@@ -4,8 +4,9 @@ require 'rails_helper'
 
 describe SideFxFollowerService do
   let(:service) { described_class.new }
-  let(:user) { create(:user) }
-  let(:follower) { create(:follower) }
+
+  let_it_be(:user, reload: true) { create(:user) }
+  let_it_be(:follower, reload: true) { create(:follower) }
 
   describe 'after_create' do
     it "logs a 'created' action when a follower is created" do

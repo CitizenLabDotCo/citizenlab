@@ -2,13 +2,13 @@ require 'rails_helper'
 
 RSpec.describe Insights::PollPhaseInsightsService do
   let(:service) { described_class.new(phase) }
-  let(:phase) { create(:poll_phase) }
-
   let(:user1) { create(:user) }
   let!(:response1) { create(:poll_response, phase: phase, user: user1) }
 
-  let(:user2) { create(:user) }
-  let!(:response2) { create(:poll_response, phase: phase, user: user2) }
+  let_it_be(:phase, reload: true) { create(:poll_phase) }
+
+  let_it_be(:user2, reload: true) { create(:user) }
+  let_it_be(:response2, reload: true) { create(:poll_response, phase: phase, user: user2) }
 
   describe '#participation_taking_poll' do
     it 'returns the participation taking polls data associated with the phase' do

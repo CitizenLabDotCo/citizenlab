@@ -16,12 +16,15 @@ resource 'User Custom Fields - Locked Fields' do
     AppConfiguration.instance.save!
   end
 
-  let(:user) { create(:user) }
-  let!(:gender_field) { create(:custom_field_gender, required: false) }
+  let_it_be(:user, reload: true) { create(:user) }
+  let_it_be(:gender_field, reload: true) { create(:custom_field_gender, required: false) }
 
   context 'when user has locked custom fields from verification' do
-    before do
+    before_all do
       create(:verification, method_name: 'bogus', user: user)
+    end
+
+    before do
       header_token_for user
     end
 

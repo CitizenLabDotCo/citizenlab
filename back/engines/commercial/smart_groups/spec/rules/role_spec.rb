@@ -31,7 +31,7 @@ describe SmartGroups::Rules::Role do
   end
 
   describe 'filter' do
-    let!(:users) do
+    let_it_be(:users, reload: true) do
       mortals = create_list(:user, 3)
       admins = create_list(:admin, 2)
       moderators = create_list(:project_moderator, 2)

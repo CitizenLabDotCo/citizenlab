@@ -43,9 +43,9 @@ resource 'Volunteering Volunteers' do
       end
 
       context 'when the phase has granular permissions' do
-        let(:group) { create(:group) }
+        let_it_be(:group, reload: true) { create(:group) }
 
-        let(:project) do
+        let_it_be(:project, reload: true) do
           create(
             :single_phase_volunteering_project,
             phase_attrs: { with_permissions: true }

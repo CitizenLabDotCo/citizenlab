@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe FileMigratable do
   describe 'default scope' do
-    let(:event_files) { create_list(:event_file, 2) }
+    let_it_be(:event_files, reload: true) { create_list(:event_file, 2) }
 
     it 'only returns non-migrated files' do
       expect(EventFile.all).to match_array(event_files)
@@ -17,7 +17,7 @@ RSpec.describe FileMigratable do
   end
 
   describe 'migrated_file association' do
-    let(:file_record) { create(:event_file) }
+    let_it_be(:file_record, reload: true) { create(:event_file) }
 
     it 'is optional' do
       expect(file_record.migrated_file).to be_nil

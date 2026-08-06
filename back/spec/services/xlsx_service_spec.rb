@@ -13,7 +13,7 @@ describe XlsxService do
   end
 
   describe 'generate_users_xlsx' do
-    let(:users) { create_list(:user, 5) }
+    let_it_be(:users, reload: true) { create_list(:user, 5) }
     let(:xlsx) { service.generate_users_xlsx(users, view_private_attributes: true) }
     let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
     let(:worksheet) { workbook.worksheets[0] }
@@ -106,7 +106,7 @@ describe XlsxService do
   end
 
   describe 'generate_ideas_xlsx' do
-    let(:ideas) do
+    let_it_be(:ideas, reload: true) do
       create_list(:idea, 5).tap do |ideas|
         ideas.first.author.destroy! # should be able to handle ideas without author
         ideas.first.reload
@@ -195,7 +195,7 @@ describe XlsxService do
   end
 
   describe 'generate_comments_xlsx' do
-    let(:comments) { create_list(:comment, 5, idea: create(:idea)) }
+    let_it_be(:comments, reload: true) { create_list(:comment, 5, idea: create(:idea)) }
     let(:xlsx) { service.generate_comments_xlsx(comments) }
     let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
     let(:worksheet) { workbook.worksheets[0] }
@@ -223,7 +223,7 @@ describe XlsxService do
   end
 
   describe 'generate_invites_xlsx' do
-    let(:invites) { create_list(:invite, 2) }
+    let_it_be(:invites, reload: true) { create_list(:invite, 2) }
     let(:xlsx) { service.generate_invites_xlsx(invites) }
     let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
     let(:worksheet) { workbook.worksheets[0] }

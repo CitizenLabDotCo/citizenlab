@@ -19,7 +19,7 @@ RSpec.describe 'reporting_contributions parity with Analytics::FactParticipation
   end
 
   context 'with one contribution of every kind' do
-    before do
+    before_all do
       create(:idea_status_proposed)
       create(:idea, submitted_at: Time.zone.now)
       create(:native_survey_response)

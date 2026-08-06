@@ -6,7 +6,7 @@ RSpec.describe EmailCampaigns::EmailConfirmationMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en', email: 'some_email@email.com') }
 
-    let(:campaign) { create(:email_confirmation_campaign) }
+    let_it_be(:campaign, reload: true) { create(:email_confirmation_campaign) }
     let(:command) { { recipient: recipient, event_payload: { code: '1234' } } }
     let(:mailer) { described_class.with(command: command, campaign: campaign) }
     let(:mail) { mailer.campaign_mail.deliver_now }

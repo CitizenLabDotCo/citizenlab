@@ -46,7 +46,7 @@ RSpec.describe EmailCampaigns::CosponsorOfYourIdeaMailer do
     end
 
     context 'with custom text' do
-      let!(:global_campaign) do
+      let_it_be(:global_campaign, reload: true) do
         create(
           :cosponsor_of_your_idea_campaign,
           subject_multiloc: { 'en' => 'Custom Global Subject - {{ cosponsorName }}' },
@@ -54,7 +54,7 @@ RSpec.describe EmailCampaigns::CosponsorOfYourIdeaMailer do
           button_text_multiloc: { 'en' => 'CLICK THE GLOBAL BUTTON' }
         )
       end
-      let!(:context_campaign) do
+      let_it_be(:context_campaign, reload: true) do
         create(
           :cosponsor_of_your_idea_campaign,
           context: proposal.phases.first,

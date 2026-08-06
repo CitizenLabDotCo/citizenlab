@@ -2,17 +2,17 @@ require 'rails_helper'
 
 RSpec.describe Insights::VolunteeringPhaseInsightsService do
   let(:service) { described_class.new(phase) }
-  let(:phase) { create(:volunteering_phase) }
-
-  let(:cause1) { create(:cause, phase: phase) }
-  let(:cause2) { create(:cause, phase: phase) }
-
   let(:user1) { create(:user) }
   let!(:volunteering1) { create(:volunteer, cause: cause1, user: user1) }
   let!(:volunteering2) { create(:volunteer, cause: cause2, user: user1) }
 
-  let(:user2) { create(:user) }
-  let!(:volunteering3) { create(:volunteer, cause: cause1, user: user2) }
+  let_it_be(:phase, reload: true) { create(:volunteering_phase) }
+
+  let_it_be(:cause1, reload: true) { create(:cause, phase: phase) }
+  let_it_be(:cause2, reload: true) { create(:cause, phase: phase) }
+
+  let_it_be(:user2, reload: true) { create(:user) }
+  let_it_be(:volunteering3, reload: true) { create(:volunteer, cause: cause1, user: user2) }
 
   describe '#participations_volunteering' do
     it 'returns the participation volunteerings data associated with the phase' do

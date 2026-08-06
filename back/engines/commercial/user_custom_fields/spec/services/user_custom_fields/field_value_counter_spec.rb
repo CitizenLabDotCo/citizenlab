@@ -27,7 +27,8 @@ RSpec.describe UserCustomFields::FieldValueCounter do
 
     context "when 'by' option is ':area_id'" do
       let(:options) { { by: :area_id } }
-      let(:area) { create(:area) }
+
+      let_it_be(:area, reload: true) { create(:area) }
 
       before do
         # Domicile field must be created before the user, otherwise the user is not

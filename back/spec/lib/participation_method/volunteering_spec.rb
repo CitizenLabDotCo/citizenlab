@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe ParticipationMethod::Volunteering do
   subject(:participation_method) { described_class.new phase }
 
-  let(:input) { create(:idea) }
+  let_it_be(:input, reload: true) { create(:idea) }
   let(:phase) { create(:volunteering_phase) }
 
   describe '#method_str' do

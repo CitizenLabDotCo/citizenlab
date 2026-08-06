@@ -14,9 +14,9 @@ RSpec.describe Analysis::Summary do
   describe 'missing_inputs_count' do
     subject { summary.missing_inputs_count }
 
-    let(:project) { create(:project_with_active_ideation_phase) }
-    let(:inputs) { create_list(:idea, 2, project: project) }
-    let(:analysis) { create(:analysis, project: project) }
+    let_it_be(:project, reload: true) { create(:project_with_active_ideation_phase) }
+    let_it_be(:inputs, reload: true) { create_list(:idea, 2, project: project) }
+    let_it_be(:analysis, reload: true) { create(:analysis, project: project) }
     let(:summary) { create(:summary, insight_attributes: { inputs_ids: inputs.map(&:id), analysis: analysis }) }
 
     context 'when the inputs didn\'t change' do
@@ -41,8 +41,11 @@ RSpec.describe Analysis::Summary do
     end
 
     context 'when filtered inputs were added' do
-      before do
+      before_all do
         create(:idea, project: project, published_at: (Time.now - 20.days))
+      end
+
+      before do
         summary.insight.update!(filters: { published_at_from: (Time.now - 3.days).strftime('%Y-%m-%d') })
       end
 

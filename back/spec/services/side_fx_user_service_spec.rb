@@ -64,7 +64,7 @@ describe SideFxUserService do
     end
 
     context 'when user is an invitee' do
-      let(:invitee) { create(:invited_user) }
+      let_it_be(:invitee, reload: true) { create(:invited_user) }
 
       it 'does not send a confirmation code email' do
         expect(RequestEmailConfirmationCodeJob).not_to receive(:perform_now)
@@ -73,7 +73,7 @@ describe SideFxUserService do
     end
 
     describe 'claim_tokens' do
-      let!(:claim_token) { create(:claim_token) }
+      let_it_be(:claim_token, reload: true) { create(:claim_token) }
       let(:idea) { claim_token.item }
 
       context 'when confirmation is not required' do

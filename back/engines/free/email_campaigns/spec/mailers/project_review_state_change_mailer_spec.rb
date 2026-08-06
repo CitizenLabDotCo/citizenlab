@@ -63,7 +63,7 @@ RSpec.describe EmailCampaigns::ProjectReviewStateChangeMailer do
     end
 
     context 'with custom text' do
-      let!(:global_campaign) do
+      let_it_be(:global_campaign, reload: true) do
         create(
           :project_review_state_change_campaign,
           subject_multiloc: { 'en' => 'Custom Global Subject - {{ organizationName }}' },

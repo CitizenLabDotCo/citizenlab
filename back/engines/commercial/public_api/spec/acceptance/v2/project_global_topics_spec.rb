@@ -55,7 +55,7 @@ resource 'Topics' do
     end
 
     describe 'when filtering by project ID' do
-      let(:project) do
+      let_it_be(:project, reload: true) do
         topics = create_list(:global_topic, 2)
         create(:project).tap { |project| project.global_topics << topics }
       end
@@ -78,7 +78,7 @@ resource 'Topics' do
     end
 
     describe 'when filtering by global topic ID' do
-      let(:topic) { create(:global_topic) }
+      let_it_be(:topic, reload: true) { create(:global_topic) }
       let(:global_topic_id) { topic.id }
 
       before do

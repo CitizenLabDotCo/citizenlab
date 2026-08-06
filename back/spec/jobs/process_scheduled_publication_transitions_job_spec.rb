@@ -108,19 +108,19 @@ RSpec.describe ProcessScheduledPublicationTransitionsJob do
   end
 
   context 'without arguments (sweep mode)' do
-    let!(:due_project) do
+    let_it_be(:due_project, reload: true) do
       create(:project, admin_publication_attributes: { publication_status: 'published' }).tap do |p|
         p.admin_publication.update_columns(scheduled_status: 'archived', scheduled_at: 1.hour.ago)
       end
     end
 
-    let!(:due_folder) do
+    let_it_be(:due_folder, reload: true) do
       create(:project_folder, admin_publication_attributes: { publication_status: 'draft' }).tap do |pf|
         pf.admin_publication.update_columns(scheduled_status: 'published', scheduled_at: 1.hour.ago)
       end
     end
 
-    let!(:future_project) do
+    let_it_be(:future_project, reload: true) do
       create(:project, admin_publication_attributes: { publication_status: 'draft' }).tap do |p|
         p.admin_publication.update_columns(scheduled_status: 'published', scheduled_at: 2.hours.from_now)
       end

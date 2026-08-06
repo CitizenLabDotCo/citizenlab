@@ -11,8 +11,11 @@ resource 'Ideas' do
   end
 
   post 'web_api/v1/phases/:phase_id/inputs' do
-    before do
+    before_all do
       create(:idea_status_proposed)
+    end
+
+    before do
       SettingsService.new.activate_feature! 'moderation'
       SettingsService.new.activate_feature! 'flag_inappropriate_content'
       @project = create(:single_phase_ideation_project)

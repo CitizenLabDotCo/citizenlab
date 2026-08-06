@@ -16,14 +16,15 @@ describe 'rake fix_existing_tenants:remap_areas_and_custom_field_options' do # r
     let!(:area_sint_jansteen) { create(:area, title_multiloc: { 'en' => 'Sint Jansteen' }) }
     let!(:area_graauw) { create(:area, title_multiloc: { 'en' => 'Graauw' }) }
     let!(:area_paal) { create(:area, title_multiloc: { 'en' => 'Paal' }) }
-    let!(:area_zandberg) { create(:area, title_multiloc: { 'en' => 'Zandberg' }) }
-    let!(:area_kloosterzande) { create(:area, title_multiloc: { 'en' => 'Kloosterzande' }) }
-    let!(:area_kruispolderhaven) { create(:area, title_multiloc: { 'en' => 'Kruispolderhaven' }) }
-    let!(:area_kruisdorp) { create(:area, title_multiloc: { 'en' => 'Kruisdorp' }) }
-    let!(:area_ossenisse) { create(:area, title_multiloc: { 'en' => 'Ossenisse' }) }
-    let!(:area_zeedorp) { create(:area, title_multiloc: { 'en' => 'Zeedorp' }) }
-    let!(:area_kreverhille) { create(:area, title_multiloc: { 'en' => 'Kreverhille' }) }
-    let!(:area_strooienstad) { create(:area, title_multiloc: { 'en' => 'Strooienstad' }) }
+
+    let_it_be(:area_zandberg, reload: true) { create(:area, title_multiloc: { 'en' => 'Zandberg' }) }
+    let_it_be(:area_kloosterzande, reload: true) { create(:area, title_multiloc: { 'en' => 'Kloosterzande' }) }
+    let_it_be(:area_kruispolderhaven, reload: true) { create(:area, title_multiloc: { 'en' => 'Kruispolderhaven' }) }
+    let_it_be(:area_kruisdorp, reload: true) { create(:area, title_multiloc: { 'en' => 'Kruisdorp' }) }
+    let_it_be(:area_ossenisse, reload: true) { create(:area, title_multiloc: { 'en' => 'Ossenisse' }) }
+    let_it_be(:area_zeedorp, reload: true) { create(:area, title_multiloc: { 'en' => 'Zeedorp' }) }
+    let_it_be(:area_kreverhille, reload: true) { create(:area, title_multiloc: { 'en' => 'Kreverhille' }) }
+    let_it_be(:area_strooienstad, reload: true) { create(:area, title_multiloc: { 'en' => 'Strooienstad' }) }
 
     it 'merges, renames, and updates all associations and multiloc values' do
       # Setup associations and multiloc

@@ -94,7 +94,7 @@ RSpec.describe EmailCampaigns::ProjectModerationRightsReceivedMailer do
     end
 
     context 'with custom text' do
-      let!(:global_campaign) do
+      let_it_be(:global_campaign, reload: true) do
         create(
           :project_moderation_rights_received_campaign,
           subject_multiloc: { 'en' => 'Custom Global Subject - {{ organizationName }}' },

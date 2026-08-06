@@ -4,7 +4,8 @@ require 'rails_helper'
 
 describe Volunteering::SideFxVolunteerService do
   let(:service) { described_class.new }
-  let(:user) { create(:user) }
+
+  let_it_be(:user, reload: true) { create(:user) }
 
   describe 'after_create' do
     it "logs a 'created' action job when a volunteer is created" do

@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Export::Geojson::GeojsonGenerator do
   subject(:service) { described_class.new phase, custom_field1 }
 
-  let(:project) { create(:single_phase_native_survey_project) }
+  let_it_be(:project, reload: true) { create(:single_phase_native_survey_project) }
   let(:phase) { project.phases.first }
   let(:form) { create(:custom_form, participation_context: phase) }
   let(:custom_field1) do

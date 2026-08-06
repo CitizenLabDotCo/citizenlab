@@ -12,8 +12,11 @@ context 'Vienna SAML employee authentication' do
   include_examples 'authenticates when the user was already registered with Vienna SAML'
 
   context 'when the user already exists' do
-    before do
+    before_all do
       create(:user, email: 'philipp.test@extern.wien.gv.at')
+    end
+
+    before do
       send_auth_request
     end
 

@@ -6,9 +6,9 @@ describe SideFxIdeaService do
   let(:service) { described_class.new }
 
   describe 'after_import' do
-    let(:admin_user) { create(:user) }
-    let(:author) { create(:user) }
-    let(:idea) { create(:idea, author: author) }
+    let_it_be(:admin_user, reload: true) { create(:user) }
+    let_it_be(:author, reload: true) { create(:user) }
+    let_it_be(:idea, reload: true) { create(:idea, author: author) }
 
     it "logs a user 'created' activity job if imported" do
       idea.idea_import = create(:idea_import, user_created: true)

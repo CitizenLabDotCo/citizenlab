@@ -61,7 +61,8 @@ RSpec.describe EmailCampaigns::Campaigns::ScreeningDigest do
     let!(:admin) { create(:admin) }
     let!(:invited_admin) { create(:invited_user, roles: [{ type: 'admin' }]) }
     let!(:moderator) { create(:project_moderator) }
-    let!(:user) { create(:user) }
+
+    let_it_be(:user, reload: true) { create(:user) }
 
     it { is_expected.to contain_exactly(admin, moderator) }
   end

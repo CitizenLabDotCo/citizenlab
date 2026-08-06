@@ -6,7 +6,7 @@ describe Permissions::UserRequirementsService do
   let(:service) { described_class.new }
 
   describe '#requirements' do
-    before do
+    before_all do
       create(:custom_field_birthyear, required: true)
       create(:custom_field_gender, required: false)
       create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_required_field')
@@ -256,7 +256,7 @@ describe Permissions::UserRequirementsService do
       end
 
       context 'when permitted_by is set to users' do
-        let(:survey_phase) { create(:native_survey_phase, with_permissions: true) }
+        let_it_be(:survey_phase, reload: true) { create(:native_survey_phase, with_permissions: true) }
         let(:permission) do
           permission = survey_phase.permissions.find { |p| p.action == 'posting_idea' }
           permission.permitted_by = 'users'
@@ -411,7 +411,7 @@ describe Permissions::UserRequirementsService do
         end
 
         context 'there are groups on the permission' do
-          let(:group) { create(:group) }
+          let_it_be(:group, reload: true) { create(:group) }
 
           before { permission.groups << group }
 
@@ -1001,7 +1001,7 @@ describe Permissions::UserRequirementsService do
   end
 
   describe '#requirements_fields' do
-    let(:custom_fields) { [true, false, false].map { |required| create(:custom_field, required: required) } }
+    let_it_be(:custom_fields, reload: true) { [true, false, false].map { |required| create(:custom_field, required: required) } }
     let(:permission) do
       create(:permission).tap do |permission|
         custom_fields.take(2).each do |field|

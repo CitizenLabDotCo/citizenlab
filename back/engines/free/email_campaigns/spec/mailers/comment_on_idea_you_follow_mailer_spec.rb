@@ -55,7 +55,7 @@ RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
     end
 
     context 'with custom text' do
-      let!(:global_campaign) do
+      let_it_be(:global_campaign, reload: true) do
         create(
           :comment_on_idea_you_follow_campaign,
           subject_multiloc: { 'en' => 'Custom Global Subject - {{ input_title }}' },
@@ -63,7 +63,7 @@ RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
           button_text_multiloc: { 'en' => 'CLICK THE GLOBAL BUTTON to go to "{{ inputTitle }}"' }
         )
       end
-      let!(:context_campaign) do
+      let_it_be(:context_campaign, reload: true) do
         create(
           :comment_on_idea_you_follow_campaign,
           context: phase,

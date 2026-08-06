@@ -2,8 +2,9 @@ require 'rails_helper'
 
 describe WebApi::V1::SpaceSerializer do
   let(:result) { described_class.new(space, params: { current_user: user }).serializable_hash }
-  let(:user) { create(:admin) }
-  let!(:space) do
+
+  let_it_be(:user, reload: true) { create(:admin) }
+  let_it_be(:space, reload: true) do
     create(
       :space,
       title_multiloc: { 'en' => 'Space Title' },

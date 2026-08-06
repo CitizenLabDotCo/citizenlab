@@ -122,9 +122,10 @@ RSpec.describe Basket do
 
   context 'when an idea has more than the maximum votes per idea' do
     let(:basket) { create(:basket, phase: phase, submitted_at: Time.now) }
-    let!(:baskets_idea) { create(:baskets_idea, basket: basket, idea: idea, votes: 4) }
-    let(:phase) { create(:multiple_voting_phase, voting_max_votes_per_idea: 3) }
     let(:idea) { create(:idea, project: phase.project, phases: [phase]) }
+    let!(:baskets_idea) { create(:baskets_idea, basket: basket, idea: idea, votes: 4) }
+
+    let_it_be(:phase, reload: true) { create(:multiple_voting_phase, voting_max_votes_per_idea: 3) }
 
     it 'is valid in normal context' do
       basket.submitted_at = Time.now
@@ -167,7 +168,7 @@ RSpec.describe Basket do
   end
 
   context 'when deleting a user' do
-    let(:user) { create(:user) }
+    let_it_be(:user, reload: true) { create(:user) }
     let(:basket) { create(:basket, user: user) }
 
     context 'when a basket has been submitted' do

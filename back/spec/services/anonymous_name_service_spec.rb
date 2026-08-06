@@ -4,7 +4,8 @@ require 'rails_helper'
 
 describe AnonymousNameService do
   let(:service) { described_class.new(user) }
-  let(:user) { create(:user, email: 'test@somewhere.com', created_at: '2024-09-30 12:00:00') }
+
+  let_it_be(:user, reload: true) { create(:user, email: 'test@somewhere.com', created_at: '2024-09-30 12:00:00') }
 
   context 'when the scheme is "animal"' do
     before do

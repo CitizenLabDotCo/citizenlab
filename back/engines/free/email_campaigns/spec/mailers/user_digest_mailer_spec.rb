@@ -98,15 +98,14 @@ RSpec.describe EmailCampaigns::UserDigestMailer do
           successful_proposals: []
         }
       end
-
-      let(:recipient1) { create(:user, locale: 'en') }
       let(:command1) { { recipient: recipient1, event_payload: event_payload } }
-
-      let(:recipient2) { create(:user, locale: 'nl-NL') }
       let(:command2) { { recipient: recipient2, event_payload: event_payload } }
-
       let(:mail1) { described_class.with(command: command1, campaign: campaign).campaign_mail.deliver_now }
       let(:mail2) { described_class.with(command: command2, campaign: campaign).campaign_mail.deliver_now }
+
+      let_it_be(:recipient1, reload: true) { create(:user, locale: 'en') }
+
+      let_it_be(:recipient2, reload: true) { create(:user, locale: 'nl-NL') }
 
       it 'renders the mails in the correct language' do
         expect(mail1.body.encoded).to include('Discover what happened last week')
@@ -115,7 +114,7 @@ RSpec.describe EmailCampaigns::UserDigestMailer do
     end
 
     context 'with custom text' do
-      let!(:global_campaign) do
+      let_it_be(:global_campaign, reload: true) do
         create(
           :user_digest_campaign,
           subject_multiloc: { 'en' => 'Custom Global Subject - {{ organizationName }}' },

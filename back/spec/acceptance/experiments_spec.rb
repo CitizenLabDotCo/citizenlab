@@ -9,7 +9,7 @@ resource 'Experiments' do
   header 'Content-Type', 'application/json'
 
   get 'web_api/v1/experiments' do
-    before do
+    before_all do
       @experiments = create_list(:experiment, 5)
     end
 

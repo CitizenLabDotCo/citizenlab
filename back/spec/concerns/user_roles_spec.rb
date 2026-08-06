@@ -5,6 +5,12 @@ require 'rails_helper'
 RSpec.describe UserRoles do
   describe 'scopes' do
     let!(:space_a) { create(:space) }
+    let!(:space_moderator_a) { create(:space_moderator, spaces: [space_a]) }
+    let!(:space_moderator_b) { create(:space_moderator) } # For random space
+    let!(:folder_moderator_a) { create(:project_folder_moderator, project_folders: [folder_a]) }
+    let!(:folder_moderator_b) { create(:project_folder_moderator) } # For random folder
+    let!(:project_moderator_a) { create(:project_moderator, projects: [project_a]) }
+    let!(:project_moderator_b) { create(:project_moderator) } # For random project
     let!(:project_a) { create(:project, space: space_a) }
     let!(:folder_a) { create(:project_folder, projects: [project_a], space: space_a) }
 
@@ -13,15 +19,10 @@ RSpec.describe UserRoles do
     let!(:project_b) { create(:project, space: space_b) }
     let!(:folder_b) { create(:project_folder, projects: [project_b], space: space_b) }
 
-    let!(:admin) { create(:admin) }
-    let!(:admin_reviewer) { create(:admin, roles: [{ 'type' => 'admin', 'project_reviewer' => true }]) }
-    let!(:space_moderator_a) { create(:space_moderator, spaces: [space_a]) }
-    let!(:space_moderator_b) { create(:space_moderator) } # For random space
-    let!(:folder_moderator_a) { create(:project_folder_moderator, project_folders: [folder_a]) }
-    let!(:folder_moderator_b) { create(:project_folder_moderator) } # For random folder
-    let!(:project_moderator_a) { create(:project_moderator, projects: [project_a]) }
-    let!(:project_moderator_b) { create(:project_moderator) } # For random project
-    let!(:normal_user) { create(:user) }
+    let_it_be(:admin, reload: true) { create(:admin) }
+    let_it_be(:admin_reviewer, reload: true) { create(:admin, roles: [{ 'type' => 'admin', 'project_reviewer' => true }]) }
+
+    let_it_be(:normal_user, reload: true) { create(:user) }
 
     describe '.admin' do
       it 'returns only admins' do

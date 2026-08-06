@@ -6,8 +6,9 @@ describe ProjectFolders::SideFxProjectFolderService do
   include SideFxHelper
 
   let(:service) { described_class.new }
-  let(:user) { create(:user) }
-  let(:project_folder) { create(:project_folder, title_multiloc: { en: 'original title' }) }
+
+  let_it_be(:user, reload: true) { create(:user) }
+  let_it_be(:project_folder, reload: true) { create(:project_folder, title_multiloc: { en: 'original title' }) }
 
   describe 'after_create' do
     it "logs a 'created' action when a project is created" do

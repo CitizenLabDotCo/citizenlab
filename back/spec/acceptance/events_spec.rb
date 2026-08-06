@@ -44,7 +44,7 @@ resource 'Events' do
     end
 
     context 'passing static page id' do
-      let(:topic) { create(:global_topic) }
+      let_it_be(:topic, reload: true) { create(:global_topic) }
       let(:static_page_id) { create(:static_page, projects_filter_type: 'topics', global_topics: [topic]).id }
 
       before { @project.update!(global_topics: [topic]) }
@@ -149,8 +149,11 @@ resource 'Events' do
     end
 
     context 'when there are unlisted projects' do
-      before do
+      before_all do
         @unlisted_project = create(:project, listed: false)
+      end
+
+      before do
         @unlisted_events = create_list(:event, 2, project: @unlisted_project)
       end
 
@@ -170,10 +173,12 @@ resource 'Events' do
       end
 
       context 'when moderator' do
-        before do
+        before_all do
           @unlisted_project2 = create(:project, listed: false)
-          @unlisted_events2 = create_list(:event, 2, project: @unlisted_project2)
+        end
 
+        before do
+          @unlisted_events2 = create_list(:event, 2, project: @unlisted_project2)
           @user = create(:user, roles: [{ type: 'project_moderator', project_id: @unlisted_project2.id }])
           header_token_for @user
         end
@@ -262,8 +267,11 @@ resource 'Events' do
     end
 
     context 'as an admin' do
-      before do
+      before_all do
         @admin = create(:admin)
+      end
+
+      before do
         header_token_for(@admin)
       end
 

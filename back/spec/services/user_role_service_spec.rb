@@ -152,21 +152,23 @@ describe UserRoleService do
   end
 
   describe 'moderators_for' do
-    let!(:space) { create(:space) }
+    let_it_be(:space, reload: true) { create(:space) }
     let!(:project) { create(:project, space: space) }
-    let!(:other_project) { create(:project) }
-    let!(:folder) { create(:project_folder, projects: [project], space: space) }
-    let!(:other_folder) { create(:project_folder) }
-
     let!(:user) { create(:user) }
-    let!(:admin) { create(:admin) }
     let!(:project_moderator_a) { create(:project_moderator, projects: [project]) }
     let!(:project_moderator_b) { create(:project_moderator, projects: [project]) }
     let!(:other_project_moderator) { create(:project_moderator, projects: [other_project]) }
     let!(:folder_moderator) { create(:project_folder_moderator, project_folders: [folder]) }
-    let!(:other_folder_moderator) { create(:project_folder_moderator, project_folders: [other_folder]) }
-    let!(:space_moderator) { create(:space_moderator, spaces: [space]) }
-    let!(:other_space_moderator) { create(:space_moderator) }
+    let!(:other_project) { create(:project) }
+    let!(:folder) { create(:project_folder, projects: [project], space: space) }
+
+    let_it_be(:other_folder, reload: true) { create(:project_folder) }
+
+    let_it_be(:admin, reload: true) { create(:admin) }
+
+    let_it_be(:other_folder_moderator, reload: true) { create(:project_folder_moderator, project_folders: [other_folder]) }
+    let_it_be(:space_moderator, reload: true) { create(:space_moderator, spaces: [space]) }
+    let_it_be(:other_space_moderator, reload: true) { create(:space_moderator) }
 
     it 'lists all explicit and implicit moderators of a project folder' do
       expect(service.moderators_for(folder).ids).to contain_exactly(admin.id, folder_moderator.id, space_moderator.id)
@@ -347,7 +349,7 @@ describe UserRoleService do
     end
 
     context 'when the user is both folder moderator and admin' do
-      let(:folders) { create_list(:project_folder, 2) }
+      let_it_be(:folders, reload: true) { create_list(:project_folder, 2) }
       let(:user) { create(:project_folder_moderator, project_folders: folders.take(1)).add_role('admin') }
 
       it 'lists all folders' do

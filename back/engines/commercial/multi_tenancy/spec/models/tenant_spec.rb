@@ -138,11 +138,12 @@ RSpec.describe Tenant do
   end
 
   describe 'tenants prioritized by lifecycle importance' do
-    let!(:churned_tenant) { create(:tenant, lifecycle: 'churned') }
-    let!(:expired_trial_tenant) { create(:tenant, lifecycle: 'expired_trial') }
-    let!(:demo_tenant) { create(:tenant, lifecycle: 'demo') }
+    let_it_be(:churned_tenant, reload: true) { create(:tenant, lifecycle: 'churned') }
+    let_it_be(:expired_trial_tenant, reload: true) { create(:tenant, lifecycle: 'expired_trial') }
+    let_it_be(:demo_tenant, reload: true) { create(:tenant, lifecycle: 'demo') }
     let!(:active_tenant) { create(:tenant, lifecycle: 'active') } # 2 active tenants with the test-tenant
-    let!(:trial_tenant) { create(:tenant, lifecycle: 'trial') }
+
+    let_it_be(:trial_tenant, reload: true) { create(:tenant, lifecycle: 'trial') }
 
     it 'returns tenants prioritized by lifecycle' do
       prioritized = described_class.prioritize(described_class.all)

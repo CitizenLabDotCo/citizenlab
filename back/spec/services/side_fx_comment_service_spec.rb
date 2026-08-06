@@ -4,9 +4,10 @@ require 'rails_helper'
 
 describe SideFxCommentService do
   let(:service) { described_class.new }
-  let(:user) { create(:user) }
-  let(:comment) { create(:comment) }
   let(:project_id) { comment.idea.project_id }
+
+  let_it_be(:user, reload: true) { create(:user) }
+  let_it_be(:comment, reload: true) { create(:comment) }
 
   describe 'after_create' do
     it "logs a 'created' action when a comment is created" do

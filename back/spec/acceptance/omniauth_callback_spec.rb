@@ -61,7 +61,7 @@ resource 'Omniauth Callback', document: false do
   end
 
   context 'when the user is logged in' do
-    before do
+    before_all do
       @user = create(:user)
     end
 
@@ -78,16 +78,17 @@ resource 'Omniauth Callback', document: false do
   end
 
   context 'when authenticating via OAuth' do
-    before do
+    before_all do
       @user = create(:user, email: 'facebook_user@example.com')
+    end
 
+    before do
       AppConfiguration.instance.settings['id_config'] = {
         allowed: true,
         enabled: true,
         id_methods: [{ name: 'facebook' }]
       }
       AppConfiguration.instance.save!
-
       OmniAuth.config.test_mode = true
       OmniAuth.config.mock_auth[:facebook] = OmniAuth::AuthHash.new({
         provider: 'facebook',
@@ -203,7 +204,7 @@ resource 'Omniauth Callback', document: false do
         end
 
         context 'when invited user accepts via SSO' do
-          let!(:invited_user) { create(:invited_user, email: 'billy_fixed@example.com') }
+          let_it_be(:invited_user, reload: true) { create(:invited_user, email: 'billy_fixed@example.com') }
 
           example 'claims participation data immediately after invite acceptance' do
             expect(idea.author_id).to be_nil

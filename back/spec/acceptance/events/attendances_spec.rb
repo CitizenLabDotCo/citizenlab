@@ -81,23 +81,23 @@ resource 'Event attendances' do
 
     context 'when the event has granular permissions' do
       let(:user) { create(:user) }
-      let(:group) { create(:group) }
-      let(:project) do
+      let(:event_id) { event.id }
+
+      let_it_be(:group, reload: true) { create(:group) }
+      let_it_be(:project, reload: true) do
         create(
           :single_phase_native_survey_project,
           phase_attrs: { with_permissions: true }
         )
       end
 
-      let(:event) do
+      let_it_be(:event, reload: true) do
         event = create(:event, project: project)
         permissions = event.project.phases.first.permissions
         permission = permissions.find_by(action: 'attending_event')
         permission.update!(permitted_by: 'users', groups: [group])
         event
       end
-
-      let(:event_id) { event.id }
 
       before { header_token_for(user) }
 
@@ -115,7 +115,7 @@ resource 'Event attendances' do
   end
 
   delete 'web_api/v1/event_attendances/:id' do
-    let!(:attendance) { create(:event_attendance) }
+    let_it_be(:attendance, reload: true) { create(:event_attendance) }
     let(:id) { attendance.id }
 
     context 'when the user is not logged in' do

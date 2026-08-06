@@ -4,8 +4,9 @@ require 'rails_helper'
 
 describe SideFxStaticPageService do
   let(:service) { described_class.new }
-  let(:user) { create(:user) }
-  let(:page) { create(:static_page, bottom_info_section_multiloc: { en: 'some text' }) }
+
+  let_it_be(:user, reload: true) { create(:user) }
+  let_it_be(:page, reload: true) { create(:static_page, bottom_info_section_multiloc: { en: 'some text' }) }
 
   describe 'after_create' do
     it "logs a 'created' action when a page is created" do

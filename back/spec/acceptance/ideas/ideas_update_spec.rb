@@ -944,7 +944,7 @@ resource 'Ideas' do
           end
 
           context 'Moving to a different project' do
-            let(:new_project) { create(:single_phase_ideation_project) }
+            let_it_be(:new_project, reload: true) { create(:single_phase_ideation_project) }
             let(:project_id) { new_project.id }
 
             example 'Move the idea to another (non-voting) project', document: false do

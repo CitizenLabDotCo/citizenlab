@@ -10,7 +10,7 @@ RSpec.describe EmailCampaigns::Campaigns::CosponsorOfYourIdea do
   end
 
   describe '#generate_commands' do
-    let(:campaign) { create(:cosponsor_of_your_idea_campaign) }
+    let_it_be(:campaign, reload: true) { create(:cosponsor_of_your_idea_campaign) }
     let(:notification) { create(:cosponsor_of_your_idea) }
     let(:notification_activity) { create(:activity, item: notification, action: 'created') }
 
@@ -32,7 +32,7 @@ RSpec.describe EmailCampaigns::Campaigns::CosponsorOfYourIdea do
   describe 'send_on_activity' do
     before { create(:idea_status_proposed) }
 
-    let!(:global_campaign) { create(:cosponsor_of_your_idea_campaign) }
+    let_it_be(:global_campaign, reload: true) { create(:cosponsor_of_your_idea_campaign) }
     let!(:context_campaign) { create(:cosponsor_of_your_idea_campaign, context: create(:phase)) }
     let(:service) { EmailCampaigns::DeliveryService.new }
     let(:phase) { create(:proposals_phase, :ongoing) }

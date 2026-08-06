@@ -11,9 +11,9 @@ RSpec.describe EmailCampaigns::Campaigns::VotingResults do
 
   describe '#generate_commands' do
     context 'phase is a voting phase' do
-      let(:project) { create(:project_with_active_budgeting_phase) }
-      let(:notification) { create(:voting_results_published, project: project, phase: project.phases.last) }
-      let(:notification_activity) { create(:activity, item: notification, action: 'created') }
+      let_it_be(:project, reload: true) { create(:project_with_active_budgeting_phase) }
+      let_it_be(:notification, reload: true) { create(:voting_results_published, project: project, phase: project.phases.last) }
+      let_it_be(:notification_activity, reload: true) { create(:activity, item: notification, action: 'created') }
 
       it 'generates a command with the desired payload and tracked content' do
         campaign = create(:voting_results_campaign)

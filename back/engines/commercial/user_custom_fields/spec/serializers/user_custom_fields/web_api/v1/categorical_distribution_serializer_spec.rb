@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe UserCustomFields::WebApi::V1::CategoricalDistributionSerializer do
   subject(:serializer) { described_class.new(distribution) }
 
-  let(:distribution) { create(:categorical_distribution) }
+  let_it_be(:distribution, reload: true) { create(:categorical_distribution) }
 
   describe '#serializable_hash' do
     specify do

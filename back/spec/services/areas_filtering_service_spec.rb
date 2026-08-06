@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 describe AreasFilteringService do
-  let(:user) { create(:user) }
+  let_it_be(:user, reload: true) { create(:user) }
 
-  let(:area1) { create(:area) }
-  let(:area2) { create(:area) }
-  let(:project_with_areas) { create(:project_with_active_ideation_phase) }
-  let!(:_areas_project1) { create(:areas_project, project: project_with_areas, area: area1) }
-  let!(:_areas_project2) { create(:areas_project, project: project_with_areas, area: area2) }
+  let_it_be(:area1, reload: true) { create(:area) }
+  let_it_be(:area2, reload: true) { create(:area) }
+  let_it_be(:project_with_areas, reload: true) { create(:project_with_active_ideation_phase) }
+  let_it_be(:_areas_project1, reload: true) { create(:areas_project, project: project_with_areas, area: area1) }
+  let_it_be(:_areas_project2, reload: true) { create(:areas_project, project: project_with_areas, area: area2) }
 
   describe 'for_homepage_filter' do
     it 'returns selected areas when visible projects are for specific areas (and none are for all areas)' do

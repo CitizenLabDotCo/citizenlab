@@ -5,9 +5,10 @@ require 'rails_helper'
 describe IdeaCustomFields::IdeaCustomFieldPolicy do
   subject(:policy) { described_class.new(user, idea_custom_field) }
 
-  let(:custom_form) { create(:custom_form) }
+  let_it_be(:custom_form, reload: true) { create(:custom_form) }
   let!(:project) { create(:project, custom_form: custom_form) }
-  let!(:idea_custom_field) { create(:custom_field, resource: custom_form) }
+
+  let_it_be(:idea_custom_field, reload: true) { create(:custom_field, resource: custom_form) }
 
   context 'for a visitor' do
     let(:user) { nil }

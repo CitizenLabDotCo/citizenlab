@@ -29,23 +29,23 @@ RSpec.describe Activity do
     end
 
     describe '.management scope' do
-      let(:admin) { create(:admin) }
-      let(:moderator) { create(:user, roles: [{ type: 'project_moderator', project_id: SecureRandom.uuid }]) }
-      let(:user) { create(:user) }
+      let_it_be(:admin, reload: true) { create(:admin) }
+      let_it_be(:moderator, reload: true) { create(:user, roles: [{ type: 'project_moderator', project_id: SecureRandom.uuid }]) }
+      let_it_be(:user, reload: true) { create(:user) }
       let(:management_filters) { described_class::MANAGEMENT_FILTERS }
 
-      let!(:a1) { create(:idea_created_activity, user: admin) }
-      let!(:a2) { create(:idea_deleted_activity, user: moderator) }
-      let!(:a3) { create(:idea_changed_activity, user: admin) }
-      let!(:a4) { create(:phase_created_activity, user: admin) }
-      let!(:a5) { create(:phase_changed_activity, user: moderator) }
-      let!(:a6) { create(:phase_deleted_activity, user: admin) }
-      let!(:a7) { create(:project_created_activity, user: admin) }
-      let!(:a8) { create(:project_changed_activity, user: moderator) }
-      let!(:a9) { create(:project_deleted_activity, user: admin) }
-      let!(:a10) { create(:project_folder_created_activity, user: admin) }
-      let!(:a11) { create(:project_folder_changed_activity, user: moderator) }
-      let!(:a12) { create(:project_folder_deleted_activity, user: admin) }
+      let_it_be(:a1, reload: true) { create(:idea_created_activity, user: admin) }
+      let_it_be(:a2, reload: true) { create(:idea_deleted_activity, user: moderator) }
+      let_it_be(:a3, reload: true) { create(:idea_changed_activity, user: admin) }
+      let_it_be(:a4, reload: true) { create(:phase_created_activity, user: admin) }
+      let_it_be(:a5, reload: true) { create(:phase_changed_activity, user: moderator) }
+      let_it_be(:a6, reload: true) { create(:phase_deleted_activity, user: admin) }
+      let_it_be(:a7, reload: true) { create(:project_created_activity, user: admin) }
+      let_it_be(:a8, reload: true) { create(:project_changed_activity, user: moderator) }
+      let_it_be(:a9, reload: true) { create(:project_deleted_activity, user: admin) }
+      let_it_be(:a10, reload: true) { create(:project_folder_created_activity, user: admin) }
+      let_it_be(:a11, reload: true) { create(:project_folder_changed_activity, user: moderator) }
+      let_it_be(:a12, reload: true) { create(:project_folder_deleted_activity, user: admin) }
 
       it "includes 'Management Feed' activities" do
         expect(described_class.management).to contain_exactly(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12)

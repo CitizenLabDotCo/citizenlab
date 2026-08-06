@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe UserCustomFields::AgeStats do
   describe '.calculate' do
-    let!(:custom_field_birthyear) { create(:custom_field, resource_type: 'User', key: 'birthyear', input_type: 'number', title_multiloc: { en: 'Birthyear' }) }
+    let_it_be(:custom_field_birthyear, reload: true) { create(:custom_field, resource_type: 'User', key: 'birthyear', input_type: 'number', title_multiloc: { en: 'Birthyear' }) }
     let(:current_year) { Date.current.year }
 
     context 'with array of custom field values' do
@@ -46,7 +46,7 @@ RSpec.describe UserCustomFields::AgeStats do
     end
 
     context 'with reference distribution' do
-      let!(:binned_distribution) do
+      let_it_be(:binned_distribution, reload: true) do
         create(
           :binned_distribution,
           custom_field: custom_field_birthyear,

@@ -4,8 +4,9 @@ require 'rails_helper'
 
 describe Verification::SideFxVerificationService do
   let(:service) { described_class.new }
-  let(:verification) { create(:verification) }
   let(:user) { verification.user }
+
+  let_it_be(:verification, reload: true) { create(:verification) }
 
   describe 'after_create' do
     it "logs a 'created' action when a verification is created" do

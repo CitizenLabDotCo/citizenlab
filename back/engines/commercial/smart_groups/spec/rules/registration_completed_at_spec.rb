@@ -21,7 +21,7 @@ describe SmartGroups::Rules::RegistrationCompletedAt do
 
   describe 'filter' do
     context 'on registration completion date' do
-      let!(:users) do
+      let_it_be(:users, reload: true) do
         users = create_list(:user, 5)
         users[0].registration_completed_at = Time.now
         users[1].registration_completed_at = (Time.now - 25.hours)

@@ -128,8 +128,11 @@ resource 'Comments' do
     parameter :project, 'Filter by project', required: false
     parameter :ideas, 'Filter by a given list of idea ids', required: false
 
-    before do
+    before_all do
       @user = create(:admin)
+    end
+
+    before do
       header_token_for @user
     end
 
@@ -236,7 +239,7 @@ resource 'Comments' do
   end
 
   get 'web_api/v1/comments/:id' do
-    let(:idea) { create(:idea) }
+    let_it_be(:idea, reload: true) { create(:idea) }
     let(:parent) { create(:comment, idea: idea) }
     let(:comment) { create(:comment, parent: parent, idea: idea) }
     let(:id) { comment.id }
@@ -273,8 +276,11 @@ resource 'Comments' do
   end
 
   context 'when authenticated' do
-    before do
+    before_all do
       @user = create(:user)
+    end
+
+    before do
       header_token_for @user
     end
 

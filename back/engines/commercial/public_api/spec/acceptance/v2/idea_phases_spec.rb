@@ -32,8 +32,8 @@ resource 'Posts' do
       in: :query
     )
 
-    let(:project) { create(:project_with_phases) }
-    let(:ideas) { create_list(:idea, 2, project: project) }
+    let_it_be(:project, reload: true) { create(:project_with_phases) }
+    let_it_be(:ideas, reload: true) { create_list(:idea, 2, project: project) }
     let!(:idea_phases) do
       2.times do |index|
         ideas[index].update!(phases: [project.phases[index]])

@@ -33,7 +33,7 @@ resource 'Voting' do
 
     include_context 'common_list_params'
 
-    let!(:basket_ideas) { create_list(:baskets_idea, 5) }
+    let_it_be(:basket_ideas, reload: true) { create_list(:baskets_idea, 5) }
 
     example_request 'List all associations between baskets and ideas' do
       assert_status 200

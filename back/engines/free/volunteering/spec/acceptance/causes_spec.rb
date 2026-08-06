@@ -16,8 +16,11 @@ resource 'Volunteering Causes' do
       parameter :size, 'Number of causes per page'
     end
 
-    before do
+    before_all do
       @phase = create(:volunteering_phase)
+    end
+
+    before do
       @causes = create_list(:cause, 3, phase: @phase)
       create(:cause)
     end

@@ -46,13 +46,14 @@ context 'etat_lu verification' do
     }
   end
 
-  before do
+  before_all do
     @user = create(:user, first_name: 'EXISTING', last_name: 'USER')
-    @token = AuthToken::AuthToken.new(payload: @user.to_token_payload).token
+  end
 
+  before do
+    @token = AuthToken::AuthToken.new(payload: @user.to_token_payload).token
     OmniAuth.config.test_mode = true
     OmniAuth.config.mock_auth[:etat_lu] = OmniAuth::AuthHash.new(auth_hash)
-
     configuration = AppConfiguration.instance
     settings = configuration.settings
     settings['id_config'] = {

@@ -23,7 +23,7 @@ RSpec.describe ClaimToken do
   end
 
   describe 'attribute defaults' do
-    let(:idea) { create(:idea, author: nil) }
+    let_it_be(:idea, reload: true) { create(:idea, author: nil) }
 
     it 'generates a random token on creation' do
       claim_token = create(:claim_token)

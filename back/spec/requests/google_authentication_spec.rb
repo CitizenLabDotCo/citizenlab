@@ -4,8 +4,11 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 describe 'google authentication' do
-  before do
+  before_all do
     @user = create(:user)
+  end
+
+  before do
     OmniAuth.config.test_mode = true
     OmniAuth.config.mock_auth[:google] = OmniAuth::AuthHash.new(
       {
@@ -60,7 +63,6 @@ describe 'google authentication' do
         status: 200,
         body: ->(_request) { File.new(Rails.root.join('spec/fixtures/female_avatar_2.jpg')) }
       )
-
     configuration = AppConfiguration.instance
     settings = configuration.settings
     settings['id_config'] = {

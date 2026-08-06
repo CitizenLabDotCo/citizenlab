@@ -10,7 +10,7 @@ RSpec.describe EmailCampaigns::Campaigns::CommentDeletedByAdmin do
   end
 
   describe '#generate_commands' do
-    let(:campaign) { create(:comment_deleted_by_admin_campaign) }
+    let_it_be(:campaign, reload: true) { create(:comment_deleted_by_admin_campaign) }
     let(:notification) { create(:comment_deleted_by_admin) }
     let(:notification_activity) { create(:activity, item: notification, action: 'created') }
 
@@ -30,7 +30,7 @@ RSpec.describe EmailCampaigns::Campaigns::CommentDeletedByAdmin do
   end
 
   describe 'send_on_activity' do
-    let!(:global_campaign) { create(:comment_deleted_by_admin_campaign) }
+    let_it_be(:global_campaign, reload: true) { create(:comment_deleted_by_admin_campaign) }
     let!(:context_campaign) { create(:comment_deleted_by_admin_campaign, context: create(:phase)) }
     let(:service) { EmailCampaigns::DeliveryService.new }
     let(:phase) { create(:ideation_phase, :ongoing) }

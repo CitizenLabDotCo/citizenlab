@@ -6,7 +6,7 @@ require 'rspec_api_documentation/dsl'
 resource 'Ideas' do
   explanation 'Inputs posted by residents: native survey responses.'
 
-  let(:user) { create(:user) }
+  let_it_be(:user, reload: true) { create(:user) }
 
   before do
     header 'Content-Type', 'application/json'

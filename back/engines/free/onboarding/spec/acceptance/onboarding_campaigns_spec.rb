@@ -7,7 +7,8 @@ resource 'Onboarding campaigns' do
   explanation 'Indicates which call to action to show to the current user'
 
   before do
-    @user = create(:user, verified: true)
+    # With an avatar but no bio yet, so the profile starts out incomplete on the bio alone.
+    @user = create(:user, :with_avatar, verified: true)
     header_token_for @user
     header 'Content-Type', 'application/json'
   end

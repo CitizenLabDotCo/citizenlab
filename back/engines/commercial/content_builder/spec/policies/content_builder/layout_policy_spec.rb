@@ -54,7 +54,7 @@ RSpec.describe ContentBuilder::LayoutPolicy do
       it { is_expected.to permit(:destroy) }
 
       context 'when craftjs_json references files' do
-        let(:file) { create(:file) }
+        let_it_be(:file, reload: true) { create(:file) }
         let(:layout) do
           create(:layout, craftjs_json: {
             'ROOT' => { 'type' => { 'resolvedName' => 'Container' }, 'nodes' => ['node1'] },
@@ -102,9 +102,10 @@ RSpec.describe ContentBuilder::LayoutPolicy do
 
     context 'when a content_buildable_type raises NotAuthorizedError' do
       let(:user) { create(:user) }
-      let!(:project) { create(:project) }
       let!(:accessible_layout) { create(:layout, content_buildable: project) }
       let!(:homepage_layout) { create(:layout, content_buildable: nil) }
+
+      let_it_be(:project, reload: true) { create(:project) }
 
       before do
         # Create a layout with a content_buildable_type that will raise NotAuthorizedError

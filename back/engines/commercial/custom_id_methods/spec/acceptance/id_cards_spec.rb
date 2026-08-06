@@ -31,7 +31,7 @@ resource 'Verification Id Cards', admin_api: true do
       parameter :file, 'Base64 encoded CSV file'
     end
 
-    before do
+    before_all do
       @idea_card = create(:id_id_card_lookup_id_card)
     end
 
@@ -61,7 +61,7 @@ resource 'Verification Id Cards', admin_api: true do
   end
 
   get 'admin_api/verification_id_cards/count' do
-    before do
+    before_all do
       @idea_card = create(:id_id_card_lookup_id_card)
     end
 

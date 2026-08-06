@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe ParticipationMethod::Information do
   subject(:participation_method) { described_class.new phase }
 
-  let(:input) { create(:idea) }
+  let_it_be(:input, reload: true) { create(:idea) }
   let(:phase) { create(:phase) }
 
   describe '#method_str' do
@@ -71,8 +71,8 @@ RSpec.describe ParticipationMethod::Information do
   end
 
   describe '#custom_form' do
-    let(:project) { create(:project_with_past_ideation_and_current_information_phase) }
-    let(:project_form) { create(:custom_form, participation_context: project) }
+    let_it_be(:project, reload: true) { create(:project_with_past_ideation_and_current_information_phase) }
+    let_it_be(:project_form, reload: true) { create(:custom_form, participation_context: project) }
     let(:phase) { project.phases.last }
 
     it 'returns the custom form of the project' do

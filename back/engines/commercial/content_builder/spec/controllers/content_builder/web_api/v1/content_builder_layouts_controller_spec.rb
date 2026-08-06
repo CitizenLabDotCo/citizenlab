@@ -7,7 +7,7 @@ require 'rails_helper'
 
 RSpec.describe ContentBuilder::WebApi::V1::ContentBuilderLayoutsController do
   routes { ContentBuilder::Engine.routes }
-  let(:user) { create(:admin) }
+  let_it_be(:user, reload: true) { create(:admin) }
 
   before do
     token = AuthToken::AuthToken.new(payload: user.to_token_payload).token

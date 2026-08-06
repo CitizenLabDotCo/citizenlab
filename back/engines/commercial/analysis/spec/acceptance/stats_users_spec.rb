@@ -39,12 +39,14 @@ resource 'Analysis - Stats - Users' do
   get 'web_api/v1/analyses/:analysis_id/stats/authors_by_domicile' do
     filter_parameters(self)
 
-    before do
+    before_all do
       @area1, @area2, @area3 = create_list(:area, 3)
+    end
+
+    before do
       # We need to call this to have the somewhere_else option
       Area.recreate_custom_field_options
       @somewhere_else_option = cf_domicile.options.left_joins(:area).find_by(areas: { id: nil })
-
       authors = [@area1.id, @area1.id, @area2.id, nil, 'outside'].map { |domicile| create(:user, domicile: domicile) }
       create(:idea, project: project, author: authors[0], likes_count: 5)
       create(:idea, project: project, author: authors[0], likes_count: 5)
@@ -110,7 +112,7 @@ resource 'Analysis - Stats - Users' do
       filter_parameters(self)
 
       describe 'with select field' do
-        before do
+        before_all do
           @custom_field = create(:custom_field_select)
           @option1, @option2, = create_list(:custom_field_option, 2, custom_field: @custom_field)
           user1 = create(:user, custom_field_values: { @custom_field.key => @option1.key })
@@ -142,7 +144,7 @@ resource 'Analysis - Stats - Users' do
       end
 
       describe 'with multiselect field' do
-        before do
+        before_all do
           @custom_field = create(:custom_field_multiselect)
           @option1, @option2 = create_list(:custom_field_option, 2, custom_field: @custom_field)
           user1 = create(:user, custom_field_values: { @custom_field.key => [@option1.key] })
@@ -174,7 +176,7 @@ resource 'Analysis - Stats - Users' do
       end
 
       describe 'with checkbox field' do
-        before do
+        before_all do
           @custom_field = create(:custom_field_checkbox)
           user1 = create(:user)
           user2 = create(:user, custom_field_values: { @custom_field.key => false })

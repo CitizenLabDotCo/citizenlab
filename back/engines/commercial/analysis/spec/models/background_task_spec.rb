@@ -12,8 +12,8 @@ RSpec.describe Analysis::BackgroundTask do
   end
 
   describe 'generated_at' do
-    let(:background_task) { create(:summarization_task) }
-    let(:insightable) { create(:summary, background_task: background_task) }
+    let_it_be(:background_task, reload: true) { create(:summarization_task) }
+    let_it_be(:insightable, reload: true) { create(:summary, background_task: background_task) }
 
     it 'is cleared when in progress' do
       insightable.update!(generated_at: Time.now)

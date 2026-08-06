@@ -2,14 +2,15 @@ require 'rails_helper'
 
 describe ProjectsFinderService do
   let(:service) { described_class }
-  let(:user) { create(:user) }
+
+  let_it_be(:user, reload: true) { create(:user) }
 
   describe 'participation_possible' do
     let(:result) { service.new(Project.all, user).participation_possible }
 
-    let!(:active_ideation_project) { create(:project_with_active_ideation_phase) }
-    let!(:_past_project) { create(:project_with_two_past_ideation_phases) }
-    let!(:_future_project) { create(:project_with_future_native_survey_phase) }
+    let_it_be(:active_ideation_project, reload: true) { create(:project_with_active_ideation_phase) }
+    let_it_be(:_past_project, reload: true) { create(:project_with_two_past_ideation_phases) }
+    let_it_be(:_future_project, reload: true) { create(:project_with_future_native_survey_phase) }
 
     it 'excludes projects without a published status' do
       create(:project_with_active_ideation_phase, admin_publication_attributes: { publication_status: 'draft' })
@@ -121,10 +122,10 @@ describe ProjectsFinderService do
   describe 'followed_by_user' do
     let(:result) { service.new(Project.all, user).followed_by_user }
 
-    let!(:followed_project) { create(:project) }
-    let!(:follower) { create(:follower, followable: followed_project, user: user) }
+    let_it_be(:followed_project, reload: true) { create(:project) }
+    let_it_be(:follower, reload: true) { create(:follower, followable: followed_project, user: user) }
 
-    let!(:unfollowed_project) { create(:project) }
+    let_it_be(:unfollowed_project, reload: true) { create(:project) }
 
     it 'includes projects with an archived status' do
       followed_project2 = create(:project, admin_publication_attributes: { publication_status: 'archived' })
@@ -223,8 +224,8 @@ describe ProjectsFinderService do
   end
 
   describe 'finished_or_archived' do
-    let!(:finished_project1) { create(:project_with_two_past_ideation_phases) }
-    let!(:unfinished_project) { create(:project_with_active_ideation_phase) }
+    let_it_be(:finished_project1, reload: true) { create(:project_with_two_past_ideation_phases) }
+    let_it_be(:unfinished_project, reload: true) { create(:project_with_active_ideation_phase) }
 
     describe "when passed filter_by: 'finished'" do
       let(:result) { service.new(Project.all, user, { filter_by: 'finished' }).finished_or_archived }
@@ -386,24 +387,23 @@ describe ProjectsFinderService do
 
     describe "when passed filter_by: 'finished_and_archived'" do
       # Should include `finished_project1` and:
-      let!(:unfinished_project1) { create(:project) }
-      let!(:phase) { create(:phase, project: unfinished_project1, start_at: 2.days.ago, end_at: 2.days.from_now) }
-      let!(:_report1) { create(:report, phase: phase, visible: true) }
+      let_it_be(:unfinished_project1, reload: true) { create(:project) }
+      let_it_be(:phase, reload: true) { create(:phase, project: unfinished_project1, start_at: 2.days.ago, end_at: 2.days.from_now) }
+      let_it_be(:_report1, reload: true) { create(:report, phase: phase, visible: true) }
 
       let!(:archived_project) do
         create(:project_with_past_information_phase, admin_publication_attributes: { publication_status: 'archived' })
       end
+      let(:result) { service.new(Project.all, user, { filter_by: 'finished_and_archived' }).finished_or_archived }
 
       # Should NOT include:
       let!(:_draft_project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
       let!(:_published_project) { create(:project, admin_publication_attributes: { publication_status: 'published' }) }
 
-      let!(:unfinished_project2) { create(:project) }
-      let!(:phase1) { create(:phase, project: unfinished_project2, start_at: 3.days.ago, end_at: 2.days.ago) }
-      let!(:_phase2) { create(:phase, project: unfinished_project2, start_at: 1.day.ago, end_at: 1.day.from_now) }
-      let!(:_report2) { create(:report, phase: phase1) }
-
-      let(:result) { service.new(Project.all, user, { filter_by: 'finished_and_archived' }).finished_or_archived }
+      let_it_be(:unfinished_project2, reload: true) { create(:project) }
+      let_it_be(:phase1, reload: true) { create(:phase, project: unfinished_project2, start_at: 3.days.ago, end_at: 2.days.ago) }
+      let_it_be(:_phase2, reload: true) { create(:phase, project: unfinished_project2, start_at: 1.day.ago, end_at: 1.day.from_now) }
+      let_it_be(:_report2, reload: true) { create(:report, phase: phase1) }
 
       it 'includes expected projects' do
         expect(Project.count).to eq 7
@@ -458,15 +458,15 @@ describe ProjectsFinderService do
   end
 
   describe 'projects_for_areas' do
-    let!(:area1) { create(:area) }
-    let!(:area2) { create(:area) }
-    let!(:project_with_areas) { create(:project_with_active_ideation_phase) }
-    let!(:_areas_project1) { create(:areas_project, project: project_with_areas, area: area1) }
-    let!(:_areas_project2) { create(:areas_project, project: project_with_areas, area: area2) }
+    let_it_be(:area1, reload: true) { create(:area) }
+    let_it_be(:area2, reload: true) { create(:area) }
+    let_it_be(:project_with_areas, reload: true) { create(:project_with_active_ideation_phase) }
+    let_it_be(:_areas_project1, reload: true) { create(:areas_project, project: project_with_areas, area: area1) }
+    let_it_be(:_areas_project2, reload: true) { create(:areas_project, project: project_with_areas, area: area2) }
 
-    let!(:project_for_all_areas) { create(:project_with_active_ideation_phase, include_all_areas: true) }
+    let_it_be(:project_for_all_areas, reload: true) { create(:project_with_active_ideation_phase, include_all_areas: true) }
 
-    let!(:_project_without_area) { create(:project) }
+    let_it_be(:_project_without_area, reload: true) { create(:project) }
 
     it 'Lists projects for a given area OR for all areas' do
       result = service.new(Project.all, user, { areas: [area1.id] }).projects_for_areas

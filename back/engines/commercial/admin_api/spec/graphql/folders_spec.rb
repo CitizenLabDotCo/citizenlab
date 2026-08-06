@@ -24,9 +24,9 @@ RSpec.describe AdminApi::Schema do
         }
       |
     end
-
-    let(:folder) { create(:project_folder) }
     let(:variables) { { id: folder.id } }
+
+    let_it_be(:folder, reload: true) { create(:project_folder) }
 
     it 'returns all folders' do
       response = result

@@ -9,7 +9,7 @@ resource 'ContentBuilderLayouts' do
   before { header 'Content-Type', 'application/json' }
 
   context 'when not authorized' do
-    let(:user) { create(:user) }
+    let_it_be(:user, reload: true) { create(:user) }
     let(:project) { create(:project) }
     let!(:layout) { create(:layout, content_buildable: project) }
     let(:project_id) { project.id }

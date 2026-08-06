@@ -14,8 +14,8 @@ describe AdditionalSeatsIncrementer do
     ActiveJob::Base.queue_adapter.try(:enqueued_jobs=, [])
   end
 
-  let(:current_user) { create(:user) }
-  let(:updated_user) { create(:user) }
+  let_it_be(:current_user, reload: true) { create(:user) }
+  let_it_be(:updated_user, reload: true) { create(:user) }
 
   describe '.increment_if_necessary' do
     it 'logs activity for admin', :active_job_inline_adapter do

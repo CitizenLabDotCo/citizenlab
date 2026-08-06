@@ -8,7 +8,7 @@ resource 'ContentBuilderLayouts' do
 
   before { header 'Content-Type', 'application/json' }
 
-  let(:folder) { create(:project_folder) }
+  let_it_be(:folder, reload: true) { create(:project_folder) }
   let!(:layout) { create(:layout, content_buildable: folder, code: 'project_folder_description') }
 
   # URL parameters

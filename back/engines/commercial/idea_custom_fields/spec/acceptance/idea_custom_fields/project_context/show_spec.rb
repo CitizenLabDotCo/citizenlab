@@ -11,7 +11,7 @@ resource 'Idea Custom Fields' do
   get 'web_api/v1/projects/:project_id/custom_fields/:id' do
     # let(:context) { create :project }
     # let(:project_id) { context.id }
-    let(:custom_field) { create(:custom_field, :for_custom_form) }
+    let_it_be(:custom_field, reload: true) { create(:custom_field, :for_custom_form) }
     let(:id) { custom_field.id }
 
     context 'when admin' do

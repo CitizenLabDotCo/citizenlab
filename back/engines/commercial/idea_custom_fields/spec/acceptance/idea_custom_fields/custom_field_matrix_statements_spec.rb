@@ -12,7 +12,7 @@ resource 'Idea Custom Field Matrix Statements' do
   let(:id) { statement.id }
 
   context 'transitive (ideation or proposals)' do
-    let(:project) { create(:project) }
+    let_it_be(:project, reload: true) { create(:project) }
     let(:custom_form) { create(:custom_form, participation_context: project) }
     let(:project_id) { project.id }
 
@@ -44,7 +44,7 @@ resource 'Idea Custom Field Matrix Statements' do
   end
 
   context 'non-transitive (native surveys)' do
-    let(:phase) { create(:native_survey_phase) }
+    let_it_be(:phase, reload: true) { create(:native_survey_phase) }
     let(:custom_form) { create(:custom_form, participation_context: phase) }
     let(:phase_id) { phase.id }
 

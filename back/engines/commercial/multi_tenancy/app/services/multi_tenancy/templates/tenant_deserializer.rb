@@ -162,7 +162,9 @@ module MultiTenancy
           end
           keys.each do |key|
             new_key = key.gsub('remote_', '').gsub('_url', '')
-            new_attributes[new_key] = File.open "public#{new_attributes[key]}"
+            # The URL is relative to Carrierwave's root, which the test environment
+            # points at a scratch directory rather than `public/`.
+            new_attributes[new_key] = File.open File.join(CarrierWave::Uploader::Base.root, new_attributes[key])
             new_attributes.delete key
           end
         end

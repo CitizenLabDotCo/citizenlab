@@ -5,19 +5,19 @@ require 'rails_helper'
 describe McpServer::Tools::ReplaceFormFields do
   let_it_be(:current_user) { create(:super_admin) }
 
-  let(:project) { create(:project, :draft) }
-  let(:phase) { create(:native_survey_phase, project:) }
-  let!(:custom_form) { create(:custom_form, participation_context: phase) }
+  let_it_be(:project, reload: true) { create(:project, :draft) }
+  let_it_be(:phase, reload: true) { create(:native_survey_phase, project:) }
+  let_it_be(:custom_form, reload: true) { create(:custom_form, participation_context: phase) }
 
   def run(params)
     run_mcp_tool(described_class, params:, current_user:)
   end
 
   context 'with a native survey phase' do
-    let!(:page) { create(:custom_field_page, resource: custom_form, page_layout: 'default') }
-    let!(:question) { create(:custom_field, resource: custom_form, title_multiloc: { 'en' => 'Old question' }) }
-    let!(:dropped_question) { create(:custom_field, resource: custom_form) }
-    let!(:end_page) { create(:custom_field_page, resource: custom_form, key: 'form_end') }
+    let_it_be(:page, reload: true) { create(:custom_field_page, resource: custom_form, page_layout: 'default') }
+    let_it_be(:question, reload: true) { create(:custom_field, resource: custom_form, title_multiloc: { 'en' => 'Old question' }) }
+    let_it_be(:dropped_question, reload: true) { create(:custom_field, resource: custom_form) }
+    let_it_be(:end_page, reload: true) { create(:custom_field_page, resource: custom_form, key: 'form_end') }
 
     it 'round-trips the fields returned by get_form_fields' do
       fetched = run_mcp_tool(

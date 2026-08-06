@@ -8,8 +8,8 @@ resource 'Avatars' do
 
   before do
     header 'Content-Type', 'application/json'
-    @user_without_avatar = create(:user, avatar: nil)
-    @users_with_avatar = create_list(:user, 6)
+    @user_without_avatar = create(:user)
+    @users_with_avatar = create_list(:user, 6, :with_avatar)
   end
 
   get 'web_api/v1/avatars' do
@@ -34,11 +34,11 @@ resource 'Avatars' do
     end
 
     describe do
-      let(:project) { create(:project) }
+      let_it_be(:project, reload: true) { create(:project) }
       let(:context_type) { 'project' }
       let(:context_id) { project.id }
-      let!(:other_user) { create(:idea).author }
-      let!(:author_ids) { Array.new(3) { create(:idea, project: project).author.id } }
+      let!(:other_user) { create(:idea, author: create(:user, :with_avatar)).author }
+      let!(:author_ids) { Array.new(3) { create(:idea, project: project, author: create(:user, :with_avatar)).author.id } }
       let(:limit) { 2 }
 
       example_request 'List random user avatars in a project' do
@@ -53,12 +53,12 @@ resource 'Avatars' do
     end
 
     describe do
-      let(:projects) { create_list(:project, 3) }
-      let(:folder) { create(:project_folder, projects: projects) }
+      let_it_be(:projects, reload: true) { create_list(:project, 3) }
+      let_it_be(:folder, reload: true) { create(:project_folder, projects: projects) }
       let(:context_type) { 'project_folder' }
       let(:context_id) { folder.id }
-      let!(:other_user) { create(:idea).author }
-      let!(:author_ids) { projects.map { |project| create(:idea, project: project).author.id } }
+      let!(:other_user) { create(:idea, author: create(:user, :with_avatar)).author }
+      let!(:author_ids) { projects.map { |project| create(:idea, project: project, author: create(:user, :with_avatar)).author.id } }
       let(:limit) { 2 }
 
       example_request 'List random user avatars in a folder' do
@@ -73,11 +73,11 @@ resource 'Avatars' do
     end
 
     describe do
-      let(:idea) { create(:idea) }
+      let_it_be(:idea, reload: true) { create(:idea, author: create(:user, :with_avatar)) }
       let(:context_type) { 'idea' }
       let(:context_id) { idea.id }
       let(:author_id) { idea.author.id }
-      let!(:commenter_ids) { Array.new(2) { create(:comment, idea: idea).author.id } }
+      let!(:commenter_ids) { Array.new(2) { create(:comment, idea: idea, author: create(:user, :with_avatar)).author.id } }
       let(:limit) { 2 }
 
       example_request 'List random user avatars on an idea (author and commenters)' do
@@ -95,11 +95,11 @@ resource 'Avatars' do
       before { admin_header_token }
 
       describe do
-        let(:group) { create(:group) }
+        let_it_be(:group, reload: true) { create(:group) }
         let(:context_type) { 'group' }
         let(:context_id) { group.id }
         let!(:other_user) { create(:user) }
-        let!(:member_ids) { create_list(:user, 4, manual_groups: [group]).map(&:id) }
+        let!(:member_ids) { create_list(:user, 4, :with_avatar, manual_groups: [group]).map(&:id) }
 
         example_request 'List random user avatars in a group as an admin' do
           assert_status 200
@@ -117,7 +117,7 @@ resource 'Avatars' do
   get 'web_api/v1/avatars/:id' do
     parameter :id, 'The avatar id is the user id', required: true
 
-    let(:user) { create(:user) }
+    let_it_be(:user, reload: true) { create(:user) }
 
     describe do
       let(:id) { user.id }

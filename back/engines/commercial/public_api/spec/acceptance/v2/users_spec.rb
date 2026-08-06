@@ -9,7 +9,7 @@ resource 'Users' do
 
   include_context 'common_auth'
 
-  let!(:users) { create_list(:user_with_demographics, 5) }
+  let_it_be(:users, reload: true) { create_list(:user_with_demographics, 5) }
 
   get '/api/v2/users/' do
     route_summary 'List users'

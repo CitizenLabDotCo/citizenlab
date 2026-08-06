@@ -20,8 +20,11 @@ resource 'AdminPublication' do
   let!(:empty_draft_folder) { create(:project_folder, admin_publication_attributes: { publication_status: 'draft' }) }
 
   context 'when admin' do
-    before do
+    before_all do
       @admin = create(:admin)
+    end
+
+    before do
       header_token_for(@admin)
     end
 
@@ -488,9 +491,10 @@ resource 'AdminPublication' do
     before { resident_header_token }
 
     let(:project_statuses) { %w[published published draft draft published archived] }
-    let!(:_custom_folder) { create(:project_folder, projects: projects.take(3)) }
-    let(:draft_project) { create(:project, slug: 'draft-project', admin_publication_attributes: { publication_status: 'draft' }) }
     let!(:folder_with_draft_project) { create(:project_folder, projects: [draft_project]) }
+    let!(:_custom_folder) { create(:project_folder, projects: projects.take(3)) }
+
+    let_it_be(:draft_project, reload: true) { create(:project, slug: 'draft-project', admin_publication_attributes: { publication_status: 'draft' }) }
 
     get 'web_api/v1/admin_publications' do
       with_options scope: :page do
@@ -805,7 +809,7 @@ resource 'AdminPublication' do
 
   context 'when project folder moderator' do
     # We can't use :folder as will collide with param :folder
-    let(:project_folder) { create(:project_folder) }
+    let_it_be(:project_folder, reload: true) { create(:project_folder) }
 
     before do
       @projects = %w[published published draft draft published archived archived published]
@@ -953,8 +957,11 @@ resource 'AdminPublication' do
     end
 
     describe 'when admin' do
-      before do
+      before_all do
         @admin = create(:admin)
+      end
+
+      before do
         header_token_for(@admin)
       end
 
@@ -971,8 +978,11 @@ resource 'AdminPublication' do
     end
 
     describe 'when project folder moderator' do
-      before do
+      before_all do
         @moderator = create(:project_folder_moderator, project_folders: [create(:project_folder)])
+      end
+
+      before do
         header_token_for(@moderator)
       end
 

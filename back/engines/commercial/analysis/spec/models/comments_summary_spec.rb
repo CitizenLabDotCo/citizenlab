@@ -14,9 +14,9 @@ RSpec.describe Analysis::CommentsSummary do
   describe 'missing_comments_count' do
     subject { comments_summary.missing_comments_count }
 
-    let(:project) { create(:project_with_active_ideation_phase) }
-    let(:input) { create(:idea, project: project) }
-    let(:comments) { create_list(:comment, 3, idea: input) }
+    let_it_be(:project, reload: true) { create(:project_with_active_ideation_phase) }
+    let_it_be(:input, reload: true) { create(:idea, project: project) }
+    let_it_be(:comments, reload: true) { create_list(:comment, 3, idea: input) }
     let(:comments_summary) { create(:comments_summary, idea: input, comments_ids: comments.map(&:id)) }
 
     context 'when the comments didn\'t change' do
@@ -24,8 +24,11 @@ RSpec.describe Analysis::CommentsSummary do
     end
 
     context 'when comments were added' do
-      before do
+      before_all do
         create_list(:comment, 2, idea: input)
+      end
+
+      before do
         input.reload
       end
 

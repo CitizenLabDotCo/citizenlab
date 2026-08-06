@@ -356,8 +356,8 @@ describe IdeaCustomFieldsService do
       let!(:end_page_field) { create(:custom_field_page, resource: custom_form, key: 'form_end') }
 
       # Define some user fields
-      let!(:user_field_gender) { create(:custom_field_gender) }
-      let!(:user_field_birthyear) { create(:custom_field_birthyear) }
+      let_it_be(:user_field_gender, reload: true) { create(:custom_field_gender) }
+      let_it_be(:user_field_birthyear, reload: true) { create(:custom_field_birthyear) }
 
       context 'when phase is a native survey phase' do
         let(:form_context) do
@@ -395,7 +395,7 @@ describe IdeaCustomFieldsService do
   end
 
   describe '#duplicate_all_fields' do
-    let(:survey_project) { create(:single_phase_native_survey_project) }
+    let_it_be(:survey_project, reload: true) { create(:single_phase_native_survey_project) }
     let(:custom_form) { create(:custom_form, participation_context: survey_project.phases.first) }
 
     it 'creates non-persisted duplicates of all fields' do

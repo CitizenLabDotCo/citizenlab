@@ -2,7 +2,8 @@ require 'rails_helper'
 
 describe CustomFieldParamsService do
   let(:service) { described_class.new }
-  let(:fields) do
+
+  let_it_be(:fields, reload: true) do
     [
       create(:custom_field_multiselect, :with_options, key: 'multiselect_field'),
       create(:custom_field_text, key: 'text_field'),

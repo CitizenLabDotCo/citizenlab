@@ -4,8 +4,8 @@ require 'rails_helper'
 
 RSpec.describe Notifications::ProjectPhaseStarted do
   describe 'make_notifications_on' do
-    let(:project) { create(:project_with_current_phase) }
-    let(:activity) { create(:activity, item: project.phases[2], action: 'started') }
+    let_it_be(:project, reload: true) { create(:project_with_current_phase) }
+    let_it_be(:activity, reload: true) { create(:activity, item: project.phases[2], action: 'started') }
 
     it 'only notifies followers of the project' do
       follower = create(:follower, followable: project)

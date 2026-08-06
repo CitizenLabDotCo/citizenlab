@@ -10,8 +10,8 @@ RSpec.describe EmailCampaigns::Campaigns::EventRegistrationConfirmation do
   end
 
   describe '#generate_commands' do
-    let(:campaign) { create(:event_registration_confirmation_campaign) }
-    let(:event_attendance) { create(:event_attendance) }
+    let_it_be(:campaign, reload: true) { create(:event_registration_confirmation_campaign) }
+    let_it_be(:event_attendance, reload: true) { create(:event_attendance) }
     let(:recipient) { event_attendance.attendee }
     let(:event) { event_attendance.event }
     let(:activity) do

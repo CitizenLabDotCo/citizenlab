@@ -179,7 +179,7 @@ resource 'Reports' do
     let(:id) { report.id }
 
     describe 'when authorized' do
-      let(:current_user) { create(:admin) }
+      let_it_be(:current_user, reload: true) { create(:admin) }
 
       before { header_token_for current_user }
 
@@ -316,7 +316,7 @@ resource 'Reports' do
     end
 
     describe 'when authorized' do
-      let(:user) { create(:admin) }
+      let_it_be(:user, reload: true) { create(:admin) }
 
       before { header_token_for user }
 

@@ -4,11 +4,12 @@ require 'rails_helper'
 
 RSpec.describe Notifications::InternalComments::InternalCommentOnUnassignedUnmoderatedIdea do
   describe 'make_notifications_on' do
-    let(:project) { create(:project) }
-    let(:project_folder) { create(:project_folder, projects: [project]) }
+    let_it_be(:project, reload: true) { create(:project) }
+    let_it_be(:project_folder, reload: true) { create(:project_folder, projects: [project]) }
     let(:idea) { create(:idea, project_id: project.id) }
-    let!(:admin) { create(:admin) }
     let(:internal_comment) { create(:internal_comment, idea: idea) }
+
+    let_it_be(:admin, reload: true) { create(:admin) }
 
     context 'when an admin should receive this notification' do
       let(:activity) { create(:activity, item: internal_comment, action: 'created') }
@@ -48,13 +49,13 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnUnassignedUnmod
     end
 
     context "when a moderator of the idea's project exists" do
-      let!(:_project_moderator) { create(:project_moderator, projects: [project]) }
+      let_it_be(:_project_moderator, reload: true) { create(:project_moderator, projects: [project]) }
 
       it_behaves_like 'no notification created'
     end
 
     context "when a moderator of a folder containing the idea's project exists" do
-      let!(:project_folder_moderator) { create(:project_folder_moderator, project_folders: [project_folder]) }
+      let_it_be(:project_folder_moderator, reload: true) { create(:project_folder_moderator, project_folders: [project_folder]) }
 
       it_behaves_like 'no notification created'
     end

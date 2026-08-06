@@ -11,7 +11,7 @@ resource 'Events' do
 
   include_context 'common_auth'
 
-  let!(:events) { create_list(:event, 5) }
+  let_it_be(:events, reload: true) { create_list(:event, 5) }
 
   get '/api/v2/events' do
     route_summary 'List all events'

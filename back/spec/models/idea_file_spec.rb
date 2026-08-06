@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe IdeaFile do
   describe 'extension_whitelist validation' do
-    let(:idea) { create(:idea) }
+    let_it_be(:idea, reload: true) { create(:idea) }
 
     it 'is valid for all whitelisted file extensions' do
       IdeaFileUploader.new.extension_allowlist.each do |extension|
@@ -30,10 +30,10 @@ RSpec.describe IdeaFile do
   end
 
   describe 'path' do
-    let(:idea_file) { create(:idea_file) }
+    let_it_be(:idea_file, reload: true) { create(:idea_file) }
 
     it 'is the location on disk in the "idea_file" directory' do
-      expected_path = Regexp.new('/citizenlab/back/public/uploads/.+/idea_file/file/.+/afvalkalender.pdf')
+      expected_path = Regexp.new("#{Regexp.escape(CarrierWave::Uploader::Base.root.to_s)}/uploads/.+/idea_file/file/.+/afvalkalender.pdf")
       expect(idea_file.file.path).to match expected_path
     end
   end

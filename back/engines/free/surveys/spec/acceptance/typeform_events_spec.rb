@@ -22,8 +22,11 @@ resource 'Typeform Events' do
   end
 
   post '/hooks/typeform_events' do
-    before do
+    before_all do
       @phase = create(:typeform_survey_phase)
+    end
+
+    before do
       url_params = {
         pc_id: @phase.id,
         pc_type: @phase.class.name

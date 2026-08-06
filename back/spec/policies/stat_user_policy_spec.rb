@@ -6,11 +6,11 @@ describe StatUserPolicy do
   subject { described_class.new(user, nil) }
 
   let(:scope) { described_class::Scope.new(user, User) }
-
-  let!(:space) { create(:space) }
-  let!(:project) { create(:single_phase_ideation_project, space: space) }
-  let!(:folder) { create(:project_folder, projects: [project], space: space) }
   let!(:test_user) { create(:user) }
+
+  let_it_be(:space, reload: true) { create(:space) }
+  let_it_be(:project, reload: true) { create(:single_phase_ideation_project, space: space) }
+  let_it_be(:folder, reload: true) { create(:project_folder, projects: [project], space: space) }
 
   shared_examples 'is denied stats access' do
     it { is_expected.not_to permit(:users_count) }

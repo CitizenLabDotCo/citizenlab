@@ -7,10 +7,10 @@ describe Polls::QuestionPolicy do
 
   let(:scope) { described_class::Scope.new(user, Polls::Question) }
 
-  let!(:space) { create(:space) }
-  let!(:project) { create(:single_phase_poll_project, space: space) }
-  let!(:folder) { create(:project_folder, projects: [project], space: space) }
-  let!(:question) { create(:poll_question, phase: project.phases.first) }
+  let_it_be(:space, reload: true) { create(:space) }
+  let_it_be(:project, reload: true) { create(:single_phase_poll_project, space: space) }
+  let_it_be(:folder, reload: true) { create(:project_folder, projects: [project], space: space) }
+  let_it_be(:question, reload: true) { create(:poll_question, phase: project.phases.first) }
 
   shared_examples 'can moderate the question' do
     it { is_expected.to permit(:show)    }

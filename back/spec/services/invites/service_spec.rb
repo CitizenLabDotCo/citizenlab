@@ -17,8 +17,6 @@ describe Invites::Service do
 
     context do
       let(:service) { described_class.new(inviter) }
-      let!(:inviter) { create(:user) }
-      let!(:groups) { create_list(:group, 3) }
       let(:users) { build_list(:user, 10) }
       let(:hash_array) do
         (users.map do |user|
@@ -32,6 +30,9 @@ describe Invites::Service do
           }
         end + [{}, {}, {}]).shuffle
       end
+      let!(:inviter) { create(:user) }
+
+      let_it_be(:groups, reload: true) { create_list(:group, 3) }
 
       it 'correctly creates invites when all is fine' do
         expect do
@@ -202,8 +203,11 @@ describe Invites::Service do
         end
 
         context 'when existing user is admin' do
-          before do
+          before_all do
             create(:project_moderator) # to reach limit
+          end
+
+          before do
             create(:admin, email: 'user1@domain.net')
           end
 
@@ -536,16 +540,16 @@ describe Invites::Service do
       let!(:user) do
         create(:user, email: 'someUser@somedomain.com', roles: [old_role], manual_groups: [old_group])
       end
-      let(:old_role) { { 'type' => 'project_moderator', 'project_id' => create(:project).id } }
-      let(:old_group) { create(:group) }
-      let(:new_group) { create(:group) }
-
       let(:hash_array) do
         [
           { email: 'john@john.son' },
           { email: 'Someuser@somedomain.com', admin: 'true', groups: new_group.title_multiloc.values.first }
         ]
       end
+
+      let_it_be(:old_role, reload: true) { { 'type' => 'project_moderator', 'project_id' => create(:project).id } }
+      let_it_be(:old_group, reload: true) { create(:group) }
+      let_it_be(:new_group, reload: true) { create(:group) }
 
       it 'adds roles and groups to user' do
         expect { service.bulk_create_xlsx(xlsx) }.to change(Invite, :count).from(0).to(1)
@@ -576,7 +580,7 @@ describe Invites::Service do
     end
 
     context 'with an email that is already invited' do
-      let!(:invite) { create(:invite) }
+      let_it_be(:invite, reload: true) { create(:invite) }
       let(:hash_array) do
         [
           { email: invite.invitee.email }

@@ -13,8 +13,9 @@ RSpec.describe EmailCampaigns::Campaign do
 
   describe '#apply_recipient_filters' do
     let(:campaign) { create(:invite_received_campaign) }
-    let(:invite) { create(:invite) }
-    let(:activity) { create(:activity, item: invite, action: 'created', user: invite.inviter) }
+
+    let_it_be(:invite, reload: true) { create(:invite) }
+    let_it_be(:activity, reload: true) { create(:activity, item: invite, action: 'created', user: invite.inviter) }
 
     it 'excludes users with pending invite and no email' do
       invitee = create(:user, invite_status: 'pending', email: nil, first_name: 'test_name')
@@ -29,8 +30,9 @@ RSpec.describe EmailCampaigns::Campaign do
 
   describe '#activity_context' do
     let(:campaign) { create(:comment_on_your_comment_campaign) }
-    let(:notification_activity) { create(:activity, item: create(:notification)) }
-    let(:area_activity) { create(:activity, item: create(:area)) }
+
+    let_it_be(:notification_activity, reload: true) { create(:activity, item: create(:notification)) }
+    let_it_be(:area_activity, reload: true) { create(:activity, item: create(:area)) }
 
     EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.each do |campaign_class|
       it 'does not raise errors when implemented' do

@@ -6,7 +6,7 @@ describe Permissions::PermissionsUpdateService do
   let(:service) { described_class.new }
 
   describe '#update_all_permissions' do
-    let(:project) { create(:project) }
+    let_it_be(:project, reload: true) { create(:project) }
     let!(:invalid_permission) do
       permission = build(:permission, permission_scope: project)
       permission.save(validate: false)

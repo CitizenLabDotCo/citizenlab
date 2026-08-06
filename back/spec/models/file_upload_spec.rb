@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe FileUpload do
-  let(:idea) { create(:idea) }
+  let_it_be(:idea, reload: true) { create(:idea) }
 
   describe 'extension allowlist validation' do
     it 'is valid for an allowlisted file extension' do
@@ -25,10 +25,10 @@ RSpec.describe FileUpload do
   end
 
   describe 'path' do
-    let(:file_upload) { create(:file_upload) }
+    let_it_be(:file_upload, reload: true) { create(:file_upload) }
 
     it 'is the location on disk in the "idea_file" directory' do
-      expected_path = Regexp.new('/citizenlab/back/public/uploads/.+/idea_file/file/.+/afvalkalender.pdf')
+      expected_path = Regexp.new("#{Regexp.escape(CarrierWave::Uploader::Base.root.to_s)}/uploads/.+/idea_file/file/.+/afvalkalender.pdf")
       expect(file_upload.file.path).to match expected_path
     end
   end

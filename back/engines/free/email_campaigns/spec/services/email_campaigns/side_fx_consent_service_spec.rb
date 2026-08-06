@@ -4,7 +4,8 @@ require 'rails_helper'
 
 describe EmailCampaigns::SideFxConsentService do
   let(:service) { described_class.new }
-  let(:user) { create(:user) }
+
+  let_it_be(:user, reload: true) { create(:user) }
 
   describe 'after_update' do
     it "logs 'consent_given' when consent is granted" do

@@ -35,8 +35,9 @@ describe PermissionPolicy do
 
   context 'for a member of a group with permissions on a phase' do
     let(:user) { create(:user) }
-    let(:group) { create(:group) }
     let!(:permission) { create(:permission, permitted_by: 'users', groups: [group]) }
+
+    let_it_be(:group, reload: true) { create(:group) }
 
     before do
       group.members << user
@@ -65,7 +66,7 @@ describe PermissionPolicy do
   end
 
   context 'when user is moderator of the corresponding project' do
-    let(:project) { create(:single_phase_ideation_project, phase_attrs: { with_permissions: true }) }
+    let_it_be(:project, reload: true) { create(:single_phase_ideation_project, phase_attrs: { with_permissions: true }) }
     let(:user) { create(:project_moderator, projects: [project]) }
     let(:permission) { project.phases.first.permissions.first }
 
@@ -78,7 +79,7 @@ describe PermissionPolicy do
   end
 
   context 'when user is moderator of another project' do
-    let(:phase) { create(:phase, with_permissions: true) }
+    let_it_be(:phase, reload: true) { create(:phase, with_permissions: true) }
     let(:permission) { phase.permissions.first }
     let(:user) { create(:project_moderator, projects: [create(:project)]) }
 

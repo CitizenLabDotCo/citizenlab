@@ -5,8 +5,11 @@ require 'rspec_api_documentation/dsl'
 resource 'ProjectsMiniAdmin' do
   explanation 'Projects admin endpoint including current phase start and end dates'
 
-  before do
+  before_all do
     @user = create(:admin)
+  end
+
+  before do
     header_token_for @user
   end
 
@@ -18,8 +21,8 @@ resource 'ProjectsMiniAdmin' do
       parameter :size, 'Number of projects per page'
     end
 
-    let!(:active_project) { create(:project_with_active_ideation_phase) }
-    let!(:past_project)   { create(:project_with_two_past_ideation_phases) }
+    let_it_be(:active_project, reload: true) { create(:project_with_active_ideation_phase) }
+    let_it_be(:past_project, reload: true)   { create(:project_with_two_past_ideation_phases) }
 
     example 'Lists projects for admin including current_phase_start_date and current_phase_end_date', document: false do
       do_request

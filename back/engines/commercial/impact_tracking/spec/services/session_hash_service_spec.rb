@@ -48,7 +48,7 @@ describe ImpactTracking::SessionHashService do
   end
 
   describe 'generate_for_user' do
-    before do
+    before_all do
       @user1_id = create(:user).id
       @user2_id = create(:user).id
     end

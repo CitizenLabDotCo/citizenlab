@@ -350,8 +350,8 @@ describe ProjectFolders::FolderPolicy do
   end
 
   context 'when space moderator' do
-    let(:space) { create(:space) }
-    let(:other_space) { create(:space) }
+    let_it_be(:space, reload: true) { create(:space) }
+    let_it_be(:other_space, reload: true) { create(:space) }
     let(:user) { create(:space_moderator, spaces: [space]) }
 
     context 'for create' do

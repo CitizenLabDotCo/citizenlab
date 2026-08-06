@@ -6,15 +6,15 @@ require 'rspec_api_documentation/dsl'
 resource 'Moderators' do
   explanation 'Moderators can manage (e.g. changing phases, ideas) only certain projects.'
 
-  let!(:project) { create(:project) }
-  let!(:same_project_moderators) { create_list(:project_moderator, 5, projects: [project]) }
-  let!(:other_project) { create(:project) }
-  let!(:other_project_moderators) { create_list(:project_moderator, 2, projects: [other_project]) }
+  let_it_be(:project, reload: true) { create(:project) }
+  let_it_be(:same_project_moderators, reload: true) { create_list(:project_moderator, 5, projects: [project]) }
+  let_it_be(:other_project, reload: true) { create(:project) }
+  let_it_be(:other_project_moderators, reload: true) { create_list(:project_moderator, 2, projects: [other_project]) }
 
   before { header 'Content-Type', 'application/json' }
 
   context 'as a project moderator' do
-    let!(:moderator) { create(:project_moderator, projects: [project]) }
+    let_it_be(:moderator, reload: true) { create(:project_moderator, projects: [project]) }
 
     before { header_token_for(moderator) }
 
@@ -127,7 +127,7 @@ resource 'Moderators' do
   end
 
   context 'as an admin' do
-    let(:admin) { create(:admin) }
+    let_it_be(:admin, reload: true) { create(:admin) }
 
     before { header_token_for(admin) }
 
@@ -165,7 +165,7 @@ resource 'Moderators' do
       ValidationErrorHelper.new.error_fields(self, User)
 
       let(:project_id) { project.id }
-      let(:user) { create(:user) }
+      let_it_be(:user, reload: true) { create(:user) }
       let(:user_id) { user.id }
 
       example_request 'Add a moderator role' do

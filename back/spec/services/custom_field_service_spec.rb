@@ -181,10 +181,10 @@ describe CustomFieldService do
   end
 
   describe 'remove_not_visible_fields' do
-    let(:project) { create(:project_with_active_ideation_phase) }
-    let(:custom_form) { create(:custom_form, participation_context: project) }
+    let_it_be(:project, reload: true) { create(:project_with_active_ideation_phase) }
+    let_it_be(:custom_form, reload: true) { create(:custom_form, participation_context: project) }
 
-    let(:select_custom_field_with_other) do
+    let_it_be(:select_custom_field_with_other, reload: true) do
       cf = create(:custom_field_select, resource: custom_form)
       create(:custom_field_option, custom_field: cf, key: 'option1')
       create(:custom_field_option, custom_field: cf, key: 'option2')
@@ -192,18 +192,7 @@ describe CustomFieldService do
       cf
     end
     let(:select_key) { select_custom_field_with_other.key }
-
-    let(:sentiment_custom_field_with_follow_up) do
-      create(
-        :custom_field_sentiment_linear_scale,
-        ask_follow_up: true,
-        resource: custom_form
-      )
-    end
-
     let(:sentiment_key) { sentiment_custom_field_with_follow_up.key }
-    let(:author) { create(:user) }
-
     let(:idea) do
       create(
         :idea,
@@ -218,6 +207,16 @@ describe CustomFieldService do
         }
       )
     end
+
+    let_it_be(:sentiment_custom_field_with_follow_up, reload: true) do
+      create(
+        :custom_field_sentiment_linear_scale,
+        ask_follow_up: true,
+        resource: custom_form
+      )
+    end
+
+    let_it_be(:author, reload: true) { create(:user) }
 
     it 'does not show custom fields if user is not author or moderator' do
       values = described_class.remove_not_visible_fields(idea, create(:user))

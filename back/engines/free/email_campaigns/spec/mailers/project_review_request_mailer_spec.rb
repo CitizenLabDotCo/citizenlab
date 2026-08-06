@@ -63,7 +63,7 @@ RSpec.describe EmailCampaigns::ProjectReviewRequestMailer do
     end
 
     context 'with custom text' do
-      let!(:global_campaign) do
+      let_it_be(:global_campaign, reload: true) do
         create(
           :project_review_request_campaign,
           subject_multiloc: { 'en' => 'Custom Global Subject - {{ organizationName }}' },

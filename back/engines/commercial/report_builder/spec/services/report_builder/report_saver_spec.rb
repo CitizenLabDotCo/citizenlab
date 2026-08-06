@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe ReportBuilder::ReportSaver do
   subject(:service) { described_class.new(report, instance_double(User)) }
 
-  let(:report) { create(:report) }
+  let_it_be(:report, reload: true) { create(:report) }
 
   it 'saves report' do
     report.name = 'Some new name'

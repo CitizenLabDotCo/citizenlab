@@ -7,7 +7,7 @@ describe XlsxService do
   let(:service) { described_class.new }
 
   describe 'generate_ideas_xlsx' do
-    before do
+    before_all do
       @project = create(:project)
       @idea1 = create(:idea, project: @project)
       @idea2 = create(:idea, project: @project)

@@ -7,7 +7,7 @@ class TrackableCampaignForTest < EmailCampaigns::Campaign
 end
 
 RSpec.describe EmailCampaigns::Trackable do
-  let(:campaign) { TrackableCampaignForTest.create! }
+  let_it_be(:campaign, reload: true) { TrackableCampaignForTest.create! }
 
   describe 'sent?' do
     it 'returns true when there are deliveries' do

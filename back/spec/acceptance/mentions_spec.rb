@@ -6,8 +6,11 @@ require 'rspec_api_documentation/dsl'
 resource 'Mentions' do
   explanation 'Part of a text that explicitly references a user.'
 
-  before do
+  before_all do
     @current_user = create(:user)
+  end
+
+  before do
     header_token_for(@current_user)
     header 'Content-Type', 'application/json'
   end

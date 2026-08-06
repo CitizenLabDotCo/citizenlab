@@ -1,8 +1,34 @@
 # frozen_string_literal: true
 
 require 'carrierwave/file_base64/adapter'
+require 'tmpdir'
+require 'fileutils'
 
-CarrierWave.configure { |config| config.enable_processing = false } if Rails.env.test? || Rails.env.cucumber?
+if Rails.env.test? || Rails.env.cucumber?
+  # Uploads written by the test suite are throw-away, but they are not free: every
+  # record with a mounted uploader copies the file once per version. Sending them to
+  # `public/uploads` means thousands of small writes per run into the working copy,
+  # which in the containerised setup is a bind mount and is markedly slower than
+  # container-local storage. It also grows unboundedly, since nothing prunes it.
+  #
+  # Writing to a per-process scratch directory instead keeps the behaviour identical
+  # while taking the working copy out of the hot path, and lets us drop the whole tree
+  # when the run ends rather than letting it grow forever. Override with
+  # CARRIERWAVE_TEST_ROOT if you need the files to survive the run.
+  #
+  # Note: /dev/shm is tempting but is only 64MB in the default container, and a full
+  # run writes several GB of attachments.
+  test_upload_root = ENV['CARRIERWAVE_TEST_ROOT'].presence
+  unless test_upload_root
+    test_upload_root = File.join(Dir.tmpdir, "carrierwave-test-#{Process.pid}")
+    at_exit { FileUtils.remove_entry(test_upload_root, true) }
+  end
+
+  CarrierWave.configure do |config|
+    config.enable_processing = false
+    config.root = test_upload_root
+  end
+end
 
 # Adds the mount_base64_file_uploader class method to ActiveRecord.
 ActiveSupport.on_load :active_record do

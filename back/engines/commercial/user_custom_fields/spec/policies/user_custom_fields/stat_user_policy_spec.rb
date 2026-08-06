@@ -5,9 +5,9 @@ require 'rails_helper'
 RSpec.describe UserCustomFields::StatUserPolicy do
   subject(:policy) { described_class.new(user, nil) }
 
-  let(:project) { create(:project) }
-  let(:folder) { create(:project_folder, projects: [project]) }
-  let(:space) { create(:space) }
+  let_it_be(:project, reload: true) { create(:project) }
+  let_it_be(:folder, reload: true) { create(:project_folder, projects: [project]) }
+  let_it_be(:space, reload: true) { create(:space) }
 
   shared_examples 'is granted stats access' do
     it { is_expected.to permit(:users_by_age) }

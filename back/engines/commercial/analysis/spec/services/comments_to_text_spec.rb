@@ -8,7 +8,7 @@ describe Analysis::CommentsToText do
 
     let(:kwargs) { {} }
 
-    let(:input) { create(:idea) }
+    let_it_be(:input, reload: true) { create(:idea) }
 
     context 'when the input has no comments' do
       it { is_expected.to be_nil }

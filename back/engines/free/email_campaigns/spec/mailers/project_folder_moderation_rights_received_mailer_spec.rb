@@ -23,7 +23,7 @@ RSpec.describe ProjectFolders::EmailCampaigns::ProjectFolderModerationRightsRece
     let(:mail) { mailer.campaign_mail.deliver_now }
     let(:body) { mail_body(mail) }
 
-    before do
+    before_all do
       EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
     end
 
@@ -96,7 +96,7 @@ RSpec.describe ProjectFolders::EmailCampaigns::ProjectFolderModerationRightsRece
     end
 
     context 'with custom text' do
-      let!(:global_campaign) do
+      let_it_be(:global_campaign, reload: true) do
         create(
           :project_folder_moderation_rights_received_campaign,
           subject_multiloc: { 'en' => 'Custom Global Subject - {{ organizationName }}' },

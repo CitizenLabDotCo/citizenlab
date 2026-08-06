@@ -53,7 +53,7 @@ resource 'Ideas Input Topics' do
     end
 
     describe 'when filtering by idea ID' do
-      let(:idea) { create(:idea_with_topics, topics_count: 2) }
+      let_it_be(:idea, reload: true) { create(:idea_with_topics, topics_count: 2) }
       let(:idea_id) { idea.id }
 
       example_request 'List only idea-input topic associations for the specified idea', document: false do
@@ -68,9 +68,10 @@ resource 'Ideas Input Topics' do
     end
 
     describe 'when filtering by input topic ID' do
-      let(:input_topic) { create(:input_topic) }
+      let_it_be(:input_topic, reload: true) { create(:input_topic) }
       let(:input_topic_id) { input_topic.id }
-      let!(:ideas) do
+
+      let_it_be(:ideas, reload: true) do
         create_list(:idea, 2).each { |idea| idea.input_topics << input_topic }
       end
 

@@ -9,7 +9,8 @@ RSpec.describe EmailCampaigns::Campaigns::CommunityMonitorReport do
 
   describe '#generate_commands' do
     let(:campaign) { create(:community_monitor_report_campaign) }
-    let!(:admin) { create(:admin) }
+
+    let_it_be(:admin, reload: true) { create(:admin) }
 
     it 'generates a command with a URL to community monitor reports' do
       command = campaign.generate_commands(recipient: admin).first
@@ -55,7 +56,8 @@ RSpec.describe EmailCampaigns::Campaigns::CommunityMonitorReport do
 
   describe '#content_worth_sending?' do
     let(:campaign) { build(:community_monitor_report_campaign) }
-    let!(:phase) { create(:community_monitor_survey_phase) }
+
+    let_it_be(:phase, reload: true) { create(:community_monitor_survey_phase) }
 
     context 'when community monitor not enabled' do
       it 'returns false' do

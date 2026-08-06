@@ -260,7 +260,7 @@ describe IdeaPolicy do
   end
 
   context 'on a published native survey response in a public project' do
-    let!(:proposed_status) { create(:idea_status_proposed) }
+    let_it_be(:proposed_status, reload: true) { create(:idea_status_proposed) }
     let!(:space) { create(:space) }
     let(:project) { create(:single_phase_native_survey_project, space: space) }
     let!(:folder) { create(:project_folder, projects: [project], space: space) }

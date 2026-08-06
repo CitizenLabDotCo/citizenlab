@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe ParticipationMethod::None do
   subject(:participation_method) { described_class.new }
 
-  let(:input) { create(:idea) }
+  let_it_be(:input, reload: true) { create(:idea) }
 
   describe '#assign_defaults' do
     it 'does not change the input' do

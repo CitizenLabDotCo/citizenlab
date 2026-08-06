@@ -5,31 +5,31 @@ require 'rails_helper'
 describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
   let(:service) { described_class.new phase, 'en', false }
 
-  let(:project) { create(:project, title_multiloc: { en: 'PROJECT' }) }
-  let(:phase) { create(:native_survey_phase, project: project, title_multiloc: { en: 'PHASE' }, with_permissions: true) }
-  let(:custom_form) { create(:custom_form, participation_context: phase) }
-  let!(:page_field) { create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'First page' }) }
-  let!(:text_field) { create(:custom_field_text, resource: custom_form, required: true, title_multiloc: { 'en' => 'Text field' }) }
-  let!(:multiline_field) { create(:custom_field_multiline_text, resource: custom_form, title_multiloc: { 'en' => 'Multiline field' }) }
-  let!(:select_field) do
+  let_it_be(:project, reload: true) { create(:project, title_multiloc: { en: 'PROJECT' }) }
+  let_it_be(:phase, reload: true) { create(:native_survey_phase, project: project, title_multiloc: { en: 'PHASE' }, with_permissions: true) }
+  let_it_be(:custom_form, reload: true) { create(:custom_form, participation_context: phase) }
+  let_it_be(:page_field, reload: true) { create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'First page' }) }
+  let_it_be(:text_field, reload: true) { create(:custom_field_text, resource: custom_form, required: true, title_multiloc: { 'en' => 'Text field' }) }
+  let_it_be(:multiline_field, reload: true) { create(:custom_field_multiline_text, resource: custom_form, title_multiloc: { 'en' => 'Multiline field' }) }
+  let_it_be(:select_field, reload: true) do
     field = create(:custom_field_select, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => 'Select field' })
     field.options.create!(key: 'single1', title_multiloc: { 'en' => 'Single 1' })
     field.options.create!(key: 'single2', title_multiloc: { 'en' => 'Single 2' })
     field
   end
-  let!(:multiselect_field) do
+  let_it_be(:multiselect_field, reload: true) do
     field = create(:custom_field_multiselect, resource: custom_form, key: 'multiselect_field', title_multiloc: { 'en' => 'Multi select field' })
     field.options.create!(key: 'option1', title_multiloc: { 'en' => 'Option 1' })
     field.options.create!(key: 'option2', title_multiloc: { 'en' => 'Option 2' })
     field
   end
-  let!(:ranking_field) do
+  let_it_be(:ranking_field, reload: true) do
     field = create(:custom_field_ranking, resource: custom_form, key: 'ranking_field', title_multiloc: { 'en' => 'Ranking field' })
     field.options.create!(key: 'ranking_one', title_multiloc: { 'en' => 'Ranking one' })
     field.options.create!(key: 'ranking_two', title_multiloc: { 'en' => 'Ranking two' })
     field
   end
-  let!(:multiselect_image_field) do
+  let_it_be(:multiselect_image_field, reload: true) do
     field = create(
       :custom_field_multiselect_image,
       resource: custom_form,
@@ -43,7 +43,7 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
     field.options.create!(title_multiloc: { 'en' => 'Image three' }, image: create(:custom_field_option_image))
     field
   end
-  let!(:matrix_field) do
+  let_it_be(:matrix_field, reload: true) do
     field = create(
       :custom_field_matrix_linear_scale,
       resource: custom_form,
@@ -60,13 +60,13 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
     field.matrix_statements.create!(title_multiloc: { 'en' => 'Matrix statement two' })
     field
   end
-  let!(:rating_field) { create(:custom_field_rating, resource: custom_form, key: 'rating_field', title_multiloc: { 'en' => 'Rating field' }) }
-  let!(:sentiment_linear_scale_field) { create(:custom_field_sentiment_linear_scale, resource: custom_form, key: 'sentiment_field', title_multiloc: { 'en' => 'Sentiment scale field' }) }
-  let!(:map_page) { create(:custom_field_page, page_layout: 'map', resource: custom_form, title_multiloc: { 'en' => 'Map page' }) }
-  let!(:point_field) { create(:custom_field_point, resource: custom_form, title_multiloc: { 'en' => 'Point field' }) }
-  let!(:line_field) { create(:custom_field_line, resource: custom_form, title_multiloc: { 'en' => 'Line field' }) }
-  let!(:polygon_field) { create(:custom_field_polygon, resource: custom_form, title_multiloc: { 'en' => 'Polygon field' }) }
-  let!(:end_page_field) { create(:custom_field_form_end_page, resource: custom_form) }
+  let_it_be(:rating_field, reload: true) { create(:custom_field_rating, resource: custom_form, key: 'rating_field', title_multiloc: { 'en' => 'Rating field' }) }
+  let_it_be(:sentiment_linear_scale_field, reload: true) { create(:custom_field_sentiment_linear_scale, resource: custom_form, key: 'sentiment_field', title_multiloc: { 'en' => 'Sentiment scale field' }) }
+  let_it_be(:map_page, reload: true) { create(:custom_field_page, page_layout: 'map', resource: custom_form, title_multiloc: { 'en' => 'Map page' }) }
+  let_it_be(:point_field, reload: true) { create(:custom_field_point, resource: custom_form, title_multiloc: { 'en' => 'Point field' }) }
+  let_it_be(:line_field, reload: true) { create(:custom_field_line, resource: custom_form, title_multiloc: { 'en' => 'Line field' }) }
+  let_it_be(:polygon_field, reload: true) { create(:custom_field_polygon, resource: custom_form, title_multiloc: { 'en' => 'Polygon field' }) }
+  let_it_be(:end_page_field, reload: true) { create(:custom_field_form_end_page, resource: custom_form) }
 
   # User fields
   let_it_be(:checkbox_field) { create(:custom_field_checkbox, resource_type: 'User', title_multiloc: { 'en' => 'Checkbox field' }) }
@@ -153,7 +153,7 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
       end
 
       context 'page with description but no title' do
-        let!(:page_no_title) { create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => '' }, description_multiloc: { 'en' => 'Page description without title' }) }
+        let_it_be(:page_no_title, reload: true) { create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => '' }, description_multiloc: { 'en' => 'Page description without title' }) }
 
         it 'includes the page description in the export' do
           fresh_service = described_class.new(phase, 'en', false)

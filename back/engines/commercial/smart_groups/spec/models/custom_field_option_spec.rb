@@ -4,8 +4,8 @@ require 'rails_helper'
 
 RSpec.describe CustomFieldOption do
   describe 'destroy' do
-    let(:cf) { create(:custom_field_select) }
-    let(:cfo) { create(:custom_field_option, custom_field: cf) }
+    let_it_be(:cf, reload: true) { create(:custom_field_select) }
+    let_it_be(:cfo, reload: true) { create(:custom_field_option, custom_field: cf) }
 
     it 'is allowed when there are no references in smart_group rules' do
       expect(cfo.destroy).to be cfo

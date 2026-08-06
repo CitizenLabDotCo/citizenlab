@@ -53,7 +53,7 @@ resource 'ProjectFolder' do
     end
 
     example 'Get a folder includes the participants_count and avatars_count', document: false do
-      idea = create(:idea)
+      idea = create(:idea, author: create(:user, :with_avatar))
       folder = create(:project_folder, projects: [idea.project])
       do_request id: folder.id
 

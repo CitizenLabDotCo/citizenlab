@@ -47,7 +47,7 @@ resource 'Ideas', :clear_cache, document: false do
   end
 
   get 'web_api/v1/ideas/:id' do
-    let(:idea) { create(:idea) }
+    let_it_be(:idea, reload: true) { create(:idea) }
     let(:id) { idea.id }
     let(:cache_key) { "api_response/example.org/web_api/v1/ideas/#{id}.json" }
 

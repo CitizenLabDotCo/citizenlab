@@ -26,10 +26,11 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnIdeaYouCommente
 
     context "when recipient is moderator, but not of idea's project, and should receive this notification" do
       let(:idea2) { create(:idea) }
-      let!(:project_moderator) { create(:project_moderator) }
       let(:internal_comment) { create(:internal_comment, idea: idea2) }
       let!(:_internal_comment2) { create(:internal_comment, idea: idea2, author: project_moderator) }
       let(:activity) { create(:activity, item: internal_comment, action: 'created') }
+
+      let_it_be(:project_moderator, reload: true) { create(:project_moderator) }
 
       it 'makes a notification on created internal comment activity' do
         notifications = described_class.make_notifications_on activity

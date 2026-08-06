@@ -420,6 +420,7 @@ resource 'Ideas' do
       end
 
       let(:with_permissions) { false }
+      let(:cosponsor_ids) { cosponsors.map(&:id) }
       let(:phase) { create(:proposals_phase, with_permissions: with_permissions) }
       let(:project) { phase.project }
       let(:creation_phase_id) { phase.id }
@@ -428,10 +429,11 @@ resource 'Ideas' do
       let(:title_multiloc) { { 'en' => 'My proposal title' } }
       let(:body_multiloc) { { 'en' => 'My proposal body' } }
       let(:topic_ids) { [create(:input_topic, project: project).id] }
-      let(:cosponsors) { create_list(:user, 2) }
-      let(:cosponsor_ids) { cosponsors.map(&:id) }
-      let!(:proposed_status) { create(:proposals_status, code: 'proposed') }
-      let!(:prescreening_status) { create(:proposals_status, code: 'prescreening') }
+
+      let_it_be(:cosponsors, reload: true) { create_list(:user, 2) }
+
+      let_it_be(:proposed_status, reload: true) { create(:proposals_status, code: 'proposed') }
+      let_it_be(:prescreening_status, reload: true) { create(:proposals_status, code: 'prescreening') }
 
       before do
         CustomField.find_by(code: 'cosponsor_ids').update!(enabled: true)
@@ -844,7 +846,7 @@ resource 'Ideas' do
       context 'when regular user' do
         before { header_token_for(user) }
 
-        let(:user) { create(:user) }
+        let_it_be(:user, reload: true) { create(:user) }
 
         include_examples 'create_common_ground_input'
       end

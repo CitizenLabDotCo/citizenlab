@@ -6,13 +6,13 @@ describe CommentPolicy do
   subject { described_class.new(user, comment) }
 
   let(:scope) { CommentPolicy::Scope.new(user, idea.comments) }
-
-  let!(:space) { create(:space) }
   let!(:project) { create(:single_phase_ideation_project, space: space) }
   let!(:folder) { create(:project_folder, projects: [project], space: space) }
   let!(:idea) { create(:idea, project: project, phases: project.phases) }
   let!(:comment) { create(:comment, idea: idea) }
   let!(:user) { create(:user) }
+
+  let_it_be(:space, reload: true) { create(:space) }
 
   context 'on comment on idea in a public project' do
     context 'for a user who is not the author of the comment' do

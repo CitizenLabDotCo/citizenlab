@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe McpServer::Tools::CreatePollOption do
-  let(:current_user) { create(:super_admin) }
+  let_it_be(:current_user, reload: true) { create(:super_admin) }
   let(:project) { create(:project, admin_publication_attributes: { publication_status: status }) }
   let(:phase) { create(:poll_phase, project: project) }
   let(:question) { create(:poll_question, phase: phase) }

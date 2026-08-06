@@ -6,7 +6,7 @@ require 'rspec_api_documentation/dsl'
 resource 'Map Configs' do
   explanation 'A map config defines how a project map should be positioned and which layers it should display'
 
-  let!(:project)      { create(:project) }
+  let_it_be(:project, reload: true) { create(:project) }
   let(:project_id)    { project.id }
   let(:json_response) { JSON.parse(response_body, symbolize_names: false) }
   let(:attributes)    { json_response.dig('data', 'attributes').with_indifferent_access }
@@ -25,7 +25,7 @@ resource 'Map Configs' do
 
   shared_examples 'successful GET map config' do
     get 'web_api/v1/projects/:project_id/map_config' do
-      let!(:map_config) do
+      let_it_be(:map_config, reload: true) do
         create(:map_config,
           :with_positioning,
           :with_tile_provider,

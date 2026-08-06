@@ -255,11 +255,6 @@ describe Export::Xlsx::InputSheetGenerator do
 
     context 'for a proposals context' do
       let(:phase) { create(:proposals_phase) }
-      let(:assignee1) { create(:admin, first_name: 'Jane', last_name: 'Smith') }
-      let(:assignee2) { create(:admin, first_name: 'John', last_name: 'Doe') }
-      let(:status1) { create(:proposals_status, title_multiloc: { 'en' => 'Accepted' }) }
-      let(:status2) { create(:proposals_status, title_multiloc: { 'en' => 'Under Review' }) }
-
       let!(:proposal1) do
         create(
           :proposal,
@@ -281,8 +276,12 @@ describe Export::Xlsx::InputSheetGenerator do
           published_at: nil
         )
       end
-
       let(:inputs) { [proposal1, proposal2] }
+
+      let_it_be(:assignee1, reload: true) { create(:admin, first_name: 'Jane', last_name: 'Smith') }
+      let_it_be(:assignee2, reload: true) { create(:admin, first_name: 'John', last_name: 'Doe') }
+      let_it_be(:status1, reload: true) { create(:proposals_status, title_multiloc: { 'en' => 'Accepted' }) }
+      let_it_be(:status2, reload: true) { create(:proposals_status, title_multiloc: { 'en' => 'Under Review' }) }
 
       it 'Generates a sheet with the phase inputs' do
         expect(xlsx).to match([
@@ -550,7 +549,7 @@ describe Export::Xlsx::InputSheetGenerator do
 
         # User custom fields appear in different places depending on whether they come from the user or the inputs
         context 'user fields' do
-          before do
+          before_all do
             create(:custom_field_gender, :with_options, title_multiloc: { 'en' => 'Gender' })
             create(:custom_field_birthyear, title_multiloc: { 'en' => 'Birth year' })
           end

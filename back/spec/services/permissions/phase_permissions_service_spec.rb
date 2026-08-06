@@ -230,8 +230,11 @@ describe Permissions::PhasePermissionsService do
       let(:user) { create(:user) }
       let(:service) { described_class.new(phase, user) }
 
-      before do
+      before_all do
         create(:idea_status_proposed)
+      end
+
+      before do
         create(:native_survey_response, author: user, project: phase.project, creation_phase: phase, phases: [phase])
       end
 

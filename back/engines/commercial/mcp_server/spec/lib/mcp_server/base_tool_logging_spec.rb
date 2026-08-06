@@ -5,7 +5,7 @@ require 'rails_helper'
 # BaseTool.for cross-cutting behaviour: activities tagged channel 'mcp' (Layer 2), and
 # unexpected tool errors reported to Sentry + re-raised, expected ones not (Layer 3).
 describe McpServer::BaseTool do
-  let(:current_user) { create(:super_admin) }
+  let_it_be(:current_user, reload: true) { create(:super_admin) }
 
   describe 'activity channel (Layer 2)' do
     it "tags activities logged during a tool run with the 'mcp' channel" do

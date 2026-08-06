@@ -4,8 +4,9 @@ require 'rails_helper'
 
 describe EmailCampaigns::SideFxCampaignService do
   let(:service) { described_class.new }
-  let(:user) { create(:user) }
-  let(:campaign) do
+
+  let_it_be(:user, reload: true) { create(:user) }
+  let_it_be(:campaign, reload: true) do
     create(
       :comment_on_your_comment_campaign,
       enabled: true,

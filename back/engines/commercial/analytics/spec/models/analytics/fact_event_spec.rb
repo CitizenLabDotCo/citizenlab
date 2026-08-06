@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Analytics::FactEvent do
   context 'when an event is created' do
-    let!(:event) { create(:event) }
+    let_it_be(:event, reload: true) { create(:event) }
 
     it 'is also available as an event fact' do
       fact_event = described_class.find(event.id)

@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe CustomField do
   describe 'destroy' do
-    let(:cf) { create(:custom_field) }
+    let_it_be(:cf, reload: true) { create(:custom_field) }
 
     it 'is allowed when there are no references in smart_group rules' do
       expect(cf.destroy).to be cf

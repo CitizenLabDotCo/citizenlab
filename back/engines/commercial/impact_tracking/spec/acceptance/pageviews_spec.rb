@@ -17,8 +17,8 @@ resource 'Impact tracking pageview' do
       parameter :route, 'The route of the pageview'
     end
 
-    let(:id) { create(:session).id }
-    let(:project) { create(:project) }
+    let_it_be(:id, reload: true) { create(:session).id }
+    let_it_be(:project, reload: true) { create(:project) }
 
     context 'when path is index' do
       let(:client_path) { '/en/' }
@@ -54,7 +54,7 @@ resource 'Impact tracking pageview' do
     end
 
     context 'when path is an idea' do
-      let(:idea) { create(:idea, project: project) }
+      let_it_be(:idea, reload: true) { create(:idea, project: project) }
       let(:client_path) { "/en/ideas/#{idea.slug}" }
       let(:route) { '/:locale/ideas/:slug' }
 

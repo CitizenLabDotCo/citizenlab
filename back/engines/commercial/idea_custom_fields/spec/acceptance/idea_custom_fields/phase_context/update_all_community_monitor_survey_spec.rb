@@ -49,8 +49,8 @@ resource 'Idea Custom Fields' do
       }
     end
 
-    let(:phase) { create(:community_monitor_survey_phase) }
-    let!(:custom_form) { create(:custom_form, participation_context: phase) }
+    let_it_be(:phase, reload: true) { create(:community_monitor_survey_phase) }
+    let_it_be(:custom_form, reload: true) { create(:custom_form, participation_context: phase) }
     let(:phase_id) { phase.id }
 
     context 'when admin' do

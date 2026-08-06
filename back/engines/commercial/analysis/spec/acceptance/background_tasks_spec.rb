@@ -12,11 +12,11 @@ resource 'Background tasks' do
   end
 
   get 'web_api/v1/analyses/:analysis_id/background_tasks' do
-    let(:analysis) { create(:analysis) }
+    let_it_be(:analysis, reload: true) { create(:analysis) }
     let(:analysis_id) { analysis.id }
     let!(:task) { create(:auto_tagging_task, analysis: analysis) }
-    let!(:other_task) { create(:auto_tagging_task) }
-    let!(:old_task) { create(:q_and_a_task, analysis: analysis, state: 'succeeded', created_at: 26.hours.ago, ended_at: 25.hours.ago) }
+    let_it_be(:other_task, reload: true) { create(:auto_tagging_task) }
+    let_it_be(:old_task, reload: true) { create(:q_and_a_task, analysis: analysis, state: 'succeeded', created_at: 26.hours.ago, ended_at: 25.hours.ago) }
 
     example_request 'List all background tasks' do
       expect(status).to eq(200)

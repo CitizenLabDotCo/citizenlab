@@ -7,7 +7,7 @@ require './engines/commercial/public_api/spec/acceptance/v2/support/shared'
 resource 'Events' do
   include_context 'common_auth'
 
-  let!(:event_attendances) { create_list(:event_attendance, 5) }
+  let_it_be(:event_attendances, reload: true) { create_list(:event_attendance, 5) }
 
   get '/api/v2/event_attendances/' do
     route_summary 'List attendees of events'

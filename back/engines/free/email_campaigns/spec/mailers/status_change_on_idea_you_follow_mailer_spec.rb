@@ -71,7 +71,7 @@ RSpec.describe EmailCampaigns::StatusChangeOnIdeaYouFollowMailer do
     end
 
     context 'with custom text' do
-      let!(:global_campaign) do
+      let_it_be(:global_campaign, reload: true) do
         create(
           :status_change_on_idea_you_follow_campaign,
           subject_multiloc: { 'en' => 'Custom Global Subject - {{ organizationName }}' },
@@ -79,7 +79,7 @@ RSpec.describe EmailCampaigns::StatusChangeOnIdeaYouFollowMailer do
           button_text_multiloc: { 'en' => 'CLICK THE GLOBAL BUTTON' }
         )
       end
-      let!(:context_campaign) do
+      let_it_be(:context_campaign, reload: true) do
         create(
           :status_change_on_idea_you_follow_campaign,
           context: create(:phase),

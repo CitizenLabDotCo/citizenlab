@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe BulkImportIdeas::Importers::ProjectImporter do
-  let(:service) { described_class.new(create(:admin), 'en') }
+  let_it_be(:service, reload: true) { described_class.new(create(:admin), 'en') }
 
   describe '#find_or_create_project' do
     let(:project_data) do

@@ -79,7 +79,7 @@ describe SmartGroups::Rules::CustomFieldNumber do
   end
 
   describe 'description_multiloc' do
-    let(:number_picker) do
+    let_it_be(:number_picker, reload: true) do
       create(:custom_field_number, title_multiloc: {
         'en' => 'How many politicians do you need to solve climate change?',
         'fr-FR' => 'Combien de politicians faut-il pour resoudre le changement du climat?',

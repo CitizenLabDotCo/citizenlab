@@ -58,7 +58,7 @@ resource 'GlobalTopics', :clear_cache, document: false do
   end
 
   get 'web_api/v1/global_topics/:id' do
-    let(:global_topic) { create(:topic) }
+    let_it_be(:global_topic, reload: true) { create(:topic) }
     let(:id) { global_topic.id }
     let(:cache_key) { "api_response/example.org/web_api/v1/global_topics/#{id}.json" }
 

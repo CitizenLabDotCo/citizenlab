@@ -14,9 +14,9 @@ resource 'Topics' do
 
   include_context 'common_auth'
 
-  let!(:project) { create(:project) }
-  let!(:global_topics) { create_list(:global_topic, 3) }
-  let!(:input_topics) { create_list(:input_topic, 2, project: project) }
+  let_it_be(:project, reload: true) { create(:project) }
+  let_it_be(:global_topics, reload: true) { create_list(:global_topic, 3) }
+  let_it_be(:input_topics, reload: true) { create_list(:input_topic, 2, project: project) }
 
   get '/api/v2/topics/' do
     route_summary '[deprecated] List topics'
@@ -158,16 +158,16 @@ resource 'Topics' do
       type: 'string'
     )
 
-    let!(:deleted_global_topic) do
+    let_it_be(:deleted_global_topic, reload: true) do
       create(:activity, item_type: 'GlobalTopic', action: 'deleted', acted_at: '2020-01-01')
     end
 
-    let!(:deleted_input_topic) do
+    let_it_be(:deleted_input_topic, reload: true) do
       create(:activity, item_type: 'InputTopic', action: 'deleted', acted_at: '2020-01-02')
     end
 
     # Legacy Topic deletion activity (for backwards compatibility)
-    let!(:deleted_legacy_topic) do
+    let_it_be(:deleted_legacy_topic, reload: true) do
       create(:activity, item_type: 'Topic', action: 'deleted', acted_at: '2020-01-03')
     end
 

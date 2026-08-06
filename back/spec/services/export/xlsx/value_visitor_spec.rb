@@ -218,7 +218,7 @@ describe Export::Xlsx::ValueVisitor do
         end
 
         context 'when there is a value' do
-          let!(:area) { create(:area, title_multiloc: { 'en' => 'Paris', 'nl-NL' => 'Parijs' }) }
+          let_it_be(:area, reload: true) { create(:area, title_multiloc: { 'en' => 'Paris', 'nl-NL' => 'Parijs' }) }
           let(:value) { area.id }
           let(:option_index) do
             {

@@ -6,9 +6,10 @@ describe SideFxProjectReviewService do
   include SideFxHelper
 
   let(:service) { described_class.new }
+
   # Reloading the user bc the db persists timestamps with a lower precision
-  let(:user) { create(:admin).reload }
-  let(:review) { create(:project_review) }
+  let_it_be(:user, reload: true) { create(:admin).reload }
+  let_it_be(:review, reload: true) { create(:project_review) }
 
   describe 'after_create' do
     it "logs a 'created' activity job" do

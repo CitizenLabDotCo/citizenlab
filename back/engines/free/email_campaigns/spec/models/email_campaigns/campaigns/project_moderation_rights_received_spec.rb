@@ -10,9 +10,9 @@ RSpec.describe EmailCampaigns::Campaigns::ProjectModerationRightsReceived do
   end
 
   describe '#generate_commands' do
-    let(:campaign) { create(:project_moderation_rights_received_campaign) }
-    let(:notification) { create(:project_moderation_rights_received) }
-    let(:notification_activity) { create(:activity, item: notification, action: 'created') }
+    let_it_be(:campaign, reload: true) { create(:project_moderation_rights_received_campaign) }
+    let_it_be(:notification, reload: true) { create(:project_moderation_rights_received) }
+    let_it_be(:notification_activity, reload: true) { create(:activity, item: notification, action: 'created') }
 
     it 'generates a command with the desired payload and tracked content' do
       command = campaign.generate_commands(

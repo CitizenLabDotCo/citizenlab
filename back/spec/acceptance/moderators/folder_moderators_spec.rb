@@ -138,7 +138,7 @@ resource 'Moderators' do
   end
 
   context 'as an admin' do
-    let(:admin) { create(:admin) }
+    let_it_be(:admin, reload: true) { create(:admin) }
 
     before do
       header_token_for(admin)

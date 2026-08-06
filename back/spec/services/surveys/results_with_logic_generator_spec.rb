@@ -185,7 +185,7 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
 
   # Test the private methods that use logic in results
   describe '#next_page_id_from_logic' do
-    let(:input) { create(:native_survey_response, project: project, phases: phases_of_inputs) }
+    let_it_be(:input, reload: true) { create(:native_survey_response, project: project, phases: phases_of_inputs) }
     let(:page_ids) { [page_field.id, mid_page_field1.id, mid_page_field2.id, last_page_field.id] }
 
     before { reset_survey_logic! }

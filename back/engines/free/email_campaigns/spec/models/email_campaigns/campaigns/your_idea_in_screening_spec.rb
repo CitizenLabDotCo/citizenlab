@@ -10,9 +10,9 @@ RSpec.describe EmailCampaigns::Campaigns::YourInputInScreening do
   end
 
   describe '#generate_commands' do
-    let(:campaign) { create(:your_input_in_screening_campaign) }
-    let(:user) { create(:user) }
-    let(:proposal) { create(:proposal, author: user) }
+    let_it_be(:campaign, reload: true) { create(:your_input_in_screening_campaign) }
+    let_it_be(:user, reload: true) { create(:user) }
+    let_it_be(:proposal, reload: true) { create(:proposal, author: user) }
     let(:activity) { create(:activity, item: proposal, action: 'submitted', user: user) }
 
     it 'generates a command with the desired payload' do
@@ -47,13 +47,14 @@ RSpec.describe EmailCampaigns::Campaigns::YourInputInScreening do
 
   describe 'send_on_activity' do
     let(:context) { create(:proposals_phase) }
-    let(:phase) { context }
-    let!(:global_campaign) { create(:your_input_in_screening_campaign) }
     let!(:context_campaign) { create(:your_input_in_screening_campaign, context:) }
     let(:activity) do
       proposal = create(:proposal, idea_status: create(:proposal_status_prescreening), publication_status: 'submitted', project: phase.project, creation_phase: phase, phases: [phase])
       create(:activity, item: proposal, action: 'submitted')
     end
+    let(:phase) { context }
+
+    let_it_be(:global_campaign, reload: true) { create(:your_input_in_screening_campaign) }
 
     describe do
       let(:context) { create(:proposals_phase) }

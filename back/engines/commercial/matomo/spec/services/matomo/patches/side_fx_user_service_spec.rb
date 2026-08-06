@@ -4,8 +4,9 @@ require 'rails_helper'
 
 describe SideFxUserService do
   let(:service) { described_class.new }
-  let(:current_user) { create(:user) }
-  let(:user) { create(:user) }
+
+  let_it_be(:current_user, reload: true) { create(:user) }
+  let_it_be(:user, reload: true) { create(:user) }
 
   describe 'after_destroy' do
     it 'successfully enqueues PII data deletion job for Matomo' do

@@ -11,7 +11,7 @@ resource 'Email Campaigns' do
 
   include_context 'common_auth'
 
-  let!(:email_campaigns) { create_list(:manual_campaign, 5) }
+  let_it_be(:email_campaigns, reload: true) { create_list(:manual_campaign, 5) }
 
   get '/api/v2/email_campaigns/' do
     route_summary 'List email campaigns'

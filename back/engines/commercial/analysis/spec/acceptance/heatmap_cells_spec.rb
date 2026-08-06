@@ -25,9 +25,9 @@ resource 'HeatmapCells' do
       parameter :size, 'Number of cells per page'
     end
 
-    let(:analysis) { create(:analysis) }
+    let_it_be(:analysis, reload: true) { create(:analysis) }
     let(:analysis_id) { analysis.id }
-    let!(:heatmap_cells) do
+    let_it_be(:heatmap_cells, reload: true) do
       [
         create(:heatmap_cell, analysis: analysis, lift: 1.1),
         create(:heatmap_cell, analysis: analysis, lift: 1.2)

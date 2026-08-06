@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Notifications::VotingResultsPublished do
   describe 'make_notifications_on' do
-    let(:participant) { create(:user) }
+    let_it_be(:participant, reload: true) { create(:user) }
 
     it 'makes a notification when a voting phase has ended' do
       phase = create(:budgeting_phase)

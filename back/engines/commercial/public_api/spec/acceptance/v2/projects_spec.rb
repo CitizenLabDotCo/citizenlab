@@ -124,7 +124,7 @@ resource 'Projects' do
     end
 
     context "when filtering by 'topic_ids'" do
-      let(:topics) { create_list(:global_topic, 2) }
+      let_it_be(:topics, reload: true) { create_list(:global_topic, 2) }
       let(:topic_ids) { topics.pluck(:id) }
 
       let!(:project) do
@@ -145,7 +145,7 @@ resource 'Projects' do
     end
 
     context "when filtering by 'area_ids'" do
-      let(:areas) { create_list(:area, 2) }
+      let_it_be(:areas, reload: true) { create_list(:area, 2) }
       let(:area_ids) { areas.pluck(:id) }
       let!(:project) { create(:project, areas: areas) }
       let!(:project_in_all_areas) { create(:project, include_all_areas: true) }

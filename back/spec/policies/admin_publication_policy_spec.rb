@@ -74,7 +74,7 @@ describe AdminPublicationPolicy do
   end
 
   context 'on a private admins project' do
-    let!(:project) { create(:private_admins_project) }
+    let_it_be(:project, reload: true) { create(:private_admins_project) }
     let!(:admin_publication) { project.admin_publication }
 
     context 'for a visitor' do
@@ -130,7 +130,7 @@ describe AdminPublicationPolicy do
   end
 
   context 'when a published folder only has draft projects' do
-    let(:draft_project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
+    let_it_be(:draft_project, reload: true) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
     let(:admin_publication) { create(:project_folder, projects: [draft_project]).admin_publication }
 
     context 'when visitor' do

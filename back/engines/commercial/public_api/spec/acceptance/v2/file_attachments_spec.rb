@@ -11,11 +11,11 @@ resource 'File Attachments' do
 
   include_context 'common_auth'
 
-  let!(:user) { create(:user) }
-  let!(:project) { create(:project) }
-  let!(:idea) { create(:idea, project: project) }
+  let_it_be(:user, reload: true) { create(:user) }
+  let_it_be(:project, reload: true) { create(:project) }
+  let_it_be(:idea, reload: true) { create(:idea, project: project) }
 
-  let!(:files) do
+  let_it_be(:files, reload: true) do
     create_list(:file, 2, uploader: user, projects: [project])
   end
 

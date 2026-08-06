@@ -8,8 +8,11 @@ describe Onboarding::OnboardingService do
   describe 'current_campaign' do
     let(:custom_field) { create(:custom_field) }
     let(:user) do
+      # A fully completed profile, so that each example can knock out one part of it
+      # and assert on the campaign that gets suggested.
       create(
         :user,
+        :with_avatar,
         bio_multiloc: { en: "I'm a great bloke" },
         custom_field_values: { custom_field.key => 'Quite often' }
       )

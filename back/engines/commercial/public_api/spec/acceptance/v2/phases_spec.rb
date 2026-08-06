@@ -11,7 +11,7 @@ resource 'Phases' do
 
   include_context 'common_auth'
 
-  let!(:project) { create(:project_with_phases) }
+  let_it_be(:project, reload: true) { create(:project_with_phases) }
 
   get '/api/v2/phases/' do
     route_summary 'List phases'
@@ -99,7 +99,8 @@ resource 'Phases' do
 
     context 'Phases per project' do
       let(:project_id) { project.id }
-      let!(:other_project) { create(:project_with_phases) }
+
+      let_it_be(:other_project, reload: true) { create(:project_with_phases) }
 
       example_request 'Successful response' do
         expect(status).to eq(200)

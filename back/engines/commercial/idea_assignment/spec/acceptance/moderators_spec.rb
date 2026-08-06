@@ -53,9 +53,9 @@ resource 'Moderators' do
 
       let(:project1) { create(:project) }
       let(:project2) { create(:project) }
-      let(:project3) { create(:project) }
+      let_it_be(:project3, reload: true) { create(:project) }
       let(:folder1) { create(:project_folder, projects: [project1, project2]) }
-      let(:folder2) { create(:project_folder, projects: [project3]) }
+      let_it_be(:folder2, reload: true) { create(:project_folder, projects: [project3]) }
       let(:moderator) { create(:project_folder_moderator, project_folders: [folder2, folder1]) }
       let(:other_moderators) { create_list(:project_folder_moderator, 2, project_folders: [folder1]) }
       let(:project_folder_id) { folder1.id }

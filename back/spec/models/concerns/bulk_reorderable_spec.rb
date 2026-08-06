@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe BulkReorderable do
   # Using CustomField with a real CustomForm to test against the actual
   # deferrable unique constraint in the database.
-  let(:custom_form) { create(:custom_form) }
+  let_it_be(:custom_form, reload: true) { create(:custom_form) }
 
   def create_field(ordering:)
     create(:custom_field, :for_custom_form, resource: custom_form, ordering: ordering)

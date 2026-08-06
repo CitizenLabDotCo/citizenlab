@@ -3,7 +3,7 @@ require 'rails_helper'
 describe SpacePolicy do
   subject { described_class.new(user, space) }
 
-  let(:space) { create(:space) }
+  let_it_be(:space, reload: true) { create(:space) }
 
   context 'for a visitor' do
     let(:user) { nil }

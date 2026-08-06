@@ -547,7 +547,7 @@ describe ProjectCopyService do
     # The prescreening_mode travels with the phase, but only takes effect where the
     # target platform has the corresponding feature.
     describe 'a phase with a prescreening_mode' do
-      let(:project) do
+      let_it_be(:project, reload: true) do
         SettingsService.new.activate_feature!('prescreening_ideation')
         create(:project).tap do |project|
           create(:phase, project: project, prescreening_mode: 'all')

@@ -2,25 +2,24 @@ require 'rails_helper'
 
 RSpec.describe Insights::VotingPhaseInsightsService do
   let(:service) { described_class.new(phase) }
-
-  let!(:phase) { create(:multiple_voting_phase, start_at: 17.days.ago, end_at: 2.days.ago, manual_votes_count: 10) }
-  let!(:idea1) { create(:idea, phases: [phase]) }
-  let!(:idea2) { create(:idea, phases: [phase], manual_votes_amount: 10) }
-
-  let(:user) { create(:user, custom_field_values: { gender: 'male' }) }
-  let!(:basket1) { create(:basket, phase: phase, user: user, submitted_at: phase.start_at + 1.day) }
-  let!(:baskets_idea1) { create(:baskets_idea, basket: basket1, idea: idea1, votes: 2) }
-  let!(:baskets_idea2) { create(:baskets_idea, basket: basket1, idea: idea2, votes: 3) }
-
-  let!(:basket2) { create(:basket, phase: phase, user: nil, submitted_at: phase.start_at + 1.day) }
-  let!(:baskets_idea3) { create(:baskets_idea, basket: basket2, idea: idea2, votes: 42) }
-
-  let!(:basket3) { create(:basket, phase: phase, user: nil, submitted_at: nil) }
-  let!(:baskets_idea4) { create(:baskets_idea, basket: basket3, idea: idea2, votes: 999) }
-
   let!(:comment1) { create(:comment, idea: idea1, created_at: 20.days.ago, author: user) } # before phase start
   let!(:comment2) { create(:comment, idea: idea1, created_at: 10.days.ago, author: user) } # during phase
   let!(:comment3) { create(:comment, idea: idea1, created_at: 1.day.ago, author: user) } # after phase end
+
+  let_it_be(:phase, reload: true) { create(:multiple_voting_phase, start_at: 17.days.ago, end_at: 2.days.ago, manual_votes_count: 10) }
+  let_it_be(:idea1, reload: true) { create(:idea, phases: [phase]) }
+  let_it_be(:idea2, reload: true) { create(:idea, phases: [phase], manual_votes_amount: 10) }
+
+  let_it_be(:user, reload: true) { create(:user, custom_field_values: { gender: 'male' }) }
+  let_it_be(:basket1, reload: true) { create(:basket, phase: phase, user: user, submitted_at: phase.start_at + 1.day) }
+  let_it_be(:baskets_idea1, reload: true) { create(:baskets_idea, basket: basket1, idea: idea1, votes: 2) }
+  let_it_be(:baskets_idea2, reload: true) { create(:baskets_idea, basket: basket1, idea: idea2, votes: 3) }
+
+  let_it_be(:basket2, reload: true) { create(:basket, phase: phase, user: nil, submitted_at: phase.start_at + 1.day) }
+  let_it_be(:baskets_idea3, reload: true) { create(:baskets_idea, basket: basket2, idea: idea2, votes: 42) }
+
+  let_it_be(:basket3, reload: true) { create(:basket, phase: phase, user: nil, submitted_at: nil) }
+  let_it_be(:baskets_idea4, reload: true) { create(:baskets_idea, basket: basket3, idea: idea2, votes: 999) }
 
   # Manually update votes_count for each idea to reflect only votes from submitted baskets, mimicking production behavior
   before do
@@ -84,11 +83,11 @@ RSpec.describe Insights::VotingPhaseInsightsService do
   end
 
   describe 'phase_participation_method_metrics' do
-    let(:user1) { create(:user) }
-    let(:participation1) { create(:basket_participation, :with_votes, vote_count: 2, acted_at: 10.days.ago, user: user1) }
-    let(:participation2) { create(:basket_participation, :with_votes, vote_count: 3, acted_at: 5.days.ago, user: user1) }
-    let(:participation3) { create(:commenting_idea_participation, acted_at: 10.days.ago, user: user1) }
-    let(:participation4) { create(:commenting_idea_participation, acted_at: 5.days.ago, user: user1) }
+    let_it_be(:user1, reload: true) { create(:user) }
+    let_it_be(:participation1, reload: true) { create(:basket_participation, :with_votes, vote_count: 2, acted_at: 10.days.ago, user: user1) }
+    let_it_be(:participation2, reload: true) { create(:basket_participation, :with_votes, vote_count: 3, acted_at: 5.days.ago, user: user1) }
+    let_it_be(:participation3, reload: true) { create(:commenting_idea_participation, acted_at: 10.days.ago, user: user1) }
+    let_it_be(:participation4, reload: true) { create(:commenting_idea_participation, acted_at: 5.days.ago, user: user1) }
 
     let(:participations) do
       {
@@ -137,10 +136,11 @@ RSpec.describe Insights::VotingPhaseInsightsService do
 
   describe '#idea_vote_counts_data' do
     let(:participations) { service.send(:phase_participations)[:voting] }
-    let(:custom_field) { create(:custom_field, resource_type: 'User', key: 'gender', input_type: 'select', title_multiloc: { en: 'Gender' }) }
-    let!(:custom_field_option_male) { create(:custom_field_option, custom_field: custom_field, key: 'male', title_multiloc: { en: 'Male' }) }
-    let!(:custom_field_option_female) { create(:custom_field_option, custom_field: custom_field, key: 'female', title_multiloc: { en: 'Female' }) }
-    let!(:custom_field_option_unspecified) { create(:custom_field_option, custom_field: custom_field, key: 'unspecified', title_multiloc: { en: 'Unspecified' }) }
+
+    let_it_be(:custom_field, reload: true) { create(:custom_field, resource_type: 'User', key: 'gender', input_type: 'select', title_multiloc: { en: 'Gender' }) }
+    let_it_be(:custom_field_option_male, reload: true) { create(:custom_field_option, custom_field: custom_field, key: 'male', title_multiloc: { en: 'Male' }) }
+    let_it_be(:custom_field_option_female, reload: true) { create(:custom_field_option, custom_field: custom_field, key: 'female', title_multiloc: { en: 'Female' }) }
+    let_it_be(:custom_field_option_unspecified, reload: true) { create(:custom_field_option, custom_field: custom_field, key: 'unspecified', title_multiloc: { en: 'Unspecified' }) }
 
     it 'returns the correct vote counts data per idea for a given custom field' do
       participations[0][:user_custom_field_values] = { 'gender' => 'female' }

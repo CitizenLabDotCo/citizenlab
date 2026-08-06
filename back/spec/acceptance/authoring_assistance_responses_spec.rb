@@ -14,7 +14,7 @@ resource 'AuthoringAssistanceResponse' do
 
     before { header_token_for user }
 
-    let(:idea) { create(:idea) }
+    let_it_be(:idea, reload: true) { create(:idea) }
     let(:idea_id) { idea.id }
     let(:custom_free_prompt) { build(:authoring_assistance_response).custom_free_prompt }
 

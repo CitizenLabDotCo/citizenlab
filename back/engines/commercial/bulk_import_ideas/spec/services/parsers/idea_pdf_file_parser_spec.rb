@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
-  let(:project) { create(:single_phase_ideation_project) }
-  let(:service) { described_class.new create(:admin), 'en', project.phases.first&.id, false }
+  let_it_be(:project, reload: true) { create(:single_phase_ideation_project) }
+  let_it_be(:service, reload: true) { described_class.new create(:admin), 'en', project.phases.first&.id, false }
 
   # Mock data to avoid Gutenberg dependency that renders PDF to get this data
   let(:template_data) do
@@ -17,7 +17,7 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
   before { allow(service).to receive(:template_data).and_return(template_data) }
 
   describe 'create_files' do
-    let(:service_with_split) { described_class.new create(:admin), 'en', project.phases.first&.id, false, pages_per_form: 2 }
+    let_it_be(:service_with_split, reload: true) { described_class.new create(:admin), 'en', project.phases.first&.id, false, pages_per_form: 2 }
 
     before { allow(service_with_split).to receive(:template_data).and_return(template_data) }
 

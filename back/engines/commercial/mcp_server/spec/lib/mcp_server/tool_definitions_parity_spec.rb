@@ -8,7 +8,7 @@ require 'rails_helper'
 # actionable error (LocaleGuard, PhaseFeatureGuard), never in the definition. This
 # spec fails when a tool (re)introduces definition-time tenant coupling.
 RSpec.describe 'MCP tool definition parity' do # rubocop:disable RSpec/DescribeClass
-  let(:current_user) { create(:super_admin) }
+  let_it_be(:current_user, reload: true) { create(:super_admin) }
 
   def definitions
     McpServer::McpController::TOOL_CLASSES.map do |klass|

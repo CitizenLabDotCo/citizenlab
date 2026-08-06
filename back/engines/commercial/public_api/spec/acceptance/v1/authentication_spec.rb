@@ -12,7 +12,7 @@ resource 'Authentication' do
 
   route '/api/v1/authenticate', 'Authentication' do
     post 'Authenticate' do
-      before do
+      before_all do
         @api_token = PublicApi::ApiClient.create
       end
 

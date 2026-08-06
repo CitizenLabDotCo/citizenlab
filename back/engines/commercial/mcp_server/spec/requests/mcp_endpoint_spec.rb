@@ -7,15 +7,15 @@ require 'rails_helper'
 # The test tenant host is 'example.org' (non-loopback), so these specs exercise
 # the real hosted-host allow path, which a localhost dev run cannot.
 describe McpServer::McpController do
-  let(:user) { create(:super_admin) }
+  let_it_be(:user, reload: true) { create(:super_admin) }
 
-  let(:oauth_app) do
+  let_it_be(:oauth_app, reload: true) do
     Doorkeeper::Application.create!(
       name: 'Test MCP Client', redirect_uri: 'https://client.example.com/cb', confidential: false
     )
   end
 
-  let(:token) do
+  let_it_be(:token, reload: true) do
     Doorkeeper::AccessToken.create!(
       resource_owner_id: user.id, application: oauth_app, scopes: 'mcp:access', expires_in: 7200
     )

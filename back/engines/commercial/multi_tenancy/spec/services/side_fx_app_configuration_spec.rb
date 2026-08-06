@@ -4,9 +4,10 @@ require 'rails_helper'
 
 describe 'SideFxAppConfigurationService' do
   let(:service) { SideFxAppConfigurationService.new }
-  let(:current_user) { create(:user) }
   let(:tenant) { Tenant.current }
   let(:config) { AppConfiguration.instance }
+
+  let_it_be(:current_user, reload: true) { create(:user) }
 
   it 'has an #before_update method' do
     # only test for the presence of the method bc it does nothing for now.

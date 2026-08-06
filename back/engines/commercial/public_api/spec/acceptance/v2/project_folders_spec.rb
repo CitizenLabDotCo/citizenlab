@@ -68,7 +68,7 @@ resource 'Project Folders' do
 
     include_context 'common_item_params'
 
-    let(:project_folder) { create(:project_folder) }
+    let_it_be(:project_folder, reload: true) { create(:project_folder) }
     let(:id) { project_folder.id }
 
     example_request 'Returns the project' do

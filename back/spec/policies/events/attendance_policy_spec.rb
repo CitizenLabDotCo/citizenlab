@@ -32,7 +32,7 @@ RSpec.describe Events::AttendancePolicy do
   end
 
   context 'when the user is a moderator' do
-    let(:event) { create(:event) }
+    let_it_be(:event, reload: true) { create(:event) }
     let(:user) { build(:project_moderator, project_ids: [event.project_id]) }
     let(:attendance) { create(:event_attendance, event: event, attendee: attendee) }
 

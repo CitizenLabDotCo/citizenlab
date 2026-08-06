@@ -24,9 +24,9 @@ describe SmartGroups::Rules::ParticipatedInCommunityMonitor do
   end
 
   describe 'filter' do
-    let!(:project) { create(:community_monitor_project) }
-    let!(:users) { create_list(:user, 3) }
-    let!(:survey_response) do
+    let_it_be(:project, reload: true) { create(:community_monitor_project) }
+    let_it_be(:users, reload: true) { create_list(:user, 3) }
+    let_it_be(:survey_response, reload: true) do
       create(:idea_status_proposed)
       create(:native_survey_response, author: users[0], project: project, creation_phase: project.phases.first)
     end

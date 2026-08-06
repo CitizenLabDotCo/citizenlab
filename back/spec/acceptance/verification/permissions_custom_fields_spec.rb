@@ -12,9 +12,9 @@ resource 'PermissionsCustomField' do
   end
 
   get 'web_api/v1/ideas/:idea_id/permissions/:action/permissions_custom_fields' do
-    let(:project) { create(:single_phase_ideation_project) }
+    let_it_be(:project, reload: true) { create(:single_phase_ideation_project) }
     let(:action) { 'commenting_idea' }
-    let(:idea_id) { create(:idea, project: project).id }
+    let_it_be(:idea_id, reload: true) { create(:idea, project: project).id }
 
     example 'List all default permissions fields of a "verified" permission with locked fields' do
       permission = create(

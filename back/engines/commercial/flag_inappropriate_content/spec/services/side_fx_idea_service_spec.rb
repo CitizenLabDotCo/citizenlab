@@ -4,8 +4,9 @@ require 'rails_helper'
 
 describe SideFxIdeaService do
   let(:service) { described_class.new }
-  let(:user) { create(:user) }
-  let(:phase) { create(:phase) }
+
+  let_it_be(:user, reload: true) { create(:user) }
+  let_it_be(:phase, reload: true) { create(:phase) }
 
   describe 'after_create' do
     it 'triggers toxicity detection for an idea' do
@@ -37,8 +38,8 @@ describe SideFxIdeaService do
     end
 
     describe 'remove_flag_if_approved' do
-      let!(:prescreening_status) { create(:idea_status_prescreening) }
-      let!(:proposed_status) { create(:idea_status_proposed) }
+      let_it_be(:prescreening_status, reload: true) { create(:idea_status_prescreening) }
+      let_it_be(:proposed_status, reload: true) { create(:idea_status_proposed) }
 
       it 'removes flag when idea transitions from prescreening to proposed status' do
         idea = create(:idea, idea_status: prescreening_status, publication_status: 'submitted')

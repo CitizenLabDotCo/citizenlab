@@ -5,11 +5,11 @@ require 'rails_helper'
 describe EmailCampaigns::SendManualCampaignService do
   subject(:service) { described_class.new }
 
-  let(:user) { create(:admin) }
+  let_it_be(:user, reload: true) { create(:admin) }
 
   describe '#call' do
-    let(:campaign) { create(:manual_campaign) }
-    let!(:users) { create_list(:user, 3) }
+    let_it_be(:campaign, reload: true) { create(:manual_campaign) }
+    let_it_be(:users, reload: true) { create_list(:user, 3) }
 
     it 'sends to all recipients and returns true' do
       result = service.call(campaign, user)

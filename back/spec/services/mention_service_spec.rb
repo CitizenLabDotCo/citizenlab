@@ -44,8 +44,11 @@ describe MentionService do
   end
 
   describe 'process_mentions' do
-    before do
+    before_all do
       @u1 = create(:user)
+    end
+
+    before do
       @u1_mention = service.user_to_mention(@u1)
       @u1_mention_expanded = service.add_span_around @u1_mention, @u1
       @u2 = create(:user)

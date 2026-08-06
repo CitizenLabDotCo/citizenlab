@@ -64,7 +64,7 @@ describe SmartGroups::Rules::CustomFieldDate do
   end
 
   describe 'description_multiloc' do
-    let(:date_picker) do
+    let_it_be(:date_picker, reload: true) do
       create(:custom_field_date, title_multiloc: {
         'en' => 'When will we have a new government?',
         'fr-FR' => 'Quand est-ce que on aura un nouveau gouvernement?',

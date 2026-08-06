@@ -5,7 +5,7 @@ require 'rspec_api_documentation/dsl'
 
 resource 'File Previews' do
   header 'Content-Type', 'application/json'
-  let(:file_preview) { create(:file_preview) }
+  let_it_be(:file_preview, reload: true) { create(:file_preview) }
   let(:id) { file_preview.file.id }
 
   get 'web_api/v1/files/:id/preview' do

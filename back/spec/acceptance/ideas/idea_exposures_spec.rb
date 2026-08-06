@@ -7,14 +7,14 @@ resource 'Idea Exposures' do
   explanation 'An idea exposure is representing a user seeing an idea in the ideation feed.'
   header 'Content-Type', 'application/json'
 
-  let(:user) { create(:user) }
+  let_it_be(:user, reload: true) { create(:user) }
 
   before { header_token_for user }
 
   post 'web_api/v1/ideas/:id/exposures' do
     parameter :phase_id, 'The phase the idea is being exposed in', required: false
 
-    let(:project) { create(:single_phase_ideation_project) }
+    let_it_be(:project, reload: true) { create(:single_phase_ideation_project) }
     let(:phase) { project.phases.first }
     let(:idea) { create(:idea, project: project, phases: [phase]) }
     let(:id) { idea.id }

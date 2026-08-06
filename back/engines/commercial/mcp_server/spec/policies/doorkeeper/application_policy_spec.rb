@@ -5,9 +5,9 @@ require 'rails_helper'
 describe Doorkeeper::ApplicationPolicy do
   subject(:policy) { described_class.new(user, application) }
 
-  let(:user) { create(:user) }
-  let(:other_user) { create(:user) }
-  let(:application) do
+  let_it_be(:user, reload: true) { create(:user) }
+  let_it_be(:other_user, reload: true) { create(:user) }
+  let_it_be(:application, reload: true) do
     Doorkeeper::Application.create!(name: 'Acme Connector', redirect_uri: 'https://a.example.com/cb', confidential: false)
   end
 
@@ -42,7 +42,7 @@ describe Doorkeeper::ApplicationPolicy do
   describe 'Scope#resolve' do
     subject(:resolved) { described_class::Scope.new(user, Doorkeeper::Application).resolve }
 
-    let(:other_application) do
+    let_it_be(:other_application, reload: true) do
       Doorkeeper::Application.create!(name: 'Urban Insights', redirect_uri: 'https://b.example.com/cb', confidential: false)
     end
 

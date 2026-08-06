@@ -44,7 +44,7 @@ describe IdeasFinder do
   end
 
   describe '#transitive_condition' do
-    let!(:non_transitive_ids) { create_pair(:proposal).pluck(:id) }
+    let_it_be(:non_transitive_ids, reload: true) { create_pair(:proposal).pluck(:id) }
 
     it 'returns transitive ideas' do
       params[:transitive] = true
@@ -108,14 +108,15 @@ describe IdeasFinder do
   end
 
   describe '#input_topics_condition' do
-    let(:project) { create(:project) }
-    let(:input_topic1) { create(:input_topic, project: project) }
-    let(:input_topic2) { create(:input_topic, project: project) }
+    let_it_be(:project, reload: true) { create(:project) }
+    let_it_be(:input_topic1, reload: true) { create(:input_topic, project: project) }
+    let_it_be(:input_topic2, reload: true) { create(:input_topic, project: project) }
     let!(:idea1) { create(:idea, project: project, input_topics: [input_topic1]) }
-    let!(:idea2) { create(:idea, project: project, input_topics: [input_topic1, input_topic2]) }
-    let!(:idea3) { create(:idea, project: project, input_topics: [input_topic2]) }
     let(:input_topic_ids) { [input_topic1.id] }
     let(:expected_record_ids) { [idea1.id, idea2.id] }
+
+    let_it_be(:idea2, reload: true) { create(:idea, project: project, input_topics: [input_topic1, input_topic2]) }
+    let_it_be(:idea3, reload: true) { create(:idea, project: project, input_topics: [input_topic2]) }
 
     before do
       params[:input_topics] = input_topic_ids
@@ -270,10 +271,11 @@ describe IdeasFinder do
 
     context 'with current user and can_moderate is true' do
       let(:user) { create(:user) }
-      let(:options) { { current_user: user } }
-      let(:moderatable_project) { create(:single_phase_ideation_project) }
       let(:moderatable_projects) { Project.where(id: moderatable_project.id) }
       let!(:idea1) { create(:idea, project: moderatable_project) }
+      let(:options) { { current_user: user } }
+
+      let_it_be(:moderatable_project, reload: true) { create(:single_phase_ideation_project) }
 
       before do
         allow(user_role_service).to receive(

@@ -7,13 +7,13 @@ describe StatReactionPolicy do
 
   let(:scope) { described_class::Scope.new(user, Reaction) }
 
-  let!(:space) { create(:space) }
-  let!(:project) { create(:single_phase_ideation_project, space: space) }
-  let!(:folder) { create(:project_folder, projects: [project], space: space) }
-  let!(:idea) { create(:idea, project: project, phases: project.phases) }
-  let!(:idea_reaction) { create(:reaction, reactable: idea) }
-  let!(:other_idea_reaction) { create(:reaction) }
-  let!(:comment_reaction) { create(:comment_reaction) }
+  let_it_be(:space, reload: true) { create(:space) }
+  let_it_be(:project, reload: true) { create(:single_phase_ideation_project, space: space) }
+  let_it_be(:folder, reload: true) { create(:project_folder, projects: [project], space: space) }
+  let_it_be(:idea, reload: true) { create(:idea, project: project, phases: project.phases) }
+  let_it_be(:idea_reaction, reload: true) { create(:reaction, reactable: idea) }
+  let_it_be(:other_idea_reaction, reload: true) { create(:reaction) }
+  let_it_be(:comment_reaction, reload: true) { create(:comment_reaction) }
 
   shared_examples 'is denied stats access' do
     it { is_expected.not_to permit(:reactions_count) }

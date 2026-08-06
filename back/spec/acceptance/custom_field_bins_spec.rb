@@ -7,8 +7,11 @@ resource 'Custom Field Bins' do
   explanation 'Together bins define a subdivision to group together certain custom field values, mostly useful for analytical purposes.'
 
   context 'as an admin' do
-    before do
+    before_all do
       @user = create(:admin)
+    end
+
+    before do
       header_token_for @user
       header 'Content-Type', 'application/json'
     end
@@ -77,8 +80,11 @@ resource 'Custom Field Bins' do
   end
 
   context 'as a normal user' do
-    before do
+    before_all do
       @user = create(:user)
+    end
+
+    before do
       header_token_for @user
       header 'Content-Type', 'application/json'
     end

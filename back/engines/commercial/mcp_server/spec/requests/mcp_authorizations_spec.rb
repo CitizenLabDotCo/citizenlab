@@ -3,12 +3,12 @@
 require 'rails_helper'
 
 describe McpServer::WebApi::V1::McpAuthorizationsController do
-  let(:user) { create(:user) }
-  let(:other_user) { create(:user) }
-  let(:app1) do
+  let_it_be(:user, reload: true) { create(:user) }
+  let_it_be(:other_user, reload: true) { create(:user) }
+  let_it_be(:app1, reload: true) do
     Doorkeeper::Application.create!(name: 'Acme Connector', redirect_uri: 'https://a.example.com/cb', confidential: false)
   end
-  let(:app2) do
+  let_it_be(:app2, reload: true) do
     Doorkeeper::Application.create!(name: 'Urban Insights', redirect_uri: 'https://b.example.com/cb', confidential: false)
   end
   let(:auth_headers) do

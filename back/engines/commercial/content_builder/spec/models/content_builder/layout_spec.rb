@@ -241,8 +241,8 @@ RSpec.describe ContentBuilder::Layout do
   end
 
   describe 'file attachment sync on save' do
-    let(:file) { create(:file) }
-    let(:another_file) { create(:file) }
+    let_it_be(:file, reload: true) { create(:file) }
+    let_it_be(:another_file, reload: true) { create(:file) }
 
     it 'creates missing file attachments' do
       layout = create(:layout, craftjs_json: {

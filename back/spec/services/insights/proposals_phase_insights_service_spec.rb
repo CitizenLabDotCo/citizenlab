@@ -1,37 +1,30 @@
 require 'rails_helper'
 
 RSpec.describe Insights::ProposalsPhaseInsightsService do
-  let(:phase) { create(:proposals_phase, start_at: 17.days.ago, end_at: 2.days.ago) }
+  let_it_be(:phase, reload: true) { create(:proposals_phase, start_at: 17.days.ago, end_at: 2.days.ago) }
   let(:service) { described_class.new(phase) }
+  let!(:idea4) { create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, published_at: nil, publication_status: 'submitted', author: user2, creation_phase_id: phase.id) } # during phase, submitted but not published
+  let!(:idea5) { create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, published_at: nil, author: user2, publication_status: 'draft', creation_phase_id: phase.id) } # during phase, but not submitted nor published
+  let!(:idea6) { create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, author: nil, author_hash: 'some_author_hash', creation_phase_id: phase.id) } # during phase, no author (e.g. anonymous participation)
+  let!(:idea7) { create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, author: nil, author_hash: nil, creation_phase_id: phase.id) } # during phase, no author nor author_hash (e.g. imported idea)
+  let!(:comment1) { create(:comment, idea: idea1, created_at: 20.days.ago, author: user1) } # before phase start
+  let!(:comment2) { create(:comment, idea: idea1, created_at: 10.days.ago, author: user1) } # during phase
+  let!(:comment3) { create(:comment, idea: idea1, created_at: 1.day.ago, author: user1) } # after phase end
+  let!(:comment4) { create(:comment, idea: idea1, created_at: 10.days.ago, author: user2) } # during phase
+  let!(:comment5) { create(:comment, idea: idea1, created_at: 10.days.ago, author: nil, author_hash: 'some_author_hash') } # during phase, no author
+  let!(:comment6) { create(:comment, idea: idea1, created_at: 10.days.ago, author: nil, author_hash: nil) } # during phase, no author nor author_hash
+  let!(:reaction1) { create(:reaction, reactable: idea1, created_at: 20.days.ago, user: user1, mode: 'up') } # before phase start
+  let!(:reaction2) { create(:reaction, reactable: idea2, created_at: 10.days.ago, user: user1, mode: 'up') } # during phase
+  let!(:reaction3) { create(:reaction, reactable: idea3, created_at: 1.day.ago, user: user1, mode: 'up') } # after phase end
+  let!(:reaction4) { create(:reaction, reactable: idea2, created_at: 10.days.ago, user: user2, mode: 'down') } # during phase
+  let!(:reaction5) { create(:reaction, reactable: idea1, created_at: 10.days.ago, user: nil, mode: 'up') } # during phase, no user
 
   let(:user1) { create(:user) }
   let!(:idea1) { create(:idea, phases: [phase], created_at: 20.days.ago, submitted_at: 20.days.ago, author: user1, creation_phase_id: phase.id) } # before phase start
   let!(:idea2) { create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, author: user1, creation_phase_id: phase.id) } # during phase
   let!(:idea3) { create(:idea, phases: [phase], created_at: 1.day.ago, submitted_at: 1.day.ago, author: user1, creation_phase_id: phase.id) } # after phase end
 
-  let(:user2) { create(:user) }
-  let!(:idea4) { create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, published_at: nil, publication_status: 'submitted', author: user2, creation_phase_id: phase.id) } # during phase, submitted but not published
-  let!(:idea5) { create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, published_at: nil, author: user2, publication_status: 'draft', creation_phase_id: phase.id) } # during phase, but not submitted nor published
-
-  let!(:idea6) { create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, author: nil, author_hash: 'some_author_hash', creation_phase_id: phase.id) } # during phase, no author (e.g. anonymous participation)
-  let!(:idea7) { create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, author: nil, author_hash: nil, creation_phase_id: phase.id) } # during phase, no author nor author_hash (e.g. imported idea)
-
-  let!(:comment1) { create(:comment, idea: idea1, created_at: 20.days.ago, author: user1) } # before phase start
-  let!(:comment2) { create(:comment, idea: idea1, created_at: 10.days.ago, author: user1) } # during phase
-  let!(:comment3) { create(:comment, idea: idea1, created_at: 1.day.ago, author: user1) } # after phase end
-
-  let!(:comment4) { create(:comment, idea: idea1, created_at: 10.days.ago, author: user2) } # during phase
-
-  let!(:comment5) { create(:comment, idea: idea1, created_at: 10.days.ago, author: nil, author_hash: 'some_author_hash') } # during phase, no author
-  let!(:comment6) { create(:comment, idea: idea1, created_at: 10.days.ago, author: nil, author_hash: nil) } # during phase, no author nor author_hash
-
-  let!(:reaction1) { create(:reaction, reactable: idea1, created_at: 20.days.ago, user: user1, mode: 'up') } # before phase start
-  let!(:reaction2) { create(:reaction, reactable: idea2, created_at: 10.days.ago, user: user1, mode: 'up') } # during phase
-  let!(:reaction3) { create(:reaction, reactable: idea3, created_at: 1.day.ago, user: user1, mode: 'up') } # after phase end
-
-  let!(:reaction4) { create(:reaction, reactable: idea2, created_at: 10.days.ago, user: user2, mode: 'down') } # during phase
-
-  let!(:reaction5) { create(:reaction, reactable: idea1, created_at: 10.days.ago, user: nil, mode: 'up') } # during phase, no user
+  let_it_be(:user2, reload: true) { create(:user) }
 
   describe '#participations_posting_idea' do
     it 'returns the participation ideas published data for published ideas published during phase' do
@@ -137,7 +130,7 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
   end
 
   describe '#threshold_reached_at' do
-    let!(:threshold_status) { create(:proposal_status_threshold_reached) }
+    let_it_be(:threshold_status, reload: true) { create(:proposal_status_threshold_reached) }
 
     it 'returns nil when idea has no threshold_reached status change' do
       threshold_reached_at = service.send(:threshold_reached_at, idea2)

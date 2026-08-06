@@ -45,7 +45,7 @@ RSpec.describe EmailCampaigns::MentionInOfficialFeedbackMailer do
     end
 
     context 'with custom text' do
-      let!(:global_campaign) do
+      let_it_be(:global_campaign, reload: true) do
         create(
           :mention_in_official_feedback_campaign,
           subject_multiloc: { 'en' => 'Custom Global Subject - {{ organizationName }}' },
@@ -53,7 +53,7 @@ RSpec.describe EmailCampaigns::MentionInOfficialFeedbackMailer do
           button_text_multiloc: { 'en' => 'CLICK THE GLOBAL BUTTON' }
         )
       end
-      let!(:context_campaign) do
+      let_it_be(:context_campaign, reload: true) do
         create(
           :mention_in_official_feedback_campaign,
           context: create(:phase),

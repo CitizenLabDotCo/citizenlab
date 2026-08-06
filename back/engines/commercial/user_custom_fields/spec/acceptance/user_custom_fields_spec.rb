@@ -38,7 +38,7 @@ resource 'User Custom Fields' do
     end
 
     describe 'do filter on input types' do
-      before do
+      before_all do
         create(:custom_field_multiselect)
         create(:custom_field_checkbox)
         create(:custom_field_date)
@@ -88,7 +88,7 @@ resource 'User Custom Fields' do
     end
 
     context 'when the custom field has a reference distribution' do
-      let(:ref_distribution) { create(:categorical_distribution) }
+      let_it_be(:ref_distribution, reload: true) { create(:categorical_distribution) }
       let(:custom_field) { ref_distribution.custom_field }
       let(:expected_ref_distribution_linkage) do
         { data: { type: 'categorical_distribution', id: ref_distribution.id } }

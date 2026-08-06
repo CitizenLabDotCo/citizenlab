@@ -7,7 +7,7 @@ class DisableableCampaignForTest < EmailCampaigns::Campaign
 end
 
 RSpec.describe EmailCampaigns::Disableable do
-  let(:campaign) { DisableableCampaignForTest.create! }
+  let_it_be(:campaign, reload: true) { DisableableCampaignForTest.create! }
 
   describe 'run_filter_hooks' do
     it 'returns true when the campaign is enabled' do

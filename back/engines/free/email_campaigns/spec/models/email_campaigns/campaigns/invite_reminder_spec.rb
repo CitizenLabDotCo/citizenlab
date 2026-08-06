@@ -10,9 +10,9 @@ RSpec.describe EmailCampaigns::Campaigns::InviteReminder do
   end
 
   describe '#apply_recipient_filters' do
-    let(:campaign) { create(:invite_reminder_campaign) }
-    let(:invite) { create(:invite) }
-    let(:activity) { create(:activity, item: invite, action: 'created', user: invite.inviter) }
+    let_it_be(:campaign, reload: true) { create(:invite_reminder_campaign) }
+    let_it_be(:invite, reload: true) { create(:invite) }
+    let_it_be(:activity, reload: true) { create(:activity, item: invite, action: 'created', user: invite.inviter) }
 
     it 'does not filter out the invitee' do
       recipients = campaign.apply_recipient_filters(activity: activity)

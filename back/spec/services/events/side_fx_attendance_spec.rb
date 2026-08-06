@@ -4,8 +4,9 @@ require 'rails_helper'
 
 describe Events::SideFxAttendanceService do
   let(:service) { described_class.new }
-  let(:user) { create(:user) }
-  let(:attendance) { create(:event_attendance) }
+
+  let_it_be(:user, reload: true) { create(:user) }
+  let_it_be(:attendance, reload: true) { create(:event_attendance) }
 
   describe 'after_create' do
     it "logs a 'created' action when an attendance is created" do

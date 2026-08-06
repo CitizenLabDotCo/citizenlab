@@ -29,10 +29,10 @@ RSpec.describe Files::Transcript do
   end
 
   describe 'scopes' do
-    let!(:pending_transcript) { create(:file_transcript, status: 'pending') }
-    let!(:processing_transcript) { create(:file_transcript, :processing) }
-    let!(:completed_transcript) { create(:file_transcript, :completed) }
-    let!(:failed_transcript) { create(:file_transcript, :failed) }
+    let_it_be(:pending_transcript, reload: true) { create(:file_transcript, status: 'pending') }
+    let_it_be(:processing_transcript, reload: true) { create(:file_transcript, :processing) }
+    let_it_be(:completed_transcript, reload: true) { create(:file_transcript, :completed) }
+    let_it_be(:failed_transcript, reload: true) { create(:file_transcript, :failed) }
 
     describe '.pending' do
       it 'returns only pending transcripts' do

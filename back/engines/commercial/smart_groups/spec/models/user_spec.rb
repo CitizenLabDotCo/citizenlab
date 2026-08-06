@@ -4,8 +4,8 @@ require 'rails_helper'
 
 RSpec.describe User do
   describe 'groups and group_ids' do
-    let!(:manual_group) { create(:group) }
-    let!(:rules_group) do
+    let_it_be(:manual_group, reload: true) { create(:group) }
+    let_it_be(:rules_group, reload: true) do
       create(:smart_group, rules: [
         { ruleType: 'email', predicate: 'is', value: 'user@test.com' }
       ])

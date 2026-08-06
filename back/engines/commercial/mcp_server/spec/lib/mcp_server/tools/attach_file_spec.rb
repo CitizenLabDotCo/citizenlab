@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 describe McpServer::Tools::AttachFile do
-  let(:current_user) { create(:super_admin) }
-  let(:project) { create(:project, :draft) }
+  let_it_be(:current_user, reload: true) { create(:super_admin) }
+  let_it_be(:project, reload: true) { create(:project, :draft) }
   let(:remote_url) { 'https://example.com/file.pdf' }
   let!(:fixture_path) { stub_remote_file_download(remote_url) }
 
@@ -42,7 +42,7 @@ describe McpServer::Tools::AttachFile do
   end
 
   context 'with a file_id' do
-    let(:existing_file) { create(:file, projects: [project]) }
+    let_it_be(:existing_file, reload: true) { create(:file, projects: [project]) }
 
     it 'reuses an existing project file' do
       response = run_mcp_tool(

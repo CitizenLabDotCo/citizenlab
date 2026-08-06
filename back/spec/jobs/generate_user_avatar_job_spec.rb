@@ -7,7 +7,7 @@ RSpec.describe GenerateUserAvatarJob do
 
   describe '#perform' do
     # TODO: We should not send real requests or rely on the existence of a gravatar account.
-    let(:user) { create(:user, email: 'sebastien+withgravatar@citizenlab.co', avatar: nil) }
+    let_it_be(:user, reload: true) { create(:user, email: 'sebastien+withgravatar@citizenlab.co', avatar: nil) }
 
     context 'when user_avatars is enabled' do
       before { SettingsService.new.activate_feature!('user_avatars') }

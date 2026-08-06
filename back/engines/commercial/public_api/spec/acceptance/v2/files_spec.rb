@@ -12,8 +12,8 @@ resource 'Files' do
 
   include_context 'common_auth'
 
-  let!(:user) { create(:user) }
-  let!(:project) { create(:project) }
+  let_it_be(:user, reload: true) { create(:user) }
+  let_it_be(:project, reload: true) { create(:project) }
   let!(:files) do
     [
       create(:file, :meeting, uploader: user, projects: [project]),

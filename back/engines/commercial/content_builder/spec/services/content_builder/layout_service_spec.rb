@@ -22,9 +22,9 @@ describe ContentBuilder::LayoutService do
   end
 
   describe 'delete_admin_publication_id_from_homepage_layout' do
-    let(:project1) { create(:project) }
-    let(:project2) { create(:project) }
-    let(:project_folder) { create(:project_folder) }
+    let_it_be(:project1, reload: true) { create(:project) }
+    let_it_be(:project2, reload: true) { create(:project) }
+    let_it_be(:project_folder, reload: true) { create(:project_folder) }
 
     let(:craftjs) do
       {

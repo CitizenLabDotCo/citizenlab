@@ -81,7 +81,7 @@ RSpec.describe EmailCampaigns::Sms::SendService do
   end
 
   describe '#deliver' do
-    let(:delivery) { EmailCampaigns::Sms::Delivery.create!(body: 'hi', status: 'pending') }
+    let_it_be(:delivery, reload: true) { EmailCampaigns::Sms::Delivery.create!(body: 'hi', status: 'pending') }
 
     it 'sends an already-created delivery through the provider and stores the status' do
       allow(provider).to receive(:send).and_return(message_sid: 'SM_d', status: 'queued')

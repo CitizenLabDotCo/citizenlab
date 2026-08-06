@@ -25,9 +25,9 @@ RSpec.describe AdminApi::Schema do
         }
       |
     end
-
-    let(:project) { create(:project) }
     let(:variables) { { id: project.id } }
+
+    let_it_be(:project, reload: true) { create(:project) }
 
     it 'returns all projects' do
       response = result

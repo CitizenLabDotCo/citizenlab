@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Analytics::FactProjectStatus do
-  let(:user) { create(:user) }
+  let_it_be(:user, reload: true) { create(:user) }
 
   it { is_expected.to belong_to(:dimension_project) }
   it { is_expected.to belong_to(:dimension_date) }

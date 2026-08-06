@@ -4,19 +4,19 @@ require 'rails_helper'
 
 describe 'rake setup_and_support:mass_official_feedback' do # rubocop:disable RSpec/DescribeClass
   let(:locale) { 'en' }
-  let(:host) { Tenant.current.host }
-  let!(:author) { create(:admin) }
   let!(:status_under_review) { create(:idea_status, title_multiloc: { locale => 'Under review' }) }
   let!(:status_proposed) { create(:idea_status, title_multiloc: { locale => 'Proposed' }) }
   let!(:idea1) { create(:idea, idea_status: status_proposed) }
   let!(:idea2) { create(:idea, idea_status: status_proposed) }
-
   let(:csv_file) do
     Tempfile.new(['mass_official_feedback', '.csv']).tap do |f|
       f.write(csv_content)
       f.close
     end
   end
+  let(:host) { Tenant.current.host }
+
+  let_it_be(:author, reload: true) { create(:admin) }
 
   before do
     load_rake_tasks_if_not_loaded

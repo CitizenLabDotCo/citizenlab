@@ -13,8 +13,11 @@ resource 'Groups' do
   end
 
   context 'when authenticated' do
-    before do
+    before_all do
       @user = create(:admin, email: 'hello@govocal.com') # Fixed email to avoid flaky spec
+    end
+
+    before do
       header_token_for @user
     end
 
@@ -134,7 +137,7 @@ resource 'Groups' do
       end
 
       describe do
-        before do
+        before_all do
           create(:user, email: 'k@k.com')
           create(:user, email: 'kk@kk.com').update!(registration_completed_at: nil)
         end

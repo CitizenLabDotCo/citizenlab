@@ -6,7 +6,7 @@ describe McpServer::Tools::GetFormFields do
   let_it_be(:current_user) { create(:super_admin) }
 
   context 'with an ideation project' do
-    let(:project) { create(:project_with_active_ideation_phase) }
+    let_it_be(:project, reload: true) { create(:project_with_active_ideation_phase) }
 
     it 'returns the default form fields and the built-in constraints' do
       response = run_mcp_tool(
@@ -35,8 +35,8 @@ describe McpServer::Tools::GetFormFields do
   end
 
   context 'with a native survey phase' do
-    let(:phase) { create(:native_survey_phase) }
-    let(:custom_form) { create(:custom_form, participation_context: phase) }
+    let_it_be(:phase, reload: true) { create(:native_survey_phase) }
+    let_it_be(:custom_form, reload: true) { create(:custom_form, participation_context: phase) }
 
     it 'returns the fields in display order with the stale-data timestamp' do
       field_a, field_b = create_list(:custom_field, 2, resource: custom_form)

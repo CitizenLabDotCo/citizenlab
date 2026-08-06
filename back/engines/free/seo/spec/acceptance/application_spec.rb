@@ -19,8 +19,11 @@ resource 'SEO' do
     end
 
     context 'when the platform has no resources' do
-      before do
+      before_all do
         %w[all_input events].each { |code| create(:nav_bar_item, code: code) }
+      end
+
+      before do
         do_request
       end
 
@@ -36,8 +39,11 @@ resource 'SEO' do
     context 'when the platform has some projects' do
       let(:project_count) { 2 }
 
-      before do
+      before_all do
         %w[all_input events].each { |code| create(:nav_bar_item, code: code) }
+      end
+
+      before do
         create_list(:project, project_count)
         do_request
       end
@@ -56,8 +62,11 @@ resource 'SEO' do
       let(:idea_count) { 2 }
       let(:project_count) { 1 }
 
-      before do
+      before_all do
         %w[all_input events].each { |code| create(:nav_bar_item, code: code) }
+      end
+
+      before do
         projects = create_list(:project, project_count)
         create(:project_folder)
         create_list(:idea, idea_count, project: projects.first)
@@ -89,8 +98,11 @@ resource 'SEO' do
     context 'when a project has multiple phases' do
       let(:phases_count) { 3 }
 
-      before do
+      before_all do
         %w[all_input events].each { |code| create(:nav_bar_item, code: code) }
+      end
+
+      before do
         create(:project_with_phases, phases_count: phases_count)
         do_request
       end

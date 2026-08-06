@@ -6,8 +6,9 @@ describe Permissions::SideFxPermissionService do
   include SideFxHelper
 
   let(:service) { described_class.new }
-  let(:user) { create(:user) }
-  let(:permission) { create(:permission, permitted_by: 'users') }
+
+  let_it_be(:user, reload: true) { create(:user) }
+  let_it_be(:permission, reload: true) { create(:permission, permitted_by: 'users') }
 
   describe 'after_update' do
     it "logs a 'changed' action job with the change in the payload" do

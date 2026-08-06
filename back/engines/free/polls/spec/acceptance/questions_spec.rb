@@ -16,7 +16,7 @@ resource 'Poll Questions' do
       parameter :size, 'Number of questions per page'
     end
 
-    before do
+    before_all do
       @phase = create(:poll_phase)
       @questions = create_list(:poll_question, 3, :with_options, phase: @phase)
       create(:poll_question)

@@ -95,7 +95,7 @@ RSpec.describe Files::File do
     end
 
     context 'when updating the file content' do
-      let!(:file) { create(:file) }
+      let_it_be(:file, reload: true) { create(:file) }
 
       it 'recalculates both size and mime_type' do
         file.content = Rails.root.join('spec/fixtures/audio_mp4.mp4').open

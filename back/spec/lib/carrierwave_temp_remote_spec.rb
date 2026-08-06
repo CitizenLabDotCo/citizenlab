@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe CarrierwaveTempRemote do
   subject(:temp_remote) { described_class }
 
-  let(:model) { create(:project) }
+  let_it_be(:model, reload: true) { create(:project) }
   let(:remote_url) { 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/brainstorming_graphic.png' }
 
   describe '.save_urls' do

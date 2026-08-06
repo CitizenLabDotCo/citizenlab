@@ -2,11 +2,12 @@ require 'rails_helper'
 
 describe PosthogIntegration::PostHog::Client do
   let(:base_uri) { 'https://example.com' }
+  let(:person_id) { 0 }
   let(:api_key) { 'fake_api_key' }
   let(:project_id) { 'fake_project_id' }
   let(:posthog) { described_class.new(base_uri: base_uri, api_key: api_key, project_id: project_id) }
-  let(:user) { create(:user) }
-  let(:person_id) { 0 }
+
+  let_it_be(:user, reload: true) { create(:user) }
 
   describe 'delete_person_by_distinct_id' do
     before do

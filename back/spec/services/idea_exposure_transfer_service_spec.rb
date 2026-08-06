@@ -4,11 +4,12 @@ require 'rails_helper'
 
 RSpec.describe IdeaExposureTransferService do
   let(:service) { described_class.new }
-  let(:user) { create(:user) }
   let(:visitor_hash) { 'abc123hash456' }
-  let(:project) { create(:project_with_active_ideation_phase) }
   let(:phase) { project.phases.first }
   let(:idea) { create(:idea, project: project, phases: [phase]) }
+
+  let_it_be(:user, reload: true) { create(:user) }
+  let_it_be(:project, reload: true) { create(:project_with_active_ideation_phase) }
 
   describe '#transfer' do
     context 'with no anonymous exposures' do

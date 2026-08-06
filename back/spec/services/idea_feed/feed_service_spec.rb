@@ -5,8 +5,8 @@ require 'rails_helper'
 describe IdeaFeed::FeedService do
   subject(:service) { described_class.new(phase, user: user) }
 
-  let(:phase) { create(:idea_feed_phase) }
-  let(:user) { create(:user) }
+  let_it_be(:phase, reload: true) { create(:idea_feed_phase) }
+  let_it_be(:user, reload: true) { create(:user) }
 
   describe '#top_n' do
     let!(:ideas) { create_list(:idea, 3, project: phase.project, phases: [phase]) }
@@ -123,9 +123,10 @@ describe IdeaFeed::FeedService do
       let!(:other_idea) { create(:idea) }
       let!(:exposed_idea) { nil }
       let!(:idea_exposure) { nil }
-      let!(:idea_a) { create(:idea, project: phase.project, phases: [phase]) }
-      let!(:idea_b) { create(:idea, project: phase.project, phases: [phase]) }
-      let!(:idea_c) { create(:idea, project: phase.project, phases: [phase]) }
+
+      let_it_be(:idea_a, reload: true) { create(:idea, project: phase.project, phases: [phase]) }
+      let_it_be(:idea_b, reload: true) { create(:idea, project: phase.project, phases: [phase]) }
+      let_it_be(:idea_c, reload: true) { create(:idea, project: phase.project, phases: [phase]) }
 
       it 'returns least exposed ideas first' do
         create(:idea_exposure, idea: idea_a, user:, phase:)

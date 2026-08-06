@@ -128,7 +128,7 @@ RSpec.describe Analysis::Analysis do
   end
 
   describe 'auto_insights_too_many_fields?' do
-    let(:main_field) { create(:custom_field_text) }
+    let_it_be(:main_field, reload: true) { create(:custom_field_text) }
 
     context 'with 50 submission fields or fewer' do
       let(:analysis) { create(:ideation_analysis, main_custom_field: main_field, additional_custom_fields: build_list(:custom_field_text, 2)) }

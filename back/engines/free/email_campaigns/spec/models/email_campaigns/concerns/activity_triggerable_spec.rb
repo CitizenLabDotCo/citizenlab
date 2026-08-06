@@ -8,8 +8,8 @@ class ActivityTriggerableCampaignForTest < EmailCampaigns::Campaign
 end
 
 RSpec.describe EmailCampaigns::ActivityTriggerable do
-  let(:campaign) { ActivityTriggerableCampaignForTest.create! }
-  let(:activity) { create(:published_activity) }
+  let_it_be(:campaign, reload: true) { ActivityTriggerableCampaignForTest.create! }
+  let_it_be(:activity, reload: true) { create(:published_activity) }
 
   describe 'run_filter_hooks' do
     it 'returns true when the activity is part of the returned activity_triggers' do

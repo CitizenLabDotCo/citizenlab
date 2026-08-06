@@ -66,8 +66,8 @@ RSpec.describe AdminApi::Schema do
     end
 
     context do
-      let(:p1) { create(:project) }
-      let(:p2) { create(:project) }
+      let_it_be(:p1, reload: true) { create(:project) }
+      let_it_be(:p2, reload: true) { create(:project) }
       let!(:i1) { create(:idea, project: p1) }
       let!(:i2) { create(:idea, project: p2) }
       let!(:i3) { create(:idea, project: p1) }
@@ -81,15 +81,16 @@ RSpec.describe AdminApi::Schema do
     end
 
     context do
-      let(:t1) { create(:input_topic) }
-      let(:t2) { create(:input_topic) }
-      let(:t3) { create(:input_topic) }
-      let(:project) { create(:project, input_topics: [t1, t2, t3]) }
+      let_it_be(:t1, reload: true) { create(:input_topic) }
+      let_it_be(:t2, reload: true) { create(:input_topic) }
+      let_it_be(:t3, reload: true) { create(:input_topic) }
+      let_it_be(:project, reload: true) { create(:project, input_topics: [t1, t2, t3]) }
       let!(:i1) { create(:idea, input_topics: [t1], project: project) }
+      let(:variables) { { topics: [t1.id, t3.id] } }
       let!(:i2) { create(:idea, input_topics: [t2], project: project) }
       let!(:i3) { create(:idea, input_topics: [t1], project: project) }
-      let!(:i4) { create(:idea, input_topics: [t3, t2], project: project) }
-      let(:variables) { { topics: [t1.id, t3.id] } }
+
+      let_it_be(:i4, reload: true) { create(:idea, input_topics: [t3, t2], project: project) }
 
       it 'returns public ideas in topics' do
         response = result

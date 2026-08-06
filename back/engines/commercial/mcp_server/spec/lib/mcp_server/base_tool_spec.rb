@@ -16,7 +16,7 @@ describe McpServer::BaseTool do
 
   # Wiring only — the walk itself is unit-tested in readonly_strip_spec.
   describe 'readOnly params stripping' do
-    let(:tool_class) do
+    let_it_be(:tool_class, reload: true) do
       Class.new(described_class) do
         def name = 'probe'
         def description = 'Probe tool'
@@ -64,7 +64,7 @@ describe McpServer::BaseTool do
   end
 
   describe 'locale guard' do
-    let(:current_user) { create(:super_admin) }
+    let_it_be(:current_user, reload: true) { create(:super_admin) }
 
     before do
       config = AppConfiguration.instance

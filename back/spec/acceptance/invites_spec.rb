@@ -11,8 +11,11 @@ resource 'Invites' do
   end
 
   context 'when admin' do
-    before do
+    before_all do
       @user = create(:admin)
+    end
+
+    before do
       header_token_for @user
     end
 
@@ -76,8 +79,9 @@ resource 'Invites' do
 
       describe do
         let!(:pending_invites) { create_list(:invite, 3) }
-        let!(:accepted_invites) { create_list(:accepted_invite, 2) }
         let(:invite_status) { 'accepted' }
+
+        let_it_be(:accepted_invites, reload: true) { create_list(:accepted_invite, 2) }
 
         example_request 'List all invites that have been accepted' do
           assert_status 200
@@ -203,7 +207,7 @@ resource 'Invites' do
       end
 
       context 'with claim_tokens' do
-        let!(:claim_token) { create(:claim_token) }
+        let_it_be(:claim_token, reload: true) { create(:claim_token) }
         let(:idea) { claim_token.item }
         let(:claim_tokens) { [claim_token.token] }
 
@@ -224,7 +228,7 @@ resource 'Invites' do
         parameter :email, 'The email of the user to resend the invite to', required: true
       end
 
-      let(:user) { create(:invited_user) }
+      let_it_be(:user, reload: true) { create(:invited_user) }
       let(:invite) { user.invitee_invite }
       let(:email) { user.email }
 

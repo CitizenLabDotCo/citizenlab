@@ -91,8 +91,8 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer do
     end
 
     context 'with proposal as an input' do
-      let!(:input) { create(:proposal, author: recipient) }
-      let!(:activity) { create(:activity, item: input, action: 'published') }
+      let_it_be(:input, reload: true) { create(:proposal, author: recipient) }
+      let_it_be(:activity, reload: true) { create(:activity, item: input, action: 'published') }
 
       context 'and no custom form' do
         # no custom_form, default fields are used, which includes the image field
@@ -127,14 +127,14 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer do
     end
 
     context 'with custom text' do
-      let!(:global_campaign) do
+      let_it_be(:global_campaign, reload: true) do
         create(
           :idea_published_campaign,
           subject_multiloc: { 'en' => 'Custom Global Subject' },
           title_multiloc: { 'en' => 'NEW TITLE' }
         )
       end
-      let!(:context_campaign) do
+      let_it_be(:context_campaign, reload: true) do
         create(
           :idea_published_campaign,
           context: input.phases.last,
