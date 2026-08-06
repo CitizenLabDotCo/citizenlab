@@ -258,7 +258,10 @@ resource 'Confirmations' do
 
       let(:user) { create(:unconfirmed_phone_user, phone: '+14155552671') }
 
-      before { RequestPhoneConfirmationCodeJob.perform_now(user) }
+      before do
+        SettingsService.new.activate_feature!('sms_login')
+        RequestPhoneConfirmationCodeJob.perform_now(user)
+      end
 
       example 'confirms the phone number and returns an auth token' do
         do_request(confirmation: { phone: user.phone, code: user.phone_confirmation.code })
@@ -310,6 +313,13 @@ resource 'Confirmations' do
         expect(user.reload.phone_confirmed_at).to be_nil
       end
 
+      example 'returns an unauthorized status when the sms_login feature is disabled' do
+        SettingsService.new.deactivate_feature!('sms_login')
+        do_request(confirmation: { phone: user.phone, code: user.phone_confirmation.code })
+        assert_status 401
+        expect(user.reload.phone_confirmed_at).to be_nil
+      end
+
       describe 'with claim tokens' do
         let!(:claim_token) { create(:claim_token) }
 
@@ -337,6 +347,13 @@ resource 'Confirmations' do
       end
 
       example 'stamps phone_confirmed_at upon successful confirmation' do
+        do_request(confirmation: { code: user.phone_confirmation.code })
+        assert_status 200
+        expect(user.reload.phone_confirmed_at).to be_present
+      end
+
+      example 'still works when the sms_login feature is disabled' do
+        SettingsService.new.deactivate_feature!('sms_login')
         do_request(confirmation: { code: user.phone_confirmation.code })
         assert_status 200
         expect(user.reload.phone_confirmed_at).to be_present

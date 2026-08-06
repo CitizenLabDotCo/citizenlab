@@ -61,6 +61,8 @@ class WebApi::V1::ConfirmationsController < ApplicationController
   # A token is always returned, but only the unauthenticated caller needs it -
   # an authenticated one keeps the (possibly longer-lived) token it already has.
   def confirm_code_phone
+    return head :unauthorized unless current_user || sms_login_enabled?
+
     phone = confirm_code_phone_params[:phone]
     user = phone.present? ? User.find_by_phone_number(phone) : current_user
 
@@ -98,6 +100,10 @@ class WebApi::V1::ConfirmationsController < ApplicationController
   end
 
   private
+
+  def sms_login_enabled?
+    AppConfiguration.instance.feature_activated?('sms_login')
+  end
 
   def confirm_code_email_params
     params.require(:confirmation).permit(:email, :code)

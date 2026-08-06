@@ -642,20 +642,24 @@ describe 'Rack::Attack' do
       end
     end
 
-    it 'limits unauthenticated phone confirmation requests from same IP to 5 in 20 seconds' do
-      params = '{ "confirmation": { "phone": "+14155552671", "code": "1234" } }'
+    context 'when the sms_login feature is enabled' do
+      before { SettingsService.new.activate_feature!('sms_login') }
 
-      freeze_time do
-        5.times { post('/web_api/v1/user/confirm_code_phone', params: params, headers: headers) }
-        expect(status).to eq(422) # Unprocessable entity
+      it 'limits unauthenticated phone confirmation requests from same IP to 5 in 20 seconds' do
+        params = '{ "confirmation": { "phone": "+14155552671", "code": "1234" } }'
 
-        post('/web_api/v1/user/confirm_code_phone', params: params, headers: headers)
-        expect(status).to eq(429) # Too many requests
-      end
+        freeze_time do
+          5.times { post('/web_api/v1/user/confirm_code_phone', params: params, headers: headers) }
+          expect(status).to eq(422) # Unprocessable entity
 
-      travel_to(20.seconds.from_now) do
-        post('/web_api/v1/user/confirm_code_phone', params: params, headers: headers)
-        expect(status).to eq(422) # Unprocessable entity
+          post('/web_api/v1/user/confirm_code_phone', params: params, headers: headers)
+          expect(status).to eq(429) # Too many requests
+        end
+
+        travel_to(20.seconds.from_now) do
+          post('/web_api/v1/user/confirm_code_phone', params: params, headers: headers)
+          expect(status).to eq(422) # Unprocessable entity
+        end
       end
     end
 
