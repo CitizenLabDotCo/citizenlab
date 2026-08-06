@@ -84,6 +84,15 @@ resource 'Spam Reports' do
         end
       end
 
+      context 'when the input is still a draft' do
+        let(:idea_id) { create(:idea, publication_status: 'draft').id }
+
+        example_request '[error] Create a spam report for a draft input' do
+          expect(response_status).to eq 401
+          expect(SpamReport.where(spam_reportable_id: idea_id)).to be_empty
+        end
+      end
+
       context 'when the input does not exist' do
         let(:idea_id) { SecureRandom.uuid }
 
