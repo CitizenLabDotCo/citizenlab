@@ -44,8 +44,10 @@ module DecidimImporter
     def map(states)
       return Result.new(custom_statuses: [], decisions: {}) if states.blank?
 
-      response = llm.chat(build_prompt(states), response_schema: RESPONSE_SCHEMA)
-      parsed = response.is_a?(String) ? JSON.parse(response) : response
+      # No `response_schema`: the multiloc fields are open string maps, which the providers' strict
+      # structured-output mode rejects (it requires `additionalProperties: false` on every object). The
+      # prompt fully specifies the JSON shape instead, and {#parse_response} extracts it from the reply.
+      parsed = parse_response(llm.chat(build_prompt(states)))
       coerce(parsed, states)
     rescue StandardError => e
       # Keep the import working if the model/credentials are down (the common case for a local dump run):
@@ -67,6 +69,20 @@ module DecidimImporter
 
     def llm
       @llm ||= DEFAULT_MODEL.new
+    end
+
+    # Extracts the JSON object from the model's reply, tolerating a schema-aware model that already
+    # returns a Hash, and a text model that wraps the JSON in ```json fences or a sentence of prose (we
+    # take the outermost `{ … }`). Raises when there's no object, so {#map} falls back to the heuristic.
+    def parse_response(response)
+      return response if response.is_a?(Hash)
+
+      text = response.to_s
+      first = text.index('{')
+      last = text.rindex('}')
+      raise JSON::ParserError, 'no JSON object in LLM response' if first.nil? || last.nil? || last < first
+
+      JSON.parse(text[first..last])
     end
 
     # Normalises the model's raw JSON into a trustworthy {Result}: caps the custom statuses, drops
@@ -175,38 +191,5 @@ module DecidimImporter
         }
       PROMPT
     end
-
-    RESPONSE_SCHEMA = {
-      type: 'object',
-      properties: {
-        custom_statuses: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              id: { type: 'string' },
-              title_multiloc: { type: 'object', additionalProperties: { type: 'string' } },
-              color: { type: 'string' },
-              description_multiloc: { type: 'object', additionalProperties: { type: 'string' } }
-            },
-            required: %w[id title_multiloc]
-          }
-        },
-        mappings: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              key: { type: 'string' },
-              target: { type: 'string', enum: %w[standard custom] },
-              code: { type: 'string' },
-              custom_status_id: { type: 'string' }
-            },
-            required: %w[key target]
-          }
-        }
-      },
-      required: %w[custom_statuses mappings]
-    }.freeze
   end
 end

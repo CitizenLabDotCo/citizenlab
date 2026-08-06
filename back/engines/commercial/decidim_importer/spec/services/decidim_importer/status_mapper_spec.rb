@@ -43,6 +43,15 @@ RSpec.describe DecidimImporter::StatusMapper do
       expect(result.decisions['accepted|Retenue']).to eq(target: 'standard', code: 'accepted')
     end
 
+    it 'extracts the JSON object even when the model wraps it in markdown fences and prose' do
+      json = { 'custom_statuses' => [], 'mappings' => [{ 'key' => 'accepted|Retenue', 'target' => 'standard', 'code' => 'accepted' }] }.to_json
+      allow(llm).to receive(:chat).and_return("Here is the mapping:\n```json\n#{json}\n```\nHope that helps!")
+
+      result = described_class.new(llm: llm).map(states('accepted|Retenue'))
+
+      expect(result.decisions['accepted|Retenue']).to eq(target: 'standard', code: 'accepted')
+    end
+
     it 'coerces an unknown standard code and a dangling custom id to the default proposed status' do
       response = {
         'custom_statuses' => [],
