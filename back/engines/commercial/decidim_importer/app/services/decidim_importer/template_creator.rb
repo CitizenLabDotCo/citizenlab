@@ -55,6 +55,7 @@ module DecidimImporter
       run_extractor(Extractors::ProjectsExtractor, :projects)
       run_categories
       run_phases
+      run_proposal_statuses
       run_proposals
       run_results
       run_debates
@@ -145,6 +146,12 @@ module DecidimImporter
       created = Importer.apply_template(template, import_uploads: @import_uploads, validate: validate)
       ModeratorAssigner.new.assign(moderator_assignments)
       created
+    end
+
+    # The custom `idea_status` records the {StatusMapper} created for this import (Decidim states with no
+    # standard Go Vocal equivalent), for the run log. Empty until {#build_template} has run.
+    def custom_statuses
+      @status_resolver&.custom_status_records || []
     end
 
     # Participation components that couldn't be placed as a phase (never published / no datable window).
@@ -271,11 +278,23 @@ module DecidimImporter
       @phase_projector.run(participation_components: participation_components)
     end
 
+    # Maps the proposals' Decidim states onto Go Vocal idea-statuses (one LLM call, see {StatusMapper}),
+    # creating the `idea_status` records for the custom ones before the proposals reference them. Runs
+    # only when there are proposals; the resolver copes with a missing `proposal_states` sidecar.
+    def run_proposal_statuses
+      return unless @rows_by_model.key?(:proposals)
+
+      @status_resolver = ProposalStatusResolver.new(
+        rows_for(:proposal_states), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
+      ).build!
+    end
+
     def run_proposals
       return unless @rows_by_model.key?(:proposals)
 
       @proposals_extractor = Extractors::ProposalsExtractor.new(
-        rows_for(:proposals), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
+        rows_for(:proposals), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale,
+        status_resolver: @status_resolver
       )
       @proposals_extractor.run
     end

@@ -52,6 +52,21 @@ module DecidimImporter
         values = (idea.attributes['custom_field_values'] ||= {})
         values['decidim_scope'] = area.attributes
       end
+
+      # Parks the proposal's *original* Decidim status (its token + citizen-facing label) in the idea's
+      # `custom_field_values` under the reserved `decidim_status` key, for provenance — the Go Vocal status
+      # the proposal was mapped onto is the idea's own `idea_status`, so this only needs the source value.
+      # Unlike {#register_scope_area} it stores literal data, so no post-import resolution is needed. No-op
+      # when neither token nor label is known (e.g. a proposal with a blank state). See {ProposalStatusResolver}.
+      def register_decidim_status(idea, decision)
+        original = {}
+        original['token'] = decision.token if decision.token.present?
+        original['title_multiloc'] = decision.original_title_multiloc if decision.original_title_multiloc.present?
+        return if original.empty?
+
+        values = (idea.attributes['custom_field_values'] ||= {})
+        values['decidim_status'] = original
+      end
     end
   end
 end
