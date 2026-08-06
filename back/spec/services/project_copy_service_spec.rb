@@ -129,6 +129,20 @@ describe ProjectCopyService do
       )
     end
 
+    it 'exports project text images, so bridge widget images survive the copy' do
+      project = create(:project)
+      text_image = create(:text_image, imageable: project, imageable_field: 'craftjs_json')
+
+      template = service.export project
+
+      expect(template['models']['project'].first['text_images_attributes']).to match [
+        hash_including(
+          'imageable_field' => 'craftjs_json',
+          'text_reference' => text_image.text_reference
+        )
+      ]
+    end
+
     it 'successfully exports custom field option images' do
       field = create(:custom_field_select, :for_custom_form)
       option = create(:custom_field_option, custom_field: field, image: create(:custom_field_option_image))
