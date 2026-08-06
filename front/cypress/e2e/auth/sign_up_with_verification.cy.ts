@@ -153,7 +153,7 @@ describe('Sign up - verification required (SSO)', () => {
     cy.apiRemoveProject(projectId);
   });
 
-  it('works when signing up with new email', () => {
+  it('works when signing up with SSO', () => {
     cy.visit(`/projects/${projectTitle}`);
 
     cy.get('.e2e-idea-button').first().find('button').should('exist');
@@ -183,7 +183,7 @@ describe('Sign up - verification required (SSO)', () => {
       });
     });
 
-    it('works when signing up with new email', () => {
+    it('works when signing up with SSO', () => {
       cy.visit(`/projects/${projectTitle}`);
 
       cy.get('.e2e-idea-button').first().find('button').should('exist');
@@ -214,13 +214,45 @@ describe('Sign up - verification required (SSO)', () => {
       });
     });
 
-    it('works when signing up with new email', () => {
+    it('works when signing up with SSO', () => {
       cy.visit(`/projects/${projectTitle}`);
 
       cy.get('.e2e-idea-button').first().find('button').should('exist');
       cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
       fakeSSOAuth(cy, 'john_doe');
+
+      cy.get('#e2e-success-continue-button').click();
+
+      cy.location('pathname').should(
+        'eq',
+        `/en/projects/${projectTitle}/surveys/new`
+      );
+    });
+  });
+
+  describe('Does not require confirmed email', () => {
+    before(() => {
+      cy.apiSetPhasePermission({
+        phaseId,
+        permissionBody: {
+          permitted_by: 'users',
+          require_name: false,
+          require_password: false,
+          require_verification: true,
+          require_confirmed_email: false,
+        },
+        action: 'posting_idea',
+      });
+    });
+
+    it('works when signing up with SSO that does not return email', () => {
+      cy.visit(`/projects/${projectTitle}`);
+
+      cy.get('.e2e-idea-button').first().find('button').should('exist');
+      cy.get('.e2e-idea-button').first().find('button').click({ force: true });
+
+      fakeSSOAuth(cy, 'jane_doe');
 
       cy.get('#e2e-success-continue-button').click();
 
