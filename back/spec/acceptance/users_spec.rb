@@ -346,7 +346,7 @@ resource 'Users' do
         context 'when the user has already requested a code', document: false do
           before do
             @user = create(:unconfirmed_phone_user, phone: '+14155552671')
-            @user.phone_confirmation.reset_code! # as if a code had already been requested
+            @user.find_or_create_confirmation(:phone_confirmation).reset_code! # as if a code had already been requested
 
             allow(RequestPhoneConfirmationCodeJob).to receive(:perform_now)
           end
@@ -363,7 +363,7 @@ resource 'Users' do
         context 'when a user exists without a password and has confirmed their phone', document: false do
           before do
             @user = create(:unconfirmed_phone_user, phone: '+14155552671')
-            @user.phone_confirmation.confirm!
+            @user.find_or_create_confirmation(:phone_confirmation).confirm!
             allow(RequestPhoneConfirmationCodeJob).to receive(:perform_now)
           end
 
