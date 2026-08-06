@@ -18,6 +18,7 @@ module DecidimImporter
         component: 'decidim_component',
         authors: 'authors',
         category: 'category',
+        scope: 'scope',
         title: 'title',
         body: 'body',
         address: 'address',
@@ -55,6 +56,7 @@ module DecidimImporter
 
         register_ideas_phase(uid, idea, phase)
         register_input_topic(uid, idea, row[COLUMNS[:category]])
+        register_scope_area(idea, row[COLUMNS[:scope]])
         register_official_feedback(uid, idea, row)
         idea
       end

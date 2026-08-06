@@ -84,6 +84,23 @@ RSpec.describe DecidimImporter::Extractors::ProposalsExtractor do
     expect(ref_map.fetch('decidim-proposal-1-ideas-input-topic')).to be_nil
   end
 
+  it 'parks a scope→area pointer in custom_field_values seeded with the area record’s attributes' do
+    area = ref_map.register('decidim--scope--2', DecidimImporter::Record.new('area', { 'title_multiloc' => { 'fr-FR' => 'Quartier' } }))
+    attrs = extract([row('scope' => 'decidim--scope--2')]).first.attributes
+
+    # Seeded with the shared area attributes hash — Importer.resolve_scope_areas! swaps it for the real id.
+    expect(attrs['custom_field_values']['decidim_scope']).to be(area.attributes)
+  end
+
+  it 'omits the scope pointer when the proposal has no scope or the scope was not imported as an area' do
+    ref_map.register('decidim--scope--9', DecidimImporter::Record.new('input_topic', {})) # wrong model
+    no_scope = extract([row('uid' => 'decidim-proposal-none', 'scope' => '')]).first.attributes
+    non_area = extract([row('uid' => 'decidim-proposal-topic', 'scope' => 'decidim--scope--9')]).first.attributes
+
+    expect(no_scope).not_to have_key('custom_field_values')
+    expect(non_area).not_to have_key('custom_field_values')
+  end
+
   it 'leaves the idea author-less when no author uid resolves to an imported user' do
     attrs = extract([row('authors' => '["decidim-user-999","decidim-meetings-meeting-3"]')]).first.attributes
     expect(attrs).not_to have_key('author_ref')
