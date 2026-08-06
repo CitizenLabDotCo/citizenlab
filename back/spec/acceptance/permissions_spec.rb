@@ -358,7 +358,7 @@ resource 'Permissions' do
           @permission.update!(
             permitted_by: 'users',
             require_verification: true,
-            require_confirmed_email: false,
+            require_confirmed_email: false
           )
         end
 
@@ -366,7 +366,7 @@ resource 'Permissions' do
 
         example 'Blocks participation if user has confirmed email but is not verified' do
           @user.update!(
-            email: 'test@user.com', 
+            email: 'test@user.com',
             email_confirmed_at: Time.current,
             confirmation_required: false,
             verified: false
@@ -379,7 +379,7 @@ resource 'Permissions' do
 
         example 'Allows participation is user has both email and is verified' do
           @user.update!(
-            email: 'test@user.com', 
+            email: 'test@user.com',
             email_confirmed_at: Time.current,
             confirmation_required: false,
             verified: true

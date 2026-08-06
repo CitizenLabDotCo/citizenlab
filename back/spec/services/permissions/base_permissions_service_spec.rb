@@ -412,9 +412,9 @@ describe Permissions::BasePermissionsService do
       context 'when verification is required but email is not' do
         let(:permission) do
           create(
-            :permission, 
-            permitted_by: 'users', 
-            require_verification: true, 
+            :permission,
+            permitted_by: 'users',
+            require_verification: true,
             require_confirmed_email: false
           )
         end
@@ -426,7 +426,7 @@ describe Permissions::BasePermissionsService do
         end
 
         context 'when verified resident' do
-          before do 
+          before do
             user.update!(verified: true)
             user.identities << create(:franceconnect_identity, user: user)
           end
@@ -441,16 +441,16 @@ describe Permissions::BasePermissionsService do
         end
 
         context 'when verified resident without confirmed email' do
-          before do 
+          before do
             user.update!(
-              verified: true, 
-              email_confirmed_at: nil, 
+              verified: true,
+              email_confirmed_at: nil,
               confirmation_required: true
             )
             user.identities << create(:franceconnect_identity, user: user)
           end
 
-          it { expect(denied_reason).to eq nil }
+          it { expect(denied_reason).to be_nil }
         end
       end
     end
