@@ -115,7 +115,7 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
           enum: Phase::PRESENTATION_MODES,
           description: <<~DESC.squish
             The view (or presentation mode) used by default to show inputs to visitors.
-            'feed' is not available on proposals phases.
+            'feed' is only available on ideation phases.
             Default: '#{phase_default('presentation_mode')}'.
           DESC
         },
@@ -126,7 +126,7 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
             Views visitors can choose from.
             Must include 'card' and the current `presentation_mode`.
             If omitted, it's auto-filled with those two.
-            'feed' is not available on proposals phases.
+            'feed' is only available on ideation phases.
           DESC
         },
         # On voting phases, the only valid value is 'random' and it's auto-filled by the model.
