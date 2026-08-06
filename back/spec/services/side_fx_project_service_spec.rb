@@ -6,8 +6,9 @@ describe SideFxProjectService do
   include SideFxHelper
 
   let(:service) { described_class.new }
-  let(:user) { create(:user) }
-  let(:project) { create(:project) }
+
+  let_it_be(:user, reload: true) { create(:user) }
+  let_it_be(:project, reload: true) { create(:project) }
 
   describe 'after_create' do
     it "logs a 'created' action when a project is created" do
@@ -224,8 +225,8 @@ describe SideFxProjectService do
   end
 
   describe 'after_copy' do
-    let(:source_project) { create(:project) }
-    let(:copied_project) { create(:project, default_assignee: nil) }
+    let_it_be(:source_project, reload: true) { create(:project) }
+    let_it_be(:copied_project, reload: true) { create(:project, default_assignee: nil) }
 
     it 'logs "local_copy_created" activity' do
       expect(LogActivityJob).to receive(:perform_later).with(

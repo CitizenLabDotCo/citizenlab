@@ -2,7 +2,8 @@ require 'rails_helper'
 
 describe UserExceedsSeatsService do
   let(:config) { AppConfiguration.instance }
-  let(:user) { create(:user) }
+
+  let_it_be(:user, reload: true) { create(:user) }
 
   context 'when user assigned moderator' do
     let(:params) { { 'seat_type' => 'moderator', 'user_id' => user.id } }

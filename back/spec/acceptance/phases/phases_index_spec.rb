@@ -16,7 +16,7 @@ resource 'Phases' do
     parameter :placement_type, "Which phases to return: 'on_timeline' (default), 'standalone', or 'all'.", required: false
 
     let(:json_response) { json_parse(response_body) }
-    let(:project) { create(:project) }
+    let_it_be(:project, reload: true) { create(:project) }
     let(:project_id) { project.id }
     let!(:phases) { create_list(:phase_sequence, 2, project: project) }
 

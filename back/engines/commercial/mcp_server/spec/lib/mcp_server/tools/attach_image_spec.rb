@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 describe McpServer::Tools::AttachImage do
-  let(:current_user) { create(:super_admin) }
-  let(:project) { create(:project, :draft) }
+  let_it_be(:current_user, reload: true) { create(:super_admin) }
+  let_it_be(:project, reload: true) { create(:project, :draft) }
   let(:remote_url) { 'https://example.com/image.jpg' }
   let!(:fixture_path) { stub_remote_image_download(remote_url) }
 

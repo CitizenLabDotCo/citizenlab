@@ -74,7 +74,7 @@ resource 'Idea Custom Fields' do
     parameter :input_types, 'Filter custom fields by input types', type: :array, items: { type: :string }, required: false
     parameter :public_fields, 'Only return custom fields that are visible to the public', type: :boolean, required: false
 
-    let(:survey_phase) { create(:native_survey_phase, with_permissions: true) }
+    let_it_be(:survey_phase, reload: true) { create(:native_survey_phase, with_permissions: true) }
     let(:phase_id) { survey_phase.id }
     let(:form) { create(:custom_form, participation_context: survey_phase) }
     let!(:custom_field1) { create(:custom_field_text, resource: form, key: 'extra_field1') }
@@ -156,13 +156,13 @@ resource 'Idea Custom Fields' do
     get 'web_api/v1/phases/:phase_id/custom_fields' do
       let(:phase_id) { current_phase.id }
 
-      let(:project) { create(:project) }
+      let_it_be(:project, reload: true) { create(:project) }
 
-      let(:past_phase) { create(:native_survey_phase, start_at: 2.weeks.ago, end_at: 1.week.ago, project: project) }
+      let_it_be(:past_phase, reload: true) { create(:native_survey_phase, start_at: 2.weeks.ago, end_at: 1.week.ago, project: project) }
       let(:form) { create(:custom_form, participation_context: past_phase) }
       let!(:custom_field1) { create(:custom_field_text, resource: form, key: 'survey1_field') }
 
-      let(:current_phase) { create(:native_survey_phase, start_at: 1.day.ago, end_at: 1.week.from_now, project: project) }
+      let_it_be(:current_phase, reload: true) { create(:native_survey_phase, start_at: 1.day.ago, end_at: 1.week.from_now, project: project) }
 
       context 'when survey form not persisted' do
         shared_examples 'returns default survey custom fields' do
@@ -238,7 +238,7 @@ resource 'Idea Custom Fields' do
       end
 
       context 'when survey form persisted' do
-        let(:form2) { create(:custom_form, participation_context: current_phase) }
+        let_it_be(:form2, reload: true) { create(:custom_form, participation_context: current_phase) }
         let!(:custom_field2) { create(:custom_field_text, resource: form2, key: 'survey2_field') }
 
         shared_examples 'returns non-default survey custom fields' do

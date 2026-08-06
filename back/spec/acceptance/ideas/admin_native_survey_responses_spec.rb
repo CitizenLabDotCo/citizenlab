@@ -6,7 +6,7 @@ require 'rspec_api_documentation/dsl'
 resource 'Ideas' do
   explanation 'Inputs posted by admins: native survey responses.'
 
-  let(:user) { create(:admin) }
+  let_it_be(:user, reload: true) { create(:admin) }
 
   before do
     header 'Content-Type', 'application/json'

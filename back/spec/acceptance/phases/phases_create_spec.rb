@@ -53,9 +53,9 @@ resource 'Phases' do
     response_field :base, "Array containing objects with signature {error: 'has_other_overlapping_phases'}", scope: :errors
 
     let(:json_response) { json_parse(response_body) }
-    let(:project) { create(:project) }
+    let_it_be(:project, reload: true) { create(:project) }
     let(:project_id) { project.id }
-    let!(:phases) { create_list(:phase_sequence, 2, project: project) }
+    let_it_be(:phases, reload: true) { create_list(:phase_sequence, 2, project: project) }
     let(:phase) { build(:phase) }
     let(:title_multiloc) { phase.title_multiloc }
     let(:description_multiloc) { phase.description_multiloc }

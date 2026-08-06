@@ -6,10 +6,11 @@ describe EmailCampaigns::CampaignPolicy do
   subject { described_class.new(user, campaign) }
 
   let(:scope) { EmailCampaigns::CampaignPolicy::Scope.new(user, campaign.class, campaign.context) }
-  let(:phase) { create(:phase) }
 
-  let!(:global_campaign) { create(:comment_on_your_comment_campaign, context: nil) }
-  let!(:context_campaign) { create(:comment_on_your_comment_campaign, context: phase) }
+  let_it_be(:phase, reload: true) { create(:phase) }
+
+  let_it_be(:global_campaign, reload: true) { create(:comment_on_your_comment_campaign, context: nil) }
+  let_it_be(:context_campaign, reload: true) { create(:comment_on_your_comment_campaign, context: phase) }
 
   context 'for global campaigns' do
     let(:campaign) { global_campaign }

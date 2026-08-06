@@ -9,7 +9,7 @@ resource 'Phase', admin_api: true do
     header 'Authorization', ENV.fetch('ADMIN_API_TOKEN')
   end
 
-  let(:project) { create(:project_with_phases) }
+  let_it_be(:project, reload: true) { create(:project_with_phases) }
   let(:project_id) { project.id }
 
   get 'admin_api/projects/:project_id/phases' do

@@ -6,7 +6,7 @@ describe Export::Xlsx::InputSheetGenerator do
   describe '#generate_sheet' do
     before { create(:idea_status_proposed) }
 
-    let(:phase) { create(:phase, participation_method: 'ideation') }
+    let_it_be(:phase, reload: true) { create(:phase, participation_method: 'ideation') }
     let(:service) { described_class.new(inputs, phase) }
     let(:xlsx) do
       package = Axlsx::Package.new
@@ -18,8 +18,8 @@ describe Export::Xlsx::InputSheetGenerator do
     let(:rows) { xlsx.first[:rows] }
 
     context 'when an idea is imported' do
-      let(:idea1) { create(:idea, project: phase.project, phases: [phase]) }
-      let(:idea2) { create(:idea, project: phase.project, phases: [phase]) }
+      let_it_be(:idea1, reload: true) { create(:idea, project: phase.project, phases: [phase]) }
+      let_it_be(:idea2, reload: true) { create(:idea, project: phase.project, phases: [phase]) }
       let(:inputs) { [idea1, idea2] }
 
       before { create(:idea_import, idea: idea2) }

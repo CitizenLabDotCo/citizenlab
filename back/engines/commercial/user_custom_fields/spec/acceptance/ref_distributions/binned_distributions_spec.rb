@@ -55,7 +55,7 @@ resource 'Binned reference distributions' do
       end
 
       context 'when the custom field already has a distribution' do
-        let!(:previous_distribution) { create(:binned_distribution) }
+        let_it_be(:previous_distribution, reload: true) { create(:binned_distribution) }
 
         example_request 'replaces the existing distribution' do
           expect(status).to eq(201)

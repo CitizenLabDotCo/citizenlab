@@ -34,7 +34,7 @@ RSpec.describe Analytics::FactParticipation do
     end
 
     context 'when a comment is added' do
-      let!(:comment) { create(:comment) }
+      let_it_be(:comment, reload: true) { create(:comment) }
 
       it 'is also available as a participation fact' do
         participation = described_class.find(comment.id)
@@ -43,7 +43,7 @@ RSpec.describe Analytics::FactParticipation do
     end
 
     context 'when a reaction is added' do
-      let!(:reaction) { create(:reaction) }
+      let_it_be(:reaction, reload: true) { create(:reaction) }
 
       it 'is also available as a participation fact' do
         participation = described_class.find(reaction.id)
@@ -52,7 +52,7 @@ RSpec.describe Analytics::FactParticipation do
     end
 
     context 'when a volunteer is added' do
-      let!(:volunteer) { create(:volunteer) }
+      let_it_be(:volunteer, reload: true) { create(:volunteer) }
 
       it 'is also available as a participation fact' do
         participation = described_class.find(volunteer.id)
@@ -61,7 +61,7 @@ RSpec.describe Analytics::FactParticipation do
     end
 
     context 'when a poll response is added' do
-      let!(:poll_response) { create(:poll_response) }
+      let_it_be(:poll_response, reload: true) { create(:poll_response) }
 
       it 'is also available as a participation fact' do
         participation = described_class.find(poll_response.id)
@@ -70,8 +70,8 @@ RSpec.describe Analytics::FactParticipation do
     end
 
     context 'when a native survey response is added in a phase' do
-      let(:idea_status) { create(:idea_status_proposed) }
-      let(:project) { create(:project_with_active_native_survey_phase) }
+      let_it_be(:idea_status, reload: true) { create(:idea_status_proposed) }
+      let_it_be(:project, reload: true) { create(:project_with_active_native_survey_phase) }
       let(:input) { create(:idea, project: project, idea_status: idea_status, creation_phase: project.phases.first) }
 
       it 'is also available as a participation fact' do
@@ -81,7 +81,7 @@ RSpec.describe Analytics::FactParticipation do
     end
 
     context 'when a basket is created' do
-      let(:basket) { create(:basket) }
+      let_it_be(:basket, reload: true) { create(:basket) }
 
       it 'is also available as a participation fact' do
         participation = described_class.find(basket.id)
@@ -90,7 +90,7 @@ RSpec.describe Analytics::FactParticipation do
     end
 
     context 'when an event is attended' do
-      let(:event_attendance) { create(:event_attendance) }
+      let_it_be(:event_attendance, reload: true) { create(:event_attendance) }
 
       it 'is also available as a participation fact' do
         participation = described_class.find(event_attendance.id)

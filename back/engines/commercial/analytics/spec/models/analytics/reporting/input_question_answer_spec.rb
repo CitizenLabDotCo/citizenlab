@@ -4,13 +4,13 @@ require 'rails_helper'
 
 RSpec.describe Analytics::Reporting::InputQuestionAnswer do
   describe 'survey answers (form on the creation phase)' do
-    let(:project) { create(:single_phase_native_survey_project) }
-    let(:form) { create(:custom_form, participation_context: project.phases.first) }
-    let!(:select_question) { create(:custom_field_select, :with_options, resource: form) }
-    let!(:scale_question) { create(:custom_field_linear_scale, resource: form) }
-    let!(:multiselect_question) { create(:custom_field_multiselect, :with_options, resource: form) }
+    let_it_be(:project, reload: true) { create(:single_phase_native_survey_project) }
+    let_it_be(:form, reload: true) { create(:custom_form, participation_context: project.phases.first) }
+    let_it_be(:select_question, reload: true) { create(:custom_field_select, :with_options, resource: form) }
+    let_it_be(:scale_question, reload: true) { create(:custom_field_linear_scale, resource: form) }
+    let_it_be(:multiselect_question, reload: true) { create(:custom_field_multiselect, :with_options, resource: form) }
 
-    let(:response) do
+    let_it_be(:response, reload: true) do
       create(:idea_status_proposed)
       create(:native_survey_response, project: project).tap do |response|
         response.update_column(:custom_field_values, {

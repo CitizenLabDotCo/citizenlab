@@ -4,9 +4,9 @@ require 'rails_helper'
 
 RSpec.describe IdeaCustomFields::UpdateAllService do
   describe 'performance' do
-    let(:phase) { create(:native_survey_phase) }
-    let!(:custom_form) { create(:custom_form, participation_context: phase) }
-    let(:user) { create(:admin) }
+    let_it_be(:phase, reload: true) { create(:native_survey_phase) }
+    let_it_be(:custom_form, reload: true) { create(:custom_form, participation_context: phase) }
+    let_it_be(:user, reload: true) { create(:admin) }
 
     def field_to_params(field)
       params = {

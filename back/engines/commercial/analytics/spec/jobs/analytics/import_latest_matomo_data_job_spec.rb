@@ -57,7 +57,7 @@ RSpec.describe Analytics::ImportLatestMatomoDataJob do
   end
 
   context 'when visits have already been imported' do
-    let!(:visit) { create(:fact_visit) }
+    let_it_be(:visit, reload: true) { create(:fact_visit) }
 
     it 'resumes the import at the time of the latest imported visit' do
       min_timestamp = visit.matomo_last_action_time.to_i - described_class::RETROACTIVE_IMPORT

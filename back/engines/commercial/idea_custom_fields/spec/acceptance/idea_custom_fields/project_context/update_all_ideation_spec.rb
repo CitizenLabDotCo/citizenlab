@@ -26,7 +26,7 @@ resource 'Idea Custom Fields' do
       parameter :title_multiloc, 'A title of the option, as shown to users, in multiple locales', required: false
     end
 
-    let(:context) { create(:single_phase_ideation_project) }
+    let_it_be(:context, reload: true) { create(:single_phase_ideation_project) }
     let(:project_id) { context.id }
     let(:participation_method) { context.pmethod }
     let(:default_fields_param) do

@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe BulkImportIdeas::Parsers::Pdf::LLMFormParser do
   subject(:parser) { described_class.new(phase, 'en') }
 
-  let(:phase) { create(:native_survey_phase, with_permissions: true) }
+  let_it_be(:phase, reload: true) { create(:native_survey_phase, with_permissions: true) }
 
   describe '#parse_idea' do
     let(:custom_form) { create(:custom_form, participation_context: phase) }

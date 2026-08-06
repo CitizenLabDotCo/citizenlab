@@ -13,12 +13,12 @@ resource 'Insights Visits' do
     AppConfiguration.instance.update!(platform_start_at: '2025-01-01')
   end
 
-  let(:project) { create(:project) }
-  let(:other_project) { create(:project) }
+  let_it_be(:project, reload: true) { create(:project) }
+  let_it_be(:other_project, reload: true) { create(:project) }
 
-  let(:session1) { create(:session, monthly_user_hash: 'user_hash_1') }
-  let(:session2) { create(:session, monthly_user_hash: 'user_hash_2') }
-  let(:session3) { create(:session, monthly_user_hash: 'user_hash_3') }
+  let_it_be(:session1, reload: true) { create(:session, monthly_user_hash: 'user_hash_1') }
+  let_it_be(:session2, reload: true) { create(:session, monthly_user_hash: 'user_hash_2') }
+  let_it_be(:session3, reload: true) { create(:session, monthly_user_hash: 'user_hash_3') }
 
   before do
     # January 2025 pageviews for project

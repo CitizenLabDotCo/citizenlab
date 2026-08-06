@@ -3,13 +3,13 @@ require 'rails_helper'
 describe Moderators::ProjectModeratorPolicy do
   subject { described_class.new(user, record) }
 
-  let!(:space) { create(:space) }
-  let!(:other_space) { create(:space) }
+  let_it_be(:space, reload: true) { create(:space) }
+  let_it_be(:other_space, reload: true) { create(:space) }
 
-  let!(:project) { create(:project, space: space) }
-  let!(:other_project) { create(:project, space: other_space) }
-  let!(:folder) { create(:project_folder, projects: [project]) }
-  let!(:unrelated_folder) { create(:project_folder) }
+  let_it_be(:project, reload: true) { create(:project, space: space) }
+  let_it_be(:other_project, reload: true) { create(:project, space: other_space) }
+  let_it_be(:folder, reload: true) { create(:project_folder, projects: [project]) }
+  let_it_be(:unrelated_folder, reload: true) { create(:project_folder) }
 
   let(:record) { project }
 

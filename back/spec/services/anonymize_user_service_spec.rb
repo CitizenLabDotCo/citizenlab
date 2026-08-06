@@ -6,7 +6,7 @@ describe AnonymizeUserService do
   let(:service) { described_class.new }
 
   describe '#anonymized_attributes' do
-    before do
+    before_all do
       create(:custom_field_birthyear)
       create(:custom_field_gender, :with_options)
       create(:custom_field_domicile)

@@ -14,7 +14,7 @@ describe 'demos:create_n_up_reactions rake task' do
 
   # Author is an admin so the idea's author is never counted as an eligible
   # (regular, active) user — eligibility is controlled entirely by each test.
-  let(:idea) { create(:idea, author: create(:admin)) }
+  let_it_be(:idea, reload: true) { create(:idea, author: create(:admin)) }
 
   def run_task(host: Tenant.current.host, idea_id: idea.id, n_reactions: 2)
     Rake::Task['demos:create_n_up_reactions'].invoke(host, idea_id, n_reactions.to_s)
@@ -92,7 +92,7 @@ describe 'demos:create_n_up_reactions rake task' do
     end
 
     context 'when the idea is a proposal' do
-      before do
+      before_all do
         %w[proposed threshold_reached expired].each { |code| create(:proposals_status, code: code) }
       end
 

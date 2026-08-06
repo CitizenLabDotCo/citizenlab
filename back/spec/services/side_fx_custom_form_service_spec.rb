@@ -4,8 +4,9 @@ require 'rails_helper'
 
 describe SideFxCustomFormService do
   let(:service) { described_class.new }
-  let(:user) { create(:user) }
-  let(:form) { create(:custom_form) }
+
+  let_it_be(:user, reload: true) { create(:user) }
+  let_it_be(:form, reload: true) { create(:custom_form) }
 
   describe 'after_update' do
     it 'logs an activity job with stats' do

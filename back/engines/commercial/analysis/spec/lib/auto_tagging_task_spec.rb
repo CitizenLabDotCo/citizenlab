@@ -117,9 +117,9 @@ RSpec.describe Analysis::AutoTaggingTask do
   end
 
   describe 'NlpTopic auto_tagging', use_transactional_fixtures: false do
-    let(:project) { create(:single_phase_ideation_project) }
-    let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
-    let(:analysis) { create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project) }
+    let_it_be(:project, reload: true) { create(:single_phase_ideation_project) }
+    let_it_be(:custom_form, reload: true) { create(:custom_form, :with_default_fields, participation_context: project) }
+    let_it_be(:analysis, reload: true) { create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project) }
 
     it 'extracts NLP topics and classifies ideas' do
       task = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'nlp_topic')

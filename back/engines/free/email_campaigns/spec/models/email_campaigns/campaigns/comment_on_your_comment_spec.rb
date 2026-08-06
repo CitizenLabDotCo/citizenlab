@@ -10,7 +10,7 @@ RSpec.describe EmailCampaigns::Campaigns::CommentOnYourComment do
   end
 
   describe '#generate_commands' do
-    let(:campaign) { create(:comment_on_your_comment_campaign) }
+    let_it_be(:campaign, reload: true) { create(:comment_on_your_comment_campaign) }
     let(:notification) { create(:comment_on_your_comment) }
     let(:notification_activity) { create(:activity, item: notification, action: 'created') }
 
@@ -45,7 +45,7 @@ RSpec.describe EmailCampaigns::Campaigns::CommentOnYourComment do
   end
 
   describe 'send_on_activity' do
-    let!(:global_campaign) { create(:comment_on_your_comment_campaign) }
+    let_it_be(:global_campaign, reload: true) { create(:comment_on_your_comment_campaign) }
     let!(:context_campaign) { create(:comment_on_your_comment_campaign, context: create(:phase)) }
     let(:service) { EmailCampaigns::DeliveryService.new }
     let(:phase) { create(:ideation_phase, :ongoing) }

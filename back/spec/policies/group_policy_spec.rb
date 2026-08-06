@@ -8,7 +8,7 @@ describe GroupPolicy do
   let(:scope) { GroupPolicy::Scope.new(user, Group) }
 
   context 'on normal group' do
-    let!(:group) { create(:group) }
+    let_it_be(:group, reload: true) { create(:group) }
 
     context 'for a visitor' do
       let(:user) { nil }

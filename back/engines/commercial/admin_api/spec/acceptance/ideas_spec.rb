@@ -9,7 +9,7 @@ resource 'Idea', admin_api: true do
     header 'Authorization', ENV.fetch('ADMIN_API_TOKEN')
   end
 
-  let(:idea) { create(:idea_with_topics) }
+  let_it_be(:idea, reload: true) { create(:idea_with_topics) }
   let(:idea_id) { idea.id }
 
   get 'admin_api/ideas' do

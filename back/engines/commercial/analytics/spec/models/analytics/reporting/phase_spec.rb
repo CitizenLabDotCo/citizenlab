@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Analytics::Reporting::Phase do
   subject(:row) { described_class.find(phase.id) }
 
-  let!(:phase) do
+  let_it_be(:phase, reload: true) do
     create(
       :phase,
       title_multiloc: { 'en' => 'Gather ideas', 'nl-BE' => 'Ideeën verzamelen' },

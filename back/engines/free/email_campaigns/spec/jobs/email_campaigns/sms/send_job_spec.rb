@@ -31,8 +31,8 @@ RSpec.describe EmailCampaigns::Sms::SendJob do
   # handle_error never runs. A transient provider error must be marked failed (not
   # left 'pending') and re-raised so the caller can react.
   describe 'a synchronous send (perform_now) that fails transiently' do
-    let(:user) { create(:user, phone: '+14155552671') }
-    let(:delivery) { EmailCampaigns::Sms::Delivery.create!(body: 'hi', status: 'pending', user: user) }
+    let_it_be(:user, reload: true) { create(:user, phone: '+14155552671') }
+    let_it_be(:delivery, reload: true) { EmailCampaigns::Sms::Delivery.create!(body: 'hi', status: 'pending', user: user) }
     let(:provider) { instance_double(EmailCampaigns::Sms::Providers::Twilio) }
 
     before do

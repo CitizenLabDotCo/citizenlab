@@ -134,7 +134,7 @@ resource 'Survey Responses' do
   end
 
   get 'web_api/v1/phases/:phase_id/survey_responses/as_xlsx' do
-    let(:phase) { create(:phase, participation_method: 'survey', survey_service: 'typeform', survey_embed_url: 'https://citizenlabco.typeform.com/to/HKGaPV') }
+    let_it_be(:phase, reload: true) { create(:phase, participation_method: 'survey', survey_service: 'typeform', survey_embed_url: 'https://citizenlabco.typeform.com/to/HKGaPV') }
     let(:phase_id) { phase.id }
 
     example_request 'XLSX export survey responses from phase' do

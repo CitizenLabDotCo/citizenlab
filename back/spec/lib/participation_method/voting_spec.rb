@@ -15,8 +15,8 @@ RSpec.describe ParticipationMethod::Voting do
 
   describe '#assign_defaults' do
     context 'when the proposed idea status is available' do
-      let!(:proposed) { create(:idea_status_proposed) }
-      let!(:initial_status) { create(:idea_status) }
+      let_it_be(:proposed, reload: true) { create(:idea_status_proposed) }
+      let_it_be(:initial_status, reload: true) { create(:idea_status) }
 
       it 'sets a default "proposed" idea_status if not set' do
         input = build(:idea, idea_status: nil)
@@ -57,7 +57,7 @@ RSpec.describe ParticipationMethod::Voting do
   end
 
   describe '#generate_slug' do
-    let(:input) { create(:idea) }
+    let_it_be(:input, reload: true) { create(:idea) }
 
     it 'sets and persists the slug of the input' do
       input.update_column :slug, nil

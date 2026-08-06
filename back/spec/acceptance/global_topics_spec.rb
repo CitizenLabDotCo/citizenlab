@@ -85,7 +85,7 @@ resource 'GlobalTopics' do
   context 'when admin' do
     before { header_token_for user }
 
-    let(:user) { create(:admin) }
+    let_it_be(:user, reload: true) { create(:admin) }
 
     get 'web_api/v1/global_topics/:id' do
       let(:global_topic) { create(:global_topic) }

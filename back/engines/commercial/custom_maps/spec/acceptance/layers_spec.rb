@@ -6,7 +6,7 @@ require 'rspec_api_documentation/dsl'
 resource 'Map Layers' do
   explanation 'Map layers are visual blocks that can be displayed on top of maps, like markers, polygons or lines.'
 
-  let!(:geojson_map_config) do
+  let_it_be(:geojson_map_config, reload: true) do
     create(:map_config,
       :with_positioning,
       :with_tile_provider,
@@ -14,7 +14,7 @@ resource 'Map Layers' do
       mappable: nil)
   end
 
-  let!(:esri_map_config) do
+  let_it_be(:esri_map_config, reload: true) do
     create(:map_config,
       :with_positioning,
       :with_tile_provider,
@@ -451,8 +451,11 @@ resource 'Map Layers' do
   end
 
   context 'when logged in as a project moderator' do
+    before_all do
+      create(:project)
+    end
+
     before do
-      project = create(:project)
       header_token_for(create(:user, roles: [{ 'type' => 'project_moderator', 'project_id' => project.id }]))
     end
 

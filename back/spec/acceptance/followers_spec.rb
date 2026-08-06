@@ -11,7 +11,7 @@ resource 'Followers' do
     header_token_for user
   end
 
-  let(:user) { create(:user) }
+  let_it_be(:user, reload: true) { create(:user) }
 
   get 'web_api/v1/followers' do
     with_options scope: :page do
@@ -21,12 +21,12 @@ resource 'Followers' do
     parameter :followable_type, 'One of: "Project", "ProjectFolders::Folder", "Idea"', required: false
 
     describe do
-      let!(:project_follows) { create_list(:project, 2).map { |project| create(:follower, user: user, followable: project) } }
-      let!(:other_follow) { create(:follower, user: create(:user)) }
-      let!(:folder_follows) { create_list(:project_folder, 2).map { |project| create(:follower, user: user, followable: project) } }
-      let!(:idea_follows) { [create(:follower, user: user, followable: create(:idea))] }
-      let!(:topic_follows) { [create(:follower, user: user, followable: create(:topic))] }
-      let!(:area_follows) { [create(:follower, user: user, followable: create(:area))] }
+      let_it_be(:project_follows, reload: true) { create_list(:project, 2).map { |project| create(:follower, user: user, followable: project) } }
+      let_it_be(:other_follow, reload: true) { create(:follower, user: create(:user)) }
+      let_it_be(:folder_follows, reload: true) { create_list(:project_folder, 2).map { |project| create(:follower, user: user, followable: project) } }
+      let_it_be(:idea_follows, reload: true) { [create(:follower, user: user, followable: create(:idea))] }
+      let_it_be(:topic_follows, reload: true) { [create(:follower, user: user, followable: create(:topic))] }
+      let_it_be(:area_follows, reload: true) { [create(:follower, user: user, followable: create(:area))] }
 
       example_request 'List all followers' do
         assert_status 200
@@ -103,7 +103,7 @@ resource 'Followers' do
   end
 
   delete 'web_api/v1/followers/:id' do
-    let(:follower) { create(:follower, user: user) }
+    let_it_be(:follower, reload: true) { create(:follower, user: user) }
     let!(:id) { follower.id }
 
     example 'Delete a follower (unfollow)' do

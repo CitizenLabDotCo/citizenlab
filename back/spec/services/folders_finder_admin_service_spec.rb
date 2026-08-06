@@ -25,8 +25,8 @@ describe FoldersFinderAdminService do
   end
 
   describe 'self.filter_status' do
-    let!(:published_folder) { create(:project_folder) }
-    let!(:draft_folder) do
+    let_it_be(:published_folder, reload: true) { create(:project_folder) }
+    let_it_be(:draft_folder, reload: true) do
       folder = create(:project_folder)
       publication = AdminPublication.find_by(publication_id: folder.id, publication_type: 'ProjectFolders::Folder')
       publication.update!(publication_status: 'draft')
@@ -72,9 +72,9 @@ describe FoldersFinderAdminService do
   end
 
   describe 'self.search' do
-    let!(:p1) { create(:project_folder, title_multiloc: { 'en' => 'Test Folder 1' }) }
-    let!(:p2) { create(:project_folder, title_multiloc: { 'en' => 'Another Folder' }) }
-    let!(:p3) { create(:project_folder, title_multiloc: { 'en' => 'Test Folder 2' }) }
+    let_it_be(:p1, reload: true) { create(:project_folder, title_multiloc: { 'en' => 'Test Folder 1' }) }
+    let_it_be(:p2, reload: true) { create(:project_folder, title_multiloc: { 'en' => 'Another Folder' }) }
+    let_it_be(:p3, reload: true) { create(:project_folder, title_multiloc: { 'en' => 'Test Folder 2' }) }
 
     it 'filters projects by search term' do
       result = described_class.search(ProjectFolders::Folder.all, { search: 'Test' })

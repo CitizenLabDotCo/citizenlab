@@ -65,7 +65,8 @@ RSpec.describe EmailCampaigns::InviteReceivedMailer do
 
     context 'with custom text' do
       let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
-      let(:intro_image) { create(:text_image) }
+
+      let_it_be(:intro_image, reload: true) { create(:text_image) }
 
       before do
         campaign.update!(

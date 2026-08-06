@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe Analysis::InputsFinder do
-  let(:analysis) { create(:analysis) }
+  let_it_be(:analysis, reload: true) { create(:analysis) }
   let(:service) { described_class.new(analysis, @params) }
   let(:output) { service.execute }
 

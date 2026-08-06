@@ -38,8 +38,9 @@ resource 'Jobs' do
 
       describe 'filter by owner' do
         let!(:filtered_jobs) { create_pair(:jobs_tracker, owner: owner) }
-        let(:owner) { create(:admin) }
         let(:owner_id) { owner.id }
+
+        let_it_be(:owner, reload: true) { create(:admin) }
 
         before { create(:jobs_tracker, :with_owner) }
 
@@ -51,9 +52,10 @@ resource 'Jobs' do
 
       describe 'filter by context' do
         let!(:filtered_jobs) { create_pair(:jobs_tracker, context: context) }
-        let(:context) { create(:phase) }
         let(:context_type) { context.class.name }
         let(:context_id) { context.id }
+
+        let_it_be(:context, reload: true) { create(:phase) }
 
         before { create(:jobs_tracker, :with_phase_context) }
 

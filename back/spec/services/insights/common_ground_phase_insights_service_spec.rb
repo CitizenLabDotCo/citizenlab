@@ -2,22 +2,20 @@ require 'rails_helper'
 
 RSpec.describe Insights::CommonGroundPhaseInsightsService do
   let(:service) { described_class.new(phase) }
-  let(:phase) { create(:common_ground_phase, start_at: 17.days.ago, end_at: 2.days.ago) }
-
   let(:user1) { create(:user) }
   let!(:idea1) { create(:idea, phases: [phase], created_at: 20.days.ago, published_at: 20.days.ago, author: user1, creation_phase_id: phase.id) } # before phase start
   let!(:idea2) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: user1, creation_phase_id: phase.id) } # during phase
   let!(:idea3) { create(:idea, phases: [phase], created_at: 1.day.ago, published_at: 1.day.ago, author: user1, creation_phase_id: phase.id) } # after phase end
-
-  let(:user2) { create(:user) }
   let!(:idea4) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: user2, creation_phase_id: phase.id) } # during phase
   let!(:idea5) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: nil, author: user2, publication_status: 'draft', creation_phase_id: phase.id) } # during phase, but not published
-
   let!(:idea6) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: nil, author_hash: 'some_author_hash', creation_phase_id: phase.id) } # during phase, no author (e.g. anonymous participation)
   let!(:idea7) { create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: nil, author_hash: nil, creation_phase_id: phase.id) } # during phase, no author nor author_hash (e.g. imported idea)
-
   let!(:reaction1) { create(:reaction, reactable: idea1, user: user1, created_at: 5.days.ago) } # during phase, and in last 7 days
   let!(:reaction2) { create(:reaction, reactable: idea1, user: user2, created_at: 1.day.ago) } # not during phase
+
+  let_it_be(:phase, reload: true) { create(:common_ground_phase, start_at: 17.days.ago, end_at: 2.days.ago) }
+
+  let_it_be(:user2, reload: true) { create(:user) }
 
   describe '#participations_posting_idea' do
     it 'returns the participation ideas published data for published ideas published during phase' do

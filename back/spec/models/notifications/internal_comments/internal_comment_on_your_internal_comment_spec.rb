@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Notifications::InternalComments::InternalCommentOnYourInternalComment do
   describe 'make_notifications_on' do
-    let(:idea) { create(:idea) }
+    let_it_be(:idea, reload: true) { create(:idea) }
     let(:parent_internal_comment) { create(:internal_comment, idea: idea) }
 
     context 'when the internal comment does not contain a mention of the parent author' do

@@ -101,8 +101,11 @@ resource 'Permissions' do
       let(:action) { @phase.permissions.first.action }
 
       context 'with custom fields and groups' do
-        before do
+        before_all do
           create(:custom_field_gender, enabled: true, required: true)
+        end
+
+        before do
           @phase.permissions.first.update!(group_ids: create_list(:group, 2, projects: [@phase.project]).map(&:id), global_custom_fields: true)
         end
 
@@ -271,8 +274,11 @@ resource 'Permissions' do
   end
 
   context 'when resident' do
-    before do
+    before_all do
       @user = create(:user)
+    end
+
+    before do
       header_token_for @user
     end
 
@@ -309,15 +315,17 @@ resource 'Permissions' do
       # Formerly the 'everyone_confirmed_email' permitted_by, now a 'users' permission
       # that only requires a confirmed email (no name, no password).
       context "'users' permission requiring only a confirmed email" do
-        before do
+        before_all do
           @user = create(:unconfirmed_user)
+        end
+
+        before do
           header_token_for @user
           @permission = @phase.permissions.first
           @permission.update!(permitted_by: 'users', require_confirmed_email: true, require_name: false, require_password: false)
           create(:custom_field_birthyear, required: true)
           create(:custom_field_gender, required: false)
           create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field')
-
           @user.update!(
             first_name: 'Jack',
             last_name: nil,
@@ -355,12 +363,14 @@ resource 'Permissions' do
 
     get 'web_api/v1/permissions/:action/requirements' do
       context 'with custom fields and onboarding' do
-        before do
+        before_all do
           create(:custom_field_birthyear, required: true)
           create(:custom_field_gender, required: false)
           create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field')
           create(:custom_field, resource_type: 'User', enabled: false, key: 'disabled_field') # Should not be returned
+        end
 
+        before do
           @user.update!(
             email: 'my@email.com',
             first_name: 'Jack',
@@ -368,7 +378,6 @@ resource 'Permissions' do
             password_digest: nil,
             custom_field_values: { 'gender' => 'male' }
           )
-
           create(:topic, include_in_onboarding: true)
         end
 
@@ -466,13 +475,14 @@ resource 'Permissions' do
       end
 
       context 'with fields locked by verification' do
-        before do
+        before_all do
           create(:custom_field_gender, required: false)
-          Permissions::PermissionsUpdateService.new.update_all_permissions
+        end
 
+        before do
+          Permissions::PermissionsUpdateService.new.update_all_permissions
           user = create(:user)
           create(:verification, method_name: 'bogus', user: user) # Bogus locks the `gender` custom_field
-
           header 'Content-Type', 'application/json'
           header_token_for user
         end

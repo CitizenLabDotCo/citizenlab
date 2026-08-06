@@ -4,8 +4,9 @@ require 'rails_helper'
 
 describe SideFxIdeaService do
   let(:service) { described_class.new }
-  let(:user) { create(:user) }
   let(:phase) { create(:phase) }
+
+  let_it_be(:user, reload: true) { create(:user) }
 
   describe 'after_create' do
     it "logs a 'created' action activity job" do
@@ -67,8 +68,8 @@ describe SideFxIdeaService do
     end
 
     context 'followers' do
-      let!(:project) { create(:project) }
-      let!(:folder) { create(:project_folder, projects: [project]) }
+      let_it_be(:project, reload: true) { create(:project) }
+      let_it_be(:folder, reload: true) { create(:project_folder, projects: [project]) }
       let!(:idea) { create(:idea, project: project) }
       let!(:phase) { create(:phase, project: project) }
 

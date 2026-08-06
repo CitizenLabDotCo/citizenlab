@@ -173,12 +173,13 @@ resource 'NavBarItems' do
 
       describe 'Adding a dropdown NavBarItem' do
         let(:code) { 'custom' }
-        let(:title_multiloc) { { 'en' => 'Departments' } }
-        let(:page) { create(:static_page, slug: 'urban-planning') }
-        let(:project) { create(:project, slug: 'transport') }
         let(:children) do
           [{ static_page_id: page.id }, { project_id: project.id }]
         end
+        let(:title_multiloc) { { 'en' => 'Departments' } }
+        let(:page) { create(:static_page, slug: 'urban-planning') }
+
+        let_it_be(:project, reload: true) { create(:project, slug: 'transport') }
 
         example_request 'Add a dropdown NavBarItem with ordered children' do
           expect(response_status).to eq 201
@@ -216,7 +217,7 @@ resource 'NavBarItems' do
         parameter :children, 'Ordered child items; replaces the dropdown\'s current children'
       end
 
-      let(:dropdown) { create(:nav_bar_item, :dropdown) }
+      let_it_be(:dropdown, reload: true) { create(:nav_bar_item, :dropdown) }
       let!(:old_child) do
         create(:nav_bar_item, code: 'custom', parent: dropdown, static_page: create(:static_page))
       end

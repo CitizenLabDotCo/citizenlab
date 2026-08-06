@@ -12,9 +12,9 @@ RSpec.describe EmailCampaigns::Campaigns::SurveySubmitted do
   describe '#generate_commands' do
     before { create(:idea_status_proposed) }
 
-    let(:campaign) { create(:survey_submitted_campaign) }
-    let(:user) { create(:user) }
-    let(:project) { create(:single_phase_native_survey_project) }
+    let_it_be(:campaign, reload: true) { create(:survey_submitted_campaign) }
+    let_it_be(:user, reload: true) { create(:user) }
+    let_it_be(:project, reload: true) { create(:single_phase_native_survey_project) }
     let(:idea) { create(:idea, author: user, project: project, creation_phase: project.phases.first) }
     let(:activity) { create(:activity, item: idea, action: 'published', user: user) }
 

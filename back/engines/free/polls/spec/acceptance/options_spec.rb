@@ -16,7 +16,7 @@ resource 'Poll Options' do
       parameter :size, 'Number of options per page'
     end
 
-    before do
+    before_all do
       @question = create(:poll_question, :with_options)
       create(:poll_option)
     end
@@ -58,7 +58,7 @@ resource 'Poll Options' do
       end
       ValidationErrorHelper.new.error_fields(self, Polls::Option)
 
-      let(:question) { create(:poll_question) }
+      let_it_be(:question, reload: true) { create(:poll_question) }
       let(:poll_question_id) { question.id }
       let(:option) { build(:poll_option, question: question) }
       let(:title_multiloc) { option.title_multiloc }

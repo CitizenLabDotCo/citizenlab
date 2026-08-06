@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe Webhooks, type: :integration do
-  let(:user) { create(:user) }
-  let(:project) { create(:project) }
+  let_it_be(:user, reload: true) { create(:user) }
+  let_it_be(:project, reload: true) { create(:project) }
 
   before do
     allow(Resolv).to receive(:getaddresses).with(a_string_matching(/webhook.example.com.*/)).and_return(['93.184.216.34'])
@@ -69,13 +69,13 @@ RSpec.describe Webhooks, type: :integration do
   end
 
   describe 'multiple subscriptions' do
-    let!(:sub1) do
+    let_it_be(:sub1, reload: true) do
       create(:webhook_subscription,
         events: ['idea.created'],
         url: 'https://webhook.example.com/1',
         enabled: true)
     end
-    let!(:sub2) do
+    let_it_be(:sub2, reload: true) do
       create(:webhook_subscription,
         events: ['idea.created', 'idea.published'],
         url: 'https://webhook.example.com/2',
@@ -106,22 +106,22 @@ RSpec.describe Webhooks, type: :integration do
   end
 
   describe 'project filtering' do
-    let(:project1) { create(:project) }
-    let(:project2) { create(:project) }
+    let_it_be(:project1, reload: true) { create(:project) }
+    let_it_be(:project2, reload: true) { create(:project) }
 
-    let!(:global_sub) do
+    let_it_be(:global_sub, reload: true) do
       create(:webhook_subscription,
         events: ['idea.created'],
         url: 'https://global.webhook.example.com',
         project: nil)
     end
-    let!(:project1_sub) do
+    let_it_be(:project1_sub, reload: true) do
       create(:webhook_subscription,
         events: ['idea.created'],
         url: 'https://project1.webhook.example.com',
         project: project1)
     end
-    let!(:project2_sub) do
+    let_it_be(:project2_sub, reload: true) do
       create(:webhook_subscription,
         events: ['idea.created'],
         url: 'https://project2.webhook.example.com',
@@ -147,13 +147,13 @@ RSpec.describe Webhooks, type: :integration do
   end
 
   describe 'disabled subscriptions' do
-    let!(:enabled_sub) do
+    let_it_be(:enabled_sub, reload: true) do
       create(:webhook_subscription,
         events: ['idea.created'],
         url: 'https://enabled.webhook.example.com',
         enabled: true)
     end
-    let!(:disabled_sub) do
+    let_it_be(:disabled_sub, reload: true) do
       create(:webhook_subscription,
         events: ['idea.created'],
         url: 'https://disabled.webhook.example.com',
@@ -182,12 +182,12 @@ RSpec.describe Webhooks, type: :integration do
   end
 
   describe 'event type filtering' do
-    let!(:idea_sub) do
+    let_it_be(:idea_sub, reload: true) do
       create(:webhook_subscription,
         events: ['idea.created'],
         url: 'https://ideas.webhook.example.com')
     end
-    let!(:user_sub) do
+    let_it_be(:user_sub, reload: true) do
       create(:webhook_subscription,
         events: ['user.created'],
         url: 'https://users.webhook.example.com')

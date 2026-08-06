@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe McpServer::Tools::ListGlobalTopics do
-  let(:current_user) { create(:super_admin) }
+  let_it_be(:current_user, reload: true) { create(:super_admin) }
 
   def list(params = {})
     run_mcp_tool(described_class, params:, current_user:)

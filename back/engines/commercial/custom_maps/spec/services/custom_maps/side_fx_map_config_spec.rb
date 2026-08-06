@@ -4,8 +4,9 @@ require 'rails_helper'
 
 describe CustomMaps::SideFxMapConfigService do
   let(:service) { described_class.new }
-  let(:user) { create(:user) }
-  let(:map_config) { create(:map_config) }
+
+  let_it_be(:user, reload: true) { create(:user) }
+  let_it_be(:map_config, reload: true) { create(:map_config) }
 
   describe 'after_create' do
     it "logs a 'created' action when a map_config is created" do

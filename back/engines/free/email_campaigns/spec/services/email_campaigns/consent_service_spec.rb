@@ -4,8 +4,9 @@ require 'rails_helper'
 
 describe EmailCampaigns::ConsentService do
   let(:service) { described_class.new }
-  let(:user) { create(:user) }
   let(:campaign_class) { EmailCampaigns::Campaigns::SmsManual }
+
+  let_it_be(:user, reload: true) { create(:user) }
 
   describe 'record!' do
     it 'creates the consent when none exists' do

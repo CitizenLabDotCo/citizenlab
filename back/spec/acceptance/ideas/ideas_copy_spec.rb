@@ -41,7 +41,7 @@ resource 'Ideas' do
     context 'when admin' do
       before { header_token_for(current_user) }
 
-      let(:current_user) { create(:admin) }
+      let_it_be(:current_user, reload: true) { create(:admin) }
 
       example 'Copy ideas into the target phase', :active_job_que_adapter do
         expect { do_request }

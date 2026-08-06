@@ -5,10 +5,11 @@ require 'rails_helper'
 RSpec.describe BulkImportIdeas::Parsers::Pdf::FormSyncSchemaBuilder do
   subject(:builder) { described_class.new(phase, 'en', personal_data_enabled: personal_data_enabled) }
 
-  let(:phase) { create(:native_survey_phase, with_permissions: true) }
+  let_it_be(:phase, reload: true) { create(:native_survey_phase, with_permissions: true) }
   let(:personal_data_enabled) { false }
-  let(:custom_form) { create(:custom_form, participation_context: phase) }
-  let!(:page_field) { create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'First page' }) }
+
+  let_it_be(:custom_form, reload: true) { create(:custom_form, participation_context: phase) }
+  let_it_be(:page_field, reload: true) { create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'First page' }) }
 
   describe '#output_schema' do
     context 'with text fields' do
@@ -40,7 +41,8 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::FormSyncSchemaBuilder do
         field.options.create!(key: 'opt_b', title_multiloc: { 'en' => 'Option B' })
         field
       end
-      let!(:multiselect_field) do
+
+      let_it_be(:multiselect_field, reload: true) do
         field = create(:custom_field_multiselect, resource: custom_form, key: 'multiselect_field', title_multiloc: { 'en' => 'Your interests' })
         field.options.create!(key: 'interest_1', title_multiloc: { 'en' => 'Sports' })
         field.options.create!(key: 'interest_2', title_multiloc: { 'en' => 'Music' })
@@ -62,7 +64,7 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::FormSyncSchemaBuilder do
     end
 
     context 'with scale fields' do
-      let!(:rating_field) { create(:custom_field_rating, resource: custom_form, key: 'rating_field', title_multiloc: { 'en' => 'Rating field' }) }
+      let_it_be(:rating_field, reload: true) { create(:custom_field_rating, resource: custom_form, key: 'rating_field', title_multiloc: { 'en' => 'Rating field' }) }
 
       it 'generates string properties with numeric enum values' do
         schema = builder.output_schema
@@ -74,7 +76,7 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::FormSyncSchemaBuilder do
     end
 
     context 'with ranking field' do
-      let!(:ranking_field) do
+      let_it_be(:ranking_field, reload: true) do
         field = create(:custom_field_ranking, resource: custom_form, key: 'ranking_field', title_multiloc: { 'en' => 'Rank these' })
         field.options.create!(key: 'first', title_multiloc: { 'en' => 'First option' })
         field.options.create!(key: 'second', title_multiloc: { 'en' => 'Second option' })
@@ -127,7 +129,7 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::FormSyncSchemaBuilder do
     end
 
     context 'with checkbox field' do
-      let!(:checkbox_field) { create(:custom_field, resource: custom_form, key: 'checkbox_field', input_type: 'checkbox', title_multiloc: { 'en' => 'I agree' }) }
+      let_it_be(:checkbox_field, reload: true) { create(:custom_field, resource: custom_form, key: 'checkbox_field', input_type: 'checkbox', title_multiloc: { 'en' => 'I agree' }) }
 
       it 'generates string property with checked/empty/_NOT_FOUND_ enum' do
         schema = builder.output_schema
@@ -139,7 +141,7 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::FormSyncSchemaBuilder do
     end
 
     context 'with unsupported field types (printable but not PDF-importable)' do
-      let!(:point_field) { create(:custom_field_point, resource: custom_form, key: 'point_field', title_multiloc: { 'en' => 'Point field' }) }
+      let_it_be(:point_field, reload: true) { create(:custom_field_point, resource: custom_form, key: 'point_field', title_multiloc: { 'en' => 'Point field' }) }
 
       it 'generates null property with unsupported description' do
         schema = builder.output_schema
@@ -156,13 +158,14 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::FormSyncSchemaBuilder do
 
     context 'question numbering' do
       let!(:text_field) { create(:custom_field_text, resource: custom_form, key: 'text_field', title_multiloc: { 'en' => 'Text field' }) }
+      let!(:multiline_field) { create(:custom_field_multiline_text, resource: custom_form, key: 'multiline_field', title_multiloc: { 'en' => 'Multiline' }) }
       let!(:select_field) do
         field = create(:custom_field_select, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => 'Select field' })
         field.options.create!(key: 'opt_a', title_multiloc: { 'en' => 'A' })
         field
       end
-      let!(:page_field2) { create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Second page' }) }
-      let!(:multiline_field) { create(:custom_field_multiline_text, resource: custom_form, key: 'multiline_field', title_multiloc: { 'en' => 'Multiline' }) }
+
+      let_it_be(:page_field2, reload: true) { create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Second page' }) }
 
       it 'numbers questions sequentially, skipping non-submittable fields like pages' do
         schema = builder.output_schema

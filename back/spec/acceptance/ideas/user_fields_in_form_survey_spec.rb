@@ -256,12 +256,14 @@ resource 'Ideas' do
         end
 
         context do
-          before do
+          before_all do
             @gender_field = create(:custom_field_gender)
             @verification = create(:verification, method_name: 'bogus')
+          end
+
+          before do
             @user = @verification.user
             @user.update!(custom_field_values: { @gender_field.key => 'female' })
-
             header_token_for @user
           end
 

@@ -23,7 +23,7 @@ end
 resource 'Campaigns' do
   explanation 'E-mail campaigns, both automated and manual'
 
-  before do
+  before_all do
     @manual_campaigns = create_list(:manual_campaign, 4)
     @manual_project_participants_campaign = create(:manual_project_participants_campaign)
     @automated_campaigns = [create(:official_feedback_on_idea_you_follow_campaign), create(:welcome_campaign)]
@@ -123,10 +123,10 @@ resource 'Campaigns' do
     end
 
     context 'Listing all campaigns scoped under a context' do
-      let!(:manual_global) { create(:manual_campaign) }
-      let!(:manual_project) { create(:manual_project_participants_campaign) }
-      let!(:global_phase) { create(:project_phase_started_campaign, context: nil) }
-      let!(:automated_phase) { create(:project_phase_started_campaign, context: create(:phase)) }
+      let_it_be(:manual_global, reload: true) { create(:manual_campaign) }
+      let_it_be(:manual_project, reload: true) { create(:manual_project_participants_campaign) }
+      let_it_be(:global_phase, reload: true) { create(:project_phase_started_campaign, context: nil) }
+      let_it_be(:automated_phase, reload: true) { create(:project_phase_started_campaign, context: create(:phase)) }
 
       get '/web_api/v1/projects/:context_id/campaigns' do
         let(:context_id) { manual_project.context_id }
@@ -150,7 +150,7 @@ resource 'Campaigns' do
         end
 
         context 'voting phase' do
-          let(:context) { create(:budgeting_phase) }
+          let_it_be(:context, reload: true) { create(:budgeting_phase) }
           let(:context_id) { context.id }
 
           example 'List only campaigns supported by the context', document: false do
@@ -302,8 +302,11 @@ resource 'Campaigns' do
       ValidationErrorHelper.new.error_fields self, EmailCampaigns::Campaign
 
       context 'moderator' do # TODO: Move out of admin context
-        before do
+        before_all do
           @user = create(:project_moderator)
+        end
+
+        before do
           header_token_for @user
         end
 
@@ -351,8 +354,11 @@ resource 'Campaigns' do
         ValidationErrorHelper.new.error_fields self, EmailCampaigns::Campaign
 
         context 'moderator' do # TODO: Move out of admin context
-          before do
+          before_all do
             @user = create(:project_moderator)
+          end
+
+          before do
             header_token_for @user
           end
 
@@ -505,7 +511,7 @@ resource 'Campaigns' do
       end
 
       context 'context campaigns' do
-        let(:phase) { create(:ideation_phase) }
+        let_it_be(:phase, reload: true) { create(:ideation_phase) }
         let!(:global_campaign) { create(:project_phase_started_campaign, enabled: true, context: nil) }
         let(:context_campaign) { create(:project_phase_started_campaign, enabled: false, context: phase) }
         let(:id) { context_campaign.id }
@@ -592,7 +598,7 @@ resource 'Campaigns' do
       context 'SMS campaign' do
         include_context 'with sms feature enabled'
 
-        before do
+        before_all do
           recipient = create(:user, phone: '+14155552671', phone_confirmed_at: Time.zone.now)
           create(:consent, :sms_manual, user: recipient)
         end
@@ -701,7 +707,7 @@ resource 'Campaigns' do
       header_token_for @user
     end
 
-    let!(:manual_project_participants_campaign_not_moderated_by_this_pm) { create(:manual_project_participants_campaign) }
+    let_it_be(:manual_project_participants_campaign_not_moderated_by_this_pm, reload: true) { create(:manual_project_participants_campaign) }
 
     get '/web_api/v1/campaigns/:id' do
       let(:id) { @manual_project_participants_campaign.id }
@@ -783,9 +789,9 @@ resource 'Campaigns' do
     post 'web_api/v1/campaigns/:id/send' do
       ValidationErrorHelper.new.error_fields self, EmailCampaigns::Campaign
 
-      let!(:participant) { create(:user) }
-      let!(:project) { create(:project_with_active_ideation_phase) }
-      let!(:idea) { create(:idea, project: project, author: participant, publication_status: 'published', phases: project.phases) }
+      let_it_be(:participant, reload: true) { create(:user) }
+      let_it_be(:project, reload: true) { create(:project_with_active_ideation_phase) }
+      let_it_be(:idea, reload: true) { create(:idea, project: project, author: participant, publication_status: 'published', phases: project.phases) }
 
       example 'Send out the campaign now' do
         @manual_project_participants_campaign.update(context_id: project.id)

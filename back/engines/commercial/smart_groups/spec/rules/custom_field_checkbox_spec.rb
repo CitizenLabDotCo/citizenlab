@@ -48,7 +48,7 @@ describe SmartGroups::Rules::CustomFieldCheckbox do
   end
 
   describe 'description_multiloc' do
-    let(:checkbox) do
+    let_it_be(:checkbox, reload: true) do
       create(:custom_field_checkbox, title_multiloc: {
         'en' => 'I agree to share my cookies',
         'fr-FR' => 'J\'accepte de partager mes biscuits',

@@ -5,8 +5,8 @@ require 'rails_helper'
 RSpec.describe Files::PreviewService do
   subject(:service) { described_class.new }
 
-  let!(:pdf_file) { create(:file) }
-  let!(:docx_file) { create(:file, name: 'david.docx') }
+  let_it_be(:pdf_file, reload: true) { create(:file) }
+  let_it_be(:docx_file, reload: true) { create(:file, name: 'david.docx') }
 
   describe '#enqueue_preview' do
     it 'enqueues a job to generate a preview for a docx file' do

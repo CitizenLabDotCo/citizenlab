@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Project do
   subject(:project) { create(:project) }
 
-  let(:user) { create(:user) }
+  let_it_be(:user, reload: true) { create(:user) }
 
   describe 'before_destroy' do
     it 'destroys any smart group that refers to this project' do

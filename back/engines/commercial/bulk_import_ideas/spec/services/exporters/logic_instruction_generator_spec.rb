@@ -9,20 +9,20 @@ RSpec.configure do |config|
 end
 
 describe BulkImportIdeas::Exporters::LogicInstructionGenerator do
-  let(:project) { create(:project) }
-  let(:phase) { create(:native_survey_phase, project: project, with_permissions: true) }
-  let(:custom_form) { create(:custom_form, participation_context: phase) }
+  let_it_be(:project, reload: true) { create(:project) }
+  let_it_be(:phase, reload: true) { create(:native_survey_phase, project: project, with_permissions: true) }
+  let_it_be(:custom_form, reload: true) { create(:custom_form, participation_context: phase) }
 
-  let!(:page1) { create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'First page' }) }
-  let!(:select_field) do
+  let_it_be(:page1, reload: true) { create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'First page' }) }
+  let_it_be(:select_field, reload: true) do
     field = create(:custom_field_select, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => 'Favourite colour' })
     field.options.create!(key: 'red', title_multiloc: { 'en' => 'Red' })
     field.options.create!(key: 'blue', title_multiloc: { 'en' => 'Blue' })
     field
   end
-  let!(:page2) { create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Second page' }) }
-  let!(:text_field) { create(:custom_field_text, resource: custom_form, title_multiloc: { 'en' => 'Why?' }) }
-  let!(:end_page) { create(:custom_field_form_end_page, resource: custom_form) }
+  let_it_be(:page2, reload: true) { create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Second page' }) }
+  let_it_be(:text_field, reload: true) { create(:custom_field_text, resource: custom_form, title_multiloc: { 'en' => 'Why?' }) }
+  let_it_be(:end_page, reload: true) { create(:custom_field_form_end_page, resource: custom_form) }
 
   let(:printable_fields) { IdeaCustomFieldsService.new(custom_form).printable_fields }
   let(:all_fields) { IdeaCustomFieldsService.new(custom_form).all_fields }
@@ -123,7 +123,7 @@ describe BulkImportIdeas::Exporters::LogicInstructionGenerator do
     end
 
     context 'multiple questions with logic on the same page' do
-      let!(:second_select_field) do
+      let_it_be(:second_select_field, reload: true) do
         field = create(:custom_field_select, resource: custom_form, key: 'second_select', title_multiloc: { 'en' => 'Favourite animal' })
         field.options.create!(key: 'cat', title_multiloc: { 'en' => 'Cat' })
         field.options.create!(key: 'dog', title_multiloc: { 'en' => 'Dog' })

@@ -8,10 +8,10 @@ RSpec.describe IdeasInputTopic do
   end
 
   describe '#enfore_clean_topic_hierarchy callback' do
-    let(:project) { create(:project) }
-    let(:idea) { create(:idea, project: project) }
-    let(:parent_topic) { create(:input_topic, project: project) }
-    let(:child_topic) { create(:input_topic, project: project, parent: parent_topic) }
+    let_it_be(:project, reload: true) { create(:project) }
+    let_it_be(:idea, reload: true) { create(:idea, project: project) }
+    let_it_be(:parent_topic, reload: true) { create(:input_topic, project: project) }
+    let_it_be(:child_topic, reload: true) { create(:input_topic, project: project, parent: parent_topic) }
 
     describe 'remove_parent_if_child_added' do
       it 'removes the parent topic assignment when a child topic is assigned' do

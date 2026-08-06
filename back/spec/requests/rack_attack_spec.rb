@@ -15,7 +15,7 @@ describe 'Rack::Attack' do
     Rack::Attack.enabled = false
   end
 
-  let!(:user) { create(:user) }
+  let_it_be(:user, reload: true) { create(:user) }
 
   it 'limits login requests from same IP to 2 in 20 seconds' do
     headers = { 'CONTENT_TYPE' => 'application/json' }

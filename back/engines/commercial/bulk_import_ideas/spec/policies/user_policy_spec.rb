@@ -7,17 +7,17 @@ describe UserPolicy do
 
   let(:scope) { UserPolicy::Scope.new current_user, User }
 
-  let!(:space) { create(:space) }
-  let!(:project1) { create(:project, space: space) }
-  let!(:project2) { create(:project, space: space) }
-  let!(:folder) { create(:project_folder, projects: [project1, project2], space: space) }
+  let_it_be(:space, reload: true) { create(:space) }
+  let_it_be(:project1, reload: true) { create(:project, space: space) }
+  let_it_be(:project2, reload: true) { create(:project, space: space) }
+  let_it_be(:folder, reload: true) { create(:project_folder, projects: [project1, project2], space: space) }
 
   shared_examples 'allows editing only an imported draft user in a moderated project' do
     context 'on a user created through import' do
-      let(:subject_user) { create(:user) }
+      let_it_be(:subject_user, reload: true) { create(:user) }
 
       context 'if the user has imported draft ideas and no published ideas' do
-        before do
+        before_all do
           idea = create(:idea, project: project1, author: subject_user, publication_status: 'draft')
           create(:idea_import, idea: idea, user_created: true)
         end
@@ -26,7 +26,7 @@ describe UserPolicy do
       end
 
       context 'if the user has published ideas' do
-        before do
+        before_all do
           idea = create(:idea, project: project1, author: subject_user, publication_status: 'published')
           create(:idea_import, idea: idea, user_created: true)
         end
@@ -35,7 +35,7 @@ describe UserPolicy do
       end
 
       context 'if the user has imported draft ideas on other projects' do
-        before do
+        before_all do
           no_moderation_project = create(:project)
           idea = create(:idea, project: no_moderation_project, author: subject_user, publication_status: 'draft')
           create(:idea_import, idea: idea, user_created: true)
@@ -45,7 +45,7 @@ describe UserPolicy do
       end
 
       context 'if the user was not created by import' do
-        before do
+        before_all do
           idea = create(:idea, project: project1, author: subject_user, publication_status: 'draft')
           create(:idea_import, idea: idea, user_created: false)
         end
@@ -54,7 +54,7 @@ describe UserPolicy do
       end
 
       context 'if the draft idea was not imported' do
-        before do
+        before_all do
           create(:idea, project: project1, author: subject_user, publication_status: 'draft')
         end
 

@@ -7,7 +7,7 @@ class ConsentableCampaign < EmailCampaigns::Campaign
 end
 
 RSpec.describe EmailCampaigns::Consentable do
-  before do
+  before_all do
     @campaign = ConsentableCampaign.create
   end
 

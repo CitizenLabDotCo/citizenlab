@@ -9,9 +9,10 @@ describe EmailCampaigns::DeliveryService do
 
   describe '#send_now (SMS channel)' do
     let(:campaign) { create(:sms_manual_campaign) }
-    let!(:recipient) { create(:user, phone: '+14155552671', phone_confirmed_at: Time.zone.now, locale: 'en') }
 
-    before do
+    let_it_be(:recipient, reload: true) { create(:user, phone: '+14155552671', phone_confirmed_at: Time.zone.now, locale: 'en') }
+
+    before_all do
       create(:consent, :sms_manual, user: recipient)
       create(:consent, :sms_manual, user: create(:user, phone: nil)) # phone-less user is not a recipient
     end
@@ -38,7 +39,8 @@ describe EmailCampaigns::DeliveryService do
 
   describe '#send_sms_preview' do
     let(:campaign) { create(:sms_manual_campaign) }
-    let(:previewer) { create(:admin, phone: '+14155552672', locale: 'en') }
+
+    let_it_be(:previewer, reload: true) { create(:admin, phone: '+14155552672', locale: 'en') }
 
     it 'sends a test SMS to the previewer without linking it to the campaign' do
       expect { service.send_sms_preview(campaign, previewer) }

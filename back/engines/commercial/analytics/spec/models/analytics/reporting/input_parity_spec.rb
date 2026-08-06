@@ -10,7 +10,7 @@ RSpec.describe 'reporting_inputs parity with Analytics::FactPost' do # rubocop:d
     Analytics::PopulateDimensionsService.populate_types
   end
 
-  before do
+  before_all do
     create(:idea)
     create(:official_feedback)
     create(:idea_changed_status_activity, item: create(:idea))

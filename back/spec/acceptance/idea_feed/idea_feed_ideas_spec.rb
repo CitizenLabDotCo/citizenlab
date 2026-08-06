@@ -14,10 +14,10 @@ resource 'Idea feed ideas' do
     end
     parameter :topics, 'Filter by topic IDs', required: false
 
-    let(:phase) { create(:idea_feed_phase) }
+    let_it_be(:phase, reload: true) { create(:idea_feed_phase) }
     let(:phase_id) { phase.id }
-    let!(:ideas) { create_list(:idea, 2, project: phase.project, phases: [phase]) }
-    let!(:other_idea) { create(:idea) }
+    let_it_be(:ideas, reload: true) { create_list(:idea, 2, project: phase.project, phases: [phase]) }
+    let_it_be(:other_idea, reload: true) { create(:idea) }
 
     example_request 'List all ideas' do
       expect(status).to eq(200)
@@ -26,12 +26,13 @@ resource 'Idea feed ideas' do
     end
 
     describe 'filtering by topic' do
-      let(:topic) { create(:input_topic, project: phase.project) }
-      let(:subtopic) { create(:input_topic, project: phase.project, parent: topic) }
+      let_it_be(:topic, reload: true) { create(:input_topic, project: phase.project) }
+      let_it_be(:subtopic, reload: true) { create(:input_topic, project: phase.project, parent: topic) }
       let(:topics) { [topic.id] }
-      let!(:idea_with_topic) { create(:idea, project: phase.project, phases: [phase], input_topics: [topic]) }
-      let!(:idea_with_subtopic) { create(:idea, project: phase.project, phases: [phase], input_topics: [subtopic]) }
-      let!(:idea_without_topics) { create(:idea, project: phase.project, phases: [phase]) }
+
+      let_it_be(:idea_with_topic, reload: true) { create(:idea, project: phase.project, phases: [phase], input_topics: [topic]) }
+      let_it_be(:idea_with_subtopic, reload: true) { create(:idea, project: phase.project, phases: [phase], input_topics: [subtopic]) }
+      let_it_be(:idea_without_topics, reload: true) { create(:idea, project: phase.project, phases: [phase]) }
 
       example_request 'List ideas filtered by topic' do
         expect(status).to eq(200)

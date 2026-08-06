@@ -264,12 +264,6 @@ RSpec.describe AdminPublication do
 
   describe '.sorted_by_title_multiloc' do
     let(:user) { create(:user, locale: 'en') }
-    let!(:project1) { create(:project, title_multiloc: { en: 'Bravo' }) }
-    let!(:project2) { create(:project, title_multiloc: { en: 'Alpha' }) }
-    let!(:folder1)  { create(:project_folder, title_multiloc: { en: 'Charlie', 'fr-FR': 'Gamma' }) }
-    let!(:project3) { create(:project, title_multiloc: { en: '', 'fr-FR': 'Echo' }) }
-    let!(:folder2)  { create(:project_folder, title_multiloc: { 'nl-NL': 'Omega', 'fr-FR': 'Delta' }) }
-
     let(:expected_ascending_order) do
       [
         project2.title_multiloc,   # Alpha
@@ -279,6 +273,12 @@ RSpec.describe AdminPublication do
         project3.title_multiloc    # Echo (en is blank, falls back to fr because fr-FR is before nl-NL in tenant locales)
       ]
     end
+
+    let_it_be(:project1, reload: true) { create(:project, title_multiloc: { en: 'Bravo' }) }
+    let_it_be(:project2, reload: true) { create(:project, title_multiloc: { en: 'Alpha' }) }
+    let_it_be(:folder1, reload: true)  { create(:project_folder, title_multiloc: { en: 'Charlie', 'fr-FR': 'Gamma' }) }
+    let_it_be(:project3, reload: true) { create(:project, title_multiloc: { en: '', 'fr-FR': 'Echo' }) }
+    let_it_be(:folder2, reload: true)  { create(:project_folder, title_multiloc: { 'nl-NL': 'Omega', 'fr-FR': 'Delta' }) }
 
     it 'sorts admin publications by multiloc title ascending (with locale fallback)' do
       expect(AppConfiguration.instance.settings('core', 'locales')).to eq %w[en fr-FR nl-NL]

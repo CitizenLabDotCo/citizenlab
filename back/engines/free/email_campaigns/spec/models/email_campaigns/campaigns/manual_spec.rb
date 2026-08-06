@@ -11,7 +11,8 @@ RSpec.describe EmailCampaigns::Campaigns::Manual do
 
   describe '#generate_commands' do
     let(:campaign) { create(:manual_campaign) }
-    let(:recipient) { create(:user) }
+
+    let_it_be(:recipient, reload: true) { create(:user) }
 
     it 'generates a command with the desired payload' do
       expect(campaign.generate_commands(recipient: recipient)&.first).to match({

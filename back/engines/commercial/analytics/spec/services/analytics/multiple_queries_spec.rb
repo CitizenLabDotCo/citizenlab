@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Analytics::MultipleQueries do
   subject(:service) { described_class.new }
 
-  before do
+  before_all do
     create(:dimension_type, name: 'idea')
     create(:idea)
   end

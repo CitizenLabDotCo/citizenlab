@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe ReportBuilder::Queries::Projects do
-  let(:user) { create(:admin) }
+  let_it_be(:user, reload: true) { create(:admin) }
   let(:query) { described_class.new(user) }
 
   describe '#run_query' do

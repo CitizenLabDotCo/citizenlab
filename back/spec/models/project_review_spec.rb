@@ -80,7 +80,7 @@ RSpec.describe ProjectReview do
       end
 
       describe 'when approved' do
-        let(:project_review) { create(:project_review, :approved) }
+        let_it_be(:project_review, reload: true) { create(:project_review, :approved) }
 
         it 'prevents changing the reviewer' do
           project_review.reviewer = create(:user)

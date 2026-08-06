@@ -20,10 +20,10 @@ resource 'Projects' do
 
       ValidationErrorHelper.new.error_fields self, Project
 
-      let(:folder) { create(:project_folder) }
-      let(:assignee) { create(:project_folder_moderator, project_folders: [folder]) }
-      let(:project1) { create(:project, folder: folder, default_assignee: assignee) }
-      let(:project2) { create(:project, folder: folder, default_assignee: assignee) }
+      let_it_be(:folder, reload: true) { create(:project_folder) }
+      let_it_be(:assignee, reload: true) { create(:project_folder_moderator, project_folders: [folder]) }
+      let_it_be(:project1, reload: true) { create(:project, folder: folder, default_assignee: assignee) }
+      let_it_be(:project2, reload: true) { create(:project, folder: folder, default_assignee: assignee) }
       let(:id) { project1.id }
 
       example 'Assignees of moved project remain valid', document: false do

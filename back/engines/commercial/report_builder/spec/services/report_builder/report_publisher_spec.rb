@@ -5,9 +5,9 @@ require 'rails_helper'
 RSpec.describe ReportBuilder::ReportPublisher do
   subject(:service) { described_class.new(report, instance_double(User)) }
 
-  let(:phase) { create(:phase) }
+  let_it_be(:phase, reload: true) { create(:phase) }
 
-  let(:report) do
+  let_it_be(:report, reload: true) do
     layout = build(:layout, craftjs_json: {
       ROOT: {},
       '5Hk6BOKxfJ' => {

@@ -107,8 +107,8 @@ resource 'Reactions' do
     end
 
     context 'when filtering by user_id' do
-      let!(:user) { create(:user) }
-      let!(:user_reactions) { create_list(:reaction, 2, user: user) }
+      let_it_be(:user, reload: true) { create(:user) }
+      let_it_be(:user_reactions, reload: true) { create_list(:reaction, 2, user: user) }
 
       let(:user_id) { user.id }
 

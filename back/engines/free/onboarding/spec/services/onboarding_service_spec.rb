@@ -6,8 +6,8 @@ describe Onboarding::OnboardingService do
   let(:service) { described_class.new }
 
   describe 'current_campaign' do
-    let(:custom_field) { create(:custom_field) }
-    let(:user) do
+    let_it_be(:custom_field, reload: true) { create(:custom_field) }
+    let_it_be(:user, reload: true) do
       # A fully completed profile, so that each example can knock out one part of it
       # and assert on the campaign that gets suggested.
       create(
@@ -91,13 +91,13 @@ describe Onboarding::OnboardingService do
       end
 
       context 'when the user is verified' do
-        let(:verified_user) { create(:user, verified: true) }
+        let_it_be(:verified_user, reload: true) { create(:user, verified: true) }
 
         it { expect(service.current_campaign(verified_user)).not_to eq :verification }
       end
 
       context 'when the user is not verified' do
-        let(:user_not_verified) { create(:user, verified: false) }
+        let_it_be(:user_not_verified, reload: true) { create(:user, verified: false) }
 
         it { expect(service.current_campaign(user_not_verified)).to eq(:verification) }
 

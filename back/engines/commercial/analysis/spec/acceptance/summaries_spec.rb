@@ -70,8 +70,8 @@ resource 'Summaries' do
       parameter :comments_to, 'Filter by number of comments on the input, smaller than or equal to', type: :integer
     end
 
-    let(:main_field) { create(:custom_field_text) }
-    let(:additional_field) { create(:custom_field) }
+    let_it_be(:main_field, reload: true) { create(:custom_field_text) }
+    let_it_be(:additional_field, reload: true) { create(:custom_field) }
     let(:analysis) { create(:analysis, main_custom_field: main_field, additional_custom_fields: [additional_field]) }
     let(:analysis_id) { analysis.id }
     let(:tag) { create(:tag, analysis: analysis) }

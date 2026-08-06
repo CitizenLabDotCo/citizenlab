@@ -29,7 +29,7 @@ RSpec.describe Events::Attendance do
   end
 
   describe 'maximum_attendees_not_reached validation' do
-    let!(:event) { create(:event, maximum_attendees: 5) }
+    let_it_be(:event, reload: true) { create(:event, maximum_attendees: 5) }
     let(:attendance) { build(:event_attendance, event: event) }
 
     it 'is valid when maximum_attendees is nil' do

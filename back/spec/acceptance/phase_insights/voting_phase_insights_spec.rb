@@ -9,12 +9,12 @@ resource 'Phase insights' do
     travel_to(Time.zone.parse('2025-12-02 12:00:00'))
   end
 
-  let!(:custom_field_gender) { create(:custom_field, :for_registration, key: 'gender', input_type: 'select', title_multiloc: { en: 'Gender' }) }
-  let!(:custom_field_option_male) { create(:custom_field_option, custom_field: custom_field_gender, key: 'male', title_multiloc: { en: 'Male' }) }
-  let!(:custom_field_option_female) { create(:custom_field_option, custom_field: custom_field_gender, key: 'female', title_multiloc: { en: 'Female' }) }
-  let!(:custom_field_option_other) { create(:custom_field_option, custom_field: custom_field_gender, key: 'unspecified', title_multiloc: { en: 'Unspecified' }) }
+  let_it_be(:custom_field_gender, reload: true) { create(:custom_field, :for_registration, key: 'gender', input_type: 'select', title_multiloc: { en: 'Gender' }) }
+  let_it_be(:custom_field_option_male, reload: true) { create(:custom_field_option, custom_field: custom_field_gender, key: 'male', title_multiloc: { en: 'Male' }) }
+  let_it_be(:custom_field_option_female, reload: true) { create(:custom_field_option, custom_field: custom_field_gender, key: 'female', title_multiloc: { en: 'Female' }) }
+  let_it_be(:custom_field_option_other, reload: true) { create(:custom_field_option, custom_field: custom_field_gender, key: 'unspecified', title_multiloc: { en: 'Unspecified' }) }
 
-  let!(:categorical_distribution) do
+  let_it_be(:categorical_distribution, reload: true) do
     create(
       :categorical_distribution,
       custom_field: custom_field_gender,
@@ -22,9 +22,9 @@ resource 'Phase insights' do
     )
   end
 
-  let!(:custom_field_birthyear) { create(:custom_field, :for_registration, key: 'birthyear', input_type: 'number', title_multiloc: { en: 'Birthyear' }) }
+  let_it_be(:custom_field_birthyear, reload: true) { create(:custom_field, :for_registration, key: 'birthyear', input_type: 'number', title_multiloc: { en: 'Birthyear' }) }
 
-  let!(:binned_distribution) do
+  let_it_be(:binned_distribution, reload: true) do
     create(
       :binned_distribution,
       custom_field: custom_field_birthyear,
@@ -33,7 +33,7 @@ resource 'Phase insights' do
     )
   end
 
-  let(:ideation_phase) do
+  let_it_be(:ideation_phase, reload: true) do
     create(
       :phase,
       participation_method: 'ideation',
@@ -362,7 +362,7 @@ resource 'Phase insights' do
       end
 
       context 'when phase is budgeting phase' do
-        let(:budgeting_phase) do
+        let_it_be(:budgeting_phase, reload: true) do
           create(
             :phase,
             participation_method: 'voting',

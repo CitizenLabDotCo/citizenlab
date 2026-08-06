@@ -4,18 +4,18 @@ require 'rspec_api_documentation/dsl'
 resource 'Moderators' do
   explanation 'Space moderators can manage items (e.g. folder, project, phase, idea) and other moderators (e.g. folder moderators, project moderators) in their space.'
 
-  let!(:space) { create(:space) }
-  let!(:other_space) { create(:space) }
+  let_it_be(:space, reload: true) { create(:space) }
+  let_it_be(:other_space, reload: true) { create(:space) }
 
-  let!(:space_moderators) { create_list(:space_moderator, 2, spaces: [space]) }
-  let!(:other_space_moderator) { create(:space_moderator, spaces: [other_space]) }
+  let_it_be(:space_moderators, reload: true) { create_list(:space_moderator, 2, spaces: [space]) }
+  let_it_be(:other_space_moderator, reload: true) { create(:space_moderator, spaces: [other_space]) }
 
   before do
     header 'Content-Type', 'application/json'
   end
 
   context 'as an admin' do
-    let(:admin) { create(:admin) }
+    let_it_be(:admin, reload: true) { create(:admin) }
 
     before do
       header_token_for(admin)
@@ -55,7 +55,7 @@ resource 'Moderators' do
 
       ValidationErrorHelper.new.error_fields(self, User)
 
-      let(:user) { create(:user) }
+      let_it_be(:user, reload: true) { create(:user) }
 
       example 'Add a space moderator role to a user' do
         do_request space_id: space.id, moderator: { user_id: user.id }
@@ -82,7 +82,7 @@ resource 'Moderators' do
   end
 
   context 'as a space moderator' do
-    let(:space_moderator) { create(:space_moderator, spaces: [space]) }
+    let_it_be(:space_moderator, reload: true) { create(:space_moderator, spaces: [space]) }
 
     before do
       header_token_for(space_moderator)
@@ -180,8 +180,8 @@ resource 'Moderators' do
     delete 'web_api/v1/spaces/:space_id/moderators/:user_id' do
       ValidationErrorHelper.new.error_fields(self, User)
 
-      let(:moderator_of_same_space) { create(:space_moderator, spaces: [space]) }
-      let(:moderator_of_other_space) { create(:space_moderator, spaces: [other_space]) }
+      let_it_be(:moderator_of_same_space, reload: true) { create(:space_moderator, spaces: [space]) }
+      let_it_be(:moderator_of_other_space, reload: true) { create(:space_moderator, spaces: [other_space]) }
 
       example "Remove a space moderator role from a user in the moderator's space" do
         n_roles_before = moderator_of_same_space.roles.size

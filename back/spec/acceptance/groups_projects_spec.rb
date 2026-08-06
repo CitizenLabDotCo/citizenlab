@@ -58,7 +58,7 @@ resource 'GroupsProjects' do
 
       let(:project_id) { @project.id }
       let(:groups_project) { build(:groups_project) }
-      let(:group) { create(:group) }
+      let_it_be(:group, reload: true) { create(:group) }
       let(:group_id) { group.id }
       let(:title_multiloc) { group.title_multiloc }
 

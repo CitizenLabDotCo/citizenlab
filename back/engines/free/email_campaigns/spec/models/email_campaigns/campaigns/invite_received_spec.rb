@@ -11,9 +11,10 @@ RSpec.describe EmailCampaigns::Campaigns::InviteReceived do
 
   describe '#generate_commands' do
     let(:campaign) { create(:invite_received_campaign) }
-    let(:invite_text_image) { create(:text_image) }
     let(:invite) { create(:invite, invite_text: "<p>Some text</p><img data-cl2-text-image-text-reference=\"#{invite_text_image.text_reference}\">") }
     let(:activity) { create(:activity, item: invite, action: 'created', user: invite.inviter) }
+
+    let_it_be(:invite_text_image, reload: true) { create(:text_image) }
 
     it 'generates a command with the desired payload and tracked content' do
       command = campaign.generate_commands(

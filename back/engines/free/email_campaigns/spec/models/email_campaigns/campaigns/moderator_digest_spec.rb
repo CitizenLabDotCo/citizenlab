@@ -13,6 +13,8 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', skip: skip_reason d
 
   describe '#generate_commands' do
     let(:campaign) { create(:moderator_digest_campaign) }
+    let!(:proposal) { create(:proposal, project:, idea_status: threshold_reached_status, phases: [project.phases.last], creation_phase: project.phases.last) }
+    let!(:proposal_changed_activity) { create(:idea_changed_status_activity, item: proposal, payload: { change: [nil, threshold_reached_status.id] }, acted_at: 1.day.ago) }
     let!(:project) do
       create(
         :project_with_current_phase,
@@ -33,9 +35,8 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', skip: skip_reason d
     let!(:comment) { create(:comment, idea: old_ideas[0]) }
     let!(:other_idea) { create(:idea, project: create(:project)) }
     let!(:draft) { create(:idea, project: project, publication_status: 'draft') }
-    let!(:threshold_reached_status) { create(:proposals_status, code: 'threshold_reached') }
-    let!(:proposal) { create(:proposal, project:, idea_status: threshold_reached_status, phases: [project.phases.last], creation_phase: project.phases.last) }
-    let!(:proposal_changed_activity) { create(:idea_changed_status_activity, item: proposal, payload: { change: [nil, threshold_reached_status.id] }, acted_at: 1.day.ago) }
+
+    let_it_be(:threshold_reached_status, reload: true) { create(:proposals_status, code: 'threshold_reached') }
 
     it 'generates a command with the desired payload and tracked content' do
       command = campaign.generate_commands(recipient: moderator).first

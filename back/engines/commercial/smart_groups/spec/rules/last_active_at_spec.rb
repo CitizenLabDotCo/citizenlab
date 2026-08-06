@@ -21,7 +21,7 @@ describe SmartGroups::Rules::LastActiveAt do
 
   describe 'filter' do
     context 'on last active date' do
-      let!(:users) do
+      let_it_be(:users, reload: true) do
         users = create_list(:user, 5)
         users[0].last_active_at = Time.now
         users[1].last_active_at = (Time.now - 25.hours)

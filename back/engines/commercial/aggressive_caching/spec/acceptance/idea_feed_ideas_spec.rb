@@ -10,9 +10,9 @@ resource 'Idea Feed Ideas', :clear_cache, document: false do
   end
 
   get 'web_api/v1/phases/:phase_id/idea_feed/ideas' do
-    let(:phase) { create(:idea_feed_phase) }
+    let_it_be(:phase, reload: true) { create(:idea_feed_phase) }
     let(:phase_id) { phase.id }
-    let!(:ideas) { create_list(:idea, 2, project: phase.project, phases: [phase]) }
+    let_it_be(:ideas, reload: true) { create_list(:idea, 2, project: phase.project, phases: [phase]) }
 
     let(:cache_key) do
       query = { topics: nil, page_size: 20, phase: phase_id, exposure_ids: [] }.to_query

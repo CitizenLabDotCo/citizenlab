@@ -31,7 +31,7 @@ describe WebApi::V1::ActivitySerializer do
   end
 
   context 'permission_action' do
-    let(:permission) { create(:permission, action: 'posting_idea') }
+    let_it_be(:permission, reload: true) { create(:permission, action: 'posting_idea') }
     let(:activity) do
       create(:activity, item: permission, action: 'changed', payload: { permission: clean_time_attributes(permission.attributes) })
     end

@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe ParticipationMethod::CommonGround do
   subject(:participation_method) { described_class.new(phase) }
 
-  let(:phase) { create(:common_ground_phase) }
+  let_it_be(:phase, reload: true) { create(:common_ground_phase) }
 
   it 'is a participation method' do
     expect(described_class).to be < ParticipationMethod::Base

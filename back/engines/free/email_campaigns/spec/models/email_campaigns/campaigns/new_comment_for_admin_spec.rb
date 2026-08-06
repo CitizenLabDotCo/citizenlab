@@ -10,7 +10,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewCommentForAdmin do
   end
 
   describe '#generate_commands' do
-    let(:recipient) { create(:user) }
+    let_it_be(:recipient, reload: true) { create(:user) }
     let(:author) { create(:user, first_name: 'Rea', last_name: 'Xion') }
     let(:comment) { create(:comment, body_multiloc: { 'en' => 'Example comment.' }, author:) }
     let(:campaign) { create(:new_comment_for_admin_campaign) }
@@ -34,14 +34,15 @@ RSpec.describe EmailCampaigns::Campaigns::NewCommentForAdmin do
   end
 
   describe 'filter_recipient' do
-    let(:idea) { create(:idea) }
+    let_it_be(:idea, reload: true) { create(:idea) }
     let(:author) { create(:user, first_name: 'Rea', last_name: 'Xion') }
     let(:comment) { create(:comment, body_multiloc: { 'en' => 'Example comment.' }, author:, idea:) }
     let(:campaign) { create(:new_comment_for_admin_campaign) }
     let(:activity) { create(:activity, item: comment, action: 'created') }
-    let!(:resident) { create(:user) }
-    let!(:admin) { create(:admin) }
-    let!(:moderator) { create(:project_moderator, projects: [idea.project]) }
+
+    let_it_be(:resident, reload: true) { create(:user) }
+    let_it_be(:admin, reload: true) { create(:admin) }
+    let_it_be(:moderator, reload: true) { create(:project_moderator, projects: [idea.project]) }
 
     it 'returns moderators only' do
       expect(campaign.filter_recipient(User.all, activity:).ids).to contain_exactly(admin.id, moderator.id)

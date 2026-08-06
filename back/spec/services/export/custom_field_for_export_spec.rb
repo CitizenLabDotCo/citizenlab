@@ -106,7 +106,7 @@ describe Export::CustomFieldForExport do
         end
 
         context 'when there are areas' do
-          let(:area) do
+          let_it_be(:area, reload: true) do
             create(
               :area,
               title_multiloc: { 'en' => 'Paris', 'nl-NL' => 'Parijs' }

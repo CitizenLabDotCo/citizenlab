@@ -22,7 +22,7 @@ resource 'PermissionsCustomField' do
       parameter :size, 'Number of permissions fields per page'
     end
 
-    let(:project) { create(:single_phase_ideation_project) }
+    let_it_be(:project, reload: true) { create(:single_phase_ideation_project) }
     let(:permission_scope) { project.phases.first }
     let(:action) { 'commenting_idea' }
     let(:idea_id) { create(:idea, project: project).id }
@@ -98,8 +98,11 @@ resource 'PermissionsCustomField' do
     let(:required) { false }
     let(:custom_field_id) { create(:custom_field, enabled: false).id }
 
-    before do
+    before_all do
       create(:custom_field_gender, enabled: true) # Create a default custom field
+    end
+
+    before do
       permission # Create permission
     end
 
@@ -207,7 +210,7 @@ resource 'PermissionsCustomField' do
       end
 
       context 'Fields are persisted exist and then group is added' do
-        let(:group_field) { create(:custom_field_domicile, enabled: false) }
+        let_it_be(:group_field, reload: true) { create(:custom_field_domicile, enabled: false) }
         let(:custom_field_id) { group_field.id }
         let(:permission_id) { permission.id }
         let(:ordering) { 1 }

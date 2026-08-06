@@ -2,7 +2,6 @@ require 'rails_helper'
 
 describe CustomFieldsValidationService do
   let(:service) { described_class.new }
-  let(:custom_form) { create(:custom_form) }
   let(:participation_method) { custom_form.participation_context.pmethod }
   let(:default_fields) do
     # Deal with title page default title being nil (not the case during API call)
@@ -10,6 +9,8 @@ describe CustomFieldsValidationService do
   end
   let(:fields) { default_fields }
   let(:result) { service.validate(fields, participation_method) }
+
+  let_it_be(:custom_form, reload: true) { create(:custom_form) }
 
   it 'accepts the default fields' do
     expect(result).to be_nil

@@ -6,45 +6,45 @@ describe Export::Xlsx::ProjectIdeasVotesGenerator do
   let(:service) { described_class.new }
 
   describe 'generate_project_ideas_votes_xlsx' do
-    let(:phase1) { create(:phase, title_multiloc: { en: 'Ideation phase' }, start_at: Time.now - 20.days, end_at: Time.now - 19.days) }
-    let(:phase2) { create(:single_voting_phase, title_multiloc: { en: 'Single voting phase' }, start_at: Time.now - 18.days, end_at: Time.now - 17.days) }
-    let(:phase3) { create(:multiple_voting_phase, title_multiloc: { en: 'Multiple voting phase' }, start_at: Time.now - 14.days, end_at: Time.now - 13.days) }
-    let(:phase4) { create(:budgeting_phase, title_multiloc: { en: 'Budget allocation phase' }, start_at: Time.now - 10.days, end_at: Time.now - 9.days) }
-    let(:project) { create(:project, phases: [phase1, phase2, phase3, phase4]) }
-    let(:ideas) do
+    let_it_be(:phase1, reload: true) { create(:phase, title_multiloc: { en: 'Ideation phase' }, start_at: Time.now - 20.days, end_at: Time.now - 19.days) }
+    let_it_be(:phase2, reload: true) { create(:single_voting_phase, title_multiloc: { en: 'Single voting phase' }, start_at: Time.now - 18.days, end_at: Time.now - 17.days) }
+    let_it_be(:phase3, reload: true) { create(:multiple_voting_phase, title_multiloc: { en: 'Multiple voting phase' }, start_at: Time.now - 14.days, end_at: Time.now - 13.days) }
+    let_it_be(:phase4, reload: true) { create(:budgeting_phase, title_multiloc: { en: 'Budget allocation phase' }, start_at: Time.now - 10.days, end_at: Time.now - 9.days) }
+    let_it_be(:project, reload: true) { create(:project, phases: [phase1, phase2, phase3, phase4]) }
+    let_it_be(:ideas, reload: true) do
       %w[idea1 idea2 idea3 idea4].map { |t| create(:idea, project: project, budget: 500, title_multiloc: { en: t }) }
     end
     # Link ideas to all voting phases
-    let!(:ideas_phases) do
+    let_it_be(:ideas_phases, reload: true) do
       ideas.each { |idea| create(:ideas_phase, idea: idea, phase: phase4) }
     end
-    let(:user1) { create(:user) }
-    let(:user2) { create(:user) }
+    let_it_be(:user1, reload: true) { create(:user) }
+    let_it_be(:user2, reload: true) { create(:user) }
 
     # 2 users select ideas[0], and 1 user selects ideas[1], in single voting phase:
-    let!(:ideas_phase1) { create(:ideas_phase, idea: ideas[0], phase: phase2, votes_count: 2) }
-    let!(:ideas_phase2) { create(:ideas_phase, idea: ideas[1], phase: phase2, votes_count: 1) }
-    let!(:ideas_phase3) { create(:ideas_phase, idea: ideas[2], phase: phase2, votes_count: 0) }
-    let!(:ideas_phase4) { create(:ideas_phase, idea: ideas[3], phase: phase2, votes_count: 0) }
+    let_it_be(:ideas_phase1, reload: true) { create(:ideas_phase, idea: ideas[0], phase: phase2, votes_count: 2) }
+    let_it_be(:ideas_phase2, reload: true) { create(:ideas_phase, idea: ideas[1], phase: phase2, votes_count: 1) }
+    let_it_be(:ideas_phase3, reload: true) { create(:ideas_phase, idea: ideas[2], phase: phase2, votes_count: 0) }
+    let_it_be(:ideas_phase4, reload: true) { create(:ideas_phase, idea: ideas[3], phase: phase2, votes_count: 0) }
 
     # 1 user votes for ideas[0] && ideas[1], and 1 user votes for ideas[0], in multiple voting phase:
-    let(:basket1) { create(:basket, user: user1, phase: phase3) }
-    let!(:baskets_idea3) { create(:baskets_idea, basket: basket1, idea: ideas[0], votes: 42) }
-    let!(:baskets_idea4) { create(:baskets_idea, basket: basket1, idea: ideas[1], votes: 24) }
-    let(:basket2) { create(:basket, user: user2, phase: phase3) }
-    let!(:baskets_idea5) { create(:baskets_idea, basket: basket2, idea: ideas[0], votes: 21) }
-    let!(:ideas_phase5) { create(:ideas_phase, idea: ideas[0], phase: phase3, votes_count: 63) }
-    let!(:ideas_phase6) { create(:ideas_phase, idea: ideas[1], phase: phase3, votes_count: 24) }
-    let!(:ideas_phase7) { create(:ideas_phase, idea: ideas[2], phase: phase3, votes_count: 0) }
-    let!(:ideas_phase8) { create(:ideas_phase, idea: ideas[3], phase: phase3, votes_count: 0) }
+    let_it_be(:basket1, reload: true) { create(:basket, user: user1, phase: phase3) }
+    let_it_be(:baskets_idea3, reload: true) { create(:baskets_idea, basket: basket1, idea: ideas[0], votes: 42) }
+    let_it_be(:baskets_idea4, reload: true) { create(:baskets_idea, basket: basket1, idea: ideas[1], votes: 24) }
+    let_it_be(:basket2, reload: true) { create(:basket, user: user2, phase: phase3) }
+    let_it_be(:baskets_idea5, reload: true) { create(:baskets_idea, basket: basket2, idea: ideas[0], votes: 21) }
+    let_it_be(:ideas_phase5, reload: true) { create(:ideas_phase, idea: ideas[0], phase: phase3, votes_count: 63) }
+    let_it_be(:ideas_phase6, reload: true) { create(:ideas_phase, idea: ideas[1], phase: phase3, votes_count: 24) }
+    let_it_be(:ideas_phase7, reload: true) { create(:ideas_phase, idea: ideas[2], phase: phase3, votes_count: 0) }
+    let_it_be(:ideas_phase8, reload: true) { create(:ideas_phase, idea: ideas[3], phase: phase3, votes_count: 0) }
 
     # 1 user votes for ideas[0] && ideas[2], and 1 user votes for idea[1] && ideas[2], in budgeting phase:
-    let(:basket3) { create(:basket, user: user1, phase: phase4) }
-    let(:basket4) { create(:basket, user: user2, phase: phase4) }
-    let!(:baskets_idea6) { create(:baskets_idea, basket: basket3, idea: ideas[0]) }
-    let!(:baskets_idea7) { create(:baskets_idea, basket: basket3, idea: ideas[2]) }
-    let!(:baskets_idea8) { create(:baskets_idea, basket: basket4, idea: ideas[1]) }
-    let!(:baskets_idea9) { create(:baskets_idea, basket: basket4, idea: ideas[2]) }
+    let_it_be(:basket3, reload: true) { create(:basket, user: user1, phase: phase4) }
+    let_it_be(:basket4, reload: true) { create(:basket, user: user2, phase: phase4) }
+    let_it_be(:baskets_idea6, reload: true) { create(:baskets_idea, basket: basket3, idea: ideas[0]) }
+    let_it_be(:baskets_idea7, reload: true) { create(:baskets_idea, basket: basket3, idea: ideas[2]) }
+    let_it_be(:baskets_idea8, reload: true) { create(:baskets_idea, basket: basket4, idea: ideas[1]) }
+    let_it_be(:baskets_idea9, reload: true) { create(:baskets_idea, basket: basket4, idea: ideas[2]) }
 
     let(:xlsx) { service.generate_project_ideas_votes_xlsx(project) }
     let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }

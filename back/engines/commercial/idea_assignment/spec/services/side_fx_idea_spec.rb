@@ -4,7 +4,8 @@ require 'rails_helper'
 
 describe SideFxIdeaService do
   let(:service) { described_class.new }
-  let(:user) { create(:user) }
+
+  let_it_be(:user, reload: true) { create(:user) }
 
   describe 'before create' do
     let(:default_assignee) { create(:admin) }

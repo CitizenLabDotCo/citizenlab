@@ -19,7 +19,7 @@ resource 'Comments' do
     end
 
     describe do
-      before do
+      before_all do
         @i1 = create(:idea, published_at: Time.zone.now)
         @i2 = create(:idea, published_at: 1.day.ago)
         @i3 = create(:idea, published_at: 3.days.ago)

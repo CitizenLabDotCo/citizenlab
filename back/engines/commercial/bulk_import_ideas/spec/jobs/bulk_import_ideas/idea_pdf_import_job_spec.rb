@@ -3,17 +3,20 @@
 require 'rails_helper'
 
 RSpec.describe BulkImportIdeas::IdeaPdfImportJob do
-  let(:project) { create(:single_phase_ideation_project) }
+  let_it_be(:project, reload: true) { create(:single_phase_ideation_project) }
   let(:phase) { project.phases.first }
-  let(:admin) { create(:admin) }
-  let(:files) { create_list(:idea_import_file, 3, project: project) }
-
   let(:file_parser) { instance_double(BulkImportIdeas::Parsers::IdeaPdfFileParser) }
   let(:import_service) { instance_double(BulkImportIdeas::Importers::IdeaImporter, imported_users: []) }
   let(:max_retry_count) { Que::Job.maximum_retry_count }
 
-  before do
+  let_it_be(:admin, reload: true) { create(:admin) }
+  let_it_be(:files, reload: true) { create_list(:idea_import_file, 3, project: project) }
+
+  before_all do
     create(:idea_status, code: 'proposed')
+  end
+
+  before do
     allow(BulkImportIdeas::Parsers::IdeaPdfFileParser).to receive(:new).and_return(file_parser)
     allow(BulkImportIdeas::Importers::IdeaImporter).to receive(:new).and_return(import_service)
   end

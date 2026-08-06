@@ -123,7 +123,7 @@ RSpec.describe StaticPage do
   end
 
   describe 'before validate' do
-    let(:topic) { create(:global_topic) }
+    let_it_be(:topic, reload: true) { create(:global_topic) }
 
     it 'destroys unused associations' do
       static_page = create(:static_page, projects_filter_type: 'topics', code: 'faq', global_topics: [topic])

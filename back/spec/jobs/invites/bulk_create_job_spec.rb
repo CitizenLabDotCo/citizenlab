@@ -3,11 +3,8 @@ require 'rails_helper'
 RSpec.describe Invites::BulkCreateJob do
   describe '#perform' do
     let!(:emails) { Array.new(5) { Faker::Internet.email }.push(nil) }
-    let(:group_ids) { [create(:group).id] }
     let(:locale) { 'nl-NL' }
     let(:invite_text) { 'Welcome, my friend!' }
-    let(:project) { create(:project) }
-    let!(:_admin) { create(:admin) }
     let!(:project_moderator) { create(:project_moderator, email: emails[0], projects: [project], locale: 'en') }
     let!(:admin2) { create(:admin, email: emails[1], locale: 'fr-FR') }
     let(:existing_invitee_emails) { [project_moderator.email, admin2.email] }
@@ -17,10 +14,15 @@ RSpec.describe Invites::BulkCreateJob do
         { 'type' => 'project_moderator', 'project_id' => project.id }
       ]
     end
-    let!(:user) { create(:admin) }
+
+    let_it_be(:group_ids, reload: true) { [create(:group).id] }
+    let_it_be(:project, reload: true) { create(:project) }
+    let_it_be(:_admin, reload: true) { create(:admin) }
+
+    let_it_be(:user, reload: true) { create(:admin) }
 
     shared_examples 'bulk create job' do |params_key:, duplicate_rows:, invalid_rows:, extra_args: {}|
-      let(:invites_import) { create(:invites_import, job_type: extra_args[:job_type], importer: user) }
+      let_it_be(:invites_import, reload: true) { create(:invites_import, job_type: extra_args[:job_type], importer: user) }
       let(:create_params) do
         params = {
           roles: [

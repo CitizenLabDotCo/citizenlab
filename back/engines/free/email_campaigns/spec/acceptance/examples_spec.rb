@@ -18,10 +18,10 @@ resource 'Campaing examples' do
       parameter :size, 'Number of examples per page'
     end
 
-    let(:campaign1) { create(:admin_rights_received_campaign) }
-    let(:campaign2) { create(:comment_deleted_by_admin_campaign) }
-    let(:examples) { create_list(:campaign_example, 3, campaign: campaign1) }
-    let!(:other_campaign_example) { create(:campaign_example, campaign: campaign2) }
+    let_it_be(:campaign1, reload: true) { create(:admin_rights_received_campaign) }
+    let_it_be(:campaign2, reload: true) { create(:comment_deleted_by_admin_campaign) }
+    let_it_be(:examples, reload: true) { create_list(:campaign_example, 3, campaign: campaign1) }
+    let_it_be(:other_campaign_example, reload: true) { create(:campaign_example, campaign: campaign2) }
     let(:campaign_id) { examples.first.campaign_id }
 
     example_request 'List all examples for a specific campaign' do
@@ -33,7 +33,7 @@ resource 'Campaing examples' do
   end
 
   get '/web_api/v1/campaigns/examples/:id' do
-    let(:example1) { create(:campaign_example) }
+    let_it_be(:example1, reload: true) { create(:campaign_example) }
     let(:id) { example1.id }
 
     example_request 'Get one campaign example by id' do

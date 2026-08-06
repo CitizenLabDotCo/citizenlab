@@ -8,7 +8,7 @@ resource 'Graph data units' do
 
   header 'Content-Type', 'application/json'
 
-  let(:project) { create(:project) }
+  let_it_be(:project, reload: true) { create(:project) }
 
   before do
     @gender = 'female'
@@ -96,16 +96,19 @@ resource 'Graph data units' do
     let(:graph_id) { 'gJxirq8X7m' }
 
     # used for test setup
-    let(:user) { create(:admin) }
+    let_it_be(:user, reload: true) { create(:admin) }
 
     before do
       ReportBuilder::ReportPublisher.new(@report, user).publish
     end
 
     context 'when user has access to phase' do
-      before do
+      before_all do
         group = create(:group)
         create(:membership, user: user, group: group)
+      end
+
+      before do
         project.update!(visible_to: 'groups', groups: [group])
         header_token_for user
       end
@@ -117,8 +120,11 @@ resource 'Graph data units' do
     end
 
     context "when user doesn't have access to phase" do
+      before_all do
+        create(:user)
+      end
+
       before do
-        user = create(:user)
         project.update!(visible_to: 'groups', groups: [])
         header_token_for user
       end

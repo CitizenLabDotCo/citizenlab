@@ -106,7 +106,7 @@ resource 'Poll Responses' do
     ValidationErrorHelper.new.error_fields(self, Polls::Response)
     ValidationErrorHelper.new.error_fields(self, Polls::ResponseOption)
 
-    let(:project) { create(:project_with_current_phase, current_phase_attrs: { participation_method: 'poll' }) }
+    let_it_be(:project, reload: true) { create(:project_with_current_phase, current_phase_attrs: { participation_method: 'poll' }) }
     let(:phase) { project.phases[2] }
     let(:phase_id) { phase.id }
     let(:q1) { create(:poll_question, :with_options, phase: phase) }

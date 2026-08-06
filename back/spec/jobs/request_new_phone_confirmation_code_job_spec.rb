@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe RequestNewPhoneConfirmationCodeJob do
   subject(:job) { described_class.new }
 
-  let(:user) { create(:user) }
+  let_it_be(:user, reload: true) { create(:user) }
   let(:new_phone) { '+14155552671' }
 
   # The OTP is sent synchronously (perform_now) inside the job, so the provider

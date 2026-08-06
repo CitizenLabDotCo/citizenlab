@@ -11,9 +11,12 @@ resource 'Memberships' do
   end
 
   context 'CRUD memberships' do
-    before do
+    before_all do
       @group = create(:group)
       @users = create_list(:user, 5)
+    end
+
+    before do
       @memberships = @users.map { |u| create(:membership, group: @group, user: u) }
       admin_header_token
     end
@@ -91,8 +94,11 @@ resource 'Memberships' do
   end
 
   context 'Users search' do
-    before do
+    before_all do
       @admin = create(:admin, first_name: 'Freddy', last_name: 'Smith', email: 'superadmin@gmail.com')
+    end
+
+    before do
       header_token_for @admin
     end
 
@@ -103,15 +109,15 @@ resource 'Memberships' do
       end
       parameter :search, 'The query used for searching users', required: true
 
-      let(:g1) { create(:group) }
+      let_it_be(:g1, reload: true) { create(:group) }
       let(:group_id) { g1.id }
-      let(:g2) { create(:group) }
+      let_it_be(:g2, reload: true) { create(:group) }
       let(:search) { 'jo' }
-      let!(:u1) { create(:user, first_name: 'Freddy', last_name: 'Smith', email: 'jofreddy@jojo.com', manual_groups: [g1]) }
-      let!(:u2) { create(:user, first_name: 'Jon', last_name: 'Smith', email: 'freddy1@zmail.com', manual_groups: [g2]) }
-      let!(:u3) { create(:user, first_name: 'Jonny', last_name: 'Johnson', email: 'freddy2@zmail.com', manual_groups: []) }
-      let!(:u4) { create(:user, first_name: 'Freddy', last_name: 'Johnson', email: 'freddy3@zmail.com', manual_groups: [g1, g2]) }
-      let!(:u5) { create(:user, first_name: 'Freddy', last_name: 'Smith', email: 'freddy4@zmail.com', manual_groups: [g1]) }
+      let_it_be(:u1, reload: true) { create(:user, first_name: 'Freddy', last_name: 'Smith', email: 'jofreddy@jojo.com', manual_groups: [g1]) }
+      let_it_be(:u2, reload: true) { create(:user, first_name: 'Jon', last_name: 'Smith', email: 'freddy1@zmail.com', manual_groups: [g2]) }
+      let_it_be(:u3, reload: true) { create(:user, first_name: 'Jonny', last_name: 'Johnson', email: 'freddy2@zmail.com', manual_groups: []) }
+      let_it_be(:u4, reload: true) { create(:user, first_name: 'Freddy', last_name: 'Johnson', email: 'freddy3@zmail.com', manual_groups: [g1, g2]) }
+      let_it_be(:u5, reload: true) { create(:user, first_name: 'Freddy', last_name: 'Smith', email: 'freddy4@zmail.com', manual_groups: [g1]) }
 
       example_request 'Search for users and see whether or not they are member of the group' do
         expect(status).to eq(200)

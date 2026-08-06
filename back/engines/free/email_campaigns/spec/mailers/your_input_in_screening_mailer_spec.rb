@@ -69,13 +69,13 @@ RSpec.describe EmailCampaigns::YourInputInScreeningMailer do
     end
 
     context 'with custom text' do
-      let!(:global_campaign) do
+      let_it_be(:global_campaign, reload: true) do
         create(
           :your_input_in_screening_campaign,
           subject_multiloc: { 'en' => 'Custom Global Subject - {{ organizationName }}' }
         )
       end
-      let!(:context_campaign) do
+      let_it_be(:context_campaign, reload: true) do
         create(
           :your_input_in_screening_campaign,
           context: create(:phase),

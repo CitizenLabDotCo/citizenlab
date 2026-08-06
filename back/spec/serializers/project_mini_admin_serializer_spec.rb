@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 describe WebApi::V1::ProjectMiniAdminSerializer do
-  let!(:project) { create(:project_with_phases) }
-  let!(:user) { create(:user) }
-  let!(:folder) { create(:project_folder, projects: [project]) }
+  let_it_be(:project, reload: true) { create(:project_with_phases) }
+  let_it_be(:user, reload: true) { create(:user) }
+  let_it_be(:folder, reload: true) { create(:project_folder, projects: [project]) }
 
   let!(:serialized_project) do
     described_class

@@ -11,18 +11,19 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest do
 
   describe '#generate_commands' do
     let(:campaign) { create(:user_digest_campaign) }
-    let!(:user) { create(:user) }
-    let!(:new_project) { create(:project, created_at: Time.now - 1.day) }
-    let!(:projects) { create_list(:project, 2, created_at: Time.now - 5.days) + [new_project] }
-    let!(:top_idea) { create(:idea, project: new_project, published_at: Time.now - 1.hour) }
-    let!(:ideas) { create_list(:idea, 10, project: new_project, published_at: Time.now - 2.hours) }
-    let!(:reactions) { create_list(:reaction, 3, mode: 'up', reactable: top_idea) + [top_idea] }
-    let!(:top_comment) { create(:comment, idea: top_idea, created_at: Time.now - 3.minutes) }
-    let!(:comments) { create_list(:comment, 3, idea: top_idea, parent: top_comment) + create_list(:comment, 5, idea: top_idea) + [top_comment] }
-    let!(:draft_project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }, created_at: Time.now - 2.minutes) }
-    let!(:threshold_reached_status) { create(:proposals_status, code: 'threshold_reached') }
-    let!(:proposal) { create(:proposal, idea_status: threshold_reached_status, published_at: 1.year.ago) }
-    let!(:proposal_changed_activity) { create(:idea_changed_status_activity, item: proposal, payload: { change: [nil, threshold_reached_status.id] }, acted_at: 1.day.ago) }
+
+    let_it_be(:user, reload: true) { create(:user) }
+    let_it_be(:new_project, reload: true) { create(:project, created_at: Time.now - 1.day) }
+    let_it_be(:projects, reload: true) { create_list(:project, 2, created_at: Time.now - 5.days) + [new_project] }
+    let_it_be(:top_idea, reload: true) { create(:idea, project: new_project, published_at: Time.now - 1.hour) }
+    let_it_be(:ideas, reload: true) { create_list(:idea, 10, project: new_project, published_at: Time.now - 2.hours) }
+    let_it_be(:reactions, reload: true) { create_list(:reaction, 3, mode: 'up', reactable: top_idea) + [top_idea] }
+    let_it_be(:top_comment, reload: true) { create(:comment, idea: top_idea, created_at: Time.now - 3.minutes) }
+    let_it_be(:comments, reload: true) { create_list(:comment, 3, idea: top_idea, parent: top_comment) + create_list(:comment, 5, idea: top_idea) + [top_comment] }
+    let_it_be(:draft_project, reload: true) { create(:project, admin_publication_attributes: { publication_status: 'draft' }, created_at: Time.now - 2.minutes) }
+    let_it_be(:threshold_reached_status, reload: true) { create(:proposals_status, code: 'threshold_reached') }
+    let_it_be(:proposal, reload: true) { create(:proposal, idea_status: threshold_reached_status, published_at: 1.year.ago) }
+    let_it_be(:proposal_changed_activity, reload: true) { create(:idea_changed_status_activity, item: proposal, payload: { change: [nil, threshold_reached_status.id] }, acted_at: 1.day.ago) }
 
     it 'generates a command with the desired payload and tracked content' do
       command = campaign.generate_commands(recipient: user).first

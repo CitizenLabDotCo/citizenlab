@@ -5,10 +5,10 @@ describe InputTopicPolicy do
 
   let(:scope) { InputTopicPolicy::Scope.new(user, InputTopic) }
 
-  let!(:space) { create(:space) }
-  let!(:project) { create(:project, space: space) }
-  let!(:folder) { create(:project_folder, projects: [project], space: space) }
-  let!(:input_topic) { create(:input_topic, project: project) }
+  let_it_be(:space, reload: true) { create(:space) }
+  let_it_be(:project, reload: true) { create(:project, space: space) }
+  let_it_be(:folder, reload: true) { create(:project_folder, projects: [project], space: space) }
+  let_it_be(:input_topic, reload: true) { create(:input_topic, project: project) }
 
   shared_examples 'can moderate the input topic' do
     it { is_expected.to permit(:show)    }

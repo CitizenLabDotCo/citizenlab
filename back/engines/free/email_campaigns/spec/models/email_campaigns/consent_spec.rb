@@ -46,7 +46,7 @@ RSpec.describe EmailCampaigns::Consent do
   end
 
   describe 'idea_marked_as_spam_campaign' do
-    let(:campaign) { create(:idea_marked_as_spam_campaign) }
+    let_it_be(:campaign, reload: true) { create(:idea_marked_as_spam_campaign) }
 
     it { expect(campaign.class).to be_consentable_for build_stubbed(:admin) }
     it { expect(campaign.class).not_to be_consentable_for build_stubbed(:user) }

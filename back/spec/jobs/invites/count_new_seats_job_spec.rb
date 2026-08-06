@@ -3,15 +3,17 @@ require 'rails_helper'
 RSpec.describe Invites::CountNewSeatsJob do
   describe '#perform' do
     let(:emails) { Array.new(5) { Faker::Internet.email }.push(nil) }
-    let(:project) { create(:project) }
-    let!(:_project_moderator1) { create(:project_moderator, projects: [project]) }
-    let!(:_admin) { create(:admin) }
     let!(:_project_moderator2) { create(:project_moderator, email: emails[0], projects: [project]) }
     let!(:_admin2) { create(:admin, email: emails[1]) }
-    let!(:user) { create(:admin) }
+
+    let_it_be(:project, reload: true) { create(:project) }
+    let_it_be(:_project_moderator1, reload: true) { create(:project_moderator, projects: [project]) }
+    let_it_be(:_admin, reload: true) { create(:admin) }
+
+    let_it_be(:user, reload: true) { create(:admin) }
 
     shared_examples 'count new seats job' do |params_key:, duplicate_rows:, invalid_rows:, extra_args: {}|
-      let(:invites_import) { create(:invites_import, job_type: extra_args[:job_type], importer: user) }
+      let_it_be(:invites_import, reload: true) { create(:invites_import, job_type: extra_args[:job_type], importer: user) }
       let(:create_params) do
         params = {
           roles: [

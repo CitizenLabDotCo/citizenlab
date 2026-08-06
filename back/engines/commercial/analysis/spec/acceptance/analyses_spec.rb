@@ -20,7 +20,7 @@ resource 'Analyses' do
       parameter :size, 'Number of analyses per page'
     end
 
-    before do
+    before_all do
       @survey_analysis = create(:survey_analysis)
       @ideation_analysis = create(:ideation_analysis)
       @proposals_analysis = create(:proposals_analysis)

@@ -6,7 +6,7 @@ RSpec.describe RequestNewEmailConfirmationCodeJob do
   subject(:job) { described_class.new }
 
   describe '#perform' do
-    let(:user) { create(:unconfirmed_user, email: 'some_email@email.com') }
+    let_it_be(:user, reload: true) { create(:unconfirmed_user, email: 'some_email@email.com') }
     let(:new_email) { 'new@email.com' }
 
     it 'enqueues a "requested_confirmation_code" activity job with the new email' do

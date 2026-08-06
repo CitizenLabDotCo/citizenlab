@@ -318,7 +318,7 @@ RSpec.describe CustomField do
   context 'when domicile field is created' do
     before { create_list(:area, 2) }
 
-    let(:domicile_field) { create(:custom_field_domicile) }
+    let_it_be(:domicile_field, reload: true) { create(:custom_field_domicile) }
 
     it 'creates custom field options from areas', :aggregate_failures do
       expect(domicile_field.options.count).to eq(Area.count + 1)

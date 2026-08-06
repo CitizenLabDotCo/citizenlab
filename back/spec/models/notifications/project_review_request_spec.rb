@@ -24,8 +24,9 @@ RSpec.describe Notifications::ProjectReviewRequest do
 
       context 'and project reviewers were configured' do
         let!(:folder) { create(:project_folder, projects: [project_review.project]) }
-        let!(:project_reviewers) { create_list(:admin, 2, :project_reviewer) }
         let!(:folder_moderator) { create(:project_folder_moderator, project_folders: [folder]) }
+
+        let_it_be(:project_reviewers, reload: true) { create_list(:admin, 2, :project_reviewer) }
 
         it 'creates a notification for all project reviewers and (relevant) folder managers' do
           recipients = project_reviewers.pluck(:id) << folder_moderator.id

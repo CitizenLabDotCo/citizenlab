@@ -15,9 +15,9 @@ RSpec.describe ParticipationMethod::Ideation do
 
   describe '#assign_defaults' do
     context 'when the proposed idea status is available' do
-      let!(:ideation_proposed) { create(:idea_status_proposed) }
-      let!(:proposals_proposed) { create(:proposals_status, code: 'proposed') }
-      let!(:initial_status) { create(:idea_status) }
+      let_it_be(:ideation_proposed, reload: true) { create(:idea_status_proposed) }
+      let_it_be(:proposals_proposed, reload: true) { create(:proposals_status, code: 'proposed') }
+      let_it_be(:initial_status, reload: true) { create(:idea_status) }
 
       it 'sets a default "proposed" idea_status if not set' do
         input = build(:idea, idea_status: nil)
@@ -54,7 +54,7 @@ RSpec.describe ParticipationMethod::Ideation do
         SettingsService.new.activate_feature!('flag_inappropriate_content')
       end
 
-      let!(:prescreening_status) { create(:idea_status_prescreening) }
+      let_it_be(:prescreening_status, reload: true) { create(:idea_status_prescreening) }
       let!(:proposed_status) { create(:idea_status_proposed) }
       let(:phase) { create(:phase, prescreening_mode: prescreening_mode, with_permissions: true) }
 
@@ -126,7 +126,7 @@ RSpec.describe ParticipationMethod::Ideation do
   end
 
   describe '#generate_slug' do
-    let(:input) { create(:idea) }
+    let_it_be(:input, reload: true) { create(:idea) }
 
     it 'sets and persists the slug of the input' do
       input.update_column :slug, nil

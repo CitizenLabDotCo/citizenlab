@@ -4,8 +4,11 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 context 'clave_unica verification' do
-  before do
+  before_all do
     @user = create(:user, first_name: 'Rudolphi', last_name: 'Raindeari')
+  end
+
+  before do
     @token = AuthToken::AuthToken.new(payload: @user.to_token_payload).token
     OmniAuth.config.test_mode = true
     OmniAuth.config.mock_auth[:clave_unica] = OmniAuth::AuthHash.new({
@@ -48,7 +51,6 @@ context 'clave_unica verification' do
         }
       }
     })
-
     configuration = AppConfiguration.instance
     settings = configuration.settings
     settings['id_config'] = {
@@ -161,7 +163,7 @@ context 'clave_unica verification' do
       follow_redirect!
     end
 
-    let!(:new_user) do
+    let_it_be(:new_user, reload: true) do
       User.order(created_at: :asc).last.tap do |user|
         expect(user).to have_attributes({ email: nil })
         expect_to_create_verified_and_identified_user(user)

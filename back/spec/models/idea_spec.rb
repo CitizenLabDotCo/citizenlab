@@ -661,7 +661,7 @@ RSpec.describe Idea do
   end
 
   describe 'anonymous participation' do
-    let(:author) { create(:user) }
+    let_it_be(:author, reload: true) { create(:user) }
 
     context 'ideas are not anonymous' do
       it 'has the same author hash for ideas in different projects when the author is the same' do

@@ -15,7 +15,7 @@ resource 'Taggings' do
     let(:analysis) { create(:analysis) }
     let(:analysis_id) { analysis.id }
     let!(:taggings) { create_list(:tagging, 3, tag: create(:tag, analysis: analysis)) }
-    let!(:other_tagging) { create(:tag) }
+    let_it_be(:other_tagging, reload: true) { create(:tag) }
 
     example_request 'List all taggings' do
       expect(status).to eq(200)

@@ -70,7 +70,7 @@ RSpec.describe EmailCampaigns::SurveySubmittedMailer do
     end
 
     context 'with custom text' do
-      let!(:global_campaign) do
+      let_it_be(:global_campaign, reload: true) do
         create(
           :survey_submitted_campaign,
           subject_multiloc: { 'en' => 'Custom Global Subject - {{ organizationName }}' },
@@ -78,7 +78,7 @@ RSpec.describe EmailCampaigns::SurveySubmittedMailer do
           button_text_multiloc: { 'en' => 'CLICK THE GLOBAL BUTTON' }
         )
       end
-      let!(:context_campaign) do
+      let_it_be(:context_campaign, reload: true) do
         create(
           :survey_submitted_campaign,
           context: input.creation_phase,

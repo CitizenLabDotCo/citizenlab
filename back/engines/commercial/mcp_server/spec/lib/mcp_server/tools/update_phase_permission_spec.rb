@@ -121,7 +121,7 @@ describe McpServer::Tools::UpdatePhasePermission do
     end
 
     describe 'demographic_questions' do
-      let!(:existing_field) { create(:custom_field) }
+      let_it_be(:existing_field, reload: true) { create(:custom_field) }
 
       before do
         permission.update!(global_custom_fields: false)

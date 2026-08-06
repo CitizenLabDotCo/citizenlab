@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
-  let(:project) { create(:single_phase_ideation_project) }
-  let(:service) { described_class.new create(:admin), 'en', project.phases.first&.id, false }
-  let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
+  let_it_be(:project, reload: true) { create(:single_phase_ideation_project) }
+  let_it_be(:service, reload: true) { described_class.new create(:admin), 'en', project.phases.first&.id, false }
+  let_it_be(:custom_form, reload: true) { create(:custom_form, :with_default_fields, participation_context: project) }
 
   before do
     # Topics for project
@@ -87,8 +87,9 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
         }
       ]
     end
-    let!(:import_file) { create(:idea_import_file) }
     let(:rows) { service.ideas_to_idea_rows(xlsx_ideas_array, import_file) }
+
+    let_it_be(:import_file, reload: true) { create(:idea_import_file) }
 
     it 'converts parsed XLSX core fields into idea rows' do
       expect(rows[0]).to include({

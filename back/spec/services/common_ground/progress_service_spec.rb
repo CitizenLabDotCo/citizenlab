@@ -7,7 +7,7 @@ describe CommonGround::ProgressService do
 
   describe '#initialize' do
     context 'when phase is not a common ground phase' do
-      let(:phase) { create(:information_phase) }
+      let_it_be(:phase, reload: true) { create(:information_phase) }
 
       it 'raises error when phase is not a common ground phase' do
         expect { service }

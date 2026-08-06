@@ -6,8 +6,8 @@ describe SideFxFileService do
   let(:service) { described_class.new }
 
   describe 'after_destroy' do
-    let(:idea) { create(:idea) }
-    let(:idea_file) { create(:idea_file, idea: idea) }
+    let_it_be(:idea, reload: true) { create(:idea) }
+    let_it_be(:idea_file, reload: true) { create(:idea_file, idea: idea) }
 
     it 'removes the file reference from the idea custom field values' do
       idea.update!(

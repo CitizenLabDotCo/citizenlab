@@ -4,13 +4,14 @@ require 'rails_helper'
 
 describe CustomFields::Options::DestroyService do
   let(:service) { described_class.new }
-  let(:current_user) { create(:user) }
+
+  let_it_be(:current_user, reload: true) { create(:user) }
 
   describe '#destroy!' do
     context 'when deleting a custom-form field option that has the same key as a user field option' do
-      let(:custom_field) { create(:custom_field, :for_custom_form, input_type: 'select') }
-      let(:option) { create(:custom_field_option, custom_field: custom_field, key: 'same-option-key') }
-      let!(:user) { create(:user, custom_field_values: { custom_field.key => 'same-option-key' }) }
+      let_it_be(:custom_field, reload: true) { create(:custom_field, :for_custom_form, input_type: 'select') }
+      let_it_be(:option, reload: true) { create(:custom_field_option, custom_field: custom_field, key: 'same-option-key') }
+      let_it_be(:user, reload: true) { create(:user, custom_field_values: { custom_field.key => 'same-option-key' }) }
 
       it 'does not update the custom field value of users' do
         service.destroy!(option, current_user)
@@ -19,11 +20,11 @@ describe CustomFields::Options::DestroyService do
     end
 
     context 'when custom field option that is a survey logic option is destroyed' do
-      let(:custom_field1) { create(:custom_field, :for_custom_form, input_type: 'select') }
-      let(:custom_field2) { create(:custom_field, :for_custom_form, input_type: 'page', page_layout: 'default') }
-      let(:custom_field3) { create(:custom_field, :for_custom_form, input_type: 'page', page_layout: 'default') }
-      let(:option1) { create(:custom_field_option, custom_field: custom_field1, key: 'option_1') }
-      let(:option2) { create(:custom_field_option, custom_field: custom_field1, key: 'option_2') }
+      let_it_be(:custom_field1, reload: true) { create(:custom_field, :for_custom_form, input_type: 'select') }
+      let_it_be(:custom_field2, reload: true) { create(:custom_field, :for_custom_form, input_type: 'page', page_layout: 'default') }
+      let_it_be(:custom_field3, reload: true) { create(:custom_field, :for_custom_form, input_type: 'page', page_layout: 'default') }
+      let_it_be(:option1, reload: true) { create(:custom_field_option, custom_field: custom_field1, key: 'option_1') }
+      let_it_be(:option2, reload: true) { create(:custom_field_option, custom_field: custom_field1, key: 'option_2') }
       let(:logic) do
         { rules: [
           { if: option1.id, goto_page_id: custom_field2.id },
@@ -44,9 +45,9 @@ describe CustomFields::Options::DestroyService do
     end
 
     context 'when deleting a ranking custom-form field option' do
-      let(:ranking_cf) { create(:custom_field_ranking, :with_options, :for_custom_form) }
-      let(:another_cf) { create(:custom_field_select, :with_options, :for_custom_form) }
-      let!(:idea) do
+      let_it_be(:ranking_cf, reload: true) { create(:custom_field_ranking, :with_options, :for_custom_form) }
+      let_it_be(:another_cf, reload: true) { create(:custom_field_select, :with_options, :for_custom_form) }
+      let_it_be(:idea, reload: true) do
         create(:idea, custom_field_values: {
           ranking_cf.key => ranking_cf.options.map(&:key),
           another_cf.key => another_cf.options.first.key

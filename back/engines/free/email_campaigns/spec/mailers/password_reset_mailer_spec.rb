@@ -7,10 +7,11 @@ RSpec.describe EmailCampaigns::PasswordResetMailer do
     let_it_be(:recipient) { create(:user, locale: 'en') }
 
     let(:url) { 'https://demo.stg.govocal.com/en/reset-password?token=abc123' }
-    let(:campaign) { create(:password_reset_campaign) }
     let(:command) { { recipient: recipient, event_payload: { password_reset_url: url } } }
     let(:mailer) { described_class.with(command: command, campaign: campaign) }
     let(:mail) { mailer.campaign_mail.deliver_now }
+
+    let_it_be(:campaign, reload: true) { create(:password_reset_campaign) }
 
     before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 

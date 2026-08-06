@@ -61,8 +61,8 @@ RSpec.describe UserCustomFields::Representativeness::CategoricalDistribution do
   describe '#compute_rscore' do
     subject(:r_score) { ref_distribution.compute_rscore(users) }
 
-    let(:ref_distribution) { create(:categorical_distribution, population_counts: [100, 200]) }
-    let(:users) do
+    let_it_be(:ref_distribution, reload: true) { create(:categorical_distribution, population_counts: [100, 200]) }
+    let_it_be(:users, reload: true) do
       custom_field = ref_distribution.custom_field
       users = custom_field.options.map do |option|
         create(:user, custom_field_values: { custom_field.key => option.key })

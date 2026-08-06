@@ -6,10 +6,11 @@ RSpec.describe ToxicityDetectionJob do
   let(:service) do
     stub_toxicity_detection!(FlagInappropriateContent::ToxicityDetectionService.new)
   end
-  let!(:idea_proposed_status) { create(:idea_status_proposed) }
-  let!(:idea_prescreening_status) { create(:idea_status_prescreening) }
-  let!(:proposal_proposed_status) { create(:proposals_status, :proposed) }
-  let!(:proposal_prescreening_status) { create(:proposal_status_prescreening) }
+
+  let_it_be(:idea_proposed_status, reload: true) { create(:idea_status_proposed) }
+  let_it_be(:idea_prescreening_status, reload: true) { create(:idea_status_prescreening) }
+  let_it_be(:proposal_proposed_status, reload: true) { create(:proposals_status, :proposed) }
+  let_it_be(:proposal_prescreening_status, reload: true) { create(:proposal_status_prescreening) }
 
   def stub_toxicity_detection!(service)
     allow(service).to receive(:classify_toxicity) do |text|

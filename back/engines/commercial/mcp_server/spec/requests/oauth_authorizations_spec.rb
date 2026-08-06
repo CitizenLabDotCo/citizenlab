@@ -6,8 +6,8 @@ require 'rails_helper'
 # Doorkeeper's HTML authorize screen. See
 # McpServer::WebApi::V1::OauthAuthorizationsController.
 describe McpServer::WebApi::V1::OauthAuthorizationsController do
-  let(:user) { create(:admin) }
-  let(:application) do
+  let_it_be(:user, reload: true) { create(:admin) }
+  let_it_be(:application, reload: true) do
     Doorkeeper::Application.create!(
       name: 'Test MCP Client',
       redirect_uri: 'https://client.example.com/oauth/callback',

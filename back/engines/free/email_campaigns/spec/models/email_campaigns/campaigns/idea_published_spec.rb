@@ -10,8 +10,8 @@ RSpec.describe EmailCampaigns::Campaigns::IdeaPublished do
   end
 
   describe '#generate_commands' do
-    let(:campaign) { create(:idea_published_campaign) }
-    let(:user) { create(:user) }
+    let_it_be(:campaign, reload: true) { create(:idea_published_campaign) }
+    let_it_be(:user, reload: true) { create(:user) }
     let(:idea) { create(:idea, author: user) }
     let(:activity) { create(:activity, item: idea, action: 'published', user: user) }
 
@@ -41,7 +41,7 @@ RSpec.describe EmailCampaigns::Campaigns::IdeaPublished do
   end
 
   describe 'send_on_activity' do
-    let!(:global_campaign) { create(:idea_published_campaign) }
+    let_it_be(:global_campaign, reload: true) { create(:idea_published_campaign) }
     let!(:context_campaign) { create(:idea_published_campaign, context: create(:phase)) }
     let(:service) { EmailCampaigns::DeliveryService.new }
     let(:phase) { create(:ideation_phase, :ongoing) }

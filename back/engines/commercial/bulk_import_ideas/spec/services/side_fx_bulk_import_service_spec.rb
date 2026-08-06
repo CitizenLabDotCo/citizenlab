@@ -4,10 +4,11 @@ require 'rails_helper'
 
 describe BulkImportIdeas::SideFxBulkImportService do
   let(:service) { described_class.new }
-  let(:current_user) { create(:user) }
-  let(:ideas) { create_list(:idea, 3) }
-  let(:users) { create_list(:user, 2) }
-  let(:phase) { create(:phase) }
+
+  let_it_be(:current_user, reload: true) { create(:user) }
+  let_it_be(:ideas, reload: true) { create_list(:idea, 3) }
+  let_it_be(:users, reload: true) { create_list(:user, 2) }
+  let_it_be(:phase, reload: true) { create(:phase) }
 
   describe 'after_success' do
     it "logs a 'successful' action job with stats against a phase" do

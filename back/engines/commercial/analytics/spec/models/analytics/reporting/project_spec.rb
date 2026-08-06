@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Analytics::Reporting::Project do
   subject(:row) { described_class.find(project.id) }
 
-  let!(:project) { create(:project, title_multiloc: { 'en' => 'Park renewal', 'nl-BE' => 'Parkvernieuwing' }) }
+  let_it_be(:project, reload: true) { create(:project, title_multiloc: { 'en' => 'Park renewal', 'nl-BE' => 'Parkvernieuwing' }) }
 
   describe 'title' do
     it 'resolves to the tenant primary locale' do

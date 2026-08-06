@@ -4,8 +4,9 @@ require 'rails_helper'
 
 describe SideFxEventService do
   let(:service) { described_class.new }
-  let(:user) { create(:user) }
-  let(:event) { create(:event) }
+
+  let_it_be(:user, reload: true) { create(:user) }
+  let_it_be(:event, reload: true) { create(:event) }
 
   describe 'after_create' do
     it "logs a 'created' action when a event is created" do

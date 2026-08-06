@@ -7,10 +7,10 @@ describe Volunteering::CausePolicy do
 
   let(:scope) { described_class::Scope.new(user, Volunteering::Cause) }
 
-  let!(:space) { create(:space) }
-  let!(:project) { create(:single_phase_volunteering_project, space: space) }
-  let!(:folder) { create(:project_folder, projects: [project], space: space) }
-  let!(:cause) { create(:cause, phase: project.phases.first) }
+  let_it_be(:space, reload: true) { create(:space) }
+  let_it_be(:project, reload: true) { create(:single_phase_volunteering_project, space: space) }
+  let_it_be(:folder, reload: true) { create(:project_folder, projects: [project], space: space) }
+  let_it_be(:cause, reload: true) { create(:cause, phase: project.phases.first) }
 
   shared_examples 'can moderate the cause' do
     it { is_expected.to permit(:show)    }

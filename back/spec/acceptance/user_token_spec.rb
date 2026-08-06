@@ -167,7 +167,7 @@ resource 'User Token' do
       end
 
       context 'with claim_tokens' do
-        let!(:claim_token) { create(:claim_token) }
+        let_it_be(:claim_token, reload: true) { create(:claim_token) }
         let(:idea) { claim_token.item }
         let(:claim_tokens) { [claim_token.token] }
 

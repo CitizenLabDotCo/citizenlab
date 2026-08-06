@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe SmartGroups::Rules::ParticipatedInIdeaStatus do
-  let(:valid_json_rule) do
+  let_it_be(:valid_json_rule, reload: true) do
     {
       'ruleType' => 'participated_in_idea_status',
       'predicate' => 'in',
@@ -122,14 +122,14 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
   end
 
   describe 'description_multiloc' do
-    let(:garbage_status) do
+    let_it_be(:garbage_status, reload: true) do
       create(:idea_status, title_multiloc: {
         'en' => 'in the garbage can',
         'fr-FR' => 'dans la poubelle',
         'nl-NL' => 'in de prullenmand'
       })
     end
-    let(:delayed_status) do
+    let_it_be(:delayed_status, reload: true) do
       create(:idea_status, title_multiloc: {
         'en' => 'delayed',
         'fr-FR' => 'retardé',

@@ -38,9 +38,9 @@ RSpec.describe Webhooks::Delivery do
       allow(Resolv).to receive(:getaddresses).with(a_string_matching(/webhook.example.com.*/)).and_return(['93.184.216.34'])
     end
 
-    let!(:pending) { create(:webhook_delivery, status: 'pending') }
-    let!(:succeeded) { create(:webhook_delivery, :succeeded) }
-    let!(:failed) { create(:webhook_delivery, :failed) }
+    let_it_be(:pending, reload: true) { create(:webhook_delivery, status: 'pending') }
+    let_it_be(:succeeded, reload: true) { create(:webhook_delivery, :succeeded) }
+    let_it_be(:failed, reload: true) { create(:webhook_delivery, :failed) }
 
     describe '.pending' do
       it 'returns only pending deliveries' do

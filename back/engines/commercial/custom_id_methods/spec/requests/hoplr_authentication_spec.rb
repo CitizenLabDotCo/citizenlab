@@ -136,7 +136,7 @@ context 'hoplr authentication' do
   end
 
   context 'when user already exists' do
-    let!(:user) { create(:user, email: 'developers+sso@citizenlab.co') }
+    let_it_be(:user, reload: true) { create(:user, email: 'developers+sso@citizenlab.co') }
 
     it 'does not update existing user' do
       get '/auth/hoplr'

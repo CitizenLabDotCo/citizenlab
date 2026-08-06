@@ -338,8 +338,11 @@ resource 'Map Configs' do
   end
 
   context 'when logged in as a project moderator' do
+    before_all do
+      create(:project)
+    end
+
     before do
-      project = create(:project)
       header_token_for(create(:user, roles: [{ 'type' => 'project_moderator', 'project_id' => project.id }]))
     end
 

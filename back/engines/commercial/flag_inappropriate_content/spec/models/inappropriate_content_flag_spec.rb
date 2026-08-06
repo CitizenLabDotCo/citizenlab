@@ -16,12 +16,12 @@ RSpec.describe FlagInappropriateContent::InappropriateContentFlag do
   end
 
   describe '#generate_commands' do
-    let(:author) { create(:user, first_name: 'Biggus', last_name: 'Dickus') }
-    let(:idea) { create(:idea, title_multiloc: { 'en' => 'Flagged idea' }, body_multiloc: { 'en' => 'This is a flagged idea.' }, author:, slug: 'flagged-idea') }
-    let(:flag) { create(:inappropriate_content_flag, flaggable: idea) }
-    let(:campaign) { create(:inappropriate_content_flagged_campaign) }
-    let(:notification) { create(:inappropriate_content_flagged, inappropriate_content_flag: flag) }
-    let(:notification_activity) { create(:activity, item: notification, action: 'created') }
+    let_it_be(:author, reload: true) { create(:user, first_name: 'Biggus', last_name: 'Dickus') }
+    let_it_be(:idea, reload: true) { create(:idea, title_multiloc: { 'en' => 'Flagged idea' }, body_multiloc: { 'en' => 'This is a flagged idea.' }, author:, slug: 'flagged-idea') }
+    let_it_be(:flag, reload: true) { create(:inappropriate_content_flag, flaggable: idea) }
+    let_it_be(:campaign, reload: true) { create(:inappropriate_content_flagged_campaign) }
+    let_it_be(:notification, reload: true) { create(:inappropriate_content_flagged, inappropriate_content_flag: flag) }
+    let_it_be(:notification_activity, reload: true) { create(:activity, item: notification, action: 'created') }
 
     it 'generates a command with the desired payload and tracked content' do
       command = campaign.generate_commands(

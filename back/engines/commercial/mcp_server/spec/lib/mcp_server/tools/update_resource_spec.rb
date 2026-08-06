@@ -3,10 +3,10 @@
 require 'rails_helper'
 
 describe McpServer::Tools::UpdateResource do
-  let(:current_user) { create(:super_admin) }
-  let(:project) { create(:project, :draft) }
-  let(:phase) { create(:volunteering_phase, project: project) }
-  let(:cause) { create(:cause, phase: phase) }
+  let_it_be(:current_user, reload: true) { create(:super_admin) }
+  let_it_be(:project, reload: true) { create(:project, :draft) }
+  let_it_be(:phase, reload: true) { create(:volunteering_phase, project: project) }
+  let_it_be(:cause, reload: true) { create(:cause, phase: phase) }
 
   def run(params)
     run_mcp_tool(described_class, params:, current_user:)

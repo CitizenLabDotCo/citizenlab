@@ -6,7 +6,7 @@ RSpec.describe EmailCampaigns::UserBlockedMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en', block_end_at: 5.days.from_now) }
 
-    let(:campaign) { create(:user_blocked_campaign) }
+    let_it_be(:campaign, reload: true) { create(:user_blocked_campaign) }
     let(:command) { { recipient: recipient, event_payload: {} } }
     let(:mailer) { described_class.with(command: command, campaign: campaign) }
     let(:mail) { mailer.campaign_mail.deliver_now }

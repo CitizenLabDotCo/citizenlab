@@ -11,7 +11,7 @@ resource 'Mailgun Events' do
   end
 
   post 'hooks/mailgun_events' do
-    let(:delivery) { create(:delivery) }
+    let_it_be(:delivery, reload: true) { create(:delivery) }
     let(:signature) { '19317083e86d1be8e76337d3c92fd637279386a6a8cbfe3a8826915570599a9d' }
     let(:delivery_id) { delivery.id }
 

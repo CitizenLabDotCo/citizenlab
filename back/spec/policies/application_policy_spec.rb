@@ -57,8 +57,9 @@ describe ApplicationPolicy do
 
   describe '#owner?' do
     let(:record_class) { Struct.new(:user_id) }
-    let(:user) { create(:user) }
     let(:record) { record_class.new(user.id) }
+
+    let_it_be(:user, reload: true) { create(:user) }
 
     it 'is true when the record belongs to the user' do
       expect(described_class.new(user, record).send(:owner?)).to be true
@@ -75,9 +76,9 @@ describe ApplicationPolicy do
   end
 
   describe '#can_moderate?' do
-    let!(:space) { create(:space) }
-    let!(:project) { create(:project, space: space) }
-    let!(:folder) { create(:project_folder, projects: [project], space: space) }
+    let_it_be(:space, reload: true) { create(:space) }
+    let_it_be(:project, reload: true) { create(:project, space: space) }
+    let_it_be(:folder, reload: true) { create(:project_folder, projects: [project], space: space) }
 
     it 'is falsey for a nil user' do
       expect(described_class.new(nil, project).send(:can_moderate?)).to be_falsey

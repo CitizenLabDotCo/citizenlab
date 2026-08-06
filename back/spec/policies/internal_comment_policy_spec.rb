@@ -63,7 +63,7 @@ describe InternalCommentPolicy do
   end
 
   context 'on internal comment by a moderator on idea in a public project' do
-    let!(:space) { create(:space) }
+    let_it_be(:space, reload: true) { create(:space) }
     let(:project) { create(:single_phase_ideation_project, space: space) }
     let!(:folder) { create(:project_folder, projects: [project], space: space) }
     let(:idea) { create(:idea, project: project) }

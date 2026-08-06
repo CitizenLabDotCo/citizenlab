@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe SmartGroups::Rules::EventAttendance do
   describe '.from_json' do
-    let(:event_ids) { create_list(:event, 2).map(&:id) }
+    let_it_be(:event_ids, reload: true) { create_list(:event, 2).map(&:id) }
     let(:json_rule) do
       {
         'ruleType' => 'event_attendances',

@@ -7,7 +7,7 @@ resource 'InputTopics' do
   explanation 'Input topics are project-specific tags for categorizing inputs'
   header 'Content-Type', 'application/json'
 
-  let(:project) { create(:project) }
+  let_it_be(:project, reload: true) { create(:project) }
   let(:project_id) { project.id }
 
   get 'web_api/v1/projects/:project_id/input_topics' do
@@ -219,7 +219,7 @@ resource 'InputTopics' do
   end
 
   context 'when project moderator' do
-    let(:moderator) { create(:project_moderator, projects: [project]) }
+    let_it_be(:moderator, reload: true) { create(:project_moderator, projects: [project]) }
 
     before { header_token_for moderator }
 
@@ -267,7 +267,7 @@ resource 'InputTopics' do
     end
 
     context 'for a different project' do
-      let(:other_project) { create(:project) }
+      let_it_be(:other_project, reload: true) { create(:project) }
       let(:other_project_id) { other_project.id }
 
       post 'web_api/v1/projects/:project_id/input_topics' do

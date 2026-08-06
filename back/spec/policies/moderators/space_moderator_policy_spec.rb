@@ -3,8 +3,8 @@ require 'rails_helper'
 describe Moderators::SpaceModeratorPolicy do
   subject { described_class.new(user, space) }
 
-  let!(:space) { create(:space) }
-  let!(:other_space) { create(:space) }
+  let_it_be(:space, reload: true) { create(:space) }
+  let_it_be(:other_space, reload: true) { create(:space) }
 
   shared_examples 'all actions not permitted' do
     it { is_expected.not_to permit(:index) }
@@ -39,14 +39,14 @@ describe Moderators::SpaceModeratorPolicy do
   end
 
   context 'for a folder moderator (of folder in space)' do
-    let(:folder) { create(:project_folder, space: space) }
+    let_it_be(:folder, reload: true) { create(:project_folder, space: space) }
     let(:user) { create(:user, roles: [{ type: 'project_folder_moderator', project_folder_id: folder.id }]) }
 
     it_behaves_like 'all actions not permitted'
   end
 
   context 'for a project moderator (of project in space)' do
-    let(:project) { create(:project, space: space) }
+    let_it_be(:project, reload: true) { create(:project, space: space) }
     let(:user) { create(:user, roles: [{ type: 'project_moderator', project_id: project.id }]) }
 
     it_behaves_like 'all actions not permitted'

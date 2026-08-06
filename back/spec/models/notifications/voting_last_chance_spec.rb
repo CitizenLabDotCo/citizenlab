@@ -4,12 +4,12 @@ require 'rails_helper'
 
 RSpec.describe Notifications::VotingLastChance do
   describe 'make_notifications_on' do
-    let(:participant) { create(:user) }
+    let_it_be(:participant, reload: true) { create(:user) }
 
     context 'when the phase is a voting phase' do
-      let(:phase) { create(:budgeting_phase, start_at: 1.month.ago, end_at: 2.days.from_now) }
-      let!(:idea) { create(:idea, project_id: phase.project.id, author_id: participant.id) }
-      let(:activity) { create(:activity, item: phase, action: 'ending_soon') }
+      let_it_be(:phase, reload: true) { create(:budgeting_phase, start_at: 1.month.ago, end_at: 2.days.from_now) }
+      let_it_be(:idea, reload: true) { create(:idea, project_id: phase.project.id, author_id: participant.id) }
+      let_it_be(:activity, reload: true) { create(:activity, item: phase, action: 'ending_soon') }
 
       it 'makes a notification when a voting phase is ending soon' do
         notifications = described_class.make_notifications_on activity

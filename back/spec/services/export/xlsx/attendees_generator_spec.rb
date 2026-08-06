@@ -6,7 +6,7 @@ describe Export::Xlsx::AttendeesGenerator do
   let(:service) { described_class.new }
 
   describe 'generate_attendees_xlsx' do
-    let(:users) { create_list(:user, 5) }
+    let_it_be(:users, reload: true) { create_list(:user, 5) }
     let(:xlsx) { service.generate_attendees_xlsx(users, view_private_attributes: true) }
     let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
     let(:worksheet) { workbook.worksheets[0] }

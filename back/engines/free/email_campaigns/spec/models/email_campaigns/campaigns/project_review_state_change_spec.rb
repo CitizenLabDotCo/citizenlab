@@ -10,9 +10,9 @@ RSpec.describe EmailCampaigns::Campaigns::ProjectReviewStateChange do
   end
 
   describe '#generate_commands' do
-    let(:campaign) { create(:project_review_state_change_campaign) }
-    let(:notification) { create(:project_review_state_change) }
-    let(:activity) { create(:activity, item: notification, action: 'created') }
+    let_it_be(:campaign, reload: true) { create(:project_review_state_change_campaign) }
+    let_it_be(:notification, reload: true) { create(:project_review_state_change) }
+    let_it_be(:activity, reload: true) { create(:activity, item: notification, action: 'created') }
 
     it 'generates the correct commands' do
       commands = campaign.generate_commands(

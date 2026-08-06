@@ -11,9 +11,10 @@ describe 'rake fix_existing_tenants' do
     before { create(:idea_status_proposed) }
 
     let(:task_name) { 'fix_existing_tenants:remove_assignees_from_survey_responses' }
-    let(:assignee) { create(:admin) }
-    let!(:idea1) { create(:native_survey_response, assignee_id: assignee.id, assigned_at: Time.zone.now) }
-    let!(:idea2) { create(:idea, assignee_id: assignee.id, assigned_at: Time.zone.now) }
+
+    let_it_be(:assignee, reload: true) { create(:admin) }
+    let_it_be(:idea1, reload: true) { create(:native_survey_response, assignee_id: assignee.id, assigned_at: Time.zone.now) }
+    let_it_be(:idea2, reload: true) { create(:idea, assignee_id: assignee.id, assigned_at: Time.zone.now) }
 
     it 'only updates ideas that are native survey responses' do
       task.execute

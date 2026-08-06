@@ -4,8 +4,9 @@ require 'rails_helper'
 
 describe CommunityMonitorService do
   let(:service) { described_class.new }
-  let!(:project) { create(:community_monitor_project) }
   let(:current_user) { create(:admin) }
+
+  let_it_be(:project, reload: true) { create(:community_monitor_project) }
 
   describe '#enabled?' do
     context 'when feature is enabled' do
@@ -145,7 +146,7 @@ describe CommunityMonitorService do
     end
 
     context 'when there is an existing previous quarter report' do
-      let!(:existing_report) { create(:report, phase: project.phases.first, year: 2025, quarter: 2) }
+      let_it_be(:existing_report, reload: true) { create(:report, phase: project.phases.first, year: 2025, quarter: 2) }
 
       it 'returns the existing report' do
         report = service.find_or_create_previous_quarter_report

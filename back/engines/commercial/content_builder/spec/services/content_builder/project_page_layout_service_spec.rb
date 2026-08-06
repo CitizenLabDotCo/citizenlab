@@ -248,7 +248,7 @@ describe ContentBuilder::ProjectPageLayoutService do
   end
 
   describe '#append_file_nodes' do
-    let(:project) { create(:project) }
+    let_it_be(:project, reload: true) { create(:project) }
 
     def attach_file(project, position)
       file = create(:file, projects: [project])

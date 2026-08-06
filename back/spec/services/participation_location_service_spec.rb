@@ -54,8 +54,8 @@ RSpec.describe ParticipationLocationService do
   end
 
   describe '.track' do
-    let(:project) { create(:project, track_participation_location: true) }
-    let(:idea) { create(:idea, project: project) }
+    let_it_be(:project, reload: true) { create(:project, track_participation_location: true) }
+    let_it_be(:idea, reload: true) { create(:idea, project: project) }
     let(:location_attrs) do
       {
         country_code: 'BE',

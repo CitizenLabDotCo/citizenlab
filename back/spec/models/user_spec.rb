@@ -658,7 +658,7 @@ RSpec.describe User do
   end
 
   describe 'demographic fields' do
-    before do
+    before_all do
       create(:custom_field_birthyear)
       create(:custom_field_gender, :with_options)
       create(:custom_field_domicile)
@@ -1132,8 +1132,8 @@ RSpec.describe User do
   end
 
   describe 'groups and group_ids' do
-    let!(:manual_group) { create(:group) }
-    let!(:group) { create(:group) }
+    let_it_be(:manual_group, reload: true) { create(:group) }
+    let_it_be(:group, reload: true) { create(:group) }
 
     let(:user) { create(:user, manual_groups: [manual_group, group]) }
 

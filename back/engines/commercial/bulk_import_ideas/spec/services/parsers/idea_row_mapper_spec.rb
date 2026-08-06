@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe BulkImportIdeas::Parsers::IdeaRowMapper do
-  let(:project) { create(:single_phase_ideation_project) }
+  let_it_be(:project, reload: true) { create(:single_phase_ideation_project) }
   let(:phase) { project.phases.first }
   let(:mapper) { described_class.new(phase: phase, project: project, locale: 'en', personal_data_enabled: false) }
 

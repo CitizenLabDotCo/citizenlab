@@ -11,8 +11,9 @@ RSpec.describe EmailBan do
 
   describe '.ban!' do
     let(:email) { 'test.user+tag@gmail.com' }
-    let(:admin) { create(:admin) }
     let(:reason) { 'Spam account' }
+
+    let_it_be(:admin, reload: true) { create(:admin) }
 
     it 'creates an email ban with hashed normalized email' do
       ban = described_class.ban!(email, reason: reason, banned_by: admin)

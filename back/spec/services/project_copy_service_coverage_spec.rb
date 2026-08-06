@@ -23,10 +23,21 @@ require 'rails_helper'
 #      for every new model).
 describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/DescribeClass
   let(:service_path) { Rails.root.join('app/services/project_copy_service.rb') }
+  let(:excluded_model_names) { excluded_models.values.flatten.to_set.freeze }
+  # Cache/derived columns excluded from coverage checks across all models. A
+  # leading `*` is a suffix glob (`*_count` matches any column ending in
+  # `_count`); other entries are exact column names. Centralized so every
+  # name-based "regenerated cache, never content" rule is visible in one place.
+  let(:ignored_cache_columns) do
+    %w[
+      *_count
+      weglot_data
+    ].freeze
+  end
 
   # Real (non-derived) columns that are intentionally NOT carried over by
   # ProjectCopyService#export, keyed by model name.
-  let(:ignored_columns) do
+  let_it_be(:ignored_columns, reload: true) do
     {
       # AdminPublication is exported as nested `admin_publication_attributes` on
       # Project, with only `publication_status` (the rest is either derived
@@ -88,7 +99,7 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
 
   # Persisted models that intentionally have no `yml_<x>` method in ProjectCopyService,
   # keyed by reason.
-  let(:excluded_models) do
+  let_it_be(:excluded_models, reload: true) do
     {
       # The tenant itself and its global configuration — not project content.
       tenant_infrastructure: %w[
@@ -304,18 +315,6 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
         TextImage
       ]
     }.freeze
-  end
-  let(:excluded_model_names) { excluded_models.values.flatten.to_set.freeze }
-
-  # Cache/derived columns excluded from coverage checks across all models. A
-  # leading `*` is a suffix glob (`*_count` matches any column ending in
-  # `_count`); other entries are exact column names. Centralized so every
-  # name-based "regenerated cache, never content" rule is visible in one place.
-  let(:ignored_cache_columns) do
-    %w[
-      *_count
-      weglot_data
-    ].freeze
   end
 
   def cache_columns_for(model)

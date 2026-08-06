@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe PublicApi::PublicApiController do
-  let(:api_client) { PublicApi::ApiClient.create }
+  let_it_be(:api_client, reload: true) { PublicApi::ApiClient.create }
   let(:jwt_token) { AuthToken::AuthToken.new(payload: api_client.to_token_payload).token }
   let(:headers) { { 'Authorization' => "Bearer #{jwt_token}" } }
 

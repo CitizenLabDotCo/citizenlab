@@ -98,9 +98,9 @@ RSpec.describe Group do
   end
 
   describe 'a smart group with many rules' do
-    let(:custom_field) { create(:custom_field_select) }
-    let(:options) { create_list(:custom_field_option, 3, custom_field: custom_field) }
-    let!(:group) do
+    let_it_be(:custom_field, reload: true) { create(:custom_field_select) }
+    let_it_be(:options, reload: true) { create_list(:custom_field_option, 3, custom_field: custom_field) }
+    let_it_be(:group, reload: true) do
       create(:smart_group, rules: [
         { ruleType: 'custom_field_select', customFieldId: custom_field.id, predicate: 'has_value',
           value: options.first.id },
@@ -123,7 +123,7 @@ RSpec.describe Group do
         { ruleType: 'verified', predicate: 'not_is_verified' }
       ])
     end
-    let!(:user) { create(:user) }
+    let_it_be(:user, reload: true) { create(:user) }
 
     it 'still works' do
       expect { group.memberships_count }.not_to raise_error

@@ -26,7 +26,7 @@ resource 'Posts' do
   end
 
   # 2 surveys
-  let!(:survey_timeline) do
+  let_it_be(:survey_timeline, reload: true) do
     project = create(:project_with_active_native_survey_phase)
     create_list(
       :native_survey_response,
@@ -177,9 +177,9 @@ resource 'Posts' do
     end
 
     context 'when filtering by parent topic id' do
-      let(:project) { create(:project) }
-      let(:parent_topic) { create(:input_topic, project: project) }
-      let(:child_topic) { create(:input_topic, project: project, parent: parent_topic) }
+      let_it_be(:project, reload: true) { create(:project) }
+      let_it_be(:parent_topic, reload: true) { create(:input_topic, project: project) }
+      let_it_be(:child_topic, reload: true) { create(:input_topic, project: project, parent: parent_topic) }
       let!(:idea_with_child) { create(:idea, project: project, input_topics: [child_topic]) }
       let(:topic_ids) { [parent_topic.id] }
 
@@ -247,13 +247,13 @@ resource 'Posts' do
       parameter :phase_ids, 'Array of phase IDs to associate with the input', type: 'array', required: false
     end
 
-    before do
+    before_all do
       @project = create(:project_with_current_phase, current_phase_attrs: { participation_method: 'ideation' })
       create(:idea_status_proposed) # Ensure default status exists
     end
 
     let(:project_id) { @project.id }
-    let(:phase) { create(:phase, project:) }
+    let_it_be(:phase, reload: true) { create(:phase, project:) }
     let(:title_multiloc) { { 'en' => 'My great idea', 'nl-NL' => 'Mijn geweldige idee' } }
     let(:body_multiloc) { { 'en' => 'This is a detailed description of my idea', 'nl-NL' => 'Dit is een gedetailleerde beschrijving van mijn idee' } }
     let(:input_topic_ids) { create_list(:input_topic, 2, project: @project).map(&:id) }
@@ -295,8 +295,11 @@ resource 'Posts' do
       parameter :phase_ids, 'Array of phase IDs to associate with the input', type: 'array', required: false
     end
 
-    before do
+    before_all do
       @project = create(:project_with_current_phase, current_phase_attrs: { participation_method: 'ideation' })
+    end
+
+    before do
       @existing_idea = create(:idea,
         project: @project,
         title_multiloc: { 'en' => 'Original Title', 'nl-NL' => 'Oorspronkelijke Titel' },
@@ -369,7 +372,7 @@ resource 'Posts' do
     end
 
     context 'when updating the project_id' do
-      let(:other_project) { create(:project) }
+      let_it_be(:other_project, reload: true) { create(:project) }
 
       example 'Update idea with project_id has no effect' do
         original_project_id = @existing_idea.project_id

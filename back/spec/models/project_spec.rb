@@ -56,8 +56,8 @@ RSpec.describe Project do
   end
 
   describe 'space_must_match_folder_space validation' do
-    let(:space) { create(:space) }
-    let(:folder) { create(:project_folder, space: space) }
+    let_it_be(:space, reload: true) { create(:space) }
+    let_it_be(:folder, reload: true) { create(:project_folder, space: space) }
 
     it "[error] is invalid if not in its folder's space" do
       other_space = create(:space)

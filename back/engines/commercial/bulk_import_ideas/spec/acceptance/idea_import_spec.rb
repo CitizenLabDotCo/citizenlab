@@ -6,8 +6,11 @@ require 'rspec_api_documentation/dsl'
 resource 'BulkImportIdeasImportIdeas' do
   explanation 'Create many ideas at once by importing an XLSX sheet or a scanned PDF of multiple ideas.'
 
-  before do
+  before_all do
     create(:idea_status, code: 'proposed')
+  end
+
+  before do
     header 'Content-Type', 'application/json'
   end
 

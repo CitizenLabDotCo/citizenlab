@@ -8,6 +8,8 @@ RSpec.describe EmailCampaigns::EventRegistrationConfirmationMailer do
     let_it_be(:recipient) { create(:user, locale: 'en', first_name: 'Dave') }
 
     let(:event_attributes) { event.attributes }
+    let(:mailer) { described_class.with(command: command, campaign: campaign) }
+    let(:mail) { mailer.campaign_mail.deliver_now }
 
     let(:event_payload) do
       {
@@ -20,9 +22,8 @@ RSpec.describe EmailCampaigns::EventRegistrationConfirmationMailer do
     end
 
     let(:command) { { recipient: recipient, event_payload: event_payload } }
-    let(:campaign) { EmailCampaigns::Campaigns::EventRegistrationConfirmation.create! }
-    let(:mailer) { described_class.with(command: command, campaign: campaign) }
-    let(:mail) { mailer.campaign_mail.deliver_now }
+
+    let_it_be(:campaign, reload: true) { EmailCampaigns::Campaigns::EventRegistrationConfirmation.create! }
 
     include_examples 'campaign delivery tracking'
 

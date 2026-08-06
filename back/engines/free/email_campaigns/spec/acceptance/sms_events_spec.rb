@@ -46,9 +46,10 @@ resource 'SMS Events' do
 
     context 'when the callback carries no message SID' do
       let(:message_sid) { '' }
+
       # A still-pending delivery whose message_sid is NULL — the row a nil-SID
       # find_by would otherwise wrongly latch onto and mutate.
-      let!(:pending_delivery) { EmailCampaigns::Sms::Delivery.create!(body: 'hey', status: 'pending') }
+      let_it_be(:pending_delivery, reload: true) { EmailCampaigns::Sms::Delivery.create!(body: 'hey', status: 'pending') }
 
       example 'returns 400 and mutates no delivery' do
         do_request(callback_params)

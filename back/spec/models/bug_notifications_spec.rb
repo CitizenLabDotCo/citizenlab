@@ -4,14 +4,14 @@ require 'rails_helper'
 
 RSpec.describe Notification do
   describe 'Deleting stuff related to notifications works when' do
-    let!(:project) { create(:project) }
-    let!(:idea) { create(:idea, project: project) }
-    let!(:parent) { create(:comment, idea: idea) }
-    let!(:child) { create(:comment, parent: parent) }
-    let!(:initiator) { create(:user) }
-    let!(:recipient) { create(:user) }
-    let!(:spam_report) { create(:spam_report) }
-    let!(:notification) { create(:comment_marked_as_spam, project: project, idea: idea, comment: child, initiating_user: initiator, recipient: recipient, spam_report: spam_report) }
+    let_it_be(:project, reload: true) { create(:project) }
+    let_it_be(:idea, reload: true) { create(:idea, project: project) }
+    let_it_be(:parent, reload: true) { create(:comment, idea: idea) }
+    let_it_be(:child, reload: true) { create(:comment, parent: parent) }
+    let_it_be(:initiator, reload: true) { create(:user) }
+    let_it_be(:recipient, reload: true) { create(:user) }
+    let_it_be(:spam_report, reload: true) { create(:spam_report) }
+    let_it_be(:notification, reload: true) { create(:comment_marked_as_spam, project: project, idea: idea, comment: child, initiating_user: initiator, recipient: recipient, spam_report: spam_report) }
 
     it 'deleting recipient of notification' do
       recipient.destroy

@@ -7,7 +7,7 @@ class RecipientConfigurableCampaignForTest < EmailCampaigns::Campaign
 end
 
 RSpec.describe EmailCampaigns::RecipientConfigurable do
-  let(:campaign) { RecipientConfigurableCampaignForTest.create! }
+  let_it_be(:campaign, reload: true) { RecipientConfigurableCampaignForTest.create! }
 
   describe 'apply_recipient_filters' do
     it 'uniquely returns all members of all associated groups' do

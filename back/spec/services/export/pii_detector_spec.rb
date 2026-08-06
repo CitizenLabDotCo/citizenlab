@@ -6,14 +6,15 @@ describe Export::PiiDetector do
   subject(:detector) { described_class.new }
 
   let(:llm) { instance_double(Analysis::LLM::ClaudeHaiku45) }
-  let(:form) { create(:custom_form) }
+
+  let_it_be(:form, reload: true) { create(:custom_form) }
   # Form questions (resource_type 'CustomForm').
-  let(:name_field) { create(:custom_field, resource: form, key: 'q_name', title_multiloc: { 'en' => 'Your name' }) }
-  let(:colour_field) { create(:custom_field, resource: form, key: 'q_colour', title_multiloc: { 'en' => 'Favourite colour' }) }
+  let_it_be(:name_field, reload: true) { create(:custom_field, resource: form, key: 'q_name', title_multiloc: { 'en' => 'Your name' }) }
+  let_it_be(:colour_field, reload: true) { create(:custom_field, resource: form, key: 'q_colour', title_multiloc: { 'en' => 'Favourite colour' }) }
   # `custom_field` defaults to a registration (resource_type 'User') field.
-  let(:user_field) { create(:custom_field, key: 'residence') }
+  let_it_be(:user_field, reload: true) { create(:custom_field, key: 'residence') }
   # User field embedded in the form (key prefixed by UserFieldsInFormService).
-  let(:user_field_in_form) { create(:custom_field, resource: form, key: UserFieldsInFormService.prefix_key('gender')) }
+  let_it_be(:user_field_in_form, reload: true) { create(:custom_field, resource: form, key: UserFieldsInFormService.prefix_key('gender')) }
 
   before do
     allow_any_instance_of(LLMSelector).to receive(:llm_class_for_use_case)

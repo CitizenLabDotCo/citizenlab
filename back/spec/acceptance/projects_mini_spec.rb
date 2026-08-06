@@ -7,8 +7,11 @@ require 'rspec_api_documentation/dsl'
 resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help differentiate when/if tests fail
   explanation 'Projects can have phases which can be of different participation methods.'
 
-  before do
+  before_all do
     @user = create(:user, roles: [])
+  end
+
+  before do
     header_token_for @user
   end
 
@@ -20,24 +23,24 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       parameter :size, 'Number of projects per page'
     end
 
-    let!(:followed_project) { create(:project) }
-    let!(:_follower) { create(:follower, followable: followed_project, user: @user) }
+    let_it_be(:followed_project, reload: true) { create(:project) }
+    let_it_be(:_follower, reload: true) { create(:follower, followable: followed_project, user: @user) }
 
-    let!(:project_with_followed_idea) { create(:project) }
-    let!(:idea) { create(:idea, project: project_with_followed_idea) }
-    let!(:_follower2) { create(:follower, followable: idea, user: @user) }
+    let_it_be(:project_with_followed_idea, reload: true) { create(:project) }
+    let_it_be(:idea, reload: true) { create(:idea, project: project_with_followed_idea) }
+    let_it_be(:_follower2, reload: true) { create(:follower, followable: idea, user: @user) }
 
-    let!(:project_for_followed_area) { create(:project) }
-    let!(:area) { create(:area) }
-    let!(:_areas_project) { create(:areas_project, project: project_for_followed_area, area: area) }
-    let!(:_follower3) { create(:follower, followable: area, user: @user) }
+    let_it_be(:project_for_followed_area, reload: true) { create(:project) }
+    let_it_be(:area, reload: true) { create(:area) }
+    let_it_be(:_areas_project, reload: true) { create(:areas_project, project: project_for_followed_area, area: area) }
+    let_it_be(:_follower3, reload: true) { create(:follower, followable: area, user: @user) }
 
-    let!(:project_for_followed_topic) { create(:project) }
-    let!(:topic) { create(:global_topic) }
-    let!(:_projects_topic) { create(:projects_global_topic, project: project_for_followed_topic, global_topic: topic) }
-    let!(:_follower4) { create(:follower, followable: topic, user: @user) }
+    let_it_be(:project_for_followed_topic, reload: true) { create(:project) }
+    let_it_be(:topic, reload: true) { create(:global_topic) }
+    let_it_be(:_projects_topic, reload: true) { create(:projects_global_topic, project: project_for_followed_topic, global_topic: topic) }
+    let_it_be(:_follower4, reload: true) { create(:follower, followable: topic, user: @user) }
 
-    let!(:_unfollowed_project) { create(:project) }
+    let_it_be(:_unfollowed_project, reload: true) { create(:project) }
 
     example_request 'Includes projects for followed items, and not un-followed projects' do
       expect(status).to eq 200
@@ -77,10 +80,12 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
     end
 
     context 'when admin' do
-      before do
+      before_all do
         @user = create(:admin)
-        header_token_for @user
+      end
 
+      before do
+        header_token_for @user
         followed_project.update!(admin_publication_attributes: { publication_status: 'draft' })
         create(:follower, followable: followed_project, user: @user)
       end
@@ -98,12 +103,12 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       parameter :size, 'Number of projects per page'
     end
 
-    let!(:active_ideation_project) { create(:project_with_active_ideation_phase) }
-    let!(:endless_project) { create(:single_phase_ideation_project) }
+    let_it_be(:active_ideation_project, reload: true) { create(:project_with_active_ideation_phase) }
+    let_it_be(:endless_project, reload: true) { create(:single_phase_ideation_project) }
 
-    let!(:active_information_project) { create(:project_with_past_ideation_and_current_information_phase) }
-    let!(:past_project) { create(:project_with_two_past_ideation_phases) }
-    let!(:future_project) { create(:project_with_future_native_survey_phase) }
+    let_it_be(:active_information_project, reload: true) { create(:project_with_past_ideation_and_current_information_phase) }
+    let_it_be(:past_project, reload: true) { create(:project_with_two_past_ideation_phases) }
+    let_it_be(:future_project, reload: true) { create(:project_with_future_native_survey_phase) }
 
     example_request 'Lists only projects with an active participatory phase' do
       expect(status).to eq 200
@@ -223,10 +228,11 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
 
     context "when passed filter_by: 'finished'" do
       let!(:finished_project1) { create(:project_with_two_past_ideation_phases) }
-      let!(:_unfinished_project1) { create(:project_with_active_ideation_phase) }
       let!(:unfinished_project2) { create(:project) }
       let!(:phase) { create(:phase, project: unfinished_project2, start_at: 2.days.ago, end_at: 2.days.from_now) }
       let!(:_report) { create(:report, phase: phase, visible: true) }
+
+      let_it_be(:_unfinished_project1, reload: true) { create(:project_with_active_ideation_phase) }
 
       example 'Lists only projects with all phases finished or with a report in the last phase' do
         do_request filter_by: 'finished'
@@ -332,15 +338,15 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       parameter :areas, 'Array of area IDs', required: false
     end
 
-    let!(:area1) { create(:area) }
-    let!(:area2) { create(:area) }
-    let!(:project_with_areas) { create(:project_with_active_ideation_phase) }
-    let!(:_areas_project1) { create(:areas_project, project: project_with_areas, area: area1) }
-    let!(:_areas_project2) { create(:areas_project, project: project_with_areas, area: area2) }
+    let_it_be(:area1, reload: true) { create(:area) }
+    let_it_be(:area2, reload: true) { create(:area) }
+    let_it_be(:project_with_areas, reload: true) { create(:project_with_active_ideation_phase) }
+    let_it_be(:_areas_project1, reload: true) { create(:areas_project, project: project_with_areas, area: area1) }
+    let_it_be(:_areas_project2, reload: true) { create(:areas_project, project: project_with_areas, area: area2) }
 
-    let!(:project_for_all_areas) { create(:project_with_active_ideation_phase, include_all_areas: true) }
+    let_it_be(:project_for_all_areas, reload: true) { create(:project_with_active_ideation_phase, include_all_areas: true) }
 
-    let!(:_project_without_area) { create(:project) }
+    let_it_be(:_project_without_area, reload: true) { create(:project) }
 
     example 'Lists projects for a given area OR for all areas' do
       do_request areas: [area1.id]
@@ -369,13 +375,13 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       parameter :topics, 'Array of topic IDs', required: false
     end
 
-    let!(:topic1) { create(:global_topic) }
-    let!(:topic2) { create(:global_topic) }
-    let!(:project_with_topics) { create(:project) }
-    let!(:_projects_topic1) { create(:projects_global_topic, project: project_with_topics, global_topic: topic1) }
-    let!(:_projects_topic2) { create(:projects_global_topic, project: project_with_topics, global_topic: topic2) }
+    let_it_be(:topic1, reload: true) { create(:global_topic) }
+    let_it_be(:topic2, reload: true) { create(:global_topic) }
+    let_it_be(:project_with_topics, reload: true) { create(:project) }
+    let_it_be(:_projects_topic1, reload: true) { create(:projects_global_topic, project: project_with_topics, global_topic: topic1) }
+    let_it_be(:_projects_topic2, reload: true) { create(:projects_global_topic, project: project_with_topics, global_topic: topic2) }
 
-    let!(:_project_without_topic) { create(:project) }
+    let_it_be(:_project_without_topic, reload: true) { create(:project) }
 
     example_request 'Lists projects for a given topic' do
       do_request topics: [topic1.id]
@@ -422,8 +428,11 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
     end
 
     context 'when admin' do
-      before do
+      before_all do
         @user = create(:admin)
+      end
+
+      before do
         header_token_for @user
       end
 

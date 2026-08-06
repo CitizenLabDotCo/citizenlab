@@ -35,7 +35,7 @@ describe McpServer::InternalMcpController do
   end
 
   describe 'tools/call' do
-    let!(:project) { create(:project) }
+    let_it_be(:project, reload: true) { create(:project) }
 
     it 'runs the tool in the tenant selected by X-Tenant-Host' do
       post '/admin_api/mcp',

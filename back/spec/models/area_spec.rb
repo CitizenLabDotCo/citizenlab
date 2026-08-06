@@ -35,7 +35,7 @@ RSpec.describe Area do
   end
 
   describe '#create' do
-    before do
+    before_all do
       create_list(:area, 3)
     end
 
@@ -74,7 +74,7 @@ RSpec.describe Area do
     context 'when domicile field exist' do
       before { create(:custom_field_domicile) }
 
-      let(:area) { create(:area, title_multiloc: { 'en' => 'Title' }) }
+      let_it_be(:area, reload: true) { create(:area, title_multiloc: { 'en' => 'Title' }) }
 
       it 'updates the corresponding domicile option' do
         area.update(title_multiloc: { 'en' => 'New title' })
@@ -84,9 +84,9 @@ RSpec.describe Area do
   end
 
   describe '#recreate_custom_field_options!' do
-    let!(:domicile) { create(:custom_field_domicile) }
+    let_it_be(:domicile, reload: true) { create(:custom_field_domicile) }
 
-    before do
+    before_all do
       create_list(:area, 2)
     end
 

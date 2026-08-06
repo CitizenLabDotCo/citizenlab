@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe FlagInappropriateContent::EmailCampaigns::InappropriateContentFlaggedMailer do
   describe 'campaign_mail' do
-    let(:recipient) { create(:user, locale: 'en') }
+    let_it_be(:recipient, reload: true) { create(:user, locale: 'en') }
     let(:command) do
       {
         recipient: recipient,
@@ -23,7 +23,7 @@ RSpec.describe FlagInappropriateContent::EmailCampaigns::InappropriateContentFla
     let(:mail) { mailer.campaign_mail.deliver_now }
     let(:body) { mail_body(mail) }
 
-    before do
+    before_all do
       EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
     end
 
@@ -120,7 +120,7 @@ RSpec.describe FlagInappropriateContent::EmailCampaigns::InappropriateContentFla
     end
 
     context 'with custom text' do
-      let!(:global_campaign) do
+      let_it_be(:global_campaign, reload: true) do
         create(
           :inappropriate_content_flagged_campaign,
           subject_multiloc: { 'en' => 'Custom Global Subject - {{ organizationName }}' },

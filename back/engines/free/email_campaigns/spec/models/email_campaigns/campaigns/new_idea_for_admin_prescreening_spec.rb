@@ -81,11 +81,12 @@ RSpec.describe EmailCampaigns::Campaigns::NewIdeaForAdminPrescreening do
   end
 
   describe '#generate_commands' do
-    let(:user) { create(:user) }
+    let_it_be(:user, reload: true) { create(:user) }
     let(:title_multiloc) { { 'en' => 'My awesome idea' } }
     let(:idea) { create(:idea, author: user, title_multiloc: title_multiloc) }
     let(:activity) { create(:activity, item: idea, action: 'published', user: user) }
-    let(:recipient) { create(:admin) }
+
+    let_it_be(:recipient, reload: true) { create(:admin) }
 
     it 'generates a command with the desired payload and tracked content' do
       command = campaign.generate_commands(recipient: recipient, activity: activity).first
@@ -96,7 +97,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewIdeaForAdminPrescreening do
     describe do
       before { create(:idea_status_proposed) }
 
-      let(:project) { create(:single_phase_native_survey_project) }
+      let_it_be(:project, reload: true) { create(:single_phase_native_survey_project) }
       let(:idea) { create(:idea, author: user, project: project, creation_phase: project.phases.first) }
 
       it "doesn't get triggered for a native survey response" do

@@ -50,8 +50,9 @@ describe Export::InputFields do
     let(:phase) { create(:native_survey_phase) }
     let!(:custom_form) { create(:custom_form, participation_context: phase) }
     let!(:question) { create(:custom_field, resource: custom_form, key: 'q_survey') }
+
     # `custom_field` defaults to a registration (resource_type User) field.
-    let!(:registration_field) { create(:custom_field, key: 'residence', title_multiloc: { 'en' => 'Residence' }) }
+    let_it_be(:registration_field, reload: true) { create(:custom_field, key: 'residence', title_multiloc: { 'en' => 'Residence' }) }
 
     it 'includes out-of-form registration fields in user_fields' do
       expect(described_class.new(phase).user_fields.map(&:key)).to include('residence')

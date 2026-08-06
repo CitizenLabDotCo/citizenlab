@@ -7,8 +7,9 @@ describe Export::InputReportFields do
     let(:phase) { create(:native_survey_phase) }
     let!(:custom_form) { create(:custom_form, participation_context: phase) }
     let!(:question) { create(:custom_field_select, :with_options, resource: custom_form, key: 'q_select') }
+
     # `custom_field` defaults to a registration (resource_type User) field.
-    let!(:registration_field) { create(:custom_field, key: 'residence', title_multiloc: { 'en' => 'Residence' }) }
+    let_it_be(:registration_field, reload: true) { create(:custom_field, key: 'residence', title_multiloc: { 'en' => 'Residence' }) }
 
     before do
       create(:custom_field_option, custom_field: question, key: 'other', title_multiloc: { 'en' => 'Other' }, other: true)
@@ -92,7 +93,7 @@ describe Export::InputReportFields do
   describe 'for an ideation phase' do
     subject(:all_keys) { described_class.new(phase).all.map(&:key) }
 
-    let(:project) { create(:single_phase_ideation_project) }
+    let_it_be(:project, reload: true) { create(:single_phase_ideation_project) }
     let(:phase) { project.phases.first }
     let!(:custom_form) { create(:custom_form, participation_context: project) }
 

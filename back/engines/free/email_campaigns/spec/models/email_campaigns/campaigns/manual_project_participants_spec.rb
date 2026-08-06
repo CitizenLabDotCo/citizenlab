@@ -22,16 +22,16 @@ RSpec.describe EmailCampaigns::Campaigns::ManualProjectParticipants do
   end
 
   describe '#apply_recipient_filters' do
-    let!(:non_participant) { create(:user) }
-    let!(:participant) { create(:user) }
-    let!(:project) { create(:project_with_active_ideation_phase) }
-    let!(:idea) { create(:idea, project: project, author: participant, publication_status: 'published', phases: project.phases) }
-    let!(:follower) do
+    let_it_be(:non_participant, reload: true) { create(:user) }
+    let_it_be(:participant, reload: true) { create(:user) }
+    let_it_be(:project, reload: true) { create(:project_with_active_ideation_phase) }
+    let_it_be(:idea, reload: true) { create(:idea, project: project, author: participant, publication_status: 'published', phases: project.phases) }
+    let_it_be(:follower, reload: true) do
       user = create(:user)
       create(:follower, followable: project, user: user)
       user
     end
-    let(:campaign) { create(:manual_project_participants_campaign, context: project) }
+    let_it_be(:campaign, reload: true) { create(:manual_project_participants_campaign, context: project) }
 
     it 'includes project participants and followers' do
       recipients = campaign.apply_recipient_filters

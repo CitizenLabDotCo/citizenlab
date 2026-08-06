@@ -7,7 +7,7 @@ resource 'Idea Custom Fields' do
   explanation 'Fields in idea forms which are customized by the city, scoped on the project level.'
   before { header 'Content-Type', 'application/json' }
 
-  let!(:default_attributes) do
+  let_it_be(:default_attributes, reload: true) do
     {
       title_multiloc: {},
       description_multiloc: {},
@@ -56,8 +56,8 @@ resource 'Idea Custom Fields' do
       }
     end
 
-    let(:context) { create(:native_survey_phase) }
-    let!(:custom_form) { create(:custom_form, participation_context: context) }
+    let_it_be(:context, reload: true) { create(:native_survey_phase) }
+    let_it_be(:custom_form, reload: true) { create(:custom_form, participation_context: context) }
     let(:phase_id) { context.id }
 
     context 'when admin' do
@@ -888,12 +888,12 @@ resource 'Idea Custom Fields' do
       end
 
       context 'Update custom field options with images' do
-        let!(:page) { create(:custom_field_page, resource: custom_form) }
-        let!(:field) { create(:custom_field_multiselect_image, resource: custom_form) }
-        let!(:option1) { create(:custom_field_option, key: 'option1', custom_field: field) }
-        let!(:option2) { create(:custom_field_option, key: 'option2', custom_field: field) }
-        let!(:image1) { create(:custom_field_option_image, custom_field_option: option1) }
-        let!(:image2) { create(:custom_field_option_image, custom_field_option: option2) }
+        let_it_be(:page, reload: true) { create(:custom_field_page, resource: custom_form) }
+        let_it_be(:field, reload: true) { create(:custom_field_multiselect_image, resource: custom_form) }
+        let_it_be(:option1, reload: true) { create(:custom_field_option, key: 'option1', custom_field: field) }
+        let_it_be(:option2, reload: true) { create(:custom_field_option, key: 'option2', custom_field: field) }
+        let_it_be(:image1, reload: true) { create(:custom_field_option_image, custom_field_option: option1) }
+        let_it_be(:image2, reload: true) { create(:custom_field_option_image, custom_field_option: option2) }
 
         example 'Remove an image from a custom field option' do
           request = {
@@ -3374,8 +3374,8 @@ resource 'Idea Custom Fields' do
       end
 
       context "Update custom field's map config relation" do
-        let!(:map_config1) { create(:map_config, mappable: nil) }
-        let!(:map_config2) { create(:map_config, mappable: nil) }
+        let_it_be(:map_config1, reload: true) { create(:map_config, mappable: nil) }
+        let_it_be(:map_config2, reload: true) { create(:map_config, mappable: nil) }
 
         example "Relating map_config(s) with 'point' custom field(s)" do
           field_to_update = create(:custom_field_point, resource: custom_form, title_multiloc: { 'en' => 'Point field' })

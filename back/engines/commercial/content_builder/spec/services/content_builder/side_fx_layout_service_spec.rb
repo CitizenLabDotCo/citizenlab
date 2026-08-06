@@ -5,8 +5,8 @@ require 'rails_helper'
 describe ContentBuilder::SideFxLayoutService do
   subject(:service) { described_class.new }
 
-  let(:user) { create(:user) }
-  let(:layout) { create(:layout) }
+  let_it_be(:user, reload: true) { create(:user) }
+  let_it_be(:layout, reload: true) { create(:layout) }
 
   describe 'before_create' do
     it 'does not log activity' do

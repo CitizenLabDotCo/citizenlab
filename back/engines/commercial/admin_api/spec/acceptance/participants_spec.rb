@@ -10,8 +10,8 @@ resource 'Participant', admin_api: true do
     Analytics::PopulateDimensionsService.populate_types
   end
 
-  let(:project) { create(:project) }
-  let!(:idea) { create(:idea, project: project) }
+  let_it_be(:project, reload: true) { create(:project) }
+  let_it_be(:idea, reload: true) { create(:idea, project: project) }
   let(:project_id) { project.id }
 
   get 'admin_api/projects/:project_id/participants_count' do

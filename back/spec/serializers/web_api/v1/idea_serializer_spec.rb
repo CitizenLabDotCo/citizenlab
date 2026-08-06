@@ -80,8 +80,9 @@ describe WebApi::V1::IdeaSerializer do
 
   context 'for a proposal' do
     let(:user) { nil }
-    let(:proposal) { create(:proposal) }
     let(:result) { described_class.new(proposal, params: { current_user: user }).serializable_hash }
+
+    let_it_be(:proposal, reload: true) { create(:proposal) }
 
     describe 'expires_at' do
       let(:expire_days_limit) { 5 }

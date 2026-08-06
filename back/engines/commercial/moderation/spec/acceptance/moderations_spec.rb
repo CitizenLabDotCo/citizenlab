@@ -126,7 +126,7 @@ resource 'Moderations' do
       end
 
       describe do
-        before do
+        before_all do
           @m5 = create(:idea, project: @m3.project)
           @m6 = create(:comment)
         end
@@ -190,7 +190,7 @@ resource 'Moderations' do
       context 'when admin' do
         before { admin_header_token }
 
-        let(:idea) { create(:idea) }
+        let_it_be(:idea, reload: true) { create(:idea) }
         let(:moderatable_type) { 'Idea' }
         let(:moderatable_id) { idea.id }
 

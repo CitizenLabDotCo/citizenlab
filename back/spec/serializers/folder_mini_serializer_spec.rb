@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe WebApi::V1::FolderMiniSerializer do
-  let!(:folder) { create(:project_folder) }
-  let!(:user) { create(:user) }
+  let_it_be(:folder, reload: true) { create(:project_folder) }
+  let_it_be(:user, reload: true) { create(:user) }
 
   let(:serialized_folder) do
     described_class

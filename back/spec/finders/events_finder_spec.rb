@@ -21,8 +21,11 @@ describe EventsFinder do
     let(:project) { create(:project) }
     let(:expected_record_ids) { Event.where(project: project).pluck(:id) }
 
-    before do
+    before_all do
       create_list(:event, 5)
+    end
+
+    before do
       create_list(:event, 2, project: project).pluck(:id)
       params[:project_ids] = [project.id]
     end
@@ -51,9 +54,12 @@ describe EventsFinder do
   describe '#ends_before_date_condition' do
     let(:expected_record_ids) { Event.where('end_at < ?', Time.zone.today).pluck(:id) }
 
-    before do
+    before_all do
       create_list(:event, 5, start_at: Time.zone.today - 1.week, end_at: Time.zone.today - 1.week + 1.day)
       create_list(:event, 5, start_at: Time.zone.today + 1.week, end_at: Time.zone.today + 1.week + 1.day)
+    end
+
+    before do
       params[:ends_before_date] = Time.zone.now
     end
 
@@ -65,9 +71,12 @@ describe EventsFinder do
   describe '#ends_on_or_after_date_condition' do
     let(:expected_record_ids) { Event.where('end_at >= ?', Time.zone.today).pluck(:id) }
 
-    before do
+    before_all do
       create_list(:event, 5, start_at: Time.zone.today - 1.week, end_at: Time.zone.today - 1.week + 1.day)
       create_list(:event, 5, start_at: Time.zone.today + 1.week, end_at: Time.zone.today + 1.week + 1.day)
+    end
+
+    before do
       params[:ends_on_or_after_date] = Time.zone.now
     end
 
@@ -77,7 +86,7 @@ describe EventsFinder do
   end
 
   describe '#attendee_id_condition' do
-    let(:attendee) { create(:user) }
+    let_it_be(:attendee, reload: true) { create(:user) }
     let(:params) { { attendee_id: attendee.id } }
     let!(:expected_record_ids) do
       initial_events.take(2).map do |event|

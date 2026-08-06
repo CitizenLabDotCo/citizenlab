@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Export::AnswerFieldsForReport do
   subject(:builder) { described_class.new(Export::Xlsx::ValueVisitor) }
 
-  let(:form) { create(:custom_form) }
+  let_it_be(:form, reload: true) { create(:custom_form) }
 
   describe '#fields_for' do
     context 'for a plain question' do
@@ -65,8 +65,9 @@ describe Export::AnswerFieldsForReport do
     context 'for a user/registration field' do
       # `custom_field` defaults to a registration (resource_type User) field.
       let(:field) { create(:custom_field, key: 'residence', title_multiloc: { 'en' => 'Residence' }) }
-      let(:author) { create(:user, custom_field_values: { 'residence' => 'Manchester' }) }
       let(:input) { create(:idea, author: author) }
+
+      let_it_be(:author, reload: true) { create(:user, custom_field_values: { 'residence' => 'Manchester' }) }
 
       it 'returns a single field read from the author profile' do
         fields = builder.fields_for(field)

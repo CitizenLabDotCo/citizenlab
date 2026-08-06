@@ -4,9 +4,12 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Ideas' do
-  before do
+  before_all do
     @ideas = create_list(:idea, 5)
-    api_token = PublicApi::ApiClient.create
+    PublicApi::ApiClient.create
+  end
+
+  before do
     token = AuthToken::AuthToken.new(payload: api_token.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
   end

@@ -184,8 +184,9 @@ describe EmailCampaigns::DeliveryService do
 
     context 'with contextual campaigns' do
       let(:notification) { create(:project_phase_started) }
-      let!(:global_campaign) { create(:project_phase_started_campaign, context: nil) }
       let!(:context_campaign) { create(:project_phase_started_campaign, context: notification.phase) }
+
+      let_it_be(:global_campaign, reload: true) { create(:project_phase_started_campaign, context: nil) }
 
       it 'receives process_command for the context campaign' do
         expect(service).to receive(:process_command).with(context_campaign, anything).once
@@ -236,13 +237,15 @@ describe EmailCampaigns::DeliveryService do
   describe 'consentable_campaign_types_for' do
     let(:user) { create(:user) }
 
-    before do
+    before_all do
       NonConsentableCampaignForTest.create!
       ConsentableCampaignForTest.create!
       ConsentableDisableableCampaignAForTest.create!(enabled: false)
       ConsentableDisableableCampaignBForTest.create!(enabled: true)
       ConsentableHiddenCampaignForTest.create!
+    end
 
+    before do
       allow(service).to receive(
         :campaign_classes
       ).and_return(

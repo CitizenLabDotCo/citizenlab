@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe SmartGroups::Rules::ParticipatedInInput do
-  let(:valid_json_rule) do
+  let_it_be(:valid_json_rule, reload: true) do
     {
       'ruleType' => 'participated_in_input',
       'predicate' => 'in',
@@ -128,10 +128,10 @@ describe SmartGroups::Rules::ParticipatedInInput do
   end
 
   describe 'description_multiloc' do
-    let(:cycling_path) do
+    let_it_be(:cycling_path, reload: true) do
       create(:idea, title_multiloc: { 'en' => 'A new cycling path' })
     end
-    let(:more_trees) do
+    let_it_be(:more_trees, reload: true) do
       create(:idea, title_multiloc: { 'en' => 'Plant more trees' })
     end
 

@@ -4,8 +4,9 @@ require 'rails_helper'
 
 describe SideFxAreaService do
   let(:service) { described_class.new }
-  let(:user) { create(:user) }
-  let(:area) { create(:area) }
+
+  let_it_be(:user, reload: true) { create(:user) }
+  let_it_be(:area, reload: true) { create(:area) }
 
   describe 'after_create' do
     it "logs a 'created' action when a area is created" do

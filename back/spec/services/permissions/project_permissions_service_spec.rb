@@ -44,7 +44,7 @@ describe Permissions::ProjectPermissionsService do
     end
 
     context 'when the phase is a community monitor phase' do
-      let(:phase) { create(:community_monitor_survey_phase) }
+      let_it_be(:phase, reload: true) { create(:community_monitor_survey_phase) }
       let(:project) { phase.project }
 
       it "returns 'attending_event_not_supported'" do

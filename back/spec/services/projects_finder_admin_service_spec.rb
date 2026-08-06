@@ -65,19 +65,19 @@ describe ProjectsFinderAdminService do
   end
 
   describe 'self.filter_status' do
-    let!(:draft_project) do
+    let_it_be(:draft_project, reload: true) do
       project = create(:project)
       admin_publication = AdminPublication.find_by(publication_id: project.id)
       admin_publication.update!(publication_status: 'draft')
       project
     end
-    let!(:published_project) do
+    let_it_be(:published_project, reload: true) do
       project = create(:project)
       admin_publication = AdminPublication.find_by(publication_id: project.id)
       admin_publication.update!(publication_status: 'published')
       project
     end
-    let!(:archived_project) do
+    let_it_be(:archived_project, reload: true) do
       project = create(:project)
       admin_publication = AdminPublication.find_by(publication_id: project.id)
       admin_publication.update!(publication_status: 'archived')
@@ -96,22 +96,22 @@ describe ProjectsFinderAdminService do
   end
 
   describe 'self.filter_review_state' do
-    let!(:regular_project) { create(:project) }
-    let!(:pending_review_draft_project) do
+    let_it_be(:regular_project, reload: true) { create(:project) }
+    let_it_be(:pending_review_draft_project, reload: true) do
       project = create(:project)
       admin_publication = AdminPublication.find_by(publication_id: project.id)
       admin_publication.update!(publication_status: 'draft')
       create(:project_review, project: project)
       project
     end
-    let!(:pending_review_published_project) do
+    let_it_be(:pending_review_published_project, reload: true) do
       project = create(:project)
       admin_publication = AdminPublication.find_by(publication_id: project.id)
       admin_publication.update!(publication_status: 'published')
       create(:project_review, project: project)
       project
     end
-    let!(:approved_project) do
+    let_it_be(:approved_project, reload: true) do
       project = create(:project)
       create(:project_review, project: project, approved_at: Time.zone.now)
       project
@@ -204,7 +204,7 @@ describe ProjectsFinderAdminService do
 
   describe 'self.filter_participation_states' do
     # Project that has not started yet
-    let!(:not_started_project) { create(:phase, start_at: 10.days.from_now).project }
+    let_it_be(:not_started_project, reload: true) { create(:phase, start_at: 10.days.from_now).project }
 
     # Project with current data collection phase
     let!(:collecting_data_project) do
@@ -215,7 +215,7 @@ describe ProjectsFinderAdminService do
     end
 
     # Project with current information phase
-    let!(:information_phase_project) do
+    let_it_be(:information_phase_project, reload: true) do
       create(:project).tap do |project|
         past_phase = create(:ideation_phase, start_at: 20.days.ago, end_at: 10.days.ago, project:)
         current_phase = create(:information_phase, start_at: past_phase.end_at, end_at: 10.days.from_now, project:)
@@ -224,10 +224,10 @@ describe ProjectsFinderAdminService do
     end
 
     # Project that is completely in the past
-    let!(:past_project) { create(:phase, start_at: 30.days.ago, end_at: 20.days.ago).project }
+    let_it_be(:past_project, reload: true) { create(:phase, start_at: 30.days.ago, end_at: 20.days.ago).project }
 
     # Project that has a gap between phases, and right now we're in the gap
-    let!(:gap_project) do
+    let_it_be(:gap_project, reload: true) do
       create(:project).tap do |project|
         create(:phase, start_at: 30.days.ago, end_at: 20.days.ago, project:)
         create(:phase, start_at: 10.days.from_now, end_at: 20.days.from_now, project:)
@@ -235,7 +235,7 @@ describe ProjectsFinderAdminService do
     end
 
     # Project without any phases
-    let!(:project_without_phases) { create(:project) }
+    let_it_be(:project_without_phases, reload: true) { create(:project) }
 
     it 'returns all projects when no participation states specified' do
       result = described_class.filter_participation_states(Project.all, {})
@@ -314,10 +314,10 @@ describe ProjectsFinderAdminService do
   end
 
   describe 'self.filter_current_phase_participation_method' do
-    let!(:project_ideation) { create(:ideation_phase, start_at: 10.days.ago, end_at: 10.days.from_now).project }
-    let!(:project_voting) { create(:single_voting_phase, start_at: 10.days.ago, end_at: 10.days.from_now).project }
-    let!(:project_information) { create(:information_phase, start_at: 10.days.ago, end_at: 10.days.from_now).project }
-    let!(:project_ideation_future) { create(:ideation_phase, start_at: 10.days.from_now, end_at: 20.days.from_now).project }
+    let_it_be(:project_ideation, reload: true) { create(:ideation_phase, start_at: 10.days.ago, end_at: 10.days.from_now).project }
+    let_it_be(:project_voting, reload: true) { create(:single_voting_phase, start_at: 10.days.ago, end_at: 10.days.from_now).project }
+    let_it_be(:project_information, reload: true) { create(:information_phase, start_at: 10.days.ago, end_at: 10.days.from_now).project }
+    let_it_be(:project_ideation_future, reload: true) { create(:ideation_phase, start_at: 10.days.from_now, end_at: 20.days.from_now).project }
 
     it 'returns all projects when no participation_methods specified' do
       result = described_class.filter_current_phase_participation_method(Project.all, {})
@@ -402,12 +402,12 @@ describe ProjectsFinderAdminService do
 
   describe 'self.filter_visibility' do
     let!(:public_project) { create(:project, visible_to: 'public') }
-    let!(:groups_project) { create(:project, visible_to: 'groups') }
-    let!(:admins_project) { create(:project, visible_to: 'admins') }
-    let!(:listed_project) { create(:project, visible_to: 'public', listed: true) }
-    let!(:unlisted_project) { create(:project, visible_to: 'public', listed: false) }
-
     let(:test_projects) { Project.where(id: [public_project.id, groups_project.id, admins_project.id, listed_project.id, unlisted_project.id]) }
+    let!(:groups_project) { create(:project, visible_to: 'groups') }
+
+    let_it_be(:admins_project, reload: true) { create(:project, visible_to: 'admins') }
+    let_it_be(:listed_project, reload: true) { create(:project, visible_to: 'public', listed: true) }
+    let_it_be(:unlisted_project, reload: true) { create(:project, visible_to: 'public', listed: false) }
 
     it 'returns all projects when no visibility filter is applied' do
       result = described_class.filter_visibility(test_projects, {})
@@ -457,11 +457,11 @@ describe ProjectsFinderAdminService do
 
   describe 'self.filter_discoverability' do
     let!(:public_project) { create(:project, visible_to: 'public', listed: true) }
-    let!(:hidden_project) { create(:project, visible_to: 'public', listed: false) }
     let!(:groups_project) { create(:project, visible_to: 'groups', listed: true) }
-    let!(:groups_hidden_project) { create(:project, visible_to: 'groups', listed: false) }
-
     let(:test_projects) { Project.where(id: [public_project.id, hidden_project.id, groups_project.id, groups_hidden_project.id]) }
+
+    let_it_be(:hidden_project, reload: true) { create(:project, visible_to: 'public', listed: false) }
+    let_it_be(:groups_hidden_project, reload: true) { create(:project, visible_to: 'groups', listed: false) }
 
     it 'returns all projects when no discoverability filter is applied' do
       result = described_class.filter_discoverability(test_projects, {})
@@ -578,9 +578,10 @@ describe ProjectsFinderAdminService do
       end
       let!(:p4) { create_project(start_at: '2020-04-01', end_at: 100.days.from_now) }
       let!(:p5) { create_project(start_at: 5.days.from_now, end_at: 25.days.from_now) }
-      let!(:p6) { create_project(start_at: 4.days.from_now, end_at: 50.days.from_now) }
-      let!(:p7) { create_project(start_at: 8.days.from_now, end_at: nil) }
-      let!(:p8) { create_project(start_at: 60.days.from_now, end_at: 90.days.from_now) }
+
+      let_it_be(:p6, reload: true) { create_project(start_at: 4.days.from_now, end_at: 50.days.from_now) }
+      let_it_be(:p7, reload: true) { create_project(start_at: 8.days.from_now, end_at: nil) }
+      let_it_be(:p8, reload: true) { create_project(start_at: 60.days.from_now, end_at: 90.days.from_now) }
 
       it 'sorts projects by phases starting or ending soon' do
         result = described_class.execute(
@@ -610,9 +611,9 @@ describe ProjectsFinderAdminService do
     end
 
     describe 'with excluded_project_ids' do
-      let!(:project1) { create(:project) }
-      let!(:project2) { create(:project) }
-      let!(:project3) { create(:project) }
+      let_it_be(:project1, reload: true) { create(:project) }
+      let_it_be(:project2, reload: true) { create(:project) }
+      let_it_be(:project3, reload: true) { create(:project) }
       let(:admin_user) { create(:admin) }
 
       it 'excludes projects by their project IDs' do
@@ -637,9 +638,9 @@ describe ProjectsFinderAdminService do
     end
 
     describe 'with excluded_folder_ids' do
-      let!(:folder) { create(:project_folder) }
-      let!(:project_in_folder) { create(:project, folder: folder) }
-      let!(:project_outside_folder) { create(:project) }
+      let_it_be(:folder, reload: true) { create(:project_folder) }
+      let_it_be(:project_in_folder, reload: true) { create(:project, folder: folder) }
+      let_it_be(:project_outside_folder, reload: true) { create(:project) }
       let(:admin_user) { create(:admin) }
 
       it 'excludes projects within excluded folders' do
@@ -665,8 +666,8 @@ describe ProjectsFinderAdminService do
   end
 
   describe '.filter_with_admin_publication' do
-    let!(:project_with_admin_pub) { create(:project) }
-    let!(:project_without_admin_pub) do
+    let_it_be(:project_with_admin_pub, reload: true) { create(:project) }
+    let_it_be(:project_without_admin_pub, reload: true) do
       project = create(:project)
       project.admin_publication.destroy!
       project.reload

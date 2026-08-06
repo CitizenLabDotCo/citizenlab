@@ -7,8 +7,8 @@ describe Frontend::UrlService do
   let(:base_uri) { AppConfiguration.instance.base_frontend_uri }
 
   describe '#model_to_url' do
-    let(:idea) { create(:idea) }
-    let(:internal_comment) { create(:internal_comment, idea: idea) }
+    let_it_be(:idea, reload: true) { create(:idea) }
+    let_it_be(:internal_comment, reload: true) { create(:internal_comment, idea: idea) }
     let(:locale) { Locale.new('en') }
 
     it 'returns the correct url for an internal comment on an idea' do
@@ -131,7 +131,7 @@ describe Frontend::UrlService do
   end
 
   describe '#input_manager_url' do
-    let!(:phase) { create(:phase) }
+    let_it_be(:phase, reload: true) { create(:phase) }
 
     it 'returns global input manager URL when no phase' do
       expect(service.input_manager_url).to eq "#{base_uri}/admin/ideas"

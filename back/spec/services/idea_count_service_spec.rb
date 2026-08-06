@@ -2,12 +2,12 @@ require 'rails_helper'
 
 describe IdeasCountService do
   describe '#counts' do
-    let(:project) { create(:project) }
-    let(:input_topic1) { create(:input_topic, project: project) }
-    let(:input_topic2) { create(:input_topic, project: project) }
+    let_it_be(:project, reload: true) { create(:project) }
+    let_it_be(:input_topic1, reload: true) { create(:input_topic, project: project) }
+    let_it_be(:input_topic2, reload: true) { create(:input_topic, project: project) }
 
-    let!(:idea1) { create(:idea, project: project, input_topics: [input_topic1]) }
-    let!(:idea2) { create(:idea, project: project, input_topics: [input_topic1, input_topic2]) }
+    let_it_be(:idea1, reload: true) { create(:idea, project: project, input_topics: [input_topic1]) }
+    let_it_be(:idea2, reload: true) { create(:idea, project: project, input_topics: [input_topic1, input_topic2]) }
 
     it 'returns the expected result' do
       result = described_class.counts(Idea.all)

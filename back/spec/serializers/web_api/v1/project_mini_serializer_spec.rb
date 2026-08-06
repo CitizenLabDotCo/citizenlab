@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe WebApi::V1::ProjectMiniSerializer do
-  let!(:project) { create(:project) }
-  let!(:user) { create(:user) }
+  let_it_be(:project, reload: true) { create(:project) }
+  let_it_be(:user, reload: true) { create(:user) }
 
   let(:serialized) do
     described_class.new(project, params: { current_user: user }).serializable_hash

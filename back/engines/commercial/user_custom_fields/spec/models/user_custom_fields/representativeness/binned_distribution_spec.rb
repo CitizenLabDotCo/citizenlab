@@ -83,7 +83,7 @@ RSpec.describe UserCustomFields::Representativeness::BinnedDistribution do
       create(:binned_distribution, bins: [nil, 40, nil], counts: [10, 20])
     end
 
-    let(:users) do
+    let_it_be(:users, reload: true) do
       birthyears = [2000, 1950]
       users = birthyears.map { |year| create(:user, birthyear: year) }
       # Users without year of birth should not affect the score.

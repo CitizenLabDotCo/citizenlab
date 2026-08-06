@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Analysis::AutoInsightsService do
   describe '#generate' do
     context 'with a mix of custom fields' do
-      let!(:custom_field_gender) { create(:custom_field_gender, :with_options) }
+      let_it_be(:custom_field_gender, reload: true) { create(:custom_field_gender, :with_options) }
       let!(:project) { create(:project_with_active_ideation_phase) }
       let!(:phase) { project.phases.first }
       let!(:custom_form) { create(:custom_form, participation_context: project) }
@@ -179,7 +179,7 @@ describe Analysis::AutoInsightsService do
     end
 
     context 'with a domicile custom field' do
-      let!(:custom_field_domicile) { create(:custom_field_domicile) }
+      let_it_be(:custom_field_domicile, reload: true) { create(:custom_field_domicile) }
       let!(:areas) { create_list(:area, 2) }
       let!(:project) { create(:project_with_active_ideation_phase) }
       let!(:phase) { project.phases.first }
@@ -208,7 +208,7 @@ describe Analysis::AutoInsightsService do
     end
 
     context 'with a birthyear custom field' do
-      let!(:custom_field_birthyear) { create(:custom_field_birthyear) }
+      let_it_be(:custom_field_birthyear, reload: true) { create(:custom_field_birthyear) }
       let!(:areas) { create_list(:area, 2) }
       let!(:project) { create(:project_with_active_ideation_phase) }
       let!(:phase) { project.phases.first }

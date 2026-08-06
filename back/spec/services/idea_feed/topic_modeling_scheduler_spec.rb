@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 describe IdeaFeed::TopicModelingScheduler do
-  let(:project) { create(:project) }
-  let(:phase) { create(:idea_feed_phase, project:) }
+  let_it_be(:project, reload: true) { create(:project) }
+  let_it_be(:phase, reload: true) { create(:idea_feed_phase, project:) }
   let(:scheduler) { described_class.new(project) }
   let(:timezone) { AppConfiguration.timezone }
 
@@ -19,7 +19,7 @@ describe IdeaFeed::TopicModelingScheduler do
 
   describe '#on_every_hour' do
     context 'when phase has fewer than MINIMUM_INPUTS ideas' do
-      before do
+      before_all do
         create_list(:idea, 2, project:, phases: [phase])
       end
 
@@ -41,7 +41,7 @@ describe IdeaFeed::TopicModelingScheduler do
     end
 
     context 'when current hour is not DAILY_SCHEDULE_HOUR (4 AM)' do
-      before do
+      before_all do
         create_list(:idea, 5, project:, phases: [phase])
       end
 
@@ -79,7 +79,7 @@ describe IdeaFeed::TopicModelingScheduler do
     end
 
     context 'when there is no previous run' do
-      before do
+      before_all do
         create_list(:idea, 3, project:, phases: [phase])
       end
 
@@ -103,7 +103,7 @@ describe IdeaFeed::TopicModelingScheduler do
 
   describe '#on_new_input' do
     context 'when phase has fewer than MINIMUM_INPUTS ideas' do
-      before do
+      before_all do
         create_list(:idea, 2, project:, phases: [phase])
       end
 
@@ -113,7 +113,7 @@ describe IdeaFeed::TopicModelingScheduler do
     end
 
     context 'when a recent run happened less than MINIMUM_INTERVAL_BETWEEN_RUNS ago' do
-      before do
+      before_all do
         create_list(:idea, 7, project:, phases: [phase])
         create(:activity, item: project, action: 'topics_rebalanced', acted_at: 10.minutes.ago, payload: { 'input_count' => 5 })
       end
@@ -124,7 +124,7 @@ describe IdeaFeed::TopicModelingScheduler do
     end
 
     context 'when input increase since last run is less than INSTANT_INPUT_INCREASE (30%)' do
-      before do
+      before_all do
         create_list(:idea, 6, project:, phases: [phase])
         create(:activity, item: project, action: 'topics_rebalanced', acted_at: 1.day.ago, payload: { 'input_count' => 5 })
       end
@@ -135,7 +135,7 @@ describe IdeaFeed::TopicModelingScheduler do
     end
 
     context 'when all conditions are met' do
-      before do
+      before_all do
         create_list(:idea, 7, project:, phases: [phase])
         create(:activity, item: project, action: 'topics_rebalanced', acted_at: 1.day.ago, payload: { 'input_count' => 5 })
       end
@@ -146,7 +146,7 @@ describe IdeaFeed::TopicModelingScheduler do
     end
 
     context 'when there is no previous run' do
-      before do
+      before_all do
         create_list(:idea, 3, project:, phases: [phase])
       end
 
@@ -156,7 +156,7 @@ describe IdeaFeed::TopicModelingScheduler do
     end
 
     context 'when previous run had 0 inputs' do
-      before do
+      before_all do
         create_list(:idea, 3, project:, phases: [phase])
         create(:activity, item: project, action: 'topics_rebalanced', acted_at: 1.day.ago, payload: { 'input_count' => 0 })
       end
@@ -187,8 +187,11 @@ describe IdeaFeed::TopicModelingScheduler do
     end
 
     context 'when exactly at INSTANT_INPUT_INCREASE boundary (30%)' do
-      before do
+      before_all do
         create_list(:idea, 10, project:, phases: [phase])
+      end
+
+      before do
         # 10 ideas now, 7 at last run = 42.8% increase (over 30%)
         create(:activity, item: project, action: 'topics_rebalanced', acted_at: 1.day.ago, payload: { 'input_count' => 7 })
       end
@@ -199,7 +202,7 @@ describe IdeaFeed::TopicModelingScheduler do
     end
 
     context 'when exactly at MINIMUM_INTERVAL_BETWEEN_RUNS boundary (20 minutes)' do
-      before do
+      before_all do
         create_list(:idea, 5, project:, phases: [phase])
       end
 
@@ -215,7 +218,7 @@ describe IdeaFeed::TopicModelingScheduler do
     end
 
     context 'when multiple previous run activities exist' do
-      before do
+      before_all do
         create_list(:idea, 8, project:, phases: [phase])
         create(:activity, item: project, action: 'topics_rebalanced', acted_at: 2.days.ago, payload: { 'input_count' => 3 })
         create(:activity, item: project, action: 'topics_rebalanced', acted_at: 1.day.ago, payload: { 'input_count' => 5 })
@@ -228,7 +231,7 @@ describe IdeaFeed::TopicModelingScheduler do
     end
 
     context 'with unpublished ideas' do
-      before do
+      before_all do
         create_list(:idea, 2, project:, phases: [phase])
         create_list(:idea, 5, project:, phases: [phase], publication_status: 'draft')
       end

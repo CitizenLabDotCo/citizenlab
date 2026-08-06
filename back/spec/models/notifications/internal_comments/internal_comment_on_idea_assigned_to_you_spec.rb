@@ -4,8 +4,8 @@ require 'rails_helper'
 
 RSpec.describe Notifications::InternalComments::InternalCommentOnIdeaAssignedToYou do
   describe 'make_notifications_on' do
-    let(:assignee) { create(:admin) }
-    let(:idea) { create(:idea, assignee: assignee) }
+    let_it_be(:assignee, reload: true) { create(:admin) }
+    let_it_be(:idea, reload: true) { create(:idea, assignee: assignee) }
     let(:internal_comment) { create(:internal_comment, idea: idea) }
 
     context 'when an assignee should receive this notification' do

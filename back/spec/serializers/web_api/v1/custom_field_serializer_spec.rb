@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe WebApi::V1::CustomFieldSerializer do
-  let!(:default_attributes) do
+  let_it_be(:default_attributes, reload: true) do
     {
       code: nil,
       created_at: an_instance_of(ActiveSupport::TimeWithZone),

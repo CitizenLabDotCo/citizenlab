@@ -72,8 +72,6 @@ RSpec.describe Analysis::HeatmapGenerationJob do
 
   describe 'perform when there is a change in the additional custom fields' do
     let(:project) { create(:single_phase_ideation_project) }
-    let(:main_field) { create(:custom_field_text) }
-    let(:additional_field) { create(:custom_field_checkbox) }
     let(:analysis) { create(:analysis, project: project, main_custom_field: main_field, additional_custom_fields: [additional_field]) }
     let(:users) do
       create_list(:user, 10) +
@@ -85,6 +83,9 @@ RSpec.describe Analysis::HeatmapGenerationJob do
         create(:idea, project: project, author: user)
       end
     end
+
+    let_it_be(:main_field, reload: true) { create(:custom_field_text) }
+    let_it_be(:additional_field, reload: true) { create(:custom_field_checkbox) }
 
     it 'enqueues a log activity job with the additional custom field ids' do
       expect do
@@ -259,10 +260,11 @@ RSpec.describe Analysis::HeatmapGenerationJob do
         create(:reaction, reactable: inputs.sample, user: user, mode: 'down')
       end
     end
+
     # A registration custom field with options feeds detect_user_custom_fields
     # so there's something to correlate tags against (same setup as the
     # top-level passing test).
-    let!(:correlatable_user_field) { create(:custom_field_select, :with_options) }
+    let_it_be(:correlatable_user_field, reload: true) { create(:custom_field_select, :with_options) }
 
     context 'when submission fields exceed the cap' do
       let(:additional_fields) do

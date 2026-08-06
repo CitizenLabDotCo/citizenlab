@@ -6,7 +6,7 @@ RSpec.describe RemoveUsersFromSegmentJob do
   subject(:job) { described_class.new }
 
   describe '#perform' do
-    let(:user) { create(:user) }
+    let_it_be(:user, reload: true) { create(:user) }
 
     context 'when SEGMENT_CLIENT is configured' do
       # and thus, data is sent to Segment

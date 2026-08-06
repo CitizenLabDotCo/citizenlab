@@ -165,7 +165,7 @@ describe Permissions::IdeaPermissionsService do
     end
 
     context "when idea has 'proposed' status" do
-      let(:proposed_status) { create(:idea_status, code: 'proposed') }
+      let_it_be(:proposed_status, reload: true) { create(:idea_status, code: 'proposed') }
       let(:input) { create(:idea, project: project, phases: [project.phases[2]], idea_status: proposed_status) }
 
       it "does not return 'reacting_not_allowed'" do
@@ -174,7 +174,7 @@ describe Permissions::IdeaPermissionsService do
     end
 
     context "when idea has 'prescreening' status" do
-      let(:prescreening_status) { create(:idea_status, code: 'prescreening') }
+      let_it_be(:prescreening_status, reload: true) { create(:idea_status, code: 'prescreening') }
       let(:input) { create(:idea, project: project, phases: [project.phases[2]], publication_status: 'submitted', idea_status: prescreening_status) }
 
       it "returns 'reacting_not_allowed'" do
@@ -183,7 +183,7 @@ describe Permissions::IdeaPermissionsService do
     end
 
     context "when idea has 'ineligible' status" do
-      let(:ineligible_status) { create(:idea_status, code: 'ineligible') }
+      let_it_be(:ineligible_status, reload: true) { create(:idea_status, code: 'ineligible') }
       let(:input) { create(:idea, project: project, phases: [project.phases[2]], idea_status: ineligible_status) }
 
       it "returns 'reacting_not_allowed'" do
@@ -192,7 +192,7 @@ describe Permissions::IdeaPermissionsService do
     end
 
     context "when idea has 'expired' status" do
-      let(:expired_status) { create(:idea_status, code: 'expired') }
+      let_it_be(:expired_status, reload: true) { create(:idea_status, code: 'expired') }
       let(:input) { create(:idea, project: project, phases: [project.phases[2]], idea_status: expired_status) }
 
       it "returns 'reacting_not_allowed'" do

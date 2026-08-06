@@ -7,10 +7,11 @@ describe SortByParamsService do
 
   let(:params) { { sort: sort, phase: phase_id } }
   let(:phase_id) { nil }
-  let(:user) { create(:user) }
+
+  let_it_be(:user, reload: true) { create(:user) }
 
   describe 'sort_ideas' do
-    let(:timeline_project) { create(:project_with_phases) }
+    let_it_be(:timeline_project, reload: true) { create(:project_with_phases) }
     let(:ideas) do
       [
         {
@@ -302,7 +303,7 @@ describe SortByParamsService do
     end
 
     context 'in a phase' do
-      let(:project_with_phases) { create(:project_with_phases) }
+      let_it_be(:project_with_phases, reload: true) { create(:project_with_phases) }
       let!(:ideas) do
         [
           create(:idea, project: project_with_phases),
@@ -445,7 +446,7 @@ describe SortByParamsService do
   end
 
   describe 'sort_events' do
-    let(:events) do
+    let_it_be(:events, reload: true) do
       [Time.zone.today, (Time.zone.today - 1.day), (Time.zone.today + 2.months)].map do |start_at|
         create(:event, start_at: start_at, end_at: (Time.zone.today + 3.months))
       end
@@ -491,7 +492,7 @@ describe SortByParamsService do
   end
 
   describe 'sort_activities' do
-    let(:activities) do
+    let_it_be(:activities, reload: true) do
       [Time.now, (Time.now - 2.minutes), (Time.now + 1.month)].map do |acted_at|
         create(:activity, acted_at: acted_at)
       end

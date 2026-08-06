@@ -7,12 +7,12 @@ describe StatCommentPolicy do
 
   let(:scope) { described_class::Scope.new(user, Comment) }
 
-  let!(:space) { create(:space) }
-  let!(:project) { create(:single_phase_ideation_project, space: space) }
-  let!(:folder) { create(:project_folder, projects: [project], space: space) }
-  let!(:idea) { create(:idea, project: project, phases: project.phases) }
-  let!(:comment) { create(:comment, idea: idea) }
-  let!(:other_comment) { create(:comment) }
+  let_it_be(:space, reload: true) { create(:space) }
+  let_it_be(:project, reload: true) { create(:single_phase_ideation_project, space: space) }
+  let_it_be(:folder, reload: true) { create(:project_folder, projects: [project], space: space) }
+  let_it_be(:idea, reload: true) { create(:idea, project: project, phases: project.phases) }
+  let_it_be(:comment, reload: true) { create(:comment, idea: idea) }
+  let_it_be(:other_comment, reload: true) { create(:comment) }
 
   shared_examples 'is denied stats access' do
     it { is_expected.not_to permit(:ideas_count) }

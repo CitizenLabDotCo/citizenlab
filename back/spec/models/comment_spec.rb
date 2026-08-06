@@ -68,7 +68,7 @@ RSpec.describe Comment do
   end
 
   describe 'anonymous participation' do
-    let(:author) { create(:user) }
+    let_it_be(:author, reload: true) { create(:user) }
 
     context 'creating comments that are not anonymous' do
       it 'has the same author hash for comments in different projects when the author is the same' do
@@ -79,7 +79,7 @@ RSpec.describe Comment do
     end
 
     context 'creating anonymous comments' do
-      let(:project) { create(:project) }
+      let_it_be(:project, reload: true) { create(:project) }
 
       context 'ideas' do
         it 'has no author if set to anonymous' do

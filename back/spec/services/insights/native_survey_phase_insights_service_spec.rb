@@ -2,16 +2,19 @@ require 'rails_helper'
 
 RSpec.describe Insights::NativeSurveyPhaseInsightsService do
   let(:service) { described_class.new(phase) }
-  let(:phase) { create(:native_survey_phase, start_at: 17.days.ago, end_at: 2.days.ago) }
-
-  let(:user1) { create(:user) }
   let!(:idea1) { create(:idea, phases: [phase], created_at: 20.days.ago, submitted_at: 20.days.ago, author: user1, creation_phase_id: phase.id) } # before phase start (should still be included)
   let!(:idea2) { create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, author: user1, creation_phase_id: phase.id) } # during phase, in week before last
   let!(:idea3) { create(:idea, phases: [phase], created_at: 1.day.ago, submitted_at: 1.day.ago, author: user1, creation_phase_id: phase.id) } # after phase end (should still be included)
-
-  let(:user2) { create(:user) }
   let!(:idea4) { create(:idea, phases: [phase], created_at: 5.days.ago, submitted_at: 5.days.ago, author: user2, creation_phase_id: phase.id) } # during phase, in last 7 days
-  let!(:idea5) do
+  let!(:idea6) { create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, author: nil, author_hash: 'some_author_hash', creation_phase_id: phase.id) } # during phase, no author (e.g. anonymous participation)
+  let!(:idea7) { create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, author: nil, author_hash: nil, creation_phase_id: phase.id) } # during phase, no author nor author_hash (e.g. imported idea)
+
+  let_it_be(:phase, reload: true) { create(:native_survey_phase, start_at: 17.days.ago, end_at: 2.days.ago) }
+
+  let_it_be(:user1, reload: true) { create(:user) }
+
+  let_it_be(:user2, reload: true) { create(:user) }
+  let_it_be(:idea5, reload: true) do
     create(
       :idea,
       phases: [phase],
@@ -22,9 +25,6 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
       creation_phase_id: phase.id
     ) # created during phase, but not submitted
   end
-
-  let!(:idea6) { create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, author: nil, author_hash: 'some_author_hash', creation_phase_id: phase.id) } # during phase, no author (e.g. anonymous participation)
-  let!(:idea7) { create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, author: nil, author_hash: nil, creation_phase_id: phase.id) } # during phase, no author nor author_hash (e.g. imported idea)
 
   describe '#participations_submitting_idea' do
     it 'returns the participation ideas posted data for non-transitive ideas created during phase' do

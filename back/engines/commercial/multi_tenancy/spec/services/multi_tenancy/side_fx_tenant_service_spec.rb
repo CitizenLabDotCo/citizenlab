@@ -4,8 +4,9 @@ require 'rails_helper'
 
 describe MultiTenancy::SideFxTenantService do
   let(:service) { described_class.new }
-  let(:current_user) { create(:user) }
   let(:tenant) { Tenant.current }
+
+  let_it_be(:current_user, reload: true) { create(:user) }
 
   describe 'after_create' do
     it "logs a 'created' action" do

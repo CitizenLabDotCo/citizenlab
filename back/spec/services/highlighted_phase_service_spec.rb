@@ -4,7 +4,8 @@ require 'rails_helper'
 
 describe HighlightedPhaseService do
   let(:service) { described_class.new(project) }
-  let(:project) { create(:project) }
+
+  let_it_be(:project, reload: true) { create(:project) }
 
   describe '#highlighted_phase and #participation_status' do
     context 'with a single active timeline phase' do

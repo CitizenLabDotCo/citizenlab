@@ -7,7 +7,7 @@ resource 'Idea Custom Fields' do
   before { header 'Content-Type', 'application/json' }
 
   get 'web_api/v1/phases/:phase_id/custom_fields/:custom_field_id/as_geojson' do
-    let(:project) { create(:single_phase_native_survey_project) }
+    let_it_be(:project, reload: true) { create(:single_phase_native_survey_project) }
     let(:phase) { project.phases.first }
     let(:form) { create(:custom_form, participation_context: phase) }
 
@@ -137,28 +137,28 @@ resource 'Idea Custom Fields' do
       )
     end
 
-    let(:custom_field_gender) do
+    let_it_be(:custom_field_gender, reload: true) do
       create(
         :custom_field_gender,
         title_multiloc: { 'en' => 'Gender', 'nl-NL' => 'Geslacht' }
       )
     end
-    let!(:custom_field_option_female) do
+    let_it_be(:custom_field_option_female, reload: true) do
       create(:custom_field_option,
         custom_field: custom_field_gender,
         key: 'female',
         title_multiloc: { 'en' => 'Female', 'nl-NL' => 'Vrouw' })
     end
 
-    let!(:custom_field_domicile) do
+    let_it_be(:custom_field_domicile, reload: true) do
       create(
         :custom_field_domicile,
         title_multiloc: { 'en' => 'Place of residence', 'nl-NL' => 'Woonplaats' }
       )
     end
-    let!(:area) { create(:area, title_multiloc: { 'en' => 'Brussels', 'nl-NL' => 'Bruxelles' }) }
+    let_it_be(:area, reload: true) { create(:area, title_multiloc: { 'en' => 'Brussels', 'nl-NL' => 'Bruxelles' }) }
 
-    let(:user) { create(:user, custom_field_values: { gender: 'female', domicile: area.id }) }
+    let_it_be(:user, reload: true) { create(:user, custom_field_values: { gender: 'female', domicile: area.id }) }
 
     let(:idea1) do
       create(
@@ -204,8 +204,11 @@ resource 'Idea Custom Fields' do
     end
 
     context 'when admin' do
+      before_all do
+        create(:admin, locale: 'nl-NL')
+      end
+
       before do
-        admin = create(:admin, locale: 'nl-NL')
         header_token_for admin
       end
 

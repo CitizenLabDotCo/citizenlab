@@ -65,7 +65,7 @@ RSpec.describe EmailCampaigns::ProposalExpiredForAdminMailer do
     end
 
     context 'with custom text' do
-      let!(:global_campaign) do
+      let_it_be(:global_campaign, reload: true) do
         create(
           :proposal_expired_for_admin_campaign,
           subject_multiloc: { 'en' => 'Custom Global Subject - {{ organizationName }}' },

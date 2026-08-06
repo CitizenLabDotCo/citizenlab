@@ -3,14 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe ReportBuilder::Queries::ProjectsTimeline do
-  let(:user) { create(:admin) }
+  let_it_be(:user, reload: true) { create(:admin) }
   let(:query) { described_class.new(user) }
 
   describe '#run_query' do
-    let!(:project1) { create(:project, title_multiloc: { en: 'Project 1' }) }
-    let!(:project2) { create(:project, title_multiloc: { en: 'Project 2' }) }
-    let!(:phase1) { create(:phase, project: project1, participation_method: 'information', start_at: 1.month.ago, end_at: 1.month.from_now) }
-    let!(:phase2) { create(:phase, project: project2, start_at: 2.months.ago, end_at: 2.months.from_now) }
+    let_it_be(:project1, reload: true) { create(:project, title_multiloc: { en: 'Project 1' }) }
+    let_it_be(:project2, reload: true) { create(:project, title_multiloc: { en: 'Project 2' }) }
+    let_it_be(:phase1, reload: true) { create(:phase, project: project1, participation_method: 'information', start_at: 1.month.ago, end_at: 1.month.from_now) }
+    let_it_be(:phase2, reload: true) { create(:phase, project: project2, start_at: 2.months.ago, end_at: 2.months.from_now) }
 
     before do
       # Ensure projects are published

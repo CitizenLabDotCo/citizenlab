@@ -6,9 +6,9 @@ describe WebApi::V1::UserSerializer do
   context "with 'abbreviated user names' enabled" do
     before { SettingsService.new.activate_feature! 'abbreviated_user_names' }
 
-    let(:jane) { create(:user, first_name: 'Jane', last_name: 'Doe') }
-    let(:john) { create(:user, first_name: 'John', last_name: 'Smith') }
-    let(:admin) { create(:admin, first_name: 'Thomas', last_name: 'Anderson') }
+    let_it_be(:jane, reload: true) { create(:user, first_name: 'Jane', last_name: 'Doe') }
+    let_it_be(:john, reload: true) { create(:user, first_name: 'John', last_name: 'Smith') }
+    let_it_be(:admin, reload: true) { create(:admin, first_name: 'Thomas', last_name: 'Anderson') }
 
     it 'abbreviates the user name' do
       last_name = described_class

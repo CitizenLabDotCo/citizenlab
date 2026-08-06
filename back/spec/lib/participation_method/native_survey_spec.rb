@@ -15,7 +15,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
 
   describe '#assign_defaults' do
     context 'when the proposed idea status is available' do
-      let!(:proposed) { create(:idea_status_proposed) }
+      let_it_be(:proposed, reload: true) { create(:idea_status_proposed) }
       let(:input) { build(:idea, publication_status: nil, idea_status: nil) }
 
       it 'sets the publication_status to "published" and the idea_status to "proposed"' do

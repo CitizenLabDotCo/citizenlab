@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe SmartGroups::Rules::LivesIn do
-  let(:valid_json_rule) do
+  let_it_be(:valid_json_rule, reload: true) do
     {
       'ruleType' => 'lives_in',
       'predicate' => 'has_value',
@@ -59,8 +59,8 @@ describe SmartGroups::Rules::LivesIn do
       )
     end
 
-    let!(:area1) { create(:area) }
-    let!(:area2) { create(:area) }
+    let_it_be(:area1, reload: true) { create(:area) }
+    let_it_be(:area2, reload: true) { create(:area) }
     let!(:users) do
       users = build_list(:user, 5)
       users[0][:custom_field_values] = { 'domicile' => 'outside' }
@@ -116,7 +116,7 @@ describe SmartGroups::Rules::LivesIn do
       )
     end
 
-    let(:area) do
+    let_it_be(:area, reload: true) do
       create(:area, title_multiloc: {
         'en' => 'Brussels',
         'fr-FR' => 'Bruxelles',

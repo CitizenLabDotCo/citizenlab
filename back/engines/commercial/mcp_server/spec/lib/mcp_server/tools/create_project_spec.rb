@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe McpServer::Tools::CreateProject do
-  let(:current_user) { create(:super_admin) }
+  let_it_be(:current_user, reload: true) { create(:super_admin) }
   let(:params) do
     {
       title_multiloc: { 'en' => 'New project' }

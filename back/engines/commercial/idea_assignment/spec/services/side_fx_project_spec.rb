@@ -4,8 +4,9 @@ require 'rails_helper'
 
 describe SideFxProjectService do
   let(:service) { described_class.new }
-  let(:user) { create(:user) }
-  let(:project) { create(:project) }
+
+  let_it_be(:user, reload: true) { create(:user) }
+  let_it_be(:project, reload: true) { create(:project) }
 
   describe 'after_create' do
     it "sets the default_assignee to the user that creates the project if it's not a super admin" do

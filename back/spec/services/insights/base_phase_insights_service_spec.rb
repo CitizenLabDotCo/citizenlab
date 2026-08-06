@@ -2,10 +2,10 @@ require 'rails_helper'
 
 RSpec.describe Insights::BasePhaseInsightsService do
   let(:service) { described_class.new(phase) }
-
-  let(:phase) { create(:single_voting_phase, start_at: 17.days.ago, end_at: 2.days.ago) }
-  let!(:permission1) { create(:permission, action: 'voting', permission_scope: phase) }
   let(:visits_service) { Insights::VisitsService.new(phase.project_id, start_at: phase.start_at, end_at: phase.end_at) }
+
+  let_it_be(:phase, reload: true) { create(:single_voting_phase, start_at: 17.days.ago, end_at: 2.days.ago) }
+  let_it_be(:permission1, reload: true) { create(:permission, action: 'voting', permission_scope: phase) }
 
   before { AppConfiguration.instance.update!(platform_start_at: 1.year.ago.beginning_of_day) }
 
@@ -24,21 +24,19 @@ RSpec.describe Insights::BasePhaseInsightsService do
   end
 
   describe '#base_metrics' do
-    let(:user1) { create(:user) }
+    let_it_be(:user1, reload: true) { create(:user) }
 
     let(:participation1) { create(:basket_participation, acted_at: 20.days.ago, user: user1) } # before phase start
+    let(:participation5) { create(:basket_participation, acted_at: 10.days.ago, user: user2) } # during phase (in week before last)
+    let(:participation6) { create(:basket_participation, acted_at: 4.days.ago, user: user2) } # during phase & in last 7 days
+    let(:participation7) { create(:basket_participation, acted_at: 4.days.ago, user: nil, participant_id: SecureRandom.uuid) } # Anonymous or no user, in last 7 days & before phase end
+    let(:participations) { { voting: [participation1, participation2, participation3, participation4, participation5, participation6, participation7] } }
+    let(:participant_ids) { participations[:voting].pluck(:participant_id).uniq }
     let(:participation2) { create(:basket_participation, acted_at: 10.days.ago, user: user1) } # during phase (in week before last)
     let(:participation3) { create(:basket_participation, acted_at: 5.days.ago, user: user1) } # during phase & in last 7 days
     let(:participation4) { create(:basket_participation, acted_at: 1.day.ago, user: user1) } # after phase end
 
-    let(:user2) { create(:user) }
-    let(:participation5) { create(:basket_participation, acted_at: 10.days.ago, user: user2) } # during phase (in week before last)
-    let(:participation6) { create(:basket_participation, acted_at: 4.days.ago, user: user2) } # during phase & in last 7 days
-
-    let(:participation7) { create(:basket_participation, acted_at: 4.days.ago, user: nil, participant_id: SecureRandom.uuid) } # Anonymous or no user, in last 7 days & before phase end
-
-    let(:participations) { { voting: [participation1, participation2, participation3, participation4, participation5, participation6, participation7] } }
-    let(:participant_ids) { participations[:voting].pluck(:participant_id).uniq }
+    let_it_be(:user2, reload: true) { create(:user) }
 
     it 'calculates base metrics correctly' do
       # Setup some visits
@@ -247,7 +245,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
     end
 
     context 'single-select field' do
-      let!(:single_select_field) { create(:custom_field, resource_type: 'User', key: 'single_select', input_type: 'select', title_multiloc: { en: 'Select one' }) }
+      let_it_be(:single_select_field, reload: true) { create(:custom_field, resource_type: 'User', key: 'single_select', input_type: 'select', title_multiloc: { en: 'Select one' }) }
       let!(:option_a) { create(:custom_field_option, custom_field: single_select_field, key: 'a', title_multiloc: { en: 'Option A' }) }
       let!(:option_b) { create(:custom_field_option, custom_field: single_select_field, key: 'b', title_multiloc: { en: 'Option B' }) }
 
@@ -335,9 +333,9 @@ RSpec.describe Insights::BasePhaseInsightsService do
     end
 
     context 'multiselect field' do
-      let!(:multi_select_field) { create(:custom_field, resource_type: 'User', key: 'multi_select', input_type: 'multiselect', title_multiloc: { en: 'Select one' }) }
-      let!(:option_x) { create(:custom_field_option, custom_field: multi_select_field, key: 'x', title_multiloc: { en: 'Option X' }) }
-      let!(:option_y) { create(:custom_field_option, custom_field: multi_select_field, key: 'y', title_multiloc: { en: 'Option Y' }) }
+      let_it_be(:multi_select_field, reload: true) { create(:custom_field, resource_type: 'User', key: 'multi_select', input_type: 'multiselect', title_multiloc: { en: 'Select one' }) }
+      let_it_be(:option_x, reload: true) { create(:custom_field_option, custom_field: multi_select_field, key: 'x', title_multiloc: { en: 'Option X' }) }
+      let_it_be(:option_y, reload: true) { create(:custom_field_option, custom_field: multi_select_field, key: 'y', title_multiloc: { en: 'Option Y' }) }
 
       let(:participation1) { create(:basket_participation, user_custom_field_values: { 'multi_select' => ['x'] }) }
       let(:participation2) { create(:basket_participation, user_custom_field_values: { 'multi_select' => %w[x y] }) }
@@ -378,7 +376,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
     end
 
     context 'checkbox field' do
-      let!(:checkbox_field) { create(:custom_field, resource_type: 'User', key: 'checkbox', input_type: 'checkbox', title_multiloc: { en: 'Check if you agree' }) }
+      let_it_be(:checkbox_field, reload: true) { create(:custom_field, resource_type: 'User', key: 'checkbox', input_type: 'checkbox', title_multiloc: { en: 'Check if you agree' }) }
 
       let(:participation1) { create(:basket_participation, user_custom_field_values: { 'checkbox' => true }) }
       let(:participation2) { create(:basket_participation, user_custom_field_values: { 'checkbox' => false }) }
@@ -412,7 +410,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
   end
 
   describe '#birthyear_demographics_data' do
-    let!(:custom_field_birthyear) { create(:custom_field, resource_type: 'User', key: 'birthyear', input_type: 'number', title_multiloc: { en: 'Birthyear' }) }
+    let_it_be(:custom_field_birthyear, reload: true) { create(:custom_field, resource_type: 'User', key: 'birthyear', input_type: 'number', title_multiloc: { en: 'Birthyear' }) }
 
     let(:participation1) { create(:basket_participation, user_custom_field_values: { 'birthyear' => Date.current.year - 25 }) }
     let(:participation2) { create(:basket_participation, user_custom_field_values: { 'birthyear' => Date.current.year - 25 }) }
@@ -508,7 +506,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
     let(:participant_ids) { participations[:voting].pluck(:participant_id).uniq }
 
     context 'with single-select field' do
-      let!(:custom_field_single_select) { create(:custom_field, resource_type: 'User', key: 'single_select', input_type: 'select', title_multiloc: { en: 'Select one' }) }
+      let_it_be(:custom_field_single_select, reload: true) { create(:custom_field, resource_type: 'User', key: 'single_select', input_type: 'select', title_multiloc: { en: 'Select one' }) }
       let!(:option_a) { create(:custom_field_option, custom_field: custom_field_single_select, key: 'a', title_multiloc: { en: 'Option A' }) }
       let!(:option_b) { create(:custom_field_option, custom_field: custom_field_single_select, key: 'b', title_multiloc: { en: 'Option B' }) }
 
@@ -553,7 +551,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
     end
 
     context 'with multi-select field' do
-      let!(:custom_field_multi_select) { create(:custom_field, resource_type: 'User', key: 'multi_select', input_type: 'multiselect', title_multiloc: { en: 'Select one' }) }
+      let_it_be(:custom_field_multi_select, reload: true) { create(:custom_field, resource_type: 'User', key: 'multi_select', input_type: 'multiselect', title_multiloc: { en: 'Select one' }) }
       let!(:option_a) { create(:custom_field_option, custom_field: custom_field_multi_select, key: 'a', title_multiloc: { en: 'Option A' }) }
       let!(:option_b) { create(:custom_field_option, custom_field: custom_field_multi_select, key: 'b', title_multiloc: { en: 'Option B' }) }
 
@@ -580,7 +578,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
     end
 
     context 'with checkbox field' do
-      let!(:custom_field_checkbox) { create(:custom_field, resource_type: 'User', key: 'checkbox', input_type: 'checkbox', title_multiloc: { en: 'Check if you agree' }) }
+      let_it_be(:custom_field_checkbox, reload: true) { create(:custom_field, resource_type: 'User', key: 'checkbox', input_type: 'checkbox', title_multiloc: { en: 'Check if you agree' }) }
 
       let(:participation1) { create(:basket_participation, user_custom_field_values: { 'checkbox' => false }) }
       let(:participation2) { create(:basket_participation, user_custom_field_values: { 'checkbox' => false }) }

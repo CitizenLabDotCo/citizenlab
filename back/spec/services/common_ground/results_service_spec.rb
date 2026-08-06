@@ -9,7 +9,7 @@ describe CommonGround::ResultsService do
 
   describe '#initialize' do
     context 'when phase is not a common ground phase' do
-      let(:phase) { create(:information_phase) }
+      let_it_be(:phase, reload: true) { create(:information_phase) }
 
       it 'raises error when phase is not a common ground phase' do
         expect { service }
@@ -93,7 +93,7 @@ describe CommonGround::ResultsService do
       end
 
       context 'when there are ties in consensus scores' do
-        let!(:idea5) do
+        let_it_be(:idea5, reload: true) do
           idea = create(:idea, project: phase.project, phases: [phase])
           create_list(:reaction, 5, reactable: idea, mode: 'up')
           idea
@@ -138,10 +138,10 @@ describe CommonGround::ResultsService do
       end
 
       context 'when there are draft ideas' do
-        let!(:draft_idea) { create(:idea, project: phase.project, phases: [phase], publication_status: 'draft') }
+        let_it_be(:draft_idea, reload: true) { create(:idea, project: phase.project, phases: [phase], publication_status: 'draft') }
         let(:n) { IdeasPhase.where(phase: phase).count }
 
-        before do
+        before_all do
           create(:reaction, reactable: draft_idea, user: user1, mode: 'up')
         end
 
@@ -153,10 +153,10 @@ describe CommonGround::ResultsService do
       end
 
       context 'when there are ideas from other phases' do
-        let!(:other_idea) { create(:idea) }
+        let_it_be(:other_idea, reload: true) { create(:idea) }
         let(:n) { Idea.count }
 
-        before do
+        before_all do
           create(:reaction, reactable: other_idea, user: user1, mode: 'up')
         end
 

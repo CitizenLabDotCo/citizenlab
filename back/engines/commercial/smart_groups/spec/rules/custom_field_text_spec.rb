@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe SmartGroups::Rules::CustomFieldText do
-  let(:valid_json_rule) do
+  let_it_be(:valid_json_rule, reload: true) do
     {
       'ruleType' => 'custom_field_text',
       'customFieldId' => create(:custom_field).id,
@@ -32,7 +32,7 @@ describe SmartGroups::Rules::CustomFieldText do
   end
 
   describe 'filter' do
-    let(:custom_field) { create(:custom_field) }
+    let_it_be(:custom_field, reload: true) { create(:custom_field) }
     let!(:users) do
       users = build_list(:user, 5)
       users[0].custom_field_values[custom_field.key] = 'one'
@@ -95,7 +95,7 @@ describe SmartGroups::Rules::CustomFieldText do
   end
 
   describe 'description_multiloc' do
-    let(:text_field) do
+    let_it_be(:text_field, reload: true) do
       create(:custom_field, title_multiloc: {
         'en' => 'What\'s your favourite Star Wars quote?',
         'fr-FR' => 'Quelle est votre citation Star Wars préférée?',

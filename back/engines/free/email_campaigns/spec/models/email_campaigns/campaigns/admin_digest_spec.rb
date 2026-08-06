@@ -9,12 +9,13 @@ RSpec.describe EmailCampaigns::Campaigns::AdminDigest do
 
   describe '#generate_commands' do
     let(:campaign) { create(:admin_digest_campaign) }
-    let!(:admin) { create(:admin) }
-    let!(:old_ideas) { create_list(:idea, 2, published_at: 20.days.ago) }
-    let!(:new_ideas) { create_list(:idea, 2, published_at: 1.day.ago) }
-    let!(:new_proposal) { create(:proposal, published_at: 1.day.ago) }
-    let!(:reaction) { create(:reaction, mode: 'up', reactable: new_ideas.first) }
-    let!(:draft) { create(:idea, publication_status: 'draft') }
+
+    let_it_be(:admin, reload: true) { create(:admin) }
+    let_it_be(:old_ideas, reload: true) { create_list(:idea, 2, published_at: 20.days.ago) }
+    let_it_be(:new_ideas, reload: true) { create_list(:idea, 2, published_at: 1.day.ago) }
+    let_it_be(:new_proposal, reload: true) { create(:proposal, published_at: 1.day.ago) }
+    let_it_be(:reaction, reload: true) { create(:reaction, mode: 'up', reactable: new_ideas.first) }
+    let_it_be(:draft, reload: true) { create(:idea, publication_status: 'draft') }
 
     it 'generates a command with the desired payload and tracked content' do
       command = campaign.generate_commands(recipient: admin).first
@@ -76,7 +77,8 @@ RSpec.describe EmailCampaigns::Campaigns::AdminDigest do
 
   describe 'content_worth_sending?' do
     let(:campaign) { build(:admin_digest_campaign) }
-    let(:project) { create(:single_phase_ideation_project) }
+
+    let_it_be(:project, reload: true) { create(:single_phase_ideation_project) }
 
     it 'returns false when no significant stats' do
       expect(campaign.send(:content_worth_sending?, {})).to be false

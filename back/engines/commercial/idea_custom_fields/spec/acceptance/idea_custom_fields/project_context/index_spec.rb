@@ -12,10 +12,10 @@ resource 'Idea Custom Fields' do
     parameter :input_types, 'Filter custom fields by input types', type: :array, items: { type: :string }, required: false
     parameter :public_fields, 'Only return custom fields that are visible to the public', type: :boolean, required: false
 
-    let(:context) { create(:single_phase_ideation_project) }
+    let_it_be(:context, reload: true) { create(:single_phase_ideation_project) }
     let(:project_id) { context.id }
-    let!(:form) { create(:custom_form, :with_default_fields, participation_context: context) }
-    let!(:custom_field) { create(:custom_field_text, resource: form, key: 'extra_field1') }
+    let_it_be(:form, reload: true) { create(:custom_form, :with_default_fields, participation_context: context) }
+    let_it_be(:custom_field, reload: true) { create(:custom_field_text, resource: form, key: 'extra_field1') }
 
     context 'when admin' do
       before { admin_header_token }
@@ -82,10 +82,10 @@ resource 'Idea Custom Fields' do
     end
 
     context 'when resident' do
-      let!(:hidden_field) { create(:custom_field_text, resource: form, key: 'extra_field2', hidden: true) }
-      let!(:disabled_field) { create(:custom_field_text, resource: form, key: 'extra_field3', enabled: false) }
+      let_it_be(:hidden_field, reload: true) { create(:custom_field_text, resource: form, key: 'extra_field2', hidden: true) }
+      let_it_be(:disabled_field, reload: true) { create(:custom_field_text, resource: form, key: 'extra_field3', enabled: false) }
 
-      let(:user) { create(:user) }
+      let_it_be(:user, reload: true) { create(:user) }
 
       before { header_token_for(user) }
 

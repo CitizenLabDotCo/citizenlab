@@ -78,7 +78,7 @@ RSpec.describe AppConfiguration do
   end
 
   describe '#closest_locale_to' do
-    let(:app_config) do
+    let_it_be(:app_config, reload: true) do
       create(:tenant, host: 'something.else-than-the-default-test-tenant').configuration
     end
 

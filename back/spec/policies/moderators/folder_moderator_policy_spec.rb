@@ -3,12 +3,12 @@ require 'rails_helper'
 describe Moderators::FolderModeratorPolicy do
   subject { described_class.new(user, folder) }
 
-  let!(:space) { create(:space) }
-  let!(:other_space) { create(:space) }
+  let_it_be(:space, reload: true) { create(:space) }
+  let_it_be(:other_space, reload: true) { create(:space) }
 
-  let!(:project) { create(:project, space: space) }
-  let!(:folder) { create(:project_folder, space: space, projects: [project]) }
-  let!(:unrelated_folder) { create(:project_folder, space: other_space) }
+  let_it_be(:project, reload: true) { create(:project, space: space) }
+  let_it_be(:folder, reload: true) { create(:project_folder, space: space, projects: [project]) }
+  let_it_be(:unrelated_folder, reload: true) { create(:project_folder, space: other_space) }
 
   let(:record) { folder }
 

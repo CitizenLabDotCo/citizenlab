@@ -5,10 +5,11 @@ require 'rails_helper'
 RSpec.describe Notifications::ProjectReviewStateChange do
   describe '#make_notifications_on' do
     let(:notifications) { described_class.make_notifications_on(activity) }
-    let(:project_review) { create(:project_review, :approved) }
     let(:activity) do
       create(:activity, item: project_review, action: 'changed', payload: { change: change })
     end
+
+    let_it_be(:project_review, reload: true) { create(:project_review, :approved) }
 
     context 'if the trigger activity is a project review approval' do
       let(:change) do

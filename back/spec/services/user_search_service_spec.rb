@@ -82,9 +82,9 @@ describe UserSearchService do
     end
 
     context 'with admins_and_moderators' do
-      let!(:admin) { create(:admin, first_name: 'Haddock', last_name: 'Ansen') }
-      let!(:moderator) { create(:project_moderator, first_name: 'Tournesol', last_name: 'Ansen') }
-      let!(:regular) { create(:user, first_name: 'Tintin', last_name: 'Ansen') }
+      let_it_be(:admin, reload: true) { create(:admin, first_name: 'Haddock', last_name: 'Ansen') }
+      let_it_be(:moderator, reload: true) { create(:project_moderator, first_name: 'Tournesol', last_name: 'Ansen') }
+      let_it_be(:regular, reload: true) { create(:user, first_name: 'Tintin', last_name: 'Ansen') }
 
       it 'returns only admins and moderators' do
         results = service.search('ansen', admins_and_moderators: true)

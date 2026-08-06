@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 describe McpServer::Tools::ListPollQuestions do
-  let(:current_user) { create(:super_admin) }
-  let(:project) { create(:project) }
-  let(:phase) { create(:poll_phase, project:) }
+  let_it_be(:current_user, reload: true) { create(:super_admin) }
+  let_it_be(:project, reload: true) { create(:project) }
+  let_it_be(:phase, reload: true) { create(:poll_phase, project:) }
 
   def list(params = {})
     run_mcp_tool(described_class, params:, current_user:)

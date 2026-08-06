@@ -13,7 +13,7 @@ resource 'Input Topics' do
 
   include_context 'common_auth'
 
-  let!(:project) { create(:project) }
+  let_it_be(:project, reload: true) { create(:project) }
   let!(:input_topics) { create_list(:input_topic, 5, project: project) }
 
   get '/api/v2/input_topics/' do

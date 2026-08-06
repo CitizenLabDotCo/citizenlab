@@ -104,8 +104,8 @@ resource 'Ideas' do
       response_field :base, "Array containing objects with signature { error: #{Permissions::PhasePermissionsService::POSTING_DENIED_REASONS.values.join(' | ')} }", scope: :errors
 
       let(:idea) { build(:idea) }
-      let(:default_assignee) { create(:admin) }
-      let(:project) { create(:single_phase_ideation_project, default_assignee: default_assignee) }
+      let_it_be(:default_assignee, reload: true) { create(:admin) }
+      let_it_be(:project, reload: true) { create(:single_phase_ideation_project, default_assignee: default_assignee) }
       let(:phase_id) { project.phases.first.id }
       let(:title_multiloc) { idea.title_multiloc }
       let(:body_multiloc) { idea.body_multiloc }
@@ -136,8 +136,11 @@ resource 'Ideas' do
     ValidationErrorHelper.new.error_fields(self, Idea)
     response_field :base, "Array containing objects with signature { error: #{Permissions::PhasePermissionsService::POSTING_DENIED_REASONS.values.join(' | ')} }", scope: :errors
 
-    before do
+    before_all do
       @project = create(:single_phase_ideation_project)
+    end
+
+    before do
       @idea =  create(:idea, project: @project)
     end
 

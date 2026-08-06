@@ -21,8 +21,8 @@ RSpec.describe AdminApi::CopyProjectJob do
     end
     let_it_be(:template_yaml) { template.to_yaml }
 
-    let(:folder) { create(:project_folder) }
-    let(:user) { create(:admin) }
+    let_it_be(:folder, reload: true) { create(:project_folder) }
+    let_it_be(:user, reload: true) { create(:admin) }
 
     example 'imports a project' do
       expect { job.perform(template_yaml, user.id, folder.id) }.to change(Project, :count).by(1)

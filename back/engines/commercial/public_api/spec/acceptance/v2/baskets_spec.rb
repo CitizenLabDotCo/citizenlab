@@ -13,7 +13,7 @@ resource 'Voting' do
 
   include_context 'common_auth'
 
-  let!(:baskets) { create_list(:basket, 3) }
+  let_it_be(:baskets, reload: true) { create_list(:basket, 3) }
 
   get '/api/v2/baskets' do
     route_summary 'List all baskets'

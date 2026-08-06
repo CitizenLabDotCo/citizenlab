@@ -116,8 +116,8 @@ RSpec.describe Group do
   end
 
   describe 'by_project_id' do
-    let!(:project1) { create(:project) }
-    let!(:project2) { create(:project) }
+    let_it_be(:project1, reload: true) { create(:project) }
+    let_it_be(:project2, reload: true) { create(:project) }
 
     let!(:smart_group_with_project1) do
       create(:group,

@@ -21,10 +21,10 @@ RSpec.describe ParticipationMethod::Proposals do
         SettingsService.new.activate_feature!('flag_inappropriate_content')
       end
 
-      let!(:ideation_proposed) { create(:idea_status_proposed) }
-      let!(:prescreening_status) { create(:proposals_status, code: 'prescreening') }
-      let!(:proposed_status) { create(:proposals_status, code: 'proposed') }
-      let!(:custom_status) { create(:proposals_status) }
+      let_it_be(:ideation_proposed, reload: true) { create(:idea_status_proposed) }
+      let_it_be(:prescreening_status, reload: true) { create(:proposals_status, code: 'prescreening') }
+      let_it_be(:proposed_status, reload: true) { create(:proposals_status, code: 'proposed') }
+      let_it_be(:custom_status, reload: true) { create(:proposals_status) }
 
       context 'when prescreening_mode is all' do
         let(:phase) { create(:proposals_phase, prescreening_mode: 'all') }

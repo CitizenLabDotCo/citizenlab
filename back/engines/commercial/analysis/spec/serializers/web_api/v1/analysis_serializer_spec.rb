@@ -15,13 +15,14 @@ describe Analysis::WebApi::V1::AnalysisSerializer do
 
   describe 'all_custom_fields' do
     context 'with custom form' do
-      let(:project) { create(:project_with_active_native_survey_phase) }
+      let_it_be(:project, reload: true) { create(:project_with_active_native_survey_phase) }
       let(:phase) { project.phases.first }
+      let(:analysis) { create(:analysis, phase: phase, project: nil, main_custom_field: main_field) }
       let(:custom_form) { create(:custom_form, participation_context: phase) }
       let!(:main_field) { create(:custom_field_text, resource: custom_form) }
       let!(:available_fields) { create_list(:custom_field_checkbox, 2, resource: custom_form) }
-      let!(:unavailable_fields) { create_list(:custom_field_checkbox, 2) }
-      let(:analysis) { create(:analysis, phase: phase, project: nil, main_custom_field: main_field) }
+
+      let_it_be(:unavailable_fields, reload: true) { create_list(:custom_field_checkbox, 2) }
 
       it 'includes all fields of the custom form' do
         expect(result.dig(:data, :relationships, :all_custom_fields, :data).pluck(:id)).to contain_exactly(main_field.id, *available_fields.map(&:id))

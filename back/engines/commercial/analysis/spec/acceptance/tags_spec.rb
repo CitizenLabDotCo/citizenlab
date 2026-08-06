@@ -151,7 +151,7 @@ resource 'Tags' do
     ValidationErrorHelper.new.error_fields(self, Analysis::Tag)
 
     let(:name) { 'tag-name' }
-    let(:analysis) { create(:analysis) }
+    let_it_be(:analysis, reload: true) { create(:analysis) }
     let(:analysis_id) { analysis.id }
 
     context 'when admin' do

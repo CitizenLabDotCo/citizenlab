@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Analysis::QAndAJob do
   subject(:job) { described_class.new }
 
-  let(:question) { create(:analysis_question) }
+  let_it_be(:question, reload: true) { create(:analysis_question) }
   let(:analysis) { question.analysis }
   let(:project) { analysis.project }
   let(:background_task) { question.background_task }

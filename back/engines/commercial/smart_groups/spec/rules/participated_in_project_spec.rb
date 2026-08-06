@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe SmartGroups::Rules::ParticipatedInProject do
-  let(:valid_json_rule) do
+  let_it_be(:valid_json_rule, reload: true) do
     {
       'ruleType' => 'participated_in_project',
       'predicate' => 'in',
@@ -147,14 +147,14 @@ describe SmartGroups::Rules::ParticipatedInProject do
   end
 
   describe 'description_multiloc' do
-    let(:project1) do
+    let_it_be(:project1, reload: true) do
       create(:project, title_multiloc: {
         'en' => 'beer',
         'fr-FR' => 'bière',
         'nl-NL' => 'bier'
       })
     end
-    let(:project2) do
+    let_it_be(:project2, reload: true) do
       create(:project, title_multiloc: {
         'en' => 'delayed',
         'fr-FR' => 'retardé',

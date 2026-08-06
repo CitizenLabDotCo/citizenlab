@@ -18,8 +18,8 @@ resource 'AutoTaggings' do
       parameter :filters, 'Optional filters, in case the auto tagging should happen on a subset of inputs only'
     end
 
-    let(:project) { create(:single_phase_ideation_project) }
-    let(:analysis) { create(:analysis, project: project) }
+    let_it_be(:project, reload: true) { create(:single_phase_ideation_project) }
+    let_it_be(:analysis, reload: true) { create(:analysis, project: project) }
     let(:id) { analysis.id }
     # let(:input) { create(:idea, project: project) }
 
@@ -46,7 +46,7 @@ resource 'AutoTaggings' do
     end
 
     context do
-      let(:tag) { create(:tag, analysis: analysis, tag_type: 'custom') }
+      let_it_be(:tag, reload: true) { create(:tag, analysis: analysis, tag_type: 'custom') }
       let(:auto_tagging_method) { 'few_shot_classification' }
       let(:filters) { { 'published_at_from' => '2022-01-01' } }
       let(:tags_ids) { [tag.id] }

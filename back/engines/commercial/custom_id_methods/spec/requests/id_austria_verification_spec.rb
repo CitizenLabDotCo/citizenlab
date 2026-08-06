@@ -56,13 +56,14 @@ context 'id_austria verification' do
     }
   end
 
-  before do
+  before_all do
     @user = create(:user, first_name: 'Otto', last_name: 'Ottakringer')
-    @token = AuthToken::AuthToken.new(payload: @user.to_token_payload).token
+  end
 
+  before do
+    @token = AuthToken::AuthToken.new(payload: @user.to_token_payload).token
     OmniAuth.config.test_mode = true
     OmniAuth.config.mock_auth[:id_austria] = OmniAuth::AuthHash.new(auth_hash)
-
     configuration = AppConfiguration.instance
     settings = configuration.settings
     settings['id_config'] = {
@@ -208,7 +209,7 @@ context 'id_austria verification' do
       follow_redirect!
     end
 
-    let!(:new_user) do
+    let_it_be(:new_user, reload: true) do
       User.order(created_at: :asc).last.tap do |user|
         expect(user).to have_attributes({ email: nil })
         expect_user_to_be_verified_and_identified(user)
