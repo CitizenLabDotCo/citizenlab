@@ -351,6 +351,58 @@ resource 'Permissions' do
           })
         end
       end
+
+      context "'users' permission with verification enabled but email disabled" do
+        before do
+          @permission = @phase.permissions.first
+          @permission.update!(
+            permitted_by: 'users',
+            require_verification: true,
+            require_confirmed_email: false,
+          )
+        end
+
+        let(:action) { @permission.action }
+
+        example 'Blocks participation if user has confirmed email but is not verified' do
+          @user.update!(
+            email: 'test@user.com', 
+            email_confirmed_at: Time.current,
+            confirmation_required: false,
+            verified: false
+          )
+          do_request
+          assert_status 200
+          expect(response_data[:attributes][:permitted]).to be false
+          expect(response_data[:attributes][:disabled_reason]).to eq 'user_missing_requirements'
+        end
+
+        example 'Allows participation is user has both email and is verified' do
+          @user.update!(
+            email: 'test@user.com', 
+            email_confirmed_at: Time.current,
+            confirmation_required: false,
+            verified: true
+          )
+          do_request
+          assert_status 200
+          expect(response_data[:attributes][:permitted]).to be true
+          expect(response_data[:attributes][:disabled_reason]).to be_nil
+        end
+
+        example 'Allows participation if user has no email but is verified' do
+          @user.update!(
+            email: nil,
+            email_confirmed_at: nil,
+            confirmation_required: true,
+            verified: true
+          )
+          do_request
+          assert_status 200
+          expect(response_data[:attributes][:permitted]).to be true
+          expect(response_data[:attributes][:disabled_reason]).to be_nil
+        end
+      end
     end
 
     get 'web_api/v1/permissions/:action/requirements' do
