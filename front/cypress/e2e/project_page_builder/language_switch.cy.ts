@@ -14,7 +14,6 @@ describe('Project description builder language switch', () => {
     cy.getAdminAuthUser().then((user) => {
       const projectTitle = randomString();
       const projectDescriptionPreview = randomString();
-      const projectDescription = '';
       const userId = user.body.data.id;
 
       cy.apiCreateProject({
