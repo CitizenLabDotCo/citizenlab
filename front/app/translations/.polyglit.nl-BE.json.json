@@ -3509,6 +3509,11 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+  "app.components.SmsConsent.smsConfirmationDisclosure": {
+    "state": "verified",
+    "verified_at": "2026-08-06T12:25:13.864161Z",
+    "verified_by": "Luuc"
+  },
   "app.components.StatusModule.futurePhase": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
@@ -10794,7 +10799,6 @@
     "verified_at": "2026-07-14T17:01:42.057992Z",
     "verified_by": "Luuc"
   },
-
   "app.containers.PhoneChange.phoneUnsupportedCountry": {
     "state": "verified",
     "verified_at": "2026-07-23T19:52:14.304523Z",
