@@ -61,6 +61,37 @@ describe MultiTenancy::Templates::TenantDeserializer do
       expect(CustomField.all.map(&:resource)).to match_array CustomForm.all
     end
 
+    it 'ignores removed attributes still present in templates serialized before their removal' do
+      yml = <<~YAML
+        ---
+        models:
+          project:
+          - &1
+            title_multiloc:
+              en: Legacy project
+            description_multiloc:
+              en: "<p>Legacy description</p>"
+          project_folders/folder:
+          - &2
+            title_multiloc:
+              en: Legacy folder
+            description_multiloc:
+              en: "<p>Legacy folder description</p>"
+          admin_publication:
+          - publication_ref: *1
+            publication_status: published
+          - publication_ref: *2
+            publication_status: published
+      YAML
+
+      template = YAML.load(yml, aliases: true)
+
+      service.deserialize(template)
+
+      expect(Project.count).to eq 1
+      expect(ProjectFolders::Folder.count).to eq 1
+    end
+
     describe 'filtering of template multiloc attributes' do
       let(:platform_locales) { ['en'] }
       let(:template) do
