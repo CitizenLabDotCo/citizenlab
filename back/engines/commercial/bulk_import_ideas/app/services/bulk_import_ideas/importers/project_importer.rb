@@ -185,18 +185,20 @@ module BulkImportIdeas::Importers
         project_data = increment_title(project_data)
 
         # Create a new project only visible to admins
-        project_attributes = project_data.except(:phases, :thumbnail_url, :banner_url, :attachments, :description)
+        # Job payloads enqueued before the rename carry :description_multiloc
+        project_data[:description] ||= project_data[:description_multiloc]
+        project_attributes = project_data.except(:phases, :thumbnail_url, :banner_url, :attachments, :description, :description_multiloc)
         project = Project.create!(project_attributes)
-
-        # Put the imported description on the project page
-        create_project_page_layout(project, project_data[:description])
 
         # Create the project thumbnail and banner images if they exist
         create_project_thumbnail_image(project, project_data)
         create_project_banner_image(project, project_data)
 
-        # Add any attachments
+        # Add any attachments (before the page layout, so it gets their widgets)
         create_project_attachments(project, project_data)
+
+        # Put the imported description on the project page
+        create_project_page_layout(project, project_data[:description])
 
         log "Created new project: #{project_data[:slug]} (#{project.id})"
         project
@@ -359,7 +361,10 @@ module BulkImportIdeas::Importers
     def create_project_page_layout(project, description_multiloc)
       layout_service = ContentBuilder::ProjectPageLayoutService.new
       craftjs_json = if description_multiloc.present?
-        layout_service.craftjs_json_from_body(description_body_craftjs(description_multiloc))
+        layout_service.append_file_nodes(
+          layout_service.craftjs_json_from_body(description_body_craftjs(description_multiloc)),
+          project
+        )
       else
         layout_service.craftjs_json_for(project)
       end
@@ -410,7 +415,7 @@ module BulkImportIdeas::Importers
     def description_has_media?(description_multiloc)
       description_multiloc.values.any? do |html|
         fragment = Nokogiri::HTML.fragment(html.to_s)
-        fragment.at('img') || fragment.at('iframe')
+        fragment.at('img') || fragment.at('iframe') || fragment.at('.custom-button')
       end
     end
 
