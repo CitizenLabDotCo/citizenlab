@@ -434,6 +434,10 @@ module MultiTenancy
               enabled: false,
               allowed: false
             },
+            sms_login: {
+              enabled: false,
+              allowed: false
+            },
             decidim_importer: {
               enabled: true,
               allowed: true

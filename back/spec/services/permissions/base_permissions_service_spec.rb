@@ -156,7 +156,6 @@ describe Permissions::BasePermissionsService do
 
         context 'when confirmed admin' do
           before { user.update!(roles: [{ type: 'admin' }]) }
-
           it { expect(denied_reason).to be_nil }
         end
 
@@ -344,7 +343,7 @@ describe Permissions::BasePermissionsService do
         end
       end
 
-      context 'when verification is required' do
+      context 'when email and verification are required' do
         let(:permission) { create(:permission, permitted_by: 'users', require_verification: true) }
 
         context 'without groups' do
@@ -449,6 +448,51 @@ describe Permissions::BasePermissionsService do
 
             it { expect(denied_reason).to eq 'user_not_active' }
           end
+        end
+      end
+
+      context 'when verification is required but email is not' do
+        let(:permission) do
+          create(
+            :permission,
+            permitted_by: 'users',
+            require_verification: true,
+            email_and_phone_requirements: 'neither'
+          )
+        end
+
+        context 'when not signed in' do
+          let(:user) { nil }
+
+          it { expect(denied_reason).to eq 'user_not_signed_in' }
+        end
+
+        context 'when verified resident' do
+          before do
+            user.update!(verified: true)
+            user.identities << create(:franceconnect_identity, user: user)
+          end
+
+          it { expect(denied_reason).to be_nil }
+        end
+
+        context 'when unverified resident' do
+          before { user.update!(verified: false) }
+
+          it { expect(denied_reason).to eq 'user_not_verified' }
+        end
+
+        context 'when verified resident without confirmed email' do
+          before do
+            user.update!(
+              verified: true,
+              email_confirmed_at: nil,
+              confirmation_required: true
+            )
+            user.identities << create(:franceconnect_identity, user: user)
+          end
+
+          it { expect(denied_reason).to be_nil }
         end
       end
     end

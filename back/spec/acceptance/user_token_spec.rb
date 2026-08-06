@@ -241,7 +241,7 @@ resource 'User Token' do
 
       context 'when user has no password and is confirmed' do
         let!(:user) do
-          create(:unconfirmed_user, email: email).tap { |u| u.email_confirmation.confirm! }
+          create(:unconfirmed_user, email: email).tap { |u| u.find_or_create_confirmation(:email_confirmation).confirm! }
         end
 
         example '[error] no JWT token is returned', document: false do
@@ -256,7 +256,7 @@ resource 'User Token' do
         let(:email) { 'hello@citizenlab.co' }
         let!(:user) do
           create(:unconfirmed_user, email: email, roles: [{ type: 'admin' }])
-            .tap { |u| u.email_confirmation.confirm! }
+            .tap { |u| u.find_or_create_confirmation(:email_confirmation).confirm! }
         end
 
         example '[error] no JWT token is returned', document: false do
@@ -268,7 +268,7 @@ resource 'User Token' do
       end
 
       context 'when the password is omitted entirely' do
-        let!(:user) { create(:unconfirmed_user, email: email).tap { |u| u.email_confirmation.confirm! } }
+        let!(:user) { create(:unconfirmed_user, email: email).tap { |u| u.find_or_create_confirmation(:email_confirmation).confirm! } }
 
         example '[error] no JWT token is returned', document: false do
           do_request(auth: { email: email })
@@ -277,7 +277,7 @@ resource 'User Token' do
       end
 
       context 'when the password is blank whitespace' do
-        let!(:user) { create(:unconfirmed_user, email: email).tap { |u| u.email_confirmation.confirm! } }
+        let!(:user) { create(:unconfirmed_user, email: email).tap { |u| u.find_or_create_confirmation(:email_confirmation).confirm! } }
 
         example '[error] no JWT token is returned', document: false do
           do_request(auth: { email: email, password: '   ' })

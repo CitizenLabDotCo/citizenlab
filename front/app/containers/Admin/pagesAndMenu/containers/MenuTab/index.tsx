@@ -94,6 +94,7 @@ const MenuTab = () => {
               buttonStyle="admin-dark"
               icon="plus-circle"
               id="e2e-new-menu-item"
+              className="intercom-admin-pages-menu-add-menu-item"
               onClick={openNewModal}
               disabled={navbarIsFull}
             >

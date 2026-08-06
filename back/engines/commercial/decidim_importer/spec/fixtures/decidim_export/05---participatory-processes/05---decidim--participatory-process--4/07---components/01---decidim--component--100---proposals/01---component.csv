@@ -1,0 +1,2 @@
+uid,manifest_name,name,settings,weight,permissions,published_at,previously_published,specific_data
+decidim--component--100,proposals,"{""fr"":""Vos idées à voter""}","{""global"":{""vote_limit"":2}}",0,,2022-09-01 10:00:00 +0100,true,

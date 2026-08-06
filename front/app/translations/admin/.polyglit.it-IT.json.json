@@ -9719,8 +9719,6 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
-<<<<<<< HEAD
-=======
   "app.containers.Admin.projects.project.projectHomepage": {
     "state": "verified",
     "verified_at": "2026-07-27T08:44:11.605205Z",
@@ -9741,7 +9739,6 @@
     "verified_at": "2026-07-01T13:49:11.860727Z",
     "verified_by": "Roger"
   },
->>>>>>> master
   "app.containers.Admin.projects.project.survey.aiAnalysis2": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -10107,8 +10104,6 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
-<<<<<<< HEAD
-=======
   "app.containers.Admin.projects.project.surveyPdfExport.cancelButton": {
     "state": "verified",
     "verified_at": "2026-07-01T13:49:11.860727Z",
@@ -10169,7 +10164,6 @@
     "verified_at": "2026-07-27T08:44:11.605205Z",
     "verified_by": "Roger"
   },
->>>>>>> master
   "app.containers.Admin.projects.project.traffic.selectPeriod": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
