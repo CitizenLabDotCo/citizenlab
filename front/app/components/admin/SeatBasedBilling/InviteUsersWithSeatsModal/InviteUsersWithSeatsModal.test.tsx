@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, screen } from 'utils/testUtils/rtl';
+import { act, fireEvent, render, screen } from 'utils/testUtils/rtl';
 
 import InviteUsersWithSeatsModal from '.';
 
@@ -141,5 +141,61 @@ describe('InviteUsersWithSeatsModal', () => {
     ).toBeInTheDocument();
 
     expect(confirmButton).toBeInTheDocument();
+  });
+
+  // The container also takes this modal down on failure, so both halves need
+  // pinning separately — either one alone satisfies a container-level test.
+  describe('on confirmation', () => {
+    const renderModal = (inviteUsers: () => Promise<boolean>) =>
+      render(
+        <InviteUsersWithSeatsModal
+          inviteUsers={inviteUsers}
+          showModal
+          closeModal={closeModal}
+          newSeatsResponse={{
+            data: {
+              id: '1',
+              type: 'invites_import',
+              attributes: {
+                job_type: 'count_new_seats',
+                completed_at: null,
+                result: {
+                  newly_added_admins_number: 1,
+                  newly_added_moderators_number: 0,
+                },
+              },
+            },
+          }}
+        />
+      );
+
+    const confirm = async () =>
+      act(async () => {
+        fireEvent.click(
+          screen.getByRole('button', {
+            name: 'Confirm and send out invitations',
+          })
+        );
+      });
+
+    it('stays on the confirmation step when the request is not accepted', async () => {
+      renderModal(jest.fn().mockResolvedValue(false));
+
+      await confirm();
+
+      expect(
+        screen.getByText('Confirm impact on seat usage')
+      ).toBeInTheDocument();
+    });
+
+    it('shows the success screen once the request is accepted', async () => {
+      renderModal(jest.fn().mockResolvedValue(true));
+
+      await confirm();
+
+      expect(
+        screen.queryByText('Confirm impact on seat usage')
+      ).not.toBeInTheDocument();
+    });
   });
 });

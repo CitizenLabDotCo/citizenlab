@@ -37,6 +37,9 @@ import { Section, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import HelmetIntl from 'components/HelmetIntl';
 import Error from 'components/UI/Error';
+// A creation that times out and one that errors say the same thing to the admin,
+// so they share a string instead of keeping two identical ones.
+import errorMessages from 'components/UI/Error/messages';
 import Tabs from 'components/UI/Tabs';
 import Warning from 'components/UI/Warning';
 
@@ -58,6 +61,12 @@ const StyledTabs = styled(Tabs)`
 `;
 
 export type TInviteTabName = 'template' | 'manual';
+
+// Both stages run as background jobs. If one never reports back — stalled queue,
+// worker killed — nothing else clears the processing state.
+// Exported so the tests advance the clock by the real budgets.
+export const COUNT_TIMEOUT_MS = 120000; // 2 minutes
+export const CREATE_TIMEOUT_MS = 300000; // 5 minutes
 
 const Invitations = () => {
   const queryClient = useQueryClient();
@@ -101,6 +110,10 @@ const Invitations = () => {
 
   // Variables to poll for import job status
   const [invitesImportId, setInvitesImportId] = useState<string | null>(null);
+  // Which job the form is waiting on, set where that job is submitted. Do not
+  // derive it from the polled import: the id is cleared before the seat count is
+  // acted on, and the query is keyed on that id, so the data is already gone.
+  const [jobStage, setJobStage] = useState<'count' | 'create' | null>(null);
   const { data: invitesImport, resetQueryData } = useInvitesImport({
     importId: invitesImportId,
     enabled: !!invitesImportId,
@@ -136,15 +149,19 @@ const Invitations = () => {
 
   const [savedInviteOptions, setSavedInviteOptions] = useState<any>(null);
 
+  // Resolves to whether the request was accepted; the seats modal waits on it
+  // before claiming success.
   const onSubmitTemplateTab = useCallback(
-    async (bulkInvite: INewBulkInvite, save: boolean) => {
+    async (bulkInvite: INewBulkInvite, save: boolean): Promise<boolean> => {
       // If we're saving and have saved options from a previous count operation
       if (save && savedInviteOptions) {
         try {
           setProcessing(true);
+          setJobStage('create');
           const createJob = await bulkInviteXLSX(savedInviteOptions);
           setInvitesImportId(createJob.data.id);
           setSavedInviteOptions(null);
+          return true;
         } catch (errors) {
           const apiErrors = errors.errors;
           setApiErrors(apiErrors);
@@ -152,43 +169,43 @@ const Invitations = () => {
             !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
           );
           setProcessing(false);
+          // Take the seats modal down so the error is not left behind it.
+          setShowModal(false);
+          setNewSeatsResponse(null);
+          return false;
         }
-        return; // Exit early, don't continue with validation checks
       }
 
-      const hasCorrectSelection = isString(selectedFileBase64);
+      if (!isString(selectedFileBase64)) return false;
 
-      if (hasCorrectSelection) {
-        try {
-          setProcessing(true);
-          setProcessed(false);
-          setApiErrors(null);
-          setFiletypeError(null);
-          setUnknownError(null);
+      try {
+        setProcessing(true);
+        setProcessed(false);
+        setApiErrors(null);
+        setFiletypeError(null);
+        setUnknownError(null);
 
-          if (isString(selectedFileBase64)) {
-            setSavedInviteOptions(null);
+        const inviteOptions = {
+          xlsx: selectedFileBase64,
+          ...bulkInvite,
+        };
 
-            const inviteOptions = {
-              xlsx: selectedFileBase64,
-              ...bulkInvite,
-            };
+        // Save options for later use when creating invites after modal confirmation
+        setSavedInviteOptions(inviteOptions);
 
-            // Save options for later use when creating invites after modal confirmation
-            setSavedInviteOptions(inviteOptions);
+        setJobStage('count');
+        const newSeats = await bulkInviteCountNewSeatsXLSX(inviteOptions);
+        setInvitesImportId(newSeats.data.id);
+        return true;
+      } catch (errors) {
+        const apiErrors = errors.errors;
 
-            const newSeats = await bulkInviteCountNewSeatsXLSX(inviteOptions);
-            setInvitesImportId(newSeats.data.id);
-          }
-        } catch (errors) {
-          const apiErrors = errors.errors;
-
-          setApiErrors(apiErrors);
-          setUnknownError(
-            !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
-          );
-          setProcessing(false);
-        }
+        setApiErrors(apiErrors);
+        setUnknownError(
+          !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
+        );
+        setProcessing(false);
+        return false;
       }
     },
     [
@@ -209,14 +226,16 @@ const Invitations = () => {
   const [savedEmailOptions, setSavedEmailOptions] = useState<any>(null);
 
   const onSubmitManualTab = useCallback(
-    async (bulkInvite: INewBulkInvite, save: boolean) => {
+    async (bulkInvite: INewBulkInvite, save: boolean): Promise<boolean> => {
       // If we're saving and have saved options from a previous count operation
       if (save && savedEmailOptions) {
         try {
           setProcessing(true);
+          setJobStage('create');
           const createJob = await bulkInviteEmails(savedEmailOptions);
           setInvitesImportId(createJob.data.id);
           setSavedEmailOptions(null);
+          return true;
         } catch (errors) {
           const apiErrors = errors.errors;
           setApiErrors(apiErrors);
@@ -224,42 +243,42 @@ const Invitations = () => {
             !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
           );
           setProcessing(false);
+          // Take the seats modal down so the error is not left behind it.
+          setShowModal(false);
+          setNewSeatsResponse(null);
+          return false;
         }
-        return; // Exit early, don't continue with validation checks
       }
 
-      const hasCorrectSelection = isString(selectedEmails);
+      if (selectedView !== 'manual' || !isString(selectedEmails)) return false;
 
-      if (hasCorrectSelection) {
-        try {
-          setProcessing(true);
-          setProcessed(false);
-          setApiErrors(null);
-          setFiletypeError(null);
-          setUnknownError(null);
+      try {
+        setProcessing(true);
+        setProcessed(false);
+        setApiErrors(null);
+        setFiletypeError(null);
+        setUnknownError(null);
 
-          if (selectedView === 'manual' && isString(selectedEmails)) {
-            setSavedEmailOptions(null);
+        const inviteOptions = {
+          emails: selectedEmails.split(',').map((item) => item.trim()),
+          ...bulkInvite,
+        };
 
-            const inviteOptions = {
-              emails: selectedEmails.split(',').map((item) => item.trim()),
-              ...bulkInvite,
-            };
+        // Save options for later use when creating invites after modal confirmation
+        setSavedEmailOptions(inviteOptions);
 
-            // Save options for later use when creating invites after modal confirmation
-            setSavedEmailOptions(inviteOptions);
-
-            const newSeats = await bulkInviteCountNewSeatsEmails(inviteOptions);
-            setInvitesImportId(newSeats.data.id);
-          }
-        } catch (errors) {
-          const apiErrors = errors.errors;
-          setApiErrors(apiErrors);
-          setUnknownError(
-            !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
-          );
-          setProcessing(false);
-        }
+        setJobStage('count');
+        const newSeats = await bulkInviteCountNewSeatsEmails(inviteOptions);
+        setInvitesImportId(newSeats.data.id);
+        return true;
+      } catch (errors) {
+        const apiErrors = errors.errors;
+        setApiErrors(apiErrors);
+        setUnknownError(
+          !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
+        );
+        setProcessing(false);
+        return false;
       }
     },
     [
@@ -292,12 +311,10 @@ const Invitations = () => {
       };
 
       if (selectedView === 'template') {
-        await onSubmitTemplateTab(bulkInvite, save);
+        return onSubmitTemplateTab(bulkInvite, save);
       }
 
-      if (selectedView === 'manual') {
-        await onSubmitManualTab(bulkInvite, save);
-      }
+      return onSubmitManualTab(bulkInvite, save);
     },
     [
       selectedLocale,
@@ -410,6 +427,10 @@ const Invitations = () => {
       setApiErrors(invitesImport.data.attributes.result.errors);
       setProcessing(false);
       setProcessed(false);
+      // Take the seats modal down, not just hide it: it switched to its success
+      // screen on confirmation and would otherwise sit on top of this error.
+      setShowModal(false);
+      setNewSeatsResponse(null);
     } else {
       // Success - reset UI state
       if (fileInputElement.current) {
@@ -430,6 +451,43 @@ const Invitations = () => {
     // Reset the query to prevent issues if we navigate away/back
     resetQueryData();
   }, [invitesImport, resetQueryData, queryClient]);
+
+  // Paused only while the seats modal waits on the admin: no import id, modal
+  // open. After they confirm, the creation runs behind a modal already declaring
+  // success, so it still needs watching.
+  const awaitingJob = processing && (!!invitesImportId || !showModal);
+  const isCountStage = jobStage === 'count';
+
+  // Keyed on `invitesImportId` so each stage gets a fresh budget. Keep the deps
+  // primitive — the polled import changes every 5s and would restart the timer.
+  useEffect(() => {
+    if (!awaitingJob) return;
+
+    const timer = setTimeout(
+      () => {
+        setInvitesImportId(null);
+        setProcessing(false);
+        setProcessed(false);
+        setShowModal(false);
+        // Unmounts the seats modal; hiding it alone keeps the success screen it
+        // switched to on confirmation.
+        setNewSeatsResponse(null);
+        setUnknownError(
+          <FormattedMessage
+            {...(isCountStage
+              ? // The count rolls its work back, so nothing was sent. A creation
+                // job may yet run.
+                messages.processingNotStartedError
+              : errorMessages.unexpected_invite_error)}
+          />
+        );
+        resetQueryData();
+      },
+      isCountStage ? COUNT_TIMEOUT_MS : CREATE_TIMEOUT_MS
+    );
+
+    return () => clearTimeout(timer);
+  }, [awaitingJob, invitesImportId, isCountStage, resetQueryData]);
 
   const closeModal = () => {
     setShowModal(false);
@@ -670,9 +728,7 @@ const Invitations = () => {
       {newSeatsResponse && (
         <Suspense fallback={null}>
           <InviteUsersWithSeatsModal
-            inviteUsers={async () => {
-              await onSubmit({ save: true }); // <-- add await here
-            }}
+            inviteUsers={() => onSubmit({ save: true })}
             showModal={showModal}
             closeModal={closeModal}
             newSeatsResponse={newSeatsResponse}

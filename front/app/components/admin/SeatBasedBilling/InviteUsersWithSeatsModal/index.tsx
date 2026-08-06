@@ -29,7 +29,7 @@ export type SeatTypeNumber = {
 interface InviteUsersWithSeatsModalProps {
   showModal: boolean;
   closeModal: () => void;
-  inviteUsers: () => void;
+  inviteUsers: () => Promise<boolean>;
   newSeatsResponse: IInvitesImport;
 }
 
@@ -52,11 +52,13 @@ const InviteUsersWithSeatsModal = ({
       newSeats.result.newly_added_moderators_number ?? 0,
   });
 
-  const handleConfirmClick = () => {
-    inviteUsers();
-    // `inviteUsers` can fail in theory, but very unlikely in practice.
-    // Errors should be displayed on the form in this case.
-    setShowSuccess(true);
+  const handleConfirmClick = async () => {
+    // Only claim success once the request has been accepted. A rejected one shows
+    // its error on the form, and takes this modal down with it.
+    const submitted = await inviteUsers();
+    if (submitted) {
+      setShowSuccess(true);
+    }
   };
 
   const header = !showSuccess ? (
