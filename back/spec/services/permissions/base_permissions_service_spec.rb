@@ -156,6 +156,7 @@ describe Permissions::BasePermissionsService do
 
         context 'when confirmed admin' do
           before { user.update!(roles: [{ type: 'admin' }]) }
+
           it { expect(denied_reason).to be_nil }
         end
 
