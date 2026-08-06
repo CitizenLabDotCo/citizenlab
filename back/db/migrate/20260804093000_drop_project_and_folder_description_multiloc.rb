@@ -6,18 +6,13 @@
 # layout, a folder in its `project_folder_description` layout — and every tenant
 # has been migrated, so nothing reads these columns any more.
 #
-# The `TextImage` records extracted from those columns go with them: they are only
-# reachable through the dropped fields (images inside migrated Content Builder
-# content were re-extracted against the layout, under `craftjs_json`).
+# The `TextImage` records extracted from those columns are kept: the migrated
+# RichTextMultiloc bridge widgets still reference them by `text_reference`
+# (extraction is skipped for images that already carry a reference), so deleting
+# them would break inline images on live pages.
 class DropProjectAndFolderDescriptionMultiloc < ActiveRecord::Migration[7.2]
   def up
     safety_assured do
-      execute(<<~SQL.squish)
-        DELETE FROM text_images
-        WHERE imageable_field = 'description_multiloc'
-          AND imageable_type IN ('Project', 'ProjectFolders::Folder');
-      SQL
-
       remove_column :projects, :description_multiloc
       remove_column :project_folders_folders, :description_multiloc
     end
@@ -25,6 +20,6 @@ class DropProjectAndFolderDescriptionMultiloc < ActiveRecord::Migration[7.2]
 
   def down
     add_column :projects, :description_multiloc, :jsonb, default: {}
-    add_column :project_folders_folders, :description_multiloc, :jsonb, default: {}
+    add_column :project_folders_folders, :description_multiloc, :jsonb
   end
 end
