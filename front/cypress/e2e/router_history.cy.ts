@@ -15,12 +15,22 @@ describe('router history', () => {
 
   beforeEach(() => {
     cy.setLoginCookie(email, password);
+    cy.intercept('GET', '**/web_api/v1/ideas?*').as('getIdeas');
     cy.visit('/projects/an-idea-bring-it-to-your-council');
     cy.get('#e2e-project-page');
 
     cy.location('pathname').should(
       'eq',
       '/en/projects/an-idea-bring-it-to-your-council'
+    );
+
+    // The ideas list is code-split + data-dependent, so it mounts after the page
+    // shell. Wait for the ideas request to resolve and the cards to render before
+    // any test interacts with them — this is the async load that races in CI.
+    cy.wait('@getIdeas');
+    cy.get('#e2e-ideas-list a', { timeout: 30000 }).should(
+      'have.length.greaterThan',
+      0
     );
   });
 
