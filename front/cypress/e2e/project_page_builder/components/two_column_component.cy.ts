@@ -9,7 +9,6 @@ describe('Project description builder Two Column component', () => {
     cy.getAdminAuthUser().then((user) => {
       const projectTitle = randomString();
       const projectDescriptionPreview = randomString();
-      const projectDescription = '';
       const userId = user.body.data.id;
 
       cy.apiCreateProject({
