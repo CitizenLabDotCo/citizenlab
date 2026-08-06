@@ -9,7 +9,6 @@ describe('Project description builder Text component', () => {
     cy.getAdminAuthUser().then((user) => {
       const projectTitle = randomString();
       const projectDescriptionPreview = randomString();
-      const projectDescription = '';
       const userId = user.body.data.id;
 
       cy.apiCreateProject({
@@ -41,7 +40,8 @@ describe('Project description builder Text component', () => {
       position: 'inside',
     });
 
-    // The seeded layout already contains text widgets, so target the dropped one.
+    // The seeded layout already contains text widgets; this targets the first
+    // (seeded intro) text box.
     cy.get('div.e2e-text-box').should('have.length', 3);
     cy.get('div.e2e-text-box').first().click();
     cy.get('.ql-editor').click();
