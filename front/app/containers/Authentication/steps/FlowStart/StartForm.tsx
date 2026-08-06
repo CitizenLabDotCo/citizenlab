@@ -33,10 +33,13 @@ const StartForm = ({
   onSubmitPhone,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const smsEnabled = useFeatureFlag({ name: 'sms' });
+  const smsFFEnabled = useFeatureFlag({ name: 'sms' });
+  const smsLoginFFEnabled = useFeatureFlag({ name: 'sms_login' });
   const [showPhoneForm, setShowPhoneForm] = useState(false);
 
-  if (!smsEnabled) {
+  const smsLoginEnabled = smsFFEnabled && smsLoginFFEnabled;
+
+  if (!smsLoginEnabled) {
     return (
       <EmailForm
         loading={loading}
