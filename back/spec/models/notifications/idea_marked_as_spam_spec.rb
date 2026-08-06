@@ -21,7 +21,7 @@ RSpec.describe Notifications::IdeaMarkedAsSpam do
       expect(report_spam!).to be_present
     end
 
-    it 'does not notify again when the same input is reported once more' do
+    it 'does not notify again when the input is reported once more and nothing has changed' do
       report_spam!.each(&:save!)
 
       expect(report_spam!).to be_empty

@@ -83,32 +83,23 @@ module Notifications
       []
     end
 
-    # Moderators are told about the first report on a piece of content. Repeat
-    # reports are still recorded, but they are only mailed out again when
-    # something has moved since the last notification: a moderator dismissed the
-    # flag and the content was reported anew, or the content itself was edited.
-    # Without this, every report on the same content notifies every moderator of
-    # the project again.
+    # Notify on the first report, then only when the flag was re-opened or the
+    # content was edited since. Repeat reports are recorded, not mailed.
     def self.notify?(flaggable, last_notified_at)
       return true if last_notified_at.blank?
 
       flag_reopened_since?(flaggable, last_notified_at) || edited_since?(flaggable, last_notified_at)
     end
 
-    # `InappropriateContentFlagService#introduce_flag!` clears `deleted_at` and
-    # saves when a report re-opens a dismissed flag, so a live flag touched after
-    # the last notification was re-opened by this report. We read the flag record
-    # rather than its activity: the record is written synchronously in
-    # `SideFxSpamReportService#after_create`, while the activity is logged by a
-    # job that races the one building this notification.
+    # `introduce_flag!` clears `deleted_at` on re-open. Read the record, not its
+    # activity: the activity is logged by a job that races this one.
     def self.flag_reopened_since?(flaggable, time)
       flag = flaggable.try(:inappropriate_content_flag)
       flag.present? && flag.deleted_at.nil? && flag.updated_at > time
     end
     private_class_method :flag_reopened_since?
 
-    # `updated_at` on the flaggable is no use here: reaction and comment counters
-    # touch it, so a single like would let the next report through.
+    # Not `flaggable.updated_at`: reaction and comment counters touch it.
     def self.edited_since?(flaggable, time)
       Activity.where(item: flaggable, action: 'changed').exists?(['acted_at > ?', time])
     end
