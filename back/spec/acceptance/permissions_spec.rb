@@ -335,7 +335,7 @@ resource 'Permissions' do
           assert_status 200
           expect(response_data[:attributes]).to eq({
             permitted: false,
-            disabled_reason: 'user_missing_requirements',
+            disabled_reason: 'user_not_active',
             requirements: {
               authentication: {
                 permitted_by: 'users',
