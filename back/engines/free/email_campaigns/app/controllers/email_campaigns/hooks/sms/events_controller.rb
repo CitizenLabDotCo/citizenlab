@@ -18,6 +18,10 @@ module EmailCampaigns
       delivery = EmailCampaigns::Sms::Delivery.find_by(message_sid: parsed[:message_sid])
       return head :not_found if delivery.nil?
 
+      if parsed[:opted_out]
+        EmailCampaigns::Sms::UseCaseConsentService.new.withdraw!(delivery.user, delivery.campaign_use_case)
+      end
+
       # If an unknown status is returned we log it for investigation but still
       # return 200 so the provider stops retrying.
       if parsed[:status].nil?

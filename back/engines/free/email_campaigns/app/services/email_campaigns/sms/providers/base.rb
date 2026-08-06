@@ -22,9 +22,11 @@ module EmailCampaigns
 
         # Normalises a provider callback into our own vocabulary.
         # @param params [ActionController::Parameters] the callback params
-        # @return [Hash{Symbol => String, nil}] { message_sid:, status:, raw_status: }
-        #   where status is one of Delivery::STATUSES (nil if the event is unmapped)
-        #   and raw_status is the provider's original status string (for diagnostics)
+        # @return [Hash] { message_sid:, status:, raw_status:, opted_out: }
+        #   where status is one of Delivery::STATUSES (nil if the event is unmapped),
+        #   raw_status is the provider's original status string (for diagnostics) and
+        #   opted_out says whether the message was refused because the recipient
+        #   replied STOP
         def parse_callback(params)
           raise NotImplementedError
         end
