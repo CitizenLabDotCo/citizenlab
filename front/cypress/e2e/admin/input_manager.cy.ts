@@ -28,7 +28,6 @@ describe('Input manager', () => {
       cy.getAdminAuthUser().then((user) => {
         const projectTitle = randomString();
         const projectDescriptionPreview = randomString();
-        const projectDescription = randomString();
         const userId = user.body.data.id;
         let projectId: string;
         const phaseTitle = randomString();
@@ -81,7 +80,6 @@ describe('Input manager', () => {
       cy.getAdminAuthUser().then((user) => {
         const projectTitle = randomString();
         const projectDescriptionPreview = randomString();
-        const projectDescription = randomString();
         const userId = user.body.data.id;
         let projectId: string;
 
@@ -175,7 +173,6 @@ describe('Input manager', () => {
       cy.getAdminAuthUser().then((user) => {
         const projectTitle = randomString();
         const projectDescriptionPreview = randomString();
-        const projectDescription = randomString();
         const userId = user.body.data.id;
         let projectId: string;
 
