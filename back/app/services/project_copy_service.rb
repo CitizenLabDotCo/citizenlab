@@ -271,6 +271,15 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       'visible_to' => @project.visible_to,
       'description_preview_multiloc' => @project.description_preview_multiloc,
       'admin_publication_attributes' => { 'publication_status' => new_publication_status || @project.admin_publication.publication_status },
+      'text_images_attributes' => @project.text_images.map do |text_image|
+        {
+          'imageable_field' => text_image.imageable_field,
+          'remote_image_url' => text_image.image_url,
+          'text_reference' => text_image.text_reference,
+          'created_at' => text_image.created_at.to_s,
+          'updated_at' => text_image.updated_at.to_s
+        }
+      end,
       'include_all_areas' => @project.include_all_areas,
       'hidden' => @project.hidden,
       'live_auto_input_topics_enabled' => @project.live_auto_input_topics_enabled,
