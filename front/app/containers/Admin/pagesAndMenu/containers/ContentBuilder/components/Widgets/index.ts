@@ -8,6 +8,9 @@ import AccordionMultiloc, {
 import ButtonMultiloc, {
   buttonMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
+import HtmlBlockMultiloc, {
+  htmlBlockMultilocTitle,
+} from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
 import IframeMultiloc, {
   iframeTitle,
 } from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
@@ -32,7 +35,6 @@ import FolderTitle, {
 import InfoWithAccordions, {
   infoWithAccordionsTitle,
 } from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
-
 import { MessageDescriptor } from 'utils/cl-intl';
 
 // Homepage builder widgets
@@ -60,12 +62,12 @@ import Selection, { selectionTitle } from './Selection';
 import Spotlight, { spotlightTitle } from './Spotlight';
 import TextMultiloc, { textMultilocTitle } from './TextMultiloc';
 import VideoEmbed, { videoEmbedTitle } from './VideoEmbed';
-import HtmlBlockMultiloc, { htmlBlockMultilocTitle } from './HtmlBlockMultiloc';
 
 export const WIDGETS = {
   // Shared widgets
   AccordionMultiloc,
   ButtonMultiloc,
+  HtmlBlockMultiloc,
   IframeMultiloc,
   ImageMultiloc,
   ThreeColumn,
@@ -88,7 +90,6 @@ export const WIDGETS = {
   ProjectsAndFoldersLegacy,
   TextMultiloc,
   VideoEmbed,
-  HtmlBlockMultiloc,
 
   // RENAMED (TODO rename in migration)
   Highlight: CallToAction,
@@ -112,6 +113,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   // Shared widgets
   AccordionMultiloc: accordionMultilocTitle,
   ButtonMultiloc: buttonMultilocTitle,
+  HtmlBlockMultiloc: htmlBlockMultilocTitle,
   IframeMultiloc: iframeTitle,
   ImageMultiloc: imageMultilocTitle,
   ThreeColumn: threeColumnTitle,
@@ -134,7 +136,6 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   ProjectsAndFoldersLegacy: projectsAndFoldersLegacyTitle,
   TextMultiloc: textMultilocTitle,
   VideoEmbed: videoEmbedTitle,
-  HtmlBlockMultiloc: htmlBlockMultilocTitle,
 
   // RENAMED
   Highlight: callToActionTitle,
