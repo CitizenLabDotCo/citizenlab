@@ -384,6 +384,7 @@ resource 'Permissions' do
             confirmation_required: false,
             verified: true
           )
+          @user.identities << create(:franceconnect_identity, user: @user)
           do_request
           assert_status 200
           expect(response_data[:attributes][:permitted]).to be true
@@ -397,6 +398,7 @@ resource 'Permissions' do
             confirmation_required: true,
             verified: true
           )
+          @user.identities << create(:franceconnect_identity, user: @user)
           do_request
           assert_status 200
           expect(response_data[:attributes][:permitted]).to be true

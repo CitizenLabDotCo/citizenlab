@@ -437,7 +437,10 @@ describe Permissions::BasePermissionsService do
         end
 
         context 'when verified resident' do
-          before { user.update!(verified: true) }
+          before do 
+            user.update!(verified: true)
+            user.identities << create(:franceconnect_identity, user: user)
+          end
 
           it { expect(denied_reason).to be_nil }
         end
@@ -455,6 +458,7 @@ describe Permissions::BasePermissionsService do
               email_confirmed_at: nil, 
               confirmation_required: true
             )
+            user.identities << create(:franceconnect_identity, user: user)
           end
 
           it { expect(denied_reason).to eq nil }
