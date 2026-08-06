@@ -144,13 +144,17 @@ class User < ApplicationRecord
       where('lower(email) = lower(?)', email).first
     end
 
-    # This method is used by knock to get the user.
-    # Default is by email, but we want to compare
-    # case insensitively and forbid login for
-    # invitees.
-    def from_token_request(request)
-      email = request.params['auth']['email']
-      not_invited.find_by_cimail(email)
+    # Returns the user record from the database whose phone number matches the
+    # specified one, compared on the canonical E.164 form, or `nil`. Unparseable
+    # numbers never match (in particular they must not match users without a
+    # phone number).
+    # @param phone [String] The phone number of the user
+    # @return [User, nil] The user record or `nil` if none could be found.
+    def find_by_phone_number(phone)
+      normalized = Phonelib.parse(phone).e164.presence
+      return nil if normalized.nil?
+
+      find_by(phone: normalized)
     end
 
     def oldest_admin
@@ -569,9 +573,11 @@ class User < ApplicationRecord
 
   def authenticated_at_least_once?
     # True if user authenticated at least once,
-    # either by confirming their email or by signing in with SSO
-    # and being verified.
-    !confirmation_required? || (sso? && verified)
+    # either by confirming their email, by confirming their phone number,
+    # or by signing in with SSO and being verified.
+    # NOTE: confirmation_required is only ever written together with
+    # email_confirmed_at, so it says nothing about the phone number.
+    !confirmation_required? || phone_confirmed_at.present? || (sso? && verified)
   end
 end
 

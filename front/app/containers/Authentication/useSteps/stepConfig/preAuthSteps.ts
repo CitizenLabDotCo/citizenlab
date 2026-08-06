@@ -2,8 +2,11 @@ import { SupportedLocale } from 'typings';
 
 import { confirmCodeEmail } from 'api/authentication/confirm_email/confirmEmailConfirmationCode';
 import { requestCodeEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
+import { confirmCodePhone } from 'api/authentication/confirm_phone/confirmPhoneConfirmationCode';
+import { requestCodePhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import signIn from 'api/authentication/sign_in_out/signIn';
 import createEmailOnlyAccount from 'api/authentication/sign_up/createEmailOnlyAccount';
+import createPhoneOnlyAccount from 'api/authentication/sign_up/createPhoneOnlyAccount';
 import { redirectToSSOProvider } from 'api/authentication/singleSignOn';
 
 import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
@@ -21,6 +24,7 @@ import {
   doesNotMeetGroupCriteria,
   checkMissingData,
   handleSubmitEmail,
+  handleSubmitPhone,
   handleSSOClick,
 } from './utils';
 
@@ -31,13 +35,36 @@ export const preAuthSteps = (
   updateState: UpdateState,
   state: State
 ) => {
+  // Shared by every step that ends with an authenticated user: the step the user
+  // still has to go through before they can participate, or null when there is
+  // nothing left and the caller can end the flow.
+  const getRemainingRequirementStep = async (): Promise<Step | null> => {
+    const { requirements } = await getRequirements();
+
+    const missingDataStep = await checkMissingData(
+      requirements,
+      getAuthenticationData(),
+      state.flow
+    );
+
+    if (missingDataStep) return missingDataStep;
+    if (doesNotMeetGroupCriteria(requirements)) return 'access-denied';
+
+    return null;
+  };
+
   return {
     'pre-auth:start': {
       CLOSE: () => setCurrentStep('closed'),
 
       SUBMIT_EMAIL: async (email: string) => {
-        updateState({ email });
+        updateState({ email, phone: null });
         await handleSubmitEmail(email, setCurrentStep, updateState);
+      },
+
+      SUBMIT_PHONE: async (phone: string) => {
+        updateState({ phone, email: null });
+        await handleSubmitPhone(phone, setCurrentStep, updateState);
       },
 
       CONTINUE_WITH_SSO: async (ssoProvider: SSOProviderWithoutVienna) => {
@@ -76,40 +103,44 @@ export const preAuthSteps = (
       GO_BACK: () => setCurrentStep('pre-auth:start'),
     },
 
+    'pre-auth:phone-policies': {
+      CLOSE: () => setCurrentStep('closed'),
+      ACCEPT_POLICIES: async (
+        phone: string,
+        locale: SupportedLocale,
+        claimTokens?: string[]
+      ) => {
+        await createPhoneOnlyAccount({ phone, locale, claimTokens });
+        setCurrentStep('pre-auth:unauthenticated-phone-confirmation');
+      },
+      GO_BACK: () => setCurrentStep('pre-auth:start'),
+    },
+
+    // Shared by the email and the phone flow: which identifier the password
+    // belongs to is read from the state.
     'pre-auth:password': {
       CLOSE: () => setCurrentStep('closed'),
       GO_BACK: () => setCurrentStep('pre-auth:start'),
       SUBMIT_PASSWORD: async (
-        email: string,
         password: string,
         rememberMe: boolean,
         tokenLifetime: number,
         claimTokens?: string[]
       ) => {
+        const { email, phone } = state;
+
         await signIn({
-          email,
+          ...(phone ? { phone } : { email: email as string }),
           password,
           rememberMe,
           tokenLifetime,
           claimTokens,
         });
 
-        const { requirements } = await getRequirements();
-        const authenticationData = getAuthenticationData();
+        const remainingStep = await getRemainingRequirementStep();
 
-        const missingDataStep = await checkMissingData(
-          requirements,
-          authenticationData,
-          state.flow
-        );
-
-        if (missingDataStep) {
-          setCurrentStep(missingDataStep);
-          return;
-        }
-
-        if (doesNotMeetGroupCriteria(requirements)) {
-          setCurrentStep('access-denied');
+        if (remainingStep) {
+          setCurrentStep(remainingStep);
           return;
         }
 
@@ -142,29 +173,26 @@ export const preAuthSteps = (
       },
       SUBMIT_CODE: async (email: string, code: string) => {
         await confirmCodeEmail(email, code);
-        const { requirements } = await getRequirements();
-        const authenticationData = getAuthenticationData();
 
-        const missingDataStep = await checkMissingData(
-          requirements,
-          authenticationData,
-          state.flow
-        );
-
-        if (missingDataStep) {
-          setCurrentStep(missingDataStep);
-          return;
-        }
-
-        if (doesNotMeetGroupCriteria(requirements)) {
-          setCurrentStep('access-denied');
-          return;
-        }
-
-        setCurrentStep('success');
+        setCurrentStep((await getRemainingRequirementStep()) ?? 'success');
       },
       RESEND_CODE: async (email: string) => {
         await requestCodeEmail({ email });
+      },
+    },
+
+    'pre-auth:unauthenticated-phone-confirmation': {
+      CLOSE: () => setCurrentStep('closed'),
+      CHANGE_PHONE: async () => {
+        setCurrentStep('pre-auth:start');
+      },
+      SUBMIT_CODE: async (code: string) => {
+        await confirmCodePhone(code, state.phone ?? undefined);
+
+        setCurrentStep((await getRemainingRequirementStep()) ?? 'success');
+      },
+      RESEND_CODE: async (phone: string) => {
+        await requestCodePhone({ phone });
       },
     },
   };

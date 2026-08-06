@@ -89,7 +89,7 @@ resource 'Users' do
       end
     end
 
-    post 'web_api/v1/users/check' do
+    post 'web_api/v1/users/check_email' do
       with_options scope: :user do
         parameter :email, 'E-mail address to check', required: true
       end
@@ -309,6 +309,162 @@ resource 'Users' do
       end
     end
 
+    post 'web_api/v1/users/check_phone' do
+      with_options scope: :user do
+        parameter :phone, 'Phone number to check', required: true
+      end
+
+      context 'when the sms and password_login features are turned on' do
+        include_context 'with sms feature enabled'
+
+        before do
+          SettingsService.new.activate_feature! 'password_login'
+          SettingsService.new.activate_feature! 'sms_login'
+        end
+
+        context 'when a user does not exist' do
+          let(:phone) { '+1 415 555 2671' }
+
+          example_request 'Returns "terms"' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('terms')
+          end
+        end
+
+        context 'when a user exists without a password and has not confirmed their phone' do
+          before do
+            @user = create(:unconfirmed_phone_user, phone: '+14155552671')
+            allow(RequestPhoneConfirmationCodeJob).to receive(:perform_now)
+          end
+
+          let(:phone) { '+1 415 555 2671' }
+
+          example_request 'Returns "confirm" and sends a code' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+            expect(RequestPhoneConfirmationCodeJob).to have_received(:perform_now).with(@user)
+          end
+        end
+
+        context 'when the user has already requested a code', document: false do
+          before do
+            @user = create(:unconfirmed_phone_user, phone: '+14155552671')
+            @user.phone_confirmation.reset_code! # as if a code had already been requested
+
+            allow(RequestPhoneConfirmationCodeJob).to receive(:perform_now)
+          end
+
+          let(:phone) { '+14155552671' }
+
+          example_request 'Returns "confirm" without resending a code' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+            expect(RequestPhoneConfirmationCodeJob).not_to have_received(:perform_now).with(@user)
+          end
+        end
+
+        context 'when a user exists without a password and has confirmed their phone', document: false do
+          before do
+            @user = create(:unconfirmed_phone_user, phone: '+14155552671')
+            @user.phone_confirmation.confirm!
+            allow(RequestPhoneConfirmationCodeJob).to receive(:perform_now)
+          end
+
+          let(:phone) { '+14155552671' }
+
+          example_request 'Returns "confirm"' do
+            expect(@user.password_digest).to be_nil
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+            expect(RequestPhoneConfirmationCodeJob).to have_received(:perform_now).with(@user)
+          end
+        end
+
+        context 'when a user exists with a password and has confirmed their phone' do
+          before { @user = create(:user, :with_confirmed_phone, phone: '+14155552671') }
+
+          let(:phone) { '+14155552671' }
+
+          example_request 'Returns "password"' do
+            expect(@user.password_digest).not_to be_nil
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('password')
+          end
+        end
+
+        context 'when a user exists with a password but has not confirmed their phone', document: false do
+          before do
+            @user = create(:user, phone: '+14155552671')
+            allow(RequestPhoneConfirmationCodeJob).to receive(:perform_now)
+          end
+
+          let(:phone) { '+14155552671' }
+
+          example_request 'Returns "confirm"' do
+            expect(@user.password_digest).not_to be_nil
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+            expect(RequestPhoneConfirmationCodeJob).to have_received(:perform_now).with(@user)
+          end
+        end
+
+        context 'when the number is submitted in a different format' do
+          before { create(:user, :with_confirmed_phone, phone: '+14155552671') }
+
+          let(:phone) { '+1 (415) 555-2671' }
+
+          example_request 'Returns "password" for the same number in E.164 form' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('password')
+          end
+        end
+
+        context 'when an invalid phone number is used', document: false do
+          let(:phone) { 'not-a-number' }
+
+          example_request '[error] Invalid phone number' do
+            assert_status 422
+            expect(json_response_body.dig(:errors, :phone, 0, :error)).to eq('invalid')
+          end
+        end
+
+        context 'when the country is not allowed', document: false do
+          before do
+            SettingsService.new.activate_feature!('sms', settings: { 'allowed_country_codes' => ['BE'] })
+          end
+
+          let(:phone) { '+1 415 555 2671' }
+
+          example_request '[error] Unsupported country' do
+            assert_status 422
+            expect(json_response_body.dig(:errors, :phone, 0, :error)).to eq('unsupported_country')
+          end
+        end
+      end
+
+      context 'when the sms feature is turned off' do
+        before { SettingsService.new.activate_feature! 'password_login' }
+
+        let(:phone) { '+14155552671' }
+
+        example_request 'It does not work' do
+          assert_status 401
+        end
+      end
+
+      context 'when password_login is turned off' do
+        include_context 'with sms feature enabled'
+
+        before { SettingsService.new.deactivate_feature! 'password_login' }
+
+        let(:phone) { '+14155552671' }
+
+        example_request 'It does not work' do
+          assert_status 401
+        end
+      end
+    end
+
     post 'web_api/v1/users' do
       with_options scope: 'user' do
         parameter :email, 'E-mail address', required: true
@@ -421,6 +577,147 @@ resource 'Users' do
               expect(existing_user.confirmation_required?).to be(false)
             end
           end
+        end
+      end
+    end
+
+    post 'web_api/v1/users/create_phone' do
+      with_options scope: 'user' do
+        parameter :phone, 'Phone number', required: true
+        parameter :locale, 'Locale (must be one of the tenant locales)', required: true
+        parameter :claim_tokens, <<~DESC
+          Tokens used to claim anonymous participation data (e.g., ideas) created before registration.
+          They are marked as pending until the phone number is confirmed.
+        DESC
+      end
+
+      ValidationErrorHelper.new.error_fields(self, User)
+
+      let(:locale) { 'en' }
+
+      context 'when the sms and password_login features are turned on' do
+        include_context 'with sms feature enabled'
+
+        before do
+          SettingsService.new.activate_feature! 'password_login'
+          SettingsService.new.activate_feature! 'sms_login'
+          allow(RequestPhoneConfirmationCodeJob).to receive(:perform_now)
+        end
+
+        let(:phone) { '+1 415 555 2671' }
+
+        example_request 'User successfully created, gets an SMS code and requires confirmation' do
+          assert_status 201
+          user = User.order(:created_at).last
+          expect(user.phone).to eq '+14155552671'
+          expect(user.phone_confirmed_at).to be_nil
+          expect(user.registration_completed_at).to be_nil
+          expect(RequestPhoneConfirmationCodeJob).to have_received(:perform_now).with(user).once
+        end
+
+        example 'No email confirmation code is sent' do
+          allow(RequestEmailConfirmationCodeJob).to receive(:perform_now)
+          allow(RequestNewEmailConfirmationCodeJob).to receive(:perform_now)
+
+          do_request
+          assert_status 201
+          expect(RequestEmailConfirmationCodeJob).not_to have_received(:perform_now)
+          expect(RequestNewEmailConfirmationCodeJob).not_to have_received(:perform_now)
+        end
+
+        describe 'with claim_tokens' do
+          let!(:claim_token) { create(:claim_token) }
+          let(:claim_tokens) { [claim_token.token] }
+
+          example_request 'Claim tokens are marked as pending until the phone is confirmed' do
+            assert_status 201
+            user = User.order(:created_at).last
+            expect(claim_token.reload.pending_claimer_id).to eq(user.id)
+          end
+        end
+
+        context 'when the phone number is invalid' do
+          let(:phone) { 'not-a-number' }
+
+          example_request '[error] Invalid phone number' do
+            assert_status 422
+            expect(json_response_body.dig(:errors, :phone, 0, :error)).to eq('invalid')
+            expect(User.count).to eq 0
+          end
+        end
+
+        context 'when the phone number is not a real number' do
+          let(:phone) { '+1 000 000 0000' }
+
+          example_request '[error] Invalid phone number', document: false do
+            assert_status 422
+            expect(json_response_body.dig(:errors, :phone, 0, :error)).to eq('invalid')
+            expect(User.count).to eq 0
+          end
+        end
+
+        context 'when the phone number is blank' do
+          let(:phone) { '' }
+
+          example_request '[error] Invalid phone number', document: false do
+            assert_status 422
+            expect(json_response_body.dig(:errors, :phone, 0, :error)).to eq('invalid')
+            expect(User.count).to eq 0
+          end
+        end
+
+        context 'when the phone number is missing' do
+          let(:phone) { nil }
+
+          example_request '[error] Invalid phone number', document: false do
+            assert_status 422
+            expect(json_response_body.dig(:errors, :phone, 0, :error)).to eq('invalid')
+            expect(User.count).to eq 0
+          end
+        end
+
+        context 'when the phone number is already taken' do
+          before { create(:user, :with_confirmed_phone, phone: '+14155552671') }
+
+          example_request '[error] Phone number taken' do
+            assert_status 422
+            expect(json_response_body.dig(:errors, :phone, 0, :error)).to eq('taken')
+          end
+        end
+
+        context 'when the country is not allowed' do
+          before do
+            SettingsService.new.activate_feature!('sms', settings: { 'allowed_country_codes' => ['BE'] })
+          end
+
+          example_request '[error] Unsupported country' do
+            assert_status 422
+            expect(json_response_body.dig(:errors, :phone, 0, :error)).to eq('unsupported_country')
+          end
+        end
+      end
+
+      context 'when the sms feature is turned off' do
+        before { SettingsService.new.activate_feature! 'password_login' }
+
+        let(:phone) { '+14155552671' }
+
+        example_request 'It does not work' do
+          assert_status 401
+        end
+      end
+
+      context 'when signup is disabled' do
+        include_context 'with sms feature enabled'
+
+        before do
+          SettingsService.new.activate_feature!('password_login', settings: { 'enable_signup' => false })
+        end
+
+        let(:phone) { '+14155552671' }
+
+        example_request 'It does not work' do
+          assert_status 401
         end
       end
     end

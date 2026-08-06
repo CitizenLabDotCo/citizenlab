@@ -17,6 +17,7 @@ import Password from '../steps/Password';
 import Phone from '../steps/Phone';
 import PhoneConfirmation from '../steps/PhoneConfirmation';
 import EmailPolicies from '../steps/Policies/EmailPolicies';
+import PhonePolicies from '../steps/Policies/PhonePolicies';
 import SSOPolicies from '../steps/Policies/SSOPolicies';
 import Success from '../steps/Success';
 import Verification from '../steps/Verification';
@@ -77,7 +78,8 @@ const CurrentStep = ({
           loading={loading}
           setError={setError}
           authenticationData={authenticationData}
-          onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}
+          onSubmitEmail={transition(currentStep, 'SUBMIT_EMAIL')}
+          onSubmitPhone={transition(currentStep, 'SUBMIT_PHONE')}
           onSwitchToSSO={transition(currentStep, 'CONTINUE_WITH_SSO')}
         />
       );
@@ -85,6 +87,17 @@ const CurrentStep = ({
     case 'pre-auth:policies':
       return (
         <EmailPolicies
+          state={state}
+          loading={loading}
+          setError={setError}
+          onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
+          goBack={transition(currentStep, 'GO_BACK')}
+        />
+      );
+
+    case 'pre-auth:phone-policies':
+      return (
+        <PhonePolicies
           state={state}
           loading={loading}
           setError={setError}
@@ -116,11 +129,23 @@ const CurrentStep = ({
     case 'pre-auth:unauthenticated-confirmation':
       return (
         <EmailConfirmation
-          email={state.email ?? authUser?.data.attributes.email ?? null}
+          email={state.email ?? null}
           loading={loading}
           setError={setError}
           onConfirm={transition(currentStep, 'SUBMIT_CODE')}
           onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
+          onResendCode={transition(currentStep, 'RESEND_CODE')}
+        />
+      );
+
+    case 'pre-auth:unauthenticated-phone-confirmation':
+      return (
+        <PhoneConfirmation
+          phone={state.phone ?? null}
+          loading={loading}
+          setError={setError}
+          onConfirm={transition(currentStep, 'SUBMIT_CODE')}
+          onChangePhone={transition(currentStep, 'CHANGE_PHONE')}
           onResendCode={transition(currentStep, 'RESEND_CODE')}
         />
       );

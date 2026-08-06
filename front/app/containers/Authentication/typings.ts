@@ -31,6 +31,7 @@ export type ErrorCode =
 export interface State {
   flow: 'signup' | 'signin';
   email: string | null;
+  phone: string | null;
   new_email: string | null;
   new_phone: string | null;
   token: string | null;

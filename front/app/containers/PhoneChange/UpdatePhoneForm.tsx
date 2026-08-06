@@ -8,6 +8,7 @@ import { IUser } from 'api/users/types';
 
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import PhoneInput from 'components/HookForm/PhoneInput';
+import usePhoneInputCountries from 'components/HookForm/PhoneInput/usePhoneInputCountries';
 import {
   Title,
   StyledButton,
@@ -23,7 +24,6 @@ import Link from 'utils/cl-router/Link';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 import messages from './messages';
-import usePhoneInputCountries from './usePhoneInputCountries';
 
 import { FormValues } from '.';
 

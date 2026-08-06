@@ -5,9 +5,9 @@ class WebApi::V1::UsersController < ApplicationController
   include UserCookies
   include EnforceUserSso
 
-  before_action :sso_enforced?, only: %i[check create]
+  before_action :sso_enforced?, only: %i[check_email create]
   before_action :set_user, only: %i[show update destroy ideas_count comments_count block unblock participation_stats]
-  skip_before_action :authenticate_user, only: %i[create show check by_invite ideas_count comments_count]
+  skip_before_action :authenticate_user, only: %i[create create_phone show check_email check_phone by_invite ideas_count comments_count]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -139,8 +139,8 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   # To validate an email without creating a user and return which action to go to next
-  def check
-    authorize :user, :check?
+  def check_email
+    authorize :user, :check_email?
     email = params[:user][:email]
 
     unless User::EMAIL_REGEX.match?(email)
@@ -156,32 +156,35 @@ class WebApi::V1::UsersController < ApplicationController
       return
     end
 
-    if @user.nil?
-      render json: raw_json({ action: 'terms' })
-      return
-    end
-
-    if @user.invite_pending?
+    if @user&.invite_pending?
       render json: { errors: { email: [{ error: 'taken_by_invite', value: email, inviter_email: @user.invitee_invite&.inviter&.email }] } }, status: :unprocessable_entity
       return
     end
 
-    if @user.confirmation_required?
-      request_code_if_first_time(@user)
-      render json: raw_json({ action: 'confirm' })
+    render_check_action(@user, @user&.email_confirmation, RequestEmailConfirmationCodeJob)
+  end
+
+  # The phone counterpart of check_email: validates a phone number without
+  # creating a user and returns which action to go to next. Invites are never
+  # sent to a phone number, so there is no taken_by_invite case here.
+  def check_phone
+    authorize :user, :check_phone?
+    phone = params[:user][:phone]
+    parsed = Phonelib.parse(phone)
+
+    if parsed.invalid?
+      render json: { errors: { phone: [{ error: 'invalid', value: phone }] } }, status: :unprocessable_entity
       return
     end
 
-    user_has_password = !@user.no_password?
-
-    if user_has_password
-      render json: raw_json({ action: 'password' })
+    unless EmailCampaigns::Sms::AllowedCountries.allowed?(parsed.country)
+      render json: { errors: { phone: [{ error: 'unsupported_country', value: phone }] } }, status: :unprocessable_entity
       return
     end
 
-    # Any other case, we send a code
-    request_code_if_first_time(@user)
-    render json: raw_json({ action: 'confirm' })
+    @user = User.find_by_phone_number(parsed.e164)
+
+    render_check_action(@user, @user&.phone_confirmation, RequestPhoneConfirmationCodeJob)
   end
 
   def create
@@ -190,6 +193,40 @@ class WebApi::V1::UsersController < ApplicationController
       authorize @user
     end
     if saved
+      claim_tokens = params.dig(:user, :claim_tokens)
+      SideFxUserService.new.after_create(@user, current_user, claim_tokens:)
+
+      render json: WebApi::V1::UserSerializer.new(
+        @user,
+        params: jsonapi_serializer_params
+      ).serializable_hash, status: :created
+    else
+      SideFxUserService.new.after_error(@user, request&.remote_ip)
+
+      render json: { errors: @user.errors.details }, status: :unprocessable_entity
+    end
+  end
+
+  # The phone counterpart of create. Kept separate from create so the email
+  # signup flow (and its SSO enforcement, which is email-based) is untouched.
+  def create_phone
+    @user = User.new
+    authorize @user, :create_phone?
+
+    phone = params.dig(:user, :phone)
+    parsed = Phonelib.parse(phone)
+
+    if parsed.invalid?
+      render json: { errors: { phone: [{ error: 'invalid', value: phone }] } }, status: :unprocessable_entity
+      return
+    end
+
+    unless EmailCampaigns::Sms::AllowedCountries.allowed?(parsed.country)
+      render json: { errors: { phone: [{ error: 'unsupported_country', value: phone }] } }, status: :unprocessable_entity
+      return
+    end
+
+    if UserService.upsert_in_web_api(@user, permitted_attributes(@user))
       claim_tokens = params.dig(:user, :claim_tokens)
       SideFxUserService.new.after_create(@user, current_user, claim_tokens:)
 
@@ -385,14 +422,34 @@ class WebApi::V1::UsersController < ApplicationController
     params.permit(:seat_type, :user_id, :user_email)
   end
 
-  def request_code_if_first_time(user)
+  # Shared by check_email and check_phone: given the account that owns the
+  # submitted identifier (nil when there is none) and the confirmation that
+  # covers that identifier, tell the frontend which step to go to next. Users
+  # who still have to confirm, and users without a password, get a code sent.
+  def render_check_action(user, confirmation, code_job)
+    if user.nil?
+      render json: raw_json({ action: 'terms' })
+      return
+    end
+
+    if !confirmation.pending? && !user.no_password?
+      render json: raw_json({ action: 'password' })
+      return
+    end
+
+    request_code_if_first_time(confirmation, code_job)
+    render json: raw_json({ action: 'confirm' })
+  end
+
+  def request_code_if_first_time(confirmation, code_job)
     # If users already have a code_reset_count > 0,
     # they tried to log in previously and failed. In this case, we don't
     # automatically resend the code, because otherwise we
     # might too easily reach the retry limit. So they will
     # have to request it themselves
-    if (user.email_confirmation&.code_reset_count || 0) == 0
-      RequestEmailConfirmationCodeJob.perform_now(user)
+    reset_count = confirmation&.code_reset_count || 0
+    if reset_count == 0
+      code_job.perform_now(confirmation.user)
     end
   end
 end

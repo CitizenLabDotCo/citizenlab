@@ -184,9 +184,14 @@ RSpec.describe UserConfirmationService do
     include_examples 'validation and confirmation', :validate_and_confirm_phone!, :phone_confirmation, :phone_confirmed_at
 
     context 'when the code is correct' do
-      it 'does not complete pending claim tokens (an email/signup concern)' do
-        expect(ClaimTokenService).not_to receive(:complete)
+      it 'completes pending claim tokens' do
+        claim_token = create(:claim_token)
+        ClaimTokenService.mark(user, [claim_token.token])
+        expect(claim_token.item.author_id).to be_nil
+
         service.validate_and_confirm_phone!(user, confirmation.code)
+
+        expect(claim_token.item.reload.author_id).to eq user.id
       end
     end
 
@@ -200,6 +205,17 @@ RSpec.describe UserConfirmationService do
 
         expect(result.success?).to be false
         expect(result.errors.details).to eq(base: [{ error: :password_login_feature_disabled }])
+      end
+    end
+
+    context 'when the sms feature is disabled' do
+      before { SettingsService.new.deactivate_feature! 'sms' }
+
+      it 'returns an sms feature disabled error' do
+        result = service.validate_and_confirm_phone!(user, user.phone_confirmation.code)
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(base: [{ error: :sms_feature_disabled }])
       end
     end
 
