@@ -28,10 +28,7 @@ describe('router history', () => {
     // shell. Wait for the ideas request to resolve and the cards to render before
     // any test interacts with them — this is the async load that races in CI.
     cy.wait('@getIdeas');
-    cy.get('#e2e-ideas-list a', { timeout: 30000 }).should(
-      'have.length.greaterThan',
-      0
-    );
+    cy.get('#e2e-ideas-list a').should('have.length.greaterThan', 0);
   });
 
   it('works with nested routes (show idea)', () => {
