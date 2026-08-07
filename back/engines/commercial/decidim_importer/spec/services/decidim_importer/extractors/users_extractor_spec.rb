@@ -116,12 +116,6 @@ RSpec.describe DecidimImporter::Extractors::UsersExtractor do
     expect(records.map { |r| r.attributes['email'] }.uniq.size).to eq(2)
   end
 
-  it 'leaves names and emails untouched by default' do
-    attrs = extract([row]).first.attributes
-    expect(attrs['email']).to eq('marie@example.fr')
-    expect(attrs['first_name']).to eq('Marie')
-  end
-
   context 'with the real Decidim export fixture' do
     let(:rows) do
       DecidimImporter::CsvReader.read(

@@ -8,8 +8,8 @@ module DecidimImporter
   # its own {https://docs.decidim.org ProposalState}s, so a real export carries dozens of one-off labels
   # (hundreds across dozens of components). The model folds each source state onto a {STANDARD_CODES
   # standard code} where the meaning matches and proposes a handful of new `custom` statuses for the
-  # genuinely distinct ones (their participatory-budget vocabulary, etc.), keeping the tenant-wide total
-  # within {MAX_TOTAL_STATUSES}. {ProposalStatusResolver} turns the result into idea_status records.
+  # genuinely distinct ones (their participatory-budget vocabulary, etc.), capping the customs at
+  # {MAX_CUSTOM_STATUSES}. {ProposalStatusResolver} turns the result into idea_status records.
   #
   # Best-effort by design: template creation runs *outside any tenant* (no AppConfiguration to select a
   # provider via {LLMSelector}), so the model is instantiated directly from the ENV-based Bedrock
@@ -26,7 +26,7 @@ module DecidimImporter
     DEFAULT_CODE = IdeaStatuses::DEFAULT_CODE
 
     # Ceiling on the imported custom statuses. Admins manage statuses by hand, so a long list is
-    # unwelcome; ~6 customs on top of the 7 seeded standard ones stays around the ~12 the team wants.
+    # unwelcome; ≤6 customs on top of the 7 seeded standard ones keeps the tenant-wide total near ~12.
     MAX_CUSTOM_STATUSES = 6
 
     # The parts the model returns and the per-state decisions it implies.
@@ -39,7 +39,7 @@ module DecidimImporter
     end
 
     # @param states [Array<Hash>] the distinct *used* states, each
-    #   `{ 'key' =>, 'label' =>, 'label_multiloc' =>, 'tokens' => [..], 'count' => Integer }`.
+    #   `{ 'key' =>, 'label_multiloc' =>, 'tokens' => [..], 'count' => Integer }`.
     # @return [Result]
     def map(states)
       return Result.new(custom_statuses: [], decisions: {}) if states.blank?

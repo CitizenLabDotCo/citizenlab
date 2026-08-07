@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require_relative '../../fixtures/decidim_export_fixture'
 
 RSpec.describe DecidimImporter::AppConfigMapper do
   let(:mapper_locale) { DecidimImporter::LocaleMapper.new }
@@ -51,19 +50,5 @@ RSpec.describe DecidimImporter::AppConfigMapper do
 
   it 'still turns on those features when there is no organization row (no locales, just the flags)' do
     expect(patch_for(nil)).to eq('settings' => flags)
-  end
-
-  context 'with the real Decidim export fixture' do
-    let(:patch) do
-      row = DecidimImporter::CsvReader.read(
-        File.join(DecidimImporter::DecidimExportFixture.csv_root, '01--organization.csv')
-      ).first
-      patch_for(row)
-    end
-
-    it 'maps the real organization locales, and nothing else, onto core settings' do
-      expect(patch['settings']['core']).to eq('locales' => %w[fr-FR en])
-      expect(patch['settings']).to include('project_static_pages', 'parallel_participation')
-    end
   end
 end

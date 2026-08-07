@@ -82,8 +82,7 @@ module DecidimImporter
     end
 
     def present(value)
-      str = value.to_s.strip
-      str.empty? ? nil : str
+      Parsing.present_value(value)
     end
   end
 end
