@@ -609,9 +609,9 @@ de-AT:
       x_ideas: '%{numberOfIdeas} Ideen'
     project_phase_started:
       cta_button: Neuigkeiten ansehen
-      event_description: "Sie können jetzt an '%{phaseTitle}' auf der Plattform von %{organizationName} teilnehmen."
+      event_description: "Du kannst jetzt an '%{phaseTitle}' auf der Plattform von %{organizationName} teilnehmen."
       new_phase: "Dieses Projekt ist nun in der Phase '%{phaseTitle}'"
-      preheader: "Sie können jetzt an '%{phaseTitle}' teilnehmen"
+      preheader: "Du kannst jetzt an '%{phaseTitle}' teilnehmen"
       subject: "'%{phaseTitle}' hat in %{projectName} begonnen"
       subtitle: "Über '%{projectName}'"
       title: "Es gibt etwas Neues in '%{projectName}'"
