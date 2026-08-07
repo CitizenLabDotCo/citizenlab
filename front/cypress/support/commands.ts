@@ -7,6 +7,7 @@ import { IUpdatedAppConfigurationProperties } from '../../app/api/app_configurat
 import { IProjectAttributes } from '../../app/api/projects/types';
 import { ICustomFieldInputType } from '../../app/api/custom_fields/types';
 import { IGroup } from '../../app/api/groups/types';
+import type { TRule } from '../../app/modules/commercial/smart_groups/components/UserFilterConditions/rules';
 import { Multiloc } from '../../app/typings';
 
 import { jwtDecode } from 'jwt-decode';
@@ -71,6 +72,7 @@ declare global {
       apiCreatePhase: typeof apiCreatePhase;
       apiCreateCustomField: typeof apiCreateCustomField;
       apiCreateCustomFieldOption: typeof apiCreateCustomFieldOption;
+      apiGetUserCustomFields: typeof apiGetUserCustomFields;
       apiRemoveCustomField: typeof apiRemoveCustomField;
       apiAddPoll: typeof apiAddPoll;
       apiCreateCause: typeof apiCreateCause;
@@ -87,6 +89,7 @@ declare global {
       apiUpdateHomepageLayout: typeof apiUpdateHomepageLayout;
       apiUpdateAppConfiguration: typeof apiUpdateAppConfiguration;
       clickLocaleSwitcherAndType: typeof clickLocaleSwitcherAndType;
+      apiCreateSmartGroup: typeof apiCreateSmartGroup;
       apiCreateSmartGroupCustomField: typeof apiCreateSmartGroupCustomField;
       apiRemoveSmartGroup: typeof apiRemoveSmartGroup;
       apiUpdatePermissionCustomField: typeof apiUpdatePermissionCustomField;
@@ -1493,6 +1496,21 @@ function apiCreateCustomFieldOption(optionName: string, customFieldId: string) {
   });
 }
 
+function apiGetUserCustomFields() {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'GET',
+      url: 'web_api/v1/users/custom_fields',
+    });
+  });
+}
+
 function apiRemoveCustomField(fieldId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1821,11 +1839,7 @@ function apiUpdateHomepageLayout({
     });
   });
 }
-function apiCreateSmartGroupCustomField(
-  groupName: string,
-  customFieldId: string,
-  customFieldOptionId: string
-) {
+function apiCreateSmartGroup(groupName: string, rules: TRule[]) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -1844,18 +1858,26 @@ function apiCreateSmartGroupCustomField(
             en: groupName,
             'nl-BE': groupName,
           },
-          rules: [
-            {
-              customFieldId,
-              predicate: 'has_value',
-              ruleType: 'custom_field_select',
-              value: customFieldOptionId,
-            },
-          ],
+          rules,
         },
       },
     });
   });
+}
+
+function apiCreateSmartGroupCustomField(
+  groupName: string,
+  customFieldId: string,
+  customFieldOptionId: string
+) {
+  return cy.apiCreateSmartGroup(groupName, [
+    {
+      customFieldId,
+      predicate: 'has_value',
+      ruleType: 'custom_field_select',
+      value: customFieldOptionId,
+    },
+  ]);
 }
 
 function apiRemoveSmartGroup(smartGroupId: string) {
@@ -2440,6 +2462,7 @@ Cypress.Commands.add('apiAddProjectsToFolder', apiAddProjectsToFolder);
 Cypress.Commands.add('apiCreatePhase', apiCreatePhase);
 Cypress.Commands.add('apiCreateCustomField', apiCreateCustomField);
 Cypress.Commands.add('apiCreateCustomFieldOption', apiCreateCustomFieldOption);
+Cypress.Commands.add('apiGetUserCustomFields', apiGetUserCustomFields);
 Cypress.Commands.add('apiRemoveCustomField', apiRemoveCustomField);
 Cypress.Commands.add('apiAddPoll', apiAddPoll);
 Cypress.Commands.add('apiCreateCause', apiCreateCause);
@@ -2474,6 +2497,7 @@ Cypress.Commands.add('apiUpdateHomepageLayout', apiUpdateHomepageLayout);
 Cypress.Commands.add('apiRemoveCustomPage', apiRemoveCustomPage);
 Cypress.Commands.add('apiCreateCustomPage', apiCreateCustomPage);
 Cypress.Commands.add('clickLocaleSwitcherAndType', clickLocaleSwitcherAndType);
+Cypress.Commands.add('apiCreateSmartGroup', apiCreateSmartGroup);
 Cypress.Commands.add(
   'apiCreateSmartGroupCustomField',
   apiCreateSmartGroupCustomField
