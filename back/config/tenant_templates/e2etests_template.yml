@@ -15894,6 +15894,18 @@ models:
     ordering: 2
     enabled: false
     code: domicile
+  - resource_type: User
+    key: postal_code
+    title_multiloc:
+      en: Postal code
+      fr-BE: Code postal
+      nl-BE: Postcode
+    input_type: text
+    required: false
+    ordering: 3
+    enabled: false
+    code: postal_code
+    hidden: true
   custom_field_option:
   - custom_field_ref: *5
     key: male
