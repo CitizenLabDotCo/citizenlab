@@ -16,17 +16,22 @@ export function canContainIdeas(phase: IPhaseData) {
   return pm === 'ideation' || pm === 'voting';
 }
 
+export function isTimelinePhase(phase: IPhaseData) {
+  return phase.attributes.placement_type === 'on_timeline';
+}
+
+export function isActivePhase(phase: IPhaseData) {
+  return (
+    pastPresentOrFuture([
+      phase.attributes.start_at,
+      phase.attributes.end_at,
+    ]) === 'present'
+  );
+}
+
 export function getCurrentPhase(phases: IPhaseData[] | undefined) {
   if (!isNilOrError(phases)) {
-    const currentPhase = phases.find(
-      (phase) =>
-        pastPresentOrFuture([
-          phase.attributes.start_at,
-          phase.attributes.end_at,
-        ]) === 'present'
-    );
-
-    return currentPhase;
+    return phases.find(isActivePhase);
   }
 
   return;

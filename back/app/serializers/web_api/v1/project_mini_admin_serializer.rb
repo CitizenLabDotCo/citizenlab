@@ -17,23 +17,19 @@ class WebApi::V1::ProjectMiniAdminSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :first_phase_start_date do |object|
-    first_phase = object.phases.order(:start_at).first
-    first_phase&.start_date
+    object.schedule.phases_span&.first
   end
 
   attribute :last_phase_end_date do |object|
-    last_phase = object.phases.order(:start_at).last
-    last_phase&.end_date
+    object.schedule.phases_span&.last
   end
 
-  attribute :current_phase_start_date do |object|
-    phase = TimelineService.new.current_phase(object)
-    phase&.start_date
+  attribute :active_phases_start_date do |object|
+    object.schedule.active_span&.first
   end
 
-  attribute :current_phase_end_date do |object|
-    phase = TimelineService.new.current_phase(object)
-    phase&.end_date
+  attribute :active_phases_end_date do |object|
+    object.schedule.active_span&.last
   end
 
   attribute :folder_title_multiloc do |object|

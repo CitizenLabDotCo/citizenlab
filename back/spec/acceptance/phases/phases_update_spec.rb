@@ -93,6 +93,13 @@ resource 'Phases' do
         )
       end
 
+      example 'Does not update the placement type, which can only be set on creation', document: false do
+        do_request(phase: { placement_type: 'standalone' })
+
+        assert_status 200
+        expect(phase.reload.placement_type).to eq 'on_timeline'
+      end
+
       context 'when description_multiloc contains images' do
         let(:description_multiloc) { { 'en' => html_with_base64_image } }
 

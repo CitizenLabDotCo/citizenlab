@@ -13,9 +13,17 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.startDate',
     defaultMessage: 'Start date: {date}',
   },
-  currentPhase: {
-    id: 'app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.currentPhase',
-    defaultMessage: 'Current phase: {phaseName} ({participationMethod})',
+  endDate: {
+    id: 'app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.endDate',
+    defaultMessage: 'End date: {date}',
+  },
+  activePhasesTitle: {
+    id: 'app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.activePhasesTitle',
+    defaultMessage: 'Active phases:',
+  },
+  activePhaseListItem: {
+    id: 'app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.activePhaseListItem',
+    defaultMessage: '{phaseName} ({participationMethod})',
   },
   daysLeft: {
     id: 'app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.daysLeft',
@@ -29,6 +37,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.phaseListItem',
     defaultMessage: 'Phase {number}: {phaseName} ({participationMethod})',
   },
+  extraPhaseListItem: {
+    id: 'app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.extraPhaseListItem',
+    defaultMessage: 'Extra: {phaseName} ({participationMethod})',
+  },
   noEndDate: {
     id: 'app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.noEndDate',
     defaultMessage: 'No end date',
@@ -37,8 +49,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.noPhases',
     defaultMessage: 'No phases',
   },
-  noCurrentPhase: {
-    id: 'app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.noCurrentPhase',
-    defaultMessage: 'No current phase',
+  noActivePhase: {
+    id: 'app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.noActivePhase',
+    defaultMessage: 'No active phase',
   },
 });
