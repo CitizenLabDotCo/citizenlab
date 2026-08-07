@@ -21,7 +21,13 @@ const acceptPolicies = (cy: Cypress.Chainable) => {
 export const confirmEmail = (cy: Cypress.Chainable) => {
   cy.get('#code').should('exist');
   cy.get('#code').click().type('123456');
+  // The confirmation request can outlive the default 15s element timeout on
+  // a loaded backend, leaving the next auth step (built-in fields form) to
+  // time out while the button still spins — so await the response itself.
+  // The request fires on click, so only the response needs the long leash.
+  cy.intercept('POST', '**/user/confirm_code_*').as('confirmCode');
   cy.get('#e2e-verify-email-button > button').click({ force: true });
+  cy.wait('@confirmCode', { responseTimeout: 60000 });
 };
 
 export const confirmPhone = (cy: Cypress.Chainable) => {
