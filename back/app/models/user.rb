@@ -64,6 +64,7 @@ class User < ApplicationRecord
   GENDERS = %w[male female unspecified].freeze
   # Registration custom fields that ship with the platform, and so are validated
   # on every save rather than only against the tenant's custom field schema.
+  # see validate :gender etc calls below and `read_attribute_for_validation`
   BUILT_IN_CUSTOM_FIELD_KEYS = %w[gender birthyear domicile].freeze
   INVITE_STATUSES = %w[pending accepted].freeze
   EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
@@ -244,10 +245,6 @@ class User < ApplicationRecord
   validates :first_name, :last_name, format: { without: /@/ }, allow_nil: true
   validates :locale, inclusion: { in: proc { AppConfiguration.instance.settings('core', 'locales') } }
   validates :bio_multiloc, multiloc: { presence: false, html: true }
-  # These three are ordinary registration custom fields living in
-  # `custom_field_values` (see `read_attribute_for_validation`), but they are
-  # built into the platform, so we always validate them — the JSON schema
-  # validation below only runs on the :form_submission context.
   validates :gender, inclusion: { in: GENDERS }, allow_nil: true
   validates :birthyear, numericality: { only_integer: true, greater_than_or_equal_to: 1900, less_than: Time.zone.now.year }, allow_nil: true
   validates :domicile, inclusion: { in: proc { ['outside'] + Area.select(:id).map(&:id) } }, allow_nil: true
@@ -277,12 +274,7 @@ class User < ApplicationRecord
   scope :not_blocked, -> { where(block_end_at: nil).or(where('? > block_end_at', Time.zone.now)) }
   scope :active, -> { registered.not_blocked }
 
-  # `gender`, `birthyear` and `domicile` are built-in registration custom fields:
-  # they live in `custom_field_values` like every other custom field and have no
-  # top-level accessor of their own. Pointing validation at the right place lets
-  # the `validates` declarations above refer to them by name, which keeps their
-  # validation errors keyed on :gender / :birthyear / :domicile rather than on
-  # :custom_field_values.
+  # HACK: makes sure we can validate values inside custom fields
   def read_attribute_for_validation(key)
     # `&.` because the column is nullable, and `store_accessor`'s reader — which
     # this replaces — tolerated a nil store.
@@ -291,24 +283,12 @@ class User < ApplicationRecord
     super
   end
 
-  # Assigns `attributes`, merging (rather than replacing) the `custom_field_values`
-  # hash so that custom fields the caller doesn't know about are preserved.
-  # Custom fields are only ever addressed through `custom_field_values`; there
-  # are no top-level attributes that write into it. The merge is applied after
-  # `assign_attributes` regardless, so that stays true if that ever changes.
-  def assign_merging_custom_fields(attributes)
-    # `to_h` so that this also accepts ActionController::Parameters (it raises
-    # ActionController::UnfilteredParameters on unpermitted params, just as
-    # `assign_attributes` would have raised ForbiddenAttributesError).
-    attributes = attributes.to_h.deep_stringify_keys
-    new_custom_field_values = attributes.delete('custom_field_values') || {}
-    assign_attributes(attributes)
-    self.custom_field_values = custom_field_values.merge(new_custom_field_values)
-  end
-
-  def update_merging_custom_fields!(attributes)
-    assign_merging_custom_fields(attributes)
-    save!
+  # Merges `values` into the user's custom fields rather than replacing them, so
+  # that fields the caller doesn't know about are preserved. Counterpart of
+  # `assign_attributes`, which writes the regular columns: a caller writing both
+  # calls both.
+  def merge_custom_field_values(values)
+    self.custom_field_values = custom_field_values.merge(values.deep_stringify_keys)
   end
 
   def to_token_payload

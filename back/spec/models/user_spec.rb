@@ -231,24 +231,30 @@ RSpec.describe User do
     end
   end
 
-  describe '#update_merging_custom_fields!' do
+  describe '#merge_custom_field_values' do
     let(:user) { create(:user, custom_field_values: { 'domicile' => 'outside', 'gender' => 'female' }) }
 
-    it 'merges nested custom_field_values into the existing ones' do
-      user.update_merging_custom_fields!({ custom_field_values: { 'birthyear' => 1990 } })
-      expect(user.reload.custom_field_values)
+    it 'merges the given values into the existing ones' do
+      user.merge_custom_field_values({ 'birthyear' => 1990 })
+      expect(user.custom_field_values)
         .to eq({ 'domicile' => 'outside', 'gender' => 'female', 'birthyear' => 1990 })
     end
 
     it 'overwrites only the custom fields it is given' do
-      user.update_merging_custom_fields!({ custom_field_values: { 'gender' => 'male' } })
-      expect(user.reload.custom_field_values)
+      user.merge_custom_field_values({ 'gender' => 'male' })
+      expect(user.custom_field_values)
         .to eq({ 'domicile' => 'outside', 'gender' => 'male' })
     end
 
-    it 'assigns regular attributes as well' do
-      user.update_merging_custom_fields!({ first_name: 'Jos', custom_field_values: { 'birthyear' => 1990 } })
-      expect(user.reload.first_name).to eq 'Jos'
+    it 'accepts symbol keys' do
+      user.merge_custom_field_values({ birthyear: 1990 })
+      expect(user.custom_field_values)
+        .to eq({ 'domicile' => 'outside', 'gender' => 'female', 'birthyear' => 1990 })
+    end
+
+    it 'leaves the existing values alone when given nothing' do
+      user.merge_custom_field_values({})
+      expect(user.custom_field_values).to eq({ 'domicile' => 'outside', 'gender' => 'female' })
     end
   end
 
