@@ -52,6 +52,21 @@ ignored. A debate's `instructions`/`information_updates`/`conclusions` are folde
 its scheduled window, closed state and endorsements have no equivalent and are dropped. Meeting comments,
 registration form answers and poll answers have no Go Vocal event equivalent and are not imported.
 
+#### Proposal statuses
+
+Decidim lets every proposals component define its own `ProposalState`s (the `NN---proposal-states.csv`
+sidecar), so a real export carries dozens of one-off labels. Go Vocal instead seeds a small fixed set of
+ideation statuses and allows a few `custom` ones. During `create_template` the **`StatusMapper`** makes a
+single LLM call (Claude via Bedrock — build runs outside a tenant, so it uses the ENV credentials
+directly, not `LLMSelector`) that folds the distinct *used* states onto a standard status where the
+meaning matches and proposes a handful of new `custom` statuses for the genuinely distinct ones, capping
+the customs (target ~12 statuses total). **`ProposalStatusResolver`** turns the result into `idea_status`
+records (emitted before the ideas that reference them) and resolves each proposal's `(component, token)`
+to its status. Best-effort: if the model is unavailable or misbehaves, it falls back to a deterministic
+token→standard-code mapping (no customs) so the import still succeeds. Each imported idea keeps its
+original Decidim status (token + citizen-facing label) in `custom_field_values['decidim_status']` for
+provenance — mirroring the scope→area pointer in `custom_field_values['decidim_scope']`.
+
 ### The rake tasks
 
 #### `create_template[path, primary_locale, production]`

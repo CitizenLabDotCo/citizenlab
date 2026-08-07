@@ -41,6 +41,7 @@ namespace :decidim_importer do
       File.write(yaml_path, builder.to_yaml)
       report_line "Wrote #{yaml_path} (users #{production ? 'untouched (production)' : 'anonymised'})"
       log_model_summary(builder)
+      log_custom_statuses(creator)
       creator.skipped_components.each { |s| report_warn "  skipped component #{s[:component]}: #{s[:reason]}" }
       creator.skipped_categories.each { |s| report_warn "  skipped category #{s[:uid]}: #{s[:reason]}" }
       creator.skipped_participation.each { |s| report_warn "  skipped #{s[:uid]}: #{s[:reason]}" }
@@ -195,6 +196,20 @@ namespace :decidim_importer do
     report_line "Template will create #{counts.values.sum} records:"
     counts.each { |model, count| report_line "  #{count} #{model}" }
     log_per_project_summary(builder)
+  end
+
+  # Logs the custom idea-statuses the LLM created for Decidim states with no standard Go Vocal
+  # equivalent (proposals map onto the seeded standard statuses otherwise). Nothing logged when none.
+  def log_custom_statuses(creator)
+    statuses = creator.custom_statuses
+    return if statuses.empty?
+
+    report_line "Created #{statuses.size} custom idea status(es) from Decidim states:"
+    statuses.each do |status|
+      title = status.attributes['title_multiloc']
+      label = (title.is_a?(Hash) && title.values.find(&:present?)) || '(untitled)'
+      report_line "  #{label}"
+    end
   end
 
   def log_per_project_summary(builder)
