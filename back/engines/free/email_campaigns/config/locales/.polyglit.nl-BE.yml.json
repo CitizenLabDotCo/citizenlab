@@ -2809,6 +2809,11 @@
     "verified_at": "2026-08-06T12:26:23.488358Z",
     "verified_by": "Luuc"
   },
+  "email_campaigns.project_phase_upcoming.event_description": {
+    "state": "verified",
+    "verified_at": "2026-08-07T12:52:56.737701Z",
+    "verified_by": "Sébastien"
+  },
   "email_campaigns.project_phase_upcoming.new_phase": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.624820Z",

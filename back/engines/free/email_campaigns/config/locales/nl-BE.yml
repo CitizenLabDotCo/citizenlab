@@ -618,7 +618,7 @@ nl-BE:
       title: "Er is iets nieuws in '%{projectName}'"
     project_phase_upcoming:
       cta_button: Controleer de instellingen
-      event_description: "Het project '%{projectName}' gaat binnenkort een nieuwe fase in. Zorg ervoor dat alles klaar staat: Is er een goede beschrijving? Werden geselecteerde ideeën al naar deze fase overgeplaatst? Wil je je burgers nog informeren over bepaalde zaken via een e-mailcampagne?"
+      event_description: "'%{phaseTitle}' in het project '%{projectName}' start op %{startDate}. Neem even de tijd om te controleren of alles klaarstaat: Is de beschrijving volledig? Zijn de datums correct? Wil je je gemeenschap informeren via een aangepaste e-mailcampagne?"
       new_phase: "Het project gaat de fase '%{phaseTitle}' in"
       preheader: Zorg ervoor dat alles klaarstaat voor %{startDate}
       subject: "%{projectName}: '%{phaseTitle}' start op %{startDate}"
