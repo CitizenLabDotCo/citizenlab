@@ -135,7 +135,7 @@ module CustomIdMethods::Criipto
     end
 
     def updateable_user_attrs
-      super + %i[custom_field_values birthyear]
+      super + %i[custom_field_values]
     end
   end
 end

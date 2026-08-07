@@ -1768,7 +1768,7 @@ resource 'Users' do
             expect(response_status).to eq 200
             @user.reload
             expect(@user.locale).to eq locale
-            expect(@user.birthyear).to eq birthyear
+            expect(@user.custom_field_values['birthyear']).to eq birthyear
           end
         end
 

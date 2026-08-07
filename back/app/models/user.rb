@@ -62,6 +62,10 @@ class User < ApplicationRecord
   include UserDoorkeeper
 
   GENDERS = %w[male female unspecified].freeze
+  # Registration custom fields that ship with the platform, and so are validated
+  # on every save rather than only against the tenant's custom field schema.
+  # see validate :gender etc calls below and `read_attribute_for_validation`
+  BUILT_IN_CUSTOM_FIELD_KEYS = %w[gender birthyear domicile].freeze
   INVITE_STATUSES = %w[pending accepted].freeze
   EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   EMAIL_DOMAIN_BLACKLIST = EmailDomainBlacklist.load
@@ -229,7 +233,6 @@ class User < ApplicationRecord
   has_many :jobs_trackers, class_name: 'Jobs::Tracker', foreign_key: :owner_id, dependent: :nullify
   has_many :invites_imports, foreign_key: :importer_id, dependent: :destroy
 
-  store_accessor :custom_field_values, :gender, :birthyear, :domicile
   store_accessor :onboarding, :topics_and_areas
 
   validates :locale, presence: true, unless: :invite_pending?
@@ -271,12 +274,21 @@ class User < ApplicationRecord
   scope :not_blocked, -> { where(block_end_at: nil).or(where('? > block_end_at', Time.zone.now)) }
   scope :active, -> { registered.not_blocked }
 
-  def update_merging_custom_fields!(attributes)
-    attributes = attributes.deep_stringify_keys
-    update!(
-      **attributes,
-      custom_field_values: custom_field_values.merge(attributes['custom_field_values'] || {})
-    )
+  # HACK: makes sure we can validate values inside custom fields
+  def read_attribute_for_validation(key)
+    # `&.` because the column is nullable, and `store_accessor`'s reader — which
+    # this replaces — tolerated a nil store.
+    return custom_field_values&.dig(key.to_s) if BUILT_IN_CUSTOM_FIELD_KEYS.include?(key.to_s)
+
+    super
+  end
+
+  # Merges `values` into the user's custom fields rather than replacing them, so
+  # that fields the caller doesn't know about are preserved. Counterpart of
+  # `assign_attributes`, which writes the regular columns: a caller writing both
+  # calls both.
+  def merge_custom_field_values(values)
+    self.custom_field_values = custom_field_values.merge(values.deep_stringify_keys)
   end
 
   def to_token_payload

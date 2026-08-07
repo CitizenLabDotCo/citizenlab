@@ -14,6 +14,7 @@ describe Export::Geojson::ValueVisitor do
       let(:field) do
         create(
           :custom_field,
+          :for_custom_form,
           input_type: 'number',
           key: 'proposed_budget',
           code: 'proposed_budget'
@@ -119,7 +120,7 @@ describe Export::Geojson::ValueVisitor do
         let(:resource_type) { 'User' }
         let(:code) { 'domicile' }
         let(:field_key) { :domicile }
-        let(:model) { create(:user, field_key => value) }
+        let(:model) { create(:user, custom_field_values: { field_key.to_s => value }.compact) }
 
         context 'when there is no value' do
           let(:value) { nil }

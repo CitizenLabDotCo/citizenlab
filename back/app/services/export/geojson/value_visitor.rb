@@ -75,7 +75,10 @@ module Export
       attr_reader :model, :option_index, :multiloc_service
 
       def value_for(field)
-        return model.public_send field.key if field.built_in?
+        # Built-in fields are backed by a real column (an idea's title, budget, ...),
+        # except on User: `gender`, `birthyear` and `domicile` are built into the
+        # platform but still live in `custom_field_values` like any other custom field.
+        return model.public_send field.key if field.built_in? && field.resource_type != 'User'
 
         model.custom_field_values[field.key]
       end

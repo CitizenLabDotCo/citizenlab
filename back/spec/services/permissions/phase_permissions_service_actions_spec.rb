@@ -154,7 +154,7 @@ describe Permissions::PhasePermissionsService do
       end
 
       context 'for a verified user' do
-        let(:user) { create(:user, verified: true, birthyear: 2008) }
+        let(:user) { create(:user, verified: true, custom_field_values: { 'birthyear' => 2008 }) }
 
         it 'returns nil' do
           permission = project.phases.first.permissions.find_by(action: 'posting_idea')

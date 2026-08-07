@@ -146,12 +146,19 @@ module Export
       end
 
       def value_for(field)
-        stored_value = if field.built_in?
+        stored_value = if built_in_column?(field)
           model.public_send field.key
         else
           model.custom_field_values[field.key]
         end
         stored_value.nil? ? '' : stored_value
+      end
+
+      # Built-in fields are backed by a real column (an idea's title, budget, ...),
+      # except on User: `gender`, `birthyear` and `domicile` are built into the
+      # platform but still live in `custom_field_values` like any other custom field.
+      def built_in_column?(field)
+        field.built_in? && field.resource_type != 'User'
       end
 
       def value_for_multiloc(maybe_multiloc)

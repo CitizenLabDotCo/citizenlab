@@ -40,13 +40,15 @@ module CustomIdMethods::Franceconnect
         remote_avatar_url: auth.info['image']
       }.tap do |attrs|
         custom_fields = CustomField.registration.enabled.pluck(:code)
+        custom_field_values = {}
         if custom_fields.include?('birthyear')
           birthdate = auth.extra.raw_info.birthdate
-          attrs[:birthyear] = Date.parse(birthdate).year if birthdate.present?
+          custom_field_values['birthyear'] = Date.parse(birthdate).year if birthdate.present?
         end
         if custom_fields.include?('gender')
-          attrs[:gender] = auth.extra.raw_info.gender
+          custom_field_values['gender'] = auth.extra.raw_info.gender
         end
+        attrs[:custom_field_values] = custom_field_values.compact
       end
     end
 
@@ -117,7 +119,7 @@ module CustomIdMethods::Franceconnect
     end
 
     def updateable_user_attrs
-      super + %i[first_name last_name birthyear gender remote_avatar_url]
+      super + %i[first_name last_name custom_field_values remote_avatar_url]
     end
 
     # To make this method return false and so to reproduce merging error, you need:

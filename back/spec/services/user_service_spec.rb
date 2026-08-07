@@ -330,6 +330,15 @@ describe UserService do
       expect(user.invite_status).to eq 'accepted'
     end
 
+    it 'merges the custom fields from the SSO into the ones set by the invite' do
+      user = create(:invited_user, custom_field_values: { 'domicile' => 'outside', 'gender' => 'female' })
+
+      service.assign_params_in_accept_invite(user, { custom_field_values: { 'birthyear' => 1990 } })
+
+      expect(user.custom_field_values)
+        .to eq({ 'domicile' => 'outside', 'gender' => 'female', 'birthyear' => 1990 })
+    end
+
     context 'when confirm_user is true' do
       it 'confirms the user email' do
         user = create(:invited_user)

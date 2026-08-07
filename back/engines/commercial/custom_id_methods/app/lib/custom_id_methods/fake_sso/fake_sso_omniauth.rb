@@ -17,12 +17,18 @@ module CustomIdMethods::FakeSso
     end
 
     def profile_to_user_attrs(auth)
+      birthdate = auth.extra.raw_info['birthdate']
+
+      custom_field_values = {
+        'gender' => auth.extra.raw_info['gender'],
+        'birthyear' => (Date.parse(birthdate).year if birthdate.present?)
+      }.compact
+
       {
         first_name: auth.info['first_name'],
         email: auth.info['email'],
         last_name: auth.info['last_name'],
-        gender: auth.extra.raw_info['gender'],
-        birthyear: Date.parse(auth.extra.raw_info['birthdate']).year
+        custom_field_values: custom_field_values
       }
     end
 
