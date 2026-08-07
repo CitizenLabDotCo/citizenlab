@@ -107,8 +107,9 @@ describe Permissions::PhasePermissionsService do
     let(:service) { described_class.new(phase, user) }
     let(:user) { create(:user) }
 
+    include_context 'with sms feature enabled'
+
     before do
-      SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' })
       phase.permissions.find_by(action: 'posting_idea').update!(
         permitted_by: 'users',
         require_confirmed_phone_number: true
