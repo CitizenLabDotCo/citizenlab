@@ -22,7 +22,14 @@ module CustomIdMethods::FakeSso
         email: auth.info['email'],
         last_name: auth.info['last_name'],
         gender: auth.extra.raw_info['gender'],
-        birthyear: Date.parse(auth.extra.raw_info['birthdate']).year
+        birthyear: Date.parse(auth.extra.raw_info['birthdate']).year,
+        custom_field_values: {
+          # A custom field with postal_code as key must exist in DB
+          # in order to be able to use this in smart groups.
+          # It is included by default in the e2e template.
+          # The Fake SSO returns this as a string with value "1212"
+          'postal_code' => auth.extra.raw_info['postal_code'],
+        }
       }
     end
 
