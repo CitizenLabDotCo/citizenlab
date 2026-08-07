@@ -3,6 +3,9 @@
 module EmailCampaigns
   module Sms
     class ProviderError < Error
+      # The recipient replied STOP to the messaging service this use case sends through.
+      class RecipientOptedOut < ProviderError; end
+
       # HTTP 429 — we are being rate limited.
       class RateLimit < ProviderError; end
 

@@ -16,6 +16,10 @@ module EmailCampaigns
           'failed' => 'failed'
         }.freeze
 
+        # Returned when the number replied STOP to the messaging service we're sending on.
+        # https://www.twilio.com/docs/api/errors/21610
+        OPTED_OUT_ERROR_CODE = 21_610
+
         MESSAGING_SERVICE_SID_SETTINGS = {
           UseCase::MANUAL_CAMPAIGNS => 'twilio_manual_campaigns_messaging_service_sid',
           UseCase::CONFIRMATION_CODES => 'twilio_confirmation_codes_messaging_service_sid'
@@ -54,16 +58,20 @@ module EmailCampaigns
             status: STATUS_MAPPING[params[:MessageStatus]],
             # The provider's original status string, kept for diagnostics when it
             # maps to nil (a status we don't track).
-            raw_status: params[:MessageStatus]
+            raw_status: params[:MessageStatus],
+            opted_out: params[:ErrorCode].to_i == OPTED_OUT_ERROR_CODE
           }
         end
 
         private
 
-        # Maps a Twilio REST error onto our provider error hierarchy by HTTP
-        # status: 429 -> RateLimit, 503 -> ServiceUnavailable, other 5xx ->
-        # ServerError (all retryable), anything else -> the permanent ProviderError.
+        # Maps a Twilio REST error onto our provider error hierarchy. An opt-out is
+        # recognised by its Twilio error code; everything else goes by HTTP status:
+        # 429 -> RateLimit, 503 -> ServiceUnavailable, other 5xx -> ServerError (all
+        # retryable), anything else -> the permanent ProviderError.
         def error_for(rest_error)
+          return ProviderError::RecipientOptedOut.new(rest_error.message) if rest_error.code == OPTED_OUT_ERROR_CODE
+
           error_class_for(rest_error.status_code).new(rest_error.message)
         end
 
