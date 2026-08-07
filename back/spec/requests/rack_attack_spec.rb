@@ -16,6 +16,7 @@ describe 'Rack::Attack' do
   end
 
   let!(:user) { create(:user) }
+  let(:token) { AuthToken::AuthToken.new(payload: user.to_token_payload).token }
 
   it 'limits login requests from same IP to 2 in 20 seconds' do
     headers = { 'CONTENT_TYPE' => 'application/json' }
@@ -296,18 +297,189 @@ describe 'Rack::Attack' do
   it 'limits unauthenticated code requests from same IP to 10 in 5 minutes' do
     headers = { 'CONTENT_TYPE' => 'application/json' }
 
+    # Use a different email for each request, to avoid testing limit by email
     freeze_time do
-      10.times do
-        post('/web_api/v1/user/request_code_email', params: '{ "request_code": { "email": "coolemail@example.org" } }', headers: headers)
+      10.times do |i|
+        post('/web_api/v1/user/request_code_email', params: '{ "request_code": { "email": "INSERT" } }'.gsub('INSERT', "a#{i}@b.com"), headers: headers)
       end
       expect(status).to eq(401) # Unauthorized
 
-      post('/web_api/v1/user/request_code_email', params: '{ "request_code": { "email": "coolemail@example.org" } }', headers: headers)
+      post('/web_api/v1/user/request_code_email', params: '{ "request_code": { "email": "a11@b.com" } }', headers: headers)
       expect(status).to eq(429) # Too many requests
     end
 
     travel_to(5.minutes.from_now) do
-      post('/web_api/v1/user/request_code_email', params: '{ "request_code": { "email": "coolemail@example.org" } }', headers: headers)
+      post('/web_api/v1/user/request_code_email', params: '{ "request_code": { "email": "a12@b.com" } }', headers: headers)
+      expect(status).to eq(401) # Unauthorized
+    end
+  end
+
+  it 'limits code requests for same email to 1 in 5 seconds' do
+    params = '{ "request_code": { "email": "coolemail@example.org" } }'
+
+    # Use a different IP for each request, to avoid testing limit by IP
+    freeze_time do
+      headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.1' }
+      post('/web_api/v1/user/request_code_email', params: params, headers: headers)
+      expect(status).to eq(401) # Unauthorized
+
+      headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.2' }
+      post('/web_api/v1/user/request_code_email', params: params, headers: headers)
+      expect(status).to eq(429) # Too many requests
+    end
+
+    travel_to(5.seconds.from_now) do
+      headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.3' }
+      post('/web_api/v1/user/request_code_email', params: params, headers: headers)
+      expect(status).to eq(401) # Unauthorized
+    end
+  end
+
+  it 'limits code requests for same user to 1 in 5 seconds' do
+    headers = { 'CONTENT_TYPE' => 'application/json', 'Authorization' => "Bearer #{token}" }
+
+    # No email in the body, to avoid testing limit by email
+    params = '{ "request_code": { "only_if_first_time": false } }'
+
+    freeze_time do
+      post('/web_api/v1/user/request_code_email', params: params, headers: headers)
+      expect(status).to eq(200) # OK
+
+      post('/web_api/v1/user/request_code_email', params: params, headers: headers)
+      expect(status).to eq(429) # Too many requests
+    end
+
+    travel_to(5.seconds.from_now) do
+      post('/web_api/v1/user/request_code_email', params: params, headers: headers)
+      expect(status).to eq(200) # OK
+    end
+  end
+
+  it 'limits code requests for same user when the token is passed as a query param' do
+    # AuthToken reads params[:token] before the Authorization header
+    headers = { 'CONTENT_TYPE' => 'application/json' }
+    params = '{ "request_code": { "only_if_first_time": false } }'
+
+    freeze_time do
+      post("/web_api/v1/user/request_code_email?token=#{token}", params: params, headers: headers)
+      expect(status).to eq(200) # OK
+
+      post("/web_api/v1/user/request_code_email?token=#{token}", params: params, headers: headers)
+      expect(status).to eq(429) # Too many requests
+    end
+  end
+
+  it 'limits email change code requests from same IP to 1 in 5 seconds' do
+    headers = { 'CONTENT_TYPE' => 'application/json' }
+
+    freeze_time do
+      post('/web_api/v1/user/request_code_new_email', params: '{ "request_code": { "new_email": "coolemail@example.org" } }', headers: headers)
+      expect(status).to eq(401) # Unauthorized
+
+      post('/web_api/v1/user/request_code_new_email', params: '{ "request_code": { "new_email": "coolemail@example.org" } }', headers: headers)
+      expect(status).to eq(429) # Too many requests
+    end
+
+    travel_to(5.seconds.from_now) do
+      post('/web_api/v1/user/request_code_new_email', params: '{ "request_code": { "new_email": "coolemail@example.org" } }', headers: headers)
+      expect(status).to eq(401) # Unauthorized
+    end
+  end
+
+  it 'limits email change code requests for same user to 1 in 5 seconds' do
+    other_user = create(:user)
+    params = "{ \"request_code\": { \"new_email\": \"#{other_user.email}\" } }"
+
+    # Use a different IP for each request, to avoid testing limit by IP
+    freeze_time do
+      headers = { 'CONTENT_TYPE' => 'application/json', 'Authorization' => "Bearer #{token}", 'REMOTE_ADDR' => '1.2.3.1' }
+      post('/web_api/v1/user/request_code_new_email', params: params, headers: headers)
+      expect(status).to eq(422) # Unprocessable entity
+
+      headers = { 'CONTENT_TYPE' => 'application/json', 'Authorization' => "Bearer #{token}", 'REMOTE_ADDR' => '1.2.3.2' }
+      post('/web_api/v1/user/request_code_new_email', params: params, headers: headers)
+      expect(status).to eq(429) # Too many requests
+    end
+
+    travel_to(5.seconds.from_now) do
+      headers = { 'CONTENT_TYPE' => 'application/json', 'Authorization' => "Bearer #{token}", 'REMOTE_ADDR' => '1.2.3.3' }
+      post('/web_api/v1/user/request_code_new_email', params: params, headers: headers)
+      expect(status).to eq(422) # Unprocessable entity
+    end
+  end
+
+  it 'limits phone re-confirmation code requests from same IP to 1 in 5 seconds' do
+    headers = { 'CONTENT_TYPE' => 'application/json' }
+
+    freeze_time do
+      post('/web_api/v1/user/request_code_phone', params: '{ "request_code": {} }', headers: headers)
+      expect(status).to eq(401) # Unauthorized
+
+      post('/web_api/v1/user/request_code_phone', params: '{ "request_code": {} }', headers: headers)
+      expect(status).to eq(429) # Too many requests
+    end
+
+    travel_to(5.seconds.from_now) do
+      post('/web_api/v1/user/request_code_phone', params: '{ "request_code": {} }', headers: headers)
+      expect(status).to eq(401) # Unauthorized
+    end
+  end
+
+  it 'limits phone re-confirmation code requests for same user to 1 in 5 seconds' do
+    params = '{ "request_code": {} }'
+
+    # Use a different IP for each request, to avoid testing limit by IP
+    freeze_time do
+      headers = { 'CONTENT_TYPE' => 'application/json', 'Authorization' => "Bearer #{token}", 'REMOTE_ADDR' => '1.2.3.1' }
+      post('/web_api/v1/user/request_code_phone', params: params, headers: headers)
+      expect(status).to eq(401) # Unauthorized
+
+      headers = { 'CONTENT_TYPE' => 'application/json', 'Authorization' => "Bearer #{token}", 'REMOTE_ADDR' => '1.2.3.2' }
+      post('/web_api/v1/user/request_code_phone', params: params, headers: headers)
+      expect(status).to eq(429) # Too many requests
+    end
+
+    travel_to(5.seconds.from_now) do
+      headers = { 'CONTENT_TYPE' => 'application/json', 'Authorization' => "Bearer #{token}", 'REMOTE_ADDR' => '1.2.3.3' }
+      post('/web_api/v1/user/request_code_phone', params: params, headers: headers)
+      expect(status).to eq(401) # Unauthorized
+    end
+  end
+
+  it 'limits phone change code requests from same IP to 1 in 5 seconds' do
+    headers = { 'CONTENT_TYPE' => 'application/json' }
+
+    freeze_time do
+      post('/web_api/v1/user/request_code_new_phone', params: '{ "request_code": { "new_phone": "+32470123456" } }', headers: headers)
+      expect(status).to eq(401) # Unauthorized
+
+      post('/web_api/v1/user/request_code_new_phone', params: '{ "request_code": { "new_phone": "+32470123456" } }', headers: headers)
+      expect(status).to eq(429) # Too many requests
+    end
+
+    travel_to(5.seconds.from_now) do
+      post('/web_api/v1/user/request_code_new_phone', params: '{ "request_code": { "new_phone": "+32470123456" } }', headers: headers)
+      expect(status).to eq(401) # Unauthorized
+    end
+  end
+
+  it 'limits phone change code requests for same user to 1 in 5 seconds' do
+    params = '{ "request_code": { "new_phone": "+32470123456" } }'
+
+    # Use a different IP for each request, to avoid testing limit by IP
+    freeze_time do
+      headers = { 'CONTENT_TYPE' => 'application/json', 'Authorization' => "Bearer #{token}", 'REMOTE_ADDR' => '1.2.3.1' }
+      post('/web_api/v1/user/request_code_new_phone', params: params, headers: headers)
+      expect(status).to eq(401) # Unauthorized
+
+      headers = { 'CONTENT_TYPE' => 'application/json', 'Authorization' => "Bearer #{token}", 'REMOTE_ADDR' => '1.2.3.2' }
+      post('/web_api/v1/user/request_code_new_phone', params: params, headers: headers)
+      expect(status).to eq(429) # Too many requests
+    end
+
+    travel_to(5.seconds.from_now) do
+      headers = { 'CONTENT_TYPE' => 'application/json', 'Authorization' => "Bearer #{token}", 'REMOTE_ADDR' => '1.2.3.3' }
+      post('/web_api/v1/user/request_code_new_phone', params: params, headers: headers)
       expect(status).to eq(401) # Unauthorized
     end
   end
