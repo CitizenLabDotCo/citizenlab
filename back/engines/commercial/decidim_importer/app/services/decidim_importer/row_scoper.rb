@@ -3,9 +3,11 @@
 module DecidimImporter
   # Narrows a parsed export (`rows_by_model`) to a chosen set of containers (participatory processes /
   # assemblies, by uid) for a supplemental import. Keeps those containers' projects and container-scoped
-  # rows (components, ideas, comments, files…), the users they reference, and the process-group folders
-  # they sit in; drops everything global (scopes, organization), which the tenant already holds. Reusing
-  # the kept users/folders on apply is the deserializer's job, not this filter's.
+  # rows (components, ideas, comments, files…), the users they reference, the process-group folders they
+  # sit in, and the organization row (which drives the app-config locale patch — the tenant still needs
+  # every locale the scoped content uses — plus the user custom fields); drops the scopes, which the
+  # tenant already holds. Reusing the kept users/folders on apply is the deserializer's job, not this
+  # filter's.
   module RowScoper
     module_function
 
@@ -27,6 +29,9 @@ module DecidimImporter
       projects = scoped[:projects] || []
       add_stream(scoped, :users, referenced_users(rows_by_model[:users], scoped.values))
       add_stream(scoped, :folders, referenced_folders(rows_by_model[:folders], projects))
+      # Keep the organization row: it isn't a container-scoped record, but it drives the app-config locale
+      # patch (the tenant needs every locale the scoped content uses) and the user custom fields.
+      add_stream(scoped, :organization, rows_by_model[:organization])
       scoped
     end
 

@@ -44,6 +44,15 @@ RSpec.describe DecidimImporter::TemplateCreator do
       expect(template).not_to have_key('area')
     end
 
+    it 'still emits the app-config locale patch when scoped (the tenant needs those locales)' do
+      full_locales = described_class.from_directory(export_root).app_config_patch.dig('settings', 'core', 'locales')
+      expect(full_locales).to be_present
+
+      scoped = described_class.from_directory(export_root, container_ids: ['decidim--process--2']).app_config_patch
+      # scoping must not drop the locales — they'd otherwise be missing from the supplemental import's patch
+      expect(scoped.dig('settings', 'core', 'locales')).to eq(full_locales)
+    end
+
     it 'adds a custom field for each enabled extra user field from the organization config' do
       template = described_class.from_directory(export_root).build_template.models['models']
       # The org enables `phone_number` (gender is a built-in, so not recreated).

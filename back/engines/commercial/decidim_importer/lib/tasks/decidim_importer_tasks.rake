@@ -353,7 +353,7 @@ namespace :decidim_importer do
     File.join(parent, "#{base}.#{suffix}")
   end
 
-  # `<base>.<kind>.log` beside the input, e.g. `participer.arcueil.fr.20260721.import.log` — every task
+  # `<base>.<kind>.log` beside the input, e.g. `example.com.20240115.import.log` — every task
   # shares one base name whatever it was handed (export zip/dir, `.template.zip` bundle, or template YAML).
   def log_path(input, kind)
     "#{artifact_base(input)}.#{kind}.log"

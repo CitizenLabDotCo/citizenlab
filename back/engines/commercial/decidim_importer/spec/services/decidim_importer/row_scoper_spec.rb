@@ -36,9 +36,10 @@ RSpec.describe DecidimImporter::RowScoper do
     # users referenced by proc-1: proposal authors user-1/user-2, comment author user-3, follower user-2
     expect(scoped[:users].pluck('uid')).to contain_exactly('user-1', 'user-2', 'user-3')
     expect(scoped[:folders].pluck('uid')).to eq(['group-A'])
-    # global-but-unneeded streams are dropped
+    # scopes (→ areas) are dropped — the tenant already holds them
     expect(scoped).not_to have_key(:scopes)
-    expect(scoped).not_to have_key(:organization)
+    # the organization row is kept — it drives the app-config locale patch + user custom fields
+    expect(scoped[:organization]).to eq([{ 'uid' => 'org-1' }])
   end
 
   it 'unions referenced users/folders across multiple containers' do
