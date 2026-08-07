@@ -305,12 +305,16 @@ describe('timeline project with no active ideation phase', () => {
   it('allows admin users to add an idea via the map for a non-active phase', () => {
     // Select map view
     cy.get('#view-tab-2').click();
-    cy.wait(2000);
+    // The map (and the whole ArcGIS bundle) is lazy-loaded on first
+    // selection, and the Esri view swallows clicks until its rendering
+    // canvas is up — the fixed waits this replaces fired the one-shot
+    // click below too early. The surface div itself mounts synchronously
+    // with the MapView, so the canvas inside it is the readiness signal.
+    cy.get('#e2e-ideas-map .esri-view-surface canvas', {
+      timeout: 30000,
+    }).should('be.visible');
     // Click map to open popup
-    cy.get('#e2e-ideas-map').should('exist');
-    cy.wait(1000);
     cy.get('#e2e-ideas-map').click('center');
-    cy.wait(1000);
     // Add idea button should appear, click it
     cy.get('#e2e-idea-from-map-button').click();
     // Shold redirect to new idea page with phase id in URL
