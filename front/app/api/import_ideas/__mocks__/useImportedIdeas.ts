@@ -68,6 +68,7 @@ export const ideasData: IIdeaData[] = [
       },
       anonymous: false,
       author_hash: 'abc123',
+      supports_public_visibility: true,
       followers_count: 0,
       manual_votes_amount: 0,
     },

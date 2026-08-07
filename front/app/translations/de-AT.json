@@ -1368,6 +1368,7 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Telefonnummer",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Telefonnummer im richtigen Format angeben, zum Beispiel +49 157 32 83 45 99",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Telefonnummer angeben",
+  "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Alle {contentType}-Benachrichtigungen umschalten",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Benachrichtigungen in dieser Kategorie",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "Welche Arten von E-Mail-Benachrichtigungen möchtest du erhalten?",
   "app.containers.CampaignsConsentForm.emailNotificationsTitle": "E-Mail-Benachrichtigungen",

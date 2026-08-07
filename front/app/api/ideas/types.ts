@@ -130,6 +130,10 @@ export interface IIdeaData {
     };
     anonymous: boolean;
     author_hash: string;
+    /** False for inputs that are not public contributions, such as survey
+     * responses. Those have no readable public page, so front-office actions
+     * like reporting as spam do not apply to them. */
+    supports_public_visibility: boolean;
     followers_count: number;
     reacting_threshold?: number;
     expires_at?: string;

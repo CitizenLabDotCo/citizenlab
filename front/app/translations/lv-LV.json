@@ -1368,6 +1368,7 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Tālruņa numurs",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Norādiet tālruņa numuru pareizā formātā, piemēram, +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Norādiet tālruņa numuru",
+  "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Pārslēgt visus {contentType} paziņojumus",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Paziņojumi šajā kategorijā",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "Kādus e-pasta paziņojumus jūs vēlaties saņemt?",
   "app.containers.CampaignsConsentForm.emailNotificationsTitle": "E-pasta paziņojumi",

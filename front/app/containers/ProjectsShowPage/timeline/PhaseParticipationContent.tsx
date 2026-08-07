@@ -35,8 +35,13 @@ const PhaseParticipationContent = ({
 }: Props) => {
   const projectId = project.id;
   const phaseId = phase.id;
-  const participationMethod = phase.attributes.participation_method;
-  const votingMethod = phase.attributes.voting_method;
+  const {
+    participation_method: participationMethod,
+    voting_method: votingMethod,
+    survey_embed_url: surveyEmbedUrl,
+    survey_service: surveyService,
+    document_annotation_embed_url: documentUrl,
+  } = phase.attributes;
   const isPastPhase =
     !!phase.attributes.end_at &&
     pastPresentOrFuture(phase.attributes.end_at) === 'past';
@@ -48,41 +53,72 @@ const PhaseParticipationContent = ({
     (isVotingPhase && !phase.attributes.autoshare_results_enabled);
   const showVotingResults =
     isVotingPhase && isPastPhase && phase.attributes.autoshare_results_enabled;
+  const showSurvey =
+    participationMethod === 'survey' && !!surveyEmbedUrl && !!surveyService;
+  const showDocumentAnnotation =
+    participationMethod === 'document_annotation' && !!documentUrl;
+  const showPoll = participationMethod === 'poll';
+  const showVolunteering = participationMethod === 'volunteering';
+  const showCommonGround = participationMethod === 'common_ground';
   const reportId = phase.relationships.report?.data?.id;
   const showReport =
     participationMethod === 'information' &&
     !!reportId &&
     phase.attributes.report_public;
 
+  // The report brings its own width and spacing, so it sits outside the
+  // container. Skipping the container when nothing goes in it leaves no empty
+  // wrapper behind, which is what lets the surrounding section collapse.
+  const hasContainedContent =
+    !!children ||
+    isVotingPhase ||
+    showSurvey ||
+    showDocumentAnnotation ||
+    showPoll ||
+    showVolunteering ||
+    showIdeas ||
+    showVotingResults ||
+    showCommonGround;
+
+  if (!hasContainedContent && !showReport) return null;
+
   return (
     <>
-      <ContentContainer maxWidth={maxPageWidth}>
-        {children}
-        {isVotingPhase && (
-          <StatusModule
-            phase={phase}
-            project={project}
-            votingMethod={votingMethod}
-          />
-        )}
-        <PhaseSurvey phaseId={phaseId} />
-        {participationMethod === 'document_annotation' && (
-          <PhaseDocumentAnnotation phase={phase} />
-        )}
-        <PhasePoll projectId={projectId} phaseId={phaseId} />
-        <PhaseVolunteering phaseId={phaseId} />
-        {showIdeas && <PhaseIdeas projectId={projectId} phaseId={phaseId} />}
-        {showVotingResults && votingMethod && (
-          <VotingResults phaseId={phaseId} votingMethod={votingMethod} />
-        )}
-        {participationMethod === 'common_ground' && (
-          <CommonGroundTabs
-            phase={phase}
-            project={project}
-            isPastPhase={isPastPhase}
-          />
-        )}
-      </ContentContainer>
+      {hasContainedContent && (
+        <ContentContainer maxWidth={maxPageWidth}>
+          {children}
+          {isVotingPhase && (
+            <StatusModule
+              phase={phase}
+              project={project}
+              votingMethod={votingMethod}
+            />
+          )}
+          {showSurvey && (
+            <PhaseSurvey
+              phase={phase}
+              surveyEmbedUrl={surveyEmbedUrl}
+              surveyService={surveyService}
+            />
+          )}
+          {showDocumentAnnotation && (
+            <PhaseDocumentAnnotation phase={phase} documentUrl={documentUrl} />
+          )}
+          {showPoll && <PhasePoll projectId={projectId} phaseId={phaseId} />}
+          {showVolunteering && <PhaseVolunteering phase={phase} />}
+          {showIdeas && <PhaseIdeas projectId={projectId} phaseId={phaseId} />}
+          {showVotingResults && votingMethod && (
+            <VotingResults phaseId={phaseId} votingMethod={votingMethod} />
+          )}
+          {showCommonGround && (
+            <CommonGroundTabs
+              phase={phase}
+              project={project}
+              isPastPhase={isPastPhase}
+            />
+          )}
+        </ContentContainer>
+      )}
       {showReport &&
         (wrapReportInSuspense ? (
           <Suspense fallback={null}>

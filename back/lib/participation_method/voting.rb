@@ -17,6 +17,10 @@ module ParticipationMethod
       %w[random]
     end
 
+    def allowed_presentation_modes
+      %w[card map]
+    end
+
     def assign_defaults_for_phase
       super
       phase.ideas_order ||= 'random'

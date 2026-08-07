@@ -38,10 +38,10 @@ RSpec.describe DecidimImporter::TemplateCreator do
       expect(phone).to include('resource_type' => 'User', 'input_type' => 'text')
     end
 
-    it 'builds the app-config patch from the organization CSV' do
+    it 'builds the app-config patch (locales + feature flags) from the organization CSV' do
       patch = described_class.from_directory(export_root).app_config_patch
       expect(patch.dig('settings', 'core', 'locales')).to eq(%w[fr-FR en])
-      expect(patch.dig('settings', 'core', 'organization_name')).to include('en' => 'Raynor, Heathcote and Moen')
+      expect(patch.dig('settings', 'parallel_participation')).to eq('allowed' => true, 'enabled' => true)
     end
 
     it 'imports a process\'s attachments as Files engine files owned by (but not attached to) the project' do
@@ -212,15 +212,19 @@ RSpec.describe DecidimImporter::TemplateCreator do
 
       let(:project) { Project.find_by("title_multiloc->>'fr-FR' = 'Espaces verts'") }
 
-      it 'lays out the proposals and survey components as phases ordered by component weight' do
-        # Steps are dropped; only proposals (ideation) and survey (native_survey) become phases. They're
-        # ordered by component weight (proposals weight 0, survey weight 7), and the survey — which
-        # overlapped — is pushed after the proposals to fit. (The page component becomes a static page.)
-        methods = project.phases.order(:start_at).pluck(:participation_method)
-        expect(methods).to eq(%w[ideation native_survey])
-        # Sequential, non-overlapping: each phase starts on/after the previous one's end.
-        starts_ends = project.phases.order(:start_at).pluck(:start_at, :end_at)
-        starts_ends.each_cons(2) { |(_, prev_end), (next_start, _)| expect(next_start).to be >= prev_end }
+      it 'lays out the proposals component on the timeline and the survey as a standalone (parallel) phase' do
+        # Steps are dropped; only proposals (ideation) and survey (native_survey) become phases.
+        # (The page component becomes a static page.)
+        ideation = project.phases.find_by(participation_method: 'ideation')
+        survey = project.phases.find_by(participation_method: 'native_survey')
+
+        # The proposals phase sits on the timeline, dated from the component to its last proposal.
+        expect(ideation.placement_type).to eq('on_timeline')
+        expect([ideation.start_at.to_date.iso8601, ideation.end_at.to_date.iso8601]).to eq(%w[2023-01-05 2023-02-25])
+        # The survey runs standalone (parallel), keeping its own window instead of being pushed after the
+        # proposals — so it overlaps them rather than distorting the timeline.
+        expect(survey.placement_type).to eq('standalone')
+        expect(survey.start_at).to be < ideation.end_at
       end
 
       it 'imports a Decidim page as a project-scoped static page carrying the page body' do
@@ -421,6 +425,14 @@ RSpec.describe DecidimImporter::TemplateCreator do
         expect(note.created_at.to_date.iso8601).to eq('2023-02-13')
       end
 
+      it 'imports the proposal’s geocoded address as a location description and map pin' do
+        accepted = Idea.find_by(title_multiloc: { 'fr-FR' => "Plus d'arbres" })
+
+        expect(accepted.location_description).to eq('12 avenue Roger Salengro')
+        expect(accepted.location_point.x).to be_within(0.00001).of(4.880)  # longitude
+        expect(accepted.location_point.y).to be_within(0.00001).of(45.766) # latitude
+      end
+
       it 'dates imported content from the export, not the import run' do
         accepted = Idea.find_by(title_multiloc: { 'fr-FR' => "Plus d'arbres" })
 
@@ -460,6 +472,9 @@ RSpec.describe DecidimImporter::TemplateCreator do
 
         expect(aire.budget).to eq(30_000)
         expect(aire.location_description).to eq('12 rue des Écoles')
+        # The budget project's coordinates become the idea's map pin ([lon, lat]).
+        expect(aire.location_point.x).to be_within(0.00001).of(4.889)
+        expect(aire.location_point.y).to be_within(0.00001).of(45.771)
         expect(aire.phases).to include(phase)
         expect(fontaine.budget).to eq(20_000)
       end
@@ -479,14 +494,56 @@ RSpec.describe DecidimImporter::TemplateCreator do
         aire = Idea.find_by(title_multiloc: { 'fr-FR' => 'Terrain multisport' })
         fontaine = Idea.find_by(title_multiloc: { 'fr-FR' => 'Fontaine à boire' })
 
-        # Two submitted baskets (the pending order is created but excluded from counts).
+        # Only the two submitted (finished) orders become baskets; the pending order is not imported at all.
+        expect(phase.baskets.count).to eq(2)
         expect(phase.reload.baskets_count).to eq(2)
         expect(phase.votes_count).to eq(80_000) # 50000 + 30000
-        # Aire de jeux is picked in both submitted baskets; Fontaine only in one (the other pick is pending).
+        # Aire de jeux is picked in both submitted baskets; Fontaine only in one (its other pick was pending).
         expect(aire.reload.baskets_count).to eq(2)
         expect(aire.votes_count).to eq(60_000)
         expect(fontaine.reload.baskets_count).to eq(1)
         expect(fontaine.votes_count).to eq(20_000)
+      end
+    end
+
+    context 'with a proposals component whose proposals were voted on' do
+      before { described_class.from_directory(export_root, import_uploads: false).import }
+
+      let(:project) { Project.find_by("title_multiloc->>'fr-FR' = 'Budget des rues'") }
+      let(:phase) { project.phases.sole }
+      let(:rue_a) { Idea.find_by(title_multiloc: { 'fr-FR' => 'Rénover la rue A' }) }
+      let(:rue_b) { Idea.find_by(title_multiloc: { 'fr-FR' => 'Rénover la rue B' }) }
+
+      it 'imports the component as a single-voting phase respecting the vote limit' do
+        expect(phase.participation_method).to eq('voting')
+        expect(phase.voting_method).to eq('single_voting')
+        expect(phase.voting_max_votes_per_idea).to eq(1) # one vote per option
+        expect(phase.voting_max_total).to eq(2) # the component's vote_limit
+      end
+
+      it 'imports the voted proposals as ideas in the voting phase' do
+        expect(rue_a.phases).to include(phase)
+        expect(rue_b.phases).to include(phase)
+        # The proposals keep their Decidim status (resolved to an ideation idea_status), as for any proposal.
+        expect(rue_a.idea_status.code).to eq('accepted')
+      end
+
+      it 'imports each voter’s votes as one submitted basket, a single vote per picked idea' do
+        user1 = User.find_by(unique_code: 'decidim-user-1')
+        basket = Basket.find_by(phase: phase, user: user1)
+
+        # user-1 voted for both streets; the basket is dated by the last vote and holds one vote per idea.
+        expect(basket.submitted_at).to eq(Time.zone.parse('2022-09-03 10:30:00 +0200'))
+        expect(basket.ideas).to contain_exactly(rue_a, rue_b)
+        expect(basket.baskets_ideas.pluck(:votes)).to eq([1, 1])
+      end
+
+      it 'recomputes the phase and idea vote counts from the submitted baskets' do
+        # Three voters (user-1/2/3), so three submitted baskets and five votes (3 for rue A, 2 for rue B).
+        expect(phase.reload.baskets_count).to eq(3)
+        expect(phase.votes_count).to eq(5)
+        expect(rue_a.reload.votes_count).to eq(3)
+        expect(rue_b.reload.votes_count).to eq(2)
       end
     end
 
@@ -502,6 +559,7 @@ RSpec.describe DecidimImporter::TemplateCreator do
         expect(event.address_1).to eq('10 av Paul Doumer, 94110 Arcueil')
         expect(event.start_at).to eq(Time.zone.parse('2024-04-25 18:30:00 +0200'))
         expect(event.end_at).to eq(Time.zone.parse('2024-04-25 20:00:00 +0200'))
+        expect(event.attendees_count).to eq(42)
         # The map pin is set from the meeting's lat/lng (GeoJSON is longitude-first).
         expect(event.location_point.x).to be_within(0.00001).of(2.33714)  # longitude
         expect(event.location_point.y).to be_within(0.00001).of(48.80633) # latitude

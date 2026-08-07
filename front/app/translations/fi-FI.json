@@ -1368,6 +1368,7 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Puhelinnumero",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Anna puhelinnumero oikeassa muodossa, esimerkiksi +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Anna puhelinnumero",
+  "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Kytke kaikki {contentType}-ilmoitukset päälle/pois",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Tämän kategorian ilmoitukset",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "Millaisia sähköposti-ilmoituksia haluat vastaanottaa?",
   "app.containers.CampaignsConsentForm.emailNotificationsTitle": "Sähköposti-ilmoitukset",

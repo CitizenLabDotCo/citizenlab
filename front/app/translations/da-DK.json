@@ -1368,6 +1368,7 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Telefonnummer",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Angiv et telefonnummer i det korrekte format, for eksempel +45 26464719",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Angiv et telefonnummer",
+  "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Slå alle {contentType}-notifikationer til/fra",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Notifikationer i denne kategori",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "Hvilke typer e-mailnotifikationer ønsker du at modtage?",
   "app.containers.CampaignsConsentForm.emailNotificationsTitle": "E-mailnotifikationer",
