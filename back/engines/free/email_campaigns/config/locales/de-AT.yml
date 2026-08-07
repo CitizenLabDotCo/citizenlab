@@ -608,7 +608,7 @@ de-AT:
       title_what_can_you_do_moderator: Was können Sie als Projektmanager*in tun?
       x_ideas: '%{numberOfIdeas} Ideen'
     project_phase_started:
-      cta_button: Sehen Sie, was es Neues gibt
+      cta_button: Neuigkeiten ansehen
       event_description: "Sie können jetzt an '%{phaseTitle}' auf der Plattform von %{organizationName} teilnehmen."
       new_phase: "Dieses Projekt ist nun in der Phase '%{phaseTitle}'"
       preheader: "Sie können jetzt an '%{phaseTitle}' teilnehmen"
@@ -616,7 +616,7 @@ de-AT:
       subtitle: "Über '%{projectName}'"
       title: "Es gibt etwas Neues in '%{projectName}'"
     project_phase_upcoming:
-      cta_button: Konfiguration überprüfen
+      cta_button: Einstellungen überprüfen
       event_description: "'%{phaseTitle}' im Projekt '%{projectName}' beginnt am %{startDate}. Nehmen Sie sich einen Moment Zeit, um zu prüfen, ob alles bereit ist: Ist die Beschreibung vollständig? Sind die Daten korrekt? Möchten Sie Ihre Community über eine benutzerdefinierte E-Mail-Kampagne informieren?"
       new_phase: Das Projekt geht in die Phase "%{phaseTitle}"
       preheader: Stellen Sie sicher, dass vor dem %{startDate} alles bereit ist
