@@ -99,7 +99,22 @@ describe('Ideation permitted by: users', () => {
 
       // Click submit and 'continue'
       cy.get('#e2e-signup-custom-fields-submit-btn').click();
+
+      // The idea form's fields (incl. #title_multiloc) are rendered from this
+      // request. Register the intercept before continuing so we can wait for the
+      // reg-flow -> idea-form transition to fully settle before interacting.
+      cy.intercept('GET', /\/custom_fields\?.*public_fields=true/).as(
+        'ideaFormFields'
+      );
+
       cy.get('#e2e-success-continue-button').click();
+
+      // 'Continue' redirects to /projects/<slug>/ideas/new and then loads the
+      // form schema. Under CI load both steps can be slow, so synchronise on the
+      // navigation and the schema fetch instead of racing a single DOM retry for
+      // #title_multiloc (which otherwise flakes: "never found #title_multiloc").
+      cy.url().should('include', '/ideas/new');
+      cy.wait('@ideaFormFields');
 
       const title = randomString(11);
       const body = randomString(40);
