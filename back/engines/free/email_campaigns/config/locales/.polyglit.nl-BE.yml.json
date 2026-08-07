@@ -2774,6 +2774,11 @@
     "verified_at": "2026-08-06T12:26:23.488358Z",
     "verified_by": "Luuc"
   },
+  "email_campaigns.project_phase_started.event_description": {
+    "state": "verified",
+    "verified_at": "2026-08-07T12:51:47.815881Z",
+    "verified_by": "Sébastien"
+  },
   "email_campaigns.project_phase_started.new_phase": {
     "state": "verified",
     "verified_at": "2026-03-18T16:34:36.237675Z",

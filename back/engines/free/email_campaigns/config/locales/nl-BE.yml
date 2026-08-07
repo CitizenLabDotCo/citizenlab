@@ -610,7 +610,7 @@ nl-BE:
       x_ideas: '%{numberOfIdeas} ideeën'
     project_phase_started:
       cta_button: Bekijk wat er nieuw is
-      event_description: Dit project ging een nieuwe fase in op het platform van %{organizationName}. Klik op de link hieronder om meer te weten te komen!
+      event_description: "Je kunt nu deelnemen aan '%{phaseTitle}' op het platform van %{organizationName}."
       new_phase: "Het project ging de fase '%{phaseTitle}' in"
       preheader: "Je kunt nu deelnemen aan '%{phaseTitle}'"
       subject: "'%{phaseTitle}' is gestart in %{projectName}"
