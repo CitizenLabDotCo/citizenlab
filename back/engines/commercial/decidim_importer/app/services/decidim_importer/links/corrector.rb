@@ -16,7 +16,7 @@ module DecidimImporter
     # Third-party links are left alone. This class only *decides*; recording and applying the mapping is
     # {Map}'s job.
     class Corrector
-      # @param original_domain [String] the source platform host (e.g. `participer.arcueil.fr`); a full
+      # @param original_domain [String] the source platform host (e.g. `decidim.example.org`); a full
       #   URL is accepted too, only its host is used. When blank, same-domain matching is skipped.
       # @param resolver [#content_href, #file_id] resolves a Decidim URL to a Go Vocal href / file id, or nil.
       def initialize(original_domain:, resolver:)

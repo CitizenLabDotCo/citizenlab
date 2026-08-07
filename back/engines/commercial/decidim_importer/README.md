@@ -69,7 +69,7 @@ provenance — mirroring the scope→area pointer in `custom_field_values['decid
 
 ### The rake tasks
 
-#### `create_template[path, primary_locale, production]`
+#### `create_template[path, primary_locale, production, container_ids]`
 
 `production=true` is the final import to the live tenant: real user names/emails are kept and the
 import-source links are omitted. Otherwise (the default, for test/verify runs) users are anonymised and
@@ -95,7 +95,14 @@ Finally it bundles the above into a single **`<base>.template.zip`** — the one
 (it unpacks the bundle to a tempdir), so the whole import is one artifact to move around. The loose files
 stay beside it for `verify`, which still takes the plain `.template.yml`.
 
-#### `import[file, host, import_uploads]`
+**Supplemental (scoped) import** — pass `container_ids` (process/assembly uids, `+`-separated) to narrow
+the template to just those spaces plus the **users** and **process-group folders** they reference
+([`RowScoper`](app/services/decidim_importer/row_scoper.rb)); everything else global (scopes → areas, the
+organization → app config) is dropped, since a supplemental import reuses what the tenant already holds.
+Use this to add a new project to a tenant that was already imported; `import` reuses those
+already-imported users/folders rather than duplicating them (see `reuse_existing` below, on by default).
+
+#### `import[file, host, import_uploads, reuse_existing]`
 
 **Bundle → tenant, in one tenant switch.** `file` is the `<base>.template.zip` bundle from
 `create_template`; `import` unpacks it to a tempdir and reads the template + its sibling artifacts from
@@ -115,6 +122,15 @@ to Home + Consultations + Assemblies — and finally grant **project-moderator**
 travel in the template). The post-import pass is idempotent; the deserialize is **not**
 transactional, so a mid-run failure leaves partial data — always import into a fresh tenant. Logs
 created counts to `<base>.import.log`.
+
+**`reuse_existing` (on by default)** — reuse a record the tenant already holds instead of inserting a
+duplicate, resolving the template's refs to the existing record. This keeps an import from aborting on a
+record that already exists — e.g. an admin whose email is also in the export, which would otherwise fail
+the user email-uniqueness validation — and makes a **supplemental** import (a scoped `create_template`)
+land its new project against the earlier import's users/folders. Matched on stable identity: users by
+`unique_code` then case-insensitive `email`, process-group folders by the slug their title generates,
+user custom fields by `key`, custom idea-statuses by title (`Importer::REUSE_MATCHERS`). Harmless on a
+fresh tenant (nothing matches); pass `reuse_existing=false` to force plain inserts.
 
 #### `verify[file, locales, import_uploads]`
 

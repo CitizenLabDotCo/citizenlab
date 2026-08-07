@@ -6,7 +6,7 @@ module DecidimImporter
   #
   # Go Vocal seeds a small fixed set of standard statuses; Decidim lets every proposals component define
   # its own {https://docs.decidim.org ProposalState}s, so a real export carries dozens of one-off labels
-  # (Villeurbanne: 237 across 32 components). The model folds each source state onto a {STANDARD_CODES
+  # (hundreds across dozens of components). The model folds each source state onto a {STANDARD_CODES
   # standard code} where the meaning matches and proposes a handful of new `custom` statuses for the
   # genuinely distinct ones (their participatory-budget vocabulary, etc.), keeping the tenant-wide total
   # within {MAX_TOTAL_STATUSES}. {ProposalStatusResolver} turns the result into idea_status records.

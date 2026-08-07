@@ -9,20 +9,57 @@ module DecidimImporter
     # created-ids hash. Project-moderator roles aren't applied here — they're driven by the sibling
     # `<base>.moderators.csv` and applied by {ModeratorAssigner} in the `import` rake task's finishing pass.
     #
+    # Reuse a record the tenant already holds instead of inserting a duplicate. On by default so an import
+    # never aborts on a pre-existing record (e.g. an admin whose email is in the export, which would fail
+    # the email-uniqueness validation); pass `reuse_existing: false` to force plain inserts. No-op on a
+    # fresh tenant. Matches on stable identity: users by `unique_code` then case-insensitive email, folders
+    # by title slug ({Slug.sanitize}), custom fields by `key`, custom idea-statuses by title. Only custom
+    # statuses travel in the template (standard ones resolve by code in {IdeaStatuses.resolve!}); their
+    # titles are matched in Ruby, best-effort — {StatusMapper} picks each import's customs blind to the
+    # tenant, so an identical label reuses and a new one is created.
+    REUSE_MATCHERS = {
+      'User' => lambda { |attrs, klass|
+        code = attrs['unique_code']
+        by_code = klass.find_by(unique_code: code) if code.present?
+        next by_code if by_code
+
+        # No unique_code match — fall back to email (e.g. a manually-created user).
+        email = attrs['email']
+        klass.find_by_cimail(email) if email.present?
+      },
+      'CustomField' => lambda { |attrs, klass|
+        key = attrs['key']
+        klass.find_by(key: key) if key.present?
+      },
+      'ProjectFolders::Folder' => lambda { |attrs, klass|
+        slug = Slug.sanitize((attrs['title_multiloc'] || {}).values.find(&:present?))
+        klass.find_by(slug: slug) if slug
+      },
+      'IdeaStatus' => lambda { |attrs, klass|
+        titles = (attrs['title_multiloc'] || {}).values.compact_blank
+        next if titles.empty?
+
+        klass.where(code: 'custom', participation_method: IdeaStatuses::PARTICIPATION_METHOD)
+          .find { |status| status.title_multiloc.values.intersect?(titles) }
+      }
+    }.freeze
+
     # @param import_uploads [Boolean] when false, every `remote_*_url` (images *and* file attachments) is
     #   stripped before deserialize — no external HTTP — e.g. for exports whose upload URLs are unreachable.
-    def self.apply_template_file(path, import_uploads: true)
+    # @param reuse_existing [Boolean] reuse records the tenant already holds (see {REUSE_MATCHERS}) instead
+    #   of duplicating them; on by default, pass false to force plain inserts.
+    def self.apply_template_file(path, import_uploads: true, reuse_existing: true)
       # Parsing a large, anchor-heavy template is a silent single-threaded pause before the first DB
       # query — bracket it so the log shows progress rather than an apparent hang.
       Rails.logger.info "Loading template #{path} (#{File.size(path) / 1_048_576} MB)…"
       template = YAML.load_file(path, aliases: true)
       Rails.logger.info 'Template loaded, resolving idea statuses…'
-      apply_template(template, import_uploads: import_uploads)
+      apply_template(template, import_uploads: import_uploads, reuse_existing: reuse_existing)
     end
 
     # Deserializes an in-memory template into the current tenant and runs the post-import passes. Shared
     # by {.apply_template_file} and {TemplateCreator#import}. Returns the deserializer's created-ids hash.
-    def self.apply_template(template, import_uploads: true, validate: true)
+    def self.apply_template(template, import_uploads: true, validate: true, reuse_existing: true)
       IdeaStatuses.resolve!(template)
       resolve_area_orderings!(template)
       TemplateCleaner.prepare_uploads!(template, import_uploads: import_uploads)
@@ -30,7 +67,9 @@ module DecidimImporter
       TemplateCleaner.prune_imageless_project_images!(template)
       # Suppress `touch: true` callbacks during the bulk load so imported records keep their template dates.
       created = ActiveRecord::Base.no_touching do
-        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template, validate: validate)
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(
+          template, validate: validate, reuse_by: reuse_existing ? REUSE_MATCHERS : {}
+        )
       end
       resolve_scope_areas!(template, created)
       recompute_voting_counts!(created)
