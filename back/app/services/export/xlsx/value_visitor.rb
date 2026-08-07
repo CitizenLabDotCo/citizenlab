@@ -98,10 +98,6 @@ module Export
         '' # The field does not capture data, so there is no value.
       end
 
-      def visit_section(_field)
-        '' # The field does not capture data, so there is no value.
-      end
-
       def visit_file_upload(field)
         file_id = value_for(field)['id']
         return '' unless file_id
