@@ -8,7 +8,8 @@ module DecidimImporter
     # hierarchy is flattened — every scope becomes a top-level area, parents included. Orderings are
     # assigned sequentially: Decidim's `weight` is unreliable (all zero in real exports) and Go Vocal's
     # `areas.ordering` is uniquely indexed, so reusing weight would collide. Scopes are registered under
-    # their `uid` so a later pass could link them to projects/ideas (not done yet).
+    # their `uid` so idea extractors can link a proposal/result back to its area — {Extractors::IdeaAssociations#register_scope_area}
+    # parks the pointer and {DecidimImporter::Importer.resolve_scope_areas!} resolves it to the real area id.
     class ScopesExtractor < BaseExtractor
       COLUMNS = {
         uid: 'uid',

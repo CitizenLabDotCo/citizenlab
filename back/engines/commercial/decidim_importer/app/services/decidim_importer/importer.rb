@@ -32,6 +32,7 @@ module DecidimImporter
       created = ActiveRecord::Base.no_touching do
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(template, validate: validate)
       end
+      resolve_scope_areas!(template, created)
       recompute_voting_counts!(created)
       restore_update_timestamps(template, created)
       reconcile_permissions!
@@ -56,6 +57,37 @@ module DecidimImporter
           by_timestamp[timestamp] << ids[i] if timestamp
         end
         by_timestamp.each { |timestamp, group_ids| klass.where(id: group_ids).update_all(updated_at: timestamp) }
+      end
+    end
+
+    # Resolves the scope→area pointer parked on each imported idea. {Extractors::IdeaAssociations#register_scope_area}
+    # seeds `custom_field_values['decidim_scope']` with the (shared) attributes hash of the `Area` the
+    # idea's Decidim scope became; here — now that the area is a real row — that hash is swapped for
+    # `{ 'area_id' => <uuid>, 'title_multiloc' => … }`, giving the imported input a durable pointer back
+    # to its area (ideas have no first-class area association). Idea/area template records line up
+    # positionally with the deserializer's created ids (same trick as {.restore_update_timestamps}); a
+    # size mismatch skips the pass rather than mislinking. Run in the target tenant.
+    def self.resolve_scope_areas!(template, created_object_ids)
+      ideas = template.dig('models', 'idea')
+      areas = template.dig('models', 'area')
+      return if ideas.blank? || areas.blank?
+
+      idea_ids = created_object_ids['Idea'] || []
+      area_ids = created_object_ids['Area'] || []
+      return unless ideas.size == idea_ids.size && areas.size == area_ids.size
+
+      area_id_by_attrs = {}.compare_by_identity
+      areas.each_with_index { |attrs, i| area_id_by_attrs[attrs] = area_ids[i] }
+
+      ideas.each_with_index do |attrs, i|
+        area_attrs = attrs['custom_field_values']&.fetch('decidim_scope', nil)
+        area_id = area_attrs.is_a?(Hash) && area_id_by_attrs[area_attrs]
+        next unless area_id
+
+        resolved = { 'area_id' => area_id, 'title_multiloc' => area_attrs['title_multiloc'] }
+        values = attrs['custom_field_values'].merge('decidim_scope' => resolved)
+        attrs['custom_field_values'] = values
+        Idea.where(id: idea_ids[i]).update_all(custom_field_values: values)
       end
     end
 
