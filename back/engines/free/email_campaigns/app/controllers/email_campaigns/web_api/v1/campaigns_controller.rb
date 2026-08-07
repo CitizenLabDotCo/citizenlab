@@ -25,8 +25,14 @@ module EmailCampaigns
         @campaigns = @campaigns.where(id: supported_ids)
       end
 
+      delivery_service = EmailCampaigns::DeliveryService.new
+
+      # Records of campaigns whose feature is deactivated are kept around (they come back
+      # when the feature does), but they have no business in the admin dashboard meanwhile.
+      @campaigns = @campaigns.where(type: delivery_service.campaign_types)
+
       # Filter out campaigns that are hidden from the admin dashboard (e.g. the phone confirmation OTP campaign)
-      @campaigns = @campaigns.where.not(type: EmailCampaigns::DeliveryService.new.hidden_from_admin_campaign_types)
+      @campaigns = @campaigns.where.not(type: delivery_service.hidden_from_admin_campaign_types)
 
       @campaigns = case parse_bool(params[:manual])
       when true then manual_order(@campaigns.manual)
