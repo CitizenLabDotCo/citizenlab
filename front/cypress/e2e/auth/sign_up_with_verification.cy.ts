@@ -1,6 +1,10 @@
 import { enterUserInfo, signUpEmailConformation } from '../../support/auth';
 import { randomString } from '../../support/commands';
-import { createNativeSurveyProjectWithPermission, fakeSSOAuth } from './utils';
+import {
+  createNativeSurveyProjectWithPermission,
+  createVerifiedPostalCodeSmartGroup,
+  fakeSSOAuth,
+} from './utils';
 
 describe('Sign up - verification required (bogus)', () => {
   let projectId = '';
@@ -260,6 +264,104 @@ describe('Sign up - verification required (SSO)', () => {
         'eq',
         `/en/projects/${projectTitle}/surveys/new`
       );
+    });
+  });
+});
+
+describe('Sign up - verification and smart group required (SSO)', () => {
+  const accessDeniedExplanation =
+    'You cannot participate because you were born on the wrong side of the tracks, buddy';
+
+  // The fake SSO returns postal code '1212' for its profiles.
+  const setUpProjectForPostalCode = (
+    postalCode: string,
+    projectTitle: string
+  ) =>
+    createVerifiedPostalCodeSmartGroup(postalCode).then((smartGroupId) =>
+      createNativeSurveyProjectWithPermission({
+        projectTitle,
+        permissionBody: {
+          permission: {
+            permitted_by: 'users',
+            require_verification: true,
+            group_ids: [smartGroupId],
+            access_denied_explanation_multiloc: {
+              en: accessDeniedExplanation,
+            },
+          },
+        },
+      }).then(({ projectId }) => ({ projectId, smartGroupId }))
+    );
+
+  describe('User matches the smart group', () => {
+    let projectId = '';
+    let smartGroupId = '';
+    const projectTitle = randomString();
+
+    before(() => {
+      setUpProjectForPostalCode('1212', projectTitle).then((ids) => {
+        projectId = ids.projectId;
+        smartGroupId = ids.smartGroupId;
+      });
+    });
+
+    after(() => {
+      cy.apiRemoveProject(projectId);
+      cy.apiRemoveSmartGroup(smartGroupId);
+    });
+
+    it('lets you participate when signing up with SSO', () => {
+      cy.visit(`/projects/${projectTitle}`);
+
+      cy.get('.e2e-idea-button').first().find('button').should('exist');
+      cy.get('.e2e-idea-button').first().find('button').click({ force: true });
+
+      fakeSSOAuth(cy, 'john_doe');
+
+      cy.get('#e2e-success-continue-button').click();
+
+      cy.location('pathname').should(
+        'eq',
+        `/en/projects/${projectTitle}/surveys/new`
+      );
+    });
+  });
+
+  describe('User does not match the smart group', () => {
+    let projectId = '';
+    let smartGroupId = '';
+    const projectTitle = randomString();
+
+    before(() => {
+      setUpProjectForPostalCode('1313', projectTitle).then((ids) => {
+        projectId = ids.projectId;
+        smartGroupId = ids.smartGroupId;
+      });
+    });
+
+    after(() => {
+      cy.apiRemoveProject(projectId);
+      cy.apiRemoveSmartGroup(smartGroupId);
+    });
+
+    it('shows the access denied step when signing up with SSO', () => {
+      cy.visit(`/projects/${projectTitle}`);
+
+      cy.get('.e2e-idea-button').first().find('button').should('exist');
+      cy.get('.e2e-idea-button').first().find('button').click({ force: true });
+
+      fakeSSOAuth(cy, 'john_doe');
+
+      cy.get('#e2e-access-denied-step')
+        .should('exist')
+        .and('contain', accessDeniedExplanation);
+
+      cy.get('.e2e-modal-close-button').click();
+
+      cy.get('.e2e-idea-button')
+        .first()
+        .find('button')
+        .should('have.attr', 'aria-disabled', 'true');
     });
   });
 });
