@@ -69,7 +69,8 @@ class UserService
       user.find_or_create_confirmation(:email_confirmation).confirm! if confirm_user
       # Merge rather than replace `custom_field_values`: the invite may have
       # pre-filled custom fields that the SSO does not return.
-      user.assign_merging_custom_fields(user_params.merge(invite_status: 'accepted'))
+      user.assign_merging_custom_fields(user_params)
+      user.invite_status = 'accepted'
       user
     end
 

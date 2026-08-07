@@ -274,9 +274,12 @@ class User < ApplicationRecord
   # Assigns `attributes`, merging (rather than replacing) the `custom_field_values`
   # hash so that custom fields the caller doesn't know about are preserved.
   #
-  # The merge is applied *after* the other attributes have been assigned, so that
-  # `store_accessor` attributes (:gender, :birthyear, :domicile), which write into
-  # `custom_field_values` themselves, are not silently overwritten.
+  # The merge is applied *after* the other attributes have been assigned. The
+  # `store_accessor` declaration above gives :gender, :birthyear and :domicile
+  # `user.gender` / `user.gender=` methods that read and write straight into the
+  # `custom_field_values` hash, so `assign_attributes(gender: 'female')` is a
+  # write to that hash too. Merging first and assigning after would throw those
+  # writes away.
   def assign_merging_custom_fields(attributes)
     # `to_h` so that this also accepts ActionController::Parameters (it raises
     # ActionController::UnfilteredParameters on unpermitted params, just as
