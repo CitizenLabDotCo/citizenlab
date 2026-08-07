@@ -93,7 +93,7 @@ describe('Native survey: multiple responses per user', () => {
     });
 
     after(() => {
-      cy.apiRemoveIdeas().then(() => cy.apiRemoveProject(projectId));
+      cy.apiRemoveIdeas(projectId).then(() => cy.apiRemoveProject(projectId));
     });
 
     it('lets a registered user submit the survey more than once', () => {
@@ -123,7 +123,7 @@ describe('Native survey: multiple responses per user', () => {
     });
 
     after(() => {
-      cy.apiRemoveIdeas().then(() => cy.apiRemoveProject(projectId));
+      cy.apiRemoveIdeas(projectId).then(() => cy.apiRemoveProject(projectId));
     });
 
     it('blocks a second submission and hides the survey CTA', () => {
