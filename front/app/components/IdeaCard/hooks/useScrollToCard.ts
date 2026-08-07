@@ -13,7 +13,7 @@ const SCROLL_OFFSETS = {
 
 /*
  * useScrollToCard:
- * Hook that handles scrolling to a card with project description image loading considerations.
+ * Hook that handles scrolling to a card with project page image loading considerations.
  * Automatically subscribes to image loaded events and cleans up on unmount.
  */
 export const useScrollToCard = (
@@ -26,14 +26,12 @@ export const useScrollToCard = (
     const performScroll = () =>
       scrollToCardAndCleanUpUrl(cardId, smallerThanPhone);
 
-    // Get the project description element
-    const projectDescription = document.querySelector(
-      '[id^="project-description"]'
-    );
+    // Get the project page body, which holds the project description
+    const projectPageBody = document.getElementById('e2e-project-page-body');
 
-    // Check if project description images are loaded,
+    // Check if the project page images are loaded,
     // if so, perform scroll immediately.
-    if (projectDescription && checkImagesLoaded(projectDescription)) {
+    if (projectPageBody && checkImagesLoaded(projectPageBody)) {
       performScroll();
       return;
     }
@@ -69,19 +67,19 @@ const scrollToCardAndCleanUpUrl = (
 
 /*
  * checkImagesLoaded:
- * Checks if project description images have finished loading.
+ * Checks if the project page images have finished loading.
  */
-const checkImagesLoaded = (projectDescription: Element): boolean => {
-  // First, check if all images in the project description are loaded.
+const checkImagesLoaded = (projectPageBody: Element): boolean => {
+  // First, check if all images on the project page are loaded.
   // If they are, we've missed the IMAGES_LOADED_EVENT which has already
   // been emitted, so we can perform the scroll right away after checking.
-  const imagesInDescription = projectDescription.querySelectorAll('img');
+  const images = projectPageBody.querySelectorAll('img');
 
   // If there are no images, return true
-  if (imagesInDescription.length === 0) {
+  if (images.length === 0) {
     return true;
   }
 
   // Check if all images are loaded
-  return Array.from(imagesInDescription).every((img) => img.complete);
+  return Array.from(images).every((img) => img.complete);
 };

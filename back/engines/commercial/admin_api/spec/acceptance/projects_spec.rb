@@ -18,7 +18,6 @@ resource 'Project', admin_api: true do
       expect(json_response_body.first).to include(
         id: project.id,
         title_multiloc: kind_of(Hash),
-        description_multiloc: kind_of(Hash),
         slug: project.slug,
         map_config_id: nil,
         visible_to: 'public',

@@ -3,7 +3,6 @@ import moment = require('moment');
 
 describe('Admin project participation method', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let phaseId: string;
@@ -13,7 +12,6 @@ describe('Admin project participation method', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     })
       .then((project) => {

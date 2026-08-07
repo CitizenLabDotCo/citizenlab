@@ -9,9 +9,7 @@ namespace :fix_existing_description_videos do
       Event => %i[description_multiloc],
       Idea => %i[body_multiloc],
       Phase => %i[description_multiloc],
-      Project => %i[description_multiloc],
-      StaticPage => %i[top_info_section_multiloc bottom_info_section_multiloc],
-      ProjectFolders::Folder => %i[description_multiloc]
+      StaticPage => %i[top_info_section_multiloc bottom_info_section_multiloc]
     }
 
     reporter = ScriptReporter.new

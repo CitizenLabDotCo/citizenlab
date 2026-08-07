@@ -3,7 +3,6 @@ import { randomString, randomEmail } from '../support/commands';
 
 describe('Information with events CTA', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
@@ -23,7 +22,6 @@ describe('Information with events CTA', () => {
           withAboutBox: true,
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
-          description: projectDescription,
         }).then((project) => {
           projectId = project.body.data.id;
           projectSlug = project.body.data.attributes.slug;

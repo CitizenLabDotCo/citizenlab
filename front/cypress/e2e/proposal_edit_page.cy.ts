@@ -4,7 +4,6 @@ import moment = require('moment');
 describe('Proposal edit page', () => {
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString();
-  const projectDescription = randomString();
   const oldTitle = randomString(40);
   const newTitle = randomString(40);
   const ideaContent = randomString(60);
@@ -30,7 +29,6 @@ describe('Proposal edit page', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;

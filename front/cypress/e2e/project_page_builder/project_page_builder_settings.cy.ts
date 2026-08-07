@@ -20,7 +20,6 @@ describe('Settings panel options', () => {
       cy.apiCreateProject({
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
-        description: '',
         publicationStatus: 'published',
         assigneeId: userId,
       })

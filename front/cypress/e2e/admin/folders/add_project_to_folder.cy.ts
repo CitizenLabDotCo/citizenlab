@@ -12,14 +12,12 @@ describe('Admin: add projects to folder', async () => {
     cy.apiCreateProject({
       title: projectTitle1,
       descriptionPreview: projectDescription,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((projectOneResponse) => {
       projectId1 = projectOneResponse.body.data.id;
       cy.apiCreateProject({
         title: projectTitle2,
         descriptionPreview: projectDescription,
-        description: projectDescription,
         publicationStatus: 'published',
       }).then((projectTwoResponse) => {
         projectId2 = projectTwoResponse.body.data.id;

@@ -19,7 +19,6 @@ describe('Idea card component', () => {
     cy.apiCreateProject({
       title: randomString(20),
       descriptionPreview: randomString(),
-      description: randomString(),
       publicationStatus: 'published',
     })
       .then((project) => {

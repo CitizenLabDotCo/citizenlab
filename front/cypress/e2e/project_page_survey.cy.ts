@@ -45,7 +45,6 @@ describe('Existing project with survey', () => {
 
 describe('New project with survey', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
 
   const phaseTitle = randomString();
@@ -55,7 +54,6 @@ describe('New project with survey', () => {
       withAboutBox: true,
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     })
       .then((project) => {
@@ -126,7 +124,6 @@ describe('New project with survey', () => {
 
 describe('Timeline project with survey phase', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
   const phaseTitle = randomString();
 
@@ -135,7 +132,6 @@ describe('Timeline project with survey phase', () => {
       withAboutBox: true,
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;
@@ -185,7 +181,6 @@ describe('Timeline project with survey phase', () => {
 
 describe('Timeline project with survey phase but not active', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
   const phaseTitle = randomString();
 
@@ -194,7 +189,6 @@ describe('Timeline project with survey phase but not active', () => {
       withAboutBox: true,
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;
@@ -235,7 +229,6 @@ describe('Timeline project with survey phase but not active', () => {
 
 describe('Archived single phase project with survey', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
 
   before(() => {
@@ -243,7 +236,6 @@ describe('Archived single phase project with survey', () => {
       withAboutBox: true,
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'archived',
     }).then((project) => {
       projectId = project.body.data.id;
@@ -281,7 +273,6 @@ describe('Archived single phase project with survey', () => {
 
 describe('Embedded survey CTA', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
 
   before(() => {
@@ -290,7 +281,6 @@ describe('Embedded survey CTA', () => {
       withAboutBox: true,
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;

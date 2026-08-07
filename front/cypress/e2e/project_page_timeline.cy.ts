@@ -17,7 +17,7 @@ describe('Existing Timeline project', () => {
 
     // shows the project header
     cy.get('#e2e-project-header-image');
-    cy.get('[data-testid="descriptionBuilderProjectPreviewContent"]');
+    cy.get('#e2e-project-page-body');
     cy.get('#e2e-project-see-ideas-button');
     cy.get('#project-ideabutton');
     cy.get('.e2e-project-info')
@@ -47,7 +47,6 @@ describe('Existing Timeline project', () => {
 describe('New timeline project', () => {
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString();
-  const projectDescription = randomString();
 
   const phasePastTitle = randomString();
   const phaseCurrentTitle = randomString();
@@ -78,7 +77,6 @@ describe('New timeline project', () => {
       withAboutBox: true,
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'draft',
     }).then((project) => {
       projectId = project.body.data.id;

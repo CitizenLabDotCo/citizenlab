@@ -20,7 +20,6 @@ describe('Budgeting project', () => {
       withAboutBox: true,
       title: projectTitle,
       descriptionPreview: '',
-      description: '',
       publicationStatus: 'published',
     })
       .then((project) => {

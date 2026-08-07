@@ -33,12 +33,6 @@ describe('useAddProjectFolder', () => {
           'fr-BE': 'new folder',
         },
         slug: null,
-        description_multiloc: {
-          'fr-BE': '<p> </p>',
-          'nl-NL': '<p> </p>',
-          'nl-BE': '<p> </p>',
-          en: '<p> </p>',
-        },
         description_preview_multiloc: {
           en: ' ',
           'nl-BE': ' ',
@@ -76,12 +70,6 @@ describe('useAddProjectFolder', () => {
           'fr-BE': 'new folder',
         },
         slug: null,
-        description_multiloc: {
-          'fr-BE': '<p> </p>',
-          'nl-NL': '<p> </p>',
-          'nl-BE': '<p> </p>',
-          en: '<p> </p>',
-        },
         description_preview_multiloc: {
           en: ' ',
           'nl-BE': ' ',

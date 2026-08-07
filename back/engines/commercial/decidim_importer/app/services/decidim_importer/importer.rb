@@ -77,19 +77,15 @@ module DecidimImporter
       Permissions::PermissionsUpdateService.new.update_all_permissions
     end
 
-    # (Re)builds the `project_page` layout — generated from `project_description` — for **this import's**
-    # projects only, so pre-existing (e.g. demo) projects are left untouched. The SideFx that normally
-    # creates the page is bypassed by the deserializer, so without this the page 404s. Any existing page is
-    # dropped first and regenerated: `provision_for` skips a project that already has one, so a stale/broken
-    # page from an earlier partial import would otherwise survive every re-import.
+    # Gives a default `project_page` layout to **this import's** projects that didn't get one from
+    # {Extractors::DescriptionLayoutExtractor} (it only builds a page for projects with content), so
+    # pre-existing (e.g. demo) projects are left untouched. The SideFx that normally creates the page is
+    # bypassed by the deserializer, so without this those pages 404.
     def self.provision_project_pages!(created_object_ids)
       ids = created_object_ids['Project'] || []
       return if ids.empty?
 
       Project.where(id: ids).find_each do |project|
-        ContentBuilder::Layout
-          .where(content_buildable: project, code: ContentBuilder::ProjectPageLayoutService::CODE)
-          .destroy_all
         ContentBuilder::DescriptionLayoutService.new.provision_for(project)
       end
     end

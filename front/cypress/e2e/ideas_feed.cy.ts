@@ -33,7 +33,6 @@ describe('Ideas Feed (Perspectives)', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescription,
-      description: projectDescription,
       publicationStatus: 'published',
     })
       .then((project) => {
@@ -321,7 +320,6 @@ describe('Ideas Feed (Perspectives) on a phase that does not offer it', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: randomString(),
-      description: randomString(),
       publicationStatus: 'published',
     })
       .then((project) => {

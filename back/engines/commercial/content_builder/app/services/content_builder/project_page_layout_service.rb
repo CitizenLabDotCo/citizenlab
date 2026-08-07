@@ -21,6 +21,8 @@ module ContentBuilder
     DETAILS_TEXT_ID = 'PROJECT_PAGE_DETAILS_TEXT'
     DETAILS_RIGHT_ID = 'PROJECT_PAGE_DETAILS_RIGHT'
 
+    # Widgets that only make sense on a folder description and would crash the
+    # project page resolver, so they are dropped when body nodes are imported.
     UNSUPPORTED_WIDGETS = %w[
       FolderFiles
       FolderTitle
@@ -32,18 +34,18 @@ module ContentBuilder
     INJECTED_ID_PREFIX = 'd_'
 
     def craftjs_json_for(project)
-      description_layout = Layout.find_by(
-        content_buildable: project,
-        code: DescriptionLayoutService::LAYOUT_CODE_BY_TYPE.fetch('Project')
-      )
+      append_file_nodes(default_page_nodes, project)
+    end
 
-      craftjs_json = if description_layout
-        from_description_craftjs(description_layout.craftjs_json)
-      else
-        from_description_multiloc(project.description_multiloc)
-      end
+    # Wraps a plain ROOT-canvas craftjs tree (as built by the Decidim importer) in
+    # the canonical project page — banner, title, the imported nodes inside the page
+    # body, then phases and events. Falls back to the default page when the tree
+    # holds nothing renderable.
+    def craftjs_json_from_body(body_craftjs)
+      injected_nodes, injected_top_level_ids = inject_body(body_craftjs || {})
+      return default_page_nodes if injected_top_level_ids.empty?
 
-      append_file_nodes(craftjs_json, project)
+      canonical_nodes(injected_top_level_ids).merge(injected_nodes)
     end
 
     def append_file_nodes(craftjs_json, project)
@@ -84,38 +86,17 @@ module ContentBuilder
       json
     end
 
-    def from_description_craftjs(description_craftjs)
-      injected_nodes, injected_top_level_ids = inject_description(description_craftjs || {})
-      return default_page_nodes if injected_top_level_ids.empty?
-
-      canonical_nodes(injected_top_level_ids).merge(injected_nodes)
-    end
-
-    def from_description_multiloc(description_multiloc)
-      description_service = DescriptionLayoutService.new
-      return default_page_nodes if description_service.description_blank?(description_multiloc)
-
-      node = if description_service.description_has_media?(description_multiloc)
-        description_service.bridge_node(description_multiloc)
-      else
-        description_service.text_node(description_multiloc)
-      end
-      node_id = "#{INJECTED_ID_PREFIX}#{SecureRandom.alphanumeric(10)}"
-
-      canonical_nodes([node_id]).merge(node_id => node.merge('parent' => BODY_ID))
-    end
-
     private
 
-    def inject_description(description)
-      root = description[ROOT_ID]
+    def inject_body(body)
+      root = body[ROOT_ID]
       return [{}, []] unless root.is_a?(Hash)
 
-      unsupported = unsupported_ids(description)
-      id_map = build_id_map(description, unsupported)
+      unsupported = unsupported_ids(body)
+      id_map = build_id_map(body, unsupported)
 
       nodes = {}
-      description.each do |id, node|
+      body.each do |id, node|
         next if id == ROOT_ID
         next if unsupported.include?(id)
         next unless node.is_a?(Hash)
@@ -132,9 +113,9 @@ module ContentBuilder
       [nodes, top_level_ids]
     end
 
-    def unsupported_ids(description)
+    def unsupported_ids(body)
       ids = Set.new
-      queue = description.filter_map do |id, node|
+      queue = body.filter_map do |id, node|
         id if id != ROOT_ID && node.is_a?(Hash) && UNSUPPORTED_WIDGETS.include?(resolved_name(node))
       end
 
@@ -143,7 +124,7 @@ module ContentBuilder
         next if ids.include?(id)
 
         ids << id
-        node = description[id]
+        node = body[id]
         next unless node.is_a?(Hash)
 
         queue.concat(Array(node['nodes']))
@@ -153,8 +134,8 @@ module ContentBuilder
       ids
     end
 
-    def build_id_map(description, unsupported)
-      description.each_key.with_object({}) do |id, map|
+    def build_id_map(body, unsupported)
+      body.each_key.with_object({}) do |id, map|
         next if id == ROOT_ID || unsupported.include?(id)
 
         map[id] = "#{INJECTED_ID_PREFIX}#{id}"

@@ -137,7 +137,7 @@ namespace :inconsistent_data do
           Phase => %i[title_multiloc description_multiloc],
           Polls::Option => [:title_multiloc],
           Polls::Question => [:title_multiloc],
-          Project => %i[title_multiloc description_multiloc description_preview_multiloc],
+          Project => %i[title_multiloc description_preview_multiloc],
           Topic => %i[title_multiloc description_multiloc],
           User => [:bio_multiloc]
         }.each do |claz, attributes|

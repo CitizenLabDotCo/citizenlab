@@ -18,7 +18,6 @@ describe('Timeline ideation with anonymous participation allowed', () => {
       cy.apiCreateProject({
         title: projectTitle,
         descriptionPreview: '',
-        description: '',
         publicationStatus: 'published',
       }).then((project) => {
         projectId = project.body.data.id;

@@ -62,6 +62,7 @@ declare global {
       apiEditProject: typeof apiEditProject;
       apiEditPhase: typeof apiEditPhase;
       apiCreateFolder: typeof apiCreateFolder;
+      apiSetFolderDescription: typeof apiSetFolderDescription;
       apiRemoveFolder: typeof apiRemoveFolder;
       apiRemoveProject: typeof apiRemoveProject;
       apiRemovePhase: typeof apiRemovePhase;
@@ -76,7 +77,6 @@ declare global {
       apiCreateCause: typeof apiCreateCause;
       apiVerifyBogus: typeof apiVerifyBogus;
       apiCreateEvent: typeof apiCreateEvent;
-      apiToggleProjectDescriptionBuilder: typeof apiToggleProjectDescriptionBuilder;
       apiCreateReportBuilder: typeof apiCreateReportBuilder;
       apiRemoveReportBuilder: typeof apiRemoveReportBuilder;
       apiRemoveAllReports: typeof apiRemoveAllReports;
@@ -965,7 +965,6 @@ function apiAddAboutBox(projectId: string) {
 function apiCreateProject({
   title,
   descriptionPreview,
-  description,
   publicationStatus = 'published',
   assigneeId,
   visibleTo,
@@ -974,7 +973,6 @@ function apiCreateProject({
 }: {
   title: string;
   descriptionPreview?: string;
-  description: string;
   publicationStatus?: IProjectAttributes['publication_status'];
   assigneeId?: string;
   visibleTo?: IProjectAttributes['visible_to'];
@@ -1008,10 +1006,6 @@ function apiCreateProject({
             description_preview_multiloc: {
               en: descriptionPreview,
               'nl-BE': descriptionPreview,
-            },
-            description_multiloc: {
-              en: description,
-              'nl-BE': description,
             },
             default_assignee_id: assigneeId,
             visible_to: visibleTo,
@@ -1064,7 +1058,6 @@ function apiEditProject({
   projectId,
   title,
   descriptionPreview,
-  description,
   publicationStatus = 'published',
   assigneeId,
   submission_enabled,
@@ -1072,7 +1065,6 @@ function apiEditProject({
   projectId: string;
   title?: string;
   descriptionPreview?: string;
-  description?: string;
   publicationStatus?: IProjectAttributes['publication_status'];
   assigneeId?: string;
   surveyUrl?: string;
@@ -1110,12 +1102,6 @@ function apiEditProject({
               'nl-BE': descriptionPreview,
             },
           }),
-          ...(description && {
-            description_multiloc: {
-              en: description,
-              'nl-BE': description,
-            },
-          }),
           ...(submission_enabled && {
             submission_enabled,
           }),
@@ -1126,16 +1112,53 @@ function apiEditProject({
   });
 }
 
+// Authors a folder's description in the Content Builder, where folder descriptions live.
+// Replaces the description text of the folder's default layout, keeping its other widgets.
+function apiSetFolderDescription(folderId: string, description: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const authHeaders = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${response.body.jwt}`,
+    };
+    const layoutPath = `web_api/v1/project_folders/${folderId}/content_builder_layouts/project_folder_description`;
+
+    return cy
+      .request({ headers: authHeaders, method: 'GET', url: layoutPath })
+      .then((layout) => {
+        const craftjs = layout.body.data.attributes.craftjs_json;
+        const textId = Object.keys(craftjs).find(
+          (id) => craftjs[id]?.type?.resolvedName === 'TextMultiloc'
+        );
+        if (!textId) {
+          throw new Error(`folder ${folderId} has no description text widget`);
+        }
+        craftjs[textId].props.text = {
+          en: `<p>${description}</p>`,
+          'nl-BE': `<p>${description}</p>`,
+          'nl-NL': `<p>${description}</p>`,
+          'fr-BE': `<p>${description}</p>`,
+        };
+
+        return cy.request({
+          headers: authHeaders,
+          method: 'POST',
+          url: `${layoutPath}/upsert`,
+          body: {
+            content_builder_layout: { enabled: true, craftjs_json: craftjs },
+          },
+        });
+      });
+  });
+}
+
 function apiCreateFolder({
   title,
   descriptionPreview,
-  description,
   publicationStatus = 'published',
   spaceId,
 }: {
   title: string;
   descriptionPreview?: string;
-  description: string;
   publicationStatus?: 'draft' | 'published' | 'archived';
   spaceId?: string;
 }) {
@@ -1161,16 +1184,10 @@ function apiCreateFolder({
             'fr-BE': title,
           },
           description_preview_multiloc: {
-            en: descriptionPreview ?? description,
-            'nl-BE': descriptionPreview ?? description,
-            'nl-NL': descriptionPreview ?? description,
-            'fr-BE': descriptionPreview ?? description,
-          },
-          description_multiloc: {
-            en: description,
-            'nl-BE': description,
-            'nl-NL': description,
-            'fr-BE': description,
+            en: descriptionPreview,
+            'nl-BE': descriptionPreview,
+            'nl-NL': descriptionPreview,
+            'fr-BE': descriptionPreview,
           },
           space_id: spaceId,
         },
@@ -1569,32 +1586,6 @@ function apiCreateEvent({
           start_at: startDate.toJSON(),
           end_at: endDate.toJSON(),
           online_link: onlineLink,
-        },
-      },
-    });
-  });
-}
-
-function apiToggleProjectDescriptionBuilder({
-  projectId,
-  enabled = true,
-}: {
-  projectId: string;
-  enabled?: boolean;
-}) {
-  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
-    const adminJwt = response.body.jwt;
-
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
-      },
-      method: 'POST',
-      url: `web_api/v1/projects/${projectId}/content_builder_layouts/project_description/upsert`,
-      body: {
-        content_builder_layout: {
-          enabled,
         },
       },
     });
@@ -2191,7 +2182,6 @@ function createProjectWithNativeSurveyPhase({
     .apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus,
       // The project page renders via the Content Builder; add the AboutBox so the
       // participation sidebar (survey / idea action button) is present for tests
@@ -2255,7 +2245,6 @@ function createProjectWithIdeationPhase({
     .apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: projectPublicationStatus,
     })
     .then((project) => {
@@ -2421,6 +2410,7 @@ Cypress.Commands.add('apiAddAboutBox', apiAddAboutBox);
 Cypress.Commands.add('apiEditProject', apiEditProject);
 Cypress.Commands.add('apiEditPhase', apiEditPhase);
 Cypress.Commands.add('apiCreateFolder', apiCreateFolder);
+Cypress.Commands.add('apiSetFolderDescription', apiSetFolderDescription);
 Cypress.Commands.add('apiRemoveFolder', apiRemoveFolder);
 Cypress.Commands.add('apiRemoveProject', apiRemoveProject);
 Cypress.Commands.add('apiRemovePhase', apiRemovePhase);
@@ -2441,10 +2431,6 @@ Cypress.Commands.add('setConsentCookie', setConsentCookie);
 Cypress.Commands.add('setLoginCookie', setLoginCookie);
 Cypress.Commands.add('apiVerifyBogus', apiVerifyBogus);
 Cypress.Commands.add('apiCreateEvent', apiCreateEvent);
-Cypress.Commands.add(
-  'apiToggleProjectDescriptionBuilder',
-  apiToggleProjectDescriptionBuilder
-);
 Cypress.Commands.add('apiCreateReportBuilder', apiCreateReportBuilder);
 Cypress.Commands.add('apiRemoveReportBuilder', apiRemoveReportBuilder);
 Cypress.Commands.add('apiRemoveAllReports', apiRemoveAllReports);

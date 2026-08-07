@@ -185,18 +185,20 @@ module BulkImportIdeas::Importers
         project_data = increment_title(project_data)
 
         # Create a new project only visible to admins
-        project_attributes = project_data.except(:phases, :thumbnail_url, :banner_url, :attachments)
+        # Job payloads enqueued before the rename carry :description_multiloc
+        project_data[:description] ||= project_data[:description_multiloc]
+        project_attributes = project_data.except(:phases, :thumbnail_url, :banner_url, :attachments, :description, :description_multiloc)
         project = Project.create!(project_attributes)
-
-        # Create the description content builder layout
-        create_description_content_builder_layout(project)
 
         # Create the project thumbnail and banner images if they exist
         create_project_thumbnail_image(project, project_data)
         create_project_banner_image(project, project_data)
 
-        # Add any attachments
+        # Add any attachments (before the page layout, so it gets their widgets)
         create_project_attachments(project, project_data)
+
+        # Put the imported description on the project page
+        create_project_page_layout(project, project_data[:description])
 
         log "Created new project: #{project_data[:slug]} (#{project.id})"
         project
@@ -353,41 +355,68 @@ module BulkImportIdeas::Importers
       project_data
     end
 
-    def create_description_content_builder_layout(project)
-      craftjs_json = {
-        ROOT: {
-          type: 'div',
-          nodes: %w[TEXT],
-          props: { id: 'e2e-content-builder-frame' },
-          custom: {},
-          hidden: false,
-          isCanvas: true,
-          displayName: 'div',
-          linkedNodes: {}
-        },
-        TEXT: {
-          type: { resolvedName: 'TextMultiloc' },
-          nodes: [],
-          props: { text: project.description_multiloc || {} },
-          custom: {},
-          hidden: false,
-          parent: 'ROOT',
-          isCanvas: false,
-          displayName: 'TextMultiloc',
-          linkedNodes: {}
-        }
-      }
+    # Builds the project page with the imported description as a text widget in its body. A project
+    # without a description falls back to the default page. Saved through the layout side effects so
+    # inline base64 images are extracted into image records rather than stored in the craftjs.
+    def create_project_page_layout(project, description_multiloc)
+      layout_service = ContentBuilder::ProjectPageLayoutService.new
+      craftjs_json = if description_multiloc.present?
+        layout_service.append_file_nodes(
+          layout_service.craftjs_json_from_body(description_body_craftjs(description_multiloc)),
+          project
+        )
+      else
+        layout_service.craftjs_json_for(project)
+      end
 
-      ContentBuilder::Layout.create!(
+      layout = ContentBuilder::Layout.new(
         content_buildable: project,
-        code: 'project_description',
+        code: ContentBuilder::ProjectPageLayoutService::CODE,
         craftjs_json: craftjs_json,
         enabled: true
       )
+      ContentBuilder::SideFxLayoutService.new.before_create(layout, @import_user)
+      layout.save!
 
-      log 'Created description builder layout for project description.'
+      log 'Created project page layout for project description.'
     rescue StandardError => e
-      log "ERROR: Creating description builder layout: #{e.message}"
+      log "ERROR: Creating project page layout: #{e.message}"
+    end
+
+    # Imported HTML can carry inline images and embeds, which only the RichTextMultiloc bridge
+    # widget renders losslessly (and whose images the layout side effects extract).
+    def description_body_craftjs(description_multiloc)
+      widget = description_has_media?(description_multiloc) ? 'RichTextMultiloc' : 'TextMultiloc'
+      {
+        'ROOT' => {
+          'type' => 'div',
+          'nodes' => %w[TEXT],
+          'props' => { 'id' => 'e2e-content-builder-frame' },
+          'custom' => {},
+          'hidden' => false,
+          'isCanvas' => true,
+          'displayName' => 'div',
+          'linkedNodes' => {}
+        },
+        'TEXT' => {
+          'type' => { 'resolvedName' => widget },
+          'nodes' => [],
+          'props' => { 'text' => description_multiloc },
+          'custom' => {},
+          'hidden' => false,
+          'parent' => 'ROOT',
+          'isCanvas' => false,
+          'displayName' => widget,
+          'linkedNodes' => {}
+        }
+      }
+    end
+
+    def description_has_media?(description_multiloc)
+      description_multiloc.values.any? do |html|
+        fragment = Nokogiri::HTML.fragment(html.to_s)
+        fragment.at('img') || fragment.at('iframe') || fragment.at('.custom-button')
+      end
     end
 
     def create_project_thumbnail_image(project, project_data)

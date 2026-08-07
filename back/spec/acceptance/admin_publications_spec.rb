@@ -544,7 +544,7 @@ resource 'AdminPublication' do
             title_multiloc: {
               en: 'another-string'
             },
-            description_multiloc: {
+            description_preview_multiloc: {
               en: 'super specific string 2'
             }
           )
@@ -571,7 +571,7 @@ resource 'AdminPublication' do
             title_multiloc: {
               en: 'a different string 3'
             },
-            description_multiloc: {
+            description_preview_multiloc: {
               en: 'super specific string description'
             }
           )
@@ -615,7 +615,7 @@ resource 'AdminPublication' do
             title_multiloc: {
               en: 'title'
             },
-            description_multiloc: {
+            description_preview_multiloc: {
               en: 'super specific string'
             }
           )
@@ -640,7 +640,7 @@ resource 'AdminPublication' do
             title_multiloc: {
               en: 'title'
             },
-            description_multiloc: {
+            description_preview_multiloc: {
               en: 'folder and project string'
             }
           )

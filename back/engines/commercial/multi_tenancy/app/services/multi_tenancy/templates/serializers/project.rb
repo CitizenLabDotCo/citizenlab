@@ -7,7 +7,6 @@ module MultiTenancy
         upload_attribute :header_bg
 
         attributes %i[
-          description_multiloc
           description_preview_multiloc
           header_bg_alt_text_multiloc
           hidden

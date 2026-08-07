@@ -13,14 +13,12 @@ describe('Project overview page', () => {
 
   // body content, not used for testing search
   const projectDescriptionPreview = randomString();
-  const projectDescription = randomString();
 
   before(() => {
     // unique name/title
     cy.apiCreateProject({
       title: projectTitleOne,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectIds.push(project.body.data.id);
@@ -29,7 +27,6 @@ describe('Project overview page', () => {
     cy.apiCreateProject({
       title: projectTitleTwo,
       descriptionPreview: projectDescriptionPreview,
-      description: projectTitleThree,
       publicationStatus: 'published',
     }).then((project) => {
       projectIds.push(project.body.data.id);
@@ -38,7 +35,6 @@ describe('Project overview page', () => {
     cy.apiCreateProject({
       title: projectTitleThree,
       descriptionPreview: projectDescriptionPreview,
-      description: projectTitleTwo,
       publicationStatus: 'published',
     }).then((project) => {
       projectIds.push(project.body.data.id);
@@ -47,7 +43,6 @@ describe('Project overview page', () => {
     cy.apiCreateProject({
       title: projectTitleFour,
       descriptionPreview: projectDescriptionPreview,
-      description: projectTitleTwo,
       publicationStatus: 'archived',
     }).then((project) => {
       projectIds.push(project.body.data.id);
@@ -57,7 +52,6 @@ describe('Project overview page', () => {
     cy.apiCreateProject({
       title: projectInFolderTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: randomString(),
       publicationStatus: 'published',
     }).then((project) => {
       projectIds.push(project.body.data.id);
@@ -66,7 +60,6 @@ describe('Project overview page', () => {
     cy.apiCreateFolder({
       title: folderTitle,
       descriptionPreview: randomString(30),
-      description: randomString(),
       publicationStatus: 'published',
     }).then((folder) => {
       folderId = folder.body.data.id;

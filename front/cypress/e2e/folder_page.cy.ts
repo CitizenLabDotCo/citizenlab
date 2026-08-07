@@ -14,26 +14,25 @@ describe('Project selection page', () => {
     cy.apiCreateProject({
       title: projectOneTitle,
       descriptionPreview: randomString(),
-      description: randomString(),
       publicationStatus: 'published',
     }).then((projectOne) => {
       projectOneId = projectOne.body.data.id;
       cy.apiCreateProject({
         title: projectTwoTitle,
         descriptionPreview: randomString(),
-        description: randomString(),
         publicationStatus: 'published',
       }).then((projectTwo) => {
         projectTwoId = projectTwo.body.data.id;
         cy.apiCreateFolder({
           title: folderTitle,
           descriptionPreview: randomString(30),
-          description: folderDescription,
           publicationStatus: 'published',
         }).then((folder) => {
           folderId = folder.body.data.id;
           folderSlug = folder.body.data.attributes.slug;
 
+          // The folder description is authored in the Content Builder.
+          cy.apiSetFolderDescription(folderId, folderDescription);
           cy.apiAddProjectsToFolder([projectOneId, projectTwoId], folderId);
         });
       });

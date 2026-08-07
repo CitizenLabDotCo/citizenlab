@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/commands';
 
-describe('Project description builder About component', () => {
+describe('Project description builder HtmlBlock component', () => {
   let projectId = '';
   let projectSlug = '';
 
@@ -9,24 +9,21 @@ describe('Project description builder About component', () => {
     cy.getAdminAuthUser().then((user) => {
       const projectTitle = randomString();
       const projectDescriptionPreview = randomString();
-      const projectDescription = 'Original project description.';
       const userId = user.body.data.id;
 
       cy.apiCreateProject({
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
-        description: projectDescription,
         publicationStatus: 'published',
         assigneeId: userId,
       }).then((project) => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
-        cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
-          cy.visit(`/admin/project-page-builder/projects/${projectId}`);
-        });
+        cy.visit(`/admin/project-page-builder/projects/${projectId}`);
       });
     });
   });
+
   beforeEach(() => {
     cy.setAdminLoginCookie();
   });
@@ -35,33 +32,38 @@ describe('Project description builder About component', () => {
     cy.apiRemoveProject(projectId);
   });
 
-  it('handles About component correctly', () => {
+  it('handles HtmlBlock component correctly', () => {
     cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
-
-    cy.get('#e2e-draggable-about-box').dragAndDrop('#e2e-project-page-body', {
+    cy.get('#e2e-draggable-html-block').dragAndDrop('#e2e-project-page-body', {
       position: 'inside',
+    });
+
+    cy.get('div.e2e-html-block').click();
+    cy.get('#html-block-textarea-en').type('<p>Html paragraph</p>', {
+      force: true,
     });
 
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
+
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('#e2e-about-box').should('exist');
+    cy.contains('Html paragraph').should('be.visible');
   });
 
-  it('deletes About component correctly', () => {
+  it('deletes HtmlBlock component correctly', () => {
     cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
     cy.visit(`/admin/project-page-builder/projects/${projectId}`);
 
-    cy.get('#e2e-about-box').click({ force: true });
+    cy.get('.e2e-html-block').click();
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('#e2e-about-box').should('not.exist');
+    cy.contains('Html paragraph').should('not.exist');
   });
 });

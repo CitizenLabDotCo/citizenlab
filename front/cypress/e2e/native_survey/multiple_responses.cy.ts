@@ -24,7 +24,6 @@ describe('Native survey: multiple responses per user', () => {
       .apiCreateProject({
         title: randomString(),
         descriptionPreview: randomString(),
-        description: randomString(),
         publicationStatus: 'published',
       })
       .then((project) => {

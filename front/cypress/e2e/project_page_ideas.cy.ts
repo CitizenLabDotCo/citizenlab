@@ -13,7 +13,6 @@ describe('New timeline project with ideation phase with default map view', () =>
       withAboutBox: true,
       title: projectTitle,
       descriptionPreview: 'Description preview',
-      description: 'Description full',
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;
@@ -62,7 +61,6 @@ describe('New timeline project with active ideation phase', () => {
           withAboutBox: true,
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
-          description: randomString(),
           publicationStatus: 'published',
         });
       })
@@ -190,7 +188,6 @@ describe('Archived timeline project with ideation phase', () => {
           withAboutBox: true,
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
-          description: randomString(),
           publicationStatus: 'draft',
         });
       })
@@ -279,7 +276,6 @@ describe('timeline project with no active ideation phase', () => {
         withAboutBox: true,
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
-        description: randomString(),
         publicationStatus: 'draft',
       })
       .then((project) => {

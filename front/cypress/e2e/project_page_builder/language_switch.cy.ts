@@ -14,20 +14,17 @@ describe('Project description builder language switch', () => {
     cy.getAdminAuthUser().then((user) => {
       const projectTitle = randomString();
       const projectDescriptionPreview = randomString();
-      const projectDescription = '';
       const userId = user.body.data.id;
 
       cy.apiCreateProject({
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
-        description: projectDescription,
         publicationStatus: 'published',
         // participationMethod: 'ideation',
         assigneeId: userId,
       }).then((project) => {
         projectSlug = projectTitle;
         projectId = project.body.data.id;
-        cy.apiToggleProjectDescriptionBuilder({ projectId });
         cy.visit(`/admin/project-page-builder/projects/${projectId}`);
       });
     });

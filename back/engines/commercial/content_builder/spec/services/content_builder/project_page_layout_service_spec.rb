@@ -82,9 +82,9 @@ describe ContentBuilder::ProjectPageLayoutService do
     ]
   end
 
-  describe '#from_description_craftjs' do
+  describe '#craftjs_json_from_body' do
     def build(json)
-      service.from_description_craftjs(json)
+      service.craftjs_json_from_body(json)
     end
 
     it 'produces the canonical structure' do
@@ -124,7 +124,7 @@ describe ContentBuilder::ProjectPageLayoutService do
       expect(result).not_to have_key('d_pub1')
     end
 
-    it 'seeds the default page content for an empty description' do
+    it 'seeds the default page content for an empty body' do
       result = build(empty_description)
 
       expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(
@@ -152,29 +152,11 @@ describe ContentBuilder::ProjectPageLayoutService do
     end
   end
 
-  describe '#from_description_multiloc' do
-    it 'wraps a text-only description in a TextMultiloc in the body' do
-      result = service.from_description_multiloc({ 'en' => '<p>Hello</p>' })
+  describe '#craftjs_json_for (default page)' do
+    let(:project) { create(:project) }
 
-      content_id = result['PROJECT_PAGE_BODY']['nodes'].first
-      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq([content_id] + project_widgets)
-      content = result[content_id]
-      expect(content['type']).to eq({ 'resolvedName' => 'TextMultiloc' })
-      expect(content['props']['text']).to eq({ 'en' => '<p>Hello</p>' })
-      expect(content['parent']).to eq('PROJECT_PAGE_BODY')
-    end
-
-    it 'wraps a description with media in the RichTextMultiloc bridge' do
-      result = service.from_description_multiloc(
-        { 'en' => '<p><img data-cl2-text-image-text-reference="abc"></p>' }
-      )
-
-      content = result[result['PROJECT_PAGE_BODY']['nodes'].first]
-      expect(content['type']).to eq({ 'resolvedName' => 'RichTextMultiloc' })
-    end
-
-    it 'seeds the intro text and participation box columns for a blank description' do
-      result = service.from_description_multiloc({ 'en' => '<p></p>' })
+    it 'seeds the intro text and participation box columns' do
+      result = service.craftjs_json_for(project)
 
       expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(
         %w[PROJECT_PAGE_INTRO_COLUMNS PROJECT_PAGE_DETAILS_COLUMNS] + project_widgets
@@ -196,7 +178,7 @@ describe ContentBuilder::ProjectPageLayoutService do
     end
 
     it 'seeds the details text next to an empty column' do
-      result = service.from_description_multiloc({})
+      result = service.craftjs_json_for(project)
 
       details_text = result['PROJECT_PAGE_DETAILS_TEXT']
       expect(details_text['type']).to eq({ 'resolvedName' => 'TextMultiloc' })
@@ -206,7 +188,7 @@ describe ContentBuilder::ProjectPageLayoutService do
     end
 
     it 'seeds the text values in every tenant locale' do
-      result = service.from_description_multiloc({})
+      result = service.craftjs_json_for(project)
 
       locales = AppConfiguration.instance.settings('core', 'locales')
       expect(result['PROJECT_PAGE_INTRO_TEXT']['props']['text'].keys).to match_array(locales)
@@ -215,26 +197,8 @@ describe ContentBuilder::ProjectPageLayoutService do
   end
 
   describe '#craftjs_json_for' do
-    it 'builds from the project_description layout when one exists' do
-      project = create(:project, description_multiloc: { 'en' => '<p>Ignored</p>' })
-      create(:layout, content_buildable: project, code: 'project_description', craftjs_json: plain_text_description)
-
-      result = service.craftjs_json_for(project)
-
-      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(['d_txt1'] + project_widgets)
-    end
-
-    it 'builds from the description_multiloc when there is no description layout' do
-      project = create(:project, description_multiloc: { 'en' => '<p>Hello</p>' })
-
-      result = service.craftjs_json_for(project)
-
-      content = result[result['PROJECT_PAGE_BODY']['nodes'].first]
-      expect(content['props']['text']).to eq({ 'en' => '<p>Hello</p>' })
-    end
-
     it 'includes a FileAttachment node for every project-attached file' do
-      project = create(:project, description_multiloc: { 'en' => '<p>Hello</p>' })
+      project = create(:project)
       attachment = create(:file_attachment, attachable: project, file: create(:file, projects: [project]))
 
       result = service.craftjs_json_for(project)
@@ -259,7 +223,7 @@ describe ContentBuilder::ProjectPageLayoutService do
       later = attach_file(project, 2)
       earlier = attach_file(project, 1)
 
-      json = service.from_description_multiloc({ 'en' => '<p>Hello</p>' })
+      json = service.craftjs_json_from_body(plain_text_description)
       result = service.append_file_nodes(json, project)
 
       body_nodes = result['PROJECT_PAGE_BODY']['nodes']
@@ -298,7 +262,7 @@ describe ContentBuilder::ProjectPageLayoutService do
       placed = attach_file(project, 1)
       to_migrate = attach_file(project, 2)
 
-      json = service.from_description_multiloc({ 'en' => '<p>Hello</p>' })
+      json = service.craftjs_json_from_body(plain_text_description)
       json['manual'] = {
         'type' => { 'resolvedName' => 'FileAttachment' },
         'nodes' => [],
@@ -325,7 +289,7 @@ describe ContentBuilder::ProjectPageLayoutService do
     it 'returns the layout unchanged when every file is already referenced' do
       attach_file(project, 1)
 
-      once = service.append_file_nodes(service.from_description_multiloc({}), project)
+      once = service.append_file_nodes(service.craftjs_json_from_body({}), project)
       twice = service.append_file_nodes(once, project)
 
       expect(twice).to eq(once)
@@ -333,7 +297,7 @@ describe ContentBuilder::ProjectPageLayoutService do
 
     it 'inserts before the phases widget' do
       attach_file(project, 1)
-      json = service.from_description_multiloc({})
+      json = service.craftjs_json_from_body({})
 
       result = service.append_file_nodes(json, project)
 
@@ -344,7 +308,7 @@ describe ContentBuilder::ProjectPageLayoutService do
     end
 
     it 'returns the layout unchanged when the project has no files' do
-      json = service.from_description_multiloc({ 'en' => '<p>Hello</p>' })
+      json = service.craftjs_json_from_body(plain_text_description)
 
       expect(service.append_file_nodes(json, project)).to eq(json)
     end

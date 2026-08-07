@@ -16,7 +16,6 @@ resource 'Projects' do
   shared_context 'PATCH project parameters' do
     with_options scope: :project do
       parameter :title_multiloc, 'The title of the project, as a multiloc string', required: true
-      parameter :description_multiloc, 'The description of the project, as a multiloc HTML string', required: true
       parameter :description_preview_multiloc, 'The description preview of the project, as a multiloc string'
       parameter :slug, 'The unique slug of the project'
       parameter :header_bg, 'Base64 encoded header image'
@@ -52,7 +51,6 @@ resource 'Projects' do
   shared_context 'POST project parameters' do
     with_options scope: :project do
       parameter :title_multiloc, 'The title of the project, as a multiloc string', required: true
-      parameter :description_multiloc, 'The description of the project, as a multiloc HTML string', required: true
       parameter :description_preview_multiloc, 'The description preview of the project, as a multiloc string'
       parameter :slug, 'The unique slug of the project. If not given, it will be auto generated'
       parameter :header_bg, 'Base64 encoded header image'
@@ -274,7 +272,6 @@ resource 'Projects' do
 
         let(:project) { build(:project) }
         let(:title_multiloc) { project.title_multiloc }
-        let(:description_multiloc) { project.description_multiloc }
         let(:description_preview_multiloc) { project.description_preview_multiloc }
         let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
         let(:area_ids) { create_list(:area, 2).map(&:id) }
@@ -291,7 +288,6 @@ resource 'Projects' do
 
           expect(response_data[:attributes]).to include(
             title_multiloc: title_multiloc.symbolize_keys,
-            description_multiloc: description_multiloc.symbolize_keys,
             description_preview_multiloc: description_preview_multiloc.symbolize_keys,
             visible_to: visible_to,
             first_published_at: new_project.admin_publication.first_published_at.iso8601(3),
@@ -335,14 +331,6 @@ resource 'Projects' do
           expect(project.folder_id).to eq folder.id
           expect(project.space_id).to eq folder.space.id
         end
-
-        context 'when project description contains text images' do
-          let(:description_multiloc) { { 'en' => html_with_base64_image } }
-
-          it_behaves_like 'creates record with text images',
-            model_class: Project,
-            field: :description_multiloc
-        end
       end
     end
 
@@ -354,7 +342,6 @@ resource 'Projects' do
 
         let(:id) { @project.id }
         let(:title_multiloc) { { 'en' => 'Changed title' } }
-        let(:description_multiloc) { { 'en' => 'Changed body' } }
         let(:description_preview_multiloc) { @project.description_preview_multiloc }
         let(:slug) { 'changed-title' }
         let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
@@ -373,7 +360,6 @@ resource 'Projects' do
           # admin publications should not be replaced, but rather should be updated
           expect(AdminPublication.ids).to match_array old_publcation_ids
           expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
-          expect(json_response.dig(:data, :attributes, :description_multiloc, :en)).to eq 'Changed body'
           expect(json_response.dig(:data, :attributes, :description_preview_multiloc).stringify_keys).to match description_preview_multiloc
           expect(json_response.dig(:data, :attributes, :slug)).to eq 'changed-title'
           expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
@@ -649,14 +635,6 @@ resource 'Projects' do
           @project.update!(default_assignee: create(:admin))
           do_request(project: { default_assignee_id: nil })
           expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to be_nil
-        end
-
-        context 'when description_multiloc contains images' do
-          let(:description_multiloc) { { 'en' => html_with_base64_image } }
-
-          it_behaves_like 'updates record with text images',
-            model_class: Project,
-            field: :description_multiloc
         end
 
         describe do
@@ -1784,7 +1762,6 @@ resource 'Projects' do
       describe do
         let(:project) { build(:project) }
         let(:title_multiloc) { project.title_multiloc }
-        let(:description_multiloc) { project.description_multiloc }
         let(:description_preview_multiloc) { project.description_preview_multiloc }
         let(:header_bg) { png_image_as_base64('header.jpg') }
         let(:area_ids) { create_list(:area, 2).map(&:id) }
@@ -2024,7 +2001,6 @@ resource 'Projects' do
       let(:moderator) { create(:project_moderator) }
       let(:project_attrs) { attributes_for(:project) }
       let(:title_multiloc) { project_attrs[:title_multiloc] }
-      let(:description_multiloc) { project_attrs[:description_multiloc] }
 
       # can create a draft project
       example 'Create a draft project', document: false do
@@ -2056,7 +2032,6 @@ resource 'Projects' do
       let(:space) { create(:space) }
       let(:project_attrs) { attributes_for(:project) }
       let(:title_multiloc) { project_attrs[:title_multiloc] }
-      let(:description_multiloc) { project_attrs[:description_multiloc] }
       let(:publication_status) { 'draft' }
       let(:other_space) { create(:space) }
       let(:moderator) { create(:space_moderator, spaces: [space]) }
