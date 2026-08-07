@@ -44,6 +44,22 @@ RSpec.describe DecidimImporter::Extractors::ProposalsExtractor do
     expect(attrs.values_at('created_at', 'published_at', 'submitted_at')).to all(eq('2023-02-10 09:00:00 +0100'))
   end
 
+  it 'maps a geocoded address to the idea’s location description and map pin' do
+    attrs = extract([row('address' => '1 rue X', 'latitude' => '45.766', 'longitude' => '4.880')]).first.attributes
+
+    expect(attrs['location_description']).to eq('1 rue X')
+    # GeoJSON orders coordinates [lon, lat].
+    expect(attrs['location_point_geojson']).to eq('type' => 'Point', 'coordinates' => [4.880, 45.766])
+  end
+
+  it 'omits the map pin when coordinates are blank or non-numeric' do
+    blank = row('uid' => 'decidim-proposal-blank', 'latitude' => '', 'longitude' => '')
+    non_numeric = row('uid' => 'decidim-proposal-nan', 'latitude' => 'n/a', 'longitude' => '4.880')
+    attrs = extract([blank, non_numeric]).map(&:attributes)
+
+    expect(attrs).to all(satisfy { |a| !a.key?('location_point_geojson') })
+  end
+
   it 'registers an ideas_phase join linking the idea to its phase' do
     idea = extract([row]).first
     join = ref_map.fetch('decidim-proposal-1-ideas-phase')

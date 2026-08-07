@@ -7,7 +7,7 @@ RSpec.describe EmailConfirmation do
     it 'confirms the user email and clears the confirmation code' do
       user = create(:unconfirmed_user)
       expect(user.confirmation_required?).to be true
-      user.email_confirmation.confirm!
+      user.find_or_create_confirmation(:email_confirmation).confirm!
       expect(user.confirmation_required?).to be false
     end
 
@@ -15,7 +15,7 @@ RSpec.describe EmailConfirmation do
       email = 'test@email.com'
       user = create(:unconfirmed_user, email: email, new_email: email)
       expect(user.confirmation_required?).to be true
-      user.email_confirmation.confirm!
+      user.find_or_create_confirmation(:email_confirmation).confirm!
       expect(user.confirmation_required?).to be false
     end
   end

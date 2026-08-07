@@ -10,6 +10,16 @@ module DecidimImporter
   module ZipExtractor
     module_function
 
+    # Bundles `files` into a new zip at `zip_path`, each stored by basename (a flat archive that
+    # {.extract} unpacks straight back into a directory). Replaces any existing file at `zip_path`.
+    def compress(files, zip_path)
+      FileUtils.rm_f(zip_path)
+      Zip::File.open(zip_path, create: true) do |zip|
+        files.each { |file| zip.add(File.basename(file), file) }
+      end
+      zip_path
+    end
+
     # Extracts every non-metadata entry from `zip_path` into `dest`.
     def extract(zip_path, dest)
       dest_root = File.expand_path(dest)

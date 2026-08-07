@@ -42,6 +42,19 @@ RSpec.describe DecidimImporter::Extractors::BudgetProjectsExtractor do
     expect(join.attributes['idea_ref']).to be(idea.attributes)
   end
 
+  it 'maps a geocoded address to the idea’s location description and map pin' do
+    attrs = extract([row('latitude' => '45.766', 'longitude' => '4.880')]).run.first.attributes
+
+    expect(attrs['location_description']).to eq('1 rue X')
+    # GeoJSON orders coordinates [lon, lat].
+    expect(attrs['location_point_geojson']).to eq('type' => 'Point', 'coordinates' => [4.880, 45.766])
+  end
+
+  it 'omits the map pin when coordinates are blank' do
+    attrs = extract([row('latitude' => '', 'longitude' => '')]).run.first.attributes
+    expect(attrs).not_to have_key('location_point_geojson')
+  end
+
   it 'omits the budget when the project has no amount' do
     idea = extract([row('budget_amount' => '')]).run.first
     expect(idea.attributes).not_to have_key('budget')

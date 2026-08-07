@@ -33,4 +33,8 @@ export default defineMessages({
     id: 'app.containers.CampaignsConsentForm.ally_categoryLabel2',
     defaultMessage: 'Notifications in this category',
   },
+  a11y_toggleAllInCategory: {
+    id: 'app.containers.CampaignsConsentForm.a11y_toggleAllInCategory',
+    defaultMessage: 'Toggle all {contentType} notifications',
+  },
 });
