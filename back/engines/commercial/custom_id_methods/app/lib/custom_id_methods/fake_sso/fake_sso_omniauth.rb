@@ -28,7 +28,7 @@ module CustomIdMethods::FakeSso
           # in order to be able to use this in smart groups.
           # It is included by default in the e2e template.
           # The Fake SSO returns this as a string with value "1212"
-          'postal_code' => auth.extra.raw_info['postal_code'],
+          'postal_code' => auth.extra.raw_info['postal_code']
         }
       }
     end
