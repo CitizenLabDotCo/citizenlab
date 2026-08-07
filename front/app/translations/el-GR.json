@@ -1367,6 +1367,7 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Αριθμός τηλεφώνου",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Καταχωρίστε έναν αριθμό τηλεφώνου στη σωστή μορφή, για παράδειγμα +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Καταχωρίστε έναν αριθμό τηλεφώνου",
+  "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Εναλλαγή όλων των ειδοποιήσεων {contentType}",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Ειδοποιήσεις σε αυτήν την κατηγορία",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "Τι είδους ειδοποιήσεις μέσω email θέλετε να λαμβάνετε;",
   "app.containers.CampaignsConsentForm.emailNotificationsTitle": "Ειδοποιήσεις μέσω email",

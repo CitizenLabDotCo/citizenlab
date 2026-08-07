@@ -3,16 +3,19 @@
 module DecidimImporter
   # Projects a Decidim process's participation components onto Go Vocal phases.
   #
-  # Phase-generating components: proposals/accountability (→ ideation), surveys (→ native_survey).
-  # Decidim steps are not imported — they carry no participation and have no Go Vocal equivalent.
+  # Phase-generating components: proposals (→ ideation, or single_voting when voted), accountability
+  # (→ ideation), surveys (→ native_survey). Decidim steps are not imported — they carry no
+  # participation and have no Go Vocal equivalent.
   #
   # Each phase is dated from the component, not the steps: start = `published_at`, falling back to the
   # earliest item date when only `previously_published`; end = latest activity (last proposal's
   # `published_at`, last answer's `created_at`). A never-published component gets no phase.
   #
-  # Go Vocal phases must be sequential and non-overlapping, so phases run in ascending component
-  # `weight` (the admin's Decidim ordering) and each keeps its length but is pushed forward to start
-  # on/after the previous phase's end (one whose real window already fits keeps its real dates).
+  # Timeline phases must be sequential and non-overlapping, so they run in ascending component `weight`
+  # (the admin's Decidim ordering) and each keeps its length but is pushed forward to start on/after the
+  # previous phase's end (one whose real window already fits keeps its real dates). Survey phases are
+  # placed *standalone* (parallel) instead — Go Vocal runs surveys concurrently — so they keep their own
+  # window, off the timeline: they don't collide with the other phases' dates or push them around.
   class PhaseProjector
     MIN_DURATION = 1 # day; Go Vocal rejects zero-length phases (Phase::MIN_DURATION)
 
@@ -49,19 +52,31 @@ module DecidimImporter
 
     attr_reader :ref_map, :locale_mapper, :primary_locale
 
-    # Lays out one process's phases as a non-overlapping sequence in ascending component weight: each
-    # phase keeps its length but is pushed forward so it starts on/after the previous phase's end.
+    # Lays out one process's phases. Timeline phases form a non-overlapping sequence in ascending
+    # component weight (each keeps its length but is pushed forward to start on/after the previous phase's
+    # end). Survey phases are placed *standalone* (parallel) instead — Go Vocal supports concurrent
+    # surveys — so they keep their own natural window and neither collide with the timeline phases' dates
+    # nor push them around, which also keeps the other phases' dates sensible.
     def sequence(project, components)
       intents = components.filter_map { |component| build_intent(component) }
-      return if intents.empty?
+      standalone, sequential = intents.partition { |intent| standalone?(intent) }
 
       cursor = nil
-      ordered(intents).each do |intent|
+      ordered(sequential).each do |intent|
         start_at = [intent[:start], cursor].compact.max
         end_at = start_at + duration(intent)
         register(project, intent, start_at, end_at)
         cursor = end_at
       end
+
+      standalone.each do |intent|
+        register(project, intent, intent[:start], intent[:start] + duration(intent), placement_type: 'standalone')
+      end
+    end
+
+    # Survey phases run standalone (parallel participation); every other method sits on the timeline.
+    def standalone?(intent)
+      intent[:method] == 'native_survey'
     end
 
     # Phases ordered by ascending component weight; ties break by the natural start date, then uid.
@@ -100,7 +115,7 @@ module DecidimImporter
       'ideation' => 'Propositions', 'native_survey' => 'Questionnaire', 'voting' => 'Vote'
     }.freeze
 
-    def register(project, intent, start_at, end_at)
+    def register(project, intent, start_at, end_at, placement_type: 'on_timeline')
       component = intent[:component]
       method = component[:method]
       title = participation_title(component, method)
@@ -111,6 +126,8 @@ module DecidimImporter
         'start_at' => start_at.iso8601,
         'end_at' => end_at&.iso8601
       }
+      # `on_timeline` is the schema default, so only a standalone (parallel) phase carries the override.
+      attributes['placement_type'] = placement_type unless placement_type == 'on_timeline'
       description = participation_description(component)
       attributes['description_multiloc'] = description if description.present?
       # Native-survey phases require these two multilocs (Phase validates their presence). The button
@@ -119,11 +136,14 @@ module DecidimImporter
         attributes['native_survey_title_multiloc'] = title
         attributes['native_survey_button_multiloc'] = native_survey_button_multiloc(title.keys)
       end
-      # Voting phases carry the voting method + the budget cap the budgeting method validates as present
-      # (`voting_min_total` keeps its schema default of 0).
+      # Voting phases carry the voting method + its per-user cap (`voting_max_total`): the budget cap for
+      # budgeting, the vote limit for single-voting (nil = Decidim's "unlimited", leaving the phase
+      # uncapped). Single-voting also pins `voting_max_votes_per_idea` to 1 (one vote per option).
+      # `voting_min_total`/`voting_min_selected_options` keep their schema defaults (0 / 1).
       if method == 'voting'
         attributes['voting_method'] = component[:voting_method]
-        attributes['voting_max_total'] = component[:voting_max_total]
+        attributes['voting_max_total'] = component[:voting_max_total] if component[:voting_max_total]
+        attributes['voting_max_votes_per_idea'] = component[:voting_max_votes_per_idea] if component[:voting_max_votes_per_idea]
       end
 
       record = Record.new('phase', attributes)

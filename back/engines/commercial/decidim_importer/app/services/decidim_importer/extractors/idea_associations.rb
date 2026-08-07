@@ -14,6 +14,18 @@ module DecidimImporter
         ref_map.register("#{uid}-ideas-phase", join)
       end
 
+      # A GeoJSON `Point` for the idea's `location_point_geojson` from the export's `latitude`/`longitude`
+      # columns, or nil when either is blank or non-numeric. GeoJSON orders coordinates `[lon, lat]`.
+      def location_point_geojson(latitude, longitude)
+        lat = present_value(latitude)
+        lon = present_value(longitude)
+        return nil if lat.nil? || lon.nil?
+
+        { 'type' => 'Point', 'coordinates' => [Float(lon), Float(lat)] }
+      rescue ArgumentError
+        nil
+      end
+
       # Tags the idea with the input topic imported from `category_uid`. No-op when there's no category
       # or it wasn't imported as an `input_topic`.
       def register_input_topic(uid, idea, category_uid)

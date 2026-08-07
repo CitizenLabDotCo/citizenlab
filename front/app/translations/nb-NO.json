@@ -1367,6 +1367,7 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Telefonnummer",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Oppgi et telefonnummer i riktig format, for eksempel +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Oppgi et telefonnummer",
+  "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Veksle alle {contentType}-varslinger",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Varslinger i denne kategorien",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "Hva slags e-postvarslinger ønsker du å motta?",
   "app.containers.CampaignsConsentForm.emailNotificationsTitle": "E-postvarslinger",
