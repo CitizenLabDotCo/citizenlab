@@ -53,6 +53,82 @@ RSpec.describe DecidimImporter::Importer do
     end
   end
 
+  describe "user reuse fallback by email (REUSE_MATCHERS['User'])" do
+    let(:matcher) { described_class::REUSE_MATCHERS['User'] }
+
+    it 'reuses a user created outside the import (no unique_code) by case-insensitive email' do
+      manual = create(:user, email: 'jane@example.com') # e.g. created manually, so no Decidim unique_code
+      found = matcher.call({ 'unique_code' => 'decidim-user-99', 'email' => 'JANE@Example.com' }, User)
+      expect(found).to eq(manual)
+    end
+
+    it 'prefers the unique_code match over the email fallback' do
+      by_code = create(:user)
+      by_code.update_columns(unique_code: 'decidim-user-1')
+      create(:user, email: 'shared@example.com')
+      found = matcher.call({ 'unique_code' => 'decidim-user-1', 'email' => 'shared@example.com' }, User)
+      expect(found).to eq(by_code)
+    end
+
+    it 'returns nil when neither unique_code nor email matches' do
+      expect(matcher.call({ 'unique_code' => 'nope', 'email' => 'nobody@example.com' }, User)).to be_nil
+      expect(matcher.call({}, User)).to be_nil
+    end
+  end
+
+  describe "custom idea-status reuse (REUSE_MATCHERS['IdeaStatus'])" do
+    let(:matcher) { described_class::REUSE_MATCHERS['IdeaStatus'] }
+
+    def custom_status(title_multiloc)
+      create(:idea_status, code: 'custom', participation_method: 'ideation', title_multiloc: title_multiloc)
+    end
+
+    it 'matches an existing custom ideation status that shares any locale title' do
+      status = custom_status('fr-FR' => 'Idée faisable', 'en' => 'Feasible')
+      # different locale keys, but the English label matches
+      expect(matcher.call({ 'title_multiloc' => { 'nl-NL' => 'x', 'en' => 'Feasible' } }, IdeaStatus)).to eq(status)
+    end
+
+    it 'does not match a distinct title, so a genuinely new status is created' do
+      custom_status('fr-FR' => 'Idée faisable')
+      expect(matcher.call({ 'title_multiloc' => { 'fr-FR' => 'Idée non retenue' } }, IdeaStatus)).to be_nil
+    end
+
+    it 'ignores standard-code and proposals-method statuses even with a matching title' do
+      create(:idea_status, code: 'viewed', participation_method: 'ideation', title_multiloc: { 'en' => 'Same' })
+      create(:idea_status, code: 'custom', participation_method: 'proposals', title_multiloc: { 'en' => 'Same' })
+      expect(matcher.call({ 'title_multiloc' => { 'en' => 'Same' } }, IdeaStatus)).to be_nil
+    end
+
+    it 'returns nil for a blank or missing title' do
+      expect(matcher.call({ 'title_multiloc' => { 'en' => '' } }, IdeaStatus)).to be_nil
+      expect(matcher.call({}, IdeaStatus)).to be_nil
+    end
+
+    it 'reuses the matched status on apply instead of duplicating it' do
+      status = custom_status('fr-FR' => 'Idée faisable')
+      template = { 'models' => { 'idea_status' => [
+        { 'code' => 'custom', 'participation_method' => 'ideation', 'ordering' => 1000, 'color' => '#123456',
+          'title_multiloc' => { 'fr-FR' => 'Idée faisable' }, 'description_multiloc' => { 'fr-FR' => 'Réalisable' } }
+      ] } }
+
+      expect { described_class.apply_template(template, import_uploads: false, reuse_existing: true) }
+        .not_to change(IdeaStatus, :count)
+      expect(IdeaStatus.where(code: 'custom').pluck(:id)).to eq([status.id])
+    end
+
+    it 'creates the custom status when reuse is off' do
+      custom_status('fr-FR' => 'Idée faisable') # a pre-existing equivalent that a normal import ignores
+      template = { 'models' => { 'idea_status' => [
+        { 'code' => 'custom', 'participation_method' => 'ideation', 'ordering' => 1000, 'color' => '#123456',
+          'title_multiloc' => { 'fr-FR' => 'Idée faisable' }, 'description_multiloc' => { 'fr-FR' => 'Réalisable' } }
+      ] } }
+
+      expect { described_class.apply_template(template, import_uploads: false, reuse_existing: false) }
+        .to change { IdeaStatus.where(code: 'custom').count }.by(1)
+    end
+  end
+
   describe '.resolve_area_orderings!' do
     it "offsets imported area orderings past the tenant's existing areas" do
       create(:area)

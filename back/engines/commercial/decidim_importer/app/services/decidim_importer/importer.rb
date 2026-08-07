@@ -12,12 +12,25 @@ module DecidimImporter
     # Matchers that reuse an already-imported record (keyed by its stable Decidim identity) rather than
     # inserting a duplicate — enabled with `reuse_existing:` for a supplemental import into a tenant that
     # already holds an earlier import. Users match on `unique_code` (the Decidim uid; stable across
-    # exports, unlike anonymised emails); process-group folders on the slug their title generates (the
-    # only slugify — {Slug.sanitize}); user custom fields on `key`.
+    # exports, unlike anonymised emails), falling back to a case-insensitive email match for accounts
+    # created outside the import (e.g. manually, so they carry no Decidim `unique_code`); process-group
+    # folders on the slug their title generates (the only slugify — {Slug.sanitize}); user custom fields
+    # on `key`; custom idea-statuses on their title.
+    #
+    # Only *custom* idea-statuses (from {StatusMapper}) travel in the template — the standard ones are
+    # seeded and resolved by code in {IdeaStatuses.resolve!}, so a matcher here only ever sees customs.
+    # {StatusMapper} decides each import's customs independently of the target tenant, so title reuse is
+    # best-effort: an identical label reuses the tenant's existing status, a genuinely new label is
+    # created. The table is tiny, so we match in Ruby against any shared locale value.
     REUSE_MATCHERS = {
       'User' => lambda { |attrs, klass|
         code = attrs['unique_code']
-        klass.find_by(unique_code: code) if code.present?
+        by_code = klass.find_by(unique_code: code) if code.present?
+        next by_code if by_code
+
+        # No matching Decidim uid — reuse a user created outside the import (e.g. manually) by email.
+        email = attrs['email']
+        klass.find_by_cimail(email) if email.present?
       },
       'CustomField' => lambda { |attrs, klass|
         key = attrs['key']
@@ -26,6 +39,13 @@ module DecidimImporter
       'ProjectFolders::Folder' => lambda { |attrs, klass|
         slug = Slug.sanitize((attrs['title_multiloc'] || {}).values.find(&:present?))
         klass.find_by(slug: slug) if slug
+      },
+      'IdeaStatus' => lambda { |attrs, klass|
+        titles = (attrs['title_multiloc'] || {}).values.compact_blank
+        next if titles.empty?
+
+        klass.where(code: 'custom', participation_method: IdeaStatuses::PARTICIPATION_METHOD)
+          .find { |status| status.title_multiloc.values.intersect?(titles) }
       }
     }.freeze
 
