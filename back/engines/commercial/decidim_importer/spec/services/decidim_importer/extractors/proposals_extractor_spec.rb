@@ -84,6 +84,74 @@ RSpec.describe DecidimImporter::Extractors::ProposalsExtractor do
     expect(ref_map.fetch('decidim-proposal-1-ideas-input-topic')).to be_nil
   end
 
+  it 'parks a scope→area pointer in custom_field_values seeded with the area record’s attributes' do
+    area = ref_map.register('decidim--scope--2', DecidimImporter::Record.new('area', { 'title_multiloc' => { 'fr-FR' => 'Quartier' } }))
+    attrs = extract([row('scope' => 'decidim--scope--2')]).first.attributes
+
+    # Seeded with the shared area attributes hash — Importer.resolve_scope_areas! swaps it for the real id.
+    expect(attrs['custom_field_values']['decidim_scope']).to be(area.attributes)
+  end
+
+  it 'omits the scope pointer when the proposal has no scope or the scope was not imported as an area' do
+    ref_map.register('decidim--scope--9', DecidimImporter::Record.new('input_topic', {})) # wrong model
+    no_scope = extract([row('uid' => 'decidim-proposal-none', 'scope' => '')]).first.attributes
+    non_area = extract([row('uid' => 'decidim-proposal-topic', 'scope' => 'decidim--scope--9')]).first.attributes
+
+    expect(no_scope).not_to have_key('custom_field_values')
+    expect(non_area).not_to have_key('custom_field_values')
+  end
+
+  describe 'status resolution via a ProposalStatusResolver' do
+    let(:status_record) do
+      DecidimImporter::Record.new('idea_status', { 'code' => 'custom', 'title_multiloc' => { 'fr-FR' => 'Idée faisable' } })
+    end
+
+    def resolve_to(decision)
+      resolver = instance_double(DecidimImporter::ProposalStatusResolver)
+      allow(resolver).to receive(:resolve).and_return(decision)
+      described_class.new([row], ref_map, locale_mapper: mapper, primary_locale: 'fr-FR', status_resolver: resolver)
+        .run.first.attributes
+    end
+
+    it 'references a custom idea_status and parks the original Decidim status in custom_field_values' do
+      decision = DecidimImporter::ProposalStatusResolver::Decision.new(
+        idea_status_code: nil, idea_status_record: status_record,
+        original_title_multiloc: { 'fr-FR' => 'Idée faisable' }, token: 'viable'
+      )
+      attrs = resolve_to(decision)
+
+      expect(attrs).not_to have_key('idea_status_code')
+      expect(attrs['idea_status_ref']).to be(status_record.attributes)
+      expect(attrs['custom_field_values']['decidim_status']).to eq(
+        'token' => 'viable', 'title_multiloc' => { 'fr-FR' => 'Idée faisable' }
+      )
+    end
+
+    it 'keeps a standard idea_status_code and still parks the original Decidim status' do
+      decision = DecidimImporter::ProposalStatusResolver::Decision.new(
+        idea_status_code: 'accepted', idea_status_record: nil,
+        original_title_multiloc: { 'fr-FR' => 'Retenue' }, token: 'accepted'
+      )
+      attrs = resolve_to(decision)
+
+      expect(attrs['idea_status_code']).to eq('accepted')
+      expect(attrs).not_to have_key('idea_status_ref')
+      expect(attrs['custom_field_values']['decidim_status']).to eq(
+        'token' => 'accepted', 'title_multiloc' => { 'fr-FR' => 'Retenue' }
+      )
+    end
+
+    it 'stores no decidim_status when the proposal had no known Decidim state' do
+      decision = DecidimImporter::ProposalStatusResolver::Decision.new(
+        idea_status_code: 'proposed', idea_status_record: nil, original_title_multiloc: nil, token: nil
+      )
+      attrs = resolve_to(decision)
+
+      expect(attrs['idea_status_code']).to eq('proposed')
+      expect(attrs).not_to have_key('custom_field_values')
+    end
+  end
+
   it 'leaves the idea author-less when no author uid resolves to an imported user' do
     attrs = extract([row('authors' => '["decidim-user-999","decidim-meetings-meeting-3"]')]).first.attributes
     expect(attrs).not_to have_key('author_ref')

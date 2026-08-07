@@ -9,20 +9,57 @@ module DecidimImporter
     # created-ids hash. Project-moderator roles aren't applied here — they're driven by the sibling
     # `<base>.moderators.csv` and applied by {ModeratorAssigner} in the `import` rake task's finishing pass.
     #
+    # Reuse a record the tenant already holds instead of inserting a duplicate. On by default so an import
+    # never aborts on a pre-existing record (e.g. an admin whose email is in the export, which would fail
+    # the email-uniqueness validation); pass `reuse_existing: false` to force plain inserts. No-op on a
+    # fresh tenant. Matches on stable identity: users by `unique_code` then case-insensitive email, folders
+    # by title slug ({Slug.sanitize}), custom fields by `key`, custom idea-statuses by title. Only custom
+    # statuses travel in the template (standard ones resolve by code in {IdeaStatuses.resolve!}); their
+    # titles are matched in Ruby, best-effort — {StatusMapper} picks each import's customs blind to the
+    # tenant, so an identical label reuses and a new one is created.
+    REUSE_MATCHERS = {
+      'User' => lambda { |attrs, klass|
+        code = attrs['unique_code']
+        by_code = klass.find_by(unique_code: code) if code.present?
+        next by_code if by_code
+
+        # No unique_code match — fall back to email (e.g. a manually-created user).
+        email = attrs['email']
+        klass.find_by_cimail(email) if email.present?
+      },
+      'CustomField' => lambda { |attrs, klass|
+        key = attrs['key']
+        klass.find_by(key: key) if key.present?
+      },
+      'ProjectFolders::Folder' => lambda { |attrs, klass|
+        slug = Slug.sanitize((attrs['title_multiloc'] || {}).values.find(&:present?))
+        klass.find_by(slug: slug) if slug
+      },
+      'IdeaStatus' => lambda { |attrs, klass|
+        titles = (attrs['title_multiloc'] || {}).values.compact_blank
+        next if titles.empty?
+
+        klass.where(code: 'custom', participation_method: IdeaStatuses::PARTICIPATION_METHOD)
+          .find { |status| status.title_multiloc.values.intersect?(titles) }
+      }
+    }.freeze
+
     # @param import_uploads [Boolean] when false, every `remote_*_url` (images *and* file attachments) is
     #   stripped before deserialize — no external HTTP — e.g. for exports whose upload URLs are unreachable.
-    def self.apply_template_file(path, import_uploads: true)
+    # @param reuse_existing [Boolean] reuse records the tenant already holds (see {REUSE_MATCHERS}) instead
+    #   of duplicating them; on by default, pass false to force plain inserts.
+    def self.apply_template_file(path, import_uploads: true, reuse_existing: true)
       # Parsing a large, anchor-heavy template is a silent single-threaded pause before the first DB
       # query — bracket it so the log shows progress rather than an apparent hang.
       Rails.logger.info "Loading template #{path} (#{File.size(path) / 1_048_576} MB)…"
       template = YAML.load_file(path, aliases: true)
       Rails.logger.info 'Template loaded, resolving idea statuses…'
-      apply_template(template, import_uploads: import_uploads)
+      apply_template(template, import_uploads: import_uploads, reuse_existing: reuse_existing)
     end
 
     # Deserializes an in-memory template into the current tenant and runs the post-import passes. Shared
     # by {.apply_template_file} and {TemplateCreator#import}. Returns the deserializer's created-ids hash.
-    def self.apply_template(template, import_uploads: true, validate: true)
+    def self.apply_template(template, import_uploads: true, validate: true, reuse_existing: true)
       IdeaStatuses.resolve!(template)
       resolve_area_orderings!(template)
       TemplateCleaner.prepare_uploads!(template, import_uploads: import_uploads)
@@ -30,8 +67,11 @@ module DecidimImporter
       TemplateCleaner.prune_imageless_project_images!(template)
       # Suppress `touch: true` callbacks during the bulk load so imported records keep their template dates.
       created = ActiveRecord::Base.no_touching do
-        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template, validate: validate)
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(
+          template, validate: validate, reuse_by: reuse_existing ? REUSE_MATCHERS : {}
+        )
       end
+      resolve_scope_areas!(template, created)
       recompute_voting_counts!(created)
       restore_update_timestamps(template, created)
       reconcile_permissions!
@@ -56,6 +96,37 @@ module DecidimImporter
           by_timestamp[timestamp] << ids[i] if timestamp
         end
         by_timestamp.each { |timestamp, group_ids| klass.where(id: group_ids).update_all(updated_at: timestamp) }
+      end
+    end
+
+    # Resolves the scope→area pointer parked on each imported idea. {Extractors::IdeaAssociations#register_scope_area}
+    # seeds `custom_field_values['decidim_scope']` with the (shared) attributes hash of the `Area` the
+    # idea's Decidim scope became; here — now that the area is a real row — that hash is swapped for
+    # `{ 'area_id' => <uuid>, 'title_multiloc' => … }`, giving the imported input a durable pointer back
+    # to its area (ideas have no first-class area association). Idea/area template records line up
+    # positionally with the deserializer's created ids (same trick as {.restore_update_timestamps}); a
+    # size mismatch skips the pass rather than mislinking. Run in the target tenant.
+    def self.resolve_scope_areas!(template, created_object_ids)
+      ideas = template.dig('models', 'idea')
+      areas = template.dig('models', 'area')
+      return if ideas.blank? || areas.blank?
+
+      idea_ids = created_object_ids['Idea'] || []
+      area_ids = created_object_ids['Area'] || []
+      return unless ideas.size == idea_ids.size && areas.size == area_ids.size
+
+      area_id_by_attrs = {}.compare_by_identity
+      areas.each_with_index { |attrs, i| area_id_by_attrs[attrs] = area_ids[i] }
+
+      ideas.each_with_index do |attrs, i|
+        area_attrs = attrs['custom_field_values']&.fetch('decidim_scope', nil)
+        area_id = area_attrs.is_a?(Hash) && area_id_by_attrs[area_attrs]
+        next unless area_id
+
+        resolved = { 'area_id' => area_id, 'title_multiloc' => area_attrs['title_multiloc'] }
+        values = attrs['custom_field_values'].merge('decidim_scope' => resolved)
+        attrs['custom_field_values'] = values
+        Idea.where(id: idea_ids[i]).update_all(custom_field_values: values)
       end
     end
 

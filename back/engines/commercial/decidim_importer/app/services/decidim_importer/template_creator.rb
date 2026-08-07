@@ -10,18 +10,23 @@ module DecidimImporter
   #   DecidimImporter::TemplateCreator.from_zip('tmp/example.com.zip').import
   class TemplateCreator
     # Build from a Decidim export zip: extract to a tempdir, parse every CSV, tear the tempdir down.
-    def self.from_zip(zip_path, **)
+    # @param container_ids [Array<String>, nil] when given, narrow the export to those process/assembly
+    #   uids and the users/folders they reference (see {RowScoper}) — a supplemental single-project import.
+    def self.from_zip(zip_path, container_ids: nil, **)
       raise ArgumentError, "file not found: #{zip_path}" unless File.file?(zip_path)
 
       Dir.mktmpdir('decidim_import_') do |tmp|
         ZipExtractor.extract(zip_path, tmp)
-        from_directory(ZipExtractor.detect_csv_root(tmp), **)
+        from_directory(ZipExtractor.detect_csv_root(tmp), container_ids: container_ids, **)
       end
     end
 
     # Build by scanning a directory that *directly* contains the export's CSV files (see {ExportReader}).
-    def self.from_directory(path, **)
-      new(ExportReader.read(path), **)
+    # @param container_ids [Array<String>, nil] see {.from_zip}.
+    def self.from_directory(path, container_ids: nil, **)
+      rows = ExportReader.read(path)
+      rows = RowScoper.scope(rows, container_ids) if container_ids.present?
+      new(rows, **)
     end
 
     # @param rows_by_model [Hash{Symbol=>Array<Hash>}] parsed CSV rows keyed by model. Missing keys mean
@@ -55,6 +60,7 @@ module DecidimImporter
       run_extractor(Extractors::ProjectsExtractor, :projects)
       run_categories
       run_phases
+      run_proposal_statuses
       run_proposals
       run_results
       run_debates
@@ -145,6 +151,12 @@ module DecidimImporter
       created = Importer.apply_template(template, import_uploads: @import_uploads, validate: validate)
       ModeratorAssigner.new.assign(moderator_assignments)
       created
+    end
+
+    # The custom `idea_status` records the {StatusMapper} created for this import (Decidim states with no
+    # standard Go Vocal equivalent), for the run log. Empty until {#build_template} has run.
+    def custom_statuses
+      @status_resolver&.custom_status_records || []
     end
 
     # Participation components that couldn't be placed as a phase (never published / no datable window).
@@ -271,11 +283,23 @@ module DecidimImporter
       @phase_projector.run(participation_components: participation_components)
     end
 
+    # Maps the proposals' Decidim states onto Go Vocal idea-statuses (one LLM call, see {StatusMapper}),
+    # creating the `idea_status` records for the custom ones before the proposals reference them. Runs
+    # only when there are proposals; the resolver copes with a missing `proposal_states` sidecar.
+    def run_proposal_statuses
+      return unless @rows_by_model.key?(:proposals)
+
+      @status_resolver = ProposalStatusResolver.new(
+        rows_for(:proposal_states), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
+      ).build!
+    end
+
     def run_proposals
       return unless @rows_by_model.key?(:proposals)
 
       @proposals_extractor = Extractors::ProposalsExtractor.new(
-        rows_for(:proposals), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
+        rows_for(:proposals), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale,
+        status_resolver: @status_resolver
       )
       @proposals_extractor.run
     end

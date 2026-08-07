@@ -98,6 +98,13 @@ RSpec.describe DecidimImporter::Extractors::ResultsExtractor do
     expect(topic_join.attributes['idea_ref']).to be(idea.attributes)
   end
 
+  it 'parks a scope→area pointer in custom_field_values seeded with the area record’s attributes' do
+    area = ref_map.register('decidim--scope--6', DecidimImporter::Record.new('area', { 'title_multiloc' => { 'fr-FR' => 'Vermont' } }))
+    attrs = extract([row('scope' => 'decidim--scope--6')]).run.first.attributes
+
+    expect(attrs['custom_field_values']['decidim_scope']).to be(area.attributes)
+  end
+
   it 'skips a result whose process/phase was not imported' do
     extractor = extract([row('decidim_component' => 'missing')])
     expect(extractor.run).to be_empty
