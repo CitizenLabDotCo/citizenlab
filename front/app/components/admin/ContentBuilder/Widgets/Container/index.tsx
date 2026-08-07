@@ -1,14 +1,22 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { UserComponent } from '@craftjs/core';
+import { UserComponent, useEditor } from '@craftjs/core';
 
 import Events from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Events';
 import Projects from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/ProjectsAndFoldersLegacy';
 
 const Container: UserComponent = ({ children }) => {
+  const { enabled: inEditor } = useEditor((state) => ({
+    enabled: state.options.enabled,
+  }));
+
   return (
-    <Box className="e2e-single-column" minHeight="40px" w="100%">
+    <Box
+      className="e2e-single-column"
+      minHeight={inEditor ? '40px' : undefined}
+      w="100%"
+    >
       {children}
     </Box>
   );

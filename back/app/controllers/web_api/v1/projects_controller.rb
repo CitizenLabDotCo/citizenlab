@@ -60,7 +60,6 @@ class WebApi::V1::ProjectsController < ApplicationController
 
     instance_options = {
       user_followers: user_followers,
-      timeline_active: TimelineService.new.timeline_active_on_collection(@projects.to_a),
       visible_children_count_by_parent_id: {}, # projects don't have children
       publication_email_enabled_per_project: publication_email_enabled_per_project,
       # Cannot use `find_sole_by` here: the global ProjectPublished campaign is normally seeded by
@@ -486,7 +485,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       @projects,
       WebApi::V1::ProjectMiniSerializer,
       params: project_serializer_params,
-      include: %i[project_images current_phase]
+      include: %i[project_images highlighted_phase]
     )
   end
 end

@@ -298,16 +298,16 @@ describe 'Rack::Attack' do
 
     freeze_time do
       10.times do
-        post('/web_api/v1/user/request_code_unauthenticated', params: '{ "request_code": { "email": "coolemail@example.org" } }', headers: headers)
+        post('/web_api/v1/user/request_code_email', params: '{ "request_code": { "email": "coolemail@example.org" } }', headers: headers)
       end
       expect(status).to eq(401) # Unauthorized
 
-      post('/web_api/v1/user/request_code_unauthenticated', params: '{ "request_code": { "email": "coolemail@example.org" } }', headers: headers)
+      post('/web_api/v1/user/request_code_email', params: '{ "request_code": { "email": "coolemail@example.org" } }', headers: headers)
       expect(status).to eq(429) # Too many requests
     end
 
     travel_to(5.minutes.from_now) do
-      post('/web_api/v1/user/request_code_unauthenticated', params: '{ "request_code": { "email": "coolemail@example.org" } }', headers: headers)
+      post('/web_api/v1/user/request_code_email', params: '{ "request_code": { "email": "coolemail@example.org" } }', headers: headers)
       expect(status).to eq(401) # Unauthorized
     end
   end
@@ -318,7 +318,7 @@ describe 'Rack::Attack' do
     freeze_time do
       5.times do
         post(
-          '/web_api/v1/user/confirm_code_unauthenticated',
+          '/web_api/v1/user/confirm_code_email',
           params: "{ \"confirmation\": { \"email\": \"#{user.email}\", \"code\": \"1234\" } }",
           headers: headers
         )
@@ -326,7 +326,7 @@ describe 'Rack::Attack' do
       expect(status).to eq(422)
 
       post(
-        '/web_api/v1/user/confirm_code_unauthenticated',
+        '/web_api/v1/user/confirm_code_email',
         params: "{ \"confirmation\": { \"email\": \"#{user.email}\", \"code\": \"1234\" } }",
         headers: headers
       )
@@ -335,7 +335,7 @@ describe 'Rack::Attack' do
 
     travel_to(20.seconds.from_now) do
       post(
-        '/web_api/v1/user/confirm_code_unauthenticated',
+        '/web_api/v1/user/confirm_code_email',
         params: "{ \"confirmation\": { \"email\": \"#{user.email}\", \"code\": \"1234\" } }",
         headers: headers
       )
@@ -575,6 +575,45 @@ describe 'Rack::Attack' do
         headers: headers
       )
       expect(status).to eq(200) # ok
+    end
+  end
+
+  describe 'spam reports' do
+    let(:headers) { { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.4' } }
+    let(:params) { '{ "spam_report": { "reason_code": "other", "other_reason": "spam" } }' }
+
+    def report_spam(path)
+      post(path, params: params, headers: headers)
+    end
+
+    it 'limits spam reports on ideas from same IP to 10 in a minute' do
+      path = "/web_api/v1/ideas/#{SecureRandom.uuid}/spam_reports"
+
+      freeze_time do
+        10.times { report_spam(path) }
+        expect(status).to eq(401) # Unauthorized, but not throttled
+
+        report_spam(path)
+        expect(status).to eq(429) # Too many requests
+      end
+
+      travel_to(1.minute.from_now) do
+        report_spam(path)
+        expect(status).to eq(401) # Unauthorized
+      end
+    end
+
+    it 'counts spam reports on comments against the same limit' do
+      idea_path = "/web_api/v1/ideas/#{SecureRandom.uuid}/spam_reports"
+      comment_path = "/web_api/v1/comments/#{SecureRandom.uuid}/spam_reports"
+
+      freeze_time do
+        10.times { report_spam(idea_path) }
+        expect(status).to eq(401) # Unauthorized, but not throttled
+
+        report_spam(comment_path)
+        expect(status).to eq(429) # Too many requests
+      end
     end
   end
 end

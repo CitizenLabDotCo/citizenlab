@@ -6,8 +6,8 @@ module DecidimImporter
   # The template is built separately by {TemplateCreator}.
   class Importer
     # Applies a dumped tenant-template YAML file to the current tenant, returning the deserializer's
-    # created-ids hash. Moderator roles (`RoleAssigner`) aren't applied here — that needs the in-memory
-    # ref map, so it only runs in {TemplateCreator#import}.
+    # created-ids hash. Project-moderator roles aren't applied here — they're driven by the sibling
+    # `<base>.moderators.csv` and applied by {ModeratorAssigner} in the `import` rake task's finishing pass.
     #
     # Matchers that reuse an already-imported record (keyed by its stable Decidim identity) rather than
     # inserting a duplicate — enabled with `reuse_existing:` for a supplemental import into a tenant that
@@ -56,6 +56,7 @@ module DecidimImporter
           template, validate: validate, reuse_by: reuse_existing ? REUSE_MATCHERS : {}
         )
       end
+      resolve_scope_areas!(template, created)
       recompute_voting_counts!(created)
       restore_update_timestamps(template, created)
       reconcile_permissions!
@@ -80,6 +81,37 @@ module DecidimImporter
           by_timestamp[timestamp] << ids[i] if timestamp
         end
         by_timestamp.each { |timestamp, group_ids| klass.where(id: group_ids).update_all(updated_at: timestamp) }
+      end
+    end
+
+    # Resolves the scope→area pointer parked on each imported idea. {Extractors::IdeaAssociations#register_scope_area}
+    # seeds `custom_field_values['decidim_scope']` with the (shared) attributes hash of the `Area` the
+    # idea's Decidim scope became; here — now that the area is a real row — that hash is swapped for
+    # `{ 'area_id' => <uuid>, 'title_multiloc' => … }`, giving the imported input a durable pointer back
+    # to its area (ideas have no first-class area association). Idea/area template records line up
+    # positionally with the deserializer's created ids (same trick as {.restore_update_timestamps}); a
+    # size mismatch skips the pass rather than mislinking. Run in the target tenant.
+    def self.resolve_scope_areas!(template, created_object_ids)
+      ideas = template.dig('models', 'idea')
+      areas = template.dig('models', 'area')
+      return if ideas.blank? || areas.blank?
+
+      idea_ids = created_object_ids['Idea'] || []
+      area_ids = created_object_ids['Area'] || []
+      return unless ideas.size == idea_ids.size && areas.size == area_ids.size
+
+      area_id_by_attrs = {}.compare_by_identity
+      areas.each_with_index { |attrs, i| area_id_by_attrs[attrs] = area_ids[i] }
+
+      ideas.each_with_index do |attrs, i|
+        area_attrs = attrs['custom_field_values']&.fetch('decidim_scope', nil)
+        area_id = area_attrs.is_a?(Hash) && area_id_by_attrs[area_attrs]
+        next unless area_id
+
+        resolved = { 'area_id' => area_id, 'title_multiloc' => area_attrs['title_multiloc'] }
+        values = attrs['custom_field_values'].merge('decidim_scope' => resolved)
+        attrs['custom_field_values'] = values
+        Idea.where(id: idea_ids[i]).update_all(custom_field_values: values)
       end
     end
 
@@ -128,66 +160,49 @@ module DecidimImporter
       Phase.where(id: ids, participation_method: 'voting').find_each { |phase| Basket.update_counts(phase) }
     end
 
-    # Additively unions the export's locales (from the app-config patch JSON) into the current tenant's
-    # `core.locales`, so the template's multilocs have every locale they reference — *without* replacing
-    # the tenant's own set (that's {.apply_app_config}'s job) and without touching branding/reply-to. Only
-    # adds, so no user is stranded and no `validate_locales` migration is needed. Returns the locales added
-    # (empty when the JSON is absent or adds nothing). Run before the template deserializes.
-    def self.merge_app_config_locales_file(path)
+    # Applies the import's app-config patch (`<base>.app_config.json`) to the current tenant: additively
+    # unions the export's locales into `core.locales` — *without* replacing the tenant's own set, so no
+    # user is stranded and no `validate_locales` migration is needed — and allows+enables the feature flags
+    # the import relies on (`project_static_pages`, `parallel_participation`), merged onto whatever the
+    # tenant already has. Nothing else in the app config is touched. Run before the template deserializes,
+    # so its records have the locales they reference. Returns the locales added (empty when none/no file).
+    def self.apply_import_app_config_file(path)
       return [] unless path && File.file?(path)
 
-      incoming = JSON.parse(File.read(path)).dig('settings', 'core', 'locales')
-      return [] unless incoming.is_a?(Array)
+      patch_settings = JSON.parse(File.read(path))['settings']
+      return [] unless patch_settings.is_a?(Hash)
 
       config = AppConfiguration.instance
-      current = Array(config.settings('core', 'locales'))
-      added = incoming - current
-      return [] if added.empty?
-
       settings = config.settings
-      settings['core'] ||= {}
-      settings['core']['locales'] = current + added
+      added = union_locales!(settings, patch_settings.dig('core', 'locales'))
+      merge_feature_flags!(settings, patch_settings)
       config.settings = settings
       config.save!
       added
     end
 
-    # Applies an AppConfiguration patch JSON (the companion artifact `create_template` writes) to the
-    # current tenant: deep-merges `settings` and, with fetching on, sets remote logo/favicon URLs. Returns
-    # false when `path` is nil/missing. Apply *before* the template so locales are in place for its records.
-    def self.apply_app_config_file(path, import_uploads: true)
-      return false unless path && File.file?(path)
+    # Adds any locales in `incoming` the tenant doesn't already have (order preserved, never dropping the
+    # tenant's own). Mutates `settings` in place; returns the locales added.
+    def self.union_locales!(settings, incoming)
+      return [] unless incoming.is_a?(Array)
 
-      apply_app_config(JSON.parse(File.read(path)), import_uploads: import_uploads)
-      true
+      current = Array(settings.dig('core', 'locales'))
+      added = incoming - current
+      return [] if added.empty?
+
+      settings['core'] ||= {}
+      settings['core']['locales'] = current + added
+      added
     end
 
-    def self.apply_app_config(patch, import_uploads: true)
-      config = AppConfiguration.instance
-      settings = patch['settings']
-      if settings.is_a?(Hash)
-        # `deep_merge` overwrites arrays, so `core.locales` *replaces* the tenant's rather than unioning.
-        # A user still on a now-removed locale is migrated first, else `validate_locales` rejects the drop.
-        migrate_users_to_first_locale(settings.dig('core', 'locales'))
-        config.settings = config.settings.deep_merge(settings)
+    # Merges every feature flag in the patch (every non-`core` settings key) onto the tenant's, so the
+    # import's `allowed`/`enabled` switches are turned on without disturbing the tenant's other config.
+    def self.merge_feature_flags!(settings, patch_settings)
+      patch_settings.each do |key, value|
+        next if key == 'core' || !value.is_a?(Hash)
+
+        settings[key] = (settings[key] || {}).merge(value)
       end
-
-      if import_uploads
-        patch.slice('remote_logo_url', 'remote_favicon_url').each do |attr, value|
-          setter = :"#{attr}="
-          config.public_send(setter, value) if config.respond_to?(setter)
-        end
-      end
-      config.save!
-      config
-    end
-
-    # Moves every user whose locale isn't in the incoming `locales` onto the first of them, so the
-    # `core.locales` replacement doesn't strand a user on a removed locale. Bulk `update_all`, no callbacks.
-    def self.migrate_users_to_first_locale(locales)
-      return if locales.blank?
-
-      User.where.not(locale: locales).update_all(locale: locales.first)
     end
   end
 end

@@ -69,6 +69,43 @@ RSpec.describe DecidimImporter::Importer do
     end
   end
 
+  describe '.resolve_scope_areas!' do
+    it 'rewrites each idea’s parked scope pointer to the imported area’s id and title' do
+      area = create(:area, title_multiloc: { 'en' => 'Utah' })
+      scoped = create(:idea, custom_field_values: {})
+      plain = create(:idea, custom_field_values: {})
+      area_attrs = { 'title_multiloc' => { 'en' => 'Utah' } }
+      template = {
+        'models' => {
+          'area' => [area_attrs],
+          # The scoped idea's pointer is the *same* area attributes hash (a YAML anchor/alias in practice).
+          'idea' => [{ 'custom_field_values' => { 'decidim_scope' => area_attrs } }, { 'custom_field_values' => {} }]
+        }
+      }
+      created = { 'Area' => [area.id], 'Idea' => [scoped.id, plain.id] }
+
+      described_class.resolve_scope_areas!(template, created)
+
+      expect(scoped.reload.custom_field_values['decidim_scope']).to eq(
+        'area_id' => area.id, 'title_multiloc' => { 'en' => 'Utah' }
+      )
+      expect(plain.reload.custom_field_values).to eq({})
+    end
+
+    it 'skips the pass when idea/area counts do not line up with the created ids' do
+      idea = create(:idea, custom_field_values: { 'decidim_scope' => { 'title_multiloc' => {} } })
+      template = { 'models' => { 'area' => [{}], 'idea' => [idea.attributes.slice('custom_field_values')] } }
+
+      described_class.resolve_scope_areas!(template, { 'Area' => [], 'Idea' => [idea.id] })
+
+      expect(idea.reload.custom_field_values['decidim_scope']).to eq('title_multiloc' => {})
+    end
+
+    it 'is a no-op when the template has no ideas or areas' do
+      expect { described_class.resolve_scope_areas!({ 'models' => {} }, {}) }.not_to raise_error
+    end
+  end
+
   describe '.provision_project_pages!' do
     let(:stale) { { 'ROOT' => { 'type' => 'div', 'isCanvas' => true, 'nodes' => [], 'props' => {} } } }
 
@@ -102,20 +139,28 @@ RSpec.describe DecidimImporter::Importer do
     end
   end
 
-  describe '.merge_app_config_locales_file' do
-    def app_config_json(locales)
+  describe '.apply_import_app_config_file' do
+    def app_config_json(settings)
       file = Tempfile.new(['decidim', '.app_config.json'])
-      file.write({ 'settings' => { 'core' => { 'locales' => locales } } }.to_json)
+      file.write({ 'settings' => settings }.to_json)
       file.close
       file
+    end
+
+    def flags
+      {
+        'project_static_pages' => { 'allowed' => true, 'enabled' => true },
+        'parallel_participation' => { 'allowed' => true, 'enabled' => true }
+      }
     end
 
     it 'adds the export locales the tenant lacks, keeping its existing ones (additive union)' do
       existing = AppConfiguration.instance.settings('core', 'locales')
       missing = (CL2_SUPPORTED_LOCALES.map(&:to_s) - existing).first
-      file = app_config_json([missing] + existing) # order in the patch shouldn't drop the tenant's own
+      # order in the patch shouldn't drop the tenant's own
+      file = app_config_json({ 'core' => { 'locales' => [missing] + existing } }.merge(flags))
 
-      added = described_class.merge_app_config_locales_file(file.path)
+      added = described_class.apply_import_app_config_file(file.path)
 
       expect(added).to eq([missing])
       locales = AppConfiguration.instance.reload.settings('core', 'locales')
@@ -124,46 +169,33 @@ RSpec.describe DecidimImporter::Importer do
       file&.unlink
     end
 
-    it 'returns [] and changes nothing when the tenant already has every export locale' do
-      file = app_config_json([AppConfiguration.instance.settings('core', 'locales').first])
-      expect(described_class.merge_app_config_locales_file(file.path)).to eq([])
+    it 'allows and enables the import feature flags without disturbing the rest of the config' do
+      name_before = AppConfiguration.instance.settings('core', 'organization_name')
+      file = app_config_json({ 'core' => { 'locales' => AppConfiguration.instance.settings('core', 'locales') } }
+        .merge(flags))
+
+      described_class.apply_import_app_config_file(file.path)
+
+      config = AppConfiguration.instance.reload
+      expect(config.feature_activated?('project_static_pages')).to be(true)
+      expect(config.feature_activated?('parallel_participation')).to be(true)
+      expect(config.settings('core', 'organization_name')).to eq(name_before) # untouched
+    ensure
+      file&.unlink
+    end
+
+    it 'returns [] (locales) when the tenant already has every export locale, still enabling the flags' do
+      file = app_config_json({ 'core' => { 'locales' => [AppConfiguration.instance.settings('core', 'locales').first] } }
+        .merge(flags))
+
+      expect(described_class.apply_import_app_config_file(file.path)).to eq([])
+      expect(AppConfiguration.instance.reload.feature_activated?('parallel_participation')).to be(true)
     ensure
       file&.unlink
     end
 
     it 'is a no-op returning [] when the file is absent' do
-      expect(described_class.merge_app_config_locales_file('/no/such.app_config.json')).to eq([])
-    end
-  end
-
-  describe '.apply_app_config_file' do
-    it 'deep-merges the patch settings into the tenant AppConfiguration' do
-      file = Tempfile.new(['decidim', '.app_config.json'])
-      file.write({ 'settings' => { 'core' => { 'organization_name' => { 'en' => 'Imported City' } } } }.to_json)
-      file.close
-
-      applied = described_class.apply_app_config_file(file.path, import_uploads: false)
-
-      expect(applied).to be(true)
-      # Deep-merge: the imported locale overrides en, the tenant's other settings are preserved.
-      expect(AppConfiguration.instance.settings('core', 'organization_name')).to include('en' => 'Imported City')
-    ensure
-      file&.unlink
-    end
-
-    it 'is a no-op returning false when the file is absent' do
-      expect(described_class.apply_app_config_file('/no/such.app_config.json')).to be(false)
-    end
-
-    it 'replaces the tenant locales with the imported ones, migrating users off dropped locales' do
-      # The default tenant supports several locales (incl. fr-FR); importing only 'en' drops the rest.
-      expect(AppConfiguration.instance.settings('core', 'locales')).to include('fr-FR')
-      user = create(:user, locale: 'fr-FR')
-
-      described_class.apply_app_config({ 'settings' => { 'core' => { 'locales' => ['en'] } } })
-
-      expect(AppConfiguration.instance.settings('core', 'locales')).to eq(['en'])
-      expect(user.reload.locale).to eq('en') # migrated to the first new locale
+      expect(described_class.apply_import_app_config_file('/no/such.app_config.json')).to eq([])
     end
   end
 end

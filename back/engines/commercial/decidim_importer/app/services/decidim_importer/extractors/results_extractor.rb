@@ -18,6 +18,7 @@ module DecidimImporter
         process: 'decidim_participatory_process',
         component: 'decidim_component',
         category: 'category',
+        scope: 'scope',
         title: 'title',
         description: 'description',
         status: 'status',
@@ -53,6 +54,7 @@ module DecidimImporter
 
         register_ideas_phase(uid, idea, phase)
         register_input_topic(uid, idea, row[COLUMNS[:category]])
+        register_scope_area(idea, row[COLUMNS[:scope]])
         idea
       end
 

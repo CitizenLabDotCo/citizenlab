@@ -85,16 +85,22 @@ export default () => {
     isLoading: isLoadingPhases,
     isFetching: isFetchingPhases,
   } = usePhases(projectId);
+  const {
+    data: standalonePhases,
+    isLoading: isLoadingStandalonePhases,
+    isFetching: isFetchingStandalonePhases,
+  } = usePhases(projectId, 'standalone');
   const [selectedPhase, setSelectedPhase] = useState<IPhaseData | undefined>(
     undefined
   );
   const { pathname } = useLocation();
 
   useEffect(() => {
-    if (!phases) return;
+    if (!phases || !standalonePhases) return;
 
+    const allPhases = [...phases.data, ...standalonePhases.data];
     const phase = phaseId
-      ? phases.data.find((phase) => phase.id === phaseId)
+      ? allPhases.find((phase) => phase.id === phaseId)
       : undefined;
     let phaseShown: IPhaseData | undefined = phase;
     if (!phase && !pathname.endsWith('/phases/new')) {
@@ -113,7 +119,12 @@ export default () => {
       `/admin/projects/${projectId}/phases`
     );
 
-    if (stillOnPhasesPath && phases.data.length === 0 && !isFetchingPhases) {
+    if (
+      stillOnPhasesPath &&
+      allPhases.length === 0 &&
+      !isFetchingPhases &&
+      !isFetchingStandalonePhases
+    ) {
       clHistory.replace(
         `/admin/projects/${projectId}/phases/new${window.location.search}`
       );
@@ -125,9 +136,17 @@ export default () => {
     }
 
     setSelectedPhase(phaseShown);
-  }, [phaseId, phases, projectId, pathname, isFetchingPhases]);
+  }, [
+    phaseId,
+    phases,
+    standalonePhases,
+    projectId,
+    pathname,
+    isFetchingPhases,
+    isFetchingStandalonePhases,
+  ]);
 
-  if (isLoadingProject || isLoadingPhases) {
+  if (isLoadingProject || isLoadingPhases || isLoadingStandalonePhases) {
     return (
       <Box
         width="100%"

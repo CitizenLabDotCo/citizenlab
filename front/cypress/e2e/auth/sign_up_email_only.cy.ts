@@ -22,6 +22,8 @@ describe('Sign up - email only', () => {
   it('works when signing up with new email', () => {
     cy.visit(`/projects/${projectTitle}`);
 
+    cy.dockProjectCtaBar();
+
     cy.get('.e2e-idea-button').first().find('button').should('exist');
     cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
@@ -38,6 +40,8 @@ describe('Sign up - email only', () => {
 
   it('works when signing up with existing normal user', () => {
     cy.visit(`/projects/${projectTitle}`);
+
+    cy.dockProjectCtaBar();
 
     cy.get('.e2e-idea-button').first().find('button').should('exist');
     cy.get('.e2e-idea-button').first().find('button').click({ force: true });

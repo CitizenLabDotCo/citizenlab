@@ -87,7 +87,7 @@ export interface IProjectAttributes {
   baskets_count: number;
   votes_count: number;
   visible_to: Visibility;
-  timeline_active?: 'past' | 'present' | 'future' | null;
+  participation_status?: 'active' | 'upcoming' | 'ended' | null;
   participants_count: number;
   internal_role: 'open_idea_box' | null;
   publication_status: PublicationStatus;
@@ -142,6 +142,9 @@ export interface IProjectData {
       data: IRelationship[];
     };
     current_phase?: {
+      data: IRelationship | null;
+    };
+    highlighted_phase?: {
       data: IRelationship | null;
     };
     user_basket?: {

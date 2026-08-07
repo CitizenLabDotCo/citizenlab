@@ -37,6 +37,10 @@ export default defineMessages({
     id: 'app.containers.PhoneChange.phoneTaken',
     defaultMessage: 'This phone number is already in use.',
   },
+  phoneUnsupportedCountry: {
+    id: 'app.containers.PhoneChange.phoneUnsupportedCountry',
+    defaultMessage: 'SMS messages cannot be sent to this country.',
+  },
   phoneUnknownError: {
     id: 'app.containers.PhoneChange.phoneUnknownError',
     defaultMessage: 'Something went wrong. Please try again.',
@@ -64,5 +68,23 @@ export default defineMessages({
   backToProfile: {
     id: 'app.containers.PhoneChange.backToProfile',
     defaultMessage: 'Back to profile settings',
+  },
+  smsConfirmationDisclosure: {
+    id: 'app.containers.PhoneChange.smsConfirmationDisclosure2',
+    defaultMessage:
+      'By clicking Submit, you agree to receive a one-time confirmation code by SMS at the number provided. Message and data rates may apply. View {termsLink} and {privacyLink}.',
+  },
+  termsLinkText: {
+    id: 'app.containers.PhoneChange.termsLinkText',
+    defaultMessage: 'Terms',
+  },
+  privacyLinkText: {
+    id: 'app.containers.PhoneChange.privacyLinkText',
+    defaultMessage: 'Privacy Policy',
+  },
+  smsManualCampaignConsentLabel: {
+    id: 'app.containers.PhoneChange.smsManualCampaignConsentLabel',
+    defaultMessage:
+      "I'd also like to receive updates and campaign messages by SMS. You can opt out at any time.",
   },
 });

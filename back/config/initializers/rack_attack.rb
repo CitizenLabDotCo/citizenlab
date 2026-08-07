@@ -111,15 +111,15 @@ class Rack::Attack
   end
 
   # Resend code by IP.
-  throttle('request_code_unauthenticated/ip', limit: 10, period: 5.minutes) do |req|
-    if req.path == '/web_api/v1/user/request_code_unauthenticated' && req.post?
+  throttle('request_code_email/ip', limit: 10, period: 5.minutes) do |req|
+    if req.path == '/web_api/v1/user/request_code_email' && req.post?
       req.remote_ip
     end
   end
 
   # Confirm by IP.
-  throttle('confirm_code_unauthenticated/ip', limit: 5, period: 20.seconds) do |req|
-    if req.path == '/web_api/v1/user/confirm_code_unauthenticated' && req.post?
+  throttle('confirm_code_email/ip', limit: 5, period: 20.seconds) do |req|
+    if req.path == '/web_api/v1/user/confirm_code_email' && req.post?
       req.remote_ip
     end
   end
@@ -183,6 +183,20 @@ class Rack::Attack
 
   throttle('oauth_registrations/ip/day', limit: 50, period: 24.hours) do |req|
     if req.path == '/oauth/registrations' && req.post?
+      req.remote_ip
+    end
+  end
+
+  # Spam reports by IP. Limits are well above plausible human volume: this runs
+  # before authentication, so an office behind a single NAT is one key.
+  throttle('spam_reports/ip', limit: 10, period: 1.minute) do |req|
+    if %r{\A/web_api/v1/(ideas|comments)/[^/]+/spam_reports\z}.match?(req.path) && req.post?
+      req.remote_ip
+    end
+  end
+
+  throttle('spam_reports/ip/day', limit: 100, period: 24.hours) do |req|
+    if %r{\A/web_api/v1/(ideas|comments)/[^/]+/spam_reports\z}.match?(req.path) && req.post?
       req.remote_ip
     end
   end

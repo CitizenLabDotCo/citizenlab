@@ -93,7 +93,9 @@ export interface IAppConfigurationSettings {
   verification?: {
     verification_methods: string[];
   };
-  sms?: AppConfigurationFeature;
+  sms?: AppConfigurationFeature & {
+    allowed_country_codes?: string[];
+  };
   smart_groups?: AppConfigurationFeature;
   typeform_surveys?: {
     allowed: boolean;

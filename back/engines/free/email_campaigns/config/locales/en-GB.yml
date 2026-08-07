@@ -193,6 +193,7 @@ en-GB:
       new_phone_confirmation: New phone confirmation code
       official_feedback_on_idea_you_follow: Update on an input that you follow
       password_reset: Password reset
+      phone_confirmation: Phone confirmation code
       project_folder_moderation_rights_received: Folder manager rights received
       project_manager_rights_received: Project manager rights received
       project_moderation_rights_received: Project moderation rights received
@@ -550,6 +551,8 @@ en-GB:
       preheader: Reset your password for %{organizationName}
       subject: '%{organizationName}: Reset your password'
       title: Choose a new password
+    phone_confirmation:
+      sms_body: Your confirmation code is %{code}.
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane

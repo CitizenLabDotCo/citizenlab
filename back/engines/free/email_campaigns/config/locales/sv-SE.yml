@@ -193,6 +193,7 @@ sv-SE:
       new_phone_confirmation: Ny bekräftelsekod för telefon
       official_feedback_on_idea_you_follow: Uppdatering av en idé som du följer
       password_reset: Återställning av lösenord
+      phone_confirmation: Bekräftelsekod för telefonnummer
       project_folder_moderation_rights_received: Rättigheter som mapphanterare har erhållits
       project_manager_rights_received: Rättigheter som projektledare mottagna
       project_moderation_rights_received: Rättigheter för projektmoderering har erhållits
@@ -550,6 +551,8 @@ sv-SE:
       preheader: Återställ ditt lösenord för %{organizationName}
       subject: '%{organizationName}: Återställ ditt lösenord'
       title: Välj ett nytt lösenord
+    phone_confirmation:
+      sms_body: Din bekräftelsekod är %{code}.
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane

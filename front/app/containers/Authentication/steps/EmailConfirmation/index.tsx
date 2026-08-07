@@ -14,14 +14,14 @@ import {
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
 
-import { State, SetError } from '../../typings';
+import { SetError } from '../../typings';
 
 import CodeSentMessage from './CodeSentMessage';
 import FooterNotes from './FooterNotes';
 import messages from './messages';
 
 interface Props {
-  state: State;
+  email: string | null;
   loading: boolean;
   setError: SetError;
   onConfirm: (email: string, code: string) => void;
@@ -42,7 +42,7 @@ const isWrongConfirmationCodeError = (e: any) => {
 };
 
 const EmailConfirmation = ({
-  state,
+  email,
   loading,
   setError,
   onConfirm,
@@ -71,7 +71,6 @@ const EmailConfirmation = ({
     resolver: yupResolver(schema),
   });
 
-  const email = state.email;
   if (!email) return null;
 
   const handleConfirm = async ({ code }: FormValues) => {

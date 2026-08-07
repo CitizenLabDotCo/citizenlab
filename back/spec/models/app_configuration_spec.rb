@@ -50,4 +50,58 @@ RSpec.describe AppConfiguration do
         .to(Time.find_zone('America/New_York'))
     end
   end
+
+  describe 'sms allowed_country_codes validation' do
+    let(:config) { described_class.instance }
+
+    before do
+      config.settings['sms'] = {
+        'allowed' => true,
+        'enabled' => true,
+        'twilio_account_sid' => 'AC_test',
+        'twilio_auth_token' => 'token',
+        'twilio_messaging_service_sid' => 'MG_test'
+      }
+    end
+
+    it 'is valid with known ISO 3166-1 alpha-2 country codes' do
+      config.settings['sms']['allowed_country_codes'] = %w[BE FR]
+      expect(config).to be_valid
+    end
+
+    it 'is invalid with an unknown country code' do
+      config.settings['sms']['allowed_country_codes'] = ['XX']
+      expect(config).not_to be_valid
+    end
+  end
+
+  describe '#base_asset_host_uri (dev S3 branch)' do
+    let(:config) { described_class.instance }
+
+    before { allow(Rails.env).to receive(:development?).and_return(true) }
+
+    it 'returns the AWS bucket URL when no endpoint is set' do
+      stub_env(
+        'USE_AWS_S3_IN_DEV' => 'true',
+        'AWS_S3_BUCKET' => 'my-bucket',
+        'AWS_REGION' => 'eu-central-1',
+        'AWS_ENDPOINT_URL_S3' => nil
+      )
+
+      expect(config.base_asset_host_uri)
+        .to eq('https://my-bucket.s3.eu-central-1.amazonaws.com')
+    end
+
+    it 'returns the bucket URL on the custom endpoint when AWS_ENDPOINT_URL_S3 is set' do
+      stub_env(
+        'USE_AWS_S3_IN_DEV' => 'true',
+        'AWS_S3_BUCKET' => 'my-bucket',
+        'AWS_REGION' => 'eu-central-1',
+        'AWS_ENDPOINT_URL_S3' => 'https://s3.fr-par.scw.cloud'
+      )
+
+      expect(config.base_asset_host_uri)
+        .to eq('https://my-bucket.s3.fr-par.scw.cloud')
+    end
+  end
 end

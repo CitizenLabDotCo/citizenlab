@@ -411,7 +411,15 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def update_file_upload_fields(input, custom_form, params)
     file_uploads_exist = false
-    params_for_file_upload_fields = extract_params_for_file_upload_fields custom_form, params
+    # A file field the user cleared arrives as null; indexing into it would raise.
+    params_for_file_upload_fields =
+      (extract_params_for_file_upload_fields custom_form, params).compact_blank
+
+    # Validated up front so the file reported is the first one in the form, and so
+    # nothing is written before we know every file is acceptable.
+    params_for_file_upload_fields.each do |key, params_for_files_field|
+      validate_file_size! params_for_files_field, key
+    end
 
     legacy_files = FileUpload.where(idea: input)
 
@@ -429,7 +437,7 @@ class WebApi::V1::IdeasController < ApplicationController
             content: params_for_files_field['content']
           })
         else
-          build_idea_file_attachment(input, params_for_files_field).tap(&:save!)
+          build_idea_file_attachment(input, params_for_files_field, field_key: key).tap(&:save!)
         end
 
         filename = idea_file.is_a?(FileUpload) ? idea_file.name : idea_file.file.name
@@ -447,7 +455,43 @@ class WebApi::V1::IdeasController < ApplicationController
       .map { |file_params| file_params.fetch(:file_by_content) }
   end
 
-  def build_idea_file_attachment(idea, file_params)
+  # Checked before building the `Files::File`: the uploader's `size_range` only fires
+  # after the base64 has been decoded into memory and copied to disk. Reading the encoded
+  # length skips both, so keep this even if `Files::FileAttachment` gains `autosave`
+  # (which would fix the silent drop that makes the failure a 500, but not the cost).
+  def validate_file_size!(file_params, field_key)
+    content = file_params['content']
+    return if content.blank?
+
+    # From the uploader, so it can't drift from the validation this mirrors.
+    max_size = Files::FileUploader.new.size_range.max
+    return if base64_byte_size(content) <= max_size
+
+    raise ApiError.new(
+      :file_too_large,
+      payload: {
+        errors: {
+          field_key => [{
+            error: 'file_too_large',
+            value: file_params['name'],
+            payload: { max_size_mb: max_size / 1.megabyte }
+          }]
+        }
+      }
+    )
+  end
+
+  # Decoded size of a base64 data URI, from the encoded length — decoding would mean
+  # materialising ~133 MB for a file at the limit.
+  def base64_byte_size(content)
+    encoded = content.to_s.split(',', 2).last.to_s
+    padding = encoded.length - encoded.chomp('==').chomp('=').length
+    ((encoded.length * 3) / 4) - padding
+  end
+
+  def build_idea_file_attachment(idea, file_params, field_key: :base)
+    validate_file_size! file_params, field_key
+
     files_file = Files::File.new(
       content_by_content: {
         content: file_params['content'],

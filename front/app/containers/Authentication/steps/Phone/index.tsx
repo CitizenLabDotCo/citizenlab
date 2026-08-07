@@ -5,6 +5,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
 
+import useAuthUser from 'api/me/useAuthUser';
+
 import { SetError, State } from 'containers/Authentication/typings';
 
 import Input from 'components/HookForm/Input';
@@ -29,6 +31,7 @@ interface Props {
 }
 
 const Phone = ({ state, loading, setError, onSubmit }: Props) => {
+  const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
 
   const schema = useMemo(
@@ -45,9 +48,11 @@ const Phone = ({ state, loading, setError, onSubmit }: Props) => {
     [formatMessage]
   );
 
+  const newPhone = state.new_phone ?? authUser?.data.attributes.new_phone;
+
   const methods = useForm<FormValues>({
     mode: 'onSubmit',
-    defaultValues: { new_phone: state.phone ?? undefined },
+    defaultValues: { new_phone: newPhone ?? undefined },
     resolver: yupResolver(schema),
     shouldFocusError: true,
   });

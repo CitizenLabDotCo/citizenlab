@@ -23,11 +23,12 @@ const createData = (offset: number): MiniProjectData[] => {
         en: `${offset + index} - Project title, but a bit longer`,
       },
       slug: 'project-slug',
-      starts_days_from_now: null,
-      ended_days_ago: null,
+      participation_status: 'active',
+      days_until_start: null,
+      days_since_end: null,
     },
     relationships: {
-      current_phase: {
+      highlighted_phase: {
         data: {
           id: 'phase-id',
         },

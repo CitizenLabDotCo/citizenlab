@@ -40,12 +40,13 @@ export interface MiniProjectData {
   type: 'project_mini';
   attributes: {
     slug: string;
-    starts_days_from_now: number | null;
-    ended_days_ago: number | null;
+    participation_status: 'active' | 'upcoming' | 'ended' | null;
+    days_until_start: number | null;
+    days_since_end: number | null;
     title_multiloc: Multiloc;
   };
   relationships: {
-    current_phase?: {
+    highlighted_phase?: {
       data: {
         id: string;
       } | null;

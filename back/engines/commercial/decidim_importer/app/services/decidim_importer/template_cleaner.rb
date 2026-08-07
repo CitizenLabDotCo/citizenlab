@@ -140,8 +140,8 @@ module DecidimImporter
         return "#{ext.present? ? ".#{ext}" : 'a missing extension'} is not on the upload allowlist"
       end
 
-      importable[url] = image_importable?(url) unless importable.key?(url)
-      importable[url] ? nil : 'it is unreachable, or its content conflicts with its extension'
+      importable[url] = image_prune_reason(url) unless importable.key?(url)
+      importable[url]
     end
 
     # Whether a `Files::File` content URL's extension passes the same allowlist CarrierWave enforces on
@@ -169,7 +169,8 @@ module DecidimImporter
 
     # Drops embedded `<img>` tags the import can't fetch, keeping the rest (and the text). `data:` images
     # are kept; a src that isn't `http(s)` (e.g. a root-relative `/rails/...` path) is dropped, since the
-    # rich-text handler can't download it. Each distinct URL is probed once (cache shared with attachments).
+    # rich-text handler can't download it. Each distinct URL is probed once (cache shared with attachments)
+    # and every drop is logged with its reason, distinguishing not-found from a format conflict.
     def prune_unreachable_embedded_images!(template, importable = {})
       rewrite_multiloc_html!(template) do |html|
         html.gsub(/<img\b[^>]*>/i) do |tag|
@@ -177,18 +178,27 @@ module DecidimImporter
           next tag if src.nil? || src.start_with?('data:')
           next '' unless src.match?(%r{\Ahttps?://}i)
 
-          importable[src] = image_importable?(src) unless importable.key?(src)
-          importable[src] ? tag : ''
+          importable[src] = image_prune_reason(src) unless importable.key?(src)
+          reason = importable[src]
+          next tag unless reason
+
+          Rails.logger.warn "Decidim import: dropping embedded image because #{reason} (#{src})"
+          ''
         end
       end
     end
 
-    # Whether the import can safely fetch a remote image: reachable, and — for a recognised raster image —
-    # its content type matches its filename extension. Decidim sometimes serves e.g. a JPEG named `.png`,
-    # which Go Vocal's exiftool then rejects, aborting the whole import; such images are dropped.
-    def image_importable?(url)
+    # Why the import can't safely fetch a remote image, or nil when it can. Two distinct failures, kept
+    # apart so the log says which it was: the image can't be found (unreachable — 404, connection error or
+    # timeout), or it's reachable but its content type disagrees with its filename extension. Decidim
+    # sometimes serves e.g. a JPEG named `.png`, which Go Vocal's exiftool then rejects, aborting the whole
+    # import; such images are dropped too.
+    def image_prune_reason(url)
       reachable, bytes = probe_image(url)
-      reachable && !image_format_conflict?(url, bytes)
+      return 'it could not be found' unless reachable
+      return 'its content conflicts with its extension' if image_format_conflict?(url, bytes)
+
+      nil
     end
 
     # A single ranged GET (following redirects): `[reachable?, leading_bytes_of_body]`. Ranged GET not

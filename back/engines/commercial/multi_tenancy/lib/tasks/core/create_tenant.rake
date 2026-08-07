@@ -361,6 +361,11 @@ namespace :cl2_back do
         },
         sms: {
           enabled: true,
+          allowed: true,
+          use_test_mode: true
+        },
+        parallel_participation: {
+          enabled: true,
           allowed: true
         }
       }

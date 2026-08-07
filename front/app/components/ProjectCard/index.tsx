@@ -401,11 +401,12 @@ const ProjectCard = memo<InputProps>(
       projectId,
       imageId,
     });
-    const currentPhaseId =
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      project?.data?.relationships?.current_phase?.data?.id ?? null;
-    const { data: phase } = usePhase(currentPhaseId);
+    const participationStatus = project?.data.attributes.participation_status;
+    const highlightedPhaseId =
+      project?.data.relationships.highlighted_phase?.data?.id ?? null;
+    const { data: phase } = usePhase(
+      participationStatus === 'active' ? highlightedPhaseId : null
+    );
     const { data: report } = useReport(
       phase?.data.relationships.report?.data?.id
     );
@@ -446,7 +447,7 @@ const ProjectCard = memo<InputProps>(
     const hasDescriptionPreview =
       !hideDescriptionPreview &&
       !isEmpty(localize(project.data.attributes.description_preview_multiloc));
-    const isFinished = project.data.attributes.timeline_active === 'past';
+    const isFinished = project.data.attributes.participation_status === 'ended';
     const isArchived =
       project.data.attributes.publication_status === 'archived';
     const showAvatarBubbles =

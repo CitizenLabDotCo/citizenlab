@@ -66,4 +66,41 @@ describe McpServer::McpController do
       expect(response).to have_http_status(:forbidden)
     end
   end
+
+  # Layer 1: McpController skips ApplicationController, so its own append_info_to_payload
+  # adds tenant (previously missing), user and MCP method/tool to the CloudWatch log line.
+  describe 'semantic-logger payload' do
+    def payload_for(body)
+      host! 'example.org'
+      payloads = []
+      subscriber = ->(_name, _started, _finished, _id, payload) { payloads << payload }
+      ActiveSupport::Notifications.subscribed(subscriber, 'process_action.action_controller') do
+        post '/mcp', params: body, headers: headers
+      end
+      payloads.last
+    end
+
+    it 'includes tenant, user and the JSON-RPC method' do
+      payload = payload_for(initialize_body)
+
+      expect(response).to have_http_status(:ok)
+      expect(payload[:tenant_host]).to eq('example.org')
+      expect(payload[:tenant_id]).to eq(Tenant.current.id)
+      expect(payload[:user_id]).to eq(user.id)
+      expect(payload[:mcp_method]).to eq('initialize')
+      expect(payload[:mcp_tool]).to be_nil
+    end
+
+    it 'includes the tool name for a tools/call request' do
+      body = {
+        jsonrpc: '2.0', id: 2, method: 'tools/call',
+        params: { name: 'list_areas', arguments: {} }
+      }.to_json
+
+      payload = payload_for(body)
+
+      expect(payload[:mcp_method]).to eq('tools/call')
+      expect(payload[:mcp_tool]).to eq('list_areas')
+    end
+  end
 end

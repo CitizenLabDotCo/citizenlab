@@ -218,6 +218,29 @@ RSpec.describe Permission do
     end
   end
 
+  describe 'confirmed_email_expiry' do
+    it 'can be set when a confirmed email is required' do
+      permission = create(:permission, :by_users, require_confirmed_email: true, confirmed_email_expiry: 1)
+      expect(permission.confirmed_email_expiry).to eq(1)
+    end
+
+    context 'when the sms feature is enabled' do
+      before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
+
+      it 'does not cause a problem if set and require_confirmed_email is later disabled' do
+        # Keep a confirmed phone number as the fallback authentication method so the
+        # permission stays valid once the confirmed-email requirement is removed.
+        permission = create(:permission, :by_users, require_confirmed_email: true, require_confirmed_phone_number: true, confirmed_email_expiry: 1)
+        permission.update!(require_confirmed_email: false)
+        expect(permission.confirmed_email_expiry).to eq(1)
+      end
+
+      it 'cannot be set when a confirmed email is not required' do
+        expect { create(:permission, :by_users, require_confirmed_email: false, require_confirmed_phone_number: true, confirmed_email_expiry: 1) }.to raise_error(ActiveRecord::RecordInvalid)
+      end
+    end
+  end
+
   describe 'confirmed_phone_number_expiry' do
     context 'when the sms feature is enabled' do
       before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }

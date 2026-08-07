@@ -193,6 +193,7 @@ hr-HR:
       new_phone_confirmation: Novi kôd za potvrdu broja telefona
       official_feedback_on_idea_you_follow: Ažuriranje ideje koju slijedite
       password_reset: Ponovno postavljanje lozinke
+      phone_confirmation: Kôd za potvrdu telefona
       project_folder_moderation_rights_received: Primljena prava upravitelja mape
       project_manager_rights_received: Primljena prava voditelja projekta
       project_moderation_rights_received: Dodjela prava za moderiranje projekta
@@ -550,6 +551,8 @@ hr-HR:
       preheader: Ponovno postavite lozinku za %{organizationName}
       subject: '%{organizationName}: Ponovno postavite lozinku'
       title: Odaberite novu lozinku
+    phone_confirmation:
+      sms_body: Vaš potvrdni kôd je %{code}.
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jana

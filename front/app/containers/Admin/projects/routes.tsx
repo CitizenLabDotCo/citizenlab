@@ -525,6 +525,9 @@ const phasesSearchSchema = yup.object({
     .oneOf(['topics', 'phases', 'projects', 'statuses'])
     .optional(),
   selected_idea_id: yup.string().optional(),
+  // Set by the Extras sidebar "New survey" action: creates the phase as a
+  // standalone (detached) survey instead of a timeline phase.
+  placement: yup.string().oneOf(['standalone']).optional(),
 });
 
 const projectPhasesRoute = createRoute({

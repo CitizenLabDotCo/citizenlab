@@ -30,6 +30,18 @@ class ConsentableDisableableCampaignBForTest < EmailCampaigns::Campaign
   end
 end
 
+class ConsentableHiddenCampaignForTest < EmailCampaigns::Campaign
+  include EmailCampaigns::Consentable
+
+  def self.consentable_roles
+    []
+  end
+
+  def hidden_from_admin?
+    true
+  end
+end
+
 describe EmailCampaigns::DeliveryService do
   let(:service) { described_class.new }
 
@@ -229,6 +241,7 @@ describe EmailCampaigns::DeliveryService do
       ConsentableCampaignForTest.create!
       ConsentableDisableableCampaignAForTest.create!(enabled: false)
       ConsentableDisableableCampaignBForTest.create!(enabled: true)
+      ConsentableHiddenCampaignForTest.create!
 
       allow(service).to receive(
         :campaign_classes
@@ -237,7 +250,8 @@ describe EmailCampaigns::DeliveryService do
           NonConsentableCampaignForTest,
           ConsentableCampaignForTest,
           ConsentableDisableableCampaignAForTest,
-          ConsentableDisableableCampaignBForTest
+          ConsentableDisableableCampaignBForTest,
+          ConsentableHiddenCampaignForTest
         ]
       )
     end
@@ -248,6 +262,10 @@ describe EmailCampaigns::DeliveryService do
 
     it 'does not return all campaign types that return false to #consentable_for?, for the given user and have an enabled campaign' do
       expect(service.consentable_campaign_types_for(user)).not_to include('ConsentableDisableableCampaignAForTest')
+    end
+
+    it 'does not return transactional campaign types that are hidden from admin' do
+      expect(service.consentable_campaign_types_for(user)).not_to include('ConsentableHiddenCampaignForTest')
     end
   end
 

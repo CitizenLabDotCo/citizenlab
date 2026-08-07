@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 
-import { Box, Success } from '@citizenlab/cl2-component-library';
+import { Box, Success, Text } from '@citizenlab/cl2-component-library';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 
-import { requestCodePhoneChange } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
+import { requestCodeNewPhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import { IUser } from 'api/users/types';
 
-import Input from 'components/HookForm/Input';
+import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
+import PhoneInput from 'components/HookForm/PhoneInput';
 import {
   Title,
   StyledButton,
@@ -17,10 +18,12 @@ import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
 import Warning from 'components/UI/Warning';
 
-import { useIntl } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 import messages from './messages';
+import usePhoneInputCountries from './usePhoneInputCountries';
 
 import { FormValues } from '.';
 
@@ -31,11 +34,12 @@ type UpdatePhoneFormProps = {
   user: IUser;
 };
 
-type FormError = 'taken' | 'invalid' | 'unknown';
+type FormError = 'taken' | 'invalid' | 'unsupported_country' | 'unknown';
 
 const ERROR_MESSAGES = {
   taken: messages.phoneTaken,
   invalid: messages.phoneInvalid,
+  unsupported_country: messages.phoneUnsupportedCountry,
   unknown: messages.phoneUnknownError,
 };
 
@@ -46,15 +50,13 @@ const UpdatePhoneForm = ({
   user,
 }: UpdatePhoneFormProps) => {
   const { formatMessage } = useIntl();
+  const { allowedCountries, defaultCountry } = usePhoneInputCountries();
   const [error, setError] = useState<FormError | undefined>(undefined);
   const currentPhone = user.data.attributes.phone;
 
-  // Return the promise so react-hook-form keeps `formState.isSubmitting` true for
-  // the whole request. That's what keeps the submit button in its processing state
-  // and prevents a second click from firing a duplicate code request.
   const onFormSubmit = async (formValues: FormValues) => {
     try {
-      return requestCodePhoneChange(formValues.phone)
+      return requestCodeNewPhone(formValues.phone)
         .then(() => {
           setOpenConfirmationModal(true);
           setError(undefined);
@@ -65,6 +67,8 @@ const UpdatePhoneForm = ({
             setError('taken');
           } else if (errorCode === 'is invalid') {
             setError('invalid');
+          } else if (errorCode === 'unsupported_country') {
+            setError('unsupported_country');
           } else {
             setError('unknown');
           }
@@ -98,10 +102,10 @@ const UpdatePhoneForm = ({
             htmlFor="phone"
           />
         </LabelContainer>
-        <Input
+        <PhoneInput
           name="phone"
-          type="text"
-          placeholder="+14155552671"
+          countries={allowedCountries}
+          defaultCountry={defaultCountry}
           onBlur={() => {
             setError(undefined);
           }}
@@ -109,6 +113,13 @@ const UpdatePhoneForm = ({
         {error && (
           <Error marginTop="4px" text={formatMessage(ERROR_MESSAGES[error])} />
         )}
+        <Box mt="20px" mb="8px">
+          <CheckboxWithLabel
+            name="smsManualCampaignConsent"
+            label={formatMessage(messages.smsManualCampaignConsentLabel)}
+            dataTestId="sms-manual-campaign-consent"
+          />
+        </Box>
         <StyledButton
           type="submit"
           size="m"
@@ -117,6 +128,35 @@ const UpdatePhoneForm = ({
           text={formatMessage(messages.submitButton)}
           dataCy="change-phone-submit-button"
         />
+        <Text
+          fontSize="s"
+          color="tenantText"
+          data-testid="sms-confirmation-disclosure"
+        >
+          <FormattedMessage
+            {...messages.smsConfirmationDisclosure}
+            values={{
+              termsLink: (
+                <Link
+                  target="_blank"
+                  to="/pages/$slug"
+                  params={{ slug: 'terms-and-conditions' }}
+                >
+                  <FormattedMessage {...messages.termsLinkText} />
+                </Link>
+              ),
+              privacyLink: (
+                <Link
+                  target="_blank"
+                  to="/pages/$slug"
+                  params={{ slug: 'privacy-policy' }}
+                >
+                  <FormattedMessage {...messages.privacyLinkText} />
+                </Link>
+              ),
+            }}
+          />
+        </Text>
       </Form>
       <Box display="flex" justifyContent="center">
         {updateSuccessful && (

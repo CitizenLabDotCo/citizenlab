@@ -193,6 +193,7 @@ ur-PK:
       new_phone_confirmation: فون کی تصدیق کا نیا کوڈ
       official_feedback_on_idea_you_follow: ایک خیال پر اپ ڈیٹ کریں جس کی آپ پیروی کرتے ہیں۔
       password_reset: پاس ورڈ ری سیٹ
+      phone_confirmation: فون کی تصدیق کا کوڈ
       project_folder_moderation_rights_received: فولڈر مینیجر کے حقوق موصول ہوئے۔
       project_manager_rights_received: پروجیکٹ مینیجر کے اختیارات موصول ہو گئے
       project_moderation_rights_received: پروجیکٹ کے اعتدال کے حقوق موصول ہوئے۔
@@ -550,6 +551,8 @@ ur-PK:
       preheader: '%{organizationName} کے لیے اپنا پاس ورڈ ری سیٹ کریں'
       subject: '%{organizationName}: اپنا پاس ورڈ ری سیٹ کریں'
       title: نیا پاس ورڈ منتخب کریں
+    phone_confirmation:
+      sms_body: آپ کا تصدیقی کوڈ %{code} ہے۔
     preview_data:
       author_display_name: جین ڈو
       author_first_name: جین

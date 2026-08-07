@@ -4,8 +4,6 @@ import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
 import { Multiloc, SupportedLocale } from 'typings';
 
-import { ContentBuildableType } from 'api/content_builder/types';
-
 import useLocalize from 'hooks/useLocalize';
 
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
@@ -31,7 +29,6 @@ type DescriptionBuilderTopBarProps = {
     locale: SupportedLocale;
     editorData: SerializedNodes;
   }) => void;
-  contentBuildableType: ContentBuildableType;
   backPath: string;
   previewLink: TypedLinkProps;
   titleMultiloc: Multiloc;
@@ -47,7 +44,6 @@ const DescriptionBuilderTopBar = ({
   onSelectLocale,
   hasError,
   hasPendingState,
-  contentBuildableType,
   backPath,
   previewLink,
   titleMultiloc,
@@ -83,11 +79,7 @@ const DescriptionBuilderTopBar = ({
       <Box display="flex" p="15px" pl="8px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
           <Title variant="h3" as="h1" mb="0px" mt="0px">
-            <FormattedMessage
-              {...(contentBuildableType === 'project'
-                ? messages.descriptionProjectHeading
-                : messages.descriptionFolderHeading)}
-            />
+            <FormattedMessage {...messages.descriptionFolderHeading} />
           </Title>
           <Text m="0" color="textSecondary">
             {localize(titleMultiloc)}
