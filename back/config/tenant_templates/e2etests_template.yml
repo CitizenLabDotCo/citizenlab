@@ -15904,7 +15904,6 @@ models:
     required: false
     ordering: 3
     enabled: false
-    code: postal_code
     hidden: true
   custom_field_option:
   - custom_field_ref: *5
