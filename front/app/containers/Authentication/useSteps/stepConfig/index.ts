@@ -8,9 +8,9 @@ import {
 } from '../../typings';
 
 import { confirmationSteps } from './confirmationSteps';
-import { emailFlow } from './emailFlow';
 import { inviteFlow } from './inviteFlow';
 import { missingDataFlow } from './missingDataFlow';
+import { preAuthSteps } from './preAuthSteps';
 import { sharedSteps } from './sharedSteps';
 import { Step } from './typings';
 import { handleSubmitEmail, handleSSOClick } from './utils';
@@ -24,7 +24,7 @@ export const getStepConfig = (
   state: State
 ) => {
   return {
-    ...emailFlow(
+    ...preAuthSteps(
       getAuthenticationData,
       getRequirements,
       setCurrentStep,

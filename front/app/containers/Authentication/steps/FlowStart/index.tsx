@@ -20,7 +20,7 @@ interface Props {
   onSwitchToSSO: (ssoProvider: SSOProvider) => void;
 }
 
-const EmailFlowStart = ({ authenticationData, ...props }: Props) => {
+const FlowStart = ({ authenticationData, ...props }: Props) => {
   const { data: requirements } = useAuthenticationRequirements(
     authenticationData.context
   );
@@ -42,4 +42,4 @@ const EmailFlowStart = ({ authenticationData, ...props }: Props) => {
   );
 };
 
-export default EmailFlowStart;
+export default FlowStart;
