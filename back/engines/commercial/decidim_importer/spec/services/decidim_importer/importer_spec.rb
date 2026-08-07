@@ -42,7 +42,7 @@ RSpec.describe DecidimImporter::Importer do
       existing.update_columns(unique_code: 'decidim-user-1') # the same Decidim id the template carries
       template = YAML.load(DecidimImporter::TemplateCreator.from_directory(export_root).to_yaml, aliases: true)
 
-      # reuse_existing defaults to true — no flag passed
+      # reuse is always applied
       described_class.apply_template(template, import_uploads: false)
 
       # not duplicated — the pre-existing user is reused
@@ -54,8 +54,8 @@ RSpec.describe DecidimImporter::Importer do
     end
   end
 
-  describe "user reuse fallback by email (REUSE_MATCHERS['User'])" do
-    let(:matcher) { described_class::REUSE_MATCHERS['User'] }
+  describe "user reuse fallback by email (reuse_matchers['User'])" do
+    let(:matcher) { described_class.reuse_matchers['User'] }
 
     it 'reuses a user created outside the import (no unique_code) by case-insensitive email' do
       manual = create(:user, email: 'jane@example.com') # e.g. created manually, so no Decidim unique_code
@@ -75,10 +75,27 @@ RSpec.describe DecidimImporter::Importer do
       expect(matcher.call({ 'unique_code' => 'nope', 'email' => 'nobody@example.com' }, User)).to be_nil
       expect(matcher.call({}, User)).to be_nil
     end
+
+    # Regression guard: reuse must not issue a query per user row — that N+1 (against a table growing as
+    # the import inserts) made a 20k-user production import quadratic. The matcher preloads once, then
+    # matches in memory.
+    it 'preloads existing users once, then matches with no further queries' do
+      create(:user).update_columns(unique_code: 'decidim-user-1')
+      matcher.call({ 'unique_code' => 'decidim-user-1' }, User) # first call warms the in-memory maps
+
+      queries = 0
+      counter = lambda do |*, payload|
+        queries += 1 unless payload[:name] == 'SCHEMA' || payload[:sql].match?(/\A\s*(BEGIN|COMMIT|ROLLBACK|SAVEPOINT|RELEASE)/i)
+      end
+      ActiveSupport::Notifications.subscribed(counter, 'sql.active_record') do
+        20.times { |i| matcher.call({ 'unique_code' => "missing-#{i}" }, User) }
+      end
+      expect(queries).to eq(0)
+    end
   end
 
-  describe "custom idea-status reuse (REUSE_MATCHERS['IdeaStatus'])" do
-    let(:matcher) { described_class::REUSE_MATCHERS['IdeaStatus'] }
+  describe "custom idea-status reuse (reuse_matchers['IdeaStatus'])" do
+    let(:matcher) { described_class.reuse_matchers['IdeaStatus'] }
 
     def custom_status(title_multiloc)
       create(:idea_status, code: 'custom', participation_method: 'ideation', title_multiloc: title_multiloc)
@@ -113,20 +130,9 @@ RSpec.describe DecidimImporter::Importer do
           'title_multiloc' => { 'fr-FR' => 'Idée faisable' }, 'description_multiloc' => { 'fr-FR' => 'Réalisable' } }
       ] } }
 
-      expect { described_class.apply_template(template, import_uploads: false, reuse_existing: true) }
+      expect { described_class.apply_template(template, import_uploads: false) }
         .not_to change(IdeaStatus, :count)
       expect(IdeaStatus.where(code: 'custom').pluck(:id)).to eq([status.id])
-    end
-
-    it 'creates the custom status when reuse is off' do
-      custom_status('fr-FR' => 'Idée faisable') # a pre-existing equivalent that a normal import ignores
-      template = { 'models' => { 'idea_status' => [
-        { 'code' => 'custom', 'participation_method' => 'ideation', 'ordering' => 1000, 'color' => '#123456',
-          'title_multiloc' => { 'fr-FR' => 'Idée faisable' }, 'description_multiloc' => { 'fr-FR' => 'Réalisable' } }
-      ] } }
-
-      expect { described_class.apply_template(template, import_uploads: false, reuse_existing: false) }
-        .to change { IdeaStatus.where(code: 'custom').count }.by(1)
     end
   end
 

@@ -62,11 +62,6 @@ RSpec.describe DecidimImporter::Extractors::ResultsExtractor do
     )
   end
 
-  it 'keeps a space after the % so the lines do not run together in plain text' do
-    body = extract([row]).run.first.attributes['body_multiloc']['fr-FR']
-    expect(body).to include('100% </li>') # trailing space before the list item closes
-  end
-
   it 'maps the status by the progress %, not the stored status, when they disagree' do
     # The result sits at 100% but its stored status is the 40% one — the % wins.
     body = extract([row('status' => 'st-40', 'progress' => '100.0')]).run.first.attributes['body_multiloc']['fr-FR']

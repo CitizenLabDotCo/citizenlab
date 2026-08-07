@@ -490,15 +490,10 @@ module DecidimImporter
     end
 
     def derived_original_domain
-      url = rows_for(:projects).filter_map { |row| present_string(row['url']) }.first
+      url = rows_for(:projects).filter_map { |row| Parsing.present_value(row['url']) }.first
       url && URI.parse(url).host
     rescue URI::InvalidURIError
       nil
-    end
-
-    def present_string(value)
-      str = value.to_s.strip
-      str.empty? ? nil : str
     end
 
     # Decidim process attachments → project-level file attachments (`ProjectFile`). Runs after the projects
@@ -625,34 +620,18 @@ module DecidimImporter
     end
 
     # Component manifest rows whose type is `proposals` (their proposals live in a sibling CSV).
-    def proposal_component_rows
-      @proposal_component_rows ||= rows_for(:components).select { |row| row['type'] == ExportReader::PROPOSALS_COMPONENT }
+    # Component manifest rows of a given type (proposals/accountability/debates/surveys/budgets/pages),
+    # memoized per type. Their per-type payloads live in sibling CSVs or `specific_data`.
+    def component_rows_of(type)
+      (@component_rows_of ||= {})[type] ||= rows_for(:components).select { |row| row['type'] == type }
     end
 
-    # Component manifest rows whose type is `accountability` (their results live in a sibling CSV).
-    def accountability_component_rows
-      @accountability_component_rows ||= rows_for(:components).select { |row| row['type'] == ExportReader::ACCOUNTABILITY_COMPONENT }
-    end
-
-    # Component manifest rows whose type is `debates` (their debates live in a sibling CSV).
-    def debate_component_rows
-      @debate_component_rows ||= rows_for(:components).select { |row| row['type'] == ExportReader::DEBATES_COMPONENT }
-    end
-
-    # Component manifest rows whose type is `surveys` (their questionnaire lives in `specific_data`).
-    def survey_component_rows
-      @survey_component_rows ||= rows_for(:components).select { |row| row['type'] == ExportReader::SURVEYS_COMPONENT }
-    end
-
-    # Component manifest rows whose type is `budgets` (their budgets/projects/orders live in a subtree).
-    def budget_component_rows
-      @budget_component_rows ||= rows_for(:components).select { |row| row['type'] == ExportReader::BUDGETS_COMPONENT }
-    end
-
-    # Component manifest rows whose type is `pages` (their body lives in `specific_data`).
-    def page_component_rows
-      @page_component_rows ||= rows_for(:components).select { |row| row['type'] == ExportReader::PAGES_COMPONENT }
-    end
+    def proposal_component_rows = component_rows_of(ExportReader::PROPOSALS_COMPONENT)
+    def accountability_component_rows = component_rows_of(ExportReader::ACCOUNTABILITY_COMPONENT)
+    def debate_component_rows = component_rows_of(ExportReader::DEBATES_COMPONENT)
+    def survey_component_rows = component_rows_of(ExportReader::SURVEYS_COMPONENT)
+    def budget_component_rows = component_rows_of(ExportReader::BUDGETS_COMPONENT)
+    def page_component_rows = component_rows_of(ExportReader::PAGES_COMPONENT)
 
     # Custom user fields seeded from the organization's `extra_user_fields` config, feeding both the
     # template (new `custom_field` records) and the users extractor (keys to copy off `extended_data`).
