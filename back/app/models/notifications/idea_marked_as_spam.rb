@@ -75,12 +75,12 @@ module Notifications
 
     def self.make_notifications_on(activity)
       spam_report = activity.item
-      return [] if spam_report.spam_reportable_type != 'Idea'
+      initiator_id = spam_report.user_id
+      return [] unless spam_report.spam_reportable_type == 'Idea' && initiator_id
 
       idea = spam_report.spam_reportable
       return [] unless notify?(idea, where(idea_id: idea.id).maximum(:created_at))
 
-      initiator_id = spam_report.user_id
       project_id = idea.project_id
       recipient_ids(initiator_id, project_id).map do |recipient_id|
         new(

@@ -21,6 +21,13 @@ RSpec.describe Notifications::IdeaMarkedAsSpam do
       expect(report_spam!).to be_present
     end
 
+    it 'does not notify when the report has no author' do
+      spam_report = create(:spam_report, spam_reportable: idea, user: nil)
+      activity = create(:activity, item: spam_report, action: 'created')
+
+      expect(described_class.make_notifications_on(activity)).to be_empty
+    end
+
     it 'does not notify again when the input is reported once more and nothing has changed' do
       report_spam!.each(&:save!)
 
