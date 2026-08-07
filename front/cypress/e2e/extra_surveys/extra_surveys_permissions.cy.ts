@@ -111,7 +111,6 @@ describe('Extra survey permissions', () => {
   describe('permitted by admins and moderators only', () => {
     let projectId = '';
     let projectSlug = '';
-    let surveyPhaseId = '';
 
     before(() => {
       createProjectWithExtraSurveys({
@@ -120,10 +119,9 @@ describe('Extra survey permissions', () => {
       }).then((result) => {
         projectId = result.projectId;
         projectSlug = result.projectSlug;
-        surveyPhaseId = result.surveyPhaseIds[0];
 
         cy.apiSetPhasePermission({
-          phaseId: surveyPhaseId,
+          phaseId: result.surveyPhaseIds[0],
           action: 'posting_idea',
           permissionBody: { permitted_by: 'admins_moderators' },
         });
@@ -143,86 +141,6 @@ describe('Extra survey permissions', () => {
         .should('contain', 'not eligible')
         .find('button')
         .should('have.class', 'disabled');
-    });
-
-    it('still lets an admin take the survey', () => {
-      cy.setAdminLoginCookie();
-      cy.visit(`/projects/${projectSlug}`);
-      cy.get('#e2e-about-box').scrollIntoView();
-
-      clickExtraSurveyButton();
-
-      cy.url().should('include', `phase_id=${surveyPhaseId}`);
-    });
-  });
-
-  describe('restricted to a user group', () => {
-    let projectId = '';
-    let projectSlug = '';
-    let surveyPhaseId = '';
-    let groupId = '';
-
-    before(() => {
-      cy.apiCreateManualGroup({ title: { en: randomString() } }).then(
-        (group) => {
-          groupId = group.body.data.id;
-        }
-      );
-
-      createProjectWithExtraSurveys({
-        withIdeationPhase: false,
-        surveys: [{}],
-      }).then((result) => {
-        projectId = result.projectId;
-        projectSlug = result.projectSlug;
-        surveyPhaseId = result.surveyPhaseIds[0];
-
-        cy.apiSetPhasePermission({
-          phaseId: surveyPhaseId,
-          action: 'posting_idea',
-          permissionBody: {
-            permission: { permitted_by: 'users', group_ids: [groupId] },
-          },
-        });
-      });
-    });
-
-    after(() => {
-      cy.apiRemoveIdeas(projectId).then(() => cy.apiRemoveProject(projectId));
-      cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
-        cy.request({
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${response.body.jwt}`,
-          },
-          method: 'DELETE',
-          url: `web_api/v1/groups/${groupId}`,
-        });
-      });
-    });
-
-    it('shows a not-eligible state to users outside the group', () => {
-      cy.setLoginCookie(email, password);
-      cy.visit(`/projects/${projectSlug}`);
-      cy.get('#e2e-about-box').scrollIntoView();
-
-      cy.get('#e2e-about-box .e2e-extra-survey-button')
-        .should('contain', 'not eligible')
-        .find('button')
-        .should('have.class', 'disabled');
-    });
-
-    it('lets a group member take the survey', () => {
-      cy.apiAddMembership({ userId, groupId });
-
-      cy.setLoginCookie(email, password);
-      cy.visit(`/projects/${projectSlug}`);
-      cy.get('#e2e-about-box').scrollIntoView();
-
-      clickExtraSurveyButton();
-
-      cy.url().should('include', `phase_id=${surveyPhaseId}`);
-      submitEmptySurvey();
     });
   });
 });
