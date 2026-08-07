@@ -570,6 +570,94 @@ resource 'Ideas' do
             })
           end
         end
+
+        context 'custom_field_values update semantics' do
+          with_options scope: :idea do
+            parameter :select_field, 'A select field with an other option'
+            parameter :select_field_other, 'The other text for the select field'
+            parameter :multiselect_field, 'A multiselect field'
+            parameter :checkbox_field, 'A checkbox field'
+            parameter :number_field, 'A number field'
+            parameter :matrix_field, 'A matrix field'
+            parameter :unknown_field, 'A field that is not part of the form'
+            parameter :custom_field_values, 'All custom field values as one nested object'
+          end
+
+          let!(:select_cf) do
+            create(:custom_field_select, resource: custom_form, key: 'select_field').tap do |field|
+              create(:custom_field_option, custom_field: field, key: 'cat')
+              create(:custom_field_option, custom_field: field, key: 'other', other: true)
+            end
+          end
+          let!(:multiselect_cf) { create(:custom_field_multiselect, :with_options, resource: custom_form, key: 'multiselect_field') }
+          let!(:checkbox_cf) { create(:custom_field_checkbox, resource: custom_form, key: 'checkbox_field') }
+          let!(:number_cf) { create(:custom_field_number, resource: custom_form, key: 'number_field') }
+          let!(:matrix_cf) { create(:custom_field_matrix_linear_scale, resource: custom_form, key: 'matrix_field') }
+          let!(:disabled_cf) { create(:custom_field_text, resource: custom_form, key: 'disabled_field', enabled: false) }
+
+          let!(:input) do
+            create(
+              :idea,
+              author: user,
+              project: project,
+              custom_field_values: {
+                'custom_field_name1' => 'Cat',
+                'select_field' => 'other',
+                'select_field_other' => 'A ferret',
+                'multiselect_field' => %w[option1 option2],
+                'checkbox_field' => true,
+                'number_field' => 42,
+                'matrix_field' => { 'send_more_animals_to_space' => 1, 'ride_bicycles_more_often' => 2 },
+                'disabled_field' => 'legacy value'
+              },
+              creation_phase: creation_phase,
+              phases: [creation_phase]
+            )
+          end
+
+          before { input.update!(publication_status: 'draft') }
+
+          describe 'updating some values while omitting others' do
+            let(:custom_field_name1) { 'Dog' }
+            let(:select_field) { 'cat' }
+            let(:select_field_other) { 'A ferret' } # Stale: the parent no longer has the other value
+            let(:checkbox_field) { false }
+            let(:matrix_field) { { send_more_animals_to_space: 3, unknown_statement: 5 } }
+            let(:multiselect_field) { 'not-an-array' }
+            let(:unknown_field) { 'some value' }
+
+            example_request 'Update merges values, clears omitted keys and keeps policy-stripped values', document: false do
+              assert_status 200
+              # number_field (omitted) and select_field_other (stale) were cleared.
+              expect(input.reload.custom_field_values).to eq({
+                'custom_field_name1' => 'Dog',
+                'select_field' => 'cat',
+                'checkbox_field' => false,
+                'matrix_field' => { 'send_more_animals_to_space' => 3 }, # replaced wholesale, unknown statement dropped
+                'multiselect_field' => %w[option1 option2], # wrong-shaped value in the request, so the stored value survives
+                'disabled_field' => 'legacy value' # stripped by permit rather than omitted, so preserved
+              })
+            end
+          end
+
+          describe 'updating with an empty custom_field_values object' do
+            let(:custom_field_values) { {} }
+
+            example_request 'Update does not change the custom field values', document: false do
+              assert_status 200
+              expect(input.reload.custom_field_values).to eq({
+                'custom_field_name1' => 'Cat',
+                'select_field' => 'other',
+                'select_field_other' => 'A ferret',
+                'multiselect_field' => %w[option1 option2],
+                'checkbox_field' => true,
+                'number_field' => 42,
+                'matrix_field' => { 'send_more_animals_to_space' => 1, 'ride_bicycles_more_often' => 2 },
+                'disabled_field' => 'legacy value'
+              })
+            end
+          end
+        end
       end
     end
 
