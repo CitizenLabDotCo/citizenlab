@@ -12,6 +12,9 @@ readonly CONCURRENCY=8
 
 readonly TRIGGER_PARAM_NAME="trigger"
 
+# Branch that feature branches are cut from.
+readonly DEFAULT_BRANCH="${MONOREPO_DEFAULT_BRANCH:-master}"
+
 readonly BUILDS_FILE=${TMP_DIR}/builds.json
 readonly DATA_FILE=${TMP_DIR}/data.json
 
@@ -62,42 +65,34 @@ function map {
 }
 
 # Get the nearest commit from which the current branch was created.
+#
+# Previously parsed `git show-branch --remote`, which silently ignores refs past
+# its 26-ref limit and so scraped an unrelated SHA once the repo outgrew that,
+# marking every package changed. merge-base has no such limit.
+#
+# Prints nothing when there is no branch point; callers treat an empty parent as
+# "assume everything changed".
 function get_parent_commit {
-  git_file="${TMP_DIR}/branches.txt"
-  commit_sha=$1
-
-  if [[ ! -f "${git_file}" ]]; then
-    git show-branch --topo-order --sha1-name --current --remote > "${git_file}"
+  # No branch point on trunk. Only reached when there is also no previous build
+  # to diff from, where building everything is the safe answer.
+  if [[ "${CIRCLE_BRANCH}" == "${DEFAULT_BRANCH}" || "${CIRCLE_BRANCH}" == "production" ]]; then
+    echo "On ${CIRCLE_BRANCH}: no branch point to diff against." >&2
+    return
   fi
 
   remote_name=$(git remote show | head -n1)
-  indents=$(\
-    sed 's/].*/]/' "${git_file}" |                                                            # remove commit message
-    awk '/^\-/ {exit} {print}' |                                                              # get lines until commits are listed
-    awk -F '' -v b="[${remote_name}/${CIRCLE_BRANCH}]" 'match($0,/^ *\*/) || index($0, b)' |  # get only current branch and remote
-    awk -F '' '{ t = length($0); sub("^ *",""); print t - length($0) + 1 }')                  # calculate indentation level
+  base_branch="${remote_name}/${DEFAULT_BRANCH}"
 
-  head_indent=$(\
-    sed 's/].*/]/' "${git_file}" |                                                            # remove commit message
-    awk '/^\-/ {exit} {print}' |                                                              # get lines until commits are listed
-    awk -F '' -v b="[${remote_name}/HEAD]" 'index($0, b)' |                                   # get origin/HEAD line
-    awk -F '' '{ t = length($0); sub("^ *",""); print t - length($0) + 1 }')                  # calculate indentation level
+  if ! git rev-parse --verify --quiet "${base_branch}^{commit}" > /dev/null; then
+    echo "Could not resolve ${base_branch}. Is it fetched?" >&2
+    return
+  fi
 
-  i1=$(echo "${indents}" | head -n1)
-  i2=$(echo "${indents}" | tail -n1)
-  i3=${head_indent:-$i1}
-
-  sed 's/].*//' "${git_file}" |                                                                        # remove commit message
-    awk -F '[' -v c="${commit_sha}" \
-      'c == "null" || f; c!="null" && length($2) > 0 && index(c, $2) == 1 { f = 1; print }' |          # skip until first commit in current branch
-    awk -F ''  -v i="${i1}" 'match(substr($0, i, 1), /[\+\-\*]/)' |                                    # filter only commits (including merges) related to current branch
-    awk -F ''  -v i="${i1}" '{ print substr($0, 1, i - 1) " " substr($0, i + 1) }' |                   # excludes current branch
-    awk -F ''  -v i="${i2}" '{ print substr($0, 1, i - 1) " " substr($0, i + 1) }' |                   # excludes current remote branch
-    awk -F ''  -v i="${i3}" '{ print substr($0, 1, i - 1) " " substr($0, i + 1) }' |                   # excludes origin/HEAD branch
-    awk -F ''  'gsub(/ /, "", $0)' |                                                                   # remove white-space
-    awk -F ''  '/[\+\-]+\[/' |                                                                         # match only lines with commit or merge
-    head -n1 |                                                                                         # get the top most found commit
-    sed 's/^.*\[//'                                                                                    # leave only the commit sha text
+  # Tolerate failure rather than letting `set -e` abort the trigger job.
+  git merge-base "${base_branch}" HEAD || {
+    echo "No merge base between ${base_branch} and HEAD. Shallow clone?" >&2
+    return 0
+  }
 }
 
 # GIT diff each package to calculate the number of changed files. 
@@ -105,14 +100,17 @@ function diff {
   parent_sha=$1
   builds_file=$2
 
+  # BSD wc (macOS) pads with leading spaces, breaking the parsing downstream.
+  count_changes() { git diff "$1"..HEAD --name-only -- ${2} | wc -l | tr -d '[:space:]'; }
+
   while read -r package paths; do
     last_build_sha=$(jq --raw-output --arg p "${package}" '.[$p][0]' "${builds_file}")
     if [[ "${last_build_sha}" != "null" && "x${last_build_sha}" != "x" ]]; then
       # diff changes since most recent successfull build for current workflow
-      echo "$(git diff "${last_build_sha}"..HEAD --name-only -- ${paths} | wc -l)" "${last_build_sha:0:9}" built "${package}"
+      echo "$(count_changes "${last_build_sha}" "${paths}")" "${last_build_sha:0:9}" built "${package}"
     elif [[ "x${parent_sha}" != "x" ]]; then
-      # diff changes since parent branch commit sha 
-      echo "$(git diff "${parent_sha}"..HEAD --name-only -- ${paths} | wc -l)" "${parent_sha:0:9}" new "${package}"
+      # diff changes since parent branch commit sha
+      echo "$(count_changes "${parent_sha}" "${paths}")" "${parent_sha:0:9}" new "${package}"
     else
       # no builds and missing parent branch (detached?)
       echo 99999 - new "${package}"
@@ -201,26 +199,17 @@ function get_builds {
 
 function debug {
   echo -e "\n\nDEBUG INFORMATION"
-  echo -e "\n\n=== Branches ==="
-  cat "${TMP_DIR}/branches.txt"
-
   echo -e "\n\n=== Builds ==="
   cat "${BUILDS_FILE}"
 }
 
 function get_parent {
-  first_commit_in_branch=$(jq --raw-output 'map(select(.vcs_revision)) | last | .vcs_revision' "${DATA_FILE}")
-  echo "First built commit in branch: ${first_commit_in_branch}" >&2
-
-  parent_commit=$(get_parent_commit "${first_commit_in_branch}")
+  parent_commit=$(get_parent_commit)
   if [[ "x${parent_commit}" == "x" ]]; then
-    # This could happen when branch is force pushed
-    # and the build commit is no longer part of the history
-    echo -e "\tCould not find parent commit relative to first build commit." >&2
-    echo -e "\tEither branch was force pushed or build commit too old." >&2
-    parent_commit=$(get_parent_commit null)
+    echo "Parent commit: <none> - packages with no previous build will be treated as changed." >&2
+  else
+    echo "Parent commit: ${parent_commit}" >&2
   fi
-  echo "Parent commit: ${parent_commit}" >&2
   echo ${parent_commit}
 }
 
