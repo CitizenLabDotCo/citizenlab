@@ -186,4 +186,18 @@ class Rack::Attack
       req.remote_ip
     end
   end
+
+  # Spam reports by IP. Limits are well above plausible human volume: this runs
+  # before authentication, so an office behind a single NAT is one key.
+  throttle('spam_reports/ip', limit: 10, period: 1.minute) do |req|
+    if %r{\A/web_api/v1/(ideas|comments)/[^/]+/spam_reports\z}.match?(req.path) && req.post?
+      req.remote_ip
+    end
+  end
+
+  throttle('spam_reports/ip/day', limit: 100, period: 24.hours) do |req|
+    if %r{\A/web_api/v1/(ideas|comments)/[^/]+/spam_reports\z}.match?(req.path) && req.post?
+      req.remote_ip
+    end
+  end
 end

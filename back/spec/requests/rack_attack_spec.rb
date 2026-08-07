@@ -577,4 +577,43 @@ describe 'Rack::Attack' do
       expect(status).to eq(200) # ok
     end
   end
+
+  describe 'spam reports' do
+    let(:headers) { { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.4' } }
+    let(:params) { '{ "spam_report": { "reason_code": "other", "other_reason": "spam" } }' }
+
+    def report_spam(path)
+      post(path, params: params, headers: headers)
+    end
+
+    it 'limits spam reports on ideas from same IP to 10 in a minute' do
+      path = "/web_api/v1/ideas/#{SecureRandom.uuid}/spam_reports"
+
+      freeze_time do
+        10.times { report_spam(path) }
+        expect(status).to eq(401) # Unauthorized, but not throttled
+
+        report_spam(path)
+        expect(status).to eq(429) # Too many requests
+      end
+
+      travel_to(1.minute.from_now) do
+        report_spam(path)
+        expect(status).to eq(401) # Unauthorized
+      end
+    end
+
+    it 'counts spam reports on comments against the same limit' do
+      idea_path = "/web_api/v1/ideas/#{SecureRandom.uuid}/spam_reports"
+      comment_path = "/web_api/v1/comments/#{SecureRandom.uuid}/spam_reports"
+
+      freeze_time do
+        10.times { report_spam(idea_path) }
+        expect(status).to eq(401) # Unauthorized, but not throttled
+
+        report_spam(comment_path)
+        expect(status).to eq(429) # Too many requests
+      end
+    end
+  end
 end
