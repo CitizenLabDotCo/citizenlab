@@ -21,7 +21,11 @@ export const createNativeSurveyProjectWithPermission = ({
   action = 'posting_idea',
 }: {
   projectTitle: string;
-  permissionBody?: Partial<IPermissionUpdate>;
+  // Rails auto-wraps flat scalar attributes in `permission`, but array
+  // attributes like group_ids only arrive when wrapped explicitly.
+  permissionBody?:
+    | Partial<IPermissionUpdate>
+    | { permission: Partial<IPermissionUpdate> };
   action?: IPhasePermissionAction;
 }) => {
   return cy
@@ -54,6 +58,36 @@ export const createNativeSurveyProjectWithPermission = ({
             .then(() => ({ projectId, phaseId }));
         });
     });
+};
+
+/**
+ * Creates a smart group that only verified users with the given postal code
+ * belong to. The `postal_code` registration field is part of the e2e template,
+ * and is returned (and locked) by the fake SSO verification.
+ *
+ * Yields the id of the created group.
+ */
+export const createVerifiedPostalCodeSmartGroup = (postalCode: string) => {
+  return cy.apiGetUserCustomFields().then((response) => {
+    const postalCodeFieldId = response.body.data.find(
+      (customField: any) => customField.attributes.key === 'postal_code'
+    ).id;
+
+    return cy
+      .apiCreateSmartGroup(randomString(), [
+        {
+          ruleType: 'verified',
+          predicate: 'is_verified',
+        },
+        {
+          ruleType: 'custom_field_text',
+          customFieldId: postalCodeFieldId,
+          predicate: 'is',
+          value: postalCode,
+        },
+      ])
+      .then((group) => group.body.data.id as string);
+  });
 };
 
 // See https://github.com/CitizenLabDotCo/fake_sso/blob/main/utils/profiles.js

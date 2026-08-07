@@ -18,7 +18,7 @@ import {
 } from '../../typings';
 
 import { Step } from './typings';
-import { checkMissingData } from './utils';
+import { checkMissingData, doesNotMeetGroupCriteria } from './utils';
 
 export const sharedSteps = (
   getAuthenticationData: () => AuthenticationData,
@@ -69,6 +69,11 @@ export const sharedSteps = (
 
         if (missingDataStep) {
           setCurrentStep(missingDataStep);
+          return;
+        }
+
+        if (doesNotMeetGroupCriteria(requirements)) {
+          setCurrentStep('access-denied');
           return;
         }
 
