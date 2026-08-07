@@ -14,9 +14,8 @@ require 'tmpdir'
 #   rake decidim_importer:create_template[tmp/import_files/example.com.zip,fr-FR]       # test: users anonymised, source urls shown
 #   rake decidim_importer:create_template[tmp/import_files/example.com.zip,fr-FR,true]  # production: real users, no source urls
 #   rake decidim_importer:create_template[tmp/import_files/example.com.zip,fr-FR,true,decidim--process--14]  # supplemental: only that space + its users/folders
-#   rake decidim_importer:import[tmp/import_files/example.com.template.zip,localhost]  # reuse of existing records is on by default
+#   rake decidim_importer:import[tmp/import_files/example.com.template.zip,localhost]
 #   rake decidim_importer:import[tmp/import_files/example.com.template.zip,localhost,false]  # skip image fetches
-#   rake decidim_importer:import[tmp/import_files/example.com.template.zip,localhost,true,false]  # force plain inserts (no reuse)
 #   rake decidim_importer:verify[tmp/import_files/example.com.template.yml,fr-FR,en]
 #
 # `import` refuses to run unless the `decidim_importer` feature is enabled for the target host (a
@@ -80,13 +79,10 @@ namespace :decidim_importer do
        'applies the app-config patch (union in the export\'s locales + enable the import\'s feature ' \
        'flags), deserializes the template, then runs the post-import finishing (link correction + ' \
        'Consultations/Assemblies folder structure + project-moderator roles).'
-  task :import, %i[file host import_uploads reuse_existing] => [:environment] do |_t, args|
+  task :import, %i[file host import_uploads] => [:environment] do |_t, args|
     tenant = Tenant.find_by!(host: args[:host] || 'localhost')
     zip = args.fetch(:file)
     import_uploads = args[:import_uploads].to_s.downcase != 'false'
-    # Reuse records the tenant already holds instead of duplicating them — on by default so an import
-    # never aborts on a pre-existing record (e.g. an admin already in the export). `false` forces inserts.
-    reuse_existing = args[:reuse_existing].to_s.strip.downcase != 'false'
 
     abort "Expected a `<base>.template.zip` bundle (from create_template), got: #{zip}" \
       unless zip.downcase.end_with?('.zip')
@@ -95,7 +91,7 @@ namespace :decidim_importer do
     # Logs and the broken-links report land beside the zip; the artifacts themselves are read from a
     # tempdir the bundle is unpacked into.
     with_report_log(log_path(zip, 'import')) do
-      report_line "Decidim import → tenant=#{tenant.host} file=#{zip} import_uploads=#{import_uploads} reuse_existing=#{reuse_existing}"
+      report_line "Decidim import → tenant=#{tenant.host} file=#{zip} import_uploads=#{import_uploads}"
       broken = []
       Dir.mktmpdir('decidim_import_') do |tmp|
         DecidimImporter::ZipExtractor.extract(zip, tmp)
@@ -108,9 +104,7 @@ namespace :decidim_importer do
           added = DecidimImporter::Importer.apply_import_app_config_file(app_config_sibling(file))
           report_line "  added locales #{added.join(', ')}" if added.any?
 
-          created = DecidimImporter::Importer.apply_template_file(
-            file, import_uploads: import_uploads, reuse_existing: reuse_existing
-          )
+          created = DecidimImporter::Importer.apply_template_file(file, import_uploads: import_uploads)
           created.each { |klass, ids| report_line "  created #{ids.size} #{klass}" }
 
           broken = finalize_import!(file)
