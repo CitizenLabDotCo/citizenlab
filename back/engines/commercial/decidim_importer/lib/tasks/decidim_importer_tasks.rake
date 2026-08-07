@@ -14,9 +14,9 @@ require 'tmpdir'
 #   rake decidim_importer:create_template[tmp/import_files/example.com.zip,fr-FR]       # test: users anonymised, source urls shown
 #   rake decidim_importer:create_template[tmp/import_files/example.com.zip,fr-FR,true]  # production: real users, no source urls
 #   rake decidim_importer:create_template[tmp/import_files/example.com.zip,fr-FR,true,decidim--process--14]  # supplemental: only that space + its users/folders
-#   rake decidim_importer:import[tmp/import_files/example.com.template.zip,localhost]
+#   rake decidim_importer:import[tmp/import_files/example.com.template.zip,localhost]  # reuse of existing records is on by default
 #   rake decidim_importer:import[tmp/import_files/example.com.template.zip,localhost,false]  # skip image fetches
-#   rake decidim_importer:import[tmp/import_files/example.com.template.zip,localhost,true,true]  # supplemental: reuse already-imported users/folders
+#   rake decidim_importer:import[tmp/import_files/example.com.template.zip,localhost,true,false]  # force plain inserts (no reuse)
 #   rake decidim_importer:verify[tmp/import_files/example.com.template.yml,fr-FR,en]
 #
 # `import` refuses to run unless the `decidim_importer` feature is enabled for the target host (a
@@ -84,9 +84,9 @@ namespace :decidim_importer do
     tenant = Tenant.find_by!(host: args[:host] || 'localhost')
     zip = args.fetch(:file)
     import_uploads = args[:import_uploads].to_s.downcase != 'false'
-    # `reuse_existing=true` reuses already-imported users/folders instead of duplicating them — for a
-    # supplemental import (a scoped template) into a tenant that already holds an earlier import.
-    reuse_existing = args[:reuse_existing].to_s.strip.downcase == 'true'
+    # Reuse records the tenant already holds instead of duplicating them — on by default so an import
+    # never aborts on a pre-existing record (e.g. an admin already in the export). `false` forces inserts.
+    reuse_existing = args[:reuse_existing].to_s.strip.downcase != 'false'
 
     abort "Expected a `<base>.template.zip` bundle (from create_template), got: #{zip}" \
       unless zip.downcase.end_with?('.zip')

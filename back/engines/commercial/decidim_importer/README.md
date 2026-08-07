@@ -99,9 +99,8 @@ stay beside it for `verify`, which still takes the plain `.template.yml`.
 the template to just those spaces plus the **users** and **process-group folders** they reference
 ([`RowScoper`](app/services/decidim_importer/row_scoper.rb)); everything else global (scopes → areas, the
 organization → app config) is dropped, since a supplemental import reuses what the tenant already holds.
-Use this to add a new project to a tenant that was already imported, then apply it with `import`'s
-`reuse_existing=true` (below), which reuses those already-imported users/folders rather than duplicating
-them.
+Use this to add a new project to a tenant that was already imported; `import` reuses those
+already-imported users/folders rather than duplicating them (see `reuse_existing` below, on by default).
 
 #### `import[file, host, import_uploads, reuse_existing]`
 
@@ -124,11 +123,14 @@ travel in the template). The post-import pass is idempotent; the deserialize is 
 transactional, so a mid-run failure leaves partial data — always import into a fresh tenant. Logs
 created counts to `<base>.import.log`.
 
-**`reuse_existing=true`** — for a **supplemental** import into a tenant that already holds an earlier
-import: instead of duplicating records that already exist, reuse them and resolve the new project's refs
-to them. Matched on stable Decidim identity — users by `unique_code`, process-group folders by the slug
-their title generates, user custom fields by `key` (`Importer::REUSE_MATCHERS`). Pair with a scoped
-`create_template` (`container_ids`). Off by default, so a normal import is unaffected.
+**`reuse_existing` (on by default)** — reuse a record the tenant already holds instead of inserting a
+duplicate, resolving the template's refs to the existing record. This keeps an import from aborting on a
+record that already exists — e.g. an admin whose email is also in the export, which would otherwise fail
+the user email-uniqueness validation — and makes a **supplemental** import (a scoped `create_template`)
+land its new project against the earlier import's users/folders. Matched on stable identity: users by
+`unique_code` then case-insensitive `email`, process-group folders by the slug their title generates,
+user custom fields by `key`, custom idea-statuses by title (`Importer::REUSE_MATCHERS`). Harmless on a
+fresh tenant (nothing matches); pass `reuse_existing=false` to force plain inserts.
 
 #### `verify[file, locales, import_uploads]`
 

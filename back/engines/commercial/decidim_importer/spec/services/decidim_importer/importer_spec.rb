@@ -36,13 +36,14 @@ RSpec.describe DecidimImporter::Importer do
     end
   end
 
-  describe '.apply_template with reuse_existing (supplemental import)' do
-    it 'reuses an already-imported user instead of duplicating it, resolving authors to it' do
+  describe '.apply_template reuse (default on)' do
+    it 'reuses a pre-existing user instead of duplicating it, resolving authors to it' do
       existing = create(:user)
       existing.update_columns(unique_code: 'decidim-user-1') # the same Decidim id the template carries
       template = YAML.load(DecidimImporter::TemplateCreator.from_directory(export_root).to_yaml, aliases: true)
 
-      described_class.apply_template(template, import_uploads: false, reuse_existing: true)
+      # reuse_existing defaults to true — no flag passed
+      described_class.apply_template(template, import_uploads: false)
 
       # not duplicated — the pre-existing user is reused
       expect(User.where(unique_code: 'decidim-user-1').count).to eq(1)

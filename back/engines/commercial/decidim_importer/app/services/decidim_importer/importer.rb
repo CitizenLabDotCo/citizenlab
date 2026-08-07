@@ -9,26 +9,21 @@ module DecidimImporter
     # created-ids hash. Project-moderator roles aren't applied here — they're driven by the sibling
     # `<base>.moderators.csv` and applied by {ModeratorAssigner} in the `import` rake task's finishing pass.
     #
-    # Matchers that reuse an already-imported record (keyed by its stable Decidim identity) rather than
-    # inserting a duplicate — enabled with `reuse_existing:` for a supplemental import into a tenant that
-    # already holds an earlier import. Users match on `unique_code` (the Decidim uid; stable across
-    # exports, unlike anonymised emails), falling back to a case-insensitive email match for accounts
-    # created outside the import (e.g. manually, so they carry no Decidim `unique_code`); process-group
-    # folders on the slug their title generates (the only slugify — {Slug.sanitize}); user custom fields
-    # on `key`; custom idea-statuses on their title.
-    #
-    # Only *custom* idea-statuses (from {StatusMapper}) travel in the template — the standard ones are
-    # seeded and resolved by code in {IdeaStatuses.resolve!}, so a matcher here only ever sees customs.
-    # {StatusMapper} decides each import's customs independently of the target tenant, so title reuse is
-    # best-effort: an identical label reuses the tenant's existing status, a genuinely new label is
-    # created. The table is tiny, so we match in Ruby against any shared locale value.
+    # Reuse a record the tenant already holds instead of inserting a duplicate. On by default so an import
+    # never aborts on a pre-existing record (e.g. an admin whose email is in the export, which would fail
+    # the email-uniqueness validation); pass `reuse_existing: false` to force plain inserts. No-op on a
+    # fresh tenant. Matches on stable identity: users by `unique_code` then case-insensitive email, folders
+    # by title slug ({Slug.sanitize}), custom fields by `key`, custom idea-statuses by title. Only custom
+    # statuses travel in the template (standard ones resolve by code in {IdeaStatuses.resolve!}); their
+    # titles are matched in Ruby, best-effort — {StatusMapper} picks each import's customs blind to the
+    # tenant, so an identical label reuses and a new one is created.
     REUSE_MATCHERS = {
       'User' => lambda { |attrs, klass|
         code = attrs['unique_code']
         by_code = klass.find_by(unique_code: code) if code.present?
         next by_code if by_code
 
-        # No matching Decidim uid — reuse a user created outside the import (e.g. manually) by email.
+        # No unique_code match — fall back to email (e.g. a manually-created user).
         email = attrs['email']
         klass.find_by_cimail(email) if email.present?
       },
@@ -51,9 +46,9 @@ module DecidimImporter
 
     # @param import_uploads [Boolean] when false, every `remote_*_url` (images *and* file attachments) is
     #   stripped before deserialize — no external HTTP — e.g. for exports whose upload URLs are unreachable.
-    # @param reuse_existing [Boolean] when true, reuse already-imported users/folders/custom-fields instead
-    #   of duplicating them (a supplemental import into a tenant that already holds an earlier import).
-    def self.apply_template_file(path, import_uploads: true, reuse_existing: false)
+    # @param reuse_existing [Boolean] reuse records the tenant already holds (see {REUSE_MATCHERS}) instead
+    #   of duplicating them; on by default, pass false to force plain inserts.
+    def self.apply_template_file(path, import_uploads: true, reuse_existing: true)
       # Parsing a large, anchor-heavy template is a silent single-threaded pause before the first DB
       # query — bracket it so the log shows progress rather than an apparent hang.
       Rails.logger.info "Loading template #{path} (#{File.size(path) / 1_048_576} MB)…"
@@ -64,7 +59,7 @@ module DecidimImporter
 
     # Deserializes an in-memory template into the current tenant and runs the post-import passes. Shared
     # by {.apply_template_file} and {TemplateCreator#import}. Returns the deserializer's created-ids hash.
-    def self.apply_template(template, import_uploads: true, validate: true, reuse_existing: false)
+    def self.apply_template(template, import_uploads: true, validate: true, reuse_existing: true)
       IdeaStatuses.resolve!(template)
       resolve_area_orderings!(template)
       TemplateCleaner.prepare_uploads!(template, import_uploads: import_uploads)

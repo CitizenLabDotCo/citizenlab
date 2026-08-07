@@ -19,12 +19,10 @@ module MultiTenancy
         @save_temp_remote_urls = save_temp_remote_urls
       end
 
-      # @param reuse_by [Hash{String=>#call}] optional per-model matchers, `model_name => ->(restored_attributes,
-      #   model_class) { existing_record_or_nil }`. When a matcher returns an existing record, that record is
-      #   *reused* — its id (and its nested `*_attributes` submodels' ids) are registered for `*_ref`
-      #   resolution and no new row is created — instead of inserting a duplicate. Lets a supplemental
-      #   import reference already-imported records (e.g. users by `unique_code`). Empty by default, so a
-      #   normal (fresh-tenant) apply is unaffected.
+      # @param reuse_by [Hash{String=>#call}] per-model matchers, `model_name => ->(restored_attributes,
+      #   model_class) { existing_record_or_nil }`. A returned record is reused instead of inserted — its id
+      #   (and its nested `*_attributes` submodels' ids) registered for `*_ref` resolution. Empty by default,
+      #   so a normal apply is unaffected. See engines/decidim_importer for an example of this in use.
       def deserialize(template, validate: true, max_time: nil, local_copy: false, reuse_by: {})
         # To ensure that `CurrentAttributes` is not unexpectedly reset during the
         # application of a template, we need to make sure that the template is wrapped by
@@ -79,7 +77,7 @@ module MultiTenancy
               model_class: model_class
             )
 
-            # Reuse an already-existing record instead of inserting a duplicate (opt-in via `reuse_by`).
+            # Reuse an existing record instead of inserting a duplicate (when `reuse_by` matches).
             if (existing = reusable_record(reuse_by, model_class, restored_attributes))
               register_reused_record(existing, attributes, obj_to_id_and_class)
               next
@@ -137,9 +135,8 @@ module MultiTenancy
         reuse_by[model_class.name]&.call(restored_attributes, model_class)
       end
 
-      # Maps a reused existing record's id — and each of its nested `*_attributes` submodels' ids — into
-      # the ref table (keyed by the template hashes' object identity), so `*_ref`/`*_attributes_ref`s
-      # pointing at this row resolve to the existing record. Mirrors the creation-time registration.
+      # Registers a reused record's id (and its nested `*_attributes` submodels' ids) in the ref table so
+      # `*_ref`/`*_attributes_ref`s pointing at this row resolve to it. Mirrors creation-time registration.
       def register_reused_record(existing, attributes, obj_to_id_and_class)
         obj_to_id_and_class[attributes] = [existing.id, existing.class]
         attributes.each do |field_name, field_value|

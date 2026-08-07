@@ -1,27 +1,18 @@
 # frozen_string_literal: true
 
 module DecidimImporter
-  # Narrows a parsed export (`rows_by_model`) to a chosen set of containers — participatory processes
-  # and/or assemblies, by uid — for a *supplemental* import into a tenant that already holds an earlier
-  # import. The result keeps only:
-  #
-  #   * those containers' projects and every container-scoped row (components, ideas, comments, files, …),
-  #     all stamped with `decidim_participatory_process` (the project's `uid` for the container itself);
-  #   * the **users** those rows reference (as authors / commenters / voters / followers / basket owners);
-  #   * the **process-group folders** those projects sit in (the only other cross-project reference).
-  #
-  # Everything else global — scopes (→ areas) and the organization (→ app config / custom fields) — is
-  # dropped: a supplemental import reuses what the tenant already has rather than re-creating it. The
-  # referenced users/folders still need to be *reused* on apply (they already exist); that's the
-  # deserializer's job, not this filter's.
+  # Narrows a parsed export (`rows_by_model`) to a chosen set of containers (participatory processes /
+  # assemblies, by uid) for a supplemental import. Keeps those containers' projects and container-scoped
+  # rows (components, ideas, comments, files…), the users they reference, and the process-group folders
+  # they sit in; drops everything global (scopes, organization), which the tenant already holds. Reusing
+  # the kept users/folders on apply is the deserializer's job, not this filter's.
   module RowScoper
     module_function
 
     # Top-level (not container-scoped) streams; each is handled explicitly below rather than by stamp.
     SHARED_STREAMS = %i[organization users scopes folders].freeze
 
-    # Columns that hold a user uid on a container-scoped row: a single `author`/`user`, or a JSON array
-    # of `authors`. Collecting these keeps the users filter agnostic of which extractor produced the row.
+    # User-uid columns on a container-scoped row: a single `author`/`user`, or a JSON `authors` array.
     USER_UID_COLUMNS = %w[author user].freeze
     USER_UID_ARRAY_COLUMNS = %w[authors].freeze
 
