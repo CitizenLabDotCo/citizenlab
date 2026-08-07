@@ -41,8 +41,12 @@ FactoryBot.define do
     end
 
     factory :user_with_demographics do
-      gender { ['male', 'female', 'unspecified', nil][rand(4)] }
-      birthyear { rand(2) == 0 ? (Time.now.year - 12 - rand(100)) : nil }
+      custom_field_values do
+        {
+          'gender' => ['male', 'female', 'unspecified', nil][rand(4)],
+          'birthyear' => (rand(2) == 0 ? (Time.now.year - 12 - rand(100)) : nil)
+        }.compact
+      end
     end
 
     factory :sso_user do

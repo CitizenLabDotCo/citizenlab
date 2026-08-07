@@ -58,9 +58,9 @@ resource 'Graph data units' do
 
     # With the current implementation, registration_completed_at is used to filter users by startAt/endAt.
     # But the participation date can be used instead in the future (Idea#created_at).
-    participant = create(:user, gender: @gender, registration_completed_at: filtered_date)
+    participant = create(:user, custom_field_values: { 'gender' => @gender }, registration_completed_at: filtered_date)
     create(:idea, project: project, created_at: filtered_date, author: participant)
-    _not_returned_idea = create(:idea, project: create(:project), created_at: filtered_date, author: create(:user, gender: @gender))
+    _not_returned_idea = create(:idea, project: create(:project), created_at: filtered_date, author: create(:user, custom_field_values: { 'gender' => @gender }))
   end
 
   def expected_series

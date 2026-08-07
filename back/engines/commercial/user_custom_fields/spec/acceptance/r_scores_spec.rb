@@ -93,7 +93,7 @@ resource 'R-scores (Representativeness scores)' do
 
           before do
             birthyears = [1970, 1980, 1990, 2000]
-            _users = birthyears.map { |year| create(:user, birthyear: year) }
+            _users = birthyears.map { |year| create(:user, custom_field_values: { 'birthyear' => year }) }
           end
 
           example 'returns the R-score' do

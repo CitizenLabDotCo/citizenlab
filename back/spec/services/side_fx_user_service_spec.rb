@@ -54,7 +54,7 @@ describe SideFxUserService do
 
     it 'creates a follower for the domicile' do
       area = create(:area)
-      user = create(:user, domicile: area.id)
+      user = create(:user, custom_field_values: { 'domicile' => area.id })
 
       expect do
         service.after_create user, user
@@ -211,7 +211,7 @@ describe SideFxUserService do
 
     it 'creates a follower for the domicile' do
       area = create(:area)
-      user.update!(domicile: area.id)
+      user.update!(custom_field_values: { 'domicile' => area.id })
 
       expect do
         service.after_update user, user

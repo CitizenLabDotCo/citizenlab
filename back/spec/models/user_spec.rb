@@ -250,14 +250,6 @@ RSpec.describe User do
       user.update_merging_custom_fields!({ first_name: 'Jos', custom_field_values: { 'birthyear' => 1990 } })
       expect(user.reload.first_name).to eq 'Jos'
     end
-
-    # `store_accessor` attributes write into `custom_field_values` themselves, so
-    # they used to be silently discarded by the subsequent merge assignment.
-    it 'does not discard store_accessor attributes' do
-      user.update_merging_custom_fields!({ birthyear: 1990, gender: 'male' })
-      expect(user.reload.custom_field_values)
-        .to eq({ 'domicile' => 'outside', 'gender' => 'male', 'birthyear' => 1990 })
-    end
   end
 
   describe 'blocked?' do
@@ -694,47 +686,47 @@ RSpec.describe User do
     end
 
     it '(gender) is valid when male, female or unspecified' do
-      expect(build(:user, gender: 'male')).to be_valid
-      expect(build(:user, gender: 'female')).to be_valid
-      expect(build(:user, gender: 'unspecified')).to be_valid
+      expect(build(:user, custom_field_values: { 'gender' => 'male' })).to be_valid
+      expect(build(:user, custom_field_values: { 'gender' => 'female' })).to be_valid
+      expect(build(:user, custom_field_values: { 'gender' => 'unspecified' })).to be_valid
     end
 
     it '(gender) is invalid when not male, female or unspecified' do
-      user = build(:user, gender: 'somethingelse')
+      user = build(:user, custom_field_values: { 'gender' => 'somethingelse' })
       expect { user.valid? }.to(change { user.errors[:gender] })
     end
 
     it '(birthyear) is valid when in realistic range' do
-      expect(build(:user, birthyear: (Time.now.year - 117))).to be_valid
-      expect(build(:user, birthyear: (Time.now.year - 13))).to be_valid
+      expect(build(:user, custom_field_values: { 'birthyear' => (Time.now.year - 117) })).to be_valid
+      expect(build(:user, custom_field_values: { 'birthyear' => (Time.now.year - 13) })).to be_valid
     end
 
     it '(birthyear) is invalid when unrealistic' do
-      user = build(:user, birthyear: Time.now.year + 1)
+      user = build(:user, custom_field_values: { 'birthyear' => Time.now.year + 1 })
       expect { user.valid? }.to(change { user.errors[:birthyear] })
-      user = build(:user, birthyear: 1850)
+      user = build(:user, custom_field_values: { 'birthyear' => 1850 })
       expect { user.valid? }.to(change { user.errors[:birthyear] })
-      user = build(:user, birthyear: 'eighteen hundred')
+      user = build(:user, custom_field_values: { 'birthyear' => 'eighteen hundred' })
       expect { user.valid? }.to(change { user.errors[:birthyear] })
     end
 
     it '(birthyear) is invalid when not an integer' do
-      user = build(:user, birthyear: 'eighteen hundred')
+      user = build(:user, custom_field_values: { 'birthyear' => 'eighteen hundred' })
       expect { user.valid? }.to(change { user.errors[:birthyear] })
-      user = build(:user, birthyear: 1930.4)
+      user = build(:user, custom_field_values: { 'birthyear' => 1930.4 })
       expect { user.valid? }.to(change { user.errors[:birthyear] })
     end
 
     it "(domicile) is valid when an area id or 'outside'" do
       create_list(:area, 5)
-      expect(build(:user, domicile: Area.offset(rand(5)).first.id)).to be_valid
-      expect(build(:user, domicile: 'outside')).to be_valid
+      expect(build(:user, custom_field_values: { 'domicile' => Area.offset(rand(5)).first.id })).to be_valid
+      expect(build(:user, custom_field_values: { 'domicile' => 'outside' })).to be_valid
     end
 
     it "(domicile) is invalid when not an area id or 'outside'" do
-      user = build(:user, domicile: 'somethingelse')
+      user = build(:user, custom_field_values: { 'domicile' => 'somethingelse' })
       expect { user.valid? }.to(change { user.errors[:domicile] })
-      user = build(:user, domicile: 5)
+      user = build(:user, custom_field_values: { 'domicile' => 5 })
       expect { user.valid? }.to(change { user.errors[:domicile] })
     end
   end

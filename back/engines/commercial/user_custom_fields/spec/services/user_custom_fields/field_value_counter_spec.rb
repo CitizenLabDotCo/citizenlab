@@ -14,7 +14,7 @@ RSpec.describe UserCustomFields::FieldValueCounter do
 
       before do
         # Create user with invalid value for gender custom field.
-        user = build(:user, gender: 'unicorn')
+        user = build(:user, custom_field_values: { 'gender' => 'unicorn' })
         user.save!(validate: false)
       end
 
@@ -33,7 +33,7 @@ RSpec.describe UserCustomFields::FieldValueCounter do
         # Domicile field must be created before the user, otherwise the user is not
         # valid.
         @domicile_field = create(:custom_field_domicile)
-        create(:user, domicile: area.id)
+        create(:user, custom_field_values: { 'domicile' => area.id })
       end
 
       context 'and custom field is domicile' do
@@ -59,7 +59,7 @@ RSpec.describe UserCustomFields::FieldValueCounter do
         # Regression test. For the test to be effective, we need at least one user with
         # domicile. The code expected option keys, while domicile field uses area ids in
         # custom_field_values. This resulted in warnings about unknown option keys.
-        create(:user, domicile: areas.first.id)
+        create(:user, custom_field_values: { 'domicile' => areas.first.id })
         expect(ErrorReporter).not_to receive(:report)
         counts
       end

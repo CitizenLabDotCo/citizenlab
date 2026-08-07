@@ -45,7 +45,7 @@ resource 'Analysis - Stats - Users' do
       Area.recreate_custom_field_options
       @somewhere_else_option = cf_domicile.options.left_joins(:area).find_by(areas: { id: nil })
 
-      authors = [@area1.id, @area1.id, @area2.id, nil, 'outside'].map { |domicile| create(:user, domicile: domicile) }
+      authors = [@area1.id, @area1.id, @area2.id, nil, 'outside'].map { |domicile| create(:user, custom_field_values: { 'domicile' => domicile }) }
       create(:idea, project: project, author: authors[0], likes_count: 5)
       create(:idea, project: project, author: authors[0], likes_count: 5)
       create(:idea, project: project, author: authors[1], likes_count: 5)
@@ -78,8 +78,8 @@ resource 'Analysis - Stats - Users' do
 
     before do
       birthyears = [1962, 1976, 1980, 1990, 1991]
-      authors = birthyears.map { |year| create(:user, birthyear: year) }
-      author_without_birthyear = create(:user, birthyear: nil)
+      authors = birthyears.map { |year| create(:user, custom_field_values: { 'birthyear' => year }) }
+      author_without_birthyear = create(:user, custom_field_values: { 'birthyear' => nil })
       create(:idea, project: project, author: authors[0])
       create(:idea, project: project, author: authors[1])
       create(:idea, project: project, author: authors[2])

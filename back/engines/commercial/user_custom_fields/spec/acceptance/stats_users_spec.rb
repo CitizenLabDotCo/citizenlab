@@ -445,8 +445,8 @@ resource 'Stats - Users' do
 
       travel_to start_at + 16.days do
         birthyears = [1962, 1976, 1980, 1990, 1991, 2005, 2006]
-        users = birthyears.map { |year| create(:user, birthyear: year) }
-        user_without_birthyear = create(:user, birthyear: nil)
+        users = birthyears.map { |year| create(:user, custom_field_values: { 'birthyear' => year }) }
+        user_without_birthyear = create(:user, custom_field_values: { 'birthyear' => nil })
 
         @group = create_group(users + [user_without_birthyear])
       end
