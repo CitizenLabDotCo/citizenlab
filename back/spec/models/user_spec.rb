@@ -231,6 +231,35 @@ RSpec.describe User do
     end
   end
 
+  describe '#update_merging_custom_fields!' do
+    let(:user) { create(:user, custom_field_values: { 'domicile' => 'outside', 'gender' => 'female' }) }
+
+    it 'merges nested custom_field_values into the existing ones' do
+      user.update_merging_custom_fields!({ custom_field_values: { 'birthyear' => 1990 } })
+      expect(user.reload.custom_field_values)
+        .to eq({ 'domicile' => 'outside', 'gender' => 'female', 'birthyear' => 1990 })
+    end
+
+    it 'overwrites only the custom fields it is given' do
+      user.update_merging_custom_fields!({ custom_field_values: { 'gender' => 'male' } })
+      expect(user.reload.custom_field_values)
+        .to eq({ 'domicile' => 'outside', 'gender' => 'male' })
+    end
+
+    it 'assigns regular attributes as well' do
+      user.update_merging_custom_fields!({ first_name: 'Jos', custom_field_values: { 'birthyear' => 1990 } })
+      expect(user.reload.first_name).to eq 'Jos'
+    end
+
+    # `store_accessor` attributes write into `custom_field_values` themselves, so
+    # they used to be silently discarded by the subsequent merge assignment.
+    it 'does not discard store_accessor attributes' do
+      user.update_merging_custom_fields!({ birthyear: 1990, gender: 'male' })
+      expect(user.reload.custom_field_values)
+        .to eq({ 'domicile' => 'outside', 'gender' => 'male', 'birthyear' => 1990 })
+    end
+  end
+
   describe 'blocked?' do
     let!(:user1) { create(:user, block_end_at: 1.day.from_now) }
     let!(:user2) { create(:user, block_end_at: 5.minutes.ago) }

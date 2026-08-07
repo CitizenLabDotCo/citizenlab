@@ -271,12 +271,25 @@ class User < ApplicationRecord
   scope :not_blocked, -> { where(block_end_at: nil).or(where('? > block_end_at', Time.zone.now)) }
   scope :active, -> { registered.not_blocked }
 
+  # Assigns `attributes`, merging (rather than replacing) the `custom_field_values`
+  # hash so that custom fields the caller doesn't know about are preserved.
+  #
+  # The merge is applied *after* the other attributes have been assigned, so that
+  # `store_accessor` attributes (:gender, :birthyear, :domicile), which write into
+  # `custom_field_values` themselves, are not silently overwritten.
+  def assign_merging_custom_fields(attributes)
+    # `to_h` so that this also accepts ActionController::Parameters (it raises
+    # ActionController::UnfilteredParameters on unpermitted params, just as
+    # `assign_attributes` would have raised ForbiddenAttributesError).
+    attributes = attributes.to_h.deep_stringify_keys
+    new_custom_field_values = attributes.delete('custom_field_values') || {}
+    assign_attributes(attributes)
+    self.custom_field_values = custom_field_values.merge(new_custom_field_values)
+  end
+
   def update_merging_custom_fields!(attributes)
-    attributes = attributes.deep_stringify_keys
-    update!(
-      **attributes,
-      custom_field_values: custom_field_values.merge(attributes['custom_field_values'] || {})
-    )
+    assign_merging_custom_fields(attributes)
+    save!
   end
 
   def to_token_payload

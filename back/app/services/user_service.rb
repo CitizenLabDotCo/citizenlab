@@ -67,7 +67,9 @@ class UserService
       # If the user's email came from/matches the authver one, and the provider
       # says it was confirmed: we mark the user's email as confirmed.
       user.find_or_create_confirmation(:email_confirmation).confirm! if confirm_user
-      user.assign_attributes(user_params.merge(invite_status: 'accepted'))
+      # Merge rather than replace `custom_field_values`: the invite may have
+      # pre-filled custom fields that the SSO does not return.
+      user.assign_merging_custom_fields(user_params.merge(invite_status: 'accepted'))
       user
     end
 

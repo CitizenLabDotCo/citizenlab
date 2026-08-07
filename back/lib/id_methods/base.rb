@@ -54,6 +54,16 @@ module IdMethods
     end
 
     # Extracts user attributes from the Omniauth response auth.
+    #
+    # Custom fields MUST always be returned nested under the `:custom_field_values`
+    # key, never as top-level attributes. `User` exposes `store_accessor`s for
+    # :gender, :birthyear and :domicile, so returning those flat happens to work
+    # when creating a user, but it breaks on every other path: they are dropped by
+    # the `updateable_user_attrs` slice on re-login, and they cannot be merged with
+    # the custom fields a user already has. Only real `users` columns
+    # (:first_name, :email, :locale, :remote_avatar_url, :unique_code, ...) belong
+    # at the top level.
+    #
     # @param [OmniAuth::AuthHash] auth
     # @return [Hash] The user attributes
     def profile_to_user_attrs(_auth)

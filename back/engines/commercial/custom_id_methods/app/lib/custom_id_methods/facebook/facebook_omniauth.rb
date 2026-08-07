@@ -62,12 +62,13 @@ module CustomIdMethods::Facebook
         last_name: auth.info['last_name'],
         email: auth.info['email'],
         locale: AppConfiguration.instance.closest_locale_to(auth.extra.raw_info.locale),
-        remote_avatar_url: remote_avatar_url(auth)
+        remote_avatar_url: remote_avatar_url(auth),
+        custom_field_values: {}
       }
 
       gender = auth.extra.raw_info&.gender
       if gender
-        user_attrs[:gender] = gender
+        user_attrs[:custom_field_values]['gender'] = gender
       else
         Rails.logger.info "Gender was not provided by facebook, auth instance was #{auth}"
       end
