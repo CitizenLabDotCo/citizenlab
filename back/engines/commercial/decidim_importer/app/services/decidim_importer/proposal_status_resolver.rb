@@ -91,7 +91,7 @@ module DecidimImporter
       @states_by_component_token.each do |(_component, token), state|
         next unless state[:count].positive?
 
-        group = (grouped[state[:key]] ||= { 'key' => state[:key], 'label' => primary_label(state[:title_multiloc]),
+        group = (grouped[state[:key]] ||= { 'key' => state[:key],
                                             'label_multiloc' => state[:title_multiloc], 'tokens' => [], 'count' => 0 })
         group['tokens'] |= [token]
         group['count'] += state[:count]
