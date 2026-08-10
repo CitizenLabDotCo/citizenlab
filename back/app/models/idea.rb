@@ -103,6 +103,7 @@ class Idea < ApplicationRecord
   has_many_text_images from: :body_multiloc
 
   before_validation :sanitize_body_multiloc, if: :body_multiloc
+  before_validation :sanitize_title_multiloc, if: :title_multiloc
 
   # Must appear before before_destroy
   before_save :convert_wkt_geo_custom_field_values_to_geojson
@@ -522,6 +523,15 @@ class Idea < ApplicationRecord
 
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
+    end
+  end
+
+  # Titles are plain text but reach HTML render paths (e.g. supportHtml in Common Ground),
+  # so strip all markup. Runs for drafts too, since draft content is rendered to admins.
+  def sanitize_title_multiloc
+    full_sanitizer = ActionView::Base.full_sanitizer
+    title_multiloc.each do |key, value|
+      title_multiloc[key] = full_sanitizer.sanitize(value) if value
     end
   end
 

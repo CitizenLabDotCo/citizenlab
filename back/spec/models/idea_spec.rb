@@ -683,6 +683,22 @@ RSpec.describe Idea do
       idea = create(:idea, title_multiloc: { 'en' => ' my fantastic idea  ' })
       expect(idea.title_multiloc['en']).to eq 'my fantastic idea'
     end
+
+    it 'strips HTML tags from the title' do
+      idea = create(:idea, title_multiloc: { 'en' => '<b>bold</b> idea' })
+      expect(idea.title_multiloc['en']).to eq 'bold idea'
+    end
+
+    it 'strips script/event-handler payloads from the title' do
+      idea = create(:idea, title_multiloc: { 'en' => '<img src=x onerror=alert(1)>hi' })
+      expect(idea.title_multiloc['en']).not_to include('<img')
+      expect(idea.title_multiloc['en']).not_to include('onerror')
+    end
+
+    it 'strips HTML from a draft title (stored XSS regression)' do
+      idea = create(:idea, publication_status: 'draft', title_multiloc: { 'en' => '<img src=x onerror=alert(1)>hi' })
+      expect(idea.title_multiloc['en']).not_to include('onerror')
+    end
   end
 
   describe 'anonymous participation' do
