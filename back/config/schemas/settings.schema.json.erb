@@ -1614,6 +1614,18 @@
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
         }
+      },
+
+      "configurable_dropdown": {
+        "type": "object",
+        "title": "Configurable dropdown",
+        "description": "Allows grouping several navigation bar items together under a single dropdown menu.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {

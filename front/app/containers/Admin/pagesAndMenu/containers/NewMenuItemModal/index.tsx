@@ -7,7 +7,10 @@ import { INavbarDropdownChild, INavbarItem } from 'api/navbar/types';
 import useAddNavbarItem from 'api/navbar/useAddNavbarItem';
 import useUpsertNavbarDropdown from 'api/navbar/useUpsertNavbarDropdown';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import Modal from 'components/UI/Modal';
+import UpsellTooltip from 'components/UpsellTooltip';
 
 import { useIntl } from 'utils/cl-intl';
 import { IItemNotInNavbar } from 'utils/navbar';
@@ -35,6 +38,11 @@ const NewMenuItemModal = ({ opened, onClose, editItem }: Props) => {
   const [activeTab, setActiveTab] = React.useState<'single' | 'dropdown'>(
     isEditing ? 'dropdown' : 'single'
   );
+
+  // Dropdowns that predate the feature stay editable, so only block reaching
+  // the tab when adding a new item.
+  const dropdownEnabled = useFeatureFlag({ name: 'configurable_dropdown' });
+  const dropdownBlocked = !dropdownEnabled && !isEditing;
 
   const handleClose = () => {
     setActiveTab(isEditing ? 'dropdown' : 'single');
@@ -74,16 +82,24 @@ const NewMenuItemModal = ({ opened, onClose, editItem }: Props) => {
           >
             {formatMessage(messages.singleItem)}
           </Button>
-          <Button
-            flex="1"
-            buttonStyle={activeTab === 'dropdown' ? 'admin-dark' : 'secondary'}
-            onClick={() => setActiveTab('dropdown')}
-            className="intercom-admin-pages-menu-dropdown-tab"
-            data-cy="e2e-new-menu-item-dropdown-tab"
-            borderRadius="0 4px 4px 0"
-          >
-            {formatMessage(messages.dropdown)}
-          </Button>
+          {/* The tooltip wraps its child in a span, and that span is what the
+              row lays out — hence the width here rather than flex on the
+              button, which would apply inside the span and do nothing. */}
+          <UpsellTooltip disabled={!dropdownBlocked} width="50%">
+            <Button
+              width="100%"
+              buttonStyle={
+                activeTab === 'dropdown' ? 'admin-dark' : 'secondary'
+              }
+              onClick={() => setActiveTab('dropdown')}
+              disabled={dropdownBlocked}
+              className="intercom-admin-pages-menu-dropdown-tab"
+              data-cy="e2e-new-menu-item-dropdown-tab"
+              borderRadius="0 4px 4px 0"
+            >
+              {formatMessage(messages.dropdown)}
+            </Button>
+          </UpsellTooltip>
         </Box>
 
         {activeTab === 'single' ? (
