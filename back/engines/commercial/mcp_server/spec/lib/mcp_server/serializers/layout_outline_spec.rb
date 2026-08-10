@@ -103,6 +103,7 @@ describe McpServer::Serializers::LayoutOutline do
       )
     end
 
+    # The widget type is the authority, not the markers the FE writes.
     it 'ignores the custom.locked markers older seeds wrote on the phases and events widgets' do
       json['PROJECT_PAGE_PHASES']['custom']['locked'] = true
       json['T1']['custom'] = { 'region' => true }

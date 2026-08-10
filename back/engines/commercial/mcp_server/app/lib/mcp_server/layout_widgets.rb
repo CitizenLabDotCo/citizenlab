@@ -1,37 +1,23 @@
 # frozen_string_literal: true
 
-# LLM-facing documentation for project page layout widgets (code 'project_page'). The
-# machine-readable rules these docs describe live in content_builder, where the API
-# layer can reuse them: widget conventions (slots, enums, multilocs) and the legacy
-# node types in ContentBuilder::Craftjs::WidgetSpecs, the fixed page scaffold in
-# ContentBuilder::ProjectPageLayoutService. Widgets declared there but absent here
-# (UNDOCUMENTED_WIDGETS and the scaffold) are structural or legacy-only — they
-# validate inside graphs but are not advertised as insertable.
+# LLM-facing documentation for project page layout widgets. The machine-readable rules
+# these docs describe live in content_builder (ContentBuilder::Craftjs::WidgetSpecs and
+# ContentBuilder::ProjectPageLayoutService); specs assert docs and rules cannot drift.
 #
-# A spec asserts every documented widget exists in WidgetSpecs and that every enum and
-# slot value appears in its widget's doc, so rules and documentation cannot drift.
-#
-# NOTE: the custom.title values embed FE react-intl message ids. They are display-only
-# metadata for the editor sidebar (nodes without them render fine) and the FE may rename
-# ids at any time; we include the current ids for visual parity in the editor, accepting
-# that stale ids degrade gracefully to the defaultMessage.
+# The custom.title values embed FE react-intl message ids. They are display-only
+# metadata for the editor sidebar; stale ids degrade gracefully to the defaultMessage.
 class McpServer::LayoutWidgets
   BODY_WIDGET = ContentBuilder::ProjectPageLayoutService::BODY_WIDGET
 
-  # What to use instead of a legacy node type, for the error a patch that tries to
-  # create one gets back: the bridge node carrying a migrated description, and the
-  # wrapper that used to hold all page content. The node types themselves are
-  # ContentBuilder::Craftjs::WidgetSpecs::LEGACY_WIDGETS; a spec keeps the two in step.
+  # Suggested replacement per legacy node type, used in error messages.
   LEGACY_ALTERNATIVES = {
     'RichTextMultiloc' => 'use TextMultiloc for rich text',
     'ProjectDescriptionSection' => "put the content directly in the #{BODY_WIDGET} node"
   }.freeze
 
-  # WidgetSpecs widgets deliberately left out of DOCS: structural containers (only ever
-  # created as part of a documented widget's slot pattern), legacy-only composite
-  # presets, and the legacy node types (edit-in-place only, see FORMAT_RULES). A spec
-  # asserts DOCS + this list + the page scaffold covers the widget specs exactly, so a
-  # new widget forces an explicit decision here.
+  # WidgetSpecs widgets deliberately not advertised as insertable: structural
+  # containers, legacy-only presets and the legacy node types. A spec asserts
+  # DOCS + this list + the page scaffold covers WidgetSpecs exactly.
   UNDOCUMENTED_WIDGETS = (%w[
     Container
     Box
@@ -164,10 +150,8 @@ class McpServer::LayoutWidgets
     - Ignore any custom.locked marker on a stored node — this document is what may be edited.
   RULES
 
-  # The compact reference for a validation-failure response: the format rules plus docs
-  # for just the given widgets. Deliberately targeted — every failed attempt puts its
-  # reference into the client's context, so full copies would accumulate across retries.
-  # (`reference_for(DOCS.keys)` is the full cheatsheet, if a caller ever wants one.)
+  # Format rules plus docs for just the given widgets, to keep validation-error
+  # responses small. (reference_for(DOCS.keys) is the full cheatsheet.)
   def self.reference_for(widget_names)
     [FORMAT_RULES, *DOCS.values_at(*widget_names.uniq).compact].join("\n")
   end

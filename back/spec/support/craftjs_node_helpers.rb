@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-# Builders for canonical craft.js node fixtures. Shared by the content_builder and
-# mcp_server specs (this file is loaded by the main rails_helper's spec/support glob,
-# which engine specs also go through), so every spec builds graphs with the same
-# canonical key set and cannot drift from the shape the FE editor writes.
+# Builders for craft.js node fixtures, shared by the content_builder and mcp_server
+# specs, so every spec builds graphs with the canonical key set the FE editor writes.
 module CraftjsNodeHelpers
   # The ROOT document node. `props` defaults to the frame id the FE content builder writes.
   def craftjs_root(children_ids = [], props: { 'id' => 'e2e-content-builder-frame' }, **overrides)
