@@ -2,7 +2,7 @@ import React from 'react';
 
 import { IPhasePermissionData } from 'api/phase_permissions/types';
 
-import { render, screen, within, userEvent } from 'utils/testUtils/rtl';
+import { render, screen } from 'utils/testUtils/rtl';
 
 import AccessSection from '.';
 
@@ -150,24 +150,6 @@ describe('<AccessSection />', () => {
       expect(
         screen.getByText(
           'Unavailable: no identity verification method is configured.'
-        )
-      ).toBeInTheDocument();
-    });
-
-    it('locks the last remaining enabled method and explains why in a tooltip', async () => {
-      // Only confirmed email enabled -> it is the last one, so it is locked.
-      renderSection({
-        require_confirmed_email: true,
-        require_verification: false,
-      });
-
-      const emailRow = screen.getByText('Confirmed email').parentElement!;
-      const tooltip = within(emailRow).getByTestId('tooltip-icon-button');
-      await userEvent.hover(tooltip);
-
-      expect(
-        await screen.findByText(
-          /At least one authentication method must stay enabled/i
         )
       ).toBeInTheDocument();
     });

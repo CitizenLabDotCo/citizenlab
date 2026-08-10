@@ -4,7 +4,6 @@ import {
   Box,
   Text,
   Icon,
-  IconTooltip,
   Toggle,
   colors,
 } from '@citizenlab/cl2-component-library';
@@ -15,17 +14,12 @@ import { AuthMethodKey } from '../../../types';
 import { METHOD_META, AUTH_METHOD_LABELS } from '../../constants';
 import RecencyControl from '../../RecencyControl';
 
-import messages from './messages';
-
 interface Props {
   methodKey: AuthMethodKey;
   enabled: boolean;
   expiry: number | null;
   available: boolean;
   unavailableReason: string;
-  // Locked on because it is the only method still enabled — a permission must
-  // always keep at least one. The toggle is disabled and explains why.
-  locked?: boolean;
   onChange: (next: { enabled: boolean; expiry: number | null }) => void;
 }
 
@@ -35,7 +29,6 @@ const MethodRow = ({
   expiry,
   available,
   unavailableReason,
-  locked = false,
   onChange,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -46,7 +39,7 @@ const MethodRow = ({
     <Box py="10px">
       <Toggle
         checked={enabled}
-        disabled={!available || locked}
+        disabled={!available}
         onChange={() => onChange({ enabled: !stateEnabled, expiry })}
         size="small"
         label={
@@ -67,14 +60,6 @@ const MethodRow = ({
               >
                 {formatMessage(AUTH_METHOD_LABELS[methodKey])}
               </Text>
-              {locked && (
-                <IconTooltip
-                  content={formatMessage(
-                    messages.atLeastOneMethodMustStayEnabled
-                  )}
-                  iconSize="14px"
-                />
-              )}
             </Box>
             <Text as="span" m="0" fontSize="xs" color="coolGrey600">
               {available ? formatMessage(meta.description) : unavailableReason}

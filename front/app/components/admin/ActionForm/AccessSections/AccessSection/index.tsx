@@ -59,10 +59,6 @@ const AccessSection = ({
     (key) => key !== 'phone' || smsEnabled
   );
 
-  const enabledMethodCount = visibleMethodKeys.filter(
-    (key) => getMethod(permission, key).enabled
-  ).length;
-
   return (
     <Box>
       <SectionHeader
@@ -85,9 +81,6 @@ const AccessSection = ({
           <Box>
             {visibleMethodKeys.map((key) => {
               const { enabled, expiry } = getMethod(permission, key);
-              // Don't let the last enabled method be turned off: a permission
-              // must always keep at least one (mirrors the backend validation).
-              const locked = enabled && enabledMethodCount === 1;
               return (
                 <MethodRow
                   key={key}
@@ -96,7 +89,6 @@ const AccessSection = ({
                   expiry={expiry}
                   available={isAvailable[key]}
                   unavailableReason={formatMessage(unavailableReason(key))}
-                  locked={locked}
                   onChange={(next) => onChange(methodChange(key, next))}
                 />
               );
