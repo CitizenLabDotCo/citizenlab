@@ -8,15 +8,15 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { requiresAccount } from '../../logic';
-import { SectionHeader } from '../../ui';
-import GroupsSection from '../GroupsSection';
-import IdMethodsModalTrigger from '../IdMethodsModal/Trigger';
-import ModeCards from '../ModeCards';
-import SecurityRequirementsSection from '../SecurityRequirementsSection';
-import { AccessSectionProps } from '../shared';
+import { requiresAccount } from '../logic';
+import { SectionHeader } from '../ui';
 
+import GroupsSection from './GroupsSection';
+import IdMethodsModalTrigger from './IdMethodsModal/Trigger';
 import messages from './messages';
+import ModeCards from './ModeCards';
+import SecurityRequirementsSection from './SecurityRequirementsSection';
+import { AccessSectionProps } from './shared';
 import useSignInMethods from './useSignInMethods';
 
 const AccessSection = ({

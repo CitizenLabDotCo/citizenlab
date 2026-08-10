@@ -14,7 +14,7 @@ import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-import AccessSection from './AccessSections/AccessSection';
+import AccessSection from './AccessSection/AccessSection';
 import DataSection from './DataSection';
 import { buildSummary, getGroupIds } from './logic';
 import messages from './messages';

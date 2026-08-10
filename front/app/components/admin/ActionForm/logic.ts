@@ -13,7 +13,7 @@ import {
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
-import { AUTH_METHOD_LABELS } from './AccessSections/constants';
+import { AUTH_METHOD_LABELS } from './AccessSection/constants';
 import messages from './messages';
 import { AuthMethodKey, Changes, METHOD_FIELDS } from './types';
 
