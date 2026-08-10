@@ -131,12 +131,17 @@ export const ModeCard = ({
     className={className}
     onClick={onClick}
   >
-    <Icon
-      name={icon}
-      width="20px"
-      height="20px"
-      fill={selected ? colors.teal500 : colors.coolGrey500}
-    />
+    {/* The icon is a flex child, so a long description would otherwise squeeze
+        it narrower than its 20px — and by a different amount per card. The
+        wrapper keeps every card's icon at the same size. */}
+    <Box display="flex" flexShrink={0}>
+      <Icon
+        name={icon}
+        width="20px"
+        height="20px"
+        fill={selected ? colors.teal500 : colors.coolGrey500}
+      />
+    </Box>
     <Box display="flex" flexDirection="column" gap="4px">
       <Text as="span" m="0" fontSize="s" fontWeight="bold" color="primary">
         {title}
