@@ -88,7 +88,7 @@ module ContentBuilder
       injected_nodes, injected_top_level_ids = inject_description(description_craftjs || {})
       return default_page_nodes if injected_top_level_ids.empty?
 
-      canonical_nodes(injected_top_level_ids).merge(injected_nodes)
+      description_page_nodes(injected_nodes, injected_top_level_ids)
     end
 
     def from_description_multiloc(description_multiloc)
@@ -102,7 +102,7 @@ module ContentBuilder
       end
       node_id = "#{INJECTED_ID_PREFIX}#{SecureRandom.alphanumeric(10)}"
 
-      canonical_nodes([node_id]).merge(node_id => node.merge('parent' => BODY_ID))
+      description_page_nodes({ node_id => node }, [node_id])
     end
 
     private
@@ -127,9 +127,21 @@ module ContentBuilder
         .reject { |id| unsupported.include?(id) }
         .filter_map { |id| id_map[id] }
 
-      top_level_ids.each { |id| nodes[id]['parent'] = BODY_ID }
-
       [nodes, top_level_ids]
+    end
+
+    # The description content sits in the wide column of a 2-1 layout with the
+    # participation box beside it, mirroring the legacy citizen page.
+    def description_page_nodes(description_nodes, top_level_ids)
+      top_level_ids.each { |id| description_nodes[id]['parent'] = INTRO_LEFT_ID }
+
+      canonical_nodes([INTRO_COLUMNS_ID]).merge(
+        INTRO_COLUMNS_ID => columns_node(BODY_ID, left: INTRO_LEFT_ID, right: INTRO_RIGHT_ID),
+        INTRO_LEFT_ID => column_node(INTRO_COLUMNS_ID, top_level_ids),
+        INTRO_RIGHT_ID => column_node(INTRO_COLUMNS_ID, [PARTICIPATION_BOX_ID]),
+        PARTICIPATION_BOX_ID => participation_box_node(INTRO_RIGHT_ID),
+        **description_nodes
+      )
     end
 
     def unsupported_ids(description)
