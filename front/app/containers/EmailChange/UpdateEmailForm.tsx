@@ -44,7 +44,7 @@ const UpdateEmailForm = ({
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
-      requestCodeNewEmail(formValues.email)
+      return requestCodeNewEmail(formValues.email)
         .then(() => {
           setOpenConfirmationModal(true);
           setError(undefined);

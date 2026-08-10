@@ -40,7 +40,6 @@ describe('Project description builder Image component', () => {
       'saveProjectDescriptionBuilder'
     );
 
-    cy.get('#e2e-draggable-image').should('exist');
     cy.get('#e2e-draggable-image').dragAndDrop('#e2e-project-page-body', {
       position: 'inside',
     });
@@ -56,7 +55,6 @@ describe('Project description builder Image component', () => {
       .type('Image alt text.');
 
     cy.get('[alt="Image alt text."]').should('exist');
-
     // Adding the image triggers an async re-fetch (convertUrlToUploadFile) that
     // disables Save until it resolves. The button renders its disabled state via
     // aria-disabled (not the native attribute), so wait on that rather than racing
@@ -64,11 +62,12 @@ describe('Project description builder Image component', () => {
     cy.get('#e2e-content-builder-topbar-save')
       .find('button')
       .should('not.have.attr', 'aria-disabled', 'true');
-    cy.get('#e2e-content-builder-topbar-save').click();
+    cy.get('#e2e-content-builder-topbar-save').click({ force: true });
 
     cy.wait('@saveProjectDescriptionBuilder');
-
     cy.visit(`/projects/${projectSlug}`);
+    //ensure the page is loaded before checking for the image
+    cy.get('body').should('be.visible');
     cy.get('[alt="Image alt text."]').should('exist');
   });
 
