@@ -146,7 +146,7 @@
   "app.components.ContentUploadDisclaimer.onAccept": "Ech verstinn",
   "app.components.ContentUploadDisclaimer.onCancel": "Ofbriechen",
   "app.components.CustomFieldsForm.Fields.SentimentScaleField.tellUsWhy": "Sot eis firwat",
-  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": "Léiwer anonym bleiwen?",
+  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": "Wëllt Dir Äre Bäitrag läschen?",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": "Späichert dëse Code, falls Dir Är Soumissioun spéider läschen wëllt.",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode": "Schéckt dëse Code op meng E-Mail",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Identifikatioun vun der Soumissioun",

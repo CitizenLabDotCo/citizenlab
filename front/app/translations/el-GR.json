@@ -146,7 +146,7 @@
   "app.components.ContentUploadDisclaimer.onAccept": "Καταλαβαίνω",
   "app.components.ContentUploadDisclaimer.onCancel": "Ακύρωση",
   "app.components.CustomFieldsForm.Fields.SentimentScaleField.tellUsWhy": "Πείτε μας γιατί",
-  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": "Προτιμάτε να παραμείνετε ανώνυμοι;",
+  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": "Θέλετε να διαγράψετε την υποβολή σας;",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": "Αποθηκεύστε αυτόν τον κωδικό σε περίπτωση που θελήσετε να αφαιρέσετε την υποβολή σας αργότερα.",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode": "Στείλτε αυτόν τον κωδικό στο email μου",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Αναγνωριστικό υποβολής",

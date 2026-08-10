@@ -146,7 +146,7 @@
   "app.components.ContentUploadDisclaimer.onAccept": "أفهم",
   "app.components.ContentUploadDisclaimer.onCancel": "يلغي",
   "app.components.CustomFieldsForm.Fields.SentimentScaleField.tellUsWhy": "أخبرنا لماذا",
-  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": "هل تفضل البقاء مجهول الهوية؟",
+  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": "هل تريد حذف مشاركتك؟",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": "احفظ هذا الرمز في حال رغبتك في حذف مشاركتك لاحقًا.",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode": "أرسل هذا الرمز إلى بريدي الإلكتروني",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "معرّف الطلب",

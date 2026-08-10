@@ -146,7 +146,7 @@
   "app.components.ContentUploadDisclaimer.onAccept": "razumijem",
   "app.components.ContentUploadDisclaimer.onCancel": "Otkazati",
   "app.components.CustomFieldsForm.Fields.SentimentScaleField.tellUsWhy": "Recite nam zašto",
-  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": "Radije biste ostali anonimni?",
+  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": "Želite li izbrisati svoj prijedlog?",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": "Spremite ovaj kod u slučaju da kasnije želite ukloniti svoju prijavu.",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode": "Pošalji ovaj kod na moju e-mail adresu",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Identifikator podneska",

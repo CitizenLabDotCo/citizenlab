@@ -146,7 +146,7 @@
   "app.components.ContentUploadDisclaimer.onAccept": "Ik begrijp het",
   "app.components.ContentUploadDisclaimer.onCancel": "Annuleer",
   "app.components.CustomFieldsForm.Fields.SentimentScaleField.tellUsWhy": "Vertel ons waarom",
-  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": "Blijf je liever anoniem?",
+  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": "Wil je je inzending verwijderen?",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": "Bewaar deze code voor het geval je je inzending later wilt verwijderen.",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode": "Stuur deze code naar mijn e-mail",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Identificatiecode voor inzending",
