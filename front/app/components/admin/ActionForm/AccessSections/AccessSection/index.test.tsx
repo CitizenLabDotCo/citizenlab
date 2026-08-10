@@ -147,7 +147,7 @@ describe('<AccessSection />', () => {
       ).toBeInTheDocument();
     });
 
-    it('falls back to "SSO (see below)" with several authentication methods', () => {
+    it('falls back to the generic SSO label with several authentication methods', () => {
       mockIdMethods = [
         buildIdMethod('franceconnect', true),
         buildIdMethod('fake_sso', true),
@@ -155,7 +155,7 @@ describe('<AccessSection />', () => {
       renderSection();
       expect(
         screen.getByText(
-          'Participants sign in with email, SMS, SSO (see below).'
+          'Participants sign in with email, SMS, SSO (see identification methods link below).'
         )
       ).toBeInTheDocument();
     });

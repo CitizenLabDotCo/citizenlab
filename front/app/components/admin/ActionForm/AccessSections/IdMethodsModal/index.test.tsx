@@ -101,7 +101,7 @@ describe('<IdMethodsModal />', () => {
       renderModal();
 
       expect(screen.getByText('Verification')).toBeInTheDocument();
-      expect(screen.queryByText('Authentication')).toBeNull();
+      expect(screen.queryByText('Authentication (SSO)')).toBeNull();
     });
 
     it('marks an authentication-only method as authentication, not verification', () => {
@@ -110,7 +110,7 @@ describe('<IdMethodsModal />', () => {
       };
       renderModal();
 
-      expect(screen.getByText('Authentication')).toBeInTheDocument();
+      expect(screen.getByText('Authentication (SSO)')).toBeInTheDocument();
       expect(screen.queryByText('Verification')).toBeNull();
     });
 
@@ -120,7 +120,7 @@ describe('<IdMethodsModal />', () => {
       };
       renderModal();
 
-      expect(screen.getByText('Authentication')).toBeInTheDocument();
+      expect(screen.getByText('Authentication (SSO)')).toBeInTheDocument();
       expect(screen.getByText('Verification')).toBeInTheDocument();
     });
 

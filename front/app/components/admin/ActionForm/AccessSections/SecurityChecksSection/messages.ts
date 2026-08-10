@@ -2,13 +2,8 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   securityChecks: {
-    id: 'front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.securityChecks',
-    defaultMessage: 'Security checks',
-  },
-  securityChecksDescription: {
-    id: 'front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.securityChecksDescription',
-    defaultMessage:
-      'Extra proof required on top of signing in, whichever method the participant signed in with.',
+    id: 'front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.securityChecks2',
+    defaultMessage: 'Security requirements',
   },
   none: {
     id: 'front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.none',

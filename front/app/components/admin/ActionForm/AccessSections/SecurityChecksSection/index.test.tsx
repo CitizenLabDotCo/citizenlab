@@ -90,7 +90,7 @@ describe('<SecurityChecksSection />', () => {
     it('can be expanded from collapsed', async () => {
       renderSection({ require_confirmed_email: false });
 
-      await userEvent.click(screen.getByText('Security checks'));
+      await userEvent.click(screen.getByText('Security requirements'));
 
       expect(screen.getByText('Confirmed email')).toBeInTheDocument();
     });
@@ -114,9 +114,7 @@ describe('<SecurityChecksSection />', () => {
       expect(screen.getByText('Confirmed phone number')).toBeInTheDocument();
       expect(screen.getByText('Identity verification')).toBeInTheDocument();
       expect(
-        screen.getByText(
-          'Participant confirms an email address with a one-time code.'
-        )
+        screen.getByText('Participant must have a confirmed email address.')
       ).toBeInTheDocument();
     });
 
@@ -136,9 +134,7 @@ describe('<SecurityChecksSection />', () => {
       renderSection();
 
       expect(
-        screen.getByText(
-          'Participant confirms an email address with a one-time code.'
-        )
+        screen.getByText('Participant must have a confirmed email address.')
       ).toBeInTheDocument();
       expect(
         screen.queryByText(/Unavailable: password login/)

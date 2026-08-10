@@ -5,8 +5,6 @@
 
 import React from 'react';
 
-import { Text } from '@citizenlab/cl2-component-library';
-
 import useVerificationMethod from 'api/id_methods/useVerificationMethod';
 import { IPhasePermissionData } from 'api/phase_permissions/types';
 
@@ -68,9 +66,6 @@ const SecurityChecksSection = ({ permission, onChange }: Props) => {
       }
       defaultOpen={activeKeys.length > 0}
     >
-      <Text as="p" mt="0" mb="4px" fontSize="xs" color="coolGrey600">
-        {formatMessage(messages.securityChecksDescription)}
-      </Text>
       {visibleKeys.map((key) => {
         const { enabled, expiry } = getMethod(permission, key);
         return (

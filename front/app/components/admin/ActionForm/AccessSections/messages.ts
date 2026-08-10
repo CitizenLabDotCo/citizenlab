@@ -14,18 +14,16 @@ export default defineMessages({
     defaultMessage: 'Identity verification',
   },
   emailMethodDescription: {
-    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription',
-    defaultMessage:
-      'Participant confirms an email address with a one-time code.',
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription2',
+    defaultMessage: 'Participant must have a confirmed email address.',
   },
   verificationMethodDescription: {
-    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription',
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription2',
     defaultMessage:
-      'Participant proves their identity through an external register.',
+      'Participant must have a verified identity (see identification methods link above).',
   },
   phoneMethodDescription: {
-    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.phoneMethodDescription',
-    defaultMessage:
-      'Participant confirms a phone number with a one-time code sent by SMS.',
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.phoneMethodDescription2',
+    defaultMessage: 'Participant must have a confirmed phone number.',
   },
 });

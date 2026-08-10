@@ -19,17 +19,17 @@ export default defineMessages({
       '“Identification” is the umbrella term for both ways a method can be used:',
   },
   authentication: {
-    id: `${PREFIX}.authentication`,
-    defaultMessage: 'Authentication',
+    id: `${PREFIX}.authentication2`,
+    defaultMessage: 'Authentication (SSO)',
   },
   verification: {
     id: `${PREFIX}.verification`,
     defaultMessage: 'Verification',
   },
   authenticationExplanation: {
-    id: `${PREFIX}.authenticationExplanation`,
+    id: `${PREFIX}.authenticationExplanation2`,
     defaultMessage:
-      'Authentication: participants can create an account and log in with this method.',
+      'Authentication (SSO): participants can create an account and log in with this method.',
   },
   verificationExplanation: {
     id: `${PREFIX}.verificationExplanation`,

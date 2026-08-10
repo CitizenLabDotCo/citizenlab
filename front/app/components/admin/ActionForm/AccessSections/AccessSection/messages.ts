@@ -6,9 +6,9 @@ export default defineMessages({
     defaultMessage: 'Who can participate',
   },
   firstDecide: {
-    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.firstDecide',
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.firstDecide2',
     defaultMessage:
-      'First decide whether an account is needed at all. Signing in and the security checks below are separate: participants can sign in by email, SMS or SSO without any check being required.',
+      'First decide whether an account is needed at all. Signing in and the security requirements below are separate: participants can sign in by email, SMS or SSO without any requirement being set.',
   },
   requireSignIn: {
     id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn',
@@ -27,8 +27,8 @@ export default defineMessages({
     defaultMessage: 'SMS',
   },
   ssoSeeBelow: {
-    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.ssoSeeBelow',
-    defaultMessage: 'SSO (see below)',
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.ssoSeeBelow2',
+    defaultMessage: 'SSO (see identification methods link below)',
   },
   noSignInMethodEnabled: {
     id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.noSignInMethodEnabled',
