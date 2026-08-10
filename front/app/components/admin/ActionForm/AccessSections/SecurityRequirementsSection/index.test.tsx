@@ -4,7 +4,7 @@ import { IPhasePermissionData } from 'api/phase_permissions/types';
 
 import { render, screen, userEvent } from 'utils/testUtils/rtl';
 
-import SecurityChecksSection from '.';
+import SecurityRequirementsSection from '.';
 
 // The two things this section reacts to: whether SMS is on (a phone check needs
 // it to send the code) and whether a verification method is configured.
@@ -60,7 +60,7 @@ const renderSection = (
   onChange = jest.fn()
 ) => {
   render(
-    <SecurityChecksSection
+    <SecurityRequirementsSection
       permission={buildPermission(attributes)}
       onChange={onChange}
     />
@@ -73,7 +73,7 @@ beforeEach(() => {
   mockVerificationMethodConfigured = true;
 });
 
-describe('<SecurityChecksSection />', () => {
+describe('<SecurityRequirementsSection />', () => {
   describe('open / collapsed state', () => {
     it('starts open when a check is already required', () => {
       renderSection();

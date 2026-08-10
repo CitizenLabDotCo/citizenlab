@@ -34,8 +34,8 @@ jest.mock(
   () => () => null
 );
 jest.mock(
-  'components/admin/ActionForm/AccessSections/SecurityChecksSection',
-  () => () => <div data-testid="security-checks-section" />
+  'components/admin/ActionForm/AccessSections/SecurityRequirementsSection',
+  () => () => <div data-testid="security-requirements-section" />
 );
 jest.mock(
   'components/admin/ActionForm/AccessSections/IdMethodsModal/Trigger',
@@ -180,7 +180,9 @@ describe('<AccessSection />', () => {
   describe('when an account is required (permitted_by: users)', () => {
     it('shows the security checks section and the identification-methods link', () => {
       renderSection();
-      expect(screen.getByTestId('security-checks-section')).toBeInTheDocument();
+      expect(
+        screen.getByTestId('security-requirements-section')
+      ).toBeInTheDocument();
       expect(
         screen.getByTestId('id-method-fields-trigger')
       ).toBeInTheDocument();
@@ -191,7 +193,7 @@ describe('<AccessSection />', () => {
     it('does not show the security checks section', () => {
       renderSection({ permitted_by: 'everyone' });
       expect(
-        screen.queryByTestId('security-checks-section')
+        screen.queryByTestId('security-requirements-section')
       ).not.toBeInTheDocument();
     });
 

@@ -27,7 +27,7 @@ interface Props {
   onChange: (changes: Changes) => void;
 }
 
-const SecurityChecksSection = ({ permission, onChange }: Props) => {
+const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
   const { formatMessage } = useIntl();
 
   // Confirming a phone number means sending an SMS, so it needs the feature;
@@ -83,4 +83,4 @@ const SecurityChecksSection = ({ permission, onChange }: Props) => {
   );
 };
 
-export default SecurityChecksSection;
+export default SecurityRequirementsSection;

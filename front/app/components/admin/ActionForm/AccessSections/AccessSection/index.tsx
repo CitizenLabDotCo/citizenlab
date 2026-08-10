@@ -13,7 +13,7 @@ import { SectionHeader } from '../../ui';
 import GroupsSection from '../GroupsSection';
 import IdMethodsModalTrigger from '../IdMethodsModal/Trigger';
 import ModeCards from '../ModeCards';
-import SecurityChecksSection from '../SecurityChecksSection';
+import SecurityRequirementsSection from '../SecurityRequirementsSection';
 import { AccessSectionProps } from '../shared';
 
 import messages from './messages';
@@ -64,7 +64,7 @@ const AccessSection = ({
             borderRadius="8px"
             px="14px"
           >
-            <SecurityChecksSection
+            <SecurityRequirementsSection
               permission={permission}
               onChange={onChange}
             />
