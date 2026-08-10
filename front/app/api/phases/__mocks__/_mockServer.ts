@@ -1,9 +1,9 @@
 import { addDays, format } from 'date-fns';
 import { http, HttpResponse } from 'msw';
 
-import { IPhaseData } from '../types';
-
 import { PhaseActionDescriptors } from 'api/projects/types';
+
+import { IPhaseData } from '../types';
 
 export const mockPhaseActionDescriptors: PhaseActionDescriptors = {
   posting_idea: { enabled: true, disabled_reason: null },
@@ -46,6 +46,7 @@ export const phasesData: IPhaseData[] = [
       reacting_dislike_enabled: false,
       reacting_dislike_limited_max: 0,
       participation_method: 'ideation',
+      placement_type: 'on_timeline',
       reacting_like_method: 'limited',
       reacting_dislike_method: 'limited',
       input_term: 'idea',
@@ -89,6 +90,7 @@ export const phasesData: IPhaseData[] = [
       updated_at: 'yesterday but later',
       action_descriptors: mockPhaseActionDescriptors,
       participation_method: 'poll',
+      placement_type: 'on_timeline',
       submission_enabled: false,
       commenting_enabled: false,
       reacting_enabled: false,
@@ -136,6 +138,7 @@ export const phasesData: IPhaseData[] = [
       updated_at: 'yesterday but later',
       action_descriptors: mockPhaseActionDescriptors,
       participation_method: 'ideation',
+      placement_type: 'on_timeline',
       submission_enabled: true,
       commenting_enabled: true,
       reacting_enabled: true,
@@ -193,6 +196,7 @@ export const mockPhaseInformationData: IPhaseData = {
     reacting_dislike_enabled: false,
     reacting_dislike_limited_max: 0,
     participation_method: 'information',
+    placement_type: 'on_timeline',
     reacting_like_method: 'limited',
     reacting_dislike_method: 'limited',
     input_term: 'idea',
@@ -237,6 +241,7 @@ export const mockPhaseIdeationData: IPhaseData = {
     updated_at: 'yesterday but later',
     action_descriptors: mockPhaseActionDescriptors,
     participation_method: 'ideation',
+    placement_type: 'on_timeline',
     submission_enabled: true,
     commenting_enabled: true,
     reacting_enabled: true,
@@ -287,6 +292,7 @@ export const mockPhaseSurveyTypeformData: IPhaseData = {
     updated_at: 'yesterday but later',
     action_descriptors: mockPhaseActionDescriptors,
     participation_method: 'survey',
+    placement_type: 'on_timeline',
     reacting_like_method: 'limited',
     reacting_dislike_method: 'limited',
     input_term: 'idea',
@@ -339,6 +345,7 @@ export const mockPhaseSurveyGoogleFormData: IPhaseData = {
     updated_at: 'yesterday but later',
     action_descriptors: mockPhaseActionDescriptors,
     participation_method: 'survey',
+    placement_type: 'on_timeline',
     reacting_like_method: 'limited',
     reacting_dislike_method: 'limited',
     input_term: 'idea',
@@ -398,6 +405,7 @@ const votingPhase: IPhaseData = {
     description_multiloc: { en: 'For testing purposes' },
     draft_description_multiloc: {},
     participation_method: 'voting',
+    placement_type: 'on_timeline',
     voting_method: 'single_voting',
     poll_anonymous: false,
     survey_embed_url: null,

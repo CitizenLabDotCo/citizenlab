@@ -2,7 +2,7 @@ import { ButtonStyles } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
 import { IPhaseData } from 'api/phases/types';
-import { getPhaseActionDescriptor } from 'api/phases/utils';
+import { getPhaseActionDescriptor, isTimelinePhase } from 'api/phases/utils';
 
 import { PhaseDisabledReason } from 'utils/actionDescriptors/types';
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -25,7 +25,7 @@ export type ExtraSurveyState =
 
 export function isExtraSurveyPhase(phase: IPhaseData) {
   return (
-    phase.attributes.placement_type === 'standalone' &&
+    !isTimelinePhase(phase) &&
     phase.attributes.participation_method === 'native_survey'
   );
 }

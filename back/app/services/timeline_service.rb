@@ -50,34 +50,6 @@ class TimelineService
     end
   end
 
-  def timeline_active(project)
-    timeline_active_on_collection([project]).values.sole
-  end
-
-  def timeline_active_on_collection(projects)
-    now = Time.now
-
-    timeline_phases = Phase.where(project: projects).on_timeline
-    starts = timeline_phases.group(:project_id).minimum(:start_at)
-    ends = timeline_phases
-      .group(:project_id)
-      .maximum(Arel.sql("coalesce(end_at, 'infinity'::timestamp)"))
-
-    projects.to_h do |project|
-      active_status = if starts[project.id].blank? # No phases
-        nil
-      elsif now < starts[project.id]
-        :future
-      elsif now >= ends[project.id]
-        :past
-      else
-        :present
-      end
-
-      [project.id, active_status]
-    end
-  end
-
   def phase_number(phase)
     timeline_phases(phase.project).map(&:id).find_index(phase.id) + 1
   end
@@ -87,7 +59,7 @@ class TimelineService
       .where.not(id: phase.id)
       .where(project_id: phase.project_id)
       .on_timeline
-      .where('start_at < ?', phase.start_at)
+      .where(start_at: ...phase.start_at)
       .order(start_at: :desc)
       .first
   end
@@ -103,7 +75,7 @@ class TimelineService
   private
 
   def timeline_phases(project)
-    project.phases.select { |phase| phase.placement_strategy.sequential? }
+    project.phases.select(&:on_timeline?)
   end
 
   def overlaps?(phase1, phase2)
