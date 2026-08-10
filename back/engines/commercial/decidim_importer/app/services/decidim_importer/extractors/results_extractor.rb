@@ -18,6 +18,7 @@ module DecidimImporter
         process: 'decidim_participatory_process',
         component: 'decidim_component',
         category: 'category',
+        scope: 'scope',
         title: 'title',
         description: 'description',
         status: 'status',
@@ -53,6 +54,7 @@ module DecidimImporter
 
         register_ideas_phase(uid, idea, phase)
         register_input_topic(uid, idea, row[COLUMNS[:category]])
+        register_scope_area(idea, row[COLUMNS[:scope]])
         idea
       end
 
@@ -81,8 +83,8 @@ module DecidimImporter
 
         status = status_for(row, pct)
         locales = description.keys.presence || [primary_locale]
-        progress_label = label_multiloc('accountability_progress', locales)
-        status_label = label_multiloc('accountability_status', locales)
+        progress_label = i18n_multiloc('accountability_progress', locales: locales)
+        status_label = i18n_multiloc('accountability_status', locales: locales)
         locales.each_with_object({}) do |locale, acc|
           items = "<li><strong>#{at(progress_label, locale)}:</strong> #{pct}% </li>"
           text = status_text(status, locale)
@@ -117,12 +119,6 @@ module DecidimImporter
       # A multiloc value for a locale, falling back to the first value present.
       def at(multiloc, locale)
         multiloc[locale] || multiloc.values.first
-      end
-
-      # The translatable label per locale, always populated: a locale without its own translation falls
-      # back to English so the label never renders empty.
-      def label_multiloc(key, locales)
-        i18n_multiloc(key, locales: locales)
       end
 
       def statuses_for(component_uid)

@@ -618,7 +618,7 @@ GEM
       multi_json (~> 1.11)
       os (>= 0.9, < 2.0)
       signet (>= 0.16, < 2.a)
-    graphql (2.5.26)
+    graphql (2.6.7)
       base64
       fiber-storage
       logger
@@ -675,7 +675,7 @@ GEM
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     jmespath (1.6.2)
-    json (2.20.0)
+    json (2.21.2)
     json-jwt (1.16.6)
       activesupport (>= 4.2)
       aes_key_wrap

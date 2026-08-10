@@ -50,7 +50,6 @@ module Permissions
       return if permission.permitted_by == 'everyone'
       return USER_DENIED_REASONS[:user_not_signed_in] unless user
       return USER_DENIED_REASONS[:user_blocked] if user.blocked?
-      return USER_DENIED_REASONS[:user_missing_requirements] if user.confirmation_required?
       return USER_DENIED_REASONS[:user_not_active] unless user.active?
       return if UserRoleService.new.can_moderate? permission, user
       return USER_DENIED_REASONS[:user_not_permitted] if permission.permitted_by == 'admins_moderators'

@@ -5,7 +5,10 @@ import { IPhasePermissionAction } from 'api/phase_permissions/types';
 
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import {
+  isActionNotSupported,
+  isFixableByAuthentication,
+} from 'utils/actionDescriptors';
 
 import useLocalize from './useLocalize';
 
@@ -42,8 +45,12 @@ export default function useCustomAccessDeniedMessage({
   // reason that authentication can't fix (e.g. the user isn't in the required
   // group). Only fetch in that case — otherwise we'd issue a request (and an
   // extra re-render once it resolves) for every enabled button on the page.
+  // Unsupported actions have no permission to explain, and asking for one 404s.
   const enabled =
-    !!phaseId && !!disabledReason && !isFixableByAuthentication(disabledReason);
+    !!phaseId &&
+    !!disabledReason &&
+    !isFixableByAuthentication(disabledReason) &&
+    !isActionNotSupported(disabledReason);
 
   const { data: accessDenied } = useAccessDeniedExplanation(
     {

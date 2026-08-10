@@ -22,19 +22,21 @@ module DecidimImporter
       attr_reader :updated_count
 
       # Rewrites links across every layout and static page, saving changed ones. Returns broken links as
-      # `{ old_url:, container_type:, container_id: }` hashes.
+      # `{ old_url:, container_type:, container_id:, container_url: }` hashes — `container_url` being the
+      # public page the reviewer can open to fix the link.
       def run
         @updated_count = 0
         broken = []
         ContentBuilder::Layout.find_each do |layout|
           changed, found = correct_layout_links(layout)
           save_changed(layout, changed)
-          found.each { |url| broken << broken_link_row(url, layout.content_buildable_type, layout.content_buildable_id) }
+          # A layout's container is its buildable (a Project or folder) — that's the page to link to.
+          found.each { |url| broken << broken_link_row(url, layout.content_buildable) }
         end
         StaticPage.find_each do |page|
           changed, found = correct_static_page_links(page)
           save_changed(page, changed)
-          found.each { |url| broken << broken_link_row(url, 'StaticPage', page.id) }
+          found.each { |url| broken << broken_link_row(url, page) }
         end
         broken
       end
@@ -105,8 +107,23 @@ module DecidimImporter
         changed
       end
 
-      def broken_link_row(url, container_type, container_id)
-        { old_url: url, container_type: container_type, container_id: container_id }
+      # A report row for one unresolved link: the URL plus its container's model name, id and public URL
+      # (the page the reviewer opens to fix it). A missing container leaves the fields blank.
+      def broken_link_row(url, container)
+        {
+          old_url: url,
+          container_type: container&.model_name&.name,
+          container_id: container&.id,
+          container_url: container_url(container)
+        }
+      end
+
+      def container_url(container)
+        return nil unless container
+
+        Frontend::UrlService.new.model_to_url(container)
+      rescue StandardError
+        nil
       end
     end
   end

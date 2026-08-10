@@ -10,9 +10,7 @@ import useNavbarItems from './useNavbarItems';
 
 const apiPath = '*/nav_bar_items';
 
-const params: NavbarParameters = {
-  onlyDefaultItems: false,
-};
+const params: NavbarParameters = {};
 
 const server = setupServer(
   http.get(apiPath, () => {

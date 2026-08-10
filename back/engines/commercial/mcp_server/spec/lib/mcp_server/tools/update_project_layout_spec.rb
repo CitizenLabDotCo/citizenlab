@@ -99,10 +99,11 @@ describe McpServer::Tools::UpdateProjectLayout do
       end
 
       it 'reorders the phases and events widgets among the content' do
-        response = patch(nodes: { body => initial_graph[body].merge('nodes' => %w[PROJECT_PAGE_EVENTS T1 PROJECT_PAGE_PHASES]) })
+        reordered = ['PROJECT_PAGE_EVENTS'] + (initial_graph[body]['nodes'] - ['PROJECT_PAGE_EVENTS'])
+        response = patch(nodes: { body => initial_graph[body].merge('nodes' => reordered) })
 
         expect(response).not_to be_error
-        expect(layout.reload.craftjs_json[body]['nodes']).to eq(%w[PROJECT_PAGE_EVENTS T1 PROJECT_PAGE_PHASES])
+        expect(layout.reload.craftjs_json[body]['nodes']).to eq(reordered)
       end
 
       # Editing these was rejected while they counted as scaffold; sectionBackground is
@@ -143,7 +144,7 @@ describe McpServer::Tools::UpdateProjectLayout do
 
         layout.reload
         expect(layout.craftjs_json).not_to have_key('PROJECT_PAGE_PHASES')
-        expect(layout.craftjs_json[body]['nodes']).to eq(%w[T1 PROJECT_PAGE_EVENTS])
+        expect(layout.craftjs_json[body]['nodes']).to eq(initial_graph[body]['nodes'] - ['PROJECT_PAGE_PHASES'])
       end
 
       it 'deletes a content node and detaches it from the page body' do

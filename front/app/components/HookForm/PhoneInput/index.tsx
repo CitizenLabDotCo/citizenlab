@@ -11,6 +11,8 @@ import { CLError, RHFErrors } from 'typings';
 import Error, { TFieldName } from 'components/UI/Error';
 import 'intl-tel-input/styles';
 
+import usePhoneInputCountries from './usePhoneInputCountries';
+
 const StyledPhoneInput = styled(Box)`
   .iti {
     width: 100%;
@@ -35,9 +37,6 @@ const StyledPhoneInput = styled(Box)`
 export interface Props {
   name: string;
   fieldName?: TFieldName;
-  // ISO 3166-1 alpha-2 codes to restrict the country dropdown. Omit for all countries.
-  countries?: string[];
-  defaultCountry?: string;
   placeholder?: string;
   scrollErrorIntoView?: boolean;
   onBlur?: () => void;
@@ -50,12 +49,11 @@ const toIso2 = (countryCode: string) => countryCode.toLowerCase() as Iso2;
 const PhoneInput = ({
   name,
   fieldName,
-  countries,
-  defaultCountry,
   placeholder,
   scrollErrorIntoView,
   onBlur,
 }: Props) => {
+  const { allowedCountries, defaultCountry } = usePhoneInputCountries();
   const {
     formState: { errors: formContextErrors },
     control,
@@ -67,7 +65,7 @@ const PhoneInput = ({
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
   const apiError = errors?.error && ([errors] as CLError[]);
 
-  const showSearch = countries ? countries.length > 4 : true;
+  const showSearch = allowedCountries ? allowedCountries.length > 4 : true;
 
   const ariaDescribedBy =
     validationError || apiError ? `${name}-error` : undefined;
@@ -80,13 +78,16 @@ const PhoneInput = ({
         render={({ field }) => (
           <IntlTelInput
             separateDialCode
+            countrySelectorMode="DROPDOWN"
             // The utils library is heavy, so we code-split it out of the main bundle.
             // The validator imports the same 'intl-tel-input/utils' module,
             // so it ends up bundled only once.
             loadUtils={() => import('intl-tel-input/utils')}
             countrySearch={showSearch}
-            onlyCountries={countries?.map(toIso2)}
-            initialCountry={defaultCountry && toIso2(defaultCountry)}
+            onlyCountries={
+              allowedCountries ? allowedCountries.map(toIso2) : null
+            }
+            initialCountry={defaultCountry ? toIso2(defaultCountry) : ''}
             value={field.value}
             onChangeNumber={(number) => field.onChange(number)}
             inputProps={{

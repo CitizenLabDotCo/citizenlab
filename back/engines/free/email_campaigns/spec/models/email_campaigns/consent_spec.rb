@@ -29,6 +29,20 @@ RSpec.describe EmailCampaigns::Consent do
       expect(described_class.where(user: user).pluck(:campaign_type))
         .to match_array %w[SomeMailingCampaign SomeOtherMailingCampaign]
     end
+
+    it 'defaults SMS consents to not-consented and email consents to consented' do
+      user = create(:user)
+
+      allow_any_instance_of(EmailCampaigns::DeliveryService)
+        .to receive(:consentable_campaign_types_for)
+        .with(user)
+        .and_return(%w[EmailCampaigns::Campaigns::SmsManual EmailCampaigns::Campaigns::Manual])
+
+      described_class.create_all_for_user!(user)
+
+      expect(described_class.find_by(user: user, campaign_type: 'EmailCampaigns::Campaigns::SmsManual').consented).to be false
+      expect(described_class.find_by(user: user, campaign_type: 'EmailCampaigns::Campaigns::Manual').consented).to be true
+    end
   end
 
   describe 'idea_marked_as_spam_campaign' do

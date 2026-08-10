@@ -80,6 +80,7 @@ export default function useSteps() {
     email: null,
     new_email: null,
     new_phone: null,
+    smsManualCampaignConsent: false,
     /** the invite token, set in case the flow started with an invitation */
     token: null,
     prefilledBuiltInFields: null,

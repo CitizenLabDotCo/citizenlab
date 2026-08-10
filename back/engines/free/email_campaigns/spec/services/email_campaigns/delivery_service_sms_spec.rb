@@ -11,7 +11,10 @@ describe EmailCampaigns::DeliveryService do
     let(:campaign) { create(:sms_manual_campaign) }
     let!(:recipient) { create(:user, phone: '+14155552671', phone_confirmed_at: Time.zone.now, locale: 'en') }
 
-    before { create(:user, phone: nil) } # phone-less user is not a recipient
+    before do
+      create(:consent, :sms_manual, user: recipient)
+      create(:consent, :sms_manual, user: create(:user, phone: nil)) # phone-less user is not a recipient
+    end
 
     it 'synchronously creates a pending campaign-linked EmailCampaigns::Sms::Delivery per phone-having recipient' do
       expect { service.send_now(campaign) }.to change(EmailCampaigns::Sms::Delivery, :count).by(1)

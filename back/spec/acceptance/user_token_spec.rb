@@ -217,6 +217,8 @@ resource 'User Token' do
       end
     end
 
+    # Logging in without a password must NEVER work, whatever the state of the user.
+    # Do not relax these expectations: they are the last line of defence of password login.
     context 'when no password is used' do
       let(:email) { 'test@email.com' }
       let(:password) { '' }
@@ -233,6 +235,52 @@ resource 'User Token' do
         let!(:user) { create(:unconfirmed_user, email: email) }
 
         example_request '[error] no JWT token is returned' do
+          assert_status 404
+        end
+      end
+
+      context 'when user has no password and is confirmed' do
+        let!(:user) do
+          create(:unconfirmed_user, email: email).tap { |u| u.find_or_create_confirmation(:email_confirmation).confirm! }
+        end
+
+        example '[error] no JWT token is returned', document: false do
+          expect(user.reload.confirmation_required?).to be false
+
+          do_request
+          assert_status 404
+        end
+      end
+
+      context 'when user has no password and is a super admin' do
+        let(:email) { 'hello@citizenlab.co' }
+        let!(:user) do
+          create(:unconfirmed_user, email: email, roles: [{ type: 'admin' }])
+            .tap { |u| u.find_or_create_confirmation(:email_confirmation).confirm! }
+        end
+
+        example '[error] no JWT token is returned', document: false do
+          expect(user.super_admin?).to be true
+
+          do_request
+          assert_status 404
+        end
+      end
+
+      context 'when the password is omitted entirely' do
+        let!(:user) { create(:unconfirmed_user, email: email).tap { |u| u.find_or_create_confirmation(:email_confirmation).confirm! } }
+
+        example '[error] no JWT token is returned', document: false do
+          do_request(auth: { email: email })
+          assert_status 404
+        end
+      end
+
+      context 'when the password is blank whitespace' do
+        let!(:user) { create(:unconfirmed_user, email: email).tap { |u| u.find_or_create_confirmation(:email_confirmation).confirm! } }
+
+        example '[error] no JWT token is returned', document: false do
+          do_request(auth: { email: email, password: '   ' })
           assert_status 404
         end
       end

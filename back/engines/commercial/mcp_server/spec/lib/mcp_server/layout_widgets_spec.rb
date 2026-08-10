@@ -80,9 +80,11 @@ describe McpServer::LayoutWidgets do
         .values
         .map { |node| node.dig('type', 'resolvedName') }
 
-      # The seed also places the phases and events widgets. They are ordinary widgets an
-      # editor may reorder or remove, so they are documented as insertable, not scaffold.
-      expect(seeded).to match_array(scaffold_widgets + %w[PhasesWidget EventsWidget])
+      # Besides the scaffold, the seed places only ordinary registered widgets (the
+      # phases and events widgets and the default template content).
+      expect(seeded).to include(*scaffold_widgets)
+      movable = seeded.uniq - scaffold_widgets
+      expect(ContentBuilder::Craftjs::WidgetSpecs::SPECS.keys).to include(*movable)
       expect(described_class::DOCS).to include('PhasesWidget', 'EventsWidget')
     end
   end

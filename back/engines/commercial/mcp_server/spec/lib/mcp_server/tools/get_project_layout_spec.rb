@@ -27,8 +27,11 @@ describe McpServer::Tools::GetProjectLayout do
       structured = response.structured_content
       expect(structured[:enabled]).to eq(layout.enabled)
       expect(structured[:outline].pluck(:id)).to eq(%w[
-        ROOT PROJECT_PAGE_BANNER PROJECT_PAGE_TITLE PROJECT_PAGE_BODY
-        T1 PROJECT_PAGE_PHASES PROJECT_PAGE_EVENTS
+        ROOT PROJECT_PAGE_BANNER PROJECT_PAGE_TITLE PROJECT_PAGE_BODY T1
+        PROJECT_PAGE_INTRO_COLUMNS PROJECT_PAGE_INTRO_LEFT PROJECT_PAGE_INTRO_TEXT
+        PROJECT_PAGE_INTRO_RIGHT PROJECT_PAGE_PARTICIPATION_BOX
+        PROJECT_PAGE_DETAILS_COLUMNS PROJECT_PAGE_DETAILS_LEFT PROJECT_PAGE_DETAILS_TEXT
+        PROJECT_PAGE_DETAILS_RIGHT PROJECT_PAGE_PHASES PROJECT_PAGE_EVENTS
       ])
       expect(structured[:craftjs_json]).to eq(layout.craftjs_json)
     end

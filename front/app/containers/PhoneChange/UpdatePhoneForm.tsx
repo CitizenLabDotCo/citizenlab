@@ -13,6 +13,8 @@ import {
   Form,
   LabelContainer,
 } from 'components/smallForm';
+import ManualCampaignConsent from 'components/SmsConsent/ManualCampaignConsent';
+import PhoneConfirmationConsent from 'components/SmsConsent/PhoneConfirmationConsent';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
 import Warning from 'components/UI/Warning';
@@ -21,7 +23,6 @@ import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 import messages from './messages';
-import usePhoneInputCountries from './usePhoneInputCountries';
 
 import { FormValues } from '.';
 
@@ -48,7 +49,6 @@ const UpdatePhoneForm = ({
   user,
 }: UpdatePhoneFormProps) => {
   const { formatMessage } = useIntl();
-  const { allowedCountries, defaultCountry } = usePhoneInputCountries();
   const [error, setError] = useState<FormError | undefined>(undefined);
   const currentPhone = user.data.attributes.phone;
 
@@ -102,8 +102,6 @@ const UpdatePhoneForm = ({
         </LabelContainer>
         <PhoneInput
           name="phone"
-          countries={allowedCountries}
-          defaultCountry={defaultCountry}
           onBlur={() => {
             setError(undefined);
           }}
@@ -111,6 +109,7 @@ const UpdatePhoneForm = ({
         {error && (
           <Error marginTop="4px" text={formatMessage(ERROR_MESSAGES[error])} />
         )}
+        <ManualCampaignConsent />
         <StyledButton
           type="submit"
           size="m"
@@ -119,6 +118,7 @@ const UpdatePhoneForm = ({
           text={formatMessage(messages.submitButton)}
           dataCy="change-phone-submit-button"
         />
+        <PhoneConfirmationConsent />
       </Form>
       <Box display="flex" justifyContent="center">
         {updateSuccessful && (
