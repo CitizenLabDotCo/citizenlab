@@ -651,6 +651,31 @@ RSpec.describe Idea do
       })
       expect(idea.body_multiloc).to eq({ 'en' => '<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/Bu2wNKlVRzE?showinfo=0" height="242.5" width="485" data-blot-formatter-unclickable-bound="true"></iframe>' })
     end
+
+    it 'sanitizes script tags in a draft body' do
+      idea = create(:idea, publication_status: 'draft', body_multiloc: {
+        'en' => '<p>Test</p><script>This should be removed!</script>'
+      })
+      expect(idea.body_multiloc['en']).not_to include('<script>')
+    end
+
+    it 'strips event-handler attributes from a draft body' do
+      ti_service = instance_double(TextImageService).as_null_object
+      allow(TextImageService).to receive(:new).and_return(ti_service)
+
+      idea = create(:idea, publication_status: 'draft', body_multiloc: { 'en' => '... <img src=x onerror=alert(1)>' })
+      expect(idea.body_multiloc['en']).not_to include('onerror')
+    end
+
+    it 'strips onload from a draft body that carries a text-image reference (reported payload shape)' do
+      ti_service = instance_double(TextImageService).as_null_object
+      allow(TextImageService).to receive(:new).and_return(ti_service)
+
+      idea = create(:idea, publication_status: 'draft', body_multiloc: {
+        'en' => '<p>poc</p><img onload="alert(document.cookie)" data-cl2-text-image-text-reference="0a808204-4e40-4fe4-9733-0fd88581e2ae">'
+      })
+      expect(idea.body_multiloc['en']).not_to include('onload')
+    end
   end
 
   describe 'title' do

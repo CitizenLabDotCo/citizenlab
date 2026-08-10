@@ -336,6 +336,20 @@ resource 'Ideas' do
             expect(blocked_error[:blocked_words].pluck(:attribute).uniq).to include('title_multiloc', 'body_multiloc')
           end
         end
+
+        describe 'stored XSS regression: draft bodies are sanitized on write' do
+          let(:publication_status) { 'draft' }
+          let(:body_multiloc) do
+            { 'en' => '<p>poc</p><img onload="alert(document.cookie)" data-cl2-text-image-text-reference="0a808204-4e40-4fe4-9733-0fd88581e2ae">' }
+          end
+
+          example_request 'strips event-handler attributes from the stored draft body' do
+            assert_status 201
+            idea = Idea.find(response_data[:id])
+            expect(idea.publication_status).to eq 'draft'
+            expect(idea.body_multiloc['en']).not_to include('onload')
+          end
+        end
       end
 
       context 'when admin' do

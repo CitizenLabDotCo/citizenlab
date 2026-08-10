@@ -102,6 +102,8 @@ class Idea < ApplicationRecord
 
   has_many_text_images from: :body_multiloc
 
+  before_validation :sanitize_body_multiloc, if: :body_multiloc
+
   # Must appear before before_destroy
   before_save :convert_wkt_geo_custom_field_values_to_geojson
   after_update :fix_comments_count_on_projects
@@ -171,7 +173,6 @@ class Idea < ApplicationRecord
     validates :idea_status, presence: true
     validates :project, presence: true
     before_validation :assign_defaults
-    before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
 
   pg_search_scope :search_by_all,
