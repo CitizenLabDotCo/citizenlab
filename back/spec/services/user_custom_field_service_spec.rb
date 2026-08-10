@@ -15,6 +15,52 @@ describe UserCustomFieldService do
       expect(User.all.map { |u| u.custom_field_values.keys }.flatten).to include(cf2.key)
       expect(User.all.map { |u| u.custom_field_values.keys }.flatten).not_to include(cf1.key)
     end
+
+    it 'deletes the values that a user field stored on inputs through user fields in form' do
+      field = create(:custom_field, key: 'the_field')
+      user = create(:user, custom_field_values: { 'the_field' => 'gone' })
+      input = create(:idea, custom_field_values: { 'u_the_field' => 'gone', 'other_field' => 'stays' })
+
+      service.delete_custom_field_values(field)
+
+      expect(user.reload.custom_field_values).to eq({})
+      expect(input.reload.custom_field_values).to eq({ 'other_field' => 'stays' })
+    end
+
+    it 'deletes the values of a phase-level form field from the inputs of its phase' do
+      phase = create(:single_phase_native_survey_project).phases.first
+      form = create(:custom_form, participation_context: phase)
+      field = create(:custom_field_text, resource: form, key: 'extra_field')
+      input = create(
+        :idea,
+        project: phase.project,
+        creation_phase: phase,
+        custom_field_values: { 'extra_field' => 'gone', 'another_field' => 'stays' }
+      )
+
+      service.delete_custom_field_values(field)
+
+      expect(input.reload.custom_field_values).to eq({ 'another_field' => 'stays' })
+    end
+
+    it 'does not delete values of inputs in other participation contexts with the same field key' do
+      other_phase = create(:single_phase_native_survey_project).phases.first
+      create(:custom_form, participation_context: other_phase)
+      other_input = create(
+        :idea,
+        project: other_phase.project,
+        creation_phase: other_phase,
+        custom_field_values: { 'extra_field' => 'stays' }
+      )
+
+      phase = create(:single_phase_native_survey_project).phases.first
+      form = create(:custom_form, participation_context: phase)
+      field = create(:custom_field_text, resource: form, key: 'extra_field')
+
+      service.delete_custom_field_values(field)
+
+      expect(other_input.reload.custom_field_values).to eq({ 'extra_field' => 'stays' })
+    end
   end
 
   describe 'delete_custom_field_option_values' do

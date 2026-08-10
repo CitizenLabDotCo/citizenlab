@@ -43,6 +43,37 @@ describe CustomFields::Options::DestroyService do
       end
     end
 
+    context 'when deleting a select custom-form field option' do
+      let(:field) { create(:custom_field_select, :with_options, :for_custom_form) }
+      let!(:idea) { create(:idea, custom_field_values: { field.key => 'option1' }) }
+
+      it 'does not update the custom field values of ideas' do
+        service.destroy!(field.options.find_by(key: 'option1'), current_user)
+        expect(idea.reload.custom_field_values).to eq({ field.key => 'option1' })
+      end
+    end
+
+    context 'when deleting a multiselect custom-form field option' do
+      let(:field) { create(:custom_field_multiselect, :with_options, :for_custom_form) }
+      let!(:idea) { create(:idea, custom_field_values: { field.key => %w[option1 option2] }) }
+
+      it 'does not update the custom field values of ideas' do
+        service.destroy!(field.options.find_by(key: 'option1'), current_user)
+        expect(idea.reload.custom_field_values).to eq({ field.key => %w[option1 option2] })
+      end
+    end
+
+    context 'when deleting a user field option' do
+      let(:field) { create(:custom_field_select) }
+      let(:option) { create(:custom_field_option, custom_field: field, key: 'option1') }
+      let!(:user) { create(:user, custom_field_values: { field.key => 'option1' }) }
+
+      it 'deletes the option from the custom field values of users' do
+        service.destroy!(option, current_user)
+        expect(user.reload.custom_field_values).to eq({})
+      end
+    end
+
     context 'when deleting a ranking custom-form field option' do
       let(:ranking_cf) { create(:custom_field_ranking, :with_options, :for_custom_form) }
       let(:another_cf) { create(:custom_field_select, :with_options, :for_custom_form) }
