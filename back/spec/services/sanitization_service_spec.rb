@@ -14,6 +14,12 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq input
     end
 
+    it 'does not mutate the passed features array and accepts a frozen one' do
+      features = %i[link image].freeze
+      expect { service.sanitize('<a href="https://example.com">x</a>', features) }.not_to raise_error
+      expect(features).to eq %i[link image]
+    end
+
     it 'allows titles to pass through when title feature is enabled' do
       input = <<~HTML
         <h2>title</h2>

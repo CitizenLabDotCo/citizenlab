@@ -75,6 +75,10 @@ class Idea < ApplicationRecord
   PUBLICATION_STATUSES = %w[draft submitted published].freeze
   SUBMISSION_STATUSES = %w[submitted published].freeze
 
+  # SanitizationService features allowed in the body. Single source of truth so that anything
+  # re-sanitizing an idea body (e.g. machine translations) can match these exactly.
+  BODY_SANITIZE_FEATURES = %i[title alignment list decoration link image video].freeze
+
   attr_accessor :request # Non persisted attribute to store request to be used by EveryoneTrackingService
 
   slug from: proc { |idea| idea&.participation_method_on_creation&.generate_slug(idea) }
@@ -420,10 +424,7 @@ class Idea < ApplicationRecord
 
   def sanitize_body_multiloc
     service = SanitizationService.new
-    self.body_multiloc = service.sanitize_multiloc(
-      body_multiloc,
-      %i[title alignment list decoration link image video]
-    )
+    self.body_multiloc = service.sanitize_multiloc(body_multiloc, BODY_SANITIZE_FEATURES)
     self.body_multiloc = service.remove_multiloc_empty_trailing_tags(body_multiloc)
     self.body_multiloc = service.linkify_multiloc(body_multiloc)
   end

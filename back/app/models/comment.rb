@@ -40,6 +40,10 @@ class Comment < ApplicationRecord
   include AnonymousParticipation
   include LocationTrackableParticipation
 
+  # SanitizationService features allowed in the body. Single source of truth so that anything
+  # re-sanitizing a comment body (e.g. machine translations) can match these exactly.
+  BODY_SANITIZE_FEATURES = %i[mention].freeze
+
   acts_as_nested_set dependent: :destroy, counter_cache: :children_count
 
   belongs_to :idea
@@ -99,7 +103,7 @@ class Comment < ApplicationRecord
 
   def sanitize_body_multiloc
     service = SanitizationService.new
-    self.body_multiloc = service.sanitize_multiloc body_multiloc, %i[mention]
+    self.body_multiloc = service.sanitize_multiloc body_multiloc, BODY_SANITIZE_FEATURES
     self.body_multiloc = service.remove_multiloc_empty_trailing_tags body_multiloc
     self.body_multiloc = service.linkify_multiloc body_multiloc
   end

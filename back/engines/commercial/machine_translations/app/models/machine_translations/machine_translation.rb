@@ -24,5 +24,29 @@ module MachineTranslations
 
     validates :translatable, :attribute_name, :translation, presence: true
     validates :locale_to, presence: true, inclusion: { in: CL2_SUPPORTED_LOCALES.map(&:to_s) } # , message: :unsupported_locales }
+
+    # The translation is external-provider HTML rendered raw on the front end, so sanitize it
+    # here as defence-in-depth. The allowlist is derived from the source field's own rules so a
+    # translation is never more permissive than the text it was translated from.
+    before_validation :sanitize_translation, if: :translation
+
+    # Maps [translatable_type, attribute_name] to the source field's SanitizationService features.
+    # Anything not listed (titles, unknown attributes) is treated as plain text and fully stripped.
+    SOURCE_SANITIZE_FEATURES = {
+      %w[Idea body_multiloc] => -> { Idea::BODY_SANITIZE_FEATURES },
+      %w[Comment body_multiloc] => -> { Comment::BODY_SANITIZE_FEATURES }
+    }.freeze
+
+    private
+
+    def sanitize_translation
+      features_proc = SOURCE_SANITIZE_FEATURES[[translatable_type, attribute_name.to_s]]
+      self.translation =
+        if features_proc
+          SanitizationService.new.sanitize(translation, features_proc.call)
+        else
+          ActionView::Base.full_sanitizer.sanitize(translation)
+        end
+    end
   end
 end
