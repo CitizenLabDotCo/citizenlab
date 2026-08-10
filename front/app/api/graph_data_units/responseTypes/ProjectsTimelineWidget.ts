@@ -7,8 +7,8 @@ export interface TimelineItem {
   title: Multiloc;
   start_date: string;
   end_date: string | null;
-  current_phase_start_date: string | null;
-  current_phase_end_date: string | null;
+  active_phases_start_date: string | null;
+  active_phases_end_date: string | null;
   publication_status: PublicationStatus;
   folder_title_multiloc: Multiloc | null;
 }

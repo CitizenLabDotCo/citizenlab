@@ -251,7 +251,6 @@ context 'id_austria verification' do
       configuration.settings['password_login'] = {
         'allowed' => true,
         'enabled' => true,
-        'enable_signup' => true,
         'minimum_length' => 8
       }
       configuration.save!

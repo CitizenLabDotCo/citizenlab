@@ -544,7 +544,6 @@ RSpec.describe User do
       settings['password_login'] = {
         'enabled' => true,
         'allowed' => true,
-        'enable_signup' => true,
         'minimum_length' => 5
       }
       AppConfiguration.instance.update! settings: settings
@@ -558,7 +557,6 @@ RSpec.describe User do
       settings['password_login'] = {
         'enabled' => true,
         'allowed' => true,
-        'enable_signup' => true,
         'minimum_length' => 5
       }
       AppConfiguration.instance.update! settings: settings

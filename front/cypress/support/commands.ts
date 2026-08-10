@@ -2386,10 +2386,11 @@ function deleteEventAttendances(
   });
 }
 
-function apiRemoveIdeas(projectId?: string) {
-  // When a projectId is passed, only ideas (incl. survey responses) belonging to
-  // that project are removed. Without it, ALL ideas in the tenant are deleted,
-  // which wipes seeded fixtures (e.g. the "Verified Idea") that other specs rely on.
+// projectId is required on purpose: scoping the deletion to one project is the
+// only safe form. A tenant-wide delete would also remove seeded fixtures (e.g.
+// the "Verified Idea") that other specs rely on, and because specs share one
+// backend it would break them from a different parallel node.
+function apiRemoveIdeas(projectId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -2397,7 +2398,7 @@ function apiRemoveIdeas(projectId?: string) {
       .request({
         method: 'GET',
         url: `/web_api/v1/ideas`,
-        qs: projectId ? { 'projects[]': projectId } : undefined,
+        qs: { 'projects[]': projectId },
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${adminJwt}`,
