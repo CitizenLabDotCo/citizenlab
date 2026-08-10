@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 
-import { Box, Success, Text } from '@citizenlab/cl2-component-library';
+import { Box, Success } from '@citizenlab/cl2-component-library';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 
 import { requestCodeNewPhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import { IUser } from 'api/users/types';
 
-import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import PhoneInput from 'components/HookForm/PhoneInput';
 import {
   Title,
@@ -14,16 +13,16 @@ import {
   Form,
   LabelContainer,
 } from 'components/smallForm';
+import ManualCampaignConsent from 'components/SmsConsent/ManualCampaignConsent';
+import PhoneConfirmationConsent from 'components/SmsConsent/PhoneConfirmationConsent';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
 import Warning from 'components/UI/Warning';
 
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 import messages from './messages';
-import usePhoneInputCountries from './usePhoneInputCountries';
 
 import { FormValues } from '.';
 
@@ -50,7 +49,6 @@ const UpdatePhoneForm = ({
   user,
 }: UpdatePhoneFormProps) => {
   const { formatMessage } = useIntl();
-  const { allowedCountries, defaultCountry } = usePhoneInputCountries();
   const [error, setError] = useState<FormError | undefined>(undefined);
   const currentPhone = user.data.attributes.phone;
 
@@ -104,8 +102,6 @@ const UpdatePhoneForm = ({
         </LabelContainer>
         <PhoneInput
           name="phone"
-          countries={allowedCountries}
-          defaultCountry={defaultCountry}
           onBlur={() => {
             setError(undefined);
           }}
@@ -113,13 +109,7 @@ const UpdatePhoneForm = ({
         {error && (
           <Error marginTop="4px" text={formatMessage(ERROR_MESSAGES[error])} />
         )}
-        <Box mt="20px" mb="8px">
-          <CheckboxWithLabel
-            name="smsManualCampaignConsent"
-            label={formatMessage(messages.smsManualCampaignConsentLabel)}
-            dataTestId="sms-manual-campaign-consent"
-          />
-        </Box>
+        <ManualCampaignConsent />
         <StyledButton
           type="submit"
           size="m"
@@ -128,35 +118,7 @@ const UpdatePhoneForm = ({
           text={formatMessage(messages.submitButton)}
           dataCy="change-phone-submit-button"
         />
-        <Text
-          fontSize="s"
-          color="tenantText"
-          data-testid="sms-confirmation-disclosure"
-        >
-          <FormattedMessage
-            {...messages.smsConfirmationDisclosure}
-            values={{
-              termsLink: (
-                <Link
-                  target="_blank"
-                  to="/pages/$slug"
-                  params={{ slug: 'terms-and-conditions' }}
-                >
-                  <FormattedMessage {...messages.termsLinkText} />
-                </Link>
-              ),
-              privacyLink: (
-                <Link
-                  target="_blank"
-                  to="/pages/$slug"
-                  params={{ slug: 'privacy-policy' }}
-                >
-                  <FormattedMessage {...messages.privacyLinkText} />
-                </Link>
-              ),
-            }}
-          />
-        </Text>
+        <PhoneConfirmationConsent />
       </Form>
       <Box display="flex" justifyContent="center">
         {updateSuccessful && (

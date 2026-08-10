@@ -33,6 +33,7 @@ export interface State {
   email: string | null;
   new_email: string | null;
   new_phone: string | null;
+  smsManualCampaignConsent: boolean;
   token: string | null;
   prefilledBuiltInFields: {
     first_name?: string;
