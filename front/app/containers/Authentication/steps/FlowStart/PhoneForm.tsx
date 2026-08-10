@@ -9,7 +9,6 @@ import { SetError } from 'containers/Authentication/typings';
 
 import PhoneInput from 'components/HookForm/PhoneInput';
 import isValidPhoneNumber from 'components/HookForm/PhoneInput/isValidPhoneNumber';
-import usePhoneInputCountries from 'components/HookForm/PhoneInput/usePhoneInputCountries';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { FormLabel } from 'components/UI/FormComponents';
 
@@ -34,7 +33,6 @@ interface Props {
 
 const PhoneForm = ({ loading, setError, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
-  const { allowedCountries, defaultCountry } = usePhoneInputCountries();
 
   const schema = useMemo(
     () =>
@@ -82,11 +80,7 @@ const PhoneForm = ({ loading, setError, onSubmit }: Props) => {
             htmlFor="phone"
             width="max-content"
           />
-          <PhoneInput
-            name="phone"
-            countries={allowedCountries}
-            defaultCountry={defaultCountry}
-          />
+          <PhoneInput name="phone" />
         </Box>
         <Box w="100%" display="flex" mt="32px">
           <ButtonWithLink

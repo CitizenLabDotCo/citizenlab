@@ -7,7 +7,6 @@ import { requestCodeNewPhone } from 'api/authentication/confirm_phone/requestPho
 import { IUser } from 'api/users/types';
 
 import PhoneInput from 'components/HookForm/PhoneInput';
-import usePhoneInputCountries from 'components/HookForm/PhoneInput/usePhoneInputCountries';
 import {
   Title,
   StyledButton,
