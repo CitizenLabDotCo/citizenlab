@@ -104,6 +104,14 @@ describe ParticipantsService do
       expect(service.project_participants_count_uncached(project)).to eq 2
     end
 
+    it 'caches the count only briefly while a standalone phase is active' do
+      project = create(:project)
+      create(:phase, :standalone, project: project, start_at: 1.week.ago, end_at: 1.week.from_now)
+
+      expect(Rails.cache).to receive(:fetch).with("#{project.cache_key}/participant_count", expires_in: 30.minutes)
+      service.project_participants_count(project)
+    end
+
     it 'returns the count of participants' do
       project = create(:project)
       pp1, pp2, pp3, pp4 = create_list(:user, 4)

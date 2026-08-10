@@ -79,8 +79,8 @@ const Calendar = () => {
     end: project.attributes.last_phase_end_date,
     folder: localize(project.attributes.folder_title_multiloc),
     highlight: {
-      start: project.attributes.current_phase_start_date,
-      end: project.attributes.current_phase_end_date,
+      start: project.attributes.active_phases_start_date,
+      end: project.attributes.active_phases_end_date,
     },
     color: getStatusColor(
       project.attributes.publication_status,

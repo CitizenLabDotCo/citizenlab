@@ -179,12 +179,12 @@ class Permission < ApplicationRecord
 
   def validate_require_confirmed_email
     return unless require_confirmed_email && require_confirmed_email_changed?
-    return if password_login_signup_enabled?
+    return if AppConfiguration.instance.feature_activated?('password_login')
 
     errors.add(
       :require_confirmed_email,
       :require_confirmed_email_not_allowed,
-      message: 'A confirmed email can only be required when password login signup is enabled.'
+      message: 'A confirmed email can only be required when password login is enabled.'
     )
   end
 
@@ -213,11 +213,6 @@ class Permission < ApplicationRecord
       :authentication_method_required,
       message: 'At least one authentication method (confirmed email, verification or confirmed phone number) is required.'
     )
-  end
-
-  def password_login_signup_enabled?
-    config = AppConfiguration.instance
-    config.feature_activated?('password_login') && !!config.settings('password_login', 'enable_signup')
   end
 
   def validate_verification_expiry

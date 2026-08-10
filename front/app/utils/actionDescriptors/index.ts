@@ -9,6 +9,8 @@ import {
 
 import messages from './messages';
 
+// Keep in sync with FIXABLE_DENIED_REASONS in
+// back/app/services/permissions/phase_permissions_service.rb.
 const FIXABLE_REASONS = new Set<string>([
   'user_not_signed_in',
   'user_not_active', // means "not registered or blocked or confirmation still required, see user.rb"
