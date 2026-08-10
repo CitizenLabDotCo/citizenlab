@@ -1510,7 +1510,6 @@
   "app.containers.Admin.projects.all.new.Projects.Table.xManagers": "{numberOfManagers} managers",
   "app.containers.Admin.projects.all.new.Projects.Table.yearsLeft2": "{years, plural, no {{years} years} one {{years} year} other {{years} years}} left",
   "app.containers.Admin.projects.all.new.Projects.Table.yearsToStart2": "{years, plural, no {{years} years} one {{years} year} other {{years} years}} to start",
-  "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.daysLeft": "{days} days left",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.folder": "Folder: {folderName}",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.noEndDate": "No end date",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.noPhases": "No phases",

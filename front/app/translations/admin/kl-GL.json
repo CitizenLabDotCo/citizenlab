@@ -1510,7 +1510,6 @@
   "app.containers.Admin.projects.all.new.Projects.Table.xManagers": "{numberOfManagers} aqutsisut",
   "app.containers.Admin.projects.all.new.Projects.Table.yearsLeft2": "{years, plural, no {{years} ukiut} one {{years} ukioq} other {{years} ukiut}} sinnerupput",
   "app.containers.Admin.projects.all.new.Projects.Table.yearsToStart2": "{years, plural, no {{years} ukiut} one {{years} ukioq} other {{years} ukiut}} aallartinnissamut",
-  "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.daysLeft": "{days} ullut sinneruttut",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.folder": "Toqqorsivik: {folderName}",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.noEndDate": "Naaffissaqanngilaq",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.noPhases": "Immikkoortoqanngilaq",

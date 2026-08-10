@@ -1510,7 +1510,6 @@
   "app.containers.Admin.projects.all.new.Projects.Table.xManagers": "{numberOfManagers} menedzser",
   "app.containers.Admin.projects.all.new.Projects.Table.yearsLeft2": "{years, plural, no {{years} év} one {{years} év} other {{years} év}} van hátra",
   "app.containers.Admin.projects.all.new.Projects.Table.yearsToStart2": "{years, plural, no {{years} év} one {{years} év} other {{years} év}} a kezdésig",
-  "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.daysLeft": "{days} nap van hátra",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.folder": "Mappa: {folderName}",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.noEndDate": "Nincs befejezési dátum",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.noPhases": "Nincsenek szakaszok",

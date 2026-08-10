@@ -1510,7 +1510,6 @@
   "app.containers.Admin.projects.all.new.Projects.Table.xManagers": "{numberOfManagers} menadžera",
   "app.containers.Admin.projects.all.new.Projects.Table.yearsLeft2": "{years, plural, no {{years} godina} one {{years} godina} other {{years} godina}} preostalo",
   "app.containers.Admin.projects.all.new.Projects.Table.yearsToStart2": "{years, plural, no {{years} godina} one {{years} godina} other {{years} godina}} za početak",
-  "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.daysLeft": "Preostalo je {days} dana",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.folder": "Mapa: {folderName}",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.noEndDate": "Nema datuma završetka",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.noPhases": "Nema faza",

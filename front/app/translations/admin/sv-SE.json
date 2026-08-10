@@ -1510,7 +1510,6 @@
   "app.containers.Admin.projects.all.new.Projects.Table.xManagers": "{numberOfManagers} chefer",
   "app.containers.Admin.projects.all.new.Projects.Table.yearsLeft2": "{years, plural, no {{years} år} one {{years} år} other {{years} år}} vänster",
   "app.containers.Admin.projects.all.new.Projects.Table.yearsToStart2": "{years, plural, no {{years} år} one {{years} år} other {{years} år}} att börja",
-  "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.daysLeft": "{days} dagar kvar",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.folder": "Mapp: {folderName}",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.noEndDate": "Inget slutdatum",
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.noPhases": "Inga faser",
