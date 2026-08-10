@@ -147,6 +147,7 @@ class Idea < ApplicationRecord
 
   has_many :idea_exposures, dependent: :destroy
   has_one :wise_voice_flag, as: :flaggable, class_name: 'WiseVoiceFlag', dependent: :destroy
+  has_many :custom_field_answers, as: :answerable, dependent: :delete_all
 
   accepts_nested_attributes_for :text_images, :idea_images, :idea_files
 
