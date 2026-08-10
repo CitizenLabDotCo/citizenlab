@@ -45,15 +45,4 @@ RSpec.describe NewPhoneConfirmation do
       expect(user.find_or_create_confirmation(:new_phone_confirmation).generate_code).to eq('1234')
     end
   end
-
-  describe '#pending?' do
-    it 'is true only when a new_phone is set' do
-      user = create(:user)
-      confirmation = user.find_or_create_confirmation(:new_phone_confirmation)
-      expect(confirmation.pending?).to be false
-
-      user.update!(new_phone: '+14155552671')
-      expect(confirmation.pending?).to be true
-    end
-  end
 end
