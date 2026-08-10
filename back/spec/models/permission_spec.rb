@@ -136,7 +136,7 @@ RSpec.describe Permission do
       AppConfiguration.instance.save!
     end
 
-    it 'can be required when password login signup is enabled' do
+    it 'can be required when password login is enabled' do
       permission = create(:permission, :by_users, require_verification: true, require_confirmed_email: false)
       permission.update!(require_confirmed_email: true)
       expect(permission.reload.require_confirmed_email).to be true
@@ -145,14 +145,6 @@ RSpec.describe Permission do
     it 'cannot be required when the password_login feature is not activated' do
       permission = create(:permission, :by_users, require_verification: true, require_confirmed_email: false)
       SettingsService.new.deactivate_feature!('password_login')
-      expect { permission.update!(require_confirmed_email: true) }.to raise_error(ActiveRecord::RecordInvalid)
-    end
-
-    it 'cannot be required when password login signup is disabled' do
-      permission = create(:permission, :by_users, require_verification: true, require_confirmed_email: false)
-      config = AppConfiguration.instance
-      config.settings['password_login']['enable_signup'] = false
-      config.save!
       expect { permission.update!(require_confirmed_email: true) }.to raise_error(ActiveRecord::RecordInvalid)
     end
   end
