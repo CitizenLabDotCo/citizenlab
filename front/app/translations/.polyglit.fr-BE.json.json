@@ -10259,6 +10259,16 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.containers.NotificationMenu.projectPhaseStarted": {
+    "state": "verified",
+    "verified_at": "2026-08-10T13:07:15.737462Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.NotificationMenu.projectPhaseUpcoming": {
+    "state": "verified",
+    "verified_at": "2026-08-10T13:07:15.737462Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.NotificationMenu.projectPublished": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
