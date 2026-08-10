@@ -4,7 +4,7 @@ describe Permissions::BasePermissionsService do
   let(:service) { described_class.new(user) }
 
   before do
-    # To allow require_verification we need to enable at least one verification method
+    # Enable a verification method so that verifications can be created and checked
     AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
     AppConfiguration.instance.save!
   end
@@ -259,10 +259,7 @@ describe Permissions::BasePermissionsService do
           end
 
           it 'ignores the verification value if require_verification: false' do
-            # Hack to avoid model validation: we need to set require_verification: true
-            # otherwise the validation fails. We then set it back to false.
-            group_permission.update!(require_verification: true, verification_expiry: 1)
-            group_permission.update!(require_verification: false)
+            group_permission.update!(require_verification: false, verification_expiry: 1)
             travel_to Time.now + 2.days do
               expect(service.send(:user_denied_reason, group_permission)).to be_nil
             end
