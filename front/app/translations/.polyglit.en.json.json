@@ -1,4 +1,9 @@
 {
+  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": {
+    "state": "verified",
+    "verified_at": "2026-08-10T15:10:50.508681Z",
+    "verified_by": "KenVM"
+  },
   "app.components.PostCardsComponents.feed": {
     "state": "verified",
     "verified_at": "2026-03-31T12:17:27.190175Z",

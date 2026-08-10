@@ -146,7 +146,7 @@
   "app.components.ContentUploadDisclaimer.onAccept": "Tuigim",
   "app.components.ContentUploadDisclaimer.onCancel": "Cealaigh",
   "app.components.CustomFieldsForm.Fields.SentimentScaleField.tellUsWhy": "Inis dúinn cén fáth",
-  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": "Ar fearr leat fanacht gan ainm?",
+  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": "Ar mhaith leat d’aighneacht a scriosadh?",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": "Sábháil an cód seo ar eagla go mbeadh tú ag iarraidh d’aighneacht a bhaint níos déanaí.",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode": "Seol an cód seo chuig mo ríomhphost",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Aitheantóir aighneachta",

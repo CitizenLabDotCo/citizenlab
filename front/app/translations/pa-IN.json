@@ -146,7 +146,7 @@
   "app.components.ContentUploadDisclaimer.onAccept": "ਮੈਂ ਸੱਮਝਦਾ ਹਾਂ",
   "app.components.ContentUploadDisclaimer.onCancel": "ਰੱਦ ਕਰੋ",
   "app.components.CustomFieldsForm.Fields.SentimentScaleField.tellUsWhy": "ਸਾਨੂੰ ਦੱਸੋ ਕਿਉਂ",
-  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": "ਕੀ ਤੁਸੀਂ ਗੁਮਨਾਮ ਰਹਿਣਾ ਪਸੰਦ ਕਰਦੇ ਹੋ?",
+  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": "ਕੀ ਤੁਸੀਂ ਆਪਣੀ ਸਬਮਿਸ਼ਨ ਮਿਟਾਉਣੀ ਚਾਹੁੰਦੇ ਹੋ?",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": "ਜੇਕਰ ਤੁਸੀਂ ਬਾਅਦ ਵਿੱਚ ਆਪਣੀ ਸਬਮਿਸ਼ਨ ਨੂੰ ਹਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ ਤਾਂ ਇਸ ਕੋਡ ਨੂੰ ਸੇਵ ਕਰੋ।",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode": "ਇਹ ਕੋਡ ਮੇਰੀ ਈਮੇਲ 'ਤੇ ਭੇਜੋ।",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "ਸਪੁਰਦਗੀ ਪਛਾਣਕਰਤਾ",
