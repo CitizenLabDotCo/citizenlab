@@ -1,15 +1,14 @@
-// The way into the identification-fields modal from a section that configures
-// several methods at once. It belongs to the method block as a whole rather
-// than to any single toggle, and it stays out of the way entirely when the
-// platform has no identification method in use — there would be nothing to show.
+// The way into the identification-fields modal. It pertains to identification
+// on the platform as a whole — not to any single sign-in method or security
+// check — so it sits directly under the mode cards, outside both groupings. It
+// stays out of the way entirely when the platform has no identification method
+// in use: there would be nothing to show.
 
 import React, { useState } from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import useIdMethods from 'api/id_methods/useIdMethods';
-
-import useIdMethodNames, { getMethodName } from 'hooks/useIdMethodNames';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -22,38 +21,13 @@ import IdMethodsModal from './index';
 
 const IdMethodsModalTrigger = () => {
   const { formatMessage } = useIntl();
-  const idMethodNames = useIdMethodNames();
   const { data: idMethods } = useIdMethods();
   const [opened, setOpened] = useState(false);
 
-  const activeMethods = getActiveMethods(idMethods);
-  if (activeMethods.length === 0) return null;
-
-  // With exactly one method we can name it, which is more informative than the
-  // generic plural wording.
-  const singleMethod =
-    activeMethods.length === 1 ? activeMethods[0] : undefined;
-
-  // What the method can actually be used for decides the wording: a
-  // verification-only method is no way to sign up, so promising that would be
-  // wrong. Only worth saying when we can name the method — across several
-  // methods the sentence turns into vague filler, and the link says it better.
-  const explanation = singleMethod?.attributes.authentication_method
-    ? singleMethod.attributes.verification_method
-      ? messages.canSignUpOrVerifyWith
-      : messages.canSignUpWith
-    : messages.canVerifyWith;
+  if (getActiveMethods(idMethods).length === 0) return null;
 
   return (
     <Box mt="8px">
-      {singleMethod && (
-        <Text as="span" m="0" fontSize="xs" color="coolGrey600">
-          {formatMessage(explanation, {
-            methodName: getMethodName(singleMethod, idMethodNames),
-          })}{' '}
-        </Text>
-      )}
-
       <Text
         as="span"
         m="0"
@@ -63,11 +37,7 @@ const IdMethodsModalTrigger = () => {
         tabIndex={0}
         onClick={() => setOpened(true)}
       >
-        {singleMethod
-          ? formatMessage(messages.viewMethodSettings, {
-              methodName: getMethodName(singleMethod, idMethodNames),
-            })
-          : formatMessage(messages.seeWhichIdMethodsAreEnabled)}
+        {formatMessage(messages.seeWhichIdMethodsAreEnabled)}
       </Text>
 
       <IdMethodsModal opened={opened} onClose={() => setOpened(false)} />

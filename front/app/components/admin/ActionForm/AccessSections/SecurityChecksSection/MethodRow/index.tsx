@@ -18,8 +18,8 @@ interface Props {
   methodKey: AuthMethodKey;
   enabled: boolean;
   expiry: number | null;
-  available: boolean;
-  unavailableReason: string;
+  // Why the check can't be used on this platform. `undefined` = it can.
+  unavailableReason?: string;
   onChange: (next: { enabled: boolean; expiry: number | null }) => void;
 }
 
@@ -27,12 +27,12 @@ const MethodRow = ({
   methodKey,
   enabled: stateEnabled,
   expiry,
-  available,
   unavailableReason,
   onChange,
 }: Props) => {
   const { formatMessage } = useIntl();
   const meta = METHOD_META[methodKey];
+  const available = !unavailableReason;
   const enabled = available && stateEnabled;
 
   return (
@@ -62,7 +62,7 @@ const MethodRow = ({
               </Text>
             </Box>
             <Text as="span" m="0" fontSize="xs" color="coolGrey600">
-              {available ? formatMessage(meta.description) : unavailableReason}
+              {unavailableReason ?? formatMessage(meta.description)}
             </Text>
           </Box>
         }

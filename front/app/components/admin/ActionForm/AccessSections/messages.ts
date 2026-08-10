@@ -13,10 +13,6 @@ export default defineMessages({
     id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.identityVerification',
     defaultMessage: 'Identity verification',
   },
-  seeMethodProperties: {
-    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.seeMethodProperties',
-    defaultMessage: 'See method properties',
-  },
   emailMethodDescription: {
     id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription',
     defaultMessage:

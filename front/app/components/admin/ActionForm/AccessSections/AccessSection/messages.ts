@@ -1,16 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  unavailablePasswordLogin: {
-    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailablePasswordLogin',
-    defaultMessage:
-      'Unavailable: password login is turned off for this platform.',
-  },
-  unavailableVerification: {
-    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification',
-    defaultMessage:
-      'Unavailable: no identity verification method is configured.',
-  },
   whoCanParticipate: {
     id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate',
     defaultMessage: 'Who can participate',
@@ -18,14 +8,30 @@ export default defineMessages({
   firstDecide: {
     id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.firstDecide',
     defaultMessage:
-      'First decide whether an account is needed at all, then pick the proof of identity required.',
+      'First decide whether an account is needed at all. Signing in and the security checks below are separate: participants can sign in by email, SMS or SSO without any check being required.',
   },
   requireSignIn: {
     id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn',
     defaultMessage: 'Require sign-in',
   },
-  mustProveIdentity: {
-    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.mustProveIdentity',
-    defaultMessage: 'Must prove who they are first.',
+  signInWith: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.signInWith',
+    defaultMessage: 'Participants sign in with {methods}.',
+  },
+  email: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.email',
+    defaultMessage: 'email',
+  },
+  sms: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.sms',
+    defaultMessage: 'SMS',
+  },
+  ssoSeeBelow: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.ssoSeeBelow',
+    defaultMessage: 'SSO (see below)',
+  },
+  noSignInMethodEnabled: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.noSignInMethodEnabled',
+    defaultMessage: 'No sign-in method is enabled on this platform.',
   },
 });

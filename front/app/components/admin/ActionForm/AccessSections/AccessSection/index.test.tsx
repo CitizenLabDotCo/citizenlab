@@ -1,32 +1,44 @@
 import React from 'react';
 
+import { IdMethodData } from 'api/id_methods/types';
 import { IPhasePermissionData } from 'api/phase_permissions/types';
 
 import { render, screen } from 'utils/testUtils/rtl';
 
 import AccessSection from '.';
 
-// ---- Controllable data hooks ------------------------------------------------
-// The three things this section reacts to: whether password login is on,
-// whether SMS is on, and whether an identity-verification method is configured.
+// ---- Controllable platform config -------------------------------------------
+// Which sign-in methods the platform offers: email and SMS come from feature
+// flags plus the `enable_signup` setting, anything else from the id methods.
 let mockPasswordLoginEnabled = true;
 let mockSmsEnabled = true;
-let mockVerificationMethodConfigured = true;
+let mockSmsLoginEnabled = true;
+let mockSignUpEnabled = true;
+let mockIdMethods: IdMethodData[] = [];
 
 jest.mock('hooks/useFeatureFlag', () =>
   jest.fn(({ name }: { name: string }) => {
     if (name === 'password_login') return mockPasswordLoginEnabled;
     if (name === 'sms') return mockSmsEnabled;
+    if (name === 'sms_login') return mockSmsLoginEnabled;
     return false;
   })
 );
 
-jest.mock('api/id_methods/useVerificationMethod', () =>
+jest.mock('api/app_configuration/useAppConfiguration', () =>
   jest.fn(() => ({
-    data: mockVerificationMethodConfigured
-      ? { data: { attributes: { method_metadata: { name: 'ItsMe' } } } }
-      : null,
+    data: {
+      data: {
+        attributes: {
+          settings: { password_login: { enable_signup: mockSignUpEnabled } },
+        },
+      },
+    },
   }))
+);
+
+jest.mock('api/id_methods/useIdMethods', () =>
+  jest.fn(() => ({ data: { data: mockIdMethods } }))
 );
 
 // Not under test - stub out the children with their own data dependencies.
@@ -35,9 +47,25 @@ jest.mock(
   () => () => null
 );
 jest.mock(
+  'components/admin/ActionForm/AccessSections/SecurityChecksSection',
+  () => () => <div data-testid="security-checks-section" />
+);
+jest.mock(
   'components/admin/ActionForm/AccessSections/IdMethodsModal/Trigger',
   () => () => <div data-testid="id-method-fields-trigger" />
 );
+
+const buildIdMethod = (name: string, authentication: boolean): IdMethodData =>
+  ({
+    id: `method-${name}`,
+    type: 'id_method',
+    attributes: {
+      name,
+      authentication_method: authentication,
+      verification_method: !authentication,
+      method_metadata: { name },
+    },
+  } as IdMethodData);
 
 const buildPermission = (
   attributes: Partial<IPhasePermissionData['attributes']> = {}
@@ -81,7 +109,9 @@ const renderSection = (
 beforeEach(() => {
   mockPasswordLoginEnabled = true;
   mockSmsEnabled = true;
-  mockVerificationMethodConfigured = true;
+  mockSmsLoginEnabled = true;
+  mockSignUpEnabled = true;
+  mockIdMethods = [];
 });
 
 describe('<AccessSection />', () => {
@@ -90,78 +120,92 @@ describe('<AccessSection />', () => {
     expect(screen.getByText('Who can participate')).toBeInTheDocument();
   });
 
-  describe('when an account is required (permitted_by: users)', () => {
-    it('shows the authentication method rows with their descriptions when available', () => {
+  describe('the sign-in methods named on the "Require sign-in" card', () => {
+    it('lists email and SMS when password login, SMS and sign-up are all on', () => {
       renderSection();
-
-      expect(screen.getByText('Confirmed email')).toBeInTheDocument();
-      expect(screen.getByText('Confirmed phone number')).toBeInTheDocument();
-      expect(screen.getByText('Identity verification')).toBeInTheDocument();
       expect(
-        screen.getByText(
-          'Participant confirms an email address with a one-time code.'
-        )
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(
-          'Participant confirms a phone number with a one-time code sent by SMS.'
-        )
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(
-          'Participant proves their identity through an external register.'
-        )
+        screen.getByText('Participants sign in with email, SMS.')
       ).toBeInTheDocument();
     });
 
-    it('hides the phone method row when SMS is off', () => {
+    it('leaves out SMS when the sms feature is off', () => {
       mockSmsEnabled = false;
       renderSection();
-
       expect(
-        screen.queryByText('Confirmed phone number')
-      ).not.toBeInTheDocument();
-      // The other methods are unaffected.
-      expect(screen.getByText('Confirmed email')).toBeInTheDocument();
-      expect(screen.getByText('Identity verification')).toBeInTheDocument();
+        screen.getByText('Participants sign in with email.')
+      ).toBeInTheDocument();
     });
 
-    it('marks the email method unavailable when password login is off', () => {
+    it('leaves out SMS when sms login is off', () => {
+      mockSmsLoginEnabled = false;
+      renderSection();
+      expect(
+        screen.getByText('Participants sign in with email.')
+      ).toBeInTheDocument();
+    });
+
+    it('leaves out both email and SMS when sign-up is disabled', () => {
+      mockSignUpEnabled = false;
+      mockIdMethods = [buildIdMethod('fake_sso', true)];
+      renderSection();
+      expect(
+        screen.getByText('Participants sign in with Fake SSO.')
+      ).toBeInTheDocument();
+    });
+
+    it('names a single authentication id method', () => {
+      mockIdMethods = [buildIdMethod('franceconnect', true)];
+      renderSection();
+      expect(
+        screen.getByText('Participants sign in with email, SMS, FranceConnect.')
+      ).toBeInTheDocument();
+    });
+
+    it('falls back to "SSO (see below)" with several authentication methods', () => {
+      mockIdMethods = [
+        buildIdMethod('franceconnect', true),
+        buildIdMethod('fake_sso', true),
+      ];
+      renderSection();
+      expect(
+        screen.getByText(
+          'Participants sign in with email, SMS, SSO (see below).'
+        )
+      ).toBeInTheDocument();
+    });
+
+    it('ignores id methods that are verification-only', () => {
+      mockIdMethods = [buildIdMethod('franceconnect', false)];
+      renderSection();
+      expect(
+        screen.getByText('Participants sign in with email, SMS.')
+      ).toBeInTheDocument();
+    });
+
+    it('warns when no sign-in method is available at all', () => {
       mockPasswordLoginEnabled = false;
       renderSection();
-
       expect(
-        screen.getByText(
-          'Unavailable: password login is turned off for this platform.'
-        )
-      ).toBeInTheDocument();
-      // The verification method is still available.
-      expect(
-        screen.getByText(
-          'Participant proves their identity through an external register.'
-        )
+        screen.getByText('No sign-in method is enabled on this platform.')
       ).toBeInTheDocument();
     });
+  });
 
-    it('marks the verification method unavailable when none is configured', () => {
-      mockVerificationMethodConfigured = false;
+  describe('when an account is required (permitted_by: users)', () => {
+    it('shows the security checks section and the identification-methods link', () => {
       renderSection();
-
+      expect(screen.getByTestId('security-checks-section')).toBeInTheDocument();
       expect(
-        screen.getByText(
-          'Unavailable: no identity verification method is configured.'
-        )
+        screen.getByTestId('id-method-fields-trigger')
       ).toBeInTheDocument();
     });
   });
 
   describe('when no account is required (permitted_by: everyone)', () => {
-    it('does not show the authentication method rows', () => {
+    it('does not show the security checks section', () => {
       renderSection({ permitted_by: 'everyone' });
-
-      expect(screen.queryByText('Confirmed email')).not.toBeInTheDocument();
       expect(
-        screen.queryByText('Identity verification')
+        screen.queryByTestId('security-checks-section')
       ).not.toBeInTheDocument();
     });
 
@@ -170,6 +214,13 @@ describe('<AccessSection />', () => {
       expect(
         screen.queryByTestId('id-method-fields-trigger')
       ).not.toBeInTheDocument();
+    });
+
+    it('still names the sign-in methods on the card', () => {
+      renderSection({ permitted_by: 'everyone' });
+      expect(
+        screen.getByText('Participants sign in with email, SMS.')
+      ).toBeInTheDocument();
     });
   });
 });

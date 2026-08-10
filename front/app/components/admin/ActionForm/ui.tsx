@@ -9,6 +9,7 @@ import {
   Icon,
   IconNames,
   IconTooltip,
+  Color,
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
@@ -102,6 +103,7 @@ export const ModeCard = ({
   icon,
   title,
   description,
+  descriptionColor = 'coolGrey600',
   selected,
   className,
   onClick,
@@ -109,6 +111,7 @@ export const ModeCard = ({
   icon: IconNames;
   title: string;
   description: string;
+  descriptionColor?: Color;
   selected: boolean;
   className?: string;
   onClick: () => void;
@@ -138,7 +141,7 @@ export const ModeCard = ({
       <Text as="span" m="0" fontSize="s" fontWeight="bold" color="primary">
         {title}
       </Text>
-      <Text as="span" m="0" fontSize="xs" color="coolGrey600">
+      <Text as="span" m="0" fontSize="xs" color={descriptionColor}>
         {description}
       </Text>
     </Box>

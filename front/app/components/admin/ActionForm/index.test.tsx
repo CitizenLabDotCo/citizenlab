@@ -19,6 +19,35 @@ jest.mock('hooks/useFeatureFlag', () =>
   )
 );
 
+jest.mock('api/app_configuration/useAppConfiguration', () =>
+  jest.fn(() => ({
+    data: {
+      data: {
+        attributes: { settings: { password_login: { enable_signup: true } } },
+      },
+    },
+  }))
+);
+
+jest.mock('api/id_methods/useIdMethods', () =>
+  jest.fn(() => ({
+    data: {
+      data: [
+        {
+          id: 'method-1',
+          type: 'id_method',
+          attributes: {
+            name: 'fake_sso',
+            authentication_method: true,
+            verification_method: false,
+            method_metadata: { name: 'ItsMe' },
+          },
+        },
+      ],
+    },
+  }))
+);
+
 jest.mock('api/id_methods/useAuthenticationMethod', () =>
   jest.fn(() => ({ data: mockAuthenticationMethod }))
 );
@@ -112,23 +141,24 @@ beforeEach(() => {
 });
 
 describe('<ActionForm />', () => {
-  describe('which access section is rendered', () => {
-    it('renders the password-login access section when password login is enabled', () => {
+  describe('the access section', () => {
+    it('offers the security checks whatever the sign-in methods are', () => {
       renderForm();
-      // The email/verification method rows are unique to the password-login variant.
       expect(screen.getByText('Confirmed email')).toBeInTheDocument();
       expect(
-        screen.queryByText(/Participants sign in with/)
-      ).not.toBeInTheDocument();
+        screen.getByText('Participants sign in with email, Fake SSO.')
+      ).toBeInTheDocument();
     });
 
-    it('renders the SSO access section when password login is disabled', () => {
+    it('keeps the same section, and the email check, when password login is off', () => {
       mockPasswordLoginEnabled = false;
       renderForm();
+      // Only the SSO method is a way in, but confirming an email is still a
+      // check the admin can require.
       expect(
-        screen.getByText('Participants sign in with ItsMe.')
+        screen.getByText('Participants sign in with Fake SSO.')
       ).toBeInTheDocument();
-      expect(screen.queryByText('Confirmed email')).not.toBeInTheDocument();
+      expect(screen.getByText('Confirmed email')).toBeInTheDocument();
     });
   });
 
@@ -150,6 +180,7 @@ describe('<ActionForm />', () => {
       );
       // Body is not rendered when collapsed; only the summary chips are.
       expect(screen.queryByText('What we collect')).not.toBeInTheDocument();
+      expect(screen.getByText('Sign-in required')).toBeInTheDocument();
       expect(screen.getByText('Confirmed email')).toBeInTheDocument();
       expect(screen.getByText('Name')).toBeInTheDocument();
       expect(screen.getByText('Password')).toBeInTheDocument();

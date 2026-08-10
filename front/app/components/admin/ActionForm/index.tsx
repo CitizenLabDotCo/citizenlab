@@ -10,18 +10,13 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
-import useAuthenticationMethod from 'api/id_methods/useAuthenticationMethod';
 import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields/usePermissionsPhaseCustomFields';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useIdMethodNames, { getMethodName } from 'hooks/useIdMethodNames';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import AccessSection from './AccessSections/AccessSection';
-import AccessSectionSSO from './AccessSections/AccessSectionSSO';
 import DataSection from './DataSection';
-import { buildSummary, buildSummarySSO, getGroupIds } from './logic';
+import { buildSummary, getGroupIds } from './logic';
 import messages from './messages';
 import { Props } from './types';
 import { Chip } from './ui';
@@ -36,7 +31,6 @@ const ActionForm = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const [isOpen, setIsOpen] = useState(defaultOpen);
-  const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
 
   const { attributes } = permissionData;
   const { action } = attributes;
@@ -45,9 +39,6 @@ const ActionForm = ({
     phaseId,
     action,
   });
-  const { data: authenticationMethod } = useAuthenticationMethod();
-  const idMethodNames = useIdMethodNames();
-
   if (!permissionsCustomFields) return null;
 
   const customFields = permissionsCustomFields.data;
@@ -56,13 +47,7 @@ const ActionForm = ({
   const showAnyone = attributes.permitted_by_everyone_allowed;
   const isAdmins = attributes.permitted_by === 'admins_moderators';
 
-  const methodName = authenticationMethod
-    ? getMethodName(authenticationMethod.data, idMethodNames)
-    : '';
-
-  const summary = passwordLoginEnabled
-    ? buildSummary(permissionData, customFields, formatMessage)
-    : buildSummarySSO(permissionData, customFields, methodName, formatMessage);
+  const summary = buildSummary(permissionData, customFields, formatMessage);
 
   // Reset clears the account-only customisations (groups + persisted questions);
   // it has nothing to undo for the open / admins-only gates.
@@ -129,19 +114,11 @@ const ActionForm = ({
           <Box px="20px" pb="20px" className={`e2e-action-form-${action}`}>
             <Divider mt="0" mb="20px" />
 
-            {passwordLoginEnabled ? (
-              <AccessSection
-                permission={permissionData}
-                showAnyone={showAnyone}
-                onChange={onChange}
-              />
-            ) : (
-              <AccessSectionSSO
-                permission={permissionData}
-                showAnyone={showAnyone}
-                onChange={onChange}
-              />
-            )}
+            <AccessSection
+              permission={permissionData}
+              showAnyone={showAnyone}
+              onChange={onChange}
+            />
 
             {/* Admins-only is a closed gate — nothing else applies. For the
                 other modes, demographics can be collected (the account-only

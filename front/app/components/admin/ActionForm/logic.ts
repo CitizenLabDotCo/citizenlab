@@ -108,7 +108,16 @@ export const buildSummary = (
     ];
   }
 
-  const chips: SummaryChip[] = [];
+  // Signing in is a requirement in its own right, independent of the security
+  // checks below it — a permission can require an account and nothing else.
+  const chips: SummaryChip[] = [
+    {
+      key: 'signin',
+      label: formatMessage(messages.signInRequired),
+      icon: 'shield-checkered',
+      tone: 'access',
+    },
+  ];
   const methodIcon: Record<AuthMethodKey, SummaryChip['icon']> = {
     email: 'email',
     phone: 'tablet',
@@ -166,79 +175,6 @@ export const buildSummary = (
     });
   }
 
-  return chips;
-};
-
-// Summary for the SSO variant: the identification method is fixed, so the per-method
-// chips are replaced by a single SSO chip.
-export const buildSummarySSO = (
-  permission: IPhasePermissionData,
-  customFields: IPermissionsPhaseCustomFieldData[],
-  signInLabel: string,
-  formatMessage: FormatMessage
-): SummaryChip[] => {
-  const { attributes } = permission;
-
-  if (attributes.permitted_by === 'admins_moderators') {
-    return [
-      {
-        key: 'admins',
-        label: formatMessage(messages.adminsManagersOnly),
-        icon: 'shield-checkered',
-        tone: 'access',
-      },
-    ];
-  }
-
-  if (attributes.permitted_by === 'everyone') {
-    return [
-      {
-        key: 'open',
-        label: formatMessage(messages.anyoneCanParticipate),
-        icon: 'user-circle',
-        tone: 'open',
-      },
-      ...demographicsChip(customFields, formatMessage),
-    ];
-  }
-
-  const chips: SummaryChip[] = [
-    {
-      key: 'signin',
-      label: signInLabel,
-      icon: 'shield-checkered',
-      tone: 'access',
-    },
-  ];
-  const groupIds = getGroupIds(permission);
-  if (groupIds.length > 0) {
-    chips.push({
-      key: 'groups',
-      label: formatMessage(messages.nGroups, { nGroups: groupIds.length }),
-      icon: 'group',
-      tone: 'access',
-    });
-  }
-  if (attributes.require_name) {
-    chips.push({
-      key: 'name',
-      label: formatMessage(messages.name),
-      icon: 'user-circle',
-      tone: 'data',
-    });
-  }
-  chips.push(...demographicsChip(customFields, formatMessage));
-  if (attributes.user_data_collection !== 'all_data') {
-    chips.push({
-      key: 'anonymity',
-      label:
-        attributes.user_data_collection === 'anonymous'
-          ? formatMessage(messages.anonymous)
-          : formatMessage(messages.piiExcluded),
-      icon: 'user-circle',
-      tone: 'data',
-    });
-  }
   return chips;
 };
 
