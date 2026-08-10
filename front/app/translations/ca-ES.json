@@ -146,7 +146,7 @@
   "app.components.ContentUploadDisclaimer.onAccept": "entenc",
   "app.components.ContentUploadDisclaimer.onCancel": "Cancel · lar",
   "app.components.CustomFieldsForm.Fields.SentimentScaleField.tellUsWhy": "Digue'ns per què",
-  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": "Prefereixes romandre en l'anonimat?",
+  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": "Vols eliminar la teva aportació?",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": "Desa aquest codi en cas que vulguis eliminar l'enviament més endavant.",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode": "Envia aquest codi al meu correu electrònic",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Identificador de la presentació",

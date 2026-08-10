@@ -146,7 +146,7 @@
   "app.components.ContentUploadDisclaimer.onAccept": "Jeg forstår",
   "app.components.ContentUploadDisclaimer.onCancel": "Afbryd",
   "app.components.CustomFieldsForm.Fields.SentimentScaleField.tellUsWhy": "Fortæl os hvorfor",
-  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": "Foretrækker du at være anonym?",
+  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": "Vil du slette dit bidrag?",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": "Gem denne kode, hvis du vil fjerne dit bidrag senere.",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode": "Send denne kode til min e-mail",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Identifikator for indsendelse",

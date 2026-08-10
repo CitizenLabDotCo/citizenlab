@@ -146,7 +146,7 @@
   "app.components.ContentUploadDisclaimer.onAccept": "Je comprends",
   "app.components.ContentUploadDisclaimer.onCancel": "Annuler",
   "app.components.CustomFieldsForm.Fields.SentimentScaleField.tellUsWhy": "Dites-nous pourquoi",
-  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": "Vous préférez rester anonyme ?",
+  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": "Souhaitez-vous supprimer votre contribution ?",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": "Conservez ce code. Il vous permettra de supprimer votre contribution si vous le souhaitez.",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode": "Envoyer ce code par e-mail",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Code de référence",

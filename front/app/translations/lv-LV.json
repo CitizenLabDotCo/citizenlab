@@ -146,7 +146,7 @@
   "app.components.ContentUploadDisclaimer.onAccept": "Es saprotu",
   "app.components.ContentUploadDisclaimer.onCancel": "Atcelt",
   "app.components.CustomFieldsForm.Fields.SentimentScaleField.tellUsWhy": "Pastāstiet mums, kāpēc",
-  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": "Vēlaties palikt anonīms?",
+  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": "Vai vēlaties dzēst savu iesniegumu?",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": "Saglabājiet šo kodu, ja vēlāk vēlaties dzēst iesniegumu.",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode": "Nosūtiet šo kodu uz manu e-pastu",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Iesniegšanas identifikators",
