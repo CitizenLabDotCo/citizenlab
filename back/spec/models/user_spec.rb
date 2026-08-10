@@ -1290,6 +1290,39 @@ RSpec.describe User do
       end
     end
 
+    describe '#confirmation_pending?' do
+      it 'answers for the phone before any confirmation record exists' do
+        user.save!
+        expect(user.confirmations).to be_empty
+
+        expect(user.confirmation_pending?(:phone_confirmation)).to be false
+
+        user.update!(phone: '+14155552671')
+        expect(user.confirmation_pending?(:phone_confirmation)).to be true
+
+        user.update!(phone_confirmed_at: Time.zone.now)
+        expect(user.confirmation_pending?(:phone_confirmation)).to be false
+      end
+
+      it 'is true for the email as long as the user has not confirmed' do
+        user.save!
+        expect(user.confirmation_pending?(:email_confirmation)).to be true
+
+        user.find_or_create_confirmation(:email_confirmation).confirm!
+        expect(user.confirmation_pending?(:email_confirmation)).to be false
+      end
+
+      it 'is true for a change confirmation only while a new value is pending' do
+        user.save!
+        expect(user.confirmation_pending?(:new_email_confirmation)).to be false
+        expect(user.confirmation_pending?(:new_phone_confirmation)).to be false
+
+        user.update!(new_email: 'new@email.com', new_phone: '+14155552671')
+        expect(user.confirmation_pending?(:new_email_confirmation)).to be true
+        expect(user.confirmation_pending?(:new_phone_confirmation)).to be true
+      end
+    end
+
     describe '#confirmation_required?' do
       it 'returns false if the user already confirmed their account' do
         user.save!
