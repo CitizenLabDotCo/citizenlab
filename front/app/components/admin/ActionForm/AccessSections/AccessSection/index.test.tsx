@@ -9,11 +9,10 @@ import AccessSection from '.';
 
 // ---- Controllable platform config -------------------------------------------
 // Which sign-in methods the platform offers: email and SMS come from feature
-// flags plus the `enable_signup` setting, anything else from the id methods.
+// flags, anything else from the id methods.
 let mockPasswordLoginEnabled = true;
 let mockSmsEnabled = true;
 let mockSmsLoginEnabled = true;
-let mockSignUpEnabled = true;
 let mockIdMethods: IdMethodData[] = [];
 
 jest.mock('hooks/useFeatureFlag', () =>
@@ -23,18 +22,6 @@ jest.mock('hooks/useFeatureFlag', () =>
     if (name === 'sms_login') return mockSmsLoginEnabled;
     return false;
   })
-);
-
-jest.mock('api/app_configuration/useAppConfiguration', () =>
-  jest.fn(() => ({
-    data: {
-      data: {
-        attributes: {
-          settings: { password_login: { enable_signup: mockSignUpEnabled } },
-        },
-      },
-    },
-  }))
 );
 
 jest.mock('api/id_methods/useIdMethods', () =>
@@ -110,7 +97,6 @@ beforeEach(() => {
   mockPasswordLoginEnabled = true;
   mockSmsEnabled = true;
   mockSmsLoginEnabled = true;
-  mockSignUpEnabled = true;
   mockIdMethods = [];
 });
 
@@ -121,7 +107,7 @@ describe('<AccessSection />', () => {
   });
 
   describe('the sign-in methods named on the "Require sign-in" card', () => {
-    it('lists email and SMS when password login, SMS and sign-up are all on', () => {
+    it('lists email and SMS when password login and SMS are both on', () => {
       renderSection();
       expect(
         screen.getByText('Participants sign in with email, SMS.')
@@ -144,8 +130,8 @@ describe('<AccessSection />', () => {
       ).toBeInTheDocument();
     });
 
-    it('leaves out both email and SMS when sign-up is disabled', () => {
-      mockSignUpEnabled = false;
+    it('leaves out both email and SMS when password login is off', () => {
+      mockPasswordLoginEnabled = false;
       mockIdMethods = [buildIdMethod('fake_sso', true)];
       renderSection();
       expect(

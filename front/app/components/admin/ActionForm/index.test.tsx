@@ -19,16 +19,6 @@ jest.mock('hooks/useFeatureFlag', () =>
   )
 );
 
-jest.mock('api/app_configuration/useAppConfiguration', () =>
-  jest.fn(() => ({
-    data: {
-      data: {
-        attributes: { settings: { password_login: { enable_signup: true } } },
-      },
-    },
-  }))
-);
-
 jest.mock('api/id_methods/useIdMethods', () =>
   jest.fn(() => ({
     data: {

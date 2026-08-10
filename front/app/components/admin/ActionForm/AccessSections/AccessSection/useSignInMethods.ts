@@ -2,7 +2,6 @@
 // from live config. Purely about signing in / up — what is required *on top* of
 // that is the separate concern of the security checks section.
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useIdMethods from 'api/id_methods/useIdMethods';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -14,25 +13,18 @@ import messages from './messages';
 
 const useSignInMethods = (): string[] => {
   const { formatMessage } = useIntl();
-  const { data: appConfiguration } = useAppConfiguration();
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
   const smsEnabled = useFeatureFlag({ name: 'sms' });
   const smsLoginEnabled = useFeatureFlag({ name: 'sms_login' });
   const { data: idMethods } = useIdMethods();
   const idMethodNames = useIdMethodNames();
 
-  // Both the email and the phone sign-up paths go through UserPolicy#create?,
-  // which is gated on this setting (see also #create_phone?, which delegates to
-  // it), so neither is a way in for a new participant without it.
-  const signUpEnabled =
-    !!appConfiguration?.data.attributes.settings.password_login?.enable_signup;
-
   const methodNames: string[] = [];
 
-  if (passwordLoginEnabled && signUpEnabled) {
+  if (passwordLoginEnabled) {
     methodNames.push(formatMessage(messages.email));
   }
-  if (passwordLoginEnabled && smsEnabled && smsLoginEnabled && signUpEnabled) {
+  if (passwordLoginEnabled && smsEnabled && smsLoginEnabled) {
     methodNames.push(formatMessage(messages.sms));
   }
 

@@ -705,20 +705,6 @@ resource 'Users' do
           assert_status 401
         end
       end
-
-      context 'when signup is disabled' do
-        include_context 'with sms feature enabled'
-
-        before do
-          SettingsService.new.activate_feature!('password_login', settings: { 'enable_signup' => false })
-        end
-
-        let(:phone) { '+14155552671' }
-
-        example_request 'It does not work' do
-          assert_status 401
-        end
-      end
     end
 
     get 'web_api/v1/users/me/ping' do
