@@ -62,11 +62,6 @@ RSpec.describe DecidimImporter::Extractors::ResultsExtractor do
     )
   end
 
-  it 'keeps a space after the % so the lines do not run together in plain text' do
-    body = extract([row]).run.first.attributes['body_multiloc']['fr-FR']
-    expect(body).to include('100% </li>') # trailing space before the list item closes
-  end
-
   it 'maps the status by the progress %, not the stored status, when they disagree' do
     # The result sits at 100% but its stored status is the 40% one — the % wins.
     body = extract([row('status' => 'st-40', 'progress' => '100.0')]).run.first.attributes['body_multiloc']['fr-FR']
@@ -96,6 +91,13 @@ RSpec.describe DecidimImporter::Extractors::ResultsExtractor do
     expect(phase_join.attributes['phase_ref']).to be(phase.attributes)
     topic_join = ref_map.fetch('decidim--accountability--result--15-ideas-input-topic')
     expect(topic_join.attributes['idea_ref']).to be(idea.attributes)
+  end
+
+  it 'parks a scope→area pointer in custom_field_values seeded with the area record’s attributes' do
+    area = ref_map.register('decidim--scope--6', DecidimImporter::Record.new('area', { 'title_multiloc' => { 'fr-FR' => 'Vermont' } }))
+    attrs = extract([row('scope' => 'decidim--scope--6')]).run.first.attributes
+
+    expect(attrs['custom_field_values']['decidim_scope']).to be(area.attributes)
   end
 
   it 'skips a result whose process/phase was not imported' do

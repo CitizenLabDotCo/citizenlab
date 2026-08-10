@@ -6,7 +6,9 @@ namespace :db do
     Rails.logger.info 'db:migrate_if_pending started'
     migration_versions = ActiveRecord::Base.connection_pool.migration_context.migrations.to_set(&:version)
 
-    schemas = Tenant.all.map(&:schema_name) + ['public']
+    # Keep in sync with Apartment's tenant_names which is what db:migrate iterates.
+    # Detecting wider means a deleted-but-not-yet-dropped tenant reports migrations db:migrate will never apply
+    schemas = Tenant.not_deleted.map(&:schema_name) + ['public']
 
     # SQL query that retrieves the list of migrations that have already been executed for each schema.
     sql = schemas

@@ -2,7 +2,7 @@
 
 module DecidimImporter
   module Extractors
-    # Shared helpers for the per-model XLSX extractors. Each subclass reads parsed rows
+    # Shared helpers for the per-model CSV extractors. Each subclass reads parsed rows
     # (`{ column_header => value }` hashes) and registers {Record}s into the shared {RefMap}.
     class BaseExtractor
       def initialize(rows, ref_map, locale_mapper:, primary_locale: 'fr-FR')

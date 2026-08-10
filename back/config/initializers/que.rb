@@ -23,6 +23,8 @@ end
 # Opt-in compatibility layer that overwrites the `clean_lockers` query for PostgreSQL
 # protected by the aiven-pg-security extension (e.g. Scaleway Managed Database).
 if ENV.fetch('QUE_AIVEN_PG_SECURITY_COMPAT', false) == 'true'
-  CitizenLab::Que::AivenPgSecurityCompat.apply!
-  Rails.logger.info('[que] clean_lockers patched for aiven-pg-security (QUE_AIVEN_PG_SECURITY_COMPAT)')
+  Rails.application.config.to_prepare do
+    CitizenLab::Que::AivenPgSecurityCompat.apply!
+    Rails.logger.info('[que] clean_lockers patched for aiven-pg-security (QUE_AIVEN_PG_SECURITY_COMPAT)')
+  end
 end

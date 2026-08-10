@@ -89,22 +89,25 @@ type DefaultProps = {
 };
 
 /**
- * If we have a label, an id is required. Otherwise id is optional.
+ * The checkbox needs an accessible name. Visible `label` text provides one (a
+ * checkbox takes its name from its contents); without it an `aria-label` is
+ * required, otherwise screen readers announce a nameless "checkbox".
  */
 type LabelProps =
   | {
-      label: string | JSX.Element | null;
-      id: string;
+      label: string | JSX.Element;
+      'aria-label'?: string;
     }
   | {
       label?: undefined;
-      id?: string | undefined;
+      'aria-label': string;
     };
 
 type Props = DefaultProps &
   LabelProps & {
     checked: boolean | 'mixed';
     onChange: (event: React.MouseEvent | React.KeyboardEvent) => void;
+    id?: string;
     className?: string;
     notFocusable?: boolean;
     disabled?: boolean;
@@ -172,13 +175,16 @@ export default class CheckboxWithPartialCheck extends PureComponent<Props> {
       label,
       size,
       checked,
+      id,
       className,
       notFocusable,
+      'aria-label': ariaLabel,
       'data-testid': testid,
     } = this.props;
 
     return (
       <Container
+        id={id}
         size={size as string}
         onMouseDown={removeFocusAfterMouseClick}
         onClick={this.handleOnClick}
@@ -188,6 +194,7 @@ export default class CheckboxWithPartialCheck extends PureComponent<Props> {
         }`}
         role="checkbox"
         aria-checked={checked}
+        aria-label={ariaLabel}
         tabIndex={notFocusable ? -1 : 0}
         data-testid={testid}
       >
@@ -199,7 +206,7 @@ export default class CheckboxWithPartialCheck extends PureComponent<Props> {
           )}
         </CustomInputWrapper>
 
-        <Label>{label}</Label>
+        {label && <Label>{label}</Label>}
       </Container>
     );
   }

@@ -47,8 +47,8 @@ export const missingDataFlow = (
   return {
     'missing-data:new_phone': {
       CLOSE: () => setCurrentStep('closed'),
-      SUBMIT: async (new_phone: string) => {
-        updateState({ new_phone });
+      SUBMIT: async (new_phone: string, smsManualCampaignConsent: boolean) => {
+        updateState({ new_phone, smsManualCampaignConsent });
         await requestCodeNewPhone(new_phone);
         invalidateCacheAfterUpdateUser(queryClient);
         setCurrentStep('confirmation:new_phone');

@@ -54,6 +54,20 @@ parameters:
     type: boolean
     default: false
 
+  # Optional comma-separated Cypress spec(s) for the manually-e2e-tests
+  # workflow. A bare filename ("router_history.cy.ts") is found anywhere
+  # under cypress/e2e/; a path or glob is passed through as-is. Empty runs
+  # the full suite. When set, also pass e2e_parallelism: 1 — every parallel
+  # node runs the given spec(s) in full.
+  e2e_spec:
+    type: string
+    default: ""
+
+  # Parallelism for the manually-e2e-tests workflow.
+  e2e_parallelism:
+    type: integer
+    default: 16
+
   templates:
     type: boolean
     default: false
@@ -378,6 +392,8 @@ jobs:
         default: .env-production
     steps:
       - run:
+          # Only tasks that must be run before the new code can serve.
+          # Anything else runs after cutover in back-run-post-deploy-tasks.
           name: Pull Docker image and run pre-deployment tasks
           command: |
             ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no \<<EOF
@@ -387,11 +403,7 @@ jobs:
               citizenlabdotco/back-ee:$CIRCLE_BRANCH \
               bin/rake \
               db:migrate_if_pending \
-              cl2back:clean_tenant_settings \
-              email_campaigns:assure_campaign_records \
-              fix_existing_tenants:update_permissions \
-              cl2back:clear_cache_store \
-              email_campaigns:remove_deprecated
+              cl2back:clean_tenant_settings
             EOF
       - run:
           name: Deploy the stack
@@ -441,6 +453,38 @@ jobs:
             --header 'content-type: application/json' \
             --header 'x-attribution-login: '"$CIRCLE_USERNAME" \
             --data '{"branch": "master"}'
+
+  # Reconciliation tasks that can be safely run post cutover.
+  # Failures are still red and should be investigated but do not block deployments for each cluster.
+  back-run-post-deploy-tasks:
+    resource_class: small
+    docker:
+      - image: cimg/base:2025.01
+    parameters:
+      ssh_host:
+        type: string
+      ssh_user:
+        type: string
+        default: ubuntu
+      env_file:
+        type: string
+        default: .env-web
+    steps:
+      - run:
+          name: Run post-deployment tasks
+          command: |
+            ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no \<<EOF
+            docker pull citizenlabdotco/back-ee:$CIRCLE_BRANCH && \
+            docker run \
+              --env-file cl2-deployment/<< parameters.env_file >> \
+              citizenlabdotco/back-ee:$CIRCLE_BRANCH \
+              bin/rake \
+              cl2back:clear_cache_store \
+              fix_existing_tenants:update_permissions \
+              email_campaigns:assure_campaign_records \
+              email_campaigns:remove_deprecated
+            EOF
+          no_output_timeout: 30m
 
   check-for-inconsistent-data:
     resource_class: small
@@ -724,10 +768,6 @@ jobs:
             aws s3 cp build/ "s3://cl2-front-production-benelux/$CIRCLE_SHA1/" --recursive --acl public-read --exclude "index.html" --cache-control "public, max-age=31536000, immutable"
             aws s3 cp build/index.html s3://cl2-front-production-benelux/index.html --acl public-read --cache-control no-cache
             aws s3 cp .well-known/security.txt s3://cl2-front-production-benelux/.well-known/security.txt --acl public-read --content-type text/plain
-      - run:
-          # All assets are deployed to a new prefix, so we only need to invalidate assets outside this path
-          name: Invalidate the static assets on the CDN
-          command: aws cloudfront create-invalidation --distribution-id E2MY732QC516J3 --paths '/' '/index.html' '/.well-known/security.txt'
 
   front-test-lighthouse:
     docker:
@@ -880,8 +920,16 @@ jobs:
           name: Run cypress
           command: |
             cd front
-            TESTFILES=$(circleci tests glob "cypress/e2e/**/*.cy.ts" | circleci tests split --split-by=timings)
-            COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
+            COMMA_SEPARATED_TESTFILES="<< pipeline.parameters.e2e_spec >>"
+            if [ -n "$COMMA_SEPARATED_TESTFILES" ]; then
+              # Bare filenames (no slash) become recursive globs so callers can
+              # pass "some_spec.cy.ts" without knowing its subdirectory.
+              COMMA_SEPARATED_TESTFILES=$(echo "$COMMA_SEPARATED_TESTFILES" | tr ',' '\n' \
+                | sed -E '/\//! s|^|cypress/e2e/**/|' | paste -sd, -)
+            else
+              TESTFILES=$(circleci tests glob "cypress/e2e/**/*.cy.ts" | circleci tests split --split-by=timings)
+              COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
+            fi
             echo $COMMA_SEPARATED_TESTFILES
             cd ../e2e
             docker compose -f docker-compose.yml -f docker-compose.test.yml --profile cypress run --name cypress_run \
@@ -1049,6 +1097,16 @@ workflows:
           stack_name: "cl2"
           env_file: ".env-web"
           cluster_name: "stg"
+      - back-run-post-deploy-tasks:
+          name: Post-deploy tasks (staging)
+          requires:
+            - Deploy to staging
+          filters:
+            branches:
+              only:
+                - master
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_STAGING
+          env_file: ".env-web"
 
   back-deploy-production:
     when: << pipeline.parameters.back >>
@@ -1186,6 +1244,87 @@ workflows:
           stack_name: cl2
           env_file: ".env-web"
           cluster_name: "aus"
+      # Each requires only its own region's deploy, so regions stay independent.
+      - back-run-post-deploy-tasks:
+          name: Post-deploy tasks (Frankfurt)
+          requires:
+            - Deploy to Europe (Frankfurt)
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
+          env_file: ".env-web"
+      - back-run-post-deploy-tasks:
+          name: Post-deploy tasks (Paris)
+          requires:
+            - Deploy to Europe (Paris)
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_PARIS
+          env_file: ".env-web"
+      - back-run-post-deploy-tasks:
+          name: Post-deploy tasks (Stockholm)
+          requires:
+            - Deploy to Europe (Stockholm)
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_STOCKHOLM
+          env_file: ".env-web"
+      - back-run-post-deploy-tasks:
+          name: Post-deploy tasks (Canada)
+          requires:
+            - Deploy to Canada
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CAN
+          env_file: ".env-web"
+      - back-run-post-deploy-tasks:
+          name: Post-deploy tasks (South-America)
+          requires:
+            - Deploy to South-America
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_SAM
+          env_file: ".env-web"
+      - back-run-post-deploy-tasks:
+          name: Post-deploy tasks (US-West)
+          requires:
+            - Deploy to US-West
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_USW
+          env_file: ".env-web"
+      - back-run-post-deploy-tasks:
+          name: Post-deploy tasks (UK)
+          requires:
+            - Deploy to UK
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_UK
+          env_file: ".env-web"
+      - back-run-post-deploy-tasks:
+          name: Post-deploy tasks (Australia)
+          requires:
+            - Deploy to Australia
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_AUS
+          env_file: ".env-web"
 
   # FRONT-END
   front:
@@ -1296,7 +1435,7 @@ workflows:
             - docker-hub-access
             - lastpass
       - e2e-tests:
-          parallelism: 16
+          parallelism: << pipeline.parameters.e2e_parallelism >>
           context:
             - docker-hub-access
           requires:

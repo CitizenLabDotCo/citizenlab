@@ -17,8 +17,7 @@ import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import ProjectContextSection from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection';
-import { ProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
-import { validateProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/utils';
+import { useValidateProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/utils';
 import useSyncProjectImages from 'containers/Admin/projects/_shared/useSyncProjectImages';
 import { getSelectedTopicIds } from 'containers/Admin/projects/_shared/utils/getSelectedTopicIds';
 
@@ -111,15 +110,10 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
       project.data.attributes.description_preview_multiloc
     );
 
-  const [projectContext, setProjectContext] = useState<ProjectContext>(() => {
-    // folder needs to be checked before space_id,
-    // because if a project is in a folder that is in a space,
-    // the project ALSO has a space_id.
-    // But in this case we want to show the folder as context, not the space.
-    if (project.data.attributes.folder_id) return 'folder';
-    if (project.data.attributes.space_id) return 'space';
-    return 'root';
-  });
+  const validateProjectContext = useValidateProjectContext();
+
+  const projectInRoot =
+    !project.data.attributes.space_id && !project.data.attributes.folder_id;
 
   useEffect(() => {
     (async () => {
@@ -269,7 +263,13 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
   };
 
   const validateForm = () => {
-    if (!validateProjectContext(projectContext, projectAttrs)) {
+    if (
+      !validateProjectContext({
+        spaceId: projectAttrs.space_id,
+        folderId: projectAttrs.folder_id,
+        projectInRoot,
+      })
+    ) {
       setProjectContextError(true);
       return false;
     }
@@ -285,9 +285,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
   const projectCardImageShouldBeSaved = projectCardImage
     ? !projectCardImage.remote
     : false;
-
-  const projectIsInRoot =
-    !project.data.attributes.space_id && !project.data.attributes.folder_id;
 
   return (
     <Box ref={containerRef}>
@@ -374,28 +371,11 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
           />
 
           <ProjectContextSection
-            projectContext={projectContext}
-            space_id={projectAttrs.space_id}
-            folder_id={projectAttrs.folder_id}
-            formSituation={
-              projectIsInRoot
-                ? 'editing-project-in-root'
-                : 'editing-project-not-in-root'
-            }
+            spaceId={projectAttrs.space_id}
+            folderId={projectAttrs.folder_id}
+            projectInRoot={projectInRoot}
             error={projectContextError}
-            onSetContext={(context) => {
-              handleProjectAttributeDiffOnChange({
-                space_id: null,
-                folder_id: null,
-              });
-              setProjectContext(context);
-              setProjectContextError(false);
-            }}
-            onChangeSpace={(spaceAndFolderId) => {
-              handleProjectAttributeDiffOnChange(spaceAndFolderId);
-              setProjectContextError(false);
-            }}
-            onChangeFolder={(spaceAndFolderId) => {
+            onChange={(spaceAndFolderId) => {
               handleProjectAttributeDiffOnChange(spaceAndFolderId);
               setProjectContextError(false);
             }}

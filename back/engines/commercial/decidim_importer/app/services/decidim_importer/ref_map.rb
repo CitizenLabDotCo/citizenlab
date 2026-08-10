@@ -21,6 +21,15 @@ module DecidimImporter
       record
     end
 
+    # Point an extra uid at an already-registered record *without* emitting it again — e.g. a second
+    # Decidim account Go Vocal must collapse onto the first (they share an email). `fetch(uid)` then
+    # resolves to that record, but it still appears only once in {#records}.
+    def register_alias(uid, record)
+      raise ArgumentError, "duplicate ref key: #{uid}" if @by_uid.key?(uid)
+
+      @by_uid[uid] = record
+    end
+
     def fetch(uid)
       @by_uid[uid]
     end

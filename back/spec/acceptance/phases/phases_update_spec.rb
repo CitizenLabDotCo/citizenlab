@@ -154,6 +154,15 @@ resource 'Phases' do
           expect(json_response.dig(:data, :attributes, :vote_term)).to eq 'token'
         end
 
+        context 'when the feed view is requested' do
+          let(:available_views) { %w[card feed] }
+
+          example_request '[error] Update a voting phase to offer the feed view' do
+            assert_status 422
+            expect(json_response_body.dig(:errors, :available_views)).to be_present
+          end
+        end
+
         describe 'with offline voters' do
           let(:manual_voters_amount) { 4 }
 
