@@ -4145,7 +4145,6 @@
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "Anket sorusu",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.adminManagersOnly": "Yalnızca yönetici ve müdürler",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.anyone": "Herkes",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.atLeastOneMethodMustStayEnabled": "En az bir kimlik doğrulama yöntemi etkin kalmalıdır, bu nedenle bu yöntem kapatılamaz.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "Onaylanmış e-posta",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhoneNumber": "Doğrulanmış telefon numarası",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription": "Katılımcı, tek kullanımlık bir kodla e-posta adresini onaylar.",

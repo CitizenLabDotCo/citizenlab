@@ -4145,7 +4145,6 @@
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "Enkätfråga",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.adminManagersOnly": "Endast administratörer och ansvariga",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.anyone": "Alla",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.atLeastOneMethodMustStayEnabled": "Minst en autentiseringsmetod måste vara aktiverad, så denna kan inte inaktiveras.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "Bekräftad e-post",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhoneNumber": "Bekräftat telefonnummer",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription": "Deltagaren bekräftar en e-postadress med en engångskod.",

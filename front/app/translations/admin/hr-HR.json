@@ -4145,7 +4145,6 @@
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "Anketno pitanje",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.adminManagersOnly": "Samo administratori i voditelji",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.anyone": "Svatko",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.atLeastOneMethodMustStayEnabled": "Barem jedan način autentifikacije mora ostati omogućen, stoga se ovaj ne može isključiti.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "Potvrđena e-pošta",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhoneNumber": "Potvrđeni telefonski broj",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription": "Sudionik potvrđuje adresu e-pošte jednokratnim kodom.",

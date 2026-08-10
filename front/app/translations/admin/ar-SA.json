@@ -4145,7 +4145,6 @@
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "مسح السؤال",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.adminManagersOnly": "المسؤولون والمديرون فقط",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.anyone": "أي شخص",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.atLeastOneMethodMustStayEnabled": "يجب أن تظل طريقة مصادقة واحدة على الأقل مفعلة، لذا لا يمكن إيقاف تشغيل هذه الطريقة.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "بريد إلكتروني مؤكد",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhoneNumber": "رقم هاتف مؤكد",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription": "يؤكد المشارك عنوان البريد الإلكتروني باستخدام رمز لمرة واحدة.",

@@ -4145,7 +4145,6 @@
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "Pergunta da pesquisa",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.adminManagersOnly": "Apenas administradores e gerentes",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.anyone": "Qualquer pessoa",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.atLeastOneMethodMustStayEnabled": "Pelo menos um método de autenticação deve permanecer ativado, por isso este não pode ser desativado.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "E-mail confirmado",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhoneNumber": "Número de telefone confirmado",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription": "O participante confirma um endereço de e-mail com um código de uso único.",

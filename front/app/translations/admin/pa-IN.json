@@ -4145,7 +4145,6 @@
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "ਸਰਵੇਖਣ ਸਵਾਲ",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.adminManagersOnly": "ਸਿਰਫ਼ ਐਡਮਿਨ ਅਤੇ ਮੈਨੇਜਰ",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.anyone": "ਕੋਈ ਵੀ",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.atLeastOneMethodMustStayEnabled": "ਘੱਟੋ-ਘੱਟ ਇੱਕ ਪ੍ਰਮਾਣਿਕਤਾ ਵਿਧੀ ਸਮਰੱਥ ਰਹਿਣੀ ਚਾਹੀਦੀ ਹੈ, ਇਸ ਲਈ ਇਸਨੂੰ ਬੰਦ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ।",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "ਪੁਸ਼ਟੀ ਕੀਤੀ ਈਮੇਲ",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhoneNumber": "ਪੁਸ਼ਟੀ ਕੀਤਾ ਫ਼ੋਨ ਨੰਬਰ",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription": "ਭਾਗੀਦਾਰ ਇੱਕ ਵਾਰ ਦੇ ਕੋਡ ਨਾਲ ਈਮੇਲ ਪਤੇ ਦੀ ਪੁਸ਼ਟੀ ਕਰਦਾ ਹੈ।",

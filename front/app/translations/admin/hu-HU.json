@@ -4145,7 +4145,6 @@
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "Felmérés kérdése",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.adminManagersOnly": "Csak adminisztrátorok és menedzserek",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.anyone": "Bárki",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.atLeastOneMethodMustStayEnabled": "Legalább egy hitelesítési módnak bekapcsolva kell maradnia, ezért ez nem kapcsolható ki.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "Megerősített e-mail",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhoneNumber": "Megerősített telefonszám",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription": "A résztvevő egy egyszeri kóddal erősíti meg az e-mail-címét.",

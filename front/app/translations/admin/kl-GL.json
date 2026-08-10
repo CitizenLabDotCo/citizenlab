@@ -4145,7 +4145,6 @@
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "Misissuinermi apeqqut",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.adminManagersOnly": "Aqutsisunut taamaallaat",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.anyone": "Kikkulluunniit",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.atLeastOneMethodMustStayEnabled": "Ikinnerpaamik kinaassutsimik uppernarsaanermut periuseq ataaseq atortuussaaq, taamaattumik una qaminneqarsinnaanngilaq.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "E-maili uppernarsagaq",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhoneNumber": "Oqarasuaatip normua uppernarsagaq",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription": "Peqataasup e-mailini kodimik ataasiartumik atugassamik uppernarsassavaa.",

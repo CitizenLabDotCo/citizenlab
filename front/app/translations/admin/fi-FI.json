@@ -4145,7 +4145,6 @@
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "Kysely kysymys",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.adminManagersOnly": "Vain ylläpitäjät ja hallinnoijat",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.anyone": "Kuka tahansa",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.atLeastOneMethodMustStayEnabled": "Vähintään yhden tunnistautumistavan on oltava käytössä, joten tätä ei voi poistaa käytöstä.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "Vahvistettu sähköposti",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhoneNumber": "Vahvistettu puhelinnumero",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription": "Osallistuja vahvistaa sähköpostiosoitteen kertakäyttökoodilla.",

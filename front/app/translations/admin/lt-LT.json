@@ -4145,7 +4145,6 @@
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "Apklausos klausimas",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.adminManagersOnly": "Tik administratoriams ir vadybininkams",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.anyone": "Bet kas",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.atLeastOneMethodMustStayEnabled": "Bent vienas autentifikavimo būdas turi likti įjungtas, todėl šio išjungti negalima.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "Patvirtintas el. paštas",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhoneNumber": "Patvirtintas telefono numeris",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription": "Dalyvis patvirtina el. pašto adresą vienkartiniu kodu.",

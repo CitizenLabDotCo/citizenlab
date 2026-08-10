@@ -4145,7 +4145,6 @@
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "سروے کا سوال",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.adminManagersOnly": "صرف ایڈمن اور مینیجرز",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.anyone": "ہر کوئی",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.atLeastOneMethodMustStayEnabled": "کم از کم ایک تصدیقی طریقہ فعال رہنا چاہیے، اس لیے اسے بند نہیں کیا جا سکتا۔",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "تصدیق شدہ ای میل",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhoneNumber": "تصدیق شدہ فون نمبر",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription": "شریک ون ٹائم کوڈ کے ذریعے ای میل ایڈریس کی تصدیق کرتا ہے۔",

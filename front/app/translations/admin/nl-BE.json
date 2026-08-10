@@ -4145,7 +4145,6 @@
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "Enquêtevraag",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.adminManagersOnly": "Alleen platformbeheerder & beheerders",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.anyone": "Iedereen",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.atLeastOneMethodMustStayEnabled": "Ten minste één authenticatiemethode moet ingeschakeld blijven, dus deze kan niet worden uitgeschakeld.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "Bevestigd e-mailadres",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhoneNumber": "Bevestigd telefoonnummer",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription": "Deelnemer bevestigt een e-mailadres met een eenmalige code.",
