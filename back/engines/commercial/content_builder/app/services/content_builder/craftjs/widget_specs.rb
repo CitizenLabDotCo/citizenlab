@@ -2,30 +2,20 @@
 
 module ContentBuilder
   module Craftjs
-    # The registry of widget conventions, enforced by Validator: linkedNodes 'slots',
-    # prop 'enums', and which props are 'multilocs'. 'slots' are declared in visual
-    # (left-to-right) order — Query relies on this for traversal order, which cannot
-    # be read from stored graphs because jsonb does not preserve key order.
+    # The widget conventions enforced by Validator: linkedNodes 'slots', prop 'enums',
+    # and which props are 'multilocs'. 'slots' are declared in visual (left-to-right)
+    # order — Query relies on this because jsonb does not preserve key order.
     #
-    # The LLM-facing documentation of these widgets lives in
-    # McpServer::LayoutWidgets; a spec there asserts docs and specs cannot
-    # drift. The rules live here and not there because consumers of Query and
-    # Validator (core app, analysis, admin_api) cannot depend on the mcp_server
-    # engine.
+    # The LLM-facing documentation of these widgets lives in McpServer::LayoutWidgets;
+    # a spec there keeps the two in sync. The rules live here so consumers outside the
+    # mcp_server engine can use them.
     #
-    # Allowlist = the FE project page toolbox (the description-builder widget set plus
-    # HtmlBlockMultiloc), the fixed page scaffold (ProjectPageLayoutService::
-    # SCAFFOLD_WIDGETS), and node types that occur inside existing graphs. The widgets
-    # the FE purges on read (FolderTitle, Published, Selection, Spotlight, FolderFiles)
-    # are deliberately absent.
-    #
-    # The '' entries in enums: the FE craft.props defaults write empty strings for
-    # size and columnLayout, so stored graphs contain them.
+    # The allowlist covers the FE project page toolbox, the fixed page scaffold and
+    # node types found in existing graphs. The '' enum entries exist because the FE
+    # writes empty strings as prop defaults.
     module WidgetSpecs
-      # Node types kept only for the graphs that already contain them: they validate and
-      # can be edited or deleted in place, but nothing may create a new one.
-      # ProjectDescriptionSection used to wrap the page content; the FE unwraps it on
-      # load, so stored graphs carry one until their next save.
+      # Node types kept only for graphs that already contain them: editable and
+      # deletable in place, but never newly created.
       LEGACY_WIDGETS = %w[RichTextMultiloc ProjectDescriptionSection].freeze
 
       SPECS = {

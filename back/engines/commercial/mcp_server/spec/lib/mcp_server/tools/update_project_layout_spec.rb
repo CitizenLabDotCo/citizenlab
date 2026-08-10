@@ -64,8 +64,7 @@ describe McpServer::Tools::UpdateProjectLayout do
       let!(:layout) { create(:layout, project: project, code: 'project_page', craftjs_json: initial_graph) }
 
       it 'edits a single node (symbol-keyed node params) without touching others' do
-        # Nested node hashes use symbol keys here, matching how the MCP SDK actually
-        # delivers tool call arguments; the tool must deep_stringify them before merging.
+        # Symbol keys, matching how the MCP SDK delivers tool call arguments.
         updated_node = {
           type: { resolvedName: 'TextMultiloc' },
           nodes: [],
@@ -122,9 +121,8 @@ describe McpServer::Tools::UpdateProjectLayout do
         expect(layout.craftjs_json[body]['nodes']).to eq(seeded_widget_ids)
       end
 
-      # Disabling a project page layout hides the whole page — banner, title, phases and
-      # events included — from everyone but moderators, with nothing to fall back to and
-      # no admin UI to undo it, so the tool has no write path for it.
+      # Disabling a page layout hides the whole page with no admin UI to undo it,
+      # so the tool has no write path for it.
       it 'offers no way to disable the layout' do
         expect(described_class.new.input_schema[:properties]).not_to have_key(:enabled)
 
@@ -256,8 +254,7 @@ describe McpServer::Tools::UpdateProjectLayout do
           expect(response.content.first[:text]).to include('also changes: parent')
         end
 
-        # `nodes` is the only part of the body node a patch owns; the rest of it
-        # (custom.region, isCanvas, hidden) is what keeps the node locked in the editor.
+        # `nodes` is the only part of the body node a patch may change.
         %w[custom isCanvas hidden displayName].each do |key|
           it "rejects a body patch that changes #{key}" do
             tampered = initial_graph[body].merge(key => key == 'custom' ? {} : 'tampered')
@@ -287,8 +284,7 @@ describe McpServer::Tools::UpdateProjectLayout do
         end
       end
 
-      # Scaffold, so they cannot be added, deleted or edited (covered above) — but their
-      # place in the page is the body's `nodes` array, which a patch does own.
+      # Scaffold nodes, but their position in the body's `nodes` array may change.
       describe 'the phases and events widgets' do
         it 'reorders them among the content' do
           response = run_mcp_tool(
@@ -318,8 +314,8 @@ describe McpServer::Tools::UpdateProjectLayout do
           expect(layout.reload.craftjs_json).to eq(initial_graph)
         end
 
-        # Dropping a scaffold id from the body's `nodes` detaches rather than deletes it;
-        # the Validator catches the orphan, so the page cannot lose them by omission.
+        # Dropping a scaffold id from the body's `nodes` detaches it; the Validator
+        # catches the orphan.
         it 'rejects a body patch that drops one from its nodes array' do
           response = run_mcp_tool(
             described_class,
@@ -421,8 +417,7 @@ describe McpServer::Tools::UpdateProjectLayout do
         expect(layout.reload.craftjs_json).not_to have_key('LEG')
       end
 
-      # Reusing an existing id must not be a way in: the exemption is for the legacy node
-      # that is already there, not for any id that happens to exist.
+      # Reusing an existing node's id must not bypass the legacy-widget check.
       it 'rejects converting an existing content node into a legacy one' do
         legacy = craftjs_node('RichTextMultiloc', parent: body, props: { 'text' => { 'en' => '<p>Smuggled</p>' } })
 
@@ -461,9 +456,8 @@ describe McpServer::Tools::UpdateProjectLayout do
       end
     end
 
-    # Pages saved before the page builder was unlocked still wrap their content in a
-    # ProjectDescriptionSection; the FE unwraps it on load, and the backend tolerates it
-    # until then.
+    # Older pages still wrap their content in a ProjectDescriptionSection; the FE
+    # unwraps it on load.
     context 'with a legacy ProjectDescriptionSection wrapper' do
       let(:wrapped_graph) do
         project_page_craftjs(
@@ -493,9 +487,8 @@ describe McpServer::Tools::UpdateProjectLayout do
       let!(:layout) { create(:layout, project: project, code: 'project_page', craftjs_json: project_page_craftjs) }
 
       context 'importing a remote image' do
-        # CarrierWave's SSRF protection (ssrf_filter) resolves the hostname via real DNS
-        # before the request reaches Net::HTTP, so the URL must be a real, publicly
-        # resolvable host — WebMock still intercepts the actual HTTP request below it.
+        # CarrierWave's SSRF protection resolves the hostname via real DNS before
+        # WebMock intercepts the request, so the host must actually resolve.
         let(:image_url) { 'https://example.com/cat.png' }
 
         let(:image_patch) do

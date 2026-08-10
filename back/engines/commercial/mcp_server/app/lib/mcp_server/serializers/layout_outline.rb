@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
 # Builds a compact, visually-ordered outline of a craftjs_json graph so an LLM can
-# navigate the layout (find node ids, parents and slots) without re-deriving the
-# structure from the raw graph. Traversal (visual order, tolerance of unvalidated
-# stored graphs) is ContentBuilder::Craftjs::Query.each_visual — the same walk
-# VisibleTextualMultilocs uses — so this class only formats entries.
+# find node ids, parents and slots without parsing the raw graph. Traversal comes
+# from ContentBuilder::Craftjs::Query.each_visual; this class only formats entries.
 class McpServer::Serializers::LayoutOutline
   # JSON schema of #entries, for tools that expose the outline in their output_schema.
   JSON_SCHEMA = {
@@ -32,8 +30,7 @@ class McpServer::Serializers::LayoutOutline
     @json = craftjs_json
   end
 
-  # One entry per node, in visual order. Full entry shape (keys with nil values are
-  # omitted, so `parent`/`canvas`/`locked`/`slot`/`text` are only present when meaningful):
+  # One entry per node, in visual order; keys with nil values are omitted:
   #   { id:, widget:, parent:, depth:, canvas: true, locked: true, slot:, text: }
   def entries
     ContentBuilder::Craftjs::Query.each_visual(@json).map do |id, node, depth, slot|
@@ -57,10 +54,8 @@ class McpServer::Serializers::LayoutOutline
     }.compact
   end
 
-  # Deliberately the widget type, and not the stored custom.locked/custom.region markers
-  # the FE writes: those markers moved when the page builder was unlocked and differ
-  # between pages saved before and after, so reading them would make the outline
-  # disagree with what update_project_layout actually enforces.
+  # Based on the widget type, not the custom.locked/custom.region markers the FE
+  # writes, so the outline always matches what update_project_layout enforces.
   def locked?(widget)
     ContentBuilder::ProjectPageLayoutService::SCAFFOLD_WIDGETS.include?(widget)
   end

@@ -103,8 +103,7 @@ describe McpServer::Serializers::LayoutOutline do
       )
     end
 
-    # The markers the FE writes are not the authority — the widget type is, so that the
-    # outline cannot disagree with what update_project_layout enforces.
+    # The widget type is the authority, not the markers the FE writes.
     it 'ignores custom.locked and custom.region markers on content' do
       json['T1']['custom'] = { 'region' => true, 'locked' => true }
 

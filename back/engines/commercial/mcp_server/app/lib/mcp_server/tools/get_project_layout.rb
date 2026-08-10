@@ -44,9 +44,7 @@ class McpServer::Tools::GetProjectLayout < McpServer::BaseTool
         code: ContentBuilder::ProjectPageLayoutService::CODE
       )
 
-      # Every project gets a page layout at creation (and a rake task backfilled older
-      # ones), so a missing layout is a data anomaly rather than a state to repair here
-      # — but one nobody would otherwise hear about.
+      # There should always be a page layout, but covering just in case.
       if layout.nil?
         ErrorReporter.report_msg('Project page layout is missing', extra: { project_id: project.id })
         return error(

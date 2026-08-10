@@ -10,8 +10,7 @@ module ContentBuilder
 
       # Orders textual (text & title) multilocs found in the craftjs by how they appear in the layout,
       # so that columns are ordered from left to right, and texts from top to bottom within each column.
-      # Top to bottom ordering within containers is also respected (the visual order
-      # comes from Query.each_visual, shared with McpServer::Serializers::LayoutOutline).
+      # Top to bottom ordering within containers is also respected (via Query.each_visual).
       # Ignores ImageMultiloc nodes, which may include an image alt-text.
       def extract
         Query.each_visual(@craftjs) do |_id, node, _depth, _slot|
