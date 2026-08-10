@@ -221,8 +221,10 @@ module ContentBuilder
           value = node['props'][prop]
           next if value.nil? || values.include?(value)
 
+          # The legacy '' member is accepted but never suggested: listing it renders as a
+          # dangling comma that reads like a missing option.
           errors << error(id, :invalid_enum_value,
-            "props.#{prop} is '#{value}' but must be one of: #{values.join(', ')}")
+            "props.#{prop} is '#{value}' but must be one of: #{values.compact_blank.join(', ')}")
         end
 
         (spec['multilocs'] || []).each do |prop|

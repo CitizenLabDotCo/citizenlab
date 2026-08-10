@@ -23,21 +23,17 @@ module ContentBuilder
     # these types, and none of them may be added, deleted or edited. The one editable
     # part is BODY_WIDGET's `nodes` array.
     #
-    # The phases and events widgets are kept fixed as a conservative choice (the FE
-    # editor can move them), so a client cannot delete the phase timeline it has no
-    # documented way to rebuild.
-    SCAFFOLD_WIDGETS = [
-      'ProjectPageRoot', 'ProjectBanner', 'ProjectTitle', BODY_WIDGET,
-      'PhasesWidget', 'EventsWidget'
-    ].freeze
+    # The seeded phases and events widgets are deliberately absent: they are
+    # ordinary widgets the FE toolbox can move or delete.
+    SCAFFOLD_WIDGETS = ['ProjectPageRoot', 'ProjectBanner', 'ProjectTitle', BODY_WIDGET].freeze
 
     # Scaffold widgets rendered from the project record rather than from layout props.
     PROJECT_RECORD_WIDGETS = %w[ProjectBanner ProjectTitle].freeze
 
-    # Whether a node is part of the fixed scaffold. Deliberately raises on anything
-    # that is not a node.
+    # Whether a node is part of the fixed scaffold; nil (an id absent from the
+    # graph) is not.
     def self.scaffold?(node)
-      SCAFFOLD_WIDGETS.include?(Craftjs::Query.resolved_name(node))
+      !node.nil? && SCAFFOLD_WIDGETS.include?(Craftjs::Query.resolved_name(node))
     end
 
     UNSUPPORTED_WIDGETS = %w[

@@ -57,12 +57,20 @@ class McpServer::LayoutWidgets
         custom: {"title":{"id":"app.containers.AdminPage.ProjectDescription.whiteSpace","defaultMessage":"White space"}}
     DOC
     'AboutBox' => <<~DOC,
-      AboutBox — project participation box. props: {"hideParticipationAvatars":false}
+      AboutBox — project participation box (the actions a visitor can take). props: {"hideParticipationAvatars":false,"hiddenOptionIds":["<phase id>"],"collapsedButtonTitleMultiloc":{"<locale>":"label"}}
+        All optional; collapsedButtonTitleMultiloc labels the button shown when several options collapse.
         custom: {"title":{"id":"app.containers.admin.ContentBuilder.participationBox","defaultMessage":"Participation Box"},"noPointerEvents":true}
     DOC
     'FileAttachment' => <<~DOC,
       FileAttachment — downloadable file. props: {"fileId":"<Files::File id>"}
         custom: {"title":{"id":"app.containers.admin.ContentBuilder.fileAttachment","defaultMessage":"File attachment"}}
+    DOC
+    'PageLink' => <<~DOC,
+      PageLink — link to one of the project's static pages. props: {"pageId":"<CustomPage id>","displayType":"link"|"preview"}
+        "link" renders a single titled row; "preview" renders the title plus an excerpt of the page.
+        custom: {"title":{"id":"app.containers.admin.ContentBuilder.projectPageLink","defaultMessage":"Project Page Link"},"noPointerEvents":true}
+        No tool here lists static pages, so only reuse a pageId already in this layout or one
+        the user gives you — never invent one. A pageId that resolves to nothing renders nothing.
     DOC
     'TwoColumn' => <<~DOC,
       TwoColumn — two side-by-side columns. props: {"columnLayout":"1-1"|"2-1"|"1-2"}
@@ -76,10 +84,36 @@ class McpServer::LayoutWidgets
       ThreeColumn — three columns, same Container pattern with slots "column1", "column2", "column3". props: {}
         custom: {"title":{"id":"app.containers.admin.ContentBuilder.threeColumnLayout","defaultMessage":"3 column"},"hasChildren":true}
     DOC
-    'HtmlBlockMultiloc' => <<~DOC
+    'HtmlBlockMultiloc' => <<~DOC,
       HtmlBlockMultiloc — raw HTML block (sanitized server-side; scripts/forms are stripped). props: {"html":{"<locale>":"<full html>"}}
         custom: {"title":{"id":"app.containers.admin.content_builder.html_block.label","defaultMessage":"HTML block"}}
         Only for content the other widgets cannot express; prefer TextMultiloc for text.
+    DOC
+    'PhasesWidget' => <<~DOC,
+      PhasesWidget — the project's phase timeline plus the input feed of the current phase.
+        props: {"sectionBackground":"colored"|"white"}
+        custom: {"title":{"id":"app.components.ProjectPageBuilder.Widgets.phasesWidgetTitle","defaultMessage":"Phases"},"noPointerEvents":true}
+        Renders entirely from the project's phases, which are managed with create_phase/update_phase.
+        Keep one on the page unless the project has no participation at all. sectionBackground
+        defaults to "colored" as a direct child of ProjectPageBody, "white" when nested deeper.
+        This and EventsWidget paint a full-width band: alternate their sectionBackground with
+        the plain content around them rather than stacking two "colored" bands together.
+    DOC
+    'EventsWidget' => <<~DOC,
+      EventsWidget — the project's upcoming and past events. props: {"sectionBackground":"colored"|"white"}
+        custom: {"title":{"id":"app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle","defaultMessage":"Events"},"noPointerEvents":true}
+        Renders entirely from the project's events (create them with create_event); it renders
+        nothing when there are none. Defaults to "white".
+    DOC
+    'ExtraSurveysWidget' => <<~DOC
+      ExtraSurveysWidget — call to action for one survey that runs alongside the timeline.
+        props: {"surveyPhaseId":"<phase id>","buttonFormat":"button"|"card","buttonStyle":"primary"|"secondary-outlined","buttonText":{"<locale>":"label"}}
+        custom: {"title":{"id":"app.components.ProjectPageBuilder.Widgets.extraSurveysWidgetTitle","defaultMessage":"Extra surveys"},"noPointerEvents":true}
+        surveyPhaseId must be a phase with placement_type "standalone" and participation_method
+        "native_survey" (list_phases). No tool here creates one: if the project has none, leave
+        this widget out and say so. "card" shows title, dates and status; "button" is just the
+        button. Defaults: buttonFormat "card", buttonStyle "primary". Only renders when the
+        platform has the parallel_participation feature.
     DOC
   }.freeze
 
@@ -92,51 +126,32 @@ class McpServer::LayoutWidgets
 
     ## Page scaffold (fixed — never add, move, delete or edit these nodes)
 
-    Every project page has exactly one node of each scaffold type, in this tree:
-    ROOT (ProjectPageRoot) → ProjectBanner (header image), ProjectTitle, #{BODY_WIDGET} →
-    PhasesWidget (phase timeline + input feed), EventsWidget.
+    Every project page contains exactly one node of each scaffold type, in this tree:
+    ROOT (ProjectPageRoot) → ProjectBanner (header image), ProjectTitle, #{BODY_WIDGET}.
 
+    - The one scaffold change allowed is sending the #{BODY_WIDGET} node itself with an
+      updated `nodes` array, to add, remove or reorder the page's top-level content.
+      Everything else about that node — `parent`, `custom`, `props` — must come back
+      exactly as get_project_layout returned it; only `nodes` may change. Keep every id
+      you still want on the page: dropping one detaches the node instead of deleting it,
+      and the update is rejected. Use delete_node_ids to remove things.
     - The project title and header image are project attributes, not layout content: change
       them with the update_project tool (title_multiloc / remote_header_bg_url). The
       ProjectTitle/ProjectBanner widgets render from the project record.
-    - The phase timeline and the events list are already on every page. Never rebuild
-      phases or events as hand-made content. You may move them within the page (see
-      below), but not delete or edit them.
 
     ## Page content (yours to arrange)
 
-    ALL content lives inside the #{BODY_WIDGET} node, whose `nodes` array is the page in
-    top-to-bottom order — including where the phases and events widgets sit.
-
-    - To add, remove or reorder content at the top level, send the #{BODY_WIDGET} node
-      itself with an updated `nodes` array. Everything else about that node — `parent`,
-      `custom`, `props` — must come back exactly as get_project_layout returned it; only
-      `nodes` may change. Keep every id you were given in that array: dropping one
-      detaches the node instead of deleting it, and the update is rejected.
-    - Legacy pages may hold their migrated description in a single RichTextMultiloc node
-      (props: {"text":{"<locale>":"<html>"}}), or wrap their content in a
-      ProjectDescriptionSection. Edit or delete those in place; creating new ones is
-      rejected — use TextMultiloc for rich text, and put content straight in the body.
+    - ALL your content lives inside the #{BODY_WIDGET} node.
+    - PhasesWidget, EventsWidget and ExtraSurveysWidget are ordinary widgets: reorder, nest,
+      remove or leave them out like any other.
+    - Two node types are legacy: a RichTextMultiloc holding a migrated description, and a
+      ProjectDescriptionSection wrapping the content of a page saved before the builder was
+      unlocked. Edit them in place or delete them, but creating new ones is rejected.
+    - Ignore any custom.locked marker on a stored node — this document is what may be edited.
   RULES
 
-  CHEATSHEET = <<~CHEATSHEET.freeze
-    #{FORMAT_RULES}
-    Design tips — a description of only text blocks reads as a wall of text; vary the widgets:
-    - Recommended shape: intro text → TwoColumn or ThreeColumn for parallel content
-      (process stages, "why / what you influence") → ButtonMultiloc for the main call to
-      action → AccordionMultiloc per FAQ/concern → AboutBox last.
-    - Place a WhiteSpace widget between sections (after the intro, before each heading,
-      around column blocks) — it is what gives layouts a clean, uncrowded look. Use
-      "medium" between sections, "small" within them; add "withDivider": true for a
-      subtle horizontal rule at strong topic changes.
-
-    ## Widgets (insertable anywhere inside the #{BODY_WIDGET} node)
-
-    #{DOCS.values.join("\n")}
-  CHEATSHEET
-
-  # Format rules plus docs for just the given widgets — deliberately not the full
-  # cheatsheet, to keep validation-error responses small.
+  # Format rules plus docs for just the given widgets, to keep validation-error
+  # responses small. (reference_for(DOCS.keys) is the full cheatsheet.)
   def self.reference_for(widget_names)
     [FORMAT_RULES, *DOCS.values_at(*widget_names.uniq).compact].join("\n")
   end

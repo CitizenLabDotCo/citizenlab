@@ -89,26 +89,26 @@ describe McpServer::Serializers::LayoutOutline do
       project_page_craftjs('T1' => text_node(parent: 'PROJECT_PAGE_BODY', text: '<p>Hi</p>'))
     end
 
-    it 'marks the page scaffold and nothing else' do
-      locked = entries.to_h { |entry| [entry[:id], entry[:locked]] }
+    let(:locked) { entries.to_h { |entry| [entry[:id], entry[:locked]] } }
 
-      expect(locked).to eq(
+    it 'marks the page scaffold, and omits the key on ordinary widgets and content' do
+      expect(locked).to include(
         'ROOT' => true,
         'PROJECT_PAGE_BANNER' => true,
         'PROJECT_PAGE_TITLE' => true,
         'PROJECT_PAGE_BODY' => true,
-        'PROJECT_PAGE_PHASES' => true,
-        'PROJECT_PAGE_EVENTS' => true,
+        'PROJECT_PAGE_PHASES' => nil,
+        'PROJECT_PAGE_EVENTS' => nil,
         'T1' => nil
       )
     end
 
     # The widget type is the authority, not the markers the FE writes.
-    it 'ignores custom.locked and custom.region markers on content' do
-      json['T1']['custom'] = { 'region' => true, 'locked' => true }
+    it 'ignores the custom.locked markers older seeds wrote on the phases and events widgets' do
+      json['PROJECT_PAGE_PHASES']['custom']['locked'] = true
+      json['T1']['custom'] = { 'region' => true }
 
-      locked = entries.to_h { |entry| [entry[:id], entry[:locked]] }
-      expect(locked).to include('T1' => nil)
+      expect(locked).to include('PROJECT_PAGE_PHASES' => nil, 'T1' => nil)
     end
   end
 

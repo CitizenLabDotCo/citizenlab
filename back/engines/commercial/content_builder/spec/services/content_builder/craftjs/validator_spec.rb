@@ -282,6 +282,19 @@ RSpec.describe ContentBuilder::Craftjs::Validator do
       )
     end
 
+    # Some enums accept '' because the FE craft.props defaults write it, but suggesting it
+    # back would render as a trailing comma that reads like a missing option.
+    it 'leaves the legacy empty-string member out of the suggested values' do
+      widget_specs['ButtonMultiloc']['enums']['type'] = ['primary', 'secondary', '']
+      json['ROOT']['nodes'] = ['B']
+      json.delete('T')
+      json['B'] = craftjs_node('ButtonMultiloc', parent: 'ROOT', props: { 'type' => 'bogus' })
+
+      expect(errors.map(&:to_s)).to eq(
+        ["node B: props.type is 'bogus' but must be one of: primary, secondary"]
+      )
+    end
+
     it 'rejects a non-multiloc text prop' do
       json['T']['props']['text'] = 'plain string'
 

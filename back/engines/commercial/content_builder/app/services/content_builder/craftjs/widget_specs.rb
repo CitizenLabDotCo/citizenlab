@@ -10,9 +10,12 @@ module ContentBuilder
     # a spec there keeps the two in sync. The rules live here so consumers outside the
     # mcp_server engine can use them.
     #
-    # The allowlist covers the FE project page toolbox, the fixed page scaffold and
-    # node types found in existing graphs. The '' enum entries exist because the FE
-    # writes empty strings as prop defaults.
+    # The allowlist covers the FE project page toolbox (including the phases, events,
+    # extra-surveys and PageLink widgets), the page scaffold and node types found in
+    # existing graphs. ExtraSurveysWidget and PageLink sit behind feature flags, but
+    # those gate rendering or the FE toolbox, never whether a stored graph may hold
+    # the node. The '' enum entries exist because the FE writes empty strings as
+    # prop defaults.
     module WidgetSpecs
       # Node types kept only for graphs that already contain them: editable and
       # deletable in place, but never newly created.
@@ -28,6 +31,7 @@ module ContentBuilder
           }
         },
         'ImageMultiloc' => { 'multilocs' => %w[alt] },
+        'PageLink' => { 'enums' => { 'displayType' => %w[link preview] } },
         'IframeMultiloc' => {
           'multilocs' => %w[title],
           'enums' => {
@@ -40,7 +44,7 @@ module ContentBuilder
           'slots' => %w[accordion-content]
         },
         'WhiteSpace' => { 'enums' => { 'size' => ['small', 'medium', 'large', ''] } },
-        'AboutBox' => {},
+        'AboutBox' => { 'multilocs' => %w[collapsedButtonTitleMultiloc] },
         'FileAttachment' => {},
         'TwoColumn' => {
           'slots' => %w[left right],
@@ -48,21 +52,29 @@ module ContentBuilder
         },
         'ThreeColumn' => { 'slots' => %w[column1 column2 column3] },
         'HtmlBlockMultiloc' => { 'multilocs' => %w[html] },
+        'PhasesWidget' => { 'enums' => { 'sectionBackground' => %w[colored white] } },
+        'EventsWidget' => { 'enums' => { 'sectionBackground' => %w[colored white] } },
+        'ExtraSurveysWidget' => {
+          'multilocs' => %w[buttonText],
+          'enums' => {
+            'buttonFormat' => %w[button card],
+            'buttonStyle' => %w[primary secondary-outlined]
+          }
+        },
         'Container' => {},
         'Box' => {},
         'ImageTextCards' => { 'slots' => %w[image-text-cards] },
         'InfoWithAccordions' => { 'slots' => %w[info-with-accordions] },
         # Legacy node types (LEGACY_WIDGETS); edit in place, never create.
         'RichTextMultiloc' => { 'multilocs' => %w[text] },
+        # The container that used to hold all page content. No longer seeded, but stored
+        # graphs carry one until the editor next saves them flat. Tolerated, never created.
         'ProjectDescriptionSection' => {},
-        # The fixed project page scaffold (no rules: locked nodes patches may not touch).
+        # The project page scaffold (no rules: nodes patches may not add, move or delete).
         'ProjectPageRoot' => {},
         'ProjectBanner' => {},
         'ProjectTitle' => {},
-        'ProjectPageBody' => {},
-        # Seeded on every project page, but ordinary widgets: movable and deletable.
-        'PhasesWidget' => {},
-        'EventsWidget' => {}
+        'ProjectPageBody' => {}
       }.freeze
     end
   end
