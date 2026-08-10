@@ -3,20 +3,16 @@
 module ContentBuilder
   module Craftjs
     # Validates a craftjs_json node graph. Returns a list of Error values (empty =
-    # valid), each carrying the offending node id and a machine-readable code, and
-    # stringifying to a client-facing message so an API client can correct and retry.
+    # valid), each carrying the offending node id, a machine-readable code and a
+    # client-facing message.
     #
     # Two layers of checks:
-    # - structural: the graph is a consistent craft.js document (ROOT present, parent/child
-    #   references bidirectional, no orphans, double references or cycles, everything
-    #   reachable). Always applied to the whole graph.
-    # - conventions (only when `widget_specs` is given): platform rules — allowed widget
-    #   types, node id format, undeclared node keys, linkedNodes slot names, prop enums
-    #   and multiloc shapes. The specs table maps
-    #   resolvedName => { 'slots' => [...], 'enums' => { prop => [...] }, 'multilocs' => [...] }.
-    #   Pass `convention_scope` (an array of node ids) to check only those nodes — callers
-    #   applying a partial update use this so pre-existing nodes they did not touch (legacy
-    #   widgets, shapes from before these rules existed) cannot fail the whole update.
+    # - structural (always, on the whole graph): ROOT present, parent/child references
+    #   consistent, no orphans, double references or cycles.
+    # - conventions (only when `widget_specs` is given): allowed widget types, node id
+    #   format, node keys, linkedNodes slot names, prop enums and multiloc shapes.
+    #   Pass `convention_scope` (an array of node ids) to check only those nodes, so a
+    #   partial update is not failed by pre-existing nodes it did not touch.
     class Validator
       NODE_KEYS = {
         'nodes' => Array,
@@ -24,17 +20,16 @@ module ContentBuilder
         'props' => Hash
       }.freeze
 
-      # The exact key set craftjs nodes carry (the cheatsheet already documents it as
-      # exhaustive); anything else would be silently persisted into the stored jsonb.
+      # The exact key set craftjs nodes carry; anything else would be silently
+      # persisted into the stored jsonb.
       ALLOWED_NODE_KEYS = %w[type parent props custom hidden isCanvas displayName nodes linkedNodes].freeze
 
-      # craft.js generates 10-char nanoid ids from this alphabet. Only the alphabet and
-      # a generous length cap are enforced, so hand-written ids remain possible.
+      # craft.js generates 10-char nanoid ids; only the alphabet and a generous
+      # length cap are enforced, so hand-written ids remain possible.
       ID_FORMAT = /\A[A-Za-z0-9_-]{1,64}\z/
 
-      # One validation problem. `node_id` is the offending node (nil for document-level
-      # problems), `code` is a stable machine-readable symbol, `message` the client-facing
-      # prose. to_s renders the full message as API clients see it.
+      # One validation problem; `node_id` is nil for document-level problems. to_s
+      # renders the message as API clients see it.
       Error = Data.define(:node_id, :code, :message) do
         def to_s
           return message if node_id.nil?
@@ -44,10 +39,14 @@ module ContentBuilder
         end
       end
 
-      def initialize(craftjs_json, widget_specs: nil, convention_scope: nil)
+      # @param [String, Hash] root_type the literal `type` value the ROOT node must carry:
+      #   'div' for description layouts, { 'resolvedName' => 'ProjectPageRoot' } for
+      #   project pages.
+      def initialize(craftjs_json, widget_specs: nil, convention_scope: nil, root_type: 'div')
         @json = craftjs_json
         @widget_specs = widget_specs
         @convention_scope = convention_scope
+        @root_type = root_type
       end
 
       # @return [Array<Error>]
@@ -84,8 +83,8 @@ module ContentBuilder
         errors = []
         reference_counts = Hash.new(0)
 
-        # ROOT is the document root: nothing may point at it and it has no parent.
-        # Together with the exactly-one-reference rule below this also rules out cycles.
+        # Nothing may point at ROOT and it has no parent; together with the
+        # exactly-one-reference rule below this also rules out cycles.
         errors << error('ROOT', :root_with_parent, "must not have a 'parent'") if @json['ROOT']['parent'].present?
 
         @json.each do |id, node|
@@ -101,9 +100,8 @@ module ContentBuilder
                 "'parent' is '#{child['parent']}' but the node is a #{via} child of '#{id}'")
             end
           end
-          # NOTE: no isCanvas requirement for parents with `nodes` children — legacy graphs
-          # (e.g. old TwoColumn nodes holding their column Containers directly in `nodes`)
-          # violate it and still render fine.
+          # NOTE: no isCanvas requirement for parents with `nodes` children — legacy
+          # graphs violate it and still render fine.
         end
 
         @json.each_key do |id|
@@ -140,7 +138,7 @@ module ContentBuilder
 
         if in_scope?('ROOT')
           root = @json['ROOT']
-          errors << error('ROOT', :root_type, "'type' must be the string 'div'") if root['type'] != 'div'
+          errors << error('ROOT', :root_type, "'type' must be #{@root_type.to_json}") if root['type'] != @root_type
           errors << error('ROOT', :root_not_canvas, 'must be a canvas (isCanvas: true)') unless root['isCanvas']
           errors.concat(unknown_key_errors('ROOT', root))
         end
@@ -181,8 +179,7 @@ module ContentBuilder
         [error(id, :unknown_keys, "unknown keys: #{unknown.join(', ')} (allowed: #{ALLOWED_NODE_KEYS.join(', ')})")]
       end
 
-      # An object 'type' carries exactly craft.js's single key; anything else would
-      # be silently persisted into the stored jsonb.
+      # An object 'type' may only carry resolvedName.
       def type_key_errors(id, node)
         type = node['type']
         return [] unless type.is_a?(Hash)
@@ -203,10 +200,8 @@ module ContentBuilder
         end
       end
 
-      # Slot containers must be canvases. Checked over every linkedNodes edge in the
-      # graph — not per in-scope parent — so a patch that flips a stored container to
-      # isCanvas: false without re-sending its parent widget is still caught. The edge
-      # counts as in scope when either side of it is.
+      # Slot containers must be canvases. An edge is checked when either its parent
+      # or its child is in scope, so a patch changing only the container is caught.
       def slot_canvas_errors
         @json.flat_map do |id, node|
           node['linkedNodes'].filter_map do |_slot, child_id|
@@ -226,8 +221,10 @@ module ContentBuilder
           value = node['props'][prop]
           next if value.nil? || values.include?(value)
 
+          # The legacy '' member is accepted but never suggested: listing it renders as a
+          # dangling comma that reads like a missing option.
           errors << error(id, :invalid_enum_value,
-            "props.#{prop} is '#{value}' but must be one of: #{values.join(', ')}")
+            "props.#{prop} is '#{value}' but must be one of: #{values.compact_blank.join(', ')}")
         end
 
         (spec['multilocs'] || []).each do |prop|

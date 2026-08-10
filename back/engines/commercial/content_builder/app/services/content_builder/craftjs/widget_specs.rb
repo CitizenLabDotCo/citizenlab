@@ -2,26 +2,25 @@
 
 module ContentBuilder
   module Craftjs
-    # The registry of widget conventions, enforced by Validator: linkedNodes 'slots',
-    # prop 'enums', and which props are 'multilocs'. 'slots' are declared in visual
-    # (left-to-right) order — Query relies on this for traversal order, which cannot
-    # be read from stored graphs because jsonb does not preserve key order.
+    # The widget conventions enforced by Validator: linkedNodes 'slots', prop 'enums',
+    # and which props are 'multilocs'. 'slots' are declared in visual (left-to-right)
+    # order — Query relies on this because jsonb does not preserve key order.
     #
-    # The LLM-facing documentation of these widgets lives in
-    # McpServer::LayoutWidgets; a spec there asserts docs and specs cannot
-    # drift. The rules live here and not there because consumers of Query and
-    # Validator (core app, analysis, admin_api) cannot depend on the mcp_server
-    # engine.
+    # The LLM-facing documentation of these widgets lives in McpServer::LayoutWidgets;
+    # a spec there keeps the two in sync. The rules live here so consumers outside the
+    # mcp_server engine can use them.
     #
-    # Allowlist = the FE project-description toolbox (ProjectDescriptionBuilderToolbox)
-    # plus node types that occur inside existing graphs. Folder/homepage-only widgets
-    # (FolderTitle, Published, Selection, Spotlight, FolderFiles) are deliberately
-    # absent.
-    #
-    # The '' entries in enums: the FE craft.props defaults write empty strings for
-    # size and columnLayout (the renderer falls back to small / 1-2), so stored
-    # graphs contain them.
+    # The allowlist covers the FE project page toolbox (including the phases, events,
+    # extra-surveys and PageLink widgets), the page scaffold and node types found in
+    # existing graphs. ExtraSurveysWidget and PageLink sit behind feature flags, but
+    # those gate rendering or the FE toolbox, never whether a stored graph may hold
+    # the node. The '' enum entries exist because the FE writes empty strings as
+    # prop defaults.
     module WidgetSpecs
+      # Node types kept only for graphs that already contain them: editable and
+      # deletable in place, but never newly created.
+      LEGACY_WIDGETS = %w[RichTextMultiloc ProjectDescriptionSection].freeze
+
       SPECS = {
         'TextMultiloc' => { 'multilocs' => %w[text] },
         'ButtonMultiloc' => {
@@ -32,6 +31,7 @@ module ContentBuilder
           }
         },
         'ImageMultiloc' => { 'multilocs' => %w[alt] },
+        'PageLink' => { 'enums' => { 'displayType' => %w[link preview] } },
         'IframeMultiloc' => {
           'multilocs' => %w[title],
           'enums' => {
@@ -44,17 +44,37 @@ module ContentBuilder
           'slots' => %w[accordion-content]
         },
         'WhiteSpace' => { 'enums' => { 'size' => ['small', 'medium', 'large', ''] } },
-        'AboutBox' => {},
+        'AboutBox' => { 'multilocs' => %w[collapsedButtonTitleMultiloc] },
         'FileAttachment' => {},
         'TwoColumn' => {
           'slots' => %w[left right],
           'enums' => { 'columnLayout' => ['1-1', '2-1', '1-2', ''] }
         },
         'ThreeColumn' => { 'slots' => %w[column1 column2 column3] },
+        'HtmlBlockMultiloc' => { 'multilocs' => %w[html] },
+        'PhasesWidget' => { 'enums' => { 'sectionBackground' => %w[colored white] } },
+        'EventsWidget' => { 'enums' => { 'sectionBackground' => %w[colored white] } },
+        'ExtraSurveysWidget' => {
+          'multilocs' => %w[buttonText],
+          'enums' => {
+            'buttonFormat' => %w[button card],
+            'buttonStyle' => %w[primary secondary-outlined]
+          }
+        },
         'Container' => {},
         'Box' => {},
         'ImageTextCards' => { 'slots' => %w[image-text-cards] },
-        'InfoWithAccordions' => { 'slots' => %w[info-with-accordions] }
+        'InfoWithAccordions' => { 'slots' => %w[info-with-accordions] },
+        # Legacy node types (LEGACY_WIDGETS); edit in place, never create.
+        'RichTextMultiloc' => { 'multilocs' => %w[text] },
+        # The container that used to hold all page content. No longer seeded, but stored
+        # graphs carry one until the editor next saves them flat. Tolerated, never created.
+        'ProjectDescriptionSection' => {},
+        # The project page scaffold (no rules: nodes patches may not add, move or delete).
+        'ProjectPageRoot' => {},
+        'ProjectBanner' => {},
+        'ProjectTitle' => {},
+        'ProjectPageBody' => {}
       }.freeze
     end
   end

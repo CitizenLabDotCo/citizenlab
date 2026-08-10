@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-# Builders for canonical craft.js node fixtures. Shared by the content_builder and
-# mcp_server specs (this file is loaded by the main rails_helper's spec/support glob,
-# which engine specs also go through), so every spec builds graphs with the same
-# canonical key set and cannot drift from the shape the FE editor writes.
+# Builders for craft.js node fixtures, shared by the content_builder and mcp_server
+# specs, so every spec builds graphs with the canonical key set the FE editor writes.
 module CraftjsNodeHelpers
   # The ROOT document node. `props` defaults to the frame id the FE content builder writes.
   def craftjs_root(children_ids = [], props: { 'id' => 'e2e-content-builder-frame' }, **overrides)
@@ -17,6 +15,19 @@ module CraftjsNodeHelpers
       'displayName' => 'div',
       'linkedNodes' => {}
     }.merge(overrides.transform_keys(&:to_s))
+  end
+
+  # A project page graph in its persisted shape: the canonical scaffold (as seeded by
+  # ContentBuilder::ProjectPageLayoutService) plus the given content nodes. Content nodes
+  # whose parent is the page body are listed as its children, before the seeded phases
+  # and events widgets.
+  def project_page_craftjs(content = {})
+    scaffold = ContentBuilder::ProjectPageLayoutService.new.from_description_multiloc({})
+    body_id = ContentBuilder::ProjectPageLayoutService::BODY_ID
+    body = scaffold[body_id]
+    top_level = content.select { |_id, node| node['parent'] == body_id }.keys
+    scaffold[body_id] = body.merge('nodes' => top_level + body['nodes'])
+    scaffold.merge(content)
   end
 
   # A widget node with the full canonical key set. `widget` is the resolvedName;

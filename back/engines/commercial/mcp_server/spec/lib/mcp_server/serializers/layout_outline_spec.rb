@@ -84,6 +84,34 @@ describe McpServer::Serializers::LayoutOutline do
     end
   end
 
+  describe 'locked' do
+    let(:json) do
+      project_page_craftjs('T1' => text_node(parent: 'PROJECT_PAGE_BODY', text: '<p>Hi</p>'))
+    end
+
+    let(:locked) { entries.to_h { |entry| [entry[:id], entry[:locked]] } }
+
+    it 'marks the page scaffold, and omits the key on ordinary widgets and content' do
+      expect(locked).to include(
+        'ROOT' => true,
+        'PROJECT_PAGE_BANNER' => true,
+        'PROJECT_PAGE_TITLE' => true,
+        'PROJECT_PAGE_BODY' => true,
+        'PROJECT_PAGE_PHASES' => nil,
+        'PROJECT_PAGE_EVENTS' => nil,
+        'T1' => nil
+      )
+    end
+
+    # The widget type is the authority, not the markers the FE writes.
+    it 'ignores the custom.locked markers older seeds wrote on the phases and events widgets' do
+      json['PROJECT_PAGE_PHASES']['custom']['locked'] = true
+      json['T1']['custom'] = { 'region' => true }
+
+      expect(locked).to include('PROJECT_PAGE_PHASES' => nil, 'T1' => nil)
+    end
+  end
+
   describe 'text snippets' do
     let(:json) do
       {

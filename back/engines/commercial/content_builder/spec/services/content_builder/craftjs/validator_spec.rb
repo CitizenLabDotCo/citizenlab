@@ -8,11 +8,14 @@ RSpec.describe ContentBuilder::Craftjs::Validator do
   end
 
   let(:error_objects) do
-    described_class.new(json, widget_specs: widget_specs, convention_scope: convention_scope).errors
+    described_class.new(
+      json, widget_specs: widget_specs, convention_scope: convention_scope, root_type: root_type
+    ).errors
   end
 
   let(:widget_specs) { nil }
   let(:convention_scope) { nil }
+  let(:root_type) { 'div' }
 
   def load_fixture(file_name)
     Pathname.new(File.dirname(__FILE__)).join('fixtures', file_name).read
@@ -279,6 +282,19 @@ RSpec.describe ContentBuilder::Craftjs::Validator do
       )
     end
 
+    # Some enums accept '' because the FE craft.props defaults write it, but suggesting it
+    # back would render as a trailing comma that reads like a missing option.
+    it 'leaves the legacy empty-string member out of the suggested values' do
+      widget_specs['ButtonMultiloc']['enums']['type'] = ['primary', 'secondary', '']
+      json['ROOT']['nodes'] = ['B']
+      json.delete('T')
+      json['B'] = craftjs_node('ButtonMultiloc', parent: 'ROOT', props: { 'type' => 'bogus' })
+
+      expect(errors.map(&:to_s)).to eq(
+        ["node B: props.type is 'bogus' but must be one of: primary, secondary"]
+      )
+    end
+
     it 'rejects a non-multiloc text prop' do
       json['T']['props']['text'] = 'plain string'
 
@@ -301,10 +317,24 @@ RSpec.describe ContentBuilder::Craftjs::Validator do
       )
     end
 
-    it "rejects a ROOT whose type is not 'div'" do
+    it 'rejects a ROOT whose type is not the expected root_type' do
       json['ROOT']['type'] = 'span'
 
-      expect(errors).to eq(["node ROOT: 'type' must be the string 'div'"])
+      expect(errors).to eq(['node ROOT: \'type\' must be "div"'])
+    end
+
+    context 'with a widget root_type (project page)' do
+      let(:root_type) { { 'resolvedName' => 'ProjectPageRoot' } }
+
+      it 'accepts a ROOT carrying that type' do
+        json['ROOT']['type'] = { 'resolvedName' => 'ProjectPageRoot' }
+
+        expect(errors).to eq([])
+      end
+
+      it "rejects a legacy 'div' ROOT" do
+        expect(errors).to eq(['node ROOT: \'type\' must be {"resolvedName":"ProjectPageRoot"}'])
+      end
     end
 
     it 'rejects a ROOT that is not a canvas' do

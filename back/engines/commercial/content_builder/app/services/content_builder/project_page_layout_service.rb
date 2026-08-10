@@ -11,6 +11,31 @@ module ContentBuilder
     PHASES_ID = 'PROJECT_PAGE_PHASES'
     EVENTS_ID = 'PROJECT_PAGE_EVENTS'
 
+    # The `type` a project page's ROOT node carries (description and folder layouts
+    # use a plain 'div').
+    ROOT_TYPE = { 'resolvedName' => 'ProjectPageRoot' }.freeze
+
+    # The scaffold node that holds all page content; its `nodes` array is the
+    # top-level order.
+    BODY_WIDGET = 'ProjectPageBody'
+
+    # The fixed page scaffold: every project page has exactly one node of each of
+    # these types, and none of them may be added, deleted or edited. The one editable
+    # part is BODY_WIDGET's `nodes` array.
+    #
+    # The seeded phases and events widgets are deliberately absent: they are
+    # ordinary widgets the FE toolbox can move or delete.
+    SCAFFOLD_WIDGETS = ['ProjectPageRoot', 'ProjectBanner', 'ProjectTitle', BODY_WIDGET].freeze
+
+    # Scaffold widgets rendered from the project record rather than from layout props.
+    PROJECT_RECORD_WIDGETS = %w[ProjectBanner ProjectTitle].freeze
+
+    # Whether a node is part of the fixed scaffold; nil (an id absent from the
+    # graph) is not.
+    def self.scaffold?(node)
+      !node.nil? && SCAFFOLD_WIDGETS.include?(Craftjs::Query.resolved_name(node))
+    end
+
     UNSUPPORTED_WIDGETS = %w[
       FolderFiles
       FolderTitle
@@ -21,8 +46,7 @@ module ContentBuilder
 
     INJECTED_ID_PREFIX = 'd_'
 
-    # Fully qualified: delegate defines the method via module_eval, where the
-    # `Craftjs::Query` relative lookup would not resolve.
+    # Fully qualified: a relative `Craftjs::Query` would not resolve inside delegate's module_eval.
     delegate :resolved_name, to: :'ContentBuilder::Craftjs::Query', private: true
 
     def craftjs_json_for(project)
@@ -47,7 +71,7 @@ module ContentBuilder
       return craftjs_json if attachments.empty?
 
       json = craftjs_json.deep_dup
-      parent_id = find_node_id(json, 'ProjectDescriptionSection') || find_node_id(json, 'ProjectPageBody')
+      parent_id = find_node_id(json, 'ProjectDescriptionSection') || find_node_id(json, BODY_WIDGET)
       return craftjs_json unless parent_id
 
       referenced_file_ids = json.each_value.filter_map do |node|

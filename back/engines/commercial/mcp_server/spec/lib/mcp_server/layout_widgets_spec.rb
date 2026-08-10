@@ -2,9 +2,11 @@
 
 require 'rails_helper'
 
-# Guards against the widget rules (ContentBuilder::Craftjs::WidgetSpecs), the
-# LLM-facing docs and the cheatsheet drifting apart.
+# Guards against the widget rules (ContentBuilder::Craftjs::WidgetSpecs) and the
+# LLM-facing docs drifting apart.
 describe McpServer::LayoutWidgets do
+  let(:scaffold_widgets) { ContentBuilder::ProjectPageLayoutService::SCAFFOLD_WIDGETS }
+
   describe 'DOCS' do
     it 'documents only widgets that exist in the widget specs' do
       undeclared = described_class::DOCS.keys - ContentBuilder::Craftjs::WidgetSpecs::SPECS.keys
@@ -12,10 +14,10 @@ describe McpServer::LayoutWidgets do
       expect(undeclared).to be_empty
     end
 
-    it 'partitions the widget specs exactly into documented and explicitly undocumented widgets' do
-      documented_or_excluded = described_class::DOCS.keys + described_class::UNDOCUMENTED_WIDGETS
+    it 'partitions the widget specs exactly into documented, scaffold and explicitly undocumented widgets' do
+      covered = described_class::DOCS.keys + scaffold_widgets + described_class::UNDOCUMENTED_WIDGETS
 
-      expect(documented_or_excluded).to match_array(ContentBuilder::Craftjs::WidgetSpecs::SPECS.keys)
+      expect(covered).to match_array(ContentBuilder::Craftjs::WidgetSpecs::SPECS.keys)
     end
 
     it 'documents every enum value (except the legacy empty string) in the widget doc' do
@@ -56,17 +58,40 @@ describe McpServer::LayoutWidgets do
     end
   end
 
-  describe 'CHEATSHEET' do
-    it 'includes the doc of every documented widget' do
-      described_class::DOCS.each do |name, doc|
-        expect(described_class::CHEATSHEET).to include(doc),
-          "expected the cheatsheet to include the #{name} doc"
-        expect(described_class::CHEATSHEET).to include(name)
+  describe 'LEGACY_ALTERNATIVES' do
+    it 'names an alternative for every legacy node type' do
+      expect(described_class::LEGACY_ALTERNATIVES.keys)
+        .to match_array(ContentBuilder::Craftjs::WidgetSpecs::LEGACY_WIDGETS)
+    end
+  end
+
+  describe 'the page scaffold' do
+    it 'are all registered widgets, without insertable docs' do
+      scaffold_widgets.each do |name|
+        expect(ContentBuilder::Craftjs::WidgetSpecs::SPECS).to have_key(name)
+        expect(described_class::DOCS).not_to have_key(name),
+          "scaffold widget #{name} must not be advertised as insertable"
       end
     end
 
-    it 'is frozen' do
-      expect(described_class::CHEATSHEET).to be_frozen
+    it 'covers the canonical nodes the backend seeds, minus the movable widgets' do
+      seeded = ContentBuilder::ProjectPageLayoutService.new
+        .from_description_multiloc({})
+        .values
+        .map { |node| node.dig('type', 'resolvedName') }
+
+      # The seed also places the phases and events widgets. They are ordinary widgets an
+      # editor may reorder or remove, so they are documented as insertable, not scaffold.
+      expect(seeded).to match_array(scaffold_widgets + %w[PhasesWidget EventsWidget])
+      expect(described_class::DOCS).to include('PhasesWidget', 'EventsWidget')
+    end
+  end
+
+  describe 'FORMAT_RULES' do
+    it 'names every scaffold widget, since they are documented nowhere else' do
+      scaffold_widgets.each do |name|
+        expect(described_class::FORMAT_RULES).to include(name)
+      end
     end
   end
 end
