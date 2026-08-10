@@ -42,10 +42,6 @@ class NewPhoneConfirmation < Confirmation
     true
   end
 
-  def pending?
-    user.new_phone.present?
-  end
-
   def reset_code!
     update!(
       code: generate_code,
