@@ -28,6 +28,10 @@ export default defineMessages({
     id: 'app.components.admin.ActionForm.AccessSections.GroupsSection.ErrorMessageModal.done',
     defaultMessage: 'Done',
   },
+  limitToGroups: {
+    id: 'app.components.admin.ActionForm.AccessSections.GroupsSection.limitToGroups',
+    defaultMessage: 'Limit to groups',
+  },
   participantMustBe: {
     id: 'app.components.admin.ActionForm.AccessSections.GroupsSection.participantMustBe',
     defaultMessage: 'Participant must be in any one of the selected groups.',

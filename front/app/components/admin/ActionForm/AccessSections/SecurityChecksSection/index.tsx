@@ -5,7 +5,7 @@
 
 import React from 'react';
 
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import { Text } from '@citizenlab/cl2-component-library';
 
 import useVerificationMethod from 'api/id_methods/useVerificationMethod';
 import { IPhasePermissionData } from 'api/phase_permissions/types';
@@ -56,37 +56,35 @@ const SecurityChecksSection = ({ permission, onChange }: Props) => {
   );
 
   return (
-    <Box mt="8px" borderTop={`1px solid ${colors.divider}`}>
-      <Expander
-        icon="shield-checkered"
-        title={formatMessage(messages.securityChecks)}
-        summary={
-          activeKeys.length
-            ? activeKeys
-                .map((key) => formatMessage(AUTH_METHOD_LABELS[key]))
-                .join(' · ')
-            : formatMessage(messages.none)
-        }
-        defaultOpen={activeKeys.length > 0}
-      >
-        <Text as="p" mt="0" mb="4px" fontSize="xs" color="coolGrey600">
-          {formatMessage(messages.securityChecksDescription)}
-        </Text>
-        {visibleKeys.map((key) => {
-          const { enabled, expiry } = getMethod(permission, key);
-          return (
-            <MethodRow
-              key={key}
-              methodKey={key}
-              enabled={enabled}
-              expiry={expiry}
-              unavailableReason={unavailableReason(key)}
-              onChange={(next) => onChange(methodChange(key, next))}
-            />
-          );
-        })}
-      </Expander>
-    </Box>
+    <Expander
+      icon="shield-checkered"
+      title={formatMessage(messages.securityChecks)}
+      summary={
+        activeKeys.length
+          ? activeKeys
+              .map((key) => formatMessage(AUTH_METHOD_LABELS[key]))
+              .join(' · ')
+          : formatMessage(messages.none)
+      }
+      defaultOpen={activeKeys.length > 0}
+    >
+      <Text as="p" mt="0" mb="4px" fontSize="xs" color="coolGrey600">
+        {formatMessage(messages.securityChecksDescription)}
+      </Text>
+      {visibleKeys.map((key) => {
+        const { enabled, expiry } = getMethod(permission, key);
+        return (
+          <MethodRow
+            key={key}
+            methodKey={key}
+            enabled={enabled}
+            expiry={expiry}
+            unavailableReason={unavailableReason(key)}
+            onChange={(next) => onChange(methodChange(key, next))}
+          />
+        );
+      })}
+    </Expander>
   );
 };
 

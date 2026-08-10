@@ -4,7 +4,7 @@
 
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -58,8 +58,22 @@ const AccessSection = ({
       {hasAccount && (
         <>
           <IdMethodsModalTrigger />
-          <SecurityChecksSection permission={permission} onChange={onChange} />
-          <GroupsSection permission={permission} onChange={onChange} />
+
+          <Box
+            mt="12px"
+            border={`1px solid ${colors.borderLight}`}
+            borderRadius="8px"
+            px="14px"
+          >
+            <SecurityChecksSection
+              permission={permission}
+              onChange={onChange}
+            />
+
+            <Box borderTop={`1px solid ${colors.divider}`}>
+              <GroupsSection permission={permission} onChange={onChange} />
+            </Box>
+          </Box>
         </>
       )}
     </Box>

@@ -4,7 +4,6 @@ import {
   Box,
   Text,
   Button,
-  colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
@@ -41,10 +40,10 @@ const GroupsSection = ({ permission, onChange }: Props) => {
   ) => onChange({ access_denied_explanation_multiloc });
 
   return (
-    <Box mt="8px" borderTop={`1px solid ${colors.divider}`}>
+    <>
       <Expander
         icon="group"
-        title="Limit to groups"
+        title={formatMessage(messages.limitToGroups)}
         summary={groupsSummary(permission, formatMessage)}
       >
         <Text as="p" mt="0" mb="8px" fontSize="xs" color="coolGrey600">
@@ -88,7 +87,7 @@ const GroupsSection = ({ permission, onChange }: Props) => {
         onClose={() => setErrorMessageOpen(false)}
         onChange={setAccessDeniedMultiloc}
       />
-    </Box>
+    </>
   );
 };
 
