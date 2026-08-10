@@ -4145,7 +4145,6 @@
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "Aptaujas jautājums",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.adminManagersOnly": "Tikai administratoriem un vadītājiem",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.anyone": "Jebkurš",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.atLeastOneMethodMustStayEnabled": "Ir jābūt iespējotai vismaz vienai autentifikācijas metodei, tāpēc šo nevar izslēgt.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "Apstiprināts e-pasts",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhoneNumber": "Apstiprināts tālruņa numurs",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription": "Dalībnieks apstiprina e-pasta adresi ar vienreizēju kodu.",

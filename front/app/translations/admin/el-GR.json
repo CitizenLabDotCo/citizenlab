@@ -4145,7 +4145,6 @@
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "Ερώτηση έρευνας",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.adminManagersOnly": "Μόνο διαχειριστές & υπεύθυνοι",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.anyone": "Οποιοσδήποτε",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.atLeastOneMethodMustStayEnabled": "Τουλάχιστον μία μέθοδος ελέγχου ταυτότητας πρέπει να παραμείνει ενεργοποιημένη, επομένως αυτή δεν μπορεί να απενεργοποιηθεί.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "Επιβεβαιωμένο email",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhoneNumber": "Επιβεβαιωμένος αριθμός τηλεφώνου",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription": "Ο συμμετέχων επιβεβαιώνει μια διεύθυνση email με έναν κωδικό μίας χρήσης.",

@@ -4145,7 +4145,6 @@
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "Survey question",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.adminManagersOnly": "Admin & managers only",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.anyone": "Anyone",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.atLeastOneMethodMustStayEnabled": "At least one authentication method must stay enabled, so this one can’t be turned off.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "Confirmed email",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhoneNumber": "Confirmed phone number",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription": "Participant confirms an email address with a one-time code.",

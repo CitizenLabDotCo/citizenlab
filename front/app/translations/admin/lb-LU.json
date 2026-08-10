@@ -4145,7 +4145,6 @@
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "Emfrofro",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.adminManagersOnly": "Nëmmen Adminen & Manageren",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.anyone": "Jiddereen",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.atLeastOneMethodMustStayEnabled": "Op d'mannst eng Authentifikatiounsmethod muss aktivéiert bleiwen, dofir kann dës net ausgeschalt ginn.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "Bestätegt E-Mail",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhoneNumber": "Bestätegt Telefonsnummer",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription": "De Participant bestätegt eng E-Mail-Adress mat engem eemolege Code.",

@@ -4145,7 +4145,6 @@
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "Spørgsmål til undersøgelsen",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.adminManagersOnly": "Kun administratorer og projektledere",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.anyone": "Alle",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.atLeastOneMethodMustStayEnabled": "Mindst én godkendelsesmetode skal forblive aktiveret, så denne kan ikke deaktiveres.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "Bekræftet e-mail",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhoneNumber": "Bekræftet telefonnummer",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription": "Deltageren bekræfter en e-mailadresse med en engangskode.",

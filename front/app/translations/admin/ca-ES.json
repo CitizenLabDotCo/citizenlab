@@ -4145,7 +4145,6 @@
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "Pregunta de l'enquesta",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.adminManagersOnly": "Només administradors i gestors",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.anyone": "Tothom",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.atLeastOneMethodMustStayEnabled": "Almenys un mètode d'autenticació ha de romandre activat, de manera que aquest no es pot desactivar.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "Correu electrònic confirmat",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhoneNumber": "Número de telèfon confirmat",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription": "El participant confirma una adreça de correu electrònic amb un codi d'un sol ús.",

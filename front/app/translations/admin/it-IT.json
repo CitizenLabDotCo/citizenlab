@@ -4145,7 +4145,6 @@
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "Domanda del sondaggio",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.adminManagersOnly": "Solo amministratori e manager",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.anyone": "Chiunque",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.atLeastOneMethodMustStayEnabled": "Almeno un metodo di autenticazione deve rimanere abilitato, quindi questo non può essere disattivato.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "Email confermata",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhoneNumber": "Numero di telefono confermato",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription": "Il partecipante conferma un indirizzo email con un codice monouso.",

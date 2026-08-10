@@ -4145,7 +4145,6 @@
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "Pytanie ankietowe",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.adminManagersOnly": "Tylko administratorzy i menedżerowie",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.anyone": "Każdy",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.atLeastOneMethodMustStayEnabled": "Przynajmniej jedna metoda uwierzytelniania musi pozostać włączona, więc tej nie można wyłączyć.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "Potwierdzony e-mail",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhoneNumber": "Potwierdzony numer telefonu",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription": "Uczestnik potwierdza adres e-mail za pomocą jednorazowego kodu.",

@@ -4145,7 +4145,6 @@
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "Ceist suirbhé",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.adminManagersOnly": "Riarthóirí & bainisteoirí amháin",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.anyone": "Duine ar bith",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.atLeastOneMethodMustStayEnabled": "Ní mór modh fíordheimhnithe amháin ar a laghad a bheith cumasaithe i gcónaí, mar sin ní féidir an ceann seo a mhúchadh.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "Ríomhphost deimhnithe",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhoneNumber": "Uimhir theileafóin dheimhnithe",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription": "Deimhníonn an rannpháirtí seoladh ríomhphoist le cód aonuaire.",
