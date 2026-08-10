@@ -82,5 +82,27 @@ module Notifications
     def self.make_notifications_on(_activity)
       []
     end
+
+    # Notify on the first report, then only when the flag was re-opened or the
+    # content was edited since. Repeat reports are recorded, not mailed.
+    def self.notify?(flaggable, last_notified_at)
+      return true if last_notified_at.blank?
+
+      flag_reopened_since?(flaggable, last_notified_at) || edited_since?(flaggable, last_notified_at)
+    end
+
+    # `introduce_flag!` clears `deleted_at` on re-open. Read the record, not its
+    # activity: the activity is logged by a job that races this one.
+    def self.flag_reopened_since?(flaggable, time)
+      flag = flaggable.try(:inappropriate_content_flag)
+      flag.present? && flag.deleted_at.nil? && flag.updated_at > time
+    end
+    private_class_method :flag_reopened_since?
+
+    # Not `flaggable.updated_at`: reaction and comment counters touch it.
+    def self.edited_since?(flaggable, time)
+      Activity.where(item: flaggable, action: 'changed').exists?(['acted_at > ?', time])
+    end
+    private_class_method :edited_since?
   end
 end

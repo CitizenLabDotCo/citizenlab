@@ -228,6 +228,16 @@ RSpec.describe DecidimImporter::Extractors::DescriptionLayoutExtractor do
       craftjs = extract([row], include_source_url: true).first.attributes['craftjs_json']
       expect(nodes_named(craftjs, 'TextMultiloc').size).to eq(1)
     end
+
+    it "strips a leaked internal server port (e.g. Decidim's :3000) from the source link" do
+      ported = row('url' => 'http://decidim.example.org:3000/processes/budget2023')
+      craftjs = extract([ported], include_source_url: true).first.attributes['craftjs_json']
+
+      link = nodes_named(craftjs, 'TextMultiloc').map { |n| n['props']['text']['fr-FR'] }
+        .find { |t| t.include?('Import source') }
+      expect(link).to include('http://decidim.example.org/processes/budget2023')
+      expect(link).not_to include(':3000')
+    end
   end
 
   it 'adds no source block when include_source_url is off, even with a url' do

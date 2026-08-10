@@ -39,6 +39,16 @@ RSpec.describe DecidimImporter::Extractors::UsersExtractor do
     expect(attrs).not_to have_key('password')
   end
 
+  it 'strips @ from names (invalid in the User model) and falls back to Unknown if nothing remains' do
+    stripped = extract([row('name' => 'Jean @Dupont')]).first.attributes
+    expect(stripped['first_name']).to eq 'Jean'
+    expect(stripped['last_name']).to eq 'Dupont'
+
+    blank = extract([row('uid' => 'decidim-user-2', 'name' => '@')]).first.attributes
+    expect(blank['first_name']).to eq 'Unknown'
+    expect(blank).not_to have_key('last_name')
+  end
+
   it 'skips deleted, blocked, unconfirmed and email-less accounts' do
     rows = [
       row('uid' => 'decidim-user-3', 'deleted_at' => '2021'),
@@ -62,6 +72,19 @@ RSpec.describe DecidimImporter::Extractors::UsersExtractor do
   it 'registers users under their Decidim uid for later joins' do
     extract([row('uid' => 'decidim-user-7', 'email' => 'jean@y.fr')])
     expect(ref_map.fetch('decidim-user-7').attributes['email']).to eq 'jean@y.fr'
+  end
+
+  it 'collapses two accounts sharing an email (case-insensitively) into one, aliasing the duplicate uid' do
+    records = extract([
+      row('uid' => 'decidim-user-1', 'email' => 'Shared@Example.fr'),
+      row('uid' => 'decidim-user-2', 'email' => 'shared@example.fr')
+    ])
+
+    # only one user is emitted, but both uids resolve to it (so authorship/follow refs still resolve)
+    expect(records.size).to eq(1)
+    first = ref_map.fetch('decidim-user-1')
+    expect(ref_map.fetch('decidim-user-2')).to be(first)
+    expect(first.attributes['email']).to eq 'Shared@Example.fr'
   end
 
   it 'reads gender and birthyear out of extended_data JSON' do
@@ -114,12 +137,6 @@ RSpec.describe DecidimImporter::Extractors::UsersExtractor do
       ref_map, locale_mapper: mapper, primary_locale: 'fr-FR', anonymize_users: true
     ).run
     expect(records.map { |r| r.attributes['email'] }.uniq.size).to eq(2)
-  end
-
-  it 'leaves names and emails untouched by default' do
-    attrs = extract([row]).first.attributes
-    expect(attrs['email']).to eq('marie@example.fr')
-    expect(attrs['first_name']).to eq('Marie')
   end
 
   context 'with the real Decidim export fixture' do

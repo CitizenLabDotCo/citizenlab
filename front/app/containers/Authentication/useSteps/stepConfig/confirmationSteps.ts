@@ -142,7 +142,7 @@ export const confirmationSteps = (
         setCurrentStep('missing-data:new_phone');
       },
       SUBMIT_CODE: async (code: string) => {
-        await confirmCodeNewPhone(code);
+        await confirmCodeNewPhone(code, state.smsManualCampaignConsent);
         invalidateCacheAfterUpdateUser(queryClient);
 
         const { requirements } = await getRequirements();

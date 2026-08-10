@@ -100,15 +100,23 @@ describe('Project with single voting phase', () => {
   });
 
   it('can submit the votes', () => {
-    cy.intercept(`**/baskets/**`).as('basketRequest');
-    cy.visit(`/en/projects/${projectSlug}`);
-    cy.wait('@basketRequest');
     cy.dockProjectCtaBar();
+    // The vote count from the previous test proves the basket state has
+    // loaded (a slow project → phase → basket fetch chain), without racing
+    // a network intercept whose request may start later than the 5s
+    // requestTimeout.
+    cy.dataCy('project-cta-bar-top').contains('4 out of 5 votes left');
     cy.get('#e2e-voting-submit-button')
       .should('be.visible')
       .should('not.have.class', 'disabled');
-    cy.wait(4000);
-    cy.get('#e2e-voting-submit-button').find('button').click({ force: true });
+
+    // Wait for the submission to actually persist before the test ends —
+    // the next test needs the basket in 'hasSubmitted' state on the backend.
+    cy.intercept('PATCH', '**/baskets/**').as('submitBasket');
+    cy.get('#e2e-voting-submit-button').find('button').click();
+    cy.wait('@submitBasket')
+      .its('response.statusCode')
+      .should('be.oneOf', [200, 201]);
 
     cy.contains('Vote submitted');
     cy.contains('Congratulations, your vote has been submitted');
@@ -120,15 +128,20 @@ describe('Project with single voting phase', () => {
 
   it('can modify and remove the votes', () => {
     cy.dockProjectCtaBar();
-    cy.get('#e2e-modify-votes')
+    // Longer timeout: the modify button renders only once the basket query
+    // (end of the project → phase → basket chain) resolves as submitted.
+    cy.get('#e2e-modify-votes', { timeout: 30000 })
       .should('be.visible')
       .should('contain', 'Modify your submission')
       .click();
-    cy.wait(1000);
 
     cy.get('.e2e-single-vote-button button')
       .should('be.visible')
       .should('have.class', 'primary')
+      // Clicking "Modify your submission" reopens the basket via a mutation,
+      // and the vote buttons stay disabled until it settles — a click in
+      // that window is a no-op and the class never toggles.
+      .should('not.have.class', 'disabled')
       .click()
       .should('have.class', 'primary-outlined');
 

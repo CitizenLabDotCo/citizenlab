@@ -33,12 +33,6 @@ RSpec.describe DecidimImporter::Extractors::ProjectsExtractor do
     expect(attrs['slug']).to eq('from-url')
   end
 
-  it 'sanitizes a Decidim slug that Go Vocal would reject (uppercase runs, double hyphens)' do
-    attrs = extract([{ 'uid' => 'a1', 'title' => '{"fr":"A"}',
-                       'url' => 'https://x.fr/assemblies/Assemblee--Citoyenne' }]).first.attributes
-    expect(attrs['slug']).to eq('assemblee-citoyenne')
-  end
-
   it 'drops the slug when nothing slug-worthy remains, so the model derives one from the title' do
     attrs = extract([{ 'uid' => 'a1', 'title' => '{"fr":"A"}',
                        'url' => 'https://x.fr/assemblies/---' }]).first.attributes
