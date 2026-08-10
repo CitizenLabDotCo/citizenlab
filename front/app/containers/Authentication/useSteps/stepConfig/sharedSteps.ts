@@ -94,6 +94,7 @@ export const sharedSteps = (
           email: null,
           new_email: null,
           new_phone: null,
+          smsManualCampaignConsent: false,
           token: null,
           prefilledBuiltInFields: null,
           ssoProvider: null,
