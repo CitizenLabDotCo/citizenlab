@@ -25,10 +25,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.activePhaseListItem',
     defaultMessage: '{phaseName} ({participationMethod})',
   },
-  daysLeft: {
-    id: 'app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.daysLeft',
-    defaultMessage: '{days} days left',
-  },
   phaseListTitle: {
     id: 'app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.phaseListTitle',
     defaultMessage: 'Phases:',

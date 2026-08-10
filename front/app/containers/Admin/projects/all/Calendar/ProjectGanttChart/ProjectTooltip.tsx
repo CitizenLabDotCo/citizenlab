@@ -2,23 +2,21 @@ import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IPhaseData } from 'api/phases/types';
 import usePhasesByIds from 'api/phases/usePhasesByIds';
-import { isActivePhase, isTimelinePhase } from 'api/phases/utils';
+import { isTimelinePhase } from 'api/phases/utils';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 
 import useLocalize from 'hooks/useLocalize';
 
 import { participationMethodMessage } from 'containers/Admin/projects/project/phase/PhaseHeader';
 
+import PhaseTimeLeft from 'components/PhaseTimeLeft';
 import { GanttItem } from 'components/UI/GanttChart/types';
 
 import { useIntl } from 'utils/cl-intl';
-import {
-  getPeriodRemainingUntil,
-  parseBackendDateString,
-} from 'utils/dateUtils';
+import { parseBackendDateString } from 'utils/dateUtils';
+import { isPhaseActive } from 'utils/projectUtils';
 
 import messages from './messages';
 
@@ -34,15 +32,7 @@ const usePhaseLabelValues = () => {
   });
 };
 
-type ActivePhasesInfoProps = {
-  activePhases: IPhaseData[];
-  tenantTimezone: string | undefined;
-};
-
-const ActivePhasesInfo = ({
-  activePhases,
-  tenantTimezone,
-}: ActivePhasesInfoProps) => {
+const ActivePhasesInfo = ({ activePhases }: { activePhases: IPhaseData[] }) => {
   const { formatMessage } = useIntl();
   const phaseLabelValues = usePhaseLabelValues();
 
@@ -61,32 +51,21 @@ const ActivePhasesInfo = ({
       <Text fontWeight="bold" color="white" my="0px" variant="bodyS">
         {formatMessage(messages.activePhasesTitle)}
       </Text>
-      {activePhases.map((phase) => {
-        const daysLeft =
-          tenantTimezone && phase.attributes.end_at
-            ? getPeriodRemainingUntil(
-                phase.attributes.end_at,
-                tenantTimezone,
-                'days'
-              )
-            : null;
-
-        return (
-          <Box key={phase.id} ml="8px">
-            <Text fontWeight="bold" color="white" my="0px" variant="bodyS">
-              {formatMessage(
-                messages.activePhaseListItem,
-                phaseLabelValues(phase)
-              )}
-            </Text>
-            {daysLeft !== null && daysLeft > 0 && (
-              <Text color="white" my="0px" variant="bodyS">
-                {formatMessage(messages.daysLeft, { days: daysLeft })}
-              </Text>
+      {activePhases.map((phase) => (
+        <Box key={phase.id} ml="8px">
+          <Text fontWeight="bold" color="white" my="0px" variant="bodyS">
+            {formatMessage(
+              messages.activePhaseListItem,
+              phaseLabelValues(phase)
             )}
-          </Box>
-        );
-      })}
+          </Text>
+          {phase.attributes.end_at && (
+            <Text color="white" my="0px" variant="bodyS">
+              <PhaseTimeLeft currentPhaseEndsAt={phase.attributes.end_at} />
+            </Text>
+          )}
+        </Box>
+      ))}
     </Box>
   );
 };
@@ -133,19 +112,17 @@ interface ProjectTooltipProps {
 
 const ProjectTooltip = ({ ganttItem, projectsById }: ProjectTooltipProps) => {
   const { formatMessage } = useIntl();
-  const { data: appConfiguration } = useAppConfiguration();
   const project = projectsById[ganttItem.id];
 
   const phaseIds = project.relationships.phases?.data.map((phase) => phase.id);
   const phasesMiniData = usePhasesByIds(phaseIds || []);
+  const isLoadingPhases = phasesMiniData.some((query) => query.isLoading);
   const phases = phasesMiniData
     .map((query) => query.data?.data)
     .filter((data): data is IPhaseData => data !== undefined);
 
-  const activePhases = phases.filter(isActivePhase);
+  const activePhases = phases.filter(isPhaseActive);
   const folderName = ganttItem.folder || undefined;
-  const tenantTimezone =
-    appConfiguration?.data.attributes.settings.core.timezone;
 
   const startDate = ganttItem.start
     ? parseBackendDateString(ganttItem.start).toLocaleDateString()
@@ -173,11 +150,12 @@ const ProjectTooltip = ({ ganttItem, projectsById }: ProjectTooltipProps) => {
         <Box mt="4px">{formatMessage(messages.noEndDate)}</Box>
       )}
 
-      <ActivePhasesInfo
-        activePhases={activePhases}
-        tenantTimezone={tenantTimezone}
-      />
-      <PhaseList phases={phases} />
+      {!isLoadingPhases && (
+        <>
+          <ActivePhasesInfo activePhases={activePhases} />
+          <PhaseList phases={phases} />
+        </>
+      )}
     </Box>
   );
 };
