@@ -234,6 +234,57 @@ describe SanitizationService do
       features = %i[title alignment list decoration link video]
       expect(service.sanitize(input, features)).not_to include "<iframe src=\"javascript:javascript:alert('ThisPlatformWasHacked!');\"></iframe>"
     end
+
+    describe 'URL scheme allowlist' do
+      it 'drops javascript: hrefs on links but keeps the text' do
+        input = '<a href="javascript:alert(1)">click</a>'
+        output = service.sanitize(input, [:link])
+        expect(output).not_to include('javascript:')
+        expect(output).to include('click')
+      end
+
+      it 'drops data: hrefs on links' do
+        input = '<a href="data:text/html;base64,PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg==">click</a>'
+        output = service.sanitize(input, [:link])
+        expect(output).not_to include('data:text/html')
+      end
+
+      it 'keeps http, https, mailto and relative hrefs on links' do
+        ['https://example.com', 'http://example.com', 'mailto:a@b.com', '/relative', '#frag'].each do |href|
+          output = service.sanitize(%(<a href="#{href}">x</a>), [:link])
+          expect(output).to include(%(href="#{href}"))
+        end
+      end
+
+      it 'drops javascript: src on images' do
+        input = '<img src="javascript:alert(1)">'
+        expect(service.sanitize(input, [:image])).not_to include('javascript:')
+      end
+
+      it 'keeps data:image base64 src on images' do
+        input = '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">'
+        expect(service.sanitize(input, [:image])).to include('data:image/gif;base64')
+      end
+    end
+
+    describe 'CSS scrubbing of the style attribute' do
+      it 'drops javascript: URLs inside style' do
+        input = '<img src="/x.png" style="background:url(javascript:alert(1))">'
+        expect(service.sanitize(input, [:image])).not_to include('javascript:')
+      end
+
+      it 'drops CSS expression() inside style' do
+        input = '<img src="/x.png" style="width:expression(alert(1))">'
+        expect(service.sanitize(input, [:image])).not_to include('expression(')
+      end
+
+      it 'drops position/offset properties usable for clickjacking overlays' do
+        input = '<img src="/x.png" style="position:fixed;top:0;left:0;width:100vw;height:100vh">'
+        output = service.sanitize(input, [:image])
+        expect(output).not_to include('position:')
+        expect(output).not_to include('top:')
+      end
+    end
   end
 
   describe 'remove_empty_trailing_tags' do
