@@ -104,11 +104,15 @@ class ProjectsFinderAdminService
   end
 
   def self.sort_alphabetically(scope, params)
-    locale = params[:locale] || 'en'
+    # whitelist of the locale
+    configured_locales = AppConfiguration.instance.settings('core', 'locales')
+    locale = configured_locales.include?(params[:locale]) ? params[:locale] : 'en'
     direction = params[:sort] == 'alphabetically_desc' ? 'DESC' : 'ASC'
+    # quote method is used to prevent SQL injection
+    quoted_locale = scope.connection.quote(locale)
 
     scope.order(
-      Arel.sql("projects.title_multiloc->>'#{locale}' #{direction}, projects.created_at ASC, projects.id ASC")
+      Arel.sql("projects.title_multiloc->>#{quoted_locale} #{direction}, projects.created_at ASC, projects.id ASC")
     )
   end
 
