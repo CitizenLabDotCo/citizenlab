@@ -39,8 +39,6 @@ const NewMenuItemModal = ({ opened, onClose, editItem }: Props) => {
     isEditing ? 'dropdown' : 'single'
   );
 
-  // Dropdowns that predate the feature stay editable, so only block reaching
-  // the tab when adding a new item.
   const dropdownEnabled = useFeatureFlag({ name: 'configurable_dropdown' });
   const dropdownBlocked = !dropdownEnabled && !isEditing;
 
@@ -82,9 +80,6 @@ const NewMenuItemModal = ({ opened, onClose, editItem }: Props) => {
           >
             {formatMessage(messages.singleItem)}
           </Button>
-          {/* The tooltip wraps its child in a span, and that span is what the
-              row lays out — hence the width here rather than flex on the
-              button, which would apply inside the span and do nothing. */}
           <UpsellTooltip disabled={!dropdownBlocked} width="50%">
             <Button
               width="100%"
