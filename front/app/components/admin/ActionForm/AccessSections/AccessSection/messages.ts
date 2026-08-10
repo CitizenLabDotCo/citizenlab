@@ -5,11 +5,6 @@ export default defineMessages({
     id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate',
     defaultMessage: 'Who can participate',
   },
-  firstDecide: {
-    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.firstDecide2',
-    defaultMessage:
-      'First decide whether an account is needed at all. Signing in and the security requirements below are separate: participants can sign in by email, SMS or SSO without any requirement being set.',
-  },
   requireSignIn: {
     id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn',
     defaultMessage: 'Require sign-in',

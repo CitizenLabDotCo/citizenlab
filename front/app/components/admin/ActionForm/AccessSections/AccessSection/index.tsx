@@ -37,7 +37,6 @@ const AccessSection = ({
       <SectionHeader
         icon="user-circle"
         title={formatMessage(messages.whoCanParticipate)}
-        tooltip={formatMessage(messages.firstDecide)}
       />
 
       <ModeCards
