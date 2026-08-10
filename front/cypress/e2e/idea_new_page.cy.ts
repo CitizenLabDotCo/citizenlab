@@ -97,7 +97,9 @@ describe('Idea submission form', () => {
       .should('be.visible')
       .should('not.have.class', 'disabled');
     cy.dataCy('e2e-submit-form').click();
-    cy.wait('@submitIdea').its('response.statusCode').should('be.oneOf', [200, 201]);
+    cy.wait('@submitIdea')
+      .its('response.statusCode')
+      .should('be.oneOf', [200, 201]);
 
     cy.dataCy('e2e-after-submission').should('exist').click();
     cy.contains(ideaTitle).should('exist');

@@ -120,7 +120,9 @@ describe('Budgeting project', () => {
 
   it('can submit the budget', () => {
     cy.dockProjectCtaBar();
-    cy.get('#e2e-voting-submit-button').should('be.visible').click({ force: true });
+    cy.get('#e2e-voting-submit-button')
+      .should('be.visible')
+      .click({ force: true });
     cy.wait(1000);
 
     cy.contains('Budget submitted');
