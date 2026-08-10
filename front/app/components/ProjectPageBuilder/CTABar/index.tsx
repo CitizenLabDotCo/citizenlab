@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import {
   Box,
@@ -15,9 +15,15 @@ type Props = {
   containerRef: React.RefObject<HTMLElement>;
 };
 
+// 'overlay' floats the bar under the navbar once the page has scrolled it
+// there; 'inline' keeps it in the page flow when the page cannot scroll at
+// all, so it doesn't cover the content at the top of the page.
+type DockMode = 'none' | 'overlay' | 'inline';
+
 const CTABar = ({ projectId, containerRef }: Props) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
-  const [docked, setDocked] = useState(false);
+  const [dockMode, setDockMode] = useState<DockMode>('none');
+  const inlineBarRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -32,19 +38,32 @@ const CTABar = ({ projectId, containerRef }: Props) => {
         phasesElement = container.querySelector(PHASES_WIDGET_SELECTOR);
       }
       if (!phasesElement) {
-        setDocked(false);
+        setDockMode('none');
         return;
       }
-      // Docked once the phases section pins under the navbar — or once the
-      // page is scrolled as far as it goes, so short pages whose section can
-      // never reach the navbar still get the bar (immediately when the page
-      // doesn't scroll at all).
       const { top } = phasesElement.getBoundingClientRect();
-      const remainingScroll =
+      // The inline bar participates in layout, so measure the page as it
+      // would be without it — otherwise its own insertion flips the mode.
+      const inlineBarHeight = inlineBarRef.current?.offsetHeight ?? 0;
+      const scrollableHeight =
         document.documentElement.scrollHeight -
-        window.innerHeight -
-        window.scrollY;
-      setDocked(top <= stylingConsts.menuHeight || remainingScroll <= 1);
+        inlineBarHeight -
+        window.innerHeight;
+
+      if (top <= stylingConsts.menuHeight) {
+        // The phases section pinned under the navbar.
+        setDockMode('overlay');
+      } else if (scrollableHeight <= 1) {
+        // The page cannot scroll, so its top is still in view and an overlay
+        // would cover it.
+        setDockMode('inline');
+      } else if (scrollableHeight - window.scrollY <= 1) {
+        // Scrolled as far as the page goes without the phases section ever
+        // reaching the navbar.
+        setDockMode('overlay');
+      } else {
+        setDockMode('none');
+      }
     };
 
     const requestUpdate = () => {
@@ -72,10 +91,18 @@ const CTABar = ({ projectId, containerRef }: Props) => {
     };
   }, [containerRef]);
 
-  if (!docked) return null;
+  if (dockMode === 'none') return null;
 
   if (isSmallerThanTablet) {
     return <ProjectCTABar projectId={projectId} />;
+  }
+
+  if (dockMode === 'inline') {
+    return (
+      <Box ref={inlineBarRef} width="100vw" ml="calc(50% - 50vw)">
+        <ProjectCTABar projectId={projectId} />
+      </Box>
+    );
   }
 
   return (
