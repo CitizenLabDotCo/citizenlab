@@ -29,9 +29,8 @@ class AppConfiguration < ApplicationRecord
   }
 
   validates :host, presence: true
-  # Only on change, for the same reason as the twin check on `Tenant`: an already-invalid host
-  # must not block saves that have nothing to do with it. This is the one that aborted the
-  # `cl2back:clean_tenant_settings` deploy step, which saves the configuration, not the tenant.
+  # Only on change, for the same reason as the twin check on `Tenant`: an
+  # already-invalid host must not block saves that have nothing to do with it.
   validate :validate_host_format, if: :host_changed?
   validate :validate_locales, on: :update
   validate :validate_singleton, on: :create
