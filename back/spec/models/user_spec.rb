@@ -1108,7 +1108,7 @@ RSpec.describe User do
 
     it 'returns true when the user has confirmed their phone number' do
       u = create(:unconfirmed_phone_user)
-      u.phone_confirmation.confirm!
+      u.find_or_create_confirmation(:phone_confirmation).confirm!
       expect(u.active?).to be true
     end
 
@@ -1119,7 +1119,7 @@ RSpec.describe User do
 
     it 'returns false when the user confirmed their phone number but is blocked' do
       u = create(:unconfirmed_phone_user, block_end_at: 5.days.from_now)
-      u.phone_confirmation.confirm!
+      u.find_or_create_confirmation(:phone_confirmation).confirm!
       expect(u.active?).to be false
     end
   end
@@ -1143,7 +1143,7 @@ RSpec.describe User do
 
     it 'is set when a user confirms their phone number' do
       u = create(:unconfirmed_phone_user)
-      u.phone_confirmation.confirm!
+      u.find_or_create_confirmation(:phone_confirmation).confirm!
       expect(u.registration_completed_at).not_to be_nil
     end
 
