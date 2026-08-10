@@ -408,7 +408,6 @@ resource 'Ideas' do
           expect(input.custom_field_values).to eq({ 'custom_field_name1' => 'Cat' })
           expect(input.creation_phase_id).to eq active_phase.id
         end
-
       end
     end
 
