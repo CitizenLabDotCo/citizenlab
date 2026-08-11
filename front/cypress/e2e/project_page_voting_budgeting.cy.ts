@@ -102,9 +102,13 @@ describe('Budgeting project', () => {
 
     cy.intercept('PUT', '**/baskets/ideas/**').as('voteForIdea');
 
+    // The vote buttons can carry the `disabled` class while the voting
+    // context initializes — a click during that window is a silent no-op,
+    // so gate on the enabled state before clicking.
     cy.get('#e2e-ideas-container')
       .find('.e2e-assign-budget-button')
       .should('have.class', 'not-in-basket')
+      .should('not.have.class', 'disabled')
       .click()
       .should('have.class', 'in-basket');
 
@@ -149,13 +153,15 @@ describe('Budgeting project', () => {
       .click();
     cy.wait('@unsubmitBasket');
 
-    cy.get('#e2e-ideas-container')
-      .find('.e2e-assign-budget-button')
-      .should('have.class', 'in-basket');
-
+    // After the unsubmit lands, the vote buttons keep the `disabled` class
+    // until the basket refetches complete; `in-basket` alone is true during
+    // that window and a click on the still-disabled button is a silent
+    // no-op. Gate on the enabled state before clicking.
     cy.intercept('PUT', '**/baskets/ideas/**').as('removeVote');
     cy.get('#e2e-ideas-container')
       .find('.e2e-assign-budget-button')
+      .should('have.class', 'in-basket')
+      .should('not.have.class', 'disabled')
       .click()
       .should('have.class', 'not-in-basket');
     cy.wait('@removeVote');
