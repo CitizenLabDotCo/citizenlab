@@ -68,10 +68,7 @@ const AccessSection = ({
               permission={permission}
               onChange={onChange}
             />
-
-            <Box borderTop={`1px solid ${colors.divider}`}>
-              <GroupsSection permission={permission} onChange={onChange} />
-            </Box>
+            <GroupsSection permission={permission} onChange={onChange} />
           </Box>
         </>
       )}

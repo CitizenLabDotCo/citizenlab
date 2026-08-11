@@ -5,6 +5,8 @@
 
 import React from 'react';
 
+import { Box, colors } from '@citizenlab/cl2-component-library';
+
 import useAuthenticationMethod from 'api/id_methods/useAuthenticationMethod';
 import useVerificationMethod from 'api/id_methods/useVerificationMethod';
 import { IPhasePermissionData } from 'api/phase_permissions/types';
@@ -50,32 +52,41 @@ const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
     (key) => getMethod(permission, key).enabled
   );
 
+  if (visibleKeys.length === 0) {
+    return null;
+  }
+
+  // The divider belongs to this section rather than to whatever follows it:
+  // when there is nothing to show here, there is no line to draw either, and
+  // the surrounding container's own border would otherwise be doubled up.
   return (
-    <Expander
-      icon="shield-checkered"
-      title={formatMessage(messages.securityChecks)}
-      summary={
-        activeKeys.length
-          ? activeKeys
-              .map((key) => formatMessage(AUTH_METHOD_LABELS[key]))
-              .join(' · ')
-          : formatMessage(messages.none)
-      }
-      defaultOpen={activeKeys.length > 0}
-    >
-      {visibleKeys.map((key) => {
-        const { enabled, expiry } = getMethod(permission, key);
-        return (
-          <MethodRow
-            key={key}
-            methodKey={key}
-            enabled={enabled}
-            expiry={expiry}
-            onChange={(next) => onChange(methodChange(key, next))}
-          />
-        );
-      })}
-    </Expander>
+    <Box borderBottom={`1px solid ${colors.divider}`}>
+      <Expander
+        icon="shield-checkered"
+        title={formatMessage(messages.securityChecks)}
+        summary={
+          activeKeys.length
+            ? activeKeys
+                .map((key) => formatMessage(AUTH_METHOD_LABELS[key]))
+                .join(' · ')
+            : formatMessage(messages.none)
+        }
+        defaultOpen={activeKeys.length > 0}
+      >
+        {visibleKeys.map((key) => {
+          const { enabled, expiry } = getMethod(permission, key);
+          return (
+            <MethodRow
+              key={key}
+              methodKey={key}
+              enabled={enabled}
+              expiry={expiry}
+              onChange={(next) => onChange(methodChange(key, next))}
+            />
+          );
+        })}
+      </Expander>
+    </Box>
   );
 };
 
