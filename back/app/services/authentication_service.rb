@@ -21,16 +21,6 @@ class AuthenticationService
     end
   end
 
-  def first_method_enabled
-    # This endpoint is only used for the access rights interface.
-    # here, we don't want to return employee-only methods.
-    # In theory we could but it requires a redesign of the interface
-    # so for now we just hide the employee-only methods.
-    active_methods(AppConfiguration.instance)
-      .reject(&:employee_only?)
-      .first
-  end
-
   def logout_url(provider, user)
     auth_method = @id_method_service.method_by_name(provider)
     return unless supports_logout?(provider)
