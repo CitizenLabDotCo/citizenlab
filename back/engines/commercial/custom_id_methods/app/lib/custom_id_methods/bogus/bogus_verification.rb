@@ -51,9 +51,7 @@ module CustomIdMethods::Bogus
           attributes: {
             last_name: 'BOGUS'
           },
-          custom_field_values: {
-            gender: 'female'
-          }
+          custom_field_values: gender_key ? { gender_key => 'female' } : {}
         }
       end
     end
@@ -63,7 +61,14 @@ module CustomIdMethods::Bogus
     end
 
     def locked_custom_fields_keys
-      [:gender]
+      [gender_key].compact
+    end
+
+    private
+
+    # The key of the gender field is not necessarily 'gender', so we look it up by code
+    def gender_key
+      CustomField.registration.find_by(code: 'gender')&.key
     end
   end
 end

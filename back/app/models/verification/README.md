@@ -76,8 +76,10 @@ module Verification
       # A list of custom field keys that should be unchangeable by the user,
       # when they're verified using this method. Make sure that the 
       # corresponding custom field is in place and enabled.
+      # Never hardcode the key of a field that has a code (gender, birthyear,
+      # domicile, ...): the key is tenant-specific, so look it up by code.
       def locked_custom_fields_keys
-        [:gender]
+        [CustomField.registration.find_by(code: 'gender')&.key].compact
       end
 
     end

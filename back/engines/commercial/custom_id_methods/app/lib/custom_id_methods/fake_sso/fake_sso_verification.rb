@@ -38,7 +38,7 @@ module CustomIdMethods::FakeSso
     end
 
     def locked_custom_fields_keys
-      %i[gender birthyear]
+      CustomField.registration.keys_by_code(%w[gender birthyear]).values_at('gender', 'birthyear').compact
     end
 
     def other_custom_fields_keys

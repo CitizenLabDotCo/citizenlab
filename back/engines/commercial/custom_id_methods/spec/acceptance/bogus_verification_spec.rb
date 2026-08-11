@@ -16,7 +16,9 @@ resource 'Verifications' do
       enabled: true,
       id_methods: [{ name: 'bogus' }]
     }
-    create(:custom_field, key: 'gender')
+    # The key of the gender field is deliberately different from its code, since
+    # bogus should locate the field by code and write to its key
+    create(:custom_field, key: 'geslacht', code: 'gender')
     configuration.save!
   end
 
@@ -32,7 +34,7 @@ resource 'Verifications' do
         assert_status 201
         expect(@user.reload.verified).to be true
         expect(@user.last_name).to eq 'BOGUS'
-        expect(@user.custom_field_values['gender']).to eq 'female'
+        expect(@user.custom_field_values['geslacht']).to eq 'female'
       end
     end
 
@@ -45,7 +47,7 @@ resource 'Verifications' do
         assert_status 201
         expect(@user.reload.verified).to be true
         expect(@user.last_name).to eq 'BOGUS'
-        expect(@user.custom_field_values['gender']).to eq 'female'
+        expect(@user.custom_field_values['geslacht']).to eq 'female'
       end
     end
 
