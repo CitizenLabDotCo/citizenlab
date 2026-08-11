@@ -26,8 +26,8 @@ let mockInvitesImport: any;
 let mockSeatsExceeded: boolean;
 let mockSeatsLoading: boolean;
 
-// Stable across renders, like the memoized callback the real hook returns — the
-// watchdog depends on it, and a fresh one per render would restart the timer.
+// Stable across renders, like the real hook's memoized callback: the watchdog
+// depends on it.
 const mockResetQueryData = jest.fn();
 
 // The real hook keys its query on the import id, so a cleared id leaves it with

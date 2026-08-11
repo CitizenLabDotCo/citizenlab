@@ -54,8 +54,8 @@ const InviteUsersWithSeatsModal = ({
   });
 
   const handleConfirmClick = async () => {
-    // The request is only the start of a background job, so this can take a
-    // moment. `processing` on the button also blocks a second click.
+    // The request only starts a background job, so this can take a moment.
+    // `processing` also blocks a second click.
     setIsSubmitting(true);
 
     try {

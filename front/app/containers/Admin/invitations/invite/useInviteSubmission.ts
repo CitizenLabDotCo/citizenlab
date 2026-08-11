@@ -15,9 +15,9 @@ import useInvitesImport from 'api/invites/useInvitesImport';
 import useExceedsSeats from 'hooks/useExceedsSeats';
 
 // Inviting runs as two background jobs: count the seats the invites would add,
-// then create them. If either never reports back — stalled queue, worker killed
-// — nothing else would clear the waiting state, so each stage gets a budget.
-// Exported so tests advance the clock by the real ones.
+// then create them. Nothing else clears the waiting state if a job never
+// reports back — a stalled queue, or a killed worker — so each stage gets a
+// budget. Both measured against a 1000-row import, the largest the form accepts.
 export const COUNT_TIMEOUT_MS = 120000; // 2 minutes
 export const CREATE_TIMEOUT_MS = 300000; // 5 minutes
 
@@ -35,10 +35,9 @@ export type InviteFailure =
   | { reason: 'apiErrors'; errors: IInviteError[] };
 
 /*
- * `seats` is the seat count the admin was asked to approve, and it outlives the
- * approval: the modal stays up on its success screen while the invites are
- * created. Only `failed` drops it, which is what takes the modal down so an
- * error is never left sitting behind it.
+ * `seats` is what the modal displays, and it outlives the admin's approval so
+ * the modal can stay up while the invites are created. Only `failed` drops it,
+ * which is what takes the modal down rather than leaving an error behind it.
  */
 export type InviteSubmission =
   | { status: 'idle' }
@@ -65,8 +64,8 @@ const completedJob = (
   return attributes.job_type.includes(jobType) ? attributes : undefined;
 };
 
-// A rejected request carries `errors` when the API had something to say about
-// the invites themselves; anything else is reported as an unknown failure.
+// A rejection carries `errors` when the API had something to say about the
+// invites; anything else is reported as unknown.
 const failureFrom = (rejection: unknown): InviteFailure => {
   const apiErrors = (rejection as { errors?: IInviteError[] } | undefined)
     ?.errors;
@@ -84,7 +83,7 @@ interface Options {
 /*
  * Owns the two-stage invite submission: which job is being waited on, the
  * polling, the per-stage timeout, and the options replayed when the admin
- * confirms extra seats. Consumers get a status and three actions.
+ * confirms extra seats.
  */
 const useInviteSubmission = ({ onCreated }: Options = {}) => {
   const { mutateAsync: countNewSeatsEmails } =
@@ -99,8 +98,8 @@ const useInviteSubmission = ({ onCreated }: Options = {}) => {
   });
   const [importId, setImportId] = useState<string | null>(null);
 
-  // Replayed if the admin confirms the extra seats. A ref, not state: nothing
-  // renders it, and it must be readable by the callback that consumes it.
+  // Replayed if the admin confirms the extra seats. A ref because nothing
+  // renders it.
   const pendingOptions = useRef<InviteOptions | null>(null);
 
   const { data: invitesImport, resetQueryData } = useInvitesImport({
@@ -112,7 +111,7 @@ const useInviteSubmission = ({ onCreated }: Options = {}) => {
     const options = pendingOptions.current;
     if (!options) return false;
 
-    // Carries the approved seat count forward, so the modal can go on showing it.
+    // Carries the seat count forward so the modal can go on showing it.
     setSubmission((current) => ({
       status: 'creating',
       seats: current.status === 'awaitingConfirmation' ? current.seats : null,
@@ -153,11 +152,9 @@ const useInviteSubmission = ({ onCreated }: Options = {}) => {
   );
 
   /*
-   * Closing the seats modal means two different things. Before confirming, the
-   * admin is declining and nothing has been submitted, so the submission is
-   * abandoned. After confirming, the creation job is already running — closing
-   * the modal only takes the modal away, and the form goes back to reporting
-   * the job it is still waiting on.
+   * Closing the modal means two things. Before confirming, the admin is
+   * declining and nothing has been submitted, so the submission is abandoned.
+   * After confirming, the job is already running and only the modal goes.
    */
   const cancel = useCallback(() => {
     if (submission.status === 'creating' || submission.status === 'created') {
@@ -170,8 +167,8 @@ const useInviteSubmission = ({ onCreated }: Options = {}) => {
     resetQueryData();
   }, [submission, resetQueryData]);
 
-  // Clears a finished result without disturbing a job in flight — the form calls
-  // this when the admin edits it after a success or a failure.
+  // Clears a finished result without disturbing a job in flight; called when
+  // the admin edits the form.
   const dismissResult = useCallback(() => {
     setSubmission((current) =>
       isWaitingOnJob(current) || current.status === 'awaitingConfirmation'
@@ -185,8 +182,8 @@ const useInviteSubmission = ({ onCreated }: Options = {}) => {
   useEffect(() => {
     if (submission.status !== 'counting') return;
 
-    // Completion is the signal, not the payload — a job that finishes with an
-    // empty result still has to move the machine on.
+    // Completion is the signal, not the payload: a job can finish with an
+    // empty result and still has to move things on.
     const completed = completedJob(invitesImport, 'count_new_seats');
     if (!completed || !invitesImport) return;
 
@@ -202,8 +199,8 @@ const useInviteSubmission = ({ onCreated }: Options = {}) => {
       return;
     }
 
-    // Seat limits are still loading. Staying in `counting` is deliberate: the
-    // count budget then reports it, rather than the admin waiting forever.
+    // Seat limits are still loading. Staying in `counting` is deliberate: its
+    // budget then reports the stall.
     if (!checkIfSeatsExceeded) return;
 
     const exceeded = checkIfSeatsExceeded({
@@ -246,8 +243,8 @@ const useInviteSubmission = ({ onCreated }: Options = {}) => {
     resetQueryData();
   }, [submission, invitesImport, onCreated, resetQueryData]);
 
-  // Nothing else clears a job that never reports back. Not armed while the seats
-  // modal waits on the admin — that wait has no deadline.
+  // Nothing else clears a job that never reports back. Not armed while the
+  // modal waits on the admin: that wait has no deadline.
   useEffect(() => {
     if (!isWaitingOnJob(submission)) return;
 

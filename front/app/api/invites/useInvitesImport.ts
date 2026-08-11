@@ -51,9 +51,8 @@ const useInvitesImport = (queryParams: QueryParams) => {
     // import id, but that lands a render later.
     refetchInterval: (data) =>
       data?.data.attributes.completed_at ? false : POLL_INTERVAL_MS,
-    // A finished creation changes the seat counts, so refresh what displays
-    // them. Gated: this runs on every successful poll, including the pending
-    // ones, and a failed creation adds no seats.
+    // A finished creation changes the seat counts, so refresh what shows
+    // them. Gated because this runs on every poll, and a failure adds none.
     onSuccess: (data) => {
       if (!isCompletedInviteCreation(data)) return;
 
@@ -62,8 +61,8 @@ const useInvitesImport = (queryParams: QueryParams) => {
     },
   });
 
-  // Reset the invite data as well, preventing stale data when revisiting the component
-  // Memoized so callers can depend on it without re-running effects every render
+  // Resets the invite data too, so revisiting the component does not show
+  // stale data. Memoized: consumers depend on it in effects.
   const resetQueryData = useCallback(() => {
     queryClient.resetQueries({ queryKey: invitesImportKeys.all() });
     queryClient.resetQueries({ queryKey: invitesKeys.lists() });

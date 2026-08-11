@@ -44,8 +44,8 @@ const respondWith = (attributes: Record<string, unknown>) =>
     )
   );
 
-// The shared wrapper keeps its client to itself, and these assertions are about
-// what the hook does to that client.
+// The shared wrapper does not expose its client, and these assertions are
+// about what the hook does to it.
 const createSpyingWrapper = () => {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false } },
@@ -109,9 +109,8 @@ describe('useInvitesImport', () => {
     expect(result.current.isLoading).toBe(false);
   });
 
-  // Consumers put this in effect dependencies. A new identity per render would
-  // re-run those effects on every poll — including a timeout that then never
-  // reaches its budget.
+  // Consumers put this in effect dependencies; a new identity per render
+  // would re-run those effects on every poll.
   it('returns the same resetQueryData across re-renders', async () => {
     const { result, rerender } = renderHook(
       () => useInvitesImport({ importId, enabled: true }),

@@ -1,5 +1,3 @@
-// change to reset CI trigger after force push
-
 import React, {
   useState,
   useRef,
@@ -24,8 +22,8 @@ import { Section, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import HelmetIntl from 'components/HelmetIntl';
 import Error from 'components/UI/Error';
-// A creation that times out and one that errors say the same thing to the admin,
-// so they share a string instead of keeping two identical ones.
+// A creation that times out and one that errors say the same thing, so they
+// share a string.
 import errorMessages from 'components/UI/Error/messages';
 import Tabs from 'components/UI/Tabs';
 import Warning from 'components/UI/Warning';
@@ -53,8 +51,7 @@ const StyledTabs = styled(Tabs)`
 
 export type TInviteTabName = 'template' | 'manual';
 
-// The budgets live with the machine that applies them; re-exported because the
-// tests reach for them here.
+// Re-exported: the tests import them from here.
 export { COUNT_TIMEOUT_MS, CREATE_TIMEOUT_MS } from './useInviteSubmission';
 
 interface InviteFormValues {
@@ -88,15 +85,14 @@ const Invitations = () => {
   });
   const values = watch();
 
-  // Which tab is open and whether the options panel is expanded are about the
-  // page, not the invitation, so they stay out of the form.
+  // About the page rather than the invitation, so not part of the form.
   const [selectedView, setSelectedView] = useState<TInviteTabName>('template');
   const [invitationOptionsOpened, setInvitationOptionsOpened] =
     useState<boolean>(false);
   const [filetypeError, setFiletypeError] = useState<JSX.Element | null>(null);
 
-  // The only way to clear a file input is through the DOM node — a file input's
-  // value cannot be set from React.
+  // A file input's value cannot be set from React, so clearing it needs the
+  // DOM node.
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const clearFileInput = useCallback(() => {
     if (fileInputRef.current) {
@@ -104,7 +100,7 @@ const Invitations = () => {
     }
   }, []);
 
-  // The invites exist; clear what the form was holding to create them.
+  // Clear what the form was holding once the invites exist.
   const handleCreated = useCallback(() => {
     setValue('fileBase64', null);
     setValue('emails', null);
@@ -145,8 +141,8 @@ const Invitations = () => {
     return roles;
   };
 
-  // The form's payload for whichever tab is active. Null when the tab has
-  // nothing to send, which is what the submit button's disabled state reflects.
+  // The payload for whichever tab is active, or null when there is nothing
+  // to send.
   const buildInviteOptions = (): InviteOptions | null => {
     const bulkInvite: INewBulkInvite = {
       locale: values.locale,
@@ -274,9 +270,7 @@ const Invitations = () => {
       ? submission.failure.errors
       : null;
 
-  // The count rolls its work back, so "nothing was sent" is safe there. A
-  // creation that times out and one that errors say the same thing, and share
-  // a string rather than keeping two identical ones.
+  // The count rolls its work back, so "nothing was sent" is only safe there.
   const failureMessages = {
     countTimedOut: messages.processingNotStartedError,
     createTimedOut: errorMessages.unexpected_invite_error,

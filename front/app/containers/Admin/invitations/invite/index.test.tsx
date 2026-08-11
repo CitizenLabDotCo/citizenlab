@@ -35,8 +35,7 @@ const completedCountImport = {
   },
 };
 
-// A second seat count needs its own id: the container remembers which imports
-// it has already acted on.
+// A second seat count, for the test that submits twice.
 const secondCompletedCountImport = {
   ...completedCountImport,
   data: { ...completedCountImport.data, id: 'count-import-id-2' },
@@ -81,14 +80,11 @@ const failedCreateImport = {
 // Swapped between assertions to stand in for what the polling hook has last seen.
 let mockInvitesImport: any;
 
-// Stable across renders, like the memoized callback the real hook returns. A
-// fresh function each render would model the opposite, and quietly excuse the
-// container from keeping the watchdog's dependencies stable.
+// Stable across renders, like the real hook's memoized callback.
 const mockResetQueryData = jest.fn();
 
-// The real hook keys its query on the import id, so clearing that id leaves it
-// with nothing to return. Mirrored here so the mock cannot serve data the
-// container could not actually see.
+// The real hook keys its query on the import id, so clearing that id leaves
+// it with nothing to return.
 jest.mock('api/invites/useInvitesImport', () => (params: any) => ({
   data: params.importId ? mockInvitesImport : undefined,
   resetQueryData: mockResetQueryData,
@@ -238,16 +234,14 @@ describe('Invitations timeout', () => {
 
     advance(1000);
     expect(screen.getByText(NOT_SENT_MESSAGE)).toBeInTheDocument();
-    // Absent only when both `processing` and the import id are cleared, the
-    // latter being what stops the polling.
+    // Gone only once the submission has left its waiting state.
     expect(
       screen.queryByText('Sending out invitations. Please wait...')
     ).not.toBeInTheDocument();
   });
 
-  // The only test that reaches the end of the happy path. Everything else here
-  // stops at a failure, so without this the success transition — and the form
-  // reset that hangs off it — goes unchecked.
+  // The only test that reaches the end of the happy path; the rest stop at a
+  // failure.
   it('reports success and clears the form once the invites are created', async () => {
     mockInvitesImport = undefined;
     const { container, rerender } = await submitManualInvite();
@@ -270,8 +264,8 @@ describe('Invitations timeout', () => {
     expect(container.querySelector('#e2e-emails')).toHaveValue('');
   });
 
-  // The spreadsheet tab goes through different mutations than the manual one,
-  // and every other test here takes the manual route.
+  // The spreadsheet tab uses different mutations; every other test here takes
+  // the manual route.
   it('sends a spreadsheet through both stages', async () => {
     mockInvitesImport = undefined;
     const { rerender } = await submitFileInvite();
@@ -400,8 +394,8 @@ describe('Invitations timeout', () => {
     expect(screen.queryByText('ALL DONE')).not.toBeInTheDocument();
   });
 
-  // With the seats data unloaded, `checkNewSeatsResponse` returns early without
-  // submitting anything, leaving `processing` set with no import id.
+  // With the seat limits still loading there is nothing to compare against, so
+  // the submission stays on the count stage and its budget reports it.
   it('treats a bailed-out seats check as the seat count stage', async () => {
     mockSeatsCheckLoading = true;
     mockInvitesImport = pendingCountImport;

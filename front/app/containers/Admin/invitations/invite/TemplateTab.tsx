@@ -46,8 +46,8 @@ const SectionParagraph = styled.p`
 interface Props {
   filetypeError: JSX.Element | null;
   handleFileInputOnChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  // Owned by the container, which clears the input after a successful import
-  // and when a file of the wrong type is picked.
+  // The container clears the input after a successful import, and when a
+  // file of the wrong type is picked.
   fileInputRef: React.RefObject<HTMLInputElement>;
 }
 

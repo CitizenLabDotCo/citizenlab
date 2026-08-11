@@ -16,9 +16,8 @@ const useBulkInviteXLSX = () => {
   const queryClient = useQueryClient();
   return useMutation<IInvitesImport, IInviteError, INewBulkXLSXInviteXLSX>({
     mutationFn: bulkInviteXLSX,
-    // This only enqueues the job. The seat numbers change when it finishes, so
-    // refreshing them belongs with the polling that watches for that —
-    // `useInvitesImport`, not a fixed delay from here.
+    // This only enqueues the job. Seat numbers change when it finishes, so
+    // `useInvitesImport` refreshes them on completion.
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: invitesKeys.lists(),

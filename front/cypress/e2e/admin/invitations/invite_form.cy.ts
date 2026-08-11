@@ -12,9 +12,8 @@ const deleteAllInvites = () =>
             headers,
             method: 'DELETE',
             url: `web_api/v1/invites/${id}`,
-            // Deleting an invite destroys the invited user, which can collide
-            // with the invitation email still being processed for them. This is
-            // tidying up, not the thing under test, so it must not fail the run.
+            // Destroying the invited user can collide with their invitation
+            // email still being delivered. Tidying up must not fail the run.
             failOnStatusCode: false,
           });
         });
@@ -46,9 +45,8 @@ describe('Admin: invitations form', () => {
       'be.visible'
     );
 
-    // The form no longer holds the spreadsheet, so the input must stop
-    // displaying it. This is the assertion jsdom cannot make: it refuses to put
-    // a filename on a file input, so the state under test cannot be set up.
+    // The form no longer holds the spreadsheet, so the input must stop showing
+    // it. jsdom cannot test this: it refuses to put a filename on a file input.
     cy.get('input[type=file]').should('have.value', '');
 
     cy.visit('/admin/users/invitations/all');
@@ -56,9 +54,8 @@ describe('Admin: invitations form', () => {
   });
 
   describe('when the invitees would exceed the seat limit', () => {
-    // Forces the exceedance instead of depending on the tenant's seat limits,
-    // which every run of this spec ratchets upwards. Modifies the real payload
-    // rather than replacing it, so nothing else about the page changes.
+    // Every run of this spec ratchets the tenant's seat limits upwards, so
+    // force the exceedance. Edits the real payload rather than replacing it.
     const capAdminSeatsAtOne = () =>
       cy
         .intercept('GET', '**/web_api/v1/app_configuration', (req) => {
@@ -73,9 +70,8 @@ describe('Admin: invitations form', () => {
     const submitInviteWithAdminRights = () => {
       cy.get('input[type=file]').selectFile('cypress/fixtures/invites.xlsx');
       cy.contains('Invitation options').click();
-      // The toggle renders a styled div over a deliberately hidden checkbox,
-      // and its data-testid only exists in test builds — so click the real
-      // control and skip the visibility check.
+      // The toggle paints a styled div over a hidden checkbox, and its
+      // data-testid only exists in test builds. Click the real control.
       cy.contains('Give invitees admin rights')
         .parent()
         .find('input[type=checkbox]')
@@ -106,10 +102,8 @@ describe('Admin: invitations form', () => {
       cy.contains('jack@johnson.com').should('not.exist');
     });
 
-    // Seat numbers change when invites are created, and the page showing them
-    // never refetches on its own — the app sets staleTime to Infinity, so only
-    // an explicit invalidation updates them. Without one, an admin inviting
-    // twice in a row is deciding against stale numbers.
+    // Nothing refetches on its own (staleTime is Infinity), so only an
+    // explicit invalidation updates these numbers.
     it('updates the assigned seats without a reload', () => {
       submitInviteWithAdminRights();
 
