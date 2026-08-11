@@ -1,5 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 
+import requirementKeys from 'api/authentication/authentication_requirements/keys';
+
 import { getJwt, setJwt } from 'utils/auth/jwt';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
@@ -21,13 +23,14 @@ export default async function signIn(parameters: Parameters) {
   try {
     await getAndSetToken(parameters);
 
-    // Requests started before authentication carry the anonymous token, and
-    // a decision-point read right after sign-in (queryClient.fetchQuery)
-    // dedupes into any request still in flight — it would then see pre-login
-    // data, e.g. stale group requirements that send a permitted user to
-    // access-denied and drop the post-login success action. The identity
-    // changed, so abort them.
-    await queryClient.cancelQueries();
+    // A requirements request fired before authentication carries the
+    // anonymous token, and the decision-point read right after sign-in
+    // (queryClient.fetchQuery) dedupes into it if it is still in flight —
+    // it would then see pre-login data, e.g. stale group requirements that
+    // send a permitted user to access-denied and drop the post-login
+    // success action. The identity changed, so abort those reads; the
+    // invalidation below refreshes everything else.
+    await queryClient.cancelQueries({ queryKey: requirementKeys.all() });
 
     const authUser = await getAuthUserAsync();
 
