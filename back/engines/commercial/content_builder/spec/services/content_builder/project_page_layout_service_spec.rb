@@ -51,6 +51,17 @@ describe ContentBuilder::ProjectPageLayoutService do
     }
   end
 
+  let(:about_box_description) do
+    {
+      'ROOT' => description_root(['col1']),
+      'col1' => node('TwoColumn', parent: 'ROOT', nodes: %w[left1 right1], props: { 'columnLayout' => '2-1' }),
+      'left1' => node('Container', parent: 'col1', nodes: ['txt1'], props: { 'id' => 'left' }, is_canvas: true),
+      'right1' => node('Container', parent: 'col1', nodes: ['about1'], props: { 'id' => 'right' }, is_canvas: true),
+      'txt1' => node('TextMultiloc', parent: 'left1', props: { 'text' => { 'en' => 'desc' } }),
+      'about1' => node('AboutBox', parent: 'right1')
+    }
+  end
+
   let(:empty_description) { { 'ROOT' => description_root([]) } }
 
   let(:unsupported_description) do
@@ -118,6 +129,17 @@ describe ContentBuilder::ProjectPageLayoutService do
       )
       expect(result['PROJECT_PAGE_INTRO_RIGHT']['nodes']).to eq(['PROJECT_PAGE_PARTICIPATION_BOX'])
       expect(result['PROJECT_PAGE_PARTICIPATION_BOX']['type']).to eq({ 'resolvedName' => 'AboutBox' })
+    end
+
+    it 'keeps the full-width layout when the description brings its own participation box' do
+      result = build(about_box_description)
+
+      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(['d_col1'] + project_widgets)
+      expect(result['d_col1']['parent']).to eq('PROJECT_PAGE_BODY')
+      expect(result['d_right1']['nodes']).to eq(['d_about1'])
+      expect(resolved_names(result).count('AboutBox')).to eq(1)
+      expect(result).not_to have_key('PROJECT_PAGE_PARTICIPATION_BOX')
+      expect(result).not_to have_key('PROJECT_PAGE_INTRO_COLUMNS')
     end
 
     it 'preserves nested content and remaps inner parent/child pointers' do
