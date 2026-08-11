@@ -262,6 +262,15 @@ describe UserFieldsInFormService do
       described_class.merge_user_fields_from_idea_into_user!(idea, user)
       expect(user.custom_field_values).to include('age' => 30)
     end
+
+    it 'merges other text values from idea into user' do
+      user = build(:user, custom_field_values: {})
+      idea = build(:idea, custom_field_values: { 'u_pet' => 'other', 'u_pet_other' => 'A ferret' })
+
+      described_class.merge_user_fields_from_idea_into_user!(idea, user)
+
+      expect(user.custom_field_values).to eq({ 'pet' => 'other', 'pet_other' => 'A ferret' })
+    end
   end
 
   describe '#add_user_fields_to_form' do

@@ -26,7 +26,7 @@ module CustomFields
         cf = option.custom_field
 
         if cf.resource_type == 'User'
-          UserCustomFieldService.new.delete_custom_field_option_values(option.key, cf)
+          CustomFieldService.new.delete_custom_field_option_values(option.key, cf)
         elsif cf.resource_type == 'CustomForm'
           delete_ranking_option_from_ideas(option) if cf.input_type == 'ranking'
         end
