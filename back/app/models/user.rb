@@ -288,10 +288,6 @@ class User < ApplicationRecord
     custom_field_values&.dig(key)
   end
 
-  # Merges `values` into the user's custom fields rather than replacing them, so
-  # that fields the caller doesn't know about are preserved. Counterpart of
-  # `assign_attributes`, which writes the regular columns: a caller writing both
-  # calls both.
   def merge_custom_field_values(values)
     self.custom_field_values = custom_field_values.merge(values.deep_stringify_keys)
   end
