@@ -171,9 +171,9 @@ const useInviteSubmission = ({ onCreated }: Options = {}) => {
   // the admin edits the form.
   const dismissResult = useCallback(() => {
     setSubmission((current) =>
-      isWaitingOnJob(current) || current.status === 'awaitingConfirmation'
-        ? current
-        : { status: 'idle' }
+      current.status === 'created' || current.status === 'failed'
+        ? { status: 'idle' }
+        : current
     );
   }, []);
 
@@ -189,9 +189,8 @@ const useInviteSubmission = ({ onCreated }: Options = {}) => {
 
     const result = completed.result ?? {};
 
-    setImportId(null);
-
     if (result.errors?.length > 0) {
+      setImportId(null);
       setSubmission({
         status: 'failed',
         failure: { reason: 'apiErrors', errors: result.errors },
@@ -199,9 +198,11 @@ const useInviteSubmission = ({ onCreated }: Options = {}) => {
       return;
     }
 
-    // Seat limits are still loading. Staying in `counting` is deliberate: its
-    // budget then reports the stall.
+    // Nothing to compare against yet. Keeping the import means this runs again
+    // once the limits load; the count budget covers it if they never do.
     if (!checkIfSeatsExceeded) return;
+
+    setImportId(null);
 
     const exceeded = checkIfSeatsExceeded({
       newlyAddedAdminsNumber: result.newly_added_admins_number || 0,

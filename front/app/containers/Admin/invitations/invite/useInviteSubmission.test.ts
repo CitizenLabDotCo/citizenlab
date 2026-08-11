@@ -251,6 +251,24 @@ describe('useInviteSubmission', () => {
       });
     });
 
+    // The count result is kept rather than discarded, so the submission picks up
+    // where it left off instead of waiting out the budget.
+    it('acts on the count once the seat limits arrive', async () => {
+      mockSeatsLoading = true;
+      const hook = setup();
+
+      await submit(hook);
+      await poll(hook, anImport('count_new_seats'));
+      expect(hook.result.current.submission.status).toBe('counting');
+
+      mockSeatsLoading = false;
+      await act(async () => {
+        hook.rerender();
+      });
+
+      expect(hook.result.current.submission.status).toBe('creating');
+    });
+
     it('is not armed while the modal waits on the admin', async () => {
       mockSeatsExceeded = true;
       const hook = setup();

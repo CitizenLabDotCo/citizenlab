@@ -25,7 +25,6 @@ describe('Admin: invitations form', () => {
   beforeEach(() => {
     deleteAllInvites();
     cy.setAdminLoginCookie();
-    cy.visit('/admin/users/invitations');
   });
 
   after(() => {
@@ -35,6 +34,7 @@ describe('Admin: invitations form', () => {
   // Inviting runs as two background jobs — count the seats, then create — so the
   // form waits on polling rather than on the response to the submit.
   it('resets the form once the invites have been created', () => {
+    cy.visit('/admin/users/invitations');
     cy.get('input[type=file]').selectFile('cypress/fixtures/invites.xlsx');
     cy.get('.e2e-submit-wrapper-button').should('not.be.disabled');
     cy.get('.e2e-submit-wrapper-button').click();

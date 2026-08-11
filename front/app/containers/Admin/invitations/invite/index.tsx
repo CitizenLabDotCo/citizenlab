@@ -258,6 +258,9 @@ const Invitations = () => {
 
   const handleSubmitAction = async (event: React.FormEvent) => {
     event.preventDefault();
+    // The submit button blocks clicks while processing, but a form submission
+    // can also come from the keyboard.
+    if (isWaitingOnJob) return;
 
     const options = buildInviteOptions();
     if (options) {
