@@ -38,6 +38,19 @@ RSpec.describe DecidimImporter::TemplateBuilder do
     expect(keys.index('event')).to be < keys.index('files/file_attachment')
   end
 
+  it 'emits idea_status before idea, so a custom-status ref resolves at deserialize time' do
+    status = record('idea_status', { 'code' => 'custom', 'title_multiloc' => { 'en' => 'Feasible' } })
+    idea = record('idea', { 'title_multiloc' => { 'en' => 'I' } })
+    idea.reference('idea_status', status)
+    ref_map.register('idea-1', idea) # registered before the status it depends on
+    ref_map.register('decidim-status-custom-feasible', status)
+
+    models = described_class.new(ref_map).models['models']
+
+    expect(models.keys.index('idea_status')).to be < models.keys.index('idea')
+    expect(models['idea'].first['idea_status_ref']).to be(models['idea_status'].first)
+  end
+
   it 'shares the referenced attributes object so a YAML round-trip resolves into a ref' do
     project = record('project', { 'title_multiloc' => { 'en' => 'X' } })
     phase = record('phase', { 'title_multiloc' => { 'en' => 'P' } })

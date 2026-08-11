@@ -180,6 +180,28 @@ describe WebApi::V1::IdeaSerializer do
     end
   end
 
+  describe 'supports_public_visibility' do
+    def supports_public_visibility(idea)
+      described_class
+        .new(idea, params: { current_user: nil })
+        .serializable_hash
+        .dig(:data, :attributes, :supports_public_visibility)
+    end
+
+    it 'is true for an ideation input' do
+      expect(supports_public_visibility(create(:idea))).to be true
+    end
+
+    it 'is true for a proposal' do
+      expect(supports_public_visibility(create(:proposal))).to be true
+    end
+
+    it 'is false for a native survey response' do
+      create(:idea_status_proposed)
+      expect(supports_public_visibility(create(:native_survey_response))).to be false
+    end
+  end
+
   def internal_comments_count_for_current_user(idea, current_user)
     described_class
       .new(idea, params: { current_user: current_user })

@@ -29,7 +29,7 @@ class WebApi::V1::RequestCodesController < ApplicationController
     user = email.present? ? User.find_by_cimail(email) : current_user
     authorize user, policy_class: RequestCodePolicy
 
-    unless only_if_first_time? && user.email_confirmation.code_outstanding?
+    unless only_if_first_time? && user.email_confirmation&.code_outstanding?
       RequestEmailConfirmationCodeJob.perform_now user
     end
 
@@ -70,7 +70,7 @@ class WebApi::V1::RequestCodesController < ApplicationController
   def request_code_phone
     authorize current_user, policy_class: RequestCodePolicy
 
-    unless only_if_first_time? && current_user.phone_confirmation.code_outstanding?
+    unless only_if_first_time? && current_user.phone_confirmation&.code_outstanding?
       RequestPhoneConfirmationCodeJob.perform_now(current_user)
     end
 
@@ -107,6 +107,13 @@ class WebApi::V1::RequestCodesController < ApplicationController
       render json: { errors: { new_phone: [{ error: 'taken' }] } }, status: :unprocessable_entity
       return
     end
+
+    consent = EmailCampaigns::ConsentService.new.record!(
+      current_user,
+      EmailCampaigns::Campaigns::NewPhoneConfirmation,
+      consented: true
+    )
+    EmailCampaigns::SideFxConsentService.new.after_grant(consent, current_user)
 
     RequestNewPhoneConfirmationCodeJob.perform_now(current_user, new_phone: normalized)
 

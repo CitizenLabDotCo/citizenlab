@@ -155,6 +155,7 @@ const CreateReportModal = ({
               projectId={projectId}
               phaseId={templatePhaseId}
               participationMethods={PARTICIPATION_METHODS}
+              placementType="all"
               onPhaseFilter={(option) => setTemplatePhaseId(option.value)}
             />
           </Box>
@@ -182,7 +183,7 @@ const CreateReportModal = ({
 };
 
 const CreateReportModalWrapper = ({ projectId, ...otherProps }: Props) => {
-  const { data: phases } = usePhases(projectId);
+  const { data: phases } = usePhases(projectId, 'all');
   if (!phases) return null;
 
   return (

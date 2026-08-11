@@ -7,6 +7,8 @@ import {
   Resolver,
 } from '@craftjs/core';
 
+import { ScopedDndContext } from 'components/admin/ResourceList/SortableList';
+
 import RenderNode from './RenderNode';
 
 type EditorProps = {
@@ -40,7 +42,9 @@ const Editor: React.FC<EditorProps> = ({
         onNodesChange && onNodesChange(data.getSerializedNodes());
       }}
     >
-      {children}
+      <ScopedDndContext.Provider value={!isPreview}>
+        {children}
+      </ScopedDndContext.Provider>
     </CraftEditor>
   );
 };

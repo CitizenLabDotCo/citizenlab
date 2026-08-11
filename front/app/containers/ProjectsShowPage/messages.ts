@@ -387,9 +387,4 @@ export default defineMessages({
     id: 'app.containers.Projects.openNowInTotal',
     defaultMessage: '{openCount} open now · {totalCount} in total',
   },
-  noOpenParticipationAdminMessage: {
-    id: 'app.containers.Projects.noOpenParticipationAdminMessage',
-    defaultMessage:
-      'There are no open ways to participate right now. Only administrators can see this message.',
-  },
 });

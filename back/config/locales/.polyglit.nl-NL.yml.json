@@ -64,6 +64,16 @@
     "verified_at": "2026-03-18T11:49:32.439428Z",
     "verified_by": "Admin"
   },
+  "content_builder.project_page.details_placeholder": {
+    "state": "verified",
+    "verified_at": "2026-07-29T21:14:00.113432Z",
+    "verified_by": "Luuc"
+  },
+  "content_builder.project_page.intro_placeholder": {
+    "state": "verified",
+    "verified_at": "2026-07-29T21:14:00.113432Z",
+    "verified_by": "Luuc"
+  },
   "custom_field_options.domicile.outside": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.439428Z",
@@ -954,6 +964,7 @@
     "verified_at": "2026-07-20T21:19:29.107567Z",
     "verified_by": "Luuc"
   },
+
   "pdf_export.input_responses.report_label": {
     "state": "verified",
     "verified_at": "2026-07-29T21:15:23.181657Z",

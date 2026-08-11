@@ -31,6 +31,10 @@ class PhasePolicy < ApplicationPolicy
     active_moderator?
   end
 
+  def input_responses_pdf_result?
+    active_moderator?
+  end
+
   def input_responses_xlsx?
     active_moderator?
   end

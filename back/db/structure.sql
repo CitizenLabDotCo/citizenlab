@@ -152,6 +152,7 @@ ALTER TABLE IF EXISTS ONLY public.baskets_ideas DROP CONSTRAINT IF EXISTS fk_rai
 ALTER TABLE IF EXISTS ONLY public.custom_field_option_images DROP CONSTRAINT IF EXISTS fk_rails_3814d72daa;
 ALTER TABLE IF EXISTS ONLY public.analysis_comments_summaries DROP CONSTRAINT IF EXISTS fk_rails_37becdebb0;
 ALTER TABLE IF EXISTS ONLY public.files DROP CONSTRAINT IF EXISTS fk_rails_34e9f7c7ef;
+ALTER TABLE IF EXISTS ONLY public.export_result_files DROP CONSTRAINT IF EXISTS fk_rails_348350e0ea;
 ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rails_34143a680f;
 ALTER TABLE IF EXISTS ONLY public.volunteering_volunteers DROP CONSTRAINT IF EXISTS fk_rails_33a154a9ba;
 ALTER TABLE IF EXISTS ONLY public.webhooks_deliveries DROP CONSTRAINT IF EXISTS fk_rails_333f76f79b;
@@ -395,6 +396,8 @@ DROP INDEX IF EXISTS public.index_files_on_category;
 DROP INDEX IF EXISTS public.index_file_attachments_on_file_id;
 DROP INDEX IF EXISTS public.index_file_attachments_on_file_and_attachable;
 DROP INDEX IF EXISTS public.index_file_attachments_on_attachable;
+DROP INDEX IF EXISTS public.index_export_result_files_on_jobs_tracker_id;
+DROP INDEX IF EXISTS public.index_export_result_files_on_expires_at;
 DROP INDEX IF EXISTS public.index_events_on_project_id;
 DROP INDEX IF EXISTS public.index_events_on_maximum_attendees;
 DROP INDEX IF EXISTS public.index_events_on_location_point;
@@ -615,6 +618,7 @@ ALTER TABLE IF EXISTS ONLY public.files_projects DROP CONSTRAINT IF EXISTS files
 ALTER TABLE IF EXISTS ONLY public.files_previews DROP CONSTRAINT IF EXISTS files_previews_pkey;
 ALTER TABLE IF EXISTS ONLY public.files DROP CONSTRAINT IF EXISTS files_pkey;
 ALTER TABLE IF EXISTS ONLY public.file_attachments DROP CONSTRAINT IF EXISTS file_attachments_pkey;
+ALTER TABLE IF EXISTS ONLY public.export_result_files DROP CONSTRAINT IF EXISTS export_result_files_pkey;
 ALTER TABLE IF EXISTS ONLY public.experiments DROP CONSTRAINT IF EXISTS experiments_pkey;
 ALTER TABLE IF EXISTS ONLY public.events DROP CONSTRAINT IF EXISTS events_pkey;
 ALTER TABLE IF EXISTS ONLY public.events_attendances DROP CONSTRAINT IF EXISTS events_attendances_pkey;
@@ -762,6 +766,7 @@ DROP TABLE IF EXISTS public.files_projects;
 DROP TABLE IF EXISTS public.files_previews;
 DROP TABLE IF EXISTS public.files;
 DROP TABLE IF EXISTS public.file_attachments;
+DROP TABLE IF EXISTS public.export_result_files;
 DROP TABLE IF EXISTS public.experiments;
 DROP TABLE IF EXISTS public.event_images;
 DROP TABLE IF EXISTS public.event_files;
@@ -2635,6 +2640,21 @@ CREATE TABLE public.experiments (
     name character varying NOT NULL,
     treatment character varying NOT NULL,
     action character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: export_result_files; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.export_result_files (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    jobs_tracker_id uuid NOT NULL,
+    name character varying NOT NULL,
+    content character varying,
+    expires_at timestamp(6) without time zone NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -4942,6 +4962,14 @@ ALTER TABLE ONLY public.experiments
 
 
 --
+-- Name: export_result_files export_result_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.export_result_files
+    ADD CONSTRAINT export_result_files_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: file_attachments file_attachments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6568,6 +6596,20 @@ CREATE INDEX index_events_on_maximum_attendees ON public.events USING btree (max
 --
 
 CREATE INDEX index_events_on_project_id ON public.events USING btree (project_id);
+
+
+--
+-- Name: index_export_result_files_on_expires_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_export_result_files_on_expires_at ON public.export_result_files USING btree (expires_at);
+
+
+--
+-- Name: index_export_result_files_on_jobs_tracker_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_export_result_files_on_jobs_tracker_id ON public.export_result_files USING btree (jobs_tracker_id);
 
 
 --
@@ -8296,6 +8338,14 @@ ALTER TABLE ONLY public.nav_bar_items
 
 
 --
+-- Name: export_result_files fk_rails_348350e0ea; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.export_result_files
+    ADD CONSTRAINT fk_rails_348350e0ea FOREIGN KEY (jobs_tracker_id) REFERENCES public.jobs_trackers(id);
+
+
+--
 -- Name: files fk_rails_34e9f7c7ef; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -9446,6 +9496,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260727100000'),
 ('20260727000000'),
 ('20260713000000'),
 ('20260707190000'),

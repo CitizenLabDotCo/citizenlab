@@ -746,8 +746,8 @@
   },
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": {
     "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.368694Z",
-    "verified_by": "Edwin Kato"
+    "verified_at": "2026-08-11T14:35:04.966400Z",
+    "verified_by": "Jelena"
   },
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": {
     "state": "verified",
@@ -3524,6 +3524,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.SmsConsent.smsConfirmationDisclosure": {
+    "state": "verified",
+    "verified_at": "2026-08-05T12:32:20.642609Z",
+    "verified_by": "Jelena"
+  },
   "app.components.StatusModule.futurePhase": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -3563,6 +3568,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.components.UI.EmojiPicker.clear": {
+    "state": "verified",
+    "verified_at": "2026-07-07T07:11:38.439345Z",
+    "verified_by": "Jelena"
   },
   "app.components.UI.FileAttachments.FileDisplay.ariaLabel": {
     "state": "verified",
@@ -6829,6 +6839,11 @@
     "verified_at": "2026-07-23T09:51:33.450048Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": {
+    "state": "verified",
+    "verified_at": "2026-08-11T14:34:54.071396Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Authentication.signUpOrLogIn": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -6928,6 +6943,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": {
+    "state": "verified",
+    "verified_at": "2026-08-11T14:34:54.071396Z",
+    "verified_by": "Jelena"
   },
   "app.containers.CampaignsConsentForm.ally_categoryLabel": {
     "state": "verified",
@@ -10804,7 +10824,6 @@
     "verified_at": "2026-07-16T09:49:20.292538Z",
     "verified_by": "eva@govocal.com"
   },
-
   "app.containers.PhoneChange.phoneUnsupportedCountry": {
     "state": "verified",
     "verified_at": "2026-07-23T09:49:54.116924Z",
@@ -10820,10 +10839,30 @@
     "verified_at": "2026-07-16T09:49:20.292538Z",
     "verified_by": "eva@govocal.com"
   },
+  "app.containers.PhoneChange.privacyLinkText": {
+    "state": "verified",
+    "verified_at": "2026-07-28T14:14:21.953228Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.PhoneChange.smsConfirmationDisclosure2": {
+    "state": "verified",
+    "verified_at": "2026-07-28T14:14:21.953228Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.PhoneChange.smsManualCampaignConsentLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-28T14:14:21.953228Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.PhoneChange.submitButton": {
     "state": "verified",
     "verified_at": "2026-07-16T09:49:20.292538Z",
     "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneChange.termsLinkText": {
+    "state": "verified",
+    "verified_at": "2026-07-28T14:14:21.953228Z",
+    "verified_by": "Jelena"
   },
   "app.containers.PhoneChange.titleAddPhone": {
     "state": "verified",
@@ -13094,6 +13133,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.errors.file_too_large": {
+    "state": "verified",
+    "verified_at": "2026-08-11T14:34:54.071396Z",
+    "verified_by": "Jelena"
   },
   "app.errors.first_name_blank": {
     "state": "verified",

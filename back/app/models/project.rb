@@ -310,8 +310,8 @@ class Project < ApplicationRecord
     )
   end
 
-  def active_phases(time = Time.now)
-    phases.select { |phase| phase.active?(time) }
+  def schedule
+    @schedule ||= ProjectSchedule.new(self)
   end
 
   def refresh_preview_token

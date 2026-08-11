@@ -447,4 +447,9 @@ export default defineMessages({
     defaultMessage:
       'This phone number is already taken. Please try another one.',
   },
+  file_too_large: {
+    id: 'app.errors.file_too_large',
+    defaultMessage:
+      '"{value}" is too large. The maximum file size is {max_size_mb} MB. Please remove it and upload a smaller file.',
+  },
 });

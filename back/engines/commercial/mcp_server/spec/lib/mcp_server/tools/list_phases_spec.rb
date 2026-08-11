@@ -30,6 +30,16 @@ describe McpServer::Tools::ListPhases do
       .to include(:title_multiloc, :participation_method, :start_at)
   end
 
+  # An ExtraSurveysWidget must point at a standalone phase, and this is the only way a
+  # client can tell which phases those are.
+  it 'exposes placement_type' do
+    create(:phase, project:)
+
+    response = list(project_id: project.id)
+
+    expect(response.structured_content[:data].sole[:placement_type]).to eq('on_timeline')
+  end
+
   it_behaves_like 'a paginated list tool' do
     let(:base_params) { { project_id: project.id } }
   end
