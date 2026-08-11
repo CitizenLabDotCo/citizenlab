@@ -73,7 +73,6 @@ resource 'Users' do
         settings['password_login'] = {
           'allowed' => true,
           'enabled' => true,
-          'enable_signup' => true,
           'minimum_length' => 6
         }
       end

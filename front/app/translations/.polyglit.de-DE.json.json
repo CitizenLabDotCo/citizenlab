@@ -744,11 +744,6 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
-  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": {
-    "state": "verified",
-    "verified_at": "2026-03-18T15:41:17.347666Z",
-    "verified_by": "Admin"
-  },
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -3523,6 +3518,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+  "app.components.SmsConsent.smsConfirmationDisclosure": {
+    "state": "verified",
+    "verified_at": "2026-08-05T12:32:20.510440Z",
+    "verified_by": "Jelena"
   },
   "app.components.StatusModule.futurePhase": {
     "state": "verified",
@@ -10809,7 +10809,6 @@
     "verified_at": "2026-07-16T09:49:20.055315Z",
     "verified_by": "eva@govocal.com"
   },
-
   "app.containers.PhoneChange.phoneUnsupportedCountry": {
     "state": "verified",
     "verified_at": "2026-07-23T09:49:54.006108Z",

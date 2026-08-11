@@ -18,6 +18,9 @@ import AccordionMultiloc, {
 import ButtonMultiloc, {
   buttonMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
+import HtmlBlockMultiloc, {
+  htmlBlockMultilocTitle,
+} from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
 import IframeMultiloc, {
   iframeTitle,
 } from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
@@ -76,9 +79,6 @@ import Spotlight, {
 } from '../Widgets/Spotlight';
 import TextMultiloc, { textMultilocTitle } from '../Widgets/TextMultiloc';
 import VideoEmbed, { videoEmbedTitle } from '../Widgets/VideoEmbed';
-import HtmlBlockMultiloc, {
-  htmlBlockMultilocTitle,
-} from '../Widgets/HtmlBlockMultiloc';
 
 import { platformCreatedBeforeReleaseNewWidgets } from './utils';
 

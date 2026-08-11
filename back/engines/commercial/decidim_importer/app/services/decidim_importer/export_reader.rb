@@ -81,7 +81,8 @@ module DecidimImporter
     COMPONENT_SIDECARS = {
       # `comment{s,}-votes` matches both the usual `comments-votes.csv` and the singular `comment-votes.csv`
       # variant some exports emit (identical columns) — otherwise the singular file is silently skipped.
-      PROPOSALS_COMPONENT => [['*--proposals.csv', :proposals], ['*--comments.csv', :comments],
+      PROPOSALS_COMPONENT => [['*--proposals.csv', :proposals], ['*--proposal-states.csv', :proposal_states],
+        ['*--comments.csv', :comments],
         ['*--comment{s,}-votes.csv', :comment_votes], ['*--followers.csv', :followers],
         ['*--endorsements.csv', :endorsements], ['*--attachments.csv', :proposal_attachments],
         ['*--proposal-notes.csv', :proposal_notes], ['*--proposal-votes.csv', :proposal_votes]],
@@ -116,7 +117,8 @@ module DecidimImporter
     # Decidim steps are deliberately not read.
     def read_containers(root)
       acc = { projects: [], attachments: [], attachment_collections: [], categories: [], proposals: [],
-              comments: [], comment_votes: [], followers: [], endorsements: [], proposal_attachments: [],
+              proposal_states: [], comments: [], comment_votes: [], followers: [], endorsements: [],
+              proposal_attachments: [],
               proposal_notes: [], proposal_votes: [], results: [], accountability_statuses: [], components: [],
               survey_answers: [], budgets: [], budget_projects: [], orders: [], blog_posts: [],
               meetings: [], meeting_attachments: [], debates: [], process_roles: [] }

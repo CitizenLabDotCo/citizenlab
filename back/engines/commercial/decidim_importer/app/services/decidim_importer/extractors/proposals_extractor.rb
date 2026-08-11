@@ -6,9 +6,9 @@ module DecidimImporter
     # surfaces the idea in its phase and, when the proposal was answered, an `OfficialFeedback`.
     #
     # The component already became an ideation phase via {PhaseProjector} (registered under the component
-    # uid), so the join's `phase` resolves through the ref map. The idea carries an `idea_status_code`
-    # (not a ref): the tenant's statuses already exist and resolve to a real id at apply time by
-    # {IdeaStatuses.resolve!}.
+    # uid), so the join's `phase` resolves through the ref map. The idea's status comes from its Decidim
+    # state via the {ProposalStatusResolver}: a standard status resolves to a real id at apply time by
+    # {IdeaStatuses.resolve!} (an `idea_status_code`), a custom one is referenced directly.
     class ProposalsExtractor < BaseExtractor
       include IdeaAssociations
 
@@ -18,6 +18,7 @@ module DecidimImporter
         component: 'decidim_component',
         authors: 'authors',
         category: 'category',
+        scope: 'scope',
         title: 'title',
         body: 'body',
         address: 'address',
@@ -30,6 +31,15 @@ module DecidimImporter
       }.freeze
 
       OFFICIAL_FEEDBACK_AUTHOR = 'Administration'
+
+      # @param status_resolver [ProposalStatusResolver, nil] maps each proposal's Decidim state to a Go
+      #   Vocal idea_status (a standard code or a custom record) and supplies the original status for
+      #   provenance. When nil, the status is derived from the state token alone via {IdeaStatuses} and no
+      #   provenance is stored — the pre-mapping path kept for callers/tests that don't build a resolver.
+      def initialize(rows, ref_map, locale_mapper:, primary_locale: 'fr-FR', status_resolver: nil)
+        super(rows, ref_map, locale_mapper: locale_mapper, primary_locale: primary_locale)
+        @status_resolver = status_resolver
+      end
 
       def run
         rows.filter_map { |row| build_idea(row) }
@@ -55,6 +65,8 @@ module DecidimImporter
 
         register_ideas_phase(uid, idea, phase)
         register_input_topic(uid, idea, row[COLUMNS[:category]])
+        register_scope_area(idea, row[COLUMNS[:scope]])
+        apply_status(idea, row)
         register_official_feedback(uid, idea, row)
         idea
       end
@@ -69,11 +81,29 @@ module DecidimImporter
           'publication_status' => 'published',
           'created_at' => published,
           'published_at' => published,
-          'submitted_at' => published,
-          'idea_status_code' => IdeaStatuses.code_for_state_token(row[COLUMNS[:state_token]])
+          'submitted_at' => published
         }
         add_location(attributes, row)
         attributes
+      end
+
+      # Sets the idea's status from its Decidim state. With a {ProposalStatusResolver} the state maps to a
+      # standard code (kept as `idea_status_code`, resolved to a tenant id by {IdeaStatuses.resolve!}) or a
+      # custom `idea_status` record (referenced), and the original Decidim status is parked in
+      # `custom_field_values` for provenance. Without a resolver, the status is derived from the token alone.
+      def apply_status(idea, row)
+        unless @status_resolver
+          idea.attributes['idea_status_code'] = IdeaStatuses.code_for_state_token(row[COLUMNS[:state_token]])
+          return
+        end
+
+        decision = @status_resolver.resolve(present_value(row[COLUMNS[:component]]), row[COLUMNS[:state_token]])
+        if decision.idea_status_record
+          idea.reference('idea_status', decision.idea_status_record)
+        else
+          idea.attributes['idea_status_code'] = decision.idea_status_code
+        end
+        register_decidim_status(idea, decision)
       end
 
       # Proposals can carry a geocoded address (`address` + `latitude`/`longitude`). Map the free-text

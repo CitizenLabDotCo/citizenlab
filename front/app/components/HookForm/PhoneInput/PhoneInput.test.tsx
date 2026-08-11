@@ -9,19 +9,30 @@ import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
 
 import PhoneInput from './';
 
+let mockAllowedCountryCodes: string[] | undefined;
+
+jest.mock('api/app_configuration/useAppConfiguration', () =>
+  jest.fn(() => ({
+    data: {
+      data: {
+        attributes: {
+          settings: {
+            core: { country_code: 'BE' },
+            sms: { allowed_country_codes: mockAllowedCountryCodes },
+          },
+        },
+      },
+    },
+  }))
+);
+
 const schema = object({
   phone: string().required('Required'),
 });
 
 const onSubmit = jest.fn();
 
-const Form = ({
-  countries,
-  defaultCountry,
-}: {
-  countries?: string[];
-  defaultCountry?: string;
-}) => {
+const Form = () => {
   const methods = useForm({
     resolver: yupResolver(schema),
     defaultValues: { phone: '' },
@@ -30,12 +41,7 @@ const Form = ({
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit((data) => onSubmit(data))}>
-        <PhoneInput
-          name="phone"
-          countries={countries}
-          defaultCountry={defaultCountry}
-          placeholder="phone"
-        />
+        <PhoneInput name="phone" placeholder="phone" />
         <button type="submit">Submit</button>
       </form>
     </FormProvider>
@@ -51,15 +57,19 @@ const openCountryDropdown = () =>
   );
 
 describe('PhoneInput (HookForm)', () => {
-  beforeEach(() => onSubmit.mockClear());
+  beforeEach(() => {
+    onSubmit.mockClear();
+    mockAllowedCountryCodes = undefined;
+  });
 
   it('renders the phone input', () => {
     render(<Form />);
     expect(screen.getByPlaceholderText('phone')).toBeInTheDocument();
   });
 
-  it('limits the country dropdown to the allowed countries', () => {
-    render(<Form countries={['BE', 'FR']} />);
+  it('limits the country dropdown to the countries the platform allows', () => {
+    mockAllowedCountryCodes = ['BE', 'FR'];
+    render(<Form />);
     openCountryDropdown();
 
     const countries = screen
@@ -72,10 +82,19 @@ describe('PhoneInput (HookForm)', () => {
     expect(countries).not.toContain('us');
   });
 
-  it('shows the country calling code as a prefix for the selected country', () => {
-    const { container } = render(
-      <Form countries={['BE']} defaultCountry="BE" />
-    );
+  it('offers every country when the platform configures no allow-list', () => {
+    render(<Form />);
+    openCountryDropdown();
+
+    const countries = screen
+      .getAllByRole('option')
+      .map((option) => option.getAttribute('data-iso2'));
+
+    expect(countries).toEqual(expect.arrayContaining(['be', 'fr', 'us']));
+  });
+
+  it("shows the platform country's calling code as a prefix", () => {
+    const { container } = render(<Form />);
 
     // The calling code sits next to the flag rather than inside the input, so the
     // user only has to type their local number.
@@ -85,7 +104,7 @@ describe('PhoneInput (HookForm)', () => {
   });
 
   it('submits the composed E.164 number', async () => {
-    render(<Form countries={['BE']} defaultCountry="BE" />);
+    render(<Form />);
 
     // Only the local number is typed; the calling code of the selected country is
     // prepended to produce the full international value.

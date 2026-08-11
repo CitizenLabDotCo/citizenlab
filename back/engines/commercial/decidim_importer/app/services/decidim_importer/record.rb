@@ -30,11 +30,5 @@ module DecidimImporter
     def reference(association, target_record)
       @attributes["#{association}_ref"] = target_record.attributes
     end
-
-    # Point a nested-attributes ref (e.g. an admin_publication parent) at a nested hash object.
-    #   record.reference_attributes('admin_publication.parent', folder.admin_publication_attributes)
-    def reference_nested(association, target_hash)
-      @attributes["#{association}_attributes_ref"] = target_hash
-    end
   end
 end
