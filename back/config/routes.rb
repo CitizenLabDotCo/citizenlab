@@ -240,6 +240,7 @@ Rails.application.routes.draw do
           get 'survey_results'
           get 'input_response_fields'
           post 'input_responses_pdf'
+          get 'input_responses_pdf_result'
           post 'input_responses_xlsx'
           get 'common_ground_results'
           get 'sentiment_by_quarter'

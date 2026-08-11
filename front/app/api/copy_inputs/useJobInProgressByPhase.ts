@@ -2,11 +2,11 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import ideasKeys from 'api/ideas/keys';
+import { IJobs } from 'api/jobs/types';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import jobsKeys from './keys';
-import { IJobs } from './types';
 
 const fetchInProgressPhaseJobs = async (
   phaseId: string
