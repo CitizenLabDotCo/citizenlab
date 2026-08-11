@@ -100,9 +100,6 @@ describe('Ideation permitted by: users', () => {
       // Click submit and 'continue'
       cy.get('#e2e-signup-custom-fields-submit-btn').click();
 
-      // The idea form's fields (incl. #title_multiloc) are rendered from this
-      // request. Register the intercept before continuing so we can wait for the
-      // reg-flow -> idea-form transition to fully settle before interacting.
       cy.intercept('GET', /\/custom_fields\?.*public_fields=true/).as(
         'ideaFormFields'
       );
