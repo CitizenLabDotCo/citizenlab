@@ -15,7 +15,22 @@ import { MessageDescriptor } from 'utils/cl-intl';
 
 import { AUTH_METHOD_LABELS } from './AccessSection/constants';
 import messages from './messages';
-import { AuthMethodKey, Changes, METHOD_FIELDS } from './types';
+import { AuthMethodKey, Changes } from './types';
+
+const METHOD_FIELDS = {
+  email: {
+    enabled: 'require_confirmed_email',
+    expiry: 'confirmed_email_expiry',
+  },
+  phone: {
+    enabled: 'require_confirmed_phone_number',
+    expiry: 'confirmed_phone_number_expiry',
+  },
+  verification: {
+    enabled: 'require_verification',
+    expiry: 'verification_expiry',
+  },
+} as const;
 
 /** The enabled flag + expiry (in days, `null` = "once, ever") for a method. */
 export const getMethod = (

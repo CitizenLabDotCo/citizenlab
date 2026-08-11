@@ -5,6 +5,7 @@
 
 import React from 'react';
 
+import useAuthenticationMethod from 'api/id_methods/useAuthenticationMethod';
 import useVerificationMethod from 'api/id_methods/useVerificationMethod';
 import { IPhasePermissionData } from 'api/phase_permissions/types';
 
@@ -13,14 +14,13 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { useIntl } from 'utils/cl-intl';
 
 import { getMethod, methodChange } from '../../logic';
-import { AuthMethodKey, Changes } from '../../types';
+import { Changes } from '../../types';
 import { Expander } from '../../ui';
 import { AUTH_METHOD_LABELS } from '../constants';
 
 import messages from './messages';
 import MethodRow from './MethodRow';
-
-const METHOD_KEYS: AuthMethodKey[] = ['email', 'phone', 'verification'];
+import { getVisibleToggles } from './utils';
 
 interface Props {
   permission: IPhasePermissionData;
@@ -33,24 +33,21 @@ const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
   // Confirming a phone number means sending an SMS, so it needs the feature;
   // `sms_login` is irrelevant here, since this is not a way of signing in.
   const smsEnabled = useFeatureFlag({ name: 'sms' });
+  const smsLoginEnabled = useFeatureFlag({ name: 'sms_login' });
   const { data: verificationMethod } = useVerificationMethod();
-  const verificationConfigured =
-    !!verificationMethod?.data.attributes.method_metadata;
-
-  // Confirming an email is possible whatever the participant signed in with, so
-  // it no longer depends on password login being available.
-  const unavailableReason = (key: AuthMethodKey) =>
-    key === 'verification' && !verificationConfigured
-      ? formatMessage(messages.unavailableVerification)
-      : undefined;
+  const { data: authenticationMethod } = useAuthenticationMethod();
 
   // Phone is hidden entirely when SMS is off rather than shown as unavailable —
   // there is nothing an admin could do about it from here.
-  const visibleKeys = METHOD_KEYS.filter(
-    (key) => key !== 'phone' || smsEnabled
-  );
+  const visibleKeys = getVisibleToggles({
+    sms2FAEnabled: smsEnabled,
+    smsLoginEnabled,
+    verificationMethodEnabled: !!verificationMethod,
+    authenticationMethodEnabled: !!authenticationMethod,
+  });
+
   const activeKeys = visibleKeys.filter(
-    (key) => getMethod(permission, key).enabled && !unavailableReason(key)
+    (key) => getMethod(permission, key).enabled
   );
 
   return (
@@ -74,7 +71,6 @@ const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
             methodKey={key}
             enabled={enabled}
             expiry={expiry}
-            unavailableReason={unavailableReason(key)}
             onChange={(next) => onChange(methodChange(key, next))}
           />
         );
