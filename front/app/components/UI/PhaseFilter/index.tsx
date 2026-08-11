@@ -3,7 +3,11 @@ import React, { useMemo } from 'react';
 import { Box, Select, Spinner, Text } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
-import { IPhaseData, ParticipationMethod } from 'api/phases/types';
+import {
+  IPhaseData,
+  ParticipationMethod,
+  PhasePlacementFilter,
+} from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 
 import useLocalize from 'hooks/useLocalize';
@@ -18,6 +22,7 @@ interface Props {
   projectId: string;
   phaseId?: string;
   participationMethods: ParticipationMethod[];
+  placementType?: PhasePlacementFilter;
   onPhaseFilter: (filter: IOption) => void;
   customPhaseFilter?: (phases: IPhaseData[]) => IPhaseData[];
 }
@@ -33,10 +38,11 @@ const PhaseFilter = ({
   projectId,
   phaseId,
   participationMethods,
+  placementType,
   onPhaseFilter,
   customPhaseFilter,
 }: Props) => {
-  const { data: phases } = usePhases(projectId);
+  const { data: phases } = usePhases(projectId, placementType);
   const localize = useLocalize();
   const correctPhases = useMemo(() => {
     if (!phases) return null;
