@@ -67,7 +67,6 @@ RSpec.describe Analytics::Reporting::Contribution do
       expect(row.participation_method).to eq 'ideation'
       expect(row.phase_id).to be_nil
     end
-
   end
 
   describe 'comments' do
