@@ -74,13 +74,13 @@ class IdMethodService
     # Custom fields
     custom_fields = CustomField.registration
     locked_custom_fields = if method.respond_to?(:locked_custom_fields)
-      method.locked_custom_fields.filter_map { |code| custom_fields.find { |f| f.code == code.to_s }&.title_multiloc }
+      method.locked_custom_fields.filter_map { |key| custom_fields.find { |f| f.key == key.to_s }&.title_multiloc }
     else
       []
     end
 
     other_custom_fields = if method.respond_to?(:other_custom_fields)
-      method.other_custom_fields.filter_map { |code| custom_fields.find { |f| f.code == code.to_s }&.title_multiloc }
+      method.other_custom_fields.filter_map { |key| custom_fields.find { |f| f.key == key.to_s }&.title_multiloc }
     else
       []
     end

@@ -112,7 +112,7 @@ module Permissions
       return fields unless method.respond_to?(:locked_custom_fields) && method.locked_custom_fields.present?
 
       # Get the IDs of the custom fields that are locked to the verification method
-      custom_field_required_array = CustomField.where(code: method.locked_custom_fields).map do |field|
+      custom_field_required_array = CustomField.where(key: method.locked_custom_fields).map do |field|
         { id: field.id, required: true }
       end
 

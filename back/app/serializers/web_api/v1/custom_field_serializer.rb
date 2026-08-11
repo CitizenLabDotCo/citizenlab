@@ -40,7 +40,9 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
 
   attribute :constraints do |object, params|
     if params[:constraints]
-      params[:constraints][object.code&.to_sym] || {}
+      # Participation method constraints are keyed by code, locked user custom
+      # fields by key (not every locked field has a code).
+      params[:constraints][object.code&.to_sym] || params[:constraints][object.key&.to_sym] || {}
     else
       {}
     end
