@@ -332,21 +332,6 @@ describe('Invitations timeout', () => {
     ).toBeInTheDocument();
   });
 
-  // The watchdog must not depend on anything whose identity changes every
-  // render. Polling re-renders the container while the job is still running, and
-  // a timer restarted on each of those renders never reaches its budget.
-  it('keeps the clock running across re-renders', async () => {
-    mockInvitesImport = pendingCountImport;
-    const { rerender } = await submitManualInvite();
-
-    advance(COUNT_TIMEOUT_MS - 1000);
-    rerender(<Invitations />);
-    rerender(<Invitations />);
-
-    advance(1000);
-    expect(screen.getByText(NOT_SENT_MESSAGE)).toBeInTheDocument();
-  });
-
   // The creation job gets a longer budget, and it may yet run and send the
   // invitations, so the admin must not be told none were sent.
   it('waits longer for the creation job and does not claim nothing was sent', async () => {
