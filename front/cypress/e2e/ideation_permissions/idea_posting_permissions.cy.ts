@@ -139,7 +139,7 @@ describe('idea posting restricted to a group', () => {
     cy.url().should('not.include', `/ideas/new`);
   });
 
-  // Skipped (TAN-8437): this test intermittently catches a real product race
+  // Skipped: this test intermittently catches a real product race
   // in the authentication flow, not a test problem. When the auth modal
   // opens, useAuthenticationRequirements fires a requirements request with
   // the ANONYMOUS token. If that request is still in flight when the user
