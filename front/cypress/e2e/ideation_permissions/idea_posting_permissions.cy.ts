@@ -143,7 +143,14 @@ describe('idea posting restricted to a group', () => {
     cy.visit(`projects/${projectSlug}`);
     cy.dataCy('e2e-ideation-start-idea-button').should('be.visible').click();
     logIn(cy, permittedUserEmail, permittedUserPassword);
-    cy.url().should('include', `/ideas/new`);
+    // The redirect runs as a post-sign-in success action that re-fetches the
+    // project and the phase before navigating, and signing in has just cleared
+    // the query cache, so it costs two sequential round trips. Under parallel
+    // CI contention that regularly outlives the default command timeout: across
+    // 96 runs of this test the passing ones took up to 21.4s while the three
+    // failures sat at 23.1-27.0s, a clean split with no overlap. The redirect
+    // arrives, it is just slow, so give the assertion room instead.
+    cy.url({ timeout: 60000 }).should('include', `/ideas/new`);
   });
 
   it('shows prompt for authentication on form page if logged out user visits and shows form when authenticated', () => {
