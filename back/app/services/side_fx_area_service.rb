@@ -19,7 +19,7 @@ class SideFxAreaService
     domicile_custom_field = CustomField.registration.find_by(code: 'domicile')
     return unless domicile_custom_field
 
-    UserCustomFieldService.new.delete_custom_field_option_values area.id, domicile_custom_field
+    CustomFieldService.new.delete_custom_field_option_values area.id, domicile_custom_field
   end
 
   def after_destroy(frozen_area, user)
