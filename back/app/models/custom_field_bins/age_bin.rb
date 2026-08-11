@@ -38,7 +38,7 @@ module CustomFieldBins
     end
 
     def filter_by_bin(scope)
-      scope.where("(custom_field_values->>'#{custom_field.key}')::integer IN (?)", birthyear_range)
+      filter_by_answer_value(scope, "(value #>> '{}')::integer IN (?)", birthyear_range)
     end
 
     def self.generate_bins(custom_field)

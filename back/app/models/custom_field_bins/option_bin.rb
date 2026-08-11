@@ -36,9 +36,9 @@ module CustomFieldBins
     def filter_by_bin(scope)
       case custom_field.input_type
       when 'select'
-        scope.where("custom_field_values->>'#{custom_field.key}' = ?", custom_field_option_value)
+        filter_by_answer_value(scope, "value #>> '{}' = ?", custom_field_option_value)
       when 'multiselect'
-        scope.where("custom_field_values->'#{custom_field.key}' @> ?", custom_field_option_value.to_json)
+        filter_by_answer_value(scope, 'value @> ?', custom_field_option_value.to_json)
       end
     end
 

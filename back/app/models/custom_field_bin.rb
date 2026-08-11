@@ -47,9 +47,13 @@ class CustomFieldBin < ApplicationRecord
   end
 
   # Returns the given ActiveRecord scope, filtered for items that are in this bin
-  # The resource covered by the scope needs to have a `custom_field_values` column (users or ideas)
+  # The resource covered by the scope needs to be an answerable (users or ideas)
   def filter_by_bin(scope)
     raise NotImplementedError
+  end
+
+  def self.answers_for(custom_field, model)
+    CustomFieldAnswer.where(answerable_type: model.base_class.name, key: custom_field.key)
   end
 
   # Returns an array of input_types that this bin subclass can be used for
@@ -84,6 +88,11 @@ class CustomFieldBin < ApplicationRecord
   end
 
   private
+
+  def filter_by_answer_value(scope, condition, *binds)
+    answers = CustomFieldBin.answers_for(custom_field, scope.model).where(condition, *binds)
+    scope.where(id: answers.select(:answerable_id))
+  end
 
   # Validates that the custom_field input_type is supported by this bin class
   # and adds an error if not

@@ -35,7 +35,7 @@ module CustomFieldBins
     end
 
     def filter_by_bin(scope)
-      scope.where("(custom_field_values->>'#{custom_field.key}')::integer IN (?)", range)
+      filter_by_answer_value(scope, "(value #>> '{}')::integer IN (?)", range)
     end
 
     def self.generate_bins(custom_field,
@@ -59,11 +59,11 @@ module CustomFieldBins
     end
 
     def self.find_lowest_value(custom_field)
-      custom_field.items_claz.minimum("(custom_field_values->>'#{custom_field.key}')::integer")
+      answers_for(custom_field, custom_field.items_claz).minimum("(value #>> '{}')::integer")
     end
 
     def self.find_highest_value(custom_field)
-      custom_field.items_claz.maximum("(custom_field_values->>'#{custom_field.key}')::integer")
+      answers_for(custom_field, custom_field.items_claz).maximum("(value #>> '{}')::integer")
     end
 
     private
