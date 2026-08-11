@@ -30,15 +30,15 @@ jest.mock('api/id_methods/useIdMethods', () =>
 
 // Not under test - stub out the children with their own data dependencies.
 jest.mock(
-  'components/admin/ActionForm/AccessSections/GroupsSection',
+  'components/admin/ActionForm/AccessSection/GroupsSection',
   () => () => null
 );
 jest.mock(
-  'components/admin/ActionForm/AccessSections/SecurityRequirementsSection',
+  'components/admin/ActionForm/AccessSection/SecurityRequirementsSection',
   () => () => <div data-testid="security-requirements-section" />
 );
 jest.mock(
-  'components/admin/ActionForm/AccessSections/IdMethodsModal/Trigger',
+  'components/admin/ActionForm/AccessSection/IdMethodsModal/Trigger',
   () => () => <div data-testid="id-method-fields-trigger" />
 );
 
