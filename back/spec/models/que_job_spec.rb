@@ -26,6 +26,29 @@ RSpec.describe QueJob, :active_job_que_adapter do
     end
   end
 
+  describe '.runnable' do
+    it 'includes pending, scheduled and errored jobs, but not finished or expired ones' do
+      pending_job = create(:que_job)
+      scheduled_job = create(:que_job, run_at: 1.day.from_now)
+      errored_job = create(:que_job, error_count: 3, run_at: 1.hour.from_now)
+      create(:que_job, finished_at: Time.zone.now)
+      create(:que_job, expired_at: Time.zone.now)
+
+      expect(described_class.runnable).to contain_exactly(pending_job, scheduled_job, errored_job)
+    end
+  end
+
+  describe '.all_related_to_gid' do
+    it 'retrieves the jobs whose related_gids contain the gid' do
+      gid = 'gid://cl2-back/Phase/some-uuid'
+      related_job = create(:que_job, related_gids: [gid, 'gid://cl2-back/User/other-uuid'])
+      create(:que_job, related_gids: ['gid://cl2-back/Phase/another-uuid'])
+      create(:que_job)
+
+      expect(described_class.all_related_to_gid(gid)).to contain_exactly(related_job)
+    end
+  end
+
   describe '#active?' do
     let!(:que_job) do
       id = TestJob.perform_later.job_id

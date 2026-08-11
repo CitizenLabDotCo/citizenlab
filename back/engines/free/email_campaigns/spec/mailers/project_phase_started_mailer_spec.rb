@@ -57,6 +57,30 @@ RSpec.describe EmailCampaigns::ProjectPhaseStartedMailer do
       expect(mail_body(mail)).to match(Frontend::UrlService.new.unfollow_url(Follower.new(followable: project, user: recipient)))
     end
 
+    context 'when the phase was deleted while the delivery was queued' do
+      let(:deleted_phase_project) { create(:project_with_phases) }
+      let(:deleted_phase) { deleted_phase_project.phases.first }
+      let(:deleted_phase_notification) do
+        create(:project_phase_started, recipient: recipient, project: deleted_phase_project, phase: deleted_phase)
+      end
+      let(:command) do
+        activity = create(:activity, item: deleted_phase_notification, action: 'created')
+        campaign.generate_commands(
+          activity: activity,
+          recipient: recipient
+        ).first.merge({ recipient: recipient })
+      end
+
+      it 'skips the delivery' do
+        command # build the command (and its payload) before the phase disappears
+        deleted_phase.destroy!
+
+        expect(mailer.campaign_mail.message).to be_a(ActionMailer::Base::NullMail)
+        expect { mailer.campaign_mail.deliver_now }
+          .not_to change { ActionMailer::Base.deliveries.count }
+      end
+    end
+
     context 'with custom text' do
       let!(:global_campaign) do
         create(

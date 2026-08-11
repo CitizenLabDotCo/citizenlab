@@ -68,6 +68,7 @@ class Phase < ApplicationRecord
   include Volunteering::VolunteeringPhase
   include DocumentAnnotation::DocumentAnnotationPhase
   include Files::FileAttachable
+  include PurgesRelatedQueJobs
 
   PRESCREENING_MODES = %w[flagged_only all].freeze
   PARTICIPATION_METHODS = ParticipationMethod::Base.all_methods.map(&:method_str).freeze
