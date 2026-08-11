@@ -41,6 +41,7 @@ const InviteUsersWithSeatsModal = ({
 }: InviteUsersWithSeatsModalProps) => {
   const { formatMessage } = useIntl();
   const [showSuccess, setShowSuccess] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const newSeats = newSeatsResponse.data.attributes;
 
   const { loading, checkIfSeatsExceeded } = useExceedsSeats();
@@ -53,11 +54,19 @@ const InviteUsersWithSeatsModal = ({
   });
 
   const handleConfirmClick = async () => {
-    // Only claim success once the request has been accepted. A rejected one shows
-    // its error on the form, and takes this modal down with it.
-    const submitted = await inviteUsers();
-    if (submitted) {
-      setShowSuccess(true);
+    // The request is only the start of a background job, so this can take a
+    // moment. `processing` on the button also blocks a second click.
+    setIsSubmitting(true);
+
+    try {
+      // Only claim success once the request has been accepted. A rejected one
+      // shows its error on the form, and takes this modal down with it.
+      const submitted = await inviteUsers();
+      if (submitted) {
+        setShowSuccess(true);
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -128,6 +137,7 @@ const InviteUsersWithSeatsModal = ({
           <Box display="flex">
             <Button
               onClick={handleConfirmClick}
+              processing={isSubmitting}
               data-testid="confirm-button-text"
             >
               {formatMessage(messages.confirmButtonText)}

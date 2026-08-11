@@ -169,13 +169,14 @@ describe('InviteUsersWithSeatsModal', () => {
         />
       );
 
+    const confirmButton = () =>
+      screen.getByRole('button', {
+        name: 'Confirm and send out invitations',
+      });
+
     const confirm = async () =>
       act(async () => {
-        fireEvent.click(
-          screen.getByRole('button', {
-            name: 'Confirm and send out invitations',
-          })
-        );
+        fireEvent.click(confirmButton());
       });
 
     it('stays on the confirmation step when the request is not accepted', async () => {
@@ -196,6 +197,44 @@ describe('InviteUsersWithSeatsModal', () => {
       expect(
         screen.queryByText('Confirm impact on seat usage')
       ).not.toBeInTheDocument();
+    });
+
+    describe('while the request is in flight', () => {
+      // Resolved by hand, so the assertions run with the click still pending.
+      const renderPendingModal = () => {
+        let accept: (accepted: boolean) => void = () => {};
+        const inviteUsers = jest.fn(
+          () =>
+            new Promise<boolean>((resolve) => {
+              accept = resolve;
+            })
+        );
+
+        renderModal(inviteUsers);
+
+        return { inviteUsers, accept: () => act(async () => accept(true)) };
+      };
+
+      it('shows the confirm button as processing', async () => {
+        const { accept } = renderPendingModal();
+
+        await confirm();
+
+        expect(confirmButton()).toHaveAttribute('aria-disabled', 'true');
+
+        await accept();
+      });
+
+      it('ignores a second click', async () => {
+        const { inviteUsers, accept } = renderPendingModal();
+
+        await confirm();
+        await confirm();
+
+        expect(inviteUsers).toHaveBeenCalledTimes(1);
+
+        await accept();
+      });
     });
   });
 });
