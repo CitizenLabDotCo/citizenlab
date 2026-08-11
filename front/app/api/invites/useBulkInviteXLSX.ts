@@ -1,7 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
-
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import invitesKeys from './keys';
@@ -18,11 +16,13 @@ const useBulkInviteXLSX = () => {
   const queryClient = useQueryClient();
   return useMutation<IInvitesImport, IInviteError, INewBulkXLSXInviteXLSX>({
     mutationFn: bulkInviteXLSX,
+    // This only enqueues the job. The seat numbers change when it finishes, so
+    // refreshing them belongs with the polling that watches for that —
+    // `useInvitesImport`, not a fixed delay from here.
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: invitesKeys.lists(),
       });
-      invalidateSeatsCache();
     },
   });
 };

@@ -106,6 +106,28 @@ describe('Admin: invitations form', () => {
       cy.contains('jack@johnson.com').should('not.exist');
     });
 
+    // Seat numbers change when invites are created, and the page showing them
+    // never refetches on its own — the app sets staleTime to Infinity, so only
+    // an explicit invalidation updates them. Without one, an admin inviting
+    // twice in a row is deciding against stale numbers.
+    it('updates the assigned seats without a reload', () => {
+      submitInviteWithAdminRights();
+
+      cy.contains('Assigned seats:')
+        .invoke('text')
+        .then((before) => {
+          cy.contains('Confirm and send out invitations').click();
+          cy.contains('Invitation successfully sent out.', {
+            timeout: 60000,
+          }).should('be.visible');
+
+          // The spreadsheet adds two admins, so this has to move.
+          cy.contains('Assigned seats:')
+            .invoke('text')
+            .should('not.equal', before);
+        });
+    });
+
     // Closing the modal after confirming is not a cancellation — the creation
     // job is already running, and the form has to go on reporting it.
     it('still reports the result when the modal is closed after confirming', () => {
