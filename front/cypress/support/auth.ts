@@ -20,17 +20,8 @@ export const enterPhone = (
 ) => {
   cy.dataCy('flow-start-toggle-identifier').click();
 
-  cy.dataCy('phone-flow-start-phone-input')
-    .find('.iti__selected-country')
-    .click();
-  cy.get('.iti__search-input').type('United States');
-  cy.get('li.iti__country[data-iso2="us"]').click();
-
-  // The phone number metadata is loaded asynchronously, and only once it is
-  // there does the field turn what is typed into a full international number.
-  // The example number showing up as the placeholder tells us it has loaded.
   cy.get('input#phone').should('have.attr', 'placeholder');
-  cy.get('input#phone').type(phone.replace('+1', ''));
+  cy.get('input#phone').type(phone);
 
   cy.dataCy('phone-flow-start-continue-button').click();
 };
