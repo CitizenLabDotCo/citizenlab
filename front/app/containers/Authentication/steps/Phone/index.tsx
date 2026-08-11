@@ -3,18 +3,23 @@ import React, { useMemo } from 'react';
 import { Box, Text, Button } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
-import { string, object } from 'yup';
+import { string, object, boolean } from 'yup';
+
+import useAuthUser from 'api/me/useAuthUser';
 
 import { SetError, State } from 'containers/Authentication/typings';
 
-import Input from 'components/HookForm/Input';
+import PhoneInput from 'components/HookForm/PhoneInput';
+import isValidPhoneNumber from 'components/HookForm/PhoneInput/isValidPhoneNumber';
+import ManualCampaignConsent from 'components/SmsConsent/ManualCampaignConsent';
+import PhoneConfirmationConsent from 'components/SmsConsent/PhoneConfirmationConsent';
+import { FormLabel } from 'components/UI/FormComponents';
 
 import { useIntl } from 'utils/cl-intl';
 import {
   isCLErrorsWrapper,
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
-import { isValidPhoneNumber } from 'utils/validate';
 
 import sharedMessages from '../messages';
 
@@ -25,10 +30,11 @@ interface Props {
   state: State;
   loading: boolean;
   setError: SetError;
-  onSubmit: (phone: string) => Promise<void>;
+  onSubmit: (phone: string, smsManualCampaignConsent: boolean) => Promise<void>;
 }
 
 const Phone = ({ state, loading, setError, onSubmit }: Props) => {
+  const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
 
   const schema = useMemo(
@@ -37,24 +43,33 @@ const Phone = ({ state, loading, setError, onSubmit }: Props) => {
         new_phone: string()
           .required(formatMessage(messages.phoneNumberMissingError))
           .test(
-            '',
+            'is-valid-phone',
             formatMessage(messages.phoneNumberFormatError),
-            isValidPhoneNumber
+            (value) => (value ? isValidPhoneNumber(value) : false)
           ),
+        smsManualCampaignConsent: boolean().default(false),
       }),
     [formatMessage]
   );
 
+  const newPhone = state.new_phone ?? authUser?.data.attributes.new_phone;
+
   const methods = useForm<FormValues>({
     mode: 'onSubmit',
-    defaultValues: { new_phone: state.phone ?? undefined },
+    defaultValues: {
+      new_phone: newPhone ?? '',
+      smsManualCampaignConsent: state.smsManualCampaignConsent,
+    },
     resolver: yupResolver(schema),
     shouldFocusError: true,
   });
 
-  const handleSubmit = async ({ new_phone }: FormValues) => {
+  const handleSubmit = async ({
+    new_phone,
+    smsManualCampaignConsent,
+  }: FormValues) => {
     try {
-      await onSubmit(new_phone);
+      await onSubmit(new_phone, smsManualCampaignConsent);
     } catch (e) {
       if (isCLErrorsWrapper(e)) {
         handleHookFormSubmissionError(e, methods.setError);
@@ -73,14 +88,13 @@ const Phone = ({ state, loading, setError, onSubmit }: Props) => {
             {formatMessage(messages.enterYourPhoneNumber)}
           </Text>
           <Box data-cy="phone-number-input">
-            <Input
-              name="new_phone"
-              type="tel"
-              autocomplete="tel"
-              label={formatMessage(messages.phoneNumber)}
-              required
+            <FormLabel
+              labelMessage={messages.phoneNumber}
+              htmlFor="new_phone"
             />
+            <PhoneInput name="new_phone" />
           </Box>
+          <ManualCampaignConsent />
           <Box w="100%" display="flex" mt="32px">
             <Button
               dataCy="phone-continue-button"
@@ -92,6 +106,7 @@ const Phone = ({ state, loading, setError, onSubmit }: Props) => {
               {formatMessage(sharedMessages.continue)}
             </Button>
           </Box>
+          <PhoneConfirmationConsent />
         </form>
       </FormProvider>
     </Box>

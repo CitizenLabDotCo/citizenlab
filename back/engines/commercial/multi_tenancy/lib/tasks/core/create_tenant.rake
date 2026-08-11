@@ -70,7 +70,6 @@ namespace :cl2_back do
         password_login: {
           enabled: true,
           allowed: true,
-          enable_signup: true,
           minimum_length: 8
         },
         pages: {
@@ -360,6 +359,11 @@ namespace :cl2_back do
           allowed: true
         },
         sms: {
+          enabled: true,
+          allowed: true,
+          use_test_mode: true
+        },
+        parallel_participation: {
           enabled: true,
           allowed: true
         }

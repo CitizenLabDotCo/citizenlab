@@ -193,6 +193,7 @@ da-DK:
       new_phone_confirmation: Ny bekræftelseskode til telefon
       official_feedback_on_idea_you_follow: Opdatering af en idé, som du følger
       password_reset: Nulstilling af adgangskode
+      phone_confirmation: Bekræftelseskode til telefon
       project_folder_moderation_rights_received: Projekt-mappens moderationsrettigheder modtaget
       project_manager_rights_received: Projektlederrettigheder modtaget
       project_moderation_rights_received: Rettigheder til projektmoderering modtaget
@@ -550,6 +551,8 @@ da-DK:
       preheader: Nulstil din adgangskode til %{organizationName}
       subject: '%{organizationName}: Nulstil din adgangskode'
       title: Vælg en ny adgangskode
+    phone_confirmation:
+      sms_body: Din bekræftelseskode er %{code}.
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane

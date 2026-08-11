@@ -60,7 +60,6 @@ class WebApi::V1::ProjectsController < ApplicationController
 
     instance_options = {
       user_followers: user_followers,
-      timeline_active: TimelineService.new.timeline_active_on_collection(@projects.to_a),
       visible_children_count_by_parent_id: {}, # projects don't have children
       publication_email_enabled_per_project: publication_email_enabled_per_project,
       # Cannot use `find_sole_by` here: the global ProjectPublished campaign is normally seeded by
@@ -73,7 +72,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       @projects,
       WebApi::V1::ProjectSerializer,
       params: project_serializer_params(instance_options),
-      include: %i[admin_publication project_images current_phase]
+      include: %i[admin_publication project_images current_phase highlighted_phase]
     )
   end
 
@@ -196,7 +195,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     render json: WebApi::V1::ProjectSerializer.new(
       @project,
       params: jsonapi_serializer_params.merge(use_cache: params[:use_cache], request: request),
-      include: %i[admin_publication project_images current_phase avatars]
+      include: %i[admin_publication project_images current_phase highlighted_phase avatars]
     ).serializable_hash
   end
 
@@ -486,7 +485,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       @projects,
       WebApi::V1::ProjectMiniSerializer,
       params: project_serializer_params,
-      include: %i[project_images current_phase]
+      include: %i[project_images highlighted_phase]
     )
   end
 end

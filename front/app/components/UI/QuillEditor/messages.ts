@@ -101,4 +101,17 @@ export default defineMessages({
     id: 'app.components.QuillEditor.imageTitleLabel',
     defaultMessage: 'Image Title',
   },
+  imageTooLargeTitle: {
+    id: 'app.components.QuillEditor.imageTooLargeTitle',
+    defaultMessage: 'This image is too large',
+  },
+  imageTooLarge: {
+    id: 'app.components.QuillEditor.imageTooLarge',
+    defaultMessage:
+      'The selected image exceeds the maximum allowed size of {maxSizeMb}MB. Please choose a smaller image.',
+  },
+  imageTooLargeConfirm: {
+    id: 'app.components.QuillEditor.imageTooLargeConfirm',
+    defaultMessage: 'I understand',
+  },
 });

@@ -3,18 +3,23 @@
 class WebApi::V1::ConfirmationsController < ApplicationController
   include UserCookies
 
-  skip_before_action :authenticate_user, only: %i[confirm_code_unauthenticated]
+  # Authentication is optional (not skipped-and-forbidden) for confirm_code_email:
+  # it serves both unauthenticated callers (email signup / passwordless login) and
+  # authenticated callers re-confirming their own email after confirmed_email_expiry.
+  skip_before_action :authenticate_user, only: %i[confirm_code_email]
   skip_after_action :verify_authorized
 
-  # This endpoint allows unauthenticated users to confirm a code
-  # This is used in the email account creation flow and when
-  # logging in passwordless users
-  def confirm_code_unauthenticated
-    user = User.find_by_cimail(confirm_code_unauthenticated_params[:email])
+  # Confirms a code for the user's `email` (in-place EmailConfirmation). Two callers:
+  #   - unauthenticated: email account creation flow and passwordless login.
+  #   - authenticated: re-confirmation of an expired confirmed_email. On success
+  #     EmailConfirmation#confirm! refreshes email_confirmed_at, which is exactly
+  #     what resets the expiry window.
+  def confirm_code_email
+    user = User.find_by_cimail(confirm_code_email_params[:email])
 
-    result = user_confirmation_service.validate_and_confirm_unauthenticated!(
+    result = user_confirmation_service.validate_and_confirm_email!(
       user,
-      confirm_code_unauthenticated_params[:code]
+      confirm_code_email_params[:code]
     )
 
     if result.success?
@@ -32,8 +37,8 @@ class WebApi::V1::ConfirmationsController < ApplicationController
   end
 
   # This endpoint is used when a logged in user wants to change their email
-  def confirm_code_email_change
-    result = user_confirmation_service.validate_and_confirm_email_change!(
+  def confirm_code_new_email
+    result = user_confirmation_service.validate_and_confirm_new_email!(
       current_user,
       confirm_code_params[:code]
     )
@@ -48,11 +53,14 @@ class WebApi::V1::ConfirmationsController < ApplicationController
     end
   end
 
-  # This endpoint is used when a logged in user confirms a pending phone-number
-  # change. On success, new_phone is promoted to phone. The phone
+  # This endpoint is used when a logged in user re-confirms their existing phone
+  # (in-place PhoneConfirmation) after confirmed_phone expiry. Unlike
+  # confirm_code_email, it's never used for account creation or passwordless login,
+  # so authentication is required. On success PhoneConfirmation#confirm! refreshes
+  # phone_confirmed_at, which is exactly what resets the expiry window. The phone
   # number isn't part of the auth token, so there's no JWT cookie to refresh.
-  def confirm_code_phone_change
-    result = user_confirmation_service.validate_and_confirm_phone_change!(
+  def confirm_code_phone
+    result = user_confirmation_service.validate_and_confirm_phone!(
       current_user,
       confirm_code_params[:code]
     )
@@ -65,14 +73,48 @@ class WebApi::V1::ConfirmationsController < ApplicationController
     end
   end
 
+  # This endpoint is used when a logged in user confirms a pending phone-number
+  # change. On success, new_phone is promoted to phone. The phone
+  # number isn't part of the auth token, so there's no JWT cookie to refresh.
+  def confirm_code_new_phone
+    result = user_confirmation_service.validate_and_confirm_new_phone!(
+      current_user,
+      confirm_code_new_phone_params[:code]
+    )
+
+    if result.success?
+      SideFxUserService.new.after_update(current_user, current_user)
+      record_sms_manual_campaign_consent
+      head :ok
+    else
+      render json: { errors: result.errors.details }, status: :unprocessable_entity
+    end
+  end
+
   private
 
-  def confirm_code_unauthenticated_params
+  def confirm_code_email_params
     params.require(:confirmation).permit(:email, :code)
   end
 
   def confirm_code_params
     params.require(:confirmation).permit(:code)
+  end
+
+  def confirm_code_new_phone_params
+    params.require(:confirmation).permit(:code, :sms_manual_campaign_consent)
+  end
+
+  def record_sms_manual_campaign_consent
+    manual_campaign_consent = parse_bool(confirm_code_new_phone_params[:sms_manual_campaign_consent])
+    return if manual_campaign_consent.nil?
+
+    consent = EmailCampaigns::ConsentService.new.record!(
+      current_user,
+      EmailCampaigns::Campaigns::SmsManual,
+      consented: manual_campaign_consent
+    )
+    EmailCampaigns::SideFxConsentService.new.after_update(consent, current_user)
   end
 
   def user_confirmation_service

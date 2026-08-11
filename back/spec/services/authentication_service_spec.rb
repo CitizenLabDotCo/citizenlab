@@ -68,7 +68,7 @@ describe AuthenticationService do
 
     context 'when the user is confirmed' do
       before do
-        user.email_confirmation.confirm!
+        user.find_or_create_confirmation(:email_confirmation).confirm!
       end
 
       it 'preserves the user account' do

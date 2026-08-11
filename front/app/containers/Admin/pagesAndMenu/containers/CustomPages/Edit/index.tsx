@@ -8,8 +8,8 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import {
-  pagesAndMenuBreadcrumb,
-  pagesAndMenuBreadcrumbLink,
+  pagesBreadcrumb,
+  pagesBreadcrumbLink,
 } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 
 import TabbedResource from 'components/admin/TabbedResource';
@@ -49,8 +49,8 @@ const CustomPagesEditSettings = () => {
         <Breadcrumbs
           breadcrumbs={[
             {
-              label: formatMessage(pagesAndMenuBreadcrumb.label),
-              link: pagesAndMenuBreadcrumbLink,
+              label: formatMessage(pagesBreadcrumb.label),
+              link: pagesBreadcrumbLink,
             },
             { label: localize(pageTitleMultiloc) },
           ]}

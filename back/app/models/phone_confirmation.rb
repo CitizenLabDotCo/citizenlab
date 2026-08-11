@@ -1,0 +1,60 @@
+# frozen_string_literal: true
+
+# == Schema Information
+#
+# Table name: confirmations
+#
+#  id               :uuid             not null, primary key
+#  user_id          :uuid             not null
+#  type             :string           not null
+#  code             :string
+#  code_retry_count :integer          default(0), not null
+#  code_reset_count :integer          default(0), not null
+#  code_sent_at     :datetime
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#
+# Indexes
+#
+#  index_confirmations_on_user_id           (user_id)
+#  index_confirmations_on_user_id_and_type  (user_id,type) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id) ON DELETE => cascade
+#
+# Confirms the user's existing phone number (stamps phone_confirmed_at),
+# the phone analog of EmailConfirmation. Unlike NewPhoneConfirmation it does
+# not promote a pending new_phone; it confirms the number already on the user.
+class PhoneConfirmation < Confirmation
+  def confirm!
+    transaction do
+      user.update!(phone_confirmed_at: Time.zone.now)
+      clear_code!
+      cancel_other_users_pending_phone_change(user.phone) if user.phone.present?
+    end
+    true
+  end
+
+  def pending?
+    user.phone.present? && user.phone_confirmed_at.nil?
+  end
+
+  def reset_code!
+    update!(
+      code: generate_code,
+      code_reset_count: code_reset_count + 1,
+      code_retry_count: 0
+    )
+  end
+
+  def expire_code!
+    update!(code: generate_code)
+  end
+
+  def generate_code
+    return '1234' if AppConfiguration.instance.settings('sms', 'use_test_mode')
+
+    Rails.env.development? ? '1234' : format('%04d', rand(10_000))
+  end
+end

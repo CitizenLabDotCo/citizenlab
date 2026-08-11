@@ -75,7 +75,6 @@ export interface IAppConfigurationSettings {
   password_login?: {
     allowed: boolean;
     enabled: boolean;
-    enable_signup: boolean;
     minimum_length?: number;
     minimum_strength?: number;
   };
@@ -93,7 +92,9 @@ export interface IAppConfigurationSettings {
   verification?: {
     verification_methods: string[];
   };
-  sms?: AppConfigurationFeature;
+  sms?: AppConfigurationFeature & {
+    allowed_country_codes?: string[];
+  };
   smart_groups?: AppConfigurationFeature;
   typeform_surveys?: {
     allowed: boolean;

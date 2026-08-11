@@ -19,8 +19,11 @@ RSpec.describe RequestNewEmailConfirmationCodeJob do
       expect(user.email).to eq 'some_email@email.com'
     end
 
-    it 'changes the new_email confirmation code delivery timestamp' do
-      expect { job.perform(user, new_email: new_email) }.to change { user.new_email_confirmation.reload.code_sent_at }
+    it 'creates the new_email confirmation on demand and sets the code delivery timestamp' do
+      expect(user.new_email_confirmation).to be_nil
+
+      expect { job.perform(user, new_email: new_email) }.to change(NewEmailConfirmation, :count).by(1)
+      expect(user.reload.new_email_confirmation.code_sent_at).to be_present
     end
 
     it 'sends the confirmation email' do
@@ -67,13 +70,14 @@ RSpec.describe RequestNewEmailConfirmationCodeJob do
     end
 
     it 'resets code_retry_count on the new_email_confirmation' do
-      user.new_email_confirmation.update!(code_retry_count: 3)
-      expect { job.perform(user, new_email: new_email) }.to change { user.new_email_confirmation.reload.code_retry_count }.to(0)
+      confirmation = user.find_or_create_confirmation(:new_email_confirmation)
+      confirmation.update!(code_retry_count: 3)
+      expect { job.perform(user, new_email: new_email) }.to change { confirmation.reload.code_retry_count }.to(0)
     end
 
     it 'does not change the confirmation_required value of a confirmed user' do
       user = create(:unconfirmed_user)
-      user.email_confirmation.confirm!
+      user.find_or_create_confirmation(:email_confirmation).confirm!
       expect(user.confirmation_required?).to be false
 
       job.perform(user, new_email: new_email)

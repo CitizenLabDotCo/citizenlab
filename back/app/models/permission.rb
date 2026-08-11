@@ -77,6 +77,7 @@ class Permission < ApplicationRecord
   validate :validate_require_confirmed_phone_number
   validate :validate_authentication_method_present
   validate :validate_verification_expiry
+  validate :validate_confirmed_email_expiry
   validate :validate_confirmed_phone_number_expiry
   validate :validate_permitted_by_everyone
   validates :user_data_collection, inclusion: { in: %w[all_data demographics_only anonymous] }
@@ -178,12 +179,12 @@ class Permission < ApplicationRecord
 
   def validate_require_confirmed_email
     return unless require_confirmed_email && require_confirmed_email_changed?
-    return if password_login_signup_enabled?
+    return if AppConfiguration.instance.feature_activated?('password_login')
 
     errors.add(
       :require_confirmed_email,
       :require_confirmed_email_not_allowed,
-      message: 'A confirmed email can only be required when password login signup is enabled.'
+      message: 'A confirmed email can only be required when password login is enabled.'
     )
   end
 
@@ -214,11 +215,6 @@ class Permission < ApplicationRecord
     )
   end
 
-  def password_login_signup_enabled?
-    config = AppConfiguration.instance
-    config.feature_activated?('password_login') && !!config.settings('password_login', 'enable_signup')
-  end
-
   def validate_verification_expiry
     return if verification_expiry.nil?
     return if require_verification || !verification_expiry_changed?
@@ -227,6 +223,17 @@ class Permission < ApplicationRecord
       :verification_expiry,
       :verification_expiry_cannot_be_set,
       message: 'Verification expiry can only be set when verification is required.'
+    )
+  end
+
+  def validate_confirmed_email_expiry
+    return if confirmed_email_expiry.nil?
+    return if require_confirmed_email || !confirmed_email_expiry_changed?
+
+    errors.add(
+      :confirmed_email_expiry,
+      :confirmed_email_expiry_cannot_be_set,
+      message: 'Confirmed email expiry can only be set when a confirmed email is required.'
     )
   end
 

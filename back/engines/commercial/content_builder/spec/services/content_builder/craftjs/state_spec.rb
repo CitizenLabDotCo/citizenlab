@@ -36,6 +36,18 @@ RSpec.describe ContentBuilder::Craftjs::State do
     it 'fails if the node does not exist' do
       expect { state.delete_node('nonexistent') }.to raise_error(KeyError)
     end
+
+    it "detaches the node from its parent's linkedNodes when it fills a slot" do
+      expect(json.dig('3h-Eizw2cD', 'linkedNodes')).to eq(
+        'about-text' => 'U7ecmS1hsI', 'about-title' => 'PoSwoa3Fx5'
+      )
+
+      state.delete_node('PoSwoa3Fx5')
+
+      expect(json.dig('3h-Eizw2cD', 'linkedNodes')).to eq('about-text' => 'U7ecmS1hsI')
+      # The slot container and its subtree are gone; no dangling references remain.
+      expect(json.keys).to match_array %w[ROOT 3h-Eizw2cD U7ecmS1hsI dpDtvSimWx]
+    end
   end
 
   describe '#replace_node' do

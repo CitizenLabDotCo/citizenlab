@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 module DecidimImporter
-  # Synthetic Decidim rows for the one pipeline piece with no real CSV fixture: participatory-process
-  # *user roles*. Real exports don't ship a roles CSV (and {ExportReader} doesn't read one), so
-  # {Extractors::ProcessRolesExtractor} + {RoleAssigner} are exercised only here. Projects, phases and
-  # folders have real fixtures under `decidim_export/`, covered by their own specs — just enough of a
-  # project + user is included below for a moderator role to attach to.
+  # Synthetic Decidim rows for the one pipeline piece with no self-contained real fixture: participatory-
+  # process *user roles* (the per-process `NN---users.csv`, read by {ExportReader} and stamped with the
+  # process uid). {Extractors::ProcessRolesExtractor} + {ModeratorAssigner} are exercised end-to-end here.
+  # Projects, phases and folders have real fixtures under `decidim_export/`, covered by their own specs —
+  # just enough of a project + user is included below for a moderator role to attach to.
   module SampleData
     module_function
 
@@ -23,16 +23,20 @@ module DecidimImporter
         { 'uid' => 'decidim-participatoryprocess-100', 'title' => 'Budget participatif 2021',
           'description' => '<p>Proposez vos projets.</p>',
           'short_description' => 'Le budget participatif annuel', 'hero_image' => '',
-          'participatory_process_group' => '',
+          'participatory_process_group' => '', 'url' => 'https://decidim.example/processes/budget-participatif-2021',
           'published_at' => '2021-01-01', 'created_at' => '2021-01-01', 'updated_at' => '2021-01-01' }
       ]
     end
 
+    # As {ExportReader} yields them: the per-process `users.csv` columns (`uid`, `role`) stamped with the
+    # owning process uid. The `admin` becomes a moderator; `private_user` is a private-space participant,
+    # ignored.
     def process_roles
       [
-        { 'decidim_user' => 'decidim-user-2',
-          'decidim_participatory_process' => 'decidim-participatoryprocess-100',
-          'role' => 'admin' }
+        { 'uid' => 'decidim-user-2', 'role' => 'admin',
+          'decidim_participatory_process' => 'decidim-participatoryprocess-100' },
+        { 'uid' => 'decidim-user-2', 'role' => 'private_user',
+          'decidim_participatory_process' => 'decidim-participatoryprocess-100' }
       ]
     end
 

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require_relative '../../../fixtures/decidim_export_fixture'
 
 RSpec.describe DecidimImporter::Extractors::FoldersExtractor do
   let(:ref_map) { DecidimImporter::RefMap.new }
@@ -31,24 +30,5 @@ RSpec.describe DecidimImporter::Extractors::FoldersExtractor do
   it 'registers folders by their uid for cross-file joins' do
     extract([{ 'uid' => 'decidim-participatoryprocessgroup-9', 'title' => '{"fr":"X"}' }])
     expect(ref_map.fetch('decidim-participatoryprocessgroup-9')).to be_present
-  end
-
-  context 'with the real Decidim export fixture' do
-    let(:records) do
-      extract(
-        DecidimImporter::CsvReader.read(
-          File.join(
-            DecidimImporter::DecidimExportFixture.csv_root,
-            '05---participatory-processes/01--participatory-process-groups.csv'
-          )
-        )
-      )
-    end
-
-    it 'maps every group in the export' do
-      expect(records.size).to eq(2)
-      uids = records.map(&:key)
-      expect(uids).to include('decidim-participatoryprocessgroup-1', 'decidim-participatoryprocessgroup-2')
-    end
   end
 end

@@ -58,11 +58,22 @@ resource 'Campaigns' do
         expect(json_response[:data].size).to eq 2
       end
 
-      example 'List only campaigns of a given channel' do
-        sms_campaign = create(:sms_manual_campaign)
+      context 'with the sms feature enabled' do
+        include_context 'with sms feature enabled'
+
+        example 'List only campaigns of a given channel' do
+          sms_campaign = create(:sms_manual_campaign)
+          do_request(channel: 'sms')
+          json_response = json_parse(response_body)
+          expect(json_response[:data].map { |c| c[:id] }).to contain_exactly(sms_campaign.id)
+        end
+      end
+
+      example 'Does not list campaigns whose feature is deactivated' do
+        create(:sms_manual_campaign) # the sms feature is off here
         do_request(channel: 'sms')
         json_response = json_parse(response_body)
-        expect(json_response[:data].map { |c| c[:id] }).to contain_exactly(sms_campaign.id)
+        expect(json_response[:data]).to be_empty
       end
 
       example 'List all manual campaigns' do
@@ -593,7 +604,8 @@ resource 'Campaigns' do
         include_context 'with sms feature enabled'
 
         before do
-          create(:user, phone: '+14155552671', phone_confirmed_at: Time.zone.now)
+          recipient = create(:user, phone: '+14155552671', phone_confirmed_at: Time.zone.now)
+          create(:consent, :sms_manual, user: recipient)
         end
 
         let(:campaign) { create(:sms_manual_campaign) }
@@ -658,6 +670,7 @@ resource 'Campaigns' do
           delivered: 0,
           undelivered: 0,
           failed: 0,
+          errored: 0,
           total: 4
         })
       end

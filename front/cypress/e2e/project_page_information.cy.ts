@@ -63,6 +63,7 @@ describe('Information with events CTA', () => {
       cy.visit(`/en/projects/${projectSlug}`);
 
       cy.get('#e2e-project-see-events-button').should('exist');
+      cy.dockProjectCtaBar();
       cy.get('#e2e-cta-bar-see-events').should('exist');
       cy.get('#e2e-event-previews').should('exist');
       cy.get('#e2e-project-page-events').should('exist');

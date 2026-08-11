@@ -6,8 +6,8 @@ import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { object, string } from 'yup';
 
-import { confirmEmailConfirmationCodeChangeEmail } from 'api/authentication/confirm_email/confirmEmailConfirmationCode';
-import { requestEmailConfirmationCodeChangeEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
+import { confirmCodeNewEmail } from 'api/authentication/confirm_email/confirmEmailConfirmationCode';
+import { requestCodeNewEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
 import meKeys from 'api/me/keys';
 import useAuthUser from 'api/me/useAuthUser';
 
@@ -64,7 +64,7 @@ const EmailChange = () => {
 
     try {
       if (!emailValue) return;
-      await confirmEmailConfirmationCodeChangeEmail(code);
+      await confirmCodeNewEmail(code);
       await queryClient.invalidateQueries(meKeys.all());
       setConfirmationError(null);
       setOpenConfirmationModal(false);
@@ -136,19 +136,11 @@ const EmailChange = () => {
               </Box>
             )}
             <EmailConfirmation
-              state={{
-                flow: 'signup',
-                email: newEmail,
-                token: null,
-                prefilledBuiltInFields: null,
-                ssoProvider: null,
-                claimTokens: null,
-                phone: null,
-              }}
+              email={newEmail}
               loading={loading}
               setError={setConfirmationError}
               onConfirm={onEmailConfirmation}
-              onResendCode={requestEmailConfirmationCodeChangeEmail}
+              onResendCode={requestCodeNewEmail}
             />
           </Box>
         </Modal>

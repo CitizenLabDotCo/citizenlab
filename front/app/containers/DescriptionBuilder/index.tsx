@@ -5,10 +5,8 @@ import { SerializedNodes } from '@craftjs/core';
 import { isEmpty } from 'lodash-es';
 import { Multiloc, SupportedLocale } from 'typings';
 
-import { ContentBuildableType } from 'api/content_builder/types';
 import useAddContentBuilderLayout from 'api/content_builder/useAddContentBuilderLayout';
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
-import useUpsertProjectPageLayout from 'api/project_page_layout/useUpsertProjectPageLayout';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
@@ -18,13 +16,10 @@ import FullscreenContentBuilder from 'components/admin/ContentBuilder/Fullscreen
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import DescriptionBuilderContent from 'components/DescriptionBuilder/DescriptionBuilderContent';
 import DescriptionBuilderEditModePreview from 'components/DescriptionBuilder/DescriptionBuilderEditModePreview';
-import DescriptionBuilderToolbox from 'components/DescriptionBuilder/DescriptionBuilderToolbox';
+import FolderDescriptionBuilderToolbox from 'components/DescriptionBuilder/DescriptionBuilderToolbox/FolderDescriptionBuilderToolbox';
 import DescriptionBuilderTopBar from 'components/DescriptionBuilder/DescriptionBuilderTopBar';
 import Editor from 'components/DescriptionBuilder/Editor';
 import ContentBuilderSettings from 'components/DescriptionBuilder/Settings';
-import useProjectDescription from 'components/DescriptionBuilder/useProjectDescription';
-import { normalizeProjectPageLayout } from 'components/ProjectPageBuilder/defaultLayout';
-import { spliceDescriptionEditorData } from 'components/ProjectPageBuilder/descriptionSection';
 
 import { type TypedLinkProps } from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
@@ -32,7 +27,6 @@ import { useLocation } from 'utils/router';
 
 type Props = {
   contentBuildableId: string;
-  contentBuildableType: ContentBuildableType;
   backPath: string;
   previewLink: TypedLinkProps;
   titleMultiloc: Multiloc;
@@ -40,7 +34,6 @@ type Props = {
 
 const DescriptionBuilderPage = ({
   contentBuildableId,
-  contentBuildableType,
   backPath,
   previewLink,
   titleMultiloc,
@@ -55,27 +48,11 @@ const DescriptionBuilderPage = ({
 
   const locales = useAppConfigurationLocales();
 
-  const isProject = contentBuildableType === 'project';
-
-  const {
-    pageLayout,
-    projectPageJson,
-    descriptionEditorData,
-    legacyLayout,
-    refetchPageLayout,
-  } = useProjectDescription(contentBuildableId, { enabled: isProject });
-  const { data: folderLayout } = useContentBuilderLayout(
-    contentBuildableType,
-    contentBuildableId,
-    !isProject
+  const { data: layout } = useContentBuilderLayout(
+    'folder',
+    contentBuildableId
   );
-  const layout = isProject ? pageLayout ?? legacyLayout : folderLayout;
 
-  const {
-    mutate: upsertProjectPageLayout,
-    isLoading: isUpsertingProjectPage,
-    isError: isUpsertProjectPageError,
-  } = useUpsertProjectPageLayout();
   const {
     mutate: addContentBuilderLayout,
     isLoading: isAddingLayout,
@@ -115,36 +92,17 @@ const DescriptionBuilderPage = ({
     Object.values(contentBuilderErrors).filter((node) => node.hasError).length >
     0;
 
-  const getEditorData = () => {
-    if (isProject && pageLayout) {
-      return descriptionEditorData;
-    }
-    if (!isEmpty(layout.data.attributes.craftjs_json)) {
-      return layout.data.attributes.craftjs_json;
-    }
-    return undefined;
-  };
+  const editorData = isEmpty(layout.data.attributes.craftjs_json)
+    ? undefined
+    : layout.data.attributes.craftjs_json;
 
-  const handleSave = async (nodes: SerializedNodes) => {
-    if (isProject && projectPageJson) {
-      const { data: freshLayout } = await refetchPageLayout();
-      const baseJson = freshLayout
-        ? normalizeProjectPageLayout(freshLayout.data.attributes.craftjs_json)
-        : projectPageJson;
-
-      upsertProjectPageLayout({
-        projectId: contentBuildableId,
-        craftjs_json: spliceDescriptionEditorData(baseJson, nodes),
-        enabled: true,
-      });
-    } else {
-      addContentBuilderLayout({
-        contentBuildableId,
-        contentBuildableType,
-        enabled: true,
-        craftjs_json: nodes,
-      });
-    }
+  const handleSave = (nodes: SerializedNodes) => {
+    addContentBuilderLayout({
+      contentBuildableId,
+      contentBuildableType: 'folder',
+      enabled: true,
+      craftjs_json: nodes,
+    });
   };
 
   const handleEditorChange = (nodes: SerializedNodes) => {
@@ -189,28 +147,26 @@ const DescriptionBuilderPage = ({
             setPreviewEnabled={setPreviewEnabled}
             selectedLocale={selectedLocale}
             onSelectLocale={handleSelectedLocaleChange}
-            contentBuildableType={contentBuildableType}
             backPath={backPath}
             previewLink={previewLink}
             titleMultiloc={titleMultiloc}
             onSave={handleSave}
-            isSaving={isUpsertingProjectPage || isAddingLayout}
-            saveHasError={isUpsertProjectPageError || isAddLayoutError}
+            isSaving={isAddingLayout}
+            saveHasError={isAddLayoutError}
           />
           <Box
             mt={`${stylingConsts.menuHeight}px`}
             display={previewEnabled ? 'none' : 'flex'}
             id="e2e-project-description-content-builder-page"
           >
-            <DescriptionBuilderToolbox
-              contentBuildableType={contentBuildableType}
-              contentBuildableId={contentBuildableId}
+            <FolderDescriptionBuilderToolbox
               selectedLocale={selectedLocale}
+              folderId={contentBuildableId}
             />
             <DescriptionBuilderContent
               selectedLocale={selectedLocale}
               platformLocale={locale}
-              editorData={getEditorData()}
+              editorData={editorData}
             />
             <ContentBuilderSettings />
           </Box>
@@ -218,7 +174,6 @@ const DescriptionBuilderPage = ({
         <Box justifyContent="center" display={previewEnabled ? 'flex' : 'none'}>
           <DescriptionBuilderEditModePreview
             contentBuildableId={contentBuildableId}
-            contentBuildableType={contentBuildableType}
             ref={iframeRef}
             selectedLocale={selectedLocale}
           />

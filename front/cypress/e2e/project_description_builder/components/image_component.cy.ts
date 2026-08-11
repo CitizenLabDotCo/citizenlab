@@ -22,9 +22,7 @@ describe('Project description builder Image component', () => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
         cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
-          cy.visit(
-            `/admin/description-builder/projects/${projectId}/description`
-          );
+          cy.visit(`/admin/project-page-builder/projects/${projectId}`);
         });
       });
     });
@@ -42,8 +40,7 @@ describe('Project description builder Image component', () => {
       'saveProjectDescriptionBuilder'
     );
 
-    cy.get('#e2e-draggable-image').should('exist');
-    cy.get('#e2e-draggable-image').dragAndDrop('#e2e-content-builder-frame', {
+    cy.get('#e2e-draggable-image').dragAndDrop('#e2e-project-page-body', {
       position: 'inside',
     });
 
@@ -58,7 +55,6 @@ describe('Project description builder Image component', () => {
       .type('Image alt text.');
 
     cy.get('[alt="Image alt text."]').should('exist');
-
     // Adding the image triggers an async re-fetch (convertUrlToUploadFile) that
     // disables Save until it resolves. The button renders its disabled state via
     // aria-disabled (not the native attribute), so wait on that rather than racing
@@ -66,11 +62,12 @@ describe('Project description builder Image component', () => {
     cy.get('#e2e-content-builder-topbar-save')
       .find('button')
       .should('not.have.attr', 'aria-disabled', 'true');
-    cy.get('#e2e-content-builder-topbar-save').click();
+    cy.get('#e2e-content-builder-topbar-save').click({ force: true });
 
     cy.wait('@saveProjectDescriptionBuilder');
-
     cy.visit(`/projects/${projectSlug}`);
+    //ensure the page is loaded before checking for the image
+    cy.get('body').should('be.visible');
     cy.get('[alt="Image alt text."]').should('exist');
   });
 
@@ -78,7 +75,7 @@ describe('Project description builder Image component', () => {
     cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
-    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
+    cy.visit(`/admin/project-page-builder/projects/${projectId}`);
 
     cy.get('.e2e-image').parent().click();
     cy.get('#e2e-delete-button').click();

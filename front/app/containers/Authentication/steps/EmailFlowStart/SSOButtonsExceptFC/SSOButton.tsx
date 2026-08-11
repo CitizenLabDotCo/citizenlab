@@ -95,6 +95,19 @@ const SSOButton = ({ provider, onClickSSO }: Props) => {
           />
         </WrappedAuthProviderButton>
       );
+    case 'nemlog_in':
+      return (
+        <WrappedAuthProviderButton
+          icon="mitid"
+          authProvider="nemlog_in"
+          onClick={onClickSSO}
+        >
+          <FormattedMessage
+            {...sharedMessages.continueWithLoginMechanism}
+            values={{ loginMechanismName: idMethodNames.nemlog_in }}
+          />
+        </WrappedAuthProviderButton>
+      );
     case 'keycloak': {
       const keycloakMethod = idMethods?.data.find(
         (item) => item.attributes.name === 'keycloak'

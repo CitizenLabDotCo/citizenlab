@@ -90,9 +90,7 @@ const CreateProject = () => {
           id="app.containers.Admin.projects.all.createProject"
           selectedTabValue={selectedTabValue}
         />
-        {selectedTabValue === 'scratch' && (
-          <ProjectSetupForm authUser={authUser} />
-        )}
+        {selectedTabValue === 'scratch' && <ProjectSetupForm />}
       </Box>
     </Box>
   );

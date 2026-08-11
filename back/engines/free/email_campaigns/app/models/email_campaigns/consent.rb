@@ -26,10 +26,12 @@ module EmailCampaigns
       defined_types = where(user_id: user.id).pluck(:campaign_type)&.uniq
       available_types = DeliveryService.new.consentable_campaign_types_for(user)
       (available_types - defined_types).each do |campaign_type|
+        campaign_class = campaign_type.safe_constantize
+        consented = campaign_class ? campaign_class.consented_by_default? : true
         create!(
           user_id: user.id,
           campaign_type: campaign_type,
-          consented: true
+          consented: consented
         )
       end
     end

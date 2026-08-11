@@ -3,16 +3,18 @@ import React, { useState } from 'react';
 import { Box, Success } from '@citizenlab/cl2-component-library';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 
-import { requestCodePhoneChange } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
+import { requestCodeNewPhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import { IUser } from 'api/users/types';
 
-import Input from 'components/HookForm/Input';
+import PhoneInput from 'components/HookForm/PhoneInput';
 import {
   Title,
   StyledButton,
   Form,
   LabelContainer,
 } from 'components/smallForm';
+import ManualCampaignConsent from 'components/SmsConsent/ManualCampaignConsent';
+import PhoneConfirmationConsent from 'components/SmsConsent/PhoneConfirmationConsent';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
 import Warning from 'components/UI/Warning';
@@ -31,11 +33,12 @@ type UpdatePhoneFormProps = {
   user: IUser;
 };
 
-type FormError = 'taken' | 'invalid' | 'unknown';
+type FormError = 'taken' | 'invalid' | 'unsupported_country' | 'unknown';
 
 const ERROR_MESSAGES = {
   taken: messages.phoneTaken,
   invalid: messages.phoneInvalid,
+  unsupported_country: messages.phoneUnsupportedCountry,
   unknown: messages.phoneUnknownError,
 };
 
@@ -49,12 +52,9 @@ const UpdatePhoneForm = ({
   const [error, setError] = useState<FormError | undefined>(undefined);
   const currentPhone = user.data.attributes.phone;
 
-  // Return the promise so react-hook-form keeps `formState.isSubmitting` true for
-  // the whole request. That's what keeps the submit button in its processing state
-  // and prevents a second click from firing a duplicate code request.
   const onFormSubmit = async (formValues: FormValues) => {
     try {
-      return requestCodePhoneChange(formValues.phone)
+      return requestCodeNewPhone(formValues.phone)
         .then(() => {
           setOpenConfirmationModal(true);
           setError(undefined);
@@ -65,6 +65,8 @@ const UpdatePhoneForm = ({
             setError('taken');
           } else if (errorCode === 'is invalid') {
             setError('invalid');
+          } else if (errorCode === 'unsupported_country') {
+            setError('unsupported_country');
           } else {
             setError('unknown');
           }
@@ -98,10 +100,8 @@ const UpdatePhoneForm = ({
             htmlFor="phone"
           />
         </LabelContainer>
-        <Input
+        <PhoneInput
           name="phone"
-          type="text"
-          placeholder="+14155552671"
           onBlur={() => {
             setError(undefined);
           }}
@@ -109,6 +109,7 @@ const UpdatePhoneForm = ({
         {error && (
           <Error marginTop="4px" text={formatMessage(ERROR_MESSAGES[error])} />
         )}
+        <ManualCampaignConsent />
         <StyledButton
           type="submit"
           size="m"
@@ -117,6 +118,7 @@ const UpdatePhoneForm = ({
           text={formatMessage(messages.submitButton)}
           dataCy="change-phone-submit-button"
         />
+        <PhoneConfirmationConsent />
       </Form>
       <Box display="flex" justifyContent="center">
         {updateSuccessful && (
