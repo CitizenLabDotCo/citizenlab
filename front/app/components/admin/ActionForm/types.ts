@@ -46,7 +46,3 @@ export type Props = {
   onChange: (changes: Changes) => Promise<void>;
   onReset: () => void;
 };
-
-// The security requirements on offer: each one maps onto a `require_*` boolean
-// + `*_expiry` pair on the permission.
-export type SecurityRequirementKey = 'email' | 'phone' | 'verification';

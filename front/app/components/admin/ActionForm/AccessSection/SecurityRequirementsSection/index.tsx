@@ -15,8 +15,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { SECURITY_REQUIREMENTS } from '../../constants';
-import { getMethod, methodChange } from '../../logic';
+import actionFormMessages from '../../messages';
 import { Changes } from '../../types';
 import { Expander } from '../../ui';
 
@@ -31,24 +30,42 @@ interface Props {
 
 const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
   const { formatMessage } = useIntl();
+  const { attributes } = permission;
 
   const smsEnabled = useFeatureFlag({ name: 'sms' });
   const smsLoginEnabled = useFeatureFlag({ name: 'sms_login' });
   const { data: verificationMethod } = useVerificationMethod();
   const { data: authenticationMethod } = useAuthenticationMethod();
 
-  const visibleKeys = getVisibleToggles({
+  const visibleToggles = getVisibleToggles({
     sms2FAEnabled: smsEnabled,
     smsLoginEnabled,
     verificationMethodEnabled: !!verificationMethod,
     authenticationMethodEnabled: !!authenticationMethod,
   });
 
-  const activeKeys = visibleKeys.filter(
-    (key) => getMethod(permission, key).enabled
-  );
+  const showEmail = visibleToggles.includes('email');
+  const showPhone = visibleToggles.includes('phone');
+  const showVerification = visibleToggles.includes('verification');
 
-  if (visibleKeys.length === 0) {
+  // Only what is both offered here and actually switched on belongs in the
+  // collapsed summary.
+  const activeLabels: string[] = [];
+  if (showEmail && attributes.require_confirmed_email) {
+    activeLabels.push(formatMessage(actionFormMessages.requireConfirmedEmail));
+  }
+  if (showPhone && attributes.require_confirmed_phone_number) {
+    activeLabels.push(
+      formatMessage(actionFormMessages.requireConfirmedPhoneNumber)
+    );
+  }
+  if (showVerification && attributes.require_verification) {
+    activeLabels.push(
+      formatMessage(actionFormMessages.requireIdentityVerification)
+    );
+  }
+
+  if (visibleToggles.length === 0) {
     return null;
   }
 
@@ -58,26 +75,77 @@ const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
         icon="shield-checkered"
         title={formatMessage(messages.securityChecks)}
         summary={
-          activeKeys.length
-            ? activeKeys
-                .map((key) => formatMessage(SECURITY_REQUIREMENTS[key].label))
-                .join(' · ')
+          activeLabels.length
+            ? activeLabels.join(' · ')
             : formatMessage(messages.none)
         }
-        defaultOpen={activeKeys.length > 0}
+        defaultOpen={activeLabels.length > 0}
       >
-        {visibleKeys.map((key) => {
-          const { enabled, expiry } = getMethod(permission, key);
-          return (
-            <MethodRow
-              key={key}
-              methodKey={key}
-              enabled={enabled}
-              expiry={expiry}
-              onChange={(next) => onChange(methodChange(key, next))}
-            />
-          );
-        })}
+        {showEmail && (
+          <MethodRow
+            icon="email"
+            label={formatMessage(actionFormMessages.requireConfirmedEmail)}
+            description={formatMessage(
+              actionFormMessages.emailMethodDescription
+            )}
+            enabled={attributes.require_confirmed_email}
+            expiry={attributes.confirmed_email_expiry}
+            verb="Re-confirm"
+            onChange={({ enabled, expiry }) =>
+              onChange({
+                require_confirmed_email: enabled,
+                confirmed_email_expiry: expiry,
+              })
+            }
+          />
+        )}
+
+        {showPhone && (
+          <MethodRow
+            icon="tablet"
+            label={formatMessage(
+              actionFormMessages.requireConfirmedPhoneNumber
+            )}
+            // Without SMS login nobody signs up by phone, so the check is
+            // simply "everyone or nobody" — the conditional wording would only
+            // confuse.
+            description={formatMessage(
+              smsLoginEnabled
+                ? actionFormMessages.phoneMethodDescriptionWithSmsLogin
+                : actionFormMessages.phoneMethodDescription
+            )}
+            enabled={attributes.require_confirmed_phone_number}
+            expiry={attributes.confirmed_phone_number_expiry}
+            verb="Re-confirm"
+            onChange={({ enabled, expiry }) =>
+              onChange({
+                require_confirmed_phone_number: enabled,
+                confirmed_phone_number_expiry: expiry,
+              })
+            }
+          />
+        )}
+
+        {showVerification && (
+          <MethodRow
+            icon="shield-checkered"
+            label={formatMessage(
+              actionFormMessages.requireIdentityVerification
+            )}
+            description={formatMessage(
+              actionFormMessages.verificationMethodDescription
+            )}
+            enabled={attributes.require_verification}
+            expiry={attributes.verification_expiry}
+            verb="Re-verify"
+            onChange={({ enabled, expiry }) =>
+              onChange({
+                require_verification: enabled,
+                verification_expiry: expiry,
+              })
+            }
+          />
+        )}
       </Expander>
     </Box>
   );

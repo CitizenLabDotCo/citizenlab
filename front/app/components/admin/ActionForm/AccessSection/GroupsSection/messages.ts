@@ -44,4 +44,8 @@ export default defineMessages({
     id: 'app.components.admin.ActionForm.AccessSections.GroupsSection.customizeErrorMessage',
     defaultMessage: 'Customize error message',
   },
+  everyoneWhoSignsIn: {
+    id: 'app.components.admin.ActionForm.everyoneWhoSignsIn',
+    defaultMessage: 'Everyone who signs in',
+  },
 });

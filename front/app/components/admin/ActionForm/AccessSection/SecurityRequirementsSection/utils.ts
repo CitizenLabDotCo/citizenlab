@@ -1,4 +1,6 @@
-import { SecurityRequirementKey } from '../../types';
+// The security requirements on offer: each one maps onto a `require_*` boolean
+// + `*_expiry` pair on the permission.
+export type SecurityRequirementKey = 'email' | 'phone' | 'verification';
 
 type Params = {
   sms2FAEnabled: boolean;

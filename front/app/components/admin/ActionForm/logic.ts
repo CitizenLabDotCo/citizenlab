@@ -6,37 +6,9 @@
 import { FormatMessage } from 'typings';
 
 import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
-import {
-  IPhasePermissionData,
-  UserDataCollection,
-} from 'api/phase_permissions/types';
+import { IPhasePermissionData } from 'api/phase_permissions/types';
 
-import { MessageDescriptor } from 'utils/cl-intl';
-
-import { SECURITY_REQUIREMENTS } from './constants';
 import messages from './messages';
-import { SecurityRequirementKey, Changes } from './types';
-
-/** The enabled flag + expiry (in days, `null` = "once, ever") for a method. */
-export const getMethod = (
-  permission: IPhasePermissionData,
-  key: SecurityRequirementKey
-): { enabled: boolean; expiry: number | null } => {
-  const { enabledField, expiryField } = SECURITY_REQUIREMENTS[key];
-  return {
-    enabled: permission.attributes[enabledField],
-    expiry: permission.attributes[expiryField],
-  };
-};
-
-/** The change to emit when a method's toggle / recency is edited. */
-export const methodChange = (
-  key: SecurityRequirementKey,
-  { enabled, expiry }: { enabled: boolean; expiry: number | null }
-): Changes => {
-  const { enabledField, expiryField } = SECURITY_REQUIREMENTS[key];
-  return { [enabledField]: enabled, [expiryField]: expiry } as Changes;
-};
 
 /** Group ids the action is limited to (OR semantics). */
 export const getGroupIds = (permission: IPhasePermissionData): string[] =>
@@ -118,18 +90,30 @@ export const buildSummary = (
       tone: 'access',
     },
   ];
-  (Object.keys(SECURITY_REQUIREMENTS) as SecurityRequirementKey[]).forEach(
-    (key) => {
-      if (getMethod(permission, key).enabled) {
-        chips.push({
-          key,
-          label: formatMessage(SECURITY_REQUIREMENTS[key].label),
-          icon: SECURITY_REQUIREMENTS[key].icon,
-          tone: 'access',
-        });
-      }
-    }
-  );
+  if (attributes.require_confirmed_email) {
+    chips.push({
+      key: 'email',
+      label: formatMessage(messages.requireConfirmedEmail),
+      icon: 'email',
+      tone: 'access',
+    });
+  }
+  if (attributes.require_confirmed_phone_number) {
+    chips.push({
+      key: 'phone',
+      label: formatMessage(messages.requireConfirmedPhoneNumber),
+      icon: 'tablet',
+      tone: 'access',
+    });
+  }
+  if (attributes.require_verification) {
+    chips.push({
+      key: 'verification',
+      label: formatMessage(messages.requireIdentityVerification),
+      icon: 'shield-checkered',
+      tone: 'access',
+    });
+  }
 
   const groupIds = getGroupIds(permission);
   if (groupIds.length > 0) {
@@ -173,52 +157,4 @@ export const buildSummary = (
   }
 
   return chips;
-};
-
-// ---- One-line summaries shown on the collapsed setting rows ----
-export const groupsSummary = (
-  permission: IPhasePermissionData,
-  formatMessage: FormatMessage
-): string => {
-  const n = getGroupIds(permission).length;
-  if (n === 0) return formatMessage(messages.everyoneWhoSignsIn);
-  return formatMessage(messages.nGroups, { nGroups: n });
-};
-
-export const piiSummary = (
-  permission: IPhasePermissionData,
-  formatMessage: FormatMessage,
-  // Password is never asked when password login is off, so it must not appear
-  // in the summary either - it would advertise a field that can't be collected.
-  showPassword = true
-): string => {
-  const parts: string[] = [];
-  if (permission.attributes.require_name) {
-    parts.push(formatMessage(messages.name));
-  }
-  if (showPassword && permission.attributes.require_password) {
-    parts.push(formatMessage(messages.password));
-  }
-  return parts.length
-    ? parts.join(' · ')
-    : formatMessage(messages.nothingExtra);
-};
-
-export const demographicsSummary = (
-  customFields: IPermissionsPhaseCustomFieldData[],
-  formatMessage: FormatMessage
-): string => {
-  const n = customFields.length;
-  return n === 0
-    ? formatMessage(messages.none)
-    : formatMessage(messages.nQuestions, { nQuestions: n });
-};
-
-export const DATA_COLLECTION_SUMMARY: Record<
-  UserDataCollection,
-  MessageDescriptor
-> = {
-  all_data: messages.linkedToProfile,
-  demographics_only: messages.piiExcludedFromResults,
-  anonymous: messages.fullyAnonymous,
 };

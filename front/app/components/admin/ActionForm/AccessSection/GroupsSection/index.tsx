@@ -17,7 +17,8 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-import { getGroupIds, groupsSummary } from '../../logic';
+import { getGroupIds } from '../../logic';
+import actionFormMessages from '../../messages';
 import { Changes } from '../../types';
 import { Expander } from '../../ui';
 
@@ -35,6 +36,13 @@ const GroupsSection = ({ permission, onChange }: Props) => {
   const [errorMessageOpen, setErrorMessageOpen] = useState(false);
   const { formatMessage } = useIntl();
 
+  // One-line summary shown while the row is collapsed.
+  const groupCount = getGroupIds(permission).length;
+  const summary =
+    groupCount === 0
+      ? formatMessage(messages.everyoneWhoSignsIn)
+      : formatMessage(actionFormMessages.nGroups, { nGroups: groupCount });
+
   const setAccessDeniedMultiloc = (
     access_denied_explanation_multiloc: Multiloc
   ) => onChange({ access_denied_explanation_multiloc });
@@ -44,7 +52,7 @@ const GroupsSection = ({ permission, onChange }: Props) => {
       <Expander
         icon="group"
         title={formatMessage(messages.limitToGroups)}
-        summary={groupsSummary(permission, formatMessage)}
+        summary={summary}
       >
         <Text as="p" mt="0" mb="8px" fontSize="xs" color="coolGrey600">
           <FormattedMessage {...messages.participantMustBe} />

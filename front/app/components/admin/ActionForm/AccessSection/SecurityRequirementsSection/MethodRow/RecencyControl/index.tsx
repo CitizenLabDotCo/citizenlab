@@ -11,7 +11,7 @@ import { Box, Text, Select } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { linkStyle } from '../shared';
+import { linkStyle } from '../../../shared';
 
 import messages from './messages';
 

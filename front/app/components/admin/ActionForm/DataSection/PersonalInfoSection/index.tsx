@@ -10,12 +10,12 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { piiSummary } from '../../logic';
+import actionFormMessages from '../../messages';
 import { Changes } from '../../types';
 import { Expander } from '../../ui';
-import PiiToggle from '../PiiToggle';
 
 import messages from './messages';
+import PiiToggle from './PiiToggle';
 
 interface Props {
   permission: IPhasePermissionData;
@@ -36,11 +36,26 @@ const PersonalInfoSection = ({ permission, onChange }: Props) => {
   const { data: authenticationMethod } = useAuthenticationMethod();
   const hasSSOAuthMethod = !!authenticationMethod;
 
+  // One-line summary shown while the row is collapsed. Password is never asked
+  // when password login is off, so it must not appear here either - it would
+  // advertise a field that can't be collected.
+  const summaryParts: string[] = [];
+  if (attributes.require_name) {
+    summaryParts.push(formatMessage(actionFormMessages.name));
+  }
+  if (showPassword && attributes.require_password) {
+    summaryParts.push(formatMessage(actionFormMessages.password));
+  }
+
   return (
     <Expander
       icon="user-circle"
       title={formatMessage(messages.personalInfo)}
-      summary={piiSummary(permission, formatMessage, showPassword)}
+      summary={
+        summaryParts.length
+          ? summaryParts.join(' · ')
+          : formatMessage(messages.nothingExtra)
+      }
     >
       <PiiToggle
         icon="user-circle"

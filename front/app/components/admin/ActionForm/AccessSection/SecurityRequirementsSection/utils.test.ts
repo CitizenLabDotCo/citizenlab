@@ -1,6 +1,4 @@
-import { SecurityRequirementKey } from '../../types';
-
-import { getVisibleToggles } from './utils';
+import { getVisibleToggles, SecurityRequirementKey } from './utils';
 
 const ALL_DISABLED = {
   sms2FAEnabled: false,

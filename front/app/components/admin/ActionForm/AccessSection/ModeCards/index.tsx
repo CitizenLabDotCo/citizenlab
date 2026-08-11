@@ -7,9 +7,9 @@ import { PermittedBy } from 'api/phase_permissions/types';
 import { useIntl } from 'utils/cl-intl';
 
 import { Changes } from '../../types';
-import { Hint, ModeCard } from '../../ui';
 
 import messages from './messages';
+import { Hint, ModeCard } from './ui';
 
 interface Props {
   permittedBy: PermittedBy;
