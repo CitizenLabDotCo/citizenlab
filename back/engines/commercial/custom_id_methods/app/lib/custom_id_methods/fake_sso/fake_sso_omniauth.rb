@@ -19,10 +19,13 @@ module CustomIdMethods::FakeSso
     def profile_to_user_attrs(auth)
       birthdate = auth.extra.raw_info['birthdate']
 
-      custom_field_values = {
-        'gender' => auth.extra.raw_info['gender'],
-        'birthyear' => (Date.parse(birthdate).year if birthdate.present?)
-      }.compact
+      keys = CustomField.registration.keys_by_code(%w[gender birthyear])
+      custom_field_values = {}
+      custom_field_values[keys['gender']] = auth.extra.raw_info['gender'] if keys['gender']
+      if keys['birthyear'] && birthdate.present?
+        custom_field_values[keys['birthyear']] = Date.parse(birthdate).year
+      end
+      custom_field_values.compact!
 
       {
         first_name: auth.info['first_name'],

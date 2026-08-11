@@ -60,7 +60,7 @@ module CustomIdMethods::Google
         email: auth.info['email'],
         remote_avatar_url: remote_avatar_url(auth),
         locale: AppConfiguration.instance.closest_locale_to(auth.extra.raw_info.locale),
-        custom_field_values: { 'gender' => auth.extra.raw_info.gender }.compact
+        custom_field_values: gender_custom_field_values(auth)
       }
     end
 
@@ -73,6 +73,14 @@ module CustomIdMethods::Google
     end
 
     private
+
+    def gender_custom_field_values(auth)
+      key = CustomField.registration.find_by(code: 'gender')&.key
+      gender = auth.extra.raw_info.gender
+      return {} if key.nil? || gender.nil?
+
+      { key => gender }
+    end
 
     def remote_avatar_url(auth)
       return unless AppConfiguration.instance.feature_activated?('user_avatars')

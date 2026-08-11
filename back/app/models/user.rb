@@ -65,7 +65,7 @@ class User < ApplicationRecord
   # Registration custom fields that ship with the platform, and so are validated
   # on every save rather than only against the tenant's custom field schema.
   # see validate :gender etc calls below and `read_attribute_for_validation`
-  BUILT_IN_CUSTOM_FIELD_KEYS = %w[gender birthyear domicile].freeze
+  BUILT_IN_CUSTOM_FIELD_CODES = %w[gender birthyear domicile].freeze
   INVITE_STATUSES = %w[pending accepted].freeze
   EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   EMAIL_DOMAIN_BLACKLIST = EmailDomainBlacklist.load
@@ -275,12 +275,17 @@ class User < ApplicationRecord
   scope :active, -> { registered.not_blocked }
 
   # HACK: makes sure we can validate values inside custom fields
-  def read_attribute_for_validation(key)
-    # `&.` because the column is nullable, and `store_accessor`'s reader — which
-    # this replaces — tolerated a nil store.
-    return custom_field_values&.dig(key.to_s) if BUILT_IN_CUSTOM_FIELD_KEYS.include?(key.to_s)
+  def read_attribute_for_validation(attribute)
+    return super unless BUILT_IN_CUSTOM_FIELD_CODES.include?(attribute.to_s)
 
-    super
+    built_in_custom_field_value(attribute)
+  end
+
+  def built_in_custom_field_value(code)
+    key = CustomField.registration.find_by(code: code.to_s)&.key
+    return unless key
+
+    custom_field_values&.dig(key)
   end
 
   # Merges `values` into the user's custom fields rather than replacing them, so

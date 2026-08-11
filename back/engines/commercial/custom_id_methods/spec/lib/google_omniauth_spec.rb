@@ -7,6 +7,7 @@ describe CustomIdMethods::Google::GoogleOmniauth do
 
   describe 'profile_to_user_attrs' do
     it 'correctly interprets gender, locale and image for google' do
+      create(:custom_field_gender)
       auth = OmniAuth::AuthHash.new(
         provider: 'google',
         info: {

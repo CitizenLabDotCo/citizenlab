@@ -39,14 +39,14 @@ module CustomIdMethods::Franceconnect
         locale: AppConfiguration.instance.closest_locale_to('fr-FR'),
         remote_avatar_url: auth.info['image']
       }.tap do |attrs|
-        custom_fields = CustomField.registration.enabled.pluck(:code)
+        keys = CustomField.registration.enabled.keys_by_code(%w[birthyear gender])
         custom_field_values = {}
-        if custom_fields.include?('birthyear')
+        if keys['birthyear']
           birthdate = auth.extra.raw_info.birthdate
-          custom_field_values['birthyear'] = Date.parse(birthdate).year if birthdate.present?
+          custom_field_values[keys['birthyear']] = Date.parse(birthdate).year if birthdate.present?
         end
-        if custom_fields.include?('gender')
-          custom_field_values['gender'] = auth.extra.raw_info.gender
+        if keys['gender']
+          custom_field_values[keys['gender']] = auth.extra.raw_info.gender
         end
         attrs[:custom_field_values] = custom_field_values.compact
       end

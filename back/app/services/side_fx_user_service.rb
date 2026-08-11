@@ -151,7 +151,7 @@ class SideFxUserService
   end
 
   def create_followers(user)
-    area = Area.where(id: user.custom_field_values['domicile']).first
+    area = Area.where(id: user.built_in_custom_field_value('domicile')).first
     Follower.find_or_create_by(followable: area, user: user) if area
   end
 

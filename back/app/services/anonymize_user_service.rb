@@ -25,7 +25,7 @@ class AnonymizeUserService
   def anonymized_attributes(locales, user: nil, start_at: nil)
     locale = locales.sample
     custom_field_values = random_custom_field_values user: user
-    gender = custom_field_values['gender']
+    gender = custom_field_values[demographic_keys['gender']]
     first_name = random_first_name gender
     last_name = random_last_name locale
     email = random_email first_name, last_name
@@ -55,18 +55,15 @@ class AnonymizeUserService
   private
 
   def random_custom_field_values(user: nil)
-    custom_field_values = {}
-    if user
-      properties = %w[gender birthyear]
-      user[:custom_field_values].each do |property, value|
-        if properties.include? property
-          custom_field_values[property] = value
-        end
-      end
-    end
-    custom_field_values['gender'] ||= User::GENDERS.sample
-    custom_field_values['birthyear'] ||= random_birthyear
+    keys = demographic_keys
+    custom_field_values = user ? (user[:custom_field_values] || {}).slice(*keys.values) : {}
+    custom_field_values[keys['gender']] ||= User::GENDERS.sample if keys['gender']
+    custom_field_values[keys['birthyear']] ||= random_birthyear if keys['birthyear']
     custom_field_values
+  end
+
+  def demographic_keys
+    @demographic_keys ||= CustomField.registration.keys_by_code(%w[gender birthyear])
   end
 
   def mismatch_gender(gender)

@@ -32,7 +32,7 @@ describe CustomIdMethods::Federa::FederaOmniauth do
 
     before do
       # Create user custom fields that will be filled by the auth hash
-      create(:custom_field, key: 'birthyear', resource_type: 'User')
+      create(:custom_field_birthyear)
       create(:custom_field, key: 'municipality_code', resource_type: 'User')
     end
 

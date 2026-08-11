@@ -43,8 +43,9 @@ module CustomIdMethods::Federa
       custom_field_values = {}
 
       birthdate = attrs['dataNascita']
-      if birthdate.present? && CustomField.find_by(key: 'birthyear')
-        custom_field_values['birthyear'] = Date.parse(birthdate).year
+      birthyear_key = CustomField.registration.find_by(code: 'birthyear')&.key
+      if birthdate.present? && birthyear_key
+        custom_field_values[birthyear_key] = Date.parse(birthdate).year
       end
 
       # NOTE: Attribute not currently returned by Federa

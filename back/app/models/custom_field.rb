@@ -136,6 +136,10 @@ class CustomField < ApplicationRecord
   scope :not_hidden, -> { where(hidden: false) }
   scope :hidden, -> { where(hidden: true) }
 
+  def self.keys_by_code(codes)
+    where(code: codes).pluck(:code, :key).to_h
+  end
+
   def policy_class
     case resource_type
     when 'User'
