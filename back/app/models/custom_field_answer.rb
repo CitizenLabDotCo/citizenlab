@@ -15,8 +15,9 @@
 #
 # Indexes
 #
-#  index_custom_field_answers_on_answerable_and_key  (answerable_type,answerable_id,key) UNIQUE
-#  index_custom_field_answers_on_custom_field_id     (custom_field_id)
+#  index_custom_field_answers_on_answerable_and_key       (answerable_type,answerable_id,key) UNIQUE
+#  index_custom_field_answers_on_custom_field_id          (custom_field_id)
+#  index_custom_field_answers_on_key_and_answerable_type  (key,answerable_type)
 #
 # Foreign Keys
 #

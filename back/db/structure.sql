@@ -441,6 +441,7 @@ DROP INDEX IF EXISTS public.index_custom_field_matrix_statements_on_key;
 DROP INDEX IF EXISTS public.index_custom_field_matrix_statements_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_custom_field_bins_on_custom_field_option_id;
 DROP INDEX IF EXISTS public.index_custom_field_bins_on_custom_field_id;
+DROP INDEX IF EXISTS public.index_custom_field_answers_on_key_and_answerable_type;
 DROP INDEX IF EXISTS public.index_custom_field_answers_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_custom_field_answers_on_answerable_and_key;
 DROP INDEX IF EXISTS public.index_cosponsorships_on_user_id;
@@ -6296,6 +6297,13 @@ CREATE UNIQUE INDEX index_custom_field_answers_on_answerable_and_key ON public.c
 --
 
 CREATE INDEX index_custom_field_answers_on_custom_field_id ON public.custom_field_answers USING btree (custom_field_id);
+
+
+--
+-- Name: index_custom_field_answers_on_key_and_answerable_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_custom_field_answers_on_key_and_answerable_type ON public.custom_field_answers USING btree (key, answerable_type);
 
 
 --
