@@ -4149,7 +4149,7 @@
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.sortByOriginal": "Ursprüngliche Reihenfolge",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyPhase": "Umfrage-Phase",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "Frage",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.adminManagersOnly": "Nur Admin & Manager*innen",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.adminManagersOnly": "Nur Admins & Manager*innen",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.anyone": "Jede*r",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.atLeastOneMethodMustStayEnabled": "Mindestens eine Authentifizierungsmethode muss aktiviert bleiben, daher kann diese nicht deaktiviert werden.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "Bestätigte E-Mail",
