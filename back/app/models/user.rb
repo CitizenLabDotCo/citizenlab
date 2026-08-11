@@ -60,6 +60,7 @@ class User < ApplicationRecord
   include UserPasswordValidations
   include PgSearch::Model
   include UserDoorkeeper
+  include Answerable
 
   GENDERS = %w[male female unspecified].freeze
   INVITE_STATUSES = %w[pending accepted].freeze
@@ -211,7 +212,6 @@ class User < ApplicationRecord
   before_validation :complete_registration
 
   has_many :identities, dependent: :destroy
-  has_many :custom_field_answers, as: :answerable, dependent: :delete_all
   has_many :spam_reports, dependent: :nullify
   has_many :activities, dependent: :nullify
   has_many :inviter_invites, class_name: 'Invite', foreign_key: :inviter_id, dependent: :nullify

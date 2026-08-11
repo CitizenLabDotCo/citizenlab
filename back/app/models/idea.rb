@@ -70,6 +70,7 @@ class Idea < ApplicationRecord
   include Files::FileAttachable
   include ClaimableParticipation
   include LocationTrackableParticipation
+  include Answerable
   extend OrderAsSpecified
 
   PUBLICATION_STATUSES = %w[draft submitted published].freeze
@@ -147,7 +148,6 @@ class Idea < ApplicationRecord
 
   has_many :idea_exposures, dependent: :destroy
   has_one :wise_voice_flag, as: :flaggable, class_name: 'WiseVoiceFlag', dependent: :destroy
-  has_many :custom_field_answers, as: :answerable, dependent: :delete_all
 
   accepts_nested_attributes_for :text_images, :idea_images, :idea_files
 
