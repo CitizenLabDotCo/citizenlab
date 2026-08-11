@@ -104,7 +104,7 @@ class ProjectsFinderAdminService
   end
 
   def self.sort_alphabetically(scope, params)
-    # whitelist of the locale
+    # Filter locale param against configured locales to prevent SQL injection
     configured_locales = AppConfiguration.instance.settings('core', 'locales')
     locale = configured_locales.include?(params[:locale]) ? params[:locale] : 'en'
     direction = params[:sort] == 'alphabetically_desc' ? 'DESC' : 'ASC'
