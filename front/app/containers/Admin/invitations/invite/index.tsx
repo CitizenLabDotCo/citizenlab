@@ -11,12 +11,10 @@ import React, {
 } from 'react';
 
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
-import { useQueryClient } from '@tanstack/react-query';
 import { isString, isEmpty } from 'lodash-es';
 import styled from 'styled-components';
 import { SupportedLocale, IOption } from 'typings';
 
-import appConfigurationKeys from 'api/app_configuration/keys';
 import {
   IInviteError,
   INewBulkInvite,
@@ -28,7 +26,6 @@ import useBulkInviteCountNewSeatsXLSX from 'api/invites/useBulkInviteCountNewSea
 import useBulkInviteEmails from 'api/invites/useBulkInviteEmails';
 import useBulkInviteXLSX from 'api/invites/useBulkInviteXLSX';
 import useInvitesImport from 'api/invites/useInvitesImport';
-import seatsKeys from 'api/seats/keys';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useExceedsSeats from 'hooks/useExceedsSeats';
@@ -69,7 +66,6 @@ export const COUNT_TIMEOUT_MS = 120000; // 2 minutes
 export const CREATE_TIMEOUT_MS = 300000; // 5 minutes
 
 const Invitations = () => {
-  const queryClient = useQueryClient();
   const { formatMessage } = useIntl();
   const { mutateAsync: bulkInviteEmails } = useBulkInviteEmails();
   const { mutateAsync: bulkInviteCountNewSeatsEmails } =
@@ -432,17 +428,13 @@ const Invitations = () => {
       setShowModal(false);
       setNewSeatsResponse(null);
     } else {
-      // Success - reset UI state
+      // Success - reset UI state. Refreshing the seat counts is the polling
+      // hook's job, not this component's.
       if (fileInputElement.current) {
         fileInputElement.current.value = '';
       }
 
       setProcessed(true);
-      // Invalidate seats & app_configuration queries to trigger refetch,
-      // to ensure correct seat counts displayed in form after invites are created.
-      queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
-      queryClient.invalidateQueries({ queryKey: appConfigurationKeys.all() });
-
       setProcessing(false);
       setSelectedFileBase64(null);
       setSelectedEmails(null);
@@ -450,7 +442,7 @@ const Invitations = () => {
 
     // Reset the query to prevent issues if we navigate away/back
     resetQueryData();
-  }, [invitesImport, resetQueryData, queryClient]);
+  }, [invitesImport, resetQueryData]);
 
   // Paused only while the seats modal waits on the admin: no import id, modal
   // open. After they confirm, the creation runs behind a modal already declaring
