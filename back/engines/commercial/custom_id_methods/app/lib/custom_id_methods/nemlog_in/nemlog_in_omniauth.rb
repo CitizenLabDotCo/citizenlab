@@ -110,7 +110,7 @@ module CustomIdMethods::NemlogIn
       super + %i[custom_field_values]
     end
 
-    def locked_custom_fields
+    def locked_custom_fields_keys
       [
         :municipality_code,
         config[:birthday_custom_field_key].presence,

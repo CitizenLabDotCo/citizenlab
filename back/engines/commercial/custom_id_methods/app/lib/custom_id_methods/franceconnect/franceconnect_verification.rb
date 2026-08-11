@@ -65,7 +65,7 @@ module CustomIdMethods::Franceconnect
       %i[first_name last_name]
     end
 
-    def locked_custom_fields
+    def locked_custom_fields_keys
       []
     end
   end

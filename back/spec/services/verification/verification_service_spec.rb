@@ -158,11 +158,11 @@ describe Verification::VerificationService do
     end
   end
 
-  describe 'locked_custom_fields' do
+  describe 'locked_custom_fields_keys' do
     context 'for a user only authenticated with facebook' do
       it 'returns no locked custom field keys' do
         identity = create(:facebook_identity)
-        expect(service.locked_custom_fields(identity.user)).to eq []
+        expect(service.locked_custom_fields_keys(identity.user)).to eq []
       end
     end
 
@@ -170,12 +170,12 @@ describe Verification::VerificationService do
       it 'returns some locked custom field keys when the custom field exists' do
         create(:custom_field_gender)
         verification = create(:verification, method_name: 'bogus')
-        expect(service.locked_custom_fields(verification.user)).to contain_exactly(:gender)
+        expect(service.locked_custom_fields_keys(verification.user)).to contain_exactly(:gender)
       end
 
       it 'does not return locked custom field keys when the field does not exist' do
         verification = create(:verification, method_name: 'bogus')
-        expect(service.locked_custom_fields(verification.user)).to be_empty
+        expect(service.locked_custom_fields_keys(verification.user)).to be_empty
       end
     end
   end

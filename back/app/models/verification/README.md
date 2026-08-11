@@ -76,7 +76,7 @@ module Verification
       # A list of custom field keys that should be unchangeable by the user,
       # when they're verified using this method. Make sure that the 
       # corresponding custom field is in place and enabled.
-      def locked_custom_fields
+      def locked_custom_fields_keys
         [:gender]
       end
 

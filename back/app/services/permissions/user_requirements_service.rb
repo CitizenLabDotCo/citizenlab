@@ -199,10 +199,10 @@ class Permissions::UserRequirementsService
 
     if user.verified?
       # Remove custom fields that are locked - we should never ask them to be filled in the flow - even if they are returned empty
-      locked_fields = verification_service.locked_custom_fields(user)
+      locked_field_keys = verification_service.locked_custom_fields_keys(user)
 
       requirements[:custom_fields]&.each_key do |key|
-        requirements[:custom_fields].delete(key) if locked_fields.include?(key.to_sym)
+        requirements[:custom_fields].delete(key) if locked_field_keys.include?(key.to_sym)
       end
     end
 

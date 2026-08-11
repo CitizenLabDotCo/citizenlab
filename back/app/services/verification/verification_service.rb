@@ -90,19 +90,19 @@ module Verification
       attributes.uniq
     end
 
-    def locked_custom_fields(user)
+    def locked_custom_fields_keys(user)
       method_names = user.verifications.active.pluck(:method_name).uniq || []
-      custom_fields = method_names.flat_map do |method_name|
+      keys = method_names.flat_map do |method_name|
         ver_method = @id_method_service.method_by_name(method_name)
-        if ver_method.respond_to? :locked_custom_fields
-          ver_method.locked_custom_fields
+        if ver_method.respond_to? :locked_custom_fields_keys
+          ver_method.locked_custom_fields_keys
         else
           []
         end
       end
 
-      # Only return the locked custom fields if they exist
-      CustomField.where(key: custom_fields).pluck(:key).map(&:to_sym)
+      # Only return the keys of the locked custom fields that exist
+      CustomField.where(key: keys).pluck(:key).map(&:to_sym)
     end
 
     def verifications_by_uid(uid, method)

@@ -42,7 +42,7 @@ module CustomIdMethods::Auth0
       []
     end
 
-    def locked_custom_fields
+    def locked_custom_fields_keys
       []
     end
   end

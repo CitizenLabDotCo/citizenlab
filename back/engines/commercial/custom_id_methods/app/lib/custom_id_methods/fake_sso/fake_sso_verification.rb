@@ -37,11 +37,11 @@ module CustomIdMethods::FakeSso
       %i[email]
     end
 
-    def locked_custom_fields
+    def locked_custom_fields_keys
       %i[gender birthyear]
     end
 
-    def other_custom_fields
+    def other_custom_fields_keys
       []
     end
 

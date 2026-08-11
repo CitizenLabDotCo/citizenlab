@@ -36,7 +36,7 @@ module CustomIdMethods::OostendeRrn
       }
     end
 
-    def locked_custom_fields
+    def locked_custom_fields_keys
       []
     end
 

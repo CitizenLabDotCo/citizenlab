@@ -73,14 +73,14 @@ class IdMethodService
 
     # Custom fields
     custom_fields = CustomField.registration
-    locked_custom_fields = if method.respond_to?(:locked_custom_fields)
-      method.locked_custom_fields.filter_map { |key| custom_fields.find { |f| f.key == key.to_s }&.title_multiloc }
+    locked_custom_field_titles = if method.respond_to?(:locked_custom_fields_keys)
+      method.locked_custom_fields_keys.filter_map { |key| custom_fields.find { |f| f.key == key.to_s }&.title_multiloc }
     else
       []
     end
 
-    other_custom_fields = if method.respond_to?(:other_custom_fields)
-      method.other_custom_fields.filter_map { |key| custom_fields.find { |f| f.key == key.to_s }&.title_multiloc }
+    other_custom_field_titles = if method.respond_to?(:other_custom_fields_keys)
+      method.other_custom_fields_keys.filter_map { |key| custom_fields.find { |f| f.key == key.to_s }&.title_multiloc }
     else
       []
     end
@@ -90,8 +90,9 @@ class IdMethodService
       name: name,
       locked_attributes: locked_attributes,
       other_attributes: other_attributes,
-      locked_custom_fields: locked_custom_fields,
-      other_custom_fields: other_custom_fields
+      # These are the titles of the custom fields, not their keys
+      locked_custom_fields: locked_custom_field_titles,
+      other_custom_fields: other_custom_field_titles
     }
   end
 end

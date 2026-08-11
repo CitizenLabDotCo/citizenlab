@@ -127,7 +127,7 @@ module CustomIdMethods::Criipto
       []
     end
 
-    def locked_custom_fields
+    def locked_custom_fields_keys
       [
         config[:birthday_custom_field_key].presence,
         config[:birthyear_custom_field_key].presence

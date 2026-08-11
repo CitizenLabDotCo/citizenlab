@@ -62,7 +62,7 @@ module CustomIdMethods::Bogus
       [:last_name]
     end
 
-    def locked_custom_fields
+    def locked_custom_fields_keys
       [:gender]
     end
   end

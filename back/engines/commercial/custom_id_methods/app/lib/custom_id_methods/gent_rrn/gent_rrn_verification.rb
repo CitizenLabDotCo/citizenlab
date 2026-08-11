@@ -50,7 +50,7 @@ module CustomIdMethods::GentRrn
       }
     end
 
-    def locked_custom_fields
+    def locked_custom_fields_keys
       [config[:custom_field_key]]
     end
 

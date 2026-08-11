@@ -130,11 +130,11 @@ class UserPolicy < ApplicationPolicy
   end
 
   def allowed_custom_fields
-    CustomField.registration.not_hidden.where.not(key: locked_custom_fields)
+    CustomField.registration.not_hidden.where.not(key: locked_custom_fields_keys)
   end
 
-  def locked_custom_fields
-    verification_service.locked_custom_fields(record)
+  def locked_custom_fields_keys
+    verification_service.locked_custom_fields_keys(record)
   end
 
   def verification_service
