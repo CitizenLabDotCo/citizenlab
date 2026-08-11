@@ -9,6 +9,32 @@ RSpec.describe Tenant do
     end
   end
 
+  describe 'host format validation' do
+    it 'rejects an invalid host on create' do
+      expect(build(:tenant, host: 'Uppercase.example.com')).to be_invalid
+    end
+
+    it 'rejects a change to an invalid host' do
+      tenant = create(:tenant, host: 'lowercase.example.com')
+      tenant.host = 'Uppercase.example.com'
+
+      expect(tenant).to be_invalid
+    end
+
+    # A host that got in without passing through the model — the tenant clone service inserts
+    # with raw SQL — used to make the whole record unsavable for good, blocking its own
+    # soft-delete and every rake task that iterates tenants and saves them.
+    it 'does not re-check a persisted host that has not changed' do
+      tenant = create(:tenant, host: 'uppercase.example.com')
+      tenant.update_column(:host, 'Uppercase.example.com')
+      tenant.reload
+
+      tenant.deleted_at = Time.zone.now
+
+      expect(tenant).to be_valid
+    end
+  end
+
   describe '#switch!' do
     let_it_be(:other_tenant) { create(:tenant, name: 'other-tenant') }
 
