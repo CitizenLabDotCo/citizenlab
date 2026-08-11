@@ -21,7 +21,7 @@ module WebApi
       def first_enabled_verification_method
         method = ::Verification::VerificationService.new.first_method_enabled
         authorize method, policy_class: IdMethodPolicy
-        
+
         if method.nil?
           head :no_content
         else

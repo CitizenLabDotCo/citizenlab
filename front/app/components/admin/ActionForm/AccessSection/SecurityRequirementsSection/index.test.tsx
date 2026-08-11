@@ -124,14 +124,17 @@ describe('<SecurityRequirementsSection />', () => {
       expect(screen.getByText(EMAIL_LABEL)).toBeInTheDocument();
     });
 
-    it('summarises every required check', () => {
+    it('summarises every required check', async () => {
       renderSection({
         require_confirmed_email: false,
         require_confirmed_phone_number: true,
         require_verification: true,
       });
 
-      // Collapsed, so this is the summary line rather than the rows.
+      // Two active checks means it starts open - the summary only shows once
+      // the section is collapsed again.
+      await userEvent.click(screen.getByText('Security requirements'));
+
       expect(
         screen.getByText(`${PHONE_LABEL} · ${VERIFICATION_LABEL}`)
       ).toBeInTheDocument();
@@ -166,7 +169,8 @@ describe('<SecurityRequirementsSection />', () => {
       // Without SMS nobody can sign up by phone, so neither the phone check nor
       // the (then unconditional) email confirmation is configurable.
       mockSmsEnabled = false;
-      renderSection();
+      // require_verification keeps the section open so the rows are rendered.
+      renderSection({ require_verification: true });
 
       expect(screen.queryByText(PHONE_LABEL)).not.toBeInTheDocument();
       expect(screen.queryByText(EMAIL_LABEL)).not.toBeInTheDocument();
@@ -175,7 +179,7 @@ describe('<SecurityRequirementsSection />', () => {
 
     it('hides the email row when SMS login is off', () => {
       mockSmsLoginEnabled = false;
-      renderSection();
+      renderSection({ require_confirmed_phone_number: true });
 
       expect(screen.queryByText(EMAIL_LABEL)).not.toBeInTheDocument();
       expect(screen.getByText(PHONE_LABEL)).toBeInTheDocument();
@@ -209,14 +213,11 @@ describe('<SecurityRequirementsSection />', () => {
     it('renders nothing when no check is available at all', () => {
       mockSmsEnabled = false;
       mockVerificationMethodConfigured = false;
-      const { container } = render(
-        <SecurityRequirementsSection
-          permission={buildPermission()}
-          onChange={jest.fn()}
-        />
-      );
+      renderSection();
 
-      expect(container).toBeEmptyDOMElement();
+      expect(
+        screen.queryByText('Security requirements')
+      ).not.toBeInTheDocument();
     });
   });
 
