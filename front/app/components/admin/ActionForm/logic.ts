@@ -13,34 +13,19 @@ import {
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
-import { AUTH_METHOD_LABELS } from './AccessSection/constants';
+import { AUTH_METHODS } from './constants';
 import messages from './messages';
 import { AuthMethodKey, Changes } from './types';
-
-const METHOD_FIELDS = {
-  email: {
-    enabled: 'require_confirmed_email',
-    expiry: 'confirmed_email_expiry',
-  },
-  phone: {
-    enabled: 'require_confirmed_phone_number',
-    expiry: 'confirmed_phone_number_expiry',
-  },
-  verification: {
-    enabled: 'require_verification',
-    expiry: 'verification_expiry',
-  },
-} as const;
 
 /** The enabled flag + expiry (in days, `null` = "once, ever") for a method. */
 export const getMethod = (
   permission: IPhasePermissionData,
   key: AuthMethodKey
 ): { enabled: boolean; expiry: number | null } => {
-  const fields = METHOD_FIELDS[key];
+  const { enabledField, expiryField } = AUTH_METHODS[key];
   return {
-    enabled: permission.attributes[fields.enabled],
-    expiry: permission.attributes[fields.expiry],
+    enabled: permission.attributes[enabledField],
+    expiry: permission.attributes[expiryField],
   };
 };
 
@@ -49,8 +34,8 @@ export const methodChange = (
   key: AuthMethodKey,
   { enabled, expiry }: { enabled: boolean; expiry: number | null }
 ): Changes => {
-  const fields = METHOD_FIELDS[key];
-  return { [fields.enabled]: enabled, [fields.expiry]: expiry } as Changes;
+  const { enabledField, expiryField } = AUTH_METHODS[key];
+  return { [enabledField]: enabled, [expiryField]: expiry } as Changes;
 };
 
 /** Group ids the action is limited to (OR semantics). */
@@ -133,17 +118,12 @@ export const buildSummary = (
       tone: 'access',
     },
   ];
-  const methodIcon: Record<AuthMethodKey, SummaryChip['icon']> = {
-    email: 'email',
-    phone: 'tablet',
-    verification: 'shield-checkered',
-  };
-  (Object.keys(METHOD_FIELDS) as AuthMethodKey[]).forEach((key) => {
+  (Object.keys(AUTH_METHODS) as AuthMethodKey[]).forEach((key) => {
     if (getMethod(permission, key).enabled) {
       chips.push({
         key,
-        label: formatMessage(AUTH_METHOD_LABELS[key]),
-        icon: methodIcon[key],
+        label: formatMessage(AUTH_METHODS[key].label),
+        icon: AUTH_METHODS[key].icon,
         tone: 'access',
       });
     }

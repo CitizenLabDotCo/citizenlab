@@ -10,8 +10,8 @@ import {
 
 import { useIntl } from 'utils/cl-intl';
 
+import { AUTH_METHODS } from '../../../constants';
 import { AuthMethodKey } from '../../../types';
-import { METHOD_META, AUTH_METHOD_LABELS } from '../../constants';
 import RecencyControl from '../../RecencyControl';
 
 interface Props {
@@ -31,7 +31,7 @@ const MethodRow = ({
   onChange,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const meta = METHOD_META[methodKey];
+  const method = AUTH_METHODS[methodKey];
   const available = !unavailableReason;
   const enabled = available && stateEnabled;
 
@@ -46,7 +46,7 @@ const MethodRow = ({
           <Box ml="8px">
             <Box display="flex" alignItems="center" gap="6px">
               <Icon
-                name={meta.icon}
+                name={method.icon}
                 width="16px"
                 height="16px"
                 fill={enabled ? colors.teal500 : colors.coolGrey500}
@@ -58,11 +58,11 @@ const MethodRow = ({
                 fontWeight="semi-bold"
                 color={available ? 'primary' : 'coolGrey500'}
               >
-                {formatMessage(AUTH_METHOD_LABELS[methodKey])}
+                {formatMessage(method.label)}
               </Text>
             </Box>
             <Text as="span" m="0" fontSize="xs" color="coolGrey600">
-              {unavailableReason ?? formatMessage(meta.description)}
+              {unavailableReason ?? formatMessage(method.description)}
             </Text>
           </Box>
         }

@@ -66,4 +66,31 @@ export default defineMessages({
     id: 'app.components.admin.ActionForm.fullyAnonymous',
     defaultMessage: 'Fully anonymous',
   },
+  // The ids still carry the AccessSection path these labels used to live under,
+  // so existing translations keep matching.
+  confirmedEmail: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail',
+    defaultMessage: 'Confirmed email',
+  },
+  confirmedPhoneNumber: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhoneNumber',
+    defaultMessage: 'Confirmed phone number',
+  },
+  identityVerification: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.identityVerification',
+    defaultMessage: 'Identity verification',
+  },
+  emailMethodDescription: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription2',
+    defaultMessage: 'Participant must have a confirmed email address.',
+  },
+  phoneMethodDescription: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.phoneMethodDescription2',
+    defaultMessage: 'Participant must have a confirmed phone number.',
+  },
+  verificationMethodDescription: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription2',
+    defaultMessage:
+      'Participant must have a verified identity (see identification methods link above).',
+  },
 });

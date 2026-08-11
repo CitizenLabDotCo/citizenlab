@@ -15,10 +15,10 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { AUTH_METHODS } from '../../constants';
 import { getMethod, methodChange } from '../../logic';
 import { Changes } from '../../types';
 import { Expander } from '../../ui';
-import { AUTH_METHOD_LABELS } from '../constants';
 
 import messages from './messages';
 import MethodRow from './MethodRow';
@@ -60,7 +60,7 @@ const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
         summary={
           activeKeys.length
             ? activeKeys
-                .map((key) => formatMessage(AUTH_METHOD_LABELS[key]))
+                .map((key) => formatMessage(AUTH_METHODS[key].label))
                 .join(' · ')
             : formatMessage(messages.none)
         }
