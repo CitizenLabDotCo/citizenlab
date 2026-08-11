@@ -47,6 +47,6 @@ export type Props = {
   onReset: () => void;
 };
 
-// The authentication methods on offer: each one maps onto a `require_*` boolean
+// The security requirements on offer: each one maps onto a `require_*` boolean
 // + `*_expiry` pair on the permission.
-export type AuthMethodKey = 'email' | 'phone' | 'verification';
+export type SecurityRequirementKey = 'email' | 'phone' | 'verification';

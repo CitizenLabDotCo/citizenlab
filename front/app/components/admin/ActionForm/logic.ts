@@ -13,16 +13,16 @@ import {
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
-import { AUTH_METHODS } from './constants';
+import { SECURITY_REQUIREMENTS } from './constants';
 import messages from './messages';
-import { AuthMethodKey, Changes } from './types';
+import { SecurityRequirementKey, Changes } from './types';
 
 /** The enabled flag + expiry (in days, `null` = "once, ever") for a method. */
 export const getMethod = (
   permission: IPhasePermissionData,
-  key: AuthMethodKey
+  key: SecurityRequirementKey
 ): { enabled: boolean; expiry: number | null } => {
-  const { enabledField, expiryField } = AUTH_METHODS[key];
+  const { enabledField, expiryField } = SECURITY_REQUIREMENTS[key];
   return {
     enabled: permission.attributes[enabledField],
     expiry: permission.attributes[expiryField],
@@ -31,10 +31,10 @@ export const getMethod = (
 
 /** The change to emit when a method's toggle / recency is edited. */
 export const methodChange = (
-  key: AuthMethodKey,
+  key: SecurityRequirementKey,
   { enabled, expiry }: { enabled: boolean; expiry: number | null }
 ): Changes => {
-  const { enabledField, expiryField } = AUTH_METHODS[key];
+  const { enabledField, expiryField } = SECURITY_REQUIREMENTS[key];
   return { [enabledField]: enabled, [expiryField]: expiry } as Changes;
 };
 
@@ -118,16 +118,18 @@ export const buildSummary = (
       tone: 'access',
     },
   ];
-  (Object.keys(AUTH_METHODS) as AuthMethodKey[]).forEach((key) => {
-    if (getMethod(permission, key).enabled) {
-      chips.push({
-        key,
-        label: formatMessage(AUTH_METHODS[key].label),
-        icon: AUTH_METHODS[key].icon,
-        tone: 'access',
-      });
+  (Object.keys(SECURITY_REQUIREMENTS) as SecurityRequirementKey[]).forEach(
+    (key) => {
+      if (getMethod(permission, key).enabled) {
+        chips.push({
+          key,
+          label: formatMessage(SECURITY_REQUIREMENTS[key].label),
+          icon: SECURITY_REQUIREMENTS[key].icon,
+          tone: 'access',
+        });
+      }
     }
-  });
+  );
 
   const groupIds = getGroupIds(permission);
   if (groupIds.length > 0) {

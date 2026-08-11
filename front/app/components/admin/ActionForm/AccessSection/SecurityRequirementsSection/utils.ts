@@ -1,4 +1,4 @@
-import { AuthMethodKey } from '../../types';
+import { SecurityRequirementKey } from '../../types';
 
 type Params = {
   sms2FAEnabled: boolean;
@@ -12,8 +12,8 @@ export const getVisibleToggles = ({
   smsLoginEnabled,
   verificationMethodEnabled,
   authenticationMethodEnabled,
-}: Params): AuthMethodKey[] => {
-  const visibleToggles: AuthMethodKey[] = [];
+}: Params): SecurityRequirementKey[] => {
+  const visibleToggles: SecurityRequirementKey[] = [];
 
   if ((sms2FAEnabled && smsLoginEnabled) || authenticationMethodEnabled) {
     // Requiring an email or not is only relevant if there exists

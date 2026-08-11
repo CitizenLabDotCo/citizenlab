@@ -1,4 +1,4 @@
-import { AuthMethodKey } from '../../types';
+import { SecurityRequirementKey } from '../../types';
 
 import { getVisibleToggles } from './utils';
 
@@ -112,7 +112,13 @@ describe('SecurityRequirementsSection utils', () => {
 
     describe('all combinations', () => {
       // [sms2FA, smsLogin, verificationMethod, authenticationMethod]
-      const cases: [boolean, boolean, boolean, boolean, AuthMethodKey[]][] = [
+      const cases: [
+        boolean,
+        boolean,
+        boolean,
+        boolean,
+        SecurityRequirementKey[]
+      ][] = [
         [false, false, false, false, []],
         [false, false, false, true, ['email']],
         [false, false, true, false, ['verification']],

@@ -10,13 +10,13 @@ import { IPhasePermissionData } from 'api/phase_permissions/types';
 import { MessageDescriptor } from 'utils/cl-intl';
 
 import messages from './messages';
-import { AuthMethodKey } from './types';
+import { SecurityRequirementKey } from './types';
 
 type PermissionAttributes = IPhasePermissionData['attributes'];
 
 // The key order is the order the methods appear in, both as toggles and as
 // summary chips.
-export const AUTH_METHODS = {
+export const SECURITY_REQUIREMENTS = {
   email: {
     label: messages.confirmedEmail,
     description: messages.emailMethodDescription,
@@ -40,7 +40,7 @@ export const AUTH_METHODS = {
     expiryField: 'verification_expiry',
   },
 } as const satisfies Record<
-  AuthMethodKey,
+  SecurityRequirementKey,
   {
     label: MessageDescriptor;
     description: MessageDescriptor;

@@ -15,7 +15,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { AUTH_METHODS } from '../../constants';
+import { SECURITY_REQUIREMENTS } from '../../constants';
 import { getMethod, methodChange } from '../../logic';
 import { Changes } from '../../types';
 import { Expander } from '../../ui';
@@ -60,7 +60,7 @@ const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
         summary={
           activeKeys.length
             ? activeKeys
-                .map((key) => formatMessage(AUTH_METHODS[key].label))
+                .map((key) => formatMessage(SECURITY_REQUIREMENTS[key].label))
                 .join(' · ')
             : formatMessage(messages.none)
         }

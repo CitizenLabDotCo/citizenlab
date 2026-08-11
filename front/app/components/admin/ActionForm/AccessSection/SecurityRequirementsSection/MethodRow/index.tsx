@@ -10,12 +10,12 @@ import {
 
 import { useIntl } from 'utils/cl-intl';
 
-import { AUTH_METHODS } from '../../../constants';
-import { AuthMethodKey } from '../../../types';
+import { SECURITY_REQUIREMENTS } from '../../../constants';
+import { SecurityRequirementKey } from '../../../types';
 import RecencyControl from '../../RecencyControl';
 
 interface Props {
-  methodKey: AuthMethodKey;
+  methodKey: SecurityRequirementKey;
   enabled: boolean;
   expiry: number | null;
   // Why the check can't be used on this platform. `undefined` = it can.
@@ -31,7 +31,7 @@ const MethodRow = ({
   onChange,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const method = AUTH_METHODS[methodKey];
+  const method = SECURITY_REQUIREMENTS[methodKey];
   const available = !unavailableReason;
   const enabled = available && stateEnabled;
 
