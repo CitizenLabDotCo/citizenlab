@@ -187,10 +187,15 @@ RSpec.describe DecidimImporter::TemplateCreator do
       expect(page.enabled).to be(true)
       expect(page.craftjs_json.dig('ROOT', 'type', 'resolvedName')).to eq('ProjectPageRoot')
 
-      # The imported description was injected into the wide intro column.
-      description_ids = page.craftjs_json['PROJECT_PAGE_INTRO_LEFT']['nodes']
+      # The imported description carries its own participation box, so it keeps
+      # its full-width layout in the body and no second box is injected.
+      description_ids = page.craftjs_json['PROJECT_PAGE_BODY']['nodes'] - %w[PROJECT_PAGE_PHASES PROJECT_PAGE_EVENTS]
       expect(description_ids).not_to be_empty
       expect(description_ids).to all(start_with('d_'))
+      about_boxes = page.craftjs_json.each_value.count do |node|
+        node.is_a?(Hash) && node.dig('type', 'resolvedName') == 'AboutBox'
+      end
+      expect(about_boxes).to eq(1)
     end
 
     it 'imports an accountability component as an ideation phase, with its results as ideas carrying a progress line' do
