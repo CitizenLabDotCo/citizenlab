@@ -120,10 +120,11 @@ describe('Budgeting project', () => {
 
   it('can submit the budget', () => {
     cy.dockProjectCtaBar();
+    cy.intercept('PATCH', '**/baskets/*').as('submitBasket');
     cy.get('#e2e-voting-submit-button')
       .should('be.visible')
       .click({ force: true });
-    cy.wait(1000);
+    cy.wait('@submitBasket');
 
     cy.contains('Budget submitted');
     cy.scrollTo('bottom');
@@ -136,28 +137,28 @@ describe('Budgeting project', () => {
 
   it('can modify the budget and remove an option', () => {
     cy.dockProjectCtaBar();
+
+    cy.intercept('PATCH', '**/baskets/*').as('unsubmitBasket');
+    // Keep the assertions and the click in one query chain: late-loading
+    // content (map config, randomly sorted idea cards) re-renders the page
+    // and can detach the button — a chained query re-runs from the start,
+    // while a fresh cy.get after a blind wait finds nothing and fails.
     cy.get('#e2e-modify-votes')
       .should('be.visible')
-      .should('contain', 'Modify your submission');
-
-    cy.wait(2000);
-
-    cy.get('#e2e-modify-votes').click();
+      .should('contain', 'Modify your submission')
+      .click();
+    cy.wait('@unsubmitBasket');
 
     cy.get('#e2e-ideas-container')
       .find('.e2e-assign-budget-button')
       .should('have.class', 'in-basket');
 
-    cy.wait(2000);
-
-    cy.get('#e2e-ideas-container');
-
-    cy.wait(1000);
-
+    cy.intercept('PUT', '**/baskets/ideas/**').as('removeVote');
     cy.get('#e2e-ideas-container')
       .find('.e2e-assign-budget-button')
       .click()
       .should('have.class', 'not-in-basket');
+    cy.wait('@removeVote');
 
     cy.get('#e2e-voting-submit-button')
       .should('be.visible')
