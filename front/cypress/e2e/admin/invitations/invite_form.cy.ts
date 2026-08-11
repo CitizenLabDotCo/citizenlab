@@ -1,95 +1,144 @@
-const deleteAllInvites = () =>
-  cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
-    const headers = {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${response.body.jwt}`,
-    };
+/*
+ * The invite form waits on two background jobs. The e2e stack runs no Que
+ * worker, so those jobs are enqueued and never processed — nothing here can
+ * wait on a real one. The job responses are stubbed instead, which leaves the
+ * part these specs exist for: what the form does in a real browser as the two
+ * stages report back, including the file input, which jsdom cannot test.
+ */
 
-    cy.request({ headers, method: 'GET', url: 'web_api/v1/invites' }).then(
-      ({ body }) => {
-        body.data.forEach(({ id }: { id: string }) => {
-          cy.request({
-            headers,
-            method: 'DELETE',
-            url: `web_api/v1/invites/${id}`,
-            // Destroying the invited user can collide with their invitation
-            // email still being delivered. Tidying up must not fail the run.
-            failOnStatusCode: false,
-          });
-        });
-      }
-    );
-  });
+const countImportId = 'count-import-id';
+const createImportId = 'create-import-id';
+
+// The API renders the import as soon as it is created, so a POST always comes
+// back pending — `completed_at` only appears once the job has run.
+const pendingImport = (id: string, jobType: string) => ({
+  data: {
+    id,
+    type: 'invites_import',
+    attributes: { job_type: jobType, completed_at: null, result: {} },
+  },
+});
+
+const completedImport = (
+  id: string,
+  jobType: string,
+  result: Record<string, unknown> | unknown[]
+) => ({
+  data: {
+    id,
+    type: 'invites_import',
+    attributes: {
+      job_type: jobType,
+      completed_at: '2026-08-11T10:00:00Z',
+      result,
+    },
+  },
+});
 
 describe('Admin: invitations form', () => {
-  beforeEach(() => {
-    deleteAllInvites();
-    cy.setAdminLoginCookie();
-  });
+  /*
+   * Whether the seats modal appears is decided by
+   * `assigned admins + newly added > maximum + additional`. Both stubbed sides
+   * are set here rather than rewriting the tenant's configuration, so the specs
+   * don't depend on its seat limits — and since nothing is really created, the
+   * limits never ratchet up between runs either.
+   */
+  const stubJobs = ({
+    newAdmins,
+    onCreate,
+  }: {
+    newAdmins: number;
+    onCreate?: () => void;
+  }) => {
+    cy.intercept('POST', '**/invites_imports/count_new_seats_xlsx', {
+      body: pendingImport(countImportId, 'count_new_seats_xlsx'),
+    }).as('countRequest');
 
-  after(() => {
-    deleteAllInvites();
-  });
+    cy.intercept('POST', '**/invites_imports/bulk_create_xlsx', (req) => {
+      onCreate?.();
+      req.reply({ body: pendingImport(createImportId, 'bulk_create_xlsx') });
+    }).as('createRequest');
 
-  // Inviting runs as two background jobs — count the seats, then create — so the
-  // form waits on polling rather than on the response to the submit.
-  it('resets the form once the invites have been created', () => {
-    cy.visit('/admin/users/invitations');
+    cy.intercept('GET', `**/invites_imports/${countImportId}`, {
+      body: completedImport(countImportId, 'count_new_seats_xlsx', {
+        newly_added_admins_number: newAdmins,
+        newly_added_moderators_number: 0,
+      }),
+    }).as('countPoll');
+
+    cy.intercept('GET', `**/invites_imports/${createImportId}`, {
+      body: completedImport(createImportId, 'bulk_create_xlsx', []),
+    });
+  };
+
+  const stubAssignedAdmins = (readCount: () => number) =>
+    cy.intercept('GET', '**/users/seats', (req) => {
+      req.reply({
+        body: {
+          data: {
+            type: 'seats',
+            attributes: { admins_number: readCount(), moderators_number: 0 },
+          },
+        },
+      });
+    });
+
+  const uploadAndSubmit = () => {
     cy.get('input[type=file]').selectFile('cypress/fixtures/invites.xlsx');
     cy.get('.e2e-submit-wrapper-button').should('not.be.disabled');
     cy.get('.e2e-submit-wrapper-button').click();
+  };
 
-    // Long enough for both jobs on a cold queue, short enough that a stall does
-    // not read as a pass.
-    cy.contains('Invitation successfully sent out.', { timeout: 60000 }).should(
-      'be.visible'
-    );
-
-    // The form no longer holds the spreadsheet, so the input must stop showing
-    // it. jsdom cannot test this: it refuses to put a filename on a file input.
-    cy.get('input[type=file]').should('have.value', '');
-
-    cy.visit('/admin/users/invitations/all');
-    cy.contains('jack@johnson.com');
+  beforeEach(() => {
+    cy.setAdminLoginCookie();
   });
 
-  describe('when the invitees would exceed the seat limit', () => {
-    // Every run of this spec ratchets the tenant's seat limits upwards, so
-    // force the exceedance. Edits the real payload rather than replacing it.
-    const capAdminSeatsAtOne = () =>
-      cy
-        .intercept('GET', '**/web_api/v1/app_configuration', (req) => {
-          req.continue((res) => {
-            const core = res.body.data.attributes.settings.core;
-            core.maximum_admins_number = 1;
-            core.additional_admins_number = 0;
-          });
-        })
-        .as('appConfiguration');
-
-    const submitInviteWithAdminRights = () => {
-      cy.get('input[type=file]').selectFile('cypress/fixtures/invites.xlsx');
-      cy.contains('Invitation options').click();
-      // The toggle paints a styled div over a hidden checkbox, and its
-      // data-testid only exists in test builds. Click the real control.
-      cy.contains('Give invitees admin rights')
-        .parent()
-        .find('input[type=checkbox]')
-        .click({ force: true });
-      cy.get('.e2e-submit-wrapper-button').click();
-
-      cy.contains('Confirm impact on seat usage', { timeout: 60000 }).should(
-        'be.visible'
-      );
-    };
-
+  describe('when the invitees fit within the seat limit', () => {
     beforeEach(() => {
-      capAdminSeatsAtOne();
+      // No new admins, so no plan can be exceeded.
+      stubJobs({ newAdmins: 0 });
+      stubAssignedAdmins(() => 1);
       cy.visit('/admin/users/invitations');
     });
 
+    it('creates the invites without asking for confirmation', () => {
+      uploadAndSubmit();
+
+      cy.contains('Invitation successfully sent out.').should('be.visible');
+      cy.contains('Confirm impact on seat usage').should('not.exist');
+
+      // The form no longer holds the spreadsheet, so the input must stop
+      // showing it. jsdom cannot test this: it refuses to put a filename on a
+      // file input.
+      cy.get('input[type=file]').should('have.value', '');
+    });
+  });
+
+  describe('when the invitees would exceed the seat limit', () => {
+    // Far more admins than any plan the seed data configures.
+    const NEW_ADMINS = 500;
+    const assignedAdmins = { current: 1 };
+
+    beforeEach(() => {
+      assignedAdmins.current = 1;
+      stubJobs({
+        newAdmins: NEW_ADMINS,
+        onCreate: () => (assignedAdmins.current += NEW_ADMINS),
+      });
+      stubAssignedAdmins(() => assignedAdmins.current);
+      cy.visit('/admin/users/invitations');
+    });
+
+    const submitAndAwaitConfirmation = () => {
+      uploadAndSubmit();
+      // The form polls on a 5s interval, so the first poll can outlast
+      // cy.wait's default timeout.
+      cy.wait('@countPoll', { timeout: 15000 });
+      cy.contains('Confirm impact on seat usage').should('be.visible');
+    };
+
     it('creates nothing when the modal is closed before confirming', () => {
-      submitInviteWithAdminRights();
+      submitAndAwaitConfirmation();
 
       cy.get('.e2e-modal-close-button').first().click();
       cy.contains('Confirm impact on seat usage').should('not.exist');
@@ -98,45 +147,39 @@ describe('Admin: invitations form', () => {
       cy.contains('Sending out invitations. Please wait...').should(
         'not.exist'
       );
-      cy.visit('/admin/users/invitations/all');
-      cy.contains('jack@johnson.com').should('not.exist');
+      cy.get('@createRequest.all').should('have.length', 0);
     });
 
-    // Nothing refetches on its own (staleTime is Infinity), so only an
-    // explicit invalidation updates these numbers.
     it('updates the assigned seats without a reload', () => {
-      submitInviteWithAdminRights();
+      // The seat panel is only on the form itself when admin rights are on.
+      // Inside the modal it disappears with the confirmation step.
+      cy.contains('Invitation options').click();
+      cy.contains('Give invitees admin rights')
+        .parent()
+        .find('input[type=checkbox]')
+        .click({ force: true });
+      cy.contains('Assigned seats: 1').should('be.visible');
 
-      cy.contains('Assigned seats:')
-        .invoke('text')
-        .then((before) => {
-          cy.contains('Confirm and send out invitations').click();
-          cy.contains('Invitation successfully sent out.', {
-            timeout: 60000,
-          }).should('be.visible');
+      submitAndAwaitConfirmation();
+      cy.contains('Confirm and send out invitations').click();
+      cy.contains('Invitation successfully sent out.').should('be.visible');
+      cy.get('.e2e-modal-close-button').first().click();
 
-          // The spreadsheet adds two admins, so this has to move.
-          cy.contains('Assigned seats:')
-            .invoke('text')
-            .should('not.equal', before);
-        });
+      // Nothing refetches on its own (staleTime is Infinity), so this only
+      // moves if the completed job invalidated the seat queries.
+      cy.contains(`Assigned seats: ${1 + NEW_ADMINS}`).should('be.visible');
     });
 
     // Closing the modal after confirming is not a cancellation — the creation
     // job is already running, and the form has to go on reporting it.
     it('still reports the result when the modal is closed after confirming', () => {
-      submitInviteWithAdminRights();
+      submitAndAwaitConfirmation();
 
       cy.contains('Confirm and send out invitations').click();
       cy.get('.e2e-modal-close-button').first().click();
       cy.contains('Confirm impact on seat usage').should('not.exist');
 
-      cy.contains('Invitation successfully sent out.', {
-        timeout: 60000,
-      }).should('be.visible');
-
-      cy.visit('/admin/users/invitations/all');
-      cy.contains('jack@johnson.com');
+      cy.contains('Invitation successfully sent out.').should('be.visible');
     });
   });
 });
