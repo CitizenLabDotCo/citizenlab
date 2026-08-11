@@ -54,6 +54,18 @@ const pendingCreateImport = {
   },
 };
 
+const completedCreateImport = {
+  data: {
+    id: 'create-import-id',
+    type: 'invites_import',
+    attributes: {
+      job_type: 'bulk_create',
+      completed_at: '2026-08-04T10:05:00Z',
+      result: {},
+    },
+  },
+};
+
 const failedCreateImport = {
   data: {
     id: 'create-import-id',
@@ -95,11 +107,24 @@ jest.mock('api/invites/useBulkInviteCountNewSeatsEmails', () => () => ({
 jest.mock('api/invites/useBulkInviteEmails', () => () => ({
   mutateAsync: mockBulkInvite,
 }));
+const mockCountNewSeatsXLSX = jest.fn(() =>
+  Promise.resolve({ data: { id: 'count-import-id' } })
+);
+const mockBulkInviteXLSX = jest.fn(() =>
+  Promise.resolve({ data: { id: 'create-import-id' } })
+);
+
 jest.mock('api/invites/useBulkInviteCountNewSeatsXLSX', () => () => ({
-  mutateAsync: jest.fn(),
+  mutateAsync: mockCountNewSeatsXLSX,
 }));
 jest.mock('api/invites/useBulkInviteXLSX', () => () => ({
-  mutateAsync: jest.fn(),
+  mutateAsync: mockBulkInviteXLSX,
+}));
+
+// Reading the file is the browser's job, and not what these tests are about.
+jest.mock('utils/fileUtils', () => ({
+  ...jest.requireActual('utils/fileUtils'),
+  getBase64FromFile: () => Promise.resolve('base64-spreadsheet'),
 }));
 
 jest.mock('hooks/useAppConfigurationLocales', () => () => ['en']);
@@ -163,6 +188,30 @@ const submitManualInvite = async () => {
   return { container, rerender };
 };
 
+// The other tab: uploads a spreadsheet and submits it.
+const submitFileInvite = async () => {
+  const { container, rerender } = render(<Invitations />);
+
+  const file = new File(['spreadsheet'], 'invites.xlsx', {
+    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  });
+
+  await act(async () => {
+    fireEvent.change(
+      container.querySelector('input[type=file]') as HTMLElement,
+      { target: { files: [file] } }
+    );
+  });
+
+  await act(async () => {
+    fireEvent.submit(
+      container.querySelector('#e2e-invitations') as HTMLElement
+    );
+  });
+
+  return { container, rerender };
+};
+
 const advance = (ms: number) =>
   act(() => {
     jest.advanceTimersByTime(ms);
@@ -194,6 +243,52 @@ describe('Invitations timeout', () => {
     expect(
       screen.queryByText('Sending out invitations. Please wait...')
     ).not.toBeInTheDocument();
+  });
+
+  // The only test that reaches the end of the happy path. Everything else here
+  // stops at a failure, so without this the success transition — and the form
+  // reset that hangs off it — goes unchecked.
+  it('reports success and clears the form once the invites are created', async () => {
+    mockInvitesImport = undefined;
+    const { container, rerender } = await submitManualInvite();
+
+    // Seats are not exceeded, so the creation job follows the count directly.
+    mockInvitesImport = completedCountImport;
+    await act(async () => {
+      rerender(<Invitations />);
+    });
+    expect(mockBulkInvite).toHaveBeenCalled();
+
+    mockInvitesImport = completedCreateImport;
+    await act(async () => {
+      rerender(<Invitations />);
+    });
+
+    expect(
+      screen.getByText('Invitation successfully sent out.')
+    ).toBeInTheDocument();
+    expect(container.querySelector('#e2e-emails')).toHaveValue('');
+  });
+
+  // The spreadsheet tab goes through different mutations than the manual one,
+  // and every other test here takes the manual route.
+  it('sends a spreadsheet through both stages', async () => {
+    mockInvitesImport = undefined;
+    const { rerender } = await submitFileInvite();
+
+    expect(mockCountNewSeatsXLSX).toHaveBeenCalledWith(
+      expect.objectContaining({ xlsx: 'base64-spreadsheet' })
+    );
+    expect(mockCountNewSeats).not.toHaveBeenCalled();
+
+    mockInvitesImport = completedCountImport;
+    await act(async () => {
+      rerender(<Invitations />);
+    });
+
+    expect(mockBulkInviteXLSX).toHaveBeenCalledWith(
+      expect.objectContaining({ xlsx: 'base64-spreadsheet' })
+    );
   });
 
   // The watchdog must not depend on anything whose identity changes every
