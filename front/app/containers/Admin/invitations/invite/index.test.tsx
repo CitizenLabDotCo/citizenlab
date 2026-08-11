@@ -69,12 +69,17 @@ const failedCreateImport = {
 // Swapped between assertions to stand in for what the polling hook has last seen.
 let mockInvitesImport: any;
 
+// Stable across renders, like the memoized callback the real hook returns. A
+// fresh function each render would model the opposite, and quietly excuse the
+// container from keeping the watchdog's dependencies stable.
+const mockResetQueryData = jest.fn();
+
 // The real hook keys its query on the import id, so clearing that id leaves it
 // with nothing to return. Mirrored here so the mock cannot serve data the
 // container could not actually see.
 jest.mock('api/invites/useInvitesImport', () => (params: any) => ({
   data: params.importId ? mockInvitesImport : undefined,
-  resetQueryData: jest.fn(),
+  resetQueryData: mockResetQueryData,
 }));
 
 const mockCountNewSeats = jest.fn(() =>
@@ -189,6 +194,21 @@ describe('Invitations timeout', () => {
     expect(
       screen.queryByText('Sending out invitations. Please wait...')
     ).not.toBeInTheDocument();
+  });
+
+  // The watchdog must not depend on anything whose identity changes every
+  // render. Polling re-renders the container while the job is still running, and
+  // a timer restarted on each of those renders never reaches its budget.
+  it('keeps the clock running across re-renders', async () => {
+    mockInvitesImport = pendingCountImport;
+    const { rerender } = await submitManualInvite();
+
+    advance(COUNT_TIMEOUT_MS - 1000);
+    rerender(<Invitations />);
+    rerender(<Invitations />);
+
+    advance(1000);
+    expect(screen.getByText(NOT_SENT_MESSAGE)).toBeInTheDocument();
   });
 
   // The creation job gets a longer budget, and it may yet run and send the

@@ -109,6 +109,25 @@ describe('useInvitesImport', () => {
     expect(result.current.isLoading).toBe(false);
   });
 
+  // Consumers put this in effect dependencies. A new identity per render would
+  // re-run those effects on every poll — including a timeout that then never
+  // reaches its budget.
+  it('returns the same resetQueryData across re-renders', async () => {
+    const { result, rerender } = renderHook(
+      () => useInvitesImport({ importId, enabled: true }),
+      {
+        wrapper: createQueryClientWrapper(),
+      }
+    );
+
+    const initial = result.current.resetQueryData;
+
+    rerender();
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    expect(result.current.resetQueryData).toBe(initial);
+  });
+
   // Seat counts change when invites are created, so the views showing them are
   // refreshed here rather than in the component waiting on the job.
   describe('refreshing the seat counts', () => {
