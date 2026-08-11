@@ -15,19 +15,28 @@ export const triggerSuccessAction = (successAction: SuccessAction) => {
   successAction$.next(successAction);
 };
 
+/** How long to wait for the auth user before giving up on a queued action. */
+const AUTH_USER_TIMEOUT = 10000;
+
 const getAuthUser = () => {
   let streamSubscription;
 
   const promise = new Promise<IUserData>((resolve, reject) => {
-    streamSubscription = authUserStream.subscribe((response) => {
-      if (response === undefined) return;
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (response === null) {
-        reject();
-        return;
-      }
+    const timeout = setTimeout(() => {
+      reject(new Error('Timed out waiting for the authenticated user'));
+    }, AUTH_USER_TIMEOUT);
 
+    streamSubscription = authUserStream.subscribe((response) => {
+      // Both undefined (not loaded yet) and null (the me query still reporting
+      // signed out) mean "not ready yet" here, not "signed out for good". The
+      // caller consumes the queued action before awaiting this promise, so
+      // rejecting discards that action permanently rather than deferring it —
+      // which silently dropped post-sign-in redirects whenever the stream had
+      // not caught up with the sign-in yet. Wait for a real user instead; the
+      // timeout stops a genuinely signed-out state from hanging forever.
+      if (!response) return;
+
+      clearTimeout(timeout);
       resolve(response.data);
     });
   });
