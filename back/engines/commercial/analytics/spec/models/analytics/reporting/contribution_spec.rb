@@ -67,6 +67,7 @@ RSpec.describe Analytics::Reporting::Contribution do
       expect(row.participation_method).to eq 'ideation'
       expect(row.phase_id).to be_nil
     end
+
   end
 
   describe 'comments' do
@@ -191,6 +192,34 @@ RSpec.describe Analytics::Reporting::Contribution do
       expect(row.phase_id).to be_nil
       expect(row.project_id).to eq attendance.event.project_id
       expect(row.participant_id).to eq attendance.attendee_id
+    end
+  end
+
+  describe 'with an overlapping standalone phase' do
+    it 'attributes each contribution once, to its timeline or creation phase' do
+      create(:idea_status_proposed)
+      project = create(:project)
+      ideation = create(:phase, project: project, participation_method: 'ideation',
+        start_at: '2026-01-01', end_at: nil)
+      standalone = create(:phase, :standalone, project: project,
+        start_at: '2026-01-01', end_at: nil)
+      idea = create(:idea, project: project, phases: [ideation],
+        created_at: '2026-02-10', submitted_at: '2026-02-10', published_at: '2026-02-10')
+      comment = create(:comment, idea: idea, created_at: '2026-02-10')
+      response = create(:native_survey_response, project: project, creation_phase: standalone,
+        submitted_at: '2026-02-10')
+
+      idea_rows = described_class.where(id: idea.id)
+      expect(idea_rows.count).to eq 1
+      expect(idea_rows.first.phase_id).to eq ideation.id
+
+      comment_rows = described_class.where(id: comment.id)
+      expect(comment_rows.count).to eq 1
+      expect(comment_rows.first.phase_id).to eq ideation.id
+
+      response_rows = described_class.where(id: response.id)
+      expect(response_rows.count).to eq 1
+      expect(response_rows.first.phase_id).to eq standalone.id
     end
   end
 end
