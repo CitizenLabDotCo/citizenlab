@@ -90,11 +90,27 @@ RSpec.describe EmailCampaigns::Sms::SendService do
     let(:delivery) { EmailCampaigns::Sms::Delivery.create!(body: 'hi', status: 'pending') }
 
     it 'sends an already-created delivery through the provider and stores the status' do
-      allow(provider).to receive(:send).and_return(message_sid: 'SM_d', status: 'queued')
+      allow(provider).to receive(:send).and_return(message_sid: 'SM_d', status: 'queued', segments_count: 2)
 
       described_class.new.deliver(delivery, to: phone, use_case: use_case)
 
-      expect(delivery.reload).to have_attributes(status: 'queued', message_sid: 'SM_d')
+      expect(delivery.reload).to have_attributes(status: 'queued', message_sid: 'SM_d', segments_count: 2)
+    end
+
+    it 'leaves the segments count unset when the provider does not report one yet' do
+      allow(provider).to receive(:send).and_return(message_sid: 'SM_d', status: 'queued', segments_count: nil)
+
+      described_class.new.deliver(delivery, to: phone)
+
+      expect(delivery.reload.segments_count).to be_nil
+    end
+
+    it 'records the segment count the fake provider reports in test mode' do
+      SettingsService.new.activate_feature!('sms', settings: { 'use_test_mode' => true })
+
+      described_class.new.deliver(delivery, to: phone)
+
+      expect(delivery.reload.segments_count).to eq(1)
     end
 
     it 'normalizes the destination to E.164 before sending' do
@@ -219,6 +235,27 @@ RSpec.describe EmailCampaigns::Sms::SendService do
 
         expect(delivery.reload.status).to eq('queued')
       end
+    end
+  end
+
+  describe '#fetch_segments_count' do
+    let(:delivery) do
+      EmailCampaigns::Sms::Delivery.create!(body: 'hi', status: 'delivered', message_sid: 'SM_1')
+    end
+
+    it 'records the count the provider reports for the sent message' do
+      expect(provider).to receive(:fetch_segments_count).with('SM_1').and_return(3)
+
+      described_class.new.fetch_segments_count(delivery)
+
+      expect(delivery.reload.segments_count).to eq(3)
+    end
+
+    it 'does not call the provider for a delivery that is not awaiting a count' do
+      delivery.update!(segments_count: 2)
+      expect(provider).not_to receive(:fetch_segments_count)
+
+      described_class.new.fetch_segments_count(delivery)
     end
   end
 end

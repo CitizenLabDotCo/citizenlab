@@ -4,15 +4,16 @@
 #
 # Table name: sms_deliveries
 #
-#  id            :uuid             not null, primary key
-#  user_id       :uuid
-#  campaign_id   :uuid
-#  body          :text             not null
-#  message_sid   :string
-#  status        :string           not null
-#  error_message :string
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
+#  id             :uuid             not null, primary key
+#  user_id        :uuid
+#  campaign_id    :uuid
+#  body           :text             not null
+#  message_sid    :string
+#  status         :string           not null
+#  error_message  :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  segments_count :integer
 #
 # Indexes
 #
@@ -56,6 +57,7 @@ module EmailCampaigns
 
       validates :body, presence: true
       validates :status, inclusion: { in: STATUSES }
+      validates :segments_count, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
 
       # Moves the delivery to `new_status` only when that represents forward
       # progress, so out-of-order provider callbacks (Twilio warns these can arrive
@@ -69,6 +71,17 @@ module EmailCampaigns
 
         update!(status: new_status)
         true
+      end
+
+      def awaiting_segments_count?
+        segments_count.nil? && message_sid.present? && TERMINAL_STATUSES.include?(status)
+      end
+
+      def record_segments_count!(count)
+        count = count.to_i
+        return if count < 1
+
+        update!(segments_count: count)
       end
     end
   end

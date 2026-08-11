@@ -21,6 +21,60 @@ RSpec.describe EmailCampaigns::Sms::Delivery do
       delivery = described_class.new(body: 'hi', status: 'sent')
       expect(delivery).to be_valid
     end
+
+    it 'rejects a non-positive segments count' do
+      delivery = described_class.new(body: 'hi', status: 'sent', segments_count: 0)
+      expect(delivery).not_to be_valid
+      expect(delivery.errors[:segments_count]).to be_present
+    end
+  end
+
+  describe '#awaiting_segments_count?' do
+    it 'is true once a message reached a terminal status with no count yet' do
+      delivery = described_class.new(body: 'hi', status: 'delivered', message_sid: 'SM_1')
+      expect(delivery).to be_awaiting_segments_count
+    end
+
+    it 'is false while the message is still on its way' do
+      delivery = described_class.new(body: 'hi', status: 'sent', message_sid: 'SM_1')
+      expect(delivery).not_to be_awaiting_segments_count
+    end
+
+    it 'is false for a delivery that never reached the provider' do
+      delivery = described_class.new(body: 'hi', status: 'errored')
+      expect(delivery).not_to be_awaiting_segments_count
+    end
+
+    it 'is false once the count is known' do
+      delivery = described_class.new(body: 'hi', status: 'delivered', message_sid: 'SM_1', segments_count: 2)
+      expect(delivery).not_to be_awaiting_segments_count
+    end
+  end
+
+  describe '#record_segments_count!' do
+    subject(:delivery) { described_class.create!(body: 'hi', status: 'sent') }
+
+    it 'stores and persists the reported count' do
+      delivery.record_segments_count!(2)
+
+      expect(delivery.reload.segments_count).to eq(2)
+    end
+
+    it 'stores the count the provider reports as a string' do
+      delivery.record_segments_count!('2')
+
+      expect(delivery.reload.segments_count).to eq(2)
+    end
+
+    it 'ignores a missing count, leaving an already recorded one in place' do
+      delivery.record_segments_count!(2)
+
+      expect { delivery.record_segments_count!(nil) }.not_to change { delivery.reload.segments_count }.from(2)
+    end
+
+    it 'ignores the 0 Twilio reports before the message is segmented' do
+      expect { delivery.record_segments_count!('0') }.not_to change { delivery.reload.segments_count }.from(nil)
+    end
   end
 
   describe '#campaign_use_case' do

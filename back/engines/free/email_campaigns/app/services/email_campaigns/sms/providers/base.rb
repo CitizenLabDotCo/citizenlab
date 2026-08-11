@@ -8,9 +8,16 @@ module EmailCampaigns
         # @param body [String] message body
         # @param use_case [String] the stream this message belongs to (one of UseCase::ALL),
         #   which the provider maps onto its own sender configuration
-        # @return [Hash{Symbol => String}] { message_sid:, status: }
+        # @return [Hash{Symbol => String, Integer, nil}] { message_sid:, status:, segments_count: }
         # @raise [Error] when the underlying provider rejects the message
         def send(to:, body:, use_case:)
+          raise NotImplementedError
+        end
+
+        # @param message_sid [String] the provider's id for an already-sent message
+        # @return [Integer, nil] the number of segments the message was billed as
+        # @raise [Error] when the provider can't be reached or doesn't know the message
+        def fetch_segments_count(message_sid)
           raise NotImplementedError
         end
 
