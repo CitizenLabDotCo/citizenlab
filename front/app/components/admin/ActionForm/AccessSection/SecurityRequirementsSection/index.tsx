@@ -45,16 +45,16 @@ const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
       method.attributes.method_metadata?.email_always_present === false
   );
 
-  const visibleToggles = getVisibleToggles({
+  const {
+    email: showEmail,
+    phone: showPhone,
+    verification: showVerification,
+  } = getVisibleToggles({
     sms2FAEnabled: smsEnabled,
     smsLoginEnabled,
     verificationMethodEnabled: !!verificationMethod,
     hasAuthMethodNotReturningEmail,
   });
-
-  const showEmail = visibleToggles.includes('email');
-  const showPhone = visibleToggles.includes('phone');
-  const showVerification = visibleToggles.includes('verification');
 
   // Only what is both offered here and actually switched on belongs in the
   // collapsed summary.
@@ -73,7 +73,7 @@ const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
     );
   }
 
-  if (visibleToggles.length === 0) {
+  if (!showEmail && !showPhone && !showVerification) {
     return null;
   }
 

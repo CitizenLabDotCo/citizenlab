@@ -1,6 +1,7 @@
 // The security requirements on offer: each one maps onto a `require_*` boolean
 // + `*_expiry` pair on the permission.
-export type SecurityRequirementKey = 'email' | 'phone' | 'verification';
+type SecurityRequirementKey = 'email' | 'phone' | 'verification';
+type VisibleToggles = Record<SecurityRequirementKey, boolean>;
 
 type Params = {
   sms2FAEnabled: boolean;
@@ -14,23 +15,27 @@ export const getVisibleToggles = ({
   smsLoginEnabled,
   verificationMethodEnabled,
   hasAuthMethodNotReturningEmail,
-}: Params): SecurityRequirementKey[] => {
-  const visibleToggles: SecurityRequirementKey[] = [];
+}: Params): VisibleToggles => {
+  const visibleToggles: VisibleToggles = {
+    email: false,
+    phone: false,
+    verification: false,
+  };
 
   if ((sms2FAEnabled && smsLoginEnabled) || hasAuthMethodNotReturningEmail) {
     // Requiring an email or not is only relevant if there exists
     // a way for participants to sign up WITHOUT an email address.
     // If you e.g. can only sign up with email, email confirmed is always required,
     // so there is no need to make it configurable.
-    visibleToggles.push('email');
+    visibleToggles.email = true;
   }
 
   if (sms2FAEnabled) {
-    visibleToggles.push('phone');
+    visibleToggles.phone = true;
   }
 
   if (verificationMethodEnabled) {
-    visibleToggles.push('verification');
+    visibleToggles.verification = true;
   }
 
   return visibleToggles;

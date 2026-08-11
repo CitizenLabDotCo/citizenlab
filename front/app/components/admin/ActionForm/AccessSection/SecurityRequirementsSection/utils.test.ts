@@ -1,16 +1,22 @@
-import { getVisibleToggles, SecurityRequirementKey } from './utils';
+import { getVisibleToggles } from './utils';
 
 const ALL_DISABLED = {
   sms2FAEnabled: false,
   smsLoginEnabled: false,
   verificationMethodEnabled: false,
-  authenticationMethodEnabled: false,
+  hasAuthMethodNotReturningEmail: false,
+};
+
+const NONE_VISIBLE = {
+  email: false,
+  phone: false,
+  verification: false,
 };
 
 describe('SecurityRequirementsSection utils', () => {
   describe('getVisibleToggles', () => {
     it('returns no toggles if nothing is enabled', () => {
-      expect(getVisibleToggles(ALL_DISABLED)).toEqual([]);
+      expect(getVisibleToggles(ALL_DISABLED)).toEqual(NONE_VISIBLE);
     });
 
     describe('email', () => {
@@ -20,37 +26,37 @@ describe('SecurityRequirementsSection utils', () => {
             ...ALL_DISABLED,
             sms2FAEnabled: true,
             smsLoginEnabled: true,
-          })
-        ).toContain('email');
+          }).email
+        ).toBe(true);
       });
 
-      it('is shown if an authentication method is enabled', () => {
+      it('is shown if an auth method that does not return an email is enabled', () => {
         expect(
           getVisibleToggles({
             ...ALL_DISABLED,
-            authenticationMethodEnabled: true,
-          })
-        ).toContain('email');
+            hasAuthMethodNotReturningEmail: true,
+          }).email
+        ).toBe(true);
       });
 
       it('is hidden if SMS login is enabled but the SMS feature is not', () => {
         expect(
-          getVisibleToggles({ ...ALL_DISABLED, smsLoginEnabled: true })
-        ).not.toContain('email');
+          getVisibleToggles({ ...ALL_DISABLED, smsLoginEnabled: true }).email
+        ).toBe(false);
       });
 
       it('is hidden if the SMS feature is enabled but SMS login is not', () => {
         expect(
-          getVisibleToggles({ ...ALL_DISABLED, sms2FAEnabled: true })
-        ).not.toContain('email');
+          getVisibleToggles({ ...ALL_DISABLED, sms2FAEnabled: true }).email
+        ).toBe(false);
       });
     });
 
     describe('phone', () => {
       it('is shown if the SMS feature is enabled', () => {
         expect(
-          getVisibleToggles({ ...ALL_DISABLED, sms2FAEnabled: true })
-        ).toContain('phone');
+          getVisibleToggles({ ...ALL_DISABLED, sms2FAEnabled: true }).phone
+        ).toBe(true);
       });
 
       it('is shown even if SMS login is disabled', () => {
@@ -59,8 +65,8 @@ describe('SecurityRequirementsSection utils', () => {
             ...ALL_DISABLED,
             sms2FAEnabled: true,
             smsLoginEnabled: false,
-          })
-        ).toContain('phone');
+          }).phone
+        ).toBe(true);
       });
 
       it('is hidden if the SMS feature is disabled', () => {
@@ -68,10 +74,10 @@ describe('SecurityRequirementsSection utils', () => {
           getVisibleToggles({
             ...ALL_DISABLED,
             smsLoginEnabled: true,
-            authenticationMethodEnabled: true,
+            hasAuthMethodNotReturningEmail: true,
             verificationMethodEnabled: true,
-          })
-        ).not.toContain('phone');
+          }).phone
+        ).toBe(false);
       });
     });
 
@@ -82,7 +88,7 @@ describe('SecurityRequirementsSection utils', () => {
             ...ALL_DISABLED,
             verificationMethodEnabled: true,
           })
-        ).toEqual(['verification']);
+        ).toEqual({ ...NONE_VISIBLE, verification: true });
       });
 
       it('is hidden if no verification method is enabled', () => {
@@ -91,57 +97,100 @@ describe('SecurityRequirementsSection utils', () => {
             ...ALL_DISABLED,
             sms2FAEnabled: true,
             smsLoginEnabled: true,
-            authenticationMethodEnabled: true,
-          })
-        ).not.toContain('verification');
+            hasAuthMethodNotReturningEmail: true,
+          }).verification
+        ).toBe(false);
       });
     });
 
-    it('returns the toggles in a fixed order', () => {
-      expect(
-        getVisibleToggles({
-          sms2FAEnabled: true,
-          smsLoginEnabled: true,
-          verificationMethodEnabled: true,
-          authenticationMethodEnabled: true,
-        })
-      ).toEqual(['email', 'phone', 'verification']);
-    });
-
     describe('all combinations', () => {
-      // [sms2FA, smsLogin, verificationMethod, authenticationMethod]
+      // [sms2FA, smsLogin, verificationMethod, authMethodNotReturningEmail]
       const cases: [
         boolean,
         boolean,
         boolean,
         boolean,
-        SecurityRequirementKey[]
+        ReturnType<typeof getVisibleToggles>
       ][] = [
-        [false, false, false, false, []],
-        [false, false, false, true, ['email']],
-        [false, false, true, false, ['verification']],
-        [false, false, true, true, ['email', 'verification']],
-        [false, true, false, false, []],
-        [false, true, false, true, ['email']],
-        [false, true, true, false, ['verification']],
-        [false, true, true, true, ['email', 'verification']],
-        [true, false, false, false, ['phone']],
-        [true, false, false, true, ['email', 'phone']],
-        [true, false, true, false, ['phone', 'verification']],
-        [true, false, true, true, ['email', 'phone', 'verification']],
-        [true, true, false, false, ['email', 'phone']],
-        [true, true, false, true, ['email', 'phone']],
-        [true, true, true, false, ['email', 'phone', 'verification']],
-        [true, true, true, true, ['email', 'phone', 'verification']],
+        [false, false, false, false, NONE_VISIBLE],
+        [false, false, false, true, { ...NONE_VISIBLE, email: true }],
+        [false, false, true, false, { ...NONE_VISIBLE, verification: true }],
+        [
+          false,
+          false,
+          true,
+          true,
+          { ...NONE_VISIBLE, email: true, verification: true },
+        ],
+        [false, true, false, false, NONE_VISIBLE],
+        [false, true, false, true, { ...NONE_VISIBLE, email: true }],
+        [false, true, true, false, { ...NONE_VISIBLE, verification: true }],
+        [
+          false,
+          true,
+          true,
+          true,
+          { ...NONE_VISIBLE, email: true, verification: true },
+        ],
+        [true, false, false, false, { ...NONE_VISIBLE, phone: true }],
+        [
+          true,
+          false,
+          false,
+          true,
+          { ...NONE_VISIBLE, email: true, phone: true },
+        ],
+        [
+          true,
+          false,
+          true,
+          false,
+          { ...NONE_VISIBLE, phone: true, verification: true },
+        ],
+        [
+          true,
+          false,
+          true,
+          true,
+          { email: true, phone: true, verification: true },
+        ],
+        [
+          true,
+          true,
+          false,
+          false,
+          { ...NONE_VISIBLE, email: true, phone: true },
+        ],
+        [
+          true,
+          true,
+          false,
+          true,
+          { ...NONE_VISIBLE, email: true, phone: true },
+        ],
+        [
+          true,
+          true,
+          true,
+          false,
+          { email: true, phone: true, verification: true },
+        ],
+        [
+          true,
+          true,
+          true,
+          true,
+          { email: true, phone: true, verification: true },
+        ],
       ];
 
       it.each(cases)(
-        'sms2FA=%p smsLogin=%p verificationMethod=%p authenticationMethod=%p -> %p',
+        'sms2FA=%p smsLogin=%p verificationMethod=%p authMethodNotReturningEmail=%p -> %p',
         (
           sms2FAEnabled,
           smsLoginEnabled,
           verificationMethodEnabled,
-          authenticationMethodEnabled,
+          hasAuthMethodNotReturningEmail,
           expected
         ) => {
           expect(
@@ -149,7 +198,7 @@ describe('SecurityRequirementsSection utils', () => {
               sms2FAEnabled,
               smsLoginEnabled,
               verificationMethodEnabled,
-              authenticationMethodEnabled,
+              hasAuthMethodNotReturningEmail,
             })
           ).toEqual(expected);
         }
