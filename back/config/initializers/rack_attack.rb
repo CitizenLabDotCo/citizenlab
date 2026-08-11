@@ -24,6 +24,14 @@ class Rack::Attack
     safelist_ip(safe_ip)
   end
 
+  # The user ID a request authenticates as, reading params[:token] before the header like AuthToken::Authenticable#token.
+  USER_ID_FROM_JWT = lambda do |req|
+    jwt = req.params['token'].presence || req.env['HTTP_AUTHORIZATION']&.split&.last
+    JWT.decode(jwt, nil, false, algorithm: 'RS256').first['sub'] # sub is the user ID
+  rescue JWT::DecodeError
+    nil
+  end
+
   # For all requests.
   throttle('req/ip', limit: 1000, period: 3.minutes) do |req|
     req.remote_ip
@@ -117,22 +125,70 @@ class Rack::Attack
     end
   end
 
-  # Confirm by IP.
-  throttle('confirm_code_email/ip', limit: 5, period: 20.seconds) do |req|
-    if req.path == '/web_api/v1/user/confirm_code_email' && req.post?
+  # Resend code by email account.
+  throttle('request_code_email/email', limit: 1, period: 5.seconds) do |req|
+    if req.path == '/web_api/v1/user/request_code_email' && req.post?
+      begin
+        JSON.parse(req.body.string).dig('request_code', 'email')&.to_s&.downcase&.gsub(/\s+/, '')&.presence
+      rescue JSON::ParserError
+        # do nothing
+      end
+    end
+  end
+
+  # Resend code by user ID from JWT, for authenticated callers who omit the email.
+  throttle('request_code_email/id', limit: 1, period: 5.seconds) do |req|
+    if req.path == '/web_api/v1/user/request_code_email' && req.post?
+      USER_ID_FROM_JWT.call(req)
+    end
+  end
+
+  # Email change code request by IP.
+  throttle('request_code_new_email/ip', limit: 1, period: 5.seconds) do |req|
+    if req.path == '/web_api/v1/user/request_code_new_email' && req.post?
       req.remote_ip
     end
   end
 
-  # Confirm by user ID from JWT.
-  throttle('confirm_code_authenticated/id', limit: 10, period: 24.hours) do |req|
-    if req.path == '/web_api/v1/user/confirm_code_authenticated' && req.post?
-      begin
-        jwt = req.env['HTTP_AUTHORIZATION']&.split&.last
-        JWT.decode(jwt, nil, false, algorithm: 'RS256').first['sub'] # sub is the user ID
-      rescue JWT::DecodeError
-        # do nothing
-      end
+  # Email change code request by user ID from JWT.
+  throttle('request_code_new_email/id', limit: 1, period: 5.seconds) do |req|
+    if req.path == '/web_api/v1/user/request_code_new_email' && req.post?
+      USER_ID_FROM_JWT.call(req)
+    end
+  end
+
+  # Phone re-confirmation code request by IP.
+  throttle('request_code_phone/ip', limit: 1, period: 5.seconds) do |req|
+    if req.path == '/web_api/v1/user/request_code_phone' && req.post?
+      req.remote_ip
+    end
+  end
+
+  # Phone re-confirmation code request by user ID from JWT.
+  throttle('request_code_phone/id', limit: 1, period: 5.seconds) do |req|
+    if req.path == '/web_api/v1/user/request_code_phone' && req.post?
+      USER_ID_FROM_JWT.call(req)
+    end
+  end
+
+  # Phone change code request by IP.
+  throttle('request_code_new_phone/ip', limit: 1, period: 5.seconds) do |req|
+    if req.path == '/web_api/v1/user/request_code_new_phone' && req.post?
+      req.remote_ip
+    end
+  end
+
+  # Phone change code request by user ID from JWT.
+  throttle('request_code_new_phone/id', limit: 1, period: 5.seconds) do |req|
+    if req.path == '/web_api/v1/user/request_code_new_phone' && req.post?
+      USER_ID_FROM_JWT.call(req)
+    end
+  end
+
+  # Confirm by IP.
+  throttle('confirm_code_email/ip', limit: 5, period: 20.seconds) do |req|
+    if req.path == '/web_api/v1/user/confirm_code_email' && req.post?
+      req.remote_ip
     end
   end
 

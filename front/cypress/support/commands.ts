@@ -143,12 +143,16 @@ export function randomEmail() {
 }
 
 export function randomPhoneNumber() {
-  // NANP toll-free number: +1 800 NXX-XXXX. libphonenumber (and therefore
-  // Phonelib, used by the backend to validate) requires the exchange code
-  // (the digit right after 800) to be 2-9 — a leading 0 or 1 is invalid.
-  // So the 7-digit block must start with 2-9: range 2000000..9999999.
-  const randomDigits = Math.floor(Math.random() * 8000000) + 2000000;
-  return `+1800${randomDigits}`; // Returns the number in E.164 format
+  // Belgian mobile number, matching the seeded platform country: the phone input
+  // pre-selects that country, so the user only types the national part while the
+  // API still needs the full E.164 number.
+  const operatorDigit = Math.floor(Math.random() * 5) + 5;
+  const subscriberDigits = String(
+    Math.floor(Math.random() * 10000000)
+  ).padStart(7, '0');
+  const national = `4${operatorDigit}${subscriberDigits}`;
+
+  return { national, e164: `+32${national}` };
 }
 
 function unregisterServiceWorkers() {
@@ -2382,10 +2386,11 @@ function deleteEventAttendances(
   });
 }
 
-function apiRemoveIdeas(projectId?: string) {
-  // When a projectId is passed, only ideas (incl. survey responses) belonging to
-  // that project are removed. Without it, ALL ideas in the tenant are deleted,
-  // which wipes seeded fixtures (e.g. the "Verified Idea") that other specs rely on.
+// projectId is required on purpose: scoping the deletion to one project is the
+// only safe form. A tenant-wide delete would also remove seeded fixtures (e.g.
+// the "Verified Idea") that other specs rely on, and because specs share one
+// backend it would break them from a different parallel node.
+function apiRemoveIdeas(projectId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -2393,7 +2398,7 @@ function apiRemoveIdeas(projectId?: string) {
       .request({
         method: 'GET',
         url: `/web_api/v1/ideas`,
-        qs: projectId ? { 'projects[]': projectId } : undefined,
+        qs: { 'projects[]': projectId },
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${adminJwt}`,

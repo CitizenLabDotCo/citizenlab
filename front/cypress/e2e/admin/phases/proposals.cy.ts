@@ -59,6 +59,12 @@ describe('Admin: proposal phase', () => {
 
     // Verify proposal phase is created and published
     cy.get('#e2e-project-page').should('contain.text', projectTitleEN);
+    // The CTA bar only mounts once docked — when the phases section pins
+    // under the navbar, or when the page can't scroll at all. This fresh
+    // project page sits within a few pixels of the viewport height, so
+    // whether it ends up scrollable (hiding the undocked bar) flips with
+    // small layout changes. Dock deterministically before asserting.
+    cy.dockProjectCtaBar();
     cy.get('#e2e-ideation-cta-button').should('have.text', 'Add a proposal');
   });
 });

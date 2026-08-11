@@ -40,7 +40,6 @@ module MultiTenancy
             password_login: {
               allowed: true,
               enabled: true,
-              enable_signup: true,
               minimum_length: 8
             },
             pages: {
