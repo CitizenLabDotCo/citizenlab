@@ -32,15 +32,11 @@ interface Props {
 const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
   const { formatMessage } = useIntl();
 
-  // Confirming a phone number means sending an SMS, so it needs the feature;
-  // `sms_login` is irrelevant here, since this is not a way of signing in.
   const smsEnabled = useFeatureFlag({ name: 'sms' });
   const smsLoginEnabled = useFeatureFlag({ name: 'sms_login' });
   const { data: verificationMethod } = useVerificationMethod();
   const { data: authenticationMethod } = useAuthenticationMethod();
 
-  // Phone is hidden entirely when SMS is off rather than shown as unavailable —
-  // there is nothing an admin could do about it from here.
   const visibleKeys = getVisibleToggles({
     sms2FAEnabled: smsEnabled,
     smsLoginEnabled,
@@ -56,9 +52,6 @@ const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
     return null;
   }
 
-  // The divider belongs to this section rather than to whatever follows it:
-  // when there is nothing to show here, there is no line to draw either, and
-  // the surrounding container's own border would otherwise be doubled up.
   return (
     <Box borderBottom={`1px solid ${colors.divider}`}>
       <Expander
