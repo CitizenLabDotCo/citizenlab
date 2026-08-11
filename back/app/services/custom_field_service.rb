@@ -75,20 +75,24 @@ class CustomFieldService
   def delete_custom_field_option_values(option_key, field)
     return if field.resource_type != 'User'
 
+    answers = CustomFieldAnswer.where(answerable_type: 'User', key: field.key)
     if field.supports_multiple_selection?
       # When option is the only selection
       User
         .where("custom_field_values->>'#{field.key}' = ?", [option_key].to_json)
         .update_all("custom_field_values = custom_field_values - '#{field.key}'")
+      answers.where('value = :value::jsonb', value: [option_key].to_json).delete_all
       # When option was selected amongst other values
       User
         .where("(custom_field_values->>'#{field.key}')::jsonb ? :value", value: option_key)
         .update_all("custom_field_values = jsonb_set(custom_field_values, '{#{field.key}}', (custom_field_values->'#{field.key}') - '#{option_key}')")
+      answers.where('value ? :value', value: option_key).update_all("value = value - '#{option_key}'")
     else
       # When single select
       User
         .where("custom_field_values->>'#{field.key}' = ?", option_key)
         .update_all("custom_field_values = custom_field_values - '#{field.key}'")
+      answers.where('value = :value::jsonb', value: option_key.to_json).delete_all
     end
   end
 
@@ -174,6 +178,7 @@ class CustomFieldService
     scope
       .where("custom_field_values ? '#{key}'")
       .update_all("custom_field_values = custom_field_values - '#{key}'")
+    CustomFieldAnswer.where(answerable: scope, key: key).delete_all
   end
 
   # *** text ***

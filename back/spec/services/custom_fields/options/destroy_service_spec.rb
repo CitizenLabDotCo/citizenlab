@@ -91,6 +91,10 @@ describe CustomFields::Options::DestroyService do
           .not_to change { idea.reload.custom_field_values.except(ranking_cf.key) }
 
         expect(idea.reload.custom_field_values[ranking_cf.key]).not_to include(option.key)
+
+        answers = idea.custom_field_answers.index_by(&:key)
+        expect(answers[ranking_cf.key].value).to eq(ranking_cf.options.map(&:key) - [option.key])
+        expect(answers[another_cf.key].value).to eq another_cf.options.first.key
       end
     end
   end
