@@ -2,7 +2,6 @@
 
 import React, {
   useState,
-  useRef,
   useEffect,
   lazy,
   Suspense,
@@ -15,7 +14,7 @@ import { isString, isEmpty } from 'lodash-es';
 import styled from 'styled-components';
 import { SupportedLocale, IOption } from 'typings';
 
-import { IInviteError, INewBulkInvite } from 'api/invites/types';
+import { INewBulkInvite } from 'api/invites/types';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
@@ -82,14 +81,8 @@ const Invitations = () => {
   const [selectedView, setSelectedView] = useState<TInviteTabName>('template');
   const [filetypeError, setFiletypeError] = useState<JSX.Element | null>(null);
 
-  const fileInputElement = useRef<HTMLInputElement | null>(null);
-
   // The invites exist; clear what the form was holding to create them.
   const handleCreated = useCallback(() => {
-    if (fileInputElement.current) {
-      fileInputElement.current.value = '';
-    }
-
     setSelectedFileBase64(null);
     setSelectedEmails(null);
   }, []);
@@ -181,10 +174,6 @@ const Invitations = () => {
     ) {
       filetypeError = <FormattedMessage {...messages.filetypeError} />;
       selectedFile = null;
-
-      if (fileInputElement.current) {
-        fileInputElement.current.value = '';
-      }
     }
 
     const selectedFileBase64 = selectedFile
@@ -225,14 +214,12 @@ const Invitations = () => {
     setSelectedInviteText(selectedInviteText);
   };
 
-  const getSubmitState = (
-    errors: IInviteError[] | null,
-    processed: boolean
-  ) => {
+  const getSubmitState = () => {
     const isInvitationValid = validateInvitation();
-    if (errors && errors.length > 0) {
+
+    if (apiErrors && apiErrors.length > 0) {
       return 'error';
-    } else if (processed && !isInvitationValid) {
+    } else if (submission.status === 'created' && !isInvitationValid) {
       return 'success';
     } else if (!isInvitationValid) {
       return 'disabled';
@@ -374,10 +361,7 @@ const Invitations = () => {
             <Box display="flex" alignItems="center" paddingTop="30px">
               <SubmitWrapper
                 loading={isWaitingOnJob}
-                status={getSubmitState(
-                  apiErrors,
-                  submission.status === 'created'
-                )}
+                status={getSubmitState()}
                 messages={{
                   buttonSave: messages.save,
                   buttonSuccess: messages.saveSuccess,
