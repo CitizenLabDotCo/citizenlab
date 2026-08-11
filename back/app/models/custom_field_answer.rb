@@ -30,6 +30,12 @@ class CustomFieldAnswer < ApplicationRecord
 
   validates :answerable_type, inclusion: { in: ANSWERABLE_TYPES }
   validates :key, presence: true
-  # `exclusion` rather than `presence`, because false is a valid answer (checkboxes).
-  validates :value, exclusion: { in: [nil] }
+  # presence would reject false/[]; exclusion checks arrays element-wise.
+  validate :value_is_not_nil
+
+  private
+
+  def value_is_not_nil
+    errors.add(:value, 'must not be nil') if value.nil?
+  end
 end

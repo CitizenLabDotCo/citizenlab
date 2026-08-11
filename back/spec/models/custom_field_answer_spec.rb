@@ -18,6 +18,13 @@ RSpec.describe CustomFieldAnswer do
     expect(answer.reload.value).to be false
   end
 
+  it 'accepts empty and nil-containing array values' do
+    answer.value = []
+    expect(answer).to be_valid
+    answer.value = [nil]
+    expect(answer).to be_valid
+  end
+
   it 'is valid without a custom field' do
     answer.custom_field = nil
     expect(answer).to be_valid
