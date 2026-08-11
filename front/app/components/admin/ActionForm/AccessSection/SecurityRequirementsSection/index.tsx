@@ -85,9 +85,7 @@ const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
           <MethodRow
             icon="email"
             label={formatMessage(actionFormMessages.requireConfirmedEmail)}
-            description={formatMessage(
-              actionFormMessages.emailMethodDescription
-            )}
+            description={formatMessage(messages.emailMethodDescription)}
             enabled={attributes.require_confirmed_email}
             expiry={attributes.confirmed_email_expiry}
             verb="Re-confirm"
@@ -111,8 +109,8 @@ const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
             // confuse.
             description={formatMessage(
               smsLoginEnabled
-                ? actionFormMessages.phoneMethodDescriptionWithSmsLogin
-                : actionFormMessages.phoneMethodDescription
+                ? messages.phoneMethodDescriptionWithSmsLogin
+                : messages.phoneMethodDescription
             )}
             enabled={attributes.require_confirmed_phone_number}
             expiry={attributes.confirmed_phone_number_expiry}
@@ -132,9 +130,7 @@ const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
             label={formatMessage(
               actionFormMessages.requireIdentityVerification
             )}
-            description={formatMessage(
-              actionFormMessages.verificationMethodDescription
-            )}
+            description={formatMessage(messages.verificationMethodDescription)}
             enabled={attributes.require_verification}
             expiry={attributes.verification_expiry}
             verb="Re-verify"
