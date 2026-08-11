@@ -1,9 +1,7 @@
 /*
- * The invite form waits on two background jobs. The e2e stack runs no Que
- * worker, so those jobs are enqueued and never processed — nothing here can
- * wait on a real one. The job responses are stubbed instead, which leaves the
- * part these specs exist for: what the form does in a real browser as the two
- * stages report back, including the file input, which jsdom cannot test.
+ * The invite form waits on two background jobs, and the e2e stack runs no Que
+ * worker — so the job responses are stubbed. What is left is what the form does
+ * in a real browser as each stage reports back.
  */
 
 const countImportId = 'count-import-id';
@@ -37,11 +35,9 @@ const completedImport = (
 
 describe('Admin: invitations form', () => {
   /*
-   * Whether the seats modal appears is decided by
-   * `assigned admins + newly added > maximum + additional`. Both stubbed sides
-   * are set here rather than rewriting the tenant's configuration, so the specs
-   * don't depend on its seat limits — and since nothing is really created, the
-   * limits never ratchet up between runs either.
+   * The modal appears when `assigned + newly added > maximum + additional`.
+   * Stubbing both sides keeps this independent of the tenant's seat limits,
+   * which every real run ratchets upwards.
    */
   const stubJobs = ({
     newAdmins,
@@ -83,10 +79,19 @@ describe('Admin: invitations form', () => {
       });
     });
 
+  // Each stage waits on a 5s poll, so a two-stage flow outlasts the 15s default.
+  const JOB_TIMEOUT = { timeout: 30000 };
+
   const uploadAndSubmit = () => {
     cy.get('input[type=file]').selectFile('cypress/fixtures/invites.xlsx');
-    cy.get('.e2e-submit-wrapper-button').should('not.be.disabled');
-    cy.get('.e2e-submit-wrapper-button').click();
+    // A div with a `disabled` class, so `be.disabled` would pass vacuously and
+    // click before the file has been read.
+    cy.get('.e2e-submit-wrapper-button')
+      .should('not.have.class', 'disabled')
+      .click();
+    // Fails here if the click did not register.
+    cy.contains('Sending out invitations. Please wait...').should('be.visible');
+    cy.wait('@countRequest', JOB_TIMEOUT);
   };
 
   beforeEach(() => {
@@ -104,7 +109,9 @@ describe('Admin: invitations form', () => {
     it('creates the invites without asking for confirmation', () => {
       uploadAndSubmit();
 
-      cy.contains('Invitation successfully sent out.').should('be.visible');
+      cy.contains('Invitation successfully sent out.', JOB_TIMEOUT).should(
+        'be.visible'
+      );
       cy.contains('Confirm impact on seat usage').should('not.exist');
 
       // The form no longer holds the spreadsheet, so the input must stop
@@ -131,9 +138,7 @@ describe('Admin: invitations form', () => {
 
     const submitAndAwaitConfirmation = () => {
       uploadAndSubmit();
-      // The form polls on a 5s interval, so the first poll can outlast
-      // cy.wait's default timeout.
-      cy.wait('@countPoll', { timeout: 15000 });
+      cy.wait('@countPoll', JOB_TIMEOUT);
       cy.contains('Confirm impact on seat usage').should('be.visible');
     };
 
@@ -162,7 +167,9 @@ describe('Admin: invitations form', () => {
 
       submitAndAwaitConfirmation();
       cy.contains('Confirm and send out invitations').click();
-      cy.contains('Invitation successfully sent out.').should('be.visible');
+      cy.contains('Invitation successfully sent out.', JOB_TIMEOUT).should(
+        'be.visible'
+      );
       cy.get('.e2e-modal-close-button').first().click();
 
       // Nothing refetches on its own (staleTime is Infinity), so this only
@@ -179,7 +186,9 @@ describe('Admin: invitations form', () => {
       cy.get('.e2e-modal-close-button').first().click();
       cy.contains('Confirm impact on seat usage').should('not.exist');
 
-      cy.contains('Invitation successfully sent out.').should('be.visible');
+      cy.contains('Invitation successfully sent out.', JOB_TIMEOUT).should(
+        'be.visible'
+      );
     });
   });
 });
