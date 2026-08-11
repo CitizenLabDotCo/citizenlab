@@ -46,9 +46,16 @@ const SectionParagraph = styled.p`
 interface Props {
   filetypeError: JSX.Element | null;
   handleFileInputOnChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  // Owned by the container, which clears the input after a successful import
+  // and when a file of the wrong type is picked.
+  fileInputRef: React.RefObject<HTMLInputElement>;
 }
 
-const TemplateTab = ({ filetypeError, handleFileInputOnChange }: Props) => {
+const TemplateTab = ({
+  filetypeError,
+  handleFileInputOnChange,
+  fileInputRef,
+}: Props) => {
   const { formatMessage } = useIntl();
 
   const downloadExampleFile = async (
@@ -108,6 +115,7 @@ const TemplateTab = ({ filetypeError, handleFileInputOnChange }: Props) => {
             type="file"
             accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             onChange={handleFileInputOnChange}
+            ref={fileInputRef}
           />
         </Box>
         <Error text={filetypeError} />

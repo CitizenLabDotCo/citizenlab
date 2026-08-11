@@ -2,6 +2,7 @@
 
 import React, {
   useState,
+  useRef,
   useEffect,
   lazy,
   Suspense,
@@ -11,6 +12,7 @@ import React, {
 
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import { isString, isEmpty } from 'lodash-es';
+import { useForm, FieldPath, FieldPathValue } from 'react-hook-form';
 import styled from 'styled-components';
 import { SupportedLocale, IOption } from 'typings';
 
@@ -55,37 +57,59 @@ export type TInviteTabName = 'template' | 'manual';
 // tests reach for them here.
 export { COUNT_TIMEOUT_MS, CREATE_TIMEOUT_MS } from './useInviteSubmission';
 
+interface InviteFormValues {
+  emails: string | null;
+  fileBase64: string | null;
+  adminRights: boolean;
+  moderatorRights: boolean;
+  locale: SupportedLocale | null;
+  projects: IOption[] | null;
+  groups: IOption[] | null;
+  inviteText: string | null;
+}
+
+const emptyForm: InviteFormValues = {
+  emails: null,
+  fileBase64: null,
+  adminRights: false,
+  moderatorRights: false,
+  locale: null,
+  projects: null,
+  groups: null,
+  inviteText: null,
+};
+
 const Invitations = () => {
   const { formatMessage } = useIntl();
   const tenantLocales = useAppConfigurationLocales();
-  const [selectedEmails, setSelectedEmails] = useState<string | null>(null);
-  const [selectedFileBase64, setSelectedFileBase64] = useState<string | null>(
-    null
-  );
-  const [inviteesWillHaveAdminRights, setInviteesWillHaveAdminRights] =
-    useState<boolean>(false);
-  const [inviteesWillHaveModeratorRights, setInviteesWillHaveModeratorRights] =
-    useState<boolean>(false);
-  const [selectedLocale, setSelectedLocale] = useState<SupportedLocale | null>(
-    null
-  );
-  const [selectedProjects, setSelectedProjects] = useState<IOption[] | null>(
-    null
-  );
-  const [selectedGroups, setSelectedGroups] = useState<IOption[] | null>(null);
-  const [selectedInviteText, setSelectedInviteText] = useState<string | null>(
-    null
-  );
+
+  const { watch, setValue, reset } = useForm<InviteFormValues>({
+    defaultValues: emptyForm,
+  });
+  const values = watch();
+
+  // Which tab is open and whether the options panel is expanded are about the
+  // page, not the invitation, so they stay out of the form.
+  const [selectedView, setSelectedView] = useState<TInviteTabName>('template');
   const [invitationOptionsOpened, setInvitationOptionsOpened] =
     useState<boolean>(false);
-  const [selectedView, setSelectedView] = useState<TInviteTabName>('template');
   const [filetypeError, setFiletypeError] = useState<JSX.Element | null>(null);
+
+  // The only way to clear a file input is through the DOM node — a file input's
+  // value cannot be set from React.
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const clearFileInput = useCallback(() => {
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  }, []);
 
   // The invites exist; clear what the form was holding to create them.
   const handleCreated = useCallback(() => {
-    setSelectedFileBase64(null);
-    setSelectedEmails(null);
-  }, []);
+    setValue('fileBase64', null);
+    setValue('emails', null);
+    clearFileInput();
+  }, [setValue, clearFileInput]);
 
   const {
     submission,
@@ -96,67 +120,65 @@ const Invitations = () => {
     dismissResult,
   } = useInviteSubmission({ onCreated: handleCreated });
 
-  const getRoles = useCallback(() => {
+  // Editing the form dismisses whatever the last submission reported.
+  const updateField = <K extends FieldPath<InviteFormValues>>(
+    field: K,
+    value: FieldPathValue<InviteFormValues, K>
+  ) => {
+    dismissResult();
+    setValue(field, value);
+  };
+
+  const getRoles = () => {
     const roles: INewBulkInvite['roles'] = [];
 
-    if (inviteesWillHaveAdminRights) {
+    if (values.adminRights) {
       roles.push({ type: 'admin' });
     }
 
-    if (
-      inviteesWillHaveModeratorRights &&
-      selectedProjects &&
-      selectedProjects.length > 0
-    ) {
-      selectedProjects.forEach((project) => {
+    if (values.moderatorRights && values.projects && values.projects.length) {
+      values.projects.forEach((project) => {
         roles.push({ type: 'project_moderator', project_id: project.value });
       });
     }
 
     return roles;
-  }, [
-    inviteesWillHaveAdminRights,
-    inviteesWillHaveModeratorRights,
-    selectedProjects,
-  ]);
+  };
 
   // The form's payload for whichever tab is active. Null when the tab has
   // nothing to send, which is what the submit button's disabled state reflects.
   const buildInviteOptions = (): InviteOptions | null => {
     const bulkInvite: INewBulkInvite = {
-      locale: selectedLocale,
+      locale: values.locale,
       roles: getRoles(),
-      group_ids:
-        selectedGroups && selectedGroups.length > 0
-          ? selectedGroups.map((group) => group.value)
-          : null,
-      invite_text: selectedInviteText,
+      group_ids: values.groups?.length
+        ? values.groups.map((group) => group.value)
+        : null,
+      invite_text: values.inviteText,
     };
 
     if (selectedView === 'template') {
-      return isString(selectedFileBase64)
-        ? { ...bulkInvite, xlsx: selectedFileBase64 }
+      return isString(values.fileBase64)
+        ? { ...bulkInvite, xlsx: values.fileBase64 }
         : null;
     }
 
-    return isString(selectedEmails)
+    return isString(values.emails)
       ? {
           ...bulkInvite,
-          emails: selectedEmails.split(',').map((item) => item.trim()),
+          emails: values.emails.split(',').map((item) => item.trim()),
         }
       : null;
   };
 
   useEffect(() => {
-    if (tenantLocales && !selectedLocale) {
-      setSelectedLocale(tenantLocales[0]);
+    if (tenantLocales && !values.locale) {
+      setValue('locale', tenantLocales[0]);
     }
-  }, [tenantLocales, selectedLocale]);
+  }, [tenantLocales, values.locale, setValue]);
 
-  const handleEmailListOnChange = (selectedEmails: string) => {
-    dismissResult();
-    setSelectedEmails(selectedEmails);
-  };
+  const handleEmailListOnChange = (emails: string) =>
+    updateField('emails', emails);
 
   const handleFileInputOnChange = async (
     event: ChangeEvent<HTMLInputElement>
@@ -174,45 +196,33 @@ const Invitations = () => {
     ) {
       filetypeError = <FormattedMessage {...messages.filetypeError} />;
       selectedFile = null;
+      clearFileInput();
     }
 
-    const selectedFileBase64 = selectedFile
-      ? await getBase64FromFile(selectedFile)
-      : null;
-    dismissResult();
-    setSelectedFileBase64(selectedFileBase64);
+    updateField(
+      'fileBase64',
+      selectedFile ? await getBase64FromFile(selectedFile) : null
+    );
     setFiletypeError(filetypeError);
   };
 
-  const handleAdminRightsOnToggle = () => {
-    dismissResult();
-    setInviteesWillHaveAdminRights(!inviteesWillHaveAdminRights);
-  };
+  const handleAdminRightsOnToggle = () =>
+    updateField('adminRights', !values.adminRights);
 
-  const handleModeratorRightsOnToggle = () => {
-    dismissResult();
-    setInviteesWillHaveModeratorRights(!inviteesWillHaveModeratorRights);
-  };
+  const handleModeratorRightsOnToggle = () =>
+    updateField('moderatorRights', !values.moderatorRights);
 
-  const handleLocaleOnChange = (selectedLocale: SupportedLocale) => {
-    dismissResult();
-    setSelectedLocale(selectedLocale);
-  };
+  const handleLocaleOnChange = (locale: SupportedLocale) =>
+    updateField('locale', locale);
 
-  const handleSelectedProjectsOnChange = (selectedProjects: IOption[]) => {
-    dismissResult();
-    setSelectedProjects(selectedProjects.length > 0 ? selectedProjects : null);
-  };
+  const handleSelectedProjectsOnChange = (projects: IOption[]) =>
+    updateField('projects', projects.length > 0 ? projects : null);
 
-  const handleSelectedGroupsOnChange = (selectedGroups: IOption[]) => {
-    dismissResult();
-    setSelectedGroups(selectedGroups.length > 0 ? selectedGroups : null);
-  };
+  const handleSelectedGroupsOnChange = (groups: IOption[]) =>
+    updateField('groups', groups.length > 0 ? groups : null);
 
-  const handleInviteTextOnChange = (selectedInviteText: string) => {
-    dismissResult();
-    setSelectedInviteText(selectedInviteText);
-  };
+  const handleInviteTextOnChange = (inviteText: string) =>
+    updateField('inviteText', inviteText);
 
   const getSubmitState = () => {
     const isInvitationValid = validateInvitation();
@@ -231,28 +241,22 @@ const Invitations = () => {
     setInvitationOptionsOpened(!invitationOptionsOpened);
   };
 
-  const resetWithView = (selectedView: TInviteTabName) => {
-    setSelectedView(selectedView);
-    setSelectedEmails(null);
-    setSelectedFileBase64(null);
-    setInviteesWillHaveAdminRights(false);
-    setInviteesWillHaveModeratorRights(false);
-    setSelectedLocale(tenantLocales ? tenantLocales[0] : null);
-    setSelectedProjects(null);
-    setSelectedGroups(null);
-    setSelectedInviteText(null);
+  const resetWithView = (view: TInviteTabName) => {
+    setSelectedView(view);
+    reset({ ...emptyForm, locale: tenantLocales ? tenantLocales[0] : null });
+    clearFileInput();
     setInvitationOptionsOpened(false);
     setFiletypeError(null);
     dismissResult();
   };
 
   const validateInvitation = () => {
-    const isValidEmails = isString(selectedEmails) && !isEmpty(selectedEmails);
-    const hasValidRights = inviteesWillHaveModeratorRights
-      ? !isEmpty(selectedProjects)
+    const isValidEmails = isString(values.emails) && !isEmpty(values.emails);
+    const hasValidRights = values.moderatorRights
+      ? !isEmpty(values.projects)
       : true;
     const isValidInvitationTemplate =
-      isString(selectedFileBase64) && !isEmpty(selectedFileBase64);
+      isString(values.fileBase64) && !isEmpty(values.fileBase64);
     return (isValidEmails || isValidInvitationTemplate) && hasValidRights;
   };
 
@@ -328,12 +332,13 @@ const Invitations = () => {
             <TemplateTab
               filetypeError={filetypeError}
               handleFileInputOnChange={handleFileInputOnChange}
+              fileInputRef={fileInputRef}
             />
           )}
 
           {selectedView === 'manual' && (
             <ManualTab
-              selectedEmails={selectedEmails}
+              selectedEmails={values.emails}
               handleEmailListOnChange={handleEmailListOnChange}
             />
           )}
@@ -343,18 +348,18 @@ const Invitations = () => {
               invitationOptionsOpened={invitationOptionsOpened}
               onToggleOptions={toggleOptions}
               selectedView={selectedView}
-              inviteesWillHaveAdminRights={inviteesWillHaveAdminRights}
-              inviteesWillHaveModeratorRights={inviteesWillHaveModeratorRights}
+              inviteesWillHaveAdminRights={values.adminRights}
+              inviteesWillHaveModeratorRights={values.moderatorRights}
               handleAdminRightsOnToggle={handleAdminRightsOnToggle}
               handleModeratorRightsOnToggle={handleModeratorRightsOnToggle}
               onLocaleOnChange={handleLocaleOnChange}
-              selectedLocale={selectedLocale}
+              selectedLocale={values.locale}
               handleSelectedProjectsOnChange={handleSelectedProjectsOnChange}
               handleSelectedGroupsOnChange={handleSelectedGroupsOnChange}
               handleInviteTextOnChange={handleInviteTextOnChange}
-              selectedProjects={selectedProjects}
-              selectedGroups={selectedGroups}
-              selectedInviteText={selectedInviteText}
+              selectedProjects={values.projects}
+              selectedGroups={values.groups}
+              selectedInviteText={values.inviteText}
             />
           </Suspense>
           <SectionField>

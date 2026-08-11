@@ -291,6 +291,47 @@ describe('Invitations timeout', () => {
     );
   });
 
+  // Closing the modal after confirming is not a cancellation — the creation job
+  // is already running, and the form has to go back to reporting it.
+  it('keeps watching the creation job when the seats modal is closed', async () => {
+    mockSeatsExceeded = true;
+    mockInvitesImport = undefined;
+    const { container, rerender } = await submitManualInvite();
+
+    mockInvitesImport = completedCountImport;
+    await act(async () => {
+      rerender(<Invitations />);
+    });
+
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('confirm-button-text'));
+    });
+
+    mockInvitesImport = pendingCreateImport;
+    await act(async () => {
+      rerender(<Invitations />);
+    });
+
+    await act(async () => {
+      fireEvent.click(
+        container.querySelector('.e2e-modal-close-button') as HTMLElement
+      );
+    });
+
+    expect(
+      screen.getByText('Sending out invitations. Please wait...')
+    ).toBeInTheDocument();
+
+    mockInvitesImport = completedCreateImport;
+    await act(async () => {
+      rerender(<Invitations />);
+    });
+
+    expect(
+      screen.getByText('Invitation successfully sent out.')
+    ).toBeInTheDocument();
+  });
+
   // The watchdog must not depend on anything whose identity changes every
   // render. Polling re-renders the container while the job is still running, and
   // a timer restarted on each of those renders never reaches its budget.

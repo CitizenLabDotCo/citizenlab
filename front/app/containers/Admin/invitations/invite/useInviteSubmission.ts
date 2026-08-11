@@ -152,11 +152,23 @@ const useInviteSubmission = ({ onCreated }: Options = {}) => {
     [countNewSeatsXLSX, countNewSeatsEmails]
   );
 
+  /*
+   * Closing the seats modal means two different things. Before confirming, the
+   * admin is declining and nothing has been submitted, so the submission is
+   * abandoned. After confirming, the creation job is already running — closing
+   * the modal only takes the modal away, and the form goes back to reporting
+   * the job it is still waiting on.
+   */
   const cancel = useCallback(() => {
+    if (submission.status === 'creating' || submission.status === 'created') {
+      setSubmission({ ...submission, seats: null });
+      return;
+    }
+
     pendingOptions.current = null;
     setSubmission({ status: 'idle' });
     resetQueryData();
-  }, [resetQueryData]);
+  }, [submission, resetQueryData]);
 
   // Clears a finished result without disturbing a job in flight — the form calls
   // this when the admin edits it after a success or a failure.
@@ -173,8 +185,12 @@ const useInviteSubmission = ({ onCreated }: Options = {}) => {
   useEffect(() => {
     if (submission.status !== 'counting') return;
 
-    const result = completedJob(invitesImport, 'count_new_seats')?.result;
-    if (!result || !invitesImport) return;
+    // Completion is the signal, not the payload — a job that finishes with an
+    // empty result still has to move the machine on.
+    const completed = completedJob(invitesImport, 'count_new_seats');
+    if (!completed || !invitesImport) return;
+
+    const result = completed.result ?? {};
 
     setImportId(null);
 
@@ -206,8 +222,10 @@ const useInviteSubmission = ({ onCreated }: Options = {}) => {
   useEffect(() => {
     if (submission.status !== 'creating') return;
 
-    const result = completedJob(invitesImport, 'bulk_create')?.result;
-    if (!result) return;
+    const completed = completedJob(invitesImport, 'bulk_create');
+    if (!completed) return;
+
+    const result = completed.result ?? {};
 
     setImportId(null);
 
