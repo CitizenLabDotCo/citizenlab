@@ -109,15 +109,6 @@ describe('Ideation permitted by: users', () => {
 
       cy.get('#e2e-success-continue-button').click();
 
-      // 'Continue' fires the success action, which resolves the auth-user stream,
-      // fetches the project + phase sequentially, then navigates to
-      // /projects/<slug>/ideas/new; the form schema is only fetched after that.
-      // Under CI contention this whole chain has been observed to take 20-40s, so
-      // synchronise on the navigation and the schema fetch with explicit, generous
-      // ceilings rather than the default 15s command timeout (which otherwise
-      // flakes: either "to include '/ideas/new'" or "never found #title_multiloc").
-      // These are assertion/response waits, so they still resolve as soon as the
-      // app is ready — the larger ceiling only applies when the app is genuinely slow.
       cy.url({ timeout: 40000 }).should('include', '/ideas/new');
       cy.wait('@ideaFormFields', {
         requestTimeout: 40000,
