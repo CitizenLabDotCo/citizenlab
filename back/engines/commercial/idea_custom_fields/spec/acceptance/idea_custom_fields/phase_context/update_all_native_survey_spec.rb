@@ -156,6 +156,31 @@ resource 'Idea Custom Fields' do
         expect(json_response[:data][1][:attributes][:min_characters]).to eq 2
       end
 
+      example 'Deleting a field deletes the answers of existing inputs', document: false do
+        delete_field = create(:custom_field_text, resource: custom_form, key: 'field_to_delete')
+        keep_field = create(:custom_field_text, resource: custom_form, key: 'field_to_keep')
+        input = create(
+          :idea,
+          project: context.project,
+          creation_phase: context,
+          phases: [context],
+          custom_field_values: { 'field_to_delete' => 'an answer', 'field_to_keep' => 'another answer' }
+        )
+
+        request = {
+          custom_fields: [
+            { input_type: 'page', page_layout: 'default' },
+            { id: keep_field.id, title_multiloc: { 'en' => 'Kept field' } },
+            final_page
+          ]
+        }
+        do_request request
+
+        assert_status 200
+        expect(CustomField.where(id: delete_field).count).to eq 0
+        expect(input.reload.custom_field_values).to eq({ 'field_to_keep' => 'another answer' })
+      end
+
       example 'Add a custom field with options, including an "other" option and delete a field with options' do
         delete_field = create(:custom_field_select, :with_options, resource: custom_form)
         delete_options = delete_field.options

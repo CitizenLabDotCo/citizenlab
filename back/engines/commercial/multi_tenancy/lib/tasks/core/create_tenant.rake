@@ -70,7 +70,6 @@ namespace :cl2_back do
         password_login: {
           enabled: true,
           allowed: true,
-          enable_signup: true,
           minimum_length: 8
         },
         pages: {

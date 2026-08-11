@@ -48,8 +48,8 @@ describe ContentBuilder::DescriptionLayoutService do
       expect(layout).to be_present
       expect(layout.enabled).to be(true)
       expect(layout.content_buildable_type).to eq('Project')
-      body_children = layout.craftjs_json['PROJECT_PAGE_BODY']['nodes']
-      expect(layout.craftjs_json[body_children.first]['props']['text']).to eq({ 'en' => '<p>Carried over</p>' })
+      content_id = layout.craftjs_json['PROJECT_PAGE_INTRO_LEFT']['nodes'].first
+      expect(layout.craftjs_json[content_id]['props']['text']).to eq({ 'en' => '<p>Carried over</p>' })
     end
 
     it 'creates the default folder layout (title + published projects) for a folder' do

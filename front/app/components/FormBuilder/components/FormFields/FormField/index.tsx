@@ -21,6 +21,9 @@ import {
   IOptionsType,
 } from 'api/custom_fields/types';
 import useDuplicateMapConfig from 'api/map_config/useDuplicateMapConfig';
+import useFormSubmissionsCount from 'api/submission_count/useSubmissionCount';
+
+import inputFormMessages from 'containers/Admin/projects/project/inputForm/messages';
 
 import { Conflict } from 'components/FormBuilder/edit/utils';
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
@@ -29,6 +32,7 @@ import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 
 import { useIntl } from 'utils/cl-intl';
 import { generateTempId } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import { FlexibleRow } from '../../FlexibleRow';
 import { FieldArrayOperations } from '../types';
@@ -78,12 +82,17 @@ export const FormField = ({
   const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
   const { formatMessage } = useIntl();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showDeleteAnswersModal, setShowDeleteAnswersModal] = useState(false);
   const [showLocationDeleteModal, setShowLocationDeleteModal] = useState(false);
   const formCustomFields: IFlatCustomField[] = watch('customFields');
   const index = formCustomFields.findIndex((f) => f.id === field.id);
   const { insert, move, remove } = fieldArrayOperations;
   const { formEndPageLogicOption, displayBuiltInFields } = builderConfig;
   const { mutateAsync: duplicateMapConfig } = useDuplicateMapConfig();
+  const { phaseId } = useParams({ strict: false });
+  const { data: submissionCount } = useFormSubmissionsCount({ phaseId });
+  const formHasSubmissions =
+    (submissionCount?.data.attributes.totalSubmissions ?? 0) > 0;
 
   const hasErrors = !!errors.customFields?.[index];
   const message = getConflictMessageKey(conflicts);
@@ -256,8 +265,18 @@ export const FormField = ({
         return;
       }
 
+      if (!field.code && field.input_type !== 'page' && formHasSubmissions) {
+        setShowDeleteAnswersModal(true);
+        return;
+      }
+
       onDelete(fieldIndex);
     }
+  };
+
+  const confirmDeleteAnswersAndField = () => {
+    setShowDeleteAnswersModal(false);
+    onDelete(index);
   };
 
   const removeLogicAndDelete = () => {
@@ -439,6 +458,51 @@ export const FormField = ({
               buttonStyle="secondary-outlined"
               width="auto"
               onClick={closeModal}
+            >
+              {formatMessage(messages.cancelDeleteButtonText)}
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
+      <Modal
+        opened={showDeleteAnswersModal}
+        close={() => setShowDeleteAnswersModal(false)}
+        returnFocusRef={moreActionsButtonRef}
+        ariaLabelledBy="delete-answered-field-modal-title"
+      >
+        <Box display="flex" flexDirection="column" width="100%" p="20px">
+          <Box mb="40px">
+            <Title
+              id="delete-answered-field-modal-title"
+              variant="h3"
+              color="primary"
+            >
+              {formatMessage(inputFormMessages.existingSubmissionsWarning)}
+            </Title>
+            <Text color="primary" fontSize="l">
+              {formatMessage(messages.deleteResultsInfo)}
+            </Text>
+          </Box>
+          <Box
+            display="flex"
+            flexDirection="row"
+            width="100%"
+            alignItems="center"
+          >
+            <Button
+              icon="delete"
+              data-cy="e2e-confirm-delete-answered-field"
+              buttonStyle="delete"
+              width="auto"
+              mr="20px"
+              onClick={confirmDeleteAnswersAndField}
+            >
+              {formatMessage(messages.delete)}
+            </Button>
+            <Button
+              buttonStyle="secondary-outlined"
+              width="auto"
+              onClick={() => setShowDeleteAnswersModal(false)}
             >
               {formatMessage(messages.cancelDeleteButtonText)}
             </Button>
