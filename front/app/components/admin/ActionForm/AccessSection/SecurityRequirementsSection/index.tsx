@@ -7,7 +7,7 @@ import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
-import useAuthenticationMethod from 'api/id_methods/useAuthenticationMethod';
+import useIdMethods from 'api/id_methods/useIdMethods';
 import useVerificationMethod from 'api/id_methods/useVerificationMethod';
 import { IPhasePermissionData } from 'api/phase_permissions/types';
 
@@ -35,19 +35,21 @@ const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
   const smsEnabled = useFeatureFlag({ name: 'sms' });
   const smsLoginEnabled = useFeatureFlag({ name: 'sms_login' });
   const { data: verificationMethod } = useVerificationMethod();
-  const { data: authenticationMethod } = useAuthenticationMethod();
+  const { data: idMethods } = useIdMethods();
 
-  const authMethodMetadata =
-    authenticationMethod?.data.attributes.method_metadata;
-  const authenticationMethodThatDoesNotAlwaysReturnEmailEnabled = !!(
-    authMethodMetadata && authMethodMetadata.email_always_present === false
+  if (!idMethods) return null;
+
+  const hasAuthMethodNotReturningEmail = idMethods.data.some(
+    (method) =>
+      method.attributes.authentication_method &&
+      method.attributes.method_metadata?.email_always_present === false
   );
 
   const visibleToggles = getVisibleToggles({
     sms2FAEnabled: smsEnabled,
     smsLoginEnabled,
     verificationMethodEnabled: !!verificationMethod,
-    authenticationMethodThatDoesNotAlwaysReturnEmailEnabled,
+    hasAuthMethodNotReturningEmail,
   });
 
   const showEmail = visibleToggles.includes('email');
