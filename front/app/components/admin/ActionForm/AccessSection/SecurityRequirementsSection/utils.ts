@@ -6,18 +6,21 @@ type Params = {
   sms2FAEnabled: boolean;
   smsLoginEnabled: boolean;
   verificationMethodEnabled: boolean;
-  authenticationMethodEnabled: boolean;
+  authenticationMethodThatDoesNotAlwaysReturnEmailEnabled: boolean;
 };
 
 export const getVisibleToggles = ({
   sms2FAEnabled,
   smsLoginEnabled,
   verificationMethodEnabled,
-  authenticationMethodEnabled,
+  authenticationMethodThatDoesNotAlwaysReturnEmailEnabled,
 }: Params): SecurityRequirementKey[] => {
   const visibleToggles: SecurityRequirementKey[] = [];
 
-  if ((sms2FAEnabled && smsLoginEnabled) || authenticationMethodEnabled) {
+  if (
+    (sms2FAEnabled && smsLoginEnabled) ||
+    authenticationMethodThatDoesNotAlwaysReturnEmailEnabled
+  ) {
     // Requiring an email or not is only relevant if there exists
     // a way for participants to sign up WITHOUT an email address.
     // If you e.g. can only sign up with email, email confirmed is always required,

@@ -37,11 +37,17 @@ const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
   const { data: verificationMethod } = useVerificationMethod();
   const { data: authenticationMethod } = useAuthenticationMethod();
 
+  const authMethodMetadata =
+    authenticationMethod?.data.attributes.method_metadata;
+  const authenticationMethodThatDoesNotAlwaysReturnEmailEnabled = !!(
+    authMethodMetadata && authMethodMetadata.email_always_present === false
+  );
+
   const visibleToggles = getVisibleToggles({
     sms2FAEnabled: smsEnabled,
     smsLoginEnabled,
     verificationMethodEnabled: !!verificationMethod,
-    authenticationMethodEnabled: !!authenticationMethod,
+    authenticationMethodThatDoesNotAlwaysReturnEmailEnabled,
   });
 
   const showEmail = visibleToggles.includes('email');
