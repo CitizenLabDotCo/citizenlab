@@ -116,6 +116,11 @@ module ContentBuilder
       injected_nodes, injected_top_level_ids = inject_description(description_craftjs || {})
       return default_page_nodes if injected_top_level_ids.empty?
 
+      if injected_nodes.values.any? { |node| resolved_name(node) == 'AboutBox' }
+        injected_top_level_ids.each { |id| injected_nodes[id]['parent'] = BODY_ID }
+        return canonical_nodes(injected_top_level_ids).merge(injected_nodes)
+      end
+
       description_page_nodes(injected_nodes, injected_top_level_ids)
     end
 
@@ -158,8 +163,6 @@ module ContentBuilder
       [nodes, top_level_ids]
     end
 
-    # The description content sits in the wide column of a 2-1 layout with the
-    # participation box beside it, mirroring the legacy citizen page.
     def description_page_nodes(description_nodes, top_level_ids)
       top_level_ids.each { |id| description_nodes[id]['parent'] = INTRO_LEFT_ID }
 
