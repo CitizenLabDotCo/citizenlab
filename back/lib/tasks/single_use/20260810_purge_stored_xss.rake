@@ -5,20 +5,21 @@
 # never HTML-sanitised at all. Sanitising on write does not touch rows already in the database, so
 # this cleans the stored values in place, using the same rules each field now applies on write:
 #
-#     Idea#body_multiloc              -> SanitizationService, Idea::BODY_SANITIZE_FEATURES
-#     Idea#title_multiloc             -> ActionView full_sanitizer (plain text, all tags stripped)
-#     Comment#body_multiloc           -> SanitizationService, Comment::BODY_SANITIZE_FEATURES
+#     Idea#body_multiloc              -> SanitizationService#sanitize_body_multiloc, Idea features
+#     Idea#title_multiloc             -> SanitizationService#strip_to_plain_text
+#     Comment#body_multiloc           -> SanitizationService#sanitize_body_multiloc, Comment features
 #     MachineTranslation#translation  -> the field's own derived rule (title full-strip vs body)
 #
 # `custom_field_values` is intentionally out of scope: those answers render as escaped text on the
 # front end (not an HTML sink), so they cannot execute and do not need purging.
 #
-# Only the *sanitise* step is applied, not the models' linkify/trailing-tag passes: those rewrite
-# legitimate content (e.g. turning a bare URL into a link) and would produce a diff on clean rows.
-# A cheap SQL pre-filter narrows the work to rows whose text carries an executable pattern (an on*
-# handler, <script, javascript:/vbscript:, data:text/html), and a row is written only when
-# sanitising actually changes it — so clean content is left untouched and re-runs are no-ops.
-# Writes use `update_columns` to avoid re-running unrelated validations on legacy rows.
+# Each field runs its *whole* write-path pipeline, linkify included. That is load-bearing for
+# comments: their allowlist has no `a` tag, so sanitising alone would strip the Rinku anchors a
+# stored comment body legitimately contains, silently destroying links while removing a payload.
+# A cheap SQL pre-filter narrows the work to rows that could possibly change at all, and a row is
+# written only when processing actually changes it — so clean content is left untouched and
+# re-runs are no-ops. Writes use `update_columns` to avoid re-running unrelated validations on
+# legacy rows.
 #
 # `TenantScript` owns the dry run, the tenant loop and the report. Deleted tenants stay out; every
 # other tenant can still serve content, so all of them are in scope.
@@ -30,20 +31,17 @@ namespace :single_use do
   desc "Re-sanitise stored idea/comment/translation content carrying XSS payloads. Dry run unless passed 'execute'."
   task :purge_stored_xss, %i[execute host] => [:environment] do |_t, args|
     service = SanitizationService.new
-    full_sanitizer = ActionView::Base.full_sanitizer
 
-    # Executable-payload pre-filter over a text-typed SQL expression (a jsonb cast or a text column).
-    suspicious = lambda do |col|
-      "(#{col} ~* 'on\\w+\\s*=' OR #{col} ILIKE '%<script%' OR " \
-        "#{col} ILIKE '%javascript:%' OR #{col} ILIKE '%vbscript:%' OR #{col} ILIKE '%data:text/html%')"
-    end
-
-    sanitize_multiloc = lambda do |multiloc, features|
-      service.sanitize_multiloc(multiloc, features)
-    end
+    # Pre-filter over a text-typed SQL expression (a jsonb cast or a text column). A row with no
+    # `<` has no tag to strip, and one with no `&` has no entity to decode, so no row this
+    # excludes can be changed by any of the sanitisers below. Anything narrower (matching only
+    # `<script`, `on*=` and friends) silently skips whole payload classes the write path strips -
+    # `<iframe src>`, `<form>`, `<object>`, `<style>`, `<base>`, and schemes hidden behind an
+    # entity such as `javas&#99;ript:`.
+    rewritable = ->(col) { "(#{col} LIKE '%<%' OR #{col} LIKE '%&%')" }
 
     strip_multiloc = lambda do |multiloc|
-      multiloc.transform_values { |value| value ? full_sanitizer.sanitize(value) : value }
+      multiloc.transform_values { |value| value ? service.strip_to_plain_text(value) : value }
     end
 
     affected = [] # rows for the summary: { host:, model:, attribute: }
@@ -85,23 +83,23 @@ namespace :single_use do
     ) do |tenant, script|
       purge.call(
         tenant, script,
-        Idea.where(suspicious.call('body_multiloc::text')), :body_multiloc,
-        ->(value) { sanitize_multiloc.call(value, Idea::BODY_SANITIZE_FEATURES) }, 'Idea'
+        Idea.where(rewritable.call('body_multiloc::text')), :body_multiloc,
+        ->(value) { service.sanitize_body_multiloc(value, Idea::BODY_SANITIZE_FEATURES) }, 'Idea'
       )
       purge.call(
         tenant, script,
-        Idea.where(suspicious.call('title_multiloc::text')), :title_multiloc,
+        Idea.where(rewritable.call('title_multiloc::text')), :title_multiloc,
         strip_multiloc, 'Idea'
       )
       purge.call(
         tenant, script,
-        Comment.where(suspicious.call('body_multiloc::text')), :body_multiloc,
-        ->(value) { sanitize_multiloc.call(value, Comment::BODY_SANITIZE_FEATURES) }, 'Comment'
+        Comment.where(rewritable.call('body_multiloc::text')), :body_multiloc,
+        ->(value) { service.sanitize_body_multiloc(value, Comment::BODY_SANITIZE_FEATURES) }, 'Comment'
       )
       # Machine translations need the record's own translatable_type/attribute_name to pick the
       # right rule, so they reuse the model's private sanitiser in place rather than the value-only
       # `purge` helper above.
-      MachineTranslations::MachineTranslation.where(suspicious.call('translation')).find_each do |mt|
+      MachineTranslations::MachineTranslation.where(rewritable.call('translation')).find_each do |mt|
         old_value = mt.translation
         mt.send(:sanitize_translation)
         new_value = mt.translation

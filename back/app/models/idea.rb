@@ -423,10 +423,7 @@ class Idea < ApplicationRecord
   end
 
   def sanitize_body_multiloc
-    service = SanitizationService.new
-    self.body_multiloc = service.sanitize_multiloc(body_multiloc, BODY_SANITIZE_FEATURES)
-    self.body_multiloc = service.remove_multiloc_empty_trailing_tags(body_multiloc)
-    self.body_multiloc = service.linkify_multiloc(body_multiloc)
+    self.body_multiloc = SanitizationService.new.sanitize_body_multiloc(body_multiloc, BODY_SANITIZE_FEATURES)
   end
 
   def fix_comments_count_on_projects

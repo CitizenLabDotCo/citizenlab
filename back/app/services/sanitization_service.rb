@@ -80,6 +80,27 @@ class SanitizationService
     Rinku.auto_link(html, :all, 'target="_blank" rel="noreferrer noopener nofollow"', nil, Rinku::AUTOLINK_SHORT_DOMAINS)
   end
 
+  # The full pipeline applied to a user-authored rich-text body: sanitize, drop empty trailing
+  # tags, then linkify. The order matters and is part of the contract - sanitizing *before*
+  # linkifying is what forces an anchor's href to agree with its visible text, so an allowlist
+  # that omits `:link` still ends up with links, just never spoofed ones.
+  #
+  # Single source of truth for `Idea`/`Comment` body handling, so anything reprocessing a stored
+  # body (machine translations, the stored-XSS purge) applies the same rules rather than its own.
+  #
+  # @param html [String] Body HTML to process.
+  # @param features [Array<Symbol>] A list of allowed features.
+  # @return [String] The processed body HTML.
+  def sanitize_body(html, features)
+    html = sanitize(html, features)
+    html = remove_empty_trailing_tags(html)
+    linkify(html)
+  end
+
+  def sanitize_body_multiloc(multiloc, features)
+    multiloc.transform_values { |html| html ? sanitize_body(html, features) : html }
+  end
+
   # Reduces text to plain text: no markup, and no entity encoding of the text that survives.
   #
   # `full_sanitizer` re-serializes the text nodes it keeps, so on its own it entity-encodes

@@ -54,6 +54,12 @@ describe 'single_use:purge_stored_xss rake task' do
       expect(idea.reload.title_multiloc['en']).not_to include('onerror')
       expect(idea.reload.title_multiloc['en']).not_to include('<img')
     end
+
+    it 'does not entity-encode the text it leaves behind' do
+      store_raw(idea, :title_multiloc, { 'en' => '<b>Fish</b> & chips' })
+      run_task
+      expect(idea.reload.title_multiloc['en']).to eq 'Fish & chips'
+    end
   end
 
   context 'a comment body carrying a script tag' do
@@ -62,6 +68,43 @@ describe 'single_use:purge_stored_xss rake task' do
     it 'strips the script' do
       run_task
       expect(comment.reload.body_multiloc['en']).not_to include('<script>')
+    end
+  end
+
+  # A comment body allows mentions only, so sanitising alone would strip the anchors that
+  # `Comment#sanitize_body_multiloc` puts there on write. Removing a payload must not cost the
+  # comment its links.
+  context 'a comment body carrying both a payload and a link' do
+    let!(:comment) do
+      store_raw(create(:comment), :body_multiloc, { 'en' =>
+        '<p>See <a href="https://example.com" target="_blank" rel="noreferrer noopener nofollow">https://example.com</a></p><img src=x onerror=alert(1)>' })
+    end
+
+    it 'strips the payload and keeps the link' do
+      run_task
+      body = comment.reload.body_multiloc['en']
+      expect(body).not_to include('onerror')
+      expect(body).to include('href="https://example.com"')
+    end
+  end
+
+  # Payload classes the old pre-filter missed: none of these contain `on*=`, `<script`,
+  # `javascript:`, `vbscript:` or `data:text/html`, but the write path strips all of them.
+  context 'payloads that carry no executable keyword' do
+    {
+      'iframe with a non-allowlisted src' => '<iframe src="https://evil.example"></iframe>',
+      'form and input' => '<form action="https://evil.example"><input name="pw"></form>',
+      'object' => '<object data="https://evil.example"></object>',
+      'style block' => '<style>body{display:none}</style>',
+      'entity-encoded scheme' => '<a href="javas&#99;ript:alert(1)">x</a>'
+    }.each do |label, payload|
+      context "an idea body carrying #{label}" do
+        let!(:idea) { store_raw(create(:idea), :body_multiloc, { 'en' => "<p>hi</p>#{payload}" }) }
+
+        it 'is found by the pre-filter and rewritten' do
+          expect { run_task }.to(change { idea.reload.body_multiloc })
+        end
+      end
     end
   end
 

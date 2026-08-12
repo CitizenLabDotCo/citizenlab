@@ -34,25 +34,15 @@ module MachineTranslations
     # Maps [translatable_type, attribute_name] to the source field's sanitization pipeline.
     # Anything not listed is treated as plain text and fully stripped.
     #
-    # These mirror `Idea#sanitize_body_multiloc` and `Comment#sanitize_body_multiloc`. The
-    # linkify step matters: both models sanitize *before* linkifying, so their stored bodies
-    # legitimately contain Rinku anchors that the allowlist alone would strip back out. It also
-    # rewrites any anchor the provider returned to point at its own visible text, which is what
-    # stops a translation from carrying a link whose destination and label disagree.
+    # `SanitizationService#sanitize_body` is the same pipeline `Idea` and `Comment` run on write.
+    # Its linkify step matters here: both models sanitize *before* linkifying, so their stored
+    # bodies legitimately contain Rinku anchors that an allowlist alone would strip back out.
     #
     # Wrapping in lambdas defers autoloading `Idea`/`Comment` until the callback runs.
     SOURCE_SANITIZE_PIPELINES = {
-      %w[Idea body_multiloc] => ->(html) { sanitize_body(html, Idea::BODY_SANITIZE_FEATURES) },
-      %w[Comment body_multiloc] => ->(html) { sanitize_body(html, Comment::BODY_SANITIZE_FEATURES) }
+      %w[Idea body_multiloc] => ->(html) { SanitizationService.new.sanitize_body(html, Idea::BODY_SANITIZE_FEATURES) },
+      %w[Comment body_multiloc] => ->(html) { SanitizationService.new.sanitize_body(html, Comment::BODY_SANITIZE_FEATURES) }
     }.freeze
-
-    def self.sanitize_body(html, features)
-      service = SanitizationService.new
-      html = service.sanitize(html, features)
-      html = service.remove_empty_trailing_tags(html)
-      service.linkify(html)
-    end
-    private_class_method :sanitize_body
 
     private
 
