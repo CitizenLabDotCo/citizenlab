@@ -39,6 +39,30 @@ describe MachineTranslations::MachineTranslation do
       expect(mt.translation).to include('href="https://example.com"')
     end
 
+    # A field nobody wired up must not silently pick up the most permissive rule by accident.
+    context 'a field with no pipeline of its own' do
+      before { allow(ErrorReporter).to receive(:report_msg) }
+
+      it 'falls back to plain text' do
+        mt = create(:machine_translation, attribute_name: 'unwired_multiloc', translation: '<p>hi</p><img src=x onerror=alert(1)>')
+        expect(mt.translation).to eq 'hi'
+      end
+
+      it 'reports the missing pipeline' do
+        create(:machine_translation, attribute_name: 'unwired_multiloc')
+        expect(ErrorReporter).to have_received(:report_msg).with(
+          a_string_including('no sanitize pipeline'),
+          extra: hash_including(attribute_name: 'unwired_multiloc')
+        )
+      end
+    end
+
+    it 'does not report a pipeline for a field that has one' do
+      allow(ErrorReporter).to receive(:report_msg)
+      create(:machine_translation, attribute_name: 'title_multiloc')
+      expect(ErrorReporter).not_to have_received(:report_msg)
+    end
+
     it 'rewrites a spoofed anchor in a comment body translation to its visible text' do
       comment = create(:comment)
       mt = create(:machine_translation, translatable: comment, attribute_name: 'body_multiloc',
