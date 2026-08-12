@@ -105,7 +105,7 @@ describe('Sign up - either email or phone', () => {
     });
   });
 
-  describe.only('If user is within phone expiry window', () => {
+  describe('If user is within phone expiry window', () => {
     it('does not require reconfirmation', () => {
       startFlow();
 

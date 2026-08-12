@@ -20,10 +20,21 @@ export const enterPhone = (
 ) => {
   cy.dataCy('flow-start-toggle-identifier').click();
 
-  cy.get('input#phone').should('have.attr', 'placeholder');
-  cy.get('input#phone').type(phone);
+  if (phone.startsWith('+1')) {
+    cy.dataCy('phone-flow-start-phone-input')
+      .find('.iti__selected-country')
+      .click();
+    cy.get('.iti__search-input').type('United States');
+    cy.get('li.iti__country[data-iso2="us"]').click({ force: true });
 
-  cy.dataCy('phone-flow-start-continue-button').click();
+    cy.get('input#phone').should('have.attr', 'placeholder');
+    cy.get('input#phone').type(phone.replace('+1', ''));
+  } else {
+    cy.get('input#phone').should('have.attr', 'placeholder');
+    cy.get('input#phone').type(phone);
+  }
+
+  cy.dataCy('phone-flow-start-continue-button').click({ force: true });
 };
 
 export const acceptPolicies = (cy: Cypress.Chainable) => {
