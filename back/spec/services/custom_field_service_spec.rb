@@ -32,8 +32,8 @@ describe CustomFieldService do
 
     it 'deletes the values that a user field stored on inputs through user fields in form' do
       field = create(:custom_field, key: 'the_field')
-      user = create(:user, custom_field_values: { 'the_field' => 'gone' })
-      input = create(:idea, custom_field_values: { 'u_the_field' => 'gone', 'other_field' => 'stays' })
+      user = create(:user, custom_field_values: { 'the_field' => 'other', 'the_field_other' => 'gone' })
+      input = create(:idea, custom_field_values: { 'u_the_field' => 'other', 'u_the_field_other' => 'gone', 'other_field' => 'stays' })
 
       service.delete_custom_field_values(field)
 
@@ -51,7 +51,7 @@ describe CustomFieldService do
         :idea,
         project: phase.project,
         creation_phase: phase,
-        custom_field_values: { 'extra_field' => 'gone', 'another_field' => 'stays' }
+        custom_field_values: { 'extra_field' => 'gone', 'extra_field_follow_up' => 'gone', 'another_field' => 'stays' }
       )
 
       service.delete_custom_field_values(field)

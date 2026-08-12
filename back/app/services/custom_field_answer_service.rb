@@ -36,19 +36,36 @@ class CustomFieldAnswerService
   def field_ids_by_key(record, keys)
     return {} if keys.empty?
 
-    field_ids = context_fields(record).where(key: keys).pluck(:key, :id).to_h
-    field_ids.merge!(user_field_ids_by_prefixed_key(keys - field_ids.keys)) if record.is_a?(Idea)
+    field_ids = field_ids_for(context_fields(record), keys.index_with(&:itself))
+    field_ids.merge!(derived_field_ids(record, keys - field_ids.keys))
     field_ids
   end
 
-  # u_ keys on ideas are copies of registration field answers.
-  def user_field_ids_by_prefixed_key(keys)
+  # Derived keys resolve to the field of their base key: _other/_follow_up
+  # companions in the same context, u_ copies of registration field answers
+  # (and their companions) against the registration fields.
+  def derived_field_ids(record, keys)
     prefix = UserFieldsInFormService.prefix
-    user_keys = keys.filter_map { |key| key.delete_prefix(prefix) if key.start_with?(prefix) }
-    return {} if user_keys.empty?
+    context_base_keys = {}
+    registration_base_keys = {}
+    keys.each do |key|
+      base_key = key.delete_suffix('_other').delete_suffix('_follow_up')
+      if record.is_a?(Idea) && base_key.start_with?(prefix)
+        registration_base_keys[key] = base_key.delete_prefix(prefix)
+      elsif base_key != key
+        context_base_keys[key] = base_key
+      end
+    end
 
-    CustomField.registration.where(key: user_keys).pluck(:key, :id).to_h
-      .transform_keys { |key| "#{prefix}#{key}" }
+    field_ids_for(context_fields(record), context_base_keys)
+      .merge(field_ids_for(CustomField.registration, registration_base_keys))
+  end
+
+  def field_ids_for(fields, base_keys_by_key)
+    return {} if base_keys_by_key.empty?
+
+    ids_by_base_key = fields.where(key: base_keys_by_key.values.uniq).pluck(:key, :id).to_h
+    base_keys_by_key.filter_map { |key, base_key| [key, ids_by_base_key[base_key]] if ids_by_base_key[base_key] }.to_h
   end
 
   def context_fields(record)
