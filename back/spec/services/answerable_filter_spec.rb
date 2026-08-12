@@ -8,10 +8,10 @@ RSpec.describe AnswerableFilter do
   end
 
   context 'with a select field' do
-    let!(:field) { create(:custom_field_select, key: 'color') }
-    let!(:red) { create(:user, custom_field_values: { 'color' => 'red' }) }
-    let!(:blue) { create(:user, custom_field_values: { 'color' => 'blue' }) }
-    let!(:unanswered) { create(:user) }
+    let_it_be(:field) { create(:custom_field_select, key: 'color') }
+    let_it_be(:red) { create(:user, custom_field_values: { 'color' => 'red' }) }
+    let_it_be(:blue) { create(:user, custom_field_values: { 'color' => 'blue' }) }
+    let_it_be(:unanswered) { create(:user) }
 
     it 'eq matches users with that answer' do
       expect(filter(field).eq('red')).to contain_exactly(red)
@@ -36,11 +36,11 @@ RSpec.describe AnswerableFilter do
   end
 
   context 'with a multiselect field' do
-    let!(:field) { create(:custom_field_multiselect, key: 'pets') }
-    let!(:cat_and_dog) { create(:user, custom_field_values: { 'pets' => %w[cat dog] }) }
-    let!(:dog_only) { create(:user, custom_field_values: { 'pets' => ['dog'] }) }
-    let!(:none_selected) { create(:user, custom_field_values: { 'pets' => [] }) }
-    let!(:unanswered) { create(:user) }
+    let_it_be(:field) { create(:custom_field_multiselect, key: 'pets') }
+    let_it_be(:cat_and_dog) { create(:user, custom_field_values: { 'pets' => %w[cat dog] }) }
+    let_it_be(:dog_only) { create(:user, custom_field_values: { 'pets' => ['dog'] }) }
+    let_it_be(:none_selected) { create(:user, custom_field_values: { 'pets' => [] }) }
+    let_it_be(:unanswered) { create(:user) }
 
     it 'eq matches users who selected the option, whatever else they selected' do
       expect(filter(field).eq('cat')).to contain_exactly(cat_and_dog)
@@ -62,10 +62,10 @@ RSpec.describe AnswerableFilter do
   end
 
   context 'with a text field' do
-    let!(:field) { create(:custom_field, key: 'motto') }
-    let!(:carpe) { create(:user, custom_field_values: { 'motto' => 'carpe diem' }) }
-    let!(:yolo) { create(:user, custom_field_values: { 'motto' => 'yolo' }) }
-    let!(:unanswered) { create(:user) }
+    let_it_be(:field) { create(:custom_field, key: 'motto') }
+    let_it_be(:carpe) { create(:user, custom_field_values: { 'motto' => 'carpe diem' }) }
+    let_it_be(:yolo) { create(:user, custom_field_values: { 'motto' => 'yolo' }) }
+    let_it_be(:unanswered) { create(:user) }
 
     it 'eq matches the exact text' do
       expect(filter(field).eq('yolo')).to contain_exactly(yolo)
@@ -78,10 +78,10 @@ RSpec.describe AnswerableFilter do
   end
 
   context 'with a number field' do
-    let!(:field) { create(:custom_field_number, key: 'bikes') }
-    let!(:two) { create(:user, custom_field_values: { 'bikes' => 2 }) }
-    let!(:five) { create(:user, custom_field_values: { 'bikes' => 5 }) }
-    let!(:unanswered) { create(:user) }
+    let_it_be(:field) { create(:custom_field_number, key: 'bikes') }
+    let_it_be(:two) { create(:user, custom_field_values: { 'bikes' => 2 }) }
+    let_it_be(:five) { create(:user, custom_field_values: { 'bikes' => 5 }) }
+    let_it_be(:unanswered) { create(:user) }
 
     it 'eq compares numerically, so an integer answer matches its float form' do
       expect(filter(field).eq(2)).to contain_exactly(two)
@@ -106,10 +106,10 @@ RSpec.describe AnswerableFilter do
   end
 
   context 'with a checkbox field' do
-    let!(:field) { create(:custom_field_checkbox, key: 'attends') }
-    let!(:yes) { create(:user, custom_field_values: { 'attends' => true }) }
-    let!(:no) { create(:user, custom_field_values: { 'attends' => false }) }
-    let!(:unanswered) { create(:user) }
+    let_it_be(:field) { create(:custom_field_checkbox, key: 'attends') }
+    let_it_be(:yes) { create(:user, custom_field_values: { 'attends' => true }) }
+    let_it_be(:no) { create(:user, custom_field_values: { 'attends' => false }) }
+    let_it_be(:unanswered) { create(:user) }
 
     it 'eq distinguishes false answers from missing ones' do
       expect(filter(field).eq(true)).to contain_exactly(yes)
@@ -119,9 +119,9 @@ RSpec.describe AnswerableFilter do
   end
 
   context 'with a date field' do
-    let!(:field) { create(:custom_field_date, key: 'member_since') }
-    let!(:january) { create(:user, custom_field_values: { 'member_since' => '2026-01-15' }) }
-    let!(:march) { create(:user, custom_field_values: { 'member_since' => '2026-03-15' }) }
+    let_it_be(:field) { create(:custom_field_date, key: 'member_since') }
+    let_it_be(:january) { create(:user, custom_field_values: { 'member_since' => '2026-01-15' }) }
+    let_it_be(:march) { create(:user, custom_field_values: { 'member_since' => '2026-03-15' }) }
 
     it 'filters with before, after and on' do
       expect(filter(field).before('2026-02-01')).to contain_exactly(january)
@@ -131,11 +131,11 @@ RSpec.describe AnswerableFilter do
   end
 
   context 'with an idea scope' do
-    let!(:project) { create(:project) }
-    let!(:form) { create(:custom_form, participation_context: project) }
-    let!(:field) { create(:custom_field_linear_scale, resource: form, key: 'rating') }
-    let!(:good) { create(:idea, project: project, custom_field_values: { 'rating' => 4 }) }
-    let!(:bad) { create(:idea, project: project, custom_field_values: { 'rating' => 1 }) }
+    let_it_be(:project) { create(:project) }
+    let_it_be(:form) { create(:custom_form, participation_context: project) }
+    let_it_be(:field) { create(:custom_field_linear_scale, resource: form, key: 'rating') }
+    let_it_be(:good) { create(:idea, project: project, custom_field_values: { 'rating' => 4 }) }
+    let_it_be(:bad) { create(:idea, project: project, custom_field_values: { 'rating' => 1 }) }
 
     it 'filters ideas by their answers' do
       expect(described_class.new(field, Idea).eq(4)).to contain_exactly(good)
