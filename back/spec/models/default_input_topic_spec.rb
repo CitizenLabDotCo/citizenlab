@@ -17,9 +17,7 @@ RSpec.describe DefaultInputTopic do
       project = create(:project)
       project.set_default_input_topics!
 
-      titles = project.input_topics.map { |topic| topic.title_multiloc['en'] }
-      expect(titles).to be_present
-      expect(titles.join).not_to include('onerror')
+      expect(project.input_topics.map { |topic| topic.title_multiloc['en'] }).to eq ['hi']
     end
   end
 end

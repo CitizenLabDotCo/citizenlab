@@ -30,9 +30,11 @@ namespace :single_use do
     service = SanitizationService.new
 
     # Pre-filter over a text-typed SQL expression (a jsonb cast or a text column). No `<` means no
-    # tag to strip and no `&` means no entity to decode, so nothing this excludes could change.
-    # Keep it this wide: matching executable keywords instead would miss `<iframe src>`, `<form>`,
-    # `<object>`, `<style>` and schemes hidden behind an entity like `javas&#99;ript:`.
+    # tag to strip and no `&` means no entity to decode, so nothing this excludes can carry a
+    # payload. It does exclude rows the write path would merely normalise (a bare URL to linkify, a
+    # stray `>` to re-escape) - deliberate: this task removes payloads, it does not reformat clean
+    # history. Keep it this wide: keyword matching would miss `<iframe src>`, `<form>`, `<object>`,
+    # `<style>` and schemes hidden behind an entity like `javas&#99;ript:`.
     rewritable = ->(col) { "(#{col} LIKE '%<%' OR #{col} LIKE '%&%')" }
 
     strip_multiloc = service.method(:strip_multiloc_to_plain_text)

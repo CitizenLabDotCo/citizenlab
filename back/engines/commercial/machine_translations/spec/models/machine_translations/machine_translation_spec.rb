@@ -6,18 +6,17 @@ describe MachineTranslations::MachineTranslation do
   describe 'translation sanitization on save' do
     it 'strips event-handler attributes from an idea body translation' do
       mt = create(:machine_translation, attribute_name: 'body_multiloc', translation: '<p>hi</p><img src=x onerror=alert(1)>')
-      expect(mt.translation).not_to include('onerror')
+      expect(mt.translation).to eq '<p>hi</p><img src="x">'
     end
 
     it 'strips script tags from an idea body translation' do
       mt = create(:machine_translation, attribute_name: 'body_multiloc', translation: '<p>hi</p><script>alert(1)</script>')
-      expect(mt.translation).not_to include('<script>')
+      expect(mt.translation).to eq '<p>hi</p>alert(1)'
     end
 
     it 'strips all HTML from a title translation' do
       mt = create(:machine_translation, attribute_name: 'title_multiloc', translation: '<img src=x onerror=alert(1)>hi')
-      expect(mt.translation).not_to include('onerror')
-      expect(mt.translation).not_to include('<img')
+      expect(mt.translation).to eq 'hi'
     end
 
     it 'leaves ampersands in a title translation as plain text' do
@@ -25,9 +24,10 @@ describe MachineTranslations::MachineTranslation do
       expect(mt.translation).to eq 'Poisson & frites'
     end
 
+    # The href survives untouched; only `rel` is rewritten, by the sanitiser's nofollow scrub.
     it 'keeps links in an idea body translation (idea body allowlist)' do
       mt = create(:machine_translation, attribute_name: 'body_multiloc', translation: '<a href="https://good.example">x</a>')
-      expect(mt.translation).to include('href="https://good.example"')
+      expect(mt.translation).to eq '<a href="https://good.example" rel="nofollow">x</a>'
     end
 
     # A comment body allows mentions only, but linkify runs after sanitize - so stored bodies do
@@ -36,7 +36,9 @@ describe MachineTranslations::MachineTranslation do
       comment = create(:comment)
       mt = create(:machine_translation, translatable: comment, attribute_name: 'body_multiloc',
         translation: '<p>Voir <a href="https://example.com" target="_blank" rel="noreferrer noopener nofollow">https://example.com</a> ici</p>')
-      expect(mt.translation).to include('href="https://example.com"')
+      expect(mt.translation).to eq(
+        '<p>Voir <a href="https://example.com" target="_blank" rel="noreferrer noopener nofollow">https://example.com</a> ici</p>'
+      )
     end
 
     context 'a field with no pipeline of its own' do
@@ -66,9 +68,9 @@ describe MachineTranslations::MachineTranslation do
       comment = create(:comment)
       mt = create(:machine_translation, translatable: comment, attribute_name: 'body_multiloc',
         translation: '<p>hi</p><a href="https://evil.example">https://google.example</a><img src=y onerror=alert(1)>')
-      expect(mt.translation).not_to include('onerror')
-      expect(mt.translation).not_to include('evil.example')
-      expect(mt.translation).to include('href="https://google.example"')
+      expect(mt.translation).to eq(
+        '<p>hi</p><a href="https://google.example" target="_blank" rel="noreferrer noopener nofollow">https://google.example</a>'
+      )
     end
   end
 end

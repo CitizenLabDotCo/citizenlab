@@ -347,7 +347,9 @@ resource 'Ideas' do
             assert_status 201
             idea = Idea.find(response_data[:id])
             expect(idea.publication_status).to eq 'draft'
-            expect(idea.body_multiloc['en']).not_to include('onload')
+            expect(idea.body_multiloc['en']).to eq(
+              '<p>poc</p><img data-cl2-text-image-text-reference="0a808204-4e40-4fe4-9733-0fd88581e2ae">'
+            )
           end
         end
       end

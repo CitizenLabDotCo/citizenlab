@@ -451,12 +451,15 @@ describe SanitizationService do
   end
 
   describe 'sanitize_body_multiloc' do
+    # One input exercising all three steps: the script tag is sanitized away, the bare URL is
+    # linkified, and the empty trailing `<p>` is dropped.
     it 'runs the sanitize, trailing-tag and linkify steps' do
       output = service.sanitize_body_multiloc(
         { 'en' => '<p>See https://example.com</p><script>alert(1)</script><p></p>' }, %i[mention]
       )
-      expect(output['en']).to include('href="https://example.com"')
-      expect(output['en']).not_to include('<script>')
+      expect(output['en']).to eq(
+        '<p>See <a href="https://example.com" target="_blank" rel="noreferrer noopener nofollow">https://example.com</a></p>alert(1)'
+      )
     end
 
     # Public API responses distinguish '' from nil, so this must not drift.
@@ -481,9 +484,7 @@ describe SanitizationService do
     end
 
     it 'neutralises a payload hidden behind entity encoding' do
-      output = service.strip_to_plain_text('&lt;img src=x onerror=alert(1)&gt;hi')
-      expect(output).not_to include('onerror')
-      expect(output).not_to include('<img')
+      expect(service.strip_to_plain_text('&lt;img src=x onerror=alert(1)&gt;hi')).to eq 'hi'
     end
 
     it 'returns nil for nil, like sanitize does' do

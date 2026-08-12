@@ -32,16 +32,16 @@ describe 'single_use:purge_stored_xss rake task' do
   context 'an idea body carrying an event-handler payload' do
     let!(:idea) { store_raw(create(:idea), :body_multiloc, { 'en' => '<p>x</p><img src=x onerror=alert(1)>' }) }
 
-    it 'strips the handler' do
+    it 'strips the handler and keeps the rest of the body' do
       run_task
-      expect(idea.reload.body_multiloc['en']).not_to include('onerror')
+      expect(idea.reload.body_multiloc['en']).to eq '<p>x</p><img src="x">'
     end
 
     it 'records the change with context' do
       run_task
       change = report['changes'].find { |c| c.dig('context', 'model') == 'Idea' && c.dig('context', 'attribute') == 'body_multiloc' }
       expect(change['context']).to include('model' => 'Idea', 'id' => idea.id, 'attribute' => 'body_multiloc')
-      expect(change['new_value']['en']).not_to include('onerror')
+      expect(change['new_value']['en']).to eq '<p>x</p><img src="x">'
     end
   end
 
@@ -50,8 +50,7 @@ describe 'single_use:purge_stored_xss rake task' do
 
     it 'strips all HTML from the title' do
       run_task
-      expect(idea.reload.title_multiloc['en']).not_to include('onerror')
-      expect(idea.reload.title_multiloc['en']).not_to include('<img')
+      expect(idea.reload.title_multiloc['en']).to eq 'hi'
     end
 
     it 'does not entity-encode the text it leaves behind' do
@@ -96,9 +95,10 @@ describe 'single_use:purge_stored_xss rake task' do
   context 'a comment body carrying a script tag' do
     let!(:comment) { store_raw(create(:comment), :body_multiloc, { 'en' => '<p>hi</p><script>alert(1)</script>' }) }
 
-    it 'strips the script' do
+    # The script tag goes; its text content stays, inert.
+    it 'strips the script and keeps the rest of the body' do
       run_task
-      expect(comment.reload.body_multiloc['en']).not_to include('<script>')
+      expect(comment.reload.body_multiloc['en']).to eq '<p>hi</p>alert(1)'
     end
   end
 
@@ -112,9 +112,9 @@ describe 'single_use:purge_stored_xss rake task' do
 
     it 'strips the payload and keeps the link' do
       run_task
-      body = comment.reload.body_multiloc['en']
-      expect(body).not_to include('onerror')
-      expect(body).to include('href="https://example.com"')
+      expect(comment.reload.body_multiloc['en']).to eq(
+        '<p>See <a href="https://example.com" target="_blank" rel="noreferrer noopener nofollow">https://example.com</a></p>'
+      )
     end
   end
 
@@ -143,9 +143,9 @@ describe 'single_use:purge_stored_xss rake task' do
       store_raw(create(:machine_translation, attribute_name: 'body_multiloc'), :translation, '<p>hi</p><img src=x onerror=alert(1)>')
     end
 
-    it 'strips the handler' do
+    it 'strips the handler and keeps the rest of the translation' do
       run_task
-      expect(mt.reload.translation).not_to include('onerror')
+      expect(mt.reload.translation).to eq '<p>hi</p><img src="x">'
     end
   end
 

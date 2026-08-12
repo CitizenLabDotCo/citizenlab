@@ -466,8 +466,7 @@ RSpec.describe Idea do
 
     it 'does not leak a stripped payload into the slug' do
       idea = create(:idea, slug: nil, title_multiloc: { 'en' => '<img src=x onerror=alert(1)>hi' })
-      expect(idea.slug).not_to include('onerror')
-      expect(idea.slug).not_to include('img')
+      expect(idea.slug).to eq 'hi'
     end
 
     it 'generates a slug when there is no current phase' do
@@ -669,7 +668,7 @@ RSpec.describe Idea do
       idea = create(:idea, publication_status: 'draft', body_multiloc: {
         'en' => '<p>Test</p><script>This should be removed!</script>'
       })
-      expect(idea.body_multiloc['en']).not_to include('<script>')
+      expect(idea.body_multiloc['en']).to eq '<p>Test</p>This should be removed!'
     end
 
     it 'strips event-handler attributes from a draft body' do
@@ -677,9 +676,10 @@ RSpec.describe Idea do
       allow(TextImageService).to receive(:new).and_return(ti_service)
 
       idea = create(:idea, publication_status: 'draft', body_multiloc: { 'en' => '... <img src=x onerror=alert(1)>' })
-      expect(idea.body_multiloc['en']).not_to include('onerror')
+      expect(idea.body_multiloc['en']).to eq '... <img src="x">'
     end
 
+    # The handler goes; the text-image reference stays, since the image itself is real content.
     it 'strips onload from a draft body that carries a text-image reference (reported payload shape)' do
       ti_service = instance_double(TextImageService).as_null_object
       allow(TextImageService).to receive(:new).and_return(ti_service)
@@ -687,7 +687,9 @@ RSpec.describe Idea do
       idea = create(:idea, publication_status: 'draft', body_multiloc: {
         'en' => '<p>poc</p><img onload="alert(document.cookie)" data-cl2-text-image-text-reference="0a808204-4e40-4fe4-9733-0fd88581e2ae">'
       })
-      expect(idea.body_multiloc['en']).not_to include('onload')
+      expect(idea.body_multiloc['en']).to eq(
+        '<p>poc</p><img data-cl2-text-image-text-reference="0a808204-4e40-4fe4-9733-0fd88581e2ae">'
+      )
     end
   end
 
@@ -699,7 +701,7 @@ RSpec.describe Idea do
 
     it 'strips HTML from a draft title (stored XSS regression)' do
       idea = create(:idea, publication_status: 'draft', title_multiloc: { 'en' => '<img src=x onerror=alert(1)>hi' })
-      expect(idea.title_multiloc['en']).not_to include('onerror')
+      expect(idea.title_multiloc['en']).to eq 'hi'
     end
 
     it 'is idempotent across repeated saves' do
