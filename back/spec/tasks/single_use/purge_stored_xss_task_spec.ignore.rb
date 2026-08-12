@@ -82,6 +82,19 @@ describe 'single_use:purge_stored_xss rake task' do
     end
   end
 
+  context 'a topic title carrying HTML' do
+    let!(:input_topic) { store_raw(create(:input_topic), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>hi' }) }
+    let!(:global_topic) { store_raw(create(:global_topic), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>hi' }) }
+    let!(:default_topic) { store_raw(create(:default_input_topic), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>hi' }) }
+
+    it 'strips all HTML from each topic model' do
+      run_task
+      [input_topic, global_topic, default_topic].each do |record|
+        expect(record.reload.title_multiloc['en']).to eq 'hi'
+      end
+    end
+  end
+
   context 'a comment body carrying a script tag' do
     let!(:comment) { store_raw(create(:comment), :body_multiloc, { 'en' => '<p>hi</p><script>alert(1)</script>' }) }
 

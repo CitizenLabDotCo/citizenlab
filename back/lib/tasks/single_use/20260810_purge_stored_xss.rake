@@ -8,7 +8,7 @@
 #     Idea#body_multiloc              -> SanitizationService#sanitize_body_multiloc, Idea features
 #     Comment#body_multiloc           -> SanitizationService#sanitize_body_multiloc, Comment features
 #     MachineTranslation#translation  -> the field's own derived rule (title full-strip vs body)
-#     #title_multiloc, on Idea, Project, Phase and Folder
+#     #title_multiloc, on each of `title_models`
 #                                     -> SanitizationService#strip_multiloc_to_plain_text
 #
 # `custom_field_values` is intentionally out of scope: those answers render as escaped text on the
@@ -36,6 +36,12 @@ namespace :single_use do
     rewritable = ->(col) { "(#{col} LIKE '%<%' OR #{col} LIKE '%&%')" }
 
     strip_multiloc = service.method(:strip_multiloc_to_plain_text)
+
+    # Titles are plain text everywhere, but several render as raw HTML: the admin management feed
+    # renders any changed `title_multiloc`, and the ideas feed sidebar renders a topic title. So a
+    # moderator-editable title is a stored XSS carrier too. Every model that sanitises its title on
+    # write belongs here, whether or not a sink for it is known today.
+    title_models = [Idea, Project, Phase, ProjectFolders::Folder, InputTopic, GlobalTopic, DefaultInputTopic].freeze
 
     affected = [] # rows for the summary: { host:, model:, attribute: }
 
@@ -79,9 +85,7 @@ namespace :single_use do
         Idea.where(rewritable.call('body_multiloc::text')), :body_multiloc,
         ->(value) { service.sanitize_body_multiloc(value, Idea::BODY_SANITIZE_FEATURES) }, 'Idea'
       )
-      # Titles are plain text everywhere, but the admin management feed renders a changed
-      # `title_multiloc` as raw HTML - so a moderator-editable title is a stored XSS carrier too.
-      [Idea, Project, Phase, ProjectFolders::Folder].each do |model|
+      title_models.each do |model|
         purge.call(
           tenant, script,
           model.where(rewritable.call('title_multiloc::text')), :title_multiloc,

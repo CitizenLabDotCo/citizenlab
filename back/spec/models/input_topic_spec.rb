@@ -11,6 +11,24 @@ RSpec.describe InputTopic do
 
   it { is_expected.to validate_presence_of(:title_multiloc) }
 
+  describe 'title sanitizer' do
+    it 'strips HTML tags from the title' do
+      topic = create(:input_topic, title_multiloc: { 'en' => '<b>bold</b> topic' })
+      expect(topic.title_multiloc['en']).to eq 'bold topic'
+    end
+
+    it 'strips script/event-handler payloads from the title' do
+      topic = create(:input_topic, title_multiloc: { 'en' => '<img src=x onerror=alert(1)>hi' })
+      expect(topic.title_multiloc['en']).not_to include('onerror')
+      expect(topic.title_multiloc['en']).not_to include('<img')
+    end
+
+    it 'leaves ampersands as plain text' do
+      topic = create(:input_topic, title_multiloc: { 'en' => 'Fish & chips' })
+      expect(topic.title_multiloc['en']).to eq 'Fish & chips'
+    end
+  end
+
   describe 'order_ideas_count' do
     # topic 0: ideas 1, 3, 6 (3)
     # topic 1: / (0)

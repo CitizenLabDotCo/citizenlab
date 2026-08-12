@@ -44,6 +44,8 @@ class InputTopic < ApplicationRecord
   validate :max_depth_validation
   validate :icon_only_for_root_topics
 
+  before_validation :sanitize_title_multiloc, if: -> { title_multiloc && title_multiloc_changed? }
+
   scope :order_ideas_count, lambda { |ideas, direction: :asc|
     topics_counts = IdeasCountService.counts(ideas, ['input_topic_id'])['input_topic_id']
     sorted_ids = ids.sort_by do |id|
@@ -64,6 +66,12 @@ class InputTopic < ApplicationRecord
   end
 
   private
+
+  # Titles are plain text but reach an HTML render path - the ideas feed sidebar renders a topic
+  # title as raw HTML - so strip all markup.
+  def sanitize_title_multiloc
+    self.title_multiloc = SanitizationService.new.strip_multiloc_to_plain_text(title_multiloc)
+  end
 
   def max_depth_validation
     return if parent.blank?
