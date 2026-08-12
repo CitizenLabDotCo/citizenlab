@@ -25,5 +25,17 @@ module InputTypeStrategy
     def supports_reference_distribution?
       true
     end
+
+    def answers_present(answers)
+      answers.where("value != '[]'::jsonb")
+    end
+
+    def answers_eq(answers, value)
+      answers.where('value ? :value', value: value)
+    end
+
+    def answers_one_of(answers, values)
+      answers.where('value ?| array[:values]', values: values)
+    end
   end
 end
