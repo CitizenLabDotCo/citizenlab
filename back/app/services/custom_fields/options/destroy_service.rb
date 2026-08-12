@@ -56,6 +56,11 @@ module CustomFields
             (custom_field_values -> '#{field_key}') - '#{option.key}'
           )
         SQL
+
+        ::CustomFieldAnswer
+          .where(answerable_type: 'Idea', key: field_key)
+          .where('value ? :option_key', option_key: option.key)
+          .update_all("value = value - '#{option.key}'")
       end
 
       def log_destroy_activity(option, user)
