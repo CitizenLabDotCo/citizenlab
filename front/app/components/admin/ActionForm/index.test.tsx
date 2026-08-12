@@ -18,6 +18,16 @@ const ssoMethod = {
   },
 } as IdMethodData;
 
+// A sign-in method that may sign someone up without an email address, which is
+// what makes the email requirement configurable.
+const emaillessSsoMethod = {
+  ...ssoMethod,
+  attributes: {
+    ...ssoMethod.attributes,
+    method_metadata: { name: 'ItsMe', email_always_present: false },
+  },
+} as IdMethodData;
+
 // The combination of platform config the panel reacts to.
 let mockPasswordLoginEnabled = true;
 let mockIdMethods: IdMethodData[] = [ssoMethod];
@@ -154,15 +164,42 @@ describe('<ActionForm />', () => {
   describe('collapsed summary chips', () => {
     it('summarises the enabled methods and collected fields', () => {
       renderForm(
-        { require_name: true, require_password: true },
+        {
+          require_name: true,
+          require_password: true,
+          require_verification: true,
+        },
         { defaultOpen: false }
       );
       // Body is not rendered when collapsed; only the summary chips are.
       expect(screen.queryByText('What we collect')).not.toBeInTheDocument();
       expect(screen.getByText('Sign-in required')).toBeInTheDocument();
-      expect(screen.getByText('Confirmed email')).toBeInTheDocument();
+      expect(screen.getByText('Verification')).toBeInTheDocument();
       expect(screen.getByText('Name')).toBeInTheDocument();
       expect(screen.getByText('Password')).toBeInTheDocument();
+    });
+
+    it('chips a security requirement the platform offers', () => {
+      // Only a sign-in method that may leave someone without an email makes
+      // the email requirement configurable here (SMS is off).
+      mockIdMethods = [emaillessSsoMethod];
+      renderForm({ require_confirmed_email: true }, { defaultOpen: false });
+
+      expect(screen.getByText('Confirmed email')).toBeInTheDocument();
+    });
+
+    it('leaves out a security requirement the platform does not offer', () => {
+      // The permission still carries the flags, but neither requirement can be
+      // configured: SMS is off and no verification method is set up.
+      mockVerificationMethodConfigured = false;
+      renderForm(
+        { require_confirmed_email: true, require_verification: true },
+        { defaultOpen: false }
+      );
+
+      expect(screen.queryByText('Confirmed email')).not.toBeInTheDocument();
+      expect(screen.queryByText('Verification')).not.toBeInTheDocument();
+      expect(screen.getByText('Sign-in required')).toBeInTheDocument();
     });
 
     it('shows the open-access chip when anyone can participate', () => {

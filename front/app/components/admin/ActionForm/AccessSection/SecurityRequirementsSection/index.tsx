@@ -7,21 +7,19 @@ import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
-import useIdMethods from 'api/id_methods/useIdMethods';
-import useVerificationMethod from 'api/id_methods/useVerificationMethod';
 import { IPhasePermissionData } from 'api/phase_permissions/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { useVisibleToggles } from '../../logic';
 import actionFormMessages from '../../messages';
 import { Changes } from '../../types';
 import { Expander } from '../../ui';
 
 import messages from './messages';
 import MethodRow from './MethodRow';
-import { getVisibleToggles } from './utils';
 
 interface Props {
   permission: IPhasePermissionData;
@@ -32,34 +30,20 @@ const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
   const { formatMessage } = useIntl();
   const { attributes } = permission;
 
-  const smsEnabled = useFeatureFlag({ name: 'sms' });
   const smsLoginEnabled = useFeatureFlag({ name: 'sms_login' });
-  const { data: verificationMethod } = useVerificationMethod();
-  const { data: idMethods } = useIdMethods();
+  const visibleToggles = useVisibleToggles();
 
-  if (!idMethods) return null;
-
-  const hasAuthMethodNotReturningEmail = idMethods.data.some(
-    (method) =>
-      method.attributes.authentication_method &&
-      method.attributes.method_metadata?.email_always_present === false
-  );
+  if (!visibleToggles) return null;
 
   const {
     email: showEmail,
     phone: showPhone,
     verification: showVerification,
-  } = getVisibleToggles({
-    sms2FAEnabled: smsEnabled,
-    smsLoginEnabled,
-    verificationMethodEnabled: !!verificationMethod,
-    hasAuthMethodNotReturningEmail,
-  });
+  } = visibleToggles;
 
   // Only what is both offered here and actually switched on belongs in the
-  // collapsed summary.
-  // The summary uses the short labels — the full sentences below are too long
-  // to line up on one row.
+  // collapsed summary, in its short form — the full sentences below are too
+  // long to line up on one row.
   const activeLabels: string[] = [];
   if (showEmail && attributes.require_confirmed_email) {
     activeLabels.push(formatMessage(actionFormMessages.confirmedEmail));

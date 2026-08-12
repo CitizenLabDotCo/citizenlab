@@ -1,4 +1,4 @@
-import { getVisibleToggles } from './utils';
+import { getVisibleToggles } from './logic';
 
 const ALL_DISABLED = {
   sms2FAEnabled: false,
@@ -13,7 +13,7 @@ const NONE_VISIBLE = {
   verification: false,
 };
 
-describe('SecurityRequirementsSection utils', () => {
+describe('ActionForm logic', () => {
   describe('getVisibleToggles', () => {
     it('returns no toggles if nothing is enabled', () => {
       expect(getVisibleToggles(ALL_DISABLED)).toEqual(NONE_VISIBLE);

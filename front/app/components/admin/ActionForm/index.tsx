@@ -16,7 +16,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import AccessSection from './AccessSection';
 import DataSection from './DataSection';
-import { buildSummary, getGroupIds } from './logic';
+import { buildSummary, getGroupIds, useVisibleToggles } from './logic';
 import messages from './messages';
 import { Props } from './types';
 import { Chip } from './ui';
@@ -39,7 +39,8 @@ const ActionForm = ({
     phaseId,
     action,
   });
-  if (!permissionsCustomFields) return null;
+  const visibleToggles = useVisibleToggles();
+  if (!permissionsCustomFields || !visibleToggles) return null;
 
   const customFields = permissionsCustomFields.data;
 
@@ -47,7 +48,12 @@ const ActionForm = ({
   const showAnyone = attributes.permitted_by_everyone_allowed;
   const isAdmins = attributes.permitted_by === 'admins_moderators';
 
-  const summary = buildSummary(permissionData, customFields, formatMessage);
+  const summary = buildSummary(
+    permissionData,
+    customFields,
+    formatMessage,
+    visibleToggles
+  );
 
   // Reset clears the account-only customisations (groups + persisted questions);
   // it has nothing to undo for the open / admins-only gates.
