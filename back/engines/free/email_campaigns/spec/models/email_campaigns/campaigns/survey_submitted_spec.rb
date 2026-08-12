@@ -9,6 +9,21 @@ RSpec.describe EmailCampaigns::Campaigns::SurveySubmitted do
     end
   end
 
+  describe '#activity_context' do
+    before { create(:idea_status_proposed) }
+
+    it 'returns the creation phase of the input, not the current timeline phase' do
+      project = create(:project_with_current_phase)
+      standalone = create(:phase, :standalone, project: project,
+        start_at: 1.week.ago, end_at: 1.week.from_now)
+      response = create(:native_survey_response, project: project, creation_phase: standalone)
+      activity = create(:activity, item: response, action: 'published')
+
+      campaign = create(:survey_submitted_campaign)
+      expect(campaign.activity_context(activity)).to eq standalone
+    end
+  end
+
   describe '#generate_commands' do
     before { create(:idea_status_proposed) }
 
