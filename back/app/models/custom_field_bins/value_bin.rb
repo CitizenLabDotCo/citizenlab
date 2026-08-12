@@ -38,12 +38,7 @@ module CustomFieldBins
     end
 
     def filter_by_bin(scope)
-      case custom_field.input_type
-      when 'checkbox'
-        filter_by_answer_value(scope, "(value #>> '{}')::boolean in (?)", values)
-      when 'linear_scale', 'rating', 'sentiment_linear_scale'
-        filter_by_answer_value(scope, "(value #>> '{}')::integer in (?)", values)
-      end
+      AnswerableFilter.new(custom_field, scope).eq(values.first)
     end
 
     def self.supports_custom_field?(custom_field)

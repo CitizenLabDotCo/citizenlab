@@ -30,6 +30,7 @@ module InputTypeStrategy
       answers.where("value != '[]'::jsonb")
     end
 
+    # Equality for a set answer means the option is selected, whatever else is.
     def answers_eq(answers, value)
       answers.where('value ? :value', value: value)
     end
