@@ -65,10 +65,10 @@ class CustomFieldService
   def delete_custom_field_values(field)
     case field.resource_type
     when 'User'
-      delete_key_from_values(User.all, field.key)
-      delete_key_from_values(Idea.all, UserFieldsInFormService.prefix_key(field.key))
+      delete_keys_from_values(User.all, keys_with_companions(field.key))
+      delete_keys_from_values(Idea.all, keys_with_companions(UserFieldsInFormService.prefix_key(field.key)))
     when 'CustomForm'
-      delete_key_from_values(form_inputs(field.resource), field.key)
+      delete_keys_from_values(form_inputs(field.resource), keys_with_companions(field.key))
     end
   end
 
@@ -174,11 +174,16 @@ class CustomFieldService
     end
   end
 
-  def delete_key_from_values(scope, key)
+  def keys_with_companions(key)
+    [key, "#{key}_other", "#{key}_follow_up"]
+  end
+
+  def delete_keys_from_values(scope, keys)
+    keys_sql = keys.map { |key| "'#{key}'" }.join(', ')
     scope
-      .where("custom_field_values ? '#{key}'")
-      .update_all("custom_field_values = custom_field_values - '#{key}'")
-    CustomFieldAnswer.where(answerable: scope, key: key).delete_all
+      .where("custom_field_values ?| array[#{keys_sql}]")
+      .update_all("custom_field_values = custom_field_values - array[#{keys_sql}]::text[]")
+    CustomFieldAnswer.where(answerable: scope, key: keys).delete_all
   end
 
   # *** text ***

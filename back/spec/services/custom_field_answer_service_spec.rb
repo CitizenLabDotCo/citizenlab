@@ -6,13 +6,19 @@ RSpec.describe CustomFieldAnswerService do
   describe 'syncing on save' do
     let!(:field) { create(:custom_field, key: 'pet') }
 
-    it 'creates answers when custom_field_values is written' do
-      user = create(:user, custom_field_values: { 'pet' => 'cat', 'pet_other' => 'A ferret' })
+    it 'creates answers when custom_field_values is written, without a custom field for unknown keys' do
+      user = create(:user, custom_field_values: { 'pet' => 'cat', 'unknown_key' => 'x' })
 
       answers = user.custom_field_answers.index_by(&:key)
-      expect(answers.keys).to match_array %w[pet pet_other]
       expect(answers['pet']).to have_attributes(custom_field_id: field.id, value: 'cat')
-      expect(answers['pet_other']).to have_attributes(custom_field_id: nil, value: 'A ferret')
+      expect(answers['unknown_key']).to have_attributes(custom_field_id: nil, value: 'x')
+    end
+
+    it 'links _other and _follow_up companion keys to their parent field' do
+      user = create(:user, custom_field_values: { 'pet' => 'other', 'pet_other' => 'A ferret' })
+
+      expect(user.custom_field_answers.find_by(key: 'pet_other'))
+        .to have_attributes(custom_field_id: field.id, value: 'A ferret')
     end
 
     it 'updates and deletes answers when custom_field_values changes' do
@@ -54,11 +60,15 @@ RSpec.describe CustomFieldAnswerService do
       project = create(:project)
       form = create(:custom_form, participation_context: project)
       form_field = create(:custom_field, resource: form, key: 'pet')
-      idea = create(:idea, project: project, custom_field_values: { 'pet' => 'cat', 'u_pet' => 'dog', 'u_unknown' => 'x' })
+      idea = create(:idea, project: project, custom_field_values: {
+        'pet' => 'cat', 'pet_follow_up' => 'why', 'u_pet' => 'dog', 'u_pet_other' => 'A hamster', 'u_unknown' => 'x'
+      })
 
       answers = idea.custom_field_answers.index_by(&:key)
       expect(answers['pet']).to have_attributes(custom_field_id: form_field.id, value: 'cat')
+      expect(answers['pet_follow_up']).to have_attributes(custom_field_id: form_field.id, value: 'why')
       expect(answers['u_pet']).to have_attributes(custom_field_id: field.id, value: 'dog')
+      expect(answers['u_pet_other']).to have_attributes(custom_field_id: field.id, value: 'A hamster')
       expect(answers['u_unknown']).to have_attributes(custom_field_id: nil, value: 'x')
     end
   end
