@@ -230,6 +230,7 @@ SKILL
     echo '# sample plan body' > plans/sample-plan.md
     echo '# plans folder README — should be excluded from the symlink mirror' > plans/README.md
     echo '{}' > settings.json
+    echo '{ "mcpServers": {} }' > .mcp.json
     echo '# private overlay README' > .claude-readme.md
     echo 'private repo own README' > README.md
     # `-c user.email=...` sets the value just for this one git command,
@@ -320,6 +321,11 @@ assert_symlink_to "$PUBLIC/.claude/settings.json"              "../../private/se
 # is renamed to `README.md` when it lands under .claude/. This makes the
 # README appear at the conventional location in the public repo's view.
 assert_symlink_to "$PUBLIC/.claude/README.md"                  "../../private/.claude-readme.md"                 ".claude/README.md → private .claude-readme.md"
+
+# Special case: `.mcp.json` lands at the repo root (where Claude Code
+# discovers project-scope MCP servers), not under .claude/.
+assert_symlink_to "$PUBLIC/.mcp.json"                          "../private/.mcp.json"                            "root .mcp.json → private"
+assert_path_missing "$PUBLIC/.claude/.mcp.json"                ".mcp.json not mirrored under .claude/ (lives at repo root instead)"
 
 
 # ----------------------------------------------------------------------------
@@ -590,6 +596,29 @@ run_mode --relink || fail "--relink after dangling symlink should succeed"
 assert_path_missing "$PUBLIC/.claude/commands/test.md" "--relink removes the dangling symlink"
 run_check_capture
 assert_eq "$CHECK_STATUS" "0" "after --relink (dangling): --check passes again"
+
+
+# ----------------------------------------------------------------------------
+# Test: the root .mcp.json symlink sits outside .claude/, so it has its own
+# drift paths. A missing symlink (overlay has the file, root link gone) is
+# detected and healed by --relink; a dangling one (file deleted from the
+# overlay) is detected and removed by --relink.
+# ----------------------------------------------------------------------------
+rm "$PUBLIC/.mcp.json"
+run_check_capture
+assert_eq "$CHECK_STATUS" "1" "missing root .mcp.json: --check exits 1"
+assert_contains "$CHECK_OUT" "not materialized" "missing root .mcp.json: --check names the drift"
+run_mode --relink || fail "--relink after missing .mcp.json should succeed"
+assert_symlink_to "$PUBLIC/.mcp.json" "../private/.mcp.json" "--relink recreates the root .mcp.json symlink"
+
+rm "$PRIVATE/.mcp.json"
+run_check_capture
+assert_eq "$CHECK_STATUS" "1" "dangling root .mcp.json: --check exits 1"
+assert_contains "$CHECK_OUT" "dangling" "dangling root .mcp.json: --check names the drift"
+run_mode --relink || fail "--relink after overlay .mcp.json removal should succeed"
+assert_path_missing "$PUBLIC/.mcp.json" "--relink removes the stale root .mcp.json symlink"
+run_check_capture
+assert_eq "$CHECK_STATUS" "0" "after --relink (.mcp.json): --check passes again"
 
 
 # ----------------------------------------------------------------------------
