@@ -142,6 +142,17 @@ assert_exit_code "$(attempt_commit)" "1" "blocks commit when a file under .claud
 
 
 # ----------------------------------------------------------------------------
+# Test: blocks commit when the root .mcp.json is staged. Like CLAUDE.md,
+# it's a gitignored symlink into the private overlay (team-shared MCP
+# config) and should never be committed.
+# ----------------------------------------------------------------------------
+setup_test_repo
+echo '{ "mcpServers": {} }' > "$REPO/.mcp.json"
+( cd "$REPO" && git add -f .mcp.json )
+assert_exit_code "$(attempt_commit)" "1" "blocks commit when .mcp.json is staged"
+
+
+# ----------------------------------------------------------------------------
 # Test: `git commit --no-verify` bypasses the hook. We test this not
 # because we want to encourage it but because it's a documented escape
 # valve for genuine emergencies and we want to confirm it still works
