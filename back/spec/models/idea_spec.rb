@@ -457,6 +457,18 @@ RSpec.describe Idea do
       expect(idea.slug).to be_present
     end
 
+    it 'generates a slug from the sanitized title, not the raw one' do
+      idea = create(:idea, slug: nil, title_multiloc: { 'en' => '<b>Bold</b> idea' })
+      expect(idea.title_multiloc['en']).to eq 'Bold idea'
+      expect(idea.slug).to eq 'bold-idea'
+    end
+
+    it 'does not leak a stripped payload into the slug' do
+      idea = create(:idea, slug: nil, title_multiloc: { 'en' => '<img src=x onerror=alert(1)>hi' })
+      expect(idea.slug).not_to include('onerror')
+      expect(idea.slug).not_to include('img')
+    end
+
     it 'generates a slug when there is no current phase' do
       now = Time.now
       project = create(:project)
