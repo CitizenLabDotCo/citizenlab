@@ -744,6 +744,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": {
+    "state": "verified",
+    "verified_at": "2026-08-11T14:35:04.966400Z",
+    "verified_by": "Jelena"
+  },
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -6834,6 +6839,11 @@
     "verified_at": "2026-07-23T09:51:33.450048Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": {
+    "state": "verified",
+    "verified_at": "2026-08-11T14:34:54.071396Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Authentication.signUpOrLogIn": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -6933,6 +6943,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": {
+    "state": "verified",
+    "verified_at": "2026-08-11T14:34:54.071396Z",
+    "verified_by": "Jelena"
   },
   "app.containers.CampaignsConsentForm.ally_categoryLabel": {
     "state": "verified",
@@ -13118,6 +13133,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.errors.file_too_large": {
+    "state": "verified",
+    "verified_at": "2026-08-11T14:34:54.071396Z",
+    "verified_by": "Jelena"
   },
   "app.errors.first_name_blank": {
     "state": "verified",
