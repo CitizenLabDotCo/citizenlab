@@ -20,19 +20,32 @@ describe MachineTranslations::MachineTranslation do
       expect(mt.translation).not_to include('<img')
     end
 
-    # The two cases below prove the allowlist is derived from the source field: an idea body
-    # permits links, a comment body (mention-only) does not.
+    it 'leaves ampersands in a title translation as plain text' do
+      mt = create(:machine_translation, attribute_name: 'title_multiloc', translation: 'Poisson & frites')
+      expect(mt.translation).to eq 'Poisson & frites'
+    end
+
     it 'keeps links in an idea body translation (idea body allowlist)' do
       mt = create(:machine_translation, attribute_name: 'body_multiloc', translation: '<a href="https://good.example">x</a>')
       expect(mt.translation).to include('href="https://good.example"')
     end
 
-    it 'strips links from a comment body translation (comment mention-only allowlist)' do
+    # A comment body allows mentions only, but `Comment#sanitize_body_multiloc` linkifies after
+    # sanitizing - so its stored bodies do contain anchors, and a translation of one must keep them.
+    it 'keeps linkified URLs in a comment body translation' do
       comment = create(:comment)
       mt = create(:machine_translation, translatable: comment, attribute_name: 'body_multiloc',
-        translation: '<p>hi</p><a href="https://evil.example">x</a><img src=y onerror=alert(1)>')
+        translation: '<p>Voir <a href="https://example.com" target="_blank" rel="noreferrer noopener nofollow">https://example.com</a> ici</p>')
+      expect(mt.translation).to include('href="https://example.com"')
+    end
+
+    it 'rewrites a spoofed anchor in a comment body translation to its visible text' do
+      comment = create(:comment)
+      mt = create(:machine_translation, translatable: comment, attribute_name: 'body_multiloc',
+        translation: '<p>hi</p><a href="https://evil.example">https://google.example</a><img src=y onerror=alert(1)>')
       expect(mt.translation).not_to include('onerror')
-      expect(mt.translation).not_to include('<a ')
+      expect(mt.translation).not_to include('evil.example')
+      expect(mt.translation).to include('href="https://google.example"')
     end
   end
 end

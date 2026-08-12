@@ -6,6 +6,10 @@ class SanitizationService
 
   EDITOR_STRUCTURE_TAGS = %w[div p h2 h3 ol ul].freeze
 
+  # Strip/decode passes allowed before `strip_to_plain_text` gives up and returns the escaped
+  # form. Each pass peels one layer of entity encoding; real text settles in 1-3.
+  PLAIN_TEXT_PASSES = 5
+
   SANITIZER = Rails::Html::SafeListSanitizer.new
 
   private_constant :SANITIZER
@@ -74,6 +78,30 @@ class SanitizationService
   # @return [String] The text with it's content being transformed into links.
   def linkify(html)
     Rinku.auto_link(html, :all, 'target="_blank" rel="noreferrer noopener nofollow"', nil, Rinku::AUTOLINK_SHORT_DOMAINS)
+  end
+
+  # Reduces text to plain text: no markup, and no entity encoding of the text that survives.
+  #
+  # `full_sanitizer` re-serializes the text nodes it keeps, so on its own it entity-encodes
+  # every `&`, `<` and `>` - turning "Fish & chips" into "Fish &amp; chips". Decoding after
+  # each pass keeps plain text intact; repeating until the value settles stops an encoded
+  # payload (`&lt;script&gt;`) from surviving by hiding one decode behind another.
+  #
+  # @param text [String] Text that may contain markup.
+  # @return [String] The text with all markup removed.
+  def strip_to_plain_text(text)
+    full_sanitizer = ActionView::Base.full_sanitizer
+
+    PLAIN_TEXT_PASSES.times do
+      decoded = CGI.unescapeHTML(full_sanitizer.sanitize(text))
+      return decoded if decoded == text
+
+      text = decoded
+    end
+
+    # Only reachable for pathologically nested encodings. Fall back to the escaped form,
+    # which is inert wherever it is rendered.
+    full_sanitizer.sanitize(text)
   end
 
   def html_with_content?(text_or_html)

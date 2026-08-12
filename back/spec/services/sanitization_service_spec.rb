@@ -449,4 +449,30 @@ describe SanitizationService do
       expect(output).to eq '<p><a href="mailto:hello@citizenlab.co" target="_blank" rel="noreferrer noopener nofollow">hello@citizenlab.co</a></p>'
     end
   end
+
+  describe 'strip_to_plain_text' do
+    it 'removes markup' do
+      expect(service.strip_to_plain_text('<b>Bold</b> idea')).to eq 'Bold idea'
+    end
+
+    it 'does not entity-encode the text that survives' do
+      expect(service.strip_to_plain_text('Fish & chips: budget > 100 < 200')).to eq 'Fish & chips: budget > 100 < 200'
+    end
+
+    it 'is idempotent' do
+      once = service.strip_to_plain_text('<b>Fish</b> & chips')
+      expect(service.strip_to_plain_text(once)).to eq once
+    end
+
+    it 'neutralises a payload hidden behind entity encoding' do
+      output = service.strip_to_plain_text('&lt;img src=x onerror=alert(1)&gt;hi')
+      expect(output).not_to include('onerror')
+      expect(output).not_to include('<img')
+    end
+
+    it 'leaves no parsable tag even for deeply nested encodings' do
+      output = service.strip_to_plain_text('&amp;amp;amp;amp;amp;lt;script&amp;amp;amp;amp;amp;gt;')
+      expect(output).not_to match(/<[a-zA-Z]/)
+    end
+  end
 end
