@@ -32,7 +32,20 @@ if [ -n "$CLAUDE_CHANGES" ]; then
   exit 1
 fi
 
-# 3. Chain to existing .git/hooks/pre-commit (e.g. husky's prettier check) so we don't disable it.
+# 3. Block the root .mcp.json from being staged. It's a gitignored symlink
+#    into the private overlay (team-shared MCP config) materialized by
+#    bin/setup-claude — committing it would leak overlay content.
+MCP_CHANGES="$(echo "$STAGED" | grep -E '^\.mcp\.json$' || true)"
+if [ -n "$MCP_CHANGES" ]; then
+  echo "ERROR: refusing to commit .mcp.json:" >&2
+  echo "$MCP_CHANGES" | sed 's/^/  /' >&2
+  echo "The root .mcp.json is a gitignored symlink managed by bin/setup-claude;" >&2
+  echo "edit the MCP config in the citizenlab-claude private overlay instead." >&2
+  echo "Bypass with --no-verify only if you really mean it." >&2
+  exit 1
+fi
+
+# 4. Chain to existing .git/hooks/pre-commit (e.g. husky's prettier check) so we don't disable it.
 if [ -x .git/hooks/pre-commit ]; then
   exec .git/hooks/pre-commit "$@"
 fi
