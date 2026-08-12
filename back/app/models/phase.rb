@@ -437,8 +437,7 @@ class Phase < ApplicationRecord
     @previous_phase_end_at_updated = true
   end
 
-  # Titles are plain text, but a changed title reaches an HTML render path: the admin management
-  # feed renders each changed multiloc attribute as raw HTML. So strip all markup.
+  # Titles are plain text, but the admin management feed renders a changed title as raw HTML.
   def sanitize_title_multiloc
     self.title_multiloc = SanitizationService.new.strip_multiloc_to_plain_text(title_multiloc)
   end

@@ -61,8 +61,6 @@ describe 'single_use:purge_stored_xss rake task' do
     end
   end
 
-  # The admin management feed renders a changed title_multiloc as raw HTML, so a moderator-editable
-  # title is a carrier too - on every model whose title can reach that feed.
   context 'a project, phase or folder title carrying HTML' do
     let!(:project) { store_raw(create(:project), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>hi' }) }
     let!(:phase) { store_raw(create(:phase), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>hi' }) }

@@ -88,8 +88,8 @@ class Project < ApplicationRecord
   before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
   before_validation :set_visible_to, on: :create
-  # `prepend: true` so this runs before `Sluggable`'s `generate_slug`, which is registered on
-  # `ApplicationRecord` and would otherwise build the slug from the raw title.
+  # `prepend: true` puts this before `Sluggable#generate_slug` (registered on `ApplicationRecord`),
+  # which would otherwise build the slug from the raw title.
   before_validation :sanitize_title_multiloc, if: -> { title_multiloc && title_multiloc_changed? }, prepend: true
   before_validation :strip_title
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
@@ -356,8 +356,7 @@ class Project < ApplicationRecord
     self.visible_to ||= 'public'
   end
 
-  # Titles are plain text, but a changed title reaches an HTML render path: the admin management
-  # feed renders each changed multiloc attribute as raw HTML. So strip all markup.
+  # Titles are plain text, but the admin management feed renders a changed title as raw HTML.
   def sanitize_title_multiloc
     self.title_multiloc = SanitizationService.new.strip_multiloc_to_plain_text(title_multiloc)
   end

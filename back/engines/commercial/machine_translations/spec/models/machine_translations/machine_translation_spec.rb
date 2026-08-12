@@ -30,7 +30,7 @@ describe MachineTranslations::MachineTranslation do
       expect(mt.translation).to include('href="https://good.example"')
     end
 
-    # A comment body allows mentions only, but is linkified after sanitizing - so stored bodies do
+    # A comment body allows mentions only, but linkify runs after sanitize - so stored bodies do
     # contain anchors, and a translation of one must keep them.
     it 'keeps linkified URLs in a comment body translation' do
       comment = create(:comment)
@@ -39,7 +39,6 @@ describe MachineTranslations::MachineTranslation do
       expect(mt.translation).to include('href="https://example.com"')
     end
 
-    # A field nobody wired up must not silently pick up the most permissive rule by accident.
     context 'a field with no pipeline of its own' do
       before { allow(ErrorReporter).to receive(:report_msg) }
 

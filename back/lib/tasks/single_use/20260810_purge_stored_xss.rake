@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 # Re-sanitises stored content carrying an XSS payload saved before sanitisation was added. Draft
-# idea bodies were never sanitised; idea titles and machine translations were never HTML-sanitised
-# at all. Sanitising on write does not touch rows already in the database, so this cleans the
-# stored values in place, using each field's whole write-path pipeline:
+# idea bodies were never sanitised; titles and machine translations were never HTML-sanitised at
+# all. Sanitising on write does not touch rows already in the database, so this cleans the stored
+# values in place, using each field's whole write-path pipeline:
 #
 #     Idea#body_multiloc              -> SanitizationService#sanitize_body_multiloc, Idea features
 #     Comment#body_multiloc           -> SanitizationService#sanitize_body_multiloc, Comment features
-#     MachineTranslation#translation  -> the field's own derived rule (title full-strip vs body)
+#     MachineTranslation#translation  -> the source field's own pipeline, whichever that is
 #     #title_multiloc, on each of `title_models`
 #                                     -> SanitizationService#strip_multiloc_to_plain_text
 #
@@ -25,22 +25,21 @@
 #     rake 'single_use:purge_stored_xss[execute]'          # write, all tenants
 #     rake 'single_use:purge_stored_xss[execute,foo.com]'  # write, one tenant
 namespace :single_use do
-  desc "Re-sanitise stored idea/comment/translation content carrying XSS payloads. Dry run unless passed 'execute'."
+  desc "Re-sanitise stored title/body/translation content carrying XSS payloads. Dry run unless passed 'execute'."
   task :purge_stored_xss, %i[execute host] => [:environment] do |_t, args|
     service = SanitizationService.new
 
-    # Pre-filter over a text-typed SQL expression (a jsonb cast or a text column). A row with no
-    # `<` has no tag to strip and no `&` has no entity to decode, so nothing this excludes can be
-    # changed below. Keep it this wide: matching executable keywords instead misses `<iframe src>`,
-    # `<form>`, `<object>`, `<style>` and schemes hidden behind an entity like `javas&#99;ript:`.
+    # Pre-filter over a text-typed SQL expression (a jsonb cast or a text column). No `<` means no
+    # tag to strip and no `&` means no entity to decode, so nothing this excludes could change.
+    # Keep it this wide: matching executable keywords instead would miss `<iframe src>`, `<form>`,
+    # `<object>`, `<style>` and schemes hidden behind an entity like `javas&#99;ript:`.
     rewritable = ->(col) { "(#{col} LIKE '%<%' OR #{col} LIKE '%&%')" }
 
     strip_multiloc = service.method(:strip_multiloc_to_plain_text)
 
-    # Titles are plain text everywhere, but several render as raw HTML: the admin management feed
-    # renders any changed `title_multiloc`, and the ideas feed sidebar renders a topic title. So a
-    # moderator-editable title is a stored XSS carrier too. Every model that sanitises its title on
-    # write belongs here, whether or not a sink for it is known today.
+    # Titles are plain text, but the admin management feed renders any changed `title_multiloc` as
+    # raw HTML and the ideas feed sidebar renders a topic title, so they carry payloads too. Every
+    # model that sanitises its title on write belongs here.
     title_models = [Idea, Project, Phase, ProjectFolders::Folder, InputTopic, GlobalTopic, DefaultInputTopic].freeze
 
     affected = [] # rows for the summary: { host:, model:, attribute: }
@@ -59,8 +58,8 @@ namespace :single_use do
         affected << { host: tenant.host, model: model_label, attribute: attribute.to_s }
         record.update_columns(attribute => new_value) if script.execute?
       rescue StandardError => e
-        # `TenantScript` only rescues per tenant, and this task sweeps ten scopes per tenant. One
-        # unreadable row must not cost the nine sweeps that follow it.
+        # `TenantScript` only rescues per tenant, so without this one bad row would cost the tenant
+        # every sweep still to come.
         script.reporter.add_error(
           "#{e.class}: #{e.message}",
           context: { tenant: tenant.host, model: model_label, id: record.id, attribute: attribute.to_s }
@@ -104,8 +103,8 @@ namespace :single_use do
         Comment.where(rewritable.call('body_multiloc::text')), :body_multiloc,
         ->(value) { service.sanitize_body_multiloc(value, Comment::BODY_SANITIZE_FEATURES) }, 'Comment'
       )
-      # Machine translations pick their rule from the record's own translatable_type and
-      # attribute_name, so they reuse the model's sanitiser rather than the value-only helper.
+      # A translation's rule depends on its own translatable_type and attribute_name, so reuse the
+      # model's sanitiser rather than a value-only helper.
       MachineTranslations::MachineTranslation.where(rewritable.call('translation')).find_each do |mt|
         old_value = mt.translation
         mt.send(:sanitize_translation)

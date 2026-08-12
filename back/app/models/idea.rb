@@ -75,8 +75,8 @@ class Idea < ApplicationRecord
   PUBLICATION_STATUSES = %w[draft submitted published].freeze
   SUBMISSION_STATUSES = %w[submitted published].freeze
 
-  # SanitizationService features allowed in the body, shared with anything re-sanitizing a stored
-  # idea body (e.g. machine translations).
+  # `SanitizationService` features allowed in the body, shared with anything that re-sanitizes a
+  # stored body (e.g. machine translations).
   BODY_SANITIZE_FEATURES = %i[title alignment list decoration link image video].freeze
 
   attr_accessor :request # Non persisted attribute to store request to be used by EveryoneTrackingService
@@ -107,8 +107,8 @@ class Idea < ApplicationRecord
   has_many_text_images from: :body_multiloc
 
   before_validation :sanitize_body_multiloc, if: :body_multiloc
-  # `prepend: true` so this runs before `Sluggable`'s `generate_slug`, which is registered on
-  # `ApplicationRecord` and would otherwise build the slug from the raw title.
+  # `prepend: true` puts this before `Sluggable#generate_slug` (registered on `ApplicationRecord`),
+  # which would otherwise build the slug from the raw title.
   before_validation :sanitize_title_multiloc, if: -> { title_multiloc && title_multiloc_changed? }, prepend: true
 
   # Must appear before before_destroy
@@ -526,8 +526,7 @@ class Idea < ApplicationRecord
     end
   end
 
-  # Titles are plain text but reach HTML render paths (e.g. supportHtml in Common Ground),
-  # so strip all markup. Runs for drafts too, since draft content is rendered to admins.
+  # Titles are plain text, but Common Ground statements render one as raw HTML.
   def sanitize_title_multiloc
     self.title_multiloc = SanitizationService.new.strip_multiloc_to_plain_text(title_multiloc)
   end

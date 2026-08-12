@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-# Shared examples for a model whose `title_multiloc` is stripped to plain text on write, because
-# a title is plain text that nonetheless reaches HTML render paths.
+# Shared examples for a model whose `title_multiloc` is stripped to plain text on write.
 #
 # The stripping rule itself is specced in spec/services/sanitization_service_spec.rb; these
 # examples only assert that the model is wired to it.

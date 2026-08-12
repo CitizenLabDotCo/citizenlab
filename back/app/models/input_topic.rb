@@ -67,8 +67,7 @@ class InputTopic < ApplicationRecord
 
   private
 
-  # Titles are plain text but reach an HTML render path - the ideas feed sidebar renders a topic
-  # title as raw HTML - so strip all markup.
+  # Titles are plain text, but the ideas feed sidebar renders a topic title as raw HTML.
   def sanitize_title_multiloc
     self.title_multiloc = SanitizationService.new.strip_multiloc_to_plain_text(title_multiloc)
   end

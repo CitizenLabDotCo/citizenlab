@@ -14,7 +14,7 @@ class SanitizationService
   private_constant :SANITIZER
 
   # Sanitizes a string from malicious and unwanted input.
-  # @param sanitize [String] string input to be sanitized
+  # @param text [String] string input to be sanitized
   # @param features [Array<Symbol>] A list of allowed features
   # See {IframeScrubber, EDITOR_FEATURES} for the list of allowed tags and attributes.
   def sanitize(text, features)
@@ -79,15 +79,14 @@ class SanitizationService
     Rinku.auto_link(html, :all, 'target="_blank" rel="noreferrer noopener nofollow"', nil, Rinku::AUTOLINK_SHORT_DOMAINS)
   end
 
-  # The pipeline `Idea` and `Comment` apply to their bodies, shared so that anything reprocessing
-  # a stored body (machine translations, the stored-XSS purge) applies the same rules.
+  # The pipeline `Idea` and `Comment` apply to their bodies, shared with anything reprocessing a
+  # stored body (e.g. machine translations).
   #
-  # Sanitizing before linkifying is load-bearing, but what it buys depends on `features`. Where
-  # `:link` is absent (`Comment`), the author's anchors are dropped and rebuilt from the visible
-  # text, so an href cannot disagree with its label. Where `:link` is present (`Idea`), anchors
-  # survive as written: the href is scheme-scrubbed, but it need not match the text it labels.
+  # Sanitizing runs before linkifying, so where `features` omits `:link` (`Comment`) the author's
+  # anchors are dropped and rebuilt from the visible text, and an href cannot disagree with its
+  # label. Where `:link` is present (`Idea`) anchors survive as written, scheme-scrubbed only.
   #
-  # A nil value comes back as '' rather than nil. Long-standing behaviour - do not add a guard.
+  # A nil value comes back as '', not nil. Long-standing behaviour - do not add a guard.
   def sanitize_body(html, features)
     html = sanitize(html, features)
     html = remove_empty_trailing_tags(html)
@@ -98,10 +97,10 @@ class SanitizationService
     multiloc.transform_values { |html| sanitize_body(html, features) }
   end
 
-  # Reduces text to plain text: no markup, and no entity encoding of the text that survives.
+  # Reduces text to plain text: no markup, and no entity encoding of what survives.
   #
   # `full_sanitizer` alone entity-encodes what it keeps ("Fish & chips" -> "Fish &amp; chips"), so
-  # decode after each pass, and repeat until the value settles - otherwise a payload survives by
+  # decode after each pass and repeat until the value settles - otherwise a payload survives by
   # hiding behind its own encoding (`&lt;script&gt;`).
   def strip_to_plain_text(text)
     return nil if text.nil?
@@ -115,13 +114,11 @@ class SanitizationService
       text = decoded
     end
 
-    # More layers of encoding than we have passes (`&amp;amp;amp;amp;amp;lt;script&gt;`). Return
-    # the escaped form, which renders as literal text rather than markup.
+    # More encoding layers than passes: return the escaped form, which renders as literal text.
     full_sanitizer.sanitize(text)
   end
 
-  # The pipeline for a plain-text multiloc field, i.e. a title. Shared so that every model whose
-  # title reaches an HTML render path strips it by the same rule.
+  # `strip_to_plain_text` across a multiloc - the rule every title-bearing model shares.
   def strip_multiloc_to_plain_text(multiloc)
     multiloc.transform_values { |text| strip_to_plain_text(text) }
   end

@@ -45,8 +45,7 @@ class DefaultInputTopic < ApplicationRecord
 
   private
 
-  # These titles are copied verbatim into `InputTopic` when a project is created, so strip here
-  # too: a payload must not sit waiting in the template set.
+  # Copied into `InputTopic` on project creation, so a payload here would reach every new project.
   def sanitize_title_multiloc
     self.title_multiloc = SanitizationService.new.strip_multiloc_to_plain_text(title_multiloc)
   end
