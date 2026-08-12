@@ -130,6 +130,19 @@ RSpec.describe AnswerableFilter do
     end
   end
 
+  context 'with rating and sentiment scale fields' do
+    let_it_be(:form) { create(:custom_form, participation_context: create(:project)) }
+    let_it_be(:rating_field) { create(:custom_field_rating, resource: form, key: 'rating_q') }
+    let_it_be(:sentiment_field) { create(:custom_field_sentiment_linear_scale, resource: form, key: 'sentiment_q') }
+    let_it_be(:idea) { create(:idea, project: form.participation_context, custom_field_values: { 'rating_q' => 4, 'sentiment_q' => 2 }) }
+    let_it_be(:other_idea) { create(:idea, project: form.participation_context, custom_field_values: { 'rating_q' => 1, 'sentiment_q' => 5 }) }
+
+    it 'eq compares scale answers as integers' do
+      expect(described_class.new(rating_field, Idea).eq(4)).to contain_exactly(idea)
+      expect(described_class.new(sentiment_field, Idea).eq(2)).to contain_exactly(idea)
+    end
+  end
+
   context 'with an idea scope' do
     let_it_be(:project) { create(:project) }
     let_it_be(:form) { create(:custom_form, participation_context: project) }
