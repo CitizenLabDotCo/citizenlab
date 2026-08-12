@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class SideFxProjectService
+  # TODO: this service is getting long, we should consider splitting it up
   include SideFxHelper
 
   def before_create(project, user); end
