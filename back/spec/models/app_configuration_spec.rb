@@ -3,6 +3,28 @@
 require 'rails_helper'
 
 RSpec.describe AppConfiguration do
+  describe 'host format validation' do
+    it 'rejects a change to an invalid host' do
+      config = described_class.instance
+      config.host = 'Uppercase.example.com'
+
+      expect(config).to be_invalid
+    end
+
+    # `cl2back:clean_tenant_settings` runs on every deploy and saves the configuration of every
+    # tenant. One host that got in without passing through the model used to abort the whole
+    # task, and with it the deploy.
+    it 'does not re-check a persisted host that has not changed' do
+      config = described_class.instance
+      config.update_column(:host, 'Uppercase.example.com')
+      config.reload
+
+      config.settings['core']['organization_name'] = { 'en' => 'Changed' }
+
+      expect(config).to be_valid
+    end
+  end
+
   describe '.instance' do
     it 'is reset when the tenant is reset' do
       tenant = Tenant.current
