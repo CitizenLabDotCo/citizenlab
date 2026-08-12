@@ -29,11 +29,31 @@ RSpec.describe EmailCampaigns::Sms::BalanceService do
     let(:manual_campaign) { create(:sms_manual_campaign) }
     let(:otp_campaign) { create(:new_phone_confirmation_campaign) }
 
-    it 'splits billable deliveries over the two campaign types' do
+    it 'splits billable deliveries over the campaign types' do
       create_list(:sms_delivery, 3, campaign: manual_campaign, status: 'sent')
       create_list(:sms_delivery, 2, campaign: otp_campaign, status: 'delivered')
 
       expect(service.used_breakdown).to eq(used_otp: 2, used_manual: 3, used_other: 0)
+    end
+
+    it 'counts both phone confirmation campaigns as verification codes' do
+      create(:sms_delivery, campaign: create(:phone_confirmation_campaign), status: 'sent')
+      create(:sms_delivery, campaign: otp_campaign, status: 'sent')
+
+      expect(service.used_breakdown).to eq(used_otp: 2, used_manual: 0, used_other: 0)
+    end
+
+    it 'counts a multi-segment message once per segment' do
+      create(:sms_delivery, campaign: manual_campaign, status: 'delivered', segments_count: 3)
+      create(:sms_delivery, campaign: manual_campaign, status: 'delivered', segments_count: 2)
+
+      expect(service.used).to eq 5
+    end
+
+    it 'counts a send whose segment count is not known yet as one segment' do
+      create(:sms_delivery, campaign: manual_campaign, status: 'sent', segments_count: nil)
+
+      expect(service.used).to eq 1
     end
 
     it 'counts every status that reached the provider, not only delivered' do
@@ -57,13 +77,14 @@ RSpec.describe EmailCampaigns::Sms::BalanceService do
       expect(service.used_breakdown).to eq(used_otp: 0, used_manual: 0, used_other: 1)
     end
 
-    it 'always sums to #used' do
+    # Verification codes are reported in the breakdown, but Go Vocal absorbs them.
+    it 'leaves verification codes out of #used, counting campaigns and previews' do
       create(:sms_delivery, campaign: manual_campaign, status: 'sent')
       create(:sms_delivery, campaign: otp_campaign, status: 'sent')
       create(:sms_delivery, campaign: nil, status: 'sent')
 
-      expect(service.used_breakdown.values.sum).to eq service.used
-      expect(service.used).to eq 3
+      expect(service.used_breakdown).to eq(used_otp: 1, used_manual: 1, used_other: 1)
+      expect(service.used).to eq 2
     end
   end
 
@@ -72,6 +93,12 @@ RSpec.describe EmailCampaigns::Sms::BalanceService do
       create_list(:sms_delivery, 4, status: 'sent')
 
       expect(service.balance).to eq 996
+    end
+
+    it 'is untouched by verification codes' do
+      create_list(:sms_delivery, 4, campaign: create(:new_phone_confirmation_campaign), status: 'sent')
+
+      expect(service.balance).to eq 1000
     end
 
     it 'goes negative when the tenant oversends' do
