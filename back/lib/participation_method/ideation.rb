@@ -305,10 +305,8 @@ module ParticipationMethod
       fields
     end
 
-    # `Sluggable` registers `generate_slug` on `ApplicationRecord`, so it runs before `Idea`'s own
-    # `sanitize_title_multiloc` and sees the raw title. Strip here rather than reorder the
-    # callbacks, which would affect every sluggable model - otherwise `<b>Bold</b> idea` is stored
-    # with title "Bold idea" but slug "b-bold-b-idea".
+    # `Sluggable` registers on `ApplicationRecord`, so this runs before `Idea#sanitize_title_multiloc`
+    # and sees the raw title. Strip here rather than reorder callbacks for every sluggable model.
     def generate_slug(input)
       title = MultilocService.new.t(input.title_multiloc, input.author&.locale).presence
       title = SanitizationService.new.strip_to_plain_text(title) if title

@@ -459,8 +459,7 @@ describe SanitizationService do
       expect(output['en']).not_to include('<script>')
     end
 
-    # Long-standing behaviour from before the pipeline was extracted: a nil locale value comes
-    # back as ''. Public API responses distinguish the two, so this must not drift to nil.
+    # Public API responses distinguish '' from nil, so this must not drift.
     it 'turns a nil locale value into an empty string, not nil' do
       output = service.sanitize_body_multiloc({ 'en' => '<p>hi</p>', 'nl-NL' => nil }, %i[mention])
       expect(output).to eq({ 'en' => '<p>hi</p>', 'nl-NL' => '' })

@@ -30,8 +30,8 @@ describe MachineTranslations::MachineTranslation do
       expect(mt.translation).to include('href="https://good.example"')
     end
 
-    # A comment body allows mentions only, but `Comment#sanitize_body_multiloc` linkifies after
-    # sanitizing - so its stored bodies do contain anchors, and a translation of one must keep them.
+    # A comment body allows mentions only, but is linkified after sanitizing - so stored bodies do
+    # contain anchors, and a translation of one must keep them.
     it 'keeps linkified URLs in a comment body translation' do
       comment = create(:comment)
       mt = create(:machine_translation, translatable: comment, attribute_name: 'body_multiloc',

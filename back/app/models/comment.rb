@@ -40,8 +40,8 @@ class Comment < ApplicationRecord
   include AnonymousParticipation
   include LocationTrackableParticipation
 
-  # SanitizationService features allowed in the body. Single source of truth so that anything
-  # re-sanitizing a comment body (e.g. machine translations) can match these exactly.
+  # SanitizationService features allowed in the body, shared with anything re-sanitizing a stored
+  # comment body (e.g. machine translations).
   BODY_SANITIZE_FEATURES = %i[mention].freeze
 
   acts_as_nested_set dependent: :destroy, counter_cache: :children_count

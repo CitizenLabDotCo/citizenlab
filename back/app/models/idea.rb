@@ -75,8 +75,8 @@ class Idea < ApplicationRecord
   PUBLICATION_STATUSES = %w[draft submitted published].freeze
   SUBMISSION_STATUSES = %w[submitted published].freeze
 
-  # SanitizationService features allowed in the body. Single source of truth so that anything
-  # re-sanitizing an idea body (e.g. machine translations) can match these exactly.
+  # SanitizationService features allowed in the body, shared with anything re-sanitizing a stored
+  # idea body (e.g. machine translations).
   BODY_SANITIZE_FEATURES = %i[title alignment list decoration link image video].freeze
 
   attr_accessor :request # Non persisted attribute to store request to be used by EveryoneTrackingService

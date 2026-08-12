@@ -6,8 +6,7 @@ class SanitizationService
 
   EDITOR_STRUCTURE_TAGS = %w[div p h2 h3 ol ul].freeze
 
-  # Strip/decode passes allowed before `strip_to_plain_text` gives up and returns the escaped
-  # form. Each pass peels one layer of entity encoding; real text settles in 1-3.
+  # Each `strip_to_plain_text` pass peels one layer of entity encoding; real text settles in 1-3.
   PLAIN_TEXT_PASSES = 5
 
   SANITIZER = Rails::Html::SafeListSanitizer.new
@@ -80,20 +79,13 @@ class SanitizationService
     Rinku.auto_link(html, :all, 'target="_blank" rel="noreferrer noopener nofollow"', nil, Rinku::AUTOLINK_SHORT_DOMAINS)
   end
 
-  # The full pipeline applied to a user-authored rich-text body: sanitize, drop empty trailing
-  # tags, then linkify. The order matters and is part of the contract - sanitizing *before*
-  # linkifying is what forces an anchor's href to agree with its visible text, so an allowlist
-  # that omits `:link` still ends up with links, just never spoofed ones.
+  # The pipeline `Idea` and `Comment` apply to their bodies, shared so that anything reprocessing
+  # a stored body (machine translations, the stored-XSS purge) applies the same rules.
   #
-  # Single source of truth for `Idea`/`Comment` body handling, so anything reprocessing a stored
-  # body (machine translations, the stored-XSS purge) applies the same rules rather than its own.
+  # Sanitizing before linkifying is load-bearing: it drops the author's anchors and rebuilds them
+  # from the visible text, so an href can never disagree with its label.
   #
-  # @param html [String] Body HTML to process.
-  # @param features [Array<Symbol>] A list of allowed features.
-  # @return [String] The processed body HTML.
-  # A `nil` value comes back as `''` rather than `nil`, because `remove_empty_trailing_tags`
-  # serializes an empty document. That is long-standing behaviour the models relied on before
-  # this pipeline was extracted, so it is preserved deliberately - do not add a nil guard.
+  # A nil value comes back as '' rather than nil. Long-standing behaviour - do not add a guard.
   def sanitize_body(html, features)
     html = sanitize(html, features)
     html = remove_empty_trailing_tags(html)
@@ -106,13 +98,9 @@ class SanitizationService
 
   # Reduces text to plain text: no markup, and no entity encoding of the text that survives.
   #
-  # `full_sanitizer` re-serializes the text nodes it keeps, so on its own it entity-encodes
-  # every `&`, `<` and `>` - turning "Fish & chips" into "Fish &amp; chips". Decoding after
-  # each pass keeps plain text intact; repeating until the value settles stops an encoded
-  # payload (`&lt;script&gt;`) from surviving by hiding one decode behind another.
-  #
-  # @param text [String] Text that may contain markup.
-  # @return [String] The text with all markup removed.
+  # `full_sanitizer` alone entity-encodes what it keeps ("Fish & chips" -> "Fish &amp; chips"), so
+  # decode after each pass, and repeat until the value settles - otherwise a payload survives by
+  # hiding behind its own encoding (`&lt;script&gt;`).
   def strip_to_plain_text(text)
     full_sanitizer = ActionView::Base.full_sanitizer
 
@@ -123,8 +111,8 @@ class SanitizationService
       text = decoded
     end
 
-    # Only reachable for pathologically nested encodings. Fall back to the escaped form,
-    # which is inert wherever it is rendered.
+    # More layers of encoding than we have passes (`&amp;amp;amp;amp;amp;lt;script&gt;`). Return
+    # the escaped form, which renders as literal text rather than markup.
     full_sanitizer.sanitize(text)
   end
 

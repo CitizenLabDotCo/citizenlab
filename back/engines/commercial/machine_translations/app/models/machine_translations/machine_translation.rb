@@ -25,20 +25,13 @@ module MachineTranslations
     validates :translatable, :attribute_name, :translation, presence: true
     validates :locale_to, presence: true, inclusion: { in: CL2_SUPPORTED_LOCALES.map(&:to_s) } # , message: :unsupported_locales }
 
-    # The translation is external-provider HTML rendered raw on the front end, so sanitize it
-    # here as defence-in-depth. Rather than reproduce a set of rules that could drift, run the
-    # translation through the source field's own pipeline: a translation is then never more
-    # permissive than the text it was translated from, and never loses markup the source keeps.
+    # The translation is external-provider HTML rendered raw on the front end, so sanitize it here
+    # as defence-in-depth. Running the source field's own pipeline keeps a translation from being
+    # more permissive than the text it came from, without a second set of rules that could drift.
     before_validation :sanitize_translation, if: :translation
 
-    # Maps [translatable_type, attribute_name] to the source field's sanitization pipeline.
-    # Anything not listed is treated as plain text and fully stripped.
-    #
-    # `SanitizationService#sanitize_body` is the same pipeline `Idea` and `Comment` run on write.
-    # Its linkify step matters here: both models sanitize *before* linkifying, so their stored
-    # bodies legitimately contain Rinku anchors that an allowlist alone would strip back out.
-    #
-    # Wrapping in lambdas defers autoloading `Idea`/`Comment` until the callback runs.
+    # [translatable_type, attribute_name] -> the source field's pipeline. Anything not listed is
+    # treated as plain text. Lambdas defer autoloading `Idea`/`Comment` until the callback runs.
     SOURCE_SANITIZE_PIPELINES = {
       %w[Idea body_multiloc] => ->(html) { SanitizationService.new.sanitize_body(html, Idea::BODY_SANITIZE_FEATURES) },
       %w[Comment body_multiloc] => ->(html) { SanitizationService.new.sanitize_body(html, Comment::BODY_SANITIZE_FEATURES) }

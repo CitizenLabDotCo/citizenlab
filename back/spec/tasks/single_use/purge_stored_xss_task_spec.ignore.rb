@@ -23,8 +23,7 @@ describe 'single_use:purge_stored_xss rake task' do
     JSON.parse(File.read(report_path))
   end
 
-  # Models now sanitise on write, so a legacy payload has to be written past the callbacks, the way
-  # it was stored before the fix. `update_column` skips validations and callbacks.
+  # Models sanitise on write now, so a legacy payload has to be stored past the callbacks.
   def store_raw(record, attribute, value)
     record.update_column(attribute, value)
     record
@@ -71,9 +70,8 @@ describe 'single_use:purge_stored_xss rake task' do
     end
   end
 
-  # A comment body allows mentions only, so sanitising alone would strip the anchors that
-  # `Comment#sanitize_body_multiloc` puts there on write. Removing a payload must not cost the
-  # comment its links.
+  # A comment body allows mentions only, so sanitising alone would strip the anchors linkify puts
+  # there on write. Removing a payload must not cost the comment its links.
   context 'a comment body carrying both a payload and a link' do
     let!(:comment) do
       store_raw(create(:comment), :body_multiloc, { 'en' =>
@@ -88,8 +86,8 @@ describe 'single_use:purge_stored_xss rake task' do
     end
   end
 
-  # Payload classes the old pre-filter missed: none of these contain `on*=`, `<script`,
-  # `javascript:`, `vbscript:` or `data:text/html`, but the write path strips all of them.
+  # None of these contain an executable keyword, but the write path strips all of them - so the
+  # pre-filter has to be wide enough to find them.
   context 'payloads that carry no executable keyword' do
     {
       'iframe with a non-allowlisted src' => '<iframe src="https://evil.example"></iframe>',
