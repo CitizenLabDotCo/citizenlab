@@ -79,6 +79,10 @@ class Idea < ApplicationRecord
   # re-sanitizing an idea body (e.g. machine translations) can match these exactly.
   BODY_SANITIZE_FEATURES = %i[title alignment list decoration link image video].freeze
 
+  # Strip/decode passes allowed before `sanitize_title_multiloc` gives up and stores the
+  # escaped form. Each pass peels one layer of entity encoding; real titles settle in 1-3.
+  TITLE_SANITIZE_PASSES = 5
+
   attr_accessor :request # Non persisted attribute to store request to be used by EveryoneTrackingService
 
   slug from: proc { |idea| idea&.participation_method_on_creation&.generate_slug(idea) }
@@ -107,7 +111,7 @@ class Idea < ApplicationRecord
   has_many_text_images from: :body_multiloc
 
   before_validation :sanitize_body_multiloc, if: :body_multiloc
-  before_validation :sanitize_title_multiloc, if: :title_multiloc
+  before_validation :sanitize_title_multiloc, if: -> { title_multiloc && title_multiloc_changed? }
 
   # Must appear before before_destroy
   before_save :convert_wkt_geo_custom_field_values_to_geojson
@@ -530,10 +534,28 @@ class Idea < ApplicationRecord
   # Titles are plain text but reach HTML render paths (e.g. supportHtml in Common Ground),
   # so strip all markup. Runs for drafts too, since draft content is rendered to admins.
   def sanitize_title_multiloc
-    full_sanitizer = ActionView::Base.full_sanitizer
     title_multiloc.each do |key, value|
-      title_multiloc[key] = full_sanitizer.sanitize(value) if value
+      title_multiloc[key] = strip_title_markup(value) if value
     end
+  end
+
+  # `full_sanitizer` re-serializes the text nodes it keeps, so on its own it entity-encodes
+  # every `&`, `<` and `>` that survives - turning "Fish & chips" into "Fish &amp; chips".
+  # Decoding after each pass keeps plain text intact; repeating until the value settles stops
+  # an encoded payload (`&lt;script&gt;`) from surviving by hiding one decode behind another.
+  def strip_title_markup(value)
+    full_sanitizer = ActionView::Base.full_sanitizer
+
+    TITLE_SANITIZE_PASSES.times do
+      decoded = CGI.unescapeHTML(full_sanitizer.sanitize(value))
+      return decoded if decoded == value
+
+      value = decoded
+    end
+
+    # Only reachable for pathologically nested encodings. Fall back to the escaped form,
+    # which is inert wherever a title is rendered.
+    full_sanitizer.sanitize(value)
   end
 
   def set_submitted_at

@@ -699,6 +699,39 @@ RSpec.describe Idea do
       idea = create(:idea, publication_status: 'draft', title_multiloc: { 'en' => '<img src=x onerror=alert(1)>hi' })
       expect(idea.title_multiloc['en']).not_to include('onerror')
     end
+
+    it 'leaves ampersands and comparison operators as plain text' do
+      idea = create(:idea, title_multiloc: { 'en' => 'Fish & chips: budget > 100 < 200' })
+      expect(idea.title_multiloc['en']).to eq 'Fish & chips: budget > 100 < 200'
+    end
+
+    it 'strips markup without entity-encoding the text that survives' do
+      idea = create(:idea, title_multiloc: { 'en' => '<b>Fish</b> & chips' })
+      expect(idea.title_multiloc['en']).to eq 'Fish & chips'
+    end
+
+    it 'neutralises a payload hidden behind entity encoding' do
+      idea = create(:idea, title_multiloc: { 'en' => '&lt;img src=x onerror=alert(1)&gt;hi' })
+      expect(idea.title_multiloc['en']).not_to include('onerror')
+      expect(idea.title_multiloc['en']).not_to include('<img')
+    end
+
+    it 'is idempotent across repeated saves' do
+      idea = create(:idea, title_multiloc: { 'en' => 'Fish & chips' })
+      expect { idea.save! }.not_to change { idea.reload.title_multiloc['en'] }
+    end
+
+    it 'is not rewritten by a save that does not touch the title' do
+      idea = create(:idea)
+      # Bypass the callbacks to mimic a row stored before titles were sanitized.
+      idea.update_columns(title_multiloc: { 'en' => 'Fish & chips' })
+      idea.reload
+
+      idea.update!(budget: 123)
+
+      expect(idea.reload.title_multiloc['en']).to eq 'Fish & chips'
+      expect(idea.title_multiloc_previously_changed?).to be false
+    end
   end
 
   describe 'anonymous participation' do
