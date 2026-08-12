@@ -631,9 +631,7 @@ assert_eq "$CHECK_STATUS" "0" "after full setup: --check passes again"
 
 # ----------------------------------------------------------------------------
 # Test: commits on origin/main touching only plans/ don't count as staleness
-# (plan documents sync to main continuously; lacking the latest plans doesn't
-# make a dev's config stale), while a commit that also touches anything else
-# still does.
+# while a commit that also touches anything else still does.
 # ----------------------------------------------------------------------------
 (
   cd "$FIXTURE_WT"

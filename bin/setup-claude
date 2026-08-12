@@ -154,9 +154,6 @@ if [ "$MODE" = "check" ]; then
     fi
     if git -C "$PRIVATE_DIR" rev-parse -q --verify refs/heads/main >/dev/null 2>&1 \
        && git -C "$PRIVATE_DIR" rev-parse -q --verify refs/remotes/origin/main >/dev/null 2>&1; then
-      # Plan documents land on overlay main continuously; a dev who lacks the
-      # latest plans is not stale in any way that affects their sessions, so
-      # commits touching only plans/ don't count toward staleness.
       behind="$(git -C "$PRIVATE_DIR" rev-list --count refs/heads/main..refs/remotes/origin/main -- . ':(exclude)plans' 2>/dev/null || echo 0)"
       if [ "$behind" -gt 0 ]; then
         last="$(git -C "$PRIVATE_DIR" log -1 --format=%cs refs/heads/main 2>/dev/null || echo unknown)"
