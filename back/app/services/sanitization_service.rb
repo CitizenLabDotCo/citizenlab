@@ -91,6 +91,9 @@ class SanitizationService
   # @param html [String] Body HTML to process.
   # @param features [Array<Symbol>] A list of allowed features.
   # @return [String] The processed body HTML.
+  # A `nil` value comes back as `''` rather than `nil`, because `remove_empty_trailing_tags`
+  # serializes an empty document. That is long-standing behaviour the models relied on before
+  # this pipeline was extracted, so it is preserved deliberately - do not add a nil guard.
   def sanitize_body(html, features)
     html = sanitize(html, features)
     html = remove_empty_trailing_tags(html)
@@ -98,7 +101,7 @@ class SanitizationService
   end
 
   def sanitize_body_multiloc(multiloc, features)
-    multiloc.transform_values { |html| html ? sanitize_body(html, features) : html }
+    multiloc.transform_values { |html| sanitize_body(html, features) }
   end
 
   # Reduces text to plain text: no markup, and no entity encoding of the text that survives.
