@@ -628,8 +628,6 @@
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "لا، إلغاء",
   "app.components.formBuilder.formInputEditWarningModal.title": "تعديل نموذج الإدخال",
   "app.components.formBuilder.formInputEditWarningModal.yesContinue": "نعم، متابعة",
-  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings": "إعدادات حقوق الوصول لهذا الاستطلاع",
-  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage2": "تم تفعيل \"الحقول الديموغرافية في نموذج الاستبيان\". عند عرض نموذج الاستبيان، ستُضاف أي أسئلة ديموغرافية مُعدّة إلى صفحة جديدة قبل انتهاء الاستبيان مباشرةً. يمكن تغيير هذه الأسئلة في {accessRightsSettingsLink}.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings1": "إعدادات حقوق الوصول لهذه المرحلة",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.checkTheAccessRights1": "قم بتحديد {accessRightsSettings} لتكوين من يمكنه المشاركة في الاستطلاع، وما هي البيانات التي يتم جمعها منهم.",
   "app.components.onboarding.askFollowPreferences": "اطلب من المستخدمين متابعة المناطق أو المواضيع",

@@ -628,8 +628,6 @@
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "Ne, odustani",
   "app.components.formBuilder.formInputEditWarningModal.title": "Uredi obrazac za unos",
   "app.components.formBuilder.formInputEditWarningModal.yesContinue": "Da, nastavi",
-  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings": "postavke prava pristupa za ovu anketu",
-  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage2": "Omogućena je 'Demografska polja u anketnom obrascu'. Kada se prikaže obrazac za anketu, sva konfigurirana demografska pitanja bit će dodana na novu stranicu neposredno prije završetka ankete. Ova pitanja se mogu promijeniti u {accessRightsSettingsLink}.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings1": "postavke prava pristupa za ovu fazu",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.checkTheAccessRights1": "Označite {accessRightsSettings} kako biste konfigurirali tko može sudjelovati u anketi i koji se podaci prikupljaju od njih.",
   "app.components.onboarding.askFollowPreferences": "Zamolite korisnike da prate područja ili teme",

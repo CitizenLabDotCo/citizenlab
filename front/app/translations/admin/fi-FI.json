@@ -628,8 +628,6 @@
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "Ei, peruuta",
   "app.components.formBuilder.formInputEditWarningModal.title": "Muokkaa vastauslomaketta",
   "app.components.formBuilder.formInputEditWarningModal.yesContinue": "Kyllä, jatka",
-  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings": "tämän kyselyn käyttöoikeusasetukset",
-  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage2": "Väestötietokentät kyselylomakkeessa on käytössä. Kun kyselylomake tulee näkyviin, kaikki määritetyt demografiset kysymykset lisätään uudelle sivulle välittömästi ennen kyselyn loppua. Näitä kysymyksiä voi muuttaa kohdassa {accessRightsSettingsLink}.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings1": "tämän vaiheen käyttöoikeusasetukset",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.checkTheAccessRights1": "Valitse {accessRightsSettings} määrittääksesi, ketkä voivat osallistua kyselyyn ja mitä tietoja heiltä kerätään.",
   "app.components.onboarding.askFollowPreferences": "Pyydä käyttäjiä seuraamaan alueita tai aiheita",

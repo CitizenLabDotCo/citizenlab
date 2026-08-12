@@ -628,8 +628,6 @@
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "Nee, ofbriechen",
   "app.components.formBuilder.formInputEditWarningModal.title": "Input-Formulaire beaarbechten",
   "app.components.formBuilder.formInputEditWarningModal.yesContinue": "Jo, weiderfueren",
-  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings": "Astellunge vun den Zougrëffsrechter fir dës Ëmfro",
-  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage2": "\"Demographesch Felder am Emfroformular\" ass aktivéiert. Wann den Emfroformular ugewisen gëtt, ginn all konfiguréiert demographesch Froen op enger neier Säit direkt virum Enn vun der Emfro bäigefüügt. Dës Froe kënnen an den {accessRightsSettingsLink} geännert ginn.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings1": "Astellunge vun den Zougrëffsrechter fir dës Phas",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.checkTheAccessRights1": "Kuckt d' {accessRightsSettings} fir ze konfiguréieren, wie bei der Ëmfro matmaache kann a wéi eng Date vun hinne gesammelt ginn.",
   "app.components.onboarding.askFollowPreferences": "Benotzer froen, Beräicher oder Themen ze verfollegen",
