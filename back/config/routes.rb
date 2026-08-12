@@ -272,6 +272,8 @@ Rails.application.routes.draw do
       resources :projects, concerns: %i[followable], defaults: { followable: 'Project', parent_param: :project_id } do
         concerns :file_attachable, attachable_type: 'Project'
 
+        get 'spotlight' => 'project_spotlights#show'
+
         resources :events, only: %i[new create]
         resources :input_topics, shallow: true do
           patch 'move', on: :member
