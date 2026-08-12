@@ -3,7 +3,7 @@
 class AnswerableFilter
   def initialize(custom_field, scope)
     @custom_field = custom_field
-    @scope = scope
+    @scope = scope.all
   end
 
   def present
