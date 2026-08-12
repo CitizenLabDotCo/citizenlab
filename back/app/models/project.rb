@@ -224,6 +224,10 @@ class Project < ApplicationRecord
     self
   end
 
+  def spotlight_summary
+    ProjectSpotlightSummaryService.new(self).call
+  end
+
   def permission_scope
     TimelineService.new.current_phase(self)
   end
