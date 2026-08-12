@@ -51,21 +51,28 @@ describe('Verification modal', () => {
       });
     });
 
-    // Skipped: intermittently hits the same post-authentication redirect race
-    // documented in ideation_permissions/idea_posting_permissions.cy.ts. After
-    // completing sign-up + verification in the modal, the queued success
-    // action — the redirect to the idea form — is silently dropped and the
-    // user stays on the project page, so the pathname assertion below fails.
-    // This is not a test problem: the race is real and can hit users on slow
-    // connections. Re-enable together with that test once the auth race is
-    // fixed.
-    it.skip('lets you participate if you meet group conditions', () => {
+    it('lets you participate if you meet group conditions', () => {
       cy.clearCookies();
       cy.visit('/projects/verified-charlie-poeple-project');
       cy.acceptCookies();
 
+      // Opening the modal mounts EmailFlowStart, which fires a phase
+      // requirements request with the anonymous token. Let it settle before
+      // signing up: the post-authentication decision point reads the same
+      // query key through queryClient.fetchQuery, which joins an in-flight
+      // fetch rather than refetching it. Joining the anonymous request makes
+      // the step machine evaluate pre-login requirements and silently drop the
+      // queued redirect to the idea form, so the assertion below fails.
+      // Only the phase context is gated here — the global-context requirements
+      // are prefetched at app boot and use a different query key.
+      cy.intercept('GET', '**/phases/*/permissions/*/requirements*').as(
+        'anonymousRequirements'
+      );
+
       cy.get('.e2e-idea-button').first().find('button').should('exist');
       cy.get('.e2e-idea-button').first().find('button').click({ force: true });
+
+      cy.wait('@anonymousRequirements');
 
       // The email should start with charlie, otherwise we won't be
       // in the right group

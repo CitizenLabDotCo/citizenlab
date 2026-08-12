@@ -139,25 +139,28 @@ describe('idea posting restricted to a group', () => {
     cy.url().should('not.include', `/ideas/new`);
   });
 
-  // Skipped: this test intermittently catches a real product race
-  // in the authentication flow, not a test problem. When the auth modal
-  // opens, useAuthenticationRequirements fires a requirements request with
-  // the ANONYMOUS token. If that request is still in flight when the user
-  // completes sign-in, the post-sign-in decision-point read
-  // (getAuthenticationRequirements -> queryClient.fetchQuery) dedupes into
-  // it — react-query joins an in-flight fetch before consulting staleness,
-  // and the invalidateQueryCache() in signIn() marks caches stale but does
-  // not abort in-flight requests. The step machine then evaluates PRE-LOGIN
-  // requirements: checkMissingData / group criteria misroute the permitted
-  // user (access-denied or an onboarding step) and the queued success action
-  // — the redirect to the idea form — is silently dropped. Fails ~1 in 30
-  // runs under CI contention; real users on slow connections can hit the
-  // same window. Re-enable once the product race is fixed (e.g. keying the
-  // decision-point requirements read by the current identity, or aborting
-  // in-flight anonymous requests at every identity change).
-  it.skip('redirects users after authentication to form page if they are permitted', () => {
+  it('redirects users after authentication to form page if they are permitted', () => {
     cy.visit(`projects/${projectSlug}`);
+
+    // Opening the modal mounts EmailFlowStart, which fires a phase
+    // requirements request with the ANONYMOUS token. Let it settle before
+    // logging in: the post-sign-in decision-point read
+    // (getAuthenticationRequirements -> queryClient.fetchQuery) joins an
+    // in-flight fetch instead of refetching, because invalidateQueryCache()
+    // in signIn() marks caches stale but does not abort requests already on
+    // the wire. Joining the anonymous request makes the step machine evaluate
+    // PRE-LOGIN requirements, so checkMissingData / group criteria misroute
+    // the permitted user and the queued redirect to the idea form is dropped.
+    // Gating the request closes the window this test can hit; the underlying
+    // product race is still open.
+    cy.intercept('GET', '**/phases/*/permissions/*/requirements*').as(
+      'anonymousRequirements'
+    );
+
     cy.dataCy('e2e-ideation-start-idea-button').should('be.visible').click();
+
+    cy.wait('@anonymousRequirements');
+
     logIn(cy, permittedUserEmail, permittedUserPassword);
     cy.url().should('include', `/ideas/new`);
   });
