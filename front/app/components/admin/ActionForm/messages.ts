@@ -54,4 +54,18 @@ export default defineMessages({
     id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.requireIdentityVerification',
     defaultMessage: 'Require identity verification from all participants',
   },
+  // Short forms of the three security requirements above, for the summary chips
+  // and the collapsed section summary, where the full sentences don't fit.
+  confirmedEmail: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail',
+    defaultMessage: 'Confirmed email',
+  },
+  confirmedPhone: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhone',
+    defaultMessage: 'Confirmed phone',
+  },
+  verification: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.verification',
+    defaultMessage: 'Verification',
+  },
 });

@@ -40,6 +40,10 @@ const PHONE_LABEL = 'Require confirmed phone number from all participants';
 const VERIFICATION_LABEL =
   'Require identity verification from all participants';
 
+// The collapsed summary uses shortened versions of the row labels.
+const PHONE_SUMMARY = 'Confirmed phone';
+const VERIFICATION_SUMMARY = 'Verification';
+
 // An authentication method that may sign someone up without an email address.
 const emaillessAuthMethod = {
   id: 'method-fake_sso',
@@ -136,7 +140,7 @@ describe('<SecurityRequirementsSection />', () => {
       await userEvent.click(screen.getByText('Security requirements'));
 
       expect(
-        screen.getByText(`${PHONE_LABEL} · ${VERIFICATION_LABEL}`)
+        screen.getByText(`${PHONE_SUMMARY} · ${VERIFICATION_SUMMARY}`)
       ).toBeInTheDocument();
     });
 

@@ -58,19 +58,17 @@ const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
 
   // Only what is both offered here and actually switched on belongs in the
   // collapsed summary.
+  // The summary uses the short labels — the full sentences below are too long
+  // to line up on one row.
   const activeLabels: string[] = [];
   if (showEmail && attributes.require_confirmed_email) {
-    activeLabels.push(formatMessage(actionFormMessages.requireConfirmedEmail));
+    activeLabels.push(formatMessage(actionFormMessages.confirmedEmail));
   }
   if (showPhone && attributes.require_confirmed_phone_number) {
-    activeLabels.push(
-      formatMessage(actionFormMessages.requireConfirmedPhoneNumber)
-    );
+    activeLabels.push(formatMessage(actionFormMessages.confirmedPhone));
   }
   if (showVerification && attributes.require_verification) {
-    activeLabels.push(
-      formatMessage(actionFormMessages.requireIdentityVerification)
-    );
+    activeLabels.push(formatMessage(actionFormMessages.verification));
   }
 
   if (!showEmail && !showPhone && !showVerification) {

@@ -93,7 +93,7 @@ export const buildSummary = (
   if (attributes.require_confirmed_email) {
     chips.push({
       key: 'email',
-      label: formatMessage(messages.requireConfirmedEmail),
+      label: formatMessage(messages.confirmedEmail),
       icon: 'email',
       tone: 'access',
     });
@@ -101,7 +101,7 @@ export const buildSummary = (
   if (attributes.require_confirmed_phone_number) {
     chips.push({
       key: 'phone',
-      label: formatMessage(messages.requireConfirmedPhoneNumber),
+      label: formatMessage(messages.confirmedPhone),
       icon: 'tablet',
       tone: 'access',
     });
@@ -109,7 +109,7 @@ export const buildSummary = (
   if (attributes.require_verification) {
     chips.push({
       key: 'verification',
-      label: formatMessage(messages.requireIdentityVerification),
+      label: formatMessage(messages.verification),
       icon: 'shield-checkered',
       tone: 'access',
     });

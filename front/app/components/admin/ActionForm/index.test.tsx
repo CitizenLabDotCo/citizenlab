@@ -160,9 +160,7 @@ describe('<ActionForm />', () => {
       // Body is not rendered when collapsed; only the summary chips are.
       expect(screen.queryByText('What we collect')).not.toBeInTheDocument();
       expect(screen.getByText('Sign-in required')).toBeInTheDocument();
-      expect(
-        screen.getByText('Require confirmed email from all participants')
-      ).toBeInTheDocument();
+      expect(screen.getByText('Confirmed email')).toBeInTheDocument();
       expect(screen.getByText('Name')).toBeInTheDocument();
       expect(screen.getByText('Password')).toBeInTheDocument();
     });
