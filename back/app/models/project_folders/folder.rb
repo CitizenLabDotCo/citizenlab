@@ -31,7 +31,9 @@ module ProjectFolders
     include Files::FileAttachable
     include PgSearch::Model
 
-    slug from: proc { |folder| folder.title_multiloc&.values&.find(&:present?) }
+    # `Sluggable` registers on `ApplicationRecord`, so this runs before `sanitize_title_multiloc`
+    # and sees the raw title. Strip here rather than reorder callbacks for every sluggable model.
+    slug from: proc { |folder| SanitizationService.new.strip_to_plain_text(folder.title_multiloc&.values&.find(&:present?)) }
 
     belongs_to :space, optional: true
 
@@ -53,6 +55,7 @@ module ProjectFolders
 
     before_validation :sanitize_description_multiloc, if: :description_multiloc
     before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
+    before_validation :sanitize_title_multiloc, if: -> { title_multiloc && title_multiloc_changed? }
     before_validation :strip_title
     before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
 
@@ -112,6 +115,12 @@ module ProjectFolders
         %i[decoration link]
       )
       self.description_preview_multiloc = service.remove_multiloc_empty_trailing_tags description_preview_multiloc
+    end
+
+    # Titles are plain text, but a changed title reaches an HTML render path: the admin management
+    # feed renders each changed multiloc attribute as raw HTML. So strip all markup.
+    def sanitize_title_multiloc
+      self.title_multiloc = SanitizationService.new.strip_multiloc_to_plain_text(title_multiloc)
     end
 
     def strip_title

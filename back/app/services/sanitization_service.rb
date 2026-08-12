@@ -102,6 +102,8 @@ class SanitizationService
   # decode after each pass, and repeat until the value settles - otherwise a payload survives by
   # hiding behind its own encoding (`&lt;script&gt;`).
   def strip_to_plain_text(text)
+    return nil if text.nil?
+
     full_sanitizer = ActionView::Base.full_sanitizer
 
     PLAIN_TEXT_PASSES.times do
@@ -114,6 +116,12 @@ class SanitizationService
     # More layers of encoding than we have passes (`&amp;amp;amp;amp;amp;lt;script&gt;`). Return
     # the escaped form, which renders as literal text rather than markup.
     full_sanitizer.sanitize(text)
+  end
+
+  # The pipeline for a plain-text multiloc field, i.e. a title. Shared so that every model whose
+  # title reaches an HTML render path strips it by the same rule.
+  def strip_multiloc_to_plain_text(multiloc)
+    multiloc.transform_values { |text| strip_to_plain_text(text) }
   end
 
   def html_with_content?(text_or_html)

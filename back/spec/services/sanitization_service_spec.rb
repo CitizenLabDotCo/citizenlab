@@ -486,9 +486,22 @@ describe SanitizationService do
       expect(output).not_to include('<img')
     end
 
+    it 'returns nil for nil, like sanitize does' do
+      expect(service.strip_to_plain_text(nil)).to be_nil
+    end
+
     it 'leaves no parsable tag even for deeply nested encodings' do
       output = service.strip_to_plain_text('&amp;amp;amp;amp;amp;lt;script&amp;amp;amp;amp;amp;gt;')
       expect(output).not_to match(/<[a-zA-Z]/)
+    end
+  end
+
+  describe 'strip_multiloc_to_plain_text' do
+    it 'strips every locale and keeps a nil value nil' do
+      output = service.strip_multiloc_to_plain_text(
+        { 'en' => '<b>Fish</b> & chips', 'fr-BE' => '<img src=x onerror=alert(1)>frites', 'nl-NL' => nil }
+      )
+      expect(output).to eq({ 'en' => 'Fish & chips', 'fr-BE' => 'frites', 'nl-NL' => nil })
     end
   end
 end

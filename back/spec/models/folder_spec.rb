@@ -36,6 +36,29 @@ RSpec.describe ProjectFolders::Folder do
       folder.update!(title_multiloc: { 'en' => 'my folder', 'nl-BE' => 'mijn map', 'fr-BE' => 'mon dossier' })
       expect(folder.slug).to eq 'my-folder'
     end
+
+    it 'generates a slug from the sanitized title, not the raw one' do
+      folder.update!(title_multiloc: { 'en' => '<b>Bold</b> folder' })
+      expect(folder.slug).to eq 'bold-folder'
+    end
+  end
+
+  describe '#sanitize_title_multiloc' do
+    it 'strips HTML tags from the title' do
+      folder = create(:project_folder, title_multiloc: { 'en' => '<b>bold</b> folder' })
+      expect(folder.title_multiloc['en']).to eq 'bold folder'
+    end
+
+    it 'strips script/event-handler payloads from the title' do
+      folder = create(:project_folder, title_multiloc: { 'en' => '<img src=x onerror=alert(1)>hi' })
+      expect(folder.title_multiloc['en']).not_to include('onerror')
+      expect(folder.title_multiloc['en']).not_to include('<img')
+    end
+
+    it 'leaves ampersands as plain text' do
+      folder = create(:project_folder, title_multiloc: { 'en' => 'Fish & chips' })
+      expect(folder.title_multiloc['en']).to eq 'Fish & chips'
+    end
   end
 
   describe '#sanitize_description_multiloc' do

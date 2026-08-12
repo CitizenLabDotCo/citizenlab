@@ -527,10 +527,7 @@ class Idea < ApplicationRecord
   # Titles are plain text but reach HTML render paths (e.g. supportHtml in Common Ground),
   # so strip all markup. Runs for drafts too, since draft content is rendered to admins.
   def sanitize_title_multiloc
-    service = SanitizationService.new
-    title_multiloc.each do |key, value|
-      title_multiloc[key] = service.strip_to_plain_text(value) if value
-    end
+    self.title_multiloc = SanitizationService.new.strip_multiloc_to_plain_text(title_multiloc)
   end
 
   def set_submitted_at

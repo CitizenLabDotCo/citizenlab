@@ -136,6 +136,35 @@ RSpec.describe Project do
     end
   end
 
+  describe 'title sanitizer' do
+    it 'strips HTML tags from the title' do
+      project = create(:project, title_multiloc: { 'en' => '<b>bold</b> project' })
+      expect(project.title_multiloc['en']).to eq 'bold project'
+    end
+
+    it 'strips script/event-handler payloads from the title' do
+      project = create(:project, title_multiloc: { 'en' => '<img src=x onerror=alert(1)>hi' })
+      expect(project.title_multiloc['en']).not_to include('onerror')
+      expect(project.title_multiloc['en']).not_to include('<img')
+    end
+
+    it 'leaves ampersands as plain text' do
+      project = create(:project, title_multiloc: { 'en' => 'Fish & chips' })
+      expect(project.title_multiloc['en']).to eq 'Fish & chips'
+    end
+
+    it 'is not rewritten by a save that does not touch the title' do
+      project = create(:project)
+      # Bypass the callbacks to mimic a row stored before titles were sanitized.
+      project.update_columns(title_multiloc: { 'en' => 'Fish & chips' })
+      project.reload
+
+      project.update!(description_multiloc: { 'en' => '<p>updated</p>' })
+
+      expect(project.reload.title_multiloc['en']).to eq 'Fish & chips'
+    end
+  end
+
   describe 'destroy' do
     it 'can be realised' do
       project = create(:project_xl)
@@ -171,6 +200,11 @@ RSpec.describe Project do
     it 'generates a slug based on the first non-empty locale' do
       project.update!(title_multiloc: { 'en' => 'my project', 'nl-BE' => 'mijn project', 'fr-BE' => 'mon projet' })
       expect(project.slug).to eq 'my-project'
+    end
+
+    it 'generates a slug from the sanitized title, not the raw one' do
+      project.update!(title_multiloc: { 'en' => '<b>Bold</b> project' })
+      expect(project.slug).to eq 'bold-project'
     end
   end
 

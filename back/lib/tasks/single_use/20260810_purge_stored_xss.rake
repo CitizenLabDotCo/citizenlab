@@ -6,9 +6,10 @@
 # stored values in place, using each field's whole write-path pipeline:
 #
 #     Idea#body_multiloc              -> SanitizationService#sanitize_body_multiloc, Idea features
-#     Idea#title_multiloc             -> SanitizationService#strip_to_plain_text
 #     Comment#body_multiloc           -> SanitizationService#sanitize_body_multiloc, Comment features
 #     MachineTranslation#translation  -> the field's own derived rule (title full-strip vs body)
+#     #title_multiloc, on Idea, Project, Phase and Folder
+#                                     -> SanitizationService#strip_multiloc_to_plain_text
 #
 # `custom_field_values` is intentionally out of scope: those answers render as escaped text on the
 # front end (not an HTML sink), so they cannot execute and do not need purging.
@@ -34,9 +35,7 @@ namespace :single_use do
     # `<form>`, `<object>`, `<style>` and schemes hidden behind an entity like `javas&#99;ript:`.
     rewritable = ->(col) { "(#{col} LIKE '%<%' OR #{col} LIKE '%&%')" }
 
-    strip_multiloc = lambda do |multiloc|
-      multiloc.transform_values { |value| value ? service.strip_to_plain_text(value) : value }
-    end
+    strip_multiloc = service.method(:strip_multiloc_to_plain_text)
 
     affected = [] # rows for the summary: { host:, model:, attribute: }
 
@@ -71,7 +70,7 @@ namespace :single_use do
     TenantScript.run(
       'purge_stored_xss',
       args: args,
-      description: 'purging stored XSS payloads from idea, comment and translation content',
+      description: 'purging stored XSS payloads from idea, comment, title and translation content',
       tenants: Tenant.not_deleted,
       summary: summary
     ) do |tenant, script|
@@ -80,11 +79,15 @@ namespace :single_use do
         Idea.where(rewritable.call('body_multiloc::text')), :body_multiloc,
         ->(value) { service.sanitize_body_multiloc(value, Idea::BODY_SANITIZE_FEATURES) }, 'Idea'
       )
-      purge.call(
-        tenant, script,
-        Idea.where(rewritable.call('title_multiloc::text')), :title_multiloc,
-        strip_multiloc, 'Idea'
-      )
+      # Titles are plain text everywhere, but the admin management feed renders a changed
+      # `title_multiloc` as raw HTML - so a moderator-editable title is a stored XSS carrier too.
+      [Idea, Project, Phase, ProjectFolders::Folder].each do |model|
+        purge.call(
+          tenant, script,
+          model.where(rewritable.call('title_multiloc::text')), :title_multiloc,
+          strip_multiloc, model.name
+        )
+      end
       purge.call(
         tenant, script,
         Comment.where(rewritable.call('body_multiloc::text')), :body_multiloc,
