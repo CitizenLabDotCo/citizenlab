@@ -55,4 +55,30 @@ describe Surveys::SurveyPhase do
       expect(pc).to be_invalid
     end
   end
+
+  describe 'validate survey_embed_url for Microsoft Forms' do
+    def microsoft_forms_phase(url)
+      build(:phase, participation_method: 'survey', survey_service: 'microsoft_forms', survey_embed_url: url)
+    end
+
+    it 'validates URLs on the cloud.microsoft domain' do
+      expect(microsoft_forms_phase('https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=HKGaPV')).to be_valid
+      expect(microsoft_forms_phase('https://forms.cloud.microsoft/e/HKGaPV')).to be_valid
+    end
+
+    it 'validates URLs on the legacy office.com and microsoft.com domains' do
+      expect(microsoft_forms_phase('https://forms.office.com/Pages/ResponsePage.aspx?id=HKGaPV')).to be_valid
+      expect(microsoft_forms_phase('https://forms.office.com/e/HKGaPV')).to be_valid
+      expect(microsoft_forms_phase('https://forms.microsoft.com/e/HKGaPV')).to be_valid
+    end
+
+    it 'invalidates URLs on other domains' do
+      expect(microsoft_forms_phase('https://forms.example.com/e/HKGaPV')).to be_invalid
+      expect(microsoft_forms_phase('http://forms.cloud.microsoft/e/HKGaPV')).to be_invalid
+    end
+
+    it 'invalidates URLs that only mention a Microsoft host outside the host part' do
+      expect(microsoft_forms_phase('https://evil.example/?next=forms.office.com/e/HKGaPV')).to be_invalid
+    end
+  end
 end
