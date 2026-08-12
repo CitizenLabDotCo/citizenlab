@@ -628,6 +628,8 @@
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "Ne, atšaukti",
   "app.components.formBuilder.formInputEditWarningModal.title": "Redaguoti įvesties formą",
   "app.components.formBuilder.formInputEditWarningModal.yesContinue": "Taip, tęsti",
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings2": "šio etapo prieigos teisių nustatymai",
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage3": "„Demografiniai laukai formoje“ yra įjungta. Kai forma rodoma, bet kokie sukonfigūruoti demografiniai klausimai bus pridėti naujame puslapyje prieš pat formos pabaigą. Šiuos klausimus galima pakeisti {accessRightsSettingsLink}.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings1": "šio etapo prieigos teisių nustatymai",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.checkTheAccessRights1": "Patikrinkite {accessRightsSettings} , kad nustatytumėte, kas gali dalyvauti apklausoje ir kokie duomenys iš jų renkami.",
   "app.components.onboarding.askFollowPreferences": "Paprašykite naudotojų sekti sritis arba temas",

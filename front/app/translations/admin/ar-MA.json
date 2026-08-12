@@ -628,6 +628,8 @@
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "لا، إلغاء",
   "app.components.formBuilder.formInputEditWarningModal.title": "تعديل استمارة المشاركة",
   "app.components.formBuilder.formInputEditWarningModal.yesContinue": "إيه، كمل",
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings2": "إعدادات حقوق الوصول لهذه المرحلة",
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage3": "تم تفعيل خيار 'الحقول الديموغرافية في الاستمارة'. عند عرض الاستمارة، ستُضاف أي أسئلة ديموغرافية تم إعدادها في صفحة جديدة مباشرة قبل نهاية الاستمارة. يمكن تغيير هذه الأسئلة في {accessRightsSettingsLink}.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings1": "إعدادات حقوق الوصول لهذه المرحلة",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.checkTheAccessRights1": "تحقق من {accessRightsSettings} لتحديد من يمكنه المشاركة في الاستطلاع، وما هي البيانات التي يتم جمعها منهم.",
   "app.components.onboarding.askFollowPreferences": "اطلب من المستخدمين متابعة مناطق أو مواضيع معينة",

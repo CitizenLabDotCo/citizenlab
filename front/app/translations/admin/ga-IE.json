@@ -628,6 +628,8 @@
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "Níl, cealaigh",
   "app.components.formBuilder.formInputEditWarningModal.title": "Cuir an fhoirm ionchuir in eagar",
   "app.components.formBuilder.formInputEditWarningModal.yesContinue": "Tá, lean ar aghaidh",
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings2": "socruithe cearta rochtana don chéim seo",
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage3": "Tá 'Réimsí déimeagrafacha san fhoirm' cumasaithe. Nuair a thaispeántar an fhoirm, cuirfear aon cheisteanna déimeagrafacha cumraithe leis ar leathanach nua díreach roimh dheireadh na foirme. Is féidir na ceisteanna seo a athrú sna {accessRightsSettingsLink}.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings1": "socruithe cearta rochtana don chéim seo",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.checkTheAccessRights1": "Seiceáil {accessRightsSettings} chun a chumrú cé a fhéadfaidh páirt a ghlacadh sa suirbhé, agus cén sonraí a bhailítear uathu.",
   "app.components.onboarding.askFollowPreferences": "Iarr ar úsáideoirí réimsí nó topaicí a leanúint",

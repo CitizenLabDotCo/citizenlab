@@ -628,6 +628,8 @@
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "Όχι, ακύρωση",
   "app.components.formBuilder.formInputEditWarningModal.title": "Επεξεργασία φόρμας εισαγωγής",
   "app.components.formBuilder.formInputEditWarningModal.yesContinue": "Ναι, συνέχεια",
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings2": "ρυθμίσεις δικαιωμάτων πρόσβασης για αυτήν τη φάση",
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage3": "Η επιλογή «Δημογραφικά πεδία στη φόρμα» είναι ενεργοποιημένη. Όταν εμφανίζεται η φόρμα, τυχόν ρυθμισμένες δημογραφικές ερωτήσεις θα προστίθενται σε μια νέα σελίδα αμέσως πριν από το τέλος της φόρμας. Αυτές οι ερωτήσεις μπορούν να αλλάξουν στις {accessRightsSettingsLink}.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings1": "ρυθμίσεις δικαιωμάτων πρόσβασης για αυτήν τη φάση",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.checkTheAccessRights1": "Ελέγξτε τις {accessRightsSettings} για να ρυθμίσετε ποιος μπορεί να συμμετάσχει στην έρευνα και ποια δεδομένα συλλέγονται από αυτούς.",
   "app.components.onboarding.askFollowPreferences": "Ζητήστε από τους χρήστες να ακολουθήσουν περιοχές ή θέματα",

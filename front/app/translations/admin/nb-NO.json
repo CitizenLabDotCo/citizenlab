@@ -628,6 +628,8 @@
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "Nei, avbryt",
   "app.components.formBuilder.formInputEditWarningModal.title": "Rediger inndataskjema",
   "app.components.formBuilder.formInputEditWarningModal.yesContinue": "Ja, fortsett",
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings2": "innstillinger for tilgangsrettigheter for denne fasen",
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage3": "'Demografiske felt i skjema' er aktivert. Når skjemaet vises, vil alle konfigurerte demografiske spørsmål bli lagt til på en ny side rett før slutten av skjemaet. Disse spørsmålene kan endres i {accessRightsSettingsLink}.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings1": "innstillinger for tilgangsrettigheter for denne fasen",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.checkTheAccessRights1": "Sjekk {accessRightsSettings} for å konfigurere hvem som kan delta i undersøkelsen, og hvilke data som samles inn fra dem.",
   "app.components.onboarding.askFollowPreferences": "Be brukerne om å følge områder eller emner",

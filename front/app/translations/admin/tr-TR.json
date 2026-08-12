@@ -628,6 +628,8 @@
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "Hayır, iptal et",
   "app.components.formBuilder.formInputEditWarningModal.title": "Giriş formunu düzenle",
   "app.components.formBuilder.formInputEditWarningModal.yesContinue": "Evet, devam et",
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings2": "bu aşama için erişim hakları ayarları",
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage3": "'Formdaki demografik alanlar' etkinleştirildi. Form görüntülendiğinde, yapılandırılmış tüm demografik sorular formun bitiminden hemen önce yeni bir sayfaya eklenecektir. Bu sorular {accessRightsSettingsLink} üzerinden değiştirilebilir.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings1": "bu aşama için erişim hakları ayarları",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.checkTheAccessRights1": "Ankete kimlerin katılabileceğini ve onlardan hangi verilerin toplanacağını yapılandırmak için {accessRightsSettings} adresini kontrol edin.",
   "app.components.onboarding.askFollowPreferences": "Kullanıcılardan alanları veya konuları takip etmelerini isteyin",

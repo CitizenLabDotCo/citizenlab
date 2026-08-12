@@ -628,6 +628,8 @@
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "Naamik, taamaatiguk",
   "app.components.formBuilder.formInputEditWarningModal.title": "Immersugassaq aaqqissuuguk",
   "app.components.formBuilder.formInputEditWarningModal.yesContinue": "Aap, ingerlagit",
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings2": "immikkoortumut uunga atuisinnaatitaanermut aaqqissuussinerit",
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage3": "'Innuttaasut pillugit immersugassami feltit' atulerpoq. Immersugassaq takutinneqaraangat innuttaasut pillugit apeqqutit aaqqissuunneqarsimasut immersugassap naggataa sioqqutitsiarlugu quppernermi nutaami ilanngunneqassapput. Apeqqutit taakku uani allanngortinneqarsinnaapput {accessRightsSettingsLink}.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings1": "immikkoortumut uunga isersinnaanermut piumasaqaatit",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.checkTheAccessRights1": "{accessRightsSettings} misissukkit kikkut misissuinermi peqataasinnaanersut aamma paasissutissat suut katersorneqassanersut aalajangersarniarlugu.",
   "app.components.onboarding.askFollowPreferences": "Atuisut sumiiffinnik imaluunniit sammisanik malinnaaqquneqarlik",

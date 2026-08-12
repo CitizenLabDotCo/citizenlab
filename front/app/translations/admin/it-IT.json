@@ -628,6 +628,8 @@
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "No, annulla",
   "app.components.formBuilder.formInputEditWarningModal.title": "Modifica modulo del contributo",
   "app.components.formBuilder.formInputEditWarningModal.yesContinue": "Sì, continua",
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings2": "impostazioni dei diritti di accesso per questa fase",
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage3": "L'opzione 'Campi demografici nel modulo' è abilitata. Quando il modulo viene visualizzato, le domande demografiche configurate verranno aggiunte in una nuova pagina immediatamente prima della fine del modulo. Queste domande possono essere modificate nelle {accessRightsSettingsLink}.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings1": "impostazioni dei diritti di accesso per questa fase",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.checkTheAccessRights1": "Controlla le {accessRightsSettings} per configurare chi può partecipare al sondaggio e quali dati vengono raccolti.",
   "app.components.onboarding.askFollowPreferences": "Chiedi agli utenti di seguire aree o argomenti",

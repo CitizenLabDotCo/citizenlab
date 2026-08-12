@@ -628,6 +628,8 @@
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "Não, cancelar",
   "app.components.formBuilder.formInputEditWarningModal.title": "Editar formulário de entrada",
   "app.components.formBuilder.formInputEditWarningModal.yesContinue": "Sim, continuar",
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings2": "configurações de direitos de acesso para esta fase",
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage3": "'Campos demográficos no formulário' está ativado. Quando o formulário for exibido, quaisquer perguntas demográficas configuradas serão adicionadas em uma nova página imediatamente antes do final do formulário. Essas perguntas podem ser alteradas nas {accessRightsSettingsLink}.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings1": "configurações de direitos de acesso para esta fase",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.checkTheAccessRights1": "Verifique o endereço {accessRightsSettings} para configurar quem pode participar da pesquisa e quais dados são coletados.",
   "app.components.onboarding.askFollowPreferences": "Pedir aos utilizadores para seguirem áreas ou tópicos",
