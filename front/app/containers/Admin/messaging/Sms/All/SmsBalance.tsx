@@ -41,7 +41,7 @@ const SmsBalance = (boxMarginProps: BoxMarginProps) => {
 
   if (!smsBalance) return null;
 
-  const { purchased, used, balance, used_otp, used_manual, used_other } =
+  const { purchased, used, balance, used_manual, used_other } =
     smsBalance.data.attributes;
 
   const isLow = balance < LOW_BALANCE_THRESHOLD;
@@ -80,7 +80,6 @@ const SmsBalance = (boxMarginProps: BoxMarginProps) => {
       )}
 
       <Box display="flex" gap="48px" mt="24px" flexWrap="wrap">
-        <BreakdownItem label={messages.smsBalanceUsedOtp} value={used_otp} />
         <BreakdownItem
           label={messages.smsBalanceUsedManual}
           value={used_manual}

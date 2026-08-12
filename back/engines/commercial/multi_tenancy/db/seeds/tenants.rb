@@ -427,7 +427,7 @@ module MultiTenancy
             },
             sms: {
               enabled: false,
-              allowed: false,
+              allowed: false
             },
             sms_login: {
               enabled: false,
