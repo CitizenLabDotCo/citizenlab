@@ -630,6 +630,42 @@ assert_eq "$CHECK_STATUS" "0" "after full setup: --check passes again"
 
 
 # ----------------------------------------------------------------------------
+# Test: commits on origin/main touching only plans/ don't count as staleness
+# (plan documents sync to main continuously; lacking the latest plans doesn't
+# make a dev's config stale), while a commit that also touches anything else
+# still does.
+# ----------------------------------------------------------------------------
+(
+  cd "$FIXTURE_WT"
+  git checkout -q main
+  mkdir -p plans
+  echo "a plan" > plans/some-feature-branch.md
+  git -c user.email=t@t -c user.name=t -c core.excludesFile=/dev/null add -A
+  git -c user.email=t@t -c user.name=t commit -q -m "Update plan"
+  git push -q origin main
+)
+rm -f "$PRIVATE/.git/setup-claude-check-fetch-stamp"
+run_check_capture fetch
+assert_eq "$CHECK_STATUS" "0" "plans-only drift: --check exits 0"
+(
+  cd "$FIXTURE_WT"
+  git checkout -q main
+  echo "more plan" > plans/some-feature-branch.md
+  echo "real config change" > real-config-change.txt
+  git -c user.email=t@t -c user.name=t -c core.excludesFile=/dev/null add -A
+  git -c user.email=t@t -c user.name=t commit -q -m "Plan update plus real change"
+  git push -q origin main
+)
+rm -f "$PRIVATE/.git/setup-claude-check-fetch-stamp"
+run_check_capture fetch
+assert_eq "$CHECK_STATUS" "1" "mixed plans+config drift: --check exits 1"
+assert_contains "$CHECK_OUT" "behind origin/main" "mixed drift: --check names the drift"
+run_setup
+run_check_capture
+assert_eq "$CHECK_STATUS" "0" "after full setup: --check passes again (plans tests)"
+
+
+# ----------------------------------------------------------------------------
 # Test: no remote + no clone (dev without overlay access) exits 0 so the
 # check stays silent for them; remote set + clone missing exits 1; --relink
 # with no clone is a hard error.
