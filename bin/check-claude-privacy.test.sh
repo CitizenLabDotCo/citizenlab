@@ -149,6 +149,21 @@ assert_exit_code "$(run_check_in "$REPO")" "1" "fails when a file under .claude/
 
 
 # ----------------------------------------------------------------------------
+# Test: fails when the root .mcp.json is tracked. Like CLAUDE.md, it's a
+# gitignored symlink into the private overlay (team-shared MCP config)
+# materialized by bin/setup-claude — tracking it would leak overlay content.
+# ----------------------------------------------------------------------------
+setup_test_repo
+echo '{ "mcpServers": {} }' > "$REPO/.mcp.json"
+(
+  cd "$REPO"
+  git add -f .mcp.json
+  git -c user.email=t@t -c user.name=t commit -q -m "mcp leak"
+)
+assert_exit_code "$(run_check_in "$REPO")" "1" "fails when a tracked .mcp.json exists at root"
+
+
+# ----------------------------------------------------------------------------
 # Test: passes when a CLAUDE.md exists on disk but is NOT tracked by git.
 # This is the normal post-`make claude-setup` state in citizenlab —
 # CLAUDE.md files exist as gitignored symlinks. The check has to look
