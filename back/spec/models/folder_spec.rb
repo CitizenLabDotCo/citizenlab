@@ -43,23 +43,7 @@ RSpec.describe ProjectFolders::Folder do
     end
   end
 
-  describe '#sanitize_title_multiloc' do
-    it 'strips HTML tags from the title' do
-      folder = create(:project_folder, title_multiloc: { 'en' => '<b>bold</b> folder' })
-      expect(folder.title_multiloc['en']).to eq 'bold folder'
-    end
-
-    it 'strips script/event-handler payloads from the title' do
-      folder = create(:project_folder, title_multiloc: { 'en' => '<img src=x onerror=alert(1)>hi' })
-      expect(folder.title_multiloc['en']).not_to include('onerror')
-      expect(folder.title_multiloc['en']).not_to include('<img')
-    end
-
-    it 'leaves ampersands as plain text' do
-      folder = create(:project_folder, title_multiloc: { 'en' => 'Fish & chips' })
-      expect(folder.title_multiloc['en']).to eq 'Fish & chips'
-    end
-  end
+  it_behaves_like 'a sanitized title_multiloc', factory: :project_folder
 
   describe '#sanitize_description_multiloc' do
     it 'sanitizes script tags in the description' do

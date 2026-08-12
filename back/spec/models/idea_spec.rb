@@ -11,6 +11,7 @@ RSpec.describe Idea do
 
   it_behaves_like 'claimable_participation'
   it_behaves_like 'location_trackable_participation'
+  it_behaves_like 'a sanitized title_multiloc', factory: :idea
 
   describe 'title validation' do
     it 'requires title_multiloc when title_multiloc_required? is true' do
@@ -696,36 +697,9 @@ RSpec.describe Idea do
       expect(idea.title_multiloc['en']).to eq 'my fantastic idea'
     end
 
-    it 'strips HTML tags from the title' do
-      idea = create(:idea, title_multiloc: { 'en' => '<b>bold</b> idea' })
-      expect(idea.title_multiloc['en']).to eq 'bold idea'
-    end
-
-    it 'strips script/event-handler payloads from the title' do
-      idea = create(:idea, title_multiloc: { 'en' => '<img src=x onerror=alert(1)>hi' })
-      expect(idea.title_multiloc['en']).not_to include('<img')
-      expect(idea.title_multiloc['en']).not_to include('onerror')
-    end
-
     it 'strips HTML from a draft title (stored XSS regression)' do
       idea = create(:idea, publication_status: 'draft', title_multiloc: { 'en' => '<img src=x onerror=alert(1)>hi' })
       expect(idea.title_multiloc['en']).not_to include('onerror')
-    end
-
-    it 'leaves ampersands and comparison operators as plain text' do
-      idea = create(:idea, title_multiloc: { 'en' => 'Fish & chips: budget > 100 < 200' })
-      expect(idea.title_multiloc['en']).to eq 'Fish & chips: budget > 100 < 200'
-    end
-
-    it 'strips markup without entity-encoding the text that survives' do
-      idea = create(:idea, title_multiloc: { 'en' => '<b>Fish</b> & chips' })
-      expect(idea.title_multiloc['en']).to eq 'Fish & chips'
-    end
-
-    it 'neutralises a payload hidden behind entity encoding' do
-      idea = create(:idea, title_multiloc: { 'en' => '&lt;img src=x onerror=alert(1)&gt;hi' })
-      expect(idea.title_multiloc['en']).not_to include('onerror')
-      expect(idea.title_multiloc['en']).not_to include('<img')
     end
 
     it 'is idempotent across repeated saves' do

@@ -136,23 +136,9 @@ RSpec.describe Project do
     end
   end
 
+  it_behaves_like 'a sanitized title_multiloc', factory: :project
+
   describe 'title sanitizer' do
-    it 'strips HTML tags from the title' do
-      project = create(:project, title_multiloc: { 'en' => '<b>bold</b> project' })
-      expect(project.title_multiloc['en']).to eq 'bold project'
-    end
-
-    it 'strips script/event-handler payloads from the title' do
-      project = create(:project, title_multiloc: { 'en' => '<img src=x onerror=alert(1)>hi' })
-      expect(project.title_multiloc['en']).not_to include('onerror')
-      expect(project.title_multiloc['en']).not_to include('<img')
-    end
-
-    it 'leaves ampersands as plain text' do
-      project = create(:project, title_multiloc: { 'en' => 'Fish & chips' })
-      expect(project.title_multiloc['en']).to eq 'Fish & chips'
-    end
-
     it 'is not rewritten by a save that does not touch the title' do
       project = create(:project)
       # Bypass the callbacks to mimic a row stored before titles were sanitized.

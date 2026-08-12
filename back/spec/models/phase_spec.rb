@@ -39,23 +39,7 @@ RSpec.describe Phase do
     end
   end
 
-  describe 'title sanitizer' do
-    it 'strips HTML tags from the title' do
-      phase = create(:phase, title_multiloc: { 'en' => '<b>bold</b> phase' })
-      expect(phase.title_multiloc['en']).to eq 'bold phase'
-    end
-
-    it 'strips script/event-handler payloads from the title' do
-      phase = create(:phase, title_multiloc: { 'en' => '<img src=x onerror=alert(1)>hi' })
-      expect(phase.title_multiloc['en']).not_to include('onerror')
-      expect(phase.title_multiloc['en']).not_to include('<img')
-    end
-
-    it 'leaves ampersands as plain text' do
-      phase = create(:phase, title_multiloc: { 'en' => 'Fish & chips' })
-      expect(phase.title_multiloc['en']).to eq 'Fish & chips'
-    end
-  end
+  it_behaves_like 'a sanitized title_multiloc', factory: :phase
 
   describe 'timing model validation' do
     it 'fails when the duration is less than 1 day' do
