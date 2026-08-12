@@ -7,6 +7,8 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
+import UserFieldsInFormNotice from '../../_shared/components/UserFieldsInFormNotice';
+
 import messages from './messages';
 
 // ideationConfig is also used for participation method 'voting'
@@ -61,6 +63,9 @@ export const ideationConfig: FormBuilderConfig = {
         </Warning>
       </Box>
     );
+  },
+  getUserFieldsNotice: () => {
+    return <UserFieldsInFormNotice />;
   },
 };
 
@@ -117,5 +122,8 @@ export const proposalsConfig: FormBuilderConfig = {
         </Warning>
       </Box>
     );
+  },
+  getUserFieldsNotice: () => {
+    return <UserFieldsInFormNotice />;
   },
 };
