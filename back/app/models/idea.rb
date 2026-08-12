@@ -107,7 +107,9 @@ class Idea < ApplicationRecord
   has_many_text_images from: :body_multiloc
 
   before_validation :sanitize_body_multiloc, if: :body_multiloc
-  before_validation :sanitize_title_multiloc, if: -> { title_multiloc && title_multiloc_changed? }
+  # `prepend: true` so this runs before `Sluggable`'s `generate_slug`, which is registered on
+  # `ApplicationRecord` and would otherwise build the slug from the raw title.
+  before_validation :sanitize_title_multiloc, if: -> { title_multiloc && title_multiloc_changed? }, prepend: true
 
   # Must appear before before_destroy
   before_save :convert_wkt_geo_custom_field_values_to_geojson

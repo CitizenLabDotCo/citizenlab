@@ -47,9 +47,7 @@ class Project < ApplicationRecord
 
   VISIBLE_TOS = %w[public groups admins].freeze
 
-  # `Sluggable` registers on `ApplicationRecord`, so this runs before `sanitize_title_multiloc` and
-  # sees the raw title. Strip here rather than reorder callbacks for every sluggable model.
-  slug from: proc { |project| SanitizationService.new.strip_to_plain_text(project.title_multiloc&.values&.find(&:present?)) }
+  slug from: proc { |project| project.title_multiloc&.values&.find(&:present?) }
 
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
@@ -90,7 +88,9 @@ class Project < ApplicationRecord
   before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
   before_validation :set_visible_to, on: :create
-  before_validation :sanitize_title_multiloc, if: -> { title_multiloc && title_multiloc_changed? }
+  # `prepend: true` so this runs before `Sluggable`'s `generate_slug`, which is registered on
+  # `ApplicationRecord` and would otherwise build the slug from the raw title.
+  before_validation :sanitize_title_multiloc, if: -> { title_multiloc && title_multiloc_changed? }, prepend: true
   before_validation :strip_title
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify

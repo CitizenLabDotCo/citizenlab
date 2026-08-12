@@ -31,9 +31,7 @@ module ProjectFolders
     include Files::FileAttachable
     include PgSearch::Model
 
-    # `Sluggable` registers on `ApplicationRecord`, so this runs before `sanitize_title_multiloc`
-    # and sees the raw title. Strip here rather than reorder callbacks for every sluggable model.
-    slug from: proc { |folder| SanitizationService.new.strip_to_plain_text(folder.title_multiloc&.values&.find(&:present?)) }
+    slug from: proc { |folder| folder.title_multiloc&.values&.find(&:present?) }
 
     belongs_to :space, optional: true
 
@@ -55,7 +53,9 @@ module ProjectFolders
 
     before_validation :sanitize_description_multiloc, if: :description_multiloc
     before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
-    before_validation :sanitize_title_multiloc, if: -> { title_multiloc && title_multiloc_changed? }
+    # `prepend: true` so this runs before `Sluggable`'s `generate_slug`, which is registered on
+    # `ApplicationRecord` and would otherwise build the slug from the raw title.
+    before_validation :sanitize_title_multiloc, if: -> { title_multiloc && title_multiloc_changed? }, prepend: true
     before_validation :strip_title
     before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
 

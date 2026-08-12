@@ -58,6 +58,13 @@ namespace :single_use do
         )
         affected << { host: tenant.host, model: model_label, attribute: attribute.to_s }
         record.update_columns(attribute => new_value) if script.execute?
+      rescue StandardError => e
+        # `TenantScript` only rescues per tenant, and this task sweeps ten scopes per tenant. One
+        # unreadable row must not cost the nine sweeps that follow it.
+        script.reporter.add_error(
+          "#{e.class}: #{e.message}",
+          context: { tenant: tenant.host, model: model_label, id: record.id, attribute: attribute.to_s }
+        )
       end
     end
 
@@ -111,6 +118,11 @@ namespace :single_use do
         )
         affected << { host: tenant.host, model: 'MachineTranslation', attribute: 'translation' }
         mt.update_columns(translation: new_value) if script.execute?
+      rescue StandardError => e
+        script.reporter.add_error(
+          "#{e.class}: #{e.message}",
+          context: { tenant: tenant.host, model: 'MachineTranslation', id: mt.id, attribute: 'translation' }
+        )
       end
     end
   end

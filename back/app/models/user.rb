@@ -497,12 +497,15 @@ class User < ApplicationRecord
     self.bio_multiloc = service.linkify_multiloc(bio_multiloc)
   end
 
+  # Names are plain text. A bare `full_sanitizer` pass entity-encodes what it keeps ("O'Brien" ->
+  # "O&#39;Brien") and leaves a payload hiding behind its own encoding intact, so use the shared
+  # plain-text pipeline instead.
   def sanitize_first_name
-    self.first_name = ActionView::Base.full_sanitizer.sanitize(first_name)
+    self.first_name = SanitizationService.new.strip_to_plain_text(first_name)
   end
 
   def sanitize_last_name
-    self.last_name = ActionView::Base.full_sanitizer.sanitize(last_name)
+    self.last_name = SanitizationService.new.strip_to_plain_text(last_name)
   end
 
   def email_or_new_email_changed?

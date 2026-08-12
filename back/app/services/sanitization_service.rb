@@ -82,8 +82,10 @@ class SanitizationService
   # The pipeline `Idea` and `Comment` apply to their bodies, shared so that anything reprocessing
   # a stored body (machine translations, the stored-XSS purge) applies the same rules.
   #
-  # Sanitizing before linkifying is load-bearing: it drops the author's anchors and rebuilds them
-  # from the visible text, so an href can never disagree with its label.
+  # Sanitizing before linkifying is load-bearing, but what it buys depends on `features`. Where
+  # `:link` is absent (`Comment`), the author's anchors are dropped and rebuilt from the visible
+  # text, so an href cannot disagree with its label. Where `:link` is present (`Idea`), anchors
+  # survive as written: the href is scheme-scrubbed, but it need not match the text it labels.
   #
   # A nil value comes back as '' rather than nil. Long-standing behaviour - do not add a guard.
   def sanitize_body(html, features)
