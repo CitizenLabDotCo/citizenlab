@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
@@ -20,7 +22,7 @@ const fetchBackgroundTasks = (analysisId?: string) => {
 
 const useAnalysisBackgroundTasks = (analysisId?: string) => {
   const queryClient = useQueryClient();
-  return useQuery<
+  const result = useQuery<
     IBackgroundTasks,
     CLErrors,
     IBackgroundTasks,
@@ -28,23 +30,32 @@ const useAnalysisBackgroundTasks = (analysisId?: string) => {
   >({
     queryKey: backgroundTasksKeys.list({ analysisId }),
     queryFn: () => fetchBackgroundTasks(analysisId),
-    onSuccess: () => {
+    // Refetch every 2 seconds when tasks are active
+    refetchInterval: ({ state }) => {
+      const activeTask = state.data?.data.find((task) => {
+        return (
+          task.attributes.state === 'queued' ||
+          task.attributes.state === 'in_progress'
+        );
+      });
+      return activeTask ? 2000 : false;
+    },
+    placeholderData: undefined,
+    enabled: !!analysisId,
+  });
+
+  const { isSuccess, dataUpdatedAt } = result;
+
+  useEffect(() => {
+    if (isSuccess) {
       queryClient.invalidateQueries({ queryKey: tagsKeys.lists() });
       queryClient.invalidateQueries({ queryKey: taggingKeys.lists() });
       queryClient.invalidateQueries({ queryKey: insightsKeys.lists() });
       queryClient.invalidateQueries({ queryKey: commentsSummariesKeys.all() });
-    },
-    // Refetch every 2 seconds when tasks are active
-    refetchInterval: (data) => {
-      const activeTask = data?.data.find((task) => {
-        const { state } = task.attributes;
-        return state === 'queued' || state === 'in_progress';
-      });
-      return activeTask ? 2000 : false;
-    },
-    keepPreviousData: false,
-    enabled: !!analysisId,
-  });
+    }
+  }, [isSuccess, dataUpdatedAt, queryClient]);
+
+  return result;
 };
 
 export default useAnalysisBackgroundTasks;

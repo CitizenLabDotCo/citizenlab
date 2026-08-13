@@ -17,7 +17,7 @@ const useBasketsIdeas = (basketId?: string) => {
     queryKey: basketsIdeasKeys.item({ basketId }),
     queryFn: () => fetchBasketsIdeas({ basketId }),
     enabled: !!basketId,
-    keepPreviousData: false,
+    placeholderData: undefined,
   });
 };
 

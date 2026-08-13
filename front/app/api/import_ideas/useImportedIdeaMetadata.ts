@@ -28,7 +28,7 @@ const useImportedIdeaMetadata = (
     queryKey: importedIdeaMetadataKeys.item(queryParams),
     queryFn: () => fetchImportedIdeaMetadata(queryParams),
     enabled: !!queryParams.id,
-    keepPreviousData: false,
+    placeholderData: undefined,
   });
 };
 

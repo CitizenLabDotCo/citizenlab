@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
@@ -24,18 +26,12 @@ const fetchInProgressPhaseJobs = async (
 
 const useJobInProgressByPhase = (phaseId: string) => {
   const queryClient = useQueryClient();
-  return useQuery<IJobs | undefined, CLErrors>({
+  const result = useQuery<IJobs | undefined, CLErrors>({
     queryKey: jobsKeys.list({ phaseId }),
     queryFn: () => fetchInProgressPhaseJobs(phaseId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        // Ideally, we should only invalidate the ideas list for the current phase,
-        // but since the ideas list is not filtered by phase, we invalidate all ideas for now.
-        queryKey: ideasKeys.lists(),
-      });
-    },
-    keepPreviousData: true,
-    refetchInterval: (data) => {
+    refetchInterval: ({ state }) => {
+      const data = state.data;
+
       // Stop polling if data is undefined or if its "data" property is an empty array.
       if (!data || data.data.length === 0) {
         return false;
@@ -45,6 +41,20 @@ const useJobInProgressByPhase = (phaseId: string) => {
       return 5000;
     },
   });
+
+  const { isSuccess, dataUpdatedAt } = result;
+
+  useEffect(() => {
+    if (isSuccess) {
+      queryClient.invalidateQueries({
+        // Ideally, we should only invalidate the ideas list for the current phase,
+        // but since the ideas list is not filtered by phase, we invalidate all ideas for now.
+        queryKey: ideasKeys.lists(),
+      });
+    }
+  }, [isSuccess, dataUpdatedAt, queryClient]);
+
+  return result;
 };
 
 export default useJobInProgressByPhase;

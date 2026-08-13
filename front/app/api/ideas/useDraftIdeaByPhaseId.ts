@@ -15,12 +15,12 @@ const useDraftIdeaByPhaseId = (phaseId?: string) => {
     queryKey: ideasKeys.item({ id: phaseId }),
     queryFn: () => fetchIdea({ phaseId }),
     refetchOnWindowFocus: false,
-    keepPreviousData: false,
+    placeholderData: undefined,
   });
 };
 
 export const clearDraftIdea = (phaseId?: string) => {
-  queryClient.removeQueries(ideasKeys.item({ id: phaseId }));
+  queryClient.removeQueries({ queryKey: ideasKeys.item({ id: phaseId }) });
 };
 
 export default useDraftIdeaByPhaseId;

@@ -1,4 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
+import {
+  keepPreviousData as keepPreviousDataFn,
+  useQuery,
+} from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -15,7 +18,7 @@ const useIdeaById = (id?: string, keepPreviousData?: boolean) => {
     queryFn: () => fetchIdea({ id }),
     enabled: !!id,
     refetchOnWindowFocus: false,
-    keepPreviousData,
+    placeholderData: keepPreviousData ? keepPreviousDataFn : undefined,
   });
 };
 

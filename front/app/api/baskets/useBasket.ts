@@ -14,7 +14,7 @@ const useBasket = (id?: string) => {
     queryKey: basketsKeys.item({ id }),
     queryFn: () => fetchBasket({ id }),
     enabled: !!id,
-    keepPreviousData: false,
+    placeholderData: undefined,
   });
 };
 

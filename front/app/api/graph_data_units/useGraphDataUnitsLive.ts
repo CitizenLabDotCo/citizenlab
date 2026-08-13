@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
@@ -34,12 +34,22 @@ const useGraphDataUnitsLive = <Response extends BaseResponseData>(
     }
   }, [stringifiedQuery, queryClient, onSuccess]);
 
-  return useQuery<Response, CLErrors, Response, any>({
+  const result = useQuery<Response, CLErrors, Response, any>({
     queryKey: graphDataUnitKeys.item(parameters),
     queryFn: () => fetchGraphDataUnitsLive<Response>(parameters),
     enabled,
-    onSuccess,
   });
+
+  const onSuccessRef = useRef(onSuccess);
+  onSuccessRef.current = onSuccess;
+  const { isSuccess, dataUpdatedAt } = result;
+  useEffect(() => {
+    if (isSuccess) {
+      onSuccessRef.current?.();
+    }
+  }, [isSuccess, dataUpdatedAt]);
+
+  return result;
 };
 
 export default useGraphDataUnitsLive;

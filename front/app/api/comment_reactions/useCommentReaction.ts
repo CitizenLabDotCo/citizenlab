@@ -22,7 +22,7 @@ const useCommentReaction = (id?: string) => {
     queryKey: reactionKeys.item({ id }),
     queryFn: async () => await fetchReaction({ id }),
     enabled: !!id,
-    keepPreviousData: false,
+    placeholderData: undefined,
   });
 };
 

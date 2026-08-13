@@ -21,24 +21,28 @@ export const invalidateFollowQueries = (
   queryClient.invalidateQueries({ queryKey: meKeys.all() });
   switch (followableType) {
     case 'projects':
-      queryClient.invalidateQueries(projectsKeys.item({ id: followableId }));
+      queryClient.invalidateQueries({
+        queryKey: projectsKeys.item({ id: followableId }),
+      });
       break;
     case 'ideas':
-      queryClient.invalidateQueries(ideasKeys.item({ id: followableId }));
+      queryClient.invalidateQueries({
+        queryKey: ideasKeys.item({ id: followableId }),
+      });
       break;
     case 'project_folders':
-      queryClient.invalidateQueries(
-        projectFoldersKeys.item({ slug: followableSlug })
-      );
+      queryClient.invalidateQueries({
+        queryKey: projectFoldersKeys.item({ slug: followableSlug }),
+      });
       break;
     case 'global_topics':
-      queryClient.invalidateQueries(globalTopicsKeys.list({}));
+      queryClient.invalidateQueries({ queryKey: globalTopicsKeys.list({}) });
       break;
     case 'areas':
-      queryClient.invalidateQueries(areasKeys.lists());
-      queryClient.invalidateQueries(
-        miniProjectsKeys.list({ endpoint: 'for_areas' })
-      );
+      queryClient.invalidateQueries({ queryKey: areasKeys.lists() });
+      queryClient.invalidateQueries({
+        queryKey: miniProjectsKeys.list({ endpoint: 'for_areas' }),
+      });
       break;
     default:
       break;

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
@@ -32,12 +32,22 @@ const useAnalytics = <Response extends BaseResponseData>(
     }
   }, [stringifiedQuery, queryClient, onSuccess]);
 
-  return useQuery<Response, CLErrors, Response, any>({
+  const result = useQuery<Response, CLErrors, Response, any>({
     queryKey: analyticsKeys.item(query),
     queryFn: () => fetchAnalytics(query),
-    onSuccess,
     enabled,
   });
+
+  const onSuccessRef = useRef(onSuccess);
+  onSuccessRef.current = onSuccess;
+  const { isSuccess, dataUpdatedAt } = result;
+  useEffect(() => {
+    if (isSuccess) {
+      onSuccessRef.current?.();
+    }
+  }, [isSuccess, dataUpdatedAt]);
+
+  return result;
 };
 
 export default useAnalytics;

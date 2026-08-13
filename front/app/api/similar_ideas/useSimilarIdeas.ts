@@ -25,7 +25,7 @@ const useSimilarIdeas = (
     enabled,
     staleTime: 0,
     refetchOnWindowFocus: false,
-    keepPreviousData: false,
+    placeholderData: undefined,
   });
 };
 

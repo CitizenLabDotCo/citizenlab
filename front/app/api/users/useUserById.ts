@@ -1,4 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
+import {
+  keepPreviousData as keepPreviousDataFn,
+  useQuery,
+} from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -17,7 +20,7 @@ const useUserById = (userId?: string | null, keepPreviousData?: boolean) => {
     queryKey: usersKeys.item({ id: userId }),
     queryFn: () => fetchUserById({ id: userId }),
     enabled: !!userId,
-    keepPreviousData,
+    placeholderData: keepPreviousData ? keepPreviousDataFn : undefined,
   });
 };
 
