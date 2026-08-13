@@ -35,10 +35,7 @@ module EmailCampaigns
           # The create response status is normally `queued` (or `accepted`); fall
           # back to `queued` for any status we don't explicitly map so the delivery
           # never lands on a non-vocabulary value.
-          {
-            message_sid: message.sid,
-            status: STATUS_MAPPING.fetch(message.status, 'queued')
-          }
+          { message_sid: message.sid, status: STATUS_MAPPING.fetch(message.status, 'queued') }
         rescue ::Twilio::REST::RestError => e
           # Translate the HTTP status into one of our provider error classes so
           # callers (Sms::SendJob, Sms::SendService) can decide whether to retry.
