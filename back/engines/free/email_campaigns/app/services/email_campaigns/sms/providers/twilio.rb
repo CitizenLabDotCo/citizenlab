@@ -37,8 +37,7 @@ module EmailCampaigns
           # never lands on a non-vocabulary value.
           {
             message_sid: message.sid,
-            status: STATUS_MAPPING.fetch(message.status, 'queued'),
-            segments_count: message.num_segments
+            status: STATUS_MAPPING.fetch(message.status, 'queued')
           }
         rescue ::Twilio::REST::RestError => e
           # Translate the HTTP status into one of our provider error classes so
@@ -47,16 +46,6 @@ module EmailCampaigns
         rescue ::Twilio::REST::TwilioError => e
           # Non-HTTP failures (e.g. connection errors) carry no status code and
           # are treated as permanent.
-          raise ProviderError, e.message
-        end
-
-        # The create response reports 0 segments for a Messaging Service message, and the
-        # status callback carries no segment count at all, so the sent message is re-read.
-        def fetch_segments_count(message_sid)
-          client.api.v2010.messages(message_sid).fetch.num_segments&.to_i
-        rescue ::Twilio::REST::RestError => e
-          raise error_for(e)
-        rescue ::Twilio::REST::TwilioError => e
           raise ProviderError, e.message
         end
 

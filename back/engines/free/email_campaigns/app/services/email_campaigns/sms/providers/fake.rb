@@ -10,11 +10,7 @@ module EmailCampaigns
       class Fake < Base
         def send(to:, body:, use_case:)
           Rails.logger.info("[SMS::Fake] Pretending to send #{use_case} SMS to #{to}: #{body}")
-          { message_sid: "FAKE_#{SecureRandom.hex(8)}", status: 'sent', segments_count: 1 }
-        end
-
-        def fetch_segments_count(_message_sid)
-          1
+          { message_sid: "FAKE_#{SecureRandom.hex(8)}", status: 'sent' }
         end
       end
     end

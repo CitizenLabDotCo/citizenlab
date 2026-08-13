@@ -34,13 +34,7 @@ module EmailCampaigns
 
       # advance_status! is a no-op when the callback arrives out of order; we
       # still return 200 so the provider stops retrying.
-      advanced = delivery.advance_status!(parsed[:status])
-
-      # A delivery can only reach a terminal status once, so a stray later callback
-      # (which no longer advances it) can't queue a second fetch for the same message.
-      if advanced && delivery.awaiting_segments_count?
-        EmailCampaigns::Sms::FetchSegmentsJob.perform_later(delivery.id)
-      end
+      delivery.advance_status!(parsed[:status])
 
       head :ok
     end

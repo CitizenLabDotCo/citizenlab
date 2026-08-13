@@ -55,9 +55,13 @@ module EmailCampaigns
         STATUSES.index_with { |status| counts[status] || 0 }.symbolize_keys.merge(total: counts.values.sum)
       end
 
+      before_validation :compute_segments_count, on: :create
+
       validates :body, presence: true
       validates :status, inclusion: { in: STATUSES }
-      validates :segments_count, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
+      validates :segments_count,
+        numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: SegmentedMessage::MAX_SEGMENTS },
+        allow_nil: true
 
       # Moves the delivery to `new_status` only when that represents forward
       # progress, so out-of-order provider callbacks (Twilio warns these can arrive
@@ -73,15 +77,12 @@ module EmailCampaigns
         true
       end
 
-      def awaiting_segments_count?
-        segments_count.nil? && message_sid.present? && TERMINAL_STATUSES.include?(status)
-      end
+      private
 
-      def record_segments_count!(count)
-        count = count.to_i
-        return if count < 1
-
-        update!(segments_count: count)
+      # Billing follows from the body, so the count is settled at creation rather
+      # than read back from the provider after the fact.
+      def compute_segments_count
+        self.segments_count = SegmentedMessage.new(body).segments_count if body.present?
       end
     end
   end

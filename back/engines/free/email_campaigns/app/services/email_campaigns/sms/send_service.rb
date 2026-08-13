@@ -30,7 +30,6 @@ module EmailCampaigns
         end
 
         result = provider.send(to: parsed.e164, body: delivery.body, use_case: use_case)
-        delivery.record_segments_count!(result[:segments_count])
         delivery.update!(message_sid: result[:message_sid], status: result[:status])
         delivery
       rescue *ProviderError::RETRYABLE_ERRORS
@@ -49,14 +48,6 @@ module EmailCampaigns
         # stopped the message before it ever reached the provider.
         delivery.update!(status: 'errored', error_message: e.message)
         raise
-      end
-
-      # Re-reads an already-sent message to learn how many segments it was billed as.
-      def fetch_segments_count(delivery)
-        return unless delivery.awaiting_segments_count?
-
-        segments_count = provider.fetch_segments_count(delivery.message_sid)
-        delivery.record_segments_count!(segments_count)
       end
 
       private

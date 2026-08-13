@@ -6,7 +6,7 @@ RSpec.shared_context 'with stubbed SMS provider' do
   let(:sms_provider) do
     instance_double(
       EmailCampaigns::Sms::Providers::Twilio,
-      send: { message_sid: 'SM_test', status: 'queued', segments_count: 1 }
+      send: { message_sid: 'SM_test', status: 'queued' }
     )
   end
 

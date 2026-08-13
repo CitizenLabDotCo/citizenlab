@@ -34,29 +34,20 @@ resource 'SMS Events' do
       expect(delivery.reload.status).to eq 'delivered'
     end
 
-    # The callback carries no segment count, so it is fetched from the provider after the fact.
-    example 'enqueues a job to fetch the segment count' do
-      do_request(callback_params)
-      expect(EmailCampaigns::Sms::FetchSegmentsJob).to have_been_enqueued.with(delivery.id).exactly(:once)
-    end
-
-    context 'when the delivery already has a segment count' do
-      before { delivery.update!(segments_count: 2) }
-
-      example 'does not fetch it again' do
-        do_request(callback_params)
-        expect(EmailCampaigns::Sms::FetchSegmentsJob).not_to have_been_enqueued.with(delivery.id)
-      end
+    # The count was settled from the body at creation, so no callback can change it.
+    example 'leaves the segment count untouched' do
+      expect { do_request(callback_params) }.not_to change { delivery.reload.segments_count }.from(1)
     end
 
     context 'when the delivery already reached a terminal status' do
       before { delivery.update!(status: 'delivered') }
 
-      # A stray callback no longer advances the delivery, so the fetch enqueued by the
-      # first terminal callback is not duplicated while it is still waiting to run.
-      example 'does not enqueue a second fetch' do
+      let(:message_status) { 'failed' }
+
+      example 'returns 200 and keeps the first terminal outcome' do
         do_request(callback_params)
-        expect(EmailCampaigns::Sms::FetchSegmentsJob).not_to have_been_enqueued.with(delivery.id)
+        expect(response_status).to eq 200
+        expect(delivery.reload.status).to eq 'delivered'
       end
     end
 
@@ -66,10 +57,9 @@ resource 'SMS Events' do
         EmailCampaigns::Sms::Delivery.create!(body: 'hi', status: 'queued', message_sid: 'SM_123')
       end
 
-      example 'advances the delivery without fetching a segment count' do
+      example 'advances the delivery' do
         do_request(callback_params)
         expect(delivery.reload.status).to eq 'sent'
-        expect(EmailCampaigns::Sms::FetchSegmentsJob).not_to have_been_enqueued.with(delivery.id)
       end
     end
 

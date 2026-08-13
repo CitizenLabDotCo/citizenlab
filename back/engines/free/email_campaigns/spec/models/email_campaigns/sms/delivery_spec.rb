@@ -22,58 +22,38 @@ RSpec.describe EmailCampaigns::Sms::Delivery do
       expect(delivery).to be_valid
     end
 
-    it 'rejects a non-positive segments count' do
-      delivery = described_class.new(body: 'hi', status: 'sent', segments_count: 0)
+    it 'rejects a body over the segment limit' do
+      over_limit = 'a' * ((153 * EmailCampaigns::Sms::SegmentedMessage::MAX_SEGMENTS) + 1)
+      delivery = described_class.new(body: over_limit, status: 'sent')
+
       expect(delivery).not_to be_valid
       expect(delivery.errors[:segments_count]).to be_present
     end
-  end
 
-  describe '#awaiting_segments_count?' do
-    it 'is true once a message reached a terminal status with no count yet' do
-      delivery = described_class.new(body: 'hi', status: 'delivered', message_sid: 'SM_1')
-      expect(delivery).to be_awaiting_segments_count
-    end
+    it 'accepts a body of exactly the segment limit' do
+      at_limit = 'a' * (153 * EmailCampaigns::Sms::SegmentedMessage::MAX_SEGMENTS)
 
-    it 'is false while the message is still on its way' do
-      delivery = described_class.new(body: 'hi', status: 'sent', message_sid: 'SM_1')
-      expect(delivery).not_to be_awaiting_segments_count
-    end
-
-    it 'is false for a delivery that never reached the provider' do
-      delivery = described_class.new(body: 'hi', status: 'errored')
-      expect(delivery).not_to be_awaiting_segments_count
-    end
-
-    it 'is false once the count is known' do
-      delivery = described_class.new(body: 'hi', status: 'delivered', message_sid: 'SM_1', segments_count: 2)
-      expect(delivery).not_to be_awaiting_segments_count
+      expect(described_class.new(body: at_limit, status: 'sent')).to be_valid
     end
   end
 
-  describe '#record_segments_count!' do
-    subject(:delivery) { described_class.create!(body: 'hi', status: 'sent') }
-
-    it 'stores and persists the reported count' do
-      delivery.record_segments_count!(2)
+  describe 'segments_count' do
+    it 'is computed from the body at creation, before the message is sent' do
+      delivery = described_class.create!(body: 'a' * 161, status: 'pending')
 
       expect(delivery.reload.segments_count).to eq(2)
     end
 
-    it 'stores the count the provider reports as a string' do
-      delivery.record_segments_count!('2')
+    it 'counts a unicode body on its own encoding' do
+      delivery = described_class.create!(body: 'ж' * 71, status: 'pending')
 
       expect(delivery.reload.segments_count).to eq(2)
     end
 
-    it 'ignores a missing count, leaving an already recorded one in place' do
-      delivery.record_segments_count!(2)
+    it 'is left alone once recorded, so an edited body never rewrites billing history' do
+      delivery = described_class.create!(body: 'hi', status: 'pending')
 
-      expect { delivery.record_segments_count!(nil) }.not_to change { delivery.reload.segments_count }.from(2)
-    end
-
-    it 'ignores the 0 Twilio reports before the message is segmented' do
-      expect { delivery.record_segments_count!('0') }.not_to change { delivery.reload.segments_count }.from(nil)
+      expect { delivery.update!(body: 'a' * 161) }.not_to change { delivery.reload.segments_count }.from(1)
     end
   end
 
