@@ -31,6 +31,28 @@ RSpec.describe DecidimImporter::TemplateCreator do
       expect(template['area'].map { |a| a['ordering'] }).to eq((0..17).to_a)
     end
 
+    it 'scopes the export to the given container, keeping only its project and referenced users' do
+      template = described_class.from_directory(export_root, container_ids: ['decidim--process--2'])
+        .build_template.models['models']
+
+      # only Espaces verts; the other processes' projects are gone
+      expect(template['project'].map { |p| p['title_multiloc']['fr-FR'] }).to eq(['Espaces verts'])
+      # only the users Espaces verts references — a subset of the full 107, and non-empty
+      expect(template['user']).to be_present
+      expect(template['user'].size).to be < 107
+      # scopes → areas are dropped (a supplemental import reuses the tenant's existing ones)
+      expect(template).not_to have_key('area')
+    end
+
+    it 'still emits the app-config locale patch when scoped (the tenant needs those locales)' do
+      full_locales = described_class.from_directory(export_root).app_config_patch.dig('settings', 'core', 'locales')
+      expect(full_locales).to be_present
+
+      scoped = described_class.from_directory(export_root, container_ids: ['decidim--process--2']).app_config_patch
+      # scoping must not drop the locales — they'd otherwise be missing from the supplemental import's patch
+      expect(scoped.dig('settings', 'core', 'locales')).to eq(full_locales)
+    end
+
     it 'adds a custom field for each enabled extra user field from the organization config' do
       template = described_class.from_directory(export_root).build_template.models['models']
       # The org enables `phone_number` (gender is a built-in, so not recreated).
@@ -165,10 +187,15 @@ RSpec.describe DecidimImporter::TemplateCreator do
       expect(page.enabled).to be(true)
       expect(page.craftjs_json.dig('ROOT', 'type', 'resolvedName')).to eq('ProjectPageRoot')
 
-      # The imported description was injected into the page body.
-      body = page.craftjs_json['PROJECT_PAGE_BODY']
-      description_ids = body['nodes'] - %w[PROJECT_PAGE_PHASES PROJECT_PAGE_EVENTS]
+      # The imported description carries its own participation box, so it keeps
+      # its full-width layout in the body and no second box is injected.
+      description_ids = page.craftjs_json['PROJECT_PAGE_BODY']['nodes'] - %w[PROJECT_PAGE_PHASES PROJECT_PAGE_EVENTS]
       expect(description_ids).not_to be_empty
+      expect(description_ids).to all(start_with('d_'))
+      about_boxes = page.craftjs_json.each_value.count do |node|
+        node.is_a?(Hash) && node.dig('type', 'resolvedName') == 'AboutBox'
+      end
+      expect(about_boxes).to eq(1)
     end
 
     it 'imports an accountability component as an ideation phase, with its results as ideas carrying a progress line' do

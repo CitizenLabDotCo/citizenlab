@@ -18,7 +18,7 @@ import {
 } from '../../typings';
 
 import { Step } from './typings';
-import { checkMissingData } from './utils';
+import { checkMissingData, doesNotMeetGroupCriteria } from './utils';
 
 export const sharedSteps = (
   getAuthenticationData: () => AuthenticationData,
@@ -72,6 +72,11 @@ export const sharedSteps = (
           return;
         }
 
+        if (doesNotMeetGroupCriteria(requirements)) {
+          setCurrentStep('access-denied');
+          return;
+        }
+
         if (flow === 'signup') {
           setCurrentStep('success');
         }
@@ -89,6 +94,7 @@ export const sharedSteps = (
           email: null,
           new_email: null,
           new_phone: null,
+          smsManualCampaignConsent: false,
           token: null,
           prefilledBuiltInFields: null,
           ssoProvider: null,

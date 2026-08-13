@@ -102,9 +102,13 @@ describe('Budgeting project', () => {
 
     cy.intercept('PUT', '**/baskets/ideas/**').as('voteForIdea');
 
+    // The vote buttons can carry the `disabled` class while the voting
+    // context initializes — a click during that window is a silent no-op,
+    // so gate on the enabled state before clicking.
     cy.get('#e2e-ideas-container')
       .find('.e2e-assign-budget-button')
       .should('have.class', 'not-in-basket')
+      .should('not.have.class', 'disabled')
       .click()
       .should('have.class', 'in-basket');
 
@@ -120,12 +124,14 @@ describe('Budgeting project', () => {
 
   it('can submit the budget', () => {
     cy.dockProjectCtaBar();
-    cy.get('#e2e-voting-submit-button').should('be.visible');
-    cy.wait(4000);
-    cy.get('#e2e-voting-submit-button').find('button').click({ force: true });
-    cy.wait(1000);
+    cy.intercept('PATCH', '**/baskets/*').as('submitBasket');
+    cy.get('#e2e-voting-submit-button')
+      .should('be.visible')
+      .click({ force: true });
+    cy.wait('@submitBasket');
 
     cy.contains('Budget submitted');
+    cy.scrollTo('bottom');
     cy.contains('You have participated in this project');
 
     cy.get('#e2e-ideas-container')
@@ -135,28 +141,30 @@ describe('Budgeting project', () => {
 
   it('can modify the budget and remove an option', () => {
     cy.dockProjectCtaBar();
+
+    cy.intercept('PATCH', '**/baskets/*').as('unsubmitBasket');
+    // Keep the assertions and the click in one query chain: late-loading
+    // content (map config, randomly sorted idea cards) re-renders the page
+    // and can detach the button — a chained query re-runs from the start,
+    // while a fresh cy.get after a blind wait finds nothing and fails.
     cy.get('#e2e-modify-votes')
       .should('be.visible')
-      .should('contain', 'Modify your submission');
+      .should('contain', 'Modify your submission')
+      .click();
+    cy.wait('@unsubmitBasket');
 
-    cy.wait(2000);
-
-    cy.get('#e2e-modify-votes').click();
-
+    // After the unsubmit lands, the vote buttons keep the `disabled` class
+    // until the basket refetches complete; `in-basket` alone is true during
+    // that window and a click on the still-disabled button is a silent
+    // no-op. Gate on the enabled state before clicking.
+    cy.intercept('PUT', '**/baskets/ideas/**').as('removeVote');
     cy.get('#e2e-ideas-container')
       .find('.e2e-assign-budget-button')
-      .should('have.class', 'in-basket');
-
-    cy.wait(2000);
-
-    cy.get('#e2e-ideas-container');
-
-    cy.wait(1000);
-
-    cy.get('#e2e-ideas-container')
-      .find('.e2e-assign-budget-button')
+      .should('have.class', 'in-basket')
+      .should('not.have.class', 'disabled')
       .click()
       .should('have.class', 'not-in-basket');
+    cy.wait('@removeVote');
 
     cy.get('#e2e-voting-submit-button')
       .should('be.visible')

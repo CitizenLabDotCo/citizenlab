@@ -1,123 +1,112 @@
 import { randomString } from '../../../support/commands';
 
-// works locally but not on CI. needs to be refactored to be stable on CI
-describe('Admin: add projects to folder', async () => {
-  it('creates a new folder', () => {
-    let projectId1: string;
-    let projectId2: string;
-    let projectTitle1 = randomString();
-    let projectDescription = randomString();
-    let projectTitle2 = randomString();
+describe('Admin: add projects to folder', () => {
+  let projectId1: string;
+  let projectId2: string;
+  let folderId: string;
+  let projectTitle1: string;
+  let projectTitle2: string;
+  let folderTitle: string;
 
+  beforeEach(() => {
+    projectTitle1 = randomString();
+    projectTitle2 = randomString();
+    folderTitle = randomString();
+    const description = randomString();
+
+    // Seed the two published projects and an (empty) published folder through
+    // the API rather than the UI. The old test built the folder by hand — typing
+    // the title into every locale switcher with fixed `cy.wait(2000)`s, then
+    // writing the description through the Content Builder (Quill) — none of which
+    // is what this test verifies. That UI-heavy, fixed-wait setup was the source
+    // of the CI flakiness (nightly failures timed out on `#e2e-admin-folders-
+    // projects-list` never rendering). Setting the state up via the API removes
+    // all of it and leaves the test focused on adding projects to the folder.
     cy.apiCreateProject({
       title: projectTitle1,
-      descriptionPreview: projectDescription,
-      description: projectDescription,
+      descriptionPreview: description,
+      description,
       publicationStatus: 'published',
-    }).then((projectOneResponse) => {
-      projectId1 = projectOneResponse.body.data.id;
-      cy.apiCreateProject({
-        title: projectTitle2,
-        descriptionPreview: projectDescription,
-        description: projectDescription,
-        publicationStatus: 'published',
-      }).then((projectTwoResponse) => {
-        projectId2 = projectTwoResponse.body.data.id;
-
-        cy.setAdminLoginCookie();
-        cy.visit('/admin/projects?tab=folders');
-
-        cy.dataCy('e2e-new-project-folder-button').click();
-        const folderTitle = randomString();
-        const folderShortDescription = randomString();
-
-        // Add folder title
-        cy.dataCy('e2e-project-folder-title').should('be.visible');
-
-        cy.dataCy('e2e-project-folder-title')
-          .find('.e2e-localeswitcher')
-          .each((button) => {
-            cy.wrap(button).click();
-            cy.get('#project-folder-title').type(folderTitle);
-            cy.wait(2000);
-          });
-
-        // Add folder short description
-        cy.dataCy('e2e-project-folder-short-description')
-          .find('.e2e-localeswitcher')
-          .each((button) => {
-            cy.wrap(button).click();
-            cy.dataCy('e2e-project-folder-short-description').within(() => {
-              cy.get('textarea').type(folderShortDescription);
-              cy.wait(2000);
-            });
-          });
-
-        // Submit project
-        cy.get('.e2e-submit-wrapper-button button').click({ force: true });
-
-        // Wait for folder page to load
-        cy.get('.e2e-resource-header').should('be.visible');
-        cy.get('.e2e-resource-header').contains(folderTitle);
-        cy.url().then((folderAdminUrl) => {
-          const folderId = folderAdminUrl
-            .split('/folders/')[1]
-            .split(/[/?#]/)[0];
-
-          cy.visit(`/admin/projects/folders/${folderId}/settings`);
-          cy.get('#e2e-project-description-builder-link')
-            .should('be.visible')
-            .click();
-          cy.get('.e2e-text-box').click('center');
-          cy.get('.ql-editor').click();
-          cy.get('.ql-editor').type(folderShortDescription, { force: true });
-          cy.get('#e2e-content-builder-topbar-save').click();
-
-          cy.visit(folderAdminUrl);
-        });
-
-        // Check that our projects are in the list and add them to the folder
-        cy.get(`[data-cy="e2e-manage-button-${projectId1}"]`).should('exist');
-        cy.get(`[data-cy="e2e-manage-button-${projectId1}"]`)
-          .find('button')
-          .scrollIntoView()
-          .click();
-
-        cy.get(`[data-cy="e2e-manage-button-${projectId2}"]`).should('exist');
-        cy.get(`[data-cy="e2e-manage-button-${projectId2}"]`)
-          .find('button')
-          .scrollIntoView()
-          .click();
-
-        cy.wait(3000);
-        // Check that projects were successfuly added to folder
-        cy.get('#e2e-admin-folders-projects-list')
-          .contains(projectTitle1)
-          .should('exist');
-        cy.get('#e2e-admin-folders-projects-list')
-          .contains(projectTitle2)
-          .should('exist');
-
-        // Navigate to the folder page
-        cy.get('#to-projectFolder').click();
-
-        // Check for correct content on folder page
-        cy.get('#e2e-folder-page').contains(folderTitle).should('exist');
-        cy.get('#e2e-folder-page').contains(projectTitle1).should('exist');
-        cy.get('#e2e-folder-page').contains(projectTitle2).should('exist');
-
-        // Navigate to one of the projects in the folder
-        cy.visit(`/admin/projects/${projectId1}`);
-
-        // Open folder projects dropdown
-        cy.dataCy('e2e-folder-preview-open-projects-dropdown').should(
-          'be.visible'
-        );
-        cy.dataCy('e2e-folder-preview-open-projects-dropdown').click();
-
-        // Check that folder projects are visible in the dropdown
-        cy.contains(projectTitle2).should('exist');
-      });
+    }).then((project) => {
+      projectId1 = project.body.data.id;
     });
+
+    cy.apiCreateProject({
+      title: projectTitle2,
+      descriptionPreview: description,
+      description,
+      publicationStatus: 'published',
+    }).then((project) => {
+      projectId2 = project.body.data.id;
+    });
+
+    cy.apiCreateFolder({
+      title: folderTitle,
+      descriptionPreview: description,
+      description,
+      publicationStatus: 'published',
+    }).then((folder) => {
+      folderId = folder.body.data.id;
+    });
+  });
+
+  afterEach(() => {
+    // Remove the projects while they still exist, then the (now empty) folder,
+    // so repeated runs / retries start from clean state.
+    if (projectId1) cy.apiRemoveProject(projectId1);
+    if (projectId2) cy.apiRemoveProject(projectId2);
+    if (folderId) cy.apiRemoveFolder(folderId);
+  });
+
+  it('adds projects to a folder and shows them on the folder page', () => {
+    cy.setAdminLoginCookie();
+
+    // Adding a project to a folder issues a PATCH to that project. Waiting on the
+    // request itself — instead of the old `cy.wait(3000)` — is what makes this
+    // deterministic: we only assert the folder list once the membership change
+    // has actually come back.
+    cy.intercept('PATCH', '**/web_api/v1/projects/*').as('updateMembership');
+
+    cy.visit(`/admin/projects/folders/${folderId}/projects`);
+
+    // Both projects are offered in the "projects you can add" list.
+    cy.get(`[data-cy="e2e-manage-button-${projectId1}"]`).should('exist');
+    cy.get(`[data-cy="e2e-manage-button-${projectId2}"]`).should('exist');
+
+    // Add the first project, then wait for its PATCH to resolve before the next.
+    cy.get(`[data-cy="e2e-manage-button-${projectId1}"]`)
+      .find('button')
+      .scrollIntoView()
+      .click();
+    cy.wait('@updateMembership');
+
+    // Add the second project and wait for its PATCH to resolve.
+    cy.get(`[data-cy="e2e-manage-button-${projectId2}"]`)
+      .find('button')
+      .scrollIntoView()
+      .click();
+    cy.wait('@updateMembership');
+
+    // Both projects now appear in the folder's "projects already added" list.
+    cy.get('#e2e-admin-folders-projects-list')
+      .contains(projectTitle1)
+      .should('exist');
+    cy.get('#e2e-admin-folders-projects-list')
+      .contains(projectTitle2)
+      .should('exist');
+
+    // The public folder page shows the folder title and both projects.
+    cy.get('#to-projectFolder').click();
+    cy.get('#e2e-folder-page').contains(folderTitle).should('exist');
+    cy.get('#e2e-folder-page').contains(projectTitle1).should('exist');
+    cy.get('#e2e-folder-page').contains(projectTitle2).should('exist');
+
+    // On a project that is in the folder, the folder-preview dropdown lists its
+    // sibling project.
+    cy.visit(`/admin/projects/${projectId1}`);
+    cy.dataCy('e2e-folder-preview-open-projects-dropdown')
+      .should('be.visible')
+      .click();
+    cy.contains(projectTitle2).should('exist');
   });
 });

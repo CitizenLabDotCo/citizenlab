@@ -137,6 +137,7 @@ ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rail
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_5ac7668cd3;
 ALTER TABLE IF EXISTS ONLY public.event_files DROP CONSTRAINT IF EXISTS fk_rails_577d1fb456;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_575368d182;
+ALTER TABLE IF EXISTS ONLY public.custom_field_answers DROP CONSTRAINT IF EXISTS fk_rails_56fa027c1d;
 ALTER TABLE IF EXISTS ONLY public.idea_exposures DROP CONSTRAINT IF EXISTS fk_rails_55d2ba0ca8;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_5471f55cd6;
 ALTER TABLE IF EXISTS ONLY public.identities DROP CONSTRAINT IF EXISTS fk_rails_5373344100;
@@ -152,6 +153,7 @@ ALTER TABLE IF EXISTS ONLY public.baskets_ideas DROP CONSTRAINT IF EXISTS fk_rai
 ALTER TABLE IF EXISTS ONLY public.custom_field_option_images DROP CONSTRAINT IF EXISTS fk_rails_3814d72daa;
 ALTER TABLE IF EXISTS ONLY public.analysis_comments_summaries DROP CONSTRAINT IF EXISTS fk_rails_37becdebb0;
 ALTER TABLE IF EXISTS ONLY public.files DROP CONSTRAINT IF EXISTS fk_rails_34e9f7c7ef;
+ALTER TABLE IF EXISTS ONLY public.export_result_files DROP CONSTRAINT IF EXISTS fk_rails_348350e0ea;
 ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rails_34143a680f;
 ALTER TABLE IF EXISTS ONLY public.volunteering_volunteers DROP CONSTRAINT IF EXISTS fk_rails_33a154a9ba;
 ALTER TABLE IF EXISTS ONLY public.webhooks_deliveries DROP CONSTRAINT IF EXISTS fk_rails_333f76f79b;
@@ -395,6 +397,8 @@ DROP INDEX IF EXISTS public.index_files_on_category;
 DROP INDEX IF EXISTS public.index_file_attachments_on_file_id;
 DROP INDEX IF EXISTS public.index_file_attachments_on_file_and_attachable;
 DROP INDEX IF EXISTS public.index_file_attachments_on_attachable;
+DROP INDEX IF EXISTS public.index_export_result_files_on_jobs_tracker_id;
+DROP INDEX IF EXISTS public.index_export_result_files_on_expires_at;
 DROP INDEX IF EXISTS public.index_events_on_project_id;
 DROP INDEX IF EXISTS public.index_events_on_maximum_attendees;
 DROP INDEX IF EXISTS public.index_events_on_location_point;
@@ -440,6 +444,9 @@ DROP INDEX IF EXISTS public.index_custom_field_matrix_statements_on_key;
 DROP INDEX IF EXISTS public.index_custom_field_matrix_statements_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_custom_field_bins_on_custom_field_option_id;
 DROP INDEX IF EXISTS public.index_custom_field_bins_on_custom_field_id;
+DROP INDEX IF EXISTS public.index_custom_field_answers_on_key_and_answerable_type;
+DROP INDEX IF EXISTS public.index_custom_field_answers_on_custom_field_id;
+DROP INDEX IF EXISTS public.index_custom_field_answers_on_answerable_and_key;
 DROP INDEX IF EXISTS public.index_cosponsorships_on_user_id;
 DROP INDEX IF EXISTS public.index_cosponsorships_on_idea_id;
 DROP INDEX IF EXISTS public.index_content_builder_layouts_content_buidable_type_id_code;
@@ -615,6 +622,7 @@ ALTER TABLE IF EXISTS ONLY public.files_projects DROP CONSTRAINT IF EXISTS files
 ALTER TABLE IF EXISTS ONLY public.files_previews DROP CONSTRAINT IF EXISTS files_previews_pkey;
 ALTER TABLE IF EXISTS ONLY public.files DROP CONSTRAINT IF EXISTS files_pkey;
 ALTER TABLE IF EXISTS ONLY public.file_attachments DROP CONSTRAINT IF EXISTS file_attachments_pkey;
+ALTER TABLE IF EXISTS ONLY public.export_result_files DROP CONSTRAINT IF EXISTS export_result_files_pkey;
 ALTER TABLE IF EXISTS ONLY public.experiments DROP CONSTRAINT IF EXISTS experiments_pkey;
 ALTER TABLE IF EXISTS ONLY public.events DROP CONSTRAINT IF EXISTS events_pkey;
 ALTER TABLE IF EXISTS ONLY public.events_attendances DROP CONSTRAINT IF EXISTS events_attendances_pkey;
@@ -639,6 +647,7 @@ ALTER TABLE IF EXISTS ONLY public.custom_field_option_images DROP CONSTRAINT IF 
 ALTER TABLE IF EXISTS ONLY public.custom_field_matrix_statements DROP CONSTRAINT IF EXISTS custom_field_matrix_statements_pkey;
 ALTER TABLE IF EXISTS ONLY public.custom_field_matrix_statements DROP CONSTRAINT IF EXISTS custom_field_matrix_statements_field_id_ordering_unique;
 ALTER TABLE IF EXISTS ONLY public.custom_field_bins DROP CONSTRAINT IF EXISTS custom_field_bins_pkey;
+ALTER TABLE IF EXISTS ONLY public.custom_field_answers DROP CONSTRAINT IF EXISTS custom_field_answers_pkey;
 ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS cosponsorships_pkey;
 ALTER TABLE IF EXISTS ONLY public.content_builder_layouts DROP CONSTRAINT IF EXISTS content_builder_layouts_pkey;
 ALTER TABLE IF EXISTS ONLY public.content_builder_layout_images DROP CONSTRAINT IF EXISTS content_builder_layout_images_pkey;
@@ -762,6 +771,7 @@ DROP TABLE IF EXISTS public.files_projects;
 DROP TABLE IF EXISTS public.files_previews;
 DROP TABLE IF EXISTS public.files;
 DROP TABLE IF EXISTS public.file_attachments;
+DROP TABLE IF EXISTS public.export_result_files;
 DROP TABLE IF EXISTS public.experiments;
 DROP TABLE IF EXISTS public.event_images;
 DROP TABLE IF EXISTS public.event_files;
@@ -779,6 +789,7 @@ DROP TABLE IF EXISTS public.custom_field_options;
 DROP TABLE IF EXISTS public.custom_field_option_images;
 DROP TABLE IF EXISTS public.custom_field_matrix_statements;
 DROP TABLE IF EXISTS public.custom_field_bins;
+DROP TABLE IF EXISTS public.custom_field_answers;
 DROP TABLE IF EXISTS public.cosponsorships;
 DROP TABLE IF EXISTS public.content_builder_layouts;
 DROP TABLE IF EXISTS public.content_builder_layout_images;
@@ -2346,6 +2357,22 @@ CREATE TABLE public.cosponsorships (
 
 
 --
+-- Name: custom_field_answers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.custom_field_answers (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    answerable_type character varying NOT NULL,
+    answerable_id uuid NOT NULL,
+    custom_field_id uuid,
+    key character varying NOT NULL,
+    value jsonb NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: custom_field_bins; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2635,6 +2662,21 @@ CREATE TABLE public.experiments (
     name character varying NOT NULL,
     treatment character varying NOT NULL,
     action character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: export_result_files; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.export_result_files (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    jobs_tracker_id uuid NOT NULL,
+    name character varying NOT NULL,
+    content character varying,
+    expires_at timestamp(6) without time zone NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -3783,7 +3825,7 @@ CREATE VIEW public.reporting_contributions AS
            FROM public.ideas
           WHERE ((ideas.publication_status)::text = 'published'::text)) i
      LEFT JOIN public.phases creation_ph ON ((creation_ph.id = i.creation_phase_id)))
-     LEFT JOIN public.phases inferred_ph ON (((i.creation_phase_id IS NULL) AND (inferred_ph.project_id = i.project_id) AND (i.contributed_at >= inferred_ph.start_at) AND ((inferred_ph.end_at IS NULL) OR (i.contributed_at < inferred_ph.end_at)))))
+     LEFT JOIN public.phases inferred_ph ON (((i.creation_phase_id IS NULL) AND (inferred_ph.project_id = i.project_id) AND ((inferred_ph.placement_type)::text = 'on_timeline'::text) AND (i.contributed_at >= inferred_ph.start_at) AND ((inferred_ph.end_at IS NULL) OR (i.contributed_at < inferred_ph.end_at)))))
 UNION ALL
  SELECT c.id,
     'comment'::text AS type,
@@ -3799,7 +3841,7 @@ UNION ALL
    FROM (((public.comments c
      LEFT JOIN public.ideas i ON ((i.id = c.idea_id)))
      LEFT JOIN public.phases input_creation_ph ON ((input_creation_ph.id = i.creation_phase_id)))
-     LEFT JOIN public.phases inferred_ph ON (((inferred_ph.project_id = i.project_id) AND (c.created_at >= inferred_ph.start_at) AND ((inferred_ph.end_at IS NULL) OR (c.created_at < inferred_ph.end_at)))))
+     LEFT JOIN public.phases inferred_ph ON (((inferred_ph.project_id = i.project_id) AND ((inferred_ph.placement_type)::text = 'on_timeline'::text) AND (c.created_at >= inferred_ph.start_at) AND ((inferred_ph.end_at IS NULL) OR (c.created_at < inferred_ph.end_at)))))
   WHERE ((c.publication_status)::text = 'published'::text)
 UNION ALL
  SELECT r.id,
@@ -3829,7 +3871,7 @@ UNION ALL
              LEFT JOIN public.ideas rci ON ((rci.id = rc.idea_id)))
           WHERE ((reactions.reactable_type)::text = ANY ((ARRAY['Idea'::character varying, 'Comment'::character varying])::text[]))) r
      LEFT JOIN public.phases input_creation_ph ON ((input_creation_ph.id = r.input_creation_phase_id)))
-     LEFT JOIN public.phases inferred_ph ON (((inferred_ph.project_id = r.project_id) AND (r.created_at >= inferred_ph.start_at) AND ((inferred_ph.end_at IS NULL) OR (r.created_at < inferred_ph.end_at)))))
+     LEFT JOIN public.phases inferred_ph ON (((inferred_ph.project_id = r.project_id) AND ((inferred_ph.placement_type)::text = 'on_timeline'::text) AND (r.created_at >= inferred_ph.start_at) AND ((inferred_ph.end_at IS NULL) OR (r.created_at < inferred_ph.end_at)))))
 UNION ALL
  SELECT bi.id,
     'vote'::text AS type,
@@ -3903,7 +3945,7 @@ CREATE VIEW public.reporting_input_question_answers AS
            FROM ((public.ideas i
              LEFT JOIN public.custom_forms phase_form ON ((((phase_form.participation_context_type)::text = 'Phase'::text) AND (phase_form.participation_context_id = i.creation_phase_id))))
              LEFT JOIN public.custom_forms project_form ON ((((project_form.participation_context_type)::text = 'Project'::text) AND (project_form.participation_context_id = i.project_id))))
-          WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]))
+          WHERE ((i.publication_status)::text = ANY (ARRAY[('submitted'::character varying)::text, ('published'::character varying)::text]))
         )
  SELECT i.id AS input_id,
     q.id AS question_id,
@@ -3917,15 +3959,15 @@ CREATE VIEW public.reporting_input_question_answers AS
           ORDER BY t.key
          LIMIT 1)) AS question_label,
         CASE
-            WHEN ((q.input_type)::text = ANY ((ARRAY['number'::character varying, 'linear_scale'::character varying, 'rating'::character varying, 'sentiment_linear_scale'::character varying])::text[])) THEN NULL::text
+            WHEN ((q.input_type)::text = ANY (ARRAY[('number'::character varying)::text, ('linear_scale'::character varying)::text, ('rating'::character varying)::text, ('sentiment_linear_scale'::character varying)::text])) THEN NULL::text
             ELSE (i.custom_field_values ->> (q.key)::text)
         END AS value_text,
         CASE
-            WHEN (((q.input_type)::text = ANY ((ARRAY['number'::character varying, 'linear_scale'::character varying, 'rating'::character varying, 'sentiment_linear_scale'::character varying])::text[])) AND (jsonb_typeof((i.custom_field_values -> (q.key)::text)) = 'number'::text)) THEN ((i.custom_field_values ->> (q.key)::text))::numeric
+            WHEN (((q.input_type)::text = ANY (ARRAY[('number'::character varying)::text, ('linear_scale'::character varying)::text, ('rating'::character varying)::text, ('sentiment_linear_scale'::character varying)::text])) AND (jsonb_typeof((i.custom_field_values -> (q.key)::text)) = 'number'::text)) THEN ((i.custom_field_values ->> (q.key)::text))::numeric
             ELSE NULL::numeric
         END AS value_numeric
    FROM (form_inputs i
-     JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = ANY ((ARRAY['text'::character varying, 'multiline_text'::character varying, 'select'::character varying, 'select_image'::character varying, 'checkbox'::character varying, 'date'::character varying, 'number'::character varying, 'linear_scale'::character varying, 'rating'::character varying, 'sentiment_linear_scale'::character varying])::text[])))))
+     JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = ANY (ARRAY[('text'::character varying)::text, ('multiline_text'::character varying)::text, ('select'::character varying)::text, ('select_image'::character varying)::text, ('checkbox'::character varying)::text, ('date'::character varying)::text, ('number'::character varying)::text, ('linear_scale'::character varying)::text, ('rating'::character varying)::text, ('sentiment_linear_scale'::character varying)::text])))))
   WHERE jsonb_exists(i.custom_field_values, (q.key)::text)
 UNION ALL
  SELECT i.id AS input_id,
@@ -3942,7 +3984,7 @@ UNION ALL
     selected.value AS value_text,
     NULL::numeric AS value_numeric
    FROM ((form_inputs i
-     JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = ANY ((ARRAY['multiselect'::character varying, 'multiselect_image'::character varying])::text[])))))
+     JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = ANY (ARRAY[('multiselect'::character varying)::text, ('multiselect_image'::character varying)::text])))))
      CROSS JOIN LATERAL jsonb_array_elements_text((i.custom_field_values -> (q.key)::text)) selected(value))
   WHERE (jsonb_typeof((i.custom_field_values -> (q.key)::text)) = 'array'::text);
 
@@ -3980,7 +4022,7 @@ CREATE VIEW public.reporting_input_tags AS
    FROM ((public.ideas_input_topics iit
      JOIN public.input_topics it ON ((it.id = iit.input_topic_id)))
      JOIN public.ideas i ON ((i.id = iit.idea_id)))
-  WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]));
+  WHERE ((i.publication_status)::text = ANY (ARRAY[('submitted'::character varying)::text, ('published'::character varying)::text]));
 
 
 --
@@ -4043,7 +4085,7 @@ CREATE VIEW public.reporting_inputs AS
    FROM ((public.ideas i
      LEFT JOIN public.phases creation_ph ON ((creation_ph.id = i.creation_phase_id)))
      LEFT JOIN public.idea_statuses s ON ((s.id = i.idea_status_id)))
-  WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]));
+  WHERE ((i.publication_status)::text = ANY (ARRAY[('submitted'::character varying)::text, ('published'::character varying)::text]));
 
 
 --
@@ -4750,6 +4792,14 @@ ALTER TABLE ONLY public.cosponsorships
 
 
 --
+-- Name: custom_field_answers custom_field_answers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.custom_field_answers
+    ADD CONSTRAINT custom_field_answers_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: custom_field_bins custom_field_bins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4939,6 +4989,14 @@ ALTER TABLE ONLY public.events
 
 ALTER TABLE ONLY public.experiments
     ADD CONSTRAINT experiments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: export_result_files export_result_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.export_result_files
+    ADD CONSTRAINT export_result_files_pkey PRIMARY KEY (id);
 
 
 --
@@ -6256,6 +6314,27 @@ CREATE INDEX index_cosponsorships_on_user_id ON public.cosponsorships USING btre
 
 
 --
+-- Name: index_custom_field_answers_on_answerable_and_key; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_custom_field_answers_on_answerable_and_key ON public.custom_field_answers USING btree (answerable_type, answerable_id, key);
+
+
+--
+-- Name: index_custom_field_answers_on_custom_field_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_custom_field_answers_on_custom_field_id ON public.custom_field_answers USING btree (custom_field_id);
+
+
+--
+-- Name: index_custom_field_answers_on_key_and_answerable_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_custom_field_answers_on_key_and_answerable_type ON public.custom_field_answers USING btree (key, answerable_type);
+
+
+--
 -- Name: index_custom_field_bins_on_custom_field_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6568,6 +6647,20 @@ CREATE INDEX index_events_on_maximum_attendees ON public.events USING btree (max
 --
 
 CREATE INDEX index_events_on_project_id ON public.events USING btree (project_id);
+
+
+--
+-- Name: index_export_result_files_on_expires_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_export_result_files_on_expires_at ON public.export_result_files USING btree (expires_at);
+
+
+--
+-- Name: index_export_result_files_on_jobs_tracker_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_export_result_files_on_jobs_tracker_id ON public.export_result_files USING btree (jobs_tracker_id);
 
 
 --
@@ -8296,6 +8389,14 @@ ALTER TABLE ONLY public.nav_bar_items
 
 
 --
+-- Name: export_result_files fk_rails_348350e0ea; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.export_result_files
+    ADD CONSTRAINT fk_rails_348350e0ea FOREIGN KEY (jobs_tracker_id) REFERENCES public.jobs_trackers(id);
+
+
+--
 -- Name: files fk_rails_34e9f7c7ef; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8413,6 +8514,14 @@ ALTER TABLE ONLY public.notifications
 
 ALTER TABLE ONLY public.idea_exposures
     ADD CONSTRAINT fk_rails_55d2ba0ca8 FOREIGN KEY (phase_id) REFERENCES public.phases(id);
+
+
+--
+-- Name: custom_field_answers fk_rails_56fa027c1d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.custom_field_answers
+    ADD CONSTRAINT fk_rails_56fa027c1d FOREIGN KEY (custom_field_id) REFERENCES public.custom_fields(id) ON DELETE CASCADE;
 
 
 --
@@ -9446,7 +9555,10 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260811145845'),
+('20260810100000'),
 ('20260805000000'),
+('20260727100000'),
 ('20260727000000'),
 ('20260713000000'),
 ('20260707190000'),

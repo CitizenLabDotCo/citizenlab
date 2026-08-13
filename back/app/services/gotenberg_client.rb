@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 class GotenbergClient
+  # Web-request callers must fail fast (not pin Puma workers); only background
+  # jobs pass JOB_TIMEOUT_SECONDS. It sits slightly above Gotenberg's
+  # --api-timeout of 600s (see docker-compose.yml) so that when a render takes
+  # too long we get Gotenberg's 503 rather than a client-side timeout.
+  DEFAULT_TIMEOUT_SECONDS = 60
+  JOB_TIMEOUT_SECONDS = 630
+  OPEN_TIMEOUT_SECONDS = 10
+
   class Error < StandardError; end
   class FileTypeUnsupportedError < Error; end
   class GotenbergServiceUnavailableError < Error; end
@@ -15,8 +23,9 @@ class GotenbergClient
     end
   end
 
-  def initialize
+  def initialize(timeout: DEFAULT_TIMEOUT_SECONDS)
     @api_url = ENV.fetch('GOTENBERG_PDF_URL', 'http://gotenberg:3000')
+    @timeout = timeout
   end
 
   # Use Gotenberg web service (separate docker container) to render html to PDF
@@ -35,10 +44,7 @@ class GotenbergClient
     }
     url = "#{@api_url}/forms/chromium/convert/html"
 
-    conn = Faraday.new(url) do |f|
-      f.request :multipart, flat_encode: true
-      f.adapter :net_http
-    end
+    conn = connection(url)
     response = conn.post(url, payload)
     raise_if_error!(response)
 
@@ -59,10 +65,7 @@ class GotenbergClient
       'files' => Faraday::UploadIO.new(file, content_type, file_name)
     }
 
-    conn = Faraday.new(url) do |f|
-      f.request :multipart, flat_encode: true
-      f.adapter :net_http
-    end
+    conn = connection(url)
 
     response = conn.post(url, payload)
     raise_if_error!(response)
@@ -87,6 +90,15 @@ class GotenbergClient
   end
 
   private
+
+  def connection(url)
+    Faraday.new(url) do |f|
+      f.request :multipart, flat_encode: true
+      f.options.timeout = @timeout
+      f.options.open_timeout = OPEN_TIMEOUT_SECONDS
+      f.adapter :net_http
+    end
+  end
 
   def raise_if_error!(response)
     return if response.success?

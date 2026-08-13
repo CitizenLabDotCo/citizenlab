@@ -30,9 +30,13 @@ describe Rake::Task do
     it 'creates the missing campaign records' do
       delivery_service = EmailCampaigns::DeliveryService.new
 
+      # A set difference, not size arithmetic: `manual_campaign_types` is
+      # feature-independent, so it can name types absent from `campaign_types`.
+      instantiatable = delivery_service.campaign_types - delivery_service.manual_campaign_types
+
       expect { task.execute }
         .to change(EmailCampaigns::Campaign, :count)
-        .by(delivery_service.campaign_types.size - delivery_service.manual_campaign_types.size)
+        .by(instantiatable.size)
     end
   end
 end

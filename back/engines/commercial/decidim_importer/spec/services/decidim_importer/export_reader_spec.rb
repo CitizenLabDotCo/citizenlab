@@ -129,6 +129,19 @@ RSpec.describe DecidimImporter::ExportReader do
         'decidim_participatory_process' => 'decidim--process--1', 'decidim_component' => 'comp-61')
     end
 
+    it 'reads a proposals component’s proposal-states sidecar, stamped with process + component' do
+      write_process('decidim--process--1')
+      comp = '04---participatory-processes/01---decidim--participatory-process--1/07---components/01---decidim--component--61---proposals'
+      write_csv("#{comp}/01---component.csv", %w[uid name], ['comp-61', %({"fr":"Idées"})])
+      write_csv("#{comp}/02---proposal-states.csv",
+        %w[uid title token proposals_count], ['state-1', %({"fr":"Idée faisable"}), 'viable', '34'])
+
+      states = described_class.read(root)[:proposal_states]
+
+      expect(states.first).to include('uid' => 'state-1', 'token' => 'viable', 'proposals_count' => '34',
+        'decidim_participatory_process' => 'decidim--process--1', 'decidim_component' => 'comp-61')
+    end
+
     it 'reads a proposals component’s proposal-votes sidecar, stamped with process + component' do
       write_process('decidim--process--1')
       comp = '04---participatory-processes/01---decidim--participatory-process--1/07---components/01---decidim--component--61---proposals'

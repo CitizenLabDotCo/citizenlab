@@ -92,7 +92,21 @@ module DecidimImporter
         # Scrub PII last, once every identifying field is present, so nothing is added back after.
         anonymize_pii!(attributes, uid) if @anonymize_users
 
-        ref_map.register(uid, Record.new('user', attributes))
+        # Go Vocal requires case-insensitively unique emails; Decidim occasionally has two accounts on the
+        # same one. Collapse the duplicate onto the first: alias this uid to that user so its references
+        # (authorship, follows, votes) still resolve, and emit a single user — otherwise the second insert
+        # trips the unique-email index. (Anonymised emails are unique per uid, so this only fires on real ones.)
+        email_key = attributes['email'].downcase
+        if (existing = seen_users_by_email[email_key])
+          ref_map.register_alias(uid, existing)
+          return skip(uid, "duplicate email #{attributes['email']}")
+        end
+
+        seen_users_by_email[email_key] = ref_map.register(uid, Record.new('user', attributes))
+      end
+
+      def seen_users_by_email
+        @seen_users_by_email ||= {}
       end
 
       # True when the email's domain is on the same blacklist the `User` model validates against, so
@@ -135,13 +149,23 @@ module DecidimImporter
 
       # Decidim stores a single display name; split into first/last (last token => last name).
       def name_attributes(row)
-        name = present_value(row[COLUMNS[:name]])
+        name = sanitize_name(present_value(row[COLUMNS[:name]]))
         return { 'first_name' => 'Unknown' } if name.nil?
 
         parts = name.split(/\s+/)
         return { 'first_name' => name } if parts.size == 1
 
         { 'first_name' => parts[0..-2].join(' '), 'last_name' => parts[-1] }
+      end
+
+      # `User` rejects `@` in first/last name (`format: { without: /@/ }`) — the only character restriction
+      # on names — and Decidim display names occasionally contain one. Strip it so the record validates;
+      # a name left blank by the removal falls back to `'Unknown'` via {#name_attributes}.
+      def sanitize_name(name)
+        return nil if name.nil?
+
+        cleaned = name.delete('@').strip
+        cleaned.presence
       end
 
       # `about` is a plain string (sometimes a multiloc JSON on multilingual platforms); the URL is

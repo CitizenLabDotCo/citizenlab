@@ -10,18 +10,23 @@ module DecidimImporter
   #   DecidimImporter::TemplateCreator.from_zip('tmp/example.com.zip').import
   class TemplateCreator
     # Build from a Decidim export zip: extract to a tempdir, parse every CSV, tear the tempdir down.
-    def self.from_zip(zip_path, **)
+    # @param container_ids [Array<String>, nil] when given, narrow the export to those process/assembly
+    #   uids and the users/folders they reference (see {RowScoper}) — a supplemental single-project import.
+    def self.from_zip(zip_path, container_ids: nil, **)
       raise ArgumentError, "file not found: #{zip_path}" unless File.file?(zip_path)
 
       Dir.mktmpdir('decidim_import_') do |tmp|
         ZipExtractor.extract(zip_path, tmp)
-        from_directory(ZipExtractor.detect_csv_root(tmp), **)
+        from_directory(ZipExtractor.detect_csv_root(tmp), container_ids: container_ids, **)
       end
     end
 
     # Build by scanning a directory that *directly* contains the export's CSV files (see {ExportReader}).
-    def self.from_directory(path, **)
-      new(ExportReader.read(path), **)
+    # @param container_ids [Array<String>, nil] see {.from_zip}.
+    def self.from_directory(path, container_ids: nil, **)
+      rows = ExportReader.read(path)
+      rows = RowScoper.scope(rows, container_ids) if container_ids.present?
+      new(rows, **)
     end
 
     # @param rows_by_model [Hash{Symbol=>Array<Hash>}] parsed CSV rows keyed by model. Missing keys mean
@@ -55,6 +60,7 @@ module DecidimImporter
       run_extractor(Extractors::ProjectsExtractor, :projects)
       run_categories
       run_phases
+      run_proposal_statuses
       run_proposals
       run_results
       run_debates
@@ -145,6 +151,12 @@ module DecidimImporter
       created = Importer.apply_template(template, import_uploads: @import_uploads, validate: validate)
       ModeratorAssigner.new.assign(moderator_assignments)
       created
+    end
+
+    # The custom `idea_status` records the {StatusMapper} created for this import (Decidim states with no
+    # standard Go Vocal equivalent), for the run log. Empty until {#build_template} has run.
+    def custom_statuses
+      @status_resolver&.custom_status_records || []
     end
 
     # Participation components that couldn't be placed as a phase (never published / no datable window).
@@ -271,11 +283,23 @@ module DecidimImporter
       @phase_projector.run(participation_components: participation_components)
     end
 
+    # Maps the proposals' Decidim states onto Go Vocal idea-statuses (one LLM call, see {StatusMapper}),
+    # creating the `idea_status` records for the custom ones before the proposals reference them. Runs
+    # only when there are proposals; the resolver copes with a missing `proposal_states` sidecar.
+    def run_proposal_statuses
+      return unless @rows_by_model.key?(:proposals)
+
+      @status_resolver = ProposalStatusResolver.new(
+        rows_for(:proposal_states), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
+      ).build!
+    end
+
     def run_proposals
       return unless @rows_by_model.key?(:proposals)
 
       @proposals_extractor = Extractors::ProposalsExtractor.new(
-        rows_for(:proposals), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
+        rows_for(:proposals), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale,
+        status_resolver: @status_resolver
       )
       @proposals_extractor.run
     end
@@ -466,15 +490,10 @@ module DecidimImporter
     end
 
     def derived_original_domain
-      url = rows_for(:projects).filter_map { |row| present_string(row['url']) }.first
+      url = rows_for(:projects).filter_map { |row| Parsing.present_value(row['url']) }.first
       url && URI.parse(url).host
     rescue URI::InvalidURIError
       nil
-    end
-
-    def present_string(value)
-      str = value.to_s.strip
-      str.empty? ? nil : str
     end
 
     # Decidim process attachments → project-level file attachments (`ProjectFile`). Runs after the projects
@@ -601,34 +620,18 @@ module DecidimImporter
     end
 
     # Component manifest rows whose type is `proposals` (their proposals live in a sibling CSV).
-    def proposal_component_rows
-      @proposal_component_rows ||= rows_for(:components).select { |row| row['type'] == ExportReader::PROPOSALS_COMPONENT }
+    # Component manifest rows of a given type (proposals/accountability/debates/surveys/budgets/pages),
+    # memoized per type. Their per-type payloads live in sibling CSVs or `specific_data`.
+    def component_rows_of(type)
+      (@component_rows_of ||= {})[type] ||= rows_for(:components).select { |row| row['type'] == type }
     end
 
-    # Component manifest rows whose type is `accountability` (their results live in a sibling CSV).
-    def accountability_component_rows
-      @accountability_component_rows ||= rows_for(:components).select { |row| row['type'] == ExportReader::ACCOUNTABILITY_COMPONENT }
-    end
-
-    # Component manifest rows whose type is `debates` (their debates live in a sibling CSV).
-    def debate_component_rows
-      @debate_component_rows ||= rows_for(:components).select { |row| row['type'] == ExportReader::DEBATES_COMPONENT }
-    end
-
-    # Component manifest rows whose type is `surveys` (their questionnaire lives in `specific_data`).
-    def survey_component_rows
-      @survey_component_rows ||= rows_for(:components).select { |row| row['type'] == ExportReader::SURVEYS_COMPONENT }
-    end
-
-    # Component manifest rows whose type is `budgets` (their budgets/projects/orders live in a subtree).
-    def budget_component_rows
-      @budget_component_rows ||= rows_for(:components).select { |row| row['type'] == ExportReader::BUDGETS_COMPONENT }
-    end
-
-    # Component manifest rows whose type is `pages` (their body lives in `specific_data`).
-    def page_component_rows
-      @page_component_rows ||= rows_for(:components).select { |row| row['type'] == ExportReader::PAGES_COMPONENT }
-    end
+    def proposal_component_rows = component_rows_of(ExportReader::PROPOSALS_COMPONENT)
+    def accountability_component_rows = component_rows_of(ExportReader::ACCOUNTABILITY_COMPONENT)
+    def debate_component_rows = component_rows_of(ExportReader::DEBATES_COMPONENT)
+    def survey_component_rows = component_rows_of(ExportReader::SURVEYS_COMPONENT)
+    def budget_component_rows = component_rows_of(ExportReader::BUDGETS_COMPONENT)
+    def page_component_rows = component_rows_of(ExportReader::PAGES_COMPONENT)
 
     # Custom user fields seeded from the organization's `extra_user_fields` config, feeding both the
     # template (new `custom_field` records) and the users extractor (keys to copy off `extended_data`).
