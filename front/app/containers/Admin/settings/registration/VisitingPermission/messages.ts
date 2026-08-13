@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   platformAccessTitle: {
     id: 'app.containers.AdminPage.SettingsPage.registration.VisitingPermission.platformAccessTitle',
-    defaultMessage: 'Platform access',
+    defaultMessage: 'Platform access and personal info collection',
   },
   subtitle1: {
     id: 'app.containers.AdminPage.SettingsPage.visitingPermission.subtitle1',
