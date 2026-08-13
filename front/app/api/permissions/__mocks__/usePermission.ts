@@ -1,0 +1,37 @@
+import { IGlobalPermissionData } from '../types';
+
+export const permissionData: IGlobalPermissionData = {
+  id: '4b6b0a1a-1d8b-4e8d-9b6d-6a4b3f0e2c11',
+  type: 'permission',
+  attributes: {
+    action: 'visiting',
+    permitted_by: 'users',
+    global_custom_fields: false,
+    created_at: '2023-08-01T14:22:08.000Z',
+    updated_at: '2023-09-14T08:55:27.098Z',
+    verification_enabled: false,
+    verification_expiry: null,
+    access_denied_explanation_multiloc: {},
+    everyone_tracking_enabled: false,
+    require_confirmed_email: true,
+    confirmed_email_expiry: null,
+    require_confirmed_phone_number: false,
+    confirmed_phone_number_expiry: null,
+    require_name: true,
+    require_password: true,
+    require_verification: false,
+    permitted_by_everyone_allowed: false,
+  },
+  relationships: {
+    permission_scope: {
+      data: null,
+    },
+    groups: {
+      data: [],
+    },
+  },
+};
+
+export default jest.fn(() => {
+  return { data: { data: permissionData } };
+});

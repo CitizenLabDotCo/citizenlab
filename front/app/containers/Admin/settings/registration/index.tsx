@@ -32,6 +32,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import CustomFieldSettings from './CustomFieldSettings';
 import HelperTextInputs from './HelperTextInputs';
 import ToggleShowFollowPreferences from './ToggleShowFollowPreferences';
+import VisitingPermission from './VisitingPermission';
 
 export const LabelTooltip = styled.div`
   display: flex;
@@ -178,6 +179,7 @@ const SettingsRegistrationTab = () => {
             </Box>
           )}
         </Box>
+        <VisitingPermission />
         <CustomFieldSettings />
       </>
     );

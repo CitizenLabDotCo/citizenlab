@@ -8,6 +8,7 @@ import { FormatMessage } from 'typings';
 
 import useIdMethods from 'api/id_methods/useIdMethods';
 import useVerificationMethod from 'api/id_methods/useVerificationMethod';
+import { IPermissionData } from 'api/permissions/types';
 import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
 import { IPhasePermissionData } from 'api/phase_permissions/types';
 
@@ -16,7 +17,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import messages from './messages';
 
 /** Group ids the action is limited to (OR semantics). */
-export const getGroupIds = (permission: IPhasePermissionData): string[] =>
+export const getGroupIds = (permission: IPermissionData): string[] =>
   permission.relationships.groups.data.map((g) => g.id);
 
 /** Does participation require an account? Driven by `permitted_by`. */

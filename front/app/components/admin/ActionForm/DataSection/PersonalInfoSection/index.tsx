@@ -4,7 +4,7 @@
 import React from 'react';
 
 import useIdMethods from 'api/id_methods/useIdMethods';
-import { IPhasePermissionData } from 'api/phase_permissions/types';
+import { IPermissionData } from 'api/permissions/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -18,7 +18,7 @@ import messages from './messages';
 import PiiToggle from './PiiToggle';
 
 interface Props {
-  permission: IPhasePermissionData;
+  permission: IPermissionData;
   onChange: (changes: Changes) => void;
 }
 

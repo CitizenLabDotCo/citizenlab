@@ -33,6 +33,10 @@ const useUpdatePermission = () => {
 
       if (action) {
         queryClient.invalidateQueries({
+          queryKey: permissionKeys.item({ action }),
+        });
+
+        queryClient.invalidateQueries({
           queryKey: permissionsPhaseCustomFieldsKeys.list({
             action,
           }),

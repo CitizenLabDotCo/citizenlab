@@ -134,6 +134,33 @@ resource 'Permissions' do
         json_response = json_parse response_body
         expect(json_response.dig(:data, :id)).to eq Permission.find_by!(permission_scope: nil, action: action).id
       end
+
+      context 'for the visiting permission' do
+        let(:action) { 'visiting' }
+
+        before do
+          Permission.find_by!(permission_scope: nil, action: 'visiting').update!(
+            require_confirmed_phone_number: true,
+            confirmed_phone_number_expiry: 30,
+            group_ids: create_list(:group, 2).map(&:id)
+          )
+        end
+
+        example_request 'Get the visiting permission' do
+          assert_status 200
+          expect(response_data[:id]).to eq Permission.find_by!(permission_scope: nil, action: 'visiting').id
+          expect(response_data[:attributes]).to include(
+            action: 'visiting',
+            require_confirmed_email: true,
+            require_confirmed_phone_number: true,
+            confirmed_phone_number_expiry: 30,
+            require_name: true,
+            require_password: true,
+            require_verification: false
+          )
+          expect(response_data.dig(:relationships, :groups, :data).count).to eq 2
+        end
+      end
     end
 
     patch 'web_api/v1/phases/:phase_id/permissions/:action' do
@@ -254,6 +281,11 @@ resource 'Permissions' do
         parameter :permitted_by, "Defines who is granted permission, either #{Permission::PERMITTED_BIES.join(',')}.", required: false
         parameter :global_custom_fields, 'When set to true, the enabled registrations are associated to the permission', required: false
         parameter :group_ids, "An array of group id's associated to this permission", required: false
+        parameter :require_confirmed_email, 'Whether a confirmed email address is required', required: false
+        parameter :require_confirmed_phone_number, 'Whether a confirmed phone number is required', required: false
+        parameter :confirmed_phone_number_expiry, 'Number of days after which the phone number must be confirmed again', required: false
+        parameter :require_verification, 'Whether identity verification is required', required: false
+        parameter :require_name, 'Whether a first and last name are required', required: false
       end
       ValidationErrorHelper.new.error_fields(self, Permission)
 
@@ -266,6 +298,37 @@ resource 'Permissions' do
         json_response = json_parse response_body
         expect(json_response.dig(:data, :attributes, :permitted_by)).to eq permitted_by
         expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to match_array group_ids
+      end
+
+      context 'for the visiting permission' do
+        let(:action) { 'visiting' }
+        let(:require_confirmed_email) { false }
+        let(:require_confirmed_phone_number) { true }
+        let(:confirmed_phone_number_expiry) { 90 }
+        let(:require_verification) { true }
+        let(:require_name) { false }
+
+        example_request 'Update the visiting permission' do
+          assert_status 200
+          expect(response_data[:attributes]).to include(
+            action: 'visiting',
+            require_confirmed_email: false,
+            require_confirmed_phone_number: true,
+            confirmed_phone_number_expiry: 90,
+            require_verification: true,
+            require_name: false
+          )
+          expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array group_ids
+
+          permission = Permission.find_by!(permission_scope: nil, action: 'visiting')
+          expect(permission).to have_attributes(
+            require_confirmed_email: false,
+            require_confirmed_phone_number: true,
+            confirmed_phone_number_expiry: 90,
+            require_verification: true,
+            require_name: false
+          )
+        end
       end
     end
   end
