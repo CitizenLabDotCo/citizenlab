@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IPhasePermissionData } from 'api/phase_permissions/types';
+import { IPermissionData } from 'api/permissions/types';
 
 import { render, screen, userEvent } from 'utils/testUtils/rtl';
 
@@ -46,8 +46,8 @@ jest.mock(
 const UPSELL_COPY = /This feature is not included in your current plan/i;
 
 const buildPermission = (
-  attributes: Partial<IPhasePermissionData['attributes']> = {}
-): IPhasePermissionData =>
+  attributes: Partial<IPermissionData['attributes']> = {}
+): IPermissionData =>
   ({
     id: 'perm-1',
     type: 'permission',
@@ -61,7 +61,7 @@ const buildPermission = (
       permission_scope: { data: { id: 'ph-1', type: 'phase' } },
       groups: { data: [] },
     },
-  } as unknown as IPhasePermissionData);
+  } as unknown as IPermissionData);
 
 const renderSection = () =>
   render(

@@ -30,7 +30,7 @@ const VisitingPermission = () => {
   if (!permission) return null;
 
   const handleChange = (changes: Changes) => {
-    updatePermission({ action: 'visiting', ...changes });
+    updatePermission({ action: 'visiting', permission: changes });
   };
 
   return (

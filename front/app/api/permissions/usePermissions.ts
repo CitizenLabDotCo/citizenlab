@@ -4,21 +4,16 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import permissionsKeys from './keys';
-import { IGlobalPermissions, PermissionsKeys } from './types';
+import { IPermissions, PermissionsKeys } from './types';
 
 const fetchPermissions = () =>
-  fetcher<IGlobalPermissions>({
+  fetcher<IPermissions>({
     path: `/permissions`,
     action: 'get',
   });
 
 const usePermissions = () => {
-  return useQuery<
-    IGlobalPermissions,
-    CLErrors,
-    IGlobalPermissions,
-    PermissionsKeys
-  >({
+  return useQuery<IPermissions, CLErrors, IPermissions, PermissionsKeys>({
     queryKey: permissionsKeys.lists(),
     queryFn: () => fetchPermissions(),
   });

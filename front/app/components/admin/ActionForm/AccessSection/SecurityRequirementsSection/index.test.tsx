@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { IdMethodData } from 'api/id_methods/types';
-import { IPhasePermissionData } from 'api/phase_permissions/types';
+import { IPermissionData } from 'api/permissions/types';
 
 import { render, screen, userEvent } from 'utils/testUtils/rtl';
 
@@ -57,8 +57,8 @@ const emaillessAuthMethod = {
 } as IdMethodData;
 
 const buildPermission = (
-  attributes: Partial<IPhasePermissionData['attributes']> = {}
-): IPhasePermissionData =>
+  attributes: Partial<IPermissionData['attributes']> = {}
+): IPermissionData =>
   ({
     id: 'perm-1',
     type: 'permission',
@@ -84,10 +84,10 @@ const buildPermission = (
       permission_scope: { data: { id: 'ph-1', type: 'phase' } },
       groups: { data: [] },
     },
-  } as IPhasePermissionData);
+  } as IPermissionData);
 
 const renderSection = (
-  attributes?: Partial<IPhasePermissionData['attributes']>,
+  attributes?: Partial<IPermissionData['attributes']>,
   onChange = jest.fn()
 ) => {
   render(

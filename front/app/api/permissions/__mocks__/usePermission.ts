@@ -1,6 +1,6 @@
-import { IGlobalPermissionData } from '../types';
+import { IPermissionData } from '../types';
 
-export const permissionData: IGlobalPermissionData = {
+export const permissionData: IPermissionData = {
   id: '4b6b0a1a-1d8b-4e8d-9b6d-6a4b3f0e2c11',
   type: 'permission',
   attributes: {
@@ -21,6 +21,12 @@ export const permissionData: IGlobalPermissionData = {
     require_password: true,
     require_verification: false,
     permitted_by_everyone_allowed: false,
+    user_data_collection: 'all_data',
+    user_fields_in_form_descriptor: {
+      value: null,
+      locked: true,
+      explanation: 'user_fields_in_form_not_supported_for_action',
+    },
   },
   relationships: {
     permission_scope: {

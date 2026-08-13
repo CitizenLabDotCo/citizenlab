@@ -1,6 +1,6 @@
-import { IPhasePermissionData } from '../types';
+import { IPermissionData } from 'api/permissions/types';
 
-export const phasePermissionsData: IPhasePermissionData = {
+export const phasePermissionsData: IPermissionData = {
   id: '80419431-f691-4dc5-8aeb-5d14ece5feb0',
   type: 'permission',
   attributes: {

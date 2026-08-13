@@ -22,6 +22,12 @@ export const permissionsData: IPermissionData[] = [
       require_password: true,
       require_verification: false,
       permitted_by_everyone_allowed: false,
+      user_data_collection: 'all_data',
+      user_fields_in_form_descriptor: {
+        value: null,
+        locked: true,
+        explanation: 'user_fields_in_form_not_supported_for_action',
+      },
     },
     relationships: {
       permission_scope: {

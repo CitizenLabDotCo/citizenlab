@@ -2,7 +2,7 @@ import React from 'react';
 
 import { IdMethodData } from 'api/id_methods/types';
 import { permissionData } from 'api/permissions/__mocks__/usePermission';
-import { IGlobalPermissionData } from 'api/permissions/types';
+import { IPermissionData } from 'api/permissions/types';
 
 import { render, screen, userEvent } from 'utils/testUtils/rtl';
 
@@ -19,7 +19,7 @@ const verificationMethod = {
   },
 } as IdMethodData;
 
-let mockPermission: IGlobalPermissionData | undefined = permissionData;
+let mockPermission: IPermissionData | undefined = permissionData;
 const mockUpdatePermission = jest.fn();
 
 jest.mock('api/permissions/usePermission', () =>
@@ -77,8 +77,7 @@ describe('<VisitingPermission />', () => {
 
     expect(mockUpdatePermission).toHaveBeenCalledWith({
       action: 'visiting',
-      require_verification: true,
-      verification_expiry: null,
+      permission: { require_verification: true, verification_expiry: null },
     });
   });
 
@@ -90,7 +89,7 @@ describe('<VisitingPermission />', () => {
 
     expect(mockUpdatePermission).toHaveBeenCalledWith({
       action: 'visiting',
-      require_name: false,
+      permission: { require_name: false },
     });
   });
 });
