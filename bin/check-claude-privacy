@@ -27,8 +27,6 @@ if [ -n "$TRACKED_CLAUDE_MD" ]; then
 fi
 
 # 3. The root .mcp.json should never be tracked. It's a gitignored symlink
-#    into the private overlay (team-shared MCP config) materialized by
-#    bin/setup-claude.
 TRACKED_MCP="$(git ls-files .mcp.json 2>/dev/null || true)"
 if [ -n "$TRACKED_MCP" ]; then
   echo "ERROR: tracked .mcp.json (should be a gitignored symlink instead):" >&2

@@ -142,9 +142,7 @@ assert_exit_code "$(attempt_commit)" "1" "blocks commit when a file under .claud
 
 
 # ----------------------------------------------------------------------------
-# Test: blocks commit when the root .mcp.json is staged. Like CLAUDE.md,
-# it's a gitignored symlink into the private overlay (team-shared MCP
-# config) and should never be committed.
+# Test: blocks commit when the root .mcp.json is staged.
 # ----------------------------------------------------------------------------
 setup_test_repo
 echo '{ "mcpServers": {} }' > "$REPO/.mcp.json"

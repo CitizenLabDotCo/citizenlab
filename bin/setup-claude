@@ -210,8 +210,6 @@ if [ "$MODE" = "check" ]; then
       issues+=("$dangling_count dangling symlink(s) under .claude/ (e.g. $dangling_example)")
     fi
 
-    # The root .mcp.json symlink sits outside .claude/, so the scan above
-    # doesn't cover it — check it for dangling separately.
     if [ -L .mcp.json ] && [ ! -e .mcp.json ]; then
       issues+=(".mcp.json at the repo root is a dangling symlink (removed from the overlay?)")
     fi
@@ -309,13 +307,6 @@ if [ -f "$PRIVATE_DIR/.claude-readme.md" ]; then
   ln -sfn "$(relpath "$PRIVATE_DIR/.claude-readme.md" "$REPO_ROOT/.claude")" .claude/README.md
 fi
 
-# Team-shared MCP server config (only if present in the private repo).
-# Lands at the repo root — not under .claude/ — because Claude Code
-# discovers project-scope MCP servers at <repo>/.mcp.json. Gitignored;
-# personal MCP servers belong in local scope (`claude mcp add`), which
-# merges with this file and wins per server name. The symlink-cleanup at
-# the top only covers .claude/, so remove a stale root symlink here when
-# the overlay no longer has the file.
 if [ -f "$PRIVATE_DIR/.mcp.json" ]; then
   ln -sfn "$(relpath "$PRIVATE_DIR/.mcp.json" "$REPO_ROOT")" .mcp.json
 elif [ -L .mcp.json ]; then

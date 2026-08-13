@@ -149,9 +149,7 @@ assert_exit_code "$(run_check_in "$REPO")" "1" "fails when a file under .claude/
 
 
 # ----------------------------------------------------------------------------
-# Test: fails when the root .mcp.json is tracked. Like CLAUDE.md, it's a
-# gitignored symlink into the private overlay (team-shared MCP config)
-# materialized by bin/setup-claude — tracking it would leak overlay content.
+# Test: fails when the root .mcp.json is tracked.
 # ----------------------------------------------------------------------------
 setup_test_repo
 echo '{ "mcpServers": {} }' > "$REPO/.mcp.json"

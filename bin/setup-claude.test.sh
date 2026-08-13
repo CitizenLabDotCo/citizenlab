@@ -322,8 +322,7 @@ assert_symlink_to "$PUBLIC/.claude/settings.json"              "../../private/se
 # README appear at the conventional location in the public repo's view.
 assert_symlink_to "$PUBLIC/.claude/README.md"                  "../../private/.claude-readme.md"                 ".claude/README.md → private .claude-readme.md"
 
-# Special case: `.mcp.json` lands at the repo root (where Claude Code
-# discovers project-scope MCP servers), not under .claude/.
+# Special case: `.mcp.json` lands at the repo root
 assert_symlink_to "$PUBLIC/.mcp.json"                          "../private/.mcp.json"                            "root .mcp.json → private"
 assert_path_missing "$PUBLIC/.claude/.mcp.json"                ".mcp.json not mirrored under .claude/ (lives at repo root instead)"
 
@@ -599,10 +598,7 @@ assert_eq "$CHECK_STATUS" "0" "after --relink (dangling): --check passes again"
 
 
 # ----------------------------------------------------------------------------
-# Test: the root .mcp.json symlink sits outside .claude/, so it has its own
-# drift paths. A missing symlink (overlay has the file, root link gone) is
-# detected and healed by --relink; a dangling one (file deleted from the
-# overlay) is detected and removed by --relink.
+# Test: the root .mcp.json symlink sits outside .claude/
 # ----------------------------------------------------------------------------
 rm "$PUBLIC/.mcp.json"
 run_check_capture
