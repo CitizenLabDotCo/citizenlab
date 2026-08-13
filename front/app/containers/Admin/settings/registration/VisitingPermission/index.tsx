@@ -38,7 +38,18 @@ const VisitingPermission = () => {
         <FormattedMessage {...messages.platformAccessTitle} />
       </SectionTitle>
       <SectionDescription>
-        <FormattedMessage {...messages.platformAccessDescription} />
+        <FormattedMessage {...messages.subtitle1} />
+        <ul>
+          <li>
+            <FormattedMessage {...messages.subtitleBullet1} />
+          </li>
+          <li>
+            <FormattedMessage
+              {...messages.subtitleBullet2}
+              values={{ b: (chunks) => <b>{chunks}</b> }}
+            />
+          </li>
+        </ul>
       </SectionDescription>
 
       <Box
