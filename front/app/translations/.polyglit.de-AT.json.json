@@ -10501,13 +10501,13 @@
   },
   "app.containers.NotificationMenu.projectPhaseStarted": {
     "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.368694Z",
-    "verified_by": "Edwin Kato"
+    "verified_at": "2026-08-07T10:28:22.311193Z",
+    "verified_by": "Jelena"
   },
   "app.containers.NotificationMenu.projectPhaseUpcoming": {
     "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.368694Z",
-    "verified_by": "Edwin Kato"
+    "verified_at": "2026-08-07T10:28:22.311193Z",
+    "verified_by": "Jelena"
   },
   "app.containers.NotificationMenu.projectPublished": {
     "state": "verified",
