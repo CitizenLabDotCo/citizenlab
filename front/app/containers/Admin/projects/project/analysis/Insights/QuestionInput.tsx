@@ -24,7 +24,7 @@ import messages from './messages';
 const QuestionInput = ({ onClose }: { onClose: () => void }) => {
   const [question, setQuestion] = useState('');
   const { formatMessage } = useIntl();
-  const { mutate: askQuestion, isLoading } = useAddAnalysisQuestion();
+  const { mutate: askQuestion, isPending } = useAddAnalysisQuestion();
   const { analysisId } = useParams({
     from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
   });
@@ -73,7 +73,7 @@ const QuestionInput = ({ onClose }: { onClose: () => void }) => {
         <Button
           buttonStyle="admin-dark"
           onClick={handleAskQuestion}
-          processing={isLoading}
+          processing={isPending}
           disabled={!question}
           type="submit"
         >

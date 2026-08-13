@@ -18,7 +18,7 @@ interface Props {
 }
 
 const UpdateOnboardingTopic = ({ topic }: Props) => {
-  const { mutate: updateTopic, isLoading, error } = useUpdateGlobalTopic();
+  const { mutate: updateTopic, isPending, error } = useUpdateGlobalTopic();
   const { formatMessage } = useIntl();
   const theme = useTheme();
   const iconName = topic.attributes.include_in_onboarding
@@ -50,7 +50,7 @@ const UpdateOnboardingTopic = ({ topic }: Props) => {
           padding="0px"
           my="0px"
           whiteSpace="normal"
-          processing={isLoading}
+          processing={isPending}
           textColor={topicButtonContentColor}
           iconColor={topicButtonContentColor}
         >

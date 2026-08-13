@@ -16,7 +16,7 @@ const ResetParticipationData = () => {
   const { projectId } = useParams({
     from: '/$locale/admin/projects/$projectId/general/data',
   });
-  const { mutate: resetProject, isLoading: isProjectResetLoading } =
+  const { mutate: resetProject, isPending: isProjectResetLoading } =
     useResetProject();
 
   const { formatMessage } = useIntl();

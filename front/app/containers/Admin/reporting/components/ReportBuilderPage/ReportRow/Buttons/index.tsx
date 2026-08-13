@@ -30,8 +30,8 @@ interface Props {
 
 const Buttons = ({ reportId, showDuplicate = true }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutate: duplicateReport, isLoading: isDuplicating } = useCopyReport();
-  const { mutate: deleteReport, isLoading: isDeleting } = useDeleteReport();
+  const { mutate: duplicateReport, isPending: isDuplicating } = useCopyReport();
+  const { mutate: deleteReport, isPending: isDeleting } = useDeleteReport();
   const { data: report } = useReport(reportId);
   if (!report) return null;
 

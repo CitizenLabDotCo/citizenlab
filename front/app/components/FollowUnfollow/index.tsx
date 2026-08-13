@@ -63,8 +63,8 @@ const FollowUnfollow = ({
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
   const { pathname } = useLocation();
-  const { mutate: addFollower, isLoading: isAddingFollower } = useAddFollower();
-  const { mutate: deleteFollower, isLoading: isDeletingFollower } =
+  const { mutate: addFollower, isPending: isAddingFollower } = useAddFollower();
+  const { mutate: deleteFollower, isPending: isDeletingFollower } =
     useDeleteFollower();
   const { treatment, send } = useABTest({
     experiment: `Following an idea text(${locale})`,

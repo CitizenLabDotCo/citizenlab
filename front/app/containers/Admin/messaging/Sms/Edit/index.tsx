@@ -17,7 +17,7 @@ import SmsCampaignForm, { FormValues } from '../SmsCampaignForm';
 const EditSmsCampaign = () => {
   const { campaignId } = useParams({ strict: false }) as { campaignId: string };
   const { data: campaign } = useSmsCampaign(campaignId);
-  const { isLoading, mutateAsync: updateCampaign } = useUpdateSmsCampaign();
+  const { isPending, mutateAsync: updateCampaign } = useUpdateSmsCampaign();
 
   if (!campaign) return null;
 
@@ -39,7 +39,7 @@ const EditSmsCampaign = () => {
         <FormattedMessage {...messages.editSmsCampaignTitle} />
       </Title>
       <SmsCampaignForm
-        isLoading={isLoading}
+        isLoading={isPending}
         defaultValues={{
           subject_multiloc: campaign.data.attributes.subject_multiloc,
           body_multiloc: campaign.data.attributes.body_multiloc,

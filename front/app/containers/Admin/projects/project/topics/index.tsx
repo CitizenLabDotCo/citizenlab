@@ -52,7 +52,7 @@ const ProjectInputTopics = () => {
 
   const { data: authUser } = useAuthUser();
   const { data: inputTopics } = useInputTopics(projectId);
-  const { mutate: deleteInputTopic, isLoading: isDeleting } =
+  const { mutate: deleteInputTopic, isPending: isDeleting } =
     useDeleteInputTopic();
   const { mutate: moveInputTopic } = useMoveInputTopic();
 

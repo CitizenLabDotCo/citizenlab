@@ -61,7 +61,7 @@ const DemographicSection = ({
     phaseId,
     action,
   });
-  const { mutate: addCustomField, isLoading: isAddingField } =
+  const { mutate: addCustomField, isPending: isAddingField } =
     useAddPermissionsPhaseCustomField({ phaseId, action });
   const { mutate: updateCustomField } = useUpdatePermissionsPhaseCustomField({
     phaseId,

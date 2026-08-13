@@ -25,7 +25,7 @@ const AuthoringAssistanePrototype = ({ ideaId }: { ideaId: string }) => {
   const {
     mutate: addAuthoringAssistance,
     data: authoringResponse,
-    isLoading,
+    isPending,
   } = useAddAuthoringAssistance();
   const promptData = authoringResponse?.data;
   const similarIdeaIds =
@@ -78,7 +78,7 @@ const AuthoringAssistanePrototype = ({ ideaId }: { ideaId: string }) => {
         />
       </Box>
 
-      <Button onClick={() => fetchAssistance(true)} processing={isLoading}>
+      <Button onClick={() => fetchAssistance(true)} processing={isPending}>
         Regenerate insights
       </Button>
 

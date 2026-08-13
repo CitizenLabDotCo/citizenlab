@@ -20,7 +20,7 @@ const AddTag = ({ onCreateTag }: { onCreateTag?: (tagId: string) => void }) => {
   });
 
   const [name, setName] = useState('');
-  const { mutate: addTag, isLoading, error } = useAddAnalysisTag();
+  const { mutate: addTag, isPending, error } = useAddAnalysisTag();
 
   const { formatMessage } = useIntl();
 
@@ -62,7 +62,7 @@ const AddTag = ({ onCreateTag }: { onCreateTag?: (tagId: string) => void }) => {
           ml="4px"
           p="6px"
           onClick={handleTagSubmit}
-          disabled={!name || isLoading}
+          disabled={!name || isPending}
           icon="plus"
           id="e2e-analysis-add-tag-button"
         />

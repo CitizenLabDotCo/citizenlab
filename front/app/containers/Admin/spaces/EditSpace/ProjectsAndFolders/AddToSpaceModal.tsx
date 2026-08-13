@@ -27,9 +27,9 @@ interface Props {
 const AddToSpaceModal = ({ spaceId, addableNodes, opened, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const { mutate: updateProject, isLoading: isUpdatingProject } =
+  const { mutate: updateProject, isPending: isUpdatingProject } =
     useUpdateProject();
-  const { mutate: updateFolder, isLoading: isUpdatingFolder } =
+  const { mutate: updateFolder, isPending: isUpdatingFolder } =
     useUpdateProjectFolder();
 
   const [nodeType, setNodeType] = useState<NodeType>('project');

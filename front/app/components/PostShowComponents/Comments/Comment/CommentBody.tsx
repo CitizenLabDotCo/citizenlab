@@ -78,7 +78,7 @@ const CommentBody = ({
   const theme = useTheme();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: comment } = useComment(commentId);
-  const { mutate: updateComment, isLoading: processing } = useUpdateComment({
+  const { mutate: updateComment, isPending: processing } = useUpdateComment({
     ideaId,
   });
   const localize = useLocalize();

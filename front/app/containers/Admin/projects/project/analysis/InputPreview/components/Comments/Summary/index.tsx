@@ -47,7 +47,7 @@ const Summary = ({ analysisId, inputId }: Props) => {
     backgroundTask?.data.attributes.state === 'queued' ||
     backgroundTask?.data.attributes.state === 'in_progress';
 
-  const { mutate: generateAnalysis, isLoading: requestingSummary } =
+  const { mutate: generateAnalysis, isPending: requestingSummary } =
     useGenerateAnalysisCommentsSummary();
 
   const generatedAt = commentsSummary?.data.attributes.generated_at;

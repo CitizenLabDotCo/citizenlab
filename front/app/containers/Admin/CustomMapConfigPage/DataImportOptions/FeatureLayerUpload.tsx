@@ -46,7 +46,7 @@ const FeatureLayerUpload = ({ mapConfigId, setView }: Props) => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const tenantLocales = useAppConfigurationLocales();
-  const { mutate: createProjectMapLayer, isLoading: apiCallLoading } =
+  const { mutate: createProjectMapLayer, isPending: apiCallLoading } =
     useAddMapLayer(projectId);
 
   const addEsriFeatureLayer = () => {

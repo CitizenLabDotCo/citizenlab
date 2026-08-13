@@ -31,7 +31,7 @@ interface Props {
 }
 
 const CommentEdit = ({ projectId, commentId, body, onCancel }: Props) => {
-  const { mutate: updateComment, isLoading } =
+  const { mutate: updateComment, isPending } =
     useUpdateProjectLibraryExternalComment();
   const { data: authUser } = useAuthUser();
 
@@ -73,7 +73,7 @@ const CommentEdit = ({ projectId, commentId, body, onCancel }: Props) => {
           bgColor={colors.primary}
           p="4px 8px"
           mr="8px"
-          processing={isLoading}
+          processing={isPending}
           onClick={methods.handleSubmit(onFormSubmit)}
         >
           {formatMessage(messages.save)}

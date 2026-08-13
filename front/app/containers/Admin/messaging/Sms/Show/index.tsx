@@ -33,15 +33,15 @@ const Show = () => {
   const { data: campaign } = useSmsCampaign(campaignId);
   const {
     mutate: sendCampaign,
-    isLoading: isSending,
+    isPending: isSending,
     error: apiSendErrors,
   } = useSendSmsCampaign();
   const {
     mutate: sendPreview,
-    isLoading: isSendingPreview,
+    isPending: isSendingPreview,
     error: apiPreviewErrors,
   } = useSendSmsCampaignPreview();
-  const { mutate: deleteCampaign, isLoading: isDeleting } =
+  const { mutate: deleteCampaign, isPending: isDeleting } =
     useDeleteSmsCampaign();
 
   const [showConfirm, setShowConfirm] = useState(false);
