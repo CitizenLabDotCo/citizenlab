@@ -51,6 +51,17 @@ describe ContentBuilder::ProjectPageLayoutService do
     }
   end
 
+  let(:about_box_description) do
+    {
+      'ROOT' => description_root(['col1']),
+      'col1' => node('TwoColumn', parent: 'ROOT', nodes: %w[left1 right1], props: { 'columnLayout' => '2-1' }),
+      'left1' => node('Container', parent: 'col1', nodes: ['txt1'], props: { 'id' => 'left' }, is_canvas: true),
+      'right1' => node('Container', parent: 'col1', nodes: ['about1'], props: { 'id' => 'right' }, is_canvas: true),
+      'txt1' => node('TextMultiloc', parent: 'left1', props: { 'text' => { 'en' => 'desc' } }),
+      'about1' => node('AboutBox', parent: 'right1')
+    }
+  end
+
   let(:empty_description) { { 'ROOT' => description_root([]) } }
 
   let(:unsupported_description) do
@@ -92,23 +103,51 @@ describe ContentBuilder::ProjectPageLayoutService do
 
       expect(result['ROOT']['nodes']).to eq(%w[PROJECT_PAGE_BANNER PROJECT_PAGE_TITLE PROJECT_PAGE_BODY])
       expect(result['ROOT']['type']).to eq({ 'resolvedName' => 'ProjectPageRoot' })
-      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(['d_txt1'] + project_widgets)
+      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(['PROJECT_PAGE_INTRO_COLUMNS'] + project_widgets)
       canonical_names.each { |name| expect(resolved_names(result)).to include(name) }
     end
 
-    it 're-keys the description content into the body' do
+    it 're-keys the description content into the wide intro column' do
       result = build(plain_text_description)
 
-      expect(result['d_txt1']['parent']).to eq('PROJECT_PAGE_BODY')
+      expect(result['PROJECT_PAGE_INTRO_LEFT']['nodes']).to eq(['d_txt1'])
+      expect(result['d_txt1']['parent']).to eq('PROJECT_PAGE_INTRO_LEFT')
       expect(result).not_to have_key('txt1')
+    end
+
+    it 'places the participation box beside the description' do
+      result = build(plain_text_description)
+
+      expect(result['PROJECT_PAGE_INTRO_COLUMNS']).to include(
+        'type' => { 'resolvedName' => 'TwoColumn' },
+        'props' => { 'columnLayout' => '2-1' },
+        'linkedNodes' => {
+          'left' => 'PROJECT_PAGE_INTRO_LEFT',
+          'right' => 'PROJECT_PAGE_INTRO_RIGHT'
+        },
+        'parent' => 'PROJECT_PAGE_BODY'
+      )
+      expect(result['PROJECT_PAGE_INTRO_RIGHT']['nodes']).to eq(['PROJECT_PAGE_PARTICIPATION_BOX'])
+      expect(result['PROJECT_PAGE_PARTICIPATION_BOX']['type']).to eq({ 'resolvedName' => 'AboutBox' })
+    end
+
+    it 'keeps the full-width layout when the description brings its own participation box' do
+      result = build(about_box_description)
+
+      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(['d_col1'] + project_widgets)
+      expect(result['d_col1']['parent']).to eq('PROJECT_PAGE_BODY')
+      expect(result['d_right1']['nodes']).to eq(['d_about1'])
+      expect(resolved_names(result).count('AboutBox')).to eq(1)
+      expect(result).not_to have_key('PROJECT_PAGE_PARTICIPATION_BOX')
+      expect(result).not_to have_key('PROJECT_PAGE_INTRO_COLUMNS')
     end
 
     it 'preserves nested content and remaps inner parent/child pointers' do
       result = build(rich_description)
 
-      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(%w[d_img1 d_col1 d_acc1] + project_widgets)
+      expect(result['PROJECT_PAGE_INTRO_LEFT']['nodes']).to eq(%w[d_img1 d_col1 d_acc1])
       expect(result['d_col1']['nodes']).to eq(%w[d_left1 d_right1])
-      expect(result['d_col1']['parent']).to eq('PROJECT_PAGE_BODY')
+      expect(result['d_col1']['parent']).to eq('PROJECT_PAGE_INTRO_LEFT')
       expect(result['d_left1']['nodes']).to eq(['d_nested1'])
       expect(result['d_nested1']['parent']).to eq('d_left1')
     end
@@ -118,7 +157,7 @@ describe ContentBuilder::ProjectPageLayoutService do
 
       names = resolved_names(result)
       expect(names).not_to include('Published', 'Selection')
-      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(%w[d_col1 d_txt1] + project_widgets)
+      expect(result['PROJECT_PAGE_INTRO_LEFT']['nodes']).to eq(%w[d_col1 d_txt1])
       expect(result['d_left1']['nodes']).to eq(['d_keep1'])
       expect(result).not_to have_key('d_sel1')
       expect(result).not_to have_key('d_pub1')
@@ -153,15 +192,17 @@ describe ContentBuilder::ProjectPageLayoutService do
   end
 
   describe '#from_description_multiloc' do
-    it 'wraps a text-only description in a TextMultiloc in the body' do
+    it 'wraps a text-only description in a TextMultiloc beside the participation box' do
       result = service.from_description_multiloc({ 'en' => '<p>Hello</p>' })
 
-      content_id = result['PROJECT_PAGE_BODY']['nodes'].first
-      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq([content_id] + project_widgets)
+      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(['PROJECT_PAGE_INTRO_COLUMNS'] + project_widgets)
+      content_id = result['PROJECT_PAGE_INTRO_LEFT']['nodes'].first
       content = result[content_id]
       expect(content['type']).to eq({ 'resolvedName' => 'TextMultiloc' })
       expect(content['props']['text']).to eq({ 'en' => '<p>Hello</p>' })
-      expect(content['parent']).to eq('PROJECT_PAGE_BODY')
+      expect(content['parent']).to eq('PROJECT_PAGE_INTRO_LEFT')
+      expect(result['PROJECT_PAGE_INTRO_RIGHT']['nodes']).to eq(['PROJECT_PAGE_PARTICIPATION_BOX'])
+      expect(result['PROJECT_PAGE_PARTICIPATION_BOX']['type']).to eq({ 'resolvedName' => 'AboutBox' })
     end
 
     it 'wraps a description with media in the RichTextMultiloc bridge' do
@@ -169,7 +210,7 @@ describe ContentBuilder::ProjectPageLayoutService do
         { 'en' => '<p><img data-cl2-text-image-text-reference="abc"></p>' }
       )
 
-      content = result[result['PROJECT_PAGE_BODY']['nodes'].first]
+      content = result[result['PROJECT_PAGE_INTRO_LEFT']['nodes'].first]
       expect(content['type']).to eq({ 'resolvedName' => 'RichTextMultiloc' })
     end
 
@@ -221,7 +262,7 @@ describe ContentBuilder::ProjectPageLayoutService do
 
       result = service.craftjs_json_for(project)
 
-      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(['d_txt1'] + project_widgets)
+      expect(result['PROJECT_PAGE_INTRO_LEFT']['nodes']).to eq(['d_txt1'])
     end
 
     it 'builds from the description_multiloc when there is no description layout' do
@@ -229,7 +270,7 @@ describe ContentBuilder::ProjectPageLayoutService do
 
       result = service.craftjs_json_for(project)
 
-      content = result[result['PROJECT_PAGE_BODY']['nodes'].first]
+      content = result[result['PROJECT_PAGE_INTRO_LEFT']['nodes'].first]
       expect(content['props']['text']).to eq({ 'en' => '<p>Hello</p>' })
     end
 

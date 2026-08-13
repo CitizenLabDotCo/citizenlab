@@ -77,6 +77,7 @@ lv-LV:
         users_who_follow_the_proposal: Lietotāji, kas seko priekšlikumam
       trigger:
         7_days_after_invite_is_sent: 7 dienas pēc uzaicinājuma nosūtīšanas
+        7_days_before_phase_starts: 7 dienas pirms posma sākuma
         7_days_before_the_project_changes_phase: 7 dienas pirms projekta izmaiņu fāzes
         comment_is_deleted: Komentārs ir dzēsts
         comment_is_flagged_as_spam: Komentārs ir atzīmēts kā surogātpasts
@@ -95,6 +96,7 @@ lv-LV:
         new_input_awaits_screening: Jauna informācija gaida skrīningu
         new_input_is_published: Tiek publicēti jauni dati
         new_proposal_is_posted: Ir publicēts jauns priekšlikums
+        phase_starts: Sākas posms
         project_phase_changes: Projekta fāzes izmaiņas
         project_published: Publicēts projekts
         project_review_request: Moderators pieprasīja projekta pārskatīšanu
@@ -197,8 +199,8 @@ lv-LV:
       project_folder_moderation_rights_received: Saņemtās mapju pārvaldnieka tiesības
       project_manager_rights_received: Saņemtas projekta pārvaldnieka tiesības
       project_moderation_rights_received: Saņemtās projekta moderēšanas tiesības
-      project_phase_started: Jauns projekta posms
-      project_phase_upcoming: Gaidāmais jaunais projekta posms
+      project_phase_started: Posms ir sācies
+      project_phase_upcoming: Posms drīz sāksies
       project_published: Publicēts projekts
       project_review_request: Projekta pārskatīšanas pieprasījums
       project_review_state_change: Projekts apstiprināts
@@ -359,6 +361,7 @@ lv-LV:
         story: Dodieties uz savu stāstu
         suggestion: Dodieties uz savu ieteikumu
         topic: Pārejiet uz savu tēmu
+      phase_dates: No %{startDate} līdz %{endDate}
     idea_marked_as_spam:
       cta_button: Pārskats
       preheader: Rīkojieties sakarā ar šo ziņojumu par surogātpastu
@@ -571,8 +574,9 @@ lv-LV:
       input_status_description: Ievades statusa piemērs (piemēram, pieņemts, noraidīts, īstenots...)
       input_status_title: Piemērs Statuss
       official_feedback_body: Piemērs oficiālai atsauksmei
+      phase_description: Šis ir posma satura paraugs, kas tiek izmantots e-pasta ziņojumu satura priekšskatīšanai. Šis nav īsts saturs.
       phase_title: Piemērs fāze
-      project_description_preview: Šis ir daži fāzes satura piemēri, ko izmanto e-pasta vēstuļu satura priekšskatīšanai. Tas nav īsts saturs.
+      project_description_preview: Šis ir projekta satura piemērs, ko izmanto e-pasta ziņojumu satura priekšskatīšanai. Šis nav īsts saturs.
       project_title: Projekta piemērs
       proposal_title: Priekšlikuma piemērs
       space_title: Piemēra telpa
@@ -607,21 +611,21 @@ lv-LV:
       title_what_can_you_do_moderator: Ko jūs varat darīt kā projektu vadītājs?
       x_ideas: '%{numberOfIdeas} idejas'
     project_phase_started:
-      cta_button: Atklājiet šo jauno posmu
-      event_description: Šim projektam ir sācies jauns posms %{organizationName} platformā. Noklikšķiniet uz zemāk redzamās saites, lai uzzinātu vairāk!
+      cta_button: Skatīt jaunumus
+      event_description: "Tagad varat piedalīties posmā '%{phaseTitle}' %{organizationName} platformā."
       new_phase: "Šim projektam ir sācies '%{phaseTitle}' posms."
-      preheader: "Projektam '%{projectName}' ir sācies jauns posms."
-      subject: '%{projectName} ir sācies jauns posms'
+      preheader: "Tagad varat piedalīties posmā '%{phaseTitle}'"
+      subject: "'%{phaseTitle}' ir sācies projektā %{projectName}"
       subtitle: "Par '%{projectName}'"
-      title: "Sācies jauns projekta posms '%{projectName}'"
+      title: "Projektā '%{projectName}' ir jaunumi"
     project_phase_upcoming:
-      cta_button: Iestatiet šo jauno posmu
-      event_description: "Projektam '%{projectName}' drīzumā sāksies jauns posms. Pārliecinieties, ka viss ir sagatavots šim posmam: Vai ir atbilstošs apraksts? Vai atlasītās idejas ir pārnestas uz šo posmu? Vai vēlaties informēt iedzīvotājus par šī posma specifiku, izmantojot pielāgotu e-pasta kampaņu?"
+      cta_button: Pārskatīt iestatījumus
+      event_description: "'%{phaseTitle}' projektā '%{projectName}' sākas %{startDate}. Veltiet brīdi, lai pārbaudītu, vai viss ir gatavs: vai apraksts ir pilnīgs? Vai datumi ir pareizi? Vai vēlaties informēt savu kopienu, izmantojot pielāgotu e-pasta kampaņu?"
       new_phase: "Projektam sāksies '%{phaseTitle}' posms."
-      preheader: Drīz sāksies %{projectName} jauns posms
-      subject: Sagatavojiet visu %{projectName} jaunajam posmam
+      preheader: Pārliecinieties, vai viss ir gatavs līdz %{startDate}
+      subject: "%{projectName}: '%{phaseTitle}' sākas %{startDate}"
       subtitle: "Par '%{projectName}'"
-      title: '%{firstName}, drīzumā sāksies jauns projekta posms'
+      title: "%{firstName}, '%{phaseTitle}' sākas %{startDate}"
     project_published:
       cta_button: Dodieties uz šo projektu
       event_description: 'Dalības platformā %{organizationName} tikko publicēts šāds projekts:'

@@ -40,9 +40,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def create?
-    app_config = AppConfiguration.instance
-    allow_signup = app_config.feature_activated?('password_login') && app_config.settings('password_login', 'enable_signup')
-    allow_signup || active_admin?
+    AppConfiguration.instance.feature_activated?('password_login') || active_admin?
   end
 
   def show?

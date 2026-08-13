@@ -77,6 +77,7 @@ pa-IN:
         users_who_follow_the_proposal: ਪ੍ਰਸਤਾਵ ਦੀ ਪਾਲਣਾ ਕਰਨ ਵਾਲੇ ਉਪਭੋਗਤਾ
       trigger:
         7_days_after_invite_is_sent: ਸੱਦਾ ਭੇਜਣ ਤੋਂ 7 ਦਿਨ ਬਾਅਦ
+        7_days_before_phase_starts: ਇੱਕ ਪੜਾਅ ਸ਼ੁਰੂ ਹੋਣ ਤੋਂ 7 ਦਿਨ ਪਹਿਲਾਂ
         7_days_before_the_project_changes_phase: ਪ੍ਰੋਜੈਕਟ ਬਦਲਣ ਦੇ ਪੜਾਅ ਤੋਂ 7 ਦਿਨ ਪਹਿਲਾਂ
         comment_is_deleted: ਟਿੱਪਣੀ ਮਿਟਾ ਦਿੱਤੀ ਗਈ ਹੈ
         comment_is_flagged_as_spam: ਟਿੱਪਣੀ ਨੂੰ ਸਪੈਮ ਵਜੋਂ ਫਲੈਗ ਕੀਤਾ ਗਿਆ ਹੈ
@@ -95,6 +96,7 @@ pa-IN:
         new_input_awaits_screening: ਨਵਾਂ ਇਨਪੁਟ ਸਕ੍ਰੀਨਿੰਗ ਦੀ ਉਡੀਕ ਕਰ ਰਿਹਾ ਹੈ
         new_input_is_published: ਨਵਾਂ ਇਨਪੁਟ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ
         new_proposal_is_posted: ਨਵਾਂ ਪ੍ਰਸਤਾਵ ਪੋਸਟ ਕੀਤਾ ਗਿਆ ਹੈ
+        phase_starts: ਇੱਕ ਪੜਾਅ ਸ਼ੁਰੂ ਹੁੰਦਾ ਹੈ
         project_phase_changes: ਪ੍ਰੋਜੈਕਟ ਪੜਾਅ ਬਦਲਦਾ ਹੈ
         project_published: ਪ੍ਰੋਜੈਕਟ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ
         project_review_request: ਸੰਚਾਲਕ ਨੇ ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਸਮੀਖਿਆ ਦੀ ਬੇਨਤੀ ਕੀਤੀ
@@ -197,8 +199,8 @@ pa-IN:
       project_folder_moderation_rights_received: ਫੋਲਡਰ ਪ੍ਰਬੰਧਕ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਹੋਏ
       project_manager_rights_received: ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਦੇ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਹੋਏ
       project_moderation_rights_received: ਪ੍ਰੋਜੈਕਟ ਸੰਚਾਲਨ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਹੋਏ
-      project_phase_started: ਨਵਾਂ ਪ੍ਰੋਜੈਕਟ ਪੜਾਅ
-      project_phase_upcoming: ਆਗਾਮੀ ਨਵਾਂ ਪ੍ਰੋਜੈਕਟ ਪੜਾਅ
+      project_phase_started: ਪੜਾਅ ਸ਼ੁਰੂ ਹੋ ਗਿਆ ਹੈ
+      project_phase_upcoming: ਪੜਾਅ ਜਲਦੀ ਹੀ ਸ਼ੁਰੂ ਹੋ ਰਿਹਾ ਹੈ
       project_published: ਪ੍ਰੋਜੈਕਟ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ
       project_review_request: ਪ੍ਰੋਜੈਕਟ ਸਮੀਖਿਆ ਬੇਨਤੀ
       project_review_state_change: ਪ੍ਰੋਜੈਕਟ ਨੂੰ ਮਨਜ਼ੂਰੀ ਦਿੱਤੀ ਗਈ
@@ -359,6 +361,7 @@ pa-IN:
         story: ਆਪਣੀ ਕਹਾਣੀ 'ਤੇ ਜਾਓ
         suggestion: ਆਪਣੇ ਸੁਝਾਅ 'ਤੇ ਜਾਓ
         topic: ਆਪਣੇ ਵਿਸ਼ੇ ਤੇ ਜਾਓ।
+      phase_dates: '%{startDate} ਤੋਂ %{endDate} ਤੱਕ'
     idea_marked_as_spam:
       cta_button: ਸਮੀਖਿਆ
       preheader: ਇਸ ਸਪੈਮ ਰਿਪੋਰਟ 'ਤੇ ਕਾਰਵਾਈ ਕਰੋ
@@ -571,8 +574,9 @@ pa-IN:
       input_status_description: ਇੱਕ ਇਨਪੁਟ ਲਈ ਸਥਿਤੀ ਦੀ ਇੱਕ ਉਦਾਹਰਣ (ਜਿਵੇਂ ਕਿ ਸਵੀਕਾਰ ਕੀਤਾ ਗਿਆ, ਅਸਵੀਕਾਰ ਕੀਤਾ ਗਿਆ, ਲਾਗੂ ਕੀਤਾ ਗਿਆ...)
       input_status_title: ਉਦਾਹਰਣ ਸਥਿਤੀ
       official_feedback_body: ਅਧਿਕਾਰਤ ਫੀਡਬੈਕ ਦੀ ਉਦਾਹਰਣ
+      phase_description: ਇਹ ਈਮੇਲਾਂ ਦੀ ਸਮੱਗਰੀ ਦਾ ਪੂਰਵਦਰਸ਼ਨ ਕਰਨ ਲਈ ਵਰਤੀ ਜਾਣ ਵਾਲੀ ਕੁਝ ਨਮੂਨਾ ਪੜਾਅ ਸਮੱਗਰੀ ਹੈ। ਇਹ ਅਸਲ ਸਮੱਗਰੀ ਨਹੀਂ ਹੈ।
       phase_title: ਉਦਾਹਰਣ ਪੜਾਅ
-      project_description_preview: ਇਹ ਈਮੇਲਾਂ ਦੀ ਸਮੱਗਰੀ ਦੀ ਝਲਕ ਦੇਖਣ ਲਈ ਵਰਤੀ ਜਾਂਦੀ ਪੜਾਅ ਸਮੱਗਰੀ ਦੀ ਕੁਝ ਉਦਾਹਰਣ ਹੈ। ਇਹ ਅਸਲ ਸਮੱਗਰੀ ਨਹੀਂ ਹੈ।
+      project_description_preview: ਇਹ ਕੁਝ ਉਦਾਹਰਨ ਪ੍ਰੋਜੈਕਟ ਸਮੱਗਰੀ ਹੈ ਜੋ ਈਮੇਲਾਂ ਦੀ ਸਮੱਗਰੀ ਦਾ ਪੂਰਵ-ਦਰਸ਼ਨ ਕਰਨ ਲਈ ਵਰਤੀ ਜਾਂਦੀ ਹੈ। ਇਹ ਅਸਲ ਸਮੱਗਰੀ ਨਹੀਂ ਹੈ।
       project_title: ਉਦਾਹਰਣ ਪ੍ਰੋਜੈਕਟ
       proposal_title: ਉਦਾਹਰਨ ਪ੍ਰਸਤਾਵ
       space_title: ਉਦਾਹਰਨ ਸਪੇਸ
@@ -607,21 +611,21 @@ pa-IN:
       title_what_can_you_do_moderator: ਤੁਸੀਂ ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਵਜੋਂ ਕੀ ਕਰ ਸਕਦੇ ਹੋ?
       x_ideas: '%{numberOfIdeas} ਵਿਚਾਰ'
     project_phase_started:
-      cta_button: ਇਸ ਨਵੇਂ ਪੜਾਅ ਦੀ ਖੋਜ ਕਰੋ
-      event_description: "ਇਹ ਪ੍ਰੋਜੈਕਟ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ 'ਤੇ ਇੱਕ ਨਵੇਂ ਪੜਾਅ ਵਿੱਚ ਦਾਖਲ ਹੋਇਆ ਹੈ। ਹੋਰ ਜਾਣਨ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਲਿੰਕ 'ਤੇ ਕਲਿੱਕ ਕਰੋ!"
+      cta_button: ਦੇਖੋ ਨਵਾਂ ਕੀ ਹੈ
+      event_description: "ਤੁਸੀਂ ਹੁਣ %{organizationName} ਦੇ ਪਲੇਟਫਾਰਮ 'ਤੇ '%{phaseTitle}' ਵਿੱਚ ਹਿੱਸਾ ਲੈ ਸਕਦੇ ਹੋ।"
       new_phase: "ਇਹ ਪ੍ਰੋਜੈਕਟ '%{phaseTitle}' ਪੜਾਅ ਵਿੱਚ ਦਾਖਲ ਹੋਇਆ ਹੈ"
-      preheader: '%{projectName}ਲਈ ਇੱਕ ਨਵਾਂ ਪੜਾਅ ਸ਼ੁਰੂ ਕੀਤਾ ਗਿਆ ਹੈ'
-      subject: '%{projectName} ਇੱਕ ਨਵੇਂ ਪੜਾਅ ਵਿੱਚ ਦਾਖਲ ਹੋਇਆ'
+      preheader: "ਤੁਸੀਂ ਹੁਣ '%{phaseTitle}' ਵਿੱਚ ਹਿੱਸਾ ਲੈ ਸਕਦੇ ਹੋ"
+      subject: "%{projectName} ਵਿੱਚ '%{phaseTitle}' ਸ਼ੁਰੂ ਹੋ ਗਿਆ ਹੈ"
       subtitle: "'%{projectName}' ਬਾਰੇ"
-      title: "'%{projectName}' ਪ੍ਰੋਜੈਕਟ ਲਈ ਇੱਕ ਨਵਾਂ ਪੜਾਅ ਸ਼ੁਰੂ ਹੋਇਆ"
+      title: "'%{projectName}' ਵਿੱਚ ਕੁਝ ਨਵਾਂ ਹੈ"
     project_phase_upcoming:
-      cta_button: ਇਸ ਨਵੇਂ ਪੜਾਅ ਨੂੰ ਸੈੱਟ ਕਰੋ
-      event_description: "ਪ੍ਰੋਜੈਕਟ '%{projectName}' ਜਲਦੀ ਹੀ ਇੱਕ ਨਵੇਂ ਪੜਾਅ ਵਿੱਚ ਦਾਖਲ ਹੋਵੇਗਾ। ਯਕੀਨੀ ਬਣਾਓ ਕਿ ਇਸ ਪੜਾਅ ਲਈ ਸਭ ਕੁਝ ਸਥਾਪਤ ਕੀਤਾ ਗਿਆ ਹੈ: ਕੀ ਇੱਥੇ ਇੱਕ ਢੁਕਵਾਂ ਵੇਰਵਾ ਹੈ? ਕੀ ਚੁਣੇ ਹੋਏ ਵਿਚਾਰ ਇਸ ਪੜਾਅ ਵਿੱਚ ਤਬਦੀਲ ਕੀਤੇ ਗਏ ਹਨ? ਕੀ ਤੁਸੀਂ ਇੱਕ ਕਸਟਮ ਈਮੇਲ ਮੁਹਿੰਮ ਰਾਹੀਂ ਆਪਣੇ ਨਾਗਰਿਕਾਂ ਨੂੰ ਇਸ ਪੜਾਅ ਦੀਆਂ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ ਬਾਰੇ ਸੂਚਿਤ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?"
+      cta_button: ਸੈੱਟਅੱਪ ਦੀ ਸਮੀਖਿਆ ਕਰੋ
+      event_description: "ਪ੍ਰੋਜੈਕਟ '%{projectName}' ਵਿੱਚ '%{phaseTitle}' %{startDate} ਨੂੰ ਸ਼ੁਰੂ ਹੋਵੇਗਾ। ਇਹ ਜਾਂਚਣ ਲਈ ਕੁਝ ਸਮਾਂ ਕੱਢੋ ਕਿ ਸਭ ਕੁਝ ਤਿਆਰ ਹੈ: ਕੀ ਵੇਰਵਾ ਪੂਰਾ ਹੈ? ਕੀ ਤਾਰੀਖਾਂ ਸਹੀ ਹਨ? ਕੀ ਤੁਸੀਂ ਇੱਕ ਕਸਟਮ ਈਮੇਲ ਮੁਹਿੰਮ ਰਾਹੀਂ ਆਪਣੇ ਭਾਈਚਾਰੇ ਨੂੰ ਸੂਚਿਤ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?"
       new_phase: "ਪ੍ਰੋਜੈਕਟ '%{phaseTitle}' ਪੜਾਅ ਵਿੱਚ ਦਾਖਲ ਹੋਵੇਗਾ"
-      preheader: '%{projectName}ਲਈ ਇੱਕ ਨਵਾਂ ਪੜਾਅ ਜਲਦੀ ਹੀ ਸ਼ੁਰੂ ਹੋਵੇਗਾ'
-      subject: '%{projectName}ਦੇ ਨਵੇਂ ਪੜਾਅ ਲਈ ਸਭ ਕੁਝ ਸੈੱਟਅੱਪ ਕਰੋ'
+      preheader: ਯਕੀਨੀ ਬਣਾਓ ਕਿ %{startDate} ਤੋਂ ਪਹਿਲਾਂ ਸਭ ਕੁਝ ਤਿਆਰ ਹੈ
+      subject: "%{projectName}: '%{phaseTitle}' %{startDate} ਨੂੰ ਸ਼ੁਰੂ ਹੋਵੇਗਾ"
       subtitle: "'%{projectName}' ਬਾਰੇ"
-      title: '%{firstName}, ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਜਲਦੀ ਹੀ ਇੱਕ ਨਵੇਂ ਪੜਾਅ ਵਿੱਚ ਦਾਖਲ ਹੋਵੇਗਾ।'
+      title: "%{firstName}, '%{phaseTitle}' %{startDate} ਨੂੰ ਸ਼ੁਰੂ ਹੋਵੇਗਾ"
     project_published:
       cta_button: ਇਸ ਪ੍ਰੋਜੈਕਟ 'ਤੇ ਜਾਓ
       event_description: '%{organizationName} ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਨੇ ਹੁਣੇ ਹੀ ਹੇਠ ਲਿਖੇ ਪ੍ਰੋਜੈਕਟ ਨੂੰ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਹੈ:'

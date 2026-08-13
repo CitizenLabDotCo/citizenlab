@@ -44,6 +44,11 @@ describe('Project description builder Iframe component', () => {
     cy.get('#e2e-draggable-iframe').dragAndDrop('#e2e-project-page-body', {
       position: 'inside',
     });
+    // dragAndDrop drops once per matched target, so a transient duplicate
+    // match inserts the component twice — which the two later tests then
+    // trip over (a 2-element click, and a frame click that selects nothing
+    // deletable). Fail fast here, at the cause.
+    cy.get('.e2e-content-builder-iframe-component').should('have.length', 1);
     cy.get('#e2e-content-builder-iframe-url-input').type(
       // Typeform survey created in CitizenLab Methods Squad workspace specifically for e2e
       'https://citizenlabco.typeform.com/to/cZtXQzTf'
@@ -99,7 +104,14 @@ describe('Project description builder Iframe component', () => {
     );
     cy.get('.e2e-content-builder-iframe-component').should('exist');
 
-    cy.get('#e2e-content-builder-frame').click();
+    // Select the iframe node itself rather than clicking the frame's center
+    // and relying on the component happening to sit at that coordinate. The
+    // cross-origin iframe covers the wrapper and swallows real clicks, so
+    // force is needed — the craftjs selection handler is on the wrapper
+    // (same pattern as the error test above).
+    cy.get('.e2e-content-builder-iframe-component').click('center', {
+      force: true,
+    });
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');

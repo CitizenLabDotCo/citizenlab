@@ -52,9 +52,29 @@ ignored. A debate's `instructions`/`information_updates`/`conclusions` are folde
 its scheduled window, closed state and endorsements have no equivalent and are dropped. Meeting comments,
 registration form answers and poll answers have no Go Vocal event equivalent and are not imported.
 
+#### Proposal statuses
+
+Decidim lets every proposals component define its own `ProposalState`s (the `NN---proposal-states.csv`
+sidecar), so a real export carries dozens of one-off labels. Go Vocal instead seeds a small fixed set of
+ideation statuses and allows a few `custom` ones. During `create_template` the **`StatusMapper`** makes a
+single LLM call (Claude via Bedrock — build runs outside a tenant, so it uses the ENV credentials
+directly, not `LLMSelector`) that folds the distinct *used* states onto a standard status where the
+meaning matches and proposes a handful of new `custom` statuses for the genuinely distinct ones, capping
+the customs (target ~12 statuses total). **`ProposalStatusResolver`** turns the result into `idea_status`
+records (emitted before the ideas that reference them) and resolves each proposal's `(component, token)`
+to its status. Best-effort: if the model is unavailable or misbehaves, it falls back to a deterministic
+token→standard-code mapping (no customs) so the import still succeeds. Each imported idea keeps its
+original Decidim status (token + citizen-facing label) in `custom_field_values['decidim_status']` for
+provenance — mirroring the scope→area pointer in `custom_field_values['decidim_scope']`.
+
 ### The rake tasks
 
-#### `create_template[path, primary_locale, production, include_source_url]`
+#### `create_template[path, primary_locale, production, container_ids]`
+
+`production=true` is the final import to the live tenant: real user names/emails are kept and the
+import-source links are omitted. Otherwise (the default, for test/verify runs) users are anonymised and
+each project description links back to its original Decidim URL, so you can cross-check the migration
+against the source.
 
 **Export → artifacts; touches no tenant.** Reads the export (`from_zip` / `from_directory`), runs the
 extractors in dependency order so cross-record refs resolve (users → scopes → folders → projects →
@@ -74,6 +94,13 @@ counts and every skipped record):
 Finally it bundles the above into a single **`<base>.template.zip`** — the one file `import` consumes
 (it unpacks the bundle to a tempdir), so the whole import is one artifact to move around. The loose files
 stay beside it for `verify`, which still takes the plain `.template.yml`.
+
+**Supplemental (scoped) import** — pass `container_ids` (process/assembly uids, `+`-separated) to narrow
+the template to just those spaces plus the **users** and **process-group folders** they reference
+([`RowScoper`](app/services/decidim_importer/row_scoper.rb)); everything else global (scopes → areas, the
+organization → app config) is dropped, since a supplemental import reuses what the tenant already holds.
+Use this to add a new project to a tenant that was already imported; `import` reuses those
+already-imported users/folders rather than duplicating them (see "Reuse" below).
 
 #### `import[file, host, import_uploads]`
 
@@ -96,6 +123,15 @@ travel in the template). The post-import pass is idempotent; the deserialize is 
 transactional, so a mid-run failure leaves partial data — always import into a fresh tenant. Logs
 created counts to `<base>.import.log`.
 
+**Reuse (always on)** — `import` always reuses a record the tenant already holds instead of inserting a
+duplicate, resolving the template's refs to the existing record. This keeps an import from aborting on a
+record that already exists — e.g. an admin whose email is also in the export, which would otherwise fail
+the user email-uniqueness validation — and makes a **supplemental** import (a scoped `create_template`)
+land its new project against the earlier import's users/folders. Matched on stable identity: users by
+`unique_code` then case-insensitive `email`, process-group folders by the slug their title generates,
+user custom fields by `key`, custom idea-statuses by title (`Importer.reuse_matchers`). Harmless on a
+fresh tenant (nothing matches — the existing-record snapshot is empty).
+
 #### `verify[file, locales, import_uploads]`
 
 Smoke-test: creates a throwaway `decidim-verify-<hex>.localhost` tenant (seeded with idea statuses),
@@ -109,8 +145,9 @@ docker compose run --rm web "bin/rails db:reset"
 
 # 2. Build the artifacts from the export — the loose files (.template.yml, .app_config.json,
 #    .url_mapping.csv, .moderators.csv) plus the .template.zip bundle that `import` consumes — and .create.log.
-#    Args: path, primary_locale=fr-FR, production=false (anonymise users), include_source_url=false (show original Decidim link in project page)
-docker compose run --rm web "bin/rails decidim_importer:create_template[tmp/import_files/example.com.zip,fr-FR,false,true]"
+#    Args: path, primary_locale=fr-FR, production=false. production=false anonymises users and shows the
+#    original Decidim link in the project page; production=true keeps real users and omits those links.
+docker compose run --rm web "bin/rails decidim_importer:create_template[tmp/import_files/example.com.zip,fr-FR,false]"
 
 # 3. (optional) Verify the template without touching a real tenant (creates a throwaway tenant, applies, then destroys it).
 #    Args: path (the loose .template.yml, not the bundle)
@@ -188,7 +225,7 @@ zip). The `--env-file` lives on the leader, which is why the import runs there:
 
 ```bash
 docker run \
-  --env-file cl2-deployment/<env_file> \
+  --env-file cl2-deployment/.env-web \
   -v /home/ubuntu/import:/data \
   citizenlabdotco/back-ee:<tag> \
   bin/rake "decidim_importer:import[/data/<base>.template.zip,<host>]"

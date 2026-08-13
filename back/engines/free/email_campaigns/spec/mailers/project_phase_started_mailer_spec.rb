@@ -5,8 +5,10 @@ require 'rails_helper'
 RSpec.describe EmailCampaigns::ProjectPhaseStartedMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
-    let_it_be(:project) { create(:project_with_phases) }
-    let_it_be(:phase) { project.phases.first }
+    let_it_be(:project) { create(:project) }
+    let_it_be(:phase) do
+      create(:phase, project: project, start_at: Date.new(2026, 7, 15), end_at: Date.new(2026, 9, 30))
+    end
     let_it_be(:notification) { create(:project_phase_started, recipient: recipient, project: project, phase: phase) }
 
     let(:campaign) { create(:project_phase_started_campaign) }
@@ -25,7 +27,13 @@ RSpec.describe EmailCampaigns::ProjectPhaseStartedMailer do
     include_examples 'campaign delivery tracking'
 
     it 'renders the subject' do
-      expect(mail.subject).to end_with('entered a new phase')
+      expect(mail.subject).to eq("'Idea phase' has started in Renew West Parc")
+    end
+
+    it 'includes the preheader' do
+      expect(mail_body(mail)).to have_tag('div') do
+        with_text(/You can now take part in 'Idea phase'/)
+      end
     end
 
     it 'renders the sender email' do
@@ -39,22 +47,57 @@ RSpec.describe EmailCampaigns::ProjectPhaseStartedMailer do
     it 'includes the header' do
       expect(mail_body(mail)).to have_tag('div') do
         with_tag 'h1' do
-          with_text(/A new phase started for project 'Renew West Parc'/)
+          with_text(/There's something new in 'Renew West Parc'/)
         end
         with_tag 'p' do
-          with_text(/This project entered a new phase on the platform of Liege. Click on the link below to learn more!/)
+          with_text(/You can now take part in 'Idea phase' on the platform of Liege./)
+        end
+      end
+    end
+
+    it 'includes the phase box' do
+      expect(mail_body(mail)).to have_tag('table') do
+        with_tag 'h2' do
+          with_text(/Idea phase/)
+        end
+        with_tag 'p' do
+          with_text(/From July 15, 2026 to September 30, 2026/)
+        end
+        with_tag 'p' do
+          with_text(/In this phase we gather ideas/)
         end
       end
     end
 
     it 'includes the CTA' do
       expect(mail_body(mail)).to have_tag('a', with: { href: "http://example.org/en/projects/#{project.slug}/1" }) do
-        with_text(/Discover this new phase/)
+        with_text(/See what's new/)
       end
     end
 
     it 'includes the unfollow url' do
       expect(mail_body(mail)).to match(Frontend::UrlService.new.unfollow_url(Follower.new(followable: project, user: recipient)))
+    end
+
+    context 'when the phase has no end date and a long description' do
+      before do
+        notification.phase.update!(
+          end_at: nil,
+          description_multiloc: { 'en' => "<p>#{'Tell us how you get around. ' * 10}This tail is truncated away.</p>" }
+        )
+      end
+
+      it 'omits the dates and truncates the description' do
+        body = mail_body(mail)
+
+        expect(body).to have_tag('table') do
+          with_tag 'p' do
+            with_text(/Tell us how you get around\./)
+          end
+        end
+        expect(body).not_to match(/From \w+ \d+, \d{4}/)
+        expect(body).not_to include('This tail is truncated away')
+      end
     end
 
     context 'with custom text' do
@@ -94,7 +137,7 @@ RSpec.describe EmailCampaigns::ProjectPhaseStartedMailer do
               with_text(/NEW TITLE FOR Idea phase/)
             end
             with_tag 'p' do
-              with_text(/This project entered a new phase on the platform of Liege. Click on the link below to learn more!/)
+              with_text(/You can now take part in 'Idea phase' on the platform of Liege./)
             end
           end
         end

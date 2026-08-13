@@ -138,6 +138,10 @@ describe('Project with single voting phase', () => {
     cy.get('.e2e-single-vote-button button')
       .should('be.visible')
       .should('have.class', 'primary')
+      // Clicking "Modify your submission" reopens the basket via a mutation,
+      // and the vote buttons stay disabled until it settles — a click in
+      // that window is a no-op and the class never toggles.
+      .should('not.have.class', 'disabled')
       .click()
       .should('have.class', 'primary-outlined');
 

@@ -11,8 +11,9 @@ require 'tmpdir'
 # throwaway tenant. `create_template`/`import` each tee their summary to a run log beside the artifacts:
 # `<base>.create.log` / `<base>.import.log`.
 #
-#   rake decidim_importer:create_template[tmp/import_files/example.com.zip,fr-FR]
-#   rake decidim_importer:create_template[tmp/import_files/example.com.zip,fr-FR,false,true]  # include_source_url
+#   rake decidim_importer:create_template[tmp/import_files/example.com.zip,fr-FR]       # test: users anonymised, source urls shown
+#   rake decidim_importer:create_template[tmp/import_files/example.com.zip,fr-FR,true]  # production: real users, no source urls
+#   rake decidim_importer:create_template[tmp/import_files/example.com.zip,fr-FR,true,decidim--process--14]  # supplemental: only that space + its users/folders
 #   rake decidim_importer:import[tmp/import_files/example.com.template.zip,localhost]
 #   rake decidim_importer:import[tmp/import_files/example.com.template.zip,localhost,false]  # skip image fetches
 #   rake decidim_importer:verify[tmp/import_files/example.com.template.yml,fr-FR,en]
@@ -24,15 +25,18 @@ require 'tmpdir'
 # disables image fetching (for templates whose `remote_*_url`s point at an unreachable host).
 namespace :decidim_importer do
   desc 'Builds the tenant-template YAML (+ app-config JSON) from a Decidim export (zip or dir). No import.'
-  task :create_template, %i[path primary_locale production include_source_url] => [:environment] do |_t, args|
+  task :create_template, %i[path primary_locale production container_ids] => [:environment] do |_t, args|
     path = args.fetch(:path)
-    # `production=true` keeps real user names/emails; otherwise they're anonymised.
+    # `production=true` is the final import to the live tenant: keep real user names/emails and omit the
+    # import-source links. Otherwise (test/verify runs) users are anonymised and each project description
+    # links back to its original Decidim URL, for cross-checking the migration against the source.
     production = args[:production].to_s.strip.downcase == 'true'
-    # `include_source_url=true` prepends a link back to each project's original Decidim URL.
-    include_source_url = args[:include_source_url].to_s.strip.downcase == 'true'
+    # `container_ids` (process/assembly uids, `+`-separated) narrows the template to those spaces plus the
+    # users/folders they reference — a supplemental import. Blank means the whole export.
+    container_ids = args[:container_ids].to_s.split(/[+\s]+/).compact_blank.presence
     creator = build_creator(
       path, primary_locale: args[:primary_locale] || 'fr-FR', anonymize_users: !production,
-      include_source_url: include_source_url
+      include_source_url: !production, container_ids: container_ids
     )
     builder = creator.build_template
 
@@ -41,6 +45,7 @@ namespace :decidim_importer do
       File.write(yaml_path, builder.to_yaml)
       report_line "Wrote #{yaml_path} (users #{production ? 'untouched (production)' : 'anonymised'})"
       log_model_summary(builder)
+      log_custom_statuses(creator)
       creator.skipped_components.each { |s| report_warn "  skipped component #{s[:component]}: #{s[:reason]}" }
       creator.skipped_categories.each { |s| report_warn "  skipped category #{s[:uid]}: #{s[:reason]}" }
       creator.skipped_participation.each { |s| report_warn "  skipped #{s[:uid]}: #{s[:reason]}" }
@@ -197,6 +202,20 @@ namespace :decidim_importer do
     log_per_project_summary(builder)
   end
 
+  # Logs the custom idea-statuses the LLM created for Decidim states with no standard Go Vocal
+  # equivalent (proposals map onto the seeded standard statuses otherwise). Nothing logged when none.
+  def log_custom_statuses(creator)
+    statuses = creator.custom_statuses
+    return if statuses.empty?
+
+    report_line "Created #{statuses.size} custom idea status(es) from Decidim states:"
+    statuses.each do |status|
+      title = status.attributes['title_multiloc']
+      label = (title.is_a?(Hash) && title.values.find(&:present?)) || '(untitled)'
+      report_line "  #{label}"
+    end
+  end
+
   def log_per_project_summary(builder)
     by_project = builder.counts_by_project
     by_project.each do |project, counts|
@@ -328,7 +347,7 @@ namespace :decidim_importer do
     File.join(parent, "#{base}.#{suffix}")
   end
 
-  # `<base>.<kind>.log` beside the input, e.g. `participer.arcueil.fr.20260721.import.log` — every task
+  # `<base>.<kind>.log` beside the input, e.g. `example.com.20240115.import.log` — every task
   # shares one base name whatever it was handed (export zip/dir, `.template.zip` bundle, or template YAML).
   def log_path(input, kind)
     "#{artifact_base(input)}.#{kind}.log"

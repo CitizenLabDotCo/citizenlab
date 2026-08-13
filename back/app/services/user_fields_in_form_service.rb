@@ -155,6 +155,7 @@ class UserFieldsInFormService
     end
 
     def user_fields_in_form_descriptor(permission, participation_method)
+      return Permission::UNSUPPORTED_DESCRIPTOR unless AppConfiguration.instance.feature_activated?('permissions_custom_fields')
       return Permission::UNSUPPORTED_DESCRIPTOR unless permission.action == 'posting_idea'
 
       if NATIVE_SURVEYLIKE_METHODS.include?(participation_method)
