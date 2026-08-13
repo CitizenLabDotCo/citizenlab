@@ -100,8 +100,26 @@ describe('Extra surveys widget in the project page builder', () => {
     );
     cy.visit(`/admin/project-page-builder/projects/${projectId}`);
 
-    // Select the widget by clicking its rendered button
-    cy.get('.e2e-extra-survey-button').first().click({ force: true });
+    // Select the widget by clicking its rendered button. The builder
+    // attaches selection handlers through refs and re-attaches them on
+    // re-renders, with no DOM signal for when a click will register — a
+    // single early click can be silently lost (verified via DOM probe:
+    // nothing gets selected and the settings panel never opens). Click,
+    // check the panel opened, and retry a bounded number of times.
+    const selectWidget = (attemptsLeft: number) => {
+      cy.get('.e2e-extra-survey-button').first().click({ force: true });
+      cy.get('body').then(($body) => {
+        if ($body.find('#extra-surveys-format-button').length === 0) {
+          expect(
+            attemptsLeft,
+            'widget selection attempts before settings panel opened'
+          ).to.be.greaterThan(0);
+          cy.wait(500);
+          selectWidget(attemptsLeft - 1);
+        }
+      });
+    };
+    selectWidget(10);
 
     cy.get('#extra-surveys-format-button').click({ force: true });
     cy.get('#e2e-extra-surveys-button-text').type(customButtonText, {

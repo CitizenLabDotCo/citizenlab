@@ -77,6 +77,7 @@ lb-LU:
         users_who_follow_the_proposal: Benotzer déi d'Propositioun verfollegen
       trigger:
         7_days_after_invite_is_sent: 7 Deeg no der Invitatioun geschéckt
+        7_days_before_phase_starts: 7 Deeg ier eng Phas ufänkt
         7_days_before_the_project_changes_phase: 7 Deeg virum Projet Ännerungen Phas
         comment_is_deleted: Commentaire geläscht
         comment_is_flagged_as_spam: Kommentar gëtt als Spam markéiert
@@ -95,6 +96,7 @@ lb-LU:
         new_input_awaits_screening: Neien Input waart op Screening
         new_input_is_published: Neien Input gëtt publizéiert
         new_proposal_is_posted: Nei Propositioun ass gepost
+        phase_starts: Eng Phas fänkt un
         project_phase_changes: Projet Phase Ännerungen
         project_published: Projet publizéiert
         project_review_request: Moderator gefrot e Projet review
@@ -199,8 +201,8 @@ lb-LU:
       project_folder_moderation_rights_received: Administratorrechter fir Dossier'en kritt
       project_manager_rights_received: Projet-Manager-Rechter kritt
       project_moderation_rights_received: Moderatiounsrechter fir Projete kritt
-      project_phase_started: Nei Projetsphas
-      project_phase_upcoming: Bevirstoend nei Projetsphas
+      project_phase_started: Phas huet ugefaangen
+      project_phase_upcoming: Phas fänkt geschwënn un
       project_published: Projet publizéiert
       project_review_request: Projet review Ufro
       project_review_state_change: Projet guttgeheescht
@@ -361,6 +363,7 @@ lb-LU:
         story: Gitt op Är Geschicht
         suggestion: Gitt op Är Suggestioun
         topic: Gitt op Äert Thema
+      phase_dates: Vun %{startDate} bis %{endDate}
     idea_marked_as_spam:
       cta_button: Iwwerpréiwung
       preheader: Reagéiert op dës Spammeldung
@@ -573,8 +576,9 @@ lb-LU:
       input_status_description: E Beispill vun engem Status fir en Input (z.B. akzeptéiert, refuséiert, ëmgesat...)
       input_status_title: Beispill Status
       official_feedback_body: Beispill vun offiziellem Feedback
+      phase_description: Dëst ass e Beispill-Inhalt vun enger Phas fir d'Virschau vum Inhalt vun E-Mailen. Dëst ass keen echte Contenu.
       phase_title: Beispillphase
-      project_description_preview: Dëst ass e Beispill vun engem Phaseninhalt, deen benotzt gëtt fir den Inhalt vun E-Maile virzekucken. Dëst ass keen echten Inhalt.
+      project_description_preview: Dëst ass e Beispill fir de Projet-Inhalt, dee fir d'Virschau vum Inhalt vun E-Maile benotzt gëtt. Dëst ass keen echte Contenu.
       project_title: Beispillprojet
       proposal_title: Beispillvirschlag
       space_title: Beispill-Space
@@ -611,21 +615,21 @@ lb-LU:
       title_what_can_you_do_moderator: Wat kënnt Dir als Projetsmanager maachen?
       x_ideas: '%{numberOfIdeas} Iddien'
     project_phase_started:
-      cta_button: Entdeckt dës nei Phase
-      event_description: Dëse Projet ass op der %{organizationName} Plattform an eng nei Phas gaangen. Klickt op de Link hei ënnen, fir méi gewuer zu ginn!
+      cta_button: Kuckt wat nei ass
+      event_description: "Dir kënnt elo un '%{phaseTitle}' op der Plattform vun %{organizationName} deelhuelen."
       new_phase: "Dëse Projet ass an d’Phas '%{phaseTitle}' gaangen"
-      preheader: Eng nei Phas gouf fir %{projectName} ugefaangen
-      subject: '%{projectName} ass an eng nei Phas gangen'
+      preheader: "Dir kënnt elo un '%{phaseTitle}' deelhuelen"
+      subject: "'%{phaseTitle}' huet an %{projectName} ugefaangen"
       subtitle: "Iwwer '%{projectName}'"
-      title: "Eng nei Phase huet fir de Projet '%{projectName}' ugefaangen"
+      title: "Et gëtt eppes Neies an '%{projectName}'"
     project_phase_upcoming:
-      cta_button: Setzt dës nei Phase op
-      event_description: "De Projet '%{projectName}' geet geschwënn an eng nei Phas. Vergewëssert Iech, datt alles fir dës nei Phas preparéiert ass: Gëtt et eng ugemiess Beschreiwung? Ginn zeréckbehalen Iddien an dës Phas iwwerholl? Wëllt Dir d'Participanten iwwer d’Detailer vun dëser Phas mat enger moossgeschneiderter E-Mail-Campagne informéieren?"
+      cta_button: Iwwerpréift de Setup
+      event_description: "'%{phaseTitle}' am Projet '%{projectName}' fänkt den %{startDate} un. Huelt Iech e Moment fir ze kontrolléieren, ob alles prett ass: Ass d'Beschreiwung komplett? Sinn d'Datumer korrekt? Wëllt Dir Är Communautéit iwwer eng personaliséiert E-Mail-Campagne informéieren?"
       new_phase: "De Projet geet an d’Phas '%{phaseTitle}'"
-      preheader: Geschwë fänkt eng nei Phas fir %{projectName} un
-      subject: Preparéiert alles fir déi nei Phas vu(n) %{projectName}
+      preheader: Vergewëssert Iech, datt alles virum %{startDate} prett ass
+      subject: "%{projectName}: '%{phaseTitle}' fänkt den %{startDate} un"
       subtitle: "Iwwer '%{projectName}'"
-      title: '%{firstName}, e Projet geet geschwënn an eng nei Phase'
+      title: "%{firstName}, '%{phaseTitle}' fänkt den %{startDate} un"
     project_published:
       cta_button: Gitt op dëst Projet
       event_description: "D'Participatiounsplattform vun %{organizationName} huet just folgend Projet publizéiert:"

@@ -167,6 +167,15 @@ RSpec.describe Permission do
     context 'surveys' do
       let(:permission) { create(:permission, action: 'posting_idea', permission_scope: create(:native_survey_phase)) }
 
+      it 'returns locked: true and explanation if the permissions_custom_fields feature is deactivated' do
+        permission.update!(permitted_by: 'users', user_data_collection: 'all_data', user_fields_in_form: true)
+        SettingsService.new.deactivate_feature!('permissions_custom_fields')
+        descriptor = permission.user_fields_in_form_descriptor
+        expect(descriptor[:value]).to be_nil
+        expect(descriptor[:locked]).to be_truthy
+        expect(descriptor[:explanation]).to eq('user_fields_in_form_not_supported_for_action')
+      end
+
       it 'if permitted_by is everyone and data collection is anonymous: returns locked: true, value: nil and explanation' do
         permission.update!(permitted_by: 'everyone', user_data_collection: 'anonymous')
         descriptor = permission.user_fields_in_form_descriptor
@@ -194,6 +203,15 @@ RSpec.describe Permission do
 
     context 'ideation' do
       let(:permission) { create(:permission, action: 'posting_idea', permission_scope: create(:ideation_phase)) }
+
+      it 'returns locked: true and explanation if the permissions_custom_fields feature is deactivated' do
+        permission.update!(permitted_by: 'users', user_fields_in_form: true)
+        SettingsService.new.deactivate_feature!('permissions_custom_fields')
+        descriptor = permission.user_fields_in_form_descriptor
+        expect(descriptor[:value]).to be_nil
+        expect(descriptor[:locked]).to be_truthy
+        expect(descriptor[:explanation]).to eq('user_fields_in_form_not_supported_for_action')
+      end
 
       it 'if permitted_by is everyone: returns locked: true and value: true' do
         permission.update!(permitted_by: 'everyone', user_fields_in_form: false)

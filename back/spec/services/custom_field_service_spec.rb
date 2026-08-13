@@ -17,6 +17,112 @@ describe CustomFieldService do
     end
   end
 
+  describe 'delete_custom_field_values' do
+    it 'deletes the custom field values from all users' do
+      cf1 = create(:custom_field)
+      cf2 = create(:custom_field)
+      create_list(:user, 5, custom_field_values: { cf1.key => 'some_value', cf2.key => 'other_value' })
+      create_list(:user, 5)
+      service.delete_custom_field_values(cf1)
+      expect(User.all.map { |u| u.custom_field_values.keys }.flatten).to include(cf2.key)
+      expect(User.all.map { |u| u.custom_field_values.keys }.flatten).not_to include(cf1.key)
+      expect(CustomFieldAnswer.where(key: cf1.key)).not_to exist
+      expect(CustomFieldAnswer.where(key: cf2.key).count).to eq 5
+    end
+
+    it 'deletes the values that a user field stored on inputs through user fields in form' do
+      field = create(:custom_field, key: 'the_field')
+      user = create(:user, custom_field_values: { 'the_field' => 'other', 'the_field_other' => 'gone' })
+      input = create(:idea, custom_field_values: { 'u_the_field' => 'other', 'u_the_field_other' => 'gone', 'other_field' => 'stays' })
+
+      service.delete_custom_field_values(field)
+
+      expect(user.reload.custom_field_values).to eq({})
+      expect(input.reload.custom_field_values).to eq({ 'other_field' => 'stays' })
+      expect(user.custom_field_answers).to be_empty
+      expect(input.custom_field_answers.pluck(:key)).to eq ['other_field']
+    end
+
+    it 'deletes the values of a phase-level form field from the inputs of its phase' do
+      phase = create(:single_phase_native_survey_project).phases.first
+      form = create(:custom_form, participation_context: phase)
+      field = create(:custom_field_text, resource: form, key: 'extra_field')
+      input = create(
+        :idea,
+        project: phase.project,
+        creation_phase: phase,
+        custom_field_values: { 'extra_field' => 'gone', 'extra_field_follow_up' => 'gone', 'another_field' => 'stays' }
+      )
+
+      service.delete_custom_field_values(field)
+
+      expect(input.reload.custom_field_values).to eq({ 'another_field' => 'stays' })
+      expect(input.custom_field_answers.pluck(:key)).to eq ['another_field']
+    end
+
+    it 'does not delete values of inputs in other participation contexts with the same field key' do
+      other_phase = create(:single_phase_native_survey_project).phases.first
+      create(:custom_form, participation_context: other_phase)
+      other_input = create(
+        :idea,
+        project: other_phase.project,
+        creation_phase: other_phase,
+        custom_field_values: { 'extra_field' => 'stays' }
+      )
+
+      phase = create(:single_phase_native_survey_project).phases.first
+      form = create(:custom_form, participation_context: phase)
+      field = create(:custom_field_text, resource: form, key: 'extra_field')
+
+      service.delete_custom_field_values(field)
+
+      expect(other_input.reload.custom_field_values).to eq({ 'extra_field' => 'stays' })
+      expect(other_input.custom_field_answers.pluck(:key, :value)).to eq [%w[extra_field stays]]
+    end
+  end
+
+  describe 'delete_custom_field_option_values' do
+    it 'deletes the custom field option values from all users for a multiselect' do
+      cf1 = create(:custom_field_multiselect)
+      cfo1 = create(:custom_field_option, custom_field: cf1)
+      cfo2 = create(:custom_field_option, custom_field: cf1)
+      cf2 = create(:custom_field_select)
+      cfo3 = create(:custom_field_option, custom_field: cf2)
+      v1 = { cf1.key => [cfo1.key], cf2.key => cfo3.key }
+      u1 = create(:user, custom_field_values: v1)
+      v2 = { cf1.key => [cfo1.key, cfo2.key] }
+      u2 = create(:user, custom_field_values: v2)
+      v3 = { cf1.key => [cfo2.key] }
+      u3 = create(:user, custom_field_values: v3)
+
+      service.delete_custom_field_option_values(cfo1.key, cfo1.custom_field)
+
+      expect(u1.reload.custom_field_values).to eq({ cf2.key => cfo3.key })
+      expect(u2.reload.custom_field_values).to eq({ cf1.key => [cfo2.key] })
+      expect(u3.reload.custom_field_values).to eq v3
+      expect(u1.custom_field_answers.pluck(:key, :value)).to eq [[cf2.key, cfo3.key]]
+      expect(u2.custom_field_answers.pluck(:key, :value)).to eq [[cf1.key, [cfo2.key]]]
+      expect(u3.custom_field_answers.pluck(:key, :value)).to eq [[cf1.key, [cfo2.key]]]
+    end
+
+    it 'deletes the custom field option values from all users for a single select' do
+      cf1 = create(:custom_field_select)
+      cfo1 = create(:custom_field_option, custom_field: cf1)
+      cfo2 = create(:custom_field_option, custom_field: cf1)
+      v1 = { cf1.key => cfo1.key }
+      u1 = create(:user, custom_field_values: v1)
+      v2 = { cf1.key => cfo2.key }
+      u2 = create(:user, custom_field_values: v2)
+
+      service.delete_custom_field_option_values(cfo1.key, cfo1.custom_field)
+
+      expect(u1.reload.custom_field_values).to eq({})
+      expect(u2.reload.custom_field_values).to eq v2
+      expect(u1.custom_field_answers).to be_empty
+      expect(u2.custom_field_answers.pluck(:key, :value)).to eq [[cf1.key, cfo2.key]]
+    end
+  end
+
   describe 'fields_to_json_schema' do
     it 'creates the valid empty schema on empty fields' do
       schema = service.fields_to_json_schema([], locale)

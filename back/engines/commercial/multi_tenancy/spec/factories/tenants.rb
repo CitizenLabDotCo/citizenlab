@@ -54,6 +54,10 @@ FactoryBot.define do
         follow: {
           enabled: true,
           allowed: true
+        },
+        permissions_custom_fields: {
+          enabled: true,
+          allowed: true
         }
       })
     end
