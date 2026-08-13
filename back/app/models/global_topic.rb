@@ -51,7 +51,6 @@ class GlobalTopic < ApplicationRecord
 
   private
 
-  # Kept in step with `InputTopic`, whose title is rendered as raw HTML.
   def sanitize_title_multiloc
     self.title_multiloc = SanitizationService.new.strip_multiloc_to_plain_text(title_multiloc)
   end

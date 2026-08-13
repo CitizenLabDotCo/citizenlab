@@ -39,9 +39,7 @@ namespace :single_use do
 
     strip_multiloc = service.method(:strip_multiloc_to_plain_text)
 
-    # Titles are plain text, but the admin management feed renders any changed `title_multiloc` as
-    # raw HTML and the ideas feed sidebar renders a topic title, so they carry payloads too. Every
-    # model that sanitises its title on write belongs here.
+    # Every model that sanitises its `title_multiloc` on write belongs here.
     title_models = [Idea, Project, Phase, ProjectFolders::Folder, InputTopic, GlobalTopic, DefaultInputTopic].freeze
 
     affected = [] # rows for the summary: { host:, model:, attribute: }
