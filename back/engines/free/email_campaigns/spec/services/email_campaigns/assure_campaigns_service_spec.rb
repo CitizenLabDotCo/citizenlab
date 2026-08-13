@@ -62,20 +62,19 @@ describe EmailCampaigns::AssureCampaignsService do
     # would destroy admin-authored content, and (for sms) trip the foreign key from
     # sms_deliveries.
     context 'when a feature is deactivated after its campaigns were created' do
-      it 'keeps the sms campaigns and their deliveries' do
-        SettingsService.new.activate_feature!('sms', settings: {
-          'twilio_account_sid' => 'AC_test',
-          'twilio_auth_token' => 'token',
-          'twilio_messaging_service_sid' => 'MG_test'
-        })
-        campaign = create(:sms_manual_campaign)
-        delivery = create(:sms_delivery, campaign: campaign)
-        SettingsService.new.deactivate_feature!('sms')
+      context 'with the sms feature' do
+        include_context 'with sms feature enabled'
 
-        expect { service.remove_deprecated_campaigns }.not_to raise_error
+        it 'keeps the sms campaigns and their deliveries' do
+          campaign = create(:sms_manual_campaign)
+          delivery = create(:sms_delivery, campaign: campaign)
+          SettingsService.new.deactivate_feature!('sms')
 
-        expect(EmailCampaigns::Campaign.exists?(campaign.id)).to be true
-        expect(delivery.reload.campaign_id).to eq campaign.id
+          expect { service.remove_deprecated_campaigns }.not_to raise_error
+
+          expect(EmailCampaigns::Campaign.exists?(campaign.id)).to be true
+          expect(delivery.reload.campaign_id).to eq campaign.id
+        end
       end
 
       it 'keeps the community monitor report campaign' do

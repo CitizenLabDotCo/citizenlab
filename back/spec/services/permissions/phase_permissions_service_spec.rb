@@ -248,11 +248,12 @@ describe Permissions::PhasePermissionsService do
       end
     end
 
-    context 'with a confirmed phone number requirement' do
+    context '"posting_idea" with a confirmed phone number requirement' do
       let(:phase) { create(:active_native_survey_phase, with_permissions: true) }
 
+      include_context 'with sms feature enabled'
+
       before do
-        SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' })
         phase.permissions.find_by(action: 'posting_idea').update!(
           permitted_by: 'users',
           require_confirmed_phone_number: true

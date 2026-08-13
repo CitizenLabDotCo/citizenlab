@@ -17,7 +17,7 @@ module EmailCampaigns
       end
 
       # Sends an already-created pending delivery through the provider.
-      def deliver(delivery, to:)
+      def deliver(delivery, to:, use_case:)
         # An at-least-once job re-run can hand us a delivery that already left
         # `pending` (e.g. already sent/delivered). Treat that as a no-op so we
         # neither re-send it nor let the failure rescue below overwrite its real
@@ -29,11 +29,15 @@ module EmailCampaigns
           raise Error, "SMS to country #{parsed.country} is not allowed on this platform"
         end
 
-        result = provider.send(to: parsed.e164, body: delivery.body)
+        result = provider.send(to: parsed.e164, body: delivery.body, use_case: use_case)
         delivery.update!(message_sid: result[:message_sid], status: result[:status])
         delivery
       rescue *ProviderError::RETRYABLE_ERRORS
         # Transient failure — leave the delivery pending so Sms::SendJob can retry it.
+        raise
+      rescue ProviderError::RecipientOptedOut => e
+        UseCaseConsentService.new.withdraw!(delivery.user, use_case)
+        delivery.update!(status: 'failed', error_message: e.message)
         raise
       rescue ProviderError => e
         # The provider took the message and rejected/failed it.
@@ -68,14 +72,15 @@ module EmailCampaigns
       #   - we're in development and the tenant is missing any Twilio credential.
       # Returns false when:
       #   - `use_test_mode` is off and we're not in development, or
-      #   - we're in development but all three Twilio credentials are filled in.
+      #   - we're in development but all Twilio credentials are filled in.
       def fake_sms_sends?
         config = AppConfiguration.instance.settings('sms') || {}
         return true if config['use_test_mode']
 
         return false unless Rails.env.development?
 
-        config.values_at('twilio_account_sid', 'twilio_auth_token', 'twilio_messaging_service_sid').any?(&:blank?)
+        sid_settings = Providers::Twilio::MESSAGING_SERVICE_SID_SETTINGS.values
+        config.values_at('twilio_account_sid', 'twilio_auth_token', *sid_settings).any?(&:blank?)
       end
     end
   end
