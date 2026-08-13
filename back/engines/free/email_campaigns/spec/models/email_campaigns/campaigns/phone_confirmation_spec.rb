@@ -43,7 +43,8 @@ RSpec.describe EmailCampaigns::Campaigns::PhoneConfirmation do
         .to change(EmailCampaigns::Sms::Delivery, :count).by(1)
 
       expect(delivery.campaign_id).to eq(campaign.id)
-      expect(sms_provider).to have_received(:send).with(to: phone, body: 'Your confirmation code is 1234.')
+      expect(sms_provider).to have_received(:send)
+        .with(to: phone, body: 'Your confirmation code is 1234.', use_case: EmailCampaigns::Sms::UseCase::CONFIRMATION_CODES)
     end
 
     it 'does not enqueue a background SendJob' do

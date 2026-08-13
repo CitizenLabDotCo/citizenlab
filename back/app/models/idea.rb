@@ -70,6 +70,7 @@ class Idea < ApplicationRecord
   include Files::FileAttachable
   include ClaimableParticipation
   include LocationTrackableParticipation
+  include Answerable
   extend OrderAsSpecified
 
   PUBLICATION_STATUSES = %w[draft submitted published].freeze

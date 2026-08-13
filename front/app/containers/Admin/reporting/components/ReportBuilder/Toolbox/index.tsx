@@ -101,7 +101,7 @@ const ReportBuilderToolbox = ({
     (isSuperAdmin(authUser) ||
       isProjectModerator(authUser, communityMonitorProject.data.id));
 
-  const { data: phases } = usePhases(projectId);
+  const { data: phases } = usePhases(projectId, 'all');
   const { data: userFields } = useUserCustomFields({ inputTypes: ['select'] });
   const projectPlanningCalendarEnabled = useFeatureFlag({
     name: 'project_planning_calendar',

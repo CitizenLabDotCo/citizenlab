@@ -94,7 +94,8 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
           body: 'A short SMS update from your city.',
           status: 'pending'
         )
-        expect(EmailCampaigns::Sms::SendJob).to have_been_enqueued.with(delivery.id)
+        expect(EmailCampaigns::Sms::SendJob).to have_been_enqueued
+          .with(delivery.id, use_case: EmailCampaigns::Sms::UseCase::MANUAL_CAMPAIGNS)
       end
 
       it 'is a no-op when the recipient has no phone number' do
@@ -110,7 +111,8 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
           .to change(EmailCampaigns::Sms::Delivery, :count).by(1)
 
         expect(delivery.campaign_id).to be_nil
-        expect(EmailCampaigns::Sms::SendJob).to have_been_enqueued.with(delivery.id)
+        expect(EmailCampaigns::Sms::SendJob).to have_been_enqueued
+          .with(delivery.id, use_case: EmailCampaigns::Sms::UseCase::MANUAL_CAMPAIGNS)
       end
 
       it 'raises when the previewer has no phone number' do

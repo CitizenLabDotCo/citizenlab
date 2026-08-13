@@ -77,6 +77,7 @@ da-DK:
         users_who_follow_the_proposal: Bruger der følger forslaget
       trigger:
         7_days_after_invite_is_sent: 7 dage efter at invitationen er sendt
+        7_days_before_phase_starts: 7 dage før en fase starter
         7_days_before_the_project_changes_phase: 7 dage før projektet ændre fase
         comment_is_deleted: Kommentar er slettet
         comment_is_flagged_as_spam: Kommentar er markeret som spam
@@ -95,6 +96,7 @@ da-DK:
         new_input_awaits_screening: Nye input venter på screening
         new_input_is_published: Nye input offentliggøres
         new_proposal_is_posted: Nyt borgerorslag er offentliggjort
+        phase_starts: En fase starter
         project_phase_changes: Ændringer i projektfasen
         project_published: Projekt offentliggjort
         project_review_request: Moderator anmodede om en projektgennemgang
@@ -197,8 +199,8 @@ da-DK:
       project_folder_moderation_rights_received: Projekt-mappens moderationsrettigheder modtaget
       project_manager_rights_received: Projektlederrettigheder modtaget
       project_moderation_rights_received: Rettigheder til projektmoderering modtaget
-      project_phase_started: Ny projektfase
-      project_phase_upcoming: Kommende ny projektfase
+      project_phase_started: Fasen er startet
+      project_phase_upcoming: Fasen starter snart
       project_published: Projekt offentliggjort
       project_review_request: Anmodning om projektgennemgang
       project_review_state_change: Projekt godkendt
@@ -359,6 +361,7 @@ da-DK:
         story: Gå til din historie
         suggestion: Gå til dit forslag
         topic: Gå til dit emne
+      phase_dates: Fra %{startDate} til %{endDate}
     idea_marked_as_spam:
       cta_button: Gennemgang
       preheader: Reagér på denne spamrapport
@@ -571,8 +574,9 @@ da-DK:
       input_status_description: Et eksempel på en status for et input (f.eks. accepteret, afvist, implementeret ...)
       input_status_title: Eksempel på status
       official_feedback_body: Eksempel på officiel feedback
+      phase_description: Dette er eksempler på faseindhold, der bruges til at forhåndsvise indholdet af e-mails. Dette er ikke rigtigt indhold.
       phase_title: Eksempel på fase
-      project_description_preview: Dette er et eksempel på faseindhold, der bruges til forhåndsvisning af indholdet i e-mails. Det er ikke rigtigt indhold.
+      project_description_preview: Dette er eksempelindhold til et projekt, der bruges til at forhåndsvise indholdet af e-mails. Dette er ikke rigtigt indhold.
       project_title: Eksempel på projekt
       proposal_title: Eksempel på forslag
       space_title: Eksempelområde
@@ -607,21 +611,21 @@ da-DK:
       title_what_can_you_do_moderator: Hvad kan du gøre som projektmoderator
       x_ideas: '%{numberOfIdeas} ideer'
     project_phase_started:
-      cta_button: Forstå den nye fase
-      event_description: Dette projekt er trådt ind i en ny fase på %{organizationName}s platform. Klik på linket nedenfor for at få mere at vide.
+      cta_button: Se hvad der er nyt
+      event_description: "Du kan nu deltage i '%{phaseTitle}' på %{organizationName}s platform."
       new_phase: Projektet nåede fasen "%{phaseTitle}"
-      preheader: Der er startet en ny fase for %{projectName}
-      subject: '%{projectName} er trådt ind i en ny fase'
+      preheader: "Du kan nu deltage i '%{phaseTitle}'"
+      subject: "'%{phaseTitle}' er startet i %{projectName}"
       subtitle: "Om '%{projectName}'"
-      title: En ny fase er startet på "%{projectName}"
+      title: "Der er noget nyt i '%{projectName}'"
     project_phase_upcoming:
-      cta_button: Opsæt denne nye fase
-      event_description: 'Projektet "%{projectName}" vil snart gå ind i en ny fase. Sørg for at alt er opsat for denne fase: Er beskrivelsen tilstrækkelig? Overføres de indeholdte idéer til denne fase? Ønsker du at informere dine borgere omkring specifikationerne af denne fase, gennem en tilpasset e-mailkampagne?'
+      cta_button: Gennemse opsætningen
+      event_description: "'%{phaseTitle}' i projektet '%{projectName}' starter den %{startDate}. Brug et øjeblik på at tjekke, om alt er klar: Er beskrivelsen komplet? Er datoerne korrekte? Vil du informere dit lokalsamfund via en tilpasset e-mailkampagne?"
       new_phase: "Projektet træder ind i fasen '%{phaseTitle}'"
-      preheader: Der starter snart en ny fase for %{projectName}
-      subject: Få alt gjort klar til den nye fase i %{projectName}
+      preheader: Sørg for, at alt er klar før %{startDate}
+      subject: "%{projectName}: '%{phaseTitle}' starter den %{startDate}"
       subtitle: "Om '%{projectName}'"
-      title: '%{firstName}, et projekt træder snart ind i en ny fase'
+      title: "%{firstName}, '%{phaseTitle}' starter den %{startDate}"
     project_published:
       cta_button: Gå til dette projekt
       event_description: 'Inddragelsesplatformen for %{organizationName} har netop offentliggjort følgende projekt:'

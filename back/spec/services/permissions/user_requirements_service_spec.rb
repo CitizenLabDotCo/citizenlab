@@ -722,7 +722,7 @@ describe Permissions::UserRequirementsService do
     end
 
     context 'when a confirmed phone number is required' do
-      before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
+      include_context 'with sms feature enabled'
 
       # Only a confirmed phone number is required (no confirmed email), so the
       # phone requirement is expressed entirely through :phone_action_required
@@ -849,8 +849,9 @@ describe Permissions::UserRequirementsService do
     # Re-confirmation of an already-confirmed phone number once
     # confirmed_phone_number_expiry has elapsed. Mirrors the email variant above.
     context 'when a confirmed phone number is required with confirmed_phone_number_expiry set' do
+      include_context 'with sms feature enabled'
+
       before do
-        SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' })
         user.update!(phone: '+3212345678', phone_confirmed_at: Time.now)
       end
 

@@ -370,6 +370,10 @@ namespace :cl2_back do
         parallel_participation: {
           enabled: true,
           allowed: true
+        },
+        configurable_dropdown: {
+          enabled: true,
+          allowed: true
         }
       }
     )

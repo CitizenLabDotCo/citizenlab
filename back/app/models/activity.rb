@@ -13,6 +13,7 @@
 #  acted_at   :datetime         not null
 #  created_at :datetime         not null
 #  project_id :uuid
+#  channel    :string
 #
 # Indexes
 #

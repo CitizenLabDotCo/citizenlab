@@ -27,7 +27,11 @@ class Tenant < ApplicationRecord
 
   validates :name, :host, presence: true
   validates :host, uniqueness: true, exclusion: { in: %w[schema-migrations public] }
-  validate :valid_host_format
+  # Only on change: the format belongs to the act of setting the host. Re-checking a persisted
+  # one means a single bad row — from a path that bypassed the model, such as the clone's raw
+  # INSERT — blocks every unrelated save, including its own soft-delete and any rake task that
+  # iterates tenants. `host_changed?` is true on create, so new and edited hosts are unaffected.
+  validate :valid_host_format, if: :host_changed?
 
   after_initialize :custom_initialization
   after_create :create_apartment_tenant

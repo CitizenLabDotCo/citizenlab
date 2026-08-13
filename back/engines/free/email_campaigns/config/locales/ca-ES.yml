@@ -77,6 +77,7 @@ ca-ES:
         users_who_follow_the_proposal: Usuaris que segueixen la proposta
       trigger:
         7_days_after_invite_is_sent: 7 dies després de l'enviament de la invitació
+        7_days_before_phase_starts: 7 dies abans que s'iniciï una etapa
         7_days_before_the_project_changes_phase: 7 dies abans del canvi de fase del projecte
         comment_is_deleted: S'ha suprimit el comentari
         comment_is_flagged_as_spam: El comentari està marcat com a correu brossa
@@ -95,6 +96,7 @@ ca-ES:
         new_input_awaits_screening: La nova entrada està a l'espera de la projecció
         new_input_is_published: Es publica una nova entrada
         new_proposal_is_posted: S'ha publicat una nova proposta
+        phase_starts: S'inicia una etapa
         project_phase_changes: Canvis de fase del projecte
         project_published: Projecte publicat
         project_review_request: El moderador ha sol·licitat una revisió del projecte
@@ -197,8 +199,8 @@ ca-ES:
       project_folder_moderation_rights_received: S'han rebut els drets del gestor de carpetes
       project_manager_rights_received: Drets de gestor de projectes rebuts
       project_moderation_rights_received: S'han rebut els drets de moderació del projecte
-      project_phase_started: Nova fase del projecte
-      project_phase_upcoming: Pròxima nova fase del projecte
+      project_phase_started: Fase iniciada
+      project_phase_upcoming: La fase començarà aviat
       project_published: Projecte publicat
       project_review_request: Sol·licitud de revisió del projecte
       project_review_state_change: Projecte aprovat
@@ -359,6 +361,7 @@ ca-ES:
         story: Ves a la teva història
         suggestion: Ves al teu suggeriment
         topic: Ves al teu tema
+      phase_dates: Del %{startDate} al %{endDate}
     idea_marked_as_spam:
       cta_button: Revisió
       preheader: Actueu sobre aquest informe de correu brossa
@@ -571,8 +574,9 @@ ca-ES:
       input_status_description: Un exemple d'estat per a una entrada (per exemple, acceptat, rebutjat, implementat...)
       input_status_title: Estat de l'exemple
       official_feedback_body: Exemple de comentaris oficials
+      phase_description: Aquest és un exemple de contingut d'etapa utilitzat per previsualitzar el contingut dels correus electrònics. Aquest no és contingut real.
       phase_title: Fase d'exemple
-      project_description_preview: Aquest és un exemple de contingut de fase utilitzat per previsualitzar el contingut dels correus electrònics. Això no és contingut real.
+      project_description_preview: Aquest és un exemple de contingut de projecte utilitzat per previsualitzar el contingut dels correus electrònics. No és contingut real.
       project_title: Projecte d'exemple
       proposal_title: Proposta d'exemple
       space_title: Espai d'exemple
@@ -607,21 +611,21 @@ ca-ES:
       title_what_can_you_do_moderator: Què pots fer com a gestor de projectes?
       x_ideas: '%{numberOfIdeas} idees'
     project_phase_started:
-      cta_button: Descobreix aquesta nova fase
-      event_description: Aquest projecte va entrar en una nova fase a la plataforma de %{organizationName}. Feu clic a l'enllaç següent per obtenir més informació!
+      cta_button: Mira què hi ha de nou
+      event_description: "Ara ja pots participar a '%{phaseTitle}' a la plataforma de %{organizationName}."
       new_phase: "Aquest projecte va entrar a la fase '%{phaseTitle}'"
-      preheader: S'ha iniciat una nova fase per a %{projectName}
-      subject: '%{projectName} va entrar en una nova fase'
+      preheader: "Ara ja pots participar a '%{phaseTitle}'"
+      subject: "'%{phaseTitle}' ha començat a %{projectName}"
       subtitle: "Sobre '%{projectName}'"
-      title: "Una nova fase ha començat per al projecte '%{projectName}'"
+      title: "Hi ha novetats a '%{projectName}'"
     project_phase_upcoming:
-      cta_button: Configura aquesta nova fase
-      event_description: "El projecte '%{projectName}' entrarà aviat en una nova fase. Assegureu-vos que tot estigui configurat per a aquesta fase: hi ha una descripció adequada? Les idees seleccionades es traslladen a aquesta fase? Vols informar els teus ciutadans sobre les especificitats d'aquesta fase mitjançant una campanya de correu electrònic personalitzada?"
+      cta_button: Revisa la configuració
+      event_description: "'%{phaseTitle}' al projecte '%{projectName}' comença el %{startDate}. Dedica un moment a comprovar que tot estigui a punt: la descripció és completa? Les dates són correctes? Vols informar la teva comunitat mitjançant una campanya de correu electrònic personalitzada?"
       new_phase: "El projecte entrarà a la fase '%{phaseTitle}'"
-      preheader: Aviat començarà una nova fase per al %{projectName}
-      subject: Configureu-ho tot per a la nova fase de %{projectName}
+      preheader: Assegura't que tot estigui a punt abans del %{startDate}
+      subject: "%{projectName}: '%{phaseTitle}' comença el %{startDate}"
       subtitle: "Sobre '%{projectName}'"
-      title: '%{firstName}, un projecte entrarà aviat en una nova fase'
+      title: "%{firstName}, '%{phaseTitle}' comença el %{startDate}"
     project_published:
       cta_button: Ves a aquest projecte
       event_description: 'La plataforma de participació de %{organizationName} acaba de publicar el següent projecte:'
