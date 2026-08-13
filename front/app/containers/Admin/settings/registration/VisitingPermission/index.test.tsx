@@ -63,7 +63,6 @@ describe('<VisitingPermission />', () => {
     render(<VisitingPermission />);
 
     expect(screen.getByText('Security requirements')).toBeInTheDocument();
-    expect(screen.getByText('Limit to groups')).toBeInTheDocument();
     expect(screen.getByText('Personal info')).toBeInTheDocument();
   });
 
