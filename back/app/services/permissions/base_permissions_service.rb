@@ -35,15 +35,26 @@ module Permissions
       if permission.blank?
         permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
 
-        if permission.blank? && Permission.available_actions(scope)
-          Permissions::PermissionsUpdateService.new.update_permissions_for_scope scope
-          permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
+        # No row of its own means the action inherits the global 'visiting'
+        # permission (phases only). Global scopes have nothing to inherit from,
+        # so their permissions are still created on demand.
+        if permission.blank?
+          permission = if inheritance_service.inheritable_scope?(scope)
+            inheritance_service.find(scope, action)
+          elsif Permission.available_actions(scope)
+            Permissions::PermissionsUpdateService.new.update_permissions_for_scope scope
+            Permission.includes(:groups).find_by(permission_scope: scope, action: action)
+          end
         end
       end
 
       raise "Unknown action '#{action}' for scope: #{scope}" if !permission
 
       permission
+    end
+
+    def inheritance_service
+      @inheritance_service ||= Permissions::PermissionInheritanceService.new
     end
 
     def user_denied_reason(permission)

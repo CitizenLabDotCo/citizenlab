@@ -11,6 +11,10 @@ resource 'Permissions' do
     @project = create(:single_phase_ideation_project)
     @phase = TimelineService.new.current_phase_not_archived(@project)
     Permissions::PermissionsUpdateService.new.update_all_permissions
+    # Most examples below configure the phase's permissions, which only exist
+    # once the action has been overridden. The inherited state is covered
+    # separately, in the 'when the action inherits the global permission' groups.
+    override_permissions!(@phase)
     AppConfiguration.instance.settings['id_config'] = { allowed: true, enabled: true, id_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
     AppConfiguration.instance.save!
   end
@@ -273,6 +277,144 @@ resource 'Permissions' do
 
         expect { do_request }
           .to enqueue_job(LogActivityJob).with(an_instance_of(Permission), 'changed', anything, anything, anything)
+      end
+    end
+
+    patch 'web_api/v1/phases/:phase_id/permissions/:action/override' do
+      let(:action) { 'posting_idea' }
+
+      before do
+        Permission.where(permission_scope: @phase).destroy_all
+        visiting_permission.update!(require_name: false, require_password: false, require_verification: true)
+      end
+
+      let(:visiting_permission) { Permission.find_by!(action: 'visiting', permission_scope: nil) }
+
+      example_request 'Override a permission that inherits the global visiting permission' do
+        assert_status 200
+        expect(response_data.dig(:attributes, :inherited)).to be false
+        expect(response_data.dig(:attributes, :require_name)).to be false
+        expect(response_data.dig(:attributes, :require_password)).to be false
+        expect(response_data.dig(:attributes, :require_verification)).to be true
+        expect(Permission.find_by(action: 'posting_idea', permission_scope: @phase)).to be_present
+      end
+
+      example 'The overridden permission no longer follows the visiting permission', document: false do
+        do_request
+        visiting_permission.update!(require_name: true)
+
+        permission = Permission.find_by!(action: 'posting_idea', permission_scope: @phase)
+        expect(permission.require_name).to be false
+      end
+
+      example 'Overriding twice is a no-op', document: false do
+        do_request
+        expect { do_request }.not_to change(Permission, :count)
+        assert_status 200
+      end
+
+      example 'Copies the groups of the visiting permission', document: false do
+        groups = create_list(:group, 2)
+        visiting_permission.update!(groups: groups)
+
+        do_request
+        assert_status 200
+        expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array groups.map(&:id)
+      end
+
+      example '[error] Overriding an action the phase does not support', document: false do
+        do_request(action: 'taking_survey')
+        assert_status 404
+      end
+
+      example 'logs an "overridden" activity', document: false do
+        expect { do_request }
+          .to enqueue_job(LogActivityJob).with(an_instance_of(Permission), 'overridden', anything, anything, anything)
+      end
+    end
+
+    patch 'web_api/v1/phases/:phase_id/permissions/:action/inherit' do
+      let(:action) { 'posting_idea' }
+      let!(:permission) do
+        Permission.find_by!(action: 'posting_idea', permission_scope: @phase).tap do |p|
+          p.update!(permitted_by: 'admins_moderators', global_custom_fields: false, groups: [create(:group)])
+          create(:permissions_custom_field, permission: p, custom_field: create(:custom_field))
+        end
+      end
+
+      example_request 'Revert a permission back to the global visiting permission' do
+        assert_status 200
+        expect(response_data.dig(:attributes, :inherited)).to be true
+        expect(response_data.dig(:attributes, :permitted_by)).to eq 'users'
+        expect(Permission.where(id: permission.id)).to be_empty
+      end
+
+      example 'Destroys the groups and demographic questions of the permission', document: false do
+        do_request
+        assert_status 200
+        expect(GroupsPermission.where(permission_id: permission.id)).to be_empty
+        expect(PermissionsCustomField.where(permission_id: permission.id)).to be_empty
+      end
+
+      example '[error] Reverting an action that already inherits', document: false do
+        permission.destroy!
+
+        do_request
+        assert_status 404
+      end
+
+      example 'logs an "inherited" activity', document: false do
+        expect { do_request }
+          .to enqueue_job(LogActivityJob).with(anything, 'inherited', anything, anything, anything)
+      end
+    end
+
+    context 'when the action inherits the global visiting permission' do
+      before do
+        Permission.where(permission_scope: @phase).destroy_all
+        Permission.find_by!(action: 'visiting', permission_scope: nil)
+          .update!(require_name: false, require_password: false)
+      end
+
+      get 'web_api/v1/phases/:phase_id/permissions' do
+        example_request 'Lists the inherited permissions alongside the overridden ones' do
+          assert_status 200
+          expect(response_data.pluck(:id)).to all(be_blank)
+          expect(response_data.map { |p| p.dig(:attributes, :action) })
+            .to eq Permission.enabled_actions(@phase)
+          expect(response_data.map { |p| p.dig(:attributes, :inherited) }).to all(be true)
+          expect(response_data.map { |p| p.dig(:attributes, :require_name) }).to all(be false)
+        end
+
+        example 'Marks the overridden actions as not inherited', document: false do
+          override_permissions!(@phase, actions: ['posting_idea'])
+
+          do_request
+          assert_status 200
+          inherited_by_action = response_data.to_h { |p| [p.dig(:attributes, :action), p.dig(:attributes, :inherited)] }
+          expect(inherited_by_action['posting_idea']).to be false
+          expect(inherited_by_action['commenting_idea']).to be true
+        end
+      end
+
+      get 'web_api/v1/phases/:phase_id/permissions/:action' do
+        let(:action) { 'posting_idea' }
+
+        example_request 'Get an inherited permission by action' do
+          assert_status 200
+          expect(response_data.dig(:attributes, :inherited)).to be true
+          expect(response_data.dig(:attributes, :require_name)).to be false
+        end
+      end
+
+      patch 'web_api/v1/phases/:phase_id/permissions/:action' do
+        let(:action) { 'posting_idea' }
+        let(:permitted_by) { 'admins_moderators' }
+
+        example '[error] An inherited permission cannot be updated before it is overridden', document: false do
+          do_request(permission: { permitted_by: permitted_by })
+          assert_status 404
+        end
       end
     end
 

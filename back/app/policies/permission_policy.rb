@@ -26,6 +26,14 @@ class PermissionPolicy < ApplicationPolicy
     update?
   end
 
+  def override?
+    update?
+  end
+
+  def inherit?
+    update?
+  end
+
   def requirements?
     true
   end
