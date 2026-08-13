@@ -23,6 +23,20 @@ RSpec.describe EmailCampaigns::Sms::Delivery do
     end
   end
 
+  describe '#campaign_use_case' do
+    it 'reads the use case off the campaign that triggered the send' do
+      delivery = described_class.create!(body: 'hi', status: 'sent', campaign: create(:sms_manual_campaign))
+
+      expect(delivery.campaign_use_case).to eq(EmailCampaigns::Sms::UseCase::MANUAL_CAMPAIGNS)
+    end
+
+    it 'is nil for an unlinked preview send' do
+      delivery = described_class.create!(body: 'hi', status: 'sent')
+
+      expect(delivery.campaign_use_case).to be_nil
+    end
+  end
+
   describe '#advance_status!' do
     subject(:delivery) { described_class.create!(body: 'hi', status: 'sent') }
 

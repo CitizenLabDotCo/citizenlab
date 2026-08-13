@@ -29,7 +29,9 @@ class AppConfiguration < ApplicationRecord
   }
 
   validates :host, presence: true
-  validate :validate_host_format
+  # Only on change, for the same reason as the twin check on `Tenant`: an
+  # already-invalid host must not block saves that have nothing to do with it.
+  validate :validate_host_format, if: :host_changed?
   validate :validate_locales, on: :update
   validate :validate_singleton, on: :create
 

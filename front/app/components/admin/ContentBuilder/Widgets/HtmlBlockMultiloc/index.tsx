@@ -41,7 +41,9 @@ const StyledBox = styled(Box)`
 const HtmlBlockMultiloc = ({ html }: Props) => {
   const localize = useLocalize();
   const { pathname } = useLocation();
-  const enabled = pathname.includes('admin/project-page-builder') || pathname.includes('admin/pages-menu');
+  const enabled =
+    pathname.includes('admin/project-page-builder') ||
+    pathname.includes('admin/pages-menu');
 
   return (
     <ContentWrapper
