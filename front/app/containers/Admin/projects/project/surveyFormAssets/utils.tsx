@@ -13,9 +13,10 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
+import UserFieldsInFormNotice from '../../_shared/components/UserFieldsInFormNotice';
+
 import AccessRightsNotice from './AccessRightsNotice';
 import messages from './messages';
-import UserFieldsInFormNotice from './UserFieldsInFormNotice';
 
 export const nativeSurveyConfig: FormBuilderConfig = {
   type: 'survey',

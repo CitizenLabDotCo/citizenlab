@@ -12,6 +12,8 @@ import { HighestRole } from 'api/users/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import NewLabel from 'components/UI/NewLabel';
+
 import { trackEventByName } from 'utils/analytics';
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
@@ -75,6 +77,9 @@ const ROLES_THAT_CAN_SEE_FOLDERS: HighestRole[] = [
   'project_folder_moderator',
 ];
 
+// Spaces shipped in August 2026. Stop flagging the tab as new six months on.
+const SPACES_NEW_LABEL_EXPIRY = new Date('2027-02-10');
+
 const Tabs = () => {
   const searchParams = useSearch({
     from: '/$locale/admin/projects/',
@@ -94,6 +99,7 @@ const Tabs = () => {
     <Box
       as="nav"
       display="flex"
+      alignItems="center"
       w="100%"
       mt="12px"
       className="intercom-product-tour-project-page-tabs"
@@ -129,17 +135,25 @@ const Tabs = () => {
         />
       )}
       {ROLES_THAT_CAN_SEE_SPACES.includes(highest_role) && spacesEnabled && (
-        <Tab
-          message={messages.spaces}
-          icon="spaces"
-          active={tab === 'spaces'}
-          dataCy="projects-overview-spaces-tab"
-          onClick={() => {
-            removeSearchParams([...PROJECT_PARAMS, ...FOLDER_PARAMS]);
-            updateSearchParams({ tab: 'spaces' });
-            trackEventByName(tracks.setTab, { tab: 'spaces' });
-          }}
-        />
+        <>
+          <Tab
+            message={messages.spaces}
+            icon="spaces"
+            active={tab === 'spaces'}
+            dataCy="projects-overview-spaces-tab"
+            onClick={() => {
+              removeSearchParams([...PROJECT_PARAMS, ...FOLDER_PARAMS]);
+              updateSearchParams({ tab: 'spaces' });
+              trackEventByName(tracks.setTab, { tab: 'spaces' });
+            }}
+          />
+          <NewLabel
+            expiryDate={SPACES_NEW_LABEL_EXPIRY}
+            ml="-12px"
+            mt="-8px"
+            mr="20px"
+          />
+        </>
       )}
       <Tab
         message={messages.calendar}

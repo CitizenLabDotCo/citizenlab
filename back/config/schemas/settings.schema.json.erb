@@ -1401,7 +1401,7 @@
           "enabled": { "type": "boolean", "default": false },
           "prompt_template": {
             "title": "Custom AI analysis prompt",
-            "description": "Optional custom prompt template (ERB format) to override the default Q&A prompt. Available variables: project_title, question, inputs_text, language, include_comments.",
+            "description": "Optional custom prompt template to override the default Q&A prompt. Insert a value by writing its name between %{ and }, e.g. %{project_title}. Available placeholders: %{project_title}, %{question}, %{inputs_text}, %{language}, %{comments_instruction}. No other syntax is supported: anything else is sent to the model as-is.",
             "type": "string"
           }
         }
@@ -1602,6 +1602,18 @@
         "type": "object",
         "title": "Hide submission removal text",
         "description": "Do not give users the option to remove survey submissions (post survey & in email confirmation). WARNING: Should only be used where GPDR does not apply.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "configurable_dropdown": {
+        "type": "object",
+        "title": "Configurable dropdown",
+        "description": "Allows grouping several navigation bar items together under a single dropdown menu.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
