@@ -21,7 +21,7 @@ interface Props {
 
 const Selection = ({ titleMultiloc, adminPublicationIds }: Props) => {
   const localizeWithFallback = useLocalizeWithFallback();
-  const { data, hasNextPage, fetchNextPage, isInitialLoading } =
+  const { data, hasNextPage, fetchNextPage, isLoading } =
     useAdminPublicationsByIds(
       {
         ids: adminPublicationIds,
@@ -43,7 +43,7 @@ const Selection = ({ titleMultiloc, adminPublicationIds }: Props) => {
     return <EmptyState title={title} explanation={messages.noData} />;
   }
 
-  if (isInitialLoading) {
+  if (isLoading) {
     return <Skeleton title={title} />;
   }
 

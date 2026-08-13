@@ -67,7 +67,7 @@ const SignedInHeader = ({
   homepageSettings: Partial<IHomepageBannerSettings>;
   isContentBuilderDisplay?: boolean;
 }) => {
-  const { data: currentOnboardingCampaign, isInitialLoading } =
+  const { data: currentOnboardingCampaign, isLoading } =
     useCurrentOnboardingCampaign();
   const { mutate: dismissOnboardingCampaign } = useDismissOnboardingCampaign();
 
@@ -121,7 +121,7 @@ const SignedInHeader = ({
       defaultHeights.phone;
   }
 
-  if (isInitialLoading) {
+  if (isLoading) {
     return (
       <Skeleton
         homepageSettingColor={homepageSettingColor ?? undefined}

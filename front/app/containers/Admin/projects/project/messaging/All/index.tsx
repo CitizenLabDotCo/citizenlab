@@ -44,7 +44,11 @@ const CustomEmails = () => {
 
   const goToPage = (page: number) => {
     setCurrentPage(page);
-    fetchNextPage({ pageParam: page });
+    // Pages accumulate in order, so a page beyond the ones already fetched has
+    // to be loaded before it can be read out of `campaigns.pages`.
+    if (page > campaigns.pages.length) {
+      fetchNextPage();
+    }
   };
 
   if (campaignsList.data.length === 0) {
