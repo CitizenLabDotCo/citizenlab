@@ -37,10 +37,6 @@ module CustomFieldBins
       values.include?(value)
     end
 
-    def filter_by_bin(scope)
-      AnswerableFilter.new(custom_field, scope).eq(values.first)
-    end
-
     def self.supports_custom_field?(custom_field)
       %w[checkbox linear_scale rating number sentiment_linear_scale].include?(custom_field.input_type)
     end

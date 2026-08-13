@@ -37,10 +37,6 @@ module CustomFieldBins
       birthyear_range.cover?(value)
     end
 
-    def filter_by_bin(scope)
-      AnswerableFilter.new(custom_field, scope).one_of(birthyear_range)
-    end
-
     def self.generate_bins(custom_field)
       return if custom_field.custom_field_bins.any?
 

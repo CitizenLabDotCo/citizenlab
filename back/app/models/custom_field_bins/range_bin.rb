@@ -34,10 +34,6 @@ module CustomFieldBins
       range.cover?(value)
     end
 
-    def filter_by_bin(scope)
-      AnswerableFilter.new(custom_field, scope).one_of(range)
-    end
-
     def self.generate_bins(custom_field,
       lower_bound: find_lowest_value(custom_field),
       upper_bound: find_highest_value(custom_field),

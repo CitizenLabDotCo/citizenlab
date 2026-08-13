@@ -187,5 +187,13 @@ RSpec.describe AnswerableFilter do
       expect(described_class.new(field, Idea).eq(4)).to contain_exactly(good)
       expect(described_class.new(field, Idea.where(project: project)).present).to contain_exactly(good, bad)
     end
+
+    it 'does not mix in answers of another form field with the same key' do
+      other_form = create(:custom_form, participation_context: create(:project))
+      create(:custom_field_linear_scale, resource: other_form, key: 'rating')
+      create(:idea, project: other_form.participation_context, custom_field_values: { 'rating' => 4 })
+
+      expect(described_class.new(field, Idea).eq(4)).to contain_exactly(good)
+    end
   end
 end

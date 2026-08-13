@@ -46,12 +46,6 @@ class CustomFieldBin < ApplicationRecord
     raise NotImplementedError
   end
 
-  # Returns the given ActiveRecord scope, filtered for items that are in this bin
-  # The resource covered by the scope needs to be an answerable (users or ideas)
-  def filter_by_bin(scope)
-    raise NotImplementedError
-  end
-
   # Returns an array of input_types that this bin subclass can be used for
   def self.supports_custom_field?(_custom_field)
     raise NotImplementedError

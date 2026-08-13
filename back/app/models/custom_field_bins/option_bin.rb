@@ -33,13 +33,6 @@ module CustomFieldBins
       value == custom_field_option_value || value.include?(custom_field_option_value)
     end
 
-    def filter_by_bin(scope)
-      case custom_field.input_type
-      when 'select', 'multiselect'
-        AnswerableFilter.new(custom_field, scope).eq(custom_field_option_value)
-      end
-    end
-
     def self.generate_bins(custom_field)
       return if custom_field.custom_field_bins.any?
 
