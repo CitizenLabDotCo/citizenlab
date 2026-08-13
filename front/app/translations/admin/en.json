@@ -3277,6 +3277,8 @@
   "app.containers.AdminPage.SettingsPage.profanityBlockerSettingDescription": "Block input, proposals and comments containing the most commonly reported offensive words",
   "app.containers.AdminPage.SettingsPage.projectsHeaderDescription": "This text is shown on the homepage above the projects.",
   "app.containers.AdminPage.SettingsPage.projects_header": "Projects header",
+  "app.containers.AdminPage.SettingsPage.registration.VisitingPermission.platformAccessDescription": "What people need to do before they can visit the platform. These requirements apply everywhere, on top of the requirements set per phase in a project.",
+  "app.containers.AdminPage.SettingsPage.registration.VisitingPermission.platformAccessTitle": "Platform access",
   "app.containers.AdminPage.SettingsPage.registrationHelperTextDescription2": "Add short descriptions for the top of the sign-up and login forms.",
   "app.containers.AdminPage.SettingsPage.registrationTitle": "Registration",
   "app.containers.AdminPage.SettingsPage.save": "Save",
