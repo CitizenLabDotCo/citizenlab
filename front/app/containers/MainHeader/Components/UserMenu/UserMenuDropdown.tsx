@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
 import useAuthenticationRequirements from 'api/authentication/authentication_requirements/useAuthenticationRequirements';
 import signOut from 'api/authentication/sign_in_out/signOut';
-import useAuthUser from 'api/me/useAuthUser';
+import { IUser } from 'api/users/types';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { showOnboarding } from 'containers/Authentication/useSteps/stepConfig/utils';
@@ -14,7 +14,6 @@ import { showOnboarding } from 'containers/Authentication/useSteps/stepConfig/ut
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 import { usePermission } from 'utils/permissions';
 
 import messages from './messages';
@@ -24,11 +23,16 @@ const DropdownListItem = styled(ButtonWithLink)``;
 interface Props {
   toggleDropdown: () => void;
   closeDropdown: () => void;
+  authUser: IUser;
   opened: boolean;
 }
 
-const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
-  const { data: authUser } = useAuthUser();
+const UserMenuDropdown = ({
+  toggleDropdown,
+  closeDropdown,
+  authUser,
+  opened,
+}: Props) => {
   const { data: authenticationRequirementsResponse } =
     useAuthenticationRequirements(GLOBAL_CONTEXT);
   const canAccessAdmin = usePermission({
@@ -36,14 +40,14 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
     action: 'access',
   });
 
-  const isRegisteredUser =
-    !isNilOrError(authUser) &&
-    !!authenticationRequirementsResponse?.data.attributes.permitted;
+  const authRequirements = authenticationRequirementsResponse?.data.attributes;
+  const isRegisteredUser = !!authRequirements?.permitted;
+  const userRequiresEmailConfirmation =
+    authRequirements?.requirements.authentication.email_action_required ===
+    'confirm_new_email';
+  const showCompleteProfile =
+    !userRequiresEmailConfirmation && !isRegisteredUser;
 
-  const isConfirmedUser =
-    !isNilOrError(authUser) && !authUser.data.attributes.confirmation_required;
-
-  const showCompleteProfile = isConfirmedUser && !isRegisteredUser;
   const shouldShowOnboarding =
     authenticationRequirementsResponse && !showCompleteProfile
       ? showOnboarding(
@@ -89,7 +93,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
             </DropdownListItem>
           )}
 
-          {isConfirmedUser && (
+          {!userRequiresEmailConfirmation && (
             <DropdownListItem
               id="e2e-my-ideas-page-link"
               to="/profile/$userId"
@@ -107,7 +111,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
             </DropdownListItem>
           )}
 
-          {isConfirmedUser && (
+          {!userRequiresEmailConfirmation && (
             <DropdownListItem
               id="e2e-profile-edit-link"
               to="/profile/edit"
@@ -124,7 +128,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
             </DropdownListItem>
           )}
 
-          {!isConfirmedUser && (
+          {userRequiresEmailConfirmation && (
             <DropdownListItem
               id="e2e-confirm-email-link"
               onClick={() => {
@@ -160,7 +164,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
             </DropdownListItem>
           )}
 
-          {isConfirmedUser && shouldShowOnboarding && (
+          {userRequiresEmailConfirmation && shouldShowOnboarding && (
             <DropdownListItem
               onClick={() => {
                 triggerAuthenticationFlow();
