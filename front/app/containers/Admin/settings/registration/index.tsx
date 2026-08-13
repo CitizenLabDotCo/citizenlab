@@ -126,7 +126,9 @@ const SettingsRegistrationTab = () => {
     return (
       <>
         <VisitingPermission />
-        <CustomFieldSettings />
+        <Box mb="80px">
+          <CustomFieldSettings />
+        </Box>
         <Section>
           <SectionTitle>
             <FormattedMessage {...messages.otherRegistrationSettings} />
