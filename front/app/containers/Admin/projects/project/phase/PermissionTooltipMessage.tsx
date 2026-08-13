@@ -64,7 +64,13 @@ const PermissionTooltipMessage = ({
               if (!label) return null;
 
               return (
-                <Text my="0px" variant="bodyS" key={permission.id}>
+                <Text
+                  my="0px"
+                  variant="bodyS"
+                  // Not the id: an inherited permission has no record of its
+                  // own, so its id is blank.
+                  key={permission.attributes.action}
+                >
                   <FormattedMessage
                     {...label}
                     values={{

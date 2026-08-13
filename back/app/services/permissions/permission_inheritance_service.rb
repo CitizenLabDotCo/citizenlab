@@ -134,7 +134,6 @@ module Permissions
       permission = build_from_source(source, scope, action)
       permission.inherited = true
 
-
       # Preload the associations in memory rather than letting them query for an
       # unsaved record (which would return nothing).
       preload_association(permission, :groups, source ? source.groups.to_a : [])

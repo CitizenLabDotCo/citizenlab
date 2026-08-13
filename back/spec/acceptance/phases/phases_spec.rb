@@ -64,6 +64,9 @@ resource 'Phases' do
     example 'Get one phase by id' do
       create_list(:idea, 2, project: phase.project, phases: [phase])
       Permissions::PermissionsUpdateService.new.update_all_permissions
+      # Only overridden permissions are serialized: an action that still
+      # inherits the global 'visiting' permission has no record of its own.
+      override_permissions!(phase)
       phase.update!(report: build(:report))
       do_request
       assert_status 200

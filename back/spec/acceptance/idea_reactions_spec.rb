@@ -157,7 +157,8 @@ resource 'Reactions' do
     describe 'when reacting to idea is allowed by moderators/admins' do
       before do
         Permissions::PermissionsUpdateService.new.update_all_permissions
-        @project.phases.first.permissions.find_by(action: 'reacting_idea').update!(permitted_by: 'admins_moderators')
+        override_permissions!(@project.phases.first, actions: ['reacting_idea'])
+          .first.update!(permitted_by: 'admins_moderators')
         @user.update!(roles: [])
         header_token_for @user # role change invalidates the earlier token; re-authenticate
       end

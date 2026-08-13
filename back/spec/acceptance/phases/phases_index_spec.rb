@@ -21,7 +21,12 @@ resource 'Phases' do
     let!(:phases) { create_list(:phase_sequence, 2, project: project) }
 
     context 'when visitor' do
-      before { Permissions::PermissionsUpdateService.new.update_all_permissions }
+      before do
+        Permissions::PermissionsUpdateService.new.update_all_permissions
+        # Only overridden permissions are serialized: an action that still
+        # inherits the global 'visiting' permission has no record of its own.
+        phases.flatten.each { |phase| override_permissions!(phase) }
+      end
 
       example 'List all phases of a project' do
         do_request

@@ -40,12 +40,18 @@ export type UserFieldsInFormFrontendDescriptor = {
 
 // Global and phase permissions are the same resource in the backend, so they
 // are the same type here: a global permission is one without a scope.
+//
+// A phase action that has not been overridden has no permission record of its
+// own — it follows the global 'visiting' permission (`inherited: true`) and has
+// a blank `id`, so never key off it. Overriding it (see
+// `useOverridePhasePermission`) persists a copy that can then be customised.
 export interface IPermissionData {
   id: string;
   type: 'permission';
   attributes: {
     access_denied_explanation_multiloc: Multiloc;
     action: Action;
+    inherited: boolean;
     confirmed_email_expiry: number | null;
     created_at: string;
     everyone_tracking_enabled: boolean;

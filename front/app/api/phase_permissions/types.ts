@@ -18,3 +18,11 @@ export type ResetPermissionParams = {
   phaseId: string;
   action: Action;
 };
+
+// Switching an action between following the global 'visiting' permission and
+// owning its own. Keyed by action only: while inherited there is no permission
+// record, so there is no id to send.
+export type InheritancePermissionParams = {
+  phaseId: string;
+  action: Action;
+};

@@ -27,6 +27,7 @@ export const phasePermissionsData: IPermissionData = {
     require_password: true,
     require_verification: false,
     permitted_by_everyone_allowed: false,
+    inherited: false,
   },
   relationships: {
     permission_scope: {

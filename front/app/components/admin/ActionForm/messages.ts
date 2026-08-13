@@ -68,4 +68,33 @@ export default defineMessages({
     id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.verification',
     defaultMessage: 'Verification',
   },
+  usingPlatformDefaults: {
+    id: 'app.components.admin.ActionForm.usingPlatformDefaults',
+    defaultMessage: 'Using <link>platform defaults</link>',
+  },
+  override: {
+    id: 'app.components.admin.ActionForm.override',
+    defaultMessage: 'Override',
+  },
+  revertToPlatformDefaults: {
+    id: 'app.components.admin.ActionForm.revertToPlatformDefaults',
+    defaultMessage: 'Revert to platform defaults',
+  },
+  revertToPlatformDefaultsConfirmation: {
+    id: 'app.components.admin.ActionForm.revertToPlatformDefaultsConfirmation',
+    defaultMessage: 'Revert to platform defaults?',
+  },
+  revertToPlatformDefaultsInfo: {
+    id: 'app.components.admin.ActionForm.revertToPlatformDefaultsInfo',
+    defaultMessage:
+      'This action will follow the platform defaults again. The groups and demographic questions you configured for it will be permanently deleted.',
+  },
+  revertToPlatformDefaultsConfirmButton: {
+    id: 'app.components.admin.ActionForm.revertToPlatformDefaultsConfirmButton',
+    defaultMessage: 'Revert',
+  },
+  revertToPlatformDefaultsCancelButton: {
+    id: 'app.components.admin.ActionForm.revertToPlatformDefaultsCancelButton',
+    defaultMessage: 'Cancel',
+  },
 });

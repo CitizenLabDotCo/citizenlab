@@ -282,13 +282,14 @@ resource 'Permissions' do
 
     patch 'web_api/v1/phases/:phase_id/permissions/:action/override' do
       let(:action) { 'posting_idea' }
+      let(:visiting_permission) { Permission.find_by!(action: 'visiting', permission_scope: nil) }
 
       before do
+        # Undo the blanket override of the outer setup: this endpoint only
+        # applies to an action that still inherits.
         Permission.where(permission_scope: @phase).destroy_all
         visiting_permission.update!(require_name: false, require_password: false, require_verification: true)
       end
-
-      let(:visiting_permission) { Permission.find_by!(action: 'visiting', permission_scope: nil) }
 
       example_request 'Override a permission that inherits the global visiting permission' do
         assert_status 200

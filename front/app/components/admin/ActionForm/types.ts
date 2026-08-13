@@ -45,4 +45,9 @@ export type Props = {
   defaultOpen?: boolean;
   onChange: (changes: Changes) => Promise<void>;
   onReset: () => void;
+  // Called when the admin opts the action out of the platform defaults, and
+  // when they put it back. Omitted where the distinction doesn't apply (the
+  // panel then behaves as it always has).
+  onOverride?: () => Promise<void>;
+  onRevertToDefaults?: () => Promise<void>;
 };
