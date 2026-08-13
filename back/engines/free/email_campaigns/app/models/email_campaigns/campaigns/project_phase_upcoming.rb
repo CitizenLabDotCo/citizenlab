@@ -71,7 +71,7 @@ module EmailCampaigns
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.7_days_before_the_project_changes_phase'
+      'email_campaigns.admin_labels.trigger.7_days_before_phase_starts'
     end
 
     def filter_notification_recipient(users_scope, activity:, time: nil)
@@ -83,9 +83,11 @@ module EmailCampaigns
       [{
         event_payload: {
           phase_title_multiloc: notification.phase.title_multiloc,
-          phase_url: Frontend::UrlService.new.model_to_url(notification.phase, locale: Locale.new(recipient.locale)),
-          project_title_multiloc: notification.project.title_multiloc,
-          project_description_preview_multiloc: notification.project.description_preview_multiloc
+          phase_start_at: notification.phase.start_at,
+          phase_end_at: notification.phase.end_at,
+          phase_description_multiloc: notification.phase.description_multiloc,
+          phase_setup_url: Frontend::UrlService.new.admin_phase_url(notification.phase),
+          project_title_multiloc: notification.project.title_multiloc
         },
         delay: 8.hours.to_i
       }]
