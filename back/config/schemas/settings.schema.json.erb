@@ -1576,10 +1576,16 @@
             "title": "Twilio Auth Token",
             "private": true
           },
-          "twilio_messaging_service_sid": {
+          "twilio_manual_campaigns_messaging_service_sid": {
             "type": "string",
-            "title": "Twilio Messaging Service SID",
-            "description": "The Twilio Messaging Service SID used to send SMS messages.",
+            "title": "Twilio Manual Campaigns Messaging Service SID",
+            "description": "The Twilio Messaging Service SID used to send manual SMS campaigns.",
+            "private": true
+          },
+          "twilio_confirmation_codes_messaging_service_sid": {
+            "type": "string",
+            "title": "Twilio Confirmation Codes Messaging Service SID",
+            "description": "The Twilio Messaging Service SID used to send phone confirmation codes.",
             "private": true
           },
           <% sms_country_codes = CountryCodesService.new %>

@@ -26,7 +26,8 @@ RSpec.describe RequestPhoneConfirmationCodeJob do
       .not_to have_enqueued_job(EmailCampaigns::Sms::SendJob)
 
     code = user.phone_confirmation.code
-    expect(sms_provider).to have_received(:send).with(to: phone, body: a_string_including(code))
+    expect(sms_provider).to have_received(:send)
+      .with(to: phone, body: a_string_including(code), use_case: EmailCampaigns::Sms::UseCase::CONFIRMATION_CODES)
   end
 
   it 'sets the code delivery timestamp and resets the retry count' do

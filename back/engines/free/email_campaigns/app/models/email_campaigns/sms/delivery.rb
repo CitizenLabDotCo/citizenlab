@@ -44,6 +44,10 @@ module EmailCampaigns
       # The campaign that triggered this SMS, when sent as part of one.
       belongs_to :campaign, class_name: 'EmailCampaigns::Campaign', optional: true
 
+      def campaign_use_case
+        campaign&.class&.sms_use_case
+      end
+
       # Per-status counts (+ total) for a campaign's SMS deliveries.
       def self.status_counts(campaign_id)
         counts = where(campaign_id: campaign_id).group(:status).count

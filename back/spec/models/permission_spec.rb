@@ -179,7 +179,7 @@ RSpec.describe Permission do
     end
 
     context 'when the sms feature is enabled' do
-      before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
+      include_context 'with sms feature enabled'
 
       it 'is valid when only a confirmed phone number is required' do
         permission = build(:permission, :by_users, require_confirmed_email: false, require_verification: false, require_confirmed_phone_number: true)
@@ -195,7 +195,7 @@ RSpec.describe Permission do
 
   describe 'require_confirmed_phone_number' do
     context 'when the sms feature is enabled' do
-      before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
+      include_context 'with sms feature enabled'
 
       it 'can be required' do
         permission = create(:permission, :by_users, require_confirmed_phone_number: true)
@@ -217,7 +217,7 @@ RSpec.describe Permission do
     end
 
     context 'when the sms feature is enabled' do
-      before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
+      include_context 'with sms feature enabled'
 
       it 'does not cause a problem if set and require_confirmed_email is later disabled' do
         # Keep a confirmed phone number as the fallback authentication method so the
@@ -235,7 +235,7 @@ RSpec.describe Permission do
 
   describe 'confirmed_phone_number_expiry' do
     context 'when the sms feature is enabled' do
-      before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
+      include_context 'with sms feature enabled'
 
       it 'can be set when a confirmed phone number is required' do
         permission = create(:permission, :by_users, require_confirmed_phone_number: true, confirmed_phone_number_expiry: 1)
