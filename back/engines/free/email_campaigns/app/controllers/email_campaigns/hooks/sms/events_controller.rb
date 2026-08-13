@@ -35,7 +35,6 @@ module EmailCampaigns
       # advance_status! is a no-op when the callback arrives out of order; we
       # still return 200 so the provider stops retrying.
       delivery.advance_status!(parsed[:status])
-
       head :ok
     end
 
