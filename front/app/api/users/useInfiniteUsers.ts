@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, InfiniteData } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -19,10 +19,17 @@ const fetchUsers = ({ pageNumber, pageSize, ...rest }: IQueryParameters) =>
   });
 
 const useInfiniteUsers = (queryParameters: IQueryParameters) => {
-  return useInfiniteQuery<IUsers, CLErrors, IUsers, UsersKeys>({
+  return useInfiniteQuery<
+    IUsers,
+    CLErrors,
+    InfiniteData<IUsers>,
+    UsersKeys,
+    number
+  >({
     queryKey: projectsKeys.list(queryParameters),
     queryFn: ({ pageParam }) =>
       fetchUsers({ ...queryParameters, pageNumber: pageParam }),
+    initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
