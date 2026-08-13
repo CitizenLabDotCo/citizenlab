@@ -69,7 +69,7 @@ const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
             ? activeLabels.join(' · ')
             : formatMessage(messages.none)
         }
-        defaultOpen={activeLabels.length > 0}
+        defaultOpen={false}
       >
         {showEmail && (
           <MethodRow

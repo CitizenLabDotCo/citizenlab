@@ -5,7 +5,6 @@ import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
 import usePermission from 'api/permissions/usePermission';
 import useUpdatePermission from 'api/permissions/useUpdatePermission';
 
-import GroupsSection from 'components/admin/ActionForm/AccessSection/GroupsSection';
 import SecurityRequirementsSection from 'components/admin/ActionForm/AccessSection/SecurityRequirementsSection';
 import PersonalInfoSection from 'components/admin/ActionForm/DataSection/PersonalInfoSection';
 import { Changes } from 'components/admin/ActionForm/types';
@@ -55,11 +54,6 @@ const VisitingPermission = () => {
           permission={permission.data}
           onChange={handleChange}
         />
-
-        <Box borderBottom={`1px solid ${colors.divider}`}>
-          <GroupsSection permission={permission.data} onChange={handleChange} />
-        </Box>
-
         <PersonalInfoSection
           permission={permission.data}
           onChange={handleChange}
