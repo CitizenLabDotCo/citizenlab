@@ -9557,6 +9557,7 @@ SET search_path TO public,shared_extensions;
 INSERT INTO "schema_migrations" (version) VALUES
 ('20260811145845'),
 ('20260810100000'),
+('20260805000000'),
 ('20260727100000'),
 ('20260727000000'),
 ('20260713000000'),

@@ -37,6 +37,10 @@ module EmailCampaigns
   class Campaigns::PhoneConfirmation < Campaigns::BaseSms
     filter :exclude_from_send_pipeline
 
+    def self.sms_use_case
+      Sms::UseCase::CONFIRMATION_CODES
+    end
+
     # A localized template with the verification code interpolated. Targets the
     # user's confirmed phone (the number already on the user), unlike
     # NewPhoneConfirmation which targets the pending new_phone.
