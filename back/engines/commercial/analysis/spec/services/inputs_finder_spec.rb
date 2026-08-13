@@ -229,7 +229,7 @@ describe Analysis::InputsFinder do
 
   describe 'input_custom_<uuid>[]' do
     let_it_be(:analysis) { create(:analysis) }
-    let_it_be(:custom_form) { create(:custom_form) }
+    let_it_be(:custom_form) { create(:custom_form, participation_context: analysis.source_project) }
     let_it_be(:custom_field_select) { create(:custom_field_select, :with_options, resource: custom_form) }
     let_it_be(:custom_field_multiselect) { create(:custom_field_multiselect, :with_options, resource: custom_form) }
     let_it_be(:custom_field_date) { create(:custom_field_date, resource: custom_form) }
@@ -397,7 +397,7 @@ describe Analysis::InputsFinder do
 
   describe 'input_custom_<uuid>from/to' do
     let_it_be(:analysis) { create(:analysis) }
-    let_it_be(:custom_form) { create(:custom_form) }
+    let_it_be(:custom_form) { create(:custom_form, participation_context: analysis.source_project) }
     let_it_be(:custom_field_select) { create(:custom_field_select, :with_options, resource: custom_form) }
     let_it_be(:custom_field_multiselect) { create(:custom_field_multiselect, :with_options, resource: custom_form) }
     let_it_be(:custom_field_date) { create(:custom_field_date, resource: custom_form) }

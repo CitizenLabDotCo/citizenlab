@@ -2,6 +2,8 @@
 
 module InputTypeStrategy
   class LinearScale < Base
+    INTEGER_VALUE = "(value #>> '{}')::integer"
+
     def supports_average?
       true
     end
@@ -19,19 +21,19 @@ module InputTypeStrategy
     end
 
     def answers_eq(answers, value)
-      answers.where("(value #>> '{}')::integer = ?", value)
+      answers.where("#{INTEGER_VALUE} = ?", value)
     end
 
     def answers_one_of(answers, values)
-      answers.where("(value #>> '{}')::integer IN (?)", values)
+      answers.where("#{INTEGER_VALUE} IN (?)", values)
     end
 
     def answers_gteq(answers, value)
-      answers.where("(value #>> '{}')::integer >= ?", value)
+      answers.where("#{INTEGER_VALUE} >= ?", value)
     end
 
     def answers_lteq(answers, value)
-      answers.where("(value #>> '{}')::integer <= ?", value)
+      answers.where("#{INTEGER_VALUE} <= ?", value)
     end
   end
 end
