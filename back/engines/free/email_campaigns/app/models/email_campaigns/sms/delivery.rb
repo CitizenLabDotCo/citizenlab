@@ -42,7 +42,7 @@ module EmailCampaigns
       TERMINAL_STATUSES = %w[delivered undelivered failed errored].freeze
 
       # Statuses meaning the message was actually handed to the provider, and so
-      # consumes one of the tenant's purchased messages. Deliberately NOT just
+      # consumes segments of the tenant's purchased allowance. Deliberately NOT just
       # `delivered`: the provider bills on submission, `delivered` only ever
       # arrives via a status callback (many carriers never send one, leaving the
       # message on `sent`), and `undelivered`/`failed` are billed too. The two

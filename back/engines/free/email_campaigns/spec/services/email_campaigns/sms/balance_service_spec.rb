@@ -31,16 +31,9 @@ RSpec.describe EmailCampaigns::Sms::BalanceService do
 
     it 'splits billable deliveries over the campaign types' do
       create_list(:sms_delivery, 3, campaign: manual_campaign, status: 'sent')
-      create_list(:sms_delivery, 2, campaign: otp_campaign, status: 'delivered')
+      create(:sms_delivery, campaign: nil, status: 'sent')
 
-      expect(service.used_breakdown).to eq(used_otp: 2, used_manual: 3, used_other: 0)
-    end
-
-    it 'counts both phone confirmation campaigns as verification codes' do
-      create(:sms_delivery, campaign: create(:phone_confirmation_campaign), status: 'sent')
-      create(:sms_delivery, campaign: otp_campaign, status: 'sent')
-
-      expect(service.used_breakdown).to eq(used_otp: 2, used_manual: 0, used_other: 0)
+      expect(service.used_breakdown).to eq(used_manual: 3, used_other: 1)
     end
 
     it 'counts a multi-segment message once per segment' do
@@ -50,10 +43,10 @@ RSpec.describe EmailCampaigns::Sms::BalanceService do
       expect(service.used).to eq 5
     end
 
-    it 'counts a send whose segment count is not known yet as one segment' do
+    it 'counts a send whose segment count is not known yet as nothing' do
       create(:sms_delivery, campaign: manual_campaign, status: 'sent', segments_count: nil)
 
-      expect(service.used).to eq 1
+      expect(service.used).to eq 0
     end
 
     it 'counts every status that reached the provider, not only delivered' do
@@ -74,17 +67,17 @@ RSpec.describe EmailCampaigns::Sms::BalanceService do
     it 'attributes campaign-less sends (previews) to used_other' do
       create(:sms_delivery, campaign: nil, status: 'sent')
 
-      expect(service.used_breakdown).to eq(used_otp: 0, used_manual: 0, used_other: 1)
+      expect(service.used_breakdown).to eq(used_manual: 0, used_other: 1)
     end
 
-    # Verification codes are reported in the breakdown, but Go Vocal absorbs them.
-    it 'leaves verification codes out of #used, counting campaigns and previews' do
-      create(:sms_delivery, campaign: manual_campaign, status: 'sent')
+    # Go Vocal absorbs verification codes, so they are not reported or charged at all.
+    it 'leaves both phone confirmation campaigns out entirely' do
+      create(:sms_delivery, campaign: create(:phone_confirmation_campaign), status: 'sent')
       create(:sms_delivery, campaign: otp_campaign, status: 'sent')
-      create(:sms_delivery, campaign: nil, status: 'sent')
+      create(:sms_delivery, campaign: manual_campaign, status: 'sent')
 
-      expect(service.used_breakdown).to eq(used_otp: 1, used_manual: 1, used_other: 1)
-      expect(service.used).to eq 2
+      expect(service.used_breakdown).to eq(used_manual: 1, used_other: 0)
+      expect(service.used).to eq 1
     end
   end
 
@@ -117,7 +110,6 @@ RSpec.describe EmailCampaigns::Sms::BalanceService do
         purchased: 1000,
         used: 1,
         balance: 999,
-        used_otp: 0,
         used_manual: 1,
         used_other: 0
       )

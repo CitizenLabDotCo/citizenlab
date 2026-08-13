@@ -12,5 +12,6 @@ FactoryBot.define do
     user
     body { 'A short SMS update.' }
     status { 'sent' }
+    segments_count { 1 }
   end
 end
