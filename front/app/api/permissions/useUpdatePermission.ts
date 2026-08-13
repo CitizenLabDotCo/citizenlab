@@ -24,10 +24,6 @@ const useUpdatePermission = () => {
     mutationFn: updatePermission,
     onSuccess: (_, { action }) => {
       queryClient.invalidateQueries({
-        queryKey: permissionKeys.lists(),
-      });
-
-      queryClient.invalidateQueries({
         queryKey: permissionKeys.item({ action }),
       });
 
