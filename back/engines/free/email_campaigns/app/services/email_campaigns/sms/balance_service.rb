@@ -11,15 +11,16 @@ module EmailCampaigns
       # real, billed messages.
       OTHER_KEY = :used_other
 
-      CAMPAIGN_TYPE_KEYS = {
-        'EmailCampaigns::Campaigns::PhoneConfirmation' => :used_otp,
-        'EmailCampaigns::Campaigns::NewPhoneConfirmation' => :used_otp,
+      BILLABLE_CAMPAIGN_TYPE_KEYS = {
         'EmailCampaigns::Campaigns::SmsManual' => :used_manual
       }.freeze
 
-      # Go Vocal absorbs the cost of verification codes, so they are reported in the
-      # breakdown but never consume the tenant's purchased messages.
-      ABSORBED_KEYS = %i[used_otp].freeze
+      # Go Vocal absorbs the cost of verification codes, so they never touch the
+      # tenant's purchased messages.
+      NON_BILLABLE_CAMPAIGN_TYPES = %w[
+        EmailCampaigns::Campaigns::PhoneConfirmation
+        EmailCampaigns::Campaigns::NewPhoneConfirmation
+      ].freeze
 
       def initialize(app_configuration: AppConfiguration.instance)
         @app_configuration = app_configuration
@@ -33,17 +34,16 @@ module EmailCampaigns
       # @return [Hash{Symbol=>Integer}]
       def used_breakdown
         @used_breakdown ||= begin
-          counts = CAMPAIGN_TYPE_KEYS.values.index_with(0).merge(OTHER_KEY => 0)
+          counts = BILLABLE_CAMPAIGN_TYPE_KEYS.values.index_with(0).merge(OTHER_KEY => 0)
           counts_by_type.each do |type, count|
-            counts[CAMPAIGN_TYPE_KEYS.fetch(type, OTHER_KEY)] += count
+            counts[BILLABLE_CAMPAIGN_TYPE_KEYS.fetch(type, OTHER_KEY)] += count
           end
           counts
         end
       end
 
-      # Only the charged sends — see ABSORBED_KEYS.
       def used
-        used_breakdown.except(*ABSORBED_KEYS).values.sum
+        used_breakdown.values.sum
       end
 
       # May go negative once a tenant sends more than it bought — that is a real
@@ -63,13 +63,16 @@ module EmailCampaigns
       #
       # The provider bills per segment, so a long message consumes several. A send
       # whose count isn't known yet (still on its way, or predating the column)
-      # counts as the one segment every message is billed at least once for, and
-      # corrects itself once the real count arrives.
+      # adds nothing until the real count arrives.
+      #
+      # The absorbed types are dropped here rather than in SQL, where excluding them
+      # would take the NULL-campaign previews down with them.
       def counts_by_type
         Delivery.billable
           .left_joins(:campaign)
           .group('email_campaigns_campaigns.type')
-          .sum(Arel.sql('COALESCE(sms_deliveries.segments_count, 1)'))
+          .sum(:segments_count)
+          .except(*NON_BILLABLE_CAMPAIGN_TYPES)
       end
     end
   end

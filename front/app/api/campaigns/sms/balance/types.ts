@@ -11,9 +11,8 @@ export interface ISmsBalanceAttributes {
   used: number;
   // purchased - used. Negative when the tenant has sent more than it bought.
   balance: number;
-  used_otp: number;
   used_manual: number;
-  // Billed sends not attributable to either campaign type, today only previews.
+  // Billed sends not attributable to a campaign type, today only previews.
   used_other: number;
 }
 
