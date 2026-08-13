@@ -409,6 +409,52 @@ RSpec.describe Insights::BasePhaseInsightsService do
         )
       end
     end
+
+    context 'domicile field' do
+      let!(:domicile_field) { create(:custom_field_domicile) }
+      let!(:area) { create(:area) }
+
+      let(:participation1) { create(:basket_participation, user_custom_field_values: { 'domicile' => area.id }) }
+      let(:flattened_participations) { [participation1] }
+      let(:participant_ids) { flattened_participations.pluck(:participant_id).uniq }
+
+      # The option that is not backed by an area, offered as 'Somewhere else'.
+      let(:somewhere_else_key) { domicile_field.options.left_joins(:area).find_by(areas: { id: nil }).key }
+
+      it 'includes series indexed by option key' do
+        result = service.send(:demographics_data, flattened_participations, participant_ids)
+
+        expect(result).to include(
+          hash_including(
+            key: 'domicile',
+            series: { area.custom_field_option.key => 1, somewhere_else_key => 0, '_blank' => 0 }
+          )
+        )
+      end
+
+      context 'when a value references an area that no longer exists' do
+        # Regression test. Deleting an area used to leave behind the domicile answers a
+        # survey form had stored on its inputs, so those values keep referencing a
+        # deleted area. Mapping them back onto option keys raised a KeyError, which took
+        # down the whole insights endpoint (metrics, timeline and demographics at once).
+        let(:participation2) do
+          create(:basket_participation, user_custom_field_values: { 'domicile' => SecureRandom.uuid })
+        end
+        let(:flattened_participations) { [participation1, participation2] }
+
+        it 'counts them as blank instead of raising' do
+          expect { service.send(:demographics_data, flattened_participations, participant_ids) }
+            .not_to raise_error
+        end
+
+        it 'keeps every participant accounted for in the series' do
+          result = service.send(:demographics_data, flattened_participations, participant_ids)
+          domicile_series = result.find { |field| field[:key] == 'domicile' }[:series]
+
+          expect(domicile_series).to eq({ area.custom_field_option.key => 1, '_blank' => 1 })
+        end
+      end
+    end
   end
 
   describe '#birthyear_demographics_data' do

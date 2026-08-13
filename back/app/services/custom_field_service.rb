@@ -75,21 +75,12 @@ class CustomFieldService
   def delete_custom_field_option_values(option_key, field)
     return if field.resource_type != 'User'
 
-    if field.supports_multiple_selection?
-      # When option is the only selection
-      User
-        .where("custom_field_values->>'#{field.key}' = ?", [option_key].to_json)
-        .update_all("custom_field_values = custom_field_values - '#{field.key}'")
-      # When option was selected amongst other values
-      User
-        .where("(custom_field_values->>'#{field.key}')::jsonb ? :value", value: option_key)
-        .update_all("custom_field_values = jsonb_set(custom_field_values, '{#{field.key}}', (custom_field_values->'#{field.key}') - '#{option_key}')")
-    else
-      # When single select
-      User
-        .where("custom_field_values->>'#{field.key}' = ?", option_key)
-        .update_all("custom_field_values = custom_field_values - '#{field.key}'")
-    end
+    delete_option_from_values(User.all, field.key, option_key, field.supports_multiple_selection?)
+    # The same field can be asked inside a survey form, in which case the answers are
+    # stored on the input under a prefixed key instead of on the user.
+    delete_option_from_values(
+      Idea.all, UserFieldsInFormService.prefix_key(field.key), option_key, field.supports_multiple_selection?
+    )
   end
 
   # @param [Hash<String, _>] custom_field_values
@@ -174,6 +165,24 @@ class CustomFieldService
     scope
       .where("custom_field_values ? '#{key}'")
       .update_all("custom_field_values = custom_field_values - '#{key}'")
+  end
+
+  def delete_option_from_values(scope, key, option_key, multiple_selection)
+    if multiple_selection
+      # When option is the only selection
+      scope
+        .where("custom_field_values->>'#{key}' = ?", [option_key].to_json)
+        .update_all("custom_field_values = custom_field_values - '#{key}'")
+      # When option was selected amongst other values
+      scope
+        .where("(custom_field_values->>'#{key}')::jsonb ? :value", value: option_key)
+        .update_all("custom_field_values = jsonb_set(custom_field_values, '{#{key}}', (custom_field_values->'#{key}') - '#{option_key}')")
+    else
+      # When single select
+      scope
+        .where("custom_field_values->>'#{key}' = ?", option_key)
+        .update_all("custom_field_values = custom_field_values - '#{key}'")
+    end
   end
 
   # *** text ***

@@ -69,6 +69,44 @@ RSpec.describe UserCustomFields::FieldValueCounter do
         expect(counts.keys).to match_array(expected_keys)
         expect(counts.values).to all eq(0)
       end
+
+      context 'when values reference an area that no longer exists' do
+        # Regression test. Deleting an area does not clean up the domicile answers a
+        # survey form stored on its inputs, so those values keep pointing at a deleted
+        # area. Mapping the area ids back onto option keys used to raise a KeyError,
+        # which made every consumer of these counts (phase insights, reporting widgets)
+        # return a 500.
+        subject(:counts) do
+          described_class.counts_by_field_option(custom_field_values, custom_field)
+        end
+
+        let(:deleted_area_id) { SecureRandom.uuid }
+        let(:custom_field_values) do
+          [
+            { 'domicile' => areas.first.id },
+            { 'domicile' => deleted_area_id },
+            { 'domicile' => deleted_area_id },
+            {}
+          ]
+        end
+
+        it 'counts them as blank instead of raising', :aggregate_failures do
+          expect { counts }.not_to raise_error
+
+          first_area_option_key = areas.first.custom_field_option.key
+          expect(counts[first_area_option_key]).to eq 1
+          # 2 answers pointing at the deleted area + 1 answer that was left empty.
+          expect(counts[described_class::UNKNOWN_VALUE_LABEL]).to eq 3
+        end
+
+        it 'keeps the total count intact' do
+          expect(counts.values.sum).to eq custom_field_values.size
+        end
+
+        it 'does not leak the deleted area id into the counts' do
+          expect(counts.keys).not_to include deleted_area_id
+        end
+      end
     end
 
     context 'when user fields are stored in ideas' do

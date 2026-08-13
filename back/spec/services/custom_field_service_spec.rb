@@ -110,6 +110,55 @@ describe CustomFieldService do
       expect(u1.reload.custom_field_values).to eq({})
       expect(u2.reload.custom_field_values).to eq v2
     end
+
+    # When a user field is asked inside a survey form, the answers live on the input
+    # rather than on the user. Leaving them behind makes them reference an option that no
+    # longer exists, which later breaks the code counting answers per option.
+    it 'deletes the option from the values a user field stored on inputs for a single select' do
+      cf1 = create(:custom_field_select)
+      cfo1 = create(:custom_field_option, custom_field: cf1)
+      cfo2 = create(:custom_field_option, custom_field: cf1)
+      key = "u_#{cf1.key}"
+      input1 = create(:idea, custom_field_values: { key => cfo1.key, 'other_field' => 'stays' })
+      input2 = create(:idea, custom_field_values: { key => cfo2.key })
+
+      service.delete_custom_field_option_values(cfo1.key, cf1)
+
+      expect(input1.reload.custom_field_values).to eq({ 'other_field' => 'stays' })
+      expect(input2.reload.custom_field_values).to eq({ key => cfo2.key })
+    end
+
+    it 'deletes the option from the values a user field stored on inputs for a multiselect' do
+      cf1 = create(:custom_field_multiselect)
+      cfo1 = create(:custom_field_option, custom_field: cf1)
+      cfo2 = create(:custom_field_option, custom_field: cf1)
+      key = "u_#{cf1.key}"
+      input1 = create(:idea, custom_field_values: { key => [cfo1.key] })
+      input2 = create(:idea, custom_field_values: { key => [cfo1.key, cfo2.key] })
+      input3 = create(:idea, custom_field_values: { key => [cfo2.key] })
+
+      service.delete_custom_field_option_values(cfo1.key, cf1)
+
+      expect(input1.reload.custom_field_values).to eq({})
+      expect(input2.reload.custom_field_values).to eq({ key => [cfo2.key] })
+      expect(input3.reload.custom_field_values).to eq({ key => [cfo2.key] })
+    end
+
+    it 'deletes the domicile values an input holds for an area that gets destroyed' do
+      domicile_field = create(:custom_field_domicile)
+      area = create(:area)
+      other_area = create(:area)
+      input1 = create(:idea, custom_field_values: { 'u_domicile' => area.id })
+      input2 = create(:idea, custom_field_values: { 'u_domicile' => other_area.id })
+      user = create(:user, domicile: area.id)
+
+      # Mirrors what SideFxAreaService#before_destroy does when an area is deleted.
+      service.delete_custom_field_option_values(area.id, domicile_field)
+
+      expect(input1.reload.custom_field_values).to eq({})
+      expect(input2.reload.custom_field_values).to eq({ 'u_domicile' => other_area.id })
+      expect(user.reload.custom_field_values).to eq({})
+    end
   end
 
   describe 'fields_to_json_schema' do

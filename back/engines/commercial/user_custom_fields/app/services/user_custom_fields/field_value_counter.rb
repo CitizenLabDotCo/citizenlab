@@ -129,18 +129,33 @@ module UserCustomFields
       counts.with_indifferent_access
     end
 
+    # Domicile values are area ids, so they have to be mapped back onto option keys.
+    #
+    # The mapping is best-effort: values can reference an area that no longer exists,
+    # because deleting an area only cleans up the answers stored on users, not the ones
+    # a survey form stored on its inputs. Such values are counted as blank rather than
+    # raising, which is consistent with +add_missing_options+ tolerating the same
+    # inconsistency a few lines earlier.
     private_class_method def self.convert_area_ids_to_option_keys!(counts, custom_field)
       raise 'custom_field is not the domicile field' unless custom_field.domicile?
 
       area_id_to_option_key = Area.includes(:custom_field_option)
-        .all.to_h { |area| [area.id, area.custom_field_option.key] }
+        .filter_map { |area| [area.id, area.custom_field_option.key] if area.custom_field_option }
+        .to_h
 
       # Adding special keys to the mapping
       somewhere_else_option = custom_field.options.left_joins(:area).find_by(areas: { id: nil })
-      area_id_to_option_key['outside'] = somewhere_else_option.key
-      area_id_to_option_key[FieldValueCounter::UNKNOWN_VALUE_LABEL] = FieldValueCounter::UNKNOWN_VALUE_LABEL
+      area_id_to_option_key['outside'] = somewhere_else_option.key if somewhere_else_option
+      area_id_to_option_key[UNKNOWN_VALUE_LABEL] = UNKNOWN_VALUE_LABEL
 
-      counts.transform_keys! { |key| area_id_to_option_key.fetch(key) }
+      # Counts are summed instead of assigned, because several keys can map onto
+      # +UNKNOWN_VALUE_LABEL+ and would otherwise overwrite each other.
+      converted = counts.each_with_object({}) do |(key, count), result|
+        option_key = area_id_to_option_key.fetch(key, UNKNOWN_VALUE_LABEL)
+        result[option_key] = (result[option_key] || 0) + count
+      end
+
+      counts.replace(converted)
     end
 
     private_class_method def self.convert_keys_to_option_ids!(counts, custom_field)
