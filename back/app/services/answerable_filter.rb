@@ -84,8 +84,14 @@ class AnswerableFilter
     @scope.where.not(id: matching_answers.select(:answerable_id))
   end
 
+  # The key is needed on top of the custom field id, as companion answers
+  # (_other and _follow_up) reference the custom field of their parent key.
   def answers
-    CustomFieldAnswer.where(answerable_type: @scope.model.base_class.name, key: @custom_field.key)
+    CustomFieldAnswer.where(
+      answerable_type: @scope.model.base_class.name,
+      custom_field_id: @custom_field.id,
+      key: @custom_field.key
+    )
   end
 
   def strategy
