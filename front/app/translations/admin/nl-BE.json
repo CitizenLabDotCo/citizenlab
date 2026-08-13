@@ -159,7 +159,7 @@
   "app.components.admin.ActionForm.AccessSections.RecencyControl.thirtyMinutes": "30 minuten",
   "app.components.admin.ActionForm.DataSection.AnonymitySection.allDataLabel": "Koppel inzendingen aan het profiel van de deelnemer (aanbevolen)",
   "app.components.admin.ActionForm.DataSection.AnonymitySection.anonymityExplanation": "Onafhankelijk van wat je hierboven vraagt: je kunt een naam verzamelen en toch de inzending losgekoppeld houden van het profiel van de deelnemer.",
-  "app.components.admin.ActionForm.DataSection.AnonymitySection.anonymityInResults": "Anonymiteit in resultaten",
+  "app.components.admin.ActionForm.DataSection.AnonymitySection.anonymityInResults": "Anonimiteit in resultaten",
   "app.components.admin.ActionForm.DataSection.AnonymitySection.anonymousLabel": "Volledig anoniem — persoonlijke informatie en demografische gegevens loskoppelen",
   "app.components.admin.ActionForm.DataSection.AnonymitySection.anonymousWarning": "Noch persoonlijke informatie, noch demografische gegevens worden opgeslagen bij inzendingen, en deze kunnen later niet worden hersteld.",
   "app.components.admin.ActionForm.DataSection.AnonymitySection.demographicsOnlyLabel": "Demografische gegevens in resultaten behouden, maar persoonlijke informatie loskoppelen",
