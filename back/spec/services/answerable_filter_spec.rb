@@ -123,10 +123,30 @@ RSpec.describe AnswerableFilter do
     let_it_be(:january) { create(:user, custom_field_values: { 'member_since' => '2026-01-15' }) }
     let_it_be(:march) { create(:user, custom_field_values: { 'member_since' => '2026-03-15' }) }
 
+    it 'one_of matches the exact dates' do
+      expect(filter(field).one_of(%w[2026-01-15 2026-06-01])).to contain_exactly(january)
+    end
+
     it 'filters with before, after and on' do
       expect(filter(field).before('2026-02-01')).to contain_exactly(january)
       expect(filter(field).after('2026-02-01')).to contain_exactly(march)
       expect(filter(field).on('2026-03-15')).to contain_exactly(march)
+    end
+  end
+
+  context 'with a multiselect image field' do
+    let_it_be(:form) { create(:custom_form, participation_context: create(:project)) }
+    let_it_be(:field) { create(:custom_field_multiselect_image, resource: form, key: 'pictures') }
+    let_it_be(:sunset) { create(:idea, project: form.participation_context, custom_field_values: { 'pictures' => %w[sunset] }) }
+    let_it_be(:none_selected) { create(:idea, project: form.participation_context, custom_field_values: { 'pictures' => [] }) }
+
+    it 'one_of matches ideas that selected any of the options' do
+      expect(described_class.new(field, Idea).one_of(%w[sunset beach])).to contain_exactly(sunset)
+    end
+
+    it 'present requires a non-empty selection' do
+      expect(described_class.new(field, Idea).present).to contain_exactly(sunset)
+      expect(described_class.new(field, Idea).absent).to contain_exactly(none_selected)
     end
   end
 
@@ -140,6 +160,12 @@ RSpec.describe AnswerableFilter do
     it 'eq compares scale answers as integers' do
       expect(described_class.new(rating_field, Idea).eq(4)).to contain_exactly(idea)
       expect(described_class.new(sentiment_field, Idea).eq(2)).to contain_exactly(idea)
+    end
+
+    it 'one_of and comparisons treat scale answers as integers' do
+      expect(described_class.new(sentiment_field, Idea).one_of([2, 3])).to contain_exactly(idea)
+      expect(described_class.new(sentiment_field, Idea).gteq(5)).to contain_exactly(other_idea)
+      expect(described_class.new(sentiment_field, Idea).lteq(2)).to contain_exactly(idea)
     end
   end
 

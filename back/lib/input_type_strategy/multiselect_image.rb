@@ -21,5 +21,13 @@ module InputTypeStrategy
     def supports_select_count?
       true
     end
+
+    def answers_present(answers)
+      answers.where("value != '[]'::jsonb")
+    end
+
+    def answers_one_of(answers, values)
+      answers.where('value ?| array[:values]', values: values)
+    end
   end
 end

@@ -177,19 +177,8 @@ describe Analysis::InputsFinder do
     end
 
     it 'returns items with no value on an array with a nil value with input type select' do
-      cf = create(:custom_field_date)
-      author1 = create(:user, custom_field_values: { cf.key => '2021-01-01' })
-      author2 = create(:user, custom_field_values: { cf.key => nil })
-      _idea1 = create(:idea, project: analysis.source_project, author: author1)
-      idea2 = create(:idea, project: analysis.source_project, author: author2)
-      idea3 = create(:idea, project: analysis.source_project)
-      @params = { "author_custom_#{cf.id}": [nil] }
-      expect(output).to contain_exactly(idea2, idea3)
-    end
-
-    it 'returns items with no value on an array with a nil value with input type date' do
       cf = create(:custom_field_select, :with_options)
-      author1 = create(:user, custom_field_values: { cf.key => cf.options[0] })
+      author1 = create(:user, custom_field_values: { cf.key => cf.options[0].key })
       author2 = create(:user, custom_field_values: { cf.key => nil })
       _idea1 = create(:idea, project: analysis.source_project, author: author1)
       idea2 = create(:idea, project: analysis.source_project, author: author2)
@@ -205,18 +194,6 @@ describe Analysis::InputsFinder do
       _idea1 = create(:idea, project: analysis.source_project, author: author1)
       idea2 = create(:idea, project: analysis.source_project, author: author2)
       idea3 = create(:idea, project: analysis.source_project)
-      @params = { "author_custom_#{cf.id}": [nil] }
-      expect(output).to contain_exactly(idea2, idea3)
-    end
-
-    it 'returns items with no value on on an array with a nil value with input type number' do
-      cf = create(:custom_field_number)
-      author1 = create(:user, custom_field_values: { cf.key => 1 })
-      author2 = create(:user, custom_field_values: { cf.key => nil })
-      author3 = create(:user, custom_field_values: {})
-      _idea1 = create(:idea, project: analysis.source_project, author: author1)
-      idea2 = create(:idea, project: analysis.source_project, author: author2)
-      idea3 = create(:idea, project: analysis.source_project, author: author3)
       @params = { "author_custom_#{cf.id}": [nil] }
       expect(output).to contain_exactly(idea2, idea3)
     end
@@ -331,33 +308,8 @@ describe Analysis::InputsFinder do
       expect(output).to contain_exactly(input0)
     end
 
-    it 'returns items with no value on an array with a nil value with input type date' do
-      @params = { "input_custom_#{custom_field_date.id}": [nil] }
-      expect(output).to contain_exactly(input0)
-    end
-
     it 'returns items with no values on an array with a nil value with input type multiselect' do
       @params = { "input_custom_#{custom_field_multiselect.id}": [nil] }
-      expect(output).to contain_exactly(input0)
-    end
-
-    it 'returns items with no value on on an array with a nil value with input type number' do
-      @params = { "input_custom_#{custom_field_number.id}": [nil] }
-      expect(output).to contain_exactly(input0)
-    end
-
-    it 'returns items with no value on on an array with a nil value with input type linear_scale' do
-      @params = { "input_custom_#{custom_field_linear_scale.id}": [nil] }
-      expect(output).to contain_exactly(input0)
-    end
-
-    it 'returns items with no value on on an array with a nil value with input type rating' do
-      @params = { "input_custom_#{custom_field_rating.id}": [nil] }
-      expect(output).to contain_exactly(input0)
-    end
-
-    it 'returns items with no value on on an array with a nil value with input type multiselect_image' do
-      @params = { "input_custom_#{custom_field_multiselect_image.id}": [nil] }
       expect(output).to contain_exactly(input0)
     end
   end
