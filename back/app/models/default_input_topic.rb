@@ -45,7 +45,6 @@ class DefaultInputTopic < ApplicationRecord
 
   private
 
-  # Copied into `InputTopic` on project creation, so a payload here would reach every new project.
   def sanitize_title_multiloc
     self.title_multiloc = SanitizationService.new.strip_multiloc_to_plain_text(title_multiloc)
   end
