@@ -4,12 +4,12 @@ class WebApi::V1::PhasesController < ApplicationController
   skip_before_action :authenticate_user
   around_action :detect_invalid_timeline_changes, only: %i[create update destroy]
   before_action :set_phase, only: %i[
-    show show_mini update destroy survey_results input_responses_pdf input_responses_xlsx
-    input_response_fields sentiment_by_quarter submission_count index_xlsx delete_inputs
-    show_progress common_ground_results
+    show show_mini update destroy survey_results input_responses_pdf input_responses_pdf_result
+    input_responses_xlsx input_response_fields sentiment_by_quarter submission_count index_xlsx
+    delete_inputs show_progress common_ground_results
   ]
   before_action :ensure_input_export_review, only: %i[
-    input_responses_pdf input_responses_xlsx input_response_fields
+    input_responses_pdf input_responses_pdf_result input_responses_xlsx input_response_fields
   ]
 
   def index
@@ -115,21 +115,53 @@ class WebApi::V1::PhasesController < ApplicationController
     render json: { data: data }
   end
 
-  # Generates a PDF of input responses (cover page + one card per response).
-  # Field-level PII redaction is driven by `redacted_field_keys`. `cover_only`
-  # returns just the cover page (used by the live preview).
+  # Starts a background job (see Export::Pdf::InputResponsesJob) that renders
+  # the input responses PDF (cover page + one card per response) and returns
+  # its Jobs::Tracker for the frontend to poll. Field-level PII redaction is
+  # driven by `redacted_field_keys`. `cover_only` renders just the cover page
+  # synchronously (used by the live preview — it skips loading responses).
+  #
+  # Refuses with 409 while an export is already running: reusing that job
+  # would silently apply someone else's redaction choices.
   def input_responses_pdf
-    cover_only = ActiveModel::Type::Boolean.new.cast(params[:cover_only])
-    pdf = I18n.with_locale(current_user.locale) do
-      Export::Pdf::InputResponsesGenerator.new(
-        @phase,
-        cover: cover_from_params,
-        redacted_field_keys: params[:redacted_field_keys] || [],
-        cover_only: cover_only
-      ).generate_pdf
+    return input_responses_pdf_cover_preview if ActiveModel::Type::Boolean.new.cast(params[:cover_only])
+
+    # The lock makes the in-progress check + enqueue atomic across concurrent requests.
+    tracker = begin
+      CitizenLab::LockManager.try_with_transaction_lock("input_responses_pdf/#{@phase.id}") do
+        enqueue_input_responses_pdf_job.tracker unless in_progress_input_responses_pdf_tracker
+      end
+    rescue CitizenLab::LockManager::FailedToLock
+      nil
     end
 
-    send_data pdf.read, type: 'application/pdf', filename: 'input_responses.pdf'
+    if tracker
+      render json: WebApi::V1::Jobs::TrackerSerializer.new(
+        tracker,
+        params: jsonapi_serializer_params
+      ).serializable_hash, status: :accepted
+    else
+      render json: { errors: { base: [{ error: 'export_in_progress' }] } }, status: :conflict
+    end
+  end
+
+  # Streams the PDF of export job `tracker_id`, only to the user who started
+  # it (the file reflects their reviewed redaction choices); 404 otherwise.
+  def input_responses_pdf_result
+    tracker = Jobs::Tracker.find_by(
+      id: params[:tracker_id],
+      context: @phase,
+      root_job_type: Export::Pdf::InputResponsesJob.name,
+      owner: current_user
+    )
+    result = tracker && Export::ResultFile
+      .where(tracker: tracker)
+      .where(expires_at: Time.current..)
+      .order(created_at: :desc)
+      .first
+    return head :not_found unless result
+
+    send_data result.content.read, type: 'application/pdf', filename: result.name
   end
 
   # Generates an xlsx of input responses: the regular full data dump, minus the
@@ -227,6 +259,43 @@ class WebApi::V1::PhasesController < ApplicationController
 
   def ensure_input_export_review
     head :unprocessable_entity unless @phase.pmethod.supports_input_pdf_export?
+  end
+
+  def input_responses_pdf_cover_preview
+    pdf = I18n.with_locale(current_user.locale) do
+      Export::Pdf::InputResponsesGenerator.new(
+        @phase,
+        cover: cover_from_params,
+        redacted_field_keys: params[:redacted_field_keys] || [],
+        cover_only: true
+      ).generate_pdf
+    end
+
+    send_data pdf.read, type: 'application/pdf', filename: 'input_responses.pdf'
+  end
+
+  # An export that is still running for this phase, if any — clicking Generate
+  # twice (or a second admin clicking it) must not start a second heavy render.
+  # Failed jobs complete their tracker (with job_errors), so they don't block a
+  # new export; the time window is a safety valve against trackers orphaned by
+  # e.g. a dev environment without a running worker.
+  def in_progress_input_responses_pdf_tracker
+    Jobs::Tracker
+      .where(context: @phase, root_job_type: Export::Pdf::InputResponsesJob.name, completed_at: nil)
+      .where(created_at: 1.hour.ago..)
+      .order(created_at: :desc)
+      .first
+  end
+
+  def enqueue_input_responses_pdf_job
+    Export::Pdf::InputResponsesJob
+      .with_tracking(owner: current_user)
+      .perform_later(
+        @phase,
+        cover: cover_from_params,
+        redacted_field_keys: params[:redacted_field_keys] || [],
+        locale: current_user.locale.to_s
+      )
   end
 
   def cover_from_params

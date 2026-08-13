@@ -19,7 +19,8 @@
 #                               hook) without touching the dev's git state
 #   bin/setup-claude --check    staleness diagnostic: exit 1 and say what's
 #                               wrong when the overlay clone is missing or
-#                               behind origin/main, symlinks are missing or
+#                               behind origin/main (commits touching only
+#                               plans/ don't count), symlinks are missing or
 #                               dangling, or core.hooksPath is unset. Makes no
 #                               changes apart from a throttled `git fetch`
 #                               (at most once per
@@ -153,10 +154,10 @@ if [ "$MODE" = "check" ]; then
     fi
     if git -C "$PRIVATE_DIR" rev-parse -q --verify refs/heads/main >/dev/null 2>&1 \
        && git -C "$PRIVATE_DIR" rev-parse -q --verify refs/remotes/origin/main >/dev/null 2>&1; then
-      behind="$(git -C "$PRIVATE_DIR" rev-list --count refs/heads/main..refs/remotes/origin/main 2>/dev/null || echo 0)"
+      behind="$(git -C "$PRIVATE_DIR" rev-list --count refs/heads/main..refs/remotes/origin/main -- . ':(exclude)plans' 2>/dev/null || echo 0)"
       if [ "$behind" -gt 0 ]; then
         last="$(git -C "$PRIVATE_DIR" log -1 --format=%cs refs/heads/main 2>/dev/null || echo unknown)"
-        issues+=("overlay main is $behind commit(s) behind origin/main (local main last commit: $last)")
+        issues+=("overlay main is $behind commit(s) behind origin/main, not counting plan-only updates (local main last commit: $last)")
       fi
     fi
 
