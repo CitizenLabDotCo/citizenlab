@@ -197,6 +197,7 @@ fr-BE:
       new_phone_confirmation: Confirmation du numéro de téléphone
       official_feedback_on_idea_you_follow: Mise à jour d'une contribution que vous suivez
       password_reset: Réinitialisation du mot de passe
+      phone_confirmation: Code de confirmation du téléphone
       project_folder_moderation_rights_received: Droits d'administrateur de dossiers reçus
       project_manager_rights_received: Droits de gestionnaire de projet reçus
       project_moderation_rights_received: Droits de modération de projet reçus
@@ -555,6 +556,8 @@ fr-BE:
       preheader: Réinitialisez votre mot de passe pour %{organizationName}
       subject: '%{organizationName} : Réinitialisez votre mot de passe'
       title: Choisissez un nouveau mot de passe
+    phone_confirmation:
+      sms_body: Votre code de confirmation est %{code}.
     preview_data:
       author_display_name: Jeanne Dupont
       author_first_name: Jeanne

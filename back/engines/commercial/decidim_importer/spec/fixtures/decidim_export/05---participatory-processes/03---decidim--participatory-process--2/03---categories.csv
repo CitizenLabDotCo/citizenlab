@@ -1,0 +1,3 @@
+uid,parent,name,description,weight,text_color,background_color
+decidim--category--1,,"{""fr"": ""Environnement""}","{""fr"": ""<p>Cat env</p>""}",0,,
+decidim--category--2,decidim--category--1,"{""fr"": ""Arbres""}",,1,,

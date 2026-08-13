@@ -25,6 +25,15 @@ type Props = {
   // form). When previewSlot is present the modal renders two columns.
   settingsSlot?: ReactNode;
   previewSlot?: ReactNode;
+  // Progress/status of an async export, rendered in the footer above the
+  // actions (e.g. the PDF export job progress bar).
+  statusSlot?: ReactNode;
+  // Disables the generate button beyond the modal's own conditions (e.g. while
+  // an async export is running).
+  generateDisabled?: boolean;
+  // Close the modal after onGenerate resolves. Turn off for async exports,
+  // where generating only starts a job whose progress is shown in statusSlot.
+  closeOnGenerate?: boolean;
 };
 
 // The shared shell of the responses exports (PDF and XLSX): field review with
@@ -38,6 +47,9 @@ const ResponseExportModal = ({
   onGenerate,
   settingsSlot,
   previewSlot,
+  statusSlot,
+  generateDisabled = false,
+  closeOnGenerate = true,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -59,7 +71,7 @@ const ResponseExportModal = ({
     setError(false);
     try {
       await onGenerate({ redactedFieldKeys });
-      onClose();
+      if (closeOnGenerate) onClose();
     } catch {
       setError(true);
     } finally {
@@ -77,6 +89,7 @@ const ResponseExportModal = ({
         // Consent lives in the fixed footer so it stays visible without
         // scrolling past the field list.
         <Box w="100%">
+          {statusSlot}
           {error && (
             <Text color="red600" mt="0px" mb="8px" fontSize="s">
               <FormattedMessage {...messages.exportError} />
@@ -112,7 +125,13 @@ const ResponseExportModal = ({
                 icon="download"
                 onClick={handleGenerate}
                 processing={isGenerating}
-                disabled={!consent || isGenerating || isLoading || isError}
+                disabled={
+                  !consent ||
+                  isGenerating ||
+                  isLoading ||
+                  isError ||
+                  generateDisabled
+                }
                 data-cy="e2e-generate-export-button"
               >
                 <FormattedMessage {...messages.generateButton} />

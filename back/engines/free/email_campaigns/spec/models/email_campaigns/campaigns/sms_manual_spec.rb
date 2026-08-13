@@ -94,7 +94,8 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
           body: 'A short SMS update from your city.',
           status: 'pending'
         )
-        expect(EmailCampaigns::Sms::SendJob).to have_been_enqueued.with(delivery.id)
+        expect(EmailCampaigns::Sms::SendJob).to have_been_enqueued
+          .with(delivery.id, use_case: EmailCampaigns::Sms::UseCase::MANUAL_CAMPAIGNS)
       end
 
       it 'is a no-op when the recipient has no phone number' do
@@ -110,7 +111,8 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
           .to change(EmailCampaigns::Sms::Delivery, :count).by(1)
 
         expect(delivery.campaign_id).to be_nil
-        expect(EmailCampaigns::Sms::SendJob).to have_been_enqueued.with(delivery.id)
+        expect(EmailCampaigns::Sms::SendJob).to have_been_enqueued
+          .with(delivery.id, use_case: EmailCampaigns::Sms::UseCase::MANUAL_CAMPAIGNS)
       end
 
       it 'raises when the previewer has no phone number' do
@@ -123,10 +125,13 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
   describe 'apply_recipient_filters' do
     let(:campaign) { build(:sms_manual_campaign) }
 
-    it 'seeds recipients from users with a confirmed phone number and excludes others' do
+    it 'seeds recipients from opted-in users with a confirmed phone number and excludes others' do
       with_confirmed_phone = create(:user, :with_confirmed_phone)
       with_unconfirmed_phone = create(:user, phone: phone1, phone_confirmed_at: nil)
       without_phone = create(:user, phone: nil)
+      [with_confirmed_phone, with_unconfirmed_phone, without_phone].each do |user|
+        create(:consent, :sms_manual, user: user)
+      end
 
       expect(campaign.apply_recipient_filters).to include(with_confirmed_phone)
       expect(campaign.apply_recipient_filters).not_to include(with_unconfirmed_phone)
@@ -135,8 +140,22 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
 
     it 'filters out invitees' do
       invitee = create(:invited_user, phone: phone2, phone_confirmed_at: Time.zone.now)
+      create(:consent, :sms_manual, user: invitee)
 
       expect(campaign.apply_recipient_filters).not_to include(invitee)
+    end
+
+    it 'only includes users who explicitly opted in to Manual SMS campaigns' do
+      opted_in = create(:user, :with_confirmed_phone)
+      create(:consent, :sms_manual, user: opted_in, consented: true)
+      opted_out = create(:user, :with_confirmed_phone)
+      create(:consent, :sms_manual, user: opted_out, consented: false)
+      never_asked = create(:user, :with_confirmed_phone)
+
+      recipients = campaign.apply_recipient_filters
+      expect(recipients).to include(opted_in)
+      expect(recipients).not_to include(opted_out)
+      expect(recipients).not_to include(never_asked)
     end
   end
 end

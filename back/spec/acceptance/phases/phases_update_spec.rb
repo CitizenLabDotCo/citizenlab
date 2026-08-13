@@ -93,6 +93,13 @@ resource 'Phases' do
         )
       end
 
+      example 'Does not update the placement type, which can only be set on creation', document: false do
+        do_request(phase: { placement_type: 'standalone' })
+
+        assert_status 200
+        expect(phase.reload.placement_type).to eq 'on_timeline'
+      end
+
       context 'when description_multiloc contains images' do
         let(:description_multiloc) { { 'en' => html_with_base64_image } }
 
@@ -145,6 +152,15 @@ resource 'Phases' do
           expect(json_response.dig(:data, :attributes, :voting_max_votes_per_idea)).to be_nil
           expect(json_response.dig(:data, :attributes, :voting_filtering_enabled)).to be true
           expect(json_response.dig(:data, :attributes, :vote_term)).to eq 'token'
+        end
+
+        context 'when the feed view is requested' do
+          let(:available_views) { %w[card feed] }
+
+          example_request '[error] Update a voting phase to offer the feed view' do
+            assert_status 422
+            expect(json_response_body.dig(:errors, :available_views)).to be_present
+          end
         end
 
         describe 'with offline voters' do

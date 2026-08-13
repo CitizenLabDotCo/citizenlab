@@ -195,6 +195,7 @@ ca-ES:
       new_phone_confirmation: Nou codi de confirmació de telèfon
       official_feedback_on_idea_you_follow: Actualitzeu una idea que seguiu
       password_reset: Restabliu la contrasenya
+      phone_confirmation: Codi de confirmació del telèfon
       project_folder_moderation_rights_received: S'han rebut els drets del gestor de carpetes
       project_manager_rights_received: Drets de gestor de projectes rebuts
       project_moderation_rights_received: S'han rebut els drets de moderació del projecte
@@ -553,6 +554,8 @@ ca-ES:
       preheader: Restableix la teva contrasenya per a %{organizationName}
       subject: '%{organizationName}: Restableix la teva contrasenya'
       title: Tria una nova contrasenya
+    phone_confirmation:
+      sms_body: El teu codi de confirmació és %{code}.
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane

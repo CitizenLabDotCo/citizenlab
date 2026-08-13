@@ -195,6 +195,7 @@ de-AT:
       new_phone_confirmation: Neuer Bestätigungscode für die Telefonnummer
       official_feedback_on_idea_you_follow: Offizielles Update zu einer Idee, der Sie folgen
       password_reset: Zurücksetzen des Passworts
+      phone_confirmation: Telefon-Bestätigungscode
       project_folder_moderation_rights_received: Ordnermanagementrechte erhalten
       project_manager_rights_received: Projekt-Manager*innen-Rechte erhalten
       project_moderation_rights_received: Projektmanagementrechte erhalten
@@ -553,6 +554,8 @@ de-AT:
       preheader: Setze dein Passwort für %{organizationName} zurück
       subject: '%{organizationName}: Passwort zurücksetzen'
       title: Neues Passwort wählen
+    phone_confirmation:
+      sms_body: Der Bestätigungscode lautet %{code}.
     preview_data:
       author_display_name: Erika Mustermann
       author_first_name: Erika

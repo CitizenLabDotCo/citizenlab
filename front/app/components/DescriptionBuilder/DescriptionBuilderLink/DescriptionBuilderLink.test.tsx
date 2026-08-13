@@ -6,18 +6,11 @@ import { render, screen } from 'utils/testUtils/rtl';
 
 import DescriptionBuilderLink from '.';
 
-(useParams as jest.Mock).mockReturnValue({ projectId: 'projectId' });
-
-const renderComponent = (
-  contentBuildableType: 'project' | 'folder' = 'project'
-) =>
-  render(
-    <DescriptionBuilderLink contentBuildableType={contentBuildableType} />
-  );
+(useParams as jest.Mock).mockReturnValue({ projectFolderId: 'folderId' });
 
 describe('DescriptionBuilderLink', () => {
   it('renders only the Content Builder link — no toggle, no WYSIWYG editor', () => {
-    renderComponent();
+    render(<DescriptionBuilderLink />);
 
     expect(
       screen.getByText('Edit description in Content Builder')

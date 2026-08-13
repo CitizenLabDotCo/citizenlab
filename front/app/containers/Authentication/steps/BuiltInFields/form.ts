@@ -5,6 +5,7 @@ import { AuthenticationRequirements } from 'api/authentication/authentication_re
 
 import { getPasswordSchema } from 'components/UI/PasswordInput/passwordSchema';
 
+import { askEmailOnBuiltInStep } from '../../useSteps/stepConfig/utils';
 import { getEmailSchema } from '../InviteSignUp/form';
 import sharedMessages from '../messages';
 
@@ -44,7 +45,7 @@ export const getSchema = (
     ),
 
     ..._if(
-      missingAttributes.has('email'),
+      askEmailOnBuiltInStep(requirements.requirements),
       'email',
       getEmailSchema(formatMessage)
     ),

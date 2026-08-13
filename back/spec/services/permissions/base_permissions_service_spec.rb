@@ -126,26 +126,15 @@ describe Permissions::BasePermissionsService do
         end
       end
 
-      context 'when fully registered unconfirmed resident' do
+      context 'when unconfirmed resident' do
         before do
           user.update!(confirmation_required: true, email_confirmed_at: nil)
         end
 
-        it { expect(denied_reason).to eq 'user_missing_requirements' }
+        it { expect(denied_reason).to eq 'user_not_active' }
       end
 
-      context 'when fully registered confirmed resident' do
-        it { expect(denied_reason).to be_nil }
-      end
-
-      context 'when fully registered sso user' do
-        before do
-          facebook_identity = create(:facebook_identity)
-          user.identities << facebook_identity
-          user.update!(password_digest: nil)
-          user.save!
-        end
-
+      context 'when confirmed resident' do
         it { expect(denied_reason).to be_nil }
       end
 
@@ -161,7 +150,7 @@ describe Permissions::BasePermissionsService do
           user.update!(roles: [{ type: 'admin' }])
         end
 
-        it { expect(denied_reason).to eq 'user_missing_requirements' }
+        it { expect(denied_reason).to eq 'user_not_active' }
       end
 
       context 'when confirmed admin' do
@@ -189,13 +178,13 @@ describe Permissions::BasePermissionsService do
         context 'when light unconfirmed resident who is group member' do
           let(:user) { create(:unconfirmed_user, manual_groups: [groups.last]) }
 
-          it { expect(denied_reason).to eq 'user_missing_requirements' }
+          it { expect(denied_reason).to eq 'user_not_active' }
         end
 
         context 'when light unconfirmed resident who is not a group member' do
           let(:user) { create(:unconfirmed_user) }
 
-          it { expect(denied_reason).to eq 'user_missing_requirements' }
+          it { expect(denied_reason).to eq 'user_not_active' }
         end
 
         context 'when fully registered resident who is not a group member' do
@@ -281,7 +270,38 @@ describe Permissions::BasePermissionsService do
         end
       end
 
-      context 'when verification is required' do
+      context 'when a confirmed phone number is required' do
+        let(:permission) { create(:permission, permitted_by: 'users', require_confirmed_phone_number: true) }
+        let(:denied_reason) { service.send(:user_denied_reason, permission) }
+
+        include_context 'with sms feature enabled'
+
+        context 'when the user has no phone number' do
+          before { user.update!(phone: nil, phone_confirmed_at: nil) }
+
+          it { expect(denied_reason).to eq 'user_missing_requirements' }
+        end
+
+        context 'when the user has an unconfirmed phone number' do
+          before { user.update!(phone: '+3212345678', phone_confirmed_at: nil) }
+
+          it { expect(denied_reason).to eq 'user_missing_requirements' }
+        end
+
+        context 'when the user has a confirmed phone number' do
+          before { user.update!(phone: '+3212345678', phone_confirmed_at: Time.now) }
+
+          it { expect(denied_reason).to be_nil }
+        end
+
+        context 'when the user is admin' do
+          before { user.update!(roles: [{ type: 'admin' }]) }
+
+          it { expect(denied_reason).to be_nil }
+        end
+      end
+
+      context 'when email and verification are required' do
         let(:permission) { create(:permission, permitted_by: 'users', require_verification: true) }
 
         context 'without groups' do
@@ -344,13 +364,13 @@ describe Permissions::BasePermissionsService do
           context 'when unconfirmed resident who is group member' do
             let(:user) { create(:unconfirmed_user, manual_groups: [groups.last]) }
 
-            it { expect(denied_reason).to eq 'user_missing_requirements' }
+            it { expect(denied_reason).to eq 'user_not_active' }
           end
 
           context 'when unconfirmed resident who is not a group member' do
             let(:user) { create(:unconfirmed_user) }
 
-            it { expect(denied_reason).to eq 'user_missing_requirements' }
+            it { expect(denied_reason).to eq 'user_not_active' }
           end
 
           context 'when fully registered resident who is not a group member' do
@@ -386,6 +406,51 @@ describe Permissions::BasePermissionsService do
 
             it { expect(denied_reason).to eq 'user_not_active' }
           end
+        end
+      end
+
+      context 'when verification is required but email is not' do
+        let(:permission) do
+          create(
+            :permission,
+            permitted_by: 'users',
+            require_verification: true,
+            require_confirmed_email: false
+          )
+        end
+
+        context 'when not signed in' do
+          let(:user) { nil }
+
+          it { expect(denied_reason).to eq 'user_not_signed_in' }
+        end
+
+        context 'when verified resident' do
+          before do
+            user.update!(verified: true)
+            user.identities << create(:franceconnect_identity, user: user)
+          end
+
+          it { expect(denied_reason).to be_nil }
+        end
+
+        context 'when unverified resident' do
+          before { user.update!(verified: false) }
+
+          it { expect(denied_reason).to eq 'user_not_verified' }
+        end
+
+        context 'when verified resident without confirmed email' do
+          before do
+            user.update!(
+              verified: true,
+              email_confirmed_at: nil,
+              confirmation_required: true
+            )
+            user.identities << create(:franceconnect_identity, user: user)
+          end
+
+          it { expect(denied_reason).to be_nil }
         end
       end
     end
@@ -431,12 +496,12 @@ describe Permissions::BasePermissionsService do
         it { expect(denied_reason).to eq 'user_not_permitted' }
       end
 
-      context 'when fully registered unconfirmed resident' do
+      context 'when unconfirmed resident' do
         before do
           user.update!(confirmation_required: true, email_confirmed_at: nil)
         end
 
-        it { expect(denied_reason).to eq 'user_missing_requirements' }
+        it { expect(denied_reason).to eq 'user_not_active' }
       end
 
       context 'when unconfirmed admin' do
@@ -448,7 +513,7 @@ describe Permissions::BasePermissionsService do
           )
         end
 
-        it { expect(denied_reason).to eq 'user_missing_requirements' }
+        it { expect(denied_reason).to eq 'user_not_active' }
       end
 
       context 'when confirmed admin' do

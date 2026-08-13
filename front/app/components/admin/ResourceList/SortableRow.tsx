@@ -7,10 +7,26 @@ import styled from 'styled-components';
 
 import { Row } from 'components/admin/ResourceList';
 
+// Geometry of the handle column on the left of every row. The icon is centred
+// in a band of DRAG_HANDLE_HEIGHT, and because that band is taller than most row
+// content it also sets the row's minimum content height — that centring is what
+// lines the two up. A row whose content outgrows the band (an expanded dropdown,
+// a folder with child projects) is no longer centred against it, so it has to
+// hold its own first line to the same height. LockedRow reuses all three so a
+// locked row's icon lands exactly where a drag handle would.
+export const DRAG_HANDLE_HEIGHT = 52;
+export const HANDLE_ICON_WIDTH = 12;
+export const HANDLE_ICON_HEIGHT = 24;
+
+export const handleColumnStyles = `
+  padding: ${(DRAG_HANDLE_HEIGHT - HANDLE_ICON_HEIGHT) / 2}px 0;
+  height: 100%;
+  align-self: flex-start;
+`;
+
 const DragHandle = styled.div`
   cursor: move;
-  padding: 1rem 0;
-  height: 100%;
+  ${handleColumnStyles}
 `;
 
 interface Props {
@@ -148,7 +164,11 @@ const SortableRow = ({
     >
       <Row isLastItem={isLastItem} disableNestedStyles={disableNestedStyles}>
         <DragHandle className="sortablerow-draghandle" ref={handleRef}>
-          <Icon width="12px" name="sort" />
+          <Icon
+            width={`${HANDLE_ICON_WIDTH}px`}
+            height={`${HANDLE_ICON_HEIGHT}px`}
+            name="sort"
+          />
         </DragHandle>
         {children}
       </Row>

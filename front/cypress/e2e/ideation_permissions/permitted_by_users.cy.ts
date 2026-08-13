@@ -86,6 +86,8 @@ describe('Ideation permitted by: users', () => {
     const inRegFlow = () => {
       cy.visit(`/projects/${projectSlug}`);
 
+      cy.dockProjectCtaBar();
+
       cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
       // Modal should show demographic question
@@ -97,7 +99,18 @@ describe('Ideation permitted by: users', () => {
 
       // Click submit and 'continue'
       cy.get('#e2e-signup-custom-fields-submit-btn').click();
+
+      cy.intercept('GET', /\/custom_fields\?.*public_fields=true/).as(
+        'ideaFormFields'
+      );
+
       cy.get('#e2e-success-continue-button').click();
+
+      cy.url({ timeout: 40000 }).should('include', '/ideas/new');
+      cy.wait('@ideaFormFields', {
+        requestTimeout: 40000,
+        responseTimeout: 40000,
+      });
 
       const title = randomString(11);
       const body = randomString(40);
@@ -210,6 +223,7 @@ describe('Ideation permitted by: users', () => {
 
     const inForm = () => {
       cy.visit(`/projects/${projectSlug}`);
+      cy.dockProjectCtaBar();
       cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
       const title = randomString(11);

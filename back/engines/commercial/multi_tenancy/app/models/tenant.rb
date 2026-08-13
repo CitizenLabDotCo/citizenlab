@@ -27,7 +27,11 @@ class Tenant < ApplicationRecord
 
   validates :name, :host, presence: true
   validates :host, uniqueness: true, exclusion: { in: %w[schema-migrations public] }
-  validate :valid_host_format
+  # Only on change: the format belongs to the act of setting the host. Re-checking a persisted
+  # one means a single bad row — from a path that bypassed the model, such as the clone's raw
+  # INSERT — blocks every unrelated save, including its own soft-delete and any rake task that
+  # iterates tenants. `host_changed?` is true on create, so new and edited hosts are unaffected.
+  validate :valid_host_format, if: :host_changed?
 
   after_initialize :custom_initialization
   after_create :create_apartment_tenant
@@ -68,19 +72,36 @@ class Tenant < ApplicationRecord
       find_by!(host: host)
     end
 
-    # Reorder tenants by most important tenants (active) first
+    # Reorder tenants by most important tenants (active) first.
+    #
+    # The order is a convenience, so a tenant that cannot be placed in it goes to the back rather
+    # than taking the whole list down with it, as an unranked one used to: `from_tenants` reads
+    # app_configurations out of every schema at once, and returns nothing for a tenant missing one.
     def prioritize(tenants)
       priority_order = %w[active trial demo expired_trial churned not_applicable]
+      tenants = tenants_with_schema(tenants)
       tenant_lifecycles = AppConfiguration.from_tenants(tenants).map do |config|
         { id: config[:id], lifecycle_stage: config[:settings]['core']['lifecycle_stage'] }
       end
-      ordered_tenants = tenant_lifecycles.sort_by { |tenant| priority_order.index(tenant[:lifecycle_stage]) }
+      ordered_tenants = tenant_lifecycles.sort_by do |tenant|
+        priority_order.index(tenant[:lifecycle_stage]) || priority_order.size
+      end
       ordered_ids = ordered_tenants.pluck(:id)
-      tenants.sort_by { |tenant| ordered_ids.index(tenant[:id]) }
+      tenants.sort_by { |tenant| ordered_ids.index(tenant[:id]) || ordered_ids.size }
     end
 
-    def safe_switch_each(scope: nil)
-      scope ||= not_deleted.where.not(creation_finalized_at: nil)
+    # Tenants whose schema exists, in one query rather than one per tenant. A tenant without one
+    # can be neither read from nor switched into.
+    def tenants_with_schema(tenants)
+      schema_names = connection.select_values('SELECT nspname FROM pg_namespace').to_set
+      tenants.select { |tenant| schema_names.include?(tenant.schema_name) }
+    end
+
+    # `host` (one or several) narrows whichever scope is in play, which `scope` cannot: passing a
+    # scope replaces the default, dropping the guarantees it carries.
+    def safe_switch_each(scope: nil, host: nil)
+      scope ||= creation_finalized
+      scope = scope.where(host: host) if host
       prioritize(scope).each do |tenant|
         next if !Tenant.exists?(id: tenant.id)
 

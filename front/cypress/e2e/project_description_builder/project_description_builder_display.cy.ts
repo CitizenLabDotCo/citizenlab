@@ -63,13 +63,14 @@ describe('Project description builder display', () => {
     );
 
     cy.apiToggleProjectDescriptionBuilder({ projectId });
-    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
+    cy.visit(`/admin/project-page-builder/projects/${projectId}`);
 
-    // Add the description as a text widget.
-    cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
+    // Add the description as a text widget. The blank project starts with
+    // seeded text widgets, so target the one that was just dropped.
+    cy.get('#e2e-draggable-text').dragAndDrop('#e2e-project-page-body', {
       position: 'inside',
     });
-    cy.get('div.e2e-text-box').click('center');
+    cy.get('div.e2e-text-box').first().click('center');
     cy.get('.ql-editor').click();
     cy.get('.ql-editor').type(projectDescription, { force: true });
 
@@ -129,8 +130,7 @@ describe('Project description builder display', () => {
     // The description and the attachment (in the two-column's wide column)
     // are both visible.
     cy.contains('Edited text.').should('be.visible');
-    cy.get('#e2e-project-page-description-section')
-      .find('.e2e-two-column #e2e-file-attachment')
+    cy.get('.e2e-two-column #e2e-file-attachment')
       .contains('example.pdf')
       .should('be.visible');
   });
@@ -168,7 +168,9 @@ const projectPageLayoutWithFile = (fileId: string) => ({
   PROJECT_PAGE_BODY: node({
     type: { resolvedName: 'ProjectPageBody' },
     nodes: [
-      'PROJECT_PAGE_DESCRIPTION',
+      'TEXT',
+      'SPACE',
+      'COLUMNS',
       'PROJECT_PAGE_PHASES',
       'PROJECT_PAGE_EVENTS',
     ],
@@ -177,30 +179,23 @@ const projectPageLayoutWithFile = (fileId: string) => ({
     isCanvas: true,
     displayName: 'ProjectPageBody',
   }),
-  PROJECT_PAGE_DESCRIPTION: node({
-    type: { resolvedName: 'ProjectDescriptionSection' },
-    nodes: ['TEXT', 'SPACE', 'COLUMNS'],
-    parent: 'PROJECT_PAGE_BODY',
-    isCanvas: true,
-    displayName: 'ProjectDescriptionSection',
-  }),
   TEXT: node({
     type: { resolvedName: 'TextMultiloc' },
     props: { text: { en: '<p>Edited text.</p>' } },
-    parent: 'PROJECT_PAGE_DESCRIPTION',
+    parent: 'PROJECT_PAGE_BODY',
     displayName: 'TextMultiloc',
   }),
   SPACE: node({
     type: { resolvedName: 'WhiteSpace' },
     props: { size: 'small' },
-    parent: 'PROJECT_PAGE_DESCRIPTION',
+    parent: 'PROJECT_PAGE_BODY',
     displayName: 'WhiteSpace',
   }),
   COLUMNS: node({
     type: { resolvedName: 'TwoColumn' },
     nodes: ['LEFT', 'RIGHT'],
     props: { columnLayout: '2-1' },
-    parent: 'PROJECT_PAGE_DESCRIPTION',
+    parent: 'PROJECT_PAGE_BODY',
     displayName: 'TwoColumn',
   }),
   LEFT: node({

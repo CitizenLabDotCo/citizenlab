@@ -278,6 +278,7 @@ kl-GL:
       official_feedback_on_your_idea: Isumassarsiannik nutarterineq
       official_feedback_on_your_initiative: Innutaasutut siunnersuutigisimasannik nutarterineq
       password_reset: Kodemik isissutissamik allannguineq
+      phone_confirmation: Oqarasuaatikkut uppernarsaanermut kodi
       project_folder_moderation_rights_received: Mappinut aqutsisutut pisinnaatitaaffeqalerpoq
       project_manager_rights_received: Suliniutinik aqutsisutut pisinnaatitaaffiit tiguneqarput
       project_moderation_rights_received: Suliniummik ingerlataqarsinnaasutut pisinnaatitaaffiit tiguneqarput
@@ -838,6 +839,8 @@ kl-GL:
       preheader: '%{organizationName}-imut isissutissat nutarteruk'
       subject: '%{organizationName}: Isissutissat nutarteruk'
       title: Isissutissat nutaaq toqqaruk
+    phone_confirmation:
+      sms_body: Uppernarsaanermut kodiit tassaavoq %{code}.
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane

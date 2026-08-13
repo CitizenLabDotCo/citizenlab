@@ -138,6 +138,8 @@ class WebApi::V1::PermissionsController < ApplicationController
       :require_name,
       :require_password,
       :require_verification,
+      :require_confirmed_phone_number,
+      :confirmed_phone_number_expiry,
       group_ids: [],
       access_denied_explanation_multiloc: CL2_SUPPORTED_LOCALES
     )

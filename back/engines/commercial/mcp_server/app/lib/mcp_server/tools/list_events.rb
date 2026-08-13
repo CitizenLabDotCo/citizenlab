@@ -17,8 +17,11 @@ class McpServer::Tools::ListEvents < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
+      project = Project.find_by(id: params[:project_id])
+      return not_found_error('Project', params[:project_id]) unless project
+
       scope = EventsFinder
-        .new({ project_ids: params[:project_id] }, current_user:)
+        .new({ project_ids: project.id }, current_user:)
         .find_records
         .order(:start_at)
 

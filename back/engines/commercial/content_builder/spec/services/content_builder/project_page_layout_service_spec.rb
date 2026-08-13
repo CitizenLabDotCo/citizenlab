@@ -51,6 +51,17 @@ describe ContentBuilder::ProjectPageLayoutService do
     }
   end
 
+  let(:about_box_description) do
+    {
+      'ROOT' => description_root(['col1']),
+      'col1' => node('TwoColumn', parent: 'ROOT', nodes: %w[left1 right1], props: { 'columnLayout' => '2-1' }),
+      'left1' => node('Container', parent: 'col1', nodes: ['txt1'], props: { 'id' => 'left' }, is_canvas: true),
+      'right1' => node('Container', parent: 'col1', nodes: ['about1'], props: { 'id' => 'right' }, is_canvas: true),
+      'txt1' => node('TextMultiloc', parent: 'left1', props: { 'text' => { 'en' => 'desc' } }),
+      'about1' => node('AboutBox', parent: 'right1')
+    }
+  end
+
   let(:empty_description) { { 'ROOT' => description_root([]) } }
 
   let(:unsupported_description) do
@@ -66,7 +77,7 @@ describe ContentBuilder::ProjectPageLayoutService do
     }
   end
 
-  let(:canonical_body) { %w[PROJECT_PAGE_DESCRIPTION PROJECT_PAGE_PHASES PROJECT_PAGE_EVENTS] }
+  let(:project_widgets) { %w[PROJECT_PAGE_PHASES PROJECT_PAGE_EVENTS] }
 
   def resolved_names(json)
     json.values.filter_map do |n|
@@ -78,7 +89,7 @@ describe ContentBuilder::ProjectPageLayoutService do
   def canonical_names
     %w[
       ProjectPageRoot ProjectBanner ProjectTitle ProjectPageBody
-      ProjectDescriptionSection PhasesWidget EventsWidget
+      PhasesWidget EventsWidget
     ]
   end
 
@@ -87,29 +98,56 @@ describe ContentBuilder::ProjectPageLayoutService do
       service.from_description_craftjs(json)
     end
 
-    it 'produces the canonical frozen structure' do
+    it 'produces the canonical structure' do
       result = build(plain_text_description)
 
       expect(result['ROOT']['nodes']).to eq(%w[PROJECT_PAGE_BANNER PROJECT_PAGE_TITLE PROJECT_PAGE_BODY])
       expect(result['ROOT']['type']).to eq({ 'resolvedName' => 'ProjectPageRoot' })
-      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(canonical_body)
+      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(['PROJECT_PAGE_INTRO_COLUMNS'] + project_widgets)
       canonical_names.each { |name| expect(resolved_names(result)).to include(name) }
     end
 
-    it 're-keys the description content into the description section' do
+    it 're-keys the description content into the wide intro column' do
       result = build(plain_text_description)
 
-      expect(result['PROJECT_PAGE_DESCRIPTION']['nodes']).to eq(['d_txt1'])
-      expect(result['d_txt1']['parent']).to eq('PROJECT_PAGE_DESCRIPTION')
+      expect(result['PROJECT_PAGE_INTRO_LEFT']['nodes']).to eq(['d_txt1'])
+      expect(result['d_txt1']['parent']).to eq('PROJECT_PAGE_INTRO_LEFT')
       expect(result).not_to have_key('txt1')
+    end
+
+    it 'places the participation box beside the description' do
+      result = build(plain_text_description)
+
+      expect(result['PROJECT_PAGE_INTRO_COLUMNS']).to include(
+        'type' => { 'resolvedName' => 'TwoColumn' },
+        'props' => { 'columnLayout' => '2-1' },
+        'linkedNodes' => {
+          'left' => 'PROJECT_PAGE_INTRO_LEFT',
+          'right' => 'PROJECT_PAGE_INTRO_RIGHT'
+        },
+        'parent' => 'PROJECT_PAGE_BODY'
+      )
+      expect(result['PROJECT_PAGE_INTRO_RIGHT']['nodes']).to eq(['PROJECT_PAGE_PARTICIPATION_BOX'])
+      expect(result['PROJECT_PAGE_PARTICIPATION_BOX']['type']).to eq({ 'resolvedName' => 'AboutBox' })
+    end
+
+    it 'keeps the full-width layout when the description brings its own participation box' do
+      result = build(about_box_description)
+
+      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(['d_col1'] + project_widgets)
+      expect(result['d_col1']['parent']).to eq('PROJECT_PAGE_BODY')
+      expect(result['d_right1']['nodes']).to eq(['d_about1'])
+      expect(resolved_names(result).count('AboutBox')).to eq(1)
+      expect(result).not_to have_key('PROJECT_PAGE_PARTICIPATION_BOX')
+      expect(result).not_to have_key('PROJECT_PAGE_INTRO_COLUMNS')
     end
 
     it 'preserves nested content and remaps inner parent/child pointers' do
       result = build(rich_description)
 
-      expect(result['PROJECT_PAGE_DESCRIPTION']['nodes']).to eq(%w[d_img1 d_col1 d_acc1])
+      expect(result['PROJECT_PAGE_INTRO_LEFT']['nodes']).to eq(%w[d_img1 d_col1 d_acc1])
       expect(result['d_col1']['nodes']).to eq(%w[d_left1 d_right1])
-      expect(result['d_col1']['parent']).to eq('PROJECT_PAGE_DESCRIPTION')
+      expect(result['d_col1']['parent']).to eq('PROJECT_PAGE_INTRO_LEFT')
       expect(result['d_left1']['nodes']).to eq(['d_nested1'])
       expect(result['d_nested1']['parent']).to eq('d_left1')
     end
@@ -119,21 +157,22 @@ describe ContentBuilder::ProjectPageLayoutService do
 
       names = resolved_names(result)
       expect(names).not_to include('Published', 'Selection')
-      expect(result['PROJECT_PAGE_DESCRIPTION']['nodes']).to eq(%w[d_col1 d_txt1])
+      expect(result['PROJECT_PAGE_INTRO_LEFT']['nodes']).to eq(%w[d_col1 d_txt1])
       expect(result['d_left1']['nodes']).to eq(['d_keep1'])
       expect(result).not_to have_key('d_sel1')
       expect(result).not_to have_key('d_pub1')
     end
 
-    it 'produces the full canonical structure with an empty section for an empty description' do
+    it 'seeds the default page content for an empty description' do
       result = build(empty_description)
 
-      expect(result['PROJECT_PAGE_DESCRIPTION']['nodes']).to eq([])
-      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(canonical_body)
+      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(
+        %w[PROJECT_PAGE_INTRO_COLUMNS PROJECT_PAGE_DETAILS_COLUMNS] + project_widgets
+      )
       canonical_names.each { |name| expect(resolved_names(result)).to include(name) }
     end
 
-    it 'locks every fixed section (fixed point of normalizeProjectPageLayout)' do
+    it 'locks only the header widgets (fixed point of normalizeProjectPageLayout)' do
       result = build(empty_description)
 
       expect(result['PROJECT_PAGE_PHASES']['custom']).to eq(
@@ -141,26 +180,29 @@ describe ContentBuilder::ProjectPageLayoutService do
           'id' => 'app.components.ProjectPageBuilder.Widgets.phasesWidgetTitle',
           'defaultMessage' => 'Phases'
         },
-        'locked' => true,
         'noPointerEvents' => true
       )
-      %w[PROJECT_PAGE_BANNER PROJECT_PAGE_TITLE PROJECT_PAGE_DESCRIPTION
-        PROJECT_PAGE_PHASES PROJECT_PAGE_EVENTS].each do |id|
+      %w[PROJECT_PAGE_BANNER PROJECT_PAGE_TITLE].each do |id|
         expect(result[id]['custom']['locked']).to be(true)
+      end
+      project_widgets.each do |id|
+        expect(result[id]['custom']).not_to have_key('locked')
       end
     end
   end
 
   describe '#from_description_multiloc' do
-    it 'wraps a text-only description in a TextMultiloc inside the section' do
+    it 'wraps a text-only description in a TextMultiloc beside the participation box' do
       result = service.from_description_multiloc({ 'en' => '<p>Hello</p>' })
 
-      section_children = result['PROJECT_PAGE_DESCRIPTION']['nodes']
-      expect(section_children.length).to eq(1)
-      content = result[section_children.first]
+      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(['PROJECT_PAGE_INTRO_COLUMNS'] + project_widgets)
+      content_id = result['PROJECT_PAGE_INTRO_LEFT']['nodes'].first
+      content = result[content_id]
       expect(content['type']).to eq({ 'resolvedName' => 'TextMultiloc' })
       expect(content['props']['text']).to eq({ 'en' => '<p>Hello</p>' })
-      expect(content['parent']).to eq('PROJECT_PAGE_DESCRIPTION')
+      expect(content['parent']).to eq('PROJECT_PAGE_INTRO_LEFT')
+      expect(result['PROJECT_PAGE_INTRO_RIGHT']['nodes']).to eq(['PROJECT_PAGE_PARTICIPATION_BOX'])
+      expect(result['PROJECT_PAGE_PARTICIPATION_BOX']['type']).to eq({ 'resolvedName' => 'AboutBox' })
     end
 
     it 'wraps a description with media in the RichTextMultiloc bridge' do
@@ -168,15 +210,48 @@ describe ContentBuilder::ProjectPageLayoutService do
         { 'en' => '<p><img data-cl2-text-image-text-reference="abc"></p>' }
       )
 
-      content = result[result['PROJECT_PAGE_DESCRIPTION']['nodes'].first]
+      content = result[result['PROJECT_PAGE_INTRO_LEFT']['nodes'].first]
       expect(content['type']).to eq({ 'resolvedName' => 'RichTextMultiloc' })
     end
 
-    it 'leaves the section empty for a blank description' do
+    it 'seeds the intro text and participation box columns for a blank description' do
       result = service.from_description_multiloc({ 'en' => '<p></p>' })
 
-      expect(result['PROJECT_PAGE_DESCRIPTION']['nodes']).to eq([])
-      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(canonical_body)
+      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(
+        %w[PROJECT_PAGE_INTRO_COLUMNS PROJECT_PAGE_DETAILS_COLUMNS] + project_widgets
+      )
+      expect(result['PROJECT_PAGE_INTRO_COLUMNS']).to include(
+        'type' => { 'resolvedName' => 'TwoColumn' },
+        'props' => { 'columnLayout' => '2-1' },
+        'linkedNodes' => {
+          'left' => 'PROJECT_PAGE_INTRO_LEFT',
+          'right' => 'PROJECT_PAGE_INTRO_RIGHT'
+        },
+        'parent' => 'PROJECT_PAGE_BODY'
+      )
+      intro_text = result['PROJECT_PAGE_INTRO_TEXT']
+      expect(intro_text['type']).to eq({ 'resolvedName' => 'TextMultiloc' })
+      expect(intro_text['props']['text']['en']).to eq(I18n.t('content_builder.project_page.intro_placeholder'))
+      expect(result['PROJECT_PAGE_INTRO_RIGHT']['nodes']).to eq(['PROJECT_PAGE_PARTICIPATION_BOX'])
+      expect(result['PROJECT_PAGE_PARTICIPATION_BOX']['type']).to eq({ 'resolvedName' => 'AboutBox' })
+    end
+
+    it 'seeds the details text next to an empty column' do
+      result = service.from_description_multiloc({})
+
+      details_text = result['PROJECT_PAGE_DETAILS_TEXT']
+      expect(details_text['type']).to eq({ 'resolvedName' => 'TextMultiloc' })
+      expect(details_text['props']['text']['en']).to eq(I18n.t('content_builder.project_page.details_placeholder'))
+      expect(result['PROJECT_PAGE_DETAILS_LEFT']['nodes']).to eq(['PROJECT_PAGE_DETAILS_TEXT'])
+      expect(result['PROJECT_PAGE_DETAILS_RIGHT']['nodes']).to eq([])
+    end
+
+    it 'seeds the text values in every tenant locale' do
+      result = service.from_description_multiloc({})
+
+      locales = AppConfiguration.instance.settings('core', 'locales')
+      expect(result['PROJECT_PAGE_INTRO_TEXT']['props']['text'].keys).to match_array(locales)
+      expect(result['PROJECT_PAGE_DETAILS_TEXT']['props']['text'].keys).to match_array(locales)
     end
   end
 
@@ -187,7 +262,7 @@ describe ContentBuilder::ProjectPageLayoutService do
 
       result = service.craftjs_json_for(project)
 
-      expect(result['PROJECT_PAGE_DESCRIPTION']['nodes']).to eq(['d_txt1'])
+      expect(result['PROJECT_PAGE_INTRO_LEFT']['nodes']).to eq(['d_txt1'])
     end
 
     it 'builds from the description_multiloc when there is no description layout' do
@@ -195,7 +270,7 @@ describe ContentBuilder::ProjectPageLayoutService do
 
       result = service.craftjs_json_for(project)
 
-      content = result[result['PROJECT_PAGE_DESCRIPTION']['nodes'].first]
+      content = result[result['PROJECT_PAGE_INTRO_LEFT']['nodes'].first]
       expect(content['props']['text']).to eq({ 'en' => '<p>Hello</p>' })
     end
 
@@ -205,7 +280,8 @@ describe ContentBuilder::ProjectPageLayoutService do
 
       result = service.craftjs_json_for(project)
 
-      columns_id = result['PROJECT_PAGE_DESCRIPTION']['nodes'].last
+      body_nodes = result['PROJECT_PAGE_BODY']['nodes']
+      columns_id = body_nodes[body_nodes.index('PROJECT_PAGE_PHASES') - 1]
       left_id = result[columns_id]['nodes'].first
       file_node_id = result[left_id]['nodes'].first
       expect(result[file_node_id]['props']).to eq({ 'fileId' => attachment.file_id })
@@ -227,16 +303,17 @@ describe ContentBuilder::ProjectPageLayoutService do
       json = service.from_description_multiloc({ 'en' => '<p>Hello</p>' })
       result = service.append_file_nodes(json, project)
 
-      space_id, columns_id = result['PROJECT_PAGE_DESCRIPTION']['nodes'].last(2)
+      body_nodes = result['PROJECT_PAGE_BODY']['nodes']
+      space_id, columns_id = body_nodes[body_nodes.index('PROJECT_PAGE_PHASES') - 2, 2]
       expect(result[space_id]).to include(
         'type' => { 'resolvedName' => 'WhiteSpace' },
         'props' => { 'size' => 'small' },
-        'parent' => 'PROJECT_PAGE_DESCRIPTION'
+        'parent' => 'PROJECT_PAGE_BODY'
       )
       expect(result[columns_id]).to include(
         'type' => { 'resolvedName' => 'TwoColumn' },
         'props' => { 'columnLayout' => '2-1' },
-        'parent' => 'PROJECT_PAGE_DESCRIPTION'
+        'parent' => 'PROJECT_PAGE_BODY'
       )
 
       left_id, right_id = result[columns_id]['nodes']
@@ -269,17 +346,18 @@ describe ContentBuilder::ProjectPageLayoutService do
         'props' => { 'fileId' => placed.file_id },
         'custom' => {},
         'hidden' => false,
-        'parent' => 'PROJECT_PAGE_DESCRIPTION',
+        'parent' => 'PROJECT_PAGE_BODY',
         'isCanvas' => false,
         'displayName' => 'FileAttachment',
         'linkedNodes' => {}
       }
-      json['PROJECT_PAGE_DESCRIPTION']['nodes'] << 'manual'
+      json['PROJECT_PAGE_BODY']['nodes'].unshift('manual')
 
       result = service.append_file_nodes(json, project)
 
       expect(result['manual']).to eq(json['manual'])
-      columns_id = result['PROJECT_PAGE_DESCRIPTION']['nodes'].last
+      body_nodes = result['PROJECT_PAGE_BODY']['nodes']
+      columns_id = body_nodes[body_nodes.index('PROJECT_PAGE_PHASES') - 1]
       left_id = result[columns_id]['nodes'].first
       migrated_file_ids = result[left_id]['nodes'].map { |id| result[id]['props']['fileId'] }
       expect(migrated_file_ids).to eq([to_migrate.file_id])
@@ -294,11 +372,9 @@ describe ContentBuilder::ProjectPageLayoutService do
       expect(twice).to eq(once)
     end
 
-    it 'inserts before the phases widget when the description section is absent' do
+    it 'inserts before the phases widget' do
       attach_file(project, 1)
       json = service.from_description_multiloc({})
-      json.delete('PROJECT_PAGE_DESCRIPTION')
-      json['PROJECT_PAGE_BODY']['nodes'] = %w[PROJECT_PAGE_PHASES PROJECT_PAGE_EVENTS]
 
       result = service.append_file_nodes(json, project)
 

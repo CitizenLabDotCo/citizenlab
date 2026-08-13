@@ -75,7 +75,6 @@ export interface IAppConfigurationSettings {
   password_login?: {
     allowed: boolean;
     enabled: boolean;
-    enable_signup: boolean;
     minimum_length?: number;
     minimum_strength?: number;
   };
@@ -92,6 +91,9 @@ export interface IAppConfigurationSettings {
   };
   verification?: {
     verification_methods: string[];
+  };
+  sms?: AppConfigurationFeature & {
+    allowed_country_codes?: string[];
   };
   smart_groups?: AppConfigurationFeature;
   typeform_surveys?: {
@@ -205,10 +207,7 @@ export interface IAppConfigurationSettings {
   project_static_pages?: AppConfigurationFeature;
   parallel_participation?: AppConfigurationFeature;
   html_block_in_content_builder?: AppConfigurationFeature;
-  sms?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
+  configurable_dropdown?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

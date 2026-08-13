@@ -929,6 +929,11 @@
     "verified_at": "2026-03-18T12:49:36.766851Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.campaign_type_description.phone_confirmation": {
+    "state": "verified",
+    "verified_at": "2026-07-30T08:19:43.317701Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "email_campaigns.campaign_type_description.project_folder_moderation_rights_received": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.766851Z",
@@ -2512,6 +2517,11 @@
   "email_campaigns.password_reset.title": {
     "state": "verified",
     "verified_at": "2026-06-09T14:45:00.075446Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "email_campaigns.phone_confirmation.sms_body": {
+    "state": "verified",
+    "verified_at": "2026-07-30T08:19:43.317701Z",
     "verified_by": "kielgast@govocal.com"
   },
   "email_campaigns.preview_data.author_display_name": {

@@ -251,7 +251,6 @@ context 'id_austria verification' do
       configuration.settings['password_login'] = {
         'allowed' => true,
         'enabled' => true,
-        'enable_signup' => true,
         'minimum_length' => 8
       }
       configuration.save!
@@ -271,13 +270,13 @@ context 'id_austria verification' do
       expect(user.confirmation_required?).to be(true)
       expect(ActionMailer::Base.deliveries.count).to eq(0)
 
-      post '/web_api/v1/user/request_code_email_change', params: { request_code: { new_email: 'newcoolemail@example.org' } }, headers: headers
+      post '/web_api/v1/user/request_code_new_email', params: { request_code: { new_email: 'newcoolemail@example.org' } }, headers: headers
       expect(response).to have_http_status(:ok)
       expect(user.reload).to have_attributes({ new_email: 'newcoolemail@example.org' })
       expect(user.confirmation_required?).to be(true)
       expect(ActionMailer::Base.deliveries.count).to eq(1)
 
-      post '/web_api/v1/user/confirm_code_email_change', params: { confirmation: { code: user.new_email_confirmation.code } }, headers: headers
+      post '/web_api/v1/user/confirm_code_new_email', params: { confirmation: { code: user.new_email_confirmation.code } }, headers: headers
       expect(response).to have_http_status(:ok)
       expect(user.reload.confirmation_required?).to be(false)
       expect(user).to have_attributes({ email: 'newcoolemail@example.org' })

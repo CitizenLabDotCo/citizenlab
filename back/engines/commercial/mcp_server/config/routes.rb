@@ -3,6 +3,12 @@
 McpServer::Engine.routes.draw do
   post 'mcp', to: 'mcp#create', as: :mcp
 
+  # Cross-tenant channel for the internal staff MCP gateway (admin-hq). The
+  # /admin_api path prefix is deliberate: those paths bypass host-based tenant
+  # switching (see multi_tenancy's apartment.rb middleware), so the controller
+  # starts in the public schema and switches via the X-Tenant-Host header.
+  post 'admin_api/mcp', to: 'internal_mcp#create', as: :internal_mcp
+
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
       # OAuth 2.1 consent screen, served as JSON to the SPA (replaces Doorkeeper's

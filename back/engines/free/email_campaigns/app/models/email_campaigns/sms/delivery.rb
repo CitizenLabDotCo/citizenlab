@@ -30,16 +30,23 @@ module EmailCampaigns
     class Delivery < ApplicationRecord
       self.table_name = 'sms_deliveries'
 
-      # The statuses order matters for advance_status!
-      STATUSES = %w[pending queued sent delivered undelivered failed].freeze
+      # `pending` and `errored` are statuses we set ourselves; the rest are set by the provider.
+      # Order matters for advance_status!, which only walks the provider funnel —
+      # `errored` (a pre-provider failure, e.g. bad number or blocked country) sits outside
+      # it and is only ever set directly.
+      STATUSES = %w[pending queued sent delivered undelivered failed errored].freeze
 
       # A message reaches exactly one terminal outcome. Once there, no later
       # callback may move it (e.g. a stray `failed` must not overwrite `delivered`).
-      TERMINAL_STATUSES = %w[delivered undelivered failed].freeze
+      TERMINAL_STATUSES = %w[delivered undelivered failed errored].freeze
 
       belongs_to :user, optional: true
       # The campaign that triggered this SMS, when sent as part of one.
       belongs_to :campaign, class_name: 'EmailCampaigns::Campaign', optional: true
+
+      def campaign_use_case
+        campaign&.class&.sms_use_case
+      end
 
       # Per-status counts (+ total) for a campaign's SMS deliveries.
       def self.status_counts(campaign_id)

@@ -29,7 +29,9 @@ class AppConfiguration < ApplicationRecord
   }
 
   validates :host, presence: true
-  validate :validate_host_format
+  # Only on change, for the same reason as the twin check on `Tenant`: an
+  # already-invalid host must not block saves that have nothing to do with it.
+  validate :validate_host_format, if: :host_changed?
   validate :validate_locales, on: :update
   validate :validate_singleton, on: :create
 
@@ -180,7 +182,7 @@ class AppConfiguration < ApplicationRecord
 
   def base_asset_host_uri
     if Rails.env.development? && ENV['USE_AWS_S3_IN_DEV'] == 'true'
-      "https://#{ENV.fetch('AWS_S3_BUCKET')}.s3.#{ENV.fetch('AWS_REGION')}.amazonaws.com"
+      Aws::S3::Bucket.new(ENV.fetch('AWS_S3_BUCKET'), client: Aws::S3::Client.new).url
     else
       # ASSET_HOST_URI env var can be used for:
       # - e2e tests (see e2e/docker-compose.yml)

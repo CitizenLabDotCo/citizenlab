@@ -195,6 +195,7 @@ cy-GB:
       new_phone_confirmation: Cod cadarnhau ffôn newydd
       official_feedback_on_idea_you_follow: Diweddariad ar syniad rydych chi'n ei ddilyn
       password_reset: Ailosod cyfrinair
+      phone_confirmation: Cod cadarnhau ffôn
       project_folder_moderation_rights_received: Hawliau rheolwr ffolder wedi'u derbyn
       project_manager_rights_received: Hawliau rheolwr prosiect wedi'u derbyn
       project_moderation_rights_received: Hawliau cymedroli prosiect wedi'u derbyn
@@ -553,6 +554,8 @@ cy-GB:
       preheader: Ailosodwch eich cyfrinair ar gyfer %{organizationName}
       subject: '%{organizationName}: Ailosodwch eich cyfrinair'
       title: Dewiswch gyfrinair newydd
+    phone_confirmation:
+      sms_body: Eich cod cadarnhau yw %{code}.
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane

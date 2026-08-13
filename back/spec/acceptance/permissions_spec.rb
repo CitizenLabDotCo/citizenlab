@@ -147,6 +147,8 @@ resource 'Permissions' do
         parameter :require_name, 'Whether a first and last name are required to take this action', required: false
         parameter :require_password, 'Whether a password is required to take this action', required: false
         parameter :require_verification, 'Whether identity verification is required to take this action', required: false
+        parameter :require_confirmed_phone_number, 'Whether a confirmed phone number is required to take this action', required: false
+        parameter :confirmed_phone_number_expiry, 'number of days before phone reconfirmation required - nil means never reconfirm', required: false
         parameter :access_denied_explanation_multiloc, 'Multiloc string for explaining why access is denied', required: false
       end
       ValidationErrorHelper.new.error_fields(self, Permission)
@@ -183,6 +185,23 @@ resource 'Permissions' do
           expect(response_data.dig(:attributes, :require_confirmed_email)).to be true
           expect(response_data.dig(:attributes, :require_name)).to be false
           expect(response_data.dig(:attributes, :require_password)).to be false
+          expect(response_data.dig(:attributes, :access_denied_explanation_multiloc)).to eq access_denied_explanation_multiloc
+          expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array group_ids
+        end
+      end
+
+      context 'require_confirmed_phone_number' do
+        include_context 'with sms feature enabled'
+
+        let(:permitted_by) { 'users' }
+        let(:require_confirmed_phone_number) { true }
+        let(:confirmed_phone_number_expiry) { 30 }
+
+        example_request 'Update a permission to require a confirmed phone number' do
+          assert_status 200
+          expect(response_data.dig(:attributes, :permitted_by)).to eq 'users'
+          expect(response_data.dig(:attributes, :require_confirmed_phone_number)).to be true
+          expect(response_data.dig(:attributes, :confirmed_phone_number_expiry)).to eq confirmed_phone_number_expiry
           expect(response_data.dig(:attributes, :access_denied_explanation_multiloc)).to eq access_denied_explanation_multiloc
           expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array group_ids
         end
@@ -274,7 +293,9 @@ resource 'Permissions' do
             requirements: {
               authentication: {
                 permitted_by: 'everyone',
-                missing_user_attributes: []
+                missing_user_attributes: [],
+                email_action_required: nil,
+                phone_action_required: nil
               },
               verification: false,
               custom_fields: {},
@@ -314,11 +335,13 @@ resource 'Permissions' do
           assert_status 200
           expect(response_data[:attributes]).to eq({
             permitted: false,
-            disabled_reason: 'user_missing_requirements',
+            disabled_reason: 'user_not_active',
             requirements: {
               authentication: {
                 permitted_by: 'users',
-                missing_user_attributes: ['confirmation']
+                missing_user_attributes: [],
+                email_action_required: 'confirm_email',
+                phone_action_required: nil
               },
               verification: false,
               custom_fields: { birthyear: 'required', extra_field: 'required' },
@@ -326,6 +349,60 @@ resource 'Permissions' do
               group_membership: false
             }
           })
+        end
+      end
+
+      context "'users' permission with verification enabled but email disabled" do
+        before do
+          @permission = @phase.permissions.first
+          @permission.update!(
+            permitted_by: 'users',
+            require_verification: true,
+            require_confirmed_email: false
+          )
+        end
+
+        let(:action) { @permission.action }
+
+        example 'Blocks participation if user has confirmed email but is not verified' do
+          @user.update!(
+            email: 'test@user.com',
+            email_confirmed_at: Time.current,
+            confirmation_required: false,
+            verified: false
+          )
+          do_request
+          assert_status 200
+          expect(response_data[:attributes][:permitted]).to be false
+          expect(response_data[:attributes][:disabled_reason]).to eq 'user_missing_requirements'
+        end
+
+        example 'Allows participation is user has both email and is verified' do
+          @user.update!(
+            email: 'test@user.com',
+            email_confirmed_at: Time.current,
+            confirmation_required: false,
+            verified: true
+          )
+          @user.identities << create(:franceconnect_identity, user: @user)
+          do_request
+          assert_status 200
+          expect(response_data[:attributes][:permitted]).to be true
+          expect(response_data[:attributes][:disabled_reason]).to be_nil
+        end
+
+        example 'Allows participation if user has no email but is verified' do
+          @user.update!(
+            email: nil,
+            email_confirmed_at: nil,
+            confirmation_required: true,
+            verified: true
+          )
+          @user.identities << create(:franceconnect_identity, user: @user)
+          do_request
+          assert_status 200
+          expect(response_data[:attributes][:permitted]).to be true
+          expect(response_data[:attributes][:disabled_reason]).to be_nil
         end
       end
     end
@@ -359,7 +436,9 @@ resource 'Permissions' do
             requirements: {
               authentication: {
                 permitted_by: 'users',
-                missing_user_attributes: %w[last_name password]
+                missing_user_attributes: %w[last_name password],
+                email_action_required: nil,
+                phone_action_required: nil
               },
               verification: false,
               custom_fields: {
@@ -395,7 +474,9 @@ resource 'Permissions' do
             requirements: {
               authentication: {
                 permitted_by: 'users',
-                missing_user_attributes: []
+                missing_user_attributes: [],
+                email_action_required: nil,
+                phone_action_required: nil
               },
               verification: false,
               custom_fields: {},

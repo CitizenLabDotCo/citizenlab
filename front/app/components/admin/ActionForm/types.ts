@@ -24,6 +24,8 @@ export type Changes = {
   group_ids?: string[];
   require_confirmed_email?: boolean;
   confirmed_email_expiry?: number | null;
+  require_confirmed_phone_number?: boolean;
+  confirmed_phone_number_expiry?: number | null;
   require_verification?: boolean;
   verification_expiry?: number | null;
   require_name?: boolean;
@@ -45,9 +47,9 @@ export type Props = {
   onReset: () => void;
 };
 
-// The authentication methods still offered after dropping "confirmed phone":
-// each one maps onto a `require_*` boolean + `*_expiry` pair on the permission.
-export type AuthMethodKey = 'email' | 'verification';
+// The authentication methods on offer: each one maps onto a `require_*` boolean
+// + `*_expiry` pair on the permission.
+export type AuthMethodKey = 'email' | 'phone' | 'verification';
 
 // Maps an auth method onto the permission attributes (and matching change keys)
 // that back it. Keeping this in one place lets the UI stay generic over methods.
@@ -55,6 +57,10 @@ export const METHOD_FIELDS = {
   email: {
     enabled: 'require_confirmed_email',
     expiry: 'confirmed_email_expiry',
+  },
+  phone: {
+    enabled: 'require_confirmed_phone_number',
+    expiry: 'confirmed_phone_number_expiry',
   },
   verification: {
     enabled: 'require_verification',

@@ -1,3 +1,5 @@
+import { queryClient } from 'utils/cl-react-query/queryClient';
+
 import fetcher from './fetcher';
 
 const baseDataArray = {
@@ -26,14 +28,15 @@ global.fetch = jest.fn(() =>
   } as Response)
 );
 
-let mockSetQueryData;
+// The mock fn is created inside the factory and read back off the mocked
+// module. Assigning to an outer `let` from the factory would throw: jest
+// hoists `jest.mock` above the imports, so the factory runs while `./fetcher`
+// is still being imported — before the declaration is initialised.
+jest.mock('utils/cl-react-query/queryClient', () => ({
+  queryClient: { setQueryData: jest.fn() },
+}));
 
-jest.mock('utils/cl-react-query/queryClient', () => {
-  mockSetQueryData = jest.fn();
-  return {
-    queryClient: { setQueryData: mockSetQueryData },
-  };
-});
+const mockSetQueryData = queryClient.setQueryData as jest.Mock;
 
 describe('fetcher', () => {
   describe('GET', () => {

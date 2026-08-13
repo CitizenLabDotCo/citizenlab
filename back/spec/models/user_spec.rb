@@ -259,27 +259,95 @@ RSpec.describe User do
     end
   end
 
-  describe 'authentication without password' do
-    it 'is allowed if the user has no password and confirmation is required' do
-      u = described_class.new(email: 'bob@citizenlab.co')
-      expect(!!u.authenticate('')).to be(true)
+  describe '#authenticate' do
+    # Authentication ALWAYS requires a non-blank password matching the stored digest.
+    # A user without a password (email-only, SSO or invited account) has no credential to log
+    # in with, and a blank password is not a credential. These specs must never be relaxed:
+    # every case below has to stay `false`, whatever the confirmation state of the user.
+    describe 'authentication without a password' do
+      # Anything that is not an actual password supplied by the requester.
+      blank_secrets = ['', ' ', "\t", nil]
+
+      it 'is NOT allowed for a user with no password who requires confirmation' do
+        user = create(:unconfirmed_user)
+        expect(user.password_digest).to be_nil
+        expect(user.confirmation_required?).to be true
+
+        blank_secrets.each do |secret|
+          expect(user.authenticate(secret)).to be(false), "authenticate(#{secret.inspect}) must be false"
+        end
+        expect(user.authenticate('any_string')).to be(false)
+      end
+
+      it 'is NOT allowed for a user with no password who does not require confirmation' do
+        user = create(:unconfirmed_user)
+        user.find_or_create_confirmation(:email_confirmation).confirm!
+        expect(user.reload.confirmation_required?).to be false
+
+        blank_secrets.each do |secret|
+          expect(user.authenticate(secret)).to be(false), "authenticate(#{secret.inspect}) must be false"
+        end
+        expect(user.authenticate('any_string')).to be(false)
+      end
+
+      it 'is NOT allowed for an unpersisted user with no password' do
+        user = described_class.new(email: 'bob@citizenlab.co', locale: 'en')
+
+        blank_secrets.each do |secret|
+          expect(user.authenticate(secret)).to be(false), "authenticate(#{secret.inspect}) must be false"
+        end
+        expect(user.authenticate('any_string')).to be(false)
+      end
+
+      it 'is NOT allowed for an SSO user who never set a password' do
+        user = create(:unconfirmed_user)
+        user.identities << create(:facebook_identity, user: user)
+        user.find_or_create_confirmation(:email_confirmation).confirm!
+
+        blank_secrets.each do |secret|
+          expect(user.authenticate(secret)).to be(false), "authenticate(#{secret.inspect}) must be false"
+        end
+      end
+
+      it 'is NOT allowed for an invited user who has not accepted their invite' do
+        user = create(:invited_user)
+        expect(user.password_digest).to be_nil
+        expect(user.invite_pending?).to be true
+
+        blank_secrets.each do |secret|
+          expect(user.authenticate(secret)).to be(false), "authenticate(#{secret.inspect}) must be false"
+        end
+        expect(user.authenticate('any_string')).to be(false)
+      end
+
+      it 'is NOT allowed for a super admin with no password' do
+        user = create(:unconfirmed_user, email: 'hello@citizenlab.co', roles: [{ type: 'admin' }])
+        expect(user.super_admin?).to be true
+
+        blank_secrets.each do |secret|
+          expect(user.authenticate(secret)).to be(false), "authenticate(#{secret.inspect}) must be false"
+        end
+      end
+
+      it 'is NOT allowed for a user who does have a password' do
+        user = create(:user, password: 'democracy2.0')
+
+        blank_secrets.each do |secret|
+          expect(user.authenticate(secret)).to be(false), "authenticate(#{secret.inspect}) must be false"
+        end
+      end
     end
 
-    it 'is not allowed if a password has been supplied in the request' do
-      u = described_class.new(email: 'bob@citizenlab.co')
-      expect(!!u.authenticate('any_string')).to be(false)
-    end
+    describe 'authentication with a password' do
+      let(:user) { create(:user, password: 'democracy2.0') }
 
-    it 'is not allowed if a password has been set' do
-      u = described_class.new(email: 'bob@citizenlab.co', password: 'democracy2.0')
-      expect(!!u.authenticate('')).to be(false)
-    end
+      it 'returns the user when the password matches' do
+        expect(user.authenticate('democracy2.0')).to eq user
+      end
 
-    it 'is not allowed if confirmation is not required' do
-      u = described_class.new(email: 'bob@citizenlab.co', locale: 'en')
-      u.save!
-      u.email_confirmation.confirm!
-      expect(!!u.authenticate('')).to be(false)
+      it 'returns false when the password does not match' do
+        expect(user.authenticate('democracy2.1')).to be(false)
+      end
     end
   end
 
@@ -476,7 +544,6 @@ RSpec.describe User do
       settings['password_login'] = {
         'enabled' => true,
         'allowed' => true,
-        'enable_signup' => true,
         'minimum_length' => 5
       }
       AppConfiguration.instance.update! settings: settings
@@ -490,7 +557,6 @@ RSpec.describe User do
       settings['password_login'] = {
         'enabled' => true,
         'allowed' => true,
-        'enable_signup' => true,
         'minimum_length' => 5
       }
       AppConfiguration.instance.update! settings: settings
@@ -1023,7 +1089,7 @@ RSpec.describe User do
   describe 'active?' do
     it 'returns true when the user has completed signup' do
       u = create(:unconfirmed_user)
-      u.email_confirmation.confirm!
+      u.find_or_create_confirmation(:email_confirmation).confirm!
       expect(u.active?).to be true
     end
 
@@ -1034,7 +1100,7 @@ RSpec.describe User do
 
     it 'returns false when the user is blocked' do
       u = create(:unconfirmed_user, block_end_at: 5.days.from_now)
-      u.email_confirmation.confirm!
+      u.find_or_create_confirmation(:email_confirmation).confirm!
       expect(u.active?).to be false
     end
   end
@@ -1047,7 +1113,7 @@ RSpec.describe User do
 
     it 'is set when a user is confirmed' do
       u = create(:unconfirmed_user)
-      u.email_confirmation.confirm!
+      u.find_or_create_confirmation(:email_confirmation).confirm!
       expect(u.registration_completed_at).not_to be_nil
     end
 
@@ -1133,15 +1199,53 @@ RSpec.describe User do
       user.clear_changes_information
     end
 
-    it 'is initialized without a confirmation code' do
+    it 'is created without any confirmation record' do
       user.save!
-      expect(user.email_confirmation.code).to be_nil
+      expect(user.confirmations).to be_empty
+    end
+
+    it 'creates the confirmation on demand, without a code' do
+      user.save!
+      expect(user.find_or_create_confirmation(:email_confirmation).code).to be_nil
+      expect(user.confirmations.pluck(:type)).to eq ['EmailConfirmation']
+    end
+
+    describe '#find_or_create_confirmation' do
+      it 'reuses the confirmation instead of creating a second one' do
+        user.save!
+        confirmation = user.find_or_create_confirmation(:email_confirmation)
+
+        expect { user.find_or_create_confirmation(:email_confirmation) }.not_to change(EmailConfirmation, :count)
+        expect(user.find_or_create_confirmation(:email_confirmation)).to eq confirmation
+      end
+
+      # Two concurrent requests can both find no confirmation and both try to insert.
+      it 'returns the row inserted by a concurrent request instead of raising' do
+        user.save!
+        expect(user.email_confirmation).to be_nil # caches the miss, as the loser of the race would
+        concurrent = EmailConfirmation.create!(user: described_class.find(user.id))
+
+        expect(user.find_or_create_confirmation(:email_confirmation)).to eq concurrent
+      end
+
+      it 'leaves the surrounding transaction usable after losing the race' do
+        user.save!
+        expect(user.email_confirmation).to be_nil
+        EmailConfirmation.create!(user: described_class.find(user.id))
+
+        ActiveRecord::Base.transaction do
+          user.find_or_create_confirmation(:email_confirmation)
+          user.update!(first_name: 'Raced')
+        end
+
+        expect(user.reload.first_name).to eq 'Raced'
+      end
     end
 
     describe '#confirmation_required?' do
       it 'returns false if the user already confirmed their account' do
         user.save!
-        user.email_confirmation.confirm!
+        user.find_or_create_confirmation(:email_confirmation).confirm!
         expect(user.reload.confirmation_required?).to be false
       end
 
@@ -1190,18 +1294,18 @@ RSpec.describe User do
     describe '#email_confirmation#confirm!' do
       it 'sets email confirmed at' do
         user.save!
-        expect { user.email_confirmation.confirm! }.to change(user, :saved_change_to_email_confirmed_at?)
+        expect { user.find_or_create_confirmation(:email_confirmation).confirm! }.to change(user, :saved_change_to_email_confirmed_at?)
       end
 
       it 'cancels any pending email change initiated with the same email' do
         target_email = 'shared-email@provider.org'
         user2 = create(:user, new_email: target_email)
         user1 = create(:user, email: target_email)
-        user2.new_email_confirmation.update!(code: '9999')
+        user2.find_or_create_confirmation(:new_email_confirmation).update!(code: '9999')
 
-        user1.email_confirmation.update!(code: '1234')
+        user1.find_or_create_confirmation(:email_confirmation).update!(code: '1234')
         user1.update!(confirmation_required: true)
-        user1.email_confirmation.confirm!
+        user1.find_or_create_confirmation(:email_confirmation).confirm!
 
         user2.reload
         expect(user2.new_email).to be_nil

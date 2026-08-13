@@ -1,0 +1,4 @@
+uid,title,description,start_date,end_date,active,position
+decidim--step--1,"{""fr"":""État des lieux""}","{""fr"":""<p>Diagnostic</p>""}",2022-10-04 02:00:00 +0200,2023-01-31 01:00:00 +0100,false,0
+decidim--step--2,"{""fr"":""Plan d'actions""}","{""fr"":""<p>Élaboration</p>""}",2023-02-01 01:00:00 +0100,2023-04-30 02:00:00 +0200,true,1
+decidim--step--3,"{""fr"":""Sans dates""}","{""fr"":""<p>?</p>""}",,,false,2

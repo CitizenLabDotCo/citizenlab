@@ -36,7 +36,8 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
           description: <<~DESC
             - everyone: anyone, no sign-in or email needed.
             - users: must have an account (default). Combine with require_name, require_password,
-              require_confirmed_email and require_verification to fine-tune what an account needs.
+              require_confirmed_email, require_verification and require_confirmed_phone_number to
+              fine-tune what an account needs.
             - admins_moderators: project admins/moderators only. When set, group_ids,
               demographic_questions, and the require_* flags have no effect.
           DESC
@@ -99,9 +100,23 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
             - 30: within last 30 days
           DESC
         },
+        require_confirmed_phone_number: {
+          type: 'boolean',
+          description: 'Whether the participant must confirm a phone number by SMS. Only applies when permitted_by is "users". Requires the sms feature to be enabled. Defaults to false.'
+        },
+        confirmed_phone_number_expiry: {
+          type: %w[integer null],
+          description: 'Number of days before phone-number reconfirmation is required; null means never reconfirm. Only used when require_confirmed_phone_number is true.'
+        },
         access_denied_explanation_multiloc: {
           **multiloc_schema,
-          description: 'Custom message shown to denied users (e.g. "You must be 18 or older to vote").'
+          type: %w[object null],
+          description: <<~DESC.squish
+            Custom message shown to denied users (e.g. "You must be 18 or older to vote").
+            Merged per locale: locales in the payload are overwritten, absent locales
+            keep their current value. Pass null to remove the custom message
+            (participants then see the default explanation).
+          DESC
         }
       },
       required: %w[phase_id action permitted_by]
@@ -120,20 +135,24 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
 
       authorize(permission, :update?)
 
-      attributes = {
-        permitted_by: params[:permitted_by],
-        group_ids: params[:group_ids],
-        require_name: params[:require_name],
-        require_password: params[:require_password],
-        require_confirmed_email: params[:require_confirmed_email],
-        confirmed_email_expiry: params[:confirmed_email_expiry],
-        require_verification: params[:require_verification],
-        verification_expiry: params[:verification_expiry],
-        access_denied_explanation_multiloc: params[:access_denied_explanation_multiloc]
-      }.compact
+      # slice keeps explicit nulls
+      # (an absent key leaves the field unchanged)
+      attributes = params.slice(
+        :permitted_by,
+        :group_ids,
+        :require_name,
+        :require_password,
+        :require_confirmed_email,
+        :confirmed_email_expiry,
+        :require_verification,
+        :verification_expiry,
+        :require_confirmed_phone_number,
+        :confirmed_phone_number_expiry,
+        :access_denied_explanation_multiloc
+      )
 
       ActiveRecord::Base.transaction do
-        permission.update!(attributes)
+        permission.update!(merge_multilocs(permission, attributes))
         replace_demographic_questions(permission, params[:demographic_questions]) if params.key?(:demographic_questions)
       end
 

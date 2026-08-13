@@ -195,6 +195,7 @@ hu-HU:
       new_phone_confirmation: Új telefonszám-megerősítő kód
       official_feedback_on_idea_you_follow: Frissítse a követett bemenetet
       password_reset: Jelszó visszaállítása
+      phone_confirmation: Telefonos megerősítő kód
       project_folder_moderation_rights_received: Mappakezelői jogok megérkeztek
       project_manager_rights_received: Projektmenedzseri jogosultságok megadva
       project_moderation_rights_received: A projekt moderálási jogai megkapták
@@ -553,6 +554,8 @@ hu-HU:
       preheader: Állítsa vissza jelszavát a(z) %{organizationName} platformon
       subject: '%{organizationName}: Jelszó visszaállítása'
       title: Válasszon új jelszót
+    phone_confirmation:
+      sms_body: 'Az Ön megerősítő kódja: %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane

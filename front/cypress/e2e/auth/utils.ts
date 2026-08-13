@@ -1,4 +1,94 @@
+import { randomString } from '../../support/commands';
+import moment = require('moment');
+import {
+  IPermissionUpdate,
+  IPhasePermissionAction,
+} from '../../../app/api/phase_permissions/types';
+
 export const FAKE_SSO_ORIGIN = 'http://host.docker.internal:8081';
+
+/**
+ * Creates a published project with a single `native_survey` phase and sets a
+ * permission on it. This is a very common setup in the auth e2e tests, where we
+ * need a survey the user has to sign up / verify for before they can respond.
+ *
+ * Yields `{ projectId, phaseId }` so the caller can clean up the project
+ * afterwards and (re)set the phase permission in nested `before` hooks.
+ */
+export const createNativeSurveyProjectWithPermission = ({
+  projectTitle,
+  permissionBody,
+  action = 'posting_idea',
+}: {
+  projectTitle: string;
+  // Rails auto-wraps flat scalar attributes in `permission`, but array
+  // attributes like group_ids only arrive when wrapped explicitly.
+  permissionBody?:
+    | Partial<IPermissionUpdate>
+    | { permission: Partial<IPermissionUpdate> };
+  action?: IPhasePermissionAction;
+}) => {
+  return cy
+    .apiCreateProject({
+      title: projectTitle,
+      descriptionPreview: randomString(),
+      description: randomString(),
+      publicationStatus: 'published',
+    })
+    .then((project) => {
+      const projectId = project.body.data.id;
+
+      return cy
+        .apiCreatePhase({
+          projectId,
+          title: 'firstPhaseTitle',
+          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+          participationMethod: 'native_survey',
+          nativeSurveyButtonMultiloc: { en: 'Take the survey' },
+          nativeSurveyTitleMultiloc: { en: 'Survey' },
+          canPost: true,
+          canComment: true,
+          canReact: true,
+        })
+        .then((phase) => {
+          const phaseId = phase.body.data.id;
+
+          return cy
+            .apiSetPhasePermission({ phaseId, permissionBody, action })
+            .then(() => ({ projectId, phaseId }));
+        });
+    });
+};
+
+/**
+ * Creates a smart group that only verified users with the given postal code
+ * belong to. The `postal_code` registration field is part of the e2e template,
+ * and is returned (and locked) by the fake SSO verification.
+ *
+ * Yields the id of the created group.
+ */
+export const createVerifiedPostalCodeSmartGroup = (postalCode: string) => {
+  return cy.apiGetUserCustomFields().then((response) => {
+    const postalCodeFieldId = response.body.data.find(
+      (customField: any) => customField.attributes.key === 'postal_code'
+    ).id;
+
+    return cy
+      .apiCreateSmartGroup(randomString(), [
+        {
+          ruleType: 'verified',
+          predicate: 'is_verified',
+        },
+        {
+          ruleType: 'custom_field_text',
+          customFieldId: postalCodeFieldId,
+          predicate: 'is',
+          value: postalCode,
+        },
+      ])
+      .then((group) => group.body.data.id as string);
+  });
+};
 
 // See https://github.com/CitizenLabDotCo/fake_sso/blob/main/utils/profiles.js
 export type ProfileName =

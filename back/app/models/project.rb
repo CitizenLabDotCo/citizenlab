@@ -310,6 +310,10 @@ class Project < ApplicationRecord
     )
   end
 
+  def schedule
+    @schedule ||= ProjectSchedule.new(self)
+  end
+
   def refresh_preview_token
     self.preview_token = self.class.generate_preview_token
   end

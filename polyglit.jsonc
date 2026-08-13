@@ -109,6 +109,11 @@
       "format": "rails-i18n-yaml"
     },
     {
+      "source": "back/engines/commercial/decidim_importer/config/locales/en.yml",
+      "pattern": "back/engines/commercial/decidim_importer/config/locales/{locale}.yml",
+      "format": "rails-i18n-yaml"
+    },
+    {
       "source": "back/engines/commercial/multi_tenancy/config/locales/en.yml",
       "pattern": "back/engines/commercial/multi_tenancy/config/locales/{locale}.yml",
       "format": "rails-i18n-yaml"

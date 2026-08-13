@@ -15,6 +15,8 @@ class McpServer::Serializers::Permission < McpServer::Serializers::Base
       confirmed_email_expiry: record.confirmed_email_expiry,
       require_verification: record.require_verification,
       verification_expiry: record.verification_expiry,
+      require_confirmed_phone_number: record.require_confirmed_phone_number,
+      confirmed_phone_number_expiry: record.confirmed_phone_number_expiry,
       access_denied_explanation_multiloc: record.access_denied_explanation_multiloc
     }
   end

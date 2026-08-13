@@ -195,6 +195,7 @@ it-IT:
       new_phone_confirmation: Nuovo codice di conferma del telefono
       official_feedback_on_idea_you_follow: Aggiornamento su un contributo che seguo
       password_reset: Ripristino della password
+      phone_confirmation: Codice di conferma del telefono
       project_folder_moderation_rights_received: Diritti di gestione delle cartelle ricevuti
       project_manager_rights_received: Permessi di project manager ricevuti
       project_moderation_rights_received: Diritti di moderazione del progetto ricevuti
@@ -553,6 +554,8 @@ it-IT:
       preheader: Reimposta la tua password per %{organizationName}
       subject: '%{organizationName}: Reimposta la tua password'
       title: Scegli una nuova password
+    phone_confirmation:
+      sms_body: Il tuo codice di conferma è %{code}.
     preview_data:
       author_display_name: Laura Bianchi
       author_first_name: Laura

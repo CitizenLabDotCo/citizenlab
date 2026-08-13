@@ -195,6 +195,7 @@ pl-PL:
       new_phone_confirmation: Nowy kod potwierdzający numer telefonu
       official_feedback_on_idea_you_follow: Zaktualizuj pomysł, który śledzisz
       password_reset: Zmiana hasła
+      phone_confirmation: Kod potwierdzający numer telefonu
       project_folder_moderation_rights_received: Przydzielono uprawnienia menedżera folderów
       project_manager_rights_received: Otrzymano uprawnienia menedżera projektu
       project_moderation_rights_received: Przyznanie prawa do moderacji projektu
@@ -553,6 +554,8 @@ pl-PL:
       preheader: Zresetuj hasło dla %{organizationName}
       subject: '%{organizationName}: Zresetuj hasło'
       title: Wybierz nowe hasło
+    phone_confirmation:
+      sms_body: Twój kod potwierdzający to %{code}.
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane

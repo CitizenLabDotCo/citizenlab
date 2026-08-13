@@ -2,7 +2,9 @@
 
 class McpServer::Tools::CreatePhase < McpServer::BaseTool
   # Mirrors the participation method picker in the admin UI.
-  # participation method value => feature flag name
+  # participation method value => feature flag name. The flags are checked at call
+  # time (PhaseFeatureGuard), not in the schema, so the definition stays
+  # tenant-agnostic.
   GATED_METHODS = {
     'common_ground' => 'common_ground',
     'document_annotation' => 'konveio_document_annotation',
@@ -45,16 +47,21 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
         description_multiloc: { **multiloc_schema, description: 'Phase description (HTML).' },
         start_at: { type: 'string', description: 'Phase start date (ISO 8601 format)' },
         end_at: {
-          type: 'string',
+          type: %w[string null],
           description: <<~DESC.squish
-            Phase end date (ISO 8601 format). Optional on the last phase,
-            which then runs indefinitely.
+            Phase end date (ISO 8601 format). Required except on the last phase,
+            where a missing end date makes the phase run indefinitely: omit the
+            field on create, or pass null on update to clear it.
           DESC
         },
         participation_method: {
           type: 'string',
           enum: available_participation_methods,
-          description: "Participation method. Default: #{phase_default('participation_method')}."
+          description: <<~DESC.squish
+            Participation method. Default: #{phase_default('participation_method')}.
+            #{GATED_METHODS.map { |method, flag| "'#{method}' requires the '#{flag}' feature" }.join(', ')}
+            to be enabled on the platform.
+          DESC
         },
 
         # Participation toggles (apply to phases with inputs: ideation, proposals, voting, common_ground, native_survey)
@@ -108,7 +115,7 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
           enum: Phase::PRESENTATION_MODES,
           description: <<~DESC.squish
             The view (or presentation mode) used by default to show inputs to visitors.
-            'feed' is not available on proposals phases.
+            'feed' is only available on ideation phases.
             Default: '#{phase_default('presentation_mode')}'.
           DESC
         },
@@ -119,7 +126,7 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
             Views visitors can choose from.
             Must include 'card' and the current `presentation_mode`.
             If omitted, it's auto-filled with those two.
-            'feed' is not available on proposals phases.
+            'feed' is only available on ideation phases.
           DESC
         },
         # On voting phases, the only valid value is 'random' and it's auto-filled by the model.
@@ -138,16 +145,18 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
           DESC
         },
 
-        # Pre-screening (ideation, proposals; gated by the 'prescreening' /
-        # 'prescreening_ideation' / 'flag_inappropriate_content' feature flags)
+        # Pre-screening (ideation, proposals)
         prescreening_mode: {
           type: %w[string null],
-          enum: prescreening_mode_enum,
+          enum: [nil, 'all', 'flagged_only'],
           description: <<~DESC
             Which inputs require admin approval before publication:
             - 'all': every input
             - 'flagged_only': only inputs flagged by automated toxicity detection
             - null: none (disabled)
+
+            Requires the 'prescreening' or 'prescreening_ideation' feature on the platform;
+            'flagged_only' additionally requires 'flag_inappropriate_content'.
           DESC
         },
 
@@ -292,14 +301,20 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
 
         manual_voters_amount: { type: 'integer', description: 'Count of offline/manually-recorded voters. Only for voting phases.' }
       },
-      required: %w[project_id title_multiloc start_at]
+      required: %w[project_id title_multiloc start_at],
+      additionalProperties: false
     }
   end
 
   class Runner < McpServer::BaseTool::Runner
+    include McpServer::PhaseFeatureGuard
+
     def run
       project = Project.find_by(id: params[:project_id])
       return not_found_error('Project', params[:project_id]) unless project
+
+      conflict = phase_feature_conflict(params)
+      return error(conflict) if conflict
 
       phase = Phase.new(**params)
       authorize_project!(project)
@@ -321,29 +336,16 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
   private
 
   def available_participation_methods
-    config = AppConfiguration.instance
-    enabled_gated = GATED_METHODS.select { |_, flag| config.feature_activated?(flag) }.keys
-    (UNGATED_METHODS + enabled_gated) & Phase::PARTICIPATION_METHODS
-  end
-
-  def prescreening_mode_enum
-    # TODO: It does not take the actual participation method into account.
-    config = AppConfiguration.instance
-    return [nil] unless config.feature_activated?('prescreening') || config.feature_activated?('prescreening_ideation')
-
-    modes = [nil, 'all']
-    modes << 'flagged_only' if config.feature_activated?('flag_inappropriate_content')
-    modes
+    (UNGATED_METHODS + GATED_METHODS.keys) & Phase::PARTICIPATION_METHODS
   end
 
   def disliking_fields
-    return {} unless AppConfiguration.instance.feature_activated?('disable_disliking')
-
     {
       reacting_dislike_enabled: {
         type: 'boolean',
         description: <<~DESC.squish
           Whether participants can dislike.
+          Requires the 'disable_disliking' feature on the platform.
           Default: #{phase_default('reacting_dislike_enabled')}.
         DESC
       },

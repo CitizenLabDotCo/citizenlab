@@ -195,6 +195,7 @@ tr-TR:
       new_phone_confirmation: Yeni telefon doğrulama kodu
       official_feedback_on_idea_you_follow: Takip ettiğiniz bir fikir hakkında güncelleme
       password_reset: Parola sıfırla
+      phone_confirmation: Telefon onay kodu
       project_folder_moderation_rights_received: Klasör yöneticisi hakları alındı
       project_manager_rights_received: Proje yöneticisi yetkileri alındı
       project_moderation_rights_received: Proje moderasyon hakları alındı
@@ -553,6 +554,8 @@ tr-TR:
       preheader: '%{organizationName} için şifrenizi sıfırlayın'
       subject: '%{organizationName}: Şifrenizi sıfırlayın'
       title: Yeni bir şifre seçin
+    phone_confirmation:
+      sms_body: 'Onay kodunuz: %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane

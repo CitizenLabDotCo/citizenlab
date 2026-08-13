@@ -1,7 +1,19 @@
 import updateLocationDescriptor from 'utils/cl-router/updateLocationDescriptor';
-import * as serviceLocale from 'utils/getUrlLocale';
+import { getUrlLocale } from 'utils/getUrlLocale';
 
-const serviceSpy = jest.spyOn(serviceLocale, 'getUrlLocale');
+// Wraps the real implementation so behaviour is unchanged; we only need to
+// observe the calls. `jest.spyOn` on a module namespace does not work here,
+// as the transformer emits ES module exports as non-configurable getters.
+jest.mock('utils/getUrlLocale', () => {
+  const actual = jest.requireActual('utils/getUrlLocale');
+  return {
+    __esModule: true,
+    ...actual,
+    getUrlLocale: jest.fn(actual.getUrlLocale),
+  };
+});
+
+const serviceSpy = getUrlLocale as jest.Mock;
 
 test('updates / to /nl-BE/ : updates home with no locale as expected', () => {
   expect(updateLocationDescriptor('/', 'nl-BE')).toEqual({
@@ -10,7 +22,7 @@ test('updates / to /nl-BE/ : updates home with no locale as expected', () => {
       locale: 'nl-BE',
     },
   });
-  expect(serviceSpy).toBeCalled();
+  expect(serviceSpy).toHaveBeenCalled();
 });
 
 test('updates /ideas to /nl-BE/ideas : updates a simple path with no locale as expected', () => {

@@ -18,6 +18,9 @@ import AccordionMultiloc, {
 import ButtonMultiloc, {
   buttonMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
+import HtmlBlockMultiloc, {
+  htmlBlockMultilocTitle,
+} from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
 import IframeMultiloc, {
   iframeTitle,
 } from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
@@ -33,6 +36,7 @@ import TwoColumn, {
 import WhiteSpace, {
   whiteSpaceTitle,
 } from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import NewLabel from 'components/UI/NewLabel';
 
 import {
   useIntl,
@@ -46,6 +50,7 @@ import CallToAction, { callToActionTitle } from '../Widgets/CallToAction';
 import CommunityMonitorCTA, {
   communityMonitorCTATitle,
 } from '../Widgets/CommunityMonitorCTA';
+import CustomPages, { customPagesTitle } from '../Widgets/CustomPages';
 import Events from '../Widgets/Events';
 import FinishedOrArchived, {
   finishedOrArchivedTitle,
@@ -74,9 +79,6 @@ import Spotlight, {
 } from '../Widgets/Spotlight';
 import TextMultiloc, { textMultilocTitle } from '../Widgets/TextMultiloc';
 import VideoEmbed, { videoEmbedTitle } from '../Widgets/VideoEmbed';
-import HtmlBlockMultiloc, {
-  htmlBlockMultilocTitle,
-} from '../Widgets/HtmlBlockMultiloc';
 
 import { platformCreatedBeforeReleaseNewWidgets } from './utils';
 
@@ -184,6 +186,13 @@ const HomepageBuilderToolbox = () => {
           }
           icon="folder-outline"
           label={formatMessage(selectionTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-custom-pages"
+          component={<CustomPages customPages={[]} />}
+          icon="page"
+          label={formatMessage(customPagesTitle)}
+          labelSuffix={<NewLabel />}
         />
         <DraggableElement
           id="e2e-draggable-published"

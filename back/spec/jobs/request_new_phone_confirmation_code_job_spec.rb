@@ -32,14 +32,24 @@ RSpec.describe RequestNewPhoneConfirmationCodeJob do
       .not_to have_enqueued_job(EmailCampaigns::Sms::SendJob)
 
     code = user.new_phone_confirmation.code
-    expect(sms_provider).to have_received(:send).with(to: new_phone, body: a_string_including(code))
+    expect(sms_provider).to have_received(:send)
+      .with(to: new_phone, body: a_string_including(code), use_case: EmailCampaigns::Sms::UseCase::CONFIRMATION_CODES)
   end
 
   it 'sets the code delivery timestamp and resets the retry count' do
-    user.new_phone_confirmation.update!(code_retry_count: 3)
+    confirmation = user.find_or_create_confirmation(:new_phone_confirmation)
+    confirmation.update!(code_retry_count: 3)
     expect { job.perform(user, new_phone: new_phone) }
-      .to change { user.new_phone_confirmation.reload.code_sent_at }
-    expect(user.new_phone_confirmation.reload.code_retry_count).to eq 0
+      .to change { confirmation.reload.code_sent_at }
+    expect(confirmation.reload.code_retry_count).to eq 0
+  end
+
+  # Users created before phone confirmations existed have no NewPhoneConfirmation row.
+  it 'creates the new_phone confirmation on demand' do
+    expect(user.new_phone_confirmation).to be_nil
+
+    expect { job.perform(user, new_phone: new_phone) }.to change(NewPhoneConfirmation, :count).by(1)
+    expect(user.reload.new_phone_confirmation.code_sent_at).to be_present
   end
 
   it 'enqueues a code expiration job' do

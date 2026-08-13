@@ -257,6 +257,10 @@ en:
       unspecified: Other
     domicile:
       outside: Somewhere else
+  content_builder:
+    project_page:
+      intro_placeholder: <p>Add a short introduction here — tell residents what this project is about and how they can take part.</p>
+      details_placeholder: <p>Use this space for more detail — background, what happens with the input, or who to get in touch with.</p>
   pdf_export:
     input_responses:
       report_label: 'Response report'

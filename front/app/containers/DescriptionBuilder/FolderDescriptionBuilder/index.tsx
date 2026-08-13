@@ -15,7 +15,6 @@ const FolderDescriptionBuilderPage = () => {
   return (
     <DescriptionBuilderPage
       contentBuildableId={folderId}
-      contentBuildableType="folder"
       backPath={`/admin/projects/folders/${folderId}/settings`}
       previewLink={{
         to: '/folders/$slug',

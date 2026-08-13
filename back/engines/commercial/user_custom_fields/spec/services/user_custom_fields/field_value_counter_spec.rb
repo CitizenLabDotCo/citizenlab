@@ -86,5 +86,28 @@ RSpec.describe UserCustomFields::FieldValueCounter do
         expect(counts).to match('male' => 1, 'female' => 1, 'unspecified' => 0, described_class::UNKNOWN_VALUE_LABEL => 1)
       end
     end
+
+    context 'when passing an array of custom field values instead of a relation' do
+      let(:select_field) { create(:custom_field_select, :with_options) }
+      let(:multiselect_field) { create(:custom_field_multiselect, :with_options) }
+
+      before do
+        create(:user, custom_field_values: { select_field.key => 'option1', multiselect_field.key => %w[option1 option2] })
+        create(:user, custom_field_values: { select_field.key => 'option2', multiselect_field.key => %w[option2] })
+        create(:user)
+      end
+
+      it 'returns the same counts as the SQL implementation' do
+        [select_field, multiselect_field].each do |field|
+          sql_counts = described_class.counts_by_field_option(User.all, field)
+          in_memory_counts = described_class.counts_by_field_option(User.all.map(&:custom_field_values), field)
+
+          expect(in_memory_counts).to eq(sql_counts)
+        end
+
+        expect(described_class.counts_by_field_option(User.all, select_field))
+          .to match('option1' => 1, 'option2' => 1, described_class::UNKNOWN_VALUE_LABEL => 1)
+      end
+    end
   end
 end

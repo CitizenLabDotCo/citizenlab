@@ -195,6 +195,7 @@ ar-MA:
       new_phone_confirmation: رمز جديد لتأكيد رقم الهاتف
       official_feedback_on_idea_you_follow: تحديث على فكرة تتابعها
       password_reset: تمت إعادة تعيين كلمة المرور
+      phone_confirmation: رمز تأكيد الهاتف
       project_folder_moderation_rights_received: تم استلام حقوق الإشراف على مجلد المشروع
       project_manager_rights_received: تم استلام صلاحيات مسير مشروع
       project_moderation_rights_received: تم استلام حقوق الإشراف على المشروع
@@ -553,6 +554,8 @@ ar-MA:
       preheader: إعادة تعيين كلمة المرور الخاصة بك لـ %{organizationName}
       subject: '%{organizationName}: إعادة تعيين كلمة المرور الخاصة بك'
       title: اختر كلمة مرور جديدة
+    phone_confirmation:
+      sms_body: رمز التأكيد الخاص بك هو %{code}.
     preview_data:
       author_display_name: جين دو
       author_first_name: جين

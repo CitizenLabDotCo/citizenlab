@@ -195,6 +195,7 @@ lt-LT:
       new_phone_confirmation: Naujas telefono patvirtinimo kodas
       official_feedback_on_idea_you_follow: Įvesties, kurią sekate, atnaujinimas
       password_reset: Slaptažodžio atkūrimas
+      phone_confirmation: Telefono patvirtinimo kodas
       project_folder_moderation_rights_received: Gautos aplankų tvarkytojo teisės
       project_manager_rights_received: Suteiktos projekto valdytojo teisės
       project_moderation_rights_received: Gautos projekto moderavimo teisės
@@ -553,6 +554,8 @@ lt-LT:
       preheader: Atstatykite savo %{organizationName} slaptažodį
       subject: '%{organizationName}: Atstatykite slaptažodį'
       title: Pasirinkite naują slaptažodį
+    phone_confirmation:
+      sms_body: Jūsų patvirtinimo kodas yra %{code}.
     preview_data:
       author_display_name: Nepažįstama moteris
       author_first_name: Jane

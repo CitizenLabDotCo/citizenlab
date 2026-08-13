@@ -78,6 +78,9 @@ export default function useSteps() {
   const [state, setState] = useState<State>({
     flow: 'signup',
     email: null,
+    new_email: null,
+    new_phone: null,
+    smsManualCampaignConsent: false,
     /** the invite token, set in case the flow started with an invitation */
     token: null,
     prefilledBuiltInFields: null,
@@ -174,13 +177,7 @@ export default function useSteps() {
 
       authenticationDataRef.current = authenticationData;
 
-      const emailInCaseUserNeedsToConfirm =
-        authUser?.data.attributes.new_email ?? null;
-
-      transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')(
-        flow,
-        emailInCaseUserNeedsToConfirm
-      );
+      transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')(flow);
     });
 
     return () => subscription.unsubscribe();
@@ -341,10 +338,6 @@ export default function useSteps() {
 
       const flow = sso_flow ?? 'signin';
 
-      const emailInCaseUserNeedsToConfirm =
-        authUser?.data.attributes.new_email ?? null;
-
-      updateState({ flow, email: emailInCaseUserNeedsToConfirm });
       transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(flow);
 
       restoreLocationAfterAuthReturn(pathname);

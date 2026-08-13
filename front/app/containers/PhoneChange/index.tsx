@@ -4,10 +4,10 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
-import { object, string } from 'yup';
+import { object, string, boolean } from 'yup';
 
-import { confirmCodePhoneChange } from 'api/authentication/confirm_phone/confirmPhoneConfirmationCode';
-import { requestCodePhoneChange } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
+import { confirmCodeNewPhone } from 'api/authentication/confirm_phone/confirmPhoneConfirmationCode';
+import { requestCodeNewPhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import meKeys from 'api/me/keys';
 import useAuthUser from 'api/me/useAuthUser';
 
@@ -15,6 +15,7 @@ import { ERROR_CODE_MESSAGES } from 'containers/Authentication/messageUtils';
 import PhoneConfirmation from 'containers/Authentication/steps/PhoneConfirmation';
 import { ErrorCode } from 'containers/Authentication/typings';
 
+import isValidPhoneNumber from 'components/HookForm/PhoneInput/isValidPhoneNumber';
 import { StyledContentContainer } from 'components/smallForm';
 import Error from 'components/UI/Error';
 import GoBackButton from 'components/UI/GoBackButton';
@@ -30,6 +31,7 @@ import UpdatePhoneForm from './UpdatePhoneForm';
 
 export type FormValues = {
   phone: string;
+  smsManualCampaignConsent: boolean;
 };
 
 const PhoneChange = () => {
@@ -44,30 +46,40 @@ const PhoneChange = () => {
   const [updateCancelled, setUpdateCancelled] = useState(false);
 
   const schema = object({
-    phone: string().required(formatMessage(messages.phoneEmptyError)),
+    phone: string()
+      .required(formatMessage(messages.phoneEmptyError))
+      .test('is-valid-phone', formatMessage(messages.phoneInvalid), (value) =>
+        value ? isValidPhoneNumber(value) : false
+      ),
+    smsManualCampaignConsent: boolean().default(false),
   });
 
   const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues: {
       phone: '',
+      smsManualCampaignConsent: false,
     },
     resolver: yupResolver(schema),
   });
 
   const phoneValue = methods.watch('phone');
+  const smsManualCampaignConsent = methods.watch('smsManualCampaignConsent');
 
   const onPhoneConfirmation = async (code: string) => {
     setLoading(true);
 
     try {
       if (!phoneValue) return;
-      await confirmCodePhoneChange(code);
+      await confirmCodeNewPhone(code, smsManualCampaignConsent);
       await queryClient.invalidateQueries(meKeys.all());
       setConfirmationError(null);
       setOpenConfirmationModal(false);
       setUpdateSuccessful(true);
-      methods.reset({ phone: '' });
+      methods.reset({
+        phone: '',
+        smsManualCampaignConsent: false,
+      });
     } catch (e) {
       if (e?.code?.[0]?.error === 'invalid') {
         setConfirmationError('wrong_confirmation_code');
@@ -132,11 +144,11 @@ const PhoneChange = () => {
               </Box>
             )}
             <PhoneConfirmation
-              phoneNumber={phoneValue}
+              phone={phoneValue}
               loading={loading}
               setError={setConfirmationError}
               onConfirm={onPhoneConfirmation}
-              onResendCode={() => requestCodePhoneChange(phoneValue)}
+              onResendCode={() => requestCodeNewPhone(phoneValue)}
             />
           </Box>
         </Modal>

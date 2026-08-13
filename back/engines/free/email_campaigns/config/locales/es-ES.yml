@@ -195,6 +195,7 @@ es-ES:
       new_phone_confirmation: Nuevo código de confirmación de teléfono
       official_feedback_on_idea_you_follow: Actualización de una idea que sigues
       password_reset: Restablecimiento de contraseña
+      phone_confirmation: Código de confirmación por teléfono
       project_folder_moderation_rights_received: Derechos de administrador de carpetas recibidos
       project_manager_rights_received: Permisos de gestor de proyecto recibidos
       project_moderation_rights_received: Derechos de moderación del proyecto recibidos
@@ -553,6 +554,8 @@ es-ES:
       preheader: Restablece tu contraseña para %{organizationName}
       subject: '%{organizationName}: Restablece tu contraseña'
       title: Elige una nueva contraseña
+    phone_confirmation:
+      sms_body: Tu código de confirmación es %{code}.
     preview_data:
       author_display_name: María Rodríguez
       author_first_name: Jane

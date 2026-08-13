@@ -3,6 +3,28 @@
 require 'rails_helper'
 
 RSpec.describe AppConfiguration do
+  describe 'host format validation' do
+    it 'rejects a change to an invalid host' do
+      config = described_class.instance
+      config.host = 'Uppercase.example.com'
+
+      expect(config).to be_invalid
+    end
+
+    # `cl2back:clean_tenant_settings` runs on every deploy and saves the configuration of every
+    # tenant. One host that got in without passing through the model used to abort the whole
+    # task, and with it the deploy.
+    it 'does not re-check a persisted host that has not changed' do
+      config = described_class.instance
+      config.update_column(:host, 'Uppercase.example.com')
+      config.reload
+
+      config.settings['core']['organization_name'] = { 'en' => 'Changed' }
+
+      expect(config).to be_valid
+    end
+  end
+
   describe '.instance' do
     it 'is reset when the tenant is reset' do
       tenant = Tenant.current
@@ -48,6 +70,61 @@ RSpec.describe AppConfiguration do
 
       expect { config.save! }.to change(Time, :zone)
         .to(Time.find_zone('America/New_York'))
+    end
+  end
+
+  describe 'sms allowed_country_codes validation' do
+    let(:config) { described_class.instance }
+
+    before do
+      config.settings['sms'] = {
+        'allowed' => true,
+        'enabled' => true,
+        'twilio_account_sid' => 'AC_test',
+        'twilio_auth_token' => 'token',
+        'twilio_manual_campaigns_messaging_service_sid' => 'MG_manual_campaigns',
+        'twilio_confirmation_codes_messaging_service_sid' => 'MG_confirmation_codes'
+      }
+    end
+
+    it 'is valid with known ISO 3166-1 alpha-2 country codes' do
+      config.settings['sms']['allowed_country_codes'] = %w[BE FR]
+      expect(config).to be_valid
+    end
+
+    it 'is invalid with an unknown country code' do
+      config.settings['sms']['allowed_country_codes'] = ['XX']
+      expect(config).not_to be_valid
+    end
+  end
+
+  describe '#base_asset_host_uri (dev S3 branch)' do
+    let(:config) { described_class.instance }
+
+    before { allow(Rails.env).to receive(:development?).and_return(true) }
+
+    it 'returns the AWS bucket URL when no endpoint is set' do
+      stub_env(
+        'USE_AWS_S3_IN_DEV' => 'true',
+        'AWS_S3_BUCKET' => 'my-bucket',
+        'AWS_REGION' => 'eu-central-1',
+        'AWS_ENDPOINT_URL_S3' => nil
+      )
+
+      expect(config.base_asset_host_uri)
+        .to eq('https://my-bucket.s3.eu-central-1.amazonaws.com')
+    end
+
+    it 'returns the bucket URL on the custom endpoint when AWS_ENDPOINT_URL_S3 is set' do
+      stub_env(
+        'USE_AWS_S3_IN_DEV' => 'true',
+        'AWS_S3_BUCKET' => 'my-bucket',
+        'AWS_REGION' => 'eu-central-1',
+        'AWS_ENDPOINT_URL_S3' => 'https://s3.fr-par.scw.cloud'
+      )
+
+      expect(config.base_asset_host_uri)
+        .to eq('https://my-bucket.s3.fr-par.scw.cloud')
     end
   end
 end

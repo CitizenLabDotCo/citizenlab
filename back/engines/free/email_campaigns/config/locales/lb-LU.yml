@@ -197,6 +197,7 @@ lb-LU:
       new_phone_confirmation: Neie Bestätegungscode fir d'Telefonsnummer
       official_feedback_on_idea_you_follow: Update op eng Iddi déi Dir verfollegt
       password_reset: Passwuert zerécksetzen
+      phone_confirmation: Telefons-Bestätegungscode
       project_folder_moderation_rights_received: Administratorrechter fir Dossier'en kritt
       project_manager_rights_received: Projet-Manager-Rechter kritt
       project_moderation_rights_received: Moderatiounsrechter fir Projete kritt
@@ -555,6 +556,8 @@ lb-LU:
       preheader: Setzt Äert Passwuert fir %{organizationName} zeréck
       subject: '%{organizationName}: Setzt Äert Passwuert zeréck'
       title: Wielt en neit Passwuert
+    phone_confirmation:
+      sms_body: Äre Bestätegungscode ass %{code}.
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane

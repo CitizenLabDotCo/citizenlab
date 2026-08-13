@@ -1,0 +1,3 @@
+author,author_status,created_at,10,11,12,13
+decidim-user-1,registered,2022-11-16 19:08:17 +0100,Bonjour le monde,"[{""answer_option"": 100, ""position"": null, ""custom_body"": null}]","[{""answer_option"": 102, ""position"": null, ""custom_body"": null}, {""answer_option"": 103, ""position"": null, ""custom_body"": null}]",Une reponse detaillee
+decidim-user-999,registered,2022-11-17 10:00:00 +0100,Reponse sans auteur connu,,,

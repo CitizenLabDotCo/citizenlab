@@ -287,6 +287,8 @@ class WebApi::V1::UsersController < ApplicationController
   def update_password
     @user = current_user
     authorize @user
+    # `no_password?` users (email-only, SSO) have no current password to confirm, so they can
+    # set a first one. This is not a login: they are already authenticated as `current_user`.
     if @user.no_password? || @user.authenticate(params[:user][:current_password])
       if @user.update(password: params[:user][:password])
         reset_jwt_cookie
@@ -389,7 +391,7 @@ class WebApi::V1::UsersController < ApplicationController
     # automatically resend the code, because otherwise we
     # might too easily reach the retry limit. So they will
     # have to request it themselves
-    if user.email_confirmation.code_reset_count == 0
+    if (user.email_confirmation&.code_reset_count || 0) == 0
       RequestEmailConfirmationCodeJob.perform_now(user)
     end
   end

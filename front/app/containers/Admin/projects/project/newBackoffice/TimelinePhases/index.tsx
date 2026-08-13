@@ -1,10 +1,8 @@
 import React from 'react';
 
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
-import { format, isSameMonth } from 'date-fns';
-import styled from 'styled-components';
 
-import { IPhaseData, ParticipationMethod } from 'api/phases/types';
+import { ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import { getPhaseLandingTab } from 'api/phases/utils';
 
@@ -16,34 +14,19 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-import { pastPresentOrFuture } from 'utils/dateUtils';
 import { useParams } from 'utils/router';
 
 import messages from '../messages';
+import {
+  Connector,
+  PHASE_TAB_ROUTES,
+  PhaseDot,
+  Row,
+  formatDateRange,
+  phaseStatus,
+} from '../phaseRowUtils';
 
-// Each phase landing tab maps to a registered phase route literal, so the
-// Link `to` below is compile-checked against the route tree instead of being
-// an interpolated string cast with `as LinkProps['to']`.
-type PhaseLandingTab = ReturnType<typeof getPhaseLandingTab>;
-
-type PhaseTabTarget =
-  | '/admin/projects/$projectId/phases/$phaseId/setup'
-  | '/admin/projects/$projectId/phases/$phaseId/ideas'
-  | '/admin/projects/$projectId/phases/$phaseId/proposals'
-  | '/admin/projects/$projectId/phases/$phaseId/insights'
-  | '/admin/projects/$projectId/phases/$phaseId/polls'
-  | '/admin/projects/$projectId/phases/$phaseId/survey-results'
-  | '/admin/projects/$projectId/phases/$phaseId/volunteering';
-
-const PHASE_TAB_ROUTES: Record<PhaseLandingTab, PhaseTabTarget> = {
-  setup: '/admin/projects/$projectId/phases/$phaseId/setup',
-  ideas: '/admin/projects/$projectId/phases/$phaseId/ideas',
-  proposals: '/admin/projects/$projectId/phases/$phaseId/proposals',
-  insights: '/admin/projects/$projectId/phases/$phaseId/insights',
-  polls: '/admin/projects/$projectId/phases/$phaseId/polls',
-  'survey-results': '/admin/projects/$projectId/phases/$phaseId/survey-results',
-  volunteering: '/admin/projects/$projectId/phases/$phaseId/volunteering',
-};
+import EmptyState from './EmptyState';
 
 const METHOD_LABELS: Record<ParticipationMethod, MessageDescriptor> = {
   ideation: methodMessages.ideation,
@@ -59,69 +42,6 @@ const METHOD_LABELS: Record<ParticipationMethod, MessageDescriptor> = {
   document_annotation: methodMessages.documentAnnotation,
 };
 
-type PhaseStatus = 'past' | 'present' | 'future';
-
-const phaseStatus = (phase: IPhaseData): PhaseStatus =>
-  pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at]);
-
-const formatDateRange = (
-  startAt: string,
-  endAt: string | null,
-  noEndLabel: string
-): string => {
-  const start = new Date(startAt);
-
-  if (!endAt) {
-    return `${format(start, 'd MMM')} – ${noEndLabel}`;
-  }
-
-  const end = new Date(endAt);
-
-  return isSameMonth(start, end)
-    ? `${format(start, 'd')} – ${format(end, 'd MMM')}`
-    : `${format(start, 'd MMM')} – ${format(end, 'd MMM')}`;
-};
-
-const dotBackground = (status: PhaseStatus) => {
-  if (status === 'present') return colors.green500;
-  if (status === 'past') return colors.coolGrey500;
-  return colors.white;
-};
-
-// Future phases show as an outline ring; present/past are filled.
-const dotBorder = (status: PhaseStatus) =>
-  status === 'future' ? `2px solid ${colors.coolGrey300}` : undefined;
-
-const Row = styled.div<{ selected: boolean }>`
-  position: relative;
-  display: flex;
-  gap: 10px;
-  padding: 8px;
-  border-radius: 6px;
-  cursor: pointer;
-  text-decoration: none;
-  background: ${({ selected }) => (selected ? colors.grey200 : 'transparent')};
-  transition: background 80ms ease-out;
-
-  &:hover {
-    background: ${({ selected }) =>
-      selected ? colors.grey200 : colors.grey100};
-  }
-`;
-
-const DOT_CENTER = 16;
-
-const Connector = styled.div<{ isFirst: boolean; isLast: boolean }>`
-  position: absolute;
-  left: 13px; /* 8px row padding + 5px (half the 10px dot) */
-  width: 2px;
-  margin-left: -1px;
-  top: ${({ isFirst }) => (isFirst ? `${DOT_CENTER}px` : '0')};
-  bottom: ${({ isLast }) => (isLast ? 'auto' : '0')};
-  height: ${({ isLast }) => (isLast ? `${DOT_CENTER}px` : 'auto')};
-  background: ${colors.coolGrey300};
-`;
-
 interface Props {
   projectId: string;
 }
@@ -129,7 +49,7 @@ interface Props {
 const TimelinePhases = ({ projectId }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const { phaseId } = useParams({ strict: false }) as { phaseId?: string };
+  const { phaseId } = useParams({ strict: false });
   const { data: phases } = usePhases(projectId);
 
   if (!phases) {
@@ -157,6 +77,8 @@ const TimelinePhases = ({ projectId }: Props) => {
         {formatMessage(messages.timeline)}
       </Text>
 
+      {sortedPhases.length === 0 && <EmptyState />}
+
       <Box display="flex" flexDirection="column">
         {sortedPhases.map((phase, index) => {
           const status = phaseStatus(phase);
@@ -181,18 +103,7 @@ const TimelinePhases = ({ projectId }: Props) => {
                 {sortedPhases.length > 1 && (
                   <Connector isFirst={index === 0} isLast={isLast} />
                 )}
-                <Box w="10px" flex="0 0 auto">
-                  <Box
-                    position="relative"
-                    zIndex="1"
-                    w="10px"
-                    h="10px"
-                    borderRadius="50%"
-                    mt="3px"
-                    background={dotBackground(status)}
-                    border={dotBorder(status)}
-                  />
-                </Box>
+                <PhaseDot status={status} />
                 <Box flexGrow={1} pb="4px">
                   <Text
                     as="span"
@@ -214,7 +125,8 @@ const TimelinePhases = ({ projectId }: Props) => {
 
       <Box display="flex" mt="4px">
         <ButtonWithLink
-          linkTo={`/admin/projects/${projectId}/phases/new`}
+          to="/admin/projects/$projectId/phases/new"
+          params={{ projectId }}
           buttonStyle="text"
           size="s"
           icon="plus"

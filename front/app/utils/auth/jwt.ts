@@ -5,6 +5,12 @@ import { HighestRole } from 'api/users/types';
 
 import { SECURE_COOKIE } from '../cookie';
 
+import {
+  forgetJwt,
+  rememberJwt,
+  reportUnexpectedJwtLoss,
+} from './reportJwtLoss';
+
 const COOKIE_NAME = 'cl2_jwt';
 
 export interface IDecodedJwt {
@@ -20,10 +26,15 @@ export function getJwt() {
     const jwt = Cookies.get(COOKIE_NAME);
 
     if (!jwt || jwt === 'undefined') {
+      // Before removeJwt(), which clears the record this check relies on.
+      reportUnexpectedJwtLoss();
       removeJwt();
       return null;
     }
 
+    // Seeds the record on page loads that reuse an existing session, where
+    // setJwt is never called.
+    rememberJwt(jwt);
     return jwt;
   } catch (error) {
     return null;
@@ -43,9 +54,11 @@ export function setJwt(
     attrs.expires = tokenLifetime; // If omitted, the cookie becomes a session cookie. Fore more info, check https://stackoverflow.com/a/36421888
   }
   Cookies.set(COOKIE_NAME, jwt, attrs);
+  rememberJwt(jwt);
 }
 
 export function removeJwt() {
+  forgetJwt();
   Cookies.remove(COOKIE_NAME);
 }
 

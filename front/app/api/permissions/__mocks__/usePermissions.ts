@@ -16,6 +16,8 @@ export const permissionsData: IPermissionData[] = [
       everyone_tracking_enabled: false,
       require_confirmed_email: true,
       confirmed_email_expiry: null,
+      require_confirmed_phone_number: false,
+      confirmed_phone_number_expiry: null,
       require_name: true,
       require_password: true,
       require_verification: false,

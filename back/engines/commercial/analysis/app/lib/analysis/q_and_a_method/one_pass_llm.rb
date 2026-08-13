@@ -9,6 +9,12 @@ module Analysis
     # The number of tokens we reserve for the LLM response containing the answer
     TOKENS_FOR_RESPONSE = 600
 
+    # Substituted for %{comments_instruction} in a tenant's custom prompt
+    # template. A custom template cannot branch on include_comments itself, so we
+    # hand it the sentence the default template would have added.
+    COMMENTS_INSTRUCTION = 'Some responses might contain comments from other users, separated by +++. ' \
+                           'You can include the information taken from the comments in your response.'
+
     def generate_plan
       plan = nil
       include_comments = true
@@ -97,7 +103,11 @@ module Analysis
       }
 
       if custom_template
-        ERB.new(custom_template).result_with_hash(params)
+        LLM::PlaceholderPrompt.new.render(
+          custom_template,
+          **params.except(:include_comments),
+          comments_instruction: include_comments ? COMMENTS_INSTRUCTION : ''
+        )
       else
         filename = file_ai_analysis_enabled? ? 'q_and_a.v2' : 'q_and_a'
         LLM::Prompt.new.fetch(filename, **params)

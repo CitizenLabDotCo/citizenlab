@@ -72,6 +72,8 @@ RSpec.describe Permission do
       expect(permission.require_password).to be true
       expect(permission.require_verification).to be false
       expect(permission.confirmed_email_expiry).to be_nil
+      expect(permission.require_confirmed_phone_number).to be false
+      expect(permission.confirmed_phone_number_expiry).to be_nil
     end
   end
 
@@ -134,7 +136,7 @@ RSpec.describe Permission do
       AppConfiguration.instance.save!
     end
 
-    it 'can be required when password login signup is enabled' do
+    it 'can be required when password login is enabled' do
       permission = create(:permission, :by_users, require_verification: true, require_confirmed_email: false)
       permission.update!(require_confirmed_email: true)
       expect(permission.reload.require_confirmed_email).to be true
@@ -143,14 +145,6 @@ RSpec.describe Permission do
     it 'cannot be required when the password_login feature is not activated' do
       permission = create(:permission, :by_users, require_verification: true, require_confirmed_email: false)
       SettingsService.new.deactivate_feature!('password_login')
-      expect { permission.update!(require_confirmed_email: true) }.to raise_error(ActiveRecord::RecordInvalid)
-    end
-
-    it 'cannot be required when password login signup is disabled' do
-      permission = create(:permission, :by_users, require_verification: true, require_confirmed_email: false)
-      config = AppConfiguration.instance
-      config.settings['password_login']['enable_signup'] = false
-      config.save!
       expect { permission.update!(require_confirmed_email: true) }.to raise_error(ActiveRecord::RecordInvalid)
     end
   end
@@ -184,9 +178,79 @@ RSpec.describe Permission do
       end
     end
 
+    context 'when the sms feature is enabled' do
+      include_context 'with sms feature enabled'
+
+      it 'is valid when only a confirmed phone number is required' do
+        permission = build(:permission, :by_users, require_confirmed_email: false, require_verification: false, require_confirmed_phone_number: true)
+        expect(permission).to be_valid
+      end
+    end
+
     it 'does not apply when participation does not require an account' do
       expect(build(:permission, :by_everyone, require_confirmed_email: false, require_verification: false)).to be_valid
       expect(build(:permission, :by_admins_moderators, require_confirmed_email: false, require_verification: false)).to be_valid
+    end
+  end
+
+  describe 'require_confirmed_phone_number' do
+    context 'when the sms feature is enabled' do
+      include_context 'with sms feature enabled'
+
+      it 'can be required' do
+        permission = create(:permission, :by_users, require_confirmed_phone_number: true)
+        expect(permission.require_confirmed_phone_number).to be true
+      end
+    end
+
+    context 'when the sms feature is not enabled' do
+      it 'cannot be required' do
+        expect { create(:permission, :by_users, require_confirmed_phone_number: true) }.to raise_error(ActiveRecord::RecordInvalid)
+      end
+    end
+  end
+
+  describe 'confirmed_email_expiry' do
+    it 'can be set when a confirmed email is required' do
+      permission = create(:permission, :by_users, require_confirmed_email: true, confirmed_email_expiry: 1)
+      expect(permission.confirmed_email_expiry).to eq(1)
+    end
+
+    context 'when the sms feature is enabled' do
+      include_context 'with sms feature enabled'
+
+      it 'does not cause a problem if set and require_confirmed_email is later disabled' do
+        # Keep a confirmed phone number as the fallback authentication method so the
+        # permission stays valid once the confirmed-email requirement is removed.
+        permission = create(:permission, :by_users, require_confirmed_email: true, require_confirmed_phone_number: true, confirmed_email_expiry: 1)
+        permission.update!(require_confirmed_email: false)
+        expect(permission.confirmed_email_expiry).to eq(1)
+      end
+
+      it 'cannot be set when a confirmed email is not required' do
+        expect { create(:permission, :by_users, require_confirmed_email: false, require_confirmed_phone_number: true, confirmed_email_expiry: 1) }.to raise_error(ActiveRecord::RecordInvalid)
+      end
+    end
+  end
+
+  describe 'confirmed_phone_number_expiry' do
+    context 'when the sms feature is enabled' do
+      include_context 'with sms feature enabled'
+
+      it 'can be set when a confirmed phone number is required' do
+        permission = create(:permission, :by_users, require_confirmed_phone_number: true, confirmed_phone_number_expiry: 1)
+        expect(permission.confirmed_phone_number_expiry).to eq(1)
+      end
+
+      it 'does not cause a problem if set and require_confirmed_phone_number is later disabled' do
+        permission = create(:permission, :by_users, require_confirmed_phone_number: true, confirmed_phone_number_expiry: 1)
+        permission.update!(require_confirmed_phone_number: false)
+        expect(permission.confirmed_phone_number_expiry).to eq(1)
+      end
+    end
+
+    it 'cannot be set when a confirmed phone number is not required' do
+      expect { create(:permission, :by_users, confirmed_phone_number_expiry: 1) }.to raise_error(ActiveRecord::RecordInvalid)
     end
   end
 
@@ -275,6 +339,15 @@ RSpec.describe Permission do
     context 'surveys' do
       let(:permission) { create(:permission, action: 'posting_idea', permission_scope: create(:native_survey_phase)) }
 
+      it 'returns locked: true and explanation if the permissions_custom_fields feature is deactivated' do
+        permission.update!(permitted_by: 'users', user_data_collection: 'all_data', user_fields_in_form: true)
+        SettingsService.new.deactivate_feature!('permissions_custom_fields')
+        descriptor = permission.user_fields_in_form_descriptor
+        expect(descriptor[:value]).to be_nil
+        expect(descriptor[:locked]).to be_truthy
+        expect(descriptor[:explanation]).to eq('user_fields_in_form_not_supported_for_action')
+      end
+
       it 'if permitted_by is everyone and data collection is anonymous: returns locked: true, value: nil and explanation' do
         permission.update!(permitted_by: 'everyone', user_data_collection: 'anonymous')
         descriptor = permission.user_fields_in_form_descriptor
@@ -302,6 +375,15 @@ RSpec.describe Permission do
 
     context 'ideation' do
       let(:permission) { create(:permission, action: 'posting_idea', permission_scope: create(:ideation_phase)) }
+
+      it 'returns locked: true and explanation if the permissions_custom_fields feature is deactivated' do
+        permission.update!(permitted_by: 'users', user_fields_in_form: true)
+        SettingsService.new.deactivate_feature!('permissions_custom_fields')
+        descriptor = permission.user_fields_in_form_descriptor
+        expect(descriptor[:value]).to be_nil
+        expect(descriptor[:locked]).to be_truthy
+        expect(descriptor[:explanation]).to eq('user_fields_in_form_not_supported_for_action')
+      end
 
       it 'if permitted_by is everyone: returns locked: true and value: true' do
         permission.update!(permitted_by: 'everyone', user_fields_in_form: false)

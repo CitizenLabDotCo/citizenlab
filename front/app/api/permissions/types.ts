@@ -27,6 +27,8 @@ export interface IGlobalPermissionData {
     permitted_by: PermittedBy;
     permitted_by_everyone_allowed: false;
     require_confirmed_email: boolean;
+    require_confirmed_phone_number: boolean;
+    confirmed_phone_number_expiry: number | null;
     require_name: boolean;
     require_password: boolean;
     require_verification: boolean;
@@ -66,6 +68,8 @@ export interface PermissionUpdateParams {
   access_denied_explanation_multiloc: Multiloc;
   require_confirmed_email: boolean;
   confirmed_email_expiry: number | null;
+  require_confirmed_phone_number: boolean;
+  confirmed_phone_number_expiry: number | null;
   require_name: boolean;
   require_password: boolean;
   require_verification: boolean;

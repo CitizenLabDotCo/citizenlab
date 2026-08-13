@@ -191,8 +191,12 @@ describe('Input form builder', () => {
     // Go to the next page of the idea form
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
-    // Veryify location is present and properly geocoded (from the lat long in URL)
-    cy.contains('Steenakker 34, 5411').should('exist');
+    // Verify location is present and reverse-geocoded (from the lat long in
+    // URL). Match street + postcode but not the house number: that's the
+    // geocoding provider's data, which drifts over time (returned 36 until
+    // June 2026, then 34). The exact coordinates are asserted on submission
+    // via the ideaSubmission interception below.
+    cy.contains(/Steenakker \d+, 5411/).should('exist');
 
     // Cannot proceed to the next page without filling in the required custom field
     cy.dataCy('e2e-submit-form').click();

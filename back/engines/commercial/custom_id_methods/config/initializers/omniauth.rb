@@ -8,7 +8,7 @@ FACEBOOK_SETUP_PROC = lambda do |env|
   CustomIdMethods::Facebook::FacebookOmniauth.new.omniauth_setup(AppConfiguration.instance, env)
 end
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :facebook, setup: FACEBOOK_SETUP_PROC
+  provider :facebook, setup: FACEBOOK_SETUP_PROC, name: 'facebook'
 end
 
 GOOGLE_SETUP_PROC = lambda do |env|
@@ -23,7 +23,7 @@ AZURE_AD_SETUP_PROC = lambda do |env|
   CustomIdMethods::AzureActiveDirectory::AzureActiveDirectoryOmniauth.new.omniauth_setup(AppConfiguration.instance, env)
 end
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :azure_activedirectory, setup: AZURE_AD_SETUP_PROC
+  provider :azure_activedirectory, setup: AZURE_AD_SETUP_PROC, name: 'azureactivedirectory'
 end
 
 AZURE_AD_B2C_SETUP_PROC = lambda do |env|

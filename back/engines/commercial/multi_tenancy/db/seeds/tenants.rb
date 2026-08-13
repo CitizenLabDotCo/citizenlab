@@ -40,7 +40,6 @@ module MultiTenancy
             password_login: {
               allowed: true,
               enabled: true,
-              enable_signup: true,
               minimum_length: 8
             },
             pages: {
@@ -427,6 +426,22 @@ module MultiTenancy
               allowed: true
             },
             html_block_in_content_builder: {
+              enabled: true,
+              allowed: true
+            },
+            sms: {
+              enabled: false,
+              allowed: false
+            },
+            decidim_importer: {
+              enabled: true,
+              allowed: true
+            },
+            parallel_participation: {
+              enabled: true,
+              allowed: true
+            },
+            configurable_dropdown: {
               enabled: true,
               allowed: true
             }
