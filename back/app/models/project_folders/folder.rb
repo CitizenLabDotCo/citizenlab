@@ -117,7 +117,7 @@ module ProjectFolders
       self.description_preview_multiloc = service.remove_multiloc_empty_trailing_tags description_preview_multiloc
     end
 
-    # Titles are plain text, but the admin management feed renders a changed title as raw HTML.
+    # Titles are plain text: strip markup so nothing downstream can render it as HTML.
     def sanitize_title_multiloc
       self.title_multiloc = SanitizationService.new.strip_multiloc_to_plain_text(title_multiloc)
     end
