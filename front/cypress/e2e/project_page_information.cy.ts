@@ -80,8 +80,10 @@ describe('Information with events CTA', () => {
     let latestEventId: string;
 
     before(() => {
-      // Removing event from the previous test
-      cy.apiRemoveEvent(ctaEventId);
+      // Remove event from the previous test
+      if (ctaEventId) {
+        cy.apiRemoveEvent(ctaEventId);
+      }
 
       // Create 2 events in reverse chronological order, so that a wrong sort order
       // cannot pass by accidentally matching the creation order.
