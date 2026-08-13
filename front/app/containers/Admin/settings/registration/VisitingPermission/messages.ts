@@ -16,8 +16,8 @@ export default defineMessages({
       'The setting will be applied to the global sign-up process (e.g. when people click "Sign up" on the homepage).',
   },
   subtitleBullet2: {
-    id: 'app.containers.AdminPage.SettingsPage.visitingPermission.subtitleBullet2',
+    id: 'app.containers.AdminPage.SettingsPage.visitingPermission.subtitleBullet4',
     defaultMessage:
-      'The setting will be applied <b>by default</b> when people want to engage with a project or sign up for an event. Depending on your license, however, <b>admins and project managers can override this per phase</b>- see the “Phase access and user data” tab on each project phase.',
+      'The setting will be applied <b>by default</b> when people want to engage with a project or sign up for an event. Depending on your license, however, <b>admins and managers can override this per phase</b>- see the “Phase access and user data” tab on each project phase.',
   },
 });
