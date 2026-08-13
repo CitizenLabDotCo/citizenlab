@@ -40,7 +40,9 @@ namespace :single_use do
     strip_multiloc = service.method(:strip_multiloc_to_plain_text)
 
     # Every model that sanitises its `title_multiloc` on write belongs here.
-    title_models = [Idea, Project, Phase, ProjectFolders::Folder, InputTopic, GlobalTopic, DefaultInputTopic].freeze
+    title_models = [
+      Idea, Project, Phase, ProjectFolders::Folder, InputTopic, GlobalTopic, DefaultInputTopic, Event, StaticPage
+    ].freeze
 
     affected = [] # rows for the summary: { host:, model:, attribute: }
 

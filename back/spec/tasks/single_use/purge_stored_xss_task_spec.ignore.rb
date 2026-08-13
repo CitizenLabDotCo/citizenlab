@@ -92,6 +92,18 @@ describe 'single_use:purge_stored_xss rake task' do
     end
   end
 
+  context 'an event or static page title carrying HTML' do
+    let!(:event) { store_raw(create(:event), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>hi' }) }
+    let!(:static_page) { store_raw(create(:static_page), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>hi' }) }
+
+    it 'strips all HTML from each of them' do
+      run_task
+      [event, static_page].each do |record|
+        expect(record.reload.title_multiloc['en']).to eq 'hi'
+      end
+    end
+  end
+
   context 'a comment body carrying a script tag' do
     let!(:comment) { store_raw(create(:comment), :body_multiloc, { 'en' => '<p>hi</p><script>alert(1)</script>' }) }
 
