@@ -189,7 +189,7 @@ function signUp() {
   cy.get('.e2e-privacy-checkbox .e2e-checkbox').click();
   cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);
 
-  cy.get('#e2e-confirmation-code-input').type('1234');
+  cy.get('#e2e-confirmation-code-input').type('123456');
   cy.get('#e2e-confirmation-button').click();
 
   cy.get('.e2e-signup-success-close-button').wait(500).click();
@@ -262,7 +262,7 @@ function emailConfirmation(email: string) {
     method: 'POST',
     url: 'web_api/v1/user/confirm_code_email',
     body: {
-      confirmation: { email, code: '1234' },
+      confirmation: { email, code: '123456' },
     },
   });
 }

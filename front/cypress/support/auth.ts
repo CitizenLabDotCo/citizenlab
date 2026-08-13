@@ -20,7 +20,7 @@ const acceptPolicies = (cy: Cypress.Chainable) => {
 
 export const confirmEmail = (cy: Cypress.Chainable) => {
   cy.get('#code').should('exist');
-  cy.get('#code').click().type('1234');
+  cy.get('#code').click().type('123456');
   // The confirmation request can outlive the default 15s element timeout on
   // a loaded backend, leaving the next auth step (built-in fields form) to
   // time out while the button still spins — so await the response itself.
@@ -31,7 +31,7 @@ export const confirmEmail = (cy: Cypress.Chainable) => {
 };
 
 export const confirmPhone = (cy: Cypress.Chainable) => {
-  cy.dataCy('phone-code-input').find('input').type('1234');
+  cy.dataCy('phone-code-input').find('input').type('123456');
   cy.dataCy('phone-confirm-button').click();
 };
 
