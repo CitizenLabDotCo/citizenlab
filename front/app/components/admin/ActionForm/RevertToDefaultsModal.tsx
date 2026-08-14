@@ -1,6 +1,7 @@
 // Confirms giving up an action's own settings. Reverting deletes the
-// permission, so the groups and demographic questions configured on it are gone
-// for good — hence the extra step.
+// permission, so every choice made on it — including which groups and
+// demographic questions apply — goes with it, hence the extra step. The groups
+// and questions themselves are platform-level and are left alone.
 
 import React from 'react';
 

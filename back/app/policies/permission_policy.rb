@@ -22,10 +22,6 @@ class PermissionPolicy < ApplicationPolicy
     user&.active? && UserRoleService.new.can_moderate?(record, user)
   end
 
-  def reset?
-    update?
-  end
-
   def override?
     update?
   end

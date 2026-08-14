@@ -61,8 +61,26 @@ describe Permissions::PermissionInheritanceService do
       expect(service.find(phase, 'taking_survey')).to be_nil
     end
 
-    it 'returns nil for a scope that does not inherit' do
+    it 'returns nil for an action the global scope does not support' do
       expect(service.find(nil, 'posting_idea')).to be_nil
+    end
+
+    it 'returns the persisted permission for a global action' do
+      expect(service.find(nil, 'visiting').id).to eq visiting_permission.id
+    end
+
+    it 'creates a missing global permission on demand, since there is nothing to inherit from' do
+      Permission.where(permission_scope: nil, action: 'following').destroy_all
+
+      expect(service.find(nil, 'following')).to be_persisted
+    end
+
+    it 'reads a permission from the preloaded association of the scope, without querying' do
+      create(:permission, action: 'posting_idea', permission_scope: phase, permitted_by: 'admins_moderators')
+      preloaded = Phase.includes(:permissions).find(phase.id)
+
+      expect(Permission).not_to receive(:includes)
+      expect(service.find(preloaded, 'posting_idea').permitted_by).to eq 'admins_moderators'
     end
 
     it 'reflects later changes to the visiting permission' do
@@ -220,35 +238,10 @@ describe Permissions::PermissionInheritanceService do
     end
   end
 
-  describe '#matches_source?' do
-    it 'is true for a permission that is an exact copy of the visiting permission' do
-      expect(service.matches_source?(service.override!(phase, 'posting_idea'))).to be true
-    end
-
-    it 'is false when an inheritable attribute differs' do
-      permission = service.override!(phase, 'posting_idea')
-      permission.update!(require_name: true)
-
-      expect(service.matches_source?(permission)).to be false
-    end
-
-    it 'is false when the groups differ' do
-      permission = service.override!(phase, 'posting_idea')
-      permission.update!(groups: [create(:group)])
-
-      expect(service.matches_source?(permission)).to be false
-    end
-
-    it 'is false when the demographic questions differ' do
-      permission = service.override!(phase, 'posting_idea')
-      permission.update!(global_custom_fields: false)
-      create(:permissions_custom_field, permission: permission)
-
-      expect(service.matches_source?(permission)).to be false
-    end
-
-    it 'is false for a global permission' do
-      expect(service.matches_source?(visiting_permission)).to be false
+  describe '#inheritable_attributes' do
+    it 'copies every attribute but the identity and the timestamps' do
+      expect(service.inheritable_attributes(visiting_permission).keys)
+        .to match_array(Permission.column_names - described_class::NON_INHERITABLE_ATTRIBUTES)
     end
   end
 

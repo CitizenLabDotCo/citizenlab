@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  resetDemographicQuestionsAndGroups: {
-    id: 'app.components.admin.ActionForm.resetDemographicQuestionsAndGroups',
-    defaultMessage: 'Reset demographic questions and groups',
-  },
   nQuestions: {
     id: 'app.components.admin.ActionForm.nQuestions',
     defaultMessage:
@@ -85,9 +81,9 @@ export default defineMessages({
     defaultMessage: 'Revert to platform defaults?',
   },
   revertToPlatformDefaultsInfo: {
-    id: 'app.components.admin.ActionForm.revertToPlatformDefaultsInfo',
+    id: 'app.components.admin.ActionForm.revertToPlatformDefaultsInfo2',
     defaultMessage:
-      'This action will follow the platform defaults again. The groups and demographic questions you configured for it will be permanently deleted.',
+      'This action will follow the platform defaults again. The settings you chose for it — including which groups and demographic questions apply — will be discarded.',
   },
   revertToPlatformDefaultsConfirmButton: {
     id: 'app.components.admin.ActionForm.revertToPlatformDefaultsConfirmButton',

@@ -23,8 +23,9 @@ resource 'Phases' do
     context 'when visitor' do
       before do
         Permissions::PermissionsUpdateService.new.update_all_permissions
-        # Only overridden permissions are serialized: an action that still
-        # inherits the global 'visiting' permission has no record of its own.
+        # A phase's `permissions` relationship only holds its own rows: an
+        # action that still inherits the global 'visiting' permission has no
+        # record, so there is nothing for the relationship to link to.
         phases.flatten.each { |phase| override_permissions!(phase) }
       end
 

@@ -2,14 +2,14 @@
 
 require 'rails_helper'
 
-# NOTE: single-use task specs are excluded from the suite (see spec_helper's
-# `config.pattern`). The predicate this task is built on —
-# Permissions::PermissionInheritanceService#matches_source? — is covered by
-# spec/services/permissions/permission_inheritance_service_spec.rb, which does run.
+# NOTE: single-use task specs are excluded from the suite (see spec_helper's `config.pattern`).
 describe 'single_use:delete_inherited_phase_permissions' do
+  subject(:run) { task.invoke('execute') }
+
   before { load_rake_tasks_if_not_loaded }
 
   let(:task) { Rake::Task['single_use:delete_inherited_phase_permissions'] }
+  let(:service) { Permissions::PermissionInheritanceService.new }
   let(:phase) { create(:single_phase_ideation_project).phases.first }
   let!(:visiting_permission) do
     create(:global_permission, action: 'visiting', permitted_by: 'users', require_name: false)
@@ -18,35 +18,50 @@ describe 'single_use:delete_inherited_phase_permissions' do
   after { task.reenable }
 
   it 'deletes the phase permissions that are an exact copy of the visiting permission' do
-    permission = Permissions::PermissionInheritanceService.new.override!(phase, 'posting_idea')
+    permission = service.override!(phase, 'posting_idea')
 
-    task.invoke
+    run
 
     expect(Permission.where(id: permission.id)).to be_empty
   end
 
-  it 'keeps the phase permissions that differ from the visiting permission' do
-    service = Permissions::PermissionInheritanceService.new
-    customised = service.override!(phase, 'posting_idea')
-    customised.update!(permitted_by: 'admins_moderators')
-    with_groups = service.override!(phase, 'commenting_idea')
-    with_groups.update!(groups: [create(:group)])
+  it 'keeps a permission whose attributes differ' do
+    permission = service.override!(phase, 'posting_idea')
+    permission.update!(require_name: true)
 
-    task.invoke
+    run
 
-    expect(Permission.where(id: [customised.id, with_groups.id]).count).to eq 2
+    expect(Permission.where(id: permission.id)).to be_present
+  end
+
+  it 'keeps a permission whose groups differ' do
+    permission = service.override!(phase, 'posting_idea')
+    permission.update!(groups: [create(:group)])
+
+    run
+
+    expect(Permission.where(id: permission.id)).to be_present
+  end
+
+  it 'keeps a permission whose demographic questions differ' do
+    permission = service.override!(phase, 'posting_idea')
+    permission.update!(global_custom_fields: false)
+    create(:permissions_custom_field, permission: permission)
+
+    run
+
+    expect(Permission.where(id: permission.id)).to be_present
   end
 
   it 'never deletes the global permissions' do
-    task.invoke
+    run
 
     expect(Permission.where(id: visiting_permission.id)).to be_present
   end
 
-  it 'deletes nothing in REPORT mode' do
-    permission = Permissions::PermissionInheritanceService.new.override!(phase, 'posting_idea')
+  it 'deletes nothing on a dry run' do
+    permission = service.override!(phase, 'posting_idea')
 
-    stub_env('REPORT' => 'true')
     task.invoke
 
     expect(Permission.where(id: permission.id)).to be_present

@@ -75,6 +75,9 @@ describe('Native survey project page actions', () => {
     it('tests actions when unregistered users may submit survey responses', () => {
       // Login as admin
       cy.setAdminLoginCookie();
+      // The action follows the platform defaults until it is overridden, and
+      // the panel only offers its settings once it has been.
+      cy.apiOverridePhasePermission({ phaseId, action: 'posting_idea' });
       // Visit admin phase permissions page
       cy.visit(
         `admin/projects/${projectIdWithOneOpenEndedPhase}/phases/${phaseId}/access-rights`

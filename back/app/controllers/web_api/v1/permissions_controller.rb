@@ -3,7 +3,7 @@
 class WebApi::V1::PermissionsController < ApplicationController
   include LockedUserCustomFieldsConcern
 
-  before_action :set_permission, only: %i[show update reset requirements custom_fields custom_field_options access_denied_explanation]
+  before_action :set_permission, only: %i[show update requirements custom_fields custom_field_options access_denied_explanation]
   before_action :set_persisted_permission, only: %i[inherit]
   skip_before_action :authenticate_user
   # The list mixes persisted permissions with inherited ones, which have no row
@@ -59,21 +59,6 @@ class WebApi::V1::PermissionsController < ApplicationController
     render json: serialize(@permission), status: :ok
   rescue Permissions::PermissionInheritanceService::UnsupportedScope
     raise ActiveRecord::RecordNotFound
-  end
-
-  def reset
-    raise ActiveRecord::RecordNotFound if @permission.inherited?
-
-    authorize @permission
-    old_group_ids = @permission.group_ids
-    ActiveRecord::Base.transaction do
-      @permission.global_custom_fields = true
-      save_or_raise!(@permission)
-      @permission.permissions_custom_fields.destroy_all
-      @permission.groups_permissions.destroy_all
-      sidefx.after_update(@permission, current_user, old_group_ids)
-      render json: serialize(@permission), status: :ok
-    end
   end
 
   def requirements

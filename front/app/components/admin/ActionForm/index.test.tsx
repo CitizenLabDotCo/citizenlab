@@ -126,7 +126,6 @@ const renderForm = (
       title="Commenting"
       defaultOpen={defaultOpen}
       onChange={jest.fn()}
-      onReset={jest.fn()}
       onOverride={onOverride}
       onRevertToDefaults={onRevertToDefaults}
     />
@@ -298,7 +297,7 @@ describe('<ActionForm />', () => {
       expect(
         screen.getByText('Revert to platform defaults?')
       ).toBeInTheDocument();
-      expect(screen.getByText(/permanently deleted/i)).toBeInTheDocument();
+      expect(screen.getByText(/will be discarded/i)).toBeInTheDocument();
       expect(onRevertToDefaults).not.toHaveBeenCalled();
 
       await userEvent.click(screen.getByRole('button', { name: 'Revert' }));

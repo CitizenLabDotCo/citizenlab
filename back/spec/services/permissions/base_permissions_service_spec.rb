@@ -9,6 +9,43 @@ describe Permissions::BasePermissionsService do
     AppConfiguration.instance.save!
   end
 
+  describe 'denied_reason_for_action' do
+    let(:user) { nil }
+    let(:phase) { create(:single_phase_ideation_project).phases.first }
+
+    before do
+      Permission.where(permission_scope: phase).destroy_all
+      Permissions::PermissionInheritanceService.clear_source_permission_cache
+    end
+
+    it 'resolves a phase action that has no permission of its own through the visiting permission' do
+      create(:global_permission, action: 'visiting', permitted_by: 'admins_moderators')
+
+      expect(service.denied_reason_for_action('posting_idea', scope: phase)).to eq 'user_not_signed_in'
+    end
+
+    it 'uses the permission of its own once the action has been overridden' do
+      create(:global_permission, action: 'visiting', permitted_by: 'users')
+      Permissions::PermissionInheritanceService.new.override!(phase, 'posting_idea')
+        .update!(permitted_by: 'everyone')
+
+      expect(service.denied_reason_for_action('posting_idea', scope: phase)).to be_nil
+    end
+
+    it 'creates a missing global permission on demand, since there is nothing to inherit from' do
+      Permission.where(permission_scope: nil).destroy_all
+
+      service.denied_reason_for_action('following', scope: nil)
+
+      expect(Permission.find_by(permission_scope: nil, action: 'following')).to be_present
+    end
+
+    it 'raises for an action the scope does not support' do
+      expect { service.denied_reason_for_action('taking_survey', scope: phase) }
+        .to raise_error(/Unknown action 'taking_survey'/)
+    end
+  end
+
   describe 'user_denied_reason' do
     before do
       create(:custom_field_birthyear, required: true)

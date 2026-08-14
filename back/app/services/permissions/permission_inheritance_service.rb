@@ -15,23 +15,17 @@ module Permissions
   class PermissionInheritanceService
     SOURCE_ACTION = 'visiting'
 
-    # Everything on a permission that is copied from 'visiting', i.e. every
-    # attribute except its identity (id, action, scope) and timestamps.
-    INHERITABLE_ATTRIBUTES = %w[
-      permitted_by
-      global_custom_fields
-      verification_expiry
-      access_denied_explanation_multiloc
-      everyone_tracking_enabled
-      user_fields_in_form
-      user_data_collection
-      require_confirmed_email
-      confirmed_email_expiry
-      require_name
-      require_password
-      require_verification
-      require_confirmed_phone_number
-      confirmed_phone_number_expiry
+    # What is *not* copied from 'visiting': the permission's identity (id,
+    # action, scope) and its timestamps. Everything else is inherited, so a new
+    # column is inherited by default and only has to be listed here if it should
+    # not be.
+    NON_INHERITABLE_ATTRIBUTES = %w[
+      id
+      action
+      permission_scope_id
+      permission_scope_type
+      created_at
+      updated_at
     ].freeze
 
     class << self
@@ -63,10 +57,13 @@ module Permissions
     def find(scope, action)
       permission = persisted_permission(scope, action)
       return permission if permission
-      return nil unless inheritable_scope?(scope)
       return nil unless Permission.available_actions(scope).include?(action)
+      return build_inherited(scope, action) if inheritable_scope?(scope)
 
-      build_inherited(scope, action)
+      # A global scope has nothing to inherit from, so its permissions are still
+      # created on demand when they are missing.
+      Permissions::PermissionsUpdateService.new.update_permissions_for_scope(scope)
+      stored_permission(scope, action)
     end
 
     # Every permission that applies to `scope`, in the scope's action order,
@@ -85,7 +82,9 @@ module Permissions
     # of it, so it can be customised independently. Returns the existing
     # permission untouched if the action was already overridden.
     def override!(scope, action)
-      existing = persisted_permission(scope, action)
+      # Deliberately not persisted_permission: a preloaded association that
+      # predates the row would send us on to create a duplicate.
+      existing = stored_permission(scope, action)
       return existing if existing
 
       raise UnsupportedScope, "Scope #{scope.inspect} does not support inheritance" unless inheritable_scope?(scope)
@@ -121,17 +120,11 @@ module Permissions
       build_inherited(scope, action)
     end
 
-    # Whether `permission` is an exact copy of the global 'visiting' permission,
-    # i.e. overriding it changes nothing. Used to decide which existing
-    # permissions can be deleted in favour of inheriting.
-    def matches_source?(permission)
-      source = self.class.source_permission
-      return false unless source
-      return false unless inheritable_scope?(permission.permission_scope)
-      return false unless inheritable_attributes(permission) == inheritable_attributes(source)
-      return false unless permission.groups.ids.sort == source.groups.ids.sort
+    # The attributes an inheriting permission copies from its source.
+    def inheritable_attributes(source)
+      return {} unless source
 
-      custom_fields_match?(permission, source)
+      source.attributes.except(*NON_INHERITABLE_ATTRIBUTES)
     end
 
     def build_inherited(scope, action)
@@ -154,8 +147,22 @@ module Permissions
 
     private
 
+    # Read through the scope's own association: it reuses the preload the phases
+    # and projects controllers set up (resolving every action of every phase
+    # through a query each would be an N+1 on those indexes), and otherwise
+    # loads the scope's permissions in one query rather than one per action.
+    # Groups are deliberately left to load on demand — most permission checks
+    # never reach them.
     def persisted_permission(scope, action)
-      Permission.find_by(permission_scope: scope, action: action)
+      return stored_permission(scope, action) unless scope.respond_to?(:permissions)
+
+      scope.permissions.find { |permission| permission.action == action }
+    end
+
+    # The strict read, for the global scope (which has no association to go
+    # through) and for the write paths, where a stale preload would be wrong.
+    def stored_permission(scope, action)
+      Permission.includes(:groups).find_by(permission_scope: scope, action: action)
     end
 
     # Starts from the model's own creation defaults, so a tenant without a
@@ -167,12 +174,6 @@ module Permissions
       permission.apply_creation_defaults
       permission.assign_attributes(inheritable_attributes(source))
       permission
-    end
-
-    def inheritable_attributes(source)
-      return {} unless source
-
-      source.attributes.slice(*INHERITABLE_ATTRIBUTES)
     end
 
     def inherited_custom_fields(source, permission)
@@ -208,13 +209,6 @@ module Permissions
           ordering: field.ordering
         )
       end
-    end
-
-    def custom_fields_match?(permission, source)
-      fingerprint = lambda do |record|
-        record.permissions_custom_fields.map { |f| [f.custom_field_id, f.required, f.ordering] }.sort
-      end
-      fingerprint.call(permission) == fingerprint.call(source)
     end
   end
 end

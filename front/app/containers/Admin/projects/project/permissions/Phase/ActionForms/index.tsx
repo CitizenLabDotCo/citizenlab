@@ -5,7 +5,6 @@ import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import useInheritPhasePermission from 'api/phase_permissions/useInheritPhasePermission';
 import useOverridePhasePermission from 'api/phase_permissions/useOverridePhasePermission';
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
-import useResetPhasePermission from 'api/phase_permissions/useResetPhasePermission';
 import useUpdatePhasePermission from 'api/phase_permissions/useUpdatePhasePermission';
 import usePhase from 'api/phases/usePhase';
 
@@ -26,7 +25,6 @@ const ActionForms = ({ phaseId }: Props) => {
   const { data: phase } = usePhase(phaseId);
   const { data: permissions } = usePhasePermissions({ phaseId });
   const { mutateAsync: updatePhasePermission } = useUpdatePhasePermission();
-  const { mutate: resetPhasePermission } = useResetPhasePermission();
   const { mutateAsync: overridePhasePermission } = useOverridePhasePermission();
   const { mutateAsync: inheritPhasePermission } = useInheritPhasePermission();
 
@@ -85,13 +83,6 @@ const ActionForms = ({ phaseId }: Props) => {
                 permission: permissionChanges,
               });
             }}
-            onReset={() =>
-              resetPhasePermission({
-                permissionId: permission.id,
-                phaseId,
-                action: permissionAction,
-              })
-            }
             onOverride={async () => {
               await overridePhasePermission({
                 phaseId,

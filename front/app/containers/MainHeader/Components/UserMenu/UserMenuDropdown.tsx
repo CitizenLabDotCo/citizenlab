@@ -17,6 +17,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
 
 import messages from './messages';
+import { getUserMenuState } from './utils';
 
 const DropdownListItem = styled(ButtonWithLink)``;
 
@@ -41,19 +42,7 @@ const UserMenuDropdown = ({
   });
 
   const authRequirements = authenticationRequirementsResponse?.data.attributes;
-  const isRegisteredUser = !!authRequirements?.permitted;
-  const userRequiresEmailConfirmation =
-    authRequirements?.requirements.authentication.email_action_required ===
-    'confirm_new_email';
-  const showCompleteProfile =
-    !userRequiresEmailConfirmation && !isRegisteredUser;
-
-  const shouldShowOnboarding =
-    authenticationRequirementsResponse && !showCompleteProfile
-      ? showOnboarding(
-          authenticationRequirementsResponse.data.attributes.requirements
-        )
-      : false;
+  const menuState = getUserMenuState(authRequirements);
 
   const handleToggleDropdown = (event: MouseEvent | KeyboardEvent) => {
     event.preventDefault();
@@ -63,6 +52,12 @@ const UserMenuDropdown = ({
   const handleCloseDropdown = (event: MouseEvent | KeyboardEvent) => {
     event.preventDefault();
     closeDropdown();
+  };
+
+  // Every unfinished state resolves through the same authentication modal,
+  // which picks up at whichever step is outstanding.
+  const openAuthenticationFlow = () => {
+    triggerAuthenticationFlow();
   };
 
   return (
@@ -93,47 +88,10 @@ const UserMenuDropdown = ({
             </DropdownListItem>
           )}
 
-          {!userRequiresEmailConfirmation && (
-            <DropdownListItem
-              id="e2e-my-ideas-page-link"
-              to="/profile/$userId"
-              params={{ userId: authUser.data.id }}
-              onClick={handleCloseDropdown}
-              buttonStyle="text"
-              bgHoverColor={colors.grey300}
-              icon="user-circle"
-              iconPos="right"
-              iconSize="20px"
-              padding="11px 11px"
-              justify="space-between"
-            >
-              <FormattedMessage {...messages.myProfile} />
-            </DropdownListItem>
-          )}
-
-          {!userRequiresEmailConfirmation && (
-            <DropdownListItem
-              id="e2e-profile-edit-link"
-              to="/profile/edit"
-              onClick={handleCloseDropdown}
-              buttonStyle="text"
-              bgHoverColor={colors.grey300}
-              icon="sidebar-settings"
-              iconPos="right"
-              iconSize="20px"
-              padding="11px 11px"
-              justify="space-between"
-            >
-              <FormattedMessage {...messages.editProfile} />
-            </DropdownListItem>
-          )}
-
-          {userRequiresEmailConfirmation && (
+          {menuState === 'confirm-email' && (
             <DropdownListItem
               id="e2e-confirm-email-link"
-              onClick={() => {
-                triggerAuthenticationFlow();
-              }}
+              onClick={openAuthenticationFlow}
               buttonStyle="text"
               bgHoverColor={colors.grey300}
               icon="email"
@@ -146,12 +104,26 @@ const UserMenuDropdown = ({
             </DropdownListItem>
           )}
 
-          {showCompleteProfile && (
+          {menuState === 'confirm-phone' && (
+            <DropdownListItem
+              id="e2e-confirm-phone-link"
+              onClick={openAuthenticationFlow}
+              buttonStyle="text"
+              bgHoverColor={colors.grey300}
+              icon="message"
+              iconPos="right"
+              iconSize="20px"
+              padding="11px 11px"
+              justify="space-between"
+            >
+              <FormattedMessage {...messages.confirmPhone} />
+            </DropdownListItem>
+          )}
+
+          {menuState === 'complete-profile' && (
             <DropdownListItem
               id="e2e-complete-registration-link"
-              onClick={() => {
-                triggerAuthenticationFlow();
-              }}
+              onClick={openAuthenticationFlow}
               buttonStyle="text"
               bgHoverColor={colors.grey300}
               icon="user-check"
@@ -164,22 +136,56 @@ const UserMenuDropdown = ({
             </DropdownListItem>
           )}
 
-          {userRequiresEmailConfirmation && shouldShowOnboarding && (
-            <DropdownListItem
-              onClick={() => {
-                triggerAuthenticationFlow();
-              }}
-              buttonStyle="text"
-              bgHoverColor={colors.grey300}
-              icon="basket-checkmark"
-              iconPos="right"
-              iconSize="20px"
-              padding="11px 11px"
-              justify="space-between"
-              id="e2e-complete-onboarding-link"
-            >
-              <FormattedMessage {...messages.completeOnboarding} />
-            </DropdownListItem>
+          {menuState === 'complete' && (
+            <>
+              <DropdownListItem
+                id="e2e-my-ideas-page-link"
+                to="/profile/$userId"
+                params={{ userId: authUser.data.id }}
+                onClick={handleCloseDropdown}
+                buttonStyle="text"
+                bgHoverColor={colors.grey300}
+                icon="user-circle"
+                iconPos="right"
+                iconSize="20px"
+                padding="11px 11px"
+                justify="space-between"
+              >
+                <FormattedMessage {...messages.myProfile} />
+              </DropdownListItem>
+
+              <DropdownListItem
+                id="e2e-profile-edit-link"
+                to="/profile/edit"
+                onClick={handleCloseDropdown}
+                buttonStyle="text"
+                bgHoverColor={colors.grey300}
+                icon="sidebar-settings"
+                iconPos="right"
+                iconSize="20px"
+                padding="11px 11px"
+                justify="space-between"
+              >
+                <FormattedMessage {...messages.editProfile} />
+              </DropdownListItem>
+
+              {authRequirements &&
+                showOnboarding(authRequirements.requirements) && (
+                  <DropdownListItem
+                    onClick={openAuthenticationFlow}
+                    buttonStyle="text"
+                    bgHoverColor={colors.grey300}
+                    icon="basket-checkmark"
+                    iconPos="right"
+                    iconSize="20px"
+                    padding="11px 11px"
+                    justify="space-between"
+                    id="e2e-complete-onboarding-link"
+                  >
+                    <FormattedMessage {...messages.completeOnboarding} />
+                  </DropdownListItem>
+                )}
+            </>
           )}
 
           <DropdownListItem

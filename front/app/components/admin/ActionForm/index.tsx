@@ -16,7 +16,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import AccessSection from './AccessSection';
 import DataSection from './DataSection';
-import { buildSummary, getGroupIds, useVisibleToggles } from './logic';
+import { buildSummary, useVisibleToggles } from './logic';
 import messages from './messages';
 import PlatformDefaultsHeader from './PlatformDefaultsHeader';
 import RevertToDefaultsModal from './RevertToDefaultsModal';
@@ -29,7 +29,6 @@ const ActionForm = ({
   title,
   defaultOpen = false,
   onChange,
-  onReset,
   onOverride,
   onRevertToDefaults,
 }: Props) => {
@@ -60,14 +59,6 @@ const ActionForm = ({
     formatMessage,
     visibleToggles
   );
-
-  // Reset clears the account-only customisations (groups + persisted questions);
-  // it has nothing to undo for the open / admins-only gates.
-  const showReset =
-    getGroupIds(permissionData).length > 0 ||
-    (!isAdmins &&
-      attributes.permitted_by !== 'everyone' &&
-      customFields.some((field) => field.attributes.persisted));
 
   const handleOverride = async () => {
     if (!onOverride) return;
@@ -187,23 +178,6 @@ const ActionForm = ({
                   onChange={onChange}
                 />
               </>
-            )}
-
-            {showReset && (
-              <Box mt="24px">
-                <Button
-                  buttonStyle="text"
-                  width="auto"
-                  padding="0px"
-                  onClick={onReset}
-                >
-                  <span style={{ textDecorationLine: 'underline' }}>
-                    <FormattedMessage
-                      {...messages.resetDemographicQuestionsAndGroups}
-                    />
-                  </span>
-                </Button>
-              </Box>
             )}
 
             {onRevertToDefaults && (
