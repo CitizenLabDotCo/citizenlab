@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Permission do
-  it_behaves_like 'a plain text multiloc', factory: :permission, attribute: :access_denied_explanation_multiloc
+  it_behaves_like 'a sanitized html_multiloc', factory: :permission, attribute: :access_denied_explanation_multiloc
 
   describe 'Default factory' do
     it 'is valid' do

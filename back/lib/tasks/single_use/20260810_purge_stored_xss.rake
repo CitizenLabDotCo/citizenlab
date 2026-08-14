@@ -64,8 +64,7 @@ namespace :single_use do
       Polls::Option => %i[title_multiloc],
       CustomMaps::Layer => %i[title_multiloc],
       Volunteering::Cause => %i[title_multiloc],
-      OfficialFeedback => %i[author_multiloc],
-      Permission => %i[access_denied_explanation_multiloc]
+      OfficialFeedback => %i[author_multiloc]
     }.freeze
 
     affected = [] # rows for the summary: { host:, model:, attribute: }
@@ -132,6 +131,12 @@ namespace :single_use do
         tenant, script,
         Comment.where(rewritable.call('body_multiloc::text')), :body_multiloc,
         ->(value) { service.sanitize_body_multiloc(value, Comment::BODY_SANITIZE_FEATURES) }, 'Comment'
+      )
+      purge.call(
+        tenant, script,
+        Permission.where(rewritable.call('access_denied_explanation_multiloc::text')),
+        :access_denied_explanation_multiloc,
+        ->(value) { service.sanitize_body_multiloc(value, %i[decoration link]) }, 'Permission'
       )
       # A translation's rule depends on its own translatable_type and attribute_name, so reuse the
       # model's sanitiser rather than a value-only helper.

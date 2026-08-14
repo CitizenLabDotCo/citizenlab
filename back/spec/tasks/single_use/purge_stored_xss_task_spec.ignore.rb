@@ -139,6 +139,19 @@ describe 'single_use:purge_stored_xss rake task' do
     end
   end
 
+  # Sanitised rather than stripped: it is rendered with `dangerouslySetInnerHTML`.
+  context 'an access denied explanation carrying a payload' do
+    let!(:permission) do
+      store_raw(create(:permission), :access_denied_explanation_multiloc,
+        { 'en' => '<p>Ask your <b>council</b></p><img src=x onerror=alert(1)>' })
+    end
+
+    it 'strips the payload and keeps the formatting' do
+      run_task
+      expect(permission.reload.access_denied_explanation_multiloc['en']).to eq '<p>Ask your <b>council</b></p>'
+    end
+  end
+
   context 'a comment body carrying a script tag' do
     let!(:comment) { store_raw(create(:comment), :body_multiloc, { 'en' => '<p>hi</p><script>alert(1)</script>' }) }
 
