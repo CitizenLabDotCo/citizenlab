@@ -42,13 +42,19 @@ const CustomEmails = () => {
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const lastPage = getPageNumberFromUrl(campaigns?.pages[0].links.last) || 1;
 
-  const goToPage = (page: number) => {
-    setCurrentPage(page);
-    // Pages accumulate in order, so a page beyond the ones already fetched has
-    // to be loaded before it can be read out of `campaigns.pages`.
-    if (page > campaigns.pages.length) {
-      fetchNextPage();
+  const goToPage = async (page: number) => {
+    // Infinite queries only ever append the next page, so jumping ahead has to
+    // walk through every page in between before `pages[page - 1]` exists. The
+    // current page stays on screen until the target page is there.
+    let pages = campaigns.pages;
+
+    while (pages.length < page) {
+      const { data } = await fetchNextPage();
+      if (!data || data.pages.length === pages.length) return;
+      pages = data.pages;
     }
+
+    setCurrentPage(page);
   };
 
   if (campaignsList.data.length === 0) {
