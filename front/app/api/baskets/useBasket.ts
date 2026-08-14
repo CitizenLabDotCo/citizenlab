@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
+import { NO_PLACEHOLDER_DATA } from 'utils/cl-react-query/queryClient';
 
 import basketsKeys from './keys';
 import { IBasket, BasketsKeys } from './types';
@@ -14,7 +15,7 @@ const useBasket = (id?: string) => {
     queryKey: basketsKeys.item({ id }),
     queryFn: () => fetchBasket({ id }),
     enabled: !!id,
-    placeholderData: undefined,
+    placeholderData: NO_PLACEHOLDER_DATA,
   });
 };
 

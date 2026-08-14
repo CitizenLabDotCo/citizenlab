@@ -4,6 +4,7 @@ import { CLErrors } from 'typings';
 import { IIdeas } from 'api/ideas/types';
 
 import fetcher from 'utils/cl-react-query/fetcher';
+import { NO_PLACEHOLDER_DATA } from 'utils/cl-react-query/queryClient';
 
 import similarIdeasKeys from './keys';
 import { ISimilarityRequestPayload } from './types';
@@ -25,7 +26,7 @@ const useSimilarIdeas = (
     enabled,
     staleTime: 0,
     refetchOnWindowFocus: false,
-    placeholderData: undefined,
+    placeholderData: NO_PLACEHOLDER_DATA,
   });
 };
 
