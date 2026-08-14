@@ -108,6 +108,16 @@ module InputTypeStrategy
       false
     end
 
+    def answers_present(answers)
+      answers
+    end
+
+    %w[eq one_of matching gt gteq lt lteq before after on].each do |condition|
+      define_method(:"answers_#{condition}") do |_answers, _value|
+        raise NotImplementedError, "#{self.class.name} does not support the #{condition} answers condition"
+      end
+    end
+
     protected
 
     attr_reader :custom_field
