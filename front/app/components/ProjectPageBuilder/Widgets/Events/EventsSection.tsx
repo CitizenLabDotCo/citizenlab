@@ -26,19 +26,26 @@ const StyledPagination = styled(Pagination)`
 `;
 
 type Props = {
+  id?: string;
   title: MessageDescriptor;
   events: IEvents;
   currentPage: number;
   onPageChange: (page: number) => void;
 };
 
-const EventsSection = ({ title, events, currentPage, onPageChange }: Props) => {
+const EventsSection = ({
+  id,
+  title,
+  events,
+  currentPage,
+  onPageChange,
+}: Props) => {
   if (events.data.length === 0) {
     return null;
   }
 
   return (
-    <Box>
+    <Box id={id}>
       <Title variant="h3" color="tenantText" m="0" mb="16px">
         <FormattedMessage {...title} />
       </Title>
