@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import useOnQuerySuccess from 'hooks/useOnQuerySuccess';
+
 import fetcher, { BaseResponseData } from 'utils/cl-react-query/fetcher';
-import useOnQuerySuccess from 'utils/cl-react-query/useOnQuerySuccess';
 
 import graphDataUnitKeys from './keys';
 import { ParametersLive, Options } from './requestTypes';
