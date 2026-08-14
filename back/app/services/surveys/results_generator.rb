@@ -104,10 +104,9 @@ module Surveys
     end
 
     def visit_file_upload(field)
-      file_ids = inputs(field)
-        .select("custom_field_values->'#{field.key}'->'id' as value")
-        .where("custom_field_values->'#{field.key}' IS NOT NULL")
-        .map(&:value)
+      file_ids = CustomFieldAnswer.main_for(field)
+        .where(answerable_id: inputs(field))
+        .pluck(Arel.sql("value ->> 'id'"))
 
       files = ::Files::FileAttachment.where(id: file_ids).map do |attachment|
         { name: attachment.file.name, url: attachment.file.content.url }
@@ -254,12 +253,10 @@ module Surveys
     end
 
     def base_responses(field)
-      inputs(field)
-        .select("custom_field_values->'#{field.key}' as value")
-        .where("custom_field_values->'#{field.key}' IS NOT NULL")
-        .map do |response|
-        { answer: response.value }
-      end
+      CustomFieldAnswer.main_for(field)
+        .where(answerable_id: inputs(field))
+        .pluck(:value)
+        .map { { answer: it } }
     end
 
     def visit_select_base(field)
@@ -295,7 +292,7 @@ module Surveys
     def build_select_response(answers, field)
       # NOTE: This is an additional query needed for multi-selects only which impacts performance slightly
       question_response_count = if field.supports_multiple_selection?
-        inputs(field).where("custom_field_values->'#{field.key}' IS NOT NULL").count
+        CustomFieldAnswer.main_for(field).where(answerable_id: inputs(field)).count
       else
         answers.reject { |a| a[:answer].nil? }.pluck(:count).sum
       end
@@ -408,13 +405,13 @@ module Surveys
     # Get any associated text responses - where follow up question or other option is used
     def get_text_responses(field, additional_text_question_key: nil)
       field_key = additional_text_question_key || field.key
-      inputs(field)
-        .select("custom_field_values->'#{field_key}' as value")
-        .where("custom_field_values->'#{field_key}' IS NOT NULL")
+      CustomFieldAnswer.where(custom_field: field, key: field_key)
+        .where(answerable_id: inputs(field))
         # Remove all sequences of one or more whitespace characters (including spaces, newlines, tabs),
         # then check the result is not empty. TRIM would not handle newlines correctly.
-        .where("regexp_replace(custom_field_values->>'#{field_key}', '[[:space:]]+', '', 'g') != ''")
-        .map { |answer| { answer: answer.value.to_s } }
+        .where("regexp_replace(value #>> '{}', '[[:space:]]+', '', 'g') != ''")
+        .pluck(:value)
+        .map { { answer: it.to_s } }
         .sort_by { |a| a[:answer] }
     end
 
