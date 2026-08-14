@@ -9,6 +9,8 @@ RSpec.describe Volunteering::Cause do
     end
   end
 
+  it_behaves_like 'a sanitized html_multiloc', factory: :cause
+
   describe 'phase_supports_causes validation' do
     it 'is invalid when the phase is not a volunteering phase' do
       cause = build(:cause, phase: create(:phase, participation_method: 'ideation'))
