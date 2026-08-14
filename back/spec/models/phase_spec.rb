@@ -30,15 +30,7 @@ RSpec.describe Phase do
   it { is_expected.to belong_to(:project) }
   it { is_expected.to validate_presence_of(:title_multiloc) }
 
-  describe 'description sanitizer' do
-    it 'sanitizes script tags in the description' do
-      phase = create(:phase, description_multiloc: {
-        'en' => '<p>Test</p><script>This should be removed!</script>'
-      })
-      expect(phase.description_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!' })
-    end
-  end
-
+  it_behaves_like 'a sanitized html_multiloc', factory: :phase
   it_behaves_like 'a sanitized title_multiloc', factory: :phase
 
   describe 'timing model validation' do

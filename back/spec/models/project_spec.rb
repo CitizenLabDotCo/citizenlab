@@ -128,14 +128,14 @@ RSpec.describe Project do
   end
 
   describe 'description sanitizer' do
-    it 'sanitizes script tags in the description' do
-      project = create(:project, description_multiloc: {
-        'en' => '<p>Test</p><script>This should be removed!</script><h2>Title</h2><ul><li>A bullet</li></ul><ol type="1"><li>And a listing</li></ol>'
-      })
-      expect(project.description_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!<h2>Title</h2><ul><li>A bullet</li></ul><ol type="1"><li>And a listing</li></ol>' })
+    it 'keeps the formatting an editor produces' do
+      html = '<h2>Title</h2><p>Test</p><ul><li>A bullet</li></ul><ol type="1"><li>And a listing</li></ol>'
+      project = create(:project, description_multiloc: { 'en' => html })
+      expect(project.description_multiloc).to eq({ 'en' => html })
     end
   end
 
+  it_behaves_like 'a sanitized html_multiloc', factory: :project
   it_behaves_like 'a sanitized title_multiloc', factory: :project
 
   describe 'title sanitizer' do

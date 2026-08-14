@@ -18,14 +18,7 @@ RSpec.describe Area do
     end
   end
 
-  describe 'description_multiloc' do
-    it 'sanitizes script tags in the description' do
-      area = create(:area, description_multiloc: {
-        'en' => '<p>Test</p><script>These tags should be removed!</script>'
-      })
-      expect(area.description_multiloc).to eq({ 'en' => '<p>Test</p>These tags should be removed!' })
-    end
-  end
+  it_behaves_like 'a sanitized html_multiloc', factory: :area
 
   describe 'description sanitizer' do
     it 'with invalid locales marks the model as invalid' do

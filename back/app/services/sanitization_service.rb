@@ -79,8 +79,8 @@ class SanitizationService
     Rinku.auto_link(html, :all, 'target="_blank" rel="noreferrer noopener nofollow"', nil, Rinku::AUTOLINK_SHORT_DOMAINS)
   end
 
-  # The pipeline `Idea` and `Comment` apply to their bodies, shared with anything reprocessing a
-  # stored body (e.g. machine translations).
+  # The pipeline for every rich-text field - bodies and descriptions - shared with anything
+  # reprocessing a stored value (e.g. machine translations).
   #
   # Sanitizing runs before linkifying, so where `features` omits `:link` (`Comment`) the author's
   # anchors are dropped and rebuilt from the visible text, and an href cannot disagree with its

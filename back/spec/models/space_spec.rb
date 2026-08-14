@@ -62,4 +62,27 @@ RSpec.describe Space do
       end
     end
   end
+
+  it_behaves_like 'a sanitized html_multiloc', factory: :space
+
+  describe 'description sanitizer' do
+    def description_of(html)
+      create(:space, description_multiloc: { 'en' => html }).description_multiloc['en']
+    end
+
+    it 'keeps the formatting an editor produces' do
+      html = '<h2>Title</h2><p>Test</p><ul><li>A bullet</li></ul>'
+      expect(description_of(html)).to eq html
+    end
+
+    it 'strips a javascript: scheme from a link' do
+      expect(description_of('<a href="javascript:alert(1)">Click</a>')).to eq '<a rel="nofollow">Click</a>'
+    end
+
+    it 'turns a bare URL into a link' do
+      expect(description_of('<p>See https://example.com</p>')).to eq(
+        '<p>See <a href="https://example.com" target="_blank" rel="noreferrer noopener nofollow">https://example.com</a></p>'
+      )
+    end
+  end
 end

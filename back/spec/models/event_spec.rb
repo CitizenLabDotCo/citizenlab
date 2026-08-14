@@ -22,14 +22,9 @@ RSpec.describe Event do
     it { is_expected.to validate_presence_of(:title_multiloc) }
   end
 
-  describe 'description sanitizer' do
-    it 'sanitizes script tags in the description' do
-      event = create(:event, description_multiloc: {
-        'en' => '<p>Test</p><script>This should be removed!</script>'
-      })
-      expect(event.description_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!' })
-    end
+  it_behaves_like 'a sanitized html_multiloc', factory: :event
 
+  describe 'description sanitizer' do
     it 'retains paragraphs and line breaks in the description' do
       event = create(:event, description_multiloc: {
         'en' => '<p>Test<br><br>One<br>Two</p><p>Three</p>'
