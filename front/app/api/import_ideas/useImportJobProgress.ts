@@ -29,6 +29,8 @@ const useImportJobProgress = (phaseId: string) => {
 
   return useQuery<IJobs | undefined, CLErrors>({
     queryKey: importJobKeys.list({ phaseId }),
+    // The invalidation lives here rather than in `useOnQuerySuccess` because it
+    // needs the fetched progress to compare against the previous one.
     queryFn: async () => {
       const jobs = await fetchImportJobs(phaseId);
       const progress = jobs?.data[0]?.attributes.progress ?? null;
