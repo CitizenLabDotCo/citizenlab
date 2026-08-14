@@ -72,12 +72,19 @@ const IdeaCard = ({
   const smallerThanPhone = useBreakpoint('phone');
   const smallerThanTablet = useBreakpoint('tablet');
 
-  const image =
-    !hideImage && ideaImage
-      ? smallerThanTablet
-        ? ideaImage.data.attributes.versions.medium
-        : ideaImage.data.attributes.versions.square_medium ?? null
-      : null;
+  const versions =
+    !hideImage && ideaImage ? ideaImage.data.attributes.versions : undefined;
+
+  // `square_medium` was added long after images started being uploaded, and the API
+  // returns its URL whether or not the version was ever generated. Fall back to
+  // `medium`, which every idea image has, so a missing square version doesn't leave
+  // an empty box on the card.
+  const image = smallerThanTablet
+    ? versions?.medium ?? null
+    : versions?.square_medium ?? versions?.medium ?? null;
+  const imageFallback = smallerThanTablet
+    ? undefined
+    : versions?.medium ?? undefined;
 
   const localize = useLocalize();
 
@@ -133,6 +140,7 @@ const IdeaCard = ({
       <CardImage
         phase={phaseData}
         image={image}
+        imageFallback={imageFallback}
         hideImagePlaceholder={hideImagePlaceholder}
       />
 
