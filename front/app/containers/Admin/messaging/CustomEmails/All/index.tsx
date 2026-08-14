@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
   Icon,
@@ -10,6 +10,8 @@ import {
 
 import useEmailCampaigns from 'api/campaigns/email/useEmailCampaigns';
 import { isEmailCampaignDraft } from 'api/campaigns/email/util';
+
+import useInfinitePagination from 'hooks/useInfinitePagination';
 
 import DraftCampaignRow from 'components/admin/Email/DraftCampaignRow';
 import SentCampaignRow from 'components/admin/Email/SentCampaignRow';
@@ -25,10 +27,13 @@ import messages from '../../messages';
 import NewCampaignButton from './NewCampaignButton';
 
 const CustomEmails = () => {
-  const [currentPage, setCurrentPage] = useState(1);
   const { data: campaigns, fetchNextPage } = useEmailCampaigns({
     manual: true,
     pageSize: 10,
+  });
+  const { currentPage, goToPage } = useInfinitePagination({
+    pages: campaigns?.pages,
+    fetchNextPage,
   });
 
   const campaignsList = campaigns?.pages[currentPage - 1];
@@ -38,21 +43,6 @@ const CustomEmails = () => {
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const lastPage = getPageNumberFromUrl(campaigns?.pages[0].links.last) || 1;
-
-  const goToPage = async (page: number) => {
-    // Infinite queries only ever append the next page, so jumping ahead has to
-    // walk through every page in between before `pages[page - 1]` exists. The
-    // current page stays on screen until the target page is there.
-    let pages = campaigns.pages;
-
-    while (pages.length < page) {
-      const { data } = await fetchNextPage();
-      if (!data || data.pages.length === pages.length) return;
-      pages = data.pages;
-    }
-
-    setCurrentPage(page);
-  };
 
   if (campaignsList.data.length === 0) {
     return (
