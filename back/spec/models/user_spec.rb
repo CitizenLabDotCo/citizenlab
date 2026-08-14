@@ -1367,6 +1367,20 @@ RSpec.describe User do
       expect(user.first_name).to eq 'Terry'
     end
 
+    it 'does not entity-encode punctuation in a valid name' do
+      user = described_class.new
+      user.first_name = "Ann-Sofie O'Brien"
+      user.validate
+      expect(user.first_name).to eq "Ann-Sofie O'Brien"
+    end
+
+    it 'neutralises a payload hidden behind entity encoding' do
+      user = described_class.new
+      user.first_name = '&lt;img src=x onerror=alert(1)&gt;Bob'
+      user.validate
+      expect(user.first_name).to eq 'Bob'
+    end
+
     it 'is invalid when it contains @' do
       user = build(:user, first_name: 'foo@example.com')
       expect(user).not_to be_valid
