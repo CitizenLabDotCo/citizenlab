@@ -4,6 +4,8 @@ import { CLErrors } from 'typings';
 import ideasKeys from 'api/ideas/keys';
 import { IJobs } from 'api/jobs/types';
 
+import useOnQuerySuccess from 'hooks/useOnQuerySuccess';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import jobsKeys from './keys';
@@ -24,17 +26,9 @@ const fetchInProgressPhaseJobs = async (
 
 const useJobInProgressByPhase = (phaseId: string) => {
   const queryClient = useQueryClient();
-  return useQuery<IJobs | undefined, CLErrors>({
+  const result = useQuery<IJobs | undefined, CLErrors>({
     queryKey: jobsKeys.list({ phaseId }),
-    queryFn: async () => {
-      const jobs = await fetchInProgressPhaseJobs(phaseId);
-      queryClient.invalidateQueries({
-        // Ideally, we should only invalidate the ideas list for the current phase,
-        // but since the ideas list is not filtered by phase, we invalidate all ideas for now.
-        queryKey: ideasKeys.lists(),
-      });
-      return jobs;
-    },
+    queryFn: () => fetchInProgressPhaseJobs(phaseId),
     refetchInterval: ({ state }) => {
       const data = state.data;
 
@@ -47,6 +41,16 @@ const useJobInProgressByPhase = (phaseId: string) => {
       return 5000;
     },
   });
+
+  useOnQuerySuccess(result, () => {
+    queryClient.invalidateQueries({
+      // Ideally, we should only invalidate the ideas list for the current phase,
+      // but since the ideas list is not filtered by phase, we invalidate all ideas for now.
+      queryKey: ideasKeys.lists(),
+    });
+  });
+
+  return result;
 };
 
 export default useJobInProgressByPhase;
