@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
@@ -27,9 +27,22 @@ const useImportJobProgress = (phaseId: string) => {
   const queryClient = useQueryClient();
   const lastProgressRef = useRef<number | null>(null);
 
-  const result = useQuery<IJobs | undefined, CLErrors>({
+  return useQuery<IJobs | undefined, CLErrors>({
     queryKey: importJobKeys.list({ phaseId }),
-    queryFn: () => fetchImportJobs(phaseId),
+    queryFn: async () => {
+      const jobs = await fetchImportJobs(phaseId);
+      const progress = jobs?.data[0]?.attributes.progress ?? null;
+
+      // Only refetch the imported ideas once the job has actually moved on.
+      if (progress !== null && progress !== lastProgressRef.current) {
+        lastProgressRef.current = progress;
+        queryClient.invalidateQueries({
+          queryKey: importedIdeasKeys.lists(),
+        });
+      }
+
+      return jobs;
+    },
     refetchInterval: ({ state }) => {
       const data = state.data;
 
@@ -43,23 +56,6 @@ const useImportJobProgress = (phaseId: string) => {
       return hasInProgressJob ? 5000 : false;
     },
   });
-
-  const currentProgress = result.data?.data[0]?.attributes.progress ?? null;
-
-  // Invalidate the imported ideas list query if the progress has changed since the last fetch
-  useEffect(() => {
-    if (
-      currentProgress !== null &&
-      currentProgress !== lastProgressRef.current
-    ) {
-      lastProgressRef.current = currentProgress;
-      queryClient.invalidateQueries({
-        queryKey: importedIdeasKeys.lists(),
-      });
-    }
-  }, [currentProgress, queryClient]);
-
-  return result;
 };
 
 export default useImportJobProgress;

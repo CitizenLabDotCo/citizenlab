@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
@@ -22,14 +20,20 @@ const useAnalysisBackgroundTask = (
   pollingEnabled?: boolean
 ) => {
   const queryClient = useQueryClient();
-  const result = useQuery<
+  return useQuery<
     IBackgroundTask,
     CLErrors,
     IBackgroundTask,
     BackgroundTasksKeys
   >({
     queryKey: backgroundTasksKeys.item({ id: backgroundTaskId }),
-    queryFn: () => fetchBackgroundTask(analysisId, backgroundTaskId),
+    queryFn: async () => {
+      const task = await fetchBackgroundTask(analysisId, backgroundTaskId);
+      queryClient.invalidateQueries({
+        queryKey: insightsKeys.list({ analysisId }),
+      });
+      return task;
+    },
     enabled: !!backgroundTaskId && !!analysisId,
     // Refetch every 5 seconds when task is active
     refetchInterval: ({ state }) => {
@@ -39,18 +43,6 @@ const useAnalysisBackgroundTask = (
       return activeTask && pollingEnabled ? 5000 : false;
     },
   });
-
-  const { isSuccess, dataUpdatedAt } = result;
-
-  useEffect(() => {
-    if (isSuccess) {
-      queryClient.invalidateQueries({
-        queryKey: insightsKeys.list({ analysisId }),
-      });
-    }
-  }, [isSuccess, dataUpdatedAt, queryClient, analysisId]);
-
-  return result;
 };
 
 export default useAnalysisBackgroundTask;

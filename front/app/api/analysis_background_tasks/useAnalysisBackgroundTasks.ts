@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
@@ -9,6 +7,7 @@ import taggingKeys from 'api/analysis_taggings/keys';
 import tagsKeys from 'api/analysis_tags/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
+import { NO_PLACEHOLDER_DATA } from 'utils/cl-react-query/queryClient';
 
 import backgroundTasksKeys from './keys';
 import { IBackgroundTasks, BackgroundTasksKeys } from './types';
@@ -22,14 +21,21 @@ const fetchBackgroundTasks = (analysisId?: string) => {
 
 const useAnalysisBackgroundTasks = (analysisId?: string) => {
   const queryClient = useQueryClient();
-  const result = useQuery<
+  return useQuery<
     IBackgroundTasks,
     CLErrors,
     IBackgroundTasks,
     BackgroundTasksKeys
   >({
     queryKey: backgroundTasksKeys.list({ analysisId }),
-    queryFn: () => fetchBackgroundTasks(analysisId),
+    queryFn: async () => {
+      const tasks = await fetchBackgroundTasks(analysisId);
+      queryClient.invalidateQueries({ queryKey: tagsKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: taggingKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: insightsKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: commentsSummariesKeys.all() });
+      return tasks;
+    },
     // Refetch every 2 seconds when tasks are active
     refetchInterval: ({ state }) => {
       const activeTask = state.data?.data.find((task) => {
@@ -40,22 +46,9 @@ const useAnalysisBackgroundTasks = (analysisId?: string) => {
       });
       return activeTask ? 2000 : false;
     },
-    placeholderData: undefined,
+    placeholderData: NO_PLACEHOLDER_DATA,
     enabled: !!analysisId,
   });
-
-  const { isSuccess, dataUpdatedAt } = result;
-
-  useEffect(() => {
-    if (isSuccess) {
-      queryClient.invalidateQueries({ queryKey: tagsKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: taggingKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: insightsKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: commentsSummariesKeys.all() });
-    }
-  }, [isSuccess, dataUpdatedAt, queryClient]);
-
-  return result;
 };
 
 export default useAnalysisBackgroundTasks;
