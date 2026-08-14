@@ -2,6 +2,10 @@
 
 module InputTypeStrategy
   class Date < Base
+    def answers_one_of(answers, values)
+      answers.where("value #>> '{}' IN (?)", values)
+    end
+
     def answers_before(answers, value)
       answers.where("(value #>> '{}')::date < (?)::date", value)
     end
