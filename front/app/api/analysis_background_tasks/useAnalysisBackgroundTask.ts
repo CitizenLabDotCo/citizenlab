@@ -3,6 +3,8 @@ import { CLErrors } from 'typings';
 
 import insightsKeys from 'api/analysis_insights/keys';
 
+import useOnQuerySuccess from 'hooks/useOnQuerySuccess';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import backgroundTasksKeys from './keys';
@@ -20,20 +22,14 @@ const useAnalysisBackgroundTask = (
   pollingEnabled?: boolean
 ) => {
   const queryClient = useQueryClient();
-  return useQuery<
+  const result = useQuery<
     IBackgroundTask,
     CLErrors,
     IBackgroundTask,
     BackgroundTasksKeys
   >({
     queryKey: backgroundTasksKeys.item({ id: backgroundTaskId }),
-    queryFn: async () => {
-      const task = await fetchBackgroundTask(analysisId, backgroundTaskId);
-      queryClient.invalidateQueries({
-        queryKey: insightsKeys.list({ analysisId }),
-      });
-      return task;
-    },
+    queryFn: () => fetchBackgroundTask(analysisId, backgroundTaskId),
     enabled: !!backgroundTaskId && !!analysisId,
     // Refetch every 5 seconds when task is active
     refetchInterval: ({ state }) => {
@@ -43,6 +39,14 @@ const useAnalysisBackgroundTask = (
       return activeTask && pollingEnabled ? 5000 : false;
     },
   });
+
+  useOnQuerySuccess(result, () => {
+    queryClient.invalidateQueries({
+      queryKey: insightsKeys.list({ analysisId }),
+    });
+  });
+
+  return result;
 };
 
 export default useAnalysisBackgroundTask;

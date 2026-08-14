@@ -6,6 +6,8 @@ import insightsKeys from 'api/analysis_insights/keys';
 import taggingKeys from 'api/analysis_taggings/keys';
 import tagsKeys from 'api/analysis_tags/keys';
 
+import useOnQuerySuccess from 'hooks/useOnQuerySuccess';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 import { NO_PLACEHOLDER_DATA } from 'utils/cl-react-query/queryClient';
 
@@ -21,21 +23,14 @@ const fetchBackgroundTasks = (analysisId?: string) => {
 
 const useAnalysisBackgroundTasks = (analysisId?: string) => {
   const queryClient = useQueryClient();
-  return useQuery<
+  const result = useQuery<
     IBackgroundTasks,
     CLErrors,
     IBackgroundTasks,
     BackgroundTasksKeys
   >({
     queryKey: backgroundTasksKeys.list({ analysisId }),
-    queryFn: async () => {
-      const tasks = await fetchBackgroundTasks(analysisId);
-      queryClient.invalidateQueries({ queryKey: tagsKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: taggingKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: insightsKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: commentsSummariesKeys.all() });
-      return tasks;
-    },
+    queryFn: () => fetchBackgroundTasks(analysisId),
     // Refetch every 2 seconds when tasks are active
     refetchInterval: ({ state }) => {
       const activeTask = state.data?.data.find((task) => {
@@ -49,6 +44,15 @@ const useAnalysisBackgroundTasks = (analysisId?: string) => {
     placeholderData: NO_PLACEHOLDER_DATA,
     enabled: !!analysisId,
   });
+
+  useOnQuerySuccess(result, () => {
+    queryClient.invalidateQueries({ queryKey: tagsKeys.lists() });
+    queryClient.invalidateQueries({ queryKey: taggingKeys.lists() });
+    queryClient.invalidateQueries({ queryKey: insightsKeys.lists() });
+    queryClient.invalidateQueries({ queryKey: commentsSummariesKeys.all() });
+  });
+
+  return result;
 };
 
 export default useAnalysisBackgroundTasks;
