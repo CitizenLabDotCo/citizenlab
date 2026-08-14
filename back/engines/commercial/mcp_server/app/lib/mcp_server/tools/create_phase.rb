@@ -68,10 +68,10 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
           enum: Phase::PLACEMENT_TYPES,
           description: <<~DESC.squish
             'on_timeline' (default) places the phase in the sequential timeline.
-            'standalone' runs it in parallel with the timeline (an extra survey);
-            its dates may overlap other phases and its participation method must
-            support standalone placement (native_survey). Cannot be changed
-            after creation.
+            'standalone' runs the phase in parallel with the timeline (an extra
+            survey): a standalone phase may overlap other phases and requires a
+            participation method that supports standalone placement
+            (native_survey). Cannot be changed after creation.
           DESC
         },
 
