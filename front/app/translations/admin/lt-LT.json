@@ -200,7 +200,6 @@
   "app.components.admin.ActionForm.password": "Slaptažodis",
   "app.components.admin.ActionForm.piiExcluded": "PII neįtraukta",
   "app.components.admin.ActionForm.piiExcludedFromResults": "Asmens tapatybę patvirtinanti informacija (PII) neįtraukiama į rezultatus",
-  "app.components.admin.ActionForm.resetDemographicQuestionsAndGroups": "Atstatyti demografinius klausimus ir grupes",
   "app.components.admin.ActionForm.signInRequired": "Reikalingas prisijungimas",
   "app.components.admin.AddByEmail.invite": "Pakviesti",
   "app.components.admin.AddByEmail.typeEmailToInviteManager": "Įveskite el. pašto adresą, kad pakviestumėte valdytoją...",

@@ -200,7 +200,6 @@
   "app.components.admin.ActionForm.password": "Passord",
   "app.components.admin.ActionForm.piiExcluded": "Personopplysninger ekskludert",
   "app.components.admin.ActionForm.piiExcludedFromResults": "Personopplysninger (PII) ekskludert fra resultatene",
-  "app.components.admin.ActionForm.resetDemographicQuestionsAndGroups": "Tilbakestill demografiske spørsmål og grupper",
   "app.components.admin.ActionForm.signInRequired": "Innlogging kreves",
   "app.components.admin.AddByEmail.invite": "Inviter",
   "app.components.admin.AddByEmail.typeEmailToInviteManager": "Skriv inn e-post for å invitere administrator...",

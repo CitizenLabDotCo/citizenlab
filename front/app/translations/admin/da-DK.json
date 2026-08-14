@@ -200,7 +200,6 @@
   "app.components.admin.ActionForm.password": "Adgangskode",
   "app.components.admin.ActionForm.piiExcluded": "PII udeladt",
   "app.components.admin.ActionForm.piiExcludedFromResults": "PII udeladt fra resultaterne",
-  "app.components.admin.ActionForm.resetDemographicQuestionsAndGroups": "Nulstil demografiske spørgsmål og grupper",
   "app.components.admin.ActionForm.signInRequired": "Login påkrævet",
   "app.components.admin.AddByEmail.invite": "Invitér",
   "app.components.admin.AddByEmail.typeEmailToInviteManager": "Indtast e-mail for at invitere projektleder...",

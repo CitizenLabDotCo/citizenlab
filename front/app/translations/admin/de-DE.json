@@ -200,7 +200,6 @@
   "app.components.admin.ActionForm.password": "Passwort",
   "app.components.admin.ActionForm.piiExcluded": "Personenbezogene Daten ausgeschlossen",
   "app.components.admin.ActionForm.piiExcludedFromResults": "Personenbezogene Daten aus den Ergebnissen ausgeschlossen",
-  "app.components.admin.ActionForm.resetDemographicQuestionsAndGroups": "Demografische Fragen und Gruppen zurücksetzen",
   "app.components.admin.ActionForm.signInRequired": "Anmeldung erforderlich",
   "app.components.admin.AddByEmail.invite": "Einladen",
   "app.components.admin.AddByEmail.typeEmailToInviteManager": "E-Mail-Adresse eingeben, um Manager*innen einzuladen ...",

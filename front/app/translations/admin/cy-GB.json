@@ -200,7 +200,6 @@
   "app.components.admin.ActionForm.password": "Cyfrinair",
   "app.components.admin.ActionForm.piiExcluded": "PII wedi'i heithrio",
   "app.components.admin.ActionForm.piiExcludedFromResults": "PII wedi'i heithrio o'r canlyniadau",
-  "app.components.admin.ActionForm.resetDemographicQuestionsAndGroups": "Ailosod cwestiynau a grwpiau demograffig",
   "app.components.admin.ActionForm.signInRequired": "Mae angen mewngofnodi",
   "app.components.admin.AddByEmail.invite": "Gwahodd",
   "app.components.admin.AddByEmail.typeEmailToInviteManager": "Teipiwch e-bost i wahodd rheolwr...",

@@ -200,7 +200,6 @@
   "app.components.admin.ActionForm.password": "Contraseña",
   "app.components.admin.ActionForm.piiExcluded": "PII excluida",
   "app.components.admin.ActionForm.piiExcludedFromResults": "PII excluida de los resultados",
-  "app.components.admin.ActionForm.resetDemographicQuestionsAndGroups": "Restablecer las preguntas y los grupos demográficos",
   "app.components.admin.ActionForm.signInRequired": "Inicio de sesión obligatorio",
   "app.components.admin.AddByEmail.invite": "Invitar",
   "app.components.admin.AddByEmail.typeEmailToInviteManager": "Escribe un correo para invitar a un gestor...",

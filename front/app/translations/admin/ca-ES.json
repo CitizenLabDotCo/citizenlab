@@ -200,7 +200,6 @@
   "app.components.admin.ActionForm.password": "Contrasenya",
   "app.components.admin.ActionForm.piiExcluded": "PII exclosa",
   "app.components.admin.ActionForm.piiExcludedFromResults": "Dades d'identificació personal (PII) excloses dels resultats",
-  "app.components.admin.ActionForm.resetDemographicQuestionsAndGroups": "Restableix les preguntes i els grups demogràfics",
   "app.components.admin.ActionForm.signInRequired": "Cal iniciar sessió",
   "app.components.admin.AddByEmail.invite": "Convidar",
   "app.components.admin.AddByEmail.typeEmailToInviteManager": "Escriu el correu electrònic per convidar un gestor...",

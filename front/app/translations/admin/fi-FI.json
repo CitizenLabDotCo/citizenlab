@@ -200,7 +200,6 @@
   "app.components.admin.ActionForm.password": "Salasana",
   "app.components.admin.ActionForm.piiExcluded": "Henkilötiedot (PII) jätetty pois",
   "app.components.admin.ActionForm.piiExcludedFromResults": "Henkilötiedot on jätetty tulosten ulkopuolelle",
-  "app.components.admin.ActionForm.resetDemographicQuestionsAndGroups": "Nollaa demografiset kysymykset ja ryhmät",
   "app.components.admin.ActionForm.signInRequired": "Kirjautuminen vaaditaan",
   "app.components.admin.AddByEmail.invite": "Kutsu",
   "app.components.admin.AddByEmail.typeEmailToInviteManager": "Kirjoita sähköpostiosoite kutsuaksesi ylläpitäjän...",

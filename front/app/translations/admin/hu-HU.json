@@ -200,7 +200,6 @@
   "app.components.admin.ActionForm.password": "Jelszó",
   "app.components.admin.ActionForm.piiExcluded": "PII (személyazonosításra alkalmas adatok) kizárva",
   "app.components.admin.ActionForm.piiExcludedFromResults": "Személyazonosításra alkalmas adatok (PII) kizárva az eredményekből",
-  "app.components.admin.ActionForm.resetDemographicQuestionsAndGroups": "Demográfiai kérdések és csoportok alaphelyzetbe állítása",
   "app.components.admin.ActionForm.signInRequired": "Bejelentkezés szükséges",
   "app.components.admin.AddByEmail.invite": "Meghívás",
   "app.components.admin.AddByEmail.typeEmailToInviteManager": "Írja be az e-mail-címet a kezelő meghívásához...",

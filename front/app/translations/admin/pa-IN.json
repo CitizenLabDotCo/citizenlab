@@ -200,7 +200,6 @@
   "app.components.admin.ActionForm.password": "ਪਾਸਵਰਡ",
   "app.components.admin.ActionForm.piiExcluded": "PII ਨੂੰ ਬਾਹਰ ਰੱਖਿਆ ਗਿਆ ਹੈ",
   "app.components.admin.ActionForm.piiExcludedFromResults": "ਨਤੀਜਿਆਂ ਵਿੱਚੋਂ PII ਨੂੰ ਬਾਹਰ ਰੱਖਿਆ ਗਿਆ ਹੈ",
-  "app.components.admin.ActionForm.resetDemographicQuestionsAndGroups": "ਜਨਸੰਖਿਆ ਸੰਬੰਧੀ ਸਵਾਲਾਂ ਅਤੇ ਸਮੂਹਾਂ ਨੂੰ ਰੀਸੈੱਟ ਕਰੋ",
   "app.components.admin.ActionForm.signInRequired": "ਸਾਈਨ-ਇਨ ਕਰਨਾ ਲਾਜ਼ਮੀ ਹੈ",
   "app.components.admin.AddByEmail.invite": "ਸੱਦਾ ਦਿਓ",
   "app.components.admin.AddByEmail.typeEmailToInviteManager": "ਮੈਨੇਜਰ ਨੂੰ ਸੱਦਾ ਦੇਣ ਲਈ ਈਮੇਲ ਟਾਈਪ ਕਰੋ...",

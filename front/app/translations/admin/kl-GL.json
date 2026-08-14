@@ -200,7 +200,6 @@
   "app.components.admin.ActionForm.password": "Isissutissaq",
   "app.components.admin.ActionForm.piiExcluded": "Inunnut paasissutissat (PII) ilaatinneqanngillat",
   "app.components.admin.ActionForm.piiExcludedFromResults": "Inunnut paasissutissat kinaassutsimut tunngasut inernernit peerneqarput",
-  "app.components.admin.ActionForm.resetDemographicQuestionsAndGroups": "Inuiaqatigiit pillugit apeqqutit eqimattallu aallarteqqikkit",
   "app.components.admin.ActionForm.signInRequired": "Isernissaq piumasaqaataavoq",
   "app.components.admin.AddByEmail.invite": "Qaaqqusigit",
   "app.components.admin.AddByEmail.typeEmailToInviteManager": "Aqutsisussamik qaaqqusinissamut e-mailia allaguk...",

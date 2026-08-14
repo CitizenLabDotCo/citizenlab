@@ -200,7 +200,6 @@
   "app.components.admin.ActionForm.password": "Wachtwoord",
   "app.components.admin.ActionForm.piiExcluded": "PII uitgesloten",
   "app.components.admin.ActionForm.piiExcludedFromResults": "Persoonsgegevens (PII) uitgesloten van resultaten",
-  "app.components.admin.ActionForm.resetDemographicQuestionsAndGroups": "Demografische vragen en groepen resetten",
   "app.components.admin.ActionForm.signInRequired": "Inloggen vereist",
   "app.components.admin.AddByEmail.invite": "Uitnodigen",
   "app.components.admin.AddByEmail.typeEmailToInviteManager": "Typ e-mailadres om beheerder uit te nodigen...",

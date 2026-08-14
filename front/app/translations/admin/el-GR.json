@@ -200,7 +200,6 @@
   "app.components.admin.ActionForm.password": "Κωδικός πρόσβασης",
   "app.components.admin.ActionForm.piiExcluded": "Εξαιρούνται τα προσωπικά δεδομένα",
   "app.components.admin.ActionForm.piiExcludedFromResults": "Τα προσωπικά δεδομένα (PII) εξαιρούνται από τα αποτελέσματα",
-  "app.components.admin.ActionForm.resetDemographicQuestionsAndGroups": "Επαναφορά δημογραφικών ερωτήσεων και ομάδων",
   "app.components.admin.ActionForm.signInRequired": "Απαιτείται σύνδεση",
   "app.components.admin.AddByEmail.invite": "Πρόσκληση",
   "app.components.admin.AddByEmail.typeEmailToInviteManager": "Πληκτρολογήστε email για να προσκαλέσετε διαχειριστή...",

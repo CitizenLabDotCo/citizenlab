@@ -200,7 +200,6 @@
   "app.components.admin.ActionForm.password": "Parole",
   "app.components.admin.ActionForm.piiExcluded": "PII izslēgta",
   "app.components.admin.ActionForm.piiExcludedFromResults": "Personu identificējoša informācija (PII) ir izslēgta no rezultātiem",
-  "app.components.admin.ActionForm.resetDemographicQuestionsAndGroups": "Atiestatīt demogrāfiskos jautājumus un grupas",
   "app.components.admin.ActionForm.signInRequired": "Nepieciešama pierakstīšanās",
   "app.components.admin.AddByEmail.invite": "Uzaicināt",
   "app.components.admin.AddByEmail.typeEmailToInviteManager": "Ierakstiet e-pastu, lai uzaicinātu vadītāju...",

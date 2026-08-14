@@ -200,7 +200,6 @@
   "app.components.admin.ActionForm.password": "كلمة المرور",
   "app.components.admin.ActionForm.piiExcluded": "استبعاد معلومات الهوية الشخصية (PII)",
   "app.components.admin.ActionForm.piiExcludedFromResults": "استبعاد معلومات التعريف الشخصية من النتائج",
-  "app.components.admin.ActionForm.resetDemographicQuestionsAndGroups": "إعادة ضبط الأسئلة والمجموعات الديموغرافية",
   "app.components.admin.ActionForm.signInRequired": "تسجيل الدخول مطلوب",
   "app.components.admin.AddByEmail.invite": "دعوة",
   "app.components.admin.AddByEmail.typeEmailToInviteManager": "اكتب البريد الإلكتروني لدعوة المسير...",

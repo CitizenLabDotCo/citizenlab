@@ -200,7 +200,6 @@
   "app.components.admin.ActionForm.password": "Pasfhocal",
   "app.components.admin.ActionForm.piiExcluded": "PII eisiata",
   "app.components.admin.ActionForm.piiExcludedFromResults": "PII eisiata ó thorthaí",
-  "app.components.admin.ActionForm.resetDemographicQuestionsAndGroups": "Athshocraigh ceisteanna agus grúpaí déimeagrafacha",
   "app.components.admin.ActionForm.signInRequired": "Logáil isteach ag teastáil",
   "app.components.admin.AddByEmail.invite": "Tabhair cuireadh",
   "app.components.admin.AddByEmail.typeEmailToInviteManager": "Clóscríobh ríomhphost chun cuireadh a thabhairt do bhainisteoir...",

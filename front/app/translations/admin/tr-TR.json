@@ -200,7 +200,6 @@
   "app.components.admin.ActionForm.password": "Şifre",
   "app.components.admin.ActionForm.piiExcluded": "PII hariç tutuldu",
   "app.components.admin.ActionForm.piiExcludedFromResults": "Kişisel veriler (PII) sonuçlara dahil edilmez",
-  "app.components.admin.ActionForm.resetDemographicQuestionsAndGroups": "Demografik soruları ve grupları sıfırla",
   "app.components.admin.ActionForm.signInRequired": "Giriş yapılması gerekiyor",
   "app.components.admin.AddByEmail.invite": "Davet et",
   "app.components.admin.AddByEmail.typeEmailToInviteManager": "Yönetici davet etmek için e-posta yazın...",
