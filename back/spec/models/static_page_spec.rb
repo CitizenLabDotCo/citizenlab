@@ -9,6 +9,8 @@ RSpec.describe StaticPage do
     end
   end
 
+  it_behaves_like 'a sanitized title_multiloc', factory: :static_page
+
   describe 'validations' do
     it { is_expected.to validate_presence_of(:title_multiloc) }
 

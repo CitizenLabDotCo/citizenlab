@@ -13,6 +13,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
+import { htmlToPlainText } from 'utils/textUtils';
 
 import messages from './messages';
 
@@ -53,12 +54,15 @@ const ChangesTable = ({ changes }: { changes: Record<string, any> }) => {
                         <Text fontWeight="bold" color="primary" fontSize="s">
                           {valueKey.toUpperCase()}:
                         </Text>
-                        {/* When the value might be a project / folder / idea description, we display it as HTML */}
-                        <Box
-                          dangerouslySetInnerHTML={{
-                            __html: value[valueKey],
-                          }}
-                        />
+                        {/* Descriptions contain HTML, which we show as text rather than render */}
+                        <Text
+                          fontSize="s"
+                          wordBreak="break-word"
+                          color="primary"
+                          whiteSpace="pre-wrap"
+                        >
+                          {htmlToPlainText(String(value[valueKey]))}
+                        </Text>
                       </Box>
                     ))}
                   </Box>
