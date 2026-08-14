@@ -59,8 +59,12 @@ const EmailConfirmation = ({
     () =>
       object({
         code: string()
-          .required(formatMessage(messages.codeMustHaveFourDigits))
-          .matches(/^\d{4}$/, formatMessage(messages.codeMustHaveFourDigits)),
+          .required(formatMessage(messages.codeMustHaveSixDigits))
+          // 4 digits stays accepted until codes sent before the switch have expired.
+          .matches(
+            /^(?:\d{4}|\d{6})$/,
+            formatMessage(messages.codeMustHaveSixDigits)
+          ),
       }),
     [formatMessage]
   );
@@ -127,7 +131,7 @@ const EmailConfirmation = ({
             name="code"
             type="text"
             label={formatMessage(messages.codeInput)}
-            maxCharCount={4}
+            maxCharCount={6}
           />
         </Box>
         <Box w="100%" display="flex" mt="32px">

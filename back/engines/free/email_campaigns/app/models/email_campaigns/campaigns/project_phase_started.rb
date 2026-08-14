@@ -80,7 +80,7 @@ module EmailCampaigns
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.project_phase_changes'
+      'email_campaigns.admin_labels.trigger.phase_starts'
     end
 
     def self.supported_context_class
@@ -100,9 +100,11 @@ module EmailCampaigns
         [{
           event_payload: {
             phase_title_multiloc: notification.phase.title_multiloc,
+            phase_start_at: notification.phase.start_at,
+            phase_end_at: notification.phase.end_at,
+            phase_description_multiloc: notification.phase.description_multiloc,
             phase_url: Frontend::UrlService.new.model_to_url(notification.phase, locale: Locale.new(recipient.locale)),
             project_title_multiloc: notification.project.title_multiloc,
-            project_description_preview_multiloc: notification.project.description_preview_multiloc,
             unfollow_url: Frontend::UrlService.new.unfollow_url(Follower.new(followable: notification.project, user: recipient))
           },
           delay: 8.hours.to_i

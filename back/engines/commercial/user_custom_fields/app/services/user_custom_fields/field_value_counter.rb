@@ -134,14 +134,20 @@ module UserCustomFields
       raise 'custom_field is not the domicile field' unless custom_field.domicile?
 
       area_id_to_option_key = Area.includes(:custom_field_option)
-        .all.to_h { |area| [area.id, area.custom_field_option.key] }
+        .filter_map { |area| [area.id, area.custom_field_option.key] if area.custom_field_option }
+        .to_h
 
       # Adding special keys to the mapping
       somewhere_else_option = custom_field.options.left_joins(:area).find_by(areas: { id: nil })
-      area_id_to_option_key['outside'] = somewhere_else_option.key
-      area_id_to_option_key[FieldValueCounter::UNKNOWN_VALUE_LABEL] = FieldValueCounter::UNKNOWN_VALUE_LABEL
+      area_id_to_option_key['outside'] = somewhere_else_option.key if somewhere_else_option
+      area_id_to_option_key[UNKNOWN_VALUE_LABEL] = UNKNOWN_VALUE_LABEL
 
-      counts.transform_keys! { |key| area_id_to_option_key.fetch(key) }
+      # Several keys can collapse onto UNKNOWN_VALUE_LABEL, so counts are summed.
+      converted = counts.each_with_object({}) do |(key, count), result|
+        option_key = area_id_to_option_key.fetch(key, UNKNOWN_VALUE_LABEL)
+        result[option_key] = (result[option_key] || 0) + count
+      end
+      counts.replace(converted)
     end
 
     private_class_method def self.convert_keys_to_option_ids!(counts, custom_field)

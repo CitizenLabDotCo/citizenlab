@@ -10124,6 +10124,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveSixDigits": {
+    "state": "verified",
+    "verified_at": "2026-08-07T10:23:32.755823Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.noAuthenticationMethodsEnabled": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -10501,13 +10506,13 @@
   },
   "app.containers.NotificationMenu.projectPhaseStarted": {
     "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.368694Z",
-    "verified_by": "Edwin Kato"
+    "verified_at": "2026-08-07T10:28:22.311193Z",
+    "verified_by": "Jelena"
   },
   "app.containers.NotificationMenu.projectPhaseUpcoming": {
     "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.368694Z",
-    "verified_by": "Edwin Kato"
+    "verified_at": "2026-08-07T10:28:22.311193Z",
+    "verified_by": "Jelena"
   },
   "app.containers.NotificationMenu.projectPublished": {
     "state": "verified",
@@ -10898,6 +10903,11 @@
     "state": "verified",
     "verified_at": "2026-07-16T09:49:20.292538Z",
     "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneConfirmation.codeMustHaveSixDigits": {
+    "state": "verified",
+    "verified_at": "2026-08-07T10:23:32.755823Z",
+    "verified_by": "Jelena"
   },
   "app.containers.PhoneConfirmation.confirmationCodeSent": {
     "state": "verified",

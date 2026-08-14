@@ -69,6 +69,23 @@ RSpec.describe UserCustomFields::FieldValueCounter do
         expect(counts.keys).to match_array(expected_keys)
         expect(counts.values).to all eq(0)
       end
+
+      context 'with values referencing a deleted area' do
+        let(:options) { { record_type: 'ideas' } }
+        let(:records) { Idea.all }
+
+        it 'counts them as blank instead of raising', :aggregate_failures do
+          create(:idea_status_proposed)
+          create(:idea, author: nil, custom_field_values: { 'u_domicile' => areas.first.id })
+          deleted_area = create(:area)
+          create(:idea, author: nil, custom_field_values: { 'u_domicile' => deleted_area.id })
+          deleted_area.destroy!
+
+          expect(counts[areas.first.custom_field_option.key]).to eq 1
+          expect(counts[described_class::UNKNOWN_VALUE_LABEL]).to eq 1
+          expect(counts.keys).not_to include(deleted_area.id)
+        end
+      end
     end
 
     context 'when user fields are stored in ideas' do

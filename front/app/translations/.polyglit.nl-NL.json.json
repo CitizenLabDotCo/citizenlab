@@ -10094,6 +10094,11 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveSixDigits": {
+    "state": "verified",
+    "verified_at": "2026-08-11T21:34:27.323419Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.noAuthenticationMethodsEnabled": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
@@ -10471,13 +10476,13 @@
   },
   "app.containers.NotificationMenu.projectPhaseStarted": {
     "state": "verified",
-    "verified_at": "2026-03-18T11:49:32.340815Z",
-    "verified_by": "Admin"
+    "verified_at": "2026-08-06T12:26:23.175091Z",
+    "verified_by": "Luuc"
   },
   "app.containers.NotificationMenu.projectPhaseUpcoming": {
     "state": "verified",
-    "verified_at": "2026-03-18T11:49:32.340815Z",
-    "verified_by": "Admin"
+    "verified_at": "2026-08-06T12:26:23.175091Z",
+    "verified_by": "Luuc"
   },
   "app.containers.NotificationMenu.projectPublished": {
     "state": "verified",
@@ -10867,6 +10872,11 @@
   "app.containers.PhoneConfirmation.codeMustHaveFourDigits": {
     "state": "verified",
     "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneConfirmation.codeMustHaveSixDigits": {
+    "state": "verified",
+    "verified_at": "2026-08-11T21:34:27.323419Z",
     "verified_by": "Luuc"
   },
   "app.containers.PhoneConfirmation.confirmationCodeSent": {
