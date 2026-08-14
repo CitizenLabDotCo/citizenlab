@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Group do
-  it_behaves_like 'a sanitized title_multiloc', factory: :group
+  it_behaves_like 'a plain text multiloc', factory: :group
 
   describe 'Default factory' do
     it 'is valid' do

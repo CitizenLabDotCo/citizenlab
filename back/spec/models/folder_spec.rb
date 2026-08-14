@@ -43,7 +43,7 @@ RSpec.describe ProjectFolders::Folder do
     end
   end
 
-  it_behaves_like 'a sanitized title_multiloc', factory: :project_folder
+  it_behaves_like 'a plain text multiloc', factory: :project_folder
 
   it_behaves_like 'a sanitized html_multiloc', factory: :project_folder
   it_behaves_like 'a sanitized html_multiloc', factory: :project_folder, attribute: :description_preview_multiloc

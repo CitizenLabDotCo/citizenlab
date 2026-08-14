@@ -8,7 +8,7 @@
 #     Idea#body_multiloc              -> SanitizationService#sanitize_body_multiloc, Idea features
 #     Comment#body_multiloc           -> SanitizationService#sanitize_body_multiloc, Comment features
 #     MachineTranslation#translation  -> the source field's own pipeline, whichever that is
-#     #title_multiloc, on each of `title_models`
+#     every column in `plain_text_columns`
 #                                     -> SanitizationService#strip_multiloc_to_plain_text
 #
 # `custom_field_values` is intentionally out of scope: those answers render as escaped text on the
@@ -39,15 +39,34 @@ namespace :single_use do
 
     strip_multiloc = service.method(:strip_multiloc_to_plain_text)
 
-    # Models that strip their `title_multiloc` on write, minus `CustomField` and
+    # Every column declared by `PlainTextMultiloc`, minus `CustomField` and
     # `EmailCampaigns::Campaign` - those two are swept by `purge_stored_xss_form_and_email_text`,
     # which is run separately so their higher risk of losing a legitimate `<` can be reviewed on its
     # own.
-    title_models = [
-      Idea, Project, Phase, ProjectFolders::Folder, InputTopic, GlobalTopic, DefaultInputTopic, Event, StaticPage,
-      Space, Area, Group, IdeaStatus, NavBarItem, CustomFieldOption, CustomFieldMatrixStatement,
-      Polls::Question, Polls::Option, CustomMaps::Layer, Volunteering::Cause
-    ].freeze
+    plain_text_columns = {
+      Idea => %i[title_multiloc],
+      Project => %i[title_multiloc],
+      Phase => %i[title_multiloc native_survey_title_multiloc native_survey_button_multiloc],
+      ProjectFolders::Folder => %i[title_multiloc],
+      InputTopic => %i[title_multiloc],
+      GlobalTopic => %i[title_multiloc],
+      DefaultInputTopic => %i[title_multiloc],
+      Event => %i[title_multiloc location_multiloc address_2_multiloc attend_button_multiloc],
+      StaticPage => %i[title_multiloc banner_header_multiloc banner_subheader_multiloc banner_cta_button_multiloc],
+      Space => %i[title_multiloc],
+      Area => %i[title_multiloc],
+      Group => %i[title_multiloc],
+      IdeaStatus => %i[title_multiloc],
+      NavBarItem => %i[title_multiloc],
+      CustomFieldOption => %i[title_multiloc],
+      CustomFieldMatrixStatement => %i[title_multiloc],
+      Polls::Question => %i[title_multiloc],
+      Polls::Option => %i[title_multiloc],
+      CustomMaps::Layer => %i[title_multiloc],
+      Volunteering::Cause => %i[title_multiloc],
+      OfficialFeedback => %i[author_multiloc],
+      Permission => %i[access_denied_explanation_multiloc]
+    }.freeze
 
     affected = [] # rows for the summary: { host:, model:, attribute: }
 
@@ -100,12 +119,14 @@ namespace :single_use do
         Idea.where(rewritable.call('body_multiloc::text')), :body_multiloc,
         ->(value) { service.sanitize_body_multiloc(value, Idea::BODY_SANITIZE_FEATURES) }, 'Idea'
       )
-      title_models.each do |model|
-        purge.call(
-          tenant, script,
-          model.where(rewritable.call('title_multiloc::text')), :title_multiloc,
-          strip_multiloc, model.name
-        )
+      plain_text_columns.each do |model, attributes|
+        attributes.each do |attribute|
+          purge.call(
+            tenant, script,
+            model.where(rewritable.call("#{attribute}::text")), attribute,
+            strip_multiloc, model.name
+          )
+        end
       end
       purge.call(
         tenant, script,

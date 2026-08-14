@@ -103,7 +103,7 @@ class Phase < ApplicationRecord
 
   before_validation :sanitize_description_multiloc
   before_validation :sanitize_draft_description_multiloc
-  plain_text_multiloc :title_multiloc
+  plain_text_multiloc :title_multiloc, :native_survey_title_multiloc, :native_survey_button_multiloc
   before_validation :strip_title
   before_validation :set_participation_method_defaults, on: :create
   before_validation :set_participation_method_defaults_on_method_change, on: :update

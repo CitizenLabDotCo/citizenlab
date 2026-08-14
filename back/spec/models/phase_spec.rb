@@ -31,7 +31,9 @@ RSpec.describe Phase do
   it { is_expected.to validate_presence_of(:title_multiloc) }
 
   it_behaves_like 'a sanitized html_multiloc', factory: :phase
-  it_behaves_like 'a sanitized title_multiloc', factory: :phase
+  it_behaves_like 'a plain text multiloc', factory: :phase
+  it_behaves_like 'a plain text multiloc', factory: :phase, attribute: :native_survey_title_multiloc
+  it_behaves_like 'a plain text multiloc', factory: :phase, attribute: :native_survey_button_multiloc
 
   describe 'timing model validation' do
     it 'fails when the duration is less than 1 day' do

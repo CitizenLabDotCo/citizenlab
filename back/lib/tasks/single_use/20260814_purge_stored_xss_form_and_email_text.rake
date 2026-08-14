@@ -3,7 +3,8 @@
 # The rest of `purge_stored_xss`: the plain-text fields on `CustomField` and
 # `EmailCampaigns::Campaign`, split into their own task so they can be reviewed and run separately.
 #
-#     CustomField#title_multiloc               -> survey and form question labels
+#     CustomField#title_multiloc, #page_button_label_multiloc, #linear_scale_label_1..11_multiloc
+#                                              -> survey and form question labels
 #     EmailCampaigns::Campaign#subject_multiloc, #title_multiloc, #button_text_multiloc
 #                                              -> the `text` editable regions of an email
 #
@@ -32,7 +33,13 @@ namespace :single_use do
 
     # Model, then every plain-text multiloc column it owns.
     targets = {
-      CustomField => %i[title_multiloc],
+      CustomField => %i[
+        title_multiloc page_button_label_multiloc
+        linear_scale_label_1_multiloc linear_scale_label_2_multiloc linear_scale_label_3_multiloc
+        linear_scale_label_4_multiloc linear_scale_label_5_multiloc linear_scale_label_6_multiloc
+        linear_scale_label_7_multiloc linear_scale_label_8_multiloc linear_scale_label_9_multiloc
+        linear_scale_label_10_multiloc linear_scale_label_11_multiloc
+      ],
       EmailCampaigns::Campaign => %i[subject_multiloc title_multiloc button_text_multiloc]
     }.freeze
 

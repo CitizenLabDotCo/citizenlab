@@ -7,7 +7,7 @@ RSpec.describe IdeaStatus do
 
   let(:code) { 'proposed' }
 
-  it_behaves_like 'a sanitized title_multiloc', factory: :idea_status
+  it_behaves_like 'a plain text multiloc', factory: :idea_status
 
   context 'Default factory' do
     it 'is valid' do

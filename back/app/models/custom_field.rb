@@ -127,7 +127,19 @@ class CustomField < ApplicationRecord
   before_validation :set_default_enabled
   before_validation :generate_key, on: :create
   before_validation :sanitize_description_multiloc
-  plain_text_multiloc :title_multiloc
+  plain_text_multiloc :title_multiloc,
+    :page_button_label_multiloc,
+    :linear_scale_label_1_multiloc,
+    :linear_scale_label_2_multiloc,
+    :linear_scale_label_3_multiloc,
+    :linear_scale_label_4_multiloc,
+    :linear_scale_label_5_multiloc,
+    :linear_scale_label_6_multiloc,
+    :linear_scale_label_7_multiloc,
+    :linear_scale_label_8_multiloc,
+    :linear_scale_label_9_multiloc,
+    :linear_scale_label_10_multiloc,
+    :linear_scale_label_11_multiloc
   before_validation :clear_logic_unless_supported
   after_create(if: :domicile?) { Area.recreate_custom_field_options }
 

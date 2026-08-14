@@ -136,7 +136,7 @@ RSpec.describe Project do
   end
 
   it_behaves_like 'a sanitized html_multiloc', factory: :project
-  it_behaves_like 'a sanitized title_multiloc', factory: :project
+  it_behaves_like 'a plain text multiloc', factory: :project
 
   describe 'title sanitizer' do
     it 'is not rewritten by a save that does not touch the title' do

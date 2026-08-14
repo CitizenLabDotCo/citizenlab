@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe CustomMaps::Layer do
-  it_behaves_like 'a sanitized title_multiloc', factory: :layer
+  it_behaves_like 'a plain text multiloc', factory: :layer
 
   describe 'Default factory' do
     it 'is valid' do

@@ -9,7 +9,10 @@ RSpec.describe Event do
     end
   end
 
-  it_behaves_like 'a sanitized title_multiloc', factory: :event
+  it_behaves_like 'a plain text multiloc', factory: :event
+  it_behaves_like 'a plain text multiloc', factory: :event, attribute: :location_multiloc
+  it_behaves_like 'a plain text multiloc', factory: :event, attribute: :address_2_multiloc
+  it_behaves_like 'a plain text multiloc', factory: :event, attribute: :attend_button_multiloc
 
   describe 'associations' do
     subject(:event) { build(:event) }

@@ -11,7 +11,7 @@ RSpec.describe GlobalTopic do
 
   it { is_expected.to validate_presence_of(:title_multiloc) }
 
-  it_behaves_like 'a sanitized title_multiloc', factory: :global_topic
+  it_behaves_like 'a plain text multiloc', factory: :global_topic
 
   describe 'title sanitizer' do
     # The guard used to test description_multiloc, so a topic with no description kept its

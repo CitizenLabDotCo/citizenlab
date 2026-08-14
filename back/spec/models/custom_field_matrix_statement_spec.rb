@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe CustomFieldMatrixStatement do
   subject { build(:custom_field_matrix_statement) }
 
-  it_behaves_like 'a sanitized title_multiloc', factory: :custom_field_matrix_statement
+  it_behaves_like 'a plain text multiloc', factory: :custom_field_matrix_statement
 
   describe 'Default factory' do
     it { is_expected.to be_valid }

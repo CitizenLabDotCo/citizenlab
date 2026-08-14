@@ -72,7 +72,11 @@ class StaticPage < ApplicationRecord
   accepts_nested_attributes_for :nav_bar_item
 
   before_validation :set_code, on: :create
-  plain_text_multiloc :title_multiloc, prepend: true
+  plain_text_multiloc :title_multiloc,
+    :banner_header_multiloc,
+    :banner_subheader_multiloc,
+    :banner_cta_button_multiloc,
+    prepend: true
   before_validation :strip_title
   before_validation :sanitize_top_info_section_multiloc
   before_validation :sanitize_bottom_info_section_multiloc

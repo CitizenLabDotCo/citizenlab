@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Polls::Question do
-  it_behaves_like 'a sanitized title_multiloc', factory: :poll_question
+  it_behaves_like 'a plain text multiloc', factory: :poll_question
 
   describe 'Default factory' do
     it 'is valid' do

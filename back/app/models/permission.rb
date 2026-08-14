@@ -31,6 +31,7 @@
 #  index_permissions_on_permission_scope_id  (permission_scope_id)
 #
 class Permission < ApplicationRecord
+  include PlainTextMultiloc
   PERMITTED_BIES = %w[everyone users admins_moderators].freeze
   ACTIONS = {
     # NOTE: Order of actions in each array is used when using :order_by_action
@@ -68,6 +69,7 @@ class Permission < ApplicationRecord
   has_many :permissions_custom_fields, -> { order(:ordering).includes(:custom_field) }, inverse_of: :permission, dependent: :destroy
   has_many :custom_fields, -> { order(:ordering) }, through: :permissions_custom_fields
 
+  plain_text_multiloc :access_denied_explanation_multiloc
   validates :action, presence: true, inclusion: { in: ->(permission) { available_actions(permission.permission_scope) } }
   validates :permitted_by, presence: true, inclusion: { in: PERMITTED_BIES }
   validates :action, uniqueness: { scope: %i[permission_scope_id permission_scope_type] }

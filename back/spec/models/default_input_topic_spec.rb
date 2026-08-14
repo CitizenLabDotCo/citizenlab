@@ -9,7 +9,7 @@ RSpec.describe DefaultInputTopic do
     end
   end
 
-  it_behaves_like 'a sanitized title_multiloc', factory: :default_input_topic
+  it_behaves_like 'a plain text multiloc', factory: :default_input_topic
 
   describe 'title sanitizer' do
     it 'does not carry a payload into the input topics copied from it' do

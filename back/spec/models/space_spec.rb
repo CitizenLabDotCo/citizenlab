@@ -64,7 +64,7 @@ RSpec.describe Space do
   end
 
   it_behaves_like 'a sanitized html_multiloc', factory: :space
-  it_behaves_like 'a sanitized title_multiloc', factory: :space
+  it_behaves_like 'a plain text multiloc', factory: :space
 
   describe 'description sanitizer' do
     def description_of(html)

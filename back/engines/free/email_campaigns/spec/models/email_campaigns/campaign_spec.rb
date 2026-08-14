@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::Campaign do
-  it_behaves_like 'a sanitized title_multiloc', factory: :welcome_campaign
+  it_behaves_like 'a plain text multiloc', factory: :welcome_campaign
 
   describe 'plain text regions' do
     it 'strips markup from the subject of a manual campaign' do
