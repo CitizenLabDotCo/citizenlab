@@ -5,6 +5,7 @@ import {
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
+import { NO_PLACEHOLDER_DATA } from 'utils/cl-react-query/queryClient';
 
 import usersKeys from './keys';
 import { IUser, UsersKeys } from './types';
@@ -20,7 +21,9 @@ const useUserById = (userId?: string | null, keepPreviousData?: boolean) => {
     queryKey: usersKeys.item({ id: userId }),
     queryFn: () => fetchUserById({ id: userId }),
     enabled: !!userId,
-    placeholderData: keepPreviousData ? keepPreviousDataFn : undefined,
+    placeholderData: keepPreviousData
+      ? keepPreviousDataFn
+      : NO_PLACEHOLDER_DATA,
   });
 };
 

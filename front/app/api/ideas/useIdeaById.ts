@@ -5,6 +5,7 @@ import {
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
+import { NO_PLACEHOLDER_DATA } from 'utils/cl-react-query/queryClient';
 
 import ideasKeys from './keys';
 import { IIdea, IdeasKeys } from './types';
@@ -18,7 +19,9 @@ const useIdeaById = (id?: string, keepPreviousData?: boolean) => {
     queryFn: () => fetchIdea({ id }),
     enabled: !!id,
     refetchOnWindowFocus: false,
-    placeholderData: keepPreviousData ? keepPreviousDataFn : undefined,
+    placeholderData: keepPreviousData
+      ? keepPreviousDataFn
+      : NO_PLACEHOLDER_DATA,
   });
 };
 

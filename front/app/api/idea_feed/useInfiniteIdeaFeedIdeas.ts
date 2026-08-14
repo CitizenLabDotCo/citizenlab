@@ -7,6 +7,7 @@ import { uniqBy } from 'lodash-es';
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
+import { NO_PLACEHOLDER_DATA } from 'utils/cl-react-query/queryClient';
 
 import ideaFeedKeys from './keys';
 import {
@@ -75,7 +76,9 @@ const useInfiniteIdeaFeedIdeas = (
 
       return true;
     },
-    placeholderData: keepPreviousData ? keepPreviousDataFn : undefined,
+    placeholderData: keepPreviousData
+      ? keepPreviousDataFn
+      : NO_PLACEHOLDER_DATA,
     gcTime: 0,
   });
 };
