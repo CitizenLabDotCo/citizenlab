@@ -213,6 +213,23 @@ RSpec.describe Surveys::ResultsGenerator do
         expected_result_multiselect[:questionNumber] = nil
         expect(generator.generate_result_for_field(multiselect_field.id)).to match expected_result_multiselect
       end
+
+      context 'with an empty selection' do
+        before do
+          create(:native_survey_response, project: project, phases: phases_of_inputs, custom_field_values: {
+            multiselect_field.key => []
+          })
+        end
+
+        it 'counts towards the question responses, but not towards any answer, not even none' do
+          result = generator.generate_result_for_field(multiselect_field.id)
+
+          expect(result[:totalResponseCount]).to eq 28
+          expect(result[:questionResponseCount]).to eq 5
+          expect(result[:answers]).to include({ answer: nil, count: 23 })
+          expect(result[:totalPickCount]).to eq 33
+        end
+      end
     end
 
     describe 'linear scale field' do

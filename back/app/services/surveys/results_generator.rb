@@ -260,39 +260,40 @@ module Surveys
     end
 
     def visit_select_base(field)
-      query = inputs(field).select(
-        select_field_query(field, as: 'answer')
-      )
-      answers = construct_select_answers(query, field)
+      answers = construct_select_answers(counts_by_value(field), field)
 
       # Build response
       build_select_response(answers, field)
     end
 
-    def select_field_query(field, as: 'answer')
-      table = field.resource_type == 'User' ? 'users' : 'ideas'
+    # How many times each value was answered, with a nil count for the inputs
+    # that did not answer. Multiple selections count once per selected option.
+    def counts_by_value(field)
+      answers = CustomFieldAnswer.main_for(field).where(answerable_id: inputs(field))
 
-      if field.supports_single_selection?
-        "COALESCE(#{table}.custom_field_values->'#{field.key}', 'null') as #{as}"
-      elsif field.supports_multiple_selection?
-        %{
-          jsonb_array_elements(
-            CASE WHEN (
-              jsonb_path_exists(#{table}.custom_field_values, '$ ? (exists (@."#{field.key}"))') AND
-              jsonb_typeof(#{table}.custom_field_values->'#{field.key}') = 'array'
-            ) THEN #{table}.custom_field_values->'#{field.key}'
-              ELSE '[null]'::jsonb END
-          ) as #{as}
-      }
+      if field.supports_multiple_selection?
+        counts = answers
+          .joins(%(CROSS JOIN jsonb_array_elements(CASE WHEN jsonb_typeof(value) = 'array' THEN value ELSE '[null]'::jsonb END) AS selections(selection)))
+          .group("selections.selection #>> '{}'")
+          .count
+        counts[nil] = (counts[nil] || 0) + field_seen_count(field) - answered_count(field)
+      elsif field.supports_single_selection?
+        counts = answers.group(:value).count
+        counts[nil] = (counts[nil] || 0) + field_seen_count(field) - counts.values.sum
       else
         raise "Unsupported field type: #{field.input_type}"
       end
+      counts
+    end
+
+    def answered_count(field)
+      @answered_count ||= {}
+      @answered_count[field.id] ||= CustomFieldAnswer.main_for(field).where(answerable_id: inputs(field)).count
     end
 
     def build_select_response(answers, field)
-      # NOTE: This is an additional query needed for multi-selects only which impacts performance slightly
       question_response_count = if field.supports_multiple_selection?
-        CustomFieldAnswer.main_for(field).where(answerable_id: inputs(field)).count
+        answered_count(field)
       else
         answers.reject { |a| a[:answer].nil? }.pluck(:count).sum
       end
@@ -346,10 +347,10 @@ module Surveys
       answer_multilocs
     end
 
-    def construct_select_answers(query, field)
+    def construct_select_answers(counts, field)
       answer_keys = generate_select_answer_keys(field)
 
-      grouped_answers_hash = select_group_query(query)
+      grouped_answers_hash = counts
         .each_with_object({}) do |(answer, count), accu|
         valid_answer = answer_keys.include?(answer) ? answer : nil
 
@@ -362,21 +363,15 @@ module Surveys
       end
     end
 
-    def select_group_query(query)
-      Idea
-        .select(:answer)
-        .from(query)
-        .group(:answer)
-        .count
-    end
-
     def generate_select_answer_keys(field)
       (field.supports_linear_scale? ? (1..field.maximum).to_a : field.ordered_transformed_options.map(&:key)) + [nil]
     end
 
     def matrix_linear_scale_statements(field)
+      field_answers = CustomFieldAnswer.main_for(field).where(answerable_id: inputs(field))
+      unanswered_count = field_seen_count(field) - answered_count(field)
       field.matrix_statements.pluck(:key, :title_multiloc).to_h do |statement_key, statement_title_multiloc|
-        query_result = inputs(field).group("custom_field_values->'#{field.key}'->'#{statement_key}'").count
+        query_result = field_answers.group("value->'#{statement_key}'").count
         answers = (1..field.maximum).reverse_each.map do |answer|
           { answer: answer, count: query_result[answer] || 0 }
         end
@@ -384,7 +379,7 @@ module Surveys
         answers.each do |answer|
           answer[:percentage] = question_response_count > 0 ? (answer[:count].to_f / question_response_count) : 0.0
         end
-        answers += [{ answer: nil, count: query_result[nil] || 0 }]
+        answers += [{ answer: nil, count: (query_result[nil] || 0) + unanswered_count }]
         value = {
           question: statement_title_multiloc,
           questionResponseCount: question_response_count,
