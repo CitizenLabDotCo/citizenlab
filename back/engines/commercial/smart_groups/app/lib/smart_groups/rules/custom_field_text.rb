@@ -65,28 +65,28 @@ module SmartGroups::Rules
 
     def filter(users_scope)
       custom_field = CustomField.find(custom_field_id)
-      key = custom_field.key
+      answer_filter = AnswerableFilter.new(custom_field, users_scope)
       case predicate
       when 'is'
-        users_scope.where("custom_field_values->>'#{key}' = ?", value)
+        answer_filter.eq(value)
       when 'not_is'
-        users_scope.where("custom_field_values->>'#{key}' IS NULL or custom_field_values->>'#{key}' != ?", value)
+        answer_filter.not_eq(value)
       when 'contains'
-        users_scope.where("custom_field_values->>'#{key}' LIKE ?", "%#{value}%")
+        answer_filter.matching("%#{value}%")
       when 'not_contains'
-        users_scope.where("custom_field_values->>'#{key}' NOT LIKE ?", "%#{value}%")
+        answer_filter.not_matching("%#{value}%").and(answer_filter.present)
       when 'begins_with'
-        users_scope.where("custom_field_values->>'#{key}' LIKE ?", "#{value}%")
+        answer_filter.matching("#{value}%")
       when 'not_begins_with'
-        users_scope.where("custom_field_values->>'#{key}' NOT LIKE ?", "#{value}%")
+        answer_filter.not_matching("#{value}%").and(answer_filter.present)
       when 'ends_on'
-        users_scope.where("custom_field_values->>'#{key}' LIKE ?", "%#{value}")
+        answer_filter.matching("%#{value}")
       when 'not_ends_on'
-        users_scope.where("custom_field_values->>'#{key}' NOT LIKE ?", "%#{value}")
+        answer_filter.not_matching("%#{value}").and(answer_filter.present)
       when 'is_empty'
-        users_scope.where("custom_field_values->>'#{key}' IS NULL")
+        answer_filter.absent
       when 'not_is_empty'
-        users_scope.where("custom_field_values->>'#{key}' IS NOT NULL")
+        answer_filter.present
       else
         raise "Unsupported predicate #{predicate}"
       end
