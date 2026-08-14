@@ -29,6 +29,8 @@ class CustomFieldAnswer < ApplicationRecord
   belongs_to :answerable, polymorphic: true
   belongs_to :custom_field, optional: true
 
+  scope :main_for, ->(field) { where(custom_field: field, key: field.key) }
+
   validates :answerable_type, inclusion: { in: ANSWERABLE_TYPES }
   validates :key, presence: true
   # presence would reject false/[]; exclusion checks arrays element-wise.
