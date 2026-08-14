@@ -16,9 +16,18 @@ module EmailCampaigns
           'failed' => 'failed'
         }.freeze
 
-        def send(to:, body:)
+        # Returned when the number replied STOP to the messaging service we're sending on.
+        # https://www.twilio.com/docs/api/errors/21610
+        OPTED_OUT_ERROR_CODE = 21_610
+
+        MESSAGING_SERVICE_SID_SETTINGS = {
+          UseCase::MANUAL_CAMPAIGNS => 'twilio_manual_campaigns_messaging_service_sid',
+          UseCase::CONFIRMATION_CODES => 'twilio_confirmation_codes_messaging_service_sid'
+        }.freeze
+
+        def send(to:, body:, use_case:)
           message = client.api.v2010.messages.create(
-            **from_params,
+            **from_params(use_case),
             to: to,
             body: body,
             status_callback: callback_url
@@ -49,16 +58,20 @@ module EmailCampaigns
             status: STATUS_MAPPING[params[:MessageStatus]],
             # The provider's original status string, kept for diagnostics when it
             # maps to nil (a status we don't track).
-            raw_status: params[:MessageStatus]
+            raw_status: params[:MessageStatus],
+            opted_out: params[:ErrorCode].to_i == OPTED_OUT_ERROR_CODE
           }
         end
 
         private
 
-        # Maps a Twilio REST error onto our provider error hierarchy by HTTP
-        # status: 429 -> RateLimit, 503 -> ServiceUnavailable, other 5xx ->
-        # ServerError (all retryable), anything else -> the permanent ProviderError.
+        # Maps a Twilio REST error onto our provider error hierarchy. An opt-out is
+        # recognised by its Twilio error code; everything else goes by HTTP status:
+        # 429 -> RateLimit, 503 -> ServiceUnavailable, other 5xx -> ServerError (all
+        # retryable), anything else -> the permanent ProviderError.
         def error_for(rest_error)
+          return ProviderError::RecipientOptedOut.new(rest_error.message) if rest_error.code == OPTED_OUT_ERROR_CODE
+
           error_class_for(rest_error.status_code).new(rest_error.message)
         end
 
@@ -76,9 +89,10 @@ module EmailCampaigns
         end
 
         # SMS is always sent through a Twilio Messaging Service, identified by its SID.
-        def from_params
-          messaging_service_sid = config['twilio_messaging_service_sid'].presence
-          raise Error, 'No Twilio messaging service SID configured' unless messaging_service_sid
+        # `fetch` raises for a use case we don't have a messaging service for.
+        def from_params(use_case)
+          messaging_service_sid = config[MESSAGING_SERVICE_SID_SETTINGS.fetch(use_case)].presence
+          raise Error, "No Twilio messaging service SID configured for #{use_case}" unless messaging_service_sid
 
           { messaging_service_sid: messaging_service_sid }
         end

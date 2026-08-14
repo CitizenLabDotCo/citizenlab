@@ -95,50 +95,22 @@ module SmartGroups::Rules
 
     def filter(users_scope)
       custom_field = CustomField.find(custom_field_id)
-      key = custom_field.key
-      case custom_field.input_type
-      when 'select'
-        case predicate
-        when 'has_value'
-          option_key = CustomFieldOption.find(value).key
-          users_scope.where("custom_field_values->>'#{key}' = ?", option_key)
-        when 'not_has_value'
-          option_key = CustomFieldOption.find(value).key
-          users_scope.where("custom_field_values->>'#{key}' IS NULL OR custom_field_values->>'#{key}' != ?", option_key)
-        when 'is_one_of'
-          option_keys = CustomFieldOption.where(id: value).pluck :key
-          users_scope.where("custom_field_values->>'#{key}' IN (?)", option_keys)
-        when 'not_is_one_of'
-          option_keys = CustomFieldOption.where(id: value).pluck :key
-          users_scope.where("custom_field_values->>'#{key}' IS NULL OR custom_field_values->>'#{key}' NOT IN (?)", option_keys)
-        when 'is_empty'
-          users_scope.where("custom_field_values->>'#{key}' IS NULL")
-        when 'not_is_empty'
-          users_scope.where("custom_field_values->>'#{key}' IS NOT NULL")
-        else
-          raise "Unsupported predicate #{predicate}"
-        end
-      when 'multiselect'
-        case predicate
-        when 'has_value'
-          option_key = CustomFieldOption.find(value).key
-          users_scope.where("(custom_field_values->>'#{key}')::jsonb ? :value", value: option_key)
-        when 'not_has_value'
-          option_key = CustomFieldOption.find(value).key
-          users_scope.where("custom_field_values->>'#{key}' IS NULL OR NOT (custom_field_values->>'#{key}')::jsonb ? :value", value: option_key)
-        when 'is_one_of'
-          option_keys = CustomFieldOption.where(id: value).pluck :key
-          users_scope.where("(custom_field_values->>'#{key}')::jsonb ?| array[:value]", value: option_keys)
-        when 'not_is_one_of'
-          option_keys = CustomFieldOption.where(id: value).pluck :key
-          users_scope.where("custom_field_values->>'#{key}' IS NULL OR NOT ((custom_field_values->>'#{key}')::jsonb ?| array[:value])", value: option_keys)
-        when 'is_empty'
-          users_scope.where("custom_field_values->>'#{key}' IS NULL OR (custom_field_values->>'#{key}')::jsonb = '[]'::jsonb")
-        when 'not_is_empty'
-          users_scope.where("custom_field_values->>'#{key}' IS NOT NULL AND (custom_field_values->>'#{key}')::jsonb != '[]'::jsonb")
-        else
-          raise "Unsupported predicate #{predicate}"
-        end
+      answer_filter = AnswerableFilter.new(custom_field, users_scope)
+      case predicate
+      when 'has_value'
+        answer_filter.eq(CustomFieldOption.find(value).key)
+      when 'not_has_value'
+        answer_filter.not_eq(CustomFieldOption.find(value).key)
+      when 'is_one_of'
+        answer_filter.one_of(CustomFieldOption.where(id: value).pluck(:key))
+      when 'not_is_one_of'
+        answer_filter.not_one_of(CustomFieldOption.where(id: value).pluck(:key))
+      when 'is_empty'
+        answer_filter.absent
+      when 'not_is_empty'
+        answer_filter.present
+      else
+        raise "Unsupported predicate #{predicate}"
       end
     end
 

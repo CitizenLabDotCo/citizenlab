@@ -148,6 +148,7 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
       # Activity logs, telemetry and derived caches — runtime data, not content.
       tracking_and_caches: %w[
         Activity
+        CustomFieldAnswer
         IdeaExposure
         ImpactTracking::Pageview
         ImpactTracking::Salt

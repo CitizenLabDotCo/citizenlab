@@ -77,6 +77,7 @@ hu-HU:
         users_who_follow_the_proposal: A javaslatot követő felhasználók
       trigger:
         7_days_after_invite_is_sent: 7 nappal a meghívó elküldése után
+        7_days_before_phase_starts: 7 nappal egy szakasz kezdete előtt
         7_days_before_the_project_changes_phase: 7 nappal a projektváltási szakasz előtt
         comment_is_deleted: A megjegyzés törölve
         comment_is_flagged_as_spam: A megjegyzés spamként van megjelölve
@@ -95,6 +96,7 @@ hu-HU:
         new_input_awaits_screening: Új bemenet vár a vetítésre
         new_input_is_published: Megjelent az új bemenet
         new_proposal_is_posted: Új ajánlatot tettek közzé
+        phase_starts: Szakasz kezdődik
         project_phase_changes: Változások a projekt fázisában
         project_published: A projekt megjelent
         project_review_request: A moderátor a projekt felülvizsgálatát kérte
@@ -197,8 +199,8 @@ hu-HU:
       project_folder_moderation_rights_received: Mappakezelői jogok megérkeztek
       project_manager_rights_received: Projektmenedzseri jogosultságok megadva
       project_moderation_rights_received: A projekt moderálási jogai megkapták
-      project_phase_started: Új projekt fázis
-      project_phase_upcoming: Közelgő új projektszakasz
+      project_phase_started: A szakasz elindult
+      project_phase_upcoming: Hamarosan kezdődő szakasz
       project_published: A projekt megjelent
       project_review_request: Projekt felülvizsgálati kérelem
       project_review_state_change: Projekt jóváhagyva
@@ -359,6 +361,7 @@ hu-HU:
         story: Menj a történetedhez
         suggestion: Ugrás a javaslatodra
         topic: Menj a témádhoz
+      phase_dates: '%{startDate} és %{endDate} között'
     idea_marked_as_spam:
       cta_button: Véleményezés
       preheader: Cselekedjen a spamjelentés alapján
@@ -571,8 +574,9 @@ hu-HU:
       input_status_description: Példa egy bemenet állapotára (pl. elfogadva, elutasítva, megvalósítva...)
       input_status_title: Példa állapot
       official_feedback_body: Példa hivatalos visszajelzésre
+      phase_description: Ez egy példa szakasztartalom, amely az e-mailek tartalmának előnézetéhez használható. Ez nem valódi tartalom.
       phase_title: Példa fázis
-      project_description_preview: Ez egy példa egy fázistartalomra, amelyet e-mailek tartalmának előnézetére használnak. Ez nem valódi tartalom.
+      project_description_preview: Ez egy példa projekttartalom az e-mailek tartalmának előnézetéhez. Ez nem valódi tartalom.
       project_title: Példaprojekt
       proposal_title: Példaajánlat
       space_title: Példa tér
@@ -607,21 +611,21 @@ hu-HU:
       title_what_can_you_do_moderator: Mit tehet projektmenedzserként?
       x_ideas: '%{numberOfIdeas} ötletek'
     project_phase_started:
-      cta_button: Fedezd fel ezt az új fázist
-      event_description: Ez a projekt új szakaszba lépett a %{organizationName}platformon. További információért kattintson az alábbi linkre!
+      cta_button: Megnézem az újdonságokat
+      event_description: Most már részt vehet a(z) „%{phaseTitle}” szakaszban a(z) %{organizationName} platformján.
       new_phase: "Ez a projekt a '%{phaseTitle}' fázisba lépett"
-      preheader: Új szakasz kezdődött a %{projectName}számára
-      subject: '%{projectName} új szakaszba lépett'
+      preheader: Most már részt vehet a(z) „%{phaseTitle}” szakaszban
+      subject: A(z) „%{phaseTitle}” szakasz elindult a(z) %{projectName} projektben
       subtitle: "Körülbelül '%{projectName}'"
-      title: "Új fázis kezdődött a(z) '%{projectName}' projektben."
+      title: Újdonság történt a(z) „%{projectName}” projektben
     project_phase_upcoming:
-      cta_button: Állítsa be ezt az új fázist
-      event_description: "A '%{projectName}' projekt hamarosan új szakaszba lép. Győződjön meg arról, hogy minden be van állítva ehhez a fázishoz: Van megfelelő leírás? A kiválasztott ötletek átkerülnek ebbe a fázisba? Egyéni e-mail kampányon keresztül szeretné tájékoztatni polgárait ennek a szakasznak a sajátosságairól?"
+      cta_button: Beállítások áttekintése
+      event_description: 'A(z) „%{projectName}” projekt „%{phaseTitle}” szakasza %{startDate} napon kezdődik. Kérjük, ellenőrizze, hogy minden készen áll-e: Teljes a leírás? Helyesek a dátumok? Szeretné tájékoztatni a közösséget egy egyedi e-mail kampányon keresztül?'
       new_phase: "A projekt a '%{phaseTitle}' fázisba lép"
-      preheader: Hamarosan új szakasz kezdődik a %{projectName}számára
-      subject: Mindent beállíthat a %{projectName}új szakaszához
+      preheader: Győződjön meg róla, hogy minden készen áll %{startDate} előtt
+      subject: '%{projectName}: a(z) „%{phaseTitle}” szakasz %{startDate} napon kezdődik'
       subtitle: "Körülbelül '%{projectName}'"
-      title: '%{firstName}, egy projekt hamarosan új fázisba lép'
+      title: '%{firstName}, a(z) „%{phaseTitle}” szakasz %{startDate} napon kezdődik'
     project_published:
       cta_button: Ugrás erre a projektre
       event_description: 'A %{organizationName} részvételi platformja nemrég tette közzé a következő projektet:'

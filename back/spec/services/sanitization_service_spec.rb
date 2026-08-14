@@ -14,6 +14,12 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq input
     end
 
+    it 'does not mutate the passed features array and accepts a frozen one' do
+      features = %i[link image].freeze
+      expect { service.sanitize('<a href="https://example.com">x</a>', features) }.not_to raise_error
+      expect(features).to eq %i[link image]
+    end
+
     it 'allows titles to pass through when title feature is enabled' do
       input = <<~HTML
         <h2>title</h2>
@@ -234,6 +240,57 @@ describe SanitizationService do
       features = %i[title alignment list decoration link video]
       expect(service.sanitize(input, features)).not_to include "<iframe src=\"javascript:javascript:alert('ThisPlatformWasHacked!');\"></iframe>"
     end
+
+    describe 'URL scheme allowlist' do
+      it 'drops javascript: hrefs on links but keeps the text' do
+        input = '<a href="javascript:alert(1)">click</a>'
+        output = service.sanitize(input, [:link])
+        expect(output).not_to include('javascript:')
+        expect(output).to include('click')
+      end
+
+      it 'drops data: hrefs on links' do
+        input = '<a href="data:text/html;base64,PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg==">click</a>'
+        output = service.sanitize(input, [:link])
+        expect(output).not_to include('data:text/html')
+      end
+
+      it 'keeps http, https, mailto and relative hrefs on links' do
+        ['https://example.com', 'http://example.com', 'mailto:a@b.com', '/relative', '#frag'].each do |href|
+          output = service.sanitize(%(<a href="#{href}">x</a>), [:link])
+          expect(output).to include(%(href="#{href}"))
+        end
+      end
+
+      it 'drops javascript: src on images' do
+        input = '<img src="javascript:alert(1)">'
+        expect(service.sanitize(input, [:image])).not_to include('javascript:')
+      end
+
+      it 'keeps data:image base64 src on images' do
+        input = '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">'
+        expect(service.sanitize(input, [:image])).to include('data:image/gif;base64')
+      end
+    end
+
+    describe 'CSS scrubbing of the style attribute' do
+      it 'drops javascript: URLs inside style' do
+        input = '<img src="/x.png" style="background:url(javascript:alert(1))">'
+        expect(service.sanitize(input, [:image])).not_to include('javascript:')
+      end
+
+      it 'drops CSS expression() inside style' do
+        input = '<img src="/x.png" style="width:expression(alert(1))">'
+        expect(service.sanitize(input, [:image])).not_to include('expression(')
+      end
+
+      it 'drops position/offset properties usable for clickjacking overlays' do
+        input = '<img src="/x.png" style="position:fixed;top:0;left:0;width:100vw;height:100vh">'
+        output = service.sanitize(input, [:image])
+        expect(output).not_to include('position:')
+        expect(output).not_to include('top:')
+      end
+    end
   end
 
   describe 'remove_empty_trailing_tags' do
@@ -390,6 +447,62 @@ describe SanitizationService do
       html = '<p>hello@citizenlab.co</p>'
       output = service.linkify(html)
       expect(output).to eq '<p><a href="mailto:hello@citizenlab.co" target="_blank" rel="noreferrer noopener nofollow">hello@citizenlab.co</a></p>'
+    end
+  end
+
+  describe 'sanitize_body_multiloc' do
+    # One input exercising all three steps: the script tag is sanitized away, the bare URL is
+    # linkified, and the empty trailing `<p>` is dropped.
+    it 'runs the sanitize, trailing-tag and linkify steps' do
+      output = service.sanitize_body_multiloc(
+        { 'en' => '<p>See https://example.com</p><script>alert(1)</script><p></p>' }, %i[mention]
+      )
+      expect(output['en']).to eq(
+        '<p>See <a href="https://example.com" target="_blank" rel="noreferrer noopener nofollow">https://example.com</a></p>alert(1)'
+      )
+    end
+
+    # Public API responses distinguish '' from nil, so this must not drift.
+    it 'turns a nil locale value into an empty string, not nil' do
+      output = service.sanitize_body_multiloc({ 'en' => '<p>hi</p>', 'nl-NL' => nil }, %i[mention])
+      expect(output).to eq({ 'en' => '<p>hi</p>', 'nl-NL' => '' })
+    end
+  end
+
+  describe 'strip_to_plain_text' do
+    it 'removes markup' do
+      expect(service.strip_to_plain_text('<b>Bold</b> idea')).to eq 'Bold idea'
+    end
+
+    it 'does not entity-encode the text that survives' do
+      expect(service.strip_to_plain_text('Fish & chips: budget > 100 < 200')).to eq 'Fish & chips: budget > 100 < 200'
+    end
+
+    it 'is idempotent' do
+      once = service.strip_to_plain_text('<b>Fish</b> & chips')
+      expect(service.strip_to_plain_text(once)).to eq once
+    end
+
+    it 'neutralises a payload hidden behind entity encoding' do
+      expect(service.strip_to_plain_text('&lt;img src=x onerror=alert(1)&gt;hi')).to eq 'hi'
+    end
+
+    it 'returns nil for nil, like sanitize does' do
+      expect(service.strip_to_plain_text(nil)).to be_nil
+    end
+
+    it 'leaves no parsable tag even for deeply nested encodings' do
+      output = service.strip_to_plain_text('&amp;amp;amp;amp;amp;lt;script&amp;amp;amp;amp;amp;gt;')
+      expect(output).not_to match(/<[a-zA-Z]/)
+    end
+  end
+
+  describe 'strip_multiloc_to_plain_text' do
+    it 'strips every locale and keeps a nil value nil' do
+      output = service.strip_multiloc_to_plain_text(
+        { 'en' => '<b>Fish</b> & chips', 'fr-BE' => '<img src=x onerror=alert(1)>frites', 'nl-NL' => nil }
+      )
+      expect(output).to eq({ 'en' => 'Fish & chips', 'fr-BE' => 'frites', 'nl-NL' => nil })
     end
   end
 end

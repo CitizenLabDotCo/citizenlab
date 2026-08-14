@@ -7,9 +7,9 @@ module EmailCampaigns
       # confirmed `phone` — e.g. the phone-confirmation OTP, sent via perform_now
       # to the pending new_phone. Async sends omit it and fall back to the
       # recipient's confirmed phone.
-      def run(delivery_id, to: nil)
+      def run(delivery_id, use_case:, to: nil)
         delivery = Delivery.find(delivery_id)
-        SendService.new.deliver(delivery, to: to || delivery.user&.phone)
+        SendService.new.deliver(delivery, to: to || delivery.user&.phone, use_case: use_case)
       rescue *ProviderError::RETRYABLE_ERRORS => e
         # A retryable error normally stays 'pending' for a retry. But run
         # synchronously (perform_now, e.g. the OTP) there is no Que worker to

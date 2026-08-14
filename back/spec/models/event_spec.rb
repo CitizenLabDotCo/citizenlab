@@ -9,6 +9,8 @@ RSpec.describe Event do
     end
   end
 
+  it_behaves_like 'a sanitized title_multiloc', factory: :event
+
   describe 'associations' do
     subject(:event) { build(:event) }
 

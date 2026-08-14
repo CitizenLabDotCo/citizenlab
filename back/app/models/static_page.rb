@@ -71,6 +71,9 @@ class StaticPage < ApplicationRecord
   accepts_nested_attributes_for :nav_bar_item
 
   before_validation :set_code, on: :create
+  # `prepend: true` puts this before `Sluggable#generate_slug` (registered on `ApplicationRecord`),
+  # which would otherwise build the slug from the raw title.
+  before_validation :sanitize_title_multiloc, if: -> { title_multiloc && title_multiloc_changed? }, prepend: true
   before_validation :strip_title
   before_validation :sanitize_top_info_section_multiloc
   before_validation :sanitize_bottom_info_section_multiloc
@@ -200,6 +203,11 @@ class StaticPage < ApplicationRecord
 
   def set_code
     self.code ||= 'custom'
+  end
+
+  # Titles are plain text: strip markup so nothing downstream can render it as HTML.
+  def sanitize_title_multiloc
+    self.title_multiloc = SanitizationService.new.strip_multiloc_to_plain_text(title_multiloc)
   end
 
   def strip_title

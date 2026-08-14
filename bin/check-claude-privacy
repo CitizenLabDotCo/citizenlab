@@ -26,6 +26,14 @@ if [ -n "$TRACKED_CLAUDE_MD" ]; then
   errors=$((errors + 1))
 fi
 
+# 3. The root .mcp.json should never be tracked. It's a gitignored symlink
+TRACKED_MCP="$(git ls-files .mcp.json 2>/dev/null || true)"
+if [ -n "$TRACKED_MCP" ]; then
+  echo "ERROR: tracked .mcp.json (should be a gitignored symlink instead):" >&2
+  echo "$TRACKED_MCP" | sed 's/^/  /' >&2
+  errors=$((errors + 1))
+fi
+
 if [ "$errors" -gt 0 ]; then
   echo "" >&2
   echo "Privacy check failed with $errors error(s)." >&2

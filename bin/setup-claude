@@ -9,6 +9,9 @@
 #     at the private content. Gitignored at any path via .gitignore.
 #     Claude Code's CLAUDE.md discovery follows file symlinks, so no
 #     committed stub or @import indirection is needed.
+#   - .mcp.json (repo root): file symlink to the overlay's team-shared MCP
+#     server config. Lives at the root (gitignored) because that's where
+#     Claude Code discovers project-scope MCP servers.
 #
 # Modes:
 #   bin/setup-claude            full setup: clone/update the overlay, then
@@ -19,7 +22,8 @@
 #                               hook) without touching the dev's git state
 #   bin/setup-claude --check    staleness diagnostic: exit 1 and say what's
 #                               wrong when the overlay clone is missing or
-#                               behind origin/main, symlinks are missing or
+#                               behind origin/main (commits touching only
+#                               plans/ don't count), symlinks are missing or
 #                               dangling, or core.hooksPath is unset. Makes no
 #                               changes apart from a throttled `git fetch`
 #                               (at most once per
@@ -110,7 +114,8 @@ PRIVATE_DIR="${CITIZENLAB_CLAUDE_DIR:-$PARENT/citizenlab-claude}"
 # shared by the mirror loop below and by --check so the two can't drift.
 # Excluded: git internals, the overlay's own README/.gitignore, per-folder
 # README docs, files with special destinations (settings.json,
-# .claude-readme.md), and CLAUDE.md (materialized as top-level symlinks).
+# .claude-readme.md, .mcp.json), and CLAUDE.md (materialized as top-level
+# symlinks).
 list_private_files() {
   find "$PRIVATE_DIR" -type f \
     -not -path '*/.git/*' \
@@ -118,6 +123,7 @@ list_private_files() {
     -not -name '.gitignore' \
     -not -name 'settings.json' \
     -not -name '.claude-readme.md' \
+    -not -name '.mcp.json' \
     -not -name 'CLAUDE.md' \
     -print0
 }
@@ -153,10 +159,10 @@ if [ "$MODE" = "check" ]; then
     fi
     if git -C "$PRIVATE_DIR" rev-parse -q --verify refs/heads/main >/dev/null 2>&1 \
        && git -C "$PRIVATE_DIR" rev-parse -q --verify refs/remotes/origin/main >/dev/null 2>&1; then
-      behind="$(git -C "$PRIVATE_DIR" rev-list --count refs/heads/main..refs/remotes/origin/main 2>/dev/null || echo 0)"
+      behind="$(git -C "$PRIVATE_DIR" rev-list --count refs/heads/main..refs/remotes/origin/main -- . ':(exclude)plans' 2>/dev/null || echo 0)"
       if [ "$behind" -gt 0 ]; then
         last="$(git -C "$PRIVATE_DIR" log -1 --format=%cs refs/heads/main 2>/dev/null || echo unknown)"
-        issues+=("overlay main is $behind commit(s) behind origin/main (local main last commit: $last)")
+        issues+=("overlay main is $behind commit(s) behind origin/main, not counting plan-only updates (local main last commit: $last)")
       fi
     fi
 
@@ -181,6 +187,9 @@ if [ "$MODE" = "check" ]; then
     if [ -f "$PRIVATE_DIR/.claude-readme.md" ]; then
       { [ -L .claude/README.md ] && [ -e .claude/README.md ]; } || note_missing ".claude/README.md"
     fi
+    if [ -f "$PRIVATE_DIR/.mcp.json" ]; then
+      { [ -L .mcp.json ] && [ -e .mcp.json ]; } || note_missing ".mcp.json"
+    fi
     while IFS= read -r -d '' src; do
       rel="${src#$PRIVATE_DIR/}"
       parent="$(dirname "$rel")"
@@ -199,6 +208,10 @@ if [ "$MODE" = "check" ]; then
       dangling_count="$(printf '%s\n' "$dangling_list" | wc -l | tr -d ' ')"
       dangling_example="$(printf '%s\n' "$dangling_list" | head -n 1)"
       issues+=("$dangling_count dangling symlink(s) under .claude/ (e.g. $dangling_example)")
+    fi
+
+    if [ -L .mcp.json ] && [ ! -e .mcp.json ]; then
+      issues+=(".mcp.json at the repo root is a dangling symlink (removed from the overlay?)")
     fi
   fi
 
@@ -292,6 +305,12 @@ fi
 # Local README explaining the .claude/ layout (only if present in the private repo)
 if [ -f "$PRIVATE_DIR/.claude-readme.md" ]; then
   ln -sfn "$(relpath "$PRIVATE_DIR/.claude-readme.md" "$REPO_ROOT/.claude")" .claude/README.md
+fi
+
+if [ -f "$PRIVATE_DIR/.mcp.json" ]; then
+  ln -sfn "$(relpath "$PRIVATE_DIR/.mcp.json" "$REPO_ROOT")" .mcp.json
+elif [ -L .mcp.json ]; then
+  rm -f .mcp.json
 fi
 
 # Top-level CLAUDE.md symlinks: Claude Code's CLAUDE.md discovery walks up

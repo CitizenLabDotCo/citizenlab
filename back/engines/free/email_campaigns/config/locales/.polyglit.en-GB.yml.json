@@ -314,6 +314,11 @@
     "verified_at": "2026-03-18T16:38:47.899840Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.admin_labels.trigger.7_days_before_phase_starts": {
+    "state": "verified",
+    "verified_at": "2026-08-04T08:36:21.445851Z",
+    "verified_by": "Sébastien"
+  },
   "email_campaigns.admin_labels.trigger.7_days_before_the_project_changes_phase": {
     "state": "verified",
     "verified_at": "2026-03-18T16:38:47.899840Z",
@@ -403,6 +408,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:38:47.899840Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.admin_labels.trigger.phase_starts": {
+    "state": "verified",
+    "verified_at": "2026-08-04T08:36:21.445851Z",
+    "verified_by": "Sébastien"
   },
   "email_campaigns.admin_labels.trigger.project_phase_changes": {
     "state": "verified",
@@ -830,16 +840,6 @@
     "verified_by": "Admin"
   },
   "email_campaigns.campaign_type_description.project_moderation_rights_received": {
-    "state": "verified",
-    "verified_at": "2026-03-18T16:38:47.899840Z",
-    "verified_by": "Admin"
-  },
-  "email_campaigns.campaign_type_description.project_phase_started": {
-    "state": "verified",
-    "verified_at": "2026-03-18T16:38:47.899840Z",
-    "verified_by": "Admin"
-  },
-  "email_campaigns.campaign_type_description.project_phase_upcoming": {
     "state": "verified",
     "verified_at": "2026-03-18T16:38:47.899840Z",
     "verified_by": "Admin"
@@ -1488,6 +1488,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:38:47.899840Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.general.phase_dates": {
+    "state": "verified",
+    "verified_at": "2026-08-04T08:36:21.445851Z",
+    "verified_by": "Sébastien"
   },
   "email_campaigns.idea_marked_as_spam.cta_button": {
     "state": "verified",
@@ -2324,12 +2329,12 @@
     "verified_at": "2026-03-18T16:38:47.899840Z",
     "verified_by": "Admin"
   },
-  "email_campaigns.preview_data.phase_title": {
+  "email_campaigns.preview_data.phase_description": {
     "state": "verified",
-    "verified_at": "2026-03-18T16:38:47.899840Z",
-    "verified_by": "Admin"
+    "verified_at": "2026-08-04T08:36:21.445851Z",
+    "verified_by": "Sébastien"
   },
-  "email_campaigns.preview_data.project_description_preview": {
+  "email_campaigns.preview_data.phase_title": {
     "state": "verified",
     "verified_at": "2026-03-18T16:38:47.899840Z",
     "verified_by": "Admin"
@@ -2484,27 +2489,7 @@
     "verified_at": "2026-03-18T16:38:47.899840Z",
     "verified_by": "Admin"
   },
-  "email_campaigns.project_phase_started.cta_button": {
-    "state": "verified",
-    "verified_at": "2026-03-18T16:38:47.899840Z",
-    "verified_by": "Admin"
-  },
-  "email_campaigns.project_phase_started.event_description": {
-    "state": "verified",
-    "verified_at": "2026-03-18T16:38:47.899840Z",
-    "verified_by": "Admin"
-  },
   "email_campaigns.project_phase_started.new_phase": {
-    "state": "verified",
-    "verified_at": "2026-03-18T16:38:47.899840Z",
-    "verified_by": "Admin"
-  },
-  "email_campaigns.project_phase_started.preheader": {
-    "state": "verified",
-    "verified_at": "2026-03-18T16:38:47.899840Z",
-    "verified_by": "Admin"
-  },
-  "email_campaigns.project_phase_started.subject": {
     "state": "verified",
     "verified_at": "2026-03-18T16:38:47.899840Z",
     "verified_by": "Admin"
@@ -2514,42 +2499,12 @@
     "verified_at": "2026-03-18T16:38:47.899840Z",
     "verified_by": "Admin"
   },
-  "email_campaigns.project_phase_started.title": {
-    "state": "verified",
-    "verified_at": "2026-03-18T16:38:47.899840Z",
-    "verified_by": "Admin"
-  },
-  "email_campaigns.project_phase_upcoming.cta_button": {
-    "state": "verified",
-    "verified_at": "2026-03-18T16:38:47.899840Z",
-    "verified_by": "Admin"
-  },
-  "email_campaigns.project_phase_upcoming.event_description": {
-    "state": "verified",
-    "verified_at": "2026-03-18T16:38:47.899840Z",
-    "verified_by": "Admin"
-  },
   "email_campaigns.project_phase_upcoming.new_phase": {
     "state": "verified",
     "verified_at": "2026-03-18T16:38:47.899840Z",
     "verified_by": "Admin"
   },
-  "email_campaigns.project_phase_upcoming.preheader": {
-    "state": "verified",
-    "verified_at": "2026-03-18T16:38:47.899840Z",
-    "verified_by": "Admin"
-  },
-  "email_campaigns.project_phase_upcoming.subject": {
-    "state": "verified",
-    "verified_at": "2026-03-18T16:38:47.899840Z",
-    "verified_by": "Admin"
-  },
   "email_campaigns.project_phase_upcoming.subtitle": {
-    "state": "verified",
-    "verified_at": "2026-03-18T16:38:47.899840Z",
-    "verified_by": "Admin"
-  },
-  "email_campaigns.project_phase_upcoming.title": {
     "state": "verified",
     "verified_at": "2026-03-18T16:38:47.899840Z",
     "verified_by": "Admin"

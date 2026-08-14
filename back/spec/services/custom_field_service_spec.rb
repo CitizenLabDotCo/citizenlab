@@ -26,17 +26,21 @@ describe CustomFieldService do
       service.delete_custom_field_values(cf1)
       expect(User.all.map { |u| u.custom_field_values.keys }.flatten).to include(cf2.key)
       expect(User.all.map { |u| u.custom_field_values.keys }.flatten).not_to include(cf1.key)
+      expect(CustomFieldAnswer.where(key: cf1.key)).not_to exist
+      expect(CustomFieldAnswer.where(key: cf2.key).count).to eq 5
     end
 
     it 'deletes the values that a user field stored on inputs through user fields in form' do
       field = create(:custom_field, key: 'the_field')
-      user = create(:user, custom_field_values: { 'the_field' => 'gone' })
-      input = create(:idea, custom_field_values: { 'u_the_field' => 'gone', 'other_field' => 'stays' })
+      user = create(:user, custom_field_values: { 'the_field' => 'other', 'the_field_other' => 'gone' })
+      input = create(:idea, custom_field_values: { 'u_the_field' => 'other', 'u_the_field_other' => 'gone', 'other_field' => 'stays' })
 
       service.delete_custom_field_values(field)
 
       expect(user.reload.custom_field_values).to eq({})
       expect(input.reload.custom_field_values).to eq({ 'other_field' => 'stays' })
+      expect(user.custom_field_answers).to be_empty
+      expect(input.custom_field_answers.pluck(:key)).to eq ['other_field']
     end
 
     it 'deletes the values of a phase-level form field from the inputs of its phase' do
@@ -47,12 +51,13 @@ describe CustomFieldService do
         :idea,
         project: phase.project,
         creation_phase: phase,
-        custom_field_values: { 'extra_field' => 'gone', 'another_field' => 'stays' }
+        custom_field_values: { 'extra_field' => 'gone', 'extra_field_follow_up' => 'gone', 'another_field' => 'stays' }
       )
 
       service.delete_custom_field_values(field)
 
       expect(input.reload.custom_field_values).to eq({ 'another_field' => 'stays' })
+      expect(input.custom_field_answers.pluck(:key)).to eq ['another_field']
     end
 
     it 'does not delete values of inputs in other participation contexts with the same field key' do
@@ -72,6 +77,7 @@ describe CustomFieldService do
       service.delete_custom_field_values(field)
 
       expect(other_input.reload.custom_field_values).to eq({ 'extra_field' => 'stays' })
+      expect(other_input.custom_field_answers.pluck(:key, :value)).to eq [%w[extra_field stays]]
     end
   end
 
@@ -94,6 +100,9 @@ describe CustomFieldService do
       expect(u1.reload.custom_field_values).to eq({ cf2.key => cfo3.key })
       expect(u2.reload.custom_field_values).to eq({ cf1.key => [cfo2.key] })
       expect(u3.reload.custom_field_values).to eq v3
+      expect(u1.custom_field_answers.pluck(:key, :value)).to eq [[cf2.key, cfo3.key]]
+      expect(u2.custom_field_answers.pluck(:key, :value)).to eq [[cf1.key, [cfo2.key]]]
+      expect(u3.custom_field_answers.pluck(:key, :value)).to eq [[cf1.key, [cfo2.key]]]
     end
 
     it 'deletes the custom field option values from all users for a single select' do
@@ -109,6 +118,8 @@ describe CustomFieldService do
 
       expect(u1.reload.custom_field_values).to eq({})
       expect(u2.reload.custom_field_values).to eq v2
+      expect(u1.custom_field_answers).to be_empty
+      expect(u2.custom_field_answers.pluck(:key, :value)).to eq [[cf1.key, cfo2.key]]
     end
   end
 

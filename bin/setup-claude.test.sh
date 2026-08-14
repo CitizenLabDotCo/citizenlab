@@ -230,6 +230,7 @@ SKILL
     echo '# sample plan body' > plans/sample-plan.md
     echo '# plans folder README — should be excluded from the symlink mirror' > plans/README.md
     echo '{}' > settings.json
+    echo '{ "mcpServers": {} }' > .mcp.json
     echo '# private overlay README' > .claude-readme.md
     echo 'private repo own README' > README.md
     # `-c user.email=...` sets the value just for this one git command,
@@ -320,6 +321,10 @@ assert_symlink_to "$PUBLIC/.claude/settings.json"              "../../private/se
 # is renamed to `README.md` when it lands under .claude/. This makes the
 # README appear at the conventional location in the public repo's view.
 assert_symlink_to "$PUBLIC/.claude/README.md"                  "../../private/.claude-readme.md"                 ".claude/README.md → private .claude-readme.md"
+
+# Special case: `.mcp.json` lands at the repo root
+assert_symlink_to "$PUBLIC/.mcp.json"                          "../private/.mcp.json"                            "root .mcp.json → private"
+assert_path_missing "$PUBLIC/.claude/.mcp.json"                ".mcp.json not mirrored under .claude/ (lives at repo root instead)"
 
 
 # ----------------------------------------------------------------------------
@@ -593,6 +598,26 @@ assert_eq "$CHECK_STATUS" "0" "after --relink (dangling): --check passes again"
 
 
 # ----------------------------------------------------------------------------
+# Test: the root .mcp.json symlink sits outside .claude/
+# ----------------------------------------------------------------------------
+rm "$PUBLIC/.mcp.json"
+run_check_capture
+assert_eq "$CHECK_STATUS" "1" "missing root .mcp.json: --check exits 1"
+assert_contains "$CHECK_OUT" "not materialized" "missing root .mcp.json: --check names the drift"
+run_mode --relink || fail "--relink after missing .mcp.json should succeed"
+assert_symlink_to "$PUBLIC/.mcp.json" "../private/.mcp.json" "--relink recreates the root .mcp.json symlink"
+
+rm "$PRIVATE/.mcp.json"
+run_check_capture
+assert_eq "$CHECK_STATUS" "1" "dangling root .mcp.json: --check exits 1"
+assert_contains "$CHECK_OUT" "dangling" "dangling root .mcp.json: --check names the drift"
+run_mode --relink || fail "--relink after overlay .mcp.json removal should succeed"
+assert_path_missing "$PUBLIC/.mcp.json" "--relink removes the stale root .mcp.json symlink"
+run_check_capture
+assert_eq "$CHECK_STATUS" "0" "after --relink (.mcp.json): --check passes again"
+
+
+# ----------------------------------------------------------------------------
 # Test: unset core.hooksPath is detected and restored by --relink.
 # ----------------------------------------------------------------------------
 git -C "$PUBLIC" config --unset core.hooksPath
@@ -627,6 +652,40 @@ fi
 run_setup
 run_check_capture
 assert_eq "$CHECK_STATUS" "0" "after full setup: --check passes again"
+
+
+# ----------------------------------------------------------------------------
+# Test: commits on origin/main touching only plans/ don't count as staleness
+# while a commit that also touches anything else still does.
+# ----------------------------------------------------------------------------
+(
+  cd "$FIXTURE_WT"
+  git checkout -q main
+  mkdir -p plans
+  echo "a plan" > plans/some-feature-branch.md
+  git -c user.email=t@t -c user.name=t -c core.excludesFile=/dev/null add -A
+  git -c user.email=t@t -c user.name=t commit -q -m "Update plan"
+  git push -q origin main
+)
+rm -f "$PRIVATE/.git/setup-claude-check-fetch-stamp"
+run_check_capture fetch
+assert_eq "$CHECK_STATUS" "0" "plans-only drift: --check exits 0"
+(
+  cd "$FIXTURE_WT"
+  git checkout -q main
+  echo "more plan" > plans/some-feature-branch.md
+  echo "real config change" > real-config-change.txt
+  git -c user.email=t@t -c user.name=t -c core.excludesFile=/dev/null add -A
+  git -c user.email=t@t -c user.name=t commit -q -m "Plan update plus real change"
+  git push -q origin main
+)
+rm -f "$PRIVATE/.git/setup-claude-check-fetch-stamp"
+run_check_capture fetch
+assert_eq "$CHECK_STATUS" "1" "mixed plans+config drift: --check exits 1"
+assert_contains "$CHECK_OUT" "behind origin/main" "mixed drift: --check names the drift"
+run_setup
+run_check_capture
+assert_eq "$CHECK_STATUS" "0" "after full setup: --check passes again (plans tests)"
 
 
 # ----------------------------------------------------------------------------
