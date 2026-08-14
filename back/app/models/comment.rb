@@ -40,6 +40,10 @@ class Comment < ApplicationRecord
   include AnonymousParticipation
   include LocationTrackableParticipation
 
+  # `SanitizationService` features allowed in the body, shared with anything that re-sanitizes a
+  # stored body (e.g. machine translations).
+  BODY_SANITIZE_FEATURES = %i[mention].freeze
+
   acts_as_nested_set dependent: :destroy, counter_cache: :children_count
 
   belongs_to :idea
@@ -98,10 +102,7 @@ class Comment < ApplicationRecord
   end
 
   def sanitize_body_multiloc
-    service = SanitizationService.new
-    self.body_multiloc = service.sanitize_multiloc body_multiloc, %i[mention]
-    self.body_multiloc = service.remove_multiloc_empty_trailing_tags body_multiloc
-    self.body_multiloc = service.linkify_multiloc body_multiloc
+    self.body_multiloc = SanitizationService.new.sanitize_body_multiloc(body_multiloc, BODY_SANITIZE_FEATURES)
   end
 
   def remove_notifications

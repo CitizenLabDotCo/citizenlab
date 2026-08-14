@@ -63,6 +63,17 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
             to be enabled on the platform.
           DESC
         },
+        placement_type: {
+          type: 'string',
+          enum: Phase::PLACEMENT_TYPES,
+          description: <<~DESC.squish
+            'on_timeline' (default) places the phase in the sequential timeline.
+            'standalone' runs the phase in parallel with the timeline (an extra
+            survey): a standalone phase may overlap other phases and requires a
+            participation method that supports standalone placement
+            (native_survey). Cannot be changed after creation.
+          DESC
+        },
 
         # Participation toggles (apply to phases with inputs: ideation, proposals, voting, common_ground, native_survey)
         submission_enabled: {

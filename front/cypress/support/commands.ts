@@ -78,6 +78,7 @@ declare global {
       apiCreateCause: typeof apiCreateCause;
       apiVerifyBogus: typeof apiVerifyBogus;
       apiCreateEvent: typeof apiCreateEvent;
+      apiRemoveEvent: typeof apiRemoveEvent;
       apiToggleProjectDescriptionBuilder: typeof apiToggleProjectDescriptionBuilder;
       apiCreateReportBuilder: typeof apiCreateReportBuilder;
       apiRemoveReportBuilder: typeof apiRemoveReportBuilder;
@@ -1229,6 +1230,21 @@ function apiRemovePhase(phaseId: string) {
       },
       method: 'DELETE',
       url: `web_api/v1/phases/${phaseId}`,
+    });
+  });
+}
+
+function apiRemoveEvent(eventId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'DELETE',
+      url: `web_api/v1/events/${eventId}`,
     });
   });
 }
@@ -2481,6 +2497,7 @@ Cypress.Commands.add('setConsentCookie', setConsentCookie);
 Cypress.Commands.add('setLoginCookie', setLoginCookie);
 Cypress.Commands.add('apiVerifyBogus', apiVerifyBogus);
 Cypress.Commands.add('apiCreateEvent', apiCreateEvent);
+Cypress.Commands.add('apiRemoveEvent', apiRemoveEvent);
 Cypress.Commands.add(
   'apiToggleProjectDescriptionBuilder',
   apiToggleProjectDescriptionBuilder

@@ -50,7 +50,12 @@ const EventsWidget: UserComponent<Props> = ({ sectionBackground }) => {
     pageSize: PAGE_SIZE,
   };
   const { data: upcomingEvents } = useEvents(
-    { ...eventsParams, currentAndFutureOnly: true, pageNumber: upcomingPage },
+    {
+      ...eventsParams,
+      currentAndFutureOnly: true,
+      sort: '-start_at',
+      pageNumber: upcomingPage,
+    },
     { enabled: !!projectId }
   );
   const { data: pastEvents } = useEvents(
@@ -84,12 +89,14 @@ const EventsWidget: UserComponent<Props> = ({ sectionBackground }) => {
           </Title>
           <Box display="flex" flexDirection="column" gap="48px">
             <EventsSection
+              id="e2e-project-page-upcoming-events"
               title={sharedMessages.upcomingAndOngoingEvents}
               events={upcomingEvents}
               currentPage={upcomingPage}
               onPageChange={setUpcomingPage}
             />
             <EventsSection
+              id="e2e-project-page-past-events"
               title={sharedMessages.pastEvents}
               events={pastEvents}
               currentPage={pastPage}
