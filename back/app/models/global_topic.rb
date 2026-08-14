@@ -19,6 +19,7 @@
 #  index_global_topics_on_include_in_onboarding  (include_in_onboarding)
 #
 class GlobalTopic < ApplicationRecord
+  include PlainTextMultiloc
   extend OrderAsSpecified
 
   # Temporary fix while deploying, since Topic is a View instead of a Table, and
@@ -38,7 +39,7 @@ class GlobalTopic < ApplicationRecord
   validates :description_multiloc, multiloc: { presence: false }
   validates :include_in_onboarding, inclusion: { in: [true, false] }
 
-  before_validation :sanitize_title_multiloc, if: -> { title_multiloc && title_multiloc_changed? }
+  plain_text_multiloc :title_multiloc
   before_validation :strip_title
 
   scope :order_new, ->(direction = :desc) { order(created_at: direction, id: direction) }
@@ -50,10 +51,6 @@ class GlobalTopic < ApplicationRecord
   }
 
   private
-
-  def sanitize_title_multiloc
-    self.title_multiloc = SanitizationService.new.strip_multiloc_to_plain_text(title_multiloc)
-  end
 
   def strip_title
     return unless title_multiloc&.any?

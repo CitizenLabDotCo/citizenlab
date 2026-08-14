@@ -5,6 +5,8 @@ require 'rails_helper'
 RSpec.describe CustomFieldOption do
   subject(:option) { create(:custom_field_option) }
 
+  it_behaves_like 'a sanitized title_multiloc', factory: :custom_field_option
+
   it { is_expected.to be_valid }
   it { is_expected.to have_one(:area).dependent(:nullify) }
 

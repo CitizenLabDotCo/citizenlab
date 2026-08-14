@@ -22,6 +22,7 @@
 #  index_default_input_topics_on_rgt        (rgt)
 #
 class DefaultInputTopic < ApplicationRecord
+  include PlainTextMultiloc
   acts_as_nested_set dependent: :destroy, counter_cache: :children_count
 
   belongs_to :parent, class_name: 'DefaultInputTopic', optional: true, counter_cache: :children_count
@@ -31,7 +32,7 @@ class DefaultInputTopic < ApplicationRecord
   validates :description_multiloc, multiloc: { presence: false }
   validate :max_depth_validation
 
-  before_validation :sanitize_title_multiloc, if: -> { title_multiloc && title_multiloc_changed? }
+  plain_text_multiloc :title_multiloc
 
   # Returns "Parent > Child" format for subtopics
   def full_title_multiloc
@@ -44,10 +45,6 @@ class DefaultInputTopic < ApplicationRecord
   end
 
   private
-
-  def sanitize_title_multiloc
-    self.title_multiloc = SanitizationService.new.strip_multiloc_to_plain_text(title_multiloc)
-  end
 
   def max_depth_validation
     return if parent.blank?

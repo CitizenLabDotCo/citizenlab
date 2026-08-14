@@ -9,11 +9,13 @@
 #  updated_at           :datetime         not null
 #
 class Space < ApplicationRecord
+  include PlainTextMultiloc
   include PgSearch::Model
 
   has_many :projects, dependent: :nullify
   has_many :folders, dependent: :nullify, class_name: 'ProjectFolders::Folder'
 
+  plain_text_multiloc :title_multiloc
   before_validation :sanitize_description_multiloc, if: :description_multiloc
 
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)

@@ -339,6 +339,7 @@ RSpec.describe CustomField do
   end
 
   it_behaves_like 'a sanitized html_multiloc', factory: :custom_field
+  it_behaves_like 'a sanitized title_multiloc', factory: :custom_field
 
   describe 'description sanitizer' do
     it 'does not sanitize allowed tags in the description' do

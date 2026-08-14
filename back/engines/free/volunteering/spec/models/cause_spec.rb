@@ -10,6 +10,7 @@ RSpec.describe Volunteering::Cause do
   end
 
   it_behaves_like 'a sanitized html_multiloc', factory: :cause
+  it_behaves_like 'a sanitized title_multiloc', factory: :cause
 
   describe 'phase_supports_causes validation' do
     it 'is invalid when the phase is not a volunteering phase' do

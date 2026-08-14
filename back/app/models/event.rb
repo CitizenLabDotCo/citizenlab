@@ -34,6 +34,7 @@
 #
 class Event < ApplicationRecord
   include Files::FileAttachable
+  include PlainTextMultiloc
   include GeoJsonHelpers
 
   has_many_text_images from: :description_multiloc
@@ -58,7 +59,7 @@ class Event < ApplicationRecord
   validate :validate_start_at_before_end_at
 
   before_validation :sanitize_description_multiloc
-  before_validation :sanitize_title_multiloc, if: -> { title_multiloc && title_multiloc_changed? }
+  plain_text_multiloc :title_multiloc
   before_validation :strip_title
 
   scope :with_project_publication_statuses, lambda { |statuses|
@@ -81,11 +82,6 @@ class Event < ApplicationRecord
     return unless start_at.present? && end_at.present? && start_at > end_at
 
     errors.add(:start_at, :after_end_at, message: 'is after end_at')
-  end
-
-  # Titles are plain text: strip markup so nothing downstream can render it as HTML.
-  def sanitize_title_multiloc
-    self.title_multiloc = SanitizationService.new.strip_multiloc_to_plain_text(title_multiloc)
   end
 
   def strip_title

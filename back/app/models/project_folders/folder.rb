@@ -30,6 +30,7 @@ module ProjectFolders
     self.table_name = 'project_folders_folders'
     include Files::FileAttachable
     include PgSearch::Model
+    include PlainTextMultiloc
 
     slug from: proc { |folder| folder.title_multiloc&.values&.find(&:present?) }
 
@@ -53,9 +54,7 @@ module ProjectFolders
 
     before_validation :sanitize_description_multiloc, if: :description_multiloc
     before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
-    # `prepend: true` puts this before `Sluggable#generate_slug` (registered on `ApplicationRecord`),
-    # which would otherwise build the slug from the raw title.
-    before_validation :sanitize_title_multiloc, if: -> { title_multiloc && title_multiloc_changed? }, prepend: true
+    plain_text_multiloc :title_multiloc, prepend: true
     before_validation :strip_title
     before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
 
@@ -115,11 +114,6 @@ module ProjectFolders
         %i[decoration link]
       )
       self.description_preview_multiloc = service.remove_multiloc_empty_trailing_tags description_preview_multiloc
-    end
-
-    # Titles are plain text: strip markup so nothing downstream can render it as HTML.
-    def sanitize_title_multiloc
-      self.title_multiloc = SanitizationService.new.strip_multiloc_to_plain_text(title_multiloc)
     end
 
     def strip_title

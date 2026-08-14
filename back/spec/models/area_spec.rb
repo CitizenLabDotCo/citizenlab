@@ -5,6 +5,8 @@ require 'rails_helper'
 RSpec.describe Area do
   subject { build(:area) }
 
+  it_behaves_like 'a sanitized title_multiloc', factory: :area
+
   describe 'Default factory' do
     it { is_expected.to be_valid }
   end
