@@ -52,6 +52,7 @@ const PlatformDefaultsHeader = ({ title, processing, onOverride }: Props) => {
       <Text
         as="span"
         m="0"
+        mt="4px"
         ml="4px"
         fontSize="xs"
         color="coolGrey600"
