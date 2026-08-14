@@ -99,7 +99,12 @@ module Permissions
         )
         permission.groups = source.groups.to_a if source
         permission.save!
-        copy_permissions_custom_fields!(source, permission) if source
+        next unless source
+
+        # apply_creation_defaults forces global_custom_fields to true on create,
+        # so the source's value has to be restored after the save.
+        permission.update!(global_custom_fields: source.global_custom_fields)
+        copy_permissions_custom_fields!(source, permission)
       end
 
       permission

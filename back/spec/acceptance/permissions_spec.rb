@@ -280,8 +280,7 @@ resource 'Permissions' do
       end
     end
 
-    patch 'web_api/v1/phases/:phase_id/permissions/:action/override' do
-      let(:action) { 'posting_idea' }
+    context 'overriding an action that inherits the global visiting permission' do
       let(:visiting_permission) { Permission.find_by!(action: 'visiting', permission_scope: nil) }
 
       before do
@@ -291,46 +290,50 @@ resource 'Permissions' do
         visiting_permission.update!(require_name: false, require_password: false, require_verification: true)
       end
 
-      example_request 'Override a permission that inherits the global visiting permission' do
-        assert_status 200
-        expect(response_data.dig(:attributes, :inherited)).to be false
-        expect(response_data.dig(:attributes, :require_name)).to be false
-        expect(response_data.dig(:attributes, :require_password)).to be false
-        expect(response_data.dig(:attributes, :require_verification)).to be true
-        expect(Permission.find_by(action: 'posting_idea', permission_scope: @phase)).to be_present
-      end
+      patch 'web_api/v1/phases/:phase_id/permissions/:action/override' do
+        let(:action) { 'posting_idea' }
 
-      example 'The overridden permission no longer follows the visiting permission', document: false do
-        do_request
-        visiting_permission.update!(require_name: true)
+        example_request 'Override a permission that inherits the global visiting permission' do
+          assert_status 200
+          expect(response_data.dig(:attributes, :inherited)).to be false
+          expect(response_data.dig(:attributes, :require_name)).to be false
+          expect(response_data.dig(:attributes, :require_password)).to be false
+          expect(response_data.dig(:attributes, :require_verification)).to be true
+          expect(Permission.find_by(action: 'posting_idea', permission_scope: @phase)).to be_present
+        end
 
-        permission = Permission.find_by!(action: 'posting_idea', permission_scope: @phase)
-        expect(permission.require_name).to be false
-      end
+        example 'The overridden permission no longer follows the visiting permission', document: false do
+          do_request
+          visiting_permission.update!(require_name: true)
 
-      example 'Overriding twice is a no-op', document: false do
-        do_request
-        expect { do_request }.not_to change(Permission, :count)
-        assert_status 200
-      end
+          permission = Permission.find_by!(action: 'posting_idea', permission_scope: @phase)
+          expect(permission.require_name).to be false
+        end
 
-      example 'Copies the groups of the visiting permission', document: false do
-        groups = create_list(:group, 2)
-        visiting_permission.update!(groups: groups)
+        example 'Overriding twice is a no-op', document: false do
+          do_request
+          expect { do_request }.not_to change(Permission, :count)
+          assert_status 200
+        end
 
-        do_request
-        assert_status 200
-        expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array groups.map(&:id)
-      end
+        example 'Copies the groups of the visiting permission', document: false do
+          groups = create_list(:group, 2)
+          visiting_permission.update!(groups: groups)
 
-      example '[error] Overriding an action the phase does not support', document: false do
-        do_request(action: 'taking_survey')
-        assert_status 404
-      end
+          do_request
+          assert_status 200
+          expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array groups.map(&:id)
+        end
 
-      example 'logs an "overridden" activity', document: false do
-        expect { do_request }
-          .to enqueue_job(LogActivityJob).with(an_instance_of(Permission), 'overridden', anything, anything, anything)
+        example '[error] Overriding an action the phase does not support', document: false do
+          do_request(action: 'taking_survey')
+          assert_status 404
+        end
+
+        example 'logs an "overridden" activity', document: false do
+          expect { do_request }
+            .to enqueue_job(LogActivityJob).with(an_instance_of(Permission), 'overridden', anything, anything, anything)
+        end
       end
     end
 

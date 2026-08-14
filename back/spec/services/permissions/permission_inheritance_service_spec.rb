@@ -169,6 +169,9 @@ describe Permissions::PermissionInheritanceService do
 
       permission = service.override!(phase, 'posting_idea')
       expect(permission.permissions_custom_fields.pluck(:custom_field_id, :required)).to eq [[custom_field.id, false]]
+      # Otherwise the copy would fall back to the platform's user fields and
+      # ignore the fields it just copied.
+      expect(permission.global_custom_fields).to be false
     end
 
     it 'no longer follows the visiting permission afterwards' do
