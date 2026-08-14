@@ -104,6 +104,41 @@ describe 'single_use:purge_stored_xss rake task' do
     end
   end
 
+  context 'the remaining title models' do
+    let!(:records) do
+      {
+        space: store_raw(create(:space), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>hi' }),
+        area: store_raw(create(:area), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>hi' }),
+        group: store_raw(create(:group), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>hi' }),
+        idea_status: store_raw(create(:idea_status), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>hi' }),
+        nav_bar_item: store_raw(create(:nav_bar_item), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>hi' }),
+        option: store_raw(create(:custom_field_option), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>hi' }),
+        statement: store_raw(create(:custom_field_matrix_statement), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>hi' }),
+        poll_question: store_raw(create(:poll_question), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>hi' }),
+        poll_option: store_raw(create(:poll_option), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>hi' }),
+        layer: store_raw(create(:layer), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>hi' }),
+        cause: store_raw(create(:cause), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>hi' })
+      }
+    end
+
+    it 'strips all HTML from each of them' do
+      run_task
+      records.each_value { |record| expect(record.reload.title_multiloc['en']).to eq 'hi' }
+    end
+  end
+
+  # Their own task sweeps these, so a payload here must survive this one untouched.
+  context 'a custom field title or a campaign subject carrying HTML' do
+    let!(:custom_field) { store_raw(create(:custom_field), :title_multiloc, { 'en' => '<b>Age</b>' }) }
+    let!(:campaign) { store_raw(create(:manual_campaign), :subject_multiloc, { 'en' => '<b>News</b>' }) }
+
+    it 'is left alone' do
+      run_task
+      expect(custom_field.reload[:title_multiloc]['en']).to eq '<b>Age</b>'
+      expect(campaign.reload[:subject_multiloc]['en']).to eq '<b>News</b>'
+    end
+  end
+
   context 'a comment body carrying a script tag' do
     let!(:comment) { store_raw(create(:comment), :body_multiloc, { 'en' => '<p>hi</p><script>alert(1)</script>' }) }
 

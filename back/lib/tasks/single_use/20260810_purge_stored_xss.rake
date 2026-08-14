@@ -39,9 +39,14 @@ namespace :single_use do
 
     strip_multiloc = service.method(:strip_multiloc_to_plain_text)
 
-    # Every model that sanitises its `title_multiloc` on write belongs here.
+    # Models that strip their `title_multiloc` on write, minus `CustomField` and
+    # `EmailCampaigns::Campaign` - those two are swept by `purge_stored_xss_form_and_email_text`,
+    # which is run separately so their higher risk of losing a legitimate `<` can be reviewed on its
+    # own.
     title_models = [
-      Idea, Project, Phase, ProjectFolders::Folder, InputTopic, GlobalTopic, DefaultInputTopic, Event, StaticPage
+      Idea, Project, Phase, ProjectFolders::Folder, InputTopic, GlobalTopic, DefaultInputTopic, Event, StaticPage,
+      Space, Area, Group, IdeaStatus, NavBarItem, CustomFieldOption, CustomFieldMatrixStatement,
+      Polls::Question, Polls::Option, CustomMaps::Layer, Volunteering::Cause
     ].freeze
 
     affected = [] # rows for the summary: { host:, model:, attribute: }
@@ -49,7 +54,9 @@ namespace :single_use do
     # Re-sanitises one attribute across a scope, reporting and writing only real changes.
     purge = lambda do |tenant, script, scope, attribute, sanitizer, model_label|
       scope.find_each do |record|
-        old_value = record.public_send(attribute)
+        # The raw column, not the reader: a model may override one to merge in a default or a
+        # translation, and writing that back would save a computed value as if it had been typed.
+        old_value = record[attribute]
         new_value = sanitizer.call(old_value)
         next if new_value == old_value
 
