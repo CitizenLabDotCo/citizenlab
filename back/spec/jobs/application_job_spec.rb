@@ -86,6 +86,50 @@ RSpec.describe ApplicationJob, use_transactional_fixtures: false do
       end
     end
 
+    # Que only rescues StandardError. Without ActiveJobQueExtension#_run, the exception below would
+    # kill the worker thread and, through abort_on_exception, the whole process (TAN-8516).
+    describe 'when a job raises an exception that is not a StandardError' do
+      around do |example|
+        initial_retry_interval = Que::Job.retry_interval
+        Que::Job.retry_interval = 0.001
+        example.run
+        Que::Job.retry_interval = initial_retry_interval
+      end
+
+      before do
+        stub_const('TestNonStandardErrorJob', Class.new(ApplicationJob) do
+          class_attribute :counter, default: 0
+
+          def run
+            self.class.counter += 1
+            raise NotImplementedError, 'not supported'
+          end
+        end)
+      end
+
+      it 'keeps the worker alive and retries the job like any other failure' do
+        TestNonStandardErrorJob.perform_later
+        wait_until(wait_timeout) { TestNonStandardErrorJob.counter >= 2 }
+        expect(TestNonStandardErrorJob.counter).to be >= 2
+      end
+
+      it 'records the original exception on the job' do
+        que_job = QueJob.find(TestNonStandardErrorJob.perform_later.provider_job_id)
+        wait_until(wait_timeout) { que_job.reload.error_count.positive? }
+        expect(que_job.last_error_message).to include('NotImplementedError: not supported')
+      end
+
+      context 'when `perform_retries false`' do
+        before { TestNonStandardErrorJob.perform_retries false }
+
+        it 'expires the job instead of retrying it' do
+          que_job = QueJob.find(TestNonStandardErrorJob.perform_later.provider_job_id)
+          wait_until(wait_timeout) { que_job.reload.expired_at.present? }
+          expect(TestNonStandardErrorJob.counter).to eq(1)
+        end
+      end
+    end
+
     describe 'error tracking' do
       context 'when job raises error' do
         before do
