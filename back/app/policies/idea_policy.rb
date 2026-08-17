@@ -64,7 +64,7 @@ class IdeaPolicy < ApplicationPolicy
     else
       return false if !active? && !record.participation_method_on_creation.supports_inputs_without_author?
 
-      posting_denied_reason(phase)
+      phase_posting_denied_reason(phase)
     end
     raise_not_authorized(reason) if reason
 
@@ -114,11 +114,11 @@ class IdeaPolicy < ApplicationPolicy
   private
 
   def draft_denied_reason(phase)
-    reason = posting_denied_reason(phase)
+    reason = phase_posting_denied_reason(phase)
     Permissions::PhasePermissionsService::DEFERRABLE_DENIED_REASONS.include?(reason) ? nil : reason
   end
 
-  def posting_denied_reason(phase)
+  def phase_posting_denied_reason(phase)
     Permissions::PhasePermissionsService.new(
       phase,
       user,
