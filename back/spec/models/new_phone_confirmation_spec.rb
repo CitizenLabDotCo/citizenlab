@@ -36,13 +36,18 @@ RSpec.describe NewPhoneConfirmation do
   end
 
   describe '#generate_code' do
-    it "returns '1234' when the sms use_test_mode setting is enabled" do
+    it "returns '123456' when the sms use_test_mode setting is enabled" do
       config = AppConfiguration.instance
       config.settings['sms'] = { 'allowed' => true, 'enabled' => true, 'use_test_mode' => true }
       config.save!
 
       user = create(:user)
-      expect(user.find_or_create_confirmation(:new_phone_confirmation).generate_code).to eq('1234')
+      expect(user.find_or_create_confirmation(:new_phone_confirmation).generate_code).to eq('123456')
+    end
+
+    it 'returns a 6-digit code' do
+      user = create(:user)
+      expect(user.find_or_create_confirmation(:new_phone_confirmation).generate_code).to match(/\A\d{6}\z/)
     end
   end
 

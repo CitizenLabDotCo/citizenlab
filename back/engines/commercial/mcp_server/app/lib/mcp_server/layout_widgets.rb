@@ -110,8 +110,7 @@ class McpServer::LayoutWidgets
         props: {"surveyPhaseId":"<phase id>","buttonFormat":"button"|"card","buttonStyle":"primary"|"secondary-outlined","buttonText":{"<locale>":"label"}}
         custom: {"title":{"id":"app.components.ProjectPageBuilder.Widgets.extraSurveysWidgetTitle","defaultMessage":"Extra surveys"},"noPointerEvents":true}
         surveyPhaseId must be a phase with placement_type "standalone" and participation_method
-        "native_survey" (list_phases). No tool here creates one: if the project has none, leave
-        this widget out and say so. "card" shows title, dates and status; "button" is just the
+        "native_survey" (list_phases). "card" shows title, dates and status; "button" is just the
         button. Defaults: buttonFormat "card", buttonStyle "primary". Only renders when the
         platform has the parallel_participation feature.
     DOC

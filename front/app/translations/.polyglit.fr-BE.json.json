@@ -10094,6 +10094,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveSixDigits": {
+    "state": "verified",
+    "verified_at": "2026-08-10T08:32:58.303924Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.noAuthenticationMethodsEnabled": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -10848,6 +10853,11 @@
     "state": "verified",
     "verified_at": "2026-07-16T20:33:10.034537Z",
     "verified_by": "Adrien"
+  },
+  "app.containers.PhoneConfirmation.codeMustHaveSixDigits": {
+    "state": "verified",
+    "verified_at": "2026-08-10T08:32:58.303924Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.PhoneConfirmation.confirmationCodeSent": {
     "state": "verified",

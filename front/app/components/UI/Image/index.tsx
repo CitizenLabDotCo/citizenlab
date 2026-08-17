@@ -30,6 +30,9 @@ const ImageElement = styled.img<{
 interface Props {
   id?: string;
   src: HTMLImageElement['src'];
+  // Rendered instead of `src` when `src` fails to load. Useful for image versions
+  // that are not guaranteed to exist for uploads predating the version.
+  fallbackSrc?: HTMLImageElement['src'];
   alt: HTMLImageElement['alt'];
   role?: string;
   cover?: boolean;
@@ -43,6 +46,7 @@ interface Props {
 const Image: React.FC<Props> = ({
   id,
   src,
+  fallbackSrc,
   alt,
   role,
   cover = false,
@@ -53,14 +57,26 @@ const Image: React.FC<Props> = ({
   className,
 }) => {
   const [loaded, setLoaded] = useState(false);
+  // Holds the src that failed rather than a boolean, so that a new `src` prop
+  // retries the primary source instead of staying stuck on the fallback.
+  const [failedSrc, setFailedSrc] = useState<string | null>(null);
+
+  const usesFallback = !!fallbackSrc && failedSrc === src;
 
   const handleImageLoaded = () => {
     setLoaded(true);
   };
 
+  const handleImageError = () => {
+    // Skip when already on the fallback, so a failing fallback can't loop.
+    if (fallbackSrc && !usesFallback) {
+      setFailedSrc(src);
+    }
+  };
+
   return (
     <ImageElement
-      src={src}
+      src={usesFallback ? fallbackSrc : src}
       alt={alt}
       role={role}
       cover={cover}
@@ -69,6 +85,7 @@ const Image: React.FC<Props> = ({
       placeholderBg={placeholderBg}
       loaded={loaded}
       onLoad={handleImageLoaded}
+      onError={handleImageError}
       id={id}
       className={className || ''}
       loading={isLazy ? 'lazy' : 'eager'}

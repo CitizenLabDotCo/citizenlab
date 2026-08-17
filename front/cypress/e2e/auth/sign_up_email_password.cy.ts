@@ -15,7 +15,7 @@ describe('Sign up - email and password flow', () => {
 
   it('fails to confirm account with an invalid code', () => {
     signUp(cy);
-    cy.get('#code').click().type('0000');
+    cy.get('#code').click().type('000000');
     cy.get('#e2e-verify-email-button > button').click({ force: true });
     cy.get('.e2e-error-message');
   });
