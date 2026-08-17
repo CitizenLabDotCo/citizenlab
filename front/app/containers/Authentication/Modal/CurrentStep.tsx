@@ -8,7 +8,7 @@ import AccessDenied from '../steps/AccessDenied';
 import BuiltInFields from '../steps/BuiltInFields';
 import ChangeEmail from '../steps/ChangeEmail';
 import EmailConfirmation from '../steps/EmailConfirmation';
-import EmailFlowStart from '../steps/EmailFlowStart';
+import FlowStart from '../steps/FlowStart';
 import Invitation from '../steps/Invitation';
 import InviteSignUp from '../steps/InviteSignUp';
 import InviteTaken from '../steps/InviteTaken';
@@ -68,12 +68,12 @@ const CurrentStep = ({
         />
       );
 
-    // email flow
+    // pre-auth steps
     // ('post-participation:email' is grouped here because it shares this body)
-    case 'email:start':
+    case 'pre-auth:start':
     case 'post-participation:email':
       return (
-        <EmailFlowStart
+        <FlowStart
           loading={loading}
           setError={setError}
           authenticationData={authenticationData}
@@ -82,7 +82,7 @@ const CurrentStep = ({
         />
       );
 
-    case 'email:policies':
+    case 'pre-auth:policies':
       return (
         <EmailPolicies
           state={state}
@@ -93,7 +93,7 @@ const CurrentStep = ({
         />
       );
 
-    case 'email:password':
+    case 'pre-auth:password':
       return (
         <Password
           state={state}
@@ -104,7 +104,7 @@ const CurrentStep = ({
         />
       );
 
-    case 'email:sso-policies':
+    case 'pre-auth:sso-policies':
       return (
         <SSOPolicies
           state={state}
@@ -113,7 +113,7 @@ const CurrentStep = ({
         />
       );
 
-    case 'email:unauthenticated-confirmation':
+    case 'pre-auth:unauthenticated-confirmation':
       return (
         <EmailConfirmation
           email={state.email ?? authUser?.data.attributes.email ?? null}

@@ -126,7 +126,7 @@ export const sharedSteps = (
           }
         }
 
-        setCurrentStep('email:start');
+        setCurrentStep('pre-auth:start');
       },
 
       TRIGGER_VERIFICATION_ONLY: () => {
@@ -146,7 +146,7 @@ export const sharedSteps = (
           setCurrentStep('missing-data:verification');
           setError(errorMap[error_code]);
         } else {
-          setCurrentStep('email:start');
+          setCurrentStep('pre-auth:start');
           setError('unknown');
         }
       },
@@ -161,7 +161,7 @@ export const sharedSteps = (
           not_entitled_service_error: 'auth_service_error',
         };
 
-        setCurrentStep('email:start');
+        setCurrentStep('pre-auth:start');
         if (error_code) {
           setError(errorMap[error_code]);
         } else {
