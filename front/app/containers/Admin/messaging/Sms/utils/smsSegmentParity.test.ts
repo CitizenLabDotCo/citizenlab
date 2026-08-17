@@ -1,5 +1,4 @@
-// Pins library ≡ fixture; segmented_message_spec.rb pins Ruby ≡ fixture, so Ruby ≡ library.
-// On failure, copy the received values into the fixture and re-run the Ruby spec.
+// Checks the JS library against the shared fixture
 import fs from 'fs';
 import path from 'path';
 

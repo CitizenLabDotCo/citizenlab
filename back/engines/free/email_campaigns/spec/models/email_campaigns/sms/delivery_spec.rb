@@ -50,7 +50,7 @@ RSpec.describe EmailCampaigns::Sms::Delivery do
       expect(delivery.reload.segments_count).to eq(2)
     end
 
-    it 'is left alone once recorded, so an edited body never rewrites billing history' do
+    it 'is not recomputed when the body changes' do
       delivery = described_class.create!(body: 'hi', status: 'pending')
 
       expect { delivery.update!(body: 'a' * 161) }.not_to change { delivery.reload.segments_count }.from(1)

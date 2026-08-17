@@ -79,8 +79,6 @@ module EmailCampaigns
 
       private
 
-      # Settled from the body at creation, so the count is known before sending and a
-      # later body edit never rewrites what was billed.
       def compute_segments_count
         self.segments_count = SegmentedMessage.new(body).segments_count if body.present?
       end

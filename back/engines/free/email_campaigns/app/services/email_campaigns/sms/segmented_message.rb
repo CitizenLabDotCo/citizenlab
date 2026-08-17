@@ -2,12 +2,9 @@
 
 module EmailCampaigns
   module Sms
-    # Ruby port of the `sms-segments-calculator` package the admin UI counts with,
-    # so the count we bill from is the one the author was shown. Parity with the
-    # JS library is pinned by spec/fixtures/sms_segment_parity.json.
-    #
-    # Twilio's Smart Encoding is off on our messaging service, so no
-    # transliteration is applied here.
+    # Ruby port of the `sms-segments-calculator` package the admin UI counts with, so the
+    # server-side count matches the one the author was shown. Both sides are checked
+    # against the bodies in spec/fixtures/sms_segment_parity.json.
     class SegmentedMessage
       MAX_SEGMENTS = 8
 
@@ -110,7 +107,8 @@ module EmailCampaigns
         end
 
         def size_in_bits
-          # A GSM-7 character still occupies one full 16-bit unit in a UCS-2 message.
+          # Keyed off the first code unit: a grapheme starting with a GSM-7 character costs
+          # 16 bits however many units it spans (`1️⃣`, decomposed `é`).
           return 16 if @encoding_name == UCS2 && gsm7?
 
           bits_per_code_unit = @encoding_name == GSM7 ? 7 : 16
