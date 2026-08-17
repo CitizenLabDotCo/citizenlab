@@ -125,8 +125,7 @@ class CustomField < ApplicationRecord
   validate :maximum_select_count_greater_than_or_equal_to_minimum, if: :select_count_enabled_and_supported?
 
   before_validation :set_default_enabled
-  before_validation :generate_key, on: :create
-  before_validation :sanitize_description_multiloc
+  # Declared ahead of `generate_key`, which builds the key from the first title value.
   plain_text_multiloc :title_multiloc,
     :page_button_label_multiloc,
     :linear_scale_label_1_multiloc,
@@ -140,6 +139,8 @@ class CustomField < ApplicationRecord
     :linear_scale_label_9_multiloc,
     :linear_scale_label_10_multiloc,
     :linear_scale_label_11_multiloc
+  before_validation :generate_key, on: :create
+  before_validation :sanitize_description_multiloc
   before_validation :clear_logic_unless_supported
   after_create(if: :domicile?) { Area.recreate_custom_field_options }
 
