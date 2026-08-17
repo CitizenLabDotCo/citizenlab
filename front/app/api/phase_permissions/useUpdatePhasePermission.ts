@@ -25,9 +25,6 @@ const useUpdatePhasePermission = () => {
   return useMutation<IPhasePermission, CLErrors, UpdatePermissionParams>({
     mutationFn: updatePhasePermission,
     onSuccess: (_, { action, phaseId }) => {
-      queryClient.invalidateQueries({
-        queryKey: phasePermissionKeys.lists(),
-      });
       if (phaseId) {
         queryClient.invalidateQueries({
           queryKey: phasePermissionKeys.list({ phaseId }),

@@ -72,13 +72,6 @@ class Permission < ApplicationRecord
   validates :permitted_by, presence: true, inclusion: { in: PERMITTED_BIES }
   validates :action, uniqueness: { scope: %i[permission_scope_id permission_scope_type] }
   validates :permission_scope_type, inclusion: { in: SCOPE_TYPES }
-  validate :validate_require_verification
-  validate :validate_require_confirmed_email
-  validate :validate_require_confirmed_phone_number
-  validate :validate_authentication_method_present
-  validate :validate_verification_expiry
-  validate :validate_confirmed_email_expiry
-  validate :validate_confirmed_phone_number_expiry
   validate :validate_permitted_by_everyone
   validates :user_data_collection, inclusion: { in: %w[all_data demographics_only anonymous] }
 
@@ -164,88 +157,6 @@ class Permission < ApplicationRecord
       end
     end
     self.global_custom_fields ||= true
-  end
-
-  def validate_require_verification
-    return unless require_verification && require_verification_changed?
-    return if Verification::VerificationService.new.first_method_enabled
-
-    errors.add(
-      :require_verification,
-      :require_verification_not_allowed,
-      message: 'Verification cannot be required because there are no verification methods enabled.'
-    )
-  end
-
-  def validate_require_confirmed_email
-    return unless require_confirmed_email && require_confirmed_email_changed?
-    return if AppConfiguration.instance.feature_activated?('password_login')
-
-    errors.add(
-      :require_confirmed_email,
-      :require_confirmed_email_not_allowed,
-      message: 'A confirmed email can only be required when password login is enabled.'
-    )
-  end
-
-  def validate_require_confirmed_phone_number
-    return unless require_confirmed_phone_number && require_confirmed_phone_number_changed?
-    return if AppConfiguration.instance.feature_activated?('sms')
-
-    errors.add(
-      :require_confirmed_phone_number,
-      :require_confirmed_phone_number_not_allowed,
-      message: 'A confirmed phone number can only be required when the SMS feature is enabled.'
-    )
-  end
-
-  # When an account is required, at least one authentication method must back it:
-  # a confirmed email, identity verification or a confirmed phone number. This
-  # only applies to 'users' permissions; 'everyone' has no sign-in and
-  # 'admins_moderators' are already authenticated, so their require_* flags are
-  # irrelevant.
-  def validate_authentication_method_present
-    return unless permitted_by == 'users'
-    return if require_confirmed_email || require_verification || require_confirmed_phone_number
-
-    errors.add(
-      :base,
-      :authentication_method_required,
-      message: 'At least one authentication method (confirmed email, verification or confirmed phone number) is required.'
-    )
-  end
-
-  def validate_verification_expiry
-    return if verification_expiry.nil?
-    return if require_verification || !verification_expiry_changed?
-
-    errors.add(
-      :verification_expiry,
-      :verification_expiry_cannot_be_set,
-      message: 'Verification expiry can only be set when verification is required.'
-    )
-  end
-
-  def validate_confirmed_email_expiry
-    return if confirmed_email_expiry.nil?
-    return if require_confirmed_email || !confirmed_email_expiry_changed?
-
-    errors.add(
-      :confirmed_email_expiry,
-      :confirmed_email_expiry_cannot_be_set,
-      message: 'Confirmed email expiry can only be set when a confirmed email is required.'
-    )
-  end
-
-  def validate_confirmed_phone_number_expiry
-    return if confirmed_phone_number_expiry.nil?
-    return if require_confirmed_phone_number || !confirmed_phone_number_expiry_changed?
-
-    errors.add(
-      :confirmed_phone_number_expiry,
-      :confirmed_phone_number_expiry_cannot_be_set,
-      message: 'Confirmed phone number expiry can only be set when a confirmed phone number is required.'
-    )
   end
 
   def validate_permitted_by_everyone

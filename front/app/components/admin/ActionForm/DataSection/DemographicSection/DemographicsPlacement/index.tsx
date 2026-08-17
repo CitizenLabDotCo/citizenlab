@@ -9,8 +9,8 @@ import Warning from 'components/UI/Warning';
 import { useIntl, MessageDescriptor } from 'utils/cl-intl';
 
 import { Changes } from '../../../types';
-import { EXPLANATION_MESSAGES } from '../constants';
 
+import { EXPLANATION_MESSAGES } from './constants';
 import messages from './messages';
 
 // Demographics placement is stored as a boolean on the permission:

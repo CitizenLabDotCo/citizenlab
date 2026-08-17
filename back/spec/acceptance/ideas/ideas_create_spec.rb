@@ -81,6 +81,24 @@ resource 'Ideas' do
             expect(response_data.dig(:attributes, :claim_token_expires_at)).to eq(idea.claim_token.expires_at.iso8601(3))
           end
         end
+
+        describe 'when saving a draft' do
+          let(:publication_status) { 'draft' }
+          let(:project) do
+            create(:single_phase_ideation_project, phase_attrs: { with_permissions: true }).tap do |project|
+              project
+                .phases.sole
+                .permissions.find_by(action: 'posting_idea')
+                .update!(permitted_by: 'users')
+            end
+          end
+
+          example '[error] Create a draft idea where posting requires sign-in', document: false do
+            expect { do_request }.not_to change(Idea, :count)
+            assert_status 401
+            expect(json_response_body).to include_response_error(:base, 'user_not_signed_in')
+          end
+        end
       end
 
       context 'when resident' do

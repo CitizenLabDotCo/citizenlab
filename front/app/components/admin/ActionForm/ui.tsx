@@ -10,7 +10,6 @@ import {
   IconNames,
   IconTooltip,
   colors,
-  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
 import { SummaryChip } from './logic';
@@ -73,77 +72,6 @@ export const Chip = ({ chip }: { chip: SummaryChip }) => {
     </Box>
   );
 };
-
-/** Inline "this isn't possible because…" note shown next to disabled controls. */
-export const Hint = ({ children }: { children: ReactNode }) => (
-  <Box
-    display="flex"
-    alignItems="center"
-    gap="6px"
-    px="10px"
-    py="6px"
-    borderRadius={stylingConsts.borderRadius}
-    bgColor={colors.grey50}
-  >
-    <Icon
-      name="info-outline"
-      width="14px"
-      height="14px"
-      fill={colors.coolGrey500}
-    />
-    <Text as="span" m="0" fontSize="xs" color="coolGrey600">
-      {children}
-    </Text>
-  </Box>
-);
-
-/** A selectable card for the top-level access-mode choice. */
-export const ModeCard = ({
-  icon,
-  title,
-  description,
-  selected,
-  className,
-  onClick,
-}: {
-  icon: IconNames;
-  title: string;
-  description: string;
-  selected: boolean;
-  className?: string;
-  onClick: () => void;
-}) => (
-  <Box
-    as="button"
-    type="button"
-    flex="1 1 200px"
-    p="12px"
-    display="flex"
-    alignItems="flex-start"
-    gap="8px"
-    borderRadius="8px"
-    border={`1px solid ${selected ? colors.teal400 : colors.borderLight}`}
-    bgColor={selected ? colors.teal50 : colors.white}
-    style={{ cursor: 'pointer', textAlign: 'left' }}
-    className={className}
-    onClick={onClick}
-  >
-    <Icon
-      name={icon}
-      width="20px"
-      height="20px"
-      fill={selected ? colors.teal500 : colors.coolGrey500}
-    />
-    <Box display="flex" flexDirection="column" gap="4px">
-      <Text as="span" m="0" fontSize="s" fontWeight="bold" color="primary">
-        {title}
-      </Text>
-      <Text as="span" m="0" fontSize="xs" color="coolGrey600">
-        {description}
-      </Text>
-    </Box>
-  </Box>
-);
 
 /**
  * A single progressive-disclosure row: collapsed it shows just a title + a

@@ -95,6 +95,7 @@ export interface IAppConfigurationSettings {
   sms?: AppConfigurationFeature & {
     allowed_country_codes?: string[];
   };
+  sms_login?: AppConfigurationFeature;
   smart_groups?: AppConfigurationFeature;
   typeform_surveys?: {
     allowed: boolean;

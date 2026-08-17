@@ -238,6 +238,7 @@ resource 'Request codes' do
 
   post 'web_api/v1/user/request_code_phone' do
     with_options scope: :request_code do
+      parameter :phone, 'The phone number to send the code to. Only for unauthenticated callers.', required: false
       parameter :only_if_first_time, 'Only send a code if none is currently outstanding.', required: false
     end
 
@@ -253,8 +254,34 @@ resource 'Request codes' do
         .with(an_instance_of(EmailCampaigns::Campaigns::PhoneConfirmation), user, hash_including(:code)).once
     end
 
-    example 'It does not work for an unauthenticated user' do
+    example 'It works for an unauthenticated user that submits a phone number' do
+      SettingsService.new.activate_feature!('sms_login')
+      user = create(:unconfirmed_phone_user, phone: '+14155552671')
+
+      do_request(request_code: { phone: '+1 (415) 555-2671' })
+      expect(response_status).to eq 200
+      expect(delivery_service).to have_received(:send_now_to_user)
+        .with(an_instance_of(EmailCampaigns::Campaigns::PhoneConfirmation), user, hash_including(:code)).once
+    end
+
+    example 'It does not work for an unauthenticated user without a phone number' do
       do_request(request_code: {})
+      expect(response_status).to eq 401
+      expect(delivery_service).not_to have_received(:send_now_to_user)
+    end
+
+    example 'It does not work if no user has that phone number' do
+      do_request(request_code: { phone: '+14155552671' })
+      expect(response_status).to eq 401
+      expect(delivery_service).not_to have_received(:send_now_to_user)
+    end
+
+    # An authenticated caller may never request a code for somebody else's number.
+    example 'It does not work for an authenticated user submitting another number' do
+      create(:user, :with_confirmed_phone, phone: '+14155552671')
+      header_token_for(create(:user, :with_confirmed_phone, phone: '+14155552672'))
+
+      do_request(request_code: { phone: '+14155552671' })
       expect(response_status).to eq 401
       expect(delivery_service).not_to have_received(:send_now_to_user)
     end

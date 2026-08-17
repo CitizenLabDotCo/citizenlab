@@ -363,6 +363,10 @@ namespace :cl2_back do
           allowed: true,
           use_test_mode: true
         },
+        sms_login: {
+          enabled: true,
+          allowed: true
+        },
         parallel_participation: {
           enabled: true,
           allowed: true

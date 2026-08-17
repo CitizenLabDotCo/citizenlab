@@ -64,6 +64,7 @@ export type MethodMetadata = {
   other_attributes: Multiloc[];
   locked_custom_fields: Multiloc[];
   other_custom_fields: Multiloc[];
+  email_always_present: boolean;
 };
 
 // Base shape shared by every id method. Concrete methods are built from this by

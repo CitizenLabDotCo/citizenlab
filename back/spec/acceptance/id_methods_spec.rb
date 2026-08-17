@@ -61,7 +61,8 @@ resource 'Id methods' do
               locked_custom_fields: [],
               name: 'cow',
               other_attributes: [],
-              other_custom_fields: []
+              other_custom_fields: [],
+              email_always_present: true
             }
           }
         }
@@ -87,7 +88,8 @@ resource 'Id methods' do
               locked_custom_fields: [
                 { en: 'gender' }, { en: 'birthyear' }
               ],
-              other_custom_fields: []
+              other_custom_fields: [],
+              email_always_present: false
             }
           }
         }
@@ -109,7 +111,8 @@ resource 'Id methods' do
               locked_custom_fields: [],
               name: 'id_card_lookup',
               other_attributes: [],
-              other_custom_fields: []
+              other_custom_fields: [],
+              email_always_present: true
             },
             name: 'id_card_lookup',
             ui_method_name: 'By social security number'
@@ -136,7 +139,8 @@ resource 'Id methods' do
               locked_custom_fields: [],
               name: 'cow',
               other_attributes: [],
-              other_custom_fields: []
+              other_custom_fields: [],
+              email_always_present: true
             }
           }
         }

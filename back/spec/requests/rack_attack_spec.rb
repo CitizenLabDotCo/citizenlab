@@ -646,7 +646,7 @@ describe 'Rack::Attack' do
     freeze_time do
       5.times do |i|
         post(
-          '/web_api/v1/users/check',
+          '/web_api/v1/users/check_email',
           params: "{ \"user\": { \"email\": \"user#{i}@test.com\" } }",
           headers: json_headers
         )
@@ -654,7 +654,7 @@ describe 'Rack::Attack' do
       expect(status).to eq(200) # ok
 
       post(
-        '/web_api/v1/users/check',
+        '/web_api/v1/users/check_email',
         params: '{ "user": { "email": "user6@test.com" } }',
         headers: json_headers
       )
@@ -663,7 +663,7 @@ describe 'Rack::Attack' do
 
     travel_to(2.minutes.from_now) do
       post(
-        '/web_api/v1/users/check',
+        '/web_api/v1/users/check_email',
         params: '{ "user": { "email": "user7@test.com" } }',
         headers: json_headers
       )
@@ -675,7 +675,7 @@ describe 'Rack::Attack' do
     freeze_time do
       5.times do |i|
         post(
-          '/web_api/v1/users/check',
+          '/web_api/v1/users/check_email',
           params: '{ "user": { "email": "user@test.com" } }',
           headers: json_headers(ip: "1.2.3.#{i}")
         )
@@ -683,7 +683,7 @@ describe 'Rack::Attack' do
       expect(status).to eq(200) # ok
 
       post(
-        '/web_api/v1/users/check',
+        '/web_api/v1/users/check_email',
         params: '{ "user": { "email": "user@test.com" } }',
         headers: json_headers(ip: '1.2.3.7')
       )
@@ -692,11 +692,142 @@ describe 'Rack::Attack' do
 
     travel_to(5.minutes.from_now) do
       post(
-        '/web_api/v1/users/check',
+        '/web_api/v1/users/check_email',
         params: '{ "user": { "email": "user@test.com" } }',
         headers: json_headers(ip: '1.2.3.8')
       )
       expect(status).to eq(200) # ok
+    end
+  end
+
+  # The phone counterparts of the throttles above. The endpoints below all reject
+  # the request for their own reasons (unknown number, sms feature off, ...), which
+  # is exactly what makes them useful here: any status other than 429 means the
+  # request was not throttled.
+  describe 'phone endpoints' do
+    let(:headers) { { 'CONTENT_TYPE' => 'application/json' } }
+
+    # A different valid number for each request, to avoid testing the limit by phone number
+    def phone_login_params(index)
+      %({ "auth": { "phone": "+141555526#{format('%02d', index)}", "password": "test123456" } })
+    end
+
+    it 'limits phone login requests from same IP to 10 in 20 seconds' do
+      freeze_time do
+        10.times { |i| post('/web_api/v1/user_token_phone', params: phone_login_params(i), headers: headers) }
+        expect(status).to eq(404) # Not found
+
+        post('/web_api/v1/user_token_phone', params: phone_login_params(10), headers: headers)
+        expect(status).to eq(429) # Too many requests
+      end
+
+      travel_to(20.seconds.from_now) do
+        post('/web_api/v1/user_token_phone', params: phone_login_params(11), headers: headers)
+        expect(status).to eq(404) # Not found
+      end
+    end
+
+    it 'limits phone login requests for same phone number to 10 in 20 seconds' do
+      params = '{ "auth": { "phone": "+14155552671", "password": "test123456" } }'
+
+      # Use a different IP for each request, to avoid testing the limit by IP
+      freeze_time do
+        10.times do |i|
+          post('/web_api/v1/user_token_phone', params: params, headers: headers.merge('REMOTE_ADDR' => "1.2.3.#{i + 1}"))
+        end
+        expect(status).to eq(404) # Not found
+
+        post('/web_api/v1/user_token_phone', params: params, headers: headers.merge('REMOTE_ADDR' => '1.2.3.11'))
+        expect(status).to eq(429) # Too many requests
+      end
+
+      travel_to(20.seconds.from_now) do
+        post('/web_api/v1/user_token_phone', params: params, headers: headers.merge('REMOTE_ADDR' => '1.2.3.12'))
+        expect(status).to eq(404) # Not found
+      end
+    end
+
+    context 'when the sms_login feature is enabled' do
+      before { SettingsService.new.activate_feature!('sms_login') }
+
+      it 'limits unauthenticated phone confirmation requests from same IP to 5 in 20 seconds' do
+        params = '{ "confirmation": { "phone": "+14155552671", "code": "1234" } }'
+
+        freeze_time do
+          5.times { post('/web_api/v1/user/confirm_code_phone', params: params, headers: headers) }
+          expect(status).to eq(422) # Unprocessable entity
+
+          post('/web_api/v1/user/confirm_code_phone', params: params, headers: headers)
+          expect(status).to eq(429) # Too many requests
+        end
+
+        travel_to(20.seconds.from_now) do
+          post('/web_api/v1/user/confirm_code_phone', params: params, headers: headers)
+          expect(status).to eq(422) # Unprocessable entity
+        end
+      end
+    end
+
+    context 'when the sms feature is enabled' do
+      include_context 'with sms feature enabled'
+
+      before { SettingsService.new.activate_feature!('sms_login') }
+
+      # A different valid number for each request, to avoid testing the limit by phone number
+      def check_phone_params(index)
+        %({ "user": { "phone": "+141555526#{format('%02d', index)}" } })
+      end
+
+      it 'limits phone account creation requests from same IP to 10 in 20 seconds' do
+        # An invalid number is rejected by the controller, so no account is created and no SMS is sent
+        params = '{ "user": { "phone": "not-a-number", "locale": "en" } }'
+
+        freeze_time do
+          10.times { post('/web_api/v1/users/create_phone', params: params, headers: headers) }
+          expect(status).to eq(422) # Unprocessable entity
+
+          post('/web_api/v1/users/create_phone', params: params, headers: headers)
+          expect(status).to eq(429) # Too many requests
+        end
+
+        travel_to(20.seconds.from_now) do
+          post('/web_api/v1/users/create_phone', params: params, headers: headers)
+          expect(status).to eq(422) # Unprocessable entity
+        end
+      end
+
+      it 'limits phone check requests from same IP to 5 in 2 minutes' do
+        freeze_time do
+          5.times { |i| post('/web_api/v1/users/check_phone', params: check_phone_params(i), headers: headers) }
+          expect(status).to eq(200) # ok
+
+          post('/web_api/v1/users/check_phone', params: check_phone_params(5), headers: headers)
+          expect(status).to eq(429) # Too many requests
+        end
+
+        travel_to(2.minutes.from_now) do
+          post('/web_api/v1/users/check_phone', params: check_phone_params(6), headers: headers)
+          expect(status).to eq(200) # ok
+        end
+      end
+
+      it 'limits phone check requests to same phone number to 5 in 5 minutes' do
+        params = '{ "user": { "phone": "+14155552671" } }'
+
+        # Use a different IP for each request, to avoid testing the limit by IP
+        freeze_time do
+          5.times { |i| post('/web_api/v1/users/check_phone', params: params, headers: headers.merge('REMOTE_ADDR' => "1.2.3.#{i}")) }
+          expect(status).to eq(200) # ok
+
+          post('/web_api/v1/users/check_phone', params: params, headers: headers.merge('REMOTE_ADDR' => '1.2.3.7'))
+          expect(status).to eq(429) # Too many requests
+        end
+
+        travel_to(5.minutes.from_now) do
+          post('/web_api/v1/users/check_phone', params: params, headers: headers.merge('REMOTE_ADDR' => '1.2.3.8'))
+          expect(status).to eq(200) # ok
+        end
+      end
     end
   end
 
