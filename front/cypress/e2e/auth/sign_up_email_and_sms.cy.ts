@@ -41,7 +41,7 @@ describe('Sign up - email and SMS (2FA)', () => {
     cy.dataCy('phone-continue-button').click();
 
     // Confirm phone number
-    cy.dataCy('phone-code-input').find('input').type('1234');
+    cy.dataCy('phone-code-input').find('input').type('123456');
     cy.dataCy('phone-confirm-button').click();
 
     enterUserInfo(cy);
@@ -70,7 +70,7 @@ describe('Sign up - email and SMS (2FA)', () => {
     cy.dataCy('phone-continue-button').click();
 
     // Confirm phone number
-    cy.dataCy('phone-code-input').find('input').type('9999');
+    cy.dataCy('phone-code-input').find('input').type('999999');
     cy.dataCy('phone-confirm-button').click();
 
     // Assert error
@@ -101,7 +101,7 @@ describe('Sign up - email and SMS (2FA)', () => {
     cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
     // Confirm phone number
-    cy.dataCy('phone-code-input').find('input').type('1234');
+    cy.dataCy('phone-code-input').find('input').type('123456');
     cy.dataCy('phone-confirm-button').click();
 
     enterUserInfo(cy);
@@ -149,7 +149,7 @@ describe('Sign up - email and SMS (2FA)', () => {
                   method: 'POST',
                   url: `web_api/v1/user/confirm_code_new_phone`,
                   body: {
-                    confirmation: { code: '1234' },
+                    confirmation: { code: '123456' },
                   },
                 });
               });
@@ -221,7 +221,7 @@ describe('Sign up - SSO and SMS (2FA)', () => {
     cy.dataCy('phone-continue-button').click();
 
     // Confirm phone number
-    cy.dataCy('phone-code-input').find('input').type('1234');
+    cy.dataCy('phone-code-input').find('input').type('123456');
     cy.dataCy('phone-confirm-button').click();
 
     cy.get('#e2e-success-continue-button').click();

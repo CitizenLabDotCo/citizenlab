@@ -10,7 +10,8 @@ describe McpServer::Tools::ListPhases do
     run_mcp_tool(described_class, params:, current_user:)
   end
 
-  it 'lists phases of the project ordered by start date' do
+  it 'lists timeline phases first, ordered by start date, then standalone phases' do
+    standalone_phase = create(:phase, :standalone, project:, start_at: '2029-01-01', end_at: '2030-06-01')
     later_phase = create(:phase, project:, start_at: '2030-03-01', end_at: '2030-03-20')
     earlier_phase = create(:phase, project:, start_at: '2030-01-01', end_at: '2030-01-20')
     create(:phase) # phase in another project
@@ -18,7 +19,8 @@ describe McpServer::Tools::ListPhases do
     response = list(project_id: project.id)
 
     expect(response).not_to be_error
-    expect(response.structured_content[:data].pluck(:id)).to eq([earlier_phase.id, later_phase.id])
+    expect(response.structured_content[:data].pluck(:id))
+      .to eq([earlier_phase.id, later_phase.id, standalone_phase.id])
   end
 
   it 'serializes summary fields' do

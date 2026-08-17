@@ -37,11 +37,9 @@ Rails.application.routes.draw do
       # McpServer::WebApi::V1::{OauthAuthorizations,McpAuthorizations}Controller.
 
       concern :reactable do
-        resources :reactions, except: [:update], shallow: true do
-          post :up, on: :collection
-          post :down, on: :collection
-        end
+        resources :reactions, except: [:update], shallow: true
       end
+
       concern :followable do
         resources :followers, only: [:create]
       end

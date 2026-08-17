@@ -74,20 +74,20 @@ module SmartGroups::Rules
 
     def filter(users_scope)
       custom_field = CustomField.find(custom_field_id)
-      key = custom_field.key
       return unless custom_field.input_type == 'date'
 
+      answer_filter = AnswerableFilter.new(custom_field, users_scope)
       case predicate
       when 'is_before'
-        users_scope.where("(custom_field_values->>'#{key}')::date < (?)::date", value)
+        answer_filter.before(value)
       when 'is_after'
-        users_scope.where("(custom_field_values->>'#{key}')::date > (?)::date", value)
+        answer_filter.after(value)
       when 'is_exactly'
-        users_scope.where("(custom_field_values->>'#{key}')::date >= (?)::date AND (custom_field_values->>'#{key}')::date < ((?)::date + '1 day'::interval)", value, value)
+        answer_filter.on(value)
       when 'is_empty'
-        users_scope.where("custom_field_values->>'#{key}' IS NULL")
+        answer_filter.absent
       when 'not_is_empty'
-        users_scope.where("custom_field_values->>'#{key}' IS NOT NULL")
+        answer_filter.present
       else
         raise "Unsupported predicate #{predicate}"
       end

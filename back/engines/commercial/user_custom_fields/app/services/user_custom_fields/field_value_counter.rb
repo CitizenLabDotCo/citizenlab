@@ -62,29 +62,30 @@ module UserCustomFields
       counts.with_indifferent_access
     end
 
-    # Returns an ActiveRecord::Relation of all the user custom field values for the given records (users or ideas).
-    # Ideas are supported so that surveys that allow user fields in the survey form can be analyzed.
-    # It returns a view (result set) with a single column named 'field_value'. Essentially,
-    # something that looks like:
-    #   SELECT ... AS field_value FROM ...
-    #
-    # Each user results in one or multiple rows, depending on the type of custom field.
-    # Custom fields with multiple values (e.g. multiselect) are returned as multiple rows.
-    # If the custom field has no value for a given user or idea, the resulting row contains NULL.
+    # Returns a relation with a single 'field_value' column, read from custom_field_answers:
+    # one row per record (user or idea), NULL when it has no answer, and one row per
+    # selected option for multiselect answers.
     private_class_method def self.select_field_values(records, custom_field, record_type)
       field_key = record_type == 'ideas' ? UserFieldsInFormService.prefix_key(custom_field.key) : custom_field.key
+      answerable_type = record_type == 'ideas' ? 'Idea' : 'User'
       case custom_field.input_type
       when 'select', 'checkbox', 'number'
-        records.select("custom_field_values->'#{field_key}' as field_value")
+        records.joins(<<~SQL.squish).select('cfa.value as field_value')
+          LEFT JOIN custom_field_answers as cfa
+          ON #{record_type}.id = cfa.answerable_id
+          AND cfa.answerable_type = '#{answerable_type}'
+          AND cfa.key = '#{field_key}'
+        SQL
       when 'multiselect'
-        records.joins(<<~SQL.squish).select('cfv.field_value as field_value')
+        records.joins(<<~SQL.squish).select('cfa.field_value as field_value')
           LEFT JOIN (
             SELECT
-              jsonb_array_elements(custom_field_values->'#{field_key}') as field_value,
-              id as record_id
-            FROM #{record_type}
-          ) as cfv
-          ON #{record_type}.id = cfv.record_id
+              jsonb_array_elements(value) as field_value,
+              answerable_id as record_id
+            FROM custom_field_answers
+            WHERE answerable_type = '#{answerable_type}' AND key = '#{field_key}'
+          ) as cfa
+          ON #{record_type}.id = cfa.record_id
         SQL
       else
         raise NotSupportedFieldTypeError

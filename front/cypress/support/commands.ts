@@ -16,6 +16,7 @@ import {
   IPermissionUpdate,
   IPhasePermissionAction,
 } from '../../app/api/phase_permissions/types';
+import { TReactionMode } from '../../app/api/idea_reactions/types';
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
@@ -53,8 +54,7 @@ declare global {
       getArea: typeof getArea;
       apiCreateIdea: typeof apiCreateIdea;
       apiRemoveIdea: typeof apiRemoveIdea;
-      apiLikeIdea: typeof apiLikeIdea;
-      apiDislikeIdea: typeof apiDislikeIdea;
+      apiReactToIdea: typeof apiReactToIdea;
       apiCreateOfficialFeedbackForIdea: typeof apiCreateOfficialFeedbackForIdea;
       apiAddComment: typeof apiAddComment;
       apiRemoveComment: typeof apiRemoveComment;
@@ -78,6 +78,7 @@ declare global {
       apiCreateCause: typeof apiCreateCause;
       apiVerifyBogus: typeof apiVerifyBogus;
       apiCreateEvent: typeof apiCreateEvent;
+      apiRemoveEvent: typeof apiRemoveEvent;
       apiToggleProjectDescriptionBuilder: typeof apiToggleProjectDescriptionBuilder;
       apiCreateReportBuilder: typeof apiCreateReportBuilder;
       apiRemoveReportBuilder: typeof apiRemoveReportBuilder;
@@ -189,7 +190,7 @@ function signUp() {
   cy.get('.e2e-privacy-checkbox .e2e-checkbox').click();
   cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);
 
-  cy.get('#e2e-confirmation-code-input').type('1234');
+  cy.get('#e2e-confirmation-code-input').type('123456');
   cy.get('#e2e-confirmation-button').click();
 
   cy.get('.e2e-signup-success-close-button').wait(500).click();
@@ -262,7 +263,7 @@ function emailConfirmation(email: string) {
     method: 'POST',
     url: 'web_api/v1/user/confirm_code_email',
     body: {
-      confirmation: { email, code: '1234' },
+      confirmation: { email, code: '123456' },
     },
   });
 }
@@ -769,7 +770,12 @@ function apiRemoveIdea(ideaId: string) {
   });
 }
 
-function apiLikeIdea(email: string, password: string, ideaId: string) {
+function apiReactToIdea(
+  email: string,
+  password: string,
+  ideaId: string,
+  mode: TReactionMode
+) {
   return cy.apiLogin(email, password).then((response) => {
     const jwt = response.body.jwt;
 
@@ -779,22 +785,12 @@ function apiLikeIdea(email: string, password: string, ideaId: string) {
         Authorization: `Bearer ${jwt}`,
       },
       method: 'POST',
-      url: `web_api/v1/ideas/${ideaId}/reactions/up`,
-    });
-  });
-}
-
-function apiDislikeIdea(email: string, password: string, ideaId: string) {
-  return cy.apiLogin(email, password).then((response) => {
-    const jwt = response.body.jwt;
-
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${jwt}`,
+      url: `web_api/v1/ideas/${ideaId}/reactions`,
+      body: {
+        reaction: {
+          mode,
+        },
       },
-      method: 'POST',
-      url: `web_api/v1/ideas/${ideaId}/reactions/down`,
     });
   });
 }
@@ -1229,6 +1225,21 @@ function apiRemovePhase(phaseId: string) {
       },
       method: 'DELETE',
       url: `web_api/v1/phases/${phaseId}`,
+    });
+  });
+}
+
+function apiRemoveEvent(eventId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'DELETE',
+      url: `web_api/v1/events/${eventId}`,
     });
   });
 }
@@ -2447,8 +2458,7 @@ Cypress.Commands.add('getAdminAuthUser', getAdminAuthUser);
 Cypress.Commands.add('getArea', getArea);
 Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
 Cypress.Commands.add('apiRemoveIdea', apiRemoveIdea);
-Cypress.Commands.add('apiLikeIdea', apiLikeIdea);
-Cypress.Commands.add('apiDislikeIdea', apiDislikeIdea);
+Cypress.Commands.add('apiReactToIdea', apiReactToIdea);
 Cypress.Commands.add(
   'apiCreateOfficialFeedbackForIdea',
   apiCreateOfficialFeedbackForIdea
@@ -2481,6 +2491,7 @@ Cypress.Commands.add('setConsentCookie', setConsentCookie);
 Cypress.Commands.add('setLoginCookie', setLoginCookie);
 Cypress.Commands.add('apiVerifyBogus', apiVerifyBogus);
 Cypress.Commands.add('apiCreateEvent', apiCreateEvent);
+Cypress.Commands.add('apiRemoveEvent', apiRemoveEvent);
 Cypress.Commands.add(
   'apiToggleProjectDescriptionBuilder',
   apiToggleProjectDescriptionBuilder

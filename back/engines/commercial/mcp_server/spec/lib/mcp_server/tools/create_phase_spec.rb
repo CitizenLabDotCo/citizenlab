@@ -70,6 +70,21 @@ describe McpServer::Tools::CreatePhase do
       expect(phase.native_survey_title_multiloc).to eq('en' => 'Survey')
     end
 
+    it 'creates a standalone survey phase overlapping the timeline' do
+      create(:phase, project:, start_at: '2026-06-01', end_at: '2026-09-01')
+
+      response = run(params.merge(
+        participation_method: 'native_survey',
+        placement_type: 'standalone',
+        native_survey_title_multiloc: { 'en' => 'Survey' },
+        native_survey_button_multiloc: { 'en' => 'Take the survey' }
+      ))
+
+      expect(response).not_to be_error
+      phase = project.phases.find_by(placement_type: 'standalone')
+      expect(phase.participation_method).to eq('native_survey')
+    end
+
     it 'creates a budgeting voting phase' do
       response = run(params.merge(
         participation_method: 'voting',
