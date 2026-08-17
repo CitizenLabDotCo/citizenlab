@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import { isSameDay } from 'date-fns';
-import moment from 'moment-timezone';
 import styled from 'styled-components';
 
 import {
@@ -19,7 +18,13 @@ import Modal from 'components/UI/Modal';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { getGmtOffset } from 'utils/dateUtils';
+import { getViewerZone } from 'utils/dateFormat';
+import {
+  convertToTimeZoneISO,
+  getDateInTimezone,
+  getGmtOffset,
+  nowInZone,
+} from 'utils/dateUtils';
 
 import messages from './messages';
 import { getDefaultTime, getNextHourTime } from './utils';
@@ -41,16 +46,13 @@ const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
   const { mutate: updateCampaign, isLoading: isUpdatingCampaign } =
     useUpdateEmailCampaign();
 
-  const now = timeZone ? moment().tz(timeZone) : moment();
-  const tenantTimeNow = timeZone
-    ? new Date(now.year(), now.month(), now.date(), now.hour(), now.minute())
-    : new Date();
+  const tenantTimeNow = nowInZone(timeZone);
 
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedTime, setSelectedTime] = useState<Date>(getDefaultTime());
 
   const gmtOffset = getGmtOffset(timeZone, tenantTimeNow, selectedDate);
-  const browserTimezone = moment.tz.guess();
+  const browserTimezone = getViewerZone();
   const browserOffset = getGmtOffset(
     browserTimezone,
     tenantTimeNow,
@@ -61,17 +63,16 @@ const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
   // if email is already scheduled set the default value to scheduled date and time
   useEffect(() => {
     if (opened && campaign.data.attributes.scheduled_at && timeZone) {
-      const m = moment.tz(campaign.data.attributes.scheduled_at, timeZone);
-      // We don't use m.toDate() because it changes the time to the browser timezone.
-      const scheduledDate = new Date(
-        m.year(),
-        m.month(),
-        m.date(),
-        m.hour(),
-        m.minute()
+      // Deliberately not the raw instant: the pickers work in local Dates
+      // whose components must read as the tenant's wall clock.
+      const scheduledDate = getDateInTimezone(
+        campaign.data.attributes.scheduled_at,
+        timeZone
       );
-      setSelectedDate(scheduledDate);
-      setSelectedTime(scheduledDate);
+      if (scheduledDate) {
+        setSelectedDate(scheduledDate);
+        setSelectedTime(scheduledDate);
+      }
     }
   }, [opened, campaign.data.attributes.scheduled_at, timeZone]);
 
@@ -102,20 +103,7 @@ const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
     scheduledDateTime.setHours(selectedTime.getHours());
     scheduledDateTime.setMinutes(selectedTime.getMinutes());
     scheduledDateTime.setSeconds(0);
-    const scheduledAt = moment
-      .tz(
-        {
-          year: scheduledDateTime.getFullYear(),
-          month: scheduledDateTime.getMonth(),
-          day: scheduledDateTime.getDate(),
-          hour: scheduledDateTime.getHours(),
-          minute: scheduledDateTime.getMinutes(),
-          second: 0,
-        },
-        timeZone
-      )
-      .utc()
-      .toISOString();
+    const scheduledAt = convertToTimeZoneISO(scheduledDateTime, timeZone);
 
     updateCampaign(
       {

@@ -412,6 +412,19 @@ export const convertToTimeZoneISO = (
 
   return new Date(instant.getTime()).toISOString();
 };
+/**
+ * "Now", as a Date whose local components read as the wall clock in `timeZone`.
+ *
+ * The scheduling screens all need this: their date/time pickers work in plain
+ * local Dates, but the value the user is choosing is a tenant-timezone wall
+ * clock. Falls back to the viewer's own clock when no zone is configured.
+ */
+export const nowInZone = (timeZone?: string): Date => {
+  const now = new Date();
+  if (!timeZone) return now;
+  return getDateInTimezone(now.toISOString(), timeZone) ?? now;
+};
+
 export const getDateInTimezone = (
   isoString: string | null | undefined,
   timeZone: string | undefined
