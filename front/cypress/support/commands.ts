@@ -16,6 +16,7 @@ import {
   IPermissionUpdate,
   IPhasePermissionAction,
 } from '../../app/api/phase_permissions/types';
+import { TReactionMode } from '../../app/api/idea_reactions/types';
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
@@ -53,8 +54,7 @@ declare global {
       getArea: typeof getArea;
       apiCreateIdea: typeof apiCreateIdea;
       apiRemoveIdea: typeof apiRemoveIdea;
-      apiLikeIdea: typeof apiLikeIdea;
-      apiDislikeIdea: typeof apiDislikeIdea;
+      apiReactToIdea: typeof apiReactToIdea;
       apiCreateOfficialFeedbackForIdea: typeof apiCreateOfficialFeedbackForIdea;
       apiAddComment: typeof apiAddComment;
       apiRemoveComment: typeof apiRemoveComment;
@@ -770,7 +770,12 @@ function apiRemoveIdea(ideaId: string) {
   });
 }
 
-function apiLikeIdea(email: string, password: string, ideaId: string) {
+function apiReactToIdea(
+  email: string,
+  password: string,
+  ideaId: string,
+  mode: TReactionMode
+) {
   return cy.apiLogin(email, password).then((response) => {
     const jwt = response.body.jwt;
 
@@ -780,22 +785,12 @@ function apiLikeIdea(email: string, password: string, ideaId: string) {
         Authorization: `Bearer ${jwt}`,
       },
       method: 'POST',
-      url: `web_api/v1/ideas/${ideaId}/reactions/up`,
-    });
-  });
-}
-
-function apiDislikeIdea(email: string, password: string, ideaId: string) {
-  return cy.apiLogin(email, password).then((response) => {
-    const jwt = response.body.jwt;
-
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${jwt}`,
+      url: `web_api/v1/ideas/${ideaId}/reactions`,
+      body: {
+        reaction: {
+          mode,
+        },
       },
-      method: 'POST',
-      url: `web_api/v1/ideas/${ideaId}/reactions/down`,
     });
   });
 }
@@ -2463,8 +2458,7 @@ Cypress.Commands.add('getAdminAuthUser', getAdminAuthUser);
 Cypress.Commands.add('getArea', getArea);
 Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
 Cypress.Commands.add('apiRemoveIdea', apiRemoveIdea);
-Cypress.Commands.add('apiLikeIdea', apiLikeIdea);
-Cypress.Commands.add('apiDislikeIdea', apiDislikeIdea);
+Cypress.Commands.add('apiReactToIdea', apiReactToIdea);
 Cypress.Commands.add(
   'apiCreateOfficialFeedbackForIdea',
   apiCreateOfficialFeedbackForIdea
