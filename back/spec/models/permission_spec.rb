@@ -5,6 +5,29 @@ require 'rails_helper'
 RSpec.describe Permission do
   it_behaves_like 'a sanitized html_multiloc', factory: :permission, attribute: :access_denied_explanation_multiloc
 
+  describe 'access denied explanation sanitizer' do
+    def explanation_of(html)
+      create(:permission, access_denied_explanation_multiloc: { 'en' => html })
+        .access_denied_explanation_multiloc['en']
+    end
+
+    it 'strips a javascript: scheme from a link' do
+      expect(explanation_of('<a href="javascript:alert(1)">Click</a>')).to eq '<a rel="nofollow">Click</a>'
+    end
+
+    it 'keeps a real link and the decoration tags' do
+      expect(explanation_of('<p>Ask your <b>council</b>: <a href="https://example.com">here</a></p>')).to eq(
+        '<p>Ask your <b>council</b>: <a href="https://example.com" rel="nofollow">here</a></p>'
+      )
+    end
+
+    # The editor is a plain input, so the allowlist is narrower than a description's.
+    it 'strips the formatting only a rich text editor offers' do
+      expect(explanation_of('<h2>Title</h2><ul><li>A bullet</li></ul><img src="https://example.com/a.png">'))
+        .to eq 'TitleA bullet'
+    end
+  end
+
   describe 'Default factory' do
     it 'is valid' do
       expect(build(:permission)).to be_valid
