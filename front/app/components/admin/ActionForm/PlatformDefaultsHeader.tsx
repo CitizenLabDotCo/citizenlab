@@ -35,6 +35,7 @@ const PlatformDefaultsHeader = ({ title, processing, onOverride }: Props) => {
 
   return (
     <Box
+      data-cy="e2e-platform-defaults-header"
       display="flex"
       alignItems="center"
       gap="12px"
@@ -76,6 +77,7 @@ const PlatformDefaultsHeader = ({ title, processing, onOverride }: Props) => {
         icon="edit"
         width="auto"
         padding="4px 12px"
+        dataCy="e2e-override-platform-defaults"
         processing={processing}
         onClick={onOverride}
       >

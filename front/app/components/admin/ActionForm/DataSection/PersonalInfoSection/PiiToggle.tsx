@@ -19,6 +19,7 @@ interface Props {
   checked: boolean;
   disabled?: boolean;
   tooltip?: string;
+  dataCy?: string;
   onChange: () => void;
 }
 
@@ -29,9 +30,10 @@ const PiiToggle = ({
   checked,
   disabled,
   tooltip,
+  dataCy,
   onChange,
 }: Props) => (
-  <Box py="8px">
+  <Box py="8px" data-cy={dataCy}>
     <Toggle
       checked={checked}
       disabled={disabled}

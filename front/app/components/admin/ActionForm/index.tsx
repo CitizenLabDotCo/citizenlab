@@ -86,7 +86,11 @@ const ActionForm = ({
   // and the panel stays shut until the admin chooses to override it.
   if (attributes.inherited && onOverride) {
     return (
-      <Box maxWidth="900px" my="16px">
+      <Box
+        maxWidth="900px"
+        my="16px"
+        data-cy={`e2e-action-inherited-${action}`}
+      >
         <Box
           border={`1px solid ${colors.borderLight}`}
           borderRadius={stylingConsts.borderRadius}
@@ -114,6 +118,7 @@ const ActionForm = ({
         {/* ---- Header (always visible, click to collapse/expand) ---- */}
         <Box
           className={`e2e-action-accordion-${action}`}
+          data-cy={`e2e-action-accordion-${action}`}
           as="button"
           type="button"
           w="100%"
@@ -157,7 +162,12 @@ const ActionForm = ({
         </Box>
 
         {isOpen && (
-          <Box px="20px" pb="20px" className={`e2e-action-form-${action}`}>
+          <Box
+            px="20px"
+            pb="20px"
+            className={`e2e-action-form-${action}`}
+            data-cy={`e2e-action-form-${action}`}
+          >
             <Divider mt="0" mb="20px" />
 
             <AccessSection
@@ -186,7 +196,7 @@ const ActionForm = ({
                   buttonStyle="text"
                   width="auto"
                   padding="0px"
-                  className={`e2e-revert-to-platform-defaults-${action}`}
+                  dataCy={`e2e-revert-to-platform-defaults-${action}`}
                   onClick={() => setRevertModalOpened(true)}
                 >
                   <span style={{ textDecorationLine: 'underline' }}>

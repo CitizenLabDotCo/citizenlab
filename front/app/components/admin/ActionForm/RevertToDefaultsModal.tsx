@@ -58,7 +58,7 @@ const RevertToDefaultsModal = ({
             width="auto"
             mr="20px"
             processing={processing}
-            className="e2e-confirm-revert-to-platform-defaults"
+            dataCy="e2e-confirm-revert-to-platform-defaults"
             onClick={onConfirm}
           >
             {formatMessage(messages.revertToPlatformDefaultsConfirmButton)}

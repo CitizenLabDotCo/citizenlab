@@ -91,6 +91,7 @@ export const Expander = ({
   defaultOpen = false,
   locked = false,
   lockedTooltip,
+  dataCy,
 }: {
   icon: IconNames;
   title: string;
@@ -99,12 +100,13 @@ export const Expander = ({
   defaultOpen?: boolean;
   locked?: boolean;
   lockedTooltip?: string;
+  dataCy?: string;
 }) => {
   const [open, setOpen] = useState(defaultOpen);
 
   if (locked) {
     return (
-      <Box>
+      <Box data-cy={dataCy}>
         <Box w="100%" display="flex" alignItems="center" gap="10px" py="12px">
           <Icon
             name="chevron-right"
@@ -142,7 +144,7 @@ export const Expander = ({
   }
 
   return (
-    <Box>
+    <Box data-cy={dataCy}>
       <Box
         as="button"
         type="button"
