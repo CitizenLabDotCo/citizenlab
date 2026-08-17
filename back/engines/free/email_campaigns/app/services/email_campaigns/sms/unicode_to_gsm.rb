@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-# Generated from sms-segments-calculator v1.2.0 by
-# front/internals/scripts/generate-sms-segment-parity.cjs. Do not edit by hand.
+# Transcribed from sms-segments-calculator
 module EmailCampaigns
   module Sms
     # Maps a UTF-16 code unit to the GSM-7 code units encoding it. A two-element
