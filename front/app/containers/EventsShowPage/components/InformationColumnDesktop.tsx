@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import moment from 'moment';
+import { isPast } from 'date-fns';
 
 import { IEventData } from 'api/events/types';
 
@@ -22,7 +22,7 @@ interface Props {
 }
 
 const InformationColumnDesktop = ({ event, className }: Props) => {
-  const isPastEvent = moment().isAfter(moment(event.attributes.end_at));
+  const isPastEvent = isPast(new Date(event.attributes.end_at));
 
   return (
     <Box

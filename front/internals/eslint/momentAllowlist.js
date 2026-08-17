@@ -12,17 +12,13 @@
 module.exports = [
   'app/api/survey_results/utils.ts',
   // Dynamic `import('moment/dist/locale/xx')` in localeGetter — no static
-  // import, so it is only caught by the no-restricted-syntax rule.
+  // import, so it is only caught by the no-restricted-syntax rule. Grep for
+  // "from 'moment" will not find it; don't prune this line automatically.
   'app/containers/App/constants.ts',
-  'app/components/EventCards/DateBlocks/index.tsx',
-  'app/components/EventCards/EventInformation/index.tsx',
-  'app/components/EventPreviews/EventPreviewCard.tsx',
   'app/components/EventPreviews/index.tsx',
   'app/components/ParticipationCTABars/EventsCTABar/index.tsx',
   'app/components/ProjectCard/index.tsx',
-  'app/components/ScreenReadableEventDate/index.tsx',
   'app/components/admin/ContentBuilder/LanguageProvider/index.tsx',
-  'app/components/admin/DatePickers/DatePhasePicker/Calendar/index.tsx',
   'app/components/admin/Email/DraftCampaignRow.tsx',
   'app/components/admin/Email/Scheduling/ScheduleModal.tsx',
   'app/components/admin/Email/SentCampaignRow.tsx',
@@ -118,17 +114,21 @@ module.exports = [
   'app/containers/App/index.tsx',
   'app/containers/DisabledAccount/index.tsx',
   'app/containers/EventsPage/EventsViewer/index.tsx',
-  'app/containers/EventsShowPage/components/InformationColumnDesktop.tsx',
-  'app/containers/EventsShowPage/components/InformationSectionMobile.tsx',
-  'app/containers/EventsShowPage/components/MetadataInformation/EventDateStylized/index.tsx',
   'app/containers/IdeasShow/components/ProposalInfo/components/CountDown.tsx',
   'app/containers/UsersShowPage/UserHeader.tsx',
   'app/modules/commercial/admin_project_templates/admin/components/UseTemplateModal.tsx',
   'app/utils/__characterization__/dateFormats.test.ts',
   'app/utils/__characterization__/momentVsFacade.test.ts',
+  'app/utils/__characterization__/schedulingPrimitives.test.ts',
   'app/utils/dataUtils/binAge.ts',
   'app/utils/dateUtils.test.ts',
   'app/utils/dateUtils.ts',
+  // Compares moment against the façade on purpose; drop when the last
+  // moment-using helper in dateUtils.ts is converted.
+  'app/utils/__characterization__/dateFormats.test.ts',
+  'app/utils/__characterization__/momentVsFacade.test.ts',
+  'app/utils/__characterization__/schedulingPrimitives.test.ts',
+  'app/utils/__characterization__/timezoneHelpers.test.ts',
   'app/utils/patchMomentDeAtJanuary.test.ts',
   'app/utils/patchMomentDeAtJanuary.ts',
 ];
