@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
 class IdeaPolicy < ApplicationPolicy
+  # A draft may be written despite a denied reason only when the row is
+  # attributable to a user who could still become permitted, since the check
+  # runs again at publication (see #update?). user_not_signed_in fails both
+  # halves: an author-less draft can never be published, so there is no later
+  # check to defer to.
+  DEFERRABLE_DRAFT_REASONS = %w[user_not_active user_not_verified user_missing_requirements].freeze
+
   class Scope < ApplicationPolicy::Scope
     def resolve
       project_scope = scope_for(Project)
@@ -60,17 +67,11 @@ class IdeaPolicy < ApplicationPolicy
     return false if !phase
 
     reason = if record.draft?
-      # User permission checks are deferred to publication, as the user may
-      # still become permitted while filling in the form.
-      Permissions::PhasePermissionsService.new(phase, user).context_denied_reason
+      draft_denied_reason(phase)
     else
       return false if !active? && !record.participation_method_on_creation.supports_inputs_without_author?
 
-      Permissions::PhasePermissionsService.new(
-        phase,
-        user,
-        request: record.request # Only present if pmethod.everyone_tracking_enabled? is true
-      ).denied_reason_for_action('posting_idea')
+      posting_denied_reason(phase)
     end
     raise_not_authorized(reason) if reason
 
@@ -118,6 +119,19 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   private
+
+  def draft_denied_reason(phase)
+    reason = posting_denied_reason(phase)
+    DEFERRABLE_DRAFT_REASONS.include?(reason) ? nil : reason
+  end
+
+  def posting_denied_reason(phase)
+    Permissions::PhasePermissionsService.new(
+      phase,
+      user,
+      request: record.request # Only present if pmethod.everyone_tracking_enabled? is true
+    ).denied_reason_for_action('posting_idea')
+  end
 
   def owner?
     user && record.author_id == user.id
