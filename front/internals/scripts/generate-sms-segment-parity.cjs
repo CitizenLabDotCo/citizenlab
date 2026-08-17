@@ -82,9 +82,16 @@ end
 
 // --- 2. Parity fixture ----------------------------------------------------
 
-const GSM_CODE_POINTS = parseTable().map(([codePoint]) => parseInt(codePoint, 16));
+const TABLE = parseTable();
+
+const gsmCharsCosting = (septets) =>
+  TABLE.filter(([, codeUnits]) => codeUnits.length === septets).map(
+    ([codePoint]) => String.fromCharCode(parseInt(codePoint, 16))
+  );
+
+const GSM_BASIC = gsmCharsCosting(1);
 // The GSM-7 extension set: these cost two septets, so they segment differently.
-const GSM_EXTENDED = '€[]{}\\|~^';
+const GSM_EXTENDED = gsmCharsCosting(2);
 
 const corpus = () => {
   const bodies = new Set();
@@ -102,23 +109,24 @@ const corpus = () => {
   // UCS-2 boundaries: 70 alone, 67 per segment once concatenated.
   [1, 69, 70, 71, 133, 134, 135, 536, 537].forEach((length) => add('ж'.repeat(length)));
 
-  // Every character the library considers GSM-7, alone and repeated past a segment.
-  GSM_CODE_POINTS.forEach((codePoint) => {
-    const char = String.fromCharCode(codePoint);
-    add(char);
-    add(char.repeat(100));
-  });
+  // Every character the library considers GSM-7, as two bodies rather than one case
+  // each. A character missing from the Ruby table flips its whole body to UCS-2 and
+  // a wrong septet cost changes its message size, so a per-character case proves
+  // nothing extra. Space-joined so CR and LF cannot pair into one CRLF grapheme.
+  add(GSM_BASIC.join(' '));
+  add(GSM_EXTENDED.join(' '));
 
   // An extension character straddling a segment edge cannot be split across it.
-  for (let filler = 152; filler <= 160; filler++) {
-    GSM_EXTENDED.split('').forEach((char) => add(`${'a'.repeat(filler)}${char}`));
+  // Only the boundary fillers can fail; shorter ones fit comfortably either way.
+  for (let filler = 158; filler <= 160; filler++) {
+    GSM_EXTENDED.forEach((char) => add(`${'a'.repeat(filler)}${char}`));
   }
 
   // The same characters cost two septets in GSM-7 but a single 16-bit unit once
   // something else has forced the message onto UCS-2.
-  GSM_EXTENDED.split('').forEach((char) => {
+  GSM_EXTENDED.forEach((char) => {
     add(`${char}ж`);
-    for (let filler = 66; filler <= 70; filler++) {
+    for (let filler = 68; filler <= 70; filler++) {
       add(`${'ж'.repeat(filler)}${char}`);
     }
   });
@@ -178,16 +186,26 @@ const measure = (body) => {
 
 const writeFixture = () => {
   const cases = corpus().map(measure);
-  const fixture = {
+  // One case per line, so regenerating this file produces a diff a reviewer can
+  // read: a changed measurement is one changed line.
+  const rows = cases
+    .map((measurement) => `    ${JSON.stringify(measurement)}`)
+    .join(',\n');
+  const json = [
+    '{',
     // Regenerate with front/internals/scripts/generate-sms-segment-parity.cjs
-    generatedFrom: `sms-segments-calculator@${PACKAGE_VERSION}`,
-    cases,
-  };
+    `  "generatedFrom": "sms-segments-calculator@${PACKAGE_VERSION}",`,
+    '  "cases": [',
+    rows,
+    '  ]',
+    '}',
+    '',
+  ].join('\n');
 
   fs.mkdirSync(path.dirname(FIXTURE_OUT), { recursive: true });
-  fs.writeFileSync(FIXTURE_OUT, `${JSON.stringify(fixture, null, 2)}\n`);
+  fs.writeFileSync(FIXTURE_OUT, json);
   console.log(`Wrote ${cases.length} parity cases to ${path.relative(REPO_ROOT, FIXTURE_OUT)}`);
 };
 
-writeRubyTable(parseTable());
+writeRubyTable(TABLE);
 writeFixture();

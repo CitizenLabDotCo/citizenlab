@@ -4,16 +4,17 @@
 #
 # Table name: sms_deliveries
 #
-#  id             :uuid             not null, primary key
-#  user_id        :uuid
-#  campaign_id    :uuid
-#  body           :text             not null
-#  message_sid    :string
-#  status         :string           not null
-#  error_message  :string
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  segments_count :integer
+#  id                       :uuid             not null, primary key
+#  user_id                  :uuid
+#  campaign_id              :uuid
+#  body                     :text             not null
+#  message_sid              :string
+#  status                   :string           not null
+#  error_message            :string
+#  created_at               :datetime         not null
+#  updated_at               :datetime         not null
+#  segments_count           :integer
+#  estimated_segments_count :integer
 #
 # Indexes
 #
@@ -55,13 +56,15 @@ module EmailCampaigns
         STATUSES.index_with { |status| counts[status] || 0 }.symbolize_keys.merge(total: counts.values.sum)
       end
 
-      before_validation :compute_segments_count, on: :create
+      before_validation :compute_estimated_segments_count, on: :create
 
       validates :body, presence: true
       validates :status, inclusion: { in: STATUSES }
-      validates :segments_count,
+      validates :estimated_segments_count,
         numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: SegmentedMessage::MAX_SEGMENTS },
         allow_nil: true
+      # Uncapped: this is what the provider says it billed, and our estimate is not its authority.
+      validates :segments_count, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
 
       # Moves the delivery to `new_status` only when that represents forward
       # progress, so out-of-order provider callbacks (Twilio warns these can arrive
@@ -79,10 +82,11 @@ module EmailCampaigns
 
       private
 
-      # Billing follows from the body, so the count is settled at creation rather
-      # than read back from the provider after the fact.
-      def compute_segments_count
-        self.segments_count = SegmentedMessage.new(body).segments_count if body.present?
+      # What we expect to be billed, settled from the body at creation so it is known
+      # before sending. `segments_count` stays nil until the provider reports what it
+      # actually billed.
+      def compute_estimated_segments_count
+        self.estimated_segments_count = SegmentedMessage.new(body).segments_count if body.present?
       end
     end
   end

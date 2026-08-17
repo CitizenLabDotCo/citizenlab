@@ -77,10 +77,10 @@ RSpec.describe EmailCampaigns::Sms::SendService do
       expect(delivery).to have_attributes(status: 'pending', campaign_id: campaign.id)
     end
 
-    it 'knows the segment count before the message reaches the provider' do
+    it 'estimates the segment count before the message reaches the provider' do
       delivery = described_class.new.create_delivery(body: 'a' * 161)
 
-      expect(delivery.segments_count).to eq(2)
+      expect(delivery.estimated_segments_count).to eq(2)
     end
 
     it 'raises and creates nothing when the SMS feature is disabled' do
@@ -103,11 +103,11 @@ RSpec.describe EmailCampaigns::Sms::SendService do
       expect(delivery.reload).to have_attributes(status: 'queued', message_sid: 'SM_d')
     end
 
-    it 'leaves the segment count computed at creation untouched' do
+    it 'leaves the segment estimate computed at creation untouched' do
       allow(provider).to receive(:send).and_return(message_sid: 'SM_d', status: 'queued')
 
       expect { described_class.new.deliver(delivery, to: phone) }
-        .not_to change { delivery.reload.segments_count }.from(1)
+        .not_to change { delivery.reload.estimated_segments_count }.from(1)
     end
 
     it 'normalizes the destination to E.164 before sending' do

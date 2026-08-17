@@ -40,7 +40,7 @@ RSpec.describe EmailCampaigns::Sms::SegmentedMessage do
 
     # Without this, a truncated or empty fixture would let the check above pass vacuously.
     it 'still holds a full corpus' do
-      expect(fixture['cases'].size).to be > 400
+      expect(fixture['cases'].size).to be > 100
     end
   end
 
