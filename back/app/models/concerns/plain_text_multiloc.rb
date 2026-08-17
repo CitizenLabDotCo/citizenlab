@@ -6,6 +6,9 @@
 #   include PlainTextMultiloc
 #   plain_text_multiloc :title_multiloc, :location_multiloc
 #
+# Declarations add up, so a second call - or a subclass declaring one of its own - keeps whatever
+# was declared before it.
+#
 # Only changed attributes are rewritten, so a save that leaves one alone cannot alter it.
 #
 # Reads and writes the raw attributes, so a model that overrides a reader (to fall back to a
@@ -21,7 +24,7 @@ module PlainTextMultiloc
     # @param prepend [Boolean] Run ahead of `Sluggable#generate_slug`, which is registered on
     #   `ApplicationRecord` and would otherwise build the slug from the raw title.
     def plain_text_multiloc(*attributes, prepend: false)
-      self.plain_text_multilocs = attributes
+      self.plain_text_multilocs |= attributes
       before_validation :strip_plain_text_multilocs, prepend: prepend
     end
   end
