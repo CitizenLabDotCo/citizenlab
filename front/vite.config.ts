@@ -24,6 +24,15 @@ export default defineConfig(({ mode }) => {
   const isTestBuild = process.env.TEST_BUILD === 'true';
   const sourceMapToSentry = !isDev && !isTestBuild && !!process.env.CI;
 
+  // Base path for built assets. CI sets ASSET_BASE_URL=/<git-sha>/ so every
+  // build's assets get immutable, per-build URLs (uploaded to a fresh S3
+  // prefix). Unset locally, so dev keeps serving everything from '/'.
+  const assetBase = process.env.ASSET_BASE_URL || '/';
+  // Sentry matches uploaded artifacts against the URL the browser requested,
+  // with `~` standing in for scheme + host. So the artifact names have to
+  // carry the same per-build prefix: '/<sha>/' -> '~/<sha>'.
+  const sentryUrlPrefix = `~${assetBase}`.replace(/\/+$/, '');
+
   const API_HOST = process.env.API_HOST || 'localhost';
   const API_PORT = process.env.API_PORT || '4000';
   const GRAPHQL_HOST = process.env.GRAPHQL_HOST || 'localhost';
@@ -40,10 +49,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     root: path.resolve(__dirname, 'app'), // Root directory
-    // Base path for built assets. CI sets ASSET_BASE_URL=/<git-sha>/ so every
-    // build's assets get immutable, per-build URLs (uploaded to a fresh S3
-    // prefix). Unset locally, so dev keeps serving everything from '/'.
-    base: process.env.ASSET_BASE_URL || '/',
+    base: assetBase,
     server: {
       port: USE_HTTPS ? 443 : Number(process.env.PORT) || 3000,
       host: '0.0.0.0',
@@ -115,7 +121,21 @@ export default defineConfig(({ mode }) => {
             project: 'cl2-front',
             release: {
               name: process.env.CIRCLE_BUILD_NUM,
+              // Our self-hosted Sentry predates artifact bundles: it only
+              // resolves source maps that are attached to a release and named
+              // after the URL they are served from. The plugin's default
+              // (debug-ID) upload names artifacts `<debugId>-<n>.js`, which
+              // that server has no way to match — which is why every release
+              // archive shows 0 artifacts. Upload the URL-named copies
+              // instead. Drop this once Sentry is new enough for artifact
+              // bundles, and re-enable `sourcemaps` below.
+              uploadLegacySourcemaps: {
+                paths: ['build'],
+                urlPrefix: sentryUrlPrefix,
+                ext: ['js', 'map'],
+              },
             },
+            sourcemaps: { disable: true },
           }),
         USE_HTTPS && mkcert({ hosts: [HTTPS_HOST] }), // HTTPS in development
       ],
