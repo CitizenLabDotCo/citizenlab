@@ -11,9 +11,9 @@ class IdeaPolicy < ApplicationPolicy
   # needs owner?, which matches on author_id, and the only route to becoming
   # that owner is a claim token, which is issued solely where posting is open to
   # everyone (see IdeasController#create). So nothing would ever re-check it.
-  # Signed-out drafts on everyone-permitted phases are unaffected - there no
-  # reason is denied in the first place.
-  DEFERRABLE_DRAFT_REASONS = %w[user_not_active user_not_verified user_missing_requirements].freeze
+  # Signed-out drafts on everyone-permitted phases are unaffected: on those
+  # phases nothing is denied in the first place.
+  DEFERRABLE_DENIED_REASONS = %w[user_not_active user_not_verified user_missing_requirements].freeze
 
   class Scope < ApplicationPolicy::Scope
     def resolve
@@ -129,7 +129,7 @@ class IdeaPolicy < ApplicationPolicy
 
   def draft_denied_reason(phase)
     reason = posting_denied_reason(phase)
-    DEFERRABLE_DRAFT_REASONS.include?(reason) ? nil : reason
+    DEFERRABLE_DENIED_REASONS.include?(reason) ? nil : reason
   end
 
   def posting_denied_reason(phase)
