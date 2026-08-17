@@ -24,13 +24,11 @@ export default defineConfig(({ mode }) => {
   const isTestBuild = process.env.TEST_BUILD === 'true';
   const sourceMapToSentry = !isDev && !isTestBuild && !!process.env.CI;
 
-  // Base path for built assets. CI sets ASSET_BASE_URL=/<git-sha>/ so every
-  // build's assets get immutable, per-build URLs (uploaded to a fresh S3
-  // prefix). Unset locally, so dev keeps serving everything from '/'.
+  // CI sets ASSET_BASE_URL=/<git-sha>/ so each build's assets get immutable,
+  // per-build URLs. Unset locally, so dev serves everything from '/'.
   const assetBase = process.env.ASSET_BASE_URL || '/';
-  // Sentry matches uploaded artifacts against the URL the browser requested,
-  // with `~` standing in for scheme + host. So the artifact names have to
-  // carry the same per-build prefix: '/<sha>/' -> '~/<sha>'.
+  // Sentry matches artifacts by request URL, `~` standing in for scheme+host,
+  // so artifact names need the same prefix: '/<sha>/' -> '~/<sha>'.
   const sentryUrlPrefix = `~${assetBase}`.replace(/\/+$/, '');
 
   const API_HOST = process.env.API_HOST || 'localhost';
@@ -121,20 +119,18 @@ export default defineConfig(({ mode }) => {
             project: 'cl2-front',
             release: {
               name: process.env.CIRCLE_BUILD_NUM,
-              // Our self-hosted Sentry predates artifact bundles: it only
-              // resolves source maps that are attached to a release and named
-              // after the URL they are served from. The plugin's default
-              // (debug-ID) upload names artifacts `<debugId>-<n>.js`, which
-              // that server has no way to match — which is why every release
-              // archive shows 0 artifacts. Upload the URL-named copies
-              // instead. Drop this once Sentry is new enough for artifact
-              // bundles, and re-enable `sourcemaps` below.
+              // Our Sentry predates artifact bundles, so it only resolves maps
+              // attached to a release and named after their URL. The default
+              // debug-ID upload names them `<debugId>-<n>.js`, which it can't
+              // match — hence 0 artifacts on every release.
               uploadLegacySourcemaps: {
                 paths: ['build'],
                 urlPrefix: sentryUrlPrefix,
                 ext: ['js', 'map'],
               },
             },
+            // After a Sentry upgrade, drop this and
+            // uploadLegacySourcemaps to switch back to debug IDs.
             sourcemaps: { disable: true },
           }),
         USE_HTTPS && mkcert({ hosts: [HTTPS_HOST] }), // HTTPS in development
