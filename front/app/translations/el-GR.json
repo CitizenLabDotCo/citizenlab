@@ -1987,6 +1987,7 @@
   "app.containers.Navbar.completeOnboarding": "Ολοκληρωμένο onboarding",
   "app.containers.Navbar.completeProfile": "Πλήρες προφίλ",
   "app.containers.Navbar.confirmEmail2": "Επιβεβαίωση email",
+  "app.containers.Navbar.confirmPhone": "Επιβεβαίωση αριθμού τηλεφώνου",
   "app.containers.Navbar.unverified": "Μη επαληθευμένος",
   "app.containers.Navbar.verified": "Επαληθευμένος",
   "app.containers.NewAuthModal.beforeYouFollow": "Πριν ακολουθήσετε",

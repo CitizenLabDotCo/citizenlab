@@ -1987,6 +1987,7 @@
   "app.containers.Navbar.completeOnboarding": "Pełne wdrożenie",
   "app.containers.Navbar.completeProfile": "Pełny profil",
   "app.containers.Navbar.confirmEmail2": "Potwierdź wiadomość e-mail",
+  "app.containers.Navbar.confirmPhone": "Potwierdź numer telefonu",
   "app.containers.Navbar.unverified": "Niezweryfikowany",
   "app.containers.Navbar.verified": "Zweryfikowany",
   "app.containers.NewAuthModal.beforeYouFollow": "Zanim zaczniesz śledzić",
