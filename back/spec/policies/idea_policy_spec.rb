@@ -398,6 +398,7 @@ describe IdeaPolicy do
   context 'on a draft native survey response' do
     let(:phase) { create(:active_native_survey_phase, with_permissions: true) }
     let(:project) { phase.project }
+    let(:permission) { phase.permissions.find_by(action: 'posting_idea') }
     let(:idea) do
       create(
         :native_survey_response,
@@ -411,11 +412,60 @@ describe IdeaPolicy do
     context 'for a visitor when posting requires sign-in' do
       let(:user) { nil }
 
+      before { permission.update!(permitted_by: 'users') }
+
+      it 'raises, since an author-less draft could never be published' do
+        expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError, /user_not_signed_in/)
+      end
+    end
+
+    context 'for a visitor when posting is open to everyone' do
+      let(:user) { nil }
+
+      before { permission.update!(permitted_by: 'everyone') }
+
+      it { is_expected.to permit(:create) }
+    end
+
+    context 'for a user who has not met the requirements yet' do
+      let(:user) { create(:user) }
+
       before do
-        phase.permissions.find_by(action: 'posting_idea').update!(permitted_by: 'users')
+        permission.update!(permitted_by: 'users', global_custom_fields: true)
+        create(:custom_field_gender, required: true)
       end
 
       it { is_expected.to permit(:create) }
+    end
+
+    context 'for a resident when posting is limited to admins and moderators' do
+      let(:user) { create(:user) }
+
+      before { permission.update!(permitted_by: 'admins_moderators') }
+
+      it 'raises' do
+        expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError, /user_not_permitted/)
+      end
+    end
+
+    context 'for a resident outside the permitted group' do
+      let(:user) { create(:user) }
+
+      before { permission.update!(permitted_by: 'users', groups: [create(:group)]) }
+
+      it 'raises' do
+        expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError, /user_not_in_group/)
+      end
+    end
+
+    context 'when submission is disabled on the phase' do
+      let(:user) { create(:user) }
+
+      before { phase.update!(submission_enabled: false) }
+
+      it 'raises' do
+        expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError, /posting_disabled/)
+      end
     end
 
     context 'for a resident when the project is not visible to them' do
