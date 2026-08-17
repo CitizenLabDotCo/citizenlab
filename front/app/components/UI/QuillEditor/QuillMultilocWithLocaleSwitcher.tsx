@@ -1,4 +1,12 @@
-import React, { memo, useState, useCallback, useRef, useEffect } from 'react';
+import React, {
+  memo,
+  useState,
+  useCallback,
+  useRef,
+  useEffect,
+  lazy,
+  Suspense,
+} from 'react';
 
 import {
   IconTooltip,
@@ -11,9 +19,12 @@ import { SupportedLocale, Multiloc } from 'typings';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 
-import QuillEditor, {
-  Props as QuillEditorProps,
-} from 'components/UI/QuillEditor';
+import type { Props as QuillEditorProps } from 'components/UI/QuillEditor';
+
+// Content-builder widgets reach this component from their settings panel, so a
+// static import would put the quill library in the bundle of every page that
+// renders those widgets — including the citizen-facing ones, which never edit.
+const QuillEditor = lazy(() => import('components/UI/QuillEditor'));
 
 import { isNilOrError } from 'utils/helperUtils';
 import { sanitizeForClassname } from 'utils/JSONFormUtils';
@@ -138,17 +149,19 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
         )}
       </LabelContainer>
 
-      <QuillEditor
-        {...quillProps}
-        id={id}
-        ariaLabelledBy={`${sanitizeForClassname(props.id)}-label`}
-        ariaDescribedBy={ariaDescribedBy}
-        ariaInvalid={ariaInvalid}
-        value={valueMultiloc?.[selectedLocale]}
-        onChange={handleValueOnChange}
-        maxCharCount={maxCharCount}
-        minCharCount={minCharCount}
-      />
+      <Suspense fallback={null}>
+        <QuillEditor
+          {...quillProps}
+          id={id}
+          ariaLabelledBy={`${sanitizeForClassname(props.id)}-label`}
+          ariaDescribedBy={ariaDescribedBy}
+          ariaInvalid={ariaInvalid}
+          value={valueMultiloc?.[selectedLocale]}
+          onChange={handleValueOnChange}
+          maxCharCount={maxCharCount}
+          minCharCount={minCharCount}
+        />
+      </Suspense>
     </Container>
   );
 });
