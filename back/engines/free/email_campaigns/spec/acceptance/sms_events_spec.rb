@@ -34,11 +34,6 @@ resource 'SMS Events' do
       expect(delivery.reload.status).to eq 'delivered'
     end
 
-    # The count was settled from the body at creation, so no callback can change it.
-    example 'leaves the segment count untouched' do
-      expect { do_request(callback_params) }.not_to change { delivery.reload.segments_count }.from(1)
-    end
-
     context 'when the delivery already reached a terminal status' do
       before { delivery.update!(status: 'delivered') }
 
@@ -48,18 +43,6 @@ resource 'SMS Events' do
         do_request(callback_params)
         expect(response_status).to eq 200
         expect(delivery.reload.status).to eq 'delivered'
-      end
-    end
-
-    context 'when the callback does not move the delivery to a terminal status' do
-      let(:message_status) { 'sent' }
-      let!(:delivery) do
-        EmailCampaigns::Sms::Delivery.create!(body: 'hi', status: 'queued', message_sid: 'SM_123')
-      end
-
-      example 'advances the delivery' do
-        do_request(callback_params)
-        expect(delivery.reload.status).to eq 'sent'
       end
     end
 

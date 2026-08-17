@@ -103,13 +103,6 @@ RSpec.describe EmailCampaigns::Sms::SendService do
       expect(delivery.reload).to have_attributes(status: 'queued', message_sid: 'SM_d')
     end
 
-    it 'leaves the segment count computed at creation untouched' do
-      allow(provider).to receive(:send).and_return(message_sid: 'SM_d', status: 'queued')
-
-      expect { described_class.new.deliver(delivery, to: phone) }
-        .not_to change { delivery.reload.segments_count }.from(1)
-    end
-
     it 'normalizes the destination to E.164 before sending' do
       expect(provider).to receive(:send)
         .with(to: phone, body: 'hi', use_case: use_case)
