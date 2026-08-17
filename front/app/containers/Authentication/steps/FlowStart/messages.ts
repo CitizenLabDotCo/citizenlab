@@ -18,4 +18,12 @@ export default defineMessages({
     id: 'app.containers.Authentication.steps.EmailFlowStart.orLoginWith',
     defaultMessage: 'Or login with:',
   },
+  usePhoneNumberInstead: {
+    id: 'app.containers.Authentication.steps.FlowStart.usePhoneNumberInstead',
+    defaultMessage: 'Use your phone number instead',
+  },
+  useEmailInstead: {
+    id: 'app.containers.Authentication.steps.FlowStart.useEmailInstead',
+    defaultMessage: 'Use your email address instead',
+  },
 });

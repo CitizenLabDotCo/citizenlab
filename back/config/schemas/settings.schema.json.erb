@@ -1604,6 +1604,18 @@
         }
       },
 
+      "sms_login": {
+        "type": "object",
+        "title": "SMS login (DO NOT USE YET)",
+        "description": "(DO NOT USE YET) Allow users to log in or sign up via SMS as an alternative to email.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "hide_submission_removal_text": {
         "type": "object",
         "title": "Hide submission removal text",

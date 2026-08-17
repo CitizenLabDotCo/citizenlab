@@ -106,6 +106,7 @@ export interface InputProps {
   autocomplete?:
     | 'email'
     | 'tel'
+    | 'username'
     | 'given-name'
     | 'family-name'
     | 'current-password'

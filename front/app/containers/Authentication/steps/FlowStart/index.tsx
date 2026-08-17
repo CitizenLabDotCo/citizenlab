@@ -16,7 +16,8 @@ interface Props {
   loading: boolean;
   setError: SetError;
   authenticationData: AuthenticationData;
-  onSubmit: (email: string) => void;
+  onSubmitEmail: (email: string) => void;
+  onSubmitPhone: (phone: string) => void;
   onSwitchToSSO: (ssoProvider: SSOProvider) => void;
 }
 

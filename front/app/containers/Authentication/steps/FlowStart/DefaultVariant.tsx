@@ -15,14 +15,15 @@ import Or from 'components/UI/Or';
 import sharedMessages from '../messages';
 
 import AdminSignInLink from './AdminSignInLink';
-import EmailForm from './EmailForm';
 import FranceConnectBlock from './FranceConnectBlock';
 import SSOButtonsExceptFC from './SSOButtonsExceptFC';
+import StartForm from './StartForm';
 
 interface Props {
   loading: boolean;
   setError: SetError;
-  onSubmit: (email: string) => void;
+  onSubmitEmail: (email: string) => void;
+  onSubmitPhone: (phone: string) => void;
   onSwitchToSSO: (ssoProvider: SSOProvider) => void;
 }
 
@@ -31,7 +32,8 @@ interface Props {
 const DefaultVariant = ({
   loading,
   setError,
-  onSubmit,
+  onSubmitEmail,
+  onSubmitPhone,
   onSwitchToSSO,
 }: Props) => {
   const { data: idMethods } = useIdMethods();
@@ -64,11 +66,12 @@ const DefaultVariant = ({
       )}
       {passwordLoginEnabled && (
         <>
-          <EmailForm
+          <StartForm
             loading={loading}
             topText={sharedMessages.enterYourEmailAddress}
             setError={setError}
-            onSubmit={onSubmit}
+            onSubmitEmail={onSubmitEmail}
+            onSubmitPhone={onSubmitPhone}
           />
           {authMethodsEnabledBesidesFC.length > 0 && (
             <Box mt="24px">

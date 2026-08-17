@@ -128,6 +128,7 @@ Rails.application.routes.draw do
 
       # auth
       post 'user_token' => 'user_token#create'
+      post 'user_token_phone' => 'user_token#create_phone'
 
       resources :users, only: %i[index create update destroy] do
         collection do
@@ -141,7 +142,9 @@ Rails.application.routes.draw do
           post 'reset_password_email' => 'reset_password#reset_password_email'
           post 'reset_password' => 'reset_password#reset_password'
           post 'update_password'
-          post 'check'
+          post 'check_email'
+          post 'check_phone'
+          post 'create_phone'
 
           get 'by_invite/:token', to: 'users#by_invite'
           get 'blocked_count'
