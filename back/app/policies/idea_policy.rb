@@ -1,20 +1,6 @@
 # frozen_string_literal: true
 
 class IdeaPolicy < ApplicationPolicy
-  # Denied reasons that still allow a draft to be created. The posting check
-  # runs again when the draft is published (see #update?), and the author can
-  # fix any of these before then: registration unfinished, verification
-  # pending, required profile fields still blank.
-  #
-  # user_not_signed_in is deliberately not here. It only arises where posting
-  # requires an account, and there a signed-out draft is a dead row: publishing
-  # needs owner?, which matches on author_id, and the only route to becoming
-  # that owner is a claim token, which is issued solely where posting is open to
-  # everyone (see IdeasController#create). So nothing would ever re-check it.
-  # Signed-out drafts on everyone-permitted phases are unaffected: on those
-  # phases nothing is denied in the first place.
-  DEFERRABLE_DENIED_REASONS = %w[user_not_active user_not_verified user_missing_requirements].freeze
-
   class Scope < ApplicationPolicy::Scope
     def resolve
       project_scope = scope_for(Project)
@@ -129,7 +115,7 @@ class IdeaPolicy < ApplicationPolicy
 
   def draft_denied_reason(phase)
     reason = posting_denied_reason(phase)
-    DEFERRABLE_DENIED_REASONS.include?(reason) ? nil : reason
+    Permissions::PhasePermissionsService::DEFERRABLE_DENIED_REASONS.include?(reason) ? nil : reason
   end
 
   def posting_denied_reason(phase)
