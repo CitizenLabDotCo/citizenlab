@@ -1483,6 +1483,26 @@ RSpec.describe User do
     end
   end
 
+  describe 'slug generated from the name' do
+    it 'keeps markup in the name out of the slug' do
+      user = create(:user, slug: nil, first_name: '<b>Bob</b>', last_name: 'Smith')
+
+      expect(user.slug).to eq 'bob-smith'
+    end
+
+    it 'keeps a payload in the name out of the slug' do
+      user = create(:user, slug: nil, first_name: '<img src=x onerror=alert(1)>Bob', last_name: 'Smith')
+
+      expect(user.slug).to eq 'bob-smith'
+    end
+
+    it 'is still valid when the name is nothing but markup' do
+      user = create(:user, slug: nil, first_name: '<b></b>', last_name: '<i></i>')
+
+      expect(user.slug).to match(Sluggable::SLUG_REGEX)
+    end
+  end
+
   describe '#last_name' do
     it 'does not allow HTML in the name' do
       user = described_class.new
