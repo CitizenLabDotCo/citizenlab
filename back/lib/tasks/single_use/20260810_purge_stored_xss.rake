@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 
 # Re-sanitises stored content carrying an XSS payload saved before sanitisation was added. Draft
-# idea bodies were never sanitised; titles and machine translations were never HTML-sanitised at
-# all. Sanitising on write does not touch rows already in the database, so this cleans the stored
-# values in place, using each field's whole write-path pipeline:
+# idea bodies were never sanitised; titles, access denied explanations and machine translations
+# were never HTML-sanitised at all. Sanitising on write does not touch rows already in the
+# database, so this cleans the stored values in place, using each field's whole write-path
+# pipeline:
 #
 #     Idea#body_multiloc              -> SanitizationService#sanitize_body_multiloc, Idea features
 #     Comment#body_multiloc           -> SanitizationService#sanitize_body_multiloc, Comment features
+#     Permission#access_denied_explanation_multiloc
+#                                     -> SanitizationService#sanitize_body_multiloc, decoration and
+#                                        link only
 #     MachineTranslation#translation  -> the source field's own pipeline, whichever that is
 #     every column in `plain_text_columns`
 #                                     -> SanitizationService#strip_multiloc_to_plain_text
@@ -25,7 +29,7 @@
 #     rake 'single_use:purge_stored_xss[execute]'          # write, all tenants
 #     rake 'single_use:purge_stored_xss[execute,foo.com]'  # write, one tenant
 namespace :single_use do
-  desc "Re-sanitise stored title/body/translation content carrying XSS payloads. Dry run unless passed 'execute'."
+  desc "Re-sanitise stored title/body/explanation/translation content carrying XSS payloads. Dry run unless passed 'execute'."
   task :purge_stored_xss, %i[execute host] => [:environment] do |_t, args|
     service = SanitizationService.new
 
@@ -109,7 +113,7 @@ namespace :single_use do
     TenantScript.run(
       'purge_stored_xss',
       args: args,
-      description: 'purging stored XSS payloads from idea, comment, title and translation content',
+      description: 'purging stored XSS payloads from idea, comment, title, explanation and translation content',
       tenants: Tenant.not_deleted,
       summary: summary
     ) do |tenant, script|
