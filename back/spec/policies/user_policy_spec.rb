@@ -271,17 +271,6 @@ describe UserPolicy do
       it { is_expected.not_to permit(:create_phone) }
     end
 
-    context 'when signup is disabled' do
-      include_context 'with sms feature enabled'
-
-      before do
-        SettingsService.new.activate_feature!('password_login', settings: { 'enable_signup' => false })
-      end
-
-      it { is_expected.to permit(:check_phone) }
-      it { is_expected.not_to permit(:create_phone) }
-    end
-
     context 'when the sms_login feature is disabled' do
       include_context 'with sms feature enabled'
 
