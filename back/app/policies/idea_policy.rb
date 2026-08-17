@@ -1,11 +1,18 @@
 # frozen_string_literal: true
 
 class IdeaPolicy < ApplicationPolicy
-  # A draft may be written despite a denied reason only when the row is
-  # attributable to a user who could still become permitted, since the check
-  # runs again at publication (see #update?). user_not_signed_in fails both
-  # halves: an author-less draft can never be published, so there is no later
-  # check to defer to.
+  # Denied reasons that still allow a draft to be created. The posting check
+  # runs again when the draft is published (see #update?), and the author can
+  # fix any of these before then: registration unfinished, verification
+  # pending, required profile fields still blank.
+  #
+  # user_not_signed_in is deliberately not here. It only arises where posting
+  # requires an account, and there a signed-out draft is a dead row: publishing
+  # needs owner?, which matches on author_id, and the only route to becoming
+  # that owner is a claim token, which is issued solely where posting is open to
+  # everyone (see IdeasController#create). So nothing would ever re-check it.
+  # Signed-out drafts on everyone-permitted phases are unaffected - there no
+  # reason is denied in the first place.
   DEFERRABLE_DRAFT_REASONS = %w[user_not_active user_not_verified user_missing_requirements].freeze
 
   class Scope < ApplicationPolicy::Scope
