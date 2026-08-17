@@ -22,7 +22,7 @@ export default defineConfig(({ mode }) => {
   const isDev = mode === 'development';
   const isProd = mode === 'production';
   const isTestBuild = process.env.TEST_BUILD === 'true';
-  const sourceMapToSentry = !isDev && !isTestBuild && process.env.CI;
+  const sourceMapToSentry = !isDev && !isTestBuild && !!process.env.CI;
 
   const API_HOST = process.env.API_HOST || 'localhost';
   const API_PORT = process.env.API_PORT || '4000';
