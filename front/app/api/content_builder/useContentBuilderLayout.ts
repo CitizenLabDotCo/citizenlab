@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
+import queryOptions from 'utils/cl-react-query/queryOptions';
 
 import contentBuilderKeys from './keys';
 import {
@@ -37,6 +38,18 @@ export const contentBuilderlayoutPath = (
   }
 };
 
+export const contentBuilderLayoutOptions = (
+  contentBuildableType: ContentBuildableType = 'homepage',
+  contentBuildableId: string = 'homepage'
+) =>
+  queryOptions<IContentBuilderLayout, ContentBuilderKeys>({
+    queryKey: contentBuilderKeys.item({
+      contentBuildableId,
+    }),
+    queryFn: () =>
+      fetchContentBuilderLayout(contentBuildableType, contentBuildableId),
+  });
+
 const useContentBuilderLayout = (
   contentBuildableType: ContentBuildableType = 'homepage',
   contentBuildableId: string = 'homepage',
@@ -48,11 +61,7 @@ const useContentBuilderLayout = (
     IContentBuilderLayout,
     ContentBuilderKeys
   >({
-    queryKey: contentBuilderKeys.item({
-      contentBuildableId,
-    }),
-    queryFn: () =>
-      fetchContentBuilderLayout(contentBuildableType, contentBuildableId),
+    ...contentBuilderLayoutOptions(contentBuildableType, contentBuildableId),
     enabled,
   });
 };

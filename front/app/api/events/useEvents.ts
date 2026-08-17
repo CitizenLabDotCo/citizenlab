@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
+import queryOptions from 'utils/cl-react-query/queryOptions';
 
 import eventsKeys from './keys';
 import { IEvents, EventsKeys, InputParameters } from './types';
@@ -40,24 +41,24 @@ const fetchEvents = (filters: InputParameters) => {
   });
 };
 
+// Module scope, so every caller in a session derives the same date and lands on
+// the same query key. Recomputing it per call would give a hook and a loader
+// two different keys for the same list.
 const newDate = new Date().toJSON();
 
-const useEvents = (
-  {
-    projectIds,
-    staticPageId,
-    currentAndFutureOnly,
-    pastOnly,
-    pageSize,
-    sort,
-    projectPublicationStatuses,
-    pageNumber,
-    attendeeId,
-    ongoing_during,
-    show_unlisted_events_user_can_moderate,
-  }: InputParameters,
-  { enabled = true } = {}
-) => {
+export const eventsOptions = ({
+  projectIds,
+  staticPageId,
+  currentAndFutureOnly,
+  pastOnly,
+  pageSize,
+  sort,
+  projectPublicationStatuses,
+  pageNumber,
+  attendeeId,
+  ongoing_during,
+  show_unlisted_events_user_can_moderate,
+}: InputParameters) => {
   const queryParams: InputParameters = {
     projectPublicationStatuses,
     sort: sort || (currentAndFutureOnly ? 'start_at' : '-start_at'),
@@ -72,9 +73,15 @@ const useEvents = (
     show_unlisted_events_user_can_moderate,
   };
 
-  return useQuery<IEvents, CLErrors, IEvents, EventsKeys>({
+  return queryOptions<IEvents, EventsKeys>({
     queryKey: eventsKeys.list(queryParams),
     queryFn: () => fetchEvents(queryParams),
+  });
+};
+
+const useEvents = (parameters: InputParameters, { enabled = true } = {}) => {
+  return useQuery<IEvents, CLErrors, IEvents, EventsKeys>({
+    ...eventsOptions(parameters),
     enabled,
   });
 };

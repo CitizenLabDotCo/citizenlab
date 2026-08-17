@@ -18,10 +18,17 @@ import { createAdminRoutes } from 'containers/Admin/routes';
 import App from 'containers/App';
 import { createUserShowPageRoutes } from 'containers/UsersShowPage/routes';
 
+import FullPageSpinner from 'components/UI/FullPageSpinner';
 import PageLoading from 'components/UI/PageLoading';
 
 import { permissiveOneOf } from 'utils/cl-router/permissiveOneOf';
 import type { Routes } from 'utils/moduleUtils';
+
+import {
+  homeLoader,
+  ideasShowLoader,
+  projectShowLoader,
+} from './routes.loaders';
 
 const HomePage = lazy(() => import('containers/HomePage'));
 const OAuthAuthorize = lazy(() => import('containers/OAuthAuthorize'));
@@ -138,10 +145,22 @@ export const localeRoute = createRoute({
   component: Outlet,
 });
 
+// A route with a loader holds the previous page until the loader settles. Without
+// a pending component no pending timeout is armed at all, so the click would read
+// as unresponsive. 150ms stays under the threshold where a warm-cache navigation
+// would flash a spinner it does not need.
+const pendingOptions = {
+  pendingComponent: () => <FullPageSpinner />,
+  pendingMs: 150,
+  pendingMinMs: 300,
+};
+
 // Index route (home page)
 const homeRoute = createRoute({
   getParentRoute: () => localeRoute,
   path: '/',
+  loader: homeLoader,
+  ...pendingOptions,
   component: () => (
     <PageLoading>
       <HomePage />
@@ -323,6 +342,8 @@ const ideasShowRoute = createRoute({
   path: 'ideas/$slug',
   validateSearch: (search: Record<string, unknown>): IdeasShowSearchParams =>
     ideasShowSearchSchema.validateSync(search, { stripUnknown: true }),
+  loader: ({ params }) => ideasShowLoader(params.slug),
+  ...pendingOptions,
   component: () => (
     <PageLoading>
       <IdeasShowPage />
@@ -418,11 +439,15 @@ const projectShowSearchSchema = yup.object({
   view: yup.string().oneOf(presentationModes).optional(),
 });
 
+// On the layout route so it also covers $phaseNumber, ideas-feed and
+// pages/$pageSlug, which all render project data from the same queries.
 const projectShowRoute = createRoute({
   getParentRoute: () => localeRoute,
   path: 'projects/$slug',
   validateSearch: (search: Record<string, unknown>) =>
     projectShowSearchSchema.validateSync(search, { stripUnknown: true }),
+  loader: ({ params }) => projectShowLoader(params.slug),
+  ...pendingOptions,
   component: Outlet,
 });
 

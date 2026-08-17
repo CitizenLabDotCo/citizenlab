@@ -53,19 +53,16 @@ const IdeasShowPage = () => {
   const { slug } = useParams({ from: '/$locale/ideas/$slug' });
   const { data: idea, status, error } = useIdeaBySlug(slug);
   const isSmallerThanTablet = useBreakpoint('tablet');
-  const { data: project } = useProjectById(
-    idea?.data.relationships.project.data.id
-  );
-  const { data: phases } = usePhases(project?.data.id);
+  const projectId = idea?.data.relationships.project.data.id;
+  const { data: project, status: projectStatus } = useProjectById(projectId);
+  const { data: phases } = usePhases(projectId);
 
   const searchParams = useSearch({
     from: '/$locale/ideas/$slug',
   });
   const phaseContext = searchParams.phase_context;
 
-  if (!project) return <PageNotFound />;
-
-  if (status === 'loading') {
+  if (status === 'loading' || (!!projectId && projectStatus === 'loading')) {
     return (
       <VerticalCenterer>
         <Spinner />
@@ -80,6 +77,8 @@ const IdeasShowPage = () => {
 
     return <PageNotFound />;
   }
+
+  if (!project) return <PageNotFound />;
 
   const phase = getCurrentPhase(phases?.data);
   const isIdeaInCurrentPhase =

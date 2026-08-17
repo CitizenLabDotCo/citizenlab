@@ -31,6 +31,13 @@ import { initRouter, router } from './routes';
 // This must happen before any component renders.
 initRouter(modules.routes);
 
+// LanguageProvider renders null until the app configuration and the locale
+// chunk arrive, so RouterProvider — and with it the route loaders — cannot
+// mount for the first second or so of a cold load. Route data needs neither,
+// so start it here instead: the loaders populate the React Query cache, which
+// the render-time load then reads without a request.
+router.preloadRoute({ to: window.location.pathname }).catch(() => undefined);
+
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
   environment: process.env.SENTRY_ENV,

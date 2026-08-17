@@ -2,6 +2,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
+import { infiniteQueryOptions } from 'utils/cl-react-query/queryOptions';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import miniProjectsKeys from './keys';
@@ -18,16 +19,8 @@ const fetchProjectsMini = ({ endpoint, ...queryParameters }: Parameters) =>
     },
   });
 
-const useProjectsMini = (
-  queryParams: Parameters,
-  { enabled = true }: { enabled: boolean } = { enabled: true }
-) => {
-  return useInfiniteQuery<
-    MiniProjects,
-    CLErrors,
-    MiniProjects,
-    MiniProjectsKeys
-  >({
+export const projectsMiniOptions = (queryParams: Parameters) =>
+  infiniteQueryOptions<MiniProjects, MiniProjectsKeys>({
     queryKey: miniProjectsKeys.list(queryParams),
     queryFn: ({ pageParam }) => {
       return fetchProjectsMini({
@@ -40,6 +33,19 @@ const useProjectsMini = (
       const pageNumber = getPageNumberFromUrl(lastPage.links.self);
       return hasNextPage && pageNumber ? pageNumber + 1 : null;
     },
+  });
+
+const useProjectsMini = (
+  queryParams: Parameters,
+  { enabled = true }: { enabled: boolean } = { enabled: true }
+) => {
+  return useInfiniteQuery<
+    MiniProjects,
+    CLErrors,
+    MiniProjects,
+    MiniProjectsKeys
+  >({
+    ...projectsMiniOptions(queryParams),
     enabled,
   });
 };
