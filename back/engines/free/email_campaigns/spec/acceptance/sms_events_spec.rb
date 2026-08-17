@@ -34,9 +34,9 @@ resource 'SMS Events' do
       expect(delivery.reload.status).to eq 'delivered'
     end
 
-    # The estimate was settled from the body at creation, so no callback can change it.
-    example 'leaves the segment estimate untouched' do
-      expect { do_request(callback_params) }.not_to change { delivery.reload.estimated_segments_count }.from(1)
+    # The count was settled from the body at creation, so no callback can change it.
+    example 'leaves the segment count untouched' do
+      expect { do_request(callback_params) }.not_to change { delivery.reload.segments_count }.from(1)
     end
 
     context 'when the delivery already reached a terminal status' do

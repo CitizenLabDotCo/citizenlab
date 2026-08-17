@@ -4276,8 +4276,7 @@ CREATE TABLE public.sms_deliveries (
     error_message character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    segments_count integer,
-    estimated_segments_count integer
+    segments_count integer
 );
 
 
@@ -9557,7 +9556,6 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20260817090000'),
 ('20260811145845'),
 ('20260811105004'),
 ('20260810100000'),

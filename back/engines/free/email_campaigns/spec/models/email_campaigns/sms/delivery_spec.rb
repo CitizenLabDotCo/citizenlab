@@ -27,7 +27,7 @@ RSpec.describe EmailCampaigns::Sms::Delivery do
       delivery = described_class.new(body: over_limit, status: 'sent')
 
       expect(delivery).not_to be_valid
-      expect(delivery.errors[:estimated_segments_count]).to be_present
+      expect(delivery.errors[:segments_count]).to be_present
     end
 
     it 'accepts a body of exactly the segment limit' do
@@ -37,29 +37,23 @@ RSpec.describe EmailCampaigns::Sms::Delivery do
     end
   end
 
-  describe 'estimated_segments_count' do
+  describe 'segments_count' do
     it 'is computed from the body at creation, before the message is sent' do
       delivery = described_class.create!(body: 'a' * 161, status: 'pending')
 
-      expect(delivery.reload.estimated_segments_count).to eq(2)
+      expect(delivery.reload.segments_count).to eq(2)
     end
 
     it 'counts a unicode body on its own encoding' do
       delivery = described_class.create!(body: 'ж' * 71, status: 'pending')
 
-      expect(delivery.reload.estimated_segments_count).to eq(2)
+      expect(delivery.reload.segments_count).to eq(2)
     end
 
     it 'is left alone once recorded, so an edited body never rewrites billing history' do
       delivery = described_class.create!(body: 'hi', status: 'pending')
 
-      expect { delivery.update!(body: 'a' * 161) }.not_to change { delivery.reload.estimated_segments_count }.from(1)
-    end
-
-    it 'leaves segments_count nil, since only the provider reports what it billed' do
-      delivery = described_class.create!(body: 'a' * 161, status: 'pending')
-
-      expect(delivery.reload.segments_count).to be_nil
+      expect { delivery.update!(body: 'a' * 161) }.not_to change { delivery.reload.segments_count }.from(1)
     end
   end
 
