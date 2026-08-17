@@ -28,6 +28,10 @@ export default defineMessages({
     id: 'app.components.admin.ActionForm.AccessSections.GroupsSection.ErrorMessageModal.done',
     defaultMessage: 'Done',
   },
+  limitToGroups: {
+    id: 'app.components.admin.ActionForm.AccessSections.GroupsSection.limitToGroups',
+    defaultMessage: 'Limit to groups',
+  },
   participantMustBe: {
     id: 'app.components.admin.ActionForm.AccessSections.GroupsSection.participantMustBe',
     defaultMessage: 'Participant must be in any one of the selected groups.',
@@ -39,5 +43,9 @@ export default defineMessages({
   customizeErrorMessage: {
     id: 'app.components.admin.ActionForm.AccessSections.GroupsSection.customizeErrorMessage',
     defaultMessage: 'Customize error message',
+  },
+  everyoneWhoSignsIn: {
+    id: 'app.components.admin.ActionForm.everyoneWhoSignsIn',
+    defaultMessage: 'Everyone who signs in',
   },
 });

@@ -42,28 +42,30 @@ export default defineMessages({
     id: 'app.components.admin.ActionForm.piiExcluded',
     defaultMessage: 'PII excluded',
   },
-  everyoneWhoSignsIn: {
-    id: 'app.components.admin.ActionForm.everyoneWhoSignsIn',
-    defaultMessage: 'Everyone who signs in',
+  requireConfirmedEmail: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedEmail',
+    defaultMessage: 'Require confirmed email from all participants',
   },
-  nothingExtra: {
-    id: 'app.components.admin.ActionForm.nothingExtra',
-    defaultMessage: 'Nothing extra',
+  requireConfirmedPhoneNumber: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedPhoneNumber',
+    defaultMessage: 'Require confirmed phone number from all participants',
   },
-  none: {
-    id: 'app.components.admin.ActionForm.none',
-    defaultMessage: 'None',
+  requireIdentityVerification: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.requireIdentityVerification',
+    defaultMessage: 'Require identity verification from all participants',
   },
-  linkedToProfile: {
-    id: 'app.components.admin.ActionForm.linkedToProfile',
-    defaultMessage: 'Linked to profile',
+  // Short forms of the three security requirements above, for the summary chips
+  // and the collapsed section summary, where the full sentences don't fit.
+  confirmedEmail: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail',
+    defaultMessage: 'Confirmed email',
   },
-  piiExcludedFromResults: {
-    id: 'app.components.admin.ActionForm.piiExcludedFromResults',
-    defaultMessage: 'PII excluded from results',
+  confirmedPhone: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhone',
+    defaultMessage: 'Confirmed phone',
   },
-  fullyAnonymous: {
-    id: 'app.components.admin.ActionForm.fullyAnonymous',
-    defaultMessage: 'Fully anonymous',
+  verification: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.verification',
+    defaultMessage: 'Verification',
   },
 });

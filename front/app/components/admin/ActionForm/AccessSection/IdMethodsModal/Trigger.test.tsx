@@ -7,18 +7,13 @@ import { render, screen, userEvent } from 'utils/testUtils/rtl';
 import Trigger from './Trigger';
 
 // The trigger only appears when the platform actually has identification
-// methods in use, and it names the method when there is exactly one.
+// methods in use. It speaks about identification in general, so it never names
+// a single method — the sign-in card above it does that.
 let mockIdMethods: { data: IdMethodData[] } | undefined = { data: [] };
 
 jest.mock('api/id_methods/useIdMethods', () =>
   jest.fn(() => ({ data: mockIdMethods }))
 );
-
-jest.mock('hooks/useIdMethodNames', () => ({
-  ...jest.requireActual('hooks/useIdMethodNames'),
-  __esModule: true,
-  default: jest.fn(() => ({ franceconnect: 'FranceConnect' })),
-}));
 
 // The modal itself is covered by its own test.
 let modalOpened = false;
@@ -32,13 +27,11 @@ const buildMethod = ({
   name = 'fake_sso',
   authentication = false,
   verification = true,
-  metadataName = 'ItsMe',
 }: {
   id?: string;
   name?: string;
   authentication?: boolean;
   verification?: boolean;
-  metadataName?: string;
 } = {}): IdMethodData =>
   ({
     id,
@@ -47,14 +40,14 @@ const buildMethod = ({
       name,
       authentication_method: authentication,
       verification_method: verification,
-      method_metadata: { name: metadataName },
+      method_metadata: { name: 'ItsMe' },
     },
   } as IdMethodData);
 
 // The render wrapper always mounts a modal portal, so "renders nothing" is
 // asserted on the link itself rather than on an empty container.
 const queryLink = () =>
-  screen.queryByText(/View .* settings|See which identification methods/);
+  screen.queryByText('See which identification methods are enabled');
 
 beforeEach(() => {
   mockIdMethods = { data: [] };
@@ -62,49 +55,19 @@ beforeEach(() => {
 });
 
 describe('<Trigger />', () => {
-  describe('with a single active identification method', () => {
-    beforeEach(() => {
+  describe('with active identification methods', () => {
+    it('renders the generic link for a single method', () => {
       mockIdMethods = { data: [buildMethod()] };
-    });
-
-    it('names the method in the link', () => {
-      render(<Trigger />);
-      expect(screen.getByText('View ItsMe settings')).toBeInTheDocument();
-    });
-
-    it('explains what a verification-only method can be used for', () => {
-      render(<Trigger />);
-      expect(
-        screen.getByText('Participants can prove their identity with ItsMe.')
-      ).toBeInTheDocument();
-    });
-
-    it('explains signing up when the method is an authentication method', () => {
-      mockIdMethods = {
-        data: [buildMethod({ authentication: true, verification: false })],
-      };
       render(<Trigger />);
 
-      expect(
-        screen.getByText('Besides email, participants can sign up with ItsMe.')
-      ).toBeInTheDocument();
+      expect(queryLink()).toBeInTheDocument();
+      expect(screen.queryByText(/ItsMe/)).toBeNull();
     });
 
-    it('opens the modal when clicked', async () => {
-      render(<Trigger />);
-      expect(modalOpened).toBe(false);
-
-      await userEvent.click(screen.getByText('View ItsMe settings'));
-
-      expect(modalOpened).toBe(true);
-    });
-  });
-
-  describe('with several active identification methods', () => {
-    beforeEach(() => {
+    it('renders the same link for several methods', () => {
       mockIdMethods = {
         data: [
-          buildMethod({ id: 'method-1' }),
+          buildMethod(),
           buildMethod({
             id: 'method-2',
             name: 'franceconnect',
@@ -113,21 +76,19 @@ describe('<Trigger />', () => {
           }),
         ],
       };
-    });
-
-    it('leaves out the explanation, which the link already covers', () => {
       render(<Trigger />);
 
-      expect(screen.queryByText(/participants can/i)).toBeNull();
+      expect(queryLink()).toBeInTheDocument();
     });
 
-    it('uses a generic link that does not name a single method', () => {
+    it('opens the modal when clicked', async () => {
+      mockIdMethods = { data: [buildMethod()] };
       render(<Trigger />);
+      expect(modalOpened).toBe(false);
 
-      expect(
-        screen.getByText('See which identification methods are enabled')
-      ).toBeInTheDocument();
-      expect(screen.queryByText(/View ItsMe/)).toBeNull();
+      await userEvent.click(queryLink()!);
+
+      expect(modalOpened).toBe(true);
     });
   });
 

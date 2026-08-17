@@ -601,10 +601,10 @@ class User < ApplicationRecord
   def authenticated_at_least_once?
     # True if user authenticated at least once,
     # either by confirming their email, by confirming their phone number,
-    # or by signing in with SSO and being verified.
+    # or by signing in with SSO.
     # NOTE: confirmation_required is only ever written together with
     # email_confirmed_at, so it says nothing about the phone number.
-    !confirmation_required? || phone_confirmed_at.present? || (sso? && verified)
+    !confirmation_required? || phone_confirmed_at.present? || sso?
   end
 end
 

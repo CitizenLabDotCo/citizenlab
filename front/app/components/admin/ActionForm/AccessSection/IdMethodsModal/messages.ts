@@ -19,17 +19,17 @@ export default defineMessages({
       '“Identification” is the umbrella term for both ways a method can be used:',
   },
   authentication: {
-    id: `${PREFIX}.authentication`,
-    defaultMessage: 'Authentication',
+    id: `${PREFIX}.authentication2`,
+    defaultMessage: 'Authentication (SSO)',
   },
   verification: {
     id: `${PREFIX}.verification`,
     defaultMessage: 'Verification',
   },
   authenticationExplanation: {
-    id: `${PREFIX}.authenticationExplanation`,
+    id: `${PREFIX}.authenticationExplanation2`,
     defaultMessage:
-      'Authentication: participants can create an account and log in with this method.',
+      'Authentication (SSO): participants can create an account and log in with this method.',
   },
   verificationExplanation: {
     id: `${PREFIX}.verificationExplanation`,
@@ -55,26 +55,8 @@ export default defineMessages({
     id: 'front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.editable',
     defaultMessage: 'Editable',
   },
-  canSignUpWith: {
-    id: `${PREFIX}.canSignUpWith`,
-    defaultMessage:
-      'Besides email, participants can sign up with {methodName}.',
-  },
-  canVerifyWith: {
-    id: `${PREFIX}.canVerifyWith`,
-    defaultMessage: 'Participants can prove their identity with {methodName}.',
-  },
-  canSignUpOrVerifyWith: {
-    id: `${PREFIX}.canSignUpOrVerifyWith`,
-    defaultMessage:
-      'Besides email, participants can sign up or prove their identity with {methodName}.',
-  },
   seeWhichIdMethodsAreEnabled: {
     id: `${PREFIX}.seeWhichIdMethodsAreEnabled`,
     defaultMessage: 'See which identification methods are enabled',
-  },
-  viewMethodSettings: {
-    id: `${PREFIX}.viewMethodSettings`,
-    defaultMessage: 'View {methodName} settings',
   },
 });

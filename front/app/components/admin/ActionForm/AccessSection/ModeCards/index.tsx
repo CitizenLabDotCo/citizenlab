@@ -1,15 +1,15 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Color } from '@citizenlab/cl2-component-library';
 
 import { PermittedBy } from 'api/phase_permissions/types';
 
 import { useIntl } from 'utils/cl-intl';
 
 import { Changes } from '../../types';
-import { Hint, ModeCard } from '../../ui';
 
 import messages from './messages';
+import { Hint, ModeCard } from './ui';
 
 interface Props {
   permittedBy: PermittedBy;
@@ -17,6 +17,7 @@ interface Props {
   showAnyone: boolean;
   signInTitle: string;
   signInDescription: string;
+  signInDescriptionColor?: Color;
   onChange: (changes: Changes) => void;
 }
 
@@ -25,6 +26,7 @@ const ModeCards = ({
   showAnyone,
   signInTitle,
   signInDescription,
+  signInDescriptionColor,
   onChange,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -47,6 +49,7 @@ const ModeCards = ({
           icon="shield-checkered"
           title={signInTitle}
           description={signInDescription}
+          descriptionColor={signInDescriptionColor}
           selected={permittedBy === 'users'}
           className="e2e-permission-registered-users"
           onClick={() => setMode('users')}

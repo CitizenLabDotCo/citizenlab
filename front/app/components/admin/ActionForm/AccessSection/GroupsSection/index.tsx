@@ -4,7 +4,6 @@ import {
   Box,
   Text,
   Button,
-  colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
@@ -18,7 +17,8 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-import { getGroupIds, groupsSummary } from '../../logic';
+import { getGroupIds } from '../../logic';
+import actionFormMessages from '../../messages';
 import { Changes } from '../../types';
 import { Expander } from '../../ui';
 
@@ -36,16 +36,23 @@ const GroupsSection = ({ permission, onChange }: Props) => {
   const [errorMessageOpen, setErrorMessageOpen] = useState(false);
   const { formatMessage } = useIntl();
 
+  // One-line summary shown while the row is collapsed.
+  const groupCount = getGroupIds(permission).length;
+  const summary =
+    groupCount === 0
+      ? formatMessage(messages.everyoneWhoSignsIn)
+      : formatMessage(actionFormMessages.nGroups, { nGroups: groupCount });
+
   const setAccessDeniedMultiloc = (
     access_denied_explanation_multiloc: Multiloc
   ) => onChange({ access_denied_explanation_multiloc });
 
   return (
-    <Box mt="8px" borderTop={`1px solid ${colors.divider}`}>
+    <>
       <Expander
         icon="group"
-        title="Limit to groups"
-        summary={groupsSummary(permission, formatMessage)}
+        title={formatMessage(messages.limitToGroups)}
+        summary={summary}
       >
         <Text as="p" mt="0" mb="8px" fontSize="xs" color="coolGrey600">
           <FormattedMessage {...messages.participantMustBe} />
@@ -88,7 +95,7 @@ const GroupsSection = ({ permission, onChange }: Props) => {
         onClose={() => setErrorMessageOpen(false)}
         onChange={setAccessDeniedMultiloc}
       />
-    </Box>
+    </>
   );
 };
 

@@ -748,6 +748,24 @@ models:
     phone_confirmed_at_timediff: -240
     created_at: '2018-03-28 13:35:02'
     updated_at: '2018-03-28 13:35:02'
+  # Signed up with a phone number only, so no email address to fall back on.
+  # This is what makes the phone expiry apply to an 'either_email_or_phone'
+  # permission, which is otherwise satisfied by a still-valid email address.
+  - &phone_only_confirmed_10_days_ago
+    first_name: Paula
+    last_name: Phoneonly
+    locale: en
+    bio_multiloc: {}
+    gender:
+    birthyear:
+    domicile:
+    password: democracy2.0
+    remote_avatar_url:
+    roles: []
+    phone: '+14155552672'
+    phone_confirmed_at_timediff: -240
+    created_at: '2018-03-28 13:35:02'
+    updated_at: '2018-03-28 13:35:02'
   email_campaigns/unsubscription_token:
     - token: ABzaQSlYBNRWlF8kHDl5NoK7oJwVduoDgy4B4Tm2zeqCYdqx5blnB8OliZ6JtBoX
       user_ref: *admin
