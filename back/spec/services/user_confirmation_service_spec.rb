@@ -69,6 +69,26 @@ RSpec.describe UserConfirmationService do
       end
     end
 
+    # Codes sent before the 4 -> 6 digit switch must stay usable until they expire.
+    context 'when the stored code still has 4 digits' do
+      before { confirmation.update!(code: '1234') }
+
+      it 'confirms the user' do
+        result = service.public_send(method_name, user, '1234')
+
+        expect(result.success?).to be true
+        expect(user.reload.public_send(confirmed_at_attr)).to be_present
+      end
+
+      it 'returns a code invalid error and counts the retry on a wrong guess' do
+        result = service.public_send(method_name, user, '9999')
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(code: [{ error: :invalid }])
+        expect(confirmation.reload.code_retry_count).to eq(1)
+      end
+    end
+
     context 'when no confirmation record exists' do
       before do
         user.confirmations.destroy_all

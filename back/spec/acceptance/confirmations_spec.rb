@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Confirmations' do
-  explanation 'User can confirm their emails using a 4 digit code'
+  explanation 'User can confirm their emails using a 6 digit code'
 
   before do
     set_api_content_type
@@ -95,7 +95,7 @@ resource 'Confirmations' do
   post 'web_api/v1/user/confirm_code_email' do
     with_options scope: :confirmation do
       parameter :email, 'The email address of the user to confirm.'
-      parameter :code, 'The 4-digit confirmation code received by email.'
+      parameter :code, 'The 6-digit confirmation code received by email.'
     end
 
     context 'when email does not exist' do
@@ -107,7 +107,7 @@ resource 'Confirmations' do
       end
 
       example 'returns a unprocessable entity status when the email does not exist' do
-        do_request(confirmation: { email: email, code: '1234' })
+        do_request(confirmation: { email: email, code: '123456' })
         expect(status).to eq 422
       end
     end
@@ -180,11 +180,11 @@ resource 'Confirmations' do
 
   post 'web_api/v1/user/confirm_code_new_email' do
     with_options scope: :confirmation do
-      parameter :code, 'The 4-digit confirmation code received by email.'
+      parameter :code, 'The 6-digit confirmation code received by email.'
     end
 
     context 'when user is not authenticated' do
-      let(:code) { '1234' }
+      let(:code) { '123456' }
 
       example_request 'returns an unauthorized status when the user is not authenticated' do
         expect(status).to eq 401
@@ -249,7 +249,7 @@ resource 'Confirmations' do
 
   post 'web_api/v1/user/confirm_code_phone' do
     with_options scope: :confirmation do
-      parameter :code, 'The 4-digit confirmation code received by SMS.'
+      parameter :code, 'The 6-digit confirmation code received by SMS.'
       parameter :phone, 'The phone number being confirmed. Only for unauthenticated callers (signup / passwordless login).'
     end
 
@@ -400,12 +400,12 @@ resource 'Confirmations' do
 
   post 'web_api/v1/user/confirm_code_new_phone' do
     with_options scope: :confirmation do
-      parameter :code, 'The 4-digit confirmation code received by SMS.'
+      parameter :code, 'The 6-digit confirmation code received by SMS.'
       parameter :sms_manual_campaign_consent, 'Whether the user opts in to receive the manual SMS campaign.', required: false
     end
 
     context 'when user is not authenticated' do
-      let(:code) { '1234' }
+      let(:code) { '123456' }
 
       example_request 'returns an unauthorized status when the user is not authenticated' do
         expect(status).to eq 401

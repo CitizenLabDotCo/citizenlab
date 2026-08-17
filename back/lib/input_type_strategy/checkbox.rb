@@ -5,5 +5,9 @@ module InputTypeStrategy
     def supports_reference_distribution?
       true
     end
+
+    def answers_eq(answers, value)
+      answers.where("(value #>> '{}')::boolean = ?", value)
+    end
   end
 end

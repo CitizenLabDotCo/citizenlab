@@ -31,6 +31,8 @@ class DefaultInputTopic < ApplicationRecord
   validates :description_multiloc, multiloc: { presence: false }
   validate :max_depth_validation
 
+  before_validation :sanitize_title_multiloc, if: -> { title_multiloc && title_multiloc_changed? }
+
   # Returns "Parent > Child" format for subtopics
   def full_title_multiloc
     return title_multiloc if parent.blank?
@@ -42,6 +44,10 @@ class DefaultInputTopic < ApplicationRecord
   end
 
   private
+
+  def sanitize_title_multiloc
+    self.title_multiloc = SanitizationService.new.strip_multiloc_to_plain_text(title_multiloc)
+  end
 
   def max_depth_validation
     return if parent.blank?

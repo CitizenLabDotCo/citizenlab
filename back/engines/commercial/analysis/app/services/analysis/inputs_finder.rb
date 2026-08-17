@@ -2,6 +2,9 @@
 
 module Analysis
   class InputsFinder
+    AUTHOR_FILTER_INPUT_TYPES = %w[select date multiselect number].freeze
+    INPUT_FILTER_INPUT_TYPES = %w[select date multiselect multiselect_image number linear_scale rating sentiment_linear_scale].freeze
+
     attr_reader :analysis, :params
 
     # @param params [Hash] The filter parameters
@@ -53,10 +56,7 @@ module Analysis
     def filter_input_custom_field_no_empty_values(inputs)
       scope = inputs
       if params[:input_custom_field_no_empty_values] && analysis.main_custom_field_id
-        scope = scope.where.not("ideas.custom_field_values->>'#{analysis.main_custom_field.key}' IS NULL")
-          # Remove all sequences of one or more whitespace characters (including spaces, newlines, tabs),
-          # then check the result is not empty. TRIM would not handle newlines correctly.
-          .where("regexp_replace(custom_field_values->>'#{analysis.main_custom_field.key}', '[[:space:]]+', '', 'g') != ''")
+        scope = with_non_blank_answer(scope, analysis.main_custom_field.key)
       end
       scope
     end
@@ -67,12 +67,19 @@ module Analysis
     def filter_input_follow_up_not_empty(inputs)
       scope = inputs
       if params[:input_follow_up_not_empty] && analysis.main_custom_field&.ask_follow_up?
-        follow_up_key = "#{analysis.main_custom_field.key}_follow_up"
-        scope = scope.where.not("ideas.custom_field_values->>'#{follow_up_key}' IS NULL")
-          # Same whitespace-aware non-empty check as filter_input_custom_field_no_empty_values.
-          .where("regexp_replace(custom_field_values->>'#{follow_up_key}', '[[:space:]]+', '', 'g') != ''")
+        scope = with_non_blank_answer(scope, "#{analysis.main_custom_field.key}_follow_up")
       end
       scope
+    end
+
+    # Remove all sequences of one or more whitespace characters (including
+    # spaces, newlines, tabs), then check the result is not empty. TRIM would
+    # not handle newlines correctly.
+    def with_non_blank_answer(scope, key)
+      answers = CustomFieldAnswer
+        .where(answerable_type: 'Idea', key: key)
+        .where("regexp_replace(value #>> '{}', '[[:space:]]+', '', 'g') != ''")
+      scope.where(id: answers.select(:answerable_id))
     end
 
     def filter_published_at(inputs)
@@ -128,28 +135,13 @@ module Analysis
         # custom_field_option keys to area ids
         value = convert_domicile_value(value) if cf.domicile?
 
-        case cf.input_type
-        when 'select', 'date'
-          scope = if value.include?(nil)
-            scope.joins(:author).where("users.custom_field_values->>'#{cf.key}' IS NULL")
-          else
-            scope.joins(:author).where("users.custom_field_values->>'#{cf.key}' IN (?)", value)
-          end
-        when 'multiselect'
-          scope = if value.include?(nil)
-            scope.joins(:author).where("users.custom_field_values->>'#{cf.key}' IS NULL OR jsonb_array_length(users.custom_field_values->'#{cf.key}') = 0")
-          else
-            scope.joins(:author).where("(users.custom_field_values->>'#{cf.key}')::jsonb ?| array[:value]", value: value)
-          end
-        when 'number'
-          scope = if value.include?(nil)
-            scope.joins(:author).where("users.custom_field_values->>'#{cf.key}' IS NULL")
-          else
-            scope.joins(:author).where("(users.custom_field_values->'#{cf.key}')::numeric IN (?)", value)
-          end
-        else
+        if AUTHOR_FILTER_INPUT_TYPES.exclude?(cf.input_type)
           raise ArgumentError, "author_custom_<uuid>[] filter on custom field of type #{cf.input_type} is not supported"
         end
+
+        author_filter = AnswerableFilter.new(cf, User.all)
+        authors = value.include?(nil) ? author_filter.absent : author_filter.one_of(value)
+        scope = scope.where(author: authors)
       end
 
       scope
@@ -159,14 +151,16 @@ module Analysis
       scope = inputs
       decode_author_range_custom_keys.each do |(custom_field_id, predicate, value)|
         cf = CustomField.find(custom_field_id)
+        author_filter = AnswerableFilter.new(cf, User.all)
 
-        scope = if predicate == 'from'
-          scope.joins(:author).where("coalesce(users.custom_field_values->>'#{cf.key}', (-99999)::text)::numeric >= ?", value)
+        authors = if predicate == 'from'
+          author_filter.gteq(value)
         elsif predicate == 'to'
-          scope.joins(:author).where("coalesce(users.custom_field_values->>'#{cf.key}', (99999)::text)::numeric <= ?", value)
+          author_filter.lteq(value)
         else
           raise ArgumentError, "invalid predicate #{predicate}"
         end
+        scope = scope.where(author: authors)
       end
       scope
     end
@@ -195,33 +189,12 @@ module Analysis
 
         cf = CustomField.find(custom_field_id)
 
-        case cf.input_type
-        when 'select', 'date'
-          scope = if value.include?(nil)
-            scope.where("ideas.custom_field_values->>'#{cf.key}' IS NULL")
-          else
-            scope.where("ideas.custom_field_values->>'#{cf.key}' IN (?)", value)
-          end
-        when 'multiselect', 'multiselect_image'
-          scope = if value.include?(nil)
-            scope.where("ideas.custom_field_values->>'#{cf.key}' IS NULL OR jsonb_array_length(ideas.custom_field_values->'#{cf.key}') = 0")
-          else
-            scope.where("(ideas.custom_field_values->>'#{cf.key}')::jsonb ?| array[:value]", value: value)
-          end
-          scope = if value.include?(nil)
-            scope.where("ideas.custom_field_values->>'#{cf.key}' IS NULL OR jsonb_array_length(ideas.custom_field_values->'#{cf.key}') = 0")
-          else
-            scope.where("(ideas.custom_field_values->>'#{cf.key}')::jsonb ?| array[:value]", value: value)
-          end
-        when 'number', 'linear_scale', 'rating', 'sentiment_linear_scale'
-          scope = if value.include?(nil)
-            scope.where("ideas.custom_field_values->>'#{cf.key}' IS NULL")
-          else
-            scope.where("(ideas.custom_field_values->'#{cf.key}')::numeric IN (?)", value)
-          end
-        else
+        if INPUT_FILTER_INPUT_TYPES.exclude?(cf.input_type)
           raise ArgumentError, "input_custom_<uuid>[] filter on custom field of type #{cf.input_type} is not supported"
         end
+
+        input_filter = AnswerableFilter.new(cf, scope)
+        scope = value.include?(nil) ? input_filter.absent : input_filter.one_of(value)
       end
 
       scope
@@ -231,11 +204,12 @@ module Analysis
       scope = inputs
       decode_input_range_custom_keys.each do |(custom_field_id, predicate, value)|
         cf = CustomField.find(custom_field_id)
+        input_filter = AnswerableFilter.new(cf, scope)
 
         scope = if predicate == 'from'
-          scope.where("(ideas.custom_field_values->'#{cf.key}')::numeric >= ?", value)
+          input_filter.gteq(value)
         elsif predicate == 'to'
-          scope.where("(ideas.custom_field_values->'#{cf.key}')::numeric <= ?", value)
+          input_filter.lteq(value)
         else
           raise ArgumentError, "invalid predicate #{predicate}"
         end
