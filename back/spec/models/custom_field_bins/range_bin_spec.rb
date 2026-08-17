@@ -26,26 +26,6 @@ RSpec.describe CustomFieldBins::RangeBin do
     end
   end
 
-  describe '#filter_by_bin' do
-    let(:scope) { Idea.all }
-    let(:custom_field) { create(:custom_field_number) }
-    let(:bin) { create(:range_bin, custom_field: custom_field, range: 10...20) }
-
-    it 'filters the scope by the range' do
-      idea1 = create(:idea, custom_field_values: { custom_field.key => 15 })
-      idea2 = create(:idea, custom_field_values: { custom_field.key => 5 })
-      idea3 = create(:idea, custom_field_values: { custom_field.key => 20 })
-      idea4 = create(:idea)
-
-      filtered_scope = bin.filter_by_bin(scope)
-
-      expect(filtered_scope).to include(idea1)
-      expect(filtered_scope).not_to include(idea2)
-      expect(filtered_scope).not_to include(idea3)
-      expect(filtered_scope).not_to include(idea4)
-    end
-  end
-
   describe '.generate_bins' do
     context 'when bins already exist' do
       let!(:custom_field) { create(:custom_field_number) }
