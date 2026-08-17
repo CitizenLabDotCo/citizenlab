@@ -41,6 +41,7 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import Navigate from 'utils/cl-router/Navigate';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import { setTenantZone } from 'utils/dateFormat';
 import eventEmitter from 'utils/eventEmitter';
 import { initiativeShowPageSlug, isPage } from 'utils/helperUtils';
 import patchMomentDeAtJanuary from 'utils/patchMomentDeAtJanuary';
@@ -184,10 +185,13 @@ const App = ({ children }: Props) => {
 
   useEffect(() => {
     if (appConfiguration && !isAppInitialized) {
-      // Set the default timezone
+      // Set the default timezone. Both are set during the moment → date-fns
+      // migration: call sites are converted incrementally, so the two have to
+      // agree until the last moment call is gone.
       moment.tz.setDefault(
         appConfiguration.data.attributes.settings.core.timezone
       );
+      setTenantZone(appConfiguration.data.attributes.settings.core.timezone);
 
       // Weglot initialization
       if (appConfiguration.data.attributes.settings.core.weglot_api_key) {
