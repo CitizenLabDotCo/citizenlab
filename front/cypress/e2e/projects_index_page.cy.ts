@@ -11,7 +11,7 @@ describe('Project overview page', () => {
   const projectIds: string[] = [];
   let folderId: string;
 
-  // body content, not used for testing search
+  // filler for the projects that take no part in the cross-title search
   const projectDescriptionPreview = randomString();
 
   before(() => {
@@ -26,7 +26,7 @@ describe('Project overview page', () => {
     // shares content with project three
     cy.apiCreateProject({
       title: projectTitleTwo,
-      descriptionPreview: projectDescriptionPreview,
+      descriptionPreview: projectTitleThree,
       publicationStatus: 'published',
     }).then((project) => {
       projectIds.push(project.body.data.id);
@@ -34,15 +34,15 @@ describe('Project overview page', () => {
     // shares content with project two
     cy.apiCreateProject({
       title: projectTitleThree,
-      descriptionPreview: projectDescriptionPreview,
+      descriptionPreview: projectTitleTwo,
       publicationStatus: 'published',
     }).then((project) => {
       projectIds.push(project.body.data.id);
     });
-    // archived project
+    // archived project, also sharing content with project two
     cy.apiCreateProject({
       title: projectTitleFour,
-      descriptionPreview: projectDescriptionPreview,
+      descriptionPreview: projectTitleTwo,
       publicationStatus: 'archived',
     }).then((project) => {
       projectIds.push(project.body.data.id);
