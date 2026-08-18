@@ -52,7 +52,7 @@ beforeEach(() => {
   mockPermission = permissionData;
 });
 
-describe.skip('<VisitingPermission />', () => {
+describe('<VisitingPermission />', () => {
   it('renders nothing while the permission is loading', () => {
     mockPermission = undefined;
     render(<VisitingPermission />);
