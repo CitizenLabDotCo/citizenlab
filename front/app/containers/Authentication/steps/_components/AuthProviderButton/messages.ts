@@ -51,6 +51,10 @@ export default defineMessages({
     id: 'app.containers.SignUp.iHaveReadAndAgreeToPrivacy',
     defaultMessage: 'I have read and agree to {link}.',
   },
+  iHaveReadAndAgreeToTermsAndPrivacy: {
+    id: 'app.containers.SignUp.iHaveReadAndAgreeToTermsAndPrivacy',
+    defaultMessage: 'I have read and agree to {termsLink} and {privacyLink}.',
+  },
   theTermsAndConditions: {
     id: 'app.containers.SignUp.theTermsAndConditions',
     defaultMessage: 'the terms and conditions',
@@ -66,6 +70,11 @@ export default defineMessages({
   privacyPolicyNotAcceptedError: {
     id: 'app.containers.SignUp.privacyPolicyNotAcceptedError',
     defaultMessage: 'Accept our privacy policy to proceed',
+  },
+  policiesNotAcceptedError: {
+    id: 'app.containers.SignUp.policiesNotAcceptedError',
+    defaultMessage:
+      'Please accept the terms and conditions and the privacy policy',
   },
   emailConsent: {
     id: 'app.containers.SignUp.emailConsent',
