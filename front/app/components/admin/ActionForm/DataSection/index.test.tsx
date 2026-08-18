@@ -1,18 +1,29 @@
 import React from 'react';
 
+import { IdMethodData } from 'api/id_methods/types';
 import { IPhasePermissionData } from 'api/phase_permissions/types';
 
 import { render, screen, within, userEvent } from 'utils/testUtils/rtl';
 
 import DataSection from '.';
 
+const buildIdMethod = (name: string, authentication: boolean): IdMethodData =>
+  ({
+    id: `method-${name}`,
+    type: 'id_method',
+    attributes: {
+      name,
+      authentication_method: authentication,
+      verification_method: !authentication,
+      method_metadata: { name },
+    },
+  } as IdMethodData);
+
 // PersonalInfoSection (rendered for account permissions) reads these two hooks:
-// password login toggles whether the password row exists at all, and the SSO
-// authentication method drives the "only asked to email sign-ups" tooltip.
+// password login toggles whether the password row exists at all, and the id
+// methods drive the "only asked to email sign-ups" tooltip.
 let mockPasswordLoginEnabled = true;
-let mockAuthenticationMethod: unknown = {
-  data: { attributes: { method_metadata: { name: 'ItsMe' } } },
-};
+let mockIdMethods: IdMethodData[] = [buildIdMethod('acm', true)];
 // DataSection itself only shows the anonymity section for native survey posting.
 let mockParticipationMethod = 'ideation';
 
@@ -22,8 +33,8 @@ jest.mock('hooks/useFeatureFlag', () =>
   )
 );
 
-jest.mock('api/id_methods/useAuthenticationMethod', () =>
-  jest.fn(() => ({ data: mockAuthenticationMethod }))
+jest.mock('api/id_methods/useIdMethods', () =>
+  jest.fn(() => ({ data: { data: mockIdMethods } }))
 );
 
 jest.mock('api/phases/usePhase', () =>
@@ -89,9 +100,7 @@ const openPersonalInfo = async () =>
 
 beforeEach(() => {
   mockPasswordLoginEnabled = true;
-  mockAuthenticationMethod = {
-    data: { attributes: { method_metadata: { name: 'ItsMe' } } },
-  };
+  mockIdMethods = [buildIdMethod('acm', true)];
   mockParticipationMethod = 'ideation';
 });
 
@@ -153,7 +162,9 @@ describe('<DataSection />', () => {
     });
 
     it('does not show the password tooltip when there is no SSO method', async () => {
-      mockAuthenticationMethod = null;
+      // Verification-only methods are not a way to sign up, so they must not
+      // trigger the tooltip either.
+      mockIdMethods = [buildIdMethod('acm', false)];
       renderSection();
       await openPersonalInfo();
 

@@ -583,7 +583,7 @@ describe Permissions::UserRequirementsService do
       let(:verified_permission) { create(:permission, :by_verified) }
 
       before do
-        # To allow require_verification we need to enable at least one verification method
+        # Enable a verification method so that verifications can be created and checked
         AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
         AppConfiguration.instance.save!
       end
@@ -978,9 +978,6 @@ describe Permissions::UserRequirementsService do
 
       context 'and require_confirmed_email is disabled (verification then backs the account)' do
         before do
-          # A 'users' permission must be backed by at least one authentication
-          # method, so turning off confirmed email requires verification to be
-          # enabled (otherwise the permission is invalid).
           AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
           AppConfiguration.instance.save!
           permission.update!(require_verification: true, require_confirmed_email: false)

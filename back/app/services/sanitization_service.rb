@@ -6,12 +6,15 @@ class SanitizationService
 
   EDITOR_STRUCTURE_TAGS = %w[div p h2 h3 ol ul].freeze
 
+  # Each `strip_to_plain_text` pass peels one layer of entity encoding; real text settles in 1-3.
+  PLAIN_TEXT_PASSES = 5
+
   SANITIZER = Rails::Html::SafeListSanitizer.new
 
   private_constant :SANITIZER
 
   # Sanitizes a string from malicious and unwanted input.
-  # @param sanitize [String] string input to be sanitized
+  # @param text [String] string input to be sanitized
   # @param features [Array<Symbol>] A list of allowed features
   # See {IframeScrubber, EDITOR_FEATURES} for the list of allowed tags and attributes.
   def sanitize(text, features)
@@ -74,6 +77,50 @@ class SanitizationService
   # @return [String] The text with it's content being transformed into links.
   def linkify(html)
     Rinku.auto_link(html, :all, 'target="_blank" rel="noreferrer noopener nofollow"', nil, Rinku::AUTOLINK_SHORT_DOMAINS)
+  end
+
+  # The pipeline `Idea` and `Comment` apply to their bodies, shared with anything reprocessing a
+  # stored body (e.g. machine translations).
+  #
+  # Sanitizing runs before linkifying, so where `features` omits `:link` (`Comment`) the author's
+  # anchors are dropped and rebuilt from the visible text, and an href cannot disagree with its
+  # label. Where `:link` is present (`Idea`) anchors survive as written, scheme-scrubbed only.
+  #
+  # A nil value comes back as '', not nil. Long-standing behaviour - do not add a guard.
+  def sanitize_body(html, features)
+    html = sanitize(html, features)
+    html = remove_empty_trailing_tags(html)
+    linkify(html)
+  end
+
+  def sanitize_body_multiloc(multiloc, features)
+    multiloc.transform_values { |html| sanitize_body(html, features) }
+  end
+
+  # Reduces text to plain text: no markup, and no entity encoding of what survives.
+  #
+  # `full_sanitizer` alone entity-encodes what it keeps ("Fish & chips" -> "Fish &amp; chips"), so
+  # decode after each pass and repeat until the value settles - otherwise a payload survives by
+  # hiding behind its own encoding (`&lt;script&gt;`).
+  def strip_to_plain_text(text)
+    return nil if text.nil?
+
+    full_sanitizer = ActionView::Base.full_sanitizer
+
+    PLAIN_TEXT_PASSES.times do
+      decoded = CGI.unescapeHTML(full_sanitizer.sanitize(text))
+      return decoded if decoded == text
+
+      text = decoded
+    end
+
+    # More encoding layers than passes: return the escaped form, which renders as literal text.
+    full_sanitizer.sanitize(text)
+  end
+
+  # `strip_to_plain_text` across a multiloc - the rule every title-bearing model shares.
+  def strip_multiloc_to_plain_text(multiloc)
+    multiloc.transform_values { |text| strip_to_plain_text(text) }
   end
 
   def html_with_content?(text_or_html)
@@ -152,7 +199,7 @@ class SanitizationService
 
     def initialize(features = [])
       super()
-      features_w_default = features.push(:default)
+      features_w_default = features + [:default]
       @tags = features_w_default.flat_map { |f| EDITOR_FEATURES[f][:tags] }.uniq
       @attributes = features_w_default.flat_map { |f| EDITOR_FEATURES[f][:attributes] }.uniq
     end

@@ -46,14 +46,22 @@ class RequestCodePolicy < ApplicationPolicy
     true
   end
 
-  # For authenticated users re-confirming the phone number already on their
-  # account (its confirmation has aged out). Unlike request_code_new_phone there
-  # is no submitted number: the code goes to user.phone, so there has to be one.
+  # Guards a request for an in-place phone confirmation code (the
+  # request_code_phone action). The phone mirror of request_code_email?, with the
+  # same three legitimate situations: `record` is the account the code would be
+  # sent to (looked up from the submitted `phone` param, or current_user when no
+  # number is given), and whenever there is an authenticated user the code may
+  # only be sent to that same user.
   def request_code_phone?
     return false unless app_configuration.feature_activated?('sms')
-    return false if user.nil?
-    return false if user.phone.blank?
-    return false if code_reset_count(user.phone_confirmation) >= max_retries - 1
+    return false if user.nil? && !app_configuration.feature_activated?('sms_login')
+    return false if record.nil?
+    return false if record.phone.blank?
+
+    # An authenticated caller may only request a code for their own number.
+    return false if user && user != record
+
+    return false if code_reset_count(record.phone_confirmation) >= max_retries - 1
 
     true
   end

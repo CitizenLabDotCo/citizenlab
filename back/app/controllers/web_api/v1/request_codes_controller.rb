@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::RequestCodesController < ApplicationController
-  skip_before_action :authenticate_user, only: %i[request_code_email]
+  skip_before_action :authenticate_user, only: %i[request_code_email request_code_phone]
 
   # Sends a confirmation code for the user's `email`, to be confirmed in place
   # (EmailConfirmation). Two callers:
@@ -65,13 +65,20 @@ class WebApi::V1::RequestCodesController < ApplicationController
     head :ok
   end
 
-  # This endpoint is only used for people reconfirming their
-  # phone number.
+  # Sends a confirmation code for the user's `phone`, to be confirmed in place
+  # (PhoneConfirmation). The phone mirror of request_code_email, with the same
+  # two callers and the same ownership rule enforced by RequestCodePolicy:
+  #   - unauthenticated: phone signup / passwordless login, where the account is
+  #     looked up from the submitted `phone` param.
+  #   - authenticated: re-confirmation of one's own number, where the param may
+  #     be omitted and current_user is used.
   def request_code_phone
-    authorize current_user, policy_class: RequestCodePolicy
+    phone = request_code_phone_params[:phone]
+    user = phone.present? ? User.find_by_phone_number(phone) : current_user
+    authorize user, policy_class: RequestCodePolicy
 
-    unless only_if_first_time? && current_user.phone_confirmation&.code_outstanding?
-      RequestPhoneConfirmationCodeJob.perform_now(current_user)
+    unless only_if_first_time? && user.phone_confirmation&.code_outstanding?
+      RequestPhoneConfirmationCodeJob.perform_now(user)
     end
 
     head :ok
@@ -135,6 +142,10 @@ class WebApi::V1::RequestCodesController < ApplicationController
 
   def request_code_new_email_params
     params.fetch(:request_code, {}).permit(:new_email)
+  end
+
+  def request_code_phone_params
+    params.fetch(:request_code, {}).permit(:phone, :only_if_first_time)
   end
 
   def request_code_new_phone_params

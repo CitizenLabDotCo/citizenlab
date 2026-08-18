@@ -46,24 +46,3 @@ export type Props = {
   onChange: (changes: Changes) => Promise<void>;
   onReset: () => void;
 };
-
-// The authentication methods on offer: each one maps onto a `require_*` boolean
-// + `*_expiry` pair on the permission.
-export type AuthMethodKey = 'email' | 'phone' | 'verification';
-
-// Maps an auth method onto the permission attributes (and matching change keys)
-// that back it. Keeping this in one place lets the UI stay generic over methods.
-export const METHOD_FIELDS = {
-  email: {
-    enabled: 'require_confirmed_email',
-    expiry: 'confirmed_email_expiry',
-  },
-  phone: {
-    enabled: 'require_confirmed_phone_number',
-    expiry: 'confirmed_phone_number_expiry',
-  },
-  verification: {
-    enabled: 'require_verification',
-    expiry: 'verification_expiry',
-  },
-} as const;

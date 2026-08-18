@@ -36,7 +36,14 @@ RSpec.describe ProjectFolders::Folder do
       folder.update!(title_multiloc: { 'en' => 'my folder', 'nl-BE' => 'mijn map', 'fr-BE' => 'mon dossier' })
       expect(folder.slug).to eq 'my-folder'
     end
+
+    it 'generates a slug from the sanitized title, not the raw one' do
+      folder.update!(title_multiloc: { 'en' => '<b>Bold</b> folder' })
+      expect(folder.slug).to eq 'bold-folder'
+    end
   end
+
+  it_behaves_like 'a sanitized title_multiloc', factory: :project_folder
 
   describe '#sanitize_description_multiloc' do
     it 'sanitizes script tags in the description' do

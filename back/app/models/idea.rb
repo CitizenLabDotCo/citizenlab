@@ -76,6 +76,10 @@ class Idea < ApplicationRecord
   PUBLICATION_STATUSES = %w[draft submitted published].freeze
   SUBMISSION_STATUSES = %w[submitted published].freeze
 
+  # `SanitizationService` features allowed in the body, shared with anything that re-sanitizes a
+  # stored body (e.g. machine translations).
+  BODY_SANITIZE_FEATURES = %i[title alignment list decoration link image video].freeze
+
   attr_accessor :request # Non persisted attribute to store request to be used by EveryoneTrackingService
 
   slug from: proc { |idea| idea&.participation_method_on_creation&.generate_slug(idea) }
@@ -102,6 +106,11 @@ class Idea < ApplicationRecord
   )
 
   has_many_text_images from: :body_multiloc
+
+  before_validation :sanitize_body_multiloc, if: :body_multiloc
+  # `prepend: true` puts this before `Sluggable#generate_slug` (registered on `ApplicationRecord`),
+  # which would otherwise build the slug from the raw title.
+  before_validation :sanitize_title_multiloc, if: -> { title_multiloc && title_multiloc_changed? }, prepend: true
 
   # Must appear before before_destroy
   before_save :convert_wkt_geo_custom_field_values_to_geojson
@@ -172,7 +181,6 @@ class Idea < ApplicationRecord
     validates :idea_status, presence: true
     validates :project, presence: true
     before_validation :assign_defaults
-    before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
 
   pg_search_scope :search_by_all,
@@ -418,13 +426,7 @@ class Idea < ApplicationRecord
   end
 
   def sanitize_body_multiloc
-    service = SanitizationService.new
-    self.body_multiloc = service.sanitize_multiloc(
-      body_multiloc,
-      %i[title alignment list decoration link image video]
-    )
-    self.body_multiloc = service.remove_multiloc_empty_trailing_tags(body_multiloc)
-    self.body_multiloc = service.linkify_multiloc(body_multiloc)
+    self.body_multiloc = SanitizationService.new.sanitize_body_multiloc(body_multiloc, BODY_SANITIZE_FEATURES)
   end
 
   def fix_comments_count_on_projects
@@ -523,6 +525,11 @@ class Idea < ApplicationRecord
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end
+  end
+
+  # Titles are plain text: strip markup so nothing downstream can render it as HTML.
+  def sanitize_title_multiloc
+    self.title_multiloc = SanitizationService.new.strip_multiloc_to_plain_text(title_multiloc)
   end
 
   def set_submitted_at

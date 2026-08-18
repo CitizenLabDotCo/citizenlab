@@ -36,10 +36,6 @@ class PhoneConfirmation < Confirmation
     true
   end
 
-  def pending?
-    user.phone.present? && user.phone_confirmed_at.nil?
-  end
-
   def reset_code!
     update!(
       code: generate_code,

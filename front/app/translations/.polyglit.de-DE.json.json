@@ -6889,6 +6889,16 @@
     "verified_at": "2026-07-08T12:03:15.782364Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Authentication.steps.FlowStart.useEmailInstead": {
+    "state": "verified",
+    "verified_at": "2026-08-17T14:35:41.629796Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Authentication.steps.FlowStart.usePhoneNumberInstead": {
+    "state": "verified",
+    "verified_at": "2026-08-17T14:35:41.629796Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -6932,6 +6942,16 @@
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": {
     "state": "verified",
     "verified_at": "2026-07-23T09:51:33.245170Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Authentication.steps.Policies.byContinuingPhone": {
+    "state": "verified",
+    "verified_at": "2026-08-17T14:35:41.629796Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": {
+    "state": "verified",
+    "verified_at": "2026-08-17T14:35:41.629796Z",
     "verified_by": "Jelena"
   },
   "app.containers.Authentication.steps.SSOVerification.alreadyHaveAnAccount": {

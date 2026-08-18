@@ -81,6 +81,24 @@ resource 'Ideas' do
             expect(response_data.dig(:attributes, :claim_token_expires_at)).to eq(idea.claim_token.expires_at.iso8601(3))
           end
         end
+
+        describe 'when saving a draft' do
+          let(:publication_status) { 'draft' }
+          let(:project) do
+            create(:single_phase_ideation_project, phase_attrs: { with_permissions: true }).tap do |project|
+              project
+                .phases.sole
+                .permissions.find_by(action: 'posting_idea')
+                .update!(permitted_by: 'users')
+            end
+          end
+
+          example '[error] Create a draft idea where posting requires sign-in', document: false do
+            expect { do_request }.not_to change(Idea, :count)
+            assert_status 401
+            expect(json_response_body).to include_response_error(:base, 'user_not_signed_in')
+          end
+        end
       end
 
       context 'when resident' do
@@ -320,6 +338,22 @@ resource 'Ideas' do
             blocked_error = json_response_body.dig(:errors, :base)&.select { |err| err[:error] == 'includes_banned_words' }&.first
             expect(blocked_error).to be_present
             expect(blocked_error[:blocked_words].pluck(:attribute).uniq).to include('title_multiloc', 'body_multiloc')
+          end
+        end
+
+        describe 'stored XSS regression: draft bodies are sanitized on write' do
+          let(:publication_status) { 'draft' }
+          let(:body_multiloc) do
+            { 'en' => '<p>poc</p><img onload="alert(document.cookie)" data-cl2-text-image-text-reference="0a808204-4e40-4fe4-9733-0fd88581e2ae">' }
+          end
+
+          example_request 'strips event-handler attributes from the stored draft body' do
+            assert_status 201
+            idea = Idea.find(response_data[:id])
+            expect(idea.publication_status).to eq 'draft'
+            expect(idea.body_multiloc['en']).to eq(
+              '<p>poc</p><img data-cl2-text-image-text-reference="0a808204-4e40-4fe4-9733-0fd88581e2ae">'
+            )
           end
         end
       end

@@ -80,42 +80,31 @@ describe McpServer::Tools::UpdatePhasePermission do
       expect(permission.reload.access_denied_explanation_multiloc).to be_blank
     end
 
-    context 'with a verification method enabled' do
-      before do
-        config = AppConfiguration.instance
-        config.settings['id_config'] = {
-          allowed: true,
-          enabled: true,
-          id_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }]
-        }
-        config.save!
-      end
+    it 'sets the verification expiry' do
+      response = run(params.merge(
+        permitted_by: 'users',
+        require_verification: true,
+        verification_expiry: 7
+      ))
 
-      it 'sets the verification expiry' do
-        response = run(params.merge(
-          permitted_by: 'users',
-          require_verification: true,
-          verification_expiry: 7
-        ))
-
-        expect(response).not_to be_error
-        expect(permission.reload.require_verification).to be(true)
-        expect(permission.verification_expiry).to eq(7)
-      end
+      expect(response).not_to be_error
+      expect(permission.reload.require_verification).to be(true)
+      expect(permission.verification_expiry).to eq(7)
     end
 
     it 'returns structured validation errors for an invalid update' do
+      commenting_permission = phase.permissions.find_by!(action: 'commenting_idea')
       response = nil
 
-      expect { response = run(params.merge(permitted_by: 'users', verification_expiry: 7)) }
-        .not_to change { permission.reload.permitted_by }
+      expect { response = run(params.merge(action: 'commenting_idea', permitted_by: 'everyone')) }
+        .not_to change { commenting_permission.reload.permitted_by }
 
       expect(response).to be_error
 
       error = response.structured_content[:errors].sole
       expect(error).to include(
-        attribute: 'verification_expiry',
-        error: :verification_expiry_cannot_be_set,
+        attribute: 'permitted_by',
+        error: :everyone_not_allowed_for_action,
         message: be_present
       )
     end
