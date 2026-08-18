@@ -19,8 +19,8 @@ import { Changes } from '../../types';
 import { Expander } from '../../ui';
 
 import messages from './messages';
-import MethodRow from './MethodRow';
-import PasswordRow from './PasswordRow';
+import MethodRow from './MethodRows/MethodRow';
+import PasswordRow from './MethodRows/PasswordRow';
 
 interface Props {
   permission: IPermissionData;

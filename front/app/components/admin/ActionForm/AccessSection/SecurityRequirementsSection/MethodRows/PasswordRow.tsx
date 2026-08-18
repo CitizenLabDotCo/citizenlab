@@ -4,9 +4,9 @@ import useIdMethods from 'api/id_methods/useIdMethods';
 
 import { useIntl } from 'utils/cl-intl';
 
-import actionFormMessages from '../../messages';
+import actionFormMessages from '../../../messages';
+import messages from '../messages';
 
-import messages from './messages';
 import RequirementToggle from './RequirementToggle';
 
 interface Props {
