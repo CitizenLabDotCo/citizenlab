@@ -27,6 +27,7 @@ interface Props {
   loading: boolean;
   showByContinuingText?: boolean;
   byContinuingMessage?: MessageDescriptor;
+  byContinuingValues?: Record<string, string>;
   onSubmit: () => void;
 }
 
@@ -34,6 +35,7 @@ const PoliciesForm = ({
   loading,
   showByContinuingText,
   byContinuingMessage,
+  byContinuingValues,
   onSubmit,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -66,6 +68,7 @@ const PoliciesForm = ({
         <PoliciesMarkup
           showByContinuingText={showByContinuingText}
           byContinuingMessage={byContinuingMessage}
+          byContinuingValues={byContinuingValues}
         />
         <ButtonWithLink
           id="e2e-policies-continue"

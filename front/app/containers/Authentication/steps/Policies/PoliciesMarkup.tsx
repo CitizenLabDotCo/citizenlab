@@ -38,11 +38,13 @@ export const ConsentText = styled.div`
 interface Props {
   showByContinuingText?: boolean;
   byContinuingMessage?: MessageDescriptor;
+  byContinuingValues?: Record<string, string>;
 }
 
 const PoliciesMarkup = ({
   showByContinuingText = true,
   byContinuingMessage = messages.byContinuing,
+  byContinuingValues,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -110,7 +112,7 @@ const PoliciesMarkup = ({
           fontSize="s"
           color="tenantText"
         >
-          {formatMessage(byContinuingMessage)}
+          {formatMessage(byContinuingMessage, byContinuingValues)}
         </Text>
       )}
     </>
