@@ -7,6 +7,8 @@ import appConfigurationKeys from 'api/app_configuration/keys';
 import { IInvitesImport, InvitesImportKeys } from 'api/invites/types';
 import seatsKeys from 'api/seats/keys';
 
+import useOnQuerySuccess from 'hooks/useOnQuerySuccess';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import invitesImportKeys from './invitesImportKeys';
@@ -49,16 +51,17 @@ const useInvitesImport = (queryParams: QueryParams) => {
     enabled: queryParams.enabled,
     // Stop polling once the job reports back; the consumer also clears the
     // import id, but that lands a render later.
-    refetchInterval: (data) =>
-      data?.data.attributes.completed_at ? false : POLL_INTERVAL_MS,
-    // A finished creation changes the seat counts, so refresh what shows
-    // them. Gated because this runs on every poll, and a failure adds none.
-    onSuccess: (data) => {
-      if (!isCompletedInviteCreation(data)) return;
+    refetchInterval: ({ state }) =>
+      state.data?.data.attributes.completed_at ? false : POLL_INTERVAL_MS,
+  });
 
-      queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
-      queryClient.invalidateQueries({ queryKey: appConfigurationKeys.all() });
-    },
+  // A finished creation changes the seat counts, so refresh what shows
+  // them. Gated because this runs on every poll, and a failure adds none.
+  useOnQuerySuccess(result, () => {
+    if (!isCompletedInviteCreation(result.data)) return;
+
+    queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
+    queryClient.invalidateQueries({ queryKey: appConfigurationKeys.all() });
   });
 
   // Resets the invite data too, so revisiting the component does not show
