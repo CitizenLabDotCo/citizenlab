@@ -10,6 +10,7 @@ import seatsKeys from 'api/seats/keys';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
+import { IInvitesImport } from './types';
 import useInvitesImport from './useInvitesImport';
 
 const importId = '123';
@@ -29,7 +30,9 @@ const mockResponse = {
   },
 };
 
-const respondWith = (attributes: Record<string, unknown>) =>
+type InvitesImportAttributes = IInvitesImport['data']['attributes'];
+
+const respondWith = (attributes: Partial<InvitesImportAttributes>) =>
   server.use(
     http.get(apiPath, () =>
       HttpResponse.json(
