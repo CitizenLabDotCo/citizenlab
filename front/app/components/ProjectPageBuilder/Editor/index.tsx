@@ -3,6 +3,7 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 
+import { VerticalRhythmContext } from 'components/admin/ContentBuilder/verticalRhythm';
 import AboutBox from 'components/admin/ContentBuilder/Widgets/AboutBox';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
@@ -38,38 +39,40 @@ type EditorProps = {
 
 const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
   return (
-    <BaseEditor
-      resolver={{
-        Box,
-        Container,
-        TwoColumn,
-        ThreeColumn,
-        TextMultiloc,
-        ImageMultiloc,
-        IframeMultiloc,
-        FileAttachment,
-        AboutBox,
-        AccordionMultiloc,
-        WhiteSpace,
-        InfoWithAccordions,
-        RichTextMultiloc,
-        HtmlBlockMultiloc,
-        ImageTextCards,
-        ButtonMultiloc,
-        PageLink,
-        PhasesWidget,
-        EventsWidget,
-        ExtraSurveysWidget,
-        ProjectBanner,
-        ProjectTitle,
-        ProjectPageRoot,
-        ProjectPageBody,
-      }}
-      isPreview={isPreview}
-      onNodesChange={onNodesChange}
-    >
-      {children}
-    </BaseEditor>
+    <VerticalRhythmContext.Provider value={true}>
+      <BaseEditor
+        resolver={{
+          Box,
+          Container,
+          TwoColumn,
+          ThreeColumn,
+          TextMultiloc,
+          ImageMultiloc,
+          IframeMultiloc,
+          FileAttachment,
+          AboutBox,
+          AccordionMultiloc,
+          WhiteSpace,
+          InfoWithAccordions,
+          RichTextMultiloc,
+          HtmlBlockMultiloc,
+          ImageTextCards,
+          ButtonMultiloc,
+          PageLink,
+          PhasesWidget,
+          EventsWidget,
+          ExtraSurveysWidget,
+          ProjectBanner,
+          ProjectTitle,
+          ProjectPageRoot,
+          ProjectPageBody,
+        }}
+        isPreview={isPreview}
+        onNodesChange={onNodesChange}
+      >
+        {children}
+      </BaseEditor>
+    </VerticalRhythmContext.Provider>
   );
 };
 
