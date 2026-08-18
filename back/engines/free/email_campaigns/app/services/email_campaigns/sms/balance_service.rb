@@ -15,8 +15,6 @@ module EmailCampaigns
         'EmailCampaigns::Campaigns::SmsManual' => :used_manual
       }.freeze
 
-      # Go Vocal absorbs the cost of verification codes, so they never touch the
-      # tenant's purchased messages.
       NON_BILLABLE_CAMPAIGN_TYPES = %w[
         EmailCampaigns::Campaigns::PhoneConfirmation
         EmailCampaigns::Campaigns::NewPhoneConfirmation
@@ -61,9 +59,8 @@ module EmailCampaigns
       # Unknown campaign types (and NULL campaign_id, for previews) fold into
       # OTHER_KEY, so every billable send lands in exactly one breakdown key.
       #
-      # The provider bills per segment, so a long message consumes several. A send
-      # whose count isn't known yet (still on its way, or predating the column)
-      # adds nothing until the real count arrives.
+      # The provider bills per segment, so a long message consumes several. Rows
+      # predating the column carry no count and add nothing.
       #
       # The absorbed types are dropped here rather than in SQL, where excluding them
       # would take the NULL-campaign previews down with them.

@@ -157,6 +157,40 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
     end
   end
 
+  describe '#segments_for_send' do
+    # 200 GSM-7 characters no longer fit the 160 a lone segment holds.
+    let(:campaign) { create(:sms_manual_campaign, body_multiloc: { 'en' => 'short', 'fr-FR' => 'a' * 200 }) }
+
+    before do
+      %w[en en fr-FR].each do |locale|
+        create(:consent, :sms_manual, user: create(:user, :with_confirmed_phone, locale: locale))
+      end
+    end
+
+    it 'bills each recipient for the body in their own locale' do
+      expect(campaign.segments_for_send).to eq 4
+    end
+  end
+
+  describe 'the balance guard on send' do
+    let(:campaign) { create(:sms_manual_campaign, body_multiloc: { 'en' => 'a' * 200 }) }
+
+    before { create(:consent, :sms_manual, user: create(:user, :with_confirmed_phone, locale: 'en')) }
+
+    it 'refuses a send whose segments exceed the balance, even when the recipient count fits' do
+      SettingsService.new.activate_feature!('sms', settings: { 'messages_purchased' => 1 })
+
+      expect(campaign.valid?(:send)).to be false
+      expect(campaign.errors.details[:base]).to include(error: :insufficient_sms_balance)
+    end
+
+    it 'allows a send the balance covers' do
+      SettingsService.new.activate_feature!('sms', settings: { 'messages_purchased' => 2 })
+
+      expect(campaign.valid?(:send)).to be true
+    end
+  end
+
   describe 'apply_recipient_filters' do
     let(:campaign) { build(:sms_manual_campaign) }
 

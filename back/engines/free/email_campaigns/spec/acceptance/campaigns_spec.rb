@@ -604,6 +604,7 @@ resource 'Campaigns' do
         include_context 'with sms manual campaigns feature enabled'
 
         before do
+          SettingsService.new.activate_feature!('sms', settings: { 'messages_purchased' => 100 })
           recipient = create(:user, phone: '+14155552671', phone_confirmed_at: Time.zone.now)
           create(:consent, :sms_manual, user: recipient)
         end
@@ -614,6 +615,14 @@ resource 'Campaigns' do
           expect { do_request }.to have_enqueued_job(EmailCampaigns::Sms::SendJob)
           assert_status 200
           expect(response_data.dig(:attributes, :deliveries_count)).to be >= 1
+        end
+
+        example '[error] Send out an SMS campaign to more recipients than the balance covers' do
+          SettingsService.new.activate_feature!('sms', settings: { 'messages_purchased' => 0 })
+
+          expect { do_request }.not_to have_enqueued_job(EmailCampaigns::Sms::SendJob)
+          assert_status 422
+          expect(json_response_body).to include_response_error(:base, 'insufficient_sms_balance')
         end
       end
     end
@@ -672,6 +681,27 @@ resource 'Campaigns' do
           failed: 0,
           errored: 0,
           total: 4
+        })
+      end
+    end
+
+    get 'web_api/v1/campaigns/:id/sms_recipients' do
+      let(:campaign) { create(:sms_manual_campaign) }
+      let!(:id) { campaign.id }
+
+      let!(:recipients) do
+        %w[en en fr-FR].map do |locale|
+          create(:consent, :sms_manual, user: create(:user, :with_confirmed_phone, locale: locale))
+        end
+      end
+      # Reachable by SMS, but has not opted in to this campaign.
+      let!(:non_recipient) { create(:user, :with_confirmed_phone) }
+
+      example_request 'Get who an SMS campaign would reach right now, split by locale' do
+        assert_status 200
+        expect(response_data[:attributes]).to eq({
+          count: 3,
+          count_by_locale: { en: 2, 'fr-FR': 1 }
         })
       end
     end

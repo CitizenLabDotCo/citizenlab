@@ -48,6 +48,7 @@ module EmailCampaigns
     validates :subject_multiloc, presence: true, multiloc: { presence: true }
     validates :body_multiloc, presence: true, multiloc: { presence: true }
     validate :body_within_segment_limit
+    validate :validate_sufficient_balance, on: :send
 
     def self.sms_use_case
       Sms::UseCase::MANUAL_CAMPAIGNS
@@ -98,6 +99,19 @@ module EmailCampaigns
 
     def clear_scheduled_at!; end
 
+    def recipients_count_by_locale
+      apply_recipient_filters.group(:locale).count
+    end
+
+    # What a send costs in segments: each recipient is billed for the body in their own locale
+    def segments_for_send
+      multiloc_service = MultilocService.new
+      recipients_count_by_locale.sum do |locale, count|
+        body = multiloc_service.t(body_multiloc, locale).to_s
+        count * EmailCampaigns::Sms::SegmentedMessage.new(body).segments_count
+      end
+    end
+
     protected
 
     def unique_campaigns_per_context?
@@ -121,6 +135,12 @@ module EmailCampaigns
 
     def user_filter_no_invitees(users_scope, _options = {})
       users_scope.active
+    end
+
+    def validate_sufficient_balance
+      return if segments_for_send <= EmailCampaigns::Sms::BalanceService.new.balance
+
+      errors.add(:base, :insufficient_sms_balance, message: 'Not enough SMS segments left to reach all recipients')
     end
 
     def only_manual_send(activity: nil, time: nil)

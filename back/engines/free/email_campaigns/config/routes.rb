@@ -12,6 +12,7 @@ EmailCampaigns::Engine.routes.draw do
         get :sms_deliveries, on: :member
         get :email_stats, on: :member
         get :sms_stats, on: :member
+        get :sms_recipients, on: :member
         resources :examples, only: %i[index]
         get 'examples/:id', action: 'show', controller: 'examples', on: :collection
       end
