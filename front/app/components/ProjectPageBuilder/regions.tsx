@@ -60,6 +60,7 @@ export const ProjectPageBody: UserComponent<RegionProps> = ({ children }) => {
   return (
     <BodyBackground
       id="e2e-project-page-body"
+      data-project-page-body
       w="100%"
       minHeight={inEditor ? '60px' : undefined}
       ref={containerRef}
