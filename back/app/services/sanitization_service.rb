@@ -9,6 +9,8 @@ class SanitizationService
   # Each `strip_to_plain_text` pass peels one layer of entity encoding; real text settles in 1-3.
   PLAIN_TEXT_PASSES = 5
 
+  NBSP = "\u00A0"
+
   SANITIZER = Rails::Html::SafeListSanitizer.new
 
   private_constant :SANITIZER
@@ -102,13 +104,17 @@ class SanitizationService
   # `full_sanitizer` alone entity-encodes what it keeps ("Fish & chips" -> "Fish &amp; chips"), so
   # decode after each pass and repeat until the value settles - otherwise a payload survives by
   # hiding behind its own encoding (`&lt;script&gt;`).
+  #
+  # `CGI.unescapeHTML` decodes numeric references and the five XML names, but the HTML5 serializer
+  # also writes U+00A0 as `&nbsp;`, so that one needs decoding by hand. Callers render the result as
+  # text and slug it, so an entity left standing reaches the reader as six literal characters.
   def strip_to_plain_text(text)
     return nil if text.nil?
 
     full_sanitizer = ActionView::Base.full_sanitizer
 
     PLAIN_TEXT_PASSES.times do
-      decoded = CGI.unescapeHTML(full_sanitizer.sanitize(text))
+      decoded = CGI.unescapeHTML(full_sanitizer.sanitize(text)).gsub('&nbsp;', NBSP)
       return decoded if decoded == text
 
       text = decoded
