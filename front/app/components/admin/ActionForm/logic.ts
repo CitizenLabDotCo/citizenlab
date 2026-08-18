@@ -67,8 +67,6 @@ export const getVisibleToggles = ({
   }
 
   if (passwordLoginEnabled) {
-    // A password is only ever set when signing up by email, so requiring one
-    // is meaningless on a platform where that is not a way in.
     visibleToggles.password = true;
   }
 
