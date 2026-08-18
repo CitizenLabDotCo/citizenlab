@@ -1987,6 +1987,7 @@
   "app.containers.Navbar.completeOnboarding": "Complete onboarding",
   "app.containers.Navbar.completeProfile": "الملف الشخصي الكامل",
   "app.containers.Navbar.confirmEmail2": "تأكيد عنوان البريد الإلكتروني",
+  "app.containers.Navbar.confirmPhone": "تأكيد رقم الهاتف",
   "app.containers.Navbar.unverified": "لم يتم التحقق منه",
   "app.containers.Navbar.verified": "تم التحقق منه",
   "app.containers.NewAuthModal.beforeYouFollow": "قبل أن تتبع",

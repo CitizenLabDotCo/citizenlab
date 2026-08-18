@@ -1987,6 +1987,7 @@
   "app.containers.Navbar.completeOnboarding": "Teljes beépítés",
   "app.containers.Navbar.completeProfile": "Teljes profil",
   "app.containers.Navbar.confirmEmail2": "Erősítse meg az e-mailt",
+  "app.containers.Navbar.confirmPhone": "Telefonszám megerősítése",
   "app.containers.Navbar.unverified": "Ellenőrizetlen",
   "app.containers.Navbar.verified": "Ellenőrzött",
   "app.containers.NewAuthModal.beforeYouFollow": "Mielőtt követnéd",

@@ -1987,6 +1987,7 @@
   "app.containers.Navbar.completeOnboarding": "Potpuna integracija",
   "app.containers.Navbar.completeProfile": "Kompletan profil",
   "app.containers.Navbar.confirmEmail2": "Potvrdite email",
+  "app.containers.Navbar.confirmPhone": "Potvrdite broj telefona",
   "app.containers.Navbar.unverified": "Nepotvrđeno",
   "app.containers.Navbar.verified": "Potvrđeno",
   "app.containers.NewAuthModal.beforeYouFollow": "Prije nego što slijedite",

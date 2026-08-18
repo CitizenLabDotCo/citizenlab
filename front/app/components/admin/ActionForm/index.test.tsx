@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { IdMethodData } from 'api/id_methods/types';
-import { IPhasePermissionData } from 'api/phase_permissions/types';
+import { IPermissionData } from 'api/permissions/types';
 
 import { render, screen, within, userEvent } from 'utils/testUtils/rtl';
 
@@ -81,8 +81,8 @@ jest.mock(
 );
 
 const buildPermission = (
-  attributes: Partial<IPhasePermissionData['attributes']> = {}
-): IPhasePermissionData =>
+  attributes: Partial<IPermissionData['attributes']> = {}
+): IPermissionData =>
   ({
     id: 'perm-1',
     type: 'permission',
@@ -100,17 +100,24 @@ const buildPermission = (
       require_password: true,
       require_verification: false,
       permitted_by_everyone_allowed: false,
+      inherited: false,
       ...attributes,
     },
     relationships: {
       permission_scope: { data: { id: 'ph-1', type: 'phase' } },
       groups: { data: [] },
     },
-  } as IPhasePermissionData);
+  } as IPermissionData);
+
+type RenderOptions = {
+  defaultOpen?: boolean;
+  onOverride?: () => Promise<void>;
+  onRevertToDefaults?: () => Promise<void>;
+};
 
 const renderForm = (
-  attributes?: Partial<IPhasePermissionData['attributes']>,
-  { defaultOpen = true }: { defaultOpen?: boolean } = {}
+  attributes?: Partial<IPermissionData['attributes']>,
+  { defaultOpen = true, onOverride, onRevertToDefaults }: RenderOptions = {}
 ) =>
   render(
     <ActionForm
@@ -119,7 +126,8 @@ const renderForm = (
       title="Commenting"
       defaultOpen={defaultOpen}
       onChange={jest.fn()}
-      onReset={jest.fn()}
+      onOverride={onOverride}
+      onRevertToDefaults={onRevertToDefaults}
     />
   );
 
@@ -212,7 +220,7 @@ describe('<ActionForm />', () => {
     it('surfaces the "email sign-up only" tooltip when an SSO method is enabled', async () => {
       renderForm();
 
-      await userEvent.click(screen.getByText('Personal info'));
+      await userEvent.click(screen.getByText('Security requirements'));
       const passwordRow = screen.getByText('Password').parentElement!;
       await userEvent.hover(
         within(passwordRow).getByTestId('tooltip-icon-button')
@@ -229,10 +237,78 @@ describe('<ActionForm />', () => {
       mockIdMethods = [];
       renderForm();
 
-      await userEvent.click(screen.getByText('Personal info'));
+      await userEvent.click(screen.getByText('Security requirements'));
       const passwordRow = screen.getByText('Password').parentElement!;
       expect(
         within(passwordRow).queryByTestId('tooltip-icon-button')
+      ).not.toBeInTheDocument();
+    });
+  });
+
+  describe('inheriting the platform defaults', () => {
+    it('locks the panel shut and offers to override it', () => {
+      renderForm({ inherited: true }, { onOverride: jest.fn() });
+
+      expect(screen.getByText('Commenting')).toBeInTheDocument();
+      expect(screen.getByText(/Using/)).toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: 'Override' })
+      ).toBeInTheDocument();
+      // Nothing is configurable until the action has been overridden.
+      expect(
+        screen.queryByText('Security requirements')
+      ).not.toBeInTheDocument();
+      expect(screen.queryByText('What we collect')).not.toBeInTheDocument();
+    });
+
+    it('overrides the action and opens the panel', async () => {
+      const onOverride = jest.fn().mockResolvedValue(undefined);
+      renderForm({ inherited: true }, { onOverride });
+
+      await userEvent.click(screen.getByRole('button', { name: 'Override' }));
+      expect(onOverride).toHaveBeenCalledTimes(1);
+    });
+
+    it('renders the regular panel when the action has been overridden', () => {
+      renderForm({ inherited: false }, { onOverride: jest.fn() });
+
+      expect(screen.getByText('Security requirements')).toBeInTheDocument();
+      expect(
+        screen.queryByRole('button', { name: 'Override' })
+      ).not.toBeInTheDocument();
+    });
+
+    it('renders the regular panel when the caller does not support overriding', () => {
+      renderForm({ inherited: true });
+
+      expect(screen.getByText('Security requirements')).toBeInTheDocument();
+    });
+  });
+
+  describe('reverting to the platform defaults', () => {
+    it('asks for confirmation before discarding the action settings', async () => {
+      const onRevertToDefaults = jest.fn().mockResolvedValue(undefined);
+      renderForm(undefined, { onRevertToDefaults });
+
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Revert to platform defaults' })
+      );
+
+      expect(
+        screen.getByText('Revert to platform defaults?')
+      ).toBeInTheDocument();
+      expect(screen.getByText(/will be discarded/i)).toBeInTheDocument();
+      expect(onRevertToDefaults).not.toHaveBeenCalled();
+
+      await userEvent.click(screen.getByRole('button', { name: 'Revert' }));
+      expect(onRevertToDefaults).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not offer reverting when the caller does not support it', () => {
+      renderForm();
+
+      expect(
+        screen.queryByRole('button', { name: 'Revert to platform defaults' })
       ).not.toBeInTheDocument();
     });
   });

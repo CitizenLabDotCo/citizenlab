@@ -10089,6 +10089,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.Navbar.confirmPhone": {
+    "state": "verified",
+    "verified_at": "2026-08-18T08:54:59.108614Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Navbar.unverified": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",

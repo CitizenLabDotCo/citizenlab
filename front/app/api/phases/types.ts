@@ -1,6 +1,6 @@
 import { IRelationship, Multiloc } from 'typings';
 
-import { UserDataCollection } from 'api/phase_permissions/types';
+import { UserDataCollection } from 'api/permissions/types';
 import { PhaseActionDescriptors } from 'api/projects/types';
 
 import { Keys } from 'utils/cl-react-query/types';

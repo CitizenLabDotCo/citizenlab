@@ -1124,6 +1124,11 @@
     "verified_at": "2026-07-08T07:51:00.235120Z",
     "verified_by": "Jelena"
   },
+  "app.components.admin.ActionForm.override": {
+    "state": "verified",
+    "verified_at": "2026-08-18T08:54:59.158798Z",
+    "verified_by": "Jelena"
+  },
   "app.components.admin.ActionForm.password": {
     "state": "verified",
     "verified_at": "2026-07-08T07:51:00.235120Z",
@@ -1144,9 +1149,39 @@
     "verified_at": "2026-07-08T07:51:00.235120Z",
     "verified_by": "Jelena"
   },
+  "app.components.admin.ActionForm.revertToPlatformDefaults": {
+    "state": "verified",
+    "verified_at": "2026-08-18T08:54:59.158798Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.revertToPlatformDefaultsCancelButton": {
+    "state": "verified",
+    "verified_at": "2026-08-18T08:54:59.158798Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.revertToPlatformDefaultsConfirmButton": {
+    "state": "verified",
+    "verified_at": "2026-08-18T08:54:59.158798Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.revertToPlatformDefaultsConfirmation": {
+    "state": "verified",
+    "verified_at": "2026-08-18T08:54:59.158798Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.revertToPlatformDefaultsInfo2": {
+    "state": "verified",
+    "verified_at": "2026-08-18T08:54:59.158798Z",
+    "verified_by": "Jelena"
+  },
   "app.components.admin.ActionForm.signInRequired": {
     "state": "verified",
     "verified_at": "2026-07-08T07:51:00.235120Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.usingPlatformDefaults": {
+    "state": "verified",
+    "verified_at": "2026-08-18T08:54:59.158798Z",
     "verified_by": "Jelena"
   },
   "app.components.admin.AddByEmail.invite": {
@@ -17344,6 +17379,11 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.AdminPage.SettingsPage.otherRegistrationSettings": {
+    "state": "verified",
+    "verified_at": "2026-08-18T08:54:59.158798Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.AdminPage.SettingsPage.overlayToggleLabel": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
@@ -17393,6 +17433,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.AdminPage.SettingsPage.registration.VisitingPermission.platformAccessTitle1": {
+    "state": "verified",
+    "verified_at": "2026-08-18T08:54:59.158798Z",
+    "verified_by": "Jelena"
   },
   "app.containers.AdminPage.SettingsPage.registrationHelperTextDescription2": {
     "state": "verified",
@@ -17493,6 +17538,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.AdminPage.SettingsPage.subtitleBullet4": {
+    "state": "verified",
+    "verified_at": "2026-08-18T08:54:59.158798Z",
+    "verified_by": "Jelena"
   },
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": {
     "state": "verified",
@@ -17638,6 +17688,21 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.AdminPage.SettingsPage.visitingPermission.subtitle1": {
+    "state": "verified",
+    "verified_at": "2026-08-18T08:54:59.158798Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.AdminPage.SettingsPage.visitingPermission.subtitleBullet1": {
+    "state": "verified",
+    "verified_at": "2026-08-18T08:54:59.158798Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.AdminPage.SettingsPage.visitingPermission.subtitleBullet5": {
+    "state": "verified",
+    "verified_at": "2026-08-18T08:54:59.158798Z",
+    "verified_by": "Jelena"
   },
   "app.containers.AdminPage.SideBar.administrator": {
     "state": "verified",

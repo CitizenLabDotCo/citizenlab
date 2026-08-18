@@ -1987,6 +1987,7 @@
   "app.containers.Navbar.completeOnboarding": "Komplett Onboarding",
   "app.containers.Navbar.completeProfile": "Komplett Profil",
   "app.containers.Navbar.confirmEmail2": "Confirméieren Email",
+  "app.containers.Navbar.confirmPhone": "Telefonnummer bestätegen",
   "app.containers.Navbar.unverified": "Net iwwerpréift",
   "app.containers.Navbar.verified": "Iwwerpréift",
   "app.containers.NewAuthModal.beforeYouFollow": "Ier Dir verfollegt",

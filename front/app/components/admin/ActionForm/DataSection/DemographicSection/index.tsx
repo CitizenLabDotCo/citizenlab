@@ -11,12 +11,12 @@ import {
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 
+import { IPermissionData } from 'api/permissions/types';
 import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
 import useAddPermissionsPhaseCustomField from 'api/permissions_phase_custom_fields/useAddPermissionsPhaseCustomField';
 import useDeletePermissionsPhaseCustomField from 'api/permissions_phase_custom_fields/useDeletePermissionsPhaseCustomField';
 import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields/usePermissionsPhaseCustomFields';
 import useUpdatePermissionsPhaseCustomField from 'api/permissions_phase_custom_fields/useUpdatePermissionsPhaseCustomField';
-import { IPhasePermissionData } from 'api/phase_permissions/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -34,7 +34,7 @@ import FieldsList from './FieldsList';
 import messages from './messages';
 
 interface Props {
-  permission: IPhasePermissionData;
+  permission: IPermissionData;
   phaseId?: string;
   permissionHasForm: boolean;
   onChange: (changes: Changes) => void;

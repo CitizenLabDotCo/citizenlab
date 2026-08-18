@@ -1987,6 +1987,7 @@
   "app.containers.Navbar.completeOnboarding": "Voltooi registratie",
   "app.containers.Navbar.completeProfile": "Profiel aanvullen",
   "app.containers.Navbar.confirmEmail2": "Bevestig e-mailadres",
+  "app.containers.Navbar.confirmPhone": "Telefoonnummer bevestigen",
   "app.containers.Navbar.unverified": "Niet geverifieerd",
   "app.containers.Navbar.verified": "Geverifieerd",
   "app.containers.NewAuthModal.beforeYouFollow": "Voordat je volgt",

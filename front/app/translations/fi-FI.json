@@ -1987,6 +1987,7 @@
   "app.containers.Navbar.completeOnboarding": "Täydellinen perehdytys",
   "app.containers.Navbar.completeProfile": "Täydellinen profiili",
   "app.containers.Navbar.confirmEmail2": "Vahvista sähköposti",
+  "app.containers.Navbar.confirmPhone": "Vahvista puhelinnumero",
   "app.containers.Navbar.unverified": "Vahvistamaton",
   "app.containers.Navbar.verified": "Vahvistettu",
   "app.containers.NewAuthModal.beforeYouFollow": "Ennen kuin seuraat",
