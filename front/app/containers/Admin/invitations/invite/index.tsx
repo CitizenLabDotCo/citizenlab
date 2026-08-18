@@ -1,5 +1,3 @@
-// change to reset CI trigger after force push
-
 import React, {
   useState,
   useRef,
@@ -11,32 +9,22 @@ import React, {
 } from 'react';
 
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
-import { useQueryClient } from '@tanstack/react-query';
 import { isString, isEmpty } from 'lodash-es';
+import { useForm, FieldPath, FieldPathValue } from 'react-hook-form';
 import styled from 'styled-components';
 import { SupportedLocale, IOption } from 'typings';
 
-import appConfigurationKeys from 'api/app_configuration/keys';
-import {
-  IInviteError,
-  INewBulkInvite,
-  IInvitesImport,
-  InvitesImportJobType,
-} from 'api/invites/types';
-import useBulkInviteCountNewSeatsEmails from 'api/invites/useBulkInviteCountNewSeatsEmails';
-import useBulkInviteCountNewSeatsXLSX from 'api/invites/useBulkInviteCountNewSeatsXLSX';
-import useBulkInviteEmails from 'api/invites/useBulkInviteEmails';
-import useBulkInviteXLSX from 'api/invites/useBulkInviteXLSX';
-import useInvitesImport from 'api/invites/useInvitesImport';
-import seatsKeys from 'api/seats/keys';
+import { INewBulkInvite } from 'api/invites/types';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useExceedsSeats from 'hooks/useExceedsSeats';
 
 import { Section, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import HelmetIntl from 'components/HelmetIntl';
 import Error from 'components/UI/Error';
+// A creation that times out and one that errors say the same thing, so they
+// share a string.
+import errorMessages from 'components/UI/Error/messages';
 import Tabs from 'components/UI/Tabs';
 import Warning from 'components/UI/Warning';
 
@@ -47,6 +35,10 @@ import messages from '../messages';
 
 import ManualTab from './ManualTab';
 import TemplateTab from './TemplateTab';
+import useInviteSubmission, {
+  InviteOptions,
+  seatsModalContent,
+} from './useInviteSubmission';
 
 const InviteUsersWithSeatsModal = lazy(
   () => import('components/admin/SeatBasedBilling/InviteUsersWithSeatsModal')
@@ -59,401 +51,130 @@ const StyledTabs = styled(Tabs)`
 
 export type TInviteTabName = 'template' | 'manual';
 
+// Re-exported: the tests import them from here.
+export { COUNT_TIMEOUT_MS, CREATE_TIMEOUT_MS } from './useInviteSubmission';
+
+interface InviteFormValues {
+  emails: string | null;
+  fileBase64: string | null;
+  adminRights: boolean;
+  moderatorRights: boolean;
+  locale: SupportedLocale | null;
+  projects: IOption[] | null;
+  groups: IOption[] | null;
+  inviteText: string | null;
+}
+
+const emptyForm: InviteFormValues = {
+  emails: null,
+  fileBase64: null,
+  adminRights: false,
+  moderatorRights: false,
+  locale: null,
+  projects: null,
+  groups: null,
+  inviteText: null,
+};
+
 const Invitations = () => {
-  const queryClient = useQueryClient();
   const { formatMessage } = useIntl();
-  const { mutateAsync: bulkInviteEmails } = useBulkInviteEmails();
-  const { mutateAsync: bulkInviteCountNewSeatsEmails } =
-    useBulkInviteCountNewSeatsEmails();
-  const { mutateAsync: bulkInviteXLSX } = useBulkInviteXLSX();
-  const { mutateAsync: bulkInviteCountNewSeatsXLSX } =
-    useBulkInviteCountNewSeatsXLSX();
   const tenantLocales = useAppConfigurationLocales();
-  const [selectedEmails, setSelectedEmails] = useState<string | null>(null);
-  const [selectedFileBase64, setSelectedFileBase64] = useState<string | null>(
-    null
-  );
-  const [inviteesWillHaveAdminRights, setInviteesWillHaveAdminRights] =
-    useState<boolean>(false);
-  const [inviteesWillHaveModeratorRights, setInviteesWillHaveModeratorRights] =
-    useState<boolean>(false);
-  const [selectedLocale, setSelectedLocale] = useState<SupportedLocale | null>(
-    null
-  );
-  const [selectedProjects, setSelectedProjects] = useState<IOption[] | null>(
-    null
-  );
-  const [selectedGroups, setSelectedGroups] = useState<IOption[] | null>(null);
-  const [selectedInviteText, setSelectedInviteText] = useState<string | null>(
-    null
-  );
+
+  const { watch, setValue, reset } = useForm<InviteFormValues>({
+    defaultValues: emptyForm,
+  });
+  const values = watch();
+
+  // About the page rather than the invitation, so not part of the form.
+  const [selectedView, setSelectedView] = useState<TInviteTabName>('template');
   const [invitationOptionsOpened, setInvitationOptionsOpened] =
     useState<boolean>(false);
-  const [selectedView, setSelectedView] = useState<TInviteTabName>('template');
-  const [processing, setProcessing] = useState<boolean>(false);
-  const [processed, setProcessed] = useState<boolean>(false);
-  const [apiErrors, setApiErrors] = useState<IInviteError[] | null>(null);
   const [filetypeError, setFiletypeError] = useState<JSX.Element | null>(null);
-  const [unknownError, setUnknownError] = useState<JSX.Element | null>(null);
-  const [showModal, setShowModal] = useState(false);
-  const [newSeatsResponse, setNewSeatsResponse] =
-    useState<IInvitesImport | null>(null);
 
-  // Variables to poll for import job status
-  const [invitesImportId, setInvitesImportId] = useState<string | null>(null);
-  const { data: invitesImport, resetQueryData } = useInvitesImport({
-    importId: invitesImportId,
-    enabled: !!invitesImportId,
-  });
+  // A file input's value cannot be set from React, so clearing it needs the
+  // DOM node.
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const clearFileInput = useCallback(() => {
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  }, []);
 
-  const { checkIfSeatsExceeded } = useExceedsSeats();
+  // Clear what the form was holding once the invites exist.
+  const handleCreated = useCallback(() => {
+    setValue('fileBase64', null);
+    setValue('emails', null);
+    clearFileInput();
+  }, [setValue, clearFileInput]);
 
-  const getRoles = useCallback(() => {
+  const {
+    submission,
+    isWaitingOnJob,
+    submit,
+    confirmSeats,
+    cancel,
+    dismissResult,
+  } = useInviteSubmission({ onCreated: handleCreated });
+
+  // Editing the form dismisses whatever the last submission reported.
+  const updateField = <K extends FieldPath<InviteFormValues>>(
+    field: K,
+    value: FieldPathValue<InviteFormValues, K>
+  ) => {
+    dismissResult();
+    setValue(field, value);
+  };
+
+  const getRoles = () => {
     const roles: INewBulkInvite['roles'] = [];
 
-    if (inviteesWillHaveAdminRights) {
+    if (values.adminRights) {
       roles.push({ type: 'admin' });
     }
 
-    if (
-      inviteesWillHaveModeratorRights &&
-      selectedProjects &&
-      selectedProjects.length > 0
-    ) {
-      selectedProjects.forEach((project) => {
+    if (values.moderatorRights && values.projects && values.projects.length) {
+      values.projects.forEach((project) => {
         roles.push({ type: 'project_moderator', project_id: project.value });
       });
     }
 
     return roles;
-  }, [
-    inviteesWillHaveAdminRights,
-    inviteesWillHaveModeratorRights,
-    selectedProjects,
-  ]);
-
-  const fileInputElement = useRef<HTMLInputElement | null>(null);
-
-  const [savedInviteOptions, setSavedInviteOptions] = useState<any>(null);
-
-  const onSubmitTemplateTab = useCallback(
-    async (bulkInvite: INewBulkInvite, save: boolean) => {
-      // If we're saving and have saved options from a previous count operation
-      if (save && savedInviteOptions) {
-        try {
-          setProcessing(true);
-          const createJob = await bulkInviteXLSX(savedInviteOptions);
-          setInvitesImportId(createJob.data.id);
-          setSavedInviteOptions(null);
-        } catch (errors) {
-          const apiErrors = errors.errors;
-          setApiErrors(apiErrors);
-          setUnknownError(
-            !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
-          );
-          setProcessing(false);
-        }
-        return; // Exit early, don't continue with validation checks
-      }
-
-      const hasCorrectSelection = isString(selectedFileBase64);
-
-      if (hasCorrectSelection) {
-        try {
-          setProcessing(true);
-          setProcessed(false);
-          setApiErrors(null);
-          setFiletypeError(null);
-          setUnknownError(null);
-
-          if (isString(selectedFileBase64)) {
-            setSavedInviteOptions(null);
-
-            const inviteOptions = {
-              xlsx: selectedFileBase64,
-              ...bulkInvite,
-            };
-
-            // Save options for later use when creating invites after modal confirmation
-            setSavedInviteOptions(inviteOptions);
-
-            const newSeats = await bulkInviteCountNewSeatsXLSX(inviteOptions);
-            setInvitesImportId(newSeats.data.id);
-          }
-        } catch (errors) {
-          const apiErrors = errors.errors;
-
-          setApiErrors(apiErrors);
-          setUnknownError(
-            !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
-          );
-          setProcessing(false);
-        }
-      }
-    },
-    [
-      selectedFileBase64,
-      setProcessing,
-      setProcessed,
-      setApiErrors,
-      setFiletypeError,
-      setUnknownError,
-      bulkInviteXLSX,
-      bulkInviteCountNewSeatsXLSX,
-      setInvitesImportId,
-      savedInviteOptions,
-      setSavedInviteOptions,
-    ]
-  );
-
-  const [savedEmailOptions, setSavedEmailOptions] = useState<any>(null);
-
-  const onSubmitManualTab = useCallback(
-    async (bulkInvite: INewBulkInvite, save: boolean) => {
-      // If we're saving and have saved options from a previous count operation
-      if (save && savedEmailOptions) {
-        try {
-          setProcessing(true);
-          const createJob = await bulkInviteEmails(savedEmailOptions);
-          setInvitesImportId(createJob.data.id);
-          setSavedEmailOptions(null);
-        } catch (errors) {
-          const apiErrors = errors.errors;
-          setApiErrors(apiErrors);
-          setUnknownError(
-            !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
-          );
-          setProcessing(false);
-        }
-        return; // Exit early, don't continue with validation checks
-      }
-
-      const hasCorrectSelection = isString(selectedEmails);
-
-      if (hasCorrectSelection) {
-        try {
-          setProcessing(true);
-          setProcessed(false);
-          setApiErrors(null);
-          setFiletypeError(null);
-          setUnknownError(null);
-
-          if (selectedView === 'manual' && isString(selectedEmails)) {
-            setSavedEmailOptions(null);
-
-            const inviteOptions = {
-              emails: selectedEmails.split(',').map((item) => item.trim()),
-              ...bulkInvite,
-            };
-
-            // Save options for later use when creating invites after modal confirmation
-            setSavedEmailOptions(inviteOptions);
-
-            const newSeats = await bulkInviteCountNewSeatsEmails(inviteOptions);
-            setInvitesImportId(newSeats.data.id);
-          }
-        } catch (errors) {
-          const apiErrors = errors.errors;
-          setApiErrors(apiErrors);
-          setUnknownError(
-            !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
-          );
-          setProcessing(false);
-        }
-      }
-    },
-    [
-      selectedEmails,
-      selectedView,
-      setProcessing,
-      setProcessed,
-      setApiErrors,
-      setFiletypeError,
-      setUnknownError,
-      bulkInviteEmails,
-      bulkInviteCountNewSeatsEmails,
-      setInvitesImportId,
-      savedEmailOptions,
-      setSavedEmailOptions,
-    ]
-  );
-
-  // `save` parameter is used to avoid duplication of import/text and error handling logic
-  const onSubmit = useCallback(
-    async ({ save }: { save: boolean }) => {
-      const bulkInvite: INewBulkInvite = {
-        locale: selectedLocale,
-        roles: getRoles(),
-        group_ids:
-          selectedGroups && selectedGroups.length > 0
-            ? selectedGroups.map((group) => group.value)
-            : null,
-        invite_text: selectedInviteText,
-      };
-
-      if (selectedView === 'template') {
-        await onSubmitTemplateTab(bulkInvite, save);
-      }
-
-      if (selectedView === 'manual') {
-        await onSubmitManualTab(bulkInvite, save);
-      }
-    },
-    [
-      selectedLocale,
-      getRoles,
-      selectedGroups,
-      selectedInviteText,
-      selectedView,
-      onSubmitTemplateTab,
-      onSubmitManualTab,
-    ]
-  );
-
-  const checkNewSeatsResponse = useCallback(
-    async (response: any) => {
-      setNewSeatsResponse(response);
-
-      const errors = response?.data?.attributes?.result?.errors;
-      if (errors?.length > 0) {
-        setApiErrors(errors);
-        setProcessing(false);
-        setProcessed(false);
-        return;
-      }
-
-      let newlyAddedAdminsNumber = 0;
-      let newlyAddedModeratorsNumber = 0;
-
-      if (response?.data?.attributes?.result) {
-        const result = response.data.attributes.result;
-        newlyAddedAdminsNumber = result.newly_added_admins_number || 0;
-        newlyAddedModeratorsNumber = result.newly_added_moderators_number || 0;
-      }
-
-      if (!checkIfSeatsExceeded) return;
-
-      if (
-        checkIfSeatsExceeded({
-          newlyAddedAdminsNumber,
-          newlyAddedModeratorsNumber,
-        }).any
-      ) {
-        setShowModal(true);
-      } else {
-        await onSubmit({ save: true }); // <-- add await here
-      }
-    },
-    [
-      setNewSeatsResponse,
-      setShowModal,
-      onSubmit,
-      checkIfSeatsExceeded,
-      setApiErrors,
-      setProcessing,
-      setProcessed,
-    ]
-  );
-
-  // State to track processed imports
-  const [processedImportIds, setProcessedImportIds] = useState<Set<string>>(
-    new Set()
-  );
-
-  // NOTE: You will probably see two invites_import responses with a completed_at value
-  // for each process, (the count seats and create invites processes),
-  // even though a completed_at value is the signal to use the response's result.
-  // This is due to React state updates being asynchronous: the polling hook may fire
-  // one extra request before the importId is cleared. This is expected and harmless.
-
-  const importJobComplete = (
-    invitesImport: IInvitesImport | undefined,
-    jobType: InvitesImportJobType
-  ) => {
-    if (!invitesImport) return false;
-    if (!invitesImport.data.attributes.job_type.includes(jobType)) {
-      return false;
-    }
-    return !!invitesImport.data.attributes.completed_at;
   };
 
-  // Effect to monitor seats check jobs
-  useEffect(() => {
-    if (!importJobComplete(invitesImport, 'count_new_seats')) return;
+  // The payload for whichever tab is active, or null when there is nothing
+  // to send.
+  const buildInviteOptions = (): InviteOptions | null => {
+    const bulkInvite: INewBulkInvite = {
+      locale: values.locale,
+      roles: getRoles(),
+      group_ids: values.groups?.length
+        ? values.groups.map((group) => group.value)
+        : null,
+      invite_text: values.inviteText,
+    };
 
-    // Skip if we've already processed this import
-    const seatsImportIdValue = invitesImport?.data.id;
-    if (!seatsImportIdValue || processedImportIds.has(seatsImportIdValue)) {
-      return;
+    if (selectedView === 'template') {
+      return isString(values.fileBase64)
+        ? { ...bulkInvite, xlsx: values.fileBase64 }
+        : null;
     }
 
-    // Mark this import as processed
-    setProcessedImportIds((prev) => new Set([...prev, seatsImportIdValue]));
-
-    // Process the import
-    setInvitesImportId(null);
-    checkNewSeatsResponse(invitesImport);
-  }, [invitesImport, checkNewSeatsResponse, processedImportIds]);
-
-  // Effect to monitor invite creation
-  useEffect(() => {
-    if (!importJobComplete(invitesImport, 'bulk_create')) return;
-
-    // Process completed invite creation
-    setInvitesImportId(null);
-
-    // Check for any errors in the response
-    if (
-      invitesImport &&
-      invitesImport.data.attributes.result.errors?.length > 0
-    ) {
-      setApiErrors(invitesImport.data.attributes.result.errors);
-      setProcessing(false);
-      setProcessed(false);
-    } else {
-      // Success - reset UI state
-      if (fileInputElement.current) {
-        fileInputElement.current.value = '';
-      }
-
-      setProcessed(true);
-      // Invalidate seats & app_configuration queries to trigger refetch,
-      // to ensure correct seat counts displayed in form after invites are created.
-      queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
-      queryClient.invalidateQueries({ queryKey: appConfigurationKeys.all() });
-
-      setProcessing(false);
-      setSelectedFileBase64(null);
-      setSelectedEmails(null);
-    }
-
-    // Reset the query to prevent issues if we navigate away/back
-    resetQueryData();
-  }, [invitesImport, resetQueryData, queryClient]);
-
-  const closeModal = () => {
-    setShowModal(false);
-    setProcessing(false);
-    setNewSeatsResponse(null);
-    resetQueryData();
+    return isString(values.emails)
+      ? {
+          ...bulkInvite,
+          emails: values.emails.split(',').map((item) => item.trim()),
+        }
+      : null;
   };
 
   useEffect(() => {
-    if (tenantLocales && !selectedLocale) {
-      setSelectedLocale(tenantLocales[0]);
+    if (tenantLocales && !values.locale) {
+      setValue('locale', tenantLocales[0]);
     }
-  }, [tenantLocales, selectedLocale]);
+  }, [tenantLocales, values.locale, setValue]);
 
-  const resetErrorAndSuccessState = () => {
-    setProcessed(false);
-    setApiErrors(null);
-    setUnknownError(null);
-  };
-
-  const handleEmailListOnChange = (selectedEmails: string) => {
-    resetErrorAndSuccessState();
-    setSelectedEmails(selectedEmails);
-  };
+  const handleEmailListOnChange = (emails: string) =>
+    updateField('emails', emails);
 
   const handleFileInputOnChange = async (
     event: ChangeEvent<HTMLInputElement>
@@ -471,58 +192,40 @@ const Invitations = () => {
     ) {
       filetypeError = <FormattedMessage {...messages.filetypeError} />;
       selectedFile = null;
-
-      if (fileInputElement.current) {
-        fileInputElement.current.value = '';
-      }
+      clearFileInput();
     }
 
-    const selectedFileBase64 = selectedFile
-      ? await getBase64FromFile(selectedFile)
-      : null;
-    resetErrorAndSuccessState();
-    setSelectedFileBase64(selectedFileBase64);
+    updateField(
+      'fileBase64',
+      selectedFile ? await getBase64FromFile(selectedFile) : null
+    );
     setFiletypeError(filetypeError);
   };
 
-  const handleAdminRightsOnToggle = () => {
-    resetErrorAndSuccessState();
-    setInviteesWillHaveAdminRights(!inviteesWillHaveAdminRights);
-  };
+  const handleAdminRightsOnToggle = () =>
+    updateField('adminRights', !values.adminRights);
 
-  const handleModeratorRightsOnToggle = () => {
-    resetErrorAndSuccessState();
-    setInviteesWillHaveModeratorRights(!inviteesWillHaveModeratorRights);
-  };
+  const handleModeratorRightsOnToggle = () =>
+    updateField('moderatorRights', !values.moderatorRights);
 
-  const handleLocaleOnChange = (selectedLocale: SupportedLocale) => {
-    resetErrorAndSuccessState();
-    setSelectedLocale(selectedLocale);
-  };
+  const handleLocaleOnChange = (locale: SupportedLocale) =>
+    updateField('locale', locale);
 
-  const handleSelectedProjectsOnChange = (selectedProjects: IOption[]) => {
-    resetErrorAndSuccessState();
-    setSelectedProjects(selectedProjects.length > 0 ? selectedProjects : null);
-  };
+  const handleSelectedProjectsOnChange = (projects: IOption[]) =>
+    updateField('projects', projects.length > 0 ? projects : null);
 
-  const handleSelectedGroupsOnChange = (selectedGroups: IOption[]) => {
-    resetErrorAndSuccessState();
-    setSelectedGroups(selectedGroups.length > 0 ? selectedGroups : null);
-  };
+  const handleSelectedGroupsOnChange = (groups: IOption[]) =>
+    updateField('groups', groups.length > 0 ? groups : null);
 
-  const handleInviteTextOnChange = (selectedInviteText: string) => {
-    resetErrorAndSuccessState();
-    setSelectedInviteText(selectedInviteText);
-  };
+  const handleInviteTextOnChange = (inviteText: string) =>
+    updateField('inviteText', inviteText);
 
-  const getSubmitState = (
-    errors: IInviteError[] | null,
-    processed: boolean
-  ) => {
+  const getSubmitState = () => {
     const isInvitationValid = validateInvitation();
-    if (errors && errors.length > 0) {
+
+    if (apiErrors && apiErrors.length > 0) {
       return 'error';
-    } else if (processed && !isInvitationValid) {
+    } else if (submission.status === 'created' && !isInvitationValid) {
       return 'success';
     } else if (!isInvitationValid) {
       return 'disabled';
@@ -534,37 +237,56 @@ const Invitations = () => {
     setInvitationOptionsOpened(!invitationOptionsOpened);
   };
 
-  const resetWithView = (selectedView: TInviteTabName) => {
-    setSelectedView(selectedView);
-    setSelectedEmails(null);
-    setSelectedFileBase64(null);
-    setInviteesWillHaveAdminRights(false);
-    setInviteesWillHaveModeratorRights(false);
-    setSelectedLocale(tenantLocales ? tenantLocales[0] : null);
-    setSelectedProjects(null);
-    setSelectedGroups(null);
-    setSelectedInviteText(null);
+  const resetWithView = (view: TInviteTabName) => {
+    setSelectedView(view);
+    reset({ ...emptyForm, locale: tenantLocales ? tenantLocales[0] : null });
+    clearFileInput();
     setInvitationOptionsOpened(false);
-    setProcessed(false);
-    setApiErrors(null);
     setFiletypeError(null);
-    setUnknownError(null);
+    dismissResult();
   };
 
   const validateInvitation = () => {
-    const isValidEmails = isString(selectedEmails) && !isEmpty(selectedEmails);
-    const hasValidRights = inviteesWillHaveModeratorRights
-      ? !isEmpty(selectedProjects)
+    const isValidEmails = isString(values.emails) && !isEmpty(values.emails);
+    const hasValidRights = values.moderatorRights
+      ? !isEmpty(values.projects)
       : true;
     const isValidInvitationTemplate =
-      isString(selectedFileBase64) && !isEmpty(selectedFileBase64);
+      isString(values.fileBase64) && !isEmpty(values.fileBase64);
     return (isValidEmails || isValidInvitationTemplate) && hasValidRights;
   };
 
   const handleSubmitAction = async (event: React.FormEvent) => {
     event.preventDefault();
-    await onSubmit({ save: false });
+    // The submit button blocks clicks while processing, but a form submission
+    // can also come from the keyboard.
+    if (isWaitingOnJob) return;
+
+    const options = buildInviteOptions();
+    if (options) {
+      await submit(options);
+    }
   };
+
+  const apiErrors =
+    submission.status === 'failed' && submission.failure.reason === 'apiErrors'
+      ? submission.failure.errors
+      : null;
+
+  // The count rolls its work back, so "nothing was sent" is only safe there.
+  const failureMessages = {
+    countTimedOut: messages.processingNotStartedError,
+    createTimedOut: errorMessages.unexpected_invite_error,
+    rejected: messages.unknownError,
+    apiErrors: null,
+  } as const;
+
+  const failureMessage =
+    submission.status === 'failed'
+      ? failureMessages[submission.failure.reason]
+      : null;
+
+  const seatsModal = seatsModalContent(submission);
 
   const invitationTabs: {
     name: TInviteTabName;
@@ -607,12 +329,13 @@ const Invitations = () => {
             <TemplateTab
               filetypeError={filetypeError}
               handleFileInputOnChange={handleFileInputOnChange}
+              fileInputRef={fileInputRef}
             />
           )}
 
           {selectedView === 'manual' && (
             <ManualTab
-              selectedEmails={selectedEmails}
+              selectedEmails={values.emails}
               handleEmailListOnChange={handleEmailListOnChange}
             />
           )}
@@ -622,25 +345,25 @@ const Invitations = () => {
               invitationOptionsOpened={invitationOptionsOpened}
               onToggleOptions={toggleOptions}
               selectedView={selectedView}
-              inviteesWillHaveAdminRights={inviteesWillHaveAdminRights}
-              inviteesWillHaveModeratorRights={inviteesWillHaveModeratorRights}
+              inviteesWillHaveAdminRights={values.adminRights}
+              inviteesWillHaveModeratorRights={values.moderatorRights}
               handleAdminRightsOnToggle={handleAdminRightsOnToggle}
               handleModeratorRightsOnToggle={handleModeratorRightsOnToggle}
               onLocaleOnChange={handleLocaleOnChange}
-              selectedLocale={selectedLocale}
+              selectedLocale={values.locale}
               handleSelectedProjectsOnChange={handleSelectedProjectsOnChange}
               handleSelectedGroupsOnChange={handleSelectedGroupsOnChange}
               handleInviteTextOnChange={handleInviteTextOnChange}
-              selectedProjects={selectedProjects}
-              selectedGroups={selectedGroups}
-              selectedInviteText={selectedInviteText}
+              selectedProjects={values.projects}
+              selectedGroups={values.groups}
+              selectedInviteText={values.inviteText}
             />
           </Suspense>
           <SectionField>
             <Box display="flex" alignItems="center" paddingTop="30px">
               <SubmitWrapper
-                loading={processing || invitesImportId !== null}
-                status={getSubmitState(apiErrors, processed)}
+                loading={isWaitingOnJob}
+                status={getSubmitState()}
                 messages={{
                   buttonSave: messages.save,
                   buttonSuccess: messages.saveSuccess,
@@ -649,7 +372,7 @@ const Invitations = () => {
                 }}
               />
 
-              {(processing || invitesImportId !== null) && (
+              {isWaitingOnJob && (
                 <Box color={colors.textSecondary} marginLeft="15px">
                   <FormattedMessage {...messages.processing} />
                 </Box>
@@ -663,19 +386,21 @@ const Invitations = () => {
               animate={false}
             />
 
-            <Error text={unknownError} />
+            <Error
+              text={
+                failureMessage ? <FormattedMessage {...failureMessage} /> : null
+              }
+            />
           </SectionField>
         </Section>
       </form>
-      {newSeatsResponse && (
+      {seatsModal && (
         <Suspense fallback={null}>
           <InviteUsersWithSeatsModal
-            inviteUsers={async () => {
-              await onSubmit({ save: true }); // <-- add await here
-            }}
-            showModal={showModal}
-            closeModal={closeModal}
-            newSeatsResponse={newSeatsResponse}
+            inviteUsers={confirmSeats}
+            showModal
+            closeModal={cancel}
+            newSeatsResponse={seatsModal}
           />
         </Suspense>
       )}

@@ -6,17 +6,13 @@ module Invites
     perform_retries false
 
     def perform(current_user, params, import_id, xlsx_import: false)
-      import = InvitesImport.find(import_id)
-
-      seat_numbers = if xlsx_import
-        count_new_seats_xlsx(current_user, params)
-      else
-        count_new_seats(current_user, params)
+      Invites::ImportRunner.new(import_id).run do
+        if xlsx_import
+          count_new_seats_xlsx(current_user, params)
+        else
+          count_new_seats(current_user, params)
+        end
       end
-
-      import.update!(result: seat_numbers, completed_at: Time.current)
-    rescue Invites::FailedError => e
-      import.update!(result: { errors: e.to_h }, completed_at: Time.current)
     end
 
     private
