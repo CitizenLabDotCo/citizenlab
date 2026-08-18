@@ -43,10 +43,31 @@ describe 'single_use:delete_inherited_phase_permissions' do
     expect(Permission.where(id: permission.id)).to be_present
   end
 
+  it 'keeps a permission whose columns all match but whose groups differ' do
+    visiting_permission.update!(groups: [create(:group)])
+    permission = service.override!(phase, 'posting_idea')
+    permission.update!(groups: [create(:group)])
+
+    run
+
+    expect(Permission.where(id: permission.id)).to be_present
+  end
+
   it 'keeps a permission whose demographic questions differ' do
     permission = service.override!(phase, 'posting_idea')
     permission.update!(global_custom_fields: false)
     create(:permissions_custom_field, permission: permission)
+
+    run
+
+    expect(Permission.where(id: permission.id)).to be_present
+  end
+
+  it 'keeps a permission whose columns all match but whose demographic questions differ' do
+    visiting_permission.update!(global_custom_fields: false)
+    create(:permissions_custom_field, permission: visiting_permission)
+    permission = service.override!(phase, 'posting_idea')
+    permission.permissions_custom_fields.first.update!(custom_field: create(:custom_field))
 
     run
 
