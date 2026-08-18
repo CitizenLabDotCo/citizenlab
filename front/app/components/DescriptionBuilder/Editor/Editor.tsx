@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { colors } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import {
   Editor as CraftEditor,
   SerializedNodes,
@@ -9,6 +9,8 @@ import {
 
 import RenderNode from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Editor/RenderNode';
 
+import { useVerticalRhythmMargin } from 'components/admin/ContentBuilder/verticalRhythm';
+
 type EditorProps = {
   isPreview: boolean;
   resolver?: Resolver;
@@ -16,9 +18,11 @@ type EditorProps = {
   children?: React.ReactNode;
 };
 
-// Without this, craftjs crashes.
+// Without a wrapper element, craftjs crashes.
 const PlainDiv = ({ render }) => {
-  return <div>{render}</div>;
+  const marginTop = useVerticalRhythmMargin();
+
+  return <Box mt={marginTop}>{render}</Box>;
 };
 
 const Editor: React.FC<EditorProps> = ({
