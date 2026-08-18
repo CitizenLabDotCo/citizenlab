@@ -50,17 +50,17 @@ const PoliciesMarkup = ({
 
   return (
     <>
-      <Box id="e2e-terms-conditions-container">
+      <Box id="e2e-policies-container">
         <CheckboxWithLabel
-          name="termsAndConditionsAccepted"
-          dataTestId="termsAndConditionsAccepted"
+          name="policiesAccepted"
+          dataTestId="policiesAccepted"
           required
           label={
             <ConsentText>
               <FormattedMessage
-                {...authProvidersMessages.iHaveReadAndAgreeToTerms}
+                {...authProvidersMessages.iHaveReadAndAgreeToTermsAndPrivacy}
                 values={{
-                  link: (
+                  termsLink: (
                     <Link
                       target="_blank"
                       to="/pages/$slug"
@@ -71,23 +71,7 @@ const PoliciesMarkup = ({
                       />
                     </Link>
                   ),
-                }}
-              />
-            </ConsentText>
-          }
-        />
-      </Box>
-      <Box mt="8px" id="e2e-privacy-policy-container">
-        <CheckboxWithLabel
-          name="privacyPolicyAccepted"
-          dataTestId="privacyPolicyAccepted"
-          required
-          label={
-            <ConsentText>
-              <FormattedMessage
-                {...authProvidersMessages.iHaveReadAndAgreeToPrivacy}
-                values={{
-                  link: (
+                  privacyLink: (
                     <Link
                       target="_blank"
                       to="/pages/$slug"

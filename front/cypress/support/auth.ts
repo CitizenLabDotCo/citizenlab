@@ -38,10 +38,7 @@ export const enterPhone = (
 };
 
 export const acceptPolicies = (cy: Cypress.Chainable) => {
-  cy.get('[data-testid="termsAndConditionsAccepted"] .e2e-checkbox')
-    .click()
-    .should('have.class', 'checked');
-  cy.get('[data-testid="privacyPolicyAccepted"] .e2e-checkbox')
+  cy.get('[data-testid="policiesAccepted"] .e2e-checkbox')
     .click()
     .should('have.class', 'checked');
   cy.get('#e2e-policies-continue').click();
