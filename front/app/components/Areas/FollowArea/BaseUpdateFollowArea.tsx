@@ -29,8 +29,8 @@ const BaseUpdateFollowArea = ({
   children,
   hideButtonIcon = false,
 }: Props) => {
-  const { mutate: addFollower, isLoading: isAddingFollower } = useAddFollower();
-  const { mutate: deleteFollower, isLoading: isDeletingFollower } =
+  const { mutate: addFollower, isPending: isAddingFollower } = useAddFollower();
+  const { mutate: deleteFollower, isPending: isDeletingFollower } =
     useDeleteFollower();
   const { pathname } = useLocation();
   const localize = useLocalize();

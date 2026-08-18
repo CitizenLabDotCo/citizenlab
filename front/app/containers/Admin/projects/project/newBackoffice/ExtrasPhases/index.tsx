@@ -46,7 +46,11 @@ const ExtrasPhases = ({ projectId }: Props) => {
   );
 
   return (
-    <Box p="12px" borderTop={`1px solid ${colors.grey200}`}>
+    <Box
+      className="intercom-product-tour-project-extras"
+      p="12px"
+      borderTop={`1px solid ${colors.grey200}`}
+    >
       <Text
         m="0 0 8px 0"
         px="10px"
@@ -111,6 +115,7 @@ const ExtrasPhases = ({ projectId }: Props) => {
 
       <Box display="flex" mt="4px">
         <ButtonWithLink
+          className="intercom-product-tour-project-new-survey-button"
           to="/admin/projects/$projectId/phases/new"
           params={{ projectId }}
           search={{ placement: 'standalone' }}

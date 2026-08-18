@@ -2091,6 +2091,17 @@ resource 'Users' do
             expect(user.reload.last_name).to eq 'NewLastName'
             expect(user.reload.slug).to eq 'newfirstname-newlastname'
           end
+
+          # The slug is built from the request here, not from the stored name.
+          context 'when the name carries markup' do
+            let(:first_name) { '<b>NewFirstName</b>' }
+
+            example_request 'Keeps the markup out of both the name and the slug', document: false do
+              assert_status 200
+              expect(user.reload.first_name).to eq 'NewFirstName'
+              expect(user.reload.slug).to eq 'newfirstname-newlastname'
+            end
+          end
         end
       end
 

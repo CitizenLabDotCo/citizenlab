@@ -16,7 +16,8 @@
 #
 # A row is written only when processing actually changes it, so clean content is left untouched
 # and re-runs are no-ops. Writes use `update_columns` to avoid re-running unrelated validations on
-# legacy rows.
+# legacy rows. A row whose only change is the dead `data-user-slug` mention attribute is left alone
+# too, and counted in the summary.
 #
 # `TenantScript` owns the dry run, the tenant loop and the report. Deleted tenants stay out; every
 # other tenant can still serve content, so all of them are in scope.
@@ -45,6 +46,21 @@ namespace :single_use do
     ].freeze
 
     affected = [] # rows for the summary: { host:, model:, attribute: }
+    slug_only_skipped = 0
+
+    # `data-user-slug` left the mention allowlist in April 2026, so re-running the write path over a
+    # legacy row strips it. Nothing reads it - the front end finds a mention by `data-user-id`, and
+    # comments written since have gone without it - so removing it rewrites a row that carries no
+    # payload. Left in, these outnumber the real findings by seven to one and bury them.
+    slug_attribute = /\s*data-user-slug="[^"]*"/
+    slug_only = lambda do |old_value, new_value|
+      stripped = if old_value.is_a?(String)
+        old_value.gsub(slug_attribute, '')
+      else
+        old_value.transform_values { |value| value&.gsub(slug_attribute, '') }
+      end
+      stripped != old_value && stripped == new_value
+    end
 
     # Re-sanitises one attribute across a scope, reporting and writing only real changes.
     purge = lambda do |tenant, script, scope, attribute, sanitizer, model_label|
@@ -52,6 +68,11 @@ namespace :single_use do
         old_value = record.public_send(attribute)
         new_value = sanitizer.call(old_value)
         next if new_value == old_value
+
+        if slug_only.call(old_value, new_value)
+          slug_only_skipped += 1
+          next
+        end
 
         script.reporter.add_change(
           old_value, new_value,
@@ -70,6 +91,9 @@ namespace :single_use do
     end
 
     summary = lambda do |_script|
+      if slug_only_skipped.positive?
+        puts "\n   ⏭️  Left alone: #{slug_only_skipped} row(s) whose only change was the dead mention attribute."
+      end
       next if affected.empty?
 
       puts "\n   🧹 Purged rows by tenant:"
@@ -112,6 +136,11 @@ namespace :single_use do
         mt.send(:sanitize_translation)
         new_value = mt.translation
         next if new_value == old_value
+
+        if slug_only.call(old_value, new_value)
+          slug_only_skipped += 1
+          next
+        end
 
         script.reporter.add_change(
           old_value, new_value,

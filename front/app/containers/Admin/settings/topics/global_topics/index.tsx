@@ -25,7 +25,7 @@ import TopicTermConfig from './TopicTermConfig';
 
 const AllTopics = () => {
   const { data: topics } = useGlobalTopics({ includeStaticPages: true });
-  const { mutate: deleteTopic, isLoading } = useDeleteGlobalTopic();
+  const { mutate: deleteTopic, isPending } = useDeleteGlobalTopic();
   const [showConfirmationModal, setShowConfirmationModal] =
     useState<boolean>(false);
   const [topicIdToDelete, setTopicIdToDelete] = useState<string | null>(null);
@@ -105,7 +105,7 @@ const AllTopics = () => {
             <ButtonWithLink
               buttonStyle="delete"
               onClick={handleTopicDeletionConfirm}
-              processing={isLoading}
+              processing={isPending}
               id="e2e-custom-topic-delete-confirmation-button"
             >
               <FormattedMessage {...messages.deleteButtonLabel} />

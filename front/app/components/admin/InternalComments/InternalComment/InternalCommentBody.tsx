@@ -71,7 +71,7 @@ const InternalCommentBody = ({
 }: Props) => {
   const theme = useTheme();
   const { data: comment } = useInternalComment(commentId);
-  const { mutate: updateComment, isLoading: processing } =
+  const { mutate: updateComment, isPending: processing } =
     useUpdateInternalComment({
       ideaId,
     });

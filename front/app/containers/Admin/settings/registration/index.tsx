@@ -44,7 +44,7 @@ const SettingsRegistrationTab = () => {
   const {
     mutate: updateAppConfiguration,
     error,
-    isLoading: isFormSubmitting,
+    isPending: isFormSubmitting,
     isSuccess: isFormSaved,
   } = useUpdateAppConfiguration();
 

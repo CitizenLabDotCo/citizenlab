@@ -31,14 +31,14 @@ const ProjectPageContentViewer = ({ projectId }: Props) => {
     action: 'moderate',
   });
 
-  const { data: layout, isInitialLoading } = useProjectPageLayout(projectId);
+  const { data: layout, isLoading } = useProjectPageLayout(projectId);
 
   const editorData = useMemo(
     () => normalizeProjectPageLayout(layout?.data.attributes.craftjs_json),
     [layout]
   );
 
-  if (isInitialLoading) return <Spinner />;
+  if (isLoading) return <Spinner />;
 
   const hasContent =
     layout &&

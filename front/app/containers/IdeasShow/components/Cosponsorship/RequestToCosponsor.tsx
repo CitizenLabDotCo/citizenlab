@@ -28,7 +28,7 @@ interface Props {
 }
 
 const RequestToCosponsor = ({ ideaId }: Props) => {
-  const { mutate: acceptConsponsorshipInvite, isLoading } =
+  const { mutate: acceptConsponsorshipInvite, isPending } =
     useAcceptCosponsorshipInvitation();
 
   const { data: cosponsors } = useCosponsorships({
@@ -59,7 +59,7 @@ const RequestToCosponsor = ({ ideaId }: Props) => {
               id: invitedCosponsor.id,
             })
           }
-          processing={isLoading}
+          processing={isPending}
           disabled={!isInvitationPending}
           bgColor={isInvitationPending ? colors.primary : colors.success}
         >

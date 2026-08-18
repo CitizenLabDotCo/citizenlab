@@ -37,7 +37,12 @@ module MachineTranslations
     SOURCE_SANITIZE_PIPELINES = {
       %w[Idea title_multiloc] => PLAIN_TEXT_PIPELINE,
       %w[Idea body_multiloc] => ->(html) { SanitizationService.new.sanitize_body(html, Idea::BODY_SANITIZE_FEATURES) },
-      %w[Comment body_multiloc] => ->(html) { SanitizationService.new.sanitize_body(html, Comment::BODY_SANITIZE_FEATURES) }
+      # A comment rebuilds its links from the visible text, which a provider translates. Restoring
+      # each URL as its own text first leaves the rule something to find, so the link survives.
+      %w[Comment body_multiloc] => lambda { |html|
+        service = SanitizationService.new
+        service.sanitize_body(service.replace_links_with_urls(html), Comment::BODY_SANITIZE_FEATURES)
+      }
     }.freeze
 
     private

@@ -18,7 +18,7 @@ const useDeleteIdeaOfficialFeedback = () => {
   return useMutation({
     mutationFn: deleteIdeaOfficialFeedback,
     onSuccess: () => {
-      queryClient.invalidateQueries(ideaFilterCountsKeys.all());
+      queryClient.invalidateQueries({ queryKey: ideaFilterCountsKeys.all() });
       queryClient.invalidateQueries({
         queryKey: ideaOfficialFeedbackKeys.lists(),
       });

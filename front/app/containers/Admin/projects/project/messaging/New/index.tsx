@@ -18,7 +18,7 @@ import messages from '../messages';
 const New = () => {
   const { projectId } = useParams({ strict: false });
   const { data: authUser } = useAuthUser();
-  const { isLoading, mutateAsync: createCampaign } = useAddEmailCampaign();
+  const { isPending, mutateAsync: createCampaign } = useAddEmailCampaign();
   const handleSubmit = async (values: FormValues) => {
     const response = await createCampaign({
       context: { projectId },
@@ -42,7 +42,7 @@ const New = () => {
           <FormattedMessage {...messages.addCampaignTitle} />
         </PageTitle>
         <CampaignForm
-          isLoading={isLoading}
+          isLoading={isPending}
           defaultValues={{
             sender: 'author',
             reply_to:

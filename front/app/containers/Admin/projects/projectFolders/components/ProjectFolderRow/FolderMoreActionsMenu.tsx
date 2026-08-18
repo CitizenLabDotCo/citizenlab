@@ -31,7 +31,7 @@ const FolderMoreActionsMenu = ({
 }: Props) => {
   const {
     mutate: deleteProjectFolder,
-    isLoading: isDeleteProjectFolderLoading,
+    isPending: isDeleteProjectFolderLoading,
   } = useDeleteProjectFolder();
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();

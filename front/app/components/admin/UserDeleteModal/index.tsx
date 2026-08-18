@@ -58,7 +58,7 @@ const DeleteUserModal = ({ setClose, user, returnFocusRef }: Props) => {
   const [banEmail, setBanEmail] = useState(false);
   const [banReason, setBanReason] = useState('');
   const { formatMessage } = useIntl();
-  const { mutate: deleteUser, isLoading } = useDeleteUser();
+  const { mutate: deleteUser, isPending } = useDeleteUser();
   const { data: statsResponse, isLoading: isLoadingStats } =
     useUserParticipationStats({ id: user.id });
   const { data: banDetails } = useCheckEmailBan(user.attributes.email);
@@ -259,7 +259,7 @@ const DeleteUserModal = ({ setClose, user, returnFocusRef }: Props) => {
           <Button
             buttonStyle="delete"
             onClick={handleDelete}
-            processing={isLoading}
+            processing={isPending}
           >
             {formatMessage(messages.deleteAccount)}
           </Button>

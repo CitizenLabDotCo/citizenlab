@@ -46,8 +46,8 @@ const DraftPhaseDescription = ({
   const { formatMessage } = useIntl();
   const { projectId } = useParams({ strict: false }) as { projectId: string };
   const { data: phases } = usePhases(projectId);
-  const { mutate: updatePhase, isLoading } = useUpdatePhase();
-  const { mutate: updateDraftPhaseDescription, isLoading: isDraftLoading } =
+  const { mutate: updatePhase, isPending } = useUpdatePhase();
+  const { mutate: updateDraftPhaseDescription, isPending: isDraftLoading } =
     useUpdatePhase();
 
   const hasSavedDraft = initialDraft && !isEmptyMultiloc(initialDraft);
@@ -173,7 +173,7 @@ const DraftPhaseDescription = ({
               buttonStyle="text"
               onClick={handleDiscard}
               padding="0px"
-              disabled={isLoading}
+              disabled={isPending}
             >
               {formatMessage(messages.draftDescriptionDiscardChanges)}
             </Button>
@@ -196,7 +196,7 @@ const DraftPhaseDescription = ({
               <Button
                 buttonStyle="admin-dark"
                 onClick={handlePublish}
-                disabled={isLoading}
+                disabled={isPending}
               >
                 {formatMessage(messages.draftDescriptionPublish)}
               </Button>

@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, InfiniteData } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -37,12 +37,14 @@ const useEmailCampaigns = (queryParams: EmailCampaignsQueryParameters) => {
   return useInfiniteQuery<
     IEmailCampaignsData,
     CLErrors,
-    IEmailCampaignsData,
-    EmailCampaignsKeys
+    InfiniteData<IEmailCampaignsData>,
+    EmailCampaignsKeys,
+    number
   >({
     queryKey: emailCampaignsKeys.list(queryParams),
     queryFn: ({ pageParam }) =>
       fetchEmailCampaigns({ ...queryParams, pageNumber: pageParam }),
+    initialPageParam: 1,
     // Should still be needed for pagination in CustomEmails
     getNextPageParam: (lastPage) => {
       const hasNextPage = lastPage.links.next;
