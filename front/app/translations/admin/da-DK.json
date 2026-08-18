@@ -1196,7 +1196,6 @@
   "app.containers.Admin.messaging.automated.editModalTitle": "Rediger kampagnefelter",
   "app.containers.Admin.messaging.automated.variablesToolTip": "Du kan bruge følgende variabler i din besked:",
   "app.containers.Admin.messaging.cancelButton": "Annuller",
-  "app.containers.Admin.messaging.confirmSendSmsHeader": "Vil du sende denne tekstbesked til alle deltagere med et telefonnummer?",
   "app.containers.Admin.messaging.deleteSmsButton": "Slet",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "Er du sikker på, at du vil slette denne sms-besked?",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "Rediger sms-besked",

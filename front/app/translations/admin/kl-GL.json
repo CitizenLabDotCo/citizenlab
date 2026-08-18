@@ -1196,7 +1196,6 @@
   "app.containers.Admin.messaging.automated.editModalTitle": "Suliiniutip immikkoortui aaqqissukkit",
   "app.containers.Admin.messaging.automated.variablesToolTip": "Nalunaarutinni allanngorarnerit tulliuttut atorsinnaavatit:",
   "app.containers.Admin.messaging.cancelButton": "Taamaatiguk",
-  "app.containers.Admin.messaging.confirmSendSmsHeader": "SMS una peqataasunut oqarasuaatitik nalunaarutigisimasunut tamanut nassiunniarpiuk?",
   "app.containers.Admin.messaging.deleteSmsButton": "Piiguk",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "Qularinngiliuk SMS una piiarusullugu?",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "SMS aaqqissuuguk",

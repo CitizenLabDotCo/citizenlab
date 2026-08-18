@@ -1196,7 +1196,6 @@
   "app.containers.Admin.messaging.automated.editModalTitle": "مہم کے شعبوں میں ترمیم کریں۔",
   "app.containers.Admin.messaging.automated.variablesToolTip": "آپ اپنے پیغام میں درج ذیل متغیرات استعمال کر سکتے ہیں:",
   "app.containers.Admin.messaging.cancelButton": "منسوخ کریں",
-  "app.containers.Admin.messaging.confirmSendSmsHeader": "کیا یہ ٹیکسٹ پیغام ان تمام شرکاء کو بھیجنا چاہتے ہیں جن کے پاس فون نمبر ہے؟",
   "app.containers.Admin.messaging.deleteSmsButton": "حذف کریں",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "کیا آپ واقعی یہ ایس ایم ایس پیغام حذف کرنا چاہتے ہیں؟",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "ایس ایم ایس پیغام میں ترمیم کریں",

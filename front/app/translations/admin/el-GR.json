@@ -1196,7 +1196,6 @@
   "app.containers.Admin.messaging.automated.editModalTitle": "Επεξεργασία πεδίων καμπάνιας",
   "app.containers.Admin.messaging.automated.variablesToolTip": "Μπορείτε να χρησιμοποιήσετε τις ακόλουθες μεταβλητές στο μήνυμά σας:",
   "app.containers.Admin.messaging.cancelButton": "Ακύρωση",
-  "app.containers.Admin.messaging.confirmSendSmsHeader": "Αποστολή αυτού του μηνύματος κειμένου σε όλους τους συμμετέχοντες με αριθμό τηλεφώνου;",
   "app.containers.Admin.messaging.deleteSmsButton": "Διαγραφή",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτό το μήνυμα SMS;",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "Επεξεργασία μηνύματος SMS",

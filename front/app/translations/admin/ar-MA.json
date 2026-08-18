@@ -1196,7 +1196,6 @@
   "app.containers.Admin.messaging.automated.editModalTitle": "تعديل حقول الحملة",
   "app.containers.Admin.messaging.automated.variablesToolTip": "يمكنك استخدام المتغيرات التالية في رسالتك:",
   "app.containers.Admin.messaging.cancelButton": "إلغاء",
-  "app.containers.Admin.messaging.confirmSendSmsHeader": "هل تريد إرسال هذه الرسالة النصية إلى جميع المشاركين الذين لديهم رقم هاتف؟",
   "app.containers.Admin.messaging.deleteSmsButton": "حذف",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "هل أنت متأكد من أنك تريد حذف هذه الرسالة النصية (SMS)؟",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "تعديل الرسالة النصية (SMS)",

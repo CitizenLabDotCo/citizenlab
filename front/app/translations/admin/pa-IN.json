@@ -1196,7 +1196,6 @@
   "app.containers.Admin.messaging.automated.editModalTitle": "ਮੁਹਿੰਮ ਖੇਤਰਾਂ ਦਾ ਸੰਪਾਦਨ ਕਰੋ",
   "app.containers.Admin.messaging.automated.variablesToolTip": "ਤੁਸੀਂ ਆਪਣੇ ਸੁਨੇਹੇ ਵਿੱਚ ਹੇਠ ਲਿਖੇ ਵੇਰੀਏਬਲ ਵਰਤ ਸਕਦੇ ਹੋ:",
   "app.containers.Admin.messaging.cancelButton": "ਰੱਦ ਕਰੋ",
-  "app.containers.Admin.messaging.confirmSendSmsHeader": "ਕੀ ਇਹ ਟੈਕਸਟ ਸੁਨੇਹਾ ਫ਼ੋਨ ਨੰਬਰ ਵਾਲੇ ਸਾਰੇ ਭਾਗੀਦਾਰਾਂ ਨੂੰ ਭੇਜਣਾ ਹੈ?",
   "app.containers.Admin.messaging.deleteSmsButton": "ਮਿਟਾਓ",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "ਕੀ ਤੁਸੀਂ ਯਕੀਨੀ ਤੌਰ 'ਤੇ ਇਸ SMS ਸੁਨੇਹੇ ਨੂੰ ਮਿਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ?",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "SMS ਸੁਨੇਹੇ ਨੂੰ ਸੋਧੋ",

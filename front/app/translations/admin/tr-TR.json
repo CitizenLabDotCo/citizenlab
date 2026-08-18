@@ -1196,7 +1196,6 @@
   "app.containers.Admin.messaging.automated.editModalTitle": "Kampanya alanlarını düzenleme",
   "app.containers.Admin.messaging.automated.variablesToolTip": "Mesajınızda aşağıdaki değişkenleri kullanabilirsiniz:",
   "app.containers.Admin.messaging.cancelButton": "İptal",
-  "app.containers.Admin.messaging.confirmSendSmsHeader": "Bu kısa mesaj telefon numarası olan tüm katılımcılara gönderilsin mi?",
   "app.containers.Admin.messaging.deleteSmsButton": "Sil",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "Bu SMS mesajını silmek istediğinizden emin misiniz?",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "SMS mesajını düzenle",

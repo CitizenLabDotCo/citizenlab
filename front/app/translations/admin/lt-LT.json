@@ -1196,7 +1196,6 @@
   "app.containers.Admin.messaging.automated.editModalTitle": "Redaguoti kampanijos laukus",
   "app.containers.Admin.messaging.automated.variablesToolTip": "Pranešime galite naudoti šiuos kintamuosius:",
   "app.containers.Admin.messaging.cancelButton": "Atšaukti",
-  "app.containers.Admin.messaging.confirmSendSmsHeader": "Siųsti šią SMS žinutę visiems dalyviams, nurodžiusiems telefono numerį?",
   "app.containers.Admin.messaging.deleteSmsButton": "Ištrinti",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "Ar tikrai norite ištrinti šią SMS žinutę?",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "Redaguoti SMS žinutę",

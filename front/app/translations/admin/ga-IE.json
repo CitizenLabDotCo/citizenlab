@@ -1196,7 +1196,6 @@
   "app.containers.Admin.messaging.automated.editModalTitle": "Cuir réimsí feachtais in eagar",
   "app.containers.Admin.messaging.automated.variablesToolTip": "Is féidir leat na hathróga seo a leanas a úsáid i do theachtaireacht:",
   "app.containers.Admin.messaging.cancelButton": "Cealaigh",
-  "app.containers.Admin.messaging.confirmSendSmsHeader": "An seolfar an teachtaireacht téacs seo chuig gach rannpháirtí a bhfuil uimhir theileafóin acu?",
   "app.containers.Admin.messaging.deleteSmsButton": "Scrios",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "An bhfuil tú cinnte gur mhaith leat an teachtaireacht SMS seo a scriosadh?",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "Cuir teachtaireacht SMS in eagar",

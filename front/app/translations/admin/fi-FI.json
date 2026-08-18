@@ -1196,7 +1196,6 @@
   "app.containers.Admin.messaging.automated.editModalTitle": "Muokkaa kampanjakenttiä",
   "app.containers.Admin.messaging.automated.variablesToolTip": "Voit käyttää viestissäsi seuraavia muuttujia:",
   "app.containers.Admin.messaging.cancelButton": "Peruuta",
-  "app.containers.Admin.messaging.confirmSendSmsHeader": "Lähetetäänkö tämä tekstiviesti kaikille osallistujille, joilla on puhelinnumero?",
   "app.containers.Admin.messaging.deleteSmsButton": "Poista",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "Haluatko varmasti poistaa tämän tekstiviestin?",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "Muokkaa tekstiviestiä",
