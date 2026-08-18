@@ -10,38 +10,36 @@ batch tickets, this is the whole thing you need.
 - **Machine** — API params, query keys, sorting, `data-` attributes. Must be
   byte-identical in every language. → `toIsoDate()`
 - **Human** — anything rendered on screen. Must adapt per language.
-  → `useFormatDate()` in components, or the `utils/dateFormat` functions with an
-  explicit locale outside components.
+  → the `utils/dateFormat` functions, with the locale passed in.
 
 ## Cheat sheet
 
 | moment                     | replacement                                                  |
 | -------------------------- | ------------------------------------------------------------ |
 | `.format('YYYY-MM-DD')`    | `toIsoDate(value)`                                           |
-| `.format('YYYY-MM')`       | `toIsoMonth(value)`                                          |
-| `.format('LL')`            | `formatDate.longDate(value)`                                 |
-| `.format('L')`             | `formatDate.shortDate(value)`                                |
-| `.format('LT')`            | `formatDate.time(value)`                                     |
-| `.format('LLL')`           | `formatDate.dateTime(value)`                                 |
-| `.format('MMMM')`          | `formatDate.month(value)`                                    |
-| `.format('MMM')`           | `formatDate.monthShort(value)`                               |
-| `.format('dddd')`          | `formatDate.weekday(value)`                                  |
-| `.format('z')`             | `formatDate.timeZoneAbbreviation(value)`                     |
+| `.format('LL')`            | `formatLongDate(value, locale)`                              |
+| `.format('L')`             | `formatShortDate(value, locale)`                             |
+| `.format('LT')`            | `formatTime(value, locale)`                                  |
+| `.format('LLL')`           | `formatDateTime(value, locale)`                              |
+| `.format('MMMM')`          | `formatMonth(value, locale)`                                 |
+| `.format('MMM')`           | `formatMonthShort(value, locale)`                            |
+| `.format('dddd')`          | `formatWeekday(value, locale)`                               |
+| `.format('z')`             | `formatTimeZoneAbbreviation(value, locale)`                  |
 | `.format('Z')`             | `formatUtcOffset(value)`                                     |
 | `moment.tz.setDefault(tz)` | `setTenantZone(tz)` — already wired in `App`, don't add more |
 
 ## In a component
 
 ```tsx
-import useFormatDate from 'hooks/useFormatDate';
-import { toIsoDate } from 'utils/dateFormat';
+import useLocale from 'hooks/useLocale';
+import { formatLongDate, toIsoDate } from 'utils/dateFormat';
 
 const EventCard = ({ event }) => {
-  const formatDate = useFormatDate();
+  const locale = useLocale();
 
   return (
     <time dateTime={toIsoDate(event.attributes.start_at)}>
-      {formatDate.longDate(event.attributes.start_at)}
+      {formatLongDate(event.attributes.start_at, locale)}
     </time>
   );
 };
@@ -56,8 +54,9 @@ Parsers, `api/` helpers and chart data prep cannot call a hook.
 
 - Machine formats need no locale — import `toIsoDate` directly.
 - Localized formats take the locale as a parameter, passed down from whichever
-  component called them. Do **not** reach for a module-level locale; there
-  isn't one, deliberately (see the header comment in `dateFormat.ts`).
+  component called them — components get it from `useLocale()`. Do **not**
+  reach for a module-level locale; there isn't one, deliberately (see the
+  header comment in `dateFormat.ts`).
 
 ```ts
 import { formatMonthShort, toIsoDate } from 'utils/dateFormat';
@@ -76,7 +75,7 @@ week-numbering year, `DD` is the day of the year. date-fns throws a
 place — use `toIsoDate()` and you never touch a token.
 
 **2. Don't use date-fns `PP` for long dates.** It abbreviates the month
-("Mar 22, 2026"). The `formatDate.longDate` helper uses `Intl` and keeps
+("Mar 22, 2026"). The `formatLongDate` helper uses `Intl` and keeps
 "March 22, 2026", matching what users see today.
 
 **3. Don't hand-build localized patterns.** `'MMMM d, yyyy'` looks fine in

@@ -107,13 +107,6 @@ export const formatYear = (value: DateInput, options?: FormatOptions): string =>
     'yyyy'
   );
 
-/** `2026-03` in the tenant's timezone. */
-export const toIsoMonth = (value: DateInput, options?: FormatOptions): string =>
-  format(
-    new TZDate(toDate(value), options?.timeZone ?? getTenantZone()),
-    'yyyy-MM'
-  );
-
 /* ────────────────────────── localized display formats ───────────────────────
  * Locale is always an explicit argument. There is deliberately no module-level
  * locale, even though that would mirror `moment.locale()` more closely:
@@ -122,9 +115,10 @@ export const toIsoMonth = (value: DateInput, options?: FormatOptions): string =>
  * paint dates in the previous language for a frame, with nothing to trigger a
  * correction.
  *
- * Components should use `useFormatDate()`, which binds these to the active
- * locale. Non-component helpers take the locale as a parameter from whoever
- * called them.
+ * Components read the locale with `useLocale()` and pass it in, the same way
+ * non-component helpers take it from their caller. A hook that pre-bound the
+ * locale was tried and removed: it could not express the `timeZone` override
+ * the event components need, and one calling convention beats two.
  *
  * These use `Intl` rather than date-fns `format` with `P`-style tokens, so
  * they need no locale registry and cannot be affected by module load order.
