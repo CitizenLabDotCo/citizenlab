@@ -31,6 +31,7 @@ module MultiTenancy
         volunteering_phase = Phase.create!({
           project: volunteering_project,
           title_multiloc: volunteering_project.title_multiloc,
+          description_multiloc: runner.rand_description_multiloc,
           start_at: phase_start_at,
           # At least 2 days: `rand(150)` can be 0 (zero-length phase), and a 1-day
           # phase spanning a DST spring-forward is only 23h < Phase::MIN_DURATION.
