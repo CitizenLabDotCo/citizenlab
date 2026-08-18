@@ -100,13 +100,9 @@ class SanitizationService
 
   # Replaces every link with its own URL as the text it shows.
   #
-  # A pipeline without `:link` drops the anchors it is given and lets `linkify` build new ones out of
-  # the visible text, so a reader always sees the address they are about to follow. That holds only
-  # while the text is the address. Run this first where it is not - machine translation translates a
-  # link's label - and the rebuild has the URL to find again.
-  #
-  # Only the schemes `linkify` itself produces are restored; anything else keeps today's outcome, the
-  # anchor gone and its text left behind.
+  # A pipeline without `:link` rebuilds links from the visible text, so a link always shows where it
+  # goes - but only while that text is the URL, which translating a label breaks. Run this first to
+  # give the rebuild its URL back. Only the schemes `linkify` builds are restored.
   def replace_links_with_urls(html)
     return html if html.blank?
 
