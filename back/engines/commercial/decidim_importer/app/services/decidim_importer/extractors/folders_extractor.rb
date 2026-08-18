@@ -53,7 +53,7 @@ module DecidimImporter
         return if description.blank?
 
         layout = Record.new('content_builder/layout', {
-          'code' => ContentBuilder::DescriptionLayoutService::FOLDER_LAYOUT_CODE,
+          'code' => ContentBuilder::LayoutProvisioningService::FOLDER_LAYOUT_CODE,
           'enabled' => true,
           'craftjs_json' => description_craftjs(description)
         })

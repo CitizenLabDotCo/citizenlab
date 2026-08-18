@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe ContentBuilder::DescriptionLayoutService do
+describe ContentBuilder::LayoutProvisioningService do
   subject(:service) { described_class.new }
 
   def node_types(layout)
@@ -114,12 +114,12 @@ describe ContentBuilder::DescriptionLayoutService do
     end
   end
 
-  describe '#provision_all_descriptions!' do
+  describe '#provision_all!' do
     it 'puts every project page and folder description on the Content Builder' do
       project = create(:project)
       folder = create(:project_folder)
 
-      service.provision_all_descriptions!
+      service.provision_all!
 
       expect(project.content_builder_layouts.find_by(code: 'project_page')&.enabled).to be(true)
       expect(folder.content_builder_layouts.find_by(code: 'project_folder_description')&.enabled).to be(true)

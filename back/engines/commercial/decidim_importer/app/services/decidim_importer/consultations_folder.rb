@@ -15,7 +15,7 @@ module DecidimImporter
     # Assemblies folder is created during import (title from {ExportReader::ASSEMBLIES_FOLDER_TITLE});
     # located here by the slug that title slugifies to.
     ASSEMBLIES_FOLDER_SLUG = 'assemblies'
-    FOLDER_LAYOUT_CODE = 'project_folder_description'
+    FOLDER_LAYOUT_CODE = ContentBuilder::LayoutProvisioningService::FOLDER_LAYOUT_CODE
     # Stable craftjs node id for the "other folders" Selection widget, so re-running replaces it in
     # place rather than appending a duplicate.
     OTHER_FOLDERS_NODE_ID = 'other-folders-selection'
@@ -85,12 +85,12 @@ module DecidimImporter
     # here, keeping the staged description. Idempotent: a layout that already has the widgets is left be.
     def ensure_standard_layout(folder)
       layout = folder_layout(folder)
-      return ContentBuilder::DescriptionLayoutService.new.provision_for(folder) if layout.nil?
+      return ContentBuilder::LayoutProvisioningService.new.provision_for(folder) if layout.nil?
       return if node_names(layout).include?('FolderTitle')
 
       layout.update!(
         enabled: true,
-        craftjs_json: ContentBuilder::DescriptionLayoutService.new
+        craftjs_json: ContentBuilder::LayoutProvisioningService.new
           .default_folder_craftjs_json(folder, staged_description(layout))
       )
     end

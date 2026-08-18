@@ -167,7 +167,7 @@ module DecidimImporter
       return if ids.empty?
 
       Project.where(id: ids).find_each do |project|
-        ContentBuilder::DescriptionLayoutService.new.provision_for(project)
+        ContentBuilder::LayoutProvisioningService.new.provision_for(project)
       end
     end
 

@@ -1,23 +1,22 @@
 # frozen_string_literal: true
 
 module ContentBuilder
-  # Puts folder descriptions and project pages on the Content Builder, used by the
-  # SideFx creation/copy hook and the after-template hook.
+  # Gives every project and folder the Content Builder layout it renders from, used
+  # by the SideFx creation/copy hook and the after-template hook.
   #
-  # Folders are authored in the description builder (`project_folder_description`).
-  # Projects are authored in the project page builder (`project_page`) — they no
-  # longer get a description layout of their own.
-  class DescriptionLayoutService
+  # A folder gets a `project_folder_description` layout, authored in the description
+  # builder. A project gets a `project_page` layout, authored in the project page
+  # builder.
+  class LayoutProvisioningService
     FOLDER_LAYOUT_CODE = 'project_folder_description'
 
     def provision_for(buildable)
       ensure_on_content_builder!(buildable)
     end
 
-    # Ensures every folder description and project page in the current tenant is on
-    # the Content Builder. A failure on one buildable is reported and skipped rather
-    # than aborting tenant creation.
-    def provision_all_descriptions!
+    # Ensures every project and folder in the current tenant has its layout. A failure
+    # on one buildable is reported and skipped rather than aborting tenant creation.
+    def provision_all!
       Project.find_each { |project| safely_ensure_on_content_builder(project) }
       ProjectFolders::Folder.find_each { |folder| safely_ensure_on_content_builder(folder) }
     end
@@ -26,18 +25,6 @@ module ContentBuilder
       return ensure_project_page!(buildable) if buildable.is_a?(Project)
 
       ensure_folder_description!(buildable)
-    end
-
-    # NB: create via Layout (not buildable.content_builder_layouts) so the
-    # polymorphic content_buildable_type is set — the has_many lacks `as:`, and a
-    # NULL type is invisible to the controller's find_by!.
-    def create_layout!(buildable, code, craftjs_json)
-      ContentBuilder::Layout.create!(
-        content_buildable: buildable,
-        code: code,
-        enabled: true,
-        craftjs_json: craftjs_json
-      )
     end
 
     # The standard folder layout: title, description, published-projects widget. The
@@ -67,11 +54,18 @@ module ContentBuilder
     def ensure_project_page!(project)
       return if ContentBuilder::Layout.exists?(content_buildable: project, code: ProjectPageLayoutService::CODE)
 
+      create_layout!(project, ProjectPageLayoutService::CODE, ProjectPageLayoutService.new.craftjs_json_for(project))
+    end
+
+    # NB: create via Layout (not buildable.content_builder_layouts) so the
+    # polymorphic content_buildable_type is set — the has_many lacks `as:`, and a
+    # NULL type is invisible to the controller's find_by!.
+    def create_layout!(buildable, code, craftjs_json)
       ContentBuilder::Layout.create!(
-        content_buildable: project,
-        code: ProjectPageLayoutService::CODE,
+        content_buildable: buildable,
+        code: code,
         enabled: true,
-        craftjs_json: ProjectPageLayoutService.new.craftjs_json_for(project)
+        craftjs_json: craftjs_json
       )
     end
 

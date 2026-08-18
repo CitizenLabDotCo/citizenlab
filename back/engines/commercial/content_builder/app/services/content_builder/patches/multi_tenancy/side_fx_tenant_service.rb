@@ -10,7 +10,7 @@ module ContentBuilder
         def after_apply_template(tenant, template, current_user = nil)
           super
           begin
-            tenant.switch { ContentBuilder::DescriptionLayoutService.new.provision_all_descriptions! }
+            tenant.switch { ContentBuilder::LayoutProvisioningService.new.provision_all! }
           rescue StandardError => e
             ErrorReporter.report(e, extra: { tenant_id: tenant.id })
           end
