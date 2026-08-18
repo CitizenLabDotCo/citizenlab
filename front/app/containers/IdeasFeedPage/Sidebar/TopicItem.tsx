@@ -69,7 +69,7 @@ const TopicItem = ({
               <Emoji emoji={topic.data.attributes.icon} size="24px" />
             )}
             <Text m="0px" p="0px" fontWeight="bold" variant="bodyL">
-              <T value={topic?.data.attributes.title_multiloc} supportHtml />
+              <T value={topic?.data.attributes.title_multiloc} />
             </Text>
           </Box>
           <Box

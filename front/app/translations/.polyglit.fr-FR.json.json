@@ -10094,6 +10094,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveSixDigits": {
+    "state": "verified",
+    "verified_at": "2026-08-10T08:32:57.730808Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.noAuthenticationMethodsEnabled": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -10471,13 +10476,13 @@
   },
   "app.containers.NotificationMenu.projectPhaseStarted": {
     "state": "verified",
-    "verified_at": "2026-03-18T11:50:36.510849Z",
-    "verified_by": "Admin"
+    "verified_at": "2026-08-10T13:07:15.603891Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.NotificationMenu.projectPhaseUpcoming": {
     "state": "verified",
-    "verified_at": "2026-03-18T11:50:36.510849Z",
-    "verified_by": "Admin"
+    "verified_at": "2026-08-10T13:07:15.603891Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.NotificationMenu.projectPublished": {
     "state": "verified",
@@ -10848,6 +10853,11 @@
     "state": "verified",
     "verified_at": "2026-07-16T20:33:09.844499Z",
     "verified_by": "Adrien"
+  },
+  "app.containers.PhoneConfirmation.codeMustHaveSixDigits": {
+    "state": "verified",
+    "verified_at": "2026-08-10T08:32:57.730808Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.PhoneConfirmation.confirmationCodeSent": {
     "state": "verified",

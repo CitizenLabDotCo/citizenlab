@@ -583,7 +583,7 @@ describe Permissions::UserRequirementsService do
       let(:verified_permission) { create(:permission, :by_verified) }
 
       before do
-        # To allow require_verification we need to enable at least one verification method
+        # Enable a verification method so that verifications can be created and checked
         AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
         AppConfiguration.instance.save!
       end
@@ -722,7 +722,7 @@ describe Permissions::UserRequirementsService do
     end
 
     context 'when a confirmed phone number is required' do
-      before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
+      include_context 'with sms feature enabled'
 
       # Only a confirmed phone number is required (no confirmed email), so the
       # phone requirement is expressed entirely through :phone_action_required
@@ -849,8 +849,9 @@ describe Permissions::UserRequirementsService do
     # Re-confirmation of an already-confirmed phone number once
     # confirmed_phone_number_expiry has elapsed. Mirrors the email variant above.
     context 'when a confirmed phone number is required with confirmed_phone_number_expiry set' do
+      include_context 'with sms feature enabled'
+
       before do
-        SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' })
         user.update!(phone: '+3212345678', phone_confirmed_at: Time.now)
       end
 
@@ -977,9 +978,6 @@ describe Permissions::UserRequirementsService do
 
       context 'and require_confirmed_email is disabled (verification then backs the account)' do
         before do
-          # A 'users' permission must be backed by at least one authentication
-          # method, so turning off confirmed email requires verification to be
-          # enabled (otherwise the permission is invalid).
           AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
           AppConfiguration.instance.save!
           permission.update!(require_verification: true, require_confirmed_email: false)

@@ -3,6 +3,8 @@ import { CLErrors } from 'typings';
 
 import insightsKeys from 'api/analysis_insights/keys';
 
+import useOnQuerySuccess from 'hooks/useOnQuerySuccess';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import backgroundTasksKeys from './keys';
@@ -20,7 +22,7 @@ const useAnalysisBackgroundTask = (
   pollingEnabled?: boolean
 ) => {
   const queryClient = useQueryClient();
-  return useQuery<
+  const result = useQuery<
     IBackgroundTask,
     CLErrors,
     IBackgroundTask,
@@ -29,19 +31,22 @@ const useAnalysisBackgroundTask = (
     queryKey: backgroundTasksKeys.item({ id: backgroundTaskId }),
     queryFn: () => fetchBackgroundTask(analysisId, backgroundTaskId),
     enabled: !!backgroundTaskId && !!analysisId,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: insightsKeys.list({ analysisId }),
-      });
-    },
     // Refetch every 5 seconds when task is active
-    refetchInterval: (data) => {
+    refetchInterval: ({ state }) => {
       const activeTask =
-        data?.data.attributes.state === 'queued' ||
-        data?.data.attributes.state === 'in_progress';
+        state.data?.data.attributes.state === 'queued' ||
+        state.data?.data.attributes.state === 'in_progress';
       return activeTask && pollingEnabled ? 5000 : false;
     },
   });
+
+  useOnQuerySuccess(result, () => {
+    queryClient.invalidateQueries({
+      queryKey: insightsKeys.list({ analysisId }),
+    });
+  });
+
+  return result;
 };
 
 export default useAnalysisBackgroundTask;

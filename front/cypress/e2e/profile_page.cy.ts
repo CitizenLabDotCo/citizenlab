@@ -73,6 +73,14 @@ describe('Profile Page', () => {
     cy.get('#e2e-usersshowpage-fullname').contains(
       `${newUserName} ${newUserSurname}`
     );
+
+    // The idea cards render after the page container appears, so wait for the
+    // card the before() hook created before scanning. Otherwise the scan races
+    // the card and silently passes by running against a half-rendered page.
+    cy.get('#e2e-ideas-container')
+      .find('.e2e-idea-card')
+      .should('have.length', 1);
+
     cy.checkA11y(undefined, {
       includedImpacts: ['critical', 'serious'],
     });

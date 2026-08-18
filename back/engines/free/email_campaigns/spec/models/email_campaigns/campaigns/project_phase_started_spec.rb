@@ -17,13 +17,18 @@ RSpec.describe EmailCampaigns::Campaigns::ProjectPhaseStarted do
 
       it 'generates a command with the desired payload and tracked content' do
         campaign = create(:project_phase_started_campaign)
+        phase = project.phases.last
         command = campaign.generate_commands(
           recipient: notification_activity.item.recipient,
           activity: notification_activity
         ).first
 
-        expect(command.dig(:event_payload, :phase_title_multiloc))
-          .to eq project.phases.last.title_multiloc
+        expect(command[:event_payload]).to include(
+          phase_title_multiloc: phase.title_multiloc,
+          phase_start_at: phase.start_at,
+          phase_end_at: phase.end_at,
+          phase_description_multiloc: phase.description_multiloc
+        )
       end
     end
 

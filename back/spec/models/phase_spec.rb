@@ -39,6 +39,8 @@ RSpec.describe Phase do
     end
   end
 
+  it_behaves_like 'a sanitized title_multiloc', factory: :phase
+
   describe 'timing model validation' do
     it 'fails when the duration is less than 1 day' do
       phase = build(:phase)

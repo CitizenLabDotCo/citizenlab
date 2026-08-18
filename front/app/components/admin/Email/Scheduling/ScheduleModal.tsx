@@ -43,7 +43,7 @@ interface Props {
 
 const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutate: updateCampaign, isLoading: isUpdatingCampaign } =
+  const { mutate: updateCampaign, isPending: isUpdatingCampaign } =
     useUpdateEmailCampaign();
 
   const tenantTimeNow = nowInZone(timeZone);

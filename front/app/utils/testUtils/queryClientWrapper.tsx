@@ -9,12 +9,6 @@ function createQueryClientWrapper() {
         retry: false,
       },
     },
-    logger: {
-      // eslint-disable-next-line no-console
-      log: console.log,
-      warn: console.warn,
-      error: () => {},
-    },
   });
 
   return ({ children }: { children: React.ReactNode }) => (

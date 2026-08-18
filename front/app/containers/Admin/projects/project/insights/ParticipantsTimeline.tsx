@@ -27,9 +27,9 @@ const ParticipantsTimeline = ({ phaseId }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef<SVGElement>(null);
 
-  const { data, isLoading, error } = usePhaseInsights({ phaseId });
+  const { data, isPending, error } = usePhaseInsights({ phaseId });
 
-  if (isLoading) {
+  if (isPending) {
     return (
       <WordExportableInsight exportId="participation-timeline" skipExport>
         <Box mt="8px" bg="white" p="24px" borderRadius="8px">

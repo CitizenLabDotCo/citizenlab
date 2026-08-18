@@ -8,7 +8,7 @@ class UserService
   class << self
     def upsert_in_web_api(new_or_existing_user, user_params, &)
       new_or_existing_user.assign_attributes(user_params)
-      yield
+      yield if block_given?
       # `on: :create` and `on: :update` callbacks/validations are not called
       new_or_existing_user.save(context: :form_submission)
     end

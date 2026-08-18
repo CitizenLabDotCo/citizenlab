@@ -77,6 +77,7 @@ sv-SE:
         users_who_follow_the_proposal: Användare som följer förslaget
       trigger:
         7_days_after_invite_is_sent: 7 dagar efter att inbjudan skickats
+        7_days_before_phase_starts: 7 dagar innan en fas startar
         7_days_before_the_project_changes_phase: 7 dagar innan projektet byter fas
         comment_is_deleted: Kommentaren tas bort.
         comment_is_flagged_as_spam: Kommentaren flaggas som skräppost
@@ -95,6 +96,7 @@ sv-SE:
         new_input_awaits_screening: Mitt bidrag väntar på bedömning
         new_input_is_published: Ny input publiceras
         new_proposal_is_posted: Ett nytt förslag har lagts fram.
+        phase_starts: En fas startar
         project_phase_changes: Förändringar i projektfas
         project_published: Projekt publicerat
         project_review_request: Moderator begärde en projektgenomgång
@@ -197,8 +199,8 @@ sv-SE:
       project_folder_moderation_rights_received: Rättigheter som mapphanterare har erhållits
       project_manager_rights_received: Rättigheter som projektledare mottagna
       project_moderation_rights_received: Rättigheter för projektmoderering har erhållits
-      project_phase_started: Ny projektfas
-      project_phase_upcoming: Kommande ny projektfas
+      project_phase_started: Fasen har startat
+      project_phase_upcoming: Fasen startar snart
       project_published: Projekt publicerat
       project_review_request: Begäran om projektgranskning
       project_review_state_change: Projekt godkänt
@@ -359,6 +361,7 @@ sv-SE:
         story: Gå till din berättelse
         suggestion: Gå till ditt förslag
         topic: Gå till ditt ämne
+      phase_dates: Från %{startDate} till %{endDate}
     idea_marked_as_spam:
       cta_button: Granskning
       preheader: Agera på den här skräppostrapporten
@@ -571,8 +574,9 @@ sv-SE:
       input_status_description: Ett exempel på status för en inmatning (t.ex. accepterad, avvisad, implementerad...)
       input_status_title: Exempel Status
       official_feedback_body: Exempel på officiell feedback
+      phase_description: Detta är ett exempel på fasinnehåll som används för att förhandsgranska innehållet i e-postmeddelanden. Detta är inte verkligt innehåll.
       phase_title: Exempel på fas
-      project_description_preview: Det här är ett exempel på fasinnehåll som används för att förhandsgranska innehållet i e-postmeddelanden. Det här är inte riktigt innehåll.
+      project_description_preview: Detta är exempel på projektinnehåll som används för att förhandsgranska innehållet i e-postmeddelanden. Detta är inte verkligt innehåll.
       project_title: Exempel på projekt
       proposal_title: Exempel på förslag
       space_title: Exempel-space
@@ -607,21 +611,21 @@ sv-SE:
       title_what_can_you_do_moderator: Vad kan du göra som projektledare?
       x_ideas: '%{numberOfIdeas} idéer'
     project_phase_started:
-      cta_button: Upptäck denna nya fas
-      event_description: Det här projektet gick in i en ny fas på plattformen för %{organizationName}. Klicka på länken nedan för att lära dig mer!
+      cta_button: Se vad som är nytt
+      event_description: "Du kan nu delta i '%{phaseTitle}' på %{organizationName}s plattform."
       new_phase: Det här projektet gick in i fasen %{phaseTitle}
-      preheader: En ny fas har startats för %{projectName}
-      subject: '%{projectName} gick in i en ny fas'
+      preheader: "Du kan nu delta i '%{phaseTitle}'"
+      subject: "'%{phaseTitle}' har startat i %{projectName}"
       subtitle: "Om '%{projectName}'"
-      title: "En ny fas har inletts för projektet '%{projectName}'"
+      title: "Det finns något nytt i '%{projectName}'"
     project_phase_upcoming:
-      cta_button: Starta den nya fasen
-      event_description: 'Projektet %{projectName} går snart in i en ny fas. Se till att allt är inställt för den här fasen: Finns det en adekvat beskrivning? Överförs utvalda idéer till den här fasen? Vill du informera dina medborgare om detaljerna i den här fasen genom en anpassad e-postkampanj?'
+      cta_button: Granska inställningarna
+      event_description: "'%{phaseTitle}' i projektet '%{projectName}' startar den %{startDate}. Ta en stund för att kontrollera att allt är klart: Är beskrivningen fullständig? Stämmer datumen? Vill du informera ditt community genom en anpassad e-postkampanj?"
       new_phase: Projektet går in i fasen %{phaseTitle}
-      preheader: En ny fas startar snart för %{projectName}
-      subject: Få allt konfigurerat för den nya fasen av %{projectName}
+      preheader: Se till att allt är klart före %{startDate}
+      subject: "%{projectName}: '%{phaseTitle}' startar den %{startDate}"
       subtitle: "Om '%{projectName}'"
-      title: '%{firstName}, ett projekt kommer snart att gå in i en ny fas'
+      title: "%{firstName}, '%{phaseTitle}' startar den %{startDate}"
     project_published:
       cta_button: Gå till detta projekt
       event_description: 'Deltagarplattformen på %{organizationName} har just publicerat följande projekt:'

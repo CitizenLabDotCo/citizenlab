@@ -18,14 +18,14 @@ class McpServer::Tools::UpdatePhase < McpServer::BaseTool
   def description
     <<~DESC.squish
       Updates an existing phase. Partial update — only the fields you pass change, and `*_multiloc`
-      fields merge per locale. Accepts the same fields as create_phase, except project_id — a phase
-      can't be moved to another project. Changing participation_method is rejected if the phase
-      already has inputs.
+      fields merge per locale. Accepts the same fields as create_phase, except project_id and
+      placement_type — a phase can't be moved to another project or on/off the timeline. Changing
+      participation_method is rejected if the phase already has inputs.
     DESC
   end
 
   def input_schema
-    create_properties = McpServer::Tools::CreatePhase.new.input_schema[:properties].except(:project_id)
+    create_properties = McpServer::Tools::CreatePhase.new.input_schema[:properties].except(:project_id, :placement_type)
     {
       properties: { phase_id: { type: 'string', description: 'The ID of the phase to update.' }, **create_properties },
       additionalProperties: false,

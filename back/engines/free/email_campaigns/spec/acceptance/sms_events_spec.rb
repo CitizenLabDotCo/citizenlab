@@ -67,6 +67,50 @@ resource 'SMS Events' do
       end
     end
 
+    context 'when the callback reports the recipient opted out' do
+      # The campaigns to withdraw consent from are only registered when SMS is on.
+      include_context 'with sms feature enabled'
+
+      let(:user) { create(:user, :with_confirmed_phone) }
+      let(:campaign) { create(:sms_manual_campaign) }
+      let!(:delivery) do
+        EmailCampaigns::Sms::Delivery.create!(
+          body: 'hi', status: 'sent', message_sid: 'SM_123', user: user, campaign: campaign
+        )
+      end
+      let(:message_status) { 'undelivered' }
+      let(:callback_params) { { MessageSid: message_sid, MessageStatus: message_status, ErrorCode: '21610' } }
+
+      example 'withdraws the recipient consent for manual SMS campaigns' do
+        create(:consent, :sms_manual, user: user, consented: true)
+
+        do_request(callback_params)
+
+        expect(response_status).to eq 200
+        consent = EmailCampaigns::Consent.find_by(
+          user: user, campaign_type: EmailCampaigns::Campaigns::SmsManual.name
+        )
+        expect(consent.consented).to be false
+        expect(delivery.reload.status).to eq 'undelivered'
+      end
+
+      context 'when the delivery belongs to a confirmation code campaign' do
+        let(:campaign) { EmailCampaigns::Campaigns::PhoneConfirmation.create! }
+
+        example 'leaves the manual SMS campaign consent alone' do
+          create(:consent, :sms_manual, user: user, consented: true)
+
+          do_request(callback_params)
+
+          expect(response_status).to eq 200
+          consent = EmailCampaigns::Consent.find_by(
+            user: user, campaign_type: EmailCampaigns::Campaigns::SmsManual.name
+          )
+          expect(consent.consented).to be true
+        end
+      end
+    end
+
     context 'when the provider status is legitimate but unmapped (e.g. canceled)' do
       let(:message_status) { 'canceled' }
 

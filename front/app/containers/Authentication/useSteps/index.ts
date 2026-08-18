@@ -78,6 +78,7 @@ export default function useSteps() {
   const [state, setState] = useState<State>({
     flow: 'signup',
     email: null,
+    phone: null,
     new_email: null,
     new_phone: null,
     smsManualCampaignConsent: false,

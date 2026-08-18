@@ -4,9 +4,10 @@ import projectsKeys from './keys';
 import { fetchProjectBySlug } from './useProjectBySlug';
 
 const getProjectbySlug = (slug: string) => {
-  return queryClient.fetchQuery(projectsKeys.item({ slug }), () =>
-    fetchProjectBySlug({ slug })
-  );
+  return queryClient.fetchQuery({
+    queryKey: projectsKeys.item({ slug }),
+    queryFn: () => fetchProjectBySlug({ slug }),
+  });
 };
 
 export default getProjectbySlug;

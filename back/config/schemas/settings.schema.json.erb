@@ -832,18 +832,6 @@
         }
       },
 
-      "granular_permissions": {
-        "type": "object",
-        "title": "Granular Permissions",
-        "description": "Admin can specify permissions for specific projects and project phases (e.g., who can post, react, etc.).",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
       "pages": {
         "type": "object",
         "title": "Custom Pages",
@@ -1576,10 +1564,16 @@
             "title": "Twilio Auth Token",
             "private": true
           },
-          "twilio_messaging_service_sid": {
+          "twilio_manual_campaigns_messaging_service_sid": {
             "type": "string",
-            "title": "Twilio Messaging Service SID",
-            "description": "The Twilio Messaging Service SID used to send SMS messages.",
+            "title": "Twilio Manual Campaigns Messaging Service SID",
+            "description": "The Twilio Messaging Service SID used to send manual SMS campaigns.",
+            "private": true
+          },
+          "twilio_confirmation_codes_messaging_service_sid": {
+            "type": "string",
+            "title": "Twilio Confirmation Codes Messaging Service SID",
+            "description": "The Twilio Messaging Service SID used to send phone confirmation codes.",
             "private": true
           },
           <% sms_country_codes = CountryCodesService.new %>
@@ -1595,6 +1589,18 @@
             "uniqueItems": true,
             "default": []
           }
+        }
+      },
+
+      "sms_login": {
+        "type": "object",
+        "title": "SMS login (DO NOT USE YET)",
+        "description": "(DO NOT USE YET) Allow users to log in or sign up via SMS as an alternative to email.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
         }
       },
 

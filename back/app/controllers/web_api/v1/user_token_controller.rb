@@ -1,20 +1,49 @@
 # frozen_string_literal: true
 
-class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
+class WebApi::V1::UserTokenController < ActionController::API
   include EnforceUserSso
 
   before_action :sso_enforced?, only: %i[create]
 
+  # Email address + password
   def create
-    ClaimTokenService.claim(entity, auth_params[:claim_tokens])
-    IdeaExposureTransferService.new.transfer_from_request(user: entity, request: request)
-    super
+    user = User.not_invited.find_by_cimail(auth_params[:email])
+
+    # `confirmation_required` is only ever cleared together with `email_confirmed_at`,
+    # so it tells us whether this email address was confirmed.
+    return head :not_found unless user && !user.confirmation_required? && password_correct?(user)
+
+    handle_successful_authentication_sidefx(user)
+    render json: auth_token(user), status: :created
+  end
+
+  # Phone number + password
+  def create_phone
+    return head :not_found unless AppConfiguration.instance.feature_activated?('sms')
+
+    user = User.not_invited.find_by_phone_number(auth_params[:phone])
+
+    return head :not_found unless user&.phone_confirmed_at && password_correct?(user)
+
+    handle_successful_authentication_sidefx(user)
+    render json: auth_token(user), status: :created
   end
 
   private
 
-  def auth_token
-    payload = entity.to_token_payload
+  def handle_successful_authentication_sidefx(user)
+    ClaimTokenService.claim(user, auth_params[:claim_tokens])
+    IdeaExposureTransferService.new.transfer_from_request(user: user, request: request)
+  end
+
+  def password_correct?(user)
+    password = auth_params[:password]
+
+    password.present? && user.authenticate(password).present?
+  end
+
+  def auth_token(user)
+    payload = user.to_token_payload
 
     unless auth_params[:remember_me] # default expiration is set in #to_token_payload and can also be used by 3rd party auth
       payload[:exp] = AuthToken::AuthToken::TOKEN_SHORT_LIFETIME.from_now.to_i
@@ -23,8 +52,8 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
     AuthToken::AuthToken.new payload: payload
   end
 
-  def extra_params
-    [:remember_me, { claim_tokens: [] }]
+  def auth_params
+    @auth_params ||= params.require(:auth).permit(:email, :phone, :password, :remember_me, claim_tokens: [])
   end
 
   def email_param

@@ -69,6 +69,26 @@ RSpec.describe UserConfirmationService do
       end
     end
 
+    # Codes sent before the 4 -> 6 digit switch must stay usable until they expire.
+    context 'when the stored code still has 4 digits' do
+      before { confirmation.update!(code: '1234') }
+
+      it 'confirms the user' do
+        result = service.public_send(method_name, user, '1234')
+
+        expect(result.success?).to be true
+        expect(user.reload.public_send(confirmed_at_attr)).to be_present
+      end
+
+      it 'returns a code invalid error and counts the retry on a wrong guess' do
+        result = service.public_send(method_name, user, '9999')
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(code: [{ error: :invalid }])
+        expect(confirmation.reload.code_retry_count).to eq(1)
+      end
+    end
+
     context 'when no confirmation record exists' do
       before do
         user.confirmations.destroy_all
@@ -184,9 +204,14 @@ RSpec.describe UserConfirmationService do
     include_examples 'validation and confirmation', :validate_and_confirm_phone!, :phone_confirmation, :phone_confirmed_at
 
     context 'when the code is correct' do
-      it 'does not complete pending claim tokens (an email/signup concern)' do
-        expect(ClaimTokenService).not_to receive(:complete)
+      it 'completes pending claim tokens' do
+        claim_token = create(:claim_token)
+        ClaimTokenService.mark(user, [claim_token.token])
+        expect(claim_token.item.author_id).to be_nil
+
         service.validate_and_confirm_phone!(user, confirmation.code)
+
+        expect(claim_token.item.reload.author_id).to eq user.id
       end
     end
 
@@ -200,6 +225,17 @@ RSpec.describe UserConfirmationService do
 
         expect(result.success?).to be false
         expect(result.errors.details).to eq(base: [{ error: :password_login_feature_disabled }])
+      end
+    end
+
+    context 'when the sms feature is disabled' do
+      before { SettingsService.new.deactivate_feature! 'sms' }
+
+      it 'returns an sms feature disabled error' do
+        result = service.validate_and_confirm_phone!(user, user.phone_confirmation.code)
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(base: [{ error: :sms_feature_disabled }])
       end
     end
 

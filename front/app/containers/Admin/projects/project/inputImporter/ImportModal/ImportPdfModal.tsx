@@ -48,7 +48,7 @@ interface Props {
 
 const ImportPdfModal = ({ open, onClose }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutateAsync: addOfflineIdeas, isLoading } = useAddOfflineIdeasAsync();
+  const { mutateAsync: addOfflineIdeas, isPending } = useAddOfflineIdeasAsync();
   const locale = useLocale();
   const { projectId, phaseId } = useParams({
     strict: false,
@@ -218,7 +218,7 @@ const ImportPdfModal = ({ open, onClose }: Props) => {
                 bgColor={colors.primary}
                 width="auto"
                 type="submit"
-                processing={isLoading}
+                processing={isPending}
                 disabled={!file?.base64}
               >
                 <FormattedMessage {...messages.upload} />

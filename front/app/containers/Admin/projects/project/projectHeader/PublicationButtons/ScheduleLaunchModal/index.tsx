@@ -45,9 +45,9 @@ interface Props {
 
 const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutate: updateProject, isLoading: isUpdatingProject } =
+  const { mutate: updateProject, isPending: isUpdatingProject } =
     useUpdateProject();
-  const { mutate: cancelScheduleMutation, isLoading: isCancelling } =
+  const { mutate: cancelScheduleMutation, isPending: isCancelling } =
     useUpdateProject();
   const { data: appConfiguration } = useAppConfiguration();
   const tenantTimezone =

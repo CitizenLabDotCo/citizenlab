@@ -1103,6 +1103,23 @@ RSpec.describe User do
       u.find_or_create_confirmation(:email_confirmation).confirm!
       expect(u.active?).to be false
     end
+
+    it 'returns true when the user has confirmed their phone number' do
+      u = create(:unconfirmed_phone_user)
+      u.find_or_create_confirmation(:phone_confirmation).confirm!
+      expect(u.active?).to be true
+    end
+
+    it 'returns false when the user has a phone number they have not confirmed' do
+      u = create(:unconfirmed_phone_user)
+      expect(u.active?).to be false
+    end
+
+    it 'returns false when the user confirmed their phone number but is blocked' do
+      u = create(:unconfirmed_phone_user, block_end_at: 5.days.from_now)
+      u.find_or_create_confirmation(:phone_confirmation).confirm!
+      expect(u.active?).to be false
+    end
   end
 
   describe 'registration_completed_at' do
@@ -1114,6 +1131,17 @@ RSpec.describe User do
     it 'is set when a user is confirmed' do
       u = create(:unconfirmed_user)
       u.find_or_create_confirmation(:email_confirmation).confirm!
+      expect(u.registration_completed_at).not_to be_nil
+    end
+
+    it 'is not set when a phone user is created' do
+      u = create(:unconfirmed_phone_user)
+      expect(u.registration_completed_at).to be_nil
+    end
+
+    it 'is set when a user confirms their phone number' do
+      u = create(:unconfirmed_phone_user)
+      u.find_or_create_confirmation(:phone_confirmation).confirm!
       expect(u.registration_completed_at).not_to be_nil
     end
 
@@ -1192,6 +1220,24 @@ RSpec.describe User do
     end
   end
 
+  describe '.find_by_phone_number' do
+    it 'finds a user with the same number in a different format' do
+      some_user = create(:user, :with_confirmed_phone, phone: '+14155552671')
+
+      expect(described_class.find_by_phone_number('+1 (415) 555-2671')&.id).to eq some_user.id
+    end
+
+    it 'returns nil if no user record with that phone number was found' do
+      expect(described_class.find_by_phone_number('+14155552671')).to be_nil
+    end
+
+    it 'does not match users without a phone number when the number is unparseable' do
+      create(:user)
+
+      expect(described_class.find_by_phone_number('not-a-number')).to be_nil
+    end
+  end
+
   context 'user confirmation' do
     subject(:user) { build(:unconfirmed_user) }
 
@@ -1239,6 +1285,39 @@ RSpec.describe User do
         end
 
         expect(user.reload.first_name).to eq 'Raced'
+      end
+    end
+
+    describe '#confirmation_pending?' do
+      it 'answers for the phone before any confirmation record exists' do
+        user.save!
+        expect(user.confirmations).to be_empty
+
+        expect(user.confirmation_pending?(:phone_confirmation)).to be false
+
+        user.update!(phone: '+14155552671')
+        expect(user.confirmation_pending?(:phone_confirmation)).to be true
+
+        user.update!(phone_confirmed_at: Time.zone.now)
+        expect(user.confirmation_pending?(:phone_confirmation)).to be false
+      end
+
+      it 'is true for the email as long as the user has not confirmed' do
+        user.save!
+        expect(user.confirmation_pending?(:email_confirmation)).to be true
+
+        user.find_or_create_confirmation(:email_confirmation).confirm!
+        expect(user.confirmation_pending?(:email_confirmation)).to be false
+      end
+
+      it 'is true for a change confirmation only while a new value is pending' do
+        user.save!
+        expect(user.confirmation_pending?(:new_email_confirmation)).to be false
+        expect(user.confirmation_pending?(:new_phone_confirmation)).to be false
+
+        user.update!(new_email: 'new@email.com', new_phone: '+14155552671')
+        expect(user.confirmation_pending?(:new_email_confirmation)).to be true
+        expect(user.confirmation_pending?(:new_phone_confirmation)).to be true
       end
     end
 
@@ -1367,6 +1446,20 @@ RSpec.describe User do
       expect(user.first_name).to eq 'Terry'
     end
 
+    it 'does not entity-encode punctuation in a valid name' do
+      user = described_class.new
+      user.first_name = "Ann-Sofie O'Brien"
+      user.validate
+      expect(user.first_name).to eq "Ann-Sofie O'Brien"
+    end
+
+    it 'neutralises a payload hidden behind entity encoding' do
+      user = described_class.new
+      user.first_name = '&lt;img src=x onerror=alert(1)&gt;Bob'
+      user.validate
+      expect(user.first_name).to eq 'Bob'
+    end
+
     it 'is invalid when it contains @' do
       user = build(:user, first_name: 'foo@example.com')
       expect(user).not_to be_valid
@@ -1387,6 +1480,26 @@ RSpec.describe User do
     it 'is valid when blank' do
       user = build(:user, first_name: '')
       expect(user).to be_valid
+    end
+  end
+
+  describe 'slug generated from the name' do
+    it 'keeps markup in the name out of the slug' do
+      user = create(:user, slug: nil, first_name: '<b>Bob</b>', last_name: 'Smith')
+
+      expect(user.slug).to eq 'bob-smith'
+    end
+
+    it 'keeps a payload in the name out of the slug' do
+      user = create(:user, slug: nil, first_name: '<img src=x onerror=alert(1)>Bob', last_name: 'Smith')
+
+      expect(user.slug).to eq 'bob-smith'
+    end
+
+    it 'is still valid when the name is nothing but markup' do
+      user = create(:user, slug: nil, first_name: '<b></b>', last_name: '<i></i>')
+
+      expect(user.slug).to match(Sluggable::SLUG_REGEX)
     end
   end
 

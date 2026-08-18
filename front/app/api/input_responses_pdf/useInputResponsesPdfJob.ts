@@ -33,8 +33,9 @@ const useInputResponsesPdfJob = (phaseId: string) => {
   return useQuery<IJobs | undefined, CLErrors>({
     queryKey: inputResponsesPdfJobKeys.list({ phaseId }),
     queryFn: () => fetchPdfExportJobs(phaseId),
-    keepPreviousData: true,
-    refetchInterval: (data) => {
+    refetchInterval: ({ state }) => {
+      const data = state.data;
+
       if (!data || data.data.length === 0) {
         return false;
       }

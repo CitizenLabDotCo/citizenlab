@@ -26,4 +26,8 @@ export default defineMessages({
     defaultMessage:
       'A password is only requested from users who sign up with email. Users who sign up another way (e.g. single sign-on) are never asked to set one.',
   },
+  nothingExtra: {
+    id: 'app.components.admin.ActionForm.nothingExtra',
+    defaultMessage: 'Nothing extra',
+  },
 });

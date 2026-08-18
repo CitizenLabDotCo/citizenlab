@@ -36,10 +36,6 @@ class PhoneConfirmation < Confirmation
     true
   end
 
-  def pending?
-    user.phone.present? && user.phone_confirmed_at.nil?
-  end
-
   def reset_code!
     update!(
       code: generate_code,
@@ -53,8 +49,8 @@ class PhoneConfirmation < Confirmation
   end
 
   def generate_code
-    return '1234' if AppConfiguration.instance.settings('sms', 'use_test_mode')
+    return '123456' if AppConfiguration.instance.settings('sms', 'use_test_mode')
 
-    Rails.env.development? ? '1234' : format('%04d', rand(10_000))
+    Rails.env.development? ? '123456' : format('%06d', rand(1_000_000))
   end
 end

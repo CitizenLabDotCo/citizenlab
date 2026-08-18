@@ -2,7 +2,7 @@
 
 class WebApi::V1::ReactionsController < ApplicationController
   before_action :set_reaction, only: %i[show destroy]
-  before_action :set_reactable_type_and_id, only: %i[index create up down]
+  before_action :set_reactable_type_and_id, only: %i[index create]
   skip_before_action :authenticate_user
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -45,14 +45,6 @@ class WebApi::V1::ReactionsController < ApplicationController
     end
   end
 
-  def up
-    upsert_reaction 'up'
-  end
-
-  def down
-    upsert_reaction 'down'
-  end
-
   def destroy
     frozen_reaction = @reaction.destroy
     if frozen_reaction
@@ -64,40 +56,6 @@ class WebApi::V1::ReactionsController < ApplicationController
   end
 
   private
-
-  def upsert_reaction(mode)
-    @old_reaction = Reaction.find_by(
-      user: current_user,
-      reactable_type: @reactable_type,
-      reactable_id: @reactable_id
-    )
-
-    if @old_reaction && @old_reaction.mode == mode
-      authorize @old_reaction, policy_class: @policy_class
-      @old_reaction.errors.add(:base, mode == 'up' ? 'already_liked' : 'already_disliked')
-      render json: { errors: @old_reaction.errors.details }, status: :unprocessable_entity
-    else
-      Reaction.transaction do
-        if @old_reaction
-          old_reaction_frozen = @old_reaction.destroy
-          SideFxReactionService.new.after_destroy(old_reaction_frozen, current_user)
-        end
-        @new_reaction = Reaction.new(
-          user: current_user,
-          reactable_type: @reactable_type,
-          reactable_id: @reactable_id,
-          mode: mode
-        )
-        authorize @new_reaction, policy_class: @policy_class
-        save_or_raise!(@new_reaction)
-        SideFxReactionService.new.after_create(@new_reaction, current_user)
-        render json: WebApi::V1::ReactionSerializer.new(
-          @reaction,
-          params: jsonapi_serializer_params
-        ).serializable_hash, status: :created
-      end
-    end
-  end
 
   def set_reactable_type_and_id
     @reactable_type = params[:reactable]

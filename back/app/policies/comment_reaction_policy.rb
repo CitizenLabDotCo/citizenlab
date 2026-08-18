@@ -14,25 +14,26 @@ class CommentReactionPolicy < ApplicationPolicy
   end
 
   def create?
-    return false if !active? || !owner? || !policy_for(record.reactable.idea.project).show?
+    # Disliking comments is not a supported feature
+    return false unless record.up?
 
-    reason = Permissions::IdeaPermissionsService.new(record.reactable.idea, user).denied_reason_for_action 'commenting_idea'
-    reason ? raise_not_authorized(reason) : true
+    reacting_permitted?
   end
 
   def show?
     active? && (owner? || admin?)
   end
 
-  def up?
-    create?
-  end
-
-  def down?
-    false
-  end
-
   def destroy?
-    create?
+    reacting_permitted?
+  end
+
+  private
+
+  def reacting_permitted?
+    return false if !active? || !owner? || !policy_for(record.reactable.idea.project).show?
+
+    reason = Permissions::IdeaPermissionsService.new(record.reactable.idea, user).denied_reason_for_action 'commenting_idea'
+    reason ? raise_not_authorized(reason) : true
   end
 end
