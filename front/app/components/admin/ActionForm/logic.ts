@@ -108,7 +108,6 @@ export interface SummaryChip {
     | 'group'
     | 'lock'
     | 'user-data';
-  tone: 'access' | 'data' | 'open';
 }
 
 // Demographic questions can be collected in every mode, so this chip is shared.
@@ -123,7 +122,6 @@ const demographicsChip = (
       key: 'demographics',
       label: formatMessage(messages.nQuestions, { nQuestions: n }),
       icon: 'user-data',
-      tone: 'data',
     },
   ];
 };
@@ -142,7 +140,6 @@ export const buildSummary = (
         key: 'admins',
         label: formatMessage(messages.adminsManagersOnly),
         icon: 'shield-checkered',
-        tone: 'access',
       },
     ];
   }
@@ -153,7 +150,6 @@ export const buildSummary = (
         key: 'open',
         label: formatMessage(messages.anyoneCanParticipate),
         icon: 'user-circle',
-        tone: 'open',
       },
       ...demographicsChip(customFields, formatMessage),
     ];
@@ -166,7 +162,6 @@ export const buildSummary = (
       key: 'signin',
       label: formatMessage(messages.signInRequired),
       icon: 'shield-checkered',
-      tone: 'access',
     },
   ];
   // A requirement the platform does not offer (no SMS, no verification method,
@@ -177,7 +172,6 @@ export const buildSummary = (
       key: 'email',
       label: formatMessage(messages.confirmedEmail),
       icon: 'email',
-      tone: 'access',
     });
   }
   if (visibleToggles.phone && attributes.require_confirmed_phone_number) {
@@ -185,7 +179,6 @@ export const buildSummary = (
       key: 'phone',
       label: formatMessage(messages.confirmedPhone),
       icon: 'tablet',
-      tone: 'access',
     });
   }
   if (visibleToggles.verification && attributes.require_verification) {
@@ -193,7 +186,6 @@ export const buildSummary = (
       key: 'verification',
       label: formatMessage(messages.verification),
       icon: 'shield-checkered',
-      tone: 'access',
     });
   }
 
@@ -203,7 +195,6 @@ export const buildSummary = (
       key: 'groups',
       label: formatMessage(messages.nGroups, { nGroups: groupIds.length }),
       icon: 'group',
-      tone: 'access',
     });
   }
 
@@ -212,7 +203,6 @@ export const buildSummary = (
       key: 'name',
       label: formatMessage(messages.name),
       icon: 'user-circle',
-      tone: 'data',
     });
   }
   if (attributes.require_password) {
@@ -220,7 +210,6 @@ export const buildSummary = (
       key: 'password',
       label: formatMessage(messages.password),
       icon: 'lock',
-      tone: 'data',
     });
   }
 
@@ -234,7 +223,6 @@ export const buildSummary = (
           ? formatMessage(messages.anonymous)
           : formatMessage(messages.piiExcluded),
       icon: 'user-circle',
-      tone: 'data',
     });
   }
 
