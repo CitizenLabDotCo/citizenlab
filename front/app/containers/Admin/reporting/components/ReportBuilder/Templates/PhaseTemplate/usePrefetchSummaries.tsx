@@ -52,12 +52,12 @@ const usePrefetchSummaries = ({
   });
 
   // Questions whose analysis has no summary yet produce a *disabled* query
-  // (see useAnalysisSummaries — enabled is gated on summaryId). In react-query
-  // v4 a disabled query reports isLoading === true, so checking isLoading here
-  // would leave summariesReady false forever and blank the whole report. Use
-  // isInitialLoading, which is false for disabled queries.
+  // (see useAnalysisSummaries — enabled is gated on summaryId). A disabled
+  // query reports isPending === true, so checking isPending here would leave
+  // summariesReady false forever and blank the whole report. Use isLoading,
+  // which is false for disabled queries.
   const allSummariesLoaded = summariesResults.every(
-    (result) => !result.isInitialLoading
+    (result) => !result.isLoading
   );
 
   const hasNoSummaries = relevantAnalyses.length === 0;

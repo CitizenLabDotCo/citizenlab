@@ -38,9 +38,9 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
   const [renameModalOpenedTagId, setRenameModalOpenedTagId] = useState('');
   const [isDropdownOpened, setDropdownOpened] = useState(false);
 
-  const { mutate: deleteTag, isLoading: deleteIsLoading } =
+  const { mutate: deleteTag, isPending: deleteIsLoading } =
     useDeleteAnalysisTag();
-  const { mutate: bulkAddTaggings, isLoading: bulkTaggingIsLoading } =
+  const { mutate: bulkAddTaggings, isPending: bulkTaggingIsLoading } =
     useAddAnalysisBulkTagging();
   const { analysisId } = useParams({
     from: '/$locale/admin/projects/$projectId/analysis/$analysisId',

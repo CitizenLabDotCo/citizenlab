@@ -60,9 +60,9 @@ const Analysis = ({
   const { data: appConfig } = useAppConfiguration();
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const { formatMessage } = useIntl();
-  const { mutate: addAnalysis, isLoading: isAddAnalysisLoading } =
+  const { mutate: addAnalysis, isPending: isAddAnalysisLoading } =
     useAddAnalysis();
-  const { mutate: updateAnalysis, isLoading } = useUpdateAnalysis();
+  const { mutate: updateAnalysis, isPending } = useUpdateAnalysis();
 
   const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams({
     strict: false,
@@ -299,7 +299,7 @@ const Analysis = ({
                       );
                     }}
                   >
-                    {isLoading ? (
+                    {isPending ? (
                       <Spinner />
                     ) : (
                       formatMessage(messages.hideSummaries)
@@ -322,7 +322,7 @@ const Analysis = ({
         <Box display="flex">
           <ButtonWithLink
             id="e2e-show-summaries"
-            processing={isLoading}
+            processing={isPending}
             onClick={() =>
               updateAnalysis({
                 id: relevantAnalysis.id,

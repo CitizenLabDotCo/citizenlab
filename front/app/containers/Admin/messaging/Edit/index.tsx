@@ -40,11 +40,11 @@ const Edit = ({ campaignType }: EditProps) => {
   };
   const { data: tenant } = useAppConfiguration();
   const { data: campaign } = useEmailCampaign(campaignId);
-  const { mutateAsync: updateCampaign, isLoading } = useUpdateEmailCampaign();
+  const { mutateAsync: updateCampaign, isPending } = useUpdateEmailCampaign();
 
   const [previewSent, setPreviewSent] = useState(false);
 
-  const { mutate: sendCampaignPreview, isLoading: isSendingCampaignPreview } =
+  const { mutate: sendCampaignPreview, isPending: isSendingCampaignPreview } =
     useSendEmailCampaignPreview();
   const { formatMessage } = useIntl();
 
@@ -124,13 +124,13 @@ const Edit = ({ campaignType }: EditProps) => {
         <Box width="50%" mr="36px">
           {campaignType === 'automated' ? (
             <AutomatedCampaignForm
-              isLoading={isLoading}
+              isLoading={isPending}
               onSubmit={handleSubmit}
               campaign={campaign}
             />
           ) : (
             <CustomCampaignForm
-              isLoading={isLoading}
+              isLoading={isPending}
               onSubmit={handleSubmit}
               campaignContextId={campaign.data.relationships.context?.data?.id}
               defaultValues={{

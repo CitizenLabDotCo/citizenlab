@@ -34,7 +34,7 @@ const ImportInputsModal = ({
   >();
   const [phaseId, setPhaseId] = useState<string | undefined>();
   const [noOfInputs, setNoOfInputs] = useState<number | undefined>();
-  const { mutate: copyInputs, isLoading: isCopying } = useCopyInputs();
+  const { mutate: copyInputs, isPending: isCopying } = useCopyInputs();
   const { data: currentPhase } = usePhase(currentPhaseid);
 
   const handleProjectFilter = useCallback(

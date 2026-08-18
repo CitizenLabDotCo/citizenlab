@@ -78,7 +78,7 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
   const { data: phases } = usePhases(projectId);
   const { mutate: addPhase } = useAddPhase();
   const { mutate: updatePhase } = useUpdatePhase();
-  const { mutate: addFile, isLoading: isAddingFile } = useAddFile();
+  const { mutate: addFile, isPending: isAddingFile } = useAddFile();
   const syncPhaseFiles = useSyncFiles();
   const [errors, setErrors] = useState<CLErrors | null>(null);
   const [processing, setProcessing] = useState<boolean>(false);

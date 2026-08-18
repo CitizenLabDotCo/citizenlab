@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
-
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
+import useOnQuerySuccess from 'hooks/useOnQuerySuccess';
 
 import fetcher, { BaseResponseData } from 'utils/cl-react-query/fetcher';
 
@@ -22,24 +22,15 @@ const useGraphDataUnitsLive = <Response extends BaseResponseData>(
   parameters: ParametersLive,
   { enabled = true, onSuccess }: Options = { enabled: true }
 ) => {
-  const queryClient = useQueryClient();
-  const stringifiedQuery = JSON.stringify(parameters);
-
-  // Call onSuccess if the query is already in the cache
-  useEffect(() => {
-    const parsedQuery = JSON.parse(stringifiedQuery);
-    const queryKey = graphDataUnitKeys.item(parsedQuery);
-    if (queryClient.getQueryData(queryKey)) {
-      onSuccess && onSuccess();
-    }
-  }, [stringifiedQuery, queryClient, onSuccess]);
-
-  return useQuery<Response, CLErrors, Response, any>({
+  const result = useQuery<Response, CLErrors, Response, any>({
     queryKey: graphDataUnitKeys.item(parameters),
     queryFn: () => fetchGraphDataUnitsLive<Response>(parameters),
     enabled,
-    onSuccess,
   });
+
+  useOnQuerySuccess(result, onSuccess);
+
+  return result;
 };
 
 export default useGraphDataUnitsLive;

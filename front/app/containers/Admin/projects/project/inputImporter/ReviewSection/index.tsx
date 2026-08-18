@@ -65,9 +65,9 @@ const ReviewSection = ({
 
   const { mutate: deleteIdea } = useDeleteIdea();
   const { mutateAsync: updateIdea } = useUpdateIdea();
-  const { mutate: approveIdeas, isLoading: isApproving } =
+  const { mutate: approveIdeas, isPending: isApproving } =
     useApproveImportedIdeas();
-  const { mutate: deleteAllIdeas, isLoading: isDeleting } =
+  const { mutate: deleteAllIdeas, isPending: isDeleting } =
     useDeleteAllDraftImportedIdeas();
 
   const { data: idea } = useIdeaById(ideaId ?? undefined, false);

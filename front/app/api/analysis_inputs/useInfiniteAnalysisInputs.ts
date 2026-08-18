@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, InfiniteData } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -29,13 +29,20 @@ const useInfiniteAnalysisInputs = ({
   analysisId: string;
   queryParams?: IInputsQueryParams;
 }) => {
-  return useInfiniteQuery<IInputs, CLErrors, IInputs, InputsKeys>({
+  return useInfiniteQuery<
+    IInputs,
+    CLErrors,
+    InfiniteData<IInputs>,
+    InputsKeys,
+    number
+  >({
     queryKey: inputsKeys.list({ analysisId, filters: queryParams }),
     queryFn: ({ pageParam }) =>
       fetchInfiniteInputs(analysisId, {
         ...queryParams,
         pageNumber: pageParam,
       }),
+    initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -44,7 +51,6 @@ const useInfiniteAnalysisInputs = ({
       return hasNextPage && pageNumber ? pageNumber + 1 : null;
     },
     enabled: !!analysisId,
-    keepPreviousData: true,
   });
 };
 

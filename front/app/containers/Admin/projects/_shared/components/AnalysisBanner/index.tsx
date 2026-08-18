@@ -40,7 +40,7 @@ const AnalysisBanner = ({ projectId, phaseId }: Props) => {
     phaseId: scope === 'phase' ? phaseId : undefined,
   });
 
-  const { mutate: createAnalysis, isLoading } = useAddAnalysis();
+  const { mutate: createAnalysis, isPending } = useAddAnalysis();
   const { formatMessage } = useIntl();
 
   const isAnalysisAllowed = useFeatureFlag({
@@ -106,7 +106,7 @@ const AnalysisBanner = ({ projectId, phaseId }: Props) => {
           iconPos="right"
           iconColor={colors.teal500}
           id="e2e-analysis-banner-button"
-          processing={isLoading}
+          processing={isPending}
           disabled={!isAnalysisAllowed}
         >
           {formatMessage(messages.analysisButton)}
