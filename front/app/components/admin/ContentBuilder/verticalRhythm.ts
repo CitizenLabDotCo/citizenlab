@@ -7,6 +7,9 @@ import { useEditor, useNode } from '@craftjs/core';
 // roles, not of a widget: https://govocal-prototypes.pages.dev/playground/fo-spacing-rhythm/
 export const VerticalRhythmContext = createContext(false);
 
+// flow: inline content that reads as one column of text (paragraphs, images,
+// buttons). card: a visually bounded box (accordions, info boxes). band: a
+// full-width section with its own background (phases, events).
 type WidgetRole = 'flow' | 'card' | 'band';
 
 const WIDGET_ROLES: Record<string, WidgetRole> = {
