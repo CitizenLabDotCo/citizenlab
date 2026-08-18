@@ -110,7 +110,9 @@ const UpdatePhoneForm = ({
         {error && (
           <Error marginTop="4px" text={formatMessage(ERROR_MESSAGES[error])} />
         )}
-        <ManualCampaignConsent />
+        <Box mt="20px" mb="8px">
+          <ManualCampaignConsent />
+        </Box>
         <StyledButton
           type="submit"
           size="m"
