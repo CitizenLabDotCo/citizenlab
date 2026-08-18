@@ -27,7 +27,7 @@ export const useScrollToCard = (
       scrollToCardAndCleanUpUrl(cardId, smallerThanPhone);
 
     // Get the project page body, which holds the project description
-    const projectPageBody = document.getElementById('e2e-project-page-body');
+    const projectPageBody = document.querySelector('[data-project-page-body]');
 
     // Check if the project page images are loaded,
     // if so, perform scroll immediately.
