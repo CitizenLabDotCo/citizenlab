@@ -1561,7 +1561,7 @@
   "app.containers.Admin.projects.project.exampleSurveyMobilityCheckIn": "Mobilitäts-Check-in",
   "app.containers.Admin.projects.project.exampleSurveySchoolRunTravel": "Umfrage zum Schulweg",
   "app.containers.Admin.projects.project.extras": "Extras",
-  "app.containers.Admin.projects.project.extrasEmptyDescription": "Umfragen, die außerhalb Ihrer Zeitleiste stattfinden – zum Beispiel:",
+  "app.containers.Admin.projects.project.extrasEmptyDescription": "Umfragen außerhalb der Zeitleiste – zum Beispiel:",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.pleaseSelectASpace": "Bitte wählen Sie einen Bereich aus.",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.spaceSelectTitle": "Space",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.tooltip3": "Sie können den Ordner einem Space hinzufügen",
