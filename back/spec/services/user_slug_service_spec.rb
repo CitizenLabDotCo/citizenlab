@@ -39,6 +39,17 @@ describe UserSlugService do
 
       expect(unpersisted_users.map(&:slug)).to eq [nil]
     end
+
+    it 'leaves both invitees without a slug when neither name survives stripping' do
+      unpersisted_users = [
+        build(:user, invite_status: 'pending', first_name: '<b></b>', last_name: '<i></i>'),
+        build(:user, invite_status: 'pending', first_name: '<i></i>', last_name: '<b></b>')
+      ]
+
+      service.generate_slugs unpersisted_users
+
+      expect(unpersisted_users.map(&:slug)).to eq [nil, nil]
+    end
   end
 
   describe 'when Abbreviated User Names feature enabled' do
