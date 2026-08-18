@@ -11,6 +11,7 @@ RSpec.describe Idea do
 
   it_behaves_like 'claimable_participation'
   it_behaves_like 'location_trackable_participation'
+  it_behaves_like 'a sanitized title_multiloc', factory: :idea
 
   describe 'title validation' do
     it 'requires title_multiloc when title_multiloc_required? is true' do
@@ -457,6 +458,17 @@ RSpec.describe Idea do
       expect(idea.slug).to be_present
     end
 
+    it 'generates a slug from the sanitized title, not the raw one' do
+      idea = create(:idea, slug: nil, title_multiloc: { 'en' => '<b>Bold</b> idea' })
+      expect(idea.title_multiloc['en']).to eq 'Bold idea'
+      expect(idea.slug).to eq 'bold-idea'
+    end
+
+    it 'does not leak a stripped payload into the slug' do
+      idea = create(:idea, slug: nil, title_multiloc: { 'en' => '<img src=x onerror=alert(1)>hi' })
+      expect(idea.slug).to eq 'hi'
+    end
+
     it 'generates a slug when there is no current phase' do
       now = Time.now
       project = create(:project)
@@ -627,6 +639,12 @@ RSpec.describe Idea do
       srx_results = described_class.all.search_by_all 'Bomen'
       expect(srx_results.size).to be > 0
     end
+
+    it 'returns results matching custom field values' do
+      create(:idea, custom_field_values: { 'a_field_key' => 'flabbergasted' })
+      srx_results = described_class.all.search_by_all 'flabbergasted'
+      expect(srx_results.size).to eq 1
+    end
   end
 
   describe 'body sanitizer' do
@@ -651,12 +669,62 @@ RSpec.describe Idea do
       })
       expect(idea.body_multiloc).to eq({ 'en' => '<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/Bu2wNKlVRzE?showinfo=0" height="242.5" width="485" data-blot-formatter-unclickable-bound="true"></iframe>' })
     end
+
+    it 'sanitizes script tags in a draft body' do
+      idea = create(:idea, publication_status: 'draft', body_multiloc: {
+        'en' => '<p>Test</p><script>This should be removed!</script>'
+      })
+      expect(idea.body_multiloc['en']).to eq '<p>Test</p>This should be removed!'
+    end
+
+    it 'strips event-handler attributes from a draft body' do
+      ti_service = instance_double(TextImageService).as_null_object
+      allow(TextImageService).to receive(:new).and_return(ti_service)
+
+      idea = create(:idea, publication_status: 'draft', body_multiloc: { 'en' => '... <img src=x onerror=alert(1)>' })
+      expect(idea.body_multiloc['en']).to eq '... <img src="x">'
+    end
+
+    # The handler goes; the text-image reference stays, since the image itself is real content.
+    it 'strips onload from a draft body that carries a text-image reference (reported payload shape)' do
+      ti_service = instance_double(TextImageService).as_null_object
+      allow(TextImageService).to receive(:new).and_return(ti_service)
+
+      idea = create(:idea, publication_status: 'draft', body_multiloc: {
+        'en' => '<p>poc</p><img onload="alert(document.cookie)" data-cl2-text-image-text-reference="0a808204-4e40-4fe4-9733-0fd88581e2ae">'
+      })
+      expect(idea.body_multiloc['en']).to eq(
+        '<p>poc</p><img data-cl2-text-image-text-reference="0a808204-4e40-4fe4-9733-0fd88581e2ae">'
+      )
+    end
   end
 
   describe 'title' do
     it 'is stripped from spaces at beginning and ending' do
       idea = create(:idea, title_multiloc: { 'en' => ' my fantastic idea  ' })
       expect(idea.title_multiloc['en']).to eq 'my fantastic idea'
+    end
+
+    it 'strips HTML from a draft title (stored XSS regression)' do
+      idea = create(:idea, publication_status: 'draft', title_multiloc: { 'en' => '<img src=x onerror=alert(1)>hi' })
+      expect(idea.title_multiloc['en']).to eq 'hi'
+    end
+
+    it 'is idempotent across repeated saves' do
+      idea = create(:idea, title_multiloc: { 'en' => 'Fish & chips' })
+      expect { idea.save! }.not_to change { idea.reload.title_multiloc['en'] }
+    end
+
+    it 'is not rewritten by a save that does not touch the title' do
+      idea = create(:idea)
+      # Bypass the callbacks to mimic a row stored before titles were sanitized.
+      idea.update_columns(title_multiloc: { 'en' => 'Fish & chips' })
+      idea.reload
+
+      idea.update!(budget: 123)
+
+      expect(idea.reload.title_multiloc['en']).to eq 'Fish & chips'
+      expect(idea.title_multiloc_previously_changed?).to be false
     end
   end
 

@@ -38,6 +38,7 @@ class GlobalTopic < ApplicationRecord
   validates :description_multiloc, multiloc: { presence: false }
   validates :include_in_onboarding, inclusion: { in: [true, false] }
 
+  before_validation :sanitize_title_multiloc, if: -> { title_multiloc && title_multiloc_changed? }
   before_validation :strip_title
 
   scope :order_new, ->(direction = :desc) { order(created_at: direction, id: direction) }
@@ -50,8 +51,12 @@ class GlobalTopic < ApplicationRecord
 
   private
 
+  def sanitize_title_multiloc
+    self.title_multiloc = SanitizationService.new.strip_multiloc_to_plain_text(title_multiloc)
+  end
+
   def strip_title
-    return unless description_multiloc&.any?
+    return unless title_multiloc&.any?
 
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip

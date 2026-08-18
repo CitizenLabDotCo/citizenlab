@@ -92,6 +92,17 @@ describe SmartGroups::Rules::CustomFieldText do
       rule = described_class.new(custom_field.id, 'not_is_empty')
       expect(rule.filter(User).count).to eq User.count
     end
+
+    # Rules on multiline text fields exist in production: the field type is only validated when the
+    # rule is created, and this used to work because the filter queried `custom_field_values` directly.
+    context 'when the custom field is a multiline text field' do
+      let(:custom_field) { create(:custom_field, input_type: 'multiline_text') }
+
+      it "filters on the 'is' and 'contains' predicates" do
+        expect(described_class.new(custom_field.id, 'is', 'two').filter(User).count).to eq 1
+        expect(described_class.new(custom_field.id, 'contains', 'hre').filter(User).count).to eq 1
+      end
+    end
   end
 
   describe 'description_multiloc' do

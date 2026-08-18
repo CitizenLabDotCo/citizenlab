@@ -56,6 +56,51 @@ resource 'Spam Reports' do
       expect(json_response.dig(:data, :relationships, :user, :data, :id)).to eq @user.id
       expect(json_response.dig(:data, :attributes, :reason_code)).to eq 'inappropriate'
     end
+
+    context 'when signed in as a regular user' do
+      before { header_token_for create(:user) }
+
+      example_request 'Create a spam report for a publicly visible idea' do
+        expect(response_status).to eq 201
+      end
+
+      context 'when the input is a native survey response' do
+        before { create(:idea_status_proposed) }
+
+        let(:idea_id) { create(:native_survey_response).id }
+
+        example_request '[error] Create a spam report for an input the user cannot see' do
+          expect(response_status).to eq 401
+          expect(SpamReport.where(spam_reportable_id: idea_id)).to be_empty
+        end
+      end
+
+      context 'when the input is in a project the user has no access to' do
+        let(:idea_id) { create(:idea, project: create(:private_groups_project)).id }
+
+        example_request '[error] Create a spam report for an input in an inaccessible project' do
+          expect(response_status).to eq 401
+          expect(SpamReport.where(spam_reportable_id: idea_id)).to be_empty
+        end
+      end
+
+      context 'when the input is still a draft' do
+        let(:idea_id) { create(:idea, publication_status: 'draft').id }
+
+        example_request '[error] Create a spam report for a draft input' do
+          expect(response_status).to eq 401
+          expect(SpamReport.where(spam_reportable_id: idea_id)).to be_empty
+        end
+      end
+
+      context 'when the input does not exist' do
+        let(:idea_id) { SecureRandom.uuid }
+
+        example_request '[error] Create a spam report for an unknown input' do
+          expect(response_status).to eq 401
+        end
+      end
+    end
   end
 
   patch 'web_api/v1/spam_reports/:id' do

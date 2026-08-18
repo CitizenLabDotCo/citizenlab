@@ -746,8 +746,8 @@
   },
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": {
     "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.368694Z",
-    "verified_by": "Edwin Kato"
+    "verified_at": "2026-08-11T14:35:04.966400Z",
+    "verified_by": "Jelena"
   },
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": {
     "state": "verified",
@@ -3523,6 +3523,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.components.SmsConsent.smsConfirmationDisclosure": {
+    "state": "verified",
+    "verified_at": "2026-08-05T12:32:20.642609Z",
+    "verified_by": "Jelena"
   },
   "app.components.StatusModule.futurePhase": {
     "state": "verified",
@@ -6834,6 +6839,11 @@
     "verified_at": "2026-07-23T09:51:33.450048Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": {
+    "state": "verified",
+    "verified_at": "2026-08-11T14:34:54.071396Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Authentication.signUpOrLogIn": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -6877,6 +6887,16 @@
   "app.containers.Authentication.steps.EmailFlowStart.orLoginWith": {
     "state": "verified",
     "verified_at": "2026-07-08T12:03:15.906621Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Authentication.steps.FlowStart.useEmailInstead": {
+    "state": "verified",
+    "verified_at": "2026-08-17T14:35:41.840831Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Authentication.steps.FlowStart.usePhoneNumberInstead": {
+    "state": "verified",
+    "verified_at": "2026-08-17T14:35:41.840831Z",
     "verified_by": "Jelena"
   },
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": {
@@ -6924,6 +6944,16 @@
     "verified_at": "2026-07-23T09:51:33.450048Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Authentication.steps.Policies.byContinuingPhone": {
+    "state": "verified",
+    "verified_at": "2026-08-17T14:35:41.840831Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": {
+    "state": "verified",
+    "verified_at": "2026-08-17T14:35:41.840831Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Authentication.steps.SSOVerification.alreadyHaveAnAccount": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -6933,6 +6963,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": {
+    "state": "verified",
+    "verified_at": "2026-08-11T14:34:54.071396Z",
+    "verified_by": "Jelena"
   },
   "app.containers.CampaignsConsentForm.ally_categoryLabel": {
     "state": "verified",
@@ -10109,6 +10144,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveSixDigits": {
+    "state": "verified",
+    "verified_at": "2026-08-07T10:23:32.755823Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.noAuthenticationMethodsEnabled": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -10486,13 +10526,13 @@
   },
   "app.containers.NotificationMenu.projectPhaseStarted": {
     "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.368694Z",
-    "verified_by": "Edwin Kato"
+    "verified_at": "2026-08-07T10:28:22.311193Z",
+    "verified_by": "Jelena"
   },
   "app.containers.NotificationMenu.projectPhaseUpcoming": {
     "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.368694Z",
-    "verified_by": "Edwin Kato"
+    "verified_at": "2026-08-07T10:28:22.311193Z",
+    "verified_by": "Jelena"
   },
   "app.containers.NotificationMenu.projectPublished": {
     "state": "verified",
@@ -10809,7 +10849,6 @@
     "verified_at": "2026-07-16T09:49:20.292538Z",
     "verified_by": "eva@govocal.com"
   },
-
   "app.containers.PhoneChange.phoneUnsupportedCountry": {
     "state": "verified",
     "verified_at": "2026-07-23T09:49:54.116924Z",
@@ -10884,6 +10923,11 @@
     "state": "verified",
     "verified_at": "2026-07-16T09:49:20.292538Z",
     "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneConfirmation.codeMustHaveSixDigits": {
+    "state": "verified",
+    "verified_at": "2026-08-07T10:23:32.755823Z",
+    "verified_by": "Jelena"
   },
   "app.containers.PhoneConfirmation.confirmationCodeSent": {
     "state": "verified",
@@ -13119,6 +13163,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.errors.file_too_large": {
+    "state": "verified",
+    "verified_at": "2026-08-11T14:34:54.071396Z",
+    "verified_by": "Jelena"
   },
   "app.errors.first_name_blank": {
     "state": "verified",

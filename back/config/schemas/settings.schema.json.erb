@@ -402,16 +402,10 @@
         "description": "Allow users to register with an email and password.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["minimum_length", "enable_signup"],
+        "required-settings": ["minimum_length"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
-          "enable_signup": {
-            "type": "boolean",
-            "title": "Enable sign-up",
-            "description": "If unchecked, only login via password is allowed for existing users; sign-up via password is disabled for new users.",
-            "default": true
-          },
           "minimum_length": {
             "type": "number",
             "title": "Minimum password length",
@@ -830,18 +824,6 @@
         "type": "object",
         "title": "Disliking Toggle",
         "description": "Display toggle in Project settings or Project’s timeline phase settings, that permits the disabling and re-enabling of dislike reactions. By default, disliking is enabled. (previously called disable_downvoting",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "granular_permissions": {
-        "type": "object",
-        "title": "Granular Permissions",
-        "description": "Admin can specify permissions for specific projects and project phases (e.g., who can post, react, etc.).",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1407,7 +1389,7 @@
           "enabled": { "type": "boolean", "default": false },
           "prompt_template": {
             "title": "Custom AI analysis prompt",
-            "description": "Optional custom prompt template (ERB format) to override the default Q&A prompt. Available variables: project_title, question, inputs_text, language, include_comments.",
+            "description": "Optional custom prompt template to override the default Q&A prompt. Insert a value by writing its name between %{ and }, e.g. %{project_title}. Available placeholders: %{project_title}, %{question}, %{inputs_text}, %{language}, %{comments_instruction}. No other syntax is supported: anything else is sent to the model as-is.",
             "type": "string"
           }
         }
@@ -1582,10 +1564,16 @@
             "title": "Twilio Auth Token",
             "private": true
           },
-          "twilio_messaging_service_sid": {
+          "twilio_manual_campaigns_messaging_service_sid": {
             "type": "string",
-            "title": "Twilio Messaging Service SID",
-            "description": "The Twilio Messaging Service SID used to send SMS messages.",
+            "title": "Twilio Manual Campaigns Messaging Service SID",
+            "description": "The Twilio Messaging Service SID used to send manual SMS campaigns.",
+            "private": true
+          },
+          "twilio_confirmation_codes_messaging_service_sid": {
+            "type": "string",
+            "title": "Twilio Confirmation Codes Messaging Service SID",
+            "description": "The Twilio Messaging Service SID used to send phone confirmation codes.",
             "private": true
           },
           <% sms_country_codes = CountryCodesService.new %>
@@ -1604,10 +1592,34 @@
         }
       },
 
+      "sms_login": {
+        "type": "object",
+        "title": "SMS login (DO NOT USE YET)",
+        "description": "(DO NOT USE YET) Allow users to log in or sign up via SMS as an alternative to email.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "hide_submission_removal_text": {
         "type": "object",
         "title": "Hide submission removal text",
         "description": "Do not give users the option to remove survey submissions (post survey & in email confirmation). WARNING: Should only be used where GPDR does not apply.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "configurable_dropdown": {
+        "type": "object",
+        "title": "Configurable dropdown",
+        "description": "Allows grouping several navigation bar items together under a single dropdown menu.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

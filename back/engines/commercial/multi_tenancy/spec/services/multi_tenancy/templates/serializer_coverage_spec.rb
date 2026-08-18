@@ -142,6 +142,7 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
       # Activity logs, telemetry and derived caches — runtime data, not content.
       tracking_and_caches: %w[
         Activity
+        CustomFieldAnswer
         IdeaExposure
         ImpactTracking::Pageview
         ImpactTracking::Salt
@@ -161,6 +162,7 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
 
       # Background-job / queue infrastructure.
       jobs: %w[
+        Export::ResultFile
         Jobs::Tracker
         Que::ActiveRecord::Model
       ],

@@ -12,11 +12,17 @@ import {
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
-import { DATA_COLLECTION_SUMMARY } from '../../logic';
 import { Changes } from '../../types';
 import { Expander } from '../../ui';
 
 import messages from './messages';
+
+// The one-line summary shown while the row is collapsed.
+const DATA_COLLECTION_SUMMARY: Record<UserDataCollection, MessageDescriptor> = {
+  all_data: messages.linkedToProfile,
+  demographics_only: messages.piiExcludedFromResults,
+  anonymous: messages.fullyAnonymous,
+};
 
 const ANONYMITY_OPTIONS: {
   value: UserDataCollection;

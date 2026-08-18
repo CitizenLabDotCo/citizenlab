@@ -216,7 +216,7 @@ const CommonGroundStatements = ({ phaseId }: Props) => {
       >
         <Box mb="12px" id={`statement-body-${current.data.id}`}>
           <Text fontSize="l">
-            <T value={current.data.attributes.title_multiloc} supportHtml />
+            <T value={current.data.attributes.title_multiloc} />
           </Text>
         </Box>
 

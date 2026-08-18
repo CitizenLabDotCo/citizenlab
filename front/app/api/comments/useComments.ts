@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, InfiniteData } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -41,10 +41,17 @@ const useComments = (
   parameters: ICommentParameters & ICommentQueryParameters,
   hasComments = true
 ) => {
-  return useInfiniteQuery<IComments, CLErrors, IComments, CommentsKeys>({
+  return useInfiniteQuery<
+    IComments,
+    CLErrors,
+    InfiniteData<IComments>,
+    CommentsKeys,
+    number
+  >({
     queryKey: commentKeys.list(parameters),
     queryFn: ({ pageParam }) =>
       fetchComments({ ...parameters, pageNumber: pageParam }),
+    initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

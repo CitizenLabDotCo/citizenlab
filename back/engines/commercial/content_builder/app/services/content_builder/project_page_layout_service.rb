@@ -21,6 +21,31 @@ module ContentBuilder
     DETAILS_TEXT_ID = 'PROJECT_PAGE_DETAILS_TEXT'
     DETAILS_RIGHT_ID = 'PROJECT_PAGE_DETAILS_RIGHT'
 
+    # The `type` a project page's ROOT node carries (description and folder layouts
+    # use a plain 'div').
+    ROOT_TYPE = { 'resolvedName' => 'ProjectPageRoot' }.freeze
+
+    # The scaffold node that holds all page content; its `nodes` array is the
+    # top-level order.
+    BODY_WIDGET = 'ProjectPageBody'
+
+    # The fixed page scaffold: every project page has exactly one node of each of
+    # these types, and none of them may be added, deleted or edited. The one editable
+    # part is BODY_WIDGET's `nodes` array.
+    #
+    # The seeded phases and events widgets are deliberately absent: they are
+    # ordinary widgets the FE toolbox can move or delete.
+    SCAFFOLD_WIDGETS = ['ProjectPageRoot', 'ProjectBanner', 'ProjectTitle', BODY_WIDGET].freeze
+
+    # Scaffold widgets rendered from the project record rather than from layout props.
+    PROJECT_RECORD_WIDGETS = %w[ProjectBanner ProjectTitle].freeze
+
+    # Whether a node is part of the fixed scaffold; nil (an id absent from the
+    # graph) is not.
+    def self.scaffold?(node)
+      !node.nil? && SCAFFOLD_WIDGETS.include?(Craftjs::Query.resolved_name(node))
+    end
+
     # Widgets that only make sense on a folder description and would crash the
     # project page resolver, so they are dropped when body nodes are imported.
     UNSUPPORTED_WIDGETS = %w[
@@ -33,19 +58,11 @@ module ContentBuilder
 
     INJECTED_ID_PREFIX = 'd_'
 
+    # Fully qualified: a relative `Craftjs::Query` would not resolve inside delegate's module_eval.
+    delegate :resolved_name, to: :'ContentBuilder::Craftjs::Query', private: true
+
     def craftjs_json_for(project)
       append_file_nodes(default_page_nodes, project)
-    end
-
-    # Wraps a plain ROOT-canvas craftjs tree (as built by the Decidim importer) in
-    # the canonical project page — banner, title, the imported nodes inside the page
-    # body, then phases and events. Falls back to the default page when the tree
-    # holds nothing renderable.
-    def craftjs_json_from_body(body_craftjs)
-      injected_nodes, injected_top_level_ids = inject_body(body_craftjs || {})
-      return default_page_nodes if injected_top_level_ids.empty?
-
-      canonical_nodes(injected_top_level_ids).merge(injected_nodes)
     end
 
     def append_file_nodes(craftjs_json, project)
@@ -55,7 +72,7 @@ module ContentBuilder
       return craftjs_json if attachments.empty?
 
       json = craftjs_json.deep_dup
-      parent_id = find_node_id(json, 'ProjectDescriptionSection') || find_node_id(json, 'ProjectPageBody')
+      parent_id = find_node_id(json, 'ProjectDescriptionSection') || find_node_id(json, BODY_WIDGET)
       return craftjs_json unless parent_id
 
       referenced_file_ids = json.each_value.filter_map do |node|
@@ -86,6 +103,21 @@ module ContentBuilder
       json
     end
 
+    # Wraps a plain ROOT-canvas craftjs tree (as built by the Decidim importer) in
+    # the canonical project page — banner, title, the imported nodes inside the page
+    # body, then phases and events. Falls back to the default page when the tree
+    # holds nothing renderable.
+    #
+    # The nodes go in the body as they come: importers decide their own layout, and
+    # only add a participation box when the project actually has participation.
+    def craftjs_json_from_body(body_craftjs)
+      injected_nodes, injected_top_level_ids = inject_body(body_craftjs || {})
+      return default_page_nodes if injected_top_level_ids.empty?
+
+      injected_top_level_ids.each { |id| injected_nodes[id]['parent'] = BODY_ID }
+      canonical_nodes(injected_top_level_ids).merge(injected_nodes)
+    end
+
     private
 
     def inject_body(body)
@@ -107,8 +139,6 @@ module ContentBuilder
       top_level_ids = Array(root['nodes'])
         .reject { |id| unsupported.include?(id) }
         .filter_map { |id| id_map[id] }
-
-      top_level_ids.each { |id| nodes[id]['parent'] = BODY_ID }
 
       [nodes, top_level_ids]
     end
@@ -160,11 +190,6 @@ module ContentBuilder
       end
 
       remapped
-    end
-
-    def resolved_name(node)
-      type = node['type']
-      type.is_a?(Hash) ? type['resolvedName'] : type
     end
 
     def find_node_id(json, name)

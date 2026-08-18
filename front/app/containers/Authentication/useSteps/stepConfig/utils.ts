@@ -2,7 +2,7 @@ import { AuthenticationRequirements } from 'api/authentication/authentication_re
 import { requestCodeEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
 import { requestCodePhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import { redirectToSSOProvider } from 'api/authentication/singleSignOn';
-import checkUser from 'api/users/checkUser';
+import { checkEmail, checkPhone } from 'api/users/checkUser';
 
 import {
   GetRequirements,
@@ -102,7 +102,7 @@ const emailActionStep = (
 ): Step | null => {
   switch (requirements.authentication.email_action_required) {
     case 'confirm_email':
-      return 'email:unauthenticated-confirmation';
+      return 'pre-auth:unauthenticated-confirmation';
     case 'confirm_new_email':
       return 'confirmation:new_email';
     case 'reconfirm_email':
@@ -194,22 +194,22 @@ export const handleSubmitEmail = async (
   updateState: UpdateState
 ) => {
   try {
-    const response = await checkUser(email);
+    const response = await checkEmail(email);
     const { action } = response.data.attributes;
 
     if (action === 'terms') {
       updateState({ flow: 'signup' });
-      setCurrentStep('email:policies');
+      setCurrentStep('pre-auth:policies');
     }
 
     if (action === 'password') {
       updateState({ flow: 'signin' });
-      setCurrentStep('email:password');
+      setCurrentStep('pre-auth:password');
     }
 
     if (action === 'confirm') {
       updateState({ flow: 'signin' });
-      setCurrentStep('email:unauthenticated-confirmation');
+      setCurrentStep('pre-auth:unauthenticated-confirmation');
     }
   } catch (e) {
     if (e.errors?.email?.[0]?.error === 'taken_by_invite') {
@@ -217,6 +217,32 @@ export const handleSubmitEmail = async (
     } else {
       throw e;
     }
+  }
+};
+
+// The phone mirror of handleSubmitEmail. Invites are never sent to a phone
+// number, so there is no taken_by_invite case here.
+export const handleSubmitPhone = async (
+  phone: string,
+  setCurrentStep: (step: Step) => void,
+  updateState: UpdateState
+) => {
+  const response = await checkPhone(phone);
+  const { action } = response.data.attributes;
+
+  if (action === 'terms') {
+    updateState({ flow: 'signup' });
+    setCurrentStep('pre-auth:phone-policies');
+  }
+
+  if (action === 'password') {
+    updateState({ flow: 'signin' });
+    setCurrentStep('pre-auth:password');
+  }
+
+  if (action === 'confirm') {
+    updateState({ flow: 'signin' });
+    setCurrentStep('pre-auth:unauthenticated-phone-confirmation');
   }
 };
 
@@ -260,7 +286,7 @@ export const handleSSOClick = async (
       );
     } else {
       updateState({ ssoProvider });
-      setCurrentStep('email:sso-policies');
+      setCurrentStep('pre-auth:sso-policies');
     }
   }
 };

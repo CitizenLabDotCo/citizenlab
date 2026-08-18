@@ -84,7 +84,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :participation_status do |object|
-    HighlightedPhaseService.new(object).participation_status
+    object.schedule.participation_status
   end
 
   attribute :preview_token, if: proc { |object, params| can_moderate? object, params }
@@ -111,7 +111,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   end
 
   has_one :highlighted_phase, serializer: WebApi::V1::PhaseSerializer, record_type: :phase do |project|
-    phase = HighlightedPhaseService.new(project).highlighted_phase
+    phase = project.schedule.highlighted_phase
     phase.project = project if phase # Performance optimization (keep preloaded relationships)
     phase
   end

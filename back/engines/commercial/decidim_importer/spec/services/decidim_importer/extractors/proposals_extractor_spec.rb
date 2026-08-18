@@ -44,6 +44,22 @@ RSpec.describe DecidimImporter::Extractors::ProposalsExtractor do
     expect(attrs.values_at('created_at', 'published_at', 'submitted_at')).to all(eq('2023-02-10 09:00:00 +0100'))
   end
 
+  it 'maps a geocoded address to the idea’s location description and map pin' do
+    attrs = extract([row('address' => '1 rue X', 'latitude' => '45.766', 'longitude' => '4.880')]).first.attributes
+
+    expect(attrs['location_description']).to eq('1 rue X')
+    # GeoJSON orders coordinates [lon, lat].
+    expect(attrs['location_point_geojson']).to eq('type' => 'Point', 'coordinates' => [4.880, 45.766])
+  end
+
+  it 'omits the map pin when coordinates are blank or non-numeric' do
+    blank = row('uid' => 'decidim-proposal-blank', 'latitude' => '', 'longitude' => '')
+    non_numeric = row('uid' => 'decidim-proposal-nan', 'latitude' => 'n/a', 'longitude' => '4.880')
+    attrs = extract([blank, non_numeric]).map(&:attributes)
+
+    expect(attrs).to all(satisfy { |a| !a.key?('location_point_geojson') })
+  end
+
   it 'registers an ideas_phase join linking the idea to its phase' do
     idea = extract([row]).first
     join = ref_map.fetch('decidim-proposal-1-ideas-phase')
@@ -66,6 +82,74 @@ RSpec.describe DecidimImporter::Extractors::ProposalsExtractor do
   it 'does not tag the idea when its category was not imported' do
     extract([row('category' => 'decidim--category--999')])
     expect(ref_map.fetch('decidim-proposal-1-ideas-input-topic')).to be_nil
+  end
+
+  it 'parks a scope→area pointer in custom_field_values seeded with the area record’s attributes' do
+    area = ref_map.register('decidim--scope--2', DecidimImporter::Record.new('area', { 'title_multiloc' => { 'fr-FR' => 'Quartier' } }))
+    attrs = extract([row('scope' => 'decidim--scope--2')]).first.attributes
+
+    # Seeded with the shared area attributes hash — Importer.resolve_scope_areas! swaps it for the real id.
+    expect(attrs['custom_field_values']['decidim_scope']).to be(area.attributes)
+  end
+
+  it 'omits the scope pointer when the proposal has no scope or the scope was not imported as an area' do
+    ref_map.register('decidim--scope--9', DecidimImporter::Record.new('input_topic', {})) # wrong model
+    no_scope = extract([row('uid' => 'decidim-proposal-none', 'scope' => '')]).first.attributes
+    non_area = extract([row('uid' => 'decidim-proposal-topic', 'scope' => 'decidim--scope--9')]).first.attributes
+
+    expect(no_scope).not_to have_key('custom_field_values')
+    expect(non_area).not_to have_key('custom_field_values')
+  end
+
+  describe 'status resolution via a ProposalStatusResolver' do
+    let(:status_record) do
+      DecidimImporter::Record.new('idea_status', { 'code' => 'custom', 'title_multiloc' => { 'fr-FR' => 'Idée faisable' } })
+    end
+
+    def resolve_to(decision)
+      resolver = instance_double(DecidimImporter::ProposalStatusResolver)
+      allow(resolver).to receive(:resolve).and_return(decision)
+      described_class.new([row], ref_map, locale_mapper: mapper, primary_locale: 'fr-FR', status_resolver: resolver)
+        .run.first.attributes
+    end
+
+    it 'references a custom idea_status and parks the original Decidim status in custom_field_values' do
+      decision = DecidimImporter::ProposalStatusResolver::Decision.new(
+        idea_status_code: nil, idea_status_record: status_record,
+        original_title_multiloc: { 'fr-FR' => 'Idée faisable' }, token: 'viable'
+      )
+      attrs = resolve_to(decision)
+
+      expect(attrs).not_to have_key('idea_status_code')
+      expect(attrs['idea_status_ref']).to be(status_record.attributes)
+      expect(attrs['custom_field_values']['decidim_status']).to eq(
+        'token' => 'viable', 'title_multiloc' => { 'fr-FR' => 'Idée faisable' }
+      )
+    end
+
+    it 'keeps a standard idea_status_code and still parks the original Decidim status' do
+      decision = DecidimImporter::ProposalStatusResolver::Decision.new(
+        idea_status_code: 'accepted', idea_status_record: nil,
+        original_title_multiloc: { 'fr-FR' => 'Retenue' }, token: 'accepted'
+      )
+      attrs = resolve_to(decision)
+
+      expect(attrs['idea_status_code']).to eq('accepted')
+      expect(attrs).not_to have_key('idea_status_ref')
+      expect(attrs['custom_field_values']['decidim_status']).to eq(
+        'token' => 'accepted', 'title_multiloc' => { 'fr-FR' => 'Retenue' }
+      )
+    end
+
+    it 'stores no decidim_status when the proposal had no known Decidim state' do
+      decision = DecidimImporter::ProposalStatusResolver::Decision.new(
+        idea_status_code: 'proposed', idea_status_record: nil, original_title_multiloc: nil, token: nil
+      )
+      attrs = resolve_to(decision)
+
+      expect(attrs['idea_status_code']).to eq('proposed')
+      expect(attrs).not_to have_key('custom_field_values')
+    end
   end
 
   it 'leaves the idea author-less when no author uid resolves to an imported user' do

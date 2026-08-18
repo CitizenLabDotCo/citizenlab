@@ -54,10 +54,11 @@ parameters:
     type: boolean
     default: false
 
-  # Optional comma-separated Cypress spec path(s) for the manually-e2e-tests
-  # workflow, e.g. "cypress/e2e/router_history.cy.ts". Empty runs the full
-  # suite. When set, also pass e2e_parallelism: 1 — every parallel node runs
-  # the given spec(s) in full.
+  # Optional comma-separated Cypress spec(s) for the manually-e2e-tests
+  # workflow. A bare filename ("router_history.cy.ts") is found anywhere
+  # under cypress/e2e/; a path or glob is passed through as-is. Empty runs
+  # the full suite. When set, also pass e2e_parallelism: 1 — every parallel
+  # node runs the given spec(s) in full.
   e2e_spec:
     type: string
     default: ""
@@ -920,7 +921,12 @@ jobs:
           command: |
             cd front
             COMMA_SEPARATED_TESTFILES="<< pipeline.parameters.e2e_spec >>"
-            if [ -z "$COMMA_SEPARATED_TESTFILES" ]; then
+            if [ -n "$COMMA_SEPARATED_TESTFILES" ]; then
+              # Bare filenames (no slash) become recursive globs so callers can
+              # pass "some_spec.cy.ts" without knowing its subdirectory.
+              COMMA_SEPARATED_TESTFILES=$(echo "$COMMA_SEPARATED_TESTFILES" | tr ',' '\n' \
+                | sed -E '/\//! s|^|cypress/e2e/**/|' | paste -sd, -)
+            else
               TESTFILES=$(circleci tests glob "cypress/e2e/**/*.cy.ts" | circleci tests split --split-by=timings)
               COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
             fi

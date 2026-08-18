@@ -15,7 +15,8 @@ class ApplicationMailer < ActionMailer::Base
     :align_direction
 
   helper_method :organization_name, :recipient_name, :url_service, :multiloc_service,
-    :loc, :localize_for_recipient, :localize_for_recipient_and_truncate, :recipient_first_name
+    :loc, :localize_for_recipient, :localize_for_recipient_and_truncate, :recipient_first_name,
+    :localize_date_for_recipient
 
   helper_method :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :gv_gray_logo_url,
     :home_url, :tenant_logo_url, :show_terms_link?, :show_privacy_policy_link?, :format_message,
@@ -83,6 +84,12 @@ class ApplicationMailer < ActionMailer::Base
     linkified = service.linkify truncated # turn any remaining URLs back into HTML links
 
     linkified.html_safe
+  end
+
+  def localize_date_for_recipient(date, format: :long)
+    return if date.blank?
+
+    I18n.l(date.to_date, format: format, locale: locale.locale_sym)
   end
 
   def count_from(value)

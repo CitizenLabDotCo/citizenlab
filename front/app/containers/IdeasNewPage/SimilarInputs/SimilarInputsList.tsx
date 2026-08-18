@@ -80,7 +80,7 @@ const SimilarIdeasList = ({
   const isTitleShort = !title || title.trim().length < 3;
   const isDescriptionShort = !body || body.trim().length < 3;
 
-  const { data: ideas, isInitialLoading } = useSimilarIdeas(
+  const { data: ideas, isLoading } = useSimilarIdeas(
     {
       idea: {
         id: ideaId,
@@ -96,7 +96,7 @@ const SimilarIdeasList = ({
     { enabled: !(isTitleShort && isDescriptionShort) }
   );
 
-  if (isInitialLoading) {
+  if (isLoading) {
     return (
       <Box display="flex" mt="16px" alignItems="center">
         <Box w="20px" mr="4px">

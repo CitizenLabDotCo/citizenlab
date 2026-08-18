@@ -222,12 +222,14 @@ resource 'Projects' do
         expect(json_response.dig(:data, :relationships, :user_follower, :data, :id)).to eq followers.first.id
       end
 
-      example 'Get a project on a timeline project includes the current_phase', document: false do
+      example 'Get a project on a timeline project includes the current and highlighted phase', document: false do
         project = create(:project_with_current_phase)
         current_phase = project.phases[2]
         do_request id: project.id
         assert_status 200
+        expect(json_response.dig(:data, :attributes, :participation_status)).to eq 'active'
         expect(json_response.dig(:data, :relationships, :current_phase, :data, :id)).to eq current_phase.id
+        expect(json_response.dig(:data, :relationships, :highlighted_phase, :data, :id)).to eq current_phase.id
         expect(json_response[:included].pluck(:id)).to include(current_phase.id)
       end
 

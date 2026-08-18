@@ -13,7 +13,7 @@ import messages from '../../messages';
 import SmsCampaignForm, { FormValues } from '../SmsCampaignForm';
 
 const NewSmsCampaign = () => {
-  const { isLoading, mutateAsync: createCampaign } = useAddSmsCampaign();
+  const { isPending, mutateAsync: createCampaign } = useAddSmsCampaign();
 
   const handleSubmit = async (values: FormValues) => {
     const response = await createCampaign(values);
@@ -30,7 +30,7 @@ const NewSmsCampaign = () => {
       <Title>
         <FormattedMessage {...messages.addSmsCampaignTitle} />
       </Title>
-      <SmsCampaignForm isLoading={isLoading} onSubmit={handleSubmit} />
+      <SmsCampaignForm isLoading={isPending} onSubmit={handleSubmit} />
     </Box>
   );
 };

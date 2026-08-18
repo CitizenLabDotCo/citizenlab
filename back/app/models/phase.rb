@@ -102,6 +102,7 @@ class Phase < ApplicationRecord
 
   before_validation :sanitize_description_multiloc
   before_validation :sanitize_draft_description_multiloc
+  before_validation :sanitize_title_multiloc, if: -> { title_multiloc && title_multiloc_changed? }
   before_validation :strip_title
   before_validation :set_participation_method_defaults, on: :create
   before_validation :set_participation_method_defaults_on_method_change, on: :update
@@ -326,11 +327,10 @@ class Phase < ApplicationRecord
     end
   end
 
-  def placement_strategy
-    @placement_strategy ||= case placement_type
-    when 'standalone' then PhasePlacementStrategy::Standalone.new
-    else PhasePlacementStrategy::OnTimeline.new
-    end
+  # Whether the phase is placed on the project timeline, as opposed to running
+  # in parallel with it (e.g. an extra survey).
+  def on_timeline?
+    placement_type == 'on_timeline'
   end
 
   def set_manual_voters(amount, user)
@@ -389,7 +389,7 @@ class Phase < ApplicationRecord
   end
 
   def validate_end_at
-    return if !placement_strategy.sequential?
+    return if !on_timeline?
     return if end_at.present? || TimelineService.new.last_phase?(self)
 
     errors.add(:end_at, message: 'cannot be blank unless it is the last phase')
@@ -402,7 +402,7 @@ class Phase < ApplicationRecord
   end
 
   def validate_no_other_overlapping_phases
-    return if !placement_strategy.sequential?
+    return if !on_timeline?
 
     TimelineService.new.overlapping_phases(self).each do |other_phase|
       # Skip open-ended phases that start before this phase as they have their own
@@ -415,7 +415,7 @@ class Phase < ApplicationRecord
   end
 
   def validate_previous_phase_can_be_closed
-    return if !placement_strategy.sequential?
+    return if !on_timeline?
 
     previous_phase = TimelineService.new.previous_phase(self)
     return unless previous_phase && previous_phase.end_at.nil?
@@ -427,13 +427,18 @@ class Phase < ApplicationRecord
   end
 
   def close_previous_open_phase
-    return if !placement_strategy.sequential?
+    return if !on_timeline?
 
     previous_phase = TimelineService.new.previous_phase(self)
     return unless previous_phase && previous_phase.end_at.nil?
 
     previous_phase.update!(end_at: start_at)
     @previous_phase_end_at_updated = true
+  end
+
+  # Titles are plain text: strip markup so nothing downstream can render it as HTML.
+  def sanitize_title_multiloc
+    self.title_multiloc = SanitizationService.new.strip_multiloc_to_plain_text(title_multiloc)
   end
 
   def strip_title
@@ -523,7 +528,7 @@ class Phase < ApplicationRecord
   end
 
   def validate_standalone_participation_method
-    return if placement_strategy.sequential?
+    return if on_timeline?
     return if pmethod.supports_standalone_placement?
 
     errors.add(:participation_method, :not_supported_in_standalone_phase, message: 'is not supported in standalone phases')

@@ -128,6 +128,32 @@ RSpec.describe DecidimImporter::ExportReader do
       expect(notes.first).to include('uid' => 'note-1', 'proposal' => 'proposal-3', 'body' => 'Confidential',
         'decidim_participatory_process' => 'decidim--process--1', 'decidim_component' => 'comp-61')
     end
+
+    it 'reads a proposals component’s proposal-states sidecar, stamped with process + component' do
+      write_process('decidim--process--1')
+      comp = '04---participatory-processes/01---decidim--participatory-process--1/07---components/01---decidim--component--61---proposals'
+      write_csv("#{comp}/01---component.csv", %w[uid name], ['comp-61', %({"fr":"Idées"})])
+      write_csv("#{comp}/02---proposal-states.csv",
+        %w[uid title token proposals_count], ['state-1', %({"fr":"Idée faisable"}), 'viable', '34'])
+
+      states = described_class.read(root)[:proposal_states]
+
+      expect(states.first).to include('uid' => 'state-1', 'token' => 'viable', 'proposals_count' => '34',
+        'decidim_participatory_process' => 'decidim--process--1', 'decidim_component' => 'comp-61')
+    end
+
+    it 'reads a proposals component’s proposal-votes sidecar, stamped with process + component' do
+      write_process('decidim--process--1')
+      comp = '04---participatory-processes/01---decidim--participatory-process--1/07---components/01---decidim--component--61---proposals'
+      write_csv("#{comp}/01---component.csv", %w[uid name], ['comp-61', %({"fr":"Idées"})])
+      write_csv("#{comp}/09---proposal-votes.csv",
+        %w[uid proposal author], %w[vote-1 proposal-3 user-8])
+
+      votes = described_class.read(root)[:proposal_votes]
+
+      expect(votes.first).to include('uid' => 'vote-1', 'proposal' => 'proposal-3', 'author' => 'user-8',
+        'decidim_participatory_process' => 'decidim--process--1', 'decidim_component' => 'comp-61')
+    end
   end
 
   describe 'budgets' do
@@ -203,6 +229,22 @@ RSpec.describe DecidimImporter::ExportReader do
       # extractors handle them once the debate is registered as an idea.
       expect(rows[:comments].first).to include('uid' => 'c-1', 'root_commentable' => 'debate-1', **stamp)
       expect(rows[:followers].first).to include('uid' => 'f-1', 'followable' => 'debate-1', **stamp)
+    end
+  end
+
+  describe 'process user roles' do
+    it 'reads a process’s users.csv into :process_roles, stamped with the process uid' do
+      write_process('decidim--process--1')
+      write_csv('04---participatory-processes/01---decidim--participatory-process--1/06---users.csv',
+        %w[uid role], %w[decidim--user--8 admin], %w[decidim--user--9 private_user])
+
+      roles = described_class.read(root)[:process_roles]
+
+      expect(roles).to contain_exactly(
+        { 'uid' => 'decidim--user--8', 'role' => 'admin', 'decidim_participatory_process' => 'decidim--process--1' },
+        { 'uid' => 'decidim--user--9', 'role' => 'private_user',
+          'decidim_participatory_process' => 'decidim--process--1' }
+      )
     end
   end
 end

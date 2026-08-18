@@ -1,6 +1,16 @@
 import { ICustomFieldResponse } from '../../../app/api/custom_fields/types';
 import { randomString } from '../../support/commands';
 
+// The next/submit buttons stay disabled until the page's last question has
+// been scrolled into view (IntersectionObserver in PageControlButtons), so
+// scroll there and wait for the enabled state instead of force-clicking —
+// a force-click on the still-disabled button silently does nothing.
+const clickPageButton = (dataCy: 'e2e-next-page' | 'e2e-submit-form') => {
+  cy.get('[data-question-id]').last().scrollIntoView();
+  cy.dataCy(dataCy).should('be.visible').should('not.have.class', 'disabled');
+  cy.dataCy(dataCy).click();
+};
+
 describe('Submit community monitor survey', () => {
   let communityMonitorProjectId: string;
   let communityMonitorPhaseId: string;
@@ -42,18 +52,13 @@ describe('Submit community monitor survey', () => {
     // Select first question
     cy.get('#place_to_live-linear-scale-option-1').click();
 
-    cy.dataCy('e2e-next-page').should('be.visible').click({ force: true });
-    cy.wait(2000);
+    clickPageButton('e2e-next-page');
     cy.contains('Service delivery').should('be.visible');
-    cy.dataCy('e2e-next-page').should('be.visible').click({ force: true });
-    cy.wait(2000);
+    clickPageButton('e2e-next-page');
     cy.contains('Governance and trust').should('be.visible');
-    cy.wait(4000);
 
     // save the form
-    cy.dataCy('e2e-submit-form').should('be.visible');
-    cy.dataCy('e2e-submit-form').click({ force: true });
-    cy.wait(2000);
+    clickPageButton('e2e-submit-form');
 
     // Confirm submissions was successful
     cy.dataCy('e2e-after-submission').should('exist');
@@ -74,18 +79,13 @@ describe('Submit community monitor survey', () => {
     cy.get('#place_to_live-linear-scale-option-1').click();
 
     // Go to last page
-    cy.dataCy('e2e-next-page').should('be.visible').click({ force: true });
-    cy.wait(2000);
+    clickPageButton('e2e-next-page');
     cy.contains('Service delivery').should('be.visible');
-    cy.dataCy('e2e-next-page').should('be.visible').click({ force: true });
-    cy.wait(2000);
+    clickPageButton('e2e-next-page');
     cy.contains('Governance and trust').should('be.visible');
-    cy.wait(4000);
 
     // save the form
-    cy.dataCy('e2e-submit-form').should('be.visible');
-    cy.dataCy('e2e-submit-form').click({ force: true });
-    cy.wait(2000);
+    clickPageButton('e2e-submit-form');
 
     // Confirm submissions was successful
     cy.dataCy('e2e-after-submission').should('exist');
@@ -98,7 +98,7 @@ describe('Submit community monitor survey', () => {
     cy.visit(`admin/community-monitor/settings/access-rights`);
     cy.get('.e2e-permission-registered-users').should('be.visible');
     cy.get('.e2e-permission-registered-users').first().click({ force: true });
-    cy.contains('Confirmed email').should('be.visible');
+    cy.contains('Security requirements').should('be.visible');
 
     // Go to community monitor survey form as logged out user
     cy.clearAllCookies();

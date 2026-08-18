@@ -7,7 +7,10 @@ import { INavbarDropdownChild, INavbarItem } from 'api/navbar/types';
 import useAddNavbarItem from 'api/navbar/useAddNavbarItem';
 import useUpsertNavbarDropdown from 'api/navbar/useUpsertNavbarDropdown';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import Modal from 'components/UI/Modal';
+import UpsellTooltip from 'components/UpsellTooltip';
 
 import { useIntl } from 'utils/cl-intl';
 import { IItemNotInNavbar } from 'utils/navbar';
@@ -26,15 +29,18 @@ type Props = {
 const NewMenuItemModal = ({ opened, onClose, editItem }: Props) => {
   const { formatMessage } = useIntl();
 
-  const { mutateAsync: addNavbarItem, isLoading: singleProcessing } =
+  const { mutateAsync: addNavbarItem, isPending: singleProcessing } =
     useAddNavbarItem();
-  const { mutateAsync: upsertDropdown, isLoading: dropdownProcessing } =
+  const { mutateAsync: upsertDropdown, isPending: dropdownProcessing } =
     useUpsertNavbarDropdown();
 
   const isEditing = !!editItem;
   const [activeTab, setActiveTab] = React.useState<'single' | 'dropdown'>(
     isEditing ? 'dropdown' : 'single'
   );
+
+  const dropdownEnabled = useFeatureFlag({ name: 'configurable_dropdown' });
+  const dropdownBlocked = !dropdownEnabled && !isEditing;
 
   const handleClose = () => {
     setActiveTab(isEditing ? 'dropdown' : 'single');
@@ -74,16 +80,21 @@ const NewMenuItemModal = ({ opened, onClose, editItem }: Props) => {
           >
             {formatMessage(messages.singleItem)}
           </Button>
-          <Button
-            flex="1"
-            buttonStyle={activeTab === 'dropdown' ? 'admin-dark' : 'secondary'}
-            onClick={() => setActiveTab('dropdown')}
-            className="intercom-admin-pages-menu-dropdown-tab"
-            data-cy="e2e-new-menu-item-dropdown-tab"
-            borderRadius="0 4px 4px 0"
-          >
-            {formatMessage(messages.dropdown)}
-          </Button>
+          <UpsellTooltip disabled={!dropdownBlocked} width="50%">
+            <Button
+              width="100%"
+              buttonStyle={
+                activeTab === 'dropdown' ? 'admin-dark' : 'secondary'
+              }
+              onClick={() => setActiveTab('dropdown')}
+              disabled={dropdownBlocked}
+              className="intercom-admin-pages-menu-dropdown-tab"
+              data-cy="e2e-new-menu-item-dropdown-tab"
+              borderRadius="0 4px 4px 0"
+            >
+              {formatMessage(messages.dropdown)}
+            </Button>
+          </UpsellTooltip>
         </Box>
 
         {activeTab === 'single' ? (

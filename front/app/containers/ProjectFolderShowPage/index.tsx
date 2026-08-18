@@ -99,7 +99,7 @@ const ProjectFolderShowPageWrapper = () => {
   const { slug } = useParams({ from: '/$locale/folders/$slug' });
   const { data: projectFolder, status, error } = useProjectFolderBySlug(slug);
 
-  if (status === 'loading') {
+  if (status === 'pending') {
     return (
       <VerticalCenterer>
         <Spinner />

@@ -268,13 +268,19 @@ module DecidimImporter
         url = present_value(row[COLUMNS[:source_url]])
         return nil if url.nil?
 
-        href = CGI.escapeHTML(url)
+        href = CGI.escapeHTML(strip_url_port(url))
         # Tag the link so the post-import {Links::Rewriter} leaves it pointing at the original Decidim URL
         # rather than rewriting it to the imported project (see {Links::Map::KEEP_HREF_REL}).
         rel = "noreferrer noopener nofollow #{Links::Map::KEEP_HREF_REL}"
         html = %(<p>Import source: <a href="#{href}" target="_blank" rel="#{rel}">#{href}</a></p>)
         locales = description.keys.presence || [primary_locale]
         locales.index_with { html }
+      end
+
+      # Decidim can leak its internal server port into exported URLs (e.g. `decidim.example.org:3000/…`);
+      # drop it so the visible import-source link points at the real public host, not `:3000`.
+      def strip_url_port(url)
+        url.sub(%r{\A(https?://[^/:@?#]+):\d+}i, '\1')
       end
 
       # file id (the explicit UUID) → its Decidim attachment-collection uid, for files that have one.

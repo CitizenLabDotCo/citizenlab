@@ -1,16 +1,36 @@
 import React from 'react';
 
+import { IdMethodData } from 'api/id_methods/types';
 import { IPhasePermissionData } from 'api/phase_permissions/types';
 
 import { render, screen, within, userEvent } from 'utils/testUtils/rtl';
 
 import ActionForm from '.';
 
+const ssoMethod = {
+  id: 'method-1',
+  type: 'id_method',
+  attributes: {
+    name: 'fake_sso',
+    authentication_method: true,
+    verification_method: false,
+    method_metadata: { name: 'ItsMe' },
+  },
+} as IdMethodData;
+
+// A sign-in method that may sign someone up without an email address, which is
+// what makes the email requirement configurable.
+const emaillessSsoMethod = {
+  ...ssoMethod,
+  attributes: {
+    ...ssoMethod.attributes,
+    method_metadata: { name: 'ItsMe', email_always_present: false },
+  },
+} as IdMethodData;
+
 // The combination of platform config the panel reacts to.
 let mockPasswordLoginEnabled = true;
-let mockAuthenticationMethod: unknown = {
-  data: { attributes: { method_metadata: { name: 'ItsMe' } } },
-};
+let mockIdMethods: IdMethodData[] = [ssoMethod];
 let mockVerificationMethodConfigured = true;
 
 jest.mock('hooks/useFeatureFlag', () =>
@@ -19,8 +39,8 @@ jest.mock('hooks/useFeatureFlag', () =>
   )
 );
 
-jest.mock('api/id_methods/useAuthenticationMethod', () =>
-  jest.fn(() => ({ data: mockAuthenticationMethod }))
+jest.mock('api/id_methods/useIdMethods', () =>
+  jest.fn(() => ({ data: { data: mockIdMethods } }))
 );
 
 jest.mock('api/id_methods/useVerificationMethod', () =>
@@ -44,11 +64,11 @@ jest.mock(
 
 // Leaf sections with their own data dependencies, orthogonal to what we test.
 jest.mock(
-  'components/admin/ActionForm/AccessSections/GroupsSection',
+  'components/admin/ActionForm/AccessSection/GroupsSection',
   () => () => null
 );
 jest.mock(
-  'components/admin/ActionForm/AccessSections/IdMethodsModal',
+  'components/admin/ActionForm/AccessSection/IdMethodsModal',
   () => () => null
 );
 jest.mock(
@@ -105,30 +125,29 @@ const renderForm = (
 
 beforeEach(() => {
   mockPasswordLoginEnabled = true;
-  mockAuthenticationMethod = {
-    data: { attributes: { method_metadata: { name: 'ItsMe' } } },
-  };
+  mockIdMethods = [ssoMethod];
   mockVerificationMethodConfigured = true;
 });
 
 describe('<ActionForm />', () => {
-  describe('which access section is rendered', () => {
-    it('renders the password-login access section when password login is enabled', () => {
+  describe('the access section', () => {
+    it('offers the security checks whatever the sign-in methods are', () => {
       renderForm();
-      // The email/verification method rows are unique to the password-login variant.
-      expect(screen.getByText('Confirmed email')).toBeInTheDocument();
+      expect(screen.getByText('Security requirements')).toBeInTheDocument();
       expect(
-        screen.queryByText(/Participants sign in with/)
-      ).not.toBeInTheDocument();
+        screen.getByText('Participants sign in with email, Fake SSO.')
+      ).toBeInTheDocument();
     });
 
-    it('renders the SSO access section when password login is disabled', () => {
+    it('keeps the same section when password login is off', () => {
       mockPasswordLoginEnabled = false;
       renderForm();
+      // Only the SSO method is a way in, but the security checks are still
+      // there to be required.
       expect(
-        screen.getByText('Participants sign in with ItsMe.')
+        screen.getByText('Participants sign in with Fake SSO.')
       ).toBeInTheDocument();
-      expect(screen.queryByText('Confirmed email')).not.toBeInTheDocument();
+      expect(screen.getByText('Security requirements')).toBeInTheDocument();
     });
   });
 
@@ -145,14 +164,42 @@ describe('<ActionForm />', () => {
   describe('collapsed summary chips', () => {
     it('summarises the enabled methods and collected fields', () => {
       renderForm(
-        { require_name: true, require_password: true },
+        {
+          require_name: true,
+          require_password: true,
+          require_verification: true,
+        },
         { defaultOpen: false }
       );
       // Body is not rendered when collapsed; only the summary chips are.
       expect(screen.queryByText('What we collect')).not.toBeInTheDocument();
-      expect(screen.getByText('Confirmed email')).toBeInTheDocument();
+      expect(screen.getByText('Sign-in required')).toBeInTheDocument();
+      expect(screen.getByText('Verification')).toBeInTheDocument();
       expect(screen.getByText('Name')).toBeInTheDocument();
       expect(screen.getByText('Password')).toBeInTheDocument();
+    });
+
+    it('chips a security requirement the platform offers', () => {
+      // Only a sign-in method that may leave someone without an email makes
+      // the email requirement configurable here (SMS is off).
+      mockIdMethods = [emaillessSsoMethod];
+      renderForm({ require_confirmed_email: true }, { defaultOpen: false });
+
+      expect(screen.getByText('Confirmed email')).toBeInTheDocument();
+    });
+
+    it('leaves out a security requirement the platform does not offer', () => {
+      // The permission still carries the flags, but neither requirement can be
+      // configured: SMS is off and no verification method is set up.
+      mockVerificationMethodConfigured = false;
+      renderForm(
+        { require_confirmed_email: true, require_verification: true },
+        { defaultOpen: false }
+      );
+
+      expect(screen.queryByText('Confirmed email')).not.toBeInTheDocument();
+      expect(screen.queryByText('Verification')).not.toBeInTheDocument();
+      expect(screen.getByText('Sign-in required')).toBeInTheDocument();
     });
 
     it('shows the open-access chip when anyone can participate', () => {
@@ -179,7 +226,7 @@ describe('<ActionForm />', () => {
     });
 
     it('does not surface the password tooltip when there is no SSO method', async () => {
-      mockAuthenticationMethod = null;
+      mockIdMethods = [];
       renderForm();
 
       await userEvent.click(screen.getByText('Personal info'));

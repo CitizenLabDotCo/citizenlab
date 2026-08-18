@@ -10,18 +10,23 @@ module DecidimImporter
   #   DecidimImporter::TemplateCreator.from_zip('tmp/example.com.zip').import
   class TemplateCreator
     # Build from a Decidim export zip: extract to a tempdir, parse every CSV, tear the tempdir down.
-    def self.from_zip(zip_path, **)
+    # @param container_ids [Array<String>, nil] when given, narrow the export to those process/assembly
+    #   uids and the users/folders they reference (see {RowScoper}) — a supplemental single-project import.
+    def self.from_zip(zip_path, container_ids: nil, **)
       raise ArgumentError, "file not found: #{zip_path}" unless File.file?(zip_path)
 
       Dir.mktmpdir('decidim_import_') do |tmp|
         ZipExtractor.extract(zip_path, tmp)
-        from_directory(ZipExtractor.detect_csv_root(tmp), **)
+        from_directory(ZipExtractor.detect_csv_root(tmp), container_ids: container_ids, **)
       end
     end
 
     # Build by scanning a directory that *directly* contains the export's CSV files (see {ExportReader}).
-    def self.from_directory(path, **)
-      new(ExportReader.read(path), **)
+    # @param container_ids [Array<String>, nil] see {.from_zip}.
+    def self.from_directory(path, container_ids: nil, **)
+      rows = ExportReader.read(path)
+      rows = RowScoper.scope(rows, container_ids) if container_ids.present?
+      new(rows, **)
     end
 
     # @param rows_by_model [Hash{Symbol=>Array<Hash>}] parsed CSV rows keyed by model. Missing keys mean
@@ -55,6 +60,7 @@ module DecidimImporter
       run_extractor(Extractors::ProjectsExtractor, :projects)
       run_categories
       run_phases
+      run_proposal_statuses
       run_proposals
       run_results
       run_debates
@@ -65,6 +71,7 @@ module DecidimImporter
       run_followers
       run_endorsements
       run_orders
+      run_proposal_votes
       run_proposal_attachments
       run_surveys
       run_survey_responses
@@ -137,13 +144,19 @@ module DecidimImporter
     delegate :to_yaml, to: :build_template
 
     # Builds the template and applies it to the current tenant in one shot, then assigns the deferred
-    # moderator roles (which need the in-memory ref map). Returns the deserializer's created-ids hash.
+    # project-moderator roles by natural key. Returns the deserializer's created-ids hash.
     def import(validate: true)
       # Round-trip through YAML to exercise the actual artifact the deserializer consumes.
       template = YAML.load(build_template.to_yaml, aliases: true)
       created = Importer.apply_template(template, import_uploads: @import_uploads, validate: validate)
-      RoleAssigner.new(ref_map).assign(created, role_assignments)
+      ModeratorAssigner.new.assign(moderator_assignments)
       created
+    end
+
+    # The custom `idea_status` records the {StatusMapper} created for this import (Decidim states with no
+    # standard Go Vocal equivalent), for the run log. Empty until {#build_template} has run.
+    def custom_statuses
+      @status_resolver&.custom_status_records || []
     end
 
     # Participation components that couldn't be placed as a phase (never published / no datable window).
@@ -196,6 +209,12 @@ module DecidimImporter
       @orders_extractor&.skipped || []
     end
 
+    # Proposal votes that couldn't be imported as baskets (component isn't a voting phase / no imported
+    # proposal among the voter's picks).
+    def skipped_proposal_votes
+      @proposal_votes_extractor&.skipped || []
+    end
+
     # Surveys/questions that couldn't be imported (e.g. an unsupported question type).
     def skipped_surveys
       @surveys_extractor&.skipped || []
@@ -241,6 +260,22 @@ module DecidimImporter
       @categories_extractor&.skipped || []
     end
 
+    # Natural-key project-moderator tuples for {ModeratorAssigner} (`{ 'user_unique_code' =>,
+    # 'project_slug' => }`), resolved against the built ref map — call after {#build_template}. Memoised
+    # so {#skipped_roles} reflects the same run.
+    def moderator_assignments
+      return [] unless @rows_by_model.key?(:process_roles)
+
+      @moderator_assignments ||=
+        (@process_roles_extractor = build_extractor(Extractors::ProcessRolesExtractor, :process_roles)).run
+    end
+
+    # Process user-roles that couldn't be turned into a moderator assignment (user/process not imported,
+    # or project without a slug). Reflects the last {#moderator_assignments} run.
+    def skipped_roles
+      @process_roles_extractor&.skipped || []
+    end
+
     private
 
     def run_phases
@@ -248,11 +283,23 @@ module DecidimImporter
       @phase_projector.run(participation_components: participation_components)
     end
 
+    # Maps the proposals' Decidim states onto Go Vocal idea-statuses (one LLM call, see {StatusMapper}),
+    # creating the `idea_status` records for the custom ones before the proposals reference them. Runs
+    # only when there are proposals; the resolver copes with a missing `proposal_states` sidecar.
+    def run_proposal_statuses
+      return unless @rows_by_model.key?(:proposals)
+
+      @status_resolver = ProposalStatusResolver.new(
+        rows_for(:proposal_states), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
+      ).build!
+    end
+
     def run_proposals
       return unless @rows_by_model.key?(:proposals)
 
       @proposals_extractor = Extractors::ProposalsExtractor.new(
-        rows_for(:proposals), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
+        rows_for(:proposals), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale,
+        status_resolver: @status_resolver
       )
       @proposals_extractor.run
     end
@@ -298,6 +345,14 @@ module DecidimImporter
       return unless @rows_by_model.key?(:orders)
 
       (@orders_extractor = build_extractor(Extractors::OrdersExtractor, :orders)).run
+    end
+
+    # Decidim proposal votes → `Basket`s (+ `BasketsIdea`s) in a proposals component's single-voting phase.
+    # Runs after the proposals extractor (ideas exist) and users (voters resolve).
+    def run_proposal_votes
+      return unless @rows_by_model.key?(:proposal_votes)
+
+      (@proposal_votes_extractor = build_extractor(Extractors::ProposalVotesExtractor, :proposal_votes)).run
     end
 
     # Decidim comment votes → up/down `Reaction`s on the imported comments (comment + author resolved).
@@ -435,15 +490,10 @@ module DecidimImporter
     end
 
     def derived_original_domain
-      url = rows_for(:projects).filter_map { |row| present_string(row['url']) }.first
+      url = rows_for(:projects).filter_map { |row| Parsing.present_value(row['url']) }.first
       url && URI.parse(url).host
     rescue URI::InvalidURIError
       nil
-    end
-
-    def present_string(value)
-      str = value.to_s.strip
-      str.empty? ? nil : str
     end
 
     # Decidim process attachments → project-level file attachments (`ProjectFile`). Runs after the projects
@@ -525,14 +575,34 @@ module DecidimImporter
         .transform_values { |budgets| budgets.sum { |budget| budget['total_budget'].to_i } }
     end
 
+    # Proposals components → `ideation` phases, *except* those whose proposals were voted on, which become
+    # `single_voting` voting phases (one vote per option) so the votes import as baskets (see
+    # {Extractors::ProposalVotesExtractor}). A voted component's phase also spans its votes' dates.
     def proposal_components
       dates_by_component = rows_for(:proposals).group_by { |row| row['decidim_component'] }
+      votes_by_component = rows_for(:proposal_votes).group_by { |row| row['decidim_component'] }
       proposal_component_rows.map do |row|
-        { process_uid: row['decidim_participatory_process'], component_uid: row['uid'],
-          name: row['name'], weight: row['weight'], method: 'ideation',
-          published_at: row['published_at'], previously_published: row['previously_published'],
-          end_dates: (dates_by_component[row['uid']] || []).pluck('published_at') }
+        uid = row['uid']
+        proposal_dates = (dates_by_component[uid] || []).pluck('published_at')
+        votes = votes_by_component[uid] || []
+        base = { process_uid: row['decidim_participatory_process'], component_uid: uid,
+                 name: row['name'], weight: row['weight'],
+                 published_at: row['published_at'], previously_published: row['previously_published'] }
+        if votes.any?
+          base.merge(method: 'voting', voting_method: 'single_voting', voting_max_votes_per_idea: 1,
+            voting_max_total: proposal_vote_limit(row), end_dates: proposal_dates + votes.pluck('created_at'))
+        else
+          base.merge(method: 'ideation', end_dates: proposal_dates)
+        end
       end
+    end
+
+    # A proposals component's per-user vote cap from its `vote_limit` setting; nil when 0 (Decidim's
+    # "unlimited"), which leaves the Go Vocal single-voting phase uncapped.
+    def proposal_vote_limit(component_row)
+      settings = Parsing.parse_json(component_row['settings'])
+      limit = settings.is_a?(Hash) ? settings.dig('global', 'vote_limit').to_i : 0
+      limit.positive? ? limit : nil
     end
 
     def survey_phase_components
@@ -550,34 +620,18 @@ module DecidimImporter
     end
 
     # Component manifest rows whose type is `proposals` (their proposals live in a sibling CSV).
-    def proposal_component_rows
-      @proposal_component_rows ||= rows_for(:components).select { |row| row['type'] == ExportReader::PROPOSALS_COMPONENT }
+    # Component manifest rows of a given type (proposals/accountability/debates/surveys/budgets/pages),
+    # memoized per type. Their per-type payloads live in sibling CSVs or `specific_data`.
+    def component_rows_of(type)
+      (@component_rows_of ||= {})[type] ||= rows_for(:components).select { |row| row['type'] == type }
     end
 
-    # Component manifest rows whose type is `accountability` (their results live in a sibling CSV).
-    def accountability_component_rows
-      @accountability_component_rows ||= rows_for(:components).select { |row| row['type'] == ExportReader::ACCOUNTABILITY_COMPONENT }
-    end
-
-    # Component manifest rows whose type is `debates` (their debates live in a sibling CSV).
-    def debate_component_rows
-      @debate_component_rows ||= rows_for(:components).select { |row| row['type'] == ExportReader::DEBATES_COMPONENT }
-    end
-
-    # Component manifest rows whose type is `surveys` (their questionnaire lives in `specific_data`).
-    def survey_component_rows
-      @survey_component_rows ||= rows_for(:components).select { |row| row['type'] == ExportReader::SURVEYS_COMPONENT }
-    end
-
-    # Component manifest rows whose type is `budgets` (their budgets/projects/orders live in a subtree).
-    def budget_component_rows
-      @budget_component_rows ||= rows_for(:components).select { |row| row['type'] == ExportReader::BUDGETS_COMPONENT }
-    end
-
-    # Component manifest rows whose type is `pages` (their body lives in `specific_data`).
-    def page_component_rows
-      @page_component_rows ||= rows_for(:components).select { |row| row['type'] == ExportReader::PAGES_COMPONENT }
-    end
+    def proposal_component_rows = component_rows_of(ExportReader::PROPOSALS_COMPONENT)
+    def accountability_component_rows = component_rows_of(ExportReader::ACCOUNTABILITY_COMPONENT)
+    def debate_component_rows = component_rows_of(ExportReader::DEBATES_COMPONENT)
+    def survey_component_rows = component_rows_of(ExportReader::SURVEYS_COMPONENT)
+    def budget_component_rows = component_rows_of(ExportReader::BUDGETS_COMPONENT)
+    def page_component_rows = component_rows_of(ExportReader::PAGES_COMPONENT)
 
     # Custom user fields seeded from the organization's `extra_user_fields` config, feeding both the
     # template (new `custom_field` records) and the users extractor (keys to copy off `extended_data`).
@@ -611,14 +665,6 @@ module DecidimImporter
     # Instantiates an extractor for a model with the shared ref map + locale settings.
     def build_extractor(klass, model)
       klass.new(rows_for(model), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale)
-    end
-
-    def role_assignments
-      return [] unless @rows_by_model.key?(:process_roles)
-
-      Extractors::ProcessRolesExtractor.new(
-        rows_for(:process_roles), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
-      ).run
     end
 
     def rows_for(model)

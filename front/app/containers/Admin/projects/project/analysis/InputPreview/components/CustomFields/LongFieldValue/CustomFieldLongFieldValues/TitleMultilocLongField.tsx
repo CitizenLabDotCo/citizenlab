@@ -16,10 +16,7 @@ const TitleMultilocLongField = ({ input, customField }: Props) => {
   return (
     <Box>
       <Title variant="h3" my="0px">
-        <T
-          value={input.attributes[customField.data.attributes.key]}
-          supportHtml={true}
-        />
+        <T value={input.attributes[customField.data.attributes.key]} />
       </Title>
     </Box>
   );

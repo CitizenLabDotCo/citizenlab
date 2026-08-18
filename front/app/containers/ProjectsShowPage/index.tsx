@@ -137,9 +137,9 @@ const ProjectsShowPageWrapper = () => {
     data: project,
     status: statusProject,
     error,
-    isInitialLoading: isInitialProjectLoading,
+    isLoading: isInitialProjectLoading,
   } = useProjectBySlug(slug);
-  const { data: phases, isInitialLoading: isInitialPhasesLoading } = usePhases(
+  const { data: phases, isLoading: isInitialPhasesLoading } = usePhases(
     project?.data.id
   );
   const phaseIndex = phaseNumber ? parseInt(phaseNumber, 10) - 1 : undefined;

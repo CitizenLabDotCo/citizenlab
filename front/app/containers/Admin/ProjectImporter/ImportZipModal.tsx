@@ -43,7 +43,7 @@ interface Props {
 
 const ImportZipModal = ({ open, onClose, onImport }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutateAsync: addProjectImport, isLoading } =
+  const { mutateAsync: addProjectImport, isPending } =
     useAddProjectImportAsync();
   const locale = useLocale();
 
@@ -115,8 +115,8 @@ const ImportZipModal = ({ open, onClose, onImport }: Props) => {
                 bgColor={colors.primary}
                 width="auto"
                 type="submit"
-                processing={isLoading}
-                disabled={isLoading}
+                processing={isPending}
+                disabled={isPending}
               >
                 <FormattedMessage {...messages.upload} />
               </Button>

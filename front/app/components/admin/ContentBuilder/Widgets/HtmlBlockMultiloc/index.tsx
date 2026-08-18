@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
+import { useLocation } from 'utils/router';
 
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 
@@ -15,6 +16,22 @@ interface Props {
   html?: Multiloc;
 }
 
+const ContentWrapper = styled(Box)<{ isEditing: boolean }>`
+  /**
+* In edit mode, we disable pointer events for iframes contained within
+* the HTMLBlock. An iframe is a separate browsing context: clicks occurring
+* inside it never bubble up to the parent document, so craft.js never
+* receives the mousedown/click event that selects the node.
+* With \`pointer-events: none\`, the click passes through the iframe and reaches
+* the wrapper connected by craft.js. This rule is applied only when the editor
+* is active, so the iframe remains fully interactive in preview mode and on
+* the public-facing side.
+*/
+  iframe {
+    pointer-events: ${({ isEditing }) => (isEditing ? 'none' : 'auto')};
+  }
+`;
+
 const StyledBox = styled(Box)`
   textarea {
     font-family: 'monospace', monospace !important;
@@ -23,16 +40,21 @@ const StyledBox = styled(Box)`
 
 const HtmlBlockMultiloc = ({ html }: Props) => {
   const localize = useLocalize();
+  const { pathname } = useLocation();
+  const enabled =
+    pathname.includes('admin/project-page-builder') ||
+    pathname.includes('admin/pages-menu');
 
   return (
-    <Box
+    <ContentWrapper
+      isEditing={enabled}
       className="e2e-html-block"
       minHeight="26px"
       maxWidth="1200px"
       margin="0 auto"
     >
       <div dangerouslySetInnerHTML={{ __html: localize(html) }} />
-    </Box>
+    </ContentWrapper>
   );
 };
 
@@ -69,5 +91,7 @@ HtmlBlockMultiloc.craft = {
     title: messages.htmlBlockMultiloc,
   },
 };
+
+export const htmlBlockMultilocTitle = messages.htmlBlockMultiloc;
 
 export default HtmlBlockMultiloc;

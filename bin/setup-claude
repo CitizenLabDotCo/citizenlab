@@ -9,12 +9,37 @@
 #     at the private content. Gitignored at any path via .gitignore.
 #     Claude Code's CLAUDE.md discovery follows file symlinks, so no
 #     committed stub or @import indirection is needed.
+#   - .mcp.json (repo root): file symlink to the overlay's team-shared MCP
+#     server config. Lives at the root (gitignored) because that's where
+#     Claude Code discovers project-scope MCP servers.
+#
+# Modes:
+#   bin/setup-claude            full setup: clone/update the overlay, then
+#                               (re)create the symlinks
+#   bin/setup-claude --relink   (re)create the symlinks from the local overlay
+#                               working tree only — no git operations, so it's
+#                               safe to run from automation (e.g. a session
+#                               hook) without touching the dev's git state
+#   bin/setup-claude --check    staleness diagnostic: exit 1 and say what's
+#                               wrong when the overlay clone is missing or
+#                               behind origin/main (commits touching only
+#                               plans/ don't count), symlinks are missing or
+#                               dangling, or core.hooksPath is unset. Makes no
+#                               changes apart from a throttled `git fetch`
+#                               (at most once per
+#                               SETUP_CLAUDE_CHECK_FETCH_MAX_AGE_MINUTES,
+#                               default 360, tracked via a stamp file in the
+#                               overlay's .git/; skipped entirely with
+#                               SETUP_CLAUDE_CHECK_NO_FETCH=1). Fetch failures
+#                               (offline, auth) are ignored — the check never
+#                               blocks on the network.
 #
 # Requires CITIZENLAB_CLAUDE_GIT_REMOTE (the git remote spec for the private
 # overlay repo — SSH `git@host:...`, HTTPS, or `ssh://...`). It can be set in
 # the host shell directly, or in env_files/back-secret.env — the script
 # extracts just that one variable from the file without sourcing it whole, so
 # the docker-compose env file doesn't have to be bash-source-safe.
+# (--check and --relink work from the existing local clone and don't need it.)
 # Override the default sibling clone location with CITIZENLAB_CLAUDE_DIR.
 
 set -euo pipefail
@@ -50,6 +75,17 @@ relpath() {
 # script. See bin/setup-claude.test.sh.
 [ "${BIN_SETUP_CLAUDE_LIBRARY:-}" = "1" ] && return 0
 
+MODE="setup"
+case "${1:-}" in
+  "") ;;
+  --check)  MODE="check" ;;
+  --relink) MODE="relink" ;;
+  *)
+    echo "Usage: bin/setup-claude [--check|--relink]" >&2
+    exit 2
+    ;;
+esac
+
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "$REPO_ROOT"
 
@@ -65,7 +101,7 @@ if [ -z "${CITIZENLAB_CLAUDE_GIT_REMOTE:-}" ] && [ -f env_files/back-secret.env 
 fi
 
 PRIVATE_REPO="${CITIZENLAB_CLAUDE_GIT_REMOTE:-}"
-if [ -z "$PRIVATE_REPO" ]; then
+if [ "$MODE" = "setup" ] && [ -z "$PRIVATE_REPO" ]; then
   echo "Warning: CITIZENLAB_CLAUDE_GIT_REMOTE is not set." >&2
   echo "Set it in your host shell rc, or add it to env_files/back-secret.env (gitignored) at the repo root." >&2
   exit 1
@@ -74,10 +110,135 @@ fi
 PARENT="$(dirname "$REPO_ROOT")"
 PRIVATE_DIR="${CITIZENLAB_CLAUDE_DIR:-$PARENT/citizenlab-claude}"
 
+# The one definition of "which overlay files get mirrored under .claude/",
+# shared by the mirror loop below and by --check so the two can't drift.
+# Excluded: git internals, the overlay's own README/.gitignore, per-folder
+# README docs, files with special destinations (settings.json,
+# .claude-readme.md, .mcp.json), and CLAUDE.md (materialized as top-level
+# symlinks).
+list_private_files() {
+  find "$PRIVATE_DIR" -type f \
+    -not -path '*/.git/*' \
+    -not -name 'README.md' \
+    -not -name '.gitignore' \
+    -not -name 'settings.json' \
+    -not -name '.claude-readme.md' \
+    -not -name '.mcp.json' \
+    -not -name 'CLAUDE.md' \
+    -print0
+}
+
+list_private_claude_md() {
+  find "$PRIVATE_DIR" -name 'CLAUDE.md' -not -path '*/.git/*' -print0
+}
+
+if [ "$MODE" = "check" ]; then
+  issues=()
+
+  if [ ! -d "$PRIVATE_DIR" ]; then
+    if [ -z "$PRIVATE_REPO" ]; then
+      # No remote configured and no clone: a dev without overlay access.
+      # Nothing to check and nothing worth nagging about.
+      echo "Claude overlay not configured (no CITIZENLAB_CLAUDE_GIT_REMOTE, no clone at $PRIVATE_DIR) — skipping check."
+      exit 0
+    fi
+    issues+=("private overlay clone is missing at $PRIVATE_DIR")
+  else
+    # Clone freshness: fetch origin/main (throttled via a stamp file so
+    # frequent invocations — e.g. one per Claude session start — hit the
+    # network at most once per max-age window), then compare local main
+    # against it. The stamp records the attempt, not the success, so an
+    # offline machine isn't re-probed on every invocation.
+    stamp="$PRIVATE_DIR/.git/setup-claude-check-fetch-stamp"
+    max_age="${SETUP_CLAUDE_CHECK_FETCH_MAX_AGE_MINUTES:-360}"
+    if [ -z "${SETUP_CLAUDE_CHECK_NO_FETCH:-}" ]; then
+      if [ ! -f "$stamp" ] || [ -n "$(find "$stamp" -mmin +"$max_age" 2>/dev/null)" ]; then
+        touch "$stamp" 2>/dev/null || true
+        git -C "$PRIVATE_DIR" fetch --quiet origin main >/dev/null 2>&1 || true
+      fi
+    fi
+    if git -C "$PRIVATE_DIR" rev-parse -q --verify refs/heads/main >/dev/null 2>&1 \
+       && git -C "$PRIVATE_DIR" rev-parse -q --verify refs/remotes/origin/main >/dev/null 2>&1; then
+      behind="$(git -C "$PRIVATE_DIR" rev-list --count refs/heads/main..refs/remotes/origin/main -- . ':(exclude)plans' 2>/dev/null || echo 0)"
+      if [ "$behind" -gt 0 ]; then
+        last="$(git -C "$PRIVATE_DIR" log -1 --format=%cs refs/heads/main 2>/dev/null || echo unknown)"
+        issues+=("overlay main is $behind commit(s) behind origin/main, not counting plan-only updates (local main last commit: $last)")
+      fi
+    fi
+
+    # Symlink drift, part 1: overlay files with no resolving symlink at
+    # their expected destination — a file was added to the overlay after
+    # the last setup/relink run. Covers the mirror set, the two
+    # special-destination files, and the top-level CLAUDE.md links (same
+    # parent-dir-must-exist rule as the creation loop below).
+    missing=0
+    missing_example=""
+    note_missing() {
+      missing=$((missing + 1))
+      [ -n "$missing_example" ] || missing_example="$1"
+    }
+    while IFS= read -r -d '' src; do
+      rel="${src#$PRIVATE_DIR/}"
+      { [ -L ".claude/$rel" ] && [ -e ".claude/$rel" ]; } || note_missing ".claude/$rel"
+    done < <(list_private_files)
+    if [ -f "$PRIVATE_DIR/settings.json" ]; then
+      { [ -L .claude/settings.json ] && [ -e .claude/settings.json ]; } || note_missing ".claude/settings.json"
+    fi
+    if [ -f "$PRIVATE_DIR/.claude-readme.md" ]; then
+      { [ -L .claude/README.md ] && [ -e .claude/README.md ]; } || note_missing ".claude/README.md"
+    fi
+    if [ -f "$PRIVATE_DIR/.mcp.json" ]; then
+      { [ -L .mcp.json ] && [ -e .mcp.json ]; } || note_missing ".mcp.json"
+    fi
+    while IFS= read -r -d '' src; do
+      rel="${src#$PRIVATE_DIR/}"
+      parent="$(dirname "$rel")"
+      if [ "$parent" = "." ] || [ -d "$parent" ]; then
+        { [ -L "$rel" ] && [ -e "$rel" ]; } || note_missing "$rel"
+      fi
+    done < <(list_private_claude_md)
+    if [ "$missing" -gt 0 ]; then
+      issues+=("$missing overlay file(s) not materialized as symlinks (e.g. $missing_example)")
+    fi
+
+    # Symlink drift, part 2: dangling symlinks under .claude/ — a file was
+    # deleted from the overlay after the last setup/relink run.
+    dangling_list="$(find .claude -type l ! -exec test -e {} \; -print 2>/dev/null || true)"
+    if [ -n "$dangling_list" ]; then
+      dangling_count="$(printf '%s\n' "$dangling_list" | wc -l | tr -d ' ')"
+      dangling_example="$(printf '%s\n' "$dangling_list" | head -n 1)"
+      issues+=("$dangling_count dangling symlink(s) under .claude/ (e.g. $dangling_example)")
+    fi
+
+    if [ -L .mcp.json ] && [ ! -e .mcp.json ]; then
+      issues+=(".mcp.json at the repo root is a dangling symlink (removed from the overlay?)")
+    fi
+  fi
+
+  if [ -d .githooks ] && [ "$(git config --get core.hooksPath || true)" != ".githooks" ]; then
+    issues+=("git core.hooksPath is not set to .githooks (privacy pre-commit guard inactive)")
+  fi
+
+  if [ "${#issues[@]}" -eq 0 ]; then
+    echo "Claude overlay check: OK"
+    exit 0
+  fi
+  echo "Claude overlay check: STALE"
+  for issue in "${issues[@]}"; do
+    echo "  - $issue"
+  done
+  echo "Run \`make claude-setup\` to refresh."
+  exit 1
+fi
+
 if [ ! -d "$PRIVATE_DIR" ]; then
+  if [ "$MODE" = "relink" ]; then
+    echo "Error: private overlay clone is missing at $PRIVATE_DIR — run \`make claude-setup\` first." >&2
+    exit 1
+  fi
   echo "Cloning private overlay into $PRIVATE_DIR ..."
   git clone "$PRIVATE_REPO" "$PRIVATE_DIR"
-else
+elif [ "$MODE" = "setup" ]; then
   echo "Updating private overlay at $PRIVATE_DIR ..."
   # Skip the pull when the current branch has no upstream — common when a
   # dev is on a fresh feature branch in citizenlab-claude that hasn't been
@@ -120,22 +281,13 @@ find .claude -type l -delete 2>/dev/null || true
 # Mirror every tracked file from the private repo as a per-file symlink at
 # .claude/<same-relative-path>. Per-file (not directory) symlinks because
 # Claude Code's `@import` and skill/command discovery don't follow directory
-# symlinks. Skipped: the private repo's own README/.gitignore, the per-folder
-# README docs, the files with special destinations handled below, and any
-# CLAUDE.md (those are materialized as top-level symlinks, see further down).
+# symlinks. The shared list_private_files() defines the set (see above).
 while IFS= read -r -d '' src; do
   rel="${src#$PRIVATE_DIR/}"
   dst=".claude/$rel"
   mkdir -p "$(dirname "$dst")"
   ln -sfn "$(relpath "$src" "$REPO_ROOT/$(dirname "$dst")")" "$dst"
-done < <(find "$PRIVATE_DIR" -type f \
-  -not -path '*/.git/*' \
-  -not -name 'README.md' \
-  -not -name '.gitignore' \
-  -not -name 'settings.json' \
-  -not -name '.claude-readme.md' \
-  -not -name 'CLAUDE.md' \
-  -print0)
+done < <(list_private_files)
 
 # Remove any empty directories under .claude/ left behind after the CLAUDE.md
 # exclusion (e.g. .claude/back/ / .claude/front/ from the previous design).
@@ -153,6 +305,12 @@ fi
 # Local README explaining the .claude/ layout (only if present in the private repo)
 if [ -f "$PRIVATE_DIR/.claude-readme.md" ]; then
   ln -sfn "$(relpath "$PRIVATE_DIR/.claude-readme.md" "$REPO_ROOT/.claude")" .claude/README.md
+fi
+
+if [ -f "$PRIVATE_DIR/.mcp.json" ]; then
+  ln -sfn "$(relpath "$PRIVATE_DIR/.mcp.json" "$REPO_ROOT")" .mcp.json
+elif [ -L .mcp.json ]; then
+  rm -f .mcp.json
 fi
 
 # Top-level CLAUDE.md symlinks: Claude Code's CLAUDE.md discovery walks up
@@ -189,7 +347,7 @@ while IFS= read -r -d '' src; do
     fi
     ln -sfn "$(relpath "$src" "$anchor")" "$rel"
   fi
-done < <(find "$PRIVATE_DIR" -name 'CLAUDE.md' -not -path '*/.git/*' -print0)
+done < <(list_private_claude_md)
 
 # Install the privacy guard hooks (versioned at .githooks/)
 if [ -d .githooks ]; then
@@ -200,4 +358,8 @@ if [ -d .githooks ]; then
   fi
 fi
 
-echo "Claude private overlay installed at $PRIVATE_DIR"
+if [ "$MODE" = "relink" ]; then
+  echo "Claude overlay symlinks refreshed from $PRIVATE_DIR"
+else
+  echo "Claude private overlay installed at $PRIVATE_DIR"
+fi

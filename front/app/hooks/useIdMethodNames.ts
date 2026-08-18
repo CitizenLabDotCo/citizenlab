@@ -35,6 +35,7 @@ const useIdMethodNames = () => {
   return {
     franceconnect: 'FranceConnect',
     criipto: isDev ? 'MitID (Criipto)' : 'MitID',
+    nemlog_in: isDev ? 'MitID (NemLog-in)' : 'MitID',
     twoday: 'BankID eller Freja eID+',
     acm: 'Itsme®',
     id_austria: 'ID Austria',

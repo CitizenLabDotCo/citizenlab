@@ -17,7 +17,6 @@ class McpServer::Tools::CreateProject < McpServer::BaseTool
     {
       properties: {
         title_multiloc: { **multiloc_schema, description: 'Project title.' },
-        description_multiloc: { **multiloc_schema, description: 'Project description (HTML).' },
         description_preview_multiloc: { **multiloc_schema, description: 'Plain-text summary for search/previews.' },
         visible_to: { type: 'string', enum: %w[public groups admins], description: 'Who can see the project. Defaults to "public".' },
         group_ids: { type: 'array', items: { type: 'string' }, description: <<~DESC.squish },

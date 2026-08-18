@@ -92,6 +92,46 @@ describe MultiTenancy::Templates::TenantDeserializer do
       expect(ProjectFolders::Folder.count).to eq 1
     end
 
+    context 'with a reuse_by matcher' do
+      let(:folder) { create(:project_folder, title_multiloc: { 'en' => 'Shared folder' }) }
+      let(:reuse_by) do
+        { 'ProjectFolders::Folder' => ->(attrs, klass) { klass.find_by("title_multiloc->>'en' = ?", attrs.dig('title_multiloc', 'en')) } }
+      end
+      let(:template) do
+        YAML.load(<<~YAML, aliases: true)
+          ---
+          models:
+            project_folders/folder:
+            - title_multiloc:
+                en: Shared folder
+              admin_publication_attributes: &folderpub
+                publication_status: published
+            project:
+            - title_multiloc:
+                en: Child project
+              admin_publication_attributes:
+                publication_status: published
+                parent_attributes_ref: *folderpub
+        YAML
+      end
+
+      it 'reuses the matched record instead of duplicating it, resolving refs (incl. nested) to it' do
+        folder # create the existing folder first
+
+        expect { service.deserialize(template, reuse_by: reuse_by) }.to change(Project, :count).by(1)
+        expect(ProjectFolders::Folder.count).to eq(1) # reused, not re-created
+
+        # the child project's admin_publication parent resolves to the *existing* folder's admin_publication
+        child = Project.find_by("title_multiloc->>'en' = 'Child project'")
+        expect(child.admin_publication.parent).to eq(folder.admin_publication)
+      end
+
+      it 'creates the record normally when the matcher finds nothing' do
+        expect { service.deserialize(template, reuse_by: reuse_by) }
+          .to change(ProjectFolders::Folder, :count).by(1) # no existing "Shared folder" → created
+      end
+    end
+
     describe 'filtering of template multiloc attributes' do
       let(:platform_locales) { ['en'] }
       let(:template) do

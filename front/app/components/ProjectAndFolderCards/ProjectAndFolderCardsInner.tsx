@@ -1,13 +1,9 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { InfiniteQueryObserverResult } from '@tanstack/react-query';
-import { CLErrors, Multiloc } from 'typings';
+import { Multiloc } from 'typings';
 
-import {
-  IAdminPublicationData,
-  IAdminPublications,
-} from 'api/admin_publications/types';
+import { IAdminPublicationData } from 'api/admin_publications/types';
 import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
 import { PublicationStatus } from 'api/projects/types';
 
@@ -38,9 +34,7 @@ interface Props extends BaseProps {
   onChangeAreas?: (areas: string[]) => void;
   onChangeSearch?: (search: string | null) => void;
   onChangePublicationStatus?: (publicationStatus: PublicationStatus[]) => void;
-  onLoadMore?: () => Promise<
-    InfiniteQueryObserverResult<IAdminPublications, CLErrors>
-  >;
+  onLoadMore?: () => void;
   onChangeCurrentTab: (tab: PublicationTab) => void;
   searchTerm?: string | null;
 }
@@ -165,7 +159,11 @@ const ProjectAndFolderCardsInner = ({
         />
       )}
 
-      {!loadingInitial && hasPublications && (
+      {/* Rendered under the same condition as the Topbar tabs (the list is
+          empty while loading), so the tab panels the tabs' aria-controls
+          point to always exist — axe flags aria-controls referencing a missing
+          id as an aria-valid-attr-value violation during the load window. */}
+      {!noAdminPublicationsAtAll && (
         <PublicationStatusTabs
           currentTab={currentTab}
           availableTabs={availableTabs}

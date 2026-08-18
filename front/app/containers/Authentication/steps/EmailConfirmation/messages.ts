@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  codeMustHaveFourDigits: {
-    id: 'app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveFourDigits',
-    defaultMessage: 'Code must have 4 digits.',
+  codeMustHaveSixDigits: {
+    id: 'app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveSixDigits',
+    defaultMessage: 'Code must have 6 digits.',
   },
   anExampleCodeHasBeenSent: {
     id: 'app.components.ConfirmationModal.anExampleCodeHasBeenSent',

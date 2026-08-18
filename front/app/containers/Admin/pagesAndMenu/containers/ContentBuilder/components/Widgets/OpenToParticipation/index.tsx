@@ -20,14 +20,13 @@ interface Props {
 
 const OpenToParticipation = ({ titleMultiloc }: Props) => {
   const localizeWithFallback = useLocalizeWithFallback();
-  const { data, hasNextPage, fetchNextPage, isInitialLoading } =
-    useProjectsMini({
-      endpoint: 'with_active_participatory_phase',
-    });
+  const { data, hasNextPage, fetchNextPage, isLoading } = useProjectsMini({
+    endpoint: 'with_active_participatory_phase',
+  });
   const projects = data?.pages.map((page) => page.data).flat();
   const title = localizeWithFallback(titleMultiloc, openToParticipationTitle);
 
-  if (isInitialLoading) {
+  if (isLoading) {
     return <Skeleton title={title} />;
   }
 

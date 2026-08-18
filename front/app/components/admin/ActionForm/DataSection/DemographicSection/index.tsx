@@ -24,7 +24,7 @@ import upsellMessages from 'components/UpsellTooltip/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { demographicsSummary } from '../../logic';
+import actionFormMessages from '../../messages';
 import { Changes } from '../../types';
 import { Expander } from '../../ui';
 
@@ -61,7 +61,7 @@ const DemographicSection = ({
     phaseId,
     action,
   });
-  const { mutate: addCustomField, isLoading: isAddingField } =
+  const { mutate: addCustomField, isPending: isAddingField } =
     useAddPermissionsPhaseCustomField({ phaseId, action });
   const { mutate: updateCustomField } = useUpdatePermissionsPhaseCustomField({
     phaseId,
@@ -120,7 +120,13 @@ const DemographicSection = ({
     <Expander
       icon="user-data"
       title={formatMessage(messages.demographicQuestions)}
-      summary={demographicsSummary(customFields, formatMessage)}
+      summary={
+        customFields.length === 0
+          ? formatMessage(messages.none)
+          : formatMessage(actionFormMessages.nQuestions, {
+              nQuestions: customFields.length,
+            })
+      }
     >
       {permissionHasForm && (
         <DemographicsPlacement

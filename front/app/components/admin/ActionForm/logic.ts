@@ -1,42 +1,19 @@
 // The "rules engine". All the cross-setting dependencies live here, in one
 // place, so the UI components stay dumb. Every helper reads from the
 // `IPhasePermissionData` shape (plus the list of permission custom fields that
-// holds the demographics). The panel is stateless, so nothing here mutates:
-// writes are expressed as `Changes` for `onChange`.
+// holds the demographics, and the platform config that decides which security
+// requirements can be configured at all). The panel is stateless, so nothing
+// here mutates: writes are expressed as `Changes` for `onChange`.
 import { FormatMessage } from 'typings';
 
+import useIdMethods from 'api/id_methods/useIdMethods';
+import useVerificationMethod from 'api/id_methods/useVerificationMethod';
 import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
-import {
-  IPhasePermissionData,
-  UserDataCollection,
-} from 'api/phase_permissions/types';
+import { IPhasePermissionData } from 'api/phase_permissions/types';
 
-import { MessageDescriptor } from 'utils/cl-intl';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { AUTH_METHOD_LABELS } from './AccessSections/constants';
 import messages from './messages';
-import { AuthMethodKey, Changes, METHOD_FIELDS } from './types';
-
-/** The enabled flag + expiry (in days, `null` = "once, ever") for a method. */
-export const getMethod = (
-  permission: IPhasePermissionData,
-  key: AuthMethodKey
-): { enabled: boolean; expiry: number | null } => {
-  const fields = METHOD_FIELDS[key];
-  return {
-    enabled: permission.attributes[fields.enabled],
-    expiry: permission.attributes[fields.expiry],
-  };
-};
-
-/** The change to emit when a method's toggle / recency is edited. */
-export const methodChange = (
-  key: AuthMethodKey,
-  { enabled, expiry }: { enabled: boolean; expiry: number | null }
-): Changes => {
-  const fields = METHOD_FIELDS[key];
-  return { [fields.enabled]: enabled, [fields.expiry]: expiry } as Changes;
-};
 
 /** Group ids the action is limited to (OR semantics). */
 export const getGroupIds = (permission: IPhasePermissionData): string[] =>
@@ -45,6 +22,79 @@ export const getGroupIds = (permission: IPhasePermissionData): string[] =>
 /** Does participation require an account? Driven by `permitted_by`. */
 export const requiresAccount = (permission: IPhasePermissionData): boolean =>
   permission.attributes.permitted_by === 'users';
+
+// The security requirements on offer: each one maps onto a `require_*` boolean
+// + `*_expiry` pair on the permission.
+type SecurityRequirementKey = 'email' | 'phone' | 'verification';
+export type VisibleToggles = Record<SecurityRequirementKey, boolean>;
+
+type VisibleTogglesParams = {
+  sms2FAEnabled: boolean;
+  smsLoginEnabled: boolean;
+  verificationMethodEnabled: boolean;
+  hasAuthMethodNotReturningEmail: boolean;
+};
+
+export const getVisibleToggles = ({
+  sms2FAEnabled,
+  smsLoginEnabled,
+  verificationMethodEnabled,
+  hasAuthMethodNotReturningEmail,
+}: VisibleTogglesParams): VisibleToggles => {
+  const visibleToggles: VisibleToggles = {
+    email: false,
+    phone: false,
+    verification: false,
+  };
+
+  if ((sms2FAEnabled && smsLoginEnabled) || hasAuthMethodNotReturningEmail) {
+    // Requiring an email or not is only relevant if there exists
+    // a way for participants to sign up WITHOUT an email address.
+    // If you e.g. can only sign up with email, email confirmed is always required,
+    // so there is no need to make it configurable.
+    visibleToggles.email = true;
+  }
+
+  if (sms2FAEnabled) {
+    visibleToggles.phone = true;
+  }
+
+  if (verificationMethodEnabled) {
+    visibleToggles.verification = true;
+  }
+
+  return visibleToggles;
+};
+
+/**
+ * Which security requirements this platform can offer at all, read from live
+ * config. Both the toggles and the summaries go through this, so a requirement
+ * that cannot be configured never shows up in a summary either — however the
+ * permission was left when the platform config changed.
+ *
+ * Undefined while the sign-in methods are still loading.
+ */
+export const useVisibleToggles = (): VisibleToggles | undefined => {
+  const sms2FAEnabled = useFeatureFlag({ name: 'sms' });
+  const smsLoginEnabled = useFeatureFlag({ name: 'sms_login' });
+  const { data: verificationMethod } = useVerificationMethod();
+  const { data: idMethods } = useIdMethods();
+
+  if (!idMethods) return undefined;
+
+  const hasAuthMethodNotReturningEmail = idMethods.data.some(
+    (method) =>
+      method.attributes.authentication_method &&
+      method.attributes.method_metadata?.email_always_present === false
+  );
+
+  return getVisibleToggles({
+    sms2FAEnabled,
+    smsLoginEnabled,
+    verificationMethodEnabled: !!verificationMethod,
+    hasAuthMethodNotReturningEmail,
+  });
+};
 
 export interface SummaryChip {
   key: string;
@@ -81,7 +131,8 @@ const demographicsChip = (
 export const buildSummary = (
   permission: IPhasePermissionData,
   customFields: IPermissionsPhaseCustomFieldData[],
-  formatMessage: FormatMessage
+  formatMessage: FormatMessage,
+  visibleToggles: VisibleToggles
 ): SummaryChip[] => {
   const { attributes } = permission;
 
@@ -108,22 +159,43 @@ export const buildSummary = (
     ];
   }
 
-  const chips: SummaryChip[] = [];
-  const methodIcon: Record<AuthMethodKey, SummaryChip['icon']> = {
-    email: 'email',
-    phone: 'tablet',
-    verification: 'shield-checkered',
-  };
-  (Object.keys(METHOD_FIELDS) as AuthMethodKey[]).forEach((key) => {
-    if (getMethod(permission, key).enabled) {
-      chips.push({
-        key,
-        label: formatMessage(AUTH_METHOD_LABELS[key]),
-        icon: methodIcon[key],
-        tone: 'access',
-      });
-    }
-  });
+  // Signing in is a requirement in its own right, independent of the security
+  // checks below it — a permission can require an account and nothing else.
+  const chips: SummaryChip[] = [
+    {
+      key: 'signin',
+      label: formatMessage(messages.signInRequired),
+      icon: 'shield-checkered',
+      tone: 'access',
+    },
+  ];
+  // A requirement the platform does not offer (no SMS, no verification method,
+  // ...) is not something the admin can act on, so it stays out of the summary
+  // even when the permission still carries the flag.
+  if (visibleToggles.email && attributes.require_confirmed_email) {
+    chips.push({
+      key: 'email',
+      label: formatMessage(messages.confirmedEmail),
+      icon: 'email',
+      tone: 'access',
+    });
+  }
+  if (visibleToggles.phone && attributes.require_confirmed_phone_number) {
+    chips.push({
+      key: 'phone',
+      label: formatMessage(messages.confirmedPhone),
+      icon: 'tablet',
+      tone: 'access',
+    });
+  }
+  if (visibleToggles.verification && attributes.require_verification) {
+    chips.push({
+      key: 'verification',
+      label: formatMessage(messages.verification),
+      icon: 'shield-checkered',
+      tone: 'access',
+    });
+  }
 
   const groupIds = getGroupIds(permission);
   if (groupIds.length > 0) {
@@ -167,125 +239,4 @@ export const buildSummary = (
   }
 
   return chips;
-};
-
-// Summary for the SSO variant: the identification method is fixed, so the per-method
-// chips are replaced by a single SSO chip.
-export const buildSummarySSO = (
-  permission: IPhasePermissionData,
-  customFields: IPermissionsPhaseCustomFieldData[],
-  signInLabel: string,
-  formatMessage: FormatMessage
-): SummaryChip[] => {
-  const { attributes } = permission;
-
-  if (attributes.permitted_by === 'admins_moderators') {
-    return [
-      {
-        key: 'admins',
-        label: formatMessage(messages.adminsManagersOnly),
-        icon: 'shield-checkered',
-        tone: 'access',
-      },
-    ];
-  }
-
-  if (attributes.permitted_by === 'everyone') {
-    return [
-      {
-        key: 'open',
-        label: formatMessage(messages.anyoneCanParticipate),
-        icon: 'user-circle',
-        tone: 'open',
-      },
-      ...demographicsChip(customFields, formatMessage),
-    ];
-  }
-
-  const chips: SummaryChip[] = [
-    {
-      key: 'signin',
-      label: signInLabel,
-      icon: 'shield-checkered',
-      tone: 'access',
-    },
-  ];
-  const groupIds = getGroupIds(permission);
-  if (groupIds.length > 0) {
-    chips.push({
-      key: 'groups',
-      label: formatMessage(messages.nGroups, { nGroups: groupIds.length }),
-      icon: 'group',
-      tone: 'access',
-    });
-  }
-  if (attributes.require_name) {
-    chips.push({
-      key: 'name',
-      label: formatMessage(messages.name),
-      icon: 'user-circle',
-      tone: 'data',
-    });
-  }
-  chips.push(...demographicsChip(customFields, formatMessage));
-  if (attributes.user_data_collection !== 'all_data') {
-    chips.push({
-      key: 'anonymity',
-      label:
-        attributes.user_data_collection === 'anonymous'
-          ? formatMessage(messages.anonymous)
-          : formatMessage(messages.piiExcluded),
-      icon: 'user-circle',
-      tone: 'data',
-    });
-  }
-  return chips;
-};
-
-// ---- One-line summaries shown on the collapsed setting rows ----
-export const groupsSummary = (
-  permission: IPhasePermissionData,
-  formatMessage: FormatMessage
-): string => {
-  const n = getGroupIds(permission).length;
-  if (n === 0) return formatMessage(messages.everyoneWhoSignsIn);
-  return formatMessage(messages.nGroups, { nGroups: n });
-};
-
-export const piiSummary = (
-  permission: IPhasePermissionData,
-  formatMessage: FormatMessage,
-  // Password is never asked when password login is off, so it must not appear
-  // in the summary either - it would advertise a field that can't be collected.
-  showPassword = true
-): string => {
-  const parts: string[] = [];
-  if (permission.attributes.require_name) {
-    parts.push(formatMessage(messages.name));
-  }
-  if (showPassword && permission.attributes.require_password) {
-    parts.push(formatMessage(messages.password));
-  }
-  return parts.length
-    ? parts.join(' · ')
-    : formatMessage(messages.nothingExtra);
-};
-
-export const demographicsSummary = (
-  customFields: IPermissionsPhaseCustomFieldData[],
-  formatMessage: FormatMessage
-): string => {
-  const n = customFields.length;
-  return n === 0
-    ? formatMessage(messages.none)
-    : formatMessage(messages.nQuestions, { nQuestions: n });
-};
-
-export const DATA_COLLECTION_SUMMARY: Record<
-  UserDataCollection,
-  MessageDescriptor
-> = {
-  all_data: messages.linkedToProfile,
-  demographics_only: messages.piiExcludedFromResults,
-  anonymous: messages.fullyAnonymous,
 };

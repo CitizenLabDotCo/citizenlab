@@ -52,7 +52,7 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
 
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
-  const { mutate: deleteIdea, isLoading: isLoadingDeleteIdea } =
+  const { mutate: deleteIdea, isPending: isLoadingDeleteIdea } =
     useDeleteIdea();
   const { data: phases } = usePhases(projectId);
   const canEditIdea = usePermission({
@@ -96,10 +96,16 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
       currentPhase?.attributes.participation_method === 'proposals';
 
     const actions = [
-      {
-        label: <FormattedMessage {...messages.reportAsSpam} />,
-        handler: openSpamModal,
-      },
+      // Survey responses and other non-public inputs have no readable page, so
+      // there is nothing meaningful to report.
+      ...(idea.attributes.supports_public_visibility
+        ? [
+            {
+              label: <FormattedMessage {...messages.reportAsSpam} />,
+              handler: openSpamModal,
+            },
+          ]
+        : []),
       ...(isIdeationOrProposalsPhase && canEditIdea
         ? [
             {
@@ -113,6 +119,8 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
           ]
         : []),
     ];
+
+    if (actions.length === 0) return null;
 
     return (
       <>

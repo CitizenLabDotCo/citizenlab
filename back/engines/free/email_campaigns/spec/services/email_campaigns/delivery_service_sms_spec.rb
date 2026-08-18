@@ -31,7 +31,8 @@ describe EmailCampaigns::DeliveryService do
       service.send_now(campaign)
 
       delivery = campaign.sms_deliveries.sole
-      expect(EmailCampaigns::Sms::SendJob).to have_been_enqueued.with(delivery.id).exactly(:once)
+      expect(EmailCampaigns::Sms::SendJob).to have_been_enqueued
+        .with(delivery.id, use_case: EmailCampaigns::Sms::UseCase::MANUAL_CAMPAIGNS).exactly(:once)
       expect(campaign.sent?).to be(true)
     end
   end
@@ -50,7 +51,8 @@ describe EmailCampaigns::DeliveryService do
         campaign_id: nil
       )
       expect(campaign.sent?).to be(false)
-      expect(EmailCampaigns::Sms::SendJob).to have_been_enqueued.with(delivery.id)
+      expect(EmailCampaigns::Sms::SendJob).to have_been_enqueued
+        .with(delivery.id, use_case: EmailCampaigns::Sms::UseCase::MANUAL_CAMPAIGNS)
     end
 
     it 'raises EmailCampaigns::Sms::Error when the previewer has no phone number' do

@@ -45,7 +45,6 @@ describe('Idea form settings', () => {
       cy.apiCreateProject({
         title: projectTitle,
         descriptionPreview: description,
-        description,
         publicationStatus: 'published',
       })
         .then((project) => {
@@ -68,7 +67,6 @@ describe('Idea form settings', () => {
       cy.apiCreateProject({
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
-        description,
         publicationStatus: 'published',
       })
         .then((project) => {

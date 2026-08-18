@@ -57,7 +57,7 @@ const CreateReportModal = ({
   open,
   onClose,
 }: InnerProps) => {
-  const { mutate: createReport, isLoading } = useAddReport();
+  const { mutate: createReport, isPending } = useAddReport();
   const [template, setTemplate] = useState<Template>('phase');
 
   // phaseId refers to the phase that the report will be in (information phase)
@@ -155,6 +155,7 @@ const CreateReportModal = ({
               projectId={projectId}
               phaseId={templatePhaseId}
               participationMethods={PARTICIPATION_METHODS}
+              placementType="all"
               onPhaseFilter={(option) => setTemplatePhaseId(option.value)}
             />
           </Box>
@@ -169,8 +170,8 @@ const CreateReportModal = ({
           width="auto"
           mt="40px"
           mb="40px"
-          disabled={blockSubmit || isLoading}
-          processing={isLoading}
+          disabled={blockSubmit || isPending}
+          processing={isPending}
           data-testid="create-report-button"
           onClick={onCreateReport}
         >
@@ -182,7 +183,7 @@ const CreateReportModal = ({
 };
 
 const CreateReportModalWrapper = ({ projectId, ...otherProps }: Props) => {
-  const { data: phases } = usePhases(projectId);
+  const { data: phases } = usePhases(projectId, 'all');
   if (!phases) return null;
 
   return (

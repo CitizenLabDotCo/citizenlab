@@ -36,7 +36,7 @@ export interface IPhaseData {
 
 export interface IPhaseAttributes {
   voting_filtering_enabled: boolean;
-  placement_type?: PhasePlacementType;
+  placement_type: PhasePlacementType;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
   draft_description_multiloc: Multiloc;

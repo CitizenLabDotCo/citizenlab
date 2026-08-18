@@ -116,11 +116,16 @@ const IdeationForm = ({
           weglot_data: weglotData,
         };
         // Keep location_point_geojson consistent with location_description:
-        // if there is no description, force the geojson to null so a stale
-        // value from the idea's initial state can't ride through unchanged
-        // (e.g. when the location field is disabled in the form config and
-        // the LocationInput never mounts to clear it).
-        if (!requestBody.location_description) {
+        // null it when the user cleared the description, and also when the
+        // form config no longer contains an enabled location field. In that
+        // second case the LocationInput never mounts, but defaultValues
+        // spread all idea attributes (getInitialData), so the idea's old
+        // location_description sits in form state anyway and the idea would
+        // invisibly keep a location its form can no longer show or edit.
+        const formHasLocationField = customFields?.some(
+          (field) => field.key === 'location_description' && field.enabled
+        );
+        if (!requestBody.location_description || !formHasLocationField) {
           requestBody.location_point_geojson = null;
         }
         await updateIdea({

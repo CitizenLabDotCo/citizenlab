@@ -24,6 +24,14 @@ class Rack::Attack
     safelist_ip(safe_ip)
   end
 
+  # The user ID a request authenticates as, reading params[:token] before the header like AuthToken::Authenticable#token.
+  USER_ID_FROM_JWT = lambda do |req|
+    jwt = req.params['token'].presence || req.env['HTTP_AUTHORIZATION']&.split&.last
+    JWT.decode(jwt, nil, false, algorithm: 'RS256').first['sub'] # sub is the user ID
+  rescue JWT::DecodeError
+    nil
+  end
+
   # For all requests.
   throttle('req/ip', limit: 1000, period: 3.minutes) do |req|
     req.remote_ip
@@ -63,9 +71,50 @@ class Rack::Attack
     end
   end
 
+  # Signing in with a phone number by IP.
+  throttle('logins_phone/ip', limit: 10, period: 20.seconds) do |req|
+    if req.path == '/web_api/v1/user_token_phone' && req.post?
+      req.remote_ip
+    end
+  end
+
+  throttle('logins_phone/ip/day', limit: 4000, period: 24.hours) do |req|
+    if req.path == '/web_api/v1/user_token_phone' && req.post?
+      req.remote_ip
+    end
+  end
+
+  # Signing in by phone number.
+  throttle('logins/phone', limit: 10, period: 20.seconds) do |req|
+    if req.path == '/web_api/v1/user_token_phone' && req.post?
+      begin
+        JSON.parse(req.body.string).dig('auth', 'phone')&.to_s&.gsub(/\s+/, '')&.presence
+      rescue JSON::ParserError
+        # do nothing
+      end
+    end
+  end
+
+  throttle('logins/phone/day', limit: 100, period: 24.hours) do |req|
+    if req.path == '/web_api/v1/user_token_phone' && req.post?
+      begin
+        JSON.parse(req.body.string).dig('auth', 'phone')&.to_s&.gsub(/\s+/, '')&.presence
+      rescue JSON::ParserError
+        # do nothing
+      end
+    end
+  end
+
   # Account creation by IP.
   throttle('signup/ip', limit: 10, period: 20.seconds) do |req|
     if req.path == '/web_api/v1/users' && req.post?
+      req.remote_ip
+    end
+  end
+
+  # Account creation with a phone number by IP.
+  throttle('signup_phone/ip', limit: 10, period: 20.seconds) do |req|
+    if req.path == '/web_api/v1/users/create_phone' && req.post?
       req.remote_ip
     end
   end
@@ -117,6 +166,66 @@ class Rack::Attack
     end
   end
 
+  # Resend code by email account.
+  throttle('request_code_email/email', limit: 1, period: 5.seconds) do |req|
+    if req.path == '/web_api/v1/user/request_code_email' && req.post?
+      begin
+        JSON.parse(req.body.string).dig('request_code', 'email')&.to_s&.downcase&.gsub(/\s+/, '')&.presence
+      rescue JSON::ParserError
+        # do nothing
+      end
+    end
+  end
+
+  # Resend code by user ID from JWT, for authenticated callers who omit the email.
+  throttle('request_code_email/id', limit: 1, period: 5.seconds) do |req|
+    if req.path == '/web_api/v1/user/request_code_email' && req.post?
+      USER_ID_FROM_JWT.call(req)
+    end
+  end
+
+  # Email change code request by IP.
+  throttle('request_code_new_email/ip', limit: 1, period: 5.seconds) do |req|
+    if req.path == '/web_api/v1/user/request_code_new_email' && req.post?
+      req.remote_ip
+    end
+  end
+
+  # Email change code request by user ID from JWT.
+  throttle('request_code_new_email/id', limit: 1, period: 5.seconds) do |req|
+    if req.path == '/web_api/v1/user/request_code_new_email' && req.post?
+      USER_ID_FROM_JWT.call(req)
+    end
+  end
+
+  # Phone re-confirmation code request by IP.
+  throttle('request_code_phone/ip', limit: 1, period: 5.seconds) do |req|
+    if req.path == '/web_api/v1/user/request_code_phone' && req.post?
+      req.remote_ip
+    end
+  end
+
+  # Phone re-confirmation code request by user ID from JWT.
+  throttle('request_code_phone/id', limit: 1, period: 5.seconds) do |req|
+    if req.path == '/web_api/v1/user/request_code_phone' && req.post?
+      USER_ID_FROM_JWT.call(req)
+    end
+  end
+
+  # Phone change code request by IP.
+  throttle('request_code_new_phone/ip', limit: 1, period: 5.seconds) do |req|
+    if req.path == '/web_api/v1/user/request_code_new_phone' && req.post?
+      req.remote_ip
+    end
+  end
+
+  # Phone change code request by user ID from JWT.
+  throttle('request_code_new_phone/id', limit: 1, period: 5.seconds) do |req|
+    if req.path == '/web_api/v1/user/request_code_new_phone' && req.post?
+      USER_ID_FROM_JWT.call(req)
+    end
+  end
+
   # Confirm by IP.
   throttle('confirm_code_email/ip', limit: 5, period: 20.seconds) do |req|
     if req.path == '/web_api/v1/user/confirm_code_email' && req.post?
@@ -124,29 +233,39 @@ class Rack::Attack
     end
   end
 
-  # Confirm by user ID from JWT.
-  throttle('confirm_code_authenticated/id', limit: 10, period: 24.hours) do |req|
-    if req.path == '/web_api/v1/user/confirm_code_authenticated' && req.post?
-      begin
-        jwt = req.env['HTTP_AUTHORIZATION']&.split&.last
-        JWT.decode(jwt, nil, false, algorithm: 'RS256').first['sub'] # sub is the user ID
-      rescue JWT::DecodeError
-        # do nothing
-      end
+  throttle('confirm_code_phone/ip', limit: 5, period: 20.seconds) do |req|
+    if req.path == '/web_api/v1/user/confirm_code_phone' && req.post?
+      req.remote_ip
     end
   end
 
-  # User check endpoint
+  # User check endpoints
   throttle('user_check/ip', limit: 5, period: 2.minutes) do |req|
-    if req.path == '/web_api/v1/users/check' && req.post?
+    if req.path == '/web_api/v1/users/check_email' && req.post?
       req.remote_ip
     end
   end
 
   throttle('user_check/email', limit: 5, period: 5.minutes) do |req|
-    if req.path == '/web_api/v1/users/check' && req.post?
+    if req.path == '/web_api/v1/users/check_email' && req.post?
       begin
         JSON.parse(req.body.string).dig('user', 'email')&.to_s&.downcase&.gsub(/\s+/, '')&.presence
+      rescue JSON::ParserError
+        # do nothing
+      end
+    end
+  end
+
+  throttle('user_check_phone/ip', limit: 5, period: 2.minutes) do |req|
+    if req.path == '/web_api/v1/users/check_phone' && req.post?
+      req.remote_ip
+    end
+  end
+
+  throttle('user_check_phone/phone', limit: 5, period: 5.minutes) do |req|
+    if req.path == '/web_api/v1/users/check_phone' && req.post?
+      begin
+        JSON.parse(req.body.string).dig('user', 'phone')&.to_s&.gsub(/\s+/, '')&.presence
       rescue JSON::ParserError
         # do nothing
       end
@@ -183,6 +302,20 @@ class Rack::Attack
 
   throttle('oauth_registrations/ip/day', limit: 50, period: 24.hours) do |req|
     if req.path == '/oauth/registrations' && req.post?
+      req.remote_ip
+    end
+  end
+
+  # Spam reports by IP. Limits are well above plausible human volume: this runs
+  # before authentication, so an office behind a single NAT is one key.
+  throttle('spam_reports/ip', limit: 10, period: 1.minute) do |req|
+    if %r{\A/web_api/v1/(ideas|comments)/[^/]+/spam_reports\z}.match?(req.path) && req.post?
+      req.remote_ip
+    end
+  end
+
+  throttle('spam_reports/ip/day', limit: 100, period: 24.hours) do |req|
+    if %r{\A/web_api/v1/(ideas|comments)/[^/]+/spam_reports\z}.match?(req.path) && req.post?
       req.remote_ip
     end
   end

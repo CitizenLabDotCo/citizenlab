@@ -9,6 +9,32 @@ RSpec.describe Tenant do
     end
   end
 
+  describe 'host format validation' do
+    it 'rejects an invalid host on create' do
+      expect(build(:tenant, host: 'Uppercase.example.com')).to be_invalid
+    end
+
+    it 'rejects a change to an invalid host' do
+      tenant = create(:tenant, host: 'lowercase.example.com')
+      tenant.host = 'Uppercase.example.com'
+
+      expect(tenant).to be_invalid
+    end
+
+    # A host that got in without passing through the model — the tenant clone service inserts
+    # with raw SQL — used to make the whole record unsavable for good, blocking its own
+    # soft-delete and every rake task that iterates tenants and saves them.
+    it 'does not re-check a persisted host that has not changed' do
+      tenant = create(:tenant, host: 'uppercase.example.com')
+      tenant.update_column(:host, 'Uppercase.example.com')
+      tenant.reload
+
+      tenant.deleted_at = Time.zone.now
+
+      expect(tenant).to be_valid
+    end
+  end
+
   describe '#switch!' do
     let_it_be(:other_tenant) { create(:tenant, name: 'other-tenant') }
 
@@ -284,6 +310,76 @@ RSpec.describe Tenant do
           collected_hosts << tenant.host
         end
       end.not_to raise_error
+      expect(collected_hosts).to eq(%w[tenant1.example.com])
+    end
+
+    # Ranking reads a table out of every schema in the scope, so a tenant that could not be ranked
+    # used to abort the run before it visited anyone.
+    it 'skips a tenant whose schema is missing rather than failing the whole run' do
+      described_class.find_by(host: 'example.org').update!(creation_finalized_at: nil)
+      create(:tenant, host: 'tenant1.example.com', creation_finalized_at: Time.zone.now)
+      schemaless = create(:tenant, host: 'tenant2.example.com', creation_finalized_at: Time.zone.now)
+      Apartment::Tenant.drop(schemaless.schema_name)
+      collected_hosts = []
+
+      described_class.safe_switch_each { |tenant| collected_hosts << tenant.host }
+
+      expect(collected_hosts).to eq(%w[tenant1.example.com])
+    end
+
+    it 'visits a tenant whose configuration is missing last rather than failing the whole run' do
+      described_class.find_by(host: 'example.org').update!(creation_finalized_at: nil)
+      create(:tenant, host: 'tenant1.example.com', lifecycle: 'active', creation_finalized_at: Time.zone.now)
+      configless = create(:tenant, host: 'tenant2.example.com', creation_finalized_at: Time.zone.now)
+      configless.switch { AppConfiguration.instance.delete }
+      collected_hosts = []
+
+      described_class.safe_switch_each { |tenant| collected_hosts << tenant.host }
+
+      expect(collected_hosts).to eq(%w[tenant1.example.com tenant2.example.com])
+    end
+
+    it 'limits the run to the given host' do
+      create(:tenant, host: 'tenant1.example.com', creation_finalized_at: Time.zone.now)
+      collected_hosts = []
+
+      described_class.safe_switch_each(host: 'tenant1.example.com') { |tenant| collected_hosts << tenant.host }
+
+      expect(collected_hosts).to eq(%w[tenant1.example.com])
+    end
+
+    it 'limits the run to the given hosts' do
+      create(:tenant, host: 'tenant1.example.com', lifecycle: 'active', creation_finalized_at: Time.zone.now)
+      create(:tenant, host: 'tenant2.example.com', lifecycle: 'demo', creation_finalized_at: Time.zone.now)
+      collected_hosts = []
+
+      described_class.safe_switch_each(host: %w[tenant1.example.com tenant2.example.com]) do |tenant|
+        collected_hosts << tenant.host
+      end
+
+      expect(collected_hosts).to eq(%w[tenant1.example.com tenant2.example.com])
+    end
+
+    # The point of the parameter: narrowing to one tenant must not drop the protections the scope
+    # carries, as passing a `scope` built around the host does.
+    it 'still skips a host that the scope in play excludes' do
+      create(:tenant, host: 'tenant1.example.com', creation_finalized_at: nil)
+      collected_hosts = []
+
+      described_class.safe_switch_each(host: 'tenant1.example.com') { |tenant| collected_hosts << tenant.host }
+
+      expect(collected_hosts).to be_empty
+    end
+
+    it 'narrows an explicit scope rather than replacing it' do
+      create(:tenant, host: 'tenant1.example.com', lifecycle: 'churned', creation_finalized_at: Time.zone.now)
+      create(:tenant, host: 'tenant2.example.com', lifecycle: 'churned', creation_finalized_at: Time.zone.now)
+      collected_hosts = []
+
+      described_class.safe_switch_each(scope: described_class.with_lifecycle('churned'), host: 'tenant1.example.com') do |tenant|
+        collected_hosts << tenant.host
+      end
+
       expect(collected_hosts).to eq(%w[tenant1.example.com])
     end
   end

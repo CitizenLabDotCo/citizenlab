@@ -48,6 +48,10 @@ module EmailCampaigns
     validates :subject_multiloc, presence: true, multiloc: { presence: true }
     validates :body_multiloc, presence: true, multiloc: { presence: true }
 
+    def self.sms_use_case
+      Sms::UseCase::MANUAL_CAMPAIGNS
+    end
+
     def self.recipient_role_multiloc_key
       'email_campaigns.admin_labels.recipient_role.registered_users'
     end

@@ -65,7 +65,7 @@ const OAuthAuthorize = () => {
     isError,
   } = useOAuthAuthorization(params, { enabled: loggedIn });
 
-  const { mutate: authorize, isLoading: authorizing } =
+  const { mutate: authorize, isPending: authorizing } =
     useCreateOAuthAuthorization();
 
   // Not logged in: open the normal sign-in flow in place. Once authenticated,

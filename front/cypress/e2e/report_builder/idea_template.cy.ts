@@ -56,7 +56,7 @@ describe('Idea template', () => {
           cy.apiSignup(randomString(), randomString(), email, password).then(
             (user) => {
               userId = user.body.data.id;
-              cy.apiLikeIdea(email, password, idea.body.data.id);
+              cy.apiReactToIdea(email, password, idea.body.data.id, 'up');
             }
           );
         });

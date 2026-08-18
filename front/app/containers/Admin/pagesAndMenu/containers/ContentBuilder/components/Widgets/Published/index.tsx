@@ -26,21 +26,20 @@ const getPublicationStatuses = (folderId?: string): PublicationStatus[] =>
 const Published = ({ titleMultiloc, folderId }: Props) => {
   const localizeWithFallback = useLocalizeWithFallback();
 
-  const { data, hasNextPage, fetchNextPage, isInitialLoading } =
-    useAdminPublications({
-      pageSize: 6,
-      publicationStatusFilter: getPublicationStatuses(folderId),
-      childrenOfId: folderId,
-      rootLevelOnly: !folderId,
-      removeNotAllowedParents: true,
-      include_publications: true,
-      remove_all_unlisted: true,
-    });
+  const { data, hasNextPage, fetchNextPage, isLoading } = useAdminPublications({
+    pageSize: 6,
+    publicationStatusFilter: getPublicationStatuses(folderId),
+    childrenOfId: folderId,
+    rootLevelOnly: !folderId,
+    removeNotAllowedParents: true,
+    include_publications: true,
+    remove_all_unlisted: true,
+  });
 
   const adminPublications = data?.pages.map((page) => page.data).flat();
   const title = localizeWithFallback(titleMultiloc, publishedTitle);
 
-  if (isInitialLoading) {
+  if (isLoading) {
     return <Skeleton title={title} />;
   }
 

@@ -40,9 +40,15 @@ class UserPolicy < ApplicationPolicy
   end
 
   def create?
-    app_config = AppConfiguration.instance
-    allow_signup = app_config.feature_activated?('password_login') && app_config.settings('password_login', 'enable_signup')
-    allow_signup || active_admin?
+    AppConfiguration.instance.feature_activated?('password_login') || active_admin?
+  end
+
+  # Signing up with a phone number is part of the password_login (i.e. non-SSO)
+  # flow, and additionally needs the sms feature to send the confirmation code.
+  def create_phone?
+    return false if user.nil? && !AppConfiguration.instance.feature_activated?('sms_login')
+
+    AppConfiguration.instance.feature_activated?('sms') && create?
   end
 
   def show?
@@ -53,8 +59,17 @@ class UserPolicy < ApplicationPolicy
     record&.invite_pending?
   end
 
-  def check?
+  def check_email?
     true
+  end
+
+  # Unlike check_email, which stays available to super admins when password_login
+  # is off, there is no phone equivalent of the super admin escape hatch.
+  def check_phone?
+    app_config = AppConfiguration.instance
+    return false if user.nil? && !app_config.feature_activated?('sms_login')
+
+    app_config.feature_activated?('sms') && app_config.feature_activated?('password_login')
   end
 
   def update?
@@ -109,6 +124,10 @@ class UserPolicy < ApplicationPolicy
 
   def permitted_attributes_for_create
     %i[email locale]
+  end
+
+  def permitted_attributes_for_create_phone
+    %i[phone locale]
   end
 
   def permitted_attributes_for_update

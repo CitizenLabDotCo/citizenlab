@@ -77,7 +77,7 @@ const IdeaEditor = ({ ideaId, setIdeaId, onIdeaApproved }: Props) => {
 
   const { data: phase } = usePhase(phaseId);
 
-  const { mutateAsync: updateIdea, isLoading: loadingApproveIdea } =
+  const { mutateAsync: updateIdea, isPending: loadingApproveIdea } =
     useUpdateIdea();
   const { mutate: updateUser } = useUpdateUser();
   const { mutateAsync: createOfflineUser } = useCreateOfflineUser();
