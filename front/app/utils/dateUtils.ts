@@ -9,7 +9,7 @@ import {
 import { isString } from 'lodash-es';
 // moment-timezone extends the regular moment library,
 // so there's no need to import both moment and moment-timezone
-import moment, { Moment } from 'moment-timezone';
+import moment from 'moment-timezone';
 import { SupportedLocale } from 'typings';
 
 import { IEventData } from 'api/events/types';
@@ -209,9 +209,14 @@ export function getIsoDateUtc(date: string) {
   return moment.utc(new Date(date)).format('YYYY-MM-DD');
 }
 
-export const momentToIsoDate = (moment: Moment | null | undefined) => {
-  return moment?.format('yyyy-MM-DD');
-};
+/**
+ * `2026-03-22` in the browser's timezone, or undefined.
+ *
+ * Name kept for now to avoid churning ~10 call sites mid-migration; it takes a
+ * Date, not a Moment. Rename to toIsoDateOrUndefined in T10.
+ */
+export const momentToIsoDate = (date: Date | null | undefined) =>
+  date ? format(date, 'yyyy-MM-dd') : undefined;
 
 type DiffUnit = 'days' | 'weeks' | 'months';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import moment from 'moment';
+import { parseISO } from 'date-fns';
 
 import { Query } from 'api/analytics/types';
 import useAnalytics from 'api/analytics/useAnalytics';
@@ -32,14 +32,14 @@ const query: Query = {
 };
 
 const getDefaultStartDate = (firstSessionDate: string | null) => {
-  if (!firstSessionDate) return moment(LOWER_BOUND);
+  if (!firstSessionDate) return parseISO(LOWER_BOUND);
 
   const defaultStartDate =
     new Date(firstSessionDate) > new Date(LOWER_BOUND)
       ? firstSessionDate
       : LOWER_BOUND;
 
-  return moment(defaultStartDate);
+  return parseISO(defaultStartDate);
 };
 
 const Visitors = () => {

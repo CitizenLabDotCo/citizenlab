@@ -6,7 +6,7 @@ import {
   stylingConsts,
   Button,
 } from '@citizenlab/cl2-component-library';
-import moment from 'moment';
+import { format } from 'date-fns';
 import Transition from 'react-transition-group/Transition';
 import { SupportedLocale } from 'typings';
 
@@ -130,7 +130,7 @@ const ReportBuilderToolbox = ({
   }
 
   // Default end date for charts (today)
-  const chartEndDate = moment().format('YYYY-MM-DD');
+  const chartEndDate = format(new Date(), 'yyyy-MM-dd');
 
   const toMultiloc = (message: MessageDescriptor) => {
     return createMultiloc(appConfigurationLocales, (locale) => {

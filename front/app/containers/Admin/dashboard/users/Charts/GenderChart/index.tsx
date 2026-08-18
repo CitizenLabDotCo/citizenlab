@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 
-import moment from 'moment';
+import { format, parseISO } from 'date-fns';
 
 import { useDemographicsLive } from 'api/graph_data_units';
 import { usersByCustomFieldXlsxEndpoint } from 'api/users_by_custom_field/util';
@@ -33,8 +33,8 @@ const GenderChart = ({
 
   const { data: usersByGender } = useDemographicsLive({
     custom_field_id: customFieldId,
-    start_at: startAt ? moment(startAt).local().format('YYYY-MM-DD') : null,
-    end_at: endAt ? moment(endAt).local().format('YYYY-MM-DD') : null,
+    start_at: startAt ? format(parseISO(startAt), 'yyyy-MM-dd') : null,
+    end_at: endAt ? format(parseISO(endAt), 'yyyy-MM-dd') : null,
     group_id: currentGroupFilter,
   });
 

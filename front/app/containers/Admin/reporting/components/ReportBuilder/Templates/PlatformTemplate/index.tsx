@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { Element } from '@craftjs/core';
-import { FormatMessage } from 'typings';
+import { FormatMessage, SupportedLocale } from 'typings';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { useProjects } from 'api/graph_data_units';
@@ -107,22 +107,25 @@ const PlatformTemplateContent = ({
     return null;
   }
 
-  const buildMultiloc = (fn: (formatMessage: FormatMessage) => string) => {
+  const buildMultiloc = (
+    fn: (formatMessage: FormatMessage, locale: SupportedLocale) => string
+  ) => {
     return createMultiloc(appConfigurationLocales, (locale) => {
       const formatMessage = (
         message: MessageDescriptor,
         values?: FormatMessageValues
       ) => formatMessageWithLocale(locale, message, values);
 
-      return fn(formatMessage);
+      return fn(formatMessage, locale);
     });
   };
 
-  const reportStats = buildMultiloc((formatMessage) => {
+  const reportStats = buildMultiloc((formatMessage, locale) => {
     const period = getPeriod({
       startAt: startDate,
       endAt: endDate,
       formatMessage,
+      locale,
     });
 
     const dateLastReport = getDateLastReport({ formatMessage });
