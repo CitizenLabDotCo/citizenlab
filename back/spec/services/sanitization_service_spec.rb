@@ -469,6 +469,36 @@ describe SanitizationService do
     end
   end
 
+  describe 'replace_links_with_urls' do
+    it 'replaces a link with the URL it points at' do
+      expect(service.replace_links_with_urls('<a href="https://example.com">click here</a>')).to eq 'https://example.com'
+    end
+
+    it 'replaces a mailto link with its address' do
+      expect(service.replace_links_with_urls('<a href="mailto:a@b.com">schrijf ons</a>')).to eq 'mailto:a@b.com'
+    end
+
+    # `linkify` never builds these, so putting one back as text would invent a link the pipeline
+    # would not have made. Left alone, the anchor is dropped downstream like any other markup.
+    it 'leaves a javascript: link alone' do
+      input = '<a href="javascript:alert(1)">click</a>'
+      expect(service.replace_links_with_urls(input)).to eq input
+    end
+
+    it 'leaves a relative link alone' do
+      input = '<a href="/somewhere">click</a>'
+      expect(service.replace_links_with_urls(input)).to eq input
+    end
+
+    it 'leaves text without links alone' do
+      expect(service.replace_links_with_urls('<p>no links here</p>')).to eq '<p>no links here</p>'
+    end
+
+    it 'returns nil for nil' do
+      expect(service.replace_links_with_urls(nil)).to be_nil
+    end
+  end
+
   describe 'strip_to_plain_text' do
     # Built by escape rather than pasted, so the character survives every editor this file passes
     # through, and a failure message can be told apart from a plain space.

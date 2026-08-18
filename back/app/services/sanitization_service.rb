@@ -11,6 +11,9 @@ class SanitizationService
 
   NBSP = "\u00A0"
 
+  # What `linkify` builds an href from, and so all `replace_links_with_urls` will put back.
+  LINKIFIABLE_HREF = %r{\A(https?://|mailto:)}i
+
   SANITIZER = Rails::Html::SafeListSanitizer.new
 
   private_constant :SANITIZER
@@ -93,6 +96,27 @@ class SanitizationService
     html = sanitize(html, features)
     html = remove_empty_trailing_tags(html)
     linkify(html)
+  end
+
+  # Replaces every link with its own URL as the text it shows.
+  #
+  # A pipeline without `:link` drops the anchors it is given and lets `linkify` build new ones out of
+  # the visible text, so a reader always sees the address they are about to follow. That holds only
+  # while the text is the address. Run this first where it is not - machine translation translates a
+  # link's label - and the rebuild has the URL to find again.
+  #
+  # Only the schemes `linkify` itself produces are restored; anything else keeps today's outcome, the
+  # anchor gone and its text left behind.
+  def replace_links_with_urls(html)
+    return html if html.blank?
+
+    doc = Nokogiri::HTML.fragment(html)
+    doc.css('a[href]').each do |link|
+      next unless link['href'].match?(LINKIFIABLE_HREF)
+
+      link.replace(Nokogiri::XML::Text.new(link['href'], link.document))
+    end
+    doc.to_s
   end
 
   def sanitize_body_multiloc(multiloc, features)

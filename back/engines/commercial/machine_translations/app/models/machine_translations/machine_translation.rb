@@ -26,7 +26,8 @@ module MachineTranslations
     validates :locale_to, presence: true, inclusion: { in: CL2_SUPPORTED_LOCALES.map(&:to_s) } # , message: :unsupported_locales }
 
     # Provider HTML, rendered raw on the front end. Running the source field's own pipeline keeps a
-    # translation from being more permissive than the text it was translated from.
+    # translation from being more permissive than the text it was translated from. Links in a comment
+    # body are the one exception, for the reason given on that pipeline.
     before_validation :sanitize_translation, if: :translation
 
     PLAIN_TEXT_PIPELINE = ->(text) { SanitizationService.new.strip_to_plain_text(text) }
@@ -37,7 +38,14 @@ module MachineTranslations
     SOURCE_SANITIZE_PIPELINES = {
       %w[Idea title_multiloc] => PLAIN_TEXT_PIPELINE,
       %w[Idea body_multiloc] => ->(html) { SanitizationService.new.sanitize_body(html, Idea::BODY_SANITIZE_FEATURES) },
-      %w[Comment body_multiloc] => ->(html) { SanitizationService.new.sanitize_body(html, Comment::BODY_SANITIZE_FEATURES) }
+      # A comment body omits `:link`, so its own rule rebuilds every link from the visible text and a
+      # reader always sees where a link goes. A provider translates that text, leaving the rule
+      # nothing to find and the link deleted. Put each URL back as its own text first, so the same
+      # rule runs on a translation and still returns a link that shows its own address.
+      %w[Comment body_multiloc] => lambda { |html|
+        service = SanitizationService.new
+        service.sanitize_body(service.replace_links_with_urls(html), Comment::BODY_SANITIZE_FEATURES)
+      }
     }.freeze
 
     private
