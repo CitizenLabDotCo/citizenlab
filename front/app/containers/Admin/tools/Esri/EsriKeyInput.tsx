@@ -30,7 +30,7 @@ const EsriKeyInput = () => {
   const { formatMessage } = useIntl();
   const {
     mutate: updateAppConfiguration,
-    isLoading,
+    isPending,
     error,
     isSuccess,
   } = useUpdateAppConfiguration();
@@ -73,7 +73,7 @@ const EsriKeyInput = () => {
 
             <Button
               bgColor={colors.primary}
-              processing={isLoading}
+              processing={isPending}
               mt="32px"
               width="fit-content"
               text={formatMessage(messages.esriSaveButtonText)}

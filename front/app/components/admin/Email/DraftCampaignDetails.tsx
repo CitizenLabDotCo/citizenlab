@@ -28,7 +28,7 @@ interface Props {
 const DraftCampaignDetails = ({ campaign }: Props) => {
   const { projectId } = useParams({ strict: false });
   const { formatMessage } = useIntl();
-  const { mutate: deleteCampaign, isLoading } = useDeleteEmailCampaign();
+  const { mutate: deleteCampaign, isPending } = useDeleteEmailCampaign();
 
   const handleDelete = () => {
     deleteCampaign(campaign.id, {
@@ -52,7 +52,7 @@ const DraftCampaignDetails = ({ campaign }: Props) => {
           buttonStyle="delete"
           icon="delete"
           onClick={() => setIsDeleteModalOpen(true)}
-          processing={isLoading}
+          processing={isPending}
         >
           {formatMessage(messages.deleteCampaignButton)}
         </Button>
@@ -77,7 +77,7 @@ const DraftCampaignDetails = ({ campaign }: Props) => {
               buttonStyle="delete"
               icon="delete"
               onClick={handleDelete}
-              processing={isLoading}
+              processing={isPending}
             >
               {formatMessage(messages.deleteCampaignButton)}
             </Button>

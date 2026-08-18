@@ -110,10 +110,10 @@ const Show = () => {
 
   const {
     mutate: sendCampaign,
-    isLoading: isSendingCampaign,
+    isPending: isSendingCampaign,
     error: apiSendErrors,
   } = useSendEmailCampaign();
-  const { mutate: sendCampaignPreview, isLoading: isSenndingCampaignPreview } =
+  const { mutate: sendCampaignPreview, isPending: isSenndingCampaignPreview } =
     useSendEmailCampaignPreview();
   const searchParams = useSearch({
     from: '/$locale/admin/messaging/emails/custom/$campaignId',

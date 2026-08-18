@@ -24,7 +24,7 @@ jest.mock(
 );
 jest.mock(
   'api/permissions_phase_custom_fields/useAddPermissionsPhaseCustomField',
-  () => jest.fn(() => ({ mutate: jest.fn(), isLoading: false }))
+  () => jest.fn(() => ({ mutate: jest.fn(), isPending: false }))
 );
 jest.mock(
   'api/permissions_phase_custom_fields/useUpdatePermissionsPhaseCustomField',

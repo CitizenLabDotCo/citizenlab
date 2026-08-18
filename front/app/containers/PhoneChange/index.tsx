@@ -72,7 +72,7 @@ const PhoneChange = () => {
     try {
       if (!phoneValue) return;
       await confirmCodeNewPhone(code, smsManualCampaignConsent);
-      await queryClient.invalidateQueries(meKeys.all());
+      await queryClient.invalidateQueries({ queryKey: meKeys.all() });
       setConfirmationError(null);
       setOpenConfirmationModal(false);
       setUpdateSuccessful(true);

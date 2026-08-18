@@ -80,8 +80,8 @@ const SurveyActions = ({ phase }: Props) => {
     phaseId,
   });
 
-  const { mutate: addAnalysis, isLoading: isAddLoading } = useAddAnalysis();
-  const { mutate: updateAnalysis, isLoading: isUpdateLoading } =
+  const { mutate: addAnalysis, isPending: isAddLoading } = useAddAnalysis();
+  const { mutate: updateAnalysis, isPending: isUpdateLoading } =
     useUpdateAnalysis();
   const { data: analyses } = useAnalyses({ phaseId });
   const { data: inputCustomFields } = useRawCustomFields({

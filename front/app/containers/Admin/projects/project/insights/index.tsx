@@ -167,7 +167,7 @@ const InsightsContent = () => {
   );
   const analysisId = analyses?.data[0]?.id;
 
-  const { mutate: createAnalysis, isLoading: isCreatingAnalysis } =
+  const { mutate: createAnalysis, isPending: isCreatingAnalysis } =
     useAddAnalysis();
 
   const handleGoToAnalysis = () => {

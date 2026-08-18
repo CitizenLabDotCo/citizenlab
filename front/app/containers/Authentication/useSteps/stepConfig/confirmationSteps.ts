@@ -44,7 +44,9 @@ export const confirmationSteps = (
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT_CODE: async (email: string, code: string) => {
         await confirmCodeEmail(email, code);
-        await queryClient.invalidateQueries(requirementKeys.all());
+        await queryClient.invalidateQueries({
+          queryKey: requirementKeys.all(),
+        });
 
         const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();
@@ -79,7 +81,9 @@ export const confirmationSteps = (
       },
       SUBMIT_CODE: async (_: string, code: string) => {
         await confirmCodeNewEmail(code);
-        await queryClient.invalidateQueries(requirementKeys.all());
+        await queryClient.invalidateQueries({
+          queryKey: requirementKeys.all(),
+        });
 
         const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();

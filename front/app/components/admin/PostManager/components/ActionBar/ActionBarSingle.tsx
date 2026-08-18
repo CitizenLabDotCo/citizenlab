@@ -26,7 +26,7 @@ const ActionBarSingle = ({
   const [warningModalOpen, setWarningModalOpen] = useState(false);
 
   const { formatMessage } = useIntl();
-  const { mutate: deleteIdea, isLoading: isLoadingDeleteIdea } =
+  const { mutate: deleteIdea, isPending: isLoadingDeleteIdea } =
     useDeleteIdea();
 
   const openWarningModal = () => setWarningModalOpen(true);

@@ -36,7 +36,7 @@ const ShareLink = ({ projectId, projectSlug, token, className }: Props) => {
   const [refreshModalIsOpen, setRefreshModalIsOpen] = useState(false);
   const isPreviewLinkEnabled = useFeatureFlag({ name: 'project_preview_link' });
   const { data: appConfiguration } = useAppConfiguration();
-  const { mutate: refreshProjectPreviewToken, isLoading } =
+  const { mutate: refreshProjectPreviewToken, isPending } =
     useRefreshProjectPreviewToken();
   const [shareDropdownIsOpen, setShareDropdownIsOpen] = useState(false);
   const [linkIsCopied, setLinkIsCopied] = useState(false);
@@ -156,7 +156,7 @@ const ShareLink = ({ projectId, projectSlug, token, className }: Props) => {
             <RegenerateLinkModal
               isOpened={refreshModalIsOpen}
               onRefresh={refreshLink}
-              isRefreshLoading={isLoading}
+              isRefreshLoading={isPending}
               onClose={() => setRefreshModalIsOpen(false)}
             />
 

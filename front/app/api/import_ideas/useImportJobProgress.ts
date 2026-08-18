@@ -29,23 +29,25 @@ const useImportJobProgress = (phaseId: string) => {
 
   return useQuery<IJobs | undefined, CLErrors>({
     queryKey: importJobKeys.list({ phaseId }),
-    queryFn: () => fetchImportJobs(phaseId),
-    onSuccess: (data) => {
-      const currentProgress = data?.data[0]?.attributes.progress ?? null;
+    // The invalidation lives here rather than in `useOnQuerySuccess` because it
+    // needs the fetched progress to compare against the previous one.
+    queryFn: async () => {
+      const jobs = await fetchImportJobs(phaseId);
+      const progress = jobs?.data[0]?.attributes.progress ?? null;
 
-      // Invalidate the imported ideas list query if the progress has changed since the last fetch
-      if (
-        currentProgress !== null &&
-        currentProgress !== lastProgressRef.current
-      ) {
-        lastProgressRef.current = currentProgress;
+      // Only refetch the imported ideas once the job has actually moved on.
+      if (progress !== null && progress !== lastProgressRef.current) {
+        lastProgressRef.current = progress;
         queryClient.invalidateQueries({
           queryKey: importedIdeasKeys.lists(),
         });
       }
+
+      return jobs;
     },
-    keepPreviousData: true,
-    refetchInterval: (data) => {
+    refetchInterval: ({ state }) => {
+      const data = state.data;
+
       if (!data || data.data.length === 0) {
         return false;
       }
