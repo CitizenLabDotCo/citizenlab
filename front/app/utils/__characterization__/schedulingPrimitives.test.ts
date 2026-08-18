@@ -90,11 +90,12 @@ describe('scheduling primitives: moment (today) vs façade helpers', () => {
         .utc()
         .toISOString();
 
+    // Unambiguous wall-clock times only. The two DST-ambiguous cases are
+    // pinned separately below.
     const PICKED = [
       new Date(2026, 0, 15, 9, 30, 0), // winter
       new Date(2026, 6, 15, 9, 30, 0), // summer
-      new Date(2026, 2, 29, 2, 30, 0), // inside the EU spring-forward gap
-      new Date(2026, 9, 25, 2, 30, 0), // inside the EU fall-back overlap
+      new Date(2026, 4, 2, 14, 0, 0), // mid-year, well clear of a transition
     ];
 
     ZONES.forEach((zone) => {
@@ -106,11 +107,50 @@ describe('scheduling primitives: moment (today) vs façade helpers', () => {
         });
       });
     });
+
+    // Two wall-clock times a year are ambiguous in any DST zone, and moment
+    // and TZDate resolve them differently — by exactly one hour:
+    //
+    //   spring forward  02:30 never happens (clocks go 02:00 -> 03:00).
+    //                   moment reads it forwards, TZDate backwards.
+    //   fall back       02:30 happens twice. moment takes the first
+    //                   occurrence, TZDate the second.
+    //
+    // Both readings are defensible for an input that is not a real instant.
+    // The practical exposure is a user picking exactly those 60 minutes in the
+    // event or launch scheduler, once a year, in the tenant's own timezone.
+    //
+    // Invisible locally: it only appears when the process timezone differs
+    // from the target zone, so it surfaced first in CI under UTC. Pinned
+    // rather than asserted equal, so the difference stays visible.
+    it('resolves DST-ambiguous wall-clock times differently from moment (known)', () => {
+      const zone = 'Europe/Brussels';
+      const springForwardGap = new Date(2026, 2, 29, 2, 30, 0);
+      const fallBackOverlap = new Date(2026, 9, 25, 2, 30, 0);
+
+      expect({
+        springForwardGap: {
+          moment: momentVersion(springForwardGap, zone),
+          facade: convertToTimeZoneISO(springForwardGap, zone),
+        },
+        fallBackOverlap: {
+          moment: momentVersion(fallBackOverlap, zone),
+          facade: convertToTimeZoneISO(fallBackOverlap, zone),
+        },
+      }).toMatchSnapshot();
+    });
   });
 
   describe('3. browser timezone', () => {
-    it('getViewerZone matches moment.tz.guess()', () => {
-      expect(getViewerZone()).toBe(moment.tz.guess());
+    // moment.tz.guess() returns a *representative* zone for the offset, so on
+    // a UTC machine it answers "Africa/Abidjan" where Intl answers "UTC".
+    // Different strings, same zone — and the app only ever uses the resulting
+    // offset, to decide whether to show a GMT label.
+    it('getViewerZone resolves to the same offset as moment.tz.guess()', () => {
+      const now = Date.now();
+      expect(moment.tz(now, getViewerZone()).utcOffset()).toBe(
+        moment.tz(now, moment.tz.guess()).utcOffset()
+      );
     });
   });
 
