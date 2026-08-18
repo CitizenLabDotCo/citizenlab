@@ -1987,6 +1987,7 @@
   "app.containers.Navbar.completeOnboarding": "Fullständig introduktion",
   "app.containers.Navbar.completeProfile": "Fullständig profil",
   "app.containers.Navbar.confirmEmail2": "Bekräfta e-post",
+  "app.containers.Navbar.confirmPhone": "Bekräfta telefonnummer",
   "app.containers.Navbar.unverified": "Ej verifierad",
   "app.containers.Navbar.verified": "Verifierad",
   "app.containers.NewAuthModal.beforeYouFollow": "Innan du följer",
