@@ -1369,7 +1369,6 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Αριθμός τηλεφώνου",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Καταχωρίστε έναν αριθμό τηλεφώνου στη σωστή μορφή, για παράδειγμα +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Καταχωρίστε έναν αριθμό τηλεφώνου",
-  "app.containers.Authentication.steps.Policies.byContinuingPhone": "Συνεχίζοντας, συμφωνείτε να λαμβάνετε μηνύματα κειμένου από αυτήν την πλατφόρμα. Μπορείτε να επιλέξετε ποια μηνύματα επιθυμείτε να λαμβάνετε στη σελίδα «Οι ρυθμίσεις μου».",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Δημιουργήστε έναν νέο λογαριασμό με: {phone} {changeLink}",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Εναλλαγή όλων των ειδοποιήσεων {contentType}",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Ειδοποιήσεις σε αυτήν την κατηγορία",

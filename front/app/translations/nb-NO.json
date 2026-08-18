@@ -1369,7 +1369,6 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Telefonnummer",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Oppgi et telefonnummer i riktig format, for eksempel +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Oppgi et telefonnummer",
-  "app.containers.Authentication.steps.Policies.byContinuingPhone": "Ved å fortsette godtar du å motta tekstmeldinger fra denne plattformen. Du kan velge hvilke meldinger du ønsker å motta på siden 'Mine innstillinger'.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Opprett en ny konto med: {phone} {changeLink}",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Veksle alle {contentType}-varslinger",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Varslinger i denne kategorien",

@@ -1369,7 +1369,6 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Numer telefonu",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Podaj numer telefonu w poprawnym formacie, na przykład +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Podaj numer telefonu",
-  "app.containers.Authentication.steps.Policies.byContinuingPhone": "Kontynuując, wyrażasz zgodę na otrzymywanie wiadomości tekstowych z tej platformy. Możesz wybrać, które wiadomości chcesz otrzymywać, na stronie „Moje ustawienia”.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Utwórz nowe konto za pomocą: {phone} {changeLink}",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Przełącz wszystkie powiadomienia {contentType}",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Powiadomienia w tej kategorii",
