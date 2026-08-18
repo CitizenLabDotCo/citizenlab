@@ -4191,6 +4191,8 @@
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verification": "Dilysu",
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verificationExplanation": "Dilysu: gellir defnyddio'r dull i brofi hunaniaeth cyfranogwr trwy gofrestr swyddogol.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.none": "Dim un",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordAvailableDescription": "Mynnu cyfrinair ar y cyfrif.",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailSignupTooltip": "Dim ond gan ddefnyddwyr sy'n cofrestru trwy e-bost y gofynnir am gyfrinair. Ni ofynnir byth i ddefnyddwyr sy'n cofrestru mewn ffordd arall (e.e. mewngofnodi sengl) osod un.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.securityChecks2": "Gofynion diogelwch",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.editable": "Gellir ei olygu",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.locked": "Wedi'i gloi",

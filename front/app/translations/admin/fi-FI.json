@@ -4191,6 +4191,8 @@
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verification": "Vahvistaminen",
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verificationExplanation": "Vahvistaminen: menetelmää voidaan käyttää osallistujan henkilöllisyyden todistamiseen virallisen rekisterin kautta.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.none": "Ei mitään",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordAvailableDescription": "Vaadi tilille salasana.",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailSignupTooltip": "Salasanaa pyydetään vain käyttäjiltä, jotka rekisteröityvät sähköpostilla. Käyttäjiltä, jotka rekisteröityvät muulla tavalla (esim. kertakirjautumisella), ei koskaan pyydetä salasanan asettamista.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.securityChecks2": "Turvallisuusvaatimukset",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.editable": "Muokattavissa",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.locked": "Lukittu",

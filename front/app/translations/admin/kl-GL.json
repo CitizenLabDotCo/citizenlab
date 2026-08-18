@@ -4191,6 +4191,8 @@
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verification": "Uppernarsaanneq",
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verificationExplanation": "Uppernarsaanneq: Periaaseq peqataasup kinaassusianik pisortatigoortumik nalunaarsuiffik aqqutigalugu uppernarsaanermut atorneqarsinnaavoq.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.none": "Soqanngilaq",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordAvailableDescription": "Kontomi isissutissiaq piumasariuk.",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailSignupTooltip": "Isissutissiaq taamaallaat atuisunut e-maili atorlugu nalunaartunut piumasarineqartarpoq. Atuisut allatut nalunaartut (soorlu single sign-on atorlugu) isissutissiamik pilersitseqquneqarneq ajorput.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.securityChecks2": "Isumannaallisaanermut piumasaqaatit",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.editable": "Allanngortinneqarsinnaasoq",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.locked": "Parnaarussaq",

@@ -4191,6 +4191,8 @@
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verification": "Fíorú",
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verificationExplanation": "Fíorú: is féidir an modh a úsáid chun aitheantas rannpháirtí a chruthú trí chlár oifigiúil.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.none": "Dada",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordAvailableDescription": "Éiligh pasfhocal ar an gcuntas.",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailSignupTooltip": "Ní iarrtar pasfhocal ach ar úsáideoirí a chláraíonn le ríomhphost. Ní iarrtar ar úsáideoirí a chláraíonn ar bhealach eile (m.sh. logáil isteach aonair) ceann a shocrú choíche.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.securityChecks2": "Riachtanais slándála",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.editable": "Ineagarthóireachta",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.locked": "Faoi ghlas",

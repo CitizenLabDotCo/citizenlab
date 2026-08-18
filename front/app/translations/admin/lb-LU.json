@@ -4191,6 +4191,8 @@
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verification": "Verifizéierung",
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verificationExplanation": "Verifizéierung: D'Method ka benotzt ginn, fir d'Identitéit vun engem Participant iwwer en offiziellen Register ze beweisen.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.none": "Keen",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordAvailableDescription": "E Passwuert fir de Kont erfuerderen.",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailSignupTooltip": "E Passwuert gëtt nëmme vu Benotzer gefrot, déi sech mat hirer E-Mail-Adress registréieren. Benotzer, déi sech op eng aner Manéier registréieren (z. B. Single Sign-on), ginn ni gefrot, eent festzeleeën.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.securityChecks2": "Sécherheetsufuerderungen",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.editable": "Ännerbar",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.locked": "Gespaart",

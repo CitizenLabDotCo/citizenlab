@@ -4191,6 +4191,8 @@
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verification": "Doğrulama",
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verificationExplanation": "Doğrulama: Yöntem, bir katılımcının kimliğini resmi bir sicil aracılığıyla kanıtlamak için kullanılabilir.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.none": "Hiçbiri",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordAvailableDescription": "Hesap için şifre gerektir.",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailSignupTooltip": "Şifre yalnızca e-posta ile kaydolan kullanıcılardan istenir. Başka bir yöntemle (ör. tekli oturum açma) kaydolan kullanıcılardan asla şifre belirlemeleri istenmez.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.securityChecks2": "Güvenlik gereksinimleri",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.editable": "Düzenlenebilir",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.locked": "Kilitli",

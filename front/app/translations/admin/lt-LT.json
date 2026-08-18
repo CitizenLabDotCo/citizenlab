@@ -4191,6 +4191,8 @@
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verification": "Tapatybės patvirtinimas",
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verificationExplanation": "Tapatybės patvirtinimas: metodas gali būti naudojamas dalyvio tapatybei patvirtinti per oficialų registrą.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.none": "Nėra",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordAvailableDescription": "Reikalauti paskyros slaptažodžio.",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailSignupTooltip": "Slaptažodžio prašoma tik tų naudotojų, kurie registruojasi naudodami el. paštą. Naudotojų, kurie registruojasi kitu būdu (pvz., per vienkartinį prisijungimą), niekada neprašoma jo nustatyti.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.securityChecks2": "Saugumo reikalavimai",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.editable": "Redaguojama",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.locked": "Užrakinta",

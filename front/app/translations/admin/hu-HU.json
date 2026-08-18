@@ -4191,6 +4191,8 @@
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verification": "Hitelesítés",
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verificationExplanation": "Hitelesítés: a módszer a résztvevő személyazonosságának igazolására használható egy hivatalos nyilvántartáson keresztül.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.none": "Nincs",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordAvailableDescription": "Jelszó megkövetelése a fiókhoz.",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailSignupTooltip": "Jelszót csak az e-mail-címmel regisztráló felhasználóktól kérünk. Azoknak a felhasználóknak, akik más módon regisztrálnak (pl. egyszeri bejelentkezéssel), soha nem kell jelszót beállítaniuk.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.securityChecks2": "Biztonsági követelmények",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.editable": "Szerkeszthető",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.locked": "Zárolva",

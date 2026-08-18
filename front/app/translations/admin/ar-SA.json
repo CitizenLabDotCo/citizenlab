@@ -4191,6 +4191,8 @@
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verification": "التحقق",
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verificationExplanation": "التحقق: يمكن استخدام هذه الطريقة لإثبات هوية المشارك من خلال سجل رسمي.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.none": "لا يوجد",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordAvailableDescription": "فرض تعيين كلمة مرور للحساب.",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailSignupTooltip": "يُطلب تعيين كلمة مرور فقط من المستخدمين الذين يسجلون عبر البريد الإلكتروني. أما المستخدمون الذين يسجلون بطريقة أخرى (مثل تسجيل الدخول الموحد) فلا يُطلب منهم تعيين كلمة مرور أبداً.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.securityChecks2": "متطلبات الأمان",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.editable": "قابل للتعديل",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.locked": "مقفل",

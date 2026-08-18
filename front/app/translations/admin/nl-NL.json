@@ -4191,6 +4191,8 @@
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verification": "Verificatie",
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verificationExplanation": "Verificatie: de methode kan worden gebruikt om de identiteit van een deelnemer te bewijzen via een officieel register.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.none": "Geen",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordAvailableDescription": "Een wachtwoord voor het account vereisen.",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailSignupTooltip": "Een wachtwoord wordt alleen gevraagd aan gebruikers die zich registreren met e-mail. Gebruikers die zich op een andere manier registreren (bijv. single sign-on) wordt nooit gevraagd om er een in te stellen.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.securityChecks2": "Beveiligingsvereisten",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.editable": "Bewerkbaar",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.locked": "Vergrendeld",

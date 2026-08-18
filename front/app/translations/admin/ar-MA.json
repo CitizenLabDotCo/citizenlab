@@ -4191,6 +4191,8 @@
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verification": "التحقق",
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verificationExplanation": "التحقق: يمكن استعمال الوسيلة لإثبات هوية المشارك من خلال سجل رسمي.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.none": "لا شيء",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordAvailableDescription": "فرض كلمة سر على الحساب.",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailSignupTooltip": "كلمة السر كيتطلب غير من المستخدمين اللي كيتسجلو بالبريد الإلكتروني. المستخدمين اللي كيتسجلو بطريقة خرى (مثلا تسجيل الدخول الموحد) ما كيتطلبش منهم نهائيا يحددوا وحدة.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.securityChecks2": "متطلبات الأمان",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.editable": "قابل للتعديل",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.locked": "مقفل",

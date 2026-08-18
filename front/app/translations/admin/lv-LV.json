@@ -4191,6 +4191,8 @@
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verification": "Verifikācija",
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verificationExplanation": "Verifikācija: metodi var izmantot, lai apliecinātu dalībnieka identitāti, izmantojot oficiālu reģistru.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.none": "Nav",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordAvailableDescription": "Pieprasīt konta paroli.",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailSignupTooltip": "Parole tiek pieprasīta tikai tiem lietotājiem, kuri reģistrējas ar e-pastu. Lietotājiem, kuri reģistrējas citā veidā (piemēram, izmantojot vienoto pieteikšanos), nekad netiek lūgts to iestatīt.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.securityChecks2": "Drošības prasības",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.editable": "Rediģējams",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.locked": "Bloķēts",

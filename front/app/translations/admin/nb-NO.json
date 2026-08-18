@@ -4191,6 +4191,8 @@
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verification": "Verifisering",
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verificationExplanation": "Verifisering: metoden kan brukes til å bekrefte en deltakers identitet gjennom et offisielt register.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.none": "Ingen",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordAvailableDescription": "Krev passord på kontoen.",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailSignupTooltip": "Passord kreves bare av brukere som registrerer seg med e-post. Brukere som registrerer seg på en annen måte (f.eks. enkel pålogging), blir aldri bedt om å angi et.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.securityChecks2": "Sikkerhetskrav",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.editable": "Redigerbar",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.locked": "Låst",

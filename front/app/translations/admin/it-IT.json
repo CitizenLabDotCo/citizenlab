@@ -4191,6 +4191,8 @@
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verification": "Verifica",
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verificationExplanation": "Verifica: il metodo può essere utilizzato per dimostrare l'identità di un partecipante attraverso un registro ufficiale.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.none": "Nessuno",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordAvailableDescription": "Richiedi una password per l'account.",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailSignupTooltip": "La password viene richiesta solo agli utenti che si registrano tramite e-mail. Agli utenti che si registrano in altro modo (ad es. single sign-on) non viene mai chiesto di impostarne una.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.securityChecks2": "Requisiti di sicurezza",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.editable": "Modificabile",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.locked": "Bloccato",

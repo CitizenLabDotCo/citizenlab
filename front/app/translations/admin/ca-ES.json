@@ -4191,6 +4191,8 @@
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verification": "Verificació",
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verificationExplanation": "Verificació: el mètode es pot utilitzar per acreditar la identitat d'un participant a través d'un registre oficial.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.none": "Cap",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordAvailableDescription": "Exigeix una contrasenya al compte.",
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailSignupTooltip": "Només es demana una contrasenya als usuaris que es registren amb el correu electrònic. Als usuaris que es registren d'una altra manera (p. ex., inici de sessió únic) mai se'ls demana que en defineixin una.",
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.securityChecks2": "Requisits de seguretat",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.editable": "Editable",
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.locked": "Bloquejat",
