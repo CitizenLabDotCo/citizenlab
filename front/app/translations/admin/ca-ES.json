@@ -681,6 +681,7 @@
   "app.containers.Admin.Invitations.moderatorLabelTooltipLinkText": "here",
   "app.containers.Admin.Invitations.name": "Name",
   "app.containers.Admin.Invitations.processing": "Enviament d'invitacions. Si us plau, espereu...",
+  "app.containers.Admin.Invitations.processingNotStartedError": "El sistema està ocupat i les teves invitacions encara no s'han processat. No s'ha enviat cap invitació. Torna-ho a provar d'aquí a uns minuts.",
   "app.containers.Admin.Invitations.projectSelectorPlaceholder": "No s'ha seleccionat cap projecte",
   "app.containers.Admin.Invitations.save": "Enviar invitacions",
   "app.containers.Admin.Invitations.saveErrorMessage": "S'han produït un o més errors i les invitacions no s'han enviat. Corregiu els errors indicats a continuació i torneu-ho a provar.",

@@ -681,6 +681,7 @@
   "app.containers.Admin.Invitations.moderatorLabelTooltipLinkText": "čia",
   "app.containers.Admin.Invitations.name": "Pavadinimas",
   "app.containers.Admin.Invitations.processing": "Kvietimų siuntimas. Palaukite...",
+  "app.containers.Admin.Invitations.processingNotStartedError": "Sistema užimta, todėl jūsų pakvietimai dar nebuvo apdoroti. Pakvietimai nebuvo išsiųsti. Bandykite dar kartą po kelių minučių.",
   "app.containers.Admin.Invitations.projectSelectorPlaceholder": "Projektas (-ai) nebuvo atrinktas (-i)",
   "app.containers.Admin.Invitations.save": "Išsiųsti kvietimus",
   "app.containers.Admin.Invitations.saveErrorMessage": "Įvyko viena ar daugiau klaidų ir kvietimai nebuvo išsiųsti. Ištaisykite toliau nurodytą (-as) klaidą (-as) ir bandykite dar kartą.",

@@ -681,6 +681,7 @@
   "app.containers.Admin.Invitations.moderatorLabelTooltipLinkText": "anseo",
   "app.containers.Admin.Invitations.name": "Ainm",
   "app.containers.Admin.Invitations.processing": "Ag seoladh cuireadh amach. Fan go fóill...",
+  "app.containers.Admin.Invitations.processingNotStartedError": "Tá an córas gnóthach agus níor próiseáladh do chuid cuireadh fós. Níor seoladh aon chuireadh. Bain triail as arís i gceann cúpla nóiméad.",
   "app.containers.Admin.Invitations.projectSelectorPlaceholder": "Níl aon tionscadal roghnaithe",
   "app.containers.Admin.Invitations.save": "Seol cuireadh amach",
   "app.containers.Admin.Invitations.saveErrorMessage": "Tharla earráid amháin nó níos mó agus níor seoladh na cuirí amach. Ceartaigh an earráid/na hearráidí atá liostaithe thíos agus déan iarracht arís.",

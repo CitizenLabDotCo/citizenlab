@@ -681,6 +681,7 @@
   "app.containers.Admin.Invitations.moderatorLabelTooltipLinkText": "ovdje",
   "app.containers.Admin.Invitations.name": "Ime",
   "app.containers.Admin.Invitations.processing": "Pozivnice se šalju. Pričekajte...",
+  "app.containers.Admin.Invitations.processingNotStartedError": "Sustav je zauzet i vaše pozivnice još nisu obrađene. Pozivnice nisu poslane. Pokušajte ponovno za nekoliko minuta.",
   "app.containers.Admin.Invitations.projectSelectorPlaceholder": "Nema odabranih projekata",
   "app.containers.Admin.Invitations.save": "Poslane pozivnice",
   "app.containers.Admin.Invitations.saveErrorMessage": "Došlo je do jedne ili više pogrešaka i pozivnice nisu poslane. Molimo vas da ispravite pogreške koje se nalaze u nastavku i pokušate ponovo.",

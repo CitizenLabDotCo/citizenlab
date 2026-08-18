@@ -681,6 +681,7 @@
   "app.containers.Admin.Invitations.moderatorLabelTooltipLinkText": "ਇਥੇ",
   "app.containers.Admin.Invitations.name": "ਨਾਮ",
   "app.containers.Admin.Invitations.processing": "ਸੱਦੇ ਭੇਜ ਰਿਹਾ ਹੈ। ਕ੍ਰਿਪਾ ਕਰਕੇ ਉਡੀਕ ਕਰੋ...",
+  "app.containers.Admin.Invitations.processingNotStartedError": "ਸਿਸਟਮ ਰੁੱਝਿਆ ਹੋਇਆ ਹੈ ਅਤੇ ਤੁਹਾਡੇ ਸੱਦਿਆਂ ਦੀ ਅਜੇ ਤੱਕ ਪ੍ਰਕਿਰਿਆ ਨਹੀਂ ਕੀਤੀ ਗਈ ਹੈ। ਕੋਈ ਸੱਦਾ ਨਹੀਂ ਭੇਜਿਆ ਗਿਆ। ਕਿਰਪਾ ਕਰਕੇ ਕੁਝ ਮਿੰਟਾਂ ਬਾਅਦ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
   "app.containers.Admin.Invitations.projectSelectorPlaceholder": "ਕੋਈ ਪ੍ਰੋਜੈਕਟ ਨਹੀਂ ਚੁਣਿਆ ਗਿਆ",
   "app.containers.Admin.Invitations.save": "ਸੱਦੇ ਭੇਜੋ",
   "app.containers.Admin.Invitations.saveErrorMessage": "ਇੱਕ ਜਾਂ ਵੱਧ ਤਰੁੱਟੀਆਂ ਆਈਆਂ ਅਤੇ ਸੱਦੇ ਨਹੀਂ ਭੇਜੇ ਗਏ। ਕਿਰਪਾ ਕਰਕੇ ਹੇਠਾਂ ਸੂਚੀਬੱਧ ਗਲਤੀਆਂ ਨੂੰ ਠੀਕ ਕਰੋ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",

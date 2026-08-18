@@ -2637,6 +2637,8 @@
   "app.errors.too_short": "Wielt wgl. e Passwuert mat mindestens 8 Zeechen",
   "app.errors.too_weak": "Dëst Passwuert ka liicht errot ginn. Wielt wgl. e méi staarkt Passwuert, zum Beispill andeem Dir et méi laang maacht oder e puer onverbonne Wierder benotzt.",
   "app.errors.uncaught_error": "En onbekannte Feeler ass geschitt.",
+  "app.errors.unexpected_invite_error": "Eppes ass schif gaangen beim Veraarbechte vun Ären Invitatiounen. Kuckt am Tab „All Invitatiounen“ no, ier Dir et nach eng Kéier probéiert.",
+  "app.errors.unexpected_seats_count_error": "Eppes ass schif gaangen beim Iwwerpréiwen, wéi vill Plazen dës Invitatiounen brauchen. Et goufe keng Invitatioune verschéckt. Probéiert wgl. nach eng Kéier.",
   "app.errors.unknown_group": "De Grupp {value}, aus der Rei {row} , ass onbekannt",
   "app.errors.unknown_locale": "D’Sprooch {value}, aus der Rei {row}, ass keng konfiguréiert Sprooch",
   "app.errors.unparseable_excel": "Déi ausgewielten Excel-Datei kann net beaarbecht ginn.",

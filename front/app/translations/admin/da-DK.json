@@ -681,6 +681,7 @@
   "app.containers.Admin.Invitations.moderatorLabelTooltipLinkText": "her",
   "app.containers.Admin.Invitations.name": "Navn",
   "app.containers.Admin.Invitations.processing": "Udsendelse af invitationer. Vent venligst...",
+  "app.containers.Admin.Invitations.processingNotStartedError": "Systemet har travlt, og dine invitationer er endnu ikke blevet behandlet. Der blev ikke sendt nogen invitationer. Prøv venligst igen om et par minutter.",
   "app.containers.Admin.Invitations.projectSelectorPlaceholder": "Ingen projekt(er) udvalgte",
   "app.containers.Admin.Invitations.save": "Send invitationer ud",
   "app.containers.Admin.Invitations.saveErrorMessage": "Der er opstået en eller flere fejl, og invitationerne blev ikke sendt ud. Ret venligst den eller de fejl, der er anført nedenfor, og prøv igen.",

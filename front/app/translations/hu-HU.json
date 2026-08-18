@@ -2637,6 +2637,8 @@
   "app.errors.too_short": "Kérjük, válasszon egy legalább 8 karakterből álló jelszót",
   "app.errors.too_weak": "Ez a jelszó könnyen kitalálható. Kérjük, válasszon erősebb jelszót, például legyen hosszabb, vagy használjon több, egymással össze nem függő szót.",
   "app.errors.uncaught_error": "Ismeretlen hiba történt.",
+  "app.errors.unexpected_invite_error": "Hiba történt a meghívók feldolgozása közben. Mielőtt újra próbálkozna, ellenőrizze az „Összes meghívó” fület.",
+  "app.errors.unexpected_seats_count_error": "Hiba történt a meghívókhoz szükséges helyek számának ellenőrzése közben. Egyetlen meghívót sem küldtünk el. Kérjük, próbálja újra.",
   "app.errors.unknown_group": "A {row} sorban található {value} csoport nem ismert csoport",
   "app.errors.unknown_locale": "A {value} a {row} sorban található nyelv nem konfigurált nyelv",
   "app.errors.unparseable_excel": "A kiválasztott Excel-fájlt nem lehetett feldolgozni.",

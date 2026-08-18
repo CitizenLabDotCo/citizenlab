@@ -681,6 +681,7 @@
   "app.containers.Admin.Invitations.moderatorLabelTooltipLinkText": "tässä",
   "app.containers.Admin.Invitations.name": "Nimi",
   "app.containers.Admin.Invitations.processing": "Kutsujen lähettäminen. Odota...",
+  "app.containers.Admin.Invitations.processingNotStartedError": "Järjestelmä on varattu, eikä kutsujasi ole vielä käsitelty. Kutsuja ei lähetetty. Yritä uudelleen muutaman minuutin kuluttua.",
   "app.containers.Admin.Invitations.projectSelectorPlaceholder": "Ei valittuja projektia",
   "app.containers.Admin.Invitations.save": "Lähetä kutsut",
   "app.containers.Admin.Invitations.saveErrorMessage": "Tapahtui yksi tai useampi virhe, eikä kutsuja lähetetty. Korjaa alla luetellut virheet ja yritä uudelleen.",

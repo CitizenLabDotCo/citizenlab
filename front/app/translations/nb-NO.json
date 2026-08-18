@@ -2637,6 +2637,8 @@
   "app.errors.too_short": "Vennligst velg et passord med minst 8 tegn",
   "app.errors.too_weak": "Dette passordet kan lett gjettes. Vennligst velg et sterkere passord, for eksempel ved å gjøre det lengre eller ved å bruke flere urelaterte ord.",
   "app.errors.uncaught_error": "En ukjent feil oppstod.",
+  "app.errors.unexpected_invite_error": "Noe gikk galt under behandlingen av invitasjonene dine. Sjekk fanen «Alle invitasjoner» før du prøver igjen.",
+  "app.errors.unexpected_seats_count_error": "Noe gikk galt under kontrollen av hvor mange plasser disse invitasjonene krever. Ingen invitasjoner ble sendt. Vennligst prøv igjen.",
   "app.errors.unknown_group": "Gruppen {value} som finnes i rad {row} er ikke en kjent gruppe",
   "app.errors.unknown_locale": "Språket {value} i rad {row} er ikke et konfigurert språk",
   "app.errors.unparseable_excel": "Den valgte Excel-filen kunne ikke behandles.",

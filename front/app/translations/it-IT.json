@@ -2637,6 +2637,8 @@
   "app.errors.too_short": "Scegli una password con almeno 8 caratteri",
   "app.errors.too_weak": "Questa password può essere indovinata facilmente. Scegli una password più sicura, ad esempio allungandola o utilizzando diverse parole non correlate tra loro.",
   "app.errors.uncaught_error": "Si è verificato un errore sconosciuto.",
+  "app.errors.unexpected_invite_error": "Si è verificato un errore durante l'elaborazione dei tuoi inviti. Controlla la scheda \"Tutti gli inviti\" prima di riprovare.",
+  "app.errors.unexpected_seats_count_error": "Si è verificato un errore durante la verifica del numero di posti necessari per questi inviti. Non è stato inviato alcun invito. Riprova.",
   "app.errors.unknown_group": "Il gruppo {value} trovato nella riga {row} non è un gruppo conosciuto",
   "app.errors.unknown_locale": "La lingua {value} trovata nella riga {row} non è una lingua configurata",
   "app.errors.unparseable_excel": "Il file Excel selezionato non può essere elaborato.",

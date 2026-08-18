@@ -2637,6 +2637,8 @@
   "app.errors.too_short": "Hasło musi mieć długość co najmniej 8 znaków",
   "app.errors.too_weak": "To hasło można łatwo odgadnąć. Proszę wybrać silniejsze hasło, na przykład wydłużając je lub używając kilku niepowiązanych ze sobą słów.",
   "app.errors.uncaught_error": "Wystąpił nieznany błąd.",
+  "app.errors.unexpected_invite_error": "Wystąpił błąd podczas przetwarzania Twoich zaproszeń. Przed ponowną próbą sprawdź kartę „Wszystkie zaproszenia”.",
+  "app.errors.unexpected_seats_count_error": "Wystąpił błąd podczas sprawdzania, ile miejsc wymagają te zaproszenia. Nie wysłano żadnych zaproszeń. Spróbuj ponownie.",
   "app.errors.unknown_group": "Grupa {value} znajdująca się w rzędzie {row} nie jest znaną grupą",
   "app.errors.unknown_locale": "Język {value} znajdujący się w wierszu {row} nie jest skonfigurowany",
   "app.errors.unparseable_excel": "Wybrany plik Excela nie mógł zostać przetworzony.",

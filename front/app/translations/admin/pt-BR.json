@@ -681,6 +681,7 @@
   "app.containers.Admin.Invitations.moderatorLabelTooltipLinkText": "Aqui",
   "app.containers.Admin.Invitations.name": "Nome",
   "app.containers.Admin.Invitations.processing": "Enviando convites. Por favor, espere...",
+  "app.containers.Admin.Invitations.processingNotStartedError": "O sistema está ocupado e seus convites ainda não foram processados. Nenhum convite foi enviado. Tente novamente em alguns minutos.",
   "app.containers.Admin.Invitations.projectSelectorPlaceholder": "Nenhum projeto selecionado",
   "app.containers.Admin.Invitations.save": "Envie seus convites",
   "app.containers.Admin.Invitations.saveErrorMessage": "Ocorreram um ou mais erros.\n      Portanto nenhum convite foi enviado.\n      Corrija o(s) erro(s) listado(s) abaixo e tente novamente.",

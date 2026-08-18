@@ -681,6 +681,7 @@
   "app.containers.Admin.Invitations.moderatorLabelTooltipLinkText": "here",
   "app.containers.Admin.Invitations.name": "Name",
   "app.containers.Admin.Invitations.processing": "Αποστολή προσκλήσεων. Παρακαλούμε περιμένετε...",
+  "app.containers.Admin.Invitations.processingNotStartedError": "Το σύστημα είναι απασχολημένο και οι προσκλήσεις σας δεν έχουν υποστεί επεξεργασία ακόμα. Δεν στάλθηκαν προσκλήσεις. Παρακαλούμε δοκιμάστε ξανά σε λίγα λεπτά.",
   "app.containers.Admin.Invitations.projectSelectorPlaceholder": "Δεν έχει επιλεγεί κανένα έργο",
   "app.containers.Admin.Invitations.save": "Αποστολή προσκλήσεων",
   "app.containers.Admin.Invitations.saveErrorMessage": "Εμφανίστηκαν ένα ή περισσότερα σφάλματα και οι προσκλήσεις δεν στάλθηκαν. Παρακαλούμε διορθώστε το/τα σφάλμα(τα) που αναφέρονται παρακάτω και προσπαθήστε ξανά.",

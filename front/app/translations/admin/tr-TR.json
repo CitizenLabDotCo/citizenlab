@@ -681,6 +681,7 @@
   "app.containers.Admin.Invitations.moderatorLabelTooltipLinkText": "buraya",
   "app.containers.Admin.Invitations.name": "Ad",
   "app.containers.Admin.Invitations.processing": "Davetiyeler gönderiliyor. Lütfen bekleyin...",
+  "app.containers.Admin.Invitations.processingNotStartedError": "Sistem meşgul ve davetiyeleriniz henüz işlenmedi. Hiçbir davetiye gönderilmedi. Lütfen birkaç dakika sonra tekrar deneyin.",
   "app.containers.Admin.Invitations.projectSelectorPlaceholder": "Hiçbir proje seçilmedi",
   "app.containers.Admin.Invitations.save": "Davetiyeleri gönderin",
   "app.containers.Admin.Invitations.saveErrorMessage": "Bir veya daha fazla hata oluştu ve davetiyeler gönderilmedi. Lütfen aşağıda listelenen hataları düzeltin ve tekrar deneyin.",

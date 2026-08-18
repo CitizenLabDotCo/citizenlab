@@ -681,6 +681,7 @@
   "app.containers.Admin.Invitations.moderatorLabelTooltipLinkText": "yma",
   "app.containers.Admin.Invitations.name": "Enw",
   "app.containers.Admin.Invitations.processing": "Anfon gwahoddiadau. Arhoswch os gwelwch yn dda...",
+  "app.containers.Admin.Invitations.processingNotStartedError": "Mae'r system yn brysur ac nid yw eich gwahoddiadau wedi cael eu prosesu eto. Ni chafodd unrhyw wahoddiadau eu hanfon. Rhowch gynnig arall arni ymhen ychydig funudau.",
   "app.containers.Admin.Invitations.projectSelectorPlaceholder": "Dim prosiect(au) wedi'u dewis",
   "app.containers.Admin.Invitations.save": "Anfon gwahoddiadau",
   "app.containers.Admin.Invitations.saveErrorMessage": "Digwyddodd un gwall neu fwy ac ni anfonwyd y gwahoddiadau. Cywirwch y gwall(au) a restrir isod a cheisiwch eto.",

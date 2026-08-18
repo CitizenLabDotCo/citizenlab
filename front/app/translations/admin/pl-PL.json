@@ -681,6 +681,7 @@
   "app.containers.Admin.Invitations.moderatorLabelTooltipLinkText": "tutaj",
   "app.containers.Admin.Invitations.name": "Imię",
   "app.containers.Admin.Invitations.processing": "Wysyłanie zaproszeń. Proszę zaczekaj...",
+  "app.containers.Admin.Invitations.processingNotStartedError": "System jest zajęty i Twoje zaproszenia nie zostały jeszcze przetworzone. Nie wysłano żadnych zaproszeń. Spróbuj ponownie za kilka minut.",
   "app.containers.Admin.Invitations.projectSelectorPlaceholder": "Nie wybrano żadnego projektu(-ów)",
   "app.containers.Admin.Invitations.save": "Wyślij swoje zaproszenia",
   "app.containers.Admin.Invitations.saveErrorMessage": "Wystąpił jeden lub więcej błędów.\n      Dlatego nie wysłano żadnych zaproszeń.\n      Proszę popraw poniższe błędy wymienione i spróbuj ponownie.",

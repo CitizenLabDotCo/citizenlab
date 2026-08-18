@@ -681,6 +681,7 @@
   "app.containers.Admin.Invitations.moderatorLabelTooltipLinkText": "här",
   "app.containers.Admin.Invitations.name": "Namn",
   "app.containers.Admin.Invitations.processing": "Skickar ut inbjudningar. Vänta...",
+  "app.containers.Admin.Invitations.processingNotStartedError": "Systemet är upptaget och dina inbjudningar har inte behandlats ännu. Inga inbjudningar skickades. Försök igen om några minuter.",
   "app.containers.Admin.Invitations.projectSelectorPlaceholder": "Inget projekt/inga projekt har valts",
   "app.containers.Admin.Invitations.save": "Skicka ut inbjudningar",
   "app.containers.Admin.Invitations.saveErrorMessage": "Ett eller flera fel uppstod och inbjudningarna skickades inte ut. Korrigera felet/felen nedan och försök igen.",
