@@ -2198,7 +2198,6 @@ type NativeSurveyPhaseResult = {
 function createProjectWithNativeSurveyPhase({
   projectTitle = randomString(),
   projectDescriptionPreview = randomString(30),
-  projectDescription = randomString(),
   publicationStatus = 'published',
   phaseTitle = randomString(),
   phaseStartAt = moment().subtract(9, 'month').format('DD/MM/YYYY'),
@@ -2213,7 +2212,6 @@ function createProjectWithNativeSurveyPhase({
 }: {
   projectTitle?: string;
   projectDescriptionPreview?: string;
-  projectDescription?: string;
   publicationStatus?: IProjectAttributes['publication_status'];
   phaseTitle?: string;
   phaseStartAt?: string;
