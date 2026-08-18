@@ -18,21 +18,29 @@ import PoliciesMarkup from './PoliciesMarkup';
 
 const DEFAULT_VALUES = {
   policiesAccepted: false,
-} as const;
+  smsManualCampaignConsent: false,
+};
 
 const isTruthy = (value?: boolean) => !!value;
+
+export interface FormValues {
+  policiesAccepted: boolean;
+  smsManualCampaignConsent: boolean;
+}
 
 interface Props {
   loading: boolean;
   showByContinuingText?: boolean;
+  showSmsManualCampaignConsent?: boolean;
   byContinuingMessage?: MessageDescriptor;
   byContinuingValues?: Record<string, string>;
-  onSubmit: () => void;
+  onSubmit: (values: FormValues) => void;
 }
 
 const PoliciesForm = ({
   loading,
   showByContinuingText,
+  showSmsManualCampaignConsent,
   byContinuingMessage,
   byContinuingValues,
   onSubmit,
@@ -40,14 +48,17 @@ const PoliciesForm = ({
   const { formatMessage } = useIntl();
 
   const schema = object({
-    policiesAccepted: boolean().test(
-      '',
-      formatMessage(authProvidersMessages.policiesNotAcceptedError),
-      isTruthy
-    ),
+    policiesAccepted: boolean()
+      .defined()
+      .test(
+        '',
+        formatMessage(authProvidersMessages.policiesNotAcceptedError),
+        isTruthy
+      ),
+    smsManualCampaignConsent: boolean().defined(),
   });
 
-  const methods = useForm({
+  const methods = useForm<FormValues>({
     mode: 'onSubmit',
     defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),
@@ -61,6 +72,7 @@ const PoliciesForm = ({
         </Text>
         <PoliciesMarkup
           showByContinuingText={showByContinuingText}
+          showSmsManualCampaignConsent={showSmsManualCampaignConsent}
           byContinuingMessage={byContinuingMessage}
           byContinuingValues={byContinuingValues}
         />
