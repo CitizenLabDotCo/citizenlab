@@ -1369,7 +1369,6 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Telefonszám",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Adjon meg egy telefonszámot a megfelelő formátumban, például: +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Adjon meg egy telefonszámot",
-  "app.containers.Authentication.steps.Policies.byContinuingPhone": "A folytatással beleegyezik, hogy szöveges üzeneteket kapjon a platformtól. A 'Beállításaim' oldalon kiválaszthatja, hogy mely üzeneteket szeretné megkapni.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Új fiók létrehozása ezzel: {phone} {changeLink}",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Összes {contentType} értesítés be-/kikapcsolása",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Értesítések ebben a kategóriában",

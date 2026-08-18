@@ -1369,7 +1369,6 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Telefonnummer",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Angiv et telefonnummer i det korrekte format, for eksempel +45 26464719",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Angiv et telefonnummer",
-  "app.containers.Authentication.steps.Policies.byContinuingPhone": "Ved at fortsætte accepterer du at modtage sms-beskeder fra denne platform. Du kan vælge, hvilke beskeder du ønsker at modtage, på siden 'Mine indstillinger'.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Opret en ny konto med: {phone} {changeLink}",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Slå alle {contentType}-notifikationer til/fra",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Notifikationer i denne kategori",

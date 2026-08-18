@@ -1369,7 +1369,6 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Telefoonnummer",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Geef een telefoonnummer op in het juiste formaat, bijvoorbeeld +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Geef een telefoonnummer op",
-  "app.containers.Authentication.steps.Policies.byContinuingPhone": "Door verder te gaan, stem je in met het ontvangen van sms-berichten van dit platform. Je kunt op de pagina 'Mijn instellingen' selecteren welke berichten je wilt ontvangen.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Maak een nieuw account aan met: {phone} {changeLink}",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Alle {contentType}-meldingen in-/uitschakelen",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Meldingen in deze categorie",

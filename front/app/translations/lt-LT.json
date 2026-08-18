@@ -1369,7 +1369,6 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Telefono numeris",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Pateikite telefono numerį teisingu formatu, pavyzdžiui, +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Pateikite telefono numerį",
-  "app.containers.Authentication.steps.Policies.byContinuingPhone": "Tęsdami sutinkate gauti tekstines žinutes iš šios platformos. Puslapyje „Mano nustatymai“ galite pasirinkti, kokias žinutes norite gauti.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Sukurkite naują paskyrą naudodami: {phone} {changeLink}",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Perjungti visus {contentType} pranešimus",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Šios kategorijos pranešimai",

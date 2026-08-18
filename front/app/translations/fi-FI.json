@@ -1369,7 +1369,6 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Puhelinnumero",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Anna puhelinnumero oikeassa muodossa, esimerkiksi +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Anna puhelinnumero",
-  "app.containers.Authentication.steps.Policies.byContinuingPhone": "Jatkamalla hyväksyt tekstiviestien vastaanottamisen tältä alustalta. Voit valita vastaanotettavat viestit 'Omat asetukset' -sivulla.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Luo uusi tili numerolla: {phone} {changeLink}",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Kytke kaikki {contentType}-ilmoitukset päälle/pois",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Tämän kategorian ilmoitukset",

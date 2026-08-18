@@ -1369,7 +1369,6 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Telefonski broj",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Unesite telefonski broj u ispravnom formatu, na primjer +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Navedite telefonski broj",
-  "app.containers.Authentication.steps.Policies.byContinuingPhone": "Nastavkom pristajete na primanje tekstualnih poruka s ove platforme. Možete odabrati koje poruke želite primati na stranici 'Moje postavke'.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Izradite novi račun s: {phone} {changeLink}",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Uključi/isključi sve {contentType} obavijesti",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Obavijesti u ovoj kategoriji",

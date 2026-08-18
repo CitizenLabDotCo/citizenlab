@@ -1369,7 +1369,6 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "رقم الهاتف",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "يرجى تقديم رقم هاتف بالصيغة الصحيحة، على سبيل المثال +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "يرجى تقديم رقم هاتف",
-  "app.containers.Authentication.steps.Policies.byContinuingPhone": "بالاستمرار ديالك، كتوافق باش توصل برسائل نصية من هاد المنصة. تقدر تختار الرسائل اللي بغيتي توصل بها فصفحة 'الإعدادات ديالي'.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "صاوب حساب جديد بـ: {phone} {changeLink}",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "تبديل جميع إشعارات {contentType}",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "الإشعارات فهاد الفئة",

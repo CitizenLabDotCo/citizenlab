@@ -1369,7 +1369,6 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Telefonsnummer",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Gitt eng Telefonsnummer am richtege Format un, zum Beispill +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Gitt eng Telefonsnummer un",
-  "app.containers.Authentication.steps.Policies.byContinuingPhone": "Andeem Dir weiderfuert, sidd Dir domat averstanen, SMS-Messagen vun dëser Plattform ze kréien. Dir kënnt op der Säit 'Meng Astellungen' auswielen, wéi eng Messagen Dir kréie wëllt.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "En neie Kont erstellen mat: {phone} {changeLink}",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "All {contentType}-Notifikatiounen ëmschalten",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Notifikatiounen an dëser Kategorie",

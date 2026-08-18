@@ -1369,7 +1369,6 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Numéro de téléphone",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Veuillez saisir un numéro de téléphone valide, par exemple +32 470 12 34 56.",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Veuillez saisir un numéro de téléphone.",
-  "app.containers.Authentication.steps.Policies.byContinuingPhone": "En continuant, vous acceptez de recevoir des SMS de la part de cette plateforme. Vous pouvez sélectionner les messages que vous souhaitez recevoir dans la page « Mes paramètres ».",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Créer un nouveau compte avec : {phone} {changeLink}",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Activer/désactiver toutes les notifications de {contentType}",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Notifications dans cette catégorie",
