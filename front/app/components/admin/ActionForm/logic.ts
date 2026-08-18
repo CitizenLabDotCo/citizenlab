@@ -25,7 +25,7 @@ export const requiresAccount = (permission: IPermissionData): boolean =>
 
 // The security requirements on offer: each one maps onto a `require_*` boolean
 // + `*_expiry` pair on the permission.
-type SecurityRequirementKey = 'email' | 'phone' | 'verification';
+type SecurityRequirementKey = 'email' | 'phone' | 'verification' | 'password';
 export type VisibleToggles = Record<SecurityRequirementKey, boolean>;
 
 type VisibleTogglesParams = {
@@ -33,6 +33,7 @@ type VisibleTogglesParams = {
   smsLoginEnabled: boolean;
   verificationMethodEnabled: boolean;
   hasAuthMethodNotReturningEmail: boolean;
+  passwordLoginEnabled: boolean;
 };
 
 export const getVisibleToggles = ({
@@ -40,11 +41,13 @@ export const getVisibleToggles = ({
   smsLoginEnabled,
   verificationMethodEnabled,
   hasAuthMethodNotReturningEmail,
+  passwordLoginEnabled,
 }: VisibleTogglesParams): VisibleToggles => {
   const visibleToggles: VisibleToggles = {
     email: false,
     phone: false,
     verification: false,
+    password: false,
   };
 
   if ((sms2FAEnabled && smsLoginEnabled) || hasAuthMethodNotReturningEmail) {
@@ -63,6 +66,12 @@ export const getVisibleToggles = ({
     visibleToggles.verification = true;
   }
 
+  if (passwordLoginEnabled) {
+    // A password is only ever set when signing up by email, so requiring one
+    // is meaningless on a platform where that is not a way in.
+    visibleToggles.password = true;
+  }
+
   return visibleToggles;
 };
 
@@ -77,6 +86,7 @@ export const getVisibleToggles = ({
 export const useVisibleToggles = (): VisibleToggles | undefined => {
   const sms2FAEnabled = useFeatureFlag({ name: 'sms' });
   const smsLoginEnabled = useFeatureFlag({ name: 'sms_login' });
+  const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
   const { data: verificationMethod } = useVerificationMethod();
   const { data: idMethods } = useIdMethods();
 
@@ -93,6 +103,7 @@ export const useVisibleToggles = (): VisibleToggles | undefined => {
     smsLoginEnabled,
     verificationMethodEnabled: !!verificationMethod,
     hasAuthMethodNotReturningEmail,
+    passwordLoginEnabled,
   });
 };
 
@@ -188,6 +199,13 @@ export const buildSummary = (
       icon: 'shield-checkered',
     });
   }
+  if (visibleToggles.password && attributes.require_password) {
+    chips.push({
+      key: 'password',
+      label: formatMessage(messages.password),
+      icon: 'lock',
+    });
+  }
 
   const groupIds = getGroupIds(permission);
   if (groupIds.length > 0) {
@@ -205,14 +223,6 @@ export const buildSummary = (
       icon: 'user-circle',
     });
   }
-  if (attributes.require_password) {
-    chips.push({
-      key: 'password',
-      label: formatMessage(messages.password),
-      icon: 'lock',
-    });
-  }
-
   chips.push(...demographicsChip(customFields, formatMessage));
 
   if (attributes.user_data_collection !== 'all_data') {

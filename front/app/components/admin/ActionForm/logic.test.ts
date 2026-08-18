@@ -5,12 +5,14 @@ const ALL_DISABLED = {
   smsLoginEnabled: false,
   verificationMethodEnabled: false,
   hasAuthMethodNotReturningEmail: false,
+  passwordLoginEnabled: false,
 };
 
 const NONE_VISIBLE = {
   email: false,
   phone: false,
   verification: false,
+  password: false,
 };
 
 describe('ActionForm logic', () => {
@@ -103,6 +105,26 @@ describe('ActionForm logic', () => {
       });
     });
 
+    describe('password', () => {
+      it('is shown if password login is enabled', () => {
+        expect(
+          getVisibleToggles({ ...ALL_DISABLED, passwordLoginEnabled: true })
+        ).toEqual({ ...NONE_VISIBLE, password: true });
+      });
+
+      it('is hidden if password login is disabled', () => {
+        expect(
+          getVisibleToggles({
+            ...ALL_DISABLED,
+            sms2FAEnabled: true,
+            smsLoginEnabled: true,
+            verificationMethodEnabled: true,
+            hasAuthMethodNotReturningEmail: true,
+          }).password
+        ).toBe(false);
+      });
+    });
+
     describe('all combinations', () => {
       // [sms2FA, smsLogin, verificationMethod, authMethodNotReturningEmail]
       const cases: [
@@ -152,7 +174,7 @@ describe('ActionForm logic', () => {
           false,
           true,
           true,
-          { email: true, phone: true, verification: true },
+          { ...NONE_VISIBLE, email: true, phone: true, verification: true },
         ],
         [
           true,
@@ -173,14 +195,14 @@ describe('ActionForm logic', () => {
           true,
           true,
           false,
-          { email: true, phone: true, verification: true },
+          { ...NONE_VISIBLE, email: true, phone: true, verification: true },
         ],
         [
           true,
           true,
           true,
           true,
-          { email: true, phone: true, verification: true },
+          { ...NONE_VISIBLE, email: true, phone: true, verification: true },
         ],
       ];
 
@@ -199,6 +221,7 @@ describe('ActionForm logic', () => {
               smsLoginEnabled,
               verificationMethodEnabled,
               hasAuthMethodNotReturningEmail,
+              passwordLoginEnabled: false,
             })
           ).toEqual(expected);
         }

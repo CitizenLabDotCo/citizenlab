@@ -220,7 +220,7 @@ describe('<ActionForm />', () => {
     it('surfaces the "email sign-up only" tooltip when an SSO method is enabled', async () => {
       renderForm();
 
-      await userEvent.click(screen.getByText('Personal info'));
+      await userEvent.click(screen.getByText('Security requirements'));
       const passwordRow = screen.getByText('Password').parentElement!;
       await userEvent.hover(
         within(passwordRow).getByTestId('tooltip-icon-button')
@@ -237,7 +237,7 @@ describe('<ActionForm />', () => {
       mockIdMethods = [];
       renderForm();
 
-      await userEvent.click(screen.getByText('Personal info'));
+      await userEvent.click(screen.getByText('Security requirements'));
       const passwordRow = screen.getByText('Password').parentElement!;
       expect(
         within(passwordRow).queryByTestId('tooltip-icon-button')
