@@ -151,6 +151,13 @@ const Tooltip = ({
         plugins={PLUGINS}
         interactive={true}
         role={role}
+        // Tippy adds `aria-expanded` to its reference element whenever
+        // `interactive` is set. That reference is the wrapper <span> below,
+        // which has no role, and `aria-expanded` is not allowed there
+        // (axe rule: aria-allowed-attr). Triggers that really do expand
+        // something declare `aria-expanded` themselves — see InputContainer's
+        // `ariaExpanded` prop — so suppress tippy's automatic one here.
+        aria={{ expanded: false }}
         visible={isFocused}
         // Ensures tippy works with both keyboard and mouse
         onHidden={handleOnHidden}
@@ -172,6 +179,8 @@ const Tooltip = ({
           plugins={PLUGINS}
           interactive={true}
           role={role}
+          // See the comment on the wrapped branch above.
+          aria={{ expanded: false }}
           visible={isFocused}
           // Ensures tippy works with both keyboard and mouse
           onHidden={handleOnHidden}
