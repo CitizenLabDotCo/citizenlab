@@ -363,6 +363,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        sms_manual_campaigns: {
+          enabled: true,
+          allowed: true
+        },
         parallel_participation: {
           enabled: true,
           allowed: true

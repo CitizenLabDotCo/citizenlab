@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::Sms::UseCaseConsentService do
-  include_context 'with sms feature enabled'
+  include_context 'with sms manual campaigns feature enabled'
 
   let(:user) { create(:user, :with_confirmed_phone) }
 

@@ -69,7 +69,7 @@ resource 'SMS Events' do
 
     context 'when the callback reports the recipient opted out' do
       # The campaigns to withdraw consent from are only registered when SMS is on.
-      include_context 'with sms feature enabled'
+      include_context 'with sms manual campaigns feature enabled'
 
       let(:user) { create(:user, :with_confirmed_phone) }
       let(:campaign) { create(:sms_manual_campaign) }

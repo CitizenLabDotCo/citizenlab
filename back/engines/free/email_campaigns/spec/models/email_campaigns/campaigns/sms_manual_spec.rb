@@ -80,7 +80,7 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
     let(:recipient) { create(:user, locale: 'en', phone: phone1, phone_confirmed_at: Time.zone.now) }
     let(:command) { { recipient: recipient, body_multiloc: { 'en' => 'A short SMS update from your city.' } } }
 
-    include_context 'with sms feature enabled'
+    include_context 'with sms manual campaigns feature enabled'
 
     describe '#deliver_later' do
       it 'creates a campaign-linked pending delivery and enqueues a SendJob' do

@@ -11,3 +11,10 @@ RSpec.shared_context 'with sms feature enabled' do
     })
   end
 end
+
+# Enables `sms_manual_campaigns` on top of `sms`, which holds the Twilio settings
+RSpec.shared_context 'with sms manual campaigns feature enabled' do
+  include_context 'with sms feature enabled'
+
+  before { SettingsService.new.activate_feature!('sms_manual_campaigns') }
+end

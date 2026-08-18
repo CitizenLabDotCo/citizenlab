@@ -20,7 +20,12 @@ import messages from './messages';
 const MessagingDashboard = () => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
-  const smsEnabled = useFeatureFlag({ name: 'sms' });
+  // The sms feature carries the Twilio settings manual campaigns send through.
+  const smsFFEnabled = useFeatureFlag({ name: 'sms' });
+  const smsManualCampaignsFFEnabled = useFeatureFlag({
+    name: 'sms_manual_campaigns',
+  });
+  const smsEnabled = smsFFEnabled && smsManualCampaignsFFEnabled;
 
   const tabs: ITab[] = [
     {
