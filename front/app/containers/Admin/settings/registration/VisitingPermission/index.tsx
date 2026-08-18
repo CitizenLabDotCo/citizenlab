@@ -18,10 +18,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
 
-// Always-true boolean value to hide new interface for now.
-// Will remove after the rake task ran
-const HIDE = Math.random() > -1;
-
 // The global 'visiting' permission drives the platform-wide sign up / log in
 // flow. It reuses the building blocks of the phase-level ActionForm, but only
 // the ones that make sense outside a phase: the sign-in mode cards, demographic
@@ -31,7 +27,6 @@ const VisitingPermission = () => {
   const { mutate: updatePermission } = useUpdatePermission();
 
   if (!permission) return null;
-  if (HIDE) return null;
 
   const handleChange = (changes: Changes) => {
     updatePermission({ action: 'visiting', permission: changes });
