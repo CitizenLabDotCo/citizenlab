@@ -7,7 +7,7 @@ import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
-import { IPhasePermissionData } from 'api/phase_permissions/types';
+import { IPermissionData } from 'api/permissions/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -22,7 +22,7 @@ import messages from './messages';
 import MethodRow from './MethodRow';
 
 interface Props {
-  permission: IPhasePermissionData;
+  permission: IPermissionData;
   onChange: (changes: Changes) => void;
 }
 
@@ -69,7 +69,7 @@ const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
             ? activeLabels.join(' · ')
             : formatMessage(messages.none)
         }
-        defaultOpen={activeLabels.length > 0}
+        defaultOpen={false}
       >
         {showEmail && (
           <MethodRow

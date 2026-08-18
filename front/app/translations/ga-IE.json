@@ -1987,6 +1987,7 @@
   "app.containers.Navbar.completeOnboarding": "Clárú iomlán",
   "app.containers.Navbar.completeProfile": "Próifíl iomlán",
   "app.containers.Navbar.confirmEmail2": "Deimhnigh ríomhphost",
+  "app.containers.Navbar.confirmPhone": "Deimhnigh uimhir ghutháin",
   "app.containers.Navbar.unverified": "Gan fhíorú",
   "app.containers.Navbar.verified": "Fíoraithe",
   "app.containers.NewAuthModal.beforeYouFollow": "Sula leanann tú",

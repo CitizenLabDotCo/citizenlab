@@ -57,6 +57,11 @@ class Permission < ApplicationRecord
     explanation: 'user_fields_in_form_not_supported_for_action'
   }
 
+  # Set on the unsaved copies of the global 'visiting' permission that stand in
+  # for phase actions which have not been overridden.
+  # See Permissions::PermissionInheritanceService.
+  attr_writer :inherited
+
   scope :filter_enabled_actions, ->(permission_scope) { where(action: enabled_actions(permission_scope)) }
   scope :order_by_action, lambda { |permission_scope|
     order(Arel.sql(order_by_action_sql(permission_scope)))
@@ -75,7 +80,7 @@ class Permission < ApplicationRecord
   validate :validate_permitted_by_everyone
   validates :user_data_collection, inclusion: { in: %w[all_data demographics_only anonymous] }
 
-  before_validation :set_permitted_by_and_global_custom_fields, on: :create
+  before_validation :apply_creation_defaults, on: :create
 
   def self.available_actions(permission_scope)
     return [] if permission_scope && !permission_scope.respond_to?(:participation_method)
@@ -100,6 +105,10 @@ class Permission < ApplicationRecord
     actions.each_with_index { |action, order| sql += "WHEN '#{action}' THEN #{order} " }
     sql += "ELSE #{actions.size} END"
     sql
+  end
+
+  def inherited?
+    @inherited == true
   end
 
   def verification_enabled?
@@ -142,9 +151,9 @@ class Permission < ApplicationRecord
     permission_scope.pmethod.supports_permitted_by_everyone?
   end
 
-  private
-
-  def set_permitted_by_and_global_custom_fields
+  # Also applied to the unsaved permissions built by
+  # Permissions::PermissionInheritanceService, which never reach a validation.
+  def apply_creation_defaults
     if permitted_by.nil?
       self.permitted_by = 'users'
       # Following used to default to the 'everyone_confirmed_email' permitted_by.
@@ -158,6 +167,8 @@ class Permission < ApplicationRecord
     end
     self.global_custom_fields ||= true
   end
+
+  private
 
   def validate_permitted_by_everyone
     return unless permitted_by == 'everyone'

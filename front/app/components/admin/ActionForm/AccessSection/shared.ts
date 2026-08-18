@@ -2,13 +2,13 @@ import { CSSProperties } from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
 
-import { IPhasePermissionData } from 'api/phase_permissions/types';
+import { IPermissionData } from 'api/permissions/types';
 
 import { Changes } from '../types';
 
 // Common props for both access-section variants.
 export interface AccessSectionProps {
-  permission: IPhasePermissionData;
+  permission: IPermissionData;
   // Whether the "Anyone" option is offered (derived from
   // `permitted_by_everyone_allowed` by the parent).
   showAnyone: boolean;

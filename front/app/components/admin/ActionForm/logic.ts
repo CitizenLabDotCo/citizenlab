@@ -1,6 +1,6 @@
 // The "rules engine". All the cross-setting dependencies live here, in one
 // place, so the UI components stay dumb. Every helper reads from the
-// `IPhasePermissionData` shape (plus the list of permission custom fields that
+// `IPermissionData` shape (plus the list of permission custom fields that
 // holds the demographics, and the platform config that decides which security
 // requirements can be configured at all). The panel is stateless, so nothing
 // here mutates: writes are expressed as `Changes` for `onChange`.
@@ -8,19 +8,19 @@ import { FormatMessage } from 'typings';
 
 import useIdMethods from 'api/id_methods/useIdMethods';
 import useVerificationMethod from 'api/id_methods/useVerificationMethod';
+import { IPermissionData } from 'api/permissions/types';
 import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
-import { IPhasePermissionData } from 'api/phase_permissions/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from './messages';
 
 /** Group ids the action is limited to (OR semantics). */
-export const getGroupIds = (permission: IPhasePermissionData): string[] =>
+export const getGroupIds = (permission: IPermissionData): string[] =>
   permission.relationships.groups.data.map((g) => g.id);
 
 /** Does participation require an account? Driven by `permitted_by`. */
-export const requiresAccount = (permission: IPhasePermissionData): boolean =>
+export const requiresAccount = (permission: IPermissionData): boolean =>
   permission.attributes.permitted_by === 'users';
 
 // The security requirements on offer: each one maps onto a `require_*` boolean
@@ -129,7 +129,7 @@ const demographicsChip = (
 };
 
 export const buildSummary = (
-  permission: IPhasePermissionData,
+  permission: IPermissionData,
   customFields: IPermissionsPhaseCustomFieldData[],
   formatMessage: FormatMessage,
   visibleToggles: VisibleToggles

@@ -1987,6 +1987,7 @@
   "app.containers.Navbar.completeOnboarding": "Complete onboarding",
   "app.containers.Navbar.completeProfile": "مکمل پروفائل",
   "app.containers.Navbar.confirmEmail2": "ای میل کی تصدیق کریں۔",
+  "app.containers.Navbar.confirmPhone": "فون نمبر کی تصدیق کریں",
   "app.containers.Navbar.unverified": "غیر تصدیق شدہ",
   "app.containers.Navbar.verified": "تصدیق شدہ",
   "app.containers.NewAuthModal.beforeYouFollow": "اس سے پہلے کہ آپ پیروی کریں۔",

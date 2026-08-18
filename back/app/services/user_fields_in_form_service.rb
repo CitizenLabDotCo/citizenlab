@@ -19,7 +19,7 @@ class UserFieldsInFormService
       # Confirm that the idea belongs to the current user
       return false unless idea.author_id == current_user.id
 
-      permission = phase.permissions.find_by(action: 'posting_idea')
+      permission = posting_permission(phase)
       return false unless permission
 
       # Confirm that user fields are asked in registration process
@@ -51,7 +51,7 @@ class UserFieldsInFormService
       return idea_custom_field_values unless current_user
       return idea_custom_field_values if phase.blank?
 
-      permission = phase.permissions.find_by(action: 'posting_idea')
+      permission = posting_permission(phase)
 
       # Use PermissionsCustomFieldsService to get fields, which handles both persisted and non-persisted (global) fields
       permissions_custom_fields_service = Permissions::PermissionsCustomFieldsService.new
@@ -78,7 +78,7 @@ class UserFieldsInFormService
       # Confirm that the idea belongs to the current user
       return false unless idea.author_id == user.id
 
-      permission = phase.permissions.find_by(action: 'posting_idea')
+      permission = posting_permission(phase)
       return false unless permission
 
       # Confirm that user fields are asked in form
@@ -108,7 +108,7 @@ class UserFieldsInFormService
       return fields unless participation_method.user_fields_in_form_enabled?
 
       phase = participation_method.phase
-      permission = phase.permissions.find_by(action: 'posting_idea')
+      permission = posting_permission(phase)
       user_fields = Permissions::UserRequirementsService.new.requirements_custom_fields(permission)
 
       return fields unless user_fields.any?
@@ -178,6 +178,12 @@ class UserFieldsInFormService
     end
 
     private
+
+    # Falls back to the permission inherited from the global 'visiting'
+    # permission when the phase has no posting_idea permission of its own.
+    def posting_permission(phase)
+      Permissions::PermissionInheritanceService.new.find(phase, 'posting_idea')
+    end
 
     def user_fields_in_form_descriptor_surveylike(permission)
       if permission.permitted_by == 'everyone'

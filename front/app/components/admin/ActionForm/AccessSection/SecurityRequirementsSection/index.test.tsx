@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { IdMethodData } from 'api/id_methods/types';
-import { IPhasePermissionData } from 'api/phase_permissions/types';
+import { IPermissionData } from 'api/permissions/types';
 
 import { render, screen, userEvent } from 'utils/testUtils/rtl';
 
@@ -35,6 +35,7 @@ jest.mock('api/id_methods/useIdMethods', () =>
   jest.fn(() => ({ data: { data: mockIdMethods } }))
 );
 
+const SECTION_TITLE = 'Security requirements';
 const EMAIL_LABEL = 'Require confirmed email from all participants';
 const PHONE_LABEL = 'Require confirmed phone number from all participants';
 const VERIFICATION_LABEL =
@@ -57,8 +58,8 @@ const emaillessAuthMethod = {
 } as IdMethodData;
 
 const buildPermission = (
-  attributes: Partial<IPhasePermissionData['attributes']> = {}
-): IPhasePermissionData =>
+  attributes: Partial<IPermissionData['attributes']> = {}
+): IPermissionData =>
   ({
     id: 'perm-1',
     type: 'permission',
@@ -84,10 +85,10 @@ const buildPermission = (
       permission_scope: { data: { id: 'ph-1', type: 'phase' } },
       groups: { data: [] },
     },
-  } as IPhasePermissionData);
+  } as IPermissionData);
 
 const renderSection = (
-  attributes?: Partial<IPhasePermissionData['attributes']>,
+  attributes?: Partial<IPermissionData['attributes']>,
   onChange = jest.fn()
 ) => {
   render(
@@ -99,6 +100,10 @@ const renderSection = (
   return onChange;
 };
 
+// The section always starts collapsed, so anything below the header has to be
+// revealed first.
+const openSection = () => userEvent.click(screen.getByText(SECTION_TITLE));
+
 beforeEach(() => {
   mockSmsEnabled = true;
   mockSmsLoginEnabled = true;
@@ -108,43 +113,38 @@ beforeEach(() => {
 
 describe('<SecurityRequirementsSection />', () => {
   describe('open / collapsed state', () => {
-    it('starts open when a check is already required', () => {
+    it('starts collapsed even when a check is already required', () => {
       renderSection();
-      expect(screen.getByText(EMAIL_LABEL)).toBeInTheDocument();
+      expect(screen.queryByText(EMAIL_LABEL)).not.toBeInTheDocument();
     });
 
-    it('starts collapsed with a "None" summary when nothing is required', () => {
+    it('summarises "None" when nothing is required', () => {
       renderSection({ require_confirmed_email: false });
 
-      expect(screen.queryByText(EMAIL_LABEL)).not.toBeInTheDocument();
       expect(screen.getByText('None')).toBeInTheDocument();
     });
 
     it('can be expanded from collapsed', async () => {
       renderSection({ require_confirmed_email: false });
 
-      await userEvent.click(screen.getByText('Security requirements'));
+      await openSection();
 
       expect(screen.getByText(EMAIL_LABEL)).toBeInTheDocument();
     });
 
-    it('summarises every required check', async () => {
+    it('summarises every required check', () => {
       renderSection({
         require_confirmed_email: false,
         require_confirmed_phone_number: true,
         require_verification: true,
       });
 
-      // Two active checks means it starts open - the summary only shows once
-      // the section is collapsed again.
-      await userEvent.click(screen.getByText('Security requirements'));
-
       expect(
         screen.getByText(`${PHONE_SUMMARY} · ${VERIFICATION_SUMMARY}`)
       ).toBeInTheDocument();
     });
 
-    it('does not count an unavailable check as a reason to open', () => {
+    it('leaves an unavailable check out of the summary', () => {
       mockVerificationMethodConfigured = false;
       renderSection({
         require_confirmed_email: false,
@@ -156,8 +156,9 @@ describe('<SecurityRequirementsSection />', () => {
   });
 
   describe('which checks are offered', () => {
-    it('shows all three rows with their descriptions', () => {
+    it('shows all three rows with their descriptions', async () => {
       renderSection();
+      await openSection();
 
       expect(screen.getByText(EMAIL_LABEL)).toBeInTheDocument();
       expect(screen.getByText(PHONE_LABEL)).toBeInTheDocument();
@@ -169,46 +170,50 @@ describe('<SecurityRequirementsSection />', () => {
       ).toBeInTheDocument();
     });
 
-    it('hides the phone and email rows when SMS is off', () => {
+    it('hides the phone and email rows when SMS is off', async () => {
       // Without SMS nobody can sign up by phone, so neither the phone check nor
       // the (then unconditional) email confirmation is configurable.
       mockSmsEnabled = false;
-      // require_verification keeps the section open so the rows are rendered.
-      renderSection({ require_verification: true });
+      renderSection();
+      await openSection();
 
       expect(screen.queryByText(PHONE_LABEL)).not.toBeInTheDocument();
       expect(screen.queryByText(EMAIL_LABEL)).not.toBeInTheDocument();
       expect(screen.getByText(VERIFICATION_LABEL)).toBeInTheDocument();
     });
 
-    it('hides the email row when SMS login is off', () => {
+    it('hides the email row when SMS login is off', async () => {
       mockSmsLoginEnabled = false;
       renderSection({ require_confirmed_phone_number: true });
+      await openSection();
 
       expect(screen.queryByText(EMAIL_LABEL)).not.toBeInTheDocument();
       expect(screen.getByText(PHONE_LABEL)).toBeInTheDocument();
     });
 
-    it('offers the email row when a sign-in method may not return an email', () => {
+    it('offers the email row when a sign-in method may not return an email', async () => {
       mockSmsEnabled = false;
       mockIdMethods = [emaillessAuthMethod];
       renderSection();
+      await openSection();
 
       expect(screen.getByText(EMAIL_LABEL)).toBeInTheDocument();
     });
 
-    it('drops the conditional wording on the phone row when SMS login is off', () => {
+    it('drops the conditional wording on the phone row when SMS login is off', async () => {
       mockSmsLoginEnabled = false;
       renderSection({ require_confirmed_phone_number: true });
+      await openSection();
 
       expect(
         screen.getByText('Participant must have a confirmed phone number.')
       ).toBeInTheDocument();
     });
 
-    it('hides the verification row when no method is configured', () => {
+    it('hides the verification row when no method is configured', async () => {
       mockVerificationMethodConfigured = false;
       renderSection();
+      await openSection();
 
       expect(screen.queryByText(VERIFICATION_LABEL)).not.toBeInTheDocument();
       expect(screen.getByText(EMAIL_LABEL)).toBeInTheDocument();
@@ -219,15 +224,14 @@ describe('<SecurityRequirementsSection />', () => {
       mockVerificationMethodConfigured = false;
       renderSection();
 
-      expect(
-        screen.queryByText('Security requirements')
-      ).not.toBeInTheDocument();
+      expect(screen.queryByText(SECTION_TITLE)).not.toBeInTheDocument();
     });
   });
 
   describe('editing', () => {
     it('emits the enabled flag and expiry when a check is toggled', async () => {
       const onChange = renderSection();
+      await openSection();
 
       await userEvent.click(screen.getByText(VERIFICATION_LABEL));
 

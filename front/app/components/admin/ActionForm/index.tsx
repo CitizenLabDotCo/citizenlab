@@ -16,8 +16,10 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import AccessSection from './AccessSection';
 import DataSection from './DataSection';
-import { buildSummary, getGroupIds, useVisibleToggles } from './logic';
+import { buildSummary, useVisibleToggles } from './logic';
 import messages from './messages';
+import PlatformDefaultsHeader from './PlatformDefaultsHeader';
+import RevertToDefaultsModal from './RevertToDefaultsModal';
 import { Props } from './types';
 import { Chip } from './ui';
 
@@ -27,10 +29,13 @@ const ActionForm = ({
   title,
   defaultOpen = false,
   onChange,
-  onReset,
+  onOverride,
+  onRevertToDefaults,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [isOpen, setIsOpen] = useState(defaultOpen);
+  const [processing, setProcessing] = useState(false);
+  const [revertModalOpened, setRevertModalOpened] = useState(false);
 
   const { attributes } = permissionData;
   const { action } = attributes;
@@ -55,13 +60,52 @@ const ActionForm = ({
     visibleToggles
   );
 
-  // Reset clears the account-only customisations (groups + persisted questions);
-  // it has nothing to undo for the open / admins-only gates.
-  const showReset =
-    getGroupIds(permissionData).length > 0 ||
-    (!isAdmins &&
-      attributes.permitted_by !== 'everyone' &&
-      customFields.some((field) => field.attributes.persisted));
+  const handleOverride = async () => {
+    if (!onOverride) return;
+    setProcessing(true);
+    try {
+      await onOverride();
+      setIsOpen(true);
+    } finally {
+      setProcessing(false);
+    }
+  };
+
+  const handleRevertToDefaults = async () => {
+    if (!onRevertToDefaults) return;
+    setProcessing(true);
+    try {
+      await onRevertToDefaults();
+      setRevertModalOpened(false);
+    } finally {
+      setProcessing(false);
+    }
+  };
+
+  // Nothing has been configured for this action: the platform defaults apply
+  // and the panel stays shut until the admin chooses to override it.
+  if (attributes.inherited && onOverride) {
+    return (
+      <Box
+        maxWidth="900px"
+        my="16px"
+        data-cy={`e2e-action-inherited-${action}`}
+      >
+        <Box
+          border={`1px solid ${colors.borderLight}`}
+          borderRadius={stylingConsts.borderRadius}
+          bgColor={colors.white}
+          style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}
+        >
+          <PlatformDefaultsHeader
+            title={title}
+            processing={processing}
+            onOverride={handleOverride}
+          />
+        </Box>
+      </Box>
+    );
+  }
 
   return (
     <Box maxWidth="900px" my="16px">
@@ -74,6 +118,7 @@ const ActionForm = ({
         {/* ---- Header (always visible, click to collapse/expand) ---- */}
         <Box
           className={`e2e-action-accordion-${action}`}
+          data-cy={`e2e-action-accordion-${action}`}
           as="button"
           type="button"
           w="100%"
@@ -117,7 +162,12 @@ const ActionForm = ({
         </Box>
 
         {isOpen && (
-          <Box px="20px" pb="20px" className={`e2e-action-form-${action}`}>
+          <Box
+            px="20px"
+            pb="20px"
+            className={`e2e-action-form-${action}`}
+            data-cy={`e2e-action-form-${action}`}
+          >
             <Divider mt="0" mb="20px" />
 
             <AccessSection
@@ -140,18 +190,17 @@ const ActionForm = ({
               </>
             )}
 
-            {showReset && (
+            {onRevertToDefaults && (
               <Box mt="24px">
                 <Button
                   buttonStyle="text"
                   width="auto"
                   padding="0px"
-                  onClick={onReset}
+                  dataCy={`e2e-revert-to-platform-defaults-${action}`}
+                  onClick={() => setRevertModalOpened(true)}
                 >
                   <span style={{ textDecorationLine: 'underline' }}>
-                    <FormattedMessage
-                      {...messages.resetDemographicQuestionsAndGroups}
-                    />
+                    <FormattedMessage {...messages.revertToPlatformDefaults} />
                   </span>
                 </Button>
               </Box>
@@ -159,6 +208,15 @@ const ActionForm = ({
           </Box>
         )}
       </Box>
+
+      {onRevertToDefaults && (
+        <RevertToDefaultsModal
+          opened={revertModalOpened}
+          processing={processing}
+          onClose={() => setRevertModalOpened(false)}
+          onConfirm={handleRevertToDefaults}
+        />
+      )}
     </Box>
   );
 };

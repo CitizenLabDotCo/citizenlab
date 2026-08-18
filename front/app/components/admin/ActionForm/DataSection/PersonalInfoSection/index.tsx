@@ -4,7 +4,7 @@
 import React from 'react';
 
 import useIdMethods from 'api/id_methods/useIdMethods';
-import { IPhasePermissionData } from 'api/phase_permissions/types';
+import { IPermissionData } from 'api/permissions/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -18,7 +18,7 @@ import messages from './messages';
 import PiiToggle from './PiiToggle';
 
 interface Props {
-  permission: IPhasePermissionData;
+  permission: IPermissionData;
   onChange: (changes: Changes) => void;
 }
 
@@ -44,6 +44,7 @@ const PersonalInfoSection = ({ permission, onChange }: Props) => {
 
   return (
     <Expander
+      dataCy="e2e-personal-info-section"
       icon="user-circle"
       title={formatMessage(messages.personalInfo)}
       summary={
@@ -53,6 +54,7 @@ const PersonalInfoSection = ({ permission, onChange }: Props) => {
       }
     >
       <PiiToggle
+        dataCy="e2e-require-name-toggle"
         icon="user-circle"
         title={formatMessage(messages.fullName)}
         description={formatMessage(messages.fullNameDescription)}

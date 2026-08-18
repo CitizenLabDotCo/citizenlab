@@ -1,5 +1,5 @@
 import { IFollowingAction } from 'api/authentication/authentication_requirements/types';
-import { IPhasePermissionAction } from 'api/phase_permissions/types';
+import { IPhasePermissionAction } from 'api/permissions/types';
 
 import errorMessages from 'components/UI/Error/messages';
 
