@@ -94,6 +94,11 @@ module EmailCampaigns
       User.where.not(phone_confirmed_at: nil)
     end
 
+    # Carrier rules require the sending organisation to be identifiable in the message.
+    def organization_name(locale)
+      MultilocService.new.t(AppConfiguration.instance.settings('core', 'organization_name'), locale.to_s)
+    end
+
     private
 
     # All SMS sends go through Sms::SendJob. A synchronous send (perform_now, e.g.
