@@ -469,7 +469,41 @@ describe SanitizationService do
     end
   end
 
+  describe 'replace_links_with_urls' do
+    it 'replaces a link with the URL it points at' do
+      expect(service.replace_links_with_urls('<a href="https://example.com">click here</a>')).to eq 'https://example.com'
+    end
+
+    it 'replaces a mailto link with its address' do
+      expect(service.replace_links_with_urls('<a href="mailto:a@b.com">schrijf ons</a>')).to eq 'mailto:a@b.com'
+    end
+
+    # `linkify` never builds these, so putting one back as text would invent a link the pipeline
+    # would not have made. Left alone, the anchor is dropped downstream like any other markup.
+    it 'leaves a javascript: link alone' do
+      input = '<a href="javascript:alert(1)">click</a>'
+      expect(service.replace_links_with_urls(input)).to eq input
+    end
+
+    it 'leaves a relative link alone' do
+      input = '<a href="/somewhere">click</a>'
+      expect(service.replace_links_with_urls(input)).to eq input
+    end
+
+    it 'leaves text without links alone' do
+      expect(service.replace_links_with_urls('<p>no links here</p>')).to eq '<p>no links here</p>'
+    end
+
+    it 'returns nil for nil' do
+      expect(service.replace_links_with_urls(nil)).to be_nil
+    end
+  end
+
   describe 'strip_to_plain_text' do
+    # Built by escape rather than pasted, so the character survives every editor this file passes
+    # through, and a failure message can be told apart from a plain space.
+    let(:nbsp) { "\u00A0" }
+
     it 'removes markup' do
       expect(service.strip_to_plain_text('<b>Bold</b> idea')).to eq 'Bold idea'
     end
@@ -495,6 +529,32 @@ describe SanitizationService do
       output = service.strip_to_plain_text('&amp;amp;amp;amp;amp;lt;script&amp;amp;amp;amp;amp;gt;')
       expect(output).not_to match(/<[a-zA-Z]/)
     end
+
+    # French typography puts a non-breaking space before ':' and inside numbers, so this is ordinary
+    # copy, and the HTML5 serializer writes it as `&nbsp;` every time it round-trips.
+    it 'keeps a non-breaking space as one character rather than its entity' do
+      title = "Analyse des options + vote#{nbsp}: 920#{nbsp}000 $"
+      expect(service.strip_to_plain_text(title)).to eq title
+    end
+
+    it 'is idempotent over a non-breaking space' do
+      once = service.strip_to_plain_text("vote#{nbsp}: la place")
+      expect(service.strip_to_plain_text(once)).to eq once
+    end
+
+    it 'decodes a non-breaking space that arrives already encoded' do
+      expect(service.strip_to_plain_text('vote&nbsp;: la place')).to eq "vote#{nbsp}: la place"
+    end
+
+    it 'strips a payload sitting next to a non-breaking space' do
+      expect(service.strip_to_plain_text("<img src=x onerror=alert(1)>vote#{nbsp}: la place"))
+        .to eq "vote#{nbsp}: la place"
+    end
+
+    it 'leaves no parsable tag when a payload is encoded around a non-breaking space' do
+      output = service.strip_to_plain_text("&amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt;#{nbsp}x")
+      expect(output).not_to match(/<[a-zA-Z]/)
+    end
   end
 
   describe 'strip_multiloc_to_plain_text' do
@@ -503,6 +563,16 @@ describe SanitizationService do
         { 'en' => '<b>Fish</b> & chips', 'fr-BE' => '<img src=x onerror=alert(1)>frites', 'nl-NL' => nil }
       )
       expect(output).to eq({ 'en' => 'Fish & chips', 'fr-BE' => 'frites', 'nl-NL' => nil })
+    end
+
+    # A row is sanitised as a whole, so a payload in one locale must not cost a clean locale its
+    # non-breaking spaces.
+    it 'leaves a clean locale untouched while stripping a payload from another' do
+      nbsp = "\u00A0"
+      output = service.strip_multiloc_to_plain_text(
+        { 'en' => '<img src=x onerror=alert(1)>frites', 'fr-BE' => "vote#{nbsp}: la place" }
+      )
+      expect(output).to eq({ 'en' => 'frites', 'fr-BE' => "vote#{nbsp}: la place" })
     end
   end
 end
