@@ -650,6 +650,15 @@ resource 'Permissions' do
           expect(response_data[:attributes][:access_denied_explanation_multiloc]).to eq(@multiloc)
         end
       end
+
+      context 'for an action the phase does not support' do
+        let(:action) { 'taking_survey' }
+
+        example_request 'Returns 404 without a body' do
+          assert_status 404
+          expect(response_body).to be_blank
+        end
+      end
     end
   end
 end

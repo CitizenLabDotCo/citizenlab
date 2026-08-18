@@ -39,6 +39,15 @@ export const isActionNotSupported = (disabledReason: string) => {
   return ACTION_NOT_SUPPORTED_REASONS.has(disabledReason);
 };
 
+// The reason comes from the idea's own phase, but the phase we'd ask about is the
+// project's current one. That phase can be of any participation method, so it may
+// well have no Permission for the action, and nothing to explain either way.
+export const isIdeaNotInCurrentPhase = (disabledReason: string) => {
+  return (
+    disabledReason === ('idea_not_in_current_phase' satisfies DisabledReason)
+  );
+};
+
 // Fall back messages for disabled reasons
 const globalDisabledMessages: {
   [reason in DisabledReason]?: MessageDescriptor;

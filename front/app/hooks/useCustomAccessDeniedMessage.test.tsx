@@ -68,6 +68,15 @@ describe('useCustomAccessDeniedMessage', () => {
     }
   );
 
+  // The phase we'd ask about is the project's current one, which may be of any
+  // participation method, so the request would often 404.
+  it('does not request an explanation when the idea is not in the current phase', async () => {
+    const { result } = renderIt('idea_not_in_current_phase');
+
+    await waitFor(() => expect(result.current).toBeNull());
+    expect(requestedActions).toEqual([]);
+  });
+
   it('does not request an explanation when the user just needs to sign in', async () => {
     const { result } = renderIt('user_not_signed_in');
 
