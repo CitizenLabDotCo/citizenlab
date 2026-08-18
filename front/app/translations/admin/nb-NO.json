@@ -681,6 +681,7 @@
   "app.containers.Admin.Invitations.moderatorLabelTooltipLinkText": "her",
   "app.containers.Admin.Invitations.name": "Navn",
   "app.containers.Admin.Invitations.processing": "Sender ut invitasjoner. Vennligst vent...",
+  "app.containers.Admin.Invitations.processingNotStartedError": "Systemet er opptatt, og invitasjonene dine har ikke blitt behandlet ennå. Ingen invitasjoner ble sendt. Vennligst prøv igjen om noen minutter.",
   "app.containers.Admin.Invitations.projectSelectorPlaceholder": "Ingen prosjekt(er) valgt",
   "app.containers.Admin.Invitations.save": "Send ut invitasjoner",
   "app.containers.Admin.Invitations.saveErrorMessage": "En eller flere feil oppstod, og invitasjonene ble ikke sendt ut. Vennligst korriger feilen(e) som er oppført nedenfor, og prøv på nytt.",

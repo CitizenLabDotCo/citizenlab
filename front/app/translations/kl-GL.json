@@ -2637,6 +2637,8 @@
   "app.errors.too_short": "Kode isissutissaq minnerpaamik 8-nik naqinneqassaaq.",
   "app.errors.too_weak": "Isissutissaq una eqqoriaruminartuuvoq. Isissutissamik nukittunerusumik toqqaagit, assersuutigalugu takinerutillugu imaluunniit oqaatsit imminnut attuumassuteqanngitsut arlallit atorlugit.",
   "app.errors.uncaught_error": "An unknown error occurred.",
+  "app.errors.unexpected_invite_error": "Qaaqqussutit suliarineranni kukkusoqarpoq. Misileqqitsinnak immikkoortoq \"Qaaqqussutit tamarmik\" alakkaruk.",
+  "app.errors.unexpected_seats_count_error": "Qaaqqussutit qassinik inissaqarnissaannik misissuinermi kukkusoqarpoq. Qaaqqussutit nassiunneqanngillat. Misileqqiguk.",
   "app.errors.unknown_group": "Ataatsimoortut {value} titarnerni quleriiaani nassaarineqartut {row} ilisimaneqanngillat",
   "app.errors.unknown_locale": "Oqaatsit {value} titarnerni quleriiaani nassaarineqartut {row} atortussanngortinneqarsimanngillat",
   "app.errors.unparseable_excel": "Excel-fil toqqagaq suliarineqarsinnaanngilaq",

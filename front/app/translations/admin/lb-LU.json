@@ -681,6 +681,7 @@
   "app.containers.Admin.Invitations.moderatorLabelTooltipLinkText": "here",
   "app.containers.Admin.Invitations.name": "Name",
   "app.containers.Admin.Invitations.processing": "Sending out invitations. Please wait...",
+  "app.containers.Admin.Invitations.processingNotStartedError": "De System ass am Moment beschäftegt an Är Invitatioune goufen nach net veraarbecht. Et goufe keng Invitatioune verschéckt. Probéiert wgl. an e puer Minutten nach eng Kéier.",
   "app.containers.Admin.Invitations.projectSelectorPlaceholder": "No project(s) selected",
   "app.containers.Admin.Invitations.save": "Send out invitations",
   "app.containers.Admin.Invitations.saveErrorMessage": "One or more errors occurred and the invitations were not sent out. Please correct the error(s) listed below and try again.",

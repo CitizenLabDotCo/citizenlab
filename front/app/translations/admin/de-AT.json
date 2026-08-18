@@ -681,6 +681,7 @@
   "app.containers.Admin.Invitations.moderatorLabelTooltipLinkText": "hier",
   "app.containers.Admin.Invitations.name": "Name",
   "app.containers.Admin.Invitations.processing": "Einladungen werden versandt. Bitte warten...",
+  "app.containers.Admin.Invitations.processingNotStartedError": "Das System ist ausgelastet und Ihre Einladungen wurden noch nicht verarbeitet. Es wurden keine Einladungen gesendet. Bitte versuchen Sie es in ein paar Minuten erneut.",
   "app.containers.Admin.Invitations.projectSelectorPlaceholder": "Keine Projekte ausgewählt",
   "app.containers.Admin.Invitations.save": "Einladungen verschicken",
   "app.containers.Admin.Invitations.saveErrorMessage": "Es sind ein oder mehrere Fehler aufgetreten und die Einladungen wurden nicht verschickt. Bitte beheben Sie den/die unten aufgeführten Fehler und versuchen Sie es erneut.",

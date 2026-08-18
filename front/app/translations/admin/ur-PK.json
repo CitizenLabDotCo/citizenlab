@@ -681,6 +681,7 @@
   "app.containers.Admin.Invitations.moderatorLabelTooltipLinkText": "یہاں",
   "app.containers.Admin.Invitations.name": "نام",
   "app.containers.Admin.Invitations.processing": "دعوت نامے بھیجنا۔ برائے مہربانی انتظار کریں...",
+  "app.containers.Admin.Invitations.processingNotStartedError": "سسٹم مصروف ہے اور آپ کے دعوت ناموں پر ابھی تک کارروائی نہیں ہوئی ہے۔ کوئی دعوت نامہ نہیں بھیجا گیا۔ براہ کرم چند منٹ بعد دوبارہ کوشش کریں۔",
   "app.containers.Admin.Invitations.projectSelectorPlaceholder": "کوئی پروجیکٹ منتخب نہیں کیا گیا۔",
   "app.containers.Admin.Invitations.save": "دعوت نامے بھیجیں۔",
   "app.containers.Admin.Invitations.saveErrorMessage": "ایک یا زیادہ غلطیاں ہوئیں اور دعوت نامے نہیں بھیجے گئے۔ براہ کرم ذیل میں درج غلطی(غلطیوں) کو درست کریں اور دوبارہ کوشش کریں۔",

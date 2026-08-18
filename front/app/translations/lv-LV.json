@@ -2637,6 +2637,8 @@
   "app.errors.too_short": "Lūdzu, izvēlieties paroli ar vismaz 8 rakstu zīmēm",
   "app.errors.too_weak": "Šo paroli var viegli uzminēt. Lūdzu, izvēlieties drošāku paroli, piemēram, padarot to garāku vai izmantojot vairākus nesaistītus vārdus.",
   "app.errors.uncaught_error": "Notika nezināma kļūda.",
+  "app.errors.unexpected_invite_error": "Radās kļūda, apstrādājot jūsu uzaicinājumus. Pirms mēģināt vēlreiz, pārbaudiet cilni \"Visi uzaicinājumi\".",
+  "app.errors.unexpected_seats_count_error": "Radās kļūda, pārbaudot, cik vietu ir nepieciešams šiem uzaicinājumiem. Uzaicinājumi netika nosūtīti. Lūdzu, mēģiniet vēlreiz.",
   "app.errors.unknown_group": "Rindā {row} atrodamā grupa {vērtība} nav zināma grupa",
   "app.errors.unknown_locale": "Rindā {row} atrodamā valoda {vērtība} nav konfigurēta valoda",
   "app.errors.unparseable_excel": "Izvēlēto Excel failu nav iespējams apstrādāt.",

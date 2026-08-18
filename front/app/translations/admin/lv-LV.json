@@ -681,6 +681,7 @@
   "app.containers.Admin.Invitations.moderatorLabelTooltipLinkText": "šeit",
   "app.containers.Admin.Invitations.name": "Vārds",
   "app.containers.Admin.Invitations.processing": "Sūta uzaicinājumus. Lūdzu, uzgaidiet...",
+  "app.containers.Admin.Invitations.processingNotStartedError": "Sistēma ir aizņemta, un jūsu uzaicinājumi vēl nav apstrādāti. Uzaicinājumi netika nosūtīti. Lūdzu, mēģiniet vēlreiz pēc dažām minūtēm.",
   "app.containers.Admin.Invitations.projectSelectorPlaceholder": "Nav izvēlēts neviens projekts",
   "app.containers.Admin.Invitations.save": "Izsūtiet uzaicinājumus",
   "app.containers.Admin.Invitations.saveErrorMessage": "Radās viena vai vairākas kļūdas, un uzaicinājumi netika izsūtīti. Lūdzu, izlabojiet turpmāk norādītās kļūdas un mēģiniet vēlreiz.",

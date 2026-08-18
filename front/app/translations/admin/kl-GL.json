@@ -681,6 +681,7 @@
   "app.containers.Admin.Invitations.moderatorLabelTooltipLinkText": "here",
   "app.containers.Admin.Invitations.name": "Ateq",
   "app.containers.Admin.Invitations.processing": "Peqataaqqussutit nassiutilerput. Utaqqilaarit...",
+  "app.containers.Admin.Invitations.processingNotStartedError": "Atortuusoq ulapippoq qaaqqussutitillu suli suliarineqanngillat. Qaaqqussutit nassiunneqanngillat. Minutsit ikittut qaangiuppata misileqqiguk.",
   "app.containers.Admin.Invitations.projectSelectorPlaceholder": "Suliniummik toqqagaqartoqanngilaq",
   "app.containers.Admin.Invitations.save": "Peqataaqqusissutinik nassiussigit",
   "app.containers.Admin.Invitations.saveErrorMessage": "Peqataaqqusissutit ajortoqarnera pissutigalugu nassiunneqanngillat. Kukkunerit ataaniittut aaqqilaarigit misileqqillugulu.",

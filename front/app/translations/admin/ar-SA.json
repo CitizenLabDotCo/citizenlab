@@ -681,6 +681,7 @@
   "app.containers.Admin.Invitations.moderatorLabelTooltipLinkText": "هنا",
   "app.containers.Admin.Invitations.name": "الاسم",
   "app.containers.Admin.Invitations.processing": "إرسال الدعوات جارٍ. يُرجى الانتظار...",
+  "app.containers.Admin.Invitations.processingNotStartedError": "النظام مشغول ولم تتم معالجة دعواتك بعد. لم يتم إرسال أي دعوات. يرجى المحاولة مرة أخرى بعد بضع دقائق.",
   "app.containers.Admin.Invitations.projectSelectorPlaceholder": "لم يتم تحديد أي مشروع/ مشاريع",
   "app.containers.Admin.Invitations.save": "أرسل دعواتك",
   "app.containers.Admin.Invitations.saveErrorMessage": "حدث خطأ واحد أو أكثر.\n      لذلك لم يتم إرسال أي دعوة.\n      يُرجى تصحيح الخطأ/ الأخطاء المُدرجة أدناه والمحاولة مجددًا.",

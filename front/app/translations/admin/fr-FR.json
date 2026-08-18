@@ -681,6 +681,7 @@
   "app.containers.Admin.Invitations.moderatorLabelTooltipLinkText": "ici",
   "app.containers.Admin.Invitations.name": "Nom",
   "app.containers.Admin.Invitations.processing": "Invitations en cours d'envoi. Veuillez patienter...",
+  "app.containers.Admin.Invitations.processingNotStartedError": "Le système est occupé et vos invitations n'ont pas encore été traitées. Aucune invitation n'a été envoyée. Veuillez réessayer dans quelques minutes.",
   "app.containers.Admin.Invitations.projectSelectorPlaceholder": "Pas de projet sélectionné",
   "app.containers.Admin.Invitations.save": "Envoyer vos invitations",
   "app.containers.Admin.Invitations.saveErrorMessage": "Une ou plusieurs erreurs se sont produites.\n      Aucune invitation n'a donc été envoyée pour le moment.\n      Veuillez corriger les erreurs ci-dessous et essayer à nouveau.",
