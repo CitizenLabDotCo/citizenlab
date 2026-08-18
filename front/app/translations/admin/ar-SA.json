@@ -1902,6 +1902,7 @@
   "app.containers.Admin.projects.project.survey.upsell.upsellMessage": "لم يتم تضمين هذه الميزة في خطتك الحالية. تحدث إلى مدير النجاح الحكومي أو المسؤول لفتحه.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "منظر",
   "app.containers.Admin.projects.project.timeline": "الجدول الزمني",
+  "app.containers.Admin.projects.project.timelineEmptyDescription2": "المراحل هي الخطوات التي يمر بها الأشخاص، على سبيل المثال:",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "اختر الفترة",
   "app.containers.Admin.projects.project.traffic.trafficSources": "مصادر حركة المرور",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "لقد غيّرنا طريقة جمع بيانات الزوار وعرضها. ونتيجةً لذلك، أصبحت بيانات الزوار أكثر دقةً، وتتوفر أنواعٌ أكثر من البيانات، مع الحفاظ على الامتثال لمعايير اللائحة العامة لحماية البيانات (GDPR). بدأنا بجمع هذه البيانات الجديدة في نوفمبر 2024 فقط، لذا لا تتوفر أي بيانات قبل ذلك.",

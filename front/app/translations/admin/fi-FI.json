@@ -1902,6 +1902,7 @@
   "app.containers.Admin.projects.project.survey.upsell.upsellMessage": "Tämä ominaisuus ei sisälly nykyiseen suunnitelmaasi. Keskustele hallituksen menestyspäällikön tai järjestelmänvalvojan kanssa avataksesi sen.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Näytä",
   "app.containers.Admin.projects.project.timeline": "Aikajana",
+  "app.containers.Admin.projects.project.timelineEmptyDescription2": "Vaiheet ovat askeleita, joiden kautta ihmiset etenevät, esimerkiksi:",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Valitse ajanjakso",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Liikenteen lähteet",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Olemme muuttaneet tapaamme kerätä ja näyttää kävijätietoja. Tämän seurauksena kävijätiedot ovat tarkempia ja saatavilla on useampia datatyyppejä, mutta ne ovat edelleen GDPR-yhteensopivia. Aloitimme näiden uusien tietojen keräämisen vasta marraskuussa 2024, joten sitä ennen tietoja ei ole saatavilla.",

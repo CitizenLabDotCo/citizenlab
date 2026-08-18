@@ -1902,6 +1902,7 @@
   "app.containers.Admin.projects.project.survey.upsell.upsellMessage": "ਇਹ ਵਿਸ਼ੇਸ਼ਤਾ ਤੁਹਾਡੀ ਮੌਜੂਦਾ ਯੋਜਨਾ ਵਿੱਚ ਸ਼ਾਮਲ ਨਹੀਂ ਹੈ। ਇਸਨੂੰ ਅਨਲੌਕ ਕਰਨ ਲਈ ਆਪਣੇ ਸਰਕਾਰੀ ਸਫਲਤਾ ਪ੍ਰਬੰਧਕ ਜਾਂ ਪ੍ਰਸ਼ਾਸਕ ਨਾਲ ਗੱਲ ਕਰੋ।",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "ਦੇਖੋ",
   "app.containers.Admin.projects.project.timeline": "ਸਮਾਂ-ਰੇਖਾ",
+  "app.containers.Admin.projects.project.timelineEmptyDescription2": "ਪੜਾਅ ਉਹ ਕਦਮ ਹਨ ਜਿਨ੍ਹਾਂ ਵਿੱਚੋਂ ਲੋਕ ਗੁਜ਼ਰਦੇ ਹਨ, ਉਦਾਹਰਨ ਲਈ:",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "ਮਿਆਦ ਚੁਣੋ",
   "app.containers.Admin.projects.project.traffic.trafficSources": "ਆਵਾਜਾਈ ਸਰੋਤ",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "ਅਸੀਂ ਵਿਜ਼ਟਰ ਡੇਟਾ ਇਕੱਠਾ ਕਰਨ ਅਤੇ ਪ੍ਰਦਰਸ਼ਿਤ ਕਰਨ ਦੇ ਤਰੀਕੇ ਨੂੰ ਬਦਲ ਦਿੱਤਾ ਹੈ। ਨਤੀਜੇ ਵਜੋਂ, ਵਿਜ਼ਟਰ ਡੇਟਾ ਵਧੇਰੇ ਸਟੀਕ ਹੈ ਅਤੇ GDPR ਦੀ ਪਾਲਣਾ ਕਰਦੇ ਹੋਏ, ਹੋਰ ਕਿਸਮਾਂ ਦੇ ਡੇਟਾ ਉਪਲਬਧ ਹਨ। ਅਸੀਂ ਇਹ ਨਵਾਂ ਡੇਟਾ ਨਵੰਬਰ 2024 ਵਿੱਚ ਹੀ ਇਕੱਠਾ ਕਰਨਾ ਸ਼ੁਰੂ ਕੀਤਾ ਸੀ, ਇਸ ਲਈ ਇਸ ਤੋਂ ਪਹਿਲਾਂ ਕੋਈ ਡੇਟਾ ਉਪਲਬਧ ਨਹੀਂ ਹੈ।",

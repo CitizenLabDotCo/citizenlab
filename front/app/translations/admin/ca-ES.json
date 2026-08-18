@@ -1902,6 +1902,7 @@
   "app.containers.Admin.projects.project.survey.upsell.upsellMessage": "Aquesta funcionalitat no està inclosa en el teu pla actual. Parla amb el teu Government Success Manager o administrador per desbloquejar-la.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "View",
   "app.containers.Admin.projects.project.timeline": "Cronologia",
+  "app.containers.Admin.projects.project.timelineEmptyDescription2": "Les fases són els passos pels quals passa la gent, per exemple:",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Selecciona el període",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Fonts de trànsit",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Hem canviat la manera com recollim i mostrem les dades dels visitants. Com a resultat, les dades dels visitants són més precises i hi ha més tipus de dades disponibles, tot complint amb el RGPD. Hem començat a recollir aquestes dades noves al novembre de 2024, per la qual cosa no hi ha dades disponibles d'abans d'aquesta data.",

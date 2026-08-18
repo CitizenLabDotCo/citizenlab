@@ -1902,6 +1902,7 @@
   "app.containers.Admin.projects.project.survey.upsell.upsellMessage": "This feature is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "View",
   "app.containers.Admin.projects.project.timeline": "Timeline",
+  "app.containers.Admin.projects.project.timelineEmptyDescription2": "Phases are the steps people move through, for example:",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Select period",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Traffic sources",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "We have changed the way we collect and display visitor data. As a result, visitor data is more accurate and more types of data are available, while still being GDPR compliant. We only started collecting this new data in November 2024, so before that no data is available.",

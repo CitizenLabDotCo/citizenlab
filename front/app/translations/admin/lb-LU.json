@@ -1902,6 +1902,7 @@
   "app.containers.Admin.projects.project.survey.upsell.upsellMessage": "Dës Funktioun ass net an Ärem aktuellen Abonnement abegraff. Schwätzt mat Ärem Government Success Manager oder Admin, fir se fräizeschalten.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Uweisen",
   "app.containers.Admin.projects.project.timeline": "Zäitplang",
+  "app.containers.Admin.projects.project.timelineEmptyDescription2": "Phasen sinn d'Schrëtt, déi d'Leit duerchlafen, zum Beispill:",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Period auswielen",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Traffic-Quellen",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Mir hunn d'Aart a Weis geännert, wéi mir Visiteurendaten erfaassen an uweisen. Doduerch sinn d'Visiteurendaten méi präzis a méi Datekategorië sinn disponibel, wärend d'DSGVO weiderhin agehale gëtt. Mir hunn eréischt am November 2024 ugefaangen, dës nei Daten ze sammelen, dofir sinn d'Date vun derzäit virdrun net disponibel.",

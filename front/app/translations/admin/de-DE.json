@@ -1902,6 +1902,7 @@
   "app.containers.Admin.projects.project.survey.upsell.upsellMessage": "Diese Funktion ist in Ihrer aktuellen Lizenz nicht enthalten. Sprechen Sie mit Ihrer Kundenbetreuerin oder Ihrem Admin, um sie freizuschalten.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Vorschau",
   "app.containers.Admin.projects.project.timeline": "Zeitleiste",
+  "app.containers.Admin.projects.project.timelineEmptyDescription2": "Phasen sind die Schritte, die durchlaufen werden, zum Beispiel:",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Zeitraum auswählen",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Kommunikations-Kanäle",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Wir haben die Art und Weise, wie wir Besucherdaten sammeln und anzeigen, geändert. Das Ergebnis ist, dass die Besucherdaten genauer sind und mehr Datenarten zur Verfügung stehen, ohne dass wir die Datenschutzbestimmungen verletzen. Wir haben erst im November 2024 mit der Erhebung dieser neuen Daten begonnen, so dass davor keine Daten verfügbar sind.",

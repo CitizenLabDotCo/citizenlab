@@ -1902,6 +1902,7 @@
   "app.containers.Admin.projects.project.survey.upsell.upsellMessage": "Questa funzione non è inclusa nel tuo piano attuale. Parla con il tuo Government Success Manager o con l'amministratore per sbloccarla.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Vedi",
   "app.containers.Admin.projects.project.timeline": "Timeline",
+  "app.containers.Admin.projects.project.timelineEmptyDescription2": "Le fasi sono i passaggi che le persone attraversano, ad esempio:",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Seleziona il periodo",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Sorgenti di traffico",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Abbiamo cambiato il modo in cui raccogliamo e visualizziamo i dati dei visitatori. Di conseguenza, i dati dei visitatori sono più precisi e sono disponibili più tipi di dati, pur rimanendo conformi al GDPR. Abbiamo iniziato a raccogliere questi nuovi dati solo nel novembre 2024, quindi prima di allora non sono disponibili dati.",

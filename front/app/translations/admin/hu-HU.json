@@ -1902,6 +1902,7 @@
   "app.containers.Admin.projects.project.survey.upsell.upsellMessage": "Ez a funkció nem része a jelenlegi csomagjának. A feloldásához vegye fel a kapcsolatot Government Success Managerével vagy az adminisztrátorral.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Megtekintés",
   "app.containers.Admin.projects.project.timeline": "Idővonal",
+  "app.containers.Admin.projects.project.timelineEmptyDescription2": "A szakaszok azok a lépések, amelyeken az emberek végighaladnak, például:",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Időszak kiválasztása",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Forgalmi források",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Megváltoztattuk a látogatói adatok gyűjtésének és megjelenítésének módját. Ennek eredményeként a látogatói adatok pontosabbak, és többféle adattípus érhető el, miközben továbbra is megfelelnek a GDPR-nak. Ezen új adatok gyűjtését csak 2024 novemberében kezdtük el, így az ezt megelőző időszakról nem állnak rendelkezésre adatok.",

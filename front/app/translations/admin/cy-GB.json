@@ -1902,6 +1902,7 @@
   "app.containers.Admin.projects.project.survey.upsell.upsellMessage": "Nid yw'r nodwedd hon wedi'i chynnwys yn eich cynllun cyfredol. Siaradwch â'ch Rheolwr Llwyddiant Llywodraeth neu weinyddwr i'w ddatgloi.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Golwg",
   "app.containers.Admin.projects.project.timeline": "Amserlen",
+  "app.containers.Admin.projects.project.timelineEmptyDescription2": "Camau yw'r camau y mae pobl yn mynd drwyddynt, er enghraifft:",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Dewiswch gyfnod",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Ffynonellau traffig",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Rydym wedi newid y ffordd rydym yn casglu ac yn arddangos data ymwelwyr. O ganlyniad, mae data ymwelwyr yn fwy cywir ac mae mwy o fathau o ddata ar gael, tra'n dal i gydymffurfio â GDPR. Dim ond ym mis Tachwedd 2024 y dechreuon ni gasglu'r data newydd hwn, felly cyn hynny nid oes unrhyw ddata ar gael.",

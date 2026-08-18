@@ -1902,6 +1902,7 @@
   "app.containers.Admin.projects.project.survey.upsell.upsellMessage": "Cette fonctionnalité n'est pas incluse dans votre plan actuel. Adressez-vous à votre GovSuccess ou à votre administrateur pour la débloquer.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Voir",
   "app.containers.Admin.projects.project.timeline": "Calendrier",
+  "app.containers.Admin.projects.project.timelineEmptyDescription2": "Les phases sont les étapes par lesquelles les participants passent, par exemple :",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Sélectionnez la période",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Sources de trafic",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Nous avons modifié la façon dont nous collectons et affichons les données relatives aux visiteurs. En conséquence, les données sur les visiteurs sont plus précises et davantage d'informations sont disponibles, tout en restant conformes au RGPD. Nous avons commencé à collecter ces nouvelles données seulement en novembre 2024, les données ne sont donc pas disponibles avant cette date.",

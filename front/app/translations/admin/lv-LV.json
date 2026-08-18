@@ -1902,6 +1902,7 @@
   "app.containers.Admin.projects.project.survey.upsell.upsellMessage": "Šī funkcija nav iekļauta jūsu pašreizējā plānā. Lai to atbloķētu, sazinieties ar savu valdības veiksmes menedžeri vai administratoru.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Skatīt",
   "app.containers.Admin.projects.project.timeline": "Laika skala",
+  "app.containers.Admin.projects.project.timelineEmptyDescription2": "Posmi ir soļi, kuriem cilvēki iet cauri, piemēram:",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Izvēlieties periodu",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Satiksmes avoti",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Esam mainījuši veidu, kā vācam un rādām apmeklētāju datus. Rezultātā apmeklētāju dati ir precīzāki un pieejami vairāk datu veidu, vienlaikus saglabājot atbilstību GDPR. Šos jaunos datus sākām vākt tikai 2024. gada novembrī, tāpēc pirms tam dati nav pieejami.",

@@ -1902,6 +1902,7 @@
   "app.containers.Admin.projects.project.survey.upsell.upsellMessage": "Bu özellik mevcut planınıza dahil değildir. Kilidi açmak için Kamu Başarı Yöneticinizle veya yöneticinizle konuşun.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Görünüm",
   "app.containers.Admin.projects.project.timeline": "Zaman çizelgesi",
+  "app.containers.Admin.projects.project.timelineEmptyDescription2": "Aşamalar, insanların ilerlediği adımlardır, örneğin:",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Dönem seçiniz",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Trafik kaynakları",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Ziyaretçi verilerini toplama ve görüntüleme şeklimizi değiştirdik. Sonuç olarak, ziyaretçi verileri daha doğrudur ve GDPR ile uyumlu olmaya devam ederken daha fazla veri türü mevcuttur. Bu yeni verileri yalnızca Kasım 2024'te toplamaya başladık, bu nedenle bundan önce hiçbir veri mevcut değil.",

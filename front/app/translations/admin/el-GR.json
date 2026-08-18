@@ -1902,6 +1902,7 @@
   "app.containers.Admin.projects.project.survey.upsell.upsellMessage": "Αυτή η λειτουργία δεν περιλαμβάνεται στο τρέχον πρόγραμμά σας. Επικοινωνήστε με τον Government Success Manager ή τον διαχειριστή σας για να την ξεκλειδώσετε.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "View",
   "app.containers.Admin.projects.project.timeline": "Χρονοδιάγραμμα",
+  "app.containers.Admin.projects.project.timelineEmptyDescription2": "Οι φάσεις είναι τα βήματα από τα οποία περνούν οι συμμετέχοντες, για παράδειγμα:",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Επιλογή περιόδου",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Πηγές επισκεψιμότητας",
   "app.containers.Admin.projects.project.traffic.visitorDataBanner": "Έχουμε αλλάξει τον τρόπο με τον οποίο συλλέγουμε και εμφανίζουμε τα δεδομένα επισκεπτών. Ως αποτέλεσμα, τα δεδομένα επισκεπτών είναι πιο ακριβή και περισσότεροι τύποι δεδομένων είναι διαθέσιμοι, παραμένοντας παράλληλα συμβατά με τον GDPR. Ξεκινήσαμε τη συλλογή αυτών των νέων δεδομένων τον Νοέμβριο του 2024, επομένως δεν υπάρχουν διαθέσιμα δεδομένα πριν από αυτό το διάστημα.",
