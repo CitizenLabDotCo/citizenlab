@@ -3,15 +3,16 @@ import React from 'react';
 import { IdMethodData } from 'api/id_methods/types';
 import { IPermissionData } from 'api/permissions/types';
 
-import { render, screen, userEvent } from 'utils/testUtils/rtl';
+import { render, screen, within, userEvent } from 'utils/testUtils/rtl';
 
 import SecurityRequirementsSection from '.';
 
-// What this section reacts to: whether SMS (and SMS login) is on, whether a
-// verification method is configured, and whether any sign-in method can leave a
-// participant without an email address.
+// What this section reacts to: whether SMS (and SMS login) is on, whether
+// password login is on, whether a verification method is configured, and
+// whether any sign-in method can leave a participant without an email address.
 let mockSmsEnabled = true;
 let mockSmsLoginEnabled = true;
+let mockPasswordLoginEnabled = true;
 let mockVerificationMethodConfigured = true;
 let mockIdMethods: IdMethodData[] = [];
 
@@ -19,6 +20,7 @@ jest.mock('hooks/useFeatureFlag', () =>
   jest.fn(({ name }: { name: string }) => {
     if (name === 'sms') return mockSmsEnabled;
     if (name === 'sms_login') return mockSmsLoginEnabled;
+    if (name === 'password_login') return mockPasswordLoginEnabled;
     return false;
   })
 );
@@ -40,12 +42,15 @@ const EMAIL_LABEL = 'Require confirmed email from all participants';
 const PHONE_LABEL = 'Require confirmed phone number from all participants';
 const VERIFICATION_LABEL =
   'Require identity verification from all participants';
+const PASSWORD_LABEL = 'Password';
 
 // The collapsed summary uses shortened versions of the row labels.
+const PASSWORD_SUMMARY = 'Password';
 const PHONE_SUMMARY = 'Confirmed phone';
 const VERIFICATION_SUMMARY = 'Verification';
 
-// An authentication method that may sign someone up without an email address.
+// An authentication method that may sign someone up without an email address -
+// which is also what makes the password only apply to some participants.
 const emaillessAuthMethod = {
   id: 'method-fake_sso',
   type: 'id_method',
@@ -107,6 +112,7 @@ const openSection = () => userEvent.click(screen.getByText(SECTION_TITLE));
 beforeEach(() => {
   mockSmsEnabled = true;
   mockSmsLoginEnabled = true;
+  mockPasswordLoginEnabled = true;
   mockVerificationMethodConfigured = true;
   mockIdMethods = [];
 });
@@ -119,13 +125,19 @@ describe('<SecurityRequirementsSection />', () => {
     });
 
     it('summarises "None" when nothing is required', () => {
-      renderSection({ require_confirmed_email: false });
+      renderSection({
+        require_confirmed_email: false,
+        require_password: false,
+      });
 
       expect(screen.getByText('None')).toBeInTheDocument();
     });
 
     it('can be expanded from collapsed', async () => {
-      renderSection({ require_confirmed_email: false });
+      renderSection({
+        require_confirmed_email: false,
+        require_password: false,
+      });
 
       await openSection();
 
@@ -140,12 +152,15 @@ describe('<SecurityRequirementsSection />', () => {
       });
 
       expect(
-        screen.getByText(`${PHONE_SUMMARY} · ${VERIFICATION_SUMMARY}`)
+        screen.getByText(
+          `${PASSWORD_SUMMARY} · ${PHONE_SUMMARY} · ${VERIFICATION_SUMMARY}`
+        )
       ).toBeInTheDocument();
     });
 
     it('leaves an unavailable check out of the summary', () => {
       mockVerificationMethodConfigured = false;
+      mockPasswordLoginEnabled = false;
       renderSection({
         require_confirmed_email: false,
         require_verification: true,
@@ -156,10 +171,11 @@ describe('<SecurityRequirementsSection />', () => {
   });
 
   describe('which checks are offered', () => {
-    it('shows all three rows with their descriptions', async () => {
+    it('shows all four rows with their descriptions', async () => {
       renderSection();
       await openSection();
 
+      expect(screen.getByText(PASSWORD_LABEL)).toBeInTheDocument();
       expect(screen.getByText(EMAIL_LABEL)).toBeInTheDocument();
       expect(screen.getByText(PHONE_LABEL)).toBeInTheDocument();
       expect(screen.getByText(VERIFICATION_LABEL)).toBeInTheDocument();
@@ -219,12 +235,60 @@ describe('<SecurityRequirementsSection />', () => {
       expect(screen.getByText(EMAIL_LABEL)).toBeInTheDocument();
     });
 
+    it('hides the password row when password login is off', async () => {
+      mockPasswordLoginEnabled = false;
+      renderSection();
+      await openSection();
+
+      expect(screen.queryByText(PASSWORD_LABEL)).not.toBeInTheDocument();
+      expect(screen.getByText(EMAIL_LABEL)).toBeInTheDocument();
+    });
+
     it('renders nothing when no check is available at all', () => {
       mockSmsEnabled = false;
+      mockPasswordLoginEnabled = false;
       mockVerificationMethodConfigured = false;
       renderSection();
 
       expect(screen.queryByText(SECTION_TITLE)).not.toBeInTheDocument();
+    });
+  });
+
+  describe('the password row', () => {
+    it('explains that a password only applies to email sign-ups when SSO is on', async () => {
+      mockIdMethods = [emaillessAuthMethod];
+      renderSection();
+      await openSection();
+
+      const passwordRow = screen.getByText(PASSWORD_LABEL).parentElement!;
+      await userEvent.hover(
+        within(passwordRow).getByTestId('tooltip-icon-button')
+      );
+
+      expect(
+        await screen.findByText(
+          /only requested from users who sign up with email/i
+        )
+      ).toBeInTheDocument();
+    });
+
+    it('does not explain anything when there is no SSO method', async () => {
+      renderSection();
+      await openSection();
+
+      const passwordRow = screen.getByText(PASSWORD_LABEL).parentElement!;
+      expect(
+        within(passwordRow).queryByTestId('tooltip-icon-button')
+      ).not.toBeInTheDocument();
+    });
+
+    it('emits the password requirement when toggled', async () => {
+      const onChange = renderSection();
+      await openSection();
+
+      await userEvent.click(screen.getByText(PASSWORD_LABEL));
+
+      expect(onChange).toHaveBeenCalledWith({ require_password: false });
     });
   });
 

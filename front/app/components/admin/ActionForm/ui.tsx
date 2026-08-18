@@ -40,15 +40,10 @@ export const SectionHeader = ({
   </Box>
 );
 
-const CHIP_TONES: Record<SummaryChip['tone'], { bg: string; fg: string }> = {
-  access: { bg: colors.teal50, fg: colors.teal700 },
-  data: { bg: colors.grey100, fg: colors.grey700 },
-  open: { bg: colors.green100, fg: colors.green700 },
-};
+const CHIP_COLORS = { bg: colors.grey100, fg: colors.grey700 };
 
 /** A compact pill used in the collapsed summary row. */
 export const Chip = ({ chip }: { chip: SummaryChip }) => {
-  const tone = CHIP_TONES[chip.tone];
   return (
     <Box
       display="inline-flex"
@@ -57,9 +52,9 @@ export const Chip = ({ chip }: { chip: SummaryChip }) => {
       px="8px"
       py="2px"
       borderRadius="4px"
-      bgColor={tone.bg}
+      bgColor={CHIP_COLORS.bg}
     >
-      <Icon name={chip.icon} width="12px" height="12px" fill={tone.fg} />
+      <Icon name={chip.icon} width="12px" height="12px" fill={CHIP_COLORS.fg} />
       <Text
         as="span"
         m="0"

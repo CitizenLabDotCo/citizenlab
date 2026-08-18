@@ -1,4 +1,4 @@
-// A single PII toggle (full name / password) with an icon and description.
+// A single PII toggle (full name) with an icon and description.
 
 import React from 'react';
 
@@ -7,7 +7,6 @@ import {
   Text,
   Icon,
   IconNames,
-  IconTooltip,
   Toggle,
   colors,
 } from '@citizenlab/cl2-component-library';
@@ -18,7 +17,6 @@ interface Props {
   description: string;
   checked: boolean;
   disabled?: boolean;
-  tooltip?: string;
   dataCy?: string;
   onChange: () => void;
 }
@@ -29,7 +27,6 @@ const PiiToggle = ({
   description,
   checked,
   disabled,
-  tooltip,
   dataCy,
   onChange,
 }: Props) => (
@@ -57,7 +54,6 @@ const PiiToggle = ({
             >
               {title}
             </Text>
-            {tooltip && <IconTooltip content={tooltip} iconSize="14px" />}
           </Box>
           <Text as="span" m="0" fontSize="xs" color="coolGrey600">
             {description}

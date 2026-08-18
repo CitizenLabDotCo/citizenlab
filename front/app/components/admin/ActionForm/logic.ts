@@ -25,7 +25,7 @@ export const requiresAccount = (permission: IPermissionData): boolean =>
 
 // The security requirements on offer: each one maps onto a `require_*` boolean
 // + `*_expiry` pair on the permission.
-type SecurityRequirementKey = 'email' | 'phone' | 'verification';
+type SecurityRequirementKey = 'email' | 'phone' | 'verification' | 'password';
 export type VisibleToggles = Record<SecurityRequirementKey, boolean>;
 
 type VisibleTogglesParams = {
@@ -33,6 +33,7 @@ type VisibleTogglesParams = {
   smsLoginEnabled: boolean;
   verificationMethodEnabled: boolean;
   hasAuthMethodNotReturningEmail: boolean;
+  passwordLoginEnabled: boolean;
 };
 
 export const getVisibleToggles = ({
@@ -40,11 +41,13 @@ export const getVisibleToggles = ({
   smsLoginEnabled,
   verificationMethodEnabled,
   hasAuthMethodNotReturningEmail,
+  passwordLoginEnabled,
 }: VisibleTogglesParams): VisibleToggles => {
   const visibleToggles: VisibleToggles = {
     email: false,
     phone: false,
     verification: false,
+    password: false,
   };
 
   if ((sms2FAEnabled && smsLoginEnabled) || hasAuthMethodNotReturningEmail) {
@@ -63,6 +66,10 @@ export const getVisibleToggles = ({
     visibleToggles.verification = true;
   }
 
+  if (passwordLoginEnabled) {
+    visibleToggles.password = true;
+  }
+
   return visibleToggles;
 };
 
@@ -77,6 +84,7 @@ export const getVisibleToggles = ({
 export const useVisibleToggles = (): VisibleToggles | undefined => {
   const sms2FAEnabled = useFeatureFlag({ name: 'sms' });
   const smsLoginEnabled = useFeatureFlag({ name: 'sms_login' });
+  const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
   const { data: verificationMethod } = useVerificationMethod();
   const { data: idMethods } = useIdMethods();
 
@@ -93,6 +101,7 @@ export const useVisibleToggles = (): VisibleToggles | undefined => {
     smsLoginEnabled,
     verificationMethodEnabled: !!verificationMethod,
     hasAuthMethodNotReturningEmail,
+    passwordLoginEnabled,
   });
 };
 
@@ -108,7 +117,6 @@ export interface SummaryChip {
     | 'group'
     | 'lock'
     | 'user-data';
-  tone: 'access' | 'data' | 'open';
 }
 
 // Demographic questions can be collected in every mode, so this chip is shared.
@@ -123,7 +131,6 @@ const demographicsChip = (
       key: 'demographics',
       label: formatMessage(messages.nQuestions, { nQuestions: n }),
       icon: 'user-data',
-      tone: 'data',
     },
   ];
 };
@@ -142,7 +149,6 @@ export const buildSummary = (
         key: 'admins',
         label: formatMessage(messages.adminsManagersOnly),
         icon: 'shield-checkered',
-        tone: 'access',
       },
     ];
   }
@@ -153,7 +159,6 @@ export const buildSummary = (
         key: 'open',
         label: formatMessage(messages.anyoneCanParticipate),
         icon: 'user-circle',
-        tone: 'open',
       },
       ...demographicsChip(customFields, formatMessage),
     ];
@@ -166,7 +171,6 @@ export const buildSummary = (
       key: 'signin',
       label: formatMessage(messages.signInRequired),
       icon: 'shield-checkered',
-      tone: 'access',
     },
   ];
   // A requirement the platform does not offer (no SMS, no verification method,
@@ -177,7 +181,6 @@ export const buildSummary = (
       key: 'email',
       label: formatMessage(messages.confirmedEmail),
       icon: 'email',
-      tone: 'access',
     });
   }
   if (visibleToggles.phone && attributes.require_confirmed_phone_number) {
@@ -185,7 +188,6 @@ export const buildSummary = (
       key: 'phone',
       label: formatMessage(messages.confirmedPhone),
       icon: 'tablet',
-      tone: 'access',
     });
   }
   if (visibleToggles.verification && attributes.require_verification) {
@@ -193,7 +195,13 @@ export const buildSummary = (
       key: 'verification',
       label: formatMessage(messages.verification),
       icon: 'shield-checkered',
-      tone: 'access',
+    });
+  }
+  if (visibleToggles.password && attributes.require_password) {
+    chips.push({
+      key: 'password',
+      label: formatMessage(messages.password),
+      icon: 'lock',
     });
   }
 
@@ -203,7 +211,6 @@ export const buildSummary = (
       key: 'groups',
       label: formatMessage(messages.nGroups, { nGroups: groupIds.length }),
       icon: 'group',
-      tone: 'access',
     });
   }
 
@@ -212,18 +219,8 @@ export const buildSummary = (
       key: 'name',
       label: formatMessage(messages.name),
       icon: 'user-circle',
-      tone: 'data',
     });
   }
-  if (attributes.require_password) {
-    chips.push({
-      key: 'password',
-      label: formatMessage(messages.password),
-      icon: 'lock',
-      tone: 'data',
-    });
-  }
-
   chips.push(...demographicsChip(customFields, formatMessage));
 
   if (attributes.user_data_collection !== 'all_data') {
@@ -234,7 +231,6 @@ export const buildSummary = (
           ? formatMessage(messages.anonymous)
           : formatMessage(messages.piiExcluded),
       icon: 'user-circle',
-      tone: 'data',
     });
   }
 
