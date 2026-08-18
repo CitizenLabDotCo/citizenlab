@@ -57,13 +57,7 @@ const Show = () => {
   const draft = isSmsCampaignDraft(campaign.data);
   const noGroupsSelected = groupIds.length === 0;
 
-  const handleSend = () => {
-    if (noGroupsSelected) {
-      setShowConfirm(true);
-    } else {
-      sendCampaign(campaignId);
-    }
-  };
+  const handleSend = () => setShowConfirm(true);
 
   const confirmSend = () => {
     sendCampaign(campaignId, { onSuccess: () => setShowConfirm(false) });
@@ -171,6 +165,8 @@ const Show = () => {
 
       <ConfirmSendModal
         opened={showConfirm}
+        campaignId={campaignId}
+        bodyMultiloc={campaign.data.attributes.body_multiloc}
         onClose={() => setShowConfirm(false)}
         onConfirm={confirmSend}
         isSending={isSending}

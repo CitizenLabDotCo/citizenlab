@@ -37,14 +37,15 @@ RSpec.describe EmailCampaigns::Sms::BalanceService do
     end
 
     it 'counts a multi-segment message once per segment' do
-      create(:sms_delivery, campaign: manual_campaign, status: 'delivered', segments_count: 3)
-      create(:sms_delivery, campaign: manual_campaign, status: 'delivered', segments_count: 2)
+      create(:sms_delivery, campaign: manual_campaign, status: 'delivered', body: 'a' * 400)
+      create(:sms_delivery, campaign: manual_campaign, status: 'delivered', body: 'a' * 200)
 
       expect(service.used).to eq 5
     end
 
-    it 'counts a send whose segment count is not known yet as nothing' do
-      create(:sms_delivery, campaign: manual_campaign, status: 'sent', segments_count: nil)
+    # Rows sent before the column existed; update_column skips the callback that fills it.
+    it 'counts a send whose segment count was never recorded as nothing' do
+      create(:sms_delivery, campaign: manual_campaign, status: 'sent').update_column(:segments_count, nil)
 
       expect(service.used).to eq 0
     end

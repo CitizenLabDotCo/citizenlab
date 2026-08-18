@@ -66,6 +66,10 @@ module EmailCampaigns
       show?
     end
 
+    def sms_recipients?
+      show?
+    end
+
     def destroy?
       update?
     end

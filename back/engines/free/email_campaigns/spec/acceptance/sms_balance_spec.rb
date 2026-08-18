@@ -19,7 +19,7 @@ resource 'SMS balance' do
 
     before do
       # 3 sends of 2 segments each — the provider bills, and we count, per segment.
-      create_list(:sms_delivery, 3, campaign: manual_campaign, status: 'sent', segments_count: 2)
+      create_list(:sms_delivery, 3, campaign: manual_campaign, status: 'sent', body: 'a' * 200)
       # Absorbed by Go Vocal rather than charged to the tenant.
       create_list(:sms_delivery, 2, campaign: otp_campaign, status: 'delivered')
       # Neither of these reached the provider, so neither is charged.

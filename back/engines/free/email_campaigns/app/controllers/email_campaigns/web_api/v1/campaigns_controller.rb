@@ -2,7 +2,7 @@
 
 module EmailCampaigns
   class WebApi::V1::CampaignsController < EmailCampaignsController
-    before_action :set_campaign, only: %i[show update do_send send_email_preview send_sms_preview email_preview email_deliveries sms_deliveries email_stats sms_stats destroy]
+    before_action :set_campaign, only: %i[show update do_send send_email_preview send_sms_preview email_preview email_deliveries sms_deliveries email_stats sms_stats sms_recipients destroy]
     skip_after_action :verify_authorized, only: %i[supported_campaign_names]
 
     def index
@@ -158,6 +158,16 @@ module EmailCampaigns
 
     def sms_stats
       render json: raw_json(EmailCampaigns::Sms::Delivery.status_counts(@campaign.id))
+    end
+
+    # Who a send would reach right now, split by locale — the body is translated per
+    # recipient, so its segment count (what the tenant is billed) varies with locale.
+    def sms_recipients
+      count_by_locale = @campaign.recipients_count_by_locale
+      render json: raw_json({
+        count: count_by_locale.values.sum,
+        count_by_locale: count_by_locale
+      }, type: 'sms_recipients')
     end
 
     def supported_campaign_names
