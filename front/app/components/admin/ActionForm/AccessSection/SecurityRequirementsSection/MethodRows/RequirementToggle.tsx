@@ -31,41 +31,32 @@ const RequirementToggle = ({
   description,
   tooltip,
   enabled,
-  dataCy,
-  children,
   onChange,
 }: Props) => (
-  <Box py="10px" data-cy={dataCy}>
-    <Toggle
-      checked={enabled}
-      onChange={onChange}
-      size="small"
-      label={
-        <Box ml="8px">
-          <Box display="flex" alignItems="center" gap="6px">
-            <Icon
-              name={icon}
-              width="16px"
-              height="16px"
-              fill={enabled ? colors.teal500 : colors.coolGrey500}
-            />
-            <Text as="span" m="0" fontSize="s" fontWeight="semi-bold">
-              {label}
-            </Text>
-            {tooltip && <IconTooltip content={tooltip} iconSize="14px" />}
-          </Box>
-          <Text as="span" m="0" fontSize="xs" color="coolGrey600">
-            {description}
+  <Toggle
+    checked={enabled}
+    onChange={onChange}
+    size="small"
+    label={
+      <Box ml="8px">
+        <Box display="flex" alignItems="center" gap="6px">
+          <Icon
+            name={icon}
+            width="16px"
+            height="16px"
+            fill={enabled ? colors.teal500 : colors.coolGrey500}
+          />
+          <Text as="span" m="0" fontSize="s" fontWeight="semi-bold">
+            {label}
           </Text>
+          {tooltip && <IconTooltip content={tooltip} iconSize="14px" />}
         </Box>
-      }
-    />
-    {children && (
-      <Box ml="42px" mt="6px">
-        {children}
+        <Text as="span" m="0" fontSize="xs" color="coolGrey600">
+          {description}
+        </Text>
       </Box>
-    )}
-  </Box>
+    }
+  />
 );
 
 export default RequirementToggle;

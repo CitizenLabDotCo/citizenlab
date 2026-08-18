@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
+
 import useIdMethods from 'api/id_methods/useIdMethods';
 
 import { useIntl } from 'utils/cl-intl';
@@ -22,18 +24,20 @@ const PasswordRow = ({ enabled, onChange }: Props) => {
   );
 
   return (
-    <RequirementToggle
-      icon="lock"
-      label={formatMessage(actionFormMessages.password)}
-      description={formatMessage(messages.passwordAvailableDescription)}
-      tooltip={
-        hasSSOAuthMethod
-          ? formatMessage(messages.passwordOnlyForEmailSignupTooltip)
-          : undefined
-      }
-      enabled={enabled}
-      onChange={() => onChange(!enabled)}
-    />
+    <Box py="12px">
+      <RequirementToggle
+        icon="lock"
+        label={formatMessage(actionFormMessages.password)}
+        description={formatMessage(messages.passwordAvailableDescription)}
+        tooltip={
+          hasSSOAuthMethod
+            ? formatMessage(messages.passwordOnlyForEmailSignupTooltip)
+            : undefined
+        }
+        enabled={enabled}
+        onChange={() => onChange(!enabled)}
+      />
+    </Box>
   );
 };
 
