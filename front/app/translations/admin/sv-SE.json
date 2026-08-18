@@ -1196,7 +1196,6 @@
   "app.containers.Admin.messaging.automated.editModalTitle": "Redigera kampanjfält",
   "app.containers.Admin.messaging.automated.variablesToolTip": "Du kan använda följande variabler i ditt meddelande:",
   "app.containers.Admin.messaging.cancelButton": "Avbryt",
-  "app.containers.Admin.messaging.confirmSendSmsHeader": "Vill du skicka detta sms till alla deltagare med ett telefonnummer?",
   "app.containers.Admin.messaging.deleteSmsButton": "Radera",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "Är du säker på att du vill radera detta sms?",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "Redigera sms",

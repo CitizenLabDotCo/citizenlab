@@ -1196,7 +1196,6 @@
   "app.containers.Admin.messaging.automated.editModalTitle": "Editar campos de campanha",
   "app.containers.Admin.messaging.automated.variablesToolTip": "Você pode usar as seguintes variáveis em sua mensagem:",
   "app.containers.Admin.messaging.cancelButton": "Cancelar",
-  "app.containers.Admin.messaging.confirmSendSmsHeader": "Enviar esta mensagem de texto para todos os participantes com um número de telefone?",
   "app.containers.Admin.messaging.deleteSmsButton": "Excluir",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "Tem certeza de que deseja excluir esta mensagem SMS?",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "Editar mensagem SMS",

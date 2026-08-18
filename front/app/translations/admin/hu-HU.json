@@ -1196,7 +1196,6 @@
   "app.containers.Admin.messaging.automated.editModalTitle": "Kampánymezők szerkesztése",
   "app.containers.Admin.messaging.automated.variablesToolTip": "A következő változókat használhatja az üzenetében:",
   "app.containers.Admin.messaging.cancelButton": "Mégse",
-  "app.containers.Admin.messaging.confirmSendSmsHeader": "Elküldi ezt a szöveges üzenetet minden telefonszámmal rendelkező résztvevőnek?",
   "app.containers.Admin.messaging.deleteSmsButton": "Törlés",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "Biztosan törölni szeretné ezt az SMS-üzenetet?",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "SMS-üzenet szerkesztése",

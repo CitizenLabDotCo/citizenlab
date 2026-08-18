@@ -1196,7 +1196,6 @@
   "app.containers.Admin.messaging.automated.editModalTitle": "Uredi polja kampanje",
   "app.containers.Admin.messaging.automated.variablesToolTip": "U svojoj poruci možete koristiti sljedeće varijable:",
   "app.containers.Admin.messaging.cancelButton": "Odustani",
-  "app.containers.Admin.messaging.confirmSendSmsHeader": "Želite li poslati ovu tekstualnu poruku svim sudionicima s brojem telefona?",
   "app.containers.Admin.messaging.deleteSmsButton": "Izbriši",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "Jeste li sigurni da želite izbrisati ovu SMS poruku?",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "Uredi SMS poruku",

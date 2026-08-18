@@ -1196,7 +1196,6 @@
   "app.containers.Admin.messaging.automated.editModalTitle": "Golygu meysydd ymgyrch",
   "app.containers.Admin.messaging.automated.variablesToolTip": "Gallwch ddefnyddio'r newidynnau canlynol yn eich neges:",
   "app.containers.Admin.messaging.cancelButton": "Canslo",
-  "app.containers.Admin.messaging.confirmSendSmsHeader": "Anfon y neges destun hon at bob cyfranogwr sydd â rhif ffôn?",
   "app.containers.Admin.messaging.deleteSmsButton": "Dileu",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "Ydych chi'n siŵr eich bod am ddileu'r neges SMS hon?",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "Golygu neges SMS",

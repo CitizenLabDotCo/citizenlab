@@ -1196,7 +1196,6 @@
   "app.containers.Admin.messaging.automated.editModalTitle": "Campagnevelden bewerken",
   "app.containers.Admin.messaging.automated.variablesToolTip": "Je kunt de volgende variabelen gebruiken in je bericht:",
   "app.containers.Admin.messaging.cancelButton": "Annuleren",
-  "app.containers.Admin.messaging.confirmSendSmsHeader": "Dit tekstbericht verzenden naar alle deelnemers met een telefoonnummer?",
   "app.containers.Admin.messaging.deleteSmsButton": "Verwijderen",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "Weet je zeker dat je dit SMS-bericht wilt verwijderen?",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "SMS-bericht bewerken",

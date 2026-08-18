@@ -1196,7 +1196,6 @@
   "app.containers.Admin.messaging.automated.editModalTitle": "Kampagnefelder beaarbechten",
   "app.containers.Admin.messaging.automated.variablesToolTip": "Dir kënnt déi folgend Variabelen an Ärer Noriicht benotzen:",
   "app.containers.Admin.messaging.cancelButton": "Ofbriechen",
-  "app.containers.Admin.messaging.confirmSendSmsHeader": "Soll dës SMS un all Participante mat enger Telefonsnummer geschéckt ginn?",
   "app.containers.Admin.messaging.deleteSmsButton": "Läschen",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "Sidd Dir sécher, datt Dir dës SMS läsche wëllt?",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "SMS änneren",
