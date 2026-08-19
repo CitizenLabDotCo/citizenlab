@@ -605,7 +605,7 @@
   "app.components.ProjectPageBuilder.Widgets.extraSurveysFormatButton": "Pulsante",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysFormatCard": "Visualizzazione a schede",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysFormatLabel": "Formato del pulsante del sondaggio",
-  "app.components.ProjectPageBuilder.Widgets.extraSurveysManagedNote": "Possono essere collegati solo i sondaggi sotto Extra. Aggiungili nel {projectEditorLink}.",
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysManagedNote": "Possono essere collegati solo i sondaggi sotto Extra. Aggiungili nell' {projectEditorLink}.",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysNoSurveyNote": "Scegli un sondaggio nel pannello delle impostazioni per mostrarlo sulla pagina.",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysNoSurveyTitle": "Nessun sondaggio ancora collegato",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysNotEligible": "Non hai i requisiti per partecipare a questo sondaggio",
