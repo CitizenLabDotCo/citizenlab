@@ -2999,6 +2999,16 @@
     "verified_at": "2026-08-19T11:57:27.646396Z",
     "verified_by": "Roger"
   },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysBadgeCompleted": {
+    "state": "verified",
+    "verified_at": "2026-08-19T11:58:44.490511Z",
+    "verified_by": "Roger"
+  },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysBadgeOpen": {
+    "state": "verified",
+    "verified_at": "2026-08-19T11:58:44.490511Z",
+    "verified_by": "Roger"
+  },
   "app.components.ProjectPageBuilder.Widgets.extraSurveysManagedNote": {
     "state": "verified",
     "verified_at": "2026-08-19T11:56:30.363116Z",
