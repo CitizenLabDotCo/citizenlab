@@ -3009,9 +3009,29 @@
     "verified_at": "2026-08-19T11:58:44.490511Z",
     "verified_by": "Roger"
   },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysBadgeRestricted": {
+    "state": "verified",
+    "verified_at": "2026-08-19T12:01:28.303991Z",
+    "verified_by": "Roger"
+  },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysBadgeUpcoming": {
+    "state": "verified",
+    "verified_at": "2026-08-19T12:01:28.303991Z",
+    "verified_by": "Roger"
+  },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysButtonTextLabel": {
+    "state": "verified",
+    "verified_at": "2026-08-19T12:01:28.303991Z",
+    "verified_by": "Roger"
+  },
   "app.components.ProjectPageBuilder.Widgets.extraSurveysManagedNote": {
     "state": "verified",
     "verified_at": "2026-08-19T11:56:30.363116Z",
+    "verified_by": "Roger"
+  },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysOpensOn": {
+    "state": "verified",
+    "verified_at": "2026-08-19T12:01:28.303991Z",
     "verified_by": "Roger"
   },
   "app.components.ProjectPageBuilder.Widgets.inputFeedEmptyTitle": {

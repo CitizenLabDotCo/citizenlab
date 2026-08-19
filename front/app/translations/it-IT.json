@@ -596,7 +596,7 @@
   "app.components.ProjectPageBuilder.Widgets.extraSurveysBadgeClosed": "Chiuso",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysBadgeCompleted": "Completato",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysBadgeOpen": "Aperto",
-  "app.components.ProjectPageBuilder.Widgets.extraSurveysBadgeRestricted": "Limitato",
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysBadgeRestricted": "Riservato",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysBadgeUpcoming": "In arrivo",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysButtonTextLabel": "Testo del pulsante",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysClosed": "Sondaggio chiuso",
