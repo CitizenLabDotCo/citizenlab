@@ -42,7 +42,7 @@ const EMAIL_LABEL = 'Require confirmed email from all participants';
 const PHONE_LABEL = 'Require confirmed phone number from all participants';
 const VERIFICATION_LABEL =
   'Require identity verification from all participants';
-const PASSWORD_LABEL = 'Password';
+const PASSWORD_LABEL = 'Require user to set a password';
 
 // The collapsed summary uses shortened versions of the row labels.
 const PASSWORD_SUMMARY = 'Password';
