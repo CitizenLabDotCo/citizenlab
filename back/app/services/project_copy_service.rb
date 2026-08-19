@@ -300,6 +300,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       image_url = exportable_image_url(p.image)
       # avoid creating an empty project_image record if the image is missing (e.g. deleted from S3)
       next if image_url.blank?
+
       {
         'project_ref' => lookup_ref(p.project_id, :project),
         'remote_image_url' => image_url,

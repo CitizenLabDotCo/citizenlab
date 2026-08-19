@@ -22,6 +22,7 @@
 #
 class ProjectImage < ApplicationRecord
   attr_accessor :skip_image_presence
+
   mount_base64_uploader :image, ProjectImageUploader
   belongs_to :project
 
