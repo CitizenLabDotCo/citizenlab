@@ -3,12 +3,20 @@ import React from 'react';
 import { Box, Label } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
-import ReactSelect from 'react-select';
+import ReactSelect, { GroupBase, SelectComponentsConfig } from 'react-select';
 import { useTheme } from 'styled-components';
 import { CLError, IOption, RHFErrors } from 'typings';
 
 import Error, { TFieldName } from 'components/UI/Error';
 import selectStyles from 'components/UI/MultipleSelect/styles';
+import useA11yMessages from 'components/UI/ReactSelect/useA11yMessages';
+import VirtualizedMenuList from 'components/UI/ReactSelect/VirtualizedMenuList';
+
+const selectComponents: SelectComponentsConfig<
+  IOption,
+  false,
+  GroupBase<IOption>
+> = { MenuList: VirtualizedMenuList };
 
 interface Props {
   name: string;
@@ -17,6 +25,7 @@ interface Props {
   isSearchable?: boolean;
   isClearable?: boolean;
   isDisabled?: boolean;
+  required?: boolean;
   blurInputOnSelect?: boolean;
   className?: string;
   label?: React.ReactNode;
@@ -33,6 +42,7 @@ const SearchSelect = ({
   isSearchable = true,
   isClearable = false,
   isDisabled,
+  required,
   blurInputOnSelect = true,
   className,
   label,
@@ -40,6 +50,8 @@ const SearchSelect = ({
   onChange,
 }: Props) => {
   const theme = useTheme();
+  const { ariaLiveMessages, noOptionsMessage, screenReaderStatus } =
+    useA11yMessages<IOption, false>();
   const {
     trigger,
     setValue,
@@ -80,19 +92,32 @@ const SearchSelect = ({
                 isSearchable={isSearchable}
                 isClearable={isClearable}
                 isDisabled={isDisabled}
+                // react-select derives `aria-required` from `required`; there
+                // is no way to set the attribute on its own.
+                required={required}
                 blurInputOnSelect={blurInputOnSelect}
                 placeholder={placeholder ?? ''}
                 aria-invalid={!!fieldState.error}
                 aria-describedby={ariaDescribedBy}
+                ariaLiveMessages={ariaLiveMessages}
+                noOptionsMessage={noOptionsMessage}
+                screenReaderStatus={screenReaderStatus}
+                components={selectComponents}
                 isOptionDisabled={(option) => !!option.disabled}
                 menuPosition="fixed"
                 menuPlacement="auto"
+                menuShouldScrollIntoView={false}
                 onChange={(option) => {
                   setValue(name, option?.value ?? '', { shouldDirty: true });
                   trigger(name);
                   onChange?.(option);
                 }}
-                styles={selectStyles(theme)}
+                styles={{
+                  ...selectStyles(theme),
+                  // Without this the open menu is painted under the control of
+                  // the next question on the form (see TAN-4671).
+                  menuPortal: (base) => ({ ...base, zIndex: 1001 }),
+                }}
               />
             </Box>
           );
