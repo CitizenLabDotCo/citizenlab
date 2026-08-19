@@ -12644,6 +12644,11 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.errors.file_too_large": {
+    "state": "verified",
+    "verified_at": "2026-08-19T09:52:52.923303Z",
+    "verified_by": "Roger"
+  },
   "app.errors.first_name_blank": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
