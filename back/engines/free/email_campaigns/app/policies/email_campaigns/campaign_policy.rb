@@ -66,7 +66,7 @@ module EmailCampaigns
       show?
     end
 
-    def sms_recipients?
+    def sms_send_summary?
       show?
     end
 
