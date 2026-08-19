@@ -203,7 +203,7 @@
   "app.components.admin.ActionForm.revertToPlatformDefaultsCancelButton": "Annulla",
   "app.components.admin.ActionForm.revertToPlatformDefaultsConfirmButton": "Ripristina",
   "app.components.admin.ActionForm.revertToPlatformDefaultsConfirmation": "Ripristinare le impostazioni predefinite della piattaforma?",
-  "app.components.admin.ActionForm.revertToPlatformDefaultsInfo2": "Questa azione seguirà nuovamente le impostazioni predefinite della piattaforma. Le impostazioni scelte, inclusi i gruppi e le domande demografiche applicabili, verranno eliminate.",
+  "app.components.admin.ActionForm.revertToPlatformDefaultsInfo2": "Questa azione ripristinerà  le impostazioni predefinite della piattaforma. Le impostazioni scelte, inclusi i gruppi e le domande demografiche applicabili, verranno eliminate.",
   "app.components.admin.ActionForm.signInRequired": "Accesso richiesto",
   "app.components.admin.ActionForm.usingPlatformDefaults": "Utilizzo delle <link>impostazioni predefinite della piattaforma</link>",
   "app.components.admin.AddByEmail.invite": "Invita",

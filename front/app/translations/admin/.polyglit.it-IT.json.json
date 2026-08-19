@@ -1194,6 +1194,31 @@
     "verified_at": "2026-07-13T07:16:39.669771Z",
     "verified_by": "Roger"
   },
+  "app.components.admin.ActionForm.revertToPlatformDefaults": {
+    "state": "verified",
+    "verified_at": "2026-08-19T12:21:00.812543Z",
+    "verified_by": "Roger"
+  },
+  "app.components.admin.ActionForm.revertToPlatformDefaultsCancelButton": {
+    "state": "verified",
+    "verified_at": "2026-08-19T12:21:00.812543Z",
+    "verified_by": "Roger"
+  },
+  "app.components.admin.ActionForm.revertToPlatformDefaultsConfirmButton": {
+    "state": "verified",
+    "verified_at": "2026-08-19T12:21:00.812543Z",
+    "verified_by": "Roger"
+  },
+  "app.components.admin.ActionForm.revertToPlatformDefaultsConfirmation": {
+    "state": "verified",
+    "verified_at": "2026-08-19T12:21:00.812543Z",
+    "verified_by": "Roger"
+  },
+  "app.components.admin.ActionForm.revertToPlatformDefaultsInfo2": {
+    "state": "verified",
+    "verified_at": "2026-08-19T12:21:00.812543Z",
+    "verified_by": "Roger"
+  },
   "app.components.admin.ActionForm.signInRequired": {
     "state": "verified",
     "verified_at": "2026-07-13T07:16:39.669771Z",
