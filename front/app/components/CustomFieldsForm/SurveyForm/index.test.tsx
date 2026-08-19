@@ -147,9 +147,16 @@ const customFields = [
   },
 ];
 
-jest.mock('api/custom_fields/useCustomFields', () => () => ({
-  data: customFields,
-}));
+let mockCustomFieldsQuery: { data?: typeof customFields; isLoading: boolean } =
+  {
+    data: customFields,
+    isLoading: false,
+  };
+
+jest.mock(
+  'api/custom_fields/useCustomFields',
+  () => () => mockCustomFieldsQuery
+);
 
 jest.mock('utils/router', () => ({
   useLocation: () => ({ pathname: '/projects/my-project/survey' }),
@@ -180,6 +187,24 @@ describe('SurveyForm — anonymous multi-page persistence', () => {
   beforeEach(() => {
     mockAddIdea.mockClear();
     mockUpdateIdea.mockClear();
+    mockCustomFieldsQuery = { data: customFields, isLoading: false };
+  });
+
+  // A select question carries its options in the custom_fields response, so a
+  // question with thousands of them leaves the form blank for seconds.
+  it('shows a spinner while the questions are still loading', () => {
+    mockCustomFieldsQuery = { data: undefined, isLoading: true };
+
+    render(
+      <SurveyForm
+        projectId="project-1"
+        phaseId="phase-1"
+        participationMethod="native_survey"
+      />
+    );
+
+    expect(screen.getByTestId('spinner')).toBeInTheDocument();
+    expect(screen.queryByText(/Question One/i)).not.toBeInTheDocument();
   });
 
   // Regression test for the bug introduced by adding `key={currentPageIndex}`
