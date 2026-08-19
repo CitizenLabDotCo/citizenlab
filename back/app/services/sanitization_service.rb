@@ -14,9 +14,6 @@ class SanitizationService
   # What `linkify` builds an href from, and so all `replace_links_with_urls` will put back.
   LINKIFIABLE_HREF = %r{\A(https?://|mailto:)}i
 
-  # `linkify` adds this scheme itself, so `replace_links_with_urls` has to leave it off the text.
-  MAILTO_SCHEME = /\Amailto:/i
-
   SANITIZER = Rails::Html::SafeListSanitizer.new
 
   private_constant :SANITIZER
@@ -117,7 +114,7 @@ class SanitizationService
     doc.css('a[href]').each do |link|
       next unless link['href'].match?(LINKIFIABLE_HREF)
 
-      link.replace(Nokogiri::XML::Text.new(link['href'].sub(MAILTO_SCHEME, ''), link.document))
+      link.replace(Nokogiri::XML::Text.new(link['href'].sub(/\Amailto:/i, ''), link.document))
     end
     doc.to_s
   end
