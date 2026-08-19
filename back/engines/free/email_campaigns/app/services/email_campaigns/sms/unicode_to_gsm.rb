@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-# Transcribed from sms-segments-calculator
+# Transcribed from sms-segments-calculator, src/libs/UnicodeToGSM.ts at v1.2.0:
+# https://github.com/TwilioDevEd/message-segment-calculator/blob/v1.2.0/src/libs/UnicodeToGSM.ts
 module EmailCampaigns
   module Sms
     # Maps a UTF-16 code unit to the GSM-7 code units encoding it. A two-element

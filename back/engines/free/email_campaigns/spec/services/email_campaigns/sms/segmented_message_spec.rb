@@ -5,7 +5,12 @@ require 'rails_helper'
 RSpec.describe EmailCampaigns::Sms::SegmentedMessage do
   # GSM-7 fits 160 septets alone, 153 once a User Data Header is reserved.
   # UCS-2 fits 70 characters alone, 67 once concatenated.
-  # front's smsSegmentParity.test.ts pins the same fixture against the JS library itself.
+  #
+  # The library these expectations come from tests the same behaviour in
+  # https://github.com/TwilioDevEd/message-segment-calculator/tree/v1.2.0/tests
+  # (segments.test.js covers the User Data Header, methods.test.js the encoding
+  # and character counts), and front/app/containers/Admin/messaging/Sms/utils/
+  # smsSegmentParity.test.ts pins the fixture below against the library itself.
   describe 'parity with the JS library the admin UI counts with' do
     let(:fixture) do
       path = Rails.root.join('engines/free/email_campaigns/spec/fixtures/sms_segment_parity.json')

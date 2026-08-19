@@ -5,6 +5,10 @@ module EmailCampaigns
     # Ruby port of the `sms-segments-calculator` package the admin UI counts with, so the
     # server-side count matches the one the author was shown. Both sides are checked
     # against the bodies in spec/fixtures/sms_segment_parity.json.
+    #
+    # Ported from src/libs/SegmentedMessage.ts (and its EncodedChar/Segment/UserDataHeader
+    # siblings) at v1.2.0, the version front/package.json pins:
+    # https://github.com/TwilioDevEd/message-segment-calculator/tree/v1.2.0/src/libs
     class SegmentedMessage
       MAX_SEGMENTS = 8
 

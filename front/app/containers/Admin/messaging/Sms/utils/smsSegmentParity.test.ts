@@ -1,4 +1,7 @@
-// Checks the JS library against the shared fixture
+// Checks the JS library (https://github.com/TwilioDevEd/message-segment-calculator)
+// against the shared fixture. The Ruby port of that library is checked against the same
+// fixture in back/engines/free/email_campaigns/spec/services/email_campaigns/sms/
+// segmented_message_spec.rb, so a drift on either side fails here or there.
 import fs from 'fs';
 import path from 'path';
 
