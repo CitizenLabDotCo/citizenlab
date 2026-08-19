@@ -610,7 +610,7 @@
   "app.components.ProjectPageBuilder.Widgets.extraSurveysNoSurveyTitle": "Nessun sondaggio ancora collegato",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysNotEligible": "Non hai i requisiti per partecipare a questo sondaggio",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysOpensOn": "Apre il {date}",
-  "app.components.ProjectPageBuilder.Widgets.extraSurveysResponseReceived": "Grazie — la tua risposta è stata ricevuta",
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysResponseReceived": "Grazie — le tue risposte sono state raccolte",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysSelectPlaceholder": "Seleziona un sondaggio…",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysStyleLabel": "Stile del pulsante",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysStylePrimary": "Primario",

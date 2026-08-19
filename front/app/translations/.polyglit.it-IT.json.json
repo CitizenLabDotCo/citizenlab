@@ -3024,6 +3024,11 @@
     "verified_at": "2026-08-19T12:01:28.303991Z",
     "verified_by": "Roger"
   },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysClosed": {
+    "state": "verified",
+    "verified_at": "2026-08-19T12:45:15.237322Z",
+    "verified_by": "Roger"
+  },
   "app.components.ProjectPageBuilder.Widgets.extraSurveysClosedTimeAgo": {
     "state": "verified",
     "verified_at": "2026-08-19T12:10:03.709915Z",
@@ -3072,6 +3077,11 @@
   "app.components.ProjectPageBuilder.Widgets.extraSurveysOpensOn": {
     "state": "verified",
     "verified_at": "2026-08-19T12:01:28.303991Z",
+    "verified_by": "Roger"
+  },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysResponseReceived": {
+    "state": "verified",
+    "verified_at": "2026-08-19T12:45:15.237322Z",
     "verified_by": "Roger"
   },
   "app.components.ProjectPageBuilder.Widgets.extraSurveysSelectPlaceholder": {

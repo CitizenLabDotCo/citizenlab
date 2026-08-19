@@ -8209,6 +8209,41 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.examplePhaseCollectIdeas": {
+    "state": "verified",
+    "verified_at": "2026-08-19T12:45:15.307881Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.examplePhaseShareWhatWeHeard": {
+    "state": "verified",
+    "verified_at": "2026-08-19T12:45:15.307881Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.examplePhaseVoteOnShortlist": {
+    "state": "verified",
+    "verified_at": "2026-08-19T12:45:15.307881Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.exampleSurveyMobilityCheckIn": {
+    "state": "verified",
+    "verified_at": "2026-08-19T12:45:15.307881Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.exampleSurveySchoolRunTravel": {
+    "state": "verified",
+    "verified_at": "2026-08-19T12:45:15.307881Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.extras": {
+    "state": "verified",
+    "verified_at": "2026-08-19T12:45:15.307881Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.projects.project.extrasEmptyDescription": {
+    "state": "verified",
+    "verified_at": "2026-08-19T12:45:15.307881Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.disabledTooltip": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
