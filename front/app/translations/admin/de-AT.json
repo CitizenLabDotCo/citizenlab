@@ -3330,7 +3330,7 @@
   "app.containers.AdminPage.SettingsPage.urlTitleTooltip": "Sie können einen Link zu Ihrer eigenen Webseite hinzufügen. Dieser Link wird am unteren Rand der Homepage gezeigt.",
   "app.containers.AdminPage.SettingsPage.userNameDisplayDescription": "Wählen Sie aus, wie Nutzer*innen ohne Namen in ihrem Profil auf der Plattform angezeigt werden. Dies geschieht, wenn Sie die Zugriffsrechte für eine Phase auf „E-Mail-Bestätigung“ setzen. In allen Fällen können Nutzer*innen nach der Teilnahme den Profilnamen aktualisieren, den wir automatisch für sie generiert haben.",
   "app.containers.AdminPage.SettingsPage.userNameDisplayTitle": "Anzeige des Nutzer*innennamens (nur für Nutzer*innen mit bestätigter E-Mail)",
-  "app.containers.AdminPage.SettingsPage.visitingPermission.subtitle1": "Verwalten Sie, wer auf die Plattform zugreifen kann. Das Konfigurieren der Einstellungen hier bewirkt zwei Dinge:",
+  "app.containers.AdminPage.SettingsPage.visitingPermission.subtitle1": "Verwalten, wer auf die Plattform zugreifen kann. Diese Einstellungen wirken sich wie folgt aus:",
   "app.containers.AdminPage.SettingsPage.visitingPermission.subtitleBullet1": "Die Einstellung wird auf den globalen Registrierungsprozess angewendet (z. B. wenn Personen auf der Startseite auf „Registrieren“ klicken).",
   "app.containers.AdminPage.SettingsPage.visitingPermission.subtitleBullet5": "Die Einstellung wird <b>standardmäßig</b> angewendet, wenn Personen an einem Projekt teilnehmen oder sich für eine Veranstaltung anmelden möchten. <b>Admins und Manager*innen können dies jedoch pro Phase überschreiben</b> – siehe den Reiter „Phasenzugriff und Nutzerdaten“ in jeder Projektphase.",
   "app.containers.AdminPage.SideBar.administrator": "Admin",
