@@ -64,6 +64,16 @@
     "verified_at": "2026-04-20T15:38:06.365179Z",
     "verified_by": "Roger"
   },
+  "content_builder.project_page.details_placeholder": {
+    "state": "verified",
+    "verified_at": "2026-08-19T09:49:12.741001Z",
+    "verified_by": "Roger"
+  },
+  "content_builder.project_page.intro_placeholder": {
+    "state": "verified",
+    "verified_at": "2026-08-19T09:49:12.741001Z",
+    "verified_by": "Roger"
+  },
   "custom_field_options.domicile.outside": {
     "state": "verified",
     "verified_at": "2026-04-20T15:38:06.365179Z",
