@@ -159,7 +159,7 @@ it-IT:
       title_text: Su di te
     pdf_export:
       by_checking_this_box: Selezionando questa casella acconsento all'utilizzo dei miei dati per creare un account sulla piattaforma partecipativa di %{organizationName}.
-      choose_as_many: Scegli tutti quelli che vuoi
+      choose_as_many: Seleziona tutte le opzioni che desideri
       choose_at_least: Scegli almeno %{count} opzioni
       choose_at_most: Scegli al massimo %{count} opzioni
       choose_between: Scegli tra le opzioni %{min} e %{max}
@@ -279,7 +279,7 @@ it-IT:
       no_answer: (Nessuna risposta)
       prepared_by: Preparato da
       report_label: Report delle risposte
-      respondent: Rispondente %{number}
+      respondent: Partecipante %{number}
       response_count:
         one: '%{count} risposta'
         other: '%{count} risposte'
