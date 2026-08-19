@@ -45,14 +45,14 @@ module Surveys
       end
 
       # NOTE: Only options with logic will be returned
-      any_other_answer_page_id = field.logic['rules']&.find { |r| r['if'] == 'any_other_answer' }&.dig('goto_page_id')
+      any_other_answer_page_id = goto_page_id(field, 'any_other_answer')
       option_logic = options.each_with_object({}) do |option, accu|
         rule_id = is_linear_or_rating ? option[:key] : option[:id]
-        logic_next_page_id = field.logic['rules']&.find { |r| r['if'] == rule_id }&.dig('goto_page_id') || any_other_answer_page_id
+        logic_next_page_id = goto_page_id(field, rule_id) || any_other_answer_page_id
         accu[option[:key]] = { id: option[:id], nextPageId: logic_next_page_id } if logic_next_page_id
       end
 
-      no_answer_logic_page_id = field.logic['rules']&.find { |r| r['if'] == 'no_answer' }&.dig('goto_page_id')
+      no_answer_logic_page_id = goto_page_id(field, 'no_answer')
       option_logic['no_answer'] = { id: "#{field.id}_no_answer", nextPageId: no_answer_logic_page_id } if no_answer_logic_page_id
 
       option_logic.present? ? { answer: option_logic } : {}
