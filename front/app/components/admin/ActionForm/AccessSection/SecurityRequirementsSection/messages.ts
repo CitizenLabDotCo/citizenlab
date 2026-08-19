@@ -29,9 +29,14 @@ export default defineMessages({
       "If enabled, users must set a password before participating. If disabled, users won't be asked to set a password.",
   },
   passwordOnlyForEmailSignupTooltip: {
-    id: 'front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailSignupTooltip',
+    id: 'front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailSignupTooltip2',
     defaultMessage:
-      'A password is only requested from users who sign up with email. Users who sign up another way (e.g. single sign-on) are never asked to set one.',
+      'If enabled, a password is only requested from users who sign up with email. Users who sign up with SSO are never asked to set one.',
+  },
+  passwordOnlyForEmailOrSMSLoginTooltip: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailOrSMSLoginTooltip',
+    defaultMessage:
+      'If enabled, a password is only requested from users who sign up with email or SMS. Users who sign up with SSO are never asked to set one.',
   },
   verificationMethodDescription: {
     id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription2',
