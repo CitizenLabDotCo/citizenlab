@@ -56,6 +56,7 @@ export const confirmEmail = (cy: Cypress.Chainable) => {
   // The request fires on click, so only the response needs the long leash.
   cy.intercept('POST', '**/user/confirm_code_*').as('confirmCode');
   cy.get('#e2e-verify-email-button > button').click({ force: true });
+  cy.wait('@confirmCode', { responseTimeout: 60000 });
 };
 
 export const confirmPhone = (cy: Cypress.Chainable) => {
