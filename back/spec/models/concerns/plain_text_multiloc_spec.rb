@@ -25,6 +25,13 @@ RSpec.describe PlainTextMultiloc do
       plain_text_multiloc :subtitle_multiloc
     end)
 
+    Object.const_set(:TempValidatedPlainTextModel, Class.new(ApplicationRecord) do
+      self.table_name = 'test_plain_text_models'
+      include PlainTextMultiloc
+      plain_text_multiloc :title_multiloc
+      validates :title_multiloc, multiloc: { presence: true }
+    end)
+
     Object.const_set(:TempSluggedPlainTextModel, Class.new(ApplicationRecord) do
       self.table_name = 'test_plain_text_models'
       include PlainTextMultiloc
@@ -35,7 +42,8 @@ RSpec.describe PlainTextMultiloc do
 
   after(:context) do # rubocop:disable RSpec/BeforeAfterAll
     # rubocop:disable RSpec/RemoveConst
-    %i[TempPlainTextModel TempSubtitlePlainTextModel TempSluggedPlainTextModel].each do |name|
+    %i[TempPlainTextModel TempSubtitlePlainTextModel TempValidatedPlainTextModel
+      TempSluggedPlainTextModel].each do |name|
       Object.send(:remove_const, name) if Object.const_defined?(name)
     end
     # rubocop:enable RSpec/RemoveConst
@@ -76,6 +84,16 @@ RSpec.describe PlainTextMultiloc do
     record.reload.update!(subtitle_multiloc: { 'en' => 'Subtitle' })
 
     expect(record.reload[:title_multiloc]).to eq({ 'en' => '<b>Legacy</b>' })
+  end
+
+  # Stripping is registered on `before_validation`, so a presence rule judges what survives it. Move
+  # it to `before_save` and the raw markup passes the rule, then lands blank in a column that
+  # requires a value - leaving a row no later save of any field can get past.
+  it 'strips before a presence rule runs, so an all-markup value is rejected rather than stored' do
+    record = TempValidatedPlainTextModel.new(title_multiloc: { 'en' => '<img src=x onerror=alert(1)>' })
+
+    expect(record).not_to be_valid
+    expect(record.errors[:title_multiloc]).to be_present
   end
 
   it 'strips the title before `Sluggable` builds the slug from it, when declared with prepend' do
