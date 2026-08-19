@@ -26,9 +26,12 @@ export const requiresAccount = (permission: IPermissionData): boolean =>
 // The security requirements on offer: each one maps onto a `require_*` boolean
 // + `*_expiry` pair on the permission.
 type SecurityRequirementKey = 'email' | 'phone' | 'verification' | 'password';
-export type VisibleToggles = Record<SecurityRequirementKey, boolean>;
+export type VisibleSecurityRequirements = Record<
+  SecurityRequirementKey,
+  boolean
+>;
 
-type VisibleTogglesParams = {
+type VisibleSecurityRequirementsParams = {
   sms2FAEnabled: boolean;
   smsLoginEnabled: boolean;
   verificationMethodEnabled: boolean;
@@ -36,14 +39,14 @@ type VisibleTogglesParams = {
   passwordLoginEnabled: boolean;
 };
 
-export const getVisibleToggles = ({
+export const getVisibleSecurityRequirements = ({
   sms2FAEnabled,
   smsLoginEnabled,
   verificationMethodEnabled,
   hasAuthMethodNotReturningEmail,
   passwordLoginEnabled,
-}: VisibleTogglesParams): VisibleToggles => {
-  const visibleToggles: VisibleToggles = {
+}: VisibleSecurityRequirementsParams): VisibleSecurityRequirements => {
+  const visibleSecurityRequirements: VisibleSecurityRequirements = {
     email: false,
     phone: false,
     verification: false,
@@ -55,22 +58,22 @@ export const getVisibleToggles = ({
     // a way for participants to sign up WITHOUT an email address.
     // If you e.g. can only sign up with email, email confirmed is always required,
     // so there is no need to make it configurable.
-    visibleToggles.email = true;
+    visibleSecurityRequirements.email = true;
   }
 
   if (sms2FAEnabled) {
-    visibleToggles.phone = true;
+    visibleSecurityRequirements.phone = true;
   }
 
   if (verificationMethodEnabled) {
-    visibleToggles.verification = true;
+    visibleSecurityRequirements.verification = true;
   }
 
   if (passwordLoginEnabled) {
-    visibleToggles.password = true;
+    visibleSecurityRequirements.password = true;
   }
 
-  return visibleToggles;
+  return visibleSecurityRequirements;
 };
 
 /**
@@ -81,7 +84,9 @@ export const getVisibleToggles = ({
  *
  * Undefined while the sign-in methods are still loading.
  */
-export const useVisibleToggles = (): VisibleToggles | undefined => {
+export const useVisibleSecurityRequirements = ():
+  | VisibleSecurityRequirements
+  | undefined => {
   const sms2FAEnabled = useFeatureFlag({ name: 'sms' });
   const smsLoginEnabled = useFeatureFlag({ name: 'sms_login' });
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
@@ -96,7 +101,7 @@ export const useVisibleToggles = (): VisibleToggles | undefined => {
       method.attributes.method_metadata?.email_always_present === false
   );
 
-  return getVisibleToggles({
+  return getVisibleSecurityRequirements({
     sms2FAEnabled,
     smsLoginEnabled,
     verificationMethodEnabled: !!verificationMethod,
@@ -139,7 +144,7 @@ export const buildSummary = (
   permission: IPermissionData,
   customFields: IPermissionsPhaseCustomFieldData[],
   formatMessage: FormatMessage,
-  visibleToggles: VisibleToggles
+  visibleToggles: VisibleSecurityRequirements
 ): SummaryChip[] => {
   const { attributes } = permission;
 

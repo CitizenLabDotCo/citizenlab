@@ -16,7 +16,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import AccessSection from './AccessSection';
 import DataSection from './DataSection';
-import { buildSummary, useVisibleToggles } from './logic';
+import { buildSummary, useVisibleSecurityRequirements } from './logic';
 import messages from './messages';
 import PlatformDefaultsHeader from './PlatformDefaultsHeader';
 import RevertToDefaultsModal from './RevertToDefaultsModal';
@@ -44,7 +44,7 @@ const ActionForm = ({
     phaseId,
     action,
   });
-  const visibleToggles = useVisibleToggles();
+  const visibleToggles = useVisibleSecurityRequirements();
   if (!permissionsCustomFields || !visibleToggles) return null;
 
   const customFields = permissionsCustomFields.data;
