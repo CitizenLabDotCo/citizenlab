@@ -20,8 +20,8 @@ import { buildSummary, useVisibleSecurityRequirements } from './logic';
 import messages from './messages';
 import PlatformDefaultsHeader from './PlatformDefaultsHeader';
 import RevertToDefaultsModal from './RevertToDefaultsModal';
-import { Props } from './types';
-import { Chip } from './ui';
+import { Changes, Props } from './types';
+import { Chip, ReadOnlyOverlay } from './ui';
 
 const ActionForm = ({
   phaseId,
@@ -53,12 +53,21 @@ const ActionForm = ({
   const showAnyone = attributes.permitted_by_everyone_allowed;
   const isAdmins = attributes.permitted_by === 'admins_moderators';
 
+  // Nothing has been configured for this action: the platform defaults apply.
+  // They can be read here, but only overriding the action makes them editable.
+  const usingPlatformDefaults = attributes.inherited && !!onOverride;
+
   const summary = buildSummary(
     permissionData,
     customFields,
     formatMessage,
     visibleSecurityRequirements
   );
+
+  const handleChange = async (changes: Changes) => {
+    if (attributes.inherited) return;
+    await onChange(changes);
+  };
 
   const handleOverride = async () => {
     if (!onOverride) return;
@@ -82,33 +91,56 @@ const ActionForm = ({
     }
   };
 
-  // Nothing has been configured for this action: the platform defaults apply
-  // and the panel stays shut until the admin chooses to override it.
-  if (attributes.inherited && onOverride) {
-    return (
-      <Box
-        maxWidth="900px"
-        my="16px"
-        data-cy={`e2e-action-inherited-${action}`}
-      >
-        <Box
-          border={`1px solid ${colors.borderLight}`}
-          borderRadius={stylingConsts.borderRadius}
-          bgColor={colors.white}
-          style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}
-        >
-          <PlatformDefaultsHeader
-            title={title}
-            processing={processing}
-            onOverride={handleOverride}
+  const body = (
+    <>
+      <Divider mt="0" mb="20px" />
+
+      <AccessSection
+        permission={permissionData}
+        showAnyone={showAnyone}
+        onChange={handleChange}
+      />
+
+      {/* Admins-only is a closed gate — nothing else applies. For the
+          other modes, demographics can be collected (the account-only
+          parts hide themselves inside DataSection). */}
+      {!isAdmins && (
+        <>
+          <Divider my="24px" />
+          <DataSection
+            permission={permissionData}
+            phaseId={phaseId}
+            onChange={handleChange}
           />
+        </>
+      )}
+
+      {onRevertToDefaults && !usingPlatformDefaults && (
+        <Box mt="24px">
+          <Button
+            buttonStyle="text"
+            width="auto"
+            padding="0px"
+            dataCy={`e2e-revert-to-platform-defaults-${action}`}
+            onClick={() => setRevertModalOpened(true)}
+          >
+            <span style={{ textDecorationLine: 'underline' }}>
+              <FormattedMessage {...messages.revertToPlatformDefaults} />
+            </span>
+          </Button>
         </Box>
-      </Box>
-    );
-  }
+      )}
+    </>
+  );
 
   return (
-    <Box maxWidth="900px" my="16px">
+    <Box
+      maxWidth="900px"
+      my="16px"
+      data-cy={
+        usingPlatformDefaults ? `e2e-action-inherited-${action}` : undefined
+      }
+    >
       <Box
         border={`1px solid ${colors.borderLight}`}
         borderRadius={stylingConsts.borderRadius}
@@ -116,50 +148,61 @@ const ActionForm = ({
         style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}
       >
         {/* ---- Header (always visible, click to collapse/expand) ---- */}
-        <Box
-          className={`e2e-action-accordion-${action}`}
-          data-cy={`e2e-action-accordion-${action}`}
-          as="button"
-          type="button"
-          w="100%"
-          display="flex"
-          alignItems="center"
-          gap="12px"
-          px="20px"
-          py="16px"
-          background="transparent"
-          border="none"
-          cursor="pointer"
-          style={{ textAlign: 'left' }}
-          onClick={() => setIsOpen((open) => !open)}
-        >
-          <Icon
-            name={isOpen ? 'chevron-down' : 'chevron-right'}
-            width="20px"
-            height="20px"
-            fill={colors.coolGrey600}
+        {usingPlatformDefaults ? (
+          <PlatformDefaultsHeader
+            title={title}
+            action={action}
+            processing={processing}
+            isOpen={isOpen}
+            onToggle={() => setIsOpen((open) => !open)}
+            onOverride={handleOverride}
           />
-          <Box flex="0 0 auto">
-            <Title variant="h4" as="h3" m="0" color="primary">
-              {title}
-            </Title>
-          </Box>
-
-          {/* When collapsed, the summary chips stand in for the whole panel. */}
-          {!isOpen && (
-            <Box
-              display="flex"
-              alignItems="center"
-              gap="6px"
-              flexWrap="wrap"
-              ml="4px"
-            >
-              {summary.map((chip) => (
-                <Chip key={chip.key} chip={chip} />
-              ))}
+        ) : (
+          <Box
+            className={`e2e-action-accordion-${action}`}
+            data-cy={`e2e-action-accordion-${action}`}
+            as="button"
+            type="button"
+            w="100%"
+            display="flex"
+            alignItems="center"
+            gap="12px"
+            px="20px"
+            py="16px"
+            background="transparent"
+            border="none"
+            cursor="pointer"
+            style={{ textAlign: 'left' }}
+            onClick={() => setIsOpen((open) => !open)}
+          >
+            <Icon
+              name={isOpen ? 'chevron-down' : 'chevron-right'}
+              width="20px"
+              height="20px"
+              fill={colors.coolGrey600}
+            />
+            <Box flex="0 0 auto">
+              <Title variant="h4" as="h3" m="0" color="primary">
+                {title}
+              </Title>
             </Box>
-          )}
-        </Box>
+
+            {/* When collapsed, the summary chips stand in for the whole panel. */}
+            {!isOpen && (
+              <Box
+                display="flex"
+                alignItems="center"
+                gap="6px"
+                flexWrap="wrap"
+                ml="4px"
+              >
+                {summary.map((chip) => (
+                  <Chip key={chip.key} chip={chip} />
+                ))}
+              </Box>
+            )}
+          </Box>
+        )}
 
         {isOpen && (
           <Box
@@ -168,42 +211,12 @@ const ActionForm = ({
             className={`e2e-action-form-${action}`}
             data-cy={`e2e-action-form-${action}`}
           >
-            <Divider mt="0" mb="20px" />
-
-            <AccessSection
-              permission={permissionData}
-              showAnyone={showAnyone}
-              onChange={onChange}
-            />
-
-            {/* Admins-only is a closed gate — nothing else applies. For the
-                other modes, demographics can be collected (the account-only
-                parts hide themselves inside DataSection). */}
-            {!isAdmins && (
-              <>
-                <Divider my="24px" />
-                <DataSection
-                  permission={permissionData}
-                  phaseId={phaseId}
-                  onChange={onChange}
-                />
-              </>
-            )}
-
-            {onRevertToDefaults && (
-              <Box mt="24px">
-                <Button
-                  buttonStyle="text"
-                  width="auto"
-                  padding="0px"
-                  dataCy={`e2e-revert-to-platform-defaults-${action}`}
-                  onClick={() => setRevertModalOpened(true)}
-                >
-                  <span style={{ textDecorationLine: 'underline' }}>
-                    <FormattedMessage {...messages.revertToPlatformDefaults} />
-                  </span>
-                </Button>
-              </Box>
+            {usingPlatformDefaults ? (
+              <ReadOnlyOverlay data-cy={`e2e-read-only-overlay-${action}`}>
+                {body}
+              </ReadOnlyOverlay>
+            ) : (
+              body
             )}
           </Box>
         )}

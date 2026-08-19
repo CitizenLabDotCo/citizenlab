@@ -11,6 +11,8 @@ import {
   IconTooltip,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { transparentize } from 'polished';
+import styled from 'styled-components';
 
 import { SummaryChip } from './logic';
 
@@ -141,6 +143,7 @@ export const Expander = ({
   return (
     <Box data-cy={dataCy}>
       <Box
+        data-expander-toggle
         as="button"
         type="button"
         w="100%"
@@ -188,3 +191,31 @@ export const Expander = ({
     </Box>
   );
 };
+
+/**
+ * Read-only view of a panel whose settings are not its own to change (they are
+ * inherited from the platform defaults). Everything inside is put under a grey
+ * wash and made inert, except the expander toggles: those only show and hide
+ * information, so they stay usable and are lifted above the wash.
+ */
+export const ReadOnlyOverlay = styled(Box)`
+  position: relative;
+
+  > * {
+    pointer-events: none;
+  }
+
+  [data-expander-toggle] {
+    position: relative;
+    z-index: 2;
+    pointer-events: auto;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-color: ${transparentize(0.35, colors.grey200)};
+  }
+`;
