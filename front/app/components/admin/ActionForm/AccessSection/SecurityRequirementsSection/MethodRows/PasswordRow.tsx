@@ -27,7 +27,7 @@ const PasswordRow = ({ enabled, onChange }: Props) => {
     <Box py="12px">
       <RequirementToggle
         icon="lock"
-        label={formatMessage(actionFormMessages.password)}
+        label={formatMessage(actionFormMessages.requireUserToSetAPassword)}
         description={formatMessage(messages.passwordAvailableDescription)}
         tooltip={
           hasSSOAuthMethod
