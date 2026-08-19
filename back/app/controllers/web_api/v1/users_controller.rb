@@ -50,6 +50,7 @@ class WebApi::V1::UsersController < ApplicationController
     sort_by_sort_param if params[:search].blank?
 
     @users = paginate @users
+    @users = @users.includes(:custom_field_answers)
 
     LogActivityJob.perform_later(current_user, 'searched_users', current_user, Time.now.to_i, payload: { search_query: params[:search] }) if params[:search].present?
 
