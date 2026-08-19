@@ -29,7 +29,6 @@ export const createProjectWithExtraSurveys = ({
       title: randomString(),
       descriptionPreview: randomString(),
       publicationStatus: 'published',
-      withAboutBox: true,
     })
     .then((project) => {
       const projectId = project.body.data.id;

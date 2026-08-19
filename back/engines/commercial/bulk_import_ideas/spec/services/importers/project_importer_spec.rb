@@ -189,21 +189,44 @@ describe BulkImportIdeas::Importers::ProjectImporter do
   describe '#create_project_page_layout' do
     let(:project) { create(:project) }
 
+    def page_layout
+      ContentBuilder::Layout.find_by(content_buildable: project, code: 'project_page')
+    end
+
+    def widget_names(layout)
+      layout.craftjs_json.each_value.filter_map do |node|
+        node['type']['resolvedName'] if node.is_a?(Hash) && node['type'].is_a?(Hash)
+      end
+    end
+
     it 'creates the project page layout carrying the description' do
       service.send(:create_project_page_layout, project, { 'en' => '<p>Imported</p>' })
 
-      layout = ContentBuilder::Layout.find_by(content_buildable: project, code: 'project_page')
-      expect(layout).to be_present
-      expect(layout.enabled).to be(true)
-      texts = layout.craftjs_json.values.filter_map { |n| n.dig('props', 'text', 'en') if n.is_a?(Hash) }
+      expect(page_layout).to be_present
+      expect(page_layout.enabled).to be(true)
+      texts = page_layout.craftjs_json.values.filter_map { |n| n.dig('props', 'text', 'en') if n.is_a?(Hash) }
       expect(texts).to include('<p>Imported</p>')
+    end
+
+    it 'puts the participation box beside the description' do
+      service.send(:create_project_page_layout, project, { 'en' => '<p>Imported</p>' })
+
+      craftjs = page_layout.craftjs_json
+      expect(widget_names(page_layout)).to include('AboutBox', 'TwoColumn')
+
+      columns = craftjs.values.find { |n| n.dig('type', 'resolvedName') == 'TwoColumn' }
+      left = craftjs[columns['linkedNodes']['left']]
+      right = craftjs[columns['linkedNodes']['right']]
+      expect(craftjs[left['nodes'].first].dig('props', 'text', 'en')).to eq('<p>Imported</p>')
+      expect(craftjs[right['nodes'].first].dig('type', 'resolvedName')).to eq('AboutBox')
     end
 
     it 'falls back to the default page when there is no description' do
       service.send(:create_project_page_layout, project, nil)
 
-      layout = ContentBuilder::Layout.find_by(content_buildable: project, code: 'project_page')
-      expect(layout.craftjs_json).to have_key('PROJECT_PAGE_BODY')
+      expect(page_layout.craftjs_json).to have_key('PROJECT_PAGE_BODY')
+      # The default page carries its own participation box.
+      expect(widget_names(page_layout)).to include('AboutBox')
     end
   end
 end

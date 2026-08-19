@@ -11,8 +11,6 @@ describe('New project with native survey', () => {
       projectId = result.projectId;
       projectSlug = result.projectSlug;
 
-      cy.apiAddAboutBox(projectId);
-
       cy.apiCreateEvent({
         projectId,
         title: eventTitle,
@@ -96,7 +94,6 @@ describe('Native survey CTA bar', () => {
       })
       .then(() => {
         cy.apiCreateProject({
-          withAboutBox: true,
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
           publicationStatus: 'published',

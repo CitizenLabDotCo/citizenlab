@@ -385,12 +385,15 @@ module BulkImportIdeas::Importers
 
     # Imported HTML can carry inline images and embeds, which only the RichTextMultiloc bridge
     # widget renders losslessly (and whose images the layout side effects extract).
+    #
+    # The description shares a `2-1` TwoColumn with the participation box, the layout a project
+    # page built in the app has.
     def description_body_craftjs(description_multiloc)
       widget = description_has_media?(description_multiloc) ? 'RichTextMultiloc' : 'TextMultiloc'
       {
         'ROOT' => {
           'type' => 'div',
-          'nodes' => %w[TEXT],
+          'nodes' => %w[MAIN],
           'props' => { 'id' => 'e2e-content-builder-frame' },
           'custom' => {},
           'hidden' => false,
@@ -398,17 +401,61 @@ module BulkImportIdeas::Importers
           'displayName' => 'div',
           'linkedNodes' => {}
         },
+        'MAIN' => {
+          'type' => { 'resolvedName' => 'TwoColumn' },
+          'nodes' => [],
+          'props' => { 'columnLayout' => '2-1' },
+          'custom' => {
+            'title' => { 'id' => 'app.containers.admin.ContentBuilder.twoColumnLayout', 'defaultMessage' => '2 column' },
+            'hasChildren' => true
+          },
+          'hidden' => false,
+          'parent' => 'ROOT',
+          'isCanvas' => false,
+          'displayName' => 'TwoColumn',
+          'linkedNodes' => { 'left' => 'LEFT', 'right' => 'RIGHT' }
+        },
+        'LEFT' => container_node('MAIN', %w[TEXT]),
+        'RIGHT' => container_node('MAIN', %w[ABOUT]),
         'TEXT' => {
           'type' => { 'resolvedName' => widget },
           'nodes' => [],
           'props' => { 'text' => description_multiloc },
           'custom' => {},
           'hidden' => false,
-          'parent' => 'ROOT',
+          'parent' => 'LEFT',
           'isCanvas' => false,
           'displayName' => widget,
           'linkedNodes' => {}
+        },
+        'ABOUT' => {
+          'type' => { 'resolvedName' => 'AboutBox' },
+          'nodes' => [],
+          'props' => {},
+          'custom' => {
+            'title' => { 'id' => 'app.containers.admin.ContentBuilder.participationBox', 'defaultMessage' => 'Participation Box' },
+            'noPointerEvents' => true
+          },
+          'hidden' => false,
+          'parent' => 'RIGHT',
+          'isCanvas' => false,
+          'displayName' => 'AboutBox',
+          'linkedNodes' => {}
         }
+      }
+    end
+
+    def container_node(parent_id, child_ids)
+      {
+        'type' => { 'resolvedName' => 'Container' },
+        'nodes' => child_ids,
+        'props' => {},
+        'custom' => {},
+        'hidden' => false,
+        'parent' => parent_id,
+        'isCanvas' => true,
+        'displayName' => 'Container',
+        'linkedNodes' => {}
       }
     end
 

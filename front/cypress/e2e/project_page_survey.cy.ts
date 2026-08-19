@@ -6,12 +6,6 @@ let projectId: string;
 let projectSlug: string;
 
 describe('Existing project with survey', () => {
-  before(() => {
-    cy.getProjectBySlug('charlie-crew-survey').then((project) => {
-      cy.apiAddAboutBox(project.body.data.id);
-    });
-  });
-
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit('/projects/charlie-crew-survey');
@@ -51,7 +45,6 @@ describe('New project with survey', () => {
 
   before(() => {
     cy.apiCreateProject({
-      withAboutBox: true,
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       publicationStatus: 'published',
@@ -129,7 +122,6 @@ describe('Timeline project with survey phase', () => {
 
   before(() => {
     cy.apiCreateProject({
-      withAboutBox: true,
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       publicationStatus: 'published',
@@ -186,7 +178,6 @@ describe('Timeline project with survey phase but not active', () => {
 
   before(() => {
     cy.apiCreateProject({
-      withAboutBox: true,
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       publicationStatus: 'published',
@@ -233,7 +224,6 @@ describe('Archived single phase project with survey', () => {
 
   before(() => {
     cy.apiCreateProject({
-      withAboutBox: true,
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       publicationStatus: 'archived',
@@ -278,7 +268,6 @@ describe('Embedded survey CTA', () => {
   before(() => {
     cy.setAdminLoginCookie();
     cy.apiCreateProject({
-      withAboutBox: true,
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       publicationStatus: 'published',

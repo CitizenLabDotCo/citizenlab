@@ -10,7 +10,6 @@ describe('New timeline project with ideation phase with default map view', () =>
     cy.setAdminLoginCookie();
 
     cy.apiCreateProject({
-      withAboutBox: true,
       title: projectTitle,
       descriptionPreview: 'Description preview',
       publicationStatus: 'published',
@@ -58,7 +57,6 @@ describe('New timeline project with active ideation phase', () => {
       })
       .then(() => {
         return cy.apiCreateProject({
-          withAboutBox: true,
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
           publicationStatus: 'published',
@@ -185,7 +183,6 @@ describe('Archived timeline project with ideation phase', () => {
       })
       .then(() => {
         return cy.apiCreateProject({
-          withAboutBox: true,
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
           publicationStatus: 'draft',
@@ -273,7 +270,6 @@ describe('timeline project with no active ideation phase', () => {
   before(() => {
     return cy
       .apiCreateProject({
-        withAboutBox: true,
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
         publicationStatus: 'draft',
@@ -354,7 +350,6 @@ describe('Ideation CTA bar', () => {
       })
       .then(() => {
         cy.apiCreateProject({
-          withAboutBox: true,
           title: projectTitle,
           descriptionPreview: description,
           publicationStatus: 'published',
@@ -386,7 +381,6 @@ describe('Ideation CTA bar', () => {
           })
           .then(() => {
             return cy.apiCreateProject({
-              withAboutBox: true,
               title: projectTitle,
               descriptionPreview: description,
               publicationStatus: 'published',

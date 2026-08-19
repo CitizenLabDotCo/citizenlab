@@ -74,7 +74,6 @@ describe('New timeline project', () => {
 
     // create new project
     cy.apiCreateProject({
-      withAboutBox: true,
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       publicationStatus: 'draft',
