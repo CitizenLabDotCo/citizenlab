@@ -1054,6 +1054,11 @@
     "verified_at": "2026-04-20T14:31:32.872123Z",
     "verified_by": "Roger"
   },
+  "static_pages.faq_body": {
+    "state": "verified",
+    "verified_at": "2026-08-19T09:34:14.250932Z",
+    "verified_by": "Roger"
+  },
   "static_pages.faq_title": {
     "state": "verified",
     "verified_at": "2026-04-20T14:31:32.872123Z",
