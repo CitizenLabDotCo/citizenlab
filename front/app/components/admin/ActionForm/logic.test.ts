@@ -1,7 +1,7 @@
 import { getVisibleSecurityRequirements } from './logic';
 
 const ALL_DISABLED = {
-  sms2FAEnabled: false,
+  smsEnabled: false,
   smsLoginEnabled: false,
   verificationMethodEnabled: false,
   hasAuthMethodNotReturningEmail: false,
@@ -28,7 +28,7 @@ describe('ActionForm logic', () => {
         expect(
           getVisibleSecurityRequirements({
             ...ALL_DISABLED,
-            sms2FAEnabled: true,
+            smsEnabled: true,
             smsLoginEnabled: true,
           }).email
         ).toBe(true);
@@ -56,7 +56,7 @@ describe('ActionForm logic', () => {
         expect(
           getVisibleSecurityRequirements({
             ...ALL_DISABLED,
-            sms2FAEnabled: true,
+            smsEnabled: true,
           }).email
         ).toBe(false);
       });
@@ -67,7 +67,7 @@ describe('ActionForm logic', () => {
         expect(
           getVisibleSecurityRequirements({
             ...ALL_DISABLED,
-            sms2FAEnabled: true,
+            smsEnabled: true,
           }).phone
         ).toBe(true);
       });
@@ -76,7 +76,7 @@ describe('ActionForm logic', () => {
         expect(
           getVisibleSecurityRequirements({
             ...ALL_DISABLED,
-            sms2FAEnabled: true,
+            smsEnabled: true,
             smsLoginEnabled: false,
           }).phone
         ).toBe(true);
@@ -108,7 +108,7 @@ describe('ActionForm logic', () => {
         expect(
           getVisibleSecurityRequirements({
             ...ALL_DISABLED,
-            sms2FAEnabled: true,
+            smsEnabled: true,
             smsLoginEnabled: true,
             hasAuthMethodNotReturningEmail: true,
           }).verification
@@ -130,7 +130,7 @@ describe('ActionForm logic', () => {
         expect(
           getVisibleSecurityRequirements({
             ...ALL_DISABLED,
-            sms2FAEnabled: true,
+            smsEnabled: true,
             smsLoginEnabled: true,
             verificationMethodEnabled: true,
             hasAuthMethodNotReturningEmail: true,
@@ -223,7 +223,7 @@ describe('ActionForm logic', () => {
       it.each(cases)(
         'sms2FA=%p smsLogin=%p verificationMethod=%p authMethodNotReturningEmail=%p -> %p',
         (
-          sms2FAEnabled,
+          smsEnabled,
           smsLoginEnabled,
           verificationMethodEnabled,
           hasAuthMethodNotReturningEmail,
@@ -231,7 +231,7 @@ describe('ActionForm logic', () => {
         ) => {
           expect(
             getVisibleSecurityRequirements({
-              sms2FAEnabled,
+              smsEnabled,
               smsLoginEnabled,
               verificationMethodEnabled,
               hasAuthMethodNotReturningEmail,

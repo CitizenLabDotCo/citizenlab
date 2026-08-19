@@ -32,7 +32,7 @@ export type VisibleSecurityRequirements = Record<
 >;
 
 type VisibleSecurityRequirementsParams = {
-  sms2FAEnabled: boolean;
+  smsEnabled: boolean;
   smsLoginEnabled: boolean;
   verificationMethodEnabled: boolean;
   hasAuthMethodNotReturningEmail: boolean;
@@ -40,7 +40,7 @@ type VisibleSecurityRequirementsParams = {
 };
 
 export const getVisibleSecurityRequirements = ({
-  sms2FAEnabled,
+  smsEnabled,
   smsLoginEnabled,
   verificationMethodEnabled,
   hasAuthMethodNotReturningEmail,
@@ -53,7 +53,7 @@ export const getVisibleSecurityRequirements = ({
     password: false,
   };
 
-  if ((sms2FAEnabled && smsLoginEnabled) || hasAuthMethodNotReturningEmail) {
+  if ((smsEnabled && smsLoginEnabled) || hasAuthMethodNotReturningEmail) {
     // Requiring an email or not is only relevant if there exists
     // a way for participants to sign up WITHOUT an email address.
     // If you e.g. can only sign up with email, email confirmed is always required,
@@ -61,7 +61,7 @@ export const getVisibleSecurityRequirements = ({
     visibleSecurityRequirements.email = true;
   }
 
-  if (sms2FAEnabled) {
+  if (smsEnabled) {
     visibleSecurityRequirements.phone = true;
   }
 
@@ -87,7 +87,7 @@ export const getVisibleSecurityRequirements = ({
 export const useVisibleSecurityRequirements = ():
   | VisibleSecurityRequirements
   | undefined => {
-  const sms2FAEnabled = useFeatureFlag({ name: 'sms' });
+  const smsEnabled = useFeatureFlag({ name: 'sms' });
   const smsLoginEnabled = useFeatureFlag({ name: 'sms_login' });
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
   const { data: verificationMethod } = useVerificationMethod();
@@ -102,7 +102,7 @@ export const useVisibleSecurityRequirements = ():
   );
 
   return getVisibleSecurityRequirements({
-    sms2FAEnabled,
+    smsEnabled,
     smsLoginEnabled,
     verificationMethodEnabled: !!verificationMethod,
     hasAuthMethodNotReturningEmail,
