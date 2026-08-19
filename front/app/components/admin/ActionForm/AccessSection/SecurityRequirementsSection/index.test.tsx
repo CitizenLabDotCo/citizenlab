@@ -42,7 +42,7 @@ const EMAIL_LABEL = 'Require confirmed email from all participants';
 const PHONE_LABEL = 'Require confirmed phone number from all participants';
 const VERIFICATION_LABEL =
   'Require identity verification from all participants';
-const PASSWORD_LABEL = 'Password';
+const PASSWORD_LABEL = 'Require user to set a password';
 
 // The collapsed summary uses shortened versions of the row labels.
 const PASSWORD_SUMMARY = 'Password';
@@ -163,6 +163,7 @@ describe('<SecurityRequirementsSection />', () => {
       mockPasswordLoginEnabled = false;
       renderSection({
         require_confirmed_email: false,
+        require_confirmed_phone_number: true,
         require_verification: true,
       });
 
@@ -235,12 +236,16 @@ describe('<SecurityRequirementsSection />', () => {
       expect(screen.getByText(EMAIL_LABEL)).toBeInTheDocument();
     });
 
-    it('hides the password row when password login is off', async () => {
+    it('hides the password and phone rows when password login is off', async () => {
+      // Phone confirmation codes are part of the password_login flow, so with
+      // that feature off a confirmed phone number can never be obtained and the
+      // check is not offered either.
       mockPasswordLoginEnabled = false;
       renderSection();
       await openSection();
 
       expect(screen.queryByText(PASSWORD_LABEL)).not.toBeInTheDocument();
+      expect(screen.queryByText(PHONE_LABEL)).not.toBeInTheDocument();
       expect(screen.getByText(EMAIL_LABEL)).toBeInTheDocument();
     });
 

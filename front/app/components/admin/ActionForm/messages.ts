@@ -26,8 +26,12 @@ export default defineMessages({
     id: 'app.components.admin.ActionForm.name',
     defaultMessage: 'Name',
   },
+  requireUserToSetAPassword: {
+    id: 'app.components.admin.ActionForm.requireUserToSetAPassword',
+    defaultMessage: 'Require user to set a password',
+  },
   password: {
-    id: 'app.components.admin.ActionForm.password',
+    id: 'app.components.admin.ActionForm.password3',
     defaultMessage: 'Password',
   },
   anonymous: {
