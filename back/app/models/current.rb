@@ -8,7 +8,7 @@ class Current < ActiveSupport::CurrentAttributes
   attribute :activity_channel
 
   # Per-request cache of the global 'visiting' permission, which every inherited
-  # phase permission is resolved from. See Permissions::PermissionInheritanceService.
+  # permission is resolved from. See Permissions::PermissionInheritanceService.
   attribute :global_visiting_permission
 
   private :tenant=, :app_configuration=
