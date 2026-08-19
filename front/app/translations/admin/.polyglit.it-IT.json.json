@@ -1174,6 +1174,11 @@
     "verified_at": "2026-07-13T07:16:39.669771Z",
     "verified_by": "Roger"
   },
+  "app.components.admin.ActionForm.override": {
+    "state": "verified",
+    "verified_at": "2026-08-19T12:22:22.562962Z",
+    "verified_by": "Roger"
+  },
   "app.components.admin.ActionForm.password": {
     "state": "verified",
     "verified_at": "2026-07-13T07:16:39.669771Z",
@@ -1222,6 +1227,11 @@
   "app.components.admin.ActionForm.signInRequired": {
     "state": "verified",
     "verified_at": "2026-07-13T07:16:39.669771Z",
+    "verified_by": "Roger"
+  },
+  "app.components.admin.ActionForm.usingPlatformDefaults": {
+    "state": "verified",
+    "verified_at": "2026-08-19T12:22:22.562962Z",
     "verified_by": "Roger"
   },
   "app.components.admin.AddByEmail.invite": {
