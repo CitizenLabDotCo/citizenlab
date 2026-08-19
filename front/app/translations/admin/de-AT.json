@@ -3282,7 +3282,7 @@
   "app.containers.AdminPage.SettingsPage.profanityBlockerSettingDescription": "Blockiert automatisch Beiträge, Vorschläge und Kommentare, die die am häufigsten gemeldeten anstößigen Wörter enthalten.",
   "app.containers.AdminPage.SettingsPage.projectsHeaderDescription": "Dieser Text wird auf der Homepage oberhalb der Projekte angezeigt.",
   "app.containers.AdminPage.SettingsPage.projects_header": "Kopfzeile Projekte",
-  "app.containers.AdminPage.SettingsPage.registration.VisitingPermission.platformAccessTitle1": "Plattformzugriff und Erfassung persönlicher Informationen",
+  "app.containers.AdminPage.SettingsPage.registration.VisitingPermission.platformAccessTitle1": "Plattformzugriff und Erfassung persönlicher Daten",
   "app.containers.AdminPage.SettingsPage.registrationHelperTextDescription2": "Fügen Sie kurze Beschreibungen für den oberen Teil der Anmelde- und Login-Formulare hinzu, um Besucher*innen zur Erstellung eines Accounts zu bewegen.",
   "app.containers.AdminPage.SettingsPage.save": "Speichern",
   "app.containers.AdminPage.SettingsPage.saveArea": "Gebiet speichern",
