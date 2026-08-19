@@ -8,9 +8,10 @@ RSpec.describe EmailCampaigns::Sms::SegmentedMessage do
   #
   # The library these expectations come from tests the same behaviour in
   # https://github.com/TwilioDevEd/message-segment-calculator/tree/v1.2.0/tests
-  # (segments.test.js covers the User Data Header, methods.test.js the encoding
-  # and character counts), and front/app/containers/Admin/messaging/Sms/utils/
-  # smsSegmentParity.test.ts pins the fixture below against the library itself.
+  # (index.test.js covers the encodings, sizes and character counts, segments.test.js the
+  # User Data Header, methods.test.js the non-GSM characters), and
+  # front/app/containers/Admin/messaging/Sms/utils/smsSegmentParity.test.ts pins the
+  # fixture below against the library itself.
   describe 'parity with the JS library the admin UI counts with' do
     let(:fixture) do
       path = Rails.root.join('engines/free/email_campaigns/spec/fixtures/sms_segment_parity.json')
