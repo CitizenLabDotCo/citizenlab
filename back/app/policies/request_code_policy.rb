@@ -53,6 +53,7 @@ class RequestCodePolicy < ApplicationPolicy
   # number is given), and whenever there is an authenticated user the code may
   # only be sent to that same user.
   def request_code_phone?
+    return false unless app_configuration.feature_activated?('password_login')
     return false unless app_configuration.feature_activated?('sms')
     return false if user.nil? && !app_configuration.feature_activated?('sms_login')
     return false if record.nil?
