@@ -4,9 +4,9 @@ require 'rails_helper'
 
 RSpec.describe Answerable do
   describe '#answer_for_key' do
-    let(:user) { create(:user) }
+    let_it_be(:user) { create(:user) }
 
-    before do
+    before_all do
       create(:custom_field_answer, answerable: user, key: 'pet', value: 'other')
       create(:custom_field_answer, answerable: user, key: 'pet_other', value: 'A ferret')
     end
