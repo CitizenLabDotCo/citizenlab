@@ -1157,7 +1157,7 @@ function apiSetFolderDescription(folderId: string, description: string) {
 
 function apiCreateFolder({
   title,
-  descriptionPreview,
+  descriptionPreview = randomString(),
   publicationStatus = 'published',
   spaceId,
 }: {
