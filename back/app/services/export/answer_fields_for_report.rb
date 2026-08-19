@@ -38,7 +38,7 @@ module Export
       field.matrix_statements.map do |statement|
         ComputedFieldForReport.new(
           multiloc_service.t(statement.title_multiloc),
-          ->(input) { input.custom_field_values.dig(statement.custom_field.key, statement.key) }
+          ->(input) { input.answer_for_key(statement.custom_field.key)&.value&.dig(statement.key) }
         )
       end
     end
