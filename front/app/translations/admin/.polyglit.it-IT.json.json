@@ -16974,6 +16974,11 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.SettingsPage.registration.VisitingPermission.platformAccessTitle1": {
+    "state": "verified",
+    "verified_at": "2026-08-19T08:26:06.262048Z",
+    "verified_by": "Roger"
+  },
   "app.containers.AdminPage.SettingsPage.registrationHelperTextDescription2": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -17218,6 +17223,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.SettingsPage.visitingPermission.subtitle1": {
+    "state": "verified",
+    "verified_at": "2026-08-19T08:26:06.262048Z",
+    "verified_by": "Roger"
   },
   "app.containers.AdminPage.SideBar.administrator": {
     "state": "verified",
