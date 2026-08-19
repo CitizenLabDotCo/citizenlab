@@ -3550,7 +3550,7 @@
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation3Title": "Volume e precisione dei dati:",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Text": "I risultati possono contenere diversi bias. Questi possono derivare, ad esempio, da dati sbilanciati nell'addestramento del modello, differenze di linguaggio ed espressione e una mancanza di comprensione del contesto. In particolare, l'ironia, il sarcasmo, i dialetti, lo slang giovanile o le espressioni legate al contesto potrebbero essere interpretati in modo errato.",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Title": "Bias:",
-  "app.containers.AdminPage.projects.project.analysis.LaunchModal.subtitle": "Raccomandiamo di utilizzare i riassunti generati dall'intelligenza artificiale come punto di partenza per la comprensione di grandi insiemi di dati, ma non come risposta finale.",
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.subtitle": "Raccomandiamo di utilizzare i riassunti generati dall'intelligenza artificiale come punto di partenza per la comprensione di grandi insiemi di dati, ma non come risposta finale. Controlla sempre i risultati!",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.title": "Come lavorare con l'AI",
   "app.containers.AdminPage.projects.project.analysis.Tags.addInputToTag": "Aggiungi i contributi selezionati al tag",
   "app.containers.AdminPage.projects.project.analysis.Tags.addTag": "Aggiungi un tag",

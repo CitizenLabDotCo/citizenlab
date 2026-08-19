@@ -15909,6 +15909,11 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel": {
+    "state": "verified",
+    "verified_at": "2026-08-19T10:04:05.005919Z",
+    "verified_by": "Roger"
+  },
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -16033,6 +16038,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.ProjectTimeline.newSurveyTitle": {
+    "state": "verified",
+    "verified_at": "2026-08-19T10:04:05.005919Z",
+    "verified_by": "Roger"
   },
   "app.containers.AdminPage.ProjectTimeline.noEndDateDescription": {
     "state": "verified",
@@ -17504,6 +17514,11 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": {
+    "state": "verified",
+    "verified_at": "2026-08-19T10:04:05.005919Z",
+    "verified_by": "Roger"
+  },
   "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -18362,6 +18377,11 @@
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Title": {
     "state": "verified",
     "verified_at": "2026-06-18T13:19:51.232567Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.subtitle": {
+    "state": "verified",
+    "verified_at": "2026-08-19T10:04:05.005919Z",
     "verified_by": "Roger"
   },
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.title": {
