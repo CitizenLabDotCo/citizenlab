@@ -618,7 +618,7 @@
   "app.components.ProjectPageBuilder.Widgets.extraSurveysSurveyLabel": "Sondaggio",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysWidgetTitle": "Sondaggi extra",
   "app.components.ProjectPageBuilder.Widgets.inputFeedEmptyTitle": "Non ci sono ancora modi per partecipare",
-  "app.components.ProjectPageBuilder.Widgets.inputFeedManagedNote": "Questo mostra il contenuto di partecipazione per la fase attiva. Il suo contenuto è impostato dal metodo della fase nel {projectEditorLink} — qui scegli solo la sua posizione nella pagina.",
+  "app.components.ProjectPageBuilder.Widgets.inputFeedManagedNote": "Questa sezione mostra il contenuto di partecipazione per la fase attiva. Il suo contenuto è impostato dal metodo della fase nell' {projectEditorLink} — qui scegli solo la sua posizione nella pagina.",
   "app.components.ProjectPageBuilder.Widgets.lockedHeaderNote": "Fissato in alto nella pagina — modificabile, ma non può essere spostato o rimosso.",
   "app.components.ProjectPageBuilder.Widgets.onlyAdminsAndManagersSeeThis": "Solo gli amministratori e i responsabili di questo progetto possono visualizzarlo",
   "app.components.ProjectPageBuilder.Widgets.phasesHeading": "Fasi",
