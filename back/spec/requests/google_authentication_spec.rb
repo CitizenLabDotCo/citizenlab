@@ -218,11 +218,11 @@ describe 'google authentication' do
         expect(user.confirmation_required?).to be(true)
       end
 
-      it "does not log 'registration_completed' activity job" do
+      it "does log 'registration_completed' activity job" do
         get '/auth/google'
         follow_redirect!
 
-        expect(LogActivityJob).not_to have_been_enqueued.with(
+        expect(LogActivityJob).to have_been_enqueued.with(
           anything,
           'completed_registration',
           anything,

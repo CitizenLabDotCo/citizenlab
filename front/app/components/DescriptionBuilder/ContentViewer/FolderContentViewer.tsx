@@ -23,8 +23,10 @@ const handleLoadImages = () => {
 };
 
 const FolderContentViewer = ({ folderId }: FolderContentViewerProps) => {
-  const { data: descriptionBuilderLayout, isInitialLoading } =
-    useContentBuilderLayout('folder', folderId);
+  const { data: descriptionBuilderLayout, isLoading } = useContentBuilderLayout(
+    'folder',
+    folderId
+  );
 
   const descriptionBuilderContent =
     descriptionBuilderLayout &&
@@ -35,11 +37,11 @@ const FolderContentViewer = ({ folderId }: FolderContentViewerProps) => {
     ? descriptionBuilderLayout.data.attributes.craftjs_json
     : undefined;
 
-  if (!isInitialLoading && !descriptionBuilderContent) return null;
+  if (!isLoading && !descriptionBuilderContent) return null;
 
   return (
     <Box data-testid="descriptionBuilderPreview">
-      {isInitialLoading ? (
+      {isLoading ? (
         <Spinner />
       ) : (
         <Box data-testid="descriptionBuilderFolderPreviewContent">

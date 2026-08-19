@@ -63,9 +63,11 @@ class UserConfirmationService
     # Ensure that password login (i.e. 'normal', non-SSO login)
     # feature is enabled for phone confirmation
     validate_password_login_enabled!
+    validate_sms_enabled!
     validate_user!(user)
     validate_phone!(user.phone)
     validate_and_confirm!(user.phone_confirmation, code)
+    ClaimTokenService.complete(user)
 
     success_result(user)
   rescue ValidationError => e
@@ -99,6 +101,12 @@ class UserConfirmationService
     return if app_configuration.feature_activated?('password_login')
 
     raise ValidationError.new(:base, :password_login_feature_disabled)
+  end
+
+  def validate_sms_enabled!
+    return if app_configuration.feature_activated?('sms')
+
+    raise ValidationError.new(:base, :sms_feature_disabled)
   end
 
   def validate_user!(user)

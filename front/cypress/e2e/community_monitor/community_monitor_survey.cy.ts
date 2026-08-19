@@ -34,6 +34,12 @@ describe('Submit community monitor survey', () => {
 
   beforeEach(() => {
     cy.setConsentAndAdminLoginCookies();
+    // The action follows the platform defaults until it is overridden, and the
+    // panel only offers its settings once it has been.
+    cy.apiOverridePhasePermission({
+      phaseId: communityMonitorPhaseId,
+      action: 'posting_idea',
+    });
     // Confirm access rights are set to Anyone for the community monitor
     cy.visit(`admin/community-monitor/settings/access-rights`);
     cy.get('.e2e-permission-anyone').should('be.visible');
@@ -98,7 +104,7 @@ describe('Submit community monitor survey', () => {
     cy.visit(`admin/community-monitor/settings/access-rights`);
     cy.get('.e2e-permission-registered-users').should('be.visible');
     cy.get('.e2e-permission-registered-users').first().click({ force: true });
-    cy.contains('Confirmed email').should('be.visible');
+    cy.contains('Security requirements').should('be.visible');
 
     // Go to community monitor survey form as logged out user
     cy.clearAllCookies();

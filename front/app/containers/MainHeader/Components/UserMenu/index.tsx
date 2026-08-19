@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 import User from './User';
 
@@ -40,7 +40,7 @@ const UserMenu = () => {
     setOpened(false);
   };
 
-  if (!isNilOrError(authUser)) {
+  if (authUser) {
     const userId = authUser.data.id;
 
     return (
@@ -68,6 +68,7 @@ const UserMenu = () => {
         <Suspense fallback={null}>
           <UserMenuDropdown
             opened={opened}
+            authUser={authUser}
             toggleDropdown={toggleDropdown}
             closeDropdown={closeDropdown}
           />

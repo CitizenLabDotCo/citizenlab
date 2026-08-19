@@ -65,7 +65,7 @@ interface Props {
 
 const ChangeStatusModal = ({ opened, project, onClose }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutate: updateProject, isLoading } = useUpdateProject();
+  const { mutate: updateProject, isPending } = useUpdateProject();
 
   const currentStatus = project.attributes.publication_status;
   const [selectedStatus, setSelectedStatus] =
@@ -118,7 +118,7 @@ const ChangeStatusModal = ({ opened, project, onClose }: Props) => {
             buttonStyle="admin-dark"
             icon="check"
             onClick={handleSave}
-            processing={isLoading}
+            processing={isPending}
             id="e2e-change-status-submit"
           >
             {formatMessage(messages.saveChanges)}

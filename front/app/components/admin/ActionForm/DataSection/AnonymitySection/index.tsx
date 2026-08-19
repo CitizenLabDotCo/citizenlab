@@ -5,18 +5,21 @@ import React from 'react';
 
 import { Box, Text, Radio, Error } from '@citizenlab/cl2-component-library';
 
-import {
-  IPhasePermissionData,
-  UserDataCollection,
-} from 'api/phase_permissions/types';
+import { IPermissionData, UserDataCollection } from 'api/permissions/types';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
-import { DATA_COLLECTION_SUMMARY } from '../../logic';
 import { Changes } from '../../types';
 import { Expander } from '../../ui';
 
 import messages from './messages';
+
+// The one-line summary shown while the row is collapsed.
+const DATA_COLLECTION_SUMMARY: Record<UserDataCollection, MessageDescriptor> = {
+  all_data: messages.linkedToProfile,
+  demographics_only: messages.piiExcludedFromResults,
+  anonymous: messages.fullyAnonymous,
+};
 
 const ANONYMITY_OPTIONS: {
   value: UserDataCollection;
@@ -40,7 +43,7 @@ const ANONYMITY_OPTIONS: {
 ];
 
 interface Props {
-  permission: IPhasePermissionData;
+  permission: IPermissionData;
   onChange: (changes: Changes) => void;
 }
 

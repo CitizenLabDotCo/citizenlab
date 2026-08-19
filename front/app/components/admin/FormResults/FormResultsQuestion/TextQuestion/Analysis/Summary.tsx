@@ -44,7 +44,7 @@ const Summary = ({
 
   const { data } = useAnalysisSummary({ analysisId, id: summaryId });
 
-  const { mutate: regenerateSummary, isLoading: isLoadingRegenerateSummary } =
+  const { mutate: regenerateSummary, isPending: isLoadingRegenerateSummary } =
     useRegenerateAnalysisSummary();
 
   const summary = data?.data.attributes.summary;

@@ -23,16 +23,15 @@ interface Props {
 const FinishedOrArchived = ({ titleMultiloc, filterBy }: Props) => {
   const localizeWithFallback = useLocalizeWithFallback();
 
-  const { data, hasNextPage, fetchNextPage, isInitialLoading } =
-    useProjectsMini({
-      endpoint: 'finished_or_archived',
-      filter_by: filterBy,
-    });
+  const { data, hasNextPage, fetchNextPage, isLoading } = useProjectsMini({
+    endpoint: 'finished_or_archived',
+    filter_by: filterBy,
+  });
 
   const projects = data?.pages.map((page) => page.data).flat();
   const title = localizeWithFallback(titleMultiloc, messages.youSaidWeDid);
 
-  if (isInitialLoading) {
+  if (isLoading) {
     return <Skeleton title={title} />;
   }
   if (!projects) return null;

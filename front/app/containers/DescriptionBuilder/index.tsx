@@ -55,7 +55,7 @@ const DescriptionBuilderPage = ({
 
   const {
     mutate: addContentBuilderLayout,
-    isLoading: isAddingLayout,
+    isPending: isAddingLayout,
     isError: isAddLayoutError,
   } = useAddContentBuilderLayout();
 

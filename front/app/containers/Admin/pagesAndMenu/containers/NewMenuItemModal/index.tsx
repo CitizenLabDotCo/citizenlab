@@ -29,9 +29,9 @@ type Props = {
 const NewMenuItemModal = ({ opened, onClose, editItem }: Props) => {
   const { formatMessage } = useIntl();
 
-  const { mutateAsync: addNavbarItem, isLoading: singleProcessing } =
+  const { mutateAsync: addNavbarItem, isPending: singleProcessing } =
     useAddNavbarItem();
-  const { mutateAsync: upsertDropdown, isLoading: dropdownProcessing } =
+  const { mutateAsync: upsertDropdown, isPending: dropdownProcessing } =
     useUpsertNavbarDropdown();
 
   const isEditing = !!editItem;

@@ -9,6 +9,11 @@ class SanitizationService
   # Each `strip_to_plain_text` pass peels one layer of entity encoding; real text settles in 1-3.
   PLAIN_TEXT_PASSES = 5
 
+  NBSP = "\u00A0"
+
+  # What `linkify` builds an href from, and so all `replace_links_with_urls` will put back.
+  LINKIFIABLE_HREF = %r{\A(https?://|mailto:)}i
+
   SANITIZER = Rails::Html::SafeListSanitizer.new
 
   private_constant :SANITIZER
@@ -93,6 +98,27 @@ class SanitizationService
     linkify(html)
   end
 
+  # Replaces every link with its own URL as the text it shows.
+  #
+  # A pipeline without `:link` rebuilds links from the visible text, so a link always shows where it
+  # goes - but only while that text is the URL, which translating a label breaks. Run this first to
+  # give the rebuild its URL back. Only the schemes `linkify` builds are restored.
+  #
+  # The text written back has to be what `linkify` matches, not the href verbatim: it spots an email
+  # by its address alone, so a `mailto:` left on would sit in front of the rebuilt link as visible
+  # text - and be read off the href and prepended again on every later pass.
+  def replace_links_with_urls(html)
+    return html if html.blank?
+
+    doc = Nokogiri::HTML.fragment(html)
+    doc.css('a[href]').each do |link|
+      next unless link['href'].match?(LINKIFIABLE_HREF)
+
+      link.replace(Nokogiri::XML::Text.new(link['href'].sub(/\Amailto:/i, ''), link.document))
+    end
+    doc.to_s
+  end
+
   def sanitize_body_multiloc(multiloc, features)
     multiloc.transform_values { |html| sanitize_body(html, features) }
   end
@@ -102,13 +128,17 @@ class SanitizationService
   # `full_sanitizer` alone entity-encodes what it keeps ("Fish & chips" -> "Fish &amp; chips"), so
   # decode after each pass and repeat until the value settles - otherwise a payload survives by
   # hiding behind its own encoding (`&lt;script&gt;`).
+  #
+  # `CGI.unescapeHTML` decodes numeric references and the five XML names, but the HTML5 serializer
+  # also writes U+00A0 as `&nbsp;`, so that one needs decoding by hand. Callers render the result as
+  # text and slug it, so an entity left standing reaches the reader as six literal characters.
   def strip_to_plain_text(text)
     return nil if text.nil?
 
     full_sanitizer = ActionView::Base.full_sanitizer
 
     PLAIN_TEXT_PASSES.times do
-      decoded = CGI.unescapeHTML(full_sanitizer.sanitize(text))
+      decoded = CGI.unescapeHTML(full_sanitizer.sanitize(text)).gsub('&nbsp;', NBSP)
       return decoded if decoded == text
 
       text = decoded

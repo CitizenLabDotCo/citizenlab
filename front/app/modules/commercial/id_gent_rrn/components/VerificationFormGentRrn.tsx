@@ -74,11 +74,13 @@ const VerificationFormGentRrn = memo<Props & WrappedComponentProps>(
             setProcessing(true);
             await verifyGentRrn(rrn);
 
-            queryClient.invalidateQueries(userLockedAttributesKeys.all());
+            queryClient.invalidateQueries({
+              queryKey: userLockedAttributesKeys.all(),
+            });
             if (!isNilOrError(authUser)) {
-              queryClient.invalidateQueries(
-                usersKeys.item({ id: authUser.data.id })
-              );
+              queryClient.invalidateQueries({
+                queryKey: usersKeys.item({ id: authUser.data.id }),
+              });
             }
 
             queryClient.invalidateQueries({ queryKey: meKeys.all() });

@@ -60,17 +60,11 @@ class IdeaPolicy < ApplicationPolicy
     return false if !phase
 
     reason = if record.draft?
-      # User permission checks are deferred to publication, as the user may
-      # still become permitted while filling in the form.
-      Permissions::PhasePermissionsService.new(phase, user).context_denied_reason
+      draft_denied_reason(phase)
     else
       return false if !active? && !record.participation_method_on_creation.supports_inputs_without_author?
 
-      Permissions::PhasePermissionsService.new(
-        phase,
-        user,
-        request: record.request # Only present if pmethod.everyone_tracking_enabled? is true
-      ).denied_reason_for_action('posting_idea')
+      phase_posting_denied_reason(phase)
     end
     raise_not_authorized(reason) if reason
 
@@ -118,6 +112,19 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   private
+
+  def draft_denied_reason(phase)
+    reason = phase_posting_denied_reason(phase)
+    Permissions::PhasePermissionsService::DEFERRABLE_DENIED_REASONS.include?(reason) ? nil : reason
+  end
+
+  def phase_posting_denied_reason(phase)
+    Permissions::PhasePermissionsService.new(
+      phase,
+      user,
+      request: record.request # Only present if pmethod.everyone_tracking_enabled? is true
+    ).denied_reason_for_action('posting_idea')
+  end
 
   def owner?
     user && record.author_id == user.id

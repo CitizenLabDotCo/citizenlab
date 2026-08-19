@@ -13,8 +13,8 @@ describe McpServer::Tools::UpdatePhase do
   end
 
   describe '#input_schema' do
-    it "reuses create_phase's schema without project_id" do
-      create_properties = McpServer::Tools::CreatePhase.new.input_schema[:properties].except(:project_id)
+    it "reuses create_phase's schema without project_id and the create-only placement_type" do
+      create_properties = McpServer::Tools::CreatePhase.new.input_schema[:properties].except(:project_id, :placement_type)
       schema = described_class.new.input_schema
 
       expect(schema[:properties].keys).to eq([:phase_id, *create_properties.keys])

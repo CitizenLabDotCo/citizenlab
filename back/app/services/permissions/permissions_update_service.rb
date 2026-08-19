@@ -2,10 +2,16 @@
 
 class Permissions::PermissionsUpdateService
   # scope = phase or null
+  #
+  # Phase permissions are not created here: an action without a permission of
+  # its own inherits the global 'visiting' permission, and only gets a row once
+  # an admin overrides it. Global permissions have nothing to inherit from, so
+  # they are still created eagerly.
+  # See Permissions::PermissionInheritanceService.
   def update_permissions_for_scope(scope)
     actions = Permission.available_actions scope
     remove_extras_actions(scope, actions)
-    add_missing_actions(scope, actions)
+    add_missing_actions(scope, actions) unless inheritance_service.inheritable_scope?(scope)
     fix_permitted_by(scope)
   end
 
@@ -39,6 +45,10 @@ class Permissions::PermissionsUpdateService
   end
 
   private
+
+  def inheritance_service
+    @inheritance_service ||= Permissions::PermissionInheritanceService.new
+  end
 
   def remove_extras_actions(scope, actions = nil)
     actions ||= Permission.available_actions(scope)

@@ -26,7 +26,7 @@ const ReviewFlow = ({ project }: Props) => {
     useProjectReview(project.id);
   const {
     mutate: approveProjectReview,
-    isLoading: isApprovingProjectReviewLoading,
+    isPending: isApprovingProjectReviewLoading,
   } = useApproveProjectReview();
   const { formatMessage } = useIntl();
 

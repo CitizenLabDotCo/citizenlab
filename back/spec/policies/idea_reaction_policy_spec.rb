@@ -15,8 +15,6 @@ describe IdeaReactionPolicy do
 
     it { is_expected.not_to permit(:show) }
     it { is_expected.not_to permit(:create) }
-    it { is_expected.not_to permit(:up) }
-    it { is_expected.not_to permit(:down) }
     it { is_expected.not_to permit(:destroy) }
 
     it 'does not index the reaction' do
@@ -29,8 +27,6 @@ describe IdeaReactionPolicy do
 
     it { is_expected.not_to permit(:show) }
     it { is_expected.not_to permit(:create) }
-    it { is_expected.not_to permit(:up) }
-    it { is_expected.not_to permit(:down) }
     it { is_expected.not_to permit(:destroy) }
 
     it 'does not index the reaction' do
@@ -43,8 +39,6 @@ describe IdeaReactionPolicy do
 
     it { is_expected.to permit(:show) }
     it { is_expected.to permit(:create) }
-    it { is_expected.to permit(:up) }
-    it { is_expected.to permit(:down) }
     it { is_expected.to permit(:destroy) }
 
     it 'indexes the reaction' do
@@ -64,8 +58,6 @@ describe IdeaReactionPolicy do
 
     it { is_expected.to     permit(:show) }
     it { is_expected.not_to permit(:create) }
-    it { is_expected.not_to permit(:up) }
-    it { is_expected.not_to permit(:down) }
     it { is_expected.not_to permit(:destroy) }
 
     it 'indexes the reaction' do
@@ -81,8 +73,6 @@ describe IdeaReactionPolicy do
 
     it { is_expected.to permit(:show) }
     it { is_expected.not_to permit(:create) }
-    it { is_expected.not_to permit(:up) }
-    it { is_expected.not_to permit(:down) }
     it { is_expected.not_to permit(:destroy) }
 
     it 'indexes the reaction' do
@@ -98,8 +88,6 @@ describe IdeaReactionPolicy do
 
     it { is_expected.to permit(:show) }
     it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
-    it { expect { policy.up? }.to raise_error(Pundit::NotAuthorizedError) }
-    it { expect { policy.down? }.to raise_error(Pundit::NotAuthorizedError) }
     it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
 
     it 'indexes the reaction' do
@@ -120,8 +108,6 @@ describe IdeaReactionPolicy do
 
     it { is_expected.to permit(:show) }
     it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
-    it { expect { policy.up? }.to raise_error(Pundit::NotAuthorizedError) }
-    it { expect { policy.down? }.to raise_error(Pundit::NotAuthorizedError) }
     it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
 
     it 'indexes the reaction' do

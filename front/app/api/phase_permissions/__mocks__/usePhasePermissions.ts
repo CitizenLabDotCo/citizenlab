@@ -1,6 +1,6 @@
-import { IPhasePermissionData } from '../types';
+import { IPermissionData } from 'api/permissions/types';
 
-export const phasePermissionsData: IPhasePermissionData = {
+export const phasePermissionsData: IPermissionData = {
   id: '80419431-f691-4dc5-8aeb-5d14ece5feb0',
   type: 'permission',
   attributes: {
@@ -27,6 +27,7 @@ export const phasePermissionsData: IPhasePermissionData = {
     require_password: true,
     require_verification: false,
     permitted_by_everyone_allowed: false,
+    inherited: false,
   },
   relationships: {
     permission_scope: {

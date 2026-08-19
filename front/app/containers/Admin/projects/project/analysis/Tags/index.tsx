@@ -149,7 +149,7 @@ const Tags = () => {
         tag_ids: nonNullSelectedTags?.filter((tagId) => tagId !== id),
       });
     }
-    queryClient.invalidateQueries(inputsKeys.lists());
+    queryClient.invalidateQueries({ queryKey: inputsKeys.lists() });
     trackEventByName(tracks.tagFilterUsed, {
       tagId: id,
     });
@@ -157,7 +157,7 @@ const Tags = () => {
 
   const toggleTagContainerClick = (id: string) => {
     updateSearchParams({ tag_ids: [id] });
-    queryClient.invalidateQueries(inputsKeys.lists());
+    queryClient.invalidateQueries({ queryKey: inputsKeys.lists() });
     trackEventByName(tracks.tagFilterUsed, {
       tagId: id,
     });

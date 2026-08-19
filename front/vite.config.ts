@@ -22,7 +22,14 @@ export default defineConfig(({ mode }) => {
   const isDev = mode === 'development';
   const isProd = mode === 'production';
   const isTestBuild = process.env.TEST_BUILD === 'true';
-  const sourceMapToSentry = !isDev && !isTestBuild && process.env.CI;
+  const sourceMapToSentry = !isDev && !isTestBuild && !!process.env.CI;
+
+  // CI sets ASSET_BASE_URL=/<git-sha>/ so each build's assets get immutable,
+  // per-build URLs. Unset locally, so dev serves everything from '/'.
+  const assetBase = process.env.ASSET_BASE_URL || '/';
+  // Sentry matches artifacts by request URL, `~` standing in for scheme+host,
+  // so artifact names need the same prefix: '/<sha>/' -> '~/<sha>'.
+  const sentryUrlPrefix = `~${assetBase}`.replace(/\/+$/, '');
 
   const API_HOST = process.env.API_HOST || 'localhost';
   const API_PORT = process.env.API_PORT || '4000';
@@ -40,10 +47,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     root: path.resolve(__dirname, 'app'), // Root directory
-    // Base path for built assets. CI sets ASSET_BASE_URL=/<git-sha>/ so every
-    // build's assets get immutable, per-build URLs (uploaded to a fresh S3
-    // prefix). Unset locally, so dev keeps serving everything from '/'.
-    base: process.env.ASSET_BASE_URL || '/',
+    base: assetBase,
     server: {
       port: USE_HTTPS ? 443 : Number(process.env.PORT) || 3000,
       host: '0.0.0.0',
@@ -115,7 +119,19 @@ export default defineConfig(({ mode }) => {
             project: 'cl2-front',
             release: {
               name: process.env.CIRCLE_BUILD_NUM,
+              // Our Sentry predates artifact bundles, so it only resolves maps
+              // attached to a release and named after their URL. The default
+              // debug-ID upload names them `<debugId>-<n>.js`, which it can't
+              // match — hence 0 artifacts on every release.
+              uploadLegacySourcemaps: {
+                paths: ['build'],
+                urlPrefix: sentryUrlPrefix,
+                ext: ['js', 'map'],
+              },
             },
+            // After a Sentry upgrade, drop this and
+            // uploadLegacySourcemaps to switch back to debug IDs.
+            sourcemaps: { disable: true },
           }),
         USE_HTTPS && mkcert({ hosts: [HTTPS_HOST] }), // HTTPS in development
       ],

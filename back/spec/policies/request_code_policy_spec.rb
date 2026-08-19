@@ -70,31 +70,86 @@ RSpec.describe RequestCodePolicy do
   end
 
   describe '#request_code_phone?' do
-    before { SettingsService.new.activate_feature!('sms') }
+    include_context 'with sms feature enabled'
 
-    # Confirmations are created on demand, so a user who has never requested a
-    # phone code has no PhoneConfirmation row at all.
-    it 'permits when the user has a phone but no confirmation record yet' do
-      user = create(:user, :with_confirmed_phone)
-      expect(user.phone_confirmation).to be_nil
-      expect(described_class.new(user, user)).to permit(:request_code_phone)
+    context 'without an authenticated user' do
+      before { SettingsService.new.activate_feature!('sms_login') }
+
+      it 'permits requesting a code for an existing account' do
+        record = create(:unconfirmed_phone_user)
+        expect(described_class.new(nil, record)).to permit(:request_code_phone)
+      end
+
+      it 'does not permit when no account matches the phone number' do
+        expect(described_class.new(nil, nil)).not_to permit(:request_code_phone)
+      end
+
+      it 'does not permit when the account has no phone number' do
+        record = create(:user)
+        expect(described_class.new(nil, record)).not_to permit(:request_code_phone)
+      end
+
+      it 'does not permit once the code_reset_count limit is reached' do
+        record = create(:unconfirmed_phone_user)
+        record.find_or_create_confirmation(:phone_confirmation).update!(code_reset_count: 4)
+        expect(described_class.new(nil, record)).not_to permit(:request_code_phone)
+      end
+
+      it 'does not permit when the sms feature is disabled' do
+        SettingsService.new.deactivate_feature!('sms')
+        record = create(:unconfirmed_phone_user)
+        expect(described_class.new(nil, record)).not_to permit(:request_code_phone)
+      end
+
+      it 'does not permit when the sms_login feature is disabled' do
+        SettingsService.new.deactivate_feature!('sms_login')
+        record = create(:unconfirmed_phone_user)
+        expect(described_class.new(nil, record)).not_to permit(:request_code_phone)
+      end
     end
 
-    it 'does not permit when the user has no phone' do
-      user = create(:user)
-      expect(described_class.new(user, user)).not_to permit(:request_code_phone)
-    end
+    context 'with an authenticated user' do
+      it 'permits requesting a code for their own account (record == user)' do
+        user = create(:user, :with_confirmed_phone)
+        expect(described_class.new(user, user)).to permit(:request_code_phone)
+      end
 
-    it 'does not permit once the code_reset_count limit is reached' do
-      user = create(:user, :with_confirmed_phone)
-      user.find_or_create_confirmation(:phone_confirmation).update!(code_reset_count: 4)
-      expect(described_class.new(user, user)).not_to permit(:request_code_phone)
-    end
+      it 'permits when the sms_login feature is disabled' do
+        SettingsService.new.deactivate_feature!('sms_login')
+        user = create(:user, :with_confirmed_phone)
+        expect(described_class.new(user, user)).to permit(:request_code_phone)
+      end
 
-    it 'does not permit when the sms feature is disabled' do
-      SettingsService.new.deactivate_feature!('sms')
-      user = create(:user, :with_confirmed_phone)
-      expect(described_class.new(user, user)).not_to permit(:request_code_phone)
+      it 'does not permit requesting a code for a different account' do
+        requester = create(:user, :with_confirmed_phone)
+        other_user = create(:user, :with_confirmed_phone)
+        expect(described_class.new(requester, other_user)).not_to permit(:request_code_phone)
+      end
+
+      # Confirmations are created on demand, so a user who has never requested a
+      # phone code has no PhoneConfirmation row at all.
+      it 'permits when the user has a phone but no confirmation record yet' do
+        user = create(:user, :with_confirmed_phone)
+        expect(user.phone_confirmation).to be_nil
+        expect(described_class.new(user, user)).to permit(:request_code_phone)
+      end
+
+      it 'does not permit when the user has no phone' do
+        user = create(:user)
+        expect(described_class.new(user, user)).not_to permit(:request_code_phone)
+      end
+
+      it 'does not permit once the code_reset_count limit is reached' do
+        user = create(:user, :with_confirmed_phone)
+        user.find_or_create_confirmation(:phone_confirmation).update!(code_reset_count: 4)
+        expect(described_class.new(user, user)).not_to permit(:request_code_phone)
+      end
+
+      it 'does not permit when the sms feature is disabled' do
+        SettingsService.new.deactivate_feature!('sms')
+        user = create(:user, :with_confirmed_phone)
+        expect(described_class.new(user, user)).not_to permit(:request_code_phone)
+      end
     end
   end
 end

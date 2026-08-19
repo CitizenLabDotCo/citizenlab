@@ -66,7 +66,7 @@ const FooterNotes = ({ codeResent, onResendCode, onChangePhone }: Props) => (
     {onChangePhone && (
       <FooterNote>
         <FormattedMessage {...messages.wrongNumber} />
-        <FooterNoteLink onClick={onChangePhone}>
+        <FooterNoteLink onClick={onChangePhone} data-cy="go-to-change-phone">
           <FormattedMessage {...messages.changeYourNumber} />
         </FooterNoteLink>
       </FooterNote>
