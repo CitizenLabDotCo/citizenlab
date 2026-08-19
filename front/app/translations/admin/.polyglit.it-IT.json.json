@@ -16924,6 +16924,11 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.SettingsPage.otherRegistrationSettings": {
+    "state": "verified",
+    "verified_at": "2026-08-19T08:30:45.546996Z",
+    "verified_by": "Roger"
+  },
   "app.containers.AdminPage.SettingsPage.overlayToggleLabel": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -17079,6 +17084,11 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.SettingsPage.subtitleBullet4": {
+    "state": "verified",
+    "verified_at": "2026-08-19T08:30:45.546996Z",
+    "verified_by": "Roger"
+  },
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -17232,6 +17242,11 @@
   "app.containers.AdminPage.SettingsPage.visitingPermission.subtitleBullet1": {
     "state": "verified",
     "verified_at": "2026-08-19T08:26:41.895357Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.AdminPage.SettingsPage.visitingPermission.subtitleBullet5": {
+    "state": "verified",
+    "verified_at": "2026-08-19T08:30:45.546996Z",
     "verified_by": "Roger"
   },
   "app.containers.AdminPage.SideBar.administrator": {
