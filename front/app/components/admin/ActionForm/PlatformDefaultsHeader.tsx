@@ -1,20 +1,24 @@
 // The "inherited" state of the panel: the action has no permission of its own,
-// so the platform-wide defaults apply. The row is deliberately inert — there is
-// nothing to configure here until the admin overrides it, at which point the
-// regular panel takes over.
+// so the platform-wide defaults apply. The panel can be opened to read those
+// defaults, but nothing in it can be changed until the admin overrides it.
 
 import React, { ReactNode } from 'react';
 
 import {
   Box,
   Button,
+  Icon,
   Text,
   Title,
+  colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 
+import useAuthUser from 'api/me/useAuthUser';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
+import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
 
@@ -26,12 +30,24 @@ const TITLE_LINE_HEIGHT = `${fontSizes.l * 1.3}px`;
 
 interface Props {
   title: ReactNode;
+  action: string;
   processing: boolean;
+  isOpen: boolean;
+  onToggle: () => void;
   onOverride: () => void;
 }
 
-const PlatformDefaultsHeader = ({ title, processing, onOverride }: Props) => {
+const PlatformDefaultsHeader = ({
+  title,
+  action,
+  processing,
+  isOpen,
+  onToggle,
+  onOverride,
+}: Props) => {
   const { formatMessage } = useIntl();
+  const { data: authUser } = useAuthUser();
+  const userIsAdmin = isAdmin(authUser);
 
   return (
     <Box
@@ -43,8 +59,27 @@ const PlatformDefaultsHeader = ({ title, processing, onOverride }: Props) => {
       py="16px"
       flexWrap="wrap"
     >
-      {/* No expand chevron: there is nothing to open in this state. */}
-      <Box flex="0 0 auto">
+      <Box
+        className={`e2e-action-accordion-${action}`}
+        data-cy={`e2e-action-accordion-${action}`}
+        as="button"
+        type="button"
+        display="flex"
+        alignItems="center"
+        gap="12px"
+        p="0"
+        background="transparent"
+        border="none"
+        cursor="pointer"
+        style={{ textAlign: 'left' }}
+        onClick={onToggle}
+      >
+        <Icon
+          name={isOpen ? 'chevron-down' : 'chevron-right'}
+          width="20px"
+          height="20px"
+          fill={colors.coolGrey600}
+        />
         <Title variant="h4" as="h3" m="0" color="primary">
           {title}
         </Title>
@@ -62,9 +97,14 @@ const PlatformDefaultsHeader = ({ title, processing, onOverride }: Props) => {
         <FormattedMessage
           {...messages.usingPlatformDefaults}
           values={{
-            link: (chunks) => (
-              <Link to="/admin/settings/registration">{chunks}</Link>
-            ),
+            // Only admins can reach the platform-wide settings the link points
+            // at, so managers get the same sentence as plain text.
+            link: (chunks) =>
+              userIsAdmin ? (
+                <Link to="/admin/settings/registration">{chunks}</Link>
+              ) : (
+                <>{chunks}</>
+              ),
           }}
         />
       </Text>
