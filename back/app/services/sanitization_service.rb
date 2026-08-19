@@ -103,6 +103,10 @@ class SanitizationService
   # A pipeline without `:link` rebuilds links from the visible text, so a link always shows where it
   # goes - but only while that text is the URL, which translating a label breaks. Run this first to
   # give the rebuild its URL back. Only the schemes `linkify` builds are restored.
+  #
+  # The text written back has to be what `linkify` matches, not the href verbatim: it spots an email
+  # by its address alone, so a `mailto:` left on would sit in front of the rebuilt link as visible
+  # text - and be read off the href and prepended again on every later pass.
   def replace_links_with_urls(html)
     return html if html.blank?
 
@@ -110,7 +114,7 @@ class SanitizationService
     doc.css('a[href]').each do |link|
       next unless link['href'].match?(LINKIFIABLE_HREF)
 
-      link.replace(Nokogiri::XML::Text.new(link['href'], link.document))
+      link.replace(Nokogiri::XML::Text.new(link['href'].sub(/\Amailto:/i, ''), link.document))
     end
     doc.to_s
   end
