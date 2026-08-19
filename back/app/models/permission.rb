@@ -58,7 +58,7 @@ class Permission < ApplicationRecord
   }
 
   # Set on the unsaved copies of the global 'visiting' permission that stand in
-  # for phase actions which have not been overridden.
+  # for the inheritable actions which have not been overridden.
   # See Permissions::PermissionInheritanceService.
   attr_writer :inherited
 

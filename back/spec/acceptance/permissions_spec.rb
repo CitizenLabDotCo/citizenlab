@@ -131,12 +131,22 @@ resource 'Permissions' do
     end
 
     get 'web_api/v1/permissions/:action' do
-      let(:action) { 'attending_event' }
+      let(:action) { 'following' }
 
       example_request 'Get one global permission by action' do
         assert_status 200
         json_response = json_parse response_body
         expect(json_response.dig(:data, :id)).to eq Permission.find_by!(permission_scope: nil, action: action).id
+      end
+
+      context "for the 'attending_event' permission, which inherits the global 'visiting' one" do
+        let(:action) { 'attending_event' }
+
+        example_request 'Get the inherited global attending_event permission', document: false do
+          assert_status 200
+          expect(Permission.where(permission_scope: nil, action: action)).to be_empty
+          expect(response_data[:attributes]).to include(action: 'attending_event', inherited: true)
+        end
       end
 
       context 'for the visiting permission' do
@@ -404,7 +414,7 @@ resource 'Permissions' do
       end
       ValidationErrorHelper.new.error_fields(self, Permission)
 
-      let(:action) { 'attending_event' }
+      let(:action) { 'following' }
       let(:permitted_by) { 'users' }
       let(:group_ids) { create_list(:group, 3).map(&:id) }
 
@@ -413,6 +423,15 @@ resource 'Permissions' do
         json_response = json_parse response_body
         expect(json_response.dig(:data, :attributes, :permitted_by)).to eq permitted_by
         expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to match_array group_ids
+      end
+
+      context "for the 'attending_event' permission, which inherits the global 'visiting' one" do
+        let(:action) { 'attending_event' }
+
+        example '[error] An inherited global permission cannot be updated before it is overridden', document: false do
+          do_request(permission: { permitted_by: permitted_by })
+          assert_status 404
+        end
       end
 
       context 'for the visiting permission' do
