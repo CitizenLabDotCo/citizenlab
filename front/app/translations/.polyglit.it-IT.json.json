@@ -3024,6 +3024,11 @@
     "verified_at": "2026-08-19T12:01:28.303991Z",
     "verified_by": "Roger"
   },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysFormatLabel": {
+    "state": "verified",
+    "verified_at": "2026-08-19T12:05:59.898226Z",
+    "verified_by": "Roger"
+  },
   "app.components.ProjectPageBuilder.Widgets.extraSurveysManagedNote": {
     "state": "verified",
     "verified_at": "2026-08-19T11:56:30.363116Z",
@@ -3034,9 +3039,44 @@
     "verified_at": "2026-08-19T12:02:26.120669Z",
     "verified_by": "Roger"
   },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysNoSurveyTitle": {
+    "state": "verified",
+    "verified_at": "2026-08-19T12:05:59.898226Z",
+    "verified_by": "Roger"
+  },
   "app.components.ProjectPageBuilder.Widgets.extraSurveysOpensOn": {
     "state": "verified",
     "verified_at": "2026-08-19T12:01:28.303991Z",
+    "verified_by": "Roger"
+  },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysSelectPlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-08-19T12:05:59.898226Z",
+    "verified_by": "Roger"
+  },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysStyleLabel": {
+    "state": "verified",
+    "verified_at": "2026-08-19T12:05:59.898226Z",
+    "verified_by": "Roger"
+  },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysStylePrimary": {
+    "state": "verified",
+    "verified_at": "2026-08-19T12:05:59.898226Z",
+    "verified_by": "Roger"
+  },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysStyleSecondary": {
+    "state": "verified",
+    "verified_at": "2026-08-19T12:05:59.898226Z",
+    "verified_by": "Roger"
+  },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysSurveyLabel": {
+    "state": "verified",
+    "verified_at": "2026-08-19T12:05:59.898226Z",
+    "verified_by": "Roger"
+  },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysWidgetTitle": {
+    "state": "verified",
+    "verified_at": "2026-08-19T12:05:59.898226Z",
     "verified_by": "Roger"
   },
   "app.components.ProjectPageBuilder.Widgets.inputFeedEmptyTitle": {
