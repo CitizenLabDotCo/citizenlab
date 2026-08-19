@@ -163,6 +163,7 @@ describe('<SecurityRequirementsSection />', () => {
       mockPasswordLoginEnabled = false;
       renderSection({
         require_confirmed_email: false,
+        require_confirmed_phone_number: true,
         require_verification: true,
       });
 
@@ -235,12 +236,16 @@ describe('<SecurityRequirementsSection />', () => {
       expect(screen.getByText(EMAIL_LABEL)).toBeInTheDocument();
     });
 
-    it('hides the password row when password login is off', async () => {
+    it('hides the password and phone rows when password login is off', async () => {
+      // Phone confirmation codes are part of the password_login flow, so with
+      // that feature off a confirmed phone number can never be obtained and the
+      // check is not offered either.
       mockPasswordLoginEnabled = false;
       renderSection();
       await openSection();
 
       expect(screen.queryByText(PASSWORD_LABEL)).not.toBeInTheDocument();
+      expect(screen.queryByText(PHONE_LABEL)).not.toBeInTheDocument();
       expect(screen.getByText(EMAIL_LABEL)).toBeInTheDocument();
     });
 
