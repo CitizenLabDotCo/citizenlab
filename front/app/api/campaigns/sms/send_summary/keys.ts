@@ -1,10 +1,10 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
 const baseKey = {
-  type: 'sms_recipients',
+  type: 'sms_send_summary',
 };
 
-const smsCampaignRecipientsKeys = {
+const smsSendSummaryKeys = {
   all: () => [baseKey],
   items: () => [{ ...baseKey, operation: 'item' }],
   item: ({ campaignId }: { campaignId: string }) => [
@@ -12,4 +12,4 @@ const smsCampaignRecipientsKeys = {
   ],
 } satisfies QueryKeys;
 
-export default smsCampaignRecipientsKeys;
+export default smsSendSummaryKeys;

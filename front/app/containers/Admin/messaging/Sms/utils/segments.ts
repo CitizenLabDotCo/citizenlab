@@ -1,7 +1,4 @@
 import { SegmentedMessage } from 'sms-segments-calculator';
-import { Multiloc, SupportedLocale } from 'typings';
-
-import { getLocalized } from 'utils/i18n';
 
 // Max segments per SMS body. Mirrored server-side by SegmentedMessage::MAX_SEGMENTS,
 // a Ruby port of this library kept in parity by a shared golden fixture.
@@ -49,20 +46,3 @@ export const measureSms = (body: string): SmsSegments => {
     exceedsLimit: segmentCount > MAX_SMS_SEGMENTS,
   };
 };
-
-// Credits a send would cost: every recipient is billed for the segments of the
-// body in their own locale, so a long translation costs more than a short one.
-export const creditsForSend = (
-  bodyMultiloc: Multiloc,
-  countByLocale: Record<string, number>,
-  tenantLocales: SupportedLocale[]
-): number =>
-  Object.entries(countByLocale).reduce((credits, [locale, count]) => {
-    const body = getLocalized(
-      bodyMultiloc,
-      locale as SupportedLocale,
-      tenantLocales
-    );
-
-    return credits + count * measureSms(body).segmentCount;
-  }, 0);

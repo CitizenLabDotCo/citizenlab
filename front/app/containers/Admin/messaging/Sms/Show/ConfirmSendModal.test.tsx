@@ -4,26 +4,26 @@ import { render, screen } from 'utils/testUtils/rtl';
 
 import ConfirmSendModal from './ConfirmSendModal';
 
-let mockRecipients: { count: number; count_by_locale: Record<string, number> } =
-  {
-    count: 3,
-    count_by_locale: { en: 3 },
-  };
-let mockBalance = 100;
+// The credits themselves are counted server-side, and covered by the segments_for_send specs.
+let mockSummary:
+  | {
+      recipients_count: number;
+      segments_needed: number;
+      segments_balance: number;
+    }
+  | undefined = {
+  recipients_count: 3,
+  segments_needed: 3,
+  segments_balance: 100,
+};
 
-jest.mock('api/campaigns/sms/recipients/useSmsCampaignRecipients', () =>
+jest.mock('api/campaigns/sms/send_summary/useSmsSendSummary', () =>
   jest.fn(() => ({
-    data: { data: { type: 'sms_recipients', attributes: mockRecipients } },
+    data: mockSummary && {
+      data: { type: 'sms_send_summary', attributes: mockSummary },
+    },
   }))
 );
-
-jest.mock('api/campaigns/sms/balance/useSmsBalance', () =>
-  jest.fn(() => ({
-    data: { data: { attributes: { balance: mockBalance } } },
-  }))
-);
-
-jest.mock('hooks/useAppConfigurationLocales', () => jest.fn(() => ['en']));
 
 // The real Modal renders through #modal-portal, which is not in the document yet
 // when it looks the element up, so it never mounts under test.
@@ -34,16 +34,11 @@ jest.mock(
       opened ? <div>{children}</div> : null
 );
 
-const SHORT_BODY = { en: 'A short update.' };
-// 161 characters no longer fit one segment, so every recipient costs two credits.
-const TWO_SEGMENT_BODY = { en: 'a'.repeat(161) };
-
-const renderModal = (bodyMultiloc: Record<string, string>) =>
+const renderModal = () =>
   render(
     <ConfirmSendModal
       opened
       campaignId="campaign-id"
-      bodyMultiloc={bodyMultiloc}
       onClose={jest.fn()}
       onConfirm={jest.fn()}
       isSending={false}
@@ -56,52 +51,45 @@ const sendBlocked = () =>
 
 describe('<ConfirmSendModal />', () => {
   beforeEach(() => {
-    mockRecipients = { count: 3, count_by_locale: { en: 3 } };
-    mockBalance = 100;
+    mockSummary = {
+      recipients_count: 3,
+      segments_needed: 3,
+      segments_balance: 100,
+    };
   });
 
-  it('shows how many recipients a send would reach', () => {
-    renderModal(SHORT_BODY);
+  it('shows the recipients, credits and remaining balance the server reports', () => {
+    mockSummary = {
+      recipients_count: 3,
+      segments_needed: 6,
+      segments_balance: 100,
+    };
+
+    renderModal();
 
     expect(screen.getByText('Recipients').nextSibling).toHaveTextContent('3');
-  });
-
-  it('counts one credit per recipient for a single-segment message', () => {
-    renderModal(SHORT_BODY);
-
-    expect(screen.getByText('Credits needed').nextSibling).toHaveTextContent(
-      '3'
-    );
-  });
-
-  it('counts a credit per segment per recipient for a longer message', () => {
-    renderModal(TWO_SEGMENT_BODY);
-
     expect(screen.getByText('Credits needed').nextSibling).toHaveTextContent(
       '6'
     );
-  });
-
-  it('adds up the credits per locale, since each translation has its own length', () => {
-    mockRecipients = { count: 4, count_by_locale: { en: 3, 'nl-BE': 1 } };
-
-    renderModal({ en: 'A short update.', 'nl-BE': 'a'.repeat(161) });
-
-    expect(screen.getByText('Credits needed').nextSibling).toHaveTextContent(
-      '5'
+    expect(screen.getByText('Credits remaining').nextSibling).toHaveTextContent(
+      '100'
     );
   });
 
   it('allows sending when the balance covers the send', () => {
-    renderModal(SHORT_BODY);
+    renderModal();
 
     expect(sendBlocked()).toBe(false);
   });
 
   it('blocks sending when the send needs more credits than are left', () => {
-    mockBalance = 2;
+    mockSummary = {
+      recipients_count: 3,
+      segments_needed: 3,
+      segments_balance: 2,
+    };
 
-    renderModal(SHORT_BODY);
+    renderModal();
 
     expect(sendBlocked()).toBe(true);
     expect(
@@ -110,13 +98,26 @@ describe('<ConfirmSendModal />', () => {
   });
 
   it('blocks sending when a send would reach nobody', () => {
-    mockRecipients = { count: 0, count_by_locale: {} };
+    mockSummary = {
+      recipients_count: 0,
+      segments_needed: 0,
+      segments_balance: 100,
+    };
 
-    renderModal(SHORT_BODY);
+    renderModal();
 
     expect(sendBlocked()).toBe(true);
     expect(
       screen.getByText(/Nobody matches this message right now/)
     ).toBeInTheDocument();
+  });
+
+  it('blocks sending until the figures have loaded', () => {
+    mockSummary = undefined;
+
+    renderModal();
+
+    expect(sendBlocked()).toBe(true);
+    expect(screen.queryByText('Credits needed')).not.toBeInTheDocument();
   });
 });

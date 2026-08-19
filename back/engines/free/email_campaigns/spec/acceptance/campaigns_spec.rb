@@ -685,24 +685,34 @@ resource 'Campaigns' do
       end
     end
 
-    get 'web_api/v1/campaigns/:id/sms_recipients' do
-      let(:campaign) { create(:sms_manual_campaign) }
-      let!(:id) { campaign.id }
+    get 'web_api/v1/campaigns/:id/sms_send_summary' do
+      context 'SMS campaign' do
+        include_context 'with sms feature enabled'
 
-      let!(:recipients) do
-        %w[en en fr-FR].map do |locale|
-          create(:consent, :sms_manual, user: create(:user, :with_confirmed_phone, locale: locale))
+        before do
+          SettingsService.new.activate_feature!('sms', settings: { 'messages_purchased' => 50 })
         end
-      end
-      # Reachable by SMS, but has not opted in to this campaign.
-      let!(:non_recipient) { create(:user, :with_confirmed_phone) }
 
-      example_request 'Get who an SMS campaign would reach right now, split by locale' do
-        assert_status 200
-        expect(response_data[:attributes]).to eq({
-          count: 3,
-          count_by_locale: { en: 2, 'fr-FR': 1 }
-        })
+        # 200 characters no longer fit one segment, so the French recipient costs two.
+        let(:campaign) { create(:sms_manual_campaign, body_multiloc: { 'en' => 'short', 'fr-FR' => 'a' * 200 }) }
+        let!(:id) { campaign.id }
+
+        let!(:recipients) do
+          %w[en en fr-FR].map do |locale|
+            create(:consent, :sms_manual, user: create(:user, :with_confirmed_phone, locale: locale))
+          end
+        end
+        # Reachable by SMS, but has not opted in to this campaign.
+        let!(:non_recipient) { create(:user, :with_confirmed_phone) }
+
+        example_request 'Get what sending an SMS campaign right now would reach and cost' do
+          assert_status 200
+          expect(response_data[:attributes]).to eq({
+            recipients_count: 3,
+            segments_needed: 4,
+            segments_balance: 50
+          })
+        end
       end
     end
 

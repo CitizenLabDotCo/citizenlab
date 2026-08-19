@@ -99,8 +99,13 @@ module EmailCampaigns
 
     def clear_scheduled_at!; end
 
+    # Memoized: the filters behind it instantiate every group member and consent row.
     def recipients_count_by_locale
-      apply_recipient_filters.group(:locale).count
+      @recipients_count_by_locale ||= apply_recipient_filters.group(:locale).count
+    end
+
+    def recipients_count
+      recipients_count_by_locale.values.sum
     end
 
     # What a send costs in segments: each recipient is billed for the body in their own locale

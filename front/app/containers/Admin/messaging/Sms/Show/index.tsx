@@ -166,7 +166,6 @@ const Show = () => {
       <ConfirmSendModal
         opened={showConfirm}
         campaignId={campaignId}
-        bodyMultiloc={campaign.data.attributes.body_multiloc}
         onClose={() => setShowConfirm(false)}
         onConfirm={confirmSend}
         isSending={isSending}
