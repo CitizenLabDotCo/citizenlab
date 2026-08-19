@@ -804,6 +804,11 @@
     "verified_at": "2026-07-13T07:16:39.669771Z",
     "verified_by": "Roger"
   },
+  "app.components.admin.ActionForm.AccessSections.GroupsSection.limitToGroups": {
+    "state": "verified",
+    "verified_at": "2026-08-19T11:49:08.036215Z",
+    "verified_by": "Roger"
+  },
   "app.components.admin.ActionForm.AccessSections.GroupsSection.participantMustBe": {
     "state": "verified",
     "verified_at": "2026-07-13T07:16:39.669771Z",

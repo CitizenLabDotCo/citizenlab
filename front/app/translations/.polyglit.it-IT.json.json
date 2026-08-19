@@ -3034,6 +3034,21 @@
     "verified_at": "2026-07-27T07:58:41.572985Z",
     "verified_by": "Roger"
   },
+  "app.components.ProjectPageBuilder.Widgets.sectionBackgroundColored": {
+    "state": "verified",
+    "verified_at": "2026-08-19T11:49:07.981571Z",
+    "verified_by": "Roger"
+  },
+  "app.components.ProjectPageBuilder.Widgets.sectionBackgroundLabel": {
+    "state": "verified",
+    "verified_at": "2026-08-19T11:49:07.981571Z",
+    "verified_by": "Roger"
+  },
+  "app.components.ProjectPageBuilder.Widgets.sectionBackgroundWhite": {
+    "state": "verified",
+    "verified_at": "2026-08-19T11:49:07.981571Z",
+    "verified_by": "Roger"
+  },
   "app.components.ProjectPageBuilder.Widgets.sectionHeightCappedNote": {
     "state": "verified",
     "verified_at": "2026-07-27T07:58:41.572985Z",
