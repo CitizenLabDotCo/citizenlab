@@ -15909,6 +15909,11 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription": {
+    "state": "verified",
+    "verified_at": "2026-08-19T10:08:05.215811Z",
+    "verified_by": "Roger"
+  },
   "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel": {
     "state": "verified",
     "verified_at": "2026-08-19T10:04:05.005919Z",
