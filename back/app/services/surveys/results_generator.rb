@@ -165,7 +165,7 @@ module Surveys
         all_page_ids = pages.keys.compact
 
         # Next build the responses with an array of input IDs that were seen for each field based on logic & values
-        @all_inputs.each_with_object({}) do |input, seen|
+        @all_inputs.includes(:custom_field_answers).each_with_object({}) do |input, seen|
           next_page_id = nil
           pages.each do |page_id, fields_on_page|
             next unless next_page_id.nil? || page_id == next_page_id
@@ -193,7 +193,7 @@ module Surveys
       return field.logic['next_page_id'] if field.page?
 
       # Options / Linear scale logic
-      field_value = input.custom_field_values[field.key]
+      field_value = input.answer_for_key(field.key)&.value
 
       if field_value
         if field_value.is_a? Array
