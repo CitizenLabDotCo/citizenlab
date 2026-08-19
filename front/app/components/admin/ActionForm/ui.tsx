@@ -216,6 +216,6 @@ export const ReadOnlyOverlay = styled(Box)`
     position: absolute;
     inset: 0;
     z-index: 1;
-    background-color: ${transparentize(0.35, colors.grey200)};
+    background-color: ${transparentize(0.65, colors.grey200)};
   }
 `;
