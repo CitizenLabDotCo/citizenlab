@@ -13,7 +13,7 @@ module MultiTenancy
         Comment
       ].to_set.freeze
 
-      SKIP_IMAGE_PRESENCE_VALIDATION = %w[IdeaImage ContentBuilder::LayoutImage].freeze
+      SKIP_IMAGE_PRESENCE_VALIDATION = %w[IdeaImage ContentBuilder::LayoutImage ProjectImage].freeze
 
       def initialize(save_temp_remote_urls: false)
         @save_temp_remote_urls = save_temp_remote_urls
