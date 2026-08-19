@@ -58,7 +58,7 @@ type CustomPagesProps = {
 };
 
 const CustomPages = ({ titleMultiloc, customPages }: CustomPagesProps) => {
-  const { data: customPagesData, isInitialLoading } = useCustomPages();
+  const { data: customPagesData, isLoading } = useCustomPages();
   const localize = useLocalize();
   const title = localize(titleMultiloc);
 
@@ -84,7 +84,7 @@ const CustomPages = ({ titleMultiloc, customPages }: CustomPagesProps) => {
     return <EmptyState title={title} explanation={messages.noData} />;
   }
 
-  if (isInitialLoading) {
+  if (isLoading) {
     return <Skeleton title={title} customPages={customPages} />;
   }
 

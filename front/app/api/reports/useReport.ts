@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
+import { NO_PLACEHOLDER_DATA } from 'utils/cl-react-query/queryClient';
 
 import reportsKeys from './keys';
 import { ReportResponse, ReportsKeys } from './types';
@@ -14,7 +15,7 @@ const useReport = (id?: string) => {
     queryKey: reportsKeys.item({ id }),
     queryFn: () => fetchReport(id),
     enabled: !!id,
-    keepPreviousData: false,
+    placeholderData: NO_PLACEHOLDER_DATA,
   });
 };
 

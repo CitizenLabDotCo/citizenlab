@@ -15,7 +15,7 @@ interface Props {
 
 const AreaTermConfig = ({ className }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
-  const { mutate: updateAppConfiguration, isLoading } =
+  const { mutate: updateAppConfiguration, isPending } =
     useUpdateAppConfiguration();
   if (isNilOrError(appConfiguration)) return null;
 
@@ -45,7 +45,7 @@ const AreaTermConfig = ({ className }: Props) => {
       singularPlaceholderMessage={messages.areaTermPlaceholder}
       pluralPlaceholderMessage={messages.areasTermPlaceholder}
       onSave={save}
-      isLoading={isLoading}
+      isLoading={isPending}
     />
   );
 };

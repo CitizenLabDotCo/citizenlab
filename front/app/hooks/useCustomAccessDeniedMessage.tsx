@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 
 import useAccessDeniedExplanation from 'api/access_denied_explanation/useAccessDeniedExplanation';
-import { IPhasePermissionAction } from 'api/phase_permissions/types';
+import { IPhasePermissionAction } from 'api/permissions/types';
 
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 

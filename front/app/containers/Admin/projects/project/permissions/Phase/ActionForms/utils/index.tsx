@@ -1,7 +1,6 @@
 import { MessageDescriptor } from 'react-intl';
 
-import { Action } from 'api/permissions/types';
-import { IPhasePermissionAction } from 'api/phase_permissions/types';
+import { Action, IPhasePermissionAction } from 'api/permissions/types';
 import { ParticipationMethod } from 'api/phases/types';
 
 import { FieldType } from 'containers/Admin/settings/registration/CustomFieldRoutes/RegistrationCustomFieldForm';

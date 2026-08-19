@@ -16,7 +16,8 @@
 #
 # A row is written only when processing actually changes it, so clean content is left untouched
 # and re-runs are no-ops. Writes use `update_columns` to avoid re-running unrelated validations on
-# legacy rows.
+# legacy rows. A row whose only change is the dead `data-user-slug` mention attribute is left alone
+# too, and counted in the summary.
 #
 # `TenantScript` owns the dry run, the tenant loop and the report. Deleted tenants stay out; every
 # other tenant can still serve content, so all of them are in scope.
@@ -45,6 +46,34 @@ namespace :single_use do
     ].freeze
 
     affected = [] # rows for the summary: { host:, model:, attribute: }
+    blanked = [] # rows sanitising emptied: { host:, model:, attribute:, id:, locales: }
+    slug_only_skipped = 0
+
+    # A value that was nothing but payload sanitises to nothing. The write still happens - leaving a
+    # payload standing would defeat the task - but `update_columns` skips the presence validation
+    # these fields carry, so the row lands empty and stays empty until someone types a value. Collect
+    # them for the summary; a blank title is visible and fixable, an unlisted one is neither.
+    blanked_locales = lambda do |old_value, new_value|
+      unless old_value.is_a?(Hash)
+        return old_value.present? && new_value.blank? ? ['-'] : []
+      end
+
+      old_value.filter_map { |locale, old| locale if old.present? && new_value[locale].blank? }
+    end
+
+    # `data-user-slug` left the mention allowlist in April 2026, so re-running the write path over a
+    # legacy row strips it. Nothing reads it - the front end finds a mention by `data-user-id`, and
+    # comments written since have gone without it - so removing it rewrites a row that carries no
+    # payload. Left in, these outnumber the real findings by seven to one and bury them.
+    slug_attribute = /\s*data-user-slug="[^"]*"/
+    slug_only = lambda do |old_value, new_value|
+      stripped = if old_value.is_a?(String)
+        old_value.gsub(slug_attribute, '')
+      else
+        old_value.transform_values { |value| value&.gsub(slug_attribute, '') }
+      end
+      stripped != old_value && stripped == new_value
+    end
 
     # Re-sanitises one attribute across a scope, reporting and writing only real changes.
     purge = lambda do |tenant, script, scope, attribute, sanitizer, model_label|
@@ -53,11 +82,20 @@ namespace :single_use do
         new_value = sanitizer.call(old_value)
         next if new_value == old_value
 
+        if slug_only.call(old_value, new_value)
+          slug_only_skipped += 1
+          next
+        end
+
         script.reporter.add_change(
           old_value, new_value,
           context: { tenant: tenant.host, model: model_label, id: record.id, attribute: attribute.to_s }
         )
         affected << { host: tenant.host, model: model_label, attribute: attribute.to_s }
+        emptied = blanked_locales.call(old_value, new_value)
+        if emptied.any?
+          blanked << { host: tenant.host, model: model_label, attribute: attribute.to_s, id: record.id, locales: emptied }
+        end
         record.update_columns(attribute => new_value) if script.execute?
       rescue StandardError => e
         # `TenantScript` only rescues per tenant, so without this one bad row would cost the tenant
@@ -70,13 +108,27 @@ namespace :single_use do
     end
 
     summary = lambda do |_script|
-      next if affected.empty?
+      if slug_only_skipped.positive?
+        puts "\n   ⏭️  Left alone: #{slug_only_skipped} row(s) whose only change was the dead mention attribute."
+      end
+      if affected.any?
+        puts "\n   🧹 Purged rows by tenant:"
+        affected.group_by { |row| row[:host] }.each do |host, rows|
+          puts "\n      #{host}"
+          rows.group_by { |row| [row[:model], row[:attribute]] }.each do |(model, attribute), group|
+            puts "         #{model}##{attribute}: #{group.size}"
+          end
+        end
+      end
 
-      puts "\n   🧹 Purged rows by tenant:"
-      affected.group_by { |row| row[:host] }.each do |host, rows|
+      next if blanked.empty?
+
+      puts "\n   ⚠️  Emptied - nothing survived sanitising. Set a value on each by hand:"
+      blanked.group_by { |row| row[:host] }.each do |host, rows|
         puts "\n      #{host}"
-        rows.group_by { |row| [row[:model], row[:attribute]] }.each do |(model, attribute), group|
-          puts "         #{model}##{attribute}: #{group.size}"
+        rows.each do |row|
+          locales = row[:locales] == ['-'] ? '' : " [#{row[:locales].join(', ')}]"
+          puts "         #{row[:model]}##{row[:attribute]}#{locales} #{row[:id]}"
         end
       end
     end
@@ -113,11 +165,20 @@ namespace :single_use do
         new_value = mt.translation
         next if new_value == old_value
 
+        if slug_only.call(old_value, new_value)
+          slug_only_skipped += 1
+          next
+        end
+
         script.reporter.add_change(
           old_value, new_value,
           context: { tenant: tenant.host, model: 'MachineTranslation', id: mt.id, attribute: 'translation' }
         )
         affected << { host: tenant.host, model: 'MachineTranslation', attribute: 'translation' }
+        emptied = blanked_locales.call(old_value, new_value)
+        if emptied.any?
+          blanked << { host: tenant.host, model: 'MachineTranslation', attribute: 'translation', id: mt.id, locales: emptied }
+        end
         mt.update_columns(translation: new_value) if script.execute?
       rescue StandardError => e
         script.reporter.add_error(

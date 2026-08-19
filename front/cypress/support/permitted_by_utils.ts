@@ -115,7 +115,10 @@ export const updatePermission = ({
     });
   };
 
-  return withAdminJwt(makeRequest, adminJwt);
+  // The action has no permission of its own until it is overridden.
+  return cy
+    .apiOverridePhasePermission({ phaseId, action: permission })
+    .then(() => withAdminJwt(makeRequest, adminJwt));
 };
 
 export const addPermissionsCustomField = ({
@@ -144,7 +147,10 @@ export const addPermissionsCustomField = ({
     });
   };
 
-  return withAdminJwt(makeRequest, adminJwt);
+  // Nothing can be persisted against a permission that is still inherited.
+  return cy
+    .apiOverridePhasePermission({ phaseId, action: permission })
+    .then(() => withAdminJwt(makeRequest, adminJwt));
 };
 
 export const confirmUserCustomFieldHasValue = ({

@@ -3,16 +3,17 @@
 class WebApi::V1::PermissionsController < ApplicationController
   include LockedUserCustomFieldsConcern
 
-  before_action :set_permission, only: %i[show update reset requirements custom_fields custom_field_options access_denied_explanation]
+  before_action :set_permission, only: %i[show update requirements custom_fields custom_field_options access_denied_explanation]
+  before_action :set_persisted_permission, only: %i[inherit]
   skip_before_action :authenticate_user
+  # The list mixes persisted permissions with inherited ones, which have no row
+  # to scope over; each is authorized individually instead.
+  skip_after_action :verify_policy_scoped, only: :index
 
   def index
-    @permissions = policy_scope(Permission)
-      .where(permission_scope: permission_scope)
-      .filter_enabled_actions(permission_scope)
-      .order_by_action(permission_scope)
-    @permissions = paginate @permissions
-    @permissions = @permissions.includes(:permission_scope, :custom_fields, :groups, permissions_custom_fields: [custom_field: [:options]])
+    permissions = inheritance_service.effective_permissions(permission_scope)
+      .select { |permission| PermissionPolicy.new(current_user, permission).show? }
+    @permissions = paginate Kaminari.paginate_array(permissions)
 
     render json: linked_json(@permissions, WebApi::V1::PermissionSerializer, params: jsonapi_serializer_params, include: %i[permissions_custom_fields custom_fields])
   end
@@ -22,6 +23,8 @@ class WebApi::V1::PermissionsController < ApplicationController
   end
 
   def update
+    raise ActiveRecord::RecordNotFound if @permission.inherited?
+
     old_group_ids = @permission.group_ids
     @permission.assign_attributes(permission_params)
     authorize @permission
@@ -33,17 +36,29 @@ class WebApi::V1::PermissionsController < ApplicationController
     end
   end
 
-  def reset
-    authorize @permission
-    old_group_ids = @permission.group_ids
-    ActiveRecord::Base.transaction do
-      @permission.global_custom_fields = true
-      save_or_raise!(@permission)
-      @permission.permissions_custom_fields.destroy_all
-      @permission.groups_permissions.destroy_all
-      sidefx.after_update(@permission, current_user, old_group_ids)
-      render json: serialize(@permission), status: :ok
-    end
+  # Detach the action from the global 'visiting' permission by persisting a copy
+  # of it, so that it can be customised independently.
+  def override
+    permission = inheritance_service.find(permission_scope, permission_action)
+    raise ActiveRecord::RecordNotFound unless permission
+
+    authorize permission, :update?
+    @permission = inheritance_service.override!(permission_scope, permission_action)
+    sidefx.after_override(@permission, current_user)
+    render json: serialize(@permission), status: :ok
+  rescue Permissions::PermissionInheritanceService::UnsupportedScope
+    raise ActiveRecord::RecordNotFound
+  end
+
+  # Put the action back under the global 'visiting' permission. Its own groups
+  # and persisted demographic questions go with it.
+  def inherit
+    authorize @permission, :update?
+    sidefx.before_inherit(@permission, current_user)
+    @permission = inheritance_service.inherit!(@permission)
+    render json: serialize(@permission), status: :ok
+  rescue Permissions::PermissionInheritanceService::UnsupportedScope
+    raise ActiveRecord::RecordNotFound
   end
 
   def requirements
@@ -113,7 +128,20 @@ class WebApi::V1::PermissionsController < ApplicationController
     @user_requirements_service ||= Permissions::UserRequirementsService.new
   end
 
+  def inheritance_service
+    @inheritance_service ||= Permissions::PermissionInheritanceService.new
+  end
+
+  # Resolves to the persisted permission, or — for a phase action that has not
+  # been overridden — to an unsaved copy of the global 'visiting' permission.
   def set_permission
+    permission = inheritance_service.find(permission_scope, permission_action)
+    raise ActiveRecord::RecordNotFound unless permission
+
+    @permission = authorize permission
+  end
+
+  def set_persisted_permission
     @permission = authorize Permission.find_by!(action: permission_action, permission_scope: permission_scope)
   end
 

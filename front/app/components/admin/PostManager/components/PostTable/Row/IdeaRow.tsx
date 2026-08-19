@@ -87,7 +87,7 @@ const IdeaRow = ({
   const phaseDeselectModalOpen = !!phasesToBeSelected;
   const closePhaseDeselectModal = () => setPhasesToBeSeselected(null);
 
-  const { mutate: updateIdea, isLoading: updatingIdea } = useUpdateIdea();
+  const { mutate: updateIdea, isPending: updatingIdea } = useUpdateIdea();
 
   const handleConfirmDeselectPhase = () => {
     updateIdea({ id: idea.id, requestBody: { phase_ids: phasesToBeSelected } });

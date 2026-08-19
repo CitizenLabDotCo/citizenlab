@@ -43,7 +43,7 @@ interface Props {
 
 const ImportExcelModal = ({ open, onClose }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutateAsync: addOfflineIdeas, isLoading } = useAddOfflineIdeasAsync();
+  const { mutateAsync: addOfflineIdeas, isPending } = useAddOfflineIdeasAsync();
   const locale = useLocale();
   const { projectId, phaseId } = useParams({
     from: '/$locale/admin/projects/$projectId/phases/$phaseId/input-importer',
@@ -148,8 +148,8 @@ const ImportExcelModal = ({ open, onClose }: Props) => {
                 bgColor={colors.primary}
                 width="auto"
                 type="submit"
-                processing={isLoading}
-                disabled={isLoading}
+                processing={isPending}
+                disabled={isPending}
               >
                 <FormattedMessage {...messages.upload} />
               </Button>

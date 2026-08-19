@@ -45,14 +45,14 @@ RSpec.describe PhoneConfirmation do
   describe '#pending?' do
     it 'is true only when the phone is set and not yet confirmed' do
       user = create(:user)
-      confirmation = user.find_or_create_confirmation(:phone_confirmation)
-      expect(confirmation.pending?).to be false
+      user.find_or_create_confirmation(:phone_confirmation)
+      expect(user.confirmation_pending?(:phone_confirmation)).to be false
 
       user.update!(phone: '+14155552671')
-      expect(confirmation.pending?).to be true
+      expect(user.confirmation_pending?(:phone_confirmation)).to be true
 
       user.update!(phone_confirmed_at: Time.zone.now)
-      expect(confirmation.pending?).to be false
+      expect(user.confirmation_pending?(:phone_confirmation)).to be false
     end
   end
 end

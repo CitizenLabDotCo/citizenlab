@@ -6,6 +6,7 @@ import { MessageDescriptor } from 'react-intl';
 import styled from 'styled-components';
 
 import messages from 'components/admin/ContentBuilder/messages';
+import { useVerticalRhythmMargin } from 'components/admin/ContentBuilder/verticalRhythm';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -26,6 +27,7 @@ const StyledBox = styled(Box)`
 const CONTAINER = 'Container';
 
 const RenderNode = ({ render }) => {
+  const rhythmMarginTop = useVerticalRhythmMargin();
   const {
     id,
     name,
@@ -138,7 +140,8 @@ const RenderNode = ({ render }) => {
           ? colors.divider
           : 'transparent'
       }
-      my="4px"
+      mt={rhythmMarginTop ?? '4px'}
+      mb={rhythmMarginTop === undefined ? '4px' : '0px'}
       isRoot={id === ROOT_NODE}
     >
       {nodeLabelIsVisible && (

@@ -78,7 +78,9 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :allow_anonymous_participation do |phase|
-    posting_permission = phase.permissions.find { |p| p.action == 'posting_idea' }
+    # Resolved through the service so an action that still inherits the global
+    # 'visiting' permission is read the same way as an overridden one.
+    posting_permission = Permissions::PermissionInheritanceService.new.find(phase, 'posting_idea')
     posting_permission&.permitted_by == 'everyone' || phase.allow_anonymous_participation
   end
 

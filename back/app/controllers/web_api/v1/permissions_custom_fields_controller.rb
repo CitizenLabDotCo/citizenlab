@@ -21,6 +21,8 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
   end
 
   def create
+    raise ActiveRecord::RecordNotFound if permission.inherited?
+
     permissions_custom_field = PermissionsCustomField.new({ permission: permission }.merge(permission_params_for_create))
     authorize permissions_custom_field
     ActiveRecord::Base.transaction do
@@ -109,8 +111,16 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
     field
   end
 
+  # For a phase action that has not been overridden this is an unsaved copy of
+  # the global 'visiting' permission: its (inherited) fields can be listed, but
+  # nothing can be persisted against it.
   def permission
-    @permission ||= Permission.find_by!(action: permission_action, permission_scope: permission_scope)
+    @permission ||= begin
+      found = Permissions::PermissionInheritanceService.new.find(permission_scope, permission_action)
+      raise ActiveRecord::RecordNotFound unless found
+
+      found
+    end
   end
 
   def sidefx

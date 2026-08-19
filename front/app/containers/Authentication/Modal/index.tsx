@@ -101,7 +101,7 @@ const AuthModal = () => {
                     createAnAccountLink: (
                       <TextButton
                         onClick={
-                          currentStep === 'email:password'
+                          currentStep === 'pre-auth:password'
                             ? transition(currentStep, 'GO_BACK')
                             : undefined
                         }

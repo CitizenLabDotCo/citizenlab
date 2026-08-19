@@ -37,11 +37,9 @@ Rails.application.routes.draw do
       # McpServer::WebApi::V1::{OauthAuthorizations,McpAuthorizations}Controller.
 
       concern :reactable do
-        resources :reactions, except: [:update], shallow: true do
-          post :up, on: :collection
-          post :down, on: :collection
-        end
+        resources :reactions, except: [:update], shallow: true
       end
+
       concern :followable do
         resources :followers, only: [:create]
       end
@@ -55,7 +53,8 @@ Rails.application.routes.draw do
           get 'custom_fields', on: :member
           get 'custom_field_options', on: :member
           get 'access_denied_explanation', on: :member
-          patch 'reset', on: :member
+          patch 'override', on: :member
+          patch 'inherit', on: :member
           resources :permissions_custom_fields, shallow: true do
             patch 'reorder', on: :member
           end
@@ -130,6 +129,7 @@ Rails.application.routes.draw do
 
       # auth
       post 'user_token' => 'user_token#create'
+      post 'user_token_phone' => 'user_token#create_phone'
 
       resources :users, only: %i[index create update destroy] do
         collection do
@@ -143,7 +143,9 @@ Rails.application.routes.draw do
           post 'reset_password_email' => 'reset_password#reset_password_email'
           post 'reset_password' => 'reset_password#reset_password'
           post 'update_password'
-          post 'check'
+          post 'check_email'
+          post 'check_phone'
+          post 'create_phone'
 
           get 'by_invite/:token', to: 'users#by_invite'
           get 'blocked_count'
@@ -412,7 +414,6 @@ Rails.application.routes.draw do
 
       resources :id_methods, only: [:index] do
         get :first_enabled_verification_method, on: :collection
-        get :first_enabled_authentication_method, on: :collection
         IdMethodService.new
           .all_methods
           .select { |vm| vm.verification_method_type == :manual_sync }

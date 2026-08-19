@@ -85,7 +85,7 @@ const ContentBuilderTopBar = ({
   const [showQuitModal, setShowQuitModal] = useState(false);
   const [downloadMenuOpened, setDownloadMenuOpened] = useState(false);
   const { query } = useEditor();
-  const { mutate: updateReportLayout, isLoading } = useUpdateReportLayout();
+  const { mutate: updateReportLayout, isPending } = useUpdateReportLayout();
   const { projectId, phaseId } = useReportContext();
   const { downloadWord, isDownloading, error, status, progress } =
     useReportWordExportContext();
@@ -371,7 +371,7 @@ const ContentBuilderTopBar = ({
         )}
         <SaveButton
           isDisabled={disableSave}
-          isLoading={isLoading}
+          isLoading={isPending}
           isSaved={saved}
           onSave={handleSave}
         />

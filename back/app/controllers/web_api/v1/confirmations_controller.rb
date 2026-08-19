@@ -3,10 +3,11 @@
 class WebApi::V1::ConfirmationsController < ApplicationController
   include UserCookies
 
-  # Authentication is optional (not skipped-and-forbidden) for confirm_code_email:
-  # it serves both unauthenticated callers (email signup / passwordless login) and
-  # authenticated callers re-confirming their own email after confirmed_email_expiry.
-  skip_before_action :authenticate_user, only: %i[confirm_code_email]
+  # Authentication is optional (not skipped-and-forbidden) for confirm_code_email
+  # and confirm_code_phone: they serve both unauthenticated callers (signup /
+  # passwordless login) and authenticated callers re-confirming their own email or
+  # phone number after the corresponding expiry.
+  skip_before_action :authenticate_user, only: %i[confirm_code_email confirm_code_phone]
   skip_after_action :verify_authorized
 
   # Confirms a code for the user's `email` (in-place EmailConfirmation). Two callers:
@@ -26,11 +27,7 @@ class WebApi::V1::ConfirmationsController < ApplicationController
       SideFxUserService.new.after_update(user, user)
       IdeaExposureTransferService.new.transfer_from_request(user: user, request: request)
 
-      payload = user.to_token_payload
-      payload[:exp] = AuthToken::AuthToken::TOKEN_SHORT_LIFETIME.from_now.to_i
-      auth_token = AuthToken::AuthToken.new payload: payload
-
-      render json: raw_json({ auth_token: })
+      render json: raw_json({ auth_token: short_lived_auth_token(user) })
     else
       render json: { errors: result.errors.details }, status: :unprocessable_entity
     end
@@ -53,21 +50,32 @@ class WebApi::V1::ConfirmationsController < ApplicationController
     end
   end
 
-  # This endpoint is used when a logged in user re-confirms their existing phone
-  # (in-place PhoneConfirmation) after confirmed_phone expiry. Unlike
-  # confirm_code_email, it's never used for account creation or passwordless login,
-  # so authentication is required. On success PhoneConfirmation#confirm! refreshes
-  # phone_confirmed_at, which is exactly what resets the expiry window. The phone
-  # number isn't part of the auth token, so there's no JWT cookie to refresh.
+  # Confirms a code for the user's `phone` (in-place PhoneConfirmation). The phone
+  # mirror of confirm_code_email, with the same two callers:
+  #   - unauthenticated: phone account creation flow and passwordless login. The
+  #     account is looked up from the submitted `phone` param.
+  #   - authenticated: re-confirmation of an existing phone number after
+  #     confirmed_phone_number_expiry. On success PhoneConfirmation#confirm!
+  #     refreshes phone_confirmed_at, which is exactly what resets the expiry
+  #     window.
+  # A token is always returned, but only the unauthenticated caller needs it -
+  # an authenticated one keeps the (possibly longer-lived) token it already has.
   def confirm_code_phone
+    return head :unauthorized unless current_user || sms_login_enabled?
+
+    phone = confirm_code_phone_params[:phone]
+    user = phone.present? ? User.find_by_phone_number(phone) : current_user
+
     result = user_confirmation_service.validate_and_confirm_phone!(
-      current_user,
-      confirm_code_params[:code]
+      user,
+      confirm_code_phone_params[:code]
     )
 
     if result.success?
-      SideFxUserService.new.after_update(current_user, current_user)
-      head :ok
+      SideFxUserService.new.after_update(user, user)
+      IdeaExposureTransferService.new.transfer_from_request(user: user, request: request)
+
+      render json: raw_json({ auth_token: short_lived_auth_token(user) })
     else
       render json: { errors: result.errors.details }, status: :unprocessable_entity
     end
@@ -93,8 +101,23 @@ class WebApi::V1::ConfirmationsController < ApplicationController
 
   private
 
+  def sms_login_enabled?
+    AppConfiguration.instance.feature_activated?('sms_login')
+  end
+
   def confirm_code_email_params
     params.require(:confirmation).permit(:email, :code)
+  end
+
+  def confirm_code_phone_params
+    params.require(:confirmation).permit(:phone, :code)
+  end
+
+  def short_lived_auth_token(user)
+    payload = user.to_token_payload
+    payload[:exp] = AuthToken::AuthToken::TOKEN_SHORT_LIFETIME.from_now.to_i
+
+    AuthToken::AuthToken.new payload: payload
   end
 
   def confirm_code_params

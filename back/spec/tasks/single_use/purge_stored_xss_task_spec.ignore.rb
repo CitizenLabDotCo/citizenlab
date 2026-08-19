@@ -130,6 +130,34 @@ describe 'single_use:purge_stored_xss rake task' do
     end
   end
 
+  # Mentions stored before April 2026 carry a `data-user-slug` the write path no longer keeps.
+  # Nothing reads it, so stripping it would rewrite a row that carries no payload.
+  context 'a comment body whose only rewrite is the dead mention attribute' do
+    let!(:comment) { store_raw(create(:comment), :body_multiloc, { 'en' => '<p><span class="cl-mention-user" data-user-id="159cfd0a-44d1-4e87-9bdc-f158d7c0d16e" data-user-slug="tesha-bergstrom">@Tesha Bergstrom</span> hi</p>' }) }
+
+    it 'leaves the row alone' do
+      expect { run_task }.not_to(change { comment.reload.body_multiloc })
+    end
+
+    it 'reports no change for it' do
+      run_task
+      expect(report['changes']).to be_empty
+    end
+  end
+
+  context 'a comment body carrying the dead mention attribute alongside a payload' do
+    let!(:comment) do
+      store_raw(create(:comment), :body_multiloc, { 'en' => '<p><span class="cl-mention-user" data-user-id="159cfd0a-44d1-4e87-9bdc-f158d7c0d16e" data-user-slug="tesha-bergstrom">@Tesha Bergstrom</span> hi</p><script>alert(1)</script>' })
+    end
+
+    # Skipping is for rows that change in no other way; a row with a payload is purged, and the dead
+    # attribute goes with it because the write path no longer keeps it.
+    it 'purges it and drops the attribute too' do
+      run_task
+      expect(comment.reload.body_multiloc['en']).to eq '<p><span class="cl-mention-user" data-user-id="159cfd0a-44d1-4e87-9bdc-f158d7c0d16e">@Tesha Bergstrom</span> hi</p>alert(1)'
+    end
+  end
+
   # None of these contain an executable keyword, but the write path strips all of them - so the
   # pre-filter has to be wide enough to find them.
   context 'payloads that carry no executable keyword' do
@@ -158,6 +186,24 @@ describe 'single_use:purge_stored_xss rake task' do
     it 'strips the handler and keeps the rest of the translation' do
       run_task
       expect(mt.reload.translation).to eq '<p>hi</p><img src="x">'
+    end
+  end
+
+  # Sanitising a value that was nothing but payload leaves nothing. The row is still written - a
+  # payload left standing defeats the task - but these fields validate presence, and `update_columns`
+  # goes around that, so the summary has to name them.
+  context 'a title that is nothing but a payload' do
+    let!(:project) { store_raw(create(:project), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>' }) }
+
+    it 'empties it rather than leaving the payload' do
+      run_task
+      expect(project.reload.title_multiloc['en']).to eq ''
+    end
+
+    it 'names the tenant, model and id in the summary' do
+      expect { run_task }.to output(
+        /Emptied.*#{Regexp.escape(Tenant.current.host)}.*Project#title_multiloc \[en\] #{project.id}/m
+      ).to_stdout
     end
   end
 

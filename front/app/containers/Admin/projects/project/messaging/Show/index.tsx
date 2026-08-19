@@ -79,12 +79,12 @@ const Show = () => {
 
   const {
     mutate: sendCampaign,
-    isLoading: isSendingCampaign,
+    isPending: isSendingCampaign,
     error: apiSendErrors,
   } = useSendEmailCampaign();
-  const { mutate: sendCampaignPreview, isLoading: isSendingCampaignPreview } =
+  const { mutate: sendCampaignPreview, isPending: isSendingCampaignPreview } =
     useSendEmailCampaignPreview();
-  const { mutate: updateCampaign, isLoading: isUpdatingCampaign } =
+  const { mutate: updateCampaign, isPending: isUpdatingCampaign } =
     useUpdateEmailCampaign();
 
   const { data: sender } = useUserById(

@@ -37,7 +37,7 @@ const DefaultInputTopics = () => {
     name: 'nested_input_topics',
   });
   const { data: defaultInputTopics } = useDefaultInputTopics();
-  const { mutate: deleteDefaultInputTopic, isLoading: isDeleting } =
+  const { mutate: deleteDefaultInputTopic, isPending: isDeleting } =
     useDeleteDefaultInputTopic();
   const { mutate: moveDefaultInputTopic } = useMoveDefaultInputTopic();
   const [showConfirmationModal, setShowConfirmationModal] =

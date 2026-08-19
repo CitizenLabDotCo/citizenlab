@@ -1,13 +1,9 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { InfiniteQueryObserverResult } from '@tanstack/react-query';
-import { CLErrors, Multiloc } from 'typings';
+import { Multiloc } from 'typings';
 
-import {
-  IAdminPublicationData,
-  IAdminPublications,
-} from 'api/admin_publications/types';
+import { IAdminPublicationData } from 'api/admin_publications/types';
 import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
 import { PublicationStatus } from 'api/projects/types';
 
@@ -38,9 +34,7 @@ interface Props extends BaseProps {
   onChangeAreas?: (areas: string[]) => void;
   onChangeSearch?: (search: string | null) => void;
   onChangePublicationStatus?: (publicationStatus: PublicationStatus[]) => void;
-  onLoadMore?: () => Promise<
-    InfiniteQueryObserverResult<IAdminPublications, CLErrors>
-  >;
+  onLoadMore?: () => void;
   onChangeCurrentTab: (tab: PublicationTab) => void;
   searchTerm?: string | null;
 }

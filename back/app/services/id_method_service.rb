@@ -91,7 +91,8 @@ class IdMethodService
       locked_attributes: locked_attributes,
       other_attributes: other_attributes,
       locked_custom_fields: locked_custom_fields,
-      other_custom_fields: other_custom_fields
+      other_custom_fields: other_custom_fields,
+      email_always_present: method.email_always_present?
     }
   end
 end

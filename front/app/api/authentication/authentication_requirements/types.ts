@@ -1,7 +1,4 @@
-import {
-  IPhasePermissionAction,
-  PermittedBy,
-} from 'api/phase_permissions/types';
+import { IPhasePermissionAction, PermittedBy } from 'api/permissions/types';
 
 import { DisabledReason } from 'utils/actionDescriptors/types';
 import { Keys } from 'utils/cl-react-query/types';

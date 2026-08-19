@@ -9719,8 +9719,6 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
-<<<<<<< HEAD
-=======
   "app.containers.Admin.projects.project.projectHomepage": {
     "state": "verified",
     "verified_at": "2026-07-27T08:44:11.605205Z",
@@ -9741,7 +9739,6 @@
     "verified_at": "2026-07-01T13:49:11.860727Z",
     "verified_by": "Roger"
   },
->>>>>>> master
   "app.containers.Admin.projects.project.survey.aiAnalysis2": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -10107,8 +10104,6 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
-<<<<<<< HEAD
-=======
   "app.containers.Admin.projects.project.surveyPdfExport.cancelButton": {
     "state": "verified",
     "verified_at": "2026-07-01T13:49:11.860727Z",
@@ -10169,7 +10164,6 @@
     "verified_at": "2026-07-27T08:44:11.605205Z",
     "verified_by": "Roger"
   },
->>>>>>> master
   "app.containers.Admin.projects.project.traffic.selectPeriod": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -16930,6 +16924,11 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.SettingsPage.otherRegistrationSettings": {
+    "state": "verified",
+    "verified_at": "2026-08-19T08:30:45.546996Z",
+    "verified_by": "Roger"
+  },
   "app.containers.AdminPage.SettingsPage.overlayToggleLabel": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -16979,6 +16978,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.SettingsPage.registration.VisitingPermission.platformAccessTitle1": {
+    "state": "verified",
+    "verified_at": "2026-08-19T08:26:06.262048Z",
+    "verified_by": "Roger"
   },
   "app.containers.AdminPage.SettingsPage.registrationHelperTextDescription2": {
     "state": "verified",
@@ -17079,6 +17083,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.SettingsPage.subtitleBullet4": {
+    "state": "verified",
+    "verified_at": "2026-08-19T08:30:45.546996Z",
+    "verified_by": "Roger"
   },
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": {
     "state": "verified",
@@ -17224,6 +17233,21 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.SettingsPage.visitingPermission.subtitle1": {
+    "state": "verified",
+    "verified_at": "2026-08-19T08:26:06.262048Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.AdminPage.SettingsPage.visitingPermission.subtitleBullet1": {
+    "state": "verified",
+    "verified_at": "2026-08-19T08:26:41.895357Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.AdminPage.SettingsPage.visitingPermission.subtitleBullet5": {
+    "state": "verified",
+    "verified_at": "2026-08-19T08:30:45.546996Z",
+    "verified_by": "Roger"
   },
   "app.containers.AdminPage.SideBar.administrator": {
     "state": "verified",
@@ -21560,6 +21584,11 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.cardIcon": {
+    "state": "verified",
+    "verified_at": "2026-08-19T07:38:49.093466Z",
+    "verified_by": "Roger"
+  },
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.clearIcon": {
     "state": "verified",
     "verified_at": "2026-07-06T07:20:24.874752Z",
@@ -21575,14 +21604,49 @@
     "verified_at": "2026-07-06T07:20:24.874752Z",
     "verified_by": "Roger"
   },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.emojiTab": {
+    "state": "verified",
+    "verified_at": "2026-08-19T07:38:49.093466Z",
+    "verified_by": "Roger"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.iconPreviewAltText": {
+    "state": "verified",
+    "verified_at": "2026-08-19T07:38:49.093466Z",
+    "verified_by": "Roger"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageInstructions2": {
+    "state": "verified",
+    "verified_at": "2026-08-19T07:38:49.093466Z",
+    "verified_by": "Roger"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageTab": {
+    "state": "verified",
+    "verified_at": "2026-08-19T07:38:49.093466Z",
+    "verified_by": "Roger"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageUploadError": {
+    "state": "verified",
+    "verified_at": "2026-08-19T07:38:49.093466Z",
+    "verified_by": "Roger"
+  },
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": {
     "state": "verified",
     "verified_at": "2026-07-06T07:20:24.874752Z",
     "verified_by": "Roger"
   },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.removeImage": {
+    "state": "verified",
+    "verified_at": "2026-08-19T07:38:49.093466Z",
+    "verified_by": "Roger"
+  },
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.selectPages": {
     "state": "verified",
     "verified_at": "2026-07-06T07:20:24.874752Z",
+    "verified_by": "Roger"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.uploadImageLabel": {
+    "state": "verified",
+    "verified_at": "2026-08-19T07:38:49.093466Z",
     "verified_by": "Roger"
   },
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.withThisWidget3": {

@@ -7,6 +7,12 @@ class WebApi::V1::PermissionSerializer < WebApi::V1::BaseSerializer
     :require_name, :require_password, :require_verification,
     :require_confirmed_phone_number, :confirmed_phone_number_expiry
 
+  # Whether this action still follows the global 'visiting' permission (true) or
+  # has been overridden with settings of its own (false).
+  attribute :inherited do |object|
+    object.inherited?
+  end
+
   attribute :verification_enabled do |object|
     object.verification_enabled?
   end

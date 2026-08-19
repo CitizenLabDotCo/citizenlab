@@ -1,4 +1,8 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  InfiniteData,
+  QueryKey,
+} from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import useLocale from 'hooks/useLocale';
@@ -34,16 +38,22 @@ const useInfiniteProjectsMiniAdmin = (
   const locale = useLocale();
   const paramsWithLocale = { ...params, locale };
 
-  return useInfiniteQuery<ProjectsMiniAdmin, CLErrors>(
-    miniProjectsKeys.list(paramsWithLocale),
-    ({ pageParam = 1 }) => fetchPage(paramsWithLocale, pageParam, pageSize),
-    {
-      getNextPageParam: (lastPage) => {
-        const nextLink = lastPage.links.next;
-        return nextLink ? getPageNumberFromUrl(nextLink) : undefined;
-      },
-    }
-  );
+  return useInfiniteQuery<
+    ProjectsMiniAdmin,
+    CLErrors,
+    InfiniteData<ProjectsMiniAdmin>,
+    QueryKey,
+    number
+  >({
+    queryKey: miniProjectsKeys.list(paramsWithLocale),
+    queryFn: ({ pageParam }) =>
+      fetchPage(paramsWithLocale, pageParam, pageSize),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      const nextLink = lastPage.links.next;
+      return nextLink ? getPageNumberFromUrl(nextLink) : undefined;
+    },
+  });
 };
 
 export default useInfiniteProjectsMiniAdmin;

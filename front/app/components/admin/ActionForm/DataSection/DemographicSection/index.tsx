@@ -11,12 +11,12 @@ import {
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 
+import { IPermissionData } from 'api/permissions/types';
 import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
 import useAddPermissionsPhaseCustomField from 'api/permissions_phase_custom_fields/useAddPermissionsPhaseCustomField';
 import useDeletePermissionsPhaseCustomField from 'api/permissions_phase_custom_fields/useDeletePermissionsPhaseCustomField';
 import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields/usePermissionsPhaseCustomFields';
 import useUpdatePermissionsPhaseCustomField from 'api/permissions_phase_custom_fields/useUpdatePermissionsPhaseCustomField';
-import { IPhasePermissionData } from 'api/phase_permissions/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -24,7 +24,7 @@ import upsellMessages from 'components/UpsellTooltip/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { demographicsSummary } from '../../logic';
+import actionFormMessages from '../../messages';
 import { Changes } from '../../types';
 import { Expander } from '../../ui';
 
@@ -34,7 +34,7 @@ import FieldsList from './FieldsList';
 import messages from './messages';
 
 interface Props {
-  permission: IPhasePermissionData;
+  permission: IPermissionData;
   phaseId?: string;
   permissionHasForm: boolean;
   onChange: (changes: Changes) => void;
@@ -61,7 +61,7 @@ const DemographicSection = ({
     phaseId,
     action,
   });
-  const { mutate: addCustomField, isLoading: isAddingField } =
+  const { mutate: addCustomField, isPending: isAddingField } =
     useAddPermissionsPhaseCustomField({ phaseId, action });
   const { mutate: updateCustomField } = useUpdatePermissionsPhaseCustomField({
     phaseId,
@@ -120,7 +120,13 @@ const DemographicSection = ({
     <Expander
       icon="user-data"
       title={formatMessage(messages.demographicQuestions)}
-      summary={demographicsSummary(customFields, formatMessage)}
+      summary={
+        customFields.length === 0
+          ? formatMessage(messages.none)
+          : formatMessage(actionFormMessages.nQuestions, {
+              nQuestions: customFields.length,
+            })
+      }
     >
       {permissionHasForm && (
         <DemographicsPlacement

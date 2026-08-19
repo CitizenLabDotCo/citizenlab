@@ -17,9 +17,9 @@ const useFilePreview = (id?: string) => {
     queryKey: filePreviewsKeys.item({ id }),
     queryFn: () => fetchPreviewByFileId(id),
     enabled: !!id,
-    refetchInterval: (data) => {
+    refetchInterval: ({ state }) => {
       // Poll every 2 seconds if status is pending, otherwise stop polling
-      return data?.data.attributes.status === 'pending' ? 2000 : false;
+      return state.data?.data.attributes.status === 'pending' ? 2000 : false;
     },
   });
 };

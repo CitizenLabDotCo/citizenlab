@@ -93,10 +93,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            granular_permissions: {
-              enabled: true,
-              allowed: true
-            },
             machine_translations: {
               enabled: true,
               allowed: true
@@ -430,6 +426,10 @@ module MultiTenancy
               allowed: true
             },
             sms: {
+              enabled: false,
+              allowed: false
+            },
+            sms_login: {
               enabled: false,
               allowed: false
             },
