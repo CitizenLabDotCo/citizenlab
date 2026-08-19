@@ -29,21 +29,16 @@ module Permissions
 
     attr_reader :user, :user_requirements_service
 
+    # A phase action without a permission of its own inherits the global
+    # 'visiting' permission; the service resolves that, along with the persisted
+    # rows and the on-demand creation of global permissions.
     def find_permission(action, scope: nil)
-      permission = scope&.permissions&.find { |p| p[:action] == action }
+      inheritance_service.find(scope, action) ||
+        raise("Unknown action '#{action}' for scope: #{scope}")
+    end
 
-      if permission.blank?
-        permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
-
-        if permission.blank? && Permission.available_actions(scope)
-          Permissions::PermissionsUpdateService.new.update_permissions_for_scope scope
-          permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
-        end
-      end
-
-      raise "Unknown action '#{action}' for scope: #{scope}" if !permission
-
-      permission
+    def inheritance_service
+      @inheritance_service ||= Permissions::PermissionInheritanceService.new
     end
 
     def user_denied_reason(permission)

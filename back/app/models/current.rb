@@ -7,6 +7,10 @@ class Current < ActiveSupport::CurrentAttributes
   # Request origin ('mcp' during an MCP tool run, else nil). Read by LogActivityJob.
   attribute :activity_channel
 
+  # Per-request cache of the global 'visiting' permission, which every inherited
+  # phase permission is resolved from. See Permissions::PermissionInheritanceService.
+  attribute :global_visiting_permission
+
   private :tenant=, :app_configuration=
 
   def app_configuration
@@ -20,6 +24,7 @@ class Current < ActiveSupport::CurrentAttributes
   def reset_tenant
     self.tenant = nil
     self.app_configuration = nil
+    self.global_visiting_permission = nil
   end
 
   # This attribute is used to globally disable some model validations and callbacks that

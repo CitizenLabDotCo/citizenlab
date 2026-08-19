@@ -5,10 +5,7 @@ import React from 'react';
 
 import { Box, Text, Radio, Error } from '@citizenlab/cl2-component-library';
 
-import {
-  IPhasePermissionData,
-  UserDataCollection,
-} from 'api/phase_permissions/types';
+import { IPermissionData, UserDataCollection } from 'api/permissions/types';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
@@ -46,7 +43,7 @@ const ANONYMITY_OPTIONS: {
 ];
 
 interface Props {
-  permission: IPhasePermissionData;
+  permission: IPermissionData;
   onChange: (changes: Changes) => void;
 }
 

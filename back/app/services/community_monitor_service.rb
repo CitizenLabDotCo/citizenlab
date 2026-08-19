@@ -62,19 +62,38 @@ class CommunityMonitorService
           native_survey_button_multiloc: multiloc_service.i18n_to_multiloc('phases.native_survey_button')
         )
 
-        # Create an everyone permission by default
-        Permission.create!(action: 'posting_idea', permission_scope: phase, permitted_by: 'everyone')
+        create_default_permission!(phase)
 
         # Persist the form
         phase.pmethod.create_default_form!
       end
     end
 
+    # Again for a project that was not created here, since it may have been
+    # populated without a permission (see the find_by above). No-op otherwise.
+    create_default_permission!(Phase.find_by(project_id: project.id))
+
     # Set the ID in the settings
     settings['community_monitor']['project_id'] = project.id
     AppConfiguration.instance.update!(settings: settings)
 
     project
+  end
+
+  # The community monitor deliberately deviates from the platform-wide sign up
+  # flow: its survey is open to everyone. That only holds while the phase has a
+  # permission of its own — a phase action without one inherits the global
+  # 'visiting' permission, which would start asking people to sign in — so the
+  # permission is persisted along with the phase rather than left to inherit.
+  # See Permissions::PermissionInheritanceService.
+  #
+  # Idempotent, and never touches an existing permission: an admin may have
+  # narrowed it on purpose.
+  def create_default_permission!(phase)
+    return if phase.nil?
+    return if Permission.exists?(action: 'posting_idea', permission_scope: phase)
+
+    Permission.create!(action: 'posting_idea', permission_scope: phase, permitted_by: 'everyone')
   end
 
   def find_or_create_previous_quarter_report

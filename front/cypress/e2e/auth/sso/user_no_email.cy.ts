@@ -90,7 +90,7 @@ describe('SSO: user without email', () => {
 
     // Re-enter flow
     cy.get('#e2e-user-menu-container').click();
-    cy.get('#e2e-confirm-email-link > button').click();
+    cy.get('#e2e-complete-registration-link > button').click();
 
     // Enter and confirm email
     const email = randomEmail();

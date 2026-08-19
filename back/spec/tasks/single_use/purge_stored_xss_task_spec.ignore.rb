@@ -189,6 +189,24 @@ describe 'single_use:purge_stored_xss rake task' do
     end
   end
 
+  # Sanitising a value that was nothing but payload leaves nothing. The row is still written - a
+  # payload left standing defeats the task - but these fields validate presence, and `update_columns`
+  # goes around that, so the summary has to name them.
+  context 'a title that is nothing but a payload' do
+    let!(:project) { store_raw(create(:project), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>' }) }
+
+    it 'empties it rather than leaving the payload' do
+      run_task
+      expect(project.reload.title_multiloc['en']).to eq ''
+    end
+
+    it 'names the tenant, model and id in the summary' do
+      expect { run_task }.to output(
+        /Emptied.*#{Regexp.escape(Tenant.current.host)}.*Project#title_multiloc \[en\] #{project.id}/m
+      ).to_stdout
+    end
+  end
+
   context 'clean content' do
     let!(:idea) { create(:idea, body_multiloc: { 'en' => '<p>perfectly fine</p>' }) }
 

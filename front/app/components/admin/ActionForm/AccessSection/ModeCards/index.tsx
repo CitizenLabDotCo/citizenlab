@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Color } from '@citizenlab/cl2-component-library';
 
-import { PermittedBy } from 'api/phase_permissions/types';
+import { PermittedBy } from 'api/permissions/types';
 
 import { useIntl } from 'utils/cl-intl';
 

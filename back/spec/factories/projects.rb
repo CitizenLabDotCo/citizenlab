@@ -644,7 +644,9 @@ FactoryBot.define do
               :community_monitor_survey_phase,
               project: project,
               **evaluator.phase_attrs,
-              with_permissions: true
+              # As CommunityMonitorService populates it: its own permission,
+              # open to everyone, rather than one inherited from 'visiting'.
+              permissions_config: { 'posting_idea' => true }
             )
           end
 

@@ -133,6 +133,10 @@ describe('Native survey CTA bar', () => {
 
     cy.setAdminLoginCookie();
 
+    // The action follows the platform defaults until it is overridden, and the
+    // panel only offers its settings once it has been.
+    cy.apiOverridePhasePermission({ phaseId, action: 'posting_idea' });
+
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/access-rights`);
 
     cy.get('.e2e-action-accordion-posting_idea').click();

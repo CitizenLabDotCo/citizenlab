@@ -36,6 +36,10 @@ describe.skip('Verified action', () => {
       .then((phase) => {
         phaseId = phase.body.data.id;
 
+        // The action follows the platform defaults until it is overridden, and
+        // the panel only offers its settings once it has been.
+        cy.apiOverridePhasePermission({ phaseId, action: 'posting_idea' });
+
         cy.intercept(`**/phases/${phaseId}/permissions/posting_idea`).as(
           'setPermissionRequest'
         );

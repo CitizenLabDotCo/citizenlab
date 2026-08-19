@@ -180,5 +180,24 @@ RSpec.describe Invites::BulkCreateJob do
         invalid_rows: [2, 5],
         extra_args: { job_type: 'bulk_create_xlsx', xlsx_import: true }
     end
+
+    describe 'when an unexpected error occurs' do
+      let(:invites_import) { create(:invites_import, job_type: 'bulk_create', importer: user) }
+
+      before do
+        allow(Invites::Service).to receive(:new).and_raise(ActiveRecord::StatementInvalid, 'boom')
+      end
+
+      # Checks the job routes through Invites::ImportRunner, which holds the rescue.
+      it 'completes the invites_import with an error and re-raises' do
+        expect do
+          described_class.perform_now(user, { emails: emails }, invites_import.id)
+        end.to raise_error(ActiveRecord::StatementInvalid)
+
+        invites_import.reload
+        expect(invites_import.completed_at).to be_present
+        expect(invites_import.result).to eq('errors' => [{ 'error' => 'unexpected_invite_error' }])
+      end
+    end
   end
 end
