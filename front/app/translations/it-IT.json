@@ -632,7 +632,7 @@
   "app.components.ProjectPageBuilder.Widgets.timelineEmptyTitle": "Non ci sono ancora fasi",
   "app.components.ProjectPageBuilder.Widgets.timelineHiddenNote": "Questo progetto ha una singola fase senza data di fine o descrizione, quindi i visitatori non vedranno una timeline.",
   "app.components.ProjectPageBuilder.Widgets.timelineHiddenTitle": "Timeline nascosta",
-  "app.components.ProjectPageBuilder.Widgets.timelineManagedNote": "Le fasi sono impostate nell'{projectEditorLink}. La timeline si aggiorna automaticamente con il passare del tempo.",
+  "app.components.ProjectPageBuilder.Widgets.timelineManagedNote": "Le fasi sono impostate nell' {projectEditorLink}. La timeline si aggiorna automaticamente con il passare del tempo.",
   "app.components.ProjectPageBuilder.Widgets.titleWidgetTitle": "Titolo",
   "app.components.ProjectPageBuilder.Widgets.untitledProject": "Progetto senza titolo",
   "app.components.ProjectTemplatePreview.alsoUsedIn": "Usato anche in queste città:",

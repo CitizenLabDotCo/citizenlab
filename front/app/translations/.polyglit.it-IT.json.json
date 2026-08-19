@@ -3069,6 +3069,11 @@
     "verified_at": "2026-07-27T07:58:41.572985Z",
     "verified_by": "Roger"
   },
+  "app.components.ProjectPageBuilder.Widgets.timelineManagedNote": {
+    "state": "verified",
+    "verified_at": "2026-08-19T11:52:30.676074Z",
+    "verified_by": "Roger"
+  },
   "app.components.ProjectPageBuilder.Widgets.titleWidgetTitle": {
     "state": "verified",
     "verified_at": "2026-07-27T07:58:41.572985Z",
