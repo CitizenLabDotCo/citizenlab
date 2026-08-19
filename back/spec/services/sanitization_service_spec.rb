@@ -474,8 +474,10 @@ describe SanitizationService do
       expect(service.replace_links_with_urls('<a href="https://example.com">click here</a>')).to eq 'https://example.com'
     end
 
-    it 'replaces a mailto link with its address' do
-      expect(service.replace_links_with_urls('<a href="mailto:a@b.com">schrijf ons</a>')).to eq 'mailto:a@b.com'
+    # Without the scheme: `linkify` matches an email by its address alone and adds the `mailto:`
+    # back itself, so leaving one on here strands it in front of the rebuilt link as visible text.
+    it 'replaces a mailto link with its address, without the scheme' do
+      expect(service.replace_links_with_urls('<a href="mailto:a@b.com">schrijf ons</a>')).to eq 'a@b.com'
     end
 
     # `linkify` never builds these, so putting one back as text would invent a link the pipeline
@@ -496,6 +498,27 @@ describe SanitizationService do
 
     it 'returns nil for nil' do
       expect(service.replace_links_with_urls(nil)).to be_nil
+    end
+
+    # The comment-translation pipeline, which is the only caller. It runs on every save and over
+    # stored rows in bulk, so a value it has already been through has to come back untouched -
+    # a label the rebuild does not reproduce exactly grows by one copy on every pass.
+    describe 'feeding the rebuilt link back through the pipeline' do
+      def round_trip(html)
+        service.sanitize_body(service.replace_links_with_urls(html), Comment::BODY_SANITIZE_FEATURES)
+      end
+
+      %w[https://example.com/x mailto:a@b.com].each do |href|
+        it "settles after one pass for #{href}" do
+          once = round_trip(%(<a href="#{href}">een vertaald label</a>))
+          expect(round_trip(once)).to eq once
+        end
+      end
+
+      it 'shows a mailto link as its address, with no scheme in the visible text' do
+        output = round_trip('<a href="mailto:a@b.com">schrijf ons</a>')
+        expect(output).to eq '<a href="mailto:a@b.com" target="_blank" rel="noreferrer noopener nofollow">a@b.com</a>'
+      end
     end
   end
 
