@@ -3330,7 +3330,7 @@
   "app.containers.AdminPage.SettingsPage.urlTitleTooltip": "Puoi aggiungere un link al tuo sito web. Questo link verrà utilizzato in fondo alla homepage.",
   "app.containers.AdminPage.SettingsPage.userNameDisplayDescription": "Scegli come appariranno sulla piattaforma gli utenti senza un nome nel profilo. Questo avverrà quando imposti i diritti di accesso di una fase su \"Conferma via email\". In ogni caso, al momento della partecipazione, gli utenti potranno aggiornare il nome del profilo che abbiamo generato automaticamente per loro.",
   "app.containers.AdminPage.SettingsPage.userNameDisplayTitle": "Visualizzazione del nome utente (solo per gli utenti con email confermata)",
-  "app.containers.AdminPage.SettingsPage.visitingPermission.subtitle1": "Gestisci chi può accedere alla piattaforma. La configurazione delle impostazioni qui comporterà due cose:",
+  "app.containers.AdminPage.SettingsPage.visitingPermission.subtitle1": "Gestisci chi può accedere alla piattaforma. La configurazione delle impostazioni in questa pagina comporterà due cose:",
   "app.containers.AdminPage.SettingsPage.visitingPermission.subtitleBullet1": "L'impostazione verrà applicata al processo di registrazione globale (ad es. quando le persone cliccano su \"Registrati\" nella homepage).",
   "app.containers.AdminPage.SettingsPage.visitingPermission.subtitleBullet5": "L'impostazione verrà applicata <b>per impostazione predefinita</b> quando le persone desiderano partecipare a un progetto o iscriversi a un evento. Tuttavia, <b>gli amministratori e i gestori possono personalizzare questa impostazione per ogni fase</b>: consulta la scheda “Accesso alle fasi e dati dell'utente” in ogni fase del progetto.",
   "app.containers.AdminPage.SideBar.administrator": "Amministratore",
