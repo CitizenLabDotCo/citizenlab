@@ -221,7 +221,7 @@ RSpec.describe Surveys::ResultsGenerator do
           })
         end
 
-        it 'counts towards the question responses, but not towards any answer, not even none' do
+        it 'increases the question response count, leaving every answer count unchanged' do
           result = generator.generate_result_for_field(multiselect_field.id)
 
           expect(result[:totalResponseCount]).to eq 28
