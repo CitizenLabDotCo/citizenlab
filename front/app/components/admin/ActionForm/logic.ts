@@ -144,7 +144,7 @@ export const buildSummary = (
   permission: IPermissionData,
   customFields: IPermissionsPhaseCustomFieldData[],
   formatMessage: FormatMessage,
-  visibleToggles: VisibleSecurityRequirements
+  visibleSecurityRequirements: VisibleSecurityRequirements
 ): SummaryChip[] => {
   const { attributes } = permission;
 
@@ -181,28 +181,34 @@ export const buildSummary = (
   // A requirement the platform does not offer (no SMS, no verification method,
   // ...) is not something the admin can act on, so it stays out of the summary
   // even when the permission still carries the flag.
-  if (visibleToggles.email && attributes.require_confirmed_email) {
+  if (visibleSecurityRequirements.email && attributes.require_confirmed_email) {
     chips.push({
       key: 'email',
       label: formatMessage(messages.confirmedEmail),
       icon: 'email',
     });
   }
-  if (visibleToggles.phone && attributes.require_confirmed_phone_number) {
+  if (
+    visibleSecurityRequirements.phone &&
+    attributes.require_confirmed_phone_number
+  ) {
     chips.push({
       key: 'phone',
       label: formatMessage(messages.confirmedPhone),
       icon: 'tablet',
     });
   }
-  if (visibleToggles.verification && attributes.require_verification) {
+  if (
+    visibleSecurityRequirements.verification &&
+    attributes.require_verification
+  ) {
     chips.push({
       key: 'verification',
       label: formatMessage(messages.verification),
       icon: 'shield-checkered',
     });
   }
-  if (visibleToggles.password && attributes.require_password) {
+  if (visibleSecurityRequirements.password && attributes.require_password) {
     chips.push({
       key: 'password',
       label: formatMessage(messages.password),

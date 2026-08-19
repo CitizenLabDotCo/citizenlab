@@ -44,8 +44,8 @@ const ActionForm = ({
     phaseId,
     action,
   });
-  const visibleToggles = useVisibleSecurityRequirements();
-  if (!permissionsCustomFields || !visibleToggles) return null;
+  const visibleSecurityRequirements = useVisibleSecurityRequirements();
+  if (!permissionsCustomFields || !visibleSecurityRequirements) return null;
 
   const customFields = permissionsCustomFields.data;
 
@@ -57,7 +57,7 @@ const ActionForm = ({
     permissionData,
     customFields,
     formatMessage,
-    visibleToggles
+    visibleSecurityRequirements
   );
 
   const handleOverride = async () => {
