@@ -144,6 +144,41 @@ describe ProjectCopyService do
       )
     end
 
+    describe 'project images whose stored file is missing' do
+      let(:project) { create(:project) }
+      let!(:project_image) { create(:project_image, project: project) }
+
+      it 'exports a surviving version when the original file is gone' do
+        File.delete(project_image.image.path)
+
+        template = service.export project
+
+        expect(template['models']['project_image'].size).to eq 1
+        expect(template['models']['project_image'].first['remote_image_url']).to end_with(
+          File.basename(project_image.image.large.path)
+        )
+      end
+
+      it 'does not export the image when no file is left' do
+        File.delete(project_image.image.path)
+        File.delete(project_image.image.large.path)
+
+        template = service.export project
+
+        expect(template['models']['project_image']).to be_empty
+      end
+
+      it 'skips the image and reports the error when the storage cannot be reached' do
+        allow_any_instance_of(CarrierWave::SanitizedFile)
+          .to receive(:exists?).and_raise(Errno::ECONNRESET)
+        expect(ErrorReporter).to receive(:report).at_least(:once)
+
+        template = service.export project
+
+        expect(template['models']['project_image']).to be_empty
+      end
+    end
+
     it 'successfully exports matrix custom fields' do
       field = create(:custom_field_matrix_linear_scale, :for_custom_form)
       template = service.export field.resource.participation_context
