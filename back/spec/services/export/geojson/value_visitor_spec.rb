@@ -383,7 +383,7 @@ describe Export::Geojson::ValueVisitor do
         let!(:file) { create(:idea_file, name: 'File1.pdf', idea: model) }
 
         it 'returns the value for the report' do
-          model.update!(custom_field_values: { field_key => { 'id' => file.id, 'name' => file.name } })
+          create(:custom_field_answer, answerable: model, custom_field: field, value: { 'id' => file.id, 'name' => file.name })
           expect(visitor.visit_file_upload(field)).to eq file.file.url
         end
       end
@@ -409,7 +409,7 @@ describe Export::Geojson::ValueVisitor do
         let!(:file) { create(:idea_file, name: 'File1.pdf', idea: model) }
 
         it 'returns the value for the report' do
-          model.update!(custom_field_values: { field_key => { 'id' => file.id, 'name' => file.name } })
+          create(:custom_field_answer, answerable: model, custom_field: field, value: { 'id' => file.id, 'name' => file.name })
           expect(visitor.visit_shapefile_upload(field)).to eq file.file.url
         end
       end

@@ -4,7 +4,12 @@ require 'rails_helper'
 
 RSpec.describe Answerable do
   describe '#answer_for_key' do
-    let(:user) { create(:user, custom_field_values: { 'pet' => 'other', 'pet_other' => 'A ferret' }) }
+    let(:user) { create(:user) }
+
+    before do
+      create(:custom_field_answer, answerable: user, key: 'pet', value: 'other')
+      create(:custom_field_answer, answerable: user, key: 'pet_other', value: 'A ferret')
+    end
 
     it 'returns the answer stored under the key' do
       expect(user.answer_for_key('pet').value).to eq 'other'

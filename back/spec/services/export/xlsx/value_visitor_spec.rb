@@ -589,7 +589,7 @@ describe Export::Xlsx::ValueVisitor do
         let!(:file) { create(:idea_file, name: 'File1.pdf', idea: model) }
 
         it 'returns the value for the report' do
-          model.update!(custom_field_values: { field_key => { 'id' => file.id, 'name' => file.name } })
+          create(:custom_field_answer, answerable: model, custom_field: field, value: { 'id' => file.id, 'name' => file.name })
           expect(visitor.visit_file_upload(field)).to eq file.file.url
         end
       end
@@ -600,7 +600,7 @@ describe Export::Xlsx::ValueVisitor do
         let(:model) { create(:native_survey_response) }
 
         it 'returns an empty string' do
-          model.update!(custom_field_values: { field_key => { 'id' => 'FILE_ID_NO_LONGER_EXISTS', 'name' => 'Deleted file' } })
+          create(:custom_field_answer, answerable: model, custom_field: field, value: { 'id' => 'FILE_ID_NO_LONGER_EXISTS', 'name' => 'Deleted file' })
           expect(visitor.visit_file_upload(field)).to eq ''
         end
       end
@@ -626,7 +626,7 @@ describe Export::Xlsx::ValueVisitor do
         let!(:file) { create(:idea_file, name: 'File1.pdf', idea: model) }
 
         it 'returns the value for the report' do
-          model.update!(custom_field_values: { field_key => { 'id' => file.id, 'name' => file.name } })
+          create(:custom_field_answer, answerable: model, custom_field: field, value: { 'id' => file.id, 'name' => file.name })
           expect(visitor.visit_shapefile_upload(field)).to eq file.file.url
         end
       end

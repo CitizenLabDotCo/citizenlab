@@ -160,7 +160,7 @@ describe Export::CustomFieldForExport do
       described_class.new(custom_field, Export::Geojson::ValueVisitor, :author)
     end
 
-    let(:user) { create(:user, custom_field_values: { 'birthyear' => 1984 }) }
+    let(:user) { build(:user, custom_field_answers: [build(:custom_field_answer, key: 'birthyear', value: 1984)]) }
     let(:input_type) { 'number' }
     let(:custom_field) do
       create(
@@ -182,7 +182,7 @@ describe Export::CustomFieldForExport do
 
       context 'for a select field without options' do
         let(:input_type) { 'select' }
-        let(:user) { create(:user, custom_field_values: { 'birthyear' => '1991' }) }
+        let(:user) { build(:user, custom_field_answers: [build(:custom_field_answer, key: 'birthyear', value: '1991')]) }
 
         it 'returns the empty string' do
           expect(report_field.value_from(model)).to eq ''
