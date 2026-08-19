@@ -8,6 +8,10 @@ module Answerable
     after_save :sync_custom_field_answers, if: :saved_change_to_custom_field_values?
   end
 
+  def answer_for_key(key)
+    custom_field_answers.find { it.key == key }
+  end
+
   private
 
   def sync_custom_field_answers
