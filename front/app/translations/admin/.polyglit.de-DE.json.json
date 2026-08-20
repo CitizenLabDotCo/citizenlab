@@ -3719,6 +3719,11 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.Invitations.processingNotStartedError": {
+    "state": "verified",
+    "verified_at": "2026-08-19T07:31:15.339130Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.Invitations.projectSelectorPlaceholder": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
@@ -22437,6 +22442,16 @@
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.none": {
     "state": "verified",
     "verified_at": "2026-08-17T14:35:41.681284Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordAvailableDescription": {
+    "state": "verified",
+    "verified_at": "2026-08-19T07:31:15.339130Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailSignupTooltip": {
+    "state": "verified",
+    "verified_at": "2026-08-19T07:31:15.339130Z",
     "verified_by": "Jelena"
   },
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.securityChecks2": {

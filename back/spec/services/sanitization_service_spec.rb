@@ -474,8 +474,10 @@ describe SanitizationService do
       expect(service.replace_links_with_urls('<a href="https://example.com">click here</a>')).to eq 'https://example.com'
     end
 
-    it 'replaces a mailto link with its address' do
-      expect(service.replace_links_with_urls('<a href="mailto:a@b.com">schrijf ons</a>')).to eq 'mailto:a@b.com'
+    # Without the scheme: `linkify` matches an email by its address alone and adds the `mailto:`
+    # back itself, so leaving one on here strands it in front of the rebuilt link as visible text.
+    it 'replaces a mailto link with its address, without the scheme' do
+      expect(service.replace_links_with_urls('<a href="mailto:a@b.com">schrijf ons</a>')).to eq 'a@b.com'
     end
 
     # `linkify` never builds these, so putting one back as text would invent a link the pipeline

@@ -6,7 +6,7 @@ import insightsKeys from 'api/analysis_insights/keys';
 import taggingKeys from 'api/analysis_taggings/keys';
 import tagsKeys from 'api/analysis_tags/keys';
 
-import useOnQuerySuccess from 'hooks/useOnQuerySuccess';
+import useOnQueryFetched from 'hooks/useOnQueryFetched';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 import { NO_PLACEHOLDER_DATA } from 'utils/cl-react-query/queryClient';
@@ -45,7 +45,8 @@ const useAnalysisBackgroundTasks = (analysisId?: string) => {
     enabled: !!analysisId,
   });
 
-  useOnQuerySuccess(result, () => {
+  // Only after the list's own fetch, see useAnalysisBackgroundTask (TAN-8535).
+  useOnQueryFetched(result, () => {
     queryClient.invalidateQueries({ queryKey: tagsKeys.lists() });
     queryClient.invalidateQueries({ queryKey: taggingKeys.lists() });
     queryClient.invalidateQueries({ queryKey: insightsKeys.lists() });
