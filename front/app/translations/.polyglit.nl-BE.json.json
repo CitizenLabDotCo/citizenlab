@@ -744,7 +744,6 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
-
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": {
     "state": "verified",
     "verified_at": "2026-08-20T12:11:02.731830Z",
@@ -3519,6 +3518,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
+  },
+  "app.components.SmsConsent.campaignPreferencesDisclosure": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:12:01.658939Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.SmsConsent.phoneConfirmationDisclosure": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:12:01.658939Z",
+    "verified_by": "Luuc"
   },
   "app.components.SmsConsent.smsConfirmationDisclosure": {
     "state": "verified",
@@ -6880,13 +6889,11 @@
     "verified_at": "2026-07-10T12:33:55.160812Z",
     "verified_by": "Luuc"
   },
-
   "app.containers.Authentication.steps.FlowStart.useEmailInstead": {
     "state": "verified",
     "verified_at": "2026-08-20T12:11:02.731830Z",
     "verified_by": "Luuc"
   },
-
   "app.containers.Authentication.steps.FlowStart.usePhoneNumberInstead": {
     "state": "verified",
     "verified_at": "2026-08-20T12:11:02.731830Z",
@@ -6937,13 +6944,11 @@
     "verified_at": "2026-07-21T19:53:38.940387Z",
     "verified_by": "Luuc"
   },
-
-  "app.containers.Authentication.steps.Policies.byContinuingPhone": {
+  "app.containers.Authentication.steps.Policies.byContinuingPhone2": {
     "state": "verified",
-    "verified_at": "2026-08-20T12:11:02.731830Z",
+    "verified_at": "2026-08-20T12:12:01.658939Z",
     "verified_by": "Luuc"
   },
-
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": {
     "state": "verified",
     "verified_at": "2026-08-20T12:11:02.731830Z",
@@ -6959,7 +6964,6 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
-
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": {
     "state": "verified",
     "verified_at": "2026-08-20T12:11:02.731830Z",
@@ -10830,6 +10834,11 @@
     "verified_at": "2026-07-14T17:01:42.057992Z",
     "verified_by": "Luuc"
   },
+  "app.containers.PhoneChange.newPhoneLabel2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:12:01.658939Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.PhoneChange.phoneEmptyError": {
     "state": "verified",
     "verified_at": "2026-07-14T17:01:42.057992Z",
@@ -10838,6 +10847,11 @@
   "app.containers.PhoneChange.phoneInvalid2": {
     "state": "verified",
     "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.phoneInvalid3": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:12:01.658939Z",
     "verified_by": "Luuc"
   },
   "app.containers.PhoneChange.phoneTaken": {
@@ -10878,6 +10892,11 @@
   "app.containers.PhoneChange.smsManualCampaignConsentLabel": {
     "state": "verified",
     "verified_at": "2026-07-29T21:12:29.853430Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.smsManualCampaignConsentLabel2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:12:01.658939Z",
     "verified_by": "Luuc"
   },
   "app.containers.PhoneChange.submitButton": {
@@ -13165,7 +13184,6 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
-
   "app.errors.file_too_large": {
     "state": "verified",
     "verified_at": "2026-08-20T12:11:02.731830Z",
@@ -13391,13 +13409,11 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
-
   "app.errors.unexpected_invite_error": {
     "state": "verified",
     "verified_at": "2026-08-20T12:11:02.731830Z",
     "verified_by": "Luuc"
   },
-
   "app.errors.unexpected_seats_count_error": {
     "state": "verified",
     "verified_at": "2026-08-20T12:11:02.731830Z",
