@@ -24,6 +24,25 @@ describe UserService do
       service.upsert_in_web_api(user, user_params) { true }
       expect(user.persisted?).to be(true)
     end
+
+    context 'with a registration custom field' do
+      before { create(:custom_field_number, key: 'yearly_bike_kms') }
+
+      it 'saves the user when the custom field values match their schemas' do
+        user = User.new
+        result = service.upsert_in_web_api(user, user_params.merge(custom_field_values: { 'yearly_bike_kms' => 2500 }))
+        expect(result).to be true
+        expect(user.reload.custom_field_values).to eq('yearly_bike_kms' => 2500)
+      end
+
+      it 'adds errors and does not save when the custom field values do not match their schemas' do
+        user = User.new
+        result = service.upsert_in_web_api(user, user_params.merge(custom_field_values: { 'yearly_bike_kms' => 'lots' }))
+        expect(result).to be false
+        expect(user).not_to be_persisted
+        expect(user.errors[:custom_field_values]).to be_present
+      end
+    end
   end
 
   describe '.create_in_admin_api' do

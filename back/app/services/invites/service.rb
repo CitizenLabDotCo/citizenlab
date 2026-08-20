@@ -18,7 +18,7 @@ class Invites::Service
   end
 
   def bulk_create_xlsx(xlsx_param, default_params = {})
-    xlsx_processor = Invites::XlsxProcessor.new(@error_storage, custom_field_schema)
+    xlsx_processor = Invites::XlsxProcessor.new(@error_storage, registration_custom_fields)
     hash_array, map_rows = xlsx_processor.param_to_hash_array(xlsx_param)
 
     bulk_create(hash_array, default_params)
@@ -55,13 +55,13 @@ class Invites::Service
 
   private
 
-  def custom_field_schema
-    @custom_field_schema ||= CustomFieldService.new.fields_to_json_schema(CustomField.registration)
+  def registration_custom_fields
+    @registration_custom_fields ||= CustomField.registration.to_a
   end
 
   # @return [Array<String>]
   def custom_field_keys
-    custom_field_schema[:properties].keys
+    registration_custom_fields.map(&:key)
   end
 
   def build_invitees(hash_array, default_params = {})
