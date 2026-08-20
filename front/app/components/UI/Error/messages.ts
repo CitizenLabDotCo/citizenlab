@@ -411,6 +411,11 @@ export default defineMessages({
     defaultMessage:
       "The campaign can't be sent out because there are no recipients. The group you're sending to is either empty, or nobody has consented to receiving emails.",
   },
+  insufficient_sms_balance: {
+    id: 'app.errors.insufficient_sms_balance',
+    defaultMessage:
+      'There are not enough SMS credits left to send this message. To purchase more credits, contact your GovSuccess Manager.',
+  },
   verification_taken: {
     id: 'app.errors.verification_taken',
     defaultMessage:
