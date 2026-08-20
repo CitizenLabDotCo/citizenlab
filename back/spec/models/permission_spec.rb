@@ -32,6 +32,18 @@ RSpec.describe Permission do
     end
   end
 
+  describe 'custom_fields_behavior' do
+    it "is 'global' when created" do
+      expect(create(:permission, custom_fields_behavior: nil).custom_fields_behavior).to eq 'global'
+    end
+
+    it 'is invalid for a value that is not one of the three behaviors' do
+      permission = build(:permission, custom_fields_behavior: 'platform')
+      expect(permission).not_to be_valid
+      expect(permission.errors.details[:custom_fields_behavior]).to include(hash_including(error: :inclusion))
+    end
+  end
+
   describe 'scopes' do
     context 'ideation' do
       let(:phase) { create(:phase) }

@@ -107,7 +107,7 @@ resource 'Permissions' do
       context 'with custom fields and groups' do
         before do
           create(:custom_field_gender, enabled: true, required: true)
-          @phase.permissions.first.update!(group_ids: create_list(:group, 2, projects: [@phase.project]).map(&:id), global_custom_fields: true)
+          @phase.permissions.first.update!(group_ids: create_list(:group, 2, projects: [@phase.project]).map(&:id), custom_fields_behavior: 'global')
         end
 
         example_request 'Get one permission by action' do
@@ -181,6 +181,7 @@ resource 'Permissions' do
       with_options scope: :permission do
         parameter :permitted_by, "Defines who is granted permission, either #{Permission::PERMITTED_BIES.join(',')}.", required: false
         parameter :global_custom_fields, 'When set to true, the enabled registrations are associated to the permission', required: false
+        parameter :custom_fields_behavior, "Which demographic questions are asked, either #{Permission::CUSTOM_FIELDS_BEHAVIORS.join(',')}. 'custom' requires the permissions_custom_fields feature.", required: false
         parameter :group_ids, "An array of group id's associated to this permission", required: false
         parameter :verification_expiry, 'number of days before reverification required - nil means never reverify', required: false
         parameter :require_confirmed_email, 'Whether a confirmed email is required to take this action', required: false
@@ -211,6 +212,66 @@ resource 'Permissions' do
           expect(response_data.dig(:attributes, :verification_enabled)).to be true
           expect(response_data.dig(:attributes, :access_denied_explanation_multiloc)).to eq access_denied_explanation_multiloc
           expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array group_ids
+        end
+      end
+
+      context 'custom_fields_behavior' do
+        let(:permitted_by) { 'users' }
+        let!(:platform_field) { create(:custom_field_gender, enabled: true) }
+
+        example 'Customise the demographic questions, which starts from the platform ones' do
+          do_request(permission: { custom_fields_behavior: 'custom' })
+
+          assert_status 200
+          expect(response_data.dig(:attributes, :custom_fields_behavior)).to eq 'custom'
+          permission = Permission.find(response_data[:id])
+          expect(permission.permissions_custom_fields.pluck(:custom_field_id)).to eq [platform_field.id]
+        end
+
+        example 'Stop asking demographic questions' do
+          do_request(permission: { custom_fields_behavior: 'disabled' })
+
+          assert_status 200
+          expect(response_data.dig(:attributes, :custom_fields_behavior)).to eq 'disabled'
+          expect(Permission.find(response_data[:id]).permissions_custom_fields).to be_empty
+        end
+
+        example 'Switching away from custom keeps the questions, so that switching back restores them' do
+          do_request(permission: { custom_fields_behavior: 'custom' })
+          permission = Permission.find(response_data[:id])
+
+          do_request(permission: { custom_fields_behavior: 'global' })
+
+          assert_status 200
+          expect(permission.reload.custom_fields_behavior).to eq 'global'
+          expect(permission.permissions_custom_fields.pluck(:custom_field_id)).to eq [platform_field.id]
+        end
+
+        example 'An unrelated update does not restore questions that were deliberately removed' do
+          do_request(permission: { custom_fields_behavior: 'custom' })
+          permission = Permission.find(response_data[:id])
+          permission.permissions_custom_fields.destroy_all
+
+          do_request(permission: { require_name: false })
+
+          assert_status 200
+          expect(permission.reload.permissions_custom_fields).to be_empty
+        end
+
+        example 'Clients that still send global_custom_fields get the behavior it stands for', document: false do
+          do_request(permission: { global_custom_fields: true })
+
+          assert_status 200
+          expect(response_data.dig(:attributes, :custom_fields_behavior)).to eq 'global'
+        end
+
+        example '[error] Questions cannot be customised without the permissions_custom_fields feature' do
+          SettingsService.new.deactivate_feature!('permissions_custom_fields')
+
+          do_request(permission: { custom_fields_behavior: 'custom' })
+
+          assert_status 401
+          expect(@phase.permissions.first.reload.custom_fields_behavior).not_to eq 'custom'
         end
       end
 
@@ -320,7 +381,7 @@ resource 'Permissions' do
       let(:action) { 'posting_idea' }
       let!(:permission) do
         Permission.find_by!(action: 'posting_idea', permission_scope: @phase).tap do |p|
-          p.update!(permitted_by: 'admins_moderators', global_custom_fields: false, groups: [create(:group)])
+          p.update!(permitted_by: 'admins_moderators', custom_fields_behavior: 'custom', groups: [create(:group)])
           create(:permissions_custom_field, permission: p, custom_field: create(:custom_field))
         end
       end
@@ -405,6 +466,7 @@ resource 'Permissions' do
       with_options scope: :permission do
         parameter :permitted_by, "Defines who is granted permission, either #{Permission::PERMITTED_BIES.join(',')}.", required: false
         parameter :global_custom_fields, 'When set to true, the enabled registrations are associated to the permission', required: false
+        parameter :custom_fields_behavior, "Which demographic questions are asked, either #{Permission::CUSTOM_FIELDS_BEHAVIORS.join(',')}. 'custom' requires the permissions_custom_fields feature.", required: false
         parameter :group_ids, "An array of group id's associated to this permission", required: false
         parameter :require_confirmed_email, 'Whether a confirmed email address is required', required: false
         parameter :require_confirmed_phone_number, 'Whether a confirmed phone number is required', required: false
@@ -771,7 +833,7 @@ resource 'Permissions' do
       context 'with permission-specific custom fields' do
         before do
           @permission = @project.phases.first.permissions.first
-          @permission.update!(global_custom_fields: false)
+          @permission.update!(custom_fields_behavior: 'custom')
           @field1 = create(:custom_field, required: true)
           @field2 = create(:custom_field, required: false)
           create(:permissions_custom_field, permission: @permission, custom_field: @field1, required: false)
@@ -804,7 +866,7 @@ resource 'Permissions' do
       context 'with permission-specific custom fields' do
         before do
           @permission = @phase.permissions.first
-          @permission.update!(global_custom_fields: false)
+          @permission.update!(custom_fields_behavior: 'custom')
           @field1 = create(:custom_field, required: true)
           @field2 = create(:custom_field, required: false)
           create(:permissions_custom_field, permission: @permission, custom_field: @field1, required: false)

@@ -125,7 +125,7 @@ describe Permissions::PermissionInheritanceService do
 
     it 'inherits the persisted demographic questions of the visiting permission' do
       custom_field = create(:custom_field)
-      visiting_permission.update!(global_custom_fields: false)
+      visiting_permission.update!(custom_fields_behavior: 'custom')
       create(:permissions_custom_field, permission: visiting_permission, custom_field: custom_field, required: true)
       described_class.clear_source_permission_cache
 
@@ -209,7 +209,7 @@ describe Permissions::PermissionInheritanceService do
 
     it 'copies the persisted demographic questions of the visiting permission' do
       custom_field = create(:custom_field)
-      visiting_permission.update!(global_custom_fields: false)
+      visiting_permission.update!(custom_fields_behavior: 'custom')
       create(:permissions_custom_field, permission: visiting_permission, custom_field: custom_field, required: false, ordering: 0)
       described_class.clear_source_permission_cache
 
@@ -217,7 +217,7 @@ describe Permissions::PermissionInheritanceService do
       expect(permission.permissions_custom_fields.pluck(:custom_field_id, :required)).to eq [[custom_field.id, false]]
       # Otherwise the copy would fall back to the platform's user fields and
       # ignore the fields it just copied.
-      expect(permission.global_custom_fields).to be false
+      expect(permission.custom_fields_behavior).to eq 'custom'
     end
 
     it 'no longer follows the visiting permission afterwards' do
@@ -260,7 +260,7 @@ describe Permissions::PermissionInheritanceService do
     end
 
     it 'destroys the groups and demographic questions of the permission' do
-      permission = create(:permission, action: 'posting_idea', permission_scope: phase, groups: [create(:group)], global_custom_fields: false)
+      permission = create(:permission, action: 'posting_idea', permission_scope: phase, groups: [create(:group)], custom_fields_behavior: 'custom')
       custom_field = create(:permissions_custom_field, permission: permission)
 
       service.inherit!(permission)

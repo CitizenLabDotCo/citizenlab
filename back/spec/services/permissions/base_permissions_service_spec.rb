@@ -126,10 +126,9 @@ describe Permissions::BasePermissionsService do
             :permission,
             permitted_by: 'users',
             require_name: false,
-            require_password: false,
-            global_custom_fields: false
+            require_password: false
           )
-          permission.update!(global_custom_fields: false)
+          permission.update!(custom_fields_behavior: 'disabled')
           permission.permissions_custom_fields.destroy_all
 
           denied_reason = service.send(:user_denied_reason, permission)
@@ -143,7 +142,7 @@ describe Permissions::BasePermissionsService do
             require_name: false,
             require_password: true
           )
-          permission.update!(global_custom_fields: false)
+          permission.update!(custom_fields_behavior: 'disabled')
           permission.permissions_custom_fields.destroy_all
 
           denied_reason = service.send(:user_denied_reason, permission)

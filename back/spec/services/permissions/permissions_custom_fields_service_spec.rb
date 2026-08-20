@@ -13,9 +13,9 @@ describe Permissions::PermissionsCustomFieldsService do
   end
 
   describe '#fields_for_permission' do
-    context 'global_custom_fields is true' do
+    context "custom_fields_behavior is 'global'" do
       it 'returns non-persisted default fields when permitted_by "users"' do
-        permission = create(:permission, permitted_by: 'users', global_custom_fields: true)
+        permission = create(:permission, permitted_by: 'users', custom_fields_behavior: 'global')
         fields = service.fields_for_permission(permission)
         expect(fields.count).to eq 2
         expect(fields.map(&:persisted?)).to contain_exactly(false, false)
@@ -23,7 +23,7 @@ describe Permissions::PermissionsCustomFieldsService do
       end
 
       it 'returns non-persisted default fields when require_verification = true' do
-        permission = create(:permission, permitted_by: 'users', require_verification: true, global_custom_fields: true)
+        permission = create(:permission, permitted_by: 'users', require_verification: true, custom_fields_behavior: 'global')
         fields = service.fields_for_permission(permission)
         expect(fields.count).to eq 2
         expect(fields.map(&:persisted?)).to contain_exactly(false, false)
@@ -31,7 +31,7 @@ describe Permissions::PermissionsCustomFieldsService do
       end
 
       it 'returns no permissions fields by default when permitted_by "everyone"' do
-        permission = create(:permission, permitted_by: 'everyone', global_custom_fields: true)
+        permission = create(:permission, permitted_by: 'everyone', custom_fields_behavior: 'global')
         expect(service.fields_for_permission(permission)).to be_empty
       end
 
@@ -41,7 +41,7 @@ describe Permissions::PermissionsCustomFieldsService do
           :permission,
           permission_scope: phase,
           permitted_by: 'everyone',
-          global_custom_fields: true,
+          custom_fields_behavior: 'global',
           user_fields_in_form: true
         )
         expect(service.fields_for_permission(permission)).to be_empty
@@ -49,7 +49,7 @@ describe Permissions::PermissionsCustomFieldsService do
 
       context 'fields related to groups' do
         it 'automatically adds any fields requiring a value in a smart group as required after existing fields' do
-          permission = create(:permission, permitted_by: 'users', global_custom_fields: true)
+          permission = create(:permission, permitted_by: 'users', custom_fields_behavior: 'global')
           custom_field = create(:custom_field_birthyear, enabled: false)
           group = create(:smart_group, rules: [
             { ruleType: 'custom_field_select', customFieldId: custom_field.id, predicate: 'is_one_of', value: ['a7212e05-2ff0-4c7f-89d3-dbfc7c049aa5'] }
@@ -78,7 +78,7 @@ describe Permissions::PermissionsCustomFieldsService do
         end
 
         it 'adds any fields used by a smart group where value should be empty as optional after existing fields' do
-          permission = create(:permission, permitted_by: 'users', global_custom_fields: true)
+          permission = create(:permission, permitted_by: 'users', custom_fields_behavior: 'global')
           custom_field = create(:custom_field_birthyear, enabled: false)
           group = create(:smart_group, rules: [
             { ruleType: 'custom_field_select', customFieldId: custom_field.id, predicate: 'is_empty' }
@@ -114,20 +114,30 @@ describe Permissions::PermissionsCustomFieldsService do
       end
     end
 
-    context 'global_custom_fields is false' do
+    context "custom_fields_behavior is 'disabled'" do
       let(:permission) { create(:permission, permitted_by: 'users') }
 
-      it 'returns no fields by default for all permitted_by values' do
+      it 'returns no fields for all permitted_by values' do
         %w[everyone users admins_moderators].each do |permitted_by|
-          permission.update!(permitted_by: permitted_by, global_custom_fields: false)
+          permission.update!(permitted_by: permitted_by, custom_fields_behavior: 'disabled')
           expect(service.fields_for_permission(permission)).to be_empty
         end
       end
 
+      it 'returns no fields even when fields are persisted' do
+        create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field_birthyear))
+        permission.update!(custom_fields_behavior: 'disabled')
+        expect(service.fields_for_permission(permission)).to be_empty
+      end
+    end
+
+    context "custom_fields_behavior is 'custom'" do
+      let(:permission) { create(:permission, permitted_by: 'users') }
+
       it 'returns persisted fields for all permitted_by values' do
         domicile_field = create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field_birthyear))
         %w[everyone users admins_moderators].each do |permitted_by|
-          permission.update!(permitted_by: permitted_by, global_custom_fields: false)
+          permission.update!(permitted_by: permitted_by, custom_fields_behavior: 'custom')
           fields = service.fields_for_permission(permission)
           expect(fields.count).to eq 1
           expect(fields.first.persisted?).to be true
@@ -141,7 +151,7 @@ describe Permissions::PermissionsCustomFieldsService do
         permission.update!(
           permitted_by: 'everyone',
           permission_scope: phase,
-          global_custom_fields: false,
+          custom_fields_behavior: 'custom',
           user_fields_in_form: true
         )
         fields = service.fields_for_permission(permission)
@@ -152,8 +162,7 @@ describe Permissions::PermissionsCustomFieldsService do
 
       context 'fields related to groups' do
         it 'automatically adds any fields used in a group to the end' do
-          permission = create(:permission, permitted_by: 'users')
-          permission.update!(global_custom_fields: false)
+          permission = create(:permission, permitted_by: 'users', custom_fields_behavior: 'custom')
           create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field_birthyear))
           group_custom_field = create(:custom_field, enabled: false)
           group = create(:smart_group, rules: [
@@ -173,7 +182,7 @@ describe Permissions::PermissionsCustomFieldsService do
         end
 
         it 'updates existing fields if used in a group' do
-          permission = create(:permission, permitted_by: 'users')
+          permission = create(:permission, permitted_by: 'users', custom_fields_behavior: 'custom')
           service.persist_default_fields(permission)
           fields = service.fields_for_permission(permission)
           gender_field = fields.last
@@ -280,10 +289,10 @@ describe Permissions::PermissionsCustomFieldsService do
     end
 
     context 'permitted_by is "everyone" and has no persisted permissions fields' do
-      it 'does not persist any fields as there are no defaults' do
+      it 'creates the platform fields, which #fields_for_permission would not resolve to' do
         permission.update!(permitted_by: 'everyone')
         service.persist_default_fields(permission)
-        expect(permission.permissions_custom_fields).to be_empty
+        expect(permission.permissions_custom_fields.count).to eq 2
       end
     end
 
@@ -294,6 +303,63 @@ describe Permissions::PermissionsCustomFieldsService do
 
         service.persist_default_fields(permission)
         expect(permission.permissions_custom_fields.count).to eq num_permissions_custom_fields
+      end
+    end
+  end
+
+  # The three attributes that decide which demographic questions get asked interact,
+  # so they are documented together: custom_fields_behavior picks the source,
+  # permitted_by decides whether the platform-wide fields apply at all
+  # (#default_fields is empty unless #allow_global_custom_fields?), and for 'everyone'
+  # nothing is asked unless the questions can be asked in the form itself, which on a
+  # native survey depends on user_data_collection.
+  describe 'combinations of permitted_by, user_data_collection and custom_fields_behavior' do
+    # Disabled, so that it is not one of the platform's fields and the persisted
+    # field is told apart from the global ones by its code alone.
+    let!(:birthyear_field) { create(:custom_field_birthyear, enabled: false) }
+
+    def asked_question_codes(permitted_by:, behavior:, user_data_collection: 'all_data')
+      permission = create(
+        :permission,
+        action: 'posting_idea',
+        permission_scope: create(:native_survey_phase),
+        permitted_by: permitted_by,
+        user_data_collection: user_data_collection,
+        custom_fields_behavior: behavior
+      )
+      create(:permissions_custom_field, permission: permission, custom_field: birthyear_field)
+
+      service.fields_for_permission(permission).map { |field| field.custom_field.code }
+    end
+
+    {
+      # permitted_by, user_data_collection, custom_fields_behavior => questions asked
+      %w[users all_data global] => %w[domicile gender],
+      %w[users all_data disabled] => [],
+      %w[users all_data custom] => %w[birthyear],
+      # user_data_collection does not gate the questions when users have to register
+      %w[users anonymous global] => %w[domicile gender],
+      %w[users anonymous custom] => %w[birthyear],
+      # 'everyone' can only be asked in the form, and never resolves the global fields
+      %w[everyone all_data global] => [],
+      %w[everyone all_data disabled] => [],
+      %w[everyone all_data custom] => %w[birthyear],
+      # an anonymous survey cannot ask anything, whatever is configured
+      %w[everyone anonymous global] => [],
+      %w[everyone anonymous disabled] => [],
+      %w[everyone anonymous custom] => [],
+      # admins and moderators are never asked the global fields either
+      %w[admins_moderators all_data global] => [],
+      %w[admins_moderators all_data disabled] => [],
+      %w[admins_moderators all_data custom] => %w[birthyear]
+    }.each do |(permitted_by, user_data_collection, behavior), expected_codes|
+      it "asks #{expected_codes.presence&.join(', ') || 'nothing'} when permitted_by is '#{permitted_by}', user_data_collection is '#{user_data_collection}' and custom_fields_behavior is '#{behavior}'" do
+        codes = asked_question_codes(
+          permitted_by: permitted_by,
+          user_data_collection: user_data_collection,
+          behavior: behavior
+        )
+        expect(codes).to eq expected_codes
       end
     end
   end
