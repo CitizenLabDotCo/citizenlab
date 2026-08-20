@@ -1,19 +1,25 @@
 # frozen_string_literal: true
 
 module Permissions
-  # Phase permissions are inheritable: as long as an action has no permission
-  # row of its own, it follows the global 'visiting' permission, which drives the
+  # Permissions are inheritable: as long as an action has no permission row of
+  # its own, it follows the global 'visiting' permission, which drives the
   # platform-wide sign up / log in flow. Such an action is resolved on the fly
   # into an unsaved Permission copied from 'visiting' — the "inherited" state.
+  #
+  # Every phase action inherits, and so does the global 'attending_event' one:
+  # event attendance has no screen of its own, so it follows the platform-wide
+  # flow rather than carrying settings nobody can reach. The other global
+  # permissions never inherit — 'visiting' is the source itself and 'following'
+  # is customised on its own screen — so they are always persisted.
   #
   # An admin opts an action out of that link by *overriding* it, which persists
   # the copy; from then on the action is customised independently. Reverting
   # destroys the row and puts the action back in the inherited state.
-  #
-  # Global permissions ('visiting', 'following', 'attending_event' with no
-  # scope) never inherit — they are always persisted.
   class PermissionInheritanceService
     SOURCE_ACTION = 'visiting'
+
+    # The actions of the global scope that inherit like phase actions do.
+    INHERITABLE_GLOBAL_ACTIONS = %w[attending_event].freeze
 
     # What is *not* copied from 'visiting': the permission's identity (id,
     # action, scope) and its timestamps. Everything else is inherited, so a new
@@ -45,10 +51,14 @@ module Permissions
       end
     end
 
-    # Only phases inherit. A nil scope is the global scope itself, which holds
-    # the source permission.
-    def inheritable_scope?(scope)
-      scope.is_a?(Phase)
+    # Whether `action` on `scope` follows the global 'visiting' permission for
+    # as long as it has no row of its own. Every phase action does; in the
+    # global scope only INHERITABLE_GLOBAL_ACTIONS, since the rest is what the
+    # inheriting permissions are resolved from or is customised on its own.
+    def inheritable?(scope, action)
+      return true if scope.is_a?(Phase)
+
+      scope.nil? && INHERITABLE_GLOBAL_ACTIONS.include?(action)
     end
 
     # The permission that governs `action` on `scope`: the persisted row if the
@@ -58,10 +68,10 @@ module Permissions
       permission = persisted_permission(scope, action)
       return permission if permission
       return nil unless Permission.available_actions(scope).include?(action)
-      return build_inherited(scope, action) if inheritable_scope?(scope)
+      return build_inherited(scope, action) if inheritable?(scope, action)
 
-      # A global scope has nothing to inherit from, so its permissions are still
-      # created on demand when they are missing.
+      # The global actions that don't inherit have nothing to fall back on, so
+      # their permissions are still created on demand when they are missing.
       Permissions::PermissionsUpdateService.new.update_permissions_for_scope(scope)
       stored_permission(scope, action)
     end
@@ -74,7 +84,7 @@ module Permissions
         .index_by(&:action)
 
       Permission.enabled_actions(scope).filter_map do |action|
-        persisted[action] || (build_inherited(scope, action) if inheritable_scope?(scope))
+        persisted[action] || (build_inherited(scope, action) if inheritable?(scope, action))
       end
     end
 
@@ -87,7 +97,9 @@ module Permissions
       existing = stored_permission(scope, action)
       return existing if existing
 
-      raise UnsupportedScope, "Scope #{scope.inspect} does not support inheritance" unless inheritable_scope?(scope)
+      unless inheritable?(scope, action)
+        raise NotInheritable, "Action #{action.inspect} on scope #{scope.inspect} does not support inheritance"
+      end
 
       source = self.class.source_permission
       permission = nil
@@ -112,10 +124,12 @@ module Permissions
     # Put the action back under the global 'visiting' permission. Its own
     # groups and persisted demographic questions are destroyed along with it.
     def inherit!(permission)
-      raise UnsupportedScope, 'Only phase permissions can be inherited' unless inheritable_scope?(permission.permission_scope)
-
       scope = permission.permission_scope
       action = permission.action
+      unless inheritable?(scope, action)
+        raise NotInheritable, "Action #{action.inspect} on scope #{scope.inspect} does not support inheritance"
+      end
+
       permission.destroy!
       build_inherited(scope, action)
     end
@@ -143,7 +157,7 @@ module Permissions
       permission
     end
 
-    class UnsupportedScope < StandardError; end
+    class NotInheritable < StandardError; end
 
     private
 

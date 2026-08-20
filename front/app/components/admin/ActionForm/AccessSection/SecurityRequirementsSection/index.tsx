@@ -13,7 +13,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { useVisibleToggles } from '../../logic';
+import { useVisibleSecurityRequirements } from '../../logic';
 import actionFormMessages from '../../messages';
 import { Changes } from '../../types';
 import { Expander } from '../../ui';
@@ -32,7 +32,7 @@ const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
   const { attributes } = permission;
 
   const smsLoginEnabled = useFeatureFlag({ name: 'sms_login' });
-  const visibleToggles = useVisibleToggles();
+  const visibleToggles = useVisibleSecurityRequirements();
 
   if (!visibleToggles) return null;
 
