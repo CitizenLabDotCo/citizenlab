@@ -26,7 +26,7 @@ describe UserService do
     end
 
     context 'with a registration custom field' do
-      before { create(:custom_field_number, key: 'yearly_bike_kms') }
+      let_it_be(:custom_field) { create(:custom_field_number, key: 'yearly_bike_kms') }
 
       it 'saves the user when the custom field values match their schemas' do
         user = User.new

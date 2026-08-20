@@ -140,7 +140,7 @@ class UserService
 
       values = values.to_h
       errors = CustomFieldValuesValidationService.new.json_schema_validation_errors(
-        CustomField.registration,
+        CustomField.registration.includes(:options),
         values
       )
       errors.each do |error|

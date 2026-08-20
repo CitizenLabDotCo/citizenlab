@@ -59,11 +59,6 @@ class Invites::Service
     @registration_custom_fields ||= CustomField.registration.to_a
   end
 
-  # @return [Array<String>]
-  def custom_field_keys
-    registration_custom_fields.map(&:key)
-  end
-
   def build_invitees(hash_array, default_params = {})
     if hash_array.size > MAX_INVITES
       add_error(:max_invites_limit_exceeded, row: (hash_array.size - 1), value: MAX_INVITES)
@@ -108,7 +103,7 @@ class Invites::Service
         first_name: params['first_name'],
         last_name: params['last_name'],
         locale: params['locale'] || default_params['locale'] || AppConfiguration.instance.settings('core', 'locales').first,
-        custom_field_values: params.slice(*custom_field_keys),
+        custom_field_values: params.slice(*registration_custom_fields.map(&:key)),
         invite_status: 'pending'
       })
 

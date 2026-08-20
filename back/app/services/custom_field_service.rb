@@ -117,12 +117,6 @@ class CustomFieldService
     end
   end
 
-  # Making pages a different data model would avoid
-  # having to do this.
-  def pages(fields)
-    fields.chunk_while { |_, field| !field.page? }
-  end
-
   private
 
   def form_inputs(custom_form)
