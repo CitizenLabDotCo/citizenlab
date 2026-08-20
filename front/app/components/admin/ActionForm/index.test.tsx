@@ -3,7 +3,15 @@ import React from 'react';
 import { IdMethodData } from 'api/id_methods/types';
 import { IPermissionData } from 'api/permissions/types';
 
-import { render, screen, within, userEvent } from 'utils/testUtils/rtl';
+import { Changes } from 'components/admin/ActionForm/types';
+
+import {
+  render,
+  screen,
+  within,
+  userEvent,
+  fireEvent,
+} from 'utils/testUtils/rtl';
 
 import ActionForm from '.';
 
@@ -50,6 +58,12 @@ jest.mock('api/id_methods/useVerificationMethod', () =>
       : null,
   }))
 );
+
+let mockUserRoles: { type: string }[] = [{ type: 'admin' }];
+
+jest.mock('api/me/useAuthUser', () => () => ({
+  data: { data: { id: 'user-1', attributes: { roles: mockUserRoles } } },
+}));
 
 jest.mock('api/phases/usePhase', () =>
   jest.fn(() => ({
@@ -111,13 +125,19 @@ const buildPermission = (
 
 type RenderOptions = {
   defaultOpen?: boolean;
+  onChange?: (changes: Changes) => Promise<void>;
   onOverride?: () => Promise<void>;
   onRevertToDefaults?: () => Promise<void>;
 };
 
 const renderForm = (
   attributes?: Partial<IPermissionData['attributes']>,
-  { defaultOpen = true, onOverride, onRevertToDefaults }: RenderOptions = {}
+  {
+    defaultOpen = true,
+    onChange = jest.fn(),
+    onOverride,
+    onRevertToDefaults,
+  }: RenderOptions = {}
 ) =>
   render(
     <ActionForm
@@ -125,7 +145,7 @@ const renderForm = (
       permissionData={buildPermission(attributes)}
       title="Commenting"
       defaultOpen={defaultOpen}
-      onChange={jest.fn()}
+      onChange={onChange}
       onOverride={onOverride}
       onRevertToDefaults={onRevertToDefaults}
     />
@@ -135,6 +155,7 @@ beforeEach(() => {
   mockPasswordLoginEnabled = true;
   mockIdMethods = [ssoMethod];
   mockVerificationMethodConfigured = true;
+  mockUserRoles = [{ type: 'admin' }];
 });
 
 describe('<ActionForm />', () => {
@@ -221,7 +242,8 @@ describe('<ActionForm />', () => {
       renderForm();
 
       await userEvent.click(screen.getByText('Security requirements'));
-      const passwordRow = screen.getByText('Password').parentElement!;
+      const passwordRow = screen.getByText('Require user to set a password')
+        .parentElement!;
       await userEvent.hover(
         within(passwordRow).getByTestId('tooltip-icon-button')
       );
@@ -238,7 +260,8 @@ describe('<ActionForm />', () => {
       renderForm();
 
       await userEvent.click(screen.getByText('Security requirements'));
-      const passwordRow = screen.getByText('Password').parentElement!;
+      const passwordRow = screen.getByText('Require user to set a password')
+        .parentElement!;
       expect(
         within(passwordRow).queryByTestId('tooltip-icon-button')
       ).not.toBeInTheDocument();
@@ -246,7 +269,7 @@ describe('<ActionForm />', () => {
   });
 
   describe('inheriting the platform defaults', () => {
-    it('locks the panel shut and offers to override it', () => {
+    it('shows the inherited settings and offers to override them', () => {
       renderForm({ inherited: true }, { onOverride: jest.fn() });
 
       expect(screen.getByText('Commenting')).toBeInTheDocument();
@@ -254,11 +277,55 @@ describe('<ActionForm />', () => {
       expect(
         screen.getByRole('button', { name: 'Override' })
       ).toBeInTheDocument();
-      // Nothing is configurable until the action has been overridden.
+      // The defaults can be read, but not changed.
+      expect(screen.getByText('Security requirements')).toBeInTheDocument();
+      expect(screen.getByText('What we collect')).toBeInTheDocument();
+      expect(
+        screen.queryByRole('button', { name: 'Revert to platform defaults' })
+      ).not.toBeInTheDocument();
+    });
+
+    it('collapses and expands the panel', async () => {
+      renderForm({ inherited: true }, { onOverride: jest.fn() });
+
+      await userEvent.click(screen.getByText('Commenting'));
       expect(
         screen.queryByText('Security requirements')
       ).not.toBeInTheDocument();
-      expect(screen.queryByText('What we collect')).not.toBeInTheDocument();
+
+      await userEvent.click(screen.getByText('Commenting'));
+      expect(screen.getByText('Security requirements')).toBeInTheDocument();
+    });
+
+    it('opens a sub-expander without changing anything', async () => {
+      const onChange = jest.fn();
+      renderForm({ inherited: true }, { onOverride: jest.fn(), onChange });
+
+      await userEvent.click(screen.getByText('Security requirements'));
+      expect(
+        screen.getByText('Require user to set a password')
+      ).toBeInTheDocument();
+      expect(onChange).not.toHaveBeenCalled();
+    });
+
+    it('does not change the permission when the settings are inherited', () => {
+      const onChange = jest.fn();
+      renderForm({ inherited: true }, { onOverride: jest.fn(), onChange });
+
+      fireEvent.click(screen.getByText('Admin & managers only'));
+      expect(onChange).not.toHaveBeenCalled();
+    });
+
+    it('links to the platform defaults for admins only', () => {
+      renderForm({ inherited: true }, { onOverride: jest.fn() });
+      expect(
+        screen.getByRole('link', { name: 'platform defaults' })
+      ).toHaveAttribute('href', '/en/admin/settings/registration');
+
+      mockUserRoles = [{ type: 'project_moderator' }];
+      renderForm({ inherited: true }, { onOverride: jest.fn() });
+      expect(screen.getAllByText(/Using/)).toHaveLength(2);
+      expect(screen.getAllByRole('link')).toHaveLength(1);
     });
 
     it('overrides the action and opens the panel', async () => {

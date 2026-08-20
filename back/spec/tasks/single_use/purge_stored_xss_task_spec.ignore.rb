@@ -29,6 +29,13 @@ describe 'single_use:purge_stored_xss rake task' do
     record
   end
 
+  # Execute mode asks about every row where sanitising costs content, and refuses to guess without a
+  # terminal. Give it one that answers.
+  def answering(*replies)
+    allow($stdin).to receive(:tty?).and_return(true)
+    allow($stdin).to receive(:gets).and_return(*replies.map { |reply| "#{reply}\n" })
+  end
+
   context 'an idea body carrying an event-handler payload' do
     let!(:idea) { store_raw(create(:idea), :body_multiloc, { 'en' => '<p>x</p><img src=x onerror=alert(1)>' }) }
 
@@ -189,21 +196,172 @@ describe 'single_use:purge_stored_xss rake task' do
     end
   end
 
-  # Sanitising a value that was nothing but payload leaves nothing. The row is still written - a
-  # payload left standing defeats the task - but these fields validate presence, and `update_columns`
-  # goes around that, so the summary has to name them.
+  # Sanitising a value that was nothing but payload leaves nothing. `update_columns` goes around the
+  # presence validation, so a blank would freeze the record - every later save of any field on it
+  # fails on the missing title. The placeholder keeps it saveable.
   context 'a title that is nothing but a payload' do
     let!(:project) { store_raw(create(:project), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>' }) }
 
-    it 'empties it rather than leaving the payload' do
+    it 'writes the placeholder once confirmed, not the blank the record rejects' do
+      answering 'y'
       run_task
-      expect(project.reload.title_multiloc['en']).to eq ''
+      expect(project.reload.title_multiloc['en']).to eq '-'
+      expect(project.reload).to be_valid
     end
 
-    it 'names the tenant, model and id in the summary' do
-      expect { run_task }.to output(
-        /Emptied.*#{Regexp.escape(Tenant.current.host)}.*Project#title_multiloc \[en\] #{project.id}/m
+    it 'leaves the row alone when skipped' do
+      answering 's'
+      expect { run_task }.not_to(change { project.reload.title_multiloc })
+    end
+
+    it 'names the tenant, model and id in the summary, with the value it would replace' do
+      expect { run_task(dry_run: true) }.to output(
+        /Emptied.*#{Regexp.escape(Tenant.current.host)}.*Project#title_multiloc \[en\] #{project.id}.*before: <img src=x onerror=alert\(1\)>/m
       ).to_stdout
+    end
+
+    # Skipping leaves a live payload and writing may cost content, so guessing is the one thing it
+    # must not do.
+    it 'aborts rather than deciding for itself when there is no terminal' do
+      allow($stdin).to receive(:tty?).and_return(false)
+      expect { run_task }.to raise_error(SystemExit)
+    end
+  end
+
+  # `Idea#body_multiloc` is the one swept field declaring `presence: false`, so a blank is a legal
+  # state and inventing content for it would be worse than leaving it.
+  context 'an idea body that is nothing but a payload' do
+    let!(:idea) { store_raw(create(:idea), :body_multiloc, { 'en' => '<object data="https://evil.example"></object>' }) }
+
+    it 'writes the blank rather than the placeholder' do
+      answering 'y'
+      run_task
+      expect(idea.reload.body_multiloc['en']).to eq ''
+    end
+  end
+
+  # `<` followed by a letter opens a tag as far as the parser is concerned, so it swallows the rest
+  # of the sentence. Nothing tells that apart from real markup, so the operator decides.
+  context 'a body where sanitising swallows prose' do
+    let!(:idea) { store_raw(create(:idea), :body_multiloc, { 'en' => 'Sea (25 cm <Sea level <200 cm) and the polders.' }) }
+
+    it 'lists the words it would lose, with the value before and after' do
+      expect { run_task(dry_run: true) }.to output(
+        /Text lost outside a link.*lost: Sea, level, 200, cm, and, the, polders.*before: Sea \(25 cm <Sea level.*after:  Sea \(25 cm/m
+      ).to_stdout
+    end
+
+    it 'writes the sanitised value once confirmed' do
+      answering 'y'
+      run_task
+      expect(idea.reload.body_multiloc['en']).to eq 'Sea (25 cm '
+    end
+
+    it 'leaves the row alone when skipped, and says so' do
+      answering 's'
+      expect { run_task }.to output(/Skipped on your say-so/).to_stdout
+      expect(idea.reload.body_multiloc['en']).to eq 'Sea (25 cm <Sea level <200 cm) and the polders.'
+    end
+  end
+
+  # The closing tag gives the swallowed run a `>` to end on, so a tag pattern that reads to the next
+  # `>` loses the same prose from the before-value and measures the loss as nothing.
+  context 'a body where the swallowed prose is followed by a closing tag' do
+    let!(:idea) do
+      store_raw(create(:idea), :body_multiloc, { 'en' => '<p>Invasion of the Sea (25 cm <Sea level <200 cm) and the polders.</p>' })
+    end
+
+    it 'still reports the words it would lose' do
+      expect { run_task(dry_run: true) }.to output(
+        /Text lost outside a link.*lost: Sea, level, 200, cm, and, the, polders/m
+      ).to_stdout
+    end
+  end
+
+  # A translated label is replaced by its own href, so its words go by design. Flagging those would
+  # bury the real losses - in the production dry run they outnumbered them 385 to 8.
+  context 'a machine translation whose link label was translated' do
+    let!(:mt) do
+      store_raw(
+        create(:machine_translation, translatable: create(:comment), attribute_name: 'body_multiloc'), :translation,
+        '<a href="https://example.com/x" target="_blank" rel="noreferrer noopener nofollow">klik hier</a>'
+      )
+    end
+
+    it 'is not flagged as lost text' do
+      expect { run_task(dry_run: true) }.not_to output(/Text lost outside a link/).to_stdout
+    end
+
+    # Nothing is flagged, so the write needs no confirmation and no terminal.
+    it 'rewrites the label to its own href without stopping to ask' do
+      run_task
+      expect(mt.reload.translation).to include('>https://example.com/x</a>')
+    end
+  end
+
+  # The label is rebuilt from the href, so a translated one is repaired rather than promoted. Before
+  # that the href moved to the address the translator invented, with no visible text changing.
+  context 'a comment body whose link label was translated' do
+    let!(:comment) do
+      store_raw(create(:comment), :body_multiloc, { 'en' =>
+        'mail <a href="mailto:maintenance@raleighparks.gov" target="_blank" rel="noreferrer noopener nofollow">mantenimiento@raleighparks.gov</a>' })
+    end
+
+    it 'keeps the address the link points at' do
+      run_task
+      expect(comment.reload.body_multiloc['en']).to include 'href="mailto:maintenance@raleighparks.gov"'
+      expect(comment.reload.body_multiloc['en']).not_to include 'mantenimiento'
+    end
+
+    it 'is not flagged as a moved link' do
+      expect { run_task(dry_run: true) }.not_to output(/Links that now point elsewhere/).to_stdout
+    end
+  end
+
+  # `linkify` reads an address out of the text around it, so a word touching the link was swallowed
+  # into the address. The link is kept now rather than dissolved and rebuilt.
+  context 'a comment body whose link touches the word before it' do
+    let!(:comment) do
+      store_raw(create(:comment), :body_multiloc, { 'en' =>
+        '<p>de VRT<a href="mailto:jrose@vrt.org" target="_blank" rel="noreferrer noopener nofollow">jrose@vrt.org</a></p>' })
+    end
+
+    it 'keeps the address intact' do
+      run_task
+      expect(comment.reload.body_multiloc['en']).to include 'href="mailto:jrose@vrt.org"'
+      expect(comment.reload.body_multiloc['en']).not_to include 'VRTjrose'
+    end
+  end
+
+  # A title keeps no markup, so its link goes with the rest. The word check sees nothing, because
+  # the label survives as text - which is why the destination is checked separately.
+  context 'a title carrying a link' do
+    let!(:idea) do
+      store_raw(create(:idea), :title_multiloc, { 'en' => 'Read <a href="https://example.com/plan">the plan</a>' })
+    end
+
+    it 'lists the destination it would drop' do
+      expect { run_task(dry_run: true) }.to output(
+        %r{Links that now point elsewhere.*was: https://example.com/plan}m
+      ).to_stdout
+    end
+
+    it 'strips it once confirmed' do
+      answering 'y'
+      run_task
+      expect(idea.reload.title_multiloc['en']).to eq 'Read the plan'
+    end
+  end
+
+  # Losing one is the point, so it is not a destination worth stopping for.
+  context 'a title carrying a javascript: link' do
+    let!(:idea) do
+      store_raw(create(:idea), :title_multiloc, { 'en' => 'Read <a href="javascript:alert(1)">the plan</a>' })
+    end
+
+    it 'drops it without stopping to ask' do
+      run_task
+      expect(idea.reload.title_multiloc['en']).to eq 'Read the plan'
     end
   end
 

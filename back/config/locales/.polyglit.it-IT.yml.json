@@ -64,6 +64,16 @@
     "verified_at": "2026-04-20T15:38:06.365179Z",
     "verified_by": "Roger"
   },
+  "content_builder.project_page.details_placeholder": {
+    "state": "verified",
+    "verified_at": "2026-08-19T09:49:12.741001Z",
+    "verified_by": "Roger"
+  },
+  "content_builder.project_page.intro_placeholder": {
+    "state": "verified",
+    "verified_at": "2026-08-19T09:49:12.741001Z",
+    "verified_by": "Roger"
+  },
   "custom_field_options.domicile.outside": {
     "state": "verified",
     "verified_at": "2026-04-20T15:38:06.365179Z",
@@ -1014,6 +1024,11 @@
     "verified_at": "2026-04-20T14:46:23.365900Z",
     "verified_by": "Roger"
   },
+  "projects.open_idea_project_description": {
+    "state": "verified",
+    "verified_at": "2026-08-19T09:44:17.657570Z",
+    "verified_by": "Roger"
+  },
   "projects.open_idea_project_description_preview": {
     "state": "verified",
     "verified_at": "2026-04-20T14:46:23.365900Z",
@@ -1052,6 +1067,11 @@
   "reset_password_mailer.send_reset_password.title_reset_your_password": {
     "state": "verified",
     "verified_at": "2026-04-20T14:31:32.872123Z",
+    "verified_by": "Roger"
+  },
+  "static_pages.faq_body": {
+    "state": "verified",
+    "verified_at": "2026-08-19T09:34:14.250932Z",
     "verified_by": "Roger"
   },
   "static_pages.faq_title": {
