@@ -542,7 +542,7 @@ de-AT:
       yesterday: Gestern
     new_phone_confirmation:
       sms_body: Dein Bestätigungscode lautet %{code}.
-      sms_body2: '%{organization_name}: Ihr Bestätigungscode lautet %{code}.'
+      sms_body2: '%{organization_name}: Dein Bestätigungscode lautet %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Zum Beitrag
       event_description: "%{feedback_author_name} hat ein offizielles Update zu %{input_title} gegeben'."
@@ -557,7 +557,7 @@ de-AT:
       title: Neues Passwort wählen
     phone_confirmation:
       sms_body: Der Bestätigungscode lautet %{code}.
-      sms_body2: '%{organization_name}: Ihr Bestätigungscode lautet %{code}.'
+      sms_body2: '%{organization_name}: Dein Bestätigungscode lautet %{code}.'
     preview_data:
       author_display_name: Erika Mustermann
       author_first_name: Erika
