@@ -123,15 +123,6 @@ resource 'PermissionsCustomField' do
       expect(PermissionsCustomField.all.count).to eq 1
     end
 
-    context 'the permission does not ask custom demographic questions' do
-      let(:custom_fields_behavior) { 'global' }
-
-      example_request '[ERROR] Fields can only be added to a customised permission' do
-        assert_status 401
-        expect(PermissionsCustomField.where(custom_field_id: custom_field_id)).to be_empty
-      end
-    end
-
     context 'the permissions_custom_fields feature is deactivated' do
       before { SettingsService.new.deactivate_feature!('permissions_custom_fields') }
 
@@ -158,18 +149,6 @@ resource 'PermissionsCustomField' do
       example_request 'Update a permissions custom field' do
         assert_status 200
         expect(response_data.dig(:attributes, :required)).to be true
-      end
-    end
-
-    context 'the permission does not ask custom demographic questions' do
-      let(:custom_fields_behavior) { 'global' }
-      let(:permissions_custom_field) { create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field_gender), required: false) }
-      let(:id) { permissions_custom_field.id }
-      let(:required) { true }
-
-      example_request '[ERROR] Fields can only be updated on a customised permission' do
-        assert_status 401
-        expect(permissions_custom_field.reload.required).to be false
       end
     end
 
@@ -253,18 +232,6 @@ resource 'PermissionsCustomField' do
         end
       end
     end
-
-    context 'the permission does not ask custom demographic questions' do
-      let(:permission) { create(:permission, permitted_by: 'users', custom_fields_behavior: 'global') }
-      let!(:permissions_custom_field) { create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field_gender)) }
-      let(:id) { permissions_custom_field.id }
-      let(:ordering) { 1 }
-
-      example_request '[ERROR] Fields can only be reordered on a customised permission' do
-        assert_status 401
-        expect(permissions_custom_field.reload.ordering).to eq 0
-      end
-    end
   end
 
   delete 'web_api/v1/permissions_custom_fields/:id' do
@@ -280,17 +247,6 @@ resource 'PermissionsCustomField' do
       example_request 'Delete a permissions custom field' do
         assert_status 200
         expect { PermissionsCustomField.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
-      end
-    end
-
-    context 'the permission does not ask custom demographic questions' do
-      let(:custom_fields_behavior) { 'global' }
-      let!(:permissions_custom_field) { create(:permissions_custom_field, permission: permission) }
-      let(:id) { permissions_custom_field.id }
-
-      example_request '[ERROR] Fields can only be deleted from a customised permission' do
-        assert_status 401
-        expect(PermissionsCustomField.find(id)).to be_present
       end
     end
   end

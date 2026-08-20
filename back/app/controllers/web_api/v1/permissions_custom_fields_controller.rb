@@ -3,7 +3,8 @@
 class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
   skip_after_action :verify_policy_scoped
   before_action :set_permissions_custom_field, only: %i[show]
-  before_action :verify_permission_is_customised, only: %i[create update reorder destroy]
+  # Customizing demographic questions per permission is a paid feature; reading them is not.
+  before_action -> { require_feature!('permissions_custom_fields') }, only: %i[create update reorder]
 
   def index
     authorize PermissionsCustomField.new(permission: permission)
@@ -107,36 +108,6 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
     raise ActiveRecord::RecordNotFound unless field
 
     field
-  end
-
-  # Demographic questions are only editable once the permission has been
-  # switched to 'custom'; on the other behaviors the persisted fields are not
-  # what gets asked, so editing them would have no visible effect.
-  def verify_permission_is_customised
-    target = target_permission
-    return unless target
-    # Nothing can be persisted against an inherited permission at all, which the
-    # action itself reports as a 404.
-    return if target.inherited?
-
-    require_feature!('permissions_custom_fields') unless action_name == 'destroy'
-    return if target.custom_fields_behavior == 'custom'
-
-    skip_authorization
-    raise ApiError.new(:custom_fields_behavior_not_custom, status: 401)
-  end
-
-  # `create` is nested under the permission; the shallow routes identify it
-  # through the field, or through the params when the field is one of the
-  # non-persisted ones added by a group.
-  def target_permission
-    return permission if action_name == 'create'
-
-    field = PermissionsCustomField.find_by(id: params[:id])
-    return field.permission if field
-
-    permission_id = params.dig(:permissions_custom_field, :permission_id)
-    Permission.find_by(id: permission_id) if permission_id
   end
 
   # For a phase action that has not been overridden this is an unsaved copy of
