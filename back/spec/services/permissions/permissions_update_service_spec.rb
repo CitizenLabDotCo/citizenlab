@@ -75,12 +75,14 @@ describe Permissions::PermissionsUpdateService do
       expect(phase.permissions.reload).to be_empty
     end
 
-    it 'still creates the global permissions, which have nothing to inherit from' do
+    it 'still creates the global permissions that have nothing to inherit from' do
       Permission.where(permission_scope: nil).destroy_all
 
       service.update_permissions_for_scope(nil)
+      # attending_event is not created: it inherits the global 'visiting'
+      # permission until an admin overrides it.
       expect(Permission.where(permission_scope: nil).pluck(:action))
-        .to match_array %w[visiting following attending_event]
+        .to match_array %w[visiting following]
     end
   end
 end

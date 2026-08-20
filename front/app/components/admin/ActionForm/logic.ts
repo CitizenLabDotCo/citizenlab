@@ -26,51 +26,54 @@ export const requiresAccount = (permission: IPermissionData): boolean =>
 // The security requirements on offer: each one maps onto a `require_*` boolean
 // + `*_expiry` pair on the permission.
 type SecurityRequirementKey = 'email' | 'phone' | 'verification' | 'password';
-export type VisibleToggles = Record<SecurityRequirementKey, boolean>;
+export type VisibleSecurityRequirements = Record<
+  SecurityRequirementKey,
+  boolean
+>;
 
-type VisibleTogglesParams = {
-  sms2FAEnabled: boolean;
+type VisibleSecurityRequirementsParams = {
+  smsEnabled: boolean;
   smsLoginEnabled: boolean;
   verificationMethodEnabled: boolean;
   hasAuthMethodNotReturningEmail: boolean;
   passwordLoginEnabled: boolean;
 };
 
-export const getVisibleToggles = ({
-  sms2FAEnabled,
+export const getVisibleSecurityRequirements = ({
+  smsEnabled,
   smsLoginEnabled,
   verificationMethodEnabled,
   hasAuthMethodNotReturningEmail,
   passwordLoginEnabled,
-}: VisibleTogglesParams): VisibleToggles => {
-  const visibleToggles: VisibleToggles = {
+}: VisibleSecurityRequirementsParams): VisibleSecurityRequirements => {
+  const visibleSecurityRequirements: VisibleSecurityRequirements = {
     email: false,
     phone: false,
     verification: false,
     password: false,
   };
 
-  if ((sms2FAEnabled && smsLoginEnabled) || hasAuthMethodNotReturningEmail) {
+  if ((smsEnabled && smsLoginEnabled) || hasAuthMethodNotReturningEmail) {
     // Requiring an email or not is only relevant if there exists
     // a way for participants to sign up WITHOUT an email address.
     // If you e.g. can only sign up with email, email confirmed is always required,
     // so there is no need to make it configurable.
-    visibleToggles.email = true;
+    visibleSecurityRequirements.email = true;
   }
 
-  if (sms2FAEnabled) {
-    visibleToggles.phone = true;
+  if (passwordLoginEnabled && smsEnabled) {
+    visibleSecurityRequirements.phone = true;
   }
 
   if (verificationMethodEnabled) {
-    visibleToggles.verification = true;
+    visibleSecurityRequirements.verification = true;
   }
 
   if (passwordLoginEnabled) {
-    visibleToggles.password = true;
+    visibleSecurityRequirements.password = true;
   }
 
-  return visibleToggles;
+  return visibleSecurityRequirements;
 };
 
 /**
@@ -81,8 +84,10 @@ export const getVisibleToggles = ({
  *
  * Undefined while the sign-in methods are still loading.
  */
-export const useVisibleToggles = (): VisibleToggles | undefined => {
-  const sms2FAEnabled = useFeatureFlag({ name: 'sms' });
+export const useVisibleSecurityRequirements = ():
+  | VisibleSecurityRequirements
+  | undefined => {
+  const smsEnabled = useFeatureFlag({ name: 'sms' });
   const smsLoginEnabled = useFeatureFlag({ name: 'sms_login' });
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
   const { data: verificationMethod } = useVerificationMethod();
@@ -96,8 +101,8 @@ export const useVisibleToggles = (): VisibleToggles | undefined => {
       method.attributes.method_metadata?.email_always_present === false
   );
 
-  return getVisibleToggles({
-    sms2FAEnabled,
+  return getVisibleSecurityRequirements({
+    smsEnabled,
     smsLoginEnabled,
     verificationMethodEnabled: !!verificationMethod,
     hasAuthMethodNotReturningEmail,
@@ -139,7 +144,7 @@ export const buildSummary = (
   permission: IPermissionData,
   customFields: IPermissionsPhaseCustomFieldData[],
   formatMessage: FormatMessage,
-  visibleToggles: VisibleToggles
+  visibleSecurityRequirements: VisibleSecurityRequirements
 ): SummaryChip[] => {
   const { attributes } = permission;
 
@@ -176,28 +181,34 @@ export const buildSummary = (
   // A requirement the platform does not offer (no SMS, no verification method,
   // ...) is not something the admin can act on, so it stays out of the summary
   // even when the permission still carries the flag.
-  if (visibleToggles.email && attributes.require_confirmed_email) {
+  if (visibleSecurityRequirements.email && attributes.require_confirmed_email) {
     chips.push({
       key: 'email',
       label: formatMessage(messages.confirmedEmail),
       icon: 'email',
     });
   }
-  if (visibleToggles.phone && attributes.require_confirmed_phone_number) {
+  if (
+    visibleSecurityRequirements.phone &&
+    attributes.require_confirmed_phone_number
+  ) {
     chips.push({
       key: 'phone',
       label: formatMessage(messages.confirmedPhone),
       icon: 'tablet',
     });
   }
-  if (visibleToggles.verification && attributes.require_verification) {
+  if (
+    visibleSecurityRequirements.verification &&
+    attributes.require_verification
+  ) {
     chips.push({
       key: 'verification',
       label: formatMessage(messages.verification),
       icon: 'shield-checkered',
     });
   }
-  if (visibleToggles.password && attributes.require_password) {
+  if (visibleSecurityRequirements.password && attributes.require_password) {
     chips.push({
       key: 'password',
       label: formatMessage(messages.password),

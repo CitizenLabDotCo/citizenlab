@@ -34,6 +34,7 @@ import FolderTitle, {
   folderTitleTitle,
 } from 'components/DescriptionBuilder/Widgets/FolderTitle';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
+import NewLabel from 'components/UI/NewLabel';
 
 import {
   MessageDescriptor,
@@ -167,6 +168,7 @@ const FolderDescriptionBuilderToolbox = ({
             component={<HtmlBlockMultiloc />}
             icon="code"
             label={formatMessage(HtmlBlockMultiloc.craft.custom.title)}
+            labelSuffix={<NewLabel expiryDate={new Date('2027-02-19')} />}
           />
         )}
         <DraggableElement

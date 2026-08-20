@@ -317,6 +317,29 @@ resource 'Request codes' do
       expect(delivery_service).not_to have_received(:send_now_to_user)
     end
 
+    # Phone confirmation codes are part of the password-less login/signup flow,
+    # which lives under the password_login feature. With it off, the tenant is
+    # SSO-only and no in-place confirmation code may be requested.
+    example 'It does not work if the password_login feature is disabled' do
+      SettingsService.new.deactivate_feature!('password_login')
+      user = create(:user, :with_confirmed_phone)
+      header_token_for(user)
+
+      do_request(request_code: {})
+      expect(response_status).to eq 401
+      expect(delivery_service).not_to have_received(:send_now_to_user)
+    end
+
+    example 'It does not work for an unauthenticated user if the password_login feature is disabled' do
+      SettingsService.new.activate_feature!('sms_login')
+      SettingsService.new.deactivate_feature!('password_login')
+      create(:unconfirmed_phone_user, phone: '+14155552671')
+
+      do_request(request_code: { phone: '+14155552671' })
+      expect(response_status).to eq 401
+      expect(delivery_service).not_to have_received(:send_now_to_user)
+    end
+
     # only_if_first_time: idempotent auto-send used when the flow lands an authenticated
     # user on the phone confirmation step (re-confirmation after the phone confirmation
     # aged out).

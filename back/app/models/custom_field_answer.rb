@@ -29,6 +29,8 @@ class CustomFieldAnswer < ApplicationRecord
   belongs_to :answerable, polymorphic: true
   belongs_to :custom_field, optional: true
 
+  # Only the answers under the field's own key, not its _other and _follow_up
+  # companions, which also reference the field.
   scope :main_for, ->(field) { where(custom_field: field, key: field.key) }
 
   validates :answerable_type, inclusion: { in: ANSWERABLE_TYPES }
