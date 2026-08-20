@@ -9,7 +9,7 @@ module Answerable
   end
 
   def answer_for_key(key)
-    custom_field_answers.find { it.key == key }
+    custom_field_answers.detect { it.key == key }
   end
 
   private
