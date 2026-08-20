@@ -11,6 +11,39 @@ RSpec.describe EmailCampaigns::Sms::UseCaseConsentService do
     EmailCampaigns::Consent.find_by(user: user, campaign_type: EmailCampaigns::Campaigns::SmsManual.name)
   end
 
+  describe '#record!' do
+    it 'records consent for every consentable campaign on the use case' do
+      described_class.new.record!(user, EmailCampaigns::Sms::UseCase::MANUAL_CAMPAIGNS, consented: true)
+
+      expect(sms_manual_consent.consented).to be true
+    end
+
+    it 'overwrites an existing consent' do
+      create(:consent, :sms_manual, user: user, consented: true)
+
+      described_class.new.record!(user, EmailCampaigns::Sms::UseCase::MANUAL_CAMPAIGNS, consented: false)
+
+      expect(sms_manual_consent.consented).to be false
+    end
+
+    it 'leaves campaigns on another use case untouched' do
+      described_class.new.record!(user, EmailCampaigns::Sms::UseCase::CONFIRMATION_CODES, consented: true)
+
+      expect(sms_manual_consent).to be_nil
+    end
+
+    it 'logs the consent' do
+      expect { described_class.new.record!(user, EmailCampaigns::Sms::UseCase::MANUAL_CAMPAIGNS, consented: true) }
+        .to have_enqueued_job(LogActivityJob)
+    end
+
+    it 'does nothing without a user or a use case' do
+      expect { described_class.new.record!(nil, EmailCampaigns::Sms::UseCase::MANUAL_CAMPAIGNS, consented: true) }
+        .not_to change(EmailCampaigns::Consent, :count)
+      expect { described_class.new.record!(user, nil, consented: true) }.not_to change(EmailCampaigns::Consent, :count)
+    end
+  end
+
   describe '#withdraw!' do
     it 'withdraws consent for every consentable campaign on the use case' do
       create(:consent, :sms_manual, user: user, consented: true)

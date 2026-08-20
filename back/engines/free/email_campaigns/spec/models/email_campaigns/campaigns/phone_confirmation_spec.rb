@@ -18,6 +18,8 @@ RSpec.describe EmailCampaigns::Campaigns::PhoneConfirmation do
     it { expect(campaign.manual?).to be(false) }
     it { expect(campaign.can_be_disabled?).to be(false) }
     it { expect(campaign.hidden_from_admin?).to be(true) }
+    it { expect(described_class.consented_by_default?).to be(false) }
+    it { expect(described_class.include?(EmailCampaigns::Consentable)).to be(true) }
   end
 
   describe '#sms_body' do
