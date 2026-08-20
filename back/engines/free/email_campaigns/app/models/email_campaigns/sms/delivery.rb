@@ -41,15 +41,10 @@ module EmailCampaigns
       # callback may move it (e.g. a stray `failed` must not overwrite `delivered`).
       TERMINAL_STATUSES = %w[delivered undelivered failed errored].freeze
 
-      # Statuses meaning the message was actually handed to the provider, and so
-      # consumes segments of the tenant's purchased allowance. Deliberately NOT just
-      # `delivered`: the provider bills on submission, `delivered` only ever
-      # arrives via a status callback (many carriers never send one, leaving the
-      # message on `sent`), and `undelivered`/`failed` are billed too. The two
-      # statuses left out are the ones that never reached the provider —
-      # `pending` (not sent yet) and `errored` (rejected before the API call,
-      # e.g. a blocked country or an unusable number).
-      BILLABLE_STATUSES = (STATUSES - %w[pending errored]).freeze
+      # Statuses that spend the tenant's purchased allowance. `pending` counts too: the
+      # message is already on its way to the provider, so the next send must see those
+      # segments as gone. Only `errored` is free — it never reached the provider and never will.
+      BILLABLE_STATUSES = (STATUSES - %w[errored]).freeze
 
       scope :billable, -> { where(status: BILLABLE_STATUSES) }
 
