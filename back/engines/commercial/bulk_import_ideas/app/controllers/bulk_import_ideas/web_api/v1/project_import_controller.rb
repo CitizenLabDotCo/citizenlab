@@ -47,6 +47,8 @@ module BulkImportIdeas
           }
         }
       }
+    rescue BulkImportIdeas::Error => e
+      render json: { errors: { file: [{ error: e.key, **e.params }] } }, status: :unprocessable_entity
     end
 
     def show_project_import
@@ -61,12 +63,12 @@ module BulkImportIdeas
 
     private
 
-    # Authorize before the controller extracts any file (see #bulk_create_projects).
-    # A project import makes top-level draft projects. Thus it needs the same rights
-    # as project creation. This runs as a before_action, so it completes before the
-    # controller body reads and unzips the uploaded archive.
+    # Authorize in a before_action, so it completes before #bulk_create_projects
+    # reads and unzips the uploaded archive. Pundit infers the policy query from
+    # the action name (bulk_create_projects? / show_project_import?). The engine
+    # patch on ProjectPolicy limits both to super admins.
     def authorize_project_import
-      authorize Project.new(admin_publication: AdminPublication.new(publication_status: 'draft')), :create?
+      authorize Project
     end
 
     def project_import_params
@@ -90,25 +92,26 @@ module BulkImportIdeas
       # Extract the contents of the ZIP file
       Zip::File.open(temp_zip_path) do |zip_file|
         zip_file.each do |entry|
-          entry_path = File.join(destination, entry.name)
-          ensure_within_destination!(entry_path, destination)
+          entry_path = safe_entry_path(destination, entry.name)
           FileUtils.mkdir_p(File.dirname(entry_path))
           zip_file.extract(entry, entry_path) unless File.exist?(entry_path)
         end
       end
-
-      # Clean up the temporary file
-      File.delete(temp_zip_path)
+    ensure
+      # Clean up the temporary file, also when extraction raises
+      FileUtils.rm_f(temp_zip_path) if temp_zip_path
     end
 
-    # Prevent Zip Slip. Reject an entry when its resolved path goes outside the
-    # destination directory (for example, an entry name that contains "..").
-    def ensure_within_destination!(entry_path, destination)
+    # Prevent Zip Slip. Return the extraction path of the entry, or raise when the
+    # resolved path goes outside the destination directory (for example, an entry
+    # name that contains "..").
+    def safe_entry_path(destination, entry_name)
       allowed_root = File.expand_path(destination)
+      entry_path = File.join(destination, entry_name)
       resolved = File.expand_path(entry_path)
-      return if resolved == allowed_root || resolved.start_with?("#{allowed_root}/")
+      return entry_path if resolved == allowed_root || resolved.start_with?("#{allowed_root}/")
 
-      raise BulkImportIdeas::Error.new('bulk_import_unsafe_zip_entry', value: entry_path)
+      raise BulkImportIdeas::Error.new('bulk_import_unsafe_zip_entry', value: entry_name)
     end
   end
 end
