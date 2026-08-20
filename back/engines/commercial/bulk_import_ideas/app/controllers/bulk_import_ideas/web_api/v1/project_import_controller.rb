@@ -47,8 +47,6 @@ module BulkImportIdeas
           }
         }
       }
-    rescue BulkImportIdeas::Error => e
-      render json: { errors: { file: [{ error: e.key, **e.params }] } }, status: :unprocessable_entity
     end
 
     def show_project_import
@@ -102,16 +100,17 @@ module BulkImportIdeas
       FileUtils.rm_f(temp_zip_path) if temp_zip_path
     end
 
-    # Prevent Zip Slip. Return the extraction path of the entry, or raise when the
-    # resolved path goes outside the destination directory (for example, an entry
-    # name that contains "..").
+    # Prevent Zip Slip. Return the extraction path of the entry, or raise an
+    # ApiError (rendered as a 422 by ApplicationController) when the resolved path
+    # goes outside the destination directory (for example, an entry name that
+    # contains "..").
     def safe_entry_path(destination, entry_name)
       allowed_root = File.expand_path(destination)
       entry_path = File.join(destination, entry_name)
       resolved = File.expand_path(entry_path)
       return entry_path if resolved == allowed_root || resolved.start_with?("#{allowed_root}/")
 
-      raise BulkImportIdeas::Error.new('bulk_import_unsafe_zip_entry', value: entry_name)
+      raise ApiError.new(:bulk_import_unsafe_zip_entry, field: :file, value: entry_name)
     end
   end
 end
