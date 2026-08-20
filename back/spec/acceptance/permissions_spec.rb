@@ -588,8 +588,8 @@ resource 'Permissions' do
         let(:action) { @permission.action }
 
         # NOTE: Unlike the old everyone_confirmed_email behaviour, a 'users' permission DOES
-        # collect the global registration custom fields (allow_global_custom_fields? is true),
-        # so the unsatisfied required fields are returned here.
+        # collect the global registration custom fields, so the unsatisfied required
+        # fields are returned here.
         example_request 'Get the participation requirements of a passwordless user requiring confirmation in a phase' do
           assert_status 200
           expect(response_data[:attributes]).to eq({

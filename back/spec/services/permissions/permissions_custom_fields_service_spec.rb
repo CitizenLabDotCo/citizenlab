@@ -317,10 +317,9 @@ describe Permissions::PermissionsCustomFieldsService do
 
   # The three attributes that decide which demographic questions get asked interact,
   # so they are documented together: custom_fields_behavior picks the source,
-  # permitted_by decides whether the platform-wide fields apply at all
-  # (#default_fields is empty unless #allow_global_custom_fields?), and for 'everyone'
-  # nothing is asked unless the questions can be asked in the form itself, which on a
-  # native survey depends on user_data_collection.
+  # admins and managers are never asked any, and for 'everyone' nothing is asked
+  # unless the questions can be asked in the form itself, which on a native survey
+  # depends on user_data_collection.
   describe 'combinations of permitted_by, user_data_collection and custom_fields_behavior' do
     # Disabled, so that it is not one of the platform's fields and the persisted
     # field is told apart from the global ones by its code alone.
