@@ -2602,6 +2602,7 @@
   "app.errors.group_ids_unauthorized_choice_moderator": "As a project manager, you can only email to people that can access your project(s)",
   "app.errors.has_inputs": "You cannot change the participation method because this phase already has inputs. Please remove all inputs first.",
   "app.errors.has_other_overlapping_phases": "Projects cannot have overlapping phases.",
+  "app.errors.insufficient_sms_balance": "There are not enough SMS credits left to send this message. To purchase more credits, contact your GovSuccess Manager.",
   "app.errors.invalid_email": "The email {value} found in row {row} is not a valid email address",
   "app.errors.invalid_first_name": "First name {value} in row {row} is not valid",
   "app.errors.invalid_last_name": "Surname {value} in row {row} is not valid",

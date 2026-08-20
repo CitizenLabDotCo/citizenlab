@@ -2602,6 +2602,7 @@
   "app.errors.group_ids_unauthorized_choice_moderator": "Kā projekta vadītājs jūs varat sūtīt e-pasta vēstules tikai tām personām, kuras var piekļūt jūsu projektam(-iem).",
   "app.errors.has_inputs": "Jūs nevarat mainīt dalības metodi, jo šajā posmā jau ir ievades dati. Lūdzu, vispirms noņemiet visus ievades datus.",
   "app.errors.has_other_overlapping_phases": "Projektu posmi nedrīkst pārklāties.",
+  "app.errors.insufficient_sms_balance": "Šīs ziņas nosūtīšanai nepietiek SMS kredītu. Lai iegādātos vairāk kredītu, sazinieties ar savu GovSuccess vadītāju.",
   "app.errors.invalid_email": "Rindā {row} atrodamais e-pasts {value} nav derīga e-pasta adrese",
   "app.errors.invalid_first_name": "Vārds {value} rindā {row} nav derīgs",
   "app.errors.invalid_last_name": "Uzvārds {value} rindā {row} nav derīgs",

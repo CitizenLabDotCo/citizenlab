@@ -2602,6 +2602,7 @@
   "app.errors.group_ids_unauthorized_choice_moderator": "Kao projektni menadžer, možete slati samo obavijesti o mogućnosti pristupa projektima",
   "app.errors.has_inputs": "Ne možete promijeniti način sudjelovanja jer ova faza već ima ulazne podatke. Prvo uklonite sve ulazne podatke.",
   "app.errors.has_other_overlapping_phases": "Projekti ne mogu imati faze koje se preklapaju.",
+  "app.errors.insufficient_sms_balance": "Nema dovoljno preostalih SMS kredita za slanje ove poruke. Kako biste kupili još kredita, obratite se svom GovSuccess Manageru.",
   "app.errors.invalid_email": "E-pošta {value} pronađena u redu {row} nije valjana",
   "app.errors.invalid_first_name": "Ime {value} u retku {row} nije valjano",
   "app.errors.invalid_last_name": "Prezime {value} u retku {row} nije valjano",

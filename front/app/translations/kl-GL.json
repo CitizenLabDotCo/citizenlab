@@ -2602,6 +2602,7 @@
   "app.errors.group_ids_unauthorized_choice_moderator": "Suliniummi aqutsisutut taamaallaat inunnut suliniutinnut isersinnaasunut mailinik nassiussisinnaavutit",
   "app.errors.has_inputs": "You cannot change the participation method because this phase already has inputs. Please remove all inputs first.",
   "app.errors.has_other_overlapping_phases": "Suliniutit qalleraattunik nikeriarfeqarsinnaanngillat. ",
+  "app.errors.insufficient_sms_balance": "SMS-inut atugassat naammanngillat nalunaarut una nassiunniarlugu. Atugassanik amerlanerusunik piniarniarlutit GovSuccess Manager-it attavigiuk.",
   "app.errors.invalid_email": "E-maili {value} titarnerni quleriiaani nassaaq {row} atorneqarsinnaanngilaq",
   "app.errors.invalid_first_name": "Atia siulleq {value} tulleriiaami {row}-miittoq atorsinnaanngilaq",
   "app.errors.invalid_last_name": "Kinguliat {value} tulleriiaami {row}-miittoq atorsinnaanngilaq",

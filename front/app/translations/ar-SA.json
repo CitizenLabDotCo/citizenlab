@@ -2602,6 +2602,7 @@
   "app.errors.group_ids_unauthorized_choice_moderator": "بصفتك مديرًا للمشروع، يمكنك فقط إرسال رسائل إلكترونية للأشخاص القادرين على الوصول إلى مشروعك/ مشاريعك",
   "app.errors.has_inputs": "لا يمكنك تغيير طريقة المشاركة لأن هذه المرحلة تحتوي بالفعل على مدخلات. يرجى إزالة جميع المدخلات أولاً.",
   "app.errors.has_other_overlapping_phases": "لا يمكن للمشاريع امتلاك مراحل متداخلة.",
+  "app.errors.insufficient_sms_balance": "لا يتوفر رصيد كافٍ من رسائل SMS لإرسال هذه الرسالة. لشراء المزيد من الرصيد، تواصل مع مدير GovSuccess الخاص بك.",
   "app.errors.invalid_email": "البريد الإلكتروني {value} والموجود في الصف {row} ليس عنوان بريد إلكتروني صالح",
   "app.errors.invalid_first_name": "الاسم الأول {value} في الصف {row} غير صالح",
   "app.errors.invalid_last_name": "اسم العائلة {value} في الصف {row} غير صالح",

@@ -2602,6 +2602,7 @@
   "app.errors.group_ids_unauthorized_choice_moderator": "Als projectbeheerder, kun je enkel een e-mail verzenden naar mensen die toegang hebben tot jouw project(en)",
   "app.errors.has_inputs": "Je kunt de deelnamemethode niet wijzigen omdat deze fase al bijdragen heeft. Verwijder eerst alle bijdragen.",
   "app.errors.has_other_overlapping_phases": "Projecten mogen geen overlappende fasen hebben.",
+  "app.errors.insufficient_sms_balance": "Er zijn onvoldoende sms-credits over om dit bericht te verzenden. Neem contact op met je GovSuccess Manager om meer credits aan te schaffen.",
   "app.errors.invalid_email": "Het e-mailadres {value} in rij {row} is geen geldig e-mailadres",
   "app.errors.invalid_first_name": "Voornaam {value} in rij {row} is niet geldig",
   "app.errors.invalid_last_name": "Achternaam {value} in rij {row} is niet geldig",

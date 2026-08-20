@@ -2602,6 +2602,7 @@
   "app.errors.group_ids_unauthorized_choice_moderator": "ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਵਜੋਂ, ਤੁਸੀਂ ਸਿਰਫ਼ ਉਹਨਾਂ ਲੋਕਾਂ ਨੂੰ ਈਮੇਲ ਕਰ ਸਕਦੇ ਹੋ ਜੋ ਤੁਹਾਡੇ ਪ੍ਰੋਜੈਕਟ (ਪ੍ਰੋਜੈਕਟਾਂ) ਤੱਕ ਪਹੁੰਚ ਕਰ ਸਕਦੇ ਹਨ",
   "app.errors.has_inputs": "ਤੁਸੀਂ ਭਾਗੀਦਾਰੀ ਵਿਧੀ ਨੂੰ ਨਹੀਂ ਬਦਲ ਸਕਦੇ ਕਿਉਂਕਿ ਇਸ ਪੜਾਅ ਵਿੱਚ ਪਹਿਲਾਂ ਹੀ ਇਨਪੁਟ ਹਨ। ਕਿਰਪਾ ਕਰਕੇ ਪਹਿਲਾਂ ਸਾਰੇ ਇਨਪੁਟ ਹਟਾਓ।",
   "app.errors.has_other_overlapping_phases": "ਪ੍ਰੋਜੈਕਟਾਂ ਵਿੱਚ ਓਵਰਲੈਪਿੰਗ ਪੜਾਅ ਨਹੀਂ ਹੋ ਸਕਦੇ ਹਨ।",
+  "app.errors.insufficient_sms_balance": "ਇਹ ਸੁਨੇਹਾ ਭੇਜਣ ਲਈ ਲੋੜੀਂਦੇ SMS ਕ੍ਰੈਡਿਟ ਨਹੀਂ ਬਚੇ ਹਨ। ਹੋਰ ਕ੍ਰੈਡਿਟ ਖਰੀਦਣ ਲਈ, ਆਪਣੇ GovSuccess ਮੈਨੇਜਰ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",
   "app.errors.invalid_email": "ਕਤਾਰ {row} ਵਿੱਚ ਮਿਲੀ ਈਮੇਲ {value} ਇੱਕ ਵੈਧ ਈਮੇਲ ਪਤਾ ਨਹੀਂ ਹੈ",
   "app.errors.invalid_first_name": "ਕਤਾਰ {row} ਵਿੱਚ ਪਹਿਲਾ ਨਾਮ {value} ਵੈਧ ਨਹੀਂ ਹੈ",
   "app.errors.invalid_last_name": "ਕਤਾਰ {row} ਵਿੱਚ ਆਖਰੀ ਨਾਮ {value} ਵੈਧ ਨਹੀਂ ਹੈ",

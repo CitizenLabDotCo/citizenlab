@@ -2602,6 +2602,7 @@
   "app.errors.group_ids_unauthorized_choice_moderator": "Ως διαχειριστής έργου, μπορείτε να στέλνετε email μόνο σε άτομα που έχουν πρόσβαση στο/στα έργο/α σας",
   "app.errors.has_inputs": "Δεν μπορείτε να αλλάξετε τη μέθοδο συμμετοχής επειδή αυτή η φάση έχει ήδη εισροές. Παρακαλούμε αφαιρέστε πρώτα όλες τις εισόδους.",
   "app.errors.has_other_overlapping_phases": "Τα έργα δεν μπορούν να έχουν επικαλυπτόμενες φάσεις.",
+  "app.errors.insufficient_sms_balance": "Δεν απομένουν αρκετές μονάδες SMS για την αποστολή αυτού του μηνύματος. Για να αγοράσετε περισσότερες μονάδες, επικοινωνήστε με τον GovSuccess Manager σας.",
   "app.errors.invalid_email": "Το email {value} που βρέθηκε στη γραμμή {row} δεν είναι έγκυρη διεύθυνση email",
   "app.errors.invalid_first_name": "Το όνομα {value} στη σειρά {row} δεν είναι έγκυρο",
   "app.errors.invalid_last_name": "Το επώνυμο {value} στη σειρά {row} δεν είναι έγκυρο",
