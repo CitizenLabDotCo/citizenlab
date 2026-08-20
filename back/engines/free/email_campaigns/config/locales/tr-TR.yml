@@ -542,6 +542,7 @@ tr-TR:
       yesterday: Dün
     new_phone_confirmation:
       sms_body: 'Doğrulama kodunuz: %{code}.'
+      sms_body2: '%{organization_name}: Onay kodunuz: %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Bu girişe gidin
       event_description: "%{feedback_author_name} '%{input_title}' adresinde bir güncelleme yaptı."
@@ -556,6 +557,7 @@ tr-TR:
       title: Yeni bir şifre seçin
     phone_confirmation:
       sms_body: 'Onay kodunuz: %{code}.'
+      sms_body2: '%{organization_name}: Onay kodunuz: %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
