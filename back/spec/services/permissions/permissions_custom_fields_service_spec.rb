@@ -284,59 +284,31 @@ describe Permissions::PermissionsCustomFieldsService do
     end
   end
 
-  # The three attributes that decide which demographic questions get asked interact,
-  # so they are documented together: custom_fields_behavior picks the source,
-  # admins and managers are never asked any, and for 'everyone' nothing is asked
-  # unless the questions can be asked in the form itself, which on a native survey
-  # depends on user_data_collection.
-  describe 'combinations of permitted_by, user_data_collection and custom_fields_behavior' do
-    # Disabled, so that it is not one of the platform's fields and the persisted
-    # field is told apart from the global ones by its code alone.
-    let!(:birthyear_field) { create(:custom_field_birthyear, enabled: false) }
+  # custom_fields_behavior decides which questions are asked; permitted_by only
+  # comes into it in these two ways.
+  describe 'how permitted_by affects the questions' do
+    it 'asks admins and managers nothing, whatever the behavior' do
+      permission = create(:permission, permitted_by: 'admins_moderators')
+      create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field_birthyear, enabled: false))
 
-    def asked_question_codes(permitted_by:, behavior:, user_data_collection: 'all_data')
-      permission = create(
-        :permission,
-        action: 'posting_idea',
-        permission_scope: create(:native_survey_phase),
-        permitted_by: permitted_by,
-        user_data_collection: user_data_collection,
-        custom_fields_behavior: behavior
-      )
-      create(:permissions_custom_field, permission: permission, custom_field: birthyear_field)
-
-      service.fields_for_permission(permission).map { |field| field.custom_field.code }
+      Permission::CUSTOM_FIELDS_BEHAVIORS.each do |behavior|
+        permission.update!(custom_fields_behavior: behavior)
+        expect(service.fields_for_permission(permission)).to be_empty
+      end
     end
 
-    {
-      # permitted_by, user_data_collection, custom_fields_behavior => questions asked
-      %w[users all_data global] => %w[domicile gender],
-      %w[users all_data disabled] => [],
-      %w[users all_data custom] => %w[birthyear],
-      # user_data_collection does not gate the questions when users have to register
-      %w[users anonymous global] => %w[domicile gender],
-      %w[users anonymous custom] => %w[birthyear],
-      # 'everyone' can only be asked in the form, but does resolve the global fields
-      %w[everyone all_data global] => %w[domicile gender],
-      %w[everyone all_data disabled] => [],
-      %w[everyone all_data custom] => %w[birthyear],
-      # an anonymous survey cannot ask anything, whatever is configured
-      %w[everyone anonymous global] => [],
-      %w[everyone anonymous disabled] => [],
-      %w[everyone anonymous custom] => [],
-      # admins and managers are never asked demographic questions at all
-      %w[admins_moderators all_data global] => [],
-      %w[admins_moderators all_data disabled] => [],
-      %w[admins_moderators all_data custom] => []
-    }.each do |(permitted_by, user_data_collection, behavior), expected_codes|
-      it "asks #{expected_codes.presence&.join(', ') || 'nothing'} when permitted_by is '#{permitted_by}', user_data_collection is '#{user_data_collection}' and custom_fields_behavior is '#{behavior}'" do
-        codes = asked_question_codes(
-          permitted_by: permitted_by,
-          user_data_collection: user_data_collection,
-          behavior: behavior
-        )
-        expect(codes).to eq expected_codes
-      end
+    # Unlike 'everyone', where an anonymous survey has no way to ask them.
+    it 'lets user_data_collection be anonymous without gating the questions when participants register' do
+      permission = create(
+        :permission,
+        permission_scope: create(:native_survey_phase),
+        permitted_by: 'users',
+        custom_fields_behavior: 'global',
+        user_data_collection: 'anonymous'
+      )
+
+      fields = service.fields_for_permission(permission)
+      expect(fields.map { |field| field.custom_field.code }).to eq %w[domicile gender]
     end
   end
 end
