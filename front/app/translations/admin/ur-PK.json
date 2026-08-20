@@ -1197,7 +1197,7 @@
   "app.containers.Admin.messaging.automated.variablesToolTip": "آپ اپنے پیغام میں درج ذیل متغیرات استعمال کر سکتے ہیں:",
   "app.containers.Admin.messaging.cancelButton": "منسوخ کریں",
   "app.containers.Admin.messaging.confirmSendSmsBalanceLabel": "باقی ماندہ کریڈٹس",
-  "app.containers.Admin.messaging.confirmSendSmsCreditsHint": "ایک SMS کے لیے بہت طویل پیغام کئی حصوں میں بھیجا جاتا ہے، اور ہر حصہ وصول کرنے والے ہر وصول کنندہ کے لیے ایک کریڈٹ خرچ ہوتا ہے۔",
+  "app.containers.Admin.messaging.confirmSendSmsCreditsHint": "ایک SMS کے لیے بہت طویل پیغام کئی حصوں میں بھیجا جاتا ہے، اور ہر حصہ وصول کرنے والے ہر وصول کنندہ کے لیے ایک کریڈٹ خرچ کرتا ہے۔",
   "app.containers.Admin.messaging.confirmSendSmsCreditsLabel": "مطلوبہ کریڈٹس",
   "app.containers.Admin.messaging.confirmSendSmsHeader2": "کیا یہ ٹیکسٹ پیغام بھیجیں؟",
   "app.containers.Admin.messaging.confirmSendSmsInsufficientBalance": "اس پیغام کے لیے {required, number} کریڈٹس درکار ہیں، لیکن صرف {balance, number} باقی ہیں۔ مزید کریڈٹس خریدنے کے لیے، اپنے GovSuccess مینیجر سے رابطہ کریں۔",

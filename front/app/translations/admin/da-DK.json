@@ -1197,7 +1197,7 @@
   "app.containers.Admin.messaging.automated.variablesToolTip": "Du kan bruge følgende variabler i din besked:",
   "app.containers.Admin.messaging.cancelButton": "Annuller",
   "app.containers.Admin.messaging.confirmSendSmsBalanceLabel": "Resterende kreditter",
-  "app.containers.Admin.messaging.confirmSendSmsCreditsHint": "En besked, der er for lang til én SMS, sendes i flere dele, og hver del koster en kredit for hver modtager, der modtager den.",
+  "app.containers.Admin.messaging.confirmSendSmsCreditsHint": "En besked, der er for lang til én sms, sendes i flere dele, og hver del koster en kredit for hver modtager, der modtager den.",
   "app.containers.Admin.messaging.confirmSendSmsCreditsLabel": "Nødvendige kreditter",
   "app.containers.Admin.messaging.confirmSendSmsHeader2": "Send denne sms-besked?",
   "app.containers.Admin.messaging.confirmSendSmsInsufficientBalance": "Denne besked kræver {required, number} kreditter, men der er kun {balance, number} tilbage. Kontakt din GovSuccess-projektleder for at købe flere kreditter.",

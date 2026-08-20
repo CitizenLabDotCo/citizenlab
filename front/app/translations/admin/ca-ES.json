@@ -1201,7 +1201,7 @@
   "app.containers.Admin.messaging.confirmSendSmsCreditsLabel": "Crèdits necessaris",
   "app.containers.Admin.messaging.confirmSendSmsHeader2": "Vols enviar aquest missatge de text?",
   "app.containers.Admin.messaging.confirmSendSmsInsufficientBalance": "Aquest missatge necessita {required, number} crèdits, però només en queden {balance, number}. Per comprar més crèdits, posa't en contacte amb el teu gestor de GovSuccess.",
-  "app.containers.Admin.messaging.confirmSendSmsNoRecipients": "Actualment ningú coincideix amb aquest missatge. Els destinataris han de tenir un número de telèfon confirmat i haver acceptat rebre missatges de text.",
+  "app.containers.Admin.messaging.confirmSendSmsNoRecipients": "Ara mateix no hi ha ningú que coincideixi amb aquest missatge. Els destinataris han de tenir un número de telèfon confirmat i haver acceptat rebre missatges de text.",
   "app.containers.Admin.messaging.confirmSendSmsRecipientsLabel": "Destinataris",
   "app.containers.Admin.messaging.deleteSmsButton": "Suprimeix",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "Segur que vols suprimir aquest missatge SMS?",
