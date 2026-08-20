@@ -11,7 +11,6 @@
 #  permission_scope_type              :string
 #  created_at                         :datetime         not null
 #  updated_at                         :datetime         not null
-#  global_custom_fields               :boolean          default(FALSE), not null
 #  verification_expiry                :integer
 #  access_denied_explanation_multiloc :jsonb            not null
 #  everyone_tracking_enabled          :boolean          default(FALSE), not null
@@ -24,7 +23,8 @@
 #  require_verification               :boolean          default(FALSE), not null
 #  require_confirmed_phone_number     :boolean          default(FALSE), not null
 #  confirmed_phone_number_expiry      :integer
-#  custom_fields_behavior             :string
+#  custom_fields_behavior             :string           default("global"), not null
+#  global_custom_fields               :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -122,17 +122,12 @@ class Permission < ApplicationRecord
     false
   end
 
-  # Falls back to the attributes the column replaces for the rows the backfill
-  # task has not reached yet. Drop the fallback once it has run everywhere.
-  # Deliberately not memoized: the fallback would go stale as soon as the fields
-  # it derives from change, and its queries are repeated ones the query cache
-  # already serves.
+  # Admins and managers are never asked demographic questions. Masked rather than
+  # stored, so the choice comes back if the action is opened up again.
   def custom_fields_behavior
-    # Admins and managers are never asked demographic questions. Masked rather
-    # than stored, so the choice comes back if the action is opened up again.
     return 'disabled' if permitted_by == 'admins_moderators'
 
-    super || Permissions::CustomFieldsBehaviorService.new.derive(self)
+    super
   end
 
   def everyone_tracking_enabled?
@@ -177,7 +172,6 @@ class Permission < ApplicationRecord
         self.require_password = false
       end
     end
-    self.global_custom_fields ||= true
     self.custom_fields_behavior ||= 'global'
   end
 
