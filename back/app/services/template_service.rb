@@ -37,6 +37,11 @@ class TemplateService
   end
 
   def exportable_image_url(uploader)
+    # A pending temp remote URL sits in the column where a filename normally goes, so `stored?`
+    # takes it for a path and confidently answers "missing". Ask before it, and export the URL
+    # unverified: it points outside our storage, and the import downloads it anyway.
+    # See CarrierwaveTempRemote.
+    return uploader.url if CarrierwaveTempRemote.url?(uploader.identifier)
     return uploader.url if stored?(uploader)
 
     fallback = [uploader.versions[:large], *uploader.versions.values]
@@ -51,15 +56,18 @@ class TemplateService
     fallback.url
   end
 
-  # Whether the file is actually present in the storage backend (an S3 HEAD request in
-  # production). This cannot be inferred from the URL: fog builds it by concatenating the
-  # asset host and the stored identifier, without ever hitting S3, so a deleted object
-  # still yields a perfectly well-formed URL. A storage error is treated as "not stored"
-  # rather than propagated, so that a transient S3 failure cannot break a whole export.
+  # Whether the file is present in the storage backend (an S3 HEAD in production). The URL
+  # cannot tell us: fog builds it from the asset host and the stored identifier without ever
+  # hitting S3, so a deleted object still yields a well-formed URL.
+  #
+  # A missing object does not raise (fog turns a 404 into a nil head), so an error here means
+  # the check failed, not that the file is gone. Swallowing it keeps a flaky S3 from breaking
+  # the export; answering "stored" keeps the URL in the template, where the import downloads
+  # it and settles the question for real.
   def stored?(uploader)
     uploader.file&.exists?
   rescue StandardError => e
     ErrorReporter.report(e, extra: { identifier: uploader.identifier })
-    false
+    true
   end
 end

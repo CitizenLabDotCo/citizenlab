@@ -144,7 +144,7 @@ describe ProjectCopyService do
       )
     end
 
-    describe 'project images whose stored file is missing' do
+    describe 'project images whose file cannot be resolved' do
       let(:project) { create(:project) }
       let!(:project_image) { create(:project_image, project: project) }
 
@@ -168,14 +168,27 @@ describe ProjectCopyService do
         expect(template['models']['project_image']).to be_empty
       end
 
-      it 'skips the image and reports the error when the storage cannot be reached' do
+      it 'exports the image and reports the error when the storage cannot be reached' do
         allow_any_instance_of(CarrierWave::SanitizedFile)
           .to receive(:exists?).and_raise(Errno::ECONNRESET)
         expect(ErrorReporter).to receive(:report).at_least(:once)
 
         template = service.export project
 
-        expect(template['models']['project_image']).to be_empty
+        expect(template['models']['project_image'].size).to eq 1
+        expect(template['models']['project_image'].first['remote_image_url']).to end_with(
+          File.basename(project_image.image.path)
+        )
+      end
+
+      it 'exports the source URL when the image is still a pending temp remote URL' do
+        project_image.update_column(:image, 'https://cdn.example.com/an-image.jpg')
+
+        template = service.export project
+
+        expect(template['models']['project_image'].size).to eq 1
+        expect(template['models']['project_image'].first['remote_image_url'])
+          .to eq 'https://cdn.example.com/an-image.jpg'
       end
     end
 

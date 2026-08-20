@@ -11,6 +11,7 @@ namespace :single_use do
     TenantScript.run(
       'remove_project_images_with_empty_image_column',
       args: args,
+      tenants: Tenant.not_deleted,
       description: 'deleting project images with an empty image column'
     ) do |tenant, script|
       ProjectImage.where(image: [nil, '']).find_each do |image|
