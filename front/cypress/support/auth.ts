@@ -56,6 +56,7 @@ export const confirmEmail = (cy: Cypress.Chainable) => {
   // The request fires on click, so only the response needs the long leash.
   cy.intercept('POST', '**/user/confirm_code_*').as('confirmCode');
   cy.get('#e2e-verify-email-button > button').click({ force: true });
+  cy.wait('@confirmCode', { responseTimeout: 60000 });
 };
 
 export const confirmPhone = (cy: Cypress.Chainable) => {
@@ -98,7 +99,13 @@ export const enterUserInfo = (
     password = randomString(),
   } = {}
 ) => {
-  cy.get('#firstName').type(firstName);
+  // The built-in-fields form is gated by two sequential requests: the
+  // confirmation POST, and the permissions-requirements GET that decides which
+  // step comes next. The verify button stays in its processing state for both,
+  // so awaiting the POST alone is not enough. On a loaded backend the pair can
+  // outlast the default 15s command timeout, hence the longer leash on the
+  // first field of the form.
+  cy.get('#firstName', { timeout: 60000 }).type(firstName);
   cy.get('#lastName').type(lastName);
   cy.get('#password').type(password);
 
