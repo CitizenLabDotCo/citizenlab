@@ -59,10 +59,16 @@ RSpec.describe EmailCampaigns::Sms::BalanceService do
     end
 
     it 'ignores deliveries that never reached the provider' do
-      create(:sms_delivery, campaign: manual_campaign, status: 'pending')
       create(:sms_delivery, campaign: manual_campaign, status: 'errored')
 
       expect(service.used).to eq 0
+    end
+
+    # Otherwise a send started while the previous one is still queued spends the same allowance twice.
+    it 'counts a send that is still in flight' do
+      create(:sms_delivery, campaign: manual_campaign, status: 'pending')
+
+      expect(service.used).to eq 1
     end
 
     it 'attributes campaign-less sends (previews) to used_other' do

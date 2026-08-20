@@ -22,8 +22,9 @@ resource 'SMS balance' do
       create_list(:sms_delivery, 3, campaign: manual_campaign, status: 'sent', body: 'a' * 200)
       # Absorbed by Go Vocal rather than charged to the tenant.
       create_list(:sms_delivery, 2, campaign: otp_campaign, status: 'delivered')
-      # Neither of these reached the provider, so neither is charged.
+      # Still on its way to the provider, but its segment is already spoken for.
       create(:sms_delivery, campaign: manual_campaign, status: 'pending')
+      # Rejected before the provider ever saw it, so it is not charged.
       create(:sms_delivery, campaign: manual_campaign, status: 'errored')
     end
 
@@ -36,9 +37,9 @@ resource 'SMS balance' do
         expect(json_response[:data][:type]).to eq 'sms_balance'
         expect(json_response[:data][:attributes]).to match({
           purchased: 500,
-          used: 6,
-          balance: 494,
-          used_manual: 6,
+          used: 7,
+          balance: 493,
+          used_manual: 7,
           used_other: 0
         })
       end

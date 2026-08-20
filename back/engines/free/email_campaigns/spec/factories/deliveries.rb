@@ -10,8 +10,6 @@ FactoryBot.define do
   factory :sms_delivery, class: 'EmailCampaigns::Sms::Delivery' do
     association :campaign, factory: :sms_manual_campaign
     user
-    # segments_count is derived from the body, so a delivery that should cost more
-    # than one segment needs a body long enough to.
     body { 'A short SMS update.' }
     status { 'sent' }
   end
