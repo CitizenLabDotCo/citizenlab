@@ -1197,7 +1197,7 @@
   "app.containers.Admin.messaging.automated.variablesToolTip": "Pranešime galite naudoti šiuos kintamuosius:",
   "app.containers.Admin.messaging.cancelButton": "Atšaukti",
   "app.containers.Admin.messaging.confirmSendSmsBalanceLabel": "Likę kreditai",
-  "app.containers.Admin.messaging.confirmSendSmsCreditsHint": "Žinutė, kuri yra per ilga vienai SMS, siunčiama keliomis dalimis, ir kiekviena dalis kainuoja po kreditą kiekvienam ją gaunančiam gavėjui.",
+  "app.containers.Admin.messaging.confirmSendSmsCreditsHint": "Žinutė, kuri yra per ilga vienai SMS, siunčiama keliomis dalimis, o kiekviena dalis kainuoja po kreditą kiekvienam ją gaunančiam gavėjui.",
   "app.containers.Admin.messaging.confirmSendSmsCreditsLabel": "Reikalinga kreditų",
   "app.containers.Admin.messaging.confirmSendSmsHeader2": "Siųsti šią tekstinę žinutę?",
   "app.containers.Admin.messaging.confirmSendSmsInsufficientBalance": "Šiai žinutei reikia {required, number} kreditų, tačiau liko tik {balance, number}. Norėdami įsigyti daugiau kreditų, susisiekite su savo „GovSuccess“ vadovu.",

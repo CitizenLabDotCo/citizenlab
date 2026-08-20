@@ -2602,7 +2602,7 @@
   "app.errors.group_ids_unauthorized_choice_moderator": "Come project manager, puoi inviare email solo alle persone che possono accedere al tuo progetto (o ai tuoi progetti)",
   "app.errors.has_inputs": "Non puoi cambiare il metodo di partecipazione perché questa fase ha già degli input. Rimuovi prima tutti gli input.",
   "app.errors.has_other_overlapping_phases": "I progetti non possono avere fasi sovrapposte.",
-  "app.errors.insufficient_sms_balance": "Non ci sono abbastanza crediti SMS per inviare questo messaggio. Per acquistare altri crediti, contatta il tuo GovSuccess Manager.",
+  "app.errors.insufficient_sms_balance": "I crediti SMS residui non sono sufficienti per inviare questo messaggio. Per acquistare altri crediti, contatta il tuo GovSuccess Manager.",
   "app.errors.invalid_email": "L'email {value} trovata nella riga {row} non è un indirizzo email valido",
   "app.errors.invalid_first_name": "Il nome {value} nella riga {row} non è valido",
   "app.errors.invalid_last_name": "Il cognome {value} nella riga {row} non è valido",

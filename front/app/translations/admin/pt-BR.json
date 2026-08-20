@@ -1224,7 +1224,7 @@
   "app.containers.Admin.messaging.smsBalanceTitle": "Créditos de SMS restantes",
   "app.containers.Admin.messaging.smsBalanceUsedManual": "Campanhas de SMS",
   "app.containers.Admin.messaging.smsBalanceUsedOther": "Mensagens de teste",
-  "app.containers.Admin.messaging.smsBalanceUsedTotal": "Total utilizado",
+  "app.containers.Admin.messaging.smsBalanceUsedTotal": "Total usado",
   "app.containers.Admin.messaging.smsCampaignsDescription": "Envie mensagens de texto para seus participantes.",
   "app.containers.Admin.messaging.smsDeliveryStatus_delivered": "Entregue",
   "app.containers.Admin.messaging.smsDeliveryStatus_failed": "Falha",

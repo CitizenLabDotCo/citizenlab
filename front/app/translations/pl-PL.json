@@ -2602,7 +2602,7 @@
   "app.errors.group_ids_unauthorized_choice_moderator": "Jako kierownik projektu, możesz wysyłać e-maile tylko do osób, które mają dostęp do Twojego projektu(ów)",
   "app.errors.has_inputs": "Nie możesz zmienić metody uczestnictwa, ponieważ ta faza zawiera już dane wejściowe. Najpierw usuń wszystkie dane wejściowe.",
   "app.errors.has_other_overlapping_phases": "Projekty nie mogą mieć nakładających się na siebie etapów.",
-  "app.errors.insufficient_sms_balance": "Pozostało zbyt mało kredytów SMS, aby wysłać tę wiadomość. Aby dokupić więcej kredytów, skontaktuj się ze swoim GovSuccess Managerem.",
+  "app.errors.insufficient_sms_balance": "Zabrakło kredytów SMS, aby wysłać tę wiadomość. Aby dokupić więcej kredytów, skontaktuj się ze swoim menedżerem GovSuccess.",
   "app.errors.invalid_email": "Email {value} znajdujący się w wierszu {row} nie jest prawidłowym adresem e-mail",
   "app.errors.invalid_first_name": "Imię {value} w wierszu {row} jest nieprawidłowe",
   "app.errors.invalid_last_name": "Nazwisko {value} w wierszu {row} jest nieprawidłowe",
