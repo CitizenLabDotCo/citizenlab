@@ -37,6 +37,11 @@ RSpec.describe Permission do
       expect(create(:permission, custom_fields_behavior: nil).custom_fields_behavior).to eq 'global'
     end
 
+    it "is 'disabled' for an admins and managers permission, whatever is stored" do
+      permission = build(:permission, :by_admins_moderators, custom_fields_behavior: 'global')
+      expect(permission.custom_fields_behavior).to eq 'disabled'
+    end
+
     it 'is invalid for a value that is not one of the three behaviors' do
       permission = build(:permission, custom_fields_behavior: 'platform')
       expect(permission).not_to be_valid
@@ -156,14 +161,6 @@ RSpec.describe Permission do
 
     it 'is false when verification is not required and there is no verification group' do
       expect(build(:permission, :by_users).verification_enabled?).to be false
-    end
-  end
-
-  describe '#allow_global_custom_fields?' do
-    it 'is true only for a users permission' do
-      expect(build(:permission, :by_users).allow_global_custom_fields?).to be true
-      expect(build(:permission, :by_everyone).allow_global_custom_fields?).to be false
-      expect(build(:permission, :by_admins_moderators).allow_global_custom_fields?).to be false
     end
   end
 

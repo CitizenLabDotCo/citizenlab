@@ -71,18 +71,26 @@ describe Permissions::CustomFieldsBehaviorService do
       expect(service.derive(permission.reload)).to eq 'custom'
     end
 
-    # 'global' resolves through #default_fields, which is empty for these, so calling
-    # them 'global' would stop them asking the questions they ask today.
-    %w[everyone admins_moderators].each do |permitted_by|
-      it "returns 'custom' for the platform's own fields when permitted_by is '#{permitted_by}'" do
-        permission = legacy_permission(
-          global_custom_fields: false,
-          permitted_by: permitted_by,
-          action: 'posting_idea',
-          permission_scope: create(:native_survey_phase)
-        )
-        expect(service.derive(persist_global_fields(permission))).to eq 'custom'
-      end
+    # 'global_custom_fields' asked nothing for an 'everyone' permission, so
+    # 'disabled' is what it does today; 'global' now asks the platform's questions.
+    it "returns 'disabled' for an 'everyone' permission on the global fields" do
+      permission = legacy_permission(
+        global_custom_fields: true,
+        permitted_by: 'everyone',
+        action: 'posting_idea',
+        permission_scope: create(:native_survey_phase)
+      )
+      expect(service.derive(permission)).to eq 'disabled'
+    end
+
+    it "returns 'global' for an 'everyone' permission whose persisted fields are the platform's" do
+      permission = legacy_permission(
+        global_custom_fields: false,
+        permitted_by: 'everyone',
+        action: 'posting_idea',
+        permission_scope: create(:native_survey_phase)
+      )
+      expect(service.derive(persist_global_fields(permission))).to eq 'global'
     end
 
     it 'ignores the permissions_custom_fields feature being deactivated' do

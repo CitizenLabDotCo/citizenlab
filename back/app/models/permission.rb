@@ -128,11 +128,11 @@ class Permission < ApplicationRecord
   # it derives from change, and its queries are repeated ones the query cache
   # already serves.
   def custom_fields_behavior
-    super || Permissions::CustomFieldsBehaviorService.new.derive(self)
-  end
+    # Admins and managers are never asked demographic questions. Masked rather
+    # than stored, so the choice comes back if the action is opened up again.
+    return 'disabled' if permitted_by == 'admins_moderators'
 
-  def allow_global_custom_fields?
-    permitted_by == 'users'
+    super || Permissions::CustomFieldsBehaviorService.new.derive(self)
   end
 
   def everyone_tracking_enabled?

@@ -36,8 +36,6 @@ module Permissions
     private
 
     def default_fields(permission)
-      return [] unless permission.allow_global_custom_fields?
-
       platform_custom_fields.each_with_index.map do |field, index|
         PermissionsCustomField.new(id: SecureRandom.uuid, custom_field: field, required: field.required, ordering: index, permission: permission)
       end

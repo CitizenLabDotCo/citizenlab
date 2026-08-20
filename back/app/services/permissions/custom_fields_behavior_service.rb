@@ -7,15 +7,18 @@ module Permissions
   # Both go away once the column is backfilled and required.
   class CustomFieldsBehaviorService
     def derive(permission)
-      return 'global' if permission.global_custom_fields
+      if permission.global_custom_fields
+        # 'global_custom_fields' never resolved to anything for an 'everyone'
+        # permission, so what it does today is ask nothing. Calling it 'global'
+        # would start asking the platform's questions on every open phase.
+        return permission.permitted_by == 'everyone' ? 'disabled' : 'global'
+      end
+
       # 'global_custom_fields' false with nothing persisted is the only way the
       # old model could express "ask nothing", so it wins over the match below
       # on a platform that has no enabled user fields at all.
       return 'disabled' if permission.permissions_custom_fields.empty?
-      # Only worth calling 'global' when 'global' resolves to the same fields:
-      # PermissionsCustomFieldsService#default_fields is empty unless the
-      # permission allows the global fields, whatever the platform has enabled.
-      return 'global' if permission.allow_global_custom_fields? && matches_platform_fields?(permission)
+      return 'global' if matches_platform_fields?(permission)
 
       'custom'
     end
