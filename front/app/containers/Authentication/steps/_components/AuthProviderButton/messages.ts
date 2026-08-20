@@ -52,8 +52,8 @@ export default defineMessages({
     defaultMessage: 'I have read and agree to {link}.',
   },
   iHaveReadAndAgreeToTermsAndPrivacy: {
-    id: 'app.containers.SignUp.iHaveReadAndAgreeToTermsAndPrivacy',
-    defaultMessage: 'I have read and agree to {termsLink} and {privacyLink}.',
+    id: 'app.containers.SignUp.iHaveReadAndAgreeToTermsAndPrivacy2',
+    defaultMessage: 'I accept {termsLink} and have read {privacyLink}.',
   },
   theTermsAndConditions: {
     id: 'app.containers.SignUp.theTermsAndConditions',
