@@ -129,8 +129,13 @@ module EmailCampaigns
     end
 
     def send_sms_preview
-      EmailCampaigns::DeliveryService.new.send_sms_preview(@campaign, current_user)
-      head :ok
+      @campaign.previewer = current_user
+      if @campaign.valid?(:preview)
+        EmailCampaigns::DeliveryService.new.send_sms_preview(@campaign, current_user)
+        head :ok
+      else
+        render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
+      end
     end
 
     def email_preview

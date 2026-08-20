@@ -627,6 +627,34 @@ resource 'Campaigns' do
       end
     end
 
+    post 'web_api/v1/campaigns/:id/send_sms_preview' do
+      context 'SMS campaign' do
+        include_context 'with sms feature enabled'
+
+        before do
+          SettingsService.new.activate_feature!('sms', settings: { 'messages_purchased' => 10 })
+          @user.update!(phone: '+14155552671', phone_confirmed_at: Time.zone.now)
+        end
+
+        let(:campaign) { create(:sms_manual_campaign) }
+        let(:id) { campaign.id }
+
+        example 'Send a preview SMS to your own phone number' do
+          expect { do_request }.to have_enqueued_job(EmailCampaigns::Sms::SendJob)
+          assert_status 200
+          expect(campaign.reload.sent?).to be false
+        end
+
+        example '[error] Send a preview SMS the balance no longer covers' do
+          SettingsService.new.activate_feature!('sms', settings: { 'messages_purchased' => 0 })
+
+          expect { do_request }.not_to have_enqueued_job(EmailCampaigns::Sms::SendJob)
+          assert_status 422
+          expect(json_response_body).to include_response_error(:base, 'insufficient_sms_balance')
+        end
+      end
+    end
+
     get 'web_api/v1/campaigns/:id/email_deliveries' do
       with_options scope: :page do
         parameter :number, 'Page number'

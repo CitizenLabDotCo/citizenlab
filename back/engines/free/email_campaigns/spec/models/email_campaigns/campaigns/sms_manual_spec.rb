@@ -191,6 +191,37 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
     end
   end
 
+  # A preview is a real, billed message, but only ever one, in the previewer's locale.
+  describe 'the balance guard on a preview' do
+    let(:campaign) do
+      create(:sms_manual_campaign, body_multiloc: { 'en' => 'short', 'fr-FR' => 'a' * 200 })
+    end
+
+    before { campaign.previewer = create(:admin, locale: 'fr-FR') }
+
+    it 'refuses a preview whose segments exceed the balance' do
+      SettingsService.new.activate_feature!('sms', settings: { 'messages_purchased' => 1 })
+
+      expect(campaign.valid?(:preview)).to be false
+      expect(campaign.errors.details[:base]).to include(error: :insufficient_sms_balance)
+    end
+
+    it 'allows a preview the balance covers' do
+      SettingsService.new.activate_feature!('sms', settings: { 'messages_purchased' => 2 })
+
+      expect(campaign.valid?(:preview)).to be true
+    end
+
+    # The whole audience is irrelevant: the preview only goes to the previewer.
+    it 'ignores what a send to every recipient would cost' do
+      SettingsService.new.activate_feature!('sms', settings: { 'messages_purchased' => 2 })
+      3.times { create(:consent, :sms_manual, user: create(:user, :with_confirmed_phone, locale: 'fr-FR')) }
+
+      expect(campaign.valid?(:preview)).to be true
+      expect(campaign.valid?(:send)).to be false
+    end
+  end
+
   describe 'apply_recipient_filters' do
     let(:campaign) { build(:sms_manual_campaign) }
 

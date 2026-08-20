@@ -38,6 +38,7 @@ interface Props {
   draft: boolean;
   onSendPreview: () => void;
   isSendingPreview: boolean;
+  insufficientBalance: boolean;
 }
 
 const Recipients = ({
@@ -46,6 +47,7 @@ const Recipients = ({
   draft,
   onSendPreview,
   isSendingPreview,
+  insufficientBalance,
 }: Props) => {
   const localize = useLocalize();
 
@@ -95,7 +97,7 @@ const Recipients = ({
           icon="send"
           onClick={onSendPreview}
           processing={isSendingPreview}
-          disabled={isSendingPreview}
+          disabled={isSendingPreview || insufficientBalance}
         >
           <Box display="inline-flex" alignItems="center">
             <FormattedMessage {...messages.sendSmsPreviewButton} />

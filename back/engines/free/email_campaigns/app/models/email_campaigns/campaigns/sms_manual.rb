@@ -45,10 +45,14 @@ module EmailCampaigns
 
     filter :only_manual_send
 
+    # The admin a preview goes out to, which decides the locale it is billed in.
+    attr_accessor :previewer
+
     validates :subject_multiloc, presence: true, multiloc: { presence: true }
     validates :body_multiloc, presence: true, multiloc: { presence: true }
     validate :body_within_segment_limit
     validate :validate_sufficient_balance, on: :send
+    validate :validate_sufficient_preview_balance, on: :preview
 
     def self.sms_use_case
       Sms::UseCase::MANUAL_CAMPAIGNS
@@ -117,6 +121,12 @@ module EmailCampaigns
       end
     end
 
+    # What a preview costs: one message, in the locale of the admin sending it to themselves.
+    def segments_for_preview
+      body = MultilocService.new.t(body_multiloc, previewer&.locale).to_s
+      EmailCampaigns::Sms::SegmentedMessage.new(body).segments_count
+    end
+
     protected
 
     def unique_campaigns_per_context?
@@ -146,6 +156,13 @@ module EmailCampaigns
       return if segments_for_send <= EmailCampaigns::Sms::BalanceService.new.balance
 
       errors.add(:base, :insufficient_sms_balance, message: 'Not enough SMS segments left to reach all recipients')
+    end
+
+    # A preview is a real, billed message, so it is refused once the balance no longer covers it.
+    def validate_sufficient_preview_balance
+      return if segments_for_preview <= EmailCampaigns::Sms::BalanceService.new.balance
+
+      errors.add(:base, :insufficient_sms_balance, message: 'Not enough SMS segments left to send a preview')
     end
 
     def only_manual_send(activity: nil, time: nil)
