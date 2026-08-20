@@ -26,6 +26,15 @@ describe 'Rack::Attack' do
     headers
   end
 
+  # Rack::Attack counts in fixed windows (`Time.now.to_i / period`), not sliding
+  # ones, so an example that spreads its requests over a window has to start at a
+  # window boundary. Otherwise the counter silently resets partway through and the
+  # request that should have been throttled isn't. 120 is the longest period any of
+  # the throttles exercised this way uses, and every shorter one divides it.
+  def freeze_at_window_start(&)
+    travel_to(Time.zone.at(Time.now.to_i - (Time.now.to_i % 120)), &)
+  end
+
   it 'limits login requests from same IP to 2 in 20 seconds' do
     # Use a different email for each request, to avoid testing limit by email
     freeze_time do
@@ -286,199 +295,181 @@ describe 'Rack::Attack' do
     end
   end
 
-  it 'limits unauthenticated code requests from same IP to 10 in 5 minutes' do
-    # Use a different email for each request, to avoid testing limit by email
-    freeze_time do
-      10.times do |i|
-        post('/web_api/v1/user/request_code_email', params: '{ "request_code": { "email": "INSERT" } }'.gsub('INSERT', "a#{i}@b.com"), headers: json_headers)
+  # Both confirmation-code controllers. Every endpoint is throttled on the
+  # identifier in the request body (email / phone / new_email / new_phone) and on
+  # the authenticated user, each limited to 1 request per 5 seconds and 5 requests
+  # per 2 minutes, plus a looser per-IP backstop of 5 requests per 20 seconds.
+  #
+  # These endpoints reject the requests below for their own reasons (unknown
+  # account, sms feature off, blank param, ...), and those reasons differ per
+  # endpoint. What every example asserts is only whether the request was throttled:
+  # any status other than 429 means it reached the controller.
+  describe 'confirmation code endpoints' do
+    endpoints = [
+      { path: '/web_api/v1/user/request_code_email', root: 'request_code', identifier: 'email' },
+      { path: '/web_api/v1/user/request_code_new_email', root: 'request_code', identifier: 'new_email' },
+      { path: '/web_api/v1/user/request_code_phone', root: 'request_code', identifier: 'phone' },
+      { path: '/web_api/v1/user/request_code_new_phone', root: 'request_code', identifier: 'new_phone' },
+      { path: '/web_api/v1/user/confirm_code_email', root: 'confirmation', identifier: 'email' },
+      { path: '/web_api/v1/user/confirm_code_new_email', root: 'confirmation', identifier: nil },
+      { path: '/web_api/v1/user/confirm_code_phone', root: 'confirmation', identifier: 'phone' },
+      { path: '/web_api/v1/user/confirm_code_new_phone', root: 'confirmation', identifier: nil }
+    ]
+
+    # A body for `endpoint`, carrying the `index`th distinct identifier. Pass
+    # `identifier: false` to leave the identifier out, which is what the callers
+    # that fall back to current_user do.
+    def code_params(endpoint, index = 0, identifier: true)
+      body = endpoint[:root] == 'confirmation' ? { 'code' => '1234' } : {}
+
+      if endpoint[:identifier] && identifier
+        body[endpoint[:identifier]] =
+          if endpoint[:identifier].include?('phone')
+            "+1415555#{format('%04d', index)}"
+          else
+            "a#{index}@example.org"
+          end
       end
-      expect(status).to eq(401) # Unauthorized
 
-      post('/web_api/v1/user/request_code_email', params: '{ "request_code": { "email": "a11@b.com" } }', headers: json_headers)
-      expect(status).to eq(429) # Too many requests
+      { endpoint[:root] => body }.to_json
     end
 
-    travel_to(5.minutes.from_now) do
-      post('/web_api/v1/user/request_code_email', params: '{ "request_code": { "email": "a12@b.com" } }', headers: json_headers)
-      expect(status).to eq(401) # Unauthorized
-    end
-  end
+    endpoints.each do |endpoint|
+      describe endpoint[:path] do
+        it 'limits requests from the same IP to 5 in 20 seconds' do
+          # A different identifier for each request, and no token, so that the IP is
+          # the only key these requests share
+          freeze_time do
+            5.times do |i|
+              post(endpoint[:path], params: code_params(endpoint, i), headers: json_headers)
+              expect(status).not_to eq(429)
+            end
 
-  it 'limits code requests for same email to 1 in 5 seconds' do
-    params = '{ "request_code": { "email": "coolemail@example.org" } }'
+            post(endpoint[:path], params: code_params(endpoint, 5), headers: json_headers)
+            expect(status).to eq(429) # Too many requests
+          end
 
-    # Use a different IP for each request, to avoid testing limit by IP
-    freeze_time do
-      post('/web_api/v1/user/request_code_email', params: params, headers: json_headers(ip: '1.2.3.1'))
-      expect(status).to eq(401) # Unauthorized
+          travel_to(20.seconds.from_now) do
+            post(endpoint[:path], params: code_params(endpoint, 6), headers: json_headers)
+            expect(status).not_to eq(429)
+          end
+        end
 
-      post('/web_api/v1/user/request_code_email', params: params, headers: json_headers(ip: '1.2.3.2'))
-      expect(status).to eq(429) # Too many requests
-    end
+        if endpoint[:identifier]
+          it "limits requests for the same #{endpoint[:identifier]} to 1 in 5 seconds" do
+            params = code_params(endpoint)
 
-    travel_to(5.seconds.from_now) do
-      post('/web_api/v1/user/request_code_email', params: params, headers: json_headers(ip: '1.2.3.3'))
-      expect(status).to eq(401) # Unauthorized
-    end
-  end
+            # A different IP for each request, to avoid testing the limit by IP
+            freeze_at_window_start do
+              post(endpoint[:path], params: params, headers: json_headers(ip: '1.2.3.1'))
+              expect(status).not_to eq(429)
 
-  it 'limits code requests for same user to 1 in 5 seconds' do
-    # No email in the body, to avoid testing limit by email
-    params = '{ "request_code": { "only_if_first_time": false } }'
+              post(endpoint[:path], params: params, headers: json_headers(ip: '1.2.3.2'))
+              expect(status).to eq(429) # Too many requests
 
-    freeze_time do
-      post('/web_api/v1/user/request_code_email', params: params, headers: json_headers(token: token))
-      expect(status).to eq(200) # OK
+              travel 5.seconds
+              post(endpoint[:path], params: params, headers: json_headers(ip: '1.2.3.3'))
+              expect(status).not_to eq(429)
+            end
+          end
 
-      post('/web_api/v1/user/request_code_email', params: params, headers: json_headers(token: token))
-      expect(status).to eq(429) # Too many requests
-    end
+          it "limits requests for the same #{endpoint[:identifier]} to 5 in 2 minutes" do
+            params = code_params(endpoint)
 
-    travel_to(5.seconds.from_now) do
-      post('/web_api/v1/user/request_code_email', params: params, headers: json_headers(token: token))
-      expect(status).to eq(200) # OK
-    end
-  end
+            freeze_at_window_start do
+              5.times do |i|
+                post(endpoint[:path], params: params, headers: json_headers(ip: "1.2.3.#{i + 1}"))
+                expect(status).not_to eq(429)
+                travel 6.seconds
+              end
 
-  it 'limits code requests for same user when the token is passed as a query param' do
-    # AuthToken reads params[:token] before the Authorization header
-    params = '{ "request_code": { "only_if_first_time": false } }'
+              post(endpoint[:path], params: params, headers: json_headers(ip: '1.2.3.6'))
+              expect(status).to eq(429) # Too many requests
 
-    freeze_time do
-      post("/web_api/v1/user/request_code_email?token=#{token}", params: params, headers: json_headers)
-      expect(status).to eq(200) # OK
+              travel 90.seconds # into the next 2 minute window
+              post(endpoint[:path], params: params, headers: json_headers(ip: '1.2.3.7'))
+              expect(status).not_to eq(429)
+            end
+          end
 
-      post("/web_api/v1/user/request_code_email?token=#{token}", params: params, headers: json_headers)
-      expect(status).to eq(429) # Too many requests
-    end
-  end
+          it "ignores casing and spacing in the #{endpoint[:identifier]}" do
+            identifier = JSON.parse(code_params(endpoint)).dig(endpoint[:root], endpoint[:identifier])
+            spaced = code_params(endpoint).sub(identifier, identifier.upcase.chars.join(' '))
 
-  it 'limits email change code requests from same IP to 1 in 5 seconds' do
-    freeze_time do
-      post('/web_api/v1/user/request_code_new_email', params: '{ "request_code": { "new_email": "coolemail@example.org" } }', headers: json_headers)
-      expect(status).to eq(401) # Unauthorized
+            freeze_at_window_start do
+              post(endpoint[:path], params: code_params(endpoint), headers: json_headers(ip: '1.2.3.1'))
+              expect(status).not_to eq(429)
 
-      post('/web_api/v1/user/request_code_new_email', params: '{ "request_code": { "new_email": "coolemail@example.org" } }', headers: json_headers)
-      expect(status).to eq(429) # Too many requests
-    end
+              post(endpoint[:path], params: spaced, headers: json_headers(ip: '1.2.3.2'))
+              expect(status).to eq(429) # Too many requests
+            end
+          end
+        end
 
-    travel_to(5.seconds.from_now) do
-      post('/web_api/v1/user/request_code_new_email', params: '{ "request_code": { "new_email": "coolemail@example.org" } }', headers: json_headers)
-      expect(status).to eq(401) # Unauthorized
-    end
-  end
+        it 'limits requests for the same user to 1 in 5 seconds' do
+          # No identifier in the body and a different IP for each request, so that the
+          # user from the JWT is the only key these requests share
+          params = code_params(endpoint, identifier: false)
 
-  it 'limits email change code requests for same user to 1 in 5 seconds' do
-    other_user = create(:user)
-    params = "{ \"request_code\": { \"new_email\": \"#{other_user.email}\" } }"
+          freeze_at_window_start do
+            post(endpoint[:path], params: params, headers: json_headers(token: token, ip: '1.2.3.1'))
+            expect(status).not_to eq(429)
 
-    # Use a different IP for each request, to avoid testing limit by IP
-    freeze_time do
-      post('/web_api/v1/user/request_code_new_email', params: params, headers: json_headers(token: token, ip: '1.2.3.1'))
-      expect(status).to eq(422) # Unprocessable entity
+            post(endpoint[:path], params: params, headers: json_headers(token: token, ip: '1.2.3.2'))
+            expect(status).to eq(429) # Too many requests
 
-      post('/web_api/v1/user/request_code_new_email', params: params, headers: json_headers(token: token, ip: '1.2.3.2'))
-      expect(status).to eq(429) # Too many requests
-    end
+            travel 5.seconds
+            post(endpoint[:path], params: params, headers: json_headers(token: token, ip: '1.2.3.3'))
+            expect(status).not_to eq(429)
+          end
+        end
 
-    travel_to(5.seconds.from_now) do
-      post('/web_api/v1/user/request_code_new_email', params: params, headers: json_headers(token: token, ip: '1.2.3.3'))
-      expect(status).to eq(422) # Unprocessable entity
-    end
-  end
+        it 'limits requests for the same user to 5 in 2 minutes' do
+          params = code_params(endpoint, identifier: false)
 
-  it 'limits phone re-confirmation code requests from same IP to 1 in 5 seconds' do
-    freeze_time do
-      post('/web_api/v1/user/request_code_phone', params: '{ "request_code": {} }', headers: json_headers)
-      expect(status).to eq(401) # Unauthorized
+          freeze_at_window_start do
+            5.times do |i|
+              post(endpoint[:path], params: params, headers: json_headers(token: token, ip: "1.2.3.#{i + 1}"))
+              expect(status).not_to eq(429)
+              travel 6.seconds
+            end
 
-      post('/web_api/v1/user/request_code_phone', params: '{ "request_code": {} }', headers: json_headers)
-      expect(status).to eq(429) # Too many requests
-    end
+            post(endpoint[:path], params: params, headers: json_headers(token: token, ip: '1.2.3.6'))
+            expect(status).to eq(429) # Too many requests
 
-    travel_to(5.seconds.from_now) do
-      post('/web_api/v1/user/request_code_phone', params: '{ "request_code": {} }', headers: json_headers)
-      expect(status).to eq(401) # Unauthorized
-    end
-  end
+            travel 90.seconds # into the next 2 minute window
+            post(endpoint[:path], params: params, headers: json_headers(token: token, ip: '1.2.3.7'))
+            expect(status).not_to eq(429)
+          end
+        end
 
-  it 'limits phone re-confirmation code requests for same user to 1 in 5 seconds' do
-    params = '{ "request_code": {} }'
+        it 'does not throttle a different user, IP and identifier' do
+          other_token = AuthToken::AuthToken.new(payload: create(:user).to_token_payload).token
 
-    # Use a different IP for each request, to avoid testing limit by IP
-    freeze_time do
-      post('/web_api/v1/user/request_code_phone', params: params, headers: json_headers(token: token, ip: '1.2.3.1'))
-      expect(status).to eq(401) # Unauthorized
+          freeze_at_window_start do
+            post(endpoint[:path], params: code_params(endpoint, 0), headers: json_headers(token: token, ip: '1.2.3.1'))
+            expect(status).not_to eq(429)
 
-      post('/web_api/v1/user/request_code_phone', params: params, headers: json_headers(token: token, ip: '1.2.3.2'))
-      expect(status).to eq(429) # Too many requests
-    end
-
-    travel_to(5.seconds.from_now) do
-      post('/web_api/v1/user/request_code_phone', params: params, headers: json_headers(token: token, ip: '1.2.3.3'))
-      expect(status).to eq(401) # Unauthorized
-    end
-  end
-
-  it 'limits phone change code requests from same IP to 1 in 5 seconds' do
-    freeze_time do
-      post('/web_api/v1/user/request_code_new_phone', params: '{ "request_code": { "new_phone": "+32470123456" } }', headers: json_headers)
-      expect(status).to eq(401) # Unauthorized
-
-      post('/web_api/v1/user/request_code_new_phone', params: '{ "request_code": { "new_phone": "+32470123456" } }', headers: json_headers)
-      expect(status).to eq(429) # Too many requests
-    end
-
-    travel_to(5.seconds.from_now) do
-      post('/web_api/v1/user/request_code_new_phone', params: '{ "request_code": { "new_phone": "+32470123456" } }', headers: json_headers)
-      expect(status).to eq(401) # Unauthorized
-    end
-  end
-
-  it 'limits phone change code requests for same user to 1 in 5 seconds' do
-    params = '{ "request_code": { "new_phone": "+32470123456" } }'
-
-    # Use a different IP for each request, to avoid testing limit by IP
-    freeze_time do
-      post('/web_api/v1/user/request_code_new_phone', params: params, headers: json_headers(token: token, ip: '1.2.3.1'))
-      expect(status).to eq(401) # Unauthorized
-
-      post('/web_api/v1/user/request_code_new_phone', params: params, headers: json_headers(token: token, ip: '1.2.3.2'))
-      expect(status).to eq(429) # Too many requests
-    end
-
-    travel_to(5.seconds.from_now) do
-      post('/web_api/v1/user/request_code_new_phone', params: params, headers: json_headers(token: token, ip: '1.2.3.3'))
-      expect(status).to eq(401) # Unauthorized
-    end
-  end
-
-  it 'limits unauthenticated confirmation requests from same IP to 5 in 20 seconds' do
-    freeze_time do
-      5.times do
-        post(
-          '/web_api/v1/user/confirm_code_email',
-          params: "{ \"confirmation\": { \"email\": \"#{user.email}\", \"code\": \"1234\" } }",
-          headers: json_headers
-        )
+            post(endpoint[:path], params: code_params(endpoint, 1), headers: json_headers(token: other_token, ip: '1.2.3.2'))
+            expect(status).not_to eq(429)
+          end
+        end
       end
-      expect(status).to eq(422)
-
-      post(
-        '/web_api/v1/user/confirm_code_email',
-        params: "{ \"confirmation\": { \"email\": \"#{user.email}\", \"code\": \"1234\" } }",
-        headers: json_headers
-      )
-      expect(status).to eq(429) # Too many requests
     end
 
-    travel_to(20.seconds.from_now) do
-      post(
-        '/web_api/v1/user/confirm_code_email',
-        params: "{ \"confirmation\": { \"email\": \"#{user.email}\", \"code\": \"1234\" } }",
-        headers: json_headers
-      )
-      expect(status).to eq(422)
+    it 'counts a token passed as a query param against the same user' do
+      # AuthToken reads params[:token] before the Authorization header, so a caller
+      # can't escape the per-user limit by moving the token from one to the other.
+      path = '/web_api/v1/user/request_code_email'
+      params = '{ "request_code": { "only_if_first_time": false } }'
+
+      freeze_at_window_start do
+        post("#{path}?token=#{token}", params: params, headers: json_headers(ip: '1.2.3.1'))
+        expect(status).to eq(200) # OK
+
+        post(path, params: params, headers: json_headers(token: token, ip: '1.2.3.2'))
+        expect(status).to eq(429) # Too many requests
+      end
     end
   end
 
@@ -744,27 +735,6 @@ describe 'Rack::Attack' do
       travel_to(20.seconds.from_now) do
         post('/web_api/v1/user_token_phone', params: params, headers: headers.merge('REMOTE_ADDR' => '1.2.3.12'))
         expect(status).to eq(404) # Not found
-      end
-    end
-
-    context 'when the sms_login feature is enabled' do
-      before { SettingsService.new.activate_feature!('sms_login') }
-
-      it 'limits unauthenticated phone confirmation requests from same IP to 5 in 20 seconds' do
-        params = '{ "confirmation": { "phone": "+14155552671", "code": "1234" } }'
-
-        freeze_time do
-          5.times { post('/web_api/v1/user/confirm_code_phone', params: params, headers: headers) }
-          expect(status).to eq(422) # Unprocessable entity
-
-          post('/web_api/v1/user/confirm_code_phone', params: params, headers: headers)
-          expect(status).to eq(429) # Too many requests
-        end
-
-        travel_to(20.seconds.from_now) do
-          post('/web_api/v1/user/confirm_code_phone', params: params, headers: headers)
-          expect(status).to eq(422) # Unprocessable entity
-        end
       end
     end
 

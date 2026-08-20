@@ -66,6 +66,24 @@ describe MachineTranslations::MachineTranslation do
           .to eq '<a href="https://evil.example" target="_blank" rel="noreferrer noopener nofollow">https://evil.example</a>'
       end
 
+      # A provider translates the words inside an address as readily as any others - `duurzaam` into
+      # `sustainable` - leaving the label pointing at a mailbox that does not exist. From production.
+      it 'puts back an address a provider translated inside the label' do
+        translated = 'Mail <a href="mailto:duurzaam@oosterhout.nl" target="_blank" rel="noreferrer noopener nofollow">sustainable@oosterhout.nl</a>'
+        expect(translation_of(translated))
+          .to eq 'Mail <a href="mailto:duurzaam@oosterhout.nl" target="_blank" rel="noreferrer noopener nofollow">duurzaam@oosterhout.nl</a>'
+      end
+
+      # `linkify` finds an email by its address alone and supplies the scheme itself, so a `mailto:`
+      # written into the text would sit in front of the rebuilt link - and, being read back off the
+      # href, gain another copy on every later save.
+      it 'shows an email address with no scheme in front of it, however often it is saved' do
+        record = create(:machine_translation, translatable: comment, attribute_name: 'body_multiloc',
+          locale_to: 'sr-SP', translation: '<a href="mailto:a@b.com">schrijf ons</a>')
+        expect(record.translation).to eq '<a href="mailto:a@b.com" target="_blank" rel="noreferrer noopener nofollow">a@b.com</a>'
+        expect { record.save! }.not_to change(record, :translation)
+      end
+
       # Only the schemes `linkify` builds are put back, so this href is never restored as text and the
       # anchor goes the way any other unsupported markup goes.
       it 'still drops a javascript: href' do
