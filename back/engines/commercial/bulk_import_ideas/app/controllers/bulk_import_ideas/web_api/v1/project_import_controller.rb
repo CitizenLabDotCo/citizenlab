@@ -2,6 +2,8 @@
 
 module BulkImportIdeas
   class WebApi::V1::ProjectImportController < ApplicationController
+    before_action :authorize_project_import
+
     def bulk_create_projects
       base64_zip = project_import_params[:file]
       locale = project_import_params[:locale]
@@ -35,7 +37,6 @@ module BulkImportIdeas
       end
 
       num_projects = projects.count
-      authorize Project.first # TODO: Fix this authorization
       render json: {
         data: {
           type: 'bulk_import_projects',
@@ -52,7 +53,6 @@ module BulkImportIdeas
       import_id = params[:import_id]
       project_import = BulkImportIdeas::ProjectImport.where(import_id: import_id)
 
-      authorize Project.first # TODO: Fix this authorization
       render json: WebApi::V1::ProjectImportSerializer.new(
         project_import,
         params: jsonapi_serializer_params
@@ -60,6 +60,14 @@ module BulkImportIdeas
     end
 
     private
+
+    # Authorize before the controller extracts any file (see #bulk_create_projects).
+    # A project import makes top-level draft projects. Thus it needs the same rights
+    # as project creation. This runs as a before_action, so it completes before the
+    # controller body reads and unzips the uploaded archive.
+    def authorize_project_import
+      authorize Project.new(admin_publication: AdminPublication.new(publication_status: 'draft')), :create?
+    end
 
     def project_import_params
       params
@@ -83,6 +91,7 @@ module BulkImportIdeas
       Zip::File.open(temp_zip_path) do |zip_file|
         zip_file.each do |entry|
           entry_path = File.join(destination, entry.name)
+          ensure_within_destination!(entry_path, destination)
           FileUtils.mkdir_p(File.dirname(entry_path))
           zip_file.extract(entry, entry_path) unless File.exist?(entry_path)
         end
@@ -90,6 +99,16 @@ module BulkImportIdeas
 
       # Clean up the temporary file
       File.delete(temp_zip_path)
+    end
+
+    # Prevent Zip Slip. Reject an entry when its resolved path goes outside the
+    # destination directory (for example, an entry name that contains "..").
+    def ensure_within_destination!(entry_path, destination)
+      allowed_root = File.expand_path(destination)
+      resolved = File.expand_path(entry_path)
+      return if resolved == allowed_root || resolved.start_with?("#{allowed_root}/")
+
+      raise BulkImportIdeas::Error.new('bulk_import_unsafe_zip_entry', value: entry_path)
     end
   end
 end
