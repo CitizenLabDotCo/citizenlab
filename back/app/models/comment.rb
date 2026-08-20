@@ -41,8 +41,9 @@ class Comment < ApplicationRecord
   include LocationTrackableParticipation
 
   # `SanitizationService` features allowed in the body, shared with anything that re-sanitizes a
-  # stored body (e.g. machine translations).
-  BODY_SANITIZE_FEATURES = %i[mention].freeze
+  # stored body (e.g. machine translations). `:link` is safe only because `sanitize_comment_body`
+  # relabels every anchor from its href first, so a kept link cannot lie about where it goes.
+  BODY_SANITIZE_FEATURES = %i[mention link].freeze
 
   acts_as_nested_set dependent: :destroy, counter_cache: :children_count
 
@@ -102,7 +103,7 @@ class Comment < ApplicationRecord
   end
 
   def sanitize_body_multiloc
-    self.body_multiloc = SanitizationService.new.sanitize_body_multiloc(body_multiloc, BODY_SANITIZE_FEATURES)
+    self.body_multiloc = SanitizationService.new.sanitize_comment_body_multiloc(body_multiloc)
   end
 
   def remove_notifications
