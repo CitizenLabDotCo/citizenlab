@@ -180,7 +180,6 @@ resource 'Permissions' do
     patch 'web_api/v1/phases/:phase_id/permissions/:action' do
       with_options scope: :permission do
         parameter :permitted_by, "Defines who is granted permission, either #{Permission::PERMITTED_BIES.join(',')}.", required: false
-        parameter :global_custom_fields, 'When set to true, the enabled registrations are associated to the permission', required: false
         parameter :custom_fields_behavior, "Which demographic questions are asked, either #{Permission::CUSTOM_FIELDS_BEHAVIORS.join(',')}. 'custom' requires the permissions_custom_fields feature.", required: false
         parameter :group_ids, "An array of group id's associated to this permission", required: false
         parameter :verification_expiry, 'number of days before reverification required - nil means never reverify', required: false
@@ -247,13 +246,6 @@ resource 'Permissions' do
           assert_status 200
           expect(permission.reload.custom_fields_behavior).to eq 'global'
           expect(permission.permissions_custom_fields.pluck(:custom_field_id)).to eq [platform_field.id]
-        end
-
-        example 'Clients that still send global_custom_fields get the behavior it stands for', document: false do
-          do_request(permission: { global_custom_fields: true })
-
-          assert_status 200
-          expect(response_data.dig(:attributes, :custom_fields_behavior)).to eq 'global'
         end
 
         example '[error] Questions cannot be customised without the permissions_custom_fields feature' do
@@ -456,7 +448,6 @@ resource 'Permissions' do
     patch 'web_api/v1/permissions/:action' do
       with_options scope: :permission do
         parameter :permitted_by, "Defines who is granted permission, either #{Permission::PERMITTED_BIES.join(',')}.", required: false
-        parameter :global_custom_fields, 'When set to true, the enabled registrations are associated to the permission', required: false
         parameter :custom_fields_behavior, "Which demographic questions are asked, either #{Permission::CUSTOM_FIELDS_BEHAVIORS.join(',')}. 'custom' requires the permissions_custom_fields feature.", required: false
         parameter :group_ids, "An array of group id's associated to this permission", required: false
         parameter :require_confirmed_email, 'Whether a confirmed email address is required', required: false

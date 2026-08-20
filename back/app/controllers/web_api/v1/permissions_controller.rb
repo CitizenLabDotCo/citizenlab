@@ -30,7 +30,6 @@ class WebApi::V1::PermissionsController < ApplicationController
 
     old_group_ids = @permission.group_ids
     @permission.assign_attributes(attributes)
-    resolve_legacy_global_custom_fields(attributes)
     authorize @permission
     if @permission.save
       sidefx.after_update(@permission, current_user, old_group_ids)
@@ -124,15 +123,6 @@ class WebApi::V1::PermissionsController < ApplicationController
     @sidefx ||= Permissions::SideFxPermissionService.new
   end
 
-  # Clients that still send `global_custom_fields`, which `custom_fields_behavior`
-  # replaces, get the behavior it stands for.
-  def resolve_legacy_global_custom_fields(attributes)
-    return unless attributes.key?(:global_custom_fields)
-    return if attributes.key?(:custom_fields_behavior)
-
-    @permission.custom_fields_behavior = Permissions::CustomFieldsBehaviorService.new.derive(@permission)
-  end
-
   def permissions_update_service
     @permissions_update_service ||= Permissions::PermissionsUpdateService.new
   end
@@ -170,7 +160,6 @@ class WebApi::V1::PermissionsController < ApplicationController
   def permission_params
     params.require(:permission).permit(
       :permitted_by,
-      :global_custom_fields,
       :custom_fields_behavior,
       :verification_expiry,
       :everyone_tracking_enabled,
