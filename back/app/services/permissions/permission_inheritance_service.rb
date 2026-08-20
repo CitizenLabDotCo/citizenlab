@@ -112,13 +112,10 @@ module Permissions
         permission.save!
         next unless source
 
-        # apply_creation_defaults forces the demographic question attributes to
-        # their 'global' values on create, so the source's have to be restored
-        # after the save.
-        permission.update!(
-          global_custom_fields: source.global_custom_fields,
-          custom_fields_behavior: source.custom_fields_behavior
-        )
+        # apply_creation_defaults stamps 'global' onto a copy whose source has no
+        # behavior stored yet, so the source's resolved one is restored after the
+        # save. Goes away once the backfill has run everywhere.
+        permission.update!(custom_fields_behavior: source.custom_fields_behavior)
         copy_permissions_custom_fields!(source, permission)
       end
 
@@ -191,9 +188,6 @@ module Permissions
       permission = Permission.new(action: action, permission_scope: scope)
       permission.apply_creation_defaults
       permission.assign_attributes(inheritable_attributes(source))
-      # Resolved rather than copied raw: the source's column is empty until the
-      # backfill task has run, and an unsaved copy cannot derive it for itself.
-      permission.custom_fields_behavior = source.custom_fields_behavior if source
       permission
     end
 
