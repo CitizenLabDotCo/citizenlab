@@ -2603,6 +2603,7 @@
   "app.errors.group_ids_unauthorized_choice_moderator": "Fel rheolwr prosiect, dim ond at bobl sy'n gallu cyrchu'ch prosiect(au) y gallwch e-bostio",
   "app.errors.has_inputs": "Ni allwch newid y dull cyfranogi oherwydd bod gan y cyfnod hwn fewnbynnau eisoes. Tynnwch yr holl fewnbynnau yn gyntaf.",
   "app.errors.has_other_overlapping_phases": "Ni all prosiectau gael cyfnodau sy'n gorgyffwrdd.",
+  "app.errors.insufficient_sms_balance": "Nid oes digon o gredydau SMS ar ôl i anfon y neges hon. I brynu mwy o gredydau, cysylltwch â'ch Rheolwr GovSuccess.",
   "app.errors.invalid_email": "Nid yw'r e-bost {value} a ddarganfuwyd yn rhes {row} yn gyfeiriad e-bost dilys",
   "app.errors.invalid_first_name": "Nid yw'r enw cyntaf {value} yn rhes {row} yn ddilys",
   "app.errors.invalid_last_name": "Nid yw'r cyfenw {value} yn rhes {row} yn ddilys",

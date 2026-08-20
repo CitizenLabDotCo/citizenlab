@@ -2603,6 +2603,7 @@
   "app.errors.group_ids_unauthorized_choice_moderator": "Projektipäällikkönä voit lähettää sähköpostia vain henkilöille, jotka voivat käyttää projektejasi",
   "app.errors.has_inputs": "Et voi muuttaa osallistumistapaa, koska tässä vaiheessa on jo syötteitä. Poista ensin kaikki syötteet.",
   "app.errors.has_other_overlapping_phases": "Projekteissa ei voi olla päällekkäisiä vaiheita.",
+  "app.errors.insufficient_sms_balance": "SMS-saldoa ei ole jäljellä tarpeeksi tämän viestin lähettämiseen. Ota yhteyttä GovSuccess Manageriisi ostaaksesi lisää saldoa.",
   "app.errors.invalid_email": "Riviltä {row} löytynyt sähköposti {value} ei ole kelvollinen sähköpostiosoite",
   "app.errors.invalid_first_name": "Etunimi {value} rivillä {row} ei ole kelvollinen",
   "app.errors.invalid_last_name": "Sukunimi {value} rivillä {row} ei ole kelvollinen",

@@ -2603,6 +2603,7 @@
   "app.errors.group_ids_unauthorized_choice_moderator": "Som projektledare kan du bara skicka e-post till personer som har tillgång till dina projekt",
   "app.errors.has_inputs": "Du kan inte ändra deltagandemetoden eftersom denna fas redan har ingångar. Ta bort alla ingångar först.",
   "app.errors.has_other_overlapping_phases": "Projekt får inte ha överlappande faser.",
+  "app.errors.insufficient_sms_balance": "Det finns inte tillräckligt med SMS-krediter kvar för att skicka detta meddelande. För att köpa fler krediter, kontakta din GovSuccess Manager.",
   "app.errors.invalid_email": "E-postadressen {value} som hittades på rad {row} är inte en giltig e-postadress",
   "app.errors.invalid_first_name": "Förnamnet {value} på rad {row} är inte giltigt",
   "app.errors.invalid_last_name": "Efternamnet {value} på rad {row} är inte giltigt",

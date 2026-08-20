@@ -2603,6 +2603,7 @@
   "app.errors.group_ids_unauthorized_choice_moderator": "پروجیکٹ مینیجر کے طور پر، آپ صرف ان لوگوں کو ای میل کر سکتے ہیں جو آپ کے پروجیکٹ تک رسائی حاصل کر سکتے ہیں",
   "app.errors.has_inputs": "آپ شرکت کا طریقہ تبدیل نہیں کر سکتے کیونکہ اس مرحلے میں پہلے سے ہی ان پٹ موجود ہیں۔ براہ کرم پہلے تمام ان پٹس کو ہٹا دیں۔",
   "app.errors.has_other_overlapping_phases": "منصوبوں میں اوورلیپنگ مراحل نہیں ہو سکتے۔",
+  "app.errors.insufficient_sms_balance": "اس پیغام کو بھیجنے کے لیے کافی SMS کریڈٹس باقی نہیں ہیں۔ مزید کریڈٹس خریدنے کے لیے، اپنے GovSuccess مینیجر سے رابطہ کریں۔",
   "app.errors.invalid_email": "قطار {row} میں پایا جانے والا ای میل {value} ایک درست ای میل پتہ نہیں ہے",
   "app.errors.invalid_first_name": "قطار {row} میں پہلا نام {value} درست نہیں ہے",
   "app.errors.invalid_last_name": "قطار {row} میں آخری نام {value} درست نہیں ہے",

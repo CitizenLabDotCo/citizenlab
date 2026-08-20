@@ -2603,6 +2603,7 @@
   "app.errors.group_ids_unauthorized_choice_moderator": "Mar bhainisteoir tionscadail, ní féidir leat ríomhphost a sheoladh ach chuig daoine a bhfuil rochtain acu ar do thionscadal(anna).",
   "app.errors.has_inputs": "Ní féidir leat an modh rannpháirtíochta a athrú mar go bhfuil ionchuir sa chéim seo cheana féin. Bain na hionchuir go léir ar dtús, le do thoil.",
   "app.errors.has_other_overlapping_phases": "Ní féidir céimeanna forluiteacha a bheith ag tionscadail.",
+  "app.errors.insufficient_sms_balance": "Níl go leor creidmheasanna SMS fágtha chun an teachtaireacht seo a sheoladh. Chun tuilleadh creidmheasanna a cheannach, déan teagmháil le do Bhainisteoir GovSuccess.",
   "app.errors.invalid_email": "Ní seoladh ríomhphoist bailí é an ríomhphost {value} atá le fáil i ró {row}",
   "app.errors.invalid_first_name": "Níl an céadainm {value} i ró {row} bailí",
   "app.errors.invalid_last_name": "Níl an sloinne {value} i ró {row} bailí",

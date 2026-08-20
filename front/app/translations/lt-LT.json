@@ -2603,6 +2603,7 @@
   "app.errors.group_ids_unauthorized_choice_moderator": "Kaip projekto vadovas galite siųsti el. laiškus tik tiems žmonėms, kurie turi prieigą prie jūsų projekto (-ų).",
   "app.errors.has_inputs": "Dalyvavimo metodo keisti negalima, nes šiame etape jau yra įvestys. Pirmiausia pašalinkite visus įvesties duomenis.",
   "app.errors.has_other_overlapping_phases": "Projektų etapai negali sutapti.",
+  "app.errors.insufficient_sms_balance": "Šiai žinutei išsiųsti nepakanka SMS kreditų. Norėdami įsigyti daugiau kreditų, susisiekite su savo „GovSuccess“ vadovu.",
   "app.errors.invalid_email": "Eilutėje {row} rastas el. pašto adresas {value} nėra galiojantis el. pašto adresas",
   "app.errors.invalid_first_name": "Vardas {value} eilutėje {row} yra neteisingas",
   "app.errors.invalid_last_name": "Pavardė {value} eilutėje {row} yra neteisinga",

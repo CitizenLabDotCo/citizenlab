@@ -2603,6 +2603,7 @@
   "app.errors.group_ids_unauthorized_choice_moderator": "Com a gestor de projectes, només podeu enviar correus electrònics a persones que puguin accedir als vostres projectes",
   "app.errors.has_inputs": "No podeu canviar el mètode de participació perquè aquesta fase ja té entrades. Primer, elimineu totes les entrades.",
   "app.errors.has_other_overlapping_phases": "Els projectes no poden tenir fases superposades.",
+  "app.errors.insufficient_sms_balance": "No queden prou crèdits d'SMS per enviar aquest missatge. Per comprar més crèdits, posa't en contacte amb el teu gestor de GovSuccess.",
   "app.errors.invalid_email": "El correu electrònic {value} que es troba a la fila {row} no és una adreça electrònica vàlida",
   "app.errors.invalid_first_name": "El nom {value} a la fila {row} no és vàlid",
   "app.errors.invalid_last_name": "El cognom {value} a la fila {row} no és vàlid",

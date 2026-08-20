@@ -2603,6 +2603,7 @@
   "app.errors.group_ids_unauthorized_choice_moderator": "Som projektleder kan du kun sende e-mails til deltagere, der kan få adgang til dine projekter",
   "app.errors.has_inputs": "Du kan ikke ændre deltagelsesmetoden, fordi denne fase allerede har input. Fjern venligst alle input først.",
   "app.errors.has_other_overlapping_phases": "Projekter kan ikke have overlappende faser.",
+  "app.errors.insufficient_sms_balance": "Der er ikke nok SMS-kreditter tilbage til at sende denne besked. Kontakt din GovSuccess-projektleder for at købe flere kreditter.",
   "app.errors.invalid_email": "The email {value} fundet i række {row} er ikke en gyldig e-mailadresse",
   "app.errors.invalid_first_name": "Fornavnet {value} i række {row} er ikke gyldigt",
   "app.errors.invalid_last_name": "Efternavnet {value} i række {row} er ikke gyldigt",
