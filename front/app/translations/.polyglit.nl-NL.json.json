@@ -3059,6 +3059,11 @@
     "verified_at": "2026-07-21T19:52:31.036719Z",
     "verified_by": "Luuc"
   },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysManagedNote2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:13:56.731835Z",
+    "verified_by": "Luuc"
+  },
   "app.components.ProjectPageBuilder.Widgets.extraSurveysNoSurveyNote": {
     "state": "verified",
     "verified_at": "2026-07-21T19:52:31.036719Z",
@@ -3112,6 +3117,11 @@
   "app.components.ProjectPageBuilder.Widgets.extraSurveysWidgetTitle": {
     "state": "verified",
     "verified_at": "2026-07-21T19:52:31.036719Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysWidgetTitle2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:13:56.731835Z",
     "verified_by": "Luuc"
   },
   "app.components.ProjectPageBuilder.Widgets.inputFeedEmptyTitle": {
