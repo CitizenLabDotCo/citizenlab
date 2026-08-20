@@ -1578,8 +1578,8 @@
           },
           "messages_purchased": {
             "type": "integer",
-            "title": "SMS messages purchased (cumulative, all time)",
-            "description": "The total number of SMS messages the tenant has EVER purchased. Cumulative: when a new bundle is sold, ADD it to this number, never replace it. The remaining balance shown to admins is this number minus every SMS handed to the provider since the platform started.",
+            "title": "SMS credits (segments) purchased (cumulative, all time)",
+            "description": "The total number of billable SMS credits (segments) the tenant has EVER purchased. Cumulative: when a new bundle is sold, ADD it to this number, never replace it. The remaining balance shown to admins is this number minus every SMS segment handed to the provider since the platform started. Long messages may consume multiple segments."
             "minimum": 0,
             "default": 0,
             "private": true
