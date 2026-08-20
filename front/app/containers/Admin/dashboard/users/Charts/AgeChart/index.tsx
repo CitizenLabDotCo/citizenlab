@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import moment from 'moment';
+import { format, parseISO } from 'date-fns';
 
 import { useDemographicsLive } from 'api/graph_data_units';
 import { usersByAgeXlsxEndpoint } from 'api/users_by_age/util';
@@ -34,8 +34,8 @@ const AgeChart = ({
 
   const { data: usersByAge } = useDemographicsLive({
     custom_field_id: customFieldId,
-    start_at: startAt ? moment(startAt).local().format('YYYY-MM-DD') : null,
-    end_at: endAt ? moment(endAt).local().format('YYYY-MM-DD') : null,
+    start_at: startAt ? format(parseISO(startAt), 'yyyy-MM-dd') : null,
+    end_at: endAt ? format(parseISO(endAt), 'yyyy-MM-dd') : null,
     group_id: currentGroupFilter,
   });
   const ageSerie = convertToGraphFormat(

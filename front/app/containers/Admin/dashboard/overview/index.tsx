@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useMemo } from 'react';
 
 import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
-import moment, { Moment } from 'moment';
 
 import useAuthUser from 'api/me/useAuthUser';
 
@@ -49,10 +48,10 @@ const OverviewDashboard = () => {
   );
 
   const [resolution, setResolution] = useState<IResolution>('month');
-  const [startAtMoment, setStartAtMoment] = useState<Moment | null | undefined>(
+  const [startAtMoment, setStartAtMoment] = useState<Date | null | undefined>(
     undefined
   );
-  const [endAtMoment, setEndAtMoment] = useState<Moment | null>(moment());
+  const [endAtMoment, setEndAtMoment] = useState<Date | null>(new Date());
   const [currentProjectFilter, setCurrentProjectFilter] = useState<
     string | undefined
   >(undefined);
@@ -69,7 +68,7 @@ const OverviewDashboard = () => {
   }, []);
 
   const handleChangeTimeRange = useCallback(
-    (startAtMoment: Moment | null, endAtMoment: Moment | null) => {
+    (startAtMoment: Date | null, endAtMoment: Date | null) => {
       const resolution = getSensibleResolution(startAtMoment, endAtMoment);
       setStartAtMoment(startAtMoment);
       setEndAtMoment(endAtMoment);

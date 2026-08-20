@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 
-import moment from 'moment';
+import { parseISO } from 'date-fns';
 
 import { useRegistrations as useRegistrationsData } from 'api/graph_data_units';
 import { RegistrationsProps } from 'api/graph_data_units/requestTypes';
@@ -33,8 +33,8 @@ export default function useRegistrations({
     return analytics?.data
       ? parseTimeSeries(
           analytics.data.attributes.registrations_timeseries,
-          start_at ? moment(start_at) : null,
-          end_at ? moment(end_at) : null,
+          start_at ? parseISO(start_at) : null,
+          end_at ? parseISO(end_at) : null,
           currentResolution
         )
       : null;

@@ -6,8 +6,7 @@ import {
   colors,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
-import { getMonth } from 'date-fns';
-import moment, { Moment } from 'moment';
+import { getMonth, isBefore, isSameDay, subDays, subYears } from 'date-fns';
 import styled from 'styled-components';
 
 import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
@@ -57,11 +56,11 @@ const DropdownListItem = styled.button`
 
 interface Props {
   showAllTime?: boolean;
-  startAtMoment?: Moment | null;
-  endAtMoment: Moment | null;
-  minDate?: Moment;
+  startAtMoment?: Date | null;
+  endAtMoment: Date | null;
+  minDate?: Date;
   tooltip?: string;
-  onChange: (startAtMoment: Moment | null, endAtMoment: Moment | null) => void;
+  onChange: (startAtMoment: Date | null, endAtMoment: Date | null) => void;
 }
 
 const TimeControl = ({
@@ -80,7 +79,7 @@ const TimeControl = ({
           {
             id: 'allTime',
             label: <FormattedMessage {...messages.allTime} />,
-            endAt: () => moment(),
+            endAt: () => new Date(),
             startAt: () => undefined,
           },
         ]
@@ -88,26 +87,26 @@ const TimeControl = ({
     {
       id: 'previousWeek',
       label: <FormattedMessage {...messages.previousWeek} />,
-      endAt: () => moment(),
-      startAt: () => moment().subtract(7, 'd'),
+      endAt: () => new Date(),
+      startAt: () => subDays(new Date(), 7),
     },
     {
       id: 'previous30Days',
       label: <FormattedMessage {...messages.previous30Days} />,
-      endAt: () => moment(),
-      startAt: () => moment().subtract(30, 'd'),
+      endAt: () => new Date(),
+      startAt: () => subDays(new Date(), 30),
     },
     {
       id: 'previous90Days',
       label: <FormattedMessage {...messages.previous90Days} />,
-      endAt: () => moment(),
-      startAt: () => moment().subtract(90, 'd'),
+      endAt: () => new Date(),
+      startAt: () => subDays(new Date(), 90),
     },
     {
       id: 'previousYear',
       label: <FormattedMessage {...messages.previousYear} />,
-      endAt: () => moment(),
-      startAt: () => moment().subtract(1, 'y'),
+      endAt: () => new Date(),
+      startAt: () => subYears(new Date(), 1),
     },
   ];
 
@@ -119,13 +118,14 @@ const TimeControl = ({
     startDate,
     endDate,
   }: {
-    startDate: Moment | null;
-    endDate: Moment | null;
+    startDate: Date | null;
+    endDate: Date | null;
   }) => {
-    const isBefore = minDate && startDate && startDate.isBefore(minDate);
+    const startsBeforeMin =
+      minDate && startDate && isBefore(startDate, minDate);
 
     // Don't set the start date if there is a minDate and the new date is before the min date or null
-    if (minDate && (isBefore || !startDate)) {
+    if (minDate && (startsBeforeMin || !startDate)) {
       return;
     }
 
@@ -138,14 +138,13 @@ const TimeControl = ({
       const startAt = preset.startAt();
       if (startAt === undefined) {
         return (
-          startAtMoment === undefined &&
-          preset.endAt().isSame(endAtMoment, 'day')
+          startAtMoment === undefined && isSameDay(preset.endAt(), endAtMoment)
         );
       } else {
         return (
           !!startAtMoment &&
-          startAt.isSame(startAtMoment, 'day') &&
-          preset.endAt().isSame(endAtMoment, 'day')
+          isSameDay(startAt, startAtMoment) &&
+          isSameDay(preset.endAt(), endAtMoment)
         );
       }
     });
@@ -201,22 +200,22 @@ const TimeControl = ({
       </DropdownContainer>
       <DateRangePicker
         selectedRange={{
-          from: startAtMoment ? startAtMoment.toDate() : undefined,
-          to: endAtMoment ? endAtMoment.toDate() : undefined,
+          from: startAtMoment ?? undefined,
+          to: endAtMoment ?? undefined,
         }}
-        startMonth={minDate?.toDate()}
+        startMonth={minDate ?? undefined}
         disabled={
           minDate
             ? {
-                from: new Date(getMonth(minDate.toDate())),
-                to: minDate.toDate(),
+                from: new Date(getMonth(minDate)),
+                to: minDate,
               }
             : undefined
         }
         onUpdateRange={({ from, to }) => {
           handleDatesChange({
-            startDate: from ? moment(from) : null,
-            endDate: to ? moment(to) : null,
+            startDate: from ?? null,
+            endDate: to ?? null,
           });
         }}
       />

@@ -1,0 +1,907 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`moment vs façade deltas in January (de-AT override) 1`] = `
+{
+  "ar-MA": {
+    "shortDate": {
+      "facade": "05‏/01‏/2026",
+      "moment": "05/01/2026",
+    },
+    "tzAbbrev": {
+      "facade": "غرينتش+1",
+      "moment": "CET",
+    },
+    "weekday": {
+      "facade": "الاثنين",
+      "moment": "الإثنين",
+    },
+  },
+  "ar-SA": {
+    "dateTime": {
+      "facade": "٥ يناير ٢٠٢٦ ٣:٣٠ م",
+      "moment": "٥ يناير ٢٠٢٦ ١٥:٣٠",
+    },
+    "isoDate": {
+      "facade": "2026-01-05",
+      "moment": "٢٠٢٦-٠١-٠٥",
+    },
+    "shortDate": {
+      "facade": "٠٥‏/٠١‏/٢٠٢٦",
+      "moment": "٠٥/٠١/٢٠٢٦",
+    },
+    "time": {
+      "facade": "٣:٣٠ م",
+      "moment": "١٥:٣٠",
+    },
+    "tzAbbrev": {
+      "facade": "غرينتش+١",
+      "moment": "CET",
+    },
+    "utcOffset": {
+      "facade": "+01:00",
+      "moment": "+٠١:٠٠",
+    },
+    "weekday": {
+      "facade": "الاثنين",
+      "moment": "الإثنين",
+    },
+  },
+  "ca-ES": {
+    "dateTime": {
+      "facade": "5 de gener del 2026 15:30",
+      "moment": "5 de gener de 2026 a les 15:30",
+    },
+    "longDate": {
+      "facade": "5 de gener del 2026",
+      "moment": "5 de gener de 2026",
+    },
+  },
+  "da-DK": {
+    "dateTime": {
+      "facade": "5. januar 2026 15.30",
+      "moment": "5. januar 2026 15:30",
+    },
+    "monthShort": {
+      "facade": "jan.",
+      "moment": "jan",
+    },
+    "time": {
+      "facade": "15.30",
+      "moment": "15:30",
+    },
+  },
+  "de-AT": {
+    "dateTime": {
+      "facade": "5. Jänner 2026 15:30",
+      "moment": "5. Januar 2026 15:30",
+    },
+    "longDate": {
+      "facade": "5. Jänner 2026",
+      "moment": "5. Januar 2026",
+    },
+    "month": {
+      "facade": "Jänner",
+      "moment": "Januar",
+    },
+    "monthShort": {
+      "facade": "Jän",
+      "moment": "Jan.",
+    },
+    "tzAbbrev": {
+      "facade": "MEZ",
+      "moment": "CET",
+    },
+  },
+  "de-DE": {
+    "monthShort": {
+      "facade": "Jan",
+      "moment": "Jan.",
+    },
+    "tzAbbrev": {
+      "facade": "MEZ",
+      "moment": "CET",
+    },
+  },
+  "el-GR": {
+    "dateTime": {
+      "facade": "5 Ιανουαρίου 2026 3:30 μ.μ.",
+      "moment": "5 Ιανουαρίου 2026 3:30 ΜΜ",
+    },
+    "month": {
+      "facade": "Ιανουαρίου",
+      "moment": "Ιανουάριος",
+    },
+    "time": {
+      "facade": "3:30 μ.μ.",
+      "moment": "3:30 ΜΜ",
+    },
+  },
+  "en-CA": {
+    "dateTime": {
+      "facade": "January 5, 2026 3:30 p.m.",
+      "moment": "January 5, 2026 3:30 PM",
+    },
+    "time": {
+      "facade": "3:30 p.m.",
+      "moment": "3:30 PM",
+    },
+    "tzAbbrev": {
+      "facade": "GMT+1",
+      "moment": "CET",
+    },
+  },
+  "en-IE": {
+    "tzAbbrev": {
+      "facade": "GMT+1",
+      "moment": "CET",
+    },
+  },
+  "es-CL": {
+    "dateTime": {
+      "facade": "5 de enero de 2026 3:30 p. m.",
+      "moment": "5 de enero de 2026 15:30",
+    },
+    "shortDate": {
+      "facade": "05-01-2026",
+      "moment": "05/01/2026",
+    },
+    "time": {
+      "facade": "3:30 p. m.",
+      "moment": "15:30",
+    },
+    "tzAbbrev": {
+      "facade": "GMT+1",
+      "moment": "CET",
+    },
+  },
+  "es-ES": {
+    "monthShort": {
+      "facade": "ene",
+      "moment": "ene.",
+    },
+  },
+  "fi-FI": {
+    "dateTime": {
+      "facade": "5. tammikuuta 2026 15.30",
+      "moment": "5. tammikuuta 2026, klo 15.30",
+    },
+    "tzAbbrev": {
+      "facade": "UTC+1",
+      "moment": "CET",
+    },
+  },
+  "fr-BE": {
+    "tzAbbrev": {
+      "facade": "UTC+1",
+      "moment": "CET",
+    },
+  },
+  "fr-FR": {
+    "tzAbbrev": {
+      "facade": "UTC+1",
+      "moment": "CET",
+    },
+  },
+  "hr-HR": {
+    "dateTime": {
+      "facade": "5. siječnja 2026. 15:30",
+      "moment": "5. siječnja 2026 15:30",
+    },
+    "longDate": {
+      "facade": "5. siječnja 2026.",
+      "moment": "5. siječnja 2026",
+    },
+    "monthShort": {
+      "facade": "sij",
+      "moment": "sij.",
+    },
+    "shortDate": {
+      "facade": "05. 01. 2026.",
+      "moment": "05.01.2026",
+    },
+  },
+  "hu-HU": {
+    "shortDate": {
+      "facade": "2026. 01. 05.",
+      "moment": "2026.01.05.",
+    },
+  },
+  "kl-GL": {
+    "dateTime": {
+      "facade": "2026 januaarip 5 15.30",
+      "moment": "5. januar 2026 15:30",
+    },
+    "longDate": {
+      "facade": "2026 januaarip 5",
+      "moment": "5. januar 2026",
+    },
+    "month": {
+      "facade": "januaari",
+      "moment": "januar",
+    },
+    "shortDate": {
+      "facade": "2026-01-05",
+      "moment": "05.01.2026",
+    },
+    "time": {
+      "facade": "15.30",
+      "moment": "15:30",
+    },
+    "tzAbbrev": {
+      "facade": "GMT+1",
+      "moment": "CET",
+    },
+    "weekday": {
+      "facade": "ataasinngorneq",
+      "moment": "mandag",
+    },
+  },
+  "lb-LU": {
+    "dateTime": {
+      "facade": "5. Januar 2026 15:30",
+      "moment": "5. Januar 2026 15:30 Auer",
+    },
+    "monthShort": {
+      "facade": "Jan",
+      "moment": "Jan.",
+    },
+    "time": {
+      "facade": "15:30",
+      "moment": "15:30 Auer",
+    },
+    "tzAbbrev": {
+      "facade": "GMT+1",
+      "moment": "CET",
+    },
+  },
+  "lt-LT": {
+    "dateTime": {
+      "facade": "2026 m. sausio 5 d. 15:30",
+      "moment": "2026 m. sausio 5 d., 15:30 val.",
+    },
+    "monthShort": {
+      "facade": "01",
+      "moment": "sau",
+    },
+    "tzAbbrev": {
+      "facade": "GMT+1",
+      "moment": "CET",
+    },
+  },
+  "lv-LV": {
+    "dateTime": {
+      "facade": "2026. gada 5. janvāris 15:30",
+      "moment": "2026. gada 5. janvāris, 15:30",
+    },
+    "monthShort": {
+      "facade": "janv.",
+      "moment": "jan",
+    },
+    "shortDate": {
+      "facade": "05.01.2026",
+      "moment": "05.01.2026.",
+    },
+    "weekday": {
+      "facade": "Pirmdiena",
+      "moment": "pirmdiena",
+    },
+  },
+  "mi": {
+    "dateTime": {
+      "facade": "5 Hānuere 2026 3:30 PM",
+      "moment": "5 Kohi-tāte 2026 i 15:30",
+    },
+    "longDate": {
+      "facade": "5 Hānuere 2026",
+      "moment": "5 Kohi-tāte 2026",
+    },
+    "month": {
+      "facade": "Hānuere",
+      "moment": "Kohi-tāte",
+    },
+    "monthShort": {
+      "facade": "Hān",
+      "moment": "Kohi",
+    },
+    "shortDate": {
+      "facade": "05-01-2026",
+      "moment": "05/01/2026",
+    },
+    "time": {
+      "facade": "3:30 PM",
+      "moment": "15:30",
+    },
+    "tzAbbrev": {
+      "facade": "GMT+1",
+      "moment": "CET",
+    },
+  },
+  "nb-NO": {
+    "dateTime": {
+      "facade": "5. januar 2026 15:30",
+      "moment": "5. januar 2026 kl. 15:30",
+    },
+    "monthShort": {
+      "facade": "jan",
+      "moment": "jan.",
+    },
+  },
+  "nl-BE": {
+    "monthShort": {
+      "facade": "jan",
+      "moment": "jan.",
+    },
+  },
+  "nl-NL": {
+    "monthShort": {
+      "facade": "jan",
+      "moment": "jan.",
+    },
+  },
+  "pa-IN": {
+    "dateTime": {
+      "facade": "5 ਜਨਵਰੀ 2026 3:30 PM",
+      "moment": "੫ ਜਨਵਰੀ ੨੦੨੬, ਦੁਪਹਿਰ ੩:੩੦ ਵਜੇ",
+    },
+    "isoDate": {
+      "facade": "2026-01-05",
+      "moment": "੨੦੨੬-੦੧-੦੫",
+    },
+    "longDate": {
+      "facade": "5 ਜਨਵਰੀ 2026",
+      "moment": "੫ ਜਨਵਰੀ ੨੦੨੬",
+    },
+    "monthShort": {
+      "facade": "ਜਨ",
+      "moment": "ਜਨਵਰੀ",
+    },
+    "shortDate": {
+      "facade": "05/01/2026",
+      "moment": "੦੫/੦੧/੨੦੨੬",
+    },
+    "time": {
+      "facade": "3:30 PM",
+      "moment": "ਦੁਪਹਿਰ ੩:੩੦ ਵਜੇ",
+    },
+    "tzAbbrev": {
+      "facade": "GMT+1",
+      "moment": "CET",
+    },
+    "utcOffset": {
+      "facade": "+01:00",
+      "moment": "+੦੧:੦੦",
+    },
+  },
+  "pt-BR": {
+    "dateTime": {
+      "facade": "5 de janeiro de 2026 15:30",
+      "moment": "5 de janeiro de 2026 às 15:30",
+    },
+    "monthShort": {
+      "facade": "jan.",
+      "moment": "jan",
+    },
+    "tzAbbrev": {
+      "facade": "GMT+1",
+      "moment": "CET",
+    },
+  },
+  "sr-Latn": {
+    "monthShort": {
+      "facade": "jan",
+      "moment": "jan.",
+    },
+    "shortDate": {
+      "facade": "05.01.2026.",
+      "moment": "5. 1. 2026.",
+    },
+  },
+  "sr-SP": {
+    "dateTime": {
+      "facade": "5. јануар 2026. 15:30",
+      "moment": "5. januar 2026. 15:30",
+    },
+    "longDate": {
+      "facade": "5. јануар 2026.",
+      "moment": "5. januar 2026.",
+    },
+    "month": {
+      "facade": "јануар",
+      "moment": "januar",
+    },
+    "monthShort": {
+      "facade": "јан",
+      "moment": "jan.",
+    },
+    "shortDate": {
+      "facade": "05.01.2026.",
+      "moment": "5. 1. 2026.",
+    },
+    "weekday": {
+      "facade": "понедељак",
+      "moment": "ponedeljak",
+    },
+  },
+  "sv-SE": {
+    "dateTime": {
+      "facade": "5 januari 2026 15:30",
+      "moment": "5 januari 2026 kl. 15:30",
+    },
+    "monthShort": {
+      "facade": "jan.",
+      "moment": "jan",
+    },
+  },
+  "tr-TR": {
+    "tzAbbrev": {
+      "facade": "GMT+1",
+      "moment": "CET",
+    },
+  },
+  "ur-PK": {
+    "dateTime": {
+      "facade": "5 جنوری، 2026 3:30 PM",
+      "moment": "5 جنوری 2026 15:30",
+    },
+    "longDate": {
+      "facade": "5 جنوری، 2026",
+      "moment": "5 جنوری 2026",
+    },
+    "time": {
+      "facade": "3:30 PM",
+      "moment": "15:30",
+    },
+    "tzAbbrev": {
+      "facade": "GMT +1",
+      "moment": "CET",
+    },
+  },
+}
+`;
+
+exports[`moment vs façade deltas on an ordinary date 1`] = `
+{
+  "ar-MA": {
+    "shortDate": {
+      "facade": "22‏/03‏/2026",
+      "moment": "22/03/2026",
+    },
+    "tzAbbrev": {
+      "facade": "غرينتش+1",
+      "moment": "CET",
+    },
+  },
+  "ar-SA": {
+    "dateTime": {
+      "facade": "٢٢ مارس ٢٠٢٦ ٣:٣٠ م",
+      "moment": "٢٢ مارس ٢٠٢٦ ١٥:٣٠",
+    },
+    "isoDate": {
+      "facade": "2026-03-22",
+      "moment": "٢٠٢٦-٠٣-٢٢",
+    },
+    "shortDate": {
+      "facade": "٢٢‏/٠٣‏/٢٠٢٦",
+      "moment": "٢٢/٠٣/٢٠٢٦",
+    },
+    "time": {
+      "facade": "٣:٣٠ م",
+      "moment": "١٥:٣٠",
+    },
+    "tzAbbrev": {
+      "facade": "غرينتش+١",
+      "moment": "CET",
+    },
+    "utcOffset": {
+      "facade": "+01:00",
+      "moment": "+٠١:٠٠",
+    },
+  },
+  "ca-ES": {
+    "dateTime": {
+      "facade": "22 de març del 2026 15:30",
+      "moment": "22 de març de 2026 a les 15:30",
+    },
+    "longDate": {
+      "facade": "22 de març del 2026",
+      "moment": "22 de març de 2026",
+    },
+  },
+  "da-DK": {
+    "dateTime": {
+      "facade": "22. marts 2026 15.30",
+      "moment": "22. marts 2026 15:30",
+    },
+    "monthShort": {
+      "facade": "mar.",
+      "moment": "mar",
+    },
+    "time": {
+      "facade": "15.30",
+      "moment": "15:30",
+    },
+  },
+  "de-AT": {
+    "monthShort": {
+      "facade": "Mär",
+      "moment": "März",
+    },
+    "tzAbbrev": {
+      "facade": "MEZ",
+      "moment": "CET",
+    },
+  },
+  "de-DE": {
+    "monthShort": {
+      "facade": "Mär",
+      "moment": "März",
+    },
+    "tzAbbrev": {
+      "facade": "MEZ",
+      "moment": "CET",
+    },
+  },
+  "el-GR": {
+    "dateTime": {
+      "facade": "22 Μαρτίου 2026 3:30 μ.μ.",
+      "moment": "22 Μαρτίου 2026 3:30 ΜΜ",
+    },
+    "month": {
+      "facade": "Μαρτίου",
+      "moment": "Μάρτιος",
+    },
+    "time": {
+      "facade": "3:30 μ.μ.",
+      "moment": "3:30 ΜΜ",
+    },
+  },
+  "en-CA": {
+    "dateTime": {
+      "facade": "March 22, 2026 3:30 p.m.",
+      "moment": "March 22, 2026 3:30 PM",
+    },
+    "time": {
+      "facade": "3:30 p.m.",
+      "moment": "3:30 PM",
+    },
+    "tzAbbrev": {
+      "facade": "GMT+1",
+      "moment": "CET",
+    },
+  },
+  "en-IE": {
+    "tzAbbrev": {
+      "facade": "GMT+1",
+      "moment": "CET",
+    },
+  },
+  "es-CL": {
+    "dateTime": {
+      "facade": "22 de marzo de 2026 3:30 p. m.",
+      "moment": "22 de marzo de 2026 15:30",
+    },
+    "shortDate": {
+      "facade": "22-03-2026",
+      "moment": "22/03/2026",
+    },
+    "time": {
+      "facade": "3:30 p. m.",
+      "moment": "15:30",
+    },
+    "tzAbbrev": {
+      "facade": "GMT+1",
+      "moment": "CET",
+    },
+  },
+  "es-ES": {
+    "monthShort": {
+      "facade": "mar",
+      "moment": "mar.",
+    },
+  },
+  "fi-FI": {
+    "dateTime": {
+      "facade": "22. maaliskuuta 2026 15.30",
+      "moment": "22. maaliskuuta 2026, klo 15.30",
+    },
+    "tzAbbrev": {
+      "facade": "UTC+1",
+      "moment": "CET",
+    },
+  },
+  "fr-BE": {
+    "tzAbbrev": {
+      "facade": "UTC+1",
+      "moment": "CET",
+    },
+  },
+  "fr-FR": {
+    "tzAbbrev": {
+      "facade": "UTC+1",
+      "moment": "CET",
+    },
+  },
+  "ga-IE": {
+    "monthShort": {
+      "facade": "Márta",
+      "moment": "Márt",
+    },
+  },
+  "hr-HR": {
+    "dateTime": {
+      "facade": "22. ožujka 2026. 15:30",
+      "moment": "22. ožujka 2026 15:30",
+    },
+    "longDate": {
+      "facade": "22. ožujka 2026.",
+      "moment": "22. ožujka 2026",
+    },
+    "monthShort": {
+      "facade": "ožu",
+      "moment": "ožu.",
+    },
+    "shortDate": {
+      "facade": "22. 03. 2026.",
+      "moment": "22.03.2026",
+    },
+  },
+  "hu-HU": {
+    "shortDate": {
+      "facade": "2026. 03. 22.",
+      "moment": "2026.03.22.",
+    },
+  },
+  "kl-GL": {
+    "dateTime": {
+      "facade": "2026 marsip 22 15.30",
+      "moment": "22. marts 2026 15:30",
+    },
+    "longDate": {
+      "facade": "2026 marsip 22",
+      "moment": "22. marts 2026",
+    },
+    "month": {
+      "facade": "marsi",
+      "moment": "marts",
+    },
+    "shortDate": {
+      "facade": "2026-03-22",
+      "moment": "22.03.2026",
+    },
+    "time": {
+      "facade": "15.30",
+      "moment": "15:30",
+    },
+    "tzAbbrev": {
+      "facade": "GMT+1",
+      "moment": "CET",
+    },
+    "weekday": {
+      "facade": "sapaat",
+      "moment": "søndag",
+    },
+  },
+  "lb-LU": {
+    "dateTime": {
+      "facade": "22. Mäerz 2026 15:30",
+      "moment": "22. Mäerz 2026 15:30 Auer",
+    },
+    "monthShort": {
+      "facade": "Mäe",
+      "moment": "Mrz.",
+    },
+    "time": {
+      "facade": "15:30",
+      "moment": "15:30 Auer",
+    },
+    "tzAbbrev": {
+      "facade": "GMT+1",
+      "moment": "CET",
+    },
+  },
+  "lt-LT": {
+    "dateTime": {
+      "facade": "2026 m. kovo 22 d. 15:30",
+      "moment": "2026 m. kovo 22 d., 15:30 val.",
+    },
+    "monthShort": {
+      "facade": "03",
+      "moment": "kov",
+    },
+    "tzAbbrev": {
+      "facade": "GMT+1",
+      "moment": "CET",
+    },
+  },
+  "lv-LV": {
+    "dateTime": {
+      "facade": "2026. gada 22. marts 15:30",
+      "moment": "2026. gada 22. marts, 15:30",
+    },
+    "monthShort": {
+      "facade": "marts",
+      "moment": "mar",
+    },
+    "shortDate": {
+      "facade": "22.03.2026",
+      "moment": "22.03.2026.",
+    },
+    "weekday": {
+      "facade": "Svētdiena",
+      "moment": "svētdiena",
+    },
+  },
+  "mi": {
+    "dateTime": {
+      "facade": "22 Māehe 2026 3:30 PM",
+      "moment": "22 Poutū-te-rangi 2026 i 15:30",
+    },
+    "longDate": {
+      "facade": "22 Māehe 2026",
+      "moment": "22 Poutū-te-rangi 2026",
+    },
+    "month": {
+      "facade": "Māehe",
+      "moment": "Poutū-te-rangi",
+    },
+    "monthShort": {
+      "facade": "Māe",
+      "moment": "Pou",
+    },
+    "shortDate": {
+      "facade": "22-03-2026",
+      "moment": "22/03/2026",
+    },
+    "time": {
+      "facade": "3:30 PM",
+      "moment": "15:30",
+    },
+    "tzAbbrev": {
+      "facade": "GMT+1",
+      "moment": "CET",
+    },
+  },
+  "nb-NO": {
+    "dateTime": {
+      "facade": "22. mars 2026 15:30",
+      "moment": "22. mars 2026 kl. 15:30",
+    },
+    "monthShort": {
+      "facade": "mar",
+      "moment": "mars",
+    },
+  },
+  "nl-BE": {
+    "monthShort": {
+      "facade": "mrt",
+      "moment": "mrt.",
+    },
+  },
+  "nl-NL": {
+    "monthShort": {
+      "facade": "mrt",
+      "moment": "mrt.",
+    },
+  },
+  "pa-IN": {
+    "dateTime": {
+      "facade": "22 ਮਾਰਚ 2026 3:30 PM",
+      "moment": "੨੨ ਮਾਰਚ ੨੦੨੬, ਦੁਪਹਿਰ ੩:੩੦ ਵਜੇ",
+    },
+    "isoDate": {
+      "facade": "2026-03-22",
+      "moment": "੨੦੨੬-੦੩-੨੨",
+    },
+    "longDate": {
+      "facade": "22 ਮਾਰਚ 2026",
+      "moment": "੨੨ ਮਾਰਚ ੨੦੨੬",
+    },
+    "shortDate": {
+      "facade": "22/03/2026",
+      "moment": "੨੨/੦੩/੨੦੨੬",
+    },
+    "time": {
+      "facade": "3:30 PM",
+      "moment": "ਦੁਪਹਿਰ ੩:੩੦ ਵਜੇ",
+    },
+    "tzAbbrev": {
+      "facade": "GMT+1",
+      "moment": "CET",
+    },
+    "utcOffset": {
+      "facade": "+01:00",
+      "moment": "+੦੧:੦੦",
+    },
+  },
+  "pt-BR": {
+    "dateTime": {
+      "facade": "22 de março de 2026 15:30",
+      "moment": "22 de março de 2026 às 15:30",
+    },
+    "monthShort": {
+      "facade": "mar.",
+      "moment": "mar",
+    },
+    "tzAbbrev": {
+      "facade": "GMT+1",
+      "moment": "CET",
+    },
+  },
+  "ro-RO": {
+    "monthShort": {
+      "facade": "mar.",
+      "moment": "mart.",
+    },
+  },
+  "sr-Latn": {
+    "monthShort": {
+      "facade": "mar",
+      "moment": "mar.",
+    },
+    "shortDate": {
+      "facade": "22.03.2026.",
+      "moment": "22. 3. 2026.",
+    },
+  },
+  "sr-SP": {
+    "dateTime": {
+      "facade": "22. март 2026. 15:30",
+      "moment": "22. mart 2026. 15:30",
+    },
+    "longDate": {
+      "facade": "22. март 2026.",
+      "moment": "22. mart 2026.",
+    },
+    "month": {
+      "facade": "март",
+      "moment": "mart",
+    },
+    "monthShort": {
+      "facade": "мар",
+      "moment": "mar.",
+    },
+    "shortDate": {
+      "facade": "22.03.2026.",
+      "moment": "22. 3. 2026.",
+    },
+    "weekday": {
+      "facade": "недеља",
+      "moment": "nedelja",
+    },
+  },
+  "sv-SE": {
+    "dateTime": {
+      "facade": "22 mars 2026 15:30",
+      "moment": "22 mars 2026 kl. 15:30",
+    },
+    "monthShort": {
+      "facade": "mars",
+      "moment": "mar",
+    },
+  },
+  "tr-TR": {
+    "tzAbbrev": {
+      "facade": "GMT+1",
+      "moment": "CET",
+    },
+  },
+  "ur-PK": {
+    "dateTime": {
+      "facade": "22 مارچ، 2026 3:30 PM",
+      "moment": "22 مارچ 2026 15:30",
+    },
+    "longDate": {
+      "facade": "22 مارچ، 2026",
+      "moment": "22 مارچ 2026",
+    },
+    "time": {
+      "facade": "3:30 PM",
+      "moment": "15:30",
+    },
+    "tzAbbrev": {
+      "facade": "GMT +1",
+      "moment": "CET",
+    },
+  },
+}
+`;

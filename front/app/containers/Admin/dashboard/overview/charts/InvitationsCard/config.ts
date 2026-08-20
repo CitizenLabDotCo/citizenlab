@@ -1,5 +1,3 @@
-import moment, { Moment } from 'moment';
-
 import { Query, QuerySchema } from 'api/analytics/types';
 
 import { formatCountValue } from 'components/admin/GraphCards/_utils/parse';
@@ -89,12 +87,12 @@ export const invitationsConfig: StatCardConfig = {
     endAtMoment,
     resolution,
   }: StatCardProps): Query => {
-    const todayMoment = moment();
+    const todayMoment = new Date();
     const lastPeriodMoment = getTimePeriodMoment(resolution);
 
     const queryBase = (
-      startMoment: Moment | null | undefined,
-      endMoment: Moment | null,
+      startMoment: Date | null | undefined,
+      endMoment: Date | null,
       inviteStatus: 'pending' | 'accepted' | null = null
     ): QuerySchema => {
       const dateDimension =

@@ -1,10 +1,8 @@
-import { Moment } from 'moment';
-
 import { IResolution } from 'components/admin/ResolutionControl';
 
 export interface Props {
-  startAtMoment?: Moment | null | undefined;
-  endAtMoment?: Moment | null;
+  startAtMoment?: Date | null | undefined;
+  endAtMoment?: Date | null;
   resolution?: IResolution;
 }
 

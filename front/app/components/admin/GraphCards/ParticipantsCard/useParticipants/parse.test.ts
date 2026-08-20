@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { parseISO } from 'date-fns';
 
 import { ParticipantsResponse } from 'api/graph_data_units/responseTypes/ParticipantsWidget';
 
@@ -23,8 +23,8 @@ describe('parseTimeSeries', () => {
 
     const output = parseTimeSeries(
       timeSeries,
-      moment('2022-09-01'),
-      moment('2022-12-01'),
+      parseISO('2022-09-01'),
+      parseISO('2022-12-01'),
       'month'
     );
 

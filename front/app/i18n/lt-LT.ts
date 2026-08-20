@@ -1,4 +1,4 @@
-import ltLT from 'date-fns/locale/lt';
+import { lt as ltLT } from 'date-fns/locale/lt';
 
 import { addLocale } from 'components/admin/DatePickers/_shared/locales';
 
