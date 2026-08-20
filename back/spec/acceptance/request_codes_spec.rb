@@ -264,6 +264,58 @@ resource 'Request codes' do
         .with(an_instance_of(EmailCampaigns::Campaigns::PhoneConfirmation), user, hash_including(:code)).once
     end
 
+    example 'It records the consent to receive a confirmation code by SMS and logs the activity' do
+      user = create(:user, :with_confirmed_phone)
+      header_token_for(user)
+
+      expect { do_request(request_code: {}) }
+        .to have_enqueued_job(LogActivityJob)
+        .with(
+          an_instance_of(EmailCampaigns::Consent),
+          'consent_given',
+          user,
+          kind_of(Integer),
+          payload: { campaign_type: EmailCampaigns::Campaigns::PhoneConfirmation.name }
+        )
+      expect(response_status).to eq 200
+
+      consent = EmailCampaigns::Consent.find_by(
+        user_id: user.id,
+        campaign_type: EmailCampaigns::Campaigns::PhoneConfirmation.name
+      )
+      expect(consent.consented).to be true
+    end
+
+    # A user who replied STOP and then asks for a code again is opting back in.
+    example 'It grants the consent back after a withdrawal' do
+      user = create(:user, :with_confirmed_phone)
+      create(
+        :consent,
+        user: user,
+        campaign_type: EmailCampaigns::Campaigns::PhoneConfirmation.name,
+        consented: false
+      )
+      header_token_for(user)
+
+      do_request(request_code: {})
+      expect(response_status).to eq 200
+
+      consent = EmailCampaigns::Consent.find_by(
+        user_id: user.id,
+        campaign_type: EmailCampaigns::Campaigns::PhoneConfirmation.name
+      )
+      expect(consent.consented).to be true
+    end
+
+    example 'It does not record consent when the request is rejected' do
+      create(:user, :with_confirmed_phone, phone: '+14155552671')
+      header_token_for(create(:user, :with_confirmed_phone, phone: '+14155552672'))
+
+      expect { do_request(request_code: { phone: '+14155552671' }) }
+        .not_to change(EmailCampaigns::Consent, :count)
+      expect(response_status).to eq 401
+    end
+
     example 'It does not work for an unauthenticated user without a phone number' do
       do_request(request_code: {})
       expect(response_status).to eq 401
