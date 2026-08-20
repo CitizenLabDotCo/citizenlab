@@ -542,6 +542,7 @@ hu-HU:
       yesterday: Tegnap
     new_phone_confirmation:
       sms_body: 'A megerősítő kódod: %{code}.'
+      sms_body2: '%{organization_name}: Az Ön megerősítő kódja: %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Ugrás erre a bemenetre
       event_description: "%{feedback_author_name} frissítést adott a(z) '%{input_title}' témában."
@@ -556,6 +557,7 @@ hu-HU:
       title: Válasszon új jelszót
     phone_confirmation:
       sms_body: 'Az Ön megerősítő kódja: %{code}.'
+      sms_body2: '%{organization_name}: Az Ön megerősítő kódja: %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane

@@ -545,6 +545,7 @@ fr-FR:
       yesterday: Hier
     new_phone_confirmation:
       sms_body: Votre code de confirmation est %{code}.
+      sms_body2: '%{organization_name} : Votre code de confirmation est %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Voir la contribution
       event_description: '%{feedback_author_name} a publié une mise à jour sur « %{input_title} ».'
@@ -559,6 +560,7 @@ fr-FR:
       title: Choisissez un nouveau mot de passe
     phone_confirmation:
       sms_body: Votre code de confirmation est %{code}.
+      sms_body2: '%{organization_name} : Votre code de confirmation est %{code}.'
     preview_data:
       author_display_name: Jeanne Dupont
       author_first_name: Jeanne
