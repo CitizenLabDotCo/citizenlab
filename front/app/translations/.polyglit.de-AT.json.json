@@ -3524,6 +3524,16 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.SmsConsent.campaignPreferencesDisclosure": {
+    "state": "verified",
+    "verified_at": "2026-08-20T16:30:02.293876Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.SmsConsent.phoneConfirmationDisclosure": {
+    "state": "verified",
+    "verified_at": "2026-08-20T16:30:02.293876Z",
+    "verified_by": "Jelena"
+  },
   "app.components.SmsConsent.smsConfirmationDisclosure": {
     "state": "verified",
     "verified_at": "2026-08-05T12:32:20.642609Z",
@@ -6947,6 +6957,11 @@
   "app.containers.Authentication.steps.Policies.byContinuingPhone": {
     "state": "verified",
     "verified_at": "2026-08-17T14:35:41.840831Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Authentication.steps.Policies.byContinuingPhone2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T16:30:02.293876Z",
     "verified_by": "Jelena"
   },
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": {
@@ -10834,6 +10849,11 @@
     "verified_at": "2026-07-16T09:49:20.292538Z",
     "verified_by": "eva@govocal.com"
   },
+  "app.containers.PhoneChange.newPhoneLabel2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T16:30:02.293876Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.PhoneChange.phoneEmptyError": {
     "state": "verified",
     "verified_at": "2026-07-16T09:49:20.292538Z",
@@ -10843,6 +10863,11 @@
     "state": "verified",
     "verified_at": "2026-07-16T09:49:20.292538Z",
     "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneChange.phoneInvalid3": {
+    "state": "verified",
+    "verified_at": "2026-08-20T16:30:02.293876Z",
+    "verified_by": "Jelena"
   },
   "app.containers.PhoneChange.phoneTaken": {
     "state": "verified",
@@ -10882,6 +10907,11 @@
   "app.containers.PhoneChange.smsManualCampaignConsentLabel": {
     "state": "verified",
     "verified_at": "2026-07-28T14:14:21.953228Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.PhoneChange.smsManualCampaignConsentLabel2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T16:30:02.293876Z",
     "verified_by": "Jelena"
   },
   "app.containers.PhoneChange.submitButton": {
