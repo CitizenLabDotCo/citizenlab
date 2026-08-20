@@ -26,10 +26,10 @@ import {
   ProjectPageBody,
 } from 'components/ProjectPageBuilder/regions';
 import EventsWidget from 'components/ProjectPageBuilder/Widgets/Events';
-import ExtraSurveysWidget from 'components/ProjectPageBuilder/Widgets/ExtraSurveys';
 import PhasesWidget from 'components/ProjectPageBuilder/Widgets/Phases';
 import ProjectBanner from 'components/ProjectPageBuilder/Widgets/ProjectBanner';
 import ProjectTitle from 'components/ProjectPageBuilder/Widgets/ProjectTitle';
+import SpotlightSurveysWidget from 'components/ProjectPageBuilder/Widgets/SpotlightSurveys';
 
 type EditorProps = {
   children?: React.ReactNode;
@@ -61,7 +61,8 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
           PageLink,
           PhasesWidget,
           EventsWidget,
-          ExtraSurveysWidget,
+          // Stored layouts persist this resolver key as `resolvedName`.
+          ExtraSurveysWidget: SpotlightSurveysWidget,
           ProjectBanner,
           ProjectTitle,
           ProjectPageRoot,

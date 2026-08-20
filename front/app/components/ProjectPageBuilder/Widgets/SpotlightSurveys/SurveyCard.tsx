@@ -22,7 +22,7 @@ import messages from '../messages';
 
 import ActionButton from './ActionButton';
 import StatusBadge from './StatusBadge';
-import { getExtraSurveyState } from './utils';
+import { getSpotlightSurveyState } from './utils';
 
 const DESCRIPTION_MAX_LENGTH = 160;
 
@@ -36,7 +36,7 @@ const SurveyCard = ({ phase, buttonStyle, buttonTextMultiloc }: Props) => {
   const theme = useTheme();
   const localize = useLocalize();
 
-  const state = getExtraSurveyState(phase);
+  const state = getSpotlightSurveyState(phase);
   const description = stripHtml(
     localize(phase.attributes.description_multiloc),
     DESCRIPTION_MAX_LENGTH

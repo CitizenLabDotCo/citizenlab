@@ -17,7 +17,7 @@ import { getLocalisedDateString, timeAgo } from 'utils/dateUtils';
 import messages from '../messages';
 import useWidgetProjectId from '../useWidgetProjectId';
 
-import { getExtraSurveyState } from './utils';
+import { getSpotlightSurveyState } from './utils';
 
 type Props = {
   phase: IPhaseData;
@@ -32,7 +32,7 @@ const ActionButton = ({ phase, buttonStyle, buttonTextMultiloc }: Props) => {
   const projectId = useWidgetProjectId();
   const { data: project } = useProjectById(projectId);
 
-  const state = getExtraSurveyState(phase);
+  const state = getSpotlightSurveyState(phase);
   const { start_at, end_at, native_survey_button_multiloc } = phase.attributes;
 
   if (state === 'open') {
