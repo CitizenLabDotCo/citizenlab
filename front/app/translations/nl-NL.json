@@ -1371,7 +1371,6 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Telefoonnummer",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Geef een telefoonnummer op in het juiste formaat, bijvoorbeeld +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Geef een telefoonnummer op",
-  "app.containers.Authentication.steps.Policies.byContinuingPhone2": "Door verder te gaan ga je ermee akkoord een eenmalige bevestigingscode per sms te ontvangen van {orgName}. Bericht- en datakosten kunnen van toepassing zijn. Antwoord HELP voor hulp, STOP om je af te melden.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Maak een nieuw account aan met: {phone} {changeLink}",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Alle {contentType}-meldingen in-/uitschakelen",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Meldingen in deze categorie",
