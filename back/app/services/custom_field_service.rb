@@ -117,13 +117,6 @@ class CustomFieldService
     end
   end
 
-  # Fallback to another locale description if current locale is missing
-  def handle_description(field, locale)
-    I18n.with_locale(locale) do
-      @multiloc_service.t(field.description_multiloc)
-    end
-  end
-
   # Making pages a different data model would avoid
   # having to do this.
   def pages(fields)
@@ -151,114 +144,5 @@ class CustomFieldService
       .where("custom_field_values ?| array[#{keys_sql}]")
       .update_all("custom_field_values = custom_field_values - array[#{keys_sql}]::text[]")
     CustomFieldAnswer.where(answerable: scope, key: keys).delete_all
-  end
-
-  # *** text ***
-
-  def text_to_ui_schema_field(field, locale)
-    base_ui_schema_field(field, locale)
-  end
-
-  # *** number ***
-
-  def number_to_ui_schema_field(field, locale)
-    base_ui_schema_field(field, locale)
-  end
-
-  # *** multiline_text ***
-
-  def multiline_text_to_ui_schema_field(field, locale)
-    base = base_ui_schema_field(field, locale)
-    if base[:'ui:widget']
-      base
-    else
-      { 'ui:widget': 'textarea' }
-    end
-  end
-
-  # *** select ***
-
-  def select_to_ui_schema_field(field, locale)
-    base_ui_schema_field(field, locale)
-  end
-
-  # *** multiselect ***
-
-  def multiselect_to_ui_schema_field(field, locale)
-    base_ui_schema_field(field, locale)
-  end
-
-  # *** checkbox ***
-
-  def checkbox_to_ui_schema_field(field, locale)
-    base_ui_schema_field(field, locale)
-  end
-
-  # *** date ***
-
-  def date_to_ui_schema_field(field, locale)
-    base_ui_schema_field(field, locale)
-  end
-
-  # Methods here are not really used to render the fields on the front-end, only description hidden and required are used
-
-  # *** html ***
-
-  def html_to_ui_schema_field(field, locale)
-    base_ui_schema_field(field, locale)
-  end
-
-  # *** text_multiloc ***
-
-  def text_multiloc_to_ui_schema_field(field, locale)
-    base_ui_schema_field(field, locale)
-  end
-
-  # *** multiline_text_multiloc ***
-
-  def multiline_text_multiloc_to_ui_schema_field(field, locale)
-    base_ui_schema_field(field, locale)
-  end
-
-  # *** html_multiloc ***
-
-  def html_multiloc_to_ui_schema_field(field, locale)
-    base_ui_schema_field(field, locale)
-  end
-
-  # *** point ***
-
-  def point_to_ui_schema_field(_field, _locale)
-    {}.tap do |ui_schema|
-      ui_schema[:'ui:widget'] = 'hidden'
-    end
-  end
-
-  # *** line ***
-
-  def line_to_ui_schema_field(_field, _locale)
-    {}.tap do |ui_schema|
-      ui_schema[:'ui:widget'] = 'hidden'
-    end
-  end
-
-  # *** polygon ***
-
-  def polygon_to_ui_schema_field(_field, _locale)
-    {}.tap do |ui_schema|
-      ui_schema[:'ui:widget'] = 'hidden'
-    end
-  end
-
-  # *** files ***
-
-  def files_to_ui_schema_field(field, locale)
-    base_ui_schema_field(field, locale)
-  end
-
-  # *** image files ***
-
-  def image_files_to_ui_schema_field(field, locale)
-    base_ui_schema_field(field, locale)
   end
 end

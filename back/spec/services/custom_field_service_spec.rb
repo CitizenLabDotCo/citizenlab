@@ -143,21 +143,6 @@ describe CustomFieldService do
     end
   end
 
-  describe 'handle_description' do
-    it 'returns the description in the requested locale' do
-      field = create(:custom_field, description_multiloc: { 'en' => 'carrot', 'nl-NL' => 'wortel' })
-      expect(service.handle_description(field, 'en')).to eq 'carrot'
-      expect(service.handle_description(field, 'nl-NL')).to eq 'wortel'
-    end
-
-    it 'returns the description from the first available locale if the requested locale is not available' do
-      field = create(:custom_field, description_multiloc: { 'en' => 'carrot', 'fr-FR' => 'carrotte' })
-      expect(service.handle_description(field, 'en')).to eq 'carrot'
-      expect(service.handle_description(field, 'fr-FR')).to eq 'carrotte'
-      expect(service.handle_description(field, 'nl-NL')).to eq 'carrot'
-    end
-  end
-
   describe 'remove_not_visible_fields' do
     let(:project) { create(:project_with_active_ideation_phase) }
     let(:custom_form) { create(:custom_form, participation_context: project) }
