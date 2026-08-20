@@ -19,15 +19,6 @@ module Permissions
       fields
     end
 
-    # Gives a permission that has just been switched to 'custom' the platform's
-    # demographic questions to start from, so the editor does not open on nothing.
-    # Idempotent, so callers need not detect the switch.
-    def persist_default_fields(permission)
-      return if permission.permissions_custom_fields.any?
-
-      default_fields(permission).each(&:save!)
-    end
-
     private
 
     def default_fields(permission)

@@ -108,10 +108,8 @@ resource 'PermissionsCustomField' do
     let(:custom_field_id) { create(:custom_field, enabled: false).id }
 
     before do
-      create(:custom_field_gender, enabled: true) # Create a default custom field
-      # What updating the permission to 'custom' does, so that the permission
-      # starts from the platform's demographic questions.
-      Permissions::PermissionsCustomFieldsService.new.persist_default_fields(permission)
+      create(:custom_field_gender, enabled: true) # A platform-wide demographic question
+      permission # Create permission
     end
 
     example_request 'Create a new permission custom field association' do
@@ -120,7 +118,9 @@ resource 'PermissionsCustomField' do
       json_response = json_parse response_body
       expect(json_response.dig(:data, :relationships, :custom_field, :data, :id)).to eq custom_field_id
       expect(json_response.dig(:data, :attributes, :required)).to eq required
-      expect(PermissionsCustomField.all.count).to eq 2 # Default custom field persisted + new custom field
+      # A permission on 'custom' starts empty: the platform-wide questions are
+      # not copied onto it.
+      expect(PermissionsCustomField.all.count).to eq 1
     end
 
     context 'the permission does not ask custom demographic questions' do

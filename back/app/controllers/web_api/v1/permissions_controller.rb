@@ -33,7 +33,6 @@ class WebApi::V1::PermissionsController < ApplicationController
     resolve_legacy_global_custom_fields(attributes)
     authorize @permission
     if @permission.save
-      seed_custom_demographic_questions
       sidefx.after_update(@permission, current_user, old_group_ids)
       render json: serialize(@permission), status: :ok
     else
@@ -125,16 +124,6 @@ class WebApi::V1::PermissionsController < ApplicationController
     @sidefx ||= Permissions::SideFxPermissionService.new
   end
 
-  # Gives a permission that has just been switched to 'custom' the platform's
-  # demographic questions to start from. Only on the switch: a permission left
-  # on 'custom' with no questions was emptied deliberately.
-  def seed_custom_demographic_questions
-    return unless @permission.saved_change_to_custom_fields_behavior?
-    return unless @permission.custom_fields_behavior == 'custom'
-
-    permissions_custom_fields_service.persist_default_fields(@permission)
-  end
-
   # Clients that still send `global_custom_fields`, which `custom_fields_behavior`
   # replaces, get the behavior it stands for.
   def resolve_legacy_global_custom_fields(attributes)
@@ -142,10 +131,6 @@ class WebApi::V1::PermissionsController < ApplicationController
     return if attributes.key?(:custom_fields_behavior)
 
     @permission.custom_fields_behavior = Permissions::CustomFieldsBehaviorService.new.derive(@permission)
-  end
-
-  def permissions_custom_fields_service
-    @permissions_custom_fields_service ||= Permissions::PermissionsCustomFieldsService.new
   end
 
   def permissions_update_service

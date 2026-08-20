@@ -191,7 +191,8 @@ describe Permissions::PermissionsCustomFieldsService do
 
         it 'updates existing fields if used in a group' do
           permission = create(:permission, permitted_by: 'users', custom_fields_behavior: 'custom')
-          service.persist_default_fields(permission)
+          create(:permissions_custom_field, permission: permission, custom_field: @domicile_field, required: true, ordering: 0)
+          create(:permissions_custom_field, permission: permission, custom_field: @gender_field, required: false, ordering: 1)
           fields = service.fields_for_permission(permission)
           gender_field = fields.last
           gender_field.update!(required: false)
@@ -279,38 +280,6 @@ describe Permissions::PermissionsCustomFieldsService do
           expect(fields.pluck(:required)).to eq [true, false]
           expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[gender domicile]
         end
-      end
-    end
-  end
-
-  describe '#persist_default_fields' do
-    let(:permission) { create(:permission, permitted_by: 'users') }
-
-    context 'permitted_by is "users" and has no persisted permissions fields' do
-      it 'creates default fields for the permission in the correct order' do
-        service.persist_default_fields(permission)
-        fields = permission.permissions_custom_fields
-        expect(fields.count).to eq 2
-        expect(fields.pluck(:ordering)).to eq [0, 1]
-        expect(fields.pluck(:required)).to eq [true, false]
-      end
-    end
-
-    context 'permitted_by is "everyone" and has no persisted permissions fields' do
-      it 'creates the platform fields, which #fields_for_permission would not resolve to' do
-        permission.update!(permitted_by: 'everyone')
-        service.persist_default_fields(permission)
-        expect(permission.permissions_custom_fields.count).to eq 2
-      end
-    end
-
-    context 'permission already has fields' do
-      it 'does not add fields' do
-        service.persist_default_fields(permission)
-        num_permissions_custom_fields = permission.permissions_custom_fields.count
-
-        service.persist_default_fields(permission)
-        expect(permission.permissions_custom_fields.count).to eq num_permissions_custom_fields
       end
     end
   end

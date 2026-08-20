@@ -219,13 +219,14 @@ resource 'Permissions' do
         let(:permitted_by) { 'users' }
         let!(:platform_field) { create(:custom_field_gender, enabled: true) }
 
-        example 'Customise the demographic questions, which starts from the platform ones' do
+        example 'Customise the demographic questions, which starts from none' do
           do_request(permission: { custom_fields_behavior: 'custom' })
 
           assert_status 200
           expect(response_data.dig(:attributes, :custom_fields_behavior)).to eq 'custom'
-          permission = Permission.find(response_data[:id])
-          expect(permission.permissions_custom_fields.pluck(:custom_field_id)).to eq [platform_field.id]
+          # The platform-wide questions are not copied onto the permission; the
+          # admin picks the ones this action asks.
+          expect(Permission.find(response_data[:id]).permissions_custom_fields).to be_empty
         end
 
         example 'Stop asking demographic questions' do
@@ -239,23 +240,13 @@ resource 'Permissions' do
         example 'Switching away from custom keeps the questions, so that switching back restores them' do
           do_request(permission: { custom_fields_behavior: 'custom' })
           permission = Permission.find(response_data[:id])
+          create(:permissions_custom_field, permission: permission, custom_field: platform_field)
 
           do_request(permission: { custom_fields_behavior: 'global' })
 
           assert_status 200
           expect(permission.reload.custom_fields_behavior).to eq 'global'
           expect(permission.permissions_custom_fields.pluck(:custom_field_id)).to eq [platform_field.id]
-        end
-
-        example 'An unrelated update does not restore questions that were deliberately removed' do
-          do_request(permission: { custom_fields_behavior: 'custom' })
-          permission = Permission.find(response_data[:id])
-          permission.permissions_custom_fields.destroy_all
-
-          do_request(permission: { require_name: false })
-
-          assert_status 200
-          expect(permission.reload.permissions_custom_fields).to be_empty
         end
 
         example 'Clients that still send global_custom_fields get the behavior it stands for', document: false do
