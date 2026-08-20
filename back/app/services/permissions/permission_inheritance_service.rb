@@ -199,11 +199,10 @@ module Permissions
 
     def inherited_custom_fields(source, permission)
       return [] unless source
-      # Global custom fields aren't persisted on the source either: they are
-      # derived from the platform's user fields, and the same derivation applies
-      # to the inheriting permission.
-      return [] if source.custom_fields_behavior == 'global'
 
+      # Copied whatever the source's behavior is: a permission that is not on
+      # 'custom' keeps its questions so that switching back restores them, and
+      # the copy should inherit that too.
       source.permissions_custom_fields.map do |field|
         PermissionsCustomField.new(
           custom_field: field.custom_field,
@@ -221,8 +220,6 @@ module Permissions
     end
 
     def copy_permissions_custom_fields!(source, permission)
-      return if source.custom_fields_behavior == 'global'
-
       source.permissions_custom_fields.each do |field|
         permission.permissions_custom_fields.create!(
           custom_field_id: field.custom_field_id,
