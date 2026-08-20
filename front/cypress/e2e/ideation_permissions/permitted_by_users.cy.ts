@@ -1,8 +1,8 @@
 import { randomString, randomEmail } from '../../support/commands';
 import {
   updatePermission,
+  askOnlyDemographicQuestion,
   confirmUserCustomFieldHasValue,
-  addPermissionsCustomField,
   setupProject,
 } from '../../support/permitted_by_utils';
 import { fillOutTitleAndBody } from './_utils';
@@ -33,17 +33,10 @@ describe('Ideation permitted by: users', () => {
         .then((response) => {
           const adminJwt = response.body.jwt;
 
-          return updatePermission({
+          return askOnlyDemographicQuestion({
             adminJwt,
             phaseId,
-            global_custom_fields: false,
-          }).then(() => {
-            // Add one permissions custom field
-            return addPermissionsCustomField({
-              adminJwt,
-              phaseId,
-              customFieldId,
-            });
+            customFieldId,
           });
         });
     });

@@ -1,6 +1,7 @@
-// "Demographic questions": where they are asked (registration flow vs. an extra
-// form page) and the reorderable list of questions themselves. Owns the
-// permission custom-field hooks since they are only used here.
+// "Demographic questions": which questions are asked (the platform-wide ones,
+// none, or a list curated here), where they are asked (registration flow vs. an
+// extra form page), and the reorderable list itself. Owns the permission
+// custom-field hooks since they are only used here.
 
 import React, { useState } from 'react';
 
@@ -20,14 +21,13 @@ import useUpdatePermissionsPhaseCustomField from 'api/permissions_phase_custom_f
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import upsellMessages from 'components/UpsellTooltip/messages';
-
 import { useIntl } from 'utils/cl-intl';
 
 import actionFormMessages from '../../messages';
 import { Changes } from '../../types';
 import { Expander } from '../../ui';
 
+import DemographicsBehavior from './DemographicsBehavior';
 import DemographicsPlacement from './DemographicsPlacement';
 import FieldSelectionModal from './FieldSelectionModal';
 import FieldsList from './FieldsList';
@@ -47,13 +47,13 @@ const DemographicSection = ({
   onChange,
 }: Props) => {
   const { attributes } = permission;
-  const { action } = attributes;
+  const { action, custom_fields_behavior: customFieldsBehavior } = attributes;
   const [showSelectionModal, setShowSelectionModal] = useState(false);
   const { formatMessage } = useIntl();
 
-  // Demographic questions rely on permission custom fields, which are a paid
-  // feature. Gate the whole section behind the tenant's pricing plan.
-  const permissionsCustomFieldsAllowed = useFeatureFlag({
+  // Curating a list of questions per action is the paid part. Using the
+  // platform-wide questions, or none at all, is not.
+  const customAllowed = useFeatureFlag({
     name: 'permissions_custom_fields',
   });
 
@@ -71,22 +71,6 @@ const DemographicSection = ({
     phaseId,
     action,
   });
-
-  // Without the feature the section is shown but locked: no controls, just a
-  // lock icon and a tooltip explaining it isn't part of the pricing plan.
-  if (!permissionsCustomFieldsAllowed) {
-    return (
-      <Expander
-        icon="user-data"
-        title={formatMessage(messages.demographicQuestions)}
-        summary={null}
-        locked
-        lockedTooltip={formatMessage(upsellMessages.tooltipContent)}
-      >
-        {null}
-      </Expander>
-    );
-  }
 
   if (!permissionFields) return null;
 
@@ -128,66 +112,81 @@ const DemographicSection = ({
             })
       }
     >
-      {permissionHasForm && (
-        <DemographicsPlacement
-          user_fields_in_form_descriptor={
-            attributes.user_fields_in_form_descriptor
-          }
-          onChange={onChange}
-        />
+      <DemographicsBehavior
+        customFieldsBehavior={customFieldsBehavior}
+        customAllowed={customAllowed}
+        onChange={onChange}
+      />
+
+      {/* Asking nothing leaves nothing to place. */}
+      {permissionHasForm && customFieldsBehavior !== 'disabled' && (
+        <Box mt="12px">
+          <DemographicsPlacement
+            user_fields_in_form_descriptor={
+              attributes.user_fields_in_form_descriptor
+            }
+            onChange={onChange}
+          />
+        </Box>
       )}
 
-      <Text
-        as="p"
-        mt="0"
-        mb="8px"
-        fontSize="xs"
-        fontWeight="bold"
-        color="coolGrey600"
-      >
-        {formatMessage(messages.questions)}
-      </Text>
+      {/* The questions themselves are only editable on 'custom'; the other two
+          behaviors do not resolve to the permission's own fields. */}
+      {customFieldsBehavior === 'custom' && (
+        <>
+          <Text
+            as="p"
+            mt="12px"
+            mb="8px"
+            fontSize="xs"
+            fontWeight="bold"
+            color="coolGrey600"
+          >
+            {formatMessage(messages.questions)}
+          </Text>
 
-      <FieldsList
-        customFields={customFields}
-        phaseId={phaseId}
-        action={action}
-        onChangeRequired={setRequired}
-        onRemove={removeField}
-      />
+          <FieldsList
+            customFields={customFields}
+            phaseId={phaseId}
+            action={action}
+            onChangeRequired={setRequired}
+            onRemove={removeField}
+          />
 
-      <Box mt="8px" display="flex">
-        <Button
-          buttonStyle="secondary-outlined"
-          size="s"
-          icon="plus-circle"
-          onClick={() => setShowSelectionModal(true)}
-          fontSize={`${fontSizes.s}px`}
-          iconSize={`${fontSizes.s}px`}
-          padding="4px 8px"
-          width="auto"
-        >
-          {formatMessage(messages.addDemographicQuestion)}
-        </Button>
-      </Box>
+          <Box mt="8px" display="flex">
+            <Button
+              buttonStyle="secondary-outlined"
+              size="s"
+              icon="plus-circle"
+              onClick={() => setShowSelectionModal(true)}
+              fontSize={`${fontSizes.s}px`}
+              iconSize={`${fontSizes.s}px`}
+              padding="4px 8px"
+              width="auto"
+            >
+              {formatMessage(messages.addDemographicQuestion)}
+            </Button>
+          </Box>
 
-      {/* The shared modal lets the admin pick an existing global field or create
-          a brand-new one. Adding a field creates the matching permission custom
-          field on this action. */}
-      <FieldSelectionModal
-        showSelectionModal={showSelectionModal}
-        setShowSelectionModal={setShowSelectionModal}
-        selectedFields={customFields}
-        handleAddField={(customField) =>
-          addCustomField({
-            custom_field_id: customField.id,
-            required: false,
-            phaseId,
-            action,
-          })
-        }
-        isLoading={isAddingField}
-      />
+          {/* The shared modal lets the admin pick an existing global field or
+              create a brand-new one. Adding a field creates the matching
+              permission custom field on this action. */}
+          <FieldSelectionModal
+            showSelectionModal={showSelectionModal}
+            setShowSelectionModal={setShowSelectionModal}
+            selectedFields={customFields}
+            handleAddField={(customField) =>
+              addCustomField({
+                custom_field_id: customField.id,
+                required: false,
+                phaseId,
+                action,
+              })
+            }
+            isLoading={isAddingField}
+          />
+        </>
+      )}
     </Expander>
   );
 };

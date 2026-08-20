@@ -153,6 +153,78 @@ export const addPermissionsCustomField = ({
     .then(() => withAdminJwt(makeRequest, adminJwt));
 };
 
+// Switching a permission to demographic questions of its own seeds it with the
+// platform-wide ones, so they have to be cleared for a test to be left asking
+// exactly the question it asked for.
+export const askOnlyDemographicQuestion = ({
+  adminJwt,
+  phaseId,
+  customFieldId,
+  permission = 'posting_idea',
+}: {
+  adminJwt?: string;
+  phaseId: string;
+  customFieldId: string;
+  permission?: IPhasePermissionAction;
+}) =>
+  updatePermission({
+    adminJwt,
+    phaseId,
+    permission,
+    custom_fields_behavior: 'custom',
+  })
+    .then(() => clearDemographicQuestions({ adminJwt, phaseId, permission }))
+    .then(() =>
+      addPermissionsCustomField({
+        adminJwt,
+        phaseId,
+        customFieldId,
+        permission,
+      })
+    );
+
+const clearDemographicQuestions = ({
+  adminJwt,
+  phaseId,
+  permission,
+}: {
+  adminJwt?: string;
+  phaseId: string;
+  permission: IPhasePermissionAction;
+}) => {
+  const makeRequest = (adminJwt: string) => {
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${adminJwt}`,
+    };
+
+    return cy
+      .request({
+        headers,
+        method: 'GET',
+        url: `web_api/v1/phases/${phaseId}/permissions/${permission}/permissions_custom_fields`,
+      })
+      .then((response) => {
+        // Fields a group pulls in are not rows of their own, so there is
+        // nothing to delete for them.
+        const persisted = response.body.data.filter(
+          (field: { attributes: { persisted: boolean } }) =>
+            field.attributes.persisted
+        );
+
+        return cy.wrap(persisted).each((field: { id: string }) =>
+          cy.request({
+            headers,
+            method: 'DELETE',
+            url: `web_api/v1/permissions_custom_fields/${field.id}`,
+          })
+        );
+      });
+  };
+
+  return withAdminJwt(makeRequest, adminJwt);
+};
+
 export const confirmUserCustomFieldHasValue = ({
   key,
   value,
