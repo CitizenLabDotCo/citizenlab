@@ -328,6 +328,23 @@ describe Invites::Service do
       end
     end
 
+    context 'with a multiselect custom field column' do
+      before do
+        create(:custom_field_multiselect, :with_options, key: 'multiselect_field')
+      end
+
+      let(:hash_array) do
+        [{ email: 'user@domain.net', multiselect_field: 'option1' }]
+      end
+
+      # Pins the current behaviour, which is likely not the desired one:
+      # importing the selected options would make more sense.
+      it 'nils the value' do
+        expect { service.bulk_create_xlsx(xlsx) }.to change(User, :count).from(0).to(1)
+        expect(User.first.custom_field_values).to eq('multiselect_field' => nil)
+      end
+    end
+
     context 'with custom field that has the wrong type' do
       before do
         create(:custom_field,

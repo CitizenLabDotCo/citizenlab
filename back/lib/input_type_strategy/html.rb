@@ -5,5 +5,9 @@ module InputTypeStrategy
     def supports_printing?
       false
     end
+
+    def json_schema
+      { type: 'string' }
+    end
   end
 end

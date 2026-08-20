@@ -206,6 +206,8 @@ class WebApi::V1::IdeasController < ApplicationController
       )
     end
 
+    validate_custom_field_values!(input, form) if published
+
     ActiveRecord::Base.transaction do
       save_or_raise!(input, **save_options)
       update_file_upload_fields input, form, params_for_create
@@ -236,16 +238,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
     raise ApiError.new(:blank, field: :author) if invalid_blank_author_for_update?(input, params)
 
-    extract_custom_field_values_from_params!(input.custom_form)
-    # Map topic_ids to input_topic_ids for the new InputTopics system
-    if params[:idea].key?(:topic_ids)
-      params[:idea][:input_topic_ids] = params[:idea].delete(:topic_ids) || []
-    end
-    params[:idea][:cosponsor_ids] ||= [] if params[:idea].key?(:cosponsor_ids)
-    params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
-    params_service.mark_custom_field_values_to_clear!(input.custom_field_values, params[:idea][:custom_field_values])
-
-    update_params = idea_params(input.custom_form).to_h
+    update_params = prepare_update_params(input)
 
     legacy_files = FileUpload.where(idea: input)
 
@@ -258,8 +251,6 @@ class WebApi::V1::IdeasController < ApplicationController
     # phase_ids/cosponsor_ids are assigned after before_update (below), not via
     # assign_attributes, so the side-fx can snapshot the previous associations first.
     phase_ids, cosponsor_ids = extract_deferred_relationship_ids(update_params)
-    update_params[:custom_field_values] = params_service.updated_custom_field_values(input.custom_field_values, update_params[:custom_field_values])
-    CustomFieldService.new.compact_custom_field_values! update_params[:custom_field_values]
     input.set_manual_votes(update_params[:manual_votes_amount], current_user) if update_params[:manual_votes_amount]
 
     creation_phase = input.creation_phase
@@ -302,7 +293,10 @@ class WebApi::V1::IdeasController < ApplicationController
     end
 
     save_options = {}
-    save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
+    if params.dig(:idea, :publication_status) == 'published'
+      save_options[:context] = :publication
+      validate_custom_field_values!(input, input.custom_form)
+    end
 
     ActiveRecord::Base.transaction do
       save_or_raise!(input, **save_options)
@@ -401,6 +395,23 @@ class WebApi::V1::IdeasController < ApplicationController
       submittable_custom_fields(custom_form)
     )
     params[:idea][:custom_field_values] = custom_field_values if custom_field_values.present?
+  end
+
+  # Mutates `params` to shape them for permitting, like the create action does inline.
+  def prepare_update_params(input)
+    extract_custom_field_values_from_params!(input.custom_form)
+    # Map topic_ids to input_topic_ids for the new InputTopics system
+    if params[:idea].key?(:topic_ids)
+      params[:idea][:input_topic_ids] = params[:idea].delete(:topic_ids) || []
+    end
+    params[:idea][:cosponsor_ids] ||= [] if params[:idea].key?(:cosponsor_ids)
+    params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
+    params_service.mark_custom_field_values_to_clear!(input.custom_field_values, params[:idea][:custom_field_values])
+
+    update_params = idea_params(input.custom_form).to_h
+    update_params[:custom_field_values] = params_service.updated_custom_field_values(input.custom_field_values, update_params[:custom_field_values])
+    CustomFieldService.new.compact_custom_field_values! update_params[:custom_field_values]
+    update_params
   end
 
   def extract_params_for_file_upload_fields(custom_form, params)
@@ -694,6 +705,19 @@ class WebApi::V1::IdeasController < ApplicationController
     if !input.participation_method_on_creation.transitive? && input.ideas_phases.find_index(&:changed?)
       raise ApiError.new(:cannot_change_phases, field: :phase_ids, value: input.phase_ids)
     end
+  end
+
+  # User field values merged into the input (u_-prefixed keys) are not validated.
+  def validate_custom_field_values!(input, custom_form)
+    fields = IdeaCustomFieldsService.new(custom_form).all_fields.select(&:supports_submission?)
+    values = input.custom_field_values.reject { |key, _| key.start_with?(UserFieldsInFormService.prefix) }
+    errors = CustomFieldValuesValidationService.new.json_schema_validation_errors(fields, values)
+    return if errors.empty?
+
+    errors.each do |error|
+      input.errors.add(:custom_field_values, error, value: values)
+    end
+    raise ApiError.from_record(input)
   end
 
   def copy_filters

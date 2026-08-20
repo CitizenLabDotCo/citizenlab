@@ -26,6 +26,12 @@ module InputTypeStrategy
       true
     end
 
+    def json_schema
+      schema = { type: 'string' }
+      option_keys = custom_field.ordered_transformed_options.map(&:key)
+      option_keys.empty? ? schema : schema.merge(enum: option_keys)
+    end
+
     def answers_eq(answers, value)
       answers.where("value #>> '{}' = ?", value)
     end
