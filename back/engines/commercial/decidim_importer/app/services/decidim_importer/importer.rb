@@ -136,7 +136,7 @@ module DecidimImporter
         resolved = { 'area_id' => area_id, 'title_multiloc' => area_attrs['title_multiloc'] }
         values = attrs['custom_field_values'].merge('decidim_scope' => resolved)
         attrs['custom_field_values'] = values
-        Idea.where(id: idea_ids[i]).update_all(custom_field_values: values)
+        CustomFieldAnswer.where(answerable_type: 'Idea', answerable_id: idea_ids[i], key: 'decidim_scope').update_all(value: resolved)
       end
     end
 

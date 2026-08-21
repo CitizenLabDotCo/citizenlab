@@ -7,16 +7,17 @@ module AdminApi
     def index
       @users = User.order(:created_at)
       @users = paginate @users
+      @users = @users.includes(:custom_field_answers)
 
       # Without `adapter: nil` an empty @users scope would render in json API
       # instead of json. As there's no data records to derive the type from,
       # it falls back to json-api.
-      render json: @users, adapter: nil
+      render json: @users.map { |user| serialize_user(user) }, adapter: nil
     end
 
     def by_email
       @user = User.find_by!(email: params[:email])
-      render json: @user
+      render json: serialize_user(@user)
     end
 
     def bulk_delete_by_emails_or_ids
@@ -26,7 +27,7 @@ module AdminApi
 
     def show
       # This uses default model serialization
-      render json: @user
+      render json: serialize_user(@user)
     end
 
     def jwt_token
@@ -41,7 +42,7 @@ module AdminApi
       if user.persisted?
         SideFxUserService.new.after_create user, nil
         # This uses default model serialization
-        render json: user, status: :created
+        render json: serialize_user(user), status: :created
       else
         render json: { errors: user.errors.details }, status: :unprocessable_entity
       end
@@ -53,13 +54,18 @@ module AdminApi
       if updated
         SideFxUserService.new.after_update(@user, nil)
         # This uses default model serialization
-        render json: @user, status: :ok
+        render json: serialize_user(@user), status: :ok
       else
         render json: { errors: @user.errors.details }, status: :unprocessable_entity
       end
     end
 
     private
+
+    # The API keeps exposing custom_field_values, now derived from the answers.
+    def serialize_user(user)
+      user.as_json.merge('custom_field_values' => user.custom_field_answers.to_h { [it.key, it.value] })
+    end
 
     def set_user
       @user = User.find(params[:id])

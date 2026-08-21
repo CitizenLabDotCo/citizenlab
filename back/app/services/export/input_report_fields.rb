@@ -26,8 +26,9 @@ module Export
     # Everything the report field procs and the value visitor read per input;
     # callers eager-load these to avoid N+1 queries.
     EAGER_LOADS = [
-      :project, :author, :ideas_input_topics, :input_topics, :idea_files,
-      :attached_files, :idea_status, :assignee, { file_attachments: :file }
+      :project, :ideas_input_topics, :input_topics, :idea_files, :attached_files,
+      :idea_status, :assignee, :custom_field_answers,
+      { author: :custom_field_answers, file_attachments: :file }
     ].freeze
 
     # Computed columns that identify a person, flagged for redaction without

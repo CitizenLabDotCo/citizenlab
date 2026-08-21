@@ -87,7 +87,9 @@ module MultiTenancy
               field_name.start_with?('remote_') && field_name.end_with?('_url') && field_name.exclude?('file')
             end.map(&:to_h)
 
+            custom_field_values = restored_attributes.delete('custom_field_values')
             model = model_class.new(restored_attributes)
+            CustomFieldValuesTransitionService.new.assign(model, custom_field_values) if custom_field_values
             model.skip_image_presence = true if SKIP_IMAGE_PRESENCE_VALIDATION.include?(model_class.name)
 
             begin

@@ -116,22 +116,22 @@ module Insights
       @phase.ideas.where(publication_status: 'published').count
     end
 
-    # Parses user custom_field_values from both the item (if values)
+    # Parses user demographics from the answers of both the item (if any)
     # and/or the participant (user) referenced in each participation.
     # Item values take precedence over participant values in case of key collisions,
     # to prefer demographics at the time of participation.
     def parse_user_custom_field_values(item, participant)
-      user_cfvs = participant&.custom_field_values || {}
+      user_values = participant&.custom_field_answers.to_h { [it.key, it.value] } || {}
 
-      return user_cfvs if !item.respond_to?(:custom_field_values) || item.custom_field_values.blank?
+      return user_values if !item.respond_to?(:custom_field_answers) || item.custom_field_answers.none?
 
       prefix = @user_fields_prefix ||= UserFieldsInFormService.prefix
 
-      item_cfvs = item.custom_field_values
-        .select { |key, _| key.to_s.start_with?(prefix) }
-        .transform_keys { |key| key.to_s.delete_prefix(prefix) }
+      item_values = item.custom_field_answers
+        .select { |answer| answer.key.start_with?(prefix) }
+        .to_h { [it.key.delete_prefix(prefix), it.value] }
 
-      user_cfvs.merge(item_cfvs).reject { |_, v| v.is_a?(String) && v.blank? }
+      user_values.merge(item_values).reject { |_, v| v.is_a?(String) && v.blank? }
     end
 
     def demographics_data(participations, participant_ids)

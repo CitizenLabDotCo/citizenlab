@@ -27,12 +27,4 @@ class TemplateService
     @template_refs[model_name][id] = yml_object
   end
 
-  def filter_custom_field_values(custom_field_values, custom_fields)
-    # Templates do not support ID references.
-
-    supported_fields = custom_fields.select do |field|
-      %w[file_upload shapefile_upload].exclude? field.input_type
-    end
-    custom_field_values.slice(*supported_fields.map(&:key))
-  end
 end

@@ -24,10 +24,6 @@ module MultiTenancy
         attribute(:block_start_at) { |user| serialize_timestamp(user.block_start_at) }
         attribute(:registration_completed_at) { |user| serialize_timestamp(user.registration_completed_at) }
 
-        attribute :custom_field_values do |user|
-          user.custom_field_values.delete_if { |k, v| v.nil? || (k == 'domicile') }
-        end
-
         attribute(:password, if: proc { |user| user.password_digest.blank? }) do
           SecureRandom.urlsafe_base64(32)
         end

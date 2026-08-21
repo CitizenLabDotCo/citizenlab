@@ -43,20 +43,6 @@ module CustomFields
       def delete_ranking_option_from_ideas(option)
         field_key = option.custom_field.key
 
-        ideas = ::Idea.where(
-          'custom_field_values -> :field_key ? :option_key',
-          field_key: field_key,
-          option_key: option.key
-        )
-
-        ideas.update_all(<<~SQL.squish)
-          custom_field_values = jsonb_set(
-            custom_field_values,
-            '{#{field_key}}',
-            (custom_field_values -> '#{field_key}') - '#{option.key}'
-          )
-        SQL
-
         ::CustomFieldAnswer
           .where(answerable_type: 'Idea', key: field_key)
           .where('value ? :option_key', option_key: option.key)

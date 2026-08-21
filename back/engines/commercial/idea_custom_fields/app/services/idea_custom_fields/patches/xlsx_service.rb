@@ -34,7 +34,7 @@ module IdeaCustomFields
           end
         else
           lambda do |idea|
-            idea && idea.custom_field_values[field.key]
+            idea&.answer_for_key(field.key)&.value
           end
         end
       end

@@ -77,7 +77,7 @@ module Export
       def value_for(field)
         return model.public_send field.key if field.built_in?
 
-        model.custom_field_values[field.key]
+        model.answer_for_key(field.key)&.value
       end
 
       def value_for_multiloc(maybe_multiloc)

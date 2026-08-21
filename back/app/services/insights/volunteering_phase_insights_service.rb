@@ -11,6 +11,7 @@ module Insights
       Volunteering::Volunteer
         .joins(:cause)
         .where(volunteering_causes: { phase_id: @phase.id })
+        .includes(user: :custom_field_answers)
         .map do |volunteering_volunteer|
           {
             item_id: volunteering_volunteer.id,
@@ -18,7 +19,7 @@ module Insights
             acted_at: volunteering_volunteer.created_at,
             classname: 'Volunteer',
             participant_id: participant_id(volunteering_volunteer.id, volunteering_volunteer.user_id),
-            user_custom_field_values: volunteering_volunteer&.user&.custom_field_values || {}
+            user_custom_field_values: volunteering_volunteer.user&.custom_field_answers.to_h { [it.key, it.value] } || {}
           }
         end
     end

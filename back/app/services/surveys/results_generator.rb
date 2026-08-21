@@ -165,7 +165,7 @@ module Surveys
         all_page_ids = pages.keys.compact
 
         # Next build the responses with an array of input IDs that were seen for each field based on logic & values
-        @all_inputs.each_with_object({}) do |input, seen|
+        @all_inputs.includes(:custom_field_answers).each_with_object({}) do |input, seen|
           next_page_id = nil
           pages.each do |page_id, fields_on_page|
             next unless next_page_id.nil? || page_id == next_page_id
@@ -193,31 +193,34 @@ module Surveys
       return field.logic['next_page_id'] if field.page?
 
       # Options / Linear scale logic
-      field_value = input.custom_field_values[field.key]
+      field_value = input.answer_for_key(field.key)&.value
 
       if field_value
         if field_value.is_a? Array
           # Multiple options selected (multiselect - legacy support)? We find the furthest page
           option_ids = field.options.select { |o| field_value.include?(o.key) }.map(&:id)
-          option_next_page_ids = option_ids.map do |option_id|
-            field.logic['rules']&.find { |r| r['if'] == option_id }&.dig('goto_page_id')
-          end
-          furthest_page_id = option_next_page_ids.max_by { |id| all_page_ids.index(id) }
+          furthest_page_id = option_ids.map { |option_id| goto_page_id(field, option_id) }
+            .max_by { |id| all_page_ids.index(id) }
 
           return furthest_page_id if furthest_page_id
         else
           # Individual option selected (single select / linear scale)
           option_value = field.supports_linear_scale? ? field_value : field.options.find { |o| o.key == field_value }&.id
-          option_next_page_id = field.logic['rules']&.find { |r| r['if'] == option_value }&.dig('goto_page_id')
+          option_next_page_id = goto_page_id(field, option_value)
           return option_next_page_id if option_next_page_id
         end
 
         # Any other answer selected?
-        field.logic['rules']&.find { |r| r['if'] == 'any_other_answer' }&.dig('goto_page_id')
+        goto_page_id(field, 'any_other_answer')
       else
         # Field empty
-        field.logic['rules']&.find { |r| r['if'] == 'no_answer' }&.dig('goto_page_id')
+        goto_page_id(field, 'no_answer')
       end
+    end
+
+    # The page a logic rule of the field jumps to when the answer matches the rule key.
+    def goto_page_id(field, rule_key)
+      field.logic['rules']&.find { |r| r['if'] == rule_key }&.dig('goto_page_id')
     end
 
     def field_seen_count(field)
