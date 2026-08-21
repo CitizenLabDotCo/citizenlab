@@ -18,7 +18,7 @@ module Insights
         .transitive
         .where.not(published_at: nil)
         .where(created_at: @phase.start_at...end_time, publication_status: 'published')
-        .includes(:author)
+        .includes(:custom_field_answers, author: :custom_field_answers)
 
       ideas.map do |idea|
         {
@@ -38,7 +38,7 @@ module Insights
       comments = Comment.joins(:idea)
         .merge(@phase.ideas)
         .where(created_at: @phase.start_at...end_time, publication_status: 'published')
-        .includes(:author)
+        .includes(author: :custom_field_answers)
 
       comments.map do |comment|
         {
@@ -47,7 +47,7 @@ module Insights
           acted_at: comment.created_at,
           classname: 'Comment',
           participant_id: participant_id(comment.id, comment.author_id, comment.author_hash),
-          user_custom_field_values: comment&.author&.custom_field_values || {}
+          user_custom_field_values: comment.author&.custom_field_answers.to_h { [it.key, it.value] } || {}
         }
       end
     end
@@ -59,7 +59,7 @@ module Insights
         reactable_type: 'Idea',
         reactable_id: @phase.ideas,
         created_at: @phase.start_at...end_time
-      ).includes(:user)
+      ).includes(user: :custom_field_answers)
 
       reactions.map do |reaction|
         {
@@ -68,7 +68,7 @@ module Insights
           acted_at: reaction.created_at,
           classname: 'Reaction',
           participant_id: participant_id(reaction.id, reaction.user_id),
-          user_custom_field_values: reaction&.user&.custom_field_values || {}
+          user_custom_field_values: reaction.user&.custom_field_answers.to_h { [it.key, it.value] } || {}
         }
       end
     end

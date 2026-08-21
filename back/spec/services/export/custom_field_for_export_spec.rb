@@ -21,7 +21,7 @@ describe Export::CustomFieldForExport do
       )
     end
     let(:name) { 'John' }
-    let(:model) { instance_double Idea, custom_field_values: { 'name' => name } }
+    let(:model) { build(:idea, custom_field_answers: [build(:custom_field_answer, key: 'name', value: name)]) }
 
     describe '#value_from' do
       context 'for a simple field' do
@@ -33,7 +33,7 @@ describe Export::CustomFieldForExport do
       context 'for a select field without options' do
         let(:input_type) { 'select' }
         let(:field_value) { 'cat' }
-        let(:model) { instance_double Idea, custom_field_values: { 'name' => field_value } }
+        let(:model) { build(:idea, custom_field_answers: [build(:custom_field_answer, key: 'name', value: field_value)]) }
 
         it 'returns the empty string' do
           expect(report_field.value_from(model)).to eq ''
@@ -43,7 +43,7 @@ describe Export::CustomFieldForExport do
       context 'for a select field with options' do
         let(:input_type) { 'select' }
         let(:field_value) { 'cat' }
-        let(:model) { instance_double Idea, custom_field_values: { 'name' => field_value } }
+        let(:model) { build(:idea, custom_field_answers: [build(:custom_field_answer, key: 'name', value: field_value)]) }
         let!(:field_option1) do
           create(
             :custom_field_option,
@@ -64,13 +64,13 @@ describe Export::CustomFieldForExport do
         it 'returns the value for the field' do
           I18n.with_locale('nl-NL') do
             expect(report_field.value_from(model)).to eq 'Kat'
-            model.custom_field_values['name'] = 'dog'
+            model.answer_for_key('name').value = 'dog'
             expect(report_field.value_from(model)).to eq 'Hond'
           end
         end
 
         it 'returns the empty string when the field has an unknown value' do
-          model.custom_field_values['name'] = 'unknown'
+          model.answer_for_key('name').value = 'unknown'
           expect(report_field.value_from(model)).to eq ''
         end
       end
@@ -160,7 +160,7 @@ describe Export::CustomFieldForExport do
       described_class.new(custom_field, Export::Geojson::ValueVisitor, :author)
     end
 
-    let(:user) { create(:user, custom_field_values: { 'birthyear' => 1984 }) }
+    let(:user) { build(:user, custom_field_answers: [build(:custom_field_answer, key: 'birthyear', value: 1984)]) }
     let(:input_type) { 'number' }
     let(:custom_field) do
       create(
@@ -182,7 +182,7 @@ describe Export::CustomFieldForExport do
 
       context 'for a select field without options' do
         let(:input_type) { 'select' }
-        let(:user) { create(:user, custom_field_values: { 'birthyear' => '1991' }) }
+        let(:user) { build(:user, custom_field_answers: [build(:custom_field_answer, key: 'birthyear', value: '1991')]) }
 
         it 'returns the empty string' do
           expect(report_field.value_from(model)).to eq ''
@@ -192,7 +192,7 @@ describe Export::CustomFieldForExport do
       context 'for a select field with options' do
         let(:input_type) { 'select' }
         let(:field_value) { '1990' }
-        let(:user) { create(:user, custom_field_values: { 'birthyear' => '1990' }) }
+        let(:user) { build(:user, custom_field_answers: [build(:custom_field_answer, key: 'birthyear', value: '1990')]) }
         let!(:field_option1) do
           create(
             :custom_field_option,
@@ -213,13 +213,13 @@ describe Export::CustomFieldForExport do
         it 'returns the value for the field' do
           I18n.with_locale('nl-NL') do
             expect(report_field.value_from(model)).to eq '1990-NL'
-            user.custom_field_values['birthyear'] = '1991'
+            user.answer_for_key('birthyear').value = '1991'
             expect(report_field.value_from(model)).to eq '1991-NL'
           end
         end
 
         it 'returns the empty string when the field has an unknown value' do
-          user.custom_field_values['birthyear'] = 'unknown'
+          user.answer_for_key('birthyear').value = 'unknown'
           expect(report_field.value_from(model)).to eq ''
         end
       end

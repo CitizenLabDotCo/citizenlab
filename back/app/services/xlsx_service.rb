@@ -250,13 +250,13 @@ class XlsxService
   def title_multiloc_for(record, field, options)
     return unless record
 
-    case record.custom_field_values[field.key]
+    case (value = record.answer_for_key(field.key)&.value)
     when Array
-      record.custom_field_values[field.key].map do |key|
+      value.map do |key|
         multiloc_service.t(options[namespace(field.id, key)]&.title_multiloc)
       end.join(', ')
     when String
-      multiloc_service.t(options[namespace(field.id, record.custom_field_values[field.key])]&.title_multiloc)
+      multiloc_service.t(options[namespace(field.id, value)]&.title_multiloc)
     end
   end
 
@@ -273,7 +273,7 @@ class XlsxService
     else # all other custom fields
       lambda do |record|
         user = record.send(record_to_user)
-        user && user.custom_field_values[field.key]
+        user&.answer_for_key(field.key)&.value
       end
     end
   end
