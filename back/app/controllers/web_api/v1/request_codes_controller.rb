@@ -122,13 +122,7 @@ class WebApi::V1::RequestCodesController < ApplicationController
     )
     EmailCampaigns::SideFxConsentService.new.after_grant(consent, current_user)
 
-    # Hold the pending number before queueing the code. The job sets it too (it
-    # has to, for the code and the number to be written together), but the
-    # frontend refetches the user's requirements as soon as this returns and must
-    # already see a pending new_phone, rather than being sent back to the step
-    # that asks for a number.
     current_user.update!(new_phone: normalized)
-
     RequestNewPhoneConfirmationCodeJob.perform_later(current_user, new_phone: normalized)
 
     head :ok

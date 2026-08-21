@@ -259,6 +259,7 @@ RSpec.describe UserConfirmationService do
     include_context 'with stubbed SMS provider'
 
     before do
+      user.update!(new_phone: new_phone)
       RequestNewPhoneConfirmationCodeJob.perform_now(user, new_phone: new_phone)
     end
 

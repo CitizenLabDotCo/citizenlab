@@ -11,7 +11,6 @@ class RequestNewPhoneConfirmationCodeJob < ApplicationJob
     # Issue (and commit) the code before delivering it - see
     # RequestEmailConfirmationCodeJob for why delivery stays out of the transaction.
     ActiveRecord::Base.transaction do
-      user.update!(new_phone: new_phone)
       confirmation.reset_code!
       confirmation.update!(code_sent_at: Time.zone.now)
     end

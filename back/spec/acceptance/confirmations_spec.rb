@@ -422,6 +422,7 @@ resource 'Confirmations' do
 
       before do
         header_token_for user
+        user.update!(new_phone: new_phone)
         RequestNewPhoneConfirmationCodeJob.perform_now(user, new_phone: new_phone)
       end
 
