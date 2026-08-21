@@ -63,10 +63,6 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
         idea_status_id
       ], # status/moderation operational state
 
-      'Permission' => %w[
-        global_custom_fields
-      ], # replaced by custom_fields_behavior; the column itself goes in a follow-up
-
       'Project' => %w[
         default_assignee_id
         preview_token
