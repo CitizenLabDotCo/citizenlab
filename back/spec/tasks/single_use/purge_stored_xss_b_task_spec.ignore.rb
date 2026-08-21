@@ -43,13 +43,17 @@ describe 'single_use:purge_stored_xss_b rake task' do
     let!(:event) { create(:event) }
     let!(:static_page) { create(:static_page) }
     let!(:official_feedback) { create(:official_feedback) }
+    let!(:project_image) { create(:project_image) }
+    let!(:project) { create(:project) }
 
     let(:columns) do
       {
         phase => %i[native_survey_title_multiloc native_survey_button_multiloc],
         event => %i[location_multiloc address_2_multiloc attend_button_multiloc],
         static_page => %i[banner_header_multiloc banner_subheader_multiloc banner_cta_button_multiloc],
-        official_feedback => %i[author_multiloc]
+        official_feedback => %i[author_multiloc],
+        project_image => %i[alt_text_multiloc],
+        project => %i[header_bg_alt_text_multiloc]
       }
     end
 
@@ -74,7 +78,9 @@ describe 'single_use:purge_stored_xss_b rake task' do
         %w[Phase native_survey_title_multiloc],
         %w[Event location_multiloc],
         %w[StaticPage banner_header_multiloc],
-        %w[OfficialFeedback author_multiloc]
+        %w[OfficialFeedback author_multiloc],
+        %w[ProjectImage alt_text_multiloc],
+        %w[Project header_bg_alt_text_multiloc]
       )
     end
   end

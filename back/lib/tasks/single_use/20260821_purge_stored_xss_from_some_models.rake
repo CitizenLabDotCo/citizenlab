@@ -70,9 +70,10 @@ namespace :single_use do
     topic_models = [InputTopic, GlobalTopic, DefaultInputTopic].freeze
 
     # Every column declared by `PlainTextMultiloc`, minus the `title_multiloc` columns
-    # `purge_stored_xss` already swept, and minus `CustomField` and `EmailCampaigns::Campaign` -
-    # those two are swept by `purge_stored_xss_form_and_email_text`, which is run separately so
-    # their higher risk of losing a legitimate `<` can be reviewed on its own.
+    # `purge_stored_xss` already swept - which is why `Project` and `ProjectFolders::Folder` appear
+    # for their alt text alone - and minus `CustomField` and `EmailCampaigns::Campaign`, swept by
+    # `purge_stored_xss_form_and_email_text` so their higher risk of losing a legitimate `<` can be
+    # reviewed on its own.
     plain_text_columns = {
       Phase => %i[native_survey_title_multiloc native_survey_button_multiloc],
       Event => %i[location_multiloc address_2_multiloc attend_button_multiloc],
@@ -88,7 +89,12 @@ namespace :single_use do
       Polls::Option => %i[title_multiloc],
       CustomMaps::Layer => %i[title_multiloc],
       Volunteering::Cause => %i[title_multiloc],
-      OfficialFeedback => %i[author_multiloc]
+      OfficialFeedback => %i[author_multiloc],
+      ProjectImage => %i[alt_text_multiloc],
+      EventImage => %i[alt_text_multiloc],
+      ProjectFolders::Image => %i[alt_text_multiloc],
+      Project => %i[header_bg_alt_text_multiloc],
+      ProjectFolders::Folder => %i[header_bg_alt_text_multiloc]
     }.freeze
 
     # Stands in for a value sanitising to nothing, where the record rejects a blank.

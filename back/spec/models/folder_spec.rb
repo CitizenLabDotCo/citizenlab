@@ -44,6 +44,7 @@ RSpec.describe ProjectFolders::Folder do
   end
 
   it_behaves_like 'a plain text multiloc', factory: :project_folder
+  it_behaves_like 'a plain text multiloc', factory: :project_folder, attribute: :header_bg_alt_text_multiloc
 
   it_behaves_like 'a sanitized html_multiloc', factory: :project_folder
   it_behaves_like 'a sanitized html_multiloc', factory: :project_folder, attribute: :description_preview_multiloc

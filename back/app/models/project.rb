@@ -89,7 +89,7 @@ class Project < ApplicationRecord
   before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
   before_validation :set_visible_to, on: :create
-  plain_text_multiloc :title_multiloc, prepend: true
+  plain_text_multiloc :title_multiloc, :header_bg_alt_text_multiloc, prepend: true
   before_validation :strip_title
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
