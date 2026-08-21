@@ -11,6 +11,7 @@ import { ReactNode } from 'react';
 import { Multiloc } from 'typings';
 
 import {
+  CustomFieldsBehavior,
   IPermissionData,
   PermittedBy,
   UserDataCollection,
@@ -34,6 +35,7 @@ export type Changes = {
   everyone_tracking_enabled?: boolean;
   user_data_collection?: UserDataCollection;
   user_fields_in_form?: boolean;
+  custom_fields_behavior?: CustomFieldsBehavior;
 };
 
 export type Props = {

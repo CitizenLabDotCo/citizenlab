@@ -77,6 +77,12 @@ RSpec.describe EmailCampaigns::Sms::SendService do
       expect(delivery).to have_attributes(status: 'pending', campaign_id: campaign.id)
     end
 
+    it 'counts the segments before the message reaches the provider' do
+      delivery = described_class.new.create_delivery(body: 'a' * 161)
+
+      expect(delivery.segments_count).to eq(2)
+    end
+
     it 'raises and creates nothing when the SMS feature is disabled' do
       SettingsService.new.deactivate_feature!('sms')
 

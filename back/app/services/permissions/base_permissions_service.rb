@@ -29,9 +29,10 @@ module Permissions
 
     attr_reader :user, :user_requirements_service
 
-    # A phase action without a permission of its own inherits the global
+    # An inheritable action without a permission of its own inherits the global
     # 'visiting' permission; the service resolves that, along with the persisted
-    # rows and the on-demand creation of global permissions.
+    # rows and the on-demand creation of the global permissions that don't
+    # inherit.
     def find_permission(action, scope: nil)
       inheritance_service.find(scope, action) ||
         raise("Unknown action '#{action}' for scope: #{scope}")

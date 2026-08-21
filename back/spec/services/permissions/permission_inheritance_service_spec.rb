@@ -21,13 +21,21 @@ describe Permissions::PermissionInheritanceService do
 
   before { described_class.clear_source_permission_cache }
 
-  describe '#inheritable_scope?' do
-    it 'is true for a phase' do
-      expect(service.inheritable_scope?(phase)).to be true
+  describe '#inheritable?' do
+    it 'is true for any action of a phase' do
+      expect(service.inheritable?(phase, 'posting_idea')).to be true
     end
 
-    it 'is false for the global scope, which holds the source permission' do
-      expect(service.inheritable_scope?(nil)).to be false
+    it "is true for the global 'attending_event' action, which has no screen of its own" do
+      expect(service.inheritable?(nil, 'attending_event')).to be true
+    end
+
+    it 'is false for the global action that holds the source permission' do
+      expect(service.inheritable?(nil, 'visiting')).to be false
+    end
+
+    it 'is false for the global action that is customised on its own screen' do
+      expect(service.inheritable?(nil, 'following')).to be false
     end
   end
 
@@ -69,6 +77,23 @@ describe Permissions::PermissionInheritanceService do
       expect(service.find(nil, 'visiting').id).to eq visiting_permission.id
     end
 
+    it "returns a copy of the visiting permission for the global 'attending_event' action" do
+      found = service.find(nil, 'attending_event')
+
+      expect(found).to be_inherited
+      expect(found).not_to be_persisted
+      expect(found.permission_scope).to be_nil
+      expect(found.require_name).to be false
+    end
+
+    it "returns the persisted global 'attending_event' permission when it was overridden" do
+      permission = create(:global_permission, action: 'attending_event', permitted_by: 'admins_moderators')
+
+      found = service.find(nil, 'attending_event')
+      expect(found.id).to eq permission.id
+      expect(found).not_to be_inherited
+    end
+
     it 'creates a missing global permission on demand, since there is nothing to inherit from' do
       Permission.where(permission_scope: nil, action: 'following').destroy_all
 
@@ -100,7 +125,7 @@ describe Permissions::PermissionInheritanceService do
 
     it 'inherits the persisted demographic questions of the visiting permission' do
       custom_field = create(:custom_field)
-      visiting_permission.update!(global_custom_fields: false)
+      visiting_permission.update!(custom_fields_behavior: 'custom')
       create(:permissions_custom_field, permission: visiting_permission, custom_field: custom_field, required: true)
       described_class.clear_source_permission_cache
 
@@ -148,8 +173,11 @@ describe Permissions::PermissionInheritanceService do
       expect(service.effective_permissions(phase).map(&:action)).not_to include 'commenting_idea'
     end
 
-    it 'returns only the persisted permissions for the global scope' do
-      expect(service.effective_permissions(nil).map(&:action)).to eq ['visiting']
+    it "returns the persisted global permissions and the inherited 'attending_event' one" do
+      expect(service.effective_permissions(nil).map { |p| [p.action, p.inherited?] }).to eq [
+        ['visiting', false],
+        ['attending_event', true]
+      ]
     end
   end
 
@@ -181,7 +209,7 @@ describe Permissions::PermissionInheritanceService do
 
     it 'copies the persisted demographic questions of the visiting permission' do
       custom_field = create(:custom_field)
-      visiting_permission.update!(global_custom_fields: false)
+      visiting_permission.update!(custom_fields_behavior: 'custom')
       create(:permissions_custom_field, permission: visiting_permission, custom_field: custom_field, required: false, ordering: 0)
       described_class.clear_source_permission_cache
 
@@ -189,7 +217,7 @@ describe Permissions::PermissionInheritanceService do
       expect(permission.permissions_custom_fields.pluck(:custom_field_id, :required)).to eq [[custom_field.id, false]]
       # Otherwise the copy would fall back to the platform's user fields and
       # ignore the fields it just copied.
-      expect(permission.global_custom_fields).to be false
+      expect(permission.custom_fields_behavior).to eq 'custom'
     end
 
     it 'no longer follows the visiting permission afterwards' do
@@ -207,8 +235,16 @@ describe Permissions::PermissionInheritanceService do
       expect(service.override!(phase, 'posting_idea').id).to eq existing.id
     end
 
-    it 'raises for a scope that does not support inheritance' do
-      expect { service.override!(nil, 'following') }.to raise_error described_class::UnsupportedScope
+    it "persists a copy of the visiting permission for the global 'attending_event' action" do
+      permission = service.override!(nil, 'attending_event')
+
+      expect(permission).to be_persisted
+      expect(permission.permission_scope).to be_nil
+      expect(permission.require_name).to be false
+    end
+
+    it 'raises for an action that does not inherit' do
+      expect { service.override!(nil, 'following') }.to raise_error described_class::NotInheritable
     end
   end
 
@@ -224,7 +260,7 @@ describe Permissions::PermissionInheritanceService do
     end
 
     it 'destroys the groups and demographic questions of the permission' do
-      permission = create(:permission, action: 'posting_idea', permission_scope: phase, groups: [create(:group)], global_custom_fields: false)
+      permission = create(:permission, action: 'posting_idea', permission_scope: phase, groups: [create(:group)], custom_fields_behavior: 'custom')
       custom_field = create(:permissions_custom_field, permission: permission)
 
       service.inherit!(permission)
@@ -233,8 +269,18 @@ describe Permissions::PermissionInheritanceService do
       expect(PermissionsCustomField.where(id: custom_field.id)).to be_empty
     end
 
-    it 'raises for a global permission' do
-      expect { service.inherit!(visiting_permission) }.to raise_error described_class::UnsupportedScope
+    it "destroys the global 'attending_event' permission and returns the inherited one" do
+      permission = create(:global_permission, action: 'attending_event', permitted_by: 'admins_moderators')
+
+      inherited = service.inherit!(permission)
+
+      expect(Permission.where(id: permission.id)).to be_empty
+      expect(inherited).to be_inherited
+      expect(inherited.permitted_by).to eq 'users'
+    end
+
+    it 'raises for a global permission that does not inherit' do
+      expect { service.inherit!(visiting_permission) }.to raise_error described_class::NotInheritable
     end
   end
 

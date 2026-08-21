@@ -3,7 +3,7 @@ import { CLErrors } from 'typings';
 
 import insightsKeys from 'api/analysis_insights/keys';
 
-import useOnQuerySuccess from 'hooks/useOnQuerySuccess';
+import useOnQueryFetched from 'hooks/useOnQueryFetched';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
@@ -40,7 +40,11 @@ const useAnalysisBackgroundTask = (
     },
   });
 
-  useOnQuerySuccess(result, () => {
+  // Refresh the insight text after every poll. This must only run after the
+  // task's own fetch: the insights response side-loads this very task, which
+  // `fetcher` writes into the cache, and reacting to that write would refetch
+  // insights in an endless loop (TAN-8535).
+  useOnQueryFetched(result, () => {
     queryClient.invalidateQueries({
       queryKey: insightsKeys.list({ analysisId }),
     });

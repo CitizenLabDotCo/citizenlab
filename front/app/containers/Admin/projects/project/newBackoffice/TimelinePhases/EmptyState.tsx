@@ -30,7 +30,7 @@ const EmptyState = () => {
   return (
     <>
       <Text m="0 0 4px 0" px="10px" fontSize="s" color="textSecondary">
-        {formatMessage(messages.timelineEmptyDescription)}
+        {formatMessage(messages.timelineEmptyDescription2)}
       </Text>
       <Box display="flex" flexDirection="column">
         {EXAMPLE_PHASES.map(({ title, method }, index) => (

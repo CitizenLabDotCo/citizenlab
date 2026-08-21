@@ -1,6 +1,7 @@
 import { SegmentedMessage } from 'sms-segments-calculator';
 
-// Max segments per SMS body. Client-side cap for now; server-side guard follows.
+// Max segments per SMS body. Mirrored server-side by SegmentedMessage::MAX_SEGMENTS,
+// a Ruby port of this library kept in parity by a shared golden fixture.
 export const MAX_SMS_SEGMENTS = 8;
 
 const GSM_7 = 'GSM-7';

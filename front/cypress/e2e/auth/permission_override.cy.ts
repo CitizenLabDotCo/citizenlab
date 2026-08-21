@@ -84,10 +84,22 @@ describe('Access rights: overriding and inheriting the platform defaults', () =>
     cy.dataCy('e2e-confirm-revert-to-platform-defaults').click();
     cy.wait('@inherit');
 
-    // Back to the inherited state, and the overridden setting is gone with it.
-    cy.dataCy('e2e-action-form-posting_idea').should('not.exist');
-    cy.dataCy('e2e-action-inherited-posting_idea')
-      .find('[data-cy="e2e-platform-defaults-header"]')
-      .should('be.visible');
+    // Back to the inherited state: the settings are still there to be read,
+    // under the read-only overlay.
+    cy.dataCy('e2e-action-inherited-posting_idea').within(() => {
+      cy.dataCy('e2e-platform-defaults-header').should('be.visible');
+      cy.dataCy('e2e-read-only-overlay-posting_idea').should('be.visible');
+    });
+
+    // The overridden setting is gone with it: the panel shows the platform
+    // default again. Its expanders still open, they only show information.
+    cy.reload();
+    cy.dataCy('e2e-action-inherited-posting_idea').within(() => {
+      cy.dataCy('e2e-action-accordion-posting_idea').click();
+      cy.dataCy('e2e-personal-info-section').find('button').first().click();
+      cy.dataCy('e2e-require-name-toggle')
+        .find('input[type="checkbox"]')
+        .should('be.checked');
+    });
   });
 });

@@ -3074,6 +3074,11 @@
     "verified_at": "2026-07-23T09:54:03.134403Z",
     "verified_by": "Jelena"
   },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysManagedNote2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T09:51:14.545262Z",
+    "verified_by": "Jelena"
+  },
   "app.components.ProjectPageBuilder.Widgets.extraSurveysNoSurveyNote": {
     "state": "verified",
     "verified_at": "2026-07-23T09:54:03.134403Z",
@@ -3127,6 +3132,11 @@
   "app.components.ProjectPageBuilder.Widgets.extraSurveysWidgetTitle": {
     "state": "verified",
     "verified_at": "2026-07-23T09:54:03.134403Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysWidgetTitle2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T09:51:14.545262Z",
     "verified_by": "Jelena"
   },
   "app.components.ProjectPageBuilder.Widgets.inputFeedEmptyTitle": {
@@ -13393,6 +13403,16 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.errors.unexpected_invite_error": {
+    "state": "verified",
+    "verified_at": "2026-08-19T07:31:15.910370Z",
+    "verified_by": "Jelena"
+  },
+  "app.errors.unexpected_seats_count_error": {
+    "state": "verified",
+    "verified_at": "2026-08-19T07:31:15.910370Z",
+    "verified_by": "Jelena"
   },
   "app.errors.unknown_group": {
     "state": "verified",

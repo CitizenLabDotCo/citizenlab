@@ -23,9 +23,9 @@ import messages from '../messages';
 import useWidgetProjectId from '../useWidgetProjectId';
 
 import {
-  ExtraSurveysProps,
+  SpotlightSurveysProps,
   SurveyButtonFormat,
-  isExtraSurveyPhase,
+  isSpotlightSurveyPhase,
 } from './utils';
 
 const Settings = () => {
@@ -36,7 +36,7 @@ const Settings = () => {
     buttonStyle,
     buttonText,
   } = useNode<
-    ExtraSurveysProps & {
+    SpotlightSurveysProps & {
       buttonFormat: SurveyButtonFormat;
       buttonStyle: ButtonStyles;
     }
@@ -53,7 +53,7 @@ const Settings = () => {
   const { data: phases } = usePhases(projectId, 'standalone');
 
   const surveyOptions = (phases?.data ?? [])
-    .filter(isExtraSurveyPhase)
+    .filter(isSpotlightSurveyPhase)
     .map((phase) => ({
       value: phase.id,
       label: localize(phase.attributes.title_multiloc),
@@ -80,14 +80,14 @@ const Settings = () => {
         />
       </Text>
       <Select
-        id="e2e-extra-surveys-survey-select"
+        id="e2e-spotlight-surveys-survey-select"
         label={formatMessage(messages.extraSurveysSurveyLabel)}
         placeholder={formatMessage(messages.extraSurveysSelectPlaceholder)}
         options={surveyOptions}
         value={surveyPhaseId}
         onChange={(option) => {
           setProp(
-            (props: ExtraSurveysProps) =>
+            (props: SpotlightSurveysProps) =>
               (props.surveyPhaseId = option.value as string | undefined)
           );
         }}
@@ -98,22 +98,26 @@ const Settings = () => {
         </Label>
         <Radio
           onChange={(value: SurveyButtonFormat) => {
-            setProp((props: ExtraSurveysProps) => (props.buttonFormat = value));
+            setProp(
+              (props: SpotlightSurveysProps) => (props.buttonFormat = value)
+            );
           }}
           currentValue={buttonFormat}
-          id="extra-surveys-format-button"
-          name="extraSurveysButtonFormat"
+          id="spotlight-surveys-format-button"
+          name="spotlightSurveysButtonFormat"
           value="button"
           label={<FormattedMessage {...messages.extraSurveysFormatButton} />}
           isRequired
         />
         <Radio
           onChange={(value: SurveyButtonFormat) => {
-            setProp((props: ExtraSurveysProps) => (props.buttonFormat = value));
+            setProp(
+              (props: SpotlightSurveysProps) => (props.buttonFormat = value)
+            );
           }}
           currentValue={buttonFormat}
-          id="extra-surveys-format-card"
-          name="extraSurveysButtonFormat"
+          id="spotlight-surveys-format-card"
+          name="spotlightSurveysButtonFormat"
           value="card"
           label={<FormattedMessage {...messages.extraSurveysFormatCard} />}
           isRequired
@@ -125,35 +129,39 @@ const Settings = () => {
         </Label>
         <Radio
           onChange={(value: ButtonStyles) => {
-            setProp((props: ExtraSurveysProps) => (props.buttonStyle = value));
+            setProp(
+              (props: SpotlightSurveysProps) => (props.buttonStyle = value)
+            );
           }}
           currentValue={buttonStyle}
-          id="extra-surveys-style-primary"
-          name="extraSurveysButtonStyle"
+          id="spotlight-surveys-style-primary"
+          name="spotlightSurveysButtonStyle"
           value="primary"
           label={<FormattedMessage {...messages.extraSurveysStylePrimary} />}
           isRequired
         />
         <Radio
           onChange={(value: ButtonStyles) => {
-            setProp((props: ExtraSurveysProps) => (props.buttonStyle = value));
+            setProp(
+              (props: SpotlightSurveysProps) => (props.buttonStyle = value)
+            );
           }}
           currentValue={buttonStyle}
-          id="extra-surveys-style-secondary"
-          name="extraSurveysButtonStyle"
+          id="spotlight-surveys-style-secondary"
+          name="spotlightSurveysButtonStyle"
           value="secondary-outlined"
           label={<FormattedMessage {...messages.extraSurveysStyleSecondary} />}
           isRequired
         />
       </Box>
       <InputMultilocWithLocaleSwitcher
-        id="e2e-extra-surveys-button-text"
+        id="e2e-spotlight-surveys-button-text"
         label={formatMessage(messages.extraSurveysButtonTextLabel)}
         placeholder={formatMessage(messages.extraSurveysDefaultButtonText)}
         type="text"
         valueMultiloc={buttonText}
         onChange={(value) => {
-          setProp((props: ExtraSurveysProps) => (props.buttonText = value));
+          setProp((props: SpotlightSurveysProps) => (props.buttonText = value));
         }}
       />
     </Box>
