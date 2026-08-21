@@ -10494,6 +10494,11 @@
     "verified_at": "2026-08-04T09:29:15.455700Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.containers.Admin.projects.project.timelineEmptyDescription2": {
+    "state": "verified",
+    "verified_at": "2026-08-18T09:09:57.455840Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Admin.projects.project.traffic.selectPeriod": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",

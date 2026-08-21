@@ -10649,6 +10649,11 @@
     "verified_at": "2026-08-04T07:50:55.459410Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Admin.projects.project.timelineEmptyDescription2": {
+    "state": "verified",
+    "verified_at": "2026-08-18T09:01:46.432338Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.project.traffic.selectPeriod": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
