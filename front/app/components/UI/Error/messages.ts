@@ -416,6 +416,11 @@ export default defineMessages({
     defaultMessage:
       'There are not enough SMS credits left to send this message. To purchase more credits, contact your GovSuccess Manager.',
   },
+  sms_not_configured: {
+    id: 'app.errors.sms_not_configured',
+    defaultMessage:
+      'Some of the SMS configuration is missing. Contact your GovSuccess Manager to have it completed.',
+  },
   verification_taken: {
     id: 'app.errors.verification_taken',
     defaultMessage:

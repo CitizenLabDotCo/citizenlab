@@ -5,10 +5,10 @@ require 'rails_helper'
 RSpec.describe EmailCampaigns::Sms::BalanceService do
   subject(:service) { described_class.new }
 
-  include_context 'with sms feature enabled'
+  include_context 'with sms manual campaigns feature enabled'
 
   before do
-    SettingsService.new.activate_feature!('sms', settings: { 'messages_purchased' => 1000 })
+    SettingsService.new.activate_feature!('sms_manual_campaigns', settings: { 'messages_purchased' => 1000 })
   end
 
   describe '#purchased' do
@@ -18,7 +18,7 @@ RSpec.describe EmailCampaigns::Sms::BalanceService do
 
     it 'falls back to 0 when the setting is absent' do
       config = AppConfiguration.instance
-      config.settings['sms'].delete('messages_purchased')
+      config.settings['sms_manual_campaigns'].delete('messages_purchased')
       config.save!
 
       expect(described_class.new.purchased).to eq 0
@@ -102,7 +102,7 @@ RSpec.describe EmailCampaigns::Sms::BalanceService do
     end
 
     it 'goes negative when the tenant oversends' do
-      SettingsService.new.activate_feature!('sms', settings: { 'messages_purchased' => 1 })
+      SettingsService.new.activate_feature!('sms_manual_campaigns', settings: { 'messages_purchased' => 1 })
       create_list(:sms_delivery, 3, status: 'sent')
 
       expect(described_class.new.balance).to eq(-2)

@@ -172,20 +172,61 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
     end
   end
 
+  describe 'the provider configuration guard' do
+    include_context 'with sms manual campaigns feature enabled'
+
+    let(:campaign) { create(:sms_manual_campaign) }
+
+    before do
+      SettingsService.new.activate_feature!('sms_manual_campaigns', settings: { 'messages_purchased' => 10 })
+      create(:consent, :sms_manual, user: create(:user, :with_confirmed_phone, locale: 'en'))
+      campaign.previewer = create(:admin)
+    end
+
+    it 'refuses a send when the manual campaigns messaging service is not configured' do
+      SettingsService.new.activate_feature!('sms_manual_campaigns', settings: {
+        'twilio_manual_campaigns_messaging_service_sid' => ''
+      })
+
+      expect(campaign.valid?(:send)).to be false
+      expect(campaign.errors.details[:base]).to include(error: :sms_not_configured)
+    end
+
+    it 'refuses a preview when the Twilio account credentials are missing' do
+      SettingsService.new.activate_feature!('sms', settings: { 'twilio_auth_token' => '' })
+
+      expect(campaign.valid?(:preview)).to be false
+      expect(campaign.errors.details[:base]).to include(error: :sms_not_configured)
+    end
+
+    # Test mode never reaches Twilio, so the credentials it would need are beside the point.
+    it 'allows a send in test mode without any Twilio credentials' do
+      SettingsService.new.activate_feature!('sms', settings: {
+        'use_test_mode' => true,
+        'twilio_account_sid' => '',
+        'twilio_auth_token' => ''
+      })
+
+      expect(campaign.valid?(:send)).to be true
+    end
+  end
+
   describe 'the balance guard on send' do
+    include_context 'with sms manual campaigns feature enabled'
+
     let(:campaign) { create(:sms_manual_campaign, body_multiloc: { 'en' => 'a' * 200 }) }
 
     before { create(:consent, :sms_manual, user: create(:user, :with_confirmed_phone, locale: 'en')) }
 
     it 'refuses a send whose segments exceed the balance, even when the recipient count fits' do
-      SettingsService.new.activate_feature!('sms', settings: { 'messages_purchased' => 1 })
+      SettingsService.new.activate_feature!('sms_manual_campaigns', settings: { 'messages_purchased' => 1 })
 
       expect(campaign.valid?(:send)).to be false
       expect(campaign.errors.details[:base]).to include(error: :insufficient_sms_balance)
     end
 
     it 'allows a send the balance covers' do
-      SettingsService.new.activate_feature!('sms', settings: { 'messages_purchased' => 2 })
+      SettingsService.new.activate_feature!('sms_manual_campaigns', settings: { 'messages_purchased' => 2 })
 
       expect(campaign.valid?(:send)).to be true
     end
@@ -193,6 +234,8 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
 
   # A preview is a real, billed message, but only ever one, in the previewer's locale.
   describe 'the balance guard on a preview' do
+    include_context 'with sms manual campaigns feature enabled'
+
     let(:campaign) do
       create(:sms_manual_campaign, body_multiloc: { 'en' => 'short', 'fr-FR' => 'a' * 200 })
     end
@@ -200,21 +243,21 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
     before { campaign.previewer = create(:admin, locale: 'fr-FR') }
 
     it 'refuses a preview whose segments exceed the balance' do
-      SettingsService.new.activate_feature!('sms', settings: { 'messages_purchased' => 1 })
+      SettingsService.new.activate_feature!('sms_manual_campaigns', settings: { 'messages_purchased' => 1 })
 
       expect(campaign.valid?(:preview)).to be false
       expect(campaign.errors.details[:base]).to include(error: :insufficient_sms_balance)
     end
 
     it 'allows a preview the balance covers' do
-      SettingsService.new.activate_feature!('sms', settings: { 'messages_purchased' => 2 })
+      SettingsService.new.activate_feature!('sms_manual_campaigns', settings: { 'messages_purchased' => 2 })
 
       expect(campaign.valid?(:preview)).to be true
     end
 
     # The whole audience is irrelevant: the preview only goes to the previewer.
     it 'ignores what a send to every recipient would cost' do
-      SettingsService.new.activate_feature!('sms', settings: { 'messages_purchased' => 2 })
+      SettingsService.new.activate_feature!('sms_manual_campaigns', settings: { 'messages_purchased' => 2 })
       3.times { create(:consent, :sms_manual, user: create(:user, :with_confirmed_phone, locale: 'fr-FR')) }
 
       expect(campaign.valid?(:preview)).to be true
