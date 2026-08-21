@@ -7,10 +7,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-import { ExtraSurveyState } from './utils';
+import { SpotlightSurveyState } from './utils';
 
 const BADGES: {
-  [key in ExtraSurveyState]: {
+  [key in SpotlightSurveyState]: {
     message: MessageDescriptor;
     background: string;
     color: 'green700' | 'coolGrey700';
@@ -43,7 +43,7 @@ const BADGES: {
   },
 };
 
-const StatusBadge = ({ state }: { state: ExtraSurveyState }) => {
+const StatusBadge = ({ state }: { state: SpotlightSurveyState }) => {
   const badge = BADGES[state];
 
   return (

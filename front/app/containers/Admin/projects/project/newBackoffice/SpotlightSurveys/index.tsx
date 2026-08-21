@@ -23,14 +23,13 @@ import {
   phaseStatus,
 } from '../phaseRowUtils';
 
-import EmptyState from './EmptyState';
 import { linkedSurveyPhaseIds } from './linkedSurveyPhaseIds';
 
 interface Props {
   projectId: string;
 }
 
-const ExtrasPhases = ({ projectId }: Props) => {
+const SpotlightSurveys = ({ projectId }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { phaseId } = useParams({ strict: false });
@@ -60,8 +59,6 @@ const ExtrasPhases = ({ projectId }: Props) => {
       >
         {formatMessage(messages.extras)}
       </Text>
-
-      {phases && sortedPhases.length === 0 && <EmptyState />}
 
       <Box display="flex" flexDirection="column">
         {sortedPhases.map((phase) => {
@@ -131,4 +128,4 @@ const ExtrasPhases = ({ projectId }: Props) => {
   );
 };
 
-export default ExtrasPhases;
+export default SpotlightSurveys;

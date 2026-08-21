@@ -2,13 +2,13 @@ import moment = require('moment');
 
 import { randomString } from '../../support/commands';
 
-type ExtraSurveyConfig = {
+type SpotlightSurveyConfig = {
   title?: string;
   startAt?: string;
   endAt?: string;
 };
 
-type ExtraSurveysProjectResult = {
+type SpotlightSurveysProjectResult = {
   projectId: string;
   projectSlug: string;
   surveyPhaseIds: string[];
@@ -17,13 +17,13 @@ type ExtraSurveysProjectResult = {
 // Creates a published project whose page contains the participation box, an
 // optional current ideation phase on the timeline, and one standalone native
 // survey phase (an "extra survey") per entry in `surveys`.
-export const createProjectWithExtraSurveys = ({
+export const createProjectWithSpotlightSurveys = ({
   withIdeationPhase = true,
   surveys = [],
 }: {
   withIdeationPhase?: boolean;
-  surveys?: ExtraSurveyConfig[];
-} = {}): Cypress.Chainable<ExtraSurveysProjectResult> => {
+  surveys?: SpotlightSurveyConfig[];
+} = {}): Cypress.Chainable<SpotlightSurveysProjectResult> => {
   return cy
     .apiCreateProject({
       title: randomString(),
@@ -70,7 +70,7 @@ export const createProjectWithExtraSurveys = ({
 
 // The e2e class lands on the ButtonWithLink container; the interactive element
 // (an anchor when enabled, a disabled button otherwise) is nested inside it.
-export const clickExtraSurveyButton = () => {
+export const clickSpotlightSurveyButton = () => {
   cy.get('#e2e-about-box .e2e-extra-survey-button')
     .first()
     .find('a, button')

@@ -9,21 +9,21 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 
 export type SurveyButtonFormat = 'button' | 'card';
 
-export type ExtraSurveysProps = {
+export type SpotlightSurveysProps = {
   surveyPhaseId?: string;
   buttonFormat?: SurveyButtonFormat;
   buttonStyle?: ButtonStyles;
   buttonText?: Multiloc;
 };
 
-export type ExtraSurveyState =
+export type SpotlightSurveyState =
   | 'open'
   | 'upcoming'
   | 'closed'
   | 'taken'
   | 'notEligible';
 
-export function isExtraSurveyPhase(phase: IPhaseData) {
+export function isSpotlightSurveyPhase(phase: IPhaseData) {
   return (
     !isTimelinePhase(phase) &&
     phase.attributes.participation_method === 'native_survey'
@@ -38,7 +38,9 @@ const UNFIXABLE_REASONS = new Set<string>([
   'inactive_phase',
 ] satisfies PhaseDisabledReason[]);
 
-export function getExtraSurveyState(phase: IPhaseData): ExtraSurveyState {
+export function getSpotlightSurveyState(
+  phase: IPhaseData
+): SpotlightSurveyState {
   const { start_at, end_at } = phase.attributes;
 
   const temporal = pastPresentOrFuture([start_at, end_at]);
