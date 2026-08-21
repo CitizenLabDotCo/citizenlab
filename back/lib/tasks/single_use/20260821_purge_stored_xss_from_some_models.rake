@@ -8,6 +8,9 @@
 #     Permission#access_denied_explanation_multiloc
 #                                     -> SanitizationService#sanitize_body_multiloc, decoration and
 #                                        link only
+#     #description_multiloc, on each of `topic_models`
+#                                     -> SanitizationService#sanitize_multiloc, decoration only, then
+#                                        empty trailing tags removed
 #     every column in `plain_text_columns`
 #                                     -> SanitizationService#strip_multiloc_to_plain_text
 #
@@ -54,6 +57,16 @@ namespace :single_use do
     rewritable = ->(col) { "(#{col} LIKE '%<%' OR #{col} LIKE '%&%')" }
 
     strip_multiloc = service.method(:strip_multiloc_to_plain_text)
+
+    # The write path each topic model applies to its description. No linkifying: the editor offers
+    # no way to make a link, so the models do not add them either.
+    sanitize_description = lambda do |value, features|
+      service.remove_multiloc_empty_trailing_tags(service.sanitize_multiloc(value, features))
+    end
+
+    # Rich text, rendered with `dangerouslySetInnerHTML`, and sanitised on write only from
+    # TAN-8413 onwards - so every row stored before that is unsanitised.
+    topic_models = [InputTopic, GlobalTopic, DefaultInputTopic].freeze
 
     # Every column declared by `PlainTextMultiloc`, minus the `title_multiloc` columns
     # `purge_stored_xss` already swept, and minus `CustomField` and `EmailCampaigns::Campaign` -
@@ -345,6 +358,13 @@ namespace :single_use do
             ->(value) { strip_multiloc.call(value) }, model.name
           )
         end
+      end
+      topic_models.each do |model|
+        purge.call(
+          tenant, script,
+          model.where(rewritable.call('description_multiloc::text')), :description_multiloc,
+          ->(value) { sanitize_description.call(value, model::DESCRIPTION_SANITIZE_FEATURES) }, model.name
+        )
       end
       purge.call(
         tenant, script,

@@ -141,6 +141,36 @@ describe 'single_use:purge_stored_xss_b rake task' do
     end
   end
 
+  # Rich text, rendered with `dangerouslySetInnerHTML` on the feed sidebar, and sanitised on write
+  # only from TAN-8413 onwards - so anything stored before that has never been through a sanitiser.
+  context 'a topic description carrying a payload' do
+    let!(:input_topic) do
+      store_raw(create(:input_topic), :description_multiloc,
+        { 'en' => '<p>About <b>housing</b></p><img src=x onerror=alert(1)>' })
+    end
+    let!(:global_topic) do
+      store_raw(create(:global_topic), :description_multiloc, { 'en' => '<p>hi</p><script>alert(1)</script>' })
+    end
+    let!(:default_topic) do
+      store_raw(create(:default_input_topic), :description_multiloc, { 'en' => '<h2>Big</h2><p>hi</p>' })
+    end
+
+    it 'strips the payload and keeps the formatting the editor can produce' do
+      run_task
+      expect(input_topic.reload[:description_multiloc]['en']).to eq '<p>About <b>housing</b></p>'
+      expect(global_topic.reload[:description_multiloc]['en']).to eq '<p>hi</p>alert(1)'
+      expect(default_topic.reload[:description_multiloc]['en']).to eq 'Big<p>hi</p>'
+    end
+
+    it 'reports each one under its own model' do
+      run_task
+      models = report['changes'].filter_map do |change|
+        change.dig('context', 'model') if change.dig('context', 'attribute') == 'description_multiloc'
+      end
+      expect(models).to include('InputTopic', 'GlobalTopic', 'DefaultInputTopic')
+    end
+  end
+
   # Sanitised rather than stripped: it is rendered with `dangerouslySetInnerHTML`.
   context 'an access denied explanation carrying a payload' do
     let!(:permission) do

@@ -35,11 +35,18 @@ class GlobalTopic < ApplicationRecord
   # Followers (polymorphic)
   has_many :followers, as: :followable, dependent: :destroy
 
+  # The description editor offers bold and italic only (`noImages noLinks noVideos noAlign
+  # limitedTextFormatting`), and the front end renders the value with `dangerouslySetInnerHTML`
+  # (`<T supportHtml>`), so the allowlist matches the editor rather than the other description
+  # fields. Shared with anything that re-sanitises a stored description.
+  DESCRIPTION_SANITIZE_FEATURES = %i[decoration].freeze
+
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false }
   validates :include_in_onboarding, inclusion: { in: [true, false] }
 
   plain_text_multiloc :title_multiloc
+  before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :strip_title
 
   scope :order_new, ->(direction = :desc) { order(created_at: direction, id: direction) }
@@ -58,6 +65,15 @@ class GlobalTopic < ApplicationRecord
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end
+  end
+
+  # No linkifying, unlike the other description fields: the editor offers no way to make a link, so
+  # turning a typed URL into one would add markup nobody asked for and `:decoration` would strip it
+  # again on the next write.
+  def sanitize_description_multiloc
+    service = SanitizationService.new
+    self.description_multiloc = service.sanitize_multiloc(description_multiloc, DESCRIPTION_SANITIZE_FEATURES)
+    self.description_multiloc = service.remove_multiloc_empty_trailing_tags description_multiloc
   end
 end
 
