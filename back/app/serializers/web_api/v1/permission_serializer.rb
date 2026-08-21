@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::PermissionSerializer < WebApi::V1::BaseSerializer
-  attributes :action, :permitted_by, :global_custom_fields, :custom_fields_behavior, :verification_expiry,
+  attributes :action, :permitted_by, :custom_fields_behavior, :verification_expiry,
     :access_denied_explanation_multiloc, :created_at, :updated_at,
     :user_data_collection, :require_confirmed_email, :confirmed_email_expiry,
     :require_name, :require_password, :require_verification,

@@ -65,6 +65,10 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         manual_votes_last_updated_by_id
       ], # moderation / manual-vote operational state
 
+      'Permission' => %w[
+        global_custom_fields
+      ], # replaced by custom_fields_behavior; the column itself goes in a follow-up
+
       'Phase' => %w[
         manual_voters_amount
         manual_voters_last_updated_at

@@ -112,10 +112,6 @@ module Permissions
         permission.save!
         next unless source
 
-        # apply_creation_defaults stamps 'global' onto a copy whose source has no
-        # behavior stored yet, so the source's resolved one is restored after the
-        # save. Goes away once the backfill has run everywhere.
-        permission.update!(custom_fields_behavior: source.custom_fields_behavior)
         copy_permissions_custom_fields!(source, permission)
       end
 
