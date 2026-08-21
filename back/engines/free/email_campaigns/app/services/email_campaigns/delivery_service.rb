@@ -74,8 +74,10 @@ module EmailCampaigns
       @campaign_classes ||= begin
         classes = CAMPAIGN_CLASSES.deep_dup
         classes << Campaigns::CommunityMonitorReport if AppConfiguration.instance.feature_activated?('community_monitor')
+        # The sms feature carries the Twilio settings every SMS campaign sends through, so
+        # sms_manual_campaigns only takes effect on top of it.
         if AppConfiguration.instance.feature_activated?('sms')
-          classes << Campaigns::SmsManual
+          classes << Campaigns::SmsManual if AppConfiguration.instance.feature_activated?('sms_manual_campaigns')
           classes << Campaigns::PhoneConfirmation
           classes << Campaigns::NewPhoneConfirmation
         end

@@ -1604,6 +1604,18 @@
         }
       },
 
+      "sms_manual_campaigns": {
+        "type": "object",
+        "title": "SMS manual campaigns (DO NOT USE YET)",
+        "description": "(DO NOT USE YET) Allow admins to send manual SMS campaigns. Requires the SMS feature, which holds the Twilio settings.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "hide_submission_removal_text": {
         "type": "object",
         "title": "Hide submission removal text",
