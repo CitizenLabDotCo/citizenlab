@@ -161,7 +161,8 @@ class WebApi::V1::UsersController < ApplicationController
       return
     end
 
-    render_check_action(@user, :email_confirmation) { |user| RequestEmailConfirmationCodeJob.perform_now(user) }
+    RequestEmailConfirmationCodeJob.perform_now(@user) if auto_send_code?(@user, :email_confirmation)
+    render_check_action(@user, :email_confirmation)
   end
 
   # The phone counterpart of check_email: validates a phone number without
@@ -184,7 +185,8 @@ class WebApi::V1::UsersController < ApplicationController
 
     @user = User.find_by_phone_number(parsed.e164)
 
-    render_check_action(@user, :phone_confirmation) { |user| RequestPhoneConfirmationCodeJob.perform_later(user) }
+    RequestPhoneConfirmationCodeJob.perform_later(@user) if auto_send_code?(@user, :phone_confirmation)
+    render_check_action(@user, :phone_confirmation)
   end
 
   def create
@@ -424,35 +426,30 @@ class WebApi::V1::UsersController < ApplicationController
 
   # Shared by check_email and check_phone: given the account that owns the
   # submitted identifier (nil when there is none) and the name of the confirmation
-  # that covers that identifier, tell the frontend which step to go to next. Users
-  # who still have to confirm, and users without a password, get a code sent.
-  def render_check_action(user, confirmation_name, &)
-    if user.nil?
-      render json: raw_json({ action: 'terms' })
-      return
-    end
-
-    if !user.confirmation_pending?(confirmation_name) && !user.no_password?
-      render json: raw_json({ action: 'password' })
-      return
-    end
-
-    request_code_if_first_time(user, confirmation_name, &)
-    render json: raw_json({ action: 'confirm' })
+  # that covers that identifier, tell the frontend which step to go to next.
+  def render_check_action(user, confirmation_name)
+    render json: raw_json({ action: check_action(user, confirmation_name) })
   end
 
-  # The block sends the code. It is passed in rather than derived from the
-  # confirmation name because email codes are sent inline while SMS codes are
-  # queued (perform_later).
-  def request_code_if_first_time(user, confirmation_name)
+  def check_action(user, confirmation_name)
+    return 'terms' if user.nil?
+    return 'password' if !user.confirmation_pending?(confirmation_name) && !user.no_password?
+
+    'confirm'
+  end
+
+  # Users who still have to confirm, and users without a password, get a code sent
+  # automatically. The callers send it themselves, because email codes are sent
+  # inline while SMS codes are queued.
+  def auto_send_code?(user, confirmation_name)
+    return false if check_action(user, confirmation_name) != 'confirm'
+
     # If users already have a code_reset_count > 0,
     # they tried to log in previously and failed. In this case, we don't
     # automatically resend the code, because otherwise we
     # might too easily reach the retry limit. So they will
     # have to request it themselves
     reset_count = user.public_send(confirmation_name)&.code_reset_count || 0
-    if reset_count == 0
-      yield user
-    end
+    reset_count == 0
   end
 end
