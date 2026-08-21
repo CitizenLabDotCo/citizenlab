@@ -48,7 +48,7 @@ const PhoneChange = () => {
   const schema = object({
     phone: string()
       .required(formatMessage(messages.phoneEmptyError))
-      .test('is-valid-phone', formatMessage(messages.phoneInvalid), (value) =>
+      .test('is-valid-phone', formatMessage(messages.phoneInvalid3), (value) =>
         value ? isValidPhoneNumber(value) : false
       ),
     smsManualCampaignConsent: boolean().default(false),

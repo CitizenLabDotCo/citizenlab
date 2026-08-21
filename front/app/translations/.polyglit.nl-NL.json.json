@@ -3509,6 +3509,16 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.components.SmsConsent.campaignPreferencesDisclosure": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:12:01.505601Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.SmsConsent.phoneConfirmationDisclosure": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:12:01.505601Z",
+    "verified_by": "Luuc"
+  },
   "app.components.SmsConsent.smsConfirmationDisclosure": {
     "state": "verified",
     "verified_at": "2026-08-06T12:25:13.721839Z",
@@ -6924,9 +6934,9 @@
     "verified_at": "2026-07-21T19:53:38.720115Z",
     "verified_by": "Luuc"
   },
-  "app.containers.Authentication.steps.Policies.byContinuingPhone": {
+  "app.containers.Authentication.steps.Policies.byContinuingPhone2": {
     "state": "verified",
-    "verified_at": "2026-08-20T12:11:02.511157Z",
+    "verified_at": "2026-08-20T12:12:01.505601Z",
     "verified_by": "Luuc"
   },
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": {
@@ -10814,6 +10824,11 @@
     "verified_at": "2026-07-14T17:01:41.815022Z",
     "verified_by": "Luuc"
   },
+  "app.containers.PhoneChange.newPhoneLabel2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:12:01.505601Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.PhoneChange.phoneEmptyError": {
     "state": "verified",
     "verified_at": "2026-07-14T17:01:41.815022Z",
@@ -10822,6 +10837,11 @@
   "app.containers.PhoneChange.phoneInvalid2": {
     "state": "verified",
     "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.phoneInvalid3": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:12:01.505601Z",
     "verified_by": "Luuc"
   },
   "app.containers.PhoneChange.phoneTaken": {
@@ -10862,6 +10882,11 @@
   "app.containers.PhoneChange.smsManualCampaignConsentLabel": {
     "state": "verified",
     "verified_at": "2026-07-29T21:12:29.735950Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.smsManualCampaignConsentLabel2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:12:01.505601Z",
     "verified_by": "Luuc"
   },
   "app.containers.PhoneChange.submitButton": {

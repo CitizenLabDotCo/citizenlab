@@ -11,8 +11,9 @@ import { SetError, State } from 'containers/Authentication/typings';
 
 import PhoneInput from 'components/HookForm/PhoneInput';
 import isValidPhoneNumber from 'components/HookForm/PhoneInput/isValidPhoneNumber';
+import ConsentDisclosure from 'components/SmsConsent/ConsentDisclosure';
 import ManualCampaignConsent from 'components/SmsConsent/ManualCampaignConsent';
-import PhoneConfirmationConsent from 'components/SmsConsent/PhoneConfirmationConsent';
+import smsConsentMessages from 'components/SmsConsent/messages';
 import { FormLabel } from 'components/UI/FormComponents';
 
 import { useIntl } from 'utils/cl-intl';
@@ -106,7 +107,9 @@ const Phone = ({ state, loading, setError, onSubmit }: Props) => {
               {formatMessage(sharedMessages.continue)}
             </Button>
           </Box>
-          <PhoneConfirmationConsent />
+          <ConsentDisclosure
+            disclosureMessage={smsConsentMessages.phoneConfirmationDisclosure}
+          />
         </form>
       </FormProvider>
     </Box>

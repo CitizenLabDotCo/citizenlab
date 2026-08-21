@@ -15,8 +15,7 @@ const ManualCampaignConsent = () => {
     <Box mt="20px" mb="8px">
       <CheckboxWithLabel
         name="smsManualCampaignConsent"
-        label={formatMessage(messages.smsManualCampaignConsentLabel)}
-        dataTestId="sms-manual-campaign-consent"
+        label={formatMessage(messages.smsManualCampaignConsentLabel2)}
       />
     </Box>
   );

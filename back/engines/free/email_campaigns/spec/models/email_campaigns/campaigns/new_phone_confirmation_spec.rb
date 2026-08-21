@@ -5,6 +5,12 @@ require 'rails_helper'
 RSpec.describe EmailCampaigns::Campaigns::NewPhoneConfirmation do
   subject(:campaign) { described_class.create! }
 
+  before_all do
+    config = AppConfiguration.instance
+    config.settings['core']['organization_name'] = { 'en' => 'Vaudeville' }
+    config.save!
+  end
+
   let(:new_phone) { '+14155552671' }
 
   describe 'channel and flags' do
@@ -19,7 +25,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewPhoneConfirmation do
 
     it 'renders the localized body with the code interpolated' do
       command = { recipient: recipient, event_payload: { code: '1234' } }
-      expect(campaign.sms_body(command)).to eq('Your confirmation code is 1234.')
+      expect(campaign.sms_body(command)).to eq('Vaudeville: Your confirmation code is 1234.')
     end
   end
 
@@ -44,7 +50,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewPhoneConfirmation do
 
       expect(delivery.campaign_id).to eq(campaign.id)
       expect(sms_provider).to have_received(:send)
-        .with(to: new_phone, body: 'Your confirmation code is 1234.', use_case: EmailCampaigns::Sms::UseCase::CONFIRMATION_CODES)
+        .with(to: new_phone, body: 'Vaudeville: Your confirmation code is 1234.', use_case: EmailCampaigns::Sms::UseCase::CONFIRMATION_CODES)
     end
 
     it 'does not enqueue a background SendJob' do

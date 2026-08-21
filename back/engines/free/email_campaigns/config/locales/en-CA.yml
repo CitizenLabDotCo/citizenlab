@@ -542,6 +542,7 @@ en-CA:
       yesterday: Yesterday
     new_phone_confirmation:
       sms_body: Your confirmation code is %{code}.
+      sms_body2: '%{organization_name}: Your confirmation code is %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Go to this input
       event_description: "%{feedback_author_name} gave an update on '%{input_title}'."
@@ -556,6 +557,7 @@ en-CA:
       title: Choose a new password
     phone_confirmation:
       sms_body: Your confirmation code is %{code}.
+      sms_body2: '%{organization_name}: Your confirmation code is %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
