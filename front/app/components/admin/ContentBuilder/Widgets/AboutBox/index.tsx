@@ -13,7 +13,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import projectMessages from 'containers/ProjectsShowPage/messages';
 import {
   excludeHidden,
-  groupExtraSurveys,
+  groupSpotlightSurveys,
   phaseHasPrimaryCTA,
 } from 'containers/ProjectsShowPage/shared/header/participationOptions';
 import ProjectInfoSideBar from 'containers/ProjectsShowPage/shared/header/ProjectInfoSideBar';
@@ -99,7 +99,7 @@ const AboutBoxSettings = () => {
   };
 
   const currentPhase = getCurrentPhase(phases?.data);
-  const { open, upcoming } = groupExtraSurveys(standalonePhases?.data);
+  const { open, upcoming } = groupSpotlightSurveys(standalonePhases?.data);
 
   const timelinePhases =
     currentPhase && phaseHasPrimaryCTA(currentPhase) ? [currentPhase] : [];
