@@ -6,11 +6,11 @@ require 'rspec_api_documentation/dsl'
 resource 'SMS balance' do
   explanation 'How many of the tenant\'s purchased SMS messages are left, and what consumed them'
 
-  include_context 'with sms feature enabled'
+  include_context 'with sms manual campaigns feature enabled'
 
   before do
     header 'Content-Type', 'application/json'
-    SettingsService.new.activate_feature!('sms', settings: { 'messages_purchased' => 500 })
+    SettingsService.new.activate_feature!('sms_manual_campaigns', settings: { 'messages_purchased' => 500 })
   end
 
   get 'web_api/v1/sms/balance' do

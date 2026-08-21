@@ -25,7 +25,7 @@ module EmailCampaigns
       end
 
       def purchased
-        @app_configuration.settings('sms', 'messages_purchased') || 0
+        @app_configuration.settings('sms_manual_campaigns', 'messages_purchased') || 0
       end
 
       # Billable sends, split by the campaign that triggered them.

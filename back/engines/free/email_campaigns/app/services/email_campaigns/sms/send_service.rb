@@ -3,6 +3,8 @@
 module EmailCampaigns
   module Sms
     class SendService
+      delegate :configured?, to: :provider
+
       def create_delivery(body:, user_id: nil, campaign_id: nil)
         unless AppConfiguration.instance.feature_activated?('sms')
           raise Error, 'SMS feature is not enabled for this tenant'
@@ -62,25 +64,15 @@ module EmailCampaigns
         parsed
       end
 
+      # `use_test_mode` is the only thing standing between a send and the real Twilio
+      # API, in every environment. A tenant that leaves it off without configuring
+      # Twilio gets an errored delivery from the provider's own credential check.
       def provider
-        fake_sms_sends? ? Providers::Fake.new : Providers::Twilio.new
-      end
-
-      # Whether to route sends through the fake provider instead of the real Twilio API.
-      # Returns true when:
-      #   - the tenant has `use_test_mode` enabled (in any environment, incl. production/staging), or
-      #   - we're in development and the tenant is missing any Twilio credential.
-      # Returns false when:
-      #   - `use_test_mode` is off and we're not in development, or
-      #   - we're in development but all Twilio credentials are filled in.
-      def fake_sms_sends?
-        config = AppConfiguration.instance.settings('sms') || {}
-        return true if config['use_test_mode']
-
-        return false unless Rails.env.development?
-
-        sid_settings = Providers::Twilio::MESSAGING_SERVICE_SID_SETTINGS.values
-        config.values_at('twilio_account_sid', 'twilio_auth_token', *sid_settings).any?(&:blank?)
+        if AppConfiguration.instance.settings('sms', 'use_test_mode')
+          Providers::Fake.new
+        else
+          Providers::Twilio.new
+        end
       end
     end
   end

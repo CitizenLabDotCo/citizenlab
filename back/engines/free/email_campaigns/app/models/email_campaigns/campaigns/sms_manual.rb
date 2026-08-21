@@ -51,6 +51,7 @@ module EmailCampaigns
     validates :subject_multiloc, presence: true, multiloc: { presence: true }
     validates :body_multiloc, presence: true, multiloc: { presence: true }
     validate :body_within_segment_limit
+    validate :validate_sms_provider_configured, on: %i[send preview]
     validate :validate_sufficient_balance, on: :send
     validate :validate_sufficient_preview_balance, on: :preview
 
@@ -150,6 +151,14 @@ module EmailCampaigns
 
     def user_filter_no_invitees(users_scope, _options = {})
       users_scope.active
+    end
+
+    # Caught here rather than in the job, so an unconfigured tenant gets one error on
+    # send instead of a delivery per recipient that can only fail.
+    def validate_sms_provider_configured
+      return if EmailCampaigns::Sms::SendService.new.configured?(self.class.sms_use_case)
+
+      errors.add(:base, :sms_not_configured, message: 'Some of the SMS configuration is missing')
     end
 
     def validate_sufficient_balance

@@ -357,8 +357,7 @@ namespace :cl2_back do
         sms: {
           enabled: true,
           allowed: true,
-          use_test_mode: true,
-          messages_purchased: 10_000
+          use_test_mode: true
         },
         sms_login: {
           enabled: true,
@@ -366,7 +365,8 @@ namespace :cl2_back do
         },
         sms_manual_campaigns: {
           enabled: true,
-          allowed: true
+          allowed: true,
+          messages_purchased: 10_000
         },
         parallel_participation: {
           enabled: true,

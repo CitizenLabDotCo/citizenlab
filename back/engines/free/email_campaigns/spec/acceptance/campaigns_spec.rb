@@ -604,7 +604,7 @@ resource 'Campaigns' do
         include_context 'with sms manual campaigns feature enabled'
 
         before do
-          SettingsService.new.activate_feature!('sms', settings: { 'messages_purchased' => 100 })
+          SettingsService.new.activate_feature!('sms_manual_campaigns', settings: { 'messages_purchased' => 100 })
           recipient = create(:user, phone: '+14155552671', phone_confirmed_at: Time.zone.now)
           create(:consent, :sms_manual, user: recipient)
         end
@@ -618,21 +618,33 @@ resource 'Campaigns' do
         end
 
         example '[error] Send out an SMS campaign to more recipients than the balance covers' do
-          SettingsService.new.activate_feature!('sms', settings: { 'messages_purchased' => 0 })
+          SettingsService.new.activate_feature!('sms_manual_campaigns', settings: { 'messages_purchased' => 0 })
 
           expect { do_request }.not_to have_enqueued_job(EmailCampaigns::Sms::SendJob)
           assert_status 422
           expect(json_response_body).to include_response_error(:base, 'insufficient_sms_balance')
+        end
+
+        # Refused before a delivery per recipient is created, rather than in the send job.
+        example '[error] Send out an SMS campaign while the SMS provider is not configured' do
+          SettingsService.new.activate_feature!('sms_manual_campaigns', settings: {
+            'twilio_manual_campaigns_messaging_service_sid' => ''
+          })
+
+          expect { do_request }.not_to have_enqueued_job(EmailCampaigns::Sms::SendJob)
+          assert_status 422
+          expect(json_response_body).to include_response_error(:base, 'sms_not_configured')
+          expect(EmailCampaigns::Sms::Delivery.count).to eq(0)
         end
       end
     end
 
     post 'web_api/v1/campaigns/:id/send_sms_preview' do
       context 'SMS campaign' do
-        include_context 'with sms feature enabled'
+        include_context 'with sms manual campaigns feature enabled'
 
         before do
-          SettingsService.new.activate_feature!('sms', settings: { 'messages_purchased' => 10 })
+          SettingsService.new.activate_feature!('sms_manual_campaigns', settings: { 'messages_purchased' => 10 })
           @user.update!(phone: '+14155552671', phone_confirmed_at: Time.zone.now)
         end
 
@@ -646,7 +658,7 @@ resource 'Campaigns' do
         end
 
         example '[error] Send a preview SMS the balance no longer covers' do
-          SettingsService.new.activate_feature!('sms', settings: { 'messages_purchased' => 0 })
+          SettingsService.new.activate_feature!('sms_manual_campaigns', settings: { 'messages_purchased' => 0 })
 
           expect { do_request }.not_to have_enqueued_job(EmailCampaigns::Sms::SendJob)
           assert_status 422
@@ -715,10 +727,10 @@ resource 'Campaigns' do
 
     get 'web_api/v1/campaigns/:id/sms_send_summary' do
       context 'SMS campaign' do
-        include_context 'with sms feature enabled'
+        include_context 'with sms manual campaigns feature enabled'
 
         before do
-          SettingsService.new.activate_feature!('sms', settings: { 'messages_purchased' => 50 })
+          SettingsService.new.activate_feature!('sms_manual_campaigns', settings: { 'messages_purchased' => 50 })
         end
 
         # 200 characters no longer fit one segment, so the French recipient costs two.
