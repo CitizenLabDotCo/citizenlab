@@ -117,8 +117,13 @@ namespace :single_use do
     # The words the stored value holds. Not the HTML sanitiser, and not `<[^>]*>` either: both read
     # `<Sea level <200 cm) ...</p>` as a single tag, so they drop that prose from the before-value
     # too and the loss measures as nothing. A real tag never contains `<`, which tells them apart.
+    #
+    # `&nbsp;` is decoded by hand, as `strip_to_plain_text` does: `CGI.unescapeHTML` covers the five
+    # XML names and numeric references but not that one, so without it the word `nbsp` counts as
+    # visible text and every row the pipeline turns into a literal U+00A0 reads as prose lost.
     visible_words = lambda do |value|
-      CGI.unescapeHTML(value.to_s.gsub(/<[^<>]*>/, ' ')).scan(/[[:word:]]+/)
+      text = value.to_s.gsub(/<[^<>]*>/, ' ').gsub('&nbsp;', SanitizationService::NBSP)
+      CGI.unescapeHTML(text).scan(/[[:word:]]+/)
     end
 
     # Words the reader loses. Compared as words rather than characters: a rewritten URL shuffles
