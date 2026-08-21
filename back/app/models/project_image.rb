@@ -21,9 +21,12 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class ProjectImage < ApplicationRecord
+  attr_accessor :skip_image_presence
+
   mount_base64_uploader :image, ProjectImageUploader
   belongs_to :project
 
   validates :project, presence: true
+  validates :image, presence: true, unless: :skip_image_presence
   validates :ordering, numericality: { only_integer: true }, allow_nil: true
 end
