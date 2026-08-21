@@ -369,11 +369,10 @@ resource 'Request codes' do
     example 'It works for an authenticated user and stores the pending number' do
       user = create(:user)
       header_token_for(user)
-      do_request(request_code: { new_phone: '+1 415 555 2671' })
+      expect { do_request(request_code: { new_phone: '+1 415 555 2671' }) }
+        .to enqueue_job(RequestNewPhoneConfirmationCodeJob).with(user, new_phone: '+14155552671').once
       expect(response_status).to eq 200
       expect(user.reload.new_phone).to eq '+14155552671'
-      expect(delivery_service).to have_received(:send_now_to_user)
-        .with(an_instance_of(EmailCampaigns::Campaigns::NewPhoneConfirmation), user, hash_including(:code)).once
     end
 
     example 'It records the consent to receive a confirmation code by SMS and logs the activity' do
@@ -456,17 +455,18 @@ resource 'Request codes' do
       SettingsService.new.activate_feature!('sms', settings: { 'allowed_country_codes' => ['BE'] })
       user = create(:user)
       header_token_for(user)
-      do_request(request_code: { new_phone: '+14155552671' }) # US number
+      expect { do_request(request_code: { new_phone: '+14155552671' }) } # US number
+        .not_to enqueue_job(RequestNewPhoneConfirmationCodeJob)
       expect(response_status).to eq 422
       expect(json_response_body).to include_response_error(:new_phone, 'unsupported_country')
-      expect(delivery_service).not_to have_received(:send_now_to_user)
     end
 
     example 'It works if the phone number is in an allowed country' do
       SettingsService.new.activate_feature!('sms', settings: { 'allowed_country_codes' => ['US'] })
       user = create(:user)
       header_token_for(user)
-      do_request(request_code: { new_phone: '+14155552671' })
+      expect { do_request(request_code: { new_phone: '+14155552671' }) }
+        .to enqueue_job(RequestNewPhoneConfirmationCodeJob).with(user, new_phone: '+14155552671').once
       expect(response_status).to eq 200
       expect(user.reload.new_phone).to eq '+14155552671'
     end
