@@ -53,27 +53,29 @@ const DemographicsBehavior = ({
 
         return (
           <Box key={option.value} mb="2px">
-            <UpsellTooltip disabled={!locked} placement="right">
-              <Radio
-                name="demographics-behavior"
-                value={option.value}
-                currentValue={customFieldsBehavior}
-                disabled={locked}
-                onChange={(value: CustomFieldsBehavior) =>
-                  onChange({ custom_fields_behavior: value })
-                }
-                label={
-                  <Text
-                    as="span"
-                    m="0"
-                    fontSize="s"
-                    color={locked ? 'coolGrey500' : 'primary'}
-                  >
-                    {formatMessage(option.label)}
-                  </Text>
-                }
-              />
-            </UpsellTooltip>
+            <Box width="fit-content">
+              <UpsellTooltip disabled={!locked} placement="right">
+                <Radio
+                  name="demographics-behavior"
+                  value={option.value}
+                  currentValue={customFieldsBehavior}
+                  disabled={locked}
+                  onChange={(value: CustomFieldsBehavior) =>
+                    onChange({ custom_fields_behavior: value })
+                  }
+                  label={
+                    <Text
+                      as="span"
+                      m="0"
+                      fontSize="s"
+                      color={locked ? 'coolGrey500' : 'primary'}
+                    >
+                      {formatMessage(option.label)}
+                    </Text>
+                  }
+                />
+              </UpsellTooltip>
+            </Box>
           </Box>
         );
       })}
