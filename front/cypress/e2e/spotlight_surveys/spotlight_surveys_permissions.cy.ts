@@ -1,5 +1,8 @@
 import { randomEmail, randomString } from '../../support/commands';
-import { clickExtraSurveyButton, createProjectWithExtraSurveys } from './utils';
+import {
+  clickSpotlightSurveyButton,
+  createProjectWithSpotlightSurveys,
+} from './utils';
 
 describe('Extra survey permissions', () => {
   const firstName = randomString();
@@ -31,7 +34,7 @@ describe('Extra survey permissions', () => {
     let surveyPhaseId = '';
 
     before(() => {
-      createProjectWithExtraSurveys({
+      createProjectWithSpotlightSurveys({
         withIdeationPhase: false,
         surveys: [{}],
       }).then((result) => {
@@ -51,7 +54,7 @@ describe('Extra survey permissions', () => {
       cy.visit(`/projects/${projectSlug}`);
       cy.get('#e2e-about-box').scrollIntoView();
 
-      clickExtraSurveyButton();
+      clickSpotlightSurveyButton();
 
       cy.url().should('include', `/projects/${projectSlug}/surveys/new`);
       cy.get('#e2e-authentication-modal').should('exist');
@@ -62,7 +65,7 @@ describe('Extra survey permissions', () => {
       cy.visit(`/projects/${projectSlug}`);
       cy.get('#e2e-about-box').scrollIntoView();
 
-      clickExtraSurveyButton();
+      clickSpotlightSurveyButton();
 
       cy.url().should('include', `phase_id=${surveyPhaseId}`);
       submitEmptySurvey();
@@ -75,7 +78,7 @@ describe('Extra survey permissions', () => {
     let surveyPhaseId = '';
 
     before(() => {
-      createProjectWithExtraSurveys({
+      createProjectWithSpotlightSurveys({
         withIdeationPhase: false,
         surveys: [{}],
       }).then((result) => {
@@ -101,7 +104,7 @@ describe('Extra survey permissions', () => {
       cy.visit(`/projects/${projectSlug}`);
       cy.get('#e2e-about-box').scrollIntoView();
 
-      clickExtraSurveyButton();
+      clickSpotlightSurveyButton();
 
       cy.url().should('include', `phase_id=${surveyPhaseId}`);
       submitEmptySurvey();
@@ -113,7 +116,7 @@ describe('Extra survey permissions', () => {
     let projectSlug = '';
 
     before(() => {
-      createProjectWithExtraSurveys({
+      createProjectWithSpotlightSurveys({
         withIdeationPhase: false,
         surveys: [{}],
       }).then((result) => {

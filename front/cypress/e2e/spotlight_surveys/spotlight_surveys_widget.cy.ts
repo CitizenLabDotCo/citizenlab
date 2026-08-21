@@ -48,7 +48,7 @@ describe('Extra surveys widget in the project page builder', () => {
     );
     cy.visit(`/admin/project-page-builder/projects/${projectId}`);
 
-    cy.get('#e2e-draggable-extra-surveys').dragAndDrop(
+    cy.get('#e2e-draggable-spotlight-surveys').dragAndDrop(
       '#e2e-project-page-body',
       {
         position: 'inside',
@@ -60,7 +60,7 @@ describe('Extra surveys widget in the project page builder', () => {
 
     // Select the widget and link the standalone survey from the settings panel
     cy.contains('No survey linked yet').click({ force: true });
-    cy.get('#e2e-extra-surveys-survey-select').select(surveyTitle);
+    cy.get('#e2e-spotlight-surveys-survey-select').select(surveyTitle);
 
     // The editor now previews the survey card instead of the empty state
     cy.contains('No survey linked yet').should('not.exist');
@@ -108,7 +108,7 @@ describe('Extra surveys widget in the project page builder', () => {
     const selectWidget = (attemptsLeft: number) => {
       cy.get('.e2e-extra-survey-button').first().click({ force: true });
       cy.get('body').then(($body) => {
-        if ($body.find('#extra-surveys-format-button').length === 0) {
+        if ($body.find('#spotlight-surveys-format-button').length === 0) {
           expect(
             attemptsLeft,
             'widget selection attempts before settings panel opened'
@@ -120,8 +120,8 @@ describe('Extra surveys widget in the project page builder', () => {
     };
     selectWidget(10);
 
-    cy.get('#extra-surveys-format-button').click({ force: true });
-    cy.get('#e2e-extra-surveys-button-text').type(customButtonText, {
+    cy.get('#spotlight-surveys-format-button').click({ force: true });
+    cy.get('#e2e-spotlight-surveys-button-text').type(customButtonText, {
       force: true,
     });
 

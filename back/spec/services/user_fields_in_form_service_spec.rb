@@ -273,21 +273,6 @@ describe UserFieldsInFormService do
     end
   end
 
-  describe '#user_fields_in_form_descriptor' do
-    let(:permission) { create(:permission, action: 'posting_idea', permission_scope: create(:native_survey_phase)) }
-
-    it 'returns the unsupported descriptor if the permissions_custom_fields feature is deactivated' do
-      SettingsService.new.deactivate_feature!('permissions_custom_fields')
-      expect(described_class.user_fields_in_form_descriptor(permission, 'native_survey'))
-        .to eq Permission::UNSUPPORTED_DESCRIPTOR
-    end
-
-    it 'returns a supported descriptor if the permissions_custom_fields feature is activated' do
-      expect(described_class.user_fields_in_form_descriptor(permission, 'native_survey'))
-        .not_to eq Permission::UNSUPPORTED_DESCRIPTOR
-    end
-  end
-
   describe '#add_user_fields_to_form' do
     it 'adds user custom fields to the form with prefixed keys' do
       project = create(:single_phase_native_survey_project, phase_attrs: {
