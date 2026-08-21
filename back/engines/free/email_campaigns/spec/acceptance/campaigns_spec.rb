@@ -59,7 +59,7 @@ resource 'Campaigns' do
       end
 
       context 'with the sms feature enabled' do
-        include_context 'with sms feature enabled'
+        include_context 'with sms manual campaigns feature enabled'
 
         example 'List only campaigns of a given channel' do
           sms_campaign = create(:sms_manual_campaign)
@@ -290,7 +290,7 @@ resource 'Campaigns' do
           parameter :subject_multiloc, 'An admin-facing label for the SMS campaign (reuses the subject column; SMS has no subject line)', required: true
         end
 
-        include_context 'with sms feature enabled'
+        include_context 'with sms manual campaigns feature enabled'
 
         let(:campaign_name) { 'sms_manual' }
         let(:subject_multiloc) { { 'en' => 'Town hall reminder' } }
@@ -601,7 +601,7 @@ resource 'Campaigns' do
       end
 
       context 'SMS campaign' do
-        include_context 'with sms feature enabled'
+        include_context 'with sms manual campaigns feature enabled'
 
         before do
           recipient = create(:user, phone: '+14155552671', phone_confirmed_at: Time.zone.now)

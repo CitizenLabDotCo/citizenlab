@@ -5,6 +5,8 @@ require 'rails_helper'
 RSpec.describe EventImage do
   subject { build(:event_image) }
 
+  it_behaves_like 'a plain text multiloc', factory: :event_image, attribute: :alt_text_multiloc
+
   describe 'Default factory' do
     it { is_expected.to be_valid }
   end

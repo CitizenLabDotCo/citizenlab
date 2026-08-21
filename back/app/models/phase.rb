@@ -64,6 +64,7 @@
 #
 class Phase < ApplicationRecord
   include Polls::PollPhase
+  include PlainTextMultiloc
   include Surveys::SurveyPhase
   include Volunteering::VolunteeringPhase
   include DocumentAnnotation::DocumentAnnotationPhase
@@ -102,7 +103,7 @@ class Phase < ApplicationRecord
 
   before_validation :sanitize_description_multiloc
   before_validation :sanitize_draft_description_multiloc
-  before_validation :sanitize_title_multiloc, if: -> { title_multiloc && title_multiloc_changed? }
+  plain_text_multiloc :title_multiloc, :native_survey_title_multiloc, :native_survey_button_multiloc
   before_validation :strip_title
   before_validation :set_participation_method_defaults, on: :create
   before_validation :set_participation_method_defaults_on_method_change, on: :update
@@ -434,11 +435,6 @@ class Phase < ApplicationRecord
 
     previous_phase.update!(end_at: start_at)
     @previous_phase_end_at_updated = true
-  end
-
-  # Titles are plain text: strip markup so nothing downstream can render it as HTML.
-  def sanitize_title_multiloc
-    self.title_multiloc = SanitizationService.new.strip_multiloc_to_plain_text(title_multiloc)
   end
 
   def strip_title

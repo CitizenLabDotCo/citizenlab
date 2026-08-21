@@ -66,6 +66,18 @@ describe MachineTranslations::MachineTranslation do
           .to eq '<a href="https://evil.example" target="_blank" rel="noreferrer noopener nofollow">https://evil.example</a>'
       end
 
+      # The same thing one level up: a provider translates the words in a URL's *path* - `so cerca`
+      # into `tan cerca` - leaving a label that points at a page that does not exist. Found in
+      # production in four languages (§11.7, §13.4), which is why this example is here rather than
+      # dismissed as unrealistic.
+      it 'puts back a URL whose path a provider translated' do
+        href = 'https://publicoescazu.cepal.org/es/ideas/34581-so-cerca-del-acuerdo-de-escazu'
+        label = 'https://publicoescazu.cepal.org/es/ideas/34581-tan-cerca-del-acuerdo-de-escazu'
+        attrs = 'target="_blank" rel="noreferrer noopener nofollow"'
+        expect(translation_of(%(Видети <a href="#{href}" #{attrs}>#{label}</a>)))
+          .to eq %(Видети <a href="#{href}" #{attrs}>#{href}</a>)
+      end
+
       # A provider translates the words inside an address as readily as any others - `duurzaam` into
       # `sustainable` - leaving the label pointing at a mailbox that does not exist. From production.
       it 'puts back an address a provider translated inside the label' do

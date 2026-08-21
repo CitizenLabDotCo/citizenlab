@@ -52,6 +52,15 @@ class Permission < ApplicationRecord
   # 'everyone' is only meaningful for the submission action of participation
   # methods that support it (see ParticipationMethod::Base#supports_permitted_by_everyone?).
   EVERYONE_PERMITTED_ACTIONS = %w[posting_idea taking_survey].freeze
+
+  # `SanitizationService` features allowed in the explanation, shared with anything that
+  # re-sanitises a stored one. Rendered with `dangerouslySetInnerHTML`
+  # (`useCustomAccessDeniedMessage.tsx`, `AccessDenied/index.tsx`).
+  #
+  # Wider than today's editor on purpose: the field had an unrestricted Quill editor until a June
+  # 2026 component swap left it a single-line input, so production still holds lists (nine rows,
+  # every cluster surveyed). Nothing else with content in it - no heading, image, video, alignment.
+  EXPLANATION_SANITIZE_FEATURES = %i[list decoration link].freeze
   UNSUPPORTED_DESCRIPTOR = {
     value: nil,
     locked: true,
@@ -74,6 +83,7 @@ class Permission < ApplicationRecord
   has_many :permissions_custom_fields, -> { order(:ordering).includes(:custom_field) }, inverse_of: :permission, dependent: :destroy
   has_many :custom_fields, -> { order(:ordering) }, through: :permissions_custom_fields
 
+  before_validation :sanitize_access_denied_explanation_multiloc, if: :access_denied_explanation_multiloc
   validates :action, presence: true, inclusion: { in: ->(permission) { available_actions(permission.permission_scope) } }
   validates :permitted_by, presence: true, inclusion: { in: PERMITTED_BIES }
   validates :action, uniqueness: { scope: %i[permission_scope_id permission_scope_type] }
@@ -175,6 +185,13 @@ class Permission < ApplicationRecord
   end
 
   private
+
+  def sanitize_access_denied_explanation_multiloc
+    self.access_denied_explanation_multiloc = SanitizationService.new.sanitize_body_multiloc(
+      access_denied_explanation_multiloc,
+      EXPLANATION_SANITIZE_FEATURES
+    )
+  end
 
   def validate_permitted_by_everyone
     return unless permitted_by == 'everyone'

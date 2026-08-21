@@ -5,6 +5,8 @@ require 'rails_helper'
 RSpec.describe ProjectImage do
   subject { create(:project_image) }
 
+  it_behaves_like 'a plain text multiloc', factory: :project_image, attribute: :alt_text_multiloc
+
   describe 'Default factory' do
     it 'is valid' do
       expect(build(:project_image)).to be_valid
