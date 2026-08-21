@@ -201,7 +201,6 @@
   "app.components.admin.ActionForm.nothingExtra": "Ingenting ekstra",
   "app.components.admin.ActionForm.override": "Overstyr",
   "app.components.admin.ActionForm.password3": "Passord",
-  "app.components.admin.ActionForm.password3": "Passord",
   "app.components.admin.ActionForm.piiExcluded": "Personopplysninger ekskludert",
   "app.components.admin.ActionForm.piiExcludedFromResults": "Personopplysninger (PII) ekskludert fra resultatene",
   "app.components.admin.ActionForm.requireUserToSetAPassword": "Krev at brukeren angir et passord",

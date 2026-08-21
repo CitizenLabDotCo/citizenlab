@@ -201,7 +201,6 @@
   "app.components.admin.ActionForm.nothingExtra": "Ei mitään ylimääräistä",
   "app.components.admin.ActionForm.override": "Ohita",
   "app.components.admin.ActionForm.password3": "Salasana",
-  "app.components.admin.ActionForm.password3": "Salasana",
   "app.components.admin.ActionForm.piiExcluded": "Henkilötiedot (PII) jätetty pois",
   "app.components.admin.ActionForm.piiExcludedFromResults": "Henkilötiedot on jätetty tulosten ulkopuolelle",
   "app.components.admin.ActionForm.requireUserToSetAPassword": "Vaadi käyttäjää asettamaan salasana",

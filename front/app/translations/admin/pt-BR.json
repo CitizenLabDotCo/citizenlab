@@ -201,7 +201,6 @@
   "app.components.admin.ActionForm.nothingExtra": "Nada extra",
   "app.components.admin.ActionForm.override": "Substituir",
   "app.components.admin.ActionForm.password3": "Senha",
-  "app.components.admin.ActionForm.password3": "Senha",
   "app.components.admin.ActionForm.piiExcluded": "PII excluídas",
   "app.components.admin.ActionForm.piiExcludedFromResults": "PII excluídas dos resultados",
   "app.components.admin.ActionForm.requireUserToSetAPassword": "Exigir que o usuário defina uma senha",

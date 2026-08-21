@@ -201,7 +201,6 @@
   "app.components.admin.ActionForm.nothingExtra": "Nada adicional",
   "app.components.admin.ActionForm.override": "Anular",
   "app.components.admin.ActionForm.password3": "Contraseña",
-  "app.components.admin.ActionForm.password3": "Contraseña",
   "app.components.admin.ActionForm.piiExcluded": "PII excluida",
   "app.components.admin.ActionForm.piiExcludedFromResults": "PII excluida de los resultados",
   "app.components.admin.ActionForm.requireUserToSetAPassword": "Requerir que el usuario establezca una contraseña",

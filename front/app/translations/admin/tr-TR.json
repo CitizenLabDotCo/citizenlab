@@ -201,7 +201,6 @@
   "app.components.admin.ActionForm.nothingExtra": "Ekstra bir şey yok",
   "app.components.admin.ActionForm.override": "Geçersiz kıl",
   "app.components.admin.ActionForm.password3": "Şifre",
-  "app.components.admin.ActionForm.password3": "Şifre",
   "app.components.admin.ActionForm.piiExcluded": "PII hariç tutuldu",
   "app.components.admin.ActionForm.piiExcludedFromResults": "Kişisel veriler (PII) sonuçlara dahil edilmez",
   "app.components.admin.ActionForm.requireUserToSetAPassword": "Kullanıcının şifre belirlemesini zorunlu kıl",

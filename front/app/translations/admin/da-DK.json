@@ -201,7 +201,6 @@
   "app.components.admin.ActionForm.nothingExtra": "Intet ekstra",
   "app.components.admin.ActionForm.override": "Tilsidesæt",
   "app.components.admin.ActionForm.password3": "Adgangskode",
-  "app.components.admin.ActionForm.password3": "Adgangskode",
   "app.components.admin.ActionForm.piiExcluded": "PII udeladt",
   "app.components.admin.ActionForm.piiExcludedFromResults": "PII udeladt fra resultaterne",
   "app.components.admin.ActionForm.requireUserToSetAPassword": "Kræv, at brugeren angiver en adgangskode",

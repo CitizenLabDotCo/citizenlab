@@ -201,7 +201,6 @@
   "app.components.admin.ActionForm.nothingExtra": "Τίποτα επιπλέον",
   "app.components.admin.ActionForm.override": "Παράκαμψη",
   "app.components.admin.ActionForm.password3": "Κωδικός πρόσβασης",
-  "app.components.admin.ActionForm.password3": "Κωδικός πρόσβασης",
   "app.components.admin.ActionForm.piiExcluded": "Εξαιρούνται τα προσωπικά δεδομένα",
   "app.components.admin.ActionForm.piiExcludedFromResults": "Τα προσωπικά δεδομένα (PII) εξαιρούνται από τα αποτελέσματα",
   "app.components.admin.ActionForm.requireUserToSetAPassword": "Απαίτηση από τον χρήστη να ορίσει κωδικό πρόσβασης",

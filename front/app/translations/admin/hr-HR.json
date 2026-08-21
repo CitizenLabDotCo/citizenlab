@@ -201,7 +201,6 @@
   "app.components.admin.ActionForm.nothingExtra": "Ništa dodatno",
   "app.components.admin.ActionForm.override": "Nadjačaj",
   "app.components.admin.ActionForm.password3": "Lozinka",
-  "app.components.admin.ActionForm.password3": "Lozinka",
   "app.components.admin.ActionForm.piiExcluded": "Osobni podaci (PII) isključeni",
   "app.components.admin.ActionForm.piiExcludedFromResults": "Osobni podaci isključeni iz rezultata",
   "app.components.admin.ActionForm.requireUserToSetAPassword": "Zahtijevaj od korisnika postavljanje lozinke",

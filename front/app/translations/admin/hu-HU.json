@@ -201,7 +201,6 @@
   "app.components.admin.ActionForm.nothingExtra": "Nincs egyéb",
   "app.components.admin.ActionForm.override": "Felülbírálás",
   "app.components.admin.ActionForm.password3": "Jelszó",
-  "app.components.admin.ActionForm.password3": "Jelszó",
   "app.components.admin.ActionForm.piiExcluded": "PII (személyazonosításra alkalmas adatok) kizárva",
   "app.components.admin.ActionForm.piiExcludedFromResults": "Személyazonosításra alkalmas adatok (PII) kizárva az eredményekből",
   "app.components.admin.ActionForm.requireUserToSetAPassword": "Jelszó beállításának megkövetelése a felhasználótól",

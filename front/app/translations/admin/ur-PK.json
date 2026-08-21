@@ -201,7 +201,6 @@
   "app.components.admin.ActionForm.nothingExtra": "کچھ اضافی نہیں",
   "app.components.admin.ActionForm.override": "اوور رائیڈ کریں",
   "app.components.admin.ActionForm.password3": "پاس ورڈ",
-  "app.components.admin.ActionForm.password3": "پاس ورڈ",
   "app.components.admin.ActionForm.piiExcluded": "PII خارج کر دیا گیا",
   "app.components.admin.ActionForm.piiExcludedFromResults": "ذاتی طور پر قابلِ شناخت معلومات (PII) نتائج سے خارج کر دی گئی ہیں",
   "app.components.admin.ActionForm.requireUserToSetAPassword": "صارف کے لیے پاس ورڈ سیٹ کرنا لازمی قرار دیں",

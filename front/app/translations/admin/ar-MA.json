@@ -201,7 +201,6 @@
   "app.components.admin.ActionForm.nothingExtra": "لا شيء إضافي",
   "app.components.admin.ActionForm.override": "تجاوز",
   "app.components.admin.ActionForm.password3": "كلمة المرور",
-  "app.components.admin.ActionForm.password3": "كلمة المرور",
   "app.components.admin.ActionForm.piiExcluded": "استبعاد معلومات الهوية الشخصية (PII)",
   "app.components.admin.ActionForm.piiExcludedFromResults": "استبعاد معلومات التعريف الشخصية من النتائج",
   "app.components.admin.ActionForm.requireUserToSetAPassword": "إلزام المستخدم بتعيين كلمة مرور",

@@ -201,7 +201,6 @@
   "app.components.admin.ActionForm.nothingExtra": "Dada breise",
   "app.components.admin.ActionForm.override": "Sáraigh",
   "app.components.admin.ActionForm.password3": "Pasfhocal",
-  "app.components.admin.ActionForm.password3": "Pasfhocal",
   "app.components.admin.ActionForm.piiExcluded": "PII eisiata",
   "app.components.admin.ActionForm.piiExcludedFromResults": "PII eisiata ó thorthaí",
   "app.components.admin.ActionForm.requireUserToSetAPassword": "Éiligh ar an úsáideoir pasfhocal a shocrú",

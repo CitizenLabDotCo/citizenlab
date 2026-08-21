@@ -201,7 +201,6 @@
   "app.components.admin.ActionForm.nothingExtra": "Nic dodatkowego",
   "app.components.admin.ActionForm.override": "Nadpisz",
   "app.components.admin.ActionForm.password3": "Hasło",
-  "app.components.admin.ActionForm.password3": "Hasło",
   "app.components.admin.ActionForm.piiExcluded": "Dane osobowe (PII) wykluczone",
   "app.components.admin.ActionForm.piiExcludedFromResults": "Dane osobowe wyłączone z wyników",
   "app.components.admin.ActionForm.requireUserToSetAPassword": "Wymagaj od użytkownika ustawienia hasła",

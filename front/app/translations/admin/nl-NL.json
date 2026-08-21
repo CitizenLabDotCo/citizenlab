@@ -201,7 +201,6 @@
   "app.components.admin.ActionForm.nothingExtra": "Niets extra's",
   "app.components.admin.ActionForm.override": "Overschrijven",
   "app.components.admin.ActionForm.password3": "Wachtwoord",
-  "app.components.admin.ActionForm.password3": "Wachtwoord",
   "app.components.admin.ActionForm.piiExcluded": "PII uitgesloten",
   "app.components.admin.ActionForm.piiExcludedFromResults": "Persoonsgegevens (PII) uitgesloten van resultaten",
   "app.components.admin.ActionForm.requireUserToSetAPassword": "Gebruiker verplichten een wachtwoord in te stellen",

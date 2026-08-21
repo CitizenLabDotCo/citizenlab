@@ -201,7 +201,6 @@
   "app.components.admin.ActionForm.nothingExtra": "Dim byd ychwanegol",
   "app.components.admin.ActionForm.override": "Diystyru",
   "app.components.admin.ActionForm.password3": "Cyfrinair",
-  "app.components.admin.ActionForm.password3": "Cyfrinair",
   "app.components.admin.ActionForm.piiExcluded": "PII wedi'i heithrio",
   "app.components.admin.ActionForm.piiExcludedFromResults": "PII wedi'i heithrio o'r canlyniadau",
   "app.components.admin.ActionForm.requireUserToSetAPassword": "Gofyn i ddefnyddiwr osod cyfrinair",

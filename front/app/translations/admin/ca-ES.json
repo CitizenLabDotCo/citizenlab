@@ -201,7 +201,6 @@
   "app.components.admin.ActionForm.nothingExtra": "Res addicional",
   "app.components.admin.ActionForm.override": "Personalitzar",
   "app.components.admin.ActionForm.password3": "Contrasenya",
-  "app.components.admin.ActionForm.password3": "Contrasenya",
   "app.components.admin.ActionForm.piiExcluded": "PII exclosa",
   "app.components.admin.ActionForm.piiExcludedFromResults": "Dades d'identificació personal (PII) excloses dels resultats",
   "app.components.admin.ActionForm.requireUserToSetAPassword": "Exigir que l'usuari estableixi una contrasenya",

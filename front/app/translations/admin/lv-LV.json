@@ -201,7 +201,6 @@
   "app.components.admin.ActionForm.nothingExtra": "Nekas papildus",
   "app.components.admin.ActionForm.override": "Pārrakstīt",
   "app.components.admin.ActionForm.password3": "Parole",
-  "app.components.admin.ActionForm.password3": "Parole",
   "app.components.admin.ActionForm.piiExcluded": "PII izslēgta",
   "app.components.admin.ActionForm.piiExcludedFromResults": "Personu identificējoša informācija (PII) ir izslēgta no rezultātiem",
   "app.components.admin.ActionForm.requireUserToSetAPassword": "Pieprasīt lietotājam iestatīt paroli",

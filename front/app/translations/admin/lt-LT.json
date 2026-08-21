@@ -201,7 +201,6 @@
   "app.components.admin.ActionForm.nothingExtra": "Nieko papildomo",
   "app.components.admin.ActionForm.override": "Keisti",
   "app.components.admin.ActionForm.password3": "Slaptažodis",
-  "app.components.admin.ActionForm.password3": "Slaptažodis",
   "app.components.admin.ActionForm.piiExcluded": "PII neįtraukta",
   "app.components.admin.ActionForm.piiExcludedFromResults": "Asmens tapatybę patvirtinanti informacija (PII) neįtraukiama į rezultatus",
   "app.components.admin.ActionForm.requireUserToSetAPassword": "Reikalauti, kad naudotojas nustatytų slaptažodį",

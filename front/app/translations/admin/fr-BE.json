@@ -201,7 +201,6 @@
   "app.components.admin.ActionForm.nothingExtra": "Rien de plus",
   "app.components.admin.ActionForm.override": "Modifier",
   "app.components.admin.ActionForm.password3": "Mot de passe",
-  "app.components.admin.ActionForm.password3": "Mot de passe",
   "app.components.admin.ActionForm.piiExcluded": "Données personnelles exclues",
   "app.components.admin.ActionForm.piiExcludedFromResults": "Données personnelles exclues des résultats",
   "app.components.admin.ActionForm.requireUserToSetAPassword": "Exiger que l'utilisateur définisse un mot de passe",

@@ -201,7 +201,6 @@
   "app.components.admin.ActionForm.nothingExtra": "Inget extra",
   "app.components.admin.ActionForm.override": "Åsidosätt",
   "app.components.admin.ActionForm.password3": "Lösenord",
-  "app.components.admin.ActionForm.password3": "Lösenord",
   "app.components.admin.ActionForm.piiExcluded": "PII exkluderat",
   "app.components.admin.ActionForm.piiExcludedFromResults": "Personuppgifter exkluderas från resultaten",
   "app.components.admin.ActionForm.requireUserToSetAPassword": "Kräv att användaren anger ett lösenord",
