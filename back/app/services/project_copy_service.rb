@@ -87,6 +87,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       @template['models']['cosponsorship']          = yml_cosponsorships exported_ideas, shift_timestamps: shift_timestamps
       @template['models']['reaction']               = yml_reactions exported_ideas, shift_timestamps: shift_timestamps
       @template['models']['follower']               = yml_followers exported_ideas, shift_timestamps: shift_timestamps
+      @template['models']['custom_field_answer']    = yml_custom_field_answers exported_ideas, shift_timestamps: shift_timestamps
       @template['models']['volunteering/volunteer'] = yml_volunteers shift_timestamps: shift_timestamps
       @template['models']['events/attendance']      = yml_attendances shift_timestamps: shift_timestamps
     end
@@ -535,7 +536,6 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       'last_name' => user.last_name,
       'locale' => user.locale,
       'bio_multiloc' => user.bio_multiloc,
-      'custom_field_values' => user.custom_field_values.delete_if { |_k, v| v.nil? },
       'registration_completed_at' => shift_timestamp(user.registration_completed_at, shift_timestamps)&.iso8601,
       'verified' => user.verified,
       'block_start_at' => user.block_start_at,
@@ -675,9 +675,34 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'creation_phase_ref' => lookup_ref(idea.creation_phase_id, :phase)
       }
 
-      yml_idea['custom_field_values'] = filter_custom_field_values(idea.custom_field_values, custom_fields) if custom_fields
       store_ref yml_idea, idea.id, :idea
       yml_idea
+    end
+  end
+
+  # Answers whose field is not part of the template (registration fields) and
+  # file answers (their values reference uploads by id) are not copied.
+  def yml_custom_field_answers(exported_ideas, shift_timestamps: 0)
+    answers = CustomFieldAnswer
+      .where(answerable: exported_ideas)
+      .or(CustomFieldAnswer.where(answerable_type: 'User', answerable_id: @user_ids))
+      .includes(:custom_field)
+
+    answers.filter_map do |answer|
+      next if answer.custom_field&.supports_file_upload?
+
+      custom_field_ref = lookup_ref(answer.custom_field_id, :custom_field)
+      answerable_ref = lookup_ref(answer.answerable_id, %i[idea user])
+      next if !custom_field_ref || !answerable_ref
+
+      {
+        'answerable_ref' => answerable_ref,
+        'custom_field_ref' => custom_field_ref,
+        'key' => answer.key,
+        'value' => answer.value,
+        'created_at' => shift_timestamp(answer.created_at, shift_timestamps)&.iso8601,
+        'updated_at' => shift_timestamp(answer.updated_at, shift_timestamps)&.iso8601
+      }
     end
   end
 
