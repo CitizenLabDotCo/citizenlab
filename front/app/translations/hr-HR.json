@@ -2629,6 +2629,7 @@
   "app.errors.phase_too_short": "Faza je prekratka. Mora trajati barem 24 sata.",
   "app.errors.resending_code_failed": "Nešto nije u redu prilikom slanja potvrdnog koda.",
   "app.errors.slug_taken": "Ovaj URL projekta već postoji. Molimo vas izmijenite „puž“ projekta.",
+  "app.errors.sms_not_configured": "Dio SMS konfiguracije nedostaje. Kontaktirajte svog GovSuccess menadžera kako biste je dovršili.",
   "app.errors.something_went_wrong": "Nešto je pošlo po zlu. Kontaktirajte nas ako se problem nastavi.",
   "app.errors.tag_name_taken": "Oznaka s ovim nazivom već postoji",
   "app.errors.title_multiloc_blank": "Naziv ne može biti prazan.",

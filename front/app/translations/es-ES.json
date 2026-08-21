@@ -2629,6 +2629,7 @@
   "app.errors.phase_too_short": "La fase es demasiado corta. Debe durar al menos 24 horas.",
   "app.errors.resending_code_failed": "Algo ha fallado al enviar el código de confirmación.",
   "app.errors.slug_taken": "La URL de este proyecto ya existe. Por favor, cambie el slug del proyecto por otro.",
+  "app.errors.sms_not_configured": "Falta parte de la configuración de SMS. Ponte en contacto con tu gestor de GovSuccess para completarla.",
   "app.errors.something_went_wrong": "Algo ha ido mal. Ponte en contacto con nosotros si el problema persiste.",
   "app.errors.tag_name_taken": "Ya existe una etiqueta con este nombre",
   "app.errors.title_multiloc_blank": "El título no puede estar vacío.",

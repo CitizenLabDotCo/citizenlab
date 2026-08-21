@@ -2629,6 +2629,7 @@
   "app.errors.phase_too_short": "Fasen är för kort. Den måste vara minst 24 timmar.",
   "app.errors.resending_code_failed": "Något gick fel när bekräftelsekoden skickades ut.",
   "app.errors.slug_taken": "Den här projektwebbadressen finns redan. Ändra projektets slug till något annat.",
+  "app.errors.sms_not_configured": "Viss SMS-konfiguration saknas. Kontakta din GovSuccess Manager för att slutföra den.",
   "app.errors.something_went_wrong": "Något gick fel. Vänligen kontakta oss om problemet kvarstår.",
   "app.errors.tag_name_taken": "En tagg med detta namn finns redan",
   "app.errors.title_multiloc_blank": "Titeln får inte vara tom.",
