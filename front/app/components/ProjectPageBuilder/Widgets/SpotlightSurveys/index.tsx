@@ -17,9 +17,9 @@ import ActionButton from './ActionButton';
 import NoSurveySelected from './NoSurveySelected';
 import Settings from './Settings';
 import SurveyCard from './SurveyCard';
-import { ExtraSurveysProps, isExtraSurveyPhase } from './utils';
+import { SpotlightSurveysProps, isSpotlightSurveyPhase } from './utils';
 
-const ExtraSurveysWidget: UserComponent<ExtraSurveysProps> = ({
+const SpotlightSurveysWidget: UserComponent<SpotlightSurveysProps> = ({
   surveyPhaseId,
   buttonFormat = 'card',
   buttonStyle = 'primary',
@@ -35,7 +35,7 @@ const ExtraSurveysWidget: UserComponent<ExtraSurveysProps> = ({
   if (!enabled) return null;
 
   const survey =
-    phase && isExtraSurveyPhase(phase.data) ? phase.data : undefined;
+    phase && isSpotlightSurveyPhase(phase.data) ? phase.data : undefined;
 
   if (!survey) {
     if (!inEditor) return null;
@@ -66,7 +66,7 @@ const ExtraSurveysWidget: UserComponent<ExtraSurveysProps> = ({
   );
 };
 
-ExtraSurveysWidget.craft = {
+SpotlightSurveysWidget.craft = {
   related: {
     settings: Settings,
   },
@@ -76,4 +76,4 @@ ExtraSurveysWidget.craft = {
   },
 };
 
-export default ExtraSurveysWidget;
+export default SpotlightSurveysWidget;

@@ -1,7 +1,10 @@
 import moment = require('moment');
 
 import { randomEmail, randomString } from '../../support/commands';
-import { clickExtraSurveyButton, createProjectWithExtraSurveys } from './utils';
+import {
+  clickSpotlightSurveyButton,
+  createProjectWithSpotlightSurveys,
+} from './utils';
 
 describe('Citizen submitting an extra survey', () => {
   const firstName = randomString();
@@ -18,7 +21,7 @@ describe('Citizen submitting an extra survey', () => {
       userId = response.body.data.id;
     });
 
-    createProjectWithExtraSurveys({
+    createProjectWithSpotlightSurveys({
       surveys: [{ endAt: moment().add(2, 'month').format('DD/MM/YYYY') }],
     }).then((result) => {
       projectId = result.projectId;
@@ -42,7 +45,7 @@ describe('Citizen submitting an extra survey', () => {
     cy.visit(`/projects/${projectSlug}`);
     cy.get('#e2e-about-box').scrollIntoView();
 
-    clickExtraSurveyButton();
+    clickSpotlightSurveyButton();
 
     // We land on the survey form of the standalone phase, not the timeline phase
     cy.url().should('include', `/projects/${projectSlug}/surveys/new`);

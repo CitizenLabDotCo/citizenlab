@@ -79,7 +79,7 @@ const PhaseList = ({ phases }: { phases: IPhaseData[] }) => {
   }
 
   const timelinePhases = phases.filter(isTimelinePhase);
-  const extraPhases = phases.filter((phase) => !isTimelinePhase(phase));
+  const spotlightPhases = phases.filter((phase) => !isTimelinePhase(phase));
 
   return (
     <Box mt="8px">
@@ -96,7 +96,7 @@ const PhaseList = ({ phases }: { phases: IPhaseData[] }) => {
           })}
         </Box>
       ))}
-      {extraPhases.map((phase) => (
+      {spotlightPhases.map((phase) => (
         <Box key={phase.id} ml="8px">
           {formatMessage(messages.extraPhaseListItem, phaseLabelValues(phase))}
         </Box>

@@ -6,8 +6,8 @@ import { IPhaseData } from 'api/phases/types';
 
 import messages from 'containers/ProjectsShowPage/messages';
 
-import ExtraSurveyActionButton from 'components/ProjectPageBuilder/Widgets/ExtraSurveys/ActionButton';
-import { getExtraSurveyState } from 'components/ProjectPageBuilder/Widgets/ExtraSurveys/utils';
+import SpotlightSurveyActionButton from 'components/ProjectPageBuilder/Widgets/SpotlightSurveys/ActionButton';
+import { getSpotlightSurveyState } from 'components/ProjectPageBuilder/Widgets/SpotlightSurveys/utils';
 import Drawer from 'components/UI/Drawer';
 import Modal from 'components/UI/Modal';
 
@@ -33,13 +33,14 @@ const WaysToParticipateModal = ({
 
   const sortedOpenSurveys = [...openSurveys].sort(
     (a, b) =>
-      Number(getExtraSurveyState(a) !== 'open') -
-      Number(getExtraSurveyState(b) !== 'open')
+      Number(getSpotlightSurveyState(a) !== 'open') -
+      Number(getSpotlightSurveyState(b) !== 'open')
   );
 
   const openNowCount =
     (methodCTA ? 1 : 0) +
-    openSurveys.filter((phase) => getExtraSurveyState(phase) === 'open').length;
+    openSurveys.filter((phase) => getSpotlightSurveyState(phase) === 'open')
+      .length;
   const totalCount =
     (methodCTA ? 1 : 0) + openSurveys.length + upcomingSurveys.length;
 
@@ -61,7 +62,7 @@ const WaysToParticipateModal = ({
     <Box display="flex" flexDirection="column" gap="8px">
       {methodCTA}
       {sortedOpenSurveys.map((surveyPhase, index) => (
-        <ExtraSurveyActionButton
+        <SpotlightSurveyActionButton
           key={surveyPhase.id}
           phase={surveyPhase}
           buttonStyle={
@@ -70,7 +71,7 @@ const WaysToParticipateModal = ({
         />
       ))}
       {upcomingSurveys.map((surveyPhase) => (
-        <ExtraSurveyActionButton
+        <SpotlightSurveyActionButton
           key={surveyPhase.id}
           phase={surveyPhase}
           buttonStyle="secondary-outlined"
