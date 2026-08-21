@@ -262,6 +262,7 @@ const HomepageBuilderToolbox = () => {
             component={<HtmlBlockMultiloc html={{}} />}
             icon="code"
             label={formatMessage(htmlBlockMultilocTitle)}
+            labelSuffix={<NewLabel expiryDate={new Date('2027-02-19')} />}
           />
         )}
         <DraggableElement

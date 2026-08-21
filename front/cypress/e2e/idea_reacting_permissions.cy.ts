@@ -1,9 +1,8 @@
 import { enterUserInfo, signUpEmailConformation } from '../support/auth';
 import { randomString, randomEmail } from '../support/commands';
 import {
-  updatePermission,
+  askOnlyDemographicQuestion,
   setupProject,
-  addPermissionsCustomField,
 } from '../support/permitted_by_utils';
 
 // OS-133
@@ -171,30 +170,23 @@ describe('idea reacting permissions for non-active users', () => {
         .then((response) => {
           const adminJwt = response.body.jwt;
 
-          return updatePermission({
+          return askOnlyDemographicQuestion({
             adminJwt,
             phaseId,
-            global_custom_fields: false,
+            customFieldId,
+            permission: 'reacting_idea',
           }).then(() => {
-            // Add one permissions custom field
-            return addPermissionsCustomField({
-              adminJwt,
-              phaseId,
-              customFieldId,
-              permission: 'reacting_idea',
-            }).then(() => {
-              return cy
-                .apiSignup(firstName, lastName, email, password)
-                .then((response) => {
-                  userId = response.body.data.id;
+            return cy
+              .apiSignup(firstName, lastName, email, password)
+              .then((response) => {
+                userId = response.body.data.id;
 
-                  return cy.apiCreateIdea({
-                    phaseId,
-                    ideaTitle: randomString(),
-                    ideaContent: randomString(),
-                  });
+                return cy.apiCreateIdea({
+                  phaseId,
+                  ideaTitle: randomString(),
+                  ideaContent: randomString(),
                 });
-            });
+              });
           });
         });
     });

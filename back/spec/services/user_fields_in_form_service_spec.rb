@@ -13,7 +13,7 @@ describe UserFieldsInFormService do
         @phase = @project.phases.first
 
         @permission = @phase.permissions.find_by(action: 'posting_idea')
-        @permission.update!(global_custom_fields: false, user_fields_in_form: false, user_data_collection: 'all_data')
+        @permission.update!(custom_fields_behavior: 'custom', user_fields_in_form: false, user_data_collection: 'all_data')
         create(:permissions_custom_field, permission: @permission, custom_field: create(:custom_field, key: 'age'))
 
         @idea = create(:idea, author: @user, custom_field_values: {})
@@ -48,7 +48,7 @@ describe UserFieldsInFormService do
         @phase = @project.phases.first
 
         @permission = @phase.permissions.find_by(action: 'posting_idea')
-        @permission.update!(global_custom_fields: false, user_fields_in_form: false, user_data_collection: 'all_data')
+        @permission.update!(custom_fields_behavior: 'custom', user_fields_in_form: false, user_data_collection: 'all_data')
         create(:permissions_custom_field, permission: @permission, custom_field: create(:custom_field, key: 'age'))
 
         @idea = create(:idea, author: @user, custom_field_values: {})
@@ -83,7 +83,7 @@ describe UserFieldsInFormService do
     before do
       @phase = create(:native_survey_phase, with_permissions: true)
       permission = @phase.permissions.find_by(action: 'posting_idea')
-      permission.update!(global_custom_fields: false)
+      permission.update!(custom_fields_behavior: 'custom')
       create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field, key: 'age'))
       create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field, key: 'city'))
       create(:custom_field, key: 'favorite_color', enabled: true)
@@ -123,7 +123,7 @@ describe UserFieldsInFormService do
       })
     end
 
-    it 'pre-populates user fields when using global_custom_fields being the default' do
+    it 'pre-populates user fields when custom_fields_behavior is the default' do
       user = build(:user, custom_field_values: { 'age' => 30, 'city' => 'New York' })
       idea = build(:idea, custom_field_values: {})
 
@@ -153,7 +153,7 @@ describe UserFieldsInFormService do
         @phase = @project.phases.first
 
         @permission = @phase.permissions.find_by(action: 'posting_idea')
-        @permission.update!(global_custom_fields: false, user_fields_in_form: true, user_data_collection: 'all_data')
+        @permission.update!(custom_fields_behavior: 'custom', user_fields_in_form: true, user_data_collection: 'all_data')
         create(:permissions_custom_field, permission: @permission, custom_field: create(:custom_field, key: 'age'))
 
         @idea = create(
@@ -205,7 +205,7 @@ describe UserFieldsInFormService do
         @phase = @project.phases.first
 
         @permission = @phase.permissions.find_by(action: 'posting_idea')
-        @permission.update!(global_custom_fields: false, user_fields_in_form: true, user_data_collection: 'all_data')
+        @permission.update!(custom_fields_behavior: 'custom', user_fields_in_form: true, user_data_collection: 'all_data')
         create(:permissions_custom_field, permission: @permission, custom_field: create(:custom_field, key: 'age'))
 
         @idea = create(
@@ -273,21 +273,6 @@ describe UserFieldsInFormService do
     end
   end
 
-  describe '#user_fields_in_form_descriptor' do
-    let(:permission) { create(:permission, action: 'posting_idea', permission_scope: create(:native_survey_phase)) }
-
-    it 'returns the unsupported descriptor if the permissions_custom_fields feature is deactivated' do
-      SettingsService.new.deactivate_feature!('permissions_custom_fields')
-      expect(described_class.user_fields_in_form_descriptor(permission, 'native_survey'))
-        .to eq Permission::UNSUPPORTED_DESCRIPTOR
-    end
-
-    it 'returns a supported descriptor if the permissions_custom_fields feature is activated' do
-      expect(described_class.user_fields_in_form_descriptor(permission, 'native_survey'))
-        .not_to eq Permission::UNSUPPORTED_DESCRIPTOR
-    end
-  end
-
   describe '#add_user_fields_to_form' do
     it 'adds user custom fields to the form with prefixed keys' do
       project = create(:single_phase_native_survey_project, phase_attrs: {
@@ -297,7 +282,7 @@ describe UserFieldsInFormService do
 
       # Create permission with user custom field
       permission = phase.permissions.find_by(action: 'posting_idea')
-      permission.update!(global_custom_fields: false, user_fields_in_form: true)
+      permission.update!(custom_fields_behavior: 'custom', user_fields_in_form: true)
       create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field, key: 'age'))
 
       # Create survey form

@@ -6,7 +6,7 @@
 # values in place, using each field's whole write-path pipeline:
 #
 #     Idea#body_multiloc              -> SanitizationService#sanitize_body_multiloc, Idea features
-#     Comment#body_multiloc           -> SanitizationService#sanitize_body_multiloc, Comment features
+#     Comment#body_multiloc           -> SanitizationService#sanitize_comment_body_multiloc
 #     MachineTranslation#translation  -> the source field's own pipeline, whichever that is
 #     #title_multiloc, on each of `title_models`
 #                                     -> SanitizationService#strip_multiloc_to_plain_text
@@ -19,12 +19,13 @@
 # legacy rows. A row whose only change is the dead `data-user-slug` mention attribute is left alone
 # too, and counted in the summary.
 #
-# Two kinds of row cost content rather than just markup, and both are reported with their before and
+# Three kinds of row cost content rather than just markup, and each is reported with its before and
 # after. In execute mode each is put to the operator one at a time, because only a person can say
 # whether the loss is acceptable:
 #
 #     emptied      sanitising left nothing, because the whole value was payload
 #     lost text    words the reader could see are gone, and they were not inside a link
+#     moved link   a link points somewhere else, which the word check cannot see
 #
 # `TenantScript` owns the dry run, the tenant loop and the report. Deleted tenants stay out; every
 # other tenant can still serve content, so all of them are in scope.
@@ -59,6 +60,7 @@ namespace :single_use do
     affected = [] # rows for the summary: { host:, model:, attribute: }
     blanked = [] # rows sanitising emptied
     lost_text = [] # rows sanitising stripped visible words from
+    relinked = [] # rows sanitising pointed a link somewhere else
     skipped = [] # rows the operator declined to write
     slug_only_skipped = 0
     skip_all = false
@@ -82,7 +84,7 @@ namespace :single_use do
       CGI.unescapeHTML(value.to_s.gsub(/<[^<>]*>/, ' ')).scan(/[[:word:]]+/)
     end
 
-    # Words inside a link's label. `replace_links_with_urls` rewrites a label to its own href, so a
+    # Words inside a link's label. `label_links_with_urls` rewrites a label to its own href, so a
     # word that only ever lived in one is meant to go and is not a loss.
     label_words = lambda do |value|
       value.to_s.scan(%r{<a\b[^>]*>(.*?)</a>}im).flatten.flat_map { |label| visible_words.call(label) }
@@ -119,6 +121,42 @@ namespace :single_use do
       end
     end
 
+    # Where each link points. Compared with both escapings undone, so `&amp;` in an attribute and a
+    # percent-encoded character - both of which the write path normalises - do not read as a move.
+    # Only the schemes a reader could have followed: dropping a `javascript:` href is the point.
+    hrefs = lambda do |value|
+      found = value.to_s.scan(/<a\b[^>]*\bhref="([^"]*)"/im).flatten
+      found.map { |href| CGI.unescape(CGI.unescapeHTML(href)) }.grep(SanitizationService::LINKIFIABLE_HREF)
+    end
+
+    # Destinations the value no longer has. This is the one damage the word check cannot see: a
+    # label is rewritten from its href, so an href can move with no visible text changing at all.
+    moved_links = lambda do |old_text, new_text|
+      remaining = hrefs.call(new_text).tally
+      hrefs.call(old_text).filter_map do |href|
+        if remaining[href].to_i.positive?
+          remaining[href] -= 1
+          nil
+        else
+          href
+        end
+      end
+    end
+
+    moved_by_locale = lambda do |old_value, new_value, emptied|
+      unless old_value.is_a?(Hash)
+        links = emptied.any? ? [] : moved_links.call(old_value, new_value)
+        return links.any? ? [['-', links, 'was']] : []
+      end
+
+      old_value.filter_map do |locale, old|
+        next if emptied.include?(locale)
+
+        links = moved_links.call(old, (new_value || {})[locale])
+        [locale, links, 'was'] if links.any?
+      end
+    end
+
     # Only where the record itself rejects the blank. Where a blank is legal - `Idea#body_multiloc`,
     # a draft idea's title - it is left alone rather than given content nobody wrote.
     rejects_blank = lambda do |record, attribute, blank_value|
@@ -148,10 +186,10 @@ namespace :single_use do
     row_lines = lambda do |row|
       locales = row[:locales].map(&:first)
       tag = locales == ['-'] ? '' : " [#{locales.join(', ')}]"
-      row[:locales].each_with_object(["         #{row[:model]}##{row[:attribute]}#{tag} #{row[:id]}"]) do |(locale, words), lines|
+      row[:locales].each_with_object(["         #{row[:model]}##{row[:attribute]}#{tag} #{row[:id]}"]) do |(locale, words, label), lines|
         before = locale == '-' ? row[:before] : (row[:before] || {})[locale]
         after = locale == '-' ? row[:after] : (row[:after] || {})[locale]
-        lines << "            lost: #{words.join(', ')}" if words
+        lines << "            #{label || 'lost'}: #{words.join(', ')}" if words
         lines << "            before: #{preview.call(before)}"
         lines << "            after:  #{after.presence ? preview.call(after) : '(blank)'}"
       end
@@ -224,6 +262,7 @@ namespace :single_use do
 
         emptied = blanked_locales.call(old_value, new_value)
         lost = lost_by_locale.call(old_value, new_value, emptied)
+        moved = moved_by_locale.call(old_value, new_value, emptied)
         written = value_to_write.call(record, attribute, new_value, emptied)
 
         row = {
@@ -232,10 +271,11 @@ namespace :single_use do
         }
         blanked << row.merge(locales: emptied.map { |locale| [locale, nil] }) if emptied.any?
         lost_text << row.merge(locales: lost) if lost.any?
+        relinked << row.merge(locales: moved) if moved.any?
 
         next unless script.execute?
 
-        flagged = emptied.map { |locale| [locale, nil] } + lost
+        flagged = emptied.map { |locale| [locale, nil] } + lost + moved
         if flagged.any? && !ask.call(row.merge(locales: flagged))
           skipped << row
           next
@@ -278,6 +318,7 @@ namespace :single_use do
 
       listing.call(blanked, 'Emptied - nothing survived sanitising. Set a value on each by hand:')
       listing.call(lost_text, 'Text lost outside a link. Check each one:')
+      listing.call(relinked, 'Links that now point elsewhere. Check each one:')
 
       return if skipped.empty?
 
@@ -310,7 +351,7 @@ namespace :single_use do
       purge.call(
         tenant, script,
         Comment.where(rewritable.call('body_multiloc::text')), :body_multiloc,
-        ->(value, _record) { service.sanitize_body_multiloc(value, Comment::BODY_SANITIZE_FEATURES) }, 'Comment'
+        ->(value, _record) { service.sanitize_comment_body_multiloc(value) }, 'Comment'
       )
       # A translation's rule depends on its own translatable_type and attribute_name, so reuse the
       # model's sanitiser rather than a value-only helper.

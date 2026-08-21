@@ -6,7 +6,8 @@ import { render, screen, userEvent } from 'utils/testUtils/rtl';
 
 import DemographicSection from '.';
 
-// `permissions_custom_fields` is the paid feature that gates this whole section.
+// `permissions_custom_fields` is the paid feature that gates curating a list of
+// questions. The other two behaviors are not gated.
 let mockPermissionsCustomFieldsAllowed = true;
 jest.mock('hooks/useFeatureFlag', () =>
   jest.fn(({ name }: { name: string }) =>
@@ -44,6 +45,9 @@ jest.mock(
 );
 
 const UPSELL_COPY = /This feature is not included in your current plan/i;
+const GLOBAL_COPY = 'Use platform-wide demographic questions';
+const DISABLED_COPY = "Don't ask demographic questions";
+const CUSTOM_COPY = 'Customize which demographic questions should be asked';
 
 const buildPermission = (
   attributes: Partial<IPermissionData['attributes']> = {}
@@ -54,6 +58,7 @@ const buildPermission = (
     attributes: {
       action: 'commenting_idea',
       permitted_by: 'users',
+      custom_fields_behavior: 'custom',
       user_fields_in_form_descriptor: {},
       ...attributes,
     },
@@ -63,42 +68,78 @@ const buildPermission = (
     },
   } as unknown as IPermissionData);
 
-const renderSection = () =>
+const renderSection = (
+  attributes: Partial<IPermissionData['attributes']> = {},
+  onChange = jest.fn()
+) =>
   render(
     <DemographicSection
-      permission={buildPermission()}
+      permission={buildPermission(attributes)}
       phaseId="ph-1"
       permissionHasForm={false}
-      onChange={jest.fn()}
+      onChange={onChange}
     />
   );
+
+const expand = () => userEvent.click(screen.getByText('Demographic questions'));
 
 beforeEach(() => {
   mockPermissionsCustomFieldsAllowed = true;
 });
 
 describe('<DemographicSection />', () => {
-  describe('when permissions_custom_fields is allowed', () => {
-    it('renders an expandable, unlocked section', async () => {
-      renderSection();
+  it('offers the three behaviors once expanded', async () => {
+    renderSection();
 
-      // The section header is always shown...
-      expect(screen.getByText('Demographic questions')).toBeInTheDocument();
-      // ...and there is no lock tooltip.
-      expect(
-        screen.queryByTestId('tooltip-icon-button')
-      ).not.toBeInTheDocument();
+    // The controls are hidden until the row is expanded.
+    expect(screen.queryByText(GLOBAL_COPY)).not.toBeInTheDocument();
 
-      // The controls are hidden until the row is expanded.
-      expect(screen.queryByText('FIELDS_LIST')).not.toBeInTheDocument();
+    await expand();
 
-      await userEvent.click(screen.getByText('Demographic questions'));
+    expect(screen.getByText(GLOBAL_COPY)).toBeInTheDocument();
+    expect(screen.getByText(DISABLED_COPY)).toBeInTheDocument();
+    expect(screen.getByText(CUSTOM_COPY)).toBeInTheDocument();
+  });
+
+  it('emits the picked behavior', async () => {
+    const onChange = jest.fn();
+    renderSection({}, onChange);
+
+    await expand();
+    await userEvent.click(screen.getByText(DISABLED_COPY));
+
+    expect(onChange).toHaveBeenCalledWith({
+      custom_fields_behavior: 'disabled',
+    });
+  });
+
+  describe('the question editor', () => {
+    it("is shown when the behavior is 'custom'", async () => {
+      renderSection({ custom_fields_behavior: 'custom' });
+
+      await expand();
 
       expect(screen.getByText('FIELDS_LIST')).toBeInTheDocument();
       expect(
         screen.getByText('Add a demographic question')
       ).toBeInTheDocument();
     });
+
+    // The other behaviors do not resolve to the permission's own questions, so
+    // editing them there would have no effect.
+    it.each(['global', 'disabled'] as const)(
+      "is hidden when the behavior is '%s'",
+      async (behavior) => {
+        renderSection({ custom_fields_behavior: behavior });
+
+        await expand();
+
+        expect(screen.queryByText('FIELDS_LIST')).not.toBeInTheDocument();
+        expect(
+          screen.queryByText('Add a demographic question')
+        ).not.toBeInTheDocument();
+      }
+    );
   });
 
   describe('when permissions_custom_fields is NOT allowed', () => {
@@ -106,35 +147,33 @@ describe('<DemographicSection />', () => {
       mockPermissionsCustomFieldsAllowed = false;
     });
 
-    it('still shows the section header', () => {
-      renderSection();
-      expect(screen.getByText('Demographic questions')).toBeInTheDocument();
+    it('still offers the two behaviors that are not part of the paid feature', async () => {
+      const onChange = jest.fn();
+      renderSection({ custom_fields_behavior: 'global' }, onChange);
+
+      await expand();
+      await userEvent.click(screen.getByText(DISABLED_COPY));
+
+      expect(onChange).toHaveBeenCalledWith({
+        custom_fields_behavior: 'disabled',
+      });
     });
 
-    it('does not render any of the section controls', () => {
-      renderSection();
-      expect(screen.queryByText('FIELDS_LIST')).not.toBeInTheDocument();
-      expect(
-        screen.queryByText('Add a demographic question')
-      ).not.toBeInTheDocument();
+    it('locks the option that curates a list of questions', async () => {
+      const onChange = jest.fn();
+      renderSection({ custom_fields_behavior: 'global' }, onChange);
+
+      await expand();
+      await userEvent.click(screen.getByText(CUSTOM_COPY));
+
+      expect(onChange).not.toHaveBeenCalled();
     });
 
-    it('cannot be expanded to reveal the controls', async () => {
-      renderSection();
+    it('explains that the locked option is not part of the pricing plan', async () => {
+      renderSection({ custom_fields_behavior: 'global' });
 
-      await userEvent.click(screen.getByText('Demographic questions'));
-
-      expect(screen.queryByText('FIELDS_LIST')).not.toBeInTheDocument();
-      expect(
-        screen.queryByText('Add a demographic question')
-      ).not.toBeInTheDocument();
-    });
-
-    it('shows a lock tooltip explaining it is not part of the pricing plan', async () => {
-      renderSection();
-
-      const tooltip = screen.getByTestId('tooltip-icon-button');
-      await userEvent.hover(tooltip);
+      await expand();
+      await userEvent.hover(screen.getByText(CUSTOM_COPY));
 
       expect(await screen.findByText(UPSELL_COPY)).toBeInTheDocument();
     });

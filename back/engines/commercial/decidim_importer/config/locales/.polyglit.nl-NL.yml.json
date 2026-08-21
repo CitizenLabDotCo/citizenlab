@@ -24,6 +24,21 @@
     "verified_at": "2026-07-29T21:15:23.240320Z",
     "verified_by": "Luuc"
   },
+  "decidim_importer.debate_conclusions": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.711926Z",
+    "verified_by": "Luuc"
+  },
+  "decidim_importer.debate_information_updates": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.711926Z",
+    "verified_by": "Luuc"
+  },
+  "decidim_importer.debate_instructions": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.711926Z",
+    "verified_by": "Luuc"
+  },
   "decidim_importer.documents_to_consult": {
     "state": "verified",
     "verified_at": "2026-07-29T21:15:23.240320Z",

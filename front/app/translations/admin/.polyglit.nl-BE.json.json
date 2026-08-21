@@ -864,6 +864,12 @@
     "verified_at": "2026-07-10T12:33:55.226747Z",
     "verified_by": "Luuc"
   },
+
+  "app.components.admin.ActionForm.AccessSections.GroupsSection.limitToGroups": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
+    "verified_by": "Luuc"
+  },
   "app.components.admin.ActionForm.AccessSections.GroupsSection.participantMustBe": {
     "state": "verified",
     "verified_at": "2026-07-10T12:33:55.226747Z",
@@ -1239,6 +1245,12 @@
     "verified_at": "2026-07-10T12:33:55.226747Z",
     "verified_by": "Luuc"
   },
+
+  "app.components.admin.ActionForm.password3": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
+    "verified_by": "Luuc"
+  },
   "app.components.admin.ActionForm.piiExcluded": {
     "state": "verified",
     "verified_at": "2026-07-10T12:33:55.226747Z",
@@ -1247,6 +1259,12 @@
   "app.components.admin.ActionForm.piiExcludedFromResults": {
     "state": "verified",
     "verified_at": "2026-07-10T12:33:55.226747Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.components.admin.ActionForm.requireUserToSetAPassword": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
     "verified_by": "Luuc"
   },
   "app.components.admin.ActionForm.resetDemographicQuestionsAndGroups": {
@@ -3439,10 +3457,22 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
+    "verified_by": "Luuc"
+  },
   "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage2": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
+  },
+
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage3": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
+    "verified_by": "Luuc"
   },
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings1": {
     "state": "verified",
@@ -3703,6 +3733,12 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
+  },
+
+  "app.containers.Admin.Invitations.processingNotStartedError": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.Invitations.projectSelectorPlaceholder": {
     "state": "verified",
@@ -6939,6 +6975,12 @@
     "verified_at": "2026-07-06T14:09:37.991081Z",
     "verified_by": "Luuc"
   },
+
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.page": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.pageTag": {
     "state": "verified",
     "verified_at": "2026-07-06T14:09:37.991081Z",
@@ -8124,6 +8166,18 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+
+  "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.activePhaseListItem": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.activePhasesTitle": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.currentPhase": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
@@ -8134,6 +8188,18 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+
+  "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.endDate": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.extraPhaseListItem": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.extraPhaseListItem2": {
     "state": "verified",
     "verified_at": "2026-08-20T12:13:56.995738Z",
@@ -8143,6 +8209,12 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
+  },
+
+  "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.noActivePhase": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.noCurrentPhase": {
     "state": "verified",
@@ -8549,6 +8621,12 @@
     "verified_at": "2026-07-20T21:19:29.190865Z",
     "verified_by": "Luuc"
   },
+
+  "app.containers.Admin.projects.project.inputResponseExport.collectingResponses": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.inputResponseExport.consentLabel": {
     "state": "verified",
     "verified_at": "2026-07-20T21:19:29.190865Z",
@@ -8574,6 +8652,12 @@
     "verified_at": "2026-07-20T21:19:29.190865Z",
     "verified_by": "Luuc"
   },
+
+  "app.containers.Admin.projects.project.inputResponseExport.dontCloseWarning": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.inputResponseExport.excludeStatus": {
     "state": "verified",
     "verified_at": "2026-07-20T21:19:29.190865Z",
@@ -8582,6 +8666,12 @@
   "app.containers.Admin.projects.project.inputResponseExport.exportError": {
     "state": "verified",
     "verified_at": "2026-07-20T21:19:29.190865Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Admin.projects.project.inputResponseExport.exportStartedBy": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
     "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.inputResponseExport.fieldReviewNoFlags": {
@@ -8642,6 +8732,12 @@
   "app.containers.Admin.projects.project.inputResponseExport.previewLabel": {
     "state": "verified",
     "verified_at": "2026-07-20T21:19:29.190865Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Admin.projects.project.inputResponseExport.renderingPdf": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
     "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.inputResponseExport.reportSubtitleLabel": {
@@ -22059,14 +22155,32 @@
     "verified_at": "2026-07-10T12:33:55.226747Z",
     "verified_by": "Luuc"
   },
+
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhone": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
+    "verified_by": "Luuc"
+  },
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhoneNumber": {
     "state": "verified",
     "verified_at": "2026-07-21T19:53:39.010908Z",
     "verified_by": "Luuc"
   },
+
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.email": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
+    "verified_by": "Luuc"
+  },
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription": {
     "state": "verified",
     "verified_at": "2026-07-10T12:33:55.226747Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription3": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
     "verified_by": "Luuc"
   },
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.firstDecide": {
@@ -22094,6 +22208,12 @@
     "verified_at": "2026-07-10T12:33:55.226747Z",
     "verified_by": "Luuc"
   },
+
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.noSignInMethodEnabled": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
+    "verified_by": "Luuc"
+  },
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": {
     "state": "verified",
     "verified_at": "2026-07-10T12:33:55.226747Z",
@@ -22109,9 +22229,39 @@
     "verified_at": "2026-07-21T19:53:39.010908Z",
     "verified_by": "Luuc"
   },
+
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.phoneMethodDescription2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.phoneMethodDescriptionWithSmsLogin": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
+    "verified_by": "Luuc"
+  },
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.pickAtLeastOne": {
     "state": "verified",
     "verified_at": "2026-07-10T12:33:55.226747Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedEmail": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedPhoneNumber": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireIdentityVerification": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
     "verified_by": "Luuc"
   },
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSSO": {
@@ -22144,6 +22294,24 @@
     "verified_at": "2026-07-10T12:33:55.226747Z",
     "verified_by": "Luuc"
   },
+
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInWith": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.sms": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.ssoSeeBelow2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
+    "verified_by": "Luuc"
+  },
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailablePasswordLogin": {
     "state": "verified",
     "verified_at": "2026-07-10T12:33:55.226747Z",
@@ -22159,9 +22327,21 @@
     "verified_at": "2026-07-10T12:33:55.226747Z",
     "verified_by": "Luuc"
   },
+
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.verification": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
+    "verified_by": "Luuc"
+  },
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription": {
     "state": "verified",
     "verified_at": "2026-07-10T12:33:55.226747Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
     "verified_by": "Luuc"
   },
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate": {
@@ -22174,9 +22354,21 @@
     "verified_at": "2026-07-20T21:13:52.460295Z",
     "verified_by": "Luuc"
   },
+
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.authentication2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
+    "verified_by": "Luuc"
+  },
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.authenticationExplanation": {
     "state": "verified",
     "verified_at": "2026-07-20T21:13:52.460295Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.authenticationExplanation2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
     "verified_by": "Luuc"
   },
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.canSignUpOrVerifyWith": {
@@ -22237,6 +22429,36 @@
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.viewMethodSettings": {
     "state": "verified",
     "verified_at": "2026-07-20T21:13:52.460295Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.none": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordAvailableDescription2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailOrSMSLoginTooltip": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailSignupTooltip2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.securityChecks2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
     "verified_by": "Luuc"
   },
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.editable": {
@@ -22357,6 +22579,12 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageInstructions": {
     "state": "verified",
     "verified_at": "2026-07-29T21:11:52.611332Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageInstructions2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.802869Z",
     "verified_by": "Luuc"
   },
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageTab": {

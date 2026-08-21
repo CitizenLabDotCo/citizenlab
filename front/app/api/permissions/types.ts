@@ -26,6 +26,11 @@ export type PermittedBy = 'everyone' | 'users' | 'admins_moderators';
 
 export type UserDataCollection = 'all_data' | 'demographics_only' | 'anonymous';
 
+// Which demographic questions an action asks: the platform-wide ones, none, or
+// a list curated on the permission itself. 'custom' requires the
+// `permissions_custom_fields` feature.
+export type CustomFieldsBehavior = 'global' | 'disabled' | 'custom';
+
 export type UserFieldsInFormExplanation =
   | 'user_fields_in_form_not_supported_for_action'
   | 'with_these_settings_cannot_ask_demographic_fields'
@@ -55,7 +60,7 @@ export interface IPermissionData {
     confirmed_email_expiry: number | null;
     created_at: string;
     everyone_tracking_enabled: boolean;
-    global_custom_fields: boolean;
+    custom_fields_behavior: CustomFieldsBehavior;
     permitted_by: PermittedBy;
     permitted_by_everyone_allowed: boolean;
     require_confirmed_email: boolean;
@@ -91,7 +96,7 @@ export interface IPermission {
 export interface IPermissionUpdate {
   group_ids: string[];
   permitted_by: PermittedBy;
-  global_custom_fields: boolean;
+  custom_fields_behavior: CustomFieldsBehavior;
   verification_expiry: number | null;
   access_denied_explanation_multiloc: Multiloc;
   everyone_tracking_enabled: boolean;

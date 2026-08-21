@@ -34,6 +34,18 @@ resource 'SMS Events' do
       expect(delivery.reload.status).to eq 'delivered'
     end
 
+    context 'when the delivery already reached a terminal status' do
+      before { delivery.update!(status: 'delivered') }
+
+      let(:message_status) { 'failed' }
+
+      example 'returns 200 and keeps the first terminal outcome' do
+        do_request(callback_params)
+        expect(response_status).to eq 200
+        expect(delivery.reload.status).to eq 'delivered'
+      end
+    end
+
     context 'when the signature is invalid' do
       let(:signature_valid) { false }
 
