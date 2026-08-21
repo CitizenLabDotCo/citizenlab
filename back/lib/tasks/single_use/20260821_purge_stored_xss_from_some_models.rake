@@ -79,7 +79,7 @@ namespace :single_use do
       Space => %i[title_multiloc],
       Area => %i[title_multiloc],
       Group => %i[title_multiloc],
-      IdeaStatus => %i[title_multiloc],
+      IdeaStatus => %i[title_multiloc description_multiloc],
       NavBarItem => %i[title_multiloc],
       CustomFieldOption => %i[title_multiloc],
       CustomFieldMatrixStatement => %i[title_multiloc],
