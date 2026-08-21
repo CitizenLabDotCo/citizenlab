@@ -74,6 +74,8 @@ class SideFxProjectService
     CheckProjectPublicationConsistencyJob.perform_later(project.id)
 
     after_folder_changed project, user if @folder_id_was != project.folder_id
+    # Publishing a project (draft or archived) directly implicitly approves a review that is still pending
+    approve_pending_review(project, user) if project.admin_publication.published? && @publication_status_was != 'published'
     # We don't want to send out the "project published" campaign when e.g. changing from "archived" to "published"
     after_publish project, user if project.admin_publication.published? && @publication_status_was == 'draft'
     enqueue_scheduled_transition(project.admin_publication)
@@ -156,6 +158,17 @@ class SideFxProjectService
   def after_folder_changed(project, current_user)
     # Defined in core app to eliminate dependency between
     # idea assignment and folder engine.
+  end
+
+  def approve_pending_review(project, user)
+    review = project.review
+    # A reviewer is mandatory to approve, so we cannot approve on behalf of nobody
+    # (e.g. a scheduled transition whose scheduler has since been deleted).
+    return if user.nil? || review.nil? || review.approved?
+    return unless user.admin? || user.space_moderator?(project.space_id) || user.project_folder_moderator?(project.folder_id)
+
+    review.approve!(user)
+    SideFxProjectReviewService.new.after_update(review, user)
   end
 end
 
