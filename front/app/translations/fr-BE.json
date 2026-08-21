@@ -2602,7 +2602,7 @@
   "app.errors.group_ids_unauthorized_choice_moderator": "En tant qu'administrateur projet, vous pouvez contacter uniquement les personnes qui peuvent accéder à votre projet (s)",
   "app.errors.has_inputs": "Vous ne pouvez pas modifier la méthode de participation car cette phase comporte déjà des entrées. Veuillez d'abord supprimer toutes les entrées.",
   "app.errors.has_other_overlapping_phases": "Les projets ne peuvent pas avoir des phases qui se superposent.",
-  "app.errors.insufficient_sms_balance": "Il ne reste pas assez de crédits SMS pour envoyer ce message. Pour acheter plus de crédits, contactez votre Spécialiste en participation Go Vocal.",
+  "app.errors.insufficient_sms_balance": "Il ne vous reste pas assez de crédits SMS pour envoyer ce message. Pour acheter plus de crédits, contactez votre Spécialiste en participation Go Vocal.",
   "app.errors.invalid_email": "L'adresse e-mail{value} qui se trouve ligne {row} n'est pas valide",
   "app.errors.invalid_first_name": "Le prénom {value} à la ligne {row} n'est pas valide",
   "app.errors.invalid_last_name": "Le nom {value} à la ligne {row} n'est pas valide",

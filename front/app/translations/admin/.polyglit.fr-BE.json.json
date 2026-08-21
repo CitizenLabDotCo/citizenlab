@@ -6284,10 +6284,45 @@
     "verified_at": "2026-07-16T15:58:15.979193Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.messaging.confirmSendSmsBalanceLabel": {
+    "state": "verified",
+    "verified_at": "2026-08-21T08:30:14.129543Z",
+    "verified_by": "Lydie"
+  },
+  "app.containers.Admin.messaging.confirmSendSmsCreditsHint": {
+    "state": "verified",
+    "verified_at": "2026-08-21T08:30:14.129543Z",
+    "verified_by": "Lydie"
+  },
+  "app.containers.Admin.messaging.confirmSendSmsCreditsLabel": {
+    "state": "verified",
+    "verified_at": "2026-08-21T08:30:14.129543Z",
+    "verified_by": "Lydie"
+  },
   "app.containers.Admin.messaging.confirmSendSmsHeader": {
     "state": "verified",
     "verified_at": "2026-07-16T21:40:03.632168Z",
     "verified_by": "Adrien"
+  },
+  "app.containers.Admin.messaging.confirmSendSmsHeader2": {
+    "state": "verified",
+    "verified_at": "2026-08-21T08:30:14.129543Z",
+    "verified_by": "Lydie"
+  },
+  "app.containers.Admin.messaging.confirmSendSmsInsufficientBalance": {
+    "state": "verified",
+    "verified_at": "2026-08-21T08:30:14.129543Z",
+    "verified_by": "Lydie"
+  },
+  "app.containers.Admin.messaging.confirmSendSmsNoRecipients": {
+    "state": "verified",
+    "verified_at": "2026-08-21T08:30:14.129543Z",
+    "verified_by": "Lydie"
+  },
+  "app.containers.Admin.messaging.confirmSendSmsRecipientsLabel": {
+    "state": "verified",
+    "verified_at": "2026-08-21T08:30:14.129543Z",
+    "verified_by": "Lydie"
   },
   "app.containers.Admin.messaging.deleteSmsButton": {
     "state": "verified",
@@ -6363,6 +6398,41 @@
     "state": "verified",
     "verified_at": "2026-07-16T20:26:58.043218Z",
     "verified_by": "Adrien"
+  },
+  "app.containers.Admin.messaging.smsBalanceLowWarning": {
+    "state": "verified",
+    "verified_at": "2026-08-21T08:30:14.129543Z",
+    "verified_by": "Lydie"
+  },
+  "app.containers.Admin.messaging.smsBalanceOfPurchased": {
+    "state": "verified",
+    "verified_at": "2026-08-21T08:30:14.129543Z",
+    "verified_by": "Lydie"
+  },
+  "app.containers.Admin.messaging.smsBalancePurchaseHint": {
+    "state": "verified",
+    "verified_at": "2026-08-21T08:30:14.129543Z",
+    "verified_by": "Lydie"
+  },
+  "app.containers.Admin.messaging.smsBalanceTitle": {
+    "state": "verified",
+    "verified_at": "2026-08-21T08:30:14.129543Z",
+    "verified_by": "Lydie"
+  },
+  "app.containers.Admin.messaging.smsBalanceUsedManual": {
+    "state": "verified",
+    "verified_at": "2026-08-21T08:30:14.129543Z",
+    "verified_by": "Lydie"
+  },
+  "app.containers.Admin.messaging.smsBalanceUsedOther": {
+    "state": "verified",
+    "verified_at": "2026-08-21T08:30:14.129543Z",
+    "verified_by": "Lydie"
+  },
+  "app.containers.Admin.messaging.smsBalanceUsedTotal": {
+    "state": "verified",
+    "verified_at": "2026-08-21T08:30:14.129543Z",
+    "verified_by": "Lydie"
   },
   "app.containers.Admin.messaging.smsCampaignsDescription": {
     "state": "verified",
