@@ -251,6 +251,7 @@ resource 'Confirmations' do
     with_options scope: :confirmation do
       parameter :code, 'The 6-digit confirmation code received by SMS.'
       parameter :phone, 'The phone number being confirmed. Only for unauthenticated callers (signup / passwordless login).'
+      parameter :sms_manual_campaign_consent, 'Whether the user opts in to receive the manual SMS campaign.', required: false
     end
 
     context 'when user is not authenticated' do
@@ -331,6 +332,39 @@ resource 'Confirmations' do
           do_request(confirmation: { phone: user.phone, code: user.phone_confirmation.code })
           assert_status 200
           expect(claim_token.item.reload.author_id).to eq user.id
+        end
+      end
+
+      describe 'manual SMS campaign consent' do
+        let(:sms_manual_type) { EmailCampaigns::Campaigns::SmsManual.name }
+
+        example 'records the opt-in given during signup and logs the activity' do
+          expect do
+            do_request(confirmation: { phone: user.phone, code: user.phone_confirmation.code, sms_manual_campaign_consent: true })
+          end.to have_enqueued_job(LogActivityJob)
+            .with(an_instance_of(EmailCampaigns::Consent), 'consent_given', user, kind_of(Integer), payload: { campaign_type: sms_manual_type })
+          assert_status 200
+          consent = EmailCampaigns::Consent.find_by(user: user, campaign_type: sms_manual_type)
+          expect(consent.consented).to be true
+        end
+
+        example 'records the opt-out when the user leaves the box unchecked' do
+          do_request(confirmation: { phone: user.phone, code: user.phone_confirmation.code, sms_manual_campaign_consent: false })
+          assert_status 200
+          consent = EmailCampaigns::Consent.find_by(user: user, campaign_type: sms_manual_type)
+          expect(consent.consented).to be false
+        end
+
+        example 'does not record consent when the field is omitted' do
+          do_request(confirmation: { phone: user.phone, code: user.phone_confirmation.code })
+          assert_status 200
+          expect(EmailCampaigns::Consent.where(user: user, campaign_type: sms_manual_type)).to be_empty
+        end
+
+        example 'does not record consent when the code is invalid' do
+          do_request(confirmation: { phone: user.phone, code: '9999', sms_manual_campaign_consent: true })
+          assert_status 422
+          expect(EmailCampaigns::Consent.where(user: user, campaign_type: sms_manual_type)).to be_empty
         end
       end
     end

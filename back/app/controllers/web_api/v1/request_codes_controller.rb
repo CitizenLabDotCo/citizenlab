@@ -78,6 +78,7 @@ class WebApi::V1::RequestCodesController < ApplicationController
     authorize user, policy_class: RequestCodePolicy
 
     unless only_if_first_time? && user.phone_confirmation&.code_outstanding?
+      EmailCampaigns::ConsentService.new.grant!(user, EmailCampaigns::Campaigns::PhoneConfirmation)
       RequestPhoneConfirmationCodeJob.perform_now(user)
     end
 
@@ -115,12 +116,7 @@ class WebApi::V1::RequestCodesController < ApplicationController
       return
     end
 
-    consent = EmailCampaigns::ConsentService.new.record!(
-      current_user,
-      EmailCampaigns::Campaigns::NewPhoneConfirmation,
-      consented: true
-    )
-    EmailCampaigns::SideFxConsentService.new.after_grant(consent, current_user)
+    EmailCampaigns::ConsentService.new.grant!(current_user, EmailCampaigns::Campaigns::NewPhoneConfirmation)
 
     RequestNewPhoneConfirmationCodeJob.perform_now(current_user, new_phone: normalized)
 

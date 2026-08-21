@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import authProvidersMessages from 'containers/Authentication/steps/_components/AuthProviderButton/messages';
 
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
+import ManualCampaignConsent from 'components/SmsConsent/ManualCampaignConsent';
 
 import { useIntl, FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -37,19 +38,21 @@ export const ConsentText = styled.div`
 
 interface Props {
   showByContinuingText?: boolean;
+  showSmsManualCampaignConsent?: boolean;
   byContinuingMessage?: MessageDescriptor;
   byContinuingValues?: Record<string, string>;
 }
 
 const PoliciesMarkup = ({
   showByContinuingText = true,
+  showSmsManualCampaignConsent = false,
   byContinuingMessage = messages.byContinuing,
   byContinuingValues,
 }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <>
+    <Box display="flex" flexDirection="column" gap="8px">
       <Box id="e2e-policies-container">
         <CheckboxWithLabel
           name="policiesAccepted"
@@ -88,10 +91,11 @@ const PoliciesMarkup = ({
           }
         />
       </Box>
+      {showSmsManualCampaignConsent && <ManualCampaignConsent />}
       {showByContinuingText && (
         <Text
           id="email-consent-description"
-          mt="24px"
+          mt="16px"
           mb="0px"
           fontSize="s"
           color="tenantText"
@@ -99,7 +103,7 @@ const PoliciesMarkup = ({
           {formatMessage(byContinuingMessage, byContinuingValues)}
         </Text>
       )}
-    </>
+    </Box>
   );
 };
 

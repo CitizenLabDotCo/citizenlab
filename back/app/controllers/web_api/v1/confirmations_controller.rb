@@ -74,6 +74,7 @@ class WebApi::V1::ConfirmationsController < ApplicationController
     if result.success?
       SideFxUserService.new.after_update(user, user)
       IdeaExposureTransferService.new.transfer_from_request(user: user, request: request)
+      record_sms_manual_campaign_consent(user, confirm_code_phone_params[:sms_manual_campaign_consent])
 
       render json: raw_json({ auth_token: short_lived_auth_token(user) })
     else
@@ -92,7 +93,7 @@ class WebApi::V1::ConfirmationsController < ApplicationController
 
     if result.success?
       SideFxUserService.new.after_update(current_user, current_user)
-      record_sms_manual_campaign_consent
+      record_sms_manual_campaign_consent(current_user, confirm_code_new_phone_params[:sms_manual_campaign_consent])
       head :ok
     else
       render json: { errors: result.errors.details }, status: :unprocessable_entity
@@ -110,7 +111,7 @@ class WebApi::V1::ConfirmationsController < ApplicationController
   end
 
   def confirm_code_phone_params
-    params.require(:confirmation).permit(:phone, :code)
+    params.require(:confirmation).permit(:phone, :code, :sms_manual_campaign_consent)
   end
 
   def short_lived_auth_token(user)
@@ -128,16 +129,15 @@ class WebApi::V1::ConfirmationsController < ApplicationController
     params.require(:confirmation).permit(:code, :sms_manual_campaign_consent)
   end
 
-  def record_sms_manual_campaign_consent
-    manual_campaign_consent = parse_bool(confirm_code_new_phone_params[:sms_manual_campaign_consent])
-    return if manual_campaign_consent.nil?
+  def record_sms_manual_campaign_consent(user, value)
+    consented = parse_bool(value)
+    return if consented.nil?
 
-    consent = EmailCampaigns::ConsentService.new.record!(
-      current_user,
-      EmailCampaigns::Campaigns::SmsManual,
-      consented: manual_campaign_consent
+    EmailCampaigns::Sms::UseCaseConsentService.new.record!(
+      user,
+      EmailCampaigns::Sms::UseCase::MANUAL_CAMPAIGNS,
+      consented: consented
     )
-    EmailCampaigns::SideFxConsentService.new.after_update(consent, current_user)
   end
 
   def user_confirmation_service

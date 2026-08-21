@@ -5,14 +5,17 @@ module EmailCampaigns
     # Consent across every campaign on an SMS use case, where ConsentService records it
     # for a single campaign.
     class UseCaseConsentService
-      # A STOP silences the messaging service, so every campaign on that use case loses consent.
-      def withdraw!(user, use_case)
+      def record!(user, use_case, consented:)
         return if user.nil? || use_case.nil?
 
         consentable_campaign_classes_for(use_case).each do |campaign_class|
-          consent = ConsentService.new.record!(user, campaign_class, consented: false)
-          SideFxConsentService.new.after_update(consent, user)
+          ConsentService.new.record!(user, campaign_class, consented: consented)
         end
+      end
+
+      # A STOP silences the messaging service, so every campaign on that use case loses consent.
+      def withdraw!(user, use_case)
+        record!(user, use_case, consented: false)
       end
 
       private

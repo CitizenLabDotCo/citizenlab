@@ -108,8 +108,10 @@ export const preAuthSteps = (
       ACCEPT_POLICIES: async (
         phone: string,
         locale: SupportedLocale,
+        smsManualCampaignConsent: boolean,
         claimTokens?: string[]
       ) => {
+        updateState({ smsManualCampaignConsent });
         await createPhoneOnlyAccount({ phone, locale, claimTokens });
         setCurrentStep('pre-auth:unauthenticated-phone-confirmation');
       },
@@ -187,7 +189,11 @@ export const preAuthSteps = (
         setCurrentStep('pre-auth:start');
       },
       SUBMIT_CODE: async (code: string) => {
-        await confirmCodePhone(code, state.phone ?? undefined);
+        await confirmCodePhone(
+          code,
+          state.phone ?? undefined,
+          state.smsManualCampaignConsent
+        );
 
         setCurrentStep((await getRemainingRequirementStep()) ?? 'success');
       },
