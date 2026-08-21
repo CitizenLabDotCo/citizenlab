@@ -2630,6 +2630,7 @@
   "app.errors.phase_too_short": "Etap jest za krótki. Musi trwać co najmniej 24 godziny.",
   "app.errors.resending_code_failed": "Coś poszło nie tak podczas wysyłania kodu potwierdzającego.",
   "app.errors.slug_taken": "Ten adres URL projektu już istnieje. Proszę zmienić URL.",
+  "app.errors.sms_not_configured": "Brakuje części konfiguracji SMS. Skontaktuj się ze swoim GovSuccess Managerem, aby ją uzupełnić.",
   "app.errors.something_went_wrong": "Coś poszło nie tak. Skontaktuj się z nami, jeśli problem będzie się powtarzał.",
   "app.errors.tag_name_taken": "Tag o tej nazwie już istnieje",
   "app.errors.title_multiloc_blank": "Tytuł nie może być pusty.",

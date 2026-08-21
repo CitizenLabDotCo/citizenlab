@@ -2630,6 +2630,7 @@
   "app.errors.phase_too_short": "La fase és massa curta. Ha de durar almenys 24 hores.",
   "app.errors.resending_code_failed": "S'ha produït un error en enviar el codi de confirmació.",
   "app.errors.slug_taken": "Aquest URL del projecte ja existeix. Si us plau, canvieu el Identificador d’URL del projecte per una altra cosa.",
+  "app.errors.sms_not_configured": "Falta part de la configuració dels SMS. Posa't en contacte amb el teu GovSuccess Manager per completar-la.",
   "app.errors.something_went_wrong": "Alguna cosa ha anat malament. Si el problema persisteix, poseu-vos en contacte amb nosaltres.",
   "app.errors.tag_name_taken": "Ja existeix una etiqueta amb aquest nom",
   "app.errors.title_multiloc_blank": "El títol no pot estar buit.",

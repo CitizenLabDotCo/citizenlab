@@ -2630,6 +2630,7 @@
   "app.errors.phase_too_short": "La phase doit durer au moins 24 heures.",
   "app.errors.resending_code_failed": "Un problème s'est produit lors de l'envoi du code de confirmation.",
   "app.errors.slug_taken": "Cette URL de projet existe déjà. Merci de modifier le slug du projet.",
+  "app.errors.sms_not_configured": "Une partie de la configuration SMS est manquante. Contactez votre Spécialiste en participation Go Vocal pour la compléter.",
   "app.errors.something_went_wrong": "Un problème s'est produit. Veuillez nous contacter si le problème persiste.",
   "app.errors.tag_name_taken": "Une étiquette portant ce nom existe déjà",
   "app.errors.title_multiloc_blank": "Le titre ne peut être vide.",

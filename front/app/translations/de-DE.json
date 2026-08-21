@@ -2630,6 +2630,7 @@
   "app.errors.phase_too_short": "Die Phase ist zu kurz. Sie muss mindestens 24 Stunden dauern.",
   "app.errors.resending_code_failed": "Beim Versenden des Bestätigungscodes ist ein Fehler aufgetreten.",
   "app.errors.slug_taken": "Diese Projekt-URL existiert bereits. Bitte ändern Sie den Projekt-Slug in etwas anderes.",
+  "app.errors.sms_not_configured": "Teile der SMS-Konfiguration fehlen. Kontaktieren Sie Ihre Kundenbetreuerin, um diese zu vervollständigen.",
   "app.errors.something_went_wrong": "Etwas ging schief. Bitte kontaktieren Sie uns, wenn das Problem weiterhin besteht.",
   "app.errors.tag_name_taken": "Ein Themen-Tag mit diesem Namen existiert bereits",
   "app.errors.title_multiloc_blank": "Die Überschrift kann nicht leergelassen werden.",

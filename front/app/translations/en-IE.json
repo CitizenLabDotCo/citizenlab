@@ -2630,6 +2630,7 @@
   "app.errors.phase_too_short": "The phase is too short. It must be at least 24 hours.",
   "app.errors.resending_code_failed": "Something went wrong while sending out the confirmation code.",
   "app.errors.slug_taken": "This project URL already exists. Please change the project slug to something else.",
+  "app.errors.sms_not_configured": "Some of the SMS configuration is missing. Contact your GovSuccess Manager to have it completed.",
   "app.errors.something_went_wrong": "Something went wrong. Please contact us if the problem persists.",
   "app.errors.tag_name_taken": "A tag with this name already exists",
   "app.errors.title_multiloc_blank": "The title cannot be empty.",

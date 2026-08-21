@@ -2630,6 +2630,7 @@
   "app.errors.phase_too_short": "Posms ir pārāk īss. Tam jābūt vismaz 24 stundas ilgam.",
   "app.errors.resending_code_failed": "Kaut kas nepareizi notika, nosūtot apstiprinājuma kodu.",
   "app.errors.slug_taken": "Šis projekta URL jau eksistē. Lūdzu, nomainiet projekta aprakstošo daļu uz citu.",
+  "app.errors.sms_not_configured": "Trūkst daļa SMS konfigurācijas. Sazinieties ar savu GovSuccess vadītāju, lai to pabeigtu.",
   "app.errors.something_went_wrong": "Kaut kas notika nepareizi. Lūdzu, sazinieties ar mums, ja problēma saglabājas.",
   "app.errors.tag_name_taken": "Tags ar šo nosaukumu jau pastāv",
   "app.errors.title_multiloc_blank": "Nosaukuma lauks nedrīkst būt tukšs.",

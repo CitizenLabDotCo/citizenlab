@@ -2630,6 +2630,7 @@
   "app.errors.phase_too_short": "Immikkoortoq naappallaarpoq. Ikinnerpaamik tiimit 24-t sivisussuseqassaaq.",
   "app.errors.resending_code_failed": "Something went wrong while sending out the confirmation code.",
   "app.errors.slug_taken": "URL taanna atorneqareerpoq. Inussiarnersumik suliniutip slugia allanngortiguk.",
+  "app.errors.sms_not_configured": "SMS-imut aaqqissuussinerit ilaat amigaataapput. GovSuccess Manager-it attavigiuk naammassineqarnissaa pillugu.",
   "app.errors.something_went_wrong": "Something went wrong. Please contact us if the problem persists.",
   "app.errors.tag_name_taken": "A tag with this name already exists",
   "app.errors.title_multiloc_blank": "Atorfiup taaguutaa allanneqassaaq",

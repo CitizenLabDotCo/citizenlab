@@ -2630,6 +2630,7 @@
   "app.errors.phase_too_short": "De fase is te kort. Deze moet minstens 24 uur duren.",
   "app.errors.resending_code_failed": "Er is iets misgegaan bij het verzenden van de bevestigingscode.",
   "app.errors.slug_taken": "Deze project-URL bestaat al. Verander de slug in iets anders.",
+  "app.errors.sms_not_configured": "Een deel van de SMS-configuratie ontbreekt. Neem contact op met je GovSuccess Manager om dit te voltooien.",
   "app.errors.something_went_wrong": "Er is iets misgegaan. Neem contact met ons op als het probleem zich blijft voordoen.",
   "app.errors.tag_name_taken": "Er bestaat al een tag met deze naam",
   "app.errors.title_multiloc_blank": "De titel kan niet leeg zijn.",

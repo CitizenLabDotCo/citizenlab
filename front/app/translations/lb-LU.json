@@ -2630,6 +2630,7 @@
   "app.errors.phase_too_short": "D'Phas ass ze kuerz. Se muss op d'mannst 24 Stonnen daueren.",
   "app.errors.resending_code_failed": "Eppes ass falsch gaang beim Ausschécken vum Confirmatiounscode.",
   "app.errors.slug_taken": "Dës Projets-URL existéiert schonn. Ännert wgl. de Projet-Slug.",
+  "app.errors.sms_not_configured": "En Deel vun der SMS-Konfiguratioun feelt. Kontaktéiert Äre GovSuccess Manager, fir dës ze vervollstännegen.",
   "app.errors.something_went_wrong": "Eppes ass falsch gelaf. Kontaktéiert eis w.e.g., wann de Problem bestoe bleift.",
   "app.errors.tag_name_taken": "En Tag mat dësem Numm gëtt et schonn",
   "app.errors.title_multiloc_blank": "Den Titel dierf net eidel sinn.",

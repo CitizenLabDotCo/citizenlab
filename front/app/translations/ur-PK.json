@@ -2630,6 +2630,7 @@
   "app.errors.phase_too_short": "مرحلہ بہت مختصر ہے۔ یہ کم از کم 24 گھنٹے کا ہونا چاہیے۔",
   "app.errors.resending_code_failed": "تصدیقی کوڈ بھیجتے وقت کچھ غلط ہو گیا۔",
   "app.errors.slug_taken": "یہ پروجیکٹ URL پہلے سے موجود ہے۔ براہ کرم پروجیکٹ سلگ کو کسی اور چیز میں تبدیل کریں۔",
+  "app.errors.sms_not_configured": "ایس ایم ایس کنفیگریشن کا کچھ حصہ غائب ہے۔ اسے مکمل کروانے کے لیے اپنے GovSuccess مینیجر سے رابطہ کریں۔",
   "app.errors.something_went_wrong": "کچھ غلط ہو گیا۔ اگر مسئلہ برقرار رہتا ہے تو براہ کرم ہم سے رابطہ کریں۔",
   "app.errors.tag_name_taken": "اس نام کا ٹیگ پہلے سے موجود ہے۔",
   "app.errors.title_multiloc_blank": "عنوان خالی نہیں ہو سکتا۔",
