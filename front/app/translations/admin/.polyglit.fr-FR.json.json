@@ -8119,6 +8119,11 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.extraPhaseListItem2": {
+    "state": "verified",
+    "verified_at": "2026-08-21T08:44:30.675343Z",
+    "verified_by": "Lydie"
+  },
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.folder": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
@@ -8353,6 +8358,11 @@
     "state": "verified",
     "verified_at": "2026-07-22T19:53:51.208622Z",
     "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.extras2": {
+    "state": "verified",
+    "verified_at": "2026-08-21T08:44:30.675343Z",
+    "verified_by": "Lydie"
   },
   "app.containers.Admin.projects.project.extrasEmptyDescription": {
     "state": "verified",

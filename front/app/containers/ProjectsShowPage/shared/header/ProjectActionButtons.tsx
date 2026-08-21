@@ -25,7 +25,7 @@ import messages from 'containers/ProjectsShowPage/messages';
 
 import IdeaButton from 'components/IdeaButton';
 import EmptyParticipationPreview from 'components/ProjectPageBuilder/Widgets/EmptyState/EmptyParticipationPreview';
-import ExtraSurveyActionButton from 'components/ProjectPageBuilder/Widgets/ExtraSurveys/ActionButton';
+import SpotlightSurveyActionButton from 'components/ProjectPageBuilder/Widgets/SpotlightSurveys/ActionButton';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
@@ -37,7 +37,7 @@ import { isAdmin } from 'utils/permissions/roles';
 import { useLocation } from 'utils/router';
 import { scrollToElement } from 'utils/scroll';
 
-import { excludeHidden, groupExtraSurveys } from './participationOptions';
+import { excludeHidden, groupSpotlightSurveys } from './participationOptions';
 import WaysToParticipateModal from './WaysToParticipateModal';
 
 interface Props {
@@ -88,7 +88,7 @@ const ProjectActionButtons = memo<Props>(
     }
 
     const { open: openSurveyPhases, upcoming: upcomingSurveyPhases } =
-      groupExtraSurveys(standalonePhases?.data);
+      groupSpotlightSurveys(standalonePhases?.data);
     const visibleOpenSurveys = isParallelParticipationEnabled
       ? excludeHidden(openSurveyPhases, hiddenOptionIds)
       : [];
@@ -354,7 +354,7 @@ const ProjectActionButtons = memo<Props>(
           <>
             {methodCTAButton}
             {surveyCTAs.map((surveyPhase, index) => (
-              <ExtraSurveyActionButton
+              <SpotlightSurveyActionButton
                 key={surveyPhase.id}
                 phase={surveyPhase}
                 buttonStyle={

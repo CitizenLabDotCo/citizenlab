@@ -8229,6 +8229,11 @@
     "verified_at": "2026-08-11T14:34:53.918421Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.extraPhaseListItem2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T09:51:14.379476Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.folder": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
@@ -8467,6 +8472,11 @@
   "app.containers.Admin.projects.project.extras": {
     "state": "verified",
     "verified_at": "2026-07-23T09:54:02.983940Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.extras2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T09:51:14.379476Z",
     "verified_by": "Jelena"
   },
   "app.containers.Admin.projects.project.extrasEmptyDescription": {

@@ -54,8 +54,8 @@ export default defineMessages({
     defaultMessage: 'No end date',
   },
   extras: {
-    id: 'app.containers.Admin.projects.project.extras',
-    defaultMessage: 'Extras',
+    id: 'app.containers.Admin.projects.project.extras2',
+    defaultMessage: 'Spotlight surveys',
   },
   newSurvey: {
     id: 'app.containers.Admin.projects.project.newSurvey',

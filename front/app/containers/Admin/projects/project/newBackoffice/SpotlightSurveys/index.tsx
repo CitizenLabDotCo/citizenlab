@@ -29,7 +29,7 @@ interface Props {
   projectId: string;
 }
 
-const ExtrasPhases = ({ projectId }: Props) => {
+const SpotlightSurveys = ({ projectId }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { phaseId } = useParams({ strict: false });
@@ -128,4 +128,4 @@ const ExtrasPhases = ({ projectId }: Props) => {
   );
 };
 
-export default ExtrasPhases;
+export default SpotlightSurveys;

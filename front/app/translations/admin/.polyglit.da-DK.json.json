@@ -8099,6 +8099,11 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.extraPhaseListItem2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T11:46:05.268117Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.folder": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
@@ -8332,6 +8337,11 @@
   "app.containers.Admin.projects.project.extras": {
     "state": "verified",
     "verified_at": "2026-07-21T07:31:04.340976Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.projects.project.extras2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T11:46:05.268117Z",
     "verified_by": "kielgast@govocal.com"
   },
   "app.containers.Admin.projects.project.extrasEmptyDescription": {

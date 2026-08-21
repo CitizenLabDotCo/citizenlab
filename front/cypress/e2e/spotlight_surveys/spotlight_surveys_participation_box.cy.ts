@@ -1,7 +1,10 @@
 import moment = require('moment');
 
 import { randomString } from '../../support/commands';
-import { clickExtraSurveyButton, createProjectWithExtraSurveys } from './utils';
+import {
+  clickSpotlightSurveyButton,
+  createProjectWithSpotlightSurveys,
+} from './utils';
 
 describe('Project page participation box with extra surveys', () => {
   describe('with a primary method and one open extra survey', () => {
@@ -10,7 +13,7 @@ describe('Project page participation box with extra surveys', () => {
     let surveyPhaseId = '';
 
     before(() => {
-      createProjectWithExtraSurveys({ surveys: [{}] }).then((result) => {
+      createProjectWithSpotlightSurveys({ surveys: [{}] }).then((result) => {
         projectId = result.projectId;
         projectSlug = result.projectSlug;
         surveyPhaseId = result.surveyPhaseIds[0];
@@ -40,7 +43,7 @@ describe('Project page participation box with extra surveys', () => {
       cy.visit(`/projects/${projectSlug}`);
       cy.get('#e2e-about-box').scrollIntoView();
 
-      clickExtraSurveyButton();
+      clickSpotlightSurveyButton();
 
       cy.url().should('include', `/projects/${projectSlug}/surveys/new`);
       cy.url().should('include', `phase_id=${surveyPhaseId}`);
@@ -52,7 +55,7 @@ describe('Project page participation box with extra surveys', () => {
     let projectSlug = '';
 
     before(() => {
-      createProjectWithExtraSurveys({
+      createProjectWithSpotlightSurveys({
         surveys: [
           {},
           {},
@@ -128,7 +131,7 @@ describe('Project page participation box with extra surveys', () => {
     let projectSlug = '';
 
     before(() => {
-      createProjectWithExtraSurveys({
+      createProjectWithSpotlightSurveys({
         surveys: [
           {
             startAt: moment().subtract(3, 'month').format('DD/MM/YYYY'),
@@ -160,12 +163,12 @@ describe('Project page participation box with extra surveys', () => {
     let projectSlug = '';
 
     before(() => {
-      createProjectWithExtraSurveys({ surveys: [{ title: surveyTitle }] }).then(
-        (result) => {
-          projectId = result.projectId;
-          projectSlug = result.projectSlug;
-        }
-      );
+      createProjectWithSpotlightSurveys({
+        surveys: [{ title: surveyTitle }],
+      }).then((result) => {
+        projectId = result.projectId;
+        projectSlug = result.projectSlug;
+      });
     });
 
     beforeEach(() => {
