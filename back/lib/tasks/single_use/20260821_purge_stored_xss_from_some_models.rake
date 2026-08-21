@@ -6,8 +6,8 @@
 # write-path pipeline:
 #
 #     Permission#access_denied_explanation_multiloc
-#                                     -> SanitizationService#sanitize_body_multiloc, decoration and
-#                                        link only
+#                                     -> SanitizationService#sanitize_body_multiloc,
+#                                        Permission::EXPLANATION_SANITIZE_FEATURES
 #     #description_multiloc, on each of `topic_models`
 #                                     -> SanitizationService#sanitize_multiloc, decoration only, then
 #                                        empty trailing tags removed
@@ -370,7 +370,7 @@ namespace :single_use do
         tenant, script,
         Permission.where(rewritable.call('access_denied_explanation_multiloc::text')),
         :access_denied_explanation_multiloc,
-        ->(value) { service.sanitize_body_multiloc(value, %i[decoration link]) }, 'Permission',
+        ->(value) { service.sanitize_body_multiloc(value, Permission::EXPLANATION_SANITIZE_FEATURES) }, 'Permission',
         track_links: true
       )
     end

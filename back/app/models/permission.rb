@@ -52,6 +52,17 @@ class Permission < ApplicationRecord
   # 'everyone' is only meaningful for the submission action of participation
   # methods that support it (see ParticipationMethod::Base#supports_permitted_by_everyone?).
   EVERYONE_PERMITTED_ACTIONS = %w[posting_idea taking_survey].freeze
+
+  # `SanitizationService` features allowed in the explanation, shared with anything that
+  # re-sanitises a stored one. Rendered with `dangerouslySetInnerHTML`
+  # (`useCustomAccessDeniedMessage.tsx`, `AccessDenied/index.tsx`).
+  #
+  # Wider than the editor, deliberately. The field had an unrestricted Quill editor from late 2024
+  # until a component swap in June 2026 left it a single-line input, so production holds formatting
+  # no editor can produce today. A survey of all eight clusters found lists on nine rows and nothing
+  # else with content in it - no heading, image, video or alignment - so this is what the stored
+  # data needs, and narrowing it further would delete text admins wrote.
+  EXPLANATION_SANITIZE_FEATURES = %i[list decoration link].freeze
   UNSUPPORTED_DESCRIPTOR = {
     value: nil,
     locked: true,
@@ -177,12 +188,10 @@ class Permission < ApplicationRecord
 
   private
 
-  # Rendered with `dangerouslySetInnerHTML` (`useCustomAccessDeniedMessage.tsx`,
-  # `AccessDenied/index.tsx`). The editor is a plain input, so the allowlist is narrow.
   def sanitize_access_denied_explanation_multiloc
     self.access_denied_explanation_multiloc = SanitizationService.new.sanitize_body_multiloc(
       access_denied_explanation_multiloc,
-      %i[decoration link]
+      EXPLANATION_SANITIZE_FEATURES
     )
   end
 

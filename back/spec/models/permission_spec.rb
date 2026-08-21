@@ -21,10 +21,12 @@ RSpec.describe Permission do
       )
     end
 
-    # The editor is a plain input, so the allowlist is narrower than a description's.
-    it 'strips the formatting only a rich text editor offers' do
+    # Lists are kept because production holds them: the field had an unrestricted Quill editor until
+    # June 2026, and a survey of every cluster found bulleted lists on nine rows. Headings, images,
+    # video and alignment appear nowhere with content in them, so they go.
+    it 'keeps a list, and strips the rest of what a rich text editor once offered' do
       expect(explanation_of('<h2>Title</h2><ul><li>A bullet</li></ul><img src="https://example.com/a.png">'))
-        .to eq 'TitleA bullet'
+        .to eq 'Title<ul><li>A bullet</li></ul>'
     end
   end
 
