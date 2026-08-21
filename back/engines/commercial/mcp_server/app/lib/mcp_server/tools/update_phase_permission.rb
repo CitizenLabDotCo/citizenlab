@@ -174,7 +174,7 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
       )
     end
 
-    # Sets global_custom_fields and the permissions_custom_fields rows on the permission.
+    # Sets custom_fields_behavior and the permissions_custom_fields rows on the permission.
     # Three cases:
     #
     # - nil: reset to tenant defaults (all enabled user fields)
@@ -185,7 +185,10 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
     # approach, but much simpler, and recreating gives us correct ordering for free
     # (acts_as_list assigns position on insert).
     def replace_demographic_questions(permission, demographic_questions)
-      permission.update!(global_custom_fields: demographic_questions.nil?)
+      permission.update!(
+        global_custom_fields: demographic_questions.nil?,
+        custom_fields_behavior: behavior_for(demographic_questions)
+      )
       permission.permissions_custom_fields.destroy_all
 
       demographic_questions.to_a.each do |entry|
@@ -194,6 +197,12 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
           required: entry.fetch(:required, true)
         )
       end
+    end
+
+    def behavior_for(demographic_questions)
+      return 'global' if demographic_questions.nil?
+
+      demographic_questions.empty? ? 'disabled' : 'custom'
     end
   end
 end

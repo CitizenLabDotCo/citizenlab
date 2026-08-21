@@ -5,6 +5,7 @@ FactoryBot.define do
     action { 'posting_idea' }
     permitted_by { 'users' }
     global_custom_fields { false }
+    custom_fields_behavior { 'global' }
     permission_scope { create(:single_phase_ideation_project).phases.first }
     groups { [] }
 
