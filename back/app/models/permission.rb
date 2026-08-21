@@ -24,6 +24,7 @@
 #  require_verification               :boolean          default(FALSE), not null
 #  require_confirmed_phone_number     :boolean          default(FALSE), not null
 #  confirmed_phone_number_expiry      :integer
+#  custom_fields_behavior             :string
 #
 # Indexes
 #
@@ -32,6 +33,7 @@
 #
 class Permission < ApplicationRecord
   PERMITTED_BIES = %w[everyone users admins_moderators].freeze
+  CUSTOM_FIELDS_BEHAVIORS = %w[global disabled custom].freeze
   ACTIONS = {
     # NOTE: Order of actions in each array is used when using :order_by_action
     nil => %w[visiting following attending_event],
@@ -79,6 +81,7 @@ class Permission < ApplicationRecord
   validates :permission_scope_type, inclusion: { in: SCOPE_TYPES }
   validate :validate_permitted_by_everyone
   validates :user_data_collection, inclusion: { in: %w[all_data demographics_only anonymous] }
+  validates :custom_fields_behavior, inclusion: { in: CUSTOM_FIELDS_BEHAVIORS }, allow_nil: true
 
   before_validation :apply_creation_defaults, on: :create
 
@@ -119,8 +122,17 @@ class Permission < ApplicationRecord
     false
   end
 
-  def allow_global_custom_fields?
-    permitted_by == 'users'
+  # Falls back to the attributes the column replaces for the rows the backfill
+  # task has not reached yet. Drop the fallback once it has run everywhere.
+  # Deliberately not memoized: the fallback would go stale as soon as the fields
+  # it derives from change, and its queries are repeated ones the query cache
+  # already serves.
+  def custom_fields_behavior
+    # Admins and managers are never asked demographic questions. Masked rather
+    # than stored, so the choice comes back if the action is opened up again.
+    return 'disabled' if permitted_by == 'admins_moderators'
+
+    super || Permissions::CustomFieldsBehaviorService.new.derive(self)
   end
 
   def everyone_tracking_enabled?
@@ -166,6 +178,7 @@ class Permission < ApplicationRecord
       end
     end
     self.global_custom_fields ||= true
+    self.custom_fields_behavior ||= 'global'
   end
 
   private

@@ -164,7 +164,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
 
   describe '#demographics_data' do
     it 'only includes data related to fields used in phase-level action permissions' do
-      permission1.update!(global_custom_fields: false)
+      permission1.update!(custom_fields_behavior: 'custom')
 
       field1 = create(:custom_field, resource_type: 'User', key: 'single_select1', code: nil, input_type: 'select', title_multiloc: { en: 'Single Select 1' })
       create(:custom_field, resource_type: 'User', key: 'single_select2', code: nil, input_type: 'select', title_multiloc: { en: 'Single Select 2' })
@@ -172,7 +172,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
       create(:permissions_custom_field, permission: permission1, custom_field: field1)
 
       permission2 = create(:permission, action: 'commenting_idea', permission_scope: phase)
-      permission2.update!(global_custom_fields: false)
+      permission2.update!(custom_fields_behavior: 'custom')
 
       field3 = create(:custom_field, resource_type: 'User', key: 'single_select3', code: nil, input_type: 'select', title_multiloc: { en: 'Single Select 3' })
       create(:permissions_custom_field, permission: permission2, custom_field: field3)
