@@ -54,6 +54,47 @@ RSpec.describe DecidimImporter::Importer do
     end
   end
 
+  describe "layout reuse (reuse_matchers['ContentBuilder::Layout'])" do
+    let(:matcher) { described_class.reuse_matchers['ContentBuilder::Layout'] }
+
+    it 'reuses the layout the content buildable already has under that code' do
+      folder = create(:project_folder)
+      existing = create(:layout, content_buildable: folder, code: 'project_folder_description')
+
+      found = matcher.call({ 'content_buildable' => folder, 'code' => 'project_folder_description' }, ContentBuilder::Layout)
+      expect(found).to eq(existing)
+    end
+
+    it 'returns nil when the buildable has no layout under that code, so one is created' do
+      folder = create(:project_folder)
+      create(:layout, content_buildable: folder, code: 'project_folder_description')
+
+      expect(matcher.call({ 'content_buildable' => folder, 'code' => 'project_page' }, ContentBuilder::Layout)).to be_nil
+      expect(matcher.call({ 'content_buildable' => create(:project), 'code' => 'project_page' }, ContentBuilder::Layout)).to be_nil
+      expect(matcher.call({}, ContentBuilder::Layout)).to be_nil
+    end
+
+    # Folders are reused by slug, so importing into a tenant that already holds them re-stages their
+    # description layout against a folder that already has one — and `(content_buildable, code)` is unique.
+    it 'imports into a tenant whose folders already carry a description layout' do
+      template = YAML.load(DecidimImporter::TemplateCreator.from_directory(export_root).to_yaml, aliases: true)
+      title_multiloc = template['models']['project_folders/folder'].first['title_multiloc']
+      # Folders are reused by title slug, so the pre-existing one has to carry that slug.
+      folder = create(
+        :project_folder,
+        title_multiloc: title_multiloc,
+        slug: DecidimImporter::Slug.sanitize(title_multiloc.values.find(&:present?))
+      )
+      create(:layout, content_buildable: folder, code: 'project_folder_description')
+
+      expect { described_class.apply_template(template, import_uploads: false) }.not_to raise_error
+
+      # The pre-existing folder was reused (the fixture holds 2), and kept its single layout.
+      expect(ProjectFolders::Folder.count).to eq(2)
+      expect(ContentBuilder::Layout.where(content_buildable: folder, code: 'project_folder_description').count).to eq(1)
+    end
+  end
+
   describe "user reuse fallback by email (reuse_matchers['User'])" do
     let(:matcher) { described_class.reuse_matchers['User'] }
 
