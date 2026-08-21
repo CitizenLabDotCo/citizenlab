@@ -25,8 +25,11 @@ class WebApi::V1::PermissionsController < ApplicationController
   def update
     raise ActiveRecord::RecordNotFound if @permission.inherited?
 
+    attributes = permission_params
+    require_feature!('permissions_custom_fields') if attributes[:custom_fields_behavior] == 'custom'
+
     old_group_ids = @permission.group_ids
-    @permission.assign_attributes(permission_params)
+    @permission.assign_attributes(attributes)
     authorize @permission
     if @permission.save
       sidefx.after_update(@permission, current_user, old_group_ids)
@@ -157,7 +160,7 @@ class WebApi::V1::PermissionsController < ApplicationController
   def permission_params
     params.require(:permission).permit(
       :permitted_by,
-      :global_custom_fields,
+      :custom_fields_behavior,
       :verification_expiry,
       :everyone_tracking_enabled,
       :user_fields_in_form,
