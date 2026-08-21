@@ -60,10 +60,8 @@ describe Verification::VerificationService do
     it 'updates the user with received custom_field_values from verify_sync' do
       cf1 = create(:custom_field)
       cf2 = create(:custom_field)
-      user.update!(custom_field_values: {
-        cf1.key => 'original',
-        cf2.key => 'original'
-      })
+      create(:custom_field_answer, answerable: user, key: cf1.key, value: 'original')
+      create(:custom_field_answer, answerable: user, key: cf2.key, value: 'original')
 
       params = {
         user: user,
@@ -82,7 +80,7 @@ describe Verification::VerificationService do
 
       service.verify_sync(**params)
 
-      expect(user.reload.custom_field_values).to eq({
+      expect(user.reload.custom_field_answers.to_h { [it.key, it.value] }).to eq({
         cf1.key => 'original',
         cf2.key => 'changed'
       })

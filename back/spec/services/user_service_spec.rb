@@ -32,7 +32,7 @@ describe UserService do
         user = User.new
         result = service.upsert_in_web_api(user, user_params.merge(custom_field_values: { 'yearly_bike_kms' => 2500 }))
         expect(result).to be true
-        expect(user.reload.custom_field_values).to eq('yearly_bike_kms' => 2500)
+        expect(user.reload.custom_field_answers.to_h { [it.key, it.value] }).to eq('yearly_bike_kms' => 2500)
       end
 
       it 'adds errors and does not save when the custom field values do not match their schemas' do

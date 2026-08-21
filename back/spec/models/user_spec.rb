@@ -662,48 +662,52 @@ RSpec.describe User do
       create(:custom_field_domicile)
     end
 
+    def user_with_answer(key, value)
+      build(:user, custom_field_answers: [build(:custom_field_answer, key: key, value: value)])
+    end
+
     it '(gender) is valid when male, female or unspecified' do
-      expect(build(:user, gender: 'male')).to be_valid
-      expect(build(:user, gender: 'female')).to be_valid
-      expect(build(:user, gender: 'unspecified')).to be_valid
+      expect(user_with_answer('gender', 'male')).to be_valid
+      expect(user_with_answer('gender', 'female')).to be_valid
+      expect(user_with_answer('gender', 'unspecified')).to be_valid
     end
 
     it '(gender) is invalid when not male, female or unspecified' do
-      user = build(:user, gender: 'somethingelse')
+      user = user_with_answer('gender', 'somethingelse')
       expect { user.valid? }.to(change { user.errors[:gender] })
     end
 
     it '(birthyear) is valid when in realistic range' do
-      expect(build(:user, birthyear: (Time.now.year - 117))).to be_valid
-      expect(build(:user, birthyear: (Time.now.year - 13))).to be_valid
+      expect(user_with_answer('birthyear', Time.now.year - 117)).to be_valid
+      expect(user_with_answer('birthyear', Time.now.year - 13)).to be_valid
     end
 
     it '(birthyear) is invalid when unrealistic' do
-      user = build(:user, birthyear: Time.now.year + 1)
+      user = user_with_answer('birthyear', Time.now.year + 1)
       expect { user.valid? }.to(change { user.errors[:birthyear] })
-      user = build(:user, birthyear: 1850)
+      user = user_with_answer('birthyear', 1850)
       expect { user.valid? }.to(change { user.errors[:birthyear] })
-      user = build(:user, birthyear: 'eighteen hundred')
+      user = user_with_answer('birthyear', 'eighteen hundred')
       expect { user.valid? }.to(change { user.errors[:birthyear] })
     end
 
     it '(birthyear) is invalid when not an integer' do
-      user = build(:user, birthyear: 'eighteen hundred')
+      user = user_with_answer('birthyear', 'eighteen hundred')
       expect { user.valid? }.to(change { user.errors[:birthyear] })
-      user = build(:user, birthyear: 1930.4)
+      user = user_with_answer('birthyear', 1930.4)
       expect { user.valid? }.to(change { user.errors[:birthyear] })
     end
 
     it "(domicile) is valid when an area id or 'outside'" do
       create_list(:area, 5)
-      expect(build(:user, domicile: Area.offset(rand(5)).first.id)).to be_valid
-      expect(build(:user, domicile: 'outside')).to be_valid
+      expect(user_with_answer('domicile', Area.offset(rand(5)).first.id)).to be_valid
+      expect(user_with_answer('domicile', 'outside')).to be_valid
     end
 
     it "(domicile) is invalid when not an area id or 'outside'" do
-      user = build(:user, domicile: 'somethingelse')
+      user = user_with_answer('domicile', 'somethingelse')
       expect { user.valid? }.to(change { user.errors[:domicile] })
-      user = build(:user, domicile: 5)
+      user = user_with_answer('domicile', 5)
       expect { user.valid? }.to(change { user.errors[:domicile] })
     end
   end

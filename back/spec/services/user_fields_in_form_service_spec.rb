@@ -6,7 +6,7 @@ describe UserFieldsInFormService do
   describe '#should_merge_user_fields_into_idea?' do
     context 'native survey' do
       before do
-        @user = create(:user, { custom_field_values: { age: 30 } })
+        @user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'age', value: 30)])
         @project = create(:single_phase_native_survey_project, phase_attrs: {
           with_permissions: true
         })
@@ -16,7 +16,7 @@ describe UserFieldsInFormService do
         @permission.update!(global_custom_fields: false, user_fields_in_form: false, user_data_collection: 'all_data')
         create(:permissions_custom_field, permission: @permission, custom_field: create(:custom_field, key: 'age'))
 
-        @idea = create(:idea, author: @user, custom_field_values: {})
+        @idea = create(:idea, author: @user)
       end
 
       it 'returns true when all conditions are met' do
@@ -24,7 +24,7 @@ describe UserFieldsInFormService do
       end
 
       it 'returns false if user is not the author of the idea' do
-        idea = create(:idea, author: create(:user), custom_field_values: {})
+        idea = create(:idea, author: create(:user))
         expect(described_class.should_merge_user_fields_into_idea?(@user, @phase, idea)).to be false
       end
 
@@ -41,7 +41,7 @@ describe UserFieldsInFormService do
 
     context 'ideation' do
       before do
-        @user = create(:user, { custom_field_values: { age: 30 } })
+        @user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'age', value: 30)])
         @project = create(:single_phase_ideation_project, phase_attrs: {
           with_permissions: true
         })
@@ -51,7 +51,7 @@ describe UserFieldsInFormService do
         @permission.update!(global_custom_fields: false, user_fields_in_form: false, user_data_collection: 'all_data')
         create(:permissions_custom_field, permission: @permission, custom_field: create(:custom_field, key: 'age'))
 
-        @idea = create(:idea, author: @user, custom_field_values: {})
+        @idea = create(:idea, author: @user)
       end
 
       it 'returns true when all conditions are met' do
@@ -59,7 +59,7 @@ describe UserFieldsInFormService do
       end
 
       it 'returns false if user is not the author of the idea' do
-        idea = create(:idea, author: create(:user), custom_field_values: {})
+        idea = create(:idea, author: create(:user))
         expect(described_class.should_merge_user_fields_into_idea?(@user, @phase, idea)).to be false
       end
 
@@ -90,13 +90,15 @@ describe UserFieldsInFormService do
     end
 
     it 'merges user custom fields into idea custom fields with prefixed keys' do
-      user = build(:user, custom_field_values: { 'age' => 30, 'city' => 'New York' })
-      idea = build(:idea, custom_field_values: { 'satisfaction' => 'high' })
+      user = build(:user, custom_field_answers: [
+        build(:custom_field_answer, key: 'age', value: 30),
+        build(:custom_field_answer, key: 'city', value: 'New York')
+      ])
 
       merged_values = described_class.merge_user_fields_into_idea(
         user,
         @phase,
-        idea.custom_field_values
+        { 'satisfaction' => 'high' }
       )
 
       expect(merged_values).to eq({
@@ -107,13 +109,17 @@ describe UserFieldsInFormService do
     end
 
     it 'does not include user fields that are not explicitly asked in permissions_custom_fields' do
-      user = build(:user, custom_field_values: { 'age' => 30, 'city' => 'New York', 'gender' => 'female', 'favorite_color' => 'green' })
-      idea = build(:idea, custom_field_values: { 'satisfaction' => 'high' })
+      user = build(:user, custom_field_answers: [
+        build(:custom_field_answer, key: 'age', value: 30),
+        build(:custom_field_answer, key: 'city', value: 'New York'),
+        build(:custom_field_answer, key: 'gender', value: 'female'),
+        build(:custom_field_answer, key: 'favorite_color', value: 'green')
+      ])
 
       merged_values = described_class.merge_user_fields_into_idea(
         user,
         @phase,
-        idea.custom_field_values
+        { 'satisfaction' => 'high' }
       )
 
       expect(merged_values).to eq({
@@ -124,15 +130,17 @@ describe UserFieldsInFormService do
     end
 
     it 'pre-populates user fields when using global_custom_fields being the default' do
-      user = build(:user, custom_field_values: { 'age' => 30, 'city' => 'New York' })
-      idea = build(:idea, custom_field_values: {})
+      user = build(:user, custom_field_answers: [
+        build(:custom_field_answer, key: 'age', value: 30),
+        build(:custom_field_answer, key: 'city', value: 'New York')
+      ])
 
       phase = create(:native_survey_phase, with_permissions: true)
 
       merged_values = described_class.merge_user_fields_into_idea(
         user,
         phase,
-        idea.custom_field_values
+        {}
       )
 
       # Should include user fields even though permissions_custom_fields are not persisted to database
@@ -146,7 +154,7 @@ describe UserFieldsInFormService do
   describe '#should_merge_user_fields_from_idea_into_user?' do
     context 'native survey' do
       before do
-        @user = create(:user, { custom_field_values: { age: 30 } })
+        @user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'age', value: 30)])
         @project = create(:single_phase_native_survey_project, phase_attrs: {
           with_permissions: true
         })
@@ -159,7 +167,6 @@ describe UserFieldsInFormService do
         @idea = create(
           :idea,
           author: @user,
-          custom_field_values: {},
           project: @project,
           creation_phase: @phase
         )
@@ -173,7 +180,6 @@ describe UserFieldsInFormService do
         idea = create(
           :idea,
           author: create(:user),
-          custom_field_values: {},
           project: @project,
           creation_phase: @phase
         )
@@ -198,7 +204,7 @@ describe UserFieldsInFormService do
 
     context 'ideation' do
       before do
-        @user = create(:user, { custom_field_values: { age: 30 } })
+        @user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'age', value: 30)])
         @project = create(:single_phase_ideation_project, phase_attrs: {
           with_permissions: true
         })
@@ -211,7 +217,6 @@ describe UserFieldsInFormService do
         @idea = create(
           :idea,
           author: @user,
-          custom_field_values: {},
           project: @project
         )
       end
@@ -224,7 +229,6 @@ describe UserFieldsInFormService do
         idea = create(
           :idea,
           author: create(:user),
-          custom_field_values: {},
           project: @project
         )
         expect(described_class.should_merge_user_fields_from_idea_into_user?(idea, @user, @phase)).to be false
@@ -248,28 +252,37 @@ describe UserFieldsInFormService do
 
   describe '#merge_user_fields_from_idea_into_user!' do
     it 'merges user fields from idea into user' do
-      user = build(:user, custom_field_values: { 'city' => 'New York' })
-      idea = build(:idea, custom_field_values: { 'satisfaction' => 'high', 'u_age' => 30 })
+      user = build(:user, custom_field_answers: [build(:custom_field_answer, key: 'city', value: 'New York')])
+      idea = build(:idea, custom_field_answers: [
+        build(:custom_field_answer, key: 'satisfaction', value: 'high'),
+        build(:custom_field_answer, key: 'u_age', value: 30)
+      ])
 
       described_class.merge_user_fields_from_idea_into_user!(idea, user)
-      expect(user.custom_field_values).to include('city' => 'New York', 'age' => 30)
+      expect(user.custom_field_answers.to_h { [it.key, it.value] }).to include('city' => 'New York', 'age' => 30)
     end
 
     it 'overwrites user fields if they already exist' do
-      user = build(:user, custom_field_values: { 'age' => 25 })
-      idea = build(:idea, custom_field_values: { 'satisfaction' => 'high', 'u_age' => 30 })
+      user = build(:user, custom_field_answers: [build(:custom_field_answer, key: 'age', value: 25)])
+      idea = build(:idea, custom_field_answers: [
+        build(:custom_field_answer, key: 'satisfaction', value: 'high'),
+        build(:custom_field_answer, key: 'u_age', value: 30)
+      ])
 
       described_class.merge_user_fields_from_idea_into_user!(idea, user)
-      expect(user.custom_field_values).to include('age' => 30)
+      expect(user.custom_field_answers.to_h { [it.key, it.value] }).to include('age' => 30)
     end
 
     it 'merges other text values from idea into user' do
-      user = build(:user, custom_field_values: {})
-      idea = build(:idea, custom_field_values: { 'u_pet' => 'other', 'u_pet_other' => 'A ferret' })
+      user = build(:user)
+      idea = build(:idea, custom_field_answers: [
+        build(:custom_field_answer, key: 'u_pet', value: 'other'),
+        build(:custom_field_answer, key: 'u_pet_other', value: 'A ferret')
+      ])
 
       described_class.merge_user_fields_from_idea_into_user!(idea, user)
 
-      expect(user.custom_field_values).to eq({ 'pet' => 'other', 'pet_other' => 'A ferret' })
+      expect(user.custom_field_answers.to_h { [it.key, it.value] }).to eq({ 'pet' => 'other', 'pet_other' => 'A ferret' })
     end
   end
 

@@ -290,7 +290,7 @@ class User < ApplicationRecord
       .merge(attributes.extract!('gender', 'birthyear', 'domicile').compact)
     values = custom_field_answers.to_h { [it.key, it.value] }.merge(incoming_values)
     CustomFieldValuesTransitionService.new.assign(self, values)
-    update!(**attributes)
+    update!(attributes)
   end
 
   def to_token_payload
