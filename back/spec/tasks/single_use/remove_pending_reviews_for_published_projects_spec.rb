@@ -45,7 +45,7 @@ describe 'single_use:remove_pending_reviews_for_published_projects rake task' do
       delete = report['deletes'].first
       expect(delete['model_name']).to eq 'ProjectReview'
       expect(delete['id']).to eq review.id
-      expect(delete['context']).to include('tenant' => Tenant.current.host, 'project_id'=> project.id)
+      expect(delete['context']).to include('tenant' => Tenant.current.host, 'project_id' => project.id)
     end
 
     it 'leaves it in place on a dry run, but still reports it' do
@@ -55,7 +55,7 @@ describe 'single_use:remove_pending_reviews_for_published_projects rake task' do
     end
   end
 
-  context 'when a project  has an approved review' do
+  context 'when a project has an approved review' do
     let!(:review) { create(:project_review, :approved, project: project) }
 
     it 'leaves it alone' do
