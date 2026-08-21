@@ -17,14 +17,14 @@ namespace :single_use do
       args: args,
       description: 'remove pending reviews for published projects'
     ) do |tenant, script|
-        ProjectReview.where(approved_at: nil)
-                     .joins(project: :admin_publication)
-                     .where.not(admin_publications: { first_published_at: nil })
-                     .find_each do |review|
-                        puts "Removing pending review #{review.id} for project #{review.project_id}"
-                        script.reporter.add_delete('ProjectReview', review.id, context: { tenant: tenant.host, project_id: review.project_id })
-                        review.destroy! if script.execute?
-                     end
+      ProjectReview.where(approved_at: nil)
+        .joins(project: :admin_publication)
+        .where.not(admin_publications: { first_published_at: nil })
+        .find_each do |review|
+        puts "Removing pending review #{review.id} for project #{review.project_id}"
+        script.reporter.add_delete('ProjectReview', review.id, context: { tenant: tenant.host, project_id: review.project_id })
+        review.destroy! if script.execute?
+      end
     end
 
     puts "\n---------- FINISHED TASK: Remove pending reviews for published projects ----------\n\n"
