@@ -161,7 +161,7 @@ class WebApi::V1::UsersController < ApplicationController
       return
     end
 
-    render_check_action(@user, :email_confirmation, RequestEmailConfirmationCodeJob)
+    render_check_action(@user, :email_confirmation) { |user| RequestEmailConfirmationCodeJob.perform_now(user) }
   end
 
   # The phone counterpart of check_email: validates a phone number without
@@ -184,7 +184,7 @@ class WebApi::V1::UsersController < ApplicationController
 
     @user = User.find_by_phone_number(parsed.e164)
 
-    render_check_action(@user, :phone_confirmation, RequestPhoneConfirmationCodeJob)
+    render_check_action(@user, :phone_confirmation) { |user| RequestPhoneConfirmationCodeJob.perform_later(user) }
   end
 
   def create
@@ -426,7 +426,7 @@ class WebApi::V1::UsersController < ApplicationController
   # submitted identifier (nil when there is none) and the name of the confirmation
   # that covers that identifier, tell the frontend which step to go to next. Users
   # who still have to confirm, and users without a password, get a code sent.
-  def render_check_action(user, confirmation_name, code_job)
+  def render_check_action(user, confirmation_name, &)
     if user.nil?
       render json: raw_json({ action: 'terms' })
       return
@@ -437,11 +437,14 @@ class WebApi::V1::UsersController < ApplicationController
       return
     end
 
-    request_code_if_first_time(user, confirmation_name, code_job)
+    request_code_if_first_time(user, confirmation_name, &)
     render json: raw_json({ action: 'confirm' })
   end
 
-  def request_code_if_first_time(user, confirmation_name, code_job)
+  # The block sends the code. It is passed in rather than derived from the
+  # confirmation name because email codes are sent inline while SMS codes are
+  # queued (perform_later).
+  def request_code_if_first_time(user, confirmation_name)
     # If users already have a code_reset_count > 0,
     # they tried to log in previously and failed. In this case, we don't
     # automatically resend the code, because otherwise we
@@ -449,7 +452,7 @@ class WebApi::V1::UsersController < ApplicationController
     # have to request it themselves
     reset_count = user.public_send(confirmation_name)&.code_reset_count || 0
     if reset_count == 0
-      code_job.perform_now(user)
+      yield user
     end
   end
 end

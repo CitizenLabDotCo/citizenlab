@@ -76,7 +76,7 @@ describe SideFxUserService do
       let(:phone_user) { create(:unconfirmed_phone_user) }
 
       it 'sends a confirmation code by SMS' do
-        expect(RequestPhoneConfirmationCodeJob).to receive(:perform_now).with(phone_user)
+        expect(RequestPhoneConfirmationCodeJob).to receive(:perform_later).with(phone_user)
         expect(RequestEmailConfirmationCodeJob).not_to receive(:perform_now)
         expect(RequestNewEmailConfirmationCodeJob).not_to receive(:perform_now)
 
@@ -84,7 +84,7 @@ describe SideFxUserService do
       end
 
       it "logs a 'created' action job with flow: 'phone_confirmation'" do
-        allow(RequestPhoneConfirmationCodeJob).to receive(:perform_now)
+        allow(RequestPhoneConfirmationCodeJob).to receive(:perform_later)
 
         expect { service.after_create(phone_user, phone_user) }
           .to enqueue_job(LogActivityJob)
@@ -95,13 +95,13 @@ describe SideFxUserService do
       it 'does not send a code when the phone number is already confirmed' do
         confirmed = create(:user, :with_confirmed_phone)
 
-        expect(RequestPhoneConfirmationCodeJob).not_to receive(:perform_now)
+        expect(RequestPhoneConfirmationCodeJob).not_to receive(:perform_later)
         service.after_create(confirmed, current_user)
       end
     end
 
     it 'does not send an SMS code for a user without a phone number' do
-      expect(RequestPhoneConfirmationCodeJob).not_to receive(:perform_now)
+      expect(RequestPhoneConfirmationCodeJob).not_to receive(:perform_later)
       service.after_create(user, current_user)
     end
 

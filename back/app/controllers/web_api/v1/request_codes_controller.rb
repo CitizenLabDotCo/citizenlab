@@ -78,7 +78,7 @@ class WebApi::V1::RequestCodesController < ApplicationController
     authorize user, policy_class: RequestCodePolicy
 
     unless only_if_first_time? && user.phone_confirmation&.code_outstanding?
-      RequestPhoneConfirmationCodeJob.perform_now(user)
+      RequestPhoneConfirmationCodeJob.perform_later(user)
     end
 
     head :ok
