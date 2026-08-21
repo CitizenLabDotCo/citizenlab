@@ -71,7 +71,6 @@ export interface IProject {
 
 export interface IProjectAttributes {
   title_multiloc: Multiloc;
-  description_multiloc: Multiloc;
   description_preview_multiloc: Multiloc;
   slug: string;
   preview_token: string;
@@ -96,7 +95,6 @@ export interface IProjectAttributes {
   include_all_areas: boolean;
   folder_id?: string | null;
   action_descriptors: ProjectActionDescriptors;
-  uses_content_builder: boolean;
   listed: boolean;
   live_auto_input_topics_enabled: boolean;
   publication_email_enabled: boolean;
@@ -187,7 +185,6 @@ export interface IUpdatedProjectProperties {
   header_bg?: string | ProjectHeaderBgImageSizes | null;
   header_bg_alt_text_multiloc?: Multiloc;
   title_multiloc?: Multiloc;
-  description_multiloc?: Multiloc;
   description_preview_multiloc?: Multiloc;
   area_ids?: string[];
   visible_to?: Visibility;

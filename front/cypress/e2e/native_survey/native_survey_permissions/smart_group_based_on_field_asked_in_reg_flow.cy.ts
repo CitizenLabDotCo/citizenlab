@@ -42,7 +42,6 @@ describe('Native survey permissions', () => {
                   cy.apiCreateProject({
                     title: randomString(),
                     descriptionPreview: randomString(),
-                    description: randomString(),
                     publicationStatus: 'published',
                   }).then((project) => {
                     projectId = project.body.data.id;

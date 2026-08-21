@@ -11,8 +11,6 @@ describe('New project with native survey', () => {
       projectId = result.projectId;
       projectSlug = result.projectSlug;
 
-      cy.apiAddAboutBox(projectId);
-
       cy.apiCreateEvent({
         projectId,
         title: eventTitle,
@@ -79,7 +77,6 @@ describe('Project with native survey phase but not active', () => {
 
 describe('Native survey CTA bar', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
@@ -97,10 +94,8 @@ describe('Native survey CTA bar', () => {
       })
       .then(() => {
         cy.apiCreateProject({
-          withAboutBox: true,
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
-          description: projectDescription,
           publicationStatus: 'published',
         }).then((project) => {
           projectId = project.body.data.id;

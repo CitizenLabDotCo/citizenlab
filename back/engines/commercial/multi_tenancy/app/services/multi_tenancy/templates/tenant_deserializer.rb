@@ -15,6 +15,14 @@ module MultiTenancy
 
       SKIP_IMAGE_PRESENCE_VALIDATION = %w[IdeaImage ContentBuilder::LayoutImage].freeze
 
+      # Attributes that were removed from the schema but may still be present in
+      # templates serialized before their removal; assigning them would raise
+      # ActiveModel::UnknownAttributeError and abort the whole template application.
+      REMOVED_ATTRIBUTES = {
+        'Project' => %w[description_multiloc],
+        'ProjectFolders::Folder' => %w[description_multiloc]
+      }.freeze
+
       def initialize(save_temp_remote_urls: false)
         @save_temp_remote_urls = save_temp_remote_urls
       end
@@ -151,8 +159,12 @@ module MultiTenancy
         start_of_day = AppConfiguration.timezone.now.beginning_of_day
         locales = USER_INPUT_CLASSES.include?(model_class) ? app_settings.dig('core', 'locales') : all_supported_locales
 
+        removed_attributes = REMOVED_ATTRIBUTES[model_class&.name] || []
+
         new_attributes = {}
         attributes.each do |field_name, field_value|
+          next if removed_attributes.include?(field_name)
+
           if multiloc?(field_name)
             new_attributes[field_name] = restore_multiloc_attribute(field_value, locales)
 

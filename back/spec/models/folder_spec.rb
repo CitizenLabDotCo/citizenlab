@@ -45,15 +45,6 @@ RSpec.describe ProjectFolders::Folder do
 
   it_behaves_like 'a sanitized title_multiloc', factory: :project_folder
 
-  describe '#sanitize_description_multiloc' do
-    it 'sanitizes script tags in the description' do
-      folder = create(:project_folder, description_multiloc: {
-        'en' => '<p>Test</p><script>These tags should be removed!</script>'
-      })
-      expect(folder.description_multiloc).to eq({ 'en' => '<p>Test</p>These tags should be removed!' })
-    end
-  end
-
   describe '#sanitize_description_preview_multiloc' do
     it 'sanitizes script tags in the description_preview_multiloc' do
       folder = create(:project_folder, description_preview_multiloc: {

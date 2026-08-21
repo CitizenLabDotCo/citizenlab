@@ -14,9 +14,6 @@ export interface IProjectFolders {
 export interface INewProjectFolderDiff {
   title_multiloc: Multiloc;
   slug: string | null;
-  // Optional: a folder can be created without a description, which is then
-  // authored in the Content Builder after creation.
-  description_multiloc?: Multiloc;
   description_preview_multiloc: Multiloc;
   header_bg?: string | null;
   header_bg_alt_text_multiloc?: Multiloc;
@@ -42,7 +39,6 @@ export interface IProjectFolderData {
     participants_count: number;
     visible_projects_count: number;
     title_multiloc: Multiloc;
-    description_multiloc: Multiloc;
     description_preview_multiloc: Multiloc;
     slug: string;
     header_bg?: ImageSizes;
@@ -72,7 +68,6 @@ export interface IUpdatedProjectFolder {
   projectFolderId: string;
   title_multiloc?: Multiloc;
   slug?: string | null;
-  description_multiloc?: Multiloc;
   description_preview_multiloc?: Multiloc;
   header_bg?: string | null;
   header_bg_alt_text_multiloc?: Multiloc;
