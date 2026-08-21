@@ -29,6 +29,13 @@ describe 'single_use:purge_stored_xss_form_and_email_text rake task' do
     record
   end
 
+  # Execute mode asks about every row where stripping costs content, and refuses to guess without a
+  # terminal. Give it one that answers.
+  def answering(*replies)
+    allow($stdin).to receive(:tty?).and_return(true)
+    allow($stdin).to receive(:gets).and_return(*replies.map { |reply| "#{reply}\n" })
+  end
+
   context 'a custom field title carrying HTML' do
     let!(:custom_field) { store_raw(create(:custom_field), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>Age' }) }
 
@@ -77,6 +84,92 @@ describe 'single_use:purge_stored_xss_form_and_email_text rake task' do
     it 'stores the stripped column alone, not the merged defaults' do
       run_task
       expect(campaign.reload[:subject_multiloc]).to eq({ 'en' => 'Welcome' })
+    end
+  end
+
+  # Stripping a value that was nothing but payload leaves nothing. `update_columns` goes around the
+  # presence validation, so a blank would freeze the record - every later save of any field on it
+  # fails on the missing title. The placeholder keeps it saveable.
+  context 'a question label that is nothing but a payload' do
+    let!(:custom_field) { store_raw(create(:custom_field), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>' }) }
+
+    it 'writes the placeholder once confirmed, not the blank the record rejects' do
+      answering 'y'
+      run_task
+      expect(custom_field.reload[:title_multiloc]['en']).to eq '-'
+      expect(custom_field.reload).to be_valid
+    end
+
+    it 'leaves the row alone when skipped, and says so' do
+      answering 's'
+      expect { run_task }.to output(/Skipped on your say-so/).to_stdout
+      expect(custom_field.reload[:title_multiloc]['en']).to eq '<img src=x onerror=alert(1)>'
+    end
+
+    it 'names the tenant, model and id in the summary, with the value it would replace' do
+      expect { run_task(dry_run: true) }.to output(
+        /Emptied.*#{Regexp.escape(Tenant.current.host)}.*CustomField#title_multiloc \[en\] #{custom_field.id}.*before: <img src=x onerror=alert\(1\)>/m
+      ).to_stdout
+    end
+
+    # Skipping leaves a live payload and writing may cost content, so guessing is the one thing it
+    # must not do.
+    it 'aborts rather than deciding for itself when there is no terminal' do
+      allow($stdin).to receive(:tty?).and_return(false)
+      expect { run_task }.to raise_error(SystemExit)
+    end
+  end
+
+  # A page carries no title presence validation, so a blank is a legal state and inventing content
+  # for it would be worse than leaving it.
+  context 'a page title that is nothing but a payload' do
+    let!(:page) { store_raw(create(:custom_field_page), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>' }) }
+
+    it 'writes the blank rather than the placeholder' do
+      answering 'y'
+      run_task
+      expect(page.reload[:title_multiloc]['en']).to eq ''
+    end
+  end
+
+  # The reason this task is separate: `<` before a letter opens a tag, so a label phrased as a
+  # sentence loses the rest of itself. Nothing tells that apart from real markup, so the operator
+  # decides.
+  context 'a label where stripping swallows the rest of the sentence' do
+    let!(:custom_field) do
+      store_raw(create(:custom_field), :title_multiloc, { 'en' => 'Prefer brand A <or brand B?' })
+    end
+
+    it 'lists the words it would lose, with the value before and after' do
+      expect { run_task(dry_run: true) }.to output(
+        /Text lost.*lost: or, brand, B.*before: Prefer brand A <or brand B\?.*after:  Prefer brand A/m
+      ).to_stdout
+    end
+
+    it 'writes the stripped value once confirmed' do
+      answering 'y'
+      run_task
+      expect(custom_field.reload[:title_multiloc]['en']).to eq 'Prefer brand A '
+    end
+
+    it 'leaves the row alone when skipped' do
+      answering 's'
+      expect { run_task }.not_to(change { custom_field.reload[:title_multiloc] })
+    end
+  end
+
+  # Not a loss to weigh: an admin typing this label today has it stored the same way, because the
+  # write path strips it before validation. The task reproducing that is the point of the task, so
+  # the row is written without a prompt. Recorded so the behaviour reads as a choice.
+  context 'a label carrying words in angle brackets' do
+    let!(:custom_field) do
+      store_raw(create(:custom_field), :title_multiloc, { 'en' => 'Do you prefer <brand A> or <brand B>?' })
+    end
+
+    it 'is stripped without stopping to ask, and shows up in the report' do
+      expect { run_task }.not_to output(/Text lost/).to_stdout
+      expect(custom_field.reload[:title_multiloc]['en']).to eq 'Do you prefer  or ?'
+      expect(report['changes'].first['old_value']['en']).to eq 'Do you prefer <brand A> or <brand B>?'
     end
   end
 

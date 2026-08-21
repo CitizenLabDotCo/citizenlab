@@ -178,6 +178,33 @@ describe 'single_use:purge_stored_xss_b rake task' do
     end
   end
 
+  # A link inside a raw-text element is text to the parser, so stripping that element takes the
+  # destination with it while the words around it stay put - the one damage the word check misses.
+  context 'an explanation whose link is swallowed with the element around it' do
+    let!(:permission) do
+      store_raw(create(:permission), :access_denied_explanation_multiloc,
+        { 'en' => '<style><a href="https://example.com/docs">docs</a></style>' })
+    end
+
+    it 'reports the destination it would lose' do
+      expect { run_task(dry_run: true) }.to output(
+        %r{Links that now point elsewhere.*was: https://example\.com/docs}m
+      ).to_stdout
+    end
+  end
+
+  # Stripping a plain-text column drops every anchor by definition, so checking those for moved
+  # links would report every link that ever existed and bury the rest.
+  context 'a plain-text column carrying a link' do
+    let!(:static_page) do
+      store_raw(create(:static_page), :banner_header_multiloc, { 'en' => '<a href="https://example.com/docs">docs</a>' })
+    end
+
+    it 'is not reported as a moved link' do
+      expect { run_task(dry_run: true) }.not_to output(/Links that now point elsewhere/).to_stdout
+    end
+  end
+
   # None of these contain an executable keyword, but the write path strips all of them - so the
   # pre-filter has to be wide enough to find them.
   context 'payloads that carry no executable keyword' do
