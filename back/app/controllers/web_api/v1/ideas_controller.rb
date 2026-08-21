@@ -153,6 +153,7 @@ class WebApi::V1::IdeasController < ApplicationController
     end
     params_for_create = idea_params(form).except(:project_id, :phase_ids)
     files_params = extract_file_params(params_for_create)
+    custom_field_values = params_for_create.delete(:custom_field_values).to_h
 
     input = Idea.new params_for_create
     input.project = phase.project
@@ -199,18 +200,19 @@ class WebApi::V1::IdeasController < ApplicationController
       phase,
       input
     )
-      input.custom_field_values = UserFieldsInFormService.merge_user_fields_into_idea(
+      custom_field_values = UserFieldsInFormService.merge_user_fields_into_idea(
         current_user,
         phase,
-        input.custom_field_values
+        custom_field_values
       )
     end
 
-    validate_custom_field_values!(input, form) if published
+    validate_custom_field_values!(input, form, custom_field_values) if published
+    CustomFieldValuesTransitionService.new.assign(input, custom_field_values)
 
     ActiveRecord::Base.transaction do
       save_or_raise!(input, **save_options)
-      update_file_upload_fields input, form, params_for_create
+      update_file_upload_fields input, form, custom_field_values
       sidefx.after_create(input, current_user, phase)
       write_everyone_tracking_cookie input
 
@@ -239,6 +241,7 @@ class WebApi::V1::IdeasController < ApplicationController
     raise ApiError.new(:blank, field: :author) if invalid_blank_author_for_update?(input, params)
 
     update_params = prepare_update_params(input)
+    custom_field_values = update_params.delete(:custom_field_values)
 
     legacy_files = FileUpload.where(idea: input)
 
@@ -260,10 +263,10 @@ class WebApi::V1::IdeasController < ApplicationController
       creation_phase,
       input
     )
-      update_params[:custom_field_values] = UserFieldsInFormService.merge_user_fields_into_idea(
+      custom_field_values = UserFieldsInFormService.merge_user_fields_into_idea(
         current_user,
         creation_phase,
-        update_params[:custom_field_values]
+        custom_field_values
       )
     end
 
@@ -284,6 +287,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
     ActiveRecord::Base.transaction do # Assigning relationships cause database changes
       input.assign_attributes(update_params)
+      CustomFieldValuesTransitionService.new.assign(input, custom_field_values)
       sidefx.before_update(input, current_user)
       assign_deferred_relationship_ids(input, phase_ids, cosponsor_ids)
 
@@ -295,13 +299,13 @@ class WebApi::V1::IdeasController < ApplicationController
     save_options = {}
     if params.dig(:idea, :publication_status) == 'published'
       save_options[:context] = :publication
-      validate_custom_field_values!(input, input.custom_form)
+      validate_custom_field_values!(input, input.custom_form, custom_field_values)
     end
 
     ActiveRecord::Base.transaction do
       save_or_raise!(input, **save_options)
       sidefx.after_update(input, current_user)
-      update_file_upload_fields input, input.custom_form, update_params
+      update_file_upload_fields input, input.custom_form, custom_field_values
 
       if anonymize_user_at_the_end
         input.author_id = nil
@@ -406,26 +410,27 @@ class WebApi::V1::IdeasController < ApplicationController
     end
     params[:idea][:cosponsor_ids] ||= [] if params[:idea].key?(:cosponsor_ids)
     params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
-    params_service.mark_custom_field_values_to_clear!(input.custom_field_values, params[:idea][:custom_field_values])
+    stored_values = input.custom_field_answers.to_h { [it.key, it.value] }
+    params_service.mark_custom_field_values_to_clear!(stored_values, params[:idea][:custom_field_values])
 
     update_params = idea_params(input.custom_form).to_h
-    update_params[:custom_field_values] = params_service.updated_custom_field_values(input.custom_field_values, update_params[:custom_field_values])
+    update_params[:custom_field_values] = params_service.updated_custom_field_values(stored_values, update_params[:custom_field_values])
     CustomFieldService.new.compact_custom_field_values! update_params[:custom_field_values]
     update_params
   end
 
-  def extract_params_for_file_upload_fields(custom_form, params)
-    return {} if params['custom_field_values'].blank?
+  def extract_params_for_file_upload_fields(custom_form, custom_field_values)
+    return {} if custom_field_values.blank?
 
     file_upload_field_keys = IdeaCustomFieldsService.new(custom_form).all_fields.select(&:supports_file_upload?).map(&:key)
-    params['custom_field_values'].extract!(*file_upload_field_keys)
+    custom_field_values.extract!(*file_upload_field_keys)
   end
 
-  def update_file_upload_fields(input, custom_form, params)
+  def update_file_upload_fields(input, custom_form, custom_field_values)
     file_uploads_exist = false
     # A file field the user cleared arrives as null; indexing into it would raise.
     params_for_file_upload_fields =
-      (extract_params_for_file_upload_fields custom_form, params).compact_blank
+      (extract_params_for_file_upload_fields custom_form, custom_field_values).compact_blank
 
     # Validated up front so the file reported is the first one in the form, and so
     # nothing is written before we know every file is acceptable.
@@ -439,7 +444,7 @@ class WebApi::V1::IdeasController < ApplicationController
       if (file_id = params_for_files_field['id'])
         idea_file = Files::FileAttachment.find_by(id: file_id) || FileUpload.find(file_id)
         filename = idea_file.is_a?(FileUpload) ? idea_file.name : idea_file.file.name
-        input.custom_field_values[key] = { id: idea_file.id, name: filename }
+        input.answer_for_key(key).value = { 'id' => idea_file.id, 'name' => filename }
         file_uploads_exist = true
 
       elsif params_for_files_field['content']
@@ -453,7 +458,7 @@ class WebApi::V1::IdeasController < ApplicationController
         end
 
         filename = idea_file.is_a?(FileUpload) ? idea_file.name : idea_file.file.name
-        input.custom_field_values[key] = { id: idea_file.id, name: filename }
+        input.answer_for_key(key).value = { 'id' => idea_file.id, 'name' => filename }
         file_uploads_exist = true
       end
     end
@@ -708,9 +713,9 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   # User field values merged into the input (u_-prefixed keys) are not validated.
-  def validate_custom_field_values!(input, custom_form)
+  def validate_custom_field_values!(input, custom_form, values)
     fields = IdeaCustomFieldsService.new(custom_form).all_fields.select(&:supports_submission?)
-    values = input.custom_field_values.reject { |key, _| key.start_with?(UserFieldsInFormService.prefix) }
+    values = values.reject { |key, _| key.start_with?(UserFieldsInFormService.prefix) }
     errors = CustomFieldValuesValidationService.new.json_schema_validation_errors(fields, values)
     return if errors.empty?
 

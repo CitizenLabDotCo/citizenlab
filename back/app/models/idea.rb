@@ -105,6 +105,8 @@ class Idea < ApplicationRecord
     delta_magnitude: proc { |idea| idea.comments_count }
   )
 
+  self.ignored_columns += %w[custom_field_values] # backup only; the answers are the source of truth
+
   has_many_text_images from: :body_multiloc
 
   before_validation :sanitize_body_multiloc, if: :body_multiloc
@@ -483,15 +485,14 @@ class Idea < ApplicationRecord
   # RGeo gem & wkt strings:
   # https://github.com/rgeo/rgeo/blob/52d42407769d9fb5267e328ed4023db013f2b7d5/Spatial_Programming_With_RGeo.md?plain=1#L521-L528
   def convert_wkt_geo_custom_field_values_to_geojson
-    return if custom_field_values.blank?
-
     geo_cf_keys = custom_form
       &.custom_fields.to_a
       .select { |field| field.input_type.in? CustomField::GEOGRAPHIC_INPUT_TYPES }
       .map(&:key)
+    return if geo_cf_keys.empty?
 
-    custom_field_values.slice(*geo_cf_keys).each do |key, value|
-      custom_field_values[key] = wkt_string_to_geojson(value) if value.is_a?(String)
+    custom_field_answers.each do |answer|
+      answer.value = wkt_string_to_geojson(answer.value) if answer.key.in?(geo_cf_keys) && answer.value.is_a?(String)
     end
   end
 

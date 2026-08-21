@@ -35,7 +35,7 @@ class UserFieldsInFormService
       return false if IDEATIONLIKE_METHODS.include?(pmethod) && idea.anonymous
 
       # Finally, confirm that the idea doesn't already have user fields
-      return false if idea.custom_field_values&.keys&.any? { |key| key.start_with?(prefix) }
+      return false if idea.custom_field_answers.any? { |answer| answer.key.start_with?(prefix) }
 
       true
     end
@@ -60,7 +60,7 @@ class UserFieldsInFormService
       allowed_keys = permissions_custom_fields.map { |pcf| pcf.custom_field.key }.uniq
 
       user_values = current_user
-        .custom_field_values
+        .custom_field_answers.to_h { [it.key, it.value] }
         .select { |key, _value| allowed_keys.include?(key) }
         .transform_keys do |key|
           prefix_key(key)
@@ -96,11 +96,11 @@ class UserFieldsInFormService
     def merge_user_fields_from_idea_into_user!(idea, user)
       return unless user
 
-      user_values_from_idea = idea.custom_field_values
+      user_values_from_idea = idea.custom_field_answers.to_h { [it.key, it.value] }
         .select { |key, _value| key.start_with?(prefix) }
         .transform_keys { |key| key[prefix.length..] }
 
-      user.update!(custom_field_values: user.custom_field_values.merge(user_values_from_idea))
+      user.update_merging_custom_fields!('custom_field_values' => user_values_from_idea)
     end
 
     # Append user custom fields to form

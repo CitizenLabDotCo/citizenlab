@@ -68,6 +68,10 @@ class PublicApi::V2::IdeaSerializer < PublicApi::V2::BaseSerializer
     Frontend::UrlService.new.model_to_url object
   end
 
+  def custom_field_values
+    object.custom_field_answers.to_h { [it.key, it.value] }
+  end
+
   def creation_phase_title
     multiloc_service.t(object.creation_phase&.title_multiloc)
   end
