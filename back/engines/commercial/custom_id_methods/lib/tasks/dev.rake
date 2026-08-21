@@ -217,16 +217,16 @@ def setup_verified_actions_test_data
 
   # No fields for reacting_idea
   permission = phase.reload.permissions.where(action: 'reacting_idea').first
-  permission.update!(permitted_by: 'verified', global_custom_fields: false)
+  permission.update!(permitted_by: 'verified', custom_fields_behavior: 'disabled')
 
   # Politician field for posting_idea (other fields are locked to verification)
   permission = phase.reload.permissions.where(action: 'posting_idea').first
-  permission.update!(permitted_by: 'verified', global_custom_fields: false)
+  permission.update!(permitted_by: 'verified', custom_fields_behavior: 'custom')
   PermissionsCustomField.create!(permission: permission, custom_field: CustomField.find_by(key: 'politician'), required: true)
 
   # Domicile field and verification by group for commenting_idea
   permission = phase.reload.permissions.where(action: 'commenting_idea').first
-  permission.update!(global_custom_fields: false)
+  permission.update!(custom_fields_behavior: 'custom')
   PermissionsCustomField.create!(permission: permission, custom_field: CustomField.find_by(key: 'domicile'), required: true)
 
   group = Group.create!(title_multiloc: { en: 'Verified actions test group' }, slug: 'verified-actions-group-test', rules: [{ ruleType: 'verified', predicate: 'is_verified' }])

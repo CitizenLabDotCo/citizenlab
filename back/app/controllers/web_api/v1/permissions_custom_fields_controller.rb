@@ -3,6 +3,8 @@
 class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
   skip_after_action :verify_policy_scoped
   before_action :set_permissions_custom_field, only: %i[show]
+  # Customizing demographic questions per permission is a paid feature; reading them is not.
+  before_action -> { require_feature!('permissions_custom_fields') }, only: %i[create update reorder]
 
   def index
     authorize PermissionsCustomField.new(permission: permission)
@@ -27,7 +29,6 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
     authorize permissions_custom_field
     ActiveRecord::Base.transaction do
       sidefx.before_create permissions_custom_field, current_user
-      Permissions::PermissionsCustomFieldsService.new.persist_default_fields permission
       save_or_raise!(permissions_custom_field)
       sidefx.after_create permissions_custom_field, current_user
       render json: WebApi::V1::PermissionsCustomFieldSerializer.new(
@@ -86,21 +87,19 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
     @permissions_custom_field = authorize PermissionsCustomField.find(params[:id])
   end
 
-  # Find existing field or persist and return the newly created field
+  # The fields added by a group are not persisted (see
+  # PermissionsCustomFieldsService#add_related_group_fields), so the id the
+  # frontend holds for one belongs to no row yet and it has to be created here.
   def persist_and_find_permissions_custom_field
-    # Does the field already exist?
     field = PermissionsCustomField.find_by(id: params[:id])
     return field if field
 
     # We need permission_id and custom_field_id to create and find the field
     raise ActiveRecord::RecordNotFound unless permission_params_for_update[:permission_id] && permission_params_for_update[:custom_field_id]
 
-    # Try and save the default fields, then find the field by custom_field_id in the persisted fields
     permission = Permission.find(permission_params_for_update[:permission_id])
-    Permissions::PermissionsCustomFieldsService.new.persist_default_fields permission
     field = permission.permissions_custom_fields.find_by(custom_field_id: permission_params_for_update[:custom_field_id])
 
-    # To allow reordering of non-persisted fields added via a group when default fields have already been persisted
     if !field && permission_params_for_update[:ordering] && CustomField.find(permission_params_for_update[:custom_field_id])
       field = PermissionsCustomField.new({ permission: permission, custom_field_id: permission_params_for_update[:custom_field_id] })
       field.save

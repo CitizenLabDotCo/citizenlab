@@ -103,7 +103,7 @@ const buildPermission = (
     attributes: {
       action: 'commenting_idea',
       permitted_by: 'users',
-      global_custom_fields: false,
+      custom_fields_behavior: 'global',
       verification_expiry: null,
       access_denied_explanation_multiloc: {},
       everyone_tracking_enabled: false,

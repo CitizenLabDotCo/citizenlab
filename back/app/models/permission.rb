@@ -11,7 +11,6 @@
 #  permission_scope_type              :string
 #  created_at                         :datetime         not null
 #  updated_at                         :datetime         not null
-#  global_custom_fields               :boolean          default(FALSE), not null
 #  verification_expiry                :integer
 #  access_denied_explanation_multiloc :jsonb            not null
 #  everyone_tracking_enabled          :boolean          default(FALSE), not null
@@ -24,6 +23,7 @@
 #  require_verification               :boolean          default(FALSE), not null
 #  require_confirmed_phone_number     :boolean          default(FALSE), not null
 #  confirmed_phone_number_expiry      :integer
+#  custom_fields_behavior             :string           default("global"), not null
 #
 # Indexes
 #
@@ -32,6 +32,7 @@
 #
 class Permission < ApplicationRecord
   PERMITTED_BIES = %w[everyone users admins_moderators].freeze
+  CUSTOM_FIELDS_BEHAVIORS = %w[global disabled custom].freeze
   ACTIONS = {
     # NOTE: Order of actions in each array is used when using :order_by_action
     nil => %w[visiting following attending_event],
@@ -79,6 +80,7 @@ class Permission < ApplicationRecord
   validates :permission_scope_type, inclusion: { in: SCOPE_TYPES }
   validate :validate_permitted_by_everyone
   validates :user_data_collection, inclusion: { in: %w[all_data demographics_only anonymous] }
+  validates :custom_fields_behavior, inclusion: { in: CUSTOM_FIELDS_BEHAVIORS }, allow_nil: true
 
   before_validation :apply_creation_defaults, on: :create
 
@@ -119,8 +121,12 @@ class Permission < ApplicationRecord
     false
   end
 
-  def allow_global_custom_fields?
-    permitted_by == 'users'
+  # Admins and managers are never asked demographic questions. Masked rather than
+  # stored, so the choice comes back if the action is opened up again.
+  def custom_fields_behavior
+    return 'disabled' if permitted_by == 'admins_moderators'
+
+    super
   end
 
   def everyone_tracking_enabled?
@@ -165,7 +171,7 @@ class Permission < ApplicationRecord
         self.require_password = false
       end
     end
-    self.global_custom_fields ||= true
+    self.custom_fields_behavior ||= 'global'
   end
 
   private

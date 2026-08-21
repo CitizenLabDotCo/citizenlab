@@ -152,6 +152,33 @@ export const addPermissionsCustomField = ({
     .then(() => withAdminJwt(makeRequest, adminJwt));
 };
 
+// A permission only accepts questions of its own once it has been switched to
+// asking custom ones.
+export const askOnlyDemographicQuestion = ({
+  adminJwt,
+  phaseId,
+  customFieldId,
+  permission = 'posting_idea',
+}: {
+  adminJwt?: string;
+  phaseId: string;
+  customFieldId: string;
+  permission?: IPhasePermissionAction;
+}) =>
+  updatePermission({
+    adminJwt,
+    phaseId,
+    permission,
+    custom_fields_behavior: 'custom',
+  }).then(() =>
+    addPermissionsCustomField({
+      adminJwt,
+      phaseId,
+      customFieldId,
+      permission,
+    })
+  );
+
 export const confirmUserCustomFieldHasValue = ({
   key,
   value,

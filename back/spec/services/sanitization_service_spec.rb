@@ -469,35 +469,169 @@ describe SanitizationService do
     end
   end
 
-  describe 'replace_links_with_urls' do
-    it 'replaces a link with the URL it points at' do
-      expect(service.replace_links_with_urls('<a href="https://example.com">click here</a>')).to eq 'https://example.com'
+  describe 'label_links_with_urls' do
+    it 'rewrites a label that disagrees with the URL it points at' do
+      expect(service.label_links_with_urls('<a href="https://example.com">click here</a>'))
+        .to eq '<a href="https://example.com" target="_blank" rel="noreferrer noopener nofollow">https://example.com</a>'
     end
 
-    # Without the scheme: `linkify` matches an email by its address alone and adds the `mailto:`
-    # back itself, so leaving one on here strands it in front of the rebuilt link as visible text.
-    it 'replaces a mailto link with its address, without the scheme' do
-      expect(service.replace_links_with_urls('<a href="mailto:a@b.com">schrijf ons</a>')).to eq 'a@b.com'
+    # A schemeless label names the same address, the way a browser shows one. Rewriting it would
+    # edit text its author got right.
+    it 'leaves a label alone when linkifying it would rebuild this very link' do
+      expect(service.label_links_with_urls('<a href="http://www.example.com/x">www.example.com/x</a>'))
+        .to eq '<a href="http://www.example.com/x" target="_blank" rel="noreferrer noopener nofollow">www.example.com/x</a>'
     end
 
-    # `linkify` never builds these, so putting one back as text would invent a link the pipeline
-    # would not have made. Left alone, the anchor is dropped downstream like any other markup.
-    it 'leaves a javascript: link alone' do
-      input = '<a href="javascript:alert(1)">click</a>'
-      expect(service.replace_links_with_urls(input)).to eq input
+    it 'leaves a label alone where only an escaping differs' do
+      expect(service.label_links_with_urls('<a href="http://www.exampl%C3%B3.com">www.exampló.com</a>'))
+        .to eq '<a href="http://www.exampl%C3%B3.com" target="_blank" rel="noreferrer noopener nofollow">www.exampló.com</a>'
     end
 
-    it 'leaves a relative link alone' do
-      input = '<a href="/somewhere">click</a>'
-      expect(service.replace_links_with_urls(input)).to eq input
+    it 'keeps an address whose label already matches it' do
+      expect(service.label_links_with_urls('<a href="mailto:a@b.com">a@b.com</a>'))
+        .to eq '<a href="mailto:a@b.com" target="_blank" rel="noreferrer noopener nofollow">a@b.com</a>'
+    end
+
+    # `linkify` writes an address without its scheme, so a kept link shows one the same way.
+    it 'shows a mailto address without the scheme, keeping it in the href' do
+      expect(service.label_links_with_urls('<a href="mailto:a@b.com">schrijf ons</a>'))
+        .to eq '<a href="mailto:a@b.com" target="_blank" rel="noreferrer noopener nofollow">a@b.com</a>'
+    end
+
+    # `target="_blank"` without `noopener` hands the opened page control of this tab.
+    it "replaces the author's target and rel with its own" do
+      expect(service.label_links_with_urls('<a href="https://e.com" target="_self" rel="dofollow">x</a>'))
+        .to eq '<a href="https://e.com" target="_blank" rel="noreferrer noopener nofollow">https://e.com</a>'
+    end
+
+    # Unwrapped, the text survives exactly as it did when the anchor was stripped downstream.
+    it 'unwraps a link it could not have built, keeping the text' do
+      expect(service.label_links_with_urls('<a href="javascript:alert(1)">click</a>')).to eq 'click'
+      expect(service.label_links_with_urls('<a href="/somewhere">click</a>')).to eq 'click'
     end
 
     it 'leaves text without links alone' do
-      expect(service.replace_links_with_urls('<p>no links here</p>')).to eq '<p>no links here</p>'
+      expect(service.label_links_with_urls('<p>no links here</p>')).to eq '<p>no links here</p>'
     end
 
     it 'returns nil for nil' do
-      expect(service.replace_links_with_urls(nil)).to be_nil
+      expect(service.label_links_with_urls(nil)).to be_nil
+    end
+  end
+
+  describe 'sanitize_comment_body' do
+    # The relabel is what makes `:link` safe in `Comment::BODY_SANITIZE_FEATURES`.
+    context 'when a label disagrees with its href' do
+      it 'shows the href, not the label' do
+        output = service.sanitize_comment_body('<a href="https://evil.example">https://google.com</a>')
+
+        expect(output).to include 'href="https://evil.example"'
+        expect(output).to include '>https://evil.example<'
+        expect(output).not_to include 'google.com'
+      end
+
+      # A provider translates the address it can read; the href is the side it leaves alone.
+      it 'restores an address a translator rewrote in the label' do
+        output = service.sanitize_comment_body(
+          'mail <a href="mailto:maintenance@raleighparks.gov">mantenimiento@raleighparks.gov</a>'
+        )
+
+        expect(output).to include 'href="mailto:maintenance@raleighparks.gov"'
+        expect(output).not_to include 'mantenimiento'
+      end
+    end
+
+    # The link is kept rather than rebuilt, so a touching word cannot be read as part of the address.
+    context 'when a link touches the word before it' do
+      it 'keeps a mailto address intact' do
+        output = service.sanitize_comment_body('de VRT<a href="mailto:jrose@vrt.org">jrose@vrt.org</a>')
+
+        expect(output).to include 'href="mailto:jrose@vrt.org"'
+        expect(output).not_to include 'VRTjrose'
+      end
+
+      it 'keeps an http link at all' do
+        output = service.sanitize_comment_body('de VRT<a href="https://vrt.org/x">https://vrt.org/x</a>')
+
+        expect(output).to include 'href="https://vrt.org/x"'
+      end
+    end
+
+    it 'still linkifies a bare URL in the text' do
+      expect(service.sanitize_comment_body('<p>see https://example.com now</p>'))
+        .to eq '<p>see <a href="https://example.com" target="_blank" rel="noreferrer noopener nofollow">https://example.com</a> now</p>'
+    end
+
+    it 'keeps a mention span' do
+      output = service.sanitize_comment_body('<span class="cl-mention-user" data-user-id="abc">@Ann</span> hi')
+
+      expect(output).to eq '<span class="cl-mention-user" data-user-id="abc">@Ann</span> hi'
+    end
+
+    it 'settles after one pass' do
+      ['de VRT<a href="mailto:jrose@vrt.org">jrose@vrt.org</a>',
+        '<a href="https://evil.example">https://google.com</a>',
+        '<p>see https://example.com now</p>'].each do |input|
+        once = service.sanitize_comment_body(input)
+        expect(service.sanitize_comment_body(once)).to eq once
+      end
+    end
+
+    # Allowing `:link` must not widen anything else.
+    context 'adversarial input' do
+      it 'drops a link whose scheme can execute' do
+        ['<a href="javascript:alert(1)">click</a>',
+          '<a href="JaVaScRiPt:alert(1)">click</a>',
+          '<a href="data:text/html,<script>alert(1)</script>">click</a>',
+          '<a href="vbscript:msgbox(1)">click</a>'].each do |input|
+          output = service.sanitize_comment_body(input)
+
+          expect(output).not_to include '<a'
+          expect(output.downcase).not_to include 'javascript:'
+          expect(output.downcase).not_to include 'vbscript:'
+          expect(output.downcase).not_to include 'data:text/html'
+        end
+      end
+
+      it 'drops event handlers, scripts and embedded frames' do
+        {
+          '<p>hi</p><script>alert(1)</script>' => '<script',
+          '<p><img src=x onerror=alert(1)></p>' => 'onerror',
+          '<a href="https://e.com" onclick="alert(1)">x</a>' => 'onclick',
+          '<iframe src="https://evil.example"></iframe>' => '<iframe'
+        }.each do |input, forbidden|
+          expect(service.sanitize_comment_body(input)).not_to include forbidden
+        end
+      end
+
+      # A label only survives when `linkify` rebuilds this link from it, so one that reads like a
+      # different host is rewritten however it is dressed up.
+      it 'leaves no label naming somewhere the link does not go' do
+        {
+          '<a href="https://evil.example">www.google.com</a>' =>
+            '<a href="https://evil.example" target="_blank" rel="noreferrer noopener nofollow">https://evil.example</a>',
+          '<a href="https://evil.example">https://google.com</a>' =>
+            '<a href="https://evil.example" target="_blank" rel="noreferrer noopener nofollow">https://evil.example</a>',
+          '<a href="https://evil.example/x">https://evil.example</a>' =>
+            '<a href="https://evil.example/x" target="_blank" rel="noreferrer noopener nofollow">https://evil.example/x</a>',
+          '<a href="https://evil.example">a@b.com</a>' =>
+            '<a href="https://evil.example" target="_blank" rel="noreferrer noopener nofollow">https://evil.example</a>',
+          '<a href="mailto:evil@example.com">good@example.com</a>' =>
+            '<a href="mailto:evil@example.com" target="_blank" rel="noreferrer noopener nofollow">evil@example.com</a>'
+        }.each do |input, expected|
+          expect(service.sanitize_comment_body(input)).to eq expected
+        end
+      end
+
+      # The label is discarded, so an encoded payload in it cannot ride along.
+      it 'does not let a label smuggle markup back in' do
+        output = service.sanitize_comment_body(
+          '<a href="https://e.com">&lt;script&gt;alert(1)&lt;/script&gt;</a>'
+        )
+
+        expect(output).not_to include 'alert(1)'
+        expect(output).to include '>https://e.com<'
+      end
     end
   end
 
