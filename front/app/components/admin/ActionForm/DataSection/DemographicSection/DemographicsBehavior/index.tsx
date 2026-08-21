@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { Box, Text, Radio } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  Radio,
+  Icon,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 import { CustomFieldsBehavior } from 'api/permissions/types';
 
@@ -71,6 +77,14 @@ const DemographicsBehavior = ({
                       color={locked ? 'coolGrey500' : 'primary'}
                     >
                       {formatMessage(option.label)}
+                      {locked && (
+                        <Icon
+                          name="lock"
+                          transform="translateY(-3px)"
+                          fill={colors.grey500}
+                          height="16px"
+                        />
+                      )}
                     </Text>
                   }
                 />
