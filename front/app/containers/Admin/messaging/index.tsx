@@ -25,7 +25,7 @@ const MessagingDashboard = () => {
   const smsManualCampaignsFFEnabled = useFeatureFlag({
     name: 'sms_manual_campaigns',
   });
-  const smsEnabled = smsFFEnabled && smsManualCampaignsFFEnabled;
+  const smsManualCampaignsEnabled = smsFFEnabled && smsManualCampaignsFFEnabled;
 
   const tabs: ITab[] = [
     {
@@ -40,7 +40,7 @@ const MessagingDashboard = () => {
       url: '/admin/messaging/emails/automated',
       className: 'intercom-messaging-automated-emails',
     },
-    ...(smsEnabled
+    ...(smsManualCampaignsEnabled
       ? [
           {
             name: 'sms',

@@ -68,7 +68,7 @@ const CampaignConsentForm = ({
   const smsManualCampaignsFFEnabled = useFeatureFlag({
     name: 'sms_manual_campaigns',
   });
-  const smsEnabled = smsFFEnabled && smsManualCampaignsFFEnabled;
+  const smsManualCampaignsEnabled = smsFFEnabled && smsManualCampaignsFFEnabled;
 
   useEffect(() => {
     if (!isNilOrError(originalCampaignConsents)) {
@@ -190,7 +190,7 @@ const CampaignConsentForm = ({
   const emailGroups = channelGroups('email');
   const smsGroups = channelGroups('sms');
 
-  const showSms = smsGroups.length > 0 && smsEnabled;
+  const showSms = smsGroups.length > 0 && smsManualCampaignsEnabled;
 
   return (
     <FormSection>
