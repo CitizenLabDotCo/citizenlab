@@ -24,7 +24,6 @@
 #  require_confirmed_phone_number     :boolean          default(FALSE), not null
 #  confirmed_phone_number_expiry      :integer
 #  custom_fields_behavior             :string           default("global"), not null
-#  global_custom_fields               :boolean          default(FALSE), not null
 #
 # Indexes
 #
