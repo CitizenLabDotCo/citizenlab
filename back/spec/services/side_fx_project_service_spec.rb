@@ -165,8 +165,9 @@ describe SideFxProjectService do
         .not_to have_enqueued_job(ProcessScheduledPublicationTransitionsJob)
     end
 
-    context "when the project has a pending review" do
+    context 'when the project has a pending review' do
       let(:admin) { create(:admin) }
+
       before do
         create(:project_review, project: project, approved_at: nil)
       end
