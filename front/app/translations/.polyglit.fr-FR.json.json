@@ -10789,6 +10789,11 @@
     "verified_at": "2026-07-16T20:42:18.365433Z",
     "verified_by": "Adrien"
   },
+  "app.containers.PhoneChange.newPhoneLabel2": {
+    "state": "verified",
+    "verified_at": "2026-08-21T08:49:58.482041Z",
+    "verified_by": "Lydie"
+  },
   "app.containers.PhoneChange.phoneEmptyError": {
     "state": "verified",
     "verified_at": "2026-07-17T07:44:21.420851Z",
@@ -10798,6 +10803,11 @@
     "state": "verified",
     "verified_at": "2026-07-17T07:44:21.420851Z",
     "verified_by": "Adrien"
+  },
+  "app.containers.PhoneChange.phoneInvalid3": {
+    "state": "verified",
+    "verified_at": "2026-08-21T08:49:58.482041Z",
+    "verified_by": "Lydie"
   },
   "app.containers.PhoneChange.phoneTaken": {
     "state": "verified",
