@@ -606,7 +606,6 @@
   "app.components.ProjectPageBuilder.Widgets.extraSurveysFormatCard": "ਕਾਰਡ ਵਿਊ",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysFormatLabel": "ਸਰਵੇਖਣ ਬਟਨ ਫਾਰਮੈਟ",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysManagedNote2": "ਸਿਰਫ਼ ਸਪੌਟਲਾਈਟ ਸਰਵੇਖਣਾਂ ਨੂੰ ਹੀ ਲਿੰਕ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ। ਉਹਨਾਂ ਨੂੰ {projectEditorLink} ਵਿੱਚ ਸ਼ਾਮਲ ਕਰੋ।",
-  "app.components.ProjectPageBuilder.Widgets.extraSurveysManagedNote2": "ਸਿਰਫ਼ ਸਪੌਟਲਾਈਟ ਸਰਵੇਖਣਾਂ ਨੂੰ ਹੀ ਲਿੰਕ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ। ਉਹਨਾਂ ਨੂੰ {projectEditorLink} ਵਿੱਚ ਸ਼ਾਮਲ ਕਰੋ।",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysNoSurveyNote": "ਪੇਜ 'ਤੇ ਦਿਖਾਉਣ ਲਈ ਸੈਟਿੰਗਾਂ ਪੈਨਲ ਵਿੱਚ ਇੱਕ ਸਰਵੇਖਣ ਚੁਣੋ।",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysNoSurveyTitle": "ਅਜੇ ਤੱਕ ਕੋਈ ਸਰਵੇਖਣ ਲਿੰਕ ਨਹੀਂ ਕੀਤਾ ਗਿਆ",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysNotEligible": "ਤੁਸੀਂ ਇਸ ਸਰਵੇਖਣ ਵਿੱਚ ਭਾਗ ਲੈਣ ਦੇ ਯੋਗ ਨਹੀਂ ਹੋ",
