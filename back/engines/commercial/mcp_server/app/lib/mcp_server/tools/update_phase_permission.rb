@@ -185,10 +185,7 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
     # approach, but much simpler, and recreating gives us correct ordering for free
     # (acts_as_list assigns position on insert).
     def replace_demographic_questions(permission, demographic_questions)
-      permission.update!(
-        global_custom_fields: demographic_questions.nil?,
-        custom_fields_behavior: behavior_for(demographic_questions)
-      )
+      permission.update!(custom_fields_behavior: behavior_for(demographic_questions))
       permission.permissions_custom_fields.destroy_all
 
       demographic_questions.to_a.each do |entry|

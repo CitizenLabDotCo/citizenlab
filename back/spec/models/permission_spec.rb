@@ -9,29 +9,6 @@ RSpec.describe Permission do
     end
   end
 
-  describe 'global_custom_fields' do
-    context 'everyone' do
-      it 'is true when created' do
-        permission = create(:permission, :by_everyone)
-        expect(permission.global_custom_fields).to be_truthy
-      end
-    end
-
-    context 'everyone_confirmed_email' do
-      it 'is true when created' do
-        permission = create(:permission, :by_everyone_confirmed_email)
-        expect(permission.global_custom_fields).to be_truthy
-      end
-    end
-
-    context 'user' do
-      it 'is true when created' do
-        permission = create(:permission, :by_users, global_custom_fields: nil)
-        expect(permission.global_custom_fields).to be_truthy
-      end
-    end
-  end
-
   describe 'custom_fields_behavior' do
     it "is 'global' when created" do
       expect(create(:permission, custom_fields_behavior: nil).custom_fields_behavior).to eq 'global'
@@ -142,15 +119,6 @@ RSpec.describe Permission do
       expect(permission.require_confirmed_email).to be true
       expect(permission.require_name).to be false
       expect(permission.require_password).to be false
-    end
-  end
-
-  describe 'verification' do
-    describe 'global_custom_fields' do
-      it 'is true when created for a permission that requires verification' do
-        permission = create(:permission, :by_verified, global_custom_fields: nil)
-        expect(permission.global_custom_fields).to be_truthy
-      end
     end
   end
 
