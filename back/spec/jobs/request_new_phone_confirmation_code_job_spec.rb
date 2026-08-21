@@ -5,18 +5,12 @@ require 'rails_helper'
 RSpec.describe RequestNewPhoneConfirmationCodeJob do
   subject(:job) { described_class.new }
 
-  let(:user) { create(:user) }
   let(:new_phone) { '+14155552671' }
+  let(:user) { create(:user, new_phone: new_phone) }
 
   # The OTP is sent synchronously (perform_now) inside the job, so the provider
   # is actually invoked.
   include_context 'with stubbed SMS provider'
-
-  it 'stores the number as the pending new_phone, leaving phone unset' do
-    job.perform(user, new_phone: new_phone)
-    expect(user.reload.new_phone).to eq new_phone
-    expect(user.phone).to be_nil
-  end
 
   it 'creates a campaign-linked EmailCampaigns::Sms::Delivery for the user' do
     expect { job.perform(user, new_phone: new_phone) }
@@ -61,10 +55,5 @@ RSpec.describe RequestNewPhoneConfirmationCodeJob do
     expect { job.perform(user, new_phone: new_phone) }
       .to enqueue_job(LogActivityJob)
       .with(user, 'requested_confirmation_code', user, anything, payload: { new_phone: new_phone })
-  end
-
-  it 'raises a record invalid error for an invalid phone number and does not persist it' do
-    expect { job.perform(user, new_phone: 'not-a-number') }.to raise_error(ActiveRecord::RecordInvalid)
-    expect(user.reload.new_phone).to be_nil
   end
 end

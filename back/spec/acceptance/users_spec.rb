@@ -333,7 +333,7 @@ resource 'Users' do
         context 'when a user exists without a password and has not confirmed their phone' do
           before do
             @user = create(:unconfirmed_phone_user, phone: '+14155552671')
-            allow(RequestPhoneConfirmationCodeJob).to receive(:perform_now)
+            allow(RequestPhoneConfirmationCodeJob).to receive(:perform_later)
           end
 
           let(:phone) { '+1 415 555 2671' }
@@ -341,7 +341,7 @@ resource 'Users' do
           example_request 'Returns "confirm" and sends a code' do
             assert_status 200
             expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
-            expect(RequestPhoneConfirmationCodeJob).to have_received(:perform_now).with(@user)
+            expect(RequestPhoneConfirmationCodeJob).to have_received(:perform_later).with(@user)
           end
         end
 
@@ -350,7 +350,7 @@ resource 'Users' do
             @user = create(:unconfirmed_phone_user, phone: '+14155552671')
             @user.find_or_create_confirmation(:phone_confirmation).reset_code! # as if a code had already been requested
 
-            allow(RequestPhoneConfirmationCodeJob).to receive(:perform_now)
+            allow(RequestPhoneConfirmationCodeJob).to receive(:perform_later)
           end
 
           let(:phone) { '+14155552671' }
@@ -358,7 +358,7 @@ resource 'Users' do
           example_request 'Returns "confirm" without resending a code' do
             assert_status 200
             expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
-            expect(RequestPhoneConfirmationCodeJob).not_to have_received(:perform_now).with(@user)
+            expect(RequestPhoneConfirmationCodeJob).not_to have_received(:perform_later).with(@user)
           end
         end
 
@@ -366,7 +366,7 @@ resource 'Users' do
           before do
             @user = create(:unconfirmed_phone_user, phone: '+14155552671')
             @user.find_or_create_confirmation(:phone_confirmation).confirm!
-            allow(RequestPhoneConfirmationCodeJob).to receive(:perform_now)
+            allow(RequestPhoneConfirmationCodeJob).to receive(:perform_later)
           end
 
           let(:phone) { '+14155552671' }
@@ -375,7 +375,7 @@ resource 'Users' do
             expect(@user.password_digest).to be_nil
             assert_status 200
             expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
-            expect(RequestPhoneConfirmationCodeJob).to have_received(:perform_now).with(@user)
+            expect(RequestPhoneConfirmationCodeJob).to have_received(:perform_later).with(@user)
           end
         end
 
@@ -394,7 +394,7 @@ resource 'Users' do
         context 'when a user exists with a password but has not confirmed their phone', document: false do
           before do
             @user = create(:user, phone: '+14155552671')
-            allow(RequestPhoneConfirmationCodeJob).to receive(:perform_now)
+            allow(RequestPhoneConfirmationCodeJob).to receive(:perform_later)
           end
 
           let(:phone) { '+14155552671' }
@@ -403,7 +403,7 @@ resource 'Users' do
             expect(@user.password_digest).not_to be_nil
             assert_status 200
             expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
-            expect(RequestPhoneConfirmationCodeJob).to have_received(:perform_now).with(@user)
+            expect(RequestPhoneConfirmationCodeJob).to have_received(:perform_later).with(@user)
           end
         end
 
@@ -600,7 +600,7 @@ resource 'Users' do
         before do
           SettingsService.new.activate_feature! 'password_login'
           SettingsService.new.activate_feature! 'sms_login'
-          allow(RequestPhoneConfirmationCodeJob).to receive(:perform_now)
+          allow(RequestPhoneConfirmationCodeJob).to receive(:perform_later)
         end
 
         let(:phone) { '+1 415 555 2671' }
@@ -611,7 +611,7 @@ resource 'Users' do
           expect(user.phone).to eq '+14155552671'
           expect(user.phone_confirmed_at).to be_nil
           expect(user.registration_completed_at).to be_nil
-          expect(RequestPhoneConfirmationCodeJob).to have_received(:perform_now).with(user).once
+          expect(RequestPhoneConfirmationCodeJob).to have_received(:perform_later).with(user).once
         end
 
         example 'No email confirmation code is sent' do

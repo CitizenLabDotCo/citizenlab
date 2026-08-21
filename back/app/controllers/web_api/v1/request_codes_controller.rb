@@ -78,7 +78,7 @@ class WebApi::V1::RequestCodesController < ApplicationController
     authorize user, policy_class: RequestCodePolicy
 
     unless only_if_first_time? && user.phone_confirmation&.code_outstanding?
-      RequestPhoneConfirmationCodeJob.perform_now(user)
+      RequestPhoneConfirmationCodeJob.perform_later(user)
     end
 
     head :ok
@@ -122,7 +122,8 @@ class WebApi::V1::RequestCodesController < ApplicationController
     )
     EmailCampaigns::SideFxConsentService.new.after_grant(consent, current_user)
 
-    RequestNewPhoneConfirmationCodeJob.perform_now(current_user, new_phone: normalized)
+    current_user.update!(new_phone: normalized)
+    RequestNewPhoneConfirmationCodeJob.perform_later(current_user, new_phone: normalized)
 
     head :ok
   end
