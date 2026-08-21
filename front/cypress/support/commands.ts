@@ -85,6 +85,7 @@ declare global {
       apiRemoveAllReports: typeof apiRemoveAllReports;
       apiSetPhasePermission: typeof apiSetPhasePermission;
       apiGetPhasePermission: typeof apiGetPhasePermission;
+      apiOverridePhasePermission: typeof apiOverridePhasePermission;
       intersectsViewport: typeof intersectsViewport;
       notIntersectsViewport: typeof notIntersectsViewport;
       apiUpdateHomepageLayout: typeof apiUpdateHomepageLayout;
@@ -1714,11 +1715,16 @@ type ApiSetPermissionTypeProps = {
     | { permission: Partial<IPermissionUpdate> };
   action: IPhasePermissionAction;
 };
-function apiSetPhasePermission({
+// A phase action has no permission of its own until it is overridden: until
+// then it follows the global 'visiting' permission and there is nothing to
+// PATCH. Overriding is idempotent, so this can be called unconditionally.
+function apiOverridePhasePermission({
   phaseId,
-  permissionBody,
   action,
-}: ApiSetPermissionTypeProps) {
+}: {
+  phaseId: string;
+  action: IPhasePermissionAction;
+}) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -1728,10 +1734,32 @@ function apiSetPhasePermission({
         Authorization: `Bearer ${adminJwt}`,
       },
       method: 'PATCH',
-      url: `web_api/v1/phases/${phaseId}/permissions/${action}`,
-      body: permissionBody,
+      url: `web_api/v1/phases/${phaseId}/permissions/${action}/override`,
     });
   });
+}
+
+function apiSetPhasePermission({
+  phaseId,
+  permissionBody,
+  action,
+}: ApiSetPermissionTypeProps) {
+  return cy
+    .apiOverridePhasePermission({ phaseId, action })
+    .then(() => cy.apiLogin('admin@govocal.com', 'democracy2.0'))
+    .then((response) => {
+      const adminJwt = response.body.jwt;
+
+      return cy.request({
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`,
+        },
+        method: 'PATCH',
+        url: `web_api/v1/phases/${phaseId}/permissions/${action}`,
+        body: permissionBody,
+      });
+    });
 }
 
 function apiGetPhasePermission({ phaseId, action }: ApiSetPermissionTypeProps) {
@@ -2446,6 +2474,7 @@ Cypress.Commands.add(
 Cypress.Commands.add('apiUpdateAppConfiguration', apiUpdateAppConfiguration);
 Cypress.Commands.add('apiGetPhasePermission', apiGetPhasePermission);
 Cypress.Commands.add('apiSetPhasePermission', apiSetPhasePermission);
+Cypress.Commands.add('apiOverridePhasePermission', apiOverridePhasePermission);
 Cypress.Commands.add('logout', logout);
 Cypress.Commands.add('acceptCookies', acceptCookies);
 Cypress.Commands.add('getIdeaById', getIdeaById);

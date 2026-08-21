@@ -71,7 +71,7 @@ class ClaimTokenService
       # If phase is survey and user_data_collection != all_data:
       # do not update the user id because it would not be anonymous then
       creation_phase = item.creation_phase # only surveys have creation_phase
-      permission = creation_phase&.permissions&.find_by(action: 'posting_idea')
+      permission = creation_phase && Permissions::PermissionInheritanceService.new.find(creation_phase, 'posting_idea')
       do_not_update_user = permission && permission.user_data_collection != 'all_data'
 
       ClaimToken.transaction do

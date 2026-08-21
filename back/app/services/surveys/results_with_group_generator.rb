@@ -34,10 +34,10 @@ module Surveys
       raise "Unsupported group field type: #{group_field.input_type}" unless group_field.supports_single_selection?
       raise "Unsupported question type: #{field.input_type}" unless field.supports_selection?
 
-      query = query.select(
-        select_field_query(field, as: 'answer'),
-        select_field_query(group_field, as: 'group')
-      )
+      query = query
+        .joins(answers_join(field, as: 'answer'))
+        .joins(group_answers_joins)
+        .select(select_field_query(field, as: 'answer'), group_select_query)
       answers = construct_select_answers(query, field)
 
       # Build response
@@ -55,7 +55,7 @@ module Surveys
       group_field_keys = generate_select_answer_keys(group_field)
 
       # Create hash of grouped answers
-      answer_groups = select_group_query(query, group: true)
+      answer_groups = select_group_query(query)
       grouped_answers_hash = answer_groups
         .each_with_object({}) do |((answer, group), count), accu|
         # We treat 'faulty' values (i.e. that don't exist in options) as nil
@@ -87,42 +87,56 @@ module Surveys
       end
     end
 
-    def select_group_query(query, group: false)
+    def select_group_query(query)
       Idea
         .select(:answer)
         .from(query)
-        .group(:answer, group ? :group : nil)
-        .count
+        .group(:answer, :group)
+        .count(:all)
     end
 
-    # Override to check for u_-prefixed demographic data on the idea first,
-    # then fall back to the user's custom_field_values. This handles anonymous
-    # surveys where demographic data is stored on the idea, not the user.
-    def select_field_query(field, as: 'answer')
-      if field.resource_type == 'User' && group_mode == 'user_field'
-        prefixed_key = UserFieldsInFormService.prefix_key(field.key)
+    def answers_join(field, as:, key: field.key, table: 'ideas')
+      <<~SQL.squish
+        LEFT JOIN custom_field_answers #{as}_cfa
+        ON #{as}_cfa.answerable_id = #{table}.id
+        AND #{as}_cfa.custom_field_id = '#{field.id}'
+        AND #{as}_cfa.key = '#{key}'
+      SQL
+    end
 
-        if field.supports_single_selection?
-          "COALESCE(ideas.custom_field_values->'#{prefixed_key}', users.custom_field_values->'#{field.key}', 'null') as #{as}"
-        elsif field.supports_multiple_selection?
-          %{
-            jsonb_array_elements(
-              CASE WHEN (
-                jsonb_path_exists(ideas.custom_field_values, '$ ? (exists (@."#{prefixed_key}"))') AND
-                jsonb_typeof(ideas.custom_field_values->'#{prefixed_key}') = 'array'
-              ) THEN ideas.custom_field_values->'#{prefixed_key}'
-              WHEN (
-                jsonb_path_exists(users.custom_field_values, '$ ? (exists (@."#{field.key}"))') AND
-                jsonb_typeof(users.custom_field_values->'#{field.key}') = 'array'
-              ) THEN users.custom_field_values->'#{field.key}'
-              ELSE '[null]'::jsonb END
-            ) as #{as}
-          }
-        else
-          raise "Unsupported field type: #{field.input_type}"
-        end
+    def group_answers_joins
+      if group_mode == 'user_field'
+        [
+          answers_join(group_field, as: 'group_idea', key: UserFieldsInFormService.prefix_key(group_field.key)),
+          answers_join(group_field, as: 'group_user', table: 'users')
+        ]
       else
-        super
+        [answers_join(group_field, as: 'group')]
+      end
+    end
+
+    def select_field_query(field, as: 'answer')
+      if field.supports_single_selection?
+        "#{as}_cfa.value as #{as}"
+      elsif field.supports_multiple_selection?
+        %{
+          jsonb_array_elements(
+            CASE WHEN jsonb_typeof(#{as}_cfa.value) = 'array'
+            THEN #{as}_cfa.value ELSE '[null]'::jsonb END
+          ) as #{as}
+        }
+      else
+        raise "Unsupported field type: #{field.input_type}"
+      end
+    end
+
+    # The demographic answer of the input's author, preferring the u_-prefixed
+    # copy on the input itself, which anonymous surveys store instead.
+    def group_select_query
+      if group_mode == 'user_field'
+        'COALESCE(group_idea_cfa.value, group_user_cfa.value) as group'
+      else
+        select_field_query(group_field, as: 'group')
       end
     end
 

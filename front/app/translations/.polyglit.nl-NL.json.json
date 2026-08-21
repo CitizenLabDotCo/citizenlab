@@ -744,6 +744,11 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.511157Z",
+    "verified_by": "Luuc"
+  },
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
@@ -6864,6 +6869,16 @@
     "verified_at": "2026-07-10T12:33:54.948848Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Authentication.steps.FlowStart.useEmailInstead": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.511157Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Authentication.steps.FlowStart.usePhoneNumberInstead": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.511157Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
@@ -6909,6 +6924,16 @@
     "verified_at": "2026-07-21T19:53:38.720115Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Authentication.steps.Policies.byContinuingPhone": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.511157Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.511157Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Authentication.steps.SSOVerification.alreadyHaveAnAccount": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
@@ -6918,6 +6943,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.511157Z",
+    "verified_by": "Luuc"
   },
   "app.containers.CampaignsConsentForm.ally_categoryLabel": {
     "state": "verified",
@@ -10039,6 +10069,11 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.containers.Navbar.confirmPhone": {
+    "state": "verified",
+    "verified_at": "2026-08-17T18:12:27.321354Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Navbar.unverified": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
@@ -13114,6 +13149,11 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.errors.file_too_large": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.511157Z",
+    "verified_by": "Luuc"
+  },
   "app.errors.first_name_blank": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
@@ -13333,6 +13373,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.errors.unexpected_invite_error": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.511157Z",
+    "verified_by": "Luuc"
+  },
+  "app.errors.unexpected_seats_count_error": {
+    "state": "verified",
+    "verified_at": "2026-08-20T12:11:02.511157Z",
+    "verified_by": "Luuc"
   },
   "app.errors.unknown_group": {
     "state": "verified",

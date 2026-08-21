@@ -6,7 +6,7 @@ import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
-import { IPhasePermissionData } from 'api/phase_permissions/types';
+import { IPermissionData } from 'api/permissions/types';
 import usePhase from 'api/phases/usePhase';
 
 import { useIntl } from 'utils/cl-intl';
@@ -20,7 +20,7 @@ import messages from './messages';
 import PersonalInfoSection from './PersonalInfoSection';
 
 interface Props {
-  permission: IPhasePermissionData;
+  permission: IPermissionData;
   phaseId: string;
   onChange: (changes: Changes) => void;
 }

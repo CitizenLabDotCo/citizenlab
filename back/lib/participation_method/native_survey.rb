@@ -181,10 +181,7 @@ module ParticipationMethod
       # but for some reason it's not in some unit tests.
       return nil if phase.nil?
 
-      @posting_permission ||= Permission.find_by(
-        permission_scope_id: phase.id,
-        action: 'posting_idea'
-      )
+      @posting_permission ||= Permissions::PermissionInheritanceService.new.find(phase, 'posting_idea')
     end
   end
 end

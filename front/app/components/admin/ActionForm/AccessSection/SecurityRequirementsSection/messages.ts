@@ -23,6 +23,21 @@ export default defineMessages({
     defaultMessage:
       'If enabled, all users need to confirm their phone number. If disabled, only participants who sign up by phone number need to confirm their phone number.',
   },
+  passwordAvailableDescription: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordAvailableDescription2',
+    defaultMessage:
+      "If enabled, users must set a password before participating. If disabled, users won't be asked to set a password.",
+  },
+  passwordOnlyForEmailSignupTooltip: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailSignupTooltip2',
+    defaultMessage:
+      'If enabled, a password is only requested from users who sign up with email. Users who sign up with SSO are never asked to set one.',
+  },
+  passwordOnlyForEmailOrSMSLoginTooltip: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailOrSMSLoginTooltip',
+    defaultMessage:
+      'If enabled, a password is only requested from users who sign up with email or SMS. Users who sign up with SSO are never asked to set one.',
+  },
   verificationMethodDescription: {
     id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription2',
     defaultMessage:

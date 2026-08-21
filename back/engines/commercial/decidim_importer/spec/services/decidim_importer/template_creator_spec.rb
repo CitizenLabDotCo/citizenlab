@@ -350,10 +350,14 @@ RSpec.describe DecidimImporter::TemplateCreator do
         expect(anonymous.custom_field_values['field_10']).to eq('Reponse sans auteur connu')
       end
 
-      it 'backfills phase permissions so a native_survey phase has its posting permission' do
+      it 'resolves the posting permission of a native_survey phase from the global permission' do
         survey_phase = project.phases.find_by(participation_method: 'native_survey')
-        # Without this the admin projects endpoint 500s (posting_permission delegated to nil).
-        expect(Permission.find_by(permission_scope: survey_phase, action: 'posting_idea')).to be_present
+        # The phase gets no permission of its own until an admin overrides the
+        # action: until then it inherits the global 'visiting' permission. What
+        # matters is that the posting permission still resolves — otherwise the
+        # admin projects endpoint 500s (posting_permission delegated to nil).
+        expect(Permission.find_by(permission_scope: survey_phase, action: 'posting_idea')).to be_nil
+        expect(Permissions::PermissionInheritanceService.new.find(survey_phase, 'posting_idea')).to be_inherited
         expect { survey_phase.pmethod.user_data_collection }.not_to raise_error
       end
 

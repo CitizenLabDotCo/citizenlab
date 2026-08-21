@@ -1,8 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, lazy, Suspense } from 'react';
 
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
-import data from '@emoji-mart/data';
-import Picker from '@emoji-mart/react';
 import styled from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
@@ -13,6 +11,8 @@ import { useIntl } from 'utils/cl-intl';
 
 import { getEmojiMartLocale } from './localeMapping';
 import messages from './messages';
+
+const Picker = lazy(() => import('./Picker'));
 
 const PickerContainer = styled.div`
   position: relative;
@@ -130,15 +130,15 @@ const EmojiPickerInput = ({
       </Box>
       {isOpen && (
         <PopoverContainer placement={placement}>
-          <Picker
-            data={data}
-            perLine={8}
-            locale={getEmojiMartLocale(locale)}
-            onEmojiSelect={(emoji: { native: string }) => {
-              onChange(emoji.native);
-              setIsOpen(false);
-            }}
-          />
+          <Suspense fallback={null}>
+            <Picker
+              locale={getEmojiMartLocale(locale)}
+              onEmojiSelect={(emoji: { native: string }) => {
+                onChange(emoji.native);
+                setIsOpen(false);
+              }}
+            />
+          </Suspense>
         </PopoverContainer>
       )}
     </PickerContainer>

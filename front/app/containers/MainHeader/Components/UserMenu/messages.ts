@@ -22,6 +22,10 @@ export default defineMessages({
     id: 'app.containers.Navbar.confirmEmail2',
     defaultMessage: 'Confirm email',
   },
+  confirmPhone: {
+    id: 'app.containers.Navbar.confirmPhone',
+    defaultMessage: 'Confirm phone number',
+  },
   completeProfile: {
     id: 'app.containers.Navbar.completeProfile',
     defaultMessage: 'Complete profile',

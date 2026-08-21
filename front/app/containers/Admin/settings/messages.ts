@@ -89,10 +89,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.saveSuccessMessage',
     defaultMessage: 'Your changes have been saved.',
   },
-  registrationTitle: {
-    id: 'app.containers.AdminPage.SettingsPage.registrationTitle',
-    defaultMessage: 'Registration',
-  },
   tabAreas: {
     id: 'app.containers.AdminPage.SettingsPage.tabAreas1',
     defaultMessage: 'Areas',
@@ -196,5 +192,9 @@ export default defineMessages({
   anonymousNameScheme_animal: {
     id: 'app.containers.AdminPage.SettingsPage.anonymousNameScheme_animal2',
     defaultMessage: 'Animal - eg Elephant Cat',
+  },
+  otherRegistrationSettings: {
+    id: 'app.containers.AdminPage.SettingsPage.otherRegistrationSettings',
+    defaultMessage: 'Other registration settings',
   },
 });

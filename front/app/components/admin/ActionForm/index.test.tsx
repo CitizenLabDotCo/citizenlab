@@ -1,9 +1,17 @@
 import React from 'react';
 
 import { IdMethodData } from 'api/id_methods/types';
-import { IPhasePermissionData } from 'api/phase_permissions/types';
+import { IPermissionData } from 'api/permissions/types';
 
-import { render, screen, within, userEvent } from 'utils/testUtils/rtl';
+import { Changes } from 'components/admin/ActionForm/types';
+
+import {
+  render,
+  screen,
+  within,
+  userEvent,
+  fireEvent,
+} from 'utils/testUtils/rtl';
 
 import ActionForm from '.';
 
@@ -51,6 +59,12 @@ jest.mock('api/id_methods/useVerificationMethod', () =>
   }))
 );
 
+let mockUserRoles: { type: string }[] = [{ type: 'admin' }];
+
+jest.mock('api/me/useAuthUser', () => () => ({
+  data: { data: { id: 'user-1', attributes: { roles: mockUserRoles } } },
+}));
+
 jest.mock('api/phases/usePhase', () =>
   jest.fn(() => ({
     data: { data: { attributes: { participation_method: 'ideation' } } },
@@ -81,15 +95,15 @@ jest.mock(
 );
 
 const buildPermission = (
-  attributes: Partial<IPhasePermissionData['attributes']> = {}
-): IPhasePermissionData =>
+  attributes: Partial<IPermissionData['attributes']> = {}
+): IPermissionData =>
   ({
     id: 'perm-1',
     type: 'permission',
     attributes: {
       action: 'commenting_idea',
       permitted_by: 'users',
-      global_custom_fields: false,
+      custom_fields_behavior: 'global',
       verification_expiry: null,
       access_denied_explanation_multiloc: {},
       everyone_tracking_enabled: false,
@@ -100,17 +114,30 @@ const buildPermission = (
       require_password: true,
       require_verification: false,
       permitted_by_everyone_allowed: false,
+      inherited: false,
       ...attributes,
     },
     relationships: {
       permission_scope: { data: { id: 'ph-1', type: 'phase' } },
       groups: { data: [] },
     },
-  } as IPhasePermissionData);
+  } as IPermissionData);
+
+type RenderOptions = {
+  defaultOpen?: boolean;
+  onChange?: (changes: Changes) => Promise<void>;
+  onOverride?: () => Promise<void>;
+  onRevertToDefaults?: () => Promise<void>;
+};
 
 const renderForm = (
-  attributes?: Partial<IPhasePermissionData['attributes']>,
-  { defaultOpen = true }: { defaultOpen?: boolean } = {}
+  attributes?: Partial<IPermissionData['attributes']>,
+  {
+    defaultOpen = true,
+    onChange = jest.fn(),
+    onOverride,
+    onRevertToDefaults,
+  }: RenderOptions = {}
 ) =>
   render(
     <ActionForm
@@ -118,8 +145,9 @@ const renderForm = (
       permissionData={buildPermission(attributes)}
       title="Commenting"
       defaultOpen={defaultOpen}
-      onChange={jest.fn()}
-      onReset={jest.fn()}
+      onChange={onChange}
+      onOverride={onOverride}
+      onRevertToDefaults={onRevertToDefaults}
     />
   );
 
@@ -127,6 +155,7 @@ beforeEach(() => {
   mockPasswordLoginEnabled = true;
   mockIdMethods = [ssoMethod];
   mockVerificationMethodConfigured = true;
+  mockUserRoles = [{ type: 'admin' }];
 });
 
 describe('<ActionForm />', () => {
@@ -212,8 +241,9 @@ describe('<ActionForm />', () => {
     it('surfaces the "email sign-up only" tooltip when an SSO method is enabled', async () => {
       renderForm();
 
-      await userEvent.click(screen.getByText('Personal info'));
-      const passwordRow = screen.getByText('Password').parentElement!;
+      await userEvent.click(screen.getByText('Security requirements'));
+      const passwordRow = screen.getByText('Require user to set a password')
+        .parentElement!;
       await userEvent.hover(
         within(passwordRow).getByTestId('tooltip-icon-button')
       );
@@ -229,10 +259,123 @@ describe('<ActionForm />', () => {
       mockIdMethods = [];
       renderForm();
 
-      await userEvent.click(screen.getByText('Personal info'));
-      const passwordRow = screen.getByText('Password').parentElement!;
+      await userEvent.click(screen.getByText('Security requirements'));
+      const passwordRow = screen.getByText('Require user to set a password')
+        .parentElement!;
       expect(
         within(passwordRow).queryByTestId('tooltip-icon-button')
+      ).not.toBeInTheDocument();
+    });
+  });
+
+  describe('inheriting the platform defaults', () => {
+    it('shows the inherited settings and offers to override them', () => {
+      renderForm({ inherited: true }, { onOverride: jest.fn() });
+
+      expect(screen.getByText('Commenting')).toBeInTheDocument();
+      expect(screen.getByText(/Using/)).toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: 'Override' })
+      ).toBeInTheDocument();
+      // The defaults can be read, but not changed.
+      expect(screen.getByText('Security requirements')).toBeInTheDocument();
+      expect(screen.getByText('What we collect')).toBeInTheDocument();
+      expect(
+        screen.queryByRole('button', { name: 'Revert to platform defaults' })
+      ).not.toBeInTheDocument();
+    });
+
+    it('collapses and expands the panel', async () => {
+      renderForm({ inherited: true }, { onOverride: jest.fn() });
+
+      await userEvent.click(screen.getByText('Commenting'));
+      expect(
+        screen.queryByText('Security requirements')
+      ).not.toBeInTheDocument();
+
+      await userEvent.click(screen.getByText('Commenting'));
+      expect(screen.getByText('Security requirements')).toBeInTheDocument();
+    });
+
+    it('opens a sub-expander without changing anything', async () => {
+      const onChange = jest.fn();
+      renderForm({ inherited: true }, { onOverride: jest.fn(), onChange });
+
+      await userEvent.click(screen.getByText('Security requirements'));
+      expect(
+        screen.getByText('Require user to set a password')
+      ).toBeInTheDocument();
+      expect(onChange).not.toHaveBeenCalled();
+    });
+
+    it('does not change the permission when the settings are inherited', () => {
+      const onChange = jest.fn();
+      renderForm({ inherited: true }, { onOverride: jest.fn(), onChange });
+
+      fireEvent.click(screen.getByText('Admin & managers only'));
+      expect(onChange).not.toHaveBeenCalled();
+    });
+
+    it('links to the platform defaults for admins only', () => {
+      renderForm({ inherited: true }, { onOverride: jest.fn() });
+      expect(
+        screen.getByRole('link', { name: 'platform defaults' })
+      ).toHaveAttribute('href', '/en/admin/settings/registration');
+
+      mockUserRoles = [{ type: 'project_moderator' }];
+      renderForm({ inherited: true }, { onOverride: jest.fn() });
+      expect(screen.getAllByText(/Using/)).toHaveLength(2);
+      expect(screen.getAllByRole('link')).toHaveLength(1);
+    });
+
+    it('overrides the action and opens the panel', async () => {
+      const onOverride = jest.fn().mockResolvedValue(undefined);
+      renderForm({ inherited: true }, { onOverride });
+
+      await userEvent.click(screen.getByRole('button', { name: 'Override' }));
+      expect(onOverride).toHaveBeenCalledTimes(1);
+    });
+
+    it('renders the regular panel when the action has been overridden', () => {
+      renderForm({ inherited: false }, { onOverride: jest.fn() });
+
+      expect(screen.getByText('Security requirements')).toBeInTheDocument();
+      expect(
+        screen.queryByRole('button', { name: 'Override' })
+      ).not.toBeInTheDocument();
+    });
+
+    it('renders the regular panel when the caller does not support overriding', () => {
+      renderForm({ inherited: true });
+
+      expect(screen.getByText('Security requirements')).toBeInTheDocument();
+    });
+  });
+
+  describe('reverting to the platform defaults', () => {
+    it('asks for confirmation before discarding the action settings', async () => {
+      const onRevertToDefaults = jest.fn().mockResolvedValue(undefined);
+      renderForm(undefined, { onRevertToDefaults });
+
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Revert to platform defaults' })
+      );
+
+      expect(
+        screen.getByText('Revert to platform defaults?')
+      ).toBeInTheDocument();
+      expect(screen.getByText(/will be discarded/i)).toBeInTheDocument();
+      expect(onRevertToDefaults).not.toHaveBeenCalled();
+
+      await userEvent.click(screen.getByRole('button', { name: 'Revert' }));
+      expect(onRevertToDefaults).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not offer reverting when the caller does not support it', () => {
+      renderForm();
+
+      expect(
+        screen.queryByRole('button', { name: 'Revert to platform defaults' })
       ).not.toBeInTheDocument();
     });
   });

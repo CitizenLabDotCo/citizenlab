@@ -23,7 +23,7 @@ resource 'PermissionsCustomField' do
         action: action,
         permitted_by: 'users',
         require_verification: true,
-        global_custom_fields: true
+        custom_fields_behavior: 'global'
       )
       custom_field = create(:custom_field_gender, required: false, enabled: false)
 
