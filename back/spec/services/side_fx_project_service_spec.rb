@@ -164,6 +164,77 @@ describe SideFxProjectService do
       expect { service.after_update(project, user) }
         .not_to have_enqueued_job(ProcessScheduledPublicationTransitionsJob)
     end
+
+    context "when the project has a pending review" do
+      let(:admin) { create(:admin) }
+      before do
+        create(:project_review, project: project, approved_at: nil)
+      end
+
+      it 'approves the pending review when the project is published form draft' do
+        project.admin_publication.update!(publication_status: 'draft')
+
+        project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
+        service.before_update(project, admin)
+
+        project.save!
+        expect { service.after_update(project, admin) }
+          .to have_enqueued_job(LogActivityJob).with(project, 'project_review_approved', admin, anything, anything)
+        expect(project.review.reload.approved_at).not_to be_nil
+      end
+
+      it 'approves the pending review when the project is published form archived' do
+        project.admin_publication.update!(publication_status: 'archived')
+
+        project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
+        service.before_update(project, admin)
+
+        project.save!
+        expect { service.after_update(project, admin) }
+          .to have_enqueued_job(LogActivityJob).with(project, 'project_review_approved', admin, anything, anything)
+        expect(project.review.reload.approved_at).not_to be_nil
+      end
+
+      it 'does not approve the pending review when the project is already published' do
+        project.admin_publication.update!(publication_status: 'published')
+
+        project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
+        service.before_update(project, admin)
+
+        project.save!
+        expect { service.after_update(project, admin) }
+          .not_to have_enqueued_job(LogActivityJob).with(project, 'project_review_approved', admin, anything, anything)
+        expect(project.review.reload.approved_at).to be_nil
+      end
+
+      it 'does not approve the pending review when there is no publisher' do
+        # Happens on a scheduled publication whose `scheduled_by` user has been deleted
+        project.admin_publication.update!(publication_status: 'draft')
+
+        project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
+        service.before_update(project, nil)
+
+        project.save!
+        expect { service.after_update(project, nil) }
+          .not_to have_enqueued_job(LogActivityJob).with(project, 'project_review_approved', admin, anything, anything)
+
+        expect(project.review.reload.approved_at).to be_nil
+      end
+
+      it 'does not approve the pending review when the publisher cannot review' do
+        moderator = create(:project_moderator, projects: [project])
+        project.admin_publication.update!(publication_status: 'archived')
+
+        project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
+        service.before_update(project, moderator)
+
+        project.save!
+        expect { service.after_update(project, moderator) }
+          .not_to have_enqueued_job(LogActivityJob).with(project, 'project_review_approved', admin, anything, anything)
+
+        expect(project.review.reload.approved_at).to be_nil
+      end
+    end
   end
 
   describe 'after_destroy' do
