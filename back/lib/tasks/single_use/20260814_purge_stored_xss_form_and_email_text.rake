@@ -26,11 +26,9 @@
 #     emptied      stripping left nothing, because the whole value was payload
 #     lost text    words the reader could see are gone
 #
-# `lost text` is for an unclosed `<` swallowing the rest of a value, which is a far bigger bite than
-# the write path takes on a routine save. A balanced `<brand A>` is not flagged, and should not be:
-# `PlainTextMultiloc` strips it from every save an admin makes today, so a legacy row losing it is
-# this task doing its job rather than damage to weigh. The dry-run report carries every before and
-# after for review.
+# `lost text` catches an unclosed `<` swallowing the rest of a value. A balanced `<brand A>` is not
+# flagged, and should not be: `PlainTextMultiloc` strips it from every save an admin makes today, so
+# a legacy row losing it is this task doing its job. The dry-run report is the backstop for those.
 #
 #     rake single_use:purge_stored_xss_form_and_email_text
 #     rake 'single_use:purge_stored_xss_form_and_email_text[execute]'

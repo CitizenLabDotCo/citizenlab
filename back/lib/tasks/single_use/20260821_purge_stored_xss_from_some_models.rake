@@ -9,8 +9,9 @@
 #                                     -> SanitizationService#sanitize_body_multiloc,
 #                                        Permission::EXPLANATION_SANITIZE_FEATURES
 #     #description_multiloc, on each of `topic_models`
-#                                     -> SanitizationService#sanitize_multiloc, decoration only, then
-#                                        empty trailing tags removed
+#                                     -> SanitizationService#sanitize_multiloc with the model's own
+#                                        DESCRIPTION_SANITIZE_FEATURES, then empty trailing tags
+#                                        removed
 #     every column in `plain_text_columns`
 #                                     -> SanitizationService#strip_multiloc_to_plain_text
 #
@@ -120,29 +121,23 @@ namespace :single_use do
       CGI.unescapeHTML(value.to_s.gsub(/<[^<>]*>/, ' ')).scan(/[[:word:]]+/)
     end
 
-    # Words inside a link's label. A label rewritten from its own href loses whatever it said, which
-    # is the pipeline working as intended rather than text going missing.
-    label_words = lambda do |value|
-      value.to_s.scan(%r{<a\b[^>]*>(.*?)</a>}im).flatten.flat_map { |label| visible_words.call(label) }
-    end
-
-    # Words the reader loses that were not inside a link. Compared as words rather than characters:
-    # a rewritten URL shuffles single letters around, which reads as noise at character level.
+    # Words the reader loses. Compared as words rather than characters: a rewritten URL shuffles
+    # single letters around, which reads as noise at character level. No carve-out for link labels -
+    # neither pipeline here rebuilds a label from its href, so a label's words never go missing.
     lost_words = lambda do |old_text, new_text|
       remaining = visible_words.call(new_text).tally
-      labels = label_words.call(old_text).to_set
       visible_words.call(old_text).filter_map do |word|
         if remaining[word].to_i.positive?
           remaining[word] -= 1
           nil
         else
-          labels.include?(word) ? nil : word
+          word
         end
       end
     end
 
-    # [locale, words] for every locale whose visible text lost something outside a link. An emptied
-    # locale lost every word it had, so it is left to `blanked` rather than listed twice.
+    # [locale, words] for every locale whose visible text lost something. An emptied locale lost
+    # every word it had, so it is left to `blanked` rather than listed twice.
     lost_by_locale = lambda do |old_value, new_value, emptied|
       unless old_value.is_a?(Hash)
         words = emptied.any? ? [] : lost_words.call(old_value, new_value)
@@ -159,7 +154,8 @@ namespace :single_use do
 
     # Where each link points. Compared with both escapings undone, so `&amp;` in an attribute and a
     # percent-encoded character - both of which the write path normalises - do not read as a move.
-    # Only the schemes a reader could have followed: dropping a `javascript:` href is the point.
+    # Only schemes a reader could have followed: a scrubbed `javascript:` href leaves the label
+    # untouched and takes no destination with it, so it is not a move.
     hrefs = lambda do |value|
       found = value.to_s.scan(/<a\b[^>]*\bhref="([^"]*)"/im).flatten
       found.map { |href| CGI.unescape(CGI.unescapeHTML(href)) }.grep(SanitizationService::LINKIFIABLE_HREF)

@@ -57,11 +57,9 @@ class Permission < ApplicationRecord
   # re-sanitises a stored one. Rendered with `dangerouslySetInnerHTML`
   # (`useCustomAccessDeniedMessage.tsx`, `AccessDenied/index.tsx`).
   #
-  # Wider than the editor, deliberately. The field had an unrestricted Quill editor from late 2024
-  # until a component swap in June 2026 left it a single-line input, so production holds formatting
-  # no editor can produce today. A survey of all eight clusters found lists on nine rows and nothing
-  # else with content in it - no heading, image, video or alignment - so this is what the stored
-  # data needs, and narrowing it further would delete text admins wrote.
+  # Wider than today's editor on purpose: the field had an unrestricted Quill editor until a June
+  # 2026 component swap left it a single-line input, so production still holds lists (nine rows,
+  # every cluster surveyed). Nothing else with content in it - no heading, image, video, alignment.
   EXPLANATION_SANITIZE_FEATURES = %i[list decoration link].freeze
   UNSUPPORTED_DESCRIPTOR = {
     value: nil,

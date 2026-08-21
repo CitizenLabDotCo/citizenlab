@@ -28,10 +28,8 @@ class DefaultInputTopic < ApplicationRecord
   belongs_to :parent, class_name: 'DefaultInputTopic', optional: true, counter_cache: :children_count
   has_many :children, -> { order(:lft) }, class_name: 'DefaultInputTopic', foreign_key: :parent_id, dependent: :destroy, inverse_of: :parent
 
-  # The description editor offers bold and italic only (`noImages noLinks noVideos noAlign
-  # limitedTextFormatting`), and the front end renders the value with `dangerouslySetInnerHTML`
-  # (`<T supportHtml>`), so the allowlist matches the editor rather than the other description
-  # fields. Shared with anything that re-sanitises a stored description.
+  # Rendered with `dangerouslySetInnerHTML` (`<T supportHtml>`), and the editor offers bold and
+  # italic only, so the allowlist is narrower than the other description fields'.
   DESCRIPTION_SANITIZE_FEATURES = %i[decoration].freeze
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
@@ -59,9 +57,8 @@ class DefaultInputTopic < ApplicationRecord
     errors.add(:parent_id, :too_deep) if parent.depth >= 1
   end
 
-  # No linkifying, unlike the other description fields: the editor offers no way to make a link, so
-  # turning a typed URL into one would add markup nobody asked for and `:decoration` would strip it
-  # again on the next write.
+  # No linkifying, unlike the other description fields: the editor cannot make links, so neither
+  # does this.
   def sanitize_description_multiloc
     service = SanitizationService.new
     self.description_multiloc = service.sanitize_multiloc(description_multiloc, DESCRIPTION_SANITIZE_FEATURES)

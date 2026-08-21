@@ -21,9 +21,8 @@ RSpec.describe Permission do
       )
     end
 
-    # Lists are kept because production holds them: the field had an unrestricted Quill editor until
-    # June 2026, and a survey of every cluster found bulleted lists on nine rows. Headings, images,
-    # video and alignment appear nowhere with content in them, so they go.
+    # Lists are kept because production holds them (nine rows, every cluster surveyed), left over
+    # from the Quill editor this field had until June 2026. Nothing else survives the allowlist.
     it 'keeps a list, and strips the rest of what a rich text editor once offered' do
       expect(explanation_of('<h2>Title</h2><ul><li>A bullet</li></ul><img src="https://example.com/a.png">'))
         .to eq 'Title<ul><li>A bullet</li></ul>'
