@@ -21,8 +21,13 @@
 #  fk_rails_...  (event_id => events.id)
 #
 class EventImage < ApplicationRecord
+  include PlainTextMultiloc
+
   mount_base64_uploader :image, EventImageUploader
   belongs_to :event
+
+  # See `ProjectImage#alt_text_multiloc`.
+  plain_text_multiloc :alt_text_multiloc
   delegate :project, to: :event
 
   validates :event, presence: true

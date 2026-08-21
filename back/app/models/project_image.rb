@@ -21,8 +21,14 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class ProjectImage < ApplicationRecord
+  include PlainTextMultiloc
+
   mount_base64_uploader :image, ProjectImageUploader
   belongs_to :project
+
+  # Alt text is read out by a screen reader and rendered into an `alt` attribute, so markup in it is
+  # never wanted - it is inert there, but it is also nonsense to hear.
+  plain_text_multiloc :alt_text_multiloc
 
   validates :project, presence: true
   validates :ordering, numericality: { only_integer: true }, allow_nil: true
