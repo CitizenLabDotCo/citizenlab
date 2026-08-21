@@ -6399,10 +6399,45 @@
     "verified_at": "2026-07-16T09:49:20.119280Z",
     "verified_by": "eva@govocal.com"
   },
+  "app.containers.Admin.messaging.confirmSendSmsBalanceLabel": {
+    "state": "verified",
+    "verified_at": "2026-08-21T07:49:39.062139Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.messaging.confirmSendSmsCreditsHint": {
+    "state": "verified",
+    "verified_at": "2026-08-21T07:49:39.062139Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.messaging.confirmSendSmsCreditsLabel": {
+    "state": "verified",
+    "verified_at": "2026-08-21T07:49:39.062139Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.messaging.confirmSendSmsHeader": {
     "state": "verified",
     "verified_at": "2026-07-16T09:49:20.119280Z",
     "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.messaging.confirmSendSmsHeader2": {
+    "state": "verified",
+    "verified_at": "2026-08-21T07:49:39.062139Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.messaging.confirmSendSmsInsufficientBalance": {
+    "state": "verified",
+    "verified_at": "2026-08-21T07:49:39.062139Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.messaging.confirmSendSmsNoRecipients": {
+    "state": "verified",
+    "verified_at": "2026-08-21T07:49:39.062139Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.messaging.confirmSendSmsRecipientsLabel": {
+    "state": "verified",
+    "verified_at": "2026-08-21T07:49:39.062139Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Admin.messaging.deleteSmsButton": {
     "state": "verified",
@@ -6478,6 +6513,41 @@
     "state": "verified",
     "verified_at": "2026-07-16T09:49:20.119280Z",
     "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.messaging.smsBalanceLowWarning": {
+    "state": "verified",
+    "verified_at": "2026-08-21T07:49:39.062139Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.messaging.smsBalanceOfPurchased": {
+    "state": "verified",
+    "verified_at": "2026-08-21T07:49:39.062139Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.messaging.smsBalancePurchaseHint": {
+    "state": "verified",
+    "verified_at": "2026-08-21T07:49:39.062139Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.messaging.smsBalanceTitle": {
+    "state": "verified",
+    "verified_at": "2026-08-21T07:49:39.062139Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.messaging.smsBalanceUsedManual": {
+    "state": "verified",
+    "verified_at": "2026-08-21T07:49:39.062139Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.messaging.smsBalanceUsedOther": {
+    "state": "verified",
+    "verified_at": "2026-08-21T07:49:39.062139Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.messaging.smsBalanceUsedTotal": {
+    "state": "verified",
+    "verified_at": "2026-08-21T07:49:39.062139Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Admin.messaging.smsCampaignsDescription": {
     "state": "verified",
