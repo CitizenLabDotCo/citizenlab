@@ -179,28 +179,29 @@ class CustomField < ApplicationRecord
   end
 
   def average_rankings(scope)
-    # This basically starts from all combinations of scope ID, option key (value)
-    # and position (ordinality) and then calculates the average position for each
-    # option. "#>> '{}'" is used to unescape the double quotes in the JSONB value.
+    # This basically starts from all combinations of answerable ID, option key
+    # (value) and position (ordinality) and then calculates the average position
+    # for each option. "#>> '{}'" is used to unescape the double quotes in the
+    # JSONB value.
     return {} if input_type != 'ranking'
 
-    scope
-      .where.not("custom_field_values ->> '#{key}' IS NULL")
-      .joins("CROSS JOIN jsonb_array_elements(custom_field_values->'#{key}') WITH ORDINALITY AS elem(value, ordinality)")
+    CustomFieldAnswer.main_for(self)
+      .where(answerable_id: scope)
+      .joins('CROSS JOIN jsonb_array_elements(value) WITH ORDINALITY AS elem(value, ordinality)')
       .group("elem.value #>> '{}'")
       .average('elem.ordinality')
   end
 
   def rankings_counts(scope)
-    # This basically starts from all combinations of scope ID, option key (value)
-    # and position (ordinality) and then calculates the count for each option and
-    # position. "#>> '{}'" is used to unescape the double quotes in the JSONB
-    # value.
+    # This basically starts from all combinations of answerable ID, option key
+    # (value) and position (ordinality) and then calculates the count for each
+    # option and position. "#>> '{}'" is used to unescape the double quotes in
+    # the JSONB value.
     return {} if input_type != 'ranking'
 
-    query_result = scope
-      .where.not("custom_field_values ->> '#{key}' IS NULL")
-      .joins("CROSS JOIN jsonb_array_elements(custom_field_values->'#{key}') WITH ORDINALITY AS elem(value, ordinality)")
+    query_result = CustomFieldAnswer.main_for(self)
+      .where(answerable_id: scope)
+      .joins('CROSS JOIN jsonb_array_elements(value) WITH ORDINALITY AS elem(value, ordinality)')
       .group("elem.value #>> '{}'", 'elem.ordinality')
       .count
 

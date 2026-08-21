@@ -107,7 +107,7 @@ resource 'Permissions' do
       context 'with custom fields and groups' do
         before do
           create(:custom_field_gender, enabled: true, required: true)
-          @phase.permissions.first.update!(group_ids: create_list(:group, 2, projects: [@phase.project]).map(&:id), global_custom_fields: true)
+          @phase.permissions.first.update!(group_ids: create_list(:group, 2, projects: [@phase.project]).map(&:id), custom_fields_behavior: 'global')
         end
 
         example_request 'Get one permission by action' do
@@ -131,12 +131,22 @@ resource 'Permissions' do
     end
 
     get 'web_api/v1/permissions/:action' do
-      let(:action) { 'attending_event' }
+      let(:action) { 'following' }
 
       example_request 'Get one global permission by action' do
         assert_status 200
         json_response = json_parse response_body
         expect(json_response.dig(:data, :id)).to eq Permission.find_by!(permission_scope: nil, action: action).id
+      end
+
+      context "for the 'attending_event' permission, which inherits the global 'visiting' one" do
+        let(:action) { 'attending_event' }
+
+        example_request 'Get the inherited global attending_event permission', document: false do
+          assert_status 200
+          expect(Permission.where(permission_scope: nil, action: action)).to be_empty
+          expect(response_data[:attributes]).to include(action: 'attending_event', inherited: true)
+        end
       end
 
       context 'for the visiting permission' do
@@ -170,7 +180,7 @@ resource 'Permissions' do
     patch 'web_api/v1/phases/:phase_id/permissions/:action' do
       with_options scope: :permission do
         parameter :permitted_by, "Defines who is granted permission, either #{Permission::PERMITTED_BIES.join(',')}.", required: false
-        parameter :global_custom_fields, 'When set to true, the enabled registrations are associated to the permission', required: false
+        parameter :custom_fields_behavior, "Which demographic questions are asked, either #{Permission::CUSTOM_FIELDS_BEHAVIORS.join(',')}. 'custom' requires the permissions_custom_fields feature.", required: false
         parameter :group_ids, "An array of group id's associated to this permission", required: false
         parameter :verification_expiry, 'number of days before reverification required - nil means never reverify', required: false
         parameter :require_confirmed_email, 'Whether a confirmed email is required to take this action', required: false
@@ -201,6 +211,50 @@ resource 'Permissions' do
           expect(response_data.dig(:attributes, :verification_enabled)).to be true
           expect(response_data.dig(:attributes, :access_denied_explanation_multiloc)).to eq access_denied_explanation_multiloc
           expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array group_ids
+        end
+      end
+
+      context 'custom_fields_behavior' do
+        let(:permitted_by) { 'users' }
+        let!(:platform_field) { create(:custom_field_gender, enabled: true) }
+
+        example 'Customise the demographic questions, which starts from none' do
+          do_request(permission: { custom_fields_behavior: 'custom' })
+
+          assert_status 200
+          expect(response_data.dig(:attributes, :custom_fields_behavior)).to eq 'custom'
+          # The platform-wide questions are not copied onto the permission; the
+          # admin picks the ones this action asks.
+          expect(Permission.find(response_data[:id]).permissions_custom_fields).to be_empty
+        end
+
+        example 'Stop asking demographic questions' do
+          do_request(permission: { custom_fields_behavior: 'disabled' })
+
+          assert_status 200
+          expect(response_data.dig(:attributes, :custom_fields_behavior)).to eq 'disabled'
+          expect(Permission.find(response_data[:id]).permissions_custom_fields).to be_empty
+        end
+
+        example 'Switching away from custom keeps the questions, so that switching back restores them' do
+          do_request(permission: { custom_fields_behavior: 'custom' })
+          permission = Permission.find(response_data[:id])
+          create(:permissions_custom_field, permission: permission, custom_field: platform_field)
+
+          do_request(permission: { custom_fields_behavior: 'global' })
+
+          assert_status 200
+          expect(permission.reload.custom_fields_behavior).to eq 'global'
+          expect(permission.permissions_custom_fields.pluck(:custom_field_id)).to eq [platform_field.id]
+        end
+
+        example '[error] Questions cannot be customised without the permissions_custom_fields feature' do
+          SettingsService.new.deactivate_feature!('permissions_custom_fields')
+
+          do_request(permission: { custom_fields_behavior: 'custom' })
+
+          assert_status 401
+          expect(@phase.permissions.first.reload.custom_fields_behavior).not_to eq 'custom'
         end
       end
 
@@ -310,7 +364,7 @@ resource 'Permissions' do
       let(:action) { 'posting_idea' }
       let!(:permission) do
         Permission.find_by!(action: 'posting_idea', permission_scope: @phase).tap do |p|
-          p.update!(permitted_by: 'admins_moderators', global_custom_fields: false, groups: [create(:group)])
+          p.update!(permitted_by: 'admins_moderators', custom_fields_behavior: 'custom', groups: [create(:group)])
           create(:permissions_custom_field, permission: p, custom_field: create(:custom_field))
         end
       end
@@ -394,7 +448,7 @@ resource 'Permissions' do
     patch 'web_api/v1/permissions/:action' do
       with_options scope: :permission do
         parameter :permitted_by, "Defines who is granted permission, either #{Permission::PERMITTED_BIES.join(',')}.", required: false
-        parameter :global_custom_fields, 'When set to true, the enabled registrations are associated to the permission', required: false
+        parameter :custom_fields_behavior, "Which demographic questions are asked, either #{Permission::CUSTOM_FIELDS_BEHAVIORS.join(',')}. 'custom' requires the permissions_custom_fields feature.", required: false
         parameter :group_ids, "An array of group id's associated to this permission", required: false
         parameter :require_confirmed_email, 'Whether a confirmed email address is required', required: false
         parameter :require_confirmed_phone_number, 'Whether a confirmed phone number is required', required: false
@@ -404,7 +458,7 @@ resource 'Permissions' do
       end
       ValidationErrorHelper.new.error_fields(self, Permission)
 
-      let(:action) { 'attending_event' }
+      let(:action) { 'following' }
       let(:permitted_by) { 'users' }
       let(:group_ids) { create_list(:group, 3).map(&:id) }
 
@@ -413,6 +467,15 @@ resource 'Permissions' do
         json_response = json_parse response_body
         expect(json_response.dig(:data, :attributes, :permitted_by)).to eq permitted_by
         expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to match_array group_ids
+      end
+
+      context "for the 'attending_event' permission, which inherits the global 'visiting' one" do
+        let(:action) { 'attending_event' }
+
+        example '[error] An inherited global permission cannot be updated before it is overridden', document: false do
+          do_request(permission: { permitted_by: permitted_by })
+          assert_status 404
+        end
       end
 
       context 'for the visiting permission' do
@@ -507,8 +570,8 @@ resource 'Permissions' do
         let(:action) { @permission.action }
 
         # NOTE: Unlike the old everyone_confirmed_email behaviour, a 'users' permission DOES
-        # collect the global registration custom fields (allow_global_custom_fields? is true),
-        # so the unsatisfied required fields are returned here.
+        # collect the global registration custom fields, so the unsatisfied required
+        # fields are returned here.
         example_request 'Get the participation requirements of a passwordless user requiring confirmation in a phase' do
           assert_status 200
           expect(response_data[:attributes]).to eq({
@@ -752,7 +815,7 @@ resource 'Permissions' do
       context 'with permission-specific custom fields' do
         before do
           @permission = @project.phases.first.permissions.first
-          @permission.update!(global_custom_fields: false)
+          @permission.update!(custom_fields_behavior: 'custom')
           @field1 = create(:custom_field, required: true)
           @field2 = create(:custom_field, required: false)
           create(:permissions_custom_field, permission: @permission, custom_field: @field1, required: false)
@@ -785,7 +848,7 @@ resource 'Permissions' do
       context 'with permission-specific custom fields' do
         before do
           @permission = @phase.permissions.first
-          @permission.update!(global_custom_fields: false)
+          @permission.update!(custom_fields_behavior: 'custom')
           @field1 = create(:custom_field, required: true)
           @field2 = create(:custom_field, required: false)
           create(:permissions_custom_field, permission: @permission, custom_field: @field1, required: false)

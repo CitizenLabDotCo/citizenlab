@@ -47,6 +47,7 @@ module EmailCampaigns
 
     validates :subject_multiloc, presence: true, multiloc: { presence: true }
     validates :body_multiloc, presence: true, multiloc: { presence: true }
+    validate :body_within_segment_limit
 
     def self.sms_use_case
       Sms::UseCase::MANUAL_CAMPAIGNS
@@ -104,6 +105,19 @@ module EmailCampaigns
     end
 
     private
+
+    # Each locale is sent as its own message, so each is capped on its own. A
+    # character cap would not do: the limit is in segments, which depend on encoding.
+    def body_within_segment_limit
+      return unless body_multiloc.is_a?(Hash)
+
+      max_segments = EmailCampaigns::Sms::SegmentedMessage::MAX_SEGMENTS
+      body_multiloc.each do |locale, body|
+        next unless body.is_a?(String) && EmailCampaigns::Sms::SegmentedMessage.new(body).exceeds_limit?
+
+        errors.add(:body_multiloc, :too_many_segments, message: "#{locale}: exceeds #{max_segments} SMS segments")
+      end
+    end
 
     def user_filter_no_invitees(users_scope, _options = {})
       users_scope.active

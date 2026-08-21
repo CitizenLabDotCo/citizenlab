@@ -25,8 +25,11 @@ class WebApi::V1::PermissionsController < ApplicationController
   def update
     raise ActiveRecord::RecordNotFound if @permission.inherited?
 
+    attributes = permission_params
+    require_feature!('permissions_custom_fields') if attributes[:custom_fields_behavior] == 'custom'
+
     old_group_ids = @permission.group_ids
-    @permission.assign_attributes(permission_params)
+    @permission.assign_attributes(attributes)
     authorize @permission
     if @permission.save
       sidefx.after_update(@permission, current_user, old_group_ids)
@@ -46,7 +49,7 @@ class WebApi::V1::PermissionsController < ApplicationController
     @permission = inheritance_service.override!(permission_scope, permission_action)
     sidefx.after_override(@permission, current_user)
     render json: serialize(@permission), status: :ok
-  rescue Permissions::PermissionInheritanceService::UnsupportedScope
+  rescue Permissions::PermissionInheritanceService::NotInheritable
     raise ActiveRecord::RecordNotFound
   end
 
@@ -57,7 +60,7 @@ class WebApi::V1::PermissionsController < ApplicationController
     sidefx.before_inherit(@permission, current_user)
     @permission = inheritance_service.inherit!(@permission)
     render json: serialize(@permission), status: :ok
-  rescue Permissions::PermissionInheritanceService::UnsupportedScope
+  rescue Permissions::PermissionInheritanceService::NotInheritable
     raise ActiveRecord::RecordNotFound
   end
 
@@ -132,8 +135,9 @@ class WebApi::V1::PermissionsController < ApplicationController
     @inheritance_service ||= Permissions::PermissionInheritanceService.new
   end
 
-  # Resolves to the persisted permission, or — for a phase action that has not
-  # been overridden — to an unsaved copy of the global 'visiting' permission.
+  # Resolves to the persisted permission, or — for an inheritable action that
+  # has not been overridden — to an unsaved copy of the global 'visiting'
+  # permission.
   def set_permission
     permission = inheritance_service.find(permission_scope, permission_action)
     raise ActiveRecord::RecordNotFound unless permission
@@ -156,7 +160,7 @@ class WebApi::V1::PermissionsController < ApplicationController
   def permission_params
     params.require(:permission).permit(
       :permitted_by,
-      :global_custom_fields,
+      :custom_fields_behavior,
       :verification_expiry,
       :everyone_tracking_enabled,
       :user_fields_in_form,

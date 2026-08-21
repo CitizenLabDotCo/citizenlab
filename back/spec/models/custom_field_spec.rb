@@ -603,19 +603,24 @@ RSpec.describe CustomField do
   end
 
   describe '#average_rankings' do
-    let!(:field) { create(:custom_field_ranking) }
+    let!(:custom_form) { create(:custom_form) }
+    let!(:field) { create(:custom_field_ranking, resource: custom_form) }
     let!(:option1) { create(:custom_field_option, custom_field: field, key: 'by_foot') }
     let!(:option2) { create(:custom_field_option, custom_field: field, key: 'by_bike') }
     let!(:option3) { create(:custom_field_option, custom_field: field, key: 'by_train') }
     let!(:option4) { create(:custom_field_option, custom_field: field, key: 'by_horse') }
 
+    def create_idea(custom_field_values)
+      create(:idea, project: custom_form.participation_context, custom_field_values: custom_field_values)
+    end
+
     it 'calculates average rankings for field options' do
-      create(:idea, custom_field_values: { field.key => %w[by_bike by_horse by_train by_foot] })
-      create(:idea, custom_field_values: { field.key => %w[by_train by_bike by_foot by_horse] })
-      create(:idea, custom_field_values: {})
-      create(:idea, custom_field_values: { field.key => %w[by_horse by_foot by_train by_bike] })
-      create(:idea, custom_field_values: { field.key => %w[by_bike by_foot by_train by_horse] })
-      excluded_idea = create(:idea, custom_field_values: { field.key => %w[by_bike by_horse by_foot by_train] })
+      create_idea({ field.key => %w[by_bike by_horse by_train by_foot] })
+      create_idea({ field.key => %w[by_train by_bike by_foot by_horse] })
+      create_idea({})
+      create_idea({ field.key => %w[by_horse by_foot by_train by_bike] })
+      create_idea({ field.key => %w[by_bike by_foot by_train by_horse] })
+      excluded_idea = create_idea({ field.key => %w[by_bike by_horse by_foot by_train] })
 
       expect(field.average_rankings(Idea.where.not(id: [excluded_idea.id]))).to eq({
         'by_bike' => 2,

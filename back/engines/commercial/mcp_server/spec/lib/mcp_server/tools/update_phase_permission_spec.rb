@@ -110,10 +110,13 @@ describe McpServer::Tools::UpdatePhasePermission do
     end
 
     describe 'demographic_questions' do
+      # Admins and managers are never asked demographic questions, which would
+      # mask the behavior these examples are about.
+      let(:params) { super().merge(permitted_by: 'users') }
       let!(:existing_field) { create(:custom_field) }
 
       before do
-        permission.update!(global_custom_fields: false)
+        permission.update!(custom_fields_behavior: 'custom')
         permission.permissions_custom_fields.create!(custom_field: existing_field, required: true)
       end
 
@@ -121,7 +124,7 @@ describe McpServer::Tools::UpdatePhasePermission do
         response = run(params)
 
         expect(response).not_to be_error
-        expect(permission.reload.global_custom_fields).to be(false)
+        expect(permission.reload.custom_fields_behavior).to eq('custom')
         expect(permission.permissions_custom_fields.pluck(:custom_field_id)).to eq([existing_field.id])
       end
 
@@ -129,7 +132,7 @@ describe McpServer::Tools::UpdatePhasePermission do
         response = run(params.merge(demographic_questions: nil))
 
         expect(response).not_to be_error
-        expect(permission.reload.global_custom_fields).to be(true)
+        expect(permission.reload.custom_fields_behavior).to eq('global')
         expect(permission.permissions_custom_fields).to be_empty
       end
 
@@ -137,7 +140,7 @@ describe McpServer::Tools::UpdatePhasePermission do
         response = run(params.merge(demographic_questions: []))
 
         expect(response).not_to be_error
-        expect(permission.reload.global_custom_fields).to be(false)
+        expect(permission.reload.custom_fields_behavior).to eq('disabled')
         expect(permission.permissions_custom_fields).to be_empty
       end
 

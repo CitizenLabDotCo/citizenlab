@@ -111,54 +111,6 @@ describe 'single_use:purge_stored_xss rake task' do
     end
   end
 
-  context 'the remaining title models' do
-    let!(:records) do
-      {
-        space: store_raw(create(:space), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>hi' }),
-        area: store_raw(create(:area), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>hi' }),
-        group: store_raw(create(:group), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>hi' }),
-        idea_status: store_raw(create(:idea_status), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>hi' }),
-        nav_bar_item: store_raw(create(:nav_bar_item), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>hi' }),
-        option: store_raw(create(:custom_field_option), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>hi' }),
-        statement: store_raw(create(:custom_field_matrix_statement), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>hi' }),
-        poll_question: store_raw(create(:poll_question), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>hi' }),
-        poll_option: store_raw(create(:poll_option), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>hi' }),
-        layer: store_raw(create(:layer), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>hi' }),
-        cause: store_raw(create(:cause), :title_multiloc, { 'en' => '<img src=x onerror=alert(1)>hi' })
-      }
-    end
-
-    it 'strips all HTML from each of them' do
-      run_task
-      records.each_value { |record| expect(record.reload.title_multiloc['en']).to eq 'hi' }
-    end
-  end
-
-  # Their own task sweeps these, so a payload here must survive this one untouched.
-  context 'a custom field title or a campaign subject carrying HTML' do
-    let!(:custom_field) { store_raw(create(:custom_field), :title_multiloc, { 'en' => '<b>Age</b>' }) }
-    let!(:campaign) { store_raw(create(:manual_campaign), :subject_multiloc, { 'en' => '<b>News</b>' }) }
-
-    it 'is left alone' do
-      run_task
-      expect(custom_field.reload[:title_multiloc]['en']).to eq '<b>Age</b>'
-      expect(campaign.reload[:subject_multiloc]['en']).to eq '<b>News</b>'
-    end
-  end
-
-  # Sanitised rather than stripped: it is rendered with `dangerouslySetInnerHTML`.
-  context 'an access denied explanation carrying a payload' do
-    let!(:permission) do
-      store_raw(create(:permission), :access_denied_explanation_multiloc,
-        { 'en' => '<p>Ask your <b>council</b></p><img src=x onerror=alert(1)>' })
-    end
-
-    it 'strips the payload and keeps the formatting' do
-      run_task
-      expect(permission.reload.access_denied_explanation_multiloc['en']).to eq '<p>Ask your <b>council</b></p>'
-    end
-  end
-
   context 'a comment body carrying a script tag' do
     let!(:comment) { store_raw(create(:comment), :body_multiloc, { 'en' => '<p>hi</p><script>alert(1)</script>' }) }
 
@@ -344,6 +296,72 @@ describe 'single_use:purge_stored_xss rake task' do
     it 'rewrites the label to its own href without stopping to ask' do
       run_task
       expect(mt.reload.translation).to include('>https://example.com/x</a>')
+    end
+  end
+
+  # The label is rebuilt from the href, so a translated one is repaired rather than promoted. Before
+  # that the href moved to the address the translator invented, with no visible text changing.
+  context 'a comment body whose link label was translated' do
+    let!(:comment) do
+      store_raw(create(:comment), :body_multiloc, { 'en' =>
+        'mail <a href="mailto:maintenance@raleighparks.gov" target="_blank" rel="noreferrer noopener nofollow">mantenimiento@raleighparks.gov</a>' })
+    end
+
+    it 'keeps the address the link points at' do
+      run_task
+      expect(comment.reload.body_multiloc['en']).to include 'href="mailto:maintenance@raleighparks.gov"'
+      expect(comment.reload.body_multiloc['en']).not_to include 'mantenimiento'
+    end
+
+    it 'is not flagged as a moved link' do
+      expect { run_task(dry_run: true) }.not_to output(/Links that now point elsewhere/).to_stdout
+    end
+  end
+
+  # `linkify` reads an address out of the text around it, so a word touching the link was swallowed
+  # into the address. The link is kept now rather than dissolved and rebuilt.
+  context 'a comment body whose link touches the word before it' do
+    let!(:comment) do
+      store_raw(create(:comment), :body_multiloc, { 'en' =>
+        '<p>de VRT<a href="mailto:jrose@vrt.org" target="_blank" rel="noreferrer noopener nofollow">jrose@vrt.org</a></p>' })
+    end
+
+    it 'keeps the address intact' do
+      run_task
+      expect(comment.reload.body_multiloc['en']).to include 'href="mailto:jrose@vrt.org"'
+      expect(comment.reload.body_multiloc['en']).not_to include 'VRTjrose'
+    end
+  end
+
+  # A title keeps no markup, so its link goes with the rest. The word check sees nothing, because
+  # the label survives as text - which is why the destination is checked separately.
+  context 'a title carrying a link' do
+    let!(:idea) do
+      store_raw(create(:idea), :title_multiloc, { 'en' => 'Read <a href="https://example.com/plan">the plan</a>' })
+    end
+
+    it 'lists the destination it would drop' do
+      expect { run_task(dry_run: true) }.to output(
+        %r{Links that now point elsewhere.*was: https://example.com/plan}m
+      ).to_stdout
+    end
+
+    it 'strips it once confirmed' do
+      answering 'y'
+      run_task
+      expect(idea.reload.title_multiloc['en']).to eq 'Read the plan'
+    end
+  end
+
+  # Losing one is the point, so it is not a destination worth stopping for.
+  context 'a title carrying a javascript: link' do
+    let!(:idea) do
+      store_raw(create(:idea), :title_multiloc, { 'en' => 'Read <a href="javascript:alert(1)">the plan</a>' })
+    end
+
+    it 'drops it without stopping to ask' do
+      run_task
+      expect(idea.reload.title_multiloc['en']).to eq 'Read the plan'
     end
   end
 

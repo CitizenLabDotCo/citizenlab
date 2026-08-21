@@ -34,26 +34,20 @@ RSpec.describe Permission do
     end
   end
 
-  describe 'global_custom_fields' do
-    context 'everyone' do
-      it 'is true when created' do
-        permission = create(:permission, :by_everyone)
-        expect(permission.global_custom_fields).to be_truthy
-      end
+  describe 'custom_fields_behavior' do
+    it "is 'global' when created" do
+      expect(create(:permission, custom_fields_behavior: nil).custom_fields_behavior).to eq 'global'
     end
 
-    context 'everyone_confirmed_email' do
-      it 'is true when created' do
-        permission = create(:permission, :by_everyone_confirmed_email)
-        expect(permission.global_custom_fields).to be_truthy
-      end
+    it "is 'disabled' for an admins and managers permission, whatever is stored" do
+      permission = build(:permission, :by_admins_moderators, custom_fields_behavior: 'global')
+      expect(permission.custom_fields_behavior).to eq 'disabled'
     end
 
-    context 'user' do
-      it 'is true when created' do
-        permission = create(:permission, :by_users, global_custom_fields: nil)
-        expect(permission.global_custom_fields).to be_truthy
-      end
+    it 'is invalid for a value that is not one of the three behaviors' do
+      permission = build(:permission, custom_fields_behavior: 'platform')
+      expect(permission).not_to be_valid
+      expect(permission.errors.details[:custom_fields_behavior]).to include(hash_including(error: :inclusion))
     end
   end
 
@@ -153,15 +147,6 @@ RSpec.describe Permission do
     end
   end
 
-  describe 'verification' do
-    describe 'global_custom_fields' do
-      it 'is true when created for a permission that requires verification' do
-        permission = create(:permission, :by_verified, global_custom_fields: nil)
-        expect(permission.global_custom_fields).to be_truthy
-      end
-    end
-  end
-
   describe '#verification_enabled?' do
     it 'is true when require_verification is true' do
       expect(build(:permission, :by_users, require_verification: true).verification_enabled?).to be true
@@ -169,14 +154,6 @@ RSpec.describe Permission do
 
     it 'is false when verification is not required and there is no verification group' do
       expect(build(:permission, :by_users).verification_enabled?).to be false
-    end
-  end
-
-  describe '#allow_global_custom_fields?' do
-    it 'is true only for a users permission' do
-      expect(build(:permission, :by_users).allow_global_custom_fields?).to be true
-      expect(build(:permission, :by_everyone).allow_global_custom_fields?).to be false
-      expect(build(:permission, :by_admins_moderators).allow_global_custom_fields?).to be false
     end
   end
 
@@ -191,15 +168,6 @@ RSpec.describe Permission do
 
     context 'surveys' do
       let(:permission) { create(:permission, action: 'posting_idea', permission_scope: create(:native_survey_phase)) }
-
-      it 'returns locked: true and explanation if the permissions_custom_fields feature is deactivated' do
-        permission.update!(permitted_by: 'users', user_data_collection: 'all_data', user_fields_in_form: true)
-        SettingsService.new.deactivate_feature!('permissions_custom_fields')
-        descriptor = permission.user_fields_in_form_descriptor
-        expect(descriptor[:value]).to be_nil
-        expect(descriptor[:locked]).to be_truthy
-        expect(descriptor[:explanation]).to eq('user_fields_in_form_not_supported_for_action')
-      end
 
       it 'if permitted_by is everyone and data collection is anonymous: returns locked: true, value: nil and explanation' do
         permission.update!(permitted_by: 'everyone', user_data_collection: 'anonymous')
@@ -228,15 +196,6 @@ RSpec.describe Permission do
 
     context 'ideation' do
       let(:permission) { create(:permission, action: 'posting_idea', permission_scope: create(:ideation_phase)) }
-
-      it 'returns locked: true and explanation if the permissions_custom_fields feature is deactivated' do
-        permission.update!(permitted_by: 'users', user_fields_in_form: true)
-        SettingsService.new.deactivate_feature!('permissions_custom_fields')
-        descriptor = permission.user_fields_in_form_descriptor
-        expect(descriptor[:value]).to be_nil
-        expect(descriptor[:locked]).to be_truthy
-        expect(descriptor[:explanation]).to eq('user_fields_in_form_not_supported_for_action')
-      end
 
       it 'if permitted_by is everyone: returns locked: true and value: true' do
         permission.update!(permitted_by: 'everyone', user_fields_in_form: false)
