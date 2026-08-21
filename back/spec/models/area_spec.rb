@@ -83,6 +83,22 @@ RSpec.describe Area do
     end
   end
 
+  describe '#destroy' do
+    context 'when domicile field exist' do
+      before { create(:custom_field_domicile) }
+
+      it 'deletes the domicile values referencing the area' do
+        area = create(:area)
+        user = create(:user, domicile: area.id)
+
+        area.destroy!
+
+        expect(user.reload.custom_field_values).not_to have_key('domicile')
+        expect(user.custom_field_answers).to be_empty
+      end
+    end
+  end
+
   describe '#recreate_custom_field_options!' do
     let!(:domicile) { create(:custom_field_domicile) }
 
