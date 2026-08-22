@@ -396,10 +396,36 @@ export default defineMessages({
     id: 'app.containers.Admin.messaging.manageButtonLabel',
     defaultMessage: 'Manage',
   },
-  confirmSendSmsHeader: {
-    id: 'app.containers.Admin.messaging.confirmSendSmsHeader',
+  confirmSendSmsHeader2: {
+    id: 'app.containers.Admin.messaging.confirmSendSmsHeader2',
+    defaultMessage: 'Send this text message?',
+  },
+  confirmSendSmsRecipientsLabel: {
+    id: 'app.containers.Admin.messaging.confirmSendSmsRecipientsLabel',
+    defaultMessage: 'Recipients',
+  },
+  confirmSendSmsCreditsLabel: {
+    id: 'app.containers.Admin.messaging.confirmSendSmsCreditsLabel',
+    defaultMessage: 'Credits needed',
+  },
+  confirmSendSmsBalanceLabel: {
+    id: 'app.containers.Admin.messaging.confirmSendSmsBalanceLabel',
+    defaultMessage: 'Credits remaining',
+  },
+  confirmSendSmsCreditsHint: {
+    id: 'app.containers.Admin.messaging.confirmSendSmsCreditsHint',
     defaultMessage:
-      'Send this text message to all participants with a phone number?',
+      'A message too long for one SMS is sent in several parts, and each part costs a credit for every recipient who receives it.',
+  },
+  confirmSendSmsInsufficientBalance: {
+    id: 'app.containers.Admin.messaging.confirmSendSmsInsufficientBalance',
+    defaultMessage:
+      'This message needs {required, number} credits, but only {balance, number} are left. To purchase more credits, contact your GovSuccess Manager.',
+  },
+  confirmSendSmsNoRecipients: {
+    id: 'app.containers.Admin.messaging.confirmSendSmsNoRecipients',
+    defaultMessage:
+      'Nobody matches this message right now. Recipients need a confirmed phone number and must have opted in to text messages.',
   },
   editSmsCampaignTitle: {
     id: 'app.containers.Admin.messaging.editSmsCampaignTitle',
@@ -452,5 +478,35 @@ export default defineMessages({
   smsDeliveryStatus_failed: {
     id: 'app.containers.Admin.messaging.smsDeliveryStatus_failed',
     defaultMessage: 'Failed',
+  },
+  smsBalanceTitle: {
+    id: 'app.containers.Admin.messaging.smsBalanceTitle',
+    defaultMessage: 'SMS credits remaining',
+  },
+  smsBalanceOfPurchased: {
+    id: 'app.containers.Admin.messaging.smsBalanceOfPurchased',
+    defaultMessage: 'of {purchased, number} credits purchased',
+  },
+  smsBalanceLowWarning: {
+    id: 'app.containers.Admin.messaging.smsBalanceLowWarning',
+    defaultMessage:
+      'You are running low on SMS credits. To purchase more credits, contact your GovSuccess Manager.',
+  },
+  smsBalancePurchaseHint: {
+    id: 'app.containers.Admin.messaging.smsBalancePurchaseHint',
+    defaultMessage:
+      'To purchase more credits, contact your GovSuccess Manager.',
+  },
+  smsBalanceUsedManual: {
+    id: 'app.containers.Admin.messaging.smsBalanceUsedManual',
+    defaultMessage: 'SMS campaigns',
+  },
+  smsBalanceUsedOther: {
+    id: 'app.containers.Admin.messaging.smsBalanceUsedOther',
+    defaultMessage: 'Test messages',
+  },
+  smsBalanceUsedTotal: {
+    id: 'app.containers.Admin.messaging.smsBalanceUsedTotal',
+    defaultMessage: 'Total used',
   },
 });

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { Box, colors, Text, Success } from '@citizenlab/cl2-component-library';
 
+import useSmsBalance from 'api/campaigns/sms/balance/useSmsBalance';
 import useDeleteSmsCampaign from 'api/campaigns/sms/useDeleteSmsCampaign';
 import useSendSmsCampaign from 'api/campaigns/sms/useSendSmsCampaign';
 import useSendSmsCampaignPreview from 'api/campaigns/sms/useSendSmsCampaignPreview';
@@ -9,6 +10,8 @@ import useSmsCampaign from 'api/campaigns/sms/useSmsCampaign';
 import { isSmsCampaignDraft } from 'api/campaigns/sms/util';
 import { IGroupData } from 'api/groups/types';
 import useGroupsByIds from 'api/groups/useGroupsByIds';
+
+import useLocalize from 'hooks/useLocalize';
 
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -20,6 +23,7 @@ import clHistory from 'utils/cl-router/history';
 import { useParams } from 'utils/router';
 
 import messages from '../../messages';
+import { measureSms } from '../utils/segments';
 
 import ConfirmSendModal from './ConfirmSendModal';
 import DeleteModal from './DeleteModal';
@@ -43,6 +47,8 @@ const Show = () => {
   } = useSendSmsCampaignPreview();
   const { mutate: deleteCampaign, isPending: isDeleting } =
     useDeleteSmsCampaign();
+  const { data: smsBalance } = useSmsBalance();
+  const localize = useLocalize();
 
   const [showConfirm, setShowConfirm] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -57,13 +63,16 @@ const Show = () => {
   const draft = isSmsCampaignDraft(campaign.data);
   const noGroupsSelected = groupIds.length === 0;
 
-  const handleSend = () => {
-    if (noGroupsSelected) {
-      setShowConfirm(true);
-    } else {
-      sendCampaign(campaignId);
-    }
-  };
+  // The preview goes out in the admin's own locale, so that is the body it is billed
+  // for. The API refuses it over the same figures, this only saves a failed attempt.
+  const previewCredits = measureSms(
+    localize(campaign.data.attributes.body_multiloc)
+  ).segmentCount;
+  const creditsBalance = smsBalance?.data.attributes.balance;
+  const insufficientBalance =
+    creditsBalance !== undefined && previewCredits > creditsBalance;
+
+  const handleSend = () => setShowConfirm(true);
 
   const confirmSend = () => {
     sendCampaign(campaignId, { onSuccess: () => setShowConfirm(false) });
@@ -132,6 +141,7 @@ const Show = () => {
         draft={draft}
         onSendPreview={handleSendPreview}
         isSendingPreview={isSendingPreview}
+        insufficientBalance={insufficientBalance}
       />
 
       <Text fontWeight="bold" mb="4px">
@@ -171,6 +181,7 @@ const Show = () => {
 
       <ConfirmSendModal
         opened={showConfirm}
+        campaignId={campaignId}
         onClose={() => setShowConfirm(false)}
         onConfirm={confirmSend}
         isSending={isSending}

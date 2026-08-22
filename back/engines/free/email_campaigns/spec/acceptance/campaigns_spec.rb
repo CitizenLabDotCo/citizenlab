@@ -604,6 +604,7 @@ resource 'Campaigns' do
         include_context 'with sms manual campaigns feature enabled'
 
         before do
+          SettingsService.new.activate_feature!('sms_manual_campaigns', settings: { 'messages_purchased' => 100 })
           recipient = create(:user, phone: '+14155552671', phone_confirmed_at: Time.zone.now)
           create(:consent, :sms_manual, user: recipient)
         end
@@ -614,6 +615,54 @@ resource 'Campaigns' do
           expect { do_request }.to have_enqueued_job(EmailCampaigns::Sms::SendJob)
           assert_status 200
           expect(response_data.dig(:attributes, :deliveries_count)).to be >= 1
+        end
+
+        example '[error] Send out an SMS campaign to more recipients than the balance covers' do
+          SettingsService.new.activate_feature!('sms_manual_campaigns', settings: { 'messages_purchased' => 0 })
+
+          expect { do_request }.not_to have_enqueued_job(EmailCampaigns::Sms::SendJob)
+          assert_status 422
+          expect(json_response_body).to include_response_error(:base, 'insufficient_sms_balance')
+        end
+
+        # Refused before a delivery per recipient is created, rather than in the send job.
+        example '[error] Send out an SMS campaign while the SMS provider is not configured' do
+          SettingsService.new.activate_feature!('sms_manual_campaigns', settings: {
+            'twilio_manual_campaigns_messaging_service_sid' => ''
+          })
+
+          expect { do_request }.not_to have_enqueued_job(EmailCampaigns::Sms::SendJob)
+          assert_status 422
+          expect(json_response_body).to include_response_error(:base, 'sms_not_configured')
+          expect(EmailCampaigns::Sms::Delivery.count).to eq(0)
+        end
+      end
+    end
+
+    post 'web_api/v1/campaigns/:id/send_sms_preview' do
+      context 'SMS campaign' do
+        include_context 'with sms manual campaigns feature enabled'
+
+        before do
+          SettingsService.new.activate_feature!('sms_manual_campaigns', settings: { 'messages_purchased' => 10 })
+          @user.update!(phone: '+14155552671', phone_confirmed_at: Time.zone.now)
+        end
+
+        let(:campaign) { create(:sms_manual_campaign) }
+        let(:id) { campaign.id }
+
+        example 'Send a preview SMS to your own phone number' do
+          expect { do_request }.to have_enqueued_job(EmailCampaigns::Sms::SendJob)
+          assert_status 200
+          expect(campaign.reload.sent?).to be false
+        end
+
+        example '[error] Send a preview SMS the balance no longer covers' do
+          SettingsService.new.activate_feature!('sms_manual_campaigns', settings: { 'messages_purchased' => 0 })
+
+          expect { do_request }.not_to have_enqueued_job(EmailCampaigns::Sms::SendJob)
+          assert_status 422
+          expect(json_response_body).to include_response_error(:base, 'insufficient_sms_balance')
         end
       end
     end
@@ -673,6 +722,37 @@ resource 'Campaigns' do
           errored: 0,
           total: 4
         })
+      end
+    end
+
+    get 'web_api/v1/campaigns/:id/sms_send_summary' do
+      context 'SMS campaign' do
+        include_context 'with sms manual campaigns feature enabled'
+
+        before do
+          SettingsService.new.activate_feature!('sms_manual_campaigns', settings: { 'messages_purchased' => 50 })
+        end
+
+        # 200 characters no longer fit one segment, so the French recipient costs two.
+        let(:campaign) { create(:sms_manual_campaign, body_multiloc: { 'en' => 'short', 'fr-FR' => 'a' * 200 }) }
+        let!(:id) { campaign.id }
+
+        let!(:recipients) do
+          %w[en en fr-FR].map do |locale|
+            create(:consent, :sms_manual, user: create(:user, :with_confirmed_phone, locale: locale))
+          end
+        end
+        # Reachable by SMS, but has not opted in to this campaign.
+        let!(:non_recipient) { create(:user, :with_confirmed_phone) }
+
+        example_request 'Get what sending an SMS campaign right now would reach and cost' do
+          assert_status 200
+          expect(response_data[:attributes]).to eq({
+            recipients_count: 3,
+            segments_needed: 4,
+            segments_balance: 50
+          })
+        end
       end
     end
 
