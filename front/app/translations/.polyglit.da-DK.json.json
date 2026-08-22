@@ -13309,6 +13309,11 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.errors.sms_not_configured": {
+    "state": "verified",
+    "verified_at": "2026-08-22T13:31:00.889599Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.errors.something_went_wrong": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
