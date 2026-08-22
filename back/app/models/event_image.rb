@@ -26,7 +26,8 @@ class EventImage < ApplicationRecord
   mount_base64_uploader :image, EventImageUploader
   belongs_to :event
 
-  # See `ProjectImage#alt_text_multiloc`.
+  # Alt text is read out by a screen reader and rendered into an `alt` attribute, so markup in it is
+  # never wanted - it is inert there, but it is also nonsense to hear.
   plain_text_multiloc :alt_text_multiloc
   delegate :project, to: :event
 
