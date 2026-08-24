@@ -3519,6 +3519,16 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.components.SmsConsent.campaignPreferencesDisclosure": {
+    "state": "verified",
+    "verified_at": "2026-08-24T07:55:36.451580Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.SmsConsent.phoneConfirmationDisclosure": {
+    "state": "verified",
+    "verified_at": "2026-08-24T07:55:36.451580Z",
+    "verified_by": "Cindy EB"
+  },
   "app.components.SmsConsent.smsConfirmationDisclosure": {
     "state": "verified",
     "verified_at": "2026-08-05T12:46:19.080802Z",
@@ -6923,6 +6933,11 @@
     "state": "verified",
     "verified_at": "2026-07-22T12:34:37.086812Z",
     "verified_by": "Adrien"
+  },
+  "app.containers.Authentication.steps.Policies.byContinuingPhone2": {
+    "state": "verified",
+    "verified_at": "2026-08-24T07:55:36.451580Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.Authentication.steps.SSOVerification.alreadyHaveAnAccount": {
     "state": "verified",
@@ -10833,6 +10848,11 @@
     "state": "verified",
     "verified_at": "2026-07-17T08:13:45.374659Z",
     "verified_by": "Adrien"
+  },
+  "app.containers.PhoneChange.smsManualCampaignConsentLabel2": {
+    "state": "verified",
+    "verified_at": "2026-08-24T07:55:36.451580Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.PhoneChange.submitButton": {
     "state": "verified",
