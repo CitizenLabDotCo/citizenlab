@@ -260,6 +260,7 @@ resource 'Confirmations' do
 
       before do
         SettingsService.new.activate_feature!('sms_login')
+        RequestPhoneConfirmationCodeJob.issue_code!(user)
         RequestPhoneConfirmationCodeJob.perform_now(user)
       end
 
@@ -343,6 +344,7 @@ resource 'Confirmations' do
 
       before do
         header_token_for user
+        RequestPhoneConfirmationCodeJob.issue_code!(user)
         RequestPhoneConfirmationCodeJob.perform_now(user)
       end
 
@@ -423,6 +425,7 @@ resource 'Confirmations' do
 
       before do
         header_token_for user
+        RequestNewPhoneConfirmationCodeJob.issue_code!(user, new_phone: new_phone)
         RequestNewPhoneConfirmationCodeJob.perform_now(user, new_phone: new_phone)
       end
 

@@ -156,7 +156,7 @@ resource 'Request codes' do
 
       do_request(request_code: { email: user.email, only_if_first_time: true })
       expect(response_status).to eq 200
-      # Only the setup send happened; the only_if_first_time request was a no-op.
+      # Only the setup code was issued; the only_if_first_time request was a no-op.
       expect(delivery_service).to have_received(:send_now_to_user)
         .with(an_instance_of(EmailCampaigns::Campaigns::EmailConfirmation), user, hash_including(:code)).once
     end
@@ -248,32 +248,31 @@ resource 'Request codes' do
       user = create(:user, :with_confirmed_phone)
       header_token_for(user)
 
-      do_request(request_code: {})
+      expect { do_request(request_code: {}) }
+        .to enqueue_job(RequestPhoneConfirmationCodeJob).with(user).once
       expect(response_status).to eq 200
-      expect(delivery_service).to have_received(:send_now_to_user)
-        .with(an_instance_of(EmailCampaigns::Campaigns::PhoneConfirmation), user, hash_including(:code)).once
+      # Only the delivery is queued; the code itself is issued before the response.
+      expect(user.reload.phone_confirmation.code).to be_present
     end
 
     example 'It works for an unauthenticated user that submits a phone number' do
       SettingsService.new.activate_feature!('sms_login')
       user = create(:unconfirmed_phone_user, phone: '+14155552671')
 
-      do_request(request_code: { phone: '+1 (415) 555-2671' })
+      expect { do_request(request_code: { phone: '+1 (415) 555-2671' }) }
+        .to enqueue_job(RequestPhoneConfirmationCodeJob).with(user).once
       expect(response_status).to eq 200
-      expect(delivery_service).to have_received(:send_now_to_user)
-        .with(an_instance_of(EmailCampaigns::Campaigns::PhoneConfirmation), user, hash_including(:code)).once
     end
 
     example 'It does not work for an unauthenticated user without a phone number' do
-      do_request(request_code: {})
+      expect { do_request(request_code: {}) }.not_to enqueue_job(RequestPhoneConfirmationCodeJob)
       expect(response_status).to eq 401
-      expect(delivery_service).not_to have_received(:send_now_to_user)
     end
 
     example 'It does not work if no user has that phone number' do
-      do_request(request_code: { phone: '+14155552671' })
+      expect { do_request(request_code: { phone: '+14155552671' }) }
+        .not_to enqueue_job(RequestPhoneConfirmationCodeJob)
       expect(response_status).to eq 401
-      expect(delivery_service).not_to have_received(:send_now_to_user)
     end
 
     # An authenticated caller may never request a code for somebody else's number.
@@ -281,9 +280,9 @@ resource 'Request codes' do
       create(:user, :with_confirmed_phone, phone: '+14155552671')
       header_token_for(create(:user, :with_confirmed_phone, phone: '+14155552672'))
 
-      do_request(request_code: { phone: '+14155552671' })
+      expect { do_request(request_code: { phone: '+14155552671' }) }
+        .not_to enqueue_job(RequestPhoneConfirmationCodeJob)
       expect(response_status).to eq 401
-      expect(delivery_service).not_to have_received(:send_now_to_user)
     end
 
     # There is no number in the request, so the code can only go to user.phone.
@@ -292,9 +291,8 @@ resource 'Request codes' do
       expect(user.phone).to be_nil
       header_token_for(user)
 
-      do_request(request_code: {})
+      expect { do_request(request_code: {}) }.not_to enqueue_job(RequestPhoneConfirmationCodeJob)
       expect(response_status).to eq 401
-      expect(delivery_service).not_to have_received(:send_now_to_user)
     end
 
     example 'It does not work if the user reached code_reset_count' do
@@ -302,9 +300,8 @@ resource 'Request codes' do
       user.find_or_create_confirmation(:phone_confirmation).update!(code_reset_count: 4)
       header_token_for(user)
 
-      do_request(request_code: {})
+      expect { do_request(request_code: {}) }.not_to enqueue_job(RequestPhoneConfirmationCodeJob)
       expect(response_status).to eq 401
-      expect(delivery_service).not_to have_received(:send_now_to_user)
     end
 
     example 'It does not work if the SMS feature is disabled' do
@@ -312,9 +309,8 @@ resource 'Request codes' do
       user = create(:user, :with_confirmed_phone)
       header_token_for(user)
 
-      do_request(request_code: {})
+      expect { do_request(request_code: {}) }.not_to enqueue_job(RequestPhoneConfirmationCodeJob)
       expect(response_status).to eq 401
-      expect(delivery_service).not_to have_received(:send_now_to_user)
     end
 
     # Phone confirmation codes are part of the password-less login/signup flow,
@@ -325,9 +321,8 @@ resource 'Request codes' do
       user = create(:user, :with_confirmed_phone)
       header_token_for(user)
 
-      do_request(request_code: {})
+      expect { do_request(request_code: {}) }.not_to enqueue_job(RequestPhoneConfirmationCodeJob)
       expect(response_status).to eq 401
-      expect(delivery_service).not_to have_received(:send_now_to_user)
     end
 
     example 'It does not work for an unauthenticated user if the password_login feature is disabled' do
@@ -335,9 +330,9 @@ resource 'Request codes' do
       SettingsService.new.deactivate_feature!('password_login')
       create(:unconfirmed_phone_user, phone: '+14155552671')
 
-      do_request(request_code: { phone: '+14155552671' })
+      expect { do_request(request_code: { phone: '+14155552671' }) }
+        .not_to enqueue_job(RequestPhoneConfirmationCodeJob)
       expect(response_status).to eq 401
-      expect(delivery_service).not_to have_received(:send_now_to_user)
     end
 
     # only_if_first_time: idempotent auto-send used when the flow lands an authenticated
@@ -348,23 +343,21 @@ resource 'Request codes' do
       expect(user.phone_confirmation).to be_nil
       header_token_for(user)
 
-      do_request(request_code: { only_if_first_time: true })
+      expect { do_request(request_code: { only_if_first_time: true }) }
+        .to enqueue_job(RequestPhoneConfirmationCodeJob).with(user).once
       expect(response_status).to eq 200
-      expect(delivery_service).to have_received(:send_now_to_user)
-        .with(an_instance_of(EmailCampaigns::Campaigns::PhoneConfirmation), user, hash_including(:code)).once
     end
 
     example 'with only_if_first_time, does not resend when a code is already outstanding' do
       user = create(:user, :with_confirmed_phone)
       header_token_for(user)
-      RequestPhoneConfirmationCodeJob.perform_now(user) # one code sent in setup
+      RequestPhoneConfirmationCodeJob.issue_code!(user) # one code issued in setup
       expect(user.phone_confirmation.reload.code).to be_present
 
-      do_request(request_code: { only_if_first_time: true })
+      # Only the setup code was issued; the only_if_first_time request was a no-op.
+      expect { do_request(request_code: { only_if_first_time: true }) }
+        .not_to enqueue_job(RequestPhoneConfirmationCodeJob)
       expect(response_status).to eq 200
-      # Only the setup send happened; the only_if_first_time request was a no-op.
-      expect(delivery_service).to have_received(:send_now_to_user)
-        .with(an_instance_of(EmailCampaigns::Campaigns::PhoneConfirmation), user, hash_including(:code)).once
     end
   end
 
@@ -378,11 +371,12 @@ resource 'Request codes' do
     example 'It works for an authenticated user and stores the pending number' do
       user = create(:user)
       header_token_for(user)
-      do_request(request_code: { new_phone: '+1 415 555 2671' })
+      expect { do_request(request_code: { new_phone: '+1 415 555 2671' }) }
+        .to enqueue_job(RequestNewPhoneConfirmationCodeJob).with(user, new_phone: '+14155552671').once
       expect(response_status).to eq 200
       expect(user.reload.new_phone).to eq '+14155552671'
-      expect(delivery_service).to have_received(:send_now_to_user)
-        .with(an_instance_of(EmailCampaigns::Campaigns::NewPhoneConfirmation), user, hash_including(:code)).once
+      # Only the delivery is queued; the code itself is issued before the response.
+      expect(user.new_phone_confirmation.code).to be_present
     end
 
     example 'It records the consent to receive a confirmation code by SMS and logs the activity' do
@@ -465,17 +459,18 @@ resource 'Request codes' do
       SettingsService.new.activate_feature!('sms', settings: { 'allowed_country_codes' => ['BE'] })
       user = create(:user)
       header_token_for(user)
-      do_request(request_code: { new_phone: '+14155552671' }) # US number
+      expect { do_request(request_code: { new_phone: '+14155552671' }) } # US number
+        .not_to enqueue_job(RequestNewPhoneConfirmationCodeJob)
       expect(response_status).to eq 422
       expect(json_response_body).to include_response_error(:new_phone, 'unsupported_country')
-      expect(delivery_service).not_to have_received(:send_now_to_user)
     end
 
     example 'It works if the phone number is in an allowed country' do
       SettingsService.new.activate_feature!('sms', settings: { 'allowed_country_codes' => ['US'] })
       user = create(:user)
       header_token_for(user)
-      do_request(request_code: { new_phone: '+14155552671' })
+      expect { do_request(request_code: { new_phone: '+14155552671' }) }
+        .to enqueue_job(RequestNewPhoneConfirmationCodeJob).with(user, new_phone: '+14155552671').once
       expect(response_status).to eq 200
       expect(user.reload.new_phone).to eq '+14155552671'
     end
