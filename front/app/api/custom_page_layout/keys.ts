@@ -5,7 +5,7 @@ const baseKey = { type: 'content_builder_layout', variant: 'custom_page' };
 const customPageLayoutKeys = {
   all: () => [baseKey],
   items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({ staticPageId }: { staticPageId: string }) => [
+  item: ({ staticPageId }: { staticPageId?: string }) => [
     {
       type: 'content_builder_layout',
       operation: 'item',

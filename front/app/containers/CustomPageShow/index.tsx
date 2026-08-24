@@ -16,6 +16,8 @@ import usePageFiles from 'api/page_files/usePageFiles';
 import useLocalize from 'hooks/useLocalize';
 
 import ContentContainer from 'components/ContentContainer';
+import CustomPageContentViewer from 'components/CustomPageBuilder/ContentViewer';
+import useCustomPageBuilderContent from 'components/CustomPageBuilder/ContentViewer/useCustomPageBuilderContent';
 import { Container, Content } from 'components/LandingPages/citizen';
 import InfoSection from 'components/LandingPages/citizen/InfoSection';
 import PageNotFound from 'components/PageNotFound';
@@ -98,6 +100,7 @@ const CustomPageShow = () => {
   const { data: remotePageFiles } = usePageFiles(
     page ? page.data.id : undefined
   );
+  const builderContent = useCustomPageBuilderContent(page?.data.id);
 
   // when neither have loaded
   if (!appConfiguration || !page) {
@@ -155,29 +158,37 @@ const CustomPageShow = () => {
             </NoBannerContainer>
           )}
           <Content>
-            {pageAttributes.top_info_section_enabled && (
-              <InfoSection
-                multilocContent={pageAttributes.top_info_section_multiloc}
-              />
+            {builderContent.hasContent ? (
+              <CustomPageContentViewer staticPageId={page.data.id} />
+            ) : (
+              <>
+                {pageAttributes.top_info_section_enabled && (
+                  <InfoSection
+                    multilocContent={pageAttributes.top_info_section_multiloc}
+                  />
+                )}
+                {pageAttributes.files_section_enabled &&
+                  !isNilOrError(remotePageFiles) &&
+                  remotePageFiles.data.length > 0 && (
+                    <AttachmentsContainer
+                      topInfoSectionEnabled={
+                        pageAttributes.top_info_section_enabled
+                      }
+                    >
+                      <FileAttachments files={remotePageFiles.data} />
+                    </AttachmentsContainer>
+                  )}
+                <CustomPageProjectsAndEvents page={page.data} />
+                {pageAttributes.bottom_info_section_enabled &&
+                  pageAttributes.bottom_info_section_multiloc && (
+                    <InfoSection
+                      multilocContent={
+                        pageAttributes.bottom_info_section_multiloc
+                      }
+                    />
+                  )}
+              </>
             )}
-            {pageAttributes.files_section_enabled &&
-              !isNilOrError(remotePageFiles) &&
-              remotePageFiles.data.length > 0 && (
-                <AttachmentsContainer
-                  topInfoSectionEnabled={
-                    pageAttributes.top_info_section_enabled
-                  }
-                >
-                  <FileAttachments files={remotePageFiles.data} />
-                </AttachmentsContainer>
-              )}
-            <CustomPageProjectsAndEvents page={page.data} />
-            {pageAttributes.bottom_info_section_enabled &&
-              pageAttributes.bottom_info_section_multiloc && (
-                <InfoSection
-                  multilocContent={pageAttributes.bottom_info_section_multiloc}
-                />
-              )}
           </Content>
         </Container>
       </main>

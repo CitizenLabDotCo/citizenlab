@@ -8,7 +8,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import customPageLayoutKeys from './keys';
 import { CustomPageLayoutKeys } from './types';
 
-const fetchCustomPageLayout = (staticPageId: string) =>
+const fetchCustomPageLayout = (staticPageId?: string) =>
   fetcher<IContentBuilderLayout>({
     path: `/static_pages/${staticPageId}/content_builder_layouts/custom_page`,
     action: 'get',
@@ -16,7 +16,7 @@ const fetchCustomPageLayout = (staticPageId: string) =>
 
 // A page with no layout yet returns 404; the builder bootstraps by upserting, so callers
 // treat that as "nothing stored" rather than an error.
-const useCustomPageLayout = (staticPageId: string, enabled = true) =>
+const useCustomPageLayout = (staticPageId?: string, enabled = true) =>
   useQuery<
     IContentBuilderLayout,
     CLErrors,
@@ -25,7 +25,7 @@ const useCustomPageLayout = (staticPageId: string, enabled = true) =>
   >({
     queryKey: customPageLayoutKeys.item({ staticPageId }),
     queryFn: () => fetchCustomPageLayout(staticPageId),
-    enabled,
+    enabled: enabled && !!staticPageId,
   });
 
 export default useCustomPageLayout;
