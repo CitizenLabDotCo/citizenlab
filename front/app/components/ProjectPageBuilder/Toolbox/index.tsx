@@ -10,6 +10,7 @@ import EventsWidget from 'components/ProjectPageBuilder/Widgets/Events';
 import widgetMessages from 'components/ProjectPageBuilder/Widgets/messages';
 import PhasesWidget from 'components/ProjectPageBuilder/Widgets/Phases';
 import SpotlightSurveysWidget from 'components/ProjectPageBuilder/Widgets/SpotlightSurveys';
+import NewLabel from 'components/UI/NewLabel';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -41,6 +42,7 @@ const ProjectPageBuilderToolbox = () => {
             component={<SpotlightSurveysWidget />}
             icon="survey"
             label={formatMessage(widgetMessages.extraSurveysWidgetTitle)}
+            labelSuffix={<NewLabel expiryDate={new Date('2026-11-24')} />}
           />
         )}
       </Section>
