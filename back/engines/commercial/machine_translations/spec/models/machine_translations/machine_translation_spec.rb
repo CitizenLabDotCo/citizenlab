@@ -68,7 +68,7 @@ describe MachineTranslations::MachineTranslation do
 
       # The same thing one level up: a provider translates the words in a URL's *path* - `so cerca`
       # into `tan cerca` - leaving a label that points at a page that does not exist. Found in
-      # production in four languages (§11.7, §13.4), which is why this example is here rather than
+      # production in four languages, which is why this example is here rather than
       # dismissed as unrealistic.
       it 'puts back a URL whose path a provider translated' do
         href = 'https://publicoescazu.cepal.org/es/ideas/34581-so-cerca-del-acuerdo-de-escazu'

@@ -21,6 +21,8 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class ProjectImage < ApplicationRecord
+  attr_accessor :skip_image_presence
+
   include PlainTextMultiloc
 
   mount_base64_uploader :image, ProjectImageUploader
@@ -31,5 +33,6 @@ class ProjectImage < ApplicationRecord
   plain_text_multiloc :alt_text_multiloc
 
   validates :project, presence: true
+  validates :image, presence: true, unless: :skip_image_presence
   validates :ordering, numericality: { only_integer: true }, allow_nil: true
 end
