@@ -6349,6 +6349,16 @@
     "verified_at": "2026-07-16T09:49:20.355299Z",
     "verified_by": "eva@govocal.com"
   },
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": {
+    "state": "verified",
+    "verified_at": "2026-08-24T13:08:27.844504Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltipLink": {
+    "state": "verified",
+    "verified_at": "2026-08-24T13:08:27.844504Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.messaging.sendSmsPreviewTooltip": {
     "state": "verified",
     "verified_at": "2026-07-16T09:49:20.355299Z",
