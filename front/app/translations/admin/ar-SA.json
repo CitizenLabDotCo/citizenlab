@@ -1217,7 +1217,7 @@
   "app.containers.Admin.messaging.noSmsCampaignsDescription": "تواصل مع المشاركين الذين شاركوا رقم هاتفهم عبر رسالة نصية قصيرة.",
   "app.containers.Admin.messaging.noSmsCampaignsHeader": "أرسل رسالتك النصية الأولى",
   "app.containers.Admin.messaging.sendSmsPreviewButton": "إرسال معاينة",
-  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": "ستُرسل المعاينة إلى هاتفك الخاص. أضف رقم هاتف إلى {profileLink} أولاً.",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": "ستصل المعاينة إلى هاتفك الخاص. أضف رقم هاتف إلى {profileLink} أولاً.",
   "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltipLink": "الملف الشخصي",
   "app.containers.Admin.messaging.sendSmsPreviewTooltip": "يرسل رسالة نصية تجريبية إلى رقم هاتفك الخاص.",
   "app.containers.Admin.messaging.smsBalanceLowWarning": "رصيد رسائل SMS أوشك على النفاد. لشراء المزيد من الرصيد، تواصل مع مدير GovSuccess الخاص بك.",

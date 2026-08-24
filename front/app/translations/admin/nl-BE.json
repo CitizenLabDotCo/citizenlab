@@ -1217,7 +1217,7 @@
   "app.containers.Admin.messaging.noSmsCampaignsDescription": "Bereik deelnemers die een telefoonnummer hebben gedeeld met een korte SMS.",
   "app.containers.Admin.messaging.noSmsCampaignsHeader": "Verzend je eerste SMS",
   "app.containers.Admin.messaging.sendSmsPreviewButton": "Stuur een voorbeeld",
-  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": "Een voorbeeld wordt naar je eigen telefoon verzonden. Voeg eerst een telefoonnummer toe aan je {profileLink}.",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": "Een voorbeeld wordt naar je eigen telefoon gestuurd. Voeg eerst een telefoonnummer toe aan je {profileLink}.",
   "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltipLink": "profiel",
   "app.containers.Admin.messaging.sendSmsPreviewTooltip": "Verzendt een test-SMS naar je eigen telefoonnummer.",
   "app.containers.Admin.messaging.smsBalanceLowWarning": "Je sms-credits raken bijna op. Neem contact op met je GovSuccess Manager om meer credits aan te schaffen.",

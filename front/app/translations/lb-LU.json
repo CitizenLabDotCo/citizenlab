@@ -2622,7 +2622,7 @@
   "app.errors.new_phone_invalid": "Gitt wann ech gelift eng gëlteg Telefonsnummer an.",
   "app.errors.new_phone_taken": "Dës Telefonsnummer gëtt scho benotzt. Probéiert wann ech gelift eng aner.",
   "app.errors.no_invites_specified": "Keng E-Mail-Adress fonnt.",
-  "app.errors.no_previewer_phone": "Eng Virschau geet op Ären eegenen Telefon. Füügt fir d'éischt eng Telefonsnummer an Äre Profil bäi.",
+  "app.errors.no_previewer_phone": "Eng Virschau gëtt op Ären eegenen Telefon geschéckt. Füügt fir d'éischt eng Telefonsnummer an Äre Profil bäi.",
   "app.errors.no_recipients": "D'Kampagne kann net verschéckt ginn, well keng Empfänger do sinn. De Grupp, un deen Dir schéckt, ass entweder eidel oder et huet kee seng Zoustëmmung ginn, fir E-Mailen ze kréien.",
   "app.errors.number_invalid": "Gitt weg eng valabel Zuel.",
   "app.errors.password_blank": "Dëst dierf net eidel sinn",

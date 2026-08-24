@@ -1217,7 +1217,7 @@
   "app.containers.Admin.messaging.noSmsCampaignsDescription": "Peqataasut oqarasuaatitik nalunaarutigisimasut SMS-ikkut attavigikkit.",
   "app.containers.Admin.messaging.noSmsCampaignsHeader": "SMS-it siulleq nassiuguk",
   "app.containers.Admin.messaging.sendSmsPreviewButton": "Isikkussaa nassiuguk",
-  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": "Misiligut nammineq oqarasuaatinnut nassiunneqassaaq. Siullermik {profileLink}-mut oqarasuaativit normua ilannguguk.",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": "Misiliut nammineq oqarasuaativnut nassiunneqassaaq. Siullermik {profileLink}-inni oqarasuaativit normua ilannguguk.",
   "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltipLink": "profili",
   "app.containers.Admin.messaging.sendSmsPreviewTooltip": "Misiliutitut SMS nammineq oqarasuaativit normuanut nassiunneqassaaq.",
   "app.containers.Admin.messaging.smsBalanceLowWarning": "SMS-inut atugassatit nungulivipput. Amerlanerusunik piniarumallutit GovSuccess Manager-it attavigiuk.",

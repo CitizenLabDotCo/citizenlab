@@ -1217,7 +1217,7 @@
   "app.containers.Admin.messaging.noSmsCampaignsDescription": "Llega a los participantes que han compartido un número de teléfono con un mensaje de texto corto.",
   "app.containers.Admin.messaging.noSmsCampaignsHeader": "Envía tu primer mensaje de texto",
   "app.containers.Admin.messaging.sendSmsPreviewButton": "Enviar una vista previa",
-  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": "Se enviará una vista previa a tu propio teléfono. Añade primero un número de teléfono a tu {profileLink}.",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": "Se envía una vista previa a tu propio teléfono. Primero añade un número de teléfono a tu {profileLink}.",
   "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltipLink": "perfil",
   "app.containers.Admin.messaging.sendSmsPreviewTooltip": "Envía un mensaje de texto de prueba a tu propio número de teléfono.",
   "app.containers.Admin.messaging.smsBalanceLowWarning": "Te estás quedando sin créditos de SMS. Para comprar más créditos, ponte en contacto con tu gestor de GovSuccess.",

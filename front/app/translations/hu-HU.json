@@ -2622,7 +2622,7 @@
   "app.errors.new_phone_invalid": "Kérjük, adjon meg egy érvényes telefonszámot.",
   "app.errors.new_phone_taken": "Ez a telefonszám már foglalt. Kérjük, próbálkozzon egy másikkal.",
   "app.errors.no_invites_specified": "Nem található e-mail cím.",
-  "app.errors.no_previewer_phone": "Az előnézetet a saját telefonjára küldjük. Előbb adjon meg egy telefonszámot a profiljában.",
+  "app.errors.no_previewer_phone": "Az előnézet a saját telefonjára érkezik. Előbb adjon meg egy telefonszámot a profiljában.",
   "app.errors.no_recipients": "A kampány nem küldhető ki, mert nincsenek címzettek. A csoport, amelynek küldeni szeretné, vagy üres, vagy senki sem járult hozzá az e-mailek fogadásához.",
   "app.errors.number_invalid": "Kérjük, adjon meg egy érvényes számot.",
   "app.errors.password_blank": "Ez nem lehet üres",

@@ -1217,7 +1217,7 @@
   "app.containers.Admin.messaging.noSmsCampaignsDescription": "Dosegnite sudionike koji su podijelili broj telefona kratkom tekstualnom porukom.",
   "app.containers.Admin.messaging.noSmsCampaignsHeader": "Pošaljite svoju prvu tekstualnu poruku",
   "app.containers.Admin.messaging.sendSmsPreviewButton": "Pošalji pregled",
-  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": "Pregled se šalje na vaš telefon. Prvo dodajte broj telefona na svoj {profileLink}.",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": "Pregled se šalje na vaš telefon. Prvo dodajte broj telefona u svoj {profileLink}.",
   "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltipLink": "profil",
   "app.containers.Admin.messaging.sendSmsPreviewTooltip": "Šalje probnu tekstualnu poruku na vaš vlastiti broj telefona.",
   "app.containers.Admin.messaging.smsBalanceLowWarning": "Ponestaje vam SMS kredita. Da biste kupili još kredita, obratite se svom GovSuccess Manageru.",

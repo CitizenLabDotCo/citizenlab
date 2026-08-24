@@ -1217,7 +1217,7 @@
   "app.containers.Admin.messaging.noSmsCampaignsDescription": "Raggiungi i partecipanti che hanno condiviso un numero di telefono con un breve messaggio di testo.",
   "app.containers.Admin.messaging.noSmsCampaignsHeader": "Invia il tuo primo messaggio di testo",
   "app.containers.Admin.messaging.sendSmsPreviewButton": "Invia un'anteprima",
-  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": "L'anteprima viene inviata al tuo telefono. Aggiungi prima un numero di telefono al tuo {profileLink}.",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": "L'anteprima verrà inviata al tuo telefono. Aggiungi prima un numero di telefono al tuo {profileLink}.",
   "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltipLink": "profilo",
   "app.containers.Admin.messaging.sendSmsPreviewTooltip": "Invia un messaggio di testo di prova al tuo numero di telefono.",
   "app.containers.Admin.messaging.smsBalanceLowWarning": "I crediti SMS stanno per esaurirsi. Per acquistare altri crediti, contatta il tuo GovSuccess Manager.",

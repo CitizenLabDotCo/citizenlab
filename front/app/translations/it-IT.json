@@ -2622,7 +2622,7 @@
   "app.errors.new_phone_invalid": "Inserisci un numero di telefono valido.",
   "app.errors.new_phone_taken": "Questo numero di telefono è già in uso. Prova con un altro.",
   "app.errors.no_invites_specified": "Non è stato possibile trovare alcun indirizzo e-mail.",
-  "app.errors.no_previewer_phone": "L'anteprima viene inviata al tuo telefono. Aggiungi prima un numero di telefono al tuo profilo.",
+  "app.errors.no_previewer_phone": "L'anteprima verrà inviata al tuo telefono. Aggiungi prima un numero di telefono al tuo profilo.",
   "app.errors.no_recipients": "Non è possibile inviare la campagna perché non ci sono destinatari. Il gruppo a cui stai effettuando l'invio è vuoto oppure nessuno ha acconsentito a ricevere e-mail.",
   "app.errors.number_invalid": "Inserisci un numero valido.",
   "app.errors.password_blank": "Questo campo non può essere vuoto",

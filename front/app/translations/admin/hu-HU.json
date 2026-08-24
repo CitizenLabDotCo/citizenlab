@@ -1217,7 +1217,7 @@
   "app.containers.Admin.messaging.noSmsCampaignsDescription": "Érje el rövid szöveges üzenetben azokat a résztvevőket, akik megadták a telefonszámukat.",
   "app.containers.Admin.messaging.noSmsCampaignsHeader": "Küldje el első szöveges üzenetét",
   "app.containers.Admin.messaging.sendSmsPreviewButton": "Előnézet küldése",
-  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": "Az előnézetet a saját telefonjára küldjük. Előbb adjon meg egy telefonszámot a {profileLink} menüpontban.",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": "Az előnézet a saját telefonjára érkezik. Előbb adjon meg egy telefonszámot a {profileLink} oldalon.",
   "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltipLink": "profil",
   "app.containers.Admin.messaging.sendSmsPreviewTooltip": "Teszt szöveges üzenetet küld a saját telefonszámára.",
   "app.containers.Admin.messaging.smsBalanceLowWarning": "Fogytán vannak az SMS-kreditjei. További kreditek vásárlásához lépjen kapcsolatba a GovSuccess menedzserével.",

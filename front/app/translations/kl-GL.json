@@ -2622,7 +2622,7 @@
   "app.errors.new_phone_invalid": "Oqarasuaatip normua atorsinnaasoq allaguk.",
   "app.errors.new_phone_taken": "Oqarasuaatip normua taanna atorneqareerpoq. Allamik misiliigit.",
   "app.errors.no_invites_specified": "E-mailadresse nassaarineqanngilaq.",
-  "app.errors.no_previewer_phone": "Misiligut nammineq oqarasuaatinnut nassiunneqassaaq. Siullermik profilinnut oqarasuaativit normua ilannguguk.",
+  "app.errors.no_previewer_phone": "Misiliut nammineq oqarasuaativnut nassiunneqassaaq. Siullermik profilinni oqarasuaativit normua ilannguguk.",
   "app.errors.no_recipients": "Nassiussassaq nassiunneqarsinnaanngilaq tigusisussaqanngimmat. Eqimattaq nassiussiffigisat imaqanngilaq, imaluunniit kinaluunniit e-mailinik tigusinissaminut akuersisimanngilaq.",
   "app.errors.number_invalid": "Please enter a valid number.",
   "app.errors.password_blank": "Una allassimasoqassaaq",
