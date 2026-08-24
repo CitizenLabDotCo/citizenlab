@@ -97,6 +97,52 @@ RSpec.describe ContentBuilder::LayoutPolicy do
     end
   end
 
+  # Custom pages run through the same policy with no stubbing: UserRoleService#can_moderate?
+  # has no StaticPage branch, so it returns nil for everyone except admins, who short-circuit
+  # to true. Writes are therefore admin-only, and project/folder moderators get nothing —
+  # which is what StaticPagePolicy already enforces for global custom pages.
+  context 'for a custom page layout' do
+    let(:layout) do
+      create(:layout, content_buildable: create(:static_page), code: ContentBuilder::CustomPageLayoutService::CODE)
+    end
+
+    context 'for a visitor' do
+      let(:user) { nil }
+
+      it { is_expected.to permit(:show) }
+      it { is_expected.not_to permit(:upsert) }
+      it { is_expected.not_to permit(:update) }
+      it { is_expected.not_to permit(:destroy) }
+    end
+
+    context 'for a regular user' do
+      let(:user) { create(:user) }
+
+      it { is_expected.to permit(:show) }
+      it { is_expected.not_to permit(:upsert) }
+      it { is_expected.not_to permit(:update) }
+      it { is_expected.not_to permit(:destroy) }
+    end
+
+    context 'for a project moderator' do
+      let(:user) { create(:project_moderator) }
+
+      it { is_expected.to permit(:show) }
+      it { is_expected.not_to permit(:upsert) }
+      it { is_expected.not_to permit(:update) }
+      it { is_expected.not_to permit(:destroy) }
+    end
+
+    context 'for an admin' do
+      let(:user) { create(:admin) }
+
+      it { is_expected.to permit(:show) }
+      it { is_expected.to permit(:upsert) }
+      it { is_expected.to permit(:update) }
+      it { is_expected.to permit(:destroy) }
+    end
+  end
+
   describe 'Scope' do
     subject(:resolved_scope) { described_class::Scope.new(user, ContentBuilder::Layout).resolve }
 
