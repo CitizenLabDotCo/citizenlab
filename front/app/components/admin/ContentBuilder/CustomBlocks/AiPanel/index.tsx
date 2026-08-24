@@ -100,6 +100,8 @@ const AiPanel = ({ onClose }: Props) => {
     useAuthoringLoop({
       tenantLocales: isNilOrError(tenantLocales) ? [] : [...tenantLocales],
       untitledTitle: formatMessage(messages.untitledBlock),
+      truncatedEventText: formatMessage(messages.outputTruncated),
+      truncatedStopText: formatMessage(messages.outputTruncatedStop),
       runtimeErrorsRef,
       onCompiled,
     });

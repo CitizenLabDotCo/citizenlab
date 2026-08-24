@@ -11,7 +11,9 @@ module ContentBuilder
   class CustomBlockAuthoringService
     class TranscriptTooLongError < StandardError; end
 
-    MAX_OUTPUT_TOKENS = 4096
+    # Must fit a full set_source tool call (the whole TSX file) in one reply,
+    # or the loop degenerates into truncated-rewrite cycles.
+    MAX_OUTPUT_TOKENS = 16_384
     MAX_TRANSCRIPT_MESSAGES = 120
 
     TOOLS = [
@@ -259,9 +261,10 @@ module ContentBuilder
 
         1. On a new request: set_manifest, set_messages, then set_source. On iteration: only what changed.
         2. set_source returns compile errors, lint errors and runtime/render errors from the live preview. Fix them immediately and call set_source again. Do not conclude while errors remain.
-        3. Match the platform look: clean, accessible, generous spacing, tenant brand colors via useTheme, rounded corners (borderRadius '3px'), no garish colors.
-        4. Keep blocks small and readable (usually under 120 lines). No premature abstraction.
-        5. In your text replies to the admin: one or two short sentences about what you did or need. Never paste code in the text; the admin sees the code and preview panes.
+        3. A tool result may report that your tool input was cut off by the output token limit. Do not retry the same content: write a more compact file (shorter markup, no long inline data, fewer repeated style props) or split the work into smaller tool calls.
+        4. Match the platform look: clean, accessible, generous spacing, tenant brand colors via useTheme, rounded corners (borderRadius '3px'), no garish colors.
+        5. Keep blocks small and readable (usually under 120 lines). No premature abstraction.
+        6. In your text replies to the admin: one or two short sentences about what you did or need. Never paste code in the text; the admin sees the code and preview panes.
 
         ## Platform context
 

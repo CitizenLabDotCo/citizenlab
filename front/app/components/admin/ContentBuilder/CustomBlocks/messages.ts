@@ -85,6 +85,16 @@ export default defineMessages({
     id: 'app.components.admin.ContentBuilder.CustomBlocks.published',
     defaultMessage: 'Block published. You can now drag it from the toolbox.',
   },
+  outputTruncated: {
+    id: 'app.components.admin.ContentBuilder.CustomBlocks.outputTruncated',
+    defaultMessage:
+      'The reply hit the output limit. Asking the AI to retry with a smaller change…',
+  },
+  outputTruncatedStop: {
+    id: 'app.components.admin.ContentBuilder.CustomBlocks.outputTruncatedStop',
+    defaultMessage:
+      'The AI keeps hitting the output limit. Ask for a simpler block, or continue with a narrower change.',
+  },
   compileFailedSave: {
     id: 'app.components.admin.ContentBuilder.CustomBlocks.compileFailedSave',
     defaultMessage: 'The block does not compile, fix it before saving.',

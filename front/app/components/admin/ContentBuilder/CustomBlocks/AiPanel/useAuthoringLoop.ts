@@ -10,6 +10,7 @@ import { BlockManifest, BlockMessages } from 'api/custom_blocks/types';
 import useAddCustomBlock from 'api/custom_blocks/useAddCustomBlock';
 
 import { DraftFiles, executeToolCall } from './toolExecutor';
+import { planToolRound } from './turnHandling';
 
 // Hard stop for one user turn: at most this many model round trips.
 const MAX_TOOL_ROUNDS = 12;
@@ -30,6 +31,9 @@ const EMPTY_MANIFEST: BlockManifest = {
 interface Options {
   tenantLocales: string[];
   untitledTitle: string;
+  // Pre-formatted UI strings for loop events (the hook stays intl-free).
+  truncatedEventText: string;
+  truncatedStopText: string;
   // Runtime errors reported by the preview surface (shared mutable ref).
   runtimeErrorsRef: { current: string[] };
   onCompiled: (code: string | null) => void;
@@ -42,6 +46,8 @@ interface Options {
 const useAuthoringLoop = ({
   tenantLocales,
   untitledTitle,
+  truncatedEventText,
+  truncatedStopText,
   runtimeErrorsRef,
   onCompiled,
 }: Options) => {
@@ -139,6 +145,7 @@ const useAuthoringLoop = ({
         const sessionId = await ensureSession();
 
         let turn = await addAiTurn({ sessionId, user_message: userText });
+        let truncationStreak = 0;
 
         for (let round = 0; round < MAX_TOOL_ROUNDS; round++) {
           const { assistant_text, tool_calls } = turn.data.attributes;
@@ -148,7 +155,24 @@ const useAuthoringLoop = ({
           }
           if (tool_calls.length === 0 || isCancelled()) break;
 
-          const toolResults = await runToolCalls(tool_calls);
+          const plan = planToolRound(turn.data.attributes);
+          let toolResults;
+          if (plan.execute) {
+            truncationStreak = 0;
+            toolResults = await runToolCalls(tool_calls);
+          } else {
+            // The reply was cut off by the output limit: the tool inputs are
+            // incomplete, so answer them with a retry instruction instead of
+            // executing. Two truncations in a row means the request does not
+            // fit; hand control back to the admin.
+            truncationStreak += 1;
+            pushEvent(truncatedEventText);
+            if (truncationStreak >= 2) {
+              pushEvent(truncatedStopText);
+              break;
+            }
+            toolResults = plan.autoResults;
+          }
           if (isCancelled()) break;
 
           turn = await addAiTurn({ sessionId, tool_results: toolResults });
@@ -159,7 +183,17 @@ const useAuthoringLoop = ({
         setBusy(false);
       }
     },
-    [addAiTurn, busy, ensureSession, isCancelled, pushChat, runToolCalls]
+    [
+      addAiTurn,
+      busy,
+      ensureSession,
+      isCancelled,
+      pushChat,
+      pushEvent,
+      runToolCalls,
+      truncatedEventText,
+      truncatedStopText,
+    ]
   );
 
   const stop = useCallback(() => {
