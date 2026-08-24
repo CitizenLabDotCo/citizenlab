@@ -50,7 +50,7 @@ const PoliciesMarkup = ({
   const { formatMessage } = useIntl();
 
   return (
-    <Box display="flex" flexDirection="column" gap="8px">
+    <>
       <Box id="e2e-policies-container">
         <CheckboxWithLabel
           name="policiesAccepted"
@@ -89,11 +89,15 @@ const PoliciesMarkup = ({
           }
         />
       </Box>
-      {showSmsManualCampaignConsent && <ManualCampaignConsent />}
+      {showSmsManualCampaignConsent && (
+        <Box mt="8px">
+          <ManualCampaignConsent />
+        </Box>
+      )}
       {showByContinuingText && (
         <Text
           id="email-consent-description"
-          mt="16px"
+          mt="24px"
           mb="0px"
           fontSize="s"
           color="tenantText"
@@ -101,7 +105,7 @@ const PoliciesMarkup = ({
           {byContinuingCopy ?? formatMessage(messages.byContinuing)}
         </Text>
       )}
-    </Box>
+    </>
   );
 };
 
