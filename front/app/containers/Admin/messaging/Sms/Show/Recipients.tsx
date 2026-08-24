@@ -1,25 +1,18 @@
 import React from 'react';
 
-import {
-  Box,
-  Icon,
-  IconTooltip,
-  Tooltip,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IGroupData } from 'api/groups/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import ButtonWithLink from 'components/UI/ButtonWithLink';
-
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import Link from 'utils/cl-router/Link';
 
 import messages from '../../messages';
+
+import SendPreviewButton from './SendPreviewButton';
 
 const Label = styled.span`
   font-weight: bold;
@@ -41,7 +34,6 @@ interface Props {
   onSendPreview: () => void;
   isSendingPreview: boolean;
   insufficientBalance: boolean;
-  missingPhoneNumber: boolean;
 }
 
 const Recipients = ({
@@ -51,7 +43,6 @@ const Recipients = ({
   onSendPreview,
   isSendingPreview,
   insufficientBalance,
-  missingPhoneNumber,
 }: Props) => {
   const localize = useLocalize();
 
@@ -96,45 +87,11 @@ const Recipients = ({
         )}
       </Box>
       {draft && (
-        <Tooltip
-          disabled={!missingPhoneNumber}
-          placement="top"
-          content={
-            <FormattedMessage
-              {...messages.sendSmsPreviewNoPhoneTooltip}
-              values={{
-                profileLink: (
-                  <Link to="/profile/change-phone">
-                    <FormattedMessage
-                      {...messages.sendSmsPreviewNoPhoneTooltipLink}
-                    />
-                  </Link>
-                ),
-              }}
-            />
-          }
-        >
-          <ButtonWithLink
-            buttonStyle="secondary-outlined"
-            data-testid="e2e-send-sms-preview-button"
-            icon="send"
-            onClick={onSendPreview}
-            processing={isSendingPreview}
-            disabled={
-              isSendingPreview || insufficientBalance || missingPhoneNumber
-            }
-          >
-            <Box display="inline-flex" alignItems="center">
-              <FormattedMessage {...messages.sendSmsPreviewButton} />
-              <IconTooltip
-                ml="4px"
-                content={
-                  <FormattedMessage {...messages.sendSmsPreviewTooltip} />
-                }
-              />
-            </Box>
-          </ButtonWithLink>
-        </Tooltip>
+        <SendPreviewButton
+          onClick={onSendPreview}
+          isSendingPreview={isSendingPreview}
+          insufficientBalance={insufficientBalance}
+        />
       )}
     </Box>
   );

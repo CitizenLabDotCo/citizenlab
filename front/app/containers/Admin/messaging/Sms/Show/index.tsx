@@ -10,7 +10,6 @@ import useSmsCampaign from 'api/campaigns/sms/useSmsCampaign';
 import { isSmsCampaignDraft } from 'api/campaigns/sms/util';
 import { IGroupData } from 'api/groups/types';
 import useGroupsByIds from 'api/groups/useGroupsByIds';
-import useAuthUser from 'api/me/useAuthUser';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -49,7 +48,6 @@ const Show = () => {
   const { mutate: deleteCampaign, isPending: isDeleting } =
     useDeleteSmsCampaign();
   const { data: smsBalance } = useSmsBalance();
-  const { data: authUser } = useAuthUser();
   const localize = useLocalize();
 
   const [showConfirm, setShowConfirm] = useState(false);
@@ -73,9 +71,6 @@ const Show = () => {
   const creditsBalance = smsBalance?.data.attributes.balance;
   const insufficientBalance =
     creditsBalance !== undefined && previewCredits > creditsBalance;
-
-  // `phone` is only populated once the number is confirmed, which is what a preview needs.
-  const missingPhoneNumber = !authUser?.data.attributes.phone;
 
   const handleSend = () => setShowConfirm(true);
 
@@ -147,7 +142,6 @@ const Show = () => {
         onSendPreview={handleSendPreview}
         isSendingPreview={isSendingPreview}
         insufficientBalance={insufficientBalance}
-        missingPhoneNumber={missingPhoneNumber}
       />
 
       <Text fontWeight="bold" mb="4px">
@@ -176,6 +170,7 @@ const Show = () => {
       {draft && (
         <Box display="flex">
           <ButtonWithLink
+            id="e2e-sms-delete-button"
             buttonStyle="delete"
             icon="delete"
             onClick={() => setShowDeleteModal(true)}

@@ -46,6 +46,7 @@ const Header = ({ campaign, draft, onSend, isSending }: Props) => {
       {draft && (
         <Box display="flex" gap="10px" alignItems="center">
           <ButtonWithLink
+            id="e2e-sms-edit-button"
             to="/admin/messaging/sms/$campaignId/edit"
             params={{ campaignId: campaign.id }}
             buttonStyle="secondary-outlined"
@@ -54,6 +55,7 @@ const Header = ({ campaign, draft, onSend, isSending }: Props) => {
             <FormattedMessage {...messages.editButtonLabel} />
           </ButtonWithLink>
           <ButtonWithLink
+            id="e2e-sms-send-button"
             buttonStyle="admin-dark"
             icon="send"
             iconPos="right"
