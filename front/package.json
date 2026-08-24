@@ -89,6 +89,7 @@
     "date-fns": "2.30.0",
     "dnd-core": "16.0.1",
     "docx": "^9.5.1",
+    "esbuild-wasm": "^0.28.2",
     "file-saver": "2.0.5",
     "focus-visible": "5.2.1",
     "formatcoords": "1.1.3",
