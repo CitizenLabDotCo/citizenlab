@@ -6394,6 +6394,16 @@
     "verified_at": "2026-07-16T20:26:33.443683Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": {
+    "state": "verified",
+    "verified_at": "2026-08-24T13:24:58.813784Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltipLink": {
+    "state": "verified",
+    "verified_at": "2026-08-24T13:24:58.813784Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.messaging.sendSmsPreviewTooltip": {
     "state": "verified",
     "verified_at": "2026-07-16T20:26:58.043218Z",
