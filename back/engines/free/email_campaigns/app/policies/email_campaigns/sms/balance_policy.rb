@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module EmailCampaigns
-  class SmsBalancePolicy < ApplicationPolicy
+  class Sms::BalancePolicy < ApplicationPolicy
     def show?
       config = AppConfiguration.instance
       return false unless config.feature_activated?('sms') && config.feature_activated?('sms_manual_campaigns')

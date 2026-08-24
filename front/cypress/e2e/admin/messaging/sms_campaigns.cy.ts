@@ -49,8 +49,8 @@ describe('Admin: SMS campaigns', () => {
     cy.contains('.e2e-admin-list-row', subject).contains('Manage').click();
     cy.location('pathname').should('match', /\/admin\/messaging\/sms\/[\w-]+$/);
 
-    // Edit. This used to keep showing the old campaign until a manual refresh, so
-    // the point of the assertion is that nothing is reloaded in between.
+    // Edit. Asserted without reloading in between, so a cached campaign would show up
+    // as the old subject still being on screen.
     cy.get('#e2e-sms-edit-button').click();
     typeInEveryLocale(
       '.e2e-sms-campaign_subject_multiloc',
@@ -64,7 +64,7 @@ describe('Admin: SMS campaigns', () => {
     cy.contains(subject).should('not.exist');
 
     // The preview goes to the sender's own phone, and the seeded admin has never
-    // confirmed one. Clicking through used to be a 500.
+    // confirmed one, so the button has to stay out of reach.
     // The test id lands on Button's wrapper; aria-disabled sits on the button inside it.
     cy.get('[data-testid="e2e-send-sms-preview-button"]')
       .find('button')

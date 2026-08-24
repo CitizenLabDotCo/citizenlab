@@ -17,7 +17,7 @@ import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
 // Below this many messages left, we nudge the admin to buy more.
-export const LOW_BALANCE_THRESHOLD = 100;
+const LOW_BALANCE_THRESHOLD = 100;
 
 interface BreakdownItemProps {
   label: MessageDescriptor;
