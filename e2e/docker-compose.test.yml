@@ -13,6 +13,10 @@ services:
       retries: 20
       start_period: 30s
 
+  # Same image as `web` (pushed by the e2e-setup-db job), just a different command.
+  que:
+    image: citizenlabdotco/back-e2e:${CIRCLE_SHA1}
+
   front:
     build:
       context: ../front/.

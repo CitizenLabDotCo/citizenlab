@@ -829,6 +829,12 @@ jobs:
           docker compose run web bin/rails db:drop db:create db:schema:load
           docker compose run web bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]"
       - run: docker cp $(docker ps -lq):/citizenlab/back/public/uploads .
+      # Tenant creation enqueues a pile of background jobs. The `que` worker now runs
+      # during the e2e tests, so without this the run would start by churning through
+      # that (irrelevant) backlog. Que jobs only ever live in the `public` schema.
+      - run: |
+          cd e2e
+          docker compose run --rm web bin/rails runner 'ActiveRecord::Base.connection.execute("TRUNCATE public.que_jobs")'
       - run: |
           cd e2e
           docker cp -a $(docker compose ps -q postgres):/var/lib/postgresql/data ../postgresql-data

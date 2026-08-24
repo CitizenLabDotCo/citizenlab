@@ -61,10 +61,10 @@ export const confirmEmail = (cy: Cypress.Chainable) => {
 
 export const confirmPhone = (cy: Cypress.Chainable) => {
   cy.dataCy('phone-code-input').should('exist');
-  // Codes are created and sent asynchronously,
-  // so if we enter the code too quickly it will be invalid (since it is not yet created).
-  // Therefore we wait a bit before entering the code.
-  cy.wait(10000);
+  // Codes are created and sent asynchronously (by the `que` worker), so if we enter the
+  // code too quickly it is not there yet and gets rejected. Que picks the job up over
+  // LISTEN/NOTIFY, so this is a matter of milliseconds in practice.
+  cy.wait(3000);
   cy.dataCy('phone-code-input').find('input').type('123456');
   cy.dataCy('phone-confirm-button').click();
 };
