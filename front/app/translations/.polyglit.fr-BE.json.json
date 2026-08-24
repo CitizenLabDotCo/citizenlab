@@ -6664,6 +6664,11 @@
     "verified_at": "2026-07-22T11:55:53.957306Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": {
+    "state": "verified",
+    "verified_at": "2026-08-24T14:10:17.336286Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Authentication.signUpOrLogIn": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
