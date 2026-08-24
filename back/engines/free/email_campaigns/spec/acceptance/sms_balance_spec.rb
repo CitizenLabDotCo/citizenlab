@@ -77,5 +77,16 @@ resource 'SMS balance' do
         assert_status 401
       end
     end
+
+    context 'when the sms_manual_campaigns feature is disabled' do
+      before do
+        SettingsService.new.deactivate_feature!('sms_manual_campaigns')
+        header_token_for create(:admin)
+      end
+
+      example_request 'is not authorized' do
+        assert_status 401
+      end
+    end
   end
 end

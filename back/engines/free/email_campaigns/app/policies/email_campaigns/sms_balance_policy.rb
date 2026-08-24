@@ -3,7 +3,8 @@
 module EmailCampaigns
   class SmsBalancePolicy < ApplicationPolicy
     def show?
-      return false unless AppConfiguration.instance.feature_activated?('sms')
+      config = AppConfiguration.instance
+      return false unless config.feature_activated?('sms') && config.feature_activated?('sms_manual_campaigns')
 
       active_admin_or_moderator?
     end
