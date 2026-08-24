@@ -439,6 +439,15 @@ export default defineMessages({
     id: 'app.containers.Admin.messaging.sendSmsPreviewTooltip',
     defaultMessage: 'Sends a test text message to your own phone number.',
   },
+  sendSmsPreviewNoPhoneTooltip: {
+    id: 'app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip',
+    defaultMessage:
+      'A preview goes to your own phone. Add a phone number to your {profileLink} first.',
+  },
+  sendSmsPreviewNoPhoneTooltipLink: {
+    id: 'app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltipLink',
+    defaultMessage: 'profile',
+  },
   smsPreviewSentConfirmation: {
     id: 'app.containers.Admin.messaging.smsPreviewSentConfirmation',
     defaultMessage: 'A test text message was sent to your phone number.',

@@ -54,6 +54,7 @@ module EmailCampaigns
     validate :validate_sms_provider_configured, on: %i[send preview]
     validate :validate_sufficient_balance, on: :send
     validate :validate_sufficient_preview_balance, on: :preview
+    validate :validate_previewer_phone, on: :preview
 
     def self.sms_use_case
       Sms::UseCase::MANUAL_CAMPAIGNS
@@ -172,6 +173,13 @@ module EmailCampaigns
       return if segments_for_preview <= EmailCampaigns::Sms::BalanceService.new.balance
 
       errors.add(:base, :insufficient_sms_balance, message: 'Not enough SMS segments left to send a preview')
+    end
+
+    # The preview goes to the previewer's own number, which `phone` only holds once confirmed.
+    def validate_previewer_phone
+      return if previewer&.phone.present?
+
+      errors.add(:base, :no_previewer_phone, message: 'A preview needs a confirmed phone number of your own')
     end
 
     def only_manual_send(activity: nil, time: nil)

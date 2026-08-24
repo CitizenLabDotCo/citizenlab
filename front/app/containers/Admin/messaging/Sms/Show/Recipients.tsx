@@ -4,6 +4,7 @@ import {
   Box,
   Icon,
   IconTooltip,
+  Tooltip,
   colors,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
@@ -16,6 +17,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import Link from 'utils/cl-router/Link';
 
 import messages from '../../messages';
 
@@ -39,6 +41,7 @@ interface Props {
   onSendPreview: () => void;
   isSendingPreview: boolean;
   insufficientBalance: boolean;
+  missingPhoneNumber: boolean;
 }
 
 const Recipients = ({
@@ -48,6 +51,7 @@ const Recipients = ({
   onSendPreview,
   isSendingPreview,
   insufficientBalance,
+  missingPhoneNumber,
 }: Props) => {
   const localize = useLocalize();
 
@@ -92,21 +96,45 @@ const Recipients = ({
         )}
       </Box>
       {draft && (
-        <ButtonWithLink
-          buttonStyle="secondary-outlined"
-          icon="send"
-          onClick={onSendPreview}
-          processing={isSendingPreview}
-          disabled={isSendingPreview || insufficientBalance}
-        >
-          <Box display="inline-flex" alignItems="center">
-            <FormattedMessage {...messages.sendSmsPreviewButton} />
-            <IconTooltip
-              ml="4px"
-              content={<FormattedMessage {...messages.sendSmsPreviewTooltip} />}
+        <Tooltip
+          disabled={!missingPhoneNumber}
+          placement="top"
+          content={
+            <FormattedMessage
+              {...messages.sendSmsPreviewNoPhoneTooltip}
+              values={{
+                profileLink: (
+                  <Link to="/profile/change-phone">
+                    <FormattedMessage
+                      {...messages.sendSmsPreviewNoPhoneTooltipLink}
+                    />
+                  </Link>
+                ),
+              }}
             />
-          </Box>
-        </ButtonWithLink>
+          }
+        >
+          <ButtonWithLink
+            buttonStyle="secondary-outlined"
+            data-testid="e2e-send-sms-preview-button"
+            icon="send"
+            onClick={onSendPreview}
+            processing={isSendingPreview}
+            disabled={
+              isSendingPreview || insufficientBalance || missingPhoneNumber
+            }
+          >
+            <Box display="inline-flex" alignItems="center">
+              <FormattedMessage {...messages.sendSmsPreviewButton} />
+              <IconTooltip
+                ml="4px"
+                content={
+                  <FormattedMessage {...messages.sendSmsPreviewTooltip} />
+                }
+              />
+            </Box>
+          </ButtonWithLink>
+        </Tooltip>
       )}
     </Box>
   );

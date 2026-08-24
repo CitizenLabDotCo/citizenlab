@@ -421,6 +421,11 @@ export default defineMessages({
     defaultMessage:
       'Some of the SMS configuration is missing. Contact your GovSuccess Manager to have it completed.',
   },
+  no_previewer_phone: {
+    id: 'app.errors.no_previewer_phone',
+    defaultMessage:
+      'A preview goes to your own phone. Add a phone number to your profile first.',
+  },
   verification_taken: {
     id: 'app.errors.verification_taken',
     defaultMessage:

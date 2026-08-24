@@ -240,7 +240,7 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
       create(:sms_manual_campaign, body_multiloc: { 'en' => 'short', 'fr-FR' => 'a' * 200 })
     end
 
-    before { campaign.previewer = create(:admin, locale: 'fr-FR') }
+    before { campaign.previewer = create(:admin, :with_confirmed_phone, locale: 'fr-FR') }
 
     it 'refuses a preview whose segments exceed the balance' do
       SettingsService.new.activate_feature!('sms_manual_campaigns', settings: { 'messages_purchased' => 1 })
@@ -262,6 +262,35 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
 
       expect(campaign.valid?(:preview)).to be true
       expect(campaign.valid?(:send)).to be false
+    end
+  end
+
+  # Without this the preview reaches the delivery layer with nowhere to send to, and raises.
+  describe 'the phone number guard on a preview' do
+    include_context 'with sms manual campaigns feature enabled'
+
+    let(:campaign) { create(:sms_manual_campaign) }
+
+    before do
+      SettingsService.new.activate_feature!('sms_manual_campaigns', settings: { 'messages_purchased' => 10 })
+    end
+
+    it 'refuses a preview when the previewer has no confirmed phone number' do
+      campaign.previewer = create(:admin)
+
+      expect(campaign.valid?(:preview)).to be false
+      expect(campaign.errors.details[:base]).to include(error: :no_previewer_phone)
+    end
+
+    it 'refuses a preview when there is no previewer at all' do
+      expect(campaign.valid?(:preview)).to be false
+      expect(campaign.errors.details[:base]).to include(error: :no_previewer_phone)
+    end
+
+    it 'allows a preview when the previewer confirmed a phone number' do
+      campaign.previewer = create(:admin, :with_confirmed_phone)
+
+      expect(campaign.valid?(:preview)).to be true
     end
   end
 

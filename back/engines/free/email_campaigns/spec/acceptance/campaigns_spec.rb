@@ -664,6 +664,14 @@ resource 'Campaigns' do
           assert_status 422
           expect(json_response_body).to include_response_error(:base, 'insufficient_sms_balance')
         end
+
+        example '[error] Send a preview SMS without a confirmed phone number of your own' do
+          @user.update!(phone: nil, phone_confirmed_at: nil)
+
+          expect { do_request }.not_to have_enqueued_job(EmailCampaigns::Sms::SendJob)
+          assert_status 422
+          expect(json_response_body).to include_response_error(:base, 'no_previewer_phone')
+        end
       end
     end
 
