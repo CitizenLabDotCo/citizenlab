@@ -64,6 +64,7 @@ ALTER TABLE IF EXISTS ONLY public.polls_options DROP CONSTRAINT IF EXISTS fk_rai
 ALTER TABLE IF EXISTS ONLY public.static_page_files DROP CONSTRAINT IF EXISTS fk_rails_b8d87c000f;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_b894d506a0;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_b82ab32ac2;
+ALTER TABLE IF EXISTS ONLY public.content_builder_custom_block_ai_sessions DROP CONSTRAINT IF EXISTS fk_rails_b7b8ec2571;
 ALTER TABLE IF EXISTS ONLY public.oauth_access_grants DROP CONSTRAINT IF EXISTS fk_rails_b4b53e07b8;
 ALTER TABLE IF EXISTS ONLY public.official_feedbacks DROP CONSTRAINT IF EXISTS fk_rails_b4a1624855;
 ALTER TABLE IF EXISTS ONLY public.custom_field_options DROP CONSTRAINT IF EXISTS fk_rails_b48da9e6c7;
@@ -88,6 +89,7 @@ ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rai
 ALTER TABLE IF EXISTS ONLY public.project_folders_folders DROP CONSTRAINT IF EXISTS fk_rails_9fde33dc89;
 ALTER TABLE IF EXISTS ONLY public.areas_projects DROP CONSTRAINT IF EXISTS fk_rails_9ecfc9d2b9;
 ALTER TABLE IF EXISTS ONLY public.event_images DROP CONSTRAINT IF EXISTS fk_rails_9dd6f2f888;
+ALTER TABLE IF EXISTS ONLY public.content_builder_custom_block_ai_sessions DROP CONSTRAINT IF EXISTS fk_rails_9c7fcf5660;
 ALTER TABLE IF EXISTS ONLY public.analytics_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_9b5a82cb55;
 ALTER TABLE IF EXISTS ONLY public.memberships DROP CONSTRAINT IF EXISTS fk_rails_99326fb65d;
 ALTER TABLE IF EXISTS ONLY public.authoring_assistance_responses DROP CONSTRAINT IF EXISTS fk_rails_98155ccbce;
@@ -126,6 +128,7 @@ ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaigns_groups DROP CONSTRAI
 ALTER TABLE IF EXISTS ONLY public.sms_deliveries DROP CONSTRAINT IF EXISTS fk_rails_704e460729;
 ALTER TABLE IF EXISTS ONLY public.groups_permissions DROP CONSTRAINT IF EXISTS fk_rails_6fa6389d80;
 ALTER TABLE IF EXISTS ONLY public.ideas_input_topics DROP CONSTRAINT IF EXISTS fk_rails_6f51315d9b;
+ALTER TABLE IF EXISTS ONLY public.content_builder_custom_block_versions DROP CONSTRAINT IF EXISTS fk_rails_6cbdf54e32;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_6c9ab6d4f8;
 ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXISTS fk_rails_6988c9886e;
 ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rails_67f00886f9;
@@ -135,6 +138,7 @@ ALTER TABLE IF EXISTS ONLY public.internal_comments DROP CONSTRAINT IF EXISTS fk
 ALTER TABLE IF EXISTS ONLY public.analysis_taggings DROP CONSTRAINT IF EXISTS fk_rails_604cfbcd8d;
 ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rails_5ea1f11fd5;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_5ac7668cd3;
+ALTER TABLE IF EXISTS ONLY public.content_builder_custom_blocks DROP CONSTRAINT IF EXISTS fk_rails_59b0c3817e;
 ALTER TABLE IF EXISTS ONLY public.event_files DROP CONSTRAINT IF EXISTS fk_rails_577d1fb456;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_575368d182;
 ALTER TABLE IF EXISTS ONLY public.custom_field_answers DROP CONSTRAINT IF EXISTS fk_rails_56fa027c1d;
@@ -150,6 +154,7 @@ ALTER TABLE IF EXISTS ONLY public.email_campaigns_examples DROP CONSTRAINT IF EX
 ALTER TABLE IF EXISTS ONLY public.followers DROP CONSTRAINT IF EXISTS fk_rails_3d258d3942;
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS fk_rails_3c57357702;
 ALTER TABLE IF EXISTS ONLY public.baskets_ideas DROP CONSTRAINT IF EXISTS fk_rails_39a1b51358;
+ALTER TABLE IF EXISTS ONLY public.content_builder_custom_blocks DROP CONSTRAINT IF EXISTS fk_rails_38d7ff057d;
 ALTER TABLE IF EXISTS ONLY public.custom_field_option_images DROP CONSTRAINT IF EXISTS fk_rails_3814d72daa;
 ALTER TABLE IF EXISTS ONLY public.analysis_comments_summaries DROP CONSTRAINT IF EXISTS fk_rails_37becdebb0;
 ALTER TABLE IF EXISTS ONLY public.files DROP CONSTRAINT IF EXISTS fk_rails_34e9f7c7ef;
@@ -447,9 +452,15 @@ DROP INDEX IF EXISTS public.index_custom_field_bins_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_custom_field_answers_on_key_and_answerable_type;
 DROP INDEX IF EXISTS public.index_custom_field_answers_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_custom_field_answers_on_answerable_and_key;
+DROP INDEX IF EXISTS public.index_custom_block_versions_on_custom_block_id_and_number;
+DROP INDEX IF EXISTS public.index_custom_block_ai_sessions_on_custom_block_id;
+DROP INDEX IF EXISTS public.index_custom_block_ai_sessions_on_created_by_id;
 DROP INDEX IF EXISTS public.index_cosponsorships_on_user_id;
 DROP INDEX IF EXISTS public.index_cosponsorships_on_idea_id;
 DROP INDEX IF EXISTS public.index_content_builder_layouts_content_buidable_type_id_code;
+DROP INDEX IF EXISTS public.index_content_builder_custom_blocks_on_status;
+DROP INDEX IF EXISTS public.index_content_builder_custom_blocks_on_created_by_id;
+DROP INDEX IF EXISTS public.index_content_builder_custom_block_versions_on_custom_block_id;
 DROP INDEX IF EXISTS public.index_confirmations_on_user_id_and_type;
 DROP INDEX IF EXISTS public.index_confirmations_on_user_id;
 DROP INDEX IF EXISTS public.index_common_passwords_on_password;
@@ -651,6 +662,9 @@ ALTER TABLE IF EXISTS ONLY public.custom_field_answers DROP CONSTRAINT IF EXISTS
 ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS cosponsorships_pkey;
 ALTER TABLE IF EXISTS ONLY public.content_builder_layouts DROP CONSTRAINT IF EXISTS content_builder_layouts_pkey;
 ALTER TABLE IF EXISTS ONLY public.content_builder_layout_images DROP CONSTRAINT IF EXISTS content_builder_layout_images_pkey;
+ALTER TABLE IF EXISTS ONLY public.content_builder_custom_blocks DROP CONSTRAINT IF EXISTS content_builder_custom_blocks_pkey;
+ALTER TABLE IF EXISTS ONLY public.content_builder_custom_block_versions DROP CONSTRAINT IF EXISTS content_builder_custom_block_versions_pkey;
+ALTER TABLE IF EXISTS ONLY public.content_builder_custom_block_ai_sessions DROP CONSTRAINT IF EXISTS content_builder_custom_block_ai_sessions_pkey;
 ALTER TABLE IF EXISTS ONLY public.confirmations DROP CONSTRAINT IF EXISTS confirmations_pkey;
 ALTER TABLE IF EXISTS ONLY public.common_passwords DROP CONSTRAINT IF EXISTS common_passwords_pkey;
 ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS comments_pkey;
@@ -793,6 +807,9 @@ DROP TABLE IF EXISTS public.custom_field_answers;
 DROP TABLE IF EXISTS public.cosponsorships;
 DROP TABLE IF EXISTS public.content_builder_layouts;
 DROP TABLE IF EXISTS public.content_builder_layout_images;
+DROP TABLE IF EXISTS public.content_builder_custom_blocks;
+DROP TABLE IF EXISTS public.content_builder_custom_block_versions;
+DROP TABLE IF EXISTS public.content_builder_custom_block_ai_sessions;
 DROP TABLE IF EXISTS public.confirmations;
 DROP TABLE IF EXISTS public.common_passwords;
 DROP TABLE IF EXISTS public.claim_tokens;
@@ -2308,6 +2325,57 @@ CREATE TABLE public.confirmations (
     code_retry_count integer DEFAULT 0 NOT NULL,
     code_reset_count integer DEFAULT 0 NOT NULL,
     code_sent_at timestamp(6) without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: content_builder_custom_block_ai_sessions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.content_builder_custom_block_ai_sessions (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    custom_block_id uuid NOT NULL,
+    created_by_id uuid,
+    status character varying DEFAULT 'active'::character varying NOT NULL,
+    transcript jsonb DEFAULT '[]'::jsonb NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: content_builder_custom_block_versions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.content_builder_custom_block_versions (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    custom_block_id uuid NOT NULL,
+    number integer NOT NULL,
+    source text DEFAULT ''::text NOT NULL,
+    bundle text DEFAULT ''::text NOT NULL,
+    manifest jsonb DEFAULT '{}'::jsonb NOT NULL,
+    messages jsonb DEFAULT '{}'::jsonb NOT NULL,
+    sdk_version integer DEFAULT 1 NOT NULL,
+    toolchain jsonb DEFAULT '{}'::jsonb NOT NULL,
+    ai_session_id uuid,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: content_builder_custom_blocks; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.content_builder_custom_blocks (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    title_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    description_multiloc jsonb DEFAULT '{}'::jsonb,
+    status character varying DEFAULT 'draft'::character varying NOT NULL,
+    created_by_id uuid,
+    current_version_id uuid,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -4769,6 +4837,30 @@ ALTER TABLE ONLY public.confirmations
 
 
 --
+-- Name: content_builder_custom_block_ai_sessions content_builder_custom_block_ai_sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_builder_custom_block_ai_sessions
+    ADD CONSTRAINT content_builder_custom_block_ai_sessions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: content_builder_custom_block_versions content_builder_custom_block_versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_builder_custom_block_versions
+    ADD CONSTRAINT content_builder_custom_block_versions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: content_builder_custom_blocks content_builder_custom_blocks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_builder_custom_blocks
+    ADD CONSTRAINT content_builder_custom_blocks_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: content_builder_layout_images content_builder_layout_images_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6294,6 +6386,27 @@ CREATE UNIQUE INDEX index_confirmations_on_user_id_and_type ON public.confirmati
 
 
 --
+-- Name: index_content_builder_custom_block_versions_on_custom_block_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_content_builder_custom_block_versions_on_custom_block_id ON public.content_builder_custom_block_versions USING btree (custom_block_id);
+
+
+--
+-- Name: index_content_builder_custom_blocks_on_created_by_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_content_builder_custom_blocks_on_created_by_id ON public.content_builder_custom_blocks USING btree (created_by_id);
+
+
+--
+-- Name: index_content_builder_custom_blocks_on_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_content_builder_custom_blocks_on_status ON public.content_builder_custom_blocks USING btree (status);
+
+
+--
 -- Name: index_content_builder_layouts_content_buidable_type_id_code; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6312,6 +6425,27 @@ CREATE INDEX index_cosponsorships_on_idea_id ON public.cosponsorships USING btre
 --
 
 CREATE INDEX index_cosponsorships_on_user_id ON public.cosponsorships USING btree (user_id);
+
+
+--
+-- Name: index_custom_block_ai_sessions_on_created_by_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_custom_block_ai_sessions_on_created_by_id ON public.content_builder_custom_block_ai_sessions USING btree (created_by_id);
+
+
+--
+-- Name: index_custom_block_ai_sessions_on_custom_block_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_custom_block_ai_sessions_on_custom_block_id ON public.content_builder_custom_block_ai_sessions USING btree (custom_block_id);
+
+
+--
+-- Name: index_custom_block_versions_on_custom_block_id_and_number; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_custom_block_versions_on_custom_block_id_and_number ON public.content_builder_custom_block_versions USING btree (custom_block_id, number);
 
 
 --
@@ -8422,6 +8556,14 @@ ALTER TABLE ONLY public.custom_field_option_images
 
 
 --
+-- Name: content_builder_custom_blocks fk_rails_38d7ff057d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_builder_custom_blocks
+    ADD CONSTRAINT fk_rails_38d7ff057d FOREIGN KEY (current_version_id) REFERENCES public.content_builder_custom_block_versions(id) ON DELETE SET NULL;
+
+
+--
 -- Name: baskets_ideas fk_rails_39a1b51358; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8542,6 +8684,14 @@ ALTER TABLE ONLY public.event_files
 
 
 --
+-- Name: content_builder_custom_blocks fk_rails_59b0c3817e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_builder_custom_blocks
+    ADD CONSTRAINT fk_rails_59b0c3817e FOREIGN KEY (created_by_id) REFERENCES public.users(id) ON DELETE SET NULL;
+
+
+--
 -- Name: ideas fk_rails_5ac7668cd3; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8611,6 +8761,14 @@ ALTER TABLE ONLY public.report_builder_reports
 
 ALTER TABLE ONLY public.ideas
     ADD CONSTRAINT fk_rails_6c9ab6d4f8 FOREIGN KEY (manual_votes_last_updated_by_id) REFERENCES public.users(id);
+
+
+--
+-- Name: content_builder_custom_block_versions fk_rails_6cbdf54e32; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_builder_custom_block_versions
+    ADD CONSTRAINT fk_rails_6cbdf54e32 FOREIGN KEY (custom_block_id) REFERENCES public.content_builder_custom_blocks(id) ON DELETE CASCADE;
 
 
 --
@@ -8918,6 +9076,14 @@ ALTER TABLE ONLY public.analytics_fact_visits
 
 
 --
+-- Name: content_builder_custom_block_ai_sessions fk_rails_9c7fcf5660; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_builder_custom_block_ai_sessions
+    ADD CONSTRAINT fk_rails_9c7fcf5660 FOREIGN KEY (custom_block_id) REFERENCES public.content_builder_custom_blocks(id) ON DELETE CASCADE;
+
+
+--
 -- Name: event_images fk_rails_9dd6f2f888; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -9107,6 +9273,14 @@ ALTER TABLE ONLY public.official_feedbacks
 
 ALTER TABLE ONLY public.oauth_access_grants
     ADD CONSTRAINT fk_rails_b4b53e07b8 FOREIGN KEY (application_id) REFERENCES public.oauth_applications(id);
+
+
+--
+-- Name: content_builder_custom_block_ai_sessions fk_rails_b7b8ec2571; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_builder_custom_block_ai_sessions
+    ADD CONSTRAINT fk_rails_b7b8ec2571 FOREIGN KEY (created_by_id) REFERENCES public.users(id) ON DELETE SET NULL;
 
 
 --
@@ -9556,6 +9730,9 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260824210220'),
+('20260824210219'),
+('20260824210218'),
 ('20260821210000'),
 ('20260821000000'),
 ('20260820000000'),

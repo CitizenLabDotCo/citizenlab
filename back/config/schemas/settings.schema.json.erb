@@ -1479,6 +1479,18 @@
         }
       },
 
+      "custom_page_blocks": {
+        "type": "object",
+        "title": "Custom page blocks (AI)",
+        "description": "Allows admins to build custom page builder blocks with an AI authoring loop.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "custom_smtp": {
         "type": "object",
         "title": "Custom SMTP Server",
