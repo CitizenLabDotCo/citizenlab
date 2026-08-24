@@ -27,6 +27,15 @@ RSpec.describe EmailCampaigns::Campaigns::PhoneConfirmation do
       command = { recipient: recipient, event_payload: { code: '1234' } }
       expect(campaign.sms_body(command)).to eq('Vaudeville: Your confirmation code is 1234.')
     end
+
+    it 'falls back to another locale when the organization name is blank for the recipient locale' do
+      config = AppConfiguration.instance
+      config.settings['core']['organization_name'] = { 'en' => '', 'nl-NL' => 'Vaudeville' }
+      config.save!
+
+      command = { recipient: recipient, event_payload: { code: '1234' } }
+      expect(campaign.sms_body(command)).to eq('Vaudeville: Your confirmation code is 1234.')
+    end
   end
 
   describe '#sms_destination' do
