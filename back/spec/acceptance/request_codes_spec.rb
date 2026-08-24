@@ -156,7 +156,7 @@ resource 'Request codes' do
 
       do_request(request_code: { email: user.email, only_if_first_time: true })
       expect(response_status).to eq 200
-      # Only the setup send happened; the only_if_first_time request was a no-op.
+      # Only the setup code was issued; the only_if_first_time request was a no-op.
       expect(delivery_service).to have_received(:send_now_to_user)
         .with(an_instance_of(EmailCampaigns::Campaigns::EmailConfirmation), user, hash_including(:code)).once
     end
@@ -251,6 +251,8 @@ resource 'Request codes' do
       expect { do_request(request_code: {}) }
         .to enqueue_job(RequestPhoneConfirmationCodeJob).with(user).once
       expect(response_status).to eq 200
+      # Only the delivery is queued; the code itself is issued before the response.
+      expect(user.reload.phone_confirmation.code).to be_present
     end
 
     example 'It works for an unauthenticated user that submits a phone number' do
@@ -349,10 +351,10 @@ resource 'Request codes' do
     example 'with only_if_first_time, does not resend when a code is already outstanding' do
       user = create(:user, :with_confirmed_phone)
       header_token_for(user)
-      RequestPhoneConfirmationCodeJob.perform_now(user) # one code sent in setup
+      RequestPhoneConfirmationCodeJob.issue_code!(user) # one code issued in setup
       expect(user.phone_confirmation.reload.code).to be_present
 
-      # Only the setup send happened; the only_if_first_time request was a no-op.
+      # Only the setup code was issued; the only_if_first_time request was a no-op.
       expect { do_request(request_code: { only_if_first_time: true }) }
         .not_to enqueue_job(RequestPhoneConfirmationCodeJob)
       expect(response_status).to eq 200
@@ -373,6 +375,8 @@ resource 'Request codes' do
         .to enqueue_job(RequestNewPhoneConfirmationCodeJob).with(user, new_phone: '+14155552671').once
       expect(response_status).to eq 200
       expect(user.reload.new_phone).to eq '+14155552671'
+      # Only the delivery is queued; the code itself is issued before the response.
+      expect(user.new_phone_confirmation.code).to be_present
     end
 
     example 'It records the consent to receive a confirmation code by SMS and logs the activity' do

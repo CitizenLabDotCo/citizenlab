@@ -185,7 +185,7 @@ class WebApi::V1::UsersController < ApplicationController
 
     @user = User.find_by_phone_number(parsed.e164)
 
-    RequestPhoneConfirmationCodeJob.perform_later(@user) if auto_send_code?(@user, :phone_confirmation)
+    RequestPhoneConfirmationCodeJob.issue_code_and_deliver_later(@user) if auto_send_code?(@user, :phone_confirmation)
     render_check_action(@user, :phone_confirmation)
   end
 
@@ -440,7 +440,7 @@ class WebApi::V1::UsersController < ApplicationController
 
   # Users who still have to confirm, and users without a password, get a code sent
   # automatically. The callers send it themselves, because email codes are sent
-  # inline while SMS codes are queued.
+  # inline while SMS codes are only issued inline and delivered from a job.
   def auto_send_code?(user, confirmation_name)
     return false if check_action(user, confirmation_name) != 'confirm'
 

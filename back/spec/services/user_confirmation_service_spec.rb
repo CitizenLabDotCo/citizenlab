@@ -198,6 +198,7 @@ RSpec.describe UserConfirmationService do
 
     before do
       SettingsService.new.activate_feature! 'password_login'
+      RequestPhoneConfirmationCodeJob.issue_code!(user)
       RequestPhoneConfirmationCodeJob.perform_now(user)
     end
 
@@ -259,7 +260,7 @@ RSpec.describe UserConfirmationService do
     include_context 'with stubbed SMS provider'
 
     before do
-      user.update!(new_phone: new_phone)
+      RequestNewPhoneConfirmationCodeJob.issue_code!(user, new_phone: new_phone)
       RequestNewPhoneConfirmationCodeJob.perform_now(user, new_phone: new_phone)
     end
 

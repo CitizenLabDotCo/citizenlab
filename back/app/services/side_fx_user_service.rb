@@ -27,7 +27,7 @@ class SideFxUserService
         RequestNewEmailConfirmationCodeJob.perform_now(user, new_email: user.new_email)
       end
     end
-    RequestPhoneConfirmationCodeJob.perform_later(user) if should_send_confirmation_sms?(user)
+    RequestPhoneConfirmationCodeJob.issue_code_and_deliver_later(user) if should_send_confirmation_sms?(user)
     AdditionalSeatsIncrementer.increment_if_necessary(user, current_user) if user.roles_previously_changed?
     ClaimTokenService.claim(user, claim_tokens)
   end
