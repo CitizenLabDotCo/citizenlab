@@ -231,6 +231,9 @@
     "es-ES": "asiento",
     "nl-NL": "account"
   },
+  "phone": {
+    "de-DE": "Handy"
+  },
   "community monitor": {
     "nl-NL": "gemeenschapsmonitor"
   },
