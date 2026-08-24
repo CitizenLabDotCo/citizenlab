@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, waitFor } from 'utils/testUtils/rtl';
+import { render, screen, waitFor } from 'utils/testUtils/rtl';
 
 import CustomPageBuilder from '.';
 
@@ -31,6 +31,9 @@ jest.mock('api/custom_page_layout/useUpsertCustomPageLayout', () =>
   jest.fn(() => ({ mutate: mockUpsert }))
 );
 
+let featureEnabled = true;
+jest.mock('hooks/useFeatureFlag', () => jest.fn(() => featureEnabled));
+
 let layoutIsError = false;
 jest.mock('api/custom_page_layout/useCustomPageLayout', () => ({
   __esModule: true,
@@ -41,6 +44,7 @@ describe('CustomPageBuilder bootstrap', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     layoutIsError = false;
+    featureEnabled = true;
   });
 
   it('does not create a layout when one already exists', () => {
@@ -60,6 +64,17 @@ describe('CustomPageBuilder bootstrap', () => {
       staticPageId: 'page-1',
       enabled: true,
     });
+  });
+
+  // Gating only the link would let an admin reach the builder by typing the URL — and
+  // opening it provisions a layout, so the gate has to sit ahead of the bootstrap.
+  it('renders nothing and writes no layout when the feature is off', () => {
+    featureEnabled = false;
+    layoutIsError = true;
+    render(<CustomPageBuilder />);
+
+    expect(screen.queryByTestId('builderPage')).not.toBeInTheDocument();
+    expect(mockUpsert).not.toHaveBeenCalled();
   });
 
   // Without the ref guard this re-fires on every render, hammering the endpoint.
