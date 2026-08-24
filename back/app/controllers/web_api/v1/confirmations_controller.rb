@@ -105,6 +105,13 @@ class WebApi::V1::ConfirmationsController < ApplicationController
     AppConfiguration.instance.feature_activated?('sms_login')
   end
 
+  # The sms feature carries the Twilio settings manual campaigns send through, so
+  # sms_manual_campaigns only takes effect on top of it.
+  def sms_manual_campaigns_enabled?
+    app_configuration = AppConfiguration.instance
+    app_configuration.feature_activated?('sms') && app_configuration.feature_activated?('sms_manual_campaigns')
+  end
+
   def confirm_code_email_params
     params.require(:confirmation).permit(:email, :code)
   end
@@ -129,6 +136,8 @@ class WebApi::V1::ConfirmationsController < ApplicationController
   end
 
   def record_sms_manual_campaign_consent
+    return unless sms_manual_campaigns_enabled?
+
     manual_campaign_consent = parse_bool(confirm_code_new_phone_params[:sms_manual_campaign_consent])
     return if manual_campaign_consent.nil?
 

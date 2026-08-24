@@ -419,6 +419,7 @@ resource 'Confirmations' do
 
       # The code request sends the OTP synchronously, so the provider is invoked.
       include_context 'with stubbed SMS provider'
+      include_context 'with sms manual campaigns feature enabled'
 
       before do
         header_token_for user
@@ -496,6 +497,13 @@ resource 'Confirmations' do
       example 'does not record consent when the code is invalid' do
         do_request(confirmation: { code: 'badcode', sms_manual_campaign_consent: true })
         assert_status 422
+        expect(EmailCampaigns::Consent.where(user: user, campaign_type: sms_manual_type)).to be_empty
+      end
+
+      example 'does not record consent when the sms_manual_campaigns feature is deactivated' do
+        SettingsService.new.deactivate_feature!('sms_manual_campaigns')
+        do_request(confirmation: { code: user.new_phone_confirmation.code, sms_manual_campaign_consent: true })
+        assert_status 200
         expect(EmailCampaigns::Consent.where(user: user, campaign_type: sms_manual_type)).to be_empty
       end
     end

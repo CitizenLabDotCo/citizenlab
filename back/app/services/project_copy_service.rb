@@ -621,7 +621,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'action' => p.action,
         'permitted_by' => p.permitted_by,
         'permission_scope_ref' => lookup_ref(p.permission_scope_id, :phase),
-        'global_custom_fields' => p.global_custom_fields,
+        'custom_fields_behavior' => p.custom_fields_behavior,
         'access_denied_explanation_multiloc' => p.access_denied_explanation_multiloc,
         'everyone_tracking_enabled' => p.everyone_tracking_enabled,
         'verification_expiry' => p.verification_expiry,

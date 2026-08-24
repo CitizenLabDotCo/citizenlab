@@ -7,7 +7,7 @@ RSpec.describe EmailCampaigns::Sms::SendService do
   let(:phone) { '+14155552671' }
   let(:use_case) { EmailCampaigns::Sms::UseCase::MANUAL_CAMPAIGNS }
 
-  include_context 'with sms feature enabled'
+  include_context 'with sms manual campaigns feature enabled'
 
   before do
     allow(EmailCampaigns::Sms::Providers::Twilio).to receive(:new).and_return(provider)
@@ -75,6 +75,12 @@ RSpec.describe EmailCampaigns::Sms::SendService do
       delivery = described_class.new.create_delivery(body: 'hi', campaign_id: campaign.id)
 
       expect(delivery).to have_attributes(status: 'pending', campaign_id: campaign.id)
+    end
+
+    it 'counts the segments before the message reaches the provider' do
+      delivery = described_class.new.create_delivery(body: 'a' * 161)
+
+      expect(delivery.segments_count).to eq(2)
     end
 
     it 'raises and creates nothing when the SMS feature is disabled' do

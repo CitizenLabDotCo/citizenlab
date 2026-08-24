@@ -63,7 +63,12 @@ const CampaignConsentForm = ({
     false
   );
   const [loading, setLoading] = useState<boolean>(false);
-  const smsEnabled = useFeatureFlag({ name: 'sms' });
+  // The sms feature carries the Twilio settings manual campaigns send through.
+  const smsFFEnabled = useFeatureFlag({ name: 'sms' });
+  const smsManualCampaignsFFEnabled = useFeatureFlag({
+    name: 'sms_manual_campaigns',
+  });
+  const smsManualCampaignsEnabled = smsFFEnabled && smsManualCampaignsFFEnabled;
 
   useEffect(() => {
     if (!isNilOrError(originalCampaignConsents)) {
@@ -185,7 +190,7 @@ const CampaignConsentForm = ({
   const emailGroups = channelGroups('email');
   const smsGroups = channelGroups('sms');
 
-  const showSms = smsGroups.length > 0 && smsEnabled;
+  const showSms = smsGroups.length > 0 && smsManualCampaignsEnabled;
 
   return (
     <FormSection>

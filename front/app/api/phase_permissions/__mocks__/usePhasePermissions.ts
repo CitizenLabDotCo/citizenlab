@@ -8,7 +8,7 @@ export const phasePermissionsData: IPermissionData = {
     permitted_by: 'users',
     created_at: '2023-03-28T12:29:20.848Z',
     updated_at: '2023-03-28T13:15:59.410Z',
-    global_custom_fields: false,
+    custom_fields_behavior: 'global',
     verification_enabled: false,
     verification_expiry: null,
     access_denied_explanation_multiloc: {},

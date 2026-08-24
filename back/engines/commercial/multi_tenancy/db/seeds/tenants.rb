@@ -433,6 +433,10 @@ module MultiTenancy
               enabled: false,
               allowed: false
             },
+            sms_manual_campaigns: {
+              enabled: false,
+              allowed: false
+            },
             decidim_importer: {
               enabled: true,
               allowed: true

@@ -20,6 +20,41 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
     end
   end
 
+  describe 'the segment limit' do
+    let(:max_segments) { EmailCampaigns::Sms::SegmentedMessage::MAX_SEGMENTS }
+
+    it 'accepts a body of exactly the maximum number of segments' do
+      body = 'a' * (153 * max_segments)
+
+      expect(build(:sms_manual_campaign, body_multiloc: { 'en' => body })).to be_valid
+    end
+
+    it 'rejects a body one character over' do
+      campaign = build(:sms_manual_campaign, body_multiloc: { 'en' => 'a' * ((153 * max_segments) + 1) })
+
+      expect(campaign).not_to be_valid
+      expect(campaign.errors[:body_multiloc]).to be_present
+    end
+
+    # Each locale is a message of its own, so a short English body cannot excuse a long French one.
+    it 'rejects a body that is only over the limit in one locale' do
+      campaign = build(
+        :sms_manual_campaign,
+        body_multiloc: { 'en' => 'short', 'fr-FR' => 'a' * ((153 * max_segments) + 1) }
+      )
+
+      expect(campaign).not_to be_valid
+      expect(campaign.errors[:body_multiloc].join).to include('fr-FR')
+    end
+
+    # Unicode fits 67 characters per segment, not 153.
+    it 'measures the limit in segments rather than characters' do
+      campaign = build(:sms_manual_campaign, body_multiloc: { 'en' => 'ж' * ((67 * max_segments) + 1) })
+
+      expect(campaign).not_to be_valid
+    end
+  end
+
   describe 'channel and manual flags' do
     subject(:campaign) { build(:sms_manual_campaign) }
 
@@ -80,7 +115,7 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
     let(:recipient) { create(:user, locale: 'en', phone: phone1, phone_confirmed_at: Time.zone.now) }
     let(:command) { { recipient: recipient, body_multiloc: { 'en' => 'A short SMS update from your city.' } } }
 
-    include_context 'with sms feature enabled'
+    include_context 'with sms manual campaigns feature enabled'
 
     describe '#deliver_later' do
       it 'creates a campaign-linked pending delivery and enqueues a SendJob' do

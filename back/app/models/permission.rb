@@ -11,7 +11,6 @@
 #  permission_scope_type              :string
 #  created_at                         :datetime         not null
 #  updated_at                         :datetime         not null
-#  global_custom_fields               :boolean          default(FALSE), not null
 #  verification_expiry                :integer
 #  access_denied_explanation_multiloc :jsonb            not null
 #  everyone_tracking_enabled          :boolean          default(FALSE), not null
@@ -24,6 +23,7 @@
 #  require_verification               :boolean          default(FALSE), not null
 #  require_confirmed_phone_number     :boolean          default(FALSE), not null
 #  confirmed_phone_number_expiry      :integer
+#  custom_fields_behavior             :string           default("global"), not null
 #
 # Indexes
 #
@@ -32,6 +32,7 @@
 #
 class Permission < ApplicationRecord
   PERMITTED_BIES = %w[everyone users admins_moderators].freeze
+  CUSTOM_FIELDS_BEHAVIORS = %w[global disabled custom].freeze
   ACTIONS = {
     # NOTE: Order of actions in each array is used when using :order_by_action
     nil => %w[visiting following attending_event],
@@ -51,6 +52,15 @@ class Permission < ApplicationRecord
   # 'everyone' is only meaningful for the submission action of participation
   # methods that support it (see ParticipationMethod::Base#supports_permitted_by_everyone?).
   EVERYONE_PERMITTED_ACTIONS = %w[posting_idea taking_survey].freeze
+
+  # `SanitizationService` features allowed in the explanation, shared with anything that
+  # re-sanitises a stored one. Rendered with `dangerouslySetInnerHTML`
+  # (`useCustomAccessDeniedMessage.tsx`, `AccessDenied/index.tsx`).
+  #
+  # Wider than today's editor on purpose: the field had an unrestricted Quill editor until a June
+  # 2026 component swap left it a single-line input, so production still holds lists (nine rows,
+  # every cluster surveyed). Nothing else with content in it - no heading, image, video, alignment.
+  EXPLANATION_SANITIZE_FEATURES = %i[list decoration link].freeze
   UNSUPPORTED_DESCRIPTOR = {
     value: nil,
     locked: true,
@@ -73,12 +83,14 @@ class Permission < ApplicationRecord
   has_many :permissions_custom_fields, -> { order(:ordering).includes(:custom_field) }, inverse_of: :permission, dependent: :destroy
   has_many :custom_fields, -> { order(:ordering) }, through: :permissions_custom_fields
 
+  before_validation :sanitize_access_denied_explanation_multiloc, if: :access_denied_explanation_multiloc
   validates :action, presence: true, inclusion: { in: ->(permission) { available_actions(permission.permission_scope) } }
   validates :permitted_by, presence: true, inclusion: { in: PERMITTED_BIES }
   validates :action, uniqueness: { scope: %i[permission_scope_id permission_scope_type] }
   validates :permission_scope_type, inclusion: { in: SCOPE_TYPES }
   validate :validate_permitted_by_everyone
   validates :user_data_collection, inclusion: { in: %w[all_data demographics_only anonymous] }
+  validates :custom_fields_behavior, inclusion: { in: CUSTOM_FIELDS_BEHAVIORS }, allow_nil: true
 
   before_validation :apply_creation_defaults, on: :create
 
@@ -119,8 +131,12 @@ class Permission < ApplicationRecord
     false
   end
 
-  def allow_global_custom_fields?
-    permitted_by == 'users'
+  # Admins and managers are never asked demographic questions. Masked rather than
+  # stored, so the choice comes back if the action is opened up again.
+  def custom_fields_behavior
+    return 'disabled' if permitted_by == 'admins_moderators'
+
+    super
   end
 
   def everyone_tracking_enabled?
@@ -165,10 +181,17 @@ class Permission < ApplicationRecord
         self.require_password = false
       end
     end
-    self.global_custom_fields ||= true
+    self.custom_fields_behavior ||= 'global'
   end
 
   private
+
+  def sanitize_access_denied_explanation_multiloc
+    self.access_denied_explanation_multiloc = SanitizationService.new.sanitize_body_multiloc(
+      access_denied_explanation_multiloc,
+      EXPLANATION_SANITIZE_FEATURES
+    )
+  end
 
   def validate_permitted_by_everyone
     return unless permitted_by == 'everyone'

@@ -21,6 +21,7 @@
 #  fk_rails_...  (custom_field_id => custom_fields.id)
 #
 class CustomFieldMatrixStatement < ApplicationRecord
+  include PlainTextMultiloc
   include BulkReorderable
 
   # non-persisted attribute to enable form copying
@@ -31,6 +32,7 @@ class CustomFieldMatrixStatement < ApplicationRecord
 
   belongs_to :custom_field
 
+  plain_text_multiloc :title_multiloc
   before_validation :generate_key, on: :create
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }

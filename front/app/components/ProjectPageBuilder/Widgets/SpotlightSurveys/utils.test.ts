@@ -3,12 +3,12 @@ import { addDays, format } from 'date-fns';
 import { phasesData } from 'api/phases/__mocks__/_mockServer';
 import { IPhaseData } from 'api/phases/types';
 
-import { getExtraSurveyState, isExtraSurveyPhase } from './utils';
+import { getSpotlightSurveyState, isSpotlightSurveyPhase } from './utils';
 
 const date = (daysFromNow: number) =>
   format(addDays(new Date(), daysFromNow), 'yyyy-MM-dd');
 
-const extraSurveyPhase = (
+const spotlightSurveyPhase = (
   attributes: Partial<IPhaseData['attributes']> = {}
 ): IPhaseData => {
   const base = phasesData[0];
@@ -37,56 +37,60 @@ const withPostingDisabledReason = (
     | 'user_not_permitted'
     | 'user_not_signed_in'
 ) =>
-  extraSurveyPhase({
+  spotlightSurveyPhase({
     action_descriptors: {
       ...phasesData[0].attributes.action_descriptors,
       posting_idea: { enabled: false, disabled_reason },
     },
   });
 
-describe('isExtraSurveyPhase', () => {
+describe('isSpotlightSurveyPhase', () => {
   it('is true only for standalone native survey phases', () => {
-    expect(isExtraSurveyPhase(extraSurveyPhase())).toBe(true);
+    expect(isSpotlightSurveyPhase(spotlightSurveyPhase())).toBe(true);
     expect(
-      isExtraSurveyPhase(extraSurveyPhase({ placement_type: 'on_timeline' }))
+      isSpotlightSurveyPhase(
+        spotlightSurveyPhase({ placement_type: 'on_timeline' })
+      )
     ).toBe(false);
     expect(
-      isExtraSurveyPhase(extraSurveyPhase({ participation_method: 'ideation' }))
+      isSpotlightSurveyPhase(
+        spotlightSurveyPhase({ participation_method: 'ideation' })
+      )
     ).toBe(false);
-    expect(isExtraSurveyPhase(phasesData[0])).toBe(false);
+    expect(isSpotlightSurveyPhase(phasesData[0])).toBe(false);
   });
 });
 
-describe('getExtraSurveyState', () => {
+describe('getSpotlightSurveyState', () => {
   it('is upcoming before the start date', () => {
     expect(
-      getExtraSurveyState(
-        extraSurveyPhase({ start_at: date(3), end_at: date(10) })
+      getSpotlightSurveyState(
+        spotlightSurveyPhase({ start_at: date(3), end_at: date(10) })
       )
     ).toBe('upcoming');
   });
 
   it('is closed after the end date', () => {
     expect(
-      getExtraSurveyState(
-        extraSurveyPhase({ start_at: date(-10), end_at: date(-3) })
+      getSpotlightSurveyState(
+        spotlightSurveyPhase({ start_at: date(-10), end_at: date(-3) })
       )
     ).toBe('closed');
   });
 
   it('is open while running and posting is enabled', () => {
-    expect(getExtraSurveyState(extraSurveyPhase())).toBe('open');
+    expect(getSpotlightSurveyState(spotlightSurveyPhase())).toBe('open');
   });
 
   it('is open for an ongoing survey without an end date', () => {
-    expect(getExtraSurveyState(extraSurveyPhase({ end_at: null }))).toBe(
-      'open'
-    );
+    expect(
+      getSpotlightSurveyState(spotlightSurveyPhase({ end_at: null }))
+    ).toBe('open');
   });
 
   it('is taken when the visitor already responded', () => {
     expect(
-      getExtraSurveyState(
+      getSpotlightSurveyState(
         withPostingDisabledReason('posting_limited_max_reached')
       )
     ).toBe('taken');
@@ -94,19 +98,19 @@ describe('getExtraSurveyState', () => {
 
   it('is closed when submissions are disabled', () => {
     expect(
-      getExtraSurveyState(withPostingDisabledReason('posting_disabled'))
+      getSpotlightSurveyState(withPostingDisabledReason('posting_disabled'))
     ).toBe('closed');
   });
 
   it('is notEligible when the visitor is not permitted', () => {
     expect(
-      getExtraSurveyState(withPostingDisabledReason('user_not_permitted'))
+      getSpotlightSurveyState(withPostingDisabledReason('user_not_permitted'))
     ).toBe('notEligible');
   });
 
   it('stays open for reasons the visitor can fix by signing in', () => {
     expect(
-      getExtraSurveyState(withPostingDisabledReason('user_not_signed_in'))
+      getSpotlightSurveyState(withPostingDisabledReason('user_not_signed_in'))
     ).toBe('open');
   });
 });
