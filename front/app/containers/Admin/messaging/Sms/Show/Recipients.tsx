@@ -12,8 +12,6 @@ import clHistory from 'utils/cl-router/history';
 
 import messages from '../../messages';
 
-import SendPreviewButton from './SendPreviewButton';
-
 const Label = styled.span`
   font-weight: bold;
 `;
@@ -30,20 +28,9 @@ const GroupLink = styled.a`
 interface Props {
   selectedGroups: IGroupData[];
   noGroupsSelected: boolean;
-  draft: boolean;
-  onSendPreview: () => void;
-  isSendingPreview: boolean;
-  insufficientBalance: boolean;
 }
 
-const Recipients = ({
-  selectedGroups,
-  noGroupsSelected,
-  draft,
-  onSendPreview,
-  isSendingPreview,
-  insufficientBalance,
-}: Props) => {
+const Recipients = ({ selectedGroups, noGroupsSelected }: Props) => {
   const localize = useLocalize();
 
   const goToAllUsers = () => clHistory.push('/admin/users');
@@ -51,14 +38,7 @@ const Recipients = ({
     clHistory.push(`/admin/users/groups/${groupId}`);
 
   return (
-    <Box
-      display="flex"
-      alignItems="center"
-      p="20px 0"
-      borderTop={`1px solid ${colors.borderLight}`}
-      borderBottom={`1px solid ${colors.borderLight}`}
-      mb="20px"
-    >
+    <Box display="flex" alignItems="center" mr="auto">
       <Icon
         name="chat-bubble"
         width="40px"
@@ -66,7 +46,7 @@ const Recipients = ({
         fill={colors.grey400}
         mr="20px"
       />
-      <Box mr="auto">
+      <Box>
         <Label>
           <FormattedMessage {...messages.fieldTo} />
           :&nbsp;
@@ -86,13 +66,6 @@ const Recipients = ({
           ))
         )}
       </Box>
-      {draft && (
-        <SendPreviewButton
-          onClick={onSendPreview}
-          isSendingPreview={isSendingPreview}
-          insufficientBalance={insufficientBalance}
-        />
-      )}
     </Box>
   );
 };

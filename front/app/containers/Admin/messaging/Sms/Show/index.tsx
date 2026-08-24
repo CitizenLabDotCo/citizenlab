@@ -30,6 +30,7 @@ import DeleteModal from './DeleteModal';
 import DeliveriesTable from './DeliveriesTable';
 import Header from './Header';
 import Recipients from './Recipients';
+import SendPreviewButton from './SendPreviewButton';
 import Stats from './Stats';
 
 const Show = () => {
@@ -135,14 +136,26 @@ const Show = () => {
         </Box>
       )}
 
-      <Recipients
-        selectedGroups={selectedGroups}
-        noGroupsSelected={noGroupsSelected}
-        draft={draft}
-        onSendPreview={handleSendPreview}
-        isSendingPreview={isSendingPreview}
-        insufficientBalance={insufficientBalance}
-      />
+      <Box
+        display="flex"
+        alignItems="center"
+        p="20px 0"
+        borderTop={`1px solid ${colors.borderLight}`}
+        borderBottom={`1px solid ${colors.borderLight}`}
+        mb="20px"
+      >
+        <Recipients
+          selectedGroups={selectedGroups}
+          noGroupsSelected={noGroupsSelected}
+        />
+        {draft && (
+          <SendPreviewButton
+            onClick={handleSendPreview}
+            isSendingPreview={isSendingPreview}
+            insufficientBalance={insufficientBalance}
+          />
+        )}
+      </Box>
 
       <Text fontWeight="bold" mb="4px">
         <FormattedMessage {...messages.fieldSmsBody} />
