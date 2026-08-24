@@ -1,8 +1,9 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 
 import {
   Box,
   Button,
+  Input,
   Text,
   Title,
   colors,
@@ -10,15 +11,20 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import { BlockConfigValues } from 'api/custom_blocks/types';
 import useAddCustomBlockVersion from 'api/custom_blocks/useAddCustomBlockVersion';
 import useUpdateCustomBlock from 'api/custom_blocks/useUpdateCustomBlock';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocale from 'hooks/useLocale';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
+
+import ManifestConfigForm from '../ManifestConfigForm';
 import messages from '../messages';
+import { defaultConfigValues } from '../utils';
 
 import PreviewSurface from './PreviewSurface';
 import useAuthoringLoop, { ChatItem } from './useAuthoringLoop';
@@ -41,6 +47,17 @@ const CodeView = styled.pre`
   overflow: auto;
   height: 100%;
   background: ${colors.grey100};
+`;
+
+const JsonView = styled.pre`
+  margin: 0;
+  padding: 12px;
+  font-size: 12px;
+  line-height: 1.5;
+  overflow: auto;
+  max-height: 260px;
+  background: ${colors.grey100};
+  border-radius: ${stylingConsts.borderRadius};
 `;
 
 const ChatLine = ({ item }: { item: ChatItem }) => {
@@ -77,8 +94,10 @@ const AiPanel = ({ onClose }: Props) => {
   const { mutateAsync: addVersion } = useAddCustomBlockVersion();
   const { mutateAsync: updateBlock } = useUpdateCustomBlock();
 
+  const locale = useLocale();
   const [input, setInput] = useState('');
-  const [tab, setTab] = useState<'preview' | 'code'>('preview');
+  const [tab, setTab] = useState<'preview' | 'code' | 'settings'>('preview');
+  const [previewConfig, setPreviewConfig] = useState<BlockConfigValues>({});
   const [compiled, setCompiled] = useState<string | null>(null);
   const [runtimeErrors, setRuntimeErrors] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
@@ -96,8 +115,19 @@ const AiPanel = ({ onClose }: Props) => {
     setRuntimeErrors([...runtimeErrorsRef.current]);
   }, []);
 
-  const { chat, busy, failed, files, blockId, sessionId, send, stop, pushEvent } =
-    useAuthoringLoop({
+  const {
+    chat,
+    busy,
+    failed,
+    files,
+    title,
+    setTitleForLocale,
+    blockId,
+    sessionId,
+    send,
+    stop,
+    pushEvent,
+  } = useAuthoringLoop({
       tenantLocales: isNilOrError(tenantLocales) ? [] : [...tenantLocales],
       untitledTitle: formatMessage(messages.untitledBlock),
       truncatedEventText: formatMessage(messages.outputTruncated),
@@ -105,6 +135,14 @@ const AiPanel = ({ onClose }: Props) => {
       runtimeErrorsRef,
       onCompiled,
     });
+
+  const schema = files.manifest.config_schema;
+  // What the preview renders with: schema defaults overridden by edits made
+  // in the Settings tab.
+  const effectiveConfig = useMemo(
+    () => ({ ...defaultConfigValues(schema), ...previewConfig }),
+    [schema, previewConfig]
+  );
 
   if (isNilOrError(tenantLocales)) return null;
 
@@ -125,6 +163,7 @@ const AiPanel = ({ onClose }: Props) => {
         messages: files.messages,
         ai_session_id: sessionId ?? undefined,
       });
+      await updateBlock({ id: blockId, title_multiloc: title });
       pushEvent(formatMessage(messages.draftSaved));
       return true;
     } catch {
@@ -178,9 +217,20 @@ const AiPanel = ({ onClose }: Props) => {
         p="12px 20px"
         borderBottom={`1px solid ${colors.divider}`}
       >
-        <Title variant="h3" m="0">
-          {formatMessage(messages.aiPanelTitle)}
-        </Title>
+        <Box display="flex" alignItems="center" gap="20px" flex="1">
+          <Title variant="h3" m="0">
+            {formatMessage(messages.aiPanelTitle)}
+          </Title>
+          <Box w="280px">
+            <Input
+              type="text"
+              value={title[locale] ?? ''}
+              placeholder={formatMessage(messages.blockName)}
+              onChange={(value) => setTitleForLocale(locale, value)}
+              id="e2e-custom-block-name"
+            />
+          </Box>
+        </Box>
         <Box display="flex" gap="8px">
           <Button
             buttonStyle="secondary-outlined"
@@ -277,16 +327,57 @@ const AiPanel = ({ onClose }: Props) => {
             >
               {formatMessage(messages.codeTab)}
             </Button>
+            <Button
+              buttonStyle={
+                tab === 'settings' ? 'admin-dark' : 'secondary-outlined'
+              }
+              size="s"
+              onClick={() => setTab('settings')}
+              id="e2e-custom-block-settings-tab"
+            >
+              {formatMessage(messages.settingsTab)}
+            </Button>
           </Box>
           <Box flex="1" overflowY="auto" background={colors.background}>
-            {tab === 'preview' ? (
+            {tab === 'preview' && (
               <PreviewSurface
                 compiledCode={compiled}
                 files={files}
+                config={effectiveConfig}
                 onRuntimeError={onRuntimeError}
               />
-            ) : (
-              <CodeView>{files.source || '—'}</CodeView>
+            )}
+            {tab === 'code' && <CodeView>{files.source || '—'}</CodeView>}
+            {tab === 'settings' && (
+              <Box p="16px">
+                <Title variant="h4" mt="0">
+                  {formatMessage(messages.configurationHeading)}
+                </Title>
+                {schema.length === 0 ? (
+                  <Text color="textSecondary">
+                    {formatMessage(messages.noConfigFields)}
+                  </Text>
+                ) : (
+                  <ManifestConfigForm
+                    schema={schema}
+                    values={effectiveConfig}
+                    onChange={(fieldKey, value) => {
+                      setPreviewConfig((current) => ({
+                        ...current,
+                        [fieldKey]: value,
+                      }));
+                    }}
+                  />
+                )}
+                <Title variant="h4">
+                  {formatMessage(messages.manifestHeading)}
+                </Title>
+                <JsonView>{JSON.stringify(files.manifest, null, 2)}</JsonView>
+                <Title variant="h4">
+                  {formatMessage(messages.messagesHeading)}
+                </Title>
+                <JsonView>{JSON.stringify(files.messages, null, 2)}</JsonView>
+              </Box>
             )}
           </Box>
           {runtimeErrors.length > 0 && (

@@ -85,6 +85,26 @@ export default defineMessages({
     id: 'app.components.admin.ContentBuilder.CustomBlocks.published',
     defaultMessage: 'Block published. You can now drag it from the toolbox.',
   },
+  blockName: {
+    id: 'app.components.admin.ContentBuilder.CustomBlocks.blockName',
+    defaultMessage: 'Block name',
+  },
+  configurationHeading: {
+    id: 'app.components.admin.ContentBuilder.CustomBlocks.configurationHeading',
+    defaultMessage: 'Configuration fields',
+  },
+  noConfigFields: {
+    id: 'app.components.admin.ContentBuilder.CustomBlocks.noConfigFields',
+    defaultMessage: 'This block has no configurable fields yet.',
+  },
+  manifestHeading: {
+    id: 'app.components.admin.ContentBuilder.CustomBlocks.manifestHeading',
+    defaultMessage: 'Manifest',
+  },
+  messagesHeading: {
+    id: 'app.components.admin.ContentBuilder.CustomBlocks.messagesHeading',
+    defaultMessage: 'Text content (per locale)',
+  },
   outputTruncated: {
     id: 'app.components.admin.ContentBuilder.CustomBlocks.outputTruncated',
     defaultMessage:

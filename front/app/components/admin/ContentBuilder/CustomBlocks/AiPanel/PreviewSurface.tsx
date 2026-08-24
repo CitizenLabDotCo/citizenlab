@@ -12,13 +12,14 @@ import CustomBlockRenderer, {
 } from '../runtime/CustomBlockRenderer';
 import { loadBlockModuleFromCode } from '../runtime/loadBlockModule';
 import { BlockProps } from '../runtime/types';
-import { defaultConfigValues } from '../utils';
 
 import { DraftFiles } from './toolExecutor';
 
 interface Props {
   compiledCode: string | null;
   files: DraftFiles;
+  // Effective config values (schema defaults + panel edits).
+  config: BlockProps['config'];
   onRuntimeError: (message: string) => void;
 }
 
@@ -28,7 +29,12 @@ const trimStack = (stack: string | null) =>
 // Renders the draft block from freshly compiled code and reports every way it
 // can blow up (import failure, render error, async error) so the loop can feed
 // it back to the model.
-const PreviewSurface = ({ compiledCode, files, onRuntimeError }: Props) => {
+const PreviewSurface = ({
+  compiledCode,
+  files,
+  config,
+  onRuntimeError,
+}: Props) => {
   const locale = useLocale();
   const [BlockComponent, setBlockComponent] =
     useState<ComponentType<BlockProps> | null>(null);
@@ -90,7 +96,7 @@ const PreviewSurface = ({ compiledCode, files, onRuntimeError }: Props) => {
     <Box p="16px" background="#fff">
       <CustomBlockRenderer
         component={BlockComponent}
-        config={defaultConfigValues(files.manifest.config_schema)}
+        config={config}
         msg={buildMessageLookup(files.messages, locale)}
         onError={(error, componentStack) => {
           onRuntimeError(

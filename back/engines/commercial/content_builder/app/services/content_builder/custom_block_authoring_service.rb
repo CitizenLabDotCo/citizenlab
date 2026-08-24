@@ -36,6 +36,26 @@ module ContentBuilder
       },
       {
         tool_spec: {
+          name: 'set_title',
+          description: 'Set the block name that admins see in the builder toolbox. ' \
+                       'Short and descriptive (2-4 words), with a value for every ' \
+                       'platform locale.',
+          input_schema: {
+            json: {
+              type: 'object',
+              properties: {
+                title: {
+                  type: 'object',
+                  description: 'Locale to name, e.g. {"en": "Before/after slider"}'
+                }
+              },
+              required: ['title']
+            }
+          }
+        }
+      },
+      {
+        tool_spec: {
           name: 'set_manifest',
           description: 'Replace the block manifest. Shape: { manifest_version: 1, ' \
                        "sdk_version: 1, targets: ['homepage'], data_uses: [names of " \
@@ -259,7 +279,7 @@ module ContentBuilder
 
         ## Working style
 
-        1. On a new request: set_manifest, set_messages, then set_source. On iteration: only what changed.
+        1. On a new request: set_title, set_manifest, set_messages, then set_source. On iteration: only what changed.
         2. set_source returns compile errors, lint errors and runtime/render errors from the live preview. Fix them immediately and call set_source again. Do not conclude while errors remain.
         3. A tool result may report that your tool input was cut off by the output token limit. Do not retry the same content: write a more compact file (shorter markup, no long inline data, fewer repeated style props) or split the work into smaller tool calls.
         4. Match the platform look: clean, accessible, generous spacing, tenant brand colors via useTheme, rounded corners (borderRadius '3px'), no garish colors.

@@ -1,5 +1,7 @@
 import { useCallback, useRef, useState } from 'react';
 
+import { Multiloc } from 'typings';
+
 import {
   IAiToolCall,
   IAiToolResult,
@@ -64,15 +66,33 @@ const useAuthoringLoop = ({
     manifest: EMPTY_MANIFEST,
     messages: {} as BlockMessages,
   });
+  const [title, setTitleState] = useState<Multiloc>(() =>
+    Object.fromEntries(tenantLocales.map((locale) => [locale, untitledTitle]))
+  );
 
   const sessionIdRef = useRef<string | null>(null);
   const filesRef = useRef(files);
+  const titleRef = useRef(title);
   const cancelledRef = useRef(false);
 
   const setFiles = useCallback((update: Partial<DraftFiles>) => {
     filesRef.current = { ...filesRef.current, ...update };
     setFilesState(filesRef.current);
   }, []);
+
+  const setTitle = useCallback((update: Multiloc) => {
+    titleRef.current = update;
+    setTitleState(update);
+  }, []);
+
+  // Edits one locale (the header input); the set_title tool replaces the
+  // whole multiloc.
+  const setTitleForLocale = useCallback(
+    (locale: string, value: string) => {
+      setTitle({ ...titleRef.current, [locale]: value });
+    },
+    [setTitle]
+  );
 
   const pushChat = useCallback((item: ChatItem) => {
     setChat((current) => [...current, item]);
@@ -86,11 +106,7 @@ const useAuthoringLoop = ({
   const ensureSession = useCallback(async () => {
     let id = blockId;
     if (!id) {
-      const block = await addCustomBlock({
-        title_multiloc: Object.fromEntries(
-          tenantLocales.map((locale) => [locale, untitledTitle])
-        ),
-      });
+      const block = await addCustomBlock({ title_multiloc: titleRef.current });
       id = block.data.id;
       setBlockId(id);
     }
@@ -101,7 +117,7 @@ const useAuthoringLoop = ({
     }
 
     return sessionIdRef.current;
-  }, [addAiSession, addCustomBlock, blockId, tenantLocales, untitledTitle]);
+  }, [addAiSession, addCustomBlock, blockId]);
 
   const runToolCalls = useCallback(
     async (toolCalls: IAiToolCall[]) => {
@@ -111,6 +127,7 @@ const useAuthoringLoop = ({
         const outcome = await executeToolCall(
           {
             setFiles,
+            setTitle,
             setCompiled: onCompiled,
             runtimeErrorsRef,
             tenantLocales,
@@ -125,7 +142,7 @@ const useAuthoringLoop = ({
       }
       return results;
     },
-    [onCompiled, pushEvent, runtimeErrorsRef, setFiles, tenantLocales]
+    [onCompiled, pushEvent, runtimeErrorsRef, setFiles, setTitle, tenantLocales]
   );
 
   // Read through a function: stop() flips the ref from another closure, which
@@ -205,6 +222,8 @@ const useAuthoringLoop = ({
     busy,
     failed,
     files,
+    title,
+    setTitleForLocale,
     blockId,
     sessionId: sessionIdRef.current,
     send,

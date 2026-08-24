@@ -77,7 +77,7 @@ describe ContentBuilder::CustomBlockAuthoringService do
         expect(tool_result[:tool_use_id]).to eq 'tu_1'
         expect(tool_result[:status]).to eq 'success'
         expect(args[:tool_config][:tools].map { |tool| tool[:tool_spec][:name] })
-          .to include 'set_source'
+          .to include('set_source', 'set_title')
         expect(args[:system].first[:text]).to include 'gv-sdk'
       end
     end

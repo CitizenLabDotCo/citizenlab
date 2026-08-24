@@ -5,6 +5,7 @@ import customBlockAiSessionsKeys from './keys';
 export type CustomBlockAiSessionsKeys = Keys<typeof customBlockAiSessionsKeys>;
 
 export type AiToolName =
+  | 'set_title'
   | 'set_source'
   | 'set_manifest'
   | 'set_messages'

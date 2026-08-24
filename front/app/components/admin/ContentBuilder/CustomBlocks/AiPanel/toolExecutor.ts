@@ -14,6 +14,7 @@ export interface DraftFiles {
 
 export interface ToolExecutorContext {
   setFiles: (update: Partial<DraftFiles>) => void;
+  setTitle: (title: Record<string, string>) => void;
   // Called with freshly compiled code; the preview surface picks it up.
   setCompiled: (code: string | null) => void;
   // Runtime errors collected by the preview surface since the last compile.
@@ -85,6 +86,43 @@ const executeSetSource = async (
 // The manifest arrives from the model at runtime, so every shape assumption
 // must be checked, whatever the declared types promise.
 type UnknownRecord = Record<string, unknown>;
+
+const executeSetTitle = (
+  ctx: ToolExecutorContext,
+  input: Record<string, unknown>
+): ToolOutcome => {
+  const title = (input.title ?? input) as unknown;
+
+  const valid =
+    typeof title === 'object' &&
+    title !== null &&
+    !Array.isArray(title) &&
+    Object.values(title).every(
+      (value) => typeof value === 'string' && value.trim() !== ''
+    ) &&
+    Object.keys(title).length > 0;
+
+  if (!valid) {
+    return {
+      isError: true,
+      content:
+        'set_title requires { title: { "<locale>": "<name>" } } with a non-empty name per locale.',
+    };
+  }
+
+  const catalog = title as Record<string, string>;
+  const missing = ctx.tenantLocales.filter((locale) => !(locale in catalog));
+  ctx.setTitle(catalog);
+  return {
+    isError: false,
+    content: asJson({
+      ok: true,
+      ...(missing.length > 0
+        ? { warning: `Missing locales: ${missing.join(', ')}.` }
+        : {}),
+    }),
+  };
+};
 
 const validateManifest = (manifest: UnknownRecord): string[] => {
   const errors: string[] = [];
@@ -233,6 +271,8 @@ export const executeToolCall = async (
   call: IAiToolCall
 ): Promise<ToolOutcome> => {
   switch (call.name) {
+    case 'set_title':
+      return executeSetTitle(ctx, call.input);
     case 'set_source':
       return executeSetSource(ctx, call.input);
     case 'set_manifest':
