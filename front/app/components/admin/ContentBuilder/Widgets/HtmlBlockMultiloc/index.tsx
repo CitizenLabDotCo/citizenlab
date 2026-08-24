@@ -43,6 +43,7 @@ const HtmlBlockMultiloc = ({ html }: Props) => {
   const { pathname } = useLocation();
   const enabled =
     pathname.includes('admin/project-page-builder') ||
+    pathname.includes('admin/custom-page-builder') ||
     pathname.includes('admin/pages-menu');
 
   return (

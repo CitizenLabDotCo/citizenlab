@@ -127,11 +127,15 @@ const AdminPage = memo<Props>(({ className }) => {
   const isProjectPageBuilderRoute = pathname.match(
     /\/admin\/project-page-builder/
   );
+  const isCustomPageBuilderRoute = pathname.match(
+    /\/admin\/custom-page-builder/
+  );
 
   const sidebarRendered =
     !isHomePageBuilderRoute &&
     !isDescriptionBuilderRoute &&
     !isProjectPageBuilderRoute &&
+    !isCustomPageBuilderRoute &&
     !isReportBuilderEditorRoute;
 
   const projectsExceptNewAndFoldersAndSpaces =

@@ -23,7 +23,6 @@ const MODERATOR_ROUTES = [
   '/admin/reporting/report-builder',
   '/admin/description-builder',
   '/admin/project-page-builder',
-  '/admin/custom-page-builder',
   '/admin/inspiration-hub',
 ];
 
