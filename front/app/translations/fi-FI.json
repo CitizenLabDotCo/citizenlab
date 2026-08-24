@@ -2622,6 +2622,7 @@
   "app.errors.new_phone_invalid": "Syötä kelvollinen puhelinnumero.",
   "app.errors.new_phone_taken": "Tämä puhelinnumero on jo käytössä. Kokeile toista numeroa.",
   "app.errors.no_invites_specified": "Sähköpostiosoitetta ei löytynyt.",
+  "app.errors.no_previewer_phone": "Esikatselu lähetetään omaan puhelimeesi. Lisää ensin puhelinnumero profiiliisi.",
   "app.errors.no_recipients": "Kampanjaa ei voida lähettää, koska vastaanottajia ei ole. Ryhmä, jolle olet lähettämässä, on joko tyhjä tai kukaan ei ole antanut suostumustaan sähköpostien vastaanottamiseen.",
   "app.errors.number_invalid": "Anna kelvollinen numero.",
   "app.errors.password_blank": "Tämä ei voi olla tyhjä",

@@ -2622,6 +2622,7 @@
   "app.errors.new_phone_invalid": "Veuillez saisir un numéro de téléphone valide.",
   "app.errors.new_phone_taken": "Ce numéro de téléphone est déjà utilisé.",
   "app.errors.no_invites_specified": "Aucune adresse e-mail n'a été trouvée.",
+  "app.errors.no_previewer_phone": "Un aperçu est envoyé sur votre propre téléphone. Ajoutez d'abord un numéro de téléphone à votre profil.",
   "app.errors.no_recipients": "La campagne ne peut pas être envoyée car il n'y a aucun destinataire. Le groupe auquel vous l'envoyez est vide, ou personne n'a consenti à recevoir des e-mails.",
   "app.errors.number_invalid": "Veuillez saisir un nombre valide.",
   "app.errors.password_blank": "Cela ne peut pas être vide",

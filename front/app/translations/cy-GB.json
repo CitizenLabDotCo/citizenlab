@@ -2622,6 +2622,7 @@
   "app.errors.new_phone_invalid": "Rhowch rif ffôn dilys.",
   "app.errors.new_phone_taken": "Mae'r rhif ffôn hwn eisoes yn cael ei ddefnyddio. Rhowch gynnig ar un arall.",
   "app.errors.no_invites_specified": "Methu dod o hyd i unrhyw gyfeiriad e-bost.",
+  "app.errors.no_previewer_phone": "Anfonir rhagolwg i'ch ffôn eich hun. Ychwanegwch rif ffôn i'ch proffil yn gyntaf.",
   "app.errors.no_recipients": "Ni ellir anfon yr ymgyrch oherwydd nad oes unrhyw dderbynwyr. Mae'r grŵp rydych chi'n anfon ato naill ai'n wag, neu nid oes neb wedi cydsynio i dderbyn e-byst.",
   "app.errors.number_invalid": "Rhowch rif dilys.",
   "app.errors.password_blank": "Ni all hwn fod yn wag",

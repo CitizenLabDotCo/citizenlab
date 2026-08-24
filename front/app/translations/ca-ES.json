@@ -2622,6 +2622,7 @@
   "app.errors.new_phone_invalid": "Si us plau, introdueix un número de telèfon vàlid.",
   "app.errors.new_phone_taken": "Aquest número de telèfon ja està en ús. Si us plau, prova'n un altre.",
   "app.errors.no_invites_specified": "No s'ha pogut trobar cap adreça de correu electrònic.",
+  "app.errors.no_previewer_phone": "S'envia una vista prèvia al teu propi telèfon. Afegeix primer un número de telèfon al teu perfil.",
   "app.errors.no_recipients": "No es pot enviar la campanya perquè no hi ha destinataris. El grup al qual l'esteu enviant és buit, o bé ningú ha donat el seu consentiment per rebre correus electrònics.",
   "app.errors.number_invalid": "Introduïu un número vàlid.",
   "app.errors.password_blank": "Això no pot estar buit",

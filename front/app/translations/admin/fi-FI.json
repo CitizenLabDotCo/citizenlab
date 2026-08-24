@@ -1217,6 +1217,8 @@
   "app.containers.Admin.messaging.noSmsCampaignsDescription": "Tavoita lyhyellä tekstiviestillä osallistujat, jotka ovat ilmoittaneet puhelinnumeronsa.",
   "app.containers.Admin.messaging.noSmsCampaignsHeader": "Lähetä ensimmäinen tekstiviestisi",
   "app.containers.Admin.messaging.sendSmsPreviewButton": "Lähetä esikatselu",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": "Esikatselu lähetetään omaan puhelimeesi. Lisää ensin puhelinnumero {profileLink}.",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltipLink": "profiiliisi",
   "app.containers.Admin.messaging.sendSmsPreviewTooltip": "Lähettää testitekstiviestin omaan puhelinnumeroosi.",
   "app.containers.Admin.messaging.smsBalanceLowWarning": "SMS-krediitit ovat vähissä. Jos haluat ostaa lisää krediittejä, ota yhteyttä GovSuccess-asiakasvastaavaasi.",
   "app.containers.Admin.messaging.smsBalanceOfPurchased": "{purchased, number} ostetusta krediitistä",

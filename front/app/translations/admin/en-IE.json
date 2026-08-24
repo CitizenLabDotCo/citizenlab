@@ -1217,6 +1217,8 @@
   "app.containers.Admin.messaging.noSmsCampaignsDescription": "Reach participants who shared a phone number with a short text message.",
   "app.containers.Admin.messaging.noSmsCampaignsHeader": "Send your first text message",
   "app.containers.Admin.messaging.sendSmsPreviewButton": "Send a preview",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": "A preview goes to your own phone. Add a phone number to your {profileLink} first.",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltipLink": "profile",
   "app.containers.Admin.messaging.sendSmsPreviewTooltip": "Sends a test text message to your own phone number.",
   "app.containers.Admin.messaging.smsBalanceLowWarning": "You are running low on SMS credits. To purchase more credits, contact your GovSuccess Manager.",
   "app.containers.Admin.messaging.smsBalanceOfPurchased": "of {purchased, number} credits purchased",

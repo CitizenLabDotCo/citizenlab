@@ -2622,6 +2622,7 @@
   "app.errors.new_phone_invalid": "Įveskite galiojantį telefono numerį.",
   "app.errors.new_phone_taken": "Šis telefono numeris jau naudojamas. Bandykite kitą.",
   "app.errors.no_invites_specified": "Nepavyko rasti jokio el. pašto adreso.",
+  "app.errors.no_previewer_phone": "Peržiūra bus išsiųsta į jūsų telefoną. Pirmiausia pridėkite telefono numerį savo profilyje.",
   "app.errors.no_recipients": "Kampanijos negalima išsiųsti, nes nėra gavėjų. Grupė, kuriai siunčiate, yra arba tuščia, arba niekas nedavė sutikimo gauti el. laiškus.",
   "app.errors.number_invalid": "Įveskite galiojantį numerį.",
   "app.errors.password_blank": "Ši reikšmė negali būti tuščia",

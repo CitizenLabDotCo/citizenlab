@@ -1217,6 +1217,8 @@
   "app.containers.Admin.messaging.noSmsCampaignsDescription": "Cyrraedd cyfranogwyr a rannodd rif ffôn gyda neges destun fer.",
   "app.containers.Admin.messaging.noSmsCampaignsHeader": "Anfonwch eich neges destun gyntaf",
   "app.containers.Admin.messaging.sendSmsPreviewButton": "Anfon rhagolwg",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": "Anfonir rhagolwg i'ch ffôn eich hun. Ychwanegwch rif ffôn i'ch {profileLink} yn gyntaf.",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltipLink": "proffil",
   "app.containers.Admin.messaging.sendSmsPreviewTooltip": "Anfon neges destun brawf i'ch rhif ffôn eich hun.",
   "app.containers.Admin.messaging.smsBalanceLowWarning": "Mae eich credydau SMS yn rhedeg yn isel. I brynu mwy o gredydau, cysylltwch â’ch Rheolwr GovSuccess.",
   "app.containers.Admin.messaging.smsBalanceOfPurchased": "o {purchased, number} credyd a brynwyd",

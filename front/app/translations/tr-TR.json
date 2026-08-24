@@ -2622,6 +2622,7 @@
   "app.errors.new_phone_invalid": "Lütfen geçerli bir telefon numarası girin.",
   "app.errors.new_phone_taken": "Bu telefon numarası zaten kullanımda. Lütfen başka bir numara deneyin.",
   "app.errors.no_invites_specified": "Herhangi bir e-posta adresi bulunamadı.",
+  "app.errors.no_previewer_phone": "Önizleme kendi telefonunuza gönderilir. Önce profilinize bir telefon numarası ekleyin.",
   "app.errors.no_recipients": "Alıcı bulunmadığı için kampanya gönderilemiyor. Gönderim yaptığınız grup ya boş ya da kimse e-posta almayı onaylamadı.",
   "app.errors.number_invalid": "Lütfen geçerli bir numara girin.",
   "app.errors.password_blank": "Bu boş olamaz",

@@ -1217,6 +1217,8 @@
   "app.containers.Admin.messaging.noSmsCampaignsDescription": "Pasiekite dalyvius, kurie nurodė telefono numerį, trumpąja žinute.",
   "app.containers.Admin.messaging.noSmsCampaignsHeader": "Išsiųskite savo pirmąją SMS žinutę",
   "app.containers.Admin.messaging.sendSmsPreviewButton": "Siųsti peržiūrą",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": "Peržiūra bus išsiųsta į jūsų telefoną. Pirmiausia pridėkite telefono numerį savo {profileLink}.",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltipLink": "profilyje",
   "app.containers.Admin.messaging.sendSmsPreviewTooltip": "Išsiunčia bandomąją SMS žinutę jūsų telefono numeriu.",
   "app.containers.Admin.messaging.smsBalanceLowWarning": "Jums baigiasi SMS kreditai. Norėdami įsigyti daugiau kreditų, susisiekite su savo „GovSuccess“ vadovu.",
   "app.containers.Admin.messaging.smsBalanceOfPurchased": "iš {purchased, number} įsigytų kreditų",

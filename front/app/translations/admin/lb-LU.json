@@ -1217,6 +1217,8 @@
   "app.containers.Admin.messaging.noSmsCampaignsDescription": "Erreecht d'Participanten, déi eng Telefonsnummer uginn hunn, mat enger kuerzer SMS.",
   "app.containers.Admin.messaging.noSmsCampaignsHeader": "Schéckt Är éischt SMS",
   "app.containers.Admin.messaging.sendSmsPreviewButton": "Eng Virschau schécken",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": "Eng Virschau geet op Ären eegenen Telefon. Füügt fir d'éischt eng Telefonsnummer an Äre {profileLink} bäi.",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltipLink": "Profil",
   "app.containers.Admin.messaging.sendSmsPreviewTooltip": "Schéckt eng Test-SMS un Är eege Telefonsnummer.",
   "app.containers.Admin.messaging.smsBalanceLowWarning": "Är SMS-Credite ginn op en Enn. Fir méi Crediten ze kafen, kontaktéiert wgl. Äre GovSuccess Manager.",
   "app.containers.Admin.messaging.smsBalanceOfPurchased": "vun {purchased, number} kaafte Crediten",

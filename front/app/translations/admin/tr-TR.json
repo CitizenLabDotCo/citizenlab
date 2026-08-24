@@ -1217,6 +1217,8 @@
   "app.containers.Admin.messaging.noSmsCampaignsDescription": "Telefon numarasını paylaşan katılımcılara kısa bir mesajla ulaşın.",
   "app.containers.Admin.messaging.noSmsCampaignsHeader": "İlk kısa mesajınızı gönderin",
   "app.containers.Admin.messaging.sendSmsPreviewButton": "Önizleme gönder",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": "Önizleme kendi telefonunuza gönderilir. Önce {profileLink} sayfanıza bir telefon numarası ekleyin.",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltipLink": "profil",
   "app.containers.Admin.messaging.sendSmsPreviewTooltip": "Kendi telefon numaranıza bir test kısa mesajı gönderir.",
   "app.containers.Admin.messaging.smsBalanceLowWarning": "SMS krediniz azalıyor. Daha fazla kredi satın almak için GovSuccess Yöneticinizle iletişime geçin.",
   "app.containers.Admin.messaging.smsBalanceOfPurchased": "satın alınan {purchased, number} krediden",

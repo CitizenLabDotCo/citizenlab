@@ -2622,6 +2622,7 @@
   "app.errors.new_phone_invalid": "Por favor, insira um número de telefone válido.",
   "app.errors.new_phone_taken": "Este número de telefone já está em uso. Por favor, tente outro.",
   "app.errors.no_invites_specified": "Não foi encontrado nenhum endereço de e-mail.",
+  "app.errors.no_previewer_phone": "Uma prévia será enviada para o seu próprio telefone. Adicione um número de telefone ao seu perfil primeiro.",
   "app.errors.no_recipients": "A campanha não pode ser enviada porque não há destinatários. O grupo para o qual você está enviando está vazio ou ninguém deu consentimento para receber e-mails.",
   "app.errors.number_invalid": "Digite um número válido.",
   "app.errors.password_blank": "Não pode estar vazio",

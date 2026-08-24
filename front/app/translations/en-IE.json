@@ -2622,6 +2622,7 @@
   "app.errors.new_phone_invalid": "Please enter a valid phone number.",
   "app.errors.new_phone_taken": "This phone number is already taken. Please try another one.",
   "app.errors.no_invites_specified": "Could not find any email address.",
+  "app.errors.no_previewer_phone": "A preview goes to your own phone. Add a phone number to your profile first.",
   "app.errors.no_recipients": "The campaign can't be sent out because there are no recipients. The group you're sending to is either empty, or nobody has consented to receiving emails.",
   "app.errors.number_invalid": "Please enter a valid number.",
   "app.errors.password_blank": "This cannot be empty",

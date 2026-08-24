@@ -1217,6 +1217,8 @@
   "app.containers.Admin.messaging.noSmsCampaignsDescription": "Sazinieties ar dalībniekiem, kuri norādījuši tālruņa numuru, nosūtot īsu teksta ziņojumu.",
   "app.containers.Admin.messaging.noSmsCampaignsHeader": "Nosūtiet savu pirmo īsziņu",
   "app.containers.Admin.messaging.sendSmsPreviewButton": "Nosūtīt priekšskatījumu",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": "Priekšskatījums tiek nosūtīts uz jūsu tālruni. Vispirms pievienojiet tālruņa numuru savam {profileLink}.",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltipLink": "profils",
   "app.containers.Admin.messaging.sendSmsPreviewTooltip": "Nosūta testa īsziņu uz jūsu tālruņa numuru.",
   "app.containers.Admin.messaging.smsBalanceLowWarning": "Jums beidzas SMS kredīti. Lai iegādātos vairāk kredītu, sazinieties ar savu GovSuccess vadītāju.",
   "app.containers.Admin.messaging.smsBalanceOfPurchased": "no {purchased, number} iegādātajiem kredītiem",

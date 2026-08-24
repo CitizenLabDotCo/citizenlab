@@ -1217,6 +1217,8 @@
   "app.containers.Admin.messaging.noSmsCampaignsDescription": "Nå deltagare som har angett ett telefonnummer med ett kort sms.",
   "app.containers.Admin.messaging.noSmsCampaignsHeader": "Skicka ditt första sms",
   "app.containers.Admin.messaging.sendSmsPreviewButton": "Skicka en förhandsgranskning",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": "En förhandsgranskning skickas till din egen telefon. Lägg till ett telefonnummer i din {profileLink} först.",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltipLink": "profil",
   "app.containers.Admin.messaging.sendSmsPreviewTooltip": "Skickar ett test-sms till ditt eget telefonnummer.",
   "app.containers.Admin.messaging.smsBalanceLowWarning": "Du håller på att få slut på SMS-krediter. För att köpa fler krediter, kontakta din GovSuccess Manager.",
   "app.containers.Admin.messaging.smsBalanceOfPurchased": "av {purchased, number} köpta krediter",

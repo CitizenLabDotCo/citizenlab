@@ -1217,6 +1217,8 @@
   "app.containers.Admin.messaging.noSmsCampaignsDescription": "Erreichen Sie Teilnehmer*innen, die eine Telefonnummer hinterlegt haben, mit einer kurzen SMS.",
   "app.containers.Admin.messaging.noSmsCampaignsHeader": "Senden Sie Ihre erste SMS",
   "app.containers.Admin.messaging.sendSmsPreviewButton": "Vorschau senden",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": "Eine Vorschau wird an Ihr eigenes Telefon gesendet. Fügen Sie zuerst eine Telefonnummer zu Ihrem {profileLink} hinzu.",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltipLink": "Profil",
   "app.containers.Admin.messaging.sendSmsPreviewTooltip": "Sendet eine Test-SMS an Ihre eigene Telefonnummer.",
   "app.containers.Admin.messaging.smsBalanceLowWarning": "Ihr SMS-Guthaben geht zur Neige. Um weiteres Guthaben zu erwerben, wenden Sie sich bitte an Ihre Kundenbetreuerin.",
   "app.containers.Admin.messaging.smsBalanceOfPurchased": "von {purchased, number} erworbenen Credits",

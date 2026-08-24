@@ -1217,6 +1217,8 @@
   "app.containers.Admin.messaging.noSmsCampaignsDescription": "Nå deltakere som har oppgitt et telefonnummer med en kort tekstmelding.",
   "app.containers.Admin.messaging.noSmsCampaignsHeader": "Send din første tekstmelding",
   "app.containers.Admin.messaging.sendSmsPreviewButton": "Send en forhåndsvisning",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": "En forhåndsvisning sendes til din egen telefon. Legg til et telefonnummer i din {profileLink} først.",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltipLink": "profil",
   "app.containers.Admin.messaging.sendSmsPreviewTooltip": "Sender en testmelding til ditt eget telefonnummer.",
   "app.containers.Admin.messaging.smsBalanceLowWarning": "Du begynner å gå tom for SMS-kreditter. For å kjøpe flere kreditter, kontakt din GovSuccess Manager.",
   "app.containers.Admin.messaging.smsBalanceOfPurchased": "av {purchased, number} kreditter kjøpt",

@@ -2622,6 +2622,7 @@
   "app.errors.new_phone_invalid": "Lūdzu, ievadiet derīgu tālruņa numuru.",
   "app.errors.new_phone_taken": "Šis tālruņa numurs jau ir aizņemts. Lūdzu, mēģiniet citu.",
   "app.errors.no_invites_specified": "Nevarēja atrast nevienu e-pasta adresi.",
+  "app.errors.no_previewer_phone": "Priekšskatījums tiek nosūtīts uz jūsu tālruni. Vispirms pievienojiet tālruņa numuru savam profilam.",
   "app.errors.no_recipients": "Kampaņu nevar nosūtīt, jo nav neviena saņēmēja. Grupa, kurai sūtāt, ir vai nu tukša, vai arī neviens nav piekritis saņemt e-pastus.",
   "app.errors.number_invalid": "Lūdzu, ievadiet derīgu numuru.",
   "app.errors.password_blank": "Tas nevar būt tukšs",

@@ -1217,6 +1217,8 @@
   "app.containers.Admin.messaging.noSmsCampaignsDescription": "Προσεγγίστε τους συμμετέχοντες που μοιράστηκαν έναν αριθμό τηλεφώνου με ένα σύντομο μήνυμα κειμένου.",
   "app.containers.Admin.messaging.noSmsCampaignsHeader": "Στείλτε το πρώτο σας μήνυμα κειμένου",
   "app.containers.Admin.messaging.sendSmsPreviewButton": "Αποστολή προεπισκόπησης",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": "Μια προεπισκόπηση αποστέλλεται στο δικό σας τηλέφωνο. Προσθέστε πρώτα έναν αριθμό τηλεφώνου στο {profileLink} σας.",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltipLink": "προφίλ",
   "app.containers.Admin.messaging.sendSmsPreviewTooltip": "Στέλνει ένα δοκιμαστικό μήνυμα κειμένου στον δικό σας αριθμό τηλεφώνου.",
   "app.containers.Admin.messaging.smsBalanceLowWarning": "Οι μονάδες SMS εξαντλούνται. Για να αγοράσετε περισσότερες μονάδες, επικοινωνήστε με τον GovSuccess Manager σας.",
   "app.containers.Admin.messaging.smsBalanceOfPurchased": "από {purchased, number} μονάδες που αγοράστηκαν",

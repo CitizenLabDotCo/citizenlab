@@ -2622,6 +2622,7 @@
   "app.errors.new_phone_invalid": "Molimo unesite valjan telefonski broj.",
   "app.errors.new_phone_taken": "Ovaj telefonski broj već se koristi. Molimo pokušajte s drugim.",
   "app.errors.no_invites_specified": "Nismo uspjeli pronaći bilo koju adresu e-pošte.",
+  "app.errors.no_previewer_phone": "Pregled se šalje na vaš telefon. Prvo dodajte broj telefona na svoj profil.",
   "app.errors.no_recipients": "Kampanja se ne može poslati jer nema primatelja. Grupa kojoj šaljete je ili prazna ili nitko nije dao privolu za primanje e-pošte.",
   "app.errors.number_invalid": "Unesite važeći broj.",
   "app.errors.password_blank": "Ovo ne može biti prazno",

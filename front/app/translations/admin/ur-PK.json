@@ -1217,6 +1217,8 @@
   "app.containers.Admin.messaging.noSmsCampaignsDescription": "ان شرکاء تک رسائی حاصل کریں جنہوں نے ایک مختصر ٹیکسٹ پیغام کے ذریعے فون نمبر شیئر کیا ہے۔",
   "app.containers.Admin.messaging.noSmsCampaignsHeader": "اپنا پہلا ٹیکسٹ پیغام بھیجیں",
   "app.containers.Admin.messaging.sendSmsPreviewButton": "پیش نظارہ بھیجیں",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": "ایک پیش نظارہ آپ کے اپنے فون پر بھیجا جاتا ہے۔ پہلے اپنے {profileLink} میں فون نمبر شامل کریں۔",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltipLink": "پروفائل",
   "app.containers.Admin.messaging.sendSmsPreviewTooltip": "آپ کے اپنے فون نمبر پر ایک آزمائشی ٹیکسٹ پیغام بھیجتا ہے۔",
   "app.containers.Admin.messaging.smsBalanceLowWarning": "آپ کے پاس SMS کریڈٹس ختم ہو رہے ہیں۔ مزید کریڈٹس خریدنے کے لیے، اپنے GovSuccess مینیجر سے رابطہ کریں۔",
   "app.containers.Admin.messaging.smsBalanceOfPurchased": "خریدے گئے {purchased, number} کریڈٹس میں سے",

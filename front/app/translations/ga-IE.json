@@ -2622,6 +2622,7 @@
   "app.errors.new_phone_invalid": "Cuir isteach uimhir theileafóin bhailí, le do thoil.",
   "app.errors.new_phone_taken": "Tá an uimhir theileafóin seo in úsáid cheana féin. Bain triail as ceann eile, le do thoil.",
   "app.errors.no_invites_specified": "Níorbh fhéidir aon seoladh ríomhphoist a aimsiú.",
+  "app.errors.no_previewer_phone": "Seoltar réamhamharc chuig d'fhón féin. Cuir uimhir ghutháin le do phróifíl ar dtús.",
   "app.errors.no_recipients": "Ní féidir an feachtas a sheoladh amach toisc nach bhfuil aon fhaighteoirí ann. Tá an grúpa a bhfuil tú á sheoladh chuige folamh, nó níor thug aon duine toiliú chun ríomhphoist a fháil.",
   "app.errors.number_invalid": "Cuir isteach uimhir bhailí le do thoil.",
   "app.errors.password_blank": "Ní féidir é seo a bheith folamh",

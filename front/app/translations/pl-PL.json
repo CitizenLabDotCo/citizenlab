@@ -2622,6 +2622,7 @@
   "app.errors.new_phone_invalid": "Proszę podać poprawny numer telefonu.",
   "app.errors.new_phone_taken": "Ten numer telefonu jest już zajęty. Proszę spróbować innego.",
   "app.errors.no_invites_specified": "Nie znaleziono żadnego adresu e-mail.",
+  "app.errors.no_previewer_phone": "Podgląd zostanie wysłany na Twój telefon. Najpierw dodaj numer telefonu do swojego profilu.",
   "app.errors.no_recipients": "Kampania nie może zostać wysłana, ponieważ nie ma odbiorców. Grupa, do której wysyłasz, jest pusta lub nikt nie wyraził zgody na otrzymywanie wiadomości e-mail.",
   "app.errors.number_invalid": "Wprowadź prawidłowy numer.",
   "app.errors.password_blank": "To pole nie może być puste",

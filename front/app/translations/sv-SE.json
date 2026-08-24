@@ -2622,6 +2622,7 @@
   "app.errors.new_phone_invalid": "Vänligen ange ett giltigt telefonnummer.",
   "app.errors.new_phone_taken": "Det här telefonnumret används redan. Vänligen försök med ett annat.",
   "app.errors.no_invites_specified": "Ingen e-postadress hittades.",
+  "app.errors.no_previewer_phone": "En förhandsgranskning skickas till din egen telefon. Lägg till ett telefonnummer i din profil först.",
   "app.errors.no_recipients": "Kampanjen kan inte skickas ut eftersom det saknas mottagare. Gruppen du skickar till är antingen tom, eller så har ingen samtyckt till att ta emot e-post.",
   "app.errors.number_invalid": "Vänligen ange ett giltigt nummer.",
   "app.errors.password_blank": "Det här får inte vara tomt",

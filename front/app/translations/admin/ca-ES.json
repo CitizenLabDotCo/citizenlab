@@ -1217,6 +1217,8 @@
   "app.containers.Admin.messaging.noSmsCampaignsDescription": "Arriba als participants que han compartit un número de telèfon amb un missatge de text curt.",
   "app.containers.Admin.messaging.noSmsCampaignsHeader": "Envia el teu primer missatge de text",
   "app.containers.Admin.messaging.sendSmsPreviewButton": "Envia una vista prèvia",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": "S'envia una vista prèvia al teu propi telèfon. Afegeix primer un número de telèfon al teu {profileLink}.",
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltipLink": "perfil",
   "app.containers.Admin.messaging.sendSmsPreviewTooltip": "Envia un missatge de text de prova al teu propi número de telèfon.",
   "app.containers.Admin.messaging.smsBalanceLowWarning": "Et queden pocs crèdits d'SMS. Per comprar més crèdits, posa't en contacte amb el teu gestor de GovSuccess.",
   "app.containers.Admin.messaging.smsBalanceOfPurchased": "de {purchased, number} crèdits comprats",

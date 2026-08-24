@@ -2622,6 +2622,7 @@
   "app.errors.new_phone_invalid": "Vennligst oppgi et gyldig telefonnummer.",
   "app.errors.new_phone_taken": "Dette telefonnummeret er allerede i bruk. Vennligst prøv et annet.",
   "app.errors.no_invites_specified": "Fant ingen e-postadresse.",
+  "app.errors.no_previewer_phone": "En forhåndsvisning sendes til din egen telefon. Legg til et telefonnummer i profilen din først.",
   "app.errors.no_recipients": "Kampanjen kan ikke sendes ut fordi det ikke er noen mottakere. Gruppen du sender til er enten tom, eller så har ingen samtykket til å motta e-poster.",
   "app.errors.number_invalid": "Vennligst skriv inn et gyldig nummer.",
   "app.errors.password_blank": "Denne kan ikke være tom",
