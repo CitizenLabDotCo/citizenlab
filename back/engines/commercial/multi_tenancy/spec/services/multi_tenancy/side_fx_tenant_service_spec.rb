@@ -47,6 +47,19 @@ describe MultiTenancy::SideFxTenantService do
       layout = project.content_builder_layouts.find_by(code: 'project_description')
       expect(layout&.enabled).to be(true)
     end
+
+    # Templates create static pages directly, so the SideFx create hook never fires for them.
+    it 'provisions Content Builder layouts for templated custom pages (content_builder patch)' do
+      page = create(:static_page, top_info_section_multiloc: { 'en' => '<p>Templated</p>' }, top_info_section_enabled: true)
+
+      service.after_apply_template(tenant, 'base', current_user)
+
+      layout = ContentBuilder::Layout.find_by(
+        content_buildable: page,
+        code: ContentBuilder::CustomPageLayoutService::CODE
+      )
+      expect(layout&.enabled).to be(true)
+    end
   end
 
   describe 'after_update' do

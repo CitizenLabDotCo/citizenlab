@@ -42,6 +42,19 @@ module ContentBuilder
       ProjectFolders::Folder.find_each { |folder| safely_ensure_on_content_builder(folder) }
     end
 
+    # Ensures every global custom page in the current tenant has a layout.
+    #
+    # Templates do serialize layouts (with a polymorphic content_buildable ref), but only the
+    # ones their source platform had: the hand-maintained templates carry a homepage layout and
+    # nothing else, and templates generated from platforms that predate the migration carry
+    # custom pages with no layout at all. This derives whatever is missing, and is a no-op when
+    # the template already supplied it.
+    #
+    # A failure on one page is reported and skipped rather than aborting tenant creation.
+    def provision_all_custom_pages!
+      StaticPage.find_each { |static_page| safely_ensure_custom_page(static_page) }
+    end
+
     def ensure_on_content_builder!(buildable)
       existing = ContentBuilder::Layout.find_by(
         content_buildable: buildable,
@@ -105,6 +118,25 @@ module ContentBuilder
       })
     end
 
+    # Custom pages are provisioned separately: a StaticPage has no description_multiloc, so
+    # none of the description-shaped helpers above apply to it, and its graph comes from
+    # CustomPageLayoutService instead.
+    #
+    # Only global custom pages take part. Policy pages (code != 'custom') and project-scoped
+    # pages keep their own editors, and giving them a layout would put them in a builder
+    # nothing routes to.
+    def ensure_custom_page!(static_page)
+      return unless static_page.custom? && !static_page.project_scoped?
+      return if ContentBuilder::Layout.exists?(content_buildable: static_page, code: CustomPageLayoutService::CODE)
+
+      ContentBuilder::Layout.create!(
+        content_buildable: static_page,
+        code: CustomPageLayoutService::CODE,
+        enabled: true,
+        craftjs_json: CustomPageLayoutService.new.craftjs_json_for(static_page)
+      )
+    end
+
     # NB: create via Layout (not buildable.content_builder_layouts) so the
     # polymorphic content_buildable_type is set — the has_many lacks `as:`, and a
     # NULL type is invisible to the controller's find_by!.
@@ -128,6 +160,12 @@ module ContentBuilder
         enabled: true,
         craftjs_json: ProjectPageLayoutService.new.craftjs_json_for(project)
       )
+    end
+
+    def safely_ensure_custom_page(static_page)
+      ensure_custom_page!(static_page)
+    rescue StandardError => e
+      ErrorReporter.report(e, extra: { static_page_id: static_page.id })
     end
 
     def safely_ensure_on_content_builder(buildable)
