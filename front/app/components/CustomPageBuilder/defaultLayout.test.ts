@@ -60,6 +60,17 @@ describe('normalizeCustomPageLayout', () => {
     expect(result.TXT.parent).toBe(BODY_NODE_ID);
   });
 
+  // A ROOT that arrives without a children array must be repaired, not thrown on:
+  // normalising exists precisely to survive a malformed stored graph.
+  it('survives a ROOT with no children array', () => {
+    const result = normalizeCustomPageLayout({
+      ROOT: {},
+    } as unknown as SerializedNodes);
+
+    expect(result.ROOT.nodes).toEqual([BODY_NODE_ID]);
+    expect(result[BODY_NODE_ID].nodes).toEqual([]);
+  });
+
   it('re-parents a child that points somewhere other than the body', () => {
     const nodes = {
       ...defaultCustomPageLayout(),

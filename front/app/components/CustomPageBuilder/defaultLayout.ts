@@ -39,6 +39,11 @@ const resolvedNameOf = (node: SerializedNode) =>
 export const findNodeIdByName = (nodes: SerializedNodes, name: string) =>
   Object.keys(nodes).find((id) => resolvedNameOf(nodes[id]) === name);
 
+// Stored graphs are typed optimistically but come off the wire, where a node may be missing
+// its children array entirely. Normalising has to survive that rather than throw.
+const childIdsOf = (node: SerializedNode): string[] =>
+  Array.isArray(node.nodes) ? node.nodes : [];
+
 // Guarantees the scaffold the editor relies on: a CustomPageRoot holding exactly one
 // CustomPageBody, with every other node hanging off the body. A layout that predates a
 // scaffold change, or one saved before the body existed, is repaired rather than discarded.
@@ -55,10 +60,14 @@ export const normalizeCustomPageLayout = (
   const bodyId = existingBodyId ?? BODY_NODE_ID;
   if (!existingBodyId) {
     // No body yet: adopt whatever ROOT was holding so no content is lost.
-    next[bodyId] = bodyNode(next[ROOT_ID].nodes);
+    next[bodyId] = bodyNode(childIdsOf(next[ROOT_ID]));
   }
 
-  next[bodyId] = { ...next[bodyId], parent: ROOT_ID };
+  next[bodyId] = {
+    ...next[bodyId],
+    parent: ROOT_ID,
+    nodes: childIdsOf(next[bodyId]),
+  };
   next[bodyId].nodes.forEach((childId) => {
     const child = next[childId] as SerializedNode | undefined;
     if (child && child.parent !== bodyId) {

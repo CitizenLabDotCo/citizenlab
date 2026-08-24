@@ -29,11 +29,7 @@ export const CustomPageBody: UserComponent<RegionProps> = ({ children }) => {
   }));
 
   return (
-    <Box
-      id="e2e-custom-page-body"
-      w="100%"
-      minHeight={inEditor ? '60px' : undefined}
-    >
+    <Box w="100%" minHeight={inEditor ? '60px' : undefined}>
       {children}
     </Box>
   );
