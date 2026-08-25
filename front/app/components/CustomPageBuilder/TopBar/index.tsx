@@ -29,7 +29,7 @@ type Props = {
   backPath: string;
   previewLink: TypedLinkProps;
   titleMultiloc: Multiloc;
-  onSave: (nodes: SerializedNodes) => Promise<boolean>;
+  onSave: (nodes: SerializedNodes) => Promise<void>;
   isSaving: boolean;
   saveHasError: boolean;
 };

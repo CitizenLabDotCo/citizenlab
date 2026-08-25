@@ -87,17 +87,15 @@ const CustomPageBuilderPage = ({
     Object.values(contentBuilderErrors).filter((node) => node.hasError).length >
     0;
 
-  const handleSave = async (nodes: SerializedNodes): Promise<boolean> => {
-    if (isSaving) return false;
+  const handleSave = async (nodes: SerializedNodes): Promise<void> => {
+    if (isSaving) return;
     setIsSaving(true);
     setSaveError(false);
 
     try {
       await upsertCustomPageLayout({ staticPageId, craftjs_json: nodes });
-      return true;
     } catch {
       setSaveError(true);
-      return false;
     } finally {
       setIsSaving(false);
     }

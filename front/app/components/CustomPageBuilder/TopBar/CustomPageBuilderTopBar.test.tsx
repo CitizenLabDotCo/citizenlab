@@ -33,7 +33,7 @@ const defaultProps: React.ComponentProps<typeof CustomPageBuilderTopBar> = {
   backPath: '/admin/pages-menu/pages/page-1/content',
   previewLink: { to: '/pages/$slug', params: { slug: 'about-us' } },
   titleMultiloc: { en: 'About us' },
-  onSave: jest.fn(() => Promise.resolve(true)),
+  onSave: jest.fn(() => Promise.resolve()),
   isSaving: false,
   saveHasError: false,
   hasError: false,
