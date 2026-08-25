@@ -24,9 +24,8 @@ import NewLabel from 'components/UI/NewLabel';
 
 import { useIntl } from 'utils/cl-intl';
 
-// Custom pages carry their own widget list rather than reusing the description toolbox: the
-// two sets are curated separately (see TAN-8556) and already differ — the Participation Box
-// is project-only, and the banner, title and projects widgets land in later tickets.
+// The description toolbox's list without the Participation Box, which is project-only. Kept
+// separate because the two lists diverge as the custom page widgets land (see TAN-8556).
 const CustomPageBuilderToolbox = () => {
   const { formatMessage } = useIntl();
   const isHtmlBlockMultilocEnabled = useFeatureFlag({

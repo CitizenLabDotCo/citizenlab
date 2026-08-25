@@ -61,8 +61,7 @@ describe('normalizeCustomPageLayout', () => {
     expect(result.TXT.parent).toBe(BODY_NODE_ID);
   });
 
-  // A ROOT that arrives without a children array must be repaired, not thrown on:
-  // normalising exists precisely to survive a malformed stored graph.
+  // Normalising exists to survive a malformed stored graph, not to throw on one.
   it('survives a ROOT with no children array', () => {
     const result = normalizeCustomPageLayout({
       ROOT: {},
@@ -72,8 +71,7 @@ describe('normalizeCustomPageLayout', () => {
     expect(result[BODY_NODE_ID].nodes).toEqual([]);
   });
 
-  // PR 3 pins banner and title slots as siblings of the body; rebuilding ROOT's children
-  // from the body alone would silently drop them.
+  // The banner and title slots will sit here; rebuilding ROOT from the body alone drops them.
   it('keeps a pinned sibling of the body on ROOT', () => {
     const nodes = {
       ...defaultCustomPageLayout(),

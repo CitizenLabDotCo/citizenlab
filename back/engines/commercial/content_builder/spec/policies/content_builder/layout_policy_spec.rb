@@ -97,10 +97,8 @@ RSpec.describe ContentBuilder::LayoutPolicy do
     end
   end
 
-  # Custom pages run through the same policy with no stubbing: UserRoleService#can_moderate?
-  # has no StaticPage branch, so it returns nil for everyone except admins, who short-circuit
-  # to true. Writes are therefore admin-only, and project/folder moderators get nothing —
-  # which is what StaticPagePolicy already enforces for global custom pages.
+  # Unstubbed, unlike the contexts above: UserRoleService#can_moderate? has no StaticPage
+  # branch, so only admins get past it. That is what makes custom page writes admin-only.
   context 'for a custom page layout' do
     let(:layout) do
       create(:layout, content_buildable: create(:static_page), code: ContentBuilder::CustomPageLayoutService::CODE)

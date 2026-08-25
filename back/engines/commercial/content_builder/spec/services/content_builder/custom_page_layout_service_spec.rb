@@ -13,9 +13,8 @@ describe ContentBuilder::CustomPageLayoutService do
   let(:plain_text) { { 'en' => '<p>Hello</p>' } }
   let(:text_with_image) { { 'en' => '<p>Hello</p><img src="https://example.com/a.png">' } }
 
-  # Starts from a genuinely blank page: the factory fills top_info_section_multiloc with
-  # Faker text but leaves top_info_section_enabled at its default of false, so each example
-  # opts into exactly the sections it is about.
+  # The factory fills the info section multilocs with Faker text, so blank them here and let
+  # each example opt into the sections it is about.
   def build_page(**attributes)
     build(
       :static_page,
@@ -104,9 +103,8 @@ describe ContentBuilder::CustomPageLayoutService do
       expect(craftjs[body_id]['nodes']).to be_empty
     end
 
-    # Node ids are fixed constants rather than generated, so the same content always yields
-    # a byte-identical graph. The migration task relies on this to tell a page that needs
-    # rewriting from one that does not.
+    # The migration task compares a stored graph with a freshly derived one to decide whether
+    # a page needs rewriting, which only works while node ids are fixed rather than generated.
     it 'gives two pages with the same content an identical graph' do
       attributes = { top_info_section_multiloc: plain_text, top_info_section_enabled: true }
 

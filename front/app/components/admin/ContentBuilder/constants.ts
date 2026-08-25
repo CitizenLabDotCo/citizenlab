@@ -6,9 +6,8 @@ export const CONTENT_BUILDER_ERROR_EVENT = 'contentBuilderError';
 export const CONTENT_BUILDER_DELETE_ELEMENT_EVENT =
   'deleteContentBuilderElement';
 
-// The custom page builder's route segment. A builder route has to be recognised in several
-// unrelated places — the admin sidebar suppression, widget editability, the preview iframe —
-// and a typo in any of them fails silently, so they all read it from here.
+// Recognised in several unrelated places — sidebar suppression, widget editability, the
+// preview iframe — where a typo fails silently.
 export const CUSTOM_PAGE_BUILDER_PATH = 'admin/custom-page-builder';
 
 export const DEFAULT_PADDING = '20px';

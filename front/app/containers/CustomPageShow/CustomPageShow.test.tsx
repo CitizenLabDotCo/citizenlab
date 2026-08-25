@@ -91,7 +91,6 @@ describe('CustomPageShow', () => {
     expect(screen.queryByTestId('builderContent')).not.toBeInTheDocument();
   });
 
-  // The builder replaces the legacy sections rather than rendering alongside them.
   it('renders the builder content instead of the legacy sections', () => {
     hasContent = true;
     render(<CustomPageShow />);
@@ -101,8 +100,7 @@ describe('CustomPageShow', () => {
     expect(screen.queryByTestId('legacyProjects')).not.toBeInTheDocument();
   });
 
-  // Rendering the legacy sections first would show content that is replaced as soon as the
-  // layout arrives.
+  // Rendering them first would show content that is replaced as soon as the layout arrives.
   it('does not render the legacy sections while the layout is still loading', () => {
     isLoading = true;
     render(<CustomPageShow />);
@@ -112,8 +110,7 @@ describe('CustomPageShow', () => {
     expect(screen.getByTestId('builderContent')).toBeInTheDocument();
   });
 
-  // This component also serves policy pages and project-scoped pages, which are not on the
-  // Content Builder; they must not consult the layout at all.
+  // Policy and project-scoped pages are not on the Content Builder.
   it.each([
     ['a policy page', { code: 'faq' }],
     ['a project-scoped page', { project_id: 'project-1' }],

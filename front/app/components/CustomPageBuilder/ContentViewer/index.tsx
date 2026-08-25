@@ -19,9 +19,7 @@ const handleLoadImages = () => {
   eventEmitter.emit(IMAGES_LOADED_EVENT);
 };
 
-// Renders a custom page from its Content Builder layout. Returns null when there is nothing
-// to show, so the page falls back to its legacy sections — which is the normal case for any
-// page whose layout has not been created yet.
+// Returns null when there is nothing to show, so the page falls back to its own sections.
 const CustomPageContentViewer = ({ staticPageId }: Props) => {
   const { isLoading, hasContent, craftjsJson } =
     useCustomPageBuilderContent(staticPageId);

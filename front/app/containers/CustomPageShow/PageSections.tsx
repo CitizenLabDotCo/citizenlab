@@ -34,10 +34,8 @@ type Props = {
   page: ICustomPageData;
 };
 
-// The fixed sections a custom page is built from before the Content Builder: two info
-// sections, its attachments and its projects/events list, each behind its own toggle. A page
-// on the builder renders its layout instead, so this whole component — and the toggles that
-// feed it — goes away at cutover.
+// How a custom page rendered before the Content Builder: two info sections, attachments and
+// a projects/events list, each behind its own toggle. Deleted once every page is migrated.
 const PageSections = ({ page }: Props) => {
   const { data: remotePageFiles } = usePageFiles(page.id);
   const attributes = page.attributes;

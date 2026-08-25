@@ -1,16 +1,11 @@
 # frozen_string_literal: true
 
 module ContentBuilder
-  # Builds the craftjs graph for a custom page's Content Builder layout.
+  # Builds the craftjs graph for a custom page: a root and a body region wrapping the page's
+  # top and bottom info sections. Widget choice per section is DescriptionLayoutService's,
+  # reused here.
   #
-  # The graph is a fixed scaffold — a root and a body region — wrapping the page's top and
-  # bottom info sections. Each section becomes a native TextMultiloc, or the lossless
-  # RichTextMultiloc bridge when its HTML holds media the text widget cannot render; the
-  # choice is DescriptionLayoutService's, reused here.
-  #
-  # A section is emitted only when it is both enabled and non-blank, so a page on the
-  # builder shows what it shows today: CustomPageShow renders each info section only when
-  # its *_enabled flag is set.
+  # A disabled section is skipped, because the front office does not render one either.
   class CustomPageLayoutService
     CODE = 'custom_page'
 
@@ -46,8 +41,7 @@ module ContentBuilder
         description_layout_service.text_node(multiloc)
       end
 
-      # The node builders hardcode ROOT as the parent; on a custom page every section
-      # hangs off the body region instead.
+      # The node builders hardcode ROOT as the parent; here sections hang off the body.
       node.merge('parent' => BODY_ID)
     end
 

@@ -113,9 +113,8 @@ describe('CustomPageBuilderPage save contract', () => {
     jest.clearAllMocks();
   });
 
-  // One-step save: custom pages have no widgets writing back to the page record yet, so
-  // there are no drafts to commit before the layout. The banner and title widgets make this
-  // a two-step commit; this assertion should fail then.
+  // No widget writes back to the page record yet, so there are no drafts to commit first.
+  // The banner and title widgets make this a two-step save, and should fail this assertion.
   it('saves the layout directly, with no page-attribute commit', async () => {
     render(<CustomPageBuilderPage {...defaultProps} />);
     fireEvent.click(screen.getByTestId('mockSaveButton'));

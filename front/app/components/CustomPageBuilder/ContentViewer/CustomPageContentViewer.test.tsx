@@ -29,7 +29,7 @@ const layout = (enabled: boolean, craftjs_json: object) => ({
   data: { data: { attributes: { enabled, craftjs_json } } },
 });
 
-// The scaffold a page gets before anyone authors anything in the builder.
+// What a page holds before anyone authors anything in the builder.
 const scaffoldOnly = {
   ROOT: {
     type: { resolvedName: 'CustomPageRoot' },
@@ -61,8 +61,7 @@ describe('CustomPageContentViewer', () => {
     expect(screen.getByTestId('frame')).toBeInTheDocument();
   });
 
-  // CustomPageShow hands the page over while the query is in flight, so the wait is shown
-  // here rather than behind the legacy sections.
+  // CustomPageShow hands over while the query is in flight, so the wait is shown here.
   it('shows a spinner while the layout is loading', () => {
     isLoading = true;
     render(<CustomPageContentViewer staticPageId="page-1" />);
@@ -71,7 +70,6 @@ describe('CustomPageContentViewer', () => {
     expect(screen.queryByTestId('frame')).not.toBeInTheDocument();
   });
 
-  // The page renders its legacy sections instead whenever this returns null.
   it('renders nothing when the feature is off', () => {
     featureEnabled = false;
     render(<CustomPageContentViewer staticPageId="page-1" />);
@@ -90,7 +88,6 @@ describe('CustomPageContentViewer', () => {
     ).not.toBeInTheDocument();
   });
 
-  // The common case: most pages have no layout until an admin opens the builder.
   it('renders nothing when there is no layout', () => {
     layoutResponse = null;
     render(<CustomPageContentViewer staticPageId="page-1" />);
@@ -109,8 +106,7 @@ describe('CustomPageContentViewer', () => {
     ).not.toBeInTheDocument();
   });
 
-  // Every page gets a scaffold as soon as it has a layout, so treating one as content would
-  // replace the page's legacy sections with a blank body.
+  // Treating a scaffold as content would replace the page's own sections with a blank body.
   it('renders nothing when the layout holds only the scaffold', () => {
     layoutResponse = layout(true, scaffoldOnly);
     render(<CustomPageContentViewer staticPageId="page-1" />);

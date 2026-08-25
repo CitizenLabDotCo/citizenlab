@@ -67,8 +67,8 @@ const BackLinkContainer = styled(ContentContainer)`
 `;
 
 const CustomPageShow = () => {
-  // Rendered both at the global `/pages/:slug` route and the project-scoped
-  // `/projects/:slug/pages/:pageSlug` route, so accept either param.
+  // Serves the `/pages/:slug` catch-all — policy pages included — and the project-scoped
+  // `/projects/:slug/pages/:pageSlug`, so accept either param.
   const { slug, pageSlug } = useParams({ strict: false }) as {
     slug?: string;
     pageSlug?: string;
@@ -77,10 +77,8 @@ const CustomPageShow = () => {
   const { data: appConfiguration } = useAppConfiguration();
   const localize = useLocalize();
   const { data: page, isError } = useCustomPageBySlug(pageSlugToUse);
-  // Only global custom pages are on the Content Builder, mirroring the backend's
-  // provisioning guard. This component also serves policy pages, which reach it through the
-  // `/pages/:slug` catch-all, and project-scoped pages; neither ever has a layout, so they
-  // must not wait on a request that can only 404.
+  // Only global custom pages are on the Content Builder, mirroring the backend's provisioning
+  // guard. The other pages served here must not wait on a request that can only 404.
   const isGlobalCustomPage =
     page?.data.attributes.code === 'custom' && !page.data.attributes.project_id;
   const builderContent = useCustomPageBuilderContent(
@@ -99,8 +97,7 @@ const CustomPageShow = () => {
     return <PageNotFound />;
   }
 
-  // The page sections wait for the layout query rather than rendering and being replaced the
-  // moment it resolves. The viewer holds the page while it is in flight.
+  // The sections wait for the query rather than rendering and being replaced when it lands.
   const showBuilderContent =
     builderContent.isLoading || builderContent.hasContent;
 

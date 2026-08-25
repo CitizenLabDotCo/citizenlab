@@ -4,12 +4,8 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { layoutHasContent } from 'components/CustomPageBuilder/defaultLayout';
 
-/**
- * Whether a custom page should render from its Content Builder layout.
- *
- * Both the viewer and the page around it need this: the page has to know whether to render
- * its legacy sections instead, so the decision cannot live inside the viewer alone.
- */
+// Whether a custom page should render from its layout. Shared, because the page around the
+// viewer needs the same answer to decide whether to render its own sections instead.
 const useCustomPageBuilderContent = (staticPageId?: string) => {
   const featureEnabled = useFeatureFlag({ name: 'custom_page_builder' });
   const { data: layout, isLoading } = useCustomPageLayout(
@@ -23,7 +19,7 @@ const useCustomPageBuilderContent = (staticPageId?: string) => {
     layoutHasContent(layout.data.attributes.craftjs_json);
 
   return {
-    // While the query is in flight we cannot tell which way to render, so callers wait.
+    // Which way to render is unknown until the query settles, so callers wait.
     isLoading: featureEnabled && isLoading,
     hasContent: featureEnabled && hasContent,
     craftjsJson: layout?.data.attributes.craftjs_json,

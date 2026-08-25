@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module ContentBuilder
-  # Puts project/folder descriptions on the Content Builder, used by the SideFx
-  # creation/copy hook, the after-template hook, and the one-time WYSIWYG migration.
+  # Puts project/folder descriptions, and custom pages, on the Content Builder. Used by the
+  # SideFx creation/copy hooks, the after-template hook, and the one-time WYSIWYG migration.
   #
   # Widget choice per description:
   # - blank         -> default layout (empty canvas for projects, title + published
@@ -42,15 +42,10 @@ module ContentBuilder
       ProjectFolders::Folder.find_each { |folder| safely_ensure_on_content_builder(folder) }
     end
 
-    # Ensures every global custom page in the current tenant has a layout.
-    #
-    # Templates do serialize layouts (with a polymorphic content_buildable ref), but only the
-    # ones their source platform had: the hand-maintained templates carry a homepage layout and
-    # nothing else, and templates generated from platforms that predate the migration carry
-    # custom pages with no layout at all. This derives whatever is missing, and is a no-op when
-    # the template already supplied it.
-    #
-    # A failure on one page is reported and skipped rather than aborting tenant creation.
+    # Ensures every global custom page in the current tenant has a layout. A template carries
+    # only the layouts its source platform had, so this fills in the rest; it is a no-op for
+    # pages the template already covered. A failure on one page is reported and skipped rather
+    # than aborting tenant creation.
     def provision_all_custom_pages!
       StaticPage.find_each { |static_page| safely_ensure_custom_page(static_page) }
     end
@@ -118,13 +113,9 @@ module ContentBuilder
       })
     end
 
-    # Custom pages are provisioned separately: a StaticPage has no description_multiloc, so
-    # none of the description-shaped helpers above apply to it, and its graph comes from
-    # CustomPageLayoutService instead.
-    #
-    # Only global custom pages take part. Policy pages (code != 'custom') and project-scoped
-    # pages keep their own editors, and giving them a layout would put them in a builder
-    # nothing routes to.
+    # A StaticPage has no description_multiloc, so its graph comes from CustomPageLayoutService
+    # rather than the description helpers above. Only global custom pages take part: policy and
+    # project-scoped pages keep their own editors and no builder route reaches them.
     def ensure_custom_page!(static_page)
       return unless static_page.custom? && !static_page.project_scoped?
       return if ContentBuilder::Layout.exists?(content_buildable: static_page, code: CustomPageLayoutService::CODE)

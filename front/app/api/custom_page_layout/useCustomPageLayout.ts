@@ -14,8 +14,7 @@ const fetchCustomPageLayout = (staticPageId?: string) =>
     action: 'get',
   });
 
-// A page with no layout yet returns 404; the builder bootstraps by upserting, so callers
-// treat that as "nothing stored" rather than an error.
+// A page with no layout returns 404. Callers treat that as "nothing stored", not an error.
 const useCustomPageLayout = (staticPageId?: string, enabled = true) =>
   useQuery<
     IContentBuilderLayout,

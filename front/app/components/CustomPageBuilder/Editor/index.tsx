@@ -31,8 +31,8 @@ type EditorProps = {
   onNodesChange?: (nodes: SerializedNodes) => void;
 };
 
-// AboutBox is deliberately absent: it is the project Participation Box, and resolves its
-// project from the route, which a custom page does not have.
+// AboutBox is absent: it is the project Participation Box and resolves its project from the
+// route, which a custom page has none of.
 const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
   return (
     <VerticalRhythmContext.Provider value={true}>
@@ -49,8 +49,7 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
           AccordionMultiloc,
           WhiteSpace,
           InfoWithAccordions,
-          // Migration-only bridge widget: resolvable so migrated layouts render, but
-          // deliberately absent from the toolbox so admins can't add new ones.
+          // Bridge widget: resolvable so derived layouts render, absent from the toolbox.
           RichTextMultiloc,
           HtmlBlockMultiloc,
           ImageTextCards,

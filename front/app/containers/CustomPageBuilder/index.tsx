@@ -14,15 +14,14 @@ const CustomPageBuilder = () => {
   const { customPageId } = useParams({ strict: false }) as {
     customPageId: string;
   };
-  // Gate the page itself, not just the link to it: opening the builder provisions a layout,
-  // so an admin typing the URL on a tenant without the feature would write data.
+  // The page is gated, not just the link to it: opening the builder provisions a layout, so
+  // a typed URL on a tenant without the feature would write data.
   const featureEnabled = useFeatureFlag({ name: 'custom_page_builder' });
   const { data: customPage } = useCustomPageById(customPageId);
   const { isError } = useCustomPageLayout(customPageId, featureEnabled);
   const { mutate: upsertCustomPageLayout } = useUpsertCustomPageLayout();
 
-  // A page with no layout 404s; create one from the page's own info sections so the
-  // builder opens on real content rather than a blank canvas.
+  // A page with no layout 404s; create one so the builder opens on the page's own content.
   const bootstrappedPageId = useRef<string>();
   useEffect(() => {
     if (!featureEnabled) return;

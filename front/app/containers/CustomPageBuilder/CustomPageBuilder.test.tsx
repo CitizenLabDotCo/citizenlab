@@ -53,8 +53,7 @@ describe('CustomPageBuilder bootstrap', () => {
     expect(mockUpsert).not.toHaveBeenCalled();
   });
 
-  // A page with no layout 404s. The builder creates one so it opens on the page's own
-  // info sections rather than a blank canvas.
+  // A page with no layout 404s, so the builder creates one.
   it('creates a layout when the page has none', async () => {
     layoutIsError = true;
     render(<CustomPageBuilder />);
@@ -66,8 +65,7 @@ describe('CustomPageBuilder bootstrap', () => {
     });
   });
 
-  // Gating only the link would let an admin reach the builder by typing the URL — and
-  // opening it provisions a layout, so the gate has to sit ahead of the bootstrap.
+  // Gating only the link would let a typed URL reach the builder, which writes a layout.
   it('renders nothing and writes no layout when the feature is off', () => {
     featureEnabled = false;
     layoutIsError = true;

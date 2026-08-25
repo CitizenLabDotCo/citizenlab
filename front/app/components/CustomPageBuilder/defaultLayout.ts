@@ -39,21 +39,17 @@ const resolvedNameOf = (node: SerializedNode) =>
 const findNodeIdByName = (nodes: SerializedNodes, name: string) =>
   Object.keys(nodes).find((id) => resolvedNameOf(nodes[id]) === name);
 
-// Stored graphs are typed optimistically but come off the wire, where a node may be missing
-// its children array entirely. Normalising has to survive that rather than throw.
+// A node off the wire may have no children array at all, whatever the type says.
 const childIdsOf = (node: SerializedNode): string[] =>
   Array.isArray(node.nodes) ? node.nodes : [];
 
-// A stored layout always carries the scaffold, so "is it empty" cannot be asked of the
-// graph as a whole: a page whose builder has never been used still has a root and a body.
-// Content means the body region holds something — or, on a graph saved before the body
-// existed, that ROOT does.
+// Every stored layout carries the scaffold, so an unused builder still yields a non-empty
+// graph. Content means the body region holds something — or ROOT, on a graph with no body.
 export const layoutHasContent = (nodes?: SerializedNodes): boolean => {
   if (!nodes) return false;
 
   const bodyId = findNodeIdByName(nodes, 'CustomPageBody');
-  // Widened deliberately: an index lookup is typed as always present, but a graph off the
-  // wire may carry neither node.
+  // Widened: an index lookup is typed as always present, but either node may be missing.
   const container = (bodyId ? nodes[bodyId] : nodes[ROOT_ID]) as
     | SerializedNode
     | undefined;
@@ -61,10 +57,9 @@ export const layoutHasContent = (nodes?: SerializedNodes): boolean => {
   return !!container && childIdsOf(container).length > 0;
 };
 
-// Guarantees the scaffold the editor relies on: a CustomPageRoot holding exactly one
-// CustomPageBody, with every ordinary node hanging off that body. ROOT's other children are
-// the pinned header slots and are left where they are. A layout that predates a scaffold
-// change, or one saved before the body existed, is repaired rather than discarded.
+// Guarantees the scaffold the editor relies on: a CustomPageRoot holding one CustomPageBody,
+// with ordinary nodes under the body and the pinned header slots left alongside it. A layout
+// saved against an older scaffold is repaired rather than discarded.
 export const normalizeCustomPageLayout = (
   nodes?: SerializedNodes
 ): SerializedNodes => {
@@ -77,7 +72,7 @@ export const normalizeCustomPageLayout = (
   const existingBodyId = findNodeIdByName(next, 'CustomPageBody');
   const bodyId = existingBodyId ?? BODY_NODE_ID;
   if (!existingBodyId) {
-    // No body yet: adopt whatever ROOT was holding so no content is lost.
+    // No body yet: adopt what ROOT was holding so no content is lost.
     next[bodyId] = bodyNode(childIdsOf(next[ROOT_ID]));
   }
 
@@ -94,9 +89,8 @@ export const normalizeCustomPageLayout = (
   });
 
   const root = next[ROOT_ID];
-  // Pinned siblings of the body — the banner and title slots — stay on ROOT, in the order
-  // they were stored. When the body was just created, ROOT's children were adopted into it
-  // instead, so ROOT keeps only the body and must not hold them twice.
+  // Pinned slots stay on ROOT in their stored order. When the body was just created they
+  // were adopted into it instead, so ROOT keeps only the body.
   const storedRootIds = existingBodyId
     ? childIdsOf(root).filter((id) => id in next)
     : [];
