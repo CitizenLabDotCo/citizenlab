@@ -36,7 +36,7 @@ export const defaultCustomPageLayout = (): SerializedNodes => ({
 const resolvedNameOf = (node: SerializedNode) =>
   typeof node.type === 'object' ? node.type.resolvedName : undefined;
 
-export const findNodeIdByName = (nodes: SerializedNodes, name: string) =>
+const findNodeIdByName = (nodes: SerializedNodes, name: string) =>
   Object.keys(nodes).find((id) => resolvedNameOf(nodes[id]) === name);
 
 // Stored graphs are typed optimistically but come off the wire, where a node may be missing
