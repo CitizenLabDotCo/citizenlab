@@ -4,7 +4,7 @@ import { useParams } from 'utils/router';
 
 import FullScreenPreview from './FullScreenPreview';
 
-export const CustomPageFullScreenPreview = () => {
+const CustomPageFullScreenPreview = () => {
   const { customPageId } = useParams({ strict: false }) as {
     customPageId: string;
   };

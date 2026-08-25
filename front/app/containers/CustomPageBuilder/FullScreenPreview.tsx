@@ -19,7 +19,7 @@ type Props = {
   staticPageId: string;
 };
 
-export const FullScreenPreview = ({ staticPageId }: Props) => {
+const FullScreenPreview = ({ staticPageId }: Props) => {
   const search = useSearch({ strict: false });
   const selectedLocale = search.selected_locale || undefined;
 
