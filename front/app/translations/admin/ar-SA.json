@@ -1203,6 +1203,7 @@
   "app.containers.Admin.messaging.confirmSendSmsInsufficientBalance": "تتطلب هذه الرسالة {required, number} من الرصيد، ولكن المتبقي هو {balance, number} فقط. لشراء المزيد من الرصيد، تواصل مع مدير GovSuccess الخاص بك.",
   "app.containers.Admin.messaging.confirmSendSmsNoRecipients": "لا يوجد أحد يطابق معايير هذه الرسالة حالياً. يجب أن يكون لدى المستلمين رقم هاتف مؤكد وأن يكونوا قد وافقوا على تلقي الرسائل النصية.",
   "app.containers.Admin.messaging.confirmSendSmsRecipientsLabel": "المستلمون",
+  "app.containers.Admin.messaging.confirmSendSmsRecipientsTooltip": "يتم احتساب الأشخاص الذين لديهم رقم هاتف مؤكد ووافقوا على تلقي الرسائل النصية فقط.",
   "app.containers.Admin.messaging.deleteSmsButton": "حذف",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "هل أنت متأكد من رغبتك في حذف هذه الرسالة النصية (SMS)؟",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "تعديل الرسالة النصية (SMS)",

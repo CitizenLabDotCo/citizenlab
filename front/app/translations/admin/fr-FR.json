@@ -1203,6 +1203,7 @@
   "app.containers.Admin.messaging.confirmSendSmsInsufficientBalance": "Ce message nécessite {required, number} crédits, mais il ne vous en reste que {balance, number}. Pour acheter plus de crédits, contactez votre Spécialiste en participation Go Vocal.",
   "app.containers.Admin.messaging.confirmSendSmsNoRecipients": "Vous n'avez pas encore de destinataires qui peuvent recevoir ce message. Les destinataires doivent avoir un numéro de téléphone confirmé et avoir accepté de recevoir des SMS.",
   "app.containers.Admin.messaging.confirmSendSmsRecipientsLabel": "Destinataires",
+  "app.containers.Admin.messaging.confirmSendSmsRecipientsTooltip": "Seules les personnes ayant un numéro de téléphone confirmé et ayant accepté de recevoir des SMS sont comptabilisées.",
   "app.containers.Admin.messaging.deleteSmsButton": "Supprimer",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "Êtes-vous sûr de vouloir supprimer ce SMS ?",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "Modifier le SMS",

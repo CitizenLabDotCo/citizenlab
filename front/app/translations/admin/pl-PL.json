@@ -1203,6 +1203,7 @@
   "app.containers.Admin.messaging.confirmSendSmsInsufficientBalance": "Ta wiadomość wymaga {required, number} kredytów, ale pozostało tylko {balance, number}. Aby dokupić więcej kredytów, skontaktuj się ze swoim menedżerem GovSuccess.",
   "app.containers.Admin.messaging.confirmSendSmsNoRecipients": "Obecnie nikt nie pasuje do tej wiadomości. Odbiorcy muszą mieć potwierdzony numer telefonu i wyrazić zgodę na otrzymywanie wiadomości tekstowych.",
   "app.containers.Admin.messaging.confirmSendSmsRecipientsLabel": "Odbiorcy",
+  "app.containers.Admin.messaging.confirmSendSmsRecipientsTooltip": "Wliczane są tylko osoby z potwierdzonym numerem telefonu, które wyraziły zgodę na otrzymywanie wiadomości tekstowych.",
   "app.containers.Admin.messaging.deleteSmsButton": "Usuń",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "Czy na pewno chcesz usunąć tę wiadomość SMS?",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "Edytuj wiadomość SMS",

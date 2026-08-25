@@ -1203,6 +1203,7 @@
   "app.containers.Admin.messaging.confirmSendSmsInsufficientBalance": "اس پیغام کے لیے {required, number} کریڈٹس درکار ہیں، لیکن صرف {balance, number} باقی ہیں۔ مزید کریڈٹس خریدنے کے لیے، اپنے GovSuccess مینیجر سے رابطہ کریں۔",
   "app.containers.Admin.messaging.confirmSendSmsNoRecipients": "اس وقت کوئی بھی اس پیغام کے معیار پر پورا نہیں اترتا۔ وصول کنندگان کے پاس تصدیق شدہ فون نمبر ہونا ضروری ہے اور انہوں نے ٹیکسٹ پیغامات وصول کرنے کی رضامندی دی ہو۔",
   "app.containers.Admin.messaging.confirmSendSmsRecipientsLabel": "وصول کنندگان",
+  "app.containers.Admin.messaging.confirmSendSmsRecipientsTooltip": "صرف وہی لوگ شمار کیے جاتے ہیں جن کا فون نمبر تصدیق شدہ ہے اور جنہوں نے ٹیکسٹ پیغامات وصول کرنے کی رضامندی دی ہے۔",
   "app.containers.Admin.messaging.deleteSmsButton": "حذف کریں",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "کیا آپ واقعی یہ ایس ایم ایس پیغام حذف کرنا چاہتے ہیں؟",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "ایس ایم ایس پیغام میں ترمیم کریں",

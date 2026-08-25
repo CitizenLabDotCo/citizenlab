@@ -1203,6 +1203,7 @@
   "app.containers.Admin.messaging.confirmSendSmsInsufficientBalance": "Bu mesaj için {required, number} kredi gerekiyor, ancak sadece {balance, number} kredi kaldı. Daha fazla kredi satın almak için GovSuccess Yöneticinizle iletişime geçin.",
   "app.containers.Admin.messaging.confirmSendSmsNoRecipients": "Şu anda bu mesajla eşleşen kimse yok. Alıcıların onaylanmış bir telefon numarasına sahip olması ve kısa mesaj almayı kabul etmiş olması gerekir.",
   "app.containers.Admin.messaging.confirmSendSmsRecipientsLabel": "Alıcılar",
+  "app.containers.Admin.messaging.confirmSendSmsRecipientsTooltip": "Yalnızca telefon numarası doğrulanmış ve kısa mesaj almayı kabul etmiş kişiler sayılır.",
   "app.containers.Admin.messaging.deleteSmsButton": "Sil",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "Bu SMS mesajını silmek istediğinizden emin misiniz?",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "SMS mesajını düzenle",

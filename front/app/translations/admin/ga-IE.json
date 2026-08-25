@@ -1203,6 +1203,7 @@
   "app.containers.Admin.messaging.confirmSendSmsInsufficientBalance": "Tá {required, number} creidmheas de dhíth don teachtaireacht seo, ach níl ach {balance, number} fágtha. Chun tuilleadh creidmheasanna a cheannach, déan teagmháil le do Bhainisteoir GovSuccess.",
   "app.containers.Admin.messaging.confirmSendSmsNoRecipients": "Níl aon duine ag teacht leis an teachtaireacht seo faoi láthair. Ní mór uimhir ghutháin dheimhnithe a bheith ag faighteoirí agus caithfidh siad a bheith tar éis rogha a dhéanamh teachtaireachtaí téacs a fháil.",
   "app.containers.Admin.messaging.confirmSendSmsRecipientsLabel": "Faighteoirí",
+  "app.containers.Admin.messaging.confirmSendSmsRecipientsTooltip": "Ní áirítear ach daoine a bhfuil uimhir ghutháin dheimhnithe acu agus a roghnaigh teachtaireachtaí téacs a fháil.",
   "app.containers.Admin.messaging.deleteSmsButton": "Scrios",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "An bhfuil tú cinnte gur mhaith leat an teachtaireacht SMS seo a scriosadh?",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "Cuir teachtaireacht SMS in eagar",

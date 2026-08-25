@@ -1203,6 +1203,7 @@
   "app.containers.Admin.messaging.confirmSendSmsInsufficientBalance": "Denne besked kræver {required, number} kreditter, men der er kun {balance, number} tilbage. Kontakt din GovSuccess-projektleder for at købe flere kreditter.",
   "app.containers.Admin.messaging.confirmSendSmsNoRecipients": "Ingen matcher denne besked lige nu. Modtagere skal have et bekræftet telefonnummer og skal have tilmeldt sig sms-beskeder.",
   "app.containers.Admin.messaging.confirmSendSmsRecipientsLabel": "Modtagere",
+  "app.containers.Admin.messaging.confirmSendSmsRecipientsTooltip": "Kun personer med et bekræftet telefonnummer, der har tilmeldt sig tekstbeskeder, tælles med.",
   "app.containers.Admin.messaging.deleteSmsButton": "Slet",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "Er du sikker på, at du vil slette denne sms-besked?",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "Rediger sms-besked",

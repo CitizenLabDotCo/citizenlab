@@ -1203,6 +1203,7 @@
   "app.containers.Admin.messaging.confirmSendSmsInsufficientBalance": "Denne meldingen krever {required, number} kreditter, men bare {balance, number} er igjen. For å kjøpe flere kreditter, kontakt din GovSuccess Manager.",
   "app.containers.Admin.messaging.confirmSendSmsNoRecipients": "Ingen samsvarer med denne meldingen akkurat nå. Mottakere må ha et bekreftet telefonnummer og må ha takket ja til å motta tekstmeldinger.",
   "app.containers.Admin.messaging.confirmSendSmsRecipientsLabel": "Mottakere",
+  "app.containers.Admin.messaging.confirmSendSmsRecipientsTooltip": "Kun personer med et bekreftet telefonnummer som har samtykket til tekstmeldinger, blir talt med.",
   "app.containers.Admin.messaging.deleteSmsButton": "Slett",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "Er du sikker på at du vil slette denne SMS-meldingen?",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "Rediger SMS-melding",

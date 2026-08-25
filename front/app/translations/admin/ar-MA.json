@@ -1203,6 +1203,7 @@
   "app.containers.Admin.messaging.confirmSendSmsInsufficientBalance": "هاد الميساج كيحتاج {required, number} ديال الرصيد، ولكن بقاو غير {balance, number}. باش تشري رصيد كتر، تواصل مع مدير GovSuccess ديالك.",
   "app.containers.Admin.messaging.confirmSendSmsNoRecipients": "حتى شي حد ما كينطابق عليه هاد الميساج دابا. المستلمين خاص يكون عندهم رقم هاتف مأكد ويكونوا وافقوا على استقبال رسائل SMS.",
   "app.containers.Admin.messaging.confirmSendSmsRecipientsLabel": "المستلمين",
+  "app.containers.Admin.messaging.confirmSendSmsRecipientsTooltip": "يتم فقط احتساب الأشخاص الذين لديهم رقم هاتف مؤكد والذين وافقوا على تلقي الرسائل النصية.",
   "app.containers.Admin.messaging.deleteSmsButton": "حذف",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "هل أنت متأكد من أنك تريد حذف هذه الرسالة النصية (SMS)؟",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "تعديل الرسالة النصية (SMS)",

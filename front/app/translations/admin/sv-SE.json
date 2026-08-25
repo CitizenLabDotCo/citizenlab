@@ -1203,6 +1203,7 @@
   "app.containers.Admin.messaging.confirmSendSmsInsufficientBalance": "Detta meddelande kräver {required, number} krediter, men endast {balance, number} finns kvar. För att köpa fler krediter, kontakta din GovSuccess Manager.",
   "app.containers.Admin.messaging.confirmSendSmsNoRecipients": "Ingen matchar detta meddelande just nu. Mottagare behöver ett bekräftat telefonnummer och måste ha valt att ta emot SMS.",
   "app.containers.Admin.messaging.confirmSendSmsRecipientsLabel": "Mottagare",
+  "app.containers.Admin.messaging.confirmSendSmsRecipientsTooltip": "Endast personer med ett bekräftat telefonnummer som har valt att ta emot sms räknas.",
   "app.containers.Admin.messaging.deleteSmsButton": "Radera",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "Är du säker på att du vill radera detta sms?",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "Redigera sms",

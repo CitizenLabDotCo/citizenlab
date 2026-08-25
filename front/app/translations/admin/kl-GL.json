@@ -1203,6 +1203,7 @@
   "app.containers.Admin.messaging.confirmSendSmsInsufficientBalance": "Nalunaarut una {required, number}-nik atugassaqartariaqarpoq, kisianni {balance, number} sinnerupput. Amerlanerusunik piniarumallutit GovSuccess Manager-it attavigiuk.",
   "app.containers.Admin.messaging.confirmSendSmsNoRecipients": "Maannakkorpiaq nalunaarummut uunga naapertuuttoqanngilaq. Tigusisussat oqarasuaataat uppernarsagaasariaqarput aammalu SMS-inik tigusisalernissamut akuersisimasariaqarlutik.",
   "app.containers.Admin.messaging.confirmSendSmsRecipientsLabel": "Tigusisussat",
+  "app.containers.Admin.messaging.confirmSendSmsRecipientsTooltip": "Inuit oqarasuaataat normuat uppernarsagaasoq SMS-inillu tigusisalernissamik akuersisimasut kisimik naatsorsuinermi ilaapput.",
   "app.containers.Admin.messaging.deleteSmsButton": "Piiguk",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "Qularinngiliuk SMS una piiarusullugu?",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "SMS aaqqissuuguk",

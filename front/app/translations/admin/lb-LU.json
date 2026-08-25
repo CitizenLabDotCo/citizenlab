@@ -1203,6 +1203,7 @@
   "app.containers.Admin.messaging.confirmSendSmsInsufficientBalance": "Dës Noricht brauch {required, number} Crediten, awer et sinn der nëmmen nach {balance, number} iwwereg. Fir méi Crediten ze kafen, kontaktéiert wgl. Äre GovSuccess Manager.",
   "app.containers.Admin.messaging.confirmSendSmsNoRecipients": "Aktuell entsprécht keen dëser Noricht. Empfänger brauchen eng confirméiert Telefonsnummer a musse sech fir SMS-Norichten ugemellt hunn.",
   "app.containers.Admin.messaging.confirmSendSmsRecipientsLabel": "Empfänger",
+  "app.containers.Admin.messaging.confirmSendSmsRecipientsTooltip": "Nëmme Leit mat enger bestätegter Telefonsnummer, déi dem Empfang vun SMS-Norichten zougestëmmt hunn, ginn gezielt.",
   "app.containers.Admin.messaging.deleteSmsButton": "Läschen",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "Sidd Dir sécher, datt Dir dës SMS läsche wëllt?",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "SMS änneren",
