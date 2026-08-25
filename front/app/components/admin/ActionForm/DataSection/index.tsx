@@ -53,17 +53,19 @@ const DataSection = ({ permission, phaseId, onChange }: Props) => {
         borderRadius="8px"
         px="14px"
       >
-        {showPIISection && (
-          <PersonalInfoSection permission={permission} onChange={onChange} />
+        {isNativeSurveySubmission && (
+          <AnonymitySection permission={permission} onChange={onChange} />
         )}
 
-        {isNativeSurveySubmission && (
+        {showPIISection && (
           <Box
             borderTop={
-              showPIISection ? `1px solid ${colors.divider}` : undefined
+              isNativeSurveySubmission
+                ? `1px solid ${colors.divider}`
+                : undefined
             }
           >
-            <AnonymitySection permission={permission} onChange={onChange} />
+            <PersonalInfoSection permission={permission} onChange={onChange} />
           </Box>
         )}
 
