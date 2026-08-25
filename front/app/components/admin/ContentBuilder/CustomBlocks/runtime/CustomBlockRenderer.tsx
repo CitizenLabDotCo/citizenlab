@@ -7,6 +7,13 @@ import { BlockProps } from './types';
 interface BoundaryProps {
   onError?: (error: Error, componentStack: string | null) => void;
   fallback?: ReactNode;
+  // A latched boundary retries the children only when this value changes
+  // (identity comparison). Callers pass a value derived from the block
+  // identity and config, NOT from the children: a children-identity reset
+  // re-arms the boundary on every parent render, and since onError updates
+  // parent state, a block that throws on each render then locks the main
+  // thread in a throw/catch/reset cycle.
+  resetKey?: unknown;
   children: ReactNode;
 }
 
@@ -28,8 +35,7 @@ export class BlockErrorBoundary extends Component<
   }
 
   componentDidUpdate(prevProps: BoundaryProps) {
-    // A new block component or config gets a fresh chance to render.
-    if (prevProps.children !== this.props.children && this.state.hasError) {
+    if (prevProps.resetKey !== this.props.resetKey && this.state.hasError) {
       this.setState({ hasError: false });
     }
   }
@@ -62,6 +68,7 @@ interface Props extends BlockProps {
   component: ComponentType<BlockProps>;
   onError?: (error: Error, componentStack: string | null) => void;
   fallback?: ReactNode;
+  resetKey?: unknown;
 }
 
 const CustomBlockRenderer = ({
@@ -70,8 +77,9 @@ const CustomBlockRenderer = ({
   msg,
   onError,
   fallback,
+  resetKey,
 }: Props) => (
-  <BlockErrorBoundary onError={onError} fallback={fallback}>
+  <BlockErrorBoundary onError={onError} fallback={fallback} resetKey={resetKey}>
     <BlockComponent config={config} msg={msg} />
   </BlockErrorBoundary>
 );

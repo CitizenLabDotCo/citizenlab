@@ -255,7 +255,7 @@ module ContentBuilder
         - Text: paragraph text. Props: color (token name like 'textSecondary'), fontSize ('s'|'base'|'l'), fontWeight, m.
         - Title: headings. Props: variant ('h1'..'h6'), color, m.
         - Button: props buttonStyle ('primary'|'secondary-outlined'|'text'), onClick, size.
-        - Icon: props name, width, height, fill.
+        - Icon: props name, width, height, fill. The name MUST be one of the valid icon names below; any other name throws at render. Valid names: close, check, check-circle, alert-circle, alert-octagon, halt, info-outline, info-solid, question-circle, plus, plus-circle, minus, minus-circle, arrow-up, arrow-down, arrow-left, arrow-right, chevron-up, chevron-down, chevron-left, chevron-right, edit, delete, search, calendar, calendar-range, clock, email, link, open-in-new, download, image, file, folder-outline, user, users, group, comment, comments, idea, map, position, home, flag, flash, stars, eye, eye-off, lock, unlock, chart-bar, trend-up, trend-down, dot, list, menu, share, notification, bookmark, thumb-up, thumb-down, globe, rocket, quote, cancel, help, settings, save, print, archive, survey, timeline, projects, money-bag, bullseye, send.
         - Spinner: loading indicator, no required props.
         - colors: token object (colors.teal400, colors.grey100, colors.textSecondary, ...). Prefer theme colors for branding.
         - useTheme(): styled-components theme. theme.colors.tenantPrimary and theme.colors.tenantSecondary are the tenant's brand colors.

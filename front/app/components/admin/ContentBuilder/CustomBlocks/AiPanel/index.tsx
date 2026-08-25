@@ -111,6 +111,9 @@ const AiPanel = ({ onClose }: Props) => {
   }, []);
 
   const onRuntimeError = useCallback((message: string) => {
+    // Cap the collection: a misbehaving block must not grow state without
+    // bound or re-render the panel on every async error.
+    if (runtimeErrorsRef.current.length >= 50) return;
     runtimeErrorsRef.current.push(message);
     setRuntimeErrors([...runtimeErrorsRef.current]);
   }, []);

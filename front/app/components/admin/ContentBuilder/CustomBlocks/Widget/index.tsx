@@ -16,6 +16,7 @@ import CustomBlockRenderer, {
 } from '../runtime/CustomBlockRenderer';
 import { loadBlockModule } from '../runtime/loadBlockModule';
 import { BlockProps } from '../runtime/types';
+import useResetKey from '../runtime/useResetKey';
 
 import Settings from './Settings';
 
@@ -53,6 +54,9 @@ const CustomBlock = ({ blockId, version, config = {} }: Props) => {
   const [BlockComponent, setBlockComponent] =
     useState<ComponentType<BlockProps> | null>(null);
   const [loadFailed, setLoadFailed] = useState(false);
+
+  // The error boundary retries when the module or the sidebar config changes.
+  const boundaryResetKey = useResetKey([BlockComponent, config]);
 
   useEffect(() => {
     if (!blockId || !version) return;
@@ -110,6 +114,7 @@ const CustomBlock = ({ blockId, version, config = {} }: Props) => {
       <CustomBlockRenderer
         component={BlockComponent}
         config={config}
+        resetKey={boundaryResetKey}
         msg={msg}
         fallback={
           inBuilder ? <BuilderNotice message={messages.blockLoadError} /> : null

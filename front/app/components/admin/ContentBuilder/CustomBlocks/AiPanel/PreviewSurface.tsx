@@ -12,6 +12,7 @@ import CustomBlockRenderer, {
 } from '../runtime/CustomBlockRenderer';
 import { loadBlockModuleFromCode } from '../runtime/loadBlockModule';
 import { BlockProps } from '../runtime/types';
+import useResetKey from '../runtime/useResetKey';
 
 import { DraftFiles } from './toolExecutor';
 
@@ -38,6 +39,10 @@ const PreviewSurface = ({
   const locale = useLocale();
   const [BlockComponent, setBlockComponent] =
     useState<ComponentType<BlockProps> | null>(null);
+
+  // New identity only when a new compile or new config values arrive: the
+  // error boundary retries exactly then.
+  const boundaryResetKey = useResetKey([compiledCode, config]);
 
   useEffect(() => {
     if (!compiledCode) {
@@ -97,6 +102,7 @@ const PreviewSurface = ({
       <CustomBlockRenderer
         component={BlockComponent}
         config={config}
+        resetKey={boundaryResetKey}
         msg={buildMessageLookup(files.messages, locale)}
         onError={(error, componentStack) => {
           onRuntimeError(

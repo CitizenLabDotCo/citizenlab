@@ -10,8 +10,10 @@ import {
   Spinner,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { icons } from 'component-library/components/Icon';
 import * as jsxRuntime from 'react/jsx-runtime';
 import { useTheme } from 'styled-components';
+
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
@@ -23,6 +25,24 @@ import useLocalize from 'hooks/useLocalize';
 import Link from 'utils/cl-router/Link';
 
 import { SDK_EXPORT_NAMES, SdkExportName } from './sdkContract';
+
+const EXAMPLE_ICON_NAMES =
+  'check-circle, alert-circle, info-outline, flag, flash, idea, calendar, ' +
+  'email, map, user, users, comment, chart-bar, arrow-right';
+
+// The library Icon crashes deep inside its fallback path on unknown names
+// (it assumes anything unknown is an SSO brand icon). Fail fast with an
+// actionable message instead: the block error boundary catches it and the
+// authoring loop feeds it back to the model.
+const SafeIcon = (props: React.ComponentProps<typeof Icon>) => {
+  if (!(props.name in icons)) {
+    throw new Error(
+      `Unknown icon name '${String(props.name)}'. ` +
+        `Valid examples: ${EXAMPLE_ICON_NAMES}.`
+    );
+  }
+  return <Icon {...props} />;
+};
 
 declare global {
   interface Window {
@@ -39,7 +59,7 @@ const buildSdkV1 = (): Record<SdkExportName, unknown> => ({
   Text,
   Title,
   Button,
-  Icon,
+  Icon: SafeIcon,
   Spinner,
   colors,
   useAuthUser,
