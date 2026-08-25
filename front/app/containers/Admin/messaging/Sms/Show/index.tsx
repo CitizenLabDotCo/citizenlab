@@ -183,7 +183,7 @@ const Show = () => {
       {draft && (
         <Box display="flex">
           <ButtonWithLink
-            id="e2e-sms-delete-button"
+            dataCy="e2e-sms-delete-button"
             buttonStyle="delete"
             icon="delete"
             onClick={() => setShowDeleteModal(true)}

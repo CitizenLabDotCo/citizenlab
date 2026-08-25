@@ -146,7 +146,7 @@ const ConfirmSendModal = ({
             <FormattedMessage {...messages.changeRecipientsButton} />
           </ButtonWithLink>
           <ButtonWithLink
-            id="e2e-sms-send-confirm-button"
+            dataCy="e2e-sms-send-confirm-button"
             buttonStyle="primary"
             icon="send"
             iconPos="right"

@@ -31,7 +31,7 @@ const DeleteModal = ({ opened, onClose, onConfirm, isDeleting }: Props) => (
           <FormattedMessage {...messages.cancelButton} />
         </ButtonWithLink>
         <ButtonWithLink
-          id="e2e-sms-delete-confirm-button"
+          dataCy="e2e-sms-delete-confirm-button"
           buttonStyle="delete"
           onClick={onConfirm}
           processing={isDeleting}

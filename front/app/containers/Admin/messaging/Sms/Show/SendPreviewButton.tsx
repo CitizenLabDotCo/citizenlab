@@ -47,7 +47,7 @@ const SendPreviewButton = ({
     >
       <ButtonWithLink
         buttonStyle="secondary-outlined"
-        data-testid="e2e-send-sms-preview-button"
+        dataCy="e2e-send-sms-preview-button"
         icon="send"
         onClick={onClick}
         processing={isSendingPreview}

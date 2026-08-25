@@ -1,18 +1,12 @@
 import { randomString } from '../../../support/commands';
 
-// Both fields are required in every one of the tenant's locales, so each has to be
-// filled through the locale switcher rather than typed into once.
-const typeInEveryLocale = (
-  field: string,
-  input: 'input' | 'textarea',
-  text: string
-) => {
-  cy.get(`${field} .e2e-localeswitcher`).each((button) => {
-    cy.wrap(button).click();
-    cy.wrap(button).should('have.class', 'selected');
-    cy.get(field).find(input).first().clear().type(text);
-    cy.wrap(button).find('div').should('have.class', 'notEmpty');
-  });
+const subjectField = {
+  container: '.e2e-sms-campaign_subject_multiloc',
+  input: 'input',
+};
+const bodyField = {
+  container: '.e2e-sms-campaign_body_multiloc',
+  input: 'textarea',
 };
 
 describe('Admin: SMS campaigns', () => {
@@ -35,8 +29,8 @@ describe('Admin: SMS campaigns', () => {
 
     // Create
     cy.visit('/admin/messaging/sms/new');
-    typeInEveryLocale('.e2e-sms-campaign_subject_multiloc', 'input', subject);
-    typeInEveryLocale('.e2e-sms-campaign_body_multiloc', 'textarea', body);
+    cy.clickLocaleSwitcherAndType(subject, subjectField);
+    cy.clickLocaleSwitcherAndType(body, bodyField);
     cy.get('#e2e-sms-campaign-form-save-button').click();
 
     cy.location('pathname').should('match', /\/admin\/messaging\/sms\/[\w-]+$/);
@@ -51,12 +45,8 @@ describe('Admin: SMS campaigns', () => {
 
     // Edit. Asserted without reloading in between, so a cached campaign would show up
     // as the old subject still being on screen.
-    cy.get('#e2e-sms-edit-button').click();
-    typeInEveryLocale(
-      '.e2e-sms-campaign_subject_multiloc',
-      'input',
-      editedSubject
-    );
+    cy.dataCy('e2e-sms-edit-button').click();
+    cy.clickLocaleSwitcherAndType(editedSubject, subjectField);
     cy.get('#e2e-sms-campaign-form-save-button').click();
 
     cy.location('pathname').should('match', /\/admin\/messaging\/sms\/[\w-]+$/);
@@ -65,11 +55,12 @@ describe('Admin: SMS campaigns', () => {
 
     // The preview goes to the sender's own phone, and the seeded admin has never
     // confirmed one, so the button has to stay out of reach.
-    // The test id lands on Button's wrapper; aria-disabled sits on the button inside it.
-    cy.get('[data-testid="e2e-send-sms-preview-button"]')
-      .find('button')
-      .should('have.attr', 'aria-disabled', 'true');
-    cy.get('[data-testid="e2e-send-sms-preview-button"]').trigger('mouseenter');
+    cy.dataCy('e2e-send-sms-preview-button').should(
+      'have.attr',
+      'aria-disabled',
+      'true'
+    );
+    cy.dataCy('e2e-send-sms-preview-button').trigger('mouseenter');
     cy.contains('Add a phone number to your').should('exist');
     cy.contains('a', 'profile').should(
       'have.attr',
@@ -79,18 +70,20 @@ describe('Admin: SMS campaigns', () => {
 
     // What a send would reach. The template seeds phone-confirmed users but no SMS
     // consents, and this campaign is opt-in, so the send is correctly refused.
-    cy.get('#e2e-sms-send-button').click();
+    cy.dataCy('e2e-sms-send-button').click();
     cy.contains('Recipients').should('exist');
     cy.contains('Credits remaining').should('exist');
     cy.contains('Nobody matches this message right now').should('exist');
-    cy.get('#e2e-sms-send-confirm-button')
-      .find('button')
-      .should('have.attr', 'aria-disabled', 'true');
+    cy.dataCy('e2e-sms-send-confirm-button').should(
+      'have.attr',
+      'aria-disabled',
+      'true'
+    );
     cy.contains('Change recipients').click();
 
     // Delete
-    cy.get('#e2e-sms-delete-button').click();
-    cy.get('#e2e-sms-delete-confirm-button').click();
+    cy.dataCy('e2e-sms-delete-button').click();
+    cy.dataCy('e2e-sms-delete-confirm-button').click();
 
     cy.location('pathname').should('eq', '/en/admin/messaging/sms');
     cy.contains(editedSubject).should('not.exist');
