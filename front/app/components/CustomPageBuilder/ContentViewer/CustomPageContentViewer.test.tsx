@@ -29,11 +29,29 @@ const layout = (enabled: boolean, craftjs_json: object) => ({
   data: { data: { attributes: { enabled, craftjs_json } } },
 });
 
+// The scaffold a page gets before anyone authors anything in the builder.
+const scaffoldOnly = {
+  ROOT: {
+    type: { resolvedName: 'CustomPageRoot' },
+    nodes: ['CUSTOM_PAGE_BODY'],
+  },
+  CUSTOM_PAGE_BODY: { type: { resolvedName: 'CustomPageBody' }, nodes: [] },
+};
+
+const withContent = {
+  ...scaffoldOnly,
+  CUSTOM_PAGE_BODY: {
+    type: { resolvedName: 'CustomPageBody' },
+    nodes: ['TXT'],
+  },
+  TXT: { type: { resolvedName: 'TextMultiloc' }, nodes: [] },
+};
+
 describe('CustomPageContentViewer', () => {
   beforeEach(() => {
     featureEnabled = true;
     isLoading = false;
-    layoutResponse = layout(true, { ROOT: { nodes: [] } });
+    layoutResponse = layout(true, withContent);
   });
 
   it('renders the layout when the feature is on and it has content', () => {
@@ -54,7 +72,7 @@ describe('CustomPageContentViewer', () => {
   });
 
   it('renders nothing when the layout is disabled', () => {
-    layoutResponse = layout(false, { ROOT: { nodes: [] } });
+    layoutResponse = layout(false, withContent);
     render(<CustomPageContentViewer staticPageId="page-1" />);
 
     expect(
@@ -74,6 +92,17 @@ describe('CustomPageContentViewer', () => {
 
   it('renders nothing when the layout is empty', () => {
     layoutResponse = layout(true, {});
+    render(<CustomPageContentViewer staticPageId="page-1" />);
+
+    expect(
+      screen.queryByTestId('customPageContentViewer')
+    ).not.toBeInTheDocument();
+  });
+
+  // Every page gets a scaffold as soon as it has a layout, so treating one as content would
+  // replace the page's legacy sections with a blank body.
+  it('renders nothing when the layout holds only the scaffold', () => {
+    layoutResponse = layout(true, scaffoldOnly);
     render(<CustomPageContentViewer staticPageId="page-1" />);
 
     expect(

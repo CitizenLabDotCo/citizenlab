@@ -44,6 +44,23 @@ export const findNodeIdByName = (nodes: SerializedNodes, name: string) =>
 const childIdsOf = (node: SerializedNode): string[] =>
   Array.isArray(node.nodes) ? node.nodes : [];
 
+// A stored layout always carries the scaffold, so "is it empty" cannot be asked of the
+// graph as a whole: a page whose builder has never been used still has a root and a body.
+// Content means the body region holds something — or, on a graph saved before the body
+// existed, that ROOT does.
+export const layoutHasContent = (nodes?: SerializedNodes): boolean => {
+  if (!nodes) return false;
+
+  const bodyId = findNodeIdByName(nodes, 'CustomPageBody');
+  // Widened deliberately: an index lookup is typed as always present, but a graph off the
+  // wire may carry neither node.
+  const container = (bodyId ? nodes[bodyId] : nodes[ROOT_ID]) as
+    | SerializedNode
+    | undefined;
+
+  return !!container && childIdsOf(container).length > 0;
+};
+
 // Guarantees the scaffold the editor relies on: a CustomPageRoot holding exactly one
 // CustomPageBody, with every other node hanging off the body. A layout that predates a
 // scaffold change, or one saved before the body existed, is repaired rather than discarded.

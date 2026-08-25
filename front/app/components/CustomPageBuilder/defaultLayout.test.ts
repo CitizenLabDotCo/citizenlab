@@ -3,6 +3,7 @@ import { SerializedNodes } from '@craftjs/core';
 import {
   BODY_NODE_ID,
   defaultCustomPageLayout,
+  layoutHasContent,
   normalizeCustomPageLayout,
 } from './defaultLayout';
 
@@ -79,5 +80,30 @@ describe('normalizeCustomPageLayout', () => {
     nodes[BODY_NODE_ID].nodes = ['TXT'];
 
     expect(normalizeCustomPageLayout(nodes).TXT.parent).toBe(BODY_NODE_ID);
+  });
+});
+
+describe('layoutHasContent', () => {
+  it('is false for a layout that holds only the scaffold', () => {
+    expect(layoutHasContent(defaultCustomPageLayout())).toBe(false);
+  });
+
+  it('is false when there is no layout', () => {
+    expect(layoutHasContent(undefined)).toBe(false);
+  });
+
+  it('is true when the body region holds a widget', () => {
+    const nodes = {
+      ...defaultCustomPageLayout(),
+      TXT: textNode(BODY_NODE_ID),
+    } as SerializedNodes;
+    nodes[BODY_NODE_ID].nodes = ['TXT'];
+
+    expect(layoutHasContent(nodes)).toBe(true);
+  });
+
+  // A graph saved before the body region existed keeps its widgets on ROOT.
+  it('is true when ROOT holds the widgets and there is no body', () => {
+    expect(layoutHasContent(rootOnlyLayout())).toBe(true);
   });
 });

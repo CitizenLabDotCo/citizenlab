@@ -1,8 +1,8 @@
-import { isEmpty } from 'lodash-es';
-
 import useCustomPageLayout from 'api/custom_page_layout/useCustomPageLayout';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { layoutHasContent } from 'components/CustomPageBuilder/defaultLayout';
 
 /**
  * Whether a custom page should render from its Content Builder layout.
@@ -20,7 +20,7 @@ const useCustomPageBuilderContent = (staticPageId?: string) => {
   const hasContent =
     !!layout &&
     layout.data.attributes.enabled &&
-    !isEmpty(layout.data.attributes.craftjs_json);
+    layoutHasContent(layout.data.attributes.craftjs_json);
 
   return {
     // While the query is in flight we cannot tell which way to render, so callers wait.
