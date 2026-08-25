@@ -297,7 +297,7 @@ resource 'Request codes' do
     end
 
     # A user who replied STOP and then asks for a code again is opting back in.
-    example 'It grants the consent back after a withdrawal' do
+    example 'It records the consent again after a withdrawal' do
       user = create(:unconfirmed_phone_user, phone: '+14155552671')
       create(
         :consent,

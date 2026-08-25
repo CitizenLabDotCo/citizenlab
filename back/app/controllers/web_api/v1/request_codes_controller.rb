@@ -64,7 +64,12 @@ class WebApi::V1::RequestCodesController < ApplicationController
     user = User.find_by_phone_number(request_code_phone_params[:phone])
     authorize user, policy_class: RequestCodePolicy
 
-    EmailCampaigns::ConsentService.new.grant!(user, EmailCampaigns::Campaigns::PhoneConfirmation)
+    EmailCampaigns::ConsentService.new.record!(
+      user,
+      EmailCampaigns::Campaigns::PhoneConfirmation,
+      consented: true,
+      always_log: true
+    )
     RequestPhoneConfirmationCodeJob.issue_code_and_deliver_later(user)
 
     head :ok
@@ -76,7 +81,12 @@ class WebApi::V1::RequestCodesController < ApplicationController
     authorize current_user, policy_class: RequestCodePolicy
 
     unless only_if_first_time? && current_user.phone_confirmation&.code_outstanding?
-      EmailCampaigns::ConsentService.new.grant!(current_user, EmailCampaigns::Campaigns::PhoneConfirmation)
+      EmailCampaigns::ConsentService.new.record!(
+        current_user,
+        EmailCampaigns::Campaigns::PhoneConfirmation,
+        consented: true,
+        always_log: true
+      )
       RequestPhoneConfirmationCodeJob.issue_code_and_deliver_later(current_user)
     end
 
@@ -114,7 +124,12 @@ class WebApi::V1::RequestCodesController < ApplicationController
       return
     end
 
-    EmailCampaigns::ConsentService.new.grant!(current_user, EmailCampaigns::Campaigns::NewPhoneConfirmation)
+    EmailCampaigns::ConsentService.new.record!(
+      current_user,
+      EmailCampaigns::Campaigns::NewPhoneConfirmation,
+      consented: true,
+      always_log: true
+    )
 
     RequestNewPhoneConfirmationCodeJob.issue_code_and_deliver_later(current_user, new_phone: normalized)
 

@@ -171,7 +171,7 @@ class WebApi::V1::ConfirmationsController < ApplicationController
     consented = parse_bool(value)
     return if consented.nil?
 
-    EmailCampaigns::Sms::UseCaseConsentService.new.record!(
+    EmailCampaigns::ConsentService.new.record_for_sms_use_case!(
       user,
       EmailCampaigns::Sms::UseCase::MANUAL_CAMPAIGNS,
       consented: consented
