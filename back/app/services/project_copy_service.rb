@@ -295,10 +295,14 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   end
 
   def yml_project_images(shift_timestamps: 0)
-    @project.project_images.map do |p|
+    @project.project_images.filter_map do |p|
+      image_url = exportable_image_url(p.image)
+      # avoid creating an empty project_image record if the image is missing (e.g. deleted from S3)
+      next if image_url.blank?
+
       {
         'project_ref' => lookup_ref(p.project_id, :project),
-        'remote_image_url' => p.image_url,
+        'remote_image_url' => image_url,
         'alt_text_multiloc' => p.alt_text_multiloc,
         'ordering' => p.ordering,
         'created_at' => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,

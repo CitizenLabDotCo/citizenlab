@@ -13,7 +13,7 @@ module MultiTenancy
         Comment
       ].to_set.freeze
 
-      SKIP_IMAGE_PRESENCE_VALIDATION = %w[IdeaImage ContentBuilder::LayoutImage].freeze
+      SKIP_IMAGE_PRESENCE_VALIDATION = %w[IdeaImage ContentBuilder::LayoutImage ProjectImage].freeze
 
       # Attributes that were removed from the schema but may still be present in
       # templates serialized before their removal; assigning them would raise

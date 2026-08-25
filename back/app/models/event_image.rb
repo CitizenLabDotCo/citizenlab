@@ -21,8 +21,14 @@
 #  fk_rails_...  (event_id => events.id)
 #
 class EventImage < ApplicationRecord
+  include PlainTextMultiloc
+
   mount_base64_uploader :image, EventImageUploader
   belongs_to :event
+
+  # Alt text is read out by a screen reader and rendered into an `alt` attribute, so markup in it is
+  # never wanted - it is inert there, but it is also nonsense to hear.
+  plain_text_multiloc :alt_text_multiloc
   delegate :project, to: :event
 
   validates :event, presence: true

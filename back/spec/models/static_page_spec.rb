@@ -9,7 +9,10 @@ RSpec.describe StaticPage do
     end
   end
 
-  it_behaves_like 'a sanitized title_multiloc', factory: :static_page
+  it_behaves_like 'a plain text multiloc', factory: :static_page
+  it_behaves_like 'a plain text multiloc', factory: :static_page, attribute: :banner_header_multiloc
+  it_behaves_like 'a plain text multiloc', factory: :static_page, attribute: :banner_subheader_multiloc
+  it_behaves_like 'a plain text multiloc', factory: :static_page, attribute: :banner_cta_button_multiloc
 
   describe 'validations' do
     it { is_expected.to validate_presence_of(:title_multiloc) }

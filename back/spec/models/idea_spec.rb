@@ -11,7 +11,7 @@ RSpec.describe Idea do
 
   it_behaves_like 'claimable_participation'
   it_behaves_like 'location_trackable_participation'
-  it_behaves_like 'a sanitized title_multiloc', factory: :idea
+  it_behaves_like 'a plain text multiloc', factory: :idea
 
   describe 'title validation' do
     it 'requires title_multiloc when title_multiloc_required? is true' do
@@ -467,6 +467,15 @@ RSpec.describe Idea do
     it 'does not leak a stripped payload into the slug' do
       idea = create(:idea, slug: nil, title_multiloc: { 'en' => '<img src=x onerror=alert(1)>hi' })
       expect(idea.slug).to eq 'hi'
+    end
+
+    # A title that is nothing but markup has to be refused, not saved blank: `title_multiloc` is
+    # required here, so a blank one leaves the idea unable to save any field afterwards.
+    it 'rejects a title that strips to nothing' do
+      idea = build(:idea, title_multiloc: { 'en' => '<img src=x onerror=alert(1)>' })
+
+      expect(idea).not_to be_valid
+      expect(idea.errors[:title_multiloc]).to be_present
     end
 
     it 'generates a slug when there is no current phase' do

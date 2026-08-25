@@ -43,14 +43,8 @@ RSpec.describe ProjectFolders::Folder do
     end
   end
 
-  it_behaves_like 'a sanitized title_multiloc', factory: :project_folder
+  it_behaves_like 'a plain text multiloc', factory: :project_folder
+  it_behaves_like 'a plain text multiloc', factory: :project_folder, attribute: :header_bg_alt_text_multiloc
 
-  describe '#sanitize_description_preview_multiloc' do
-    it 'sanitizes script tags in the description_preview_multiloc' do
-      folder = create(:project_folder, description_preview_multiloc: {
-        'en' => '<p>Test</p><script>These tags should be removed!</script>'
-      })
-      expect(folder.description_preview_multiloc).to eq({ 'en' => '<p>Test</p>These tags should be removed!' })
-    end
-  end
+  it_behaves_like 'a sanitized html_multiloc', factory: :project_folder, attribute: :description_preview_multiloc
 end
