@@ -5,6 +5,8 @@ import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 
+import { CUSTOM_PAGE_BUILDER_PATH } from 'components/admin/ContentBuilder/constants';
+
 import clHistory from 'utils/cl-router/history';
 import { usePermission } from 'utils/permissions';
 import { Outlet as RouterOutlet, useLocation } from 'utils/router';
@@ -127,9 +129,7 @@ const AdminPage = memo<Props>(({ className }) => {
   const isProjectPageBuilderRoute = pathname.match(
     /\/admin\/project-page-builder/
   );
-  const isCustomPageBuilderRoute = pathname.match(
-    /\/admin\/custom-page-builder/
-  );
+  const isCustomPageBuilderRoute = pathname.includes(CUSTOM_PAGE_BUILDER_PATH);
 
   const sidebarRendered =
     !isHomePageBuilderRoute &&

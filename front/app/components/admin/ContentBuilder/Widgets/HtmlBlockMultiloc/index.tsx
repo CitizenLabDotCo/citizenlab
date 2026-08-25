@@ -6,9 +6,11 @@ import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
-import { useLocation } from 'utils/router';
 
+import { CUSTOM_PAGE_BUILDER_PATH } from 'components/admin/ContentBuilder/constants';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
+
+import { useLocation } from 'utils/router';
 
 import messages from './messages';
 
@@ -43,7 +45,7 @@ const HtmlBlockMultiloc = ({ html }: Props) => {
   const { pathname } = useLocation();
   const enabled =
     pathname.includes('admin/project-page-builder') ||
-    pathname.includes('admin/custom-page-builder') ||
+    pathname.includes(CUSTOM_PAGE_BUILDER_PATH) ||
     pathname.includes('admin/pages-menu');
 
   return (

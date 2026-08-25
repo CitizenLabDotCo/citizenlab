@@ -10,6 +10,7 @@ import useUpsertCustomPageLayout from 'api/custom_page_layout/useUpsertCustomPag
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 
+import { CUSTOM_PAGE_BUILDER_PATH } from 'components/admin/ContentBuilder/constants';
 import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
@@ -60,7 +61,7 @@ const CustomPageBuilderPage = ({
     [layout]
   );
 
-  const builderVisible = pathname.includes('admin/custom-page-builder');
+  const builderVisible = pathname.includes(CUSTOM_PAGE_BUILDER_PATH);
 
   // DO NOT REMOVE THESE useCallbacks, without them the content builder
   // becomes horribly slow

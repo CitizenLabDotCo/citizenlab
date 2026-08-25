@@ -4,6 +4,7 @@ import { SupportedLocale } from 'typings';
 
 import useLocale from 'hooks/useLocale';
 
+import { CUSTOM_PAGE_BUILDER_PATH } from 'components/admin/ContentBuilder/constants';
 import EditModePreview from 'components/admin/ContentBuilder/EditModePreview';
 
 type Props = {
@@ -20,7 +21,7 @@ const CustomPageBuilderEditModePreview = React.forwardRef<
 
   return (
     <EditModePreview
-      iframeSrc={`/${locale}/admin/custom-page-builder/pages/${staticPageId}/preview?selected_locale=${locale}`}
+      iframeSrc={`/${locale}/${CUSTOM_PAGE_BUILDER_PATH}/pages/${staticPageId}/preview?selected_locale=${locale}`}
       ref={ref}
     />
   );
