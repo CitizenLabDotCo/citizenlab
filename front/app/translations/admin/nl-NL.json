@@ -4175,6 +4175,7 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedPhoneNumber2": "Bevestigd telefoonnummer vereisen van alle gebruikers",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireIdentityVerification2": "Identiteitsverificatie vereisen van alle gebruikers",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Inloggen vereisen",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff2": "Beperkt tot platformbeheerders en iedereen met beheerrechten voor dit project. Er zijn geen andere vereisten van toepassing.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInWith": "Deelnemers loggen in met {methods}.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.sms": "SMS",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.ssoSeeBelow2": "SSO (zie link naar identificatiemethoden hieronder)",

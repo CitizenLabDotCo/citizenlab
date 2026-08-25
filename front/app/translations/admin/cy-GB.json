@@ -4175,6 +4175,7 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedPhoneNumber2": "Ei gwneud yn ofynnol i bob defnyddiwr gael rhif ffôn wedi'i gadarnhau",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireIdentityVerification2": "Ei gwneud yn ofynnol i bob defnyddiwr ddilysu eu hunaniaeth",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Ei gwneud yn ofynnol mewngofnodi",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff2": "Wedi'i gyfyngu i weinyddwyr a phwy bynnag sydd â hawliau rheoli'r prosiect hwn. Nid oes unrhyw ofynion eraill yn berthnasol.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInWith": "Mae cyfranogwyr yn mewngofnodi gyda {methods}.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.sms": "SMS",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.ssoSeeBelow2": "SSO (gweler y ddolen dulliau adnabod isod)",

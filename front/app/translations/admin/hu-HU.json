@@ -4175,6 +4175,7 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedPhoneNumber2": "Megerősített telefonszám megkövetelése minden felhasználótól",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireIdentityVerification2": "Személyazonosság-ellenőrzés megkövetelése minden felhasználótól",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Bejelentkezés megkövetelése",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff2": "Csak az adminisztrátorok és a projekt kezelési jogaival rendelkezők számára korlátozva. Egyéb feltételek nem vonatkoznak rá.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInWith": "A résztvevők a következő módon jelentkeznek be: {methods}.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.sms": "SMS",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.ssoSeeBelow2": "SSO (lásd az azonosítási módok lenti linkjét)",

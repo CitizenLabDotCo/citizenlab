@@ -4175,6 +4175,7 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedPhoneNumber2": "Exigir número de telefone confirmado de todos os usuários",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireIdentityVerification2": "Exigir verificação de identidade de todos os usuários",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Exigir login",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff2": "Restrito a administradores e a quem tiver direitos de gerenciamento neste projeto. Não se aplicam outros requisitos.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInWith": "Os participantes fazem login com {methods}.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.sms": "SMS",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.ssoSeeBelow2": "SSO (veja o link dos métodos de identificação abaixo)",

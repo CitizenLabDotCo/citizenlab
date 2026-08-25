@@ -4175,6 +4175,7 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedPhoneNumber2": "Tüm kullanıcılardan onaylı telefon numarası iste",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireIdentityVerification2": "Tüm kullanıcılardan kimlik doğrulaması iste",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Giriş yapmayı zorunlu tut",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff2": "Yalnızca yöneticiler ve bu proje üzerinde yönetim yetkisi olan kişilerle sınırlıdır. Başka bir gereklilik geçerli değildir.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInWith": "Katılımcılar {methods} ile giriş yapar.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.sms": "SMS",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.ssoSeeBelow2": "SSO (aşağıdaki kimlik doğrulama yöntemleri bağlantısına bakın)",
