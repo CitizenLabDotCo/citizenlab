@@ -4175,7 +4175,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedPhoneNumber2": "تمام صارفین سے تصدیق شدہ فون نمبر کا مطالبہ کریں",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireIdentityVerification2": "تمام صارفین سے شناخت کی تصدیق کا مطالبہ کریں",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "سائن ان لازمی قرار دیں",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "عملے تک محدود",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInWith": "شرکاء {methods} کے ذریعے سائن ان کرتے ہیں۔",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.sms": "ایس ایم ایس",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.ssoSeeBelow2": "SSO (شناختی طریقوں کا لنک نیچے دیکھیں)",

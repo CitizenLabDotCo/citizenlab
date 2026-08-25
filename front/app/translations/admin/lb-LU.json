@@ -4175,7 +4175,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedPhoneNumber2": "Bestätegt Telefonsnummer vun alle Benotzer verlaangen",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireIdentityVerification2": "Identitéitsverifikatioun vun alle Benotzer verlaangen",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Umeldung erfuerderen",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "Op d'Personal beschränkt",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInWith": "Participante mellen sech mat {methods} un.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.sms": "SMS",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.ssoSeeBelow2": "SSO (kuckt de Link fir d'Identifikatiounsmethoden hei drënner)",

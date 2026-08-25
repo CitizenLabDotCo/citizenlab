@@ -4175,7 +4175,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedPhoneNumber2": "Requerir un número de teléfono confirmado a todos los usuarios",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireIdentityVerification2": "Requerir verificación de identidad a todos los usuarios",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Requerir inicio de sesión",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "Restringido al personal",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInWith": "Los participantes inician sesión con {methods}.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.sms": "SMS",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.ssoSeeBelow2": "SSO (ver el enlace a los métodos de identificación más abajo)",

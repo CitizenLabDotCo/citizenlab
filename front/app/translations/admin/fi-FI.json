@@ -4175,7 +4175,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedPhoneNumber2": "Vaadi vahvistettu puhelinnumero kaikilta käyttäjiltä",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireIdentityVerification2": "Vaadi henkilöllisyyden vahvistaminen kaikilta käyttäjiltä",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Vaadi kirjautuminen",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "Rajoitettu henkilökunnalle",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInWith": "Osallistujat kirjautuvat sisään menetelmällä {methods}.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.sms": "Tekstiviesti",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.ssoSeeBelow2": "SSO (katso tunnistautumistavat alla olevasta linkistä)",

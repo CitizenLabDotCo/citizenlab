@@ -4175,7 +4175,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedPhoneNumber2": "مطالبة جميع المستخدمين برقم هاتف مؤكد",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireIdentityVerification2": "مطالبة جميع المستخدمين بالتحقق من الهوية",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "طلب تسجيل الدخول",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "يقتصر على الموظفين",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInWith": "يسجل المشاركون الدخول باستخدام {methods}.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.sms": "الرسائل النصية القصيرة (SMS)",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.ssoSeeBelow2": "SSO (راجع رابط طرق تحديد الهوية أدناه)",

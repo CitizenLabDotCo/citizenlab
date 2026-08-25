@@ -4175,7 +4175,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedPhoneNumber2": "Exigir un número de telèfon confirmat a tots els usuaris",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireIdentityVerification2": "Exigir la verificació d'identitat a tots els usuaris",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Requereix inici de sessió",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "Restringit al personal",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInWith": "Els participants inicien la sessió amb {methods}.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.sms": "SMS",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.ssoSeeBelow2": "SSO (vegeu l'enllaç als mètodes d'identificació a continuació)",

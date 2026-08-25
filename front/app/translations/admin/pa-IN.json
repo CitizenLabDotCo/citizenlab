@@ -4175,7 +4175,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedPhoneNumber2": "ਸਾਰੇ ਵਰਤੋਂਕਾਰਾਂ ਤੋਂ ਪੁਸ਼ਟੀ ਕੀਤੇ ਫ਼ੋਨ ਨੰਬਰ ਦੀ ਮੰਗ ਕਰੋ",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireIdentityVerification2": "ਸਾਰੇ ਵਰਤੋਂਕਾਰਾਂ ਤੋਂ ਪਛਾਣ ਦੀ ਪੁਸ਼ਟੀ ਦੀ ਮੰਗ ਕਰੋ",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "ਸਾਈਨ-ਇਨ ਦੀ ਲੋੜ ਹੈ",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "ਸਟਾਫ ਤੱਕ ਸੀਮਿਤ",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInWith": "ਭਾਗੀਦਾਰ {methods} ਨਾਲ ਸਾਈਨ-ਇਨ ਕਰਦੇ ਹਨ।",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.sms": "SMS",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.ssoSeeBelow2": "SSO (ਹੇਠਾਂ ਦਿੱਤੇ ਪਛਾਣ ਵਿਧੀਆਂ ਦੇ ਲਿੰਕ ਨੂੰ ਦੇਖੋ)",
