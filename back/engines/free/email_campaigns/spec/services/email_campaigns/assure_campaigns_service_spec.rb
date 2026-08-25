@@ -36,7 +36,7 @@ describe EmailCampaigns::AssureCampaignsService do
     end
 
     context 'when the sms feature is enabled' do
-      include_context 'with sms feature enabled'
+      include_context 'with sms manual campaigns feature enabled'
 
       it 'unlinks (but keeps) the sms deliveries of a deprecated campaign' do
         campaign = create(:sms_manual_campaign)
@@ -63,7 +63,7 @@ describe EmailCampaigns::AssureCampaignsService do
     # sms_deliveries.
     context 'when a feature is deactivated after its campaigns were created' do
       context 'with the sms feature' do
-        include_context 'with sms feature enabled'
+        include_context 'with sms manual campaigns feature enabled'
 
         it 'keeps the sms campaigns and their deliveries' do
           campaign = create(:sms_manual_campaign)

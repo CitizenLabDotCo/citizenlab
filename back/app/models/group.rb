@@ -18,6 +18,7 @@
 #  index_groups_on_slug  (slug)
 #
 class Group < ApplicationRecord
+  include PlainTextMultiloc
   include PgSearch::Model
   include EmailCampaigns::GroupDecorator
 
@@ -35,6 +36,7 @@ class Group < ApplicationRecord
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :membership_type, presence: true, inclusion: { in: proc { membership_types } }
 
+  plain_text_multiloc :title_multiloc, prepend: true
   before_validation :set_membership_type, on: :create
   before_validation :strip_title
 
