@@ -54,6 +54,8 @@ const PublicationButtons = ({ project }: { project: IProjectData }) => {
     context: projectReview?.data.attributes.state === 'approved',
   });
 
+  const isPublished = project.attributes.publication_status === 'published';
+
   const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
   const [changeStatusModalOpen, setChangeStatusModalOpen] = useState(false);
 
@@ -77,9 +79,12 @@ const PublicationButtons = ({ project }: { project: IProjectData }) => {
     }
   };
 
-  const showPublishButton = !isProjectReviewEnabled || canPublish;
+  // if the project is published, we show the publish button to allow unpublishing, even if the user cannot publish
+  const showPublishButton =
+    !isProjectReviewEnabled || isPublished || canPublish;
   const publishButtonDisabled =
     !canPublish && !project.attributes.first_published_at;
+
   return (
     <Box display="flex" gap="8px">
       {showPublishButton && (
@@ -106,7 +111,9 @@ const PublicationButtons = ({ project }: { project: IProjectData }) => {
         </Tooltip>
       )}
 
-      {isProjectReviewEnabled && <ReviewFlow project={project} />}
+      {isProjectReviewEnabled && !isPublished &&
+        (<ReviewFlow project={project} />
+        )}
 
       <ScheduleLaunchModal
         opened={scheduleModalOpen}
