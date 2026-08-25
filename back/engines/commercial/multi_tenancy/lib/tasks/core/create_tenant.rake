@@ -365,7 +365,8 @@ namespace :cl2_back do
         },
         sms_manual_campaigns: {
           enabled: true,
-          allowed: true
+          allowed: true,
+          messages_purchased: 10_000
         },
         parallel_participation: {
           enabled: true,
