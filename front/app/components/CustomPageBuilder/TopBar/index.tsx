@@ -20,8 +20,8 @@ import { type TypedLinkProps } from 'utils/cl-router/Link';
 import messages from '../messages';
 
 type Props = {
-  hasPendingState?: boolean;
-  hasError?: boolean;
+  hasPendingState: boolean;
+  hasError: boolean;
   previewEnabled: boolean;
   setPreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
   selectedLocale: SupportedLocale;
@@ -51,7 +51,7 @@ const CustomPageBuilderTopBar = ({
   const { query } = useEditor();
   const localize = useLocalize();
 
-  const disableSave = !!hasError || !!hasPendingState;
+  const disableSave = hasError || hasPendingState;
 
   const goBack = () => {
     clHistory.push(backPath);

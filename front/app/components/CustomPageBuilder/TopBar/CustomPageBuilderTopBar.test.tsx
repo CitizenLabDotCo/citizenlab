@@ -36,6 +36,8 @@ const defaultProps: React.ComponentProps<typeof CustomPageBuilderTopBar> = {
   onSave: jest.fn(() => Promise.resolve(true)),
   isSaving: false,
   saveHasError: false,
+  hasError: false,
+  hasPendingState: false,
 };
 
 const renderTopBar = (
