@@ -50,6 +50,7 @@ describe MultiTenancy::SideFxTenantService do
 
     # Templates create static pages directly, so the SideFx create hook never fires for them.
     it 'provisions Content Builder layouts for templated custom pages (content_builder patch)' do
+      SettingsService.new.activate_feature!('custom_page_builder')
       page = create(:static_page, top_info_section_multiloc: { 'en' => '<p>Templated</p>' }, top_info_section_enabled: true)
 
       service.after_apply_template(tenant, 'base', current_user)
@@ -59,6 +60,14 @@ describe MultiTenancy::SideFxTenantService do
         code: ContentBuilder::CustomPageLayoutService::CODE
       )
       expect(layout&.enabled).to be(true)
+    end
+
+    it 'provisions no custom page layouts while the feature is off (content_builder patch)' do
+      page = create(:static_page, top_info_section_multiloc: { 'en' => '<p>Templated</p>' }, top_info_section_enabled: true)
+
+      service.after_apply_template(tenant, 'base', current_user)
+
+      expect(ContentBuilder::Layout.find_by(content_buildable: page)).to be_nil
     end
   end
 

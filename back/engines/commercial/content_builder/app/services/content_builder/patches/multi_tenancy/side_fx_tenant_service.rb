@@ -14,7 +14,10 @@ module ContentBuilder
             tenant.switch do
               service = ContentBuilder::DescriptionLayoutService.new
               service.provision_all_descriptions!
-              service.provision_all_custom_pages!
+              # Temporary gate: nothing reads a layout while the feature is off, so write none.
+              if AppConfiguration.instance.feature_activated?('custom_page_builder')
+                service.provision_all_custom_pages!
+              end
             end
           rescue StandardError => e
             ErrorReporter.report(e, extra: { tenant_id: tenant.id })
