@@ -3,6 +3,7 @@ import React from 'react';
 import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
 
 import LineLocationQuestion from './LineLocationQuestion';
+import MultipointLocationQuestion from './MultipointLocationQuestion';
 import PointLocationQuestion from './PointLocationQuestion';
 import PolygonLocationQuestion from './PolygonLocationQuestion';
 
@@ -44,6 +45,15 @@ const MapQuestion = ({
           customFieldId={customFieldId}
           projectId={projectId}
           mapConfigId={attributes.mapConfigId}
+        />
+      )}
+      {!attributes.grouped && attributes.multipointResponses && (
+        <MultipointLocationQuestion
+          multipointResponses={attributes.multipointResponses}
+          customFieldId={customFieldId}
+          projectId={projectId}
+          mapConfigId={attributes.mapConfigId}
+          heatmap={heatmap}
         />
       )}
     </div>

@@ -42,6 +42,7 @@ export type ICustomFieldInputType =
   | 'point'
   | 'line'
   | 'polygon'
+  | 'multipoint'
   | 'cosponsor_ids'
   | 'sentiment_linear_scale'
   | 'checkbox'

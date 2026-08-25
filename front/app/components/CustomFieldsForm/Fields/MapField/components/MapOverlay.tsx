@@ -30,6 +30,8 @@ const MapOverlay = ({
         return formatMessage(messages.tapToAddALine);
       case 'polygon':
         return formatMessage(messages.tapToAddAnArea);
+      case 'multipoint':
+        return formatMessage(messages.tapToAddPins);
       default:
         return '';
     }

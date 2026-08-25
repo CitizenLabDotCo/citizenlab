@@ -10,12 +10,12 @@ import { geocode, reverseGeocode } from 'utils/locationTools';
 
 import {
   getCoordinatesFromMultiPointData,
-  isLineOrPolygonInput,
+  isMultiPointInput,
   updateMultiPointsDataAndDisplay,
 } from './multiPointUtils';
 import { updatePointDataAndDisplay } from './pointUtils';
 
-export type MapInputType = 'point' | 'line' | 'polygon';
+export type MapInputType = 'point' | 'line' | 'polygon' | 'multipoint';
 
 // reverseGeocodeAndSave
 // Description: Reverse geocodes a point and saves the address
@@ -94,7 +94,7 @@ export const updateDataAndDisplay = ({
       tenantPrimaryColor: theme.colors.tenantPrimary,
       setAddress,
     });
-  } else if (isLineOrPolygonInput(inputType)) {
+  } else if (isMultiPointInput(inputType)) {
     updateMultiPointsDataAndDisplay({
       data: getCoordinatesFromMultiPointData(data, inputType),
       mapView,
@@ -137,7 +137,7 @@ export const getInitialMapCenter = (
 ) => {
   if (inputType === 'point') {
     return data || mapConfig?.data.attributes.center_geojson;
-  } else if (isLineOrPolygonInput(inputType)) {
+  } else if (isMultiPointInput(inputType)) {
     return mapConfig?.data.attributes.center_geojson;
   }
 };

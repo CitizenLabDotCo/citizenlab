@@ -11,7 +11,9 @@ import { colors } from '@citizenlab/cl2-component-library';
 import {
   getFillSymbol,
   getLineSymbol,
+  getMapPinSymbol,
   getShapeSymbol,
+  newPinPointGraphic,
 } from 'components/EsriMap/utils';
 
 import { projectPointToWebMercator } from 'utils/mapUtils/map';
@@ -23,13 +25,19 @@ import {
 } from './utils';
 
 // isLineOrPolygonInput
-// Description: Checks if the input is a line or polygon
+// Description: Checks if the input joins its points into a shape
 export const isLineOrPolygonInput = (inputType: MapInputType) => {
   return inputType === 'line' || inputType === 'polygon';
 };
 
+// isMultiPointInput
+// Description: Checks if the input collects several points rather than one
+export const isMultiPointInput = (inputType: MapInputType) => {
+  return isLineOrPolygonInput(inputType) || inputType === 'multipoint';
+};
+
 // handleMapClickMultipoint
-// Description: Handles map click for Line or Polygon input
+// Description: Handles map click for line, polygon or multipoint input
 export const handleMapClickMultipoint = (
   event: any,
   mapView: MapView,
@@ -104,13 +112,16 @@ export const setupPointDrag = ({
         temporaryDragGraphic.current = pointBeingDragged.current.clone();
 
         // Change the symbol colour so we can identify it as the preview point
-        temporaryDragGraphic.current.symbol = getShapeSymbol({
-          shape: 'circle',
-          color: tenantSecondaryColor,
-          sizeInPx: pointSymbolSize || 20,
-          outlineColor: colors.white,
-          outlineWidth: 2,
-        });
+        temporaryDragGraphic.current.symbol =
+          inputType === 'multipoint'
+            ? getMapPinSymbol({ color: tenantSecondaryColor, sizeInPx: 44 })
+            : getShapeSymbol({
+                shape: 'circle',
+                color: tenantSecondaryColor,
+                sizeInPx: pointSymbolSize || 20,
+                outlineColor: colors.white,
+                outlineWidth: 2,
+              });
 
         // Generate temporary line graphics between the preview point and existing vertices
         generateLinePreview({
@@ -192,6 +203,11 @@ export const generateLinePreview = ({
   mapView,
   event,
 }: GenerateLinePreviewProps) => {
+  // A multipoint has no connecting geometry, so there is no preview line to draw.
+  if (!isLineOrPolygonInput(inputType)) {
+    return;
+  }
+
   // Determine the index of the point the user is trying to drag
   const currentDataCoordinates = getCoordinatesFromMultiPointData(
     data,
@@ -282,6 +298,10 @@ export const convertCoordinatesToGeoJSON = (
   coordinates: number[][],
   inputType: MapInputType
 ) => {
+  if (inputType === 'multipoint') {
+    return { type: 'MultiPoint', coordinates };
+  }
+
   const geoJsonType = inputType === 'line' ? 'LineString' : 'Polygon';
 
   // Add an extra coordinate to close the line if we're forming a polygon
@@ -306,10 +326,19 @@ export const updateMultiPointsDataAndDisplay = ({
 }: UpdateMultiPointsDataAndDisplayProps) => {
   const coordinates = data;
 
-  // Create graphics for the user input points
+  // Create graphics for the user input points. A multipoint's points are
+  // standalone locations, so they get the same pin as a single point question;
+  // a line or polygon's points are vertices of a shape, so they stay dots.
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const pointGraphics = coordinates?.map((coordinates) => {
+    if (inputType === 'multipoint') {
+      return newPinPointGraphic(
+        { type: 'Point', coordinates },
+        tenantPrimaryColor
+      );
+    }
+
     return new Graphic({
       geometry: new Point({
         longitude: coordinates[0],
@@ -325,51 +354,56 @@ export const updateMultiPointsDataAndDisplay = ({
     });
   });
 
-  // Create an Esri line graphic to connect the points
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const pointsForLine = coordinates?.map((coordinates) => [
-    coordinates[0],
-    coordinates[1],
-  ]);
-  // If we have a polygon, we want to close the shape by connecting the first and last points
-  if (inputType === 'polygon') {
+  // A multipoint is a set of independent pins, so nothing connects them.
+  const connectingGraphics: Graphic[] = [];
+
+  if (isLineOrPolygonInput(inputType)) {
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    pointsForLine?.push(coordinates[0]);
+    const pointsForLine = coordinates?.map((coordinates) => [
+      coordinates[0],
+      coordinates[1],
+    ]);
+    // If we have a polygon, we want to close the shape by connecting the first and last points
+    if (inputType === 'polygon') {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      pointsForLine?.push(coordinates[0]);
+    }
+    // Create the Esri line object
+    const polyline = new Polyline({
+      paths: [pointsForLine],
+    });
+
+    connectingGraphics.push(
+      new Graphic({
+        geometry: polyline,
+        symbol:
+          inputType === 'line'
+            ? getLineSymbol({ style: 'dash' })
+            : getFillSymbol({
+                // Fills a polygon
+                transparency: 0.3,
+                color: tenantPrimaryColor,
+                outlineStyle: 'dash',
+              }),
+      })
+    );
   }
-  // Create the Esri line object
-  const polyline = new Polyline({
-    paths: [pointsForLine],
-  });
 
-  // Create the line graphic
-  const lineGraphic = new Graphic({
-    geometry: polyline,
-    symbol:
-      inputType === 'line'
-        ? getLineSymbol({ style: 'dash' })
-        : getFillSymbol({
-            // Fills a polygon
-            transparency: 0.3,
-            color: tenantPrimaryColor,
-            outlineStyle: 'dash',
-          }),
-  });
-
-  // Add the point and line graphics to the map
+  // Add the point and any connecting graphics to the map
   if (mapView) {
     // Remove any existing user input graphics
     const userInputLayer = getUserInputGraphicsLayer(mapView);
 
     if (userInputLayer) {
       userInputLayer.removeAll();
-      userInputLayer.add(lineGraphic);
+      userInputLayer.addMany(connectingGraphics);
       userInputLayer.addMany(pointGraphics);
     } else {
       // Add a new graphics layer to store the user inputs
       const graphicsLayer = new GraphicsLayer({ title: 'User Input' });
-      graphicsLayer.add(lineGraphic);
+      graphicsLayer.addMany(connectingGraphics);
       graphicsLayer.addMany(pointGraphics);
 
       // mapView.map is not always defined, so we do need to check here.
@@ -399,7 +433,11 @@ export function convertGeojsonToWKT(rawData: any) {
   for (const key in data) {
     if (typeof data[key] === 'object') {
       for (const subKey in data[key]) {
-        if (['Point', 'LineString', 'Polygon'].includes(data[key][subKey])) {
+        if (
+          ['Point', 'LineString', 'Polygon', 'MultiPoint'].includes(
+            data[key][subKey]
+          )
+        ) {
           const coordinates = data[key]['coordinates'].flat(2);
           let coordinatesString = '';
 
@@ -429,7 +467,7 @@ export function convertWKTToGeojson(rawData: any) {
   for (const key in data) {
     if (
       typeof data[key] === 'string' &&
-      data[key].match(/^(POINT|LINESTRING|POLYGON)/)
+      data[key].match(/^(POINT|LINESTRING|POLYGON|MULTIPOINT)/)
     ) {
       const wkt = data[key].trim();
       const type = wkt.split(' ')[0].toLowerCase();
@@ -449,23 +487,22 @@ export function convertWKTToGeojson(rawData: any) {
           .map((point) => point.trim().split(' ').map(Number));
 
         let coordinates;
+        let geoJsonType: string;
         if (type === 'point') {
           coordinates = points[0];
+          geoJsonType = 'Point';
         } else if (type === 'linestring') {
           coordinates = points;
-        } else if (type === 'polygon') {
+          geoJsonType = 'LineString';
+        } else if (type === 'multipoint') {
+          coordinates = points;
+          geoJsonType = 'MultiPoint';
+        } else {
           coordinates = [points];
+          geoJsonType = 'Polygon';
         }
 
-        data[key] = {
-          type:
-            type === 'point'
-              ? 'Point'
-              : type === 'linestring'
-              ? 'LineString'
-              : 'Polygon',
-          coordinates,
-        };
+        data[key] = { type: geoJsonType, coordinates };
       }
     }
   }

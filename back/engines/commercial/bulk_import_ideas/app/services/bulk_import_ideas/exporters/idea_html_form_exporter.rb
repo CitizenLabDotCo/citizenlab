@@ -208,7 +208,7 @@ module BulkImportIdeas::Exporters
         :matrix_linear_scale
       when 'checkbox'
         :checkbox
-      when 'point', 'line', 'polygon'
+      when 'point', 'line', 'polygon', 'multipoint'
         field_map_url(field) ? :mapping : :unsupported
       else
         # CURRENTLY UNSUPPORTED
@@ -247,7 +247,7 @@ module BulkImportIdeas::Exporters
     end
 
     def field_map_url(field)
-      return unless %w[point line polygon page].include? field.input_type
+      return unless %w[point line polygon multipoint page].include? field.input_type
       return if field.page? && field.page_layout != 'map'
 
       # Use map config from field > project > platform in that order
@@ -270,7 +270,8 @@ module BulkImportIdeas::Exporters
       messages = {
         'point' => 'form_builder.pdf_export.point_print_description',
         'line' => 'form_builder.pdf_export.line_print_description',
-        'polygon' => 'form_builder.pdf_export.polygon_print_description'
+        'polygon' => 'form_builder.pdf_export.polygon_print_description',
+        'multipoint' => 'form_builder.pdf_export.multipoint_print_description'
       }
       message_id = messages[field.input_type]
       return '' unless field_map_url(field) && message_id

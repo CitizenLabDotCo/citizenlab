@@ -39,7 +39,9 @@ const MapField = ({
   projectId,
   scrollErrorIntoView,
 }: {
-  question: IFlatCustomField & { input_type: 'point' | 'polygon' | 'line' };
+  question: IFlatCustomField & {
+    input_type: 'point' | 'polygon' | 'line' | 'multipoint';
+  };
   projectId?: string;
   scrollErrorIntoView?: boolean;
 }) => {
@@ -116,7 +118,7 @@ const MapField = ({
     [setValue, name]
   );
 
-  // Handler for when multiple point data changes (line/polygon)
+  // Handler for when multiple point data changes (line/polygon/multipoint)
   const handleMultiPointChange = useCallback(
     (coordinates?: number[][]) => {
       if (coordinates) {
