@@ -14,7 +14,7 @@ const fetchSmsBalance = () =>
 
 const useSmsBalance = () => {
   return useQuery<ISmsBalance, CLErrors, ISmsBalance, SmsBalanceKeys>({
-    queryKey: smsBalanceKeys.items(),
+    queryKey: smsBalanceKeys.all(),
     queryFn: fetchSmsBalance,
   });
 };

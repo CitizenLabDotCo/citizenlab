@@ -6,7 +6,6 @@ const baseKey = {
 
 const smsBalanceKeys = {
   all: () => [baseKey],
-  items: () => [{ ...baseKey, operation: 'item' }],
 } satisfies QueryKeys;
 
 export default smsBalanceKeys;
