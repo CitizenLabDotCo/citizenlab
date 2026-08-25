@@ -4,8 +4,10 @@ module ContentBuilder
   module Patches
     module MultiTenancy
       module SideFxTenantService
-        # A template carries only the layouts its source platform had, so fill in the rest.
-        # Errors are swallowed so provisioning can never abort tenant creation.
+        # Transitional. A template generated from a platform that predates the migration
+        # carries projects, folders and custom pages with no layout; once every platform is
+        # migrated this finds nothing, and it retires with the migration task. Errors are
+        # swallowed so provisioning can never abort tenant creation.
         def after_apply_template(tenant, template, current_user = nil)
           super
           begin

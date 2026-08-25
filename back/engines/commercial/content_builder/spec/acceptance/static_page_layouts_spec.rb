@@ -9,7 +9,29 @@ resource 'ContentBuilderLayouts' do
   before { header 'Content-Type', 'application/json' }
 
   let(:page) { create(:static_page) }
-  let!(:layout) { create(:layout, content_buildable: page, code: 'custom_page') }
+  let(:stored_craftjs_json) do
+    {
+      'ROOT' => {
+        'type' => { 'resolvedName' => 'CustomPageRoot' },
+        'nodes' => ['CUSTOM_PAGE_BODY'],
+        'isCanvas' => true
+      },
+      'CUSTOM_PAGE_BODY' => {
+        'type' => { 'resolvedName' => 'CustomPageBody' },
+        'nodes' => ['TEXT'],
+        'parent' => 'ROOT',
+        'isCanvas' => true
+      },
+      'TEXT' => {
+        'type' => { 'resolvedName' => 'TextMultiloc' },
+        'props' => { 'text' => { 'en' => '<p>Hello</p>' } },
+        'parent' => 'CUSTOM_PAGE_BODY'
+      }
+    }
+  end
+  let!(:layout) do
+    create(:layout, content_buildable: page, code: 'custom_page', craftjs_json: stored_craftjs_json)
+  end
 
   # URL parameters
   let(:static_page_id) { page.id }
@@ -26,6 +48,8 @@ resource 'ContentBuilderLayouts' do
               type: 'content_builder_layout',
               attributes: hash_including(
                 code: code,
+                enabled: true,
+                craftjs_json: stored_craftjs_json.deep_symbolize_keys,
                 created_at: match(time_regex),
                 updated_at: match(time_regex)
               )
@@ -64,7 +88,10 @@ resource 'ContentBuilderLayouts' do
     describe 'GET' do
       get 'web_api/v1/static_pages/:static_page_id/content_builder_layouts/:code' do
         example_request 'Get one layout by static_page_id and code' do
-          expect(status).to eq 200
+          assert_status 200
+          expect(json_response_body.dig(:data, :id)).to eq layout.id
+          expect(json_response_body.dig(:data, :attributes, :craftjs_json))
+            .to eq stored_craftjs_json.deep_symbolize_keys
         end
 
         context 'when the custom page does not exist' do

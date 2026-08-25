@@ -42,10 +42,9 @@ module ContentBuilder
       ProjectFolders::Folder.find_each { |folder| safely_ensure_on_content_builder(folder) }
     end
 
-    # Ensures every global custom page in the current tenant has a layout. A template carries
-    # only the layouts its source platform had, so this fills in the rest; it is a no-op for
-    # pages the template already covered. A failure on one page is reported and skipped rather
-    # than aborting tenant creation.
+    # Ensures every global custom page in the current tenant has a layout, deriving one for any
+    # page that arrived without it. A failure on one page is reported and skipped rather than
+    # aborting tenant creation.
     def provision_all_custom_pages!
       StaticPage.find_each { |static_page| safely_ensure_custom_page(static_page) }
     end
