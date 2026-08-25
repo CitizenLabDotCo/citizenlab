@@ -780,6 +780,7 @@ kl-GL:
       subject: Innuttaasunut siunnersuummik platformimut %{organizationName}mi tamanut saqqummiisoqarpoq
     new_phone_confirmation:
       sms_body: Uppernarsaatissat tassaavoq %{code}.
+      sms_body2: '%{organization_name}: Uppernarsaatissat tassaavoq %{code}.'
     official_feedback_on_commented_idea:
       by_author: uannga %{authorName}
       cta_view: Isumassarsiamukarit
@@ -841,6 +842,7 @@ kl-GL:
       title: Isissutissat nutaaq toqqaruk
     phone_confirmation:
       sms_body: Uppernarsaanermut kodiit tassaavoq %{code}.
+      sms_body2: '%{organization_name}: Uppernarsaatissat tassaavoq %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane

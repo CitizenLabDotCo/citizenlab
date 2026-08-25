@@ -542,6 +542,7 @@ ca-ES:
       yesterday: Ahir
     new_phone_confirmation:
       sms_body: El vostre codi de confirmació és %{code}.
+      sms_body2: '%{organization_name}: El teu codi de confirmació és %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Ves a aquesta entrada
       event_description: "%{feedback_author_name} ha donat una actualització sobre '%{input_title}'."
@@ -556,6 +557,7 @@ ca-ES:
       title: Tria una nova contrasenya
     phone_confirmation:
       sms_body: El teu codi de confirmació és %{code}.
+      sms_body2: '%{organization_name}: El teu codi de confirmació és %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
