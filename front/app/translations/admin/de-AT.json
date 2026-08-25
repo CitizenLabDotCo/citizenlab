@@ -1203,7 +1203,7 @@
   "app.containers.Admin.messaging.confirmSendSmsInsufficientBalance": "Diese Nachricht benötigt {required, number} Credits, aber es sind nur noch {balance, number} übrig. Um weiteres Guthaben zu erwerben, wenden Sie sich bitte an Ihre Kundenbetreuerin.",
   "app.containers.Admin.messaging.confirmSendSmsNoRecipients": "Aktuell entspricht niemand den Kriterien für diese Nachricht. Empfänger*innen benötigen eine bestätigte Telefonnummer und müssen dem Erhalt von SMS zugestimmt haben.",
   "app.containers.Admin.messaging.confirmSendSmsRecipientsLabel": "Empfänger*innen",
-  "app.containers.Admin.messaging.confirmSendSmsRecipientsTooltip": "Nur Personen mit einer bestätigten Handynummer, die dem Erhalt von Textnachrichten zugestimmt haben, werden gezählt.",
+  "app.containers.Admin.messaging.confirmSendSmsRecipientsTooltip": "Nur Personen mit einer bestätigten Handynummer, die dem Erhalt von SMS zugestimmt haben, werden gezählt.",
   "app.containers.Admin.messaging.deleteSmsButton": "Löschen",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "Sind Sie sicher, dass Sie diese SMS-Nachricht löschen möchten?",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "SMS-Nachricht bearbeiten",

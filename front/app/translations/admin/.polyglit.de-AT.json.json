@@ -6279,6 +6279,11 @@
     "verified_at": "2026-08-21T07:49:39.278680Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Admin.messaging.confirmSendSmsRecipientsTooltip": {
+    "state": "verified",
+    "verified_at": "2026-08-25T12:30:01.463798Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.messaging.deleteSmsButton": {
     "state": "verified",
     "verified_at": "2026-07-16T09:49:20.355299Z",
