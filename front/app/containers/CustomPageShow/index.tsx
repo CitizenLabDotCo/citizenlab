@@ -11,7 +11,6 @@ import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
-import usePageFiles from 'api/page_files/usePageFiles';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -19,17 +18,14 @@ import ContentContainer from 'components/ContentContainer';
 import CustomPageContentViewer from 'components/CustomPageBuilder/ContentViewer';
 import useCustomPageBuilderContent from 'components/CustomPageBuilder/ContentViewer/useCustomPageBuilderContent';
 import { Container, Content } from 'components/LandingPages/citizen';
-import InfoSection from 'components/LandingPages/citizen/InfoSection';
 import PageNotFound from 'components/PageNotFound';
-import FileAttachments from 'components/UI/FileAttachments';
 
-import { isNilOrError } from 'utils/helperUtils';
 import { useParams } from 'utils/router';
 
 import BackToProjectLink from './BackToProjectLink';
 import CustomPageHeader from './CustomPageHeader';
 import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
-import CustomPageProjectsAndEvents from './CustomPageProjectsAndEvents';
+import PageSections from './PageSections';
 
 const PageTitle = styled.h1`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -47,22 +43,6 @@ const PageTitle = styled.h1`
   ${isRtl`
     text-align: right;
     direction: rtl;
-  `}
-`;
-
-const AttachmentsContainer = styled(ContentContainer)<{
-  topInfoSectionEnabled: boolean;
-}>`
-  background: #fff;
-  padding-top: ${({ topInfoSectionEnabled }) =>
-    topInfoSectionEnabled ? '0' : '50px'};
-  padding-bottom: 50px;
-  padding-left: 20px;
-  padding-right: 20px;
-
-  ${media.tablet`
-    padding-top: 30px;
-    padding-bottom: 30px;
   `}
 `;
 
@@ -97,9 +77,6 @@ const CustomPageShow = () => {
   const { data: appConfiguration } = useAppConfiguration();
   const localize = useLocalize();
   const { data: page, isError } = useCustomPageBySlug(pageSlugToUse);
-  const { data: remotePageFiles } = usePageFiles(
-    page ? page.data.id : undefined
-  );
   // Only global custom pages are on the Content Builder, mirroring the backend's
   // provisioning guard. This component also serves policy pages, which reach it through the
   // `/pages/:slug` catch-all, and project-scoped pages; neither ever has a layout, so they
@@ -122,8 +99,8 @@ const CustomPageShow = () => {
     return <PageNotFound />;
   }
 
-  // The legacy sections wait for the layout query rather than rendering and being replaced
-  // the moment it resolves. The viewer holds the page while it is in flight.
+  // The page sections wait for the layout query rather than rendering and being replaced the
+  // moment it resolves. The viewer holds the page while it is in flight.
   const showBuilderContent =
     builderContent.isLoading || builderContent.hasContent;
 
@@ -174,33 +151,7 @@ const CustomPageShow = () => {
             {showBuilderContent ? (
               <CustomPageContentViewer staticPageId={page.data.id} />
             ) : (
-              <>
-                {pageAttributes.top_info_section_enabled && (
-                  <InfoSection
-                    multilocContent={pageAttributes.top_info_section_multiloc}
-                  />
-                )}
-                {pageAttributes.files_section_enabled &&
-                  !isNilOrError(remotePageFiles) &&
-                  remotePageFiles.data.length > 0 && (
-                    <AttachmentsContainer
-                      topInfoSectionEnabled={
-                        pageAttributes.top_info_section_enabled
-                      }
-                    >
-                      <FileAttachments files={remotePageFiles.data} />
-                    </AttachmentsContainer>
-                  )}
-                <CustomPageProjectsAndEvents page={page.data} />
-                {pageAttributes.bottom_info_section_enabled &&
-                  pageAttributes.bottom_info_section_multiloc && (
-                    <InfoSection
-                      multilocContent={
-                        pageAttributes.bottom_info_section_multiloc
-                      }
-                    />
-                  )}
-              </>
+              <PageSections page={page.data} />
             )}
           </Content>
         </Container>
