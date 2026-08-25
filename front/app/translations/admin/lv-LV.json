@@ -4175,7 +4175,7 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedPhoneNumber2": "Pieprasīt apstiprinātu tālruņa numuru no visiem lietotājiem",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireIdentityVerification2": "Pieprasīt identitātes verifikāciju no visiem lietotājiem",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Pieprasīt pierakstīšanos",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff2": "Pieejams tikai administratoriem un personām ar šī projekta pārvaldības tiesībām. Citi nosacījumi netiek piemēroti.",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff2": "Ierobežots administratoriem un visiem, kam ir šī projekta pārvaldības tiesības. Citas prasības netiek piemērotas.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInWith": "Dalībnieki pierakstās ar {methods}.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.sms": "SMS",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.ssoSeeBelow2": "SSO (skatīt identifikācijas metožu saiti zemāk)",

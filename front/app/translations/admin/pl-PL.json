@@ -4175,7 +4175,7 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedPhoneNumber2": "Wymagaj potwierdzonego numeru telefonu od wszystkich użytkowników",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireIdentityVerification2": "Wymagaj weryfikacji tożsamości od wszystkich użytkowników",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Wymagaj zalogowania",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff2": "Dostępne tylko dla administratorów oraz osób posiadających uprawnienia do zarządzania tym projektem. Nie obowiązują żadne inne wymogi.",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff2": "Dostęp ograniczony do administratorów i osób posiadających uprawnienia do zarządzania tym projektem. Inne wymagania nie mają zastosowania.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInWith": "Uczestnicy logują się za pomocą {methods}.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.sms": "SMS",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.ssoSeeBelow2": "SSO (zobacz link do metod identyfikacji poniżej)",

@@ -4175,7 +4175,7 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedPhoneNumber2": "Éiligh uimhir theileafóin dheimhnithe ó gach úsáideoir",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireIdentityVerification2": "Éiligh fíorú céannachta ó gach úsáideoir",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Éiligh logáil isteach",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff2": "Srianta do riarthóirí agus do dhuine ar bith a bhfuil cearta bainistíochta acu don tionscadal seo. Níl feidhm ag aon riachtanais eile.",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff2": "Srianta do riarthóirí agus d'aon duine a bhfuil cearta bainistíochta acu don tionscadal seo. Níl feidhm ag aon riachtanais eile.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInWith": "Logálann rannpháirtithe isteach le {methods}.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.sms": "SMS",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.ssoSeeBelow2": "SSO (féach an nasc chuig modhanna aitheantais thíos)",

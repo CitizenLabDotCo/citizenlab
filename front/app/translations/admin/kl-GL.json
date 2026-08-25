@@ -4175,7 +4175,7 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedPhoneNumber2": "Atuisunit tamanit oqarasuaatip normua uppernarsagaq piumasaqaataavoq",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireIdentityVerification2": "Atuisunit tamanit kinaussutsip uppernarsarneqarnissaa piumasaqaataavoq",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Isernissaq piumasaqaataavoq",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff2": "Aqutsisunut aamma suliniutimut uunga aqutsinissamut pisinnaatitaaffilinnut killeqarpoq. Allanik piumasaqaateqanngilaq.",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff2": "Aqutsisunut aamma suliniutimut matumunnga aqutsinissamut pisinnaatitaaffeqartunut taamaallaat killeqarpoq. Piumasaqaatinik allanik atuuttoqanngilaq.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInWith": "Peqataasut {methods} atorlugu isertassapput.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.sms": "SMS",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.ssoSeeBelow2": "SSO (kinaassutsimik uppernarsaanermut periarfissat ataaniittut takukkit)",

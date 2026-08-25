@@ -4175,7 +4175,7 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedPhoneNumber2": "Reikalauti patvirtinto telefono numerio iš visų naudotojų",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireIdentityVerification2": "Reikalauti tapatybės patvirtinimo iš visų naudotojų",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Reikalauti prisijungimo",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff2": "Prieinama tik administratoriams ir visiems, turintiems šio projekto valdymo teises. Kiti reikalavimai netaikomi.",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff2": "Apribota administratoriams ir visiems, turintiems šio projekto valdymo teises. Kiti reikalavimai netaikomi.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInWith": "Dalyviai prisijungia naudodami {methods}.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.sms": "SMS",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.ssoSeeBelow2": "SSO (žr. tapatybės nustatymo metodų nuorodą žemiau)",

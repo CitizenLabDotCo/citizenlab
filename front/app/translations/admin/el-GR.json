@@ -4175,7 +4175,7 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedPhoneNumber2": "Απαίτηση επιβεβαιωμένου αριθμού τηλεφώνου από όλους τους χρήστες",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireIdentityVerification2": "Απαίτηση επαλήθευσης ταυτότητας από όλους τους χρήστες",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Απαίτηση σύνδεσης",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff2": "Περιορίζεται στους διαχειριστές και σε όποιον έχει δικαιώματα διαχείρισης σε αυτό το έργο. Δεν ισχύουν άλλες προϋποθέσεις.",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff2": "Περιορίζεται στους διαχειριστές και σε όποιον έχει δικαιώματα διαχείρισης αυτού του έργου. Δεν ισχύουν άλλες προϋποθέσεις.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInWith": "Οι συμμετέχοντες συνδέονται με {methods}.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.sms": "SMS",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.ssoSeeBelow2": "SSO (δείτε τον σύνδεσμο μεθόδων ταυτοποίησης παρακάτω)",

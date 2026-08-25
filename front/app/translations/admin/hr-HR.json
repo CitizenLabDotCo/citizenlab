@@ -4175,7 +4175,7 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedPhoneNumber2": "Zahtijevaj potvrđeni broj telefona od svih korisnika",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireIdentityVerification2": "Zahtijevaj provjeru identiteta od svih korisnika",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Zahtijevaj prijavu",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff2": "Ograničeno na administratore i osobe s pravima upravljanja ovim projektom. Drugi uvjeti se ne primjenjuju.",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff2": "Ograničeno na administratore i sve koji imaju prava upravljanja ovim projektom. Drugi uvjeti se ne primjenjuju.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInWith": "Sudionici se prijavljuju putem {methods}.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.sms": "SMS",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.ssoSeeBelow2": "SSO (pogledajte poveznicu za metode identifikacije u nastavku)",

@@ -4175,7 +4175,7 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedPhoneNumber2": "Kræv bekræftet telefonnummer fra alle brugere",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireIdentityVerification2": "Kræv identitetsverifikation fra alle brugere",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Kræv login",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff2": "Begrænset til administratorer og alle med administrationsrettigheder til dette projekt. Ingen andre krav er gældende.",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff2": "Begrænset til administratorer og alle, der har administrationsrettigheder til dette projekt. Ingen andre krav er gældende.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInWith": "Deltagere logger ind med {methods}.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.sms": "SMS",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.ssoSeeBelow2": "SSO (se link til identifikationsmetoder nedenfor)",
