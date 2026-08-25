@@ -26,7 +26,7 @@ export const FullScreenPreview = ({ staticPageId }: Props) => {
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
   const platformLocale = useLocale();
 
-  const { data: layout } = useCustomPageLayout(staticPageId);
+  const { data: layout, isLoading } = useCustomPageLayout(staticPageId);
 
   const savedEditorData = useMemo(
     () =>
@@ -36,7 +36,6 @@ export const FullScreenPreview = ({ staticPageId }: Props) => {
     [layout]
   );
 
-  const isLoading = layout === undefined;
   const editorData = draftData || savedEditorData;
 
   return (
