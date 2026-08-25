@@ -86,3 +86,124 @@ describe('Admin project approval flow', () => {
     cy.get('#e2e-publish').should('contain', 'Published');
   });
 });
+
+describe('Admin publishing a project without approving it first', () => {
+  const managerPassword = randomString();
+
+  describe('when the project manager has requested approval', () => {
+    const managerEmail = randomEmail();
+    let projectId: string;
+    let userId: string;
+
+    before(() => {
+      cy.apiCreateProject({
+        title: randomString(),
+        description: randomString(30),
+        publicationStatus: 'draft',
+      }).then((project) => {
+        projectId = project.body.data.id;
+
+        cy.apiCreateModeratorForProject({
+          firstName: 'Jane',
+          lastName: 'Doe',
+          email: managerEmail,
+          password: managerPassword,
+          projectId,
+        }).then((moderator) => {
+          userId = moderator.body.data.id;
+
+          // The manager requests approval, so the project has a pending review.
+          cy.apiLogin(managerEmail, managerPassword).then((response) => {
+            cy.request({
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${response.body.jwt}`,
+              },
+              method: 'POST',
+              url: `web_api/v1/projects/${projectId}/review`,
+              body: {},
+            });
+          });
+        });
+      });
+    });
+
+    after(() => {
+      if (projectId && userId) {
+        cy.apiRemoveProject(projectId);
+      }
+    });
+
+    it('shows the Published button to the project manager', () => {
+      // The admin publishes the project without approving the pending review first.
+      cy.apiEditProject({ projectId, publicationStatus: 'published' });
+
+      cy.setLoginCookie(managerEmail, managerPassword);
+
+      cy.intercept('GET', `**/projects/${projectId}/review`).as('getReview');
+      cy.intercept('GET', `**/projects/${projectId}/phases`).as('getPhases');
+
+      cy.visit(`admin/projects/${projectId}`);
+      cy.wait(['@getReview', '@getPhases']);
+
+      cy.get('#e2e-publish')
+        .should('be.visible')
+        .and('contain', 'Published')
+        .and('not.be.disabled');
+      cy.dataCy('e2e-request-approval-pending').should('not.exist');
+      cy.dataCy('e2e-request-approval').should('not.exist');
+    });
+  });
+
+  describe('when the project manager has not requested approval', () => {
+    const managerEmail = randomEmail();
+    let projectId: string;
+    let userId: string;
+
+    before(() => {
+      cy.apiCreateProject({
+        title: randomString(),
+        description: randomString(30),
+        publicationStatus: 'draft',
+      }).then((project) => {
+        projectId = project.body.data.id;
+
+        cy.apiCreateModeratorForProject({
+          firstName: 'Jack',
+          lastName: 'Doe',
+          email: managerEmail,
+          password: managerPassword,
+          projectId,
+        }).then((moderator) => {
+          userId = moderator.body.data.id;
+        });
+      });
+    });
+
+    after(() => {
+      if (projectId && userId) {
+        cy.apiRemoveProject(projectId);
+      }
+    });
+
+    it('shows the Published button to the project manager', () => {
+      // The admin publishes the project, which was never submitted for review.
+      cy.apiEditProject({ projectId, publicationStatus: 'published' });
+
+      cy.setLoginCookie(managerEmail, managerPassword);
+
+      cy.intercept('GET', `**/projects/${projectId}/review`).as('getReview');
+      cy.intercept('GET', `**/projects/${projectId}/phases`).as('getPhases');
+
+      cy.visit(`admin/projects/${projectId}`);
+      cy.wait(['@getReview', '@getPhases']);
+
+      cy.get('#e2e-publish')
+        .should('be.visible')
+        .and('contain', 'Published')
+        .and('not.be.disabled');
+      cy.dataCy('e2e-request-approval').should('not.exist');
+      cy.dataCy('e2e-request-approval-pending').should('not.exist');
+    });
+  });
+});
