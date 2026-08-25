@@ -25,7 +25,7 @@ jest.mock('@tanstack/react-router', () => ({
   })),
 }));
 
-const defaultProps = {
+const defaultProps: React.ComponentProps<typeof CustomPageBuilderTopBar> = {
   previewEnabled: false,
   setPreviewEnabled: jest.fn(),
   selectedLocale: 'en',
@@ -36,7 +36,7 @@ const defaultProps = {
   onSave: jest.fn(() => Promise.resolve(true)),
   isSaving: false,
   saveHasError: false,
-} as unknown as React.ComponentProps<typeof CustomPageBuilderTopBar>;
+};
 
 const renderTopBar = (
   props: Partial<React.ComponentProps<typeof CustomPageBuilderTopBar>> = {}

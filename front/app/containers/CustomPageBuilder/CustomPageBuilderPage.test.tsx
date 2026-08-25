@@ -101,12 +101,12 @@ jest.mock('api/custom_page_layout/useCustomPageLayout', () => ({
   })),
 }));
 
-const defaultProps = {
+const defaultProps: React.ComponentProps<typeof CustomPageBuilderPage> = {
   staticPageId: 'page-1',
   backPath: '/admin/pages-menu/pages/page-1/content',
   previewLink: { to: '/pages/$slug', params: { slug: 'about-us' } },
   titleMultiloc: { en: 'About us' },
-} as unknown as React.ComponentProps<typeof CustomPageBuilderPage>;
+};
 
 describe('CustomPageBuilderPage save contract', () => {
   beforeEach(() => {
