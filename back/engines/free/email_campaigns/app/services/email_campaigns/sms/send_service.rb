@@ -64,9 +64,6 @@ module EmailCampaigns
         parsed
       end
 
-      # `use_test_mode` is the only thing standing between a send and the real Twilio
-      # API, in every environment. A tenant that leaves it off without configuring
-      # Twilio gets an errored delivery from the provider's own credential check.
       def provider
         if AppConfiguration.instance.settings('sms', 'use_test_mode')
           Providers::Fake.new
