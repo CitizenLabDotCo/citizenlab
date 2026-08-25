@@ -172,7 +172,7 @@ describe SideFxProjectService do
         create(:project_review, project: project, approved_at: nil)
       end
 
-      it 'approves the pending review when the project is published form draft' do
+      it 'approves the pending review when the project is published from draft' do
         project.admin_publication.update!(publication_status: 'draft')
 
         project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
@@ -184,7 +184,7 @@ describe SideFxProjectService do
         expect(project.review.reload.approved_at).not_to be_nil
       end
 
-      it 'approves the pending review when the project is published form archived' do
+      it 'approves the pending review when the project is published from archived' do
         project.admin_publication.update!(publication_status: 'archived')
 
         project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
