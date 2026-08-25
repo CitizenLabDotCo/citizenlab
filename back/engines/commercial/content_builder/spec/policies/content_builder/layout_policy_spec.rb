@@ -98,7 +98,9 @@ RSpec.describe ContentBuilder::LayoutPolicy do
   end
 
   # Unstubbed, unlike the contexts above: UserRoleService#can_moderate? has no StaticPage
-  # branch, so only admins get past it. That is what makes custom page writes admin-only.
+  # branch, so only admins get past it. That covers layouts only — the pages themselves follow
+  # StaticPagePolicy, which does let a moderator edit a project-scoped page. Those have no
+  # layout today, so the two never disagree.
   context 'for a custom page layout' do
     let(:layout) do
       create(:layout, content_buildable: create(:static_page), code: ContentBuilder::CustomPageLayoutService::CODE)
