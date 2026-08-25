@@ -114,6 +114,11 @@ const CustomPageShow = () => {
     return <PageNotFound />;
   }
 
+  // The legacy sections wait for the layout query rather than rendering and being replaced
+  // the moment it resolves. The viewer holds the page while it is in flight.
+  const showBuilderContent =
+    builderContent.isLoading || builderContent.hasContent;
+
   const pageAttributes = page.data.attributes;
   const localizedOrgName = localize(
     // TODO: Fix this the next time the file is edited.
@@ -158,7 +163,7 @@ const CustomPageShow = () => {
             </NoBannerContainer>
           )}
           <Content>
-            {builderContent.hasContent ? (
+            {showBuilderContent ? (
               <CustomPageContentViewer staticPageId={page.data.id} />
             ) : (
               <>

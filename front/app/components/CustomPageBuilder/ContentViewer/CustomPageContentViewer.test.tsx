@@ -61,6 +61,16 @@ describe('CustomPageContentViewer', () => {
     expect(screen.getByTestId('frame')).toBeInTheDocument();
   });
 
+  // CustomPageShow hands the page over while the query is in flight, so the wait is shown
+  // here rather than behind the legacy sections.
+  it('shows a spinner while the layout is loading', () => {
+    isLoading = true;
+    render(<CustomPageContentViewer staticPageId="page-1" />);
+
+    expect(screen.getByTestId('spinner')).toBeInTheDocument();
+    expect(screen.queryByTestId('frame')).not.toBeInTheDocument();
+  });
+
   // The page renders its legacy sections instead whenever this returns null.
   it('renders nothing when the feature is off', () => {
     featureEnabled = false;

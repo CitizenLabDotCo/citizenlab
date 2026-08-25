@@ -61,15 +61,21 @@ jest.mock('api/custom_pages/useCustomPageBySlug', () =>
 );
 
 let hasContent = false;
+let isLoading = false;
 jest.mock(
   'components/CustomPageBuilder/ContentViewer/useCustomPageBuilderContent',
   () => ({
     __esModule: true,
-    default: jest.fn(() => ({ hasContent, isLoading: false })),
+    default: jest.fn(() => ({ hasContent, isLoading })),
   })
 );
 
 describe('CustomPageShow', () => {
+  beforeEach(() => {
+    hasContent = false;
+    isLoading = false;
+  });
+
   it('renders the legacy sections when the builder has no content', () => {
     hasContent = false;
     render(<CustomPageShow />);
@@ -87,5 +93,16 @@ describe('CustomPageShow', () => {
     expect(screen.getByTestId('builderContent')).toBeInTheDocument();
     expect(screen.queryByTestId('legacyInfoSection')).not.toBeInTheDocument();
     expect(screen.queryByTestId('legacyProjects')).not.toBeInTheDocument();
+  });
+
+  // Rendering the legacy sections first would show content that is replaced as soon as the
+  // layout arrives.
+  it('does not render the legacy sections while the layout is still loading', () => {
+    isLoading = true;
+    render(<CustomPageShow />);
+
+    expect(screen.queryByTestId('legacyInfoSection')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('legacyProjects')).not.toBeInTheDocument();
+    expect(screen.getByTestId('builderContent')).toBeInTheDocument();
   });
 });
