@@ -100,7 +100,15 @@ const CustomPageShow = () => {
   const { data: remotePageFiles } = usePageFiles(
     page ? page.data.id : undefined
   );
-  const builderContent = useCustomPageBuilderContent(page?.data.id);
+  // Only global custom pages are on the Content Builder, mirroring the backend's
+  // provisioning guard. This component also serves policy pages, which reach it through the
+  // `/pages/:slug` catch-all, and project-scoped pages; neither ever has a layout, so they
+  // must not wait on a request that can only 404.
+  const isGlobalCustomPage =
+    page?.data.attributes.code === 'custom' && !page.data.attributes.project_id;
+  const builderContent = useCustomPageBuilderContent(
+    isGlobalCustomPage ? page.data.id : undefined
+  );
 
   // when neither have loaded
   if (!appConfiguration || !page) {

@@ -39,23 +39,23 @@ jest.mock('api/app_configuration/useAppConfiguration', () =>
 );
 jest.mock('api/page_files/usePageFiles', () => jest.fn(() => ({ data: null })));
 
+const globalCustomPage = {
+  code: 'custom',
+  project_id: null,
+  title_multiloc: { en: 'About us' },
+  banner_enabled: false,
+  top_info_section_enabled: true,
+  top_info_section_multiloc: { en: '<p>Top</p>' },
+  bottom_info_section_enabled: true,
+  bottom_info_section_multiloc: { en: '<p>Bottom</p>' },
+  files_section_enabled: false,
+  projects_filter_type: 'no_filter',
+};
+
+let pageAttributes: Record<string, unknown> = globalCustomPage;
 jest.mock('api/custom_pages/useCustomPageBySlug', () =>
   jest.fn(() => ({
-    data: {
-      data: {
-        id: 'page-1',
-        attributes: {
-          title_multiloc: { en: 'About us' },
-          banner_enabled: false,
-          top_info_section_enabled: true,
-          top_info_section_multiloc: { en: '<p>Top</p>' },
-          bottom_info_section_enabled: true,
-          bottom_info_section_multiloc: { en: '<p>Bottom</p>' },
-          files_section_enabled: false,
-          projects_filter_type: 'no_filter',
-        },
-      },
-    },
+    data: { data: { id: 'page-1', attributes: pageAttributes } },
     isError: false,
   }))
 );
@@ -66,7 +66,12 @@ jest.mock(
   'components/CustomPageBuilder/ContentViewer/useCustomPageBuilderContent',
   () => ({
     __esModule: true,
-    default: jest.fn(() => ({ hasContent, isLoading })),
+    // Mirrors the real hook, which is disabled without an id and so reports nothing.
+    default: jest.fn((staticPageId?: string) =>
+      staticPageId
+        ? { hasContent, isLoading }
+        : { hasContent: false, isLoading: false }
+    ),
   })
 );
 
@@ -74,6 +79,7 @@ describe('CustomPageShow', () => {
   beforeEach(() => {
     hasContent = false;
     isLoading = false;
+    pageAttributes = globalCustomPage;
   });
 
   it('renders the legacy sections when the builder has no content', () => {
@@ -104,5 +110,19 @@ describe('CustomPageShow', () => {
     expect(screen.queryByTestId('legacyInfoSection')).not.toBeInTheDocument();
     expect(screen.queryByTestId('legacyProjects')).not.toBeInTheDocument();
     expect(screen.getByTestId('builderContent')).toBeInTheDocument();
+  });
+
+  // This component also serves policy pages and project-scoped pages, which are not on the
+  // Content Builder; they must not consult the layout at all.
+  it.each([
+    ['a policy page', { code: 'faq' }],
+    ['a project-scoped page', { project_id: 'project-1' }],
+  ])('renders the legacy sections for %s', (_label, overrides) => {
+    hasContent = true;
+    pageAttributes = { ...globalCustomPage, ...overrides };
+    render(<CustomPageShow />);
+
+    expect(screen.getAllByTestId('legacyInfoSection')).toHaveLength(2);
+    expect(screen.queryByTestId('builderContent')).not.toBeInTheDocument();
   });
 });
