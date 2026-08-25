@@ -13,8 +13,9 @@ import {
   Form,
   LabelContainer,
 } from 'components/smallForm';
+import ConsentDisclosure from 'components/SmsConsent/ConsentDisclosure';
 import ManualCampaignConsent from 'components/SmsConsent/ManualCampaignConsent';
-import PhoneConfirmationConsent from 'components/SmsConsent/PhoneConfirmationConsent';
+import smsConsentMessages from 'components/SmsConsent/messages';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
 import Warning from 'components/UI/Warning';
@@ -37,7 +38,7 @@ type FormError = 'taken' | 'invalid' | 'unsupported_country' | 'unknown';
 
 const ERROR_MESSAGES = {
   taken: messages.phoneTaken,
-  invalid: messages.phoneInvalid,
+  invalid: messages.phoneInvalid3,
   unsupported_country: messages.phoneUnsupportedCountry,
   unknown: messages.phoneUnknownError,
 };
@@ -96,7 +97,7 @@ const UpdatePhoneForm = ({
           <FormLabel
             width="max-content"
             margin-right="5px"
-            labelMessage={messages.newPhoneLabel}
+            labelMessage={messages.newPhoneLabel2}
             htmlFor="phone"
           />
         </LabelContainer>
@@ -118,7 +119,9 @@ const UpdatePhoneForm = ({
           text={formatMessage(messages.submitButton)}
           dataCy="change-phone-submit-button"
         />
-        <PhoneConfirmationConsent />
+        <ConsentDisclosure
+          disclosureMessage={smsConsentMessages.phoneConfirmationDisclosure}
+        />
       </Form>
       <Box display="flex" justifyContent="center">
         {updateSuccessful && (

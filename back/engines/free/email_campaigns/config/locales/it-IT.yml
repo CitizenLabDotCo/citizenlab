@@ -542,6 +542,7 @@ it-IT:
       yesterday: Ieri
     new_phone_confirmation:
       sms_body: Il tuo codice di conferma è %{code}.
+      sms_body2: '%{organization_name}: Il tuo codice di conferma è %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Guarda il contributo
       event_description: "%{feedback_author_name} ha pubblicato un aggiornamento su '%{input_title}'."
@@ -556,6 +557,7 @@ it-IT:
       title: Scegli una nuova password
     phone_confirmation:
       sms_body: Il tuo codice di conferma è %{code}.
+      sms_body2: '%{organization_name}: Il tuo codice di conferma è %{code}.'
     preview_data:
       author_display_name: Laura Bianchi
       author_first_name: Laura
