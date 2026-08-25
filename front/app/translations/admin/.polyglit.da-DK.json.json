@@ -6339,6 +6339,11 @@
     "verified_at": "2026-08-21T10:22:53.053108Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.containers.Admin.messaging.confirmSendSmsRecipientsTooltip": {
+    "state": "verified",
+    "verified_at": "2026-08-25T08:56:00.130138Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Admin.messaging.deleteSmsButton": {
     "state": "verified",
     "verified_at": "2026-07-14T16:35:52.450315Z",
@@ -6407,6 +6412,16 @@
   "app.containers.Admin.messaging.sendSmsPreviewButton": {
     "state": "verified",
     "verified_at": "2026-07-14T16:35:52.450315Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltip": {
+    "state": "verified",
+    "verified_at": "2026-08-25T08:56:00.130138Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.messaging.sendSmsPreviewNoPhoneTooltipLink": {
+    "state": "verified",
+    "verified_at": "2026-08-25T08:56:00.130138Z",
     "verified_by": "kielgast@govocal.com"
   },
   "app.containers.Admin.messaging.sendSmsPreviewTooltip": {
