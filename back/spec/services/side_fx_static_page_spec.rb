@@ -12,6 +12,21 @@ describe SideFxStaticPageService do
       expect { service.after_create(page, user) }
         .to have_enqueued_job(LogActivityJob).with(page, 'created', user, page.created_at.to_i)
     end
+
+    it 'provisions an enabled Content Builder layout for a global custom page (content_builder patch)' do
+      service.after_create(page, user)
+
+      layout = ContentBuilder::Layout.find_by(content_buildable: page, code: 'custom_page')
+      expect(layout&.enabled).to be(true)
+    end
+
+    it 'does not provision a layout for a policy page (content_builder patch)' do
+      policy_page = create(:static_page, code: 'faq', slug: 'faq')
+
+      service.after_create(policy_page, user)
+
+      expect(ContentBuilder::Layout.find_by(content_buildable: policy_page)).to be_nil
+    end
   end
 
   describe 'after_update' do
