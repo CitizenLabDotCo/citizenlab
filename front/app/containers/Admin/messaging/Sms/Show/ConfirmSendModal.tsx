@@ -1,9 +1,18 @@
 import React from 'react';
 
-import { Box, Spinner, Text, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconTooltip,
+  Spinner,
+  Text,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import { FormattedNumber } from 'react-intl';
 
 import useSmsSendSummary from 'api/campaigns/sms/send_summary/useSmsSendSummary';
+import { IGroupData } from 'api/groups/types';
+
+import useLocalize from 'hooks/useLocalize';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
@@ -16,6 +25,8 @@ import messages from '../../messages';
 interface Props {
   opened: boolean;
   campaignId: string;
+  selectedGroups: IGroupData[];
+  noGroupsSelected: boolean;
   onClose: () => void;
   onConfirm: () => void;
   isSending: boolean;
@@ -23,16 +34,24 @@ interface Props {
 
 interface SummaryRowProps {
   label: MessageDescriptor;
-  value: number;
+  tooltip?: MessageDescriptor;
+  children: React.ReactNode;
 }
 
-const SummaryRow = ({ label, value }: SummaryRowProps) => (
-  <Box display="flex" justifyContent="space-between" py="8px">
-    <Text m="0px" color="textSecondary">
+const SummaryRow = ({ label, tooltip, children }: SummaryRowProps) => (
+  <Box display="flex" justifyContent="space-between" gap="16px" py="8px">
+    <Text m="0px" color="textSecondary" display="flex">
       <FormattedMessage {...label} />
+      {tooltip && (
+        <IconTooltip
+          ml="4px"
+          iconSize="16px"
+          content={<FormattedMessage {...tooltip} />}
+        />
+      )}
     </Text>
-    <Text m="0px" fontWeight="bold">
-      <FormattedNumber value={value} />
+    <Text m="0px" fontWeight="bold" textAlign="right">
+      {children}
     </Text>
   </Box>
 );
@@ -40,11 +59,14 @@ const SummaryRow = ({ label, value }: SummaryRowProps) => (
 const ConfirmSendModal = ({
   opened,
   campaignId,
+  selectedGroups,
+  noGroupsSelected,
   onClose,
   onConfirm,
   isSending,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
   const { data: sendSummary } = useSmsSendSummary(campaignId, {
     enabled: opened,
   });
@@ -69,18 +91,27 @@ const ConfirmSendModal = ({
         {summary ? (
           <>
             <Box mb="16px" borderBottom={`1px solid ${colors.divider}`}>
+              <SummaryRow label={messages.fieldTo}>
+                {noGroupsSelected ? (
+                  <FormattedMessage {...messages.allUsers} />
+                ) : (
+                  selectedGroups
+                    .map((group) => localize(group.attributes.title_multiloc))
+                    .join(', ')
+                )}
+              </SummaryRow>
               <SummaryRow
                 label={messages.confirmSendSmsRecipientsLabel}
-                value={recipientsCount}
-              />
-              <SummaryRow
-                label={messages.confirmSendSmsCreditsLabel}
-                value={segmentsNeeded}
-              />
-              <SummaryRow
-                label={messages.confirmSendSmsBalanceLabel}
-                value={segmentsBalance}
-              />
+                tooltip={messages.confirmSendSmsRecipientsTooltip}
+              >
+                <FormattedNumber value={recipientsCount} />
+              </SummaryRow>
+              <SummaryRow label={messages.confirmSendSmsCreditsLabel}>
+                <FormattedNumber value={segmentsNeeded} />
+              </SummaryRow>
+              <SummaryRow label={messages.confirmSendSmsBalanceLabel}>
+                <FormattedNumber value={segmentsBalance} />
+              </SummaryRow>
             </Box>
 
             {insufficientBalance && (

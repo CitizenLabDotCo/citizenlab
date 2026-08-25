@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { groupsData } from 'api/groups/__mocks__/useGroups';
+
 import { render, screen } from 'utils/testUtils/rtl';
 
 import ConfirmSendModal from './ConfirmSendModal';
@@ -34,11 +36,13 @@ jest.mock(
       opened ? <div>{children}</div> : null
 );
 
-const renderModal = () =>
+const renderModal = ({ selectedGroups = groupsData } = {}) =>
   render(
     <ConfirmSendModal
       opened
       campaignId="campaign-id"
+      selectedGroups={selectedGroups}
+      noGroupsSelected={selectedGroups.length === 0}
       onClose={jest.fn()}
       onConfirm={jest.fn()}
       isSending={false}
@@ -74,6 +78,20 @@ describe('<ConfirmSendModal />', () => {
     expect(screen.getByText('Credits remaining').nextSibling).toHaveTextContent(
       '100'
     );
+  });
+
+  it('names the groups the message goes to', () => {
+    renderModal();
+
+    expect(screen.getByText('To').nextSibling).toHaveTextContent(
+      'Group 1, Group 2'
+    );
+  });
+
+  it('shows all users as the audience when no group is selected', () => {
+    renderModal({ selectedGroups: [] });
+
+    expect(screen.getByText('To').nextSibling).toHaveTextContent('All users');
   });
 
   it('allows sending when the balance covers the send', () => {

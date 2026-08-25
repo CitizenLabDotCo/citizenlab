@@ -196,6 +196,8 @@ const Show = () => {
       <ConfirmSendModal
         opened={showConfirm}
         campaignId={campaignId}
+        selectedGroups={selectedGroups}
+        noGroupsSelected={noGroupsSelected}
         onClose={() => setShowConfirm(false)}
         onConfirm={confirmSend}
         isSending={isSending}

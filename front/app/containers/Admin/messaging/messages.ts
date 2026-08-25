@@ -404,6 +404,11 @@ export default defineMessages({
     id: 'app.containers.Admin.messaging.confirmSendSmsRecipientsLabel',
     defaultMessage: 'Recipients',
   },
+  confirmSendSmsRecipientsTooltip: {
+    id: 'app.containers.Admin.messaging.confirmSendSmsRecipientsTooltip',
+    defaultMessage:
+      'Only people with a confirmed phone number who have opted in to text messages are counted.',
+  },
   confirmSendSmsCreditsLabel: {
     id: 'app.containers.Admin.messaging.confirmSendSmsCreditsLabel',
     defaultMessage: 'Credits needed',
