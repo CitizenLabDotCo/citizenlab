@@ -27,8 +27,8 @@ export default defineMessages({
     defaultMessage: 'Name',
   },
   requireUserToSetAPassword: {
-    id: 'app.components.admin.ActionForm.requireUserToSetAPassword',
-    defaultMessage: 'Require user to set a password',
+    id: 'app.components.admin.ActionForm.requireUserToSetAPassword2',
+    defaultMessage: 'Require users to set a password',
   },
   password: {
     id: 'app.components.admin.ActionForm.password3',
@@ -43,16 +43,16 @@ export default defineMessages({
     defaultMessage: 'PII excluded',
   },
   requireConfirmedEmail: {
-    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedEmail',
-    defaultMessage: 'Require confirmed email from all participants',
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedEmail2',
+    defaultMessage: 'Require confirmed email from all users',
   },
   requireConfirmedPhoneNumber: {
-    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedPhoneNumber',
-    defaultMessage: 'Require confirmed phone number from all participants',
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedPhoneNumber2',
+    defaultMessage: 'Require confirmed phone number from all users',
   },
   requireIdentityVerification: {
-    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.requireIdentityVerification',
-    defaultMessage: 'Require identity verification from all participants',
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.requireIdentityVerification2',
+    defaultMessage: 'Require identity verification from all users',
   },
   // Short forms of the three security requirements above, for the summary chips
   // and the collapsed section summary, where the full sentences don't fit.
