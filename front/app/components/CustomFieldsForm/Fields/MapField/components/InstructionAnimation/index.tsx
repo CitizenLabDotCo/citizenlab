@@ -34,6 +34,8 @@ const InstructionAnimation = ({
         return require('./animations/line-draw.json');
       case 'polygon':
         return require('./animations/polygon-draw.json');
+      case 'multipoint':
+        return require('./animations/pin-drop.json');
     }
   };
 
@@ -45,6 +47,8 @@ const InstructionAnimation = ({
         return !data || data.coordinates?.length < 2;
       case 'polygon':
         return !data || data.coordinates?.[0]?.length < 4;
+      case 'multipoint':
+        return !data || data.coordinates?.length < 1;
     }
   };
 

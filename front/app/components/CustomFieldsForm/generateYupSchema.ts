@@ -506,6 +506,61 @@ const generateYupSchema = ({
           : polygon.nullable();
         break;
       }
+
+      case 'multipoint': {
+        const pinsFor = (value: string | undefined) => {
+          if (!value) return undefined;
+          const converted = convertWKTToGeojson({ multipoint: value });
+          if (
+            !converted.multipoint ||
+            converted.multipoint.type !== 'MultiPoint' ||
+            !Array.isArray(converted.multipoint.coordinates)
+          ) {
+            return undefined;
+          }
+          return converted.multipoint.coordinates.length;
+        };
+
+        let multipoint = string().test({
+          message: formatMessage(messages.atLeastOnePinRequired),
+          test: (value) => {
+            if (!value) return true;
+            const pins = pinsFor(value);
+            return pins !== undefined && pins > 0;
+          },
+        });
+
+        if (minimum_select_count) {
+          multipoint = multipoint.test({
+            message: formatMessage(messages.minimumPinsRequired, {
+              minPins: minimum_select_count,
+            }),
+            test: (value) => {
+              if (!value) return true;
+              const pins = pinsFor(value);
+              return pins !== undefined && pins >= minimum_select_count;
+            },
+          });
+        }
+
+        if (maximum_select_count) {
+          multipoint = multipoint.test({
+            message: formatMessage(messages.maximumPinsAllowed, {
+              maxPins: maximum_select_count,
+            }),
+            test: (value) => {
+              if (!value) return true;
+              const pins = pinsFor(value);
+              return pins !== undefined && pins <= maximum_select_count;
+            },
+          });
+        }
+
+        schema[key] = required
+          ? multipoint.required(fieldRequired)
+          : multipoint.nullable();
+        break;
+      }
     }
   });
 

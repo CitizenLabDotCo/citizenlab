@@ -156,7 +156,8 @@ describe CustomFieldService do
         create(:custom_field, key: 'field7', input_type: 'number'),
         create(:custom_field, key: 'field8', input_type: 'multiselect', required: true),
         create(:custom_field, key: 'field9', input_type: 'files', required: true),
-        create(:custom_field, key: 'field10', input_type: 'point')
+        create(:custom_field, key: 'field10', input_type: 'point'),
+        create(:custom_field, key: 'field11', input_type: 'multipoint')
       ]
       create(:custom_field_option, key: 'option_1', custom_field: fields[2], ordering: 1)
       create(:custom_field_option, key: 'option_3', custom_field: fields[2], ordering: 3)
@@ -226,6 +227,10 @@ describe CustomFieldService do
                 format: 'data-url'
               } },
                         'field10' =>
+            { title: 'Did you attend',
+              description: 'Which councils are you attending in our city?',
+              type: 'string' },
+                        'field11' =>
             { title: 'Did you attend',
               description: 'Which councils are you attending in our city?',
               type: 'string' } },

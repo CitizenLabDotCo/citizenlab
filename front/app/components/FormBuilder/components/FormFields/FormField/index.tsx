@@ -15,6 +15,7 @@ import styled from 'styled-components';
 
 import {
   ICreateMatrixStatementsType,
+  ICustomFieldInputType,
   ICustomFieldSettingsTab,
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
@@ -51,6 +52,13 @@ const FormFieldsContainer = styled(Box)`
     background: ${rgba(colors.tealLight, 0.2)};
   }
 `;
+
+const MAPPING_INPUT_TYPES: ICustomFieldInputType[] = [
+  'point',
+  'line',
+  'polygon',
+  'multipoint',
+];
 
 type Props = {
   field: IFlatCustomField;
@@ -185,7 +193,7 @@ export const FormField = ({
 
     // Duplicate the map config if this is a mapping question
     if (
-      originalField.input_type === 'point' &&
+      MAPPING_INPUT_TYPES.includes(originalField.input_type) &&
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       originalField.map_config?.data?.id

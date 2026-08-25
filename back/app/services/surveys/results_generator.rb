@@ -135,6 +135,10 @@ module Surveys
       responses_to_geographic_input_type(field)
     end
 
+    def visit_multipoint(field)
+      responses_to_geographic_input_type(field)
+    end
+
     def visit_page(field)
       core_field_attributes(field, response_count: 0) # Response count gets updated later by looking at all the results
     end

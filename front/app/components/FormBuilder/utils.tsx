@@ -21,6 +21,7 @@ import MultiselectSettings from './components/FormBuilderSettings/MultiselectSet
 import OptionsSettings from './components/FormBuilderSettings/OptionsSettings';
 import PageButtonSettings from './components/FormBuilderSettings/PageButtonSettings';
 import PageLayoutSettings from './components/FormBuilderSettings/PageLayoutSettings';
+import PinCountSettings from './components/FormBuilderSettings/PinCountSettings';
 import PointSettings from './components/FormBuilderSettings/PointSettings';
 import SentimentLinearScaleSettings from './components/FormBuilderSettings/SentimentLinearScaleSettings';
 import TopicsSettings from './components/FormBuilderSettings/TopicsSettings';
@@ -208,6 +209,20 @@ export function getAdditionalSettings(
           field={field}
         />
       );
+    case 'multipoint':
+      return (
+        <>
+          <PointSettings
+            mapConfigIdName={`customFields.${field.index}.map_config_id`}
+            field={field}
+          />
+          <PinCountSettings
+            minimumSelectCountName={`customFields.${field.index}.minimum_select_count`}
+            maximumSelectCountName={`customFields.${field.index}.maximum_select_count`}
+            selectCountToggleName={`customFields.${field.index}.select_count_enabled`}
+          />
+        </>
+      );
     case 'text':
     case 'multiline_text':
     case 'text_multiloc':
@@ -314,6 +329,9 @@ const getInputTypeStringKey = (
       break;
     case 'polygon':
       translatedStringKey = messages.drawArea;
+      break;
+    case 'multipoint':
+      translatedStringKey = messages.dropMultiplePins;
       break;
     case 'ranking':
       translatedStringKey = messages.ranking;

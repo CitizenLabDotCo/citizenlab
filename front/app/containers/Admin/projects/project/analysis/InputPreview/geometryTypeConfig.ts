@@ -47,6 +47,7 @@ export const polygonConfig: IGeometryTypeConfig = {
 export const getGeometryTypeConfig = (geometryType: EsriGeometryType) => {
   switch (geometryType) {
     case 'point':
+    case 'multipoint':
       return pointConfig;
     case 'polygon':
       return polygonConfig;

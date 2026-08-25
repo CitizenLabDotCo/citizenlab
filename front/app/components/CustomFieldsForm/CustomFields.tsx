@@ -214,11 +214,12 @@ const renderField = ({
     case 'point':
     case 'line':
     case 'polygon':
+    case 'multipoint':
       return (
         <MapField
           question={
             question as IFlatCustomField & {
-              input_type: 'point' | 'polygon' | 'line';
+              input_type: 'point' | 'polygon' | 'line' | 'multipoint';
             }
           }
           projectId={projectId}

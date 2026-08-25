@@ -362,6 +362,23 @@ describe Export::Geojson::ValueVisitor do
       end
     end
 
+    describe '#visit_multipoint' do
+      let(:input_type) { 'multipoint' }
+      let(:value) do
+        {
+          'type' => 'MultiPoint',
+          'coordinates' => [[11.11, 22.22], [11.33, 22.44], [12.33, 23.44]]
+        }
+      end
+
+      it 'returns the GeoJSON value' do
+        expect(visitor.visit_multipoint(field)).to eq({
+          'type' => 'MultiPoint',
+          'coordinates' => [[11.11, 22.22], [11.33, 22.44], [12.33, 23.44]]
+        })
+      end
+    end
+
     describe '#visit_file_upload' do
       let(:input_type) { 'file_upload' }
 

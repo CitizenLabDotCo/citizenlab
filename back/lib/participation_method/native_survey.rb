@@ -4,7 +4,7 @@ module ParticipationMethod
   class NativeSurvey < Base
     ALLOWED_EXTRA_FIELD_TYPES = %w[
       page number linear_scale rating text multiline_text select multiselect
-      multiselect_image file_upload shapefile_upload point line polygon
+      multiselect_image file_upload shapefile_upload point line polygon multipoint
       ranking matrix_linear_scale sentiment_linear_scale
     ]
 

@@ -17,7 +17,7 @@ import LocationTextInput from '../components/LocationTextInput';
 import MapOverlay from '../components/MapOverlay';
 import RemoveAnswerButton from '../components/RemoveAnswerButton';
 import {
-  isLineOrPolygonInput,
+  isMultiPointInput,
   updateMultiPointsDataAndDisplay,
   getCoordinatesFromMultiPointData,
 } from '../multiPointUtils';
@@ -77,7 +77,7 @@ const MobileView = ({
           tenantPrimaryColor: theme.colors.tenantPrimary,
           setAddress,
         });
-      } else if (isLineOrPolygonInput(inputType)) {
+      } else if (isMultiPointInput(inputType)) {
         updateMultiPointsDataAndDisplay({
           data: getCoordinatesFromMultiPointData(data, inputType),
           mapView,
@@ -138,7 +138,7 @@ const MobileView = ({
             }}
             webMapId={mapConfig?.data.attributes.esri_web_map_id}
           />
-          {isLineOrPolygonInput(inputType) && data && (
+          {isMultiPointInput(inputType) && data && (
             <RemoveAnswerButton
               mapView={mapView}
               handleMultiPointChange={handleMultiPointChange}

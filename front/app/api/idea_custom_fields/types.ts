@@ -24,6 +24,7 @@ export type IIdeaCustomFieldInputType =
   | 'point'
   | 'line'
   | 'polygon'
+  | 'multipoint'
   | 'multiselect_image';
 
 export type TCustomFieldCode =
