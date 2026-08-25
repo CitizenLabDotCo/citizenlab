@@ -78,8 +78,9 @@ const PhonePolicies = ({
       </Text>
       <PoliciesForm
         loading={loading}
-        byContinuingMessage={messages.byContinuingPhone2}
-        byContinuingValues={{ orgName }}
+        byContinuingCopy={formatMessage(messages.byContinuingPhone2, {
+          orgName,
+        })}
         onSubmit={handleSubmit}
       />
     </>
