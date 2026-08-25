@@ -10,13 +10,11 @@ module ContentBuilder
           return ProjectPageLayoutService.new.craftjs_json_for(content_buildable)
         end
 
-        if code == CustomPageLayoutService::CODE
-          return CustomPageLayoutService.new.craftjs_json_for(content_buildable)
-        end
-
         case content_buildable.class.name
         when 'ProjectFolders::Folder'
           folder_layout(content_buildable)
+        when 'StaticPage'
+          CustomPageLayoutService.new.craftjs_json_for(content_buildable)
         else
           {}
         end
