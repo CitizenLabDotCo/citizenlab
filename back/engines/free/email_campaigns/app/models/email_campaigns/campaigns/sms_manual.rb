@@ -162,15 +162,19 @@ module EmailCampaigns
       errors.add(:base, :sms_not_configured, message: 'Some of the SMS configuration is missing')
     end
 
+    def segments_balance
+      @segments_balance ||= EmailCampaigns::Sms::BalanceService.new.balance
+    end
+
     def validate_sufficient_balance
-      return if segments_for_send <= EmailCampaigns::Sms::BalanceService.new.balance
+      return if segments_for_send <= segments_balance
 
       errors.add(:base, :insufficient_sms_balance, message: 'Not enough SMS segments left to reach all recipients')
     end
 
     # A preview is a real, billed message, so it is refused once the balance no longer covers it.
     def validate_sufficient_preview_balance
-      return if segments_for_preview <= EmailCampaigns::Sms::BalanceService.new.balance
+      return if segments_for_preview <= segments_balance
 
       errors.add(:base, :insufficient_sms_balance, message: 'Not enough SMS segments left to send a preview')
     end
