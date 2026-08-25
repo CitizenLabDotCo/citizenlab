@@ -13174,6 +13174,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.errors.insufficient_sms_balance": {
+    "state": "verified",
+    "verified_at": "2026-08-21T08:30:14.056854Z",
+    "verified_by": "Lydie"
+  },
   "app.errors.invalid_email": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -13264,6 +13269,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.errors.no_previewer_phone": {
+    "state": "verified",
+    "verified_at": "2026-08-24T13:24:58.762427Z",
+    "verified_by": "Cindy EB"
+  },
   "app.errors.no_recipients": {
     "state": "verified",
     "verified_at": "2026-03-18T16:35:09.080991Z",
@@ -13303,6 +13313,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.errors.sms_not_configured": {
+    "state": "verified",
+    "verified_at": "2026-08-24T07:54:40.733189Z",
+    "verified_by": "Cindy EB"
   },
   "app.errors.something_went_wrong": {
     "state": "verified",
