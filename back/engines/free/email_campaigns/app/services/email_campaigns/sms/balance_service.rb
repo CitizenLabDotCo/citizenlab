@@ -44,8 +44,8 @@ module EmailCampaigns
         used_breakdown.values.sum
       end
 
-      # May go negative once a tenant sends more than it bought — that is a real
-      # (over-)usage figure and is reported as such rather than clamped to 0.
+      # Goes negative once a tenant sends more than it bought. That over-usage is a
+      # real figure, so it is reported as-is rather than clamped to 0.
       def balance
         purchased - used
       end
