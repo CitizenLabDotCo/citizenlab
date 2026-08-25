@@ -72,6 +72,28 @@ describe('normalizeCustomPageLayout', () => {
     expect(result[BODY_NODE_ID].nodes).toEqual([]);
   });
 
+  // PR 3 pins banner and title slots as siblings of the body; rebuilding ROOT's children
+  // from the body alone would silently drop them.
+  it('keeps a pinned sibling of the body on ROOT', () => {
+    const nodes = {
+      ...defaultCustomPageLayout(),
+      BANNER: textNode('ROOT'),
+    } as SerializedNodes;
+    nodes.ROOT = { ...nodes.ROOT, nodes: ['BANNER', BODY_NODE_ID] };
+
+    const result = normalizeCustomPageLayout(nodes);
+
+    expect(result.ROOT.nodes).toEqual(['BANNER', BODY_NODE_ID]);
+    expect(result.BANNER).toBeDefined();
+  });
+
+  it('drops a ROOT child that has no node in the graph', () => {
+    const nodes = { ...defaultCustomPageLayout() } as SerializedNodes;
+    nodes.ROOT = { ...nodes.ROOT, nodes: ['GHOST', BODY_NODE_ID] };
+
+    expect(normalizeCustomPageLayout(nodes).ROOT.nodes).toEqual([BODY_NODE_ID]);
+  });
+
   it('re-parents a child that points somewhere other than the body', () => {
     const nodes = {
       ...defaultCustomPageLayout(),

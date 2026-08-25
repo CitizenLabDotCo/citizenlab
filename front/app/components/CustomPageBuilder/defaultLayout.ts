@@ -62,8 +62,9 @@ export const layoutHasContent = (nodes?: SerializedNodes): boolean => {
 };
 
 // Guarantees the scaffold the editor relies on: a CustomPageRoot holding exactly one
-// CustomPageBody, with every other node hanging off the body. A layout that predates a
-// scaffold change, or one saved before the body existed, is repaired rather than discarded.
+// CustomPageBody, with every ordinary node hanging off that body. ROOT's other children are
+// the pinned header slots and are left where they are. A layout that predates a scaffold
+// change, or one saved before the body existed, is repaired rather than discarded.
 export const normalizeCustomPageLayout = (
   nodes?: SerializedNodes
 ): SerializedNodes => {
@@ -93,13 +94,23 @@ export const normalizeCustomPageLayout = (
   });
 
   const root = next[ROOT_ID];
+  // Pinned siblings of the body — the banner and title slots — stay on ROOT, in the order
+  // they were stored. When the body was just created, ROOT's children were adopted into it
+  // instead, so ROOT keeps only the body and must not hold them twice.
+  const storedRootIds = existingBodyId
+    ? childIdsOf(root).filter((id) => id in next)
+    : [];
+  const rootIds = storedRootIds.includes(bodyId)
+    ? storedRootIds
+    : [...storedRootIds, bodyId];
+
   next[ROOT_ID] = {
     ...root,
     type: { resolvedName: 'CustomPageRoot' },
     isCanvas: true,
     displayName: 'CustomPageRoot',
     custom: { ...root.custom, region: true },
-    nodes: [bodyId],
+    nodes: rootIds,
   };
 
   return next;
