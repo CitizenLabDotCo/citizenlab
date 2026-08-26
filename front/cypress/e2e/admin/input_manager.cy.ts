@@ -18,15 +18,19 @@ let removals: string[] = [];
 let observer: MutationObserver | undefined;
 let probedSelect: HTMLSelectElement | undefined;
 
+// `instanceof Element` is false across the app iframe's realm, so go by nodeType.
 function describeEl(el: Node | null | undefined): string {
   if (!el) return 'none';
-  if (!(el instanceof Element)) return el.nodeName;
-  const id = el.id ? `#${el.id}` : '';
+  if (el.nodeType !== 1) return el.nodeName;
+  const element = el as Element;
+  const id = element.id ? `#${element.id}` : '';
   const cls =
-    typeof el.className === 'string' && el.className.trim()
-      ? `.${el.className.trim().split(/\s+/).join('.')}`
+    typeof element.className === 'string' && element.className.trim()
+      ? `.${element.className.trim().split(/\s+/).join('.')}`
       : '';
-  return `${el.tagName.toLowerCase()}${id}${cls}`;
+  const rows = element.querySelectorAll('tr').length;
+  const selects = element.querySelectorAll('#post-row-select-assignee').length;
+  return `${element.tagName.toLowerCase()}${id}${cls}[rows=${rows},selects=${selects}]`;
 }
 
 function probeAssigneeSelect(rowSelector: string, targetOptionText: string) {
