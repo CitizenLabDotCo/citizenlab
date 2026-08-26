@@ -21599,6 +21599,11 @@
     "verified_at": "2026-07-13T07:16:39.669771Z",
     "verified_by": "Roger"
   },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription4": {
+    "state": "verified",
+    "verified_at": "2026-08-26T09:07:24.638050Z",
+    "verified_by": "Roger"
+  },
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.firstDecide": {
     "state": "verified",
     "verified_at": "2026-07-13T07:16:39.669771Z",
