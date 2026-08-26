@@ -213,6 +213,19 @@ describe ContentBuilder::CustomPageLayoutService do
         expect(craftjs[projects_id]['parent']).to eq body_id
       end
 
+      # craftjs reads `custom` from the stored graph, so a derived widget has to carry what a
+      # dragged one would or it shows a raw node name and stays clickable in the builder.
+      it 'gives a derived widget the same custom data a dragged one has' do
+        craftjs = service.craftjs_json_for(filtered_page)
+
+        [projects_id, events_id].each do |node_id|
+          expect(craftjs[node_id]['custom']).to match(
+            'title' => { 'id' => be_present, 'defaultMessage' => be_present },
+            'noPointerEvents' => true
+          )
+        end
+      end
+
       it 'derives the events list from the same filter, on a coloured band' do
         craftjs = service.craftjs_json_for(filtered_page)
 

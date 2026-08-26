@@ -63,6 +63,7 @@ EventsByProjects.craft = {
   },
   custom: {
     title: messages.events,
+    noPointerEvents: true,
   },
 };
 

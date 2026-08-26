@@ -64,6 +64,8 @@ module ContentBuilder
 
       widget_node(
         'ProjectsByFilter',
+        'app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filteredProjects',
+        'Filtered projects',
         'filterType' => static_page.projects_filter_type,
         'ids' => projects_filter_ids(static_page),
         # No heading: the legacy section renders with showTitle false.
@@ -78,6 +80,8 @@ module ContentBuilder
 
       widget_node(
         'EventsByProjects',
+        'app.components.CustomPageBuilder.Widgets.EventsByProjects.events',
+        'Events',
         'mode' => static_page.projects_filter_type,
         'ids' => projects_filter_ids(static_page),
         'sectionBackground' => 'colored'
@@ -95,12 +99,17 @@ module ContentBuilder
       end
     end
 
-    def widget_node(name, **props)
+    # craftjs restores `custom` from the stored graph rather than from the component's
+    # craft.custom, so a derived node has to carry what a dragged one would.
+    def widget_node(name, title_id, title, **props)
       {
         'type' => { 'resolvedName' => name },
         'nodes' => [],
         'props' => props,
-        'custom' => {},
+        'custom' => {
+          'title' => { 'id' => title_id, 'defaultMessage' => title },
+          'noPointerEvents' => true
+        },
         'hidden' => false,
         'parent' => BODY_ID,
         'isCanvas' => false,

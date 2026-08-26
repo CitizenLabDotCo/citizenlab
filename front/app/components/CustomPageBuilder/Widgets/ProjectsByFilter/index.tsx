@@ -146,6 +146,7 @@ ProjectsByFilter.craft = {
   },
   custom: {
     title: messages.filteredProjects,
+    noPointerEvents: true,
   },
 };
 
