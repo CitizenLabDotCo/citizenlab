@@ -32,6 +32,75 @@ describe EventsFinder do
     end
   end
 
+  describe '#areas_condition' do
+    let(:area) { create(:area) }
+    let(:project) { create(:project, areas: [area]) }
+    let(:expected_record_ids) { Event.where(project: project).pluck(:id) }
+
+    before do
+      create_list(:event, 3)
+      create_list(:event, 2, project: project)
+    end
+
+    it 'returns the events of projects in the area' do
+      params[:areas] = [area.id]
+
+      expect(result_record_ids).to match_array expected_record_ids
+    end
+
+    it 'does not filter when no area is given' do
+      params[:areas] = []
+
+      expect(result_record_ids).to match_array Event.pluck(:id)
+    end
+  end
+
+  describe '#global_topics_condition' do
+    let(:global_topic) { create(:global_topic) }
+    let(:project) { create(:project, global_topics: [global_topic]) }
+    let(:expected_record_ids) { Event.where(project: project).pluck(:id) }
+
+    before do
+      create_list(:event, 3)
+      create_list(:event, 2, project: project)
+    end
+
+    it 'returns the events of projects with the tag' do
+      params[:global_topics] = [global_topic.id]
+
+      expect(result_record_ids).to match_array expected_record_ids
+    end
+
+    it 'does not filter when no tag is given' do
+      params[:global_topics] = []
+
+      expect(result_record_ids).to match_array Event.pluck(:id)
+    end
+  end
+
+  describe '#spaces_condition' do
+    let(:space) { create(:space) }
+    let(:project) { create(:project, space: space) }
+    let(:expected_record_ids) { Event.where(project: project).pluck(:id) }
+
+    before do
+      create_list(:event, 3)
+      create_list(:event, 2, project: project)
+    end
+
+    it 'returns the events of projects in the space' do
+      params[:spaces] = [space.id]
+
+      expect(result_record_ids).to match_array expected_record_ids
+    end
+
+    it 'does not filter when no space is given' do
+      params[:spaces] = []
+
+      expect(result_record_ids).to match_array Event.pluck(:id)
+    end
+  end
+
   describe '#project_publication_statuses_condition' do
     let(:project) { create(:project) }
     let(:project2) { create(:project, { admin_publication_attributes: { publication_status: 'draft' } }) }

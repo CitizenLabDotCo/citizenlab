@@ -21,6 +21,7 @@ import {
   CustomPageRoot,
   CustomPageBody,
 } from 'components/CustomPageBuilder/regions';
+import EventsByProjects from 'components/CustomPageBuilder/Widgets/EventsByProjects';
 import ProjectsByFilter from 'components/CustomPageBuilder/Widgets/ProjectsByFilter';
 import BaseEditor from 'components/DescriptionBuilder/Editor/Editor';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
@@ -57,6 +58,7 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
           ButtonMultiloc,
           PageLink,
           ProjectsByFilter,
+          EventsByProjects,
           CustomPageRoot,
           CustomPageBody,
         }}

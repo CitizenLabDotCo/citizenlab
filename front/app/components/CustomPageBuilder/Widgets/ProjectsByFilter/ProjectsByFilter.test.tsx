@@ -28,11 +28,15 @@ jest.mock('api/admin_publications/useAdminPublications', () => ({
   default: () => ({ data: undefined, isLoading: true }),
 }));
 
+const cards = jest.fn();
 jest.mock(
   'components/ProjectAndFolderCards/ProjectAndFolderCardsInner',
   () => ({
     __esModule: true,
-    default: () => <div data-testid="project-cards" />,
+    default: (props: unknown) => {
+      cards(props);
+      return <div data-testid="project-cards" />;
+    },
   })
 );
 
@@ -40,6 +44,48 @@ describe('ProjectsByFilter', () => {
   beforeEach(() => {
     inBuilder = true;
     statusCountsCall.mockClear();
+    cards.mockClear();
+  });
+
+  // Legacy pages show no heading, so one only appears once an admin writes it.
+  it('shows no heading until a title is written', () => {
+    render(<ProjectsByFilter filterType="areas" ids={['area-1']} />);
+
+    expect(cards).toHaveBeenCalledWith(
+      expect.objectContaining({ showTitle: false })
+    );
+  });
+
+  it('shows the heading an admin wrote', () => {
+    const titleMultiloc = { en: 'Projects near you' };
+    render(
+      <ProjectsByFilter
+        filterType="areas"
+        ids={['area-1']}
+        titleMultiloc={titleMultiloc}
+      />
+    );
+
+    expect(cards).toHaveBeenCalledWith(
+      expect.objectContaining({
+        showTitle: true,
+        currentlyWorkingOnText: titleMultiloc,
+      })
+    );
+  });
+
+  it('ignores a title that is only whitespace', () => {
+    render(
+      <ProjectsByFilter
+        filterType="areas"
+        ids={['area-1']}
+        titleMultiloc={{ en: '   ' }}
+      />
+    );
+
+    expect(cards).toHaveBeenCalledWith(
+      expect.objectContaining({ showTitle: false })
+    );
   });
 
   it('prompts for a selection in the builder when nothing is picked', () => {

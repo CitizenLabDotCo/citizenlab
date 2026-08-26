@@ -16,6 +16,7 @@ import useSpaces from 'api/spaces/useSpaces';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { useIntl } from 'utils/cl-intl';
@@ -28,9 +29,11 @@ const Settings = () => {
     actions: { setProp },
     filterType = 'global_topics',
     ids = [],
+    titleMultiloc,
   } = useNode((node) => ({
     filterType: node.data.props.filterType,
     ids: node.data.props.ids,
+    titleMultiloc: node.data.props.titleMultiloc,
   }));
 
   const { formatMessage } = useIntl();
@@ -60,9 +63,7 @@ const Settings = () => {
     spaces: spaces?.data,
   }[filterType];
 
-  if (!entities) return <Spinner />;
-
-  const options: IOption[] = entities.map((entity) => ({
+  const options: IOption[] | undefined = entities?.map((entity) => ({
     value: entity.id,
     label: localize(entity.attributes.title_multiloc),
   }));
@@ -75,6 +76,18 @@ const Settings = () => {
       flexDirection="column"
       gap="16px"
     >
+      <InputMultilocWithLocaleSwitcher
+        id="projects-by-filter-title"
+        type="text"
+        name="titleMultiloc"
+        label={formatMessage(messages.titleLabel)}
+        valueMultiloc={titleMultiloc}
+        onChange={(valueMultiloc) => {
+          setProp((props: ProjectsByFilterProps) => {
+            props.titleMultiloc = valueMultiloc;
+          });
+        }}
+      />
       <Select
         value={filterType}
         options={filterTypeOptions}
@@ -87,16 +100,21 @@ const Settings = () => {
           });
         }}
       />
-      <MultipleSelect
-        value={options.filter((option) => ids.includes(option.value))}
-        options={options}
-        label={formatMessage(messages.selectionLabel)}
-        onChange={(selected) => {
-          setProp((props: ProjectsByFilterProps) => {
-            props.ids = selected.map((option) => option.value);
-          });
-        }}
-      />
+      {/* Only the selector waits on its entity list; the rest of the panel stays usable. */}
+      {options ? (
+        <MultipleSelect
+          value={options.filter((option) => ids.includes(option.value))}
+          options={options}
+          label={formatMessage(messages.selectionLabel)}
+          onChange={(selected) => {
+            setProp((props: ProjectsByFilterProps) => {
+              props.ids = selected.map((option) => option.value);
+            });
+          }}
+        />
+      ) : (
+        <Spinner />
+      )}
     </Box>
   );
 };

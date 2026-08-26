@@ -19,6 +19,7 @@ import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import EventsByProjects from 'components/CustomPageBuilder/Widgets/EventsByProjects';
 import ProjectsByFilter from 'components/CustomPageBuilder/Widgets/ProjectsByFilter';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
 import NewLabel from 'components/UI/NewLabel';
@@ -84,6 +85,12 @@ const CustomPageBuilderToolbox = () => {
             label={formatMessage(ProjectsByFilter.craft.custom.title)}
           />
         )}
+        <DraggableElement
+          id="e2e-draggable-events-by-projects"
+          component={<EventsByProjects />}
+          icon="calendar"
+          label={formatMessage(EventsByProjects.craft.custom.title)}
+        />
         <DraggableElement
           id="e2e-draggable-text"
           component={<TextMultiloc />}

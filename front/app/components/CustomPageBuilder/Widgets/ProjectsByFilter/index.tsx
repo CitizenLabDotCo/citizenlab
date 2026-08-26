@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 
-import { Box, media } from '@citizenlab/cl2-component-library';
 import { useEditor } from '@craftjs/core';
-import styled from 'styled-components';
 
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import { IStatusCounts } from 'api/admin_publications_status_counts/types';
 import useAdminPublicationsStatusCounts from 'api/admin_publications_status_counts/useAdminPublicationsStatusCounts';
 import getStatusCounts from 'api/admin_publications_status_counts/util/getAdminPublicationsStatusCount';
 
-import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
+import ContentContainer from 'components/ContentContainer';
 import {
   PublicationTab,
   PUBLICATION_STATUSES,
@@ -22,19 +20,11 @@ import {
 
 import { FormattedMessage } from 'utils/cl-intl';
 
+import Placeholder from '../Placeholder';
+
 import messages from './messages';
-import Placeholder from './Placeholder';
 import Settings from './Settings';
-import { ProjectsByFilterProps, ProjectsFilterType } from './types';
-
-const ProjectSection = styled.div`
-  width: 100%;
-
-  ${media.tablet`
-    padding-left: ${DEFAULT_PADDING};
-    padding-right: ${DEFAULT_PADDING};
-  `}
-`;
+import { hasTitle, ProjectsByFilterProps, ProjectsFilterType } from './types';
 
 // Only the selected dimension is sent; the others stay absent so they do not narrow the
 // result set. Spaces also carry folders, so they page over top-level publications while the
@@ -55,6 +45,7 @@ type InnerProps = ProjectsByFilterProps & {
 const ProjectsByFilterInner = ({
   filterType,
   ids,
+  titleMultiloc,
   statusCountsWithoutFilters,
 }: InnerProps) => {
   const allStatusCountsWithoutFilters = getStatusCounts(
@@ -75,31 +66,34 @@ const ProjectsByFilterInner = ({
   const adminPublications = data?.pages.map((page) => page.data).flat();
 
   return (
-    <Box maxWidth="1200px" margin="0 auto">
-      <ProjectSection>
-        <ProjectAndFolderCardsInner
-          statusCounts={allStatusCountsWithoutFilters}
-          showTitle={false}
-          showFilters={false}
-          showSearch={false}
-          adminPublications={adminPublications || []}
-          statusCountsWithoutFilters={allStatusCountsWithoutFilters}
-          layout="dynamic"
-          loadingInitial={isLoading}
-          loadingMore={isFetchingNextPage}
-          hasMore={hasNextPage}
-          currentTab={currentTab}
-          onLoadMore={fetchNextPage}
-          onChangeCurrentTab={setCurrentTab}
-        />
-      </ProjectSection>
-    </Box>
+    // Same container the page section used, so the cards keep their page alignment. Its
+    // 50px vertical padding is deliberately not carried over: inside the builder, spacing
+    // between widgets is VerticalRhythmContext's job.
+    <ContentContainer mode="page">
+      <ProjectAndFolderCardsInner
+        statusCounts={allStatusCountsWithoutFilters}
+        showTitle={hasTitle(titleMultiloc)}
+        currentlyWorkingOnText={titleMultiloc}
+        showFilters={false}
+        showSearch={false}
+        adminPublications={adminPublications || []}
+        statusCountsWithoutFilters={allStatusCountsWithoutFilters}
+        layout="dynamic"
+        loadingInitial={isLoading}
+        loadingMore={isFetchingNextPage}
+        hasMore={hasNextPage}
+        currentTab={currentTab}
+        onLoadMore={fetchNextPage}
+        onChangeCurrentTab={setCurrentTab}
+      />
+    </ContentContainer>
   );
 };
 
 const ProjectsByFilter = ({
   filterType = 'global_topics',
   ids = [],
+  titleMultiloc = {},
 }: Partial<ProjectsByFilterProps>) => {
   const { inBuilder } = useEditor((state) => ({
     inBuilder: state.options.enabled,
@@ -127,6 +121,7 @@ const ProjectsByFilter = ({
     <ProjectsByFilterInner
       filterType={filterType}
       ids={ids}
+      titleMultiloc={titleMultiloc}
       statusCountsWithoutFilters={statusCountsWithoutFilters}
     />
   );

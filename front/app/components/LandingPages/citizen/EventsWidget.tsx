@@ -12,6 +12,7 @@ import {
 import { darken } from 'polished';
 import styled from 'styled-components';
 
+import { EventProjectFilters } from 'api/events/types';
 import useEvents from 'api/events/useEvents';
 
 import EventsMessage from 'containers/EventsPage/EventsViewer/EventsMessage';
@@ -61,9 +62,12 @@ const EventPageLink = typedStyled(Link)`
 
 interface Props {
   staticPageId?: string;
+  // Narrows to one set of projects. Absent means every project, which is what the homepage
+  // shows.
+  filters?: EventProjectFilters;
 }
 
-const EventsWidget = ({ staticPageId }: Props) => {
+const EventsWidget = ({ staticPageId, filters }: Props) => {
   const { formatMessage } = useIntl();
   const { data: events } = useEvents({
     projectPublicationStatuses: ['published'],
@@ -71,6 +75,7 @@ const EventsWidget = ({ staticPageId }: Props) => {
     pageSize: 3,
     sort: '-start_at',
     ...(staticPageId && { staticPageId }),
+    ...filters,
   });
   const isSmallerThanPhone = useBreakpoint('phone');
 

@@ -9,6 +9,9 @@ import { IEvents, EventsKeys, InputParameters } from './types';
 const fetchEvents = (filters: InputParameters) => {
   const {
     projectIds: project_ids,
+    areas,
+    globalTopics: global_topics,
+    spaces,
     endsBeforeDate: ends_before_date,
     endsOnOrAfterDate: ends_on_or_after_date,
     sort,
@@ -25,6 +28,9 @@ const fetchEvents = (filters: InputParameters) => {
     action: 'get',
     queryParams: {
       project_ids,
+      areas,
+      global_topics,
+      spaces,
       ends_before_date,
       ends_on_or_after_date,
       static_page_id,
@@ -45,6 +51,9 @@ const newDate = new Date().toJSON();
 const useEvents = (
   {
     projectIds,
+    areas,
+    globalTopics,
+    spaces,
     staticPageId,
     currentAndFutureOnly,
     pastOnly,
@@ -66,6 +75,9 @@ const useEvents = (
     pageNumber,
     pageSize,
     projectIds,
+    areas,
+    globalTopics,
+    spaces,
     staticPageId,
     attendeeId,
     ongoing_during,

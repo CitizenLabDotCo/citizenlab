@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'app.components.CustomPageBuilder.Widgets.ProjectsByFilter.selectionLabel',
     defaultMessage: 'Selection',
   },
+  titleLabel: {
+    id: 'app.components.CustomPageBuilder.Widgets.ProjectsByFilter.titleLabel',
+    defaultMessage: 'Title',
+  },
   nothingSelected: {
     id: 'app.components.CustomPageBuilder.Widgets.ProjectsByFilter.nothingSelected',
     defaultMessage: 'Pick at least one to show projects here.',
