@@ -1371,6 +1371,7 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Telefonszám",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Adjon meg egy telefonszámot a megfelelő formátumban, például: +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Adjon meg egy telefonszámot",
+  "app.containers.Authentication.steps.Policies.byContinuingPhone3": "A folytatással beleegyezik, hogy egyszeri megerősítő kódot kapjon SMS-ben a(z) {orgName} szervezettől. Ha fentebb hozzájárult, híreket és frissítéseket is kapni fog; az üzenetek gyakorisága változó. Üzenetküldési és adatforgalmi díjak merülhetnek fel. Válaszoljon a HELP szóra segítségért, vagy a STOP szóra a leiratkozáshoz.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Új fiók létrehozása ezzel: {phone} {changeLink}",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Összes {contentType} értesítés be-/kikapcsolása",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Értesítések ebben a kategóriában",

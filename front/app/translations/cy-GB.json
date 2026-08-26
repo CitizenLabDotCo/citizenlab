@@ -1371,6 +1371,7 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Rhif ffôn",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Rhowch rif ffôn yn y fformat cywir, er enghraifft +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Darparwch rif ffôn",
+  "app.containers.Authentication.steps.Policies.byContinuingPhone3": "Trwy barhau, rydych chi'n cytuno i dderbyn cod cadarnhau un-tro trwy SMS oddi wrth {orgName}. Os gwnaethoch ddewis cymryd rhan uchod, byddwch hefyd yn derbyn newyddion a diweddariadau; mae amlder y negeseuon yn amrywio. Gall cyfraddau negeseuon a data fod yn berthnasol. Atebwch HELP am gymorth, STOP i optio allan.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Creu cyfrif newydd gyda: {phone} {changeLink}",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Toglo pob hysbysiad {contentType}",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Hysbysiadau yn y categori hwn",

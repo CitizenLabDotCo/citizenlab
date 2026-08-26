@@ -1371,6 +1371,7 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Número de telefone",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Forneça um número de telefone no formato correto, por exemplo +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Forneça um número de telefone",
+  "app.containers.Authentication.steps.Policies.byContinuingPhone3": "Ao continuar, você concorda em receber um código de confirmação único por SMS de {orgName}. Se você optou por aceitar acima, também receberá notícias e atualizações; a frequência das mensagens varia. Tarifas de mensagens e dados podem ser aplicadas. Responda AJUDA para obter ajuda, PARAR para cancelar.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Criar uma nova conta com: {phone} {changeLink}",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Alternar todas as notificações de {contentType}",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Notificações nesta categoria",

@@ -1371,6 +1371,7 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Telefonsnummer",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Gitt eng Telefonsnummer am richtege Format un, zum Beispill +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Gitt eng Telefonsnummer un",
+  "app.containers.Authentication.steps.Policies.byContinuingPhone3": "Andeem Dir weiderfuerdert, sidd Dir averstanen, en eemolege Bestätegungscode per SMS vun {orgName} ze kréien. Wann Dir Iech uewen ugemellt hutt, kritt Dir och Neiegkeeten an Updates; d'Frequenz vun de Messagen variéiert. Et kënne Käschte fir Messagen an Daten ufalen. Äntwert mat HELP fir Hëllef, STOP fir Iech ofzemellen.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "En neie Kont erstellen mat: {phone} {changeLink}",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "All {contentType}-Notifikatiounen ëmschalten",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Notifikatiounen an dëser Kategorie",

@@ -1371,6 +1371,7 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Phone number",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Provide a phone number in the correct format, for example +353 87 123 4567",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Provide a phone number",
+  "app.containers.Authentication.steps.Policies.byContinuingPhone3": "By continuing, you agree to receive a one-time confirmation code by SMS from {orgName}. If you opted in above, you'll also receive news and updates; message frequency varies. Message and data rates may apply. Reply HELP for help, STOP to opt out.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Create a new account with: {phone} {changeLink}",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Toggle all {contentType} notifications",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Notifications in this category",
