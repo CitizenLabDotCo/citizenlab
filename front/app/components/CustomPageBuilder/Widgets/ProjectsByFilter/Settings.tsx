@@ -78,7 +78,7 @@ const Settings = () => {
       gap="16px"
     >
       <Text m="0px" color="textSecondary">
-        {formatMessage(messages.description)}
+        {formatMessage(messages.description2)}
       </Text>
       <InputMultilocWithLocaleSwitcher
         id="projects-by-filter-title"

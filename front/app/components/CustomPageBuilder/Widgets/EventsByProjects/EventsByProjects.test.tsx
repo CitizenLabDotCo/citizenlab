@@ -64,7 +64,10 @@ describe('EventsByProjects', () => {
     render(<EventsByProjects />);
 
     expect(screen.getByTestId('events-widget')).toBeInTheDocument();
-    expect(eventsWidget).toHaveBeenCalledWith({ filters: {} });
+    expect(eventsWidget).toHaveBeenCalledWith({
+      filters: {},
+      titleMultiloc: {},
+    });
   });
 
   it('prompts for a selection in the builder when a mode is picked but nothing is', () => {
@@ -82,11 +85,22 @@ describe('EventsByProjects', () => {
     expect(screen.queryByTestId('events-widget')).not.toBeInTheDocument();
   });
 
+  // Unset leaves EventsWidget's own "Upcoming and ongoing events" heading in place.
+  it('passes an admin heading through to the events list', () => {
+    const titleMultiloc = { en: 'Events in Northside' };
+    render(<EventsByProjects titleMultiloc={titleMultiloc} />);
+
+    expect(eventsWidget).toHaveBeenCalledWith(
+      expect.objectContaining({ titleMultiloc })
+    );
+  });
+
   it('passes the selected dimension through', () => {
     render(<EventsByProjects mode="areas" ids={['area-1']} />);
 
     expect(eventsWidget).toHaveBeenCalledWith({
       filters: { areas: ['area-1'] },
+      titleMultiloc: {},
     });
   });
 

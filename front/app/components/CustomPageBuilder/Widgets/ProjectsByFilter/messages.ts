@@ -5,10 +5,10 @@ export default defineMessages({
     id: 'app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filteredProjects',
     defaultMessage: 'Filtered projects',
   },
-  description: {
-    id: 'app.components.CustomPageBuilder.Widgets.ProjectsByFilter.description',
+  description2: {
+    id: 'app.components.CustomPageBuilder.Widgets.ProjectsByFilter.description2',
     defaultMessage:
-      'Shows the published and archived projects matching the tags, areas or spaces you pick below.',
+      'Shows the published and archived projects matching the filter you choose below.',
   },
   filterByLabel: {
     id: 'app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filterByLabel',
@@ -37,9 +37,5 @@ export default defineMessages({
   nothingSelected: {
     id: 'app.components.CustomPageBuilder.Widgets.ProjectsByFilter.nothingSelected',
     defaultMessage: 'Pick at least one to show projects here.',
-  },
-  noMatchingProjects: {
-    id: 'app.components.CustomPageBuilder.Widgets.ProjectsByFilter.noMatchingProjects',
-    defaultMessage: 'No projects match this selection yet.',
   },
 });

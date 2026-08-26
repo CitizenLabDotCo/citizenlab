@@ -76,6 +76,7 @@ module ContentBuilder
           'enums' => { 'filterType' => %w[global_topics areas spaces] }
         },
         'EventsByProjects' => {
+          'multilocs' => %w[titleMultiloc],
           'enums' => {
             'mode' => %w[all projects global_topics areas spaces],
             'sectionBackground' => %w[colored white]

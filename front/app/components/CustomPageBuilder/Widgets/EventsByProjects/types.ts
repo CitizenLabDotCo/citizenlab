@@ -1,3 +1,5 @@
+import { Multiloc } from 'typings';
+
 import { EventProjectFilters } from 'api/events/types';
 
 import { SectionBackgroundChoice } from 'components/ProjectPageBuilder/Widgets/SectionBackground';
@@ -16,6 +18,7 @@ export type EventsByProjectsProps = {
   mode: EventsSelectionMode;
   ids: string[];
   sectionBackground: SectionBackgroundChoice;
+  titleMultiloc: Multiloc;
 };
 
 export const filtersFor = (

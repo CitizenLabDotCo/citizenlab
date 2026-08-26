@@ -11,9 +11,12 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 import styled from 'styled-components';
+import { Multiloc } from 'typings';
 
 import { EventProjectFilters } from 'api/events/types';
 import useEvents from 'api/events/useEvents';
+
+import useLocalize from 'hooks/useLocalize';
 
 import EventsMessage from 'containers/EventsPage/EventsViewer/EventsMessage';
 import EventsSpinner from 'containers/EventsPage/EventsViewer/EventsSpinner';
@@ -65,10 +68,14 @@ interface Props {
   // Narrows to one set of projects. Absent means every project, which is what the homepage
   // shows.
   filters?: EventProjectFilters;
+  // Overrides the default heading. Absent keeps it, which is what every caller but the
+  // custom page builder wants.
+  titleMultiloc?: Multiloc;
 }
 
-const EventsWidget = ({ staticPageId, filters }: Props) => {
+const EventsWidget = ({ staticPageId, filters, titleMultiloc }: Props) => {
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
   const { data: events } = useEvents({
     projectPublicationStatuses: ['published'],
     currentAndFutureOnly: true,
@@ -86,7 +93,9 @@ const EventsWidget = ({ staticPageId, filters }: Props) => {
     <Box display="flex" flexDirection="column">
       <Header>
         <StyledTitle variant="h2" color="tenantText" m="0">
-          {formatMessage(messages.upcomingEventsWidgetTitle)}
+          {localize(titleMultiloc, {
+            fallback: formatMessage(messages.upcomingEventsWidgetTitle),
+          })}
         </StyledTitle>
       </Header>
 

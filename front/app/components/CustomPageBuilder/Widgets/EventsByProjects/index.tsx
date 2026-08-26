@@ -19,6 +19,7 @@ const EventsByProjects = ({
   mode = 'all',
   ids = [],
   sectionBackground = 'white',
+  titleMultiloc = {},
 }: Partial<EventsByProjectsProps>) => {
   const { inBuilder } = useEditor((state) => ({
     inBuilder: state.options.enabled,
@@ -44,7 +45,10 @@ const EventsByProjects = ({
     >
       {/* Same container the page section used, so the list keeps its page alignment. */}
       <ContentContainer mode="page">
-        <EventsWidget filters={filtersFor(mode, ids)} />
+        <EventsWidget
+          filters={filtersFor(mode, ids)}
+          titleMultiloc={titleMultiloc}
+        />
       </ContentContainer>
     </SectionBackground>
   );

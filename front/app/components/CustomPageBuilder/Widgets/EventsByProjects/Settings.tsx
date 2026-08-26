@@ -18,7 +18,9 @@ import useSpaces from 'api/spaces/useSpaces';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
+import eventsMessages from 'components/LandingPages/citizen/messages';
 import SectionBackgroundSetting from 'components/ProjectPageBuilder/Widgets/SectionBackgroundSetting';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { useIntl } from 'utils/cl-intl';
@@ -31,9 +33,11 @@ const Settings = () => {
     actions: { setProp },
     mode = 'all',
     ids = [],
+    titleMultiloc,
   } = useNode((node) => ({
     mode: node.data.props.mode,
     ids: node.data.props.ids,
+    titleMultiloc: node.data.props.titleMultiloc,
   }));
 
   const { formatMessage } = useIntl();
@@ -89,6 +93,21 @@ const Settings = () => {
       <Text m="0px" color="textSecondary">
         {formatMessage(messages.description)}
       </Text>
+      <InputMultilocWithLocaleSwitcher
+        id="events-by-projects-title"
+        type="text"
+        name="titleMultiloc"
+        label={formatMessage(messages.titleLabel)}
+        // The widget keeps its own heading until an admin writes one, so show that rather
+        // than leaving the field looking like it failed to load.
+        placeholder={formatMessage(eventsMessages.upcomingEventsWidgetTitle)}
+        valueMultiloc={titleMultiloc}
+        onChange={(valueMultiloc) => {
+          setProp((props: EventsByProjectsProps) => {
+            props.titleMultiloc = valueMultiloc;
+          });
+        }}
+      />
       <Select
         value={mode}
         options={modeOptions}
