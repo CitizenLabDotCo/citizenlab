@@ -38,6 +38,53 @@ describe('useEvents', () => {
     expect(result.current.data?.data).toEqual(eventsData);
   });
 
+  it('sends the project dimensions a custom page can filter by', async () => {
+    let requested = '';
+    server.use(
+      http.get(apiPath, ({ request }) => {
+        requested = request.url;
+        return HttpResponse.json({ data: eventsData }, { status: 200 });
+      })
+    );
+
+    const { result } = renderHook(
+      () =>
+        useEvents({
+          areas: ['area-1'],
+          globalTopics: ['tag-1'],
+          spaces: ['space-1'],
+        }),
+      { wrapper: createQueryClientWrapper() }
+    );
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    expect(decodeURIComponent(requested)).toContain('areas[]=area-1');
+    expect(decodeURIComponent(requested)).toContain('global_topics[]=tag-1');
+    expect(decodeURIComponent(requested)).toContain('spaces[]=space-1');
+  });
+
+  // The homepage passes none of them, and its request must be exactly what it always was.
+  it('sends no dimension params when none are given', async () => {
+    let requested = '';
+    server.use(
+      http.get(apiPath, ({ request }) => {
+        requested = request.url;
+        return HttpResponse.json({ data: eventsData }, { status: 200 });
+      })
+    );
+
+    const { result } = renderHook(() => useEvents({}), {
+      wrapper: createQueryClientWrapper(),
+    });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    expect(requested).not.toContain('areas');
+    expect(requested).not.toContain('global_topics');
+    expect(requested).not.toContain('spaces');
+  });
+
   it('returns error correctly', async () => {
     server.use(
       http.get(apiPath, () => {
