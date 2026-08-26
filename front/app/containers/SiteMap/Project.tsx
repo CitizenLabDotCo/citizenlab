@@ -3,6 +3,7 @@ import React from 'react';
 import useEvents from 'api/events/useEvents';
 import useProjectById from 'api/projects/useProjectById';
 
+import { EVENTS_WIDGET_ANCHOR_ID } from 'components/ProjectPageBuilder/Widgets/Events';
 import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -49,7 +50,7 @@ const Project = ({ projectId, hightestTitle }: Props) => {
               <Link
                 to="/projects/$slug"
                 params={{ slug: project.data.attributes.slug }}
-                hash="e2e-events-section-project-page"
+                hash={EVENTS_WIDGET_ANCHOR_ID}
               >
                 <FormattedMessage {...messages.projectEvents} />
               </Link>
