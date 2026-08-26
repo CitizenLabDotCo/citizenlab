@@ -205,7 +205,10 @@ describe ContentBuilder::CustomPageLayoutService do
 
         expect(resolved_name(craftjs, projects_id)).to eq 'ProjectsByFilter'
         expect(craftjs[projects_id]['props']).to eq(
-          'filterType' => 'areas', 'ids' => [area.id], 'titleMultiloc' => {}
+          'filterType' => 'areas',
+          'ids' => [area.id],
+          'titleMultiloc' => {},
+          'sectionBackground' => 'colored'
         )
         expect(craftjs[projects_id]['parent']).to eq body_id
       end

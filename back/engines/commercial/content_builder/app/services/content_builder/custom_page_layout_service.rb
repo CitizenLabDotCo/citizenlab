@@ -64,10 +64,12 @@ module ContentBuilder
 
       widget_node(
         'ProjectsByFilter',
-        # No heading: the legacy section renders with showTitle false.
         'filterType' => static_page.projects_filter_type,
         'ids' => projects_filter_ids(static_page),
-        'titleMultiloc' => {}
+        # No heading: the legacy section renders with showTitle false.
+        'titleMultiloc' => {},
+        # Both legacy lists sit on one coloured band.
+        'sectionBackground' => 'colored'
       )
     end
 
@@ -78,7 +80,6 @@ module ContentBuilder
         'EventsByProjects',
         'mode' => static_page.projects_filter_type,
         'ids' => projects_filter_ids(static_page),
-        # The legacy events section sits on a coloured band; a hand-placed widget does not.
         'sectionBackground' => 'colored'
       )
     end

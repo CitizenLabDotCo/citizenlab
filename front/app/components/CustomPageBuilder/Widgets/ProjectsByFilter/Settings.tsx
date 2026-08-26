@@ -17,6 +17,7 @@ import useSpaces from 'api/spaces/useSpaces';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
+import SectionBackgroundSetting from 'components/ProjectPageBuilder/Widgets/SectionBackgroundSetting';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import MultipleSelect from 'components/UI/MultipleSelect';
 
@@ -119,6 +120,7 @@ const Settings = () => {
       ) : (
         <Spinner />
       )}
+      <SectionBackgroundSetting defaultValue="white" />
     </Box>
   );
 };

@@ -72,7 +72,10 @@ module ContentBuilder
         # Custom page widgets.
         'ProjectsByFilter' => {
           'multilocs' => %w[titleMultiloc],
-          'enums' => { 'filterType' => %w[global_topics areas spaces] }
+          'enums' => {
+            'filterType' => %w[global_topics areas spaces],
+            'sectionBackground' => %w[colored white]
+          }
         },
         'EventsByProjects' => {
           'multilocs' => %w[titleMultiloc],

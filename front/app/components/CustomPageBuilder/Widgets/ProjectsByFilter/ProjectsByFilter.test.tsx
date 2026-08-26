@@ -28,6 +28,25 @@ jest.mock('api/admin_publications/useAdminPublications', () => ({
   default: () => ({ data: undefined, isLoading: true }),
 }));
 
+const sectionBackground = jest.fn();
+jest.mock('components/ProjectPageBuilder/Widgets/SectionBackground', () => ({
+  __esModule: true,
+  default: ({
+    colored,
+    children,
+  }: {
+    colored: boolean;
+    children: React.ReactNode;
+  }) => {
+    sectionBackground({ colored });
+    return <div>{children}</div>;
+  },
+}));
+jest.mock('components/ProjectPageBuilder/Widgets/useIsPageBodyChild', () => ({
+  __esModule: true,
+  default: () => true,
+}));
+
 const cards = jest.fn();
 jest.mock(
   'components/ProjectAndFolderCards/ProjectAndFolderCardsInner',
@@ -45,6 +64,25 @@ describe('ProjectsByFilter', () => {
     inBuilder = true;
     statusCountsCall.mockClear();
     cards.mockClear();
+    sectionBackground.mockClear();
+  });
+
+  it('renders on white unless an admin asks for a coloured band', () => {
+    render(<ProjectsByFilter filterType="areas" ids={['area-1']} />);
+
+    expect(sectionBackground).toHaveBeenCalledWith({ colored: false });
+  });
+
+  it('renders a coloured band when set, which is what migration sets', () => {
+    render(
+      <ProjectsByFilter
+        filterType="areas"
+        ids={['area-1']}
+        sectionBackground="colored"
+      />
+    );
+
+    expect(sectionBackground).toHaveBeenCalledWith({ colored: true });
   });
 
   it('shows no heading until a title is written', () => {
