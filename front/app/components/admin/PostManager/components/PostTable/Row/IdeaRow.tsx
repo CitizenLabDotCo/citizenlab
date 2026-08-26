@@ -442,6 +442,7 @@ const IdeaRow = ({
     <>
       <StyledRow
         className={`${className} e2e-idea-manager-idea-row`}
+        dataCy={`e2e-idea-row-${idea.id}`}
         undraggable={false}
         background={active ? colors.grey300 : undefined}
         ref={drag}
