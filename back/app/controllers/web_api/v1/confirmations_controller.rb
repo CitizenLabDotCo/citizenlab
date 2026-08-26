@@ -3,18 +3,14 @@
 class WebApi::V1::ConfirmationsController < ApplicationController
   include UserCookies
 
-  # Authentication is optional (not skipped-and-forbidden) for confirm_code_email
-  # and confirm_code_phone: they serve both unauthenticated callers (signup /
-  # passwordless login) and authenticated callers re-confirming their own email or
-  # phone number after the corresponding expiry.
   skip_before_action :authenticate_user, only: %i[confirm_code_email confirm_code_phone]
+  before_action :reject_authenticated_caller, only: %i[confirm_code_email confirm_code_phone]
   skip_after_action :verify_authorized
 
-  # Confirms a code for the user's `email` (in-place EmailConfirmation). Two callers:
-  #   - unauthenticated: email account creation flow and passwordless login.
-  #   - authenticated: re-confirmation of an expired confirmed_email. On success
-  #     EmailConfirmation#confirm! refreshes email_confirmed_at, which is exactly
-  #     what resets the expiry window.
+  # Confirms a code for the `email` of an account that isn't signed in yet: email
+  # account creation and passwordless login. The account is looked up from the
+  # submitted `email`. An authenticated user re-confirming their own email uses
+  # reconfirm_code_email instead.
   def confirm_code_email
     user = User.find_by_cimail(confirm_code_email_params[:email])
 
@@ -28,6 +24,25 @@ class WebApi::V1::ConfirmationsController < ApplicationController
       IdeaExposureTransferService.new.transfer_from_request(user: user, request: request)
 
       render json: raw_json({ auth_token: short_lived_auth_token(user) })
+    else
+      render json: { errors: result.errors.details }, status: :unprocessable_entity
+    end
+  end
+
+  # Re-confirmation of the signed-in user's own `email` after its
+  # confirmed_email_expiry window has elapsed. EmailConfirmation#confirm!
+  # refreshes email_confirmed_at, which is what resets that window. The caller
+  # already holds a token, so none is returned.
+  def reconfirm_code_email
+    result = user_confirmation_service.validate_and_reconfirm_email!(
+      current_user,
+      confirm_code_params[:code]
+    )
+
+    if result.success?
+      SideFxUserService.new.after_update(current_user, current_user)
+
+      head :ok
     else
       render json: { errors: result.errors.details }, status: :unprocessable_entity
     end
@@ -50,21 +65,12 @@ class WebApi::V1::ConfirmationsController < ApplicationController
     end
   end
 
-  # Confirms a code for the user's `phone` (in-place PhoneConfirmation). The phone
-  # mirror of confirm_code_email, with the same two callers:
-  #   - unauthenticated: phone account creation flow and passwordless login. The
-  #     account is looked up from the submitted `phone` param.
-  #   - authenticated: re-confirmation of an existing phone number after
-  #     confirmed_phone_number_expiry. On success PhoneConfirmation#confirm!
-  #     refreshes phone_confirmed_at, which is exactly what resets the expiry
-  #     window.
-  # A token is always returned, but only the unauthenticated caller needs it -
-  # an authenticated one keeps the (possibly longer-lived) token it already has.
+  # The phone mirror of confirm_code_email: phone account creation and
+  # passwordless login, with the account looked up from the submitted `phone`.
   def confirm_code_phone
-    return head :unauthorized unless current_user || sms_login_enabled?
+    return head :unauthorized unless sms_login_enabled?
 
-    phone = confirm_code_phone_params[:phone]
-    user = phone.present? ? User.find_by_phone_number(phone) : current_user
+    user = User.find_by_phone_number(confirm_code_phone_params[:phone])
 
     result = user_confirmation_service.validate_and_confirm_phone!(
       user,
@@ -76,6 +82,23 @@ class WebApi::V1::ConfirmationsController < ApplicationController
       IdeaExposureTransferService.new.transfer_from_request(user: user, request: request)
 
       render json: raw_json({ auth_token: short_lived_auth_token(user) })
+    else
+      render json: { errors: result.errors.details }, status: :unprocessable_entity
+    end
+  end
+
+  # The phone mirror of reconfirm_code_email: re-confirmation of the signed-in
+  # user's own `phone` after confirmed_phone_number_expiry has elapsed.
+  def reconfirm_code_phone
+    result = user_confirmation_service.validate_and_reconfirm_phone!(
+      current_user,
+      confirm_code_params[:code]
+    )
+
+    if result.success?
+      SideFxUserService.new.after_update(current_user, current_user)
+
+      head :ok
     else
       render json: { errors: result.errors.details }, status: :unprocessable_entity
     end
@@ -100,6 +123,12 @@ class WebApi::V1::ConfirmationsController < ApplicationController
   end
 
   private
+
+  # The confirm_code_* endpoints serve callers that aren't signed in yet. A
+  # signed-in user confirming their own email or phone uses reconfirm_code_*.
+  def reject_authenticated_caller
+    head :unauthorized if current_user
+  end
 
   def sms_login_enabled?
     AppConfiguration.instance.feature_activated?('sms_login')

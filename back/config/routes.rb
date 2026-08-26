@@ -174,11 +174,15 @@ Rails.application.routes.draw do
         post 'request_code_new_email', to: 'request_codes#request_code_new_email'
         post 'request_code_phone', to: 'request_codes#request_code_phone'
         post 'request_code_new_phone', to: 'request_codes#request_code_new_phone'
+        post 'request_reconfirm_code_email', to: 'request_codes#request_reconfirm_code_email'
+        post 'request_reconfirm_code_phone', to: 'request_codes#request_reconfirm_code_phone'
 
         post 'confirm_code_email', to: 'confirmations#confirm_code_email'
         post 'confirm_code_new_email', to: 'confirmations#confirm_code_new_email'
         post 'confirm_code_phone', to: 'confirmations#confirm_code_phone'
         post 'confirm_code_new_phone', to: 'confirmations#confirm_code_new_phone'
+        post 'reconfirm_code_email', to: 'confirmations#reconfirm_code_email'
+        post 'reconfirm_code_phone', to: 'confirmations#reconfirm_code_phone'
       end
 
       resources :global_topics do
