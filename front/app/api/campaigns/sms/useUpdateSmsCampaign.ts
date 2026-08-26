@@ -21,7 +21,7 @@ const useUpdateSmsCampaign = () => {
   return useMutation<ISmsCampaign, CLErrors, IUpdateSmsCampaignProperties>({
     mutationFn: updateSmsCampaign,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: smsCampaignsKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: smsCampaignsKeys.all() });
     },
   });
 };

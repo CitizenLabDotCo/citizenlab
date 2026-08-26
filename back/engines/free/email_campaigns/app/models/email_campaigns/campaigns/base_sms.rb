@@ -94,6 +94,16 @@ module EmailCampaigns
       User.where.not(phone_confirmed_at: nil)
     end
 
+    # Carrier rules require the sending organisation to be identifiable in the message,
+    # so a blank translation must fall through to a locale that has one.
+    def organization_name(locale)
+      MultilocService.new.t(
+        AppConfiguration.instance.settings('core', 'organization_name'),
+        locale.to_s,
+        ignore_blank: true
+      )
+    end
+
     private
 
     # All SMS sends go through Sms::SendJob. A synchronous send (perform_now, e.g.

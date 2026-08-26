@@ -3529,6 +3529,16 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.components.SmsConsent.campaignPreferencesDisclosure": {
+    "state": "verified",
+    "verified_at": "2026-08-20T11:47:33.945742Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.SmsConsent.phoneConfirmationDisclosure": {
+    "state": "verified",
+    "verified_at": "2026-08-20T11:47:33.945742Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.components.SmsConsent.smsConfirmationDisclosure": {
     "state": "verified",
     "verified_at": "2026-08-05T14:15:57.187013Z",
@@ -6932,6 +6942,11 @@
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": {
     "state": "verified",
     "verified_at": "2026-07-21T07:18:56.038873Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Authentication.steps.Policies.byContinuingPhone2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T11:47:33.945742Z",
     "verified_by": "kielgast@govocal.com"
   },
   "app.containers.Authentication.steps.SSOVerification.alreadyHaveAnAccount": {
@@ -10804,6 +10819,11 @@
     "verified_at": "2026-07-14T16:35:52.394338Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.containers.PhoneChange.newPhoneLabel2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T11:47:33.945742Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.PhoneChange.phoneEmptyError": {
     "state": "verified",
     "verified_at": "2026-07-14T16:35:52.394338Z",
@@ -10812,6 +10832,11 @@
   "app.containers.PhoneChange.phoneInvalid2": {
     "state": "verified",
     "verified_at": "2026-07-14T16:35:52.394338Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.PhoneChange.phoneInvalid3": {
+    "state": "verified",
+    "verified_at": "2026-08-20T11:47:33.945742Z",
     "verified_by": "kielgast@govocal.com"
   },
   "app.containers.PhoneChange.phoneTaken": {
@@ -10852,6 +10877,11 @@
   "app.containers.PhoneChange.smsManualCampaignConsentLabel": {
     "state": "verified",
     "verified_at": "2026-07-30T08:20:55.645325Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.PhoneChange.smsManualCampaignConsentLabel2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T11:47:33.945742Z",
     "verified_by": "kielgast@govocal.com"
   },
   "app.containers.PhoneChange.submitButton": {
@@ -13174,6 +13204,11 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.errors.insufficient_sms_balance": {
+    "state": "verified",
+    "verified_at": "2026-08-21T10:22:53.002015Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.errors.invalid_email": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -13264,6 +13299,11 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.errors.no_previewer_phone": {
+    "state": "verified",
+    "verified_at": "2026-08-25T08:56:00.077394Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.errors.no_recipients": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -13303,6 +13343,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.errors.sms_not_configured": {
+    "state": "verified",
+    "verified_at": "2026-08-22T13:31:00.889599Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.errors.something_went_wrong": {
     "state": "verified",

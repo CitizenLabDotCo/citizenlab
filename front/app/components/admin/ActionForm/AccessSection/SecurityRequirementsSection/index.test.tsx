@@ -38,11 +38,10 @@ jest.mock('api/id_methods/useIdMethods', () =>
 );
 
 const SECTION_TITLE = 'Security requirements';
-const EMAIL_LABEL = 'Require confirmed email from all participants';
-const PHONE_LABEL = 'Require confirmed phone number from all participants';
-const VERIFICATION_LABEL =
-  'Require identity verification from all participants';
-const PASSWORD_LABEL = 'Require user to set a password';
+const EMAIL_LABEL = 'Require confirmed email from all users';
+const PHONE_LABEL = 'Require confirmed phone number from all users';
+const VERIFICATION_LABEL = 'Require identity verification from all users';
+const PASSWORD_LABEL = 'Require users to set a password';
 
 // The collapsed summary uses shortened versions of the row labels.
 const PASSWORD_SUMMARY = 'Password';
@@ -182,7 +181,7 @@ describe('<SecurityRequirementsSection />', () => {
       expect(screen.getByText(VERIFICATION_LABEL)).toBeInTheDocument();
       expect(
         screen.getByText(
-          'If enabled, all users need to confirm their email. If disabled, only participants who sign up by email need to confirm their email.'
+          'If enabled, all users need to confirm their email. If disabled, only users who sign up by email need to confirm their email.'
         )
       ).toBeInTheDocument();
     });
@@ -223,7 +222,7 @@ describe('<SecurityRequirementsSection />', () => {
       await openSection();
 
       expect(
-        screen.getByText('Participant must have a confirmed phone number.')
+        screen.getByText('Users must have a confirmed phone number.')
       ).toBeInTheDocument();
     });
 

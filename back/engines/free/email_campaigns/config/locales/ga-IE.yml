@@ -542,6 +542,7 @@ ga-IE:
       yesterday: Inné
     new_phone_confirmation:
       sms_body: Is é %{code} do chód deimhnithe.
+      sms_body2: '%{organization_name}: Is é %{code} do chód deimhnithe.'
     official_feedback_on_idea_you_follow:
       cta_button: Téigh chuig an ionchur seo
       event_description: "Thug %{feedback_author_name} nuashonrú ar '%{input_title}'."
@@ -556,6 +557,7 @@ ga-IE:
       title: Roghnaigh pasfhocal nua
     phone_confirmation:
       sms_body: Is é do chód deimhnithe ná %{code}.
+      sms_body2: '%{organization_name}: Is é %{code} do chód deimhnithe.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane

@@ -45,10 +45,12 @@ module EmailCampaigns
     # user's confirmed phone (the number already on the user), unlike
     # NewPhoneConfirmation which targets the pending new_phone.
     def sms_body(command)
+      locale = command[:recipient].locale
       I18n.t(
-        'email_campaigns.phone_confirmation.sms_body',
+        'email_campaigns.phone_confirmation.sms_body2',
         code: command.dig(:event_payload, :code),
-        locale: command[:recipient].locale
+        organization_name: organization_name(locale),
+        locale: locale
       )
     end
 
