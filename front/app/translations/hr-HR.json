@@ -2157,6 +2157,7 @@
   "app.containers.PhoneConfirmation.confirmationCodeSent": "Novi kôd je poslan",
   "app.containers.PhoneConfirmation.didntGetAnSMS": "Niste primili SMS?",
   "app.containers.PhoneConfirmation.sendNewCode": "Pošalji novi kôd.",
+  "app.containers.PhoneConfirmation.sendNewCodeIn": "Novi kod možete zatražiti za {seconds} {seconds, plural, one {sekundu} few {sekunde} other {sekundi}}.",
   "app.containers.PhoneConfirmation.verifyAndContinue": "Potvrdi i nastavi",
   "app.containers.PhoneConfirmation.wrongNumber": "Pogrešan broj?",
   "app.containers.ProjectFolderCards.allProjects": "Svi projekti",

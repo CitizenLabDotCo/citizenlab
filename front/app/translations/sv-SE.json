@@ -2157,6 +2157,7 @@
   "app.containers.PhoneConfirmation.confirmationCodeSent": "Ny kod skickad",
   "app.containers.PhoneConfirmation.didntGetAnSMS": "Fick du inget SMS?",
   "app.containers.PhoneConfirmation.sendNewCode": "Skicka ny kod.",
+  "app.containers.PhoneConfirmation.sendNewCodeIn": "Du kan begära en ny kod om {seconds} {seconds, plural, one {sekund} other {sekunder}}.",
   "app.containers.PhoneConfirmation.verifyAndContinue": "Verifiera och fortsätt",
   "app.containers.PhoneConfirmation.wrongNumber": "Fel nummer?",
   "app.containers.ProjectFolderCards.allProjects": "Alla projekt",

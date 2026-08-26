@@ -2157,6 +2157,7 @@
   "app.containers.PhoneConfirmation.confirmationCodeSent": "Jauns kods nosūtīts",
   "app.containers.PhoneConfirmation.didntGetAnSMS": "Nesaņēmāt SMS?",
   "app.containers.PhoneConfirmation.sendNewCode": "Nosūtīt jaunu kodu.",
+  "app.containers.PhoneConfirmation.sendNewCodeIn": "Jūs varat pieprasīt jaunu kodu pēc {seconds} {seconds, plural, one {sekundes} other {sekundēm}}.",
   "app.containers.PhoneConfirmation.verifyAndContinue": "Apstiprināt un turpināt",
   "app.containers.PhoneConfirmation.wrongNumber": "Nepareizs numurs?",
   "app.containers.ProjectFolderCards.allProjects": "Visi projekti",

@@ -2157,6 +2157,7 @@
   "app.containers.PhoneConfirmation.confirmationCodeSent": "Uusi koodi lähetetty",
   "app.containers.PhoneConfirmation.didntGetAnSMS": "Etkö saanut tekstiviestiä?",
   "app.containers.PhoneConfirmation.sendNewCode": "Lähetä uusi koodi.",
+  "app.containers.PhoneConfirmation.sendNewCodeIn": "Voit pyytää uuden koodin {seconds} {seconds, plural, one {sekunnin} other {sekunnin}} kuluttua.",
   "app.containers.PhoneConfirmation.verifyAndContinue": "Vahvista ja jatka",
   "app.containers.PhoneConfirmation.wrongNumber": "Väärä numero?",
   "app.containers.ProjectFolderCards.allProjects": "Kaikki projektit",

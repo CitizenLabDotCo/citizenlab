@@ -2157,6 +2157,7 @@
   "app.containers.PhoneConfirmation.confirmationCodeSent": "نیا کوڈ بھیج دیا گیا ہے",
   "app.containers.PhoneConfirmation.didntGetAnSMS": "کیا آپ کو SMS موصول نہیں ہوا؟",
   "app.containers.PhoneConfirmation.sendNewCode": "نیا کوڈ بھیجیں۔",
+  "app.containers.PhoneConfirmation.sendNewCodeIn": "آپ {seconds} {seconds, plural, one {سیکنڈ} other {سیکنڈ}} میں نیا کوڈ طلب کر سکتے ہیں۔",
   "app.containers.PhoneConfirmation.verifyAndContinue": "تصدیق کریں اور جاری رکھیں",
   "app.containers.PhoneConfirmation.wrongNumber": "غلط نمبر؟",
   "app.containers.ProjectFolderCards.allProjects": "تمام منصوبے",

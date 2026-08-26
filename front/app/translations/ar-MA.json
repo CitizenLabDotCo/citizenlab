@@ -2157,6 +2157,7 @@
   "app.containers.PhoneConfirmation.confirmationCodeSent": "تم إرسال كود جديد",
   "app.containers.PhoneConfirmation.didntGetAnSMS": "ما وصلكش SMS؟",
   "app.containers.PhoneConfirmation.sendNewCode": "صيفط كود جديد.",
+  "app.containers.PhoneConfirmation.sendNewCodeIn": "يمكنك طلب رمز جديد بعد {seconds} {seconds, plural, one {ثانية} other {ثانية}}.",
   "app.containers.PhoneConfirmation.verifyAndContinue": "تحقق واستمر",
   "app.containers.PhoneConfirmation.wrongNumber": "النمرة غلط؟",
   "app.containers.ProjectFolderCards.allProjects": "جميع المشاريع",

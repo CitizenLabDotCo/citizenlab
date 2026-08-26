@@ -2157,6 +2157,7 @@
   "app.containers.PhoneConfirmation.confirmationCodeSent": "Új kód elküldve",
   "app.containers.PhoneConfirmation.didntGetAnSMS": "Nem kaptál SMS-t?",
   "app.containers.PhoneConfirmation.sendNewCode": "Új kód küldése.",
+  "app.containers.PhoneConfirmation.sendNewCodeIn": "Új kódot {seconds} {seconds, plural, one {másodperc} other {másodperc}} múlva kérhetsz.",
   "app.containers.PhoneConfirmation.verifyAndContinue": "Ellenőrzés és folytatás",
   "app.containers.PhoneConfirmation.wrongNumber": "Rossz szám?",
   "app.containers.ProjectFolderCards.allProjects": "Minden projekt",

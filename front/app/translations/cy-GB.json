@@ -2157,6 +2157,7 @@
   "app.containers.PhoneConfirmation.confirmationCodeSent": "Cod newydd wedi'i anfon",
   "app.containers.PhoneConfirmation.didntGetAnSMS": "Heb dderbyn SMS?",
   "app.containers.PhoneConfirmation.sendNewCode": "Anfon Cod Newydd.",
+  "app.containers.PhoneConfirmation.sendNewCodeIn": "Gallwch ofyn am god newydd ymhen {seconds} {seconds, plural, one {eiliad} other {eiliad}}.",
   "app.containers.PhoneConfirmation.verifyAndContinue": "Gwirio a Pharhau",
   "app.containers.PhoneConfirmation.wrongNumber": "Rhif anghywir?",
   "app.containers.ProjectFolderCards.allProjects": "Pob prosiect",

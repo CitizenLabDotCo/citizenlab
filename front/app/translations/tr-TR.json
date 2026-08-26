@@ -2157,6 +2157,7 @@
   "app.containers.PhoneConfirmation.confirmationCodeSent": "Yeni kod gönderildi",
   "app.containers.PhoneConfirmation.didntGetAnSMS": "SMS gelmedi mi?",
   "app.containers.PhoneConfirmation.sendNewCode": "Yeni Kod Gönder.",
+  "app.containers.PhoneConfirmation.sendNewCodeIn": "Yeni bir kodu {seconds} {seconds, plural, one {saniye} other {saniye}} içinde talep edebilirsiniz.",
   "app.containers.PhoneConfirmation.verifyAndContinue": "Doğrula ve Devam Et",
   "app.containers.PhoneConfirmation.wrongNumber": "Yanlış numara mı?",
   "app.containers.ProjectFolderCards.allProjects": "Tüm projeler",
