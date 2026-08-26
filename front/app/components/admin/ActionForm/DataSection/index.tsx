@@ -53,13 +53,29 @@ const DataSection = ({ permission, phaseId, onChange }: Props) => {
         borderRadius="8px"
         px="14px"
       >
+        {isNativeSurveySubmission && (
+          <AnonymitySection permission={permission} onChange={onChange} />
+        )}
+
         {showPIISection && (
-          <PersonalInfoSection permission={permission} onChange={onChange} />
+          <Box
+            borderTop={
+              isNativeSurveySubmission
+                ? `1px solid ${colors.divider}`
+                : undefined
+            }
+          >
+            <PersonalInfoSection permission={permission} onChange={onChange} />
+          </Box>
         )}
 
         {/* Demographics — available in every mode. */}
         <Box
-          borderTop={showPIISection ? `1px solid ${colors.divider}` : undefined}
+          borderTop={
+            showPIISection || isNativeSurveySubmission
+              ? `1px solid ${colors.divider}`
+              : undefined
+          }
         >
           <DemographicSection
             permission={permission}
@@ -68,12 +84,6 @@ const DataSection = ({ permission, phaseId, onChange }: Props) => {
             onChange={onChange}
           />
         </Box>
-
-        {isNativeSurveySubmission && (
-          <Box borderTop={`1px solid ${colors.divider}`}>
-            <AnonymitySection permission={permission} onChange={onChange} />
-          </Box>
-        )}
       </Box>
     </Box>
   );

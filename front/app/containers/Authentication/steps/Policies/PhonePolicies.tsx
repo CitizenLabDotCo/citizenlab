@@ -2,7 +2,10 @@ import React from 'react';
 
 import { Text, Icon, colors } from '@citizenlab/cl2-component-library';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import useLocale from 'hooks/useLocale';
+import useLocalize from 'hooks/useLocalize';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -28,8 +31,13 @@ const PhonePolicies = ({
   goBack,
 }: Props) => {
   const locale = useLocale();
+  const localize = useLocalize();
+  const { data: appConfiguration } = useAppConfiguration();
   const { formatMessage } = useIntl();
   const { phone } = state;
+  const orgName = localize(
+    appConfiguration?.data.attributes.settings.core.organization_name
+  );
 
   if (phone === null) return null;
 
@@ -70,7 +78,9 @@ const PhonePolicies = ({
       </Text>
       <PoliciesForm
         loading={loading}
-        byContinuingMessage={messages.byContinuingPhone}
+        byContinuingCopy={formatMessage(messages.byContinuingPhone2, {
+          orgName,
+        })}
         onSubmit={handleSubmit}
       />
     </>

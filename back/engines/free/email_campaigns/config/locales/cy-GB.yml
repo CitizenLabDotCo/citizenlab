@@ -542,6 +542,7 @@ cy-GB:
       yesterday: Ddoe
     new_phone_confirmation:
       sms_body: Eich cod cadarnhau yw %{code}.
+      sms_body2: '%{organization_name}: Eich cod cadarnhau yw %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Ewch i'r mewnbwn hwn
       event_description: "Rhoddodd %{feedback_author_name} ddiweddariad ar '%{input_title}'."
@@ -556,6 +557,7 @@ cy-GB:
       title: Dewiswch gyfrinair newydd
     phone_confirmation:
       sms_body: Eich cod cadarnhau yw %{code}.
+      sms_body2: '%{organization_name}: Eich cod cadarnhau yw %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane

@@ -1564,12 +1564,6 @@
             "title": "Twilio Auth Token",
             "private": true
           },
-          "twilio_manual_campaigns_messaging_service_sid": {
-            "type": "string",
-            "title": "Twilio Manual Campaigns Messaging Service SID",
-            "description": "The Twilio Messaging Service SID used to send manual SMS campaigns.",
-            "private": true
-          },
           "twilio_confirmation_codes_messaging_service_sid": {
             "type": "string",
             "title": "Twilio Confirmation Codes Messaging Service SID",
@@ -1607,12 +1601,26 @@
       "sms_manual_campaigns": {
         "type": "object",
         "title": "SMS manual campaigns (DO NOT USE YET)",
-        "description": "(DO NOT USE YET) Allow admins to send manual SMS campaigns. Requires the SMS feature, which holds the Twilio settings.",
+        "description": "(DO NOT USE YET) Allow admins to send manual SMS campaigns. Requires the SMS feature, which holds the Twilio account credentials.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
+          "enabled": { "type": "boolean", "default": false },
+          "twilio_manual_campaigns_messaging_service_sid": {
+            "type": "string",
+            "title": "Twilio Manual Campaigns Messaging Service SID",
+            "description": "The Twilio Messaging Service SID used to send manual SMS campaigns.",
+            "private": true
+          },
+          "messages_purchased": {
+            "type": "integer",
+            "title": "SMS credits (segments) purchased (cumulative, all time)",
+            "description": "The total number of billable SMS credits (segments) the tenant has EVER purchased. Cumulative: when a new bundle is sold, ADD it to this number, never replace it. The remaining balance shown to admins is this number minus every SMS segment handed to the provider since the platform started. Long messages may consume multiple segments.",
+            "minimum": 0,
+            "default": 0,
+            "private": true
+          }
         }
       },
 

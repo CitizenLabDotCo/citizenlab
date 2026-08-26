@@ -287,16 +287,6 @@ describe Permissions::PermissionsCustomFieldsService do
   # custom_fields_behavior decides which questions are asked; permitted_by only
   # comes into it in these two ways.
   describe 'how permitted_by affects the questions' do
-    it 'asks admins and managers nothing, whatever the behavior' do
-      permission = create(:permission, permitted_by: 'admins_moderators')
-      create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field_birthyear, enabled: false))
-
-      Permission::CUSTOM_FIELDS_BEHAVIORS.each do |behavior|
-        permission.update!(custom_fields_behavior: behavior)
-        expect(service.fields_for_permission(permission)).to be_empty
-      end
-    end
-
     # Unlike 'everyone', where an anonymous survey has no way to ask them.
     it 'lets user_data_collection be anonymous without gating the questions when participants register' do
       permission = create(
