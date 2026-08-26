@@ -177,7 +177,7 @@ export const preAuthSteps = (
         setCurrentStep((await getRemainingRequirementStep()) ?? 'success');
       },
       RESEND_CODE: async (email: string) => {
-        await requestCodeEmail({ email });
+        await requestCodeEmail(email);
       },
     },
 
@@ -187,12 +187,12 @@ export const preAuthSteps = (
         setCurrentStep('pre-auth:start');
       },
       SUBMIT_CODE: async (code: string) => {
-        await confirmCodePhone(code, state.phone ?? undefined);
+        await confirmCodePhone(code, state.phone ?? '');
 
         setCurrentStep((await getRemainingRequirementStep()) ?? 'success');
       },
       RESEND_CODE: async (phone: string) => {
-        await requestCodePhone({ phone });
+        await requestCodePhone(phone);
       },
     },
   };
