@@ -4181,7 +4181,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "Bestätigte E-Mail",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhone": "Bestätigte Telefonnummer",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.email": "E-Mail",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription4": "Wenn aktiviert, müssen alle Nutzenden ihre E-Mail-Adresse bestätigen. Wenn deaktiviert, müssen nur Nutzende, die sich per E-Mail registrieren, ihre E-Mail-Adresse bestätigen.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Kein Konto erforderlich",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noSignInMethodEnabled": "Auf dieser Plattform ist keine Anmeldemethode aktiviert.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Nur Admins und Manager*innen können diese Aktion ausführen. Es gelten keine weiteren Anforderungen.",

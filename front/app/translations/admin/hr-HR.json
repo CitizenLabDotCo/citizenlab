@@ -4181,7 +4181,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "Potvrđena e-adresa",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhone": "Potvrđen telefon",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.email": "e-adresa",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription4": "Ako je omogućeno, svi korisnici moraju potvrditi svoju e-adresu. Ako je onemogućeno, samo korisnici koji se registriraju putem e-adrese moraju potvrditi svoju e-adresu.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Račun nije potreban",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noSignInMethodEnabled": "Na ovoj platformi nije omogućena nijedna metoda prijave.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Samo administratori i voditelji mogu poduzeti ovu radnju. Ostali uvjeti se ne primjenjuju.",

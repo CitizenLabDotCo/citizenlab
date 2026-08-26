@@ -4181,7 +4181,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "Bekräftad e-postadress",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhone": "Bekräftat telefonnummer",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.email": "e-post",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription4": "Om aktiverat måste alla användare bekräfta sin e-postadress. Om inaktiverat behöver endast användare som registrerar sig via e-post bekräfta sin e-postadress.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Inget konto behövs",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noSignInMethodEnabled": "Ingen inloggningsmetod är aktiverad på denna plattform.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Endast administratörer och chefer kan utföra denna åtgärd. Inga andra krav gäller.",

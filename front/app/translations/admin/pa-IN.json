@@ -4181,7 +4181,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "ਪੁਸ਼ਟੀ ਕੀਤੀ ਈਮੇਲ",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhone": "ਪੁਸ਼ਟੀ ਕੀਤਾ ਫ਼ੋਨ",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.email": "ਈਮੇਲ",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription4": "ਜੇਕਰ ਚਾਲੂ ਹੈ, ਤਾਂ ਸਾਰੇ ਵਰਤੋਂਕਾਰਾਂ ਨੂੰ ਆਪਣੀ ਈਮੇਲ ਦੀ ਪੁਸ਼ਟੀ ਕਰਨ ਦੀ ਲੋੜ ਹੈ। ਜੇਕਰ ਬੰਦ ਹੈ, ਤਾਂ ਸਿਰਫ਼ ਉਹਨਾਂ ਵਰਤੋਂਕਾਰਾਂ ਨੂੰ ਆਪਣੀ ਈਮੇਲ ਦੀ ਪੁਸ਼ਟੀ ਕਰਨ ਦੀ ਲੋੜ ਹੈ ਜੋ ਈਮੇਲ ਰਾਹੀਂ ਸਾਈਨ ਅੱਪ ਕਰਦੇ ਹਨ।",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "ਕਿਸੇ ਖਾਤੇ ਦੀ ਲੋੜ ਨਹੀਂ ਹੈ",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noSignInMethodEnabled": "ਇਸ ਪਲੇਟਫਾਰਮ 'ਤੇ ਕੋਈ ਵੀ ਸਾਈਨ-ਇਨ ਵਿਧੀ ਸਮਰੱਥ ਨਹੀਂ ਹੈ।",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "ਸਿਰਫ਼ ਐਡਮਿਨ ਅਤੇ ਮੈਨੇਜਰ ਹੀ ਇਹ ਕਾਰਵਾਈ ਕਰ ਸਕਦੇ ਹਨ। ਕੋਈ ਹੋਰ ਲੋੜਾਂ ਲਾਗੂ ਨਹੀਂ ਹੁੰਦੀਆਂ।",

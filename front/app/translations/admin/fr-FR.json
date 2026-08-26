@@ -4181,7 +4181,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "E-mail confirmé",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhone": "Téléphone confirmé",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.email": "e-mail",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription4": "Si cette option est activée, tous les utilisateurs doivent confirmer leur e-mail. Si elle est désactivée, seuls les utilisateurs qui s'inscrivent par e-mail doivent le confirmer.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Aucun compte requis",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noSignInMethodEnabled": "Aucune méthode de connexion n'est activée sur cette plateforme.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Seuls les administrateurs et les gestionnaires peuvent effectuer cette action. Aucune autre condition ne s'applique.",

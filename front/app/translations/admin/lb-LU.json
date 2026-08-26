@@ -4181,7 +4181,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "Bestätegt E-Mail",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhone": "Bestätegten Telefon",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.email": "E-Mail",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription4": "Wann dës Optioun aktivéiert ass, mussen all Benotzer hir E-Mail-Adress bestätegen. Wann se deaktivéiert ass, mussen nëmmen d'Benotzer, déi sech per E-Mail umellen, hir E-Mail-Adress bestätegen.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Kee Kont néideg",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noSignInMethodEnabled": "Op dëser Plattform ass keng Umeldungsmethod aktivéiert.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Nëmmen Adminen a Manager kënnen dës Aktioun ausféieren. Keng aner Ufuerderunge gëllen.",

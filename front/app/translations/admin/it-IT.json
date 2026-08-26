@@ -4181,7 +4181,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "Email confermata",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhone": "Telefono confermato",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.email": "email",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription4": "Se abilitata, tutti gli utenti devono confermare la propria e-mail. Se disabilitata, solo gli utenti che si registrano tramite e-mail devono confermarla.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Nessun account richiesto",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noSignInMethodEnabled": "Nessun metodo di accesso è abilitato su questa piattaforma.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Solo gli amministratori e i manager possono eseguire questa azione. Non si applicano altri requisiti.",
