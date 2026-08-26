@@ -7,31 +7,42 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
-// `phone` is only passed by unauthenticated callers (phone signup / passwordless
-// phone login), and that is also the only case where we adopt the token the
-// backend returns: an authenticated user re-confirming their own number keeps
-// the (possibly longer lived) token they already have.
-export const confirmCodePhone = async (
-  code: string,
-  phone?: string,
-  sms_manual_campaign_consent?: boolean
-) => {
+// Confirms the `phone` of an account that isn't signed in yet (phone signup /
+// passwordless phone login), which is why the token the backend returns is
+// adopted here.
+export const confirmCodePhone = async (code: string, phone: string) => {
   try {
     const res = await fetcher<ConfirmCodeResponse>({
       path: `/user/confirm_code_phone`,
       action: 'post',
       body: {
-        confirmation: { phone, code, sms_manual_campaign_consent },
+        confirmation: { phone, code },
       },
     });
 
-    if (phone) {
-      setJwt(res.data.attributes.auth_token.token, false);
-      invalidateQueryCache();
-    } else {
-      queryClient.invalidateQueries({ queryKey: meKeys.all() });
-      queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
-    }
+    setJwt(res.data.attributes.auth_token.token, false);
+    invalidateQueryCache();
+
+    return true;
+  } catch (errors) {
+    throw errors.errors;
+  }
+};
+
+// Re-confirmation of the signed-in user's own number. The caller keeps the
+// (possibly longer lived) token it already has, so no JWT is set here.
+export const reconfirmCodePhone = async (code: string) => {
+  try {
+    await fetcher({
+      path: `/user/reconfirm_code_phone`,
+      action: 'post',
+      body: {
+        confirmation: { code },
+      },
+    });
+
+    queryClient.invalidateQueries({ queryKey: meKeys.all() });
+    queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
 
     return true;
   } catch (errors) {

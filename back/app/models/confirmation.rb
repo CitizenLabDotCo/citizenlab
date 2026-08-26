@@ -39,8 +39,9 @@ class Confirmation < ApplicationRecord
   end
 
   # Whether a code has been sent and not yet consumed. Used by the idempotent
-  # "send a code only if it's the first time this cycle" path (request_code_email /
-  # request_code_phone with only_if_first_time): a successful confirmation runs
+  # "send a code only if it's the first time this cycle" path
+  # (request_reconfirm_code_email / request_reconfirm_code_phone with
+  # only_if_first_time): a successful confirmation runs
   # clear_code! (code -> nil), so an outstanding code means one was already sent for
   # the current cycle and re-sending would both spam the user and invalidate the
   # code they hold. Mirrors the code_sent_at.nil? guard in
