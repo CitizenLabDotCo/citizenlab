@@ -5,6 +5,7 @@ import {
   colors,
   fontSizes,
   Icon,
+  IconNames,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -25,14 +26,22 @@ const PlaceholderIcon = styled(Icon)<{ color: string }>`
   flex-shrink: 0;
 `;
 
-type FilePlaceholderProps = {
+type WidgetPlaceholderProps = {
+  iconName: IconNames;
   variant?: 'error';
   children: ReactNode;
 };
 
-const FilePlaceholder = ({ variant, children }: FilePlaceholderProps) => {
+// Builder stand-in for a widget with nothing to render yet: nothing selected, or a selection
+// that no longer resolves (`error`). Never shown in the front office, where such a widget
+// renders nothing at all.
+const WidgetPlaceholder = ({
+  iconName,
+  variant,
+  children,
+}: WidgetPlaceholderProps) => {
   const color = variant === 'error' ? colors.error : colors.textSecondary;
-  const iconName = variant === 'error' ? 'paperclip' : 'file-add';
+
   return (
     <PlaceholderContainer color={color}>
       <PlaceholderIcon name={iconName} color={color} />
@@ -41,4 +50,4 @@ const FilePlaceholder = ({ variant, children }: FilePlaceholderProps) => {
   );
 };
 
-export default FilePlaceholder;
+export default WidgetPlaceholder;

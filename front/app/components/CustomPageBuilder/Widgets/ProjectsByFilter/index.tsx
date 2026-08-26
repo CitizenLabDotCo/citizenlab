@@ -7,6 +7,7 @@ import { IStatusCounts } from 'api/admin_publications_status_counts/types';
 import useAdminPublicationsStatusCounts from 'api/admin_publications_status_counts/useAdminPublicationsStatusCounts';
 import getStatusCounts from 'api/admin_publications_status_counts/util/getAdminPublicationsStatusCount';
 
+import WidgetPlaceholder from 'components/admin/ContentBuilder/Widgets/WidgetPlaceholder';
 import ContentContainer from 'components/ContentContainer';
 import {
   PublicationTab,
@@ -20,11 +21,10 @@ import {
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import Placeholder from '../Placeholder';
-
 import messages from './messages';
 import Settings from './Settings';
-import { hasTitle, ProjectsByFilterProps, ProjectsFilterType } from './types';
+import { ProjectsByFilterProps, ProjectsFilterType } from './types';
+import { hasTitle } from './utils';
 
 // Only the selected dimension is sent; the others stay absent so they do not narrow the
 // result set. Spaces also carry folders, so they page over top-level publications while the
@@ -109,9 +109,9 @@ const ProjectsByFilter = ({
 
   if (ids.length === 0) {
     return inBuilder ? (
-      <Placeholder>
+      <WidgetPlaceholder iconName="projects">
         <FormattedMessage {...messages.nothingSelected} />
-      </Placeholder>
+      </WidgetPlaceholder>
     ) : null;
   }
 

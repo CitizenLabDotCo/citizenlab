@@ -2,8 +2,8 @@ import React from 'react';
 
 import { useEditor } from '@craftjs/core';
 
+import WidgetPlaceholder from 'components/admin/ContentBuilder/Widgets/WidgetPlaceholder';
 import ContentContainer from 'components/ContentContainer';
-import Placeholder from 'components/CustomPageBuilder/Widgets/Placeholder';
 import EventsWidget from 'components/LandingPages/citizen/EventsWidget';
 import SectionBackground from 'components/ProjectPageBuilder/Widgets/SectionBackground';
 import useIsPageBodyChild from 'components/ProjectPageBuilder/Widgets/useIsPageBodyChild';
@@ -13,7 +13,8 @@ import { useParams } from 'utils/router';
 
 import messages from './messages';
 import Settings from './Settings';
-import { EventsByProjectsProps, filtersFor } from './types';
+import { EventsByProjectsProps } from './types';
+import { filtersFor } from './utils';
 
 const EventsByProjects = ({
   mode = 'all',
@@ -31,9 +32,9 @@ const EventsByProjects = ({
 
   if (mode !== 'all' && ids.length === 0) {
     return inBuilder ? (
-      <Placeholder>
+      <WidgetPlaceholder iconName="projects">
         <FormattedMessage {...messages.nothingSelected} />
-      </Placeholder>
+      </WidgetPlaceholder>
     ) : null;
   }
 

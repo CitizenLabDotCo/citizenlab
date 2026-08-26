@@ -28,6 +28,14 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { EventsByProjectsProps, EventsSelectionMode } from './types';
 
+const MODES: EventsSelectionMode[] = [
+  'all',
+  'projects',
+  'global_topics',
+  'areas',
+  'spaces',
+];
+
 const Settings = () => {
   const {
     actions: { setProp },
@@ -54,20 +62,26 @@ const Settings = () => {
   const { data: areas } = useAreas({});
   const { data: spaces } = useSpaces();
 
-  // Filtering is the advanced_custom_pages capability; an unfiltered events list is not.
-  const modeOptions: { value: EventsSelectionMode; label: string }[] = [
-    { value: 'all', label: formatMessage(messages.modeAll) },
-    ...(advancedCustomPagesEnabled
-      ? ([
-          { value: 'projects', label: formatMessage(messages.modeProjects) },
-          { value: 'global_topics', label: formatMessage(messages.modeTags) },
-          { value: 'areas', label: formatMessage(messages.modeAreas) },
-          ...(spacesEnabled
-            ? [{ value: 'spaces', label: formatMessage(messages.modeSpaces) }]
-            : []),
-        ] as { value: EventsSelectionMode; label: string }[])
-      : []),
-  ];
+  const modeLabels: Record<EventsSelectionMode, string> = {
+    all: formatMessage(messages.modeAll),
+    projects: formatMessage(messages.modeProjects),
+    global_topics: formatMessage(messages.modeTags),
+    areas: formatMessage(messages.modeAreas),
+    spaces: formatMessage(messages.modeSpaces),
+  };
+
+  // Filtering is the advanced_custom_pages capability; an unfiltered list is not, so every
+  // tenant keeps the 'all' mode.
+  const isAvailable = (mode: EventsSelectionMode) => {
+    if (mode === 'all') return true;
+    if (!advancedCustomPagesEnabled) return false;
+    return mode !== 'spaces' || spacesEnabled;
+  };
+
+  const modeOptions = MODES.filter(isAvailable).map((mode) => ({
+    value: mode,
+    label: modeLabels[mode],
+  }));
 
   const entities = {
     all: [],

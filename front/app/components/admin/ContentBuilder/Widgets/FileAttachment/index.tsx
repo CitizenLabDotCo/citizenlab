@@ -15,13 +15,13 @@ import useFileById from 'api/files/useFileById';
 import useFiles from 'api/files/useFiles';
 
 import { useContentBuilderLayoutContext } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
+import WidgetPlaceholder from 'components/admin/ContentBuilder/Widgets/WidgetPlaceholder';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import FileDisplay from 'components/UI/FileAttachments/FileDisplay';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { useParams } from 'utils/router';
 
-import FilePlaceholder from './FilePlaceholder';
 import messages from './messages';
 import { getIsFileAlreadyUsed } from './utils';
 
@@ -35,9 +35,9 @@ const FilePreview = ({ fileId }: { fileId?: string }) => {
   if (!fileId) {
     return (
       <Box maxWidth="1200px" margin="0 auto">
-        <FilePlaceholder>
+        <WidgetPlaceholder iconName="file-add">
           <FormattedMessage {...messages.selectFilePrompt} />
-        </FilePlaceholder>
+        </WidgetPlaceholder>
       </Box>
     );
   }
@@ -49,9 +49,9 @@ const FilePreview = ({ fileId }: { fileId?: string }) => {
   if (!file) {
     return (
       <Box maxWidth="1200px" margin="0 auto">
-        <FilePlaceholder variant="error">
+        <WidgetPlaceholder iconName="paperclip" variant="error">
           <FormattedMessage {...messages.fileMissing} />
-        </FilePlaceholder>
+        </WidgetPlaceholder>
       </Box>
     );
   }

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { render, screen } from 'utils/testUtils/rtl';
 
-import { filtersFor } from './types';
+import { filtersFor } from './utils';
 
 import EventsByProjects from '.';
 

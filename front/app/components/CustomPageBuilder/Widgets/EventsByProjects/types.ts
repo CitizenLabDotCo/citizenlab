@@ -1,7 +1,5 @@
 import { Multiloc } from 'typings';
 
-import { EventProjectFilters } from 'api/events/types';
-
 import { SectionBackgroundChoice } from 'components/ProjectPageBuilder/Widgets/SectionBackground';
 
 // 'all' is the unconfigured default and shows every project's events, which is what the
@@ -19,22 +17,4 @@ export type EventsByProjectsProps = {
   ids: string[];
   sectionBackground: SectionBackgroundChoice;
   titleMultiloc: Multiloc;
-};
-
-export const filtersFor = (
-  mode: EventsSelectionMode,
-  ids: string[]
-): EventProjectFilters => {
-  switch (mode) {
-    case 'all':
-      return {};
-    case 'projects':
-      return { projectIds: ids };
-    case 'global_topics':
-      return { globalTopics: ids };
-    case 'areas':
-      return { areas: ids };
-    case 'spaces':
-      return { spaces: ids };
-  }
 };
