@@ -38,7 +38,7 @@ const FooterNoteSuccessMessage = styled.span`
 `;
 
 const FooterNoteCountdown = styled.span`
-  color: ${colors.textSecondary};
+  color: ${({ theme }) => theme.colors.tenantText};
   padding-left: 4px;
 `;
 
