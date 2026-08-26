@@ -15,6 +15,17 @@ class McpServer::LayoutWidgets
     'ProjectDescriptionSection' => "put the content directly in the #{BODY_WIDGET} node"
   }.freeze
 
+  # Widgets belonging to the custom page builder, undocumented here for scope rather than for
+  # being uninsertable: this tool only writes project layouts, where none of them can appear.
+  # ProjectsByFilter and EventsByProjects are insertable on a custom page whenever an admin
+  # wants them; CustomPageRoot and CustomPageBody are that page's scaffold.
+  CUSTOM_PAGE_WIDGETS = %w[
+    ProjectsByFilter
+    EventsByProjects
+    CustomPageRoot
+    CustomPageBody
+  ].freeze
+
   # WidgetSpecs widgets deliberately not advertised as insertable: structural
   # containers, legacy-only presets and the legacy node types. A spec asserts
   # DOCS + this list + the page scaffold covers WidgetSpecs exactly.
@@ -23,7 +34,7 @@ class McpServer::LayoutWidgets
     Box
     ImageTextCards
     InfoWithAccordions
-  ] + ContentBuilder::Craftjs::WidgetSpecs::LEGACY_WIDGETS).freeze
+  ] + CUSTOM_PAGE_WIDGETS + ContentBuilder::Craftjs::WidgetSpecs::LEGACY_WIDGETS).freeze
 
   DOCS = {
     'TextMultiloc' => <<~DOC,

@@ -70,11 +70,25 @@ module ContentBuilder
         # The container that used to hold all page content. No longer seeded, but stored
         # graphs carry one until the editor next saves them flat. Tolerated, never created.
         'ProjectDescriptionSection' => {},
+        # Custom page widgets.
+        'ProjectsByFilter' => {
+          'multilocs' => %w[titleMultiloc],
+          'enums' => { 'filterType' => %w[global_topics areas spaces] }
+        },
+        'EventsByProjects' => {
+          'enums' => {
+            'mode' => %w[all projects global_topics areas spaces],
+            'sectionBackground' => %w[colored white]
+          }
+        },
         # The project page scaffold (no rules: nodes patches may not add, move or delete).
         'ProjectPageRoot' => {},
         'ProjectBanner' => {},
         'ProjectTitle' => {},
-        'ProjectPageBody' => {}
+        'ProjectPageBody' => {},
+        # The custom page scaffold, same idea.
+        'CustomPageRoot' => {},
+        'CustomPageBody' => {}
       }.freeze
     end
   end
