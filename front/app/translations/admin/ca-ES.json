@@ -4182,7 +4182,7 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhone": "Telèfon confirmat",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.email": "correu electrònic",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription2": "Els usuaris han de tenir una adreça de correu electrònic confirmada.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescriptionWithPasswordLogin": "Si està activat, tots els usuaris han de confirmar el seu correu electrònic. Si està desactivat, només els usuaris que es registrin per correu electrònic l'hauran de confirmar.",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescriptionWithPasswordLogin": "Si està activat, tots els usuaris han de confirmar el seu correu electrònic. Si està desactivat, només els usuaris que es registrin per correu electrònic han de confirmar el seu correu electrònic.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "No cal cap compte",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noSignInMethodEnabled": "No hi ha cap mètode d'inici de sessió habilitat en aquesta plataforma.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Només els administradors i gestors poden realitzar aquesta acció. No s'aplica cap altre requisit.",

@@ -4182,7 +4182,7 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhone": "Bestätegten Telefon",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.email": "E-Mail",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription2": "D'Benotzer mussen eng confirméiert E-Mail-Adress hunn.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescriptionWithPasswordLogin": "Wann dës Optioun aktivéiert ass, mussen all Benotzer hir E-Mail-Adress confirméieren. Wann se desaktivéiert ass, mussen nëmmen d'Benotzer, déi sech per E-Mail registréieren, hir E-Mail-Adress confirméieren.",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescriptionWithPasswordLogin": "Wann dës Funktioun aktivéiert ass, mussen all d'Benotzer hir E-Mail confirméieren. Wann se desaktivéiert ass, mussen nëmmen d'Benotzer, déi sech per E-Mail umellen, hir E-Mail confirméieren.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Kee Kont néideg",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noSignInMethodEnabled": "Op dëser Plattform ass keng Umeldungsmethod aktivéiert.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Nëmmen Adminen a Manager kënnen dës Aktioun ausféieren. Keng aner Ufuerderunge gëllen.",

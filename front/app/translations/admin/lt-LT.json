@@ -4182,7 +4182,7 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhone": "Patvirtintas telefonas",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.email": "el. paštas",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription2": "Naudotojai privalo turėti patvirtintą el. pašto adresą.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescriptionWithPasswordLogin": "Jei įjungta, visi naudotojai privalo patvirtinti savo el. pašto adresą. Jei išjungta, savo el. pašto adresą privalo patvirtinti tik tie naudotojai, kurie užsiregistravo naudodami el. paštą.",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescriptionWithPasswordLogin": "Jei įjungta, visi naudotojai privalo patvirtinti savo el. pašto adresą. Jei išjungta, el. pašto adresą patvirtinti reikia tik tiems naudotojams, kurie registruojasi el. paštu.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Paskyra nereikalinga",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noSignInMethodEnabled": "Šioje platformoje neįjungtas joks prisijungimo būdas.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Šį veiksmą gali atlikti tik administratoriai ir vadovai. Kiti reikalavimai netaikomi.",

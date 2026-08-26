@@ -4182,7 +4182,7 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhone": "Potwierdzony telefon",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.email": "e-mail",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription2": "Użytkownicy muszą mieć potwierdzony adres e-mail.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescriptionWithPasswordLogin": "Jeśli opcja jest włączona, wszyscy użytkownicy muszą potwierdzić swój adres e-mail. Jeśli jest wyłączona, tylko użytkownicy, którzy zarejestrowali się przez e-mail, muszą potwierdzić swój adres e-mail.",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescriptionWithPasswordLogin": "Jeśli opcja jest włączona, wszyscy użytkownicy muszą potwierdzić swój adres e-mail. Jeśli jest wyłączona, tylko użytkownicy rejestrujący się przez e-mail muszą potwierdzić swój adres e-mail.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Konto nie jest wymagane",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noSignInMethodEnabled": "Na tej platformie nie włączono żadnej metody logowania.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Tylko administratorzy i menedżerowie mogą podjąć to działanie. Inne wymagania nie mają zastosowania.",
