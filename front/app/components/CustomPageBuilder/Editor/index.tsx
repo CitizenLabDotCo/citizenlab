@@ -21,6 +21,7 @@ import {
   CustomPageRoot,
   CustomPageBody,
 } from 'components/CustomPageBuilder/regions';
+import ProjectsByFilter from 'components/CustomPageBuilder/Widgets/ProjectsByFilter';
 import BaseEditor from 'components/DescriptionBuilder/Editor/Editor';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
 import RichTextMultiloc from 'components/DescriptionBuilder/Widgets/RichTextMultiloc';
@@ -55,6 +56,7 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
           ImageTextCards,
           ButtonMultiloc,
           PageLink,
+          ProjectsByFilter,
           CustomPageRoot,
           CustomPageBody,
         }}

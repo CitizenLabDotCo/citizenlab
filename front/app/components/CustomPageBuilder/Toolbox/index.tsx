@@ -19,6 +19,7 @@ import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import ProjectsByFilter from 'components/CustomPageBuilder/Widgets/ProjectsByFilter';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
 import NewLabel from 'components/UI/NewLabel';
 
@@ -33,6 +34,9 @@ const CustomPageBuilderToolbox = () => {
   });
   const projectStaticPagesEnabled = useFeatureFlag({
     name: 'project_static_pages',
+  });
+  const advancedCustomPagesEnabled = useFeatureFlag({
+    name: 'advanced_custom_pages',
   });
 
   return (
@@ -72,6 +76,14 @@ const CustomPageBuilderToolbox = () => {
         />
       </Section>
       <Section>
+        {advancedCustomPagesEnabled && (
+          <DraggableElement
+            id="e2e-draggable-projects-by-filter"
+            component={<ProjectsByFilter />}
+            icon="projects"
+            label={formatMessage(ProjectsByFilter.craft.custom.title)}
+          />
+        )}
         <DraggableElement
           id="e2e-draggable-text"
           component={<TextMultiloc />}
