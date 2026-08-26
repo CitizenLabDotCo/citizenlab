@@ -11,6 +11,33 @@ function selectAssigneeFilter(optionLabelText: string) {
   cy.get('#e2e-select-assignee-filter').select(optionLabelText);
 }
 
+// The input manager renders nothing while its ideas query has no data for the
+// current key, so every filter change tears the table down and rebuilds it
+// with fresh DOM nodes. `cy.select()` clicks the element and needs that click
+// to focus it; on a node that was detached in between, the focus never happens
+// and Cypress reports it as "this element is `disabled`". Yield the select
+// only once the same node has survived several consecutive checks, which is
+// what tells us the rebuild is over.
+const SETTLE_CHECKS = 5;
+
+function settledAssigneeSelect(rowSelector: string) {
+  let lastNode: HTMLElement | undefined;
+  let survived = 0;
+
+  return cy
+    .get(rowSelector)
+    .find('#post-row-select-assignee')
+    .should(($select) => {
+      const node = $select[0];
+      survived = node === lastNode ? survived + 1 : 0;
+      lastNode = node;
+      expect(
+        survived,
+        'consecutive checks the select node survived'
+      ).to.be.at.least(SETTLE_CHECKS);
+    });
+}
+
 describe('Input manager', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
@@ -270,18 +297,15 @@ describe('Input manager', () => {
       selectAssigneeFilter(optionLabelText1);
       checkSelectedAssigneeFilter(optionLabelText1);
 
-      // The table fades rows in and out over 500ms, so the previous filter's
-      // rows are still in the DOM once the filtered list arrives. Assign the
-      // idea the response puts first rather than whichever row is first right
-      // now: a row that is dropped while `select()` runs takes the focus with
-      // it, which Cypress reports as `this element is disabled`.
       cy.wait('@unassignedIdeas')
         .its('response.body.data')
         .then((ideas: { id: string }[]) => {
-          cy.get(`[data-cy="e2e-idea-row-${ideas[0].id}"]`)
-            .find('#post-row-select-assignee')
-            .select(optionLabelText2);
+          settledAssigneeSelect(
+            `[data-cy="e2e-idea-row-${ideas[0].id}"]`
+          ).select(optionLabelText2);
         });
+      // A value set on a detached select never reaches React, so the request is
+      // what proves the assignment actually happened.
       cy.wait('@assignIdea').its('response.statusCode').should('eq', 200);
 
       // Select this user in the assignee filter
