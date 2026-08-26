@@ -1,9 +1,14 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  projects: {
-    id: 'app.components.CustomPageBuilder.Widgets.ProjectsByFilter.projects',
-    defaultMessage: 'Projects',
+  filteredProjects: {
+    id: 'app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filteredProjects',
+    defaultMessage: 'Filtered projects',
+  },
+  description: {
+    id: 'app.components.CustomPageBuilder.Widgets.ProjectsByFilter.description',
+    defaultMessage:
+      'Shows the published and archived projects matching the tags, areas or spaces you pick below.',
   },
   filterByLabel: {
     id: 'app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filterByLabel',

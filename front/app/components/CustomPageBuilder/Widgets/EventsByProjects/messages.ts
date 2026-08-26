@@ -5,6 +5,11 @@ export default defineMessages({
     id: 'app.components.CustomPageBuilder.Widgets.EventsByProjects.events',
     defaultMessage: 'Events',
   },
+  description: {
+    id: 'app.components.CustomPageBuilder.Widgets.EventsByProjects.description',
+    defaultMessage:
+      'Shows the next three upcoming events from the projects you pick below. Past events are never shown.',
+  },
   modeLabel: {
     id: 'app.components.CustomPageBuilder.Widgets.EventsByProjects.modeLabel',
     defaultMessage: 'Show events from',

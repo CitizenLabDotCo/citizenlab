@@ -132,7 +132,7 @@ ProjectsByFilter.craft = {
     settings: Settings,
   },
   custom: {
-    title: messages.projects,
+    title: messages.filteredProjects,
   },
 };
 

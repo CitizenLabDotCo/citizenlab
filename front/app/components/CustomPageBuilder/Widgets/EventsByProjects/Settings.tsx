@@ -5,6 +5,7 @@ import {
   colors,
   Select,
   Spinner,
+  Text,
 } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { IOption } from 'typings';
@@ -85,6 +86,9 @@ const Settings = () => {
       flexDirection="column"
       gap="16px"
     >
+      <Text m="0px" color="textSecondary">
+        {formatMessage(messages.description)}
+      </Text>
       <Select
         value={mode}
         options={modeOptions}
