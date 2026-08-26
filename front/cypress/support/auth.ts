@@ -51,7 +51,9 @@ export const confirmEmail = (cy: Cypress.Chainable) => {
   // a loaded backend, leaving the next auth step (built-in fields form) to
   // time out while the button still spins — so await the response itself.
   // The request fires on click, so only the response needs the long leash.
-  cy.intercept('POST', '**/user/confirm_code_*').as('confirmCode');
+  // Matches both confirm_code_* (signup / passwordless login) and
+  // reconfirm_code_* (re-confirmation), since this helper serves both.
+  cy.intercept('POST', '**/user/*confirm_code_*').as('confirmCode');
   cy.get('#e2e-verify-email-button > button').click({ force: true });
   cy.wait('@confirmCode', { responseTimeout: 60000 });
 };
