@@ -158,11 +158,14 @@ describe('<SecurityRequirementsSection />', () => {
     });
 
     it('leaves an unavailable check out of the summary', () => {
+      // Both required checks are unavailable here: no verification method is
+      // configured, and password login is off. Only the checks the platform
+      // still offers (email, phone) keep the section on screen.
       mockVerificationMethodConfigured = false;
       mockPasswordLoginEnabled = false;
       renderSection({
         require_confirmed_email: false,
-        require_confirmed_phone_number: true,
+        require_confirmed_phone_number: false,
         require_verification: true,
       });
 
@@ -235,16 +238,16 @@ describe('<SecurityRequirementsSection />', () => {
       expect(screen.getByText(EMAIL_LABEL)).toBeInTheDocument();
     });
 
-    it('hides the password and phone rows when password login is off', async () => {
-      // Phone confirmation codes are part of the password_login flow, so with
-      // that feature off a confirmed phone number can never be obtained and the
-      // check is not offered either.
+    it('hides the password row when password login is off, but keeps the phone one', async () => {
+      // Re-confirming a phone number goes through reconfirm_code_phone, which
+      // is not gated by password_login, so an SSO-only platform can still
+      // require a confirmed phone number.
       mockPasswordLoginEnabled = false;
       renderSection();
       await openSection();
 
       expect(screen.queryByText(PASSWORD_LABEL)).not.toBeInTheDocument();
-      expect(screen.queryByText(PHONE_LABEL)).not.toBeInTheDocument();
+      expect(screen.getByText(PHONE_LABEL)).toBeInTheDocument();
       expect(screen.getByText(EMAIL_LABEL)).toBeInTheDocument();
     });
 
