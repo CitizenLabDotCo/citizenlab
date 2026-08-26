@@ -6949,6 +6949,11 @@
     "verified_at": "2026-08-20T11:47:33.945742Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.containers.Authentication.steps.Policies.byContinuingPhone3": {
+    "state": "verified",
+    "verified_at": "2026-08-26T12:23:36.496089Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Authentication.steps.SSOVerification.alreadyHaveAnAccount": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
