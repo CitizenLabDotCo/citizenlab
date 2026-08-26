@@ -11,83 +11,6 @@ function selectAssigneeFilter(optionLabelText: string) {
   cy.get('#e2e-select-assignee-filter').select(optionLabelText);
 }
 
-// TEMPORARY diagnostic instrumentation — records what happens to the assignee
-// select around `cy.select()`. Remove once the flake is understood.
-let probe: Record<string, unknown> = {};
-let removals: string[] = [];
-let observer: MutationObserver | undefined;
-let probedSelect: HTMLSelectElement | undefined;
-
-// `instanceof Element` is false across the app iframe's realm, so go by nodeType.
-function describeEl(el: Node | null | undefined): string {
-  if (!el) return 'none';
-  if (el.nodeType !== 1) return el.nodeName;
-  const element = el as Element;
-  const id = element.id ? `#${element.id}` : '';
-  const cls =
-    typeof element.className === 'string' && element.className.trim()
-      ? `.${element.className.trim().split(/\s+/).join('.')}`
-      : '';
-  const rows = element.querySelectorAll('tr').length;
-  const selects = element.querySelectorAll('#post-row-select-assignee').length;
-  return `${element.tagName.toLowerCase()}${id}${cls}[rows=${rows},selects=${selects}]`;
-}
-
-function probeAssigneeSelect(rowSelector: string, targetOptionText: string) {
-  return cy
-    .get(rowSelector)
-    .find('#post-row-select-assignee')
-    .then(($select) => {
-      const el = $select[0] as HTMLSelectElement;
-      const doc = el.ownerDocument;
-      const win = doc.defaultView;
-      if (!win) return;
-      const rect = el.getBoundingClientRect();
-      const atPoint = doc.elementFromPoint(
-        rect.left + rect.width / 2,
-        rect.top + rect.height / 2
-      );
-      const row = el.closest('tr');
-      const t0 = win.performance.now();
-
-      probedSelect = el;
-      probe = {
-        attached: doc.contains(el),
-        disabledProp: el.disabled,
-        disabledAttr: el.hasAttribute('disabled'),
-        rect: `${Math.round(rect.left)},${Math.round(rect.top)} ${Math.round(
-          rect.width
-        )}x${Math.round(rect.height)}`,
-        atPoint: describeEl(atPoint),
-        atPointIsSelect: atPoint === el || el.contains(atPoint),
-        rowClass: row?.className,
-        rowDraggable: row?.getAttribute('draggable'),
-        optionCount: el.options.length,
-        hasTargetOption: Array.from(el.options).some(
-          (o) => o.text.trim() === targetOptionText
-        ),
-        activeBefore: describeEl(doc.activeElement),
-      };
-
-      removals = [];
-      observer?.disconnect();
-      observer = new win.MutationObserver((records) => {
-        records.forEach((record) => {
-          record.removedNodes.forEach((node) => {
-            if (node === el || node === row || node.contains(el)) {
-              removals.push(
-                `t+${Math.round(
-                  win.performance.now() - t0
-                )}ms removed ${describeEl(node)}`
-              );
-            }
-          });
-        });
-      });
-      observer.observe(doc.body, { childList: true, subtree: true });
-    });
-}
-
 describe('Input manager', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
@@ -334,23 +257,6 @@ describe('Input manager', () => {
       cy.apiRemoveUser(adminUserId);
     });
 
-    afterEach(() => {
-      if (Object.keys(probe).length === 0) return;
-      cy.window({ log: false }).then((win) => {
-        observer?.disconnect();
-        probe.activeAfter = describeEl(win.document.activeElement);
-        probe.stillAttached = probedSelect
-          ? win.document.contains(probedSelect)
-          : null;
-        probe.selectValueAfter = probedSelect?.value;
-        cy.task(
-          'log',
-          `PROBE ${JSON.stringify(probe)} REMOVALS ${JSON.stringify(removals)}`
-        );
-        probe = {};
-      });
-    });
-
     it('Assigns a user to an idea', () => {
       const optionLabelText1 = 'Unassigned';
       const optionLabelText2 = `Assigned to ${newAdminFirstName} ${newAdminLastName}`;
@@ -364,16 +270,17 @@ describe('Input manager', () => {
       selectAssigneeFilter(optionLabelText1);
       checkSelectedAssigneeFilter(optionLabelText1);
 
+      // Assign the idea the response puts first, so the row is addressed by id
+      // rather than by whatever happens to be on top mid-refresh.
       cy.wait('@unassignedIdeas')
         .its('response.body.data')
         .then((ideas: { id: string }[]) => {
-          probeAssigneeSelect(
-            `[data-cy="e2e-idea-row-${ideas[0].id}"]`,
-            optionLabelText2
-          ).select(optionLabelText2);
+          cy.get(`[data-cy="e2e-idea-row-${ideas[0].id}"]`)
+            .find('#post-row-select-assignee')
+            .select(optionLabelText2);
         });
-      // A value set on a detached select never reaches React, so the request is
-      // what proves the assignment actually happened.
+      // A value set on a select React has dropped never reaches its handler, so
+      // the request is what proves the assignment happened.
       cy.wait('@assignIdea').its('response.statusCode').should('eq', 200);
 
       // Select this user in the assignee filter

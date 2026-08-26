@@ -44,11 +44,6 @@ module.exports = (on) => {
     })
   );
   on('task', {
-    // TEMPORARY: stdout channel for the input_manager flake diagnostic.
-    log(message) {
-      console.log(message);
-      return null;
-    },
     deleteFolder(folderName) {
       console.log('deleting folder %s', folderName);
 
