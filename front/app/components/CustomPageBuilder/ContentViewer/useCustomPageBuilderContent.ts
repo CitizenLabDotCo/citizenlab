@@ -5,7 +5,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { layoutHasContent } from 'components/CustomPageBuilder/defaultLayout';
 
 // Whether a custom page should render from its layout. Shared, because the page around the
-// viewer needs the same answer to decide whether to render its own sections instead.
+// viewer needs the same answer to choose between the two.
 const useCustomPageBuilderContent = (staticPageId?: string) => {
   const featureEnabled = useFeatureFlag({ name: 'custom_page_builder' });
   const { data: layout, isLoading } = useCustomPageLayout(
@@ -23,8 +23,8 @@ const useCustomPageBuilderContent = (staticPageId?: string) => {
     isLoading: featureEnabled && isLoading,
     hasContent: featureEnabled && hasContent,
     craftjsJson: layout?.data.attributes.craftjs_json,
-    // FileAttachment resolves its file through the layout's own attachments, so the viewer
-    // has to put this in context or those widgets render nothing in the front office.
+    // FileAttachment resolves its file through the layout's attachments, so the viewer has
+    // to put this in context or those widgets render nothing.
     layoutId: layout?.data.id,
   };
 };

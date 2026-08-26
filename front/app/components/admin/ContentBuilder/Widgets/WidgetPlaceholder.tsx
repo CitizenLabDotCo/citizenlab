@@ -32,9 +32,8 @@ type WidgetPlaceholderProps = {
   children: ReactNode;
 };
 
-// Builder stand-in for a widget with nothing to render yet: nothing selected, or a selection
-// that no longer resolves (`error`). Never shown in the front office, where such a widget
-// renders nothing at all.
+// Builder stand-in for a widget with nothing to render: nothing selected, or a selection that
+// no longer resolves (`error`). Never shown in the front office.
 const WidgetPlaceholder = ({
   iconName,
   variant,

@@ -70,8 +70,7 @@ const Settings = () => {
     spaces: formatMessage(messages.modeSpaces),
   };
 
-  // Filtering is the advanced_custom_pages capability; an unfiltered list is not, so every
-  // tenant keeps the 'all' mode.
+  // Filtering is the advanced_custom_pages capability; an unfiltered list is not.
   const isAvailable = (mode: EventsSelectionMode) => {
     if (mode === 'all') return true;
     if (!advancedCustomPagesEnabled) return false;
@@ -112,8 +111,8 @@ const Settings = () => {
         type="text"
         name="titleMultiloc"
         label={formatMessage(messages.titleLabel)}
-        // The widget keeps its own heading until an admin writes one, so show that rather
-        // than leaving the field looking like it failed to load.
+        // Shown as a placeholder, not a value: prefilling would freeze today's wording into
+        // the page and stop it falling back per locale.
         placeholder={formatMessage(eventsMessages.upcomingEventsWidgetTitle)}
         valueMultiloc={titleMultiloc}
         onChange={(valueMultiloc) => {
@@ -129,7 +128,7 @@ const Settings = () => {
         onChange={(option) => {
           setProp((props: EventsByProjectsProps) => {
             props.mode = option.value;
-            // A selection only means anything within its own dimension.
+            // Ids only mean something within their own dimension.
             props.ids = [];
           });
         }}

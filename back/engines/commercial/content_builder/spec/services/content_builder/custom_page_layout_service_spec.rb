@@ -163,8 +163,7 @@ describe ContentBuilder::CustomPageLayoutService do
         expect(craftjs[body_id]['nodes']).to eq [top_id, "#{file_prefix}#{file_id}", bottom_id]
       end
 
-      # The plan says verify rather than assume: Layout's file syncing and its policy check
-      # are written against content_buildable in general, not against Project.
+      # Layout's file syncing is written against content_buildable in general, not Project.
       it 'attaches the referenced files to the layout when it is saved' do
         page = page_with_files(1)
         file_id = Files::FileAttachment.where(attachable: page).pick(:file_id)
@@ -221,7 +220,7 @@ describe ContentBuilder::CustomPageLayoutService do
       end
 
       # projects_filter_type stores 'topics' but reads back as the enum key, which is what the
-      # widget prop expects — so the mapping is a copy, not a translation.
+      # widget prop expects.
       it 'uses the enum key for a tag filter, not the stored value' do
         topic = create(:global_topic)
         page = filtered_page(projects_filter_type: 'global_topics', areas: [], global_topics: [topic])
@@ -287,9 +286,8 @@ describe ContentBuilder::CustomPageLayoutService do
       end
     end
 
-    # Section node ids are fixed rather than generated, so content alone decides the graph.
-    # Note this does not hold across pages once files are attached — a file node id carries
-    # its file id — which is why the migration task's assumption is pinned separately below.
+    # Section node ids are fixed, so content alone decides the graph. This does not hold
+    # across pages once files are attached: a file node id carries its file id.
     it 'gives two pages with the same sections an identical graph' do
       attributes = { top_info_section_multiloc: plain_text, top_info_section_enabled: true }
 

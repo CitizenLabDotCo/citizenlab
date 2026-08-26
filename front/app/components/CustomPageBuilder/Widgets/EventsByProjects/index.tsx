@@ -25,8 +25,8 @@ const EventsByProjects = ({
   const { inBuilder } = useEditor((state) => ({
     inBuilder: state.options.enabled,
   }));
-  // The builder route carries a page id, the front office a slug — so a coloured band only
-  // bleeds to the viewport edge where the page is actually being rendered.
+  // Only the front-office route carries a slug, so a coloured band bleeds to the viewport
+  // edge there but not in the builder canvas.
   const { slug } = useParams({ strict: false }) as { slug?: string };
   const isPageBodyChild = useIsPageBodyChild('CustomPageBody');
 
@@ -44,7 +44,7 @@ const EventsByProjects = ({
       fullBleed={!!slug && isPageBodyChild}
       py="40px"
     >
-      {/* Same container the page section used, so the list keeps its page alignment. */}
+      {/* The container the page section used, so the list keeps its page alignment. */}
       <ContentContainer mode="page">
         <EventsWidget
           filters={filtersFor(mode, ids)}

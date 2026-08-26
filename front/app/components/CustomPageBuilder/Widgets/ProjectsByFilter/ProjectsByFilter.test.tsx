@@ -47,7 +47,6 @@ describe('ProjectsByFilter', () => {
     cards.mockClear();
   });
 
-  // Legacy pages show no heading, so one only appears once an admin writes it.
   it('shows no heading until a title is written', () => {
     render(<ProjectsByFilter filterType="areas" ids={['area-1']} />);
 
@@ -116,7 +115,7 @@ describe('ProjectsByFilter', () => {
     );
   });
 
-  // Spaces carry folders, so the query pages over top-level publications instead of projects.
+  // Spaces carry folders as well as projects.
   it('pages over top-level publications when filtering by space', () => {
     render(<ProjectsByFilter filterType="spaces" ids={['space-1']} />);
 

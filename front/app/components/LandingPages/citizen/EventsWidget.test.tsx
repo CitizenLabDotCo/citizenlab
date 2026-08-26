@@ -4,9 +4,8 @@ import { render, screen } from 'utils/testUtils/rtl';
 
 import EventsWidget from './EventsWidget';
 
-// internals/jest/setup.js mocks useLocalize globally with a version that ignores the
-// fallback option, which is exactly what the heading depends on. Restore the real behaviour
-// here: an absent multiloc falls back, a present one wins.
+// internals/jest/setup.js mocks useLocalize globally with a version that drops the fallback
+// option, which is what the heading depends on. Restore the real behaviour here.
 jest.mock('hooks/useLocalize', () => ({
   __esModule: true,
   default:
@@ -31,7 +30,7 @@ jest.mock('components/EventCards', () => ({
 describe('EventsWidget', () => {
   beforeEach(() => eventsQuery.mockClear());
 
-  // The homepage renders it with no props at all; its request must stay exactly as it was.
+  // The homepage renders it with no props at all.
   it('asks for every project when given nothing', () => {
     render(<EventsWidget />);
 

@@ -65,11 +65,9 @@ const EventPageLink = typedStyled(Link)`
 
 interface Props {
   staticPageId?: string;
-  // Narrows to one set of projects. Absent means every project, which is what the homepage
-  // shows.
+  // Narrows to one set of projects. Absent means every project, as on the homepage.
   filters?: EventProjectFilters;
-  // Overrides the default heading. Absent keeps it, which is what every caller but the
-  // custom page builder wants.
+  // Overrides the default heading.
   titleMultiloc?: Multiloc;
 }
 

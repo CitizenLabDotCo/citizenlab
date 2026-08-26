@@ -99,7 +99,7 @@ const Settings = () => {
         onChange={(option) => {
           setProp((props: ProjectsByFilterProps) => {
             props.filterType = option.value;
-            // A selection only means anything within its own dimension.
+            // Ids only mean something within their own dimension.
             props.ids = [];
           });
         }}

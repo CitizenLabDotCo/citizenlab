@@ -30,7 +30,7 @@ const CustomPageContentViewer = ({ staticPageId }: Props) => {
 
   return (
     // The page container is grey and each legacy section paints white over it, so the
-    // builder content has to do the same or the page background shows through.
+    // builder content has to do the same.
     <Box
       data-testid="customPageContentViewer"
       background={colors.white}

@@ -26,9 +26,8 @@ import Settings from './Settings';
 import { ProjectsByFilterProps, ProjectsFilterType } from './types';
 import { hasTitle } from './utils';
 
-// Only the selected dimension is sent; the others stay absent so they do not narrow the
-// result set. Spaces also carry folders, so they page over top-level publications while the
-// other two page over projects.
+// Spaces carry folders as well as projects, so they page over top-level publications while
+// the other two page over projects.
 const queryFilters = (filterType: ProjectsFilterType, ids: string[]) => ({
   globalTopics: filterType === 'global_topics' ? ids : undefined,
   areaIds: filterType === 'areas' ? ids : undefined,
@@ -66,9 +65,8 @@ const ProjectsByFilterInner = ({
   const adminPublications = data?.pages.map((page) => page.data).flat();
 
   return (
-    // Same container the page section used, so the cards keep their page alignment. Its
-    // 50px vertical padding is deliberately not carried over: inside the builder, spacing
-    // between widgets is VerticalRhythmContext's job.
+    // The container the page section used, so the cards keep their page alignment. Its 50px
+    // vertical padding is not carried over: spacing between widgets is VerticalRhythmContext's.
     <ContentContainer mode="page">
       <ProjectAndFolderCardsInner
         statusCounts={allStatusCountsWithoutFilters}

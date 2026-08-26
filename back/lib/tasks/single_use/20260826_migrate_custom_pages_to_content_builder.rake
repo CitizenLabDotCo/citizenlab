@@ -3,9 +3,8 @@
 # Derives a `custom_page` Content Builder layout for every global custom page, from the info
 # sections, attachments and projects/events filter the page renders today.
 #
-# Run it while `custom_page_builder` is still off for the tenant. That ordering is what keeps
-# the task simple: with the flag off no admin can have opened the builder, so there is no
-# builder edit to protect and re-deriving is always safe. `overwrite` therefore refuses a
+# Run it while `custom_page_builder` is still off for the tenant: no admin can have opened the
+# builder, so there is no builder edit for a re-derive to overwrite. `overwrite` refuses a
 # tenant whose flag is already active unless `force` is also passed.
 #
 #     rake single_use:migrate_custom_pages_to_content_builder                             # dry run, all tenants
@@ -22,15 +21,12 @@ namespace :single_use do
     refusals = []
     archived = []
 
-    # Content in a switched-off info section is not migrated: it renders nowhere today, so
-    # leaving it behind changes nothing a resident can see. The columns keep it until the
-    # cutover drops them, and this report is the only record that survives that — so it holds
-    # every locale's HTML verbatim, not a summary.
+    # A switched-off section renders nowhere today, so it is not migrated. Its content stays
+    # in the column until the cutover drops it, and this report is then the only record left —
+    # hence every locale verbatim.
     #
-    # Recorded as a change to nothing rather than in a bucket of its own: ScriptReporter has
-    # no slot for "deliberately dropped", and `add_change` is the only one that can carry the
-    # payload (`add_delete` takes an id, not attributes). The summary below counts them
-    # separately so they do not read as writes.
+    # Recorded via add_change because ScriptReporter has no bucket for "dropped", and it is the
+    # only one that carries a payload. The summary counts them apart from real writes.
     archive_disabled_sections = lambda do |page, tenant, script|
       {
         top_info_section: [page.top_info_section_enabled, page.top_info_section_multiloc],
@@ -83,8 +79,8 @@ namespace :single_use do
             )
           end
         elsif overwrite && layout.craftjs_json != craftjs_json
-          # Node ids are deterministic, so an unchanged page derives byte-identically and is
-          # left alone — a re-run settles rather than rewriting every row.
+          # Node ids are deterministic, so an unchanged page derives identically and is skipped
+          # here — a re-run settles rather than rewriting every row.
           script.reporter.add_change(layout.craftjs_json.keys, craftjs_json.keys, context: context.merge(layout_id: layout.id))
           layout.update!(craftjs_json: craftjs_json) if script.execute?
         end

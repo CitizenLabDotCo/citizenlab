@@ -80,8 +80,6 @@ describe('EventsByProjects Settings', () => {
     ]);
   });
 
-  // Filtering is the advanced_custom_pages capability; an unfiltered events list is not, so it
-  // stays available on every tenant.
   it('offers only every project without advanced_custom_pages', () => {
     flags.advanced_custom_pages = false;
 
@@ -109,7 +107,6 @@ describe('EventsByProjects Settings', () => {
     expect(props).toEqual({ mode: 'projects', ids: [] });
   });
 
-  // Nothing to select when the widget shows every project's events.
   it('shows no selector in the every-project mode', () => {
     render(<Settings />);
 

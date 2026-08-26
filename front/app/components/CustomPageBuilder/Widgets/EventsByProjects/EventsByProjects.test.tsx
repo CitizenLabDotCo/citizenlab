@@ -85,7 +85,6 @@ describe('EventsByProjects', () => {
     expect(screen.queryByTestId('events-widget')).not.toBeInTheDocument();
   });
 
-  // Unset leaves EventsWidget's own "Upcoming and ongoing events" heading in place.
   it('passes an admin heading through to the events list', () => {
     const titleMultiloc = { en: 'Events in Northside' };
     render(<EventsByProjects titleMultiloc={titleMultiloc} />);
@@ -104,7 +103,6 @@ describe('EventsByProjects', () => {
     });
   });
 
-  // The four filtered modes map onto the query params the events endpoint understands.
   it.each([
     ['projects', { projectIds: ['x'] }],
     ['global_topics', { globalTopics: ['x'] }],

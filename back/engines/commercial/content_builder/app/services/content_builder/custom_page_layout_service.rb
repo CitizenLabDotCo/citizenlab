@@ -1,14 +1,10 @@
 # frozen_string_literal: true
 
 module ContentBuilder
-  # Builds the craftjs graph for a custom page: a root and a body region wrapping the page's
-  # content, in the order the page renders it today. Widget choice per info section is
-  # DescriptionLayoutService's, reused here.
+  # Builds the craftjs graph for a custom page: a root and a body region holding the page's
+  # content in the order it renders today.
   #
-  # Anything the front office does not render is skipped, so a migrated page looks the same:
-  # a disabled info section or attachments section produces no node, and neither does a
-  # projects or events list that is switched off, unfiltered, or behind an inactive
-  # advanced_custom_pages.
+  # Anything the front office does not render is skipped, so a migrated page looks the same.
   class CustomPageLayoutService
     CODE = 'custom_page'
 
@@ -22,7 +18,7 @@ module ContentBuilder
     BOTTOM_INFO_ID = 'CUSTOM_PAGE_BOTTOM_INFO'
 
     def craftjs_json_for(static_page)
-      # Key order is the order the body renders in, and matches PageSections.tsx.
+      # Key order is the render order, and matches PageSections.tsx.
       sections = {
         TOP_INFO_ID => section_node(
           static_page.top_info_section_multiloc,
@@ -42,8 +38,8 @@ module ContentBuilder
 
     private
 
-    # A stacked list, unlike the project page's two-column block, because that is how the
-    # page renders them today. The node itself is the shared one either way.
+    # Stacked, unlike the project page's two-column block, because that is how the page
+    # renders them today.
     def file_nodes(static_page)
       return {} unless static_page.files_section_enabled
 
@@ -57,8 +53,7 @@ module ContentBuilder
     end
 
     # CustomPageProjectsAndEvents hides both lists unless the feature is on and a real filter
-    # is set — the flag and the no_filter check sit above both blocks, not just the projects
-    # one. So neither list migrates when it is not being rendered.
+    # is set: its `hideProjects` early return sits above the events block too, despite the name.
     def project_lists_rendered?(static_page)
       !static_page.no_filter? &&
         AppConfiguration.instance.feature_activated?('advanced_custom_pages')
@@ -69,7 +64,7 @@ module ContentBuilder
 
       widget_node(
         'ProjectsByFilter',
-        # No heading: the legacy section renders with showTitle false. An admin can add one.
+        # No heading: the legacy section renders with showTitle false.
         'filterType' => static_page.projects_filter_type,
         'ids' => projects_filter_ids(static_page),
         'titleMultiloc' => {}
@@ -88,8 +83,8 @@ module ContentBuilder
       )
     end
 
-    # The same associations StaticPage#filter_projects reads, but as ids: the widgets take the
-    # dimension straight and resolve projects themselves.
+    # The associations StaticPage#filter_projects reads, as ids: the widgets take the
+    # dimension and resolve projects themselves.
     def projects_filter_ids(static_page)
       case static_page.projects_filter_type
       when 'areas' then static_page.areas_static_pages.pluck(:area_id)

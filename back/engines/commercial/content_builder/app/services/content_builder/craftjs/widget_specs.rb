@@ -10,9 +10,8 @@ module ContentBuilder
     # a spec there keeps the two in sync. The rules live here so consumers outside the
     # mcp_server engine can use them.
     #
-    # The allowlist covers the FE project page toolbox (including the phases, events,
-    # spotlight-surveys and PageLink widgets), the page scaffold and node types found in
-    # existing graphs. ExtraSurveysWidget and PageLink sit behind feature flags, but
+    # The allowlist covers the project page and custom page toolboxes, both page scaffolds,
+    # and node types found in existing graphs. ExtraSurveysWidget and PageLink sit behind feature flags, but
     # those gate rendering or the FE toolbox, never whether a stored graph may hold
     # the node. The '' enum entries exist because the FE writes empty strings as
     # prop defaults.

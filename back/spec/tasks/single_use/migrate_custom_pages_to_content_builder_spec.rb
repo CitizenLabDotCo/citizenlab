@@ -2,9 +2,8 @@
 
 require 'rails_helper'
 
-# Runs in CI until the task has been released and run, then rename to *_spec.ignore.rb per
-# lib/tasks/single_use/README.md. Until then it guards the task against PRs 3-7, which keep
-# changing the service it derives from.
+# Rename to *_spec.ignore.rb once the task has been released and run, per
+# lib/tasks/single_use/README.md.
 # rubocop:disable RSpec/DescribeClass
 describe 'single_use:migrate_custom_pages_to_content_builder' do
   before { load_rake_tasks_if_not_loaded }
@@ -73,8 +72,8 @@ describe 'single_use:migrate_custom_pages_to_content_builder' do
     expect(layout_for(project_page)).to be_nil
   end
 
-  # Once the legacy columns are dropped this report is the only surviving record of content
-  # that was switched off and therefore never migrated.
+  # Once the legacy columns are dropped, this report is the only record of the content that
+  # was switched off and so never migrated.
   it 'records the full multiloc of a disabled section it does not migrate' do
     multiloc = { 'en' => '<p>Hidden</p>', 'nl-BE' => '<p>Verborgen</p>' }
     page.update!(bottom_info_section_multiloc: multiloc, bottom_info_section_enabled: false)
@@ -100,8 +99,7 @@ describe 'single_use:migrate_custom_pages_to_content_builder' do
       expect(existing.reload.craftjs_json).to eq service.craftjs_json_for(page)
     end
 
-    # Node ids are deterministic, so an unchanged page derives byte-identically. Without that,
-    # the task would rewrite every row on every run and never settle.
+    # Without this the task would rewrite every row on every run and never settle.
     it 'leaves an up-to-date layout untouched' do
       ContentBuilder::Layout.create!(
         content_buildable: page, code: code, enabled: true, craftjs_json: service.craftjs_json_for(page)

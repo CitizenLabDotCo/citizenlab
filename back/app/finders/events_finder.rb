@@ -7,8 +7,8 @@ class EventsFinder < ApplicationFinder
     where(project_id: StaticPage.find(static_page_id).filter_projects(Project.all))
   end
 
-  # The three dimensions a custom page can filter its projects by. Blank means "not
-  # filtering", matching the other conditions here, rather than "match nothing".
+  # Blank means "not filtering", as in the other conditions here — ProjectsFilteringService
+  # would read an empty list as "match nothing".
   def areas_condition(area_ids)
     events_of_projects_matching(areas: area_ids) if area_ids.present?
   end

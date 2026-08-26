@@ -70,8 +70,7 @@ describe('ProjectsByFilter Settings', () => {
     expect(dimensions()).not.toContain('One of these spaces');
   });
 
-  // Ids only mean something within their own dimension: kept across a switch, area ids would
-  // silently be read as tag ids.
+  // Kept across a switch, area ids would silently be read as tag ids.
   it('clears the selection when the dimension changes', () => {
     props = { filterType: 'areas', ids: ['area-1'] };
 
@@ -83,8 +82,7 @@ describe('ProjectsByFilter Settings', () => {
     expect(props).toEqual({ filterType: 'global_topics', ids: [] });
   });
 
-  // The panel used to return a spinner in place of everything until its entity list arrived,
-  // so a query that never resolved left the title and the dimension unreachable.
+  // A query that never resolves must not take the whole panel down with it.
   it('keeps the rest of the panel usable while the entity list is missing', () => {
     areas = undefined;
     props = { filterType: 'areas' };
