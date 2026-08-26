@@ -28,6 +28,10 @@ jest.mock('components/ProjectPageBuilder/Widgets/SectionBackground', () => ({
     return <div>{children}</div>;
   },
 }));
+jest.mock(
+  'components/admin/ContentBuilder/useCraftComponentDefaultPadding',
+  () => ({ __esModule: true, default: () => '0px' })
+);
 jest.mock('components/ProjectPageBuilder/Widgets/useIsPageBodyChild', () => ({
   __esModule: true,
   default: () => true,

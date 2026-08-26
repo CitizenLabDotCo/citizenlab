@@ -27,6 +27,9 @@ import CustomPageHeader from './CustomPageHeader';
 import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
 import PageSections from './PageSections';
 
+// What every builder widget sets as its own max width.
+const BUILDER_CONTENT_WIDTH = 1200;
+
 const PageTitle = styled.h1`
   color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xxxxl}px;
@@ -128,7 +131,11 @@ const CustomPageShow = () => {
               </Box>
             </>
           ) : (
-            <NoBannerContainer>
+            // Builder widgets are 1200px wide, the container's default is narrower, so the
+            // title would not line up with the content under it.
+            <NoBannerContainer
+              maxWidth={showBuilderContent ? BUILDER_CONTENT_WIDTH : undefined}
+            >
               {pageAttributes.project_id && (
                 <Box mb="8px">
                   <BackToProjectLink projectId={pageAttributes.project_id} />

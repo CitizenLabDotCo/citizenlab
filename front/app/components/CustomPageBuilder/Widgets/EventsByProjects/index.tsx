@@ -1,9 +1,10 @@
 import React from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { useEditor } from '@craftjs/core';
 
+import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 import WidgetPlaceholder from 'components/admin/ContentBuilder/Widgets/WidgetPlaceholder';
-import ContentContainer from 'components/ContentContainer';
 import EventsWidget from 'components/LandingPages/citizen/EventsWidget';
 import SectionBackground from 'components/ProjectPageBuilder/Widgets/SectionBackground';
 import useIsPageBodyChild from 'components/ProjectPageBuilder/Widgets/useIsPageBodyChild';
@@ -29,6 +30,7 @@ const EventsByProjects = ({
   // edge there but not in the builder canvas.
   const { slug } = useParams({ strict: false }) as { slug?: string };
   const isPageBodyChild = useIsPageBodyChild('CustomPageBody');
+  const padding = useCraftComponentDefaultPadding();
 
   if (mode !== 'all' && ids.length === 0) {
     return inBuilder ? (
@@ -44,13 +46,13 @@ const EventsByProjects = ({
       fullBleed={!!slug && isPageBodyChild}
       py="40px"
     >
-      {/* The container the page section used, so the list keeps its page alignment. */}
-      <ContentContainer mode="page">
+      {/* The width every builder widget uses, so the page lines up on one edge. */}
+      <Box maxWidth="1200px" margin="0 auto" px={padding}>
         <EventsWidget
           filters={filtersFor(mode, ids)}
           titleMultiloc={titleMultiloc}
         />
-      </ContentContainer>
+      </Box>
     </SectionBackground>
   );
 };

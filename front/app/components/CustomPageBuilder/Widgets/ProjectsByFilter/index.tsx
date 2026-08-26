@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { useEditor } from '@craftjs/core';
 
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
@@ -7,8 +8,8 @@ import { IStatusCounts } from 'api/admin_publications_status_counts/types';
 import useAdminPublicationsStatusCounts from 'api/admin_publications_status_counts/useAdminPublicationsStatusCounts';
 import getStatusCounts from 'api/admin_publications_status_counts/util/getAdminPublicationsStatusCount';
 
+import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 import WidgetPlaceholder from 'components/admin/ContentBuilder/Widgets/WidgetPlaceholder';
-import ContentContainer from 'components/ContentContainer';
 import {
   PublicationTab,
   PUBLICATION_STATUSES,
@@ -50,6 +51,7 @@ const ProjectsByFilterInner = ({
   titleMultiloc,
   statusCountsWithoutFilters,
 }: InnerProps) => {
+  const padding = useCraftComponentDefaultPadding();
   const allStatusCountsWithoutFilters = getStatusCounts(
     statusCountsWithoutFilters
   );
@@ -68,9 +70,8 @@ const ProjectsByFilterInner = ({
   const adminPublications = data?.pages.map((page) => page.data).flat();
 
   return (
-    // The container the page section used, so the cards keep their page alignment. Its 50px
-    // vertical padding is not carried over: spacing between widgets is VerticalRhythmContext's.
-    <ContentContainer mode="page">
+    // The width every builder widget uses, so the page lines up on one edge.
+    <Box maxWidth="1200px" margin="0 auto" px={padding}>
       <ProjectAndFolderCardsInner
         statusCounts={allStatusCountsWithoutFilters}
         showTitle={hasTitle(titleMultiloc)}
@@ -87,7 +88,7 @@ const ProjectsByFilterInner = ({
         onLoadMore={fetchNextPage}
         onChangeCurrentTab={setCurrentTab}
       />
-    </ContentContainer>
+    </Box>
   );
 };
 

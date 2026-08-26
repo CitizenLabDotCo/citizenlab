@@ -31,6 +31,8 @@ const WIDGET_ROLES: Record<string, WidgetRole> = {
   ExtraSurveysWidget: 'card',
   PhasesWidget: 'band',
   EventsWidget: 'band',
+  ProjectsByFilter: 'band',
+  EventsByProjects: 'band',
 };
 
 const BOUNDARY_MARGINS = {

@@ -17,7 +17,8 @@ const useCraftComponentDefaultPadding = () => {
   return isSmallerThanTablet &&
     (parent === ROOT_NODE ||
       parentName === 'Box' ||
-      parentName === 'ProjectPageBody')
+      parentName === 'ProjectPageBody' ||
+      parentName === 'CustomPageBody')
     ? DEFAULT_PADDING
     : '0px';
 };
