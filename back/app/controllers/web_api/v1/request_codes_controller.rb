@@ -64,7 +64,8 @@ class WebApi::V1::RequestCodesController < ApplicationController
     user = User.find_by_phone_number(request_code_phone_params[:phone])
     authorize user, policy_class: RequestCodePolicy
 
-    return if render_resend_too_soon(user.phone_confirmation)
+    confirmation = user.phone_confirmation
+    return render_resend_too_soon(confirmation) if resend_too_soon?(confirmation)
 
     RequestPhoneConfirmationCodeJob.issue_code_and_deliver_later(user)
 
@@ -86,7 +87,7 @@ class WebApi::V1::RequestCodesController < ApplicationController
       return
     end
 
-    return if render_resend_too_soon(confirmation)
+    return render_resend_too_soon(confirmation) if resend_too_soon?(confirmation)
 
     RequestPhoneConfirmationCodeJob.issue_code_and_deliver_later(current_user)
 
@@ -126,8 +127,9 @@ class WebApi::V1::RequestCodesController < ApplicationController
 
     # Only a code for the number the user is already confirming is a resend; a
     # different number is a new request (the "change your number" path).
+    confirmation = current_user.new_phone_confirmation
     resending = normalized == current_user.new_phone
-    return if resending && render_resend_too_soon(current_user.new_phone_confirmation)
+    return render_resend_too_soon(confirmation) if resending && resend_too_soon?(confirmation)
 
     consent = EmailCampaigns::ConsentService.new.record!(
       current_user,
@@ -143,15 +145,16 @@ class WebApi::V1::RequestCodesController < ApplicationController
 
   private
 
-  # Rejects a code request that comes in before the previous code's cooldown has
-  # elapsed, and reports how long is left so the caller can count it down.
-  # Returns whether a response was rendered.
-  def render_resend_too_soon(confirmation)
-    seconds = confirmation&.seconds_until_resend_allowed.to_i
-    return false if seconds.zero?
+  # Whether the previous code's cooldown still has to run out.
+  def resend_too_soon?(confirmation)
+    confirmation&.seconds_until_resend_allowed.to_i.positive?
+  end
 
-    render json: { errors: { base: [{ error: 'too_soon', retry_after: seconds }] } }, status: :too_many_requests
-    true
+  # Rejects the request, reporting how much of the cooldown is left so the caller
+  # can count it down.
+  def render_resend_too_soon(confirmation)
+    render json: { errors: { base: [{ error: 'too_soon', retry_after: confirmation.seconds_until_resend_allowed }] } },
+      status: :too_many_requests
   end
 
   # Read back from the record rather than assuming a full interval, so a request
