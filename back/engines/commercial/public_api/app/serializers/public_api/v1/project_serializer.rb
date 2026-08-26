@@ -17,7 +17,7 @@ class PublicApi::V1::ProjectSerializer < ActiveModel::Serializer
   end
 
   def description_html
-    @@multiloc_service.t(object.description_multiloc)
+    @@multiloc_service.t(description_service.description_multiloc(object))
   end
 
   def description_preview
@@ -36,5 +36,11 @@ class PublicApi::V1::ProjectSerializer < ActiveModel::Serializer
 
   def map_center_geojson
     object.map_config&.center_geojson
+  end
+
+  private
+
+  def description_service
+    @description_service ||= ContentBuilder::BuildableDescriptionService.new
   end
 end
