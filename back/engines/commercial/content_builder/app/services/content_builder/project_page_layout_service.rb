@@ -235,20 +235,7 @@ module ContentBuilder
     end
 
     def file_attachment_node(file_id, parent_id)
-      {
-        'type' => { 'resolvedName' => 'FileAttachment' },
-        'nodes' => [],
-        'props' => { 'fileId' => file_id },
-        'custom' => {
-          'title' => message('app.containers.admin.ContentBuilder.fileAttachment', 'File Attachment'),
-          'noPointerEvents' => true
-        },
-        'hidden' => false,
-        'parent' => parent_id,
-        'isCanvas' => false,
-        'displayName' => 'FileAttachment',
-        'linkedNodes' => {}
-      }
+      Craftjs::Nodes.file_attachment(file_id, parent_id)
     end
 
     def white_space_node(parent_id)

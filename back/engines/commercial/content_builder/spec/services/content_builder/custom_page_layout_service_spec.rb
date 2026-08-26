@@ -8,6 +8,7 @@ describe ContentBuilder::CustomPageLayoutService do
   let(:root_id) { described_class::ROOT_ID }
   let(:body_id) { described_class::BODY_ID }
   let(:top_id) { described_class::TOP_INFO_ID }
+  let(:file_prefix) { described_class::FILE_ID_PREFIX }
   let(:projects_id) { described_class::PROJECTS_ID }
   let(:events_id) { described_class::EVENTS_ID }
   let(:bottom_id) { described_class::BOTTOM_INFO_ID }
@@ -103,6 +104,81 @@ describe ContentBuilder::CustomPageLayoutService do
 
       expect(craftjs).not_to have_key top_id
       expect(craftjs[body_id]['nodes']).to be_empty
+    end
+
+    context 'with attachments' do
+      def page_with_files(count, **attributes)
+        page = create(
+          :static_page,
+          {
+            top_info_section_multiloc: {},
+            top_info_section_enabled: false,
+            files_section_enabled: true
+          }.merge(attributes)
+        )
+        count.times { create(:file_attachment, attachable: page) }
+        page
+      end
+
+      it 'stacks one node per file directly in the body' do
+        page = page_with_files(2)
+        file_ids = Files::FileAttachment.where(attachable: page).ordered.pluck(:file_id)
+
+        craftjs = service.craftjs_json_for(page)
+
+        expected_ids = file_ids.map { |id| "#{file_prefix}#{id}" }
+        expect(craftjs[body_id]['nodes']).to eq expected_ids
+        expected_ids.each do |node_id|
+          expect(resolved_name(craftjs, node_id)).to eq 'FileAttachment'
+          # Stacked, unlike the project page's two-column block.
+          expect(craftjs[node_id]['parent']).to eq body_id
+        end
+        expect(craftjs[expected_ids.first]['props']).to eq({ 'fileId' => file_ids.first })
+      end
+
+      it 'skips the files that are attached while the section is off' do
+        craftjs = service.craftjs_json_for(page_with_files(2, files_section_enabled: false))
+
+        expect(craftjs.keys).to contain_exactly(root_id, body_id)
+      end
+
+      it 'adds nothing when the section is on but nothing is attached' do
+        craftjs = service.craftjs_json_for(page_with_files(0))
+
+        expect(craftjs.keys).to contain_exactly(root_id, body_id)
+      end
+
+      it 'puts the files between the top info section and the rest' do
+        page = page_with_files(
+          1,
+          top_info_section_multiloc: plain_text,
+          top_info_section_enabled: true,
+          bottom_info_section_multiloc: plain_text,
+          bottom_info_section_enabled: true
+        )
+        file_id = Files::FileAttachment.where(attachable: page).pick(:file_id)
+
+        craftjs = service.craftjs_json_for(page)
+
+        expect(craftjs[body_id]['nodes']).to eq [top_id, "#{file_prefix}#{file_id}", bottom_id]
+      end
+
+      # The plan says verify rather than assume: Layout's file syncing and its policy check
+      # are written against content_buildable in general, not against Project.
+      it 'attaches the referenced files to the layout when it is saved' do
+        page = page_with_files(1)
+        file_id = Files::FileAttachment.where(attachable: page).pick(:file_id)
+
+        layout = ContentBuilder::Layout.create!(
+          content_buildable: page,
+          code: described_class::CODE,
+          enabled: true,
+          craftjs_json: service.craftjs_json_for(page)
+        )
+
+        expect(layout.referenced_file_ids).to eq [file_id]
+        expect(Files::FileAttachment.where(attachable: layout).pluck(:file_id)).to eq [file_id]
+      end
     end
 
     context 'with a projects filter' do

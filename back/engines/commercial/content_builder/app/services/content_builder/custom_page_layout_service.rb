@@ -6,14 +6,17 @@ module ContentBuilder
   # DescriptionLayoutService's, reused here.
   #
   # Anything the front office does not render is skipped, so a migrated page looks the same:
-  # a disabled info section produces no node, and neither does a projects or events list that
-  # is switched off, unfiltered, or behind an inactive advanced_custom_pages.
+  # a disabled info section or attachments section produces no node, and neither does a
+  # projects or events list that is switched off, unfiltered, or behind an inactive
+  # advanced_custom_pages.
   class CustomPageLayoutService
     CODE = 'custom_page'
 
     ROOT_ID = 'ROOT'
     BODY_ID = 'CUSTOM_PAGE_BODY'
     TOP_INFO_ID = 'CUSTOM_PAGE_TOP_INFO'
+    # One node per attached file, so the id carries the file it renders.
+    FILE_ID_PREFIX = 'CUSTOM_PAGE_FILE_'
     PROJECTS_ID = 'CUSTOM_PAGE_PROJECTS'
     EVENTS_ID = 'CUSTOM_PAGE_EVENTS'
     BOTTOM_INFO_ID = 'CUSTOM_PAGE_BOTTOM_INFO'
@@ -25,6 +28,7 @@ module ContentBuilder
           static_page.top_info_section_multiloc,
           enabled: static_page.top_info_section_enabled
         ),
+        **file_nodes(static_page),
         PROJECTS_ID => projects_node(static_page),
         EVENTS_ID => events_node(static_page),
         BOTTOM_INFO_ID => section_node(
@@ -37,6 +41,20 @@ module ContentBuilder
     end
 
     private
+
+    # A stacked list, unlike the project page's two-column block, because that is how the
+    # page renders them today. The node itself is the shared one either way.
+    def file_nodes(static_page)
+      return {} unless static_page.files_section_enabled
+
+      attachments = ::Files::FileAttachment.where(attachable: static_page).ordered
+      attachments.to_h do |attachment|
+        [
+          "#{FILE_ID_PREFIX}#{attachment.file_id}",
+          Craftjs::Nodes.file_attachment(attachment.file_id, BODY_ID)
+        ]
+      end
+    end
 
     # CustomPageProjectsAndEvents hides both lists unless the feature is on and a real filter
     # is set — the flag and the no_filter check sit above both blocks, not just the projects
