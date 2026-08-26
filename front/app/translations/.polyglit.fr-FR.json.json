@@ -11889,6 +11889,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.SignUp.iHaveReadAndAgreeToTermsAndPrivacy2": {
+    "state": "verified",
+    "verified_at": "2026-08-26T08:23:14.100591Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -11923,6 +11928,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.containers.SignUp.policiesNotAcceptedError": {
+    "state": "verified",
+    "verified_at": "2026-08-26T08:23:14.100591Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.SignUp.privacyPolicyNotAcceptedError": {
     "state": "verified",

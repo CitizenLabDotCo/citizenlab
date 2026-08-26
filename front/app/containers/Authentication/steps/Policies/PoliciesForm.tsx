@@ -17,8 +17,7 @@ import messages from './messages';
 import PoliciesMarkup from './PoliciesMarkup';
 
 const DEFAULT_VALUES = {
-  termsAndConditionsAccepted: false,
-  privacyPolicyAccepted: false,
+  policiesAccepted: false,
 } as const;
 
 const isTruthy = (value?: boolean) => !!value;
@@ -39,14 +38,9 @@ const PoliciesForm = ({
   const { formatMessage } = useIntl();
 
   const schema = object({
-    termsAndConditionsAccepted: boolean().test(
+    policiesAccepted: boolean().test(
       '',
-      formatMessage(authProvidersMessages.tacError),
-      isTruthy
-    ),
-    privacyPolicyAccepted: boolean().test(
-      '',
-      formatMessage(authProvidersMessages.privacyPolicyNotAcceptedError),
+      formatMessage(authProvidersMessages.policiesNotAcceptedError),
       isTruthy
     ),
   });
