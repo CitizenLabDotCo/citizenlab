@@ -4181,6 +4181,8 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "Επιβεβαιωμένο email",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhone": "Επιβεβαιωμένο τηλέφωνο",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.email": "email",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription2": "Οι χρήστες πρέπει να έχουν επιβεβαιωμένη διεύθυνση email.",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescriptionWithPasswordLogin": "Αν ενεργοποιηθεί, όλοι οι χρήστες θα πρέπει να επιβεβαιώσουν το email τους. Αν απενεργοποιηθεί, μόνο οι χρήστες που εγγράφονται μέσω email θα πρέπει να επιβεβαιώσουν το email τους.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Δεν απαιτείται λογαριασμός",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noSignInMethodEnabled": "Δεν έχει ενεργοποιηθεί καμία μέθοδος σύνδεσης σε αυτήν την πλατφόρμα.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Μόνο οι διαχειριστές και οι υπεύθυνοι μπορούν να προβούν σε αυτήν την ενέργεια. Δεν ισχύουν άλλες απαιτήσεις.",

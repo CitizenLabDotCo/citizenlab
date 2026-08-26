@@ -4181,6 +4181,8 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "Vahvistettu sähköpostiosoite",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhone": "Vahvistettu puhelinnumero",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.email": "sähköposti",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription2": "Käyttäjillä on oltava vahvistettu sähköpostiosoite.",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescriptionWithPasswordLogin": "Jos asetus on käytössä, kaikkien käyttäjien on vahvistettava sähköpostiosoitteensa. Jos asetus on poissa käytöstä, vain sähköpostilla rekisteröityvien käyttäjien on vahvistettava sähköpostiosoitteensa.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Tiliä ei tarvita",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noSignInMethodEnabled": "Tällä alustalla ei ole käytössä yhtään kirjautumistapaa.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Vain ylläpitäjät ja hallinnoijat voivat suorittaa tämän toiminnon. Muita vaatimuksia ei sovelleta.",

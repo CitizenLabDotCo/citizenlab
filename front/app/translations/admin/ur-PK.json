@@ -4181,6 +4181,8 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "تصدیق شدہ ای میل",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhone": "تصدیق شدہ فون",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.email": "ای میل",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription2": "صارفین کا ای میل ایڈریس تصدیق شدہ ہونا ضروری ہے۔",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescriptionWithPasswordLogin": "اگر فعال ہے، تو تمام صارفین کو اپنے ای میل کی تصدیق کرنی ہوگی۔ اگر غیر فعال ہے، تو صرف ای میل کے ذریعے سائن اپ کرنے والے صارفین کو اپنے ای میل کی تصدیق کرنی ہوگی۔",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "کسی اکاؤنٹ کی ضرورت نہیں ہے",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noSignInMethodEnabled": "اس پلیٹ فارم پر سائن ان کا کوئی طریقہ فعال نہیں ہے۔",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "صرف ایڈمنز اور مینیجرز یہ کارروائی کر سکتے ہیں۔ کوئی دوسری شرائط لاگو نہیں ہوتیں۔",

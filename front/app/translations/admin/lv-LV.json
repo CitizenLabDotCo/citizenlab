@@ -4181,6 +4181,8 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "Apstiprināts e-pasts",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhone": "Apstiprināts tālrunis",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.email": "e-pasts",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription2": "Lietotājiem ir jābūt apstiprinātai e-pasta adresei.",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescriptionWithPasswordLogin": "Ja šī iespēja ir iespējota, visiem lietotājiem ir jāapstiprina savs e-pasts. Ja tā ir atspējota, e-pasts jāapstiprina tikai tiem lietotājiem, kuri reģistrējas ar e-pastu.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Konts nav nepieciešams",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noSignInMethodEnabled": "Šajā platformā nav iespējota neviena pierakstīšanās metode.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Šo darbību var veikt tikai administratori un vadītāji. Citas prasības netiek piemērotas.",

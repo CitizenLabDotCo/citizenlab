@@ -4181,6 +4181,8 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "Bevestigd e-mailadres",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhone": "Bevestigd telefoonnummer",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.email": "e-mail",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription2": "Gebruikers moeten een bevestigd e-mailadres hebben.",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescriptionWithPasswordLogin": "Indien ingeschakeld, moeten alle gebruikers hun e-mail bevestigen. Indien uitgeschakeld, hoeven alleen gebruikers die zich via e-mail registreren hun e-mail te bevestigen.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Geen account nodig",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noSignInMethodEnabled": "Er is geen inlogmethode ingeschakeld op dit platform.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Alleen platformbeheerders en beheerders kunnen deze actie uitvoeren. Er gelden geen andere vereisten.",

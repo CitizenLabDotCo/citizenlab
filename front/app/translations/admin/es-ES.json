@@ -4181,6 +4181,8 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "Correo confirmado",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhone": "Teléfono confirmado",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.email": "correo",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription2": "Los usuarios deben tener una dirección de correo confirmada.",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescriptionWithPasswordLogin": "Si está activado, todos los usuarios deben confirmar su correo. Si está desactivado, solo los usuarios que se registren por correo deberán confirmar su correo.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "No se necesita cuenta",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noSignInMethodEnabled": "No hay ningún método de inicio de sesión habilitado en esta plataforma.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Solo los administradores y gestores pueden realizar esta acción. No se aplican otros requisitos.",

@@ -4181,6 +4181,8 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "E-bost wedi'i gadarnhau",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhone": "Ffôn wedi'i gadarnhau",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.email": "e-bost",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription2": "Rhaid i ddefnyddwyr gael cyfeiriad e-bost wedi'i gadarnhau.",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescriptionWithPasswordLogin": "Os yw wedi'i alluogi, bydd angen i bob defnyddiwr gadarnhau eu cyfeiriad e-bost. Os yw wedi'i analluogi, dim ond defnyddwyr sy'n cofrestru drwy e-bost fydd angen cadarnhau eu cyfeiriad e-bost.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Dim angen cyfrif",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noSignInMethodEnabled": "Nid oes unrhyw ddull mewngofnodi wedi'i alluogi ar y platfform hwn.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Dim ond gweinyddwyr a rheolwyr sy'n gallu cyflawni'r weithred hon. Nid oes unrhyw ofynion eraill yn berthnasol.",

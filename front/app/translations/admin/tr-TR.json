@@ -4181,6 +4181,8 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "Onaylanmış e-posta",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhone": "Onaylanmış telefon",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.email": "e-posta",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription2": "Kullanıcıların onaylanmış bir e-posta adresine sahip olması gerekir.",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescriptionWithPasswordLogin": "Etkinleştirilirse tüm kullanıcıların e-posta adreslerini onaylaması gerekir. Devre dışı bırakılırsa yalnızca e-posta ile kaydolan kullanıcıların e-posta adreslerini onaylaması gerekir.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Hesap gerekmiyor",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noSignInMethodEnabled": "Bu platformda hiçbir giriş yöntemi etkinleştirilmemiş.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Bu eylemi yalnızca yöneticiler ve menajerler gerçekleştirebilir. Başka bir gereklilik uygulanmaz.",

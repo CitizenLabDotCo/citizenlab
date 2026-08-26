@@ -4181,6 +4181,8 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "بريد إلكتروني مؤكد",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhone": "هاتف مؤكد",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.email": "البريد الإلكتروني",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription2": "يجب أن يكون لدى المستخدمين بريد إلكتروني مؤكد.",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescriptionWithPasswordLogin": "في حال التفعيل، سيتعين على جميع المستخدمين تأكيد بريدهم الإلكتروني. وفي حال التعطيل، سيتعين فقط على المستخدمين الذين سجلوا عبر البريد الإلكتروني تأكيد بريدهم الإلكتروني.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "لا يلزم وجود حساب",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noSignInMethodEnabled": "لم يتم تفعيل أي طريقة لتسجيل الدخول على هذه المنصة.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "يمكن للمسؤولين والمديرين فقط اتخاذ هذا الإجراء. لا تنطبق أي متطلبات أخرى.",

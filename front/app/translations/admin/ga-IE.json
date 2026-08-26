@@ -4181,6 +4181,8 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": "Ríomhphost deimhnithe",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhone": "Fón deimhnithe",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.email": "ríomhphost",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription2": "Ní mór seoladh ríomhphoist deimhnithe a bheith ag úsáideoirí.",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescriptionWithPasswordLogin": "Má tá sé cumasaithe, ní mór do gach úsáideoir a ríomhphost a dheimhniú. Má tá sé díchumasaithe, ní gá ach d’úsáideoirí a chláraíonn trí ríomhphost a ríomhphost a dheimhniú.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Níl aon chuntas de dhíth",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noSignInMethodEnabled": "Níl aon mhodh logála isteach cumasaithe ar an ardán seo.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Ní féidir ach le riarthóirí agus le bainisteoirí an gníomh seo a dhéanamh. Níl aon riachtanais eile i bhfeidhm.",
