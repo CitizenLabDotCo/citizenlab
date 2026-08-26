@@ -3,7 +3,7 @@
 module ContentBuilder
   module Craftjs
     # Node shapes shared by the layout services. Where a node is parented stays each
-    # service's own choice: the project page groups files into columns, a custom page stacks
+    # service's own choice: `project_page` groups files into columns, `custom_page` stacks
     # them.
     module Nodes
       module_function

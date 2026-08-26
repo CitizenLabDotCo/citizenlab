@@ -38,8 +38,8 @@ module ContentBuilder
 
     private
 
-    # Stacked, unlike the project page's two-column block, because that is how the page
-    # renders them today.
+    # Stacked, unlike the two-column block `project_page` builds, because that is how the
+    # page renders them today.
     def file_nodes(static_page)
       return {} unless static_page.files_section_enabled
 
