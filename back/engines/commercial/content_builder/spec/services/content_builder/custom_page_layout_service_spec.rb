@@ -287,9 +287,10 @@ describe ContentBuilder::CustomPageLayoutService do
       end
     end
 
-    # The migration task compares a stored graph with a freshly derived one to decide whether
-    # a page needs rewriting, which only works while node ids are fixed rather than generated.
-    it 'gives two pages with the same content an identical graph' do
+    # Section node ids are fixed rather than generated, so content alone decides the graph.
+    # Note this does not hold across pages once files are attached — a file node id carries
+    # its file id — which is why the migration task's assumption is pinned separately below.
+    it 'gives two pages with the same sections an identical graph' do
       attributes = { top_info_section_multiloc: plain_text, top_info_section_enabled: true }
 
       first = service.craftjs_json_for(build_page(**attributes))
@@ -297,6 +298,37 @@ describe ContentBuilder::CustomPageLayoutService do
 
       expect(first).to eq second
       expect(first.keys).to contain_exactly(root_id, body_id, top_id)
+    end
+
+    # The migration task compares a stored graph with a freshly derived one to decide whether
+    # a page has drifted from its source columns. That only works while re-deriving one page
+    # is stable, so this pins it with every kind of node in play at once.
+    it 'derives the same page identically however often it runs' do
+      SettingsService.new.activate_feature!('advanced_custom_pages')
+      page = create(
+        :static_page,
+        top_info_section_multiloc: plain_text,
+        top_info_section_enabled: true,
+        # Media, so the bottom section derives to the bridge widget. Base64 rather than the
+        # text_with_image fixture: StaticPage's before_validation hook extracts <img> tags
+        # into TextImage records, and a remote src would be fetched rather than decoded.
+        bottom_info_section_multiloc: { 'en' => html_with_base64_image },
+        bottom_info_section_enabled: true,
+        files_section_enabled: true,
+        projects_filter_type: 'areas',
+        areas: [create(:area)],
+        projects_enabled: true,
+        events_widget_enabled: true
+      )
+      create_list(:file_attachment, 2, attachable: page)
+
+      first = service.craftjs_json_for(page.reload)
+      second = service.craftjs_json_for(page.reload)
+
+      expect(first).to eq second
+      # Guards the ordering too: a task that rewrote on key order alone would never settle.
+      expect(first[body_id]['nodes']).to eq second[body_id]['nodes']
+      expect(first[body_id]['nodes'].size).to eq 6
     end
   end
 end
