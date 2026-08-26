@@ -96,7 +96,7 @@ const FileAttachment = ({ fileId }: FileAttachmentProps) => {
   if (attachment) {
     const attachmentAttributes = attachment.attributes;
     return (
-      <Box id="e2e-file-attachment" maxWidth="1200px">
+      <Box id="e2e-file-attachment" maxWidth="1200px" margin="0 auto">
         <FileDisplay
           file={{
             id: attachment.relationships.file.data.id,

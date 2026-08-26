@@ -25,8 +25,25 @@ jest.mock('api/custom_page_layout/useCustomPageLayout', () => ({
   default: jest.fn(() => ({ data: layoutResponse?.data, isLoading })),
 }));
 
+const layoutProvider = jest.fn();
+jest.mock(
+  'components/admin/ContentBuilder/context/ContentBuilderLayoutContext',
+  () => ({
+    ContentBuilderLayoutProvider: ({
+      layoutId,
+      children,
+    }: {
+      layoutId?: string;
+      children: React.ReactNode;
+    }) => {
+      layoutProvider({ layoutId });
+      return <>{children}</>;
+    },
+  })
+);
+
 const layout = (enabled: boolean, craftjs_json: object) => ({
-  data: { data: { attributes: { enabled, craftjs_json } } },
+  data: { data: { id: 'layout-1', attributes: { enabled, craftjs_json } } },
 });
 
 // What a page holds before anyone authors anything in the builder.
@@ -114,5 +131,15 @@ describe('CustomPageContentViewer', () => {
     expect(
       screen.queryByTestId('customPageContentViewer')
     ).not.toBeInTheDocument();
+  });
+
+  // FileAttachment looks its file up via the layout's own attachments, so without this the
+  // widget renders nothing in the front office while working fine in the builder.
+  it('puts the layout id in context for widgets that need it', () => {
+    layoutResponse = layout(true, withContent);
+
+    render(<CustomPageContentViewer staticPageId="page-1" />);
+
+    expect(layoutProvider).toHaveBeenCalledWith({ layoutId: 'layout-1' });
   });
 });
