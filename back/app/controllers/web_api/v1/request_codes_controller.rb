@@ -67,6 +67,12 @@ class WebApi::V1::RequestCodesController < ApplicationController
     confirmation = user.phone_confirmation
     return render_resend_too_soon(confirmation) if resend_too_soon?(confirmation)
 
+    EmailCampaigns::ConsentService.new.record!(
+      user,
+      EmailCampaigns::Campaigns::PhoneConfirmation,
+      consented: true,
+      always_log: true
+    )
     RequestPhoneConfirmationCodeJob.issue_code_and_deliver_later(user)
 
     render_retry_after(user.phone_confirmation)
@@ -89,6 +95,12 @@ class WebApi::V1::RequestCodesController < ApplicationController
 
     return render_resend_too_soon(confirmation) if resend_too_soon?(confirmation)
 
+    EmailCampaigns::ConsentService.new.record!(
+      current_user,
+      EmailCampaigns::Campaigns::PhoneConfirmation,
+      consented: true,
+      always_log: true
+    )
     RequestPhoneConfirmationCodeJob.issue_code_and_deliver_later(current_user)
 
     render_retry_after(current_user.phone_confirmation)
@@ -131,13 +143,12 @@ class WebApi::V1::RequestCodesController < ApplicationController
     resending = normalized == current_user.new_phone
     return render_resend_too_soon(confirmation) if resending && resend_too_soon?(confirmation)
 
-    consent = EmailCampaigns::ConsentService.new.record!(
+    EmailCampaigns::ConsentService.new.record!(
       current_user,
       EmailCampaigns::Campaigns::NewPhoneConfirmation,
-      consented: true
+      consented: true,
+      always_log: true
     )
-    EmailCampaigns::SideFxConsentService.new.after_grant(consent, current_user)
-
     RequestNewPhoneConfirmationCodeJob.issue_code_and_deliver_later(current_user, new_phone: normalized)
 
     render_retry_after(current_user.new_phone_confirmation)

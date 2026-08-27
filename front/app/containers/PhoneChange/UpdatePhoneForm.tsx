@@ -6,6 +6,8 @@ import { FormProvider, UseFormReturn } from 'react-hook-form';
 import { requestCodeNewPhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import { IUser } from 'api/users/types';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import PhoneInput from 'components/HookForm/PhoneInput';
 import {
   Title,
@@ -50,6 +52,9 @@ const UpdatePhoneForm = ({
   user,
 }: UpdatePhoneFormProps) => {
   const { formatMessage } = useIntl();
+  const smsManualCampaignsEnabled = useFeatureFlag({
+    name: 'sms_manual_campaigns',
+  });
   const [error, setError] = useState<FormError | undefined>(undefined);
   const currentPhone = user.data.attributes.phone;
 
@@ -110,7 +115,9 @@ const UpdatePhoneForm = ({
         {error && (
           <Error marginTop="4px" text={formatMessage(ERROR_MESSAGES[error])} />
         )}
-        <ManualCampaignConsent />
+        <Box mt="20px" mb="8px">
+          <ManualCampaignConsent />
+        </Box>
         <StyledButton
           type="submit"
           size="m"
@@ -120,7 +127,11 @@ const UpdatePhoneForm = ({
           dataCy="change-phone-submit-button"
         />
         <ConsentDisclosure
-          disclosureMessage={smsConsentMessages.phoneConfirmationDisclosure}
+          disclosureMessage={
+            smsManualCampaignsEnabled
+              ? smsConsentMessages.phoneConfirmationDisclosureWithCampaignsEnabled
+              : smsConsentMessages.phoneConfirmationDisclosureWithoutCampaignsEnabled
+          }
         />
       </Form>
       <Box display="flex" justifyContent="center">

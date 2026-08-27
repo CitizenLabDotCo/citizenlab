@@ -6949,6 +6949,11 @@
     "verified_at": "2026-08-20T12:12:01.658939Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Authentication.steps.Policies.byContinuingPhone3": {
+    "state": "verified",
+    "verified_at": "2026-08-26T12:38:11.150696Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": {
     "state": "verified",
     "verified_at": "2026-08-20T12:11:02.731830Z",
