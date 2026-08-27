@@ -6,6 +6,8 @@ import { FormProvider, UseFormReturn } from 'react-hook-form';
 import { requestCodeNewPhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import { IUser } from 'api/users/types';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import PhoneInput from 'components/HookForm/PhoneInput';
 import {
   Title,
@@ -13,8 +15,9 @@ import {
   Form,
   LabelContainer,
 } from 'components/smallForm';
+import ConsentDisclosure from 'components/SmsConsent/ConsentDisclosure';
 import ManualCampaignConsent from 'components/SmsConsent/ManualCampaignConsent';
-import PhoneConfirmationConsent from 'components/SmsConsent/PhoneConfirmationConsent';
+import smsConsentMessages from 'components/SmsConsent/messages';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
 import Warning from 'components/UI/Warning';
@@ -37,7 +40,7 @@ type FormError = 'taken' | 'invalid' | 'unsupported_country' | 'unknown';
 
 const ERROR_MESSAGES = {
   taken: messages.phoneTaken,
-  invalid: messages.phoneInvalid,
+  invalid: messages.phoneInvalid3,
   unsupported_country: messages.phoneUnsupportedCountry,
   unknown: messages.phoneUnknownError,
 };
@@ -49,6 +52,9 @@ const UpdatePhoneForm = ({
   user,
 }: UpdatePhoneFormProps) => {
   const { formatMessage } = useIntl();
+  const smsManualCampaignsEnabled = useFeatureFlag({
+    name: 'sms_manual_campaigns',
+  });
   const [error, setError] = useState<FormError | undefined>(undefined);
   const currentPhone = user.data.attributes.phone;
 
@@ -96,7 +102,7 @@ const UpdatePhoneForm = ({
           <FormLabel
             width="max-content"
             margin-right="5px"
-            labelMessage={messages.newPhoneLabel}
+            labelMessage={messages.newPhoneLabel2}
             htmlFor="phone"
           />
         </LabelContainer>
@@ -109,7 +115,9 @@ const UpdatePhoneForm = ({
         {error && (
           <Error marginTop="4px" text={formatMessage(ERROR_MESSAGES[error])} />
         )}
-        <ManualCampaignConsent />
+        <Box mt="20px" mb="8px">
+          <ManualCampaignConsent />
+        </Box>
         <StyledButton
           type="submit"
           size="m"
@@ -118,7 +126,13 @@ const UpdatePhoneForm = ({
           text={formatMessage(messages.submitButton)}
           dataCy="change-phone-submit-button"
         />
-        <PhoneConfirmationConsent />
+        <ConsentDisclosure
+          disclosureMessage={
+            smsManualCampaignsEnabled
+              ? smsConsentMessages.phoneConfirmationDisclosureWithCampaignsEnabled
+              : smsConsentMessages.phoneConfirmationDisclosureWithoutCampaignsEnabled
+          }
+        />
       </Form>
       <Box display="flex" justifyContent="center">
         {updateSuccessful && (

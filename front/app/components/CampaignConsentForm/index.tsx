@@ -13,6 +13,8 @@ import { internalCommentNotificationTypes } from 'api/campaigns/types';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
+import ConsentDisclosure from 'components/SmsConsent/ConsentDisclosure';
+import smsConsentMessages from 'components/SmsConsent/messages';
 import { FormSection } from 'components/UI/FormComponents';
 
 import { trackEventByName } from 'utils/analytics';
@@ -63,7 +65,12 @@ const CampaignConsentForm = ({
     false
   );
   const [loading, setLoading] = useState<boolean>(false);
-  const smsEnabled = useFeatureFlag({ name: 'sms' });
+  // The sms feature carries the Twilio settings manual campaigns send through.
+  const smsFFEnabled = useFeatureFlag({ name: 'sms' });
+  const smsManualCampaignsFFEnabled = useFeatureFlag({
+    name: 'sms_manual_campaigns',
+  });
+  const smsManualCampaignsEnabled = smsFFEnabled && smsManualCampaignsFFEnabled;
 
   useEffect(() => {
     if (!isNilOrError(originalCampaignConsents)) {
@@ -185,7 +192,7 @@ const CampaignConsentForm = ({
   const emailGroups = channelGroups('email');
   const smsGroups = channelGroups('sms');
 
-  const showSms = smsGroups.length > 0 && smsEnabled;
+  const showSms = smsGroups.length > 0 && smsManualCampaignsEnabled;
 
   return (
     <FormSection>
@@ -198,13 +205,22 @@ const CampaignConsentForm = ({
       />
 
       {showSms && (
-        <ChannelConsentSection
-          titleMessage={messages.smsNotificationsTitle}
-          subtitleMessage={messages.smsNotificationsSubTitle}
-          groups={smsGroups}
-          onToggleGroup={toggleGroup}
-          onToggleConsent={onChange}
-        />
+        <>
+          <ChannelConsentSection
+            titleMessage={messages.smsNotificationsTitle}
+            subtitleMessage={messages.smsNotificationsSubTitle}
+            groups={smsGroups}
+            onToggleGroup={toggleGroup}
+            onToggleConsent={onChange}
+          />
+          <Box mt="-12px" mb="20px">
+            <ConsentDisclosure
+              disclosureMessage={
+                smsConsentMessages.campaignPreferencesDisclosure
+              }
+            />
+          </Box>
+        </>
       )}
 
       <Feedback

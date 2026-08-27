@@ -542,6 +542,7 @@ lt-LT:
       yesterday: Vakar
     new_phone_confirmation:
       sms_body: Jūsų patvirtinimo kodas yra %{code}.
+      sms_body2: '%{organization_name}: Jūsų patvirtinimo kodas yra %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Eikite į šią įvestį
       event_description: '%{feedback_author_name} pateikė naujausią informaciją apie "%{input_title}".'
@@ -556,6 +557,7 @@ lt-LT:
       title: Pasirinkite naują slaptažodį
     phone_confirmation:
       sms_body: Jūsų patvirtinimo kodas yra %{code}.
+      sms_body2: '%{organization_name}: Jūsų patvirtinimo kodas yra %{code}.'
     preview_data:
       author_display_name: Nepažįstama moteris
       author_first_name: Jane

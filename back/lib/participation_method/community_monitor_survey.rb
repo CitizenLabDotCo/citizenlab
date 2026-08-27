@@ -46,7 +46,7 @@ module ParticipationMethod
     end
 
     def everyone_tracking_enabled?
-      permission = phase.permissions&.find_by(action: 'posting_idea')
+      permission = Permissions::PermissionInheritanceService.new.find(phase, 'posting_idea')
       return false unless permission
 
       permission.everyone_tracking_enabled?

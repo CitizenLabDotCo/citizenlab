@@ -11,8 +11,12 @@ class SanitizationService
 
   NBSP = "\u00A0"
 
-  # What `linkify` builds an href from, and so all `replace_links_with_urls` will put back.
+  # What `linkify` builds an href from, and so the only links a body may show as their own URL.
   LINKIFIABLE_HREF = %r{\A(https?://|mailto:)}i
+
+  # What `linkify` puts on a link it builds, and so what a kept link carries too. `target="_blank"`
+  # without `noopener` hands the opened page control of this tab.
+  LINK_ATTRIBUTES = { 'target' => '_blank', 'rel' => 'noreferrer noopener nofollow' }.freeze
 
   SANITIZER = Rails::Html::SafeListSanitizer.new
 
@@ -81,15 +85,13 @@ class SanitizationService
   # @param html [String] Text that will be linkified.
   # @return [String] The text with it's content being transformed into links.
   def linkify(html)
-    Rinku.auto_link(html, :all, 'target="_blank" rel="noreferrer noopener nofollow"', nil, Rinku::AUTOLINK_SHORT_DOMAINS)
+    attributes = LINK_ATTRIBUTES.map { |name, value| %(#{name}="#{value}") }.join(' ')
+    Rinku.auto_link(html, :all, attributes, nil, Rinku::AUTOLINK_SHORT_DOMAINS)
   end
 
-  # The pipeline `Idea` and `Comment` apply to their bodies, shared with anything reprocessing a
-  # stored body (e.g. machine translations).
-  #
-  # Sanitizing runs before linkifying, so where `features` omits `:link` (`Comment`) the author's
-  # anchors are dropped and rebuilt from the visible text, and an href cannot disagree with its
-  # label. Where `:link` is present (`Idea`) anchors survive as written, scheme-scrubbed only.
+  # The pipeline for every rich-text field - bodies and descriptions - shared with anything
+  # reprocessing a stored value (e.g. machine translations). Also the second half of
+  # `sanitize_comment_body`.
   #
   # A nil value comes back as '', not nil. Long-standing behaviour - do not add a guard.
   def sanitize_body(html, features)
@@ -98,19 +100,34 @@ class SanitizationService
     linkify(html)
   end
 
-  # Replaces every link with its own URL as the text it shows.
+  # The pipeline `Comment` applies to its body, shared with anything reprocessing a stored one
+  # (e.g. machine translations). Only the href says where a click lands, so it is the side the
+  # label is rebuilt from - an author can point `google.com` anywhere, and a translator rewrites
+  # whatever label it can read.
+  def sanitize_comment_body(html)
+    sanitize_body(label_links_with_urls(html), Comment::BODY_SANITIZE_FEATURES)
+  end
+
+  def sanitize_comment_body_multiloc(multiloc)
+    multiloc.transform_values { |html| sanitize_comment_body(html) }
+  end
+
+  # Rewrites a link's label to the URL it points at where the two disagree, leaving the href alone.
+  # Attributes always come out as `linkify` writes them, so a kept link and a rebuilt one match.
   #
-  # A pipeline without `:link` rebuilds links from the visible text, so a link always shows where it
-  # goes - but only while that text is the URL, which translating a label breaks. Run this first to
-  # give the rebuild its URL back. Only the schemes `linkify` builds are restored.
-  def replace_links_with_urls(html)
+  # A link `linkify` could not have built is unwrapped to its text: relabelling it would show a
+  # scheme the pipeline never produces, and keeping it would leave the label free to lie.
+  def label_links_with_urls(html)
     return html if html.blank?
 
     doc = Nokogiri::HTML.fragment(html)
     doc.css('a[href]').each do |link|
-      next unless link['href'].match?(LINKIFIABLE_HREF)
-
-      link.replace(Nokogiri::XML::Text.new(link['href'], link.document))
+      if link['href'].match?(LINKIFIABLE_HREF)
+        link.content = link['href'].sub(/\Amailto:/i, '') unless label_matches_href?(link)
+        LINK_ATTRIBUTES.each { |name, value| link[name] = value }
+      else
+        link.replace(Nokogiri::XML::Text.new(link.text, link.document))
+      end
     end
     doc.to_s
   end
@@ -168,6 +185,21 @@ class SanitizationService
 
   def with_content?(node)
     node.text.present? || %w[img iframe].any? { |tag| node.at tag }
+  end
+
+  # A label tells the truth when linkifying it on its own rebuilds this very link, so the
+  # `www.example.com` someone typed is left as they typed it. Asking `linkify` rather than comparing
+  # by hand is the point: a label cannot look honest to this check and still point elsewhere.
+  #
+  # Both escapings come off first - the href is stored as it serialises, the label as a person reads
+  # it - so an accent or an `&` does not read as disagreement.
+  def label_matches_href?(link)
+    built = linkify(link.text)[/href="([^"]*)"/, 1]
+    built.present? && unescaped(built) == unescaped(link['href'])
+  end
+
+  def unescaped(url)
+    CGI.unescape(CGI.unescapeHTML(url))
   end
 
   def remove_hidden_spaces(html)

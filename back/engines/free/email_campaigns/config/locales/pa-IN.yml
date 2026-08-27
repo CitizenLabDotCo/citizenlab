@@ -542,6 +542,7 @@ pa-IN:
       yesterday: ਕੱਲ੍ਹ
     new_phone_confirmation:
       sms_body: ਤੁਹਾਡਾ ਪੁਸ਼ਟੀਕਰਨ ਕੋਡ %{code} ਹੈ।
+      sms_body2: '%{organization_name}: ਤੁਹਾਡਾ ਪੁਸ਼ਟੀਕਰਨ ਕੋਡ %{code} ਹੈ।'
     official_feedback_on_idea_you_follow:
       cta_button: ਇਸ ਇਨਪੁੱਟ 'ਤੇ ਜਾਓ
       event_description: "%{feedback_author_name} ਨੇ '%{input_title}' ਬਾਰੇ ਇੱਕ ਅਪਡੇਟ ਦਿੱਤੀ।"
@@ -556,6 +557,7 @@ pa-IN:
       title: ਇੱਕ ਨਵਾਂ ਪਾਸਵਰਡ ਚੁਣੋ
     phone_confirmation:
       sms_body: ਤੁਹਾਡਾ ਪੁਸ਼ਟੀਕਰਨ ਕੋਡ %{code} ਹੈ।
+      sms_body2: '%{organization_name}: ਤੁਹਾਡਾ ਪੁਸ਼ਟੀਕਰਨ ਕੋਡ %{code} ਹੈ।'
     preview_data:
       author_display_name: ਜੇਨ ਡੋ
       author_first_name: ਜੇਨ

@@ -22,9 +22,15 @@ export default defineMessages({
     id: 'app.containers.Authentication.steps.Policies.createANewAccountWithPhone',
     defaultMessage: 'Create a new account with: {phone} {changeLink}',
   },
-  byContinuingPhone: {
-    id: 'app.containers.Authentication.steps.Policies.byContinuingPhone',
+  // Submitted verbatim as opt-in evidence for toll-free verification.
+  byContinuingPhoneWithCampaignsEnabled: {
+    id: 'app.containers.Authentication.steps.Policies.byContinuingPhone3',
     defaultMessage:
-      "By continuing, you agree to receive text messages from this platform. You can select which messages you wish to receive in the 'My Settings' page.",
+      "By continuing, you agree to receive a one-time confirmation code by SMS from {orgName}. If you opted in above, you'll also receive news and updates; message frequency varies. Message and data rates may apply. Reply HELP for help, STOP to opt out.",
+  },
+  byContinuingPhoneWithoutCampaignsEnabled: {
+    id: 'app.containers.Authentication.steps.Policies.byContinuingPhoneWithoutCampaignsEnabled',
+    defaultMessage:
+      'By continuing, you agree to receive a one-time confirmation code by SMS from {orgName}. Message and data rates may apply. Reply HELP for help, STOP to opt out.',
   },
 });

@@ -65,6 +65,7 @@
 #
 class Idea < ApplicationRecord
   include PgSearch::Model
+  include PlainTextMultiloc
   include GeoJsonHelpers
   include AnonymousParticipation
   include Files::FileAttachable
@@ -108,9 +109,7 @@ class Idea < ApplicationRecord
   has_many_text_images from: :body_multiloc
 
   before_validation :sanitize_body_multiloc, if: :body_multiloc
-  # `prepend: true` puts this before `Sluggable#generate_slug` (registered on `ApplicationRecord`),
-  # which would otherwise build the slug from the raw title.
-  before_validation :sanitize_title_multiloc, if: -> { title_multiloc && title_multiloc_changed? }, prepend: true
+  plain_text_multiloc :title_multiloc, prepend: true
 
   # Must appear before before_destroy
   before_save :convert_wkt_geo_custom_field_values_to_geojson
@@ -525,11 +524,6 @@ class Idea < ApplicationRecord
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end
-  end
-
-  # Titles are plain text: strip markup so nothing downstream can render it as HTML.
-  def sanitize_title_multiloc
-    self.title_multiloc = SanitizationService.new.strip_multiloc_to_plain_text(title_multiloc)
   end
 
   def set_submitted_at

@@ -211,7 +211,7 @@ class WebApi::V1::IdeasController < ApplicationController
       sidefx.after_create(input, current_user, phase)
       write_everyone_tracking_cookie input
 
-      permission = phase.permissions.find_by(action: 'posting_idea')
+      permission = Permissions::PermissionInheritanceService.new.find(phase, 'posting_idea')
       generate_claim_token = permission && permission.permitted_by == 'everyone' && permission.user_data_collection != 'anonymous' && current_user.nil?
 
       if generate_claim_token
@@ -621,10 +621,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def permitted_by_everyone?(phase)
-    permission = Permission.find_by(
-      permission_scope_id: phase.id,
-      action: 'posting_idea'
-    )
+    permission = Permissions::PermissionInheritanceService.new.find(phase, 'posting_idea')
     permission&.permitted_by == 'everyone'
   end
 

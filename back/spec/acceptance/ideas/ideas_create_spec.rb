@@ -597,7 +597,7 @@ resource 'Ideas' do
             phase = project.phases.first
 
             permission = phase.permissions.find_by(action: 'posting_idea')
-            permission.update!(global_custom_fields: false, user_data_collection: 'all_data')
+            permission.update!(custom_fields_behavior: 'custom', user_data_collection: 'all_data')
             permission.permissions_custom_fields = [
               create(:permissions_custom_field, custom_field: create(:custom_field, key: 'age'))
             ]

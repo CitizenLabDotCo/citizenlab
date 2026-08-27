@@ -1,6 +1,6 @@
-import { IPhasePermissionData } from '../types';
+import { IPermissionData } from 'api/permissions/types';
 
-export const phasePermissionsData: IPhasePermissionData = {
+export const phasePermissionsData: IPermissionData = {
   id: '80419431-f691-4dc5-8aeb-5d14ece5feb0',
   type: 'permission',
   attributes: {
@@ -8,7 +8,7 @@ export const phasePermissionsData: IPhasePermissionData = {
     permitted_by: 'users',
     created_at: '2023-03-28T12:29:20.848Z',
     updated_at: '2023-03-28T13:15:59.410Z',
-    global_custom_fields: false,
+    custom_fields_behavior: 'global',
     verification_enabled: false,
     verification_expiry: null,
     access_denied_explanation_multiloc: {},
@@ -27,6 +27,7 @@ export const phasePermissionsData: IPhasePermissionData = {
     require_password: true,
     require_verification: false,
     permitted_by_everyone_allowed: false,
+    inherited: false,
   },
   relationships: {
     permission_scope: {

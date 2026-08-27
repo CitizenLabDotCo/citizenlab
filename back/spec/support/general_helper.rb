@@ -4,9 +4,9 @@ require 'timeout'
 
 module GeneralHelper
   # https://gist.github.com/jnicklas/d8da686061f0a59ffdf7#gistcomment-2900179
-  def wait_until(time, &)
+  def wait_until(time, interval: 0.01, &)
     Timeout.timeout(time) do
-      sleep(0.01) until (value = yield)
+      sleep(interval) until (value = yield)
       value
     end
   end

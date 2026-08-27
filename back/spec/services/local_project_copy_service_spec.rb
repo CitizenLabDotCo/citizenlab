@@ -285,9 +285,8 @@ describe LocalProjectCopyService do
       let(:groups) { create_list(:group, 2) }
       let(:permission) do
         Permissions::PermissionsUpdateService.new.update_all_permissions
-        TimelineService.new
-          .current_phase_not_archived(source_project).permissions
-          .find_by(action: 'commenting_idea')
+        phase = TimelineService.new.current_phase_not_archived(source_project)
+        override_permissions!(phase, actions: ['commenting_idea']).first
       end
 
       it 'copies the action groups permission' do
@@ -295,6 +294,15 @@ describe LocalProjectCopyService do
 
         copied_project = service.copy(source_project)
         expect(copied_project.phases.first.permissions.find_by(action: 'commenting_idea').groups).to match_array(groups)
+      end
+
+      it 'leaves the actions that inherit the global permission inherited' do
+        permission.update!(permitted_by: 'users', groups: groups)
+
+        copied_project = service.copy(source_project)
+        copied_phase = copied_project.phases.first
+        expect(copied_phase.permissions.pluck(:action)).to eq ['commenting_idea']
+        expect(Permissions::PermissionInheritanceService.new.find(copied_phase, 'posting_idea')).to be_inherited
       end
     end
 

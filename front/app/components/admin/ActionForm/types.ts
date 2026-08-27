@@ -1,7 +1,7 @@
 // Data model for the "Participation requirements" panel.
 //
 // The panel is a *stateless*, controlled view: it receives an
-// `IPhasePermissionData` and emits granular `Changes` through `onChange`; the
+// `IPermissionData` and emits granular `Changes` through `onChange`; the
 // parent owns the state and persists it. The demographic questions are not
 // passed in — they are read straight from `usePermissionsPhaseCustomFields`
 // (and mutated through its sibling hooks).
@@ -11,10 +11,11 @@ import { ReactNode } from 'react';
 import { Multiloc } from 'typings';
 
 import {
-  IPhasePermissionData,
+  CustomFieldsBehavior,
+  IPermissionData,
   PermittedBy,
   UserDataCollection,
-} from 'api/phase_permissions/types';
+} from 'api/permissions/types';
 
 // The set of edits the panel can emit. A superset of `ActionForm`'s `Changes`,
 // extended with the composable `require_*` / `*_expiry` fields this design edits
@@ -34,15 +35,20 @@ export type Changes = {
   everyone_tracking_enabled?: boolean;
   user_data_collection?: UserDataCollection;
   user_fields_in_form?: boolean;
+  custom_fields_behavior?: CustomFieldsBehavior;
 };
 
 export type Props = {
   phaseId: string;
-  permissionData: IPhasePermissionData;
+  permissionData: IPermissionData;
   // Heading shown in the panel's collapse header (e.g. the action subtitle).
   title: ReactNode;
   // Whether the panel starts expanded. Defaults to closed.
   defaultOpen?: boolean;
   onChange: (changes: Changes) => Promise<void>;
-  onReset: () => void;
+  // Called when the admin opts the action out of the platform defaults, and
+  // when they put it back. Omitted where the distinction doesn't apply (the
+  // panel then behaves as it always has).
+  onOverride?: () => Promise<void>;
+  onRevertToDefaults?: () => Promise<void>;
 };

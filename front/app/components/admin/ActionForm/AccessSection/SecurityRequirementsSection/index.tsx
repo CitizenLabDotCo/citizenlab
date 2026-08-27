@@ -7,22 +7,23 @@ import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
-import { IPhasePermissionData } from 'api/phase_permissions/types';
+import { IPermissionData } from 'api/permissions/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { useVisibleToggles } from '../../logic';
+import { useVisibleSecurityRequirements } from '../../logic';
 import actionFormMessages from '../../messages';
 import { Changes } from '../../types';
 import { Expander } from '../../ui';
 
 import messages from './messages';
-import MethodRow from './MethodRow';
+import MethodRow from './MethodRows/MethodRow';
+import PasswordRow from './MethodRows/PasswordRow';
 
 interface Props {
-  permission: IPhasePermissionData;
+  permission: IPermissionData;
   onChange: (changes: Changes) => void;
 }
 
@@ -30,8 +31,9 @@ const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
   const { formatMessage } = useIntl();
   const { attributes } = permission;
 
+  const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
   const smsLoginEnabled = useFeatureFlag({ name: 'sms_login' });
-  const visibleToggles = useVisibleToggles();
+  const visibleToggles = useVisibleSecurityRequirements();
 
   if (!visibleToggles) return null;
 
@@ -39,12 +41,16 @@ const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
     email: showEmail,
     phone: showPhone,
     verification: showVerification,
+    password: showPassword,
   } = visibleToggles;
 
   // Only what is both offered here and actually switched on belongs in the
   // collapsed summary, in its short form — the full sentences below are too
   // long to line up on one row.
   const activeLabels: string[] = [];
+  if (showPassword && attributes.require_password) {
+    activeLabels.push(formatMessage(actionFormMessages.password));
+  }
   if (showEmail && attributes.require_confirmed_email) {
     activeLabels.push(formatMessage(actionFormMessages.confirmedEmail));
   }
@@ -55,7 +61,7 @@ const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
     activeLabels.push(formatMessage(actionFormMessages.verification));
   }
 
-  if (!showEmail && !showPhone && !showVerification) {
+  if (!showEmail && !showPhone && !showVerification && !showPassword) {
     return null;
   }
 
@@ -69,13 +75,24 @@ const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
             ? activeLabels.join(' · ')
             : formatMessage(messages.none)
         }
-        defaultOpen={activeLabels.length > 0}
+        defaultOpen={false}
       >
+        {showPassword && (
+          <PasswordRow
+            enabled={attributes.require_password}
+            onChange={(enabled) => onChange({ require_password: enabled })}
+          />
+        )}
+
         {showEmail && (
           <MethodRow
             icon="email"
             label={formatMessage(actionFormMessages.requireConfirmedEmail)}
-            description={formatMessage(messages.emailMethodDescription)}
+            description={formatMessage(
+              passwordLoginEnabled
+                ? messages.emailMethodDescriptionWithPasswordLogin
+                : messages.emailMethodDescription
+            )}
             enabled={attributes.require_confirmed_email}
             expiry={attributes.confirmed_email_expiry}
             verb="Re-confirm"

@@ -89,6 +89,16 @@ export default defineMessages({
     id: 'app.errors.no_invites_specified',
     defaultMessage: 'Could not find any email addresses.',
   },
+  unexpected_invite_error: {
+    id: 'app.errors.unexpected_invite_error',
+    defaultMessage:
+      'Something went wrong while processing your invitations. Check the "All invitations" tab before trying again.',
+  },
+  unexpected_seats_count_error: {
+    id: 'app.errors.unexpected_seats_count_error',
+    defaultMessage:
+      'Something went wrong while checking how many seats these invitations need. No invitations were sent. Please try again.',
+  },
   unknown_group: {
     id: 'app.errors.unknown_group',
     defaultMessage: 'The group {value} found in row {row} is not a known group',
@@ -400,6 +410,21 @@ export default defineMessages({
     id: 'app.errors.no_recipients',
     defaultMessage:
       "The campaign can't be sent out because there are no recipients. The group you're sending to is either empty, or nobody has consented to receiving emails.",
+  },
+  insufficient_sms_balance: {
+    id: 'app.errors.insufficient_sms_balance',
+    defaultMessage:
+      'There are not enough SMS credits left to send this message. To purchase more credits, contact your GovSuccess Manager.',
+  },
+  sms_not_configured: {
+    id: 'app.errors.sms_not_configured',
+    defaultMessage:
+      'Some of the SMS configuration is missing. Contact your GovSuccess Manager to have it completed.',
+  },
+  no_previewer_phone: {
+    id: 'app.errors.no_previewer_phone',
+    defaultMessage:
+      'A preview goes to your own phone. Add a phone number to your profile first.',
   },
   verification_taken: {
     id: 'app.errors.verification_taken',

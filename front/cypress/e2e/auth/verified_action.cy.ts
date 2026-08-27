@@ -37,6 +37,10 @@ describe.skip('Verified action', () => {
       .then((phase) => {
         phaseId = phase.body.data.id;
 
+        // The action follows the platform defaults until it is overridden, and
+        // the panel only offers its settings once it has been.
+        cy.apiOverridePhasePermission({ phaseId, action: 'posting_idea' });
+
         cy.intercept(`**/phases/${phaseId}/permissions/posting_idea`).as(
           'setPermissionRequest'
         );
@@ -66,8 +70,7 @@ describe.skip('Verified action', () => {
     cy.get('.e2e-idea-button').find('button').click({ force: true });
 
     cy.get('#e2e-verified-action-fake-sso-button').click();
-    cy.get('#e2e-terms-conditions-container .e2e-checkbox').click();
-    cy.get('#e2e-privacy-policy-container .e2e-checkbox').click();
+    cy.get('#e2e-policies-container .e2e-checkbox').click();
     cy.get('#e2e-policies-continue button').click();
 
     // Now we are on the fake-sso page

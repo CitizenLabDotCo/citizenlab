@@ -7,61 +7,30 @@ RSpec.describe EmailCampaigns::Sms::SendService do
   let(:phone) { '+14155552671' }
   let(:use_case) { EmailCampaigns::Sms::UseCase::MANUAL_CAMPAIGNS }
 
-  include_context 'with sms feature enabled'
+  include_context 'with sms manual campaigns feature enabled'
 
   before do
     allow(EmailCampaigns::Sms::Providers::Twilio).to receive(:new).and_return(provider)
   end
 
   describe '#provider' do
-    let(:blank_credentials) do
-      {
+    it 'uses the fake provider when test mode is enabled' do
+      SettingsService.new.activate_feature!('sms', settings: { 'use_test_mode' => true })
+      expect(EmailCampaigns::Sms::Providers::Fake).to receive(:new)
+      expect(EmailCampaigns::Sms::Providers::Twilio).not_to receive(:new)
+
+      described_class.new.send(:provider)
+    end
+
+    it 'uses the Twilio provider when test mode is off, even in development without credentials' do
+      allow(Rails.env).to receive(:development?).and_return(true)
+      SettingsService.new.activate_feature!('sms', settings: {
         'twilio_account_sid' => '',
         'twilio_auth_token' => '',
-        'twilio_manual_campaigns_messaging_service_sid' => '',
         'twilio_confirmation_codes_messaging_service_sid' => ''
-      }
-    end
-
-    it 'uses the fake provider in development when Twilio credentials are missing' do
-      allow(Rails.env).to receive(:development?).and_return(true)
-      SettingsService.new.activate_feature!('sms', settings: blank_credentials)
-      expect(EmailCampaigns::Sms::Providers::Fake).to receive(:new)
-
-      described_class.new.send(:provider)
-    end
-
-    it 'uses the Twilio provider in development when Twilio credentials are configured' do
-      allow(Rails.env).to receive(:development?).and_return(true)
+      })
       expect(EmailCampaigns::Sms::Providers::Twilio).to receive(:new)
       expect(EmailCampaigns::Sms::Providers::Fake).not_to receive(:new)
-
-      described_class.new.send(:provider)
-    end
-
-    it 'always uses the Twilio provider outside development, even without credentials' do
-      allow(Rails.env).to receive(:development?).and_return(false)
-      SettingsService.new.activate_feature!('sms', settings: blank_credentials)
-      expect(EmailCampaigns::Sms::Providers::Twilio).to receive(:new)
-      expect(EmailCampaigns::Sms::Providers::Fake).not_to receive(:new)
-
-      described_class.new.send(:provider)
-    end
-
-    it 'uses the fake provider when test mode is enabled, even outside development with credentials configured' do
-      allow(Rails.env).to receive(:development?).and_return(false)
-      SettingsService.new.activate_feature!('sms', settings: { 'use_test_mode' => true })
-      expect(EmailCampaigns::Sms::Providers::Fake).to receive(:new)
-      expect(EmailCampaigns::Sms::Providers::Twilio).not_to receive(:new)
-
-      described_class.new.send(:provider)
-    end
-
-    it 'uses the fake provider when test mode is enabled in development' do
-      allow(Rails.env).to receive(:development?).and_return(true)
-      SettingsService.new.activate_feature!('sms', settings: { 'use_test_mode' => true })
-      expect(EmailCampaigns::Sms::Providers::Fake).to receive(:new)
-      expect(EmailCampaigns::Sms::Providers::Twilio).not_to receive(:new)
 
       described_class.new.send(:provider)
     end
@@ -75,6 +44,12 @@ RSpec.describe EmailCampaigns::Sms::SendService do
       delivery = described_class.new.create_delivery(body: 'hi', campaign_id: campaign.id)
 
       expect(delivery).to have_attributes(status: 'pending', campaign_id: campaign.id)
+    end
+
+    it 'counts the segments before the message reaches the provider' do
+      delivery = described_class.new.create_delivery(body: 'a' * 161)
+
+      expect(delivery.segments_count).to eq(2)
     end
 
     it 'raises and creates nothing when the SMS feature is disabled' do
@@ -118,6 +93,26 @@ RSpec.describe EmailCampaigns::Sms::SendService do
 
       expect { described_class.new.deliver(delivery, to: 'not-a-phone', use_case: use_case) }
         .to raise_error(EmailCampaigns::Sms::Error, /Invalid phone number/)
+      expect(delivery.reload.status).to eq('errored')
+    end
+
+    it 'marks the delivery errored and re-raises when the Twilio account credentials are missing' do
+      allow(EmailCampaigns::Sms::Providers::Twilio).to receive(:new).and_call_original
+      SettingsService.new.activate_feature!('sms', settings: { 'twilio_auth_token' => '' })
+
+      expect { described_class.new.deliver(delivery, to: phone, use_case: use_case) }
+        .to raise_error(EmailCampaigns::Sms::Error, /Twilio is not configured.*missing auth token/)
+      expect(delivery.reload.status).to eq('errored')
+    end
+
+    it 'marks the delivery errored and re-raises when the messaging service is not configured' do
+      allow(EmailCampaigns::Sms::Providers::Twilio).to receive(:new).and_call_original
+      SettingsService.new.activate_feature!('sms_manual_campaigns', settings: {
+        'twilio_manual_campaigns_messaging_service_sid' => ''
+      })
+
+      expect { described_class.new.deliver(delivery, to: phone, use_case: use_case) }
+        .to raise_error(EmailCampaigns::Sms::Error, /Twilio is not configured.*messaging service SID/)
       expect(delivery.reload.status).to eq('errored')
     end
 

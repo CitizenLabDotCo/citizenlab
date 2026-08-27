@@ -34,6 +34,12 @@ describe('Submit community monitor survey', () => {
 
   beforeEach(() => {
     cy.setConsentAndAdminLoginCookies();
+    // The action follows the platform defaults until it is overridden, and the
+    // panel only offers its settings once it has been.
+    cy.apiOverridePhasePermission({
+      phaseId: communityMonitorPhaseId,
+      action: 'posting_idea',
+    });
     // Confirm access rights are set to Anyone for the community monitor
     cy.visit(`admin/community-monitor/settings/access-rights`);
     cy.get('.e2e-permission-anyone').should('be.visible');

@@ -1,17 +1,18 @@
 import React from 'react';
 
 import { IdMethodData } from 'api/id_methods/types';
-import { IPhasePermissionData } from 'api/phase_permissions/types';
+import { IPermissionData } from 'api/permissions/types';
 
-import { render, screen, userEvent } from 'utils/testUtils/rtl';
+import { render, screen, within, userEvent } from 'utils/testUtils/rtl';
 
 import SecurityRequirementsSection from '.';
 
-// What this section reacts to: whether SMS (and SMS login) is on, whether a
-// verification method is configured, and whether any sign-in method can leave a
-// participant without an email address.
+// What this section reacts to: whether SMS (and SMS login) is on, whether
+// password login is on, whether a verification method is configured, and
+// whether any sign-in method can leave a participant without an email address.
 let mockSmsEnabled = true;
 let mockSmsLoginEnabled = true;
+let mockPasswordLoginEnabled = true;
 let mockVerificationMethodConfigured = true;
 let mockIdMethods: IdMethodData[] = [];
 
@@ -19,6 +20,7 @@ jest.mock('hooks/useFeatureFlag', () =>
   jest.fn(({ name }: { name: string }) => {
     if (name === 'sms') return mockSmsEnabled;
     if (name === 'sms_login') return mockSmsLoginEnabled;
+    if (name === 'password_login') return mockPasswordLoginEnabled;
     return false;
   })
 );
@@ -35,16 +37,19 @@ jest.mock('api/id_methods/useIdMethods', () =>
   jest.fn(() => ({ data: { data: mockIdMethods } }))
 );
 
-const EMAIL_LABEL = 'Require confirmed email from all participants';
-const PHONE_LABEL = 'Require confirmed phone number from all participants';
-const VERIFICATION_LABEL =
-  'Require identity verification from all participants';
+const SECTION_TITLE = 'Security requirements';
+const EMAIL_LABEL = 'Require confirmed email from all users';
+const PHONE_LABEL = 'Require confirmed phone number from all users';
+const VERIFICATION_LABEL = 'Require identity verification from all users';
+const PASSWORD_LABEL = 'Require users to set a password';
 
 // The collapsed summary uses shortened versions of the row labels.
+const PASSWORD_SUMMARY = 'Password';
 const PHONE_SUMMARY = 'Confirmed phone';
 const VERIFICATION_SUMMARY = 'Verification';
 
-// An authentication method that may sign someone up without an email address.
+// An authentication method that may sign someone up without an email address -
+// which is also what makes the password only apply to some participants.
 const emaillessAuthMethod = {
   id: 'method-fake_sso',
   type: 'id_method',
@@ -57,15 +62,15 @@ const emaillessAuthMethod = {
 } as IdMethodData;
 
 const buildPermission = (
-  attributes: Partial<IPhasePermissionData['attributes']> = {}
-): IPhasePermissionData =>
+  attributes: Partial<IPermissionData['attributes']> = {}
+): IPermissionData =>
   ({
     id: 'perm-1',
     type: 'permission',
     attributes: {
       action: 'commenting_idea',
       permitted_by: 'users',
-      global_custom_fields: false,
+      custom_fields_behavior: 'global',
       verification_expiry: null,
       access_denied_explanation_multiloc: {},
       everyone_tracking_enabled: false,
@@ -84,10 +89,10 @@ const buildPermission = (
       permission_scope: { data: { id: 'ph-1', type: 'phase' } },
       groups: { data: [] },
     },
-  } as IPhasePermissionData);
+  } as IPermissionData);
 
 const renderSection = (
-  attributes?: Partial<IPhasePermissionData['attributes']>,
+  attributes?: Partial<IPermissionData['attributes']>,
   onChange = jest.fn()
 ) => {
   render(
@@ -99,55 +104,68 @@ const renderSection = (
   return onChange;
 };
 
+// The section always starts collapsed, so anything below the header has to be
+// revealed first.
+const openSection = () => userEvent.click(screen.getByText(SECTION_TITLE));
+
 beforeEach(() => {
   mockSmsEnabled = true;
   mockSmsLoginEnabled = true;
+  mockPasswordLoginEnabled = true;
   mockVerificationMethodConfigured = true;
   mockIdMethods = [];
 });
 
 describe('<SecurityRequirementsSection />', () => {
   describe('open / collapsed state', () => {
-    it('starts open when a check is already required', () => {
+    it('starts collapsed even when a check is already required', () => {
       renderSection();
-      expect(screen.getByText(EMAIL_LABEL)).toBeInTheDocument();
+      expect(screen.queryByText(EMAIL_LABEL)).not.toBeInTheDocument();
     });
 
-    it('starts collapsed with a "None" summary when nothing is required', () => {
-      renderSection({ require_confirmed_email: false });
+    it('summarises "None" when nothing is required', () => {
+      renderSection({
+        require_confirmed_email: false,
+        require_password: false,
+      });
 
-      expect(screen.queryByText(EMAIL_LABEL)).not.toBeInTheDocument();
       expect(screen.getByText('None')).toBeInTheDocument();
     });
 
     it('can be expanded from collapsed', async () => {
-      renderSection({ require_confirmed_email: false });
+      renderSection({
+        require_confirmed_email: false,
+        require_password: false,
+      });
 
-      await userEvent.click(screen.getByText('Security requirements'));
+      await openSection();
 
       expect(screen.getByText(EMAIL_LABEL)).toBeInTheDocument();
     });
 
-    it('summarises every required check', async () => {
+    it('summarises every required check', () => {
       renderSection({
         require_confirmed_email: false,
         require_confirmed_phone_number: true,
         require_verification: true,
       });
 
-      // Two active checks means it starts open - the summary only shows once
-      // the section is collapsed again.
-      await userEvent.click(screen.getByText('Security requirements'));
-
       expect(
-        screen.getByText(`${PHONE_SUMMARY} · ${VERIFICATION_SUMMARY}`)
+        screen.getByText(
+          `${PASSWORD_SUMMARY} · ${PHONE_SUMMARY} · ${VERIFICATION_SUMMARY}`
+        )
       ).toBeInTheDocument();
     });
 
-    it('does not count an unavailable check as a reason to open', () => {
+    it('leaves an unavailable check out of the summary', () => {
+      // Both required checks are unavailable here: no verification method is
+      // configured, and password login is off. Only the checks the platform
+      // still offers (email, phone) keep the section on screen.
       mockVerificationMethodConfigured = false;
+      mockPasswordLoginEnabled = false;
       renderSection({
         require_confirmed_email: false,
+        require_confirmed_phone_number: false,
         require_verification: true,
       });
 
@@ -156,78 +174,135 @@ describe('<SecurityRequirementsSection />', () => {
   });
 
   describe('which checks are offered', () => {
-    it('shows all three rows with their descriptions', () => {
+    it('shows all four rows with their descriptions', async () => {
       renderSection();
+      await openSection();
 
+      expect(screen.getByText(PASSWORD_LABEL)).toBeInTheDocument();
       expect(screen.getByText(EMAIL_LABEL)).toBeInTheDocument();
       expect(screen.getByText(PHONE_LABEL)).toBeInTheDocument();
       expect(screen.getByText(VERIFICATION_LABEL)).toBeInTheDocument();
       expect(
         screen.getByText(
-          'If enabled, all users need to confirm their email. If disabled, only participants who sign up by email need to confirm their email.'
+          'If enabled, all users need to confirm their email. If disabled, only users who sign up by email need to confirm their email.'
         )
       ).toBeInTheDocument();
     });
 
-    it('hides the phone and email rows when SMS is off', () => {
+    it('hides the phone and email rows when SMS is off', async () => {
       // Without SMS nobody can sign up by phone, so neither the phone check nor
       // the (then unconditional) email confirmation is configurable.
       mockSmsEnabled = false;
-      // require_verification keeps the section open so the rows are rendered.
-      renderSection({ require_verification: true });
+      renderSection();
+      await openSection();
 
       expect(screen.queryByText(PHONE_LABEL)).not.toBeInTheDocument();
       expect(screen.queryByText(EMAIL_LABEL)).not.toBeInTheDocument();
       expect(screen.getByText(VERIFICATION_LABEL)).toBeInTheDocument();
     });
 
-    it('hides the email row when SMS login is off', () => {
+    it('hides the email row when SMS login is off', async () => {
       mockSmsLoginEnabled = false;
       renderSection({ require_confirmed_phone_number: true });
+      await openSection();
 
       expect(screen.queryByText(EMAIL_LABEL)).not.toBeInTheDocument();
       expect(screen.getByText(PHONE_LABEL)).toBeInTheDocument();
     });
 
-    it('offers the email row when a sign-in method may not return an email', () => {
+    it('offers the email row when a sign-in method may not return an email', async () => {
       mockSmsEnabled = false;
       mockIdMethods = [emaillessAuthMethod];
       renderSection();
+      await openSection();
 
       expect(screen.getByText(EMAIL_LABEL)).toBeInTheDocument();
     });
 
-    it('drops the conditional wording on the phone row when SMS login is off', () => {
+    it('drops the conditional wording on the phone row when SMS login is off', async () => {
       mockSmsLoginEnabled = false;
       renderSection({ require_confirmed_phone_number: true });
+      await openSection();
 
       expect(
-        screen.getByText('Participant must have a confirmed phone number.')
+        screen.getByText('Users must have a confirmed phone number.')
       ).toBeInTheDocument();
     });
 
-    it('hides the verification row when no method is configured', () => {
+    it('hides the verification row when no method is configured', async () => {
       mockVerificationMethodConfigured = false;
       renderSection();
+      await openSection();
 
       expect(screen.queryByText(VERIFICATION_LABEL)).not.toBeInTheDocument();
       expect(screen.getByText(EMAIL_LABEL)).toBeInTheDocument();
     });
 
+    it('hides the password row when password login is off, but keeps the phone one', async () => {
+      // Re-confirming a phone number goes through reconfirm_code_phone, which
+      // is not gated by password_login, so an SSO-only platform can still
+      // require a confirmed phone number.
+      mockPasswordLoginEnabled = false;
+      renderSection();
+      await openSection();
+
+      expect(screen.queryByText(PASSWORD_LABEL)).not.toBeInTheDocument();
+      expect(screen.getByText(PHONE_LABEL)).toBeInTheDocument();
+      expect(screen.getByText(EMAIL_LABEL)).toBeInTheDocument();
+    });
+
     it('renders nothing when no check is available at all', () => {
       mockSmsEnabled = false;
+      mockPasswordLoginEnabled = false;
       mockVerificationMethodConfigured = false;
       renderSection();
 
+      expect(screen.queryByText(SECTION_TITLE)).not.toBeInTheDocument();
+    });
+  });
+
+  describe('the password row', () => {
+    it('explains that a password only applies to email sign-ups when SSO is on', async () => {
+      mockIdMethods = [emaillessAuthMethod];
+      renderSection();
+      await openSection();
+
+      const passwordRow = screen.getByText(PASSWORD_LABEL).parentElement!;
+      await userEvent.hover(
+        within(passwordRow).getByTestId('tooltip-icon-button')
+      );
+
       expect(
-        screen.queryByText('Security requirements')
+        await screen.findByText(
+          /only requested from users who sign up with email/i
+        )
+      ).toBeInTheDocument();
+    });
+
+    it('does not explain anything when there is no SSO method', async () => {
+      renderSection();
+      await openSection();
+
+      const passwordRow = screen.getByText(PASSWORD_LABEL).parentElement!;
+      expect(
+        within(passwordRow).queryByTestId('tooltip-icon-button')
       ).not.toBeInTheDocument();
+    });
+
+    it('emits the password requirement when toggled', async () => {
+      const onChange = renderSection();
+      await openSection();
+
+      await userEvent.click(screen.getByText(PASSWORD_LABEL));
+
+      expect(onChange).toHaveBeenCalledWith({ require_password: false });
     });
   });
 
   describe('editing', () => {
     it('emits the enabled flag and expiry when a check is toggled', async () => {
       const onChange = renderSection();
+      await openSection();
 
       await userEvent.click(screen.getByText(VERIFICATION_LABEL));
 

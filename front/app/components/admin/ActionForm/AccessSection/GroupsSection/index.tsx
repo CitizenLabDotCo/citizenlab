@@ -9,7 +9,7 @@ import {
 import { Multiloc } from 'typings';
 
 import useGroups from 'api/groups/useGroups';
-import { IPhasePermissionData } from 'api/phase_permissions/types';
+import { IPermissionData } from 'api/permissions/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -26,7 +26,7 @@ import ErrorMessageModal from './ErrorMessageModal';
 import messages from './messages';
 
 interface Props {
-  permission: IPhasePermissionData;
+  permission: IPermissionData;
   onChange: (changes: Changes) => void;
 }
 

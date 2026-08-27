@@ -1,41 +1,13 @@
 import React from 'react';
 
-import { IdMethodData } from 'api/id_methods/types';
-import { IPhasePermissionData } from 'api/phase_permissions/types';
+import { IPermissionData } from 'api/permissions/types';
 
-import { render, screen, within, userEvent } from 'utils/testUtils/rtl';
+import { render, screen, userEvent } from 'utils/testUtils/rtl';
 
 import DataSection from '.';
 
-const buildIdMethod = (name: string, authentication: boolean): IdMethodData =>
-  ({
-    id: `method-${name}`,
-    type: 'id_method',
-    attributes: {
-      name,
-      authentication_method: authentication,
-      verification_method: !authentication,
-      method_metadata: { name },
-    },
-  } as IdMethodData);
-
-// PersonalInfoSection (rendered for account permissions) reads these two hooks:
-// password login toggles whether the password row exists at all, and the id
-// methods drive the "only asked to email sign-ups" tooltip.
-let mockPasswordLoginEnabled = true;
-let mockIdMethods: IdMethodData[] = [buildIdMethod('acm', true)];
-// DataSection itself only shows the anonymity section for native survey posting.
+// DataSection only shows the anonymity section for native survey posting.
 let mockParticipationMethod = 'ideation';
-
-jest.mock('hooks/useFeatureFlag', () =>
-  jest.fn(({ name }: { name: string }) =>
-    name === 'password_login' ? mockPasswordLoginEnabled : false
-  )
-);
-
-jest.mock('api/id_methods/useIdMethods', () =>
-  jest.fn(() => ({ data: { data: mockIdMethods } }))
-);
 
 jest.mock('api/phases/usePhase', () =>
   jest.fn(() => ({
@@ -56,15 +28,15 @@ jest.mock(
 );
 
 const buildPermission = (
-  attributes: Partial<IPhasePermissionData['attributes']> = {}
-): IPhasePermissionData =>
+  attributes: Partial<IPermissionData['attributes']> = {}
+): IPermissionData =>
   ({
     id: 'perm-1',
     type: 'permission',
     attributes: {
       action: 'commenting_idea',
       permitted_by: 'users',
-      global_custom_fields: false,
+      custom_fields_behavior: 'global',
       verification_expiry: null,
       access_denied_explanation_multiloc: {},
       everyone_tracking_enabled: false,
@@ -81,11 +53,9 @@ const buildPermission = (
       permission_scope: { data: { id: 'ph-1', type: 'phase' } },
       groups: { data: [] },
     },
-  } as IPhasePermissionData);
+  } as IPermissionData);
 
-const renderSection = (
-  attributes?: Partial<IPhasePermissionData['attributes']>
-) =>
+const renderSection = (attributes?: Partial<IPermissionData['attributes']>) =>
   render(
     <DataSection
       permission={buildPermission(attributes)}
@@ -99,8 +69,6 @@ const openPersonalInfo = async () =>
   userEvent.click(screen.getByText('Personal info'));
 
 beforeEach(() => {
-  mockPasswordLoginEnabled = true;
-  mockIdMethods = [buildIdMethod('acm', true)];
   mockParticipationMethod = 'ideation';
 });
 
@@ -117,7 +85,6 @@ describe('<DataSection />', () => {
 
       await openPersonalInfo();
       expect(screen.getByText('Full name')).toBeInTheDocument();
-      expect(screen.getByText('Password')).toBeInTheDocument();
     });
 
     it('is hidden when no account is required (permitted_by: everyone)', () => {
@@ -125,53 +92,10 @@ describe('<DataSection />', () => {
       expect(screen.queryByText('Personal info')).not.toBeInTheDocument();
     });
 
-    it('hides the password toggle when password login is disabled', async () => {
-      mockPasswordLoginEnabled = false;
-      renderSection();
+    it('summarises the name requirement while collapsed', () => {
+      renderSection({ require_name: true });
 
-      await openPersonalInfo();
-      expect(screen.getByText('Full name')).toBeInTheDocument();
-      expect(screen.queryByText('Password')).not.toBeInTheDocument();
-    });
-
-    it('excludes Password from the collapsed summary when password login is disabled', () => {
-      // require_password is still true, but the password toggle is not shown
-      // when password login is off - so the summary must not mention Password
-      // either (otherwise it advertises a field that can never be collected).
-      mockPasswordLoginEnabled = false;
-      renderSection({ require_name: true, require_password: true });
-
-      // The expander is collapsed, so its one-line summary is visible.
-      expect(screen.queryByText(/Password/)).not.toBeInTheDocument();
       expect(screen.getByText('Name')).toBeInTheDocument();
-    });
-
-    it('shows the "only asked to email sign-ups" tooltip when an SSO method is enabled', async () => {
-      renderSection();
-      await openPersonalInfo();
-
-      const passwordRow = screen.getByText('Password').parentElement!;
-      const tooltip = within(passwordRow).getByTestId('tooltip-icon-button');
-      await userEvent.hover(tooltip);
-
-      expect(
-        await screen.findByText(
-          /only requested from users who sign up with email/i
-        )
-      ).toBeInTheDocument();
-    });
-
-    it('does not show the password tooltip when there is no SSO method', async () => {
-      // Verification-only methods are not a way to sign up, so they must not
-      // trigger the tooltip either.
-      mockIdMethods = [buildIdMethod('acm', false)];
-      renderSection();
-      await openPersonalInfo();
-
-      const passwordRow = screen.getByText('Password').parentElement!;
-      expect(
-        within(passwordRow).queryByTestId('tooltip-icon-button')
-      ).not.toBeInTheDocument();
     });
   });
 
