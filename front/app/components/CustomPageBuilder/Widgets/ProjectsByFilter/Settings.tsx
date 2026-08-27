@@ -40,6 +40,8 @@ const Settings = () => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
+  // The whole widget is the paid capability, so with it off nothing here is worth offering.
+  const unavailable = !useFeatureFlag({ name: 'advanced_custom_pages' });
 
   const { data: topics } = useGlobalTopics();
   const { data: areas } = useAreas({});
@@ -78,7 +80,9 @@ const Settings = () => {
       gap="16px"
     >
       <Text m="0px" color="textSecondary">
-        {formatMessage(messages.description2)}
+        {formatMessage(
+          unavailable ? messages.notAvailable : messages.description2
+        )}
       </Text>
       <InputMultilocWithLocaleSwitcher
         id="projects-by-filter-title"
@@ -92,32 +96,36 @@ const Settings = () => {
           });
         }}
       />
-      <Select
-        value={filterType}
-        options={filterTypeOptions}
-        label={formatMessage(messages.filterByLabel)}
-        onChange={(option) => {
-          setProp((props: ProjectsByFilterProps) => {
-            props.filterType = option.value;
-            // Ids only mean something within their own dimension.
-            props.ids = [];
-          });
-        }}
-      />
-      {/* Only the selector waits on its entity list; the rest of the panel stays usable. */}
-      {options ? (
-        <MultipleSelect
-          value={options.filter((option) => ids.includes(option.value))}
-          options={options}
-          label={formatMessage(messages.selectionLabel)}
-          onChange={(selected) => {
-            setProp((props: ProjectsByFilterProps) => {
-              props.ids = selected.map((option) => option.value);
-            });
-          }}
-        />
-      ) : (
-        <Spinner />
+      {!unavailable && (
+        <>
+          <Select
+            value={filterType}
+            options={filterTypeOptions}
+            label={formatMessage(messages.filterByLabel)}
+            onChange={(option) => {
+              setProp((props: ProjectsByFilterProps) => {
+                props.filterType = option.value;
+                // Ids only mean something within their own dimension.
+                props.ids = [];
+              });
+            }}
+          />
+          {/* Only the selector waits on its entity list; the rest of the panel stays usable. */}
+          {options ? (
+            <MultipleSelect
+              value={options.filter((option) => ids.includes(option.value))}
+              options={options}
+              label={formatMessage(messages.selectionLabel)}
+              onChange={(selected) => {
+                setProp((props: ProjectsByFilterProps) => {
+                  props.ids = selected.map((option) => option.value);
+                });
+              }}
+            />
+          ) : (
+            <Spinner />
+          )}
+        </>
       )}
     </Box>
   );

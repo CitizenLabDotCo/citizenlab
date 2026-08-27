@@ -5,8 +5,13 @@ export default defineMessages({
     id: 'app.components.CustomPageBuilder.Widgets.EventsByProjects.events',
     defaultMessage: 'Events',
   },
-  description2: {
-    id: 'app.components.CustomPageBuilder.Widgets.EventsByProjects.description2',
+  descriptionAll: {
+    id: 'app.components.CustomPageBuilder.Widgets.EventsByProjects.descriptionAll',
+    defaultMessage:
+      'Shows the next three upcoming events from every published project. Past events are never shown.',
+  },
+  descriptionFiltered: {
+    id: 'app.components.CustomPageBuilder.Widgets.EventsByProjects.descriptionFiltered',
     defaultMessage:
       'Shows the next three upcoming events from the published projects you pick below. Past events are never shown.',
   },

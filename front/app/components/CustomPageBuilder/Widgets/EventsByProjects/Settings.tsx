@@ -78,6 +78,10 @@ const Settings = () => {
     return mode !== 'spaces' || spacesEnabled;
   };
 
+  // A stored filtered mode outlives the feature it needed, so the panel has to explain
+  // itself rather than offer controls that change nothing.
+  const filteringUnavailable = !advancedCustomPagesEnabled && mode !== 'all';
+
   const modeOptions = MODES.filter(isAvailable).map((mode) => ({
     value: mode,
     label: modeLabels[mode],
@@ -105,7 +109,13 @@ const Settings = () => {
       gap="16px"
     >
       <Text m="0px" color="textSecondary">
-        {formatMessage(messages.description2)}
+        {formatMessage(
+          filteringUnavailable
+            ? messages.notAvailable
+            : mode === 'all'
+            ? messages.descriptionAll
+            : messages.descriptionFiltered
+        )}
       </Text>
       <InputMultilocWithLocaleSwitcher
         id="events-by-projects-title"
@@ -122,20 +132,25 @@ const Settings = () => {
           });
         }}
       />
-      <Select
-        value={mode}
-        options={modeOptions}
-        label={formatMessage(messages.modeLabel)}
-        onChange={(option) => {
-          setProp((props: EventsByProjectsProps) => {
-            props.mode = option.value;
-            // Ids only mean something within their own dimension.
-            props.ids = [];
-          });
-        }}
-      />
+      {/* Without advanced_custom_pages only 'all' is on offer, and a one-option dropdown
+          reads as broken. */}
+      {modeOptions.length > 1 && (
+        <Select
+          value={mode}
+          options={modeOptions}
+          label={formatMessage(messages.modeLabel)}
+          onChange={(option) => {
+            setProp((props: EventsByProjectsProps) => {
+              props.mode = option.value;
+              // Ids only mean something within their own dimension.
+              props.ids = [];
+            });
+          }}
+        />
+      )}
       {/* Only the selector waits on its entity list; the rest of the panel stays usable. */}
       {mode !== 'all' &&
+        !filteringUnavailable &&
         (options ? (
           <MultipleSelect
             value={options.filter((option) => ids.includes(option.value))}

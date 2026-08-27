@@ -15,8 +15,11 @@ jest.mock('@craftjs/core', () => ({
   }),
 }));
 
-let spacesEnabled = true;
-jest.mock('hooks/useFeatureFlag', () => jest.fn(() => spacesEnabled));
+let flags: Record<string, boolean> = {};
+jest.mock('hooks/useFeatureFlag', () => ({
+  __esModule: true,
+  default: ({ name }: { name: string }) => flags[name],
+}));
 
 const list = (...entities: [string, string][]) => ({
   data: entities.map(([id, title]) => ({
@@ -42,7 +45,7 @@ jest.mock('api/spaces/useSpaces', () => ({
 describe('ProjectsByFilter Settings', () => {
   beforeEach(() => {
     props = {};
-    spacesEnabled = true;
+    flags = { spaces: true, advanced_custom_pages: true };
     areas = list(['area-1', 'North'], ['area-2', 'South']);
     setProp.mockClear();
   });
@@ -63,7 +66,7 @@ describe('ProjectsByFilter Settings', () => {
   });
 
   it('hides the spaces dimension when its feature is off', () => {
-    spacesEnabled = false;
+    flags.spaces = false;
 
     render(<Settings />);
 
@@ -90,6 +93,17 @@ describe('ProjectsByFilter Settings', () => {
     render(<Settings />);
 
     expect(screen.getByTestId('select')).toBeInTheDocument();
+    expect(screen.getByText('Title')).toBeInTheDocument();
+  });
+
+  // The widget renders nothing without the feature, so controls here would change nothing.
+  it('drops the dimension and selection pickers without advanced_custom_pages', () => {
+    flags.advanced_custom_pages = false;
+
+    render(<Settings />);
+
+    expect(screen.queryByTestId('select')).not.toBeInTheDocument();
+    expect(screen.queryByText('Selection')).not.toBeInTheDocument();
     expect(screen.getByText('Title')).toBeInTheDocument();
   });
 });

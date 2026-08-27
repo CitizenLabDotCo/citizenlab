@@ -72,14 +72,6 @@ describe('EventsByProjects Settings', () => {
     ]);
   });
 
-  it('offers only every project without advanced_custom_pages', () => {
-    flags.advanced_custom_pages = false;
-
-    render(<Settings />);
-
-    expect(modes()).toEqual(['Every project']);
-  });
-
   it('hides the spaces mode when its feature is off', () => {
     flags.spaces = false;
 
@@ -111,5 +103,37 @@ describe('EventsByProjects Settings', () => {
     render(<Settings />);
 
     expect(screen.getByText('Selection')).toBeInTheDocument();
+  });
+
+  // A one-option dropdown reads as broken, and the copy must not promise a picker.
+  it('drops the mode dropdown and the picker copy without advanced_custom_pages', () => {
+    flags.advanced_custom_pages = false;
+
+    render(<Settings />);
+
+    expect(screen.queryByTestId('select')).not.toBeInTheDocument();
+    expect(
+      screen.getByText(/from every published project/i)
+    ).toBeInTheDocument();
+  });
+
+  it('describes the picker once a filtered mode is available', () => {
+    props = { mode: 'areas', ids: [] };
+
+    render(<Settings />);
+
+    expect(screen.getByText(/you pick below/i)).toBeInTheDocument();
+  });
+
+  // A filtered mode outlives the feature it needed; the leftover picker would change nothing.
+  it('drops the picker for a stored filtered mode once the feature is off', () => {
+    props = { mode: 'areas', ids: ['area-1'] };
+    flags.advanced_custom_pages = false;
+
+    render(<Settings />);
+
+    expect(screen.queryByText('Selection')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('select')).not.toBeInTheDocument();
+    expect(screen.queryByText(/you pick below/i)).not.toBeInTheDocument();
   });
 });
