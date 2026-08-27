@@ -10989,6 +10989,11 @@
     "verified_at": "2026-07-16T09:49:20.055315Z",
     "verified_by": "eva@govocal.com"
   },
+  "app.containers.PhoneConfirmation.sendNewCodeIn": {
+    "state": "verified",
+    "verified_at": "2026-08-27T07:22:54.523055Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.PhoneConfirmation.verifyAndContinue": {
     "state": "verified",
     "verified_at": "2026-07-16T09:49:20.055315Z",
