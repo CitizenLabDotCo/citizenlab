@@ -143,9 +143,6 @@ describe('Project description builder display', () => {
       .contains('example.pdf')
       .should('be.visible');
 
-    // And in the builder's preview. The widget resolves its file through the layout's own
-    // attachments, so the preview has to put the layout in context — front office alone does
-    // not cover it.
     cy.visit(`/admin/project-page-builder/projects/${projectId}`);
     cy.get('div#ROOT');
     cy.get('#e2e-preview-toggle').click({ force: true });
