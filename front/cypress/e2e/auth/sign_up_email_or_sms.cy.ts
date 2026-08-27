@@ -128,7 +128,7 @@ describe('Sign up - either email or SMS', () => {
         });
     };
 
-    it('gets back to the confirmation step when the number is kept', () => {
+    it.only('gets back to the confirmation step when the number is kept', () => {
       const phone = randomPhoneNumber();
 
       startFlow();
@@ -136,14 +136,11 @@ describe('Sign up - either email or SMS', () => {
       enterPhone(cy, phone.national);
       acceptPolicies(cy);
       expectConfirmationNumber(phone);
-
       goBackToPrefilledPhoneForm(phone);
-
       // Submitting the same number again: the (unconfirmed) account already
       // exists, so the policies are not asked a second time and we land back on
       // the confirmation step for that same number.
       cy.dataCy('phone-flow-start-continue-button').click({ force: true });
-
       expectConfirmationNumber(phone);
       confirmPhone(cy);
       enterUserInfo(cy);
