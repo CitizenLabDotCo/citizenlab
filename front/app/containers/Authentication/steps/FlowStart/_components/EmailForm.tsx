@@ -7,42 +7,46 @@ import { string, object } from 'yup';
 
 import { SetError } from 'containers/Authentication/typings';
 
-import PhoneInput from 'components/HookForm/PhoneInput';
-import isValidPhoneNumber from 'components/HookForm/PhoneInput/isValidPhoneNumber';
+import Input from 'components/HookForm/Input';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
-import { FormLabel } from 'components/UI/FormComponents';
 
-import { useIntl } from 'utils/cl-intl';
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import {
   isCLErrorsWrapper,
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
+import { isValidEmail } from 'utils/validate';
 
-import sharedMessages from '../messages';
-import phoneMessages from '../Phone/messages';
+import sharedMessages from '../../messages';
 
 interface FormValues {
-  phone: string;
+  email: string;
 }
+
+const DEFAULT_VALUES: Partial<FormValues> = {
+  email: undefined,
+};
 
 interface Props {
   loading: boolean;
+  topText: MessageDescriptor;
   setError: SetError;
-  onSubmit: (phone: string) => void;
+  onSubmit: (email: string) => void;
 }
 
-const PhoneForm = ({ loading, setError, onSubmit }: Props) => {
+const EmailForm = ({ loading, topText, setError, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
 
   const schema = useMemo(
     () =>
       object({
-        phone: string()
-          .required(formatMessage(phoneMessages.phoneNumberMissingError))
+        email: string()
+          .email(formatMessage(sharedMessages.emailFormatError))
+          .required(formatMessage(sharedMessages.emailMissingError))
           .test(
-            'is-valid-phone',
-            formatMessage(phoneMessages.phoneNumberFormatError),
-            (value) => (value ? isValidPhoneNumber(value) : false)
+            '',
+            formatMessage(sharedMessages.emailFormatError),
+            isValidEmail
           ),
       }),
     [formatMessage]
@@ -50,14 +54,14 @@ const PhoneForm = ({ loading, setError, onSubmit }: Props) => {
 
   const methods = useForm<FormValues>({
     mode: 'onSubmit',
-    defaultValues: { phone: '' },
+    defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),
     shouldFocusError: true,
   });
 
-  const handleSubmit = async ({ phone }: FormValues) => {
+  const handleSubmit = async ({ email }: FormValues) => {
     try {
-      await onSubmit(phone);
+      await onSubmit(email);
     } catch (e) {
       if (isCLErrorsWrapper(e)) {
         handleHookFormSubmissionError(e, methods.setError);
@@ -72,19 +76,20 @@ const PhoneForm = ({ loading, setError, onSubmit }: Props) => {
     <FormProvider {...methods}>
       <form noValidate onSubmit={methods.handleSubmit(handleSubmit)}>
         <Text mt="0px" mb="32px" color="tenantText">
-          {formatMessage(phoneMessages.enterYourPhoneNumber)}
+          {formatMessage(topText)}
         </Text>
-        <Box data-cy="phone-flow-start-phone-input">
-          <FormLabel
-            labelMessage={phoneMessages.phoneNumber}
-            htmlFor="phone"
-            width="max-content"
+        <Box data-cy="email-flow-start-email-input">
+          <Input
+            name="email"
+            type="email"
+            autocomplete="email"
+            label={formatMessage(sharedMessages.email)}
+            required
           />
-          <PhoneInput name="phone" />
         </Box>
         <Box w="100%" display="flex" mt="32px">
           <ButtonWithLink
-            dataCy="phone-flow-start-continue-button"
+            dataCy="email-flow-start-continue-button"
             type="submit"
             width="100%"
             disabled={loading}
@@ -98,4 +103,4 @@ const PhoneForm = ({ loading, setError, onSubmit }: Props) => {
   );
 };
 
-export default PhoneForm;
+export default EmailForm;

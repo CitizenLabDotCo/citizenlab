@@ -16,12 +16,12 @@ import { useIntl } from 'utils/cl-intl';
 
 import sharedMessages from '../messages';
 
-import AdminSignInLink from './AdminSignInLink';
-import FranceConnectBlock from './FranceConnectBlock';
+import AdminSignInLink from './_components/AdminSignInLink';
+import FranceConnectBlock from './_components/FranceConnectBlock';
 import messages from './messages';
-import SSOButton from './SSOButtonsExceptFC/SSOButton';
-import StartForm from './StartForm';
-import VerificationWarning from './VerificationWarning';
+import SSOButton from './_components/SSOButtonsExceptFC/SSOButton';
+import StartForm from './_components/StartForm';
+import VerificationWarning from './_components/VerificationWarning';
 
 interface Props {
   loading: boolean;

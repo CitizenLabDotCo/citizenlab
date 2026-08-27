@@ -8,10 +8,10 @@ import { SetError } from 'containers/Authentication/typings';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
-import TextButton from '../_components/TextButton';
+import TextButton from '../../_components/TextButton';
+import messages from '../messages';
 
 import EmailForm from './EmailForm';
-import messages from './messages';
 import PhoneForm from './PhoneForm';
 
 interface Props {

@@ -14,10 +14,10 @@ import Or from 'components/UI/Or';
 
 import sharedMessages from '../messages';
 
-import AdminSignInLink from './AdminSignInLink';
-import FranceConnectBlock from './FranceConnectBlock';
-import SSOButtonsExceptFC from './SSOButtonsExceptFC';
-import StartForm from './StartForm';
+import AdminSignInLink from './_components/AdminSignInLink';
+import FranceConnectBlock from './_components/FranceConnectBlock';
+import SSOButtonsExceptFC from './_components/SSOButtonsExceptFC';
+import StartForm from './_components/StartForm';
 
 interface Props {
   loading: boolean;

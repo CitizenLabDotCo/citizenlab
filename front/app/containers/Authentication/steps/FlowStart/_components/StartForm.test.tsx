@@ -4,7 +4,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
 
-import sharedMessages from '../messages';
+import sharedMessages from '../../messages';
 
 import StartForm from './StartForm';
 
