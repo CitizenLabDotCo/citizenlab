@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, colors, Spinner } from '@citizenlab/cl2-component-library';
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
 
 import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
@@ -29,13 +29,9 @@ const CustomPageContentViewer = ({ staticPageId }: Props) => {
   if (!hasContent) return null;
 
   return (
-    // The page container is grey and each legacy section paints white over it, so the
-    // builder content has to do the same.
-    <Box
-      data-testid="customPageContentViewer"
-      background={colors.white}
-      py="50px"
-    >
+    // Matches the vertical breathing room the legacy sections had. The white behind it is the
+    // page's own, set by CustomPageShow when builder content renders.
+    <Box data-testid="customPageContentViewer" py="50px">
       <ContentBuilderLayoutProvider layoutId={layoutId}>
         <Editor isPreview={true}>
           <ContentBuilderFrame
