@@ -15,9 +15,6 @@ type Props = Override<
   }
 >;
 
-// Keep this at module scope. A cell component built inside IdeaRow's render is
-// a new component type on every render, so React drops the cell and mounts it
-// again — taking the open assignee dropdown with it.
 const AssigneeCell = ({ idea, onChange }: Props) => (
   <AssigneeSelect
     onAssigneeChange={onChange(idea)}

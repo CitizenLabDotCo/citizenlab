@@ -270,8 +270,6 @@ describe('Input manager', () => {
       selectAssigneeFilter(optionLabelText1);
       checkSelectedAssigneeFilter(optionLabelText1);
 
-      // Assign the idea the response puts first, so the row is addressed by id
-      // rather than by whatever happens to be on top mid-refresh.
       cy.wait('@unassignedIdeas')
         .its('response.body.data')
         .then((ideas: { id: string }[]) => {
@@ -279,8 +277,7 @@ describe('Input manager', () => {
             .find('#post-row-select-assignee')
             .select(optionLabelText2);
         });
-      // A value set on a select React has dropped never reaches its handler, so
-      // the request is what proves the assignment happened.
+
       cy.wait('@assignIdea').its('response.statusCode').should('eq', 200);
 
       // Select this user in the assignee filter
