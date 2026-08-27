@@ -5,10 +5,10 @@ export default defineMessages({
     id: 'app.components.CustomPageBuilder.Widgets.EventsByProjects.events',
     defaultMessage: 'Events',
   },
-  description: {
-    id: 'app.components.CustomPageBuilder.Widgets.EventsByProjects.description',
+  description2: {
+    id: 'app.components.CustomPageBuilder.Widgets.EventsByProjects.description2',
     defaultMessage:
-      'Shows the next three upcoming events from the projects you pick below. Past events are never shown.',
+      'Shows the next three upcoming events from the published projects you pick below. Past events are never shown.',
   },
   titleLabel: {
     id: 'app.components.CustomPageBuilder.Widgets.EventsByProjects.titleLabel',

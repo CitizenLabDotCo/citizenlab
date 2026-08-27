@@ -54,8 +54,10 @@ const Settings = () => {
     name: 'advanced_custom_pages',
   });
 
+  // EventsWidget only ever asks for published projects' events, so an archived one would be
+  // selectable and then show nothing.
   const { data: projects } = useProjects({
-    publicationStatuses: ['published', 'archived'],
+    publicationStatuses: ['published'],
   });
   const { data: topics } = useGlobalTopics();
   const { data: areas } = useAreas({});
@@ -103,7 +105,7 @@ const Settings = () => {
       gap="16px"
     >
       <Text m="0px" color="textSecondary">
-        {formatMessage(messages.description)}
+        {formatMessage(messages.description2)}
       </Text>
       <InputMultilocWithLocaleSwitcher
         id="events-by-projects-title"
