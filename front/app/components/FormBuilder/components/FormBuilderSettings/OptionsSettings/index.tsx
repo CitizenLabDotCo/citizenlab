@@ -8,6 +8,7 @@ import {
 import { useFormContext } from 'react-hook-form';
 
 import { LIST_LAYOUT_MAX_OPTIONS } from 'components/CustomFieldsForm/constants';
+import { isDropdownLayoutForced } from 'components/CustomFieldsForm/util';
 import Toggle from 'components/HookForm/Toggle';
 import Warning from 'components/UI/Warning';
 
@@ -34,10 +35,7 @@ const OptionsSettings = ({
   const { watch } = useFormContext();
 
   const optionCount = watch(selectOptionsName)?.length ?? 0;
-  // Only single select renders long lists as a dropdown regardless of this
-  // setting, so it is the only type where the setting is not the admin's.
-  const dropdownForced =
-    inputType === 'select' && optionCount > LIST_LAYOUT_MAX_OPTIONS;
+  const dropdownForced = isDropdownLayoutForced(inputType, optionCount);
 
   const dropdownLabel = (
     <Box display="flex">
@@ -73,8 +71,9 @@ const OptionsSettings = ({
         <Box mb="24px">
           {dropdownForced ? (
             <>
-              {/* The stored value is ignored above the threshold, so a
-                  form-bound toggle would misreport how the question renders. */}
+              {/* Saving sets `dropdown_layout`, but the form value is still
+                  whatever the admin last picked, so a form-bound toggle would
+                  misreport how the question renders. */}
               <ToggleComponent
                 id={dropdownLayoutName}
                 checked

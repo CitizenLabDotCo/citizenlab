@@ -17,9 +17,9 @@ import SearchSelect from 'components/HookForm/SearchSelect';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
 
-import { LIST_LAYOUT_MAX_OPTIONS, SEARCHABLE_OPTION_COUNT } from '../constants';
+import { SEARCHABLE_OPTION_COUNT } from '../constants';
 import messages from '../messages';
-import { extractOptions } from '../util';
+import { extractOptions, isDropdownLayoutForced } from '../util';
 
 const StyledBox = styled(Box)<{ selected: boolean }>`
   cursor: pointer;
@@ -60,7 +60,8 @@ const SingleSelectField = ({
 
   const isSearchable = options.length >= SEARCHABLE_OPTION_COUNT;
   const dropdownLayout =
-    question.dropdown_layout || options.length > LIST_LAYOUT_MAX_OPTIONS;
+    question.dropdown_layout ||
+    isDropdownLayoutForced(question.input_type, options.length);
 
   return (
     <>
