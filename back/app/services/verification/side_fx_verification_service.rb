@@ -6,9 +6,11 @@ module Verification
 
     def before_create(verification, current_user); end
 
-    def after_create(verification, current_user)
+    # @param activity_payload [Hash] extra data for the 'created' activity, e.g. the outcome of an RRN check
+    def after_create(verification, current_user, activity_payload = {})
       verification.user.update!(verified: true)
-      LogActivityJob.perform_later(verification, 'created', current_user, verification.created_at.to_i, payload: { method: verification.method_name })
+      payload = { method: verification.method_name }.merge(activity_payload)
+      LogActivityJob.perform_later(verification, 'created', current_user, verification.created_at.to_i, payload: payload)
       UpdateMemberCountJob.perform_later
     end
   end
