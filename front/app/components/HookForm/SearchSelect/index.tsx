@@ -43,7 +43,7 @@ const SearchSelect = ({
   isClearable = false,
   isDisabled,
   required,
-  blurInputOnSelect = true,
+  blurInputOnSelect,
   className,
   label,
   scrollErrorIntoView,
@@ -92,8 +92,6 @@ const SearchSelect = ({
                 isSearchable={isSearchable}
                 isClearable={isClearable}
                 isDisabled={isDisabled}
-                // react-select derives `aria-required` from `required`; there
-                // is no way to set the attribute on its own.
                 required={required}
                 blurInputOnSelect={blurInputOnSelect}
                 placeholder={placeholder ?? ''}
