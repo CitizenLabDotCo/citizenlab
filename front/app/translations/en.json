@@ -209,7 +209,7 @@
   "app.components.CustomFieldsForm.uploadShapefileInstructions": "* Upload a zip file containing one or more shapefiles.",
   "app.components.CustomFieldsForm.validCordinatesTooltip2": "If the location is not displayed among the options as you type, you can add valid coordinates in the format 'latitude, longitude' to specify a precise location (eg: -33.019808, -71.495676).",
   "app.components.CustomFieldsForm.yesSubmit": "Yes, submit",
-  "app.components.CustomPageBuilder.Widgets.EventsByProjects.description": "Shows the next three upcoming events from the projects you pick below. Past events are never shown.",
+  "app.components.CustomPageBuilder.Widgets.EventsByProjects.description2": "Shows the next three upcoming events from the published projects you pick below. Past events are never shown.",
   "app.components.CustomPageBuilder.Widgets.EventsByProjects.events": "Events",
   "app.components.CustomPageBuilder.Widgets.EventsByProjects.modeAll": "Every project",
   "app.components.CustomPageBuilder.Widgets.EventsByProjects.modeAreas": "Projects in one of these areas",
