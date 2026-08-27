@@ -6,6 +6,12 @@ import { filtersFor } from './utils';
 
 import EventsByProjects from '.';
 
+let advancedCustomPages = true;
+jest.mock('hooks/useFeatureFlag', () => ({
+  __esModule: true,
+  default: () => advancedCustomPages,
+}));
+
 let inBuilder = true;
 jest.mock('@craftjs/core', () => ({
   useEditor: (collect: (state: { options: { enabled: boolean } }) => unknown) =>
@@ -30,6 +36,7 @@ jest.mock('components/LandingPages/citizen/EventsWidget', () => ({
 describe('EventsByProjects', () => {
   beforeEach(() => {
     inBuilder = true;
+    advancedCustomPages = true;
     eventsWidget.mockClear();
   });
 
@@ -83,5 +90,23 @@ describe('EventsByProjects', () => {
     ['spaces', { spaces: ['x'] }],
   ] as const)('maps %s onto its query param', (mode, expected) => {
     expect(filtersFor(mode, ['x'])).toEqual(expected);
+  });
+
+  it('renders nothing in the front office when a filtered mode loses the feature', () => {
+    advancedCustomPages = false;
+    inBuilder = false;
+
+    render(<EventsByProjects mode="areas" ids={['area-1']} />);
+
+    expect(screen.queryByTestId('events-widget')).not.toBeInTheDocument();
+  });
+
+  // An unfiltered list is not the paid capability, so it survives.
+  it('still shows every project’s events without the feature', () => {
+    advancedCustomPages = false;
+
+    render(<EventsByProjects />);
+
+    expect(screen.getByTestId('events-widget')).toBeInTheDocument();
   });
 });

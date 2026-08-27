@@ -34,6 +34,11 @@ export default defineMessages({
     id: 'app.components.CustomPageBuilder.Widgets.ProjectsByFilter.titleLabel',
     defaultMessage: 'Title',
   },
+  notAvailable: {
+    id: 'app.components.CustomPageBuilder.Widgets.ProjectsByFilter.notAvailable',
+    defaultMessage:
+      'Filtered project lists are not available on this platform, so this is not shown to residents.',
+  },
   nothingSelected: {
     id: 'app.components.CustomPageBuilder.Widgets.ProjectsByFilter.nothingSelected',
     defaultMessage: 'Pick at least one to show projects here.',

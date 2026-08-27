@@ -42,6 +42,11 @@ export default defineMessages({
     id: 'app.components.CustomPageBuilder.Widgets.EventsByProjects.selectionLabel',
     defaultMessage: 'Selection',
   },
+  notAvailable: {
+    id: 'app.components.CustomPageBuilder.Widgets.EventsByProjects.notAvailable',
+    defaultMessage:
+      'Filtered event lists are not available on this platform, so this is not shown to residents.',
+  },
   nothingSelected: {
     id: 'app.components.CustomPageBuilder.Widgets.EventsByProjects.nothingSelected',
     defaultMessage:

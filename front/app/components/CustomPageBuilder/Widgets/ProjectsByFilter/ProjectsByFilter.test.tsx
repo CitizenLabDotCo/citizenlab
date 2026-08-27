@@ -4,6 +4,12 @@ import { render, screen } from 'utils/testUtils/rtl';
 
 import ProjectsByFilter from '.';
 
+let advancedCustomPages = true;
+jest.mock('hooks/useFeatureFlag', () => ({
+  __esModule: true,
+  default: () => advancedCustomPages,
+}));
+
 let inBuilder = true;
 jest.mock('@craftjs/core', () => ({
   useEditor: (collect: (state: { options: { enabled: boolean } }) => unknown) =>
@@ -48,6 +54,7 @@ jest.mock(
 describe('ProjectsByFilter', () => {
   beforeEach(() => {
     inBuilder = true;
+    advancedCustomPages = true;
     statusCountsCall.mockClear();
     cards.mockClear();
   });
@@ -128,5 +135,26 @@ describe('ProjectsByFilter', () => {
       expect.objectContaining({ rootLevelOnly: true, onlyProjects: false }),
       expect.anything()
     );
+  });
+
+  // The legacy section hides both lists without this feature; a migrated page must not keep
+  // showing them after a downgrade.
+  it('renders nothing in the front office without advanced_custom_pages', () => {
+    advancedCustomPages = false;
+    inBuilder = false;
+
+    render(<ProjectsByFilter filterType="areas" ids={['area-1']} />);
+
+    expect(screen.queryByTestId('project-cards')).not.toBeInTheDocument();
+  });
+
+  it('says why in the builder without advanced_custom_pages', () => {
+    advancedCustomPages = false;
+
+    render(<ProjectsByFilter filterType="areas" ids={['area-1']} />);
+
+    expect(
+      screen.getByText(/not available on this platform/i)
+    ).toBeInTheDocument();
   });
 });

@@ -8,6 +8,8 @@ import { IStatusCounts } from 'api/admin_publications_status_counts/types';
 import useAdminPublicationsStatusCounts from 'api/admin_publications_status_counts/useAdminPublicationsStatusCounts';
 import getStatusCounts from 'api/admin_publications_status_counts/util/getAdminPublicationsStatusCount';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 import WidgetPlaceholder from 'components/admin/ContentBuilder/Widgets/WidgetPlaceholder';
 import {
@@ -98,6 +100,9 @@ const ProjectsByFilter = ({
   const { inBuilder } = useEditor((state) => ({
     inBuilder: state.options.enabled,
   }));
+  const advancedCustomPagesEnabled = useFeatureFlag({
+    name: 'advanced_custom_pages',
+  });
 
   const { data: statusCountsWithoutFilters } = useAdminPublicationsStatusCounts(
     {
@@ -106,6 +111,16 @@ const ProjectsByFilter = ({
     },
     { enabled: ids.length > 0 }
   );
+
+  // The legacy page section hides both lists without this feature, so a page migrated while
+  // the tenant had it must not keep showing them after a downgrade.
+  if (!advancedCustomPagesEnabled) {
+    return inBuilder ? (
+      <WidgetPlaceholder iconName="projects">
+        <FormattedMessage {...messages.notAvailable} />
+      </WidgetPlaceholder>
+    ) : null;
+  }
 
   if (ids.length === 0) {
     return inBuilder ? (

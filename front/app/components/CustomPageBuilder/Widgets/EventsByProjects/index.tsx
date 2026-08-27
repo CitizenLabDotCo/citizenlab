@@ -3,6 +3,8 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { useEditor } from '@craftjs/core';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 import WidgetPlaceholder from 'components/admin/ContentBuilder/Widgets/WidgetPlaceholder';
 import EventsWidget from 'components/LandingPages/citizen/EventsWidget';
@@ -23,6 +25,18 @@ const EventsByProjects = ({
     inBuilder: state.options.enabled,
   }));
   const padding = useCraftComponentDefaultPadding();
+  const advancedCustomPagesEnabled = useFeatureFlag({
+    name: 'advanced_custom_pages',
+  });
+
+  // Filtering is the paid capability; an unfiltered list stays available, as on the homepage.
+  if (mode !== 'all' && !advancedCustomPagesEnabled) {
+    return inBuilder ? (
+      <WidgetPlaceholder iconName="calendar">
+        <FormattedMessage {...messages.notAvailable} />
+      </WidgetPlaceholder>
+    ) : null;
+  }
 
   if (mode !== 'all' && ids.length === 0) {
     return inBuilder ? (
