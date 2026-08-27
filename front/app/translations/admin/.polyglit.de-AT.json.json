@@ -894,6 +894,11 @@
     "verified_at": "2026-07-08T07:51:00.235120Z",
     "verified_by": "Jelena"
   },
+  "app.components.admin.ActionForm.DataSection.AnonymitySection.anonymityExplanation2": {
+    "state": "verified",
+    "verified_at": "2026-08-27T12:19:31.178397Z",
+    "verified_by": "Jelena"
+  },
   "app.components.admin.ActionForm.DataSection.AnonymitySection.anonymityInResults": {
     "state": "verified",
     "verified_at": "2026-07-08T07:51:00.235120Z",
@@ -932,6 +937,26 @@
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicRow.required": {
     "state": "verified",
     "verified_at": "2026-07-08T07:51:00.235120Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsBehavior.custom": {
+    "state": "verified",
+    "verified_at": "2026-08-27T12:19:31.178397Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsBehavior.disabled": {
+    "state": "verified",
+    "verified_at": "2026-08-27T12:19:31.178397Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsBehavior.global": {
+    "state": "verified",
+    "verified_at": "2026-08-27T12:19:31.178397Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsBehavior.whichQuestions": {
+    "state": "verified",
+    "verified_at": "2026-08-27T12:19:31.178397Z",
     "verified_by": "Jelena"
   },
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.askDemographicQuestionsBefore": {
@@ -1014,6 +1039,11 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.admin.ActionForm.Fields.cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone2": {
+    "state": "verified",
+    "verified_at": "2026-08-27T12:19:31.178397Z",
+    "verified_by": "Jelena"
+  },
   "app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPage2": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
@@ -1063,6 +1093,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow5": {
+    "state": "verified",
+    "verified_at": "2026-08-27T12:19:31.178397Z",
+    "verified_by": "Jelena"
   },
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": {
     "state": "verified",
@@ -1134,6 +1169,11 @@
     "verified_at": "2026-07-08T07:51:00.235120Z",
     "verified_by": "Jelena"
   },
+  "app.components.admin.ActionForm.password3": {
+    "state": "verified",
+    "verified_at": "2026-08-27T12:19:31.178397Z",
+    "verified_by": "Jelena"
+  },
   "app.components.admin.ActionForm.piiExcluded": {
     "state": "verified",
     "verified_at": "2026-07-08T07:51:00.235120Z",
@@ -1142,6 +1182,11 @@
   "app.components.admin.ActionForm.piiExcludedFromResults": {
     "state": "verified",
     "verified_at": "2026-07-08T07:51:00.235120Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.requireUserToSetAPassword2": {
+    "state": "verified",
+    "verified_at": "2026-08-27T12:19:31.178397Z",
     "verified_by": "Jelena"
   },
   "app.components.admin.ActionForm.resetDemographicQuestionsAndGroups": {
@@ -22099,9 +22144,19 @@
     "verified_at": "2026-07-08T07:51:00.235120Z",
     "verified_by": "Jelena"
   },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription2": {
+    "state": "verified",
+    "verified_at": "2026-08-27T12:19:31.178397Z",
+    "verified_by": "Jelena"
+  },
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription3": {
     "state": "verified",
     "verified_at": "2026-08-17T14:35:41.893467Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescriptionWithPasswordLogin": {
+    "state": "verified",
+    "verified_at": "2026-08-27T12:19:31.178397Z",
     "verified_by": "Jelena"
   },
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.firstDecide": {
@@ -22154,9 +22209,19 @@
     "verified_at": "2026-08-17T14:35:41.893467Z",
     "verified_by": "Jelena"
   },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.phoneMethodDescription3": {
+    "state": "verified",
+    "verified_at": "2026-08-27T12:19:31.178397Z",
+    "verified_by": "Jelena"
+  },
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.phoneMethodDescriptionWithSmsLogin": {
     "state": "verified",
     "verified_at": "2026-08-17T14:35:41.893467Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.phoneMethodDescriptionWithSmsLogin2": {
+    "state": "verified",
+    "verified_at": "2026-08-27T12:19:31.178397Z",
     "verified_by": "Jelena"
   },
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.pickAtLeastOne": {
@@ -22169,14 +22234,29 @@
     "verified_at": "2026-08-17T14:35:41.893467Z",
     "verified_by": "Jelena"
   },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedEmail2": {
+    "state": "verified",
+    "verified_at": "2026-08-27T12:19:31.178397Z",
+    "verified_by": "Jelena"
+  },
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedPhoneNumber": {
     "state": "verified",
     "verified_at": "2026-08-17T14:35:41.893467Z",
     "verified_by": "Jelena"
   },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedPhoneNumber2": {
+    "state": "verified",
+    "verified_at": "2026-08-27T12:19:31.178397Z",
+    "verified_by": "Jelena"
+  },
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireIdentityVerification": {
     "state": "verified",
     "verified_at": "2026-08-17T14:35:41.893467Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireIdentityVerification2": {
+    "state": "verified",
+    "verified_at": "2026-08-27T12:19:31.178397Z",
     "verified_by": "Jelena"
   },
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSSO": {
@@ -22192,6 +22272,11 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": {
     "state": "verified",
     "verified_at": "2026-07-08T07:51:00.235120Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff2": {
+    "state": "verified",
+    "verified_at": "2026-08-27T12:19:31.178397Z",
     "verified_by": "Jelena"
   },
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeMethodProperties": {
@@ -22344,9 +22429,24 @@
     "verified_at": "2026-08-19T07:31:15.970842Z",
     "verified_by": "Jelena"
   },
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordAvailableDescription2": {
+    "state": "verified",
+    "verified_at": "2026-08-27T12:19:31.178397Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailOrSMSLoginTooltip": {
+    "state": "verified",
+    "verified_at": "2026-08-27T12:19:31.178397Z",
+    "verified_by": "Jelena"
+  },
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailSignupTooltip": {
     "state": "verified",
     "verified_at": "2026-08-19T07:31:15.970842Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailSignupTooltip2": {
+    "state": "verified",
+    "verified_at": "2026-08-27T12:19:31.178397Z",
     "verified_by": "Jelena"
   },
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.securityChecks2": {
