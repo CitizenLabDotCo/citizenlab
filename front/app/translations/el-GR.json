@@ -1371,7 +1371,7 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Αριθμός τηλεφώνου",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Καταχωρίστε έναν αριθμό τηλεφώνου στη σωστή μορφή, για παράδειγμα +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Καταχωρίστε έναν αριθμό τηλεφώνου",
-  "app.containers.Authentication.steps.Policies.byContinuingPhone2": "Συνεχίζοντας, συμφωνείτε να λάβετε έναν εφάπαξ κωδικό επιβεβαίωσης μέσω SMS από τον οργανισμό {orgName}. Ενδέχεται να ισχύουν χρεώσεις μηνυμάτων και δεδομένων. Απαντήστε HELP για βοήθεια, STOP για εξαίρεση.",
+  "app.containers.Authentication.steps.Policies.byContinuingPhone3": "Συνεχίζοντας, συμφωνείτε να λάβετε έναν εφάπαξ κωδικό επιβεβαίωσης μέσω SMS από τον οργανισμό {orgName}. Εάν δώσατε τη συγκατάθεσή σας παραπάνω, θα λαμβάνετε επίσης νέα και ενημερώσεις· η συχνότητα των μηνυμάτων ποικίλλει. Ενδέχεται να ισχύουν χρεώσεις μηνυμάτων και δεδομένων. Απαντήστε HELP για βοήθεια, STOP για εξαίρεση.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Δημιουργήστε έναν νέο λογαριασμό με: {phone} {changeLink}",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Εναλλαγή όλων των ειδοποιήσεων {contentType}",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Ειδοποιήσεις σε αυτήν την κατηγορία",

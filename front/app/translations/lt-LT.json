@@ -1371,7 +1371,7 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Telefono numeris",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Pateikite telefono numerį teisingu formatu, pavyzdžiui, +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Pateikite telefono numerį",
-  "app.containers.Authentication.steps.Policies.byContinuingPhone2": "Tęsdami sutinkate gauti vienkartinį patvirtinimo kodą SMS žinute iš {orgName}. Gali būti taikomi žinučių ir duomenų perdavimo tarifai. Atsakykite HELP, jei reikia pagalbos, STOP, jei norite atsisakyti.",
+  "app.containers.Authentication.steps.Policies.byContinuingPhone3": "Tęsdami sutinkate gauti vienkartinį patvirtinimo kodą SMS žinute iš {orgName}. Jei aukščiau sutikote, taip pat gausite naujienas ir atnaujinimus; žinučių dažnumas gali skirtis. Gali būti taikomi mokesčiai už žinutes ir duomenų perdavimą. Atsakykite HELP, jei reikia pagalbos, arba STOP, jei norite atsisakyti.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Sukurkite naują paskyrą naudodami: {phone} {changeLink}",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Perjungti visus {contentType} pranešimus",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Šios kategorijos pranešimai",

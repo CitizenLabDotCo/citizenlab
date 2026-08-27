@@ -10,13 +10,17 @@ import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 // Confirms the `phone` of an account that isn't signed in yet (phone signup /
 // passwordless phone login), which is why the token the backend returns is
 // adopted here.
-export const confirmCodePhone = async (code: string, phone: string) => {
+export const confirmCodePhone = async (
+  code: string,
+  phone: string,
+  sms_manual_campaign_consent?: boolean
+) => {
   try {
     const res = await fetcher<ConfirmCodeResponse>({
       path: `/user/confirm_code_phone`,
       action: 'post',
       body: {
-        confirmation: { phone, code },
+        confirmation: { phone, code, sms_manual_campaign_consent },
       },
     });
 

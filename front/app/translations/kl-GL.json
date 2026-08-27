@@ -1371,7 +1371,7 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Oqarasuaatip normua",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Oqarasuaatip normua ilusissaa eqqortoq atorlugu allaguk, soorlu +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Oqarasuaatip normua allaguk",
-  "app.containers.Authentication.steps.Policies.byContinuingPhone2": "Nanginneratigut, {orgName}-mit SMS-ikkut uppernarsaatissamik ataasiartumik tigusaqarnissat akuerivat. Nalunaarutinut datanullu akit atuuttut atorneqarsinnaapput. Ikiortissarsiorniaruit HELP akissutigiguk, unitsinniarukku STOP.",
+  "app.containers.Authentication.steps.Policies.byContinuingPhone3": "Nangikkuit {orgName}-mit SMS-ikkut uppernarsaatimik ataasiartumik atugassamik tigusaqarnissat akuersissutigaat. Qulaani akuersisimaguit, nutaarsiassanik nutarterutinillu aamma tigusaqassaatit; nalunaarutit qasseriarlutik takkuttarnerat nikerarsinnaavoq. SMS-inut datanullu akit nalinginnaasut atuussinnaapput. Ikiortissarsiorniaruit HELP-imik akigit, unitsitsiniaruit STOP-imik akigit.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Konto nutaaq uunga pilersiguk: {phone} {changeLink}",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "{contentType} nalunaarutit tamarmik allanngortikkit",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Kalerrisaarutit suussusermi uaniittut",

@@ -1371,7 +1371,7 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Número de telèfon",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Indiqueu un número de telèfon en el format correcte, per exemple +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Indiqueu un número de telèfon",
-  "app.containers.Authentication.steps.Policies.byContinuingPhone2": "En continuar, acceptes rebre un codi de confirmació d'un sol ús per SMS de {orgName}. Es poden aplicar tarifes de missatgeria i dades. Respon HELP per obtenir ajuda, STOP per donar-te de baixa.",
+  "app.containers.Authentication.steps.Policies.byContinuingPhone3": "En continuar, acceptes rebre un codi de confirmació d'un sol ús per SMS de {orgName}. Si has acceptat anteriorment, també rebràs notícies i actualitzacions; la freqüència dels missatges pot variar. Es poden aplicar tarifes de missatgeria i dades. Respon HELP per obtenir ajuda o STOP per cancel·lar la subscripció.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Crea un compte nou amb: {phone} {changeLink}",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Activa/desactiva totes les notificacions de {contentType}",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Notificacions d'aquesta categoria",

@@ -1371,7 +1371,7 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "ਫ਼ੋਨ ਨੰਬਰ",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "ਸਹੀ ਫਾਰਮੈਟ ਵਿੱਚ ਫ਼ੋਨ ਨੰਬਰ ਦਿਓ, ਉਦਾਹਰਨ ਲਈ +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "ਫ਼ੋਨ ਨੰਬਰ ਦਿਓ",
-  "app.containers.Authentication.steps.Policies.byContinuingPhone2": "ਜਾਰੀ ਰੱਖ ਕੇ, ਤੁਸੀਂ {orgName} ਤੋਂ SMS ਰਾਹੀਂ ਇੱਕ ਵਾਰੀ ਪੁਸ਼ਟੀਕਰਨ ਕੋਡ ਪ੍ਰਾਪਤ ਕਰਨ ਲਈ ਸਹਿਮਤ ਹੁੰਦੇ ਹੋ। ਸੁਨੇਹੇ ਅਤੇ ਡੇਟਾ ਦਰਾਂ ਲਾਗੂ ਹੋ ਸਕਦੀਆਂ ਹਨ। ਮਦਦ ਲਈ HELP, ਬਾਹਰ ਨਿਕਲਣ ਲਈ STOP ਲਿਖ ਕੇ ਜਵਾਬ ਦਿਓ।",
+  "app.containers.Authentication.steps.Policies.byContinuingPhone3": "ਅੱਗੇ ਵਧ ਕੇ, ਤੁਸੀਂ {orgName} ਤੋਂ SMS ਰਾਹੀਂ ਇੱਕ ਵਾਰ ਦਾ ਪੁਸ਼ਟੀਕਰਨ ਕੋਡ ਪ੍ਰਾਪਤ ਕਰਨ ਲਈ ਸਹਿਮਤ ਹੁੰਦੇ ਹੋ। ਜੇਕਰ ਤੁਸੀਂ ਉੱਪਰ ਸਹਿਮਤੀ ਦਿੱਤੀ ਹੈ, ਤਾਂ ਤੁਹਾਨੂੰ ਖ਼ਬਰਾਂ ਅਤੇ ਅੱਪਡੇਟ ਵੀ ਪ੍ਰਾਪਤ ਹੋਣਗੇ; ਸੁਨੇਹਿਆਂ ਦੀ ਬਾਰੰਬਾਰਤਾ ਵੱਖ-ਵੱਖ ਹੋ ਸਕਦੀ ਹੈ। ਸੁਨੇਹੇ ਅਤੇ ਡੇਟਾ ਦੀਆਂ ਦਰਾਂ ਲਾਗੂ ਹੋ ਸਕਦੀਆਂ ਹਨ। ਮਦਦ ਲਈ HELP, ਸੇਵਾ ਬੰਦ ਕਰਨ ਲਈ STOP ਲਿਖ ਕੇ ਜਵਾਬ ਦਿਓ।",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "{phone} {changeLink} ਨਾਲ ਨਵਾਂ ਖਾਤਾ ਬਣਾਓ",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "ਸਾਰੀਆਂ {contentType} ਸੂਚਨਾਵਾਂ ਨੂੰ ਟੌਗਲ ਕਰੋ",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "ਇਸ ਸ਼੍ਰੇਣੀ ਵਿੱਚ ਨੋਟੀਫਿਕੇਸ਼ਨ",

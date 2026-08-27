@@ -1371,7 +1371,7 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Telefonnummer",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Ange ett telefonnummer i rätt format, till exempel +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Ange ett telefonnummer",
-  "app.containers.Authentication.steps.Policies.byContinuingPhone2": "Genom att fortsätta godkänner du att ta emot en engångskod för bekräftelse via SMS från {orgName}. Meddelande- och datataxor kan tillkomma. Svara HELP för hjälp, STOP för att avregistrera dig.",
+  "app.containers.Authentication.steps.Policies.byContinuingPhone3": "Genom att fortsätta godkänner du att ta emot en engångskod via SMS från {orgName}. Om du valde att tacka ja ovan kommer du även att få nyheter och uppdateringar; meddelandefrekvensen varierar. Avgifter för meddelanden och data kan tillkomma. Svara HELP för hjälp, STOP för att avsluta.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Skapa ett nytt konto med: {phone} {changeLink}",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Slå på/av alla aviseringar för {contentType}",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Aviseringar i denna kategori",

@@ -95,7 +95,9 @@ const Phone = ({ state, loading, setError, onSubmit }: Props) => {
             />
             <PhoneInput name="new_phone" />
           </Box>
-          <ManualCampaignConsent />
+          <Box mt="20px" mb="8px">
+            <ManualCampaignConsent />
+          </Box>
           <Box w="100%" display="flex" mt="32px">
             <Button
               dataCy="phone-continue-button"
