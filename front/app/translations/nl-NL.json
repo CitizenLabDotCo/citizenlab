@@ -2159,6 +2159,7 @@
   "app.containers.PhoneConfirmation.confirmationCodeSent": "Nieuwe code verzonden",
   "app.containers.PhoneConfirmation.didntGetAnSMS": "Geen SMS ontvangen?",
   "app.containers.PhoneConfirmation.sendNewCode": "Stuur nieuwe code.",
+  "app.containers.PhoneConfirmation.sendNewCodeIn": "Je kunt een nieuwe code aanvragen over {seconds} {seconds, plural, one {seconde} other {seconden}}.",
   "app.containers.PhoneConfirmation.verifyAndContinue": "Verifiëren en doorgaan",
   "app.containers.PhoneConfirmation.wrongNumber": "Verkeerd nummer?",
   "app.containers.ProjectFolderCards.allProjects": "Alle projecten",

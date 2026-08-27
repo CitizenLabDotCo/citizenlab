@@ -2159,6 +2159,7 @@
   "app.containers.PhoneConfirmation.confirmationCodeSent": "Kodemik nutaamik nassiussisoqarpoq",
   "app.containers.PhoneConfirmation.didntGetAnSMS": "SMS-imik tigusaqanngilaatit?",
   "app.containers.PhoneConfirmation.sendNewCode": "Kodemik nutaamik nassiussigit.",
+  "app.containers.PhoneConfirmation.sendNewCodeIn": "Kodimik nutaamik piumasinnaavutit {seconds} {seconds, plural, one {sekundi} other {sekundit}} qaangiuppata.",
   "app.containers.PhoneConfirmation.verifyAndContinue": "Uppernarsaruk ingerlaqqillutillu",
   "app.containers.PhoneConfirmation.wrongNumber": "Normu kukkusuua?",
   "app.containers.ProjectFolderCards.allProjects": "Suliniutit tamarmik",

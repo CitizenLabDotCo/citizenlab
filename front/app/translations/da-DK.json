@@ -2159,6 +2159,7 @@
   "app.containers.PhoneConfirmation.confirmationCodeSent": "Ny kode sendt",
   "app.containers.PhoneConfirmation.didntGetAnSMS": "Modtog du ikke en sms?",
   "app.containers.PhoneConfirmation.sendNewCode": "Send ny kode.",
+  "app.containers.PhoneConfirmation.sendNewCodeIn": "Du kan anmode om en ny kode om {seconds} {seconds, plural, one {sekund} other {sekunder}}.",
   "app.containers.PhoneConfirmation.verifyAndContinue": "Bekræft og fortsæt",
   "app.containers.PhoneConfirmation.wrongNumber": "Forkert nummer?",
   "app.containers.ProjectFolderCards.allProjects": "Alle projekter",

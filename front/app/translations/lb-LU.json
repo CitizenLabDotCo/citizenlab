@@ -2159,6 +2159,7 @@
   "app.containers.PhoneConfirmation.confirmationCodeSent": "Neie Code geschéckt",
   "app.containers.PhoneConfirmation.didntGetAnSMS": "Keng SMS kritt?",
   "app.containers.PhoneConfirmation.sendNewCode": "Neie Code schécken.",
+  "app.containers.PhoneConfirmation.sendNewCodeIn": "Dir kënnt an {seconds} {seconds, plural, one {Sekonn} other {Sekonnen}} en neie Code ufroen.",
   "app.containers.PhoneConfirmation.verifyAndContinue": "Verifizéieren a weiderfueren",
   "app.containers.PhoneConfirmation.wrongNumber": "Falsch Nummer?",
   "app.containers.ProjectFolderCards.allProjects": "All Projeten",

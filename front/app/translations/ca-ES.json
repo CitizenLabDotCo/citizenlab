@@ -2159,6 +2159,7 @@
   "app.containers.PhoneConfirmation.confirmationCodeSent": "S'ha enviat un codi nou",
   "app.containers.PhoneConfirmation.didntGetAnSMS": "No has rebut cap SMS?",
   "app.containers.PhoneConfirmation.sendNewCode": "Envia un codi nou.",
+  "app.containers.PhoneConfirmation.sendNewCodeIn": "Pots sol·licitar un codi nou en {seconds} {seconds, plural, one {segon} other {segons}}.",
   "app.containers.PhoneConfirmation.verifyAndContinue": "Verifica i continua",
   "app.containers.PhoneConfirmation.wrongNumber": "El número és incorrecte?",
   "app.containers.ProjectFolderCards.allProjects": "Tots els projectes",
