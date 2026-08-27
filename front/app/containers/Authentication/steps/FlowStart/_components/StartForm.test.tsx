@@ -2,9 +2,11 @@ import React from 'react';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import { State } from 'containers/Authentication/typings';
+
 import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
 
-import sharedMessages from '../messages';
+import sharedMessages from '../../messages';
 
 import StartForm from './StartForm';
 
@@ -13,11 +15,25 @@ jest.mock('hooks/useFeatureFlag', () => jest.fn());
 const onSubmitEmail = jest.fn();
 const onSubmitPhone = jest.fn();
 
-const renderStartForm = () =>
+const state = {
+  flow: 'signup',
+  email: null,
+  phone: null,
+  new_email: null,
+  new_phone: null,
+  smsManualCampaignConsent: false,
+  token: null,
+  prefilledBuiltInFields: null,
+  ssoProvider: null,
+  claimTokens: null,
+} satisfies State;
+
+const renderStartForm = (stateOverrides: Partial<State> = {}) =>
   render(
     <StartForm
       loading={false}
       topText={sharedMessages.enterYourEmailAddress}
+      state={{ ...state, ...stateOverrides }}
       setError={jest.fn()}
       onSubmitEmail={onSubmitEmail}
       onSubmitPhone={onSubmitPhone}
@@ -57,6 +73,21 @@ describe('StartForm', () => {
 
       fireEvent.click(queryToggle() as HTMLElement);
       expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+    });
+
+    it('starts on the phone form when a phone number is already in the state', () => {
+      renderStartForm({ phone: '+32470123456' });
+
+      expect(
+        screen.getByRole('textbox', { name: 'Phone number' })
+      ).toBeInTheDocument();
+      expect(screen.queryByLabelText(/email/i)).not.toBeInTheDocument();
+    });
+
+    it('prefills the email form with the address already in the state', () => {
+      renderStartForm({ email: 'test@citizenlab.co' });
+
+      expect(screen.getByLabelText(/email/i)).toHaveValue('test@citizenlab.co');
     });
 
     it('submits the email through onSubmitEmail', async () => {
