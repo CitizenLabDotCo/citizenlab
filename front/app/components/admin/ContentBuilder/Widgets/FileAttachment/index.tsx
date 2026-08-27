@@ -174,6 +174,13 @@ const FileAttachmentSettings = () => {
     return !isFileUsed;
   });
 
+  // Two different dead ends: nothing uploaded, or everything uploaded is already placed.
+  const emptyStateMessage = files?.data.length
+    ? messages.allFilesAlreadyUsed
+    : projectId
+    ? messages.noFilesAvailable
+    : messages.noFilesYet;
+
   // Full-panel spinner on initial load only; refetches keep the panel visible.
   if (isLoadingFiles) {
     return <Spinner />;
@@ -188,16 +195,7 @@ const FileAttachmentSettings = () => {
       gap="12px"
     >
       {fileOptions.length === 0 ? (
-        // Two different dead ends: nothing uploaded, or everything uploaded is already placed.
-        <Text m="0px">
-          {formatMessage(
-            files?.data.length
-              ? messages.allFilesAlreadyUsed
-              : projectId
-              ? messages.noFilesAvailable
-              : messages.noFilesYet
-          )}
-        </Text>
+        <Text m="0px">{formatMessage(emptyStateMessage)}</Text>
       ) : (
         <Select
           value={fileId}
