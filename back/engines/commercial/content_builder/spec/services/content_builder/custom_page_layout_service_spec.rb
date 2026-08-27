@@ -120,6 +120,23 @@ describe ContentBuilder::CustomPageLayoutService do
         page
       end
 
+      # position is NULL on every row, so without a tie-break the order is whatever Postgres
+      # happens to return — and the migration task rewrites the row on every run. Inserted
+      # newest-first so physical row order cannot stand in for the sort.
+      it 'orders the files predictably when none carries a position' do
+        page = page_with_files(0)
+        newer = create(:file_attachment, attachable: page, created_at: 1.day.ago)
+        older = create(:file_attachment, attachable: page, created_at: 2.days.ago)
+
+        craftjs = service.craftjs_json_for(page)
+
+        expect(Files::FileAttachment.where(attachable: page).pluck(:position).uniq).to eq [nil]
+        expect(craftjs[body_id]['nodes']).to eq [
+          "#{file_prefix}#{older.file_id}",
+          "#{file_prefix}#{newer.file_id}"
+        ]
+      end
+
       it 'stacks one node per file directly in the body' do
         page = page_with_files(2)
         file_ids = Files::FileAttachment.where(attachable: page).ordered.pluck(:file_id)

@@ -38,7 +38,7 @@ const queryFilters = (filterType: ProjectsFilterType, ids: string[]) => ({
   removeNotAllowedParents: true,
 });
 
-type InnerProps = Omit<ProjectsByFilterProps, 'sectionBackground'> & {
+type InnerProps = ProjectsByFilterProps & {
   statusCountsWithoutFilters: IStatusCounts;
 };
 

@@ -44,7 +44,10 @@ module ContentBuilder
     def file_nodes(static_page)
       return {} unless static_page.files_section_enabled
 
-      attachments = ::Files::FileAttachment.where(attachable: static_page).ordered
+      # `ordered` sorts on position alone, and position is NULL on every row until TAN-5126
+      # turns position management back on — so it needs a tie-break, or the same page derives
+      # a different node order each time and the migration task rewrites it on every run.
+      attachments = ::Files::FileAttachment.where(attachable: static_page).ordered.order(:created_at, :id)
       attachments.to_h do |attachment|
         [
           "#{FILE_ID_PREFIX}#{attachment.file_id}",

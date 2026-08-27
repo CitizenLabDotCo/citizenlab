@@ -24,14 +24,6 @@ jest.mock('hooks/useFeatureFlag', () => ({
   default: ({ name }: { name: string }) => flags[name],
 }));
 
-jest.mock(
-  'components/ProjectPageBuilder/Widgets/SectionBackgroundSetting',
-  () => ({
-    __esModule: true,
-    default: () => <div data-testid="section-background" />,
-  })
-);
-
 const list = (...entities: [string, string][]) => ({
   data: entities.map(([id, title]) => ({
     id,

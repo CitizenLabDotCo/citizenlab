@@ -15,14 +15,6 @@ jest.mock('@craftjs/core', () => ({
   }),
 }));
 
-jest.mock(
-  'components/ProjectPageBuilder/Widgets/SectionBackgroundSetting',
-  () => ({
-    __esModule: true,
-    default: () => <div data-testid="section-background" />,
-  })
-);
-
 let spacesEnabled = true;
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => spacesEnabled));
 
