@@ -205,10 +205,7 @@ describe ContentBuilder::CustomPageLayoutService do
 
         expect(resolved_name(craftjs, projects_id)).to eq 'ProjectsByFilter'
         expect(craftjs[projects_id]['props']).to eq(
-          'filterType' => 'areas',
-          'ids' => [area.id],
-          'titleMultiloc' => {},
-          'sectionBackground' => 'colored'
+          'filterType' => 'areas', 'ids' => [area.id], 'titleMultiloc' => {}
         )
         expect(craftjs[projects_id]['parent']).to eq body_id
       end
@@ -226,12 +223,12 @@ describe ContentBuilder::CustomPageLayoutService do
         end
       end
 
-      it 'derives the events list from the same filter, on a coloured band' do
+      it 'derives the events list from the same filter' do
         craftjs = service.craftjs_json_for(filtered_page)
 
         expect(resolved_name(craftjs, events_id)).to eq 'EventsByProjects'
         expect(craftjs[events_id]['props']).to eq(
-          'mode' => 'areas', 'ids' => [area.id], 'sectionBackground' => 'colored'
+          'mode' => 'areas', 'ids' => [area.id]
         )
       end
 

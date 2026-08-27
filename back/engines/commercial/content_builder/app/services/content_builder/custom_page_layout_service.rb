@@ -69,9 +69,7 @@ module ContentBuilder
         'filterType' => static_page.projects_filter_type,
         'ids' => projects_filter_ids(static_page),
         # No heading: the legacy section renders with showTitle false.
-        'titleMultiloc' => {},
-        # Both legacy lists sit on one coloured band.
-        'sectionBackground' => 'colored'
+        'titleMultiloc' => {}
       )
     end
 
@@ -83,8 +81,7 @@ module ContentBuilder
         'app.components.CustomPageBuilder.Widgets.EventsByProjects.events',
         'Events',
         'mode' => static_page.projects_filter_type,
-        'ids' => projects_filter_ids(static_page),
-        'sectionBackground' => 'colored'
+        'ids' => projects_filter_ids(static_page)
       )
     end
 

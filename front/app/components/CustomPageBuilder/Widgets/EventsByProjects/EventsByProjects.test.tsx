@@ -14,28 +14,10 @@ jest.mock('@craftjs/core', () => ({
 }));
 
 const eventsWidget = jest.fn();
-const sectionBackground = jest.fn();
-jest.mock('components/ProjectPageBuilder/Widgets/SectionBackground', () => ({
-  __esModule: true,
-  default: ({
-    colored,
-    children,
-  }: {
-    colored: boolean;
-    children: React.ReactNode;
-  }) => {
-    sectionBackground({ colored });
-    return <div>{children}</div>;
-  },
-}));
 jest.mock(
   'components/admin/ContentBuilder/useCraftComponentDefaultPadding',
   () => ({ __esModule: true, default: () => '0px' })
 );
-jest.mock('components/ProjectPageBuilder/Widgets/useIsPageBodyChild', () => ({
-  __esModule: true,
-  default: () => true,
-}));
 
 jest.mock('components/LandingPages/citizen/EventsWidget', () => ({
   __esModule: true,
@@ -49,19 +31,6 @@ describe('EventsByProjects', () => {
   beforeEach(() => {
     inBuilder = true;
     eventsWidget.mockClear();
-    sectionBackground.mockClear();
-  });
-
-  it('renders on white unless an admin asks for a coloured band', () => {
-    render(<EventsByProjects />);
-
-    expect(sectionBackground).toHaveBeenCalledWith({ colored: false });
-  });
-
-  it('renders a coloured band when set, which is what migration sets', () => {
-    render(<EventsByProjects sectionBackground="colored" />);
-
-    expect(sectionBackground).toHaveBeenCalledWith({ colored: true });
   });
 
   it('shows every project’s events when unconfigured', () => {

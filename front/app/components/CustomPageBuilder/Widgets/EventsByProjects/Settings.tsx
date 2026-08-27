@@ -19,7 +19,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import eventsMessages from 'components/LandingPages/citizen/messages';
-import SectionBackgroundSetting from 'components/ProjectPageBuilder/Widgets/SectionBackgroundSetting';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import MultipleSelect from 'components/UI/MultipleSelect';
 
@@ -149,7 +148,6 @@ const Settings = () => {
         ) : (
           <Spinner />
         ))}
-      <SectionBackgroundSetting defaultValue="white" />
     </Box>
   );
 };

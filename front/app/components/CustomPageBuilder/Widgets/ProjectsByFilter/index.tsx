@@ -19,11 +19,8 @@ import {
   getCurrentTab,
   getPublicationStatuses,
 } from 'components/ProjectAndFolderCards/utils';
-import SectionBackground from 'components/ProjectPageBuilder/Widgets/SectionBackground';
-import useIsPageBodyChild from 'components/ProjectPageBuilder/Widgets/useIsPageBodyChild';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { useParams } from 'utils/router';
 
 import messages from './messages';
 import Settings from './Settings';
@@ -70,8 +67,9 @@ const ProjectsByFilterInner = ({
   const adminPublications = data?.pages.map((page) => page.data).flat();
 
   return (
-    // The width every builder widget uses, so the page lines up on one edge.
-    <Box maxWidth="1200px" margin="0 auto" px={padding}>
+    // The width every builder widget uses, so the page lines up on one edge. The vertical
+    // padding is the band's own: stacked bands sit flush, so each provides its own gap.
+    <Box maxWidth="1200px" margin="0 auto" px={padding} py="40px">
       <ProjectAndFolderCardsInner
         statusCounts={allStatusCountsWithoutFilters}
         showTitle={hasTitle(titleMultiloc)}
@@ -96,15 +94,10 @@ const ProjectsByFilter = ({
   filterType = 'global_topics',
   ids = [],
   titleMultiloc = {},
-  sectionBackground = 'white',
 }: Partial<ProjectsByFilterProps>) => {
   const { inBuilder } = useEditor((state) => ({
     inBuilder: state.options.enabled,
   }));
-  // Only the front-office route carries a slug, so a coloured band bleeds to the viewport
-  // edge there but not in the builder canvas.
-  const { slug } = useParams({ strict: false }) as { slug?: string };
-  const isPageBodyChild = useIsPageBodyChild('CustomPageBody');
 
   const { data: statusCountsWithoutFilters } = useAdminPublicationsStatusCounts(
     {
@@ -125,18 +118,12 @@ const ProjectsByFilter = ({
   if (!statusCountsWithoutFilters) return null;
 
   return (
-    <SectionBackground
-      colored={sectionBackground === 'colored'}
-      fullBleed={!!slug && isPageBodyChild}
-      py="40px"
-    >
-      <ProjectsByFilterInner
-        filterType={filterType}
-        ids={ids}
-        titleMultiloc={titleMultiloc}
-        statusCountsWithoutFilters={statusCountsWithoutFilters}
-      />
-    </SectionBackground>
+    <ProjectsByFilterInner
+      filterType={filterType}
+      ids={ids}
+      titleMultiloc={titleMultiloc}
+      statusCountsWithoutFilters={statusCountsWithoutFilters}
+    />
   );
 };
 

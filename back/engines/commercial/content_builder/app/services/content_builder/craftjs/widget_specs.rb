@@ -72,17 +72,11 @@ module ContentBuilder
         # Custom page widgets.
         'ProjectsByFilter' => {
           'multilocs' => %w[titleMultiloc],
-          'enums' => {
-            'filterType' => %w[global_topics areas spaces],
-            'sectionBackground' => %w[colored white]
-          }
+          'enums' => { 'filterType' => %w[global_topics areas spaces] }
         },
         'EventsByProjects' => {
           'multilocs' => %w[titleMultiloc],
-          'enums' => {
-            'mode' => %w[all projects global_topics areas spaces],
-            'sectionBackground' => %w[colored white]
-          }
+          'enums' => { 'mode' => %w[all projects global_topics areas spaces] }
         },
         # The project page scaffold (no rules: nodes patches may not add, move or delete).
         'ProjectPageRoot' => {},
