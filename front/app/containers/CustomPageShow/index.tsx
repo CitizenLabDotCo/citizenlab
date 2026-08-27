@@ -30,6 +30,13 @@ import PageSections from './PageSections';
 // What every builder widget sets as its own max width.
 const BUILDER_CONTENT_WIDTH = 1200;
 
+// The page background is grey, and each legacy section paints white over it. Builder content
+// is one white block instead, so that grey would only ever show as a strip below it — and no
+// other builder puts its content on a coloured page.
+const WhitePageContainer = styled(Container)`
+  background: #fff;
+`;
+
 const PageTitle = styled.h1`
   color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xxxxl}px;
@@ -104,6 +111,8 @@ const CustomPageShow = () => {
   const showBuilderContent =
     builderContent.isLoading || builderContent.hasContent;
 
+  // Builder content is one white block; the legacy sections rely on the grey page behind them.
+  const PageContainer = showBuilderContent ? WhitePageContainer : Container;
   const pageAttributes = page.data.attributes;
   const localizedOrgName = localize(
     // TODO: Fix this the next time the file is edited.
@@ -118,7 +127,7 @@ const CustomPageShow = () => {
         )} | ${localizedOrgName}`}
       />
       <main className={`e2e-page-${pageSlugToUse}`}>
-        <Container>
+        <PageContainer>
           {pageAttributes.banner_enabled ? (
             <>
               {pageAttributes.project_id && (
@@ -158,7 +167,7 @@ const CustomPageShow = () => {
               <PageSections page={page.data} />
             )}
           </Content>
-        </Container>
+        </PageContainer>
       </main>
     </>
   );
