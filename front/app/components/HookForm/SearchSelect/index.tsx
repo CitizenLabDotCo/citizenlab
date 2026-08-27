@@ -10,13 +10,16 @@ import { CLError, IOption, RHFErrors } from 'typings';
 import Error, { TFieldName } from 'components/UI/Error';
 import selectStyles from 'components/UI/MultipleSelect/styles';
 import useA11yMessages from 'components/UI/ReactSelect/useA11yMessages';
-import VirtualizedMenuList from 'components/UI/ReactSelect/VirtualizedMenuList';
+import {
+  VirtualizedMenuList,
+  VirtualizedOption,
+} from 'components/UI/ReactSelect/VirtualizedMenu';
 
 const selectComponents: SelectComponentsConfig<
   IOption,
   false,
   GroupBase<IOption>
-> = { MenuList: VirtualizedMenuList };
+> = { MenuList: VirtualizedMenuList, Option: VirtualizedOption };
 
 interface Props {
   name: string;
