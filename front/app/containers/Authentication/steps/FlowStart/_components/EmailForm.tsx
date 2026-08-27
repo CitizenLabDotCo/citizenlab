@@ -17,22 +17,24 @@ import {
 } from 'utils/errorUtils';
 import { isValidEmail } from 'utils/validate';
 
-import sharedMessages from '../messages';
+import sharedMessages from '../../messages';
 
-import { FormValues } from './types';
-
-const DEFAULT_VALUES: Partial<FormValues> = {
-  email: undefined,
-};
+interface FormValues {
+  email: string;
+}
 
 interface Props {
   loading: boolean;
   topText: MessageDescriptor;
+  // The address entered earlier in the flow, if any. Set when the user comes back
+  // here from the confirmation step to change their email, so they don't have to
+  // type it again.
+  email: string | null;
   setError: SetError;
   onSubmit: (email: string) => void;
 }
 
-const EmailForm = ({ loading, topText, setError, onSubmit }: Props) => {
+const EmailForm = ({ loading, topText, email, setError, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
 
   const schema = useMemo(
@@ -52,7 +54,7 @@ const EmailForm = ({ loading, topText, setError, onSubmit }: Props) => {
 
   const methods = useForm<FormValues>({
     mode: 'onSubmit',
-    defaultValues: DEFAULT_VALUES,
+    defaultValues: { email: email ?? undefined },
     resolver: yupResolver(schema),
     shouldFocusError: true,
   });

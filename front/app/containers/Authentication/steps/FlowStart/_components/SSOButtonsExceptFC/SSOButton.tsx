@@ -14,10 +14,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import AuthProviderButton, {
   Props as AuthProviderButtonProps,
-} from '../../_components/AuthProviderButton';
-import ClaveUnicaExpandedAuthProviderButton from '../../_components/ClaveUnicaExpandedAuthProviderButton';
-import sharedMessages from '../../_components/messages';
-import ViennaSamlButton from '../../_components/ViennaSamlButton';
+} from '../../../_components/AuthProviderButton';
+import ClaveUnicaExpandedAuthProviderButton from '../../../_components/ClaveUnicaExpandedAuthProviderButton';
+import sharedMessages from '../../../_components/messages';
+import ViennaSamlButton from '../../../_components/ViennaSamlButton';
 
 import messages from './messages';
 

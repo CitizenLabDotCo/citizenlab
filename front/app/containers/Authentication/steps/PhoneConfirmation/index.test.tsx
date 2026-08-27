@@ -20,6 +20,10 @@ const renderPhoneConfirmation = () =>
   );
 
 const queryResendLink = () => screen.queryByText(/send new code/i);
+// By data-cy rather than by text: the same copy also goes out through the screen
+// reader live region at the top of the step.
+const queryCodeSentMessage = () =>
+  document.querySelector('[data-cy="confirmation-code-sent-message"]');
 const queryCountdown = (seconds?: number) =>
   screen.queryByText(
     new RegExp(`you can request a new code in ${seconds ?? ''}`, 'i')
@@ -83,6 +87,22 @@ describe('PhoneConfirmation', () => {
 
       expect(queryCountdown(60)).toBeInTheDocument();
       expect(queryResendLink()).not.toBeInTheDocument();
+    });
+
+    it('stops confirming the code was sent once the countdown has run out', async () => {
+      onResendCode.mockImplementationOnce(async () => setResendCooldown(60));
+      renderPhoneConfirmation();
+
+      await act(async () => {
+        fireEvent.click(queryResendLink() as HTMLElement);
+      });
+
+      expect(queryCodeSentMessage()).toBeInTheDocument();
+
+      act(() => jest.advanceTimersByTime(60_000));
+
+      expect(queryCodeSentMessage()).not.toBeInTheDocument();
+      expect(queryResendLink()).toBeInTheDocument();
     });
   });
 });

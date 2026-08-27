@@ -1,5 +1,6 @@
 import { requestCodeNewEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
 import { requestCodeNewPhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
+import { tooSoonRetryAfter } from 'api/authentication/confirm_phone/resendCooldown';
 import { OnboardingType } from 'api/users/types';
 import {
   updateUser,
@@ -49,7 +50,18 @@ export const missingDataFlow = (
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT: async (new_phone: string, smsManualCampaignConsent: boolean) => {
         updateState({ new_phone, smsManualCampaignConsent });
-        await requestCodeNewPhone(new_phone);
+
+        try {
+          await requestCodeNewPhone(new_phone);
+        } catch (e) {
+          // A refused resend is not a failure: it means a code for this very
+          // number is still outstanding, which is what happens when the user
+          // comes back through 'wrong number' and submits the same number
+          // again. The code they were sent still works, so carry on to the
+          // confirmation step instead of leaving them on the input.
+          if (tooSoonRetryAfter(e) === undefined) throw e;
+        }
+
         invalidateCacheAfterUpdateUser(queryClient);
         setCurrentStep('confirmation:new_phone');
       },

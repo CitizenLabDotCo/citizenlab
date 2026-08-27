@@ -4,6 +4,7 @@ import { Box, Success } from '@citizenlab/cl2-component-library';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 
 import { requestCodeNewPhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
+import { tooSoonRetryAfter } from 'api/authentication/confirm_phone/resendCooldown';
 import { IUser } from 'api/users/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -66,10 +67,20 @@ const UpdatePhoneForm = ({
           setError(undefined);
         })
         .catch((e) => {
+          // A refused resend is not a failure: it means a code for this very
+          // number is still outstanding, which happens when the user restarts
+          // the flow for the number they were already confirming. Take them to
+          // the confirmation step so they can use the code they were sent.
+          if (tooSoonRetryAfter(e) !== undefined) {
+            setOpenConfirmationModal(true);
+            setError(undefined);
+            return;
+          }
+
           const errorCode = e?.errors?.new_phone?.[0]?.error;
-          if (errorCode === 'is already taken') {
+          if (errorCode === 'taken') {
             setError('taken');
-          } else if (errorCode === 'is invalid') {
+          } else if (errorCode === 'invalid') {
             setError('invalid');
           } else if (errorCode === 'unsupported_country') {
             setError('unsupported_country');
