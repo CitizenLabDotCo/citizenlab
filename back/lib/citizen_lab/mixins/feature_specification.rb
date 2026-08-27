@@ -15,6 +15,7 @@ module CitizenLab
           'additionalProperties' => false,
           'required' => %w[allowed enabled],
           'required-settings' => required_settings.presence,
+          'early_access' => (true if early_access?),
           'properties' => {
             'allowed' => { 'type' => 'boolean', 'default' => allowed_by_default },
             'enabled' => { 'type' => 'boolean', 'default' => enabled_by_default }
@@ -40,6 +41,13 @@ module CitizenLab
 
       def dependencies
         []
+      end
+
+      # Released but hidden features stay off for everyone, and admins switch them
+      # on for themselves only. See AppConfiguration::Settings.early_access_features.
+      # @return [Boolean]
+      def early_access?
+        false
       end
 
       # @return [Boolean]
