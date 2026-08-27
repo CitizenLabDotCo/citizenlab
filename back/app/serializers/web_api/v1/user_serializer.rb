@@ -44,6 +44,7 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   attribute :verified, if: PRIVATE
   attribute :followings_count, if: PRIVATE
   attribute :onboarding, if: PRIVATE
+  attribute :early_access_features, if: PRIVATE
 
   attribute :no_password, if: PRIVATE do |object|
     object.no_password?
