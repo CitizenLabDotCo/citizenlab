@@ -9,23 +9,10 @@ module CustomIdMethods::Magda
     NAMESPACE = 'http://webservice.registreeruitschrijvingdienst-02_00.repertorium-02_00.vip.vlaanderen.be'
     DIENST_NAAM = 'RegistreerUitschrijving'
 
-    CONFIG_KEYS = (BASE_CONFIG_KEYS + %i[magda_uitschrijving_endpoint]).freeze
-
-    # @param config [Hash] the ACM id method config (symbol keys)
-    def self.from_config(config)
-      new(
-        endpoint: config[:magda_uitschrijving_endpoint],
-        certificate: config[:magda_certificate],
-        private_key: config[:magda_private_key],
-        afzender_identificatie: config[:magda_afzender_identificatie],
-        hoedanigheid: config[:magda_hoedanigheid],
-        sign: config[:magda_sign_requests] != false
-      )
-    end
-
-    def self.configured?(config)
-      config.present? && CONFIG_KEYS.all? { |key| config[key].present? }
-    end
+    ENDPOINTS = {
+      'production' => 'https://magdarepertoriumdienst.vlaanderen.be/RegistreerUitschrijvingDienst-02.00/soap/WebService',
+      'tni' => 'https://magdarepertoriumdienst-aip.vlaanderen.be/RegistreerUitschrijvingDienst-02.00/soap/WebService'
+    }.freeze
 
     # @param insz [String] 11 digits
     # @return [RepertoriumResult]
@@ -41,8 +28,8 @@ module CustomIdMethods::Magda
     def inhoud_xml(insz)
       <<~XML.strip
         <Uitschrijving>
-          <Identificatie>#{escape(afzender_identificatie)}</Identificatie>
-          <Hoedanigheid>#{escape(hoedanigheid)}</Hoedanigheid>
+          <Identificatie>#{escape(uri)}</Identificatie>
+          <Hoedanigheid>#{escape(hoedanigheidscode)}</Hoedanigheid>
           <INSZ>#{escape(insz)}</INSZ>
         </Uitschrijving>
       XML

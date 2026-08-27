@@ -304,9 +304,9 @@ context 'ACM verification (Oostende Itsme)' do
   end
 
   context 'with rrn_provider magda' do
-    let(:magda_endpoint) { 'https://magdapersoondienst-aip.vlaanderen.be/GeefPersoonDienst-02.02/soap/WebService' }
+    let(:magda_endpoint) { CustomIdMethods::Magda::GeefPersoonClient::ENDPOINTS.fetch('tni') }
 
-    let(:magda_inschrijving_endpoint) { 'https://magdarepertoriumdienst-aip.vlaanderen.be/RegistreerInschrijvingDienst-02.00/soap/WebService' }
+    let(:magda_inschrijving_endpoint) { CustomIdMethods::Magda::RegistreerInschrijvingClient::ENDPOINTS.fetch('tni') }
 
     def magda_fixture(name, postcode: '2880', birth_date: '1990-05-15')
       File.read(File.expand_path("../fixtures/magda/#{name}", __dir__))
@@ -331,10 +331,9 @@ context 'ACM verification (Oostende Itsme)' do
     before do
       update_acm_config(
         'rrn_provider' => 'magda',
-        'magda_endpoint' => magda_endpoint,
-        'magda_inschrijving_endpoint' => magda_inschrijving_endpoint,
-        'magda_afzender_identificatie' => 'bornem.be/govocal/ipdc77332-aip',
-        'magda_hoedanigheid' => 'ipdc77332',
+        'magda_environment' => 'tni',
+        'magda_uri' => 'bornem.be/govocal/ipdc77332-aip',
+        'magda_hoedanigheidscode' => 'ipdc77332',
         'magda_certificate' => MagdaTestCertificate.certificate_pem,
         'magda_private_key' => MagdaTestCertificate.private_key_pem,
         'magda_postal_codes' => ['2880'],

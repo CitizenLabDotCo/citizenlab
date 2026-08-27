@@ -4,16 +4,16 @@ require 'rails_helper'
 require_relative '../../support/magda_test_certificate'
 
 describe CustomIdMethods::Magda::GeefPersoonClient do
-  let(:endpoint) { 'https://magdapersoondienst-aip.vlaanderen.be/GeefPersoonDienst-02.02/soap/WebService' }
+  let(:endpoint) { described_class::ENDPOINTS.fetch('tni') }
   let(:sign) { false }
   let(:hoedanigheid) { 'ipdc77332' }
   let(:client) do
     described_class.new(
-      endpoint: endpoint,
+      environment: 'tni',
       certificate: MagdaTestCertificate.certificate_pem,
       private_key: MagdaTestCertificate.private_key_pem,
-      afzender_identificatie: 'bornem.be/govocal/ipdc77332-aip',
-      hoedanigheid: hoedanigheid,
+      uri: 'bornem.be/govocal/ipdc77332-aip',
+      hoedanigheidscode: hoedanigheid,
       sign: sign
     )
   end
@@ -164,8 +164,8 @@ describe CustomIdMethods::Magda::GeefPersoonClient do
 
     it 'returns an error for an unusable certificate' do
       broken = described_class.new(
-        endpoint: endpoint, certificate: 'not a pem', private_key: MagdaTestCertificate.private_key_pem,
-        afzender_identificatie: 'x'
+        environment: 'tni', certificate: 'not a pem', private_key: MagdaTestCertificate.private_key_pem,
+        uri: 'x'
       )
       result = broken.call(insz)
       expect(result).to be_error
@@ -191,28 +191,26 @@ describe CustomIdMethods::Magda::GeefPersoonClient do
   describe '.configured? and .from_config' do
     let(:config) do
       {
-        magda_endpoint: endpoint,
+        magda_environment: 'tni',
         magda_certificate: MagdaTestCertificate.certificate_pem,
         magda_private_key: MagdaTestCertificate.private_key_pem,
-        magda_afzender_identificatie: 'bornem.be/govocal/ipdc77332-aip',
-        magda_hoedanigheid: 'ipdc77332',
-        magda_sign_requests: false
+        magda_uri: 'bornem.be/govocal/ipdc77332-aip',
+        magda_hoedanigheidscode: 'ipdc77332'
       }
     end
 
-    it 'needs endpoint, certificate, private key and identificatie' do
+    it 'needs certificate, private key and uri' do
       expect(described_class.configured?(config)).to be true
-      expect(described_class.configured?(config.except(:magda_hoedanigheid))).to be true
+      expect(described_class.configured?(config.except(:magda_hoedanigheidscode))).to be true
       expect(described_class.configured?(config.except(:magda_certificate))).to be false
-      expect(described_class.configured?(config.merge(magda_endpoint: ''))).to be false
+      expect(described_class.configured?(config.merge(magda_uri: ''))).to be false
       expect(described_class.configured?(nil)).to be false
     end
 
-    it 'builds a client from the config' do
+    it 'builds a client from the config, defaulting to the production environment' do
       built = described_class.from_config(config)
-      expect(built).to have_attributes(endpoint: endpoint, afzender_identificatie: 'bornem.be/govocal/ipdc77332-aip', hoedanigheid: 'ipdc77332', sign: false)
-      expect(described_class.from_config(config.except(:magda_sign_requests)).sign).to be true
-      expect(described_class.from_config(config.merge(magda_sign_requests: true)).sign).to be true
+      expect(built).to have_attributes(endpoint: endpoint, uri: 'bornem.be/govocal/ipdc77332-aip', hoedanigheidscode: 'ipdc77332', sign: true)
+      expect(described_class.from_config(config.except(:magda_environment)).endpoint).to eq described_class::ENDPOINTS.fetch('production')
     end
   end
 end

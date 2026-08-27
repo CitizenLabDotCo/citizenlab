@@ -2,9 +2,7 @@
 
 module CustomIdMethods::Magda
   # Client for MAGDA Persoon.GeefPersoon-02.02 (Rijksregister lookup by INSZ).
-  # (The "Starten met testen" mail said 02.00, but MAGDA confirmed on 26/08 that
-  # 02.00 is obsolete and 02.02 must be used.)
-  # See BaseClient for the transport details.
+  # See BaseClient for the transport and configuration details.
   #
   # Note: the person must be registered in the MAGDA repertorium first
   # (RegistreerInschrijvingClient); an unregistered INSZ answers with
@@ -14,23 +12,10 @@ module CustomIdMethods::Magda
     DIENST_NAAM = 'GeefPersoon'
     VERSIE = '02.02.0000'
 
-    CONFIG_KEYS = (BASE_CONFIG_KEYS + %i[magda_endpoint]).freeze
-
-    # @param config [Hash] the ACM id method config (symbol keys)
-    def self.from_config(config)
-      new(
-        endpoint: config[:magda_endpoint],
-        certificate: config[:magda_certificate],
-        private_key: config[:magda_private_key],
-        afzender_identificatie: config[:magda_afzender_identificatie],
-        hoedanigheid: config[:magda_hoedanigheid],
-        sign: config[:magda_sign_requests] != false
-      )
-    end
-
-    def self.configured?(config)
-      config.present? && CONFIG_KEYS.all? { |key| config[key].present? }
-    end
+    ENDPOINTS = {
+      'production' => 'https://magdapersoondienst.vlaanderen.be/GeefPersoonDienst-02.02/soap/WebService',
+      'tni' => 'https://magdapersoondienst-aip.vlaanderen.be/GeefPersoonDienst-02.02/soap/WebService'
+    }.freeze
 
     # @param insz [String] 11 digits
     # @param referte [String] unique per call, goes in both refertes of the request

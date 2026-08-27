@@ -4,16 +4,15 @@ require 'rails_helper'
 require_relative '../../support/magda_test_certificate'
 
 describe 'MAGDA repertorium clients' do # rubocop:disable RSpec/DescribeClass -- two sibling clients share the setup
-  let(:inschrijving_endpoint) { 'https://magdarepertoriumdienst-aip.vlaanderen.be/RegistreerInschrijvingDienst-02.00/soap/WebService' }
-  let(:uitschrijving_endpoint) { 'https://magdarepertoriumdienst-aip.vlaanderen.be/RegistreerUitschrijvingDienst-02.00/soap/WebService' }
+  let(:inschrijving_endpoint) { CustomIdMethods::Magda::RegistreerInschrijvingClient::ENDPOINTS.fetch('tni') }
+  let(:uitschrijving_endpoint) { CustomIdMethods::Magda::RegistreerUitschrijvingClient::ENDPOINTS.fetch('tni') }
   let(:config) do
     {
-      magda_inschrijving_endpoint: inschrijving_endpoint,
-      magda_uitschrijving_endpoint: uitschrijving_endpoint,
+      magda_environment: 'tni',
       magda_certificate: MagdaTestCertificate.certificate_pem,
       magda_private_key: MagdaTestCertificate.private_key_pem,
-      magda_afzender_identificatie: 'bornem.be/govocal/ipdc77332-aip',
-      magda_hoedanigheid: 'ipdc77332'
+      magda_uri: 'bornem.be/govocal/ipdc77332-aip',
+      magda_hoedanigheidscode: 'ipdc77332'
     }
   end
   let(:insz) { '01234567993' }
@@ -99,9 +98,9 @@ describe 'MAGDA repertorium clients' do # rubocop:disable RSpec/DescribeClass --
       expect(result.referte).to eq referte
     end
 
-    it 'requires the inschrijving endpoint in the config' do
+    it 'resolves the endpoint from the environment' do
       expect(described_class.configured?(config)).to be true
-      expect(described_class.configured?(config.except(:magda_inschrijving_endpoint))).to be false
+      expect(described_class.from_config(config).endpoint).to eq described_class::ENDPOINTS.fetch('tni')
     end
   end
 
@@ -125,9 +124,9 @@ describe 'MAGDA repertorium clients' do # rubocop:disable RSpec/DescribeClass --
       expect(uitschrijving.at_xpath('Periode')).to be_nil
     end
 
-    it 'requires the uitschrijving endpoint in the config' do
+    it 'resolves the endpoint from the environment' do
       expect(described_class.configured?(config)).to be true
-      expect(described_class.configured?(config.except(:magda_uitschrijving_endpoint))).to be false
+      expect(described_class.from_config(config).endpoint).to eq described_class::ENDPOINTS.fetch('tni')
     end
   end
 end

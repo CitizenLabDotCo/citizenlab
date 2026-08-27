@@ -93,7 +93,6 @@ module CustomIdMethods::Acm
     def magda_lookup_with_registration(rrn)
       lookup = CustomIdMethods::Magda::GeefPersoonClient.from_config(config).call(rrn)
       return lookup unless lookup.not_registered?
-      return lookup unless CustomIdMethods::Magda::RegistreerInschrijvingClient.configured?(config)
 
       registration = CustomIdMethods::Magda::RegistreerInschrijvingClient.from_config(config).call(rrn)
       return lookup unless registration.ok?

@@ -3,44 +3,75 @@
 require 'savon'
 
 module CustomIdMethods::Magda
-  # Shared plumbing for the MAGDA 02.00 SOAP diensten (Persoon.GeefPersoon,
+  # Shared plumbing for the MAGDA SOAP diensten (Persoon.GeefPersoon,
   # Repertorium.RegistreerInschrijving, Repertorium.RegistreerUitschrijving).
   #
   # - Two-way TLS with the DCBaaS application certificate of the municipality
   #   (the municipality is the verwerkingsverantwoordelijke, Go Vocal the verwerker).
   # - WS-Security signature of the SOAP body with the same certificate
-  #   (RSA-SHA1, exclusive C14N, X509v3 BinarySecurityToken), which is what the
-  #   MAGDA reference connector does. The MAGDA reverse proxy rejects unsigned
-  #   requests with "ERR_025: Verification failure: No signature in message!",
-  #   so signing is on by default; `sign: false` only exists for diagnostics.
+  #   (RSA-SHA1, exclusive C14N, X509v3 BinarySecurityToken). MAGDA rejects
+  #   unsigned requests ("ERR_025: Verification failure: No signature in
+  #   message!"), so requests are always signed; `sign: false` only exists for
+  #   diagnostics from specs.
+  # - The dienst namespace is declared with a prefix (`<ns:GeefPersoon><Verzoek>`),
+  #   like MAGDA's own "werkend request" example. MAGDA's bron adapter rejects
+  #   the XSD-equivalent `<Verzoek xmlns="">` form with a misleading
+  #   "99994 Onverwachte fout bij de bron".
   # - No WSDL at runtime (it sits behind mTLS as well); the envelope follows the
-  #   official request template and the 02.00 XSD's.
+  #   official request template and XSD's.
   #
-  # Subclasses define NAMESPACE, DIENST_NAAM (and optionally VERSIE) and build
-  # their own `Inhoud`.
+  # The configuration mirrors the parameters in MAGDA's aansluitingsmail:
+  # `magda_uri` = "URI (identifier)", `magda_hoedanigheidscode` =
+  # "Hoedanigheidscodes", and `magda_environment` selects the fixed endpoints
+  # (production, or tni for the test environment with the -aip hosts).
+  #
+  # Subclasses define NAMESPACE, DIENST_NAAM, ENDPOINTS (and optionally VERSIE)
+  # and build their own `Inhoud`.
   class BaseClient
     VERSIE = '02.00.0000' # subclasses can override (GeefPersoon runs on 02.02)
     TIME_ZONE = 'Europe/Brussels'
     OPEN_TIMEOUT = 5
     READ_TIMEOUT = 15
 
-    BASE_CONFIG_KEYS = %i[magda_certificate magda_private_key magda_afzender_identificatie].freeze
+    ENVIRONMENTS = %w[production tni].freeze
+    CONFIG_KEYS = %i[magda_certificate magda_private_key magda_uri].freeze
 
-    attr_reader :endpoint, :afzender_identificatie, :hoedanigheid, :sign
+    attr_reader :environment, :uri, :hoedanigheidscode, :sign
 
-    def initialize(endpoint:, certificate:, private_key:, afzender_identificatie:, hoedanigheid: nil, sign: true)
-      @endpoint = endpoint
+    # @param config [Hash] the ACM id method config (symbol keys)
+    def self.from_config(config)
+      new(
+        environment: config[:magda_environment].presence || 'production',
+        certificate: config[:magda_certificate],
+        private_key: config[:magda_private_key],
+        uri: config[:magda_uri],
+        hoedanigheidscode: config[:magda_hoedanigheidscode]
+      )
+    end
+
+    def self.configured?(config)
+      config.present? && CONFIG_KEYS.all? { |key| config[key].present? }
+    end
+
+    def initialize(environment:, certificate:, private_key:, uri:, hoedanigheidscode: nil, sign: true)
+      @environment = environment
       @certificate = certificate
       @private_key = private_key
-      @afzender_identificatie = afzender_identificatie
-      @hoedanigheid = hoedanigheid
+      @uri = uri
+      @hoedanigheidscode = hoedanigheidscode
       @sign = sign
+    end
+
+    def endpoint
+      self.class::ENDPOINTS.fetch(environment) do
+        raise ArgumentError, "Unknown MAGDA environment #{environment.inspect} for #{self.class.name} (expected one of #{ENVIRONMENTS.join(', ')})"
+      end
     end
 
     # The `Verzoek` element, inserted by Savon inside `<ns:DienstNaam>`.
     # Public so that specs and the probe rake tasks can inspect it.
     def verzoek_xml(inhoud_xml:, referte:, now:)
-      hoedanigheid_xml = hoedanigheid.present? ? "<Hoedanigheid>#{escape(hoedanigheid)}</Hoedanigheid>" : ''
+      hoedanigheid_xml = hoedanigheidscode.present? ? "<Hoedanigheid>#{escape(hoedanigheidscode)}</Hoedanigheid>" : ''
       <<~XML.strip
         <Verzoek>
           <Context>
@@ -53,7 +84,7 @@ module CustomIdMethods::Magda
                 <Tijd>#{now.strftime('%H:%M:%S')}.000</Tijd>
               </Tijdstip>
               <Afzender>
-                <Identificatie>#{escape(afzender_identificatie)}</Identificatie>
+                <Identificatie>#{escape(uri)}</Identificatie>
                 <Referte>#{escape(referte)}</Referte>
                 #{hoedanigheid_xml}
               </Afzender>
@@ -78,15 +109,9 @@ module CustomIdMethods::Magda
       savon_client.call(
         self.class::DIENST_NAAM.underscore.to_sym,
         message_tag: self.class::DIENST_NAAM,
-        soap_action: soap_action,
+        soap_action: '',
         message: verzoek_xml(inhoud_xml:, referte:, now:)
       )
-    end
-
-    # The MAGDA reference connector sends an empty SOAPAction. The WSDL's declare
-    # e.g. "GeefPersoonDienst-02.02"; MAGDA_SOAPACTION overrides for diagnostics.
-    def soap_action
-      (Rails.env.local? && ENV.fetch('MAGDA_SOAPACTION', nil)) || ''
     end
 
     def savon_client
@@ -97,9 +122,6 @@ module CustomIdMethods::Magda
       options = {
         endpoint: endpoint,
         namespace: self.class::NAMESPACE,
-        # Prefixed namespace (<ns:GeefPersoon><Verzoek>...), like the official
-        # "werkend request" example. MAGDA asked (27/08) to drop the xmlns=""
-        # reset that a default namespace on the Envelope would require.
         namespace_identifier: :ns,
         env_namespace: :soapenv,
         soap_version: 1,

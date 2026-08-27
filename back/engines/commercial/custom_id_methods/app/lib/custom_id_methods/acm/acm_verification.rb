@@ -24,14 +24,11 @@ module CustomIdMethods::Acm
         rrn_provider
         rrn_api_key
         rrn_environment
-        magda_endpoint
-        magda_inschrijving_endpoint
-        magda_uitschrijving_endpoint
-        magda_afzender_identificatie
-        magda_hoedanigheid
+        magda_environment
+        magda_uri
+        magda_hoedanigheidscode
         magda_certificate
         magda_private_key
-        magda_sign_requests
         magda_postal_codes
         magda_minimum_age
       ]
@@ -67,30 +64,22 @@ module CustomIdMethods::Acm
           private: true,
           description: 'WijkBudget API key.'
         },
-        magda_endpoint: {
+        magda_environment: {
           private: true,
           type: 'string',
-          description: 'GeefPersoon SOAP endpoint from the MAGDA aansluiting. T&I and production differ, e.g. https://magdapersoondienst-aip.vlaanderen.be/GeefPersoonDienst-02.02/soap/WebService'
+          enum: %w[production tni],
+          default: 'production',
+          description: 'MAGDA environment: production, or tni for the test environment. The endpoints are fixed per environment (tni uses the -aip hosts).'
         },
-        magda_inschrijving_endpoint: {
+        magda_uri: {
           private: true,
           type: 'string',
-          description: 'Repertorium.RegistreerInschrijving SOAP endpoint, e.g. https://magdarepertoriumdienst-aip.vlaanderen.be/RegistreerInschrijvingDienst-02.00/soap/WebService. GeefPersoon only answers about registered persons, so new citizens are registered automatically before the lookup. Leave empty to skip automatic registration.'
+          description: 'The "URI (identifier)" from the MAGDA aansluitingsmail, e.g. bornem.be/govocal/ipdc77332. Not the certificate CN; T&I URIs end in -aip.'
         },
-        magda_uitschrijving_endpoint: {
+        magda_hoedanigheidscode: {
           private: true,
           type: 'string',
-          description: 'Repertorium.RegistreerUitschrijving SOAP endpoint. Not used in the verification flow; only by the MAGDA acceptance rake task.'
-        },
-        magda_afzender_identificatie: {
-          private: true,
-          type: 'string',
-          description: 'Afzender/Identificatie URI that MAGDA linked to the service for this environment, e.g. bornem.be/govocal/ipdc77332-aip. Not the certificate CN.'
-        },
-        magda_hoedanigheid: {
-          private: true,
-          type: 'string',
-          description: 'Hoedanigheid code from the MAGDA aansluiting (same for T&I and production), e.g. ipdc77332.'
+          description: 'The "Hoedanigheidscode" from the MAGDA aansluitingsmail, e.g. ipdc77332.'
         },
         magda_certificate: {
           private: true,
@@ -101,12 +90,6 @@ module CustomIdMethods::Acm
           private: true,
           type: 'string',
           description: 'Private key (PEM) of the certificate. Looks like `-----BEGIN RSA PRIVATE KEY-----\nMIIJ...\n-----END RSA PRIVATE KEY-----`'
-        },
-        magda_sign_requests: {
-          private: true,
-          type: 'boolean',
-          default: true,
-          description: 'Sign the SOAP body (WS-Security) with the same certificate. MAGDA rejects unsigned requests (ERR_025), so only switch this off for diagnostics.'
         },
         magda_postal_codes: {
           private: true,

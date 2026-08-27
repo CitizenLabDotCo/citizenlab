@@ -50,14 +50,11 @@ module IdAcmMagdaRake
   def config
     base = IdMethodService.new.method_by_name('acm')&.config || {}
     overrides = {
-      magda_endpoint: ENV.fetch('MAGDA_ENDPOINT', nil),
-      magda_inschrijving_endpoint: ENV.fetch('MAGDA_INSCHRIJVING_ENDPOINT', nil),
-      magda_uitschrijving_endpoint: ENV.fetch('MAGDA_UITSCHRIJVING_ENDPOINT', nil),
+      magda_environment: ENV.fetch('MAGDA_ENVIRONMENT', nil),
       magda_certificate: ENV['MAGDA_CERT_FILE'].present? ? File.read(ENV.fetch('MAGDA_CERT_FILE')) : nil,
       magda_private_key: ENV['MAGDA_KEY_FILE'].present? ? File.read(ENV.fetch('MAGDA_KEY_FILE')) : nil,
-      magda_afzender_identificatie: ENV.fetch('MAGDA_IDENTIFICATIE', nil),
-      magda_hoedanigheid: ENV.fetch('MAGDA_HOEDANIGHEID', nil),
-      magda_sign_requests: ENV['MAGDA_SIGN'] == '0' ? false : nil
+      magda_uri: ENV.fetch('MAGDA_URI', nil),
+      magda_hoedanigheidscode: ENV.fetch('MAGDA_HOEDANIGHEIDSCODE', nil)
     }.compact
     base.merge(overrides)
   end
@@ -83,7 +80,7 @@ module IdAcmMagdaRake
 end
 
 namespace :id_acm do
-  desc 'One MAGDA GeefPersoon call (with automatic repertorium registration when needed). Env overrides: MAGDA_ENDPOINT, MAGDA_INSCHRIJVING_ENDPOINT, MAGDA_CERT_FILE, MAGDA_KEY_FILE, MAGDA_IDENTIFICATIE, MAGDA_HOEDANIGHEID, MAGDA_SIGN=0 (diagnostics only). MAGDA_POSTAL_CODES=2880,2890 and MAGDA_MINIMUM_AGE=12 also run the residency check. VERBOSE=1 prints the XML. Nothing is persisted.'
+  desc 'One MAGDA GeefPersoon call (with automatic repertorium registration when needed). Env overrides: MAGDA_ENVIRONMENT (production|tni), MAGDA_CERT_FILE, MAGDA_KEY_FILE, MAGDA_URI, MAGDA_HOEDANIGHEIDSCODE. MAGDA_POSTAL_CODES=2880,2890 and MAGDA_MINIMUM_AGE=12 also run the residency check. VERBOSE=1 prints the XML. Nothing is persisted.'
   task :magda_probe, %i[tenant_host insz] => [:environment] do |_t, args|
     IdAcmMagdaRake.switch_tenant!(args[:tenant_host])
     verbose = ENV['VERBOSE'] == '1'
@@ -107,7 +104,7 @@ namespace :id_acm do
     puts "geef_persoon: #{IdAcmMagdaRake.describe(result)}"
     puts "--- response:\n#{result.raw_xml}" if verbose && result.raw_xml.present?
 
-    if result.not_registered? && IdAcmMagdaRake.config[:magda_inschrijving_endpoint].present?
+    if result.not_registered?
       ri = IdAcmMagdaRake.client(CustomIdMethods::Magda::RegistreerInschrijvingClient)
       registration = ri.call(args[:insz])
       puts "registreer_inschrijving: #{IdAcmMagdaRake.describe(registration)}"
