@@ -2,6 +2,15 @@ import { randomString } from '../../support/commands';
 import moment = require('moment');
 
 describe('Project description builder display', () => {
+  const getIframeBody = () =>
+    cy
+      .get('iframe')
+      .its('0.contentDocument')
+      .should('exist')
+      .its('body')
+      .should('not.be.undefined')
+      .then(cy.wrap);
+
   let projectId = '';
   let projectSlug = '';
   let userId = '';
@@ -131,6 +140,17 @@ describe('Project description builder display', () => {
     // are both visible.
     cy.contains('Edited text.').should('be.visible');
     cy.get('.e2e-two-column #e2e-file-attachment')
+      .contains('example.pdf')
+      .should('be.visible');
+
+    // And in the builder's preview. The widget resolves its file through the layout's own
+    // attachments, so the preview has to put the layout in context — front office alone does
+    // not cover it.
+    cy.visit(`/admin/project-page-builder/projects/${projectId}`);
+    cy.get('div#ROOT');
+    cy.get('#e2e-preview-toggle').click({ force: true });
+    getIframeBody()
+      .find('#e2e-file-attachment')
       .contains('example.pdf')
       .should('be.visible');
   });
