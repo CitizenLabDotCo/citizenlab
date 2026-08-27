@@ -115,6 +115,9 @@ const SearchSelect = ({
                   // Without this the open menu is painted under the control of
                   // the next question on the form (see TAN-4671).
                   menuPortal: (base) => ({ ...base, zIndex: 1001 }),
+                  // The focus ring's white shadow lands on the placeholder,
+                  // which the search input sits on top of.
+                  input: (base) => ({ ...base, input: { boxShadow: 'none' } }),
                 }}
               />
             </Box>
