@@ -483,7 +483,7 @@ export const transformFieldForSubmission = (
       random_option_ordering: field.random_option_ordering,
       dropdown_layout: field.dropdown_layout,
     }),
-    ...(field.input_type === 'topic_ids' && {
+    ...(['topic_ids', 'multipoint'].includes(field.input_type) && {
       maximum_select_count: field.select_count_enabled
         ? field.maximum_select_count
         : null,

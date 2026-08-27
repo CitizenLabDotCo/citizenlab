@@ -4,8 +4,58 @@ import {
   LogicConflictType,
   detectConflictsByPage,
   getReorderedFields,
+  transformFieldForSubmission,
   NestedGroupingStructure,
 } from './utils';
+
+describe('transformFieldForSubmission', () => {
+  const multipointField = (
+    overrides: Partial<IFlatCustomField> = {}
+  ): IFlatCustomField =>
+    ({
+      id: 'field-1',
+      input_type: 'multipoint',
+      key: 'locations',
+      required: false,
+      enabled: true,
+      title_multiloc: { en: 'Which locations?' },
+      ...overrides,
+    } as IFlatCustomField);
+
+  it('submits the pin counts for a multipoint field', () => {
+    const result = transformFieldForSubmission(
+      multipointField({
+        select_count_enabled: true,
+        minimum_select_count: 2,
+        maximum_select_count: 5,
+      }),
+      []
+    );
+
+    expect(result).toMatchObject({
+      select_count_enabled: true,
+      minimum_select_count: 2,
+      maximum_select_count: 5,
+    });
+  });
+
+  it('clears the pin counts when the limit is turned off', () => {
+    const result = transformFieldForSubmission(
+      multipointField({
+        select_count_enabled: false,
+        minimum_select_count: 2,
+        maximum_select_count: 5,
+      }),
+      []
+    );
+
+    expect(result).toMatchObject({
+      select_count_enabled: false,
+      minimum_select_count: null,
+      maximum_select_count: null,
+    });
+  });
+});
 
 describe('getReorderedFields', () => {
   const nestedGroupData = [
