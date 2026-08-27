@@ -6,9 +6,18 @@ import FileAttachment from '.';
 
 let inBuilder = false;
 jest.mock('@craftjs/core', () => ({
-  useEditor: (collect: (state: { options: { enabled: boolean } }) => unknown) =>
-    collect({ options: { enabled: inBuilder } }),
-  useNode: jest.fn(),
+  useEditor: (
+    collect?: (state: { options: { enabled: boolean } }) => unknown
+  ) => ({
+    ...(collect
+      ? (collect({ options: { enabled: inBuilder } }) as object)
+      : {}),
+    query: { getSerializedNodes: () => ({}) },
+  }),
+  useNode: (collect?: (node: { data: { props: unknown } }) => unknown) => ({
+    ...(collect ? (collect({ data: { props: {} } }) as object) : {}),
+    actions: { setProp: jest.fn() },
+  }),
 }));
 
 let layoutId: string | undefined = 'layout-1';
@@ -39,10 +48,27 @@ jest.mock('api/files/useFileById', () => ({
   __esModule: true,
   default: () => ({ data: undefined, isLoading: false }),
 }));
+const filesQuery = jest.fn();
+let availableFiles: { id: string; attributes: { name: string } }[] = [];
+let fileIsAlreadyUsed = false;
+jest.mock('./utils', () => ({
+  getIsFileAlreadyUsed: () => fileIsAlreadyUsed,
+}));
 jest.mock('api/files/useFiles', () => ({
   __esModule: true,
-  default: () => ({ data: undefined }),
+  default: (params: { project?: string[] }) => {
+    filesQuery(params);
+    return {
+      data: { data: availableFiles },
+      isLoading: false,
+      isFetching: false,
+      refetch: jest.fn(),
+    };
+  },
 }));
+
+let routeParams: { projectId?: string } = {};
+jest.mock('utils/router', () => ({ useParams: () => routeParams }));
 
 describe('FileAttachment', () => {
   beforeEach(() => {
@@ -74,5 +100,52 @@ describe('FileAttachment', () => {
 
     expect(screen.queryByText('minutes.pdf')).not.toBeInTheDocument();
     expect(document.getElementById('e2e-file-attachment')).toBeNull();
+  });
+
+  describe('settings', () => {
+    const Settings = FileAttachment.craft.related.settings;
+
+    beforeEach(() => {
+      filesQuery.mockClear();
+      routeParams = {};
+      availableFiles = [];
+      fileIsAlreadyUsed = false;
+    });
+
+    // An empty array disables the files query, which left the panel on a spinner for good.
+    it('asks for every file when the page belongs to no project', () => {
+      render(<Settings />);
+
+      expect(filesQuery).toHaveBeenCalledWith(
+        expect.objectContaining({ project: undefined })
+      );
+    });
+
+    it('asks for the project’s files when there is one', () => {
+      routeParams = { projectId: 'project-1' };
+
+      render(<Settings />);
+
+      expect(filesQuery).toHaveBeenCalledWith(
+        expect.objectContaining({ project: ['project-1'] })
+      );
+    });
+
+    it('says nothing is uploaded yet when there are no files', () => {
+      render(<Settings />);
+
+      expect(screen.getByText(/no files available yet/i)).toBeInTheDocument();
+    });
+
+    // Files already placed elsewhere in the layout are filtered out, which used to read as
+    // "no files available" and sent the admin off to upload duplicates.
+    it('says so when every file is already on the page', () => {
+      availableFiles = [{ id: 'file-1', attributes: { name: 'minutes.pdf' } }];
+      fileIsAlreadyUsed = true;
+
+      render(<Settings />);
+
+      expect(screen.getByText(/already on this page/i)).toBeInTheDocument();
+    });
   });
 });

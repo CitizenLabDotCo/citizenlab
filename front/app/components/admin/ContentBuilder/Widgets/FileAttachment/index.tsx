@@ -133,15 +133,17 @@ const FileAttachmentSettings = () => {
 
   const { formatMessage } = useIntl();
   const { query } = useEditor();
-  const { projectId } = useParams({ strict: false });
+  const { projectId, customPageId } = useParams({ strict: false });
 
-  // Get files for project
+  // A page outside a project — a custom page — offers every file the user may see. Passing an
+  // empty array instead would disable the query, leaving the panel on a spinner for good.
   const {
     data: files,
+    isLoading: isLoadingFiles,
     isFetching: isFetchingFiles,
     refetch: refetchFiles,
   } = useFiles({
-    project: projectId ? [projectId] : [],
+    project: projectId ? [projectId] : undefined,
   });
 
   // Get current layout state to check for duplicate files
@@ -173,7 +175,7 @@ const FileAttachmentSettings = () => {
   });
 
   // Full-panel spinner on initial load only; refetches keep the panel visible.
-  if (!files) {
+  if (isLoadingFiles) {
     return <Spinner />;
   }
 
@@ -186,7 +188,16 @@ const FileAttachmentSettings = () => {
       gap="12px"
     >
       {fileOptions.length === 0 ? (
-        <Text m="0px">{formatMessage(messages.noFilesAvailable)}</Text>
+        // Two different dead ends: nothing uploaded, or everything uploaded is already placed.
+        <Text m="0px">
+          {formatMessage(
+            files?.data.length
+              ? messages.allFilesAlreadyUsed
+              : projectId
+              ? messages.noFilesAvailable
+              : messages.noFilesYet
+          )}
+        </Text>
       ) : (
         <Select
           value={fileId}
@@ -201,17 +212,30 @@ const FileAttachmentSettings = () => {
         />
       )}
 
-      {projectId && (
+      {(projectId || customPageId) && (
         <Box display="flex" alignItems="center" gap="4px">
-          <ButtonWithLink
-            to="/admin/projects/$projectId/files"
-            params={{ projectId }}
-            buttonStyle="text"
-            icon="upload-file"
-            openLinkInNewTab={true}
-          >
-            {formatMessage(messages.uploadFiles)}
-          </ButtonWithLink>
+          {projectId && (
+            <ButtonWithLink
+              to="/admin/projects/$projectId/files"
+              params={{ projectId }}
+              buttonStyle="text"
+              icon="upload-file"
+              openLinkInNewTab={true}
+            >
+              {formatMessage(messages.uploadFiles)}
+            </ButtonWithLink>
+          )}
+          {!projectId && customPageId && (
+            <ButtonWithLink
+              to="/admin/pages-menu/pages/$customPageId/attachments"
+              params={{ customPageId }}
+              buttonStyle="text"
+              icon="upload-file"
+              openLinkInNewTab={true}
+            >
+              {formatMessage(messages.uploadFilesToPage)}
+            </ButtonWithLink>
+          )}
           {/* Refresh the list to pick up files uploaded in the other tab. */}
           {isFetchingFiles ? (
             <Box p="4px" display="flex">
