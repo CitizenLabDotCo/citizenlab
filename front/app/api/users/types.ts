@@ -1,5 +1,7 @@
 import { ImageSizes, SupportedLocale, Multiloc } from 'typings';
 
+import { TAppConfigurationSetting } from 'api/app_configuration/types';
+
 import { Keys } from 'utils/cl-react-query/types';
 import { TRole } from 'utils/permissions/roles';
 
@@ -50,6 +52,7 @@ export interface IUserAttributes {
   confirmation_required: boolean;
   custom_field_values?: Record<string, any>;
   onboarding?: OnboardingType;
+  early_access_features?: TAppConfigurationSetting[];
   avatar?: ImageSizes;
   roles?: TRole[];
   email?: string;
@@ -104,6 +107,7 @@ export interface IUserUpdate {
   bio_multiloc?: Multiloc;
   custom_field_values?: Record<string, any>;
   onboarding?: OnboardingType;
+  early_access_features?: TAppConfigurationSetting[];
   phone?: string;
 }
 
