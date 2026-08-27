@@ -21,8 +21,25 @@ jest.mock('components/admin/ContentBuilder/LanguageProvider', () => ({
   default: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
+const layoutProvider = jest.fn();
+jest.mock(
+  'components/admin/ContentBuilder/context/ContentBuilderLayoutContext',
+  () => ({
+    ContentBuilderLayoutProvider: ({
+      layoutId,
+      children,
+    }: {
+      layoutId?: string;
+      children: React.ReactNode;
+    }) => {
+      layoutProvider({ layoutId });
+      return <>{children}</>;
+    },
+  })
+);
+
 let layoutResponse:
-  | { data: { attributes: { craftjs_json: object } } }
+  | { data: { id?: string; attributes: { craftjs_json: object } } }
   | undefined;
 let isLoading = false;
 jest.mock('api/custom_page_layout/useCustomPageLayout', () => ({
@@ -34,8 +51,20 @@ describe('FullScreenPreview', () => {
   beforeEach(() => {
     isLoading = false;
     layoutResponse = {
-      data: { attributes: { craftjs_json: { ROOT: { nodes: [] } } } },
+      data: {
+        id: 'layout-1',
+        attributes: { craftjs_json: { ROOT: { nodes: [] } } },
+      },
     };
+    layoutProvider.mockClear();
+  });
+
+  // FileAttachment looks its file up via the layout's own attachments, so without this those
+  // widgets render nothing in the preview while working in the builder and the front office.
+  it('puts the layout id in context for widgets that need it', () => {
+    render(<FullScreenPreview staticPageId="page-1" />);
+
+    expect(layoutProvider).toHaveBeenCalledWith({ layoutId: 'layout-1' });
   });
 
   it('renders the stored layout', () => {
