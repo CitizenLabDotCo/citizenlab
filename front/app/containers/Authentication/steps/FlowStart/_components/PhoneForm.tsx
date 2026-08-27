@@ -27,11 +27,15 @@ interface FormValues {
 
 interface Props {
   loading: boolean;
+  // The number entered earlier in the flow, if any. Set when the user comes back
+  // here from the confirmation step to change their number, so they don't have
+  // to type it again.
+  phone: string | null;
   setError: SetError;
   onSubmit: (phone: string) => void;
 }
 
-const PhoneForm = ({ loading, setError, onSubmit }: Props) => {
+const PhoneForm = ({ loading, phone, setError, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
 
   const schema = useMemo(
@@ -50,7 +54,7 @@ const PhoneForm = ({ loading, setError, onSubmit }: Props) => {
 
   const methods = useForm<FormValues>({
     mode: 'onSubmit',
-    defaultValues: { phone: '' },
+    defaultValues: { phone: phone ?? '' },
     resolver: yupResolver(schema),
     shouldFocusError: true,
   });

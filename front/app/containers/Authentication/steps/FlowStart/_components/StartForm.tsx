@@ -4,7 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { SetError } from 'containers/Authentication/typings';
+import { SetError, State } from 'containers/Authentication/typings';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
@@ -17,6 +17,7 @@ import PhoneForm from './PhoneForm';
 interface Props {
   loading: boolean;
   topText: MessageDescriptor;
+  state: State;
   setError: SetError;
   onSubmitEmail: (email: string) => void;
   onSubmitPhone: (phone: string) => void;
@@ -28,6 +29,7 @@ interface Props {
 const StartForm = ({
   loading,
   topText,
+  state,
   setError,
   onSubmitEmail,
   onSubmitPhone,
@@ -35,7 +37,10 @@ const StartForm = ({
   const { formatMessage } = useIntl();
   const smsFFEnabled = useFeatureFlag({ name: 'sms' });
   const smsLoginFFEnabled = useFeatureFlag({ name: 'sms_login' });
-  const [showPhoneForm, setShowPhoneForm] = useState(false);
+  // A number in the state means the user already identified themselves with a
+  // phone number and came back here (e.g. through 'change your number' on the
+  // confirmation step), so start on the phone form rather than the email one.
+  const [showPhoneForm, setShowPhoneForm] = useState(!!state.phone);
 
   const smsLoginEnabled = smsFFEnabled && smsLoginFFEnabled;
 
@@ -44,6 +49,7 @@ const StartForm = ({
       <EmailForm
         loading={loading}
         topText={topText}
+        email={state.email}
         setError={setError}
         onSubmit={onSubmitEmail}
       />
@@ -55,6 +61,7 @@ const StartForm = ({
       {showPhoneForm ? (
         <PhoneForm
           loading={loading}
+          phone={state.phone}
           setError={setError}
           onSubmit={onSubmitPhone}
         />
@@ -62,6 +69,7 @@ const StartForm = ({
         <EmailForm
           loading={loading}
           topText={topText}
+          email={state.email}
           setError={setError}
           onSubmit={onSubmitEmail}
         />
