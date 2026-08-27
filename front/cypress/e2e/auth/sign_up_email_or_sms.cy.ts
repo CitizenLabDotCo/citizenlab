@@ -121,14 +121,17 @@ describe('Sign up - either email or SMS', () => {
     cy.logout();
   });
 
-  it('allows requesting a new confirmation code', () => {
+  // A code was just sent, so a new one can only be requested a minute later. The
+  // countdown running out is covered by the backend spec: the interval is kept by
+  // the server clock, which cypress cannot move forward.
+  it('counts down before a new confirmation code can be requested', () => {
     startFlow();
 
     enterPhone(cy);
     acceptPolicies(cy);
 
-    cy.dataCy('resend-code').click();
-    cy.dataCy('confirmation-code-sent-message').should('exist');
+    cy.dataCy('resend-code-countdown').should('exist');
+    cy.dataCy('resend-code').should('not.exist');
 
     confirmPhone(cy);
     enterUserInfo(cy);

@@ -10969,6 +10969,11 @@
     "verified_at": "2026-07-14T17:01:42.057992Z",
     "verified_by": "Luuc"
   },
+  "app.containers.PhoneConfirmation.sendNewCodeIn": {
+    "state": "verified",
+    "verified_at": "2026-08-26T20:34:09.027539Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.PhoneConfirmation.verifyAndContinue": {
     "state": "verified",
     "verified_at": "2026-07-14T17:01:42.057992Z",

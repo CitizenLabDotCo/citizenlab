@@ -2159,6 +2159,7 @@
   "app.containers.PhoneConfirmation.confirmationCodeSent": "Wysłano nowy kod",
   "app.containers.PhoneConfirmation.didntGetAnSMS": "Nie otrzymano SMS-a?",
   "app.containers.PhoneConfirmation.sendNewCode": "Wyślij nowy kod.",
+  "app.containers.PhoneConfirmation.sendNewCodeIn": "Możesz poprosić o nowy kod za {seconds} {seconds, plural, one {sekundę} few {sekundy} many {sekund} other {sekundy}}.",
   "app.containers.PhoneConfirmation.verifyAndContinue": "Zweryfikuj i kontynuuj",
   "app.containers.PhoneConfirmation.wrongNumber": "Błędny numer?",
   "app.containers.ProjectFolderCards.allProjects": "Wszystkie projekty",

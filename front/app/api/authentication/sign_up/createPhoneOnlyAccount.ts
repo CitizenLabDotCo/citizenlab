@@ -1,5 +1,9 @@
 import { SupportedLocale } from 'typings';
 
+import {
+  RESEND_INTERVAL_SECONDS,
+  setResendCooldown,
+} from 'api/authentication/confirm_phone/resendCooldown';
 import { IUser } from 'api/users/types';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -35,6 +39,10 @@ export default async function createPhoneOnlyAccount({
       claim_tokens: claimTokens,
     },
   });
+
+  // Creating the account always sends a code, so the confirmation step this
+  // leads to starts on a full cooldown.
+  setResendCooldown(RESEND_INTERVAL_SECONDS);
 
   clearClaimToken();
 }

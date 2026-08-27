@@ -2159,6 +2159,7 @@
   "app.containers.PhoneConfirmation.confirmationCodeSent": "Išsiųstas naujas kodas",
   "app.containers.PhoneConfirmation.didntGetAnSMS": "Negavote SMS žinutės?",
   "app.containers.PhoneConfirmation.sendNewCode": "Siųsti naują kodą.",
+  "app.containers.PhoneConfirmation.sendNewCodeIn": "Naujo kodo galėsite paprašyti po {seconds} {seconds, plural, one {sekundės} other {sekundžių}}.",
   "app.containers.PhoneConfirmation.verifyAndContinue": "Patvirtinti ir tęsti",
   "app.containers.PhoneConfirmation.wrongNumber": "Neteisingas numeris?",
   "app.containers.ProjectFolderCards.allProjects": "Visi projektai",

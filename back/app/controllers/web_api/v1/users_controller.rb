@@ -186,7 +186,11 @@ class WebApi::V1::UsersController < ApplicationController
     @user = User.find_by_phone_number(parsed.e164)
 
     RequestPhoneConfirmationCodeJob.issue_code_and_deliver_later(@user) if auto_send_code?(@user, :phone_confirmation)
-    render_check_action(@user, :phone_confirmation)
+    render_check_action(
+      @user,
+      :phone_confirmation,
+      code_retry_after: @user&.phone_confirmation&.seconds_until_resend_allowed.to_i
+    )
   end
 
   def create
@@ -427,8 +431,11 @@ class WebApi::V1::UsersController < ApplicationController
   # Shared by check_email and check_phone: given the account that owns the
   # submitted identifier (nil when there is none) and the name of the confirmation
   # that covers that identifier, tell the frontend which step to go to next.
-  def render_check_action(user, confirmation_name)
-    render json: raw_json({ action: check_action(user, confirmation_name) })
+  # code_retry_after is passed for phone only: only SMS codes have a minimum
+  # interval between requests, and the confirmation step counts it down instead
+  # of offering a resend the backend would reject.
+  def render_check_action(user, confirmation_name, code_retry_after: nil)
+    render json: raw_json({ action: check_action(user, confirmation_name), code_retry_after: code_retry_after }.compact)
   end
 
   def check_action(user, confirmation_name)

@@ -2159,6 +2159,7 @@
   "app.containers.PhoneConfirmation.confirmationCodeSent": "Seoladh cód nua",
   "app.containers.PhoneConfirmation.didntGetAnSMS": "Ní bhfuair tú SMS?",
   "app.containers.PhoneConfirmation.sendNewCode": "Seol Cód Nua.",
+  "app.containers.PhoneConfirmation.sendNewCodeIn": "Is féidir leat cód nua a iarraidh i gceann {seconds} {seconds, plural, one {soicind} other {soicind}}.",
   "app.containers.PhoneConfirmation.verifyAndContinue": "Deimhnigh agus Lean ar aghaidh",
   "app.containers.PhoneConfirmation.wrongNumber": "Uimhir mhícheart?",
   "app.containers.ProjectFolderCards.allProjects": "Gach tionscadal",

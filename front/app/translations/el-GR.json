@@ -2159,6 +2159,7 @@
   "app.containers.PhoneConfirmation.confirmationCodeSent": "Στάλθηκε νέος κωδικός",
   "app.containers.PhoneConfirmation.didntGetAnSMS": "Δεν λάβατε SMS;",
   "app.containers.PhoneConfirmation.sendNewCode": "Αποστολή νέου κωδικού.",
+  "app.containers.PhoneConfirmation.sendNewCodeIn": "Μπορείτε να ζητήσετε νέο κωδικό σε {seconds} {seconds, plural, one {δευτερόλεπτο} other {δευτερόλεπτα}}.",
   "app.containers.PhoneConfirmation.verifyAndContinue": "Επαλήθευση και συνέχεια",
   "app.containers.PhoneConfirmation.wrongNumber": "Λάθος αριθμός;",
   "app.containers.ProjectFolderCards.allProjects": "Όλα τα έργα",
