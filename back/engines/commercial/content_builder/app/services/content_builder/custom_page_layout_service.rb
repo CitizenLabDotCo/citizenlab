@@ -4,7 +4,8 @@ module ContentBuilder
   # Builds the craftjs graph for a custom page: a root and a body region holding the page's
   # content in the order it renders today.
   #
-  # Anything the front office does not render is skipped, so a migrated page looks the same.
+  # Anything the front office does not render is skipped, so a migrated page carries the same
+  # content. Its layout follows the builder's conventions rather than the legacy page's.
   class CustomPageLayoutService
     CODE = 'custom_page'
 

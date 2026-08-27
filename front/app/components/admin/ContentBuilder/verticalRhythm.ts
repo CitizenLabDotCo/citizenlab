@@ -9,7 +9,8 @@ export const VerticalRhythmContext = createContext(false);
 
 // flow: inline content that reads as one column of text (paragraphs, images,
 // buttons). card: a visually bounded box (accordions, info boxes). band: a
-// full-width section with its own background (phases, events).
+// full-width section standing apart from the text around it, carrying its own
+// vertical padding and sometimes a background (phases, events, project lists).
 type WidgetRole = 'flow' | 'card' | 'band';
 
 const WIDGET_ROLES: Record<string, WidgetRole> = {

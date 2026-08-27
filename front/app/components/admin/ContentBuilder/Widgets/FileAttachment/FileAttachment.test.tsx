@@ -137,8 +137,8 @@ describe('FileAttachment', () => {
       expect(screen.getByText(/no files available yet/i)).toBeInTheDocument();
     });
 
-    // Files already placed elsewhere in the layout are filtered out, which used to read as
-    // "no files available" and sent the admin off to upload duplicates.
+    // Files already placed elsewhere in the layout are filtered out, so having none left to
+    // offer is a different situation from having none at all.
     it('says so when every file is already on the page', () => {
       availableFiles = [{ id: 'file-1', attributes: { name: 'minutes.pdf' } }];
       fileIsAlreadyUsed = true;
