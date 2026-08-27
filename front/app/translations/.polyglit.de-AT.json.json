@@ -6974,6 +6974,11 @@
     "verified_at": "2026-08-20T16:30:02.293876Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Authentication.steps.Policies.byContinuingPhone3": {
+    "state": "verified",
+    "verified_at": "2026-08-26T09:59:04.023535Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": {
     "state": "verified",
     "verified_at": "2026-08-17T14:35:41.840831Z",

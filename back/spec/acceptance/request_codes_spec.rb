@@ -275,6 +275,56 @@ resource 'Request codes' do
       expect(user.reload.phone_confirmation.code).to be_present
     end
 
+    example 'It records the consent to receive a confirmation code by SMS and logs the activity' do
+      user = create(:unconfirmed_phone_user, phone: '+14155552671')
+
+      expect { do_request(request_code: { phone: '+14155552671' }) }
+        .to have_enqueued_job(LogActivityJob)
+        .with(
+          an_instance_of(EmailCampaigns::Consent),
+          'consent_given',
+          user,
+          kind_of(Integer),
+          payload: { campaign_type: EmailCampaigns::Campaigns::PhoneConfirmation.name }
+        )
+      expect(response_status).to eq 200
+
+      consent = EmailCampaigns::Consent.find_by(
+        user_id: user.id,
+        campaign_type: EmailCampaigns::Campaigns::PhoneConfirmation.name
+      )
+      expect(consent.consented).to be true
+    end
+
+    # A user who replied STOP and then asks for a code again is opting back in.
+    example 'It records the consent again after a withdrawal' do
+      user = create(:unconfirmed_phone_user, phone: '+14155552671')
+      create(
+        :consent,
+        user: user,
+        campaign_type: EmailCampaigns::Campaigns::PhoneConfirmation.name,
+        consented: false
+      )
+
+      do_request(request_code: { phone: '+14155552671' })
+      expect(response_status).to eq 200
+
+      consent = EmailCampaigns::Consent.find_by(
+        user_id: user.id,
+        campaign_type: EmailCampaigns::Campaigns::PhoneConfirmation.name
+      )
+      expect(consent.consented).to be true
+    end
+
+    example 'It does not record consent when the request is rejected' do
+      create(:user, :with_confirmed_phone, phone: '+14155552671')
+      header_token_for(create(:user, :with_confirmed_phone, phone: '+14155552672'))
+
+      expect { do_request(request_code: { phone: '+14155552671' }) }
+        .not_to change(EmailCampaigns::Consent, :count)
+      expect(response_status).to eq 401
+    end
+
     example 'It does not work without a phone number' do
       expect { do_request(request_code: {}) }.not_to enqueue_job(RequestPhoneConfirmationCodeJob)
       expect(response_status).to eq 401
@@ -358,6 +408,28 @@ resource 'Request codes' do
       expect(response_status).to eq 200
       # Only the delivery is queued; the code itself is issued before the response.
       expect(user.reload.phone_confirmation.code).to be_present
+    end
+
+    example 'It records the consent to receive a confirmation code by SMS and logs the activity' do
+      user = create(:user, :with_confirmed_phone)
+      header_token_for(user)
+
+      expect { do_request(request_code: {}) }
+        .to have_enqueued_job(LogActivityJob)
+        .with(
+          an_instance_of(EmailCampaigns::Consent),
+          'consent_given',
+          user,
+          kind_of(Integer),
+          payload: { campaign_type: EmailCampaigns::Campaigns::PhoneConfirmation.name }
+        )
+      expect(response_status).to eq 200
+
+      consent = EmailCampaigns::Consent.find_by(
+        user_id: user.id,
+        campaign_type: EmailCampaigns::Campaigns::PhoneConfirmation.name
+      )
+      expect(consent.consented).to be true
     end
 
     # Unlike request_code_phone, which is a login path.

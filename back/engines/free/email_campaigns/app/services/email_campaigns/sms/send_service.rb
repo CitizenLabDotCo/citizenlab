@@ -38,7 +38,7 @@ module EmailCampaigns
         # Transient failure — leave the delivery pending so Sms::SendJob can retry it.
         raise
       rescue ProviderError::RecipientOptedOut => e
-        UseCaseConsentService.new.withdraw!(delivery.user, use_case)
+        ConsentService.new.record_for_sms_use_case!(delivery.user, use_case, consented: false)
         delivery.update!(status: 'failed', error_message: e.message)
         raise
       rescue ProviderError => e

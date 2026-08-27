@@ -23,8 +23,13 @@ export default defineMessages({
     defaultMessage: 'Create a new account with: {phone} {changeLink}',
   },
   // Submitted verbatim as opt-in evidence for toll-free verification.
-  byContinuingPhone2: {
-    id: 'app.containers.Authentication.steps.Policies.byContinuingPhone2',
+  byContinuingPhoneWithCampaignsEnabled: {
+    id: 'app.containers.Authentication.steps.Policies.byContinuingPhone3',
+    defaultMessage:
+      "By continuing, you agree to receive a one-time confirmation code by SMS from {orgName}. If you opted in above, you'll also receive news and updates; message frequency varies. Message and data rates may apply. Reply HELP for help, STOP to opt out.",
+  },
+  byContinuingPhoneWithoutCampaignsEnabled: {
+    id: 'app.containers.Authentication.steps.Policies.byContinuingPhoneWithoutCampaignsEnabled',
     defaultMessage:
       'By continuing, you agree to receive a one-time confirmation code by SMS from {orgName}. Message and data rates may apply. Reply HELP for help, STOP to opt out.',
   },
