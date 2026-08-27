@@ -77,7 +77,9 @@ const FooterNotes = ({
         </FooterNoteLink>
       )}
 
-      {codeResent && (
+      {/* The message says a code just went out, which is the very thing the
+          countdown is measuring - so it goes when the countdown does. */}
+      {codeResent && secondsUntilResend > 0 && (
         <FooterNoteSuccessMessage data-cy="confirmation-code-sent-message">
           <FooterNoteSuccessMessageIcon name="check-circle" />
           <FormattedMessage {...messages.confirmationCodeSent} />
