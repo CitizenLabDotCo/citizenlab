@@ -25,7 +25,9 @@ import messages from 'containers/ProjectsShowPage/messages';
 
 import IdeaButton from 'components/IdeaButton';
 import EmptyParticipationPreview from 'components/ProjectPageBuilder/Widgets/EmptyState/EmptyParticipationPreview';
-import ExtraSurveyActionButton from 'components/ProjectPageBuilder/Widgets/ExtraSurveys/ActionButton';
+import { EVENTS_WIDGET_ANCHOR_ID } from 'components/ProjectPageBuilder/Widgets/Events';
+import useHasEventsWidget from 'components/ProjectPageBuilder/Widgets/Events/useHasEventsWidget';
+import SpotlightSurveyActionButton from 'components/ProjectPageBuilder/Widgets/SpotlightSurveys/ActionButton';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
@@ -37,7 +39,7 @@ import { isAdmin } from 'utils/permissions/roles';
 import { useLocation } from 'utils/router';
 import { scrollToElement } from 'utils/scroll';
 
-import { excludeHidden, groupExtraSurveys } from './participationOptions';
+import { excludeHidden, groupSpotlightSurveys } from './participationOptions';
 import WaysToParticipateModal from './WaysToParticipateModal';
 
 interface Props {
@@ -69,6 +71,7 @@ const ProjectActionButtons = memo<Props>(
       currentAndFutureOnly: true,
       sort: 'start_at',
     });
+    const hasEventsWidget = useHasEventsWidget(projectId);
 
     useEffect(() => {
       setCurrentPhase(
@@ -88,7 +91,7 @@ const ProjectActionButtons = memo<Props>(
     }
 
     const { open: openSurveyPhases, upcoming: upcomingSurveyPhases } =
-      groupExtraSurveys(standalonePhases?.data);
+      groupSpotlightSurveys(standalonePhases?.data);
     const visibleOpenSurveys = isParallelParticipationEnabled
       ? excludeHidden(openSurveyPhases, hiddenOptionIds)
       : [];
@@ -98,8 +101,14 @@ const ProjectActionButtons = memo<Props>(
 
     const canSeeEmptyState =
       isParallelParticipationEnabled && isAdmin(authUser);
+    const showEventsCTAButton = !!events?.data.length && hasEventsWidget;
 
-    if (!currentPhase && visibleOpenSurveys.length === 0 && !canSeeEmptyState) {
+    if (
+      !currentPhase &&
+      visibleOpenSurveys.length === 0 &&
+      !canSeeEmptyState &&
+      !showEventsCTAButton
+    ) {
       return null;
     }
 
@@ -247,9 +256,6 @@ const ProjectActionButtons = memo<Props>(
       !currentPhaseHidden &&
       participationMethod === 'document_annotation' &&
       !hasCurrentPhaseEnded;
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    const showEventsCTAButton = !!events?.data?.length;
 
     const showMethodCTA =
       showPostIdeaButton ||
@@ -354,7 +360,7 @@ const ProjectActionButtons = memo<Props>(
           <>
             {methodCTAButton}
             {surveyCTAs.map((surveyPhase, index) => (
-              <ExtraSurveyActionButton
+              <SpotlightSurveyActionButton
                 key={surveyPhase.id}
                 phase={surveyPhase}
                 buttonStyle={
@@ -402,7 +408,7 @@ const ProjectActionButtons = memo<Props>(
             id="e2e-project-see-events-button"
             buttonStyle="secondary-outlined"
             onClick={() => {
-              scrollToElement({ id: 'e2e-events-section-project-page' });
+              scrollToElement({ id: EVENTS_WIDGET_ANCHOR_ID });
             }}
             fontWeight="500"
             mb="8px"

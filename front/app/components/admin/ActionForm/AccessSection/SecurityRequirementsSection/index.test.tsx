@@ -38,11 +38,10 @@ jest.mock('api/id_methods/useIdMethods', () =>
 );
 
 const SECTION_TITLE = 'Security requirements';
-const EMAIL_LABEL = 'Require confirmed email from all participants';
-const PHONE_LABEL = 'Require confirmed phone number from all participants';
-const VERIFICATION_LABEL =
-  'Require identity verification from all participants';
-const PASSWORD_LABEL = 'Require user to set a password';
+const EMAIL_LABEL = 'Require confirmed email from all users';
+const PHONE_LABEL = 'Require confirmed phone number from all users';
+const VERIFICATION_LABEL = 'Require identity verification from all users';
+const PASSWORD_LABEL = 'Require users to set a password';
 
 // The collapsed summary uses shortened versions of the row labels.
 const PASSWORD_SUMMARY = 'Password';
@@ -159,11 +158,14 @@ describe('<SecurityRequirementsSection />', () => {
     });
 
     it('leaves an unavailable check out of the summary', () => {
+      // Both required checks are unavailable here: no verification method is
+      // configured, and password login is off. Only the checks the platform
+      // still offers (email, phone) keep the section on screen.
       mockVerificationMethodConfigured = false;
       mockPasswordLoginEnabled = false;
       renderSection({
         require_confirmed_email: false,
-        require_confirmed_phone_number: true,
+        require_confirmed_phone_number: false,
         require_verification: true,
       });
 
@@ -182,7 +184,7 @@ describe('<SecurityRequirementsSection />', () => {
       expect(screen.getByText(VERIFICATION_LABEL)).toBeInTheDocument();
       expect(
         screen.getByText(
-          'If enabled, all users need to confirm their email. If disabled, only participants who sign up by email need to confirm their email.'
+          'If enabled, all users need to confirm their email. If disabled, only users who sign up by email need to confirm their email.'
         )
       ).toBeInTheDocument();
     });
@@ -223,7 +225,7 @@ describe('<SecurityRequirementsSection />', () => {
       await openSection();
 
       expect(
-        screen.getByText('Participant must have a confirmed phone number.')
+        screen.getByText('Users must have a confirmed phone number.')
       ).toBeInTheDocument();
     });
 
@@ -236,16 +238,16 @@ describe('<SecurityRequirementsSection />', () => {
       expect(screen.getByText(EMAIL_LABEL)).toBeInTheDocument();
     });
 
-    it('hides the password and phone rows when password login is off', async () => {
-      // Phone confirmation codes are part of the password_login flow, so with
-      // that feature off a confirmed phone number can never be obtained and the
-      // check is not offered either.
+    it('hides the password row when password login is off, but keeps the phone one', async () => {
+      // Re-confirming a phone number goes through reconfirm_code_phone, which
+      // is not gated by password_login, so an SSO-only platform can still
+      // require a confirmed phone number.
       mockPasswordLoginEnabled = false;
       renderSection();
       await openSection();
 
       expect(screen.queryByText(PASSWORD_LABEL)).not.toBeInTheDocument();
-      expect(screen.queryByText(PHONE_LABEL)).not.toBeInTheDocument();
+      expect(screen.getByText(PHONE_LABEL)).toBeInTheDocument();
       expect(screen.getByText(EMAIL_LABEL)).toBeInTheDocument();
     });
 

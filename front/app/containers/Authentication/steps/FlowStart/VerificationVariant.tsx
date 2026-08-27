@@ -8,7 +8,7 @@ import useIdMethods from 'api/id_methods/useIdMethods';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useSuperAdmin from 'hooks/useSuperAdmin';
 
-import { SetError } from 'containers/Authentication/typings';
+import { SetError, State } from 'containers/Authentication/typings';
 
 import Or from 'components/UI/Or';
 
@@ -16,15 +16,16 @@ import { useIntl } from 'utils/cl-intl';
 
 import sharedMessages from '../messages';
 
-import AdminSignInLink from './AdminSignInLink';
-import FranceConnectBlock from './FranceConnectBlock';
+import AdminSignInLink from './_components/AdminSignInLink';
+import FranceConnectBlock from './_components/FranceConnectBlock';
+import SSOButton from './_components/SSOButtonsExceptFC/SSOButton';
+import StartForm from './_components/StartForm';
+import VerificationWarning from './_components/VerificationWarning';
 import messages from './messages';
-import SSOButton from './SSOButtonsExceptFC/SSOButton';
-import StartForm from './StartForm';
-import VerificationWarning from './VerificationWarning';
 
 interface Props {
   loading: boolean;
+  state: State;
   setError: SetError;
   onSubmitEmail: (email: string) => void;
   onSubmitPhone: (phone: string) => void;
@@ -40,6 +41,7 @@ interface Props {
  */
 const VerificationVariant = ({
   loading,
+  state,
   setError,
   onSubmitEmail,
   onSubmitPhone,
@@ -104,6 +106,7 @@ const VerificationVariant = ({
               <StartForm
                 loading={loading}
                 topText={sharedMessages.enterYourEmailAddress}
+                state={state}
                 setError={setError}
                 onSubmitEmail={onSubmitEmail}
                 onSubmitPhone={onSubmitPhone}

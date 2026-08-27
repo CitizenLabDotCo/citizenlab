@@ -29,5 +29,6 @@ export const updateSearchParams = (updatedParams: Record<string, any>) => {
   clHistory.replace({
     pathname: window.location.pathname,
     search: stringify(newSearchParams, { addQueryPrefix: true }),
+    hash: window.location.hash,
   });
 };

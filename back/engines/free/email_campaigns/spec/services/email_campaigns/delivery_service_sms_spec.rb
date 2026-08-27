@@ -5,7 +5,26 @@ require 'rails_helper'
 describe EmailCampaigns::DeliveryService do
   subject(:service) { described_class.new }
 
-  include_context 'with sms feature enabled'
+  include_context 'with sms manual campaigns feature enabled'
+
+  describe '#campaign_classes' do
+    it 'includes SmsManual when both the sms and sms_manual_campaigns features are activated' do
+      expect(service.campaign_classes).to include(EmailCampaigns::Campaigns::SmsManual)
+    end
+
+    it 'excludes SmsManual but keeps the OTP campaigns when sms_manual_campaigns is deactivated' do
+      SettingsService.new.deactivate_feature!('sms_manual_campaigns')
+
+      expect(service.campaign_classes).not_to include(EmailCampaigns::Campaigns::SmsManual)
+      expect(service.campaign_classes).to include(EmailCampaigns::Campaigns::PhoneConfirmation)
+    end
+
+    it 'excludes SmsManual when sms is deactivated, whatever sms_manual_campaigns says' do
+      SettingsService.new.deactivate_feature!('sms')
+
+      expect(service.campaign_classes).not_to include(EmailCampaigns::Campaigns::SmsManual)
+    end
+  end
 
   describe '#send_now (SMS channel)' do
     let(:campaign) { create(:sms_manual_campaign) }

@@ -3064,6 +3064,11 @@
     "verified_at": "2026-07-22T22:11:44.152415Z",
     "verified_by": "Adrien"
   },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysManagedNote2": {
+    "state": "verified",
+    "verified_at": "2026-08-21T08:44:30.840010Z",
+    "verified_by": "Lydie"
+  },
   "app.components.ProjectPageBuilder.Widgets.extraSurveysNoSurveyNote": {
     "state": "verified",
     "verified_at": "2026-07-22T20:39:16.943574Z",
@@ -3118,6 +3123,11 @@
     "state": "verified",
     "verified_at": "2026-07-22T20:21:43.199401Z",
     "verified_by": "Adrien"
+  },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysWidgetTitle2": {
+    "state": "verified",
+    "verified_at": "2026-08-21T08:44:30.840010Z",
+    "verified_by": "Lydie"
   },
   "app.components.ProjectPageBuilder.Widgets.inputFeedEmptyTitle": {
     "state": "verified",
@@ -3508,6 +3518,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.components.SmsConsent.campaignPreferencesDisclosure": {
+    "state": "verified",
+    "verified_at": "2026-08-24T07:55:36.451580Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.SmsConsent.phoneConfirmationDisclosure": {
+    "state": "verified",
+    "verified_at": "2026-08-24T07:55:36.451580Z",
+    "verified_by": "Cindy EB"
   },
   "app.components.SmsConsent.smsConfirmationDisclosure": {
     "state": "verified",
@@ -6913,6 +6933,16 @@
     "state": "verified",
     "verified_at": "2026-07-22T12:34:37.086812Z",
     "verified_by": "Adrien"
+  },
+  "app.containers.Authentication.steps.Policies.byContinuingPhone2": {
+    "state": "verified",
+    "verified_at": "2026-08-24T07:55:36.451580Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Authentication.steps.Policies.byContinuingPhone3": {
+    "state": "verified",
+    "verified_at": "2026-08-26T10:01:07.217972Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.Authentication.steps.SSOVerification.alreadyHaveAnAccount": {
     "state": "verified",
@@ -10779,6 +10809,11 @@
     "verified_at": "2026-07-16T20:42:18.518328Z",
     "verified_by": "Adrien"
   },
+  "app.containers.PhoneChange.newPhoneLabel2": {
+    "state": "verified",
+    "verified_at": "2026-08-21T08:49:58.655567Z",
+    "verified_by": "Lydie"
+  },
   "app.containers.PhoneChange.phoneEmptyError": {
     "state": "verified",
     "verified_at": "2026-07-17T07:44:21.568357Z",
@@ -10788,6 +10823,11 @@
     "state": "verified",
     "verified_at": "2026-07-17T07:44:21.568357Z",
     "verified_by": "Adrien"
+  },
+  "app.containers.PhoneChange.phoneInvalid3": {
+    "state": "verified",
+    "verified_at": "2026-08-21T08:49:58.655567Z",
+    "verified_by": "Lydie"
   },
   "app.containers.PhoneChange.phoneTaken": {
     "state": "verified",
@@ -10813,6 +10853,11 @@
     "state": "verified",
     "verified_at": "2026-07-17T08:13:45.374659Z",
     "verified_by": "Adrien"
+  },
+  "app.containers.PhoneChange.smsManualCampaignConsentLabel2": {
+    "state": "verified",
+    "verified_at": "2026-08-24T07:55:36.451580Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.PhoneChange.submitButton": {
     "state": "verified",
@@ -11849,6 +11894,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.containers.SignUp.iHaveReadAndAgreeToTermsAndPrivacy2": {
+    "state": "verified",
+    "verified_at": "2026-08-26T08:23:14.230165Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -11883,6 +11933,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.containers.SignUp.policiesNotAcceptedError": {
+    "state": "verified",
+    "verified_at": "2026-08-26T08:23:14.230165Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.SignUp.privacyPolicyNotAcceptedError": {
     "state": "verified",
@@ -13134,6 +13189,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.errors.insufficient_sms_balance": {
+    "state": "verified",
+    "verified_at": "2026-08-21T08:30:14.056854Z",
+    "verified_by": "Lydie"
+  },
   "app.errors.invalid_email": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -13224,6 +13284,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.errors.no_previewer_phone": {
+    "state": "verified",
+    "verified_at": "2026-08-24T13:24:58.762427Z",
+    "verified_by": "Cindy EB"
+  },
   "app.errors.no_recipients": {
     "state": "verified",
     "verified_at": "2026-03-18T16:35:09.080991Z",
@@ -13263,6 +13328,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.errors.sms_not_configured": {
+    "state": "verified",
+    "verified_at": "2026-08-24T07:54:40.733189Z",
+    "verified_by": "Cindy EB"
   },
   "app.errors.something_went_wrong": {
     "state": "verified",

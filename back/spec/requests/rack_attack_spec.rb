@@ -310,15 +310,19 @@ describe 'Rack::Attack' do
       { path: '/web_api/v1/user/request_code_new_email', root: 'request_code', identifier: 'new_email' },
       { path: '/web_api/v1/user/request_code_phone', root: 'request_code', identifier: 'phone' },
       { path: '/web_api/v1/user/request_code_new_phone', root: 'request_code', identifier: 'new_phone' },
+      { path: '/web_api/v1/user/request_reconfirm_code_email', root: 'request_code', identifier: nil },
+      { path: '/web_api/v1/user/request_reconfirm_code_phone', root: 'request_code', identifier: nil },
       { path: '/web_api/v1/user/confirm_code_email', root: 'confirmation', identifier: 'email' },
       { path: '/web_api/v1/user/confirm_code_new_email', root: 'confirmation', identifier: nil },
       { path: '/web_api/v1/user/confirm_code_phone', root: 'confirmation', identifier: 'phone' },
-      { path: '/web_api/v1/user/confirm_code_new_phone', root: 'confirmation', identifier: nil }
+      { path: '/web_api/v1/user/confirm_code_new_phone', root: 'confirmation', identifier: nil },
+      { path: '/web_api/v1/user/reconfirm_code_email', root: 'confirmation', identifier: nil },
+      { path: '/web_api/v1/user/reconfirm_code_phone', root: 'confirmation', identifier: nil }
     ]
 
     # A body for `endpoint`, carrying the `index`th distinct identifier. Pass
-    # `identifier: false` to leave the identifier out, which is what the callers
-    # that fall back to current_user do.
+    # `identifier: false` to leave the identifier out, which is what the
+    # endpoints that act on current_user do.
     def code_params(endpoint, index = 0, identifier: true)
       body = endpoint[:root] == 'confirmation' ? { 'code' => '1234' } : {}
 
@@ -460,7 +464,7 @@ describe 'Rack::Attack' do
     it 'counts a token passed as a query param against the same user' do
       # AuthToken reads params[:token] before the Authorization header, so a caller
       # can't escape the per-user limit by moving the token from one to the other.
-      path = '/web_api/v1/user/request_code_email'
+      path = '/web_api/v1/user/request_reconfirm_code_email'
       params = '{ "request_code": { "only_if_first_time": false } }'
 
       freeze_at_window_start do

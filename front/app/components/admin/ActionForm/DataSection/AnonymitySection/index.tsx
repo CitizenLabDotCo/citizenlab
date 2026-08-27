@@ -1,6 +1,3 @@
-// "Anonymity in results": how the collected data is linked to the submission.
-// Only relevant when there's an account to link against.
-
 import React from 'react';
 
 import { Box, Text, Radio, Error } from '@citizenlab/cl2-component-library';

@@ -542,6 +542,7 @@ fi-FI:
       yesterday: Eilen
     new_phone_confirmation:
       sms_body: Vahvistuskoodisi on %{code}.
+      sms_body2: '%{organization_name}: Vahvistuskoodisi on %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Siirry tähän syötteeseen
       event_description: "%{feedback_author_name} antoi päivityksen kohteesta '%{input_title}'."
@@ -556,6 +557,7 @@ fi-FI:
       title: Valitse uusi salasana
     phone_confirmation:
       sms_body: Vahvistuskoodisi on %{code}.
+      sms_body2: '%{organization_name}: Vahvistuskoodisi on %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane

@@ -542,6 +542,7 @@ da-DK:
       yesterday: I går
     new_phone_confirmation:
       sms_body: Din bekræftelseskode er %{code}.
+      sms_body2: '%{organization_name}: Din bekræftelseskode er %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Gå til dette input
       event_description: "%{feedback_author_name} kom med en officiel opdatering på %{input_title}'."
@@ -556,6 +557,7 @@ da-DK:
       title: Vælg en ny adgangskode
     phone_confirmation:
       sms_body: Din bekræftelseskode er %{code}.
+      sms_body2: '%{organization_name}: Din bekræftelseskode er %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane

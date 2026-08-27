@@ -8,19 +8,20 @@ import useIdMethods from 'api/id_methods/useIdMethods';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useSuperAdmin from 'hooks/useSuperAdmin';
 
-import { SetError } from 'containers/Authentication/typings';
+import { SetError, State } from 'containers/Authentication/typings';
 
 import Or from 'components/UI/Or';
 
 import sharedMessages from '../messages';
 
-import AdminSignInLink from './AdminSignInLink';
-import FranceConnectBlock from './FranceConnectBlock';
-import SSOButtonsExceptFC from './SSOButtonsExceptFC';
-import StartForm from './StartForm';
+import AdminSignInLink from './_components/AdminSignInLink';
+import FranceConnectBlock from './_components/FranceConnectBlock';
+import SSOButtonsExceptFC from './_components/SSOButtonsExceptFC';
+import StartForm from './_components/StartForm';
 
 interface Props {
   loading: boolean;
+  state: State;
   setError: SetError;
   onSubmitEmail: (email: string) => void;
   onSubmitPhone: (phone: string) => void;
@@ -31,6 +32,7 @@ interface Props {
 // methods (each only shown when its feature flag is enabled).
 const DefaultVariant = ({
   loading,
+  state,
   setError,
   onSubmitEmail,
   onSubmitPhone,
@@ -69,6 +71,7 @@ const DefaultVariant = ({
           <StartForm
             loading={loading}
             topText={sharedMessages.enterYourEmailAddress}
+            state={state}
             setError={setError}
             onSubmitEmail={onSubmitEmail}
             onSubmitPhone={onSubmitPhone}

@@ -9,7 +9,7 @@ import authProvidersMessages from 'containers/Authentication/steps/_components/A
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
-import { useIntl, MessageDescriptor } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 
 import sharedMessages from '../messages';
 
@@ -17,41 +17,46 @@ import messages from './messages';
 import PoliciesMarkup from './PoliciesMarkup';
 
 const DEFAULT_VALUES = {
-  termsAndConditionsAccepted: false,
-  privacyPolicyAccepted: false,
-} as const;
+  policiesAccepted: false,
+  smsManualCampaignConsent: false,
+};
 
 const isTruthy = (value?: boolean) => !!value;
+
+export interface FormValues {
+  policiesAccepted: boolean;
+  smsManualCampaignConsent: boolean;
+}
 
 interface Props {
   loading: boolean;
   showByContinuingText?: boolean;
-  byContinuingMessage?: MessageDescriptor;
-  onSubmit: () => void;
+  showSmsManualCampaignConsent?: boolean;
+  onSubmit: (values: FormValues) => void;
+  byContinuingCopy?: string;
 }
 
 const PoliciesForm = ({
   loading,
   showByContinuingText,
-  byContinuingMessage,
+  showSmsManualCampaignConsent,
+  byContinuingCopy,
   onSubmit,
 }: Props) => {
   const { formatMessage } = useIntl();
 
   const schema = object({
-    termsAndConditionsAccepted: boolean().test(
-      '',
-      formatMessage(authProvidersMessages.tacError),
-      isTruthy
-    ),
-    privacyPolicyAccepted: boolean().test(
-      '',
-      formatMessage(authProvidersMessages.privacyPolicyNotAcceptedError),
-      isTruthy
-    ),
+    policiesAccepted: boolean()
+      .defined()
+      .test(
+        '',
+        formatMessage(authProvidersMessages.policiesNotAcceptedError),
+        isTruthy
+      ),
+    smsManualCampaignConsent: boolean().defined(),
   });
 
-  const methods = useForm({
+  const methods = useForm<FormValues>({
     mode: 'onSubmit',
     defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),
@@ -65,7 +70,8 @@ const PoliciesForm = ({
         </Text>
         <PoliciesMarkup
           showByContinuingText={showByContinuingText}
-          byContinuingMessage={byContinuingMessage}
+          showSmsManualCampaignConsent={showSmsManualCampaignConsent}
+          byContinuingCopy={byContinuingCopy}
         />
         <ButtonWithLink
           id="e2e-policies-continue"

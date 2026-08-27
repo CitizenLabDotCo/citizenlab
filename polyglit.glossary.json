@@ -126,6 +126,9 @@
   "topic (input term)": {
     "nl-NL": "thema"
   },
+  "text message": {
+    "de-DE": "SMS"
+  },
   "plan": {
     "de-DE": "Lizenz"
   },
@@ -230,6 +233,9 @@
     "de-DE": "Zugang",
     "es-ES": "asiento",
     "nl-NL": "account"
+  },
+  "phone": {
+    "de-DE": "Handy"
   },
   "community monitor": {
     "nl-NL": "gemeenschapsmonitor"

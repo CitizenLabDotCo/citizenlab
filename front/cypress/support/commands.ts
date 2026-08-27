@@ -88,6 +88,7 @@ declare global {
       apiOverridePhasePermission: typeof apiOverridePhasePermission;
       intersectsViewport: typeof intersectsViewport;
       notIntersectsViewport: typeof notIntersectsViewport;
+      apiGetHomepageLayout: typeof apiGetHomepageLayout;
       apiUpdateHomepageLayout: typeof apiUpdateHomepageLayout;
       apiUpdateAppConfiguration: typeof apiUpdateAppConfiguration;
       clickLocaleSwitcherAndType: typeof clickLocaleSwitcherAndType;
@@ -1850,11 +1851,43 @@ function apiUpdateAppConfiguration(
   });
 }
 
-function clickLocaleSwitcherAndType(title: string) {
-  cy.wait(1000);
-  cy.get('.e2e-localeswitcher').each((button) => {
+// Fills a multiloc field in every locale of the tenant, through its locale switcher.
+// Pass `field` on forms holding more than one multiloc field: the switcher and the
+// input are then looked up inside that field instead of page-wide. `input` is a
+// selector within it ('input', 'textarea', '.ql-editor', …).
+function clickLocaleSwitcherAndType(
+  text: string,
+  field?: { container: string; input: string }
+) {
+  if (!field) {
+    cy.wait(1000);
+    cy.get('.e2e-localeswitcher').each((button) => {
+      cy.wrap(button).click();
+      cy.get('#title_multiloc').clear().type(text);
+    });
+    return;
+  }
+
+  cy.get(`${field.container} .e2e-localeswitcher`).each((button) => {
     cy.wrap(button).click();
-    cy.get('#title_multiloc').clear().type(title);
+    cy.wrap(button).should('have.class', 'selected');
+    cy.get(field.container).find(field.input).first().clear().type(text);
+    cy.wrap(button).find('div').should('have.class', 'notEmpty');
+  });
+}
+
+function apiGetHomepageLayout() {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'GET',
+      url: `web_api/v1/home_pages/content_builder_layouts/homepage`,
+    });
   });
 }
 
@@ -2538,6 +2571,7 @@ Cypress.Commands.add(
   { prevSubject: true },
   notIntersectsViewport
 );
+Cypress.Commands.add('apiGetHomepageLayout', apiGetHomepageLayout);
 Cypress.Commands.add('apiUpdateHomepageLayout', apiUpdateHomepageLayout);
 Cypress.Commands.add('apiRemoveCustomPage', apiRemoveCustomPage);
 Cypress.Commands.add('apiCreateCustomPage', apiCreateCustomPage);

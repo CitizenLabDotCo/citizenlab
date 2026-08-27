@@ -89,7 +89,9 @@ class SanitizationService
     Rinku.auto_link(html, :all, attributes, nil, Rinku::AUTOLINK_SHORT_DOMAINS)
   end
 
-  # The pipeline `Idea` applies to its body, and the second half of `sanitize_comment_body`.
+  # The pipeline for every rich-text field - bodies and descriptions - shared with anything
+  # reprocessing a stored value (e.g. machine translations). Also the second half of
+  # `sanitize_comment_body`.
   #
   # A nil value comes back as '', not nil. Long-standing behaviour - do not add a guard.
   def sanitize_body(html, features)

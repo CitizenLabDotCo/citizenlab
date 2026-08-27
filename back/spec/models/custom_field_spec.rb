@@ -313,6 +313,16 @@ RSpec.describe CustomField do
       cf = create(:custom_field, key: nil, title_multiloc: { 'ar-SA': 'الرئيسية' })
       expect(cf.key).to be_present
     end
+
+    it 'generates a key from the title with its markup already stripped' do
+      cf = create(:custom_field, key: nil, title_multiloc: { 'en' => '<b>Age</b>' })
+      expect(cf.key).to start_with 'age_'
+    end
+
+    it 'generates a key from a title carrying a payload without keeping any of it' do
+      cf = create(:custom_field, key: nil, title_multiloc: { 'en' => '<img src=x onerror=alert(1)>hi' })
+      expect(cf.key).to start_with 'hi_'
+    end
   end
 
   context 'when domicile field is created' do
@@ -338,14 +348,13 @@ RSpec.describe CustomField do
     end
   end
 
-  describe 'description sanitizer' do
-    it 'sanitizes script tags in the description' do
-      custom_field = create(:custom_field, description_multiloc: {
-        'en' => '<p>Test</p><script>This content will stay</script><p>This content will also stay</p><a href="http://www.citizenlab.co" rel="nofollow">Click</a>'
-      })
-      expect(custom_field.description_multiloc).to eq({ 'en' => '<p>Test</p>This content will stay<p>This content will also stay</p><a href="http://www.citizenlab.co" rel="nofollow">Click</a>' })
-    end
+  it_behaves_like 'a sanitized html_multiloc', factory: :custom_field
+  it_behaves_like 'a plain text multiloc', factory: :custom_field
+  it_behaves_like 'a plain text multiloc', factory: :custom_field, attribute: :page_button_label_multiloc
+  it_behaves_like 'a plain text multiloc', factory: :custom_field, attribute: :linear_scale_label_1_multiloc
+  it_behaves_like 'a plain text multiloc', factory: :custom_field, attribute: :linear_scale_label_11_multiloc
 
+  describe 'description sanitizer' do
     it 'does not sanitize allowed tags in the description' do
       description_multiloc = { 'en' => <<-DESC
       <h2> This is fine ! </h2>
