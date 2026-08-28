@@ -60,13 +60,26 @@ class ProjectReview < ApplicationRecord
     self.updated_at = now
   end
 
+  # Who may approve this review: admins, moderators of the project's space, and moderators of
+  # the project's folder (which includes moderators of that folder's own space).
+  # Project moderators are excluded on purpose: they are the ones requesting the review.
+  # The `present?` guards matter: `space_moderator?(nil)` / `project_folder_moderator?(nil)`
+  # answer "moderates any space/folder", which would let an unrelated moderator through.
+  def approvable_by?(user)
+    return false if user.nil?
+    return true if user.admin?
+
+    role_service = UserRoleService.new
+    (project.space.present? && role_service.can_moderate?(project.space, user)) ||
+      (project.folder.present? && role_service.can_moderate?(project.folder, user)) ||
+      false
+  end
+
   private
 
   def validate_reviewer
     return if reviewer.nil?
-    return if reviewer.admin?
-    return if reviewer.space_moderator?(project.space_id)
-    return if reviewer.project_folder_moderator?(project.folder_id)
+    return if approvable_by?(reviewer)
 
     errors.add(:reviewer, 'must be an admin, a moderator of the project space, or a moderator of the project folder')
   end
