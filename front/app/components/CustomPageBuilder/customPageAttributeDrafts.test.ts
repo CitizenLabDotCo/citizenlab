@@ -6,6 +6,12 @@ import {
   stripCustomPageAttributeDrafts,
 } from './customPageAttributeDrafts';
 
+const nodesWithBanner = (props: Record<string, unknown>) =>
+  ({
+    ROOT: { type: { resolvedName: 'CustomPageRoot' }, nodes: ['B'] },
+    B: { type: { resolvedName: 'CustomPageBanner' }, nodes: [], props },
+  } as unknown as SerializedNodes);
+
 const nodesWithTitle = (props: Record<string, unknown>) =>
   ({
     ROOT: { type: { resolvedName: 'CustomPageRoot' }, nodes: ['T'] },
@@ -57,5 +63,45 @@ describe('customPageAttributeDrafts', () => {
     expect(
       hasCustomPageAttributeDrafts(extractCustomPageAttributeDrafts(nodes))
     ).toBe(false);
+  });
+
+  it('extracts edited banner settings', () => {
+    const drafts = extractCustomPageAttributeDrafts(
+      nodesWithBanner({ draft: { banner_layout: 'two_row_layout' } })
+    );
+
+    expect(drafts.banner).toEqual({ banner_layout: 'two_row_layout' });
+    expect(hasCustomPageAttributeDrafts(drafts)).toBe(true);
+  });
+
+  // An untouched banner must not send the page an update on every save.
+  it('reports no drafts for a banner that was never edited', () => {
+    expect(
+      hasCustomPageAttributeDrafts(
+        extractCustomPageAttributeDrafts(nodesWithBanner({}))
+      )
+    ).toBe(false);
+    expect(
+      hasCustomPageAttributeDrafts(
+        extractCustomPageAttributeDrafts(nodesWithBanner({ draft: {} }))
+      )
+    ).toBe(false);
+  });
+
+  // A removed image is a real change, and null is what tells the API to clear it.
+  it('keeps a removed image in the draft', () => {
+    const drafts = extractCustomPageAttributeDrafts(
+      nodesWithBanner({ draft: { header_bg: null } })
+    );
+
+    expect(drafts.banner).toEqual({ header_bg: null });
+  });
+
+  it('strips the banner draft before the layout is stored', () => {
+    const stripped = stripCustomPageAttributeDrafts(
+      nodesWithBanner({ draft: { banner_layout: 'two_row_layout' } })
+    );
+
+    expect(stripped.B.props).toEqual({});
   });
 });

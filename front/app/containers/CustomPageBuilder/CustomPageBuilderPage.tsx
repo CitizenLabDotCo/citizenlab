@@ -106,7 +106,8 @@ const CustomPageBuilderPage = ({
       if (hasCustomPageAttributeDrafts(drafts)) {
         await updateCustomPage({
           id: staticPageId,
-          title_multiloc: drafts.titleMultiloc,
+          ...(drafts.titleMultiloc && { title_multiloc: drafts.titleMultiloc }),
+          ...drafts.banner,
         });
       }
 

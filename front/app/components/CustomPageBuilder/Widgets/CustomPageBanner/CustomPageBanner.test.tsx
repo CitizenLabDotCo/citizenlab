@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Multiloc } from 'typings';
+
 import { render, screen } from 'utils/testUtils/rtl';
 
 import CustomPageBanner from '.';
@@ -35,8 +37,16 @@ jest.mock('@craftjs/core', () => ({
 // The real header is covered by its own tests; here we only care whether it renders.
 jest.mock('components/CustomPageHeader', () => ({
   __esModule: true,
-  default: ({ pageData }: { pageData: { id: string } }) => (
-    <div data-testid="header" data-page={pageData.id} />
+  default: ({
+    pageData,
+  }: {
+    pageData: { id: string; attributes: { banner_header_multiloc: Multiloc } };
+  }) => (
+    <div
+      data-testid="header"
+      data-page={pageData.id}
+      data-heading={pageData.attributes.banner_header_multiloc.en}
+    />
   ),
 }));
 
@@ -96,6 +106,35 @@ describe('CustomPageBanner', () => {
     };
 
     render(<CustomPageBanner />);
+
+    expect(screen.getByTestId('header')).toBeInTheDocument();
+  });
+
+  // Without this the builder would show the saved banner while the panel edits something
+  // else, and an admin could not see what they were changing.
+  it('previews unsaved settings over the saved ones', () => {
+    render(
+      <CustomPageBanner draft={{ banner_header_multiloc: { en: 'Draft' } }} />
+    );
+
+    expect(screen.getByTestId('header')).toHaveAttribute(
+      'data-heading',
+      'Draft'
+    );
+  });
+
+  // A page with no saved image is still configured once a draft image is added.
+  it('counts a draft image as configured', () => {
+    page = {
+      data: {
+        id: 'page-1',
+        attributes: { banner_header_multiloc: {}, header_bg: null },
+      },
+    };
+
+    render(
+      <CustomPageBanner draft={{ header_bg: 'data:image/png;base64,x' }} />
+    );
 
     expect(screen.getByTestId('header')).toBeInTheDocument();
   });

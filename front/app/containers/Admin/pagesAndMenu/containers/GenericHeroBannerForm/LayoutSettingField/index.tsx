@@ -34,7 +34,6 @@ const LayoutOption = styled.label`
   display: flex;
   flex-direction: column;
   align-items: start;
-  margin-right: 20px;
   font-size: ${fontSizes.base}px;
   cursor: pointer;
 `;
@@ -57,7 +56,9 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
       <SubSectionTitle>
         <FormattedMessage {...messages.chooseLayout} />
       </SubSectionTitle>
-      <Box display="flex">
+      {/* Wraps so the fixed-width previews stack in a narrow container, such as the
+          content builder's settings panel. A wide form still gets them in one row. */}
+      <Box display="flex" flexWrap="wrap" gap="20px">
         <LayoutOption data-cy="e2e-full-width-banner-layout-option">
           <LayoutOptionTop>
             <Radio
