@@ -21,9 +21,15 @@ jest.mock('./CustomPageProjectsAndEvents', () => ({
   __esModule: true,
   default: () => <div data-testid="legacyProjects" />,
 }));
-jest.mock('./CustomPageHeader', () => ({
+jest.mock('components/CustomPageHeader', () => ({
   __esModule: true,
-  default: () => <div data-testid="banner" />,
+  default: ({ adminEditButton }: { adminEditButton?: React.ReactNode }) => (
+    <div data-testid="banner">{adminEditButton}</div>
+  ),
+}));
+jest.mock('./AdminCustomPageEditButton', () => ({
+  __esModule: true,
+  default: () => <div data-testid="editButton" />,
 }));
 
 jest.mock('api/app_configuration/useAppConfiguration', () =>
@@ -62,6 +68,7 @@ jest.mock('api/custom_pages/useCustomPageBySlug', () =>
 
 let hasContent = false;
 let isLoading = false;
+let craftjsJson: unknown;
 jest.mock(
   'components/CustomPageBuilder/ContentViewer/useCustomPageBuilderContent',
   () => ({
@@ -69,7 +76,7 @@ jest.mock(
     // Mirrors the real hook, which is disabled without an id and so reports nothing.
     default: jest.fn((staticPageId?: string) =>
       staticPageId
-        ? { hasContent, isLoading }
+        ? { hasContent, isLoading, craftjsJson }
         : { hasContent: false, isLoading: false }
     ),
   })
@@ -79,6 +86,7 @@ describe('CustomPageShow', () => {
   beforeEach(() => {
     hasContent = false;
     isLoading = false;
+    craftjsJson = undefined;
     pageAttributes = globalCustomPage;
   });
 
@@ -98,6 +106,26 @@ describe('CustomPageShow', () => {
     expect(screen.getByTestId('builderContent')).toBeInTheDocument();
     expect(screen.queryByTestId('legacyInfoSection')).not.toBeInTheDocument();
     expect(screen.queryByTestId('legacyProjects')).not.toBeInTheDocument();
+  });
+
+  // The layout carries a Title widget that owns the heading and can hide it, so rendering
+  // the legacy one too showed the title twice.
+  it('leaves the heading to the builder content', () => {
+    hasContent = true;
+    render(<CustomPageShow />);
+
+    expect(
+      screen.queryByRole('heading', { name: 'About us' })
+    ).not.toBeInTheDocument();
+  });
+
+  it('still renders the heading on a page with no builder content', () => {
+    hasContent = false;
+    render(<CustomPageShow />);
+
+    expect(
+      screen.getByRole('heading', { name: 'About us' })
+    ).toBeInTheDocument();
   });
 
   // Rendering them first would show content that is replaced as soon as the layout arrives.
@@ -121,5 +149,73 @@ describe('CustomPageShow', () => {
 
     expect(screen.getAllByTestId('legacyInfoSection')).toHaveLength(2);
     expect(screen.queryByTestId('builderContent')).not.toBeInTheDocument();
+  });
+
+  // A page may have no banner and a hidden title, so the button belongs to the page rather
+  // than to any widget that might not be there.
+  describe('the admin edit button', () => {
+    it('renders once for the page when builder content renders', () => {
+      hasContent = true;
+      render(<CustomPageShow />);
+
+      expect(screen.getAllByTestId('editButton')).toHaveLength(1);
+    });
+
+    it('renders once on a legacy page too', () => {
+      hasContent = false;
+      render(<CustomPageShow />);
+
+      expect(screen.getAllByTestId('editButton')).toHaveLength(1);
+    });
+
+    // The layout's Banner widget renders it instead, so rendering the legacy one too showed
+    // two banners — and two edit buttons with them.
+    it('drops the legacy banner when builder content renders', () => {
+      hasContent = true;
+      pageAttributes = { ...globalCustomPage, banner_enabled: true };
+      render(<CustomPageShow />);
+
+      expect(screen.queryByTestId('banner')).not.toBeInTheDocument();
+      expect(screen.getAllByTestId('editButton')).toHaveLength(1);
+    });
+
+    it('is left to the banner on a legacy page', () => {
+      hasContent = false;
+      pageAttributes = { ...globalCustomPage, banner_enabled: true };
+      render(<CustomPageShow />);
+
+      expect(
+        screen.getByTestId('banner').querySelector('[data-testid="editButton"]')
+      ).not.toBeNull();
+      expect(screen.getAllByTestId('editButton')).toHaveLength(1);
+    });
+  });
+
+  // A full-bleed banner takes the button to the window edge; without one it lines up with
+  // the content. The layout decides, since the widget can be deleted.
+  describe('the edit button anchor', () => {
+    const anchorOf = (container: HTMLElement) =>
+      container.querySelector('[data-testid="editButton"]')?.parentElement;
+
+    it('is content width when the layout has no banner widget', () => {
+      hasContent = true;
+      craftjsJson = { ROOT: { type: { resolvedName: 'CustomPageRoot' } } };
+
+      const { container } = render(<CustomPageShow />);
+
+      expect(anchorOf(container)).toHaveStyle('max-width: 1200px');
+    });
+
+    it('is full width when the layout has one', () => {
+      hasContent = true;
+      craftjsJson = {
+        ROOT: { type: { resolvedName: 'CustomPageRoot' } },
+        BANNER: { type: { resolvedName: 'CustomPageBanner' } },
+      };
+
+      const { container } = render(<CustomPageShow />);
+
+      expect(anchorOf(container)).not.toHaveStyle('max-width: 1200px');
+    });
   });
 });

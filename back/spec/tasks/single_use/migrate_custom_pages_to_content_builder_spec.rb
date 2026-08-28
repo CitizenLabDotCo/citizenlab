@@ -45,6 +45,27 @@ describe 'single_use:migrate_custom_pages_to_content_builder' do
     expect(layout_for(page).enabled).to be true
   end
 
+  # The layouts PRs 1 and 2 derived predate the header widgets, so the upgrade path for an
+  # already-migrated page is a re-derive rather than anything header-specific in the task.
+  it 'gives a migrated page its header widgets' do
+    task.invoke('execute')
+
+    root = layout_for(page).craftjs_json.fetch('ROOT')
+    expect(root['nodes']).to start_with ContentBuilder::CustomPageLayoutService::TITLE_ID
+  end
+
+  it 'gives a page with a banner both header widgets, banner first' do
+    page.update!(banner_enabled: true)
+
+    task.invoke('execute')
+
+    root = layout_for(page).craftjs_json.fetch('ROOT')
+    expect(root['nodes'].first(2)).to eq [
+      ContentBuilder::CustomPageLayoutService::BANNER_ID,
+      ContentBuilder::CustomPageLayoutService::TITLE_ID
+    ]
+  end
+
   it 'writes nothing on a dry run, but reports what it would create' do
     task.invoke
 

@@ -15,6 +15,8 @@ type WidgetRole = 'flow' | 'card' | 'band';
 
 const WIDGET_ROLES: Record<string, WidgetRole> = {
   TextMultiloc: 'flow',
+  CustomPageTitle: 'flow',
+  CustomPageBanner: 'band',
   RichTextMultiloc: 'flow',
   ImageMultiloc: 'flow',
   IframeMultiloc: 'flow',

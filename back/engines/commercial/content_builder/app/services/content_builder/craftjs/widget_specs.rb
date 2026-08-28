@@ -83,8 +83,13 @@ module ContentBuilder
         'ProjectBanner' => {},
         'ProjectTitle' => {},
         'ProjectPageBody' => {},
-        # The custom page scaffold, same idea.
+        # The custom page scaffold, same idea. The two header widgets sit alongside it rather
+        # than in it, both pinned to the top: the title is always present and hidden with a
+        # prop, the banner is seeded only when the page has one and is deletable. Both render
+        # from the page record, so neither carries content props.
         'CustomPageRoot' => {},
+        'CustomPageBanner' => {},
+        'CustomPageTitle' => {},
         'CustomPageBody' => {}
       }.freeze
     end

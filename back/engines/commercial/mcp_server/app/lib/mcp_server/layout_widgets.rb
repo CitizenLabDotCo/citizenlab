@@ -17,11 +17,13 @@ class McpServer::LayoutWidgets
 
   # Widgets belonging to the custom page builder, undocumented here for scope rather than for
   # being uninsertable: this tool only writes project layouts, where none of them can appear.
-  # ProjectsByFilter and EventsByProjects are insertable on a custom page whenever an admin
-  # wants them; CustomPageRoot and CustomPageBody are that page's scaffold.
+  # ProjectsByFilter, EventsByProjects, CustomPageBanner and CustomPageTitle are insertable
+  # whenever an admin wants them; CustomPageRoot and CustomPageBody are that page's scaffold.
   CUSTOM_PAGE_WIDGETS = %w[
     ProjectsByFilter
     EventsByProjects
+    CustomPageBanner
+    CustomPageTitle
     CustomPageRoot
     CustomPageBody
   ].freeze

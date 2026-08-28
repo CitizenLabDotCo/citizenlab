@@ -36,7 +36,7 @@ export const defaultCustomPageLayout = (): SerializedNodes => ({
 const resolvedNameOf = (node: SerializedNode) =>
   typeof node.type === 'object' ? node.type.resolvedName : undefined;
 
-const findNodeIdByName = (nodes: SerializedNodes, name: string) =>
+export const findNodeIdByName = (nodes: SerializedNodes, name: string) =>
   Object.keys(nodes).find((id) => resolvedNameOf(nodes[id]) === name);
 
 // A node off the wire may have no children array at all, whatever the type says.
@@ -57,6 +57,11 @@ export const layoutHasContent = (nodes?: SerializedNodes): boolean => {
   return !!container && childIdsOf(container).length > 0;
 };
 
+// Pinned above the body, in the order ROOT holds them. CustomPageRoot refuses drops, so a
+// widget dragged from the toolbox lands in the body; hoisting it back to its slot is what
+// makes it pinned rather than ordinary content. ProjectPageBuilder does the same.
+const HEADER_WIDGETS = ['CustomPageBanner', 'CustomPageTitle'];
+
 // Guarantees the scaffold the editor relies on: a CustomPageRoot holding one CustomPageBody,
 // with ordinary nodes under the body and the pinned header slots left alongside it. A layout
 // saved against an older scaffold is repaired rather than discarded.
@@ -76,10 +81,18 @@ export const normalizeCustomPageLayout = (
     next[bodyId] = bodyNode(childIdsOf(next[ROOT_ID]));
   }
 
+  const headerIds = HEADER_WIDGETS.map((name) =>
+    findNodeIdByName(next, name)
+  ).filter((id): id is string => id !== undefined);
+
+  headerIds.forEach((id) => {
+    next[id] = { ...next[id], parent: ROOT_ID };
+  });
+
   next[bodyId] = {
     ...next[bodyId],
     parent: ROOT_ID,
-    nodes: childIdsOf(next[bodyId]),
+    nodes: childIdsOf(next[bodyId]).filter((id) => !headerIds.includes(id)),
   };
   next[bodyId].nodes.forEach((childId) => {
     const child = next[childId] as SerializedNode | undefined;
@@ -92,11 +105,12 @@ export const normalizeCustomPageLayout = (
   // Pinned slots stay on ROOT in their stored order. When the body was just created they
   // were adopted into it instead, so ROOT keeps only the body.
   const storedRootIds = existingBodyId
-    ? childIdsOf(root).filter((id) => id in next)
+    ? childIdsOf(root).filter((id) => id in next && !headerIds.includes(id))
     : [];
-  const rootIds = storedRootIds.includes(bodyId)
+  const withBody = storedRootIds.includes(bodyId)
     ? storedRootIds
     : [...storedRootIds, bodyId];
+  const rootIds = [...headerIds, ...withBody];
 
   next[ROOT_ID] = {
     ...root,

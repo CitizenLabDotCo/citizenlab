@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
-# Derives a `custom_page` Content Builder layout for every global custom page, from the info
-# sections, attachments and projects/events filter the page renders today.
+# Derives a `custom_page` Content Builder layout for every global custom page, from the banner,
+# title, info sections, attachments and projects/events filter the page renders today.
+#
+# Layouts derived before the header widgets existed have no banner or title node; `overwrite`
+# re-derives them, which is the upgrade path for an already-migrated page.
 #
 # Run it while `custom_page_builder` is still off for the tenant: no admin can have opened the
 # builder, so there is no builder edit for a re-derive to overwrite. `overwrite` refuses a

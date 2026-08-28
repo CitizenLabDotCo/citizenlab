@@ -87,6 +87,15 @@ export interface ICustomPageAttributes extends ICustomPageEnabledSettings {
   updated_at: string;
 }
 
+// header_bg is read back as sized URLs but written as a base64 string, so an update accepts
+// either. The attributes type describes only the read side.
+export type ICustomPageUpdate = Omit<
+  Partial<ICustomPageAttributes>,
+  'header_bg'
+> & {
+  header_bg?: ImageSizes | string | null;
+};
+
 export type TPolicyPage =
   | 'cookie-policy'
   | 'privacy-policy'

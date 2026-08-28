@@ -21,6 +21,8 @@ import {
   CustomPageRoot,
   CustomPageBody,
 } from 'components/CustomPageBuilder/regions';
+import CustomPageBanner from 'components/CustomPageBuilder/Widgets/CustomPageBanner';
+import CustomPageTitle from 'components/CustomPageBuilder/Widgets/CustomPageTitle';
 import EventsByProjects from 'components/CustomPageBuilder/Widgets/EventsByProjects';
 import ProjectsByFilter from 'components/CustomPageBuilder/Widgets/ProjectsByFilter';
 import BaseEditor from 'components/DescriptionBuilder/Editor/Editor';
@@ -61,6 +63,8 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
           EventsByProjects,
           CustomPageRoot,
           CustomPageBody,
+          CustomPageBanner,
+          CustomPageTitle,
         }}
         isPreview={isPreview}
         onNodesChange={onNodesChange}
