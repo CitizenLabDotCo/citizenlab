@@ -27,7 +27,7 @@ const CustomPageBuilder = () => {
     if (!featureEnabled) return;
     if (isError && bootstrappedPageId.current !== customPageId) {
       bootstrappedPageId.current = customPageId;
-      upsertCustomPageLayout({ staticPageId: customPageId, enabled: true });
+      upsertCustomPageLayout({ staticPageId: customPageId });
     }
   }, [featureEnabled, isError, customPageId, upsertCustomPageLayout]);
 
