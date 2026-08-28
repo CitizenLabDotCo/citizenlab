@@ -129,12 +129,22 @@ const CustomPageShow = () => {
           {/* One button for the page, not for a widget: the banner may be absent and the
               title hidden, and every combination still needs a way into the admin editor.
               The box gives its absolute positioning a content-width ancestor to line up
-              with, and has no height of its own. Legacy branches below keep their own. */}
+              with, and has no height of its own. `w=100%` is needed because the page
+              container centres its flex children, which would otherwise shrink this to its
+              (zero-width) absolutely positioned child. A full-bleed banner takes the button
+              to the window edge as it does today; without one it lines up with the content.
+              The z-index is what the legacy branch already used: the banner is a later,
+              positioned sibling, so it paints over the button otherwise. */}
           {showBuilderContent && (
             <Box
               position="relative"
-              maxWidth={`${BUILDER_CONTENT_WIDTH}px`}
-              margin="0 auto"
+              w="100%"
+              maxWidth={
+                pageAttributes.banner_enabled
+                  ? undefined
+                  : `${BUILDER_CONTENT_WIDTH}px`
+              }
+              zIndex="40000"
             >
               <AdminCustomPageEditButton
                 pageId={page.data.id}
