@@ -16,9 +16,14 @@ import HeaderContent from './HeaderContent';
 export interface Props {
   className?: string;
   pageData: ICustomPageData;
+  showAdminEditButton?: boolean;
 }
 
-const FullWidthBannerLayout = ({ className, pageData }: Props) => {
+const FullWidthBannerLayout = ({
+  className,
+  pageData,
+  showAdminEditButton = true,
+}: Props) => {
   const imageUrl = pageData.attributes.header_bg?.large;
   const overlayColor = pageData.attributes.banner_overlay_color;
   const overlayOpacity = pageData.attributes.banner_overlay_opacity;
@@ -47,10 +52,12 @@ const FullWidthBannerLayout = ({ className, pageData }: Props) => {
           pageAttributes={pageData.attributes}
         />
       </Header>
-      <AdminCustomPageEditButton
-        pageId={pageData.id}
-        projectId={pageData.attributes.project_id}
-      />
+      {showAdminEditButton && (
+        <AdminCustomPageEditButton
+          pageId={pageData.id}
+          projectId={pageData.attributes.project_id}
+        />
+      )}
     </Container>
   );
 };

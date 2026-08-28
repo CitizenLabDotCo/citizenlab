@@ -20,6 +20,7 @@ import HeaderContent from './HeaderContent';
 
 export interface Props {
   pageData: ICustomPageData;
+  showAdminEditButton?: boolean;
 }
 
 const CustomPageLayoutContainer = styled(Container)`
@@ -30,7 +31,7 @@ const CustomPageLayoutHeader = styled(Header)`
   max-width: ${stylingConsts.maxPageWidth}px;
 `;
 
-const FixedRatioLayout = ({ pageData }: Props) => {
+const FixedRatioLayout = ({ pageData, showAdminEditButton = true }: Props) => {
   const imageUrl = pageData.attributes.header_bg?.large;
   const overlayColor = pageData.attributes.banner_overlay_color;
   const overlayOpacity = pageData.attributes.banner_overlay_opacity;
@@ -56,10 +57,12 @@ const FixedRatioLayout = ({ pageData }: Props) => {
           pageAttributes={pageData.attributes}
         />
       </CustomPageLayoutHeader>
-      <AdminCustomPageEditButton
-        pageId={pageData.id}
-        projectId={pageData.attributes.project_id}
-      />
+      {showAdminEditButton && (
+        <AdminCustomPageEditButton
+          pageId={pageData.id}
+          projectId={pageData.attributes.project_id}
+        />
+      )}
     </CustomPageLayoutContainer>
   );
 };

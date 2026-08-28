@@ -27,12 +27,12 @@ import CustomPageHeader from './CustomPageHeader';
 import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
 import PageSections from './PageSections';
 
-// What every builder widget sets as its own max width.
-const BUILDER_CONTENT_WIDTH = 1200;
-
 // The page background is grey, and each legacy section paints white over it. Builder content
 // is one white block instead, so that grey would only ever show as a strip below it — and no
 // other builder puts its content on a coloured page.
+// What every builder widget sets as its own max width.
+const BUILDER_CONTENT_WIDTH = 1200;
+
 const PageContainer = styled(Container)<{ builderContent: boolean }>`
   ${({ builderContent }) => builderContent && 'background: #fff;'}
 `;
@@ -126,6 +126,22 @@ const CustomPageShow = () => {
       />
       <main className={`e2e-page-${pageSlugToUse}`}>
         <PageContainer builderContent={showBuilderContent}>
+          {/* One button for the page, not for a widget: the banner may be absent and the
+              title hidden, and every combination still needs a way into the admin editor.
+              The box gives its absolute positioning a content-width ancestor to line up
+              with, and has no height of its own. Legacy branches below keep their own. */}
+          {showBuilderContent && (
+            <Box
+              position="relative"
+              maxWidth={`${BUILDER_CONTENT_WIDTH}px`}
+              margin="0 auto"
+            >
+              <AdminCustomPageEditButton
+                pageId={page.data.id}
+                projectId={pageAttributes.project_id}
+              />
+            </Box>
+          )}
           {pageAttributes.banner_enabled ? (
             <>
               {pageAttributes.project_id && (
@@ -134,33 +150,31 @@ const CustomPageShow = () => {
                 </BackLinkContainer>
               )}
               <Box background="#fff" width="100%">
-                <CustomPageHeader pageData={page.data} />
+                <CustomPageHeader
+                  pageData={page.data}
+                  showAdminEditButton={!showBuilderContent}
+                />
               </Box>
             </>
           ) : (
-            // Builder widgets are 1200px wide, the container's default is narrower, so the
-            // title would not line up with the content under it.
-            <NoBannerContainer
-              maxWidth={showBuilderContent ? BUILDER_CONTENT_WIDTH : undefined}
-            >
-              {pageAttributes.project_id && (
-                <Box mb="8px">
-                  <BackToProjectLink projectId={pageAttributes.project_id} />
-                </Box>
-              )}
-              {/* Show the page text title if the banner is disabled — unless the layout
-                  holds a Title widget, which owns the heading and can hide it. The banner
-                  branch above stays legacy until the Banner widget lands. */}
-              {!showBuilderContent && (
+            // Legacy only: with builder content the layout owns the heading, and the edit
+            // button is rendered once for the whole page above.
+            !showBuilderContent && (
+              <NoBannerContainer>
+                {pageAttributes.project_id && (
+                  <Box mb="8px">
+                    <BackToProjectLink projectId={pageAttributes.project_id} />
+                  </Box>
+                )}
                 <PageTitle>{localize(pageAttributes.title_multiloc)}</PageTitle>
-              )}
-              <Box zIndex="40000">
-                <AdminCustomPageEditButton
-                  pageId={page.data.id}
-                  projectId={pageAttributes.project_id}
-                />
-              </Box>
-            </NoBannerContainer>
+                <Box zIndex="40000">
+                  <AdminCustomPageEditButton
+                    pageId={page.data.id}
+                    projectId={pageAttributes.project_id}
+                  />
+                </Box>
+              </NoBannerContainer>
+            )
           )}
           <Content>
             {showBuilderContent ? (

@@ -17,9 +17,10 @@ import HeaderContent from './HeaderContent';
 
 interface Props {
   pageData: ICustomPageData;
+  showAdminEditButton?: boolean;
 }
 
-const TwoRowLayout = ({ pageData }: Props) => {
+const TwoRowLayout = ({ pageData, showAdminEditButton = true }: Props) => {
   const pageAttributes = pageData.attributes;
   const imageUrl = pageAttributes.header_bg?.large;
   const isSmallerThanTablet = useBreakpoint('tablet');
@@ -46,10 +47,12 @@ const TwoRowLayout = ({ pageData }: Props) => {
             alt=""
           />
         )}
-        <AdminCustomPageEditButton
-          pageId={pageData.id}
-          projectId={pageData.attributes.project_id}
-        />
+        {showAdminEditButton && (
+          <AdminCustomPageEditButton
+            pageId={pageData.id}
+            projectId={pageData.attributes.project_id}
+          />
+        )}
       </Box>
       <ContentContainer mode="page">
         <Container>

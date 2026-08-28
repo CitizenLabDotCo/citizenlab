@@ -14,9 +14,10 @@ import HeaderContent from './HeaderContent';
 
 interface Props {
   pageData: ICustomPageData;
+  showAdminEditButton?: boolean;
 }
 
-const TwoColumnLayout = ({ pageData }: Props) => {
+const TwoColumnLayout = ({ pageData, showAdminEditButton = true }: Props) => {
   const pageAttributes = pageData.attributes;
   const imageUrl = pageAttributes.header_bg?.large;
 
@@ -44,10 +45,12 @@ const TwoColumnLayout = ({ pageData }: Props) => {
           hasHeaderBannerImage={imageUrl != null}
           pageAttributes={pageAttributes}
         />
-        <AdminCustomPageEditButton
-          pageId={pageData.id}
-          projectId={pageData.attributes.project_id}
-        />
+        {showAdminEditButton && (
+          <AdminCustomPageEditButton
+            pageId={pageData.id}
+            projectId={pageData.attributes.project_id}
+          />
+        )}
       </TextWrapper>
     </Container>
   );

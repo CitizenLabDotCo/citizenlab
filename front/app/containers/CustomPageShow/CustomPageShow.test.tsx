@@ -23,7 +23,13 @@ jest.mock('./CustomPageProjectsAndEvents', () => ({
 }));
 jest.mock('./CustomPageHeader', () => ({
   __esModule: true,
-  default: () => <div data-testid="banner" />,
+  default: ({ showAdminEditButton }: { showAdminEditButton?: boolean }) => (
+    <div data-testid="banner" data-edit-button={String(showAdminEditButton)} />
+  ),
+}));
+jest.mock('./CustomPageHeader/AdminCustomPageEditButton', () => ({
+  __esModule: true,
+  default: () => <div data-testid="editButton" />,
 }));
 
 jest.mock('api/app_configuration/useAppConfiguration', () =>
@@ -141,5 +147,48 @@ describe('CustomPageShow', () => {
 
     expect(screen.getAllByTestId('legacyInfoSection')).toHaveLength(2);
     expect(screen.queryByTestId('builderContent')).not.toBeInTheDocument();
+  });
+
+  // A page may have no banner and a hidden title, so the button belongs to the page rather
+  // than to any widget that might not be there.
+  describe('the admin edit button', () => {
+    it('renders once for the page when builder content renders', () => {
+      hasContent = true;
+      render(<CustomPageShow />);
+
+      expect(screen.getAllByTestId('editButton')).toHaveLength(1);
+    });
+
+    it('renders once on a legacy page too', () => {
+      hasContent = false;
+      render(<CustomPageShow />);
+
+      expect(screen.getAllByTestId('editButton')).toHaveLength(1);
+    });
+
+    // Otherwise a banner page shows two: the layout's and the page's.
+    it('is suppressed inside the banner when builder content renders', () => {
+      hasContent = true;
+      pageAttributes = { ...globalCustomPage, banner_enabled: true };
+      render(<CustomPageShow />);
+
+      expect(screen.getByTestId('banner')).toHaveAttribute(
+        'data-edit-button',
+        'false'
+      );
+      expect(screen.getAllByTestId('editButton')).toHaveLength(1);
+    });
+
+    it('is left to the banner on a legacy page', () => {
+      hasContent = false;
+      pageAttributes = { ...globalCustomPage, banner_enabled: true };
+      render(<CustomPageShow />);
+
+      expect(screen.getByTestId('banner')).toHaveAttribute(
+        'data-edit-button',
+        'true'
+      );
+      expect(screen.queryByTestId('editButton')).not.toBeInTheDocument();
+    });
   });
 });
