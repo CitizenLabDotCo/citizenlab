@@ -1039,6 +1039,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.components.CustomFieldsForm.typeToSearch": {
+    "state": "verified",
+    "verified_at": "2026-08-28T06:59:27.735727Z",
+    "verified_by": "Jelena"
+  },
   "app.components.CustomFieldsForm.typeYourAnswer": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -3394,6 +3399,111 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.components.ReactSelect.filterResultsForTerm": {
+    "state": "verified",
+    "verified_at": "2026-08-28T06:59:27.735727Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.ReactSelect.focusedOption": {
+    "state": "verified",
+    "verified_at": "2026-08-28T06:59:27.735727Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.ReactSelect.focusedOptionDisabled": {
+    "state": "verified",
+    "verified_at": "2026-08-28T06:59:27.735727Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.ReactSelect.focusedOptionSelected": {
+    "state": "verified",
+    "verified_at": "2026-08-28T06:59:27.735727Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.ReactSelect.focusedOptionSelectedDisabled": {
+    "state": "verified",
+    "verified_at": "2026-08-28T06:59:27.735727Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.ReactSelect.focusedValue": {
+    "state": "verified",
+    "verified_at": "2026-08-28T06:59:27.735727Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.ReactSelect.guidanceInput": {
+    "state": "verified",
+    "verified_at": "2026-08-28T06:59:27.735727Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.ReactSelect.guidanceInputMulti": {
+    "state": "verified",
+    "verified_at": "2026-08-28T06:59:27.735727Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.ReactSelect.guidanceInputSearchable": {
+    "state": "verified",
+    "verified_at": "2026-08-28T06:59:27.735727Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.ReactSelect.guidanceInputSearchableMulti": {
+    "state": "verified",
+    "verified_at": "2026-08-28T06:59:27.735727Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.ReactSelect.guidanceMenu": {
+    "state": "verified",
+    "verified_at": "2026-08-28T06:59:27.735727Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.ReactSelect.guidanceMenuTabSelects": {
+    "state": "verified",
+    "verified_at": "2026-08-28T06:59:27.735727Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.ReactSelect.guidanceValue": {
+    "state": "verified",
+    "verified_at": "2026-08-28T06:59:27.735727Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.ReactSelect.noOptions": {
+    "state": "verified",
+    "verified_at": "2026-08-28T06:59:27.735727Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.ReactSelect.optionDeselected": {
+    "state": "verified",
+    "verified_at": "2026-08-28T06:59:27.735727Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.ReactSelect.optionDisabled": {
+    "state": "verified",
+    "verified_at": "2026-08-28T06:59:27.735727Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.ReactSelect.optionSelected": {
+    "state": "verified",
+    "verified_at": "2026-08-28T06:59:27.735727Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.ReactSelect.optionsAlreadySelected": {
+    "state": "verified",
+    "verified_at": "2026-08-28T06:59:27.735727Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.ReactSelect.resultsAvailable": {
+    "state": "verified",
+    "verified_at": "2026-08-28T06:59:27.735727Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.ReactSelect.selectLabel": {
+    "state": "verified",
+    "verified_at": "2026-08-28T06:59:27.735727Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.ReactSelect.selectionCleared": {
+    "state": "verified",
+    "verified_at": "2026-08-28T06:59:27.735727Z",
+    "verified_by": "Jelena"
+  },
   "app.components.ReactionControl.completeProfileToReact": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -4768,6 +4878,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+  "app.components.formBuilder.displayAsDropdownForcedWarning": {
+    "state": "verified",
+    "verified_at": "2026-08-28T06:59:27.735727Z",
+    "verified_by": "Jelena"
   },
   "app.components.formBuilder.displayAsDropdownTooltip": {
     "state": "verified",
