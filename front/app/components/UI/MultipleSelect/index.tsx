@@ -139,12 +139,6 @@ const MultipleSelect = ({
         isDisabled={disabled}
         styles={{
           ...selectStyles(theme, { fontSize, minHeight }),
-          menuPortal: (base) => ({
-            ...base,
-            // zIndex needed so dropdown is not overlapped by
-            // subsequent dropdown questions (see TAN-4671).
-            zIndex: 1001,
-          }),
           option: (base, state) => ({
             ...base,
             cursor: state.isDisabled ? 'not-allowed' : 'pointer',
