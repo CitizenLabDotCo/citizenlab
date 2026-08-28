@@ -111,17 +111,7 @@ describe('Admin publishing a project without approving it first', () => {
           userId = moderator.body.data.id;
 
           // The manager requests approval, so the project has a pending review.
-          cy.apiLogin(managerEmail, managerPassword).then((response) => {
-            cy.request({
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${response.body.jwt}`,
-              },
-              method: 'POST',
-              url: `web_api/v1/projects/${projectId}/review`,
-              body: {},
-            });
-          });
+          cy.apiRequestProjectReview(projectId, managerEmail, managerPassword);
         });
       });
     });
@@ -129,6 +119,7 @@ describe('Admin publishing a project without approving it first', () => {
     after(() => {
       if (projectId && userId) {
         cy.apiRemoveProject(projectId);
+        cy.apiRemoveUser(userId);
       }
     });
 
@@ -181,6 +172,7 @@ describe('Admin publishing a project without approving it first', () => {
     after(() => {
       if (projectId && userId) {
         cy.apiRemoveProject(projectId);
+        cy.apiRemoveUser(userId);
       }
     });
 
