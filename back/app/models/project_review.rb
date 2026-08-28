@@ -63,8 +63,6 @@ class ProjectReview < ApplicationRecord
   # Who may approve this review: admins, moderators of the project's space, and moderators of
   # the project's folder (which includes moderators of that folder's own space).
   # Project moderators are excluded on purpose: they are the ones requesting the review.
-  # The `present?` guards matter: `space_moderator?(nil)` / `project_folder_moderator?(nil)`
-  # answer "moderates any space/folder", which would let an unrelated moderator through.
   def approvable_by?(user)
     return false if user.nil?
     return true if user.admin?
