@@ -3,6 +3,8 @@ import { CLErrors } from 'typings';
 
 import { IContentBuilderLayout } from 'api/content_builder/types';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import customPageLayoutKeys from './keys';
@@ -15,8 +17,10 @@ const fetchCustomPageLayout = (staticPageId?: string) =>
   });
 
 // A page with no layout returns 404. Callers treat that as "nothing stored", not an error.
-const useCustomPageLayout = (staticPageId?: string, enabled = true) =>
-  useQuery<
+const useCustomPageLayout = (staticPageId?: string) => {
+  const featureEnabled = useFeatureFlag({ name: 'custom_page_builder' });
+
+  return useQuery<
     IContentBuilderLayout,
     CLErrors,
     IContentBuilderLayout,
@@ -24,7 +28,8 @@ const useCustomPageLayout = (staticPageId?: string, enabled = true) =>
   >({
     queryKey: customPageLayoutKeys.item({ staticPageId }),
     queryFn: () => fetchCustomPageLayout(staticPageId),
-    enabled: enabled && !!staticPageId,
+    enabled: featureEnabled && !!staticPageId,
   });
+};
 
 export default useCustomPageLayout;
