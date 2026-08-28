@@ -3,7 +3,6 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 import { SSOProvider } from 'api/authentication/singleSignOn';
-import useIdMethods from 'api/id_methods/useIdMethods';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useSuperAdmin from 'hooks/useSuperAdmin';
@@ -18,6 +17,8 @@ import AdminSignInLink from './_components/AdminSignInLink';
 import FranceConnectBlock from './_components/FranceConnectBlock';
 import SSOButtonsExceptFC from './_components/SSOButtonsExceptFC';
 import StartForm from './_components/StartForm';
+import useFranceConnectEnabled from './useFranceConnectEnabled';
+import useVisibleIdMethodsExceptFC from './useVisibleIdMethodsExceptFC';
 
 interface Props {
   loading: boolean;
@@ -38,21 +39,15 @@ const DefaultVariant = ({
   onSubmitPhone,
   onSwitchToSSO,
 }: Props) => {
-  const { data: idMethods } = useIdMethods();
+  const visibleIdMethodsExceptFC = useVisibleIdMethodsExceptFC();
+  const franceConnectEnabled = useFranceConnectEnabled();
   const isSuperAdmin = useSuperAdmin();
   const passwordLoginEnabled =
     useFeatureFlag({ name: 'password_login' }) || isSuperAdmin;
-  const franceConnectEnabled = !!idMethods?.data.find(
-    (method) => method.attributes.name === 'franceconnect'
+
+  const authMethodsEnabledBesidesFC = visibleIdMethodsExceptFC.filter(
+    (method) => method.attributes.authentication_method
   );
-
-  const authMethodsEnabledBesidesFC =
-    idMethods?.data.filter((method) => {
-      const isFC = method.attributes.name === 'franceconnect';
-      const isAuthMethod = method.attributes.authentication_method;
-
-      return !isFC && isAuthMethod;
-    }) ?? [];
 
   return (
     <Box data-cy="email-flow-start">
