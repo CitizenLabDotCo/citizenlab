@@ -12,13 +12,14 @@ import useLocalize from 'hooks/useLocalize';
 import Input from 'components/HookForm/Input';
 import RadioGroup from 'components/HookForm/RadioGroup';
 import Radio from 'components/HookForm/RadioGroup/Radio';
-import Select from 'components/HookForm/Select';
+import SearchSelect from 'components/HookForm/SearchSelect';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
 
+import { SEARCHABLE_OPTION_COUNT } from '../constants';
 import messages from '../messages';
-import { extractOptions } from '../util';
+import { extractOptions, isDropdownLayoutForced } from '../util';
 
 const StyledBox = styled(Box)<{ selected: boolean }>`
   cursor: pointer;
@@ -57,23 +58,25 @@ const SingleSelectField = ({
     return extractOptions(question, localize, question.random_option_ordering);
   }, [question, localize, areas, formatMessage]);
 
-  const selectOptions = useMemo(() => {
-    // Add empty option at the beginning if field is not required (only for dropdown)
-    if (!question.required) {
-      return [{ value: '', label: '' }, ...options];
-    }
-    return options;
-  }, [question.required, options]);
+  const isSearchable = options.length >= SEARCHABLE_OPTION_COUNT;
+  const dropdownLayout =
+    question.dropdown_layout ||
+    isDropdownLayoutForced(question.input_type, options.length);
 
   return (
     <>
-      {question.dropdown_layout ? (
-        <Select
+      {dropdownLayout ? (
+        <SearchSelect
           name={question.key}
-          options={selectOptions}
+          options={options}
+          isSearchable={isSearchable}
+          isClearable={!question.required}
+          required={question.required}
+          placeholder={
+            isSearchable ? formatMessage(messages.typeToSearch) : undefined
+          }
           scrollErrorIntoView={scrollErrorIntoView}
-          disabled={disabled}
-          aria-required={question.required}
+          isDisabled={disabled}
         />
       ) : (
         <RadioGroup

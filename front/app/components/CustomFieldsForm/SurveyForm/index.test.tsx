@@ -2,6 +2,8 @@ import React from 'react';
 
 import { render, screen, userEvent, waitFor } from 'utils/testUtils/rtl';
 
+import { SEARCHABLE_OPTION_COUNT } from '../constants';
+
 import SurveyForm from './index';
 
 // PageControlButtons uses IntersectionObserver to enable the Next/Submit
@@ -147,9 +149,16 @@ const customFields = [
   },
 ];
 
-jest.mock('api/custom_fields/useCustomFields', () => () => ({
-  data: customFields,
-}));
+let mockCustomFieldsQuery: { data?: typeof customFields; isLoading: boolean } =
+  {
+    data: customFields,
+    isLoading: false,
+  };
+
+jest.mock(
+  'api/custom_fields/useCustomFields',
+  () => () => mockCustomFieldsQuery
+);
 
 jest.mock('utils/router', () => ({
   useLocation: () => ({ pathname: '/projects/my-project/survey' }),
@@ -180,6 +189,24 @@ describe('SurveyForm — anonymous multi-page persistence', () => {
   beforeEach(() => {
     mockAddIdea.mockClear();
     mockUpdateIdea.mockClear();
+    mockCustomFieldsQuery = { data: customFields, isLoading: false };
+  });
+
+  // A select question carries its options in the custom_fields response, so a
+  // question with thousands of them leaves the form blank for seconds.
+  it('shows a spinner while the questions are still loading', () => {
+    mockCustomFieldsQuery = { data: undefined, isLoading: true };
+
+    render(
+      <SurveyForm
+        projectId="project-1"
+        phaseId="phase-1"
+        participationMethod="native_survey"
+      />
+    );
+
+    expect(screen.getByTestId('spinner')).toBeInTheDocument();
+    expect(screen.queryByText(/Question One/i)).not.toBeInTheDocument();
   });
 
   // Regression test for the bug introduced by adding `key={currentPageIndex}`
@@ -236,4 +263,68 @@ describe('SurveyForm — anonymous multi-page persistence', () => {
       })
     );
   });
+
+  const renderWithDropdown = (inputType: string) => {
+    mockCustomFieldsQuery = {
+      data: [
+        customFields[0],
+        {
+          ...customFields[1],
+          input_type: inputType,
+          required: false,
+          dropdown_layout: true,
+          options: Array.from(
+            { length: SEARCHABLE_OPTION_COUNT },
+            (_, index) => ({
+              id: `option-${index}`,
+              key: `option_${index + 1}`,
+              title_multiloc: { en: `Option ${index + 1}` },
+            })
+          ),
+        },
+        ...customFields.slice(2),
+      ] as typeof customFields,
+      isLoading: false,
+    };
+
+    render(
+      <SurveyForm
+        projectId="project-1"
+        phaseId="phase-1"
+        participationMethod="native_survey"
+      />
+    );
+  };
+
+  // A dropdown's search box is a text input, and the form submits the page on
+  // Enter in a text input. Enter has to reach the dropdown only.
+  it.each(['select', 'multiselect'])(
+    'does not advance the page when Enter picks an option in a %s dropdown',
+    async (inputType) => {
+      const user = userEvent.setup();
+      renderWithDropdown(inputType);
+
+      await user.click(screen.getByRole('combobox'));
+      await user.keyboard('{Enter}');
+
+      expect(screen.getByRole('combobox')).toBeInTheDocument();
+      expect(screen.queryByText(/Question Two/i)).not.toBeInTheDocument();
+    }
+  );
+
+  // A search that matches nothing leaves the dropdown with no option to pick,
+  // so it does nothing with the Enter it is given.
+  it.each(['select', 'multiselect'])(
+    'does not advance the page when a %s dropdown search matches nothing',
+    async (inputType) => {
+      const user = userEvent.setup();
+      renderWithDropdown(inputType);
+
+      await user.click(screen.getByRole('combobox'));
+      await user.keyboard('no such option{Enter}');
+
+      expect(screen.getByRole('combobox')).toBeInTheDocument();
+      expect(screen.queryByText(/Question Two/i)).not.toBeInTheDocument();
+    }
+  );
 });
