@@ -129,7 +129,7 @@ RSpec.describe ProjectReview do
         moderator = create(:project_moderator, projects: [review.project])
         expect(review.approvable_by?(moderator)).to be false
       end
-      
+
       it 'is false for a moderator of an unrelated folder' do
         expect(review.approvable_by?(create(:project_folder_moderator))).to be false
       end
