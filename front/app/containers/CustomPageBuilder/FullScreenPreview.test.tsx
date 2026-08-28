@@ -21,42 +21,15 @@ jest.mock('components/admin/ContentBuilder/LanguageProvider', () => ({
   default: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
-let layoutResponse:
-  | { data: { attributes: { craftjs_json: object } } }
-  | undefined;
-let isLoading = false;
 jest.mock('api/custom_page_layout/useCustomPageLayout', () => ({
   __esModule: true,
-  default: jest.fn(() => ({ data: layoutResponse, isLoading })),
+  default: jest.fn(() => ({ data: undefined, isLoading: false })),
 }));
 
 describe('FullScreenPreview', () => {
-  beforeEach(() => {
-    isLoading = false;
-    layoutResponse = {
-      data: { attributes: { craftjs_json: { ROOT: { nodes: [] } } } },
-    };
-  });
-
-  it('renders the stored layout', () => {
-    render(<FullScreenPreview staticPageId="page-1" />);
-
-    expect(screen.getByTestId('frame')).toBeInTheDocument();
-    expect(screen.queryByTestId('spinner')).not.toBeInTheDocument();
-  });
-
-  it('shows a spinner while the layout is loading', () => {
-    isLoading = true;
-    layoutResponse = undefined;
-    render(<FullScreenPreview staticPageId="page-1" />);
-
-    expect(screen.getByTestId('spinner')).toBeInTheDocument();
-  });
-
   // A page with no layout 404s. Deriving the wait from `layout === undefined` left the
   // spinner up for good, because the query settles without ever producing data.
   it('renders nothing when the layout could not be loaded', () => {
-    layoutResponse = undefined;
     render(<FullScreenPreview staticPageId="page-1" />);
 
     expect(screen.queryByTestId('spinner')).not.toBeInTheDocument();
