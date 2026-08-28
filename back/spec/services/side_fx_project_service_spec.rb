@@ -217,9 +217,42 @@ describe SideFxProjectService do
 
         project.save!
         expect { service.after_update(project, nil) }
-          .not_to have_enqueued_job(LogActivityJob).with(project, 'project_review_approved', admin, anything, anything)
+          .not_to have_enqueued_job(LogActivityJob).with(project, 'project_review_approved', nil, anything, anything)
 
         expect(project.review.reload.approved_at).to be_nil
+      end
+
+      it 'does not approve the pending review when a due scheduled publication has not been applied yet' do
+        project.admin_publication.update!(publication_status: 'draft')
+        # The transition is due, but the job has not materialized it yet, so the column is still 'draft'.
+        project.admin_publication.update_columns(
+          scheduled_status: 'published',
+          scheduled_at: 1.hour.ago,
+          scheduled_by_id: admin.id
+        )
+
+        project.assign_attributes(title_multiloc: { 'en' => 'An unrelated title change' })
+        service.before_update(project, admin)
+
+        project.save!
+        expect { service.after_update(project, admin) }
+          .not_to have_enqueued_job(LogActivityJob).with(project, 'project_review_approved', admin, anything, anything)
+        expect(project.review.reload.approved_at).to be_nil
+      end
+
+      it 'approves the pending review when the scheduled publication is applied' do
+        project.admin_publication.update!(publication_status: 'draft')
+        project.admin_publication.update_columns(
+          scheduled_status: 'published',
+          scheduled_at: 1.hour.ago,
+          scheduled_by_id: admin.id
+        )
+
+        ProcessScheduledPublicationTransitionsJob.perform_now(project.admin_publication)
+
+        review = project.review.reload
+        expect(review.approved_at).not_to be_nil
+        expect(review.reviewer_id).to eq(admin.id)
       end
 
       it 'does not approve the pending review when the publisher cannot review' do
@@ -231,9 +264,79 @@ describe SideFxProjectService do
 
         project.save!
         expect { service.after_update(project, moderator) }
-          .not_to have_enqueued_job(LogActivityJob).with(project, 'project_review_approved', admin, anything, anything)
+          .not_to have_enqueued_job(LogActivityJob).with(project, 'project_review_approved', moderator, anything, anything)
 
         expect(project.review.reload.approved_at).to be_nil
+      end
+
+      it 'does not approve the pending review when the publisher only moderates an unrelated folder' do
+        moderator = create(:project_folder_moderator)
+        project.admin_publication.update!(publication_status: 'draft')
+
+        project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
+        service.before_update(project, moderator)
+
+        project.save!
+        expect { service.after_update(project, moderator) }
+          .not_to have_enqueued_job(LogActivityJob).with(project, 'project_review_approved', moderator, anything, anything)
+
+        expect(project.review.reload.approved_at).to be_nil
+      end
+
+      it 'does not approve the pending review when the publisher only moderates an unrelated space' do
+        moderator = create(:space_moderator)
+        project.admin_publication.update!(publication_status: 'draft')
+
+        project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
+        service.before_update(project, moderator)
+
+        project.save!
+        expect { service.after_update(project, moderator) }
+          .not_to have_enqueued_job(LogActivityJob).with(project, 'project_review_approved', moderator, anything, anything)
+
+        expect(project.review.reload.approved_at).to be_nil
+      end
+
+      context 'when the project is in a folder' do
+        let(:folder) { create(:project_folder) }
+        let(:project) { create(:project, admin_publication_attributes: { parent_id: folder.admin_publication.id }) }
+
+        it 'approves the pending review when the publisher moderates that folder' do
+          moderator = create(:project_folder_moderator, project_folders: [folder])
+          project.admin_publication.update!(publication_status: 'draft')
+
+          project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
+          service.before_update(project, moderator)
+
+          project.save!
+          expect { service.after_update(project, moderator) }
+            .to have_enqueued_job(LogActivityJob).with(project, 'project_review_approved', moderator, anything, anything)
+
+          review = project.review.reload
+          expect(review.approved_at).not_to be_nil
+          expect(review.reviewer_id).to eq(moderator.id)
+        end
+      end
+
+      context 'when the project belongs to a space' do
+        let(:space) { create(:space) }
+        let(:project) { create(:project, space: space) }
+
+        it 'approves the pending review when the publisher moderates that space' do
+          moderator = create(:space_moderator, spaces: [space])
+          project.admin_publication.update!(publication_status: 'draft')
+
+          project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
+          service.before_update(project, moderator)
+
+          project.save!
+          expect { service.after_update(project, moderator) }
+            .to have_enqueued_job(LogActivityJob).with(project, 'project_review_approved', moderator, anything, anything)
+
+          review = project.review.reload
+          expect(review.approved_at).not_to be_nil
+          expect(review.reviewer_id).to eq(moderator.id)
+        end
       end
     end
   end
