@@ -64,5 +64,18 @@ describe 'single_use:remove_pending_reviews_for_published_projects rake task' do
       expect(report['deletes']).to be_empty
     end
   end
+
+  context 'when a published project is back to draft and has now a pending review' do
+    before do
+      project.admin_publication.update!(publication_status: 'published')
+      project.admin_publication.update!(publication_status: 'draft')
+    end
+
+    it 'leaves it alone' do
+      run_task
+      expect(ProjectReview.where(id: review.id)).to exist
+      expect(report['deletes']).to be_empty
+    end
+  end
 end
 # rubocop:enable RSpec/DescribeClass
