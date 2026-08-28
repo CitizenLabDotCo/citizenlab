@@ -142,4 +142,30 @@ describe('CustomPageContentViewer', () => {
 
     expect(layoutProvider).toHaveBeenCalledWith({ layoutId: 'layout-1' });
   });
+
+  // A full-bleed banner belongs flush under the nav bar; without one the content needs the
+  // breathing room the legacy sections had.
+  it('sits flush under the nav bar when the layout has a banner', () => {
+    layoutResponse = layout(true, {
+      ...withContent,
+      CUSTOM_PAGE_BANNER: {
+        type: { resolvedName: 'CustomPageBanner' },
+        nodes: [],
+      },
+    });
+
+    render(<CustomPageContentViewer staticPageId="page-1" />);
+
+    expect(screen.getByTestId('customPageContentViewer')).toHaveStyle(
+      'padding-top: 0px'
+    );
+  });
+
+  it('keeps its top padding when the layout has no banner', () => {
+    render(<CustomPageContentViewer staticPageId="page-1" />);
+
+    expect(screen.getByTestId('customPageContentViewer')).toHaveStyle(
+      'padding-top: 50px'
+    );
+  });
 });

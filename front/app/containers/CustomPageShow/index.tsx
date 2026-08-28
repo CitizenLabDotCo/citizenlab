@@ -17,6 +17,7 @@ import useLocalize from 'hooks/useLocalize';
 import ContentContainer from 'components/ContentContainer';
 import CustomPageContentViewer from 'components/CustomPageBuilder/ContentViewer';
 import useCustomPageBuilderContent from 'components/CustomPageBuilder/ContentViewer/useCustomPageBuilderContent';
+import { findNodeIdByName } from 'components/CustomPageBuilder/defaultLayout';
 import CustomPageHeader from 'components/CustomPageHeader';
 import { Container, Content } from 'components/LandingPages/citizen';
 import PageNotFound from 'components/PageNotFound';
@@ -111,6 +112,13 @@ const CustomPageShow = () => {
   const showBuilderContent =
     builderContent.isLoading || builderContent.hasContent;
 
+  // The layout owns the banner, not `banner_enabled`: an admin can delete the widget on a
+  // page whose column is still true, and then there is no full-bleed banner to sit over.
+  const hasBannerWidget =
+    !!builderContent.craftjsJson &&
+    findNodeIdByName(builderContent.craftjsJson, 'CustomPageBanner') !==
+      undefined;
+
   const pageAttributes = page.data.attributes;
   const localizedOrgName = localize(
     // TODO: Fix this the next time the file is edited.
@@ -140,9 +148,7 @@ const CustomPageShow = () => {
               position="relative"
               w="100%"
               maxWidth={
-                pageAttributes.banner_enabled
-                  ? undefined
-                  : `${BUILDER_CONTENT_WIDTH}px`
+                hasBannerWidget ? undefined : `${BUILDER_CONTENT_WIDTH}px`
               }
               zIndex="40000"
             >
@@ -152,31 +158,29 @@ const CustomPageShow = () => {
               />
             </Box>
           )}
-          {pageAttributes.banner_enabled ? (
-            <>
-              {pageAttributes.project_id && (
-                <BackLinkContainer>
-                  <BackToProjectLink projectId={pageAttributes.project_id} />
-                </BackLinkContainer>
-              )}
-              <Box background="#fff" width="100%">
-                <CustomPageHeader
-                  pageData={page.data}
-                  adminEditButton={
-                    showBuilderContent ? undefined : (
+          {/* Legacy header, replaced by the layout's Banner and Title widgets once the
+              page has builder content. Goes entirely at cutover. */}
+          {!showBuilderContent &&
+            (pageAttributes.banner_enabled ? (
+              <>
+                {pageAttributes.project_id && (
+                  <BackLinkContainer>
+                    <BackToProjectLink projectId={pageAttributes.project_id} />
+                  </BackLinkContainer>
+                )}
+                <Box background="#fff" width="100%">
+                  <CustomPageHeader
+                    pageData={page.data}
+                    adminEditButton={
                       <AdminCustomPageEditButton
                         pageId={page.data.id}
                         projectId={pageAttributes.project_id}
                       />
-                    )
-                  }
-                />
-              </Box>
-            </>
-          ) : (
-            // Legacy only: with builder content the layout owns the heading, and the edit
-            // button is rendered once for the whole page above.
-            !showBuilderContent && (
+                    }
+                  />
+                </Box>
+              </>
+            ) : (
               <NoBannerContainer>
                 {pageAttributes.project_id && (
                   <Box mb="8px">
@@ -191,8 +195,7 @@ const CustomPageShow = () => {
                   />
                 </Box>
               </NoBannerContainer>
-            )
-          )}
+            ))}
           <Content>
             {showBuilderContent ? (
               <CustomPageContentViewer staticPageId={page.data.id} />

@@ -68,6 +68,7 @@ jest.mock('api/custom_pages/useCustomPageBySlug', () =>
 
 let hasContent = false;
 let isLoading = false;
+let craftjsJson: unknown;
 jest.mock(
   'components/CustomPageBuilder/ContentViewer/useCustomPageBuilderContent',
   () => ({
@@ -75,7 +76,7 @@ jest.mock(
     // Mirrors the real hook, which is disabled without an id and so reports nothing.
     default: jest.fn((staticPageId?: string) =>
       staticPageId
-        ? { hasContent, isLoading }
+        ? { hasContent, isLoading, craftjsJson }
         : { hasContent: false, isLoading: false }
     ),
   })
@@ -85,6 +86,7 @@ describe('CustomPageShow', () => {
   beforeEach(() => {
     hasContent = false;
     isLoading = false;
+    craftjsJson = undefined;
     pageAttributes = globalCustomPage;
   });
 
@@ -166,15 +168,14 @@ describe('CustomPageShow', () => {
       expect(screen.getAllByTestId('editButton')).toHaveLength(1);
     });
 
-    // Otherwise a banner page shows two: the layout's and the page's.
-    it('is suppressed inside the banner when builder content renders', () => {
+    // The layout's Banner widget renders it instead, so rendering the legacy one too showed
+    // two banners — and two edit buttons with them.
+    it('drops the legacy banner when builder content renders', () => {
       hasContent = true;
       pageAttributes = { ...globalCustomPage, banner_enabled: true };
       render(<CustomPageShow />);
 
-      expect(
-        screen.getByTestId('banner').querySelector('[data-testid="editButton"]')
-      ).toBeNull();
+      expect(screen.queryByTestId('banner')).not.toBeInTheDocument();
       expect(screen.getAllByTestId('editButton')).toHaveLength(1);
     });
 
@@ -187,6 +188,34 @@ describe('CustomPageShow', () => {
         screen.getByTestId('banner').querySelector('[data-testid="editButton"]')
       ).not.toBeNull();
       expect(screen.getAllByTestId('editButton')).toHaveLength(1);
+    });
+  });
+
+  // A full-bleed banner takes the button to the window edge; without one it lines up with
+  // the content. The layout decides, since the widget can be deleted.
+  describe('the edit button anchor', () => {
+    const anchorOf = (container: HTMLElement) =>
+      container.querySelector('[data-testid="editButton"]')?.parentElement;
+
+    it('is content width when the layout has no banner widget', () => {
+      hasContent = true;
+      craftjsJson = { ROOT: { type: { resolvedName: 'CustomPageRoot' } } };
+
+      const { container } = render(<CustomPageShow />);
+
+      expect(anchorOf(container)).toHaveStyle('max-width: 1200px');
+    });
+
+    it('is full width when the layout has one', () => {
+      hasContent = true;
+      craftjsJson = {
+        ROOT: { type: { resolvedName: 'CustomPageRoot' } },
+        BANNER: { type: { resolvedName: 'CustomPageBanner' } },
+      };
+
+      const { container } = render(<CustomPageShow />);
+
+      expect(anchorOf(container)).not.toHaveStyle('max-width: 1200px');
     });
   });
 });

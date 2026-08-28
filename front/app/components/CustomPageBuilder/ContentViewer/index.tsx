@@ -5,7 +5,10 @@ import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
-import { normalizeCustomPageLayout } from 'components/CustomPageBuilder/defaultLayout';
+import {
+  findNodeIdByName,
+  normalizeCustomPageLayout,
+} from 'components/CustomPageBuilder/defaultLayout';
 import Editor from 'components/CustomPageBuilder/Editor';
 
 import eventEmitter from 'utils/eventEmitter';
@@ -28,10 +31,20 @@ const CustomPageContentViewer = ({ staticPageId }: Props) => {
   if (isLoading) return <Spinner />;
   if (!hasContent) return null;
 
+  // A banner is full-bleed and belongs flush under the nav bar; anything else needs the
+  // breathing room the legacy sections had.
+  const hasBanner =
+    !!craftjsJson &&
+    findNodeIdByName(craftjsJson, 'CustomPageBanner') !== undefined;
+
   return (
-    // Matches the vertical breathing room the legacy sections had. The white behind it is the
-    // page's own, set by CustomPageShow when builder content renders.
-    <Box data-testid="customPageContentViewer" py="50px">
+    // The white behind this is the page's own, set by CustomPageShow when builder content
+    // renders.
+    <Box
+      data-testid="customPageContentViewer"
+      pt={hasBanner ? '0px' : '50px'}
+      pb="50px"
+    >
       <ContentBuilderLayoutProvider layoutId={layoutId}>
         <Editor isPreview={true}>
           <ContentBuilderFrame

@@ -6,6 +6,7 @@ describe ContentBuilder::CustomPageLayoutService do
   subject(:service) { described_class.new }
 
   let(:root_id) { described_class::ROOT_ID }
+  let(:banner_id) { described_class::BANNER_ID }
   let(:title_id) { described_class::TITLE_ID }
   let(:body_id) { described_class::BODY_ID }
   # What every derived page carries before any content: the title node is always seeded, so
@@ -56,7 +57,6 @@ describe ContentBuilder::CustomPageLayoutService do
         craftjs = service.craftjs_json_for(build_page(banner_enabled: true))
 
         expect(craftjs[title_id]['props']).to eq({ 'showTitle' => false })
-        expect(craftjs[root_id]['nodes']).to eq [title_id, body_id]
       end
 
       # The heading renders from title_multiloc on the page record, so a copy in the layout
@@ -81,6 +81,45 @@ describe ContentBuilder::CustomPageLayoutService do
             'defaultMessage' => 'Title'
           },
           'locked' => true,
+          'noPointerEvents' => true
+        )
+      end
+    end
+
+    describe 'the banner' do
+      # A page may simply not have one, unlike the title, so it is seeded only where the page
+      # shows one and stays deletable — an admin adds it back from the toolbox.
+      it 'seeds a banner node above the title when the page has one' do
+        craftjs = service.craftjs_json_for(build_page(banner_enabled: true))
+
+        expect(resolved_name(craftjs, banner_id)).to eq 'CustomPageBanner'
+        expect(craftjs[banner_id]['parent']).to eq root_id
+        expect(craftjs[root_id]['nodes']).to eq [banner_id, title_id, body_id]
+      end
+
+      it 'seeds no banner node when the page has none' do
+        craftjs = service.craftjs_json_for(build_page(banner_enabled: false))
+
+        expect(craftjs).not_to have_key banner_id
+        expect(craftjs[root_id]['nodes']).to eq [title_id, body_id]
+      end
+
+      # It renders from the record's banner_* columns, so a copy here would go stale.
+      it 'gives the banner node no props of its own' do
+        craftjs = service.craftjs_json_for(build_page(banner_enabled: true))
+
+        expect(craftjs[banner_id]['props']).to eq({})
+      end
+
+      # Deletable, so no `locked` — unlike the title, which a page always has.
+      it 'carries the custom a dragged widget would have' do
+        craftjs = service.craftjs_json_for(build_page(banner_enabled: true))
+
+        expect(craftjs[banner_id]['custom']).to eq(
+          'title' => {
+            'id' => 'app.components.CustomPageBuilder.Widgets.CustomPageBanner.title',
+            'defaultMessage' => 'Banner'
+          },
           'noPointerEvents' => true
         )
       end

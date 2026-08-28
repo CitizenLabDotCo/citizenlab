@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { useEditor } from '@craftjs/core';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from 'containers/DescriptionBuilder/messages';
@@ -19,6 +21,7 @@ import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import CustomPageBanner from 'components/CustomPageBuilder/Widgets/CustomPageBanner';
 import EventsByProjects from 'components/CustomPageBuilder/Widgets/EventsByProjects';
 import ProjectsByFilter from 'components/CustomPageBuilder/Widgets/ProjectsByFilter';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
@@ -39,9 +42,28 @@ const CustomPageBuilderToolbox = () => {
   const advancedCustomPagesEnabled = useFeatureFlag({
     name: 'advanced_custom_pages',
   });
+  // A page has one banner, so stop offering it once placed — the same reason FileAttachment's
+  // picker drops files already used in the layout. Deleting it brings the entry back.
+  const { hasBanner } = useEditor((state) => ({
+    hasBanner: Object.values(state.nodes).some(
+      (node) => node.data.name === 'CustomPageBanner'
+    ),
+  }));
 
   return (
     <Container>
+      {!hasBanner && (
+        <Section>
+          {/* Dropped into the body like any widget; normalizeCustomPageLayout hoists it to
+              its pinned slot above the page content. */}
+          <DraggableElement
+            id="e2e-draggable-custom-page-banner"
+            component={<CustomPageBanner />}
+            icon="image"
+            label={formatMessage(CustomPageBanner.craft.custom.title)}
+          />
+        </Section>
+      )}
       <Section>
         <DraggableElement
           id="e2e-draggable-image-text-cards"

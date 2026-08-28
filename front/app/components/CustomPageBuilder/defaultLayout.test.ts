@@ -20,6 +20,19 @@ const textNode = (parent: string) =>
     linkedNodes: {},
   } as unknown as SerializedNodes[string]);
 
+const headerNode = (name: string, parent: string) =>
+  ({
+    type: { resolvedName: name },
+    nodes: [],
+    props: {},
+    custom: {},
+    hidden: false,
+    parent,
+    isCanvas: false,
+    displayName: name,
+    linkedNodes: {},
+  } as unknown as SerializedNodes[string]);
+
 const rootOnlyLayout = (): SerializedNodes => {
   const layout = defaultCustomPageLayout();
   delete layout[BODY_NODE_ID];
@@ -83,6 +96,45 @@ describe('normalizeCustomPageLayout', () => {
 
     expect(result.ROOT.nodes).toEqual(['BANNER', BODY_NODE_ID]);
     expect(result.BANNER).toBeDefined();
+  });
+
+  // The toolbox is the only way back once the banner is deleted, and CustomPageRoot refuses
+  // drops — so without hoisting it would be stranded in the body wherever it landed.
+  it('hoists a banner dropped into the body back onto ROOT', () => {
+    const nodes = {
+      ...defaultCustomPageLayout(),
+      TXT: textNode(BODY_NODE_ID),
+      BANNER: headerNode('CustomPageBanner', BODY_NODE_ID),
+    } as SerializedNodes;
+    nodes[BODY_NODE_ID].nodes = ['TXT', 'BANNER'];
+
+    const result = normalizeCustomPageLayout(nodes);
+
+    expect(result.ROOT.nodes).toEqual(['BANNER', BODY_NODE_ID]);
+    expect(result.BANNER.parent).toBe('ROOT');
+    expect(result[BODY_NODE_ID].nodes).toEqual(['TXT']);
+  });
+
+  // The banner sits above the title whichever order they were stored in.
+  it('puts the headers in a fixed order on ROOT', () => {
+    const nodes = {
+      ...defaultCustomPageLayout(),
+      TITLE: headerNode('CustomPageTitle', 'ROOT'),
+      BANNER: headerNode('CustomPageBanner', BODY_NODE_ID),
+    } as SerializedNodes;
+    nodes.ROOT = { ...nodes.ROOT, nodes: ['TITLE', BODY_NODE_ID] };
+    nodes[BODY_NODE_ID].nodes = ['BANNER'];
+
+    const result = normalizeCustomPageLayout(nodes);
+
+    expect(result.ROOT.nodes).toEqual(['BANNER', 'TITLE', BODY_NODE_ID]);
+  });
+
+  // A page with no banner must not gain one on load.
+  it('does not create headers that were never there', () => {
+    const result = normalizeCustomPageLayout(defaultCustomPageLayout());
+
+    expect(result.ROOT.nodes).toEqual([BODY_NODE_ID]);
   });
 
   it('drops a ROOT child that has no node in the graph', () => {

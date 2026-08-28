@@ -10,6 +10,7 @@ module ContentBuilder
     CODE = 'custom_page'
 
     ROOT_ID = 'ROOT'
+    BANNER_ID = 'CUSTOM_PAGE_BANNER'
     TITLE_ID = 'CUSTOM_PAGE_TITLE'
     BODY_ID = 'CUSTOM_PAGE_BODY'
     TOP_INFO_ID = 'CUSTOM_PAGE_TOP_INFO'
@@ -35,7 +36,10 @@ module ContentBuilder
         )
       }.compact
 
-      canonical_nodes(sections.keys).merge(TITLE_ID => title_node(static_page), **sections)
+      headers = { TITLE_ID => title_node(static_page) }
+      headers = { BANNER_ID => banner_node }.merge(headers) if static_page.banner_enabled
+
+      canonical_nodes(sections.keys, headers.keys).merge(headers, sections)
     end
 
     private
@@ -44,6 +48,26 @@ module ContentBuilder
     # a page without a banner displays it: CustomPageShow renders `<PageTitle>` on its
     # `!banner_enabled` branch, and a banner carries its own banner_header_multiloc instead.
     # So the node is always there and `showTitle` carries what the page shows today.
+    # Unlike the title, a page may simply not have a banner — so this is seeded only when the
+    # page shows one, and stays deletable and re-addable from the toolbox. It renders from the
+    # record's banner_* columns, so it carries no props of its own.
+    def banner_node
+      {
+        'type' => { 'resolvedName' => 'CustomPageBanner' },
+        'nodes' => [],
+        'props' => {},
+        'custom' => {
+          'title' => message('app.components.CustomPageBuilder.Widgets.CustomPageBanner.title', 'Banner'),
+          'noPointerEvents' => true
+        },
+        'hidden' => false,
+        'parent' => ROOT_ID,
+        'isCanvas' => false,
+        'displayName' => 'CustomPageBanner',
+        'linkedNodes' => {}
+      }
+    end
+
     def title_node(static_page)
       {
         'type' => { 'resolvedName' => 'CustomPageTitle' },
@@ -166,11 +190,11 @@ module ContentBuilder
       @description_layout_service ||= DescriptionLayoutService.new
     end
 
-    def canonical_nodes(section_ids)
+    def canonical_nodes(section_ids, header_ids)
       {
         ROOT_ID => {
           'type' => { 'resolvedName' => 'CustomPageRoot' },
-          'nodes' => [TITLE_ID, BODY_ID],
+          'nodes' => header_ids + [BODY_ID],
           'props' => {},
           'custom' => { 'region' => true },
           'hidden' => false,
