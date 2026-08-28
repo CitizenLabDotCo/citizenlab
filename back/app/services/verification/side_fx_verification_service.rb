@@ -6,7 +6,6 @@ module Verification
 
     def before_create(verification, current_user); end
 
-    # @param activity_payload [Hash] extra data for the 'created' activity, e.g. the outcome of an RRN check
     def after_create(verification, current_user, activity_payload = {})
       verification.user.update!(verified: true)
       payload = { method: verification.method_name }.merge(activity_payload)
