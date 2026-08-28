@@ -277,10 +277,13 @@ const SurveyPage = ({
   // accidentally submit the form with empty responses
   const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
     if (e.key !== 'Enter') return;
-    // A dropdown's search box is a text input too, and it takes Enter to pick
-    // the focused option.
-    if (e.defaultPrevented) return;
     const target = e.target as HTMLInputElement;
+    // A dropdown's search box is a text input too, but Enter there belongs to
+    // the dropdown, whether or not it has an option to pick.
+    if (target.getAttribute('role') === 'combobox') {
+      e.preventDefault();
+      return;
+    }
     if (target.tagName.toLowerCase() !== 'input') return;
     const inputType = target.type;
     if (inputType !== 'text' && inputType !== 'number') return;

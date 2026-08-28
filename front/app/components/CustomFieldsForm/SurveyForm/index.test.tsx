@@ -264,45 +264,64 @@ describe('SurveyForm — anonymous multi-page persistence', () => {
     );
   });
 
+  const renderWithDropdown = (inputType: string) => {
+    mockCustomFieldsQuery = {
+      data: [
+        customFields[0],
+        {
+          ...customFields[1],
+          input_type: inputType,
+          required: false,
+          dropdown_layout: true,
+          options: Array.from(
+            { length: SEARCHABLE_OPTION_COUNT },
+            (_, index) => ({
+              id: `option-${index}`,
+              key: `option_${index + 1}`,
+              title_multiloc: { en: `Option ${index + 1}` },
+            })
+          ),
+        },
+        ...customFields.slice(2),
+      ] as typeof customFields,
+      isLoading: false,
+    };
+
+    render(
+      <SurveyForm
+        projectId="project-1"
+        phaseId="phase-1"
+        participationMethod="native_survey"
+      />
+    );
+  };
+
   // A dropdown's search box is a text input, and the form submits the page on
   // Enter in a text input. Enter has to reach the dropdown only.
   it.each(['select', 'multiselect'])(
     'does not advance the page when Enter picks an option in a %s dropdown',
     async (inputType) => {
       const user = userEvent.setup();
-
-      mockCustomFieldsQuery = {
-        data: [
-          customFields[0],
-          {
-            ...customFields[1],
-            input_type: inputType,
-            required: false,
-            dropdown_layout: true,
-            options: Array.from(
-              { length: SEARCHABLE_OPTION_COUNT },
-              (_, index) => ({
-                id: `option-${index}`,
-                key: `option_${index + 1}`,
-                title_multiloc: { en: `Option ${index + 1}` },
-              })
-            ),
-          },
-          ...customFields.slice(2),
-        ] as typeof customFields,
-        isLoading: false,
-      };
-
-      render(
-        <SurveyForm
-          projectId="project-1"
-          phaseId="phase-1"
-          participationMethod="native_survey"
-        />
-      );
+      renderWithDropdown(inputType);
 
       await user.click(screen.getByRole('combobox'));
       await user.keyboard('{Enter}');
+
+      expect(screen.getByRole('combobox')).toBeInTheDocument();
+      expect(screen.queryByText(/Question Two/i)).not.toBeInTheDocument();
+    }
+  );
+
+  // A search that matches nothing leaves the dropdown with no option to pick,
+  // so it does nothing with the Enter it is given.
+  it.each(['select', 'multiselect'])(
+    'does not advance the page when a %s dropdown search matches nothing',
+    async (inputType) => {
+      const user = userEvent.setup();
+      renderWithDropdown(inputType);
+
+      await user.click(screen.getByRole('combobox'));
+      await user.keyboard('no such option{Enter}');
 
       expect(screen.getByRole('combobox')).toBeInTheDocument();
       expect(screen.queryByText(/Question Two/i)).not.toBeInTheDocument();
