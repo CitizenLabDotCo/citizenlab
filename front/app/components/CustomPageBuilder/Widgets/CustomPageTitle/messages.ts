@@ -13,6 +13,11 @@ export default defineMessages({
     id: 'app.components.CustomPageBuilder.Widgets.CustomPageTitle.untitledPage',
     defaultMessage: 'Untitled page',
   },
+  pinnedNote: {
+    id: 'app.components.CustomPageBuilder.Widgets.CustomPageTitle.pinnedNote',
+    defaultMessage:
+      "Pinned to the top of the page — editable and removable, but can't be moved.",
+  },
   alsoRenamesPageNote: {
     id: 'app.components.CustomPageBuilder.Widgets.CustomPageTitle.alsoRenamesPageNote',
     defaultMessage:

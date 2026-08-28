@@ -9,6 +9,8 @@ import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import useLocalize from 'hooks/useLocalize';
 
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
+// Shared with the project page's header widgets; PR 4 moves it somewhere neutral.
+import LockedNote from 'components/ProjectPageBuilder/Widgets/LockedNote';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Warning from 'components/UI/Warning';
 
@@ -71,6 +73,7 @@ const CustomPageTitleSettings = () => {
       {/* title_multiloc is the page name and the nav bar item's fallback title, not just a
           heading, so an admin renaming a heading needs to know what else moves. */}
       <Warning>{formatMessage(messages.alsoRenamesPageNote)}</Warning>
+      <LockedNote message={messages.pinnedNote} />
     </Box>
   );
 };
