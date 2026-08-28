@@ -44,8 +44,8 @@ const CustomPageBuilderToolbox = () => {
   return (
     <Container>
       <Section>
-        {/* Deletable, so it needs a way back. Dropping it anywhere puts it in the body;
-            the layout normaliser is what returns it to its pinned slot on ROOT. */}
+        {/* Deletable, so it needs a way back. It can only be dropped into the body — ROOT
+            refuses drops — and normalizeCustomPageLayout hoists it to its slot from there. */}
         <DraggableElement
           id="e2e-draggable-custom-page-title"
           component={<CustomPageTitle />}
