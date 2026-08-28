@@ -3529,6 +3529,11 @@
     "verified_at": "2026-08-20T12:12:01.505601Z",
     "verified_by": "Luuc"
   },
+  "app.components.SmsConsent.phoneConfirmationDisclosureWithoutCampaignsEnabled": {
+    "state": "verified",
+    "verified_at": "2026-08-27T20:58:06.825899Z",
+    "verified_by": "Luuc"
+  },
   "app.components.SmsConsent.smsConfirmationDisclosure": {
     "state": "verified",
     "verified_at": "2026-08-06T12:25:13.721839Z",
@@ -6952,6 +6957,11 @@
   "app.containers.Authentication.steps.Policies.byContinuingPhone3": {
     "state": "verified",
     "verified_at": "2026-08-26T12:38:10.964951Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Authentication.steps.Policies.byContinuingPhoneWithoutCampaignsEnabled": {
+    "state": "verified",
+    "verified_at": "2026-08-27T20:58:06.825899Z",
     "verified_by": "Luuc"
   },
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": {
