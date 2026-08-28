@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
@@ -12,15 +12,14 @@ import {
   HeaderImage,
 } from 'components/LandingPages/citizen/TwoRowLayout';
 
-import AdminCustomPageEditButton from './AdminCustomPageEditButton';
 import HeaderContent from './HeaderContent';
 
 interface Props {
   pageData: ICustomPageData;
-  showAdminEditButton?: boolean;
+  adminEditButton?: ReactNode;
 }
 
-const TwoRowLayout = ({ pageData, showAdminEditButton = true }: Props) => {
+const TwoRowLayout = ({ pageData, adminEditButton }: Props) => {
   const pageAttributes = pageData.attributes;
   const imageUrl = pageAttributes.header_bg?.large;
   const isSmallerThanTablet = useBreakpoint('tablet');
@@ -30,7 +29,7 @@ const TwoRowLayout = ({ pageData, showAdminEditButton = true }: Props) => {
       <Box
         position="relative"
         // Needed when the Hero banner is turned on, but there is no image yet
-        // Otherwise the AdminCustomPageEditButton is not clickable.
+        // Otherwise the admin edit button is not clickable.
         height={
           isSmallerThanTablet
             ? `${homepageBannerLayoutHeights['two_row_layout'].tablet}px`
@@ -47,12 +46,7 @@ const TwoRowLayout = ({ pageData, showAdminEditButton = true }: Props) => {
             alt=""
           />
         )}
-        {showAdminEditButton && (
-          <AdminCustomPageEditButton
-            pageId={pageData.id}
-            projectId={pageData.attributes.project_id}
-          />
-        )}
+        {adminEditButton}
       </Box>
       <ContentContainer mode="page">
         <Container>

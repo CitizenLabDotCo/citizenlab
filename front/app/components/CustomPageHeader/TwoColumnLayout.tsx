@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { ICustomPageData } from 'api/custom_pages/types';
 
@@ -9,15 +9,14 @@ import {
   TextWrapper,
 } from 'components/LandingPages/citizen/TwoColumnLayout';
 
-import AdminCustomPageEditButton from './AdminCustomPageEditButton';
 import HeaderContent from './HeaderContent';
 
 interface Props {
   pageData: ICustomPageData;
-  showAdminEditButton?: boolean;
+  adminEditButton?: ReactNode;
 }
 
-const TwoColumnLayout = ({ pageData, showAdminEditButton = true }: Props) => {
+const TwoColumnLayout = ({ pageData, adminEditButton }: Props) => {
   const pageAttributes = pageData.attributes;
   const imageUrl = pageAttributes.header_bg?.large;
 
@@ -45,12 +44,7 @@ const TwoColumnLayout = ({ pageData, showAdminEditButton = true }: Props) => {
           hasHeaderBannerImage={imageUrl != null}
           pageAttributes={pageAttributes}
         />
-        {showAdminEditButton && (
-          <AdminCustomPageEditButton
-            pageId={pageData.id}
-            projectId={pageData.attributes.project_id}
-          />
-        )}
+        {adminEditButton}
       </TextWrapper>
     </Container>
   );

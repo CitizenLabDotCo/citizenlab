@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { colors, stylingConsts } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
@@ -15,12 +15,11 @@ import {
   HeaderImageOverlay,
 } from 'components/LandingPages/citizen/FullWidthBannerLayout';
 
-import AdminCustomPageEditButton from './AdminCustomPageEditButton';
 import HeaderContent from './HeaderContent';
 
 export interface Props {
   pageData: ICustomPageData;
-  showAdminEditButton?: boolean;
+  adminEditButton?: ReactNode;
 }
 
 const CustomPageLayoutContainer = styled(Container)`
@@ -31,7 +30,7 @@ const CustomPageLayoutHeader = styled(Header)`
   max-width: ${stylingConsts.maxPageWidth}px;
 `;
 
-const FixedRatioLayout = ({ pageData, showAdminEditButton = true }: Props) => {
+const FixedRatioLayout = ({ pageData, adminEditButton }: Props) => {
   const imageUrl = pageData.attributes.header_bg?.large;
   const overlayColor = pageData.attributes.banner_overlay_color;
   const overlayOpacity = pageData.attributes.banner_overlay_opacity;
@@ -57,12 +56,7 @@ const FixedRatioLayout = ({ pageData, showAdminEditButton = true }: Props) => {
           pageAttributes={pageData.attributes}
         />
       </CustomPageLayoutHeader>
-      {showAdminEditButton && (
-        <AdminCustomPageEditButton
-          pageId={pageData.id}
-          projectId={pageData.attributes.project_id}
-        />
-      )}
+      {adminEditButton}
     </CustomPageLayoutContainer>
   );
 };

@@ -21,13 +21,13 @@ jest.mock('./CustomPageProjectsAndEvents', () => ({
   __esModule: true,
   default: () => <div data-testid="legacyProjects" />,
 }));
-jest.mock('./CustomPageHeader', () => ({
+jest.mock('components/CustomPageHeader', () => ({
   __esModule: true,
-  default: ({ showAdminEditButton }: { showAdminEditButton?: boolean }) => (
-    <div data-testid="banner" data-edit-button={String(showAdminEditButton)} />
+  default: ({ adminEditButton }: { adminEditButton?: React.ReactNode }) => (
+    <div data-testid="banner">{adminEditButton}</div>
   ),
 }));
-jest.mock('./CustomPageHeader/AdminCustomPageEditButton', () => ({
+jest.mock('./AdminCustomPageEditButton', () => ({
   __esModule: true,
   default: () => <div data-testid="editButton" />,
 }));
@@ -172,10 +172,9 @@ describe('CustomPageShow', () => {
       pageAttributes = { ...globalCustomPage, banner_enabled: true };
       render(<CustomPageShow />);
 
-      expect(screen.getByTestId('banner')).toHaveAttribute(
-        'data-edit-button',
-        'false'
-      );
+      expect(
+        screen.getByTestId('banner').querySelector('[data-testid="editButton"]')
+      ).toBeNull();
       expect(screen.getAllByTestId('editButton')).toHaveLength(1);
     });
 
@@ -184,11 +183,10 @@ describe('CustomPageShow', () => {
       pageAttributes = { ...globalCustomPage, banner_enabled: true };
       render(<CustomPageShow />);
 
-      expect(screen.getByTestId('banner')).toHaveAttribute(
-        'data-edit-button',
-        'true'
-      );
-      expect(screen.queryByTestId('editButton')).not.toBeInTheDocument();
+      expect(
+        screen.getByTestId('banner').querySelector('[data-testid="editButton"]')
+      ).not.toBeNull();
+      expect(screen.getAllByTestId('editButton')).toHaveLength(1);
     });
   });
 });

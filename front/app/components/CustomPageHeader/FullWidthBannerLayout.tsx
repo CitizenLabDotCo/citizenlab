@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { ICustomPageData } from 'api/custom_pages/types';
 
@@ -10,19 +10,18 @@ import {
   HeaderImageOverlay,
 } from 'components/LandingPages/citizen/FullWidthBannerLayout';
 
-import AdminCustomPageEditButton from './AdminCustomPageEditButton';
 import HeaderContent from './HeaderContent';
 
 export interface Props {
   className?: string;
   pageData: ICustomPageData;
-  showAdminEditButton?: boolean;
+  adminEditButton?: ReactNode;
 }
 
 const FullWidthBannerLayout = ({
   className,
   pageData,
-  showAdminEditButton = true,
+  adminEditButton,
 }: Props) => {
   const imageUrl = pageData.attributes.header_bg?.large;
   const overlayColor = pageData.attributes.banner_overlay_color;
@@ -52,12 +51,7 @@ const FullWidthBannerLayout = ({
           pageAttributes={pageData.attributes}
         />
       </Header>
-      {showAdminEditButton && (
-        <AdminCustomPageEditButton
-          pageId={pageData.id}
-          projectId={pageData.attributes.project_id}
-        />
-      )}
+      {adminEditButton}
     </Container>
   );
 };

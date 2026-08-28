@@ -17,14 +17,14 @@ import useLocalize from 'hooks/useLocalize';
 import ContentContainer from 'components/ContentContainer';
 import CustomPageContentViewer from 'components/CustomPageBuilder/ContentViewer';
 import useCustomPageBuilderContent from 'components/CustomPageBuilder/ContentViewer/useCustomPageBuilderContent';
+import CustomPageHeader from 'components/CustomPageHeader';
 import { Container, Content } from 'components/LandingPages/citizen';
 import PageNotFound from 'components/PageNotFound';
 
 import { useParams } from 'utils/router';
 
+import AdminCustomPageEditButton from './AdminCustomPageEditButton';
 import BackToProjectLink from './BackToProjectLink';
-import CustomPageHeader from './CustomPageHeader';
-import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
 import PageSections from './PageSections';
 
 // The page background is grey, and each legacy section paints white over it. Builder content
@@ -162,7 +162,14 @@ const CustomPageShow = () => {
               <Box background="#fff" width="100%">
                 <CustomPageHeader
                   pageData={page.data}
-                  showAdminEditButton={!showBuilderContent}
+                  adminEditButton={
+                    showBuilderContent ? undefined : (
+                      <AdminCustomPageEditButton
+                        pageId={page.data.id}
+                        projectId={pageAttributes.project_id}
+                      />
+                    )
+                  }
                 />
               </Box>
             </>
