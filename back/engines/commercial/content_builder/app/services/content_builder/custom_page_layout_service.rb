@@ -10,6 +10,7 @@ module ContentBuilder
     CODE = 'custom_page'
 
     ROOT_ID = 'ROOT'
+    TITLE_ID = 'CUSTOM_PAGE_TITLE'
     BODY_ID = 'CUSTOM_PAGE_BODY'
     TOP_INFO_ID = 'CUSTOM_PAGE_TOP_INFO'
     # One node per attached file, so the id carries the file it renders.
@@ -34,10 +35,42 @@ module ContentBuilder
         )
       }.compact
 
-      canonical_nodes(sections.keys).merge(sections)
+      headers = header_nodes(static_page)
+      canonical_nodes(sections.keys, headers).merge(headers, sections)
     end
 
     private
+
+    # A page shows either a banner or a plain title, never both: CustomPageShow renders
+    # `<PageTitle>` from title_multiloc only on the `!banner_enabled` branch. Seeding both
+    # would put a heading above every banner. Each is deletable, and either can be added
+    # back from the toolbox, so this is the starting point rather than a fixed shape.
+    def header_nodes(static_page)
+      return {} if static_page.banner_enabled
+
+      { TITLE_ID => title_node }
+    end
+
+    def title_node
+      {
+        'type' => { 'resolvedName' => 'CustomPageTitle' },
+        'nodes' => [],
+        'props' => {},
+        'custom' => {
+          'title' => message('app.components.CustomPageBuilder.Widgets.CustomPageTitle.title', 'Title'),
+          'noPointerEvents' => true
+        },
+        'hidden' => false,
+        'parent' => ROOT_ID,
+        'isCanvas' => false,
+        'displayName' => 'CustomPageTitle',
+        'linkedNodes' => {}
+      }
+    end
+
+    def message(id, default_message)
+      { 'id' => id, 'defaultMessage' => default_message }
+    end
 
     # Stacked, unlike the two-column block `project_page` builds, because that is how the
     # page renders them today.
@@ -108,7 +141,7 @@ module ContentBuilder
         'nodes' => [],
         'props' => props,
         'custom' => {
-          'title' => { 'id' => title_id, 'defaultMessage' => title },
+          'title' => message(title_id, title),
           'noPointerEvents' => true
         },
         'hidden' => false,
@@ -137,11 +170,11 @@ module ContentBuilder
       @description_layout_service ||= DescriptionLayoutService.new
     end
 
-    def canonical_nodes(section_ids)
+    def canonical_nodes(section_ids, header_nodes)
       {
         ROOT_ID => {
           'type' => { 'resolvedName' => 'CustomPageRoot' },
-          'nodes' => [BODY_ID],
+          'nodes' => header_nodes.keys + [BODY_ID],
           'props' => {},
           'custom' => { 'region' => true },
           'hidden' => false,

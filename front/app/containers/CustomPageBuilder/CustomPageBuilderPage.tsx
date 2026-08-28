@@ -6,6 +6,7 @@ import { Multiloc, SupportedLocale } from 'typings';
 
 import useCustomPageLayout from 'api/custom_page_layout/useCustomPageLayout';
 import useUpsertCustomPageLayout from 'api/custom_page_layout/useUpsertCustomPageLayout';
+import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
@@ -14,6 +15,11 @@ import { CUSTOM_PAGE_BUILDER_PATH } from 'components/admin/ContentBuilder/consta
 import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
+import {
+  extractCustomPageAttributeDrafts,
+  hasCustomPageAttributeDrafts,
+  stripCustomPageAttributeDrafts,
+} from 'components/CustomPageBuilder/customPageAttributeDrafts';
 import { normalizeCustomPageLayout } from 'components/CustomPageBuilder/defaultLayout';
 import CustomPageBuilderEditModePreview from 'components/CustomPageBuilder/EditModePreview';
 import Editor from 'components/CustomPageBuilder/Editor';
@@ -48,6 +54,7 @@ const CustomPageBuilderPage = ({
   const locales = useAppConfigurationLocales();
   const { data: layout } = useCustomPageLayout(staticPageId);
   const { mutateAsync: upsertCustomPageLayout } = useUpsertCustomPageLayout();
+  const { mutateAsync: updateCustomPage } = useUpdateCustomPage();
 
   const [contentBuilderErrors, setContentBuilderErrors] =
     useState<ContentBuilderErrors>({});
@@ -93,7 +100,20 @@ const CustomPageBuilderPage = ({
     setSaveError(false);
 
     try {
-      await upsertCustomPageLayout({ staticPageId, craftjs_json: nodes });
+      // Two-step save: commit the header widgets' drafts to the page, then store the layout
+      // without them (see customPageAttributeDrafts.ts).
+      const drafts = extractCustomPageAttributeDrafts(nodes);
+      if (hasCustomPageAttributeDrafts(drafts)) {
+        await updateCustomPage({
+          id: staticPageId,
+          title_multiloc: drafts.titleMultiloc,
+        });
+      }
+
+      await upsertCustomPageLayout({
+        staticPageId,
+        craftjs_json: stripCustomPageAttributeDrafts(nodes),
+      });
     } catch {
       setSaveError(true);
     } finally {

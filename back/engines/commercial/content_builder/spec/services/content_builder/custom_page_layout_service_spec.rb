@@ -6,7 +6,11 @@ describe ContentBuilder::CustomPageLayoutService do
   subject(:service) { described_class.new }
 
   let(:root_id) { described_class::ROOT_ID }
+  let(:title_id) { described_class::TITLE_ID }
   let(:body_id) { described_class::BODY_ID }
+  # What every derived page carries before any content: a bannerless page gets a title node,
+  # so examples about the body assert against this rather than listing the header themselves.
+  let(:scaffold_ids) { [root_id, title_id, body_id] }
   let(:top_id) { described_class::TOP_INFO_ID }
   let(:file_prefix) { described_class::FILE_ID_PREFIX }
   let(:projects_id) { described_class::PROJECTS_ID }
@@ -35,11 +39,55 @@ describe ContentBuilder::CustomPageLayoutService do
   end
 
   describe '#craftjs_json_for' do
+    describe 'the header' do
+      # CustomPageShow renders <PageTitle> only on its !banner_enabled branch, and the heading
+      # inside an enabled banner comes from banner_header_multiloc instead. Seeding both would
+      # show a heading twice on every page that has a banner.
+      it 'seeds a title node on a page with no banner' do
+        craftjs = service.craftjs_json_for(build_page(banner_enabled: false))
+
+        expect(resolved_name(craftjs, title_id)).to eq 'CustomPageTitle'
+        expect(craftjs[title_id]['parent']).to eq root_id
+        expect(craftjs[root_id]['nodes']).to eq [title_id, body_id]
+      end
+
+      it 'seeds no title node on a page with a banner' do
+        craftjs = service.craftjs_json_for(build_page(banner_enabled: true))
+
+        expect(craftjs).not_to have_key title_id
+        expect(craftjs[root_id]['nodes']).to eq [body_id]
+      end
+
+      # The title renders from title_multiloc on the page record, so a copy in the layout
+      # would be a second source of truth that goes stale on the next rename.
+      it 'gives the title node no props of its own' do
+        craftjs = service.craftjs_json_for(
+          build_page(banner_enabled: false, title_multiloc: { 'en' => 'About us' })
+        )
+
+        expect(craftjs[title_id]['props']).to eq({})
+      end
+
+      # craftjs restores `custom` from the stored graph, and RenderNode makes a node
+      # selectable only when it has a title — without this the widget cannot be configured.
+      it 'carries the custom a dragged widget would have' do
+        craftjs = service.craftjs_json_for(build_page(banner_enabled: false))
+
+        expect(craftjs[title_id]['custom']).to eq(
+          'title' => {
+            'id' => 'app.components.CustomPageBuilder.Widgets.CustomPageTitle.title',
+            'defaultMessage' => 'Title'
+          },
+          'noPointerEvents' => true
+        )
+      end
+    end
+
     it 'wraps the sections in the root and body scaffold' do
       craftjs = service.craftjs_json_for(build_page)
 
       expect(resolved_name(craftjs, root_id)).to eq 'CustomPageRoot'
-      expect(craftjs[root_id]['nodes']).to eq [body_id]
+      expect(craftjs[root_id]['nodes']).to eq [title_id, body_id]
       expect(craftjs[root_id]['isCanvas']).to be true
 
       expect(resolved_name(craftjs, body_id)).to eq 'CustomPageBody'
@@ -50,7 +98,7 @@ describe ContentBuilder::CustomPageLayoutService do
     it 'still gives a page with no enabled section a usable empty canvas' do
       craftjs = service.craftjs_json_for(build_page)
 
-      expect(craftjs.keys).to contain_exactly(root_id, body_id)
+      expect(craftjs.keys).to match_array(scaffold_ids)
       expect(craftjs[body_id]['nodes']).to be_empty
     end
 
@@ -156,13 +204,13 @@ describe ContentBuilder::CustomPageLayoutService do
       it 'skips the files that are attached while the section is off' do
         craftjs = service.craftjs_json_for(page_with_files(2, files_section_enabled: false))
 
-        expect(craftjs.keys).to contain_exactly(root_id, body_id)
+        expect(craftjs.keys).to match_array(scaffold_ids)
       end
 
       it 'adds nothing when the section is on but nothing is attached' do
         craftjs = service.craftjs_json_for(page_with_files(0))
 
-        expect(craftjs.keys).to contain_exactly(root_id, body_id)
+        expect(craftjs.keys).to match_array(scaffold_ids)
       end
 
       it 'puts the files between the top info section and the rest' do
@@ -276,7 +324,7 @@ describe ContentBuilder::CustomPageLayoutService do
           filtered_page(projects_enabled: false, events_widget_enabled: false)
         )
 
-        expect(craftjs.keys).to contain_exactly(root_id, body_id)
+        expect(craftjs.keys).to match_array(scaffold_ids)
       end
 
       it 'keeps the events list when only the projects list is off' do
@@ -304,7 +352,7 @@ describe ContentBuilder::CustomPageLayoutService do
 
         craftjs = service.craftjs_json_for(filtered_page)
 
-        expect(craftjs.keys).to contain_exactly(root_id, body_id)
+        expect(craftjs.keys).to match_array(scaffold_ids)
       end
 
       it 'migrates neither list when the page has no filter' do
@@ -312,7 +360,7 @@ describe ContentBuilder::CustomPageLayoutService do
           filtered_page(projects_filter_type: 'no_filter', areas: [])
         )
 
-        expect(craftjs.keys).to contain_exactly(root_id, body_id)
+        expect(craftjs.keys).to match_array(scaffold_ids)
       end
     end
 
@@ -325,7 +373,7 @@ describe ContentBuilder::CustomPageLayoutService do
       second = service.craftjs_json_for(build_page(**attributes))
 
       expect(first).to eq second
-      expect(first.keys).to contain_exactly(root_id, body_id, top_id)
+      expect(first.keys).to contain_exactly(*scaffold_ids, top_id)
     end
 
     # The migration task compares a stored graph with a freshly derived one to decide whether

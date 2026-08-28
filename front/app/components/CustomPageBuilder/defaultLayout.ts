@@ -36,7 +36,7 @@ export const defaultCustomPageLayout = (): SerializedNodes => ({
 const resolvedNameOf = (node: SerializedNode) =>
   typeof node.type === 'object' ? node.type.resolvedName : undefined;
 
-const findNodeIdByName = (nodes: SerializedNodes, name: string) =>
+export const findNodeIdByName = (nodes: SerializedNodes, name: string) =>
   Object.keys(nodes).find((id) => resolvedNameOf(nodes[id]) === name);
 
 // A node off the wire may have no children array at all, whatever the type says.

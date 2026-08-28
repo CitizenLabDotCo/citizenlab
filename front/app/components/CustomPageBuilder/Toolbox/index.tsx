@@ -19,6 +19,7 @@ import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import CustomPageTitle from 'components/CustomPageBuilder/Widgets/CustomPageTitle';
 import EventsByProjects from 'components/CustomPageBuilder/Widgets/EventsByProjects';
 import ProjectsByFilter from 'components/CustomPageBuilder/Widgets/ProjectsByFilter';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
@@ -42,6 +43,16 @@ const CustomPageBuilderToolbox = () => {
 
   return (
     <Container>
+      <Section>
+        {/* Deletable, so it needs a way back. Dropping it anywhere puts it in the body;
+            the layout normaliser is what returns it to its pinned slot on ROOT. */}
+        <DraggableElement
+          id="e2e-draggable-custom-page-title"
+          component={<CustomPageTitle />}
+          icon="text"
+          label={formatMessage(CustomPageTitle.craft.custom.title)}
+        />
+      </Section>
       <Section>
         <DraggableElement
           id="e2e-draggable-image-text-cards"

@@ -83,8 +83,11 @@ module ContentBuilder
         'ProjectBanner' => {},
         'ProjectTitle' => {},
         'ProjectPageBody' => {},
-        # The custom page scaffold, same idea.
+        # The custom page scaffold, same idea. CustomPageTitle sits alongside it rather than
+        # in it: pinned to the top like the project page's, but deletable, since a custom page
+        # shows either a title or a banner. Its heading lives on the page record, so no props.
         'CustomPageRoot' => {},
+        'CustomPageTitle' => {},
         'CustomPageBody' => {}
       }.freeze
     end
