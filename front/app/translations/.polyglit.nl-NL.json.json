@@ -1039,6 +1039,11 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.components.CustomFieldsForm.typeToSearch": {
+    "state": "verified",
+    "verified_at": "2026-08-27T20:46:50.919565Z",
+    "verified_by": "Luuc"
+  },
   "app.components.CustomFieldsForm.typeYourAnswer": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
@@ -3379,6 +3384,111 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.components.ReactSelect.filterResultsForTerm": {
+    "state": "verified",
+    "verified_at": "2026-08-27T20:46:50.919565Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.ReactSelect.focusedOption": {
+    "state": "verified",
+    "verified_at": "2026-08-27T20:46:50.919565Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.ReactSelect.focusedOptionDisabled": {
+    "state": "verified",
+    "verified_at": "2026-08-27T20:46:50.919565Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.ReactSelect.focusedOptionSelected": {
+    "state": "verified",
+    "verified_at": "2026-08-27T20:46:50.919565Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.ReactSelect.focusedOptionSelectedDisabled": {
+    "state": "verified",
+    "verified_at": "2026-08-27T20:46:50.919565Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.ReactSelect.focusedValue": {
+    "state": "verified",
+    "verified_at": "2026-08-27T20:46:50.919565Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.ReactSelect.guidanceInput": {
+    "state": "verified",
+    "verified_at": "2026-08-27T20:46:50.919565Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.ReactSelect.guidanceInputMulti": {
+    "state": "verified",
+    "verified_at": "2026-08-27T20:46:50.919565Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.ReactSelect.guidanceInputSearchable": {
+    "state": "verified",
+    "verified_at": "2026-08-27T20:46:50.919565Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.ReactSelect.guidanceInputSearchableMulti": {
+    "state": "verified",
+    "verified_at": "2026-08-27T20:46:50.919565Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.ReactSelect.guidanceMenu": {
+    "state": "verified",
+    "verified_at": "2026-08-27T20:46:50.919565Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.ReactSelect.guidanceMenuTabSelects": {
+    "state": "verified",
+    "verified_at": "2026-08-27T20:46:50.919565Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.ReactSelect.guidanceValue": {
+    "state": "verified",
+    "verified_at": "2026-08-27T20:46:50.919565Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.ReactSelect.noOptions": {
+    "state": "verified",
+    "verified_at": "2026-08-27T20:46:50.919565Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.ReactSelect.optionDeselected": {
+    "state": "verified",
+    "verified_at": "2026-08-27T20:46:50.919565Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.ReactSelect.optionDisabled": {
+    "state": "verified",
+    "verified_at": "2026-08-27T20:46:50.919565Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.ReactSelect.optionSelected": {
+    "state": "verified",
+    "verified_at": "2026-08-27T20:46:50.919565Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.ReactSelect.optionsAlreadySelected": {
+    "state": "verified",
+    "verified_at": "2026-08-27T20:46:50.919565Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.ReactSelect.resultsAvailable": {
+    "state": "verified",
+    "verified_at": "2026-08-27T20:46:50.919565Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.ReactSelect.selectLabel": {
+    "state": "verified",
+    "verified_at": "2026-08-27T20:46:50.919565Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.ReactSelect.selectionCleared": {
+    "state": "verified",
+    "verified_at": "2026-08-27T20:46:50.919565Z",
+    "verified_by": "Luuc"
+  },
   "app.components.ReactionControl.completeProfileToReact": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
@@ -4758,6 +4868,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.components.formBuilder.displayAsDropdownForcedWarning": {
+    "state": "verified",
+    "verified_at": "2026-08-27T20:46:50.919565Z",
+    "verified_by": "Luuc"
   },
   "app.components.formBuilder.displayAsDropdownTooltip": {
     "state": "verified",
