@@ -24,8 +24,6 @@ import NewLabel from 'components/UI/NewLabel';
 
 import { useIntl } from 'utils/cl-intl';
 
-// The description toolbox's list without the Participation Box, which is project-only. Kept
-// separate because the two lists diverge as the custom page widgets land (see TAN-8556).
 const CustomPageBuilderToolbox = () => {
   const { formatMessage } = useIntl();
   const isHtmlBlockMultilocEnabled = useFeatureFlag({

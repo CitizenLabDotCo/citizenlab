@@ -19,7 +19,6 @@ const handleLoadImages = () => {
   eventEmitter.emit(IMAGES_LOADED_EVENT);
 };
 
-// Returns null when there is nothing to show, so the page falls back to its own sections.
 const CustomPageContentViewer = ({ staticPageId }: Props) => {
   const { isLoading, hasContent, craftjsJson } =
     useCustomPageBuilderContent(staticPageId);
