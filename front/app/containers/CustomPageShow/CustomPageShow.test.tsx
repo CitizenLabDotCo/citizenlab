@@ -100,6 +100,26 @@ describe('CustomPageShow', () => {
     expect(screen.queryByTestId('legacyProjects')).not.toBeInTheDocument();
   });
 
+  // The layout carries a Title widget that owns the heading and can hide it, so rendering
+  // the legacy one too showed the title twice.
+  it('leaves the heading to the builder content', () => {
+    hasContent = true;
+    render(<CustomPageShow />);
+
+    expect(
+      screen.queryByRole('heading', { name: 'About us' })
+    ).not.toBeInTheDocument();
+  });
+
+  it('still renders the heading on a page with no builder content', () => {
+    hasContent = false;
+    render(<CustomPageShow />);
+
+    expect(
+      screen.getByRole('heading', { name: 'About us' })
+    ).toBeInTheDocument();
+  });
+
   // Rendering them first would show content that is replaced as soon as the layout arrives.
   it('does not render the legacy sections while the layout is still loading', () => {
     isLoading = true;

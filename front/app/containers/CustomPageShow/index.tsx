@@ -148,8 +148,12 @@ const CustomPageShow = () => {
                   <BackToProjectLink projectId={pageAttributes.project_id} />
                 </Box>
               )}
-              {/* show page text title if the banner is disabled */}
-              <PageTitle>{localize(pageAttributes.title_multiloc)}</PageTitle>
+              {/* Show the page text title if the banner is disabled — unless the layout
+                  holds a Title widget, which owns the heading and can hide it. The banner
+                  branch above stays legacy until the Banner widget lands. */}
+              {!showBuilderContent && (
+                <PageTitle>{localize(pageAttributes.title_multiloc)}</PageTitle>
+              )}
               <Box zIndex="40000">
                 <AdminCustomPageEditButton
                   pageId={page.data.id}

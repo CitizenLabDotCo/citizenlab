@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { useEditor } from '@craftjs/core';
-
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from 'containers/DescriptionBuilder/messages';
@@ -21,7 +19,6 @@ import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
-import CustomPageTitle from 'components/CustomPageBuilder/Widgets/CustomPageTitle';
 import EventsByProjects from 'components/CustomPageBuilder/Widgets/EventsByProjects';
 import ProjectsByFilter from 'components/CustomPageBuilder/Widgets/ProjectsByFilter';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
@@ -42,29 +39,9 @@ const CustomPageBuilderToolbox = () => {
   const advancedCustomPagesEnabled = useFeatureFlag({
     name: 'advanced_custom_pages',
   });
-  // A page has one heading, so stop offering it once it is placed — the same reason
-  // FileAttachment's picker drops files already used in the layout. Deleting the title
-  // brings the entry back.
-  const { hasTitle } = useEditor((state) => ({
-    hasTitle: Object.values(state.nodes).some(
-      (node) => node.data.name === 'CustomPageTitle'
-    ),
-  }));
 
   return (
     <Container>
-      {/* Deletable, so it needs a way back. It can only be dropped into the body — ROOT
-          refuses drops — and normalizeCustomPageLayout hoists it to its slot from there. */}
-      {!hasTitle && (
-        <Section>
-          <DraggableElement
-            id="e2e-draggable-custom-page-title"
-            component={<CustomPageTitle />}
-            icon="text"
-            label={formatMessage(CustomPageTitle.craft.custom.title)}
-          />
-        </Section>
-      )}
       <Section>
         <DraggableElement
           id="e2e-draggable-image-text-cards"

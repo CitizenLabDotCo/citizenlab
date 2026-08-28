@@ -8,8 +8,8 @@ describe ContentBuilder::CustomPageLayoutService do
   let(:root_id) { described_class::ROOT_ID }
   let(:title_id) { described_class::TITLE_ID }
   let(:body_id) { described_class::BODY_ID }
-  # What every derived page carries before any content: a bannerless page gets a title node,
-  # so examples about the body assert against this rather than listing the header themselves.
+  # What every derived page carries before any content: the title node is always seeded, so
+  # examples about the body assert against this rather than listing the header themselves.
   let(:scaffold_ids) { [root_id, title_id, body_id] }
   let(:top_id) { described_class::TOP_INFO_ID }
   let(:file_prefix) { described_class::FILE_ID_PREFIX }
@@ -39,45 +39,48 @@ describe ContentBuilder::CustomPageLayoutService do
   end
 
   describe '#craftjs_json_for' do
-    describe 'the header' do
-      # CustomPageShow renders <PageTitle> only on its !banner_enabled branch, and the heading
-      # inside an enabled banner comes from banner_header_multiloc instead. Seeding both would
-      # show a heading twice on every page that has a banner.
-      it 'seeds a title node on a page with no banner' do
+    describe 'the title' do
+      # Every page has a title_multiloc — it is the page name — but only a bannerless page
+      # displays it, and a banner carries its own header text. So the node is always seeded
+      # and showTitle carries what the page shows today.
+      it 'seeds a shown title on a page with no banner' do
         craftjs = service.craftjs_json_for(build_page(banner_enabled: false))
 
         expect(resolved_name(craftjs, title_id)).to eq 'CustomPageTitle'
+        expect(craftjs[title_id]['props']).to eq({ 'showTitle' => true })
         expect(craftjs[title_id]['parent']).to eq root_id
         expect(craftjs[root_id]['nodes']).to eq [title_id, body_id]
       end
 
-      it 'seeds no title node on a page with a banner' do
+      it 'seeds a hidden title on a page with a banner' do
         craftjs = service.craftjs_json_for(build_page(banner_enabled: true))
 
-        expect(craftjs).not_to have_key title_id
-        expect(craftjs[root_id]['nodes']).to eq [body_id]
+        expect(craftjs[title_id]['props']).to eq({ 'showTitle' => false })
+        expect(craftjs[root_id]['nodes']).to eq [title_id, body_id]
       end
 
-      # The title renders from title_multiloc on the page record, so a copy in the layout
+      # The heading renders from title_multiloc on the page record, so a copy in the layout
       # would be a second source of truth that goes stale on the next rename.
-      it 'gives the title node no props of its own' do
+      it 'does not copy the title text into the layout' do
         craftjs = service.craftjs_json_for(
-          build_page(banner_enabled: false, title_multiloc: { 'en' => 'About us' })
+          build_page(title_multiloc: { 'en' => 'About us' })
         )
 
-        expect(craftjs[title_id]['props']).to eq({})
+        expect(craftjs[title_id]['props']).not_to have_key 'title'
       end
 
       # craftjs restores `custom` from the stored graph, and RenderNode makes a node
       # selectable only when it has a title — without this the widget cannot be configured.
+      # `locked` keeps the settings panel while removing the delete button.
       it 'carries the custom a dragged widget would have' do
-        craftjs = service.craftjs_json_for(build_page(banner_enabled: false))
+        craftjs = service.craftjs_json_for(build_page)
 
         expect(craftjs[title_id]['custom']).to eq(
           'title' => {
             'id' => 'app.components.CustomPageBuilder.Widgets.CustomPageTitle.title',
             'defaultMessage' => 'Title'
           },
+          'locked' => true,
           'noPointerEvents' => true
         )
       end

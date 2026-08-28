@@ -35,29 +35,25 @@ module ContentBuilder
         )
       }.compact
 
-      headers = header_nodes(static_page)
-      canonical_nodes(sections.keys, headers).merge(headers, sections)
+      canonical_nodes(sections.keys).merge(TITLE_ID => title_node(static_page), **sections)
     end
 
     private
 
-    # A page shows either a banner or a plain title, never both: CustomPageShow renders
-    # `<PageTitle>` from title_multiloc only on the `!banner_enabled` branch. Seeding both
-    # would put a heading above every banner. Each is deletable, and either can be added
-    # back from the toolbox, so this is the starting point rather than a fixed shape.
-    def header_nodes(static_page)
-      return {} if static_page.banner_enabled
-
-      { TITLE_ID => title_node }
-    end
-
-    def title_node
+    # Every page has a title_multiloc — it is the page name, required at creation — but only
+    # a page without a banner displays it: CustomPageShow renders `<PageTitle>` on its
+    # `!banner_enabled` branch, and a banner carries its own banner_header_multiloc instead.
+    # So the node is always there and `showTitle` carries what the page shows today.
+    def title_node(static_page)
       {
         'type' => { 'resolvedName' => 'CustomPageTitle' },
         'nodes' => [],
-        'props' => {},
+        'props' => { 'showTitle' => !static_page.banner_enabled },
         'custom' => {
           'title' => message('app.components.CustomPageBuilder.Widgets.CustomPageTitle.title', 'Title'),
+          # Settings panel yes, delete button no — the page always has a title, and hiding it
+          # is what `showTitle` is for.
+          'locked' => true,
           'noPointerEvents' => true
         },
         'hidden' => false,
@@ -170,11 +166,11 @@ module ContentBuilder
       @description_layout_service ||= DescriptionLayoutService.new
     end
 
-    def canonical_nodes(section_ids, header_nodes)
+    def canonical_nodes(section_ids)
       {
         ROOT_ID => {
           'type' => { 'resolvedName' => 'CustomPageRoot' },
-          'nodes' => header_nodes.keys + [BODY_ID],
+          'nodes' => [TITLE_ID, BODY_ID],
           'props' => {},
           'custom' => { 'region' => true },
           'hidden' => false,

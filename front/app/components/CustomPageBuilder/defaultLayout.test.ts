@@ -20,19 +20,6 @@ const textNode = (parent: string) =>
     linkedNodes: {},
   } as unknown as SerializedNodes[string]);
 
-const titleNode = (parent: string) =>
-  ({
-    type: { resolvedName: 'CustomPageTitle' },
-    nodes: [],
-    props: {},
-    custom: {},
-    hidden: false,
-    parent,
-    isCanvas: false,
-    displayName: 'CustomPageTitle',
-    linkedNodes: {},
-  } as unknown as SerializedNodes[string]);
-
 const rootOnlyLayout = (): SerializedNodes => {
   const layout = defaultCustomPageLayout();
   delete layout[BODY_NODE_ID];
@@ -96,42 +83,6 @@ describe('normalizeCustomPageLayout', () => {
 
     expect(result.ROOT.nodes).toEqual(['BANNER', BODY_NODE_ID]);
     expect(result.BANNER).toBeDefined();
-  });
-
-  // The toolbox is the only way back once the title is deleted, and CustomPageRoot refuses
-  // drops — so without hoisting it would be stranded in the body wherever it landed.
-  it('hoists a title dropped into the body back onto ROOT', () => {
-    const nodes = {
-      ...defaultCustomPageLayout(),
-      TXT: textNode(BODY_NODE_ID),
-      TITLE: titleNode(BODY_NODE_ID),
-    } as SerializedNodes;
-    nodes[BODY_NODE_ID].nodes = ['TXT', 'TITLE'];
-
-    const result = normalizeCustomPageLayout(nodes);
-
-    expect(result.ROOT.nodes).toEqual(['TITLE', BODY_NODE_ID]);
-    expect(result.TITLE.parent).toBe('ROOT');
-    expect(result[BODY_NODE_ID].nodes).toEqual(['TXT']);
-  });
-
-  it('leaves a title that is already on ROOT in place', () => {
-    const nodes = {
-      ...defaultCustomPageLayout(),
-      TITLE: titleNode('ROOT'),
-    } as SerializedNodes;
-    nodes.ROOT = { ...nodes.ROOT, nodes: ['TITLE', BODY_NODE_ID] };
-
-    const result = normalizeCustomPageLayout(nodes);
-
-    expect(result.ROOT.nodes).toEqual(['TITLE', BODY_NODE_ID]);
-  });
-
-  // A page with a banner has no title node, and normalising must not invent one.
-  it('does not create a title that was never there', () => {
-    const result = normalizeCustomPageLayout(defaultCustomPageLayout());
-
-    expect(result.ROOT.nodes).toEqual([BODY_NODE_ID]);
   });
 
   it('drops a ROOT child that has no node in the graph', () => {

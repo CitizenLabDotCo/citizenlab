@@ -16,6 +16,7 @@ jest.mock('../useWidgetCustomPageId', () => ({
   default: () => 'page-1',
 }));
 // The widget sits on ROOT, so useCraftComponentDefaultPadding resolves its parent there.
+let mockInBuilder = true;
 jest.mock('@craftjs/core', () => ({
   ROOT_NODE: 'ROOT',
   useNode: (collect?: (node: { data: unknown }) => unknown) => ({
@@ -24,17 +25,22 @@ jest.mock('@craftjs/core', () => ({
       : {}),
     actions: { setProp: jest.fn() },
   }),
-  useEditor: () => ({
+  // useCraftComponentDefaultPadding calls this with no collector; the widget passes one.
+  useEditor: (
+    collect?: (state: { options: { enabled: boolean } }) => object
+  ) => ({
     query: {
       node: () => ({
         get: () => ({ data: { displayName: 'CustomPageRoot' } }),
       }),
     },
+    ...(collect ? collect({ options: { enabled: mockInBuilder } }) : {}),
   }),
 }));
 
 describe('CustomPageTitle', () => {
   beforeEach(() => {
+    mockInBuilder = true;
     page = {
       data: {
         id: 'page-1',
@@ -72,5 +78,30 @@ describe('CustomPageTitle', () => {
     render(<CustomPageTitle />);
 
     expect(screen.queryByRole('heading')).not.toBeInTheDocument();
+  });
+
+  // Hiding is a display choice, so the builder has to show the page still has a name —
+  // otherwise the toggle reads as having deleted something.
+  it('explains the page still has a title when hidden, in the builder', () => {
+    render(<CustomPageTitle showTitle={false} />);
+
+    expect(screen.queryByRole('heading')).not.toBeInTheDocument();
+    expect(screen.getByText(/still called "About us"/)).toBeInTheDocument();
+  });
+
+  it('renders nothing at all when hidden in the front office', () => {
+    mockInBuilder = false;
+
+    render(<CustomPageTitle showTitle={false} />);
+
+    expect(screen.queryByRole('heading')).not.toBeInTheDocument();
+    expect(screen.queryByText(/still called/)).not.toBeInTheDocument();
+  });
+
+  // A node stored before showTitle existed must keep rendering.
+  it('shows the title when the prop is absent', () => {
+    render(<CustomPageTitle />);
+
+    expect(screen.getByText('About us')).toBeInTheDocument();
   });
 });
