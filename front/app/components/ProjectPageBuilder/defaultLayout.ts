@@ -46,7 +46,7 @@ const bannerNode = (): SerializedNode => ({
   nodes: [],
   props: { image: {}, alt: {} },
   custom: {
-    title: widgetMessages.bannerWidgetTitle,
+    title: widgetMessages.bannerWidgetTitle2,
     locked: true,
     noPointerEvents: true,
   },
@@ -62,7 +62,7 @@ const titleNode = (): SerializedNode => ({
   nodes: [],
   props: {},
   custom: {
-    title: widgetMessages.titleWidgetTitle,
+    title: widgetMessages.titleWidgetTitle2,
     locked: true,
     noPointerEvents: true,
   },
@@ -227,12 +227,12 @@ export const findNodeIdByName = (nodes: SerializedNodes, name: string) =>
 
 const CANONICAL_CUSTOM: Record<string, Record<string, unknown>> = {
   ProjectBanner: {
-    title: widgetMessages.bannerWidgetTitle,
+    title: widgetMessages.bannerWidgetTitle2,
     locked: true,
     noPointerEvents: true,
   },
   ProjectTitle: {
-    title: widgetMessages.titleWidgetTitle,
+    title: widgetMessages.titleWidgetTitle2,
     locked: true,
     noPointerEvents: true,
   },
