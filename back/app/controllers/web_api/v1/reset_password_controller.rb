@@ -35,10 +35,6 @@ class WebApi::V1::ResetPasswordController < ApplicationController
       @user.find_or_create_confirmation(:email_confirmation).confirm! if @user.confirmation_required?
 
       if @user.save
-        # A reset ends every session that was open before it: whoever was signed
-        # in with the old password (an attacker, on a compromised account) is
-        # signed out and has to produce the new one. Unlike update_password
-        # there is no session to keep alive here - the caller isn't signed in.
         @user.expire_token!
 
         render json: WebApi::V1::UserSerializer.new(
