@@ -92,8 +92,9 @@ module IdMethods
     end
 
     def email_confirmed?(_auth)
-      # TODO: (Luuc): should we set this to be auth.extra.raw_info.email_verified? by default?
-      true
+      email_included = auth&.info&.email.present?
+      email_verified = auth.info['email_verified'] || auth.extra.raw_info.email_verified
+      email_included && email_verified
     end
 
     def enforced_email_domains
