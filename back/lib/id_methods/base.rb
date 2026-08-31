@@ -91,8 +91,8 @@ module IdMethods
       true
     end
 
-    def email_confirmed?(_auth)
-      email_included = auth&.info&.email.present?
+    def email_confirmed?(auth)
+      email_included = auth.info.email.present?
       email_verified = auth.info['email_verified'] || auth.extra.raw_info.email_verified
       email_included && email_verified
     end

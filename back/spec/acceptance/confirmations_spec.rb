@@ -136,28 +136,32 @@ resource 'Confirmations' do
         expect(anonymous_exposure.visitor_hash).to be_nil
       end
 
-      example 'allows confirming a user with password that is already confirmed' do
-        user_with_password = create(:unconfirmed_user, password: 'password123')
+      # This endpoint is the password-less login path: a valid code alone returns
+      # an auth token. An account that has a password must sign in with it, so a
+      # code can never be traded for a session on such an account.
+      example 'does not allow confirming a user with a password that is already confirmed' do
+        user_with_password = create(:user, password: 'password123')
+        expect(user_with_password.reload).not_to be_confirmation_required
         RequestEmailConfirmationCodeJob.perform_now user_with_password
         code = user_with_password.reload.email_confirmation.code
-        do_request(confirmation: { email: user_with_password.email, code: })
-        expect(user_with_password.reload).not_to be_confirmation_required
 
-        RequestEmailConfirmationCodeJob.perform_now user_with_password
-        expect(user_with_password.reload).not_to be_confirmation_required
-        code = user_with_password.reload.email_confirmation.code
         do_request(confirmation: { email: user_with_password.email, code: })
-        assert_status 200
+
+        assert_status 422
+        expect(json_parse(response_body)).to include_response_error(:user, 'has_password')
       end
 
-      example 'allows confirming a user with password that requires confirmation' do
+      example 'does not allow confirming a user with a password that requires confirmation' do
         user_with_password = create(:unconfirmed_user, password: 'password123')
         RequestEmailConfirmationCodeJob.perform_now user_with_password
         expect(user_with_password).to be_confirmation_required
 
         code = user_with_password.email_confirmation.code
         do_request(confirmation: { email: user_with_password.email, code: })
-        assert_status 200
+
+        assert_status 422
+        expect(json_parse(response_body)).to include_response_error(:user, 'has_password')
+        expect(user_with_password.reload).to be_confirmation_required
       end
 
       example 'returns an unauthorized status when the caller is authenticated' do
@@ -379,6 +383,18 @@ resource 'Confirmations' do
       example 'does not work when no user has that phone number' do
         do_request(confirmation: { phone: '+14155559999', code: user.phone_confirmation.code })
         assert_status 422
+      end
+
+      # The mirror of confirm_code_email: a valid code alone returns an auth
+      # token, so an account that has a password is not reachable through it.
+      example 'does not work when the user has a password' do
+        user.update_columns(password_digest: 'super_secret')
+
+        do_request(confirmation: { phone: user.phone, code: user.phone_confirmation.code })
+
+        assert_status 422
+        expect(json_parse(response_body)).to include_response_error(:user, 'has_password')
+        expect(user.reload.phone_confirmed_at).to be_nil
       end
 
       example 'does not work when the sms feature is disabled' do

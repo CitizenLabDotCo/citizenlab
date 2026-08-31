@@ -13,6 +13,7 @@ class RequestCodePolicy < ApplicationPolicy
     return false unless app_configuration.feature_activated?('password_login')
     return false if record.nil?
     return false if record.email.blank?
+    return false if password_set?(record)
     return false if code_reset_count(record.email_confirmation) >= max_retries - 1
 
     true
@@ -46,6 +47,7 @@ class RequestCodePolicy < ApplicationPolicy
     return false unless app_configuration.feature_activated?('sms_login')
     return false if record.nil?
     return false if record.phone.blank?
+    return false if password_set?(record)
     return false if code_reset_count(record.phone_confirmation) >= max_retries - 1
 
     true
@@ -72,6 +74,16 @@ class RequestCodePolicy < ApplicationPolicy
   end
 
   private
+
+  # request_code_email? and request_code_phone? serve the password-less
+  # login/signup flow, where the code alone signs the account in (see
+  # UserConfirmationService#validate_no_password!). An account that has a
+  # password authenticates with it, so no code is issued for it here. The
+  # request_reconfirm_code_* actions are unaffected: the caller is already
+  # signed in there.
+  def password_set?(record)
+    record.password_digest.present?
+  end
 
   def code_reset_count(confirmation)
     confirmation&.code_reset_count || 0

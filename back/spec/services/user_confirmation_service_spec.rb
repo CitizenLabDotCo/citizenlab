@@ -139,15 +139,25 @@ RSpec.describe UserConfirmationService do
       end
     end
 
+    # A code alone signs the account in here, so an account that has a password
+    # must go through that password instead.
     context 'when the user has a password' do
       let(:user) { create(:unconfirmed_user, password_digest: 'super_secret') }
 
       it 'returns a user has password error' do
         expect(user.confirmation_required?).to be true
         expect(user.password_digest).not_to be_nil
+
         result = service.validate_and_confirm_email!(user, user.email_confirmation.code)
-        expect(result.success?).to be true
-        expect(user.reload.confirmation_required?).to be false
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(user: [{ error: :has_password }])
+        expect(user.reload.confirmation_required?).to be true
+      end
+
+      it 'does not count the attempt as a code retry' do
+        expect { service.validate_and_confirm_email!(user, 'failcode') }
+          .not_to change { user.email_confirmation.reload.code_retry_count }
       end
     end
 
@@ -236,7 +246,9 @@ RSpec.describe UserConfirmationService do
   end
 
   describe '#validate_and_confirm_phone!' do
-    let(:user) { create(:user, phone: '+14155552671') }
+    # Password-less: this is the login path, and an account with a password is
+    # not allowed through it (see the 'when the user has a password' context).
+    let(:user) { create(:user, phone: '+14155552671', password: nil) }
 
     # The code request sends the OTP synchronously, so the provider is invoked.
     include_context 'with stubbed SMS provider'
@@ -293,6 +305,25 @@ RSpec.describe UserConfirmationService do
 
         expect(result.success?).to be false
         expect(result.errors.details).to eq(user: [{ error: :no_phone }])
+      end
+    end
+
+    # The mirror of the email case: a code alone signs the account in here, so
+    # an account that has a password must go through that password instead.
+    context 'when the user has a password' do
+      before { user.update_columns(password_digest: 'super_secret') }
+
+      it 'returns a user has password error' do
+        result = service.validate_and_confirm_phone!(user, confirmation.code)
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(user: [{ error: :has_password }])
+        expect(user.reload.phone_confirmed_at).to be_nil
+      end
+
+      it 'does not count the attempt as a code retry' do
+        expect { service.validate_and_confirm_phone!(user, 'failcode') }
+          .not_to change { user.phone_confirmation.reload.code_retry_count }
       end
     end
   end

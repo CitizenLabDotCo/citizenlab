@@ -45,15 +45,17 @@ resource 'Request codes' do
         .with(an_instance_of(EmailCampaigns::Campaigns::EmailConfirmation), user, hash_including(:code)).once
     end
 
-    example 'works if user has password and has email confirmed' do
+    # This endpoint serves the password-less login/signup flow, where the code
+    # alone signs the account in. An account that has a password authenticates
+    # with it instead, so it never gets a code here.
+    example 'does not work if user has password and has email confirmed' do
       user = create(:user, email: 'test@test.com')
       expect(user.password_digest).not_to be_nil
       expect(user.confirmation_required?).to be false
 
       do_request(request_code: { email: user.email })
-      expect(response_status).to eq 200
-      expect(delivery_service).to have_received(:send_now_to_user)
-        .with(an_instance_of(EmailCampaigns::Campaigns::EmailConfirmation), user, hash_including(:code)).once
+      expect(response_status).to eq 401
+      expect(delivery_service).not_to have_received(:send_now_to_user)
     end
 
     # This endpoint serves callers that aren't signed in yet. A signed-in user
@@ -69,15 +71,15 @@ resource 'Request codes' do
 
     # This is an edge case related to legacy users, where a user has a password set
     # but has not confirmed their email yet. This should not be possible anymore.
-    example 'works if user has password and does not have email confirmed' do
+    # Having a password is what closes this endpoint, regardless of that state.
+    example 'does not work if user has password and does not have email confirmed' do
       user = create(:unconfirmed_user, email: 'test@test.com', password_digest: 'super_secret')
       expect(user.password_digest).not_to be_nil
       expect(user.confirmation_required?).to be true
 
       do_request(request_code: { email: user.email })
-      expect(response_status).to eq 200
-      expect(delivery_service).to have_received(:send_now_to_user)
-        .with(an_instance_of(EmailCampaigns::Campaigns::EmailConfirmation), user, hash_including(:code)).once
+      expect(response_status).to eq 401
+      expect(delivery_service).not_to have_received(:send_now_to_user)
     end
 
     example 'It does not work if user reached code_reset_count' do
@@ -364,6 +366,18 @@ resource 'Request codes' do
       expect { do_request(request_code: { phone: '+14155552671' }) }
         .not_to enqueue_job(RequestPhoneConfirmationCodeJob)
       expect(response_status).to eq 401
+    end
+
+    # The mirror of request_code_email: the code alone signs the account in, so
+    # an account that has a password never gets one here.
+    example 'It does not work if the account has a password' do
+      user = create(:unconfirmed_phone_user, phone: '+14155552671')
+      user.update_columns(password_digest: 'super_secret')
+
+      expect { do_request(request_code: { phone: '+14155552671' }) }
+        .not_to enqueue_job(RequestPhoneConfirmationCodeJob)
+      expect(response_status).to eq 401
+      expect(user.reload.phone_confirmation).to be_nil
     end
 
     # This endpoint serves callers that aren't signed in yet. A signed-in user

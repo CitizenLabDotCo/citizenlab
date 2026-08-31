@@ -39,6 +39,7 @@ class UserConfirmationService
     # feature is enabled for email confirmation
     validate_password_login_enabled!
     validate_user!(user)
+    validate_no_password!(user)
     validate_email!(user.email)
     validate_and_confirm!(user.email_confirmation, code)
     ClaimTokenService.complete(user)
@@ -79,6 +80,7 @@ class UserConfirmationService
     validate_password_login_enabled!
     validate_sms_enabled!
     validate_user!(user)
+    validate_no_password!(user)
     validate_phone!(user.phone)
     validate_and_confirm!(user.phone_confirmation, code)
     ClaimTokenService.complete(user)
@@ -139,6 +141,15 @@ class UserConfirmationService
 
   def validate_user!(user)
     raise ValidationError.new(:user, :blank) if user.blank?
+  end
+
+  # validate_and_confirm_email! and validate_and_confirm_phone! back the
+  # password-less login/signup flow: a valid code on its own signs the account
+  # in. An account that has a password must go through that password, so a code
+  # can never be traded for a session on it. The authenticated reconfirm_* and
+  # *_new_* paths are unaffected - there the caller already holds a token.
+  def validate_no_password!(user)
+    raise ValidationError.new(:user, :has_password) if user.password_digest.present?
   end
 
   def validate_email!(email)

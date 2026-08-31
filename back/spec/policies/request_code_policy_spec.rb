@@ -12,15 +12,32 @@ RSpec.describe RequestCodePolicy do
       let(:user) { nil }
 
       it 'permits requesting a code for an existing account' do
-        record = create(:user, email: 'test@test.com')
+        record = create(:unconfirmed_user, email: 'test@test.com')
         expect(described_class.new(nil, record)).to permit(:request_code_email)
       end
 
-      it 'permits requesting a code for a full account (password set + confirmed)' do
-        record = create(:user, email: 'test@test.com')
-        expect(record.password_digest).not_to be_nil
+      it 'permits requesting a code for a password-less account that is already confirmed' do
+        record = create(:unconfirmed_user, email: 'test@test.com')
+        record.find_or_create_confirmation(:email_confirmation).confirm!
+        expect(record.password_digest).to be_nil
         expect(record.confirmation_required?).to be false
         expect(described_class.new(nil, record)).to permit(:request_code_email)
+      end
+
+      # This action serves the password-less login/signup flow, where the code
+      # alone signs the account in. An account that has a password authenticates
+      # with it instead, so no code is issued for it here.
+      it 'does not permit requesting a code for an account that has a password' do
+        record = create(:user, email: 'test@test.com')
+        expect(record.password_digest).not_to be_nil
+        expect(described_class.new(nil, record)).not_to permit(:request_code_email)
+      end
+
+      # The legacy shape: a password was set before the email was ever confirmed.
+      it 'does not permit for an account with a password that still has to confirm' do
+        record = create(:unconfirmed_user, email: 'test@test.com', password_digest: 'super_secret')
+        expect(record.confirmation_required?).to be true
+        expect(described_class.new(nil, record)).not_to permit(:request_code_email)
       end
 
       it 'does not permit when no account matches the email' do
@@ -34,7 +51,7 @@ RSpec.describe RequestCodePolicy do
       end
 
       it 'does not permit when password_login is disabled' do
-        record = create(:user, email: 'test@test.com')
+        record = create(:unconfirmed_user, email: 'test@test.com')
         allow(AppConfiguration.instance).to receive(:feature_activated?).with('password_login').and_return(false)
         expect(described_class.new(nil, record)).not_to permit(:request_code_email)
       end
@@ -98,12 +115,21 @@ RSpec.describe RequestCodePolicy do
         expect(described_class.new(nil, record)).to permit(:request_code_phone)
       end
 
+      # The mirror of request_code_email?: the code alone signs the account in,
+      # so an account that has a password is not reachable through it.
+      it 'does not permit requesting a code for an account that has a password' do
+        record = create(:user, :with_confirmed_phone)
+        expect(record.password_digest).not_to be_nil
+        expect(described_class.new(nil, record)).not_to permit(:request_code_phone)
+      end
+
       it 'does not permit when no account matches the phone number' do
         expect(described_class.new(nil, nil)).not_to permit(:request_code_phone)
       end
 
       it 'does not permit when the account has no phone number' do
-        record = create(:user)
+        record = create(:unconfirmed_user)
+        expect(record.phone).to be_nil
         expect(described_class.new(nil, record)).not_to permit(:request_code_phone)
       end
 
