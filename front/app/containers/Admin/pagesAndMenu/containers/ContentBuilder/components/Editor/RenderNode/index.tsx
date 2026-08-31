@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
 import { MessageDescriptor } from 'react-intl';
 import styled from 'styled-components';
@@ -34,6 +34,7 @@ const RenderNode = ({ render }) => {
     isHover,
     hasError,
     title,
+    locked,
     noPointerEvents,
     connectors: { connect, drag },
   } = useNode((node) => {
@@ -56,6 +57,7 @@ const RenderNode = ({ render }) => {
       title:
         WIDGET_TITLES[name] ||
         (node.data.custom?.title as MessageDescriptor | undefined),
+      locked: node.data.custom?.locked === true,
       noPointerEvents:
         hasNoPointerEvents(name) || node.data.custom?.noPointerEvents === true,
     };
@@ -147,6 +149,9 @@ const RenderNode = ({ render }) => {
       {nodeLabelIsVisible && (
         <Box
           id="e2e-node-label"
+          display="flex"
+          alignItems="center"
+          gap="4px"
           p="4px"
           bgColor={hasError ? colors.red600 : colors.primary}
           color="#fff"
@@ -154,6 +159,9 @@ const RenderNode = ({ render }) => {
           top="-28px"
           left="-1px"
         >
+          {locked && (
+            <Icon name="lock" width="16px" height="16px" fill="#fff" />
+          )}
           <FormattedMessage {...title} />
           {hasError && (
             <>

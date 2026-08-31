@@ -91,7 +91,7 @@ ProjectTitle.craft = {
     canDrag: () => false,
   },
   custom: {
-    title: messages.titleWidgetTitle,
+    title: messages.titleWidgetTitle2,
     locked: true,
     noPointerEvents: true,
   },
