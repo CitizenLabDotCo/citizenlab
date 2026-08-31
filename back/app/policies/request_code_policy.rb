@@ -1,13 +1,6 @@
 # frozen_string_literal: true
 
 class RequestCodePolicy < ApplicationPolicy
-  # Guards a request for an in-place email confirmation code (the
-  # request_code_email action). That action serves the public flow only - email
-  # signup and passwordless login - so `record` is the account that owns the
-  # submitted `email` param and `user` (current_user) must be nil. A signed-in
-  # user re-confirming their own email goes through request_reconfirm_code_email?
-  # instead, which is why an authenticated caller is rejected outright rather
-  # than checked for ownership.
   def request_code_email?
     return false unless user.nil?
     return false unless app_configuration.feature_activated?('password_login')
@@ -19,9 +12,6 @@ class RequestCodePolicy < ApplicationPolicy
     true
   end
 
-  # Guards a re-confirmation code for the signed-in user's own email. Not gated
-  # by password_login: an account created through SSO must still be able to
-  # re-confirm. `record` is current_user (see the controller).
   def request_reconfirm_code_email?
     return false if user.nil?
     return false if user.email.blank?
@@ -75,12 +65,6 @@ class RequestCodePolicy < ApplicationPolicy
 
   private
 
-  # request_code_email? and request_code_phone? serve the password-less
-  # login/signup flow, where the code alone signs the account in (see
-  # UserConfirmationService#validate_no_password!). An account that has a
-  # password authenticates with it, so no code is issued for it here. The
-  # request_reconfirm_code_* actions are unaffected: the caller is already
-  # signed in there.
   def password_set?(record)
     record.password_digest.present?
   end

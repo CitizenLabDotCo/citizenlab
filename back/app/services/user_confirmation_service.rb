@@ -143,11 +143,6 @@ class UserConfirmationService
     raise ValidationError.new(:user, :blank) if user.blank?
   end
 
-  # validate_and_confirm_email! and validate_and_confirm_phone! back the
-  # password-less login/signup flow: a valid code on its own signs the account
-  # in. An account that has a password must go through that password, so a code
-  # can never be traded for a session on it. The authenticated reconfirm_* and
-  # *_new_* paths are unaffected - there the caller already holds a token.
   def validate_no_password!(user)
     raise ValidationError.new(:user, :has_password) if user.password_digest.present?
   end
