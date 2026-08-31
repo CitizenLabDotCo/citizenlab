@@ -1,12 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  Button,
-  colors,
-  Text,
-  Title,
-} from '@citizenlab/cl2-component-library';
+import { Box, Button, colors, Text } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { SupportedLocale } from 'typings';
@@ -85,12 +79,7 @@ const ImportZipModal = ({ open, onClose, onImport }: Props) => {
       width="780px"
       opened={open}
       close={onClose}
-      header={
-        <Title variant="h2" color="primary" px="24px" m="0">
-          Import projects from zip file
-        </Title>
-      }
-      niceHeader
+      header="Import projects from zip file"
     >
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(submitFile)}>

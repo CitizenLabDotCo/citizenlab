@@ -12,7 +12,6 @@ import React from 'react';
 import {
   Accordion,
   Box,
-  Title,
   Text,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
@@ -82,15 +81,8 @@ const IdMethodsModal = ({ opened, onClose }: Props) => {
     <Modal
       opened={opened}
       close={onClose}
-      niceHeader
       width="620px"
-      header={
-        // The close button is absolutely positioned over the full-width header,
-        // so the title has to keep clear of it on the right.
-        <Title ml="20px" mr="56px" variant="h3" color="primary">
-          <FormattedMessage {...messages.identificationMethods} />
-        </Title>
-      }
+      header={<FormattedMessage {...messages.identificationMethods} />}
     >
       <Box p="24px">
         {activeMethods.length === 0 && (

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { media } from '@citizenlab/cl2-component-library';
+import { Button, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IGroupData, MembershipType } from 'api/groups/types';
@@ -8,7 +8,12 @@ import useAddGroup from 'api/groups/useAddGroup';
 
 import HelmetIntl from 'components/HelmetIntl';
 import Outlet from 'components/Outlet';
-import Modal from 'components/UI/Modal';
+// TEMP (TAN-8590): belongs to the original Modal, commented out at the bottom
+// of this file. Restore when reverting.
+// import Modal from 'components/UI/Modal';
+// This is a temproray to test the new SettingsModal component.
+// It will be removed before merge this branch
+import SettingsModal from 'components/UI/SettingsModal';
 
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import { Outlet as RouterOutlet } from 'utils/router';
@@ -109,6 +114,35 @@ const UsersPage = () => {
         </ChildWrapper>
       </Wrapper>
 
+      <SettingsModal
+        header={renderModalHeader()}
+        opened={groupCreationModal !== false}
+        close={closeGroupCreationModal}
+        footer={<Button buttonStyle="admin-dark">Save changes</Button>}
+        sections={[
+          {
+            name: 'manual',
+            label: messages.step1TypeNameNormal,
+            icon: 'database',
+            content: (
+              <NormalGroupForm
+                onSubmit={(values) =>
+                  handleSubmitForm({ ...values, membership_type: 'manual' })
+                }
+              />
+            ),
+          },
+          {
+            name: 'smart',
+            label: messages.step1TypeNameSmart,
+            icon: 'settings',
+            content: <GroupCreationStep1 onOpenStep2={openStep2} />,
+          },
+        ]}
+      />
+
+      {/* 
+
       <Modal
         header={renderModalHeader()}
         opened={groupCreationModal !== false}
@@ -134,6 +168,8 @@ const UsersPage = () => {
           />
         </>
       </Modal>
+
+      */}
     </>
   );
 };
