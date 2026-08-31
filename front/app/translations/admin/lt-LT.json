@@ -181,7 +181,7 @@
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "Ką renkame",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "Iš dalyvių renkama informacija ir tai, kaip ji saugoma kartu su jų pateiktais duomenimis.",
   "app.components.admin.ActionForm.Fields.addDemographicQuestion": "Pridėti demografinį klausimą",
-  "app.components.admin.ActionForm.Fields.cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone3": "Kai nustatymas „Kas gali dalyvauti“ yra nustatytas į „Visi“, demografiniai klausimai gali būti pateikiami tik paskutiniame formos puslapyje.",
+  "app.components.admin.ActionForm.Fields.cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone3": "Kai parinktis „Kas gali dalyvauti“ nustatyta į „Visi“, demografiniai klausimai gali būti pateikiami tik paskutiniame formos puslapyje.",
   "app.components.admin.ActionForm.Fields.demographicQuestions": "Demografiniai klausimai",
   "app.components.admin.ActionForm.Fields.noDemographicQuestionsAsked": "Demografiniai klausimai neužduodami.",
   "app.components.admin.ActionForm.Fields.questions": "Klausimai",

@@ -1203,7 +1203,7 @@
   "app.containers.Admin.messaging.confirmSendSmsInsufficientBalance": "Šim ziņojumam ir nepieciešami {required, number} kredīti, taču ir atlikuši tikai {balance, number}. Lai iegādātos vairāk kredītu, sazinieties ar savu GovSuccess vadītāju.",
   "app.containers.Admin.messaging.confirmSendSmsNoRecipients": "Pašlaik neviens neatbilst šim ziņojumam. Saņēmējiem ir nepieciešams apstiprināts tālruņa numurs un viņiem ir jābūt piekritušiem saņemt īsziņas.",
   "app.containers.Admin.messaging.confirmSendSmsRecipientsLabel": "Saņēmēji",
-  "app.containers.Admin.messaging.confirmSendSmsRecipientsTooltip2": "Tiek ieskaitīti tikai tie lietotāji ar apstiprinātu tālruņa numuru, kuri ir pieteikušies saņemt īsziņas.",
+  "app.containers.Admin.messaging.confirmSendSmsRecipientsTooltip2": "Tiek skaitīti tikai tie lietotāji, kuriem ir apstiprināts tālruņa numurs un kuri ir piekrituši saņemt īsziņas.",
   "app.containers.Admin.messaging.deleteSmsButton": "Dzēst",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "Vai tiešām vēlaties dzēst šo SMS ziņu?",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "Rediģēt SMS ziņu",

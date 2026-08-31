@@ -181,7 +181,7 @@
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "Vad vi samlar in",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "Information som samlas in från deltagare och hur den lagras tillsammans med deras bidrag.",
   "app.components.admin.ActionForm.Fields.addDemographicQuestion": "Lägg till en demografisk fråga",
-  "app.components.admin.ActionForm.Fields.cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone3": "När ”Vem kan delta” är inställt på ”Alla” kan demografiska frågor endast ställas på formulärets sista sida.",
+  "app.components.admin.ActionForm.Fields.cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone3": "När \"Vem kan delta\" är inställt på \"Alla\", kan demografiska frågor endast ställas på formulärets sista sida.",
   "app.components.admin.ActionForm.Fields.demographicQuestions": "Demografiska frågor",
   "app.components.admin.ActionForm.Fields.noDemographicQuestionsAsked": "Inga demografiska frågor ställs.",
   "app.components.admin.ActionForm.Fields.questions": "Frågor",

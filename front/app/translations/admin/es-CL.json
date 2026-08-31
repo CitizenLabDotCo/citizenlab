@@ -181,7 +181,7 @@
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "Qué recopilamos",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "Información recopilada de los participantes y cómo se almacena junto con su aportación.",
   "app.components.admin.ActionForm.Fields.addDemographicQuestion": "Añadir una pregunta demográfica",
-  "app.components.admin.ActionForm.Fields.cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone3": "Cuando «Quién puede participar» está configurado como «Cualquiera», las preguntas demográficas solo pueden formularse en la última página del formulario.",
+  "app.components.admin.ActionForm.Fields.cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone3": "Cuando «Quién puede participar» se establece en «Cualquiera», las preguntas demográficas solo pueden incluirse en la última página del formulario.",
   "app.components.admin.ActionForm.Fields.demographicQuestions": "Preguntas demográficas",
   "app.components.admin.ActionForm.Fields.noDemographicQuestionsAsked": "No se realizan preguntas demográficas.",
   "app.components.admin.ActionForm.Fields.questions": "Preguntas",

@@ -1203,7 +1203,7 @@
   "app.containers.Admin.messaging.confirmSendSmsInsufficientBalance": "Questo messaggio richiede {required, number} crediti, ma ne rimangono solo {balance, number}. Per acquistare altri crediti, contatta il tuo GovSuccess Manager.",
   "app.containers.Admin.messaging.confirmSendSmsNoRecipients": "Al momento nessun utente corrisponde ai criteri di questo messaggio. I destinatari devono avere un numero di telefono confermato e aver acconsentito alla ricezione di messaggi SMS.",
   "app.containers.Admin.messaging.confirmSendSmsRecipientsLabel": "Destinatari",
-  "app.containers.Admin.messaging.confirmSendSmsRecipientsTooltip2": "Vengono conteggiati solo gli utenti con un numero di telefono confermato che hanno acconsentito a ricevere messaggi di testo.",
+  "app.containers.Admin.messaging.confirmSendSmsRecipientsTooltip2": "Vengono conteggiati solo gli utenti con un numero di telefono confermato che hanno acconsentito alla ricezione di SMS.",
   "app.containers.Admin.messaging.deleteSmsButton": "Elimina",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "Sei sicuro di voler eliminare questo messaggio SMS?",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "Modifica messaggio SMS",
