@@ -162,7 +162,7 @@ class WebApi::V1::UsersController < ApplicationController
     end
 
     RequestEmailConfirmationCodeJob.perform_now(@user) if auto_send_code?(@user, :email_confirmation)
-    render_check_action(@user, :email_confirmation)
+    render_check_action(@user)
   end
 
   # The phone counterpart of check_email: validates a phone number without
@@ -188,7 +188,6 @@ class WebApi::V1::UsersController < ApplicationController
     RequestPhoneConfirmationCodeJob.issue_code_and_deliver_later(@user) if auto_send_code?(@user, :phone_confirmation)
     render_check_action(
       @user,
-      :phone_confirmation,
       code_retry_after: @user&.phone_confirmation&.seconds_until_resend_allowed.to_i
     )
   end
@@ -429,27 +428,33 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   # Shared by check_email and check_phone: given the account that owns the
-  # submitted identifier (nil when there is none) and the name of the confirmation
-  # that covers that identifier, tell the frontend which step to go to next.
-  # code_retry_after is passed for phone only: only SMS codes have a minimum
-  # interval between requests, and the confirmation step counts it down instead
-  # of offering a resend the backend would reject.
-  def render_check_action(user, confirmation_name, code_retry_after: nil)
-    render json: raw_json({ action: check_action(user, confirmation_name), code_retry_after: code_retry_after }.compact)
+  # submitted identifier (nil when there is none), tell the frontend which step
+  # to go to next. code_retry_after is passed for phone only: only SMS codes
+  # have a minimum interval between requests, and the confirmation step counts
+  # it down instead of offering a resend the backend would reject.
+  def render_check_action(user, code_retry_after: nil)
+    render json: raw_json({ action: check_action(user), code_retry_after: code_retry_after }.compact)
   end
 
-  def check_action(user, confirmation_name)
+  # An account that has a password authenticates with it, never with a code:
+  # the code steps are the password-less path, and both RequestCodePolicy and
+  # UserConfirmationService reject an account with a password. So a user who has
+  # one always goes to the password step, including the legacy shape where a
+  # password was set before the identifier was ever confirmed - sending those to
+  # 'confirm' would only offer a code that can no longer be redeemed. They can
+  # still get in: the password reset flow confirms the email on the way through.
+  def check_action(user)
     return 'terms' if user.nil?
-    return 'password' if !user.confirmation_pending?(confirmation_name) && !user.no_password?
+    return 'password' unless user.no_password?
 
     'confirm'
   end
 
-  # Users who still have to confirm, and users without a password, get a code sent
-  # automatically. The callers send it themselves, because email codes are sent
-  # inline while SMS codes are only issued inline and delivered from a job.
+  # Users without a password - the ones the confirmation step is for - get a code
+  # sent automatically. The callers send it themselves, because email codes are
+  # sent inline while SMS codes are only issued inline and delivered from a job.
   def auto_send_code?(user, confirmation_name)
-    return false if check_action(user, confirmation_name) != 'confirm'
+    return false if check_action(user) != 'confirm'
 
     # If users already have a code_reset_count > 0,
     # they tried to log in previously and failed. In this case, we don't

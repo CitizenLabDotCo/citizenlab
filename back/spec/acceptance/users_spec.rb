@@ -172,6 +172,10 @@ resource 'Users' do
           end
         end
 
+        # A legacy shape: a password was set before the email was ever confirmed.
+        # The confirmation step is the password-less path and no longer accepts an
+        # account with a password, so there is no code to send here. These users
+        # get back in through the password reset flow, which confirms them.
         context 'when a user exists with a password and does not have email confirmed', document: false do
           before do
             @user = create(:unconfirmed_user, email: 'test@test.com', password_digest: 'super_secret')
@@ -180,12 +184,12 @@ resource 'Users' do
 
           let(:email) { 'test@test.com' }
 
-          example_request 'Returns "confirm"' do
+          example_request 'Returns "password" without sending a code' do
             expect(@user.password_digest).not_to be_nil
             expect(@user.confirmation_required?).to be true
             assert_status 200
-            expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
-            expect(RequestEmailConfirmationCodeJob).to have_received(:perform_now).with(@user)
+            expect(json_response_body[:data][:attributes][:action]).to eq('password')
+            expect(RequestEmailConfirmationCodeJob).not_to have_received(:perform_now).with(@user)
           end
         end
 
@@ -229,13 +233,16 @@ resource 'Users' do
           end
         end
 
+        # Same legacy shape as above, SSO-created: the password closes the
+        # confirmation step, so they are sent to the password one. Signing in
+        # through the identity provider still confirms them.
         context 'when user was created by SSO, has a password, email unconfirmed' do
           let(:user) { create(:unconfirmed_user, password_digest: 'super_secret', identities: [create(:facebook_identity)]) }
           let(:email) { user.email }
 
-          example_request 'Returns "confirm"' do
+          example_request 'Returns "password"' do
             assert_status 200
-            expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+            expect(json_response_body[:data][:attributes][:action]).to eq('password')
           end
         end
 
@@ -408,6 +415,9 @@ resource 'Users' do
           end
         end
 
+        # The phone mirror of the email case: an SMS code would let whoever holds
+        # the (still unconfirmed) number into an account that is protected by a
+        # password, so no code is sent and the caller is sent to the password step.
         context 'when a user exists with a password but has not confirmed their phone', document: false do
           before do
             @user = create(:user, phone: '+14155552671')
@@ -416,11 +426,12 @@ resource 'Users' do
 
           let(:phone) { '+14155552671' }
 
-          example_request 'Returns "confirm"' do
+          example_request 'Returns "password" without sending a code' do
             expect(@user.password_digest).not_to be_nil
+            expect(@user.phone_confirmed_at).to be_nil
             assert_status 200
-            expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
-            expect(RequestPhoneConfirmationCodeJob).to have_received(:issue_code_and_deliver_later).with(@user)
+            expect(json_response_body[:data][:attributes][:action]).to eq('password')
+            expect(RequestPhoneConfirmationCodeJob).not_to have_received(:issue_code_and_deliver_later).with(@user)
           end
         end
 
