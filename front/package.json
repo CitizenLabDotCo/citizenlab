@@ -172,7 +172,7 @@
     "@cypress/webpack-preprocessor": "6.0.1",
     "@sentry/vite-plugin": "^5.4.0",
     "@storybook/builder-vite": "10.4.5",
-    "@storybook/react": "10.4.5",
+    "@storybook/react": "10.5.10",
     "@storybook/react-vite": "10.4.5",
     "@storybook/react-webpack5": "10.4.5",
     "@swc/core": "^1.15.46",
