@@ -63,6 +63,30 @@ resource 'Users' do
         expect(@user.authenticate(password)).to be @user
       end
 
+      # A reset is what someone does when their account may be compromised, so
+      # the sessions opened with the old password must not survive it.
+      example 'Invalidates the tokens issued before the reset' do
+        old_token = AuthToken::AuthToken.new(payload: @user.to_token_payload).token
+        old_expiry_key = @user.token_expiry_key
+
+        do_request
+
+        expect(status).to eq 200
+        expect(@user.reload.token_expiry_key).to be_present
+        expect(@user.token_expiry_key).not_to eq old_expiry_key
+        expect { AuthToken::AuthToken.new(token: old_token).entity_for(User) }
+          .to raise_error ActiveRecord::RecordNotFound
+      end
+
+      example 'Does not invalidate the tokens when the reset fails', document: false do
+        old_expiry_key = @user.token_expiry_key
+
+        do_request(user: { password: 'short', token: token })
+
+        expect(status).to eq 422
+        expect(@user.reload.token_expiry_key).to eq old_expiry_key
+      end
+
       example '[error] Reset password using invalid token' do
         do_request(user: { password: password, token: 'abcabcabc' })
         expect(status).to be 401
