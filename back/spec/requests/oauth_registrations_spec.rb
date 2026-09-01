@@ -42,6 +42,16 @@ describe Oauth::RegistrationsController do
       expect(response.parsed_body['redirect_uris']).to eq ['https://a.example.com/cb', 'http://127.0.0.1:5000/cb']
     end
 
+    # The other side of the error-code split: a failure that has nothing to do
+    # with redirect_uri keeps the generic RFC 7591 code.
+    it 'reports a non-redirect_uri problem with the generic error code' do
+      expect { register(['https://ok.example.com/cb'], client_name: nil) }
+        .not_to change(Doorkeeper::Application, :count)
+
+      expect(response).to have_http_status(:bad_request)
+      expect(response.parsed_body['error']).to eq 'invalid_client_metadata'
+    end
+
     describe 'redirect_uri scheme allowlist' do
       using RSpec::Parameterized::TableSyntax
 
@@ -62,6 +72,9 @@ describe Oauth::RegistrationsController do
         'URI with a fragment'         | ['https://ok.example.com/cb#fragment']
         'no redirect_uris'            | []
         'non-string entry'            | [{ 'uri' => 'https://ok.example.com/cb' }]
+        # Passes the controller allowlist (http is a valid scheme) and is refused one layer down
+        # by force_ssl_in_redirect_uri. Same code either way.
+        'plaintext non-loopback URI' | ['http://client.example.com/cb']
       end
 
       with_them do

@@ -23,6 +23,7 @@ describe Doorkeeper::Application do
       'data scheme'               | 'data:text/html,<script>alert(1)</script>'  | false
       'vbscript scheme'           | 'vbscript:msgbox(1)'                        | false
       'https plus hostile URI'    | "https://ok.example.com/cb\njavascript://x%0Aalert(1)" | false
+      'loopback host with upcase' | 'http://LOCALHOST:33418/cb'                 | true
     end
 
     with_them do
