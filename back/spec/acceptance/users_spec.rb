@@ -1601,6 +1601,40 @@ resource 'Users' do
         let(:id) { @user.id }
         let(:first_name) { 'Edmond' }
 
+        describe 'early access' do
+          let(:feature) { AppConfiguration::Settings.early_access_features.first }
+
+          example 'Opt into an early access feature' do
+            do_request(user: { early_access_features: [feature] })
+
+            assert_status 200
+            expect(response_data.dig(:attributes, :early_access_features)).to eq [feature]
+            expect(@user.reload.early_access_features).to eq [feature]
+          end
+
+          example 'Opt out of an early access feature again', document: false do
+            @user.update!(early_access_features: [feature])
+            do_request(user: { early_access_features: [] })
+
+            assert_status 200
+            expect(@user.reload.early_access_features).to eq []
+          end
+
+          example '[error] Opt into a feature that is not in early access', document: false do
+            do_request(user: { early_access_features: ['analysis'] })
+
+            assert_status 422
+            expect(@user.reload.early_access_features).to eq []
+          end
+
+          example '[error] Opt another admin into an early access feature', document: false do
+            other_admin = create(:admin)
+            do_request(id: other_admin.id, user: { early_access_features: [feature] })
+
+            expect(other_admin.reload.early_access_features).to eq []
+          end
+        end
+
         describe do
           let(:custom_field_values) { { birthyear: 1984 } }
           let(:project) { create(:single_phase_ideation_project, phase_attrs: { with_permissions: true }) }
