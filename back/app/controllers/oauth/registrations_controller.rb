@@ -57,6 +57,7 @@ module Oauth
       uri = URI.parse(value)
       ALLOWED_REDIRECT_URI_SCHEMES.include?(uri.scheme.to_s.downcase) &&
         uri.host.present? &&
+        # RFC 6749 §3.1.2 (redirection endpoint should not hold fragment)
         uri.fragment.nil?
     rescue URI::InvalidURIError
       false
