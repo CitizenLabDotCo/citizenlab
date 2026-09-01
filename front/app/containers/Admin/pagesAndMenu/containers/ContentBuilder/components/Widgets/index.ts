@@ -1,4 +1,7 @@
 // Shared widgets
+import CustomBlock, {
+  customBlockTitle,
+} from 'components/admin/ContentBuilder/CustomBlocks/Widget';
 import AboutBox, {
   aboutBoxTitle,
 } from 'components/admin/ContentBuilder/Widgets/AboutBox';
@@ -35,6 +38,7 @@ import FolderTitle, {
 import InfoWithAccordions, {
   infoWithAccordionsTitle,
 } from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
+
 import { MessageDescriptor } from 'utils/cl-intl';
 
 // Homepage builder widgets
@@ -67,6 +71,7 @@ export const WIDGETS = {
   // Shared widgets
   AccordionMultiloc,
   ButtonMultiloc,
+  CustomBlock,
   HtmlBlockMultiloc,
   IframeMultiloc,
   ImageMultiloc,
@@ -113,6 +118,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   // Shared widgets
   AccordionMultiloc: accordionMultilocTitle,
   ButtonMultiloc: buttonMultilocTitle,
+  CustomBlock: customBlockTitle,
   HtmlBlockMultiloc: htmlBlockMultilocTitle,
   IframeMultiloc: iframeTitle,
   ImageMultiloc: imageMultilocTitle,
@@ -167,6 +173,7 @@ export const hasChildren = (nodeName: string) => {
 const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   // Shared widgets
   'ButtonMultiloc',
+  'CustomBlock',
   'IframeMultiloc',
   'Published',
   'Selection',
