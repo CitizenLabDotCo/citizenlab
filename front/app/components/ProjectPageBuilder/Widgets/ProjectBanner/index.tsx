@@ -216,7 +216,7 @@ ProjectBanner.craft = {
     canDrag: () => false,
   },
   custom: {
-    title: messages.bannerWidgetTitle2,
+    title: messages.bannerWidgetTitle,
     locked: true,
     noPointerEvents: true,
   },
