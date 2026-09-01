@@ -17,17 +17,9 @@ export default defineMessages({
     id: 'app.components.ProjectPageBuilder.Widgets.titleWidgetTitle',
     defaultMessage: 'Title',
   },
-  titleWidgetTitle2: {
-    id: 'app.components.ProjectPageBuilder.Widgets.titleWidgetTitle2',
-    defaultMessage: 'Title - Pinned to the top of the page — editable, but can\'t be moved or removed.',
-  },
   bannerWidgetTitle: {
     id: 'app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle',
     defaultMessage: 'Project image',
-  },
-  bannerWidgetTitle2: {
-    id: 'app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle2',
-    defaultMessage: 'Project image - Pinned to the top of the page — editable, but can\'t be moved or removed.',
   },
   projectTitleLabel: {
     id: 'app.components.ProjectPageBuilder.Widgets.projectTitleLabel',
