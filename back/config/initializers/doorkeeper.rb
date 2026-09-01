@@ -293,10 +293,6 @@ Doorkeeper.configure do
   end
 
   # Specify what redirect URI's you want to block during Application creation.
-  # Any redirect URI is allowed by default.
-  #
-  # You can use this option in order to forbid URI's with 'javascript' scheme
-  # for example.
   #
   # Scheme allowlist only — a browser must never be able to execute a stored
   # redirect_uri. Whether http is acceptable is force_ssl_in_redirect_uri's job.

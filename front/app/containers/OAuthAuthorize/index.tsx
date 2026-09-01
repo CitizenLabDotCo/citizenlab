@@ -121,7 +121,7 @@ const OAuthAuthorize = () => {
         </Box>
       </Card>
     );
-  } else if (isError || !authorization || unsafeRedirect || redirectBlocked) {
+  } else if (isError || unsafeRedirect || redirectBlocked) {
     content = (
       <Card>
         <Box p="40px">
