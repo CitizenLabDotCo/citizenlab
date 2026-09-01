@@ -559,6 +559,32 @@ describe Export::Xlsx::ValueVisitor do
       end
     end
 
+    describe '#visit_multipoint' do
+      let(:input_type) { 'multipoint' }
+
+      context 'when there is no value' do
+        let(:value) { nil }
+
+        it 'returns an empty string' do
+          expect(visitor.visit_multipoint(field)).to eq ''
+        end
+      end
+
+      context 'when there is a value' do
+        let(:value) do
+          {
+            'type' => 'MultiPoint',
+            'coordinates' => [[11.11, 22.22], [11.33, 22.44], [12.33, 23.44]]
+          }
+        end
+
+        it 'returns the GeoJSON value as a string' do
+          expect(visitor.visit_multipoint(field))
+            .to eq '{"type":"MultiPoint","coordinates":[[11.11,22.22],[11.33,22.44],[12.33,23.44]]}'
+        end
+      end
+    end
+
     describe '#visit_page' do
       let(:field) { create(:custom_field_page) }
       let(:model) { instance_double Idea } # The model is irrelevant for this test.

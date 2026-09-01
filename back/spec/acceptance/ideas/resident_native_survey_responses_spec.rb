@@ -288,6 +288,7 @@ resource 'Ideas' do
         parameter :point_field, 'A point field'
         parameter :line_field, 'A line field'
         parameter :polygon_field, 'A polygon field'
+        parameter :multipoint_field, 'A multipoint field'
       end
 
       let(:project) { create(:single_phase_native_survey_project) }
@@ -319,6 +320,7 @@ resource 'Ideas' do
       let!(:point_cf) { create(:custom_field_point, resource: form, key: 'point_field') }
       let!(:line_cf) { create(:custom_field_line, resource: form, key: 'line_field') }
       let!(:polygon_cf) { create(:custom_field_polygon, resource: form, key: 'polygon_field') }
+      let!(:multipoint_cf) { create(:custom_field_multipoint, resource: form, key: 'multipoint_field') }
 
       let(:text_field) { 'A text answer' }
       let(:multiline_field) { "Line 1\nLine 2" }
@@ -343,6 +345,7 @@ resource 'Ideas' do
       let(:point_field) { 'POINT (4.31 50.85)' }
       let(:line_field) { 'LINESTRING (4.30 50.85, 4.660 51.15)' }
       let(:polygon_field) { 'POLYGON ((4.3 50.85, 4.31 50.85, 4.31 50.86, 4.3 50.85))' }
+      let(:multipoint_field) { 'MULTIPOINT (4.35 50.85, 4.36 50.86)' }
 
       example_request 'Create a response with all supported input types', document: false do
         assert_status 201
@@ -374,7 +377,8 @@ resource 'Ideas' do
           'polygon_field' => {
             'type' => 'Polygon',
             'coordinates' => [[[4.3, 50.85], [4.31, 50.85], [4.31, 50.86], [4.3, 50.85]]]
-          }
+          },
+          'multipoint_field' => { 'type' => 'MultiPoint', 'coordinates' => [[4.35, 50.85], [4.36, 50.86]] }
         })
       end
     end

@@ -488,7 +488,7 @@ export const transformFieldForSubmission = (
         field.dropdown_layout ||
         isDropdownLayoutForced(field.input_type, field.options?.length ?? 0),
     }),
-    ...(field.input_type === 'topic_ids' && {
+    ...(['topic_ids', 'multipoint'].includes(field.input_type) && {
       maximum_select_count: field.select_count_enabled
         ? field.maximum_select_count
         : null,

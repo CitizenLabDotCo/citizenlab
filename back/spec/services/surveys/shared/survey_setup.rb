@@ -281,6 +281,19 @@ RSpec.shared_context 'survey_setup' do
     )
   end
 
+  let_it_be(:multipoint_field) do
+    create(
+      :custom_field_multipoint,
+      resource: form,
+      title_multiloc: {
+        'en' => 'Which locations should we look at?'
+      },
+      description_multiloc: {}
+    )
+  end
+
+  let_it_be(:map_config_for_multipoint) { create(:map_config, mappable: multipoint_field) }
+
   # The following page for form submission should not be returned in the results
   let_it_be(:last_page_field) do
     create(:custom_field_form_end_page, resource: form)
@@ -327,7 +340,8 @@ RSpec.shared_context 'survey_setup' do
           'send_more_animals_to_space' => 1,
           'ride_bicycles_more_often' => 3
         },
-        sentiment_linear_scale_field.key => 3
+        sentiment_linear_scale_field.key => 3,
+        multipoint_field.key => { type: 'MultiPoint', coordinates: [[1.1, 2.2], [3.3, 4.4], [5.5, 6.6]] }
       },
       idea_files: [idea_file1, idea_file2],
       author: female_user,
@@ -351,7 +365,8 @@ RSpec.shared_context 'survey_setup' do
           'send_more_animals_to_space' => 1
         },
         sentiment_linear_scale_field.key => 2,
-        "#{sentiment_linear_scale_field.key}_follow_up" => 'Just not good'
+        "#{sentiment_linear_scale_field.key}_follow_up" => 'Just not good',
+        multipoint_field.key => { type: 'MultiPoint', coordinates: [[1.2, 2.3], [3.4, 4.5]] }
       },
       author: male_user,
       created_at: '2025-04-16'

@@ -415,6 +415,22 @@ class CustomFieldService
     }
   end
 
+  # *** multipoint ***
+
+  def multipoint_to_ui_schema_field(_field, _locale)
+    {}.tap do |ui_schema|
+      ui_schema[:'ui:widget'] = 'hidden'
+    end
+  end
+
+  def multipoint_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }
+  end
+
   # *** files ***
 
   def files_to_ui_schema_field(field, locale)

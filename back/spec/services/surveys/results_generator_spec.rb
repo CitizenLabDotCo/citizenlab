@@ -63,7 +63,7 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns the correct fields in the correct order' do
-        expect(generated_results[:results].count).to eq 20
+        expect(generated_results[:results].count).to eq 21
         expect(generated_results[:results].pluck(:customFieldId)).not_to include disabled_multiselect_field.id
       end
     end
@@ -803,6 +803,34 @@ RSpec.describe Surveys::ResultsGenerator do
 
       it 'returns the results for a polygon field' do
         expect(generated_results[:results][result_index(polygon_field)]).to match expected_result_polygon
+      end
+    end
+
+    describe 'multipoint fields' do
+      let(:expected_result_multipoint) do
+        {
+          inputType: 'multipoint',
+          question: { 'en' => 'Which locations should we look at?' },
+          required: false,
+          grouped: false,
+          description: {},
+          hidden: false,
+          pageNumber: nil,
+          questionNumber: 18,
+          questionCategory: nil,
+          questionResponseCount: 2,
+          totalResponseCount: 27,
+          customFieldId: multipoint_field.id,
+          mapConfigId: map_config_for_multipoint.id,
+          multipointResponses: a_collection_containing_exactly(
+            { answer: { 'coordinates' => [[1.1, 2.2], [3.3, 4.4], [5.5, 6.6]], 'type' => 'MultiPoint' } },
+            { answer: { 'coordinates' => [[1.2, 2.3], [3.4, 4.5]], 'type' => 'MultiPoint' } }
+          )
+        }
+      end
+
+      it 'returns the results for a multipoint field' do
+        expect(generated_results[:results][result_index(multipoint_field)]).to match expected_result_multipoint
       end
     end
 

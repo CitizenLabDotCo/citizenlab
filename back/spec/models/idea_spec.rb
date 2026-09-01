@@ -322,13 +322,15 @@ RSpec.describe Idea do
       let!(:point_field) { create(:custom_field_point, key: 'point_field', resource: custom_form) }
       let!(:line_field) { create(:custom_field_line, key: 'line_field', resource: custom_form) }
       let!(:polygon_field) { create(:custom_field_polygon, key: 'polygon_field', resource: custom_form) }
+      let!(:multipoint_field) { create(:custom_field_multipoint, key: 'multipoint_field', resource: custom_form) }
       let(:idea) { build(:idea, creation_phase: active_phase) }
 
       it 'converts valid wkt strings to GeoJSON' do
         idea.custom_field_values = {
           point_field: 'POINT (4.31 50.85)',
           line_field: 'LINESTRING (4.30 50.85, 4.660 51.15)',
-          polygon_field: 'POLYGON ((4.3 50.85, 4.31 50.85, 4.31 50.86, 4.3 50.85))'
+          polygon_field: 'POLYGON ((4.3 50.85, 4.31 50.85, 4.31 50.86, 4.3 50.85))',
+          multipoint_field: 'MULTIPOINT (4.35 50.85, 4.36 50.86, 4.37 50.87)'
         }
         idea.send(:convert_wkt_geo_custom_field_values_to_geojson)
         expect(idea.custom_field_values).to eq({
@@ -337,7 +339,19 @@ RSpec.describe Idea do
           'polygon_field' => {
             'type' => 'Polygon',
             'coordinates' => [[[4.3, 50.85], [4.31, 50.85], [4.31, 50.86], [4.3, 50.85]]]
+          },
+          'multipoint_field' => {
+            'type' => 'MultiPoint',
+            'coordinates' => [[4.35, 50.85], [4.36, 50.86], [4.37, 50.87]]
           }
+        })
+      end
+
+      it 'converts a multipoint wkt string holding a single pin' do
+        idea.custom_field_values = { multipoint_field: 'MULTIPOINT (4.35 50.85)' }
+        idea.send(:convert_wkt_geo_custom_field_values_to_geojson)
+        expect(idea.custom_field_values).to eq({
+          'multipoint_field' => { 'type' => 'MultiPoint', 'coordinates' => [[4.35, 50.85]] }
         })
       end
 

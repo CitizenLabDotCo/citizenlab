@@ -220,7 +220,9 @@ const PointSettings = ({ mapConfigIdName, pageLayoutName, field }: Props) => {
         />
         {/* TODO: Fix this the next time the file is edited. */}
         {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-        {(field?.input_type === 'line' || field?.input_type === 'polygon') && (
+        {(field?.input_type === 'line' ||
+          field?.input_type === 'polygon' ||
+          field?.input_type === 'multipoint') && (
           <Box my="8px">
             <Warning>
               <FormattedMessage

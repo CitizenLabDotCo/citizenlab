@@ -186,6 +186,10 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.tapToAddAnArea',
     defaultMessage: 'Tap to add an area',
   },
+  tapToAddPins: {
+    id: 'app.components.CustomFieldsForm.tapToAddPins',
+    defaultMessage: 'Tap to add locations',
+  },
   back: {
     id: 'app.components.CustomFieldsForm.back',
     defaultMessage: 'Back',
@@ -205,6 +209,18 @@ export default defineMessages({
   atLeastThreePointsRequired: {
     id: 'app.components.CustomFieldsForm.atLeastThreePointsRequired',
     defaultMessage: 'At least three points are required for a polygon.',
+  },
+  atLeastOnePinRequired: {
+    id: 'app.components.CustomFieldsForm.atLeastOnePinRequired',
+    defaultMessage: 'At least one location is required.',
+  },
+  minimumPinsRequired: {
+    id: 'app.components.CustomFieldsForm.minimumPinsRequired',
+    defaultMessage: 'Add at least {minPins} locations.',
+  },
+  maximumPinsAllowed: {
+    id: 'app.components.CustomFieldsForm.maximumPinsAllowed',
+    defaultMessage: 'Add no more than {maxPins} locations.',
   },
   fileSizeLimit: {
     id: 'app.components.CustomFieldsForm.fileSizeLimit',
