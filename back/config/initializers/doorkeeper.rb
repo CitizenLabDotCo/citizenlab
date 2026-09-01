@@ -289,7 +289,7 @@ Doorkeeper.configure do
   # callback during Dynamic Client Registration. Without this the
   # default (force SSL outside development) rejects http://localhost:<port>/...
   force_ssl_in_redirect_uri do |uri|
-    !Rails.env.development? && %w[localhost 127.0.0.1 ::1].exclude?(uri.hostname)
+    !Rails.env.development? && %w[localhost 127.0.0.1 ::1].exclude?(uri.hostname&.downcase)
   end
 
   # Specify what redirect URI's you want to block during Application creation.
@@ -297,7 +297,9 @@ Doorkeeper.configure do
   #
   # You can use this option in order to forbid URI's with 'javascript' scheme
   # for example.
-
+  #
+  # Scheme allowlist only — a browser must never be able to execute a stored
+  # redirect_uri. Whether http is acceptable is force_ssl_in_redirect_uri's job.
   forbid_redirect_uri { |uri| %w[http https].exclude?(uri.scheme.to_s.downcase) }
 
   # Allows to set blank redirect URIs for Applications in case Doorkeeper configured
