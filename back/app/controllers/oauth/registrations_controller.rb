@@ -37,8 +37,9 @@ module Oauth
           redirect_uris: application.redirect_uri.split
         }, status: :created
       else
+        error = application.errors.include?(:redirect_uri) ? 'invalid_redirect_uri' : 'invalid_client_metadata'
         render json: {
-          error: 'invalid_client_metadata',
+          error: error,
           error_description: application.errors.full_messages.join(', ')
         }, status: :bad_request
       end
