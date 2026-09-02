@@ -87,9 +87,7 @@ resource 'Project Folders' do
     end
 
     context 'when the description is authored on the Content Builder' do
-      let(:project_folder) { create(:project_folder, description_multiloc: { 'en' => '<p>All things pools</p>' }) }
-
-      before { ContentBuilder::LayoutProvisioningService.new.provision_for(project_folder) }
+      before { author_description(project_folder, { 'en' => '<p>All things pools</p>' }) }
 
       example_request 'Returns the description held by the folder layout', document: false do
         assert_status 200
