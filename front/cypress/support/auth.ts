@@ -4,7 +4,12 @@ export const enterEmail = (
   cy: Cypress.Chainable,
   email: string = randomEmail()
 ) => {
-  cy.get('#e2e-authentication-modal').get('input[type="email"]').type(email);
+  // The input is prefilled when the user comes back here from the confirmation
+  // step, so empty it before typing (a no-op on the first visit).
+  cy.get('#e2e-authentication-modal')
+    .get('input[type="email"]')
+    .clear()
+    .type(email);
   cy.dataCy('email-flow-start-continue-button').click();
 };
 
@@ -16,9 +21,19 @@ export const enterEmail = (
 // the number is typed. randomPhoneNumber() returns a US number, hence 'us'.
 export const enterPhone = (
   cy: Cypress.Chainable,
-  phone: string = randomPhoneNumber().national
+  phone: string = randomPhoneNumber().national,
+  // The flow start opens on the email form, so we normally have to toggle to the
+  // phone form first. When the user comes back here from the phone confirmation
+  // step the phone form is already shown, prefilled with the number they entered
+  // before - then there is nothing to toggle and the input has to be emptied
+  // before a different number can be typed.
+  { alreadyOnPhoneForm = false }: { alreadyOnPhoneForm?: boolean } = {}
 ) => {
-  cy.dataCy('flow-start-toggle-identifier').click();
+  if (alreadyOnPhoneForm) {
+    cy.get('input#phone').clear();
+  } else {
+    cy.dataCy('flow-start-toggle-identifier').click();
+  }
 
   if (phone.startsWith('+1')) {
     cy.dataCy('phone-flow-start-phone-input')
@@ -51,7 +66,9 @@ export const confirmEmail = (cy: Cypress.Chainable) => {
   // a loaded backend, leaving the next auth step (built-in fields form) to
   // time out while the button still spins — so await the response itself.
   // The request fires on click, so only the response needs the long leash.
-  cy.intercept('POST', '**/user/confirm_code_*').as('confirmCode');
+  // Matches both confirm_code_* (signup / passwordless login) and
+  // reconfirm_code_* (re-confirmation), since this helper serves both.
+  cy.intercept('POST', '**/user/*confirm_code_*').as('confirmCode');
   cy.get('#e2e-verify-email-button > button').click({ force: true });
   cy.wait('@confirmCode', { responseTimeout: 60000 });
 };
@@ -115,7 +132,7 @@ export const logIn = (
   password: string
 ) => {
   // Enter email
-  cy.dataCy('email-flow-start').get('input[type="email"]').type(email);
+  cy.dataCy('email-flow-start').get('input[type="email"]').clear().type(email);
   cy.dataCy('email-flow-start-continue-button').click();
 
   enterPassword(cy, password);

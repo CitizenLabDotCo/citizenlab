@@ -4,6 +4,7 @@ import { Text, Icon, colors } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
@@ -13,13 +14,18 @@ import { SetError, State } from '../../typings';
 import TextButton from '../_components/TextButton';
 
 import messages from './messages';
-import PoliciesForm from './PoliciesForm';
+import PoliciesForm, { FormValues } from './PoliciesForm';
 
 interface Props {
   state: State;
   loading: boolean;
   setError: SetError;
-  onAccept: (phone: string, locale: string, claimTokens?: string[]) => void;
+  onAccept: (
+    phone: string,
+    locale: string,
+    smsManualCampaignConsent: boolean,
+    claimTokens?: string[]
+  ) => void;
   goBack: () => void;
 }
 
@@ -33,6 +39,9 @@ const PhonePolicies = ({
   const locale = useLocale();
   const localize = useLocalize();
   const { data: appConfiguration } = useAppConfiguration();
+  const smsManualCampaignsEnabled = useFeatureFlag({
+    name: 'sms_manual_campaigns',
+  });
   const { formatMessage } = useIntl();
   const { phone } = state;
   const orgName = localize(
@@ -41,9 +50,14 @@ const PhonePolicies = ({
 
   if (phone === null) return null;
 
-  const handleSubmit = async () => {
+  const handleSubmit = async ({ smsManualCampaignConsent }: FormValues) => {
     try {
-      await onAccept(phone, locale, state.claimTokens ?? undefined);
+      await onAccept(
+        phone,
+        locale,
+        smsManualCampaignConsent,
+        state.claimTokens ?? undefined
+      );
     } catch (e) {
       setError('account_creation_failed');
     }
@@ -78,9 +92,15 @@ const PhonePolicies = ({
       </Text>
       <PoliciesForm
         loading={loading}
-        byContinuingCopy={formatMessage(messages.byContinuingPhone2, {
-          orgName,
-        })}
+        showSmsManualCampaignConsent
+        byContinuingCopy={formatMessage(
+          smsManualCampaignsEnabled
+            ? messages.byContinuingPhoneWithCampaignsEnabled
+            : messages.byContinuingPhoneWithoutCampaignsEnabled,
+          {
+            orgName,
+          }
+        )}
         onSubmit={handleSubmit}
       />
     </>

@@ -74,7 +74,8 @@ module Verification
       end
 
       uid = method.profile_to_uid(auth)
-      make_verification(user:, method:, uid:)
+      activity_payload = method.respond_to?(:verification_activity_payload) ? method.verification_activity_payload(auth) : {}
+      make_verification(user:, method:, uid:, activity_payload:)
     end
 
     def locked_attributes(user)
@@ -114,7 +115,7 @@ module Verification
 
     private
 
-    def make_verification(user:, uid:, method:)
+    def make_verification(user:, uid:, method:, activity_payload: {})
       existing_users = existing_verified_users(user, uid, method)
       taken = existing_users.present?
 
@@ -139,7 +140,7 @@ module Verification
       sfxv_service.before_create(verification, user)
       ActiveRecord::Base.transaction do
         verification.save!
-        sfxv_service.after_create(verification, user)
+        sfxv_service.after_create(verification, user, activity_payload)
       end
 
       verification

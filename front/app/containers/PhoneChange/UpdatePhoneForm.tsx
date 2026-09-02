@@ -4,7 +4,10 @@ import { Box, Success } from '@citizenlab/cl2-component-library';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 
 import { requestCodeNewPhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
+import { tooSoonRetryAfter } from 'api/authentication/confirm_phone/resendCooldown';
 import { IUser } from 'api/users/types';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import PhoneInput from 'components/HookForm/PhoneInput';
 import {
@@ -50,6 +53,9 @@ const UpdatePhoneForm = ({
   user,
 }: UpdatePhoneFormProps) => {
   const { formatMessage } = useIntl();
+  const smsManualCampaignsEnabled = useFeatureFlag({
+    name: 'sms_manual_campaigns',
+  });
   const [error, setError] = useState<FormError | undefined>(undefined);
   const currentPhone = user.data.attributes.phone;
 
@@ -61,10 +67,20 @@ const UpdatePhoneForm = ({
           setError(undefined);
         })
         .catch((e) => {
+          // A refused resend is not a failure: it means a code for this very
+          // number is still outstanding, which happens when the user restarts
+          // the flow for the number they were already confirming. Take them to
+          // the confirmation step so they can use the code they were sent.
+          if (tooSoonRetryAfter(e) !== undefined) {
+            setOpenConfirmationModal(true);
+            setError(undefined);
+            return;
+          }
+
           const errorCode = e?.errors?.new_phone?.[0]?.error;
-          if (errorCode === 'is already taken') {
+          if (errorCode === 'taken') {
             setError('taken');
-          } else if (errorCode === 'is invalid') {
+          } else if (errorCode === 'invalid') {
             setError('invalid');
           } else if (errorCode === 'unsupported_country') {
             setError('unsupported_country');
@@ -110,7 +126,9 @@ const UpdatePhoneForm = ({
         {error && (
           <Error marginTop="4px" text={formatMessage(ERROR_MESSAGES[error])} />
         )}
-        <ManualCampaignConsent />
+        <Box mt="20px" mb="8px">
+          <ManualCampaignConsent />
+        </Box>
         <StyledButton
           type="submit"
           size="m"
@@ -120,7 +138,11 @@ const UpdatePhoneForm = ({
           dataCy="change-phone-submit-button"
         />
         <ConsentDisclosure
-          disclosureMessage={smsConsentMessages.phoneConfirmationDisclosure}
+          disclosureMessage={
+            smsManualCampaignsEnabled
+              ? smsConsentMessages.phoneConfirmationDisclosureWithCampaignsEnabled
+              : smsConsentMessages.phoneConfirmationDisclosureWithoutCampaignsEnabled
+          }
         />
       </Form>
       <Box display="flex" justifyContent="center">

@@ -405,9 +405,9 @@ export default defineMessages({
     defaultMessage: 'Recipients',
   },
   confirmSendSmsRecipientsTooltip: {
-    id: 'app.containers.Admin.messaging.confirmSendSmsRecipientsTooltip',
+    id: 'app.containers.Admin.messaging.confirmSendSmsRecipientsTooltip2',
     defaultMessage:
-      'Only people with a confirmed phone number who have opted in to text messages are counted.',
+      'Only users with a confirmed phone number who have opted in to text messages are counted.',
   },
   confirmSendSmsCreditsLabel: {
     id: 'app.containers.Admin.messaging.confirmSendSmsCreditsLabel',

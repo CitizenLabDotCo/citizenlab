@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import authProvidersMessages from 'containers/Authentication/steps/_components/AuthProviderButton/messages';
 
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
+import ManualCampaignConsent from 'components/SmsConsent/ManualCampaignConsent';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -37,11 +38,13 @@ export const ConsentText = styled.div`
 
 interface Props {
   showByContinuingText?: boolean;
+  showSmsManualCampaignConsent?: boolean;
   byContinuingCopy?: string;
 }
 
 const PoliciesMarkup = ({
   showByContinuingText = true,
+  showSmsManualCampaignConsent = false,
   byContinuingCopy,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -86,6 +89,11 @@ const PoliciesMarkup = ({
           }
         />
       </Box>
+      {showSmsManualCampaignConsent && (
+        <Box mt="8px">
+          <ManualCampaignConsent />
+        </Box>
+      )}
       {showByContinuingText && (
         <Text
           id="email-consent-description"

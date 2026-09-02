@@ -2,6 +2,15 @@ import { randomString } from '../../support/commands';
 import moment = require('moment');
 
 describe('Project description builder display', () => {
+  const getIframeBody = () =>
+    cy
+      .get('iframe')
+      .its('0.contentDocument')
+      .should('exist')
+      .its('body')
+      .should('not.be.undefined')
+      .then(cy.wrap);
+
   let projectId = '';
   let projectSlug = '';
   let userId = '';
@@ -131,6 +140,14 @@ describe('Project description builder display', () => {
     // are both visible.
     cy.contains('Edited text.').should('be.visible');
     cy.get('.e2e-two-column #e2e-file-attachment')
+      .contains('example.pdf')
+      .should('be.visible');
+
+    cy.visit(`/admin/project-page-builder/projects/${projectId}`);
+    cy.get('div#ROOT');
+    cy.get('#e2e-preview-toggle').click({ force: true });
+    getIframeBody()
+      .find('#e2e-file-attachment')
       .contains('example.pdf')
       .should('be.visible');
   });
