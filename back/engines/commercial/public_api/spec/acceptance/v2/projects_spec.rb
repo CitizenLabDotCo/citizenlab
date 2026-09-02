@@ -67,7 +67,7 @@ resource 'Projects' do
     example_request 'Returns the documented project fields', document: false do
       assert_status 200
       expect(json_response_body[:projects].first.keys).to match_array %i[
-        id title description_preview slug folder_id href visible_to images
+        id title description_html description_preview slug folder_id href visible_to images
         created_at updated_at ideas_count comments_count map_center_geojson publication_status
       ]
     end
