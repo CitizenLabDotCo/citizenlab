@@ -7,6 +7,7 @@ import useIdMethods from 'api/id_methods/useIdMethods';
 import {
   AuthenticationData,
   SetError,
+  State,
 } from 'containers/Authentication/typings';
 
 import DefaultVariant from './DefaultVariant';
@@ -14,6 +15,7 @@ import VerificationVariant from './VerificationVariant';
 
 interface Props {
   loading: boolean;
+  state: State;
   setError: SetError;
   authenticationData: AuthenticationData;
   onSubmitEmail: (email: string) => void;

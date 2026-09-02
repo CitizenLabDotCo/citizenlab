@@ -49,7 +49,7 @@ resource 'Project Folders' do
         assert_status 200
         expect(json_response_body[:'project_folders/folders'].first.keys).to match_array %i[
           id slug created_at updated_at publication_status
-          title_multiloc title description_preview_multiloc description_preview
+          title_multiloc title description_multiloc description description_preview_multiloc description_preview
         ]
       end
 
@@ -84,6 +84,18 @@ resource 'Project Folders' do
     example_request 'Returns the project' do
       assert_status 200
       expect(json_response_body[:'project_folders/folder']).to include({ id: id })
+    end
+
+    context 'when the description is authored on the Content Builder' do
+      before { author_description(project_folder, { 'en' => '<p>All things pools</p>' }) }
+
+      example_request 'Returns the description held by the folder layout', document: false do
+        assert_status 200
+        expect(json_response_body[:'project_folders/folder']).to include(
+          description_multiloc: { en: '<p>All things pools</p>' },
+          description: '<p>All things pools</p>'
+        )
+      end
     end
   end
 

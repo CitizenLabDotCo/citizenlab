@@ -10,7 +10,11 @@ export default defineMessages({
     defaultMessage: 'None',
   },
   emailMethodDescription: {
-    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription4',
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription2',
+    defaultMessage: 'Users must have a confirmed email address.',
+  },
+  emailMethodDescriptionWithPasswordLogin: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescriptionWithPasswordLogin',
     defaultMessage:
       'If enabled, all users need to confirm their email. If disabled, only users who sign up by email need to confirm their email.',
   },

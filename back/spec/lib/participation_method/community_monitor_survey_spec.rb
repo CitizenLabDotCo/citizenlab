@@ -187,6 +187,24 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
     end
   end
 
+  describe '#user_data_collection' do
+    let(:phase) { create(:community_monitor_survey_phase, with_permissions: true) }
+
+    it 'returns "all_data" by default' do
+      expect(participation_method.user_data_collection).to eq 'all_data'
+    end
+
+    it 'delegates to the posting permission when it collects demographics only' do
+      phase.permissions.first.update!(user_data_collection: 'demographics_only')
+      expect(participation_method.user_data_collection).to eq 'demographics_only'
+    end
+
+    it 'delegates to the posting permission when it is anonymous' do
+      phase.permissions.first.update!(user_data_collection: 'anonymous')
+      expect(participation_method.user_data_collection).to eq 'anonymous'
+    end
+  end
+
   its(:additional_export_columns) { is_expected.to eq [] }
   its(:allowed_ideas_orders) { is_expected.to be_empty }
   its(:return_disabled_actions?) { is_expected.to be true }

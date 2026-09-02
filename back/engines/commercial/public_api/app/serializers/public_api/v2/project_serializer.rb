@@ -3,6 +3,7 @@
 class PublicApi::V2::ProjectSerializer < PublicApi::V2::BaseSerializer
   attributes :id,
     :title,
+    :description_html,
     :description_preview,
     :slug,
     :folder_id,
@@ -21,6 +22,10 @@ class PublicApi::V2::ProjectSerializer < PublicApi::V2::BaseSerializer
 
   def title
     multiloc_service.t(object.title_multiloc)
+  end
+
+  def description_html
+    multiloc_service.t(description_service.description_multiloc(object))
   end
 
   def description_preview
@@ -45,5 +50,9 @@ class PublicApi::V2::ProjectSerializer < PublicApi::V2::BaseSerializer
 
   def multiloc_service
     @multiloc_service ||= MultilocService.new
+  end
+
+  def description_service
+    @description_service ||= ContentBuilder::BuildableDescriptionService.new
   end
 end

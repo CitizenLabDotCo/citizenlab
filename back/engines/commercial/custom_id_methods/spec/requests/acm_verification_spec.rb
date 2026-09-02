@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
+require_relative '../support/magda_test_certificate'
 
 context 'ACM verification (Oostende Itsme)' do
   let(:auth_hash) do
@@ -299,6 +300,198 @@ context 'ACM verification (Oostende Itsme)' do
         expect_user_to_be_verified(new_user)
         expect_user_rnn_result(new_user, 'service_error')
       end
+    end
+  end
+
+  context 'with rrn_provider magda' do
+    let(:magda_endpoint) { CustomIdMethods::Magda::GeefPersoonClient::ENDPOINTS.fetch('tni') }
+
+    let(:magda_inschrijving_endpoint) { CustomIdMethods::Magda::RegistreerInschrijvingClient::ENDPOINTS.fetch('tni') }
+
+    def magda_fixture(name, postcode: '2880', birth_date: '1990-05-15')
+      File.read(File.expand_path("../fixtures/magda/#{name}", __dir__))
+        .sub('<Postcode>2880</Postcode>', "<Postcode>#{postcode}</Postcode>")
+        .sub('<Datum>1990-05-15</Datum>', "<Datum>#{birth_date}</Datum>")
+    end
+
+    def stub_magda(body:, status: 200)
+      stub_request(:post, magda_endpoint).to_return(status: status, body: body, headers: { 'Content-Type' => 'text/xml;charset=UTF-8' })
+    end
+
+    def update_acm_config(attrs)
+      configuration = AppConfiguration.instance
+      configuration.settings['id_config']['id_methods'].first.merge!(attrs)
+      configuration.save!
+    end
+
+    def rrn_check_payload_matcher(result)
+      hash_including(method: 'acm', rrn_check: hash_including('provider' => 'magda', 'result' => result, 'referte' => kind_of(String)))
+    end
+
+    before do
+      update_acm_config(
+        'rrn_provider' => 'magda',
+        'magda_environment' => 'tni',
+        'magda_uri' => 'bornem.be/govocal/ipdc77332-aip',
+        'magda_hoedanigheidscode' => 'ipdc77332',
+        'magda_certificate' => MagdaTestCertificate.certificate_pem,
+        'magda_private_key' => MagdaTestCertificate.private_key_pem,
+        'magda_postal_codes' => ['2880'],
+        'magda_minimum_age' => 12
+      )
+      stub_magda(body: magda_fixture('geef_persoon_found.xml'))
+    end
+
+    it 'creates a new verified user with result "valid", calls MAGDA once and logs the referte on the verification activity' do
+      expect do
+        get '/auth/acm'
+        follow_redirect!
+      end.to have_enqueued_job(LogActivityJob).with(kind_of(Verification::Verification), 'created', kind_of(User), kind_of(Integer), payload: rrn_check_payload_matcher('valid'))
+
+      expect(response).to redirect_to('/en/?sso_flow=signup&sso_success=true')
+      new_user = User.order(created_at: :asc).last
+      expect_user_to_be_identified(new_user)
+      expect_user_to_be_verified(new_user)
+      expect_user_rnn_result(new_user, 'valid')
+      expect(new_user.identities.first.auth_hash.dig('extra', 'rrn_check')).to include('provider' => 'magda', 'result' => 'valid')
+      expect(new_user.identities.first.auth_hash.dig('extra', 'rrn_check', 'referte')).to match(/\A\h{8}-\h{4}-\h{4}-\h{4}-\h{12}\z/)
+      expect(a_request(:post, magda_endpoint)).to have_been_made.once
+      expect(a_request(:get, %r{/WijkBudget/verificatie/.*})).not_to have_been_made
+    end
+
+    it 'sends the RRN from ACM to MAGDA' do
+      get '/auth/acm'
+      follow_redirect!
+
+      expect(a_request(:post, magda_endpoint).with { |req| req.body.include?('<INSZ>86110121798</INSZ>') }).to have_been_made.once
+    end
+
+    it 'logs in an existing user, calls MAGDA once and refreshes the result' do
+      user = create(:user, first_name: 'EXISTING', last_name: 'USER', email: 'test@govocal.com', verified: true, custom_field_values: { 'rrn_verification_result' => 'lives_outside' })
+      user.identities << create(:identity, provider: 'acm', user_id: user.id, uid: auth_hash['uid'])
+      user.verifications << create(:verification, method_name: 'acm', hashed_uid: Verification::VerificationService.new.send(:hashed_uid, auth_hash['uid'], 'acm'))
+
+      get '/auth/acm?sso_pathname=/some-page'
+      follow_redirect!
+
+      expect(response).to redirect_to('/en/some-page?sso_flow=signin&sso_success=true')
+      expect_user_to_be_verified(user.reload)
+      expect_user_rnn_result(user, 'valid')
+      expect(a_request(:post, magda_endpoint)).to have_been_made.once
+    end
+
+    it 'verifies an existing logged in user with result "valid"' do
+      existing_user = create(:user, first_name: 'EXISTING', last_name: 'USER', email: 'test@govocal.com')
+      token = AuthToken::AuthToken.new(payload: existing_user.to_token_payload).token
+
+      get "/auth/acm?token=#{token}&verification_pathname=/some-page"
+      follow_redirect!
+
+      expect(response).to redirect_to('/en/some-page?verification_success=true')
+      expect_user_to_be_verified(existing_user.reload)
+      expect_user_rnn_result(existing_user, 'valid')
+    end
+
+    it 'sets "lives_outside" for another postcode, but still verifies' do
+      stub_magda(body: magda_fixture('geef_persoon_found.xml', postcode: '9000'))
+
+      expect do
+        get '/auth/acm'
+        follow_redirect!
+      end.to have_enqueued_job(LogActivityJob).with(kind_of(Verification::Verification), 'created', kind_of(User), kind_of(Integer), payload: rrn_check_payload_matcher('lives_outside'))
+
+      new_user = User.order(created_at: :asc).last
+      expect_user_to_be_verified(new_user)
+      expect_user_rnn_result(new_user, 'lives_outside')
+    end
+
+    it 'sets "under_minimum_age" for a person younger than the minimum age' do
+      stub_magda(body: magda_fixture('geef_persoon_found.xml', birth_date: (Date.current - 11.years).iso8601))
+
+      get '/auth/acm'
+      follow_redirect!
+
+      new_user = User.order(created_at: :asc).last
+      expect_user_to_be_verified(new_user)
+      expect_user_rnn_result(new_user, 'under_minimum_age')
+    end
+
+    it 'sets "no_match" when MAGDA does not know the INSZ' do
+      stub_magda(body: magda_fixture('geef_persoon_not_found.xml'))
+
+      get '/auth/acm'
+      follow_redirect!
+
+      new_user = User.order(created_at: :asc).last
+      expect_user_to_be_verified(new_user)
+      expect_user_rnn_result(new_user, 'no_match')
+    end
+
+    it 'sets "service_error" when MAGDA refuses the request' do
+      stub_magda(body: magda_fixture('geef_persoon_no_machtiging.xml'))
+
+      get '/auth/acm'
+      follow_redirect!
+
+      new_user = User.order(created_at: :asc).last
+      expect_user_to_be_verified(new_user)
+      expect_user_rnn_result(new_user, 'service_error')
+    end
+
+    it 'sets "service_error" when MAGDA is down' do
+      stub_magda(body: '', status: 503)
+
+      get '/auth/acm'
+      follow_redirect!
+
+      new_user = User.order(created_at: :asc).last
+      expect_user_to_be_verified(new_user)
+      expect_user_rnn_result(new_user, 'service_error')
+    end
+
+    it 'registers the person in the repertorium and retries when GeefPersoon does not know them yet' do
+      stub_request(:post, magda_endpoint)
+        .to_return(
+          { status: 200, body: magda_fixture('geef_persoon_not_registered.xml'), headers: { 'Content-Type' => 'text/xml;charset=UTF-8' } },
+          { status: 200, body: magda_fixture('geef_persoon_found.xml'), headers: { 'Content-Type' => 'text/xml;charset=UTF-8' } }
+        )
+      stub_request(:post, magda_inschrijving_endpoint)
+        .to_return(status: 200, body: magda_fixture('registreer_inschrijving_ok.xml'), headers: { 'Content-Type' => 'text/xml;charset=UTF-8' })
+
+      get '/auth/acm'
+      follow_redirect!
+
+      new_user = User.order(created_at: :asc).last
+      expect_user_to_be_verified(new_user)
+      expect_user_rnn_result(new_user, 'valid')
+      expect(a_request(:post, magda_endpoint)).to have_been_made.twice
+      expect(a_request(:post, magda_inschrijving_endpoint).with { |req| req.body.include?('<INSZ>86110121798</INSZ>') }).to have_been_made.once
+    end
+
+    it 'sets "service_error" when the repertorium registration fails' do
+      stub_magda(body: magda_fixture('geef_persoon_not_registered.xml'))
+      stub_request(:post, magda_inschrijving_endpoint)
+        .to_return(status: 200, body: magda_fixture('registreer_inschrijving_failed.xml'), headers: { 'Content-Type' => 'text/xml;charset=UTF-8' })
+
+      get '/auth/acm'
+      follow_redirect!
+
+      new_user = User.order(created_at: :asc).last
+      expect_user_to_be_verified(new_user)
+      expect_user_rnn_result(new_user, 'service_error')
+      expect(a_request(:post, magda_endpoint)).to have_been_made.once
+    end
+
+    it 'does not set a result when the MAGDA config is incomplete' do
+      update_acm_config('magda_certificate' => '')
+
+      get '/auth/acm'
+      follow_redirect!
+
+      new_user = User.order(created_at: :asc).last
+      expect_user_to_be_verified(new_user)
+      expect_user_rnn_result(new_user, nil)
+      expect(a_request(:post, magda_endpoint)).not_to have_been_made
     end
   end
 end

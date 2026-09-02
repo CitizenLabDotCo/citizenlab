@@ -13,7 +13,9 @@ resource 'Projects' do
   explanation 'Projects are participation scopes defined by the city. They define a context and set time and input expectations towards the citizens, stimulating them to engage in a the scoped debate. Citizens can post ideas in projects.'
 
   route '/api/v1/projects', 'Projects: Listing projects' do
-    let!(:projects) { create_list(:project, 5) }
+    let!(:projects) do
+      create_list(:project, 5).each { |project| author_description(project, { 'en' => '<p>Renew the parc</p>' }) }
+    end
 
     get 'Retrieve a listing of projects' do
       parameter :page_size, 'The number of projects that should be returned in one response. Defaults to 12, max 24', required: false, type: 'integer'
@@ -43,12 +45,19 @@ resource 'Projects' do
       let!(:map_config) { create(:map_config, :with_positioning, project: project) }
       let(:id) { project.id }
 
+      before do
+        author_description(project, {
+          'en' => '<p>Let\'s renew the parc at the city border and make it an enjoyable place for young and old.</p>'
+        })
+      end
+
       example_request 'Get one project by id' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:project]).to match({
           id: id,
           title: 'Renew West Parc',
+          description_html: '<p>Let\'s renew the parc at the city border and make it an enjoyable place for young and old.</p>',
           description_preview: 'Let\'s renew the parc at the city border and make it an enjoyable place for young and old.',
           map_center_geojson: { coordinates: [an_instance_of(Float), an_instance_of(Float)], type: 'Point' },
           href: "http://example.org/projects/#{project.slug}",
