@@ -16,7 +16,7 @@
   },
   "admin": {
     "de-DE": "Admin",
-    "nl-NL": "Platformbeheerder"
+    "nl-NL": "platformbeheerder"
   },
   "posts": {
     "nl-NL": "bijdragen"
@@ -126,6 +126,9 @@
   "topic (input term)": {
     "nl-NL": "thema"
   },
+  "text message": {
+    "de-DE": "SMS"
+  },
   "plan": {
     "de-DE": "Lizenz"
   },
@@ -231,6 +234,9 @@
     "es-ES": "asiento",
     "nl-NL": "account"
   },
+  "phone": {
+    "de-DE": "Handy"
+  },
   "community monitor": {
     "nl-NL": "gemeenschapsmonitor"
   },
@@ -265,6 +271,9 @@
   },
   "initiative (input term)": {
     "nl-NL": "initiatief"
+  },
+  "spotlight survey": {
+    "nl-NL": "uitgelichte vragenlijst"
   },
   "early access": {
     "nl-NL": "vroege toegang"

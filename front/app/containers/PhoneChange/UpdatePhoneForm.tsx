@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 
-import { Box, Success, Text } from '@citizenlab/cl2-component-library';
+import { Box, Success } from '@citizenlab/cl2-component-library';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 
 import { requestCodeNewPhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
+import { tooSoonRetryAfter } from 'api/authentication/confirm_phone/resendCooldown';
 import { IUser } from 'api/users/types';
 
-import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import PhoneInput from 'components/HookForm/PhoneInput';
 import {
   Title,
@@ -14,16 +16,17 @@ import {
   Form,
   LabelContainer,
 } from 'components/smallForm';
+import ConsentDisclosure from 'components/SmsConsent/ConsentDisclosure';
+import ManualCampaignConsent from 'components/SmsConsent/ManualCampaignConsent';
+import smsConsentMessages from 'components/SmsConsent/messages';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
 import Warning from 'components/UI/Warning';
 
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 import messages from './messages';
-import usePhoneInputCountries from './usePhoneInputCountries';
 
 import { FormValues } from '.';
 
@@ -38,7 +41,7 @@ type FormError = 'taken' | 'invalid' | 'unsupported_country' | 'unknown';
 
 const ERROR_MESSAGES = {
   taken: messages.phoneTaken,
-  invalid: messages.phoneInvalid,
+  invalid: messages.phoneInvalid3,
   unsupported_country: messages.phoneUnsupportedCountry,
   unknown: messages.phoneUnknownError,
 };
@@ -50,7 +53,9 @@ const UpdatePhoneForm = ({
   user,
 }: UpdatePhoneFormProps) => {
   const { formatMessage } = useIntl();
-  const { allowedCountries, defaultCountry } = usePhoneInputCountries();
+  const smsManualCampaignsEnabled = useFeatureFlag({
+    name: 'sms_manual_campaigns',
+  });
   const [error, setError] = useState<FormError | undefined>(undefined);
   const currentPhone = user.data.attributes.phone;
 
@@ -62,10 +67,20 @@ const UpdatePhoneForm = ({
           setError(undefined);
         })
         .catch((e) => {
+          // A refused resend is not a failure: it means a code for this very
+          // number is still outstanding, which happens when the user restarts
+          // the flow for the number they were already confirming. Take them to
+          // the confirmation step so they can use the code they were sent.
+          if (tooSoonRetryAfter(e) !== undefined) {
+            setOpenConfirmationModal(true);
+            setError(undefined);
+            return;
+          }
+
           const errorCode = e?.errors?.new_phone?.[0]?.error;
-          if (errorCode === 'is already taken') {
+          if (errorCode === 'taken') {
             setError('taken');
-          } else if (errorCode === 'is invalid') {
+          } else if (errorCode === 'invalid') {
             setError('invalid');
           } else if (errorCode === 'unsupported_country') {
             setError('unsupported_country');
@@ -98,14 +113,12 @@ const UpdatePhoneForm = ({
           <FormLabel
             width="max-content"
             margin-right="5px"
-            labelMessage={messages.newPhoneLabel}
+            labelMessage={messages.newPhoneLabel2}
             htmlFor="phone"
           />
         </LabelContainer>
         <PhoneInput
           name="phone"
-          countries={allowedCountries}
-          defaultCountry={defaultCountry}
           onBlur={() => {
             setError(undefined);
           }}
@@ -114,11 +127,7 @@ const UpdatePhoneForm = ({
           <Error marginTop="4px" text={formatMessage(ERROR_MESSAGES[error])} />
         )}
         <Box mt="20px" mb="8px">
-          <CheckboxWithLabel
-            name="smsManualCampaignConsent"
-            label={formatMessage(messages.smsManualCampaignConsentLabel)}
-            dataTestId="sms-manual-campaign-consent"
-          />
+          <ManualCampaignConsent />
         </Box>
         <StyledButton
           type="submit"
@@ -128,35 +137,13 @@ const UpdatePhoneForm = ({
           text={formatMessage(messages.submitButton)}
           dataCy="change-phone-submit-button"
         />
-        <Text
-          fontSize="s"
-          color="tenantText"
-          data-testid="sms-confirmation-disclosure"
-        >
-          <FormattedMessage
-            {...messages.smsConfirmationDisclosure}
-            values={{
-              termsLink: (
-                <Link
-                  target="_blank"
-                  to="/pages/$slug"
-                  params={{ slug: 'terms-and-conditions' }}
-                >
-                  <FormattedMessage {...messages.termsLinkText} />
-                </Link>
-              ),
-              privacyLink: (
-                <Link
-                  target="_blank"
-                  to="/pages/$slug"
-                  params={{ slug: 'privacy-policy' }}
-                >
-                  <FormattedMessage {...messages.privacyLinkText} />
-                </Link>
-              ),
-            }}
-          />
-        </Text>
+        <ConsentDisclosure
+          disclosureMessage={
+            smsManualCampaignsEnabled
+              ? smsConsentMessages.phoneConfirmationDisclosureWithCampaignsEnabled
+              : smsConsentMessages.phoneConfirmationDisclosureWithoutCampaignsEnabled
+          }
+        />
       </Form>
       <Box display="flex" justifyContent="center">
         {updateSuccessful && (

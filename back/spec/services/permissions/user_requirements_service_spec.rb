@@ -34,7 +34,7 @@ describe Permissions::UserRequirementsService do
       before { create(:topic, include_in_onboarding: true) }
 
       context 'when permitted_by is set to everyone' do
-        let(:permission) { create(:permission, permitted_by: 'everyone', global_custom_fields: false) }
+        let(:permission) { create(:permission, permitted_by: 'everyone') }
 
         let(:expected_requirements) do
           {
@@ -87,7 +87,7 @@ describe Permissions::UserRequirementsService do
         let(:permission) { create(:permission, :by_everyone_confirmed_email) }
 
         before do
-          permission.update!(global_custom_fields: false)
+          permission.update!(custom_fields_behavior: 'custom')
           field = CustomField.find_by code: 'birthyear'
           create(:permissions_custom_field, permission: permission, custom_field: field, required: false)
         end
@@ -260,7 +260,7 @@ describe Permissions::UserRequirementsService do
         let(:permission) do
           permission = survey_phase.permissions.find { |p| p.action == 'posting_idea' }
           permission.permitted_by = 'users'
-          permission.global_custom_fields = true
+          permission.custom_fields_behavior = 'global'
           permission.save!
           permission
         end
@@ -494,7 +494,7 @@ describe Permissions::UserRequirementsService do
 
     context 'when onboarding is not possible (there are no topics or areas assigned to projects)' do
       context 'when permitted_by is set to users' do
-        let(:permission) { create(:permission, permitted_by: 'users', global_custom_fields: true) }
+        let(:permission) { create(:permission, permitted_by: 'users', custom_fields_behavior: 'global') }
 
         before do
           field = CustomField.find_by code: 'birthyear'
@@ -583,7 +583,7 @@ describe Permissions::UserRequirementsService do
       let(:verified_permission) { create(:permission, :by_verified) }
 
       before do
-        # To allow require_verification we need to enable at least one verification method
+        # Enable a verification method so that verifications can be created and checked
         AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
         AppConfiguration.instance.save!
       end
@@ -643,7 +643,7 @@ describe Permissions::UserRequirementsService do
           end
 
           it 'removes locked custom fields if verified' do
-            verified_permission.update!(global_custom_fields: false)
+            verified_permission.update!(custom_fields_behavior: 'custom')
             create(:permissions_custom_field, custom_field: CustomField.find_by(key: 'gender'), permission: verified_permission, required: true) # locked
             create(:permissions_custom_field, custom_field: CustomField.find_by(key: 'birthyear'), permission: verified_permission, required: true) # locked
             create(:permissions_custom_field, custom_field: create(:custom_field_domicile), permission: verified_permission, required: true) # not locked
@@ -722,7 +722,7 @@ describe Permissions::UserRequirementsService do
     end
 
     context 'when a confirmed phone number is required' do
-      before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
+      include_context 'with sms feature enabled'
 
       # Only a confirmed phone number is required (no confirmed email), so the
       # phone requirement is expressed entirely through :phone_action_required
@@ -731,7 +731,6 @@ describe Permissions::UserRequirementsService do
         create(
           :permission,
           permitted_by: 'users',
-          global_custom_fields: false,
           require_confirmed_email: false,
           require_name: false,
           require_password: false,
@@ -849,8 +848,9 @@ describe Permissions::UserRequirementsService do
     # Re-confirmation of an already-confirmed phone number once
     # confirmed_phone_number_expiry has elapsed. Mirrors the email variant above.
     context 'when a confirmed phone number is required with confirmed_phone_number_expiry set' do
+      include_context 'with sms feature enabled'
+
       before do
-        SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' })
         user.update!(phone: '+3212345678', phone_confirmed_at: Time.now)
       end
 
@@ -858,7 +858,6 @@ describe Permissions::UserRequirementsService do
         create(
           :permission,
           permitted_by: 'users',
-          global_custom_fields: false,
           require_confirmed_email: false,
           require_name: false,
           require_password: false,
@@ -977,9 +976,6 @@ describe Permissions::UserRequirementsService do
 
       context 'and require_confirmed_email is disabled (verification then backs the account)' do
         before do
-          # A 'users' permission must be backed by at least one authentication
-          # method, so turning off confirmed email requires verification to be
-          # enabled (otherwise the permission is invalid).
           AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
           AppConfiguration.instance.save!
           permission.update!(require_verification: true, require_confirmed_email: false)
@@ -1012,17 +1008,17 @@ describe Permissions::UserRequirementsService do
     end
     let(:requirements_custom_fields) { service.requirements_custom_fields permission }
 
-    context 'when global_custom_fields is true' do
+    context "when custom_fields_behavior is 'global'" do
       it 'returns default fields' do
-        permission.update!(global_custom_fields: true)
+        permission.update!(custom_fields_behavior: 'global')
         expect(requirements_custom_fields.map(&:id)).to eq custom_fields.map(&:id)
         expect(requirements_custom_fields.map(&:required)).to eq [true, false, false]
       end
     end
 
-    context 'when global_custom_fields is false' do
+    context "when custom_fields_behavior is 'custom'" do
       it 'returns only the permissions fields' do
-        permission.update!(global_custom_fields: false)
+        permission.update!(custom_fields_behavior: 'custom')
         expect(requirements_custom_fields.map(&:id)).to eq custom_fields.take(2).map(&:id)
         expect(requirements_custom_fields.map(&:required)).to eq [false, true]
       end
@@ -1030,7 +1026,7 @@ describe Permissions::UserRequirementsService do
 
     context 'when user fields are hidden' do
       it 'does not return hidden fields' do
-        permission.update!(global_custom_fields: false)
+        permission.update!(custom_fields_behavior: 'custom')
         hidden_field = custom_fields.first
         hidden_field.update!(hidden: true)
         expect(requirements_custom_fields.map(&:id)).to eq [custom_fields.second.id]

@@ -33,9 +33,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.newPhase',
     defaultMessage: 'New phase',
   },
-  timelineEmptyDescription: {
-    id: 'app.containers.Admin.projects.project.timelineEmptyDescription',
-    defaultMessage: 'Phases are the steps people move through — for example:',
+  timelineEmptyDescription2: {
+    id: 'app.containers.Admin.projects.project.timelineEmptyDescription2',
+    defaultMessage: 'Phases are the steps people move through, for example:',
   },
   examplePhaseCollectIdeas: {
     id: 'app.containers.Admin.projects.project.examplePhaseCollectIdeas',
@@ -54,24 +54,12 @@ export default defineMessages({
     defaultMessage: 'No end date',
   },
   extras: {
-    id: 'app.containers.Admin.projects.project.extras',
-    defaultMessage: 'Extras',
+    id: 'app.containers.Admin.projects.project.extras2',
+    defaultMessage: 'Spotlight surveys',
   },
   newSurvey: {
     id: 'app.containers.Admin.projects.project.newSurvey',
     defaultMessage: 'New survey',
-  },
-  extrasEmptyDescription: {
-    id: 'app.containers.Admin.projects.project.extrasEmptyDescription',
-    defaultMessage: 'Surveys that run outside your timeline — for example:',
-  },
-  exampleSurveySchoolRunTravel: {
-    id: 'app.containers.Admin.projects.project.exampleSurveySchoolRunTravel',
-    defaultMessage: 'School-run travel survey',
-  },
-  exampleSurveyMobilityCheckIn: {
-    id: 'app.containers.Admin.projects.project.exampleSurveyMobilityCheckIn',
-    defaultMessage: 'Mobility check-in',
   },
   ongoing: {
     id: 'app.containers.Admin.projects.project.ongoing',

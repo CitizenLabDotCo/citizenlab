@@ -77,6 +77,7 @@ lt-LT:
         users_who_follow_the_proposal: Naudotojai, kurie seka pasiūlymą
       trigger:
         7_days_after_invite_is_sent: 7 dienos po kvietimo išsiuntimo
+        7_days_before_phase_starts: Likus 7 dienoms iki etapo pradžios
         7_days_before_the_project_changes_phase: likus 7 dienoms iki projekto pokyčių etapo
         comment_is_deleted: Komentaras ištrintas
         comment_is_flagged_as_spam: Komentaras pažymėtas kaip šlamštas
@@ -95,6 +96,7 @@ lt-LT:
         new_input_awaits_screening: Naujų duomenų laukia atranka
         new_input_is_published: Skelbiami nauji duomenys
         new_proposal_is_posted: Paskelbtas naujas pasiūlymas
+        phase_starts: Prasideda etapas
         project_phase_changes: Projekto etapo pokyčiai
         project_published: Paskelbtas projektas
         project_review_request: Moderatorius paprašė peržiūrėti projektą
@@ -197,8 +199,8 @@ lt-LT:
       project_folder_moderation_rights_received: Gautos aplankų tvarkytojo teisės
       project_manager_rights_received: Suteiktos projekto valdytojo teisės
       project_moderation_rights_received: Gautos projekto moderavimo teisės
-      project_phase_started: Naujas projekto etapas
-      project_phase_upcoming: Būsimas naujas projekto etapas
+      project_phase_started: Etapas prasidėjo
+      project_phase_upcoming: Etapas netrukus prasidės
       project_published: Paskelbtas projektas
       project_review_request: Projekto peržiūros prašymas
       project_review_state_change: Patvirtintas projektas
@@ -359,6 +361,7 @@ lt-LT:
         story: Eikite į savo istoriją
         suggestion: Eikite į savo pasiūlymą
         topic: Eikite į savo temą
+      phase_dates: Nuo %{startDate} iki %{endDate}
     idea_marked_as_spam:
       cta_button: Peržiūrėkite
       preheader: Veiksmai, susiję su šia nepageidaujamų laiškų ataskaita
@@ -539,6 +542,7 @@ lt-LT:
       yesterday: Vakar
     new_phone_confirmation:
       sms_body: Jūsų patvirtinimo kodas yra %{code}.
+      sms_body2: '%{organization_name}: Jūsų patvirtinimo kodas yra %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Eikite į šią įvestį
       event_description: '%{feedback_author_name} pateikė naujausią informaciją apie "%{input_title}".'
@@ -553,6 +557,7 @@ lt-LT:
       title: Pasirinkite naują slaptažodį
     phone_confirmation:
       sms_body: Jūsų patvirtinimo kodas yra %{code}.
+      sms_body2: '%{organization_name}: Jūsų patvirtinimo kodas yra %{code}.'
     preview_data:
       author_display_name: Nepažįstama moteris
       author_first_name: Jane
@@ -571,8 +576,9 @@ lt-LT:
       input_status_description: Įvesties būsenos pavyzdys (pvz., priimta, atmesta, įgyvendinta...)
       input_status_title: Pavyzdys Būklė
       official_feedback_body: Oficialių atsiliepimų pavyzdys
+      phase_description: Tai yra pavyzdinis etapo turinys, naudojamas el. laiškų turinio peržiūrai. Tai nėra tikras turinys.
       phase_title: Pavyzdys fazė
-      project_description_preview: Tai tam tikras etapo turinio pavyzdys, naudojamas el. laiškų turiniui peržiūrėti. Tai nėra tikrasis turinys.
+      project_description_preview: Tai yra pavyzdinis projekto turinys, skirtas el. laiškų peržiūrai. Tai nėra tikras turinys.
       project_title: Projekto pavyzdys
       proposal_title: Pasiūlymo pavyzdys
       space_title: Pavyzdinė erdvė
@@ -607,21 +613,21 @@ lt-LT:
       title_what_can_you_do_moderator: Ką galite padaryti kaip projektų vadovas?
       x_ideas: '%{numberOfIdeas} idėjos'
     project_phase_started:
-      cta_button: Atraskite šį naują etapą
-      event_description: Šis projektas įžengė į naują etapą %{organizationName}platformoje. Spustelėkite toliau pateiktą nuorodą ir sužinokite daugiau!
+      cta_button: Sužinokite, kas naujo
+      event_description: Dabar galite dalyvauti etape „%{phaseTitle}“ %{organizationName} platformoje.
       new_phase: "Šis projektas perėjo į etapą '%{phaseTitle}'"
-      preheader: Prasidėjo naujas %{projectName}etapas.
-      subject: '%{projectName} prasidėjo naujas etapas.'
+      preheader: Dabar galite dalyvauti etape „%{phaseTitle}“
+      subject: „%{phaseTitle}“ prasidėjo projekte %{projectName}
       subtitle: "Apie '%{projectName}'"
-      title: Prasidėjo naujas projekto "%{projectName}" etapas
+      title: Projekte „%{projectName}“ yra naujienų
     project_phase_upcoming:
-      cta_button: Nustatykite šį naują etapą
-      event_description: 'Netrukus prasidės naujas projekto "%{projectName}" etapas. Pasirūpinkite, kad viskas būtų paruošta šiam etapui: Ar yra tinkamas aprašymas? Ar pasirinktos idėjos perkeltos į šį etapą? Ar norite informuoti savo piliečius apie šio etapo ypatumus naudodami pasirinktinę el. pašto kampaniją?'
+      cta_button: Peržiūrėkite sąranką
+      event_description: '„%{phaseTitle}“ projekte „%{projectName}“ prasideda %{startDate}. Skirkite akimirką ir patikrinkite, ar viskas paruošta: ar aprašymas išsamus? Ar datos teisingos? Ar norite informuoti savo bendruomenę naudodami pritaikytą el. pašto kampaniją?'
       new_phase: Projektas pereis į etapą "%{phaseTitle}".
-      preheader: Netrukus prasidės naujas %{projectName}etapas
-      subject: Pasirūpinkite, kad viskas būtų paruošta naujam %{projectName}etapui.
+      preheader: Įsitikinkite, kad viskas paruošta iki %{startDate}
+      subject: '%{projectName}: „%{phaseTitle}“ prasideda %{startDate}'
       subtitle: "Apie '%{projectName}'"
-      title: '%{firstName}, netrukus prasidės naujas projekto etapas'
+      title: '%{firstName}, „%{phaseTitle}“ prasideda %{startDate}'
     project_published:
       cta_button: Eikite į šį projektą
       event_description: 'Dalyvavimo platformoje %{organizationName} ką tik paskelbtas šis projektas:'

@@ -24,8 +24,8 @@ interface Props {
 }
 
 const UpdateFollowTopic = ({ topic }: Props) => {
-  const { mutate: addFollower, isLoading: isAddingFollower } = useAddFollower();
-  const { mutate: deleteFollower, isLoading: isDeletingFollower } =
+  const { mutate: addFollower, isPending: isAddingFollower } = useAddFollower();
+  const { mutate: deleteFollower, isPending: isDeletingFollower } =
     useDeleteFollower();
   const { pathname } = useLocation();
   const theme = useTheme();

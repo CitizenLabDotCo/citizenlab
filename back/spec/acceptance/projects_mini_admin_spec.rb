@@ -21,18 +21,18 @@ resource 'ProjectsMiniAdmin' do
     let!(:active_project) { create(:project_with_active_ideation_phase) }
     let!(:past_project)   { create(:project_with_two_past_ideation_phases) }
 
-    example 'Lists projects for admin including current_phase_start_date and current_phase_end_date', document: false do
+    example 'Lists projects for admin including the active phases span', document: false do
       do_request
       expect(status).to eq 200
 
       data = json_response[:data]
       active = data.find { |d| d[:id] == active_project.id }
-      expect(active[:attributes][:current_phase_start_date]).not_to be_nil
-      expect(active[:attributes][:current_phase_end_date]).not_to be_nil
+      expect(active[:attributes][:active_phases_start_date]).not_to be_nil
+      expect(active[:attributes][:active_phases_end_date]).not_to be_nil
 
       past = data.find { |d| d[:id] == past_project.id }
-      expect(past[:attributes][:current_phase_start_date]).to be_nil
-      expect(past[:attributes][:current_phase_end_date]).to be_nil
+      expect(past[:attributes][:active_phases_start_date]).to be_nil
+      expect(past[:attributes][:active_phases_end_date]).to be_nil
     end
   end
 end

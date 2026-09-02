@@ -7,7 +7,8 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
-type Response = {
+// Returned by both confirm_code_email and confirm_code_phone.
+export type ConfirmCodeResponse = {
   data: {
     type: 'create';
     attributes: {
@@ -27,7 +28,7 @@ type Response = {
 
 export const confirmCodeEmail = async (email: string, code: string) => {
   try {
-    const res = await fetcher<Response>({
+    const res = await fetcher<ConfirmCodeResponse>({
       path: `/user/confirm_code_email`,
       action: 'post',
       body: {
@@ -37,6 +38,27 @@ export const confirmCodeEmail = async (email: string, code: string) => {
 
     setJwt(res.data.attributes.auth_token.token, false);
     invalidateQueryCache();
+
+    return true;
+  } catch (errors) {
+    throw errors.errors;
+  }
+};
+
+// Re-confirmation of the signed-in user's own email. The caller keeps the token
+// it already has, so - unlike confirmCodeEmail - no JWT is set here.
+export const reconfirmCodeEmail = async (code: string) => {
+  try {
+    await fetcher({
+      path: `/user/reconfirm_code_email`,
+      action: 'post',
+      body: {
+        confirmation: { code },
+      },
+    });
+
+    queryClient.invalidateQueries({ queryKey: meKeys.all() });
+    queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
 
     return true;
   } catch (errors) {

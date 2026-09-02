@@ -36,23 +36,16 @@ RSpec.describe ProjectFolders::Folder do
       folder.update!(title_multiloc: { 'en' => 'my folder', 'nl-BE' => 'mijn map', 'fr-BE' => 'mon dossier' })
       expect(folder.slug).to eq 'my-folder'
     end
-  end
 
-  describe '#sanitize_description_multiloc' do
-    it 'sanitizes script tags in the description' do
-      folder = create(:project_folder, description_multiloc: {
-        'en' => '<p>Test</p><script>These tags should be removed!</script>'
-      })
-      expect(folder.description_multiloc).to eq({ 'en' => '<p>Test</p>These tags should be removed!' })
+    it 'generates a slug from the sanitized title, not the raw one' do
+      folder.update!(title_multiloc: { 'en' => '<b>Bold</b> folder' })
+      expect(folder.slug).to eq 'bold-folder'
     end
   end
 
-  describe '#sanitize_description_preview_multiloc' do
-    it 'sanitizes script tags in the description_preview_multiloc' do
-      folder = create(:project_folder, description_preview_multiloc: {
-        'en' => '<p>Test</p><script>These tags should be removed!</script>'
-      })
-      expect(folder.description_preview_multiloc).to eq({ 'en' => '<p>Test</p>These tags should be removed!' })
-    end
-  end
+  it_behaves_like 'a plain text multiloc', factory: :project_folder
+  it_behaves_like 'a plain text multiloc', factory: :project_folder, attribute: :header_bg_alt_text_multiloc
+
+  it_behaves_like 'a sanitized html_multiloc', factory: :project_folder
+  it_behaves_like 'a sanitized html_multiloc', factory: :project_folder, attribute: :description_preview_multiloc
 end

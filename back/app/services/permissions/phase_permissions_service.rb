@@ -104,6 +104,31 @@ module Permissions
       PHASE_DENIED_REASONS[:inactive_phase] if time && !phase.active?(time)
     end
 
+    # Reasons the user can potentially 'fix' themselves, e.g. by signing in or
+    # completing their profile. Fixing one may still reveal another unfixable
+    # reason. Keep in sync with FIXABLE_REASONS in
+    # front/app/utils/actionDescriptors/index.ts.
+    FIXABLE_DENIED_REASONS = %w[user_not_signed_in user_not_active user_not_verified user_missing_requirements].freeze
+
+    # Reasons that still allow a draft input to be created, because the posting
+    # check runs again when the draft is published (see IdeaPolicy#update?) and
+    # the author can fix any of these before then.
+    #
+    # user_not_signed_in is deliberately absent. It only arises where posting
+    # requires an account, and there a signed-out draft is a dead row:
+    # publishing needs IdeaPolicy#owner?, which matches on author_id, and the
+    # only route to becoming that owner is a claim token, which is issued solely
+    # where posting is open to everyone (see IdeasController#create). So nothing
+    # would ever re-check it. Signed-out drafts on everyone-permitted phases are
+    # unaffected: on those phases nothing is denied in the first place.
+    DEFERRABLE_DENIED_REASONS = %w[user_not_active user_not_verified user_missing_requirements].freeze
+
+    def participation_possible?
+      action_descriptors.values.any? do |descriptor|
+        descriptor[:enabled] || FIXABLE_DENIED_REASONS.include?(descriptor[:disabled_reason])
+      end
+    end
+
     def action_descriptors
       posting = denied_reason_for_action 'posting_idea'
       commenting = denied_reason_for_action 'commenting_idea'

@@ -18,7 +18,7 @@ import {
 } from '../../typings';
 
 import { Step } from './typings';
-import { checkMissingData } from './utils';
+import { checkMissingData, doesNotMeetGroupCriteria } from './utils';
 
 export const sharedSteps = (
   getAuthenticationData: () => AuthenticationData,
@@ -72,6 +72,11 @@ export const sharedSteps = (
           return;
         }
 
+        if (doesNotMeetGroupCriteria(requirements)) {
+          setCurrentStep('access-denied');
+          return;
+        }
+
         if (flow === 'signup') {
           setCurrentStep('success');
         }
@@ -89,6 +94,7 @@ export const sharedSteps = (
           email: null,
           new_email: null,
           new_phone: null,
+          smsManualCampaignConsent: false,
           token: null,
           prefilledBuiltInFields: null,
           ssoProvider: null,
@@ -120,7 +126,7 @@ export const sharedSteps = (
           }
         }
 
-        setCurrentStep('email:start');
+        setCurrentStep('pre-auth:start');
       },
 
       TRIGGER_VERIFICATION_ONLY: () => {
@@ -140,7 +146,7 @@ export const sharedSteps = (
           setCurrentStep('missing-data:verification');
           setError(errorMap[error_code]);
         } else {
-          setCurrentStep('email:start');
+          setCurrentStep('pre-auth:start');
           setError('unknown');
         }
       },
@@ -155,7 +161,7 @@ export const sharedSteps = (
           not_entitled_service_error: 'auth_service_error',
         };
 
-        setCurrentStep('email:start');
+        setCurrentStep('pre-auth:start');
         if (error_code) {
           setError(errorMap[error_code]);
         } else {

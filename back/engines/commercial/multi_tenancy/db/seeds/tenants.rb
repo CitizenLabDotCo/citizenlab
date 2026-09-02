@@ -40,7 +40,6 @@ module MultiTenancy
             password_login: {
               allowed: true,
               enabled: true,
-              enable_signup: true,
               minimum_length: 8
             },
             pages: {
@@ -91,10 +90,6 @@ module MultiTenancy
               allowed: true
             },
             idea_author_change: {
-              enabled: true,
-              allowed: true
-            },
-            granular_permissions: {
               enabled: true,
               allowed: true
             },
@@ -430,7 +425,19 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            custom_page_builder: {
+              enabled: true,
+              allowed: true
+            },
             sms: {
+              enabled: false,
+              allowed: false
+            },
+            sms_login: {
+              enabled: false,
+              allowed: false
+            },
+            sms_manual_campaigns: {
               enabled: false,
               allowed: false
             },
@@ -439,6 +446,10 @@ module MultiTenancy
               allowed: true
             },
             parallel_participation: {
+              enabled: true,
+              allowed: true
+            },
+            configurable_dropdown: {
               enabled: true,
               allowed: true
             }

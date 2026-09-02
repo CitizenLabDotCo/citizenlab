@@ -48,7 +48,7 @@ const PhoneChange = () => {
   const schema = object({
     phone: string()
       .required(formatMessage(messages.phoneEmptyError))
-      .test('is-valid-phone', formatMessage(messages.phoneInvalid), (value) =>
+      .test('is-valid-phone', formatMessage(messages.phoneInvalid3), (value) =>
         value ? isValidPhoneNumber(value) : false
       ),
     smsManualCampaignConsent: boolean().default(false),
@@ -72,7 +72,7 @@ const PhoneChange = () => {
     try {
       if (!phoneValue) return;
       await confirmCodeNewPhone(code, smsManualCampaignConsent);
-      await queryClient.invalidateQueries(meKeys.all());
+      await queryClient.invalidateQueries({ queryKey: meKeys.all() });
       setConfirmationError(null);
       setOpenConfirmationModal(false);
       setUpdateSuccessful(true);
@@ -82,7 +82,7 @@ const PhoneChange = () => {
       });
     } catch (e) {
       if (e?.code?.[0]?.error === 'invalid') {
-        setConfirmationError('wrong_confirmation_code');
+        setConfirmationError('wrong_phone_confirmation_code');
       } else {
         setConfirmationError('unknown');
       }

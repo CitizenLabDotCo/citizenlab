@@ -1,8 +1,8 @@
 import { randomString, randomEmail } from '../../support/commands';
 import {
   updatePermission,
+  askOnlyDemographicQuestion,
   confirmUserCustomFieldHasValue,
-  addPermissionsCustomField,
   setupProject,
 } from '../../support/permitted_by_utils';
 import { fillOutTitleAndBody } from './_utils';
@@ -33,17 +33,10 @@ describe('Ideation permitted by: users', () => {
         .then((response) => {
           const adminJwt = response.body.jwt;
 
-          return updatePermission({
+          return askOnlyDemographicQuestion({
             adminJwt,
             phaseId,
-            global_custom_fields: false,
-          }).then(() => {
-            // Add one permissions custom field
-            return addPermissionsCustomField({
-              adminJwt,
-              phaseId,
-              customFieldId,
-            });
+            customFieldId,
           });
         });
     });
@@ -99,7 +92,18 @@ describe('Ideation permitted by: users', () => {
 
       // Click submit and 'continue'
       cy.get('#e2e-signup-custom-fields-submit-btn').click();
+
+      cy.intercept('GET', /\/custom_fields\?.*public_fields=true/).as(
+        'ideaFormFields'
+      );
+
       cy.get('#e2e-success-continue-button').click();
+
+      cy.url({ timeout: 40000 }).should('include', '/ideas/new');
+      cy.wait('@ideaFormFields', {
+        requestTimeout: 40000,
+        responseTimeout: 40000,
+      });
 
       const title = randomString(11);
       const body = randomString(40);

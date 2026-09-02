@@ -10,9 +10,10 @@ RSpec.describe EmailCampaigns::Sms::SendJob do
       send_service = instance_double(EmailCampaigns::Sms::SendService)
       allow(EmailCampaigns::Sms::SendService).to receive(:new).and_return(send_service)
 
-      expect(send_service).to receive(:deliver).with(delivery, to: '+14155552671')
+      expect(send_service).to receive(:deliver)
+        .with(delivery, to: '+14155552671', use_case: EmailCampaigns::Sms::UseCase::MANUAL_CAMPAIGNS)
 
-      described_class.new.run(delivery.id)
+      described_class.new.run(delivery.id, use_case: EmailCampaigns::Sms::UseCase::MANUAL_CAMPAIGNS)
     end
 
     it 'delivers to an explicit `to` destination when given (e.g. the OTP new_phone)' do
@@ -21,9 +22,10 @@ RSpec.describe EmailCampaigns::Sms::SendJob do
       send_service = instance_double(EmailCampaigns::Sms::SendService)
       allow(EmailCampaigns::Sms::SendService).to receive(:new).and_return(send_service)
 
-      expect(send_service).to receive(:deliver).with(delivery, to: '+14155552671')
+      expect(send_service).to receive(:deliver)
+        .with(delivery, to: '+14155552671', use_case: EmailCampaigns::Sms::UseCase::CONFIRMATION_CODES)
 
-      described_class.new.run(delivery.id, to: '+14155552671')
+      described_class.new.run(delivery.id, use_case: EmailCampaigns::Sms::UseCase::CONFIRMATION_CODES, to: '+14155552671')
     end
   end
 
@@ -42,7 +44,7 @@ RSpec.describe EmailCampaigns::Sms::SendJob do
     end
 
     it 'marks the delivery failed and re-raises the provider error' do
-      expect { described_class.perform_now(delivery.id) }
+      expect { described_class.perform_now(delivery.id, use_case: EmailCampaigns::Sms::UseCase::CONFIRMATION_CODES) }
         .to raise_error(EmailCampaigns::Sms::ProviderError::RateLimit)
 
       expect(delivery.reload).to have_attributes(status: 'failed', error_message: 'slow down')

@@ -59,12 +59,25 @@ module EmailCampaigns
       Campaigns::YourInputInScreening
     ].freeze
 
+    # Campaign classes that only join `campaign_classes` when the feature that exposes
+    # them is activated. They still exist in the codebase when it isn't, so they are part
+    # of `all_campaign_classes`.
+    FEATURE_GATED_CAMPAIGN_CLASSES = [
+      Campaigns::CommunityMonitorReport,
+      Campaigns::SmsManual,
+      Campaigns::PhoneConfirmation,
+      Campaigns::NewPhoneConfirmation
+    ].freeze
+
+    # The campaigns that may act right now: send, be offered for consent, be created.
     def campaign_classes
       @campaign_classes ||= begin
         classes = CAMPAIGN_CLASSES.deep_dup
         classes << Campaigns::CommunityMonitorReport if AppConfiguration.instance.feature_activated?('community_monitor')
+        # The sms feature carries the Twilio settings every SMS campaign sends through, so
+        # sms_manual_campaigns only takes effect on top of it.
         if AppConfiguration.instance.feature_activated?('sms')
-          classes << Campaigns::SmsManual
+          classes << Campaigns::SmsManual if AppConfiguration.instance.feature_activated?('sms_manual_campaigns')
           classes << Campaigns::PhoneConfirmation
           classes << Campaigns::NewPhoneConfirmation
         end
@@ -72,18 +85,36 @@ module EmailCampaigns
       end
     end
 
+    # Every campaign class that exists in the codebase, whether or not the feature that
+    # exposes it is currently activated. A campaign whose feature is switched off is
+    # dormant, not deprecated: its records must survive (deleting them would destroy
+    # admin-authored content that should come back the moment the feature returns).
+    # Derived from `campaign_classes` so that engine patches feed both lists.
+    def all_campaign_classes
+      campaign_classes | FEATURE_GATED_CAMPAIGN_CLASSES
+    end
+
     def campaign_types
       campaign_classes.map(&:name)
     end
 
+    def all_campaign_types
+      all_campaign_classes.map(&:name)
+    end
+
+    # Whether a campaign is manual is a property of its class, not of the feature flag,
+    # so this covers dormant campaigns too. `Campaign.automatic` negates this list: were
+    # it feature-dependent, a dormant manual campaign would count as automatic.
     def manual_campaign_types
-      campaign_classes.select { |campaign| campaign.new.manual? }.map(&:name)
+      all_campaign_classes.select { |campaign| campaign.new.manual? }.map(&:name)
     end
 
     # Campaign types that should never surface in the admin campaigns UI
     # (e.g. transactional/internal campaigns like the phone-confirmation OTP).
+    # Feature-independent for the same reason as `manual_campaign_types`: a dormant
+    # OTP campaign must stay hidden rather than appear once its feature is switched off.
     def hidden_from_admin_campaign_types
-      campaign_classes.select { |campaign| campaign.new.hidden_from_admin? }.map(&:name)
+      all_campaign_classes.select { |campaign| campaign.new.hidden_from_admin? }.map(&:name)
     end
 
     def consentable_campaign_types_for(user)

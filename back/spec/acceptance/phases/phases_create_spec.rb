@@ -130,15 +130,6 @@ resource 'Phases' do
           expect(json_response.dig(:data, :attributes, :end_at)).to eq timeline_phase.end_at.as_json
           expect(Phase.find(json_response.dig(:data, :id)).placement_type).to eq 'standalone'
         end
-
-        context 'with a participation method that does not support standalone placement' do
-          let(:participation_method) { 'ideation' }
-
-          example_request '[error] Create a standalone ideation phase' do
-            assert_status 422
-            expect(json_response).to include_response_error(:participation_method, 'not_supported_in_standalone_phase')
-          end
-        end
       end
 
       context 'with a blank end date' do

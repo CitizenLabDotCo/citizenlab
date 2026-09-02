@@ -132,6 +132,7 @@ kl-GL:
         users_who_follow_the_proposal: Atuisut siunnersuummik malinnittut
       trigger:
         7_days_after_invite_is_sent: Qaaqqusissutip nassiunnerata kingorna ullut arfineq-marluk qaangiuttut
+        7_days_before_phase_starts: Immikkoortup aallartinnissaa ullunik 7-inik sioqqullugu
         7_days_before_the_project_changes_phase: Ullut 7-it suliniutip immikkoortumut allamut ikaannginnerani
         comment_is_deleted: Oqaaseqaat piiarneqarpoq
         comment_is_flagged_as_spam: Oqaaseqaat spam-itut nalunaarsorneqarpoq
@@ -150,6 +151,7 @@ kl-GL:
         new_input_awaits_screening: Saaffiginnissut nutaaq misissorneqartussanngorpoq
         new_input_is_published: Nutaamik ilanngussaq saqqummerpoq
         new_proposal_is_posted: Siunnersuut nutaaq saqqummiunneqarpoq
+        phase_starts: Immikkoortoq aallartippoq
         project_phase_changes: Suliniutip ingerlanerata allanngorneri
         project_published: Suliniut saqqummiunneqarpoq
         project_review_request: Akunnermuliuttup suliassap misissorneqarnissaa piumasaraa
@@ -280,8 +282,8 @@ kl-GL:
       project_folder_moderation_rights_received: Mappinut aqutsisutut pisinnaatitaaffeqalerpoq
       project_manager_rights_received: Suliniutinik aqutsisutut pisinnaatitaaffiit tiguneqarput
       project_moderation_rights_received: Suliniummik ingerlataqarsinnaasutut pisinnaatitaaffiit tiguneqarput
-      project_phase_started: Suliniummut nikeriarfik nutaaq
-      project_phase_upcoming: Suliniummut nikeriarfik nutaaq takkuttussaq
+      project_phase_started: Immikkoortoq aallartippoq
+      project_phase_upcoming: Immikkoortoq aallartilerpoq
       project_published: Suliniut saqqummiunneqarpoq
       project_review_request: Suliniutip misissorneqarnissaanik kissaat
       project_review_state_change: Suliniut akuerineqarpoq
@@ -489,6 +491,7 @@ kl-GL:
         story: Oqaluttuannut iserit
         suggestion: Siunnersuutinnut iserit
         topic: Sammisannut iserit
+      phase_dates: '%{startDate}-miit %{endDate}-mut'
     idea_marked_as_spam:
       by_author: uannga %{authorName}
       cta_button: Misissuataarit
@@ -777,6 +780,7 @@ kl-GL:
       subject: Innuttaasunut siunnersuummik platformimut %{organizationName}mi tamanut saqqummiisoqarpoq
     new_phone_confirmation:
       sms_body: Uppernarsaatissat tassaavoq %{code}.
+      sms_body2: '%{organization_name}: Uppernarsaatissat tassaavoq %{code}.'
     official_feedback_on_commented_idea:
       by_author: uannga %{authorName}
       cta_view: Isumassarsiamukarit
@@ -838,6 +842,7 @@ kl-GL:
       title: Isissutissat nutaaq toqqaruk
     phone_confirmation:
       sms_body: Uppernarsaanermut kodiit tassaavoq %{code}.
+      sms_body2: '%{organization_name}: Uppernarsaatissat tassaavoq %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
@@ -856,8 +861,9 @@ kl-GL:
       input_status_description: Siunnersuutip inissisimaneranut assersuut (ass. akuerisaq, itigartitaq, piviusunngortitaq...)
       input_status_title: Inissisimanermut assersuut
       official_feedback_body: Pisortatigoortumik akissummut assersuut
+      phase_description: Una tassaavoq immikkoortumut imarisatut assersuut e-mailit imarisaannik takutitseqqaarnermut atorneqartoq. Una imarivippianngilaq.
       phase_title: Immikkoortoq assersuut
-      project_description_preview: Una tassaavoq immikkoortup imarisaanut assersuut e-mailit imarisaannik takunnissinnaanermut atorneqartoq. Una imarisaavinnik imaqanngilaq.
+      project_description_preview: Una suliniutip imarisaanut siulittuutitut atorneqarpoq e-mailit imarisaat takuniarlugit. Una imarivianngilaa.
       project_title: Suliniut assersuut
       proposal_title: Siunnersuut assersuut
       space_title: Immikkoortortaq assersuut
@@ -898,25 +904,25 @@ kl-GL:
       title_you_became_moderator: Aqutsisunngorputit
       x_ideas: '%{numberOfIdeas} isumassarsiat'
     project_phase_started:
-      cta_button: Immikkoortoq nutaaq una misissuguk
+      cta_button: Nutaat takukkit
       cta_view_phase: Fase nutaaq paasiuk
-      event_description: Una suliniut %{organizationName}p platformiani fasemut nutaamut pivoq. Ataani linki tooruk paasisaqarnerorusukkuit
+      event_description: "Maanna '%{phaseTitle}'-mi %{organizationName}-p platformiani peqataasinnaavutit."
       main_header: '"%{projectName}"mi fase nutaaq aallartippoq'
       new_phase: Suliniut fasemut "%{phaseTitle}" killippoq
-      preheader: '%{projectName}mut fase nutaaq aallartippoq'
-      subject: '%{projectName} fasemut nutaamut pivoq'
+      preheader: "Maanna '%{phaseTitle}'-mi peqataasinnaavutit"
+      subject: "'%{phaseTitle}' %{projectName}-mi aallartippoq"
       subtitle: "About '%{projectName}'"
-      title: "Pilersaarummi '%{projectName}'-mi immikkoortoq nutaaq aallartippoq"
+      title: "'%{projectName}'-mi nutaamik pisoqarpoq"
     project_phase_upcoming:
-      cta_button: Immikkoortoq nutaaq una aaqqissuuguk
+      cta_button: Aaqqissuussineq misissuguk
       cta_view_phase: Fase una nutaaq inissititeruk
-      event_description: 'Suliaq"%{projectName}" nutaamik fasemik aallartissaaq. Uani fasemi suna tamarmi inissititerneqarsimassasoq qulakkeeruk: Nassuiarnera naammappa? Isumassarsiat imarineqareersut uunga fasemut nuunneqassappat? Uuma fasep e-mailikkut tulluarsakkakkut innuttaasunut nassuiarnissaa kissaatigiviuk?'
+      event_description: "'%{phaseTitle}' suliniummi '%{projectName}'-mi %{startDate} aallartissaaq. Misissulaariuk tamarmik piareersimanersut: Nassuiaat naammassiva? Ullut eqqortuuppat? Innuttaasut e-mailikkut immikkut ittumik ilisimatikkusuppigit?"
       main_header: '%{firstName}, suliniut ullut XXX qaangiuppata fasemut nutaamut pissaaq'
       new_phase: "Suliniut fasemut '%{phaseTitle}' pivoq"
-      preheader: '%{projectName}mut suliniummik nutaamik aallartitsisoqarpoq '
-      subject: '%{projectName}mi fasemut nutaamut piareersarit'
+      preheader: Misissukkit tamarmik piareersimanersut %{startDate} nallertinnagu
+      subject: "%{projectName}: '%{phaseTitle}' %{startDate} aallartissaaq"
       subtitle: "About '%{projectName}'"
-      title: '%{firstName}, suliniut piaartumik immikkoortumut nutaamut ikaassaaq'
+      title: "%{firstName}, '%{phaseTitle}' %{startDate} aallartissaaq"
     project_published:
       cta_button: Suliniummut uunga iserit
       event_description: '%{organizationName}-p peqataatitsinermut platformia suliniut una saqqummersippaa:'

@@ -77,6 +77,7 @@ pl-PL:
         users_who_follow_the_proposal: Użytkownicy, którzy śledzą propozycję
       trigger:
         7_days_after_invite_is_sent: 7 dni po wysłaniu zaproszenia
+        7_days_before_phase_starts: 7 dni przed rozpoczęciem fazy
         7_days_before_the_project_changes_phase: 7 dni przed zmianą fazy projektu
         comment_is_deleted: Komentarz został usunięty.
         comment_is_flagged_as_spam: Komentarz został oznaczony jako spam
@@ -95,6 +96,7 @@ pl-PL:
         new_input_awaits_screening: Nowy wkład czeka na ekranizację
         new_input_is_published: Nowy wkład jest publikowany
         new_proposal_is_posted: Nowa propozycja została opublikowana
+        phase_starts: Rozpoczyna się faza
         project_phase_changes: Zmiany fazy projektu
         project_published: Projekt opublikowany
         project_review_request: Moderator zażądał przeglądu projektu
@@ -197,8 +199,8 @@ pl-PL:
       project_folder_moderation_rights_received: Przydzielono uprawnienia menedżera folderów
       project_manager_rights_received: Otrzymano uprawnienia menedżera projektu
       project_moderation_rights_received: Przyznanie prawa do moderacji projektu
-      project_phase_started: Nowy etap projektu
-      project_phase_upcoming: Nadchodzący nowy etap projektu
+      project_phase_started: Etap rozpoczęty
+      project_phase_upcoming: Etap rozpocznie się wkrótce
       project_published: Projekt opublikowany
       project_review_request: Żądanie przeglądu projektu
       project_review_state_change: Projekt zatwierdzony
@@ -359,6 +361,7 @@ pl-PL:
         story: Przejdź do swojej historii
         suggestion: Przejdź do swojej sugestii
         topic: Przejdź do swojego tematu
+      phase_dates: Od %{startDate} do %{endDate}
     idea_marked_as_spam:
       cta_button: Recenzja
       preheader: Podejmij działanie w związku ze zgłoszeniem spamu
@@ -539,6 +542,7 @@ pl-PL:
       yesterday: Wczoraj
     new_phone_confirmation:
       sms_body: Twój kod potwierdzający to %{code}.
+      sms_body2: '%{organization_name}: Twój kod potwierdzający to %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Przejdź do tego wejścia
       event_description: '%{feedback_author_name} przedstawił aktualizację na stronie "%{input_title}".'
@@ -553,6 +557,7 @@ pl-PL:
       title: Wybierz nowe hasło
     phone_confirmation:
       sms_body: Twój kod potwierdzający to %{code}.
+      sms_body2: '%{organization_name}: Twój kod potwierdzający to %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
@@ -571,8 +576,9 @@ pl-PL:
       input_status_description: Przykład statusu wejścia (np. zaakceptowane, odrzucone, zaimplementowane...)
       input_status_title: Przykładowy status
       official_feedback_body: Przykład oficjalnej informacji zwrotnej
+      phase_description: To jest przykładowa treść fazy używana do podglądu treści wiadomości e-mail. To nie jest prawdziwa treść.
       phase_title: Przykładowa faza
-      project_description_preview: Jest to przykładowa zawartość fazowa używana do podglądu treści wiadomości e-mail. Nie jest to prawdziwa treść.
+      project_description_preview: To jest przykładowa treść projektu służąca do podglądu treści wiadomości e-mail. To nie jest prawdziwa treść.
       project_title: Przykładowy projekt
       proposal_title: Przykładowa propozycja
       space_title: Przykładowy obszar
@@ -607,21 +613,21 @@ pl-PL:
       title_what_can_you_do_moderator: Co możesz zrobić jako moderator projektu?
       x_ideas: 'ilość pomysłów: %{numberOfIdeas}'
     project_phase_started:
-      cta_button: Odkryj ten nowy etap
-      event_description: Ten projekt wszedł w nowy etap na platformie %{organizationName}. Kliknij na poniższy link, aby dowiedzieć się więcej!
+      cta_button: Zobacz, co nowego
+      event_description: Możesz teraz wziąć udział w „%{phaseTitle}” na platformie %{organizationName}.
       new_phase: Projekt ten wszedł w etap "%{phaseTitle}"
-      preheader: Rozpoczął się nowy etap projektu %{projectName}
-      subject: '%{projectName} wszedł w nowy etap'
+      preheader: Możesz teraz wziąć udział w „%{phaseTitle}”
+      subject: „%{phaseTitle}” rozpoczęło się w %{projectName}
       subtitle: "O '%{projectName}'"
-      title: "Rozpoczął się nowy etap projektu '%{projectName}'"
+      title: Pojawiło się coś nowego w „%{projectName}”
     project_phase_upcoming:
-      cta_button: Ustaw ten nowy etap
-      event_description: 'Projekt "%{projectName}" wkrótce wejdzie w nowy etap. Upewnij się, że wszystko jest przygotowane: Czy opis jest odpowiedni? Czy wybrane pomysły zostały przeniesione do nowego etapu? Czy chcesz poinformować swoich obywateli o specyfice tego etapu poprzez specjalną kampanię e-mailową?'
+      cta_button: Przejrzyj ustawienia
+      event_description: '„%{phaseTitle}” w projekcie „%{projectName}” rozpoczyna się %{startDate}. Poświęć chwilę, aby sprawdzić, czy wszystko jest gotowe: Czy opis jest kompletny? Czy daty są poprawne? Czy chcesz poinformować swoją społeczność za pomocą niestandardowej kampanii e-mail?'
       new_phase: Projekt wejdzie w etap "%{phaseTitle}"
-      preheader: Wkrótce rozpocznie się nowy etap projektu dla %{projectName}
-      subject: Skonfiguruj nowy etap %{projectName}
+      preheader: Upewnij się, że wszystko jest gotowe przed %{startDate}
+      subject: '%{projectName}: „%{phaseTitle}” rozpoczyna się %{startDate}'
       subtitle: "O '%{projectName}'"
-      title: '%{firstName}projekt wkrótce wejdzie w nową fazę'
+      title: '%{firstName}, „%{phaseTitle}” rozpoczyna się %{startDate}'
     project_published:
       cta_button: Przejdź do tego projektu
       event_description: 'Platforma uczestnictwa %{organizationName} właśnie opublikowała następujący projekt:'

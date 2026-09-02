@@ -62,6 +62,40 @@ class CustomFieldService
     end
   end
 
+  def delete_custom_field_values(field)
+    case field.resource_type
+    when 'User'
+      delete_keys_from_values(User.all, keys_with_companions(field.key))
+      delete_keys_from_values(Idea.all, keys_with_companions(UserFieldsInFormService.prefix_key(field.key)))
+    when 'CustomForm'
+      delete_keys_from_values(form_inputs(field.resource), keys_with_companions(field.key))
+    end
+  end
+
+  def delete_custom_field_option_values(option_key, field)
+    return if field.resource_type != 'User'
+
+    answers = CustomFieldAnswer.where(answerable_type: 'User', key: field.key)
+    if field.supports_multiple_selection?
+      # When option is the only selection
+      User
+        .where("custom_field_values->>'#{field.key}' = ?", [option_key].to_json)
+        .update_all("custom_field_values = custom_field_values - '#{field.key}'")
+      answers.where('value = :value::jsonb', value: [option_key].to_json).delete_all
+      # When option was selected amongst other values
+      User
+        .where("(custom_field_values->>'#{field.key}')::jsonb ? :value", value: option_key)
+        .update_all("custom_field_values = jsonb_set(custom_field_values, '{#{field.key}}', (custom_field_values->'#{field.key}') - '#{option_key}')")
+      answers.where('value ? :value', value: option_key).update_all("value = value - '#{option_key}'")
+    else
+      # When single select
+      User
+        .where("custom_field_values->>'#{field.key}' = ?", option_key)
+        .update_all("custom_field_values = custom_field_values - '#{field.key}'")
+      answers.where('value = :value::jsonb', value: option_key.to_json).delete_all
+    end
+  end
+
   # @param [Hash<String, _>] custom_field_values
   # @return [Hash<String, _>]
   def self.remove_hidden_custom_fields(custom_field_values)
@@ -130,6 +164,27 @@ class CustomFieldService
   end
 
   private
+
+  def form_inputs(custom_form)
+    context = custom_form.participation_context
+    if context.is_a?(Phase)
+      Idea.where(creation_phase_id: context.id)
+    else
+      Idea.where(project_id: context.id)
+    end
+  end
+
+  def keys_with_companions(key)
+    [key, "#{key}_other", "#{key}_follow_up"]
+  end
+
+  def delete_keys_from_values(scope, keys)
+    keys_sql = keys.map { |key| "'#{key}'" }.join(', ')
+    scope
+      .where("custom_field_values ?| array[#{keys_sql}]")
+      .update_all("custom_field_values = custom_field_values - array[#{keys_sql}]::text[]")
+    CustomFieldAnswer.where(answerable: scope, key: keys).delete_all
+  end
 
   # *** text ***
 

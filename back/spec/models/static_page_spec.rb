@@ -9,6 +9,11 @@ RSpec.describe StaticPage do
     end
   end
 
+  it_behaves_like 'a plain text multiloc', factory: :static_page
+  it_behaves_like 'a plain text multiloc', factory: :static_page, attribute: :banner_header_multiloc
+  it_behaves_like 'a plain text multiloc', factory: :static_page, attribute: :banner_subheader_multiloc
+  it_behaves_like 'a plain text multiloc', factory: :static_page, attribute: :banner_cta_button_multiloc
+
   describe 'validations' do
     it { is_expected.to validate_presence_of(:title_multiloc) }
 
@@ -172,6 +177,21 @@ RSpec.describe StaticPage do
     it 'is reported as project_scoped only when it has a project' do
       expect(build(:static_page, :project_scoped).project_scoped?).to be(true)
       expect(build(:static_page).project_scoped?).to be(false)
+    end
+  end
+
+  describe 'content builder layout association' do
+    # The layouts table is polymorphic, so it carries no foreign key and nothing else
+    # sweeps a layout whose page is gone.
+    it 'destroys the layout when the page is destroyed' do
+      page = create(:static_page)
+      create(
+        :layout,
+        content_buildable: page,
+        code: ContentBuilder::CustomPageLayoutService::CODE
+      )
+
+      expect { page.destroy! }.to change(ContentBuilder::Layout, :count).by(-1)
     end
   end
 

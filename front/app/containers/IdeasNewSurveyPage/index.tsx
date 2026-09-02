@@ -46,13 +46,13 @@ const IdeasNewSurveyPage = () => {
   const phaseIdFromSearchParams = searchParams.phase_id;
   const phaseId =
     phaseIdFromSearchParams ||
-    project?.data.relationships.current_phase?.data?.id;
-  const { data: phase, isInitialLoading: phaseIsLoading } = usePhase(phaseId);
+    project?.data.relationships.current_phase?.data?.id; // TODO: This can be deleted in a few months, as URLs now always include the phase_id.
+  const { data: phase, isLoading: phaseIsLoading } = usePhase(phaseId);
 
   /*
     TO DO: simplify these loading & auth checks, then if possible abstract and use the same the IdeasNewPage
   */
-  if (projectStatus === 'loading' || phaseIsLoading) {
+  if (projectStatus === 'pending' || phaseIsLoading) {
     return (
       <VerticalCenterer>
         <Spinner />

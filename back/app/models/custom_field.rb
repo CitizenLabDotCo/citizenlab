@@ -53,6 +53,7 @@
 #
 class CustomField < ApplicationRecord
   include BulkReorderable
+  include PlainTextMultiloc
 
   delegate :page?, :supports_submission?, :supports_average?, :supports_options?, :supports_other_option?, :supports_option_images?,
     :supports_follow_up?, :supports_text?, :supports_linear_scale?, :supports_linear_scale_labels?, :supports_matrix_statements?,
@@ -124,6 +125,20 @@ class CustomField < ApplicationRecord
   validate :maximum_select_count_greater_than_or_equal_to_minimum, if: :select_count_enabled_and_supported?
 
   before_validation :set_default_enabled
+  # Declared ahead of `generate_key`, which builds the key from the first title value.
+  plain_text_multiloc :title_multiloc,
+    :page_button_label_multiloc,
+    :linear_scale_label_1_multiloc,
+    :linear_scale_label_2_multiloc,
+    :linear_scale_label_3_multiloc,
+    :linear_scale_label_4_multiloc,
+    :linear_scale_label_5_multiloc,
+    :linear_scale_label_6_multiloc,
+    :linear_scale_label_7_multiloc,
+    :linear_scale_label_8_multiloc,
+    :linear_scale_label_9_multiloc,
+    :linear_scale_label_10_multiloc,
+    :linear_scale_label_11_multiloc
   before_validation :generate_key, on: :create
   before_validation :sanitize_description_multiloc
   before_validation :clear_logic_unless_supported
@@ -164,28 +179,29 @@ class CustomField < ApplicationRecord
   end
 
   def average_rankings(scope)
-    # This basically starts from all combinations of scope ID, option key (value)
-    # and position (ordinality) and then calculates the average position for each
-    # option. "#>> '{}'" is used to unescape the double quotes in the JSONB value.
+    # This basically starts from all combinations of answerable ID, option key
+    # (value) and position (ordinality) and then calculates the average position
+    # for each option. "#>> '{}'" is used to unescape the double quotes in the
+    # JSONB value.
     return {} if input_type != 'ranking'
 
-    scope
-      .where.not("custom_field_values ->> '#{key}' IS NULL")
-      .joins("CROSS JOIN jsonb_array_elements(custom_field_values->'#{key}') WITH ORDINALITY AS elem(value, ordinality)")
+    CustomFieldAnswer.main_for(self)
+      .where(answerable_id: scope)
+      .joins('CROSS JOIN jsonb_array_elements(value) WITH ORDINALITY AS elem(value, ordinality)')
       .group("elem.value #>> '{}'")
       .average('elem.ordinality')
   end
 
   def rankings_counts(scope)
-    # This basically starts from all combinations of scope ID, option key (value)
-    # and position (ordinality) and then calculates the count for each option and
-    # position. "#>> '{}'" is used to unescape the double quotes in the JSONB
-    # value.
+    # This basically starts from all combinations of answerable ID, option key
+    # (value) and position (ordinality) and then calculates the count for each
+    # option and position. "#>> '{}'" is used to unescape the double quotes in
+    # the JSONB value.
     return {} if input_type != 'ranking'
 
-    query_result = scope
-      .where.not("custom_field_values ->> '#{key}' IS NULL")
-      .joins("CROSS JOIN jsonb_array_elements(custom_field_values->'#{key}') WITH ORDINALITY AS elem(value, ordinality)")
+    query_result = CustomFieldAnswer.main_for(self)
+      .where(answerable_id: scope)
+      .joins('CROSS JOIN jsonb_array_elements(value) WITH ORDINALITY AS elem(value, ordinality)')
       .group("elem.value #>> '{}'", 'elem.ordinality')
       .count
 

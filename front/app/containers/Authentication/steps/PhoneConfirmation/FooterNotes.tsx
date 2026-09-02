@@ -37,36 +37,59 @@ const FooterNoteSuccessMessage = styled.span`
   padding-left: 6px;
 `;
 
+const FooterNoteCountdown = styled.span`
+  color: ${({ theme }) => theme.colors.tenantText};
+  padding-left: 4px;
+`;
+
 const FooterNoteSuccessMessageIcon = styled(Icon)`
   margin-right: 4px;
 `;
 
 interface Props {
   codeResent: boolean;
+  secondsUntilResend: number;
   onResendCode: (e: FormEvent) => void;
   onChangePhone?: (e: FormEvent) => void;
 }
 
-const FooterNotes = ({ codeResent, onResendCode, onChangePhone }: Props) => (
+const FooterNotes = ({
+  codeResent,
+  secondsUntilResend,
+  onResendCode,
+  onChangePhone,
+}: Props) => (
   <>
     <FooterNote>
       <FormattedMessage {...messages.didntGetAnSMS} />
 
-      {codeResent ? (
-        <FooterNoteSuccessMessage data-cy="confirmation-code-sent-message">
-          <FooterNoteSuccessMessageIcon name="check-circle" />
-          <FormattedMessage {...messages.confirmationCodeSent} />
-        </FooterNoteSuccessMessage>
+      {/* The link only appears once the backend would accept a new code. */}
+      {secondsUntilResend > 0 ? (
+        <FooterNoteCountdown data-cy="resend-code-countdown">
+          <FormattedMessage
+            {...messages.sendNewCodeIn}
+            values={{ seconds: secondsUntilResend }}
+          />
+        </FooterNoteCountdown>
       ) : (
         <FooterNoteLink onClick={onResendCode} data-cy="resend-code">
           <FormattedMessage {...messages.sendNewCode} />
         </FooterNoteLink>
       )}
+
+      {/* The message says a code just went out, which is the very thing the
+          countdown is measuring - so it goes when the countdown does. */}
+      {codeResent && secondsUntilResend > 0 && (
+        <FooterNoteSuccessMessage data-cy="confirmation-code-sent-message">
+          <FooterNoteSuccessMessageIcon name="check-circle" />
+          <FormattedMessage {...messages.confirmationCodeSent} />
+        </FooterNoteSuccessMessage>
+      )}
     </FooterNote>
     {onChangePhone && (
       <FooterNote>
         <FormattedMessage {...messages.wrongNumber} />
-        <FooterNoteLink onClick={onChangePhone}>
+        <FooterNoteLink onClick={onChangePhone} data-cy="go-to-change-phone">
           <FormattedMessage {...messages.changeYourNumber} />
         </FooterNoteLink>
       </FooterNote>

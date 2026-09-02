@@ -13,7 +13,7 @@ describe UserFieldsInFormService do
         @phase = @project.phases.first
 
         @permission = @phase.permissions.find_by(action: 'posting_idea')
-        @permission.update!(global_custom_fields: false, user_fields_in_form: false, user_data_collection: 'all_data')
+        @permission.update!(custom_fields_behavior: 'custom', user_fields_in_form: false, user_data_collection: 'all_data')
         create(:permissions_custom_field, permission: @permission, custom_field: create(:custom_field, key: 'age'))
 
         @idea = create(:idea, author: @user, custom_field_values: {})
@@ -39,6 +39,33 @@ describe UserFieldsInFormService do
       end
     end
 
+    context 'community monitor' do
+      before do
+        @user = create(:user, { custom_field_values: { age: 30 } })
+        @phase = create(:community_monitor_survey_phase, with_permissions: true)
+
+        @permission = @phase.permissions.find_by(action: 'posting_idea')
+        @permission.update!(custom_fields_behavior: 'custom', user_fields_in_form: false, user_data_collection: 'all_data')
+        create(:permissions_custom_field, permission: @permission, custom_field: create(:custom_field, key: 'age'))
+
+        @idea = create(:idea, author: @user, custom_field_values: {})
+      end
+
+      it 'returns true when all conditions are met' do
+        expect(described_class.should_merge_user_fields_into_idea?(@user, @phase, @idea)).to be true
+      end
+
+      it 'returns true if user_data_collection is set to demographics_only' do
+        @permission.update!(user_data_collection: 'demographics_only')
+        expect(described_class.should_merge_user_fields_into_idea?(@user, @phase, @idea)).to be true
+      end
+
+      it 'returns false if user_data_collection is set to anonymous' do
+        @permission.update!(user_data_collection: 'anonymous')
+        expect(described_class.should_merge_user_fields_into_idea?(@user, @phase, @idea)).to be false
+      end
+    end
+
     context 'ideation' do
       before do
         @user = create(:user, { custom_field_values: { age: 30 } })
@@ -48,7 +75,7 @@ describe UserFieldsInFormService do
         @phase = @project.phases.first
 
         @permission = @phase.permissions.find_by(action: 'posting_idea')
-        @permission.update!(global_custom_fields: false, user_fields_in_form: false, user_data_collection: 'all_data')
+        @permission.update!(custom_fields_behavior: 'custom', user_fields_in_form: false, user_data_collection: 'all_data')
         create(:permissions_custom_field, permission: @permission, custom_field: create(:custom_field, key: 'age'))
 
         @idea = create(:idea, author: @user, custom_field_values: {})
@@ -83,7 +110,7 @@ describe UserFieldsInFormService do
     before do
       @phase = create(:native_survey_phase, with_permissions: true)
       permission = @phase.permissions.find_by(action: 'posting_idea')
-      permission.update!(global_custom_fields: false)
+      permission.update!(custom_fields_behavior: 'custom')
       create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field, key: 'age'))
       create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field, key: 'city'))
       create(:custom_field, key: 'favorite_color', enabled: true)
@@ -123,7 +150,7 @@ describe UserFieldsInFormService do
       })
     end
 
-    it 'pre-populates user fields when using global_custom_fields being the default' do
+    it 'pre-populates user fields when custom_fields_behavior is the default' do
       user = build(:user, custom_field_values: { 'age' => 30, 'city' => 'New York' })
       idea = build(:idea, custom_field_values: {})
 
@@ -153,7 +180,7 @@ describe UserFieldsInFormService do
         @phase = @project.phases.first
 
         @permission = @phase.permissions.find_by(action: 'posting_idea')
-        @permission.update!(global_custom_fields: false, user_fields_in_form: true, user_data_collection: 'all_data')
+        @permission.update!(custom_fields_behavior: 'custom', user_fields_in_form: true, user_data_collection: 'all_data')
         create(:permissions_custom_field, permission: @permission, custom_field: create(:custom_field, key: 'age'))
 
         @idea = create(
@@ -196,6 +223,40 @@ describe UserFieldsInFormService do
       end
     end
 
+    context 'community monitor' do
+      before do
+        @user = create(:user, { custom_field_values: { age: 30 } })
+        @phase = create(:community_monitor_survey_phase, with_permissions: true)
+        @project = @phase.project
+
+        @permission = @phase.permissions.find_by(action: 'posting_idea')
+        @permission.update!(custom_fields_behavior: 'custom', user_fields_in_form: true, user_data_collection: 'all_data')
+        create(:permissions_custom_field, permission: @permission, custom_field: create(:custom_field, key: 'age'))
+
+        @idea = create(
+          :idea,
+          author: @user,
+          custom_field_values: {},
+          project: @project,
+          creation_phase: @phase
+        )
+      end
+
+      it 'returns true when all conditions are met' do
+        expect(described_class.should_merge_user_fields_from_idea_into_user?(@idea, @user, @phase)).to be true
+      end
+
+      it 'returns true if user_data_collection is set to demographics_only' do
+        @permission.update!(user_data_collection: 'demographics_only')
+        expect(described_class.should_merge_user_fields_from_idea_into_user?(@idea, @user, @phase)).to be true
+      end
+
+      it 'returns false if user_data_collection is set to anonymous' do
+        @permission.update!(user_data_collection: 'anonymous')
+        expect(described_class.should_merge_user_fields_from_idea_into_user?(@idea, @user, @phase)).to be false
+      end
+    end
+
     context 'ideation' do
       before do
         @user = create(:user, { custom_field_values: { age: 30 } })
@@ -205,7 +266,7 @@ describe UserFieldsInFormService do
         @phase = @project.phases.first
 
         @permission = @phase.permissions.find_by(action: 'posting_idea')
-        @permission.update!(global_custom_fields: false, user_fields_in_form: true, user_data_collection: 'all_data')
+        @permission.update!(custom_fields_behavior: 'custom', user_fields_in_form: true, user_data_collection: 'all_data')
         create(:permissions_custom_field, permission: @permission, custom_field: create(:custom_field, key: 'age'))
 
         @idea = create(
@@ -262,6 +323,15 @@ describe UserFieldsInFormService do
       described_class.merge_user_fields_from_idea_into_user!(idea, user)
       expect(user.custom_field_values).to include('age' => 30)
     end
+
+    it 'merges other text values from idea into user' do
+      user = build(:user, custom_field_values: {})
+      idea = build(:idea, custom_field_values: { 'u_pet' => 'other', 'u_pet_other' => 'A ferret' })
+
+      described_class.merge_user_fields_from_idea_into_user!(idea, user)
+
+      expect(user.custom_field_values).to eq({ 'pet' => 'other', 'pet_other' => 'A ferret' })
+    end
   end
 
   describe '#add_user_fields_to_form' do
@@ -273,7 +343,7 @@ describe UserFieldsInFormService do
 
       # Create permission with user custom field
       permission = phase.permissions.find_by(action: 'posting_idea')
-      permission.update!(global_custom_fields: false, user_fields_in_form: true)
+      permission.update!(custom_fields_behavior: 'custom', user_fields_in_form: true)
       create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field, key: 'age'))
 
       # Create survey form

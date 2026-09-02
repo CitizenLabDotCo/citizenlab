@@ -65,7 +65,7 @@ const EmailChange = () => {
     try {
       if (!emailValue) return;
       await confirmCodeNewEmail(code);
-      await queryClient.invalidateQueries(meKeys.all());
+      await queryClient.invalidateQueries({ queryKey: meKeys.all() });
       setConfirmationError(null);
       setOpenConfirmationModal(false);
       setUpdateSuccessful(true);

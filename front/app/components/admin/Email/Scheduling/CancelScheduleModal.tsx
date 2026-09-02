@@ -22,7 +22,7 @@ interface Props {
 
 const CancelScheduleModal = ({ campaign, opened, onClose }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutate: updateCampaign, isLoading: isUpdatingCampaign } =
+  const { mutate: updateCampaign, isPending: isUpdatingCampaign } =
     useUpdateEmailCampaign();
 
   // to cancel schedule campaign ( send scheduledAt as null )

@@ -6,12 +6,24 @@ class SanitizationService
 
   EDITOR_STRUCTURE_TAGS = %w[div p h2 h3 ol ul].freeze
 
+  # Each `strip_to_plain_text` pass peels one layer of entity encoding; real text settles in 1-3.
+  PLAIN_TEXT_PASSES = 5
+
+  NBSP = "\u00A0"
+
+  # What `linkify` builds an href from, and so the only links a body may show as their own URL.
+  LINKIFIABLE_HREF = %r{\A(https?://|mailto:)}i
+
+  # What `linkify` puts on a link it builds, and so what a kept link carries too. `target="_blank"`
+  # without `noopener` hands the opened page control of this tab.
+  LINK_ATTRIBUTES = { 'target' => '_blank', 'rel' => 'noreferrer noopener nofollow' }.freeze
+
   SANITIZER = Rails::Html::SafeListSanitizer.new
 
   private_constant :SANITIZER
 
   # Sanitizes a string from malicious and unwanted input.
-  # @param sanitize [String] string input to be sanitized
+  # @param text [String] string input to be sanitized
   # @param features [Array<Symbol>] A list of allowed features
   # See {IframeScrubber, EDITOR_FEATURES} for the list of allowed tags and attributes.
   def sanitize(text, features)
@@ -73,7 +85,85 @@ class SanitizationService
   # @param html [String] Text that will be linkified.
   # @return [String] The text with it's content being transformed into links.
   def linkify(html)
-    Rinku.auto_link(html, :all, 'target="_blank" rel="noreferrer noopener nofollow"', nil, Rinku::AUTOLINK_SHORT_DOMAINS)
+    attributes = LINK_ATTRIBUTES.map { |name, value| %(#{name}="#{value}") }.join(' ')
+    Rinku.auto_link(html, :all, attributes, nil, Rinku::AUTOLINK_SHORT_DOMAINS)
+  end
+
+  # The pipeline for every rich-text field - bodies and descriptions - shared with anything
+  # reprocessing a stored value (e.g. machine translations). Also the second half of
+  # `sanitize_comment_body`.
+  #
+  # A nil value comes back as '', not nil. Long-standing behaviour - do not add a guard.
+  def sanitize_body(html, features)
+    html = sanitize(html, features)
+    html = remove_empty_trailing_tags(html)
+    linkify(html)
+  end
+
+  # The pipeline `Comment` applies to its body, shared with anything reprocessing a stored one
+  # (e.g. machine translations). Only the href says where a click lands, so it is the side the
+  # label is rebuilt from - an author can point `google.com` anywhere, and a translator rewrites
+  # whatever label it can read.
+  def sanitize_comment_body(html)
+    sanitize_body(label_links_with_urls(html), Comment::BODY_SANITIZE_FEATURES)
+  end
+
+  def sanitize_comment_body_multiloc(multiloc)
+    multiloc.transform_values { |html| sanitize_comment_body(html) }
+  end
+
+  # Rewrites a link's label to the URL it points at where the two disagree, leaving the href alone.
+  # Attributes always come out as `linkify` writes them, so a kept link and a rebuilt one match.
+  #
+  # A link `linkify` could not have built is unwrapped to its text: relabelling it would show a
+  # scheme the pipeline never produces, and keeping it would leave the label free to lie.
+  def label_links_with_urls(html)
+    return html if html.blank?
+
+    doc = Nokogiri::HTML.fragment(html)
+    doc.css('a[href]').each do |link|
+      if link['href'].match?(LINKIFIABLE_HREF)
+        link.content = link['href'].sub(/\Amailto:/i, '') unless label_matches_href?(link)
+        LINK_ATTRIBUTES.each { |name, value| link[name] = value }
+      else
+        link.replace(Nokogiri::XML::Text.new(link.text, link.document))
+      end
+    end
+    doc.to_s
+  end
+
+  def sanitize_body_multiloc(multiloc, features)
+    multiloc.transform_values { |html| sanitize_body(html, features) }
+  end
+
+  # Reduces text to plain text: no markup, and no entity encoding of what survives.
+  #
+  # `full_sanitizer` alone entity-encodes what it keeps ("Fish & chips" -> "Fish &amp; chips"), so
+  # decode after each pass and repeat until the value settles - otherwise a payload survives by
+  # hiding behind its own encoding (`&lt;script&gt;`).
+  #
+  # `CGI.unescapeHTML` decodes numeric references and the five XML names, but the HTML5 serializer
+  # also writes U+00A0 as `&nbsp;`, so that one needs decoding by hand. Callers render the result as
+  # text and slug it, so an entity left standing reaches the reader as six literal characters.
+  def strip_to_plain_text(text)
+    return nil if text.nil?
+
+    full_sanitizer = ActionView::Base.full_sanitizer
+
+    PLAIN_TEXT_PASSES.times do
+      decoded = CGI.unescapeHTML(full_sanitizer.sanitize(text)).gsub('&nbsp;', NBSP)
+      return decoded if decoded == text
+
+      text = decoded
+    end
+
+    # More encoding layers than passes: return the escaped form, which renders as literal text.
+    full_sanitizer.sanitize(text)
+  end
+
+  # `strip_to_plain_text` across a multiloc - the rule every title-bearing model shares.
+  def strip_multiloc_to_plain_text(multiloc)
+    multiloc.transform_values { |text| strip_to_plain_text(text) }
   end
 
   def html_with_content?(text_or_html)
@@ -95,6 +185,21 @@ class SanitizationService
 
   def with_content?(node)
     node.text.present? || %w[img iframe].any? { |tag| node.at tag }
+  end
+
+  # A label tells the truth when linkifying it on its own rebuilds this very link, so the
+  # `www.example.com` someone typed is left as they typed it. Asking `linkify` rather than comparing
+  # by hand is the point: a label cannot look honest to this check and still point elsewhere.
+  #
+  # Both escapings come off first - the href is stored as it serialises, the label as a person reads
+  # it - so an accent or an `&` does not read as disagreement.
+  def label_matches_href?(link)
+    built = linkify(link.text)[/href="([^"]*)"/, 1]
+    built.present? && unescaped(built) == unescaped(link['href'])
+  end
+
+  def unescaped(url)
+    CGI.unescape(CGI.unescapeHTML(url))
   end
 
   def remove_hidden_spaces(html)
@@ -152,7 +257,7 @@ class SanitizationService
 
     def initialize(features = [])
       super()
-      features_w_default = features.push(:default)
+      features_w_default = features + [:default]
       @tags = features_w_default.flat_map { |f| EDITOR_FEATURES[f][:tags] }.uniq
       @attributes = features_w_default.flat_map { |f| EDITOR_FEATURES[f][:attributes] }.uniq
     end

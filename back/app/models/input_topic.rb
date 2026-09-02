@@ -28,6 +28,7 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class InputTopic < ApplicationRecord
+  include PlainTextMultiloc
   extend OrderAsSpecified
 
   acts_as_nested_set scope: [:project_id], dependent: :destroy, counter_cache: :children_count
@@ -39,10 +40,17 @@ class InputTopic < ApplicationRecord
   has_many :ideas_input_topics, dependent: :destroy
   has_many :ideas, through: :ideas_input_topics
 
+  # Rendered with `dangerouslySetInnerHTML` (`<T supportHtml>`), and the editor offers bold and
+  # italic only, so the allowlist is narrower than the other description fields'.
+  DESCRIPTION_SANITIZE_FEATURES = %i[decoration].freeze
+
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false }
   validate :max_depth_validation
   validate :icon_only_for_root_topics
+
+  plain_text_multiloc :title_multiloc
+  before_validation :sanitize_description_multiloc, if: :description_multiloc
 
   scope :order_ideas_count, lambda { |ideas, direction: :asc|
     topics_counts = IdeasCountService.counts(ideas, ['input_topic_id'])['input_topic_id']
@@ -75,5 +83,13 @@ class InputTopic < ApplicationRecord
     return if icon.blank?
 
     errors.add(:icon, :not_allowed_for_subtopics) if depth.present? && depth >= 1
+  end
+
+  # No linkifying, unlike the other description fields: the editor cannot make links, so neither
+  # does this.
+  def sanitize_description_multiloc
+    service = SanitizationService.new
+    self.description_multiloc = service.sanitize_multiloc(description_multiloc, DESCRIPTION_SANITIZE_FEATURES)
+    self.description_multiloc = service.remove_multiloc_empty_trailing_tags description_multiloc
   end
 end

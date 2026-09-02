@@ -77,6 +77,7 @@ ga-IE:
         users_who_follow_the_proposal: Úsáideoirí a leanann an togra
       trigger:
         7_days_after_invite_is_sent: 7 lá tar éis an cuireadh a sheoladh
+        7_days_before_phase_starts: 7 lá sula dtosaíonn céim
         7_days_before_the_project_changes_phase: 7 lá sula n-athraíonn an tionscadal céim
         comment_is_deleted: Scriosadh an trácht
         comment_is_flagged_as_spam: Tá an trácht marcáilte mar thurscar
@@ -95,6 +96,7 @@ ga-IE:
         new_input_awaits_screening: Tá ionchur nua ag fanacht le scagadh
         new_input_is_published: Tá ionchur nua foilsithe
         new_proposal_is_posted: Tá togra nua foilsithe
+        phase_starts: Tosaíonn céim
         project_phase_changes: Athruithe céime tionscadail
         project_published: Tionscadal foilsithe
         project_review_request: D'iarr an modhnóir athbhreithniú tionscadail
@@ -197,8 +199,8 @@ ga-IE:
       project_folder_moderation_rights_received: Fuarthas cearta bainisteoir fillteán
       project_manager_rights_received: Cearta bainisteora tionscadail faighte
       project_moderation_rights_received: Cearta modhnóireachta tionscadail faighte
-      project_phase_started: Céim nua tionscadail
-      project_phase_upcoming: Céim nua tionscadail atá le teacht
+      project_phase_started: Céim tosaithe
+      project_phase_upcoming: Céim ag tosú go luath
       project_published: Tionscadal foilsithe
       project_review_request: Iarratas ar athbhreithniú tionscadail
       project_review_state_change: Tionscadal ceadaithe
@@ -359,6 +361,7 @@ ga-IE:
         story: Téigh chuig do scéal
         suggestion: Téigh chuig do mholadh
         topic: Téigh chuig do thopaic
+      phase_dates: Ó %{startDate} go %{endDate}
     idea_marked_as_spam:
       cta_button: Athbhreithniú
       preheader: Gníomhaigh ar an tuairisc turscair seo
@@ -539,6 +542,7 @@ ga-IE:
       yesterday: Inné
     new_phone_confirmation:
       sms_body: Is é %{code} do chód deimhnithe.
+      sms_body2: '%{organization_name}: Is é %{code} do chód deimhnithe.'
     official_feedback_on_idea_you_follow:
       cta_button: Téigh chuig an ionchur seo
       event_description: "Thug %{feedback_author_name} nuashonrú ar '%{input_title}'."
@@ -553,6 +557,7 @@ ga-IE:
       title: Roghnaigh pasfhocal nua
     phone_confirmation:
       sms_body: Is é do chód deimhnithe ná %{code}.
+      sms_body2: '%{organization_name}: Is é %{code} do chód deimhnithe.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
@@ -571,8 +576,9 @@ ga-IE:
       input_status_description: Sampla de stádas ionchuir (m.sh. glactha, diúltaithe, curtha i bhfeidhm...)
       input_status_title: Stádas Samplach
       official_feedback_body: Aiseolas oifigiúil samplach
+      phase_description: Is sampla é seo d'inneachar céime a úsáidtear chun réamhamharc a dhéanamh ar inneachar ríomhphost. Ní fíor-inneachar é seo.
       phase_title: Céim shamplach
-      project_description_preview: Seo sampla d'ábhar céime a úsáidtear chun réamhamharc a dhéanamh ar ábhar ríomhphoist. Ní fíor-ábhar é seo.
+      project_description_preview: Is sampla d'ábhar tionscadail é seo a úsáidtear chun réamhamharc a dhéanamh ar ábhar ríomhphoist. Ní fíor-ábhar é seo.
       project_title: Tionscadal samplach
       proposal_title: Togra Samplach
       space_title: Spás samplach
@@ -607,21 +613,21 @@ ga-IE:
       title_what_can_you_do_moderator: Cad is féidir leat a dhéanamh mar bhainisteoir tionscadail?
       x_ideas: '%{numberOfIdeas} ideas'
     project_phase_started:
-      cta_button: Faigh amach an chéim nua seo
-      event_description: Chuaigh an tionscadal seo isteach i gcéim nua ar ardán %{organizationName}. Cliceáil ar an nasc thíos le tuilleadh eolais a fháil!
+      cta_button: Féach cad atá nua
+      event_description: "Is féidir leat páirt a ghlacadh in '%{phaseTitle}' anois ar ardán %{organizationName}."
       new_phase: "Chuaigh an tionscadal seo isteach sa chéim '%{phaseTitle}'"
-      preheader: Tá céim nua tosaithe do %{projectName}
-      subject: Chuaigh %{projectName} isteach i gcéim nua
+      preheader: "Is féidir leat páirt a ghlacadh in '%{phaseTitle}' anois"
+      subject: "Tá '%{phaseTitle}' tosaithe in %{projectName}"
       subtitle: "Maidir le '%{projectName}'"
-      title: "Céim nua tosaithe don tionscadal '%{projectName}'"
+      title: "Tá rud éigin nua in '%{projectName}'"
     project_phase_upcoming:
-      cta_button: Socraigh an chéim nua seo
-      event_description: "Beidh an tionscadal '%{projectName}' ag dul isteach i gcéim nua go luath. Déan cinnte go bhfuil gach rud socraithe don chéim seo: An bhfuil cur síos leordhóthanach ann? An aistrítear smaointe roghnaithe chuig an gcéim seo? Ar mhaith leat do shaoránaigh a chur ar an eolas faoi shonraí na céime seo trí fheachtas ríomhphoist saincheaptha?"
+      cta_button: Athbhreithnigh an socrú
+      event_description: "Tosaíonn '%{phaseTitle}' sa tionscadal '%{projectName}' ar %{startDate}. Tóg nóiméad le deimhniú go bhfuil gach rud réidh: An bhfuil an cur síos iomlán? An bhfuil na dátaí ceart? Ar mhaith leat do phobal a chur ar an eolas trí fheachtas ríomhphoist saincheaptha?"
       new_phase: "Rachaidh an tionscadal isteach sa chéim '%{phaseTitle}'"
-      preheader: Tosóidh céim nua go luath do %{projectName}
-      subject: Faigh gach rud réidh don chéim nua de %{projectName}
+      preheader: Déan cinnte go bhfuil gach rud réidh roimh %{startDate}
+      subject: "%{projectName}: tosaíonn '%{phaseTitle}' ar %{startDate}"
       subtitle: "Maidir le '%{projectName}'"
-      title: '%{firstName}, rachaidh tionscadal isteach i gcéim nua go luath'
+      title: "%{firstName}, tosaíonn '%{phaseTitle}' ar %{startDate}"
     project_published:
       cta_button: Téigh chuig an tionscadal seo
       event_description: 'D’fhoilsigh ardán rannpháirtíochta %{organizationName} an tionscadal seo a leanas díreach:'

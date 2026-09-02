@@ -34,6 +34,7 @@
 #
 class Event < ApplicationRecord
   include Files::FileAttachable
+  include PlainTextMultiloc
   include GeoJsonHelpers
 
   has_many_text_images from: :description_multiloc
@@ -58,6 +59,7 @@ class Event < ApplicationRecord
   validate :validate_start_at_before_end_at
 
   before_validation :sanitize_description_multiloc
+  plain_text_multiloc :title_multiloc, :location_multiloc, :address_2_multiloc, :attend_button_multiloc
   before_validation :strip_title
 
   scope :with_project_publication_statuses, lambda { |statuses|

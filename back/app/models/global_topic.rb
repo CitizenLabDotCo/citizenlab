@@ -19,6 +19,7 @@
 #  index_global_topics_on_include_in_onboarding  (include_in_onboarding)
 #
 class GlobalTopic < ApplicationRecord
+  include PlainTextMultiloc
   extend OrderAsSpecified
 
   # Temporary fix while deploying, since Topic is a View instead of a Table, and
@@ -34,10 +35,16 @@ class GlobalTopic < ApplicationRecord
   # Followers (polymorphic)
   has_many :followers, as: :followable, dependent: :destroy
 
+  # Rendered with `dangerouslySetInnerHTML` (`<T supportHtml>`), and the editor offers bold and
+  # italic only, so the allowlist is narrower than the other description fields'.
+  DESCRIPTION_SANITIZE_FEATURES = %i[decoration].freeze
+
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false }
   validates :include_in_onboarding, inclusion: { in: [true, false] }
 
+  plain_text_multiloc :title_multiloc
+  before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :strip_title
 
   scope :order_new, ->(direction = :desc) { order(created_at: direction, id: direction) }
@@ -51,11 +58,19 @@ class GlobalTopic < ApplicationRecord
   private
 
   def strip_title
-    return unless description_multiloc&.any?
+    return unless title_multiloc&.any?
 
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
     end
+  end
+
+  # No linkifying, unlike the other description fields: the editor cannot make links, so neither
+  # does this.
+  def sanitize_description_multiloc
+    service = SanitizationService.new
+    self.description_multiloc = service.sanitize_multiloc(description_multiloc, DESCRIPTION_SANITIZE_FEATURES)
+    self.description_multiloc = service.remove_multiloc_empty_trailing_tags description_multiloc
   end
 end
 

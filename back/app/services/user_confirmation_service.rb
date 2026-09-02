@@ -48,6 +48,20 @@ class UserConfirmationService
     failure_result(e)
   end
 
+  # Re-confirmation of the user's own `email` by an authenticated caller. Unlike
+  # validate_and_confirm_email!, it isn't gated by password_login: an account
+  # created through SSO must still be able to re-confirm.
+  def validate_and_reconfirm_email!(user, code)
+    validate_user!(user)
+    validate_email!(user.email)
+    validate_and_confirm!(user.email_confirmation, code)
+    ClaimTokenService.complete(user)
+
+    success_result(user)
+  rescue ValidationError => e
+    failure_result(e)
+  end
+
   def validate_and_confirm_new_email!(user, code)
     validate_user!(user)
     validate_email!(user.new_email)
@@ -63,9 +77,25 @@ class UserConfirmationService
     # Ensure that password login (i.e. 'normal', non-SSO login)
     # feature is enabled for phone confirmation
     validate_password_login_enabled!
+    validate_sms_enabled!
     validate_user!(user)
     validate_phone!(user.phone)
     validate_and_confirm!(user.phone_confirmation, code)
+    ClaimTokenService.complete(user)
+
+    success_result(user)
+  rescue ValidationError => e
+    failure_result(e)
+  end
+
+  # The phone mirror of validate_and_reconfirm_email!. The sms feature is still
+  # required, since it carries the settings the code is sent through.
+  def validate_and_reconfirm_phone!(user, code)
+    validate_sms_enabled!
+    validate_user!(user)
+    validate_phone!(user.phone)
+    validate_and_confirm!(user.phone_confirmation, code)
+    ClaimTokenService.complete(user)
 
     success_result(user)
   rescue ValidationError => e
@@ -99,6 +129,12 @@ class UserConfirmationService
     return if app_configuration.feature_activated?('password_login')
 
     raise ValidationError.new(:base, :password_login_feature_disabled)
+  end
+
+  def validate_sms_enabled!
+    return if app_configuration.feature_activated?('sms')
+
+    raise ValidationError.new(:base, :sms_feature_disabled)
   end
 
   def validate_user!(user)

@@ -115,7 +115,10 @@ export const updatePermission = ({
     });
   };
 
-  return withAdminJwt(makeRequest, adminJwt);
+  // The action has no permission of its own until it is overridden.
+  return cy
+    .apiOverridePhasePermission({ phaseId, action: permission })
+    .then(() => withAdminJwt(makeRequest, adminJwt));
 };
 
 export const addPermissionsCustomField = ({
@@ -144,8 +147,38 @@ export const addPermissionsCustomField = ({
     });
   };
 
-  return withAdminJwt(makeRequest, adminJwt);
+  // Nothing can be persisted against a permission that is still inherited.
+  return cy
+    .apiOverridePhasePermission({ phaseId, action: permission })
+    .then(() => withAdminJwt(makeRequest, adminJwt));
 };
+
+// A permission only accepts questions of its own once it has been switched to
+// asking custom ones.
+export const askOnlyDemographicQuestion = ({
+  adminJwt,
+  phaseId,
+  customFieldId,
+  permission = 'posting_idea',
+}: {
+  adminJwt?: string;
+  phaseId: string;
+  customFieldId: string;
+  permission?: IPhasePermissionAction;
+}) =>
+  updatePermission({
+    adminJwt,
+    phaseId,
+    permission,
+    custom_fields_behavior: 'custom',
+  }).then(() =>
+    addPermissionsCustomField({
+      adminJwt,
+      phaseId,
+      customFieldId,
+      permission,
+    })
+  );
 
 export const confirmUserCustomFieldHasValue = ({
   key,

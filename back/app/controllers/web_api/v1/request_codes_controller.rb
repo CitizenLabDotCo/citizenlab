@@ -1,36 +1,29 @@
 # frozen_string_literal: true
 
 class WebApi::V1::RequestCodesController < ApplicationController
-  skip_before_action :authenticate_user, only: %i[request_code_email]
+  skip_before_action :authenticate_user, only: %i[request_code_email request_code_phone]
 
-  # Sends a confirmation code for the user's `email`, to be confirmed in place
-  # (EmailConfirmation). Two callers:
-  #   - unauthenticated: email account creation flow and passwordless login. The
-  #     email is looked up from the submitted `email` param.
-  #   - authenticated: re-confirmation of an already-confirmed email whose
-  #     confirmed_email_expiry window has elapsed. Here the caller is the account
-  #     owner, so `email` may be omitted and we use current_user.
-  #
-  # `only_if_first_time` makes the send idempotent (used for the auto-send when the
-  # flow lands the user on the confirmation step): the code is only (re)sent when
-  # none is currently outstanding — i.e. the first send of this confirmation cycle
-  # — so reopening the modal or recomputing requirements neither spams the user nor
-  # invalidates a code they already hold.
+  # Sends a confirmation code for the `email` of an account that isn't signed in
+  # yet: email account creation and passwordless login. The account is looked up
+  # from the submitted `email`, and RequestCodePolicy rejects authenticated
+  # callers - a signed-in user re-confirming their own email uses
+  # request_reconfirm_code_email instead.
   def request_code_email
-    email = request_code_email_params[:email]
-
-    # Resolve the account the code will be sent to. Only three situations are
-    # legitimate, and RequestCodePolicy enforces them:
-    #   1. email param + no authenticated user -> look the account up by email.
-    #   2. no email param + authenticated user -> use current_user.
-    #   3. email param + authenticated user    -> the email must resolve to the
-    #      authenticated user's own account; requesting a code for someone else's
-    #      email is rejected (401).
-    user = email.present? ? User.find_by_cimail(email) : current_user
+    user = User.find_by_cimail(request_code_email_params[:email])
     authorize user, policy_class: RequestCodePolicy
 
-    unless only_if_first_time? && user.email_confirmation&.code_outstanding?
-      RequestEmailConfirmationCodeJob.perform_now user
+    RequestEmailConfirmationCodeJob.perform_now user
+
+    head :ok
+  end
+
+  # Sends a re-confirmation code for the signed-in user's own `email`, after its
+  # confirmed_email_expiry window has elapsed.
+  def request_reconfirm_code_email
+    authorize current_user, policy_class: RequestCodePolicy
+
+    unless only_if_first_time? && current_user.email_confirmation&.code_outstanding?
+      RequestEmailConfirmationCodeJob.perform_now current_user
     end
 
     head :ok
@@ -65,22 +58,58 @@ class WebApi::V1::RequestCodesController < ApplicationController
     head :ok
   end
 
-  # This endpoint is only used for people reconfirming their
-  # phone number.
+  # The phone mirror of request_code_email: phone signup / passwordless login,
+  # with the account looked up from the submitted `phone`.
   def request_code_phone
+    user = User.find_by_phone_number(request_code_phone_params[:phone])
+    authorize user, policy_class: RequestCodePolicy
+
+    confirmation = user.phone_confirmation
+    return render_resend_too_soon(confirmation) if resend_too_soon?(confirmation)
+
+    EmailCampaigns::ConsentService.new.record!(
+      user,
+      EmailCampaigns::Campaigns::PhoneConfirmation,
+      consented: true,
+      always_log: true
+    )
+    RequestPhoneConfirmationCodeJob.issue_code_and_deliver_later(user)
+
+    render_retry_after(user.phone_confirmation)
+  end
+
+  # The phone mirror of request_reconfirm_code_email, for a number that has aged
+  # past confirmed_phone_number_expiry.
+  def request_reconfirm_code_phone
     authorize current_user, policy_class: RequestCodePolicy
 
-    unless only_if_first_time? && current_user.phone_confirmation&.code_outstanding?
-      RequestPhoneConfirmationCodeJob.perform_now(current_user)
+    confirmation = current_user.phone_confirmation
+
+    # The idempotent auto-send keeps its own answer: it asked for a code only if
+    # there wasn't one already, which is exactly what happened, so it gets the
+    # remaining cooldown rather than a rejection.
+    if only_if_first_time? && confirmation&.code_outstanding?
+      render_retry_after(confirmation)
+      return
     end
 
-    head :ok
+    return render_resend_too_soon(confirmation) if resend_too_soon?(confirmation)
+
+    EmailCampaigns::ConsentService.new.record!(
+      current_user,
+      EmailCampaigns::Campaigns::PhoneConfirmation,
+      consented: true,
+      always_log: true
+    )
+    RequestPhoneConfirmationCodeJob.issue_code_and_deliver_later(current_user)
+
+    render_retry_after(current_user.phone_confirmation)
   end
 
   # This endpoint is used when a logged in user wants to add or change their
   # (verified) phone number. The submitted number is held as a pending
   # new_phone and an SMS confirmation code is sent to it. Re-confirming the
-  # number already on the account is request_code_phone's job, not this one.
+  # number already on the account is request_reconfirm_code_phone's job, not this one.
   def request_code_new_phone
     authorize current_user, policy_class: RequestCodePolicy
 
@@ -108,33 +137,61 @@ class WebApi::V1::RequestCodesController < ApplicationController
       return
     end
 
-    consent = EmailCampaigns::ConsentService.new.record!(
+    # Only a code for the number the user is already confirming is a resend; a
+    # different number is a new request (the "change your number" path).
+    confirmation = current_user.new_phone_confirmation
+    resending = normalized == current_user.new_phone
+    return render_resend_too_soon(confirmation) if resending && resend_too_soon?(confirmation)
+
+    EmailCampaigns::ConsentService.new.record!(
       current_user,
       EmailCampaigns::Campaigns::NewPhoneConfirmation,
-      consented: true
+      consented: true,
+      always_log: true
     )
-    EmailCampaigns::SideFxConsentService.new.after_grant(consent, current_user)
+    RequestNewPhoneConfirmationCodeJob.issue_code_and_deliver_later(current_user, new_phone: normalized)
 
-    RequestNewPhoneConfirmationCodeJob.perform_now(current_user, new_phone: normalized)
-
-    head :ok
+    render_retry_after(current_user.new_phone_confirmation)
   end
 
   private
 
+  # Whether the previous code's cooldown still has to run out.
+  def resend_too_soon?(confirmation)
+    confirmation&.seconds_until_resend_allowed.to_i.positive?
+  end
+
+  # Rejects the request, reporting how much of the cooldown is left so the caller
+  # can count it down.
+  def render_resend_too_soon(confirmation)
+    render json: { errors: { base: [{ error: 'too_soon', retry_after: confirmation.seconds_until_resend_allowed }] } },
+      status: :too_many_requests
+  end
+
+  # Read back from the record rather than assuming a full interval, so a request
+  # that deliberately sent nothing still reports the real time left.
+  def render_retry_after(confirmation)
+    render json: raw_json({ retry_after: confirmation&.seconds_until_resend_allowed.to_i })
+  end
+
   # Whether the caller asked for the idempotent "send only if no code is
-  # outstanding" behaviour (the first send of the confirmation cycle). Present on
-  # both request_code_email and request_code_phone.
+  # outstanding" behaviour. Used by the auto-send that fires when the flow lands
+  # the user on a re-confirmation step: reopening the modal or recomputing
+  # requirements then neither spams the user nor invalidates a code they hold.
   def only_if_first_time?
     ActiveModel::Type::Boolean.new.cast(params.fetch(:request_code, {})[:only_if_first_time])
   end
 
   def request_code_email_params
-    params.require(:request_code).permit(:email, :only_if_first_time)
+    params.require(:request_code).permit(:email)
   end
 
   def request_code_new_email_params
     params.fetch(:request_code, {}).permit(:new_email)
+  end
+
+  def request_code_phone_params
+    params.fetch(:request_code, {}).permit(:phone)
   end
 
   def request_code_new_phone_params

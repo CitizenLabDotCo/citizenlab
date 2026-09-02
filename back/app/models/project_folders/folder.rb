@@ -30,6 +30,7 @@ module ProjectFolders
     self.table_name = 'project_folders_folders'
     include Files::FileAttachable
     include PgSearch::Model
+    include PlainTextMultiloc
 
     slug from: proc { |folder| folder.title_multiloc&.values&.find(&:present?) }
 
@@ -53,6 +54,7 @@ module ProjectFolders
 
     before_validation :sanitize_description_multiloc, if: :description_multiloc
     before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
+    plain_text_multiloc :title_multiloc, :header_bg_alt_text_multiloc, prepend: true
     before_validation :strip_title
     before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
 

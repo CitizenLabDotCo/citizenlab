@@ -3,32 +3,35 @@
 require 'rails_helper'
 
 RSpec.describe Permission do
-  describe 'Default factory' do
-    it 'is valid' do
-      expect(build(:permission)).to be_valid
+  it_behaves_like 'a sanitized html_multiloc', factory: :permission, attribute: :access_denied_explanation_multiloc
+
+  describe 'access denied explanation sanitizer' do
+    def explanation_of(html)
+      create(:permission, access_denied_explanation_multiloc: { 'en' => html })
+        .access_denied_explanation_multiloc['en']
+    end
+
+    it 'strips a javascript: scheme from a link' do
+      expect(explanation_of('<a href="javascript:alert(1)">Click</a>')).to eq '<a rel="nofollow">Click</a>'
+    end
+
+    it 'keeps a real link and the decoration tags' do
+      expect(explanation_of('<p>Ask your <b>council</b>: <a href="https://example.com">here</a></p>')).to eq(
+        '<p>Ask your <b>council</b>: <a href="https://example.com" rel="nofollow">here</a></p>'
+      )
+    end
+
+    # Lists are kept because production holds them (nine rows, every cluster surveyed), left over
+    # from the Quill editor this field had until June 2026. Nothing else survives the allowlist.
+    it 'keeps a list, and strips the rest of what a rich text editor once offered' do
+      expect(explanation_of('<h2>Title</h2><ul><li>A bullet</li></ul><img src="https://example.com/a.png">'))
+        .to eq 'Title<ul><li>A bullet</li></ul>'
     end
   end
 
-  describe 'global_custom_fields' do
-    context 'everyone' do
-      it 'is true when created' do
-        permission = create(:permission, :by_everyone)
-        expect(permission.global_custom_fields).to be_truthy
-      end
-    end
-
-    context 'everyone_confirmed_email' do
-      it 'is true when created' do
-        permission = create(:permission, :by_everyone_confirmed_email)
-        expect(permission.global_custom_fields).to be_truthy
-      end
-    end
-
-    context 'user' do
-      it 'is true when created' do
-        permission = create(:permission, :by_users, global_custom_fields: nil)
-        expect(permission.global_custom_fields).to be_truthy
-      end
+  describe 'Default factory' do
+    it 'is valid' do
+      expect(build(:permission)).to be_valid
     end
   end
 
@@ -128,195 +131,6 @@ RSpec.describe Permission do
     end
   end
 
-  describe 'require_confirmed_email' do
-    # A permission must always keep at least one authentication method, so these
-    # cases require verification while toggling the confirmed-email requirement.
-    before do
-      AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
-      AppConfiguration.instance.save!
-    end
-
-    it 'can be required when password login signup is enabled' do
-      permission = create(:permission, :by_users, require_verification: true, require_confirmed_email: false)
-      permission.update!(require_confirmed_email: true)
-      expect(permission.reload.require_confirmed_email).to be true
-    end
-
-    it 'cannot be required when the password_login feature is not activated' do
-      permission = create(:permission, :by_users, require_verification: true, require_confirmed_email: false)
-      SettingsService.new.deactivate_feature!('password_login')
-      expect { permission.update!(require_confirmed_email: true) }.to raise_error(ActiveRecord::RecordInvalid)
-    end
-
-    it 'cannot be required when password login signup is disabled' do
-      permission = create(:permission, :by_users, require_verification: true, require_confirmed_email: false)
-      config = AppConfiguration.instance
-      config.settings['password_login']['enable_signup'] = false
-      config.save!
-      expect { permission.update!(require_confirmed_email: true) }.to raise_error(ActiveRecord::RecordInvalid)
-    end
-  end
-
-  describe 'authentication method requirement' do
-    it 'is invalid when neither a confirmed email nor verification is required' do
-      permission = build(:permission, :by_users, require_confirmed_email: false, require_verification: false)
-      expect(permission).not_to be_valid
-      expect(permission.errors.details[:base]).to include(error: :authentication_method_required)
-    end
-
-    it 'is valid when only a confirmed email is required' do
-      permission = build(:permission, :by_users, require_confirmed_email: true, require_verification: false)
-      expect(permission).to be_valid
-    end
-
-    context 'when a verification method is enabled' do
-      before do
-        AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
-        AppConfiguration.instance.save!
-      end
-
-      it 'is valid when only verification is required' do
-        permission = build(:permission, :by_users, require_confirmed_email: false, require_verification: true)
-        expect(permission).to be_valid
-      end
-
-      it 'is valid when both are required' do
-        permission = build(:permission, :by_users, require_confirmed_email: true, require_verification: true)
-        expect(permission).to be_valid
-      end
-    end
-
-    context 'when the sms feature is enabled' do
-      before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
-
-      it 'is valid when only a confirmed phone number is required' do
-        permission = build(:permission, :by_users, require_confirmed_email: false, require_verification: false, require_confirmed_phone_number: true)
-        expect(permission).to be_valid
-      end
-    end
-
-    it 'does not apply when participation does not require an account' do
-      expect(build(:permission, :by_everyone, require_confirmed_email: false, require_verification: false)).to be_valid
-      expect(build(:permission, :by_admins_moderators, require_confirmed_email: false, require_verification: false)).to be_valid
-    end
-  end
-
-  describe 'require_confirmed_phone_number' do
-    context 'when the sms feature is enabled' do
-      before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
-
-      it 'can be required' do
-        permission = create(:permission, :by_users, require_confirmed_phone_number: true)
-        expect(permission.require_confirmed_phone_number).to be true
-      end
-    end
-
-    context 'when the sms feature is not enabled' do
-      it 'cannot be required' do
-        expect { create(:permission, :by_users, require_confirmed_phone_number: true) }.to raise_error(ActiveRecord::RecordInvalid)
-      end
-    end
-  end
-
-  describe 'confirmed_email_expiry' do
-    it 'can be set when a confirmed email is required' do
-      permission = create(:permission, :by_users, require_confirmed_email: true, confirmed_email_expiry: 1)
-      expect(permission.confirmed_email_expiry).to eq(1)
-    end
-
-    context 'when the sms feature is enabled' do
-      before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
-
-      it 'does not cause a problem if set and require_confirmed_email is later disabled' do
-        # Keep a confirmed phone number as the fallback authentication method so the
-        # permission stays valid once the confirmed-email requirement is removed.
-        permission = create(:permission, :by_users, require_confirmed_email: true, require_confirmed_phone_number: true, confirmed_email_expiry: 1)
-        permission.update!(require_confirmed_email: false)
-        expect(permission.confirmed_email_expiry).to eq(1)
-      end
-
-      it 'cannot be set when a confirmed email is not required' do
-        expect { create(:permission, :by_users, require_confirmed_email: false, require_confirmed_phone_number: true, confirmed_email_expiry: 1) }.to raise_error(ActiveRecord::RecordInvalid)
-      end
-    end
-  end
-
-  describe 'confirmed_phone_number_expiry' do
-    context 'when the sms feature is enabled' do
-      before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
-
-      it 'can be set when a confirmed phone number is required' do
-        permission = create(:permission, :by_users, require_confirmed_phone_number: true, confirmed_phone_number_expiry: 1)
-        expect(permission.confirmed_phone_number_expiry).to eq(1)
-      end
-
-      it 'does not cause a problem if set and require_confirmed_phone_number is later disabled' do
-        permission = create(:permission, :by_users, require_confirmed_phone_number: true, confirmed_phone_number_expiry: 1)
-        permission.update!(require_confirmed_phone_number: false)
-        expect(permission.confirmed_phone_number_expiry).to eq(1)
-      end
-    end
-
-    it 'cannot be set when a confirmed phone number is not required' do
-      expect { create(:permission, :by_users, confirmed_phone_number_expiry: 1) }.to raise_error(ActiveRecord::RecordInvalid)
-    end
-  end
-
-  describe 'require_verification' do
-    context 'when a verification method is enabled' do
-      before do
-        AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
-        AppConfiguration.instance.save!
-      end
-
-      it 'can be required' do
-        permission = create(:permission, :by_users, require_verification: true)
-        expect(permission.require_verification).to be true
-      end
-    end
-
-    context 'when no verification method is enabled' do
-      it 'cannot be required' do
-        expect { create(:permission, :by_users, require_verification: true) }.to raise_error(ActiveRecord::RecordInvalid)
-      end
-    end
-  end
-
-  describe 'verification' do
-    context 'when a verification method is enabled' do
-      before do
-        AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
-        AppConfiguration.instance.save!
-      end
-
-      describe 'global_custom_fields' do
-        it 'is true when created for a permission that requires verification' do
-          permission = create(:permission, :by_verified, global_custom_fields: nil)
-          expect(permission.global_custom_fields).to be_truthy
-        end
-      end
-
-      describe 'verification_expiry' do
-        it 'can be set when verification is required' do
-          permission = create(:permission, :by_verified, verification_expiry: 1.day)
-          expect(permission.verification_expiry).to eq(1.day)
-        end
-
-        it 'cannot be set when verification is not required' do
-          expect { create(:permission, :by_users, verification_expiry: 1.day) }.to raise_error(ActiveRecord::RecordInvalid)
-        end
-
-        it 'does not cause a problem if set and require_verification is later disabled' do
-          permission = create(:permission, :by_verified, verification_expiry: 1.day)
-          # First need to enable email so that the validation does not fail when require_verification is disabled
-          permission.update!(require_confirmed_email: true)
-          permission.update!(require_verification: false)
-          expect(permission.verification_expiry).to eq(1.day)
-        end
-      end
-    end
-  end
-
   describe '#verification_enabled?' do
     it 'is true when require_verification is true' do
       expect(build(:permission, :by_users, require_verification: true).verification_enabled?).to be true
@@ -324,14 +138,6 @@ RSpec.describe Permission do
 
     it 'is false when verification is not required and there is no verification group' do
       expect(build(:permission, :by_users).verification_enabled?).to be false
-    end
-  end
-
-  describe '#allow_global_custom_fields?' do
-    it 'is true only for a users permission' do
-      expect(build(:permission, :by_users).allow_global_custom_fields?).to be true
-      expect(build(:permission, :by_everyone).allow_global_custom_fields?).to be false
-      expect(build(:permission, :by_admins_moderators).allow_global_custom_fields?).to be false
     end
   end
 

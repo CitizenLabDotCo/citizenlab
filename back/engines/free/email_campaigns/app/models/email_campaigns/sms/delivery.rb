@@ -4,15 +4,16 @@
 #
 # Table name: sms_deliveries
 #
-#  id            :uuid             not null, primary key
-#  user_id       :uuid
-#  campaign_id   :uuid
-#  body          :text             not null
-#  message_sid   :string
-#  status        :string           not null
-#  error_message :string
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
+#  id             :uuid             not null, primary key
+#  user_id        :uuid
+#  campaign_id    :uuid
+#  body           :text             not null
+#  message_sid    :string
+#  status         :string           not null
+#  error_message  :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  segments_count :integer
 #
 # Indexes
 #
@@ -40,9 +41,20 @@ module EmailCampaigns
       # callback may move it (e.g. a stray `failed` must not overwrite `delivered`).
       TERMINAL_STATUSES = %w[delivered undelivered failed errored].freeze
 
+      # Statuses that spend the tenant's purchased allowance. `pending` counts too: the
+      # message is already on its way to the provider, so the next send must see those
+      # segments as gone. Only `errored` is free — it never reached the provider and never will.
+      BILLABLE_STATUSES = (STATUSES - %w[errored]).freeze
+
+      scope :billable, -> { where(status: BILLABLE_STATUSES) }
+
       belongs_to :user, optional: true
       # The campaign that triggered this SMS, when sent as part of one.
       belongs_to :campaign, class_name: 'EmailCampaigns::Campaign', optional: true
+
+      def campaign_use_case
+        campaign&.class&.sms_use_case
+      end
 
       # Per-status counts (+ total) for a campaign's SMS deliveries.
       def self.status_counts(campaign_id)
@@ -50,8 +62,13 @@ module EmailCampaigns
         STATUSES.index_with { |status| counts[status] || 0 }.symbolize_keys.merge(total: counts.values.sum)
       end
 
+      before_validation :compute_segments_count, on: :create
+
       validates :body, presence: true
       validates :status, inclusion: { in: STATUSES }
+      validates :segments_count,
+        numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: SegmentedMessage::MAX_SEGMENTS },
+        allow_nil: true
 
       # Moves the delivery to `new_status` only when that represents forward
       # progress, so out-of-order provider callbacks (Twilio warns these can arrive
@@ -65,6 +82,12 @@ module EmailCampaigns
 
         update!(status: new_status)
         true
+      end
+
+      private
+
+      def compute_segments_count
+        self.segments_count = SegmentedMessage.new(body).segments_count if body.present?
       end
     end
   end

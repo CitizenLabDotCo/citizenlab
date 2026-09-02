@@ -25,6 +25,7 @@
 #
 class Confirmation < ApplicationRecord
   CODE_DURATION = 24.hours
+  RESEND_INTERVAL = 1.minute
 
   belongs_to :user
 
@@ -38,9 +39,20 @@ class Confirmation < ApplicationRecord
     code_sent_at + CODE_DURATION
   end
 
+  # How long the caller still has to wait before a new code may be requested, in
+  # seconds (0 when it may be requested right away). An SMS costs money and takes
+  # a moment to arrive, so a code asked for seconds after the previous one is
+  # nearly always impatience rather than a lost message.
+  def seconds_until_resend_allowed
+    return 0 if code_sent_at.nil?
+
+    [(code_sent_at + RESEND_INTERVAL - Time.zone.now).ceil, 0].max
+  end
+
   # Whether a code has been sent and not yet consumed. Used by the idempotent
-  # "send a code only if it's the first time this cycle" path (request_code_email /
-  # request_code_phone with only_if_first_time): a successful confirmation runs
+  # "send a code only if it's the first time this cycle" path
+  # (request_reconfirm_code_email / request_reconfirm_code_phone with
+  # only_if_first_time): a successful confirmation runs
   # clear_code! (code -> nil), so an outstanding code means one was already sent for
   # the current cycle and re-sending would both spam the user and invalidate the
   # code they hold. Mirrors the code_sent_at.nil? guard in
@@ -66,7 +78,7 @@ class Confirmation < ApplicationRecord
   end
 
   def self.generate_code
-    Rails.env.development? ? '1234' : format('%04d', rand(10_000))
+    Rails.env.development? ? '123456' : format('%06d', rand(1_000_000))
   end
 
   protected

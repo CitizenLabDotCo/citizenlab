@@ -2,8 +2,9 @@ import React from 'react';
 
 import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
 
+import useInheritPhasePermission from 'api/phase_permissions/useInheritPhasePermission';
+import useOverridePhasePermission from 'api/phase_permissions/useOverridePhasePermission';
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
-import useResetPhasePermission from 'api/phase_permissions/useResetPhasePermission';
 import useUpdatePhasePermission from 'api/phase_permissions/useUpdatePhasePermission';
 import usePhase from 'api/phases/usePhase';
 
@@ -24,7 +25,8 @@ const ActionForms = ({ phaseId }: Props) => {
   const { data: phase } = usePhase(phaseId);
   const { data: permissions } = usePhasePermissions({ phaseId });
   const { mutateAsync: updatePhasePermission } = useUpdatePhasePermission();
-  const { mutate: resetPhasePermission } = useResetPhasePermission();
+  const { mutateAsync: overridePhasePermission } = useOverridePhasePermission();
+  const { mutateAsync: inheritPhasePermission } = useInheritPhasePermission();
 
   if (!permissions || !phase) return null;
 
@@ -49,7 +51,9 @@ const ActionForms = ({ phaseId }: Props) => {
 
         return (
           <ActionForm
-            key={permission.id}
+            // Not the id: an inherited permission has no record of its own, so
+            // its id is blank. The action is unique within the phase.
+            key={permissionAction}
             phaseId={phaseId}
             permissionData={permission}
             defaultOpen={defaultOpen}
@@ -79,13 +83,18 @@ const ActionForms = ({ phaseId }: Props) => {
                 permission: permissionChanges,
               });
             }}
-            onReset={() =>
-              resetPhasePermission({
-                permissionId: permission.id,
+            onOverride={async () => {
+              await overridePhasePermission({
                 phaseId,
-                action: permission.attributes.action,
-              })
-            }
+                action: permissionAction,
+              });
+            }}
+            onRevertToDefaults={async () => {
+              await inheritPhasePermission({
+                phaseId,
+                action: permissionAction,
+              });
+            }}
           />
         );
       })}

@@ -11,6 +11,9 @@ RSpec.describe InputTopic do
 
   it { is_expected.to validate_presence_of(:title_multiloc) }
 
+  it_behaves_like 'a plain text multiloc', factory: :input_topic
+  it_behaves_like 'a decoration-only description', factory: :input_topic
+
   describe 'order_ideas_count' do
     # topic 0: ideas 1, 3, 6 (3)
     # topic 1: / (0)

@@ -17,12 +17,11 @@ module CustomIdMethods::Acm
     end
 
     def profile_to_user_attrs(auth)
-      # Validate the RRN against the API and store the result in a custom field
-      # Custom field should be a select field with options: [valid, lives_outside, under_minimum_age, no_match, service_error]
+      # Check the RRN (WijkBudget API or MAGDA, see AcmVerification#rrn_check) and store the
+      # result in a select custom field with options: [valid, lives_outside, under_minimum_age, no_match, service_error]
       custom_field_values = {}
-      if (rrn_result_key = config[:rrn_result_custom_field_key])
-        rrn_result = rnn_verification_result(auth.extra.raw_info.rrn)
-        custom_field_values[rrn_result_key] = rrn_result if rrn_result
+      if (rrn_result_key = config[:rrn_result_custom_field_key]).present? && (check = rrn_check(auth))
+        custom_field_values[rrn_result_key] = check['result']
       end
 
       {

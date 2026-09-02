@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 import { UserComponent, useEditor } from '@craftjs/core';
@@ -12,7 +12,8 @@ import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/use
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import sharedMessages from 'utils/messages';
-import { useParams } from 'utils/router';
+import { useLocation, useParams } from 'utils/router';
+import { scrollToElement } from 'utils/scroll';
 
 import EditModeHeightCap from '../EditModeHeightCap';
 import messages from '../messages';
@@ -25,6 +26,8 @@ import useWidgetProjectId from '../useWidgetProjectId';
 
 import EmptyEvents from './EmptyEvents';
 import EventsSection from './EventsSection';
+
+export const EVENTS_WIDGET_ANCHOR_ID = 'e2e-project-page-events';
 
 const PUBLICATION_STATUSES = ['published', 'draft', 'archived'] as const;
 const PAGE_SIZE = 15;
@@ -50,13 +53,31 @@ const EventsWidget: UserComponent<Props> = ({ sectionBackground }) => {
     pageSize: PAGE_SIZE,
   };
   const { data: upcomingEvents } = useEvents(
-    { ...eventsParams, currentAndFutureOnly: true, pageNumber: upcomingPage },
+    {
+      ...eventsParams,
+      currentAndFutureOnly: true,
+      sort: '-start_at',
+      pageNumber: upcomingPage,
+    },
     { enabled: !!projectId }
   );
   const { data: pastEvents } = useEvents(
     { ...eventsParams, pastOnly: true, pageNumber: pastPage },
     { enabled: !!projectId }
   );
+  const { hash } = useLocation();
+
+  const anchorRendered =
+    !!projectId &&
+    !!upcomingEvents &&
+    !!pastEvents &&
+    (upcomingEvents.data.length > 0 || pastEvents.data.length > 0);
+
+  useEffect(() => {
+    if (hash === EVENTS_WIDGET_ANCHOR_ID && anchorRendered) {
+      scrollToElement({ id: EVENTS_WIDGET_ANCHOR_ID });
+    }
+  }, [hash, anchorRendered]);
 
   if (!projectId || !upcomingEvents || !pastEvents) {
     return null;
@@ -74,7 +95,7 @@ const EventsWidget: UserComponent<Props> = ({ sectionBackground }) => {
         py="40px"
       >
         <Box
-          id="e2e-project-page-events"
+          id={EVENTS_WIDGET_ANCHOR_ID}
           mx="auto"
           maxWidth={`${maxPageWidth}px`}
           px={padding}
@@ -84,12 +105,14 @@ const EventsWidget: UserComponent<Props> = ({ sectionBackground }) => {
           </Title>
           <Box display="flex" flexDirection="column" gap="48px">
             <EventsSection
+              id="e2e-project-page-upcoming-events"
               title={sharedMessages.upcomingAndOngoingEvents}
               events={upcomingEvents}
               currentPage={upcomingPage}
               onPageChange={setUpcomingPage}
             />
             <EventsSection
+              id="e2e-project-page-past-events"
               title={sharedMessages.pastEvents}
               events={pastEvents}
               currentPage={pastPage}

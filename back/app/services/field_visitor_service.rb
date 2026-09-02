@@ -117,10 +117,6 @@ class FieldVisitorService
     default(field)
   end
 
-  def visit_section(field)
-    default(field)
-  end
-
   def default(field)
     # Do nothing
   end

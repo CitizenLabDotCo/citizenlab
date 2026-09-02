@@ -17,5 +17,21 @@ module InputTypeStrategy
     def supports_single_selection?
       true
     end
+
+    def answers_eq(answers, value)
+      answers.where("(value #>> '{}')::integer = ?", value)
+    end
+
+    def answers_one_of(answers, values)
+      answers.where("(value #>> '{}')::integer IN (?)", values)
+    end
+
+    def answers_gteq(answers, value)
+      answers.where("(value #>> '{}')::integer >= ?", value)
+    end
+
+    def answers_lteq(answers, value)
+      answers.where("(value #>> '{}')::integer <= ?", value)
+    end
   end
 end

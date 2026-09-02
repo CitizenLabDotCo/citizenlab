@@ -333,11 +333,11 @@ export default defineMessages({
   },
   projectPhaseStarted: {
     id: 'app.containers.NotificationMenu.projectPhaseStarted',
-    defaultMessage: '{projectTitle} entered a new phase',
+    defaultMessage: '{phaseTitle} has started in {projectTitle}',
   },
   projectPhaseUpcoming: {
     id: 'app.containers.NotificationMenu.projectPhaseUpcoming',
-    defaultMessage: '{projectTitle} will enter a new phase on {phaseStartAt}',
+    defaultMessage: '{phaseTitle} starts on {phaseStartAt} in {projectTitle}',
   },
   projectPublished: {
     id: 'app.containers.NotificationMenu.projectPublished',

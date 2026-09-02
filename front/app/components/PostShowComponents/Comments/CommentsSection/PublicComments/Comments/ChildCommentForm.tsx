@@ -84,7 +84,7 @@ const ChildCommentForm = ({
 
   const {
     mutate: addCommentToIdeaComment,
-    isLoading: isAddCommentToIdeaLoading,
+    isPending: isAddCommentToIdeaLoading,
   } = useAddCommentToIdea();
 
   const [inputValue, setInputValue] = useState('');

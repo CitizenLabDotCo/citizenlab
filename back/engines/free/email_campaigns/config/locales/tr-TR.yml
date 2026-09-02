@@ -77,6 +77,7 @@ tr-TR:
         users_who_follow_the_proposal: Teklifi takip eden kullanıcılar
       trigger:
         7_days_after_invite_is_sent: Davetiye gönderildikten 7 gün sonra
+        7_days_before_phase_starts: Bir aşama başlamadan 7 gün önce
         7_days_before_the_project_changes_phase: Proje değişiklik aşamasından 7 gün önce
         comment_is_deleted: Yorum silindi
         comment_is_flagged_as_spam: Yorum spam olarak işaretlendi
@@ -95,6 +96,7 @@ tr-TR:
         new_input_awaits_screening: Yeni girdiler taranmayı bekliyor
         new_input_is_published: Yeni girdi yayınlandı
         new_proposal_is_posted: Yeni teklif yayınlandı
+        phase_starts: Bir aşama başlıyor
         project_phase_changes: Proje aşaması değişiklikleri
         project_published: Proje yayınlandı
         project_review_request: Moderatör proje incelemesi talep etti
@@ -197,8 +199,8 @@ tr-TR:
       project_folder_moderation_rights_received: Klasör yöneticisi hakları alındı
       project_manager_rights_received: Proje yöneticisi yetkileri alındı
       project_moderation_rights_received: Proje moderasyon hakları alındı
-      project_phase_started: Yeni proje aşaması
-      project_phase_upcoming: Yaklaşan yeni proje aşaması
+      project_phase_started: Aşama başladı
+      project_phase_upcoming: Aşama yakında başlıyor
       project_published: Proje yayınlandı
       project_review_request: Proje inceleme talebi
       project_review_state_change: Proje onaylandı
@@ -359,6 +361,7 @@ tr-TR:
         story: Hikayene git
         suggestion: Önerinize gidin
         topic: Konunuza gidin
+      phase_dates: '%{startDate} tarihinden %{endDate} tarihine kadar'
     idea_marked_as_spam:
       cta_button: İnceleme
       preheader: Bu spam bildirimi ile ilgili işlem yapın
@@ -539,6 +542,7 @@ tr-TR:
       yesterday: Dün
     new_phone_confirmation:
       sms_body: 'Doğrulama kodunuz: %{code}.'
+      sms_body2: '%{organization_name}: Onay kodunuz: %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Bu girişe gidin
       event_description: "%{feedback_author_name} '%{input_title}' adresinde bir güncelleme yaptı."
@@ -553,6 +557,7 @@ tr-TR:
       title: Yeni bir şifre seçin
     phone_confirmation:
       sms_body: 'Onay kodunuz: %{code}.'
+      sms_body2: '%{organization_name}: Onay kodunuz: %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
@@ -571,8 +576,9 @@ tr-TR:
       input_status_description: Bir girdi için durum örneği (örneğin kabul edildi, reddedildi, uygulandı...)
       input_status_title: Örnek Durum
       official_feedback_body: Örnek resmi geri bildirim
+      phase_description: Bu, e-posta içeriklerini önizlemek için kullanılan örnek bir aşama içeriğidir. Gerçek bir içerik değildir.
       phase_title: Örnek aşama
-      project_description_preview: Bu, e-postaların içeriğini önizlemek için kullanılan bazı örnek faz içerikleridir. Bu gerçek içerik değildir.
+      project_description_preview: Bu, e-postaların içeriğini önizlemek için kullanılan örnek bir proje içeriğidir. Gerçek bir içerik değildir.
       project_title: Örnek proje
       proposal_title: Örnek Teklif
       space_title: Örnek alan
@@ -607,21 +613,21 @@ tr-TR:
       title_what_can_you_do_moderator: Proje yöneticisi olarak neler yapabilirsiniz?
       x_ideas: '%{numberOfIdeas} fikir'
     project_phase_started:
-      cta_button: Bu yeni aşamayı keşfedin
-      event_description: Bu proje, %{organizationName} platformunda yeni bir aşamaya geçti. Daha fazla bilgi için aşağıdaki bağlantıyı tıklayın.
+      cta_button: Yenilikleri görün
+      event_description: "Artık %{organizationName} platformunda '%{phaseTitle}' aşamasına katılabilirsiniz."
       new_phase: "Bu proje '%{phaseTitle}' aşamasına geçti"
-      preheader: '%{projectName} adlı proje için yeni bir aşama başladı'
-      subject: '%{projectName} yeni bir aşamaya girdi'
+      preheader: "Artık '%{phaseTitle}' aşamasına katılabilirsiniz"
+      subject: "'%{projectName}' projesinde '%{phaseTitle}' başladı"
       subtitle: "Hakkında '%{projectName}'"
-      title: "'%{projectName}' projesi için yeni bir dönem başladı"
+      title: "'%{projectName}' projesinde yeni bir gelişme var"
     project_phase_upcoming:
-      cta_button: Bu yeni aşamayı ayarlayın
-      event_description: "'%{projectName}' adlı proje yakında yeni bir aşamaya geçiyor. Bu aşama için her şeyin hazır olduğundan emin olun: Uygun bir açıklama var mı? Seçilen fikirler bu aşamaya aktarıldı mı? Özel bir e-posta kampanyası ile vatandaşlarınızı bu aşamanın özellikleri hakkında bilgilendirmek istiyor musunuz?"
+      cta_button: Kurulumu gözden geçirin
+      event_description: "'%{projectName}' projesindeki '%{phaseTitle}' aşaması %{startDate} tarihinde başlıyor. Her şeyin hazır olduğundan emin olmak için bir dakikanızı ayırın: Açıklama tamam mı? Tarihler doğru mu? Topluluğunuzu özel bir e-posta kampanyasıyla bilgilendirmek ister misiniz?"
       new_phase: "Proje '%{phaseTitle}' aşamasına geçecek"
-      preheader: '%{projectName} için yakında yeni bir aşama başlıyor'
-      subject: '%{projectName} için yeni aşama ile ilgili her şeyi ayarlayın'
+      preheader: '%{startDate} tarihinden önce her şeyin hazır olduğundan emin olun'
+      subject: "%{projectName}: '%{phaseTitle}' %{startDate} tarihinde başlıyor"
       subtitle: "Hakkında '%{projectName}'"
-      title: '%{firstName}bir proje yakında yeni bir aşamaya girecek'
+      title: "%{firstName}, '%{phaseTitle}' %{startDate} tarihinde başlıyor"
     project_published:
       cta_button: Bu projeye gidin
       event_description: '%{organizationName} katılım platformu aşağıdaki projeyi yayınladı:'

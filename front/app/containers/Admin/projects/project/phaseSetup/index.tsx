@@ -12,7 +12,7 @@ import useAddPhase from 'api/phases/useAddPhase';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
-import { getPhaseLandingTab } from 'api/phases/utils';
+import { getPhaseLandingTab, isTimelinePhase } from 'api/phases/utils';
 
 import { useSyncFiles } from 'hooks/files/useSyncFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -78,7 +78,7 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
   const { data: phases } = usePhases(projectId);
   const { mutate: addPhase } = useAddPhase();
   const { mutate: updatePhase } = useUpdatePhase();
-  const { mutate: addFile, isLoading: isAddingFile } = useAddFile();
+  const { mutate: addFile, isPending: isAddingFile } = useAddFile();
   const syncPhaseFiles = useSyncFiles();
   const [errors, setErrors] = useState<CLErrors | null>(null);
   const [processing, setProcessing] = useState<boolean>(false);
@@ -99,9 +99,7 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
 
   // Detached phases skip the timeline rules (dates may overlap and stay
   // open-ended) and keep their fixed participation method.
-  const standalone =
-    (standaloneSurvey && !phase) ||
-    phase?.data.attributes.placement_type === 'standalone';
+  const standalone = phase ? !isTimelinePhase(phase.data) : standaloneSurvey;
 
   const standaloneSeededRef = useRef(false);
 
@@ -542,7 +540,7 @@ const AdminPhaseEditWrapper = () => {
   const { projectId, phaseId } = useParams({ strict: false });
   const { placement } = useSearch({ strict: false });
   const { data: phase } = usePhase(phaseId);
-  const extraSurveysEnabled = useFeatureFlag({
+  const spotlightSurveysEnabled = useFeatureFlag({
     name: 'parallel_participation',
   });
 
@@ -555,7 +553,7 @@ const AdminPhaseEditWrapper = () => {
     <AdminPhaseEdit
       projectId={projectId}
       phase={phaseId ? phase : undefined}
-      standaloneSurvey={extraSurveysEnabled && placement === 'standalone'}
+      standaloneSurvey={spotlightSurveysEnabled && placement === 'standalone'}
     />
   );
 };

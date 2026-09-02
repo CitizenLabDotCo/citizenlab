@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
+import { NO_PLACEHOLDER_DATA } from 'utils/cl-react-query/queryClient';
 
 import analysesKeys from './keys';
 import {
@@ -48,7 +49,7 @@ const useAnalysisHeatmapCells = (params: IAnalysysHeatmapCellsParams) => {
     queryKey: analysesKeys.list(params),
     queryFn: () => fetchAnalysisHeatmapCells(params),
     refetchInterval: 1000 * 60, // 1 minute
-    keepPreviousData: false,
+    placeholderData: NO_PLACEHOLDER_DATA,
   });
 };
 

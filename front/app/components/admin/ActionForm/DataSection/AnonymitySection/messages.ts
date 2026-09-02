@@ -29,8 +29,20 @@ export default defineMessages({
     defaultMessage: 'Anonymity in results',
   },
   anonymityExplanation: {
-    id: 'app.components.admin.ActionForm.DataSection.AnonymitySection.anonymityExplanation',
+    id: 'app.components.admin.ActionForm.DataSection.AnonymitySection.anonymityExplanation2',
     defaultMessage:
-      'Independent of what you ask above: you can collect a name yet still keep the submission unlinked from the participant’s profile.',
+      'Independent of what you ask below: you can collect a name yet still keep the submission unlinked from the participant’s profile.',
+  },
+  linkedToProfile: {
+    id: 'app.components.admin.ActionForm.linkedToProfile',
+    defaultMessage: 'Linked to profile',
+  },
+  piiExcludedFromResults: {
+    id: 'app.components.admin.ActionForm.piiExcludedFromResults',
+    defaultMessage: 'PII excluded from results',
+  },
+  fullyAnonymous: {
+    id: 'app.components.admin.ActionForm.fullyAnonymous',
+    defaultMessage: 'Fully anonymous',
   },
 });

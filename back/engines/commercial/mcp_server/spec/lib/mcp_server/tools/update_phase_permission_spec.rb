@@ -36,6 +36,7 @@ describe McpServer::Tools::UpdatePhasePermission do
 
       expect(response.structured_content).to match(
         action: permission.action,
+        inherited: false,
         permitted_by: 'admins_moderators',
         group_ids: [],
         demographic_questions: [],
@@ -80,51 +81,43 @@ describe McpServer::Tools::UpdatePhasePermission do
       expect(permission.reload.access_denied_explanation_multiloc).to be_blank
     end
 
-    context 'with a verification method enabled' do
-      before do
-        config = AppConfiguration.instance
-        config.settings['id_config'] = {
-          allowed: true,
-          enabled: true,
-          id_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }]
-        }
-        config.save!
-      end
+    it 'sets the verification expiry' do
+      response = run(params.merge(
+        permitted_by: 'users',
+        require_verification: true,
+        verification_expiry: 7
+      ))
 
-      it 'sets the verification expiry' do
-        response = run(params.merge(
-          permitted_by: 'users',
-          require_verification: true,
-          verification_expiry: 7
-        ))
-
-        expect(response).not_to be_error
-        expect(permission.reload.require_verification).to be(true)
-        expect(permission.verification_expiry).to eq(7)
-      end
+      expect(response).not_to be_error
+      expect(permission.reload.require_verification).to be(true)
+      expect(permission.verification_expiry).to eq(7)
     end
 
     it 'returns structured validation errors for an invalid update' do
+      commenting_permission = phase.permissions.find_by!(action: 'commenting_idea')
       response = nil
 
-      expect { response = run(params.merge(permitted_by: 'users', verification_expiry: 7)) }
-        .not_to change { permission.reload.permitted_by }
+      expect { response = run(params.merge(action: 'commenting_idea', permitted_by: 'everyone')) }
+        .not_to change { commenting_permission.reload.permitted_by }
 
       expect(response).to be_error
 
       error = response.structured_content[:errors].sole
       expect(error).to include(
-        attribute: 'verification_expiry',
-        error: :verification_expiry_cannot_be_set,
+        attribute: 'permitted_by',
+        error: :everyone_not_allowed_for_action,
         message: be_present
       )
     end
 
     describe 'demographic_questions' do
+      # Admins and managers are never asked demographic questions, which would
+      # mask the behavior these examples are about.
+      let(:params) { super().merge(permitted_by: 'users') }
       let!(:existing_field) { create(:custom_field) }
 
       before do
-        permission.update!(global_custom_fields: false)
+        permission.update!(custom_fields_behavior: 'custom')
         permission.permissions_custom_fields.create!(custom_field: existing_field, required: true)
       end
 
@@ -132,7 +125,7 @@ describe McpServer::Tools::UpdatePhasePermission do
         response = run(params)
 
         expect(response).not_to be_error
-        expect(permission.reload.global_custom_fields).to be(false)
+        expect(permission.reload.custom_fields_behavior).to eq('custom')
         expect(permission.permissions_custom_fields.pluck(:custom_field_id)).to eq([existing_field.id])
       end
 
@@ -140,7 +133,7 @@ describe McpServer::Tools::UpdatePhasePermission do
         response = run(params.merge(demographic_questions: nil))
 
         expect(response).not_to be_error
-        expect(permission.reload.global_custom_fields).to be(true)
+        expect(permission.reload.custom_fields_behavior).to eq('global')
         expect(permission.permissions_custom_fields).to be_empty
       end
 
@@ -148,7 +141,7 @@ describe McpServer::Tools::UpdatePhasePermission do
         response = run(params.merge(demographic_questions: []))
 
         expect(response).not_to be_error
-        expect(permission.reload.global_custom_fields).to be(false)
+        expect(permission.reload.custom_fields_behavior).to eq('disabled')
         expect(permission.permissions_custom_fields).to be_empty
       end
 
@@ -179,6 +172,63 @@ describe McpServer::Tools::UpdatePhasePermission do
 
         expect(response).to be_error
         expect(permission.permissions_custom_fields.pluck(:custom_field_id)).to eq([existing_field.id])
+      end
+    end
+
+    # A phase action has no permission row of its own until it is overridden;
+    # until then it follows the global 'visiting' permission.
+    # See Permissions::PermissionInheritanceService.
+    context 'when the phase has not customised the action' do
+      let(:phase) { create(:phase, project: project) }
+      let(:params) do
+        {
+          phase_id: phase.id,
+          action: 'commenting_idea',
+          permitted_by: 'admins_moderators'
+        }
+      end
+
+      let!(:visiting_permission) do
+        create(
+          :global_permission,
+          action: 'visiting',
+          permitted_by: 'users',
+          require_name: false,
+          require_password: false
+        )
+      end
+
+      before { Permissions::PermissionInheritanceService.clear_source_permission_cache }
+
+      it 'overrides the action and applies the update' do
+        response = nil
+        expect { response = run(params) }
+          .to change { phase.permissions.pluck(:action) }.from([]).to(%w[commenting_idea])
+
+        expect(response).not_to be_error
+        expect(phase.permissions.sole.permitted_by).to eq 'admins_moderators'
+      end
+
+      it 'starts from the settings the action was inheriting' do
+        response = run(params.merge(permitted_by: 'users'))
+
+        expect(response).not_to be_error
+        expect(response.structured_content).to include(
+          inherited: false, # It is customised for this phase from now on
+          permitted_by: 'users',
+          require_name: false,
+          require_password: false
+        )
+      end
+
+      it 'leaves no override behind when the update is rejected' do
+        demographic_questions = [{ custom_field_id: SecureRandom.uuid }]
+
+        response = nil
+        expect { response = run(params.merge(permitted_by: 'users', demographic_questions:)) }
+          .not_to change { phase.permissions.count }.from(0)
+
+        expect(response).to be_error
       end
     end
 

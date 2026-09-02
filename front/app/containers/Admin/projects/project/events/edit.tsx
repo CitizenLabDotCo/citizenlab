@@ -76,12 +76,12 @@ const AdminProjectEventEdit = () => {
   const locale = useLocale();
 
   const { mutate: addEvent } = useAddEvent();
-  const { data: event, isInitialLoading } = useEvent(eventId);
+  const { data: event, isLoading } = useEvent(eventId);
   const { mutate: updateEvent } = useUpdateEvent();
 
   // event file attachments
   const syncEventFiles = useSyncFiles();
-  const { mutate: addFile, isLoading: isAddingFile } = useAddFile();
+  const { mutate: addFile, isPending: isAddingFile } = useAddFile();
   const { data: remoteEventFileAttachments } = useFileAttachments({
     attachable_id: event?.data.id,
     attachable_type: 'Event',
@@ -615,7 +615,7 @@ const AdminProjectEventEdit = () => {
     setCroppedImgBase64(imgBase64);
   };
 
-  if (event !== undefined && isInitialLoading) {
+  if (isLoading) {
     return <Spinner />;
   }
 

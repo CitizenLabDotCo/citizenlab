@@ -2,83 +2,84 @@ import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IPhaseData } from 'api/phases/types';
 import usePhasesByIds from 'api/phases/usePhasesByIds';
-import { getCurrentPhase } from 'api/phases/utils';
+import { isTimelinePhase } from 'api/phases/utils';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 
 import useLocalize from 'hooks/useLocalize';
 
 import { participationMethodMessage } from 'containers/Admin/projects/project/phase/PhaseHeader';
 
+import PhaseTimeLeft from 'components/PhaseTimeLeft';
 import { GanttItem } from 'components/UI/GanttChart/types';
 
 import { useIntl } from 'utils/cl-intl';
-import {
-  getPeriodRemainingUntil,
-  parseBackendDateString,
-} from 'utils/dateUtils';
+import { parseBackendDateString } from 'utils/dateUtils';
+import { isPhaseActive } from 'utils/projectUtils';
 
 import messages from './messages';
 
-type CurrentPhaseInfoProps = {
-  currentPhase: IPhaseData | undefined;
-  tenantTimezone: string | undefined;
-};
-
-const CurrentPhaseInfo = ({
-  currentPhase,
-  tenantTimezone,
-}: CurrentPhaseInfoProps) => {
+const usePhaseLabelValues = () => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  if (!currentPhase || !tenantTimezone) {
-    return null;
-  }
 
-  const phaseName = localize(currentPhase.attributes.title_multiloc);
-  const participationMethod = formatMessage(
-    participationMethodMessage[currentPhase.attributes.participation_method]
-  );
+  return (phase: IPhaseData) => ({
+    phaseName: localize(phase.attributes.title_multiloc),
+    participationMethod: formatMessage(
+      participationMethodMessage[phase.attributes.participation_method]
+    ),
+  });
+};
 
-  let daysLeftNode: React.ReactNode = null;
+const ActivePhasesInfo = ({ activePhases }: { activePhases: IPhaseData[] }) => {
+  const { formatMessage } = useIntl();
+  const phaseLabelValues = usePhaseLabelValues();
 
-  if (currentPhase.attributes.end_at) {
-    const daysLeft = getPeriodRemainingUntil(
-      currentPhase.attributes.end_at,
-      tenantTimezone,
-      'days'
-    );
-    if (daysLeft > 0) {
-      daysLeftNode = (
+  if (activePhases.length === 0) {
+    return (
+      <Box mt="8px">
         <Text fontWeight="bold" color="white" my="0px" variant="bodyS">
-          {formatMessage(messages.daysLeft, { days: daysLeft })}
+          {formatMessage(messages.noActivePhase)}
         </Text>
-      );
-    }
+      </Box>
+    );
   }
 
   return (
     <Box mt="8px">
       <Text fontWeight="bold" color="white" my="0px" variant="bodyS">
-        {formatMessage(messages.currentPhase, {
-          phaseName,
-          participationMethod,
-        })}
+        {formatMessage(messages.activePhasesTitle)}
       </Text>
-      {daysLeftNode}
+      {activePhases.map((phase) => (
+        <Box key={phase.id} ml="8px">
+          <Text fontWeight="bold" color="white" my="0px" variant="bodyS">
+            {formatMessage(
+              messages.activePhaseListItem,
+              phaseLabelValues(phase)
+            )}
+          </Text>
+          {phase.attributes.end_at && (
+            <Text color="white" my="0px" variant="bodyS">
+              <PhaseTimeLeft currentPhaseEndsAt={phase.attributes.end_at} />
+            </Text>
+          )}
+        </Box>
+      ))}
     </Box>
   );
 };
 
 const PhaseList = ({ phases }: { phases: IPhaseData[] }) => {
   const { formatMessage } = useIntl();
-  const localize = useLocalize();
+  const phaseLabelValues = usePhaseLabelValues();
 
   if (phases.length === 0) {
     return <Box mt="8px">{formatMessage(messages.noPhases)}</Box>;
   }
+
+  const timelinePhases = phases.filter(isTimelinePhase);
+  const spotlightPhases = phases.filter((phase) => !isTimelinePhase(phase));
 
   return (
     <Box mt="8px">
@@ -87,15 +88,17 @@ const PhaseList = ({ phases }: { phases: IPhaseData[] }) => {
           {formatMessage(messages.phaseListTitle)}
         </Text>
       </Box>
-      {phases.map((phase, idx) => (
+      {timelinePhases.map((phase, idx) => (
         <Box key={phase.id} ml="8px">
           {formatMessage(messages.phaseListItem, {
             number: idx + 1,
-            phaseName: localize(phase.attributes.title_multiloc),
-            participationMethod: formatMessage(
-              participationMethodMessage[phase.attributes.participation_method]
-            ),
+            ...phaseLabelValues(phase),
           })}
+        </Box>
+      ))}
+      {spotlightPhases.map((phase) => (
+        <Box key={phase.id} ml="8px">
+          {formatMessage(messages.extraPhaseListItem, phaseLabelValues(phase))}
         </Box>
       ))}
     </Box>
@@ -109,19 +112,17 @@ interface ProjectTooltipProps {
 
 const ProjectTooltip = ({ ganttItem, projectsById }: ProjectTooltipProps) => {
   const { formatMessage } = useIntl();
-  const { data: appConfiguration } = useAppConfiguration();
   const project = projectsById[ganttItem.id];
 
   const phaseIds = project.relationships.phases?.data.map((phase) => phase.id);
   const phasesMiniData = usePhasesByIds(phaseIds || []);
+  const isLoadingPhases = phasesMiniData.some((query) => query.isLoading);
   const phases = phasesMiniData
     .map((query) => query.data?.data)
     .filter((data): data is IPhaseData => data !== undefined);
 
-  const currentPhase = getCurrentPhase(phases);
+  const activePhases = phases.filter(isPhaseActive);
   const folderName = ganttItem.folder || undefined;
-  const tenantTimezone =
-    appConfiguration?.data.attributes.settings.core.timezone;
 
   const startDate = ganttItem.start
     ? parseBackendDateString(ganttItem.start).toLocaleDateString()
@@ -144,21 +145,17 @@ const ProjectTooltip = ({ ganttItem, projectsById }: ProjectTooltipProps) => {
         </Box>
       )}
       {endDate ? (
-        <Box mt="4px">
-          {formatMessage(messages.startDate, { date: endDate }).replace(
-            'Start date',
-            'End date'
-          )}
-        </Box>
+        <Box mt="4px">{formatMessage(messages.endDate, { date: endDate })}</Box>
       ) : (
         <Box mt="4px">{formatMessage(messages.noEndDate)}</Box>
       )}
 
-      <CurrentPhaseInfo
-        currentPhase={currentPhase}
-        tenantTimezone={tenantTimezone}
-      />
-      <PhaseList phases={phases} />
+      {!isLoadingPhases && (
+        <>
+          <ActivePhasesInfo activePhases={activePhases} />
+          <PhaseList phases={phases} />
+        </>
+      )}
     </Box>
   );
 };

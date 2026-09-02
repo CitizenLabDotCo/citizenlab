@@ -77,6 +77,7 @@ it-IT:
         users_who_follow_the_proposal: Gli utenti che seguono la proposta
       trigger:
         7_days_after_invite_is_sent: "7 giorni dopo l'invio dell'invito"
+        7_days_before_phase_starts: 7 giorni prima dell'inizio di una fase
         7_days_before_the_project_changes_phase: 7 giorni prima che il progetto cambi fase
         comment_is_deleted: Il commento viene eliminato
         comment_is_flagged_as_spam: Il commento viene segnalato come spam
@@ -95,6 +96,7 @@ it-IT:
         new_input_awaits_screening: Un nuovo contributo in attesa di essere vagliato
         new_input_is_published: Viene pubblicato un nuovo contributo
         new_proposal_is_posted: La nuova proposta è pubblicata
+        phase_starts: Inizio di una fase
         project_phase_changes: Cambiamenti di fase del progetto
         project_published: Progetto pubblicato
         project_review_request: Il moderatore ha richiesto una revisione del progetto
@@ -197,8 +199,8 @@ it-IT:
       project_folder_moderation_rights_received: Diritti di gestione delle cartelle ricevuti
       project_manager_rights_received: Permessi di project manager ricevuti
       project_moderation_rights_received: Diritti di moderazione del progetto ricevuti
-      project_phase_started: Nuova fase del progetto
-      project_phase_upcoming: Nuova fase del progetto in arrivo
+      project_phase_started: Fase iniziata
+      project_phase_upcoming: La fase inizierà a breve
       project_published: Progetto pubblicato
       project_review_request: Richiesta di revisione del progetto
       project_review_state_change: Progetto approvato
@@ -359,6 +361,7 @@ it-IT:
         story: Vai alla tua storia
         suggestion: Vai al tuo suggerimento
         topic: Vai al tuo argomento
+      phase_dates: Dal %{startDate} al %{endDate}
     idea_marked_as_spam:
       cta_button: Esamina
       preheader: Agisci su questa segnalazione di spam
@@ -539,6 +542,7 @@ it-IT:
       yesterday: Ieri
     new_phone_confirmation:
       sms_body: Il tuo codice di conferma è %{code}.
+      sms_body2: '%{organization_name}: Il tuo codice di conferma è %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Guarda il contributo
       event_description: "%{feedback_author_name} ha pubblicato un aggiornamento su '%{input_title}'."
@@ -553,6 +557,7 @@ it-IT:
       title: Scegli una nuova password
     phone_confirmation:
       sms_body: Il tuo codice di conferma è %{code}.
+      sms_body2: '%{organization_name}: Il tuo codice di conferma è %{code}.'
     preview_data:
       author_display_name: Laura Bianchi
       author_first_name: Laura
@@ -571,8 +576,9 @@ it-IT:
       input_status_description: Un esempio di status per un contributo (ad esempio accettato, rifiutato, implementato...)
       input_status_title: Esempio di status
       official_feedback_body: Esempio di aggiornamento ufficiale
+      phase_description: Questo è un esempio di contenuto della fase utilizzato per l'anteprima del contenuto delle e-mail. Non si tratta di contenuto reale.
       phase_title: Esempio di fase
-      project_description_preview: Questo è un esempio di contenuto di una fase utilizzato per l'anteprima del contenuto delle e-mail. Non si tratta di contenuti reali.
+      project_description_preview: Questo è un esempio di contenuto del progetto utilizzato per l'anteprima delle email. Non si tratta di contenuto reale.
       project_title: Esempio di progetto
       proposal_title: Esempio di proposta
       space_title: Esempio di spazio
@@ -607,21 +613,21 @@ it-IT:
       title_what_can_you_do_moderator: Cosa puoi fare come project manager?
       x_ideas: '%{numberOfIdeas} idee'
     project_phase_started:
-      cta_button: Scopri la nuova fase
-      event_description: Questo progetto è entrato in una nuova fase sulla piattaforma di %{organizationName}. Clicca sul link qui sotto per saperne di più!
+      cta_button: Scopri le novità
+      event_description: "Ora puoi partecipare a '%{phaseTitle}' sulla piattaforma di %{organizationName}."
       new_phase: "Questo progetto è entrato nella fase '%{phaseTitle}'"
-      preheader: Una nuova fase è stata avviata per %{projectName}
-      subject: '%{projectName} è entrato in una nuova fase'
+      preheader: "Ora puoi partecipare a '%{phaseTitle}'"
+      subject: "'%{phaseTitle}' è iniziata in %{projectName}"
       subtitle: "Informazioni su '%{projectName}'"
-      title: "È iniziata una nuova fase per il progetto '%{projectName}'"
+      title: "C'è qualcosa di nuovo in '%{projectName}'"
     project_phase_upcoming:
-      cta_button: Imposta la nuova fase
-      event_description: "Il progetto '%{projectName}' entrerà presto in una nuova fase. Assicurati che tutto sia pronto per questa fase: C'è una descrizione adeguata? Le idee selezionate sono state trasferite alla nuova fase? Vuoi informare i tuoi cittadini sui dettagli di questa fase attraverso una campagna email personalizzata?"
+      cta_button: Rivedi la configurazione
+      event_description: "'%{phaseTitle}' nel progetto '%{projectName}' inizia il %{startDate}. Prenditi un momento per verificare che tutto sia pronto: la descrizione è completa? Le date sono corrette? Vuoi informare la tua comunità attraverso una campagna email personalizzata?"
       new_phase: "Il progetto entrerà nella fase '%{phaseTitle}'"
-      preheader: Una nuova fase inizierà presto per %{projectName}
-      subject: Prepara tutto per la nuova fase di %{projectName}
+      preheader: Assicurati che tutto sia pronto prima del %{startDate}
+      subject: "%{projectName}: '%{phaseTitle}' inizia il %{startDate}"
       subtitle: "Informazioni su '%{projectName}'"
-      title: '%{firstName}, un progetto entrerà presto in una nuova fase'
+      title: "%{firstName}, '%{phaseTitle}' inizia il %{startDate}"
     project_published:
       cta_button: Vai a questo progetto
       event_description: 'La piattaforma partecipativa di %{organizationName} ha appena pubblicato il seguente progetto:'

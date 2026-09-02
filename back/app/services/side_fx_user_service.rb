@@ -27,6 +27,7 @@ class SideFxUserService
         RequestNewEmailConfirmationCodeJob.perform_now(user, new_email: user.new_email)
       end
     end
+    RequestPhoneConfirmationCodeJob.issue_code_and_deliver_later(user) if should_send_confirmation_sms?(user)
     AdditionalSeatsIncrementer.increment_if_necessary(user, current_user) if user.roles_previously_changed?
     ClaimTokenService.claim(user, claim_tokens)
   end
@@ -160,9 +161,16 @@ class SideFxUserService
       (user.email.present? || user.new_email.present?) # some SSO methods don't provide email
   end
 
+  def should_send_confirmation_sms?(user)
+    !user.invite_pending? && user.phone.present? && user.phone_confirmed_at.nil? &&
+      user.phone_confirmation&.code_sent_at.nil?
+  end
+
   def create_user_activity_payload(user)
     if user.sso?
       { flow: 'sso', method: user.identities.first&.provider }
+    elsif user.phone.present? && user.email.blank?
+      { flow: 'phone_confirmation' }
     elsif user.password.nil?
       { flow: 'email_confirmation' }
     else

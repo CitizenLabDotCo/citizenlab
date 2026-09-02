@@ -81,6 +81,24 @@ resource 'Ideas' do
             expect(response_data.dig(:attributes, :claim_token_expires_at)).to eq(idea.claim_token.expires_at.iso8601(3))
           end
         end
+
+        describe 'when saving a draft' do
+          let(:publication_status) { 'draft' }
+          let(:project) do
+            create(:single_phase_ideation_project, phase_attrs: { with_permissions: true }).tap do |project|
+              project
+                .phases.sole
+                .permissions.find_by(action: 'posting_idea')
+                .update!(permitted_by: 'users')
+            end
+          end
+
+          example '[error] Create a draft idea where posting requires sign-in', document: false do
+            expect { do_request }.not_to change(Idea, :count)
+            assert_status 401
+            expect(json_response_body).to include_response_error(:base, 'user_not_signed_in')
+          end
+        end
       end
 
       context 'when resident' do
@@ -270,20 +288,6 @@ resource 'Ideas' do
           end
 
           describe do
-            let(:project) do
-              create(:project_with_current_phase, current_phase_attrs: {
-                participation_method: 'information'
-              })
-            end
-            let(:phase_id) { TimelineService.new.current_phase(project).id }
-
-            example_request '[error] Creating an idea in a project with an active information phase' do
-              assert_status 401
-              expect(json_response_body.dig(:errors, :base).first[:error]).to eq('posting_not_supported')
-            end
-          end
-
-          describe do
             let(:phase_id) { 'unknown-phase-id' }
 
             example_request '[error] Create an idea in an unknown phase' do
@@ -336,6 +340,22 @@ resource 'Ideas' do
             expect(blocked_error[:blocked_words].pluck(:attribute).uniq).to include('title_multiloc', 'body_multiloc')
           end
         end
+
+        describe 'stored XSS regression: draft bodies are sanitized on write' do
+          let(:publication_status) { 'draft' }
+          let(:body_multiloc) do
+            { 'en' => '<p>poc</p><img onload="alert(document.cookie)" data-cl2-text-image-text-reference="0a808204-4e40-4fe4-9733-0fd88581e2ae">' }
+          end
+
+          example_request 'strips event-handler attributes from the stored draft body' do
+            assert_status 201
+            idea = Idea.find(response_data[:id])
+            expect(idea.publication_status).to eq 'draft'
+            expect(idea.body_multiloc['en']).to eq(
+              '<p>poc</p><img data-cl2-text-image-text-reference="0a808204-4e40-4fe4-9733-0fd88581e2ae">'
+            )
+          end
+        end
       end
 
       context 'when admin' do
@@ -352,14 +372,6 @@ resource 'Ideas' do
           example_request 'Creating an idea in a specific (inactive) phase' do
             assert_status 201
             expect(response_data.dig(:relationships, :phases, :data).pluck(:id)).to eq [phase_id]
-          end
-
-          context 'when saving a draft' do
-            let(:publication_status) { 'draft' }
-
-            example_request 'Creating a draft in a specific (inactive) phase' do
-              assert_status 201
-            end
           end
         end
 
@@ -585,7 +597,7 @@ resource 'Ideas' do
             phase = project.phases.first
 
             permission = phase.permissions.find_by(action: 'posting_idea')
-            permission.update!(global_custom_fields: false, user_data_collection: 'all_data')
+            permission.update!(custom_fields_behavior: 'custom', user_data_collection: 'all_data')
             permission.permissions_custom_fields = [
               create(:permissions_custom_field, custom_field: create(:custom_field, key: 'age'))
             ]
@@ -781,8 +793,50 @@ resource 'Ideas' do
           end
         end
 
+        context 'Creating a community monitor survey response when only demographics are collected' do
+          let(:resident) { create(:user, custom_field_values: { age: 30 }) }
+
+          before do
+            permission = phase.permissions.find_by(action: 'posting_idea')
+            permission.update!(
+              permitted_by: 'users',
+              custom_fields_behavior: 'custom',
+              user_data_collection: 'demographics_only'
+            )
+            permission.permissions_custom_fields = [
+              create(:permissions_custom_field, custom_field: create(:custom_field, key: 'age'))
+            ]
+          end
+
+          example_request 'Posting a survey sets anonymous to true but still stores the demographic fields' do
+            assert_status 201
+            expect(response_data.dig(:attributes, :anonymous)).to be true
+            expect(response_data.dig(:attributes, :author_name)).to be_nil
+            expect(response_data.dig(:relationships, :author, :data)).to be_nil
+
+            idea = Idea.find(response_data[:id])
+            expect(idea.author_id).to be_nil
+            expect(idea.custom_field_values['u_age']).to eq 30
+          end
+
+          context 'when user_data_collection is anonymous' do
+            before do
+              phase.permissions.find_by(action: 'posting_idea').update!(user_data_collection: 'anonymous')
+            end
+
+            example_request 'Posting a survey does not store the demographic fields' do
+              assert_status 201
+              idea = Idea.find(response_data[:id])
+              expect(idea.author_id).to be_nil
+              expect(idea.custom_field_values.keys).not_to include 'u_age'
+            end
+          end
+        end
+
         context 'Creating a community monitor survey response when posting anonymously is not enabled' do
-          before { phase.update! allow_anonymous_participation: false }
+          before do
+            phase.permissions.find_by(action: 'posting_idea').update!(user_data_collection: 'all_data')
+          end
 
           example_request 'Posting a survey does not set the survey to anonymous' do
             assert_status 201
@@ -900,19 +954,6 @@ resource 'Ideas' do
             example_request '[error] Create a draft survey response in a closed standalone phase' do
               assert_status 401
               expect(json_response_body).to eq({ errors: { base: [{ error: 'inactive_phase' }] } })
-            end
-          end
-        end
-
-        context 'when the project is archived' do
-          before { project.admin_publication.update!(publication_status: 'archived') }
-
-          context 'when saving a draft' do
-            let(:publication_status) { 'draft' }
-
-            example_request '[error] Create a draft survey response in an archived project' do
-              assert_status 401
-              expect(json_response_body).to eq({ errors: { base: [{ error: 'project_inactive' }] } })
             end
           end
         end

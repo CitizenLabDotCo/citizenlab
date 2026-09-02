@@ -48,7 +48,7 @@ const SettingsCustomizeTab = () => {
   const { data: appConfiguration } = useAppConfiguration();
   const {
     mutate: updateAppConfiguration,
-    isLoading,
+    isPending,
     error,
     isSuccess,
   } = useUpdateAppConfiguration();
@@ -108,7 +108,7 @@ const SettingsCustomizeTab = () => {
         />
 
         <SubmitWrapper
-          loading={isLoading}
+          loading={isPending}
           status={getSubmitState({
             errors: error,
             saved: isSuccess,

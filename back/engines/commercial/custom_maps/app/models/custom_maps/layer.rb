@@ -26,6 +26,7 @@
 #
 module CustomMaps
   class Layer < ApplicationRecord
+    include PlainTextMultiloc
     self.table_name = 'maps_layers'
 
     attribute :geojson_file
@@ -43,6 +44,7 @@ module CustomMaps
       format: { with: %r{\Ahttps://.*\z}, message: 'should start with https://' },
       allow_nil: true
 
+    plain_text_multiloc :title_multiloc
     before_validation :set_default_enabled, :decode_geojson_file, :set_geojson_empty_hash_for_nil
 
     def set_default_enabled

@@ -1,6 +1,6 @@
 import { IRelationship, Multiloc } from 'typings';
 
-import { UserDataCollection } from 'api/phase_permissions/types';
+import { UserDataCollection } from 'api/permissions/types';
 import { PhaseActionDescriptors } from 'api/projects/types';
 
 import { Keys } from 'utils/cl-react-query/types';
@@ -36,7 +36,7 @@ export interface IPhaseData {
 
 export interface IPhaseAttributes {
   voting_filtering_enabled: boolean;
-  placement_type?: PhasePlacementType;
+  placement_type: PhasePlacementType;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
   draft_description_multiloc: Multiloc;

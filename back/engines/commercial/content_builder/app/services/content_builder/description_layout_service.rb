@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module ContentBuilder
-  # Puts project/folder descriptions on the Content Builder, used by the SideFx
-  # creation/copy hook, the after-template hook, and the one-time WYSIWYG migration.
+  # Puts project/folder descriptions, and custom pages, on the Content Builder. Used by the
+  # SideFx creation/copy hooks, the after-template hook, and the one-time WYSIWYG migration.
   #
   # Widget choice per description:
   # - blank         -> default layout (empty canvas for projects, title + published
@@ -40,6 +40,13 @@ module ContentBuilder
     def provision_all_descriptions!
       Project.find_each { |project| safely_ensure_on_content_builder(project) }
       ProjectFolders::Folder.find_each { |folder| safely_ensure_on_content_builder(folder) }
+    end
+
+    # Ensures every global custom page in the current tenant has a layout, deriving one for any
+    # page that arrived without it. A failure on one page is reported and skipped rather than
+    # aborting tenant creation.
+    def provision_all_custom_pages!
+      StaticPage.find_each { |static_page| safely_ensure_custom_page(static_page) }
     end
 
     def ensure_on_content_builder!(buildable)
@@ -105,6 +112,21 @@ module ContentBuilder
       })
     end
 
+    # A StaticPage has no description_multiloc, so its graph comes from CustomPageLayoutService
+    # rather than the description helpers above. Only global custom pages take part: policy and
+    # project-scoped pages keep their own editors and no builder route reaches them.
+    def ensure_custom_page!(static_page)
+      return unless static_page.custom? && !static_page.project_scoped?
+      return if ContentBuilder::Layout.exists?(content_buildable: static_page, code: CustomPageLayoutService::CODE)
+
+      ContentBuilder::Layout.create!(
+        content_buildable: static_page,
+        code: CustomPageLayoutService::CODE,
+        enabled: true,
+        craftjs_json: CustomPageLayoutService.new.craftjs_json_for(static_page)
+      )
+    end
+
     # NB: create via Layout (not buildable.content_builder_layouts) so the
     # polymorphic content_buildable_type is set — the has_many lacks `as:`, and a
     # NULL type is invisible to the controller's find_by!.
@@ -128,6 +150,12 @@ module ContentBuilder
         enabled: true,
         craftjs_json: ProjectPageLayoutService.new.craftjs_json_for(project)
       )
+    end
+
+    def safely_ensure_custom_page(static_page)
+      ensure_custom_page!(static_page)
+    rescue StandardError => e
+      ErrorReporter.report(e, extra: { static_page_id: static_page.id })
     end
 
     def safely_ensure_on_content_builder(buildable)

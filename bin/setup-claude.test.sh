@@ -230,12 +230,15 @@ SKILL
     echo '# sample plan body' > plans/sample-plan.md
     echo '# plans folder README — should be excluded from the symlink mirror' > plans/README.md
     echo '{}' > settings.json
+    echo '{ "mcpServers": {} }' > .mcp.json
     echo '# private overlay README' > .claude-readme.md
     echo 'private repo own README' > README.md
     # `-c user.email=...` sets the value just for this one git command,
     # avoiding any reliance on whatever `git config` is set to on the
-    # dev's machine or the CI runner.
-    git -c user.email=t@t -c user.name=t add -A
+    # dev's machine or the CI runner. `-c core.excludesFile=/dev/null`
+    # likewise neutralizes a global gitignore, which may exclude fixture
+    # filenames like `settings.json` and silently drop them.
+    git -c user.email=t@t -c user.name=t -c core.excludesFile=/dev/null add -A
     git -c user.email=t@t -c user.name=t commit -q -m fixtures
     # Push to whatever default branch the local clone landed on (could be
     # `main` or `master` depending on the user's git defaults).
@@ -318,6 +321,10 @@ assert_symlink_to "$PUBLIC/.claude/settings.json"              "../../private/se
 # is renamed to `README.md` when it lands under .claude/. This makes the
 # README appear at the conventional location in the public repo's view.
 assert_symlink_to "$PUBLIC/.claude/README.md"                  "../../private/.claude-readme.md"                 ".claude/README.md → private .claude-readme.md"
+
+# Special case: `.mcp.json` lands at the repo root
+assert_symlink_to "$PUBLIC/.mcp.json"                          "../private/.mcp.json"                            "root .mcp.json → private"
+assert_path_missing "$PUBLIC/.claude/.mcp.json"                ".mcp.json not mirrored under .claude/ (lives at repo root instead)"
 
 
 # ----------------------------------------------------------------------------
@@ -406,7 +413,7 @@ mkdir -p "$PUBLIC/front"   # restore the area dir we removed in an earlier test
   cd "$FIXTURE_WT"
   git pull -q --ff-only
   rm front/CLAUDE.md
-  git -c user.email=t@t -c user.name=t add -A
+  git -c user.email=t@t -c user.name=t -c core.excludesFile=/dev/null add -A
   git -c user.email=t@t -c user.name=t commit -q -m "drop front"
   git push -q
 )
@@ -492,7 +499,7 @@ behind_sha="$(git -C "$PRIVATE" rev-parse main)"
 (
   cd "$FIXTURE_WT"
   echo "advance" > main-advance.txt
-  git -c user.email=t@t -c user.name=t add -A
+  git -c user.email=t@t -c user.name=t -c core.excludesFile=/dev/null add -A
   git -c user.email=t@t -c user.name=t commit -q -m "advance main"
   git push -q origin main
 )
@@ -500,6 +507,239 @@ ahead_sha="$(git -C "$FIXTURE_WT" rev-parse main)"
 assert_eq "$(git -C "$PRIVATE" rev-parse main)" "$behind_sha" "test setup sanity: PRIVATE main starts behind origin/main"
 run_setup
 assert_eq "$(git -C "$PRIVATE" rev-parse main)" "$ahead_sha" "local main fast-forwarded to origin/main even when HEAD is on a feature branch"
+
+
+# ============================================================================
+# Integration tests: --check and --relink modes
+# ============================================================================
+# These continue from the fake-universe state left by the tests above
+# (PRIVATE exists, HEAD on a feature branch, main == origin/main).
+
+# Assert a string contains a substring — pins the category of a --check
+# issue, not its exact phrasing.
+assert_contains() {
+  local haystack="$1" needle="$2" label="$3"
+  case "$haystack" in
+    *"$needle"*) pass "$label" ;;
+    *)
+      fail "$label"
+      echo "    expected to contain: '$needle'" >&2
+      echo "    actual output:       '$haystack'" >&2
+      ;;
+  esac
+}
+
+# Run bin/setup-claude with the given args against the fake universe.
+# Fetch is disabled for determinism; the fetch-path test opts back in.
+run_mode() {
+  (
+    cd "$PUBLIC"
+    CITIZENLAB_CLAUDE_GIT_REMOTE="$REMOTE" \
+    CITIZENLAB_CLAUDE_DIR="$PRIVATE" \
+    SETUP_CLAUDE_CHECK_NO_FETCH=1 \
+      bash "$SCRIPT_TO_TEST" "$@" >/dev/null 2>&1
+  )
+}
+
+# Run `--check`, capturing output in CHECK_OUT and exit status in
+# CHECK_STATUS (`|| CHECK_STATUS=$?` keeps set -e from aborting on the
+# expected failures). Pass "fetch" to enable the throttled-fetch path.
+CHECK_OUT=""
+CHECK_STATUS=0
+run_check_capture() {
+  local no_fetch=1
+  [ "${1:-}" = "fetch" ] && no_fetch=""
+  CHECK_STATUS=0
+  CHECK_OUT="$(
+    cd "$PUBLIC"
+    CITIZENLAB_CLAUDE_GIT_REMOTE="$REMOTE" \
+    CITIZENLAB_CLAUDE_DIR="$PRIVATE" \
+    SETUP_CLAUDE_CHECK_NO_FETCH="$no_fetch" \
+      bash "$SCRIPT_TO_TEST" --check 2>&1
+  )" || CHECK_STATUS=$?
+}
+
+
+# ----------------------------------------------------------------------------
+# Test: freshly-set-up state passes --check.
+# ----------------------------------------------------------------------------
+run_setup
+run_check_capture
+assert_eq "$CHECK_STATUS" "0" "fresh state: --check exits 0"
+assert_contains "$CHECK_OUT" "OK" "fresh state: --check reports OK"
+
+
+# ----------------------------------------------------------------------------
+# Test: missing symlink (file added to the overlay, setup never re-run) is
+# detected and healed by --relink.
+# ----------------------------------------------------------------------------
+rm "$PUBLIC/.claude/hooks/test-hook.sh"
+run_check_capture
+assert_eq "$CHECK_STATUS" "1" "missing symlink: --check exits 1"
+assert_contains "$CHECK_OUT" "not materialized" "missing symlink: --check names the drift"
+run_mode --relink || fail "--relink after missing symlink should succeed"
+assert_symlink_to "$PUBLIC/.claude/hooks/test-hook.sh" "../../../private/hooks/test-hook.sh" "--relink recreates the missing symlink"
+run_check_capture
+assert_eq "$CHECK_STATUS" "0" "after --relink: --check passes again"
+
+
+# ----------------------------------------------------------------------------
+# Test: dangling symlink (file deleted from the overlay) is detected and
+# cleaned up by --relink.
+# ----------------------------------------------------------------------------
+rm "$PRIVATE/commands/test.md"
+run_check_capture
+assert_eq "$CHECK_STATUS" "1" "dangling symlink: --check exits 1"
+assert_contains "$CHECK_OUT" "dangling" "dangling symlink: --check names the drift"
+run_mode --relink || fail "--relink after dangling symlink should succeed"
+assert_path_missing "$PUBLIC/.claude/commands/test.md" "--relink removes the dangling symlink"
+run_check_capture
+assert_eq "$CHECK_STATUS" "0" "after --relink (dangling): --check passes again"
+
+
+# ----------------------------------------------------------------------------
+# Test: the root .mcp.json symlink sits outside .claude/
+# ----------------------------------------------------------------------------
+rm "$PUBLIC/.mcp.json"
+run_check_capture
+assert_eq "$CHECK_STATUS" "1" "missing root .mcp.json: --check exits 1"
+assert_contains "$CHECK_OUT" "not materialized" "missing root .mcp.json: --check names the drift"
+run_mode --relink || fail "--relink after missing .mcp.json should succeed"
+assert_symlink_to "$PUBLIC/.mcp.json" "../private/.mcp.json" "--relink recreates the root .mcp.json symlink"
+
+rm "$PRIVATE/.mcp.json"
+run_check_capture
+assert_eq "$CHECK_STATUS" "1" "dangling root .mcp.json: --check exits 1"
+assert_contains "$CHECK_OUT" "dangling" "dangling root .mcp.json: --check names the drift"
+run_mode --relink || fail "--relink after overlay .mcp.json removal should succeed"
+assert_path_missing "$PUBLIC/.mcp.json" "--relink removes the stale root .mcp.json symlink"
+run_check_capture
+assert_eq "$CHECK_STATUS" "0" "after --relink (.mcp.json): --check passes again"
+
+
+# ----------------------------------------------------------------------------
+# Test: unset core.hooksPath is detected and restored by --relink.
+# ----------------------------------------------------------------------------
+git -C "$PUBLIC" config --unset core.hooksPath
+run_check_capture
+assert_eq "$CHECK_STATUS" "1" "unset hooksPath: --check exits 1"
+assert_contains "$CHECK_OUT" "core.hooksPath" "unset hooksPath: --check names the drift"
+run_mode --relink || fail "--relink after unset hooksPath should succeed"
+assert_eq "$(git -C "$PUBLIC" config --get core.hooksPath)" ".githooks" "--relink restores core.hooksPath"
+
+
+# ----------------------------------------------------------------------------
+# Test: local main behind origin/main is detected via the fetch path, the
+# fetch attempt leaves the throttle stamp, and a full setup run clears it.
+# ----------------------------------------------------------------------------
+(
+  cd "$FIXTURE_WT"
+  git checkout -q main
+  echo "advance again" > main-advance-2.txt
+  git -c user.email=t@t -c user.name=t -c core.excludesFile=/dev/null add -A
+  git -c user.email=t@t -c user.name=t commit -q -m "advance main again"
+  git push -q origin main
+)
+rm -f "$PRIVATE/.git/setup-claude-check-fetch-stamp"
+run_check_capture fetch
+assert_eq "$CHECK_STATUS" "1" "behind origin/main: --check exits 1"
+assert_contains "$CHECK_OUT" "behind origin/main" "behind origin/main: --check names the drift"
+if [ -f "$PRIVATE/.git/setup-claude-check-fetch-stamp" ]; then
+  pass "fetch attempt leaves the throttle stamp file"
+else
+  fail "fetch attempt leaves the throttle stamp file"
+fi
+run_setup
+run_check_capture
+assert_eq "$CHECK_STATUS" "0" "after full setup: --check passes again"
+
+
+# ----------------------------------------------------------------------------
+# Test: commits on origin/main touching only plans/ don't count as staleness
+# while a commit that also touches anything else still does.
+# ----------------------------------------------------------------------------
+(
+  cd "$FIXTURE_WT"
+  git checkout -q main
+  mkdir -p plans
+  echo "a plan" > plans/some-feature-branch.md
+  git -c user.email=t@t -c user.name=t -c core.excludesFile=/dev/null add -A
+  git -c user.email=t@t -c user.name=t commit -q -m "Update plan"
+  git push -q origin main
+)
+rm -f "$PRIVATE/.git/setup-claude-check-fetch-stamp"
+run_check_capture fetch
+assert_eq "$CHECK_STATUS" "0" "plans-only drift: --check exits 0"
+(
+  cd "$FIXTURE_WT"
+  git checkout -q main
+  echo "more plan" > plans/some-feature-branch.md
+  echo "real config change" > real-config-change.txt
+  git -c user.email=t@t -c user.name=t -c core.excludesFile=/dev/null add -A
+  git -c user.email=t@t -c user.name=t commit -q -m "Plan update plus real change"
+  git push -q origin main
+)
+rm -f "$PRIVATE/.git/setup-claude-check-fetch-stamp"
+run_check_capture fetch
+assert_eq "$CHECK_STATUS" "1" "mixed plans+config drift: --check exits 1"
+assert_contains "$CHECK_OUT" "behind origin/main" "mixed drift: --check names the drift"
+run_setup
+run_check_capture
+assert_eq "$CHECK_STATUS" "0" "after full setup: --check passes again (plans tests)"
+
+
+# ----------------------------------------------------------------------------
+# Test: no remote + no clone (dev without overlay access) exits 0 so the
+# check stays silent for them; remote set + clone missing exits 1; --relink
+# with no clone is a hard error.
+# ----------------------------------------------------------------------------
+NOACCESS_PUBLIC="$TEST_TMP/noaccess-public"
+mkdir -p "$NOACCESS_PUBLIC"
+(
+  cd "$NOACCESS_PUBLIC"
+  git init -q
+  git -c user.email=t@t -c user.name=t commit -q --allow-empty -m init
+)
+if (
+  cd "$NOACCESS_PUBLIC"
+  CITIZENLAB_CLAUDE_GIT_REMOTE="" \
+  CITIZENLAB_CLAUDE_DIR="$TEST_TMP/nonexistent-private" \
+    bash "$SCRIPT_TO_TEST" --check >/dev/null 2>&1
+); then
+  pass "no access (no remote, no clone): --check exits 0"
+else
+  fail "no access (no remote, no clone): --check exits 0"
+fi
+MISSING_STATUS=0
+MISSING_OUT="$(
+  cd "$NOACCESS_PUBLIC"
+  CITIZENLAB_CLAUDE_GIT_REMOTE="$REMOTE" \
+  CITIZENLAB_CLAUDE_DIR="$TEST_TMP/nonexistent-private" \
+  SETUP_CLAUDE_CHECK_NO_FETCH=1 \
+    bash "$SCRIPT_TO_TEST" --check 2>&1
+)" || MISSING_STATUS=$?
+assert_eq "$MISSING_STATUS" "1" "remote set but clone missing: --check exits 1"
+assert_contains "$MISSING_OUT" "missing at" "remote set but clone missing: --check says the clone is missing"
+if (
+  cd "$NOACCESS_PUBLIC"
+  CITIZENLAB_CLAUDE_GIT_REMOTE="$REMOTE" \
+  CITIZENLAB_CLAUDE_DIR="$TEST_TMP/nonexistent-private" \
+    bash "$SCRIPT_TO_TEST" --relink >/dev/null 2>&1
+); then
+  fail "--relink with missing clone exits non-zero"
+else
+  pass "--relink with missing clone exits non-zero"
+fi
+
+
+# ----------------------------------------------------------------------------
+# Test: an unknown flag is rejected instead of silently running a full setup.
+# ----------------------------------------------------------------------------
+if run_mode --bogus-flag; then
+  fail "unknown flag exits non-zero"
+else
+  pass "unknown flag exits non-zero"
+fi
 
 
 # ============================================================================

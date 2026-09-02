@@ -63,14 +63,9 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        granular_permissions: {
-          enabled: true,
-          allowed: true
-        },
         password_login: {
           enabled: true,
           allowed: true,
-          enable_signup: true,
           minimum_length: 8
         },
         pages: {
@@ -364,7 +359,20 @@ namespace :cl2_back do
           allowed: true,
           use_test_mode: true
         },
+        sms_login: {
+          enabled: true,
+          allowed: true
+        },
+        sms_manual_campaigns: {
+          enabled: true,
+          allowed: true,
+          messages_purchased: 10_000
+        },
         parallel_participation: {
+          enabled: true,
+          allowed: true
+        },
+        configurable_dropdown: {
           enabled: true,
           allowed: true
         }

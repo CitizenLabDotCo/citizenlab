@@ -35,11 +35,13 @@ describe('Sign up - email and SMS (2FA)', () => {
     signUpEmailConformation(cy);
 
     // Enter phone number
-    cy.dataCy('phone-number-input').find('input').type(randomPhoneNumber());
+    cy.dataCy('phone-number-input')
+      .find('input[type="tel"]')
+      .type(randomPhoneNumber().national);
     cy.dataCy('phone-continue-button').click();
 
     // Confirm phone number
-    cy.dataCy('phone-code-input').find('input').type('1234');
+    cy.dataCy('phone-code-input').find('input').type('123456');
     cy.dataCy('phone-confirm-button').click();
 
     enterUserInfo(cy);
@@ -62,17 +64,126 @@ describe('Sign up - email and SMS (2FA)', () => {
     signUpEmailConformation(cy);
 
     // Enter phone number
-    cy.dataCy('phone-number-input').find('input').type(randomPhoneNumber());
+    cy.dataCy('phone-number-input')
+      .find('input[type="tel"]')
+      .type(randomPhoneNumber().national);
     cy.dataCy('phone-continue-button').click();
 
     // Confirm phone number
-    cy.dataCy('phone-code-input').find('input').type('9999');
+    cy.dataCy('phone-code-input').find('input').type('999999');
     cy.dataCy('phone-confirm-button').click();
 
     // Assert error
     cy.get('.e2e-error-message')
       .first()
       .should('include.text', 'Invalid confirmation code.');
+  });
+
+  // 'Wrong number' brings the user back to the input, prefilled with the number
+  // they entered. Submitting that same number again is not a resend the backend
+  // accepts, but the code it already sent is still valid - so the flow has to
+  // carry on to the confirmation step rather than sit there doing nothing.
+  it('reaches the confirmation step when the same number is submitted again', () => {
+    const phoneNumber = randomPhoneNumber();
+
+    cy.visit(`/projects/${projectTitle}`);
+
+    cy.get('.e2e-idea-button').first().find('button').should('exist');
+    cy.get('.e2e-idea-button').first().find('button').click({ force: true });
+
+    signUpEmailConformation(cy);
+
+    // Enter phone number
+    cy.dataCy('phone-number-input')
+      .find('input[type="tel"]')
+      .type(phoneNumber.national);
+    cy.dataCy('phone-continue-button').click();
+    cy.dataCy('phone-code-input').should('exist');
+
+    // Go back to the input, which holds the number that was just entered (the
+    // field only shows the national part, formatted, hence the digit compare).
+    cy.dataCy('go-to-change-phone').click();
+    cy.dataCy('phone-number-input')
+      .find('input[type="tel"]')
+      .invoke('val')
+      .should((value) => {
+        expect(String(value).replace(/\D/g, '')).to.contain(
+          phoneNumber.national
+        );
+      });
+
+    // Submit it unchanged: no error, and the confirmation step for that same
+    // number is reached again.
+    cy.dataCy('phone-continue-button').click();
+
+    cy.get('.e2e-error-message').should('not.exist');
+    cy.dataCy('confirmation-phone-number')
+      .invoke('text')
+      .should((text) => {
+        expect(text.replace(/\D/g, '')).to.contain(phoneNumber.national);
+      });
+
+    // The code sent the first time round still works
+    cy.dataCy('phone-code-input').find('input').type('123456');
+    cy.dataCy('phone-confirm-button').click();
+
+    enterUserInfo(cy);
+
+    cy.get('#e2e-success-continue-button').click();
+
+    cy.location('pathname').should(
+      'eq',
+      `/en/projects/${projectTitle}/surveys/new`
+    );
+    cy.logout();
+  });
+
+  it('confirms the new number when it is changed', () => {
+    const phoneNumber = randomPhoneNumber();
+    const newPhoneNumber = randomPhoneNumber();
+
+    cy.visit(`/projects/${projectTitle}`);
+
+    cy.get('.e2e-idea-button').first().find('button').should('exist');
+    cy.get('.e2e-idea-button').first().find('button').click({ force: true });
+
+    signUpEmailConformation(cy);
+
+    // Enter phone number
+    cy.dataCy('phone-number-input')
+      .find('input[type="tel"]')
+      .type(phoneNumber.national);
+    cy.dataCy('phone-continue-button').click();
+    cy.dataCy('phone-code-input').should('exist');
+
+    // Go back and correct the number. A different number is a new request, not a
+    // resend, so a code goes out right away.
+    cy.dataCy('go-to-change-phone').click();
+    cy.dataCy('phone-number-input')
+      .find('input[type="tel"]')
+      .clear()
+      .type(newPhoneNumber.national);
+    cy.dataCy('phone-continue-button').click();
+
+    cy.get('.e2e-error-message').should('not.exist');
+    cy.dataCy('confirmation-phone-number')
+      .invoke('text')
+      .should((text) => {
+        expect(text.replace(/\D/g, '')).to.contain(newPhoneNumber.national);
+      });
+
+    cy.dataCy('phone-code-input').find('input').type('123456');
+    cy.dataCy('phone-confirm-button').click();
+
+    enterUserInfo(cy);
+
+    cy.get('#e2e-success-continue-button').click();
+
+    cy.location('pathname').should(
+      'eq',
+      `/en/projects/${projectTitle}/surveys/new`
+    );
+    cy.logout();
   });
 
   it('when exit flow after entering phone: on re-entry, correct step is shown', () => {
@@ -84,7 +195,9 @@ describe('Sign up - email and SMS (2FA)', () => {
     signUpEmailConformation(cy);
 
     // Enter phone number
-    cy.dataCy('phone-number-input').find('input').type(randomPhoneNumber());
+    cy.dataCy('phone-number-input')
+      .find('input[type="tel"]')
+      .type(randomPhoneNumber().national);
     cy.dataCy('phone-continue-button').click();
 
     // Refresh page
@@ -95,7 +208,7 @@ describe('Sign up - email and SMS (2FA)', () => {
     cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
     // Confirm phone number
-    cy.dataCy('phone-code-input').find('input').type('1234');
+    cy.dataCy('phone-code-input').find('input').type('123456');
     cy.dataCy('phone-confirm-button').click();
 
     enterUserInfo(cy);
@@ -131,7 +244,7 @@ describe('Sign up - email and SMS (2FA)', () => {
                 method: 'POST',
                 url: `web_api/v1/user/request_code_new_phone`,
                 body: {
-                  request_code: { new_phone: phoneNumber },
+                  request_code: { new_phone: phoneNumber.e164 },
                 },
               })
               .then(() => {
@@ -143,7 +256,7 @@ describe('Sign up - email and SMS (2FA)', () => {
                   method: 'POST',
                   url: `web_api/v1/user/confirm_code_new_phone`,
                   body: {
-                    confirmation: { code: '1234' },
+                    confirmation: { code: '123456' },
                   },
                 });
               });
@@ -165,7 +278,9 @@ describe('Sign up - email and SMS (2FA)', () => {
       signUpEmailConformation(cy);
 
       // Enter phone number
-      cy.dataCy('phone-number-input').find('input').type(phoneNumber);
+      cy.dataCy('phone-number-input')
+        .find('input[type="tel"]')
+        .type(phoneNumber.national);
       cy.dataCy('phone-continue-button').click();
 
       // Assert error
@@ -207,11 +322,13 @@ describe('Sign up - SSO and SMS (2FA)', () => {
     fakeSSOAuth(cy, 'john_doe');
 
     // Enter phone number
-    cy.dataCy('phone-number-input').find('input').type(randomPhoneNumber());
+    cy.dataCy('phone-number-input')
+      .find('input[type="tel"]')
+      .type(randomPhoneNumber().national);
     cy.dataCy('phone-continue-button').click();
 
     // Confirm phone number
-    cy.dataCy('phone-code-input').find('input').type('1234');
+    cy.dataCy('phone-code-input').find('input').type('123456');
     cy.dataCy('phone-confirm-button').click();
 
     cy.get('#e2e-success-continue-button').click();

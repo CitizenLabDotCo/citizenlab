@@ -10,8 +10,9 @@ import {
   IconNames,
   IconTooltip,
   colors,
-  stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import { transparentize } from 'polished';
+import styled from 'styled-components';
 
 import { SummaryChip } from './logic';
 
@@ -41,15 +42,10 @@ export const SectionHeader = ({
   </Box>
 );
 
-const CHIP_TONES: Record<SummaryChip['tone'], { bg: string; fg: string }> = {
-  access: { bg: colors.teal50, fg: colors.teal700 },
-  data: { bg: colors.grey100, fg: colors.grey700 },
-  open: { bg: colors.green100, fg: colors.green700 },
-};
+const CHIP_COLORS = { bg: colors.grey100, fg: colors.grey700 };
 
 /** A compact pill used in the collapsed summary row. */
 export const Chip = ({ chip }: { chip: SummaryChip }) => {
-  const tone = CHIP_TONES[chip.tone];
   return (
     <Box
       display="inline-flex"
@@ -58,9 +54,9 @@ export const Chip = ({ chip }: { chip: SummaryChip }) => {
       px="8px"
       py="2px"
       borderRadius="4px"
-      bgColor={tone.bg}
+      bgColor={CHIP_COLORS.bg}
     >
-      <Icon name={chip.icon} width="12px" height="12px" fill={tone.fg} />
+      <Icon name={chip.icon} width="12px" height="12px" fill={CHIP_COLORS.fg} />
       <Text
         as="span"
         m="0"
@@ -73,77 +69,6 @@ export const Chip = ({ chip }: { chip: SummaryChip }) => {
     </Box>
   );
 };
-
-/** Inline "this isn't possible because…" note shown next to disabled controls. */
-export const Hint = ({ children }: { children: ReactNode }) => (
-  <Box
-    display="flex"
-    alignItems="center"
-    gap="6px"
-    px="10px"
-    py="6px"
-    borderRadius={stylingConsts.borderRadius}
-    bgColor={colors.grey50}
-  >
-    <Icon
-      name="info-outline"
-      width="14px"
-      height="14px"
-      fill={colors.coolGrey500}
-    />
-    <Text as="span" m="0" fontSize="xs" color="coolGrey600">
-      {children}
-    </Text>
-  </Box>
-);
-
-/** A selectable card for the top-level access-mode choice. */
-export const ModeCard = ({
-  icon,
-  title,
-  description,
-  selected,
-  className,
-  onClick,
-}: {
-  icon: IconNames;
-  title: string;
-  description: string;
-  selected: boolean;
-  className?: string;
-  onClick: () => void;
-}) => (
-  <Box
-    as="button"
-    type="button"
-    flex="1 1 200px"
-    p="12px"
-    display="flex"
-    alignItems="flex-start"
-    gap="8px"
-    borderRadius="8px"
-    border={`1px solid ${selected ? colors.teal400 : colors.borderLight}`}
-    bgColor={selected ? colors.teal50 : colors.white}
-    style={{ cursor: 'pointer', textAlign: 'left' }}
-    className={className}
-    onClick={onClick}
-  >
-    <Icon
-      name={icon}
-      width="20px"
-      height="20px"
-      fill={selected ? colors.teal500 : colors.coolGrey500}
-    />
-    <Box display="flex" flexDirection="column" gap="4px">
-      <Text as="span" m="0" fontSize="s" fontWeight="bold" color="primary">
-        {title}
-      </Text>
-      <Text as="span" m="0" fontSize="xs" color="coolGrey600">
-        {description}
-      </Text>
-    </Box>
-  </Box>
-);
 
 /**
  * A single progressive-disclosure row: collapsed it shows just a title + a
@@ -163,6 +88,7 @@ export const Expander = ({
   defaultOpen = false,
   locked = false,
   lockedTooltip,
+  dataCy,
 }: {
   icon: IconNames;
   title: string;
@@ -171,12 +97,13 @@ export const Expander = ({
   defaultOpen?: boolean;
   locked?: boolean;
   lockedTooltip?: string;
+  dataCy?: string;
 }) => {
   const [open, setOpen] = useState(defaultOpen);
 
   if (locked) {
     return (
-      <Box>
+      <Box data-cy={dataCy}>
         <Box w="100%" display="flex" alignItems="center" gap="10px" py="12px">
           <Icon
             name="chevron-right"
@@ -214,8 +141,9 @@ export const Expander = ({
   }
 
   return (
-    <Box>
+    <Box data-cy={dataCy}>
       <Box
+        data-expander-toggle
         as="button"
         type="button"
         w="100%"
@@ -263,3 +191,31 @@ export const Expander = ({
     </Box>
   );
 };
+
+/**
+ * Read-only view of a panel whose settings are not its own to change (they are
+ * inherited from the platform defaults). Everything inside is put under a grey
+ * wash and made inert, except the expander toggles: those only show and hide
+ * information, so they stay usable and are lifted above the wash.
+ */
+export const ReadOnlyOverlay = styled(Box)`
+  position: relative;
+
+  > * {
+    pointer-events: none;
+  }
+
+  [data-expander-toggle] {
+    position: relative;
+    z-index: 2;
+    pointer-events: auto;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-color: ${transparentize(0.65, colors.grey200)};
+  }
+`;

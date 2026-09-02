@@ -96,8 +96,6 @@ RSpec/ExpectInHook:
 RSpec/NamedSubject:
   Exclude:
     - 'engines/commercial/custom_id_methods/spec/services/id_card_service_spec.rb'
-    - 'spec/lib/omniauth_methods/azure_active_directory_spec.rb'
-    - 'spec/lib/omniauth_methods/google_spec.rb'
     - 'spec/models/area_spec.rb'
     - 'spec/models/idea_status_spec.rb'
 
@@ -139,7 +137,6 @@ RSpec/SubjectStub:
     - 'engines/commercial/multi_tenancy/spec/jobs/publish_generic_event_to_rabbit_job_spec.rb'
     - 'engines/commercial/multi_tenancy/spec/services/publish_generic_event_to_rabbit_job_spec.rb'
     - 'spec/jobs/publish_generic_event_to_rabbit_job_spec.rb'
-    - 'spec/lib/omniauth_methods/google_spec.rb'
 
 # Offense count: 5
 # Configuration parameters: IgnoreNameless, IgnoreSymbolicNames.
@@ -284,7 +281,6 @@ Rails/WhereRange:
     - 'app/controllers/web_api/v1/comments_controller.rb'
     - 'app/controllers/web_api/v1/internal_comments_controller.rb'
     - 'app/finders/events_finder.rb'
-    - 'app/services/timeline_service.rb'
     - 'engines/commercial/analysis/app/controllers/analysis/web_api/v1/background_tasks_controller.rb'
     - 'engines/commercial/analysis/app/services/analysis/inputs_finder.rb'
     - 'engines/commercial/multi_tenancy/lib/tasks/core/migrate_creation_finalized_at.rake'
@@ -324,8 +320,6 @@ Style/OpenStructUse:
     - 'app/mailers/application_mailer.rb'
     - 'engines/free/onboarding/app/controllers/onboarding/web_api/v1/campaigns_controller.rb'
     - 'engines/free/surveys/spec/services/typeform_api_parser_spec.rb'
-    - 'spec/lib/omniauth_methods/azure_active_directory_spec.rb'
-    - 'spec/lib/omniauth_methods/google_spec.rb'
     - 'spec/services/track_intercom_service_spec.rb'
 
 # Offense count: 4
@@ -335,15 +329,12 @@ Style/RedundantFilterChain:
     - 'app/services/invalid_data_checker.rb'
     - 'engines/commercial/multi_tenancy/lib/tasks/core/trim_idea_titles.rake'
     - 'spec/acceptance/memberships_spec.rb'
-    - 'spec/acceptance/project_moderators_spec.rb'
 
 # Offense count: 10
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: AllowedMethods, AllowedPatterns.
 Style/ReturnNilInPredicateMethodDefinition:
   Exclude:
-    - 'app/policies/comment_reaction_policy.rb'
-    - 'app/policies/folder_moderator_policy.rb'
     - 'app/policies/group_policy.rb'
     - 'app/policies/project_folders/folder_policy.rb'
     - 'app/policies/project_policy.rb'
@@ -366,5 +357,4 @@ Style/SafeNavigationChainLength:
     - 'engines/commercial/idea_custom_fields/app/policies/idea_custom_fields/idea_custom_field_policy.rb'
     - 'engines/free/email_campaigns/app/serializers/email_campaigns/web_api/v1/consent_serializer.rb'
     - 'engines/free/email_campaigns/app/services/email_campaigns/internal_comment_campaign_commands_builder.rb'
-    - 'lib/omniauth_methods/facebook.rb'
     - 'spec/support/validation_error_helper.rb'

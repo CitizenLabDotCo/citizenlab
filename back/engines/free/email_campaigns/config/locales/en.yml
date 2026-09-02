@@ -69,13 +69,13 @@ en:
         user_with_unsubmitted_votes: User who has not submitted their votes
         users_who_engaged_but_not_voted: Users who engaged with the project but have not voted
         users_who_engaged_with_the_project: Users who engaged with the project
+        users_who_follow_or_participated: Users who follow the project or have participated
         users_who_follow_the_input: Users who follow the input
         users_who_follow_the_project: Users who follow the project’s topic or area tags
         users_who_follow_the_proposal: Users who follow the proposal
-        users_who_follow_or_participated: Users who follow the project or have participated
       trigger:
         7_days_after_invite_is_sent: 7 days after invite is sent
-        7_days_before_the_project_changes_phase: 7 days before the project changes phase
+        7_days_before_phase_starts: 7 days before a phase starts
         comment_is_deleted: Comment is deleted
         comment_is_flagged_as_spam: Comment is flagged as spam
         content_gets_flagged_as_innapropiate: Content gets flagged as innapropiate
@@ -93,7 +93,7 @@ en:
         new_input_awaits_screening: New input awaits screening
         new_input_is_published: New input is published
         new_proposal_is_posted: New proposal is posted
-        project_phase_changes: Project phase changes
+        phase_starts: A phase starts
         project_published: Project published
         project_review_request: Moderator requested a project review
         project_review_state_change: Reviewer approved the project
@@ -192,8 +192,8 @@ en:
       phone_confirmation: Phone confirmation code
       project_folder_moderation_rights_received: Folder manager rights received
       project_manager_rights_received: Project manager rights received
-      project_phase_started: New project phase
-      project_phase_upcoming: Upcoming new project phase
+      project_phase_started: Phase started
+      project_phase_upcoming: Phase starting soon
       project_published: Project published
       project_review_request: Project review request
       project_review_state_change: Project approved
@@ -283,7 +283,7 @@ en:
       title: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
     email_confirmation:
       best_regards: Best regards,
-      event_description: 'Thank you for your participation. Please enter this confirmation code in the window on %{organizationName}''s participation platform:'
+      event_description: "Thank you for your participation. Please enter this confirmation code in the window on %{organizationName}'s participation platform:"
       expire_code: 'This code will expire in '
       hours_24: 24 hours.
       ignore_email: If you didn't request a code, you can safely ignore this email.
@@ -354,6 +354,7 @@ en:
         story: Go to your story
         suggestion: Go to your suggestion
         topic: Go to your topic
+      phase_dates: From %{startDate} to %{endDate}
     idea_marked_as_spam:
       cta_button: Review
       preheader: Act upon this spam report
@@ -489,8 +490,8 @@ en:
       event_description: You started sharing your answers on %{phaseTitle} but didn't submit them. Click on the button below to continue where you left off.
       preheader: You didn't complete your survey response on the participation platform of %{organizationName}
       subject: '%{organizationName}: Almost there! Submit your answers'
-      submissions_close_on_date: "Submissions close at the end of %{date}."
-      submissions_close_at_time: "Submissions will close on %{datetime}."
+      submissions_close_at_time: Submissions will close on %{datetime}.
+      submissions_close_on_date: Submissions close at the end of %{date}.
       title: Almost there! Submit your answers
     new_comment_for_admin:
       anonymous_user: Anonymous user
@@ -505,7 +506,7 @@ en:
       yesterday: Yesterday
     new_email_confirmation:
       best_regards: Best regards,
-      event_description: 'Please enter this confirmation code in the window on %{organizationName}''s participation platform to confirm your new email address:'
+      event_description: "Please enter this confirmation code in the window on %{organizationName}'s participation platform to confirm your new email address:"
       expire_code: 'This code will expire in '
       hours_24: 24 hours.
       ignore_email: If you didn't request a code, you can safely ignore this email.
@@ -532,13 +533,21 @@ en:
       today: Today
       yesterday: Yesterday
     new_phone_confirmation:
-      sms_body: 'Your confirmation code is %{code}.'
+      sms_body2: '%{organization_name}: Your confirmation code is %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Go to this input
       event_description: "%{feedback_author_name} gave an update on '%{input_title}'."
       preheader: There's an update on an input you follow
       subject: Official feedback was posted on "%{input_title}"
       title: There's an update on "%{input_title}"
+    password_reset:
+      cta_button: Reset your password
+      event_description: You requested a password reset for the participation platform of %{organizationName}. Click the button below to choose a new, safe password. The link expires in 1 hour.
+      preheader: Reset your password for %{organizationName}
+      subject: '%{organizationName}: Reset your password'
+      title: Choose a new password
+    phone_confirmation:
+      sms_body2: '%{organization_name}: Your confirmation code is %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
@@ -557,19 +566,12 @@ en:
       input_status_description: An example of a status for an input (e.g. accepted, rejected, implemented...)
       input_status_title: Example Status
       official_feedback_body: Example official feedback
+      phase_description: This is some example phase content used for previewing the content of emails. This is not real content.
       phase_title: Example phase
-      project_description_preview: This is some example phase content used for previewing the content of emails. This is not real content.
+      project_description_preview: This is some example project content used for previewing the content of emails. This is not real content.
       project_title: Example project
       proposal_title: Example Proposal
       space_title: Example space
-    password_reset:
-      cta_button: Reset your password
-      event_description: You requested a password reset for the participation platform of %{organizationName}. Click the button below to choose a new, safe password. The link expires in 1 hour.
-      preheader: Reset your password for %{organizationName}
-      subject: '%{organizationName}: Reset your password'
-      title: Choose a new password
-    phone_confirmation:
-      sms_body: 'Your confirmation code is %{code}.'
     project_folder_moderation_rights_received:
       cta_button: View this folder
       event_description: "You've been given folder manager rights on %{organizationName}'s participation platform for the following folder:"
@@ -601,21 +603,17 @@ en:
       title_what_can_you_do_moderator: What can you do as a project manager?
       x_ideas: '%{numberOfIdeas} ideas'
     project_phase_started:
-      cta_button: Discover this new phase
-      event_description: This project entered a new phase on the platform of %{organizationName}. Click on the link below to learn more!
-      new_phase: "This project entered the phase '%{phaseTitle}'"
-      preheader: A new phase has been started for %{projectName}
-      subject: '%{projectName} entered a new phase'
-      subtitle: "About '%{projectName}'"
-      title: "A new phase started for project '%{projectName}'"
+      cta_button: See what's new
+      event_description: "You can now take part in '%{phaseTitle}' on the platform of %{organizationName}."
+      preheader: "You can now take part in '%{phaseTitle}'"
+      subject: "'%{phaseTitle}' has started in %{projectName}"
+      title: "There's something new in '%{projectName}'"
     project_phase_upcoming:
-      cta_button: Set this new phase up
-      event_description: "The project '%{projectName}' will be entering a new phase soon. Make sure everything is set up for this phase: Is there an adequate description? Are selected ideas transferred to this phase? Do you want to inform your citizens on the specifics of this phase through a custom email campaign?"
-      new_phase: "The project will enter the phase '%{phaseTitle}'"
-      preheader: A new phase will start soon for %{projectName}
-      subject: Get everything set up for the new phase of %{projectName}
-      subtitle: "About '%{projectName}'"
-      title: '%{firstName}, a project will enter a new phase soon'
+      cta_button: Review the setup
+      event_description: "'%{phaseTitle}' in the project '%{projectName}' starts on %{startDate}. Take a moment to check that everything is ready: Is the description complete? Are the dates correct? Do you want to inform your community through a custom email campaign?"
+      preheader: Make sure everything is ready before %{startDate}
+      subject: "%{projectName}: '%{phaseTitle}' starts on %{startDate}"
+      title: "%{firstName}, '%{phaseTitle}' starts on %{startDate}"
     project_published:
       cta_button: Go to this project
       event_description: 'The participation platform of %{organizationName} just published the following project:'
@@ -662,12 +660,12 @@ en:
       no_projects: No projects yet
       preheader: An adminstrator of the participation platform of %{organizationName} just made you a space manager of the following space
       subject: You became a space manager on the platform of %{organizationName}
-      text_organize_projects_and_folders: As a space manager, you can manage projects and folders within your space, including assigning and removing management roles for them.
       text_manage_space_settings: You can edit the space title and description so participants and your fellow managers immediately understand what your space is about and how it relates to your organization.
+      text_organize_projects_and_folders: As a space manager, you can manage projects and folders within your space, including assigning and removing management roles for them.
       text_oversee_participation: As a space manager, you have project manager rights over every project that lives within your space, so you can keep an eye on incoming input and assist project managers when needed.
       title: You became a space manager
-      title_organize_projects_and_folders: Organize projects and folders
       title_manage_space_settings: Manage space settings
+      title_organize_projects_and_folders: Organize projects and folders
       title_oversee_participation: Oversee participation
       title_what_can_you_do_space_manager: What can you do as a space manager?
       x_projects: '%{numberOfProjects} projects'

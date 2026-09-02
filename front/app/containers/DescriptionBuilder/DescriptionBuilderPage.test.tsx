@@ -83,7 +83,7 @@ const mockAddContentBuilderLayout = jest.fn();
 jest.mock('api/content_builder/useAddContentBuilderLayout', () =>
   jest.fn(() => ({
     mutate: mockAddContentBuilderLayout,
-    isLoading: false,
+    isPending: false,
     isError: false,
   }))
 );

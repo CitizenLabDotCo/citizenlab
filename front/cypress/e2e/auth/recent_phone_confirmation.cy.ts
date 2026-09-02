@@ -1,4 +1,4 @@
-import { confirmPhone, logIn } from '../../support/auth';
+import { confirmPhone, logIn, logInWithPhone } from '../../support/auth';
 import { randomString } from '../../support/commands';
 import { updatePermission } from '../../support/permitted_by_utils';
 import { createNativeSurveyProjectWithPermission } from './utils';

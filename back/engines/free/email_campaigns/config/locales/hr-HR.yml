@@ -77,6 +77,7 @@ hr-HR:
         users_who_follow_the_proposal: Korisnici koji prate prijedlog
       trigger:
         7_days_after_invite_is_sent: 7 dana nakon slanja poziva
+        7_days_before_phase_starts: 7 dana prije početka faze
         7_days_before_the_project_changes_phase: 7 dana prije promjene faze projekta
         comment_is_deleted: Komentar je izbrisan
         comment_is_flagged_as_spam: Komentar je označen kao neželjena pošta
@@ -95,6 +96,7 @@ hr-HR:
         new_input_awaits_screening: Novi unos čeka provjeru
         new_input_is_published: Objavljen je novi unos
         new_proposal_is_posted: Novi prijedlog je objavljen
+        phase_starts: Faza započinje
         project_phase_changes: Promjene faza projekta
         project_published: Projekt objavljen
         project_review_request: Moderator je zatražio pregled projekta
@@ -197,8 +199,8 @@ hr-HR:
       project_folder_moderation_rights_received: Primljena prava upravitelja mape
       project_manager_rights_received: Primljena prava voditelja projekta
       project_moderation_rights_received: Dodjela prava za moderiranje projekta
-      project_phase_started: Nova faza projekta
-      project_phase_upcoming: Nadolazeća nova faza projekta
+      project_phase_started: Faza je započela
+      project_phase_upcoming: Faza uskoro počinje
       project_published: Projekt objavljen
       project_review_request: Zahtjev za pregled projekta
       project_review_state_change: Projekt odobren
@@ -359,6 +361,7 @@ hr-HR:
         story: Idi na svoju priču
         suggestion: Idi na svoj prijedlog
         topic: Idi na svoju temu
+      phase_dates: Od %{startDate} do %{endDate}
     idea_marked_as_spam:
       cta_button: Pregled
       preheader: Reagirajte na ovaj izvještaj o neželjenom sadržaju
@@ -539,6 +542,7 @@ hr-HR:
       yesterday: Jučer
     new_phone_confirmation:
       sms_body: Vaš kôd za potvrdu je %{code}.
+      sms_body2: '%{organization_name}: Vaš potvrdni kod je %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Idi na ovaj ulaz
       event_description: "%{feedback_author_name} je dao/la ažuriranje o '%{input_title}'."
@@ -553,6 +557,7 @@ hr-HR:
       title: Odaberite novu lozinku
     phone_confirmation:
       sms_body: Vaš potvrdni kôd je %{code}.
+      sms_body2: '%{organization_name}: Vaš potvrdni kod je %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jana
@@ -571,8 +576,9 @@ hr-HR:
       input_status_description: Primjer statusa za unos (npr. prihvaćeno, odbijeno, implementirano...)
       input_status_title: Primjer statusa
       official_feedback_body: Primjer službene povratne informacije
+      phase_description: Ovo je primjer sadržaja faze koji se koristi za pretpregled sadržaja e-poruka. Ovo nije stvarni sadržaj.
       phase_title: Primjer faze
-      project_description_preview: Ovo je primjer faznog sadržaja koji se koristi za pregled sadržaja e-poruka. Ovo nije stvarni sadržaj.
+      project_description_preview: Ovo je primjer sadržaja projekta koji se koristi za pregled sadržaja e-pošte. Ovo nije stvarni sadržaj.
       project_title: Primjer projekta
       proposal_title: Primjer prijedloga
       space_title: Primjer prostora
@@ -607,21 +613,21 @@ hr-HR:
       title_what_can_you_do_moderator: Što možete učiniti kao voditelj projekta?
       x_ideas: '%{numberOfIdeas} ideja'
     project_phase_started:
-      cta_button: Otkrijte ovu novu fazu
-      event_description: Ovaj projekt ušao je u novu fazu na %{organizationName} platformi. Kliknite na poveznicu u nastavku kako biste saznali više!
+      cta_button: Pogledajte što je novo
+      event_description: "Sada možete sudjelovati u fazi '%{phaseTitle}' na platformi %{organizationName}."
       new_phase: "Ovaj projekt je ušao u fazu '%{phaseTitle}'"
-      preheader: Započeta je nova faza za %{projectName}
-      subject: '%{projectName} je ušao u novu fazu'
+      preheader: "Sada možete sudjelovati u fazi '%{phaseTitle}'"
+      subject: "'%{phaseTitle}' je započeo u projektu %{projectName}"
       subtitle: "O '%{projectName}'"
-      title: "Započeta je nova faza za projekt '%{projectName}'"
+      title: "Ima nešto novo u projektu '%{projectName}'"
     project_phase_upcoming:
-      cta_button: Postavite ovu novu fazu
-      event_description: "Projekt '%{projectName}' uskoro ulazi u novu fazu. Provjerite je li sve postavljeno za ovu fazu: Postoji li odgovarajući opis? Prebacuju li se odabrane ideje u ovu fazu? Želite li svoje građane informirati o specifičnostima ove faze putem prilagođene kampanje e-poštom?"
+      cta_button: Pregledajte postavke
+      event_description: "'%{phaseTitle}' u projektu '%{projectName}' počinje %{startDate}. Odvojite trenutak i provjerite je li sve spremno: Je li opis potpun? Jesu li datumi točni? Želite li obavijestiti svoju zajednicu putem prilagođene kampanje e-poštom?"
       new_phase: "Projekt će ući u fazu '%{phaseTitle}'"
-      preheader: Uskoro počinje nova faza projekta %{projectName}
-      subject: Pripremite sve za novu fazu projekta %{projectName}
+      preheader: Provjerite je li sve spremno prije %{startDate}
+      subject: "%{projectName}: '%{phaseTitle}' počinje %{startDate}"
       subtitle: "O '%{projectName}'"
-      title: '%{firstName}, projekt će uskoro ući u novu fazu'
+      title: "%{firstName}, '%{phaseTitle}' počinje %{startDate}"
     project_published:
       cta_button: Idi na ovaj projekt
       event_description: 'Platforma za sudjelovanje %{organizationName} upravo je objavila sljedeći projekt:'

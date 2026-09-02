@@ -35,17 +35,28 @@ const IdeaCardImage = styled(Image)`
 interface Props {
   phase?: IPhaseData;
   image: string | null;
+  imageFallback?: string;
   hideImagePlaceholder: boolean;
 }
 
-const CardImage = ({ phase, image, hideImagePlaceholder }: Props) => {
+const CardImage = ({
+  phase,
+  image,
+  imageFallback,
+  hideImagePlaceholder,
+}: Props) => {
   const votingMethod = phase?.attributes.voting_method;
 
   return (
     <>
       {image && (
         <IdeaCardImageWrapper>
-          <IdeaCardImage src={image} cover={true} alt="" />
+          <IdeaCardImage
+            src={image}
+            fallbackSrc={imageFallback}
+            cover={true}
+            alt=""
+          />
         </IdeaCardImageWrapper>
       )}
 

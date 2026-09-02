@@ -2,7 +2,7 @@
 
 module EmailCampaigns
   class WebApi::V1::CampaignsController < EmailCampaignsController
-    before_action :set_campaign, only: %i[show update do_send send_email_preview send_sms_preview email_preview email_deliveries sms_deliveries email_stats sms_stats destroy]
+    before_action :set_campaign, only: %i[show update do_send send_email_preview send_sms_preview email_preview email_deliveries sms_deliveries email_stats sms_stats sms_send_summary destroy]
     skip_after_action :verify_authorized, only: %i[supported_campaign_names]
 
     def index
@@ -25,8 +25,14 @@ module EmailCampaigns
         @campaigns = @campaigns.where(id: supported_ids)
       end
 
+      delivery_service = EmailCampaigns::DeliveryService.new
+
+      # Records of campaigns whose feature is deactivated are kept around (they come back
+      # when the feature does), but they have no business in the admin dashboard meanwhile.
+      @campaigns = @campaigns.where(type: delivery_service.campaign_types)
+
       # Filter out campaigns that are hidden from the admin dashboard (e.g. the phone confirmation OTP campaign)
-      @campaigns = @campaigns.where.not(type: EmailCampaigns::DeliveryService.new.hidden_from_admin_campaign_types)
+      @campaigns = @campaigns.where.not(type: delivery_service.hidden_from_admin_campaign_types)
 
       @campaigns = case parse_bool(params[:manual])
       when true then manual_order(@campaigns.manual)
@@ -123,8 +129,13 @@ module EmailCampaigns
     end
 
     def send_sms_preview
-      EmailCampaigns::DeliveryService.new.send_sms_preview(@campaign, current_user)
-      head :ok
+      @campaign.previewer = current_user
+      if @campaign.valid?(:preview)
+        EmailCampaigns::DeliveryService.new.send_sms_preview(@campaign, current_user)
+        head :ok
+      else
+        render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
+      end
     end
 
     def email_preview
@@ -152,6 +163,15 @@ module EmailCampaigns
 
     def sms_stats
       render json: raw_json(EmailCampaigns::Sms::Delivery.status_counts(@campaign.id))
+    end
+
+    # Balance is served alongside the cost so the admin weighs two figures read at the same instant.
+    def sms_send_summary
+      render json: raw_json({
+        recipients_count: @campaign.recipients_count,
+        segments_needed: @campaign.segments_for_send,
+        segments_balance: EmailCampaigns::Sms::BalanceService.new.balance
+      }, type: 'sms_send_summary')
     end
 
     def supported_campaign_names

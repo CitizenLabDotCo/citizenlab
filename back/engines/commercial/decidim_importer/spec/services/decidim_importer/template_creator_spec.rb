@@ -187,10 +187,15 @@ RSpec.describe DecidimImporter::TemplateCreator do
       expect(page.enabled).to be(true)
       expect(page.craftjs_json.dig('ROOT', 'type', 'resolvedName')).to eq('ProjectPageRoot')
 
-      # The imported description was injected into the page body.
-      body = page.craftjs_json['PROJECT_PAGE_BODY']
-      description_ids = body['nodes'] - %w[PROJECT_PAGE_PHASES PROJECT_PAGE_EVENTS]
+      # The imported description carries its own participation box, so it keeps
+      # its full-width layout in the body and no second box is injected.
+      description_ids = page.craftjs_json['PROJECT_PAGE_BODY']['nodes'] - %w[PROJECT_PAGE_PHASES PROJECT_PAGE_EVENTS]
       expect(description_ids).not_to be_empty
+      expect(description_ids).to all(start_with('d_'))
+      about_boxes = page.craftjs_json.each_value.count do |node|
+        node.is_a?(Hash) && node.dig('type', 'resolvedName') == 'AboutBox'
+      end
+      expect(about_boxes).to eq(1)
     end
 
     it 'imports an accountability component as an ideation phase, with its results as ideas carrying a progress line' do
@@ -345,10 +350,14 @@ RSpec.describe DecidimImporter::TemplateCreator do
         expect(anonymous.custom_field_values['field_10']).to eq('Reponse sans auteur connu')
       end
 
-      it 'backfills phase permissions so a native_survey phase has its posting permission' do
+      it 'resolves the posting permission of a native_survey phase from the global permission' do
         survey_phase = project.phases.find_by(participation_method: 'native_survey')
-        # Without this the admin projects endpoint 500s (posting_permission delegated to nil).
-        expect(Permission.find_by(permission_scope: survey_phase, action: 'posting_idea')).to be_present
+        # The phase gets no permission of its own until an admin overrides the
+        # action: until then it inherits the global 'visiting' permission. What
+        # matters is that the posting permission still resolves — otherwise the
+        # admin projects endpoint 500s (posting_permission delegated to nil).
+        expect(Permission.find_by(permission_scope: survey_phase, action: 'posting_idea')).to be_nil
+        expect(Permissions::PermissionInheritanceService.new.find(survey_phase, 'posting_idea')).to be_inherited
         expect { survey_phase.pmethod.user_data_collection }.not_to raise_error
       end
 

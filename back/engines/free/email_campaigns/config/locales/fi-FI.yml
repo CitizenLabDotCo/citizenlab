@@ -77,6 +77,7 @@ fi-FI:
         users_who_follow_the_proposal: Käyttäjät, jotka seuraavat ehdotusta
       trigger:
         7_days_after_invite_is_sent: 7 päivää kutsun lähettämisen jälkeen
+        7_days_before_phase_starts: 7 päivää ennen vaiheen alkua
         7_days_before_the_project_changes_phase: 7 päivää ennen projektin muutosvaihetta
         comment_is_deleted: Kommentti on poistettu
         comment_is_flagged_as_spam: Kommentti on merkitty roskapostiksi
@@ -95,6 +96,7 @@ fi-FI:
         new_input_awaits_screening: Uusi tulo odottaa näyttöä
         new_input_is_published: Uusi syöte on julkaistu
         new_proposal_is_posted: Uusi ehdotus on julkaistu
+        phase_starts: Vaihe alkaa
         project_phase_changes: Projektivaiheen muutokset
         project_published: Projekti julkaistu
         project_review_request: Moderaattori pyysi projektin tarkistusta
@@ -197,8 +199,8 @@ fi-FI:
       project_folder_moderation_rights_received: Kansionhallintaoikeudet vastaanotettu
       project_manager_rights_received: Projektipäällikön oikeudet vastaanotettu
       project_moderation_rights_received: Projektin moderointioikeudet saatu
-      project_phase_started: Uusi projektivaihe
-      project_phase_upcoming: Tuleva uusi projektivaihe
+      project_phase_started: Vaihe on alkanut
+      project_phase_upcoming: Vaihe alkaa pian
       project_published: Projekti julkaistu
       project_review_request: Hankearviointipyyntö
       project_review_state_change: Projekti hyväksytty
@@ -359,6 +361,7 @@ fi-FI:
         story: Siirry omaan tarinaasi
         suggestion: Siirry ehdotukseesi
         topic: Siirry aiheeseesi
+      phase_dates: Välillä %{startDate}–%{endDate}
     idea_marked_as_spam:
       cta_button: Arvostelu
       preheader: Toimi tämän roskapostiraportin mukaan
@@ -539,6 +542,7 @@ fi-FI:
       yesterday: Eilen
     new_phone_confirmation:
       sms_body: Vahvistuskoodisi on %{code}.
+      sms_body2: '%{organization_name}: Vahvistuskoodisi on %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Siirry tähän syötteeseen
       event_description: "%{feedback_author_name} antoi päivityksen kohteesta '%{input_title}'."
@@ -553,6 +557,7 @@ fi-FI:
       title: Valitse uusi salasana
     phone_confirmation:
       sms_body: Vahvistuskoodisi on %{code}.
+      sms_body2: '%{organization_name}: Vahvistuskoodisi on %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
@@ -571,8 +576,9 @@ fi-FI:
       input_status_description: Esimerkki syötteen tilasta (esim. hyväksytty, hylätty, toteutettu...)
       input_status_title: Esimerkkitila
       official_feedback_body: Esimerkki virallisesta palautteesta
+      phase_description: Tämä on vaiheen esimerkkisisältöä sähköpostien sisällön esikatselua varten. Tämä ei ole oikeaa sisältöä.
       phase_title: Esimerkkivaihe
-      project_description_preview: Tämä on esimerkki sähköpostien sisällön esikatseluun käytettävästä vaihesisällöstä. Tämä ei ole oikeaa sisältöä.
+      project_description_preview: Tämä on esimerkkisisältöä, jota käytetään sähköpostien sisällön esikatseluun. Tämä ei ole oikeaa sisältöä.
       project_title: Esimerkkiprojekti
       proposal_title: Esimerkkiehdotus
       space_title: Esimerkkitila
@@ -607,21 +613,21 @@ fi-FI:
       title_what_can_you_do_moderator: Mitä voit tehdä projektipäällikkönä?
       x_ideas: '%{numberOfIdeas} ideoita'
     project_phase_started:
-      cta_button: Tutustu tähän uuteen vaiheeseen
-      event_description: Tämä projekti siirtyi uuteen vaiheeseen alustalla %{organizationName}. Napsauta alla olevaa linkkiä saadaksesi lisätietoja!
+      cta_button: Katso mitä uutta
+      event_description: "Voit nyt osallistua vaiheeseen '%{phaseTitle}' organisaation %{organizationName} alustalla."
       new_phase: Tämä projekti siirtyi vaiheeseen%{phaseTitle}
-      preheader: Uusi vaihe on aloitettu kohteelle %{projectName}
-      subject: '%{projectName} siirtyi uuteen vaiheeseen'
+      preheader: "Voit nyt osallistua vaiheeseen '%{phaseTitle}'"
+      subject: "'%{phaseTitle}' on alkanut hankkeessa %{projectName}"
       subtitle: "Tietoja '%{projectName}'"
-      title: "Uusi vaihe alkoi projektille '%{projectName}'"
+      title: "Hankkeessa '%{projectName}' on jotain uutta"
     project_phase_upcoming:
-      cta_button: Aseta tämä uusi vaihe käyttöön
-      event_description: "Projekti '%{projectName}' siirtyy pian uuteen vaiheeseen. Varmista, että kaikki on asetettu tähän vaiheeseen: Onko riittävä kuvaus? Siirretäänkö valitut ideat tähän vaiheeseen? Haluatko tiedottaa kansalaisillesi tämän vaiheen yksityiskohdista mukautetun sähköpostikampanjan avulla?"
+      cta_button: Tarkista asetukset
+      event_description: "'%{phaseTitle}' hankkeessa '%{projectName}' alkaa %{startDate}. Tarkista vielä, että kaikki on valmista: Onko kuvaus valmis? Ovatko päivämäärät oikein? Haluatko tiedottaa yhteisöäsi mukautetulla sähköpostikampanjalla?"
       new_phase: Projekti siirtyy vaiheeseen%{phaseTitle}
-      preheader: Uusi vaihe alkaa pian %{projectName}
-      subject: Valmistele kaikki %{projectName}uutta vaihetta varten
+      preheader: Varmista, että kaikki on valmista ennen %{startDate}
+      subject: "%{projectName}: '%{phaseTitle}' alkaa %{startDate}"
       subtitle: "Tietoja '%{projectName}'"
-      title: '%{firstName}, projekti siirtyy pian uuteen vaiheeseen'
+      title: "%{firstName}, '%{phaseTitle}' alkaa %{startDate}"
     project_published:
       cta_button: Siirry tähän projektiin
       event_description: '%{organizationName} :n osallistumisalusta julkaisi juuri seuraavan projektin:'

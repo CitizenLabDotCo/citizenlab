@@ -32,8 +32,8 @@ const Edit = () => {
 
   const { data: campaign } = useEmailCampaign(campaignId);
 
-  const { mutateAsync: updateCampaign, isLoading } = useUpdateEmailCampaign();
-  const { mutate: sendCampaignPreview, isLoading: isSendingCampaignPreview } =
+  const { mutateAsync: updateCampaign, isPending } = useUpdateEmailCampaign();
+  const { mutate: sendCampaignPreview, isPending: isSendingCampaignPreview } =
     useSendEmailCampaignPreview();
   const [previewSent, setPreviewSent] = useState(false);
   const goBack = () => {
@@ -80,7 +80,7 @@ const Edit = () => {
         <Box display="flex">
           <Box width="50%" mr="36px">
             <CampaignForm
-              isLoading={isLoading}
+              isLoading={isPending}
               onSubmit={handleSubmit}
               defaultValues={{
                 sender: campaign.data.attributes.sender,

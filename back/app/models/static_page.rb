@@ -42,6 +42,7 @@
 #
 class StaticPage < ApplicationRecord
   include Files::FileAttachable
+  include PlainTextMultiloc
 
   CODES = %w[about cookie-policy terms-and-conditions privacy-policy faq custom].freeze
   RESERVED_SLUGS = (CODES - %w[custom]).freeze
@@ -58,6 +59,8 @@ class StaticPage < ApplicationRecord
   belongs_to :project, optional: true
 
   has_one :nav_bar_item, dependent: :destroy
+  has_one :content_builder_layout, class_name: 'ContentBuilder::Layout',
+    as: :content_buildable, dependent: :destroy
   has_many :static_page_files, -> { order(:ordering) }, dependent: :destroy
   has_many :static_pages_global_topics, dependent: :destroy
   has_many :global_topics, -> { order(:ordering) }, through: :static_pages_global_topics
@@ -71,6 +74,11 @@ class StaticPage < ApplicationRecord
   accepts_nested_attributes_for :nav_bar_item
 
   before_validation :set_code, on: :create
+  plain_text_multiloc :title_multiloc,
+    :banner_header_multiloc,
+    :banner_subheader_multiloc,
+    :banner_cta_button_multiloc,
+    prepend: true
   before_validation :strip_title
   before_validation :sanitize_top_info_section_multiloc
   before_validation :sanitize_bottom_info_section_multiloc

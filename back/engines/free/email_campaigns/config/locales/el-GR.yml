@@ -77,6 +77,7 @@ el-GR:
         users_who_follow_the_proposal: Χρήστες που ακολουθούν την πρόταση
       trigger:
         7_days_after_invite_is_sent: 7 ημέρες μετά την αποστολή της πρόσκλησης
+        7_days_before_phase_starts: 7 ημέρες πριν την έναρξη μιας φάσης
         7_days_before_the_project_changes_phase: 7 ημέρες πριν από τη φάση αλλαγής του έργου
         comment_is_deleted: Το σχόλιο διαγράφεται
         comment_is_flagged_as_spam: Το σχόλιο επισημαίνεται ως spam
@@ -95,6 +96,7 @@ el-GR:
         new_input_awaits_screening: Η νέα εισροή αναμένει την προβολή
         new_input_is_published: Δημοσιεύονται νέες εισροές
         new_proposal_is_posted: Αναρτήθηκε νέα πρόταση
+        phase_starts: Μια φάση ξεκινά
         project_phase_changes: Αλλαγές φάσης έργου
         project_published: Δημοσιευμένο έργο
         project_review_request: Ο συντονιστής ζήτησε επανεξέταση του έργου
@@ -197,8 +199,8 @@ el-GR:
       project_folder_moderation_rights_received: Δικαιώματα διαχειριστή φακέλων
       project_manager_rights_received: Λήφθηκαν δικαιώματα διαχειριστή έργου
       project_moderation_rights_received: Δικαιώματα συντονισμού έργου που ελήφθησαν
-      project_phase_started: Νέα φάση του έργου
-      project_phase_upcoming: Επόμενη νέα φάση έργου
+      project_phase_started: Η φάση ξεκίνησε
+      project_phase_upcoming: Η φάση ξεκινά σύντομα
       project_published: Δημοσιευμένο έργο
       project_review_request: Αίτημα αξιολόγησης του έργου
       project_review_state_change: Το έργο εγκρίθηκε
@@ -359,6 +361,7 @@ el-GR:
         story: Πηγαίνετε στην ιστορία σας
         suggestion: Πηγαίνετε στην πρότασή σας
         topic: Πηγαίνετε στο θέμα σας
+      phase_dates: Από %{startDate} έως %{endDate}
     idea_marked_as_spam:
       cta_button: Ανασκόπηση
       preheader: Ενεργήστε βάσει αυτής της έκθεσης spam
@@ -539,6 +542,7 @@ el-GR:
       yesterday: Χθες
     new_phone_confirmation:
       sms_body: Ο κωδικός επιβεβαίωσής σας είναι %{code}.
+      sms_body2: '%{organization_name}: Ο κωδικός επιβεβαίωσής σας είναι %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Πηγαίνετε σε αυτή την είσοδο
       event_description: "%{feedback_author_name} ενημέρωσε για το '%{input_title}'."
@@ -553,6 +557,7 @@ el-GR:
       title: Επιλέξτε έναν νέο κωδικό πρόσβασης
     phone_confirmation:
       sms_body: Ο κωδικός επιβεβαίωσής σας είναι %{code}.
+      sms_body2: '%{organization_name}: Ο κωδικός επιβεβαίωσής σας είναι %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
@@ -571,8 +576,9 @@ el-GR:
       input_status_description: Ένα παράδειγμα κατάστασης για μια είσοδο (π.χ. αποδεκτή, απορριφθείσα, υλοποιημένη...)
       input_status_title: Παράδειγμα Κατάσταση
       official_feedback_body: Παράδειγμα επίσημης ανατροφοδότησης
+      phase_description: Αυτό είναι ένα παράδειγμα περιεχομένου φάσης που χρησιμοποιείται για την προεπισκόπηση του περιεχομένου των email. Αυτό δεν είναι πραγματικό περιεχόμενο.
       phase_title: Παράδειγμα φάσης
-      project_description_preview: Αυτό είναι κάποιο παράδειγμα περιεχομένου φάσης που χρησιμοποιείται για την προεπισκόπηση του περιεχομένου των μηνυμάτων ηλεκτρονικού ταχυδρομείου. Δεν πρόκειται για πραγματικό περιεχόμενο.
+      project_description_preview: Αυτό είναι ένα παράδειγμα περιεχομένου έργου που χρησιμοποιείται για την προεπισκόπηση του περιεχομένου των email. Αυτό δεν είναι πραγματικό περιεχόμενο.
       project_title: Παράδειγμα έργου
       proposal_title: Παράδειγμα πρότασης
       space_title: Παράδειγμα χώρου
@@ -607,21 +613,21 @@ el-GR:
       title_what_can_you_do_moderator: Τι μπορείτε να κάνετε ως διαχειριστής έργων;
       x_ideas: '%{numberOfIdeas} ιδέες'
     project_phase_started:
-      cta_button: Ανακαλύψτε αυτή τη νέα φάση
-      event_description: Το έργο αυτό εισήλθε σε νέα φάση με την πλατφόρμα %{organizationName}. Κάντε κλικ στον παρακάτω σύνδεσμο για να μάθετε περισσότερα!
+      cta_button: Δείτε τι νέο υπάρχει
+      event_description: "Μπορείτε πλέον να συμμετάσχετε στη φάση '%{phaseTitle}' στην πλατφόρμα του οργανισμού %{organizationName}."
       new_phase: "Το έργο αυτό εισήλθε στη φάση '%{phaseTitle}'"
-      preheader: Μια νέα φάση έχει ξεκινήσει για το %{projectName}
-      subject: '%{projectName} εισήλθε σε νέα φάση'
+      preheader: "Μπορείτε πλέον να συμμετάσχετε στη φάση '%{phaseTitle}'"
+      subject: "Η φάση '%{phaseTitle}' ξεκίνησε στο %{projectName}"
       subtitle: "Σχετικά με '%{projectName}'"
-      title: "Μια νέα φάση ξεκίνησε για το έργο '%{projectName}'"
+      title: "Υπάρχει κάτι νέο στο '%{projectName}'"
     project_phase_upcoming:
-      cta_button: Ορίστε αυτή τη νέα φάση
-      event_description: "Το έργο '%{projectName}' θα εισέλθει σύντομα σε μια νέα φάση. Βεβαιωθείτε ότι όλα είναι έτοιμα για αυτή τη φάση: Υπάρχει επαρκής περιγραφή; Μεταφέρονται επιλεγμένες ιδέες σε αυτή τη φάση; Θέλετε να ενημερώσετε τους πολίτες σας για τις ιδιαιτερότητες αυτής της φάσης μέσω μιας προσαρμοσμένης εκστρατείας ηλεκτρονικού ταχυδρομείου;"
+      cta_button: Ελέγξτε τη διαμόρφωση
+      event_description: "Η φάση '%{phaseTitle}' στο έργο '%{projectName}' ξεκινά στις %{startDate}. Αφιερώστε λίγο χρόνο για να βεβαιωθείτε ότι όλα είναι έτοιμα: Είναι η περιγραφή πλήρης; Είναι οι ημερομηνίες σωστές; Θέλετε να ενημερώσετε την κοινότητά σας μέσω μιας προσαρμοσμένης καμπάνιας email;"
       new_phase: Το έργο θα εισέλθει στη φάση "%{phaseTitle}".
-      preheader: Μια νέα φάση θα ξεκινήσει σύντομα για το %{projectName}
-      subject: Ετοιμάστε τα πάντα για τη νέα φάση του %{projectName}
+      preheader: Βεβαιωθείτε ότι όλα είναι έτοιμα πριν από τις %{startDate}
+      subject: "%{projectName}: Η φάση '%{phaseTitle}' ξεκινά στις %{startDate}"
       subtitle: "Σχετικά με '%{projectName}'"
-      title: '%{firstName}, ένα έργο θα εισέλθει σύντομα σε νέα φάση'
+      title: "%{firstName}, η φάση '%{phaseTitle}' ξεκινά στις %{startDate}"
     project_published:
       cta_button: Πηγαίνετε σε αυτό το έργο
       event_description: 'Η πλατφόρμα συμμετοχής του %{organizationName} μόλις δημοσίευσε το ακόλουθο έργο:'

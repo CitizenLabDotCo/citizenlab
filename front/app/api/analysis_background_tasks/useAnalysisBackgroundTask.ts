@@ -3,6 +3,8 @@ import { CLErrors } from 'typings';
 
 import insightsKeys from 'api/analysis_insights/keys';
 
+import useOnQueryFetched from 'hooks/useOnQueryFetched';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import backgroundTasksKeys from './keys';
@@ -20,7 +22,7 @@ const useAnalysisBackgroundTask = (
   pollingEnabled?: boolean
 ) => {
   const queryClient = useQueryClient();
-  return useQuery<
+  const result = useQuery<
     IBackgroundTask,
     CLErrors,
     IBackgroundTask,
@@ -29,19 +31,26 @@ const useAnalysisBackgroundTask = (
     queryKey: backgroundTasksKeys.item({ id: backgroundTaskId }),
     queryFn: () => fetchBackgroundTask(analysisId, backgroundTaskId),
     enabled: !!backgroundTaskId && !!analysisId,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: insightsKeys.list({ analysisId }),
-      });
-    },
     // Refetch every 5 seconds when task is active
-    refetchInterval: (data) => {
+    refetchInterval: ({ state }) => {
       const activeTask =
-        data?.data.attributes.state === 'queued' ||
-        data?.data.attributes.state === 'in_progress';
+        state.data?.data.attributes.state === 'queued' ||
+        state.data?.data.attributes.state === 'in_progress';
       return activeTask && pollingEnabled ? 5000 : false;
     },
   });
+
+  // Refresh the insight text after every poll. This must only run after the
+  // task's own fetch: the insights response side-loads this very task, which
+  // `fetcher` writes into the cache, and reacting to that write would refetch
+  // insights in an endless loop (TAN-8535).
+  useOnQueryFetched(result, () => {
+    queryClient.invalidateQueries({
+      queryKey: insightsKeys.list({ analysisId }),
+    });
+  });
+
+  return result;
 };
 
 export default useAnalysisBackgroundTask;

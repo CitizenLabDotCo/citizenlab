@@ -11,7 +11,6 @@
 #  permission_scope_type              :string
 #  created_at                         :datetime         not null
 #  updated_at                         :datetime         not null
-#  global_custom_fields               :boolean          default(FALSE), not null
 #  verification_expiry                :integer
 #  access_denied_explanation_multiloc :jsonb            not null
 #  everyone_tracking_enabled          :boolean          default(FALSE), not null
@@ -24,6 +23,7 @@
 #  require_verification               :boolean          default(FALSE), not null
 #  require_confirmed_phone_number     :boolean          default(FALSE), not null
 #  confirmed_phone_number_expiry      :integer
+#  custom_fields_behavior             :string           default("global"), not null
 #
 # Indexes
 #
@@ -32,6 +32,7 @@
 #
 class Permission < ApplicationRecord
   PERMITTED_BIES = %w[everyone users admins_moderators].freeze
+  CUSTOM_FIELDS_BEHAVIORS = %w[global disabled custom].freeze
   ACTIONS = {
     # NOTE: Order of actions in each array is used when using :order_by_action
     nil => %w[visiting following attending_event],
@@ -51,11 +52,25 @@ class Permission < ApplicationRecord
   # 'everyone' is only meaningful for the submission action of participation
   # methods that support it (see ParticipationMethod::Base#supports_permitted_by_everyone?).
   EVERYONE_PERMITTED_ACTIONS = %w[posting_idea taking_survey].freeze
+
+  # `SanitizationService` features allowed in the explanation, shared with anything that
+  # re-sanitises a stored one. Rendered with `dangerouslySetInnerHTML`
+  # (`useCustomAccessDeniedMessage.tsx`, `AccessDenied/index.tsx`).
+  #
+  # Wider than today's editor on purpose: the field had an unrestricted Quill editor until a June
+  # 2026 component swap left it a single-line input, so production still holds lists (nine rows,
+  # every cluster surveyed). Nothing else with content in it - no heading, image, video, alignment.
+  EXPLANATION_SANITIZE_FEATURES = %i[list decoration link].freeze
   UNSUPPORTED_DESCRIPTOR = {
     value: nil,
     locked: true,
     explanation: 'user_fields_in_form_not_supported_for_action'
   }
+
+  # Set on the unsaved copies of the global 'visiting' permission that stand in
+  # for the inheritable actions which have not been overridden.
+  # See Permissions::PermissionInheritanceService.
+  attr_writer :inherited
 
   scope :filter_enabled_actions, ->(permission_scope) { where(action: enabled_actions(permission_scope)) }
   scope :order_by_action, lambda { |permission_scope|
@@ -68,21 +83,16 @@ class Permission < ApplicationRecord
   has_many :permissions_custom_fields, -> { order(:ordering).includes(:custom_field) }, inverse_of: :permission, dependent: :destroy
   has_many :custom_fields, -> { order(:ordering) }, through: :permissions_custom_fields
 
+  before_validation :sanitize_access_denied_explanation_multiloc, if: :access_denied_explanation_multiloc
   validates :action, presence: true, inclusion: { in: ->(permission) { available_actions(permission.permission_scope) } }
   validates :permitted_by, presence: true, inclusion: { in: PERMITTED_BIES }
   validates :action, uniqueness: { scope: %i[permission_scope_id permission_scope_type] }
   validates :permission_scope_type, inclusion: { in: SCOPE_TYPES }
-  validate :validate_require_verification
-  validate :validate_require_confirmed_email
-  validate :validate_require_confirmed_phone_number
-  validate :validate_authentication_method_present
-  validate :validate_verification_expiry
-  validate :validate_confirmed_email_expiry
-  validate :validate_confirmed_phone_number_expiry
   validate :validate_permitted_by_everyone
   validates :user_data_collection, inclusion: { in: %w[all_data demographics_only anonymous] }
+  validates :custom_fields_behavior, inclusion: { in: CUSTOM_FIELDS_BEHAVIORS }, allow_nil: true
 
-  before_validation :set_permitted_by_and_global_custom_fields, on: :create
+  before_validation :apply_creation_defaults, on: :create
 
   def self.available_actions(permission_scope)
     return [] if permission_scope && !permission_scope.respond_to?(:participation_method)
@@ -109,16 +119,16 @@ class Permission < ApplicationRecord
     sql
   end
 
+  def inherited?
+    @inherited == true
+  end
+
   def verification_enabled?
     # Verification can be enabled by the require_verification attribute OR by a verification group
     return true if require_verification
     return true if groups.any? && Verification::VerificationService.new.find_verification_group(groups)
 
     false
-  end
-
-  def allow_global_custom_fields?
-    permitted_by == 'users'
   end
 
   def everyone_tracking_enabled?
@@ -149,9 +159,9 @@ class Permission < ApplicationRecord
     permission_scope.pmethod.supports_permitted_by_everyone?
   end
 
-  private
-
-  def set_permitted_by_and_global_custom_fields
+  # Also applied to the unsaved permissions built by
+  # Permissions::PermissionInheritanceService, which never reach a validation.
+  def apply_creation_defaults
     if permitted_by.nil?
       self.permitted_by = 'users'
       # Following used to default to the 'everyone_confirmed_email' permitted_by.
@@ -163,93 +173,15 @@ class Permission < ApplicationRecord
         self.require_password = false
       end
     end
-    self.global_custom_fields ||= true
+    self.custom_fields_behavior ||= 'global'
   end
 
-  def validate_require_verification
-    return unless require_verification && require_verification_changed?
-    return if Verification::VerificationService.new.first_method_enabled
+  private
 
-    errors.add(
-      :require_verification,
-      :require_verification_not_allowed,
-      message: 'Verification cannot be required because there are no verification methods enabled.'
-    )
-  end
-
-  def validate_require_confirmed_email
-    return unless require_confirmed_email && require_confirmed_email_changed?
-    return if password_login_signup_enabled?
-
-    errors.add(
-      :require_confirmed_email,
-      :require_confirmed_email_not_allowed,
-      message: 'A confirmed email can only be required when password login signup is enabled.'
-    )
-  end
-
-  def validate_require_confirmed_phone_number
-    return unless require_confirmed_phone_number && require_confirmed_phone_number_changed?
-    return if AppConfiguration.instance.feature_activated?('sms')
-
-    errors.add(
-      :require_confirmed_phone_number,
-      :require_confirmed_phone_number_not_allowed,
-      message: 'A confirmed phone number can only be required when the SMS feature is enabled.'
-    )
-  end
-
-  # When an account is required, at least one authentication method must back it:
-  # a confirmed email, identity verification or a confirmed phone number. This
-  # only applies to 'users' permissions; 'everyone' has no sign-in and
-  # 'admins_moderators' are already authenticated, so their require_* flags are
-  # irrelevant.
-  def validate_authentication_method_present
-    return unless permitted_by == 'users'
-    return if require_confirmed_email || require_verification || require_confirmed_phone_number
-
-    errors.add(
-      :base,
-      :authentication_method_required,
-      message: 'At least one authentication method (confirmed email, verification or confirmed phone number) is required.'
-    )
-  end
-
-  def password_login_signup_enabled?
-    config = AppConfiguration.instance
-    config.feature_activated?('password_login') && !!config.settings('password_login', 'enable_signup')
-  end
-
-  def validate_verification_expiry
-    return if verification_expiry.nil?
-    return if require_verification || !verification_expiry_changed?
-
-    errors.add(
-      :verification_expiry,
-      :verification_expiry_cannot_be_set,
-      message: 'Verification expiry can only be set when verification is required.'
-    )
-  end
-
-  def validate_confirmed_email_expiry
-    return if confirmed_email_expiry.nil?
-    return if require_confirmed_email || !confirmed_email_expiry_changed?
-
-    errors.add(
-      :confirmed_email_expiry,
-      :confirmed_email_expiry_cannot_be_set,
-      message: 'Confirmed email expiry can only be set when a confirmed email is required.'
-    )
-  end
-
-  def validate_confirmed_phone_number_expiry
-    return if confirmed_phone_number_expiry.nil?
-    return if require_confirmed_phone_number || !confirmed_phone_number_expiry_changed?
-
-    errors.add(
-      :confirmed_phone_number_expiry,
-      :confirmed_phone_number_expiry_cannot_be_set,
-      message: 'Confirmed phone number expiry can only be set when a confirmed phone number is required.'
+  def sanitize_access_denied_explanation_multiloc
+    self.access_denied_explanation_multiloc = SanitizationService.new.sanitize_body_multiloc(
+      access_denied_explanation_multiloc,
+      EXPLANATION_SANITIZE_FEATURES
     )
   end
 

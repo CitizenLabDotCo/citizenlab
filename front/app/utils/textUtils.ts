@@ -17,12 +17,24 @@ export const truncateMultiloc = (
   }, {});
 };
 
-export function stripHtml(html: string, maxLength?: number) {
-  const tmp = document.createElement('DIV');
-  tmp.innerHTML = html;
-  const result = tmp.textContent || tmp.innerText || '';
+const blockBoundaryRegEx = /<\/(p|div|li|h[1-6]|tr|blockquote)>|<br\s*\/?>/gi;
 
-  return truncate(result, maxLength);
+// Converts HTML to plain text, preserving line breaks. DOMParser is inert (no
+// scripts run, no event handlers fire), unlike `innerHTML`, so this is XSS-safe.
+export function htmlToPlainText(html: string) {
+  const withLineBreaks = html.replace(blockBoundaryRegEx, '\n');
+  const { body } = new DOMParser().parseFromString(withLineBreaks, 'text/html');
+  // Otherwise their source code would show up as text.
+  body.querySelectorAll('script, style').forEach((element) => element.remove());
+
+  return body.textContent;
+}
+
+// Single line of plain text, for meta tags and previews.
+export function stripHtml(html: string, maxLength?: number) {
+  const text = htmlToPlainText(html).replace(/\s+/g, ' ').trim();
+
+  return truncate(text, maxLength);
 }
 
 // Default slug rules including arabic character ranges

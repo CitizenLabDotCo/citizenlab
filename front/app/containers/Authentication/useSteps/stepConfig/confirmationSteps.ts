@@ -1,19 +1,19 @@
 import requirementKeys from 'api/authentication/authentication_requirements/keys';
 import {
-  confirmCodeEmail,
   confirmCodeNewEmail,
+  reconfirmCodeEmail,
 } from 'api/authentication/confirm_email/confirmEmailConfirmationCode';
 import {
-  requestCodeEmail,
   requestCodeNewEmail,
+  requestReconfirmCodeEmail,
 } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
 import {
-  confirmCodePhone,
   confirmCodeNewPhone,
+  reconfirmCodePhone,
 } from 'api/authentication/confirm_phone/confirmPhoneConfirmationCode';
 import {
-  requestCodePhone,
   requestCodeNewPhone,
+  requestReconfirmCodePhone,
 } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import { invalidateCacheAfterUpdateUser } from 'api/users/useUpdateUser';
 
@@ -30,7 +30,7 @@ import { doesNotMeetGroupCriteria, checkMissingData } from './utils';
 
 // Here we put all the steps related to confirmation email and phone
 // EXCEPT the ones that are part of the main email flow
-// (i.e. email:unauthenticated-confirmation)
+// (i.e. pre-auth:unauthenticated-confirmation)
 export const confirmationSteps = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
@@ -42,9 +42,11 @@ export const confirmationSteps = (
     // your email.
     'confirmation:reconfirm-email': {
       CLOSE: () => setCurrentStep('closed'),
-      SUBMIT_CODE: async (email: string, code: string) => {
-        await confirmCodeEmail(email, code);
-        await queryClient.invalidateQueries(requirementKeys.all());
+      SUBMIT_CODE: async (_: string, code: string) => {
+        await reconfirmCodeEmail(code);
+        await queryClient.invalidateQueries({
+          queryKey: requirementKeys.all(),
+        });
 
         const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();
@@ -68,7 +70,7 @@ export const confirmationSteps = (
         setCurrentStep('success');
       },
       RESEND_CODE: async () => {
-        await requestCodeEmail();
+        await requestReconfirmCodeEmail();
       },
     },
 
@@ -79,7 +81,9 @@ export const confirmationSteps = (
       },
       SUBMIT_CODE: async (_: string, code: string) => {
         await confirmCodeNewEmail(code);
-        await queryClient.invalidateQueries(requirementKeys.all());
+        await queryClient.invalidateQueries({
+          queryKey: requirementKeys.all(),
+        });
 
         const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();
@@ -112,7 +116,7 @@ export const confirmationSteps = (
     'confirmation:reconfirm-phone': {
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT_CODE: async (code: string) => {
-        await confirmCodePhone(code);
+        await reconfirmCodePhone(code);
         invalidateCacheAfterUpdateUser(queryClient);
 
         const { requirements } = await getRequirements();
@@ -132,7 +136,7 @@ export const confirmationSteps = (
         setCurrentStep('success');
       },
       RESEND_CODE: async () => {
-        await requestCodePhone();
+        await requestReconfirmCodePhone();
       },
     },
 
@@ -142,7 +146,7 @@ export const confirmationSteps = (
         setCurrentStep('missing-data:new_phone');
       },
       SUBMIT_CODE: async (code: string) => {
-        await confirmCodeNewPhone(code);
+        await confirmCodeNewPhone(code, state.smsManualCampaignConsent);
         invalidateCacheAfterUpdateUser(queryClient);
 
         const { requirements } = await getRequirements();

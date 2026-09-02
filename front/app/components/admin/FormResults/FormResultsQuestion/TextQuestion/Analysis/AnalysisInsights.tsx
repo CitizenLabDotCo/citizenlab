@@ -43,9 +43,9 @@ const AnalysisInsights = ({
 
   const { formatMessage } = useIntl();
 
-  const { mutate: addAnalysisSummary, isLoading: addSummaryIsLoading } =
+  const { mutate: addAnalysisSummary, isPending: addSummaryIsLoading } =
     useAddAnalysisSummary();
-  const { mutate: preCheck, isLoading: preCheckIsLoading } =
+  const { mutate: preCheck, isPending: preCheckIsLoading } =
     useAddAnalysisSummaryPreCheck();
 
   const largeSummariesAllowed = useFeatureFlag({

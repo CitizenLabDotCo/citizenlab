@@ -77,6 +77,7 @@ nl-NL:
         users_who_follow_the_proposal: Gebruikers die het voorstel volgen
       trigger:
         7_days_after_invite_is_sent: 7 dagen na verzending van de uitnodiging
+        7_days_before_phase_starts: 7 dagen voordat een fase start
         7_days_before_the_project_changes_phase: 7 dagen voor het project van fase verandert
         comment_is_deleted: Reactie is verwijderd
         comment_is_flagged_as_spam: Reactie is gemarkeerd als spam
@@ -95,6 +96,7 @@ nl-NL:
         new_input_awaits_screening: Nieuwe bijdrage wacht op screening
         new_input_is_published: Nieuwe bijdrage is gepubliceerd
         new_proposal_is_posted: Nieuw voorstel is geplaatst
+        phase_starts: Een fase start
         project_phase_changes: Wijzigingen in projectfase
         project_published: Project gepubliceerd
         project_review_request: Moderator heeft een projectbeoordeling aangevraagd
@@ -197,8 +199,8 @@ nl-NL:
       project_folder_moderation_rights_received: Mapbeheerdersrechten ontvangen
       project_manager_rights_received: Projectbeheerdersrechten ontvangen
       project_moderation_rights_received: Projectbeheerdersrechten ontvangen
-      project_phase_started: Nieuwe projectfase
-      project_phase_upcoming: Opkomende nieuwe projectfase
+      project_phase_started: Fase gestart
+      project_phase_upcoming: Fase start binnenkort
       project_published: Project gepubliceerd
       project_review_request: Projectbeoordelingsverzoek
       project_review_state_change: Project goedgekeurd
@@ -359,6 +361,7 @@ nl-NL:
         story: Ga naar je verhaal
         suggestion: Ga naar je suggestie
         topic: Ga naar je thema
+      phase_dates: Van %{startDate} tot %{endDate}
     idea_marked_as_spam:
       cta_button: Beoordeling
       preheader: Neem actie
@@ -539,6 +542,7 @@ nl-NL:
       yesterday: Gisteren
     new_phone_confirmation:
       sms_body: Je bevestigingscode is %{code}.
+      sms_body2: '%{organization_name}: Je bevestigingscode is %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Ga naar deze bijdrage
       event_description: "%{feedback_author_name} gaf een update op %{input_title}'."
@@ -553,6 +557,7 @@ nl-NL:
       title: Kies een nieuw wachtwoord
     phone_confirmation:
       sms_body: Je bevestigingscode is %{code}.
+      sms_body2: '%{organization_name}: Je bevestigingscode is %{code}.'
     preview_data:
       author_display_name: Emma de Vries
       author_first_name: Emma
@@ -571,8 +576,9 @@ nl-NL:
       input_status_description: Een voorbeeld van een status voor een bijdrage (bijv. geaccepteerd, afgewezen, geïmplementeerd...)
       input_status_title: Voorbeeld status
       official_feedback_body: Voorbeeld officiële feedback
+      phase_description: Dit is voorbeeldinhoud voor een fase die wordt gebruikt voor een voorbeeldweergave van de inhoud van e-mails. Dit is geen echte inhoud.
       phase_title: Voorbeeldfase
-      project_description_preview: Dit is een voorbeeld van fase-inhoud die wordt gebruikt om de inhoud van e-mails te bekijken. Dit is geen echte inhoud.
+      project_description_preview: Dit is voorbeeldinhoud van een project die wordt gebruikt om de inhoud van e-mails te bekijken. Dit is geen echte inhoud.
       project_title: Voorbeeldproject
       proposal_title: Voorbeeldvoorstel
       space_title: Voorbeeldruimte
@@ -609,21 +615,21 @@ nl-NL:
       title_what_can_you_do_moderator: Wat kan je doen als projectbeheerder?
       x_ideas: '%{numberOfIdeas} bijdrages'
     project_phase_started:
-      cta_button: Ontdek deze nieuwe fase
-      event_description: Dit project is een nieuwe fase ingegaan op het platform van %{organizationName}. Klik op de link hieronder om meer te weten te komen!
+      cta_button: Bekijk wat er nieuw is
+      event_description: "Je kunt nu deelnemen aan '%{phaseTitle}' op het platform van %{organizationName}."
       new_phase: "Het project is de fase '%{phaseTitle}' ingegaan"
-      preheader: Een nieuwe fase is gestart voor %{projectName}
-      subject: '%{projectName} ging een nieuwe fase in'
+      preheader: "Je kunt nu deelnemen aan '%{phaseTitle}'"
+      subject: "'%{phaseTitle}' is gestart in %{projectName}"
       subtitle: "Over '%{projectName}'"
-      title: "Een nieuwe fase is begonnen voor het project '%{projectName}'"
+      title: "Er is iets nieuws in '%{projectName}'"
     project_phase_upcoming:
-      cta_button: Stel deze nieuwe fase in
-      event_description: "Het project '%{projectName}' gaat binnenkort een nieuwe fase in. Zorg ervoor dat alles klaar staat: Is er een goede beschrijving? Werden geselecteerde bijdrages al naar deze fase overgeplaatst? Wil je je burgers nog informeren over bepaalde zaken via een e-mailcampagne?"
+      cta_button: Controleer de instellingen
+      event_description: "'%{phaseTitle}' in het project '%{projectName}' start op %{startDate}. Neem even de tijd om te controleren of alles klaarstaat: Is de beschrijving volledig? Zijn de datums correct? Wil je je gemeenschap informeren via een aangepaste e-mailcampagne?"
       new_phase: "Het project gaat de fase '%{phaseTitle}' in"
-      preheader: Een nieuwe fase gaat binnenkort van start voor %{projectName}
-      subject: Zet alles klaar voor de nieuwe fase van %{projectName}
+      preheader: Zorg ervoor dat alles klaarstaat voor %{startDate}
+      subject: "%{projectName}: '%{phaseTitle}' start op %{startDate}"
       subtitle: "Over '%{projectName}'"
-      title: '%{firstName}, een project gaat binnenkort een nieuwe fase in'
+      title: "%{firstName}, '%{phaseTitle}' start op %{startDate}"
     project_published:
       cta_button: Ga naar dit project
       event_description: 'Het participatieplatform van %{organizationName} heeft zojuist het volgende project gepubliceerd:'

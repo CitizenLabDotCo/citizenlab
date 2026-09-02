@@ -1,10 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import { IJob } from 'api/jobs/types';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import jobsKeys from './keys';
-import { IJob, CopyRequestParams } from './types';
+import { CopyRequestParams } from './types';
 
 const copyInputs = ({
   toPhaseId,

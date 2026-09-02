@@ -77,6 +77,7 @@ nb-NO:
         users_who_follow_the_proposal: Brukere som følger forslaget
       trigger:
         7_days_after_invite_is_sent: 7 dager etter at invitasjonen er sendt
+        7_days_before_phase_starts: 7 dager før en fase starter
         7_days_before_the_project_changes_phase: 7 dager før prosjektet endrer fase
         comment_is_deleted: Kommentar er slettet
         comment_is_flagged_as_spam: Kommentaren er flagget som søppelpost
@@ -95,6 +96,7 @@ nb-NO:
         new_input_awaits_screening: Nye innspill venter på screening
         new_input_is_published: Nye innspill publiseres
         new_proposal_is_posted: Nytt forslag er lagt ut
+        phase_starts: En fase starter
         project_phase_changes: Endringer i prosjektfasen
         project_published: Prosjekt publisert
         project_review_request: Moderator ba om en prosjektgjennomgang
@@ -197,8 +199,8 @@ nb-NO:
       project_folder_moderation_rights_received: Mappeadministratorrettigheter mottatt
       project_manager_rights_received: Rettigheter som prosjektansvarlig mottatt
       project_moderation_rights_received: Mottatte rettigheter til prosjektmoderering
-      project_phase_started: Ny prosjektfase
-      project_phase_upcoming: Kommende ny prosjektfase
+      project_phase_started: Fasen har startet
+      project_phase_upcoming: Fasen starter snart
       project_published: Prosjekt publisert
       project_review_request: Forespørsel om prosjektgjennomgang
       project_review_state_change: Prosjektet er godkjent
@@ -359,6 +361,7 @@ nb-NO:
         story: Gå til historien din
         suggestion: Gå til forslaget ditt
         topic: Gå til emnet ditt
+      phase_dates: Fra %{startDate} til %{endDate}
     idea_marked_as_spam:
       cta_button: Anmeldelse
       preheader: Gjør noe med denne spam-rapporten
@@ -539,6 +542,7 @@ nb-NO:
       yesterday: I går
     new_phone_confirmation:
       sms_body: Din bekreftelseskode er %{code}.
+      sms_body2: '%{organization_name}: Din bekreftelseskode er %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Gå til denne inngangen
       event_description: "%{feedback_author_name} ga en oppdatering på '%{input_title}'."
@@ -553,6 +557,7 @@ nb-NO:
       title: Velg et nytt passord
     phone_confirmation:
       sms_body: Din bekreftelseskode er %{code}.
+      sms_body2: '%{organization_name}: Din bekreftelseskode er %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
@@ -571,8 +576,9 @@ nb-NO:
       input_status_description: Et eksempel på en status for en inngang (f.eks. akseptert, avvist, implementert ...)
       input_status_title: Eksempel Status
       official_feedback_body: Eksempel på offisiell tilbakemelding
+      phase_description: Dette er eksempelinnhold for en fase som brukes til å forhåndsvise innholdet i e-poster. Dette er ikke ekte innhold.
       phase_title: Eksempel på fase
-      project_description_preview: Dette er et eksempel på faseinnhold som brukes til forhåndsvisning av innholdet i e-poster. Dette er ikke ekte innhold.
+      project_description_preview: Dette er eksempelinnhold for prosjektet som brukes til å forhåndsvise innholdet i e-poster. Dette er ikke ekte innhold.
       project_title: Eksempel på prosjekt
       proposal_title: Eksempel på forslag
       space_title: Eksempelområde
@@ -607,21 +613,21 @@ nb-NO:
       title_what_can_you_do_moderator: Hva kan du gjøre som prosjektleder?
       x_ideas: '%{numberOfIdeas} ideer'
     project_phase_started:
-      cta_button: Oppdag denne nye fasen
-      event_description: Dette prosjektet gikk inn i en ny fase på plattformen %{organizationName}. Klikk på lenken nedenfor for å lære mer!
+      cta_button: Se hva som er nytt
+      event_description: "Du kan nå delta i '%{phaseTitle}' på plattformen til %{organizationName}."
       new_phase: "Dette prosjektet gikk inn i fasen '%{phaseTitle}'"
-      preheader: En ny fase har startet for %{projectName}
-      subject: '%{projectName} gikk inn i en ny fase'
+      preheader: "Du kan nå delta i '%{phaseTitle}'"
+      subject: "'%{phaseTitle}' har startet i %{projectName}"
       subtitle: "Om '%{projectName}'"
-      title: "En ny fase startet for prosjektet '%{projectName}'"
+      title: "Det er noe nytt i '%{projectName}'"
     project_phase_upcoming:
-      cta_button: Sett opp denne nye fasen
-      event_description: 'Prosjektet%{projectName} går snart over i en ny fase. Sørg for at alt er klart for denne fasen: Finnes det en tilstrekkelig beskrivelse? Er utvalgte ideer overført til denne fasen? Ønsker du å informere innbyggerne om detaljene i denne fasen gjennom en tilpasset e-postkampanje?'
+      cta_button: Se over oppsettet
+      event_description: "'%{phaseTitle}' i prosjektet '%{projectName}' starter %{startDate}. Bruk et øyeblikk på å sjekke at alt er klart: Er beskrivelsen fullstendig? Er datoene riktige? Vil du informere lokalsamfunnet ditt gjennom en tilpasset e-postkampanje?"
       new_phase: "Prosjektet vil gå inn i fasen '%{phaseTitle}'"
-      preheader: Snart starter en ny fase for %{projectName}
-      subject: Gjør alt klart for den nye fasen av %{projectName}
+      preheader: Sørg for at alt er klart før %{startDate}
+      subject: "%{projectName}: '%{phaseTitle}' starter %{startDate}"
       subtitle: "Om '%{projectName}'"
-      title: '%{firstName}, et prosjekt går snart inn i en ny fase'
+      title: "%{firstName}, '%{phaseTitle}' starter %{startDate}"
     project_published:
       cta_button: Gå til dette prosjektet
       event_description: 'Deltakelsesplattformen %{organizationName} har nettopp publisert følgende prosjekt:'

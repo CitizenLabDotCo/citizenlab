@@ -14,8 +14,7 @@ export interface FormValues {
   last_name: string;
   email: string;
   password: string;
-  termsAndConditionsAccepted: boolean;
-  privacyPolicyAccepted: boolean;
+  policiesAccepted: boolean;
 }
 
 export const DEFAULT_VALUES: Partial<FormValues> = {
@@ -23,8 +22,7 @@ export const DEFAULT_VALUES: Partial<FormValues> = {
   last_name: undefined,
   email: undefined,
   password: undefined,
-  termsAndConditionsAccepted: false,
-  privacyPolicyAccepted: false,
+  policiesAccepted: false,
 };
 
 const isTruthy = (value?: boolean) => !!value;
@@ -55,13 +53,10 @@ export const getSchema = (
     ),
     email: emailSchema,
     password: passwordSchema,
-    termsAndConditionsAccepted: boolean()
-      .test('', formatMessage(authProvidersMessages.tacError), isTruthy)
-      .required(),
-    privacyPolicyAccepted: boolean()
+    policiesAccepted: boolean()
       .test(
         '',
-        formatMessage(authProvidersMessages.privacyPolicyNotAcceptedError),
+        formatMessage(authProvidersMessages.policiesNotAcceptedError),
         isTruthy
       )
       .required(),

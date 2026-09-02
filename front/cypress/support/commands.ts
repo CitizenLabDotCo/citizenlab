@@ -7,6 +7,7 @@ import { IUpdatedAppConfigurationProperties } from '../../app/api/app_configurat
 import { IProjectAttributes } from '../../app/api/projects/types';
 import { ICustomFieldInputType } from '../../app/api/custom_fields/types';
 import { IGroup } from '../../app/api/groups/types';
+import type { TRule } from '../../app/modules/commercial/smart_groups/components/UserFilterConditions/rules';
 import { Multiloc } from '../../app/typings';
 
 import { jwtDecode } from 'jwt-decode';
@@ -15,6 +16,7 @@ import {
   IPermissionUpdate,
   IPhasePermissionAction,
 } from '../../app/api/phase_permissions/types';
+import { TReactionMode } from '../../app/api/idea_reactions/types';
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
@@ -52,8 +54,7 @@ declare global {
       getArea: typeof getArea;
       apiCreateIdea: typeof apiCreateIdea;
       apiRemoveIdea: typeof apiRemoveIdea;
-      apiLikeIdea: typeof apiLikeIdea;
-      apiDislikeIdea: typeof apiDislikeIdea;
+      apiReactToIdea: typeof apiReactToIdea;
       apiCreateOfficialFeedbackForIdea: typeof apiCreateOfficialFeedbackForIdea;
       apiAddComment: typeof apiAddComment;
       apiRemoveComment: typeof apiRemoveComment;
@@ -71,22 +72,27 @@ declare global {
       apiCreatePhase: typeof apiCreatePhase;
       apiCreateCustomField: typeof apiCreateCustomField;
       apiCreateCustomFieldOption: typeof apiCreateCustomFieldOption;
+      apiGetUserCustomFields: typeof apiGetUserCustomFields;
       apiRemoveCustomField: typeof apiRemoveCustomField;
       apiAddPoll: typeof apiAddPoll;
       apiCreateCause: typeof apiCreateCause;
       apiVerifyBogus: typeof apiVerifyBogus;
       apiCreateEvent: typeof apiCreateEvent;
+      apiRemoveEvent: typeof apiRemoveEvent;
       apiToggleProjectDescriptionBuilder: typeof apiToggleProjectDescriptionBuilder;
       apiCreateReportBuilder: typeof apiCreateReportBuilder;
       apiRemoveReportBuilder: typeof apiRemoveReportBuilder;
       apiRemoveAllReports: typeof apiRemoveAllReports;
       apiSetPhasePermission: typeof apiSetPhasePermission;
       apiGetPhasePermission: typeof apiGetPhasePermission;
+      apiOverridePhasePermission: typeof apiOverridePhasePermission;
       intersectsViewport: typeof intersectsViewport;
       notIntersectsViewport: typeof notIntersectsViewport;
+      apiGetHomepageLayout: typeof apiGetHomepageLayout;
       apiUpdateHomepageLayout: typeof apiUpdateHomepageLayout;
       apiUpdateAppConfiguration: typeof apiUpdateAppConfiguration;
       clickLocaleSwitcherAndType: typeof clickLocaleSwitcherAndType;
+      apiCreateSmartGroup: typeof apiCreateSmartGroup;
       apiCreateSmartGroupCustomField: typeof apiCreateSmartGroupCustomField;
       apiRemoveSmartGroup: typeof apiRemoveSmartGroup;
       apiUpdatePermissionCustomField: typeof apiUpdatePermissionCustomField;
@@ -140,12 +146,16 @@ export function randomEmail() {
 }
 
 export function randomPhoneNumber() {
-  // NANP toll-free number: +1 800 NXX-XXXX. libphonenumber (and therefore
-  // Phonelib, used by the backend to validate) requires the exchange code
-  // (the digit right after 800) to be 2-9 — a leading 0 or 1 is invalid.
-  // So the 7-digit block must start with 2-9: range 2000000..9999999.
-  const randomDigits = Math.floor(Math.random() * 8000000) + 2000000;
-  return `+1800${randomDigits}`; // Returns the number in E.164 format
+  // Belgian mobile number, matching the seeded platform country: the phone input
+  // pre-selects that country, so the user only types the national part while the
+  // API still needs the full E.164 number.
+  const operatorDigit = Math.floor(Math.random() * 5) + 5;
+  const subscriberDigits = String(
+    Math.floor(Math.random() * 10000000)
+  ).padStart(7, '0');
+  const national = `4${operatorDigit}${subscriberDigits}`;
+
+  return { national, e164: `+32${national}` };
 }
 
 function unregisterServiceWorkers() {
@@ -182,7 +192,7 @@ function signUp() {
   cy.get('.e2e-privacy-checkbox .e2e-checkbox').click();
   cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);
 
-  cy.get('#e2e-confirmation-code-input').type('1234');
+  cy.get('#e2e-confirmation-code-input').type('123456');
   cy.get('#e2e-confirmation-button').click();
 
   cy.get('.e2e-signup-success-close-button').wait(500).click();
@@ -255,7 +265,7 @@ function emailConfirmation(email: string) {
     method: 'POST',
     url: 'web_api/v1/user/confirm_code_email',
     body: {
-      confirmation: { email, code: '1234' },
+      confirmation: { email, code: '123456' },
     },
   });
 }
@@ -762,7 +772,12 @@ function apiRemoveIdea(ideaId: string) {
   });
 }
 
-function apiLikeIdea(email: string, password: string, ideaId: string) {
+function apiReactToIdea(
+  email: string,
+  password: string,
+  ideaId: string,
+  mode: TReactionMode
+) {
   return cy.apiLogin(email, password).then((response) => {
     const jwt = response.body.jwt;
 
@@ -772,22 +787,12 @@ function apiLikeIdea(email: string, password: string, ideaId: string) {
         Authorization: `Bearer ${jwt}`,
       },
       method: 'POST',
-      url: `web_api/v1/ideas/${ideaId}/reactions/up`,
-    });
-  });
-}
-
-function apiDislikeIdea(email: string, password: string, ideaId: string) {
-  return cy.apiLogin(email, password).then((response) => {
-    const jwt = response.body.jwt;
-
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${jwt}`,
+      url: `web_api/v1/ideas/${ideaId}/reactions`,
+      body: {
+        reaction: {
+          mode,
+        },
       },
-      method: 'POST',
-      url: `web_api/v1/ideas/${ideaId}/reactions/down`,
     });
   });
 }
@@ -1226,6 +1231,21 @@ function apiRemovePhase(phaseId: string) {
   });
 }
 
+function apiRemoveEvent(eventId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'DELETE',
+      url: `web_api/v1/events/${eventId}`,
+    });
+  });
+}
+
 function apiRemoveFolder(folderId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1493,6 +1513,21 @@ function apiCreateCustomFieldOption(optionName: string, customFieldId: string) {
   });
 }
 
+function apiGetUserCustomFields() {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'GET',
+      url: 'web_api/v1/users/custom_fields',
+    });
+  });
+}
+
 function apiRemoveCustomField(fieldId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1681,11 +1716,16 @@ type ApiSetPermissionTypeProps = {
     | { permission: Partial<IPermissionUpdate> };
   action: IPhasePermissionAction;
 };
-function apiSetPhasePermission({
+// A phase action has no permission of its own until it is overridden: until
+// then it follows the global 'visiting' permission and there is nothing to
+// PATCH. Overriding is idempotent, so this can be called unconditionally.
+function apiOverridePhasePermission({
   phaseId,
-  permissionBody,
   action,
-}: ApiSetPermissionTypeProps) {
+}: {
+  phaseId: string;
+  action: IPhasePermissionAction;
+}) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -1695,10 +1735,32 @@ function apiSetPhasePermission({
         Authorization: `Bearer ${adminJwt}`,
       },
       method: 'PATCH',
-      url: `web_api/v1/phases/${phaseId}/permissions/${action}`,
-      body: permissionBody,
+      url: `web_api/v1/phases/${phaseId}/permissions/${action}/override`,
     });
   });
+}
+
+function apiSetPhasePermission({
+  phaseId,
+  permissionBody,
+  action,
+}: ApiSetPermissionTypeProps) {
+  return cy
+    .apiOverridePhasePermission({ phaseId, action })
+    .then(() => cy.apiLogin('admin@govocal.com', 'democracy2.0'))
+    .then((response) => {
+      const adminJwt = response.body.jwt;
+
+      return cy.request({
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`,
+        },
+        method: 'PATCH',
+        url: `web_api/v1/phases/${phaseId}/permissions/${action}`,
+        body: permissionBody,
+      });
+    });
 }
 
 function apiGetPhasePermission({ phaseId, action }: ApiSetPermissionTypeProps) {
@@ -1789,11 +1851,43 @@ function apiUpdateAppConfiguration(
   });
 }
 
-function clickLocaleSwitcherAndType(title: string) {
-  cy.wait(1000);
-  cy.get('.e2e-localeswitcher').each((button) => {
+// Fills a multiloc field in every locale of the tenant, through its locale switcher.
+// Pass `field` on forms holding more than one multiloc field: the switcher and the
+// input are then looked up inside that field instead of page-wide. `input` is a
+// selector within it ('input', 'textarea', '.ql-editor', …).
+function clickLocaleSwitcherAndType(
+  text: string,
+  field?: { container: string; input: string }
+) {
+  if (!field) {
+    cy.wait(1000);
+    cy.get('.e2e-localeswitcher').each((button) => {
+      cy.wrap(button).click();
+      cy.get('#title_multiloc').clear().type(text);
+    });
+    return;
+  }
+
+  cy.get(`${field.container} .e2e-localeswitcher`).each((button) => {
     cy.wrap(button).click();
-    cy.get('#title_multiloc').clear().type(title);
+    cy.wrap(button).should('have.class', 'selected');
+    cy.get(field.container).find(field.input).first().clear().type(text);
+    cy.wrap(button).find('div').should('have.class', 'notEmpty');
+  });
+}
+
+function apiGetHomepageLayout() {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'GET',
+      url: `web_api/v1/home_pages/content_builder_layouts/homepage`,
+    });
   });
 }
 
@@ -1821,11 +1915,7 @@ function apiUpdateHomepageLayout({
     });
   });
 }
-function apiCreateSmartGroupCustomField(
-  groupName: string,
-  customFieldId: string,
-  customFieldOptionId: string
-) {
+function apiCreateSmartGroup(groupName: string, rules: TRule[]) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -1844,18 +1934,26 @@ function apiCreateSmartGroupCustomField(
             en: groupName,
             'nl-BE': groupName,
           },
-          rules: [
-            {
-              customFieldId,
-              predicate: 'has_value',
-              ruleType: 'custom_field_select',
-              value: customFieldOptionId,
-            },
-          ],
+          rules,
         },
       },
     });
   });
+}
+
+function apiCreateSmartGroupCustomField(
+  groupName: string,
+  customFieldId: string,
+  customFieldOptionId: string
+) {
+  return cy.apiCreateSmartGroup(groupName, [
+    {
+      customFieldId,
+      predicate: 'has_value',
+      ruleType: 'custom_field_select',
+      value: customFieldOptionId,
+    },
+  ]);
 }
 
 function apiRemoveSmartGroup(smartGroupId: string) {
@@ -1874,7 +1972,8 @@ function apiRemoveSmartGroup(smartGroupId: string) {
 }
 
 const createBaseCustomField =
-  (imageId?: string) => (input_type: ICustomFieldInputType, i: number) => ({
+  (imageId?: string, optionCount?: number) =>
+  (input_type: ICustomFieldInputType, i: number) => ({
     title_multiloc:
       input_type === 'page' ? {} : { en: `Question: ${input_type}` },
     description_multiloc: {},
@@ -1885,7 +1984,7 @@ const createBaseCustomField =
     logic: {},
     required: false,
     input_type,
-    options: getOptions(input_type, imageId),
+    options: getOptions(input_type, imageId, optionCount),
     ordering: i,
     ...(input_type === 'linear_scale'
       ? {
@@ -1896,20 +1995,13 @@ const createBaseCustomField =
       : {}),
   });
 
-const getOptions = (input_type: string, imageId?: string) => {
+const getOptions = (input_type: string, imageId?: string, optionCount = 2) => {
   if (['select', 'multiselect', 'multiselect_image'].indexOf(input_type) > -1) {
-    return [
-      {
-        temp_id: `TEMP-ID-${randomString()}`,
-        title_multiloc: { en: `${input_type}: Option 1` },
-        ...(imageId ? { image_id: imageId } : {}),
-      },
-      {
-        temp_id: `TEMP-ID-${randomString()}`,
-        title_multiloc: { en: `${input_type}: Option 2` },
-        ...(imageId ? { image_id: imageId } : {}),
-      },
-    ];
+    return Array.from({ length: optionCount }, (_, index) => ({
+      temp_id: `TEMP-ID-${randomString()}`,
+      title_multiloc: { en: `${input_type}: Option ${index + 1}` },
+      ...(imageId ? { image_id: imageId } : {}),
+    }));
   }
 
   return undefined;
@@ -1918,7 +2010,8 @@ const getOptions = (input_type: string, imageId?: string) => {
 function apiCreateSurveyQuestions(
   phaseId: string,
   inputTypes: ICustomFieldInputType[],
-  imageId?: string
+  imageId?: string,
+  optionCount?: number
 ) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1932,7 +2025,7 @@ function apiCreateSurveyQuestions(
       url: `web_api/v1/phases/${phaseId}/custom_fields/update_all`,
       body: {
         custom_fields: [
-          ...inputTypes.map(createBaseCustomField(imageId)),
+          ...inputTypes.map(createBaseCustomField(imageId, optionCount)),
           {
             id: randomString(),
             input_type: 'page',
@@ -2360,10 +2453,11 @@ function deleteEventAttendances(
   });
 }
 
-function apiRemoveIdeas(projectId?: string) {
-  // When a projectId is passed, only ideas (incl. survey responses) belonging to
-  // that project are removed. Without it, ALL ideas in the tenant are deleted,
-  // which wipes seeded fixtures (e.g. the "Verified Idea") that other specs rely on.
+// projectId is required on purpose: scoping the deletion to one project is the
+// only safe form. A tenant-wide delete would also remove seeded fixtures (e.g.
+// the "Verified Idea") that other specs rely on, and because specs share one
+// backend it would break them from a different parallel node.
+function apiRemoveIdeas(projectId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -2371,7 +2465,7 @@ function apiRemoveIdeas(projectId?: string) {
       .request({
         method: 'GET',
         url: `/web_api/v1/ideas`,
-        qs: projectId ? { 'projects[]': projectId } : undefined,
+        qs: { 'projects[]': projectId },
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${adminJwt}`,
@@ -2408,6 +2502,7 @@ Cypress.Commands.add(
 Cypress.Commands.add('apiUpdateAppConfiguration', apiUpdateAppConfiguration);
 Cypress.Commands.add('apiGetPhasePermission', apiGetPhasePermission);
 Cypress.Commands.add('apiSetPhasePermission', apiSetPhasePermission);
+Cypress.Commands.add('apiOverridePhasePermission', apiOverridePhasePermission);
 Cypress.Commands.add('logout', logout);
 Cypress.Commands.add('acceptCookies', acceptCookies);
 Cypress.Commands.add('getIdeaById', getIdeaById);
@@ -2420,8 +2515,7 @@ Cypress.Commands.add('getAdminAuthUser', getAdminAuthUser);
 Cypress.Commands.add('getArea', getArea);
 Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
 Cypress.Commands.add('apiRemoveIdea', apiRemoveIdea);
-Cypress.Commands.add('apiLikeIdea', apiLikeIdea);
-Cypress.Commands.add('apiDislikeIdea', apiDislikeIdea);
+Cypress.Commands.add('apiReactToIdea', apiReactToIdea);
 Cypress.Commands.add(
   'apiCreateOfficialFeedbackForIdea',
   apiCreateOfficialFeedbackForIdea
@@ -2440,6 +2534,7 @@ Cypress.Commands.add('apiAddProjectsToFolder', apiAddProjectsToFolder);
 Cypress.Commands.add('apiCreatePhase', apiCreatePhase);
 Cypress.Commands.add('apiCreateCustomField', apiCreateCustomField);
 Cypress.Commands.add('apiCreateCustomFieldOption', apiCreateCustomFieldOption);
+Cypress.Commands.add('apiGetUserCustomFields', apiGetUserCustomFields);
 Cypress.Commands.add('apiRemoveCustomField', apiRemoveCustomField);
 Cypress.Commands.add('apiAddPoll', apiAddPoll);
 Cypress.Commands.add('apiCreateCause', apiCreateCause);
@@ -2453,6 +2548,7 @@ Cypress.Commands.add('setConsentCookie', setConsentCookie);
 Cypress.Commands.add('setLoginCookie', setLoginCookie);
 Cypress.Commands.add('apiVerifyBogus', apiVerifyBogus);
 Cypress.Commands.add('apiCreateEvent', apiCreateEvent);
+Cypress.Commands.add('apiRemoveEvent', apiRemoveEvent);
 Cypress.Commands.add(
   'apiToggleProjectDescriptionBuilder',
   apiToggleProjectDescriptionBuilder
@@ -2470,10 +2566,12 @@ Cypress.Commands.add(
   { prevSubject: true },
   notIntersectsViewport
 );
+Cypress.Commands.add('apiGetHomepageLayout', apiGetHomepageLayout);
 Cypress.Commands.add('apiUpdateHomepageLayout', apiUpdateHomepageLayout);
 Cypress.Commands.add('apiRemoveCustomPage', apiRemoveCustomPage);
 Cypress.Commands.add('apiCreateCustomPage', apiCreateCustomPage);
 Cypress.Commands.add('clickLocaleSwitcherAndType', clickLocaleSwitcherAndType);
+Cypress.Commands.add('apiCreateSmartGroup', apiCreateSmartGroup);
 Cypress.Commands.add(
   'apiCreateSmartGroupCustomField',
   apiCreateSmartGroupCustomField

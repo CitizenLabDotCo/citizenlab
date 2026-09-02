@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  codeMustHaveFourDigits: {
-    id: 'app.containers.PhoneConfirmation.codeMustHaveFourDigits',
-    defaultMessage: 'Code must have 4 digits.',
+  codeMustHaveSixDigits: {
+    id: 'app.containers.PhoneConfirmation.codeMustHaveSixDigits',
+    defaultMessage: 'Code must have 6 digits.',
   },
   anSMSCodeHasBeenSent: {
     id: 'app.containers.PhoneConfirmation.anSMSCodeHasBeenSent',
@@ -21,6 +21,11 @@ export default defineMessages({
   wrongNumber: {
     id: 'app.containers.PhoneConfirmation.wrongNumber',
     defaultMessage: 'Wrong number?',
+  },
+  sendNewCodeIn: {
+    id: 'app.containers.PhoneConfirmation.sendNewCodeIn',
+    defaultMessage:
+      'You can request a new code in {seconds} {seconds, plural, one {second} other {seconds}}.',
   },
   sendNewCode: {
     id: 'app.containers.PhoneConfirmation.sendNewCode',

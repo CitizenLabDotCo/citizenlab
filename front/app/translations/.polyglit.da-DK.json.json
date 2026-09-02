@@ -744,11 +744,6 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
-  "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": {
-    "state": "verified",
-    "verified_at": "2026-03-18T12:49:36.657470Z",
-    "verified_by": "Admin"
-  },
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -1038,6 +1033,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.components.CustomFieldsForm.typeToSearch": {
+    "state": "verified",
+    "verified_at": "2026-08-28T07:07:30.663569Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.components.CustomFieldsForm.typeYourAnswer": {
     "state": "verified",
@@ -3074,6 +3074,11 @@
     "verified_at": "2026-07-21T07:31:04.297512Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysManagedNote2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T11:46:05.215947Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.components.ProjectPageBuilder.Widgets.extraSurveysNoSurveyNote": {
     "state": "verified",
     "verified_at": "2026-07-21T07:31:04.297512Z",
@@ -3127,6 +3132,11 @@
   "app.components.ProjectPageBuilder.Widgets.extraSurveysWidgetTitle": {
     "state": "verified",
     "verified_at": "2026-07-21T07:31:04.297512Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysWidgetTitle2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T11:46:05.215947Z",
     "verified_by": "kielgast@govocal.com"
   },
   "app.components.ProjectPageBuilder.Widgets.inputFeedEmptyTitle": {
@@ -3384,6 +3394,111 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.components.ReactSelect.filterResultsForTerm": {
+    "state": "verified",
+    "verified_at": "2026-08-28T07:07:30.663569Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.ReactSelect.focusedOption": {
+    "state": "verified",
+    "verified_at": "2026-08-28T07:07:30.663569Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.ReactSelect.focusedOptionDisabled": {
+    "state": "verified",
+    "verified_at": "2026-08-28T07:07:30.663569Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.ReactSelect.focusedOptionSelected": {
+    "state": "verified",
+    "verified_at": "2026-08-28T07:07:30.663569Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.ReactSelect.focusedOptionSelectedDisabled": {
+    "state": "verified",
+    "verified_at": "2026-08-28T07:07:30.663569Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.ReactSelect.focusedValue": {
+    "state": "verified",
+    "verified_at": "2026-08-28T07:07:30.663569Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.ReactSelect.guidanceInput": {
+    "state": "verified",
+    "verified_at": "2026-08-28T07:07:30.663569Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.ReactSelect.guidanceInputMulti": {
+    "state": "verified",
+    "verified_at": "2026-08-28T07:07:30.663569Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.ReactSelect.guidanceInputSearchable": {
+    "state": "verified",
+    "verified_at": "2026-08-28T07:07:30.663569Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.ReactSelect.guidanceInputSearchableMulti": {
+    "state": "verified",
+    "verified_at": "2026-08-28T07:07:30.663569Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.ReactSelect.guidanceMenu": {
+    "state": "verified",
+    "verified_at": "2026-08-28T07:07:30.663569Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.ReactSelect.guidanceMenuTabSelects": {
+    "state": "verified",
+    "verified_at": "2026-08-28T07:07:30.663569Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.ReactSelect.guidanceValue": {
+    "state": "verified",
+    "verified_at": "2026-08-28T07:07:30.663569Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.ReactSelect.noOptions": {
+    "state": "verified",
+    "verified_at": "2026-08-28T07:07:30.663569Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.ReactSelect.optionDeselected": {
+    "state": "verified",
+    "verified_at": "2026-08-28T07:07:30.663569Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.ReactSelect.optionDisabled": {
+    "state": "verified",
+    "verified_at": "2026-08-28T07:07:30.663569Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.ReactSelect.optionSelected": {
+    "state": "verified",
+    "verified_at": "2026-08-28T07:07:30.663569Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.ReactSelect.optionsAlreadySelected": {
+    "state": "verified",
+    "verified_at": "2026-08-28T07:07:30.663569Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.ReactSelect.resultsAvailable": {
+    "state": "verified",
+    "verified_at": "2026-08-28T07:07:30.663569Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.ReactSelect.selectLabel": {
+    "state": "verified",
+    "verified_at": "2026-08-28T07:07:30.663569Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.ReactSelect.selectionCleared": {
+    "state": "verified",
+    "verified_at": "2026-08-28T07:07:30.663569Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.components.ReactionControl.completeProfileToReact": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -3523,6 +3638,21 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.components.SmsConsent.campaignPreferencesDisclosure": {
+    "state": "verified",
+    "verified_at": "2026-08-20T11:47:33.945742Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.SmsConsent.phoneConfirmationDisclosure": {
+    "state": "verified",
+    "verified_at": "2026-08-20T11:47:33.945742Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.SmsConsent.smsConfirmationDisclosure": {
+    "state": "verified",
+    "verified_at": "2026-08-05T14:15:57.187013Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.components.StatusModule.futurePhase": {
     "state": "verified",
@@ -4743,6 +4873,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.components.formBuilder.displayAsDropdownForcedWarning": {
+    "state": "verified",
+    "verified_at": "2026-08-28T07:07:30.663569Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.components.formBuilder.displayAsDropdownTooltip": {
     "state": "verified",
@@ -6922,6 +7057,16 @@
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": {
     "state": "verified",
     "verified_at": "2026-07-21T07:18:56.038873Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Authentication.steps.Policies.byContinuingPhone2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T11:47:33.945742Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Authentication.steps.Policies.byContinuingPhone3": {
+    "state": "verified",
+    "verified_at": "2026-08-26T12:23:36.496089Z",
     "verified_by": "kielgast@govocal.com"
   },
   "app.containers.Authentication.steps.SSOVerification.alreadyHaveAnAccount": {
@@ -10109,6 +10254,11 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveSixDigits": {
+    "state": "verified",
+    "verified_at": "2026-08-07T10:23:20.926391Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.noAuthenticationMethodsEnabled": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -10486,13 +10636,13 @@
   },
   "app.containers.NotificationMenu.projectPhaseStarted": {
     "state": "verified",
-    "verified_at": "2026-03-18T12:49:36.657470Z",
-    "verified_by": "Admin"
+    "verified_at": "2026-08-13T07:26:00.815529Z",
+    "verified_by": "Sébastien"
   },
   "app.containers.NotificationMenu.projectPhaseUpcoming": {
     "state": "verified",
-    "verified_at": "2026-03-18T12:49:36.657470Z",
-    "verified_by": "Admin"
+    "verified_at": "2026-08-13T07:26:00.815529Z",
+    "verified_by": "Sébastien"
   },
   "app.containers.NotificationMenu.projectPublished": {
     "state": "verified",
@@ -10789,6 +10939,11 @@
     "verified_at": "2026-07-14T16:35:52.394338Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.containers.PhoneChange.newPhoneLabel2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T11:47:33.945742Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.PhoneChange.phoneEmptyError": {
     "state": "verified",
     "verified_at": "2026-07-14T16:35:52.394338Z",
@@ -10797,6 +10952,11 @@
   "app.containers.PhoneChange.phoneInvalid2": {
     "state": "verified",
     "verified_at": "2026-07-14T16:35:52.394338Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.PhoneChange.phoneInvalid3": {
+    "state": "verified",
+    "verified_at": "2026-08-20T11:47:33.945742Z",
     "verified_by": "kielgast@govocal.com"
   },
   "app.containers.PhoneChange.phoneTaken": {
@@ -10809,7 +10969,6 @@
     "verified_at": "2026-07-14T16:35:52.394338Z",
     "verified_by": "kielgast@govocal.com"
   },
-
   "app.containers.PhoneChange.phoneUnsupportedCountry": {
     "state": "verified",
     "verified_at": "2026-07-24T07:31:08.472758Z",
@@ -10838,6 +10997,11 @@
   "app.containers.PhoneChange.smsManualCampaignConsentLabel": {
     "state": "verified",
     "verified_at": "2026-07-30T08:20:55.645325Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.PhoneChange.smsManualCampaignConsentLabel2": {
+    "state": "verified",
+    "verified_at": "2026-08-20T11:47:33.945742Z",
     "verified_by": "kielgast@govocal.com"
   },
   "app.containers.PhoneChange.submitButton": {
@@ -10885,6 +11049,11 @@
     "verified_at": "2026-07-14T16:35:52.394338Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.containers.PhoneConfirmation.codeMustHaveSixDigits": {
+    "state": "verified",
+    "verified_at": "2026-08-07T10:23:20.926391Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.PhoneConfirmation.confirmationCodeSent": {
     "state": "verified",
     "verified_at": "2026-07-14T16:35:52.394338Z",
@@ -10898,6 +11067,11 @@
   "app.containers.PhoneConfirmation.sendNewCode": {
     "state": "verified",
     "verified_at": "2026-07-14T16:35:52.394338Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.PhoneConfirmation.sendNewCodeIn": {
+    "state": "verified",
+    "verified_at": "2026-08-27T07:58:21.569289Z",
     "verified_by": "kielgast@govocal.com"
   },
   "app.containers.PhoneConfirmation.verifyAndContinue": {
@@ -11875,6 +12049,11 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.containers.SignUp.iHaveReadAndAgreeToTermsAndPrivacy2": {
+    "state": "verified",
+    "verified_at": "2026-08-25T13:03:22.001117Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -11909,6 +12088,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.containers.SignUp.policiesNotAcceptedError": {
+    "state": "verified",
+    "verified_at": "2026-08-25T13:03:22.001117Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.containers.SignUp.privacyPolicyNotAcceptedError": {
     "state": "verified",
@@ -13155,6 +13339,11 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.errors.insufficient_sms_balance": {
+    "state": "verified",
+    "verified_at": "2026-08-21T10:22:53.002015Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.errors.invalid_email": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -13245,6 +13434,11 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.errors.no_previewer_phone": {
+    "state": "verified",
+    "verified_at": "2026-08-25T08:56:00.077394Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.errors.no_recipients": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -13284,6 +13478,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.errors.sms_not_configured": {
+    "state": "verified",
+    "verified_at": "2026-08-22T13:31:00.889599Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.errors.something_went_wrong": {
     "state": "verified",

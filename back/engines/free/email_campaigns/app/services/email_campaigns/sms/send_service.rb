@@ -3,6 +3,8 @@
 module EmailCampaigns
   module Sms
     class SendService
+      delegate :configured?, to: :provider
+
       def create_delivery(body:, user_id: nil, campaign_id: nil)
         unless AppConfiguration.instance.feature_activated?('sms')
           raise Error, 'SMS feature is not enabled for this tenant'
@@ -17,7 +19,7 @@ module EmailCampaigns
       end
 
       # Sends an already-created pending delivery through the provider.
-      def deliver(delivery, to:)
+      def deliver(delivery, to:, use_case:)
         # An at-least-once job re-run can hand us a delivery that already left
         # `pending` (e.g. already sent/delivered). Treat that as a no-op so we
         # neither re-send it nor let the failure rescue below overwrite its real
@@ -29,11 +31,15 @@ module EmailCampaigns
           raise Error, "SMS to country #{parsed.country} is not allowed on this platform"
         end
 
-        result = provider.send(to: parsed.e164, body: delivery.body)
+        result = provider.send(to: parsed.e164, body: delivery.body, use_case: use_case)
         delivery.update!(message_sid: result[:message_sid], status: result[:status])
         delivery
       rescue *ProviderError::RETRYABLE_ERRORS
         # Transient failure — leave the delivery pending so Sms::SendJob can retry it.
+        raise
+      rescue ProviderError::RecipientOptedOut => e
+        ConsentService.new.record_for_sms_use_case!(delivery.user, use_case, consented: false)
+        delivery.update!(status: 'failed', error_message: e.message)
         raise
       rescue ProviderError => e
         # The provider took the message and rejected/failed it.
@@ -59,23 +65,11 @@ module EmailCampaigns
       end
 
       def provider
-        fake_sms_sends? ? Providers::Fake.new : Providers::Twilio.new
-      end
-
-      # Whether to route sends through the fake provider instead of the real Twilio API.
-      # Returns true when:
-      #   - the tenant has `use_test_mode` enabled (in any environment, incl. production/staging), or
-      #   - we're in development and the tenant is missing any Twilio credential.
-      # Returns false when:
-      #   - `use_test_mode` is off and we're not in development, or
-      #   - we're in development but all three Twilio credentials are filled in.
-      def fake_sms_sends?
-        config = AppConfiguration.instance.settings('sms') || {}
-        return true if config['use_test_mode']
-
-        return false unless Rails.env.development?
-
-        config.values_at('twilio_account_sid', 'twilio_auth_token', 'twilio_messaging_service_sid').any?(&:blank?)
+        if AppConfiguration.instance.settings('sms', 'use_test_mode')
+          Providers::Fake.new
+        else
+          Providers::Twilio.new
+        end
       end
     end
   end

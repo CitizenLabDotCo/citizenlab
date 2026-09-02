@@ -30,7 +30,7 @@ const useOAuthAuthorization = (
       }),
     enabled: enabled && !!params.client_id,
     retry: false,
-    cacheTime: 0,
+    gcTime: 0,
   });
 };
 

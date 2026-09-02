@@ -86,6 +86,63 @@ RSpec.describe ApplicationJob, use_transactional_fixtures: false do
       end
     end
 
+    # Que only rescues StandardError. Without ActiveJobQueExtension#_run, the exception below would
+    # kill the worker thread and, through abort_on_exception, the whole process (TAN-8516).
+    describe 'when a job raises an exception that is not a StandardError' do
+      around do |example|
+        initial_retry_interval = Que::Job.retry_interval
+        Que::Job.retry_interval = 0.001
+        example.run
+        Que::Job.retry_interval = initial_retry_interval
+      end
+
+      before do
+        stub_const('TestNonStandardErrorJob', Class.new(ApplicationJob) do
+          class_attribute :counter, default: 0
+
+          def run
+            self.class.counter += 1
+            raise NotImplementedError, 'not supported'
+          end
+        end)
+      end
+
+      it 'keeps the worker alive and retries the job like any other failure' do
+        TestNonStandardErrorJob.perform_later
+        wait_until(wait_timeout) { TestNonStandardErrorJob.counter >= 2 }
+        expect(TestNonStandardErrorJob.counter).to be >= 2
+      end
+
+      it 'records the original exception on the job' do
+        que_job = QueJob.find(TestNonStandardErrorJob.perform_later.provider_job_id)
+        wait_until(wait_timeout) { que_job.reload.error_count.positive? }
+        expect(que_job.last_error_message).to include('NotImplementedError: not supported')
+      end
+
+      context 'when `perform_retries false`' do
+        before { TestNonStandardErrorJob.perform_retries false }
+
+        # Asserts what expiry means - the job stops running - rather than an exact run count, which
+        # is not something the code guarantees: a failure inside `handle_error` is swallowed by
+        # `ActiveJobQueExtension#_run`, which then falls through to `retry_in_default_interval`, so
+        # a job can legitimately run again before an expire succeeds. Whether that is what made this
+        # example flake on CI is unconfirmed - it reproduces when `expire` is stubbed to raise, but
+        # the trigger on CI was never identified. The coarser poll is for the same reason: the tight
+        # default competes with the worker thread for connections, and this example flakes where the
+        # `perform_retries false` one above, which only sleeps, does not.
+        it 'expires the job instead of retrying it' do
+          que_job = QueJob.find(TestNonStandardErrorJob.perform_later.provider_job_id)
+          wait_until(wait_timeout, interval: 0.05) { que_job.reload.expired_at.present? }
+          runs_at_expiry = TestNonStandardErrorJob.counter
+
+          sleep wait_timeout
+
+          expect(TestNonStandardErrorJob.counter).to eq(runs_at_expiry)
+          expect(que_job.reload.expired_at).to be_present
+        end
+      end
+    end
+
     describe 'error tracking' do
       context 'when job raises error' do
         before do

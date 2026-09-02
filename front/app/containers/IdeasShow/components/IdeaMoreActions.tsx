@@ -52,7 +52,7 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
 
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
-  const { mutate: deleteIdea, isLoading: isLoadingDeleteIdea } =
+  const { mutate: deleteIdea, isPending: isLoadingDeleteIdea } =
     useDeleteIdea();
   const { data: phases } = usePhases(projectId);
   const canEditIdea = usePermission({
