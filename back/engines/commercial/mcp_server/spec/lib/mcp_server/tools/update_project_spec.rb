@@ -112,6 +112,17 @@ describe McpServer::Tools::UpdateProject do
     expect(response).to be_unauthorized_project
   end
 
+  it 'updates a published project on a demo platform' do
+    change_lifecycle_stage('demo')
+    published = create(:project)
+
+    response = nil
+    expect { response = run(project_id: published.id, title_multiloc: { 'en' => 'New' }) }
+      .to change { published.reload.title_multiloc }
+
+    expect(response).not_to be_error
+  end
+
   it 'returns a not-found error when the project is missing' do
     response = run(project_id: SecureRandom.uuid, title_multiloc: { 'en' => 'New' })
 
