@@ -35,10 +35,16 @@
 #
 module EmailCampaigns
   class Campaigns::PhoneConfirmation < Campaigns::BaseSms
+    include Consentable
+
     filter :exclude_from_send_pipeline
 
     def self.sms_use_case
       Sms::UseCase::CONFIRMATION_CODES
+    end
+
+    def self.consented_by_default?
+      false
     end
 
     # A localized template with the verification code interpolated. Targets the

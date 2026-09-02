@@ -6,9 +6,11 @@ import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
-import { useLocation } from 'utils/router';
 
+import { CUSTOM_PAGE_BUILDER_PATH } from 'components/admin/ContentBuilder/constants';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
+
+import { useLocation } from 'utils/router';
 
 import messages from './messages';
 
@@ -41,8 +43,11 @@ const StyledBox = styled(Box)`
 const HtmlBlockMultiloc = ({ html }: Props) => {
   const localize = useLocalize();
   const { pathname } = useLocation();
+  // Only the custom page path is a constant so far, because the sidebar and preview checks
+  // share it. The other two are still literals; unify when the builder paths are tidied up.
   const enabled =
     pathname.includes('admin/project-page-builder') ||
+    pathname.includes(CUSTOM_PAGE_BUILDER_PATH) ||
     pathname.includes('admin/pages-menu');
 
   return (

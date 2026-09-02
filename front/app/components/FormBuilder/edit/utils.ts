@@ -6,6 +6,7 @@ import {
   IFlatCustomField,
 } from 'api/custom_fields/types';
 
+import { isDropdownLayoutForced } from 'components/CustomFieldsForm/util';
 import { getInitialLinearScaleLabel } from 'components/FormBuilder/components/FormBuilderToolbox/utils';
 import {
   questionDNDType,
@@ -481,7 +482,11 @@ export const transformFieldForSubmission = (
         : null,
       select_count_enabled: field.select_count_enabled,
       random_option_ordering: field.random_option_ordering,
-      dropdown_layout: field.dropdown_layout,
+      // A long option list renders as a dropdown whatever the admin picked, so
+      // the saved value has to say so too.
+      dropdown_layout:
+        field.dropdown_layout ||
+        isDropdownLayoutForced(field.input_type, field.options?.length ?? 0),
     }),
     ...(field.input_type === 'topic_ids' && {
       maximum_select_count: field.select_count_enabled

@@ -47,15 +47,17 @@ const SurveyForm = ({
 
   const { data: authUser } = useAuthUser();
   const { data: phase } = usePhase(phaseId);
-  const { data: draftIdea, isLoading } = useDraftIdeaByPhaseId(phaseId);
+  const { data: draftIdea, isLoading: isLoadingDraftIdea } =
+    useDraftIdeaByPhaseId(phaseId);
 
   const { mutateAsync: addIdea } = useAddIdea();
   const { mutateAsync: updateIdea } = useUpdateIdea();
-  const { data: customFields } = useCustomFields({
-    projectId,
-    phaseId,
-    publicFields: true,
-  });
+  const { data: customFields, isLoading: isLoadingCustomFields } =
+    useCustomFields({
+      projectId,
+      phaseId,
+      publicFields: true,
+    });
 
   const nestedPagesData = convertCustomFieldsToNestedPages(customFields || []);
 
@@ -116,8 +118,14 @@ const SurveyForm = ({
 
   const initialFormData = getInitialData(draftIdea, authUser, phase);
 
-  if (isLoading) {
-    return <Spinner />;
+  // The options of a select question are part of this response, so a question
+  // with thousands of them keeps the whole form waiting.
+  if (isLoadingDraftIdea || isLoadingCustomFields) {
+    return (
+      <Box mt="20px" display="flex" justifyContent="center" w="100%">
+        <Spinner />
+      </Box>
+    );
   }
 
   return (

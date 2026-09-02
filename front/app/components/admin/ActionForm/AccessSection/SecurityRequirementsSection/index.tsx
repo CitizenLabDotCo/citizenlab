@@ -31,6 +31,7 @@ const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
   const { formatMessage } = useIntl();
   const { attributes } = permission;
 
+  const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
   const smsLoginEnabled = useFeatureFlag({ name: 'sms_login' });
   const visibleToggles = useVisibleSecurityRequirements();
 
@@ -87,7 +88,11 @@ const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
           <MethodRow
             icon="email"
             label={formatMessage(actionFormMessages.requireConfirmedEmail)}
-            description={formatMessage(messages.emailMethodDescription)}
+            description={formatMessage(
+              passwordLoginEnabled
+                ? messages.emailMethodDescriptionWithPasswordLogin
+                : messages.emailMethodDescription
+            )}
             enabled={attributes.require_confirmed_email}
             expiry={attributes.confirmed_email_expiry}
             verb="Re-confirm"

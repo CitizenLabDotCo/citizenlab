@@ -2,6 +2,17 @@ import moment = require('moment');
 import { randomString, randomEmail } from '../../../support/commands';
 import { signUpEmailConformation, enterUserInfo } from '../../../support/auth';
 
+const chooseOption = (fieldKey: string, optionLabel: string) => {
+  // Two options is below the search threshold, so react-select renders a
+  // DummyInput 100px left of the control that a plain click would miss.
+  cy.get('#e2e-signup-custom-fields-container')
+    .find(`[id="${fieldKey}"]`)
+    .click({ force: true });
+
+  // The menu is portaled to the body, outside the container queried above.
+  cy.contains('[role="option"]', optionLabel).click();
+};
+
 describe('Native survey permissions', () => {
   describe('Native survey for smart group (question defining smart group asked in registration flow)', () => {
     let customFieldId = '';
@@ -105,9 +116,7 @@ describe('Native survey permissions', () => {
       cy.get('#e2e-signup-custom-fields-container');
 
       // Select Option A
-      cy.get('#e2e-signup-custom-fields-container')
-        .find(`select[id="${customFieldKey}"]`)
-        .select('Option A');
+      chooseOption(customFieldKey, 'Option A');
 
       // Submit custom fields
       cy.get('#e2e-signup-custom-fields-submit-btn').click();
@@ -141,9 +150,7 @@ describe('Native survey permissions', () => {
       cy.get('#e2e-signup-custom-fields-container');
 
       // Select Option B
-      cy.get('#e2e-signup-custom-fields-container')
-        .find(`select[id="${customFieldKey}"]`)
-        .select('Option B');
+      chooseOption(customFieldKey, 'Option B');
 
       // Submit custom fields
       cy.get('#e2e-signup-custom-fields-submit-btn').click();

@@ -1878,7 +1878,8 @@ function apiRemoveSmartGroup(smartGroupId: string) {
 }
 
 const createBaseCustomField =
-  (imageId?: string) => (input_type: ICustomFieldInputType, i: number) => ({
+  (imageId?: string, optionCount?: number) =>
+  (input_type: ICustomFieldInputType, i: number) => ({
     title_multiloc:
       input_type === 'page' ? {} : { en: `Question: ${input_type}` },
     description_multiloc: {},
@@ -1889,7 +1890,7 @@ const createBaseCustomField =
     logic: {},
     required: false,
     input_type,
-    options: getOptions(input_type, imageId),
+    options: getOptions(input_type, imageId, optionCount),
     ordering: i,
     ...(input_type === 'linear_scale'
       ? {
@@ -1900,20 +1901,13 @@ const createBaseCustomField =
       : {}),
   });
 
-const getOptions = (input_type: string, imageId?: string) => {
+const getOptions = (input_type: string, imageId?: string, optionCount = 2) => {
   if (['select', 'multiselect', 'multiselect_image'].indexOf(input_type) > -1) {
-    return [
-      {
-        temp_id: `TEMP-ID-${randomString()}`,
-        title_multiloc: { en: `${input_type}: Option 1` },
-        ...(imageId ? { image_id: imageId } : {}),
-      },
-      {
-        temp_id: `TEMP-ID-${randomString()}`,
-        title_multiloc: { en: `${input_type}: Option 2` },
-        ...(imageId ? { image_id: imageId } : {}),
-      },
-    ];
+    return Array.from({ length: optionCount }, (_, index) => ({
+      temp_id: `TEMP-ID-${randomString()}`,
+      title_multiloc: { en: `${input_type}: Option ${index + 1}` },
+      ...(imageId ? { image_id: imageId } : {}),
+    }));
   }
 
   return undefined;
@@ -1922,7 +1916,8 @@ const getOptions = (input_type: string, imageId?: string) => {
 function apiCreateSurveyQuestions(
   phaseId: string,
   inputTypes: ICustomFieldInputType[],
-  imageId?: string
+  imageId?: string,
+  optionCount?: number
 ) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1936,7 +1931,7 @@ function apiCreateSurveyQuestions(
       url: `web_api/v1/phases/${phaseId}/custom_fields/update_all`,
       body: {
         custom_fields: [
-          ...inputTypes.map(createBaseCustomField(imageId)),
+          ...inputTypes.map(createBaseCustomField(imageId, optionCount)),
           {
             id: randomString(),
             input_type: 'page',

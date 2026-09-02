@@ -200,6 +200,18 @@ resource 'Projects' do
       expect(json_response_body[:project]).to include({ id: id })
     end
 
+    context 'when the description is authored on the Content Builder' do
+      before do
+        project.update!(description_multiloc: { 'en' => '<p>Renew the parc</p>' })
+        ContentBuilder::LayoutProvisioningService.new.provision_for(project)
+      end
+
+      example_request 'Returns the description held by the project page layout', document: false do
+        assert_status 200
+        expect(json_response_body.dig(:project, :description_html)).to eq '<p>Renew the parc</p>'
+      end
+    end
+
     context 'when the locale is specified' do
       let(:locale) { 'nl-NL' }
 

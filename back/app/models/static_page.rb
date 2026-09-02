@@ -59,6 +59,8 @@ class StaticPage < ApplicationRecord
   belongs_to :project, optional: true
 
   has_one :nav_bar_item, dependent: :destroy
+  has_one :content_builder_layout, class_name: 'ContentBuilder::Layout',
+    as: :content_buildable, dependent: :destroy
   has_many :static_page_files, -> { order(:ordering) }, dependent: :destroy
   has_many :static_pages_global_topics, dependent: :destroy
   has_many :global_topics, -> { order(:ordering) }, through: :static_pages_global_topics

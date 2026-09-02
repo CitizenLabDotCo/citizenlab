@@ -61,7 +61,7 @@ export const getVisibleSecurityRequirements = ({
     visibleSecurityRequirements.email = true;
   }
 
-  if (passwordLoginEnabled && smsEnabled) {
+  if (smsEnabled) {
     visibleSecurityRequirements.phone = true;
   }
 

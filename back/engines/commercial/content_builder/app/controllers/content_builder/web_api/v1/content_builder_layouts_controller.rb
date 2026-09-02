@@ -36,6 +36,8 @@ module ContentBuilder
             Project.find params[:project_id]
           when 'ProjectFolder'
             ProjectFolders::Folder.find params[:project_folder_id]
+          when 'StaticPage'
+            StaticPage.find params[:static_page_id]
           when 'HomePage'
             nil
           end

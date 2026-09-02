@@ -9,6 +9,11 @@ class ExpireConfirmationCodeOrDeleteJob < ApplicationJob
     'NewPhoneConfirmation' => :new_phone_confirmation
   }.freeze
 
+  # The signup flows: the code is the user's only way to prove they own the identity
+  # they registered with, so an expired code means the signup never completed. The
+  # new_* flows change an identity on an already-existing user and never delete.
+  SIGNUP_ASSOCIATION_NAMES = %i[email_confirmation phone_confirmation].freeze
+
   def run(user_id, confirmation_type, code_to_expire)
     user = User.find_by(id: user_id)
     return unless user
@@ -24,8 +29,11 @@ class ExpireConfirmationCodeOrDeleteJob < ApplicationJob
     confirmation.expire_code!
 
     # Garbage-collect freshly-signed-up users who never finished confirming.
-    # Only applies to the email-confirmation (signup) flow.
-    if association_name == :email_confirmation && user.no_password? && !user.registration_completed_at
+    # A password or a completed registration means the user has another way into
+    # the account (registration_completed_at is only stamped once the user has
+    # authenticated at least once - confirmed email, confirmed phone, or SSO), so
+    # for those we only expire the code.
+    if SIGNUP_ASSOCIATION_NAMES.include?(association_name) && user.no_password? && !user.registration_completed_at
       DeleteUserJob.perform_later(user)
     end
   end
