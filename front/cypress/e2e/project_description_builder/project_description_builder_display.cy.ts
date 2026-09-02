@@ -216,10 +216,7 @@ describe('Project description builder display', () => {
     getIframeBody().should('contain.text', 'example.pdf');
 
     // The widget takes no pointer events in the builder, so select the node around it.
-    cy.get('#e2e-file-attachment')
-      .parents('.e2e-render-node')
-      .first()
-      .click({ force: true });
+    cy.get('#e2e-file-attachment').parents('.e2e-render-node').first().click();
     cy.dataCy('e2e-file-attachment-file-select').select('replacement.pdf');
     cy.wait(1000);
 
