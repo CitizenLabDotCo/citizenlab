@@ -40,6 +40,12 @@ describe ContentBuilder::BuildableDescriptionService do
         expect(service.description_multiloc(project)).to eq({ 'en' => '<p>Edited on the page builder</p>' })
       end
 
+      it 'returns the raw HTML of an HTML block widget' do
+        author_description(project, { 'en' => '<p>Raw block</p>' }, widget: 'HtmlBlockMultiloc')
+
+        expect(service.description_multiloc(project)).to eq({ 'en' => '<p>Raw block</p>' })
+      end
+
       it 'returns an empty multiloc when the project has no page' do
         expect(service.description_multiloc(project)).to eq({})
       end

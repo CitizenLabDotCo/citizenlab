@@ -10,7 +10,8 @@ module DescriptionLayoutHelpers
       code = ContentBuilder::ProjectPageLayoutService::CODE
       body = {
         'ROOT' => craftjs_root(['DESCRIPTION']),
-        'DESCRIPTION' => craftjs_node(widget, parent: 'ROOT', props: { 'text' => text_multiloc })
+        # HtmlBlockMultiloc keeps its body in `html`; every other text widget in `text`.
+        'DESCRIPTION' => craftjs_node(widget, parent: 'ROOT', props: { body_prop(widget) => text_multiloc })
       }
       craftjs_json = ContentBuilder::ProjectPageLayoutService.new.craftjs_json_from_body(body)
     else
@@ -19,6 +20,12 @@ module DescriptionLayoutHelpers
     end
 
     ContentBuilder::Layout.create!(content_buildable: buildable, code: code, enabled: true, craftjs_json: craftjs_json)
+  end
+
+  private
+
+  def body_prop(widget)
+    widget == 'HtmlBlockMultiloc' ? 'html' : 'text'
   end
 end
 
