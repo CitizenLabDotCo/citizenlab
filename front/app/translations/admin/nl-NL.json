@@ -740,6 +740,7 @@
   "app.containers.Admin.Moderation.unread": "Niet gezien",
   "app.containers.Admin.ModeratorsTable.noManagers2": "Er zijn nog geen beheerders.",
   "app.containers.Admin.ModeratorsTable.removeManager": "Beheerder verwijderen",
+  "app.containers.Admin.PagesAndMenu.EditCustomPage.editInContentBuilder": "Bewerk deze pagina in de content builder",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "Deze pagina bestaat uit de volgende onderdelen. Je kunt ze in-/uitschakelen en naar wens bewerken.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Secties",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.viewPage": "Toon pagina",

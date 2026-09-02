@@ -740,6 +740,7 @@
   "app.containers.Admin.Moderation.unread": "لم تتم مشاهدته",
   "app.containers.Admin.ModeratorsTable.noManagers2": "لا يوجد أي مسيرين بعد.",
   "app.containers.Admin.ModeratorsTable.removeManager": "إزالة المدير",
+  "app.containers.Admin.PagesAndMenu.EditCustomPage.editInContentBuilder": "عدل هذه الصفحة في منشئ المحتوى",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "تتكون هذه الصفحة من الأقسام التالية. يمكنك تشغيلها أو إيقاف تشغيلها وتعديلها حسب الحاجة.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "الأقسام",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.viewPage": "عرض الصفحة",

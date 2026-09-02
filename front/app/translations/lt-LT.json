@@ -1507,6 +1507,8 @@
   "app.containers.CookiePolicy.viewPreferencesButtonText": "Slapukų nustatymai",
   "app.containers.CookiePolicy.viewPreferencesText": "Toliau pateiktos slapukų kategorijos gali būti taikomos ne visiems lankytojams ar platformoms; išsamų jums taikomų trečiųjų šalių integracijų sąrašą rasite {viewPreferencesButton} .",
   "app.containers.CookiePolicy.whatDoWeUseCookiesFor": "Kam naudojame slapukus?",
+  "app.containers.CustomPageBuilder.customPage": "Pasirinktinis puslapis",
+  "app.containers.CustomPageBuilder.saveError": "Išsaugant pasirinktinį puslapį įvyko klaida.",
   "app.containers.CustomPageShow.editPage": "Redaguoti puslapį",
   "app.containers.CustomPageShow.goBack": "Grįžti atgal",
   "app.containers.CustomPageShow.notFound": "Puslapis nerastas",

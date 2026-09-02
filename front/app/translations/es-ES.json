@@ -1507,6 +1507,8 @@
   "app.containers.CookiePolicy.viewPreferencesButtonText": "Configuración de las cookies",
   "app.containers.CookiePolicy.viewPreferencesText": "Las siguientes categorías de cookies pueden no aplicar a todos los visitantes o plataformas; consulte su {viewPreferencesButton} para ver una lista completa de las integraciones de terceros que aplican en su caso.",
   "app.containers.CookiePolicy.whatDoWeUseCookiesFor": "¿Para qué utilizamos las cookies?",
+  "app.containers.CustomPageBuilder.customPage": "Página personalizada",
+  "app.containers.CustomPageBuilder.saveError": "Se ha producido un error al guardar la página personalizada.",
   "app.containers.CustomPageShow.editPage": "Editar página",
   "app.containers.CustomPageShow.goBack": "Volver",
   "app.containers.CustomPageShow.notFound": "Página no encontrada",

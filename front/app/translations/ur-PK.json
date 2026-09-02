@@ -1507,6 +1507,8 @@
   "app.containers.CookiePolicy.viewPreferencesButtonText": "کوکی کی ترتیبات",
   "app.containers.CookiePolicy.viewPreferencesText": "مندرجہ ذیل کوکی زمرے تمام وزٹرز یا پلیٹ فارمز پر لاگو نہیں ہوسکتے ہیں۔ آپ پر لاگو ہونے والے فریق ثالث کے انضمام کی مکمل فہرست کے لیے اپنا {viewPreferencesButton} دیکھیں۔",
   "app.containers.CookiePolicy.whatDoWeUseCookiesFor": "ہم کوکیز کس کے لیے استعمال کرتے ہیں؟",
+  "app.containers.CustomPageBuilder.customPage": "کسٹم پیج",
+  "app.containers.CustomPageBuilder.saveError": "کسٹم پیج کو محفوظ کرنے میں ایک خرابی پیش آئی۔",
   "app.containers.CustomPageShow.editPage": "صفحہ میں ترمیم کریں۔",
   "app.containers.CustomPageShow.goBack": "واپس جاؤ",
   "app.containers.CustomPageShow.notFound": "صفحہ نہیں ملا",

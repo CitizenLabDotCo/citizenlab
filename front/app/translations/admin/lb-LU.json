@@ -740,6 +740,7 @@
   "app.containers.Admin.Moderation.unread": "Not seen",
   "app.containers.Admin.ModeratorsTable.noManagers2": "Et gëtt nach keng Manageren.",
   "app.containers.Admin.ModeratorsTable.removeManager": "Manager ewechhuelen",
+  "app.containers.Admin.PagesAndMenu.EditCustomPage.editInContentBuilder": "Dës Säit am Content Builder beaarbechten.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "This page consists of the following sections. You can turn them on/off and edit them as required.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Sections",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.viewPage": "View page",

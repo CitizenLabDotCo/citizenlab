@@ -740,6 +740,7 @@
   "app.containers.Admin.Moderation.unread": "Takuneqanngilaq",
   "app.containers.Admin.ModeratorsTable.noManagers2": "Suli aqutsisoqanngilaq.",
   "app.containers.Admin.ModeratorsTable.removeManager": "Aqutsisoq peeruk",
+  "app.containers.Admin.PagesAndMenu.EditCustomPage.editInContentBuilder": "Qupperneq una imarisanik aaqqissuussivimmi aaqqissuuguk",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "Quppeneq una immikkoortunik tulliuttunik imaqarpoq. Pisariaqartitat naapertorlugu atuutsilersillugillu atorunnaarsissinnaavatit.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Sections",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.viewPage": "View page",

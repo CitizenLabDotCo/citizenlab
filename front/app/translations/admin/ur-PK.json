@@ -740,6 +740,7 @@
   "app.containers.Admin.Moderation.unread": "نہیں دیکھا",
   "app.containers.Admin.ModeratorsTable.noManagers2": "ابھی تک کوئی منتظمین نہیں ہیں۔",
   "app.containers.Admin.ModeratorsTable.removeManager": "مینیجر کو ہٹائیں",
+  "app.containers.Admin.PagesAndMenu.EditCustomPage.editInContentBuilder": "اس صفحے کی کنٹینٹ بلڈر میں ترمیم کریں",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "یہ صفحہ درج ذیل حصوں پر مشتمل ہے۔ آپ انہیں آن/آف کر سکتے ہیں اور ضرورت کے مطابق ان میں ترمیم کر سکتے ہیں۔",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "سیکشنز",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.viewPage": "صفحہ دیکھیں",

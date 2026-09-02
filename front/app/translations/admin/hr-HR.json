@@ -740,6 +740,7 @@
   "app.containers.Admin.Moderation.unread": "Nije pregledano",
   "app.containers.Admin.ModeratorsTable.noManagers2": "Još nema voditelja.",
   "app.containers.Admin.ModeratorsTable.removeManager": "Ukloni voditelja",
+  "app.containers.Admin.PagesAndMenu.EditCustomPage.editInContentBuilder": "Uredite ovu stranicu u alatu za izradu sadržaja",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "Stranica se sastoji od sljedećih odjeljaka. Možete ih uključiti/isključiti i urediti prema potrebi.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Odjeljci",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.viewPage": "Prikaz stranice",

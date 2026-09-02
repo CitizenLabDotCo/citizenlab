@@ -740,6 +740,7 @@
   "app.containers.Admin.Moderation.unread": "Görülmedi",
   "app.containers.Admin.ModeratorsTable.noManagers2": "Henüz yönetici yok.",
   "app.containers.Admin.ModeratorsTable.removeManager": "Yöneticiyi kaldır",
+  "app.containers.Admin.PagesAndMenu.EditCustomPage.editInContentBuilder": "Bu sayfayı içerik oluşturucuda düzenle",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "Bu sayfa aşağıdaki bölümlerden oluşur. Bunları açıp kapatabilir ve gerektiği gibi düzenleyebilirsiniz.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Bölümler",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.viewPage": "Sayfayı görüntüle",

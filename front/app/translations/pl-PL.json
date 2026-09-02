@@ -1507,6 +1507,8 @@
   "app.containers.CookiePolicy.viewPreferencesButtonText": "Ustawień cookie",
   "app.containers.CookiePolicy.viewPreferencesText": "Poniższe kategorie plików cookie mogą nie mieć zastosowania do wszystkich użytkowników lub platform; zapoznaj się z {viewPreferencesButton}, aby uzyskać pełną listę integracji stron trzecich.",
   "app.containers.CookiePolicy.whatDoWeUseCookiesFor": "Do czego używamy cookie?",
+  "app.containers.CustomPageBuilder.customPage": "Strona niestandardowa",
+  "app.containers.CustomPageBuilder.saveError": "Wystąpił błąd podczas zapisywania strony niestandardowej.",
   "app.containers.CustomPageShow.editPage": "Edytuj stronę",
   "app.containers.CustomPageShow.goBack": "Wróć",
   "app.containers.CustomPageShow.notFound": "Nie znaleziono strony",

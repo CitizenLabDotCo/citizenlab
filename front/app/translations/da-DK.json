@@ -1507,6 +1507,8 @@
   "app.containers.CookiePolicy.viewPreferencesButtonText": "Cookie-indstillinger",
   "app.containers.CookiePolicy.viewPreferencesText": "Nedenstående cookie-kategorier gælder muligvis ikke for alle besøgende eller platforme; se dine {viewPreferencesButton} for at få en komplet liste over integrationer af tredjeparter, der gælder for dig.",
   "app.containers.CookiePolicy.whatDoWeUseCookiesFor": "Hvad bruger vi cookies til?",
+  "app.containers.CustomPageBuilder.customPage": "Tilpasset side",
+  "app.containers.CustomPageBuilder.saveError": "Der opstod en fejl under gemning af den tilpassede side.",
   "app.containers.CustomPageShow.editPage": "Rediger side",
   "app.containers.CustomPageShow.goBack": "Gå tilbage",
   "app.containers.CustomPageShow.notFound": "Side ikke fundet",

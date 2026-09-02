@@ -1507,6 +1507,8 @@
   "app.containers.CookiePolicy.viewPreferencesButtonText": "Postavke kolačića",
   "app.containers.CookiePolicy.viewPreferencesText": "Niže navedene kategorije kolačića možda se ne odnose na sve posjetitelje ili platforme. Pogledajte svoje {viewPreferencesButton} za potpuni popis integracija s trećim stranama koje se odnose na vas.",
   "app.containers.CookiePolicy.whatDoWeUseCookiesFor": "Za što nam služe kolačići?",
+  "app.containers.CustomPageBuilder.customPage": "Prilagođena stranica",
+  "app.containers.CustomPageBuilder.saveError": "Došlo je do pogreške prilikom spremanja prilagođene stranice.",
   "app.containers.CustomPageShow.editPage": "Uredi stranicu",
   "app.containers.CustomPageShow.goBack": "Idi natrag",
   "app.containers.CustomPageShow.notFound": "Stranica nije pronađena",

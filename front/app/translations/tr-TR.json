@@ -1507,6 +1507,8 @@
   "app.containers.CookiePolicy.viewPreferencesButtonText": "Çerez Ayarları",
   "app.containers.CookiePolicy.viewPreferencesText": "Aşağıdaki çerez kategorileri tüm ziyaretçiler veya platformlar için geçerli olmayabilir. Sizin için geçerli olan üçüncü taraf entegrasyonlarının tam listesi için: {viewPreferencesButton}",
   "app.containers.CookiePolicy.whatDoWeUseCookiesFor": "Çerezleri ne için kullanıyoruz?",
+  "app.containers.CustomPageBuilder.customPage": "Özel sayfa",
+  "app.containers.CustomPageBuilder.saveError": "Özel sayfa kaydedilirken bir hata oluştu.",
   "app.containers.CustomPageShow.editPage": "Sayfayı düzenle",
   "app.containers.CustomPageShow.goBack": "Geri gidin",
   "app.containers.CustomPageShow.notFound": "Sayfa bulunamadı",

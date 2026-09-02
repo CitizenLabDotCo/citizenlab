@@ -1507,6 +1507,8 @@
   "app.containers.CookiePolicy.viewPreferencesButtonText": "Innstillinger for informasjonskapsler",
   "app.containers.CookiePolicy.viewPreferencesText": "Kategoriene for informasjonskapsler nedenfor gjelder kanskje ikke for alle besøkende eller plattformer; se {viewPreferencesButton} for en fullstendig liste over tredjepartsintegrasjoner som gjelder for deg.",
   "app.containers.CookiePolicy.whatDoWeUseCookiesFor": "Hva bruker vi informasjonskapsler til?",
+  "app.containers.CustomPageBuilder.customPage": "Egendefinert side",
+  "app.containers.CustomPageBuilder.saveError": "Det oppsto en feil under lagring av den egendefinerte siden.",
   "app.containers.CustomPageShow.editPage": "Rediger side",
   "app.containers.CustomPageShow.goBack": "Gå tilbake",
   "app.containers.CustomPageShow.notFound": "Siden ble ikke funnet",

@@ -740,6 +740,7 @@
   "app.containers.Admin.Moderation.unread": "Não visto",
   "app.containers.Admin.ModeratorsTable.noManagers2": "Ainda não há gestores.",
   "app.containers.Admin.ModeratorsTable.removeManager": "Remover gestor",
+  "app.containers.Admin.PagesAndMenu.EditCustomPage.editInContentBuilder": "Editar esta página no construtor de conteúdo",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "Esta página é constituída pelas seguintes seções. Pode ligá-las/desligá-las e editá-las conforme as suas necessidades.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Seções",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.viewPage": "Ver página",

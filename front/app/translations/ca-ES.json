@@ -1507,6 +1507,8 @@
   "app.containers.CookiePolicy.viewPreferencesButtonText": "Configuració de galetes",
   "app.containers.CookiePolicy.viewPreferencesText": "És possible que les categories de galetes següents no s'apliquin a tots els visitants o plataformes; consulteu el vostre {viewPreferencesButton} per obtenir una llista completa de les integracions de tercers aplicables a vosaltres.",
   "app.containers.CookiePolicy.whatDoWeUseCookiesFor": "Per a què fem servir les galetes?",
+  "app.containers.CustomPageBuilder.customPage": "Pàgina personalitzada",
+  "app.containers.CustomPageBuilder.saveError": "S'ha produït un error en desar la pàgina personalitzada.",
   "app.containers.CustomPageShow.editPage": "Editar la pàgina",
   "app.containers.CustomPageShow.goBack": "Tornar",
   "app.containers.CustomPageShow.notFound": "Pàgina no trobada",

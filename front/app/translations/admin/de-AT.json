@@ -740,6 +740,7 @@
   "app.containers.Admin.Moderation.unread": "Nicht gesehen",
   "app.containers.Admin.ModeratorsTable.noManagers2": "Es gibt noch keine Manager*innen.",
   "app.containers.Admin.ModeratorsTable.removeManager": "Manager*innen entfernen",
+  "app.containers.Admin.PagesAndMenu.EditCustomPage.editInContentBuilder": "Diese Seite im Content Builder bearbeiten",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "Diese Seite besteht aus den folgenden Abschnitten. Sie können sie ein- und ausschalten und nach Bedarf bearbeiten.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Bereiche",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.viewPage": "Seite anzeigen",

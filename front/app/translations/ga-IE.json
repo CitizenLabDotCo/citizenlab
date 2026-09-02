@@ -1507,6 +1507,8 @@
   "app.containers.CookiePolicy.viewPreferencesButtonText": "Socruithe Fianán",
   "app.containers.CookiePolicy.viewPreferencesText": "B’fhéidir nach mbaineann na catagóirí fianán thíos le gach cuairteoir nó ardán; féach ar do {viewPreferencesButton} le haghaidh liosta iomlán de chomhtháthú tríú páirtí is infheidhme maidir leat.",
   "app.containers.CookiePolicy.whatDoWeUseCookiesFor": "Cad chuige a n-úsáidimid fianáin?",
+  "app.containers.CustomPageBuilder.customPage": "Leathanach saincheaptha",
+  "app.containers.CustomPageBuilder.saveError": "Tharla earráid agus an leathanach saincheaptha á shábháil.",
   "app.containers.CustomPageShow.editPage": "Cuir leathanach in eagar",
   "app.containers.CustomPageShow.goBack": "Téigh ar ais",
   "app.containers.CustomPageShow.notFound": "Leathanach gan aimsiú",

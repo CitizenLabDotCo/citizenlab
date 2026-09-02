@@ -1507,6 +1507,8 @@
   "app.containers.CookiePolicy.viewPreferencesButtonText": "Cookie-beállítások",
   "app.containers.CookiePolicy.viewPreferencesText": "Előfordulhat, hogy az alábbi cookie-kategóriák nem vonatkoznak minden látogatóra vagy platformra; Tekintse meg a {viewPreferencesButton} -t az Önre vonatkozó harmadik féltől származó integrációk teljes listájáért.",
   "app.containers.CookiePolicy.whatDoWeUseCookiesFor": "Mire használjuk a sütiket?",
+  "app.containers.CustomPageBuilder.customPage": "Egyedi oldal",
+  "app.containers.CustomPageBuilder.saveError": "Hiba történt az egyedi oldal mentésekor.",
   "app.containers.CustomPageShow.editPage": "Oldal szerkesztése",
   "app.containers.CustomPageShow.goBack": "Menj vissza",
   "app.containers.CustomPageShow.notFound": "Az oldal nem található",

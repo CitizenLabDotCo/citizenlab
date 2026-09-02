@@ -740,6 +740,7 @@
   "app.containers.Admin.Moderation.unread": "Heb ei weld",
   "app.containers.Admin.ModeratorsTable.noManagers2": "Nid oes unrhyw reolwyr eto.",
   "app.containers.Admin.ModeratorsTable.removeManager": "Tynnu rheolwr",
+  "app.containers.Admin.PagesAndMenu.EditCustomPage.editInContentBuilder": "Golygu'r dudalen hon yn yr adeiladwr cynnwys",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "Mae'r dudalen hon yn cynnwys yr adrannau canlynol. Gallwch eu troi ymlaen / i ffwrdd a'u golygu yn ôl yr angen.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Adrannau",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.viewPage": "Gweld tudalen",
