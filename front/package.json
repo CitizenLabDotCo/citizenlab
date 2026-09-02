@@ -61,7 +61,10 @@
   },
   "overrides": {
     "@tanstack/router-core": "1.159.4",
-    "@tanstack/history": "1.154.14"
+    "@tanstack/history": "1.154.14",
+    "react-mentions": {
+      "@babel/runtime": "^7.26.10"
+    }
   },
   "dependencies": {
     "@arcgis/core": "^4.34.8",
