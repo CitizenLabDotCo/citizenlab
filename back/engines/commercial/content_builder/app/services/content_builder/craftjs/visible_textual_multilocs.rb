@@ -49,12 +49,19 @@ module ContentBuilder
           @ordered_multilocs << {
             node_type: resolved_name,
             multiloc_type: 'text',
-            multliloc: node['props']['text']
+            multliloc: body_multiloc(node)
           }
         else
           @ordered_multilocs << make_h3s(node['props']['title']) if resolved_name == 'AccordionMultiloc'
-          @ordered_multilocs << node['props']['text'] if node['props']['text'].present?
+          body = body_multiloc(node)
+          @ordered_multilocs << body if body.present?
         end
+      end
+
+      # Every text widget keeps its body in `text`, except HtmlBlockMultiloc, which keeps
+      # its raw HTML in `html` (see Craftjs::WidgetSpecs).
+      def body_multiloc(node)
+        node['props']['text'] || node['props']['html']
       end
 
       def make_h3s(multliloc)
