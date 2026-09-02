@@ -10,6 +10,10 @@ export default defineMessages({
     defaultMessage:
       'This page consists of the following sections. You can turn them on/off and edit them as required.',
   },
+  editInContentBuilder: {
+    id: 'app.containers.Admin.PagesAndMenu.EditCustomPage.editInContentBuilder',
+    defaultMessage: 'Edit this page in the content builder',
+  },
   sectionsTitle: {
     id: 'app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle',
     defaultMessage: 'Sections',

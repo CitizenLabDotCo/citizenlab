@@ -208,6 +208,7 @@ export interface IAppConfigurationSettings {
   project_static_pages?: AppConfigurationFeature;
   parallel_participation?: AppConfigurationFeature;
   html_block_in_content_builder?: AppConfigurationFeature;
+  custom_page_builder?: AppConfigurationFeature;
   configurable_dropdown?: AppConfigurationFeature;
 }
 

@@ -1507,6 +1507,8 @@
   "app.containers.CookiePolicy.viewPreferencesButtonText": "Gosodiadau Cwcis",
   "app.containers.CookiePolicy.viewPreferencesText": "Efallai na fydd y categorïau cwcis isod yn berthnasol i bob ymwelydd neu blatfform; edrychwch ar eich {viewPreferencesButton} am restr lawn o integreiddiadau trydydd parti sy'n berthnasol i chi.",
   "app.containers.CookiePolicy.whatDoWeUseCookiesFor": "Ar gyfer beth rydym yn defnyddio cwcis?",
+  "app.containers.CustomPageBuilder.customPage": "Tudalen bwrpasol",
+  "app.containers.CustomPageBuilder.saveError": "Cafwyd gwall wrth gadw'r dudalen bwrpasol.",
   "app.containers.CustomPageShow.editPage": "Golygu tudalen",
   "app.containers.CustomPageShow.goBack": "Mynd yn ôl",
   "app.containers.CustomPageShow.notFound": "Tudalen heb ei chanfod",

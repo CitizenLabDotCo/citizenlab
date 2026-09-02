@@ -740,6 +740,7 @@
   "app.containers.Admin.Moderation.unread": "Ikke sett",
   "app.containers.Admin.ModeratorsTable.noManagers2": "Det er ingen administratorer ennå.",
   "app.containers.Admin.ModeratorsTable.removeManager": "Fjern administrator",
+  "app.containers.Admin.PagesAndMenu.EditCustomPage.editInContentBuilder": "Rediger denne siden i innholdsbyggeren",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "Denne siden består av følgende seksjoner. Du kan slå dem på/av og redigere dem etter behov.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Seksjoner",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.viewPage": "Vis side",

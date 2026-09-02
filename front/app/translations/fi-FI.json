@@ -1507,6 +1507,8 @@
   "app.containers.CookiePolicy.viewPreferencesButtonText": "Evästeasetukset",
   "app.containers.CookiePolicy.viewPreferencesText": "Alla olevat evästeluokat eivät välttämättä koske kaikkia vierailijoita tai alustoja; katso {viewPreferencesButton} saadaksesi täydellisen luettelon sinua koskevista kolmannen osapuolen integraatioista.",
   "app.containers.CookiePolicy.whatDoWeUseCookiesFor": "Mihin käytämme evästeitä?",
+  "app.containers.CustomPageBuilder.customPage": "Mukautettu sivu",
+  "app.containers.CustomPageBuilder.saveError": "Mukautetun sivun tallentamisessa tapahtui virhe.",
   "app.containers.CustomPageShow.editPage": "Muokkaa sivua",
   "app.containers.CustomPageShow.goBack": "Mene takaisin",
   "app.containers.CustomPageShow.notFound": "Sivua ei löydetty",

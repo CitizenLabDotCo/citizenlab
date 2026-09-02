@@ -197,4 +197,73 @@ describe ContentBuilder::DescriptionLayoutService do
         .not_to include('AboutBox', 'TwoColumn')
     end
   end
+
+  describe '#ensure_custom_page!' do
+    def layout_for(page)
+      ContentBuilder::Layout.find_by(
+        content_buildable: page,
+        code: ContentBuilder::CustomPageLayoutService::CODE
+      )
+    end
+
+    it 'creates an enabled layout for a global custom page' do
+      page = create(:static_page, top_info_section_multiloc: { 'en' => '<p>Hi</p>' }, top_info_section_enabled: true)
+
+      service.ensure_custom_page!(page)
+
+      layout = layout_for(page)
+      expect(layout).to be_present
+      expect(layout.enabled).to be true
+      expect(layout.craftjs_json.dig('ROOT', 'type', 'resolvedName')).to eq 'CustomPageRoot'
+    end
+
+    it 'sets content_buildable_type, so the controller can find the layout' do
+      page = create(:static_page)
+
+      service.ensure_custom_page!(page)
+
+      expect(layout_for(page).content_buildable_type).to eq 'StaticPage'
+    end
+
+    it 'is idempotent' do
+      page = create(:static_page)
+      service.ensure_custom_page!(page)
+
+      expect { service.ensure_custom_page!(page) }.not_to change(ContentBuilder::Layout, :count)
+    end
+
+    it 'leaves a policy page alone' do
+      page = create(:static_page, code: 'faq', slug: 'faq')
+
+      expect { service.ensure_custom_page!(page) }.not_to change(ContentBuilder::Layout, :count)
+    end
+
+    it 'leaves a project-scoped page alone' do
+      page = create(:static_page, :project_scoped)
+
+      expect { service.ensure_custom_page!(page) }.not_to change(ContentBuilder::Layout, :count)
+    end
+  end
+
+  describe '#provision_all_custom_pages!' do
+    it 'provisions every global custom page and skips the rest' do
+      custom = create(:static_page)
+      policy = create(:static_page, code: 'faq', slug: 'faq')
+      scoped = create(:static_page, :project_scoped)
+
+      service.provision_all_custom_pages!
+
+      code = ContentBuilder::CustomPageLayoutService::CODE
+      expect(ContentBuilder::Layout.find_by(content_buildable: custom, code: code)).to be_present
+      expect(ContentBuilder::Layout.find_by(content_buildable: policy, code: code)).to be_nil
+      expect(ContentBuilder::Layout.find_by(content_buildable: scoped, code: code)).to be_nil
+    end
+
+    it 'is idempotent' do
+      create(:static_page)
+      service.provision_all_custom_pages!
+
+      expect { service.provision_all_custom_pages! }.not_to change(ContentBuilder::Layout, :count)
+    end
+  end
 end

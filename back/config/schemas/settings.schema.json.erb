@@ -1479,6 +1479,18 @@
         }
       },
 
+      "custom_page_builder": {
+        "type": "object",
+        "title": "Custom page builder [DO NOT ENABLE]",
+        "description": "Edit custom pages with the content builder. Still under development, not ready for customer use.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "custom_smtp": {
         "type": "object",
         "title": "Custom SMTP Server",

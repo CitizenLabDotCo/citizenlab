@@ -740,6 +740,7 @@
   "app.containers.Admin.Moderation.unread": "Ei nähty",
   "app.containers.Admin.ModeratorsTable.noManagers2": "Vastuuhenkilöitä ei ole vielä.",
   "app.containers.Admin.ModeratorsTable.removeManager": "Poista ylläpitäjä",
+  "app.containers.Admin.PagesAndMenu.EditCustomPage.editInContentBuilder": "Muokkaa tätä sivua sisältöeditorissa",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "Tämä sivu koostuu seuraavista osioista. Voit kytkeä ne päälle/pois ja muokata niitä tarpeen mukaan.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Osat",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.viewPage": "Näytä sivu",

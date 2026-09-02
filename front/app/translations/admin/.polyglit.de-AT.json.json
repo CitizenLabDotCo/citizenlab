@@ -1044,6 +1044,11 @@
     "verified_at": "2026-08-27T12:19:31.178397Z",
     "verified_by": "Jelena"
   },
+  "app.components.admin.ActionForm.Fields.cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone3": {
+    "state": "verified",
+    "verified_at": "2026-09-01T09:57:03.031971Z",
+    "verified_by": "Jelena"
+  },
   "app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPage2": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
@@ -6327,6 +6332,11 @@
   "app.containers.Admin.messaging.confirmSendSmsRecipientsTooltip": {
     "state": "verified",
     "verified_at": "2026-08-25T12:30:01.463798Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.messaging.confirmSendSmsRecipientsTooltip2": {
+    "state": "verified",
+    "verified_at": "2026-09-01T09:57:03.031971Z",
     "verified_by": "Jelena"
   },
   "app.containers.Admin.messaging.deleteSmsButton": {

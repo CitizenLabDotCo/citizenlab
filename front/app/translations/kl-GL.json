@@ -1507,6 +1507,8 @@
   "app.containers.CookiePolicy.viewPreferencesButtonText": "Cookie-t iluarsaatikkit",
   "app.containers.CookiePolicy.viewPreferencesText": "Cookie-t assigiinngitsut ataani takusinnaasatit quppernernut alakkarterisunut tamanut qupernernulluunniit tamanut atuutinngitsooratarsinnaapput, allaniit ikkussat ilinnut atuutsinneqartut takussutissartaat tamaat takuniarlugu {viewPreferencesButton}-mukarit.",
   "app.containers.CookiePolicy.whatDoWeUseCookiesFor": "Cookie-t sumut atortarpavut?",
+  "app.containers.CustomPageBuilder.customPage": "Qupperneq nammineq aaqqitaq",
+  "app.containers.CustomPageBuilder.saveError": "Qupperneq nammineq aaqqitaq toqqorniarnerani kukkusoqarpoq.",
   "app.containers.CustomPageShow.editPage": "Edit page",
   "app.containers.CustomPageShow.goBack": "Go back",
   "app.containers.CustomPageShow.notFound": "Qupperneq nassaarineqanngilaq",

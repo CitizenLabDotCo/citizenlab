@@ -1507,6 +1507,8 @@
   "app.containers.CookiePolicy.viewPreferencesButtonText": "ਕੂਕੀ ਸੈਟਿੰਗਾਂ",
   "app.containers.CookiePolicy.viewPreferencesText": "ਹੇਠਾਂ ਦਿੱਤੀਆਂ ਕੂਕੀ ਸ਼੍ਰੇਣੀਆਂ ਸਾਰੇ ਵਿਜ਼ਟਰਾਂ ਜਾਂ ਪਲੇਟਫਾਰਮਾਂ 'ਤੇ ਲਾਗੂ ਨਹੀਂ ਹੋ ਸਕਦੀਆਂ; ਤੁਹਾਡੇ 'ਤੇ ਲਾਗੂ ਤੀਜੀ ਧਿਰ ਦੇ ਏਕੀਕਰਣਾਂ ਦੀ ਪੂਰੀ ਸੂਚੀ ਲਈ ਆਪਣਾ {viewPreferencesButton} ਦੇਖੋ।",
   "app.containers.CookiePolicy.whatDoWeUseCookiesFor": "ਅਸੀਂ ਕੂਕੀਜ਼ ਦੀ ਵਰਤੋਂ ਕਿਸ ਲਈ ਕਰਦੇ ਹਾਂ?",
+  "app.containers.CustomPageBuilder.customPage": "ਕਸਟਮ ਪੇਜ",
+  "app.containers.CustomPageBuilder.saveError": "ਕਸਟਮ ਪੇਜ ਨੂੰ ਸੇਵ ਕਰਨ ਵੇਲੇ ਇੱਕ ਗਲਤੀ ਆਈ।",
   "app.containers.CustomPageShow.editPage": "ਪੰਨਾ ਸੰਪਾਦਿਤ ਕਰੋ",
   "app.containers.CustomPageShow.goBack": "ਵਾਪਸ ਜਾਓ",
   "app.containers.CustomPageShow.notFound": "ਪੰਨਾ ਨਹੀਂ ਮਿਲਿਆ",

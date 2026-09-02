@@ -1507,6 +1507,8 @@
   "app.containers.CookiePolicy.viewPreferencesButtonText": "Ρυθμίσεις cookies",
   "app.containers.CookiePolicy.viewPreferencesText": "Οι παρακάτω κατηγορίες cookies ενδέχεται να μην ισχύουν για όλους τους επισκέπτες ή τις πλατφόρμες. Δείτε το {viewPreferencesButton} για να δείτε την πλήρη λίστα από εξωτερικούς παρόχους που σας αφορούν.",
   "app.containers.CookiePolicy.whatDoWeUseCookiesFor": "Για ποιο λόγο χρησιμοποιούμε τα cookies;",
+  "app.containers.CustomPageBuilder.customPage": "Προσαρμοσμένη σελίδα",
+  "app.containers.CustomPageBuilder.saveError": "Παρουσιάστηκε σφάλμα κατά την αποθήκευση της προσαρμοσμένης σελίδας.",
   "app.containers.CustomPageShow.editPage": "Επεξεργασία σελίδας",
   "app.containers.CustomPageShow.goBack": "Επιστροφή",
   "app.containers.CustomPageShow.notFound": "Η σελίδα δεν βρέθηκε",

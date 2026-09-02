@@ -3654,6 +3654,11 @@
     "verified_at": "2026-08-20T16:30:02.293876Z",
     "verified_by": "Jelena"
   },
+  "app.components.SmsConsent.phoneConfirmationDisclosureWithoutCampaignsEnabled": {
+    "state": "verified",
+    "verified_at": "2026-09-01T09:57:02.976008Z",
+    "verified_by": "Jelena"
+  },
   "app.components.SmsConsent.smsConfirmationDisclosure": {
     "state": "verified",
     "verified_at": "2026-08-05T12:32:20.642609Z",
@@ -7092,6 +7097,11 @@
   "app.containers.Authentication.steps.Policies.byContinuingPhone3": {
     "state": "verified",
     "verified_at": "2026-08-26T09:59:04.023535Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Authentication.steps.Policies.byContinuingPhoneWithoutCampaignsEnabled": {
+    "state": "verified",
+    "verified_at": "2026-09-01T09:57:02.976008Z",
     "verified_by": "Jelena"
   },
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": {

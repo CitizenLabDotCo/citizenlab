@@ -740,6 +740,7 @@
   "app.containers.Admin.Moderation.unread": "Μη αναγνωσμένο",
   "app.containers.Admin.ModeratorsTable.noManagers2": "Δεν υπάρχουν ακόμα διαχειριστές.",
   "app.containers.Admin.ModeratorsTable.removeManager": "Αφαίρεση διαχειριστή",
+  "app.containers.Admin.PagesAndMenu.EditCustomPage.editInContentBuilder": "Επεξεργασία αυτής της σελίδας στο εργαλείο δημιουργίας περιεχομένου",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": "Αυτή η σελίδα αποτελείται από τις ακόλουθες ενότητες. Μπορείτε να τις ενεργοποιήσετε/απενεργοποιήσετε και να τις επεξεργαστείτε όπως απαιτείται.",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionsTitle": "Sections",
   "app.containers.Admin.PagesAndMenu.EditCustomPage.viewPage": "View page",
