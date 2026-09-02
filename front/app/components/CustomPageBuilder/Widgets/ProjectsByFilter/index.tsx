@@ -109,7 +109,7 @@ const ProjectsByFilter = ({
       publicationStatusFilter: PUBLICATION_STATUSES,
       ...queryFilters(filterType, ids),
     },
-    { enabled: ids.length > 0 }
+    { enabled: advancedCustomPagesEnabled && ids.length > 0 }
   );
 
   // The legacy page section hides both lists without this feature, so a page migrated while
