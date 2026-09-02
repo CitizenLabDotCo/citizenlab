@@ -33,8 +33,7 @@ export const FullScreenPreview = ({ projectId }: Props) => {
   const queryClient = useQueryClient();
   const { data: layout } = useProjectPageLayout(projectId);
 
-  // The save creates the layout's file attachments server-side, and this document keeps its
-  // own cache, so without a refetch a newly attached file stays invisible until a reload.
+  // The save creates the layout's file attachments, and this document caches its own copy.
   const handleSave = useCallback(() => {
     queryClient.invalidateQueries({ queryKey: fileAttachmentsKeys.lists() });
   }, [queryClient]);
