@@ -40,6 +40,21 @@ describe ContentBuilder::BuildableDescriptionService do
         expect(service.description_multiloc(project)).to eq({ 'en' => '<p>Edited on the page builder</p>' })
       end
 
+      # An HTML block keeps its body in `props.html`, not `props.text`.
+      it 'returns the raw HTML of an HTML block widget on the page' do
+        project = provision(create(:project, description_multiloc: { 'en' => '<p>Renew the parc</p>' }))
+        page = project.content_builder_layouts.find_by!(code: 'project_page')
+        node_id = page.craftjs_json['PROJECT_PAGE_INTRO_LEFT']['nodes'].first
+        page.craftjs_json[node_id] = craftjs_node(
+          'HtmlBlockMultiloc',
+          parent: 'PROJECT_PAGE_INTRO_LEFT',
+          props: { 'html' => { 'en' => '<p>Raw block</p>' } }
+        )
+        page.save!
+
+        expect(service.description_multiloc(project)).to eq({ 'en' => '<p>Raw block</p>' })
+      end
+
       it 'returns an empty multiloc when the project has no layout' do
         expect(service.description_multiloc(create(:project))).to eq({})
       end
