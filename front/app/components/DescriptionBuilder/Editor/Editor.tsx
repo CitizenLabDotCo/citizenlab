@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import {
   Editor as CraftEditor,
   SerializedNodes,
@@ -46,11 +46,10 @@ const Editor: React.FC<EditorProps> = ({
   return (
     <CraftEditor
       resolver={resolver}
-      indicator={{
-        success: colors.green300,
-        error: 'red',
-        transition: 'none',
-      }}
+      // DropPlacementOverlay draws the drop indicator instead: craft.js only
+      // knows how to paint a plain rectangle, with no room for the reason a
+      // drop is refused.
+      indicator={{ style: { display: 'none' } }}
       onRender={isPreview ? PlainDiv : RenderNode}
       enabled={!isPreview}
       onNodesChange={(data) => {
