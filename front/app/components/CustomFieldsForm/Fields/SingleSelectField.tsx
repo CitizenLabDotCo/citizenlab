@@ -14,7 +14,6 @@ import RadioGroup from 'components/HookForm/RadioGroup';
 import Radio from 'components/HookForm/RadioGroup/Radio';
 import Select from 'components/HookForm/Select';
 
-import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
@@ -81,9 +80,6 @@ const SingleSelectField = ({
           padding="0px"
           aria-required={question.required}
         >
-          <ScreenReaderOnly>
-            <legend>{localize(question.title_multiloc)}</legend>
-          </ScreenReaderOnly>
           {options.map((option) => (
             <StyledBox
               style={{ cursor: 'pointer' }}
