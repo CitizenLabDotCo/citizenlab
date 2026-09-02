@@ -74,6 +74,12 @@ RSpec.describe DecidimImporter::Extractors::UsersExtractor do
     expect(ref_map.fetch('decidim-user-7').attributes['email']).to eq 'jean@y.fr'
   end
 
+  it 'presets a unique slug from the uid so the model skips its (O(n²)) slug generation on insert' do
+    attrs = extract([row('uid' => 'decidim--user--159')]).first.attributes
+    expect(attrs['slug']).to eq 'decidim-user-159'
+    expect(attrs['slug']).to match(Sluggable::SLUG_REGEX)
+  end
+
   it 'collapses two accounts sharing an email (case-insensitively) into one, aliasing the duplicate uid' do
     records = extract([
       row('uid' => 'decidim-user-1', 'email' => 'Shared@Example.fr'),
