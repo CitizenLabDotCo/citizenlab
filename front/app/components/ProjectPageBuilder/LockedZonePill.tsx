@@ -38,7 +38,7 @@ const LockedZonePill = () => (
         height="14px"
         fill={colors.textSecondary}
       />
-      <Text m="0px" fontSize="xs" color="textSecondary">
+      <Text m="0px" fontSize="xs" color="textSecondary" data-cy="locked-zone-pill-tooltip">
         <FormattedMessage {...messages.lockedZoneLabel} />
       </Text>
     </Box>

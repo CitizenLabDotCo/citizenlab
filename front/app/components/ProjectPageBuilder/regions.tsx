@@ -7,6 +7,7 @@ import styled, { css } from 'styled-components';
 import { useParams } from 'utils/router';
 
 import CTABar from './CTABar';
+import DropZoneOutline from './DropFeedback/DropZoneOutline';
 import EditableContentDivider from './EditableContentDivider';
 import LockedZonePill from './LockedZonePill';
 import useWidgetProjectId from './Widgets/useWidgetProjectId';
@@ -91,7 +92,16 @@ export const ProjectPageBody: UserComponent<RegionProps> = ({ children }) => {
       $fullBleed={!!slug}
     >
       {inEditor && <EditableContentDivider />}
-      {children}
+      {inEditor ? (
+        // The divider labels the zone from the outside, so the outline frames
+        // the widgets alone rather than the whole body.
+        <Box position="relative">
+          <DropZoneOutline />
+          {children}
+        </Box>
+      ) : (
+        children
+      )}
       {!inEditor && projectId && (
         <CTABar projectId={projectId} containerRef={containerRef} />
       )}
