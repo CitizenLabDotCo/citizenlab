@@ -82,9 +82,22 @@ const Settings = () => {
   // itself rather than offer controls that change nothing.
   const filteringUnavailable = !advancedCustomPagesEnabled && mode !== 'all';
 
-  const modeOptions = MODES.filter(isAvailable).map((mode) => ({
-    value: mode,
-    label: modeLabels[mode],
+  // A page can hold a mode whose feature the tenant has since lost. Dropping it from the
+  // options would leave the panel reading as unset while the widget still filters by it, and
+  // the obvious repair — picking another mode — discards the selection silently. Only while
+  // filtering is available at all: without it the panel explains itself instead.
+  const visibleModes = MODES.filter(
+    (option) =>
+      isAvailable(option) || (advancedCustomPagesEnabled && option === mode)
+  );
+
+  const modeOptions = visibleModes.map((option) => ({
+    value: option,
+    label: isAvailable(option)
+      ? modeLabels[option]
+      : formatMessage(messages.modeUnavailable, {
+          mode: modeLabels[option],
+        }),
   }));
 
   const entities = {

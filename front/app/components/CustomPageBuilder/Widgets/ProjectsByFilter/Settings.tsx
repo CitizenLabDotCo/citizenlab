@@ -47,14 +47,23 @@ const Settings = () => {
   const { data: areas } = useAreas({});
   const { data: spaces } = useSpaces();
 
+  // A page can hold a dimension whose feature the tenant has since lost. Dropping it from the
+  // options would leave the panel reading as unset while the widget still filters by it, and
+  // the obvious repair — picking another dimension — discards the selection silently.
+  const spacesOption = spacesEnabled || filterType === 'spaces';
+
   const filterTypeOptions: { value: ProjectsFilterType; label: string }[] = [
     { value: 'global_topics', label: formatMessage(messages.filterByTags) },
     { value: 'areas', label: formatMessage(messages.filterByAreas) },
-    ...(spacesEnabled
+    ...(spacesOption
       ? [
           {
             value: 'spaces' as const,
-            label: formatMessage(messages.filterBySpaces),
+            label: spacesEnabled
+              ? formatMessage(messages.filterBySpaces)
+              : formatMessage(messages.dimensionUnavailable, {
+                  dimension: formatMessage(messages.filterBySpaces),
+                }),
           },
         ]
       : []),

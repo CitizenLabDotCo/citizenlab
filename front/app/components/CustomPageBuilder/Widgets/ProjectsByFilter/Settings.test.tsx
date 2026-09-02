@@ -73,6 +73,18 @@ describe('ProjectsByFilter Settings', () => {
     expect(dimensions()).not.toContain('One of these spaces');
   });
 
+  // Dropping it would read as "no filter chosen" while the widget still filters by spaces.
+  it('keeps a stored dimension whose feature is off, marked unavailable', () => {
+    flags.spaces = false;
+    props = { filterType: 'spaces', ids: ['space-1'] };
+
+    render(<Settings />);
+
+    expect(dimensions()).toContain(
+      'One of these spaces (not available on this platform)'
+    );
+  });
+
   // Kept across a switch, area ids would silently be read as tag ids.
   it('clears the selection when the dimension changes', () => {
     props = { filterType: 'areas', ids: ['area-1'] };

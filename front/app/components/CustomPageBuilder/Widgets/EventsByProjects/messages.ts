@@ -43,6 +43,10 @@ export default defineMessages({
     id: 'app.components.CustomPageBuilder.Widgets.EventsByProjects.modeAll',
     defaultMessage: 'Every project',
   },
+  modeUnavailable: {
+    id: 'app.components.CustomPageBuilder.Widgets.EventsByProjects.modeUnavailable',
+    defaultMessage: '{mode} (not available on this platform)',
+  },
   selectionLabel: {
     id: 'app.components.CustomPageBuilder.Widgets.EventsByProjects.selectionLabel',
     defaultMessage: 'Selection',

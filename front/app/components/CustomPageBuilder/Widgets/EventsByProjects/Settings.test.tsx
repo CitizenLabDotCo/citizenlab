@@ -80,6 +80,18 @@ describe('EventsByProjects Settings', () => {
     expect(modes()).not.toContain('Projects in one of these spaces');
   });
 
+  // Dropping it would read as "no filter chosen" while the widget still filters by spaces.
+  it('keeps a stored mode whose feature is off, marked unavailable', () => {
+    flags.spaces = false;
+    props = { mode: 'spaces', ids: ['space-1'] };
+
+    render(<Settings />);
+
+    expect(modes()).toContain(
+      'Projects in one of these spaces (not available on this platform)'
+    );
+  });
+
   it('clears the selection when the mode changes', () => {
     props = { mode: 'areas', ids: ['area-1'] };
 
