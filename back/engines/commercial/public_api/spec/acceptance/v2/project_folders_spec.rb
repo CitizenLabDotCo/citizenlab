@@ -49,7 +49,7 @@ resource 'Project Folders' do
         assert_status 200
         expect(json_response_body[:'project_folders/folders'].first.keys).to match_array %i[
           id slug created_at updated_at publication_status
-          title_multiloc title description_preview_multiloc description_preview
+          title_multiloc title description_multiloc description description_preview_multiloc description_preview
         ]
       end
 
