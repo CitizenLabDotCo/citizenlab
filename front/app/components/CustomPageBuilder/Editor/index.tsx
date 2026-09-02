@@ -33,8 +33,6 @@ type EditorProps = {
   onNodesChange?: (nodes: SerializedNodes) => void;
 };
 
-// AboutBox is absent: it is the project Participation Box and resolves its project from the
-// route, which a custom page has none of.
 const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
   return (
     <VerticalRhythmContext.Provider value={true}>

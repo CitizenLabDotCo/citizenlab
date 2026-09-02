@@ -59,10 +59,7 @@ describe('CustomPageBuilder bootstrap', () => {
     render(<CustomPageBuilder />);
 
     await waitFor(() => expect(mockUpsert).toHaveBeenCalled());
-    expect(mockUpsert).toHaveBeenCalledWith({
-      staticPageId: 'page-1',
-      enabled: true,
-    });
+    expect(mockUpsert).toHaveBeenCalledWith({ staticPageId: 'page-1' });
   });
 
   // Gating only the link would let a typed URL reach the builder, which writes a layout.

@@ -3,12 +3,11 @@ import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import { SSOProvider } from 'api/authentication/singleSignOn';
-import useIdMethods from 'api/id_methods/useIdMethods';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useSuperAdmin from 'hooks/useSuperAdmin';
 
-import { SetError } from 'containers/Authentication/typings';
+import { SetError, State } from 'containers/Authentication/typings';
 
 import Or from 'components/UI/Or';
 
@@ -16,15 +15,18 @@ import { useIntl } from 'utils/cl-intl';
 
 import sharedMessages from '../messages';
 
-import AdminSignInLink from './AdminSignInLink';
-import FranceConnectBlock from './FranceConnectBlock';
+import AdminSignInLink from './_components/AdminSignInLink';
+import FranceConnectBlock from './_components/FranceConnectBlock';
+import SSOButton from './_components/SSOButtonsExceptFC/SSOButton';
+import StartForm from './_components/StartForm';
+import VerificationWarning from './_components/VerificationWarning';
 import messages from './messages';
-import SSOButton from './SSOButtonsExceptFC/SSOButton';
-import StartForm from './StartForm';
-import VerificationWarning from './VerificationWarning';
+import useFranceConnectEnabled from './useFranceConnectEnabled';
+import useVisibleIdMethodsExceptFC from './useVisibleIdMethodsExceptFC';
 
 interface Props {
   loading: boolean;
+  state: State;
   setError: SetError;
   onSubmitEmail: (email: string) => void;
   onSubmitPhone: (phone: string) => void;
@@ -40,39 +42,29 @@ interface Props {
  */
 const VerificationVariant = ({
   loading,
+  state,
   setError,
   onSubmitEmail,
   onSubmitPhone,
   onSwitchToSSO,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: idMethods } = useIdMethods();
+  const visibleIdMethodsExceptFC = useVisibleIdMethodsExceptFC();
+  const franceConnectEnabled = useFranceConnectEnabled();
   const isSuperAdmin = useSuperAdmin();
   const passwordLoginEnabled =
     useFeatureFlag({ name: 'password_login' }) || isSuperAdmin;
-  const franceConnectEnabled = !!idMethods?.data.find(
-    (method) => method.attributes.name === 'franceconnect'
+
+  const authenticationOnlyMethodsExceptFC = visibleIdMethodsExceptFC.filter(
+    ({ attributes: { authentication_method, verification_method } }) =>
+      authentication_method && !verification_method
   );
 
-  const authenticationOnlyMethodsExceptFC =
-    idMethods?.data.filter((method) => {
-      const { name, authentication_method, verification_method } =
-        method.attributes;
-      if (name === 'franceconnect') {
-        return false;
-      }
-      return authentication_method && !verification_method;
-    }) ?? [];
-
   const authenticationVerificationMethodsExceptFC =
-    idMethods?.data.filter((method) => {
-      const { name, verification_method, authentication_method } =
-        method.attributes;
-      if (name === 'franceconnect') {
-        return false;
-      }
-      return authentication_method && verification_method;
-    }) ?? [];
+    visibleIdMethodsExceptFC.filter(
+      ({ attributes: { authentication_method, verification_method } }) =>
+        authentication_method && verification_method
+    );
 
   const orLoginWithSection =
     passwordLoginEnabled || authenticationOnlyMethodsExceptFC.length > 0;
@@ -104,6 +96,7 @@ const VerificationVariant = ({
               <StartForm
                 loading={loading}
                 topText={sharedMessages.enterYourEmailAddress}
+                state={state}
                 setError={setError}
                 onSubmitEmail={onSubmitEmail}
                 onSubmitPhone={onSubmitPhone}

@@ -10,6 +10,7 @@ import {
   Text,
   Button,
   fontSizes,
+  colors,
 } from '@citizenlab/cl2-component-library';
 
 import { IPermissionData } from 'api/permissions/types';
@@ -118,25 +119,13 @@ const DemographicSection = ({
         onChange={onChange}
       />
 
-      {/* Asking nothing leaves nothing to place. */}
-      {permissionHasForm && customFieldsBehavior !== 'disabled' && (
-        <Box mt="12px">
-          <DemographicsPlacement
-            user_fields_in_form_descriptor={
-              attributes.user_fields_in_form_descriptor
-            }
-            onChange={onChange}
-          />
-        </Box>
-      )}
-
       {/* The questions themselves are only editable on 'custom'; the other two
           behaviors do not resolve to the permission's own fields. */}
       {customFieldsBehavior === 'custom' && (
         <>
+          <Box mt="8px" mb="20px" borderTop={`1px solid ${colors.divider}`} />
           <Text
             as="p"
-            mt="12px"
             mb="8px"
             fontSize="xs"
             fontWeight="bold"
@@ -184,6 +173,18 @@ const DemographicSection = ({
               })
             }
             isLoading={isAddingField}
+          />
+        </>
+      )}
+      {/* Asking nothing leaves nothing to place. */}
+      {permissionHasForm && customFieldsBehavior !== 'disabled' && (
+        <>
+          <Box mt="20px" mb="20px" borderTop={`1px solid ${colors.divider}`} />
+          <DemographicsPlacement
+            user_fields_in_form_descriptor={
+              attributes.user_fields_in_form_descriptor
+            }
+            onChange={onChange}
           />
         </>
       )}

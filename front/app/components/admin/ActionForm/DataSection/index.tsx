@@ -33,12 +33,16 @@ const DataSection = ({ permission, phaseId, onChange }: Props) => {
   // PII only make sense if there is an account
   const showPIISection = attributes.permitted_by === 'users';
 
+  const participationMethod = phase?.data.attributes.participation_method;
   const permissionHasForm = attributes.action === 'posting_idea';
-  const isNativeSurveyPhase =
-    phase?.data.attributes.participation_method === 'native_survey';
+  const isSurveyPhase =
+    !!participationMethod &&
+    ['native_survey', 'community_monitor_survey'].includes(participationMethod);
 
-  // The anonymity settings are only implemented for native surveys atm.
-  const isNativeSurveySubmission = permissionHasForm && isNativeSurveyPhase;
+  // The anonymity settings are only implemented for the survey methods, which
+  // resolve `user_data_collection` from this permission (ParticipationMethod::NativeSurvey
+  // and the community monitor that inherits from it). Everything else reports 'all_data'.
+  const isSurveySubmission = permissionHasForm && isSurveyPhase;
 
   return (
     <Box>
@@ -53,13 +57,27 @@ const DataSection = ({ permission, phaseId, onChange }: Props) => {
         borderRadius="8px"
         px="14px"
       >
+        {isSurveySubmission && (
+          <AnonymitySection permission={permission} onChange={onChange} />
+        )}
+
         {showPIISection && (
-          <PersonalInfoSection permission={permission} onChange={onChange} />
+          <Box
+            borderTop={
+              isSurveySubmission ? `1px solid ${colors.divider}` : undefined
+            }
+          >
+            <PersonalInfoSection permission={permission} onChange={onChange} />
+          </Box>
         )}
 
         {/* Demographics — available in every mode. */}
         <Box
-          borderTop={showPIISection ? `1px solid ${colors.divider}` : undefined}
+          borderTop={
+            showPIISection || isSurveySubmission
+              ? `1px solid ${colors.divider}`
+              : undefined
+          }
         >
           <DemographicSection
             permission={permission}
@@ -68,12 +86,6 @@ const DataSection = ({ permission, phaseId, onChange }: Props) => {
             onChange={onChange}
           />
         </Box>
-
-        {isNativeSurveySubmission && (
-          <Box borderTop={`1px solid ${colors.divider}`}>
-            <AnonymitySection permission={permission} onChange={onChange} />
-          </Box>
-        )}
       </Box>
     </Box>
   );

@@ -4,6 +4,10 @@ class McpServer::Serializers::Permission < McpServer::Serializers::Base
   def attributes(record)
     {
       action: record.action,
+      # Whether the action still follows the global 'visiting' permission, i.e.
+      # the platform-wide sign-in flow, rather than settings of its own.
+      # See Permissions::PermissionInheritanceService.
+      inherited: record.inherited?,
       permitted_by: record.permitted_by,
       group_ids: record.groups.pluck(:id),
       demographic_questions: record.permissions_custom_fields.map do |pcf|

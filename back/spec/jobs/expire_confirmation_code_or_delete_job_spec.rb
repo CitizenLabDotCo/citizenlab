@@ -60,6 +60,70 @@ RSpec.describe ExpireConfirmationCodeOrDeleteJob do
     end
   end
 
+  # The phone signup flow (POST /users/phone) is the mirror of the email one:
+  # a user who never confirms the number they signed up with is garbage-collected.
+  context 'unconfirmed phone users' do
+    let(:user) do
+      user = create(:unconfirmed_phone_user)
+      RequestPhoneConfirmationCodeJob.issue_code!(user)
+      user
+    end
+
+    it 'changes the confirmation code and deletes a user requiring confirmation' do
+      old_code = user.phone_confirmation.code
+      described_class.perform_now(user.id, 'PhoneConfirmation', old_code)
+      expect(user.phone_confirmation.reload.code).not_to eq(old_code)
+      expect(DeleteUserJob).to have_been_enqueued
+    end
+
+    it 'does nothing when the code to expire is not the current code' do
+      RequestPhoneConfirmationCodeJob.issue_code!(user)
+      old_code = user.phone_confirmation.reload.code
+      described_class.perform_now(user.id, 'PhoneConfirmation', '12345')
+      expect(user.phone_confirmation.reload.code).to eq(old_code)
+      expect(DeleteUserJob).not_to have_been_enqueued
+    end
+
+    it 'does nothing when the user has already confirmed their phone number' do
+      user.phone_confirmation.confirm!
+      described_class.perform_now(user.id, 'PhoneConfirmation', user.phone_confirmation.reload.code)
+      expect(user.phone_confirmation.reload.code).to be_nil
+      expect(DeleteUserJob).not_to have_been_enqueued
+    end
+  end
+
+  context 'full users with an unconfirmed phone number' do
+    let(:user) do
+      user = create(:user, phone: '+14155552671')
+      RequestPhoneConfirmationCodeJob.issue_code!(user)
+      user
+    end
+
+    it 'expires the code but keeps a user who has a password and completed registration' do
+      old_code = user.phone_confirmation.code
+      described_class.perform_now(user.id, 'PhoneConfirmation', old_code)
+      expect(user.phone_confirmation.reload.code).not_to eq(old_code)
+      expect(DeleteUserJob).not_to have_been_enqueued
+    end
+  end
+
+  # Changing the number on an existing account must never delete that account,
+  # however incomplete the account itself is.
+  context 'users with a pending new phone number' do
+    let(:user) do
+      user = create(:unconfirmed_phone_user)
+      RequestNewPhoneConfirmationCodeJob.issue_code!(user, new_phone: '+14155552671')
+      user
+    end
+
+    it 'expires the code without deleting the user' do
+      old_code = user.new_phone_confirmation.code
+      described_class.perform_now(user.id, 'NewPhoneConfirmation', old_code)
+      expect(user.new_phone_confirmation.reload.code).not_to eq(old_code)
+      expect(DeleteUserJob).not_to have_been_enqueued
+    end
+  end
+
   context 'confirmed users with no password' do
     let(:user) do
       user = create(:unconfirmed_user)

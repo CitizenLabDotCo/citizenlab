@@ -126,6 +126,9 @@
   "topic (input term)": {
     "nl-NL": "thema"
   },
+  "text message": {
+    "de-DE": "SMS"
+  },
   "plan": {
     "de-DE": "Lizenz"
   },

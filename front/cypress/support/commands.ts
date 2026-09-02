@@ -1851,11 +1851,28 @@ function apiUpdateAppConfiguration(
   });
 }
 
-function clickLocaleSwitcherAndType(title: string) {
-  cy.wait(1000);
-  cy.get('.e2e-localeswitcher').each((button) => {
+// Fills a multiloc field in every locale of the tenant, through its locale switcher.
+// Pass `field` on forms holding more than one multiloc field: the switcher and the
+// input are then looked up inside that field instead of page-wide. `input` is a
+// selector within it ('input', 'textarea', '.ql-editor', …).
+function clickLocaleSwitcherAndType(
+  text: string,
+  field?: { container: string; input: string }
+) {
+  if (!field) {
+    cy.wait(1000);
+    cy.get('.e2e-localeswitcher').each((button) => {
+      cy.wrap(button).click();
+      cy.get('#title_multiloc').clear().type(text);
+    });
+    return;
+  }
+
+  cy.get(`${field.container} .e2e-localeswitcher`).each((button) => {
     cy.wrap(button).click();
-    cy.get('#title_multiloc').clear().type(title);
+    cy.wrap(button).should('have.class', 'selected');
+    cy.get(field.container).find(field.input).first().clear().type(text);
+    cy.wrap(button).find('div').should('have.class', 'notEmpty');
   });
 }
 
@@ -1955,7 +1972,8 @@ function apiRemoveSmartGroup(smartGroupId: string) {
 }
 
 const createBaseCustomField =
-  (imageId?: string) => (input_type: ICustomFieldInputType, i: number) => ({
+  (imageId?: string, optionCount?: number) =>
+  (input_type: ICustomFieldInputType, i: number) => ({
     title_multiloc:
       input_type === 'page' ? {} : { en: `Question: ${input_type}` },
     description_multiloc: {},
@@ -1966,7 +1984,7 @@ const createBaseCustomField =
     logic: {},
     required: false,
     input_type,
-    options: getOptions(input_type, imageId),
+    options: getOptions(input_type, imageId, optionCount),
     ordering: i,
     ...(input_type === 'linear_scale'
       ? {
@@ -1977,20 +1995,13 @@ const createBaseCustomField =
       : {}),
   });
 
-const getOptions = (input_type: string, imageId?: string) => {
+const getOptions = (input_type: string, imageId?: string, optionCount = 2) => {
   if (['select', 'multiselect', 'multiselect_image'].indexOf(input_type) > -1) {
-    return [
-      {
-        temp_id: `TEMP-ID-${randomString()}`,
-        title_multiloc: { en: `${input_type}: Option 1` },
-        ...(imageId ? { image_id: imageId } : {}),
-      },
-      {
-        temp_id: `TEMP-ID-${randomString()}`,
-        title_multiloc: { en: `${input_type}: Option 2` },
-        ...(imageId ? { image_id: imageId } : {}),
-      },
-    ];
+    return Array.from({ length: optionCount }, (_, index) => ({
+      temp_id: `TEMP-ID-${randomString()}`,
+      title_multiloc: { en: `${input_type}: Option ${index + 1}` },
+      ...(imageId ? { image_id: imageId } : {}),
+    }));
   }
 
   return undefined;
@@ -1999,7 +2010,8 @@ const getOptions = (input_type: string, imageId?: string) => {
 function apiCreateSurveyQuestions(
   phaseId: string,
   inputTypes: ICustomFieldInputType[],
-  imageId?: string
+  imageId?: string,
+  optionCount?: number
 ) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -2013,7 +2025,7 @@ function apiCreateSurveyQuestions(
       url: `web_api/v1/phases/${phaseId}/custom_fields/update_all`,
       body: {
         custom_fields: [
-          ...inputTypes.map(createBaseCustomField(imageId)),
+          ...inputTypes.map(createBaseCustomField(imageId, optionCount)),
           {
             id: randomString(),
             input_type: 'page',

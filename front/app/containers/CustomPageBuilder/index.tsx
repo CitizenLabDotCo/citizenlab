@@ -18,7 +18,7 @@ const CustomPageBuilder = () => {
   // a typed URL on a tenant without the feature would write data.
   const featureEnabled = useFeatureFlag({ name: 'custom_page_builder' });
   const { data: customPage } = useCustomPageById(customPageId);
-  const { isError } = useCustomPageLayout(customPageId, featureEnabled);
+  const { isError } = useCustomPageLayout(customPageId);
   const { mutate: upsertCustomPageLayout } = useUpsertCustomPageLayout();
 
   // A page with no layout 404s; create one so the builder opens on the page's own content.
@@ -27,7 +27,7 @@ const CustomPageBuilder = () => {
     if (!featureEnabled) return;
     if (isError && bootstrappedPageId.current !== customPageId) {
       bootstrappedPageId.current = customPageId;
-      upsertCustomPageLayout({ staticPageId: customPageId, enabled: true });
+      upsertCustomPageLayout({ staticPageId: customPageId });
     }
   }, [featureEnabled, isError, customPageId, upsertCustomPageLayout]);
 

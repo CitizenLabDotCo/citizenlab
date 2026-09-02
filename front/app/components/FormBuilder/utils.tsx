@@ -132,6 +132,7 @@ export function getAdditionalSettings(
             inputType={field.input_type}
             randomizeName={`customFields.${field.index}.random_option_ordering`}
             dropdownLayoutName={`customFields.${field.index}.dropdown_layout`}
+            selectOptionsName={`customFields.${field.index}.options`}
           />
         </>
       );
@@ -148,6 +149,7 @@ export function getAdditionalSettings(
             inputType={field.input_type}
             randomizeName={`customFields.${field.index}.random_option_ordering`}
             dropdownLayoutName={`customFields.${field.index}.dropdown_layout`}
+            selectOptionsName={`customFields.${field.index}.options`}
           />
         </>
       );
@@ -164,6 +166,7 @@ export function getAdditionalSettings(
             inputType={field.input_type}
             randomizeName={`customFields.${field.index}.random_option_ordering`}
             dropdownLayoutName={`customFields.${field.index}.dropdown_layout`}
+            selectOptionsName={`customFields.${field.index}.options`}
           />
         </>
       );

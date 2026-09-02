@@ -13,18 +13,17 @@ import customPageLayoutKeys from './keys';
 interface IUpsertCustomPageLayout {
   staticPageId: string;
   craftjs_json?: CraftJson;
-  enabled?: boolean;
 }
 
 const upsertCustomPageLayout = ({
   staticPageId,
   craftjs_json,
-  enabled = true,
 }: IUpsertCustomPageLayout) =>
   fetcher<IContentBuilderLayout>({
     path: `/static_pages/${staticPageId}/content_builder_layouts/custom_page/upsert`,
     action: 'post',
-    body: { content_builder_layout: { craftjs_json, enabled } },
+    // A layout is only ever upserted to be shown; nothing disables one through this hook.
+    body: { content_builder_layout: { craftjs_json, enabled: true } },
   });
 
 const useUpsertCustomPageLayout = () => {

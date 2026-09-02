@@ -8,10 +8,7 @@ import { layoutHasContent } from 'components/CustomPageBuilder/defaultLayout';
 // viewer needs the same answer to choose between the two.
 const useCustomPageBuilderContent = (staticPageId?: string) => {
   const featureEnabled = useFeatureFlag({ name: 'custom_page_builder' });
-  const { data: layout, isLoading } = useCustomPageLayout(
-    staticPageId,
-    featureEnabled
-  );
+  const { data: layout, isLoading } = useCustomPageLayout(staticPageId);
 
   const hasContent =
     !!layout &&
