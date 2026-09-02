@@ -34,7 +34,11 @@ const FilePreview = ({ fileId }: { fileId?: string }) => {
 
   if (!fileId) {
     return (
-      <Box maxWidth="1200px" margin="0 auto">
+      <Box
+        maxWidth="1200px"
+        margin="0 auto"
+        data-cy="e2e-file-attachment-placeholder"
+      >
         <WidgetPlaceholder iconName="file-add">
           <FormattedMessage {...messages.selectFilePrompt} />
         </WidgetPlaceholder>
@@ -207,6 +211,7 @@ const FileAttachmentSettings = () => {
           placeholder={formatMessage(messages.selectFile)}
           options={fileOptions}
           label={formatMessage(messages.selectFile)}
+          dataCy="e2e-file-attachment-file-select"
         />
       )}
 

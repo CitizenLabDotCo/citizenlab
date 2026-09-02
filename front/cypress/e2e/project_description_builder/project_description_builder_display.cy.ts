@@ -151,6 +151,87 @@ describe('Project description builder display', () => {
       .contains('example.pdf')
       .should('be.visible');
   });
+
+  it('shows a file swapped in the builder in the preview, without a reload', () => {
+    // The backend rebuilds the layout's file attachments on save, and the preview is a
+    // separate document with its own cache: it has to refetch them or it keeps showing the
+    // file that was on the layout when it loaded.
+    cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+      const headers = {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${response.body.jwt}`,
+      };
+
+      cy.fixture('example.pdf', 'base64')
+        .then((fileContent) =>
+          cy.request({
+            headers,
+            method: 'POST',
+            url: 'web_api/v1/files',
+            body: {
+              file: {
+                name: 'example.pdf',
+                content: `data:application/pdf;base64,${fileContent}`,
+                project: projectId,
+              },
+            },
+          })
+        )
+        .then((fileResponse) =>
+          cy.request({
+            headers,
+            method: 'POST',
+            url: `web_api/v1/projects/${projectId}/content_builder_layouts/project_page/upsert`,
+            body: {
+              content_builder_layout: {
+                enabled: true,
+                craftjs_json: projectPageLayoutWithFile(
+                  fileResponse.body.data.id
+                ),
+              },
+            },
+          })
+        );
+
+      cy.fixture('example.pdf', 'base64').then((fileContent) =>
+        cy.request({
+          headers,
+          method: 'POST',
+          url: 'web_api/v1/files',
+          body: {
+            file: {
+              name: 'replacement.pdf',
+              content: `data:application/pdf;base64,${fileContent}`,
+              project: projectId,
+            },
+          },
+        })
+      );
+    });
+
+    cy.visit(`/admin/project-page-builder/projects/${projectId}`);
+    cy.get('div#ROOT');
+
+    // The preview has now read the layout's attachments, and holds example.pdf.
+    getIframeBody().should('contain.text', 'example.pdf');
+
+    // The widget takes no pointer events in the builder, so select the node around it.
+    cy.get('#e2e-file-attachment')
+      .parents('.e2e-render-node')
+      .first()
+      .click({ force: true });
+    cy.dataCy('e2e-file-attachment-file-select').select('replacement.pdf');
+    cy.wait(1000);
+
+    cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait(1000);
+
+    cy.get('#e2e-preview-toggle').click({ force: true });
+    getIframeBody()
+      .find('#e2e-file-attachment')
+      .contains('replacement.pdf')
+      .should('be.visible');
+  });
 });
 
 const node = (override: Record<string, unknown>) => ({

@@ -94,6 +94,10 @@ const CustomPageBuilderPage = ({
 
     try {
       await upsertCustomPageLayout({ staticPageId, craftjs_json: nodes });
+      iframeRef.current?.contentWindow?.postMessage(
+        { layoutSaved: true },
+        window.location.href
+      );
     } catch {
       setSaveError(true);
     } finally {
