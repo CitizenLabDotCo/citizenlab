@@ -1397,7 +1397,6 @@
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Norādiet tālruņa numuru",
   "app.containers.Authentication.steps.Policies.byContinuingPhone3": "Turpinot jūs piekrītat saņemt vienreizēju apstiprinājuma kodu īsziņā no {orgName}. Ja augstāk piekritāt, jūs saņemsiet arī jaunumus un aktualitātes; ziņu biežums var mainīties. Var tikt piemērota maksa par īsziņām un datu pārraidi. Atbildiet HELP, lai saņemtu palīdzību, vai STOP, lai atteiktos.",
   "app.containers.Authentication.steps.Policies.byContinuingPhoneWithoutCampaignsEnabled": "Turpinot, jūs piekrītat saņemt vienreizēju apstiprinājuma kodu SMS veidā no {orgName}. Var tikt piemērota maksa par ziņojumiem un datu pārraidi. Atbildiet HELP, lai saņemtu palīdzību, STOP, lai atteiktos.",
-  "app.components.SmsConsent.phoneConfirmationDisclosureWithoutCampaignsEnabled": "Iesniedzot, jūs piekrītat saņemt vienreizēju apstiprinājuma kodu SMS veidā no {orgName}. Var tikt piemērota maksa par ziņojumiem un datu pārraidi. Atbildiet HELP, lai saņemtu palīdzību, STOP, lai atteiktos. Skatiet mūsu {termsLink} un {privacyLink}.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Izveidot jaunu kontu ar: {phone} {changeLink}",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Pārslēgt visus {contentType} paziņojumus",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Paziņojumi šajā kategorijā",

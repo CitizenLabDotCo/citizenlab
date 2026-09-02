@@ -1397,7 +1397,6 @@
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Navedite telefonski broj",
   "app.containers.Authentication.steps.Policies.byContinuingPhone3": "Nastavkom pristajete na primanje jednokratnog koda za potvrdu putem SMS-a od {orgName}. Ako ste gore dali privolu, primat ćete i vijesti i ažuriranja; učestalost poruka varira. Mogu se primijeniti naknade za poruke i prijenos podataka. Odgovorite s HELP za pomoć, STOP za odjavu.",
   "app.containers.Authentication.steps.Policies.byContinuingPhoneWithoutCampaignsEnabled": "Nastavkom pristajete na primanje jednokratnog potvrdnog koda putem SMS-a od {orgName}. Mogu se primijeniti naknade za poruke i prijenos podataka. Odgovorite s HELP za pomoć, STOP za odjavu.",
-  "app.containers.Authentication.steps.Policies.byContinuingPhoneWithoutCampaignsEnabled": "Nastavkom pristajete na primanje jednokratnog potvrdnog koda putem SMS-a od {orgName}. Mogu se primijeniti naknade za poruke i prijenos podataka. Odgovorite s HELP za pomoć, STOP za odjavu.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Izradite novi račun s: {phone} {changeLink}",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Uključi/isključi sve {contentType} obavijesti",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Obavijesti u ovoj kategoriji",

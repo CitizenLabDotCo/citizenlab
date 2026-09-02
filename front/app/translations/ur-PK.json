@@ -1397,7 +1397,6 @@
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "فون نمبر فراہم کریں",
   "app.containers.Authentication.steps.Policies.byContinuingPhone3": "آگے بڑھ کر، آپ {orgName} کی جانب سے بذریعہ SMS ایک بار استعمال ہونے والا تصدیقی کوڈ موصول کرنے پر اتفاق کرتے ہیں۔ اگر آپ نے اوپر رضامندی دی ہے، تو آپ کو خبریں اور اپ ڈیٹس بھی موصول ہوں گی؛ پیغامات کی تعداد مختلف ہو سکتی ہے۔ میسج اور ڈیٹا کے چارجز لاگو ہو سکتے ہیں۔ مدد کے لیے HELP، اور آپٹ آؤٹ کرنے کے لیے STOP لکھ کر جواب دیں۔",
   "app.containers.Authentication.steps.Policies.byContinuingPhoneWithoutCampaignsEnabled": "جاری رکھ کر، آپ {orgName} کی جانب سے بذریعہ SMS ایک بار استعمال ہونے والا تصدیقی کوڈ موصول کرنے پر اتفاق کرتے ہیں۔ میسج اور ڈیٹا کے نرخ لاگو ہو سکتے ہیں۔ مدد کے لیے HELP، آپٹ آؤٹ کرنے کے لیے STOP لکھ کر جواب دیں۔",
-  "app.components.SmsConsent.phoneConfirmationDisclosureWithoutCampaignsEnabled": "جمع کروا کر، آپ {orgName} کی جانب سے بذریعہ SMS ایک بار استعمال ہونے والا تصدیقی کوڈ موصول کرنے پر اتفاق کرتے ہیں۔ میسج اور ڈیٹا کے نرخ لاگو ہو سکتے ہیں۔ مدد کے لیے HELP، آپٹ آؤٹ کرنے کے لیے STOP لکھ کر جواب دیں۔ ہماری {termsLink} اور {privacyLink} دیکھیں۔",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "اس کے ساتھ نیا اکاؤنٹ بنائیں: {phone} {changeLink}",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "تمام {contentType} اطلاعات کو آن/آف کریں",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "اس زمرے میں اطلاعات",

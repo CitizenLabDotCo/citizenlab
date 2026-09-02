@@ -1397,7 +1397,6 @@
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Forneça um número de telefone",
   "app.containers.Authentication.steps.Policies.byContinuingPhone3": "Ao continuar, você concorda em receber um código de confirmação único por SMS de {orgName}. Se você optou por aceitar acima, também receberá notícias e atualizações; a frequência das mensagens varia. Tarifas de mensagens e dados podem ser aplicadas. Responda AJUDA para obter ajuda, PARAR para cancelar.",
   "app.containers.Authentication.steps.Policies.byContinuingPhoneWithoutCampaignsEnabled": "Ao continuar, você concorda em receber um código de confirmação único por SMS de {orgName}. Tarifas de mensagens e dados podem ser aplicadas. Responda HELP para ajuda, STOP para cancelar.",
-  "app.containers.Authentication.steps.Policies.byContinuingPhoneWithoutCampaignsEnabled": "Ao continuar, você concorda em receber um código de confirmação único por SMS de {orgName}. Tarifas de mensagens e dados podem ser aplicadas. Responda HELP para ajuda, STOP para cancelar.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Criar uma nova conta com: {phone} {changeLink}",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Alternar todas as notificações de {contentType}",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Notificações nesta categoria",

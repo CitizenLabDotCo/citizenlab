@@ -1397,7 +1397,6 @@
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Oppgi et telefonnummer",
   "app.containers.Authentication.steps.Policies.byContinuingPhone3": "Ved å fortsette samtykker du til å motta en engangskode på SMS fra {orgName}. Hvis du har valgt det over, vil du også motta nyheter og oppdateringer; meldingsfrekvensen varierer. Kostnader for meldinger og data kan påløpe. Svar HELP for hjelp, STOP for å melde deg av.",
   "app.containers.Authentication.steps.Policies.byContinuingPhoneWithoutCampaignsEnabled": "Ved å fortsette godtar du å motta en engangsbekreftelseskode på SMS fra {orgName}. Meldings- og datakostnader kan påløpe. Svar HJELP for hjelp, STOPP for å melde deg av.",
-  "app.containers.Authentication.steps.Policies.byContinuingPhoneWithoutCampaignsEnabled": "Ved å fortsette godtar du å motta en engangsbekreftelseskode på SMS fra {orgName}. Meldings- og datakostnader kan påløpe. Svar HJELP for hjelp, STOPP for å melde deg av.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Opprett en ny konto med: {phone} {changeLink}",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Veksle alle {contentType}-varslinger",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Varslinger i denne kategorien",

@@ -1397,7 +1397,6 @@
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Bir telefon numarası girin",
   "app.containers.Authentication.steps.Policies.byContinuingPhone3": "Devam ederek, {orgName} tarafından SMS ile tek seferlik bir onay kodu almayı kabul edersiniz. Yukarıda onay verdiyseniz, haberler ve güncellemeler de alırsınız; mesaj sıklığı değişebilir. Mesaj ve veri ücretleri uygulanabilir. Yardım için HELP, abonelikten çıkmak için STOP yazarak yanıtlayın.",
   "app.containers.Authentication.steps.Policies.byContinuingPhoneWithoutCampaignsEnabled": "Devam ederek, {orgName} tarafından SMS ile gönderilecek tek seferlik bir onay kodu almayı kabul etmiş olursunuz. Mesaj ve veri ücretleri uygulanabilir. Yardım için HELP, abonelikten çıkmak için STOP yazarak yanıtlayın.",
-  "app.containers.Authentication.steps.Policies.byContinuingPhoneWithoutCampaignsEnabled": "Devam ederek, {orgName} tarafından SMS ile gönderilecek tek seferlik bir onay kodu almayı kabul etmiş olursunuz. Mesaj ve veri ücretleri uygulanabilir. Yardım için HELP, abonelikten çıkmak için STOP yazarak yanıtlayın.",
   "app.containers.Authentication.steps.Policies.createANewAccountWithPhone": "Şununla yeni bir hesap oluşturun: {phone} {changeLink}",
   "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Tüm {contentType} bildirimlerini aç/kapat",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Bu kategorideki bildirimler",
