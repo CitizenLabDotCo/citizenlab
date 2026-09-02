@@ -20,6 +20,15 @@ module ContentBuilder
       # deletable in place, but never newly created.
       LEGACY_WIDGETS = %w[RichTextMultiloc ProjectDescriptionSection].freeze
 
+      # The custom page builder's own widgets and scaffold. A project page has no resolver for
+      # them, so anything validating a project layout has to work from PROJECT_PAGE_SPECS.
+      CUSTOM_PAGE_WIDGETS = %w[
+        ProjectsByFilter
+        EventsByProjects
+        CustomPageRoot
+        CustomPageBody
+      ].freeze
+
       SPECS = {
         'TextMultiloc' => { 'multilocs' => %w[text] },
         'ButtonMultiloc' => {
@@ -87,6 +96,8 @@ module ContentBuilder
         'CustomPageRoot' => {},
         'CustomPageBody' => {}
       }.freeze
+
+      PROJECT_PAGE_SPECS = SPECS.except(*CUSTOM_PAGE_WIDGETS).freeze
     end
   end
 end
