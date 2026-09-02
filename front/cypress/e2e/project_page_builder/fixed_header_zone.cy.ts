@@ -1,5 +1,3 @@
-import { format, subMonths } from 'date-fns';
-
 import { randomString } from '../../support/commands';
 
 describe('Project page builder fixed header zone', () => {
@@ -36,20 +34,27 @@ describe('Project page builder fixed header zone', () => {
     }).should('exist');
   });
 
-  it('shows a header zone with specific chip and tooltip', () => {
+  it('shows  header zone with specific chip and tooltip', () => {
     cy.contains('Fixed — editable only').should('exist');
     cy.get('[data-cy="locked-zone-pill-tooltip"]').click();
-    cy.contains('Pinned to the top of the page — editable, but can\'t be moved or removed.').should('be.visible');
+    cy.contains(
+      "Pinned to the top of the page — editable, but can't be moved or removed."
+    ).should('be.visible');
   });
 
   it('shows a specific chip when clicking on the banner or the title', () => {
     cy.get('#PROJECT_PAGE_BANNER').click();
-    cy.contains('Project image').should('be.visible');
-    cy.contains('- click to edit — can\'t be moved or removed').should('be.visible');
+    cy.contains(
+      "Project image - click to edit — can't be moved or removed"
+    ).should('be.visible');
     cy.get('#PROJECT_PAGE_TITLE').click();
     // sometimes page scrolls down and the title chip is not visible
-    cy.get('#e2e-project-page-content-builder-page').children().eq(1).scrollTo('top');
-    cy.contains('Title').should('be.visible');
-    cy.contains('- click to edit — can\'t be moved or removed').should('be.visible');
+    cy.get('#e2e-project-page-content-builder-page')
+      .children()
+      .eq(1)
+      .scrollTo('top');
+    cy.contains("Title - click to edit — can't be moved or removed").should(
+      'be.visible'
+    );
   });
 });
