@@ -201,10 +201,7 @@ resource 'Projects' do
     end
 
     context 'when the description is authored on the Content Builder' do
-      before do
-        project.update!(description_multiloc: { 'en' => '<p>Renew the parc</p>' })
-        ContentBuilder::LayoutProvisioningService.new.provision_for(project)
-      end
+      before { author_description(project, { 'en' => '<p>Renew the parc</p>' }) }
 
       example_request 'Returns the description held by the project page layout', document: false do
         assert_status 200
