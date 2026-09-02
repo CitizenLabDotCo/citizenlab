@@ -14,7 +14,7 @@ resource 'Projects' do
 
   route '/api/v1/projects', 'Projects: Listing projects' do
     let!(:projects) do
-      create_list(:project, 5).each { |project| ContentBuilder::LayoutProvisioningService.new.provision_for(project) }
+      create_list(:project, 5).each { |project| author_description(project, { 'en' => '<p>Renew the parc</p>' }) }
     end
 
     get 'Retrieve a listing of projects' do
@@ -45,9 +45,11 @@ resource 'Projects' do
       let!(:map_config) { create(:map_config, :with_positioning, project: project) }
       let(:id) { project.id }
 
-      # The description is authored on the Content Builder, which the SideFx hook
-      # provisions on create; the factory bypasses it.
-      before { ContentBuilder::LayoutProvisioningService.new.provision_for(project) }
+      before do
+        author_description(project, {
+          'en' => '<p>Let\'s renew the parc at the city border and make it an enjoyable place for young and old.</p>'
+        })
+      end
 
       example_request 'Get one project by id' do
         expect(status).to eq(200)
@@ -55,6 +57,7 @@ resource 'Projects' do
         expect(json_response[:project]).to match({
           id: id,
           title: 'Renew West Parc',
+          description_html: '<p>Let\'s renew the parc at the city border and make it an enjoyable place for young and old.</p>',
           description_preview: 'Let\'s renew the parc at the city border and make it an enjoyable place for young and old.',
           map_center_geojson: { coordinates: [an_instance_of(Float), an_instance_of(Float)], type: 'Point' },
           href: "http://example.org/projects/#{project.slug}",
