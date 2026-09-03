@@ -28,8 +28,6 @@ const CustomPageContentViewer = ({ staticPageId }: Props) => {
   if (!hasContent) return null;
 
   return (
-    // Matches the vertical breathing room the legacy sections had. The white behind it is the
-    // page's own, set by CustomPageShow when builder content renders.
     <Box data-testid="customPageContentViewer" py="50px">
       <ContentBuilderLayoutProvider layoutId={layoutId}>
         <Editor isPreview={true}>

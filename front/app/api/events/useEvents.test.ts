@@ -64,7 +64,6 @@ describe('useEvents', () => {
     expect(decodeURIComponent(requested)).toContain('spaces[]=space-1');
   });
 
-  // The homepage passes none of them, and its request must be exactly what it always was.
   it('sends no dimension params when none are given', async () => {
     let requested = '';
     server.use(

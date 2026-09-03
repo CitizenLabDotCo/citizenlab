@@ -66,8 +66,7 @@ export interface InputParameters {
   ongoing_during?: (string | null)[]; // [startDate, endDate], use null for open ended
   show_unlisted_events_user_can_moderate?: boolean;
 }
-// The ways a caller can narrow events down to a set of projects. Exactly one is expected;
-// combining them narrows further, which no caller wants today.
+
 export type EventProjectFilters = Pick<
   InputParameters,
   'projectIds' | 'areas' | 'globalTopics' | 'spaces'

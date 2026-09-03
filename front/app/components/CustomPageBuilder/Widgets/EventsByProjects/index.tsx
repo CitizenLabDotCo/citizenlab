@@ -29,7 +29,7 @@ const EventsByProjects = ({
     name: 'advanced_custom_pages',
   });
 
-  // Filtering is the paid capability; an unfiltered list stays available, as on the homepage.
+  // Only filtering is paid — mode 'all' keeps working without it, like the homepage.
   if (mode !== 'all' && !advancedCustomPagesEnabled) {
     return inBuilder ? (
       <WidgetPlaceholder iconName="calendar">
@@ -47,8 +47,6 @@ const EventsByProjects = ({
   }
 
   return (
-    // The width every builder widget uses, so the page lines up on one edge. The vertical
-    // padding is the band's own: stacked bands sit flush, so each provides its own gap.
     <Box maxWidth="1200px" margin="0 auto" px={padding} py="40px">
       <EventsWidget
         filters={filtersFor(mode, ids)}

@@ -69,8 +69,6 @@ const ProjectsByFilterInner = ({
   const adminPublications = data?.pages.map((page) => page.data).flat();
 
   return (
-    // The width every builder widget uses, so the page lines up on one edge. The vertical
-    // padding is the band's own: stacked bands sit flush, so each provides its own gap.
     <Box maxWidth="1200px" margin="0 auto" px={padding} py="40px">
       <ProjectAndFolderCardsInner
         statusCounts={allStatusCountsWithoutFilters}
