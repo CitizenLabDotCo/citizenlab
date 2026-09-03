@@ -456,7 +456,7 @@ module MultiTenancy
             project_workspace: {
               enabled: true,
               allowed: true
-            },
+            }
           })
         )
 
