@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 
-import moment from 'moment';
+import { parseISO } from 'date-fns';
 
 import { useVisitors as useVisitorsData } from 'api/graph_data_units';
 
@@ -41,8 +41,8 @@ export default function useVisitors({
       analytics?.data
         ? parseTimeSeries(
             analytics.data.attributes.visitors_timeseries,
-            startAt ? moment(startAt) : null,
-            endAt ? moment(endAt) : null,
+            startAt ? parseISO(startAt) : null,
+            endAt ? parseISO(endAt) : null,
             currentResolution
           )
         : null,

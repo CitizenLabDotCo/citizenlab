@@ -1,12 +1,30 @@
+import { TZDate } from '@date-fns/tz';
+import {
+  differenceInDays,
+  differenceInMonths,
+  differenceInWeeks,
+  format,
+  startOfDay,
+} from 'date-fns';
 import { isString } from 'lodash-es';
 // moment-timezone extends the regular moment library,
 // so there's no need to import both moment and moment-timezone
-import moment, { unitOfTime, Moment } from 'moment-timezone';
+import moment from 'moment-timezone';
 import { SupportedLocale } from 'typings';
 
 import { IEventData } from 'api/events/types';
 
 import { IResolution } from 'components/admin/ResolutionControl';
+
+import {
+  formatDateTime,
+  formatLongDate,
+  formatTime,
+  formatTimeZoneAbbreviation,
+  getViewerZone,
+  parseInZone,
+  toIsoDate,
+} from './dateFormat';
 
 export function getIsoDateForToday(): string {
   // this is based on the user's timezone in moment, so
@@ -191,23 +209,33 @@ export function getIsoDateUtc(date: string) {
   return moment.utc(new Date(date)).format('YYYY-MM-DD');
 }
 
-export const momentToIsoDate = (moment: Moment | null | undefined) => {
-  return moment?.format('yyyy-MM-DD');
-};
+/**
+ * `2026-03-22` in the browser's timezone, or undefined.
+ *
+ * Name kept for now to avoid churning ~10 call sites mid-migration; it takes a
+ * Date, not a Moment. Rename to toIsoDateOrUndefined in T10.
+ */
+export const momentToIsoDate = (date: Date | null | undefined) =>
+  date ? format(date, 'yyyy-MM-dd') : undefined;
+
+type DiffUnit = 'days' | 'weeks' | 'months';
+
+const DIFF_BY_UNIT = {
+  days: differenceInDays,
+  weeks: differenceInWeeks,
+  months: differenceInMonths,
+} as const;
 
 export function getPeriodRemainingUntil(
   date: string,
   tenantTimezone: string,
-  timeUnit: unitOfTime.Diff
+  timeUnit: DiffUnit
 ): number {
-  // Parse the target date in the tenant's timezone
-  const targetDate = moment.tz(date, tenantTimezone);
+  // Target date and "today at midnight", both read in the tenant's timezone.
+  const targetDate = parseInZone(date, tenantTimezone);
+  const now = startOfDay(new TZDate(Date.now(), tenantTimezone));
 
-  // Get the current date at midnight in the tenant's timezone
-  const now = moment.tz(tenantTimezone).startOf('day');
-
-  // Calculate and return the difference
-  return targetDate.diff(now, timeUnit);
+  return DIFF_BY_UNIT[timeUnit](targetDate, now);
 }
 
 export function convertSecondsToDDHHMM(seconds: number) {
@@ -263,24 +291,30 @@ export function showDotAfterDay(locale: SupportedLocale) {
 
 // Function used to get the event dates in a localized string format,
 // converted to the viewer's local timezone with a timezone label.
-export function getEventDateString(event: IEventData) {
-  const startMoment = moment.tz(event.attributes.start_at, userTimezone);
-  const endMoment = moment.tz(event.attributes.end_at, userTimezone);
-  const tzLabel = startMoment.format('z');
+export function getEventDateString(event: IEventData, locale: SupportedLocale) {
+  const { start_at, end_at } = event.attributes;
+  // Event times are shown in the VIEWER's timezone, not the tenant's, so that
+  // an attendee always reads the time on their own clock. The label makes the
+  // zone explicit.
+  const inViewerZone = { timeZone: getViewerZone() };
+  const tzLabel = formatTimeZoneAbbreviation(start_at, locale, inViewerZone);
 
   const isEventMultipleDays =
-    startMoment.dayOfYear() !== endMoment.dayOfYear() ||
-    startMoment.year() !== endMoment.year(); // Added in case the event is exactly 1 year long
+    toIsoDate(start_at, inViewerZone) !== toIsoDate(end_at, inViewerZone);
 
   if (isEventMultipleDays) {
-    return `${startMoment.format('LLL')} - ${endMoment.format(
-      'LLL'
-    )} ${tzLabel}`;
-  } else {
-    return `${startMoment.format('LL')} • ${startMoment.format(
-      'LT'
-    )} - ${endMoment.format('LT')} ${tzLabel}`;
+    return `${formatDateTime(
+      start_at,
+      locale,
+      inViewerZone
+    )} - ${formatDateTime(end_at, locale, inViewerZone)} ${tzLabel}`;
   }
+
+  return `${formatLongDate(start_at, locale, inViewerZone)} • ${formatTime(
+    start_at,
+    locale,
+    inViewerZone
+  )} - ${formatTime(end_at, locale, inViewerZone)} ${tzLabel}`;
 }
 
 // Get a single date in local format - for example for voting phase end date
@@ -351,16 +385,16 @@ export const getGmtOffset = (
   if (!timeZone) return '';
 
   const dateToCheck = selectedDate || tenantTimeNow;
-  const momentDate = moment.tz(
-    {
-      year: dateToCheck.getFullYear(),
-      month: dateToCheck.getMonth(),
-      day: dateToCheck.getDate(),
-    },
+  // Midnight on that calendar day in the target zone, so the offset reflects
+  // whether DST is in effect on the selected date rather than right now.
+  const midnightThere = new TZDate(
+    dateToCheck.getFullYear(),
+    dateToCheck.getMonth(),
+    dateToCheck.getDate(),
     timeZone
   );
 
-  return momentDate.format('Z');
+  return format(midnightThere, 'xxx');
 };
 
 export const convertToTimeZoneISO = (
@@ -369,35 +403,48 @@ export const convertToTimeZoneISO = (
 ): string => {
   if (!date || !timeZone) return '';
 
-  return moment
-    .tz(
-      {
-        year: date.getFullYear(),
-        month: date.getMonth(),
-        day: date.getDate(),
-        hour: date.getHours(),
-        minute: date.getMinutes(),
-        second: date.getSeconds(),
-      },
-      timeZone
-    )
-    .utc()
-    .toISOString();
+  // The Date carries wall-clock components the user picked; re-read them in
+  // the target zone to get the instant they actually meant.
+  const instant = new TZDate(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+    date.getHours(),
+    date.getMinutes(),
+    date.getSeconds(),
+    timeZone
+  );
+
+  return new Date(instant.getTime()).toISOString();
 };
+/**
+ * "Now", as a Date whose local components read as the wall clock in `timeZone`.
+ *
+ * The scheduling screens all need this: their date/time pickers work in plain
+ * local Dates, but the value the user is choosing is a tenant-timezone wall
+ * clock. Falls back to the viewer's own clock when no zone is configured.
+ */
+export const nowInZone = (timeZone?: string): Date => {
+  const now = new Date();
+  if (!timeZone) return now;
+  return getDateInTimezone(now.toISOString(), timeZone) ?? now;
+};
+
 export const getDateInTimezone = (
   isoString: string | null | undefined,
   timeZone: string | undefined
 ): Date | undefined => {
   if (!isoString || !timeZone) return undefined;
 
-  const m = moment.tz(isoString, timeZone);
-  // We don't use m.toDate() because it changes the time to the browser timezone.
+  const inZone = parseInZone(isoString, timeZone);
+  // Deliberately rebuilt as a local Date from the zone's wall-clock parts —
+  // callers want a Date whose components read as they do in `timeZone`.
   return new Date(
-    m.year(),
-    m.month(),
-    m.date(),
-    m.hour(),
-    m.minute(),
-    m.second()
+    inZone.getFullYear(),
+    inZone.getMonth(),
+    inZone.getDate(),
+    inZone.getHours(),
+    inZone.getMinutes(),
+    inZone.getSeconds()
   );
 };

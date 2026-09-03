@@ -1,6 +1,6 @@
 import React from 'react';
 
-import moment from 'moment';
+import { format, parseISO } from 'date-fns';
 
 import TimeControl from 'containers/Admin/dashboard/components/TimeControl';
 
@@ -16,23 +16,23 @@ const TimeFilter = () => {
   });
 
   const endAtMoment = searchParams.published_at_to
-    ? moment(searchParams.published_at_to)
-    : moment();
+    ? parseISO(searchParams.published_at_to)
+    : new Date();
 
   const startAtMoment = searchParams.published_at_from
-    ? moment(searchParams.published_at_from)
+    ? parseISO(searchParams.published_at_from)
     : undefined;
 
   return (
     <TimeControl
       onChange={(from, to) => {
         updateSearchParams({
-          published_at_from: from?.format('YYYY-MM-DD'),
-          published_at_to: to?.format('YYYY-MM-DD'),
+          published_at_from: from ? format(from, 'yyyy-MM-dd') : undefined,
+          published_at_to: to ? format(to, 'yyyy-MM-dd') : undefined,
         });
         trackEventByName(tracks.timeFilterUsed, {
-          from: from?.format('YYYY-MM-DD'),
-          to: to?.format('YYYY-MM-DD'),
+          from: from ? format(from, 'yyyy-MM-dd') : undefined,
+          to: to ? format(to, 'yyyy-MM-dd') : undefined,
         });
       }}
       endAtMoment={endAtMoment}

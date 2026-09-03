@@ -4,6 +4,8 @@ import { Text } from '@citizenlab/cl2-component-library';
 
 import { IEventData } from 'api/events/types';
 
+import useLocale from 'hooks/useLocale';
+
 import { AddEventToCalendarButton } from 'components/AddEventToCalendarButton';
 import messages from 'components/EventCards/messages';
 
@@ -17,8 +19,9 @@ export interface Props {
 }
 
 const FullEventTime = ({ event }: Props) => {
+  const locale = useLocale();
   const { formatMessage } = useIntl();
-  const eventDateString = getEventDateString(event);
+  const eventDateString = getEventDateString(event, locale);
 
   return (
     <Container>

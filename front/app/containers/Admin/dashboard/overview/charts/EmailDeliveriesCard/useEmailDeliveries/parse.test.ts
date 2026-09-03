@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { parseISO } from 'date-fns';
 
 import { mergeTimeSeries, parseTimeSeries } from './parse';
 
@@ -145,8 +145,8 @@ describe('parseTimeSeries', () => {
   it('works correctly for months', () => {
     const output = parseTimeSeries(
       preparedTimeSeriesResponse,
-      moment('2022-09-01'),
-      moment('2022-12-01'),
+      parseISO('2022-09-01'),
+      parseISO('2022-12-01'),
       'month'
     );
 
@@ -179,8 +179,8 @@ describe('parseTimeSeries', () => {
   it('works correctly for weeks', () => {
     const output = parseTimeSeries(
       preparedTimeSeriesResponse,
-      moment('2022-10-24'),
-      moment('2022-11-07'),
+      parseISO('2022-10-24'),
+      parseISO('2022-11-07'),
       'week'
     );
 
@@ -208,8 +208,8 @@ describe('parseTimeSeries', () => {
   it('works correctly for days', () => {
     const output = parseTimeSeries(
       preparedTimeSeriesResponse,
-      moment('2022-10-29'),
-      moment('2022-11-02'),
+      parseISO('2022-10-29'),
+      parseISO('2022-11-02'),
       'day'
     );
 
@@ -247,8 +247,8 @@ describe('parseTimeSeries', () => {
   it('returns null if time series is empty array', () => {
     const output = parseTimeSeries(
       [],
-      moment('2022-09-01'),
-      moment('2022-12-01'),
+      parseISO('2022-09-01'),
+      parseISO('2022-12-01'),
       'month'
     );
 

@@ -1,4 +1,4 @@
-import moment, { Moment } from 'moment';
+import { format, parseISO } from 'date-fns';
 
 import {
   parseMonths,
@@ -24,24 +24,24 @@ interface TimeSeriesRow {
 
 type TimeSeries = TimeSeriesRow[];
 
-const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
+const parseRow = (date: Date, row?: TimeSeriesResponseRow): TimeSeriesRow => {
   if (!row) return getEmptyRow(date);
 
   return {
     visitors: row.count_visitor_id,
     visits: row.count,
-    date: date.format('YYYY-MM-DD'),
+    date: format(date, 'yyyy-MM-dd'),
   };
 };
 
-const getEmptyRow = (date: Moment) => ({
-  date: date.format('YYYY-MM-DD'),
+const getEmptyRow = (date: Date) => ({
+  date: format(date, 'yyyy-MM-dd'),
   visitors: 0,
   visits: 0,
 });
 
 const getDate = (row: TimeSeriesResponseRow) => {
-  return moment(row['first_dimension_date_first_action_date']);
+  return parseISO(row['first_dimension_date_first_action_date']);
 };
 
 describe('parseMonths', () => {
@@ -88,8 +88,8 @@ describe('parseMonths', () => {
     { date: '2022-02-01', visits: 4, visitors: 4 },
   ];
 
-  const startMoment = moment('2021-09-01');
-  const endMoment = moment('2022-04-01');
+  const startMoment = parseISO('2021-09-01');
+  const endMoment = parseISO('2022-04-01');
 
   const expectedDataBefore: TimeSeries = [
     {
@@ -299,8 +299,8 @@ describe('parseWeeks', () => {
     { date: '2022-01-10', visits: 4, visitors: 4 },
   ];
 
-  const startMoment = moment('2021-12-08');
-  const endMoment = moment('2022-01-27');
+  const startMoment = parseISO('2021-12-08');
+  const endMoment = parseISO('2022-01-27');
 
   const expectedDataBefore: TimeSeries = [
     {
@@ -523,8 +523,8 @@ describe('parseDays', () => {
     expect(
       parseDays(
         data,
-        moment('2021-12-28'),
-        moment('2022-01-03'),
+        parseISO('2021-12-28'),
+        parseISO('2022-01-03'),
         getDate,
         parseRow
       )

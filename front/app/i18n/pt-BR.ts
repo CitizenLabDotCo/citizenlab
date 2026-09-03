@@ -1,4 +1,4 @@
-import ptBR from 'date-fns/locale/pt-BR';
+import { ptBR } from 'date-fns/locale/pt-BR';
 
 import { addLocale } from 'components/admin/DatePickers/_shared/locales';
 

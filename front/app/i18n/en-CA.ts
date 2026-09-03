@@ -1,4 +1,4 @@
-import enCA from 'date-fns/locale/en-CA';
+import { enCA } from 'date-fns/locale/en-CA';
 
 import { addLocale } from 'components/admin/DatePickers/_shared/locales';
 

@@ -1,4 +1,4 @@
-import moment, { Moment } from 'moment';
+import { isAfter, parseISO } from 'date-fns';
 import { FormatMessage } from 'typings';
 
 import { Period } from 'api/graph_data_units/responseTypes/ProjectsWidget';
@@ -6,11 +6,11 @@ import { ProjectSortableParam } from 'api/projects_mini_admin/types';
 
 import projectFilterMessages from 'containers/Admin/projects/all/_shared/FilterBar/Filters/messages';
 
-export const deriveProjectStatus = (period: Period, now: Moment) => {
-  const startAt = moment(period.start_at);
-  const endAt = period.end_at ? moment(period.end_at) : null;
+export const deriveProjectStatus = (period: Period, now: Date) => {
+  const startAt = parseISO(period.start_at);
+  const endAt = period.end_at ? parseISO(period.end_at) : null;
 
-  if (startAt.isAfter(now)) {
+  if (isAfter(startAt, now)) {
     return 'planned';
   }
 
@@ -18,7 +18,7 @@ export const deriveProjectStatus = (period: Period, now: Moment) => {
     return 'open-ended';
   }
 
-  return now.isAfter(endAt) ? 'finished' : 'active';
+  return isAfter(now, endAt) ? 'finished' : 'active';
 };
 
 interface ISortOption {

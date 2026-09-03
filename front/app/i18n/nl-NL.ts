@@ -1,4 +1,4 @@
-import nl from 'date-fns/locale/nl';
+import { nl } from 'date-fns/locale/nl';
 
 import { addLocale } from 'components/admin/DatePickers/_shared/locales';
 

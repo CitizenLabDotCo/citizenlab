@@ -1,4 +1,4 @@
-import arSA from 'date-fns/locale/ar-SA';
+import { arSA } from 'date-fns/locale/ar-SA';
 
 import { addLocale } from 'components/admin/DatePickers/_shared/locales';
 
