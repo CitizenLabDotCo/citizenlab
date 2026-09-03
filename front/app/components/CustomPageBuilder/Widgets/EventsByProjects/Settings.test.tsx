@@ -80,15 +80,13 @@ describe('EventsByProjects Settings', () => {
     expect(modes()).not.toContain('Projects in one of these spaces');
   });
 
-  it('keeps a stored mode whose feature is off, marked unavailable', () => {
+  it('keeps a stored mode listed once its feature is off', () => {
     flags.spaces = false;
     props = { mode: 'spaces', ids: ['space-1'] };
 
     render(<Settings />);
 
-    expect(modes()).toContain(
-      'Projects in one of these spaces (not available on this platform)'
-    );
+    expect(modes()).toContain('Projects in one of these spaces');
   });
 
   it('clears the selection when the mode changes', () => {

@@ -73,15 +73,13 @@ describe('ProjectsByFilter Settings', () => {
     expect(dimensions()).not.toContain('One of these spaces');
   });
 
-  it('keeps a stored dimension whose feature is off, marked unavailable', () => {
+  it('keeps a stored dimension listed once its feature is off', () => {
     flags.spaces = false;
     props = { filterType: 'spaces', ids: ['space-1'] };
 
     render(<Settings />);
 
-    expect(dimensions()).toContain(
-      'One of these spaces (not available on this platform)'
-    );
+    expect(dimensions()).toContain('One of these spaces');
   });
 
   // Kept across a switch, area ids would silently be read as tag ids.

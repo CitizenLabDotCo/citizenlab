@@ -47,9 +47,8 @@ const Settings = () => {
   const { data: areas } = useAreas({});
   const { data: spaces } = useSpaces();
 
-  // A page can hold a dimension whose feature the tenant has since lost. Dropping it from the
-  // options would leave the panel reading as unset while the widget still filters by it, and
-  // the obvious repair — picking another dimension — discards the selection silently.
+  // A stored dimension stays listed even once its feature is off: the widget still filters by
+  // it, so dropping it would read as unset, and picking another discards the selection.
   const spacesOption = spacesEnabled || filterType === 'spaces';
 
   const filterTypeOptions: { value: ProjectsFilterType; label: string }[] = [
@@ -59,11 +58,7 @@ const Settings = () => {
       ? [
           {
             value: 'spaces' as const,
-            label: spacesEnabled
-              ? formatMessage(messages.filterBySpaces)
-              : formatMessage(messages.dimensionUnavailable, {
-                  dimension: formatMessage(messages.filterBySpaces),
-                }),
+            label: formatMessage(messages.filterBySpaces),
           },
         ]
       : []),

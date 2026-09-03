@@ -90,11 +90,7 @@ const Settings = () => {
 
   const modeOptions = visibleModes.map((option) => ({
     value: option,
-    label: isAvailable(option)
-      ? modeLabels[option]
-      : formatMessage(messages.modeUnavailable, {
-          mode: modeLabels[option],
-        }),
+    label: modeLabels[option],
   }));
 
   const entities = {

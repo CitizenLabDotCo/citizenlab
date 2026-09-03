@@ -26,10 +26,6 @@ export default defineMessages({
     id: 'app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filterBySpaces',
     defaultMessage: 'One of these spaces',
   },
-  dimensionUnavailable: {
-    id: 'app.components.CustomPageBuilder.Widgets.ProjectsByFilter.dimensionUnavailable',
-    defaultMessage: '{dimension} (not available on this platform)',
-  },
   selectionLabel: {
     id: 'app.components.CustomPageBuilder.Widgets.ProjectsByFilter.selectionLabel',
     defaultMessage: 'Selection',
