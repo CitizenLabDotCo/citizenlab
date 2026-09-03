@@ -4029,6 +4029,11 @@
     "verified_at": "2026-03-30T13:12:31.639803Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Admin.PagesAndMenu.EditCustomPage.editInContentBuilder": {
+    "state": "verified",
+    "verified_at": "2026-09-03T08:29:21.372602Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
