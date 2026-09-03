@@ -21,7 +21,14 @@ module McpServer
     before_action :set_sentry_context
 
     def create
-      Sentry.set_tags(mcp_tool: params.dig(:params, :name)) if params[:method] == 'tools/call'
+      # Best-effort log-line capture; parse errors must not block the transport.
+      begin
+        @mcp_method = params[:method]
+        @mcp_tool = @mcp_method == 'tools/call' ? params.dig(:params, :name) : nil
+      rescue StandardError
+        @mcp_method = @mcp_tool = nil
+      end
+      Sentry.set_tags(mcp_tool: @mcp_tool) if @mcp_tool
 
       server = MCP::Server.new(
         name: 'go_vocal_internal',
@@ -73,7 +80,21 @@ module McpServer
       tenant = host.presence && Tenant.find_by(host: host)
       return render(json: { error: "Unknown tenant host: #{host}" }, status: :not_found) unless tenant
 
+      # Stashed for append_info_to_payload, which runs after the schema switches back.
+      @tenant = tenant
       tenant.switch(&)
+    end
+
+    # Mirrors McpController's field names so CloudWatch queries cover both channels.
+    # Runs after switch_tenant unwinds, so ivars only — no tenant-schema lookups.
+    def append_info_to_payload(payload)
+      super
+      payload[:tenant_id]    = @tenant&.id
+      payload[:tenant_host]  = @tenant&.host
+      payload[:user_id]      = @acting_user&.id
+      payload[:acting_staff] = request.headers['X-Acting-Staff'].presence
+      payload[:mcp_method]   = @mcp_method
+      payload[:mcp_tool]     = @mcp_tool
     end
 
     # Mirrors McpPolicy#create? (feature flag + active super admin), with explicit
@@ -116,7 +137,7 @@ module McpServer
     # acting user, with the real staff identity in the payload (the acting user
     # may be the shared internal account).
     def log_tool_call_activity
-      return unless params[:method] == 'tools/call'
+      return unless @mcp_method == 'tools/call'
 
       LogActivityJob.perform_later(
         acting_user,
@@ -124,7 +145,7 @@ module McpServer
         acting_user,
         Time.zone.now.to_i,
         payload: {
-          tool: params.dig(:params, :name),
+          tool: @mcp_tool,
           acting_staff: request.headers['X-Acting-Staff']
         }
       )
