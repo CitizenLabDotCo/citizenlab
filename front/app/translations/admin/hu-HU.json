@@ -3921,6 +3921,7 @@
   "app.containers.admin.ContentBuilder.imageMultiloc": "Kép",
   "app.containers.admin.ContentBuilder.imageMultilocAltLabel": "A kép rövid leírása",
   "app.containers.admin.ContentBuilder.imageMultilocAltTooltip": "Az „alternatív szöveg” hozzáadása a képekhez fontos ahhoz, hogy platformja hozzáférhető legyen a képernyőolvasót használó felhasználók számára.",
+  "app.containers.admin.ContentBuilder.lockedNodeLabel": "{widgetName} - kattintson a szerkesztéshez — nem mozgatható és nem távolítható el",
   "app.containers.admin.ContentBuilder.noFilesAvailable": "Nincsenek elérhető fájlok. Kérjük, először töltsön fel fájlokat a projekthez.",
   "app.containers.admin.ContentBuilder.noPageSelected": "Nincs oldal kiválasztva.",
   "app.containers.admin.ContentBuilder.noPagesAvailable": "Nem érhető el oldal. Kérjük, előbb adjon hozzá egy oldalt a projekthez.",

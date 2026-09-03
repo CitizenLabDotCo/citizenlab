@@ -3921,6 +3921,7 @@
   "app.containers.admin.ContentBuilder.imageMultiloc": "Bild",
   "app.containers.admin.ContentBuilder.imageMultilocAltLabel": "Kort beskrivning av bilden",
   "app.containers.admin.ContentBuilder.imageMultilocAltTooltip": "Att lägga till \"alt-text\" för bilder är viktigt för att göra din plattform tillgänglig för användare som använder skärmläsare.",
+  "app.containers.admin.ContentBuilder.lockedNodeLabel": "{widgetName} – klicka för att redigera – kan inte flyttas eller tas bort",
   "app.containers.admin.ContentBuilder.noFilesAvailable": "Inga filer tillgängliga. Vänligen ladda upp filer till projektet först.",
   "app.containers.admin.ContentBuilder.noPageSelected": "Ingen sida har valts.",
   "app.containers.admin.ContentBuilder.noPagesAvailable": "Inga sidor tillgängliga. Lägg till en sida i projektet först.",

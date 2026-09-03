@@ -3921,6 +3921,7 @@
   "app.containers.admin.ContentBuilder.imageMultiloc": "Kuva",
   "app.containers.admin.ContentBuilder.imageMultilocAltLabel": "Lyhyt kuvaus kuvasta",
   "app.containers.admin.ContentBuilder.imageMultilocAltTooltip": "\"Vaihtoehtoisen tekstin\" lisääminen kuviin on tärkeää, jotta alustasi on näytönlukuohjelmia käyttävien käyttäjien käytettävissä.",
+  "app.containers.admin.ContentBuilder.lockedNodeLabel": "{widgetName} - muokkaa napsauttamalla — ei voi siirtää tai poistaa",
   "app.containers.admin.ContentBuilder.noFilesAvailable": "Ei tiedostoja saatavilla. Lataa tiedostot ensin projektiin.",
   "app.containers.admin.ContentBuilder.noPageSelected": "Sivua ei ole valittu.",
   "app.containers.admin.ContentBuilder.noPagesAvailable": "Sivuja ei ole saatavilla. Lisää ensin sivu projektiin.",

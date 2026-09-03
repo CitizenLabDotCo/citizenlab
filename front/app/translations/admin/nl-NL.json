@@ -3921,6 +3921,7 @@
   "app.containers.admin.ContentBuilder.imageMultiloc": "Afbeelding",
   "app.containers.admin.ContentBuilder.imageMultilocAltLabel": "Korte beschrijving van de afbeelding",
   "app.containers.admin.ContentBuilder.imageMultilocAltTooltip": "Het toevoegen van \"alt-tekst\" voor afbeeldingen is belangrijk om jullie platform toegankelijk te maken voor gebruikers die schermlezers gebruiken.",
+  "app.containers.admin.ContentBuilder.lockedNodeLabel": "{widgetName} - klik om te bewerken — kan niet worden verplaatst of verwijderd",
   "app.containers.admin.ContentBuilder.noFilesAvailable": "Geen bestanden beschikbaar. Upload eerst bestanden naar het project.",
   "app.containers.admin.ContentBuilder.noPageSelected": "Geen pagina geselecteerd.",
   "app.containers.admin.ContentBuilder.noPagesAvailable": "Geen pagina's beschikbaar. Voeg eerst een pagina toe aan het project.",

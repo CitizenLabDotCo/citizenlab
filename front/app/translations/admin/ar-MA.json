@@ -3921,6 +3921,7 @@
   "app.containers.admin.ContentBuilder.imageMultiloc": "صورة",
   "app.containers.admin.ContentBuilder.imageMultilocAltLabel": "وصف قصير للصورة",
   "app.containers.admin.ContentBuilder.imageMultilocAltTooltip": "إضافة \"نص بديل\" للصور أمر مهم لجعل منصتك سهلة الاستخدام للمستخدمين الذين يستخدمون قارئات الشاشة.",
+  "app.containers.admin.ContentBuilder.lockedNodeLabel": "{widgetName} - كليكي باش تعدل — ما يمكنش يتحرك ولا يتمسح",
   "app.containers.admin.ContentBuilder.noFilesAvailable": "لا توجد ملفات متاحة. يرجى تحميل الملفات إلى المشروع أولاً.",
   "app.containers.admin.ContentBuilder.noPageSelected": "لم يتم اختيار أي صفحة.",
   "app.containers.admin.ContentBuilder.noPagesAvailable": "لا توجد صفحات متاحة. يرجى إضافة صفحة إلى المشروع أولاً.",

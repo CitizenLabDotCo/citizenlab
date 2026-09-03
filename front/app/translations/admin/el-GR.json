@@ -3921,6 +3921,7 @@
   "app.containers.admin.ContentBuilder.imageMultiloc": "Εικόνα",
   "app.containers.admin.ContentBuilder.imageMultilocAltLabel": "Σύντομη περιγραφή της εικόνας",
   "app.containers.admin.ContentBuilder.imageMultilocAltTooltip": "Η προσθήκη \"εναλλακτικού κειμένου\" (alt text) για εικόνες είναι σημαντική για να καταστήσετε την πλατφόρμα σας προσβάσιμη σε χρήστες που χρησιμοποιούν προγράμματα ανάγνωσης οθόνης.",
+  "app.containers.admin.ContentBuilder.lockedNodeLabel": "{widgetName} - κάντε κλικ για επεξεργασία — δεν μπορεί να μετακινηθεί ή να αφαιρεθεί",
   "app.containers.admin.ContentBuilder.noFilesAvailable": "Δεν υπάρχουν διαθέσιμα αρχεία. Παρακαλούμε μεταφορτώστε πρώτα αρχεία στο έργο.",
   "app.containers.admin.ContentBuilder.noPageSelected": "Δεν έχει επιλεγεί σελίδα.",
   "app.containers.admin.ContentBuilder.noPagesAvailable": "Δεν υπάρχουν διαθέσιμες σελίδες. Προσθέστε πρώτα μια σελίδα στο έργο.",

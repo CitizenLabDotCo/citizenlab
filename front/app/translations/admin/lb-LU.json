@@ -3921,6 +3921,7 @@
   "app.containers.admin.ContentBuilder.imageMultiloc": "Bild",
   "app.containers.admin.ContentBuilder.imageMultilocAltLabel": "Kuerz Beschreiwung vum Bild",
   "app.containers.admin.ContentBuilder.imageMultilocAltTooltip": "\"Alt-Text\" fir Biller bäizefügen ass wichteg, fir Är Plattform fir Benotzer, déi Screenreader benotzen, accessibel ze maachen.",
+  "app.containers.admin.ContentBuilder.lockedNodeLabel": "{widgetName} - klickt fir z'änneren — kann net verréckelt oder geläscht ginn",
   "app.containers.admin.ContentBuilder.noFilesAvailable": "Keng Dateie verfügbar. Luet wgl. d'éischt Dateien am Projet erop.",
   "app.containers.admin.ContentBuilder.noPageSelected": "Keng Säit ausgewielt.",
   "app.containers.admin.ContentBuilder.noPagesAvailable": "Keng Säite verfügbar. Füügt wgl. fir d'éischt eng Säit zum Projet bäi.",

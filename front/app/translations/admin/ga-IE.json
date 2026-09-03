@@ -3921,6 +3921,7 @@
   "app.containers.admin.ContentBuilder.imageMultiloc": "Íomhá",
   "app.containers.admin.ContentBuilder.imageMultilocAltLabel": "Cur síos gairid ar an íomhá",
   "app.containers.admin.ContentBuilder.imageMultilocAltTooltip": "Tá sé tábhachtach \"téacs alt\" a chur le híomhánna chun go mbeidh d'ardán inrochtana d'úsáideoirí a úsáideann léitheoirí scáileáin.",
+  "app.containers.admin.ContentBuilder.lockedNodeLabel": "{widgetName} - cliceáil chun eagarthóireacht a dhéanamh — ní féidir é a bhogadh ná a bhaint",
   "app.containers.admin.ContentBuilder.noFilesAvailable": "Níl aon chomhaid ar fáil. Uaslódáil comhaid chuig an tionscadal ar dtús.",
   "app.containers.admin.ContentBuilder.noPageSelected": "Níl aon leathanach roghnaithe.",
   "app.containers.admin.ContentBuilder.noPagesAvailable": "Níl aon leathanaigh ar fáil. Cuir leathanach leis an tionscadal ar dtús, le do thoil.",

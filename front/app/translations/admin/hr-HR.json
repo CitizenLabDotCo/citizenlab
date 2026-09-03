@@ -3921,6 +3921,7 @@
   "app.containers.admin.ContentBuilder.imageMultiloc": "Slika",
   "app.containers.admin.ContentBuilder.imageMultilocAltLabel": "Kratki opis slike",
   "app.containers.admin.ContentBuilder.imageMultilocAltTooltip": "Dodavanje \"alternativnog teksta\" za slike važno je kako bi vaša platforma bila dostupna korisnicima koji koriste čitače zaslona.",
+  "app.containers.admin.ContentBuilder.lockedNodeLabel": "{widgetName} - kliknite za uređivanje — ne može se premjestiti niti ukloniti",
   "app.containers.admin.ContentBuilder.noFilesAvailable": "Nema dostupnih datoteka. Prvo prenesite datoteke u projekt.",
   "app.containers.admin.ContentBuilder.noPageSelected": "Nije odabrana nijedna stranica.",
   "app.containers.admin.ContentBuilder.noPagesAvailable": "Nema dostupnih stranica. Prvo dodajte stranicu projektu.",

@@ -3921,6 +3921,7 @@
   "app.containers.admin.ContentBuilder.imageMultiloc": "Resim",
   "app.containers.admin.ContentBuilder.imageMultilocAltLabel": "Görselin kısa açıklaması",
   "app.containers.admin.ContentBuilder.imageMultilocAltTooltip": "Görseller için \"alt metin\" eklemek, platformunuzu ekran okuyucu kullanan kullanıcılar için erişilebilir kılmak açısından önemlidir.",
+  "app.containers.admin.ContentBuilder.lockedNodeLabel": "{widgetName} - düzenlemek için tıklayın — taşınamaz veya kaldırılamaz",
   "app.containers.admin.ContentBuilder.noFilesAvailable": "Dosya mevcut değil. Lütfen önce dosyaları projeye yükleyin.",
   "app.containers.admin.ContentBuilder.noPageSelected": "Sayfa seçilmedi.",
   "app.containers.admin.ContentBuilder.noPagesAvailable": "Kullanılabilir sayfa yok. Lütfen önce projeye bir sayfa ekleyin.",
