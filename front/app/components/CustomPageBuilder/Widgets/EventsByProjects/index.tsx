@@ -5,6 +5,7 @@ import { useEditor } from '@craftjs/core';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 import WidgetPlaceholder from 'components/admin/ContentBuilder/Widgets/WidgetPlaceholder';
 import EventsWidget from 'components/LandingPages/citizen/EventsWidget';
@@ -47,7 +48,12 @@ const EventsByProjects = ({
   }
 
   return (
-    <Box maxWidth="1200px" margin="0 auto" px={padding} py="40px">
+    <Box
+      maxWidth={BUILDER_CONTENT_MAX_WIDTH}
+      margin="0 auto"
+      px={padding}
+      py="40px"
+    >
       <EventsWidget
         filters={filtersFor(mode, ids)}
         titleMultiloc={titleMultiloc}

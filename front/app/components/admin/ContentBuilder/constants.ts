@@ -10,5 +10,7 @@ export const CUSTOM_PAGE_BUILDER_PATH = 'admin/custom-page-builder';
 
 export const DEFAULT_PADDING = '20px';
 
+export const BUILDER_CONTENT_MAX_WIDTH = '1200px';
+
 export const TOOLBOX_WIDTH = '236px';
 export const SETTINGS_PANEL_WIDTH = '400px';

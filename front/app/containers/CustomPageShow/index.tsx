@@ -14,6 +14,7 @@ import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
 import ContentContainer from 'components/ContentContainer';
 import CustomPageContentViewer from 'components/CustomPageBuilder/ContentViewer';
 import useCustomPageBuilderContent from 'components/CustomPageBuilder/ContentViewer/useCustomPageBuilderContent';
@@ -26,9 +27,6 @@ import BackToProjectLink from './BackToProjectLink';
 import CustomPageHeader from './CustomPageHeader';
 import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
 import PageSections from './PageSections';
-
-// What every builder widget sets as its own max width.
-const BUILDER_CONTENT_WIDTH = 1200;
 
 // The page background is grey, and each legacy section paints white over it. Builder content
 // is one white block instead, so that grey would only ever show as a strip below it — and no
@@ -138,10 +136,12 @@ const CustomPageShow = () => {
               </Box>
             </>
           ) : (
-            // Builder widgets are 1200px wide, the container's default is narrower, so the
-            // title would not line up with the content under it.
+            // The container's default is narrower, so the title would not line up with the
+            // content under it.
             <NoBannerContainer
-              maxWidth={showBuilderContent ? BUILDER_CONTENT_WIDTH : undefined}
+              maxWidth={
+                showBuilderContent ? BUILDER_CONTENT_MAX_WIDTH : undefined
+              }
             >
               {pageAttributes.project_id && (
                 <Box mb="8px">

@@ -10,6 +10,7 @@ import getStatusCounts from 'api/admin_publications_status_counts/util/getAdminP
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 import WidgetPlaceholder from 'components/admin/ContentBuilder/Widgets/WidgetPlaceholder';
 import {
@@ -69,7 +70,12 @@ const ProjectsByFilterInner = ({
   const adminPublications = data?.pages.map((page) => page.data).flat();
 
   return (
-    <Box maxWidth="1200px" margin="0 auto" px={padding} py="40px">
+    <Box
+      maxWidth={BUILDER_CONTENT_MAX_WIDTH}
+      margin="0 auto"
+      px={padding}
+      py="40px"
+    >
       <ProjectAndFolderCardsInner
         statusCounts={allStatusCountsWithoutFilters}
         showTitle={hasTitle(titleMultiloc)}
