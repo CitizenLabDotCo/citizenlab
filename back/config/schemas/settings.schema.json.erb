@@ -844,6 +844,18 @@
         }
       },
 
+      "project_workspace": {
+        "type": "object",
+        "title": "Project Workspace [DO NOT ENABLE]",
+        "description": "Show the project back office as a single three-pane workspace instead of a page per setting. Still under development, not ready for customer use.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "project_static_pages": {
         "type": "object",
         "title": "Project Static Pages [DO NOT ENABLE]",
