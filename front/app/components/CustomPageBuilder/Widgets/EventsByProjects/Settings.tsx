@@ -71,7 +71,6 @@ const Settings = () => {
     spaces: formatMessage(messages.modeSpaces),
   };
 
-  // Filtering is the advanced_custom_pages capability; an unfiltered list is not.
   const isAvailable = (mode: EventsSelectionMode) => {
     if (mode === 'all') return true;
     if (!advancedCustomPagesEnabled) return false;
@@ -82,10 +81,8 @@ const Settings = () => {
   // itself rather than offer controls that change nothing.
   const filteringUnavailable = !advancedCustomPagesEnabled && mode !== 'all';
 
-  // A page can hold a mode whose feature the tenant has since lost. Dropping it from the
-  // options would leave the panel reading as unset while the widget still filters by it, and
-  // the obvious repair — picking another mode — discards the selection silently. Only while
-  // filtering is available at all: without it the panel explains itself instead.
+  // A stored mode whose feature the tenant lost stays listed: dropping it would read as
+  // unset while the widget still filters by it. Only while filtering is available at all.
   const visibleModes = MODES.filter(
     (option) =>
       isAvailable(option) || (advancedCustomPagesEnabled && option === mode)

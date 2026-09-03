@@ -67,7 +67,6 @@ interface Props {
   staticPageId?: string;
   // Narrows to one set of projects. Absent means every project, as on the homepage.
   filters?: EventProjectFilters;
-  // Overrides the default heading.
   titleMultiloc?: Multiloc;
 }
 

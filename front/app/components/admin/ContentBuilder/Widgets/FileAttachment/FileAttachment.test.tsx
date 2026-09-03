@@ -112,7 +112,6 @@ describe('FileAttachment', () => {
       fileIsAlreadyUsed = false;
     });
 
-    // An empty array disables the files query, which left the panel on a spinner for good.
     it('asks for every file when the page belongs to no project', () => {
       render(<Settings />);
 

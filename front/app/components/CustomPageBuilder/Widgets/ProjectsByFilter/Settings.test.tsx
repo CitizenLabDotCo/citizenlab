@@ -73,7 +73,6 @@ describe('ProjectsByFilter Settings', () => {
     expect(dimensions()).not.toContain('One of these spaces');
   });
 
-  // Dropping it would read as "no filter chosen" while the widget still filters by spaces.
   it('keeps a stored dimension whose feature is off, marked unavailable', () => {
     flags.spaces = false;
     props = { filterType: 'spaces', ids: ['space-1'] };
@@ -108,7 +107,6 @@ describe('ProjectsByFilter Settings', () => {
     expect(screen.getByText('Title')).toBeInTheDocument();
   });
 
-  // The widget renders nothing without the feature, so controls here would change nothing.
   it('drops the dimension and selection pickers without advanced_custom_pages', () => {
     flags.advanced_custom_pages = false;
 

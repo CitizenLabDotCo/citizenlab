@@ -127,7 +127,6 @@ describe('ProjectsByFilter', () => {
     );
   });
 
-  // Spaces carry folders as well as projects.
   it('pages over top-level publications when filtering by space', () => {
     render(<ProjectsByFilter filterType="spaces" ids={['space-1']} />);
 
@@ -137,8 +136,6 @@ describe('ProjectsByFilter', () => {
     );
   });
 
-  // The legacy section hides both lists without this feature; a migrated page must not keep
-  // showing them after a downgrade.
   it('renders nothing in the front office without advanced_custom_pages', () => {
     advancedCustomPages = false;
     inBuilder = false;

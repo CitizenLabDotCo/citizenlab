@@ -28,9 +28,7 @@ import CustomPageHeader from './CustomPageHeader';
 import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
 import PageSections from './PageSections';
 
-// The page background is grey, and each legacy section paints white over it. Builder content
-// is one white block instead, so that grey would only ever show as a strip below it — and no
-// other builder puts its content on a coloured page.
+// Builder content is one white block, so the page's grey would only show as a strip below it.
 const PageContainer = styled(Container)<{ builderContent: boolean }>`
   ${({ builderContent }) => builderContent && 'background: #fff;'}
 `;

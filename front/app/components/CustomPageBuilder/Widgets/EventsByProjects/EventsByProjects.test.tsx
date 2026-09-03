@@ -101,7 +101,6 @@ describe('EventsByProjects', () => {
     expect(screen.queryByTestId('events-widget')).not.toBeInTheDocument();
   });
 
-  // An unfiltered list is not the paid capability, so it survives.
   it('still shows every project’s events without the feature', () => {
     advancedCustomPages = false;
 

@@ -100,7 +100,6 @@ describe('CustomPageShow', () => {
     expect(screen.queryByTestId('legacyProjects')).not.toBeInTheDocument();
   });
 
-  // Rendering them first would show content that is replaced as soon as the layout arrives.
   it('does not render the legacy sections while the layout is still loading', () => {
     isLoading = true;
     render(<CustomPageShow />);

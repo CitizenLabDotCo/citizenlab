@@ -80,7 +80,6 @@ describe('EventsByProjects Settings', () => {
     expect(modes()).not.toContain('Projects in one of these spaces');
   });
 
-  // Dropping it would read as "no filter chosen" while the widget still filters by spaces.
   it('keeps a stored mode whose feature is off, marked unavailable', () => {
     flags.spaces = false;
     props = { mode: 'spaces', ids: ['space-1'] };
@@ -137,7 +136,6 @@ describe('EventsByProjects Settings', () => {
     expect(screen.getByText(/you pick below/i)).toBeInTheDocument();
   });
 
-  // A filtered mode outlives the feature it needed; the leftover picker would change nothing.
   it('drops the picker for a stored filtered mode once the feature is off', () => {
     props = { mode: 'areas', ids: ['area-1'] };
     flags.advanced_custom_pages = false;

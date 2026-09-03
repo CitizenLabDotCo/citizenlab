@@ -43,8 +43,6 @@ const StyledBox = styled(Box)`
 const HtmlBlockMultiloc = ({ html }: Props) => {
   const localize = useLocalize();
   const { pathname } = useLocation();
-  // Only the custom page path is a constant so far, because the sidebar and preview checks
-  // share it. The other two are still literals; unify when the builder paths are tidied up.
   const enabled =
     pathname.includes('admin/project-page-builder') ||
     pathname.includes(CUSTOM_PAGE_BUILDER_PATH) ||
