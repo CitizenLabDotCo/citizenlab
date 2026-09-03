@@ -14,7 +14,6 @@ import { CLError, IOption, RHFErrors } from 'typings';
 
 import Error, { TFieldName } from 'components/UI/Error';
 
-import { ScreenReaderOnly } from 'utils/a11y';
 interface Props extends Omit<SelectProps, 'onChange'> {
   name: string;
   options: IOption[];
@@ -35,7 +34,6 @@ const CheckboxMultiSelect = ({
   name,
   options,
   scrollErrorIntoView,
-  title,
   'aria-required': ariaRequired,
 }: Props) => {
   const {
@@ -72,9 +70,6 @@ const CheckboxMultiSelect = ({
               aria-invalid={fieldState.error ? true : undefined}
               aria-describedby={ariaDescribedBy}
             >
-              <ScreenReaderOnly>
-                <legend>{title}</legend>
-              </ScreenReaderOnly>
               {options.map((option, index) => (
                 <StyledBox
                   style={{ cursor: 'pointer' }}
@@ -97,6 +92,7 @@ const CheckboxMultiSelect = ({
                         {option.label}
                       </Text>
                     }
+                    ariaLabel={option.label}
                     checked={checkedOptions.includes(option.value)}
                     usePrimaryBorder={false}
                     setRef={index === 0 ? (el) => ref(el) : undefined}

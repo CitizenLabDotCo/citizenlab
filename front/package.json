@@ -61,7 +61,10 @@
   },
   "overrides": {
     "@tanstack/router-core": "1.159.4",
-    "@tanstack/history": "1.154.14"
+    "@tanstack/history": "1.154.14",
+    "react-mentions": {
+      "@babel/runtime": "^7.26.10"
+    }
   },
   "dependencies": {
     "@arcgis/core": "^4.34.8",
@@ -115,7 +118,7 @@
     "polished": "4.3.1",
     "posthog-js": "1.215.1",
     "process": "0.11.10",
-    "qs": "6.15.2",
+    "qs": "6.16.0",
     "quill": "^2.0.3",
     "react": "18.3.1",
     "react-color": "2.19.3",
