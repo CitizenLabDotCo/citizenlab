@@ -20479,6 +20479,11 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.admin.ContentBuilder.lockedNodeLabel": {
+    "state": "verified",
+    "verified_at": "2026-09-03T09:36:28.345487Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.admin.ContentBuilder.noFilesAvailable": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
