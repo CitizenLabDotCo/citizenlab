@@ -2954,6 +2954,41 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.ProjectPageBuilder.DropFeedback.cannotDropBelowPageContent": {
+    "state": "verified",
+    "verified_at": "2026-09-03T09:36:28.290964Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.ProjectPageBuilder.DropFeedback.cannotDropHere": {
+    "state": "verified",
+    "verified_at": "2026-09-03T09:36:28.290964Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.ProjectPageBuilder.DropFeedback.cannotDropInFixedHeader": {
+    "state": "verified",
+    "verified_at": "2026-09-03T09:36:28.290964Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.ProjectPageBuilder.DropFeedback.dropZoneTag": {
+    "state": "verified",
+    "verified_at": "2026-09-03T09:36:28.290964Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.ProjectPageBuilder.DropFeedback.fixedZoneNote": {
+    "state": "verified",
+    "verified_at": "2026-09-03T09:36:28.290964Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.ProjectPageBuilder.DropFeedback.fixedZoneTitle": {
+    "state": "verified",
+    "verified_at": "2026-09-03T09:36:28.290964Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.ProjectPageBuilder.DropFeedback.placeHere": {
+    "state": "verified",
+    "verified_at": "2026-09-03T09:36:28.290964Z",
+    "verified_by": "Cindy EB"
+  },
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyNote": {
     "state": "verified",
     "verified_at": "2026-07-17T08:20:45.182128Z",
@@ -10978,6 +11013,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.containers.ProjectPageBuilder.editableContent": {
+    "state": "verified",
+    "verified_at": "2026-09-03T09:36:28.290964Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.ProjectPageBuilder.lockedZoneLabel": {
+    "state": "verified",
+    "verified_at": "2026-09-03T09:36:28.290964Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.ProjectPageBuilder.projectHomepage": {
     "state": "verified",
