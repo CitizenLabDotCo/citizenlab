@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
 import { MessageDescriptor } from 'react-intl';
 import styled from 'styled-components';
@@ -13,7 +13,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { WIDGET_TITLES, hasChildren, hasNoPointerEvents } from '../../Widgets';
 
 const StyledBox = styled(Box)`
-  ${({ isRoot }: { isRoot: boolean }) =>
+  ${({ isRoot, isLocked }: { isRoot: boolean; isLocked?: boolean }) =>
     isRoot
       ? `cursor: auto;
           padding: 4px;
@@ -21,6 +21,8 @@ const StyledBox = styled(Box)`
           max-width: 1000px;
           background-color: #fff;
           min-height: 160px;`
+      : isLocked
+      ? `cursor: default;`
       : `cursor:move;`}
 `;
 
@@ -34,6 +36,7 @@ const RenderNode = ({ render }) => {
     isHover,
     hasError,
     title,
+    locked,
     noPointerEvents,
     connectors: { connect, drag },
   } = useNode((node) => {
@@ -56,6 +59,7 @@ const RenderNode = ({ render }) => {
       title:
         WIDGET_TITLES[name] ||
         (node.data.custom?.title as MessageDescriptor | undefined),
+      locked: node.data.custom?.locked === true,
       noPointerEvents:
         hasNoPointerEvents(name) || node.data.custom?.noPointerEvents === true,
     };
@@ -121,11 +125,21 @@ const RenderNode = ({ render }) => {
   const nodeIsHovered = isHover && id !== ROOT_NODE && !isContainer;
   const solidBorderIsVisible =
     isSelectable && (nodeLabelIsVisible || nodeIsHovered || hasError);
+  const accentColor = locked ? colors.textSecondary : colors.primary;
 
   return (
     <StyledBox
       className="e2e-render-node"
-      ref={(ref) => ref && connect(drag(ref))}
+      ref={(ref) => {
+        if (!ref) return;
+        // Without the drag connector craftjs cannot start a drag, so a locked
+        // node never shows a drop indicator.
+        if (locked) {
+          connect(ref);
+        } else {
+          connect(drag(ref));
+        }
+      }}
       id={id}
       position="relative"
       borderStyle={solidBorderIsVisible ? 'solid' : 'dashed'}
@@ -135,7 +149,7 @@ const RenderNode = ({ render }) => {
         hasError
           ? colors.red600
           : solidBorderIsVisible
-          ? colors.primary
+          ? accentColor
           : isSelectable
           ? colors.divider
           : 'transparent'
@@ -143,18 +157,32 @@ const RenderNode = ({ render }) => {
       mt={rhythmMarginTop ?? '4px'}
       mb={rhythmMarginTop === undefined ? '4px' : '0px'}
       isRoot={id === ROOT_NODE}
+      isLocked={locked}
     >
       {nodeLabelIsVisible && (
         <Box
           id="e2e-node-label"
+          display="flex"
+          alignItems="center"
+          gap="4px"
           p="4px"
-          bgColor={hasError ? colors.red600 : colors.primary}
+          bgColor={hasError ? colors.red600 : accentColor}
           color="#fff"
           position="absolute"
           top="-28px"
           left="-1px"
         >
-          <FormattedMessage {...title} />
+          {locked && (
+            <Icon name="lock" width="16px" height="16px" fill="#fff" />
+          )}
+          {locked ? (
+            <FormattedMessage
+              {...messages.lockedNodeLabel}
+              values={{ widgetName: <FormattedMessage {...title} /> }}
+            />
+          ) : (
+            <FormattedMessage {...title} />
+          )}
           {hasError && (
             <>
               <span> - </span>

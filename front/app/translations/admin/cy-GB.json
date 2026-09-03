@@ -3922,6 +3922,7 @@
   "app.containers.admin.ContentBuilder.imageMultiloc": "Delwedd",
   "app.containers.admin.ContentBuilder.imageMultilocAltLabel": "Disgrifiad byr o'r ddelwedd....",
   "app.containers.admin.ContentBuilder.imageMultilocAltTooltip": "Mae ychwanegu \"testun alt\" ar gyfer delweddau yn bwysig i wneud eich platfform yn hygyrch i ddefnyddwyr sy'n defnyddio darllenwyr sgrin.",
+  "app.containers.admin.ContentBuilder.lockedNodeLabel": "{widgetName} - cliciwch i olygu — ni ellir ei symud na'i dynnu",
   "app.containers.admin.ContentBuilder.noFilesAvailable": "Dim ffeiliau ar gael. Llwythwch ffeiliau i fyny i'r prosiect yn gyntaf.",
   "app.containers.admin.ContentBuilder.noPageSelected": "Dim tudalen wedi'i dewis.",
   "app.containers.admin.ContentBuilder.noPagesAvailable": "Dim tudalennau ar gael. Ychwanegwch dudalen i'r prosiect yn gyntaf.",

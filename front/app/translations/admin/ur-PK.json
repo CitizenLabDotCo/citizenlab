@@ -3922,6 +3922,7 @@
   "app.containers.admin.ContentBuilder.imageMultiloc": "تصویر",
   "app.containers.admin.ContentBuilder.imageMultilocAltLabel": "تصویر کی مختصر تفصیل",
   "app.containers.admin.ContentBuilder.imageMultilocAltTooltip": "آپ کے پلیٹ فارم کو اسکرین ریڈرز استعمال کرنے والے صارفین کے لیے قابل رسائی بنانے کے لیے تصاویر کے لیے \"Alt text\" شامل کرنا ضروری ہے۔",
+  "app.containers.admin.ContentBuilder.lockedNodeLabel": "{widgetName} - ترمیم کرنے کے لیے کلک کریں — اسے منتقل یا ختم نہیں کیا جا سکتا",
   "app.containers.admin.ContentBuilder.noFilesAvailable": "کوئی فائلیں دستیاب نہیں ہیں۔ براہ کرم پہلے پروجیکٹ میں فائلیں اپ لوڈ کریں۔",
   "app.containers.admin.ContentBuilder.noPageSelected": "کوئی صفحہ منتخب نہیں کیا گیا۔",
   "app.containers.admin.ContentBuilder.noPagesAvailable": "کوئی صفحات دستیاب نہیں ہیں۔ براہ کرم پہلے پروجیکٹ میں ایک صفحہ شامل کریں۔",

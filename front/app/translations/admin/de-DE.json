@@ -3922,6 +3922,7 @@
   "app.containers.admin.ContentBuilder.imageMultiloc": "Bild",
   "app.containers.admin.ContentBuilder.imageMultilocAltLabel": "Kurzbeschreibung des Bildes",
   "app.containers.admin.ContentBuilder.imageMultilocAltTooltip": "Das Hinzufügen von \"Alt-Text\" für Bilder ist wichtig, um Ihre Plattform für Nutzer*innen mit Bildschirmlesegeräten zugänglich zu machen.",
+  "app.containers.admin.ContentBuilder.lockedNodeLabel": "{widgetName} – zum Bearbeiten klicken – kann nicht verschoben oder entfernt werden",
   "app.containers.admin.ContentBuilder.noFilesAvailable": "Keine Dateien verfügbar. Bitte laden Sie zuerst Dateien in das Projekt hoch.",
   "app.containers.admin.ContentBuilder.noPageSelected": "Keine Seite ausgewählt.",
   "app.containers.admin.ContentBuilder.noPagesAvailable": "Keine Seiten verfügbar. Bitte fügen Sie dem Projekt zuerst eine Seite hinzu.",

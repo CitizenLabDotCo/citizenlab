@@ -3922,6 +3922,7 @@
   "app.containers.admin.ContentBuilder.imageMultiloc": "ਚਿੱਤਰ",
   "app.containers.admin.ContentBuilder.imageMultilocAltLabel": "ਚਿੱਤਰ ਦਾ ਛੋਟਾ ਵੇਰਵਾ",
   "app.containers.admin.ContentBuilder.imageMultilocAltTooltip": "ਚਿੱਤਰਾਂ ਲਈ \"ਆਲਟ ਟੈਕਸਟ\" ਜੋੜਨਾ ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ਨੂੰ ਸਕ੍ਰੀਨ ਰੀਡਰ ਦੀ ਵਰਤੋਂ ਕਰਨ ਵਾਲੇ ਉਪਭੋਗਤਾਵਾਂ ਲਈ ਪਹੁੰਚਯੋਗ ਬਣਾਉਣ ਲਈ ਮਹੱਤਵਪੂਰਨ ਹੈ।",
+  "app.containers.admin.ContentBuilder.lockedNodeLabel": "{widgetName} - ਸੰਪਾਦਨ ਕਰਨ ਲਈ ਕਲਿੱਕ ਕਰੋ — ਹਿਲਾਇਆ ਜਾਂ ਹਟਾਇਆ ਨਹੀਂ ਜਾ ਸਕਦਾ",
   "app.containers.admin.ContentBuilder.noFilesAvailable": "ਕੋਈ ਫਾਈਲਾਂ ਉਪਲਬਧ ਨਹੀਂ ਹਨ। ਕਿਰਪਾ ਕਰਕੇ ਪਹਿਲਾਂ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਫਾਈਲਾਂ ਅਪਲੋਡ ਕਰੋ।",
   "app.containers.admin.ContentBuilder.noPageSelected": "ਕੋਈ ਪੰਨਾ ਨਹੀਂ ਚੁਣਿਆ ਗਿਆ।",
   "app.containers.admin.ContentBuilder.noPagesAvailable": "ਕੋਈ ਪੰਨਾ ਉਪਲਬਧ ਨਹੀਂ ਹੈ। ਕਿਰਪਾ ਕਰਕੇ ਪਹਿਲਾਂ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਇੱਕ ਪੰਨਾ ਜੋੜੋ।",

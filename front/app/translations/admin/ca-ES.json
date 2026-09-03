@@ -3922,6 +3922,7 @@
   "app.containers.admin.ContentBuilder.imageMultiloc": "Imatge",
   "app.containers.admin.ContentBuilder.imageMultilocAltLabel": "Descripció breu de la imatge",
   "app.containers.admin.ContentBuilder.imageMultilocAltTooltip": "Afegir \"text alternatiu\" a les imatges és important per fer que la teva plataforma sigui accessible per als usuaris que utilitzen lectors de pantalla.",
+  "app.containers.admin.ContentBuilder.lockedNodeLabel": "{widgetName} - fes clic per editar — no es pot moure ni eliminar",
   "app.containers.admin.ContentBuilder.noFilesAvailable": "No hi ha fitxers disponibles. Pugeu fitxers al projecte primer.",
   "app.containers.admin.ContentBuilder.noPageSelected": "No s'ha seleccionat cap pàgina.",
   "app.containers.admin.ContentBuilder.noPagesAvailable": "No hi ha pàgines disponibles. Afegiu primer una pàgina al projecte.",

@@ -7,6 +7,9 @@ import styled, { css } from 'styled-components';
 import { useParams } from 'utils/router';
 
 import CTABar from './CTABar';
+import DropZoneOutline from './DropFeedback/DropZoneOutline';
+import EditableContentDivider from './EditableContentDivider';
+import LockedZonePill from './LockedZonePill';
 import useWidgetProjectId from './Widgets/useWidgetProjectId';
 
 type RegionProps = {
@@ -33,11 +36,34 @@ const BodyBackground = styled(Box)<{ $fullBleed: boolean }>`
     `}
 `;
 
-export const ProjectPageRoot: UserComponent<RegionProps> = ({ children }) => (
-  <Box id="e2e-content-builder-frame" w="100%">
-    {children}
-  </Box>
-);
+// Room at the top of the locked zone, so the pill never sits on the banner.
+const LOCKED_ZONE_PILL_STRIP = '34px';
+
+export const ProjectPageRoot: UserComponent<RegionProps> = ({ children }) => {
+  const { enabled: inEditor } = useEditor((state) => ({
+    enabled: state.options.enabled,
+  }));
+
+  // The zone's background only shows behind the banner and the title:
+  // ProjectPageBody paints white over everything below it, and
+  // normalizeProjectPageLayout keeps ROOT's children as [banner, title, body].
+  return (
+    <Box
+      id="e2e-content-builder-frame"
+      w="100%"
+      position="relative"
+      background={inEditor ? colors.grey200 : undefined}
+      pt={inEditor ? LOCKED_ZONE_PILL_STRIP : undefined}
+    >
+      {inEditor && (
+        <Box position="absolute" top="6px" right="8px" zIndex="1">
+          <LockedZonePill />
+        </Box>
+      )}
+      {children}
+    </Box>
+  );
+};
 
 ProjectPageRoot.craft = {
   rules: {
@@ -65,7 +91,17 @@ export const ProjectPageBody: UserComponent<RegionProps> = ({ children }) => {
       ref={containerRef}
       $fullBleed={!!slug}
     >
-      {children}
+      {inEditor && <EditableContentDivider />}
+      {inEditor ? (
+        // The divider labels the zone from the outside, so the outline frames
+        // the widgets alone rather than the whole body.
+        <Box position="relative">
+          <DropZoneOutline />
+          {children}
+        </Box>
+      ) : (
+        children
+      )}
       {!inEditor && projectId && (
         <CTABar projectId={projectId} containerRef={containerRef} />
       )}

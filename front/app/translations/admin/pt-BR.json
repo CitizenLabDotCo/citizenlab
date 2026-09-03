@@ -3922,6 +3922,7 @@
   "app.containers.admin.ContentBuilder.imageMultiloc": "Imagem",
   "app.containers.admin.ContentBuilder.imageMultilocAltLabel": "Breve descrição da imagem",
   "app.containers.admin.ContentBuilder.imageMultilocAltTooltip": "Adicionar “texto alternativo” às imagens é importante para tornar sua plataforma acessível aos usuários que usam leitores de tela.",
+  "app.containers.admin.ContentBuilder.lockedNodeLabel": "{widgetName} - clique para editar — não pode ser movido ou removido",
   "app.containers.admin.ContentBuilder.noFilesAvailable": "Não há arquivos disponíveis. Carregue os arquivos no projeto primeiro.",
   "app.containers.admin.ContentBuilder.noPageSelected": "Nenhuma página selecionada.",
   "app.containers.admin.ContentBuilder.noPagesAvailable": "Nenhuma página disponível. Adicione uma página ao projeto primeiro.",
