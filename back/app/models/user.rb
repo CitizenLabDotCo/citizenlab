@@ -225,6 +225,7 @@ class User < ApplicationRecord
   has_one :new_email_confirmation, dependent: :destroy
   has_one :phone_confirmation, dependent: :destroy
   has_one :new_phone_confirmation, dependent: :destroy
+  has_one :merge_account_confirmation, dependent: :destroy
   has_many :baskets, -> { order(:phase_id) }
   before_destroy :destroy_baskets
 
@@ -383,8 +384,10 @@ class User < ApplicationRecord
       cosponsorships.exists?(status: 'accepted')
   end
 
-  def find_or_create_confirmation(association_name)
-    public_send(association_name) || create_confirmation!(association_name)
+  # +attributes+ is for confirmation kinds that cannot exist empty -
+  # MergeAccountConfirmation needs the address it is proving from the outset.
+  def find_or_create_confirmation(association_name, attributes = {})
+    public_send(association_name) || create_confirmation!(association_name, attributes)
   end
 
   # Whether a confirmation flow still has to happen. Whether it does depends
@@ -411,11 +414,15 @@ class User < ApplicationRecord
     new_phone.present?
   end
 
+  def merge_account_confirmation_pending?
+    merge_account_confirmation&.target_email.present?
+  end
+
   private
 
   # Concurrent requests race here; the savepoint lets the caller's transaction survive the losing insert.
-  def create_confirmation!(association_name)
-    transaction(requires_new: true) { public_send(:"create_#{association_name}!") }
+  def create_confirmation!(association_name, attributes = {})
+    transaction(requires_new: true) { public_send(:"create_#{association_name}!", attributes) }
   rescue ActiveRecord::RecordNotUnique
     association(association_name).reload
     public_send(association_name)

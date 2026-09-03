@@ -12,6 +12,7 @@ import FlowStart from '../steps/FlowStart';
 import Invitation from '../steps/Invitation';
 import InviteSignUp from '../steps/InviteSignUp';
 import InviteTaken from '../steps/InviteTaken';
+import MergeAccountConfirmation from '../steps/MergeAccountConfirmation';
 import Onboarding from '../steps/Onboarding';
 import Password from '../steps/Password';
 import Phone from '../steps/Phone';
@@ -167,6 +168,18 @@ const CurrentStep = ({
       return (
         <EmailConfirmation
           email={state.new_email ?? authUser?.data.attributes.new_email ?? null}
+          loading={loading}
+          setError={setError}
+          onConfirm={transition(currentStep, 'SUBMIT_CODE')}
+          onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
+          onResendCode={transition(currentStep, 'RESEND_CODE')}
+        />
+      );
+
+    case 'confirmation:merge-account':
+      return (
+        <MergeAccountConfirmation
+          email={state.new_email ?? null}
           loading={loading}
           setError={setError}
           onConfirm={transition(currentStep, 'SUBMIT_CODE')}

@@ -320,6 +320,72 @@ resource 'Confirmations' do
     end
   end
 
+  post 'web_api/v1/user/confirm_code_merge_account' do
+    with_options scope: :confirmation do
+      parameter :code, 'The 6-digit confirmation code sent to the address being claimed.'
+    end
+
+    let!(:target) { create(:user, email: 'existing@example.com') }
+
+    # An email-less SSO account that has asked to be absorbed into `target`.
+    let(:sso_user) do
+      create(:user).tap do |user|
+        user.update_columns(email: nil, password_digest: nil)
+        create(:identity, user: user, provider: 'clave_unica', uid: '11111')
+        create(:verification, user: user, method_name: 'cow', hashed_uid: 'aaa')
+      end
+    end
+
+    context 'when user is not authenticated' do
+      let(:code) { '123456' }
+
+      example_request 'returns an unauthorized status' do
+        expect(status).to eq 401
+      end
+    end
+
+    context 'when user is authenticated' do
+      before do
+        header_token_for sso_user
+        RequestMergeAccountConfirmationCodeJob.perform_now(sso_user, target_email: target.email)
+      end
+
+      example 'merges the account and returns a token for the surviving one' do
+        do_request(confirmation: { code: sso_user.merge_account_confirmation.code })
+
+        assert_status 200
+        expect { sso_user.reload }.to raise_error ActiveRecord::RecordNotFound
+        expect(target.reload.identities.pluck(:uid)).to eq ['11111']
+        expect(target.verified).to be true
+
+        # The caller's own account is gone, so its JWT is dead - the response has
+        # to hand back a token for the account that survived.
+        token = response_data[:attributes][:auth_token]
+        expect(token[:payload][:sub]).to eq target.id
+      end
+
+      example 'returns a code.invalid error when the code is wrong' do
+        do_request(confirmation: { code: 'badcode' })
+
+        assert_status 422
+        expect(json_parse(response_body)).to include_response_error(:code, 'invalid')
+        expect(sso_user.reload).to be_present
+        expect(target.reload.identities).to be_empty
+      end
+
+      example 'refuses, without saying why, when the target became an admin meanwhile' do
+        target.update!(roles: [{ type: 'admin' }])
+
+        do_request(confirmation: { code: sso_user.merge_account_confirmation.code })
+
+        assert_status 422
+        expect(json_parse(response_body)).to include_response_error(:base, 'merge_not_allowed')
+        expect(sso_user.reload).to be_present
+        expect(target.reload.identities).to be_empty
+      end
+    end
+  end
+
   post 'web_api/v1/user/confirm_code_phone' do
     with_options scope: :confirmation do
       parameter :code, 'The 6-digit confirmation code received by SMS.'

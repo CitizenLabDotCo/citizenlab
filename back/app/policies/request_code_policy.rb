@@ -29,10 +29,17 @@ class RequestCodePolicy < ApplicationPolicy
     true
   end
 
-  # For authenticated users changing their email
+  # For authenticated users changing their email. The same endpoint also issues
+  # merge-account codes, so both confirmations count against the reset budget -
+  # otherwise the merge path would be unthrottled by this guard.
   def request_code_new_email?
     return false if user.nil?
-    return false if code_reset_count(user.new_email_confirmation) >= max_retries - 1
+
+    resets = [
+      code_reset_count(user.new_email_confirmation),
+      code_reset_count(user.merge_account_confirmation)
+    ].max
+    return false if resets >= max_retries - 1
 
     true
   end

@@ -180,6 +180,7 @@ en:
       manual_project_participants: Official messages to project participants
       mention_in_internal_comment: Mention in an internal comment
       mention_in_official_feedback: Mention in an update
+      merge_account_confirmation: Account merge confirmation code
       moderator_digest: Weekly overview for project managers
       native_survey_not_submitted: Survey not submitted
       new_comment_for_admin: New comment in a project I moderate
@@ -470,6 +471,15 @@ en:
       preheader: '%{organizationName} mentioned you in feedback'
       subject: '%{organizationName} mentioned you in their feedback'
       title: You have been mentioned
+    merge_account_confirmation:
+      best_regards: Best regards,
+      event_description: 'Someone signed in to %{organizationName}''s participation platform and asked to link that sign-in to the account using this email address. If that was you, enter this confirmation code to continue:'
+      expire_code: 'This code will expire in '
+      hours_24: 24 hours.
+      ignore_email: If this wasn't you, you can safely ignore this email. Nothing has changed, and nobody can use this code without access to this inbox.
+      preheader: Confirm your email address for %{organizationName}
+      subject: Confirm your email address for %{organizationName}'s participation platform
+      title: Confirm your email address
     moderator_digest:
       cta_button: Manage your project
       event_description: "We've curated for you the input that has generated the most activity over the past week. Find out what's happening with your project!"

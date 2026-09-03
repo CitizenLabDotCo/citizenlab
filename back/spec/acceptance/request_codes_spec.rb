@@ -245,6 +245,8 @@ resource 'Request codes' do
       expect(delivery_service).not_to have_received(:send_now_to_user)
     end
 
+    # This caller has an email and a password of its own, so it is not eligible to
+    # be merged away - the taken address stays a plain error for it.
     example 'It does not work if new_email is already taken by another user' do
       existing_user = create(:user, email: 'existing_email@example.com')
       user = create(:user)
@@ -253,6 +255,59 @@ resource 'Request codes' do
       expect(response_status).to eq 422
       expect(json_response_body).to include_response_error(:new_email, 'is already taken')
       expect(delivery_service).not_to have_received(:send_now_to_user)
+    end
+
+    context 'when the caller signed in through an SSO method that gave no email' do
+      let(:sso_user) do
+        create(:user).tap do |user|
+          user.update_columns(email: nil, password_digest: nil)
+          create(:identity, user: user, provider: 'clave_unica', uid: '11111')
+        end
+      end
+
+      example 'It offers an account merge instead of failing on a taken address' do
+        existing_user = create(:user, email: 'existing_email@example.com')
+        header_token_for(sso_user)
+
+        do_request(request_code: { new_email: existing_user.email })
+
+        expect(response_status).to eq 200
+        expect(response_data[:attributes][:confirmation_type]).to eq 'merge_account'
+        expect(delivery_service).to have_received(:send_now_to_user)
+          .with(
+            an_instance_of(EmailCampaigns::Campaigns::MergeAccountConfirmation),
+            sso_user,
+            hash_including(code: anything, email: existing_user.email)
+          ).once
+
+        confirmation = sso_user.reload.merge_account_confirmation
+        expect(confirmation.target_email).to eq existing_user.email
+        # The address belongs to someone else, so it must never land on new_email.
+        expect(sso_user.new_email).to be_nil
+      end
+
+      # Whether the target may actually be merged into is settled at confirm time.
+      # Refusing here would tell an unauthenticated prober which addresses belong
+      # to admins; the code goes to the admin's own inbox, so nothing leaks.
+      example 'It gives the same answer when the address belongs to an admin' do
+        admin = create(:admin, email: 'admin_email@example.com')
+        header_token_for(sso_user)
+
+        do_request(request_code: { new_email: admin.email })
+
+        expect(response_status).to eq 200
+        expect(response_data[:attributes][:confirmation_type]).to eq 'merge_account'
+      end
+
+      example 'It still starts an ordinary confirmation for an unused address' do
+        header_token_for(sso_user)
+
+        do_request(request_code: { new_email: 'nobody@example.com' })
+
+        expect(response_status).to eq 200
+        expect(response_data[:attributes][:confirmation_type]).to eq 'new_email'
+        expect(sso_user.reload.new_email).to eq 'nobody@example.com'
+      end
     end
   end
 

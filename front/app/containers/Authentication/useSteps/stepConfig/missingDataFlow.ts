@@ -74,7 +74,25 @@ export const missingDataFlow = (
         { email, ...restBuiltInFieldUpdate }: BuiltInFieldsUpdate
       ) => {
         if (email) {
-          await requestCodeNewEmail(email);
+          const confirmationType = await requestCodeNewEmail(email);
+
+          // A merge never writes user.new_email, so email_action_required stays
+          // `provide_new_email` and checkMissingData below would bounce the user
+          // straight back to this form with nothing shown. Go to the code entry
+          // directly instead.
+          if (confirmationType === 'merge_account') {
+            if (!isEmpty(restBuiltInFieldUpdate)) {
+              await updateUser({
+                userId,
+                ...restBuiltInFieldUpdate,
+              });
+            }
+
+            updateState({ new_email: email });
+            invalidateCacheAfterUpdateUser(queryClient);
+            setCurrentStep('confirmation:merge-account');
+            return;
+          }
         }
 
         if (!isEmpty(restBuiltInFieldUpdate)) {
@@ -117,10 +135,14 @@ export const missingDataFlow = (
     'missing-data:change-new-email': {
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT: async (new_email: string) => {
-        await requestCodeNewEmail(new_email);
+        const confirmationType = await requestCodeNewEmail(new_email);
         updateState({ new_email });
         invalidateCacheAfterUpdateUser(queryClient);
-        setCurrentStep('confirmation:new_email');
+        setCurrentStep(
+          confirmationType === 'merge_account'
+            ? 'confirmation:merge-account'
+            : 'confirmation:new_email'
+        );
       },
     },
 

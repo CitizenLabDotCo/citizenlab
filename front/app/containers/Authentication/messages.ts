@@ -60,6 +60,20 @@ export default defineMessages({
     defaultMessage:
       'An account with this email already exists. You can sign out, log in with this email address and verify your account on the settings page.',
   },
+  linkYourAccount: {
+    id: 'app.containers.Authentication.linkYourAccount',
+    defaultMessage: 'Link your account',
+  },
+  mergeAccountExplanation: {
+    id: 'app.containers.Authentication.mergeAccountExplanation',
+    defaultMessage:
+      'An account already uses {email}. We sent a code to it. Entering the code links this sign-in to that account and keeps it — your verification and anything you have already contributed move across.',
+  },
+  accountMergeNotAllowed: {
+    id: 'app.containers.Authentication.accountMergeNotAllowed',
+    defaultMessage:
+      'This account cannot be linked. Use a different email address, or sign out and log in with this email instead.',
+  },
   franceConnectMergingFailed: {
     id: 'app.components.AuthProviders.franceConnectMergingFailed',
     defaultMessage:

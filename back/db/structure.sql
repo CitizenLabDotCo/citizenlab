@@ -2309,7 +2309,8 @@ CREATE TABLE public.confirmations (
     code_reset_count integer DEFAULT 0 NOT NULL,
     code_sent_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    target_email character varying
 );
 
 
@@ -3869,7 +3870,7 @@ UNION ALL
              LEFT JOIN public.ideas ri ON ((((reactions.reactable_type)::text = 'Idea'::text) AND (ri.id = reactions.reactable_id))))
              LEFT JOIN public.comments rc ON ((((reactions.reactable_type)::text = 'Comment'::text) AND (rc.id = reactions.reactable_id))))
              LEFT JOIN public.ideas rci ON ((rci.id = rc.idea_id)))
-          WHERE ((reactions.reactable_type)::text = ANY (ARRAY[('Idea'::character varying)::text, ('Comment'::character varying)::text]))) r
+          WHERE ((reactions.reactable_type)::text = ANY ((ARRAY['Idea'::character varying, 'Comment'::character varying])::text[]))) r
      LEFT JOIN public.phases input_creation_ph ON ((input_creation_ph.id = r.input_creation_phase_id)))
      LEFT JOIN public.phases inferred_ph ON (((inferred_ph.project_id = r.project_id) AND ((inferred_ph.placement_type)::text = 'on_timeline'::text) AND (r.created_at >= inferred_ph.start_at) AND ((inferred_ph.end_at IS NULL) OR (r.created_at < inferred_ph.end_at)))))
 UNION ALL
@@ -9556,6 +9557,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260903000000'),
 ('20260821210000'),
 ('20260821000000'),
 ('20260820000000'),

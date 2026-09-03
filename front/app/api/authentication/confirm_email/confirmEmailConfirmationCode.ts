@@ -66,6 +66,29 @@ export const reconfirmCodeEmail = async (code: string) => {
   }
 };
 
+// Consumes a merge-account code. On success the account that made the request no
+// longer exists - it has been merged into the account owning the confirmed address -
+// so the response carries a token for that surviving account. The whole cache is
+// reset rather than a few keys: the signed-in user is now a different person.
+export const confirmCodeMergeAccount = async (code: string) => {
+  try {
+    const res = await fetcher<ConfirmCodeResponse>({
+      path: `/user/confirm_code_merge_account`,
+      action: 'post',
+      body: {
+        confirmation: { code },
+      },
+    });
+
+    setJwt(res.data.attributes.auth_token.token, false);
+    invalidateQueryCache();
+
+    return true;
+  } catch (errors) {
+    throw errors.errors;
+  }
+};
+
 export const confirmCodeNewEmail = async (code: string) => {
   try {
     await fetcher({

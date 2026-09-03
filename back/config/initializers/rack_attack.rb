@@ -180,6 +180,7 @@ class Rack::Attack
     '/web_api/v1/user/request_reconfirm_code_phone' => nil,
     '/web_api/v1/user/confirm_code_email' => %w[confirmation email],
     '/web_api/v1/user/confirm_code_new_email' => nil,
+    '/web_api/v1/user/confirm_code_merge_account' => nil,
     '/web_api/v1/user/confirm_code_phone' => %w[confirmation phone],
     '/web_api/v1/user/confirm_code_new_phone' => nil,
     '/web_api/v1/user/reconfirm_code_email' => nil,
