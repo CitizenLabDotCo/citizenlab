@@ -75,6 +75,20 @@ resource 'Project Folders' do
       assert_status 200
       expect(json_response_body[:'project_folders/folder']).to include({ id: id })
     end
+
+    context 'when the description is authored on the Content Builder' do
+      let(:project_folder) { create(:project_folder, description_multiloc: { 'en' => '<p>All things pools</p>' }) }
+
+      before { ContentBuilder::DescriptionLayoutService.new.provision_for(project_folder) }
+
+      example_request 'Returns the description held by the folder layout', document: false do
+        assert_status 200
+        expect(json_response_body[:'project_folders/folder']).to include(
+          description_multiloc: { en: '<p>All things pools</p>' },
+          description: '<p>All things pools</p>'
+        )
+      end
+    end
   end
 
   include_examples '/api/v2/.../deleted', :project_folders
