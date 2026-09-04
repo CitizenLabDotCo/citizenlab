@@ -45,7 +45,7 @@ module CustomIdMethods::EtatLu
       }
     end
 
-    def email_always_present?
+    def confirmed_email_always_present?
       true
     end
 

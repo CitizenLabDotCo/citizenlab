@@ -62,7 +62,7 @@ resource 'Id methods' do
               name: 'cow',
               other_attributes: [],
               other_custom_fields: [],
-              email_always_present: true
+              confirmed_email_always_present: true
             }
           }
         }
@@ -89,7 +89,7 @@ resource 'Id methods' do
                 { en: 'gender' }, { en: 'birthyear' }
               ],
               other_custom_fields: [],
-              email_always_present: false
+              confirmed_email_always_present: false
             }
           }
         }
@@ -112,7 +112,7 @@ resource 'Id methods' do
               name: 'id_card_lookup',
               other_attributes: [],
               other_custom_fields: [],
-              email_always_present: true
+              confirmed_email_always_present: true
             },
             name: 'id_card_lookup',
             ui_method_name: 'By social security number'
@@ -140,7 +140,7 @@ resource 'Id methods' do
               name: 'cow',
               other_attributes: [],
               other_custom_fields: [],
-              email_always_present: true
+              confirmed_email_always_present: true
             }
           }
         }

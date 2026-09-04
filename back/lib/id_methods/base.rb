@@ -87,8 +87,8 @@ module IdMethods
       raise NotImplementedError
     end
 
-    def email_always_present?
-      true
+    def confirmed_email_always_present?
+      false
     end
 
     def email_confirmed?(auth)

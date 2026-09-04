@@ -118,5 +118,9 @@ module CustomIdMethods::Hoplr
     def locked_custom_fields
       %i[neighbourhood]
     end
+
+    def confirmed_email_always_present?
+      true
+    end
   end
 end

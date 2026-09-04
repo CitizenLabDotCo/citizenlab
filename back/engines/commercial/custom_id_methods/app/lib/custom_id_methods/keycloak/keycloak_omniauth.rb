@@ -54,8 +54,8 @@ module CustomIdMethods::Keycloak
       }
     end
 
-    def email_always_present?
-      config[:provider] == 'rheinbahn'
+    def confirmed_email_always_present?
+      true
     end
 
     def filter_auth_to_persist(auth)

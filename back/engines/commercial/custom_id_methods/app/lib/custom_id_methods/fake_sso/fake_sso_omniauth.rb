@@ -79,10 +79,6 @@ module CustomIdMethods::FakeSso
       'http'
     end
 
-    def email_always_present?
-      false
-    end
-
     # The fake SSO JWT secret is only needed to verify ID tokens against a real
     # Fake SSO service. It is not set in every environment (e.g. CI), so a
     # missing value must not raise and break the omniauth flow.

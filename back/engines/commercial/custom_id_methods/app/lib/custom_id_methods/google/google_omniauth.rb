@@ -68,6 +68,10 @@ module CustomIdMethods::Google
       super + %i[remote_avatar_url]
     end
 
+    def confirmed_email_always_present?
+      true
+    end
+
     private
 
     def remote_avatar_url(auth)
