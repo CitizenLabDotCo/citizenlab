@@ -5,8 +5,8 @@ import styled from 'styled-components';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import SpotlightSurveys from '../SpotlightSurveys';
-import TimelinePhases from '../TimelinePhases';
+import SpotlightSurveys from '../../projectPage/SpotlightSurveys';
+import TimelinePhases from '../../projectPage/TimelinePhases';
 
 const Sections = styled(Box)`
   & > div:first-child {

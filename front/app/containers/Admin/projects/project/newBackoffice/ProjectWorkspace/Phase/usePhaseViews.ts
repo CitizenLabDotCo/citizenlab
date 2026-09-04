@@ -4,8 +4,11 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
+import {
+  PHASE_TAB_ROUTES,
+  PhaseTabTarget,
+} from '../../../projectPage/phaseRowUtils';
 import { FeatureFlags, getTabs } from '../../../tabs';
-import { PHASE_TAB_ROUTES, PhaseTabTarget } from '../../phaseRowUtils';
 import messages from '../messages';
 
 export type PhaseViewKey = 'build' | 'manage' | 'insights';
