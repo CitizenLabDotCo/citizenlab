@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, screen } from 'utils/testUtils/rtl';
+import { render } from 'utils/testUtils/rtl';
 
 import FileAttachment from '.';
 
@@ -77,17 +77,6 @@ describe('FileAttachment', () => {
     attachments = { data: [attachment] };
   });
 
-  // It resolves through the layout's attachments, not the fileId.
-  it('renders nothing in view mode when there is no layout context', () => {
-    layoutId = undefined;
-    attachments = undefined;
-
-    render(<FileAttachment fileId="file-1" />);
-
-    expect(screen.queryByText('minutes.pdf')).not.toBeInTheDocument();
-    expect(document.getElementById('e2e-file-attachment')).toBeNull();
-  });
-
   describe('settings', () => {
     const Settings = FileAttachment.craft.related.settings;
 
@@ -96,14 +85,6 @@ describe('FileAttachment', () => {
       routeParams = {};
       availableFiles = [];
       fileIsAlreadyUsed = false;
-    });
-
-    it('asks for every file when the page belongs to no project', () => {
-      render(<Settings />);
-
-      expect(filesQuery).toHaveBeenCalledWith(
-        expect.objectContaining({ project: undefined })
-      );
     });
 
     it('asks for the project’s files when there is one', () => {

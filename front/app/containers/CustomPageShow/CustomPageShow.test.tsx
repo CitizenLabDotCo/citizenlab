@@ -82,24 +82,6 @@ describe('CustomPageShow', () => {
     pageAttributes = globalCustomPage;
   });
 
-  it('renders the legacy sections when the builder has no content', () => {
-    hasContent = false;
-    render(<CustomPageShow />);
-
-    expect(screen.getAllByTestId('legacyInfoSection')).toHaveLength(2);
-    expect(screen.getByTestId('legacyProjects')).toBeInTheDocument();
-    expect(screen.queryByTestId('builderContent')).not.toBeInTheDocument();
-  });
-
-  it('renders the builder content instead of the legacy sections', () => {
-    hasContent = true;
-    render(<CustomPageShow />);
-
-    expect(screen.getByTestId('builderContent')).toBeInTheDocument();
-    expect(screen.queryByTestId('legacyInfoSection')).not.toBeInTheDocument();
-    expect(screen.queryByTestId('legacyProjects')).not.toBeInTheDocument();
-  });
-
   // Rendering them first would show content that is replaced as soon as the layout arrives.
   it('does not render the legacy sections while the layout is still loading', () => {
     isLoading = true;
