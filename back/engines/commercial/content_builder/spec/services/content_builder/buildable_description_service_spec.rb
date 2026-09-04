@@ -18,16 +18,16 @@ describe ContentBuilder::BuildableDescriptionService do
         expect(service.description_multiloc(project)).to eq({ 'en' => '<p>Renew the parc</p>' })
       end
 
-      it 'keeps an inline image, which rides along on the bridge widget' do
+      it 'keeps an inline image reference on the bridge widget' do
         gif = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
         project = provision(create(:project, description_multiloc: {
           'en' => %(<p>Renew the parc</p><img src="#{gif}" />)
         }))
+        text_reference = project.text_images.sole.text_reference
 
-        description = service.description_multiloc(project)['en']
-
-        expect(description).to include('<p>Renew the parc</p>')
-        expect(description).to include('<img')
+        expect(service.description_multiloc(project)).to eq({
+          'en' => %(<p>Renew the parc</p><img data-cl2-text-image-text-reference="#{text_reference}">)
+        })
       end
 
       it 'reads the project page layout rather than the description layout it superseded' do
