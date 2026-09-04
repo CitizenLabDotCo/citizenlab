@@ -4,13 +4,14 @@
 #
 # Table name: public_api_api_clients
 #
-#  id             :uuid             not null, primary key
-#  name           :string
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  last_used_at   :datetime
-#  secret_digest  :string           not null
-#  secret_postfix :string           not null
+#  id              :uuid             not null, primary key
+#  name            :string
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  last_used_at    :datetime
+#  secret_digest   :string           not null
+#  secret_postfix  :string           not null
+#  last_user_agent :string
 #
 module PublicApi
   class ApiClient < ApplicationRecord
@@ -42,8 +43,12 @@ module PublicApi
       }
     end
 
-    def used!
-      touch(:last_used_at)
+    # Stores when last used and the user agent raw so it can be classified when read
+    def used!(user_agent = nil)
+      now = Time.current
+      attributes = { last_used_at: now, updated_at: now }
+      attributes[:last_user_agent] = user_agent.truncate(255) if user_agent.present?
+      update_columns(attributes)
     end
 
     def generate_secret
