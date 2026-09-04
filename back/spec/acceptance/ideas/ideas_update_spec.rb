@@ -837,6 +837,26 @@ resource 'Ideas' do
               end
             end
           end
+
+          context 'with user_data_collection set to demographics only' do
+            before do
+              permission = project.phases.first.permissions.find_by(action: 'posting_idea')
+              permission.update!(user_data_collection: 'demographics_only')
+            end
+
+            let(:publication_status) { 'published' }
+
+            example_request 'Can change a survey response from draft to published' do
+              assert_status 200
+              expect(response_data[:attributes][:publication_status]).to eq 'published'
+
+              idea = Idea.find(response_data[:id])
+              expect(idea.custom_field_values['u_age']).to eq 30
+              expect(idea.anonymous).to be true
+              expect(idea.author).to be_nil
+              expect(idea.author_hash).to eq(Idea.create_author_hash(input.author.id, project.id, true))
+            end
+          end
         end
       end
 
