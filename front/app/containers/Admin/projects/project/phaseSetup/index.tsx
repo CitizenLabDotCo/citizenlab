@@ -67,9 +67,18 @@ interface Props {
   projectId: string;
   phase: IPhase | undefined;
   standaloneSurvey?: boolean;
+  // SPIKE (TAN-8619) — throwaway. Do not merge.
+  onFormDataChange?: (formData: IUpdatedPhaseProperties) => void;
+  onSaved?: () => void;
 }
 
-const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
+const AdminPhaseEdit = ({
+  projectId,
+  phase,
+  standaloneSurvey,
+  onFormDataChange,
+  onSaved,
+}: Props) => {
   const phaseId = phase?.data.id;
   const { data: phaseFileAttachments } = useFileAttachments({
     attachable_id: phaseId,
@@ -147,6 +156,11 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
       setInStatePhaseFileAttachments(phaseFileAttachments.data);
     }
   }, [phaseFileAttachments]);
+
+  // SPIKE (TAN-8619): mirror every form change to the live preview.
+  useEffect(() => {
+    if (formData) onFormDataChange?.(formData);
+  }, [formData, onFormDataChange]);
 
   if (!formatMessageWithLocale) return null;
 
@@ -367,6 +381,7 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
         } else {
           setFormData(response.data.attributes);
         }
+        onSaved?.();
       })
       .catch(({ errors }) => {
         // For some reason, the BE adds a 'blank' error
@@ -536,7 +551,11 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
   );
 };
 
-const AdminPhaseEditWrapper = () => {
+// SPIKE (TAN-8619): the two optional callbacks are throwaway. Do not merge.
+const AdminPhaseEditWrapper = ({
+  onFormDataChange,
+  onSaved,
+}: Pick<Props, 'onFormDataChange' | 'onSaved'>) => {
   const { projectId, phaseId } = useParams({ strict: false });
   const { placement } = useSearch({ strict: false });
   const { data: phase } = usePhase(phaseId);
@@ -554,6 +573,8 @@ const AdminPhaseEditWrapper = () => {
       projectId={projectId}
       phase={phaseId ? phase : undefined}
       standaloneSurvey={spotlightSurveysEnabled && placement === 'standalone'}
+      onFormDataChange={onFormDataChange}
+      onSaved={onSaved}
     />
   );
 };
