@@ -26,41 +26,15 @@ describe('Custom page builder display', () => {
       pageId = page.body.data.id;
       pageSlug = page.body.data.attributes.slug;
 
-      cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
-        const headers = {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${response.body.jwt}`,
-        };
-
-        cy.request({
-          headers,
-          method: 'PATCH',
-          url: `web_api/v1/static_pages/${pageId}`,
-          body: {
-            static_page: {
-              top_info_section_enabled: true,
-              top_info_section_multiloc: { en: `<p>${topInfoText}</p>` },
-              bottom_info_section_enabled: true,
-              bottom_info_section_multiloc: { en: `<p>${bottomInfoText}</p>` },
-              files_section_enabled: true,
-            },
-          },
-        });
-
-        cy.fixture('example.pdf', 'base64').then((fileContent) =>
-          cy.request({
-            headers,
-            method: 'POST',
-            url: `web_api/v1/static_pages/${pageId}/files`,
-            body: {
-              file: {
-                name: 'example.pdf',
-                file: `data:application/pdf;base64,${fileContent}`,
-              },
-            },
-          })
-        );
+      cy.apiUpdateCustomPage(pageId, {
+        top_info_section_enabled: true,
+        top_info_section_multiloc: { en: `<p>${topInfoText}</p>` },
+        bottom_info_section_enabled: true,
+        bottom_info_section_multiloc: { en: `<p>${bottomInfoText}</p>` },
+        files_section_enabled: true,
       });
+
+      cy.apiAddFileToCustomPage(pageId, 'example.pdf', 'example.pdf');
     });
   });
 

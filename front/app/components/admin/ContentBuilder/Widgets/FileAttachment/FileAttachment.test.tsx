@@ -5,6 +5,8 @@ import { render } from 'utils/testUtils/rtl';
 import FileAttachment from '.';
 
 let inBuilder = false;
+// craft's collector callbacks are generic over the caller's shape, so the mock casts what it
+// hands back at that boundary rather than restating each collector's return type.
 jest.mock('@craftjs/core', () => ({
   useEditor: (
     collect?: (state: { options: { enabled: boolean } }) => unknown

@@ -15,7 +15,6 @@ import useFileById from 'api/files/useFileById';
 import useFiles from 'api/files/useFiles';
 
 import { useContentBuilderLayoutContext } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 import FileDisplay from 'components/UI/FileAttachments/FileDisplay';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -23,6 +22,7 @@ import { useParams } from 'utils/router';
 
 import FilePlaceholder from './FilePlaceholder';
 import messages from './messages';
+import UploadFilesLink from './UploadFilesLink';
 import { getIsFileAlreadyUsed } from './utils';
 
 type FileAttachmentProps = {
@@ -127,49 +127,6 @@ const FileAttachment = ({ fileId }: FileAttachmentProps) => {
   return <FilePreview fileId={fileId} />;
 };
 
-// The two routes are different members of the router's typed union, so each branch names its
-// own rather than varying `to` on one element.
-const UploadFilesLink = ({
-  projectId,
-  customPageId,
-}: {
-  projectId?: string;
-  customPageId?: string;
-}) => {
-  const { formatMessage } = useIntl();
-  const buttonProps = {
-    buttonStyle: 'text',
-    icon: 'upload-file',
-    openLinkInNewTab: true,
-  } as const;
-
-  if (projectId) {
-    return (
-      <ButtonWithLink
-        to="/admin/projects/$projectId/files"
-        params={{ projectId }}
-        {...buttonProps}
-      >
-        {formatMessage(messages.uploadFiles)}
-      </ButtonWithLink>
-    );
-  }
-
-  if (customPageId) {
-    return (
-      <ButtonWithLink
-        to="/admin/pages-menu/pages/$customPageId/attachments"
-        params={{ customPageId }}
-        {...buttonProps}
-      >
-        {formatMessage(messages.uploadFilesToPage)}
-      </ButtonWithLink>
-    );
-  }
-
-  return null;
-};
-
 const FileAttachmentSettings = () => {
   const {
     actions: { setProp },
@@ -201,7 +158,6 @@ const FileAttachmentSettings = () => {
     }
   }, [query]);
 
-  // Generate options for the file select dropdown with usage warnings
   let fileOptions = useMemo(() => {
     if (!files) return [];
 
