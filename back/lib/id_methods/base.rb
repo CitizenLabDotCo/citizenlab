@@ -92,7 +92,9 @@ module IdMethods
     end
 
     def email_confirmed?(auth)
-      email_verified = auth&.info&.email_verified || auth.dig(:extra, :raw_info, :email_verified)
+      raw_info = auth&.dig(:extra, :raw_info)
+      email_verified = auth&.info&.email_verified
+      email_verified ||= raw_info[:email_verified] if raw_info.is_a?(Hash)
       !!email_verified
     end
 

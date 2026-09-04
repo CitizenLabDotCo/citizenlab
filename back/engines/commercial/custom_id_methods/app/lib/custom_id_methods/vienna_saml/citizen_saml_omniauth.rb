@@ -95,6 +95,14 @@ module CustomIdMethods::ViennaSaml
       env['omniauth.strategy'].options.merge!(metadata)
     end
 
+    def confirmed_email_always_present?
+      true
+    end
+
+    def email_confirmed?(_auth)
+      true
+    end
+
     # Removes the response object because it produces a Stacklevel too deep error when converting to JSON
     # @param [OmniAuth::AuthHash] auth
     # @return [Hash] The filtered hash that will be persisted in the database
