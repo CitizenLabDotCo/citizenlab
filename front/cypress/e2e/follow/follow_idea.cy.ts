@@ -25,7 +25,6 @@ describe('Follow idea', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: '',
-      description: '',
       publicationStatus: 'published',
     })
       .then((project) => {

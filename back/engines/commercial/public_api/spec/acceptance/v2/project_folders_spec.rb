@@ -43,6 +43,16 @@ resource 'Project Folders' do
         expect(json_response_body[:meta]).to eq({ total_pages: 1, current_page: 1 })
       end
 
+      # Pins the response shape: these fields are a public contract, so adding or removing one is a
+      # breaking change for integrations and has to be a deliberate edit here.
+      example_request 'Returns the documented project folder fields', document: false do
+        assert_status 200
+        expect(json_response_body[:'project_folders/folders'].first.keys).to match_array %i[
+          id slug created_at updated_at publication_status
+          title_multiloc title description_multiloc description description_preview_multiloc description_preview
+        ]
+      end
+
       context "when filtering by 'publication_status'" do
         let!(:archived_project_folder) do
           create(:project_folder, admin_publication_attributes: { publication_status: 'archived' })
@@ -77,9 +87,7 @@ resource 'Project Folders' do
     end
 
     context 'when the description is authored on the Content Builder' do
-      let(:project_folder) { create(:project_folder, description_multiloc: { 'en' => '<p>All things pools</p>' }) }
-
-      before { ContentBuilder::DescriptionLayoutService.new.provision_for(project_folder) }
+      before { author_description(project_folder, { 'en' => '<p>All things pools</p>' }) }
 
       example_request 'Returns the description held by the folder layout', document: false do
         assert_status 200

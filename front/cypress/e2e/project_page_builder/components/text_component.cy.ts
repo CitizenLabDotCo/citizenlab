@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/commands';
 
-describe('Project description builder White space component', () => {
+describe('Project description builder Text component', () => {
   let projectId = '';
   let projectSlug = '';
 
@@ -9,21 +9,17 @@ describe('Project description builder White space component', () => {
     cy.getAdminAuthUser().then((user) => {
       const projectTitle = randomString();
       const projectDescriptionPreview = randomString();
-      const projectDescription = 'Original project description.';
       const userId = user.body.data.id;
 
       cy.apiCreateProject({
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
-        description: projectDescription,
         publicationStatus: 'published',
         assigneeId: userId,
       }).then((project) => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
-        cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
-          cy.visit(`/admin/project-page-builder/projects/${projectId}`);
-        });
+        cy.visit(`/admin/project-page-builder/projects/${projectId}`);
       });
     });
   });
@@ -31,44 +27,45 @@ describe('Project description builder White space component', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
   });
+
   after(() => {
     cy.apiRemoveProject(projectId);
   });
 
-  it('handles white space component correctly', () => {
+  it('handles Text component correctly', () => {
     cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
-
-    cy.get('#e2e-draggable-white-space').dragAndDrop('#e2e-project-page-body', {
+    cy.get('#e2e-draggable-text').dragAndDrop('#e2e-project-page-body', {
       position: 'inside',
     });
-    cy.get('#e2e-white-space-divider-toggle').wait(1000).click({ force: true });
+
+    // The seeded layout already contains text widgets; this targets the first
+    // (seeded intro) text box.
+    cy.get('div.e2e-text-box').should('have.length', 3);
+    cy.get('div.e2e-text-box').first().click();
+    cy.get('.ql-editor').click();
+    cy.get('.ql-editor').type('Edited text.', { force: true });
 
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('.e2e-white-space').should('be.visible');
-    cy.get('.e2e-white-space').within(() => {
-      cy.get('hr').should('be.visible');
-    });
+    cy.contains('Edited text.').should('be.visible');
   });
 
-  it('deletes white space component correctly', () => {
+  it('deletes Text component correctly', () => {
     cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
     cy.visit(`/admin/project-page-builder/projects/${projectId}`);
 
-    cy.get('.e2e-white-space').wait(1000).click({
-      force: true,
-    });
+    cy.contains('.e2e-text-box', 'Edited text.').click();
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('.e2e-white-space').should('not.exist');
+    cy.contains('Edited text.').should('not.exist');
   });
 });

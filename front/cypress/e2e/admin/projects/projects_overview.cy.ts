@@ -7,7 +7,6 @@ describe('Projects overview: admin (projects)', () => {
   before(() => {
     cy.apiCreateProject({
       title,
-      description: randomString(),
     }).then((response) => {
       projectId = response.body.data.id;
     });
@@ -89,7 +88,6 @@ describe('Projects overview: admin (folders)', () => {
   before(() => {
     cy.apiCreateFolder({
       title: folderTitle,
-      description: randomString(),
     }).then((response) => {
       folderId = response.body.data.id;
     });
@@ -123,7 +121,6 @@ describe('Projects overview: project moderator', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: randomString(),
-      description: randomString(),
       publicationStatus: 'draft',
     }).then((project) => {
       projectId = project.body.data.id;
@@ -175,21 +172,18 @@ describe('Projects overview: folder moderator', () => {
     cy.apiCreateProject({
       title: projectOneTitle,
       descriptionPreview: randomString(),
-      description: randomString(),
       publicationStatus: 'published',
     }).then((projectOne) => {
       projectOneId = projectOne.body.data.id;
       cy.apiCreateProject({
         title: projectTwoTitle,
         descriptionPreview: randomString(),
-        description: randomString(),
         publicationStatus: 'published',
       }).then((projectTwo) => {
         projectTwoId = projectTwo.body.data.id;
         cy.apiCreateFolder({
           title: folderTitle,
           descriptionPreview: folderShortDescription,
-          description: randomString(),
           publicationStatus: 'published',
         }).then((folder) => {
           folderId = folder.body.data.id;

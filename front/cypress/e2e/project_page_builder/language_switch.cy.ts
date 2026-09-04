@@ -37,13 +37,11 @@ describe('Project description builder language switch', () => {
       cy.apiCreateProject({
         title: projectTitle,
         descriptionPreview: randomString(),
-        description: '',
         publicationStatus: 'published',
         assigneeId: user.body.data.id,
       }).then((project) => {
         projectSlug = projectTitle;
         projectId = project.body.data.id;
-        cy.apiToggleProjectDescriptionBuilder({ projectId });
       });
     });
   });

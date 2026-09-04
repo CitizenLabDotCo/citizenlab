@@ -44,6 +44,11 @@ class Project < ApplicationRecord
   include PgSearch::Model
   include PlainTextMultiloc
 
+  # The legacy WYSIWYG description, superseded by the `project_page` layout. Ignored here
+  # first so no running process still selects or inserts it by the time the column is
+  # dropped — migrations run before the new containers take over traffic.
+  self.ignored_columns += %w[description_multiloc]
+
   attribute :preview_token, :string, default: -> { generate_preview_token }
 
   VISIBLE_TOS = %w[public groups admins].freeze
@@ -52,7 +57,8 @@ class Project < ApplicationRecord
 
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
-  has_many_text_images from: :description_multiloc, as: :text_images
+  # Inline images of RichTextMultiloc bridge widgets in the project's layouts
+  has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
 
   belongs_to :space, optional: true
@@ -86,7 +92,6 @@ class Project < ApplicationRecord
   has_many :files_projects, class_name: 'Files::FilesProject', dependent: :destroy
   has_many :files, through: :files_projects
 
-  before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
   before_validation :set_visible_to, on: :create
   plain_text_multiloc :title_multiloc, :header_bg_alt_text_multiloc, prepend: true
@@ -110,7 +115,6 @@ class Project < ApplicationRecord
   INTERNAL_ROLES = %w[open_idea_box community_monitor].freeze
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
-  validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :description_preview_multiloc, multiloc: { presence: false }
   validates :visible_to, presence: true, inclusion: { in: VISIBLE_TOS }
   validates :internal_role, inclusion: { in: INTERNAL_ROLES, allow_nil: true }
@@ -121,7 +125,7 @@ class Project < ApplicationRecord
   scope :not_hidden, -> { where(hidden: false) }
 
   pg_search_scope :search_by_all,
-    against: %i[title_multiloc description_multiloc description_preview_multiloc slug],
+    against: %i[title_multiloc description_preview_multiloc slug],
     using: { tsearch: { prefix: true } }
 
   pg_search_scope :search_by_title,
@@ -339,16 +343,6 @@ class Project < ApplicationRecord
     return unless folder.present? && folder.space_id != space_id
 
     errors.add(:space_id, 'project space must match the space of its folder')
-  end
-
-  def sanitize_description_multiloc
-    service = SanitizationService.new
-    self.description_multiloc = service.sanitize_multiloc(
-      description_multiloc,
-      %i[title alignment list decoration link image video]
-    )
-    self.description_multiloc = service.remove_multiloc_empty_trailing_tags(description_multiloc)
-    self.description_multiloc = service.linkify_multiloc(description_multiloc)
   end
 
   def set_visible_to

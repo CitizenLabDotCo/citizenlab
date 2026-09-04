@@ -76,7 +76,7 @@ describe McpServer::LayoutWidgets do
 
     it 'covers the canonical nodes the backend seeds, minus the movable widgets' do
       seeded = ContentBuilder::ProjectPageLayoutService.new
-        .from_description_multiloc({})
+        .craftjs_json_from_body({})
         .values
         .map { |node| node.dig('type', 'resolvedName') }
 
