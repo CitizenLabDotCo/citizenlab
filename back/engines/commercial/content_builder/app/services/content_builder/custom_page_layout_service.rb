@@ -39,8 +39,8 @@ module ContentBuilder
       return {} unless static_page.files_section_enabled
 
       # `ordered` sorts on position alone, and position is NULL on every row until TAN-5126
-      # turns position management back on — so it needs a tie-break, or the same page derives
-      # a different node order each time and the migration task rewrites it on every run.
+      # turns position management back on. Without a tie-break two derives of one page can
+      # differ by order alone, so the migration task's overwrite rewrites rows nothing changed in.
       attachments = ::Files::FileAttachment.where(attachable: static_page).ordered.order(:created_at, :id)
       attachments.to_h do |attachment|
         [
