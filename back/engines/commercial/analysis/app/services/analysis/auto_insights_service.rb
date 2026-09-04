@@ -67,8 +67,8 @@ module Analysis
       case unit
       when 'inputs'
         big_fat_matrix_helper(
-          items: @analysis.inputs.includes(:author),
-          inputs_custom_field_values: ->(item) { [item.custom_field_values] },
+          items: @analysis.inputs.includes(:custom_field_answers, author: :custom_field_answers),
+          inputs: ->(item) { [item] },
           author: ->(item) { item.author },
           input_ids: ->(item) { [item.id] },
           **
@@ -77,8 +77,8 @@ module Analysis
         big_fat_matrix_helper(
           items: Reaction
             .where(reactable_type: 'Idea', reactable_id: @analysis.inputs, mode: unit == 'likes' ? 'up' : 'down')
-            .includes(:user, :reactable),
-          inputs_custom_field_values: ->(reaction) { [reaction.reactable.custom_field_values] },
+            .includes(user: :custom_field_answers, reactable: :custom_field_answers),
+          inputs: ->(reaction) { [reaction.reactable] },
           author: ->(reaction) { reaction.user },
           input_ids: ->(reaction) { [reaction.reactable_id] },
           **
@@ -86,7 +86,7 @@ module Analysis
       when 'participants'
         big_fat_matrix_helper(
           items: participant_to_inputs_map.keys,
-          inputs_custom_field_values: ->(participant) { participant_to_inputs_map[participant].map(&:custom_field_values) },
+          inputs: ->(participant) { participant_to_inputs_map[participant] },
           author: ->(participant) { participant },
           input_ids: ->(participant) { participant_to_inputs_map[participant].map(&:id) },
           **
@@ -98,7 +98,7 @@ module Analysis
 
     def big_fat_matrix_helper(
       items:,
-      inputs_custom_field_values:,
+      inputs:,
       author:,
       input_ids:,
       tags:,
@@ -118,16 +118,15 @@ module Analysis
         end
 
         # Add columns for input custom fields
+        item_inputs = inputs.call(item)
         input_custom_field_bins.each do |bin|
-          multiple_cfvs = inputs_custom_field_values.call(item)
-          row[bin] = multiple_cfvs.any? { |cfv| bin.in_bin?(cfv[bin.custom_field.key]) }
+          row[bin] = item_inputs.any? { |input| bin.in_bin?(input.answer_for_key(bin.custom_field.key)&.value) }
         end
 
         # Add columns for user custom fields
         if (item_author = author.call(item))
-          cfv = item_author.custom_field_values
           user_custom_field_bins.each do |bin|
-            row[bin] = !!bin.in_bin?(cfv[bin.custom_field.key])
+            row[bin] = !!bin.in_bin?(item_author.answer_for_key(bin.custom_field.key)&.value)
           end
         end
 
@@ -216,8 +215,8 @@ module Analysis
       pc = ParticipantsService.new
 
       @analysis.inputs
-        .select(:id, :custom_field_values, :author_id)
-        .includes(:author, :taggings).each do |input|
+        .select(:id, :author_id)
+        .includes(:custom_field_answers, :author, :taggings).each do |input|
         pc.ideas_participants(Idea.where(id: input)).each do |participant|
           output[participant] << input
         end

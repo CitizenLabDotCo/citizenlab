@@ -183,7 +183,8 @@ class Idea < ApplicationRecord
   end
 
   pg_search_scope :search_by_all,
-    against: %i[title_multiloc body_multiloc custom_field_values slug],
+    against: %i[title_multiloc body_multiloc slug],
+    associated_against: { custom_field_answers: %i[value] },
     using: { tsearch: { prefix: true } }
 
   pg_search_scope :restricted_search,
