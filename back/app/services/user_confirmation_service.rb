@@ -73,6 +73,29 @@ class UserConfirmationService
     failure_result(e)
   end
 
+  # Consumes a merge-account code. Unlike its siblings this does not confirm an
+  # identity on +user+ - it hands +user+'s identity, verification and participation
+  # to the account that owns the confirmed address, and deletes +user+.
+  #
+  # The returned result carries the *surviving* account, which is the one the caller
+  # must be signed in as afterwards.
+  def validate_and_confirm_merge_account!(user, code)
+    validate_user!(user)
+    confirmation = user.merge_account_confirmation
+    raise ValidationError.new(:code, :invalid) if confirmation.nil?
+
+    validate_code!(confirmation, code)
+    target = AccountMergeService.new.merge!(source: user, confirmation: confirmation)
+
+    success_result(target)
+  rescue ValidationError => e
+    failure_result(e)
+  rescue AccountMergeService::IneligibleError
+    # Never say which rule refused: it would turn the endpoint into an oracle for
+    # which addresses belong to admins.
+    failure_result(ValidationError.new(:base, :merge_not_allowed))
+  end
+
   def validate_and_confirm_phone!(user, code)
     # Ensure that password login (i.e. 'normal', non-SSO login)
     # feature is enabled for phone confirmation
@@ -119,10 +142,17 @@ class UserConfirmationService
   def validate_and_confirm!(confirmation, code)
     raise ValidationError.new(:code, :invalid) if confirmation.nil?
 
+    validate_code!(confirmation, code)
+    confirm_user!(confirmation)
+  end
+
+  # The code checks alone, without the confirm! that follows them in the ordinary
+  # flows. Split out for validate_and_confirm_merge_account!, whose "confirm" step is
+  # a multi-table merge rather than a boolean-returning model method.
+  def validate_code!(confirmation, code)
     validate_retry_count!(confirmation, code)
     validate_code_value!(confirmation, code)
     validate_code_expiration!(confirmation)
-    confirm_user!(confirmation)
   end
 
   def validate_password_login_enabled!

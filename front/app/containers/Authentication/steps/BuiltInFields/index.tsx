@@ -121,6 +121,14 @@ const BuiltInFields = ({
         return;
       }
 
+      // A `base` error belongs to no form field, so react-hook-form would record
+      // it against a field that is never rendered and the user would be left
+      // staring at an unchanged form. Surface it on the modal instead.
+      if (e?.errors?.base) {
+        setError('unknown');
+        return;
+      }
+
       if (isCLErrorsWrapper(e)) {
         handleHookFormSubmissionError(e, methods.setError);
         return;

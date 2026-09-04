@@ -17,18 +17,53 @@ describe('SSO: user without email', () => {
     cy.get('#e2e-sign-up-success-modal').should('exist');
   });
 
-  it('shows error when trying to sign up with an email that already exists', () => {
+  // An address that already has an account is not a dead end for an email-less
+  // SSO user: it offers to merge the two, confirmed by a code sent to that
+  // account's inbox.
+  it('merges into the existing account when the email is already taken', () => {
+    const existingEmail = randomEmail();
+    cy.apiSignup('Existing', 'User', existingEmail, 'democracy2.0');
+
     fakeSSOGlobalSignup(cy, 'jane_doe');
 
-    const existingEmail = 'admin@govocal.com';
     cy.get('#e2e-authentication-modal')
       .get('input[type="email"]')
       .type(existingEmail);
     cy.get('#e2e-built-in-fields-submit-button').click();
 
+    // The code goes to the other account's inbox, so the screen explains what
+    // entering it will do before asking for it.
     cy.get('#e2e-authentication-modal').should(
       'include.text',
-      'An account with this email already exists'
+      'An account already uses'
+    );
+    confirmEmail(cy);
+
+    cy.get('#e2e-sign-up-success-modal').should('exist');
+
+    // Signed in as the account that survived, carrying the SSO verification.
+    cy.getAuthUser().then((user) => {
+      expect(user.body.data.attributes.email).to.eq(existingEmail);
+      expect(user.body.data.attributes.verified).to.eq(true);
+    });
+  });
+
+  // Whether the merge is allowed is only settled once the code has been entered -
+  // deciding earlier would let anyone probe which addresses belong to admins. So
+  // an admin target gets as far as the code screen and is refused there.
+  it('refuses to merge into an admin account', () => {
+    fakeSSOGlobalSignup(cy, 'jane_doe');
+
+    cy.get('#e2e-authentication-modal')
+      .get('input[type="email"]')
+      .type('admin@govocal.com');
+    cy.get('#e2e-built-in-fields-submit-button').click();
+
+    confirmEmail(cy);
+
+    cy.get('#e2e-authentication-modal').should(
+      'include.text',
+      'This account cannot be linked'
     );
   });
 

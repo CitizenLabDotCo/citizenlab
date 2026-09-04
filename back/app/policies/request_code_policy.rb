@@ -29,10 +29,20 @@ class RequestCodePolicy < ApplicationPolicy
     true
   end
 
-  # For authenticated users changing their email
+  # For authenticated users changing their email.
   def request_code_new_email?
     return false if user.nil?
     return false if code_reset_count(user.new_email_confirmation) >= max_retries - 1
+
+    true
+  end
+
+  # Merge-account codes ride the same endpoint but keep their own budget. A
+  # shared one would let an exhausted merge lock the user out of typing a
+  # different address, which is the only way out of that flow.
+  def request_merge_account_code?
+    return false if user.nil?
+    return false if code_reset_count(user.merge_account_confirmation) >= max_retries - 1
 
     true
   end

@@ -1,17 +1,20 @@
 # frozen_string_literal: true
 
 class ExpireConfirmationCodeOrDeleteJob < ApplicationJob
-  # The type is enqueued as a class name; only these four are expected.
+  # The type is enqueued as a class name; only these five are expected.
   ASSOCIATION_NAMES = {
     'EmailConfirmation' => :email_confirmation,
     'NewEmailConfirmation' => :new_email_confirmation,
     'PhoneConfirmation' => :phone_confirmation,
-    'NewPhoneConfirmation' => :new_phone_confirmation
+    'NewPhoneConfirmation' => :new_phone_confirmation,
+    'MergeAccountConfirmation' => :merge_account_confirmation
   }.freeze
 
   # The signup flows: the code is the user's only way to prove they own the identity
   # they registered with, so an expired code means the signup never completed. The
   # new_* flows change an identity on an already-existing user and never delete.
+  # Nor does the merge flow: its user is a real signed-in SSO account that exists
+  # perfectly well on its own if the merge is abandoned.
   SIGNUP_ASSOCIATION_NAMES = %i[email_confirmation phone_confirmation].freeze
 
   def run(user_id, confirmation_type, code_to_expire)

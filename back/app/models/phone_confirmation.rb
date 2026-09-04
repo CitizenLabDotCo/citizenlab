@@ -13,6 +13,7 @@
 #  code_sent_at     :datetime
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  target_email     :string
 #
 # Indexes
 #
@@ -23,9 +24,6 @@
 #
 #  fk_rails_...  (user_id => users.id) ON DELETE => cascade
 #
-# Confirms the user's existing phone number (stamps phone_confirmed_at),
-# the phone analog of EmailConfirmation. Unlike NewPhoneConfirmation it does
-# not promote a pending new_phone; it confirms the number already on the user.
 class PhoneConfirmation < Confirmation
   def confirm!
     transaction do

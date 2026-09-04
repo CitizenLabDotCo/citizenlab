@@ -189,6 +189,15 @@ DEV_ID_METHOD_CONFIGS = {
   }
 }.freeze
 
+# Phase actions inherit from the global 'visiting' permission and have no row of
+# their own until overridden. The override copies visiting's questions across,
+# which this data replaces.
+def override_permission(phase, action)
+  permission = Permissions::PermissionInheritanceService.new.override!(phase, action)
+  permission.permissions_custom_fields.destroy_all
+  permission
+end
+
 # Create (or recreate) the verified-actions test data used to test the Fake SSO verification flow.
 def setup_verified_actions_test_data
   # Remove the existing project + group
@@ -216,16 +225,16 @@ def setup_verified_actions_test_data
   Permissions::PermissionsUpdateService.new.update_permissions_for_scope(phase)
 
   # No fields for reacting_idea
-  permission = phase.reload.permissions.where(action: 'reacting_idea').first
-  permission.update!(permitted_by: 'verified', custom_fields_behavior: 'disabled')
+  permission = override_permission(phase, 'reacting_idea')
+  permission.update!(permitted_by: 'users', require_verification: true, custom_fields_behavior: 'disabled')
 
   # Politician field for posting_idea (other fields are locked to verification)
-  permission = phase.reload.permissions.where(action: 'posting_idea').first
-  permission.update!(permitted_by: 'verified', custom_fields_behavior: 'custom')
+  permission = override_permission(phase, 'posting_idea')
+  permission.update!(permitted_by: 'users', require_verification: true, custom_fields_behavior: 'custom')
   PermissionsCustomField.create!(permission: permission, custom_field: CustomField.find_by(key: 'politician'), required: true)
 
   # Domicile field and verification by group for commenting_idea
-  permission = phase.reload.permissions.where(action: 'commenting_idea').first
+  permission = override_permission(phase, 'commenting_idea')
   permission.update!(custom_fields_behavior: 'custom')
   PermissionsCustomField.create!(permission: permission, custom_field: CustomField.find_by(key: 'domicile'), required: true)
 

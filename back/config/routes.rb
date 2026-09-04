@@ -179,6 +179,7 @@ Rails.application.routes.draw do
 
         post 'confirm_code_email', to: 'confirmations#confirm_code_email'
         post 'confirm_code_new_email', to: 'confirmations#confirm_code_new_email'
+        post 'confirm_code_merge_account', to: 'confirmations#confirm_code_merge_account'
         post 'confirm_code_phone', to: 'confirmations#confirm_code_phone'
         post 'confirm_code_new_phone', to: 'confirmations#confirm_code_new_phone'
         post 'reconfirm_code_email', to: 'confirmations#reconfirm_code_email'

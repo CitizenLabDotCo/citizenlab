@@ -1,5 +1,6 @@
 import requirementKeys from 'api/authentication/authentication_requirements/keys';
 import {
+  confirmCodeMergeAccount,
   confirmCodeNewEmail,
   reconfirmCodeEmail,
 } from 'api/authentication/confirm_email/confirmEmailConfirmationCode';
@@ -108,6 +109,51 @@ export const confirmationSteps = (
       },
       RESEND_CODE: async () => {
         await requestCodeNewEmail();
+      },
+    },
+
+    // The email the user supplied already belongs to another account, and a code
+    // was sent to that account's inbox. Entering it merges this (email-less, SSO)
+    // account into that one and signs the user in as it - so on success this
+    // session belongs to a different user than it did a moment ago, and the
+    // requirements have to be re-fetched for that user rather than reused.
+    'confirmation:merge-account': {
+      CLOSE: () => setCurrentStep('closed'),
+      CHANGE_EMAIL: async () => {
+        setCurrentStep('missing-data:change-new-email');
+      },
+      SUBMIT_CODE: async (_: string, code: string) => {
+        await confirmCodeMergeAccount(code);
+        await queryClient.invalidateQueries({
+          queryKey: requirementKeys.all(),
+        });
+
+        const { requirements } = await getRequirements();
+        const authenticationData = getAuthenticationData();
+
+        const missingDataStep = await checkMissingData(
+          requirements,
+          authenticationData,
+          state.flow
+        );
+
+        if (missingDataStep) {
+          setCurrentStep(missingDataStep);
+          return;
+        }
+
+        if (doesNotMeetGroupCriteria(requirements)) {
+          setCurrentStep('access-denied');
+          return;
+        }
+
+        setCurrentStep('success');
+      },
+      RESEND_CODE: async () => {
+        // The address has to be passed explicitly: unlike the new_email flow, a
+        // merge never writes user.new_email (it belongs to somebody else), so the
+        // backend has nothing to fall back on.
+        await requestCodeNewEmail(state.new_email ?? undefined);
       },
     },
 
