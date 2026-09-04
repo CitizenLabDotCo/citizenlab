@@ -119,6 +119,7 @@ module CustomIdMethods::Hoplr
       %i[neighbourhood]
     end
 
+    # https://app.notion.com/p/govocal/Fix-omniauth-vulnerability-3ce9663b7b2680fc8a2be45b6b5042c6
     def confirmed_email_always_present?
       true
     end
