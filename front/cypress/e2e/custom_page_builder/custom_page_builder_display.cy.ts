@@ -1,9 +1,7 @@
 import { randomString } from '../../support/commands';
 
-// Covers the custom page Content Builder end to end: that the flag gates it, that a legacy
-// page's info sections and attachments are derived into the layout, and that the layout renders
-// in the front office — including file attachments, which resolve through the layout's own
-// attachments rather than their node's fileId and so fail silently when that context is missing.
+// File attachments resolve through the layout's own attachments rather than their node's
+// fileId, so they fail silently in the front office when that context is missing.
 describe('Custom page builder display', () => {
   const pageTitle = randomString();
   const topInfoText = randomString();
@@ -103,8 +101,6 @@ describe('Custom page builder display', () => {
       .first()
       .click({ force: true });
 
-    // A page belongs to no project, so the panel asks for every file the admin may see —
-    // passing an empty project filter instead would disable the query and hang on a spinner.
     cy.dataCy('e2e-file-attachment-file-select').should('exist');
     cy.contains('Upload files to page').should('be.visible');
   });
@@ -120,8 +116,7 @@ describe('Custom page builder display', () => {
 
     cy.visit(`/pages/${pageSlug}`);
 
-    // The file is the load-bearing assertion: it resolves through the layout's attachments, so
-    // it renders as nothing at all if the viewer does not provide the layout context.
+    // The load-bearing assertion: without the layout context this renders as nothing at all.
     cy.get('#e2e-file-attachment').contains('example.pdf').should('be.visible');
     cy.contains(topInfoText).should('be.visible');
     cy.contains(bottomInfoText).should('be.visible');

@@ -134,8 +134,7 @@ const CustomPageShow = () => {
               </Box>
             </>
           ) : (
-            // The container's default is narrower, so the title would not line up with
-            // the content under it.
+            // The default is narrower, so the title would not line up with the content.
             <NoBannerContainer
               maxWidth={
                 showBuilderContent ? BUILDER_CONTENT_MAX_WIDTH : undefined

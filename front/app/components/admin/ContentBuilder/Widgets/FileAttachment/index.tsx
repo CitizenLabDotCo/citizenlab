@@ -127,8 +127,8 @@ const FileAttachment = ({ fileId }: FileAttachmentProps) => {
   return <FilePreview fileId={fileId} />;
 };
 
-// Uploads land on the project when the layout belongs to one, and on the page otherwise. The
-// two routes are different members of the router's typed union, so each names its own.
+// The two routes are different members of the router's typed union, so each branch names its
+// own rather than varying `to` on one element.
 const UploadFilesLink = ({
   projectId,
   customPageId,
@@ -182,8 +182,7 @@ const FileAttachmentSettings = () => {
   const { query } = useEditor();
   const { projectId, customPageId } = useParams({ strict: false });
 
-  // A page outside a project — a custom page — offers every file the user may see. Passing an
-  // empty array instead would disable the query, leaving the panel on a spinner for good.
+  // An empty array would disable the query, leaving the panel on a spinner for good.
   const {
     data: files,
     isLoading: isLoadingFiles,
@@ -221,7 +220,6 @@ const FileAttachmentSettings = () => {
     return !isFileUsed;
   });
 
-  // Two different dead ends: nothing uploaded, or everything uploaded is already placed.
   const nothingUploadedMessage = projectId
     ? messages.noFilesAvailable
     : messages.noFilesYet;

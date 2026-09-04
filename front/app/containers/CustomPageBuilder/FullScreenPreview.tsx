@@ -60,8 +60,6 @@ const FullScreenPreview = ({ staticPageId }: Props) => {
         {isLoading && <Spinner />}
         {!isLoading && editorData && (
           <Box ref={(el: HTMLElement | null) => el?.setAttribute('inert', '')}>
-            {/* FileAttachment resolves its file through the layout's attachments, so without
-                this those widgets render nothing in the preview. */}
             <ContentBuilderLayoutProvider layoutId={layout?.data.id}>
               <Editor isPreview={true}>
                 <ContentBuilderFrame editorData={editorData} />

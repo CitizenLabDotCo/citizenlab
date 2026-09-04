@@ -13,7 +13,6 @@ module ContentBuilder
     ROOT_ID = 'ROOT'
     BODY_ID = 'CUSTOM_PAGE_BODY'
     TOP_INFO_ID = 'CUSTOM_PAGE_TOP_INFO'
-    # One node per attached file, so the id carries the file it renders.
     FILE_ID_PREFIX = 'CUSTOM_PAGE_FILE_'
     BOTTOM_INFO_ID = 'CUSTOM_PAGE_BOTTOM_INFO'
 
@@ -36,8 +35,6 @@ module ContentBuilder
 
     private
 
-    # Stacked, unlike the two-column block `project_page` builds, because that is how the
-    # page renders them today.
     def file_nodes(static_page)
       return {} unless static_page.files_section_enabled
 

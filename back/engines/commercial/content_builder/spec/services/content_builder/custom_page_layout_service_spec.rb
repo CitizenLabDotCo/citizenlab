@@ -132,9 +132,7 @@ describe ContentBuilder::CustomPageLayoutService do
         page
       end
 
-      # position is NULL on every row, so without a tie-break the order is whatever Postgres
-      # happens to return — and the migration task rewrites the row on every run. Inserted
-      # newest-first so physical row order cannot stand in for the sort.
+      # Inserted newest-first so physical row order cannot stand in for the sort.
       it 'orders the files predictably when none carries a position' do
         page = page_with_files(0)
         newer = create(:file_attachment, attachable: page, created_at: 1.day.ago)
@@ -159,7 +157,6 @@ describe ContentBuilder::CustomPageLayoutService do
         expect(craftjs[body_id]['nodes']).to eq expected_ids
         expected_ids.each do |node_id|
           expect(resolved_name(craftjs, node_id)).to eq 'FileAttachment'
-          # Stacked, unlike the project page's two-column block.
           expect(craftjs[node_id]['parent']).to eq body_id
         end
         expect(craftjs[expected_ids.first]['props']).to eq({ 'fileId' => file_ids.first })
