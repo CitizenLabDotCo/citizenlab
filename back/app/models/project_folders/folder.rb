@@ -6,7 +6,6 @@
 #
 #  id                           :uuid             not null, primary key
 #  title_multiloc               :jsonb
-#  description_multiloc         :jsonb
 #  description_preview_multiloc :jsonb
 #  header_bg                    :string
 #  slug                         :string
@@ -31,12 +30,6 @@ module ProjectFolders
     include Files::FileAttachable
     include PgSearch::Model
     include PlainTextMultiloc
-
-    # The legacy WYSIWYG description, superseded by the `project_folder_description`
-    # layout. Ignored here first so no running process still selects or inserts it by the
-    # time the column is dropped — migrations run before the new containers take over
-    # traffic.
-    self.ignored_columns += %w[description_multiloc]
 
     slug from: proc { |folder| folder.title_multiloc&.values&.find(&:present?) }
 
