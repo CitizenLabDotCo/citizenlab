@@ -103,6 +103,10 @@ module CustomIdMethods::ViennaSaml
       true
     end
 
+    # Vienna uses SAML, which does not have an email_verified attribute.
+    # We assume that the email provided by Vienna is always confirmed.
+    # In any case, Vienna does not support log in by email so the
+    # security risk of an unverified email is mitigated.
     def email_confirmed?(_auth)
       true
     end
