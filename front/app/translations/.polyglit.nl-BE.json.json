@@ -2959,6 +2959,41 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+  "app.components.ProjectPageBuilder.DropFeedback.cannotDropBelowPageContent": {
+    "state": "verified",
+    "verified_at": "2026-09-04T21:05:55.807649Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.ProjectPageBuilder.DropFeedback.cannotDropHere": {
+    "state": "verified",
+    "verified_at": "2026-09-04T21:05:55.807649Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.ProjectPageBuilder.DropFeedback.cannotDropInFixedHeader": {
+    "state": "verified",
+    "verified_at": "2026-09-04T21:05:55.807649Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.ProjectPageBuilder.DropFeedback.dropZoneTag": {
+    "state": "verified",
+    "verified_at": "2026-09-04T21:05:55.807649Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.ProjectPageBuilder.DropFeedback.fixedZoneNote": {
+    "state": "verified",
+    "verified_at": "2026-09-04T21:05:55.807649Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.ProjectPageBuilder.DropFeedback.fixedZoneTitle": {
+    "state": "verified",
+    "verified_at": "2026-09-04T21:05:55.807649Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.ProjectPageBuilder.DropFeedback.placeHere": {
+    "state": "verified",
+    "verified_at": "2026-09-04T21:05:55.807649Z",
+    "verified_by": "Luuc"
+  },
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyNote": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
@@ -11158,6 +11193,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
+  },
+  "app.containers.ProjectPageBuilder.editableContent": {
+    "state": "verified",
+    "verified_at": "2026-09-04T21:05:55.807649Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.ProjectPageBuilder.lockedZoneLabel": {
+    "state": "verified",
+    "verified_at": "2026-09-04T21:05:55.807649Z",
+    "verified_by": "Luuc"
   },
   "app.containers.ProjectPageBuilder.projectHomepage": {
     "state": "verified",
