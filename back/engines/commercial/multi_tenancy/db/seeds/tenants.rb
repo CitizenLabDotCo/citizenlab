@@ -452,6 +452,10 @@ module MultiTenancy
             configurable_dropdown: {
               enabled: true,
               allowed: true
+            },
+            project_workspace: {
+              enabled: true,
+              allowed: true
             }
           })
         )

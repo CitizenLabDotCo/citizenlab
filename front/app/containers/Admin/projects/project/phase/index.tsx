@@ -27,6 +27,7 @@ interface DataProps {
 const AdminProjectPhaseIndex = ({ project, selectedPhase }: DataProps) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
+  const workspaceEnabled = useFeatureFlag({ name: 'project_workspace' });
   const featureFlags: FeatureFlags = {
     typeform_enabled: useFeatureFlag({
       name: 'typeform_surveys',
@@ -57,7 +58,7 @@ const AdminProjectPhaseIndex = ({ project, selectedPhase }: DataProps) => {
         flexDirection="column"
         flexGrow={1}
       >
-        {!isNewPhaseLink && selectedPhase && (
+        {!isNewPhaseLink && selectedPhase && !workspaceEnabled && (
           <PhaseHeader phase={selectedPhase} tabs={tabs} />
         )}
 

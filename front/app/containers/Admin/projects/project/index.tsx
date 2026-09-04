@@ -3,21 +3,53 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
+import usePhase from 'api/phases/usePhase';
 import { IProjectData } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import { Outlet as RouterOutlet, useParams } from 'utils/router';
 
+import ProjectWorkspace from './newBackoffice/ProjectWorkspace';
+import PhaseLeftPanel from './newBackoffice/ProjectWorkspace/Phase/PhaseLeftPanel';
+import PhaseRightPanel from './newBackoffice/ProjectWorkspace/Phase/PhaseRightPanel';
+import ProjectLeftPanel from './newBackoffice/ProjectWorkspace/ProjectLeftPanel';
+import ProjectRightPanel from './newBackoffice/ProjectWorkspace/ProjectRightPanel';
 import ProjectHeader from './projectHeader';
 import ProjectSidebar from './projectPage/ProjectSidebar';
 
 const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
   const { data: authUser } = useAuthUser();
+  const { phaseId } = useParams({ strict: false });
+  const { data: phase } = usePhase(phaseId);
+  const workspaceEnabled = useFeatureFlag({ name: 'project_workspace' });
   const projectId = project.id;
+
+  const selectedPhase = phaseId ? phase?.data : undefined;
 
   if (!canModerateProject(project, authUser)) {
     return null;
+  }
+
+  if (workspaceEnabled) {
+    return (
+      <ProjectWorkspace
+        project={project}
+        phase={selectedPhase}
+        leftPanel={
+          selectedPhase ? (
+            <PhaseLeftPanel projectId={projectId} />
+          ) : (
+            <ProjectLeftPanel projectId={projectId} />
+          )
+        }
+        rightPanel={selectedPhase ? <PhaseRightPanel /> : <ProjectRightPanel />}
+      >
+        <RouterOutlet />
+      </ProjectWorkspace>
+    );
   }
 
   return (
