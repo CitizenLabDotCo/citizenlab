@@ -7,8 +7,7 @@ class McpServer::Tools::GetPlatformBranding < McpServer::BaseTool
   def description
     <<~DESC.squish
       Reads the platform's branding: organization name, locales, brand colours,
-      logo URLs and style customizations (fonts, header colours, etc.). Use it to
-      make generated content match the platform's look and feel.
+      logo URLs and style customizations (fonts, header colours, etc.).
     DESC
   end
 
