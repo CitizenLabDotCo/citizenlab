@@ -176,6 +176,22 @@ describe Analysis::AutoInsightsService do
           unit: 'participants'
         )
       end
+
+      # The participants are not read through the analysis inputs, so their
+      # answers need preloading of their own. Without it, every extra
+      # participant adds a query.
+      it 'reads the participant answers without querying per participant' do
+        male, female, _unspecified = custom_field_gender.options
+        4.times do |i|
+          participant = create(:user, custom_field_values: { custom_field_gender.key => (i.even? ? male : female).key })
+          create(:idea, author: participant, project:, custom_field_values: { custom_field2.key => 1 })
+        end
+
+        service = described_class.new(analysis)
+
+        expect { service.generate(unit: 'participants') }
+          .not_to exceed_query_limit(2).with(/custom_field_answers/)
+      end
     end
 
     context 'with a domicile custom field' do
