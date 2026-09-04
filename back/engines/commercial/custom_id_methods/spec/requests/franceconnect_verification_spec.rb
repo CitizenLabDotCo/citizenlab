@@ -78,10 +78,11 @@ context 'franceconnect verification' do
 
       expect(response).to redirect_to('/fr-FR/?random-passthrough-param=somevalue&sso_flow=signup&sso_success=true')
 
-      user = User.find_by(email: 'wossewodda-3728@yopmail.com')
+      user = User.find_by(new_email: 'wossewodda-3728@yopmail.com')
 
       expect(user).to have_attributes({
         verified: true,
+        email: nil,
         first_name: 'Angela Claire Louise',
         last_name: 'Dubois'
       })
@@ -129,10 +130,11 @@ context 'franceconnect verification' do
 
       expect(response).to redirect_to('/fr-FR/?random-passthrough-param=somevalue&sso_flow=signup&sso_success=true')
 
-      user = User.find_by(email: 'wossewodda-3728@yopmail.com')
+      user = User.find_by(new_email: 'wossewodda-3728@yopmail.com')
 
       expect(user).to have_attributes({
         verified: true,
+        email: nil,
         first_name: 'Angela Claire Louise',
         last_name: 'Dupuis'
       })

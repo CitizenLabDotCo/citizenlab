@@ -48,7 +48,7 @@ class Identity < ApplicationRecord
     update!(auth_hash: auth_to_persist)
   end
 
-  def email_always_present?
-    IdMethodService.new.method_by_name(provider).email_always_present?
+  def confirmed_email_always_present?
+    IdMethodService.new.method_by_name(provider).confirmed_email_always_present?
   end
 end

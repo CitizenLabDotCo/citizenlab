@@ -45,16 +45,12 @@ module CustomIdMethods::EtatLu
       }
     end
 
-    def email_always_present?
+    def confirmed_email_always_present?
       true
     end
 
     def verification_prioritized?
       true
-    end
-
-    def email_confirmed?(auth)
-      auth&.info&.email.present?
     end
 
     def filter_auth_to_persist(auth)

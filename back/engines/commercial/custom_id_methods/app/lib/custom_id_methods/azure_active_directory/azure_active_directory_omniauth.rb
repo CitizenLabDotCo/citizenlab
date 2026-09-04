@@ -110,10 +110,6 @@ module CustomIdMethods::AzureActiveDirectory
       domains_str.split(',').map { |d| d.strip.downcase }.compact_blank
     end
 
-    def email_always_present?
-      false
-    end
-
     def updateable_user_attrs
       super + %i[remote_avatar_url]
     end

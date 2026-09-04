@@ -11,7 +11,7 @@ context 'etat_lu verification' do
       'info' => {
         'name' => 'Theo Musterman',
         'email' => 'Theo.Musterman@ctie.etat.lu',
-        'email_verified' => nil,
+        'email_verified' => true,
         'nickname' => 'ABC123',
         'first_name' => 'Theo',
         'last_name' => 'Musterman',
@@ -168,6 +168,24 @@ context 'etat_lu verification' do
       })
 
       expect(response).to redirect_to('/fr-FR/?param=some-param&sso_flow=signup&sso_success=true')
+    end
+
+    context 'when the auth response says the email is not verified' do
+      let(:auth_hash) do
+        super().tap { |hash| hash['info']['email_verified'] = false }
+      end
+
+      it 'creates a new user whose email still has to be confirmed' do
+        get '/auth/etat_lu'
+        follow_redirect!
+
+        user = User.order(created_at: :asc).last
+        expect(user).to have_attributes({
+          email: nil,
+          new_email: 'Theo.Musterman@ctie.etat.lu'
+        })
+        expect(user.confirmation_required?).to be(true)
+      end
     end
 
     it 'signs in an existing identified user without requiring email confirmation' do

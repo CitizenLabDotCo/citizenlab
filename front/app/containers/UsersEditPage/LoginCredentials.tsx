@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import { IdMethodName } from 'api/id_methods/types';
 import useIdMethods from 'api/id_methods/useIdMethods';
 import { IUserData } from 'api/users/types';
 
@@ -19,25 +18,14 @@ type PasswordChangeProps = {
   user: IUserData;
 };
 
-// SSO methods that don't return an email by default (email_always_present? ==
-// false): users authenticated through these need to be able to set/change their
-// email.
-const SSO_METHODS_WITHOUT_EMAIL: IdMethodName[] = [
-  'clave_unica',
-  'id_austria',
-  'nemlog_in',
-  'acm',
-  'criipto',
-  'twoday',
-];
-
 const LoginCredentials = ({ user }: PasswordChangeProps) => {
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
   const smsEnabled = useFeatureFlag({ name: 'sms' });
   const { data: idMethods } = useIdMethods();
 
-  const ssoWithoutEmailEnabled = !!idMethods?.data.some((method) =>
-    SSO_METHODS_WITHOUT_EMAIL.includes(method.attributes.name)
+  const ssoWithoutEmailEnabled = !!idMethods?.data.some(
+    ({ attributes }) =>
+      attributes.method_metadata?.confirmed_email_always_present === false
   );
 
   const showChangePassword = passwordLoginEnabled;

@@ -127,14 +127,6 @@ module CustomIdMethods::NemlogIn
     #   URI.join(Frontend::UrlService.new.home_url, '/auth/nemlog_in/spslo').to_s
     # end
 
-    def email_always_present?
-      false
-    end
-
-    def email_confirmed?(_auth)
-      false
-    end
-
     private
 
     def fetch_municipality_code(cpr_number)
