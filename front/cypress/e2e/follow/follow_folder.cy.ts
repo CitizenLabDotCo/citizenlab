@@ -15,7 +15,6 @@ describe('Follow folder', () => {
     cy.apiCreateFolder({
       title: folderTitle,
       descriptionPreview: folderShortDescription,
-      description: randomString(),
       publicationStatus: 'published',
     }).then((folder) => {
       folderId = folder.body.data.id;

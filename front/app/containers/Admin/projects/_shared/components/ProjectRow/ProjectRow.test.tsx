@@ -18,7 +18,6 @@ const publication: IAdminPublicationData = {
     scheduled_at: null,
     visible_children_count: 0,
     publication_title_multiloc: {},
-    publication_description_multiloc: {},
     publication_description_preview_multiloc: {},
     publication_slug: 'project_1',
     followers_count: 3,
@@ -65,7 +64,6 @@ const mockProjectData = {
   attributes: {
     title_multiloc: { en: 'Test Project' },
     slug: 'test',
-    uses_content_builder: true,
   },
 };
 

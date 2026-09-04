@@ -62,6 +62,16 @@ resource 'Projects' do
       items: { type: 'string' }
     )
 
+    # Pins the response shape: these fields are a public contract, so adding or removing one is a
+    # breaking change for integrations and has to be a deliberate edit here.
+    example_request 'Returns the documented project fields', document: false do
+      assert_status 200
+      expect(json_response_body[:projects].first.keys).to match_array %i[
+        id title description_html description_preview slug folder_id href visible_to images
+        created_at updated_at ideas_count comments_count map_center_geojson publication_status
+      ]
+    end
+
     context 'when the page size is smaller than the total number of projects' do
       let(:page_size) { 2 }
 
@@ -188,6 +198,15 @@ resource 'Projects' do
     example_request 'Returns the project in the default locale' do
       assert_status 200
       expect(json_response_body[:project]).to include({ id: id })
+    end
+
+    context 'when the description is authored on the Content Builder' do
+      before { author_description(project, { 'en' => '<p>Renew the parc</p>' }) }
+
+      example_request 'Returns the description held by the project page layout', document: false do
+        assert_status 200
+        expect(json_response_body.dig(:project, :description_html)).to eq '<p>Renew the parc</p>'
+      end
     end
 
     context 'when the locale is specified' do

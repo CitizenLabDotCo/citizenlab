@@ -12,7 +12,6 @@ describe('Project page without an active phase', () => {
       cy.apiCreateProject({
         title: randomString(),
         descriptionPreview: randomString(),
-        description: randomString(),
         publicationStatus: 'published',
       }).then((project) => {
         projectId = project.body.data.id;
@@ -54,7 +53,6 @@ describe('Project page without an active phase', () => {
       cy.apiCreateProject({
         title: randomString(),
         descriptionPreview: randomString(),
-        description: randomString(),
         publicationStatus: 'archived',
       }).then((project) => {
         projectId = project.body.data.id;

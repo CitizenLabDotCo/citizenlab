@@ -1456,7 +1456,6 @@ CREATE TABLE public.analytics_dimension_locales_fact_visits (
 CREATE TABLE public.projects (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
     title_multiloc jsonb DEFAULT '{}'::jsonb,
-    description_multiloc jsonb DEFAULT '{}'::jsonb,
     slug character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
@@ -3587,7 +3586,6 @@ COMMENT ON COLUMN public.project_folders_files.migrated_file_id IS 'References t
 CREATE TABLE public.project_folders_folders (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
     title_multiloc jsonb,
-    description_multiloc jsonb,
     description_preview_multiloc jsonb,
     header_bg character varying,
     slug character varying,
@@ -9559,6 +9557,7 @@ SET search_path TO public,shared_extensions;
 INSERT INTO "schema_migrations" (version) VALUES
 ('20260903000000'),
 ('20260821210000'),
+('20260821090000'),
 ('20260821000000'),
 ('20260820000000'),
 ('20260811145845'),

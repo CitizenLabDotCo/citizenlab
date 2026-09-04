@@ -45,12 +45,6 @@ describe('Verification modal', () => {
   });
 
   describe('Participation with group conditions', () => {
-    before(() => {
-      cy.getProjectBySlug('verified-charlie-poeple-project').then((project) => {
-        cy.apiAddAboutBox(project.body.data.id);
-      });
-    });
-
     // Skipped: intermittently hits the same post-authentication redirect race
     // documented in ideation_permissions/idea_posting_permissions.cy.ts. After
     // completing sign-up + verification in the modal, the queued success

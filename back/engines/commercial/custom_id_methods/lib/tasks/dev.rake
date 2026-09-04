@@ -206,7 +206,6 @@ def setup_verified_actions_test_data
 
   project = Project.create!(
     title_multiloc: { en: 'Verified actions test project' },
-    description_multiloc: { en: 'This project has verified actions enabled' },
     slug: 'verified-actions-project-test'
   )
   phase = project.phases.create!(

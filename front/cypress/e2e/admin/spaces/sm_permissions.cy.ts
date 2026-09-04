@@ -22,14 +22,12 @@ describe('Space moderator: permissions', () => {
 
       cy.apiCreateFolder({
         title: folderName,
-        description: randomString(),
         spaceId,
       }).then((response) => {
         folderId = response.body.data.id;
 
         cy.apiCreateProject({
           title: randomString(),
-          description: randomString(),
           publicationStatus: 'published',
           folderId,
         }).then((response) => {

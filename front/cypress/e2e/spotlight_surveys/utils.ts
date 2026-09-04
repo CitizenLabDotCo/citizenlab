@@ -28,9 +28,7 @@ export const createProjectWithSpotlightSurveys = ({
     .apiCreateProject({
       title: randomString(),
       descriptionPreview: randomString(),
-      description: randomString(),
       publicationStatus: 'published',
-      withAboutBox: true,
     })
     .then((project) => {
       const projectId = project.body.data.id;

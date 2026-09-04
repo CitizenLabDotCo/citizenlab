@@ -3,7 +3,6 @@ import moment = require('moment');
 
 describe('Form builder linear scale', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const questionTitle = randomString();
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
@@ -18,7 +17,6 @@ describe('Form builder linear scale', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     })
       .then((project) => {

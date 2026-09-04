@@ -15,7 +15,6 @@ describe('Extra surveys widget in the project page builder', () => {
       cy.apiCreateProject({
         title: randomString(),
         descriptionPreview: randomString(),
-        description: randomString(),
         publicationStatus: 'published',
         assigneeId: user.body.data.id,
       }).then((project) => {

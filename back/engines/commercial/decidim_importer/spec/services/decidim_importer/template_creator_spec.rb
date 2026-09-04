@@ -180,8 +180,7 @@ RSpec.describe DecidimImporter::TemplateCreator do
       described_class.from_directory(export_root, import_uploads: false).import
       project = Project.find_by("title_multiloc->>'fr-FR' = 'Espaces verts'")
 
-      # The page now renders from a `project_page` layout (generated from the `project_description`
-      # layout the importer built); without it the project page endpoint 404s.
+      # The importer builds the `project_page` layout directly; without it the project page endpoint 404s.
       page = ContentBuilder::Layout.find_by(content_buildable: project, code: 'project_page')
       expect(page).to be_present
       expect(page.enabled).to be(true)
@@ -264,8 +263,7 @@ RSpec.describe DecidimImporter::TemplateCreator do
       end
 
       it 'imports the project description as a two-column Content Builder layout linking the static page' do
-        expect(project.description_multiloc).to eq({}) # description is in the layout, not here
-        layout = ContentBuilder::Layout.find_by(content_buildable: project, code: 'project_description')
+        layout = ContentBuilder::Layout.find_by(content_buildable: project, code: 'project_page')
         expect(layout).to be_present
         expect(layout.enabled).to be(true)
         cj = layout.craftjs_json
@@ -602,7 +600,7 @@ RSpec.describe DecidimImporter::TemplateCreator do
         expect(page.top_info_section_multiloc['fr-FR']).to include('îlot de fraicheur')
 
         project = Project.find_by("title_multiloc->>'fr-FR' = 'Budget participatif'")
-        layout = ContentBuilder::Layout.find_by(content_buildable: project, code: 'project_description')
+        layout = ContentBuilder::Layout.find_by(content_buildable: project, code: 'project_page')
         page_links = layout.craftjs_json.values
           .select { |n| n['type'].is_a?(Hash) && n['type']['resolvedName'] == 'PageLink' }
           .map { |n| n['props']['pageId'] }

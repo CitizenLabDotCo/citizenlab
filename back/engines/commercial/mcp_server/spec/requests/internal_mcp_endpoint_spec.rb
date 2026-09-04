@@ -138,6 +138,48 @@ describe McpServer::InternalMcpController do
     end
   end
 
+  describe 'semantic-logger payload' do
+    def payload_for(body, extra_headers = {})
+      payloads = []
+      subscriber = ->(_name, _started, _finished, _id, payload) { payloads << payload }
+      ActiveSupport::Notifications.subscribed(subscriber, 'process_action.action_controller') do
+        post '/admin_api/mcp', params: body, headers: headers.merge(extra_headers)
+      end
+      payloads.last
+    end
+
+    it 'includes tenant, acting user and the JSON-RPC method' do
+      payload = payload_for(rpc_body('tools/list'))
+
+      expect(response).to have_http_status(:ok)
+      expect(payload[:tenant_host]).to eq(tenant_host)
+      expect(payload[:tenant_id]).to eq(Tenant.find_by(host: tenant_host).id)
+      expect(payload[:user_id]).to eq(internal_account.id)
+      expect(payload[:acting_staff]).to be_nil
+      expect(payload[:mcp_method]).to eq('tools/list')
+      expect(payload[:mcp_tool]).to be_nil
+    end
+
+    it 'includes the tool name and staff identity for a tools/call request' do
+      payload = payload_for(
+        rpc_body('tools/call', { name: 'list_areas', arguments: {} }),
+        'X-Acting-Staff' => 'someone@govocal.com'
+      )
+
+      expect(payload[:mcp_method]).to eq('tools/call')
+      expect(payload[:mcp_tool]).to eq('list_areas')
+      expect(payload[:acting_staff]).to eq('someone@govocal.com')
+    end
+
+    it 'omits tenant fields when the tenant host is unknown' do
+      payload = payload_for(rpc_body('tools/list'), 'X-Tenant-Host' => 'unknown.example.net')
+
+      expect(response).to have_http_status(:not_found)
+      expect(payload[:tenant_id]).to be_nil
+      expect(payload[:tenant_host]).to be_nil
+    end
+  end
+
   describe 'protocol handshake' do
     it 'handles initialize' do
       initialize_params = {

@@ -36,7 +36,6 @@ describe('Smart group "Follow" input value selectors', () => {
     cy.apiCreateProject({
       title: randomString(),
       descriptionPreview: randomString(),
-      description: randomString(),
       publicationStatus: 'published',
     });
 

@@ -9,19 +9,16 @@ describe('Project description builder Two Column component', () => {
     cy.getAdminAuthUser().then((user) => {
       const projectTitle = randomString();
       const projectDescriptionPreview = randomString();
-      const projectDescription = '';
       const userId = user.body.data.id;
 
       cy.apiCreateProject({
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
-        description: projectDescription,
         publicationStatus: 'published',
         assigneeId: userId,
       }).then((project) => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
-        cy.apiToggleProjectDescriptionBuilder({ projectId });
         cy.visit(`/admin/project-page-builder/projects/${projectId}`);
       });
     });

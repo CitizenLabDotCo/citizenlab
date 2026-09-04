@@ -127,15 +127,6 @@ RSpec.describe Project do
     end
   end
 
-  describe 'description sanitizer' do
-    it 'keeps the formatting an editor produces' do
-      html = '<h2>Title</h2><p>Test</p><ul><li>A bullet</li></ul><ol type="1"><li>And a listing</li></ol>'
-      project = create(:project, description_multiloc: { 'en' => html })
-      expect(project.description_multiloc).to eq({ 'en' => html })
-    end
-  end
-
-  it_behaves_like 'a sanitized html_multiloc', factory: :project
   it_behaves_like 'a plain text multiloc', factory: :project
   it_behaves_like 'a plain text multiloc', factory: :project, attribute: :header_bg_alt_text_multiloc
 
@@ -146,7 +137,7 @@ RSpec.describe Project do
       project.update_columns(title_multiloc: { 'en' => 'Fish & chips' })
       project.reload
 
-      project.update!(description_multiloc: { 'en' => '<p>updated</p>' })
+      project.update!(description_preview_multiloc: { 'en' => '<p>updated</p>' })
 
       expect(project.reload.title_multiloc['en']).to eq 'Fish & chips'
     end

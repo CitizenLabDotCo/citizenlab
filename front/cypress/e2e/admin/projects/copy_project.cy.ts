@@ -3,14 +3,12 @@ import { randomString } from '../../../support/commands';
 describe('Copy projects outside folder', () => {
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString();
-  const projectDescription = randomString();
   let projectId: string;
 
   beforeEach(() => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;

@@ -17,10 +17,8 @@ describe('Budgeting project', () => {
 
   before(() => {
     cy.apiCreateProject({
-      withAboutBox: true,
       title: projectTitle,
       descriptionPreview: '',
-      description: '',
       publicationStatus: 'published',
     })
       .then((project) => {

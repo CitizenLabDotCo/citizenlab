@@ -10,7 +10,7 @@ module PublicApi
         .order(created_at: :desc)
         .page(params[:page_number])
         .per([params[:page_size]&.to_i || 12, 24].min)
-        .includes(:project_images, :map_config)
+        .includes(:project_images, :map_config, :content_builder_layouts)
 
       render json: @projects,
         each_serializer: V1::ProjectSerializer,

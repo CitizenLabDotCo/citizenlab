@@ -6,12 +6,6 @@ let projectId: string;
 let projectSlug: string;
 
 describe('Existing project with survey', () => {
-  before(() => {
-    cy.getProjectBySlug('charlie-crew-survey').then((project) => {
-      cy.apiAddAboutBox(project.body.data.id);
-    });
-  });
-
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit('/projects/charlie-crew-survey');
@@ -45,17 +39,14 @@ describe('Existing project with survey', () => {
 
 describe('New project with survey', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
 
   const phaseTitle = randomString();
 
   before(() => {
     cy.apiCreateProject({
-      withAboutBox: true,
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     })
       .then((project) => {
@@ -126,16 +117,13 @@ describe('New project with survey', () => {
 
 describe('Timeline project with survey phase', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
   const phaseTitle = randomString();
 
   before(() => {
     cy.apiCreateProject({
-      withAboutBox: true,
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;
@@ -185,16 +173,13 @@ describe('Timeline project with survey phase', () => {
 
 describe('Timeline project with survey phase but not active', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
   const phaseTitle = randomString();
 
   before(() => {
     cy.apiCreateProject({
-      withAboutBox: true,
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;
@@ -235,15 +220,12 @@ describe('Timeline project with survey phase but not active', () => {
 
 describe('Archived single phase project with survey', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
 
   before(() => {
     cy.apiCreateProject({
-      withAboutBox: true,
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'archived',
     }).then((project) => {
       projectId = project.body.data.id;
@@ -281,16 +263,13 @@ describe('Archived single phase project with survey', () => {
 
 describe('Embedded survey CTA', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
 
   before(() => {
     cy.setAdminLoginCookie();
     cy.apiCreateProject({
-      withAboutBox: true,
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;

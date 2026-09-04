@@ -2,7 +2,6 @@ import { randomString } from '../../../support/commands';
 
 describe('Admin: schedule project launch', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString(30);
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
 
@@ -10,7 +9,6 @@ describe('Admin: schedule project launch', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'draft',
     }).then((project) => {
       projectId = project.body.data.id;
