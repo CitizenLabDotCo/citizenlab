@@ -308,6 +308,32 @@ resource 'Request codes' do
         expect(response_data[:attributes][:confirmation_type]).to eq 'new_email'
         expect(sso_user.reload.new_email).to eq 'nobody@example.com'
       end
+
+      example 'It refuses a further merge code once the merge budget is spent' do
+        existing_user = create(:user, email: 'existing_email@example.com')
+        sso_user.find_or_create_confirmation(:merge_account_confirmation, target_email: existing_user.email)
+          .update!(code_reset_count: 4)
+        header_token_for(sso_user)
+
+        do_request(request_code: { new_email: existing_user.email })
+
+        expect(response_status).to eq 401
+        expect(delivery_service).not_to have_received(:send_now_to_user)
+      end
+
+      # Changing your mind is the way out of an offered merge, so an exhausted
+      # merge budget must not take the ordinary path down with it.
+      example 'It still starts an ordinary confirmation once the merge budget is spent' do
+        sso_user.find_or_create_confirmation(:merge_account_confirmation, target_email: 'existing_email@example.com')
+          .update!(code_reset_count: 4)
+        header_token_for(sso_user)
+
+        do_request(request_code: { new_email: 'nobody@example.com' })
+
+        expect(response_status).to eq 200
+        expect(response_data[:attributes][:confirmation_type]).to eq 'new_email'
+        expect(sso_user.reload.new_email).to eq 'nobody@example.com'
+      end
     end
   end
 

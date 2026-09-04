@@ -54,6 +54,10 @@ class WebApi::V1::RequestCodesController < ApplicationController
         return
       end
 
+      # Throttled against its own budget, not the new-email one: being locked out
+      # of merging must still leave "change your email" usable.
+      authorize current_user, :request_merge_account_code?, policy_class: RequestCodePolicy
+
       # Whether the *target* may be merged into is deliberately not checked here.
       # Refusing up front would let anyone probe which addresses belong to admins;
       # the code goes to the target's own inbox, so nobody who cannot read it gets

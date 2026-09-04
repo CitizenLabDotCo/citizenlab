@@ -1,10 +1,12 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 import { SetError } from 'containers/Authentication/typings';
 
-import { useIntl } from 'utils/cl-intl';
+import Warning from 'components/UI/Warning';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import authenticationMessages from '../../messages';
 import EmailConfirmation from '../EmailConfirmation';
@@ -23,23 +25,27 @@ interface Props {
 // account into that one. Code entry itself is identical to any other email
 // confirmation, so only the explanation above it differs - the user is about to
 // end up signed in as a different account, and needs to be told so before they
-// type the code, not after.
+// type the code, not after. That warning names the address, so the usual
+// "code sent to ..." banner is suppressed rather than saying it twice.
 const MergeAccountConfirmation = ({
   email,
   ...emailConfirmationProps
-}: Props) => {
-  const { formatMessage } = useIntl();
-
-  return (
-    <Box>
-      <Text mt="0px" mb="24px">
-        {formatMessage(authenticationMessages.mergeAccountExplanation, {
-          email: email ?? '',
-        })}
-      </Text>
-      <EmailConfirmation email={email} {...emailConfirmationProps} />
+}: Props) => (
+  <Box>
+    <Box mb="24px">
+      <Warning>
+        <FormattedMessage
+          {...authenticationMessages.mergeAccountExplanation}
+          values={{ email: <strong>{email}</strong> }}
+        />
+      </Warning>
     </Box>
-  );
-};
+    <EmailConfirmation
+      email={email}
+      showCodeSentMessage={false}
+      {...emailConfirmationProps}
+    />
+  </Box>
+);
 
 export default MergeAccountConfirmation;
