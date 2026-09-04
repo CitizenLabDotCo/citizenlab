@@ -19,10 +19,10 @@ describe ContentBuilder::BuildableDescriptionService do
         gif = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
         author_description(project, { 'en' => %(<p>Renew the parc</p><img src="#{gif}" />) }, widget: 'RichTextMultiloc')
 
-        description = service.description_multiloc(project)['en']
-
-        expect(description).to include('<p>Renew the parc</p>')
-        expect(description).to include('<img')
+        # The data URI stays inline: `swap_data_images` only runs for the homepage layout.
+        expect(service.description_multiloc(project)).to eq({
+          'en' => %(<p>Renew the parc</p><img src="#{gif}">)
+        })
       end
 
       it 'ignores a superseded project_description layout' do
