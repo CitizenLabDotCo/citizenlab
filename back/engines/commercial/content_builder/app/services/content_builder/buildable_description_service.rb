@@ -7,7 +7,7 @@ module ContentBuilder
       layout = layout_for(buildable)
       return {} if layout.nil?
 
-      Craftjs::VisibleTextualMultilocs.new(layout.craftjs_json.deep_dup)
+      Craftjs::VisibleTextualMultilocs.new(layout.craftjs_json, sanitize: false)
         .extract_and_join
         .compact_blank
     end
