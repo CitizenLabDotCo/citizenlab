@@ -17,16 +17,17 @@ class McpServer::Tools::GetPlatformBranding < McpServer::BaseTool
   class Runner < McpServer::BaseTool::Runner
     def run
       config = AppConfiguration.instance
+      core = config.settings('core')
 
       response(
         "Branding of platform #{config.host}",
         structured: {
-          organization_name_multiloc: config.settings('core', 'organization_name'),
-          locales: config.settings('core', 'locales'),
+          organization_name_multiloc: core['organization_name'],
+          locales: core['locales'],
           colors: {
-            main: config.settings('core', 'color_main'),
-            secondary: config.settings('core', 'color_secondary'),
-            text: config.settings('core', 'color_text')
+            main: core['color_main'],
+            secondary: core['color_secondary'],
+            text: core['color_text']
           },
           logo_urls: (config.logo.versions.transform_values(&:url) if config.logo.file),
           style: config.style
