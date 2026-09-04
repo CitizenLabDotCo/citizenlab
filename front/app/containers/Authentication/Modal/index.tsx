@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -76,14 +76,7 @@ const AuthModal = () => {
       close={handleClose}
       hideCloseButton={!closable}
       closeOnClickOutside={false}
-      header={
-        headerMessage ? (
-          <Title variant="h3" as="h1" mt="0px" mb="0px" ml={marginX}>
-            {formatMessage(headerMessage)}
-          </Title>
-        ) : undefined
-      }
-      niceHeader
+      header={headerMessage ? formatMessage(headerMessage) : undefined}
       ariaLabelledBy="auth-modal-title"
     >
       <Box id="e2e-authentication-modal" px={marginX} py="32px" w="100%">

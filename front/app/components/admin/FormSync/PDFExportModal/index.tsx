@@ -4,7 +4,6 @@ import {
   Box,
   CollapsibleContainer,
   Text,
-  Title,
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -154,12 +153,7 @@ const PDFExportModal = ({
       width="580px"
       opened={open}
       close={onClose}
-      header={
-        <Title variant="h2" as="h1" color="primary" m="0" px="24px">
-          <FormattedMessage {...messages.exportAsPDF} />
-        </Title>
-      }
-      niceHeader
+      header={<FormattedMessage {...messages.exportAsPDF} />}
       // This is necessary to prevent the modal from closing when you e.g. select text in
       // the textarea and happen to arrive outside of the modal with your cursor.
       closeOnClickOutside={false}
