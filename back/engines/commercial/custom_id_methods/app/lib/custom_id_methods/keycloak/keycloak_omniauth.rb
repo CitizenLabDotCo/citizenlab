@@ -54,11 +54,6 @@ module CustomIdMethods::Keycloak
       }
     end
 
-    # https://app.notion.com/p/govocal/Fix-omniauth-vulnerability-3ce9663b7b2680fc8a2be45b6b5042c6
-    def confirmed_email_always_present?
-      true
-    end
-
     def filter_auth_to_persist(auth)
       auth_to_persist = auth.deep_dup
       auth_to_persist.tap { |h| h.delete(:credentials) }
