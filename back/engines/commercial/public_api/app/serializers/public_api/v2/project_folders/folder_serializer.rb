@@ -31,12 +31,6 @@ module PublicApi
         def description
           multiloc_service.t(description_multiloc)
         end
-
-        private
-
-        def description_service
-          @description_service ||= ContentBuilder::BuildableDescriptionService.new
-        end
       end
     end
   end
