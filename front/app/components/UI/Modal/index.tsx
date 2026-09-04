@@ -313,7 +313,7 @@ const Modal: React.FC<Props> = ({
   'data-testid': dataTestId,
   opened,
   fixedHeight = false,
-  width = 560,
+  width = 650,
   close,
   className,
   header,
