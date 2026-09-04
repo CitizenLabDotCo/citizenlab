@@ -92,7 +92,7 @@ module ContentBuilder
 
       file_node_ids = missing.map do |attachment|
         node_id = "#{INJECTED_ID_PREFIX}file_#{attachment.file_id}"
-        json[node_id] = file_attachment_node(attachment.file_id, left_id)
+        json[node_id] = Craftjs::Nodes.file_attachment(attachment.file_id, left_id)
         node_id
       end
       json[left_id] = container_node('left', columns_id, file_node_ids)
@@ -200,23 +200,6 @@ module ContentBuilder
       nodes = Array(json[parent_id]['nodes'])
       index = nodes.index { |id| json[id].is_a?(Hash) && resolved_name(json[id]) == 'PhasesWidget' } || nodes.length
       json[parent_id]['nodes'] = nodes.dup.insert(index, node_id)
-    end
-
-    def file_attachment_node(file_id, parent_id)
-      {
-        'type' => { 'resolvedName' => 'FileAttachment' },
-        'nodes' => [],
-        'props' => { 'fileId' => file_id },
-        'custom' => {
-          'title' => message('app.containers.admin.ContentBuilder.fileAttachment', 'File Attachment'),
-          'noPointerEvents' => true
-        },
-        'hidden' => false,
-        'parent' => parent_id,
-        'isCanvas' => false,
-        'displayName' => 'FileAttachment',
-        'linkedNodes' => {}
-      }
     end
 
     def white_space_node(parent_id)
