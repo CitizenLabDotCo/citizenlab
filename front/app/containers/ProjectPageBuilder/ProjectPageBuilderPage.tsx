@@ -130,6 +130,10 @@ const ProjectPageBuilderPage = ({
         projectId,
         craftjs_json: stripProjectAttributeDrafts(nodes),
       });
+      iframeRef.current?.contentWindow?.postMessage(
+        { layoutSaved: true },
+        window.location.href
+      );
 
       return true;
     } catch {
