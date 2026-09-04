@@ -2959,6 +2959,41 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.components.ProjectPageBuilder.DropFeedback.cannotDropBelowPageContent": {
+    "state": "verified",
+    "verified_at": "2026-09-04T11:12:39.339717Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.ProjectPageBuilder.DropFeedback.cannotDropHere": {
+    "state": "verified",
+    "verified_at": "2026-09-04T11:12:39.339717Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.ProjectPageBuilder.DropFeedback.cannotDropInFixedHeader": {
+    "state": "verified",
+    "verified_at": "2026-09-04T11:12:39.339717Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.ProjectPageBuilder.DropFeedback.dropZoneTag": {
+    "state": "verified",
+    "verified_at": "2026-09-04T11:12:39.339717Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.ProjectPageBuilder.DropFeedback.fixedZoneNote": {
+    "state": "verified",
+    "verified_at": "2026-09-04T11:12:39.339717Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.ProjectPageBuilder.DropFeedback.fixedZoneTitle": {
+    "state": "verified",
+    "verified_at": "2026-09-04T11:12:39.339717Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.ProjectPageBuilder.DropFeedback.placeHere": {
+    "state": "verified",
+    "verified_at": "2026-09-04T11:12:39.339717Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyNote": {
     "state": "verified",
     "verified_at": "2026-07-08T14:05:02.878146Z",
@@ -11133,6 +11168,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.containers.ProjectPageBuilder.editableContent": {
+    "state": "verified",
+    "verified_at": "2026-09-04T11:12:39.339717Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.ProjectPageBuilder.lockedZoneLabel": {
+    "state": "verified",
+    "verified_at": "2026-09-04T11:12:39.339717Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.containers.ProjectPageBuilder.projectHomepage": {
     "state": "verified",
