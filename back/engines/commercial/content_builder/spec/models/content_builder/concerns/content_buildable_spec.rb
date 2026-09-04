@@ -114,11 +114,11 @@ RSpec.describe ContentBuilder::Concerns::ContentBuildable do
           expect(model.search_ids_by_all_including_patches('here')).to contain_exactly(p1.id, p2.id)
         end
 
-        it "finds #{factory} by both builder content and normal description" do
+        it "finds #{factory} by both builder content and the short description" do
           p1 = create_model(factory, { text: { 'en' => 'othertext', 'fr-FR' => 'sometext here' } })
           __ = create_model(factory, { text: { 'en' => 'othertext here' } })
-          p2 = create(factory, description_multiloc: { en: 'sometext' })
-          __ = create(factory, description_multiloc: { en: 'othertext' })
+          p2 = create(factory, description_preview_multiloc: { en: 'sometext' })
+          __ = create(factory, description_preview_multiloc: { en: 'othertext' })
 
           model = model_class(factory)
           expect(model.search_ids_by_all_including_patches('sometext')).to contain_exactly(p1.id, p2.id)

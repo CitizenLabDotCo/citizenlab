@@ -180,7 +180,7 @@ resource 'ContentBuilderLayouts' do
         let(:enabled) { true }
 
         post 'web_api/v1/projects/:project_id/content_builder_layouts/:code/upsert' do
-          example_request 'Create a project page layout seeded from the project description' do
+          example_request 'Create a project page layout seeded with the default page content' do
             assert_status 201
 
             json_response = json_parse(response_body)
@@ -189,10 +189,10 @@ resource 'ContentBuilderLayouts' do
             craftjs_json = json_response.dig(:data, :attributes, :craftjs_json)
             expect(craftjs_json.keys).to include(:ROOT, :PROJECT_PAGE_BODY)
 
-            description_ids = craftjs_json.dig(:PROJECT_PAGE_INTRO_LEFT, :nodes)
-            expect(description_ids).not_to be_empty
-            expect(craftjs_json.dig(description_ids.first.to_sym, :props, :text)).to match(
-              hash_including(en: project.description_multiloc['en'])
+            body_ids = craftjs_json.dig(:PROJECT_PAGE_BODY, :nodes)
+            expect(body_ids).to include('PROJECT_PAGE_INTRO_COLUMNS', 'PROJECT_PAGE_DETAILS_COLUMNS')
+            expect(craftjs_json.dig(:PROJECT_PAGE_INTRO_TEXT, :props, :text)).to match(
+              hash_including(en: I18n.t('content_builder.project_page.intro_placeholder'))
             )
           end
         end

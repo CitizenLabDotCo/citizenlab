@@ -11,7 +11,6 @@ export function getProject(
     type: 'project',
     attributes: {
       title_multiloc: { en: `${id} project Title` },
-      description_multiloc: { en: `${id} project description` },
       description_preview_multiloc: { en: `${id} project description preview` },
       slug: `${id}_slug`,
       input_term: 'idea',

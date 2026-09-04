@@ -2,8 +2,10 @@ module ContentBuilder
   module Craftjs
     # Extracts multilocs for visible text from a craftjs in the order they appear in the visual layout.
     class VisibleTextualMultilocs
-      def initialize(craftjs, with_metadata: false)
-        @craftjs = LayoutSanitizationService.new.sanitize(craftjs)
+      # `sanitize: false` skips the HTML sanitization pass for craftjs read straight off a
+      # persisted Layout, which sanitizes on save. Nothing is mutated either way.
+      def initialize(craftjs, with_metadata: false, sanitize: true)
+        @craftjs = sanitize ? LayoutSanitizationService.new.sanitize(craftjs) : craftjs
         @with_metadata = with_metadata
         @ordered_multilocs = []
       end
@@ -49,16 +51,24 @@ module ContentBuilder
           @ordered_multilocs << {
             node_type: resolved_name,
             multiloc_type: 'text',
-            multliloc: node['props']['text']
+            multliloc: body_multiloc(node)
           }
         else
           @ordered_multilocs << make_h3s(node['props']['title']) if resolved_name == 'AccordionMultiloc'
-          @ordered_multilocs << node['props']['text'] if node['props']['text'].present?
+          body = body_multiloc(node)
+          @ordered_multilocs << body if body.present?
         end
       end
 
+      # Every text widget keeps its body in `text`, except HtmlBlockMultiloc, which keeps
+      # its raw HTML in `html` (see Craftjs::WidgetSpecs).
+      def body_multiloc(node)
+        node['props']['text'] || node['props']['html']
+      end
+
+      # Non-mutating: callers may pass a persisted layout's own craftjs_json.
       def make_h3s(multliloc)
-        multliloc.transform_values! { |text| "<h3>#{text}</h3>" }
+        multliloc.transform_values { |text| "<h3>#{text}</h3>" }
       end
     end
   end

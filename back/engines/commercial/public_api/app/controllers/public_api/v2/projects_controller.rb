@@ -10,7 +10,7 @@ module PublicApi
         **finder_params
       ).execute
 
-      list_items(projects, V2::ProjectSerializer, includes: [:project_images, :map_config, { admin_publication: :parent }])
+      list_items(projects, V2::ProjectSerializer, includes: [:project_images, :map_config, :content_builder_layouts, { admin_publication: :parent }])
     end
 
     def show

@@ -11,16 +11,14 @@ describe('Project overview page', () => {
   const projectIds: string[] = [];
   let folderId: string;
 
-  // body content, not used for testing search
+  // filler for the projects that take no part in the cross-title search
   const projectDescriptionPreview = randomString();
-  const projectDescription = randomString();
 
   before(() => {
     // unique name/title
     cy.apiCreateProject({
       title: projectTitleOne,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectIds.push(project.body.data.id);
@@ -28,8 +26,7 @@ describe('Project overview page', () => {
     // shares content with project three
     cy.apiCreateProject({
       title: projectTitleTwo,
-      descriptionPreview: projectDescriptionPreview,
-      description: projectTitleThree,
+      descriptionPreview: projectTitleThree,
       publicationStatus: 'published',
     }).then((project) => {
       projectIds.push(project.body.data.id);
@@ -37,17 +34,15 @@ describe('Project overview page', () => {
     // shares content with project two
     cy.apiCreateProject({
       title: projectTitleThree,
-      descriptionPreview: projectDescriptionPreview,
-      description: projectTitleTwo,
+      descriptionPreview: projectTitleTwo,
       publicationStatus: 'published',
     }).then((project) => {
       projectIds.push(project.body.data.id);
     });
-    // archived project
+    // archived project, also sharing content with project two
     cy.apiCreateProject({
       title: projectTitleFour,
-      descriptionPreview: projectDescriptionPreview,
-      description: projectTitleTwo,
+      descriptionPreview: projectTitleTwo,
       publicationStatus: 'archived',
     }).then((project) => {
       projectIds.push(project.body.data.id);
@@ -57,7 +52,6 @@ describe('Project overview page', () => {
     cy.apiCreateProject({
       title: projectInFolderTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: randomString(),
       publicationStatus: 'published',
     }).then((project) => {
       projectIds.push(project.body.data.id);
@@ -66,7 +60,6 @@ describe('Project overview page', () => {
     cy.apiCreateFolder({
       title: folderTitle,
       descriptionPreview: randomString(30),
-      description: randomString(),
       publicationStatus: 'published',
     }).then((folder) => {
       folderId = folder.body.data.id;

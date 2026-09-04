@@ -31,8 +31,8 @@ const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));
 const AdminProjectNew = lazy(() => import('./new'));
 const AdminProjectsProjectIndex = lazy(() => import('./project'));
-const AdminProjectPageNewBackoffice = lazy(
-  () => import('./project/newBackoffice/ProjectPage')
+const AdminProjectPage = lazy(
+  () => import('./project/projectPage/ProjectPage')
 );
 const AdminProjectPhaseIndex = lazy(() => import('./project/phase'));
 const AdminProjectsProjectGeneral = lazy(() => import('./project/general'));
@@ -246,7 +246,7 @@ const projectPageRoute = createRoute({
   path: 'project-page',
   component: () => (
     <PageLoading>
-      <AdminProjectPageNewBackoffice />
+      <AdminProjectPage />
     </PageLoading>
   ),
 });

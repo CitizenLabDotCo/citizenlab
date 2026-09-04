@@ -61,6 +61,21 @@ RSpec.describe ContentBuilder::Craftjs::VisibleTextualMultilocs do
       it 'adds <h3>...</h3> tags to AccordianMultiloc node title text' do
         expect(service.extract).to include({ 'en' => '<h3>accordianA title</h3>' })
       end
+
+      # HtmlBlockMultiloc keeps its body in `html`, not `text`.
+      context 'with an HTML block' do
+        let(:json) do
+          {
+            'ROOT' => craftjs_root(%w[TEXT HTML]),
+            'TEXT' => craftjs_node('TextMultiloc', parent: 'ROOT', props: { 'text' => { 'en' => '<p>Intro</p>' } }),
+            'HTML' => craftjs_node('HtmlBlockMultiloc', parent: 'ROOT', props: { 'html' => { 'en' => '<p>Raw</p>' } })
+          }
+        end
+
+        it 'extracts the html multiloc alongside the text ones' do
+          expect(service.extract).to eq([{ 'en' => '<p>Intro</p>' }, { 'en' => '<p>Raw</p>' }])
+        end
+      end
     end
 
     context 'with metadata' do

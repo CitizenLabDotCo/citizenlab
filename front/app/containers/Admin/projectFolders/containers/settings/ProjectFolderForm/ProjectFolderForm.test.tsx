@@ -13,7 +13,6 @@ const folderWithoutDescription = {
     id: 'folder-id',
     attributes: {
       title_multiloc: { en: 'A folder' },
-      description_multiloc: null,
       description_preview_multiloc: { en: 'Short description' },
       header_bg_alt_text_multiloc: {},
       slug: 'a-folder',

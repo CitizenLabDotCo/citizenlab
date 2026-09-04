@@ -12,13 +12,13 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import { Outlet as RouterOutlet, useParams } from 'utils/router';
 
-import ProjectSidebar from './newBackoffice/ProjectSidebar';
 import ProjectWorkspace from './newBackoffice/ProjectWorkspace';
 import PhaseLeftPanel from './newBackoffice/ProjectWorkspace/Phase/PhaseLeftPanel';
 import PhaseRightPanel from './newBackoffice/ProjectWorkspace/Phase/PhaseRightPanel';
 import ProjectLeftPanel from './newBackoffice/ProjectWorkspace/ProjectLeftPanel';
 import ProjectRightPanel from './newBackoffice/ProjectWorkspace/ProjectRightPanel';
 import ProjectHeader from './projectHeader';
+import ProjectSidebar from './projectPage/ProjectSidebar';
 
 const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
   const { data: authUser } = useAuthUser();
