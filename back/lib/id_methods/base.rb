@@ -92,9 +92,6 @@ module IdMethods
     end
 
     def email_confirmed?(auth)
-      has_email = auth&.info&.email.present? || auth.dig(:extra, :raw_info, :email).present?
-      return false unless has_email
-
       email_verified = auth&.info&.email_verified || auth.dig(:extra, :raw_info, :email_verified)
       !!email_verified
     end
