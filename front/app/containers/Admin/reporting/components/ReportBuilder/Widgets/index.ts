@@ -89,6 +89,8 @@ export const CUSTOM_TEMPLATE_WIDGET_TITLES: Record<string, MessageDescriptor> =
     RegistrationsWidgetSince: messages.registrationWidgetSince,
     ParticipantsWidgetFromStart: messages.participantsWidgetFromStart,
     ParticipantsWidgetSince: messages.participantsWidgetSince,
+    InternalAdoptionWidgetFromStart: messages.internalAdoptionWidgetFromStart,
+    InternalAdoptionWidgetSince: messages.internalAdoptionWidgetSince,
   };
 
 export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
