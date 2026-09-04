@@ -131,10 +131,6 @@ module CustomIdMethods::NemlogIn
       false
     end
 
-    def email_confirmed?(_auth)
-      false
-    end
-
     private
 
     def fetch_municipality_code(cpr_number)

@@ -91,10 +91,6 @@ module CustomIdMethods::ClaveUnica
       false
     end
 
-    def email_confirmed?(_auth)
-      false
-    end
-
     private
 
     def formatted_rut(auth)

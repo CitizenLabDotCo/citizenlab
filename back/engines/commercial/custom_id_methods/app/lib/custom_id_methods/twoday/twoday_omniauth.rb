@@ -51,10 +51,6 @@ module CustomIdMethods::Twoday
       false
     end
 
-    def email_confirmed?(_auth)
-      false # No email returned from SSO
-    end
-
     def filter_auth_to_persist(auth)
       auth_to_persist = auth.deep_dup
       auth_to_persist.tap { |h| h.delete(:credentials) }

@@ -53,10 +53,6 @@ module CustomIdMethods::EtatLu
       true
     end
 
-    def email_confirmed?(auth)
-      auth&.info&.email.present?
-    end
-
     def filter_auth_to_persist(auth)
       auth_to_persist = auth.deep_dup
       auth_to_persist.tap { |h| h.delete(:credentials) }
