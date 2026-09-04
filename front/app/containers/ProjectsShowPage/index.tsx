@@ -20,6 +20,7 @@ import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import useLocale from 'hooks/useLocale';
 
+import DraftPreviewBridge from 'components/DraftPreviewBridge';
 import ErrorBoundary from 'components/ErrorBoundary';
 import PageNotFound from 'components/PageNotFound';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
@@ -202,6 +203,8 @@ const ProjectsShowPageWrapper = () => {
 
 export default () => (
   <ErrorBoundary>
+    {/* SPIKE (TAN-8619) — throwaway. Do not merge. */}
+    <DraftPreviewBridge />
     <ProjectsShowPageWrapper />
   </ErrorBoundary>
 );
