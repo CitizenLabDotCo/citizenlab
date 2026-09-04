@@ -33,6 +33,7 @@ const UploadFilesLink = ({ projectId, customPageId }: Props) => {
   if (customPageId) {
     return (
       <ButtonWithLink
+        data-cy="e2e-upload-files-to-page"
         to="/admin/pages-menu/pages/$customPageId/attachments"
         params={{ customPageId }}
         buttonStyle="text"

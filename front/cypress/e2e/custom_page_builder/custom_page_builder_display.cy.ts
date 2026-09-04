@@ -76,7 +76,7 @@ describe('Custom page builder display', () => {
       .click({ force: true });
 
     cy.dataCy('e2e-file-attachment-file-select').should('exist');
-    cy.contains('Upload files to page').should('be.visible');
+    cy.dataCy('e2e-upload-files-to-page').should('be.visible');
   });
 
   it('renders the saved layout in the front office, attachment included', () => {
