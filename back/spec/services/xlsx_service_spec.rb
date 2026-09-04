@@ -60,6 +60,23 @@ describe XlsxService do
       ).to eq ['Center', 'Option 1', 'Option 2']
     end
 
+    it 'lists deduped, alphabetically sorted sso methods and verifications' do
+      user = users.first
+      create(:identity, user: user, provider: 'google')
+      create(:identity, user: user, provider: 'facebook')
+      create(:identity, user: user, provider: 'google')
+      create(:verification, user: user, method_name: 'id_card_lookup')
+      create(:verification, user: user, method_name: 'cow')
+      create(:verification, user: user, method_name: 'bogus', active: false)
+
+      title_row = worksheet[0].cells.map(&:value)
+      sso_index = title_row.find_index 'sso_methods'
+      verifications_index = title_row.find_index 'verifications'
+      user_row = worksheet.map { |row| row.cells.map(&:value) }.find { |values| values.include? user.id }
+
+      expect([user_row[sso_index], user_row[verifications_index]]).to eq ['facebook, google', 'cow, id_card_lookup']
+    end
+
     it 'includes hidden custom fields' do
       create(:custom_field, hidden: true, title_multiloc: { 'en' => 'Hidden field' })
       headers = worksheet[0].cells.map(&:value)

@@ -133,6 +133,8 @@ class XlsxService
       { header: 'created_at', f: ->(u) { u.created_at }, skip_sanitization: true },
       { header: 'registration_completed_at', f: ->(u) { u.registration_completed_at }, skip_sanitization: true },
       { header: 'invite_status', f: ->(u) { u.invite_status }, skip_sanitization: true },
+      { header: 'sso_methods', f: ->(u) { u.identities.map(&:provider).uniq.sort.join(', ') }, skip_sanitization: true },
+      { header: 'verifications', f: ->(u) { u.verifications.select(&:active?).map(&:method_name).uniq.sort.join(', ') }, skip_sanitization: true },
       *user_custom_field_columns(:itself)
     ]
     columns.reject! { |c| %w[id email first_name last_name].include?(c[:header]) } unless view_private_attributes
