@@ -35,6 +35,10 @@ const AdminProjectPageNewBackoffice = lazy(
   () => import('./project/newBackoffice/ProjectPage')
 );
 const AdminProjectPhaseIndex = lazy(() => import('./project/phase'));
+// SPIKE (TAN-8619) — throwaway. Do not merge.
+const AdminPhaseBuildSpike = lazy(
+  () => import('./project/newBackoffice/PhaseBuild')
+);
 const AdminProjectsProjectGeneral = lazy(() => import('./project/general'));
 const AdminProjectsProjectGeneralSetUp = lazy(
   () => import('./project/general/setUp')
@@ -247,6 +251,17 @@ const projectPageRoute = createRoute({
   component: () => (
     <PageLoading>
       <AdminProjectPageNewBackoffice />
+    </PageLoading>
+  ),
+});
+
+// SPIKE (TAN-8619) — throwaway. Do not merge.
+const phaseBuildSpikeRoute = createRoute({
+  getParentRoute: () => projectRoute,
+  path: 'build/$phaseId',
+  component: () => (
+    <PageLoading>
+      <AdminPhaseBuildSpike />
     </PageLoading>
   ),
 });
@@ -802,6 +817,7 @@ const createAdminProjectsRoutes = (moduleRoutes: RouteConfiguration[] = []) => {
     projectRoute.addChildren([
       projectIndexRoute,
       projectPageRoute,
+      phaseBuildSpikeRoute,
       projectGeneralRoute.addChildren([
         projectGeneralIndexRoute,
         projectGeneralInputTagsRoute,
