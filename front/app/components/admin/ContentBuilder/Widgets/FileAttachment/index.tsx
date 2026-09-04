@@ -139,7 +139,8 @@ const FileAttachmentSettings = () => {
   const { query } = useEditor();
   const { projectId, customPageId } = useParams({ strict: false });
 
-  // An empty array would disable the query, leaving the panel on a spinner for good.
+  // Scoped to where the layout lives, so a page cannot publish a file belonging to a project
+  // the visitor has no access to. Uploading goes through the link below.
   const {
     data: files,
     isLoading: isLoadingFiles,
@@ -147,6 +148,7 @@ const FileAttachmentSettings = () => {
     refetch: refetchFiles,
   } = useFiles({
     project: projectId ? [projectId] : undefined,
+    staticPage: projectId ? undefined : customPageId,
   });
 
   // Get current layout state to check for duplicate files
