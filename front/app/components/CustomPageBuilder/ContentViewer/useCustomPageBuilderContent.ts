@@ -20,6 +20,9 @@ const useCustomPageBuilderContent = (staticPageId?: string) => {
     isLoading: featureEnabled && isLoading,
     hasContent: featureEnabled && hasContent,
     craftjsJson: layout?.data.attributes.craftjs_json,
+    // FileAttachment resolves its file through the layout's attachments, so the viewer has
+    // to put this in context or those widgets render nothing.
+    layoutId: layout?.data.id,
   };
 };
 

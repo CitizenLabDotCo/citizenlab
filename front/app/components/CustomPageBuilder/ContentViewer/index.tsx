@@ -3,6 +3,7 @@ import React from 'react';
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 
 import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
+import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import { normalizeCustomPageLayout } from 'components/CustomPageBuilder/defaultLayout';
 import Editor from 'components/CustomPageBuilder/Editor';
@@ -20,7 +21,7 @@ const handleLoadImages = () => {
 };
 
 const CustomPageContentViewer = ({ staticPageId }: Props) => {
-  const { isLoading, hasContent, craftjsJson } =
+  const { isLoading, hasContent, craftjsJson, layoutId } =
     useCustomPageBuilderContent(staticPageId);
 
   if (isLoading) return <Spinner />;
@@ -28,12 +29,14 @@ const CustomPageContentViewer = ({ staticPageId }: Props) => {
 
   return (
     <Box data-testid="customPageContentViewer">
-      <Editor isPreview={true}>
-        <ContentBuilderFrame
-          editorData={normalizeCustomPageLayout(craftjsJson)}
-          onLoadImages={handleLoadImages}
-        />
-      </Editor>
+      <ContentBuilderLayoutProvider layoutId={layoutId}>
+        <Editor isPreview={true}>
+          <ContentBuilderFrame
+            editorData={normalizeCustomPageLayout(craftjsJson)}
+            onLoadImages={handleLoadImages}
+          />
+        </Editor>
+      </ContentBuilderLayoutProvider>
     </Box>
   );
 };

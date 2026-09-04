@@ -14,6 +14,7 @@ import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
 import ContentContainer from 'components/ContentContainer';
 import CustomPageContentViewer from 'components/CustomPageBuilder/ContentViewer';
 import useCustomPageBuilderContent from 'components/CustomPageBuilder/ContentViewer/useCustomPageBuilderContent';
@@ -26,6 +27,11 @@ import BackToProjectLink from './BackToProjectLink';
 import CustomPageHeader from './CustomPageHeader';
 import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
 import PageSections from './PageSections';
+
+// Builder content is one white block, so the page's grey would only show as a strip below it.
+const PageContainer = styled(Container)<{ builderContent: boolean }>`
+  ${({ builderContent }) => builderContent && 'background: #fff;'}
+`;
 
 const PageTitle = styled.h1`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -115,7 +121,7 @@ const CustomPageShow = () => {
         )} | ${localizedOrgName}`}
       />
       <main className={`e2e-page-${pageSlugToUse}`}>
-        <Container>
+        <PageContainer builderContent={showBuilderContent}>
           {pageAttributes.banner_enabled ? (
             <>
               {pageAttributes.project_id && (
@@ -128,7 +134,13 @@ const CustomPageShow = () => {
               </Box>
             </>
           ) : (
-            <NoBannerContainer>
+            // The container's default is narrower, so the title would not line up with
+            // the content under it.
+            <NoBannerContainer
+              maxWidth={
+                showBuilderContent ? BUILDER_CONTENT_MAX_WIDTH : undefined
+              }
+            >
               {pageAttributes.project_id && (
                 <Box mb="8px">
                   <BackToProjectLink projectId={pageAttributes.project_id} />
@@ -151,7 +163,7 @@ const CustomPageShow = () => {
               <PageSections page={page.data} />
             )}
           </Content>
-        </Container>
+        </PageContainer>
       </main>
     </>
   );
