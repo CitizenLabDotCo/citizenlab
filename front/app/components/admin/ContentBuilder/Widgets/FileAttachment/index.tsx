@@ -127,6 +127,49 @@ const FileAttachment = ({ fileId }: FileAttachmentProps) => {
   return <FilePreview fileId={fileId} />;
 };
 
+// Uploads land on the project when the layout belongs to one, and on the page otherwise. The
+// two routes are different members of the router's typed union, so each names its own.
+const UploadFilesLink = ({
+  projectId,
+  customPageId,
+}: {
+  projectId?: string;
+  customPageId?: string;
+}) => {
+  const { formatMessage } = useIntl();
+  const buttonProps = {
+    buttonStyle: 'text',
+    icon: 'upload-file',
+    openLinkInNewTab: true,
+  } as const;
+
+  if (projectId) {
+    return (
+      <ButtonWithLink
+        to="/admin/projects/$projectId/files"
+        params={{ projectId }}
+        {...buttonProps}
+      >
+        {formatMessage(messages.uploadFiles)}
+      </ButtonWithLink>
+    );
+  }
+
+  if (customPageId) {
+    return (
+      <ButtonWithLink
+        to="/admin/pages-menu/pages/$customPageId/attachments"
+        params={{ customPageId }}
+        {...buttonProps}
+      >
+        {formatMessage(messages.uploadFilesToPage)}
+      </ButtonWithLink>
+    );
+  }
+
+  return null;
+};
+
 const FileAttachmentSettings = () => {
   const {
     actions: { setProp },
@@ -179,11 +222,12 @@ const FileAttachmentSettings = () => {
   });
 
   // Two different dead ends: nothing uploaded, or everything uploaded is already placed.
-  const emptyStateMessage = files?.data.length
-    ? messages.allFilesAlreadyUsed
-    : projectId
+  const nothingUploadedMessage = projectId
     ? messages.noFilesAvailable
     : messages.noFilesYet;
+  const emptyStateMessage = files?.data.length
+    ? messages.allFilesAlreadyUsed
+    : nothingUploadedMessage;
 
   // Full-panel spinner on initial load only; refetches keep the panel visible.
   if (isLoadingFiles) {
@@ -217,28 +261,7 @@ const FileAttachmentSettings = () => {
 
       {(projectId || customPageId) && (
         <Box display="flex" alignItems="center" gap="4px">
-          {projectId && (
-            <ButtonWithLink
-              to="/admin/projects/$projectId/files"
-              params={{ projectId }}
-              buttonStyle="text"
-              icon="upload-file"
-              openLinkInNewTab={true}
-            >
-              {formatMessage(messages.uploadFiles)}
-            </ButtonWithLink>
-          )}
-          {!projectId && customPageId && (
-            <ButtonWithLink
-              to="/admin/pages-menu/pages/$customPageId/attachments"
-              params={{ customPageId }}
-              buttonStyle="text"
-              icon="upload-file"
-              openLinkInNewTab={true}
-            >
-              {formatMessage(messages.uploadFilesToPage)}
-            </ButtonWithLink>
-          )}
+          <UploadFilesLink projectId={projectId} customPageId={customPageId} />
           {/* Refresh the list to pick up files uploaded in the other tab. */}
           {isFetchingFiles ? (
             <Box p="4px" display="flex">

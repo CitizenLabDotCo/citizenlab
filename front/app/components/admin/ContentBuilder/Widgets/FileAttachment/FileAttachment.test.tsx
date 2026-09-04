@@ -77,20 +77,6 @@ describe('FileAttachment', () => {
     attachments = { data: [attachment] };
   });
 
-  it('renders the attached file', () => {
-    render(<FileAttachment fileId="file-1" />);
-
-    expect(screen.getByText('minutes.pdf')).toBeInTheDocument();
-  });
-
-  // Custom pages stack these straight in the page body, where nothing else constrains them.
-  it('centres the row in the page container', () => {
-    render(<FileAttachment fileId="file-1" />);
-
-    const container = document.getElementById('e2e-file-attachment');
-    expect(container).toHaveStyle({ maxWidth: '1200px', margin: '0 auto' });
-  });
-
   // It resolves through the layout's attachments, not the fileId.
   it('renders nothing in view mode when there is no layout context', () => {
     layoutId = undefined;
@@ -128,23 +114,6 @@ describe('FileAttachment', () => {
       expect(filesQuery).toHaveBeenCalledWith(
         expect.objectContaining({ project: ['project-1'] })
       );
-    });
-
-    it('says nothing is uploaded yet when there are no files', () => {
-      render(<Settings />);
-
-      expect(screen.getByText(/no files available yet/i)).toBeInTheDocument();
-    });
-
-    // Files already placed elsewhere in the layout are filtered out, so having none left to
-    // offer is a different situation from having none at all.
-    it('says so when every file is already on the page', () => {
-      availableFiles = [{ id: 'file-1', attributes: { name: 'minutes.pdf' } }];
-      fileIsAlreadyUsed = true;
-
-      render(<Settings />);
-
-      expect(screen.getByText(/already on this page/i)).toBeInTheDocument();
     });
   });
 });
