@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 import {
+  Box,
   media,
   colors,
   fontSizes,
@@ -214,33 +215,6 @@ const HeaderTitle = styled.h1`
   `}
 `;
 
-const HeaderContainer = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: center;
-  min-height: 65px;
-  padding: 14px 18px;
-  border-bottom: solid 1px ${colors.grey200};
-  background: transparent;
-`;
-
-const FooterContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-shrink: 0;
-  flex-direction: row;
-  align-items: center;
-  padding: 12px 24px;
-  border-top: solid 1px ${colors.grey100};
-  background: ${colors.grey50};
-
-  ${media.phone`
-    padding: 12px 20px;
-  `}
-`;
-
 const Skip = styled.div`
   color: #fff;
   font-size: ${fontSizes.base}px;
@@ -438,6 +412,7 @@ const Modal: React.FC<Props> = ({
 
   const { windowHeight, windowWidth } = windowDimensions;
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
+  const isPhone = windowWidth <= viewportWidths.phone;
   let calculatedPadding = padding;
 
   if (header !== undefined || footer !== undefined) {
@@ -478,10 +453,19 @@ const Modal: React.FC<Props> = ({
             role="dialog"
           >
             {header ? (
-              <HeaderContainer>
+              <Box
+                position="relative"
+                display="flex"
+                flexDirection="column"
+                alignItems="stretch"
+                justifyContent="center"
+                minHeight="65px"
+                padding="14px 18px"
+                borderBottom={`solid 1px ${colors.grey200}`}
+              >
                 <HeaderTitle id="modal-header">{header}</HeaderTitle>
                 {closeButton}
-              </HeaderContainer>
+              </Box>
             ) : (
               closeButton
             )}
@@ -490,7 +474,20 @@ const Modal: React.FC<Props> = ({
               {children}
             </ModalContentContainer>
 
-            {footer && <FooterContainer>{footer}</FooterContainer>}
+            {footer && (
+              <Box
+                w="100%"
+                display="flex"
+                flexShrink={0}
+                flexDirection="row"
+                alignItems="center"
+                padding={isPhone ? '12px 20px' : '12px 24px'}
+                borderTop={`solid 1px ${colors.grey100}`}
+                background={colors.grey50}
+              >
+                {footer}
+              </Box>
+            )}
 
             {hasSkipButton && skipText && (
               <Skip onClick={clickCloseButton}>{skipText}</Skip>
