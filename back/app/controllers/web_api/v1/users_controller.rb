@@ -97,7 +97,7 @@ class WebApi::V1::UsersController < ApplicationController
       @users = @users.where(id: participant_ids)
     end
     @users = @users.where(id: params[:users]) if params[:users]
-    xlsx = XlsxService.new.generate_users_xlsx @users, view_private_attributes: view_private_attributes?
+    xlsx = XlsxService.new.generate_users_xlsx @users.includes(:identities, :verifications), view_private_attributes: view_private_attributes?
 
     LogActivityJob.perform_later(current_user, 'exported_users_sheet', current_user, Time.now.to_i)
 
