@@ -20719,6 +20719,11 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "app.containers.admin.ContentBuilder.lockedNodeLabel": {
+    "state": "verified",
+    "verified_at": "2026-09-04T11:12:39.391993Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.admin.ContentBuilder.noFilesAvailable": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
