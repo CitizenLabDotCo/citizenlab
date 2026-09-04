@@ -51,8 +51,4 @@ class PublicApi::V2::ProjectSerializer < PublicApi::V2::BaseSerializer
   def multiloc_service
     @multiloc_service ||= MultilocService.new
   end
-
-  def description_service
-    @description_service ||= ContentBuilder::BuildableDescriptionService.new
-  end
 end
