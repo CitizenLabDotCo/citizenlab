@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 module ContentBuilder
-  # Builds the craftjs graph for a custom page: a root and a body region wrapping the page's
-  # top and bottom info sections. A section of plain text goes in a native TextMultiloc
-  # widget; one holding media the text widget cannot render losslessly (inline images,
-  # videos, CTA buttons) goes in the RichTextMultiloc bridge widget.
+  # Builds the craftjs graph for a custom page: a root and a body region holding the page's
+  # content in the order it renders today. A section of plain text goes in a native
+  # TextMultiloc widget; one holding media the text widget cannot render losslessly (inline
+  # images, videos, CTA buttons) goes in the RichTextMultiloc bridge widget.
   #
   # A disabled section is skipped, because the front office does not render one either.
   class CustomPageLayoutService
@@ -13,14 +13,17 @@ module ContentBuilder
     ROOT_ID = 'ROOT'
     BODY_ID = 'CUSTOM_PAGE_BODY'
     TOP_INFO_ID = 'CUSTOM_PAGE_TOP_INFO'
+    FILE_ID_PREFIX = 'CUSTOM_PAGE_FILE_'
     BOTTOM_INFO_ID = 'CUSTOM_PAGE_BOTTOM_INFO'
 
     def craftjs_json_for(static_page)
+      # Key order is the render order, and matches PageSections.tsx.
       sections = {
         TOP_INFO_ID => section_node(
           static_page.top_info_section_multiloc,
           enabled: static_page.top_info_section_enabled
         ),
+        **file_nodes(static_page),
         BOTTOM_INFO_ID => section_node(
           static_page.bottom_info_section_multiloc,
           enabled: static_page.bottom_info_section_enabled
@@ -31,6 +34,21 @@ module ContentBuilder
     end
 
     private
+
+    def file_nodes(static_page)
+      return {} unless static_page.files_section_enabled
+
+      # `ordered` sorts on position alone, and position is NULL on every row until TAN-5126
+      # turns position management back on. Without a tie-break two derives of one page can
+      # differ by order alone, so the migration task's overwrite rewrites rows nothing changed in.
+      attachments = ::Files::FileAttachment.where(attachable: static_page).ordered.order(:created_at, :id)
+      attachments.to_h do |attachment|
+        [
+          "#{FILE_ID_PREFIX}#{attachment.file_id}",
+          Craftjs::Nodes.file_attachment(attachment.file_id, BODY_ID)
+        ]
+      end
+    end
 
     def section_node(multiloc, enabled:)
       return unless enabled

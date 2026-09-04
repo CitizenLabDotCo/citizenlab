@@ -1,8 +1,10 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
+import { useQueryClient } from '@tanstack/react-query';
 
+import fileAttachmentsKeys from 'api/file_attachments/keys';
 import useProjectPageLayout from 'api/project_page_layout/useProjectPageLayout';
 
 import useLocale from 'hooks/useLocale';
@@ -28,7 +30,13 @@ export const FullScreenPreview = ({ projectId }: Props) => {
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
   const platformLocale = useLocale();
 
+  const queryClient = useQueryClient();
   const { data: layout } = useProjectPageLayout(projectId);
+
+  // The save creates the layout's file attachments, and this document caches its own copy.
+  const handleSave = useCallback(() => {
+    queryClient.invalidateQueries({ queryKey: fileAttachmentsKeys.lists() });
+  }, [queryClient]);
 
   const savedEditorData = useMemo(
     () =>
@@ -50,7 +58,11 @@ export const FullScreenPreview = ({ projectId }: Props) => {
       platformLocale={platformLocale}
       contentBuilderLocale={selectedLocale}
     >
-      <FullScreenWrapper onUpdateDraftData={setDraftData} padding="0px">
+      <FullScreenWrapper
+        onUpdateDraftData={setDraftData}
+        onSave={handleSave}
+        padding="0px"
+      >
         {isLoading && <Spinner />}
         {!isLoading && editorData && (
           <Box ref={(el: HTMLElement | null) => el?.setAttribute('inert', '')}>

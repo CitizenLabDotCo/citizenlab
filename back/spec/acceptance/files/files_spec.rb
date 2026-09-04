@@ -12,6 +12,7 @@ resource 'Files' do
     parameter :uploader, 'Filter files by uploader user ID(s)', type: %i[string array]
     parameter :project, 'Filter files by project ID(s)', type: %i[string array]
     parameter :search, 'Filter files by searching in filename'
+    parameter :static_page, 'Filter files by the static page they are attached to'
 
     parameter :category, <<~CATEGORY_DESC.squish, type: %i[string array], required: false
       Filter files by category (values: #{Files::File.categories.values.join(', ')})
@@ -66,6 +67,17 @@ resource 'Files' do
           assert_status 200
           expect(response_data.size).to eq(1)
           expect(response_ids).to eq [file.id]
+        end
+      end
+
+      describe 'when filtering by static page' do
+        let(:static_page) { create(:static_page).id }
+        let!(:attachment) { create(:file_attachment, attachable: StaticPage.find(static_page)) }
+
+        example 'List all files attached to a specific static page', document: false do
+          do_request
+          assert_status 200
+          expect(response_ids).to eq [attachment.file_id]
         end
       end
 

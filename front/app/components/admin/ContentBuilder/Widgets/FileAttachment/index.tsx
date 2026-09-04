@@ -15,7 +15,6 @@ import useFileById from 'api/files/useFileById';
 import useFiles from 'api/files/useFiles';
 
 import { useContentBuilderLayoutContext } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 import FileDisplay from 'components/UI/FileAttachments/FileDisplay';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -23,6 +22,7 @@ import { useParams } from 'utils/router';
 
 import FilePlaceholder from './FilePlaceholder';
 import messages from './messages';
+import UploadFilesLink from './UploadFilesLink';
 import { getIsFileAlreadyUsed } from './utils';
 
 type FileAttachmentProps = {
@@ -34,7 +34,11 @@ const FilePreview = ({ fileId }: { fileId?: string }) => {
 
   if (!fileId) {
     return (
-      <Box maxWidth="1200px" margin="0 auto">
+      <Box
+        maxWidth="1200px"
+        margin="0 auto"
+        data-cy="e2e-file-attachment-placeholder"
+      >
         <FilePlaceholder>
           <FormattedMessage {...messages.selectFilePrompt} />
         </FilePlaceholder>
@@ -96,7 +100,7 @@ const FileAttachment = ({ fileId }: FileAttachmentProps) => {
   if (attachment) {
     const attachmentAttributes = attachment.attributes;
     return (
-      <Box id="e2e-file-attachment" maxWidth="1200px">
+      <Box id="e2e-file-attachment" maxWidth="1200px" margin="0 auto">
         <FileDisplay
           file={{
             id: attachment.relationships.file.data.id,
@@ -133,15 +137,18 @@ const FileAttachmentSettings = () => {
 
   const { formatMessage } = useIntl();
   const { query } = useEditor();
-  const { projectId } = useParams({ strict: false });
+  const { projectId, customPageId } = useParams({ strict: false });
 
-  // Get files for project
+  // Scoped to where the layout lives, so a page cannot publish a file belonging to a project
+  // the visitor has no access to. Uploading goes through the link below.
   const {
     data: files,
+    isLoading: isLoadingFiles,
     isFetching: isFetchingFiles,
     refetch: refetchFiles,
   } = useFiles({
-    project: projectId ? [projectId] : [],
+    project: projectId ? [projectId] : undefined,
+    staticPage: projectId ? undefined : customPageId,
   });
 
   // Get current layout state to check for duplicate files
@@ -153,7 +160,6 @@ const FileAttachmentSettings = () => {
     }
   }, [query]);
 
-  // Generate options for the file select dropdown with usage warnings
   let fileOptions = useMemo(() => {
     if (!files) return [];
 
@@ -172,8 +178,15 @@ const FileAttachmentSettings = () => {
     return !isFileUsed;
   });
 
+  const nothingUploadedMessage = projectId
+    ? messages.noFilesAvailable
+    : messages.noFilesYet;
+  const emptyStateMessage = files?.data.length
+    ? messages.allFilesAlreadyUsed
+    : nothingUploadedMessage;
+
   // Full-panel spinner on initial load only; refetches keep the panel visible.
-  if (!files) {
+  if (isLoadingFiles) {
     return <Spinner />;
   }
 
@@ -186,7 +199,7 @@ const FileAttachmentSettings = () => {
       gap="12px"
     >
       {fileOptions.length === 0 ? (
-        <Text m="0px">{formatMessage(messages.noFilesAvailable)}</Text>
+        <Text m="0px">{formatMessage(emptyStateMessage)}</Text>
       ) : (
         <Select
           value={fileId}
@@ -198,20 +211,13 @@ const FileAttachmentSettings = () => {
           placeholder={formatMessage(messages.selectFile)}
           options={fileOptions}
           label={formatMessage(messages.selectFile)}
+          dataCy="e2e-file-attachment-file-select"
         />
       )}
 
-      {projectId && (
+      {(projectId || customPageId) && (
         <Box display="flex" alignItems="center" gap="4px">
-          <ButtonWithLink
-            to="/admin/projects/$projectId/files"
-            params={{ projectId }}
-            buttonStyle="text"
-            icon="upload-file"
-            openLinkInNewTab={true}
-          >
-            {formatMessage(messages.uploadFiles)}
-          </ButtonWithLink>
+          <UploadFilesLink projectId={projectId} customPageId={customPageId} />
           {/* Refresh the list to pick up files uploaded in the other tab. */}
           {isFetchingFiles ? (
             <Box p="4px" display="flex">

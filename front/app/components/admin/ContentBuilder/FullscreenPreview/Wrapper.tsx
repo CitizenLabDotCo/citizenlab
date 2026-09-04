@@ -12,6 +12,7 @@ import { DEFAULT_PADDING } from '../constants';
 interface Props {
   onUpdateDraftData?: (serializedNodes: SerializedNodes | undefined) => void;
   onUpdateLocale?: (locale: SupportedLocale) => void;
+  onSave?: () => void;
   children: React.ReactNode;
   padding?: string;
 }
@@ -33,6 +34,7 @@ export const StyledPreviewBox = styled.div`
 export const FullScreenPreviewWrapper = ({
   onUpdateDraftData,
   onUpdateLocale,
+  onSave,
   children,
   padding,
 }: Props) => {
@@ -49,12 +51,15 @@ export const FullScreenPreviewWrapper = ({
       ) {
         onUpdateLocale(e.data.selectedLocale);
       }
+      if (onSave && e.origin === window.location.origin && e.data.layoutSaved) {
+        onSave();
+      }
     };
     window.addEventListener('message', handleMessage);
     return () => {
       window.removeEventListener('message', handleMessage);
     };
-  }, [onUpdateDraftData, onUpdateLocale]);
+  }, [onUpdateDraftData, onUpdateLocale, onSave]);
 
   return (
     <FocusOn>
