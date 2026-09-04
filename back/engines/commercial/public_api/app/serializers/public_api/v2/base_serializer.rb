@@ -13,6 +13,10 @@ module PublicApi
         @multiloc_service ||= MultilocService.new
       end
 
+      def description_service
+        @description_service ||= ContentBuilder::BuildableDescriptionService.new
+      end
+
       class << self
         def classname_to_type(classname)
           classname.underscore.dasherize

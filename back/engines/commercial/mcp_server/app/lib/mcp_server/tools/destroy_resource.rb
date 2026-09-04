@@ -37,7 +37,8 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
 
   def description
     <<~DESC.squish
-      Deletes a resource by id. Only works on resources whose target project is in draft.
+      Deletes a resource by id. Only works on resources whose target project is in draft,
+      except on demo and trial platforms, where published projects can be targeted too.
       Destroying a project or a phase fails if any of its inputs would be deleted along with it.
     DESC
   end

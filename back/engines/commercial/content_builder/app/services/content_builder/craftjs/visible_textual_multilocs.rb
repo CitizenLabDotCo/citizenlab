@@ -2,8 +2,10 @@ module ContentBuilder
   module Craftjs
     # Extracts multilocs for visible text from a craftjs in the order they appear in the visual layout.
     class VisibleTextualMultilocs
-      def initialize(craftjs, with_metadata: false)
-        @craftjs = LayoutSanitizationService.new.sanitize(craftjs)
+      # `sanitize: false` skips the HTML sanitization pass for craftjs read straight off a
+      # persisted Layout, which sanitizes on save. Nothing is mutated either way.
+      def initialize(craftjs, with_metadata: false, sanitize: true)
+        @craftjs = sanitize ? LayoutSanitizationService.new.sanitize(craftjs) : craftjs
         @with_metadata = with_metadata
         @ordered_multilocs = []
       end
@@ -64,8 +66,9 @@ module ContentBuilder
         node['props']['text'] || node['props']['html']
       end
 
+      # Non-mutating: callers may pass a persisted layout's own craftjs_json.
       def make_h3s(multliloc)
-        multliloc.transform_values! { |text| "<h3>#{text}</h3>" }
+        multliloc.transform_values { |text| "<h3>#{text}</h3>" }
       end
     end
   end
