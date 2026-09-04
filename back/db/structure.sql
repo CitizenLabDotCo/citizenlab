@@ -3684,7 +3684,8 @@ CREATE TABLE public.public_api_api_clients (
     updated_at timestamp without time zone NOT NULL,
     last_used_at timestamp(6) without time zone,
     secret_digest character varying NOT NULL,
-    secret_postfix character varying NOT NULL
+    secret_postfix character varying NOT NULL,
+    last_user_agent character varying
 );
 
 
@@ -9556,6 +9557,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260904074654'),
 ('20260821210000'),
 ('20260821000000'),
 ('20260820000000'),

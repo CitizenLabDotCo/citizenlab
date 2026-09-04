@@ -3,17 +3,11 @@
 require 'rails_helper'
 require 'zip'
 
-# The two Power BI files we ship - report.pbit and dataflow.json - hard-code, per
-# query, the column names they expect back from the public API v2. Power Query
-# types those columns explicitly, so a dropped or renamed serializer attribute
-# fails the whole query, and it fails on the customer's next refresh rather than
-# in our CI. Endpoints are pinned the same way: a query names its endpoint in
-# ApiGET("..."), which 404s once a route goes.
-#
-# These specs pin both files to the API. A failure means either the API change
-# needs a backwards-compatible shim (see PhaseSerializer#start_at, which kept
-# start_at/end_at in the payload after the columns became datetimes), or the two
-# files need updating and reshipping to customers.
+# The Power BI files we ship hard-code the endpoints and column names they expect
+# from the public API, so a renamed or dropped field breaks them on the
+# customer's next refresh rather than in CI. These specs pin both files to the
+# serializers: a failure means either keeping the field in the payload, or
+# updating and reshipping the files.
 describe 'Power BI files' do # rubocop:disable RSpec/DescribeClass
   # Query name in the file => serializer that renders its endpoint.
   def serializers
