@@ -34,7 +34,6 @@ const mockProjectData = {
   attributes: {
     title_multiloc: { en: 'Test Project' },
     slug: 'test',
-    uses_content_builder: true,
   },
 };
 

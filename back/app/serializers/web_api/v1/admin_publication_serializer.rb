@@ -19,10 +19,6 @@ class WebApi::V1::AdminPublicationSerializer < WebApi::V1::BaseSerializer
     object.publication.title_multiloc
   end
 
-  attribute :publication_description_multiloc do |object|
-    object.publication.description_multiloc
-  end
-
   attribute :publication_description_preview_multiloc do |object|
     object.publication.description_preview_multiloc
   end

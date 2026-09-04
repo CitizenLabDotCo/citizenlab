@@ -32,7 +32,6 @@ export const createNativeSurveyProjectWithPermission = ({
     .apiCreateProject({
       title: projectTitle,
       descriptionPreview: randomString(),
-      description: randomString(),
       publicationStatus: 'published',
     })
     .then((project) => {

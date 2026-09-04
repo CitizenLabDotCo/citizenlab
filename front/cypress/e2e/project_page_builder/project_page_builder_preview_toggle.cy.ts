@@ -26,7 +26,6 @@ describe('Project description builder preview', () => {
       cy.apiCreateProject({
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
-        description: '',
         publicationStatus: 'published',
         assigneeId: userId,
       })

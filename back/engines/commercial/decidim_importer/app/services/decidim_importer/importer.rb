@@ -13,10 +13,10 @@ module DecidimImporter
     # Always applied, so an import never aborts on a pre-existing record (e.g. an admin whose email is in
     # the export, which would fail the email-uniqueness validation). No-op on a fresh tenant. Matches on
     # stable identity: users by `unique_code` then case-insensitive email, folders by title slug
-    # ({Slug.sanitize}), custom fields by `key`, custom idea-statuses by title. Only custom statuses travel
-    # in the template (standard ones resolve by code in {IdeaStatuses.resolve!}); their titles are matched
-    # in Ruby, best-effort — {StatusMapper} picks each import's customs blind to the tenant, so an identical
-    # label reuses and a new one is created.
+    # ({Slug.sanitize}), custom fields by `key`, content builder layouts by content buildable and `code`,
+    # custom idea-statuses by title. Only custom statuses travel in the template (standard ones resolve by
+    # code in {IdeaStatuses.resolve!}); their titles are matched in Ruby, best-effort — {StatusMapper} picks
+    # each import's customs blind to the tenant, so an identical label reuses and a new one is created.
     #
     # Built fresh per apply (not a shared constant): the user matcher preloads the tenant's existing users
     # into in-memory maps ONCE, lazily on first use, and matches against those. A per-row DB lookup would
@@ -52,6 +52,14 @@ module DecidimImporter
 
           klass.where(code: 'custom', participation_method: IdeaStatuses::PARTICIPATION_METHOD)
             .find { |status| status.title_multiloc.values.intersect?(titles) }
+        },
+        # A reused folder already carries the description layout a previous import gave it, and
+        # `(content_buildable, code)` is unique — inserting a second one raises and aborts the apply.
+        # Projects are never reused, so their `project_page` layouts always miss this and are created.
+        'ContentBuilder::Layout' => lambda { |attrs, klass|
+          buildable = attrs['content_buildable']
+          code = attrs['code']
+          klass.find_by(content_buildable: buildable, code: code) if buildable && code.present?
         }
       }
     end
@@ -158,20 +166,16 @@ module DecidimImporter
       Permissions::PermissionsUpdateService.new.update_all_permissions
     end
 
-    # (Re)builds the `project_page` layout — generated from `project_description` — for **this import's**
-    # projects only, so pre-existing (e.g. demo) projects are left untouched. The SideFx that normally
-    # creates the page is bypassed by the deserializer, so without this the page 404s. Any existing page is
-    # dropped first and regenerated: `provision_for` skips a project that already has one, so a stale/broken
-    # page from an earlier partial import would otherwise survive every re-import.
+    # Gives a default `project_page` layout to **this import's** projects that didn't get one from
+    # {Extractors::DescriptionLayoutExtractor} (it only builds a page for projects with content), so
+    # pre-existing (e.g. demo) projects are left untouched. The SideFx that normally creates the page is
+    # bypassed by the deserializer, so without this those pages 404.
     def self.provision_project_pages!(created_object_ids)
       ids = created_object_ids['Project'] || []
       return if ids.empty?
 
       Project.where(id: ids).find_each do |project|
-        ContentBuilder::Layout
-          .where(content_buildable: project, code: ContentBuilder::ProjectPageLayoutService::CODE)
-          .destroy_all
-        ContentBuilder::DescriptionLayoutService.new.provision_for(project)
+        ContentBuilder::LayoutProvisioningService.new.provision_for(project)
       end
     end
 

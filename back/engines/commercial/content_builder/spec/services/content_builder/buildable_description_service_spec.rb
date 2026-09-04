@@ -5,69 +5,59 @@ require 'rails_helper'
 describe ContentBuilder::BuildableDescriptionService do
   subject(:service) { described_class.new }
 
-  def provision(buildable)
-    ContentBuilder::DescriptionLayoutService.new.provision_for(buildable)
-    buildable
-  end
-
   describe '#description_multiloc' do
     context 'for a project' do
-      it 'returns the description held by the project page layout' do
-        project = provision(create(:project, description_multiloc: { 'en' => '<p>Renew the parc</p>' }))
+      let(:project) { create(:project) }
+
+      it 'returns the text on the project page' do
+        author_description(project, { 'en' => '<p>Renew the parc</p>' })
 
         expect(service.description_multiloc(project)).to eq({ 'en' => '<p>Renew the parc</p>' })
       end
 
-      it 'keeps an inline image reference on the bridge widget' do
+      it 'keeps an inline image held by a rich text widget' do
         gif = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
-        project = provision(create(:project, description_multiloc: {
-          'en' => %(<p>Renew the parc</p><img src="#{gif}" />)
-        }))
-        text_reference = project.text_images.sole.text_reference
+        author_description(project, { 'en' => %(<p>Renew the parc</p><img src="#{gif}" />) }, widget: 'RichTextMultiloc')
 
+        # The data URI stays inline: `swap_data_images` only runs for the homepage layout.
         expect(service.description_multiloc(project)).to eq({
-          'en' => %(<p>Renew the parc</p><img data-cl2-text-image-text-reference="#{text_reference}">)
+          'en' => %(<p>Renew the parc</p><img src="#{gif}">)
         })
       end
 
-      it 'reads the project page layout rather than the description layout it superseded' do
-        project = provision(create(:project, description_multiloc: { 'en' => '<p>Superseded</p>' }))
-        page = project.content_builder_layouts.find_by!(code: 'project_page')
-        node_id = page.craftjs_json['PROJECT_PAGE_INTRO_LEFT']['nodes'].first
-        page.craftjs_json[node_id]['props']['text'] = { 'en' => '<p>Edited on the page builder</p>' }
-        page.save!
+      it 'ignores a superseded project_description layout' do
+        ContentBuilder::Layout.create!(
+          content_buildable: project,
+          code: 'project_description',
+          enabled: true,
+          craftjs_json: {
+            'ROOT' => craftjs_root(['TEXT']),
+            'TEXT' => craftjs_node('TextMultiloc', parent: 'ROOT', props: { 'text' => { 'en' => '<p>Superseded</p>' } })
+          }
+        )
+        author_description(project, { 'en' => '<p>Edited on the page builder</p>' })
 
         expect(service.description_multiloc(project)).to eq({ 'en' => '<p>Edited on the page builder</p>' })
       end
 
-      # An HTML block keeps its body in `props.html`, not `props.text`.
-      it 'returns the raw HTML of an HTML block widget on the page' do
-        project = provision(create(:project, description_multiloc: { 'en' => '<p>Renew the parc</p>' }))
-        page = project.content_builder_layouts.find_by!(code: 'project_page')
-        node_id = page.craftjs_json['PROJECT_PAGE_INTRO_LEFT']['nodes'].first
-        page.craftjs_json[node_id] = craftjs_node(
-          'HtmlBlockMultiloc',
-          parent: 'PROJECT_PAGE_INTRO_LEFT',
-          props: { 'html' => { 'en' => '<p>Raw block</p>' } }
-        )
-        page.save!
+      it 'returns the raw HTML of an HTML block widget' do
+        author_description(project, { 'en' => '<p>Raw block</p>' }, widget: 'HtmlBlockMultiloc')
 
         expect(service.description_multiloc(project)).to eq({ 'en' => '<p>Raw block</p>' })
       end
 
-      it 'returns an empty multiloc when the project has no layout' do
-        expect(service.description_multiloc(create(:project))).to eq({})
+      it 'returns an empty multiloc when the project has no page' do
+        expect(service.description_multiloc(project)).to eq({})
       end
 
-      it 'ignores a disabled layout' do
-        project = provision(create(:project, description_multiloc: { 'en' => '<p>Renew the parc</p>' }))
-        project.content_builder_layouts.find_by!(code: 'project_page').update!(enabled: false)
+      it 'ignores a disabled page' do
+        author_description(project, { 'en' => '<p>Renew the parc</p>' }).update!(enabled: false)
 
         expect(service.description_multiloc(project.reload)).to eq({})
       end
 
-      it 'drops the locales the layout has no text for, so a lookup still falls back' do
-        project = provision(create(:project, description_multiloc: { 'en' => '<p>Renew the parc</p>' }))
+      it 'drops the locales the page has no text for, so a lookup still falls back' do
+        author_description(project, { 'en' => '<p>Renew the parc</p>' })
 
         multiloc = service.description_multiloc(project)
 
@@ -75,10 +65,8 @@ describe ContentBuilder::BuildableDescriptionService do
         expect(MultilocService.new.t(multiloc, 'nl-NL')).to eq('<p>Renew the parc</p>')
       end
 
-      it 'returns each locale the layout holds text for' do
-        project = provision(create(:project, description_multiloc: {
-          'en' => '<p>Renew the parc</p>', 'nl-NL' => '<p>Vernieuw het park</p>'
-        }))
+      it 'returns each locale the page holds text for' do
+        author_description(project, { 'en' => '<p>Renew the parc</p>', 'nl-NL' => '<p>Vernieuw het park</p>' })
 
         expect(service.description_multiloc(project)).to eq({
           'en' => '<p>Renew the parc</p>', 'nl-NL' => '<p>Vernieuw het park</p>'
@@ -87,14 +75,16 @@ describe ContentBuilder::BuildableDescriptionService do
     end
 
     context 'for a folder' do
-      it 'returns the description held by the folder layout' do
-        folder = provision(create(:project_folder, description_multiloc: { 'en' => '<p>All things pools</p>' }))
+      let(:folder) { create(:project_folder) }
+
+      it 'returns the text of the folder description layout' do
+        author_description(folder, { 'en' => '<p>All things pools</p>' })
 
         expect(service.description_multiloc(folder)).to eq({ 'en' => '<p>All things pools</p>' })
       end
 
       it 'leaves out the folder title and published projects widgets around it' do
-        folder = provision(create(:project_folder, description_multiloc: { 'en' => '<p>All things pools</p>' }))
+        author_description(folder, { 'en' => '<p>All things pools</p>' })
 
         expect(service.description_multiloc(folder)['en']).not_to include(folder.title_multiloc['en'])
       end

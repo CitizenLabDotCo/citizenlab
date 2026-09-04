@@ -14,7 +14,6 @@ describe('Project and folder cards on front page', () => {
     cy.apiCreateProject({
       title: publishedProjectTitle,
       descriptionPreview: publishedProjectDescriptionPreview,
-      description: randomString(),
       publicationStatus: 'published',
     }).then((project) => {
       publishedProjectId = project.body.data.id;
@@ -23,7 +22,6 @@ describe('Project and folder cards on front page', () => {
     cy.apiCreateProject({
       title: archivedProjectTitle,
       descriptionPreview: archivedProjectDescriptionPreview,
-      description: randomString(),
       publicationStatus: 'archived',
     }).then((project) => {
       archivedProjectId = project.body.data.id;
@@ -87,7 +85,6 @@ describe('Project and folder cards on front page', () => {
 
 describe('Native survey project card', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
@@ -96,7 +93,6 @@ describe('Native survey project card', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;

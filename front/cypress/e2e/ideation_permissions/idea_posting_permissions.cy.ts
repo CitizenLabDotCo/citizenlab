@@ -134,6 +134,7 @@ describe('idea posting restricted to a group', () => {
 
   it("doesn't redirect users after authentication to form page if they are not permitted", () => {
     cy.visit(`projects/${projectSlug}`);
+    cy.dockProjectCtaBar();
     cy.dataCy('e2e-ideation-start-idea-button').should('be.visible').click();
     logIn(cy, nonPermittedUserEmail, nonPermittedUserPassword);
     cy.url().should('not.include', `/ideas/new`);
@@ -157,6 +158,7 @@ describe('idea posting restricted to a group', () => {
   // in-flight anonymous requests at every identity change).
   it.skip('redirects users after authentication to form page if they are permitted', () => {
     cy.visit(`projects/${projectSlug}`);
+    cy.dockProjectCtaBar();
     cy.dataCy('e2e-ideation-start-idea-button').should('be.visible').click();
     logIn(cy, permittedUserEmail, permittedUserPassword);
     cy.url().should('include', `/ideas/new`);

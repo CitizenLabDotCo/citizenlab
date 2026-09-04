@@ -11,21 +11,18 @@ describe('Project selection page', () => {
     cy.apiCreateProject({
       title: randomString(),
       descriptionPreview: randomString(),
-      description: randomString(),
       publicationStatus: 'published',
     }).then((projectOne) => {
       projectOneId = projectOne.body.data.id;
       cy.apiCreateProject({
         title: randomString(),
         descriptionPreview: randomString(),
-        description: randomString(),
         publicationStatus: 'published',
       }).then((projectTwo) => {
         projectTwoId = projectTwo.body.data.id;
         cy.apiCreateFolder({
           title: folderTitle,
           descriptionPreview: folderShortDescription,
-          description: randomString(),
           publicationStatus: 'published',
         }).then((folder) => {
           folderId = folder.body.data.id;

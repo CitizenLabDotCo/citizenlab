@@ -3,7 +3,6 @@ import { randomString, randomEmail } from '../../../support/commands';
 const email = randomEmail();
 const password = randomString();
 const projectTitle = randomString();
-const projectDescription = randomString(30);
 const projectDescriptionPreview = randomString(30);
 let projectId: string;
 let userId: string;
@@ -17,7 +16,6 @@ describe('Admin project approval flow', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'draft',
     }).then((project) => {
       projectId = project.body.data.id;

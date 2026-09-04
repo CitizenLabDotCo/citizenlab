@@ -38,7 +38,6 @@ describe('Project description builder display', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: '',
       publicationStatus: 'published',
       assigneeId: userId,
     })
@@ -71,7 +70,6 @@ describe('Project description builder display', () => {
       'saveProjectDescriptionBuilder'
     );
 
-    cy.apiToggleProjectDescriptionBuilder({ projectId });
     cy.visit(`/admin/project-page-builder/projects/${projectId}`);
 
     // Add the description as a text widget. The blank project starts with

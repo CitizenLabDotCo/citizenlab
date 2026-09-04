@@ -22,7 +22,7 @@ module ContentBuilder
     def layout_code(buildable)
       case buildable
       when Project then ProjectPageLayoutService::CODE
-      when ProjectFolders::Folder then DescriptionLayoutService::LAYOUT_CODE_BY_TYPE.fetch('ProjectFolders::Folder')
+      when ProjectFolders::Folder then LayoutProvisioningService::FOLDER_LAYOUT_CODE
       else raise ArgumentError, "Unsupported buildable: #{buildable.class.name}"
       end
     end

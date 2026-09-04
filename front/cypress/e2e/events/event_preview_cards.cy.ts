@@ -5,7 +5,6 @@ import { randomString, randomEmail } from '../../support/commands';
 
 describe('Event preview cards on timeline project', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
@@ -24,7 +23,6 @@ describe('Event preview cards on timeline project', () => {
         cy.apiCreateProject({
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
-          description: projectDescription,
           publicationStatus: 'published',
         }).then((project) => {
           projectId = project.body.data.id;
