@@ -28,17 +28,21 @@ const StyledPagination = styled(Pagination)`
 type Props = {
   id?: string;
   title: MessageDescriptor;
+  showTitle?: boolean;
   events: IEvents;
   currentPage: number;
   onPageChange: (page: number) => void;
+  showPagination?: boolean;
 };
 
 const EventsSection = ({
   id,
   title,
+  showTitle = true,
   events,
   currentPage,
   onPageChange,
+  showPagination = true,
 }: Props) => {
   if (events.data.length === 0) {
     return null;
@@ -46,20 +50,24 @@ const EventsSection = ({
 
   return (
     <Box id={id}>
-      <Title variant="h3" color="tenantText" m="0" mb="16px">
-        <FormattedMessage {...title} />
-      </Title>
+      {showTitle && (
+        <Title variant="h3" color="tenantText" m="0" mb="16px">
+          <FormattedMessage {...title} />
+        </Title>
+      )}
       <Grid>
         {events.data.map((event) => (
           <EventCard key={event.id} id={event.id} event={event} />
         ))}
       </Grid>
-      <StyledPagination
-        currentPage={currentPage}
-        totalPages={getPageNumberFromUrl(events.links.last) ?? 1}
-        loadPage={onPageChange}
-        useColorsTheme
-      />
+      {showPagination && (
+        <StyledPagination
+          currentPage={currentPage}
+          totalPages={getPageNumberFromUrl(events.links.last) ?? 1}
+          loadPage={onPageChange}
+          useColorsTheme
+        />
+      )}
     </Box>
   );
 };
