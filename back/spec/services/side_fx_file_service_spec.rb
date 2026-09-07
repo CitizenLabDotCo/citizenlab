@@ -10,18 +10,14 @@ describe SideFxFileService do
     let(:idea_file) { create(:idea_file, idea: idea) }
 
     it 'removes the file reference from the idea custom field values' do
-      idea.update!(
-        custom_field_values: {
-          'some_survey_question' => 'option2',
-          'deleted_file_upload' => { 'id' => idea_file.id, 'name' => idea_file.name },
-          'other_file_upload' => { 'id' => 'fake_id', 'name' => 'fake_filename' }
-        }
-      )
+      create(:custom_field_answer, answerable: idea, key: 'some_survey_question', value: 'option2')
+      create(:custom_field_answer, answerable: idea, key: 'deleted_file_upload', value: { 'id' => idea_file.id, 'name' => idea_file.name })
+      create(:custom_field_answer, answerable: idea, key: 'other_file_upload', value: { 'id' => 'fake_id', 'name' => 'fake_filename' })
 
       service.after_destroy(idea_file)
-      expect(idea.reload.custom_field_values).to eq(
-        'some_survey_question' => 'option2',
-        'other_file_upload' => { 'id' => 'fake_id', 'name' => 'fake_filename' }
+      expect(idea.reload.custom_field_answers.pluck(:key, :value)).to contain_exactly(
+        ['some_survey_question', 'option2'],
+        ['other_file_upload', { 'id' => 'fake_id', 'name' => 'fake_filename' }]
       )
     end
   end
