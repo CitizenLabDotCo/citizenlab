@@ -21,8 +21,9 @@ module McpServer::DemoData
   def build_author(registered_at)
     first_name = Faker::Name.first_name
     last_name = Faker::Name.last_name
+    # parameterize: Faker names can contain apostrophes/accents, invalid in emails.
     User.new(
-      email: "#{first_name}.#{last_name}.#{SecureRandom.hex(4)}@#{EMAIL_DOMAIN}".downcase,
+      email: "#{"#{first_name}.#{last_name}".parameterize(separator: '.')}.#{SecureRandom.hex(4)}@#{EMAIL_DOMAIN}",
       first_name: first_name,
       last_name: last_name,
       locale: AppConfiguration.instance.settings('core', 'locales').sample,
@@ -52,7 +53,7 @@ module McpServer::DemoData
     Array.new(count) do
       target = rand * total
       day = weights.find_index { |weight| (target -= weight) <= 0 } || (days - 1)
-      [from + day.days + rand(86_400).seconds, now].min
+      [from + day.days + rand(86_400).seconds, to].min
     end
   end
 end

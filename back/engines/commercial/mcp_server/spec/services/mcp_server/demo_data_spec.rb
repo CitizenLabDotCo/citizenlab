@@ -25,6 +25,15 @@ describe McpServer::DemoData do
       expect(author.created_at).to be_within(1.second).of(registered_at)
       expect(AppConfiguration.instance.settings('core', 'locales')).to include(author.locale)
     end
+
+    it 'builds a valid email from names with apostrophes and accents' do
+      allow(Faker::Name).to receive_messages(first_name: 'Zoë', last_name: "O'Conner")
+
+      author = described_class.build_author(Time.zone.now)
+
+      expect(author.save).to be true
+      expect(author.email).to match(/\Azoe\.o\.conner\.\h{8}@/)
+    end
   end
 
   describe '.sample_times' do
@@ -34,6 +43,13 @@ describe McpServer::DemoData do
 
       expect(times.size).to eq(20)
       expect(times).to all(be_between(from, Time.zone.now))
+    end
+
+    it 'keeps times within a range that ended in the past' do
+      from = 30.days.ago
+      to = 10.days.ago
+
+      expect(described_class.sample_times(20, from: from, to: to)).to all(be_between(from, to))
     end
 
     it 'returns the current time when the range lies in the future' do
