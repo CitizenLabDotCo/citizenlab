@@ -1,9 +1,10 @@
-import { IPhaseData } from 'api/phases/types';
+import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
+import { supportsNativeSurvey } from '../../../inputImporter/ReviewSection/utils';
 import {
   PHASE_TAB_ROUTES,
   PhaseLandingTab,
@@ -19,6 +20,8 @@ export type PhaseView = {
   label: string;
   /** Absent when the phase has no tab under this view, which makes it unreachable. */
   to?: PhaseTabTarget;
+  /** Why the view is unreachable, so a locked one says more than nothing. */
+  lockedReason?: string;
 };
 
 // Which view each linkable phase tab lands under. Keyed by the same union as
@@ -52,6 +55,35 @@ export const viewFromPathname = (pathname: string): PhaseViewKey => {
   return tab?.[1] ?? 'build';
 };
 
+/**
+ * Why a view has no tab to land on. The reasons differ by method rather than
+ * being one line: a survey does collect input, it just isn't managed here.
+ * Returns nothing when the combination isn't one we can explain, so the switch
+ * stays silent rather than asserting something untrue.
+ */
+const lockedReason = (
+  view: PhaseViewKey,
+  method: ParticipationMethod
+): MessageDescriptor | undefined => {
+  if (method === 'information') {
+    return view === 'manage'
+      ? messages.noInputToManage
+      : messages.noInputToAnalyse;
+  }
+
+  if (view === 'manage' && supportsNativeSurvey(method)) {
+    return messages.surveyResponsesInInsights;
+  }
+
+  if (method === 'survey' || method === 'document_annotation') {
+    return view === 'manage'
+      ? messages.externalToolToManage
+      : messages.externalToolToAnalyse;
+  }
+
+  return undefined;
+};
+
 const VIEW_LABELS: { key: PhaseViewKey; label: MessageDescriptor }[] = [
   { key: 'build', label: messages.buildView },
   { key: 'manage', label: messages.manageView },
@@ -79,11 +111,16 @@ const usePhaseViews = (phase: IPhaseData | undefined): PhaseView[] => {
 
   return VIEW_LABELS.map(({ key, label }) => {
     const tab = landingTabs.find((url) => VIEW_BY_TAB[url] === key);
+    const reason =
+      tab === undefined
+        ? lockedReason(key, phase.attributes.participation_method)
+        : undefined;
 
     return {
       key,
       label: formatMessage(label),
       to: tab && PHASE_TAB_ROUTES[tab],
+      lockedReason: reason && formatMessage(reason),
     };
   });
 };
