@@ -2,7 +2,8 @@ import React from 'react';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
-import { useIntl } from 'utils/cl-intl';
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { WrapperTo } from 'utils/cl-router/Link';
 
 import messages from './messages';
 
@@ -11,41 +12,45 @@ type Props = {
   customPageId?: string;
 };
 
-// The two routes are different members of the router's typed union, so each branch names its
-// own rather than varying `to` on one element.
+type UploadTarget = {
+  to: WrapperTo;
+  params: Record<string, string>;
+  message: MessageDescriptor;
+  dataCy?: string;
+};
+
 const UploadFilesLink = ({ projectId, customPageId }: Props) => {
   const { formatMessage } = useIntl();
 
-  if (projectId) {
-    return (
-      <ButtonWithLink
-        to="/admin/projects/$projectId/files"
-        params={{ projectId }}
-        buttonStyle="text"
-        icon="upload-file"
-        openLinkInNewTab={true}
-      >
-        {formatMessage(messages.uploadFiles)}
-      </ButtonWithLink>
-    );
-  }
+  const target: UploadTarget | null = projectId
+    ? {
+        to: '/admin/projects/$projectId/files',
+        params: { projectId },
+        message: messages.uploadFiles,
+      }
+    : customPageId
+    ? {
+        to: '/admin/pages-menu/pages/$customPageId/attachments',
+        params: { customPageId },
+        message: messages.uploadFilesToPage,
+        dataCy: 'e2e-upload-files-to-page',
+      }
+    : null;
 
-  if (customPageId) {
-    return (
-      <ButtonWithLink
-        data-cy="e2e-upload-files-to-page"
-        to="/admin/pages-menu/pages/$customPageId/attachments"
-        params={{ customPageId }}
-        buttonStyle="text"
-        icon="upload-file"
-        openLinkInNewTab={true}
-      >
-        {formatMessage(messages.uploadFilesToPage)}
-      </ButtonWithLink>
-    );
-  }
+  if (!target) return null;
 
-  return null;
+  return (
+    <ButtonWithLink
+      data-cy={target.dataCy}
+      to={target.to}
+      params={target.params}
+      buttonStyle="text"
+      icon="upload-file"
+      openLinkInNewTab={true}
+    >
+      {formatMessage(target.message)}
+    </ButtonWithLink>
+  );
 };
 
 export default UploadFilesLink;
