@@ -60,7 +60,9 @@ describe('Custom page builder display', () => {
     cy.get('div#ROOT');
     cy.contains(topInfoText).should('be.visible');
     cy.contains(bottomInfoText).should('be.visible');
-    cy.get('#e2e-file-attachment').contains('example.pdf').should('be.visible');
+    cy.dataCy('e2e-file-attachment')
+      .contains('example.pdf')
+      .should('be.visible');
   });
 
   it('offers the page’s own files in the widget settings', () => {
@@ -70,7 +72,7 @@ describe('Custom page builder display', () => {
     cy.get('div#ROOT');
 
     // The widget takes no pointer events in the builder, so select the node around it.
-    cy.get('#e2e-file-attachment')
+    cy.dataCy('e2e-file-attachment')
       .parents('.e2e-render-node')
       .first()
       .click({ force: true });
@@ -98,7 +100,9 @@ describe('Custom page builder display', () => {
     cy.visit(`/pages/${pageSlug}`);
 
     // The load-bearing assertion: without the layout context this renders as nothing at all.
-    cy.get('#e2e-file-attachment').contains('example.pdf').should('be.visible');
+    cy.dataCy('e2e-file-attachment')
+      .contains('example.pdf')
+      .should('be.visible');
     cy.contains(topInfoText).should('be.visible');
     cy.contains(bottomInfoText).should('be.visible');
   });

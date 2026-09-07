@@ -137,7 +137,7 @@ describe('Project description builder display', () => {
     // The description and the attachment (in the two-column's wide column)
     // are both visible.
     cy.contains('Edited text.').should('be.visible');
-    cy.get('.e2e-two-column #e2e-file-attachment')
+    cy.get('.e2e-two-column [data-cy="e2e-file-attachment"]')
       .contains('example.pdf')
       .should('be.visible');
 
@@ -145,7 +145,7 @@ describe('Project description builder display', () => {
     cy.get('div#ROOT');
     cy.get('#e2e-preview-toggle').click({ force: true });
     getIframeBody()
-      .find('#e2e-file-attachment')
+      .find('[data-cy="e2e-file-attachment"]')
       .contains('example.pdf')
       .should('be.visible');
   });
@@ -214,7 +214,7 @@ describe('Project description builder display', () => {
     getIframeBody().should('contain.text', 'example.pdf');
 
     // The widget takes no pointer events in the builder, so select the node around it.
-    cy.get('#e2e-file-attachment')
+    cy.dataCy('e2e-file-attachment')
       .parents('.e2e-render-node')
       .first()
       .click({ force: true });
@@ -226,7 +226,7 @@ describe('Project description builder display', () => {
 
     cy.get('#e2e-preview-toggle').click({ force: true });
     getIframeBody()
-      .find('#e2e-file-attachment')
+      .find('[data-cy="e2e-file-attachment"]')
       .contains('replacement.pdf')
       .should('be.visible');
   });

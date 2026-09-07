@@ -59,7 +59,7 @@ const FilePreview = ({ fileId }: { fileId?: string }) => {
 
   return (
     <Box
-      id="e2e-file-attachment"
+      data-cy="e2e-file-attachment"
       maxWidth={BUILDER_CONTENT_MAX_WIDTH}
       margin="0 auto"
       pointerEvents="none"
@@ -103,7 +103,7 @@ const FileAttachment = ({ fileId }: FileAttachmentProps) => {
     const attachmentAttributes = attachment.attributes;
     return (
       <Box
-        id="e2e-file-attachment"
+        data-cy="e2e-file-attachment"
         maxWidth={BUILDER_CONTENT_MAX_WIDTH}
         margin="0 auto"
       >
