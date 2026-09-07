@@ -92,6 +92,8 @@ declare global {
       apiGetHomepageLayout: typeof apiGetHomepageLayout;
       apiUpdateHomepageLayout: typeof apiUpdateHomepageLayout;
       apiUpdateProjectPageLayout: typeof apiUpdateProjectPageLayout;
+      apiCreateArea: typeof apiCreateArea;
+      apiSetProjectAreas: typeof apiSetProjectAreas;
       apiUpdateAppConfiguration: typeof apiUpdateAppConfiguration;
       clickLocaleSwitcherAndType: typeof clickLocaleSwitcherAndType;
       apiCreateSmartGroup: typeof apiCreateSmartGroup;
@@ -1869,6 +1871,43 @@ function apiUpdateHomepageLayout({
   });
 }
 
+function apiCreateArea(title: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: 'web_api/v1/areas',
+      body: {
+        area: {
+          title_multiloc: { en: title, 'nl-BE': title },
+          description_multiloc: { en: title, 'nl-BE': title },
+        },
+      },
+    });
+  });
+}
+
+function apiSetProjectAreas(projectId: string, areaIds: string[]) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'PATCH',
+      url: `web_api/v1/projects/${projectId}`,
+      body: { project: { area_ids: areaIds } },
+    });
+  });
+}
+
 function apiUpdateProjectPageLayout(
   projectId: string,
   craftjs_json: Record<string, unknown>
@@ -2535,6 +2574,8 @@ Cypress.Commands.add(
 Cypress.Commands.add('apiGetHomepageLayout', apiGetHomepageLayout);
 Cypress.Commands.add('apiUpdateHomepageLayout', apiUpdateHomepageLayout);
 Cypress.Commands.add('apiUpdateProjectPageLayout', apiUpdateProjectPageLayout);
+Cypress.Commands.add('apiCreateArea', apiCreateArea);
+Cypress.Commands.add('apiSetProjectAreas', apiSetProjectAreas);
 Cypress.Commands.add('apiRemoveCustomPage', apiRemoveCustomPage);
 Cypress.Commands.add('apiCreateCustomPage', apiCreateCustomPage);
 Cypress.Commands.add('apiUpdateCustomPage', apiUpdateCustomPage);

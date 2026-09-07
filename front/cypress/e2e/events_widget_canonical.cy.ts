@@ -48,8 +48,10 @@ describe('Events widget added from a toolbox', () => {
         title: upcomingTitle,
         description: upcomingTitle,
         location: 'Brussels',
-        startDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-        endDate: new Date(Date.now() + 8 * 24 * 60 * 60 * 1000),
+        // Starts within the hour so it is among the soonest upcoming events, which is
+        // what the homepage teaser shows: it caps the list at three.
+        startDate: new Date(Date.now() + 60 * 1000),
+        endDate: new Date(Date.now() + 60 * 60 * 1000),
       });
 
       cy.apiCreateEvent({
