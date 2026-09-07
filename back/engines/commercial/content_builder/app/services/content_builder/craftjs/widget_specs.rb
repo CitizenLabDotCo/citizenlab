@@ -53,7 +53,7 @@ module ContentBuilder
         'ThreeColumn' => { 'slots' => %w[column1 column2 column3] },
         'HtmlBlockMultiloc' => { 'multilocs' => %w[html] },
         'PhasesWidget' => { 'enums' => { 'sectionBackground' => %w[colored white] } },
-        'EventsWidget' => { 'enums' => { 'sectionBackground' => %w[colored white] } },
+        'EventsWidget' => {},
         'ExtraSurveysWidget' => {
           'multilocs' => %w[buttonText],
           'enums' => {

@@ -96,14 +96,14 @@ class McpServer::LayoutWidgets
         Renders entirely from the project's phases, which are managed with create_phase/update_phase.
         Keep one on the page unless the project has no participation at all. sectionBackground
         defaults to "colored" as a direct child of ProjectPageBody, "white" when nested deeper.
-        This and EventsWidget paint a full-width band: alternate their sectionBackground with
-        the plain content around them rather than stacking two "colored" bands together.
+        It paints a full-width band, so alternate it with the plain content around it rather than
+        stacking two "colored" bands together.
     DOC
     'EventsWidget' => <<~DOC,
-      EventsWidget — the project's upcoming and past events. props: {"sectionBackground":"colored"|"white"}
+      EventsWidget — the project's upcoming and past events. props: {}
         custom: {"title":{"id":"app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle","defaultMessage":"Events"},"noPointerEvents":true}
         Renders entirely from the project's events (create them with create_event); it renders
-        nothing when there are none. Defaults to "white".
+        nothing when there are none. Renders on white; it has no background setting.
     DOC
     'ExtraSurveysWidget' => <<~DOC
       ExtraSurveysWidget — call to action for one spotlight survey, which runs alongside the

@@ -8,14 +8,12 @@ import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
 import messages from '../messages';
-import SectionBackgroundSetting from '../SectionBackgroundSetting';
 
 const EventsSettings = () => {
   const projectId = useWidgetProjectId();
 
   return (
     <Box my="20px">
-      <SectionBackgroundSetting defaultValue="white" />
       <Text color="textSecondary" fontSize="s">
         <FormattedMessage
           {...messages.eventsManagedNote}
