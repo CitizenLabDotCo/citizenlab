@@ -33,13 +33,10 @@ describe XlsxService do
       select_option = create(:custom_field_option, custom_field: custom_select, title_multiloc: { 'en' => 'Option 1' })
       multiselect_option = create(:custom_field_option, custom_field: custom_multiselect, title_multiloc: { 'en' => 'Option 2' })
       area = create(:area, title_multiloc: { 'en' => 'Center' })
-      users.first.update!(
-        custom_field_values: {
-          'domicile' => area.id,
-          custom_select.key => select_option.key,
-          custom_multiselect.key => [multiselect_option.key]
-        }
-      )
+      create(:custom_field_answer, answerable: users.first, key: 'domicile', value: area.id)
+      create(:custom_field_answer, answerable: users.first, key: custom_select.key, value: select_option.key)
+      create(:custom_field_answer, answerable: users.first, key: custom_multiselect.key, value: [multiselect_option.key])
+      users.first.custom_field_answers.reset
 
       custom_fields_headers = %w[domicile Select Multiselect]
       title_row = worksheet[0].cells.map(&:value)
@@ -73,12 +70,8 @@ describe XlsxService do
       option1 = create(:custom_field_option, custom_field: select1, title_multiloc: { 'en' => 'Option 1' })
       option2 = create(:custom_field_option, custom_field: select2, title_multiloc: { 'en' => 'Option 2' })
 
-      users.first.update!(
-        custom_field_values: {
-          select1.key => option1.key,
-          select2.key => option2.key
-        }
-      )
+      create(:custom_field_answer, answerable: users.first, key: select1.key, value: option1.key)
+      create(:custom_field_answer, answerable: users.first, key: select2.key, value: option2.key)
 
       title_row = worksheet[0].cells.map(&:value)
       expect(title_row).to include('gender (1)', 'gender (2)')
