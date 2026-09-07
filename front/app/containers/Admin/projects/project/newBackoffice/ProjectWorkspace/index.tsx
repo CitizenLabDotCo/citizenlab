@@ -10,7 +10,10 @@ import { useLocation } from 'utils/router';
 import { PhaseViewKey } from './Phase/usePhaseViews';
 import WorkspaceHeader from './WorkspaceHeader';
 
-const LEFT_PANEL_WIDTH = '280px';
+const PROJECT_PANEL_WIDTH = '280px';
+// The phase panel holds form fields rather than a list, so it needs the same
+// room as the right panel.
+const PHASE_PANEL_WIDTH = '384px';
 const RIGHT_PANEL_WIDTH = '384px';
 
 const activeViewFromPath = (pathname: string): PhaseViewKey => {
@@ -41,6 +44,12 @@ const ProjectWorkspace = ({
 }: Props) => {
   const { pathname } = useLocation();
   const divider = `1px solid ${colors.grey200}`;
+  const leftPanelWidth = phase ? PHASE_PANEL_WIDTH : PROJECT_PANEL_WIDTH;
+  const activeView = activeViewFromPath(pathname);
+
+  // A phase is built in three columns, but managed and analysed across the
+  // full width, so its panels step aside on those two views.
+  const showPanels = !phase || activeView === 'build';
 
   return (
     <Box
@@ -53,14 +62,14 @@ const ProjectWorkspace = ({
       <WorkspaceHeader
         project={project}
         phase={phase}
-        activeView={activeViewFromPath(pathname)}
+        activeView={activeView}
       />
 
       <Box display="flex" flexGrow={1} minHeight="0" overflow="hidden">
-        {leftPanel && (
+        {showPanels && leftPanel && (
           <Box
-            flex={`0 0 ${LEFT_PANEL_WIDTH}`}
-            width={LEFT_PANEL_WIDTH}
+            flex={`0 0 ${leftPanelWidth}`}
+            width={leftPanelWidth}
             minHeight="0"
             overflowY="auto"
             borderRight={divider}
@@ -69,11 +78,20 @@ const ProjectWorkspace = ({
           </Box>
         )}
 
-        <Box flexGrow={1} minWidth="0" minHeight="0" overflowY="auto">
+        {/* A flex column so a centre that fills the stage (the phase preview)
+            stretches to it, rather than collapsing to its content. */}
+        <Box
+          flexGrow={1}
+          minWidth="0"
+          minHeight="0"
+          overflowY="auto"
+          display="flex"
+          flexDirection="column"
+        >
           {children}
         </Box>
 
-        {rightPanel && (
+        {showPanels && rightPanel && (
           <Box
             flex={`0 0 ${RIGHT_PANEL_WIDTH}`}
             width={RIGHT_PANEL_WIDTH}
