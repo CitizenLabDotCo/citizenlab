@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors, Tooltip } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import Link, { typedStyled } from 'utils/cl-router/Link';
@@ -72,9 +72,14 @@ const ViewSwitch = ({ views, activeView, projectId, phaseId }: Props) => {
             {view.label}
           </Segment>
         ) : (
-          <LockedSegment key={view.key} aria-disabled="true">
-            {view.label}
-          </LockedSegment>
+          <Tooltip
+            key={view.key}
+            content={view.lockedReason}
+            disabled={!view.lockedReason}
+            theme="dark"
+          >
+            <LockedSegment aria-disabled="true">{view.label}</LockedSegment>
+          </Tooltip>
         )
       )}
     </Box>
