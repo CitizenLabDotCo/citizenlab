@@ -45,6 +45,7 @@ export type IdMethodName =
   | 'keycloak'
   | 'nemlog_in'
   | 'oostende_rrn'
+  | 'publik'
   | 'twoday'
   | 'vienna_citizen'
   | 'vienna_employee';

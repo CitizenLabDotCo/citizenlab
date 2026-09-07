@@ -143,6 +143,24 @@ const SSOButton = ({ provider, onClickSSO }: Props) => {
           />
         </WrappedAuthProviderButton>
       );
+    case 'publik': {
+      const publikName = idMethodNames.publik;
+
+      if (!publikName) return null;
+
+      return (
+        <WrappedAuthProviderButton
+          icon="shield-check"
+          authProvider="publik"
+          onClick={onClickSSO}
+        >
+          <FormattedMessage
+            {...sharedMessages.continueWithLoginMechanism}
+            values={{ loginMechanismName: publikName }}
+          />
+        </WrappedAuthProviderButton>
+      );
+    }
     case 'acm':
       return (
         <WrappedAuthProviderButton

@@ -179,6 +179,14 @@ DEV_ID_METHOD_CONFIGS = {
     'client_id' => ENV.fetch('DEFAULT_HOPLR_CLIENT_ID', 'fake id'),
     'client_secret' => ENV.fetch('DEFAULT_HOPLR_CLIENT_SECRET', 'fake secret')
   },
+  # Needs HTTPS on the tenant's own host: use `make be-up-publik` / `make fe-up-publik`.
+  'publik' => {
+    'name' => 'publik',
+    'issuer' => ENV.fetch('DEFAULT_PUBLIK_ISSUER', 'https://connexion.meyzieu.fr/'),
+    'client_id' => ENV.fetch('DEFAULT_PUBLIK_CLIENT_ID', 'fake id'),
+    'client_secret' => ENV.fetch('DEFAULT_PUBLIK_CLIENT_SECRET', 'fake secret'),
+    'ui_method_name' => 'Connexion Meyzieu'
+  },
   'vienna_citizen' => {
     'name' => 'vienna_citizen',
     'environment' => 'test'

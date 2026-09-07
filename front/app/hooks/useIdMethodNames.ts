@@ -32,6 +32,10 @@ const useIdMethodNames = () => {
     (method) => method.attributes.name === 'keycloak'
   ) as IDKeycloakMethod | undefined;
 
+  const publikMethod = idMethods?.data.find(
+    (method) => method.attributes.name === 'publik'
+  );
+
   return {
     franceconnect: 'FranceConnect',
     criipto: isDev ? 'MitID (Criipto)' : 'MitID',
@@ -51,6 +55,8 @@ const useIdMethodNames = () => {
     azureactivedirectory_b2c:
       azureB2cConfig?.attributes.login_mechanism_name ?? '',
     etat_lu: 'Luxembourg IAM',
+    // Publik is white-labelled, so each city configures its own button name.
+    publik: publikMethod?.attributes.method_metadata?.name ?? '',
   };
 };
 
