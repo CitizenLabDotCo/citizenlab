@@ -614,7 +614,6 @@
   "app.components.formBuilder.copySurveyModal.noProject": "Nincs projekt",
   "app.components.formBuilder.copySurveyModal.noProjectSelected": "Nincs projekt kiválasztva. Kérjük, előbb válasszon ki egy projektet.",
   "app.components.formBuilder.copySurveyModal.surveyFormPersistedWarning": "Már mentette a módosításokat ebben a felmérésben. Ha egy másik felmérést duplikál, a módosítások elvesznek.",
-  "app.components.formBuilder.copySurveyModal.surveyPhase": "Kérdőív szakasz",
   "app.components.formBuilder.copySurveyModal.title": "Válasszon ki egy másolandó kérdőívet",
   "app.components.formBuilder.editWarningModal.addOrReorder": "Kérdések hozzáadása vagy átrendezése",
   "app.components.formBuilder.editWarningModal.addOrReorderDescription": "A válaszadási adatok pontatlanok lehetnek",

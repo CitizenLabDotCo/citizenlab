@@ -614,7 +614,6 @@
   "app.components.formBuilder.copySurveyModal.noProject": "Ingen prosjekter",
   "app.components.formBuilder.copySurveyModal.noProjectSelected": "Ingen prosjekt valgt. Vennligst velg et prosjekt først.",
   "app.components.formBuilder.copySurveyModal.surveyFormPersistedWarning": "Du har allerede lagret endringer i denne undersøkelsen. Hvis du dupliserer en annen undersøkelse, vil endringene gå tapt.",
-  "app.components.formBuilder.copySurveyModal.surveyPhase": "Undersøkelsesfasen",
   "app.components.formBuilder.copySurveyModal.title": "Velg en undersøkelse som skal dupliseres",
   "app.components.formBuilder.editWarningModal.addOrReorder": "Legg til eller endre rekkefølgen på spørsmål",
   "app.components.formBuilder.editWarningModal.addOrReorderDescription": "Svaropplysningene dine kan være unøyaktige",

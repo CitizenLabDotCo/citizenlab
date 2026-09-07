@@ -614,7 +614,6 @@
   "app.components.formBuilder.copySurveyModal.noProject": "Nėra projekto",
   "app.components.formBuilder.copySurveyModal.noProjectSelected": "Projektas nepasirinktas. Pirmiausia pasirinkite projektą.",
   "app.components.formBuilder.copySurveyModal.surveyFormPersistedWarning": "Jau išsaugojote šios apklausos pakeitimus. Jei dubliuosite kitą apklausą, pakeitimai bus prarasti.",
-  "app.components.formBuilder.copySurveyModal.surveyPhase": "Apklausos etapas",
   "app.components.formBuilder.copySurveyModal.title": "Pasirinkite apklausą, kurią norite dubliuoti",
   "app.components.formBuilder.editWarningModal.addOrReorder": "Pridėti arba keisti klausimų eiliškumą",
   "app.components.formBuilder.editWarningModal.addOrReorderDescription": "Jūsų atsakymo duomenys gali būti netikslūs.",

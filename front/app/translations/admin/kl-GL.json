@@ -614,7 +614,6 @@
   "app.components.formBuilder.copySurveyModal.noProject": "Suliniummik soqanngilaq",
   "app.components.formBuilder.copySurveyModal.noProjectSelected": "Suliniut toqqarneqanngilaq. Siullermik suliniut toqqaruk.",
   "app.components.formBuilder.copySurveyModal.surveyFormPersistedWarning": "Misissuinermut uunga allannguutit toqqoreerpatit. Misissuineq alla assilineqarpat (duplicate), allannguutit tammassapput.",
-  "app.components.formBuilder.copySurveyModal.surveyPhase": "Misissuinerup ingerlanera",
   "app.components.formBuilder.copySurveyModal.title": "Misissuineq assilineqartussaq toqqaruk",
   "app.components.formBuilder.editWarningModal.addOrReorder": "Apeqqutinik ilasigit imaluunniit tulleriiaarnerat allanngortiguk",
   "app.components.formBuilder.editWarningModal.addOrReorderDescription": "Akissutitit eqqunngitsuusinnaapput",

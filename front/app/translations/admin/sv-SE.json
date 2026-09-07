@@ -614,7 +614,6 @@
   "app.components.formBuilder.copySurveyModal.noProject": "Inget projekt",
   "app.components.formBuilder.copySurveyModal.noProjectSelected": "Inget projekt valt. Vänligen välj ett projekt först.",
   "app.components.formBuilder.copySurveyModal.surveyFormPersistedWarning": "Du har redan sparat ändringar i denna undersökning. Om du duplicerar en annan enkät kommer ändringarna att gå förlorade.",
-  "app.components.formBuilder.copySurveyModal.surveyPhase": "Undersökningsfas",
   "app.components.formBuilder.copySurveyModal.title": "Välj en undersökning att duplicera",
   "app.components.formBuilder.editWarningModal.addOrReorder": "Lägg till eller ändra ordning på frågor",
   "app.components.formBuilder.editWarningModal.addOrReorderDescription": "Dina svarsuppgifter kan vara felaktiga",

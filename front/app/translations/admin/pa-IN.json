@@ -614,7 +614,6 @@
   "app.components.formBuilder.copySurveyModal.noProject": "ਕੋਈ ਪ੍ਰੋਜੈਕਟ ਨਹੀਂ",
   "app.components.formBuilder.copySurveyModal.noProjectSelected": "ਕੋਈ ਪ੍ਰੋਜੈਕਟ ਨਹੀਂ ਚੁਣਿਆ ਗਿਆ। ਕਿਰਪਾ ਕਰਕੇ ਪਹਿਲਾਂ ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਚੁਣੋ।",
   "app.components.formBuilder.copySurveyModal.surveyFormPersistedWarning": "ਤੁਸੀਂ ਪਹਿਲਾਂ ਹੀ ਇਸ ਸਰਵੇਖਣ ਵਿੱਚ ਬਦਲਾਅ ਸੁਰੱਖਿਅਤ ਕਰ ਚੁੱਕੇ ਹੋ। ਜੇਕਰ ਤੁਸੀਂ ਕਿਸੇ ਹੋਰ ਸਰਵੇਖਣ ਦੀ ਡੁਪਲੀਕੇਟ ਬਣਾਉਂਦੇ ਹੋ, ਤਾਂ ਤਬਦੀਲੀਆਂ ਖਤਮ ਹੋ ਜਾਣਗੀਆਂ।",
-  "app.components.formBuilder.copySurveyModal.surveyPhase": "ਸਰਵੇਖਣ ਪੜਾਅ",
   "app.components.formBuilder.copySurveyModal.title": "ਡੁਪਲੀਕੇਟ ਕਰਨ ਲਈ ਇੱਕ ਸਰਵੇਖਣ ਚੁਣੋ",
   "app.components.formBuilder.editWarningModal.addOrReorder": "ਸਵਾਲ ਸ਼ਾਮਲ ਕਰੋ ਜਾਂ ਮੁੜ ਕ੍ਰਮਬੱਧ ਕਰੋ",
   "app.components.formBuilder.editWarningModal.addOrReorderDescription": "ਤੁਹਾਡਾ ਜਵਾਬ ਡੇਟਾ ਗਲਤ ਹੋ ਸਕਦਾ ਹੈ",

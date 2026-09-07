@@ -614,7 +614,6 @@
   "app.components.formBuilder.copySurveyModal.noProject": "Aucun projet",
   "app.components.formBuilder.copySurveyModal.noProjectSelected": "Aucun projet n'a été sélectionné. Veuillez d'abord sélectionner un projet.",
   "app.components.formBuilder.copySurveyModal.surveyFormPersistedWarning": "Vous avez déjà apporté des modifications à cette enquête. Si vous dupliquez une autre enquête, ces modifications seront perdues.",
-  "app.components.formBuilder.copySurveyModal.surveyPhase": "Phase d'enquête",
   "app.components.formBuilder.copySurveyModal.title": "Sélectionnez une enquête à dupliquer",
   "app.components.formBuilder.editWarningModal.addOrReorder": "Ajouter ou réordonner les questions",
   "app.components.formBuilder.editWarningModal.addOrReorderDescription": "Les données de réponse pourraient être incorrectes",

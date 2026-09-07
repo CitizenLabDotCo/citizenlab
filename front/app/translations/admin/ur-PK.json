@@ -614,7 +614,6 @@
   "app.components.formBuilder.copySurveyModal.noProject": "کوئی پروجیکٹ نہیں۔",
   "app.components.formBuilder.copySurveyModal.noProjectSelected": "کوئی پروجیکٹ منتخب نہیں کیا گیا۔ براہ کرم پہلے ایک پروجیکٹ منتخب کریں۔",
   "app.components.formBuilder.copySurveyModal.surveyFormPersistedWarning": "آپ پہلے ہی اس سروے میں تبدیلیاں محفوظ کر چکے ہیں۔ اگر آپ دوسرے سروے کو نقل کرتے ہیں، تو تبدیلیاں ضائع ہو جائیں گی۔",
-  "app.components.formBuilder.copySurveyModal.surveyPhase": "سروے کا مرحلہ",
   "app.components.formBuilder.copySurveyModal.title": "نقل کرنے کے لیے ایک سروے کا انتخاب کریں۔",
   "app.components.formBuilder.editWarningModal.addOrReorder": "سوالات شامل کریں یا دوبارہ ترتیب دیں۔",
   "app.components.formBuilder.editWarningModal.addOrReorderDescription": "آپ کا جوابی ڈیٹا غلط ہو سکتا ہے۔",
