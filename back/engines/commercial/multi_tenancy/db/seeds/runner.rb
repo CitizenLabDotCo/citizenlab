@@ -128,7 +128,7 @@ module MultiTenancy
         # Seeded projects/folders are created straight from the models, so they miss
         # the SideFx hooks that normally put their descriptions on the Content
         # Builder. Provision the layouts here instead, or the Content Builder 404s.
-        ContentBuilder::DescriptionLayoutService.new.provision_all_descriptions!
+        ContentBuilder::LayoutProvisioningService.new.provision_all!
       end
 
       # @return [Array[String]] default seed locales

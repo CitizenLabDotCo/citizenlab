@@ -64,6 +64,9 @@ class WebApi::V1::RequestCodesController < ApplicationController
     user = User.find_by_phone_number(request_code_phone_params[:phone])
     authorize user, policy_class: RequestCodePolicy
 
+    confirmation = user.phone_confirmation
+    return render_resend_too_soon(confirmation) if resend_too_soon?(confirmation)
+
     EmailCampaigns::ConsentService.new.record!(
       user,
       EmailCampaigns::Campaigns::PhoneConfirmation,
@@ -72,7 +75,7 @@ class WebApi::V1::RequestCodesController < ApplicationController
     )
     RequestPhoneConfirmationCodeJob.issue_code_and_deliver_later(user)
 
-    head :ok
+    render_retry_after(user.phone_confirmation)
   end
 
   # The phone mirror of request_reconfirm_code_email, for a number that has aged
@@ -80,17 +83,27 @@ class WebApi::V1::RequestCodesController < ApplicationController
   def request_reconfirm_code_phone
     authorize current_user, policy_class: RequestCodePolicy
 
-    unless only_if_first_time? && current_user.phone_confirmation&.code_outstanding?
-      EmailCampaigns::ConsentService.new.record!(
-        current_user,
-        EmailCampaigns::Campaigns::PhoneConfirmation,
-        consented: true,
-        always_log: true
-      )
-      RequestPhoneConfirmationCodeJob.issue_code_and_deliver_later(current_user)
+    confirmation = current_user.phone_confirmation
+
+    # The idempotent auto-send keeps its own answer: it asked for a code only if
+    # there wasn't one already, which is exactly what happened, so it gets the
+    # remaining cooldown rather than a rejection.
+    if only_if_first_time? && confirmation&.code_outstanding?
+      render_retry_after(confirmation)
+      return
     end
 
-    head :ok
+    return render_resend_too_soon(confirmation) if resend_too_soon?(confirmation)
+
+    EmailCampaigns::ConsentService.new.record!(
+      current_user,
+      EmailCampaigns::Campaigns::PhoneConfirmation,
+      consented: true,
+      always_log: true
+    )
+    RequestPhoneConfirmationCodeJob.issue_code_and_deliver_later(current_user)
+
+    render_retry_after(current_user.phone_confirmation)
   end
 
   # This endpoint is used when a logged in user wants to add or change their
@@ -124,19 +137,42 @@ class WebApi::V1::RequestCodesController < ApplicationController
       return
     end
 
+    # Only a code for the number the user is already confirming is a resend; a
+    # different number is a new request (the "change your number" path).
+    confirmation = current_user.new_phone_confirmation
+    resending = normalized == current_user.new_phone
+    return render_resend_too_soon(confirmation) if resending && resend_too_soon?(confirmation)
+
     EmailCampaigns::ConsentService.new.record!(
       current_user,
       EmailCampaigns::Campaigns::NewPhoneConfirmation,
       consented: true,
       always_log: true
     )
-
     RequestNewPhoneConfirmationCodeJob.issue_code_and_deliver_later(current_user, new_phone: normalized)
 
-    head :ok
+    render_retry_after(current_user.new_phone_confirmation)
   end
 
   private
+
+  # Whether the previous code's cooldown still has to run out.
+  def resend_too_soon?(confirmation)
+    confirmation&.seconds_until_resend_allowed.to_i.positive?
+  end
+
+  # Rejects the request, reporting how much of the cooldown is left so the caller
+  # can count it down.
+  def render_resend_too_soon(confirmation)
+    render json: { errors: { base: [{ error: 'too_soon', retry_after: confirmation.seconds_until_resend_allowed }] } },
+      status: :too_many_requests
+  end
+
+  # Read back from the record rather than assuming a full interval, so a request
+  # that deliberately sent nothing still reports the real time left.
+  def render_retry_after(confirmation)
+    render json: raw_json({ retry_after: confirmation&.seconds_until_resend_allowed.to_i })
+  end
 
   # Whether the caller asked for the idempotent "send only if no code is
   # outstanding" behaviour. Used by the auto-send that fires when the flow lands

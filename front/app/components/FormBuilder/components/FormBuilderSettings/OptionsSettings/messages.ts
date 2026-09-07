@@ -18,4 +18,9 @@ export default defineMessages({
     defaultMessage:
       'Display the options in a dropdown. If you have many options, this is recommended.',
   },
+  displayAsDropdownForcedWarning: {
+    id: 'app.components.formBuilder.displayAsDropdownForcedWarning',
+    defaultMessage:
+      'This question has more than {count} options, so it is always shown as a dropdown. Users can type to search for the option they want to select.',
+  },
 });

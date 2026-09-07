@@ -32,7 +32,7 @@ const ProjectFolderShowPageMeta = ({ projectFolder }: Props) => {
     title: localize(projectFolder.attributes.title_multiloc, { maxChar: 50 }),
   });
   const description = stripHtml(
-    localize(projectFolder.attributes.description_multiloc),
+    localize(projectFolder.attributes.description_preview_multiloc),
     250
   );
   const image = projectFolder.attributes.header_bg?.large;
@@ -69,8 +69,6 @@ const ProjectFolderShowPageMeta = ({ projectFolder }: Props) => {
       <meta name="twitter:card" content="summary_large_image" />
     </Helmet>
   );
-
-  return null;
 };
 
 export default ProjectFolderShowPageMeta;

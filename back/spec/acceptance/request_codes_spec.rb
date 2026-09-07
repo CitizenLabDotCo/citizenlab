@@ -275,6 +275,36 @@ resource 'Request codes' do
       expect(user.reload.phone_confirmation.code).to be_present
     end
 
+    example 'It reports how long the caller has to wait before requesting another code' do
+      create(:unconfirmed_phone_user, phone: '+14155552671')
+
+      do_request(request_code: { phone: '+14155552671' })
+      expect(response_status).to eq 200
+      expect(response_data.dig(:attributes, :retry_after)).to eq 60
+    end
+
+    example 'It does not send another code within a minute of the previous one' do
+      user = create(:unconfirmed_phone_user, phone: '+14155552671')
+      RequestPhoneConfirmationCodeJob.issue_code!(user)
+
+      expect { do_request(request_code: { phone: '+14155552671' }) }
+        .not_to enqueue_job(RequestPhoneConfirmationCodeJob)
+      expect(response_status).to eq 429
+      expect(json_response_body).to include_response_error(:base, 'too_soon')
+      expect(json_response_body.dig(:errors, :base, 0, :retry_after)).to be_between(1, 60)
+    end
+
+    example 'It sends another code once the interval has elapsed' do
+      user = create(:unconfirmed_phone_user, phone: '+14155552671')
+      RequestPhoneConfirmationCodeJob.issue_code!(user)
+
+      travel_to(61.seconds.from_now) do
+        expect { do_request(request_code: { phone: '+14155552671' }) }
+          .to enqueue_job(RequestPhoneConfirmationCodeJob).with(user).once
+        expect(response_status).to eq 200
+      end
+    end
+
     example 'It records the consent to receive a confirmation code by SMS and logs the activity' do
       user = create(:unconfirmed_phone_user, phone: '+14155552671')
 
@@ -410,6 +440,28 @@ resource 'Request codes' do
       expect(user.reload.phone_confirmation.code).to be_present
     end
 
+    example 'It does not send another code within a minute of the previous one' do
+      user = create(:user, :with_confirmed_phone)
+      RequestPhoneConfirmationCodeJob.issue_code!(user)
+      header_token_for(user)
+
+      expect { do_request(request_code: {}) }.not_to enqueue_job(RequestPhoneConfirmationCodeJob)
+      expect(response_status).to eq 429
+      expect(json_response_body).to include_response_error(:base, 'too_soon')
+    end
+
+    example 'It sends another code once the interval has elapsed' do
+      user = create(:user, :with_confirmed_phone)
+      RequestPhoneConfirmationCodeJob.issue_code!(user)
+      header_token_for(user)
+
+      travel_to(61.seconds.from_now) do
+        expect { do_request(request_code: {}) }
+          .to enqueue_job(RequestPhoneConfirmationCodeJob).with(user).once
+        expect(response_status).to eq 200
+      end
+    end
+
     example 'It records the consent to receive a confirmation code by SMS and logs the activity' do
       user = create(:user, :with_confirmed_phone)
       header_token_for(user)
@@ -493,6 +545,7 @@ resource 'Request codes' do
       expect { do_request(request_code: { only_if_first_time: true }) }
         .not_to enqueue_job(RequestPhoneConfirmationCodeJob)
       expect(response_status).to eq 200
+      expect(response_data.dig(:attributes, :retry_after)).to be_between(1, 60)
     end
   end
 
@@ -512,6 +565,33 @@ resource 'Request codes' do
       expect(user.reload.new_phone).to eq '+14155552671'
       # Only the delivery is queued; the code itself is issued before the response.
       expect(user.new_phone_confirmation.code).to be_present
+    end
+
+    example 'It does not send another code for the same number within a minute' do
+      user = create(:user)
+      header_token_for(user)
+      do_request(request_code: { new_phone: '+1 415 555 2671' })
+      expect(response_status).to eq 200
+      expect(response_data.dig(:attributes, :retry_after)).to eq 60
+
+      expect { do_request(request_code: { new_phone: '+1 415 555 2671' }) }
+        .not_to enqueue_job(RequestNewPhoneConfirmationCodeJob)
+      expect(response_status).to eq 429
+      expect(json_response_body).to include_response_error(:base, 'too_soon')
+    end
+
+    # The interval is about resending the same code, not about the number the user
+    # is asking for - correcting a mistyped number should not have to wait.
+    example 'It sends a code for a different number right away' do
+      user = create(:user)
+      header_token_for(user)
+      do_request(request_code: { new_phone: '+1 415 555 2671' })
+      expect(response_status).to eq 200
+
+      expect { do_request(request_code: { new_phone: '+1 415 555 2680' }) }
+        .to enqueue_job(RequestNewPhoneConfirmationCodeJob).with(user, new_phone: '+14155552680').once
+      expect(response_status).to eq 200
+      expect(user.reload.new_phone).to eq '+14155552680'
     end
 
     example 'It records the consent to receive a confirmation code by SMS and logs the activity' do

@@ -4,6 +4,7 @@ import { Text, Icon, colors } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
@@ -38,6 +39,9 @@ const PhonePolicies = ({
   const locale = useLocale();
   const localize = useLocalize();
   const { data: appConfiguration } = useAppConfiguration();
+  const smsManualCampaignsEnabled = useFeatureFlag({
+    name: 'sms_manual_campaigns',
+  });
   const { formatMessage } = useIntl();
   const { phone } = state;
   const orgName = localize(
@@ -89,9 +93,14 @@ const PhonePolicies = ({
       <PoliciesForm
         loading={loading}
         showSmsManualCampaignConsent
-        byContinuingCopy={formatMessage(messages.byContinuingPhone2, {
-          orgName,
-        })}
+        byContinuingCopy={formatMessage(
+          smsManualCampaignsEnabled
+            ? messages.byContinuingPhoneWithCampaignsEnabled
+            : messages.byContinuingPhoneWithoutCampaignsEnabled,
+          {
+            orgName,
+          }
+        )}
         onSubmit={handleSubmit}
       />
     </>

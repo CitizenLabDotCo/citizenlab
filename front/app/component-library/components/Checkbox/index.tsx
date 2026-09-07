@@ -102,6 +102,7 @@ type Props = {
   id?: string;
   dataTestId?: string;
   tabIndex?: number;
+  ariaLabel?: string;
 } & CheckboxProps &
   BoxPaddingProps &
   BoxMarginProps;
@@ -127,6 +128,7 @@ const Checkbox = ({
   setRef,
   ariaInvalid,
   ariaDescribedBy,
+  ariaLabel,
   ...boxProps
 }: Props) => {
   const handleOnCheckboxClick = (event: React.MouseEvent) => {
@@ -153,6 +155,7 @@ const Checkbox = ({
         ref={setRef}
         aria-invalid={ariaInvalid}
         aria-describedby={ariaDescribedBy}
+        aria-label={ariaLabel}
       />
       <StyledCheckbox
         data-testid={dataTestId || testEnv('check-mark-background')}

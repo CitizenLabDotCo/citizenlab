@@ -180,6 +180,21 @@ RSpec.describe StaticPage do
     end
   end
 
+  describe 'content builder layout association' do
+    # The layouts table is polymorphic, so it carries no foreign key and nothing else
+    # sweeps a layout whose page is gone.
+    it 'destroys the layout when the page is destroyed' do
+      page = create(:static_page)
+      create(
+        :layout,
+        content_buildable: page,
+        code: ContentBuilder::CustomPageLayoutService::CODE
+      )
+
+      expect { page.destroy! }.to change(ContentBuilder::Layout, :count).by(-1)
+    end
+  end
+
   describe 'nav bar item restrictions' do
     it 'cannot have a nav bar item when project-scoped' do
       page = build(:static_page, :project_scoped, nav_bar_item: build(:nav_bar_item, code: 'custom'))

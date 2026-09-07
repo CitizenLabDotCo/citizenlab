@@ -82,7 +82,7 @@ const PhoneChange = () => {
       });
     } catch (e) {
       if (e?.code?.[0]?.error === 'invalid') {
-        setConfirmationError('wrong_confirmation_code');
+        setConfirmationError('wrong_phone_confirmation_code');
       } else {
         setConfirmationError('unknown');
       }

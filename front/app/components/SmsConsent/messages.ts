@@ -4,10 +4,15 @@ import { defineMessages } from 'react-intl';
 // translation quality and because the wording is submitted verbatim as opt-in
 // evidence for toll-free verification.
 export default defineMessages({
-  phoneConfirmationDisclosure: {
+  phoneConfirmationDisclosureWithCampaignsEnabled: {
     id: 'app.components.SmsConsent.phoneConfirmationDisclosure',
     defaultMessage:
       "By submitting, you agree to receive a one-time confirmation code by SMS from {orgName}. If you opted in above, you'll also receive news and updates; message frequency varies. Message and data rates may apply. Reply HELP for help, STOP to opt out. See our {termsLink} and {privacyLink}.",
+  },
+  phoneConfirmationDisclosureWithoutCampaignsEnabled: {
+    id: 'app.components.SmsConsent.phoneConfirmationDisclosureWithoutCampaignsEnabled',
+    defaultMessage:
+      'By submitting, you agree to receive a one-time confirmation code by SMS from {orgName}. Message and data rates may apply. Reply HELP for help, STOP to opt out. See our {termsLink} and {privacyLink}.',
   },
   campaignPreferencesDisclosure: {
     id: 'app.components.SmsConsent.campaignPreferencesDisclosure',

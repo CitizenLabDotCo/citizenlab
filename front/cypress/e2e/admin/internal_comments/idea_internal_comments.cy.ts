@@ -7,7 +7,6 @@ describe('Idea internal comments', () => {
   let ideaId2: string;
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString();
-  const projectDescription = randomString();
   const ideaTitle1 = randomString();
   const ideaContent1 = randomString();
   const ideaTitle2 = randomString();
@@ -38,7 +37,6 @@ describe('Idea internal comments', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     })
       .then((project) => {

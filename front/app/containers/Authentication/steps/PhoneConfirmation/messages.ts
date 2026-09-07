@@ -22,6 +22,11 @@ export default defineMessages({
     id: 'app.containers.PhoneConfirmation.wrongNumber',
     defaultMessage: 'Wrong number?',
   },
+  sendNewCodeIn: {
+    id: 'app.containers.PhoneConfirmation.sendNewCodeIn',
+    defaultMessage:
+      'You can request a new code in {seconds} {seconds, plural, one {second} other {seconds}}.',
+  },
   sendNewCode: {
     id: 'app.containers.PhoneConfirmation.sendNewCode',
     defaultMessage: 'Send New Code.',

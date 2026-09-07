@@ -278,6 +278,12 @@ const SurveyPage = ({
   const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
     if (e.key !== 'Enter') return;
     const target = e.target as HTMLInputElement;
+    // A dropdown's search box is a text input too, but Enter there belongs to
+    // the dropdown, whether or not it has an option to pick.
+    if (target.getAttribute('role') === 'combobox') {
+      e.preventDefault();
+      return;
+    }
     if (target.tagName.toLowerCase() !== 'input') return;
     const inputType = target.type;
     if (inputType !== 'text' && inputType !== 'number') return;

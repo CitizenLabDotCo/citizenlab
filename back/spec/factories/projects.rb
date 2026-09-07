@@ -9,12 +9,6 @@ FactoryBot.define do
         'nl-BE' => 'Westpark vernieuwen'
       }
     end
-    description_multiloc do
-      {
-        'en' => '<p>Let\'s renew the parc at the city border and make it an enjoyable place for young and old.</p>',
-        'nl-BE' => '<p>Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.</p>'
-      }
-    end
     description_preview_multiloc do
       {
         'en' => 'Let\'s renew the parc at the city border and make it an enjoyable place for young and old.',

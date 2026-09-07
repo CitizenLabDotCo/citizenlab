@@ -76,6 +76,7 @@ const CurrentStep = ({
       return (
         <FlowStart
           loading={loading}
+          state={state}
           setError={setError}
           authenticationData={authenticationData}
           onSubmitEmail={transition(currentStep, 'SUBMIT_EMAIL')}

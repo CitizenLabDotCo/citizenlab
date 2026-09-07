@@ -105,7 +105,6 @@ describe 'rake demos:translate_missing_locales' do
       tenant.switch do
         project = create(:project,
           title_multiloc: { 'en' => 'English title', 'fr-FR' => 'Titre' },
-          description_multiloc: { 'en' => 'Desc', 'fr-FR' => 'Desc FR' },
           description_preview_multiloc: { 'en' => 'Preview', 'fr-FR' => 'Preview FR' })
       end
 
@@ -236,7 +235,6 @@ describe 'rake demos:translate_missing_locales' do
       tenant.switch do
         create(:project,
           title_multiloc: { 'en' => 'English', 'fr-FR' => 'French', 'nl-NL' => 'Dutch' },
-          description_multiloc: { 'en' => 'Desc', 'fr-FR' => 'Desc FR', 'nl-NL' => 'Desc NL' },
           description_preview_multiloc: { 'en' => 'Preview', 'fr-FR' => 'Preview FR', 'nl-NL' => 'Preview NL' })
       end
 

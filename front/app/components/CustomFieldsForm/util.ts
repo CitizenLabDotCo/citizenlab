@@ -7,6 +7,7 @@ import { MessageDescriptor } from 'utils/cl-intl';
 import { FormatMessageValues } from 'utils/cl-intl/useIntl';
 import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 
+import { LIST_LAYOUT_MAX_OPTIONS } from './constants';
 import messages from './messages';
 
 export type Pages = {
@@ -110,6 +111,11 @@ export function getFormCompletionPercentage({
 
   return Math.floor(percentage);
 }
+
+export const isDropdownLayoutForced = (
+  inputType: string,
+  optionCount: number
+) => inputType === 'select' && optionCount > LIST_LAYOUT_MAX_OPTIONS;
 
 export const extractOptions = (
   question: IFlatCustomField,

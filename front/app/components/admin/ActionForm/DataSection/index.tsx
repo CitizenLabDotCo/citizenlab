@@ -33,12 +33,16 @@ const DataSection = ({ permission, phaseId, onChange }: Props) => {
   // PII only make sense if there is an account
   const showPIISection = attributes.permitted_by === 'users';
 
+  const participationMethod = phase?.data.attributes.participation_method;
   const permissionHasForm = attributes.action === 'posting_idea';
-  const isNativeSurveyPhase =
-    phase?.data.attributes.participation_method === 'native_survey';
+  const isSurveyPhase =
+    !!participationMethod &&
+    ['native_survey', 'community_monitor_survey'].includes(participationMethod);
 
-  // The anonymity settings are only implemented for native surveys atm.
-  const isNativeSurveySubmission = permissionHasForm && isNativeSurveyPhase;
+  // The anonymity settings are only implemented for the survey methods, which
+  // resolve `user_data_collection` from this permission (ParticipationMethod::NativeSurvey
+  // and the community monitor that inherits from it). Everything else reports 'all_data'.
+  const isSurveySubmission = permissionHasForm && isSurveyPhase;
 
   return (
     <Box>
@@ -53,16 +57,14 @@ const DataSection = ({ permission, phaseId, onChange }: Props) => {
         borderRadius="8px"
         px="14px"
       >
-        {isNativeSurveySubmission && (
+        {isSurveySubmission && (
           <AnonymitySection permission={permission} onChange={onChange} />
         )}
 
         {showPIISection && (
           <Box
             borderTop={
-              isNativeSurveySubmission
-                ? `1px solid ${colors.divider}`
-                : undefined
+              isSurveySubmission ? `1px solid ${colors.divider}` : undefined
             }
           >
             <PersonalInfoSection permission={permission} onChange={onChange} />
@@ -72,7 +74,7 @@ const DataSection = ({ permission, phaseId, onChange }: Props) => {
         {/* Demographics — available in every mode. */}
         <Box
           borderTop={
-            showPIISection || isNativeSurveySubmission
+            showPIISection || isSurveySubmission
               ? `1px solid ${colors.divider}`
               : undefined
           }

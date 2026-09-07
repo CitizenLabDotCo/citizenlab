@@ -145,7 +145,7 @@ module Export
         stored_value = if field.built_in?
           model.public_send field.key
         else
-          model.custom_field_values[field.key]
+          model.answer_for_key(field.key)&.value
         end
         stored_value.nil? ? '' : stored_value
       end

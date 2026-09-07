@@ -9,7 +9,7 @@ module Export
       def initialize(phase, field)
         @phase = phase
         @field = field
-        @inputs = phase.ideas.native_survey.published
+        @inputs = phase.ideas.native_survey.published.includes(:custom_field_answers, author: :custom_field_answers)
         @fields_in_form = IdeaCustomFieldsService.new(phase.custom_form).geojson_supported_fields
         @multiloc_service = MultilocService.new(app_configuration: @app_configuration)
         @value_visitor = Geojson::ValueVisitor
@@ -20,7 +20,7 @@ module Export
 
         @inputs.each do |input|
           geojson_hash[:features] << {
-            type: 'Feature', geometry: input.custom_field_values[@field.key], properties: generate_properties(input)
+            type: 'Feature', geometry: input.answer_for_key(@field.key)&.value, properties: generate_properties(input)
           }
         end
 

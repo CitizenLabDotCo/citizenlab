@@ -186,7 +186,7 @@ class Permissions::UserRequirementsService
     requirements[:authentication][:missing_user_attributes].delete(:password) unless user.password_digest.nil?
 
     requirements[:custom_fields]&.each_key do |key|
-      requirements[:custom_fields].delete(key) if user.custom_field_values.key?(key)
+      requirements[:custom_fields].delete(key) if user.answer_for_key(key)
     end
 
     if requirements[:onboarding]

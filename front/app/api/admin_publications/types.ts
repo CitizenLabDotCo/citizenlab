@@ -51,7 +51,6 @@ export interface IAdminPublicationData {
     scheduled_at?: string | null;
     visible_children_count: number;
     publication_title_multiloc: Multiloc;
-    publication_description_multiloc: Multiloc;
     publication_description_preview_multiloc: Multiloc;
     publication_slug: string;
     publication_visible_to?: 'public' | 'groups' | 'admins' | null;

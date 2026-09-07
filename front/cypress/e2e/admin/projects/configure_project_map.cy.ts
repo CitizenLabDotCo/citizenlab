@@ -12,7 +12,6 @@ describe('Configure a project-level map', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: randomString(),
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;

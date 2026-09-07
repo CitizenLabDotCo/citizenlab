@@ -25,6 +25,7 @@
 #
 class Confirmation < ApplicationRecord
   CODE_DURATION = 24.hours
+  RESEND_INTERVAL = 1.minute
 
   belongs_to :user
 
@@ -36,6 +37,16 @@ class Confirmation < ApplicationRecord
     return nil if code_sent_at.nil?
 
     code_sent_at + CODE_DURATION
+  end
+
+  # How long the caller still has to wait before a new code may be requested, in
+  # seconds (0 when it may be requested right away). An SMS costs money and takes
+  # a moment to arrive, so a code asked for seconds after the previous one is
+  # nearly always impatience rather than a lost message.
+  def seconds_until_resend_allowed
+    return 0 if code_sent_at.nil?
+
+    [(code_sent_at + RESEND_INTERVAL - Time.zone.now).ceil, 0].max
   end
 
   # Whether a code has been sent and not yet consumed. Used by the idempotent
