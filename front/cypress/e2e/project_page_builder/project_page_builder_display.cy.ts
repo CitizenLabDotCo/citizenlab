@@ -219,10 +219,15 @@ describe('Project description builder display', () => {
       .first()
       .click({ force: true });
     cy.dataCy('e2e-file-attachment-file-select').select('replacement.pdf');
-    cy.wait(1000);
+    cy.dataCy('e2e-file-attachment-file-select')
+      .find('option:checked')
+      .should('have.text', 'replacement.pdf');
 
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
+      'saveProjectPageLayout'
+    );
     cy.get('#e2e-content-builder-topbar-save').click();
-    cy.wait(1000);
+    cy.wait('@saveProjectPageLayout');
 
     cy.get('#e2e-preview-toggle').click({ force: true });
     getIframeBody()

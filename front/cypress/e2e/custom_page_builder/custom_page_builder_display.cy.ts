@@ -94,8 +94,11 @@ describe('Custom page builder display', () => {
     cy.visit(`/admin/custom-page-builder/pages/${pageId}`);
     cy.get('div#ROOT');
 
+    cy.intercept('**/content_builder_layouts/custom_page/upsert').as(
+      'saveCustomPageLayout'
+    );
     cy.get('#e2e-content-builder-topbar-save').click();
-    cy.wait(1000);
+    cy.wait('@saveCustomPageLayout');
 
     cy.visit(`/pages/${pageSlug}`);
 
