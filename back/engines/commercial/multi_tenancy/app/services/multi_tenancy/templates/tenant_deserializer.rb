@@ -194,19 +194,23 @@ module MultiTenancy
           end
         end
 
-        # Required to make templates tests work in which case file storage is used
-        if Rails.env.test?
-          keys = new_attributes.keys.select do |key|
-            key.start_with?('remote_') && key.end_with?('_url') && new_attributes[key]&.start_with?('/')
-          end
-          keys.each do |key|
-            new_key = key.gsub('remote_', '').gsub('_url', '')
-            new_attributes[new_key] = File.open "public#{new_attributes[key]}"
-            new_attributes.delete key
-          end
-        end
+        localize_remote_files_for_test!(new_attributes)
 
         new_attributes
+      end
+
+      # Required to make templates tests work in which case file storage is used
+      def localize_remote_files_for_test!(new_attributes)
+        return if !Rails.env.test?
+
+        keys = new_attributes.keys.select do |key|
+          key.start_with?('remote_') && key.end_with?('_url') && new_attributes[key]&.start_with?('/')
+        end
+        keys.each do |key|
+          new_key = key.gsub('remote_', '').gsub('_url', '')
+          new_attributes[new_key] = File.open "public#{new_attributes[key]}"
+          new_attributes.delete key
+        end
       end
 
       def restore_multiloc_attribute(field_value, locales)
