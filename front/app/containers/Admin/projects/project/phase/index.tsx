@@ -27,7 +27,9 @@ interface DataProps {
 const AdminProjectPhaseIndex = ({ project, selectedPhase }: DataProps) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
-  const workspaceEnabled = useFeatureFlag({ name: 'project_workspace' });
+  const workspaceEnabled = useFeatureFlag({
+    name: 'project_backoffice_redesign',
+  });
   const featureFlags: FeatureFlags = {
     typeform_enabled: useFeatureFlag({
       name: 'typeform_surveys',

@@ -7,7 +7,7 @@ import { IProjectData } from 'api/projects/types';
 
 import { useLocation } from 'utils/router';
 
-import { PhaseViewKey } from './Phase/usePhaseViews';
+import { viewFromPathname } from './Phase/usePhaseViews';
 import WorkspaceHeader from './WorkspaceHeader';
 
 const PROJECT_PANEL_WIDTH = '280px';
@@ -15,17 +15,6 @@ const PROJECT_PANEL_WIDTH = '280px';
 // room as the right panel.
 const PHASE_PANEL_WIDTH = '384px';
 const RIGHT_PANEL_WIDTH = '384px';
-
-const activeViewFromPath = (pathname: string): PhaseViewKey => {
-  if (pathname.endsWith('/ideas') || pathname.endsWith('/proposals')) {
-    return 'manage';
-  }
-  if (pathname.endsWith('/insights') || pathname.endsWith('/survey-results')) {
-    return 'insights';
-  }
-
-  return 'build';
-};
 
 interface Props {
   project: IProjectData;
@@ -45,7 +34,7 @@ const ProjectWorkspace = ({
   const { pathname } = useLocation();
   const divider = `1px solid ${colors.grey200}`;
   const leftPanelWidth = phase ? PHASE_PANEL_WIDTH : PROJECT_PANEL_WIDTH;
-  const activeView = activeViewFromPath(pathname);
+  const activeView = viewFromPathname(pathname);
 
   // A phase is built in three columns, but managed and analysed across the
   // full width, so its panels step aside on those two views.

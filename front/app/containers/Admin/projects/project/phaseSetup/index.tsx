@@ -40,7 +40,7 @@ import { generateTemporaryFileAttachment } from 'utils/fileUtils';
 import { useParams, useSearch } from 'utils/router';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
-import PhasePreview from '../newBackoffice/ProjectWorkspace/Phase/PhasePreview';
+import PhasePreview from '../backofficeRedesign/ProjectWorkspace/Phase/PhasePreview';
 
 import DateSetup from './components/DateSetup';
 import PhaseParticipationConfig from './components/PhaseParticipationConfig';
@@ -545,7 +545,9 @@ const AdminPhaseEditWrapper = () => {
   const spotlightSurveysEnabled = useFeatureFlag({
     name: 'parallel_participation',
   });
-  const workspaceEnabled = useFeatureFlag({ name: 'project_workspace' });
+  const workspaceEnabled = useFeatureFlag({
+    name: 'project_backoffice_redesign',
+  });
 
   if (!projectId) return null;
 
