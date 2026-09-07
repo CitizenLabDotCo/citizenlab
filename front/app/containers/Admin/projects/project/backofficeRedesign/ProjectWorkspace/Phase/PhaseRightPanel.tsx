@@ -18,6 +18,8 @@ import phaseSetupMessages from '../../../phaseSetup/messages';
 import { SubmitStateType, ValidationErrors } from '../../../phaseSetup/typings';
 import validate from '../../../phaseSetup/validate';
 
+import ReportSection from './ReportSection';
+
 interface Props {
   projectId: string;
   phase: IPhaseData;
@@ -82,40 +84,50 @@ const PhaseRightPanel = ({ projectId, phase }: Props) => {
     );
   };
 
+  // An information phase has no participation to configure, so its panel holds
+  // the report instead, which saves through its own builder.
+  const isInformation = phase.attributes.participation_method === 'information';
+
   return (
     <Box display="flex" flexDirection="column" minHeight="100%">
       <Box flexGrow={1} p="20px">
-        <PhaseParticipationConfig
-          phase={phaseWithRelationships}
-          formData={formData}
-          validationErrors={validationErrors}
-          apiErrors={errors}
-          onChange={handleChange}
-          setValidationErrors={setValidationErrors}
-          hideMethodPicker
-        />
+        {isInformation ? (
+          <ReportSection projectId={projectId} phase={phase} />
+        ) : (
+          <PhaseParticipationConfig
+            phase={phaseWithRelationships}
+            formData={formData}
+            validationErrors={validationErrors}
+            apiErrors={errors}
+            onChange={handleChange}
+            setValidationErrors={setValidationErrors}
+            hideMethodPicker
+          />
+        )}
       </Box>
 
-      <Box
-        position="sticky"
-        bottom="0"
-        px="20px"
-        py="12px"
-        background={colors.white}
-        borderTop={`1px solid ${colors.grey200}`}
-      >
-        <SubmitWrapper
-          onClick={handleSave}
-          loading={processing}
-          status={submitState}
-          messages={{
-            buttonSave: phaseSetupMessages.saveChangesLabel,
-            buttonSuccess: phaseSetupMessages.saveSuccessLabel,
-            messageError: phaseSetupMessages.saveErrorMessage,
-            messageSuccess: phaseSetupMessages.saveSuccessMessage,
-          }}
-        />
-      </Box>
+      {!isInformation && (
+        <Box
+          position="sticky"
+          bottom="0"
+          px="20px"
+          py="12px"
+          background={colors.white}
+          borderTop={`1px solid ${colors.grey200}`}
+        >
+          <SubmitWrapper
+            onClick={handleSave}
+            loading={processing}
+            status={submitState}
+            messages={{
+              buttonSave: phaseSetupMessages.saveChangesLabel,
+              buttonSuccess: phaseSetupMessages.saveSuccessLabel,
+              messageError: phaseSetupMessages.saveErrorMessage,
+              messageSuccess: phaseSetupMessages.saveSuccessMessage,
+            }}
+          />
+        </Box>
+      )}
     </Box>
   );
 };
