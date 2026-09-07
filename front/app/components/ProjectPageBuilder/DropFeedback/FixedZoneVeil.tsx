@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useReducer } from 'react';
 
 import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
 import {
@@ -11,10 +11,8 @@ import {
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import { OVERLAY_Z_INDEX } from './constants';
+import { BODY_REGION, OVERLAY_Z_INDEX } from './constants';
 import messages from './messages';
-
-const BODY_REGION = 'ProjectPageBody';
 
 // craft.js types its node map as total, so an absent id has to be ruled out
 // before reading from it.
@@ -37,6 +35,24 @@ const collectRegionDoms = (state: EditorState) => {
 
 const FixedZoneVeil = () => {
   const { rootDom, bodyDom } = useEditor(collectRegionDoms);
+  // The veil is positioned in viewport coordinates, measured during render,
+  // and craft.js reports placement changes but never scrolls.
+  const [, remeasure] = useReducer((n: number) => n + 1, 0);
+
+  useEffect(() => {
+    // The canvas scrolls in its own overflow container and scroll events do
+    // not bubble, so they have to be caught on the way down.
+    window.addEventListener('scroll', remeasure, {
+      passive: true,
+      capture: true,
+    });
+    window.addEventListener('resize', remeasure, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', remeasure, { capture: true });
+      window.removeEventListener('resize', remeasure);
+    };
+  }, []);
 
   if (!rootDom || !bodyDom) return null;
 

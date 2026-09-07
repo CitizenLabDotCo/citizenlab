@@ -15,18 +15,25 @@ type Props = {
   atEnd: boolean;
 };
 
-const DropIndicatorCap = ({ color, vertical, atEnd }: Props) => (
-  <Box
-    position="absolute"
-    top={vertical ? (atEnd ? undefined : ALONG) : ACROSS}
-    bottom={vertical && atEnd ? ALONG : undefined}
-    left={vertical ? ACROSS : atEnd ? undefined : ALONG}
-    right={!vertical && atEnd ? ALONG : undefined}
-    width={`${CAP_SIZE}px`}
-    height={`${CAP_SIZE}px`}
-    borderRadius="50%"
-    bgColor={color}
-  />
-);
+const DropIndicatorCap = ({ color, vertical, atEnd }: Props) => {
+  const topOffset = vertical ? (atEnd ? undefined : ALONG) : ACROSS;
+  const bottomOffset = vertical && atEnd ? ALONG : undefined;
+  const leftOffset = vertical ? ACROSS : atEnd ? undefined : ALONG;
+  const rightOffset = !vertical && atEnd ? ALONG : undefined;
+
+  return (
+    <Box
+      position="absolute"
+      top={topOffset}
+      bottom={bottomOffset}
+      left={leftOffset}
+      right={rightOffset}
+      width={`${CAP_SIZE}px`}
+      height={`${CAP_SIZE}px`}
+      borderRadius="50%"
+      bgColor={color}
+    />
+  );
+};
 
 export default DropIndicatorCap;

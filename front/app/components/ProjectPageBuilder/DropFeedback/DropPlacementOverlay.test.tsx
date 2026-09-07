@@ -9,6 +9,8 @@ import DropPlacementOverlay from './DropPlacementOverlay';
 const BODY_ID = 'PROJECT_PAGE_BODY';
 
 let editorState: EditorState;
+// The canvas scrolls in its own container, which shifts every measured rect.
+let scrollOffset = 0;
 
 jest.mock('@craftjs/core', () => {
   const originalModule = jest.requireActual('@craftjs/core');
@@ -19,17 +21,19 @@ jest.mock('@craftjs/core', () => {
   };
 });
 
-const elementAt = (top: number) => {
+const elementAt = (documentTop: number) => {
   const element = document.createElement('div');
-  element.getBoundingClientRect = () =>
-    ({
+  element.getBoundingClientRect = () => {
+    const top = documentTop - scrollOffset;
+    return {
       top,
       bottom: top + 100,
       left: 0,
       right: 500,
       width: 500,
       height: 100,
-    } as DOMRect);
+    } as DOMRect;
+  };
   return element;
 };
 
@@ -55,6 +59,18 @@ const buildState = (
     },
   } as unknown as EditorState);
 
+// Scroll events do not bubble, so the overlay has to catch them on the way
+// down from the window.
+const scrollCanvasBy = (offset: number) => {
+  const scroller = document.createElement('div');
+  document.body.appendChild(scroller);
+
+  act(() => {
+    scrollOffset = offset;
+    scroller.dispatchEvent(new Event('scroll'));
+  });
+};
+
 const startDrag = () => {
   const source = document.createElement('div');
   source.setAttribute('draggable', 'true');
@@ -67,6 +83,7 @@ const startDrag = () => {
 
 afterEach(() => {
   document.body.innerHTML = '';
+  scrollOffset = 0;
 });
 
 describe('DropPlacementOverlay', () => {
@@ -103,6 +120,24 @@ describe('DropPlacementOverlay', () => {
     expect(
       screen.getByText('The project image and title are fixed')
     ).toBeInTheDocument();
+  });
+
+  it('follows the fixed zone when the canvas scrolls under a still pointer', () => {
+    editorState = buildState(
+      'Parent node cannot accept incoming node',
+      ROOT_NODE,
+      'ProjectTitle'
+    );
+    render(<DropPlacementOverlay />);
+    startDrag();
+
+    const veil = () => document.querySelector('[data-cy="fixed-zone-veil"]');
+
+    expect(veil()).toHaveStyle({ top: '0px' });
+
+    scrollCanvasBy(120);
+
+    expect(veil()).toHaveStyle({ top: '-120px' });
   });
 
   it('leaves the fixed zone alone when the placement slips below the body', () => {

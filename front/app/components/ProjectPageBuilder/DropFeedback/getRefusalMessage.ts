@@ -1,9 +1,8 @@
 import { Placement, ROOT_NODE } from '@craftjs/core';
 import { MessageDescriptor } from 'react-intl';
 
+import { BODY_REGION } from './constants';
 import messages from './messages';
-
-const BODY_REGION = 'ProjectPageBody';
 
 // craft.js fills `indicator.error` with an internal English sentence
 // ("Parent node cannot accept incoming node") that is never meant for users,

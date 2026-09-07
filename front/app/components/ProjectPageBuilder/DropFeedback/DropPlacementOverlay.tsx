@@ -22,10 +22,12 @@ const DropPlacementOverlay = () => {
 
   const { placement, error } = indicator;
   const refusalMessage = error === null ? null : getRefusalMessage(placement);
+  const isFixedHeaderRefusal =
+    refusalMessage === messages.cannotDropInFixedHeader;
 
   return (
     <>
-      {refusalMessage === messages.cannotDropInFixedHeader && <FixedZoneVeil />}
+      {isFixedHeaderRefusal && <FixedZoneVeil />}
       <DropIndicatorBar placement={placement} refusalMessage={refusalMessage} />
     </>
   );

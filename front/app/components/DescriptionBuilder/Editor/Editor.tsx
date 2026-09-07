@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import {
   Editor as CraftEditor,
+  Options,
   SerializedNodes,
   Resolver,
 } from '@craftjs/core';
@@ -16,7 +17,15 @@ type EditorProps = {
   isPreview: boolean;
   resolver?: Resolver;
   onNodesChange?: (nodes: SerializedNodes) => void;
+  // Builders that paint their own drop feedback pass their own config here.
+  indicator?: Options['indicator'];
   children?: React.ReactNode;
+};
+
+const DEFAULT_INDICATOR: Options['indicator'] = {
+  success: colors.green300,
+  error: 'red',
+  transition: 'none',
 };
 
 // A widget can render nothing (e.g. events on a project without events) while its
@@ -41,15 +50,13 @@ const Editor: React.FC<EditorProps> = ({
   isPreview,
   resolver,
   onNodesChange,
+  indicator,
   children,
 }) => {
   return (
     <CraftEditor
       resolver={resolver}
-      // DropPlacementOverlay draws the drop indicator instead: craft.js only
-      // knows how to paint a plain rectangle, with no room for the reason a
-      // drop is refused.
-      indicator={{ style: { display: 'none' } }}
+      indicator={indicator ?? DEFAULT_INDICATOR}
       onRender={isPreview ? PlainDiv : RenderNode}
       enabled={!isPreview}
       onNodesChange={(data) => {
