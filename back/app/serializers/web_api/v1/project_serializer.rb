@@ -60,10 +60,6 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     object.admin_publication.first_published_at
   end
 
-  attribute :description_multiloc do |object|
-    TextImageService.new.render_data_images_multiloc object.description_multiloc, field: :description_multiloc, imageable: object
-  end
-
   attribute :header_bg do |object|
     object.header_bg && object.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
   end
@@ -144,4 +140,3 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
 end
 
 WebApi::V1::ProjectSerializer.include(IdeaAssignment::Extensions::WebApi::V1::ProjectSerializer)
-WebApi::V1::ProjectSerializer.include(ContentBuilder::Extensions::WebApi::V1::ProjectSerializer)

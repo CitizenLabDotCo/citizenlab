@@ -6,7 +6,7 @@ module ContentBuilder
       module SideFxProjectFolderService
         def after_create(folder, current_user)
           super
-          ContentBuilder::DescriptionLayoutService.new.provision_for(folder)
+          ContentBuilder::LayoutProvisioningService.new.provision_for(folder)
         end
       end
     end

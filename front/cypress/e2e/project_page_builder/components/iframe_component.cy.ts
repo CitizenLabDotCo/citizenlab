@@ -1,0 +1,118 @@
+import { randomString } from '../../../support/commands';
+
+describe('Project description builder Iframe component', () => {
+  let projectId = '';
+  let projectSlug = '';
+
+  before(() => {
+    cy.setAdminLoginCookie();
+    cy.getAdminAuthUser().then((user) => {
+      const projectTitle = randomString();
+      const projectDescriptionPreview = randomString();
+      const userId = user.body.data.id;
+
+      cy.apiCreateProject({
+        title: projectTitle,
+        descriptionPreview: projectDescriptionPreview,
+        publicationStatus: 'published',
+        assigneeId: userId,
+      }).then((project) => {
+        projectId = project.body.data.id;
+        projectSlug = projectTitle;
+        cy.visit(`/admin/project-page-builder/projects/${projectId}`);
+      });
+    });
+  });
+  beforeEach(() => {
+    cy.setAdminLoginCookie();
+    cy.visit(`/admin/project-page-builder/projects/${projectId}`);
+  });
+
+  after(() => {
+    cy.apiRemoveProject(projectId);
+  });
+
+  it('handles Iframe component correctly', () => {
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
+      'saveProjectDescriptionBuilder'
+    );
+    // Add iframe with valid url
+    cy.get('#e2e-draggable-iframe').dragAndDrop('#e2e-project-page-body', {
+      position: 'inside',
+    });
+    // dragAndDrop drops once per matched target, so a transient duplicate
+    // match inserts the component twice — which the two later tests then
+    // trip over (a 2-element click, and a frame click that selects nothing
+    // deletable). Fail fast here, at the cause.
+    cy.get('.e2e-content-builder-iframe-component').should('have.length', 1);
+    cy.get('#e2e-content-builder-iframe-url-input').type(
+      // Typeform survey created in CitizenLab Methods Squad workspace specifically for e2e
+      'https://citizenlabco.typeform.com/to/cZtXQzTf'
+    );
+
+    // Confirms that iframe displays correctly on live page
+    cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveProjectDescriptionBuilder');
+    cy.visit(`/projects/${projectSlug}`);
+    cy.get('.e2e-content-builder-iframe-component').should('exist');
+  });
+
+  it('handles Iframe errors correctly', () => {
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
+      'saveProjectDescriptionBuilder'
+    );
+    cy.visit(`/admin/project-page-builder/projects/${projectId}`);
+    cy.get('.e2e-content-builder-iframe-component').wait(1000).click('center', {
+      force: true,
+    });
+
+    // Try invalid URL
+    cy.get('#e2e-content-builder-iframe-url-input')
+      .clear()
+      .type('https://citizen')
+      .blur();
+    cy.get('.e2e-error-message').should('be.visible');
+    // Check that save is disabled
+    cy.contains('Save').should('have.attr', 'aria-disabled', 'true');
+    // Check that red border is present
+    cy.get('.e2e-content-builder-iframe-component')
+      .parents('.e2e-render-node')
+      .first()
+      .should('have.css', 'border-color', 'rgb(214, 22, 7)');
+
+    // Type valid URL
+    cy.get('#e2e-content-builder-iframe-url-input')
+      .clear()
+      .type('https://citizenlabco.typeform.com/to/cZtXQzTf')
+      .blur();
+    // Check that save is enabled
+    cy.contains('Save').should('be.enabled');
+    // Check that red border is gone
+    cy.get('.e2e-content-builder-iframe-component')
+      .parents('.e2e-render-node')
+      .first()
+      .should('have.css', 'border-color', 'rgb(4, 77, 108)');
+  });
+
+  it('deletes Iframe component correctly', () => {
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
+      'saveProjectDescriptionBuilder'
+    );
+    cy.get('.e2e-content-builder-iframe-component').should('exist');
+
+    // Select the iframe node itself rather than clicking the frame's center
+    // and relying on the component happening to sit at that coordinate. The
+    // cross-origin iframe covers the wrapper and swallows real clicks, so
+    // force is needed — the craftjs selection handler is on the wrapper
+    // (same pattern as the error test above).
+    cy.get('.e2e-content-builder-iframe-component').click('center', {
+      force: true,
+    });
+    cy.get('#e2e-delete-button').click();
+    cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveProjectDescriptionBuilder');
+
+    cy.visit(`/projects/${projectSlug}`);
+    cy.get('.e2e-content-builder-iframe-component').should('not.exist');
+  });
+});

@@ -4,7 +4,6 @@ module AdminApi
   class ProjectSerializer < ActiveModel::Serializer
     attributes :id,
       :title_multiloc,
-      :description_multiloc,
       :description_preview_multiloc,
       :slug,
       :href,
@@ -55,7 +54,7 @@ module AdminApi
     end
 
     class FolderSerializer < ActiveModel::Serializer
-      attributes :id, :title_multiloc, :description_multiloc, :slug
+      attributes :id, :title_multiloc, :slug
     end
 
     class ProjectImageSerializer < ActiveModel::Serializer

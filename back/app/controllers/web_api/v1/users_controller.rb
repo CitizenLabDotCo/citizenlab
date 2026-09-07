@@ -52,11 +52,11 @@ class WebApi::V1::UsersController < ApplicationController
     @users = paginate @users
 
     LogActivityJob.perform_later(current_user, 'searched_users', current_user, Time.now.to_i, payload: { search_query: params[:search] }) if params[:search].present?
-
     render json: linked_json(@users, WebApi::V1::UserSerializer, params: jsonapi_serializer_params)
   end
 
   def seats
+
     authorize :user, :seats?
 
     attributes = {

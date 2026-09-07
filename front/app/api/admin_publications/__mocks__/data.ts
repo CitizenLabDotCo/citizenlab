@@ -15,13 +15,6 @@ export const mockFolderChildAdminPublicationsList: IAdminPublicationData[] = [
         'fr-BE': 'Et illo et aperiam.',
         'nl-BE': 'Praesentium ut itaque ipsam.',
       },
-      publication_description_multiloc: {
-        en: '\u003cp\u003eAdipisci quia ducimus. Rem et ipsa. Ipsa vero quae.\u003c/p\u003e\u003cp\u003eVoluptas nemo sit. Tempora quia rerum. Ratione dolore quae.\u003c/p\u003e\u003cp\u003eNecessitatibus dolores quod. Magnam ullam natus. Culpa delectus rerum.\u003c/p\u003e',
-        'fr-BE':
-          '\u003cp\u003eLaudantium et et. Voluptates expedita ipsam. Omnis aut veritatis.\u003c/p\u003e\u003cp\u003eNon cupiditate quia. Illo laudantium tenetur. Neque aperiam aliquid.\u003c/p\u003e\u003cp\u003eAsperiores velit saepe. Veritatis quibusdam est. Fuga laudantium consequatur.\u003c/p\u003e',
-        'nl-BE':
-          '\u003cp\u003eDeserunt dolor quia. Quae ipsum omnis. Odit autem sint.\u003c/p\u003e\u003cp\u003eEt eos amet. Officia temporibus molestiae. Delectus nihil laboriosam.\u003c/p\u003e\u003cp\u003eMaiores eaque magni. Amet molestias asperiores. Incidunt magni consequatur.\u003c/p\u003e',
-      },
       publication_description_preview_multiloc: {
         en: 'Et omnis recusandae minima.',
         'fr-BE': 'Blanditiis et repellendus cupiditate.',
@@ -62,13 +55,6 @@ export const mockFolderChildAdminPublicationsList: IAdminPublicationData[] = [
         en: 'Rem nulla consequatur vero.',
         'fr-BE': 'Ducimus voluptatem tempora expedita.',
         'nl-BE': 'Perferendis modi voluptatem facilis.',
-      },
-      publication_description_multiloc: {
-        en: '\u003cp\u003eAd quam rerum. Fugiat vel dolores. Eligendi occaecati corporis.\u003c/p\u003e\u003cp\u003eDolorem est rem. Sequi aspernatur repudiandae. Tempora reprehenderit aut.\u003c/p\u003e\u003cp\u003eDolor accusantium molestiae. Pariatur aut tempora. Illum sequi illo.\u003c/p\u003e',
-        'fr-BE':
-          '\u003cp\u003eQuas rem sed. Temporibus corporis et. Fugiat et vero.\u003c/p\u003e\u003cp\u003eEsse aut dolorem. Quis impedit optio. Necessitatibus ipsa ut.\u003c/p\u003e\u003cp\u003eCorporis iure suscipit. Aut autem dolores. Voluptas ea eligendi.\u003c/p\u003e',
-        'nl-BE':
-          '\u003cp\u003eAliquam amet ut. Ea ut in. Architecto neque minus.\u003c/p\u003e\u003cp\u003eOmnis maxime ullam. Eaque eveniet illum. Animi aut accusantium.\u003c/p\u003e\u003cp\u003eQuasi consectetur dolorem. Ut quam assumenda. Aspernatur pariatur explicabo.\u003c/p\u003e',
       },
       publication_description_preview_multiloc: {
         en: 'Aspernatur ut eius excepturi.',

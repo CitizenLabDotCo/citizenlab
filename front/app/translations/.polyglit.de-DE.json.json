@@ -7699,6 +7699,16 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.containers.CustomPageBuilder.customPage": {
+    "state": "verified",
+    "verified_at": "2026-09-03T08:29:21.309632Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.CustomPageBuilder.saveError": {
+    "state": "verified",
+    "verified_at": "2026-09-03T08:29:21.309632Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.CustomPageShow.editPage": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",

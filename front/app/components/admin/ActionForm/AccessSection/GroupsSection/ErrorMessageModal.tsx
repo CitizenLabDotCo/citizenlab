@@ -5,7 +5,6 @@ import React from 'react';
 
 import {
   Box,
-  Title,
   Text,
   Button,
   InputMultilocWithLocaleSwitcher,
@@ -43,13 +42,8 @@ const ErrorMessageModal = ({
     <Modal
       opened={opened}
       close={onClose}
-      niceHeader
       width="560px"
-      header={
-        <Title ml="20px" variant="h3" color="primary">
-          <FormattedMessage {...messages.modalTitle} />
-        </Title>
-      }
+      header={<FormattedMessage {...messages.modalTitle} />}
     >
       <Box p="24px">
         <Text mt="0" color="coolGrey600">

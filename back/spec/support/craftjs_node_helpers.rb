@@ -22,7 +22,7 @@ module CraftjsNodeHelpers
   # whose parent is the page body are listed as its children, before the seeded phases
   # and events widgets.
   def project_page_craftjs(content = {})
-    scaffold = ContentBuilder::ProjectPageLayoutService.new.from_description_multiloc({})
+    scaffold = ContentBuilder::ProjectPageLayoutService.new.craftjs_json_from_body({})
     body_id = ContentBuilder::ProjectPageLayoutService::BODY_ID
     body = scaffold[body_id]
     top_level = content.select { |_id, node| node['parent'] == body_id }.keys

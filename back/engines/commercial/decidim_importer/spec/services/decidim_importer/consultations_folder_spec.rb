@@ -93,12 +93,22 @@ RSpec.describe DecidimImporter::ConsultationsFolder do
   it 'gives every folder a homepage preview description, deriving it from the description when present' do
     group = create(:project_folder,
       title_multiloc: { 'en' => 'Neighbourhoods' },
-      description_multiloc: { 'en' => '<p>All the <strong>neighbourhood</strong> projects.</p>' },
       description_preview_multiloc: {})
+    # The importer stages a folder's description as a description-only layout.
+    create(:layout, content_buildable: group, code: 'project_folder_description', enabled: true, craftjs_json: {
+      'ROOT' => { 'type' => 'div', 'nodes' => ['TEXT'], 'props' => {}, 'isCanvas' => true },
+      'TEXT' => {
+        'type' => { 'resolvedName' => 'TextMultiloc' },
+        'nodes' => [],
+        'props' => { 'text' => { 'en' => '<p>All the <strong>neighbourhood</strong> projects.</p>' } },
+        'parent' => 'ROOT',
+        'isCanvas' => false
+      }
+    })
 
     folder = service.run[:folder]
 
-    # imported folder: preview derived from the (tag-stripped) description
+    # imported folder: preview derived from the (tag-stripped) staged description
     expect(group.reload.description_preview_multiloc['en']).to eq('All the neighbourhood projects.')
     # synthetic Consultations folder: no description, so it falls back to the (translated) title
     expect(folder.reload.description_preview_multiloc).to eq(folder.title_multiloc)
