@@ -27,6 +27,7 @@ module McpServer::DemoData
       first_name: first_name,
       last_name: last_name,
       locale: AppConfiguration.instance.settings('core', 'locales').sample,
+      custom_field_values: RandomCustomFieldValuesService.new.generate(CustomField.registration.enabled),
       confirmation_required: false,
       email_confirmed_at: registered_at,
       registration_completed_at: registered_at,
