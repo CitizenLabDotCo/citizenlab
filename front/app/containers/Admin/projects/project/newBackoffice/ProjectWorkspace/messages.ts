@@ -37,4 +37,12 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.workspace.backToProjectSetup',
     defaultMessage: 'Project setup',
   },
+  offlineCollection: {
+    id: 'app.containers.Admin.projects.project.workspace.offlineCollection',
+    defaultMessage: 'Offline collection',
+  },
+  phasePreviewTitle: {
+    id: 'app.containers.Admin.projects.project.workspace.phasePreviewTitle',
+    defaultMessage: 'Preview of this phase',
+  },
 });
