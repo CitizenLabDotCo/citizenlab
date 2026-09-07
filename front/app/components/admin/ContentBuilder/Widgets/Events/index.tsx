@@ -27,6 +27,8 @@ import { useIntl } from 'utils/cl-intl';
 import Link, { typedStyled } from 'utils/cl-router/Link';
 import sharedMessages from 'utils/messages';
 
+export const EVENTS_WIDGET_NAME = 'EventsList';
+
 const PAGINATED_PAGE_SIZE = 15;
 const CURRENT_PROJECT_STATUSES = ['published', 'draft', 'archived'] as const;
 

@@ -8,6 +8,7 @@ import AccordionMultiloc, {
 import ButtonMultiloc, {
   buttonMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
+import EventsList from 'components/admin/ContentBuilder/Widgets/Events';
 import HtmlBlockMultiloc, {
   htmlBlockMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
@@ -35,6 +36,7 @@ import FolderTitle, {
 import InfoWithAccordions, {
   infoWithAccordionsTitle,
 } from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
+
 import { MessageDescriptor } from 'utils/cl-intl';
 
 // Homepage builder widgets
@@ -83,6 +85,7 @@ export const WIDGETS = {
   CommunityMonitorCTA,
   CustomPages,
   Events,
+  EventsList,
   FollowedItems,
   FinishedOrArchived,
   HomepageBanner,
@@ -129,6 +132,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   CommunityMonitorCTA: communityMonitorCTATitle,
   CustomPages: customPagesTitle,
   Events: eventsTitle,
+  EventsList: eventsTitle,
   FollowedItems: followedItemsTitle,
   FinishedOrArchived: finishedOrArchivedTitle,
   HomepageBanner: homepageBannerTitle,
