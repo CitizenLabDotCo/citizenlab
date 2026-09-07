@@ -613,6 +613,7 @@
   "app.components.formBuilder.copySurveyModal.noPhaseSelected": "Nie wybrano żadnej fazy. Najpierw wybierz fazę.",
   "app.components.formBuilder.copySurveyModal.noProject": "Brak projektu",
   "app.components.formBuilder.copySurveyModal.noProjectSelected": "Nie wybrano żadnego projektu. Wybierz projekt jako pierwszy.",
+  "app.components.formBuilder.copySurveyModal.survey": "Ankieta",
   "app.components.formBuilder.copySurveyModal.surveyFormPersistedWarning": "Zapisałeś już zmiany w tej ankiecie. Jeśli powielisz inną ankietę, zmiany zostaną utracone.",
   "app.components.formBuilder.copySurveyModal.title": "Wybierz ankietę do powielenia",
   "app.components.formBuilder.editWarningModal.addOrReorder": "Dodaj lub zmień kolejność pytań",

@@ -613,6 +613,7 @@
   "app.components.formBuilder.copySurveyModal.noPhaseSelected": "Geen fase geselecteerd. Selecteer eerst een fase.",
   "app.components.formBuilder.copySurveyModal.noProject": "Geen project",
   "app.components.formBuilder.copySurveyModal.noProjectSelected": "Geen project geselecteerd. Selecteer eerst een project.",
+  "app.components.formBuilder.copySurveyModal.survey": "Vragenlijst",
   "app.components.formBuilder.copySurveyModal.surveyFormPersistedWarning": "Je hebt al wijzigingen in deze vragenlijst opgeslagen. Als je een andere vragenlijst dupliceert, gaan de wijzigingen verloren.",
   "app.components.formBuilder.copySurveyModal.title": "Selecteer een vragenlijst om te dupliceren",
   "app.components.formBuilder.editWarningModal.addOrReorder": "Vragen toevoegen of opnieuw ordenen",

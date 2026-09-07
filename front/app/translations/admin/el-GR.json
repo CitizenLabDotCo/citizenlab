@@ -613,6 +613,7 @@
   "app.components.formBuilder.copySurveyModal.noPhaseSelected": "Δεν έχει επιλεγεί φάση. Παρακαλούμε επιλέξτε πρώτα μια φάση.",
   "app.components.formBuilder.copySurveyModal.noProject": "Κανένα έργο",
   "app.components.formBuilder.copySurveyModal.noProjectSelected": "Δεν έχει επιλεγεί κανένα έργο. Παρακαλούμε επιλέξτε πρώτα ένα έργο.",
+  "app.components.formBuilder.copySurveyModal.survey": "Έρευνα",
   "app.components.formBuilder.copySurveyModal.surveyFormPersistedWarning": "Έχετε ήδη αποθηκεύσει αλλαγές σε αυτήν την έρευνα. Εάν δημιουργήσετε αντίγραφο άλλης έρευνας, οι αλλαγές θα χαθούν.",
   "app.components.formBuilder.copySurveyModal.title": "Επιλέξτε μια έρευνα για αντιγραφή",
   "app.components.formBuilder.editWarningModal.addOrReorder": "Προσθήκη ή αναδιάταξη ερωτήσεων",

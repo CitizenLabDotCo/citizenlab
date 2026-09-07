@@ -613,6 +613,7 @@
   "app.components.formBuilder.copySurveyModal.noPhaseSelected": "Vaihetta ei ole valittu. Valitse ensin vaihe.",
   "app.components.formBuilder.copySurveyModal.noProject": "Ei projektia",
   "app.components.formBuilder.copySurveyModal.noProjectSelected": "Projektia ei ole valittu. Valitse ensin projekti.",
+  "app.components.formBuilder.copySurveyModal.survey": "Kysely",
   "app.components.formBuilder.copySurveyModal.surveyFormPersistedWarning": "Olet jo tallentanut muutokset tähän kyselyyn. Jos kopioit toisen kyselyn, muutokset menetetään.",
   "app.components.formBuilder.copySurveyModal.title": "Valitse kopioitava kysely",
   "app.components.formBuilder.editWarningModal.addOrReorder": "Lisää tai järjestä kysymyksiä uudelleen",

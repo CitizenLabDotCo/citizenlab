@@ -613,6 +613,7 @@
   "app.components.formBuilder.copySurveyModal.noPhaseSelected": "Níl aon chéim roghnaithe. Roghnaigh céim ar dtús le do thoil.",
   "app.components.formBuilder.copySurveyModal.noProject": "Gan tionscadal",
   "app.components.formBuilder.copySurveyModal.noProjectSelected": "Níl aon tionscadal roghnaithe. Roghnaigh tionscadal ar dtús le do thoil.",
+  "app.components.formBuilder.copySurveyModal.survey": "Suirbhé",
   "app.components.formBuilder.copySurveyModal.surveyFormPersistedWarning": "Tá athruithe sábháilte agat ar an suirbhé seo cheana féin. Má dhéanann tú suirbhé eile a dhúbláil, caillfear na hathruithe.",
   "app.components.formBuilder.copySurveyModal.title": "Roghnaigh suirbhé le dúbláil",
   "app.components.formBuilder.editWarningModal.addOrReorder": "Cuir ceisteanna leis nó athordaigh iad",

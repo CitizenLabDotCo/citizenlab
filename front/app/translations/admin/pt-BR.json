@@ -613,6 +613,7 @@
   "app.components.formBuilder.copySurveyModal.noPhaseSelected": "Nenhuma fase foi selecionada. Selecione uma fase primeiro.",
   "app.components.formBuilder.copySurveyModal.noProject": "Nenhum projeto",
   "app.components.formBuilder.copySurveyModal.noProjectSelected": "Nenhum projeto foi selecionado. Por favor, selecione um projeto primeiro.",
+  "app.components.formBuilder.copySurveyModal.survey": "Pesquisa",
   "app.components.formBuilder.copySurveyModal.surveyFormPersistedWarning": "Você já salvou as alterações nesta pesquisa. Se você duplicar outro questionário, as alterações serão perdidas.",
   "app.components.formBuilder.copySurveyModal.title": "Selecione uma pesquisa para duplicar",
   "app.components.formBuilder.editWarningModal.addOrReorder": "Adicionar ou reordenar perguntas",

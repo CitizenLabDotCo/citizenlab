@@ -613,6 +613,7 @@
   "app.components.formBuilder.copySurveyModal.noPhaseSelected": "Nincs szakasz kiválasztva. Kérjük, előbb válasszon egy szakaszt.",
   "app.components.formBuilder.copySurveyModal.noProject": "Nincs projekt",
   "app.components.formBuilder.copySurveyModal.noProjectSelected": "Nincs projekt kiválasztva. Kérjük, előbb válasszon ki egy projektet.",
+  "app.components.formBuilder.copySurveyModal.survey": "Kérdőív",
   "app.components.formBuilder.copySurveyModal.surveyFormPersistedWarning": "Már mentette a módosításokat ebben a felmérésben. Ha egy másik felmérést duplikál, a módosítások elvesznek.",
   "app.components.formBuilder.copySurveyModal.title": "Válasszon ki egy másolandó kérdőívet",
   "app.components.formBuilder.editWarningModal.addOrReorder": "Kérdések hozzáadása vagy átrendezése",

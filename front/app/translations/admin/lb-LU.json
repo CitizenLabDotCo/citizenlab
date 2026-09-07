@@ -613,6 +613,7 @@
   "app.components.formBuilder.copySurveyModal.noPhaseSelected": "Keng Phas ausgewielt. Wielt wgl. fir d'éischt eng Phas aus.",
   "app.components.formBuilder.copySurveyModal.noProject": "Kee Projet",
   "app.components.formBuilder.copySurveyModal.noProjectSelected": "Kee Projet ausgewielt. Wielt wgl. fir d'éischt e Projet aus.",
+  "app.components.formBuilder.copySurveyModal.survey": "Ëmfro",
   "app.components.formBuilder.copySurveyModal.surveyFormPersistedWarning": "Dir hutt d'Ännerungen un dëser Ëmfro scho gespäichert. Wann Dir eng aner Ëmfro duplizéiert, ginn d'Ännerunge verluer.",
   "app.components.formBuilder.copySurveyModal.title": "Wielt eng Ëmfro aus, fir se ze duplizéieren",
   "app.components.formBuilder.editWarningModal.addOrReorder": "Froen derbäisetzen oder nei uuerden",

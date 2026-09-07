@@ -613,6 +613,7 @@
   "app.components.formBuilder.copySurveyModal.noPhaseSelected": "Ingen fase valgt. Vennligst velg en fase først.",
   "app.components.formBuilder.copySurveyModal.noProject": "Ingen prosjekter",
   "app.components.formBuilder.copySurveyModal.noProjectSelected": "Ingen prosjekt valgt. Vennligst velg et prosjekt først.",
+  "app.components.formBuilder.copySurveyModal.survey": "Spørreundersøkelse",
   "app.components.formBuilder.copySurveyModal.surveyFormPersistedWarning": "Du har allerede lagret endringer i denne undersøkelsen. Hvis du dupliserer en annen undersøkelse, vil endringene gå tapt.",
   "app.components.formBuilder.copySurveyModal.title": "Velg en undersøkelse som skal dupliseres",
   "app.components.formBuilder.editWarningModal.addOrReorder": "Legg til eller endre rekkefølgen på spørsmål",

@@ -613,6 +613,7 @@
   "app.components.formBuilder.copySurveyModal.noPhaseSelected": "Keine Phase ausgewählt. Bitte wähle zuerst eine Phase.",
   "app.components.formBuilder.copySurveyModal.noProject": "Kein Projekt",
   "app.components.formBuilder.copySurveyModal.noProjectSelected": "Kein Projekt ausgewählt. Bitte wähle zuerst ein Projekt aus.",
+  "app.components.formBuilder.copySurveyModal.survey": "Umfrage",
   "app.components.formBuilder.copySurveyModal.surveyFormPersistedWarning": "Du hast bereits Änderungen an dieser Umfrage gespeichert. Wenn du eine andere Umfrage duplizierst, gehen die Änderungen verloren.",
   "app.components.formBuilder.copySurveyModal.title": "Wähle eine zu duplizierende Umfrage",
   "app.components.formBuilder.editWarningModal.addOrReorder": "Fragen hinzufügen oder neu anordnen",
