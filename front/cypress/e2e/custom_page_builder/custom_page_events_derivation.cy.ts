@@ -14,15 +14,27 @@ describe('Custom page events derivation', () => {
   let pageSlug = '';
   let projectId = '';
   let otherProjectId = '';
+  let filteringWasEnabled = false;
 
   const setBuilderFeature = (enabled: boolean) =>
     cy.apiUpdateAppConfiguration({
       settings: { custom_page_builder: { allowed: true, enabled } },
     });
 
+  const setFiltering = (enabled: boolean) =>
+    cy.apiUpdateAppConfiguration({
+      settings: { advanced_custom_pages: { allowed: enabled, enabled } },
+    });
+
   before(() => {
     cy.setAdminLoginCookie();
     setBuilderFeature(false);
+
+    cy.apiGetAppConfiguration().then((config) => {
+      filteringWasEnabled =
+        config.body.data.attributes.settings.advanced_custom_pages?.enabled ===
+        true;
+    });
 
     cy.apiCreateArea(areaTitle).then((area) => {
       const areaId = area.body.data.id;
@@ -75,13 +87,32 @@ describe('Custom page events derivation', () => {
 
   after(() => {
     setBuilderFeature(false);
+    setFiltering(filteringWasEnabled);
     if (pageId) cy.apiRemoveCustomPage(pageId);
     if (projectId) cy.apiRemoveProject(projectId);
     if (otherProjectId) cy.apiRemoveProject(otherProjectId);
   });
 
+  // Filtering is the paid capability on this surface, and the only surface it is gated on.
+  it('offers no choice of source without advanced_custom_pages', () => {
+    setBuilderFeature(true);
+    setFiltering(false);
+    cy.setAdminLoginCookie();
+    cy.visit(`/admin/custom-page-builder/pages/${pageId}`);
+    cy.get('div#ROOT');
+
+    cy.get('[data-cy="e2e-events-widget"]')
+      .parents('.e2e-render-node')
+      .first()
+      .click({ force: true });
+
+    cy.get('label[for="events-source-areas"]').should('not.exist');
+    cy.get('label[for="events-source-all"]').should('not.exist');
+  });
+
   it('carries the page filter onto the derived events widget', () => {
     setBuilderFeature(true);
+    setFiltering(true);
     cy.setAdminLoginCookie();
     // Open the builder once so the layout is derived, then check what a visitor sees.
     cy.visit(`/admin/custom-page-builder/pages/${pageId}`);

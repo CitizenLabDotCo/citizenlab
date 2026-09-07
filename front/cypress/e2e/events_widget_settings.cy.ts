@@ -103,7 +103,9 @@ describe('Events widget settings panel', () => {
     if (outsideProjectId) cy.apiRemoveProject(outsideProjectId);
   });
 
-  it('offers no choice of source without the filtering feature', () => {
+  // Filtering is gated on custom pages only, so the homepage offers it whatever the
+  // advanced_custom_pages flag says.
+  it('offers a choice of source on the homepage', () => {
     setFiltering(false);
     goToHomepageBuilder();
 
@@ -112,8 +114,8 @@ describe('Events widget settings panel', () => {
     });
     selectTheWidget();
 
-    cy.get('#events-source-all').should('not.exist');
-    cy.get('#events-source-areas').should('not.exist');
+    cy.get('label[for="events-source-all"]').should('exist');
+    cy.get('label[for="events-source-areas"]').should('exist');
   });
 
   it('shows the heading the widget falls back to as the placeholder', () => {
