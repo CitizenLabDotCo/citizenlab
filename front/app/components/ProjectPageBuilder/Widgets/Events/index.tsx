@@ -8,6 +8,7 @@ import useEvents from 'api/events/useEvents';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
+import useWidgetProjectId from 'components/admin/ContentBuilder/useWidgetProjectId';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -22,7 +23,6 @@ import SectionBackground, {
 } from '../SectionBackground';
 import SectionBackgroundSetting from '../SectionBackgroundSetting';
 import useIsPageBodyChild from '../useIsPageBodyChild';
-import useWidgetProjectId from '../useWidgetProjectId';
 
 import EmptyEvents from './EmptyEvents';
 import EventsSection from './EventsSection';
