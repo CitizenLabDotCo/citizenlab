@@ -14,6 +14,7 @@ import useFileAttachments from 'api/file_attachments/useFileAttachments';
 import useFileById from 'api/files/useFileById';
 import useFiles from 'api/files/useFiles';
 
+import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
 import { useContentBuilderLayoutContext } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
 import FileDisplay from 'components/UI/FileAttachments/FileDisplay';
 
@@ -34,7 +35,7 @@ const FilePreview = ({ fileId }: { fileId?: string }) => {
 
   if (!fileId) {
     return (
-      <Box maxWidth="1200px" margin="0 auto">
+      <Box maxWidth={BUILDER_CONTENT_MAX_WIDTH} margin="0 auto">
         <FilePlaceholder>
           <FormattedMessage {...messages.selectFilePrompt} />
         </FilePlaceholder>
@@ -48,7 +49,7 @@ const FilePreview = ({ fileId }: { fileId?: string }) => {
 
   if (!file) {
     return (
-      <Box maxWidth="1200px" margin="0 auto">
+      <Box maxWidth={BUILDER_CONTENT_MAX_WIDTH} margin="0 auto">
         <FilePlaceholder variant="error">
           <FormattedMessage {...messages.fileMissing} />
         </FilePlaceholder>
@@ -59,7 +60,7 @@ const FilePreview = ({ fileId }: { fileId?: string }) => {
   return (
     <Box
       id="e2e-file-attachment"
-      maxWidth="1200px"
+      maxWidth={BUILDER_CONTENT_MAX_WIDTH}
       margin="0 auto"
       pointerEvents="none"
     >
@@ -101,7 +102,11 @@ const FileAttachment = ({ fileId }: FileAttachmentProps) => {
   if (attachment) {
     const attachmentAttributes = attachment.attributes;
     return (
-      <Box id="e2e-file-attachment" maxWidth="1200px" margin="0 auto">
+      <Box
+        id="e2e-file-attachment"
+        maxWidth={BUILDER_CONTENT_MAX_WIDTH}
+        margin="0 auto"
+      >
         <FileDisplay
           file={{
             id: attachment.relationships.file.data.id,
