@@ -1,12 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  Label,
-  MultiSelect,
-  Radio,
-  Text,
-} from '@citizenlab/cl2-component-library';
+import { Box, Label, Radio, Text } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { Multiloc } from 'typings';
 
@@ -16,6 +10,8 @@ import useSpaces from 'api/spaces/useSpaces';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
+
+import MultiSelect from 'components/UI/MultiSelect';
 
 import { useIntl } from 'utils/cl-intl';
 import { useParams } from 'utils/router';
@@ -138,10 +134,6 @@ const SourceSetting = () => {
           isLoading={selection.isLoading}
           options={selection.options}
           onChange={(values) => setProp((p: EventsProps) => (p.ids = values))}
-          a11y_clearbuttonActionMessage={formatMessage(messages.clearSelection)}
-          a11y_clearSearchButtonActionMessage={formatMessage(
-            messages.clearSearch
-          )}
         />
       )}
     </Box>

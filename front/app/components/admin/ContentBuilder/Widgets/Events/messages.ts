@@ -78,14 +78,6 @@ export default defineMessages({
     defaultMessage:
       'This widget shows events from every project. Filtering by area, tag or space is part of a paid plan.',
   },
-  clearSelection: {
-    id: 'app.components.admin.ContentBuilder.Widgets.Events.clearSelection',
-    defaultMessage: 'Clear selection',
-  },
-  clearSearch: {
-    id: 'app.components.admin.ContentBuilder.Widgets.Events.clearSearch',
-    defaultMessage: 'Clear search',
-  },
   heading: {
     id: 'app.components.admin.ContentBuilder.Widgets.Events.heading',
     defaultMessage: 'Heading',

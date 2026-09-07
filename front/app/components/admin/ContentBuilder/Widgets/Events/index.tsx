@@ -128,7 +128,7 @@ const EventsWidget: UserComponent<EventsProps> = ({
   }
 
   const contents = (
-    <Box display="flex" flexDirection="column">
+    <Box display="flex" flexDirection="column" data-cy="e2e-events-widget">
       <Title variant="h2" color="tenantText" m="0" mb="24px">
         {titleMultiloc
           ? localize(titleMultiloc)
