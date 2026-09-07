@@ -101,6 +101,7 @@ module McpServer
       McpServer::Tools::CreateCause,
       McpServer::Tools::CreatePollQuestion,
       McpServer::Tools::CreatePollOption,
+      McpServer::Tools::CreateDemoInputs,
       McpServer::Tools::DestroyResource,
       McpServer::Tools::UpdateResource,
       McpServer::Tools::UpdateProject,
