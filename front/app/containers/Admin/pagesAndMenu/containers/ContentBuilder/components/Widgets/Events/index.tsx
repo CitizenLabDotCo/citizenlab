@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, useBreakpoint, Text } from '@citizenlab/cl2-component-library';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
-import EventsWidget from 'components/LandingPages/citizen/EventsWidget';
+import SharedEventsWidget from 'components/admin/ContentBuilder/Widgets/Events';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -22,7 +22,13 @@ const Events = () => {
         pb={isSmallerThanTablet ? DEFAULT_PADDING : DEFAULT_Y_PADDING}
         px={isSmallerThanTablet ? DEFAULT_PADDING : '0px'}
       >
-        <EventsWidget />
+        <SharedEventsWidget
+          source="all"
+          timeFilters={['upcoming']}
+          limit={3}
+          projectPublicationStatuses={['published']}
+          showEmptyMessage
+        />
       </Box>
     </Box>
   );

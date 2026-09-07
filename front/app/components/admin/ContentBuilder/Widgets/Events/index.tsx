@@ -49,6 +49,7 @@ export type EventsProps = {
   limit?: EventsLimit;
   projectPublicationStatuses?: EventsPublicationStatus[];
   showEmptyMessage?: boolean;
+  renderFrame?: (contents: React.ReactNode) => React.ReactNode;
 };
 
 const NoEventsText = styled.div`
@@ -91,6 +92,7 @@ const EventsWidget: UserComponent<EventsProps> = ({
   limit = 3,
   projectPublicationStatuses = ['published'],
   showEmptyMessage = false,
+  renderFrame,
 }) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -137,11 +139,12 @@ const EventsWidget: UserComponent<EventsProps> = ({
     (upcomingEvents?.data.length ?? 0) === 0 &&
     (pastEvents?.data.length ?? 0) === 0;
 
+  // EmptyEvents brings its own frame, and the caller's frame should not paint an empty band.
   if (isEmpty && !showEmptyMessage) {
     return inEditor ? <EmptyEvents /> : null;
   }
 
-  return (
+  const contents = (
     <Box display="flex" flexDirection="column">
       <Title variant="h2" color="tenantText" m="0" mb="24px">
         {titleMultiloc
@@ -195,6 +198,8 @@ const EventsWidget: UserComponent<EventsProps> = ({
       )}
     </Box>
   );
+
+  return <>{renderFrame ? renderFrame(contents) : contents}</>;
 };
 
 export default EventsWidget;
