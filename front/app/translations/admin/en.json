@@ -1937,6 +1937,8 @@
   "app.containers.Admin.projects.project.workspace.buildView": "Build",
   "app.containers.Admin.projects.project.workspace.insightsView": "Insights",
   "app.containers.Admin.projects.project.workspace.manageView": "Manage",
+  "app.containers.Admin.projects.project.workspace.offlineCollection": "Offline collection",
+  "app.containers.Admin.projects.project.workspace.phasePreviewTitle": "Preview of this phase",
   "app.containers.Admin.projects.project.workspace.phaseSettings": "Phase settings",
   "app.containers.Admin.projects.project.workspace.phaseSetupPanel": "Phase setup",
   "app.containers.Admin.projects.project.workspace.projectSettings": "Project settings",
