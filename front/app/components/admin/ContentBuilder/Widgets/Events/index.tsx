@@ -27,6 +27,9 @@ import { useIntl } from 'utils/cl-intl';
 import Link, { typedStyled } from 'utils/cl-router/Link';
 import sharedMessages from 'utils/messages';
 
+import messages from './messages';
+import EventsSettings from './Settings';
+
 export const EVENTS_WIDGET_NAME = 'EventsList';
 
 const PAGINATED_PAGE_SIZE = 15;
@@ -202,6 +205,16 @@ const EventsWidget: UserComponent<EventsProps> = ({
   );
 
   return <>{renderFrame ? renderFrame(contents) : contents}</>;
+};
+
+EventsWidget.craft = {
+  related: {
+    settings: EventsSettings,
+  },
+  custom: {
+    title: messages.eventsListTitle,
+    noPointerEvents: true,
+  },
 };
 
 export default EventsWidget;
