@@ -123,5 +123,17 @@ resource 'Phase insights' do
     include_examples 'phase insights demographics',
       gender_blank: 1,
       birthyear_blank: 1
+
+    # Phase permissions only exist once an admin overrides them; until then the
+    # phase follows the global 'visiting' permission, and its demographic
+    # questions are the ones the insights report on.
+    # See Permissions::PermissionInheritanceService.
+    context 'when the phase has not overridden its permissions' do
+      before { ideation_phase.permissions.destroy_all }
+
+      include_examples 'phase insights demographics',
+        gender_blank: 1,
+        birthyear_blank: 1
+    end
   end
 end

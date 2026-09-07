@@ -12,6 +12,10 @@ module EmailCampaigns
           Rails.logger.info("[SMS::Fake] Pretending to send #{use_case} SMS to #{to}: #{body}")
           { message_sid: "FAKE_#{SecureRandom.hex(8)}", status: 'sent' }
         end
+
+        def configured?(_use_case)
+          true
+        end
       end
     end
   end

@@ -55,7 +55,7 @@ describe 'single_use:delete_inherited_phase_permissions' do
 
   it 'keeps a permission whose demographic questions differ' do
     permission = service.override!(phase, 'posting_idea')
-    permission.update!(global_custom_fields: false)
+    permission.update!(custom_fields_behavior: 'custom')
     create(:permissions_custom_field, permission: permission)
 
     run
@@ -64,7 +64,7 @@ describe 'single_use:delete_inherited_phase_permissions' do
   end
 
   it 'keeps a permission whose columns all match but whose demographic questions differ' do
-    visiting_permission.update!(global_custom_fields: false)
+    visiting_permission.update!(custom_fields_behavior: 'custom')
     create(:permissions_custom_field, permission: visiting_permission)
     permission = service.override!(phase, 'posting_idea')
     permission.permissions_custom_fields.first.update!(custom_field: create(:custom_field))

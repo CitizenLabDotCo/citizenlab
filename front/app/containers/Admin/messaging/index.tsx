@@ -20,7 +20,12 @@ import messages from './messages';
 const MessagingDashboard = () => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
-  const smsEnabled = useFeatureFlag({ name: 'sms' });
+  // The sms feature carries the Twilio settings manual campaigns send through.
+  const smsFFEnabled = useFeatureFlag({ name: 'sms' });
+  const smsManualCampaignsFFEnabled = useFeatureFlag({
+    name: 'sms_manual_campaigns',
+  });
+  const smsManualCampaignsEnabled = smsFFEnabled && smsManualCampaignsFFEnabled;
 
   const tabs: ITab[] = [
     {
@@ -35,7 +40,7 @@ const MessagingDashboard = () => {
       url: '/admin/messaging/emails/automated',
       className: 'intercom-messaging-automated-emails',
     },
-    ...(smsEnabled
+    ...(smsManualCampaignsEnabled
       ? [
           {
             name: 'sms',

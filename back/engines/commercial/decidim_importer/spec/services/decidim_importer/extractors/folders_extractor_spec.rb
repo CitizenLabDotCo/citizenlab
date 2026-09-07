@@ -10,7 +10,7 @@ RSpec.describe DecidimImporter::Extractors::FoldersExtractor do
     described_class.new(rows, ref_map, locale_mapper: mapper, primary_locale: 'fr-FR').run
   end
 
-  it 'maps a process group to a folder with multiloc title/description' do
+  it 'maps a process group to a folder, staging its description as a layout' do
     rows = [{
       'uid' => 'decidim-participatoryprocessgroup-1',
       'title' => '{"en":"Env.","fr":"Environnement"}',
@@ -22,9 +22,14 @@ RSpec.describe DecidimImporter::Extractors::FoldersExtractor do
     attrs = extract(rows).first.attributes
 
     expect(attrs['title_multiloc']).to eq('en' => 'Env.', 'fr-FR' => 'Environnement')
-    expect(attrs['description_multiloc']['fr-FR']).to include('Vert')
+    expect(attrs).not_to have_key('description_multiloc')
     expect(attrs['admin_publication_attributes']).to eq('publication_status' => 'published')
     expect(attrs['remote_header_bg_url']).to eq 'http://localhost/hero.png'
+
+    layout = ref_map.fetch('decidim-participatoryprocessgroup-1-description-layout')
+    expect(layout.attributes['code']).to eq 'project_folder_description'
+    expect(layout.attributes['enabled']).to be true
+    expect(layout.attributes.dig('craftjs_json', 'TEXT', 'props', 'text', 'fr-FR')).to include('Vert')
   end
 
   it 'registers folders by their uid for cross-file joins' do

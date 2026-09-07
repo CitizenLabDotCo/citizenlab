@@ -5,6 +5,8 @@ require 'rails_helper'
 RSpec.describe OfficialFeedback do
   subject { build(:official_feedback) }
 
+  it_behaves_like 'a plain text multiloc', factory: :official_feedback, attribute: :author_multiloc
+
   describe 'Default factory' do
     it { is_expected.to be_valid }
   end

@@ -542,6 +542,7 @@ pt-BR:
       yesterday: Ontem
     new_phone_confirmation:
       sms_body: Seu código de confirmação é %{code}.
+      sms_body2: '%{organization_name}: Seu código de confirmação é %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Ir para esta entrada
       event_description: "%{feedback_author_name} apresentou uma atualização sobre o '%{input_title}'."
@@ -556,6 +557,7 @@ pt-BR:
       title: Escolha uma nova senha
     phone_confirmation:
       sms_body: Seu código de confirmação é %{code}.
+      sms_body2: '%{organization_name}: Seu código de confirmação é %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane

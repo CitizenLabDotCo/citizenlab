@@ -7,6 +7,7 @@ import useProjectPageLayout from 'api/project_page_layout/useProjectPageLayout';
 
 import useLocale from 'hooks/useLocale';
 
+import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
@@ -53,9 +54,11 @@ export const FullScreenPreview = ({ projectId }: Props) => {
         {isLoading && <Spinner />}
         {!isLoading && editorData && (
           <Box ref={(el: HTMLElement | null) => el?.setAttribute('inert', '')}>
-            <Editor isPreview={true}>
-              <ContentBuilderFrame editorData={editorData} />
-            </Editor>
+            <ContentBuilderLayoutProvider layoutId={layout.data.id}>
+              <Editor isPreview={true}>
+                <ContentBuilderFrame editorData={editorData} />
+              </Editor>
+            </ContentBuilderLayoutProvider>
           </Box>
         )}
       </FullScreenWrapper>

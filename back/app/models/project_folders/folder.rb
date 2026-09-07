@@ -6,7 +6,6 @@
 #
 #  id                           :uuid             not null, primary key
 #  title_multiloc               :jsonb
-#  description_multiloc         :jsonb
 #  description_preview_multiloc :jsonb
 #  header_bg                    :string
 #  slug                         :string
@@ -30,12 +29,14 @@ module ProjectFolders
     self.table_name = 'project_folders_folders'
     include Files::FileAttachable
     include PgSearch::Model
+    include PlainTextMultiloc
 
     slug from: proc { |folder| folder.title_multiloc&.values&.find(&:present?) }
 
     belongs_to :space, optional: true
 
-    has_many_text_images from: :description_multiloc
+    # Inline images of RichTextMultiloc bridge widgets in the folder's layouts
+    has_many :text_images, as: :imageable, dependent: :destroy
 
     has_one :admin_publication, as: :publication, inverse_of: :publication, dependent: :destroy
     has_one :nav_bar_item, dependent: :destroy, inverse_of: 'project_folder', foreign_key: 'project_folder_id'
@@ -47,15 +48,11 @@ module ProjectFolders
     mount_base64_uploader :header_bg, HeaderBgUploader
 
     validates :title_multiloc, presence: true, multiloc: { presence: true }
-    validates :description_multiloc, multiloc: { presence: false, html: true }
     validates :description_preview_multiloc, multiloc: { presence: false, html: true }
     validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template }
 
-    before_validation :sanitize_description_multiloc, if: :description_multiloc
     before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
-    # `prepend: true` puts this before `Sluggable#generate_slug` (registered on `ApplicationRecord`),
-    # which would otherwise build the slug from the raw title.
-    before_validation :sanitize_title_multiloc, if: -> { title_multiloc && title_multiloc_changed? }, prepend: true
+    plain_text_multiloc :title_multiloc, :header_bg_alt_text_multiloc, prepend: true
     before_validation :strip_title
     before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
 
@@ -65,7 +62,7 @@ module ProjectFolders
     after_destroy :remove_moderators
 
     pg_search_scope :search_by_all,
-      against: %i[title_multiloc description_multiloc description_preview_multiloc slug],
+      against: %i[title_multiloc description_preview_multiloc slug],
       using: { tsearch: { prefix: true } }
 
     pg_search_scope :search_by_title,
@@ -98,16 +95,6 @@ module ProjectFolders
       errors.add(:admin_publication_id, :blank, message: "Admin publication can't be blank")
     end
 
-    def sanitize_description_multiloc
-      service = SanitizationService.new
-      self.description_multiloc = service.sanitize_multiloc(
-        description_multiloc,
-        %i[title alignment list decoration link image video]
-      )
-      self.description_multiloc = service.remove_multiloc_empty_trailing_tags description_multiloc
-      self.description_multiloc = service.linkify_multiloc description_multiloc
-    end
-
     def sanitize_description_preview_multiloc
       service = SanitizationService.new
       self.description_preview_multiloc = service.sanitize_multiloc(
@@ -115,11 +102,6 @@ module ProjectFolders
         %i[decoration link]
       )
       self.description_preview_multiloc = service.remove_multiloc_empty_trailing_tags description_preview_multiloc
-    end
-
-    # Titles are plain text: strip markup so nothing downstream can render it as HTML.
-    def sanitize_title_multiloc
-      self.title_multiloc = SanitizationService.new.strip_multiloc_to_plain_text(title_multiloc)
     end
 
     def strip_title

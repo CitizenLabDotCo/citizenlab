@@ -5,7 +5,7 @@ import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 
 import {
   excludeHidden,
-  groupExtraSurveys,
+  groupSpotlightSurveys,
   phaseHasPrimaryCTA,
 } from './participationOptions';
 
@@ -59,9 +59,12 @@ describe('phaseHasPrimaryCTA', () => {
   );
 });
 
-describe('groupExtraSurveys', () => {
+describe('groupSpotlightSurveys', () => {
   it('returns empty groups for undefined input', () => {
-    expect(groupExtraSurveys(undefined)).toEqual({ open: [], upcoming: [] });
+    expect(groupSpotlightSurveys(undefined)).toEqual({
+      open: [],
+      upcoming: [],
+    });
   });
 
   it('groups standalone surveys by temporal state and drops past ones', () => {
@@ -72,7 +75,7 @@ describe('groupExtraSurveys', () => {
     );
     const pastSurvey = phase({ start_at: date(-10), end_at: date(-3) }, 'past');
 
-    const { open, upcoming } = groupExtraSurveys([
+    const { open, upcoming } = groupSpotlightSurveys([
       openSurvey,
       upcomingSurvey,
       pastSurvey,
@@ -84,7 +87,7 @@ describe('groupExtraSurveys', () => {
 
   it('treats surveys without an end date as open', () => {
     const ongoing = phase({ end_at: null }, 'ongoing');
-    expect(groupExtraSurveys([ongoing]).open.map((p) => p.id)).toEqual([
+    expect(groupSpotlightSurveys([ongoing]).open.map((p) => p.id)).toEqual([
       'ongoing',
     ]);
   });
@@ -93,7 +96,7 @@ describe('groupExtraSurveys', () => {
     const timelinePhase = phase({ placement_type: 'on_timeline' });
     const standaloneIdeation = phase({ participation_method: 'ideation' });
 
-    expect(groupExtraSurveys([timelinePhase, standaloneIdeation])).toEqual({
+    expect(groupSpotlightSurveys([timelinePhase, standaloneIdeation])).toEqual({
       open: [],
       upcoming: [],
     });

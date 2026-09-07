@@ -6,7 +6,7 @@ describe Analysis::PhaseToText do
   let(:service) { described_class.new }
 
   describe '#execute' do
-    let(:project) { build(:project, title_multiloc: { en: 'Renewing the park' }, description_multiloc: { en: 'Help us make the park great again!' }) }
+    let(:project) { build(:project, title_multiloc: { en: 'Renewing the park' }) }
     let(:phase) do
       build(
         :phase,
@@ -52,18 +52,18 @@ describe Analysis::PhaseToText do
       }
     end
 
-    it 'includes phase and project attributes' do
+    it 'includes phase and project attributes, with a blank description when there is no project page' do
       expect(service.execute(phase)).to eq({
         'Project title' => 'Renewing the park',
-        'Project description' => 'Help us make the park great again!',
+        'Project description' => '',
         'Phase title' => 'Collecting ideas',
         'Phase description' => 'Submit all your awesome ideas here!'
       })
     end
 
-    context 'when the project has a content builder layout for the description' do
+    context 'when the project has a project page layout' do
       it 'uses the layout to render the project description' do
-        create(:layout, craftjs_json:, content_buildable: project, code: 'project_description', enabled: true)
+        create(:layout, craftjs_json:, content_buildable: project, code: 'project_page', enabled: true)
         expect(service.execute(phase)).to eq({
           'Project title' => 'Renewing the park',
           'Project description' => 'This is the new description',

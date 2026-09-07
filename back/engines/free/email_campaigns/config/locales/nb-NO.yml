@@ -542,6 +542,7 @@ nb-NO:
       yesterday: I går
     new_phone_confirmation:
       sms_body: Din bekreftelseskode er %{code}.
+      sms_body2: '%{organization_name}: Din bekreftelseskode er %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Gå til denne inngangen
       event_description: "%{feedback_author_name} ga en oppdatering på '%{input_title}'."
@@ -556,6 +557,7 @@ nb-NO:
       title: Velg et nytt passord
     phone_confirmation:
       sms_body: Din bekreftelseskode er %{code}.
+      sms_body2: '%{organization_name}: Din bekreftelseskode er %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane

@@ -16,6 +16,7 @@
 #  participation_method :string           default("ideation"), not null
 #
 class IdeaStatus < ApplicationRecord
+  include PlainTextMultiloc
   CODES = %w[prescreening proposed threshold_reached expired viewed under_consideration accepted implemented rejected answered ineligible custom].freeze
   LOCKED_CODES = %w[prescreening proposed threshold_reached expired].freeze
   MANUAL_TRANSITION_NOT_ALLOWED_CODES = %w[prescreening threshold_reached expired].freeze
@@ -29,6 +30,7 @@ class IdeaStatus < ApplicationRecord
 
   has_many :ideas
 
+  plain_text_multiloc :title_multiloc, :description_multiloc
   before_validation :strip_title
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify

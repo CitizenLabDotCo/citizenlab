@@ -177,10 +177,15 @@ module Insights
       end
     end
 
+    # The permissions that actually govern participation in the phase: the rows
+    # the phase owns, plus, for every action it has not overridden, the copy of
+    # the global 'visiting' permission it inherits.
+    # See Permissions::PermissionInheritanceService.
+    # 'attending_event' is left out: event attendance is not phase participation.
     def phase_permissions
-      @phase.permissions
-        .where.not(action: 'attending_event')
-        .includes(:permissions_custom_fields, :groups)
+      Permissions::PermissionInheritanceService.new
+        .effective_permissions(@phase)
+        .reject { |permission| permission.action == 'attending_event' }
     end
 
     def birthyear_demographics_data(participant_custom_field_values)

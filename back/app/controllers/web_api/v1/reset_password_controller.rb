@@ -35,6 +35,8 @@ class WebApi::V1::ResetPasswordController < ApplicationController
       @user.find_or_create_confirmation(:email_confirmation).confirm! if @user.confirmation_required?
 
       if @user.save
+        @user.expire_token!
+
         render json: WebApi::V1::UserSerializer.new(
           @user,
           params: jsonapi_serializer_params

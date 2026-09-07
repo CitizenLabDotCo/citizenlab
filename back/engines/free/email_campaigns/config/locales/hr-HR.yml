@@ -542,6 +542,7 @@ hr-HR:
       yesterday: Jučer
     new_phone_confirmation:
       sms_body: Vaš kôd za potvrdu je %{code}.
+      sms_body2: '%{organization_name}: Vaš potvrdni kod je %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Idi na ovaj ulaz
       event_description: "%{feedback_author_name} je dao/la ažuriranje o '%{input_title}'."
@@ -556,6 +557,7 @@ hr-HR:
       title: Odaberite novu lozinku
     phone_confirmation:
       sms_body: Vaš potvrdni kôd je %{code}.
+      sms_body2: '%{organization_name}: Vaš potvrdni kod je %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jana

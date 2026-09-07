@@ -20,12 +20,55 @@ describe McpServer::Tools::ListPhasePermissions do
     expect(response.structured_content).to match(
       phase_id: phase.id,
       permissions: [
-        a_hash_including(action: 'posting_idea'),
-        a_hash_including(action: 'commenting_idea'),
-        a_hash_including(action: 'reacting_idea'),
-        a_hash_including(action: 'attending_event')
+        a_hash_including(action: 'posting_idea', inherited: false),
+        a_hash_including(action: 'commenting_idea', inherited: false),
+        a_hash_including(action: 'reacting_idea', inherited: false),
+        a_hash_including(action: 'attending_event', inherited: false)
       ]
     )
+  end
+
+  # A phase action has no permission row of its own until it is overridden;
+  # until then it follows the global 'visiting' permission.
+  # See Permissions::PermissionInheritanceService.
+  context 'when the phase has not customised its permissions' do
+    let!(:visiting_permission) do
+      create(:global_permission, action: 'visiting', permitted_by: 'admins_moderators')
+    end
+
+    before { Permissions::PermissionInheritanceService.clear_source_permission_cache }
+
+    it 'lists every action with the settings it inherits' do
+      phase = create(:phase)
+
+      response = list(phase_id: phase.id)
+
+      expect(response).not_to be_error
+
+      expect(response.structured_content).to match(
+        phase_id: phase.id,
+        permissions: [
+          a_hash_including(action: 'posting_idea', inherited: true, permitted_by: 'admins_moderators'),
+          a_hash_including(action: 'commenting_idea', inherited: true, permitted_by: 'admins_moderators'),
+          a_hash_including(action: 'reacting_idea', inherited: true, permitted_by: 'admins_moderators'),
+          a_hash_including(action: 'attending_event', inherited: true, permitted_by: 'admins_moderators')
+        ]
+      )
+    end
+
+    it 'reports the actions the phase has customised as its own' do
+      phase = create(:phase)
+      Permissions::PermissionInheritanceService.new.override!(phase, 'posting_idea')
+
+      response = list(phase_id: phase.id)
+
+      expect(response.structured_content[:permissions]).to match([
+        a_hash_including(action: 'posting_idea', inherited: false),
+        a_hash_including(action: 'commenting_idea', inherited: true),
+        a_hash_including(action: 'reacting_idea', inherited: true),
+        a_hash_including(action: 'attending_event', inherited: true)
+      ])
+    end
   end
 
   it 'serializes permission fields' do

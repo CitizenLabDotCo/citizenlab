@@ -10,8 +10,8 @@ module MultiTenancy
           access_denied_explanation_multiloc
           action
           confirmed_email_expiry
+          custom_fields_behavior
           everyone_tracking_enabled
-          global_custom_fields
           permitted_by
           require_confirmed_email
           require_name

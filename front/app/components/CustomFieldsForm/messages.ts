@@ -114,6 +114,10 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.typeYourAnswerRequired',
     defaultMessage: 'It is required to type your answer',
   },
+  typeToSearch: {
+    id: 'app.components.CustomFieldsForm.typeToSearch',
+    defaultMessage: 'Type to search',
+  },
   authorFieldPlaceholder: {
     id: 'app.components.CustomFieldsForm.authorFieldPlaceholder',
     defaultMessage: 'Start typing to search by user email or name...',

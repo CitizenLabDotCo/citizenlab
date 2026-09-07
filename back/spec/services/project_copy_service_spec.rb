@@ -129,6 +129,20 @@ describe ProjectCopyService do
       )
     end
 
+    it 'exports project text images, so bridge widget images survive the copy' do
+      project = create(:project)
+      text_image = create(:text_image, imageable: project, imageable_field: 'craftjs_json')
+
+      template = service.export project
+
+      expect(template['models']['project'].first['text_images_attributes']).to match [
+        hash_including(
+          'imageable_field' => 'craftjs_json',
+          'text_reference' => text_image.text_reference
+        )
+      ]
+    end
+
     it 'successfully exports custom field option images' do
       field = create(:custom_field_select, :for_custom_form)
       option = create(:custom_field_option, custom_field: field, image: create(:custom_field_option_image))
@@ -142,6 +156,54 @@ describe ProjectCopyService do
         'remote_image_url' => an_instance_of(String),
         'ordering' => option.image.ordering
       )
+    end
+
+    describe 'project images whose file cannot be resolved' do
+      let(:project) { create(:project) }
+      let!(:project_image) { create(:project_image, project: project) }
+
+      it 'exports a surviving version when the original file is gone' do
+        File.delete(project_image.image.path)
+
+        template = service.export project
+
+        expect(template['models']['project_image'].size).to eq 1
+        expect(template['models']['project_image'].first['remote_image_url']).to end_with(
+          File.basename(project_image.image.large.path)
+        )
+      end
+
+      it 'does not export the image when no file is left' do
+        File.delete(project_image.image.path)
+        File.delete(project_image.image.large.path)
+
+        template = service.export project
+
+        expect(template['models']['project_image']).to be_empty
+      end
+
+      it 'exports the image and reports the error when the storage cannot be reached' do
+        allow_any_instance_of(CarrierWave::SanitizedFile)
+          .to receive(:exists?).and_raise(Errno::ECONNRESET)
+        expect(ErrorReporter).to receive(:report).at_least(:once)
+
+        template = service.export project
+
+        expect(template['models']['project_image'].size).to eq 1
+        expect(template['models']['project_image'].first['remote_image_url']).to end_with(
+          File.basename(project_image.image.path)
+        )
+      end
+
+      it 'exports the source URL when the image is still a pending temp remote URL' do
+        project_image.update_column(:image, 'https://cdn.example.com/an-image.jpg')
+
+        template = service.export project
+
+        expect(template['models']['project_image'].size).to eq 1
+        expect(template['models']['project_image'].first['remote_image_url'])
+          .to eq 'https://cdn.example.com/an-image.jpg'
+      end
     end
 
     it 'successfully exports matrix custom fields' do
@@ -424,7 +486,7 @@ describe ProjectCopyService do
     end
 
     it 'can limit the number of ideas copied' do
-      project = create(:project_with_active_ideation_phase, title_multiloc: { en: 'ENGLISH PROJECT', 'fr-FR': 'FRENCH PROJECT' }, description_multiloc: {})
+      project = create(:project_with_active_ideation_phase, title_multiloc: { en: 'ENGLISH PROJECT', 'fr-FR': 'FRENCH PROJECT' })
       create_list(:idea, 5, project: project, phases: project.phases)
 
       template = service.export project, anonymize_users: false, include_ideas: true, max_ideas: 2
@@ -446,7 +508,7 @@ describe ProjectCopyService do
         # Single locale setup
         configure_platform_locales ['en']
 
-        project = create(:project_with_active_ideation_phase, title_multiloc: { en: 'ENGLISH PROJECT' }, description_multiloc: { en: '' })
+        project = create(:project_with_active_ideation_phase, title_multiloc: { en: 'ENGLISH PROJECT' })
         create(:idea, project: project, phases: project.phases, author: create(:user, locale: 'en', bio_multiloc: { en: 'ENGLISH BIO' }))
         template = service.export project, anonymize_users: false, include_ideas: true
 
@@ -458,9 +520,6 @@ describe ProjectCopyService do
 
           copied_project = service.import template
           expect(copied_project.title_multiloc).to eq({ 'fr-FR' => 'TRANSLATED: ENGLISH PROJECT' })
-
-          # Does nothing with empty multiloc values
-          expect(copied_project.description_multiloc).to eq({ 'fr-FR' => '' })
 
           # Changes the locale of users, but removes their bios
           expect(copied_project.ideas.first.author.locale).to eq 'fr-FR'
@@ -482,7 +541,7 @@ describe ProjectCopyService do
         # Single locale setup
         configure_platform_locales ['en']
 
-        project = create(:project_with_active_ideation_phase, title_multiloc: { en: 'ENGLISH PROJECT' }, description_multiloc: {})
+        project = create(:project_with_active_ideation_phase, title_multiloc: { en: 'ENGLISH PROJECT' })
         create(:idea, project: project, phases: project.phases, author: create(:user, locale: 'en', bio_multiloc: { en: 'ENGLISH BIO' }))
         template = service.export project, anonymize_users: false, include_ideas: true
 
@@ -505,7 +564,7 @@ describe ProjectCopyService do
         # Set config to two locales
         configure_platform_locales %w[en fr-FR]
 
-        project = create(:project_with_active_ideation_phase, title_multiloc: { en: 'ENGLISH PROJECT', 'fr-FR': 'FRENCH PROJECT' }, description_multiloc: {})
+        project = create(:project_with_active_ideation_phase, title_multiloc: { en: 'ENGLISH PROJECT', 'fr-FR': 'FRENCH PROJECT' })
         create(:idea, title_multiloc: { 'fr-FR' => 'FRENCH IDEA' }, author: create(:user, locale: 'en'), project: project, phases: project.phases)
 
         template = service.export project, anonymize_users: false, include_ideas: true

@@ -3,7 +3,7 @@ import { randomString } from '../../../support/commands';
 import {
   updatePermission,
   setupProject,
-  addPermissionsCustomField,
+  askOnlyDemographicQuestion,
   confirmUserCustomFieldHasValue,
 } from '../../../support/permitted_by_utils';
 
@@ -36,7 +36,7 @@ describe('Post Participation Signup: survey', () => {
             phaseId,
             permitted_by: 'everyone',
           }).then(() => {
-            return addPermissionsCustomField({
+            return askOnlyDemographicQuestion({
               adminJwt,
               phaseId,
               customFieldId,

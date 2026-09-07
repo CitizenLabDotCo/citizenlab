@@ -542,6 +542,7 @@ nl-NL:
       yesterday: Gisteren
     new_phone_confirmation:
       sms_body: Je bevestigingscode is %{code}.
+      sms_body2: '%{organization_name}: Je bevestigingscode is %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Ga naar deze bijdrage
       event_description: "%{feedback_author_name} gaf een update op %{input_title}'."
@@ -556,6 +557,7 @@ nl-NL:
       title: Kies een nieuw wachtwoord
     phone_confirmation:
       sms_body: Je bevestigingscode is %{code}.
+      sms_body2: '%{organization_name}: Je bevestigingscode is %{code}.'
     preview_data:
       author_display_name: Emma de Vries
       author_first_name: Emma

@@ -7,15 +7,16 @@ import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableE
 import Section from 'components/admin/ContentBuilder/Toolbox/Section';
 import DescriptionToolboxSections from 'components/DescriptionBuilder/DescriptionBuilderToolbox/DescriptionToolboxSections';
 import EventsWidget from 'components/ProjectPageBuilder/Widgets/Events';
-import ExtraSurveysWidget from 'components/ProjectPageBuilder/Widgets/ExtraSurveys';
 import widgetMessages from 'components/ProjectPageBuilder/Widgets/messages';
 import PhasesWidget from 'components/ProjectPageBuilder/Widgets/Phases';
+import SpotlightSurveysWidget from 'components/ProjectPageBuilder/Widgets/SpotlightSurveys';
+import NewLabel from 'components/UI/NewLabel';
 
 import { useIntl } from 'utils/cl-intl';
 
 const ProjectPageBuilderToolbox = () => {
   const { formatMessage } = useIntl();
-  const extraSurveysEnabled = useFeatureFlag({
+  const spotlightSurveysEnabled = useFeatureFlag({
     name: 'parallel_participation',
   });
 
@@ -35,12 +36,13 @@ const ProjectPageBuilderToolbox = () => {
           icon="calendar"
           label={formatMessage(widgetMessages.eventsWidgetTitle)}
         />
-        {extraSurveysEnabled && (
+        {spotlightSurveysEnabled && (
           <DraggableElement
-            id="e2e-draggable-extra-surveys"
-            component={<ExtraSurveysWidget />}
+            id="e2e-draggable-spotlight-surveys"
+            component={<SpotlightSurveysWidget />}
             icon="survey"
             label={formatMessage(widgetMessages.extraSurveysWidgetTitle)}
+            labelSuffix={<NewLabel expiryDate={new Date('2026-11-24')} />}
           />
         )}
       </Section>

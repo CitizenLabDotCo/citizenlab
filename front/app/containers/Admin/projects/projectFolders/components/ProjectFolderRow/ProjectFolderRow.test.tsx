@@ -20,7 +20,6 @@ const folderPublication: IAdminPublicationData = {
     scheduled_at: null,
     visible_children_count: 0,
     publication_title_multiloc: {},
-    publication_description_multiloc: {},
     publication_description_preview_multiloc: {},
     publication_slug: 'folder_1',
     followers_count: 3,

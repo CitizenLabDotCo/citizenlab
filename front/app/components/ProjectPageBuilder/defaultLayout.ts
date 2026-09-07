@@ -244,6 +244,10 @@ const CANONICAL_CUSTOM: Record<string, Record<string, unknown>> = {
     title: widgetMessages.eventsWidgetTitle,
     noPointerEvents: true,
   },
+  ExtraSurveysWidget: {
+    title: widgetMessages.extraSurveysWidgetTitle,
+    noPointerEvents: true,
+  },
 };
 
 const REMOVED_WIDGETS = [

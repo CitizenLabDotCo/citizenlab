@@ -34,8 +34,8 @@ export default defineMessages({
     defaultMessage: 'Phase {number}: {phaseName} ({participationMethod})',
   },
   extraPhaseListItem: {
-    id: 'app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.extraPhaseListItem',
-    defaultMessage: 'Extra: {phaseName} ({participationMethod})',
+    id: 'app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.extraPhaseListItem2',
+    defaultMessage: 'Spotlight survey: {phaseName}',
   },
   noEndDate: {
     id: 'app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.noEndDate',

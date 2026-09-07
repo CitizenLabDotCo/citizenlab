@@ -19,6 +19,7 @@
 #
 module Polls
   class Question < ApplicationRecord
+    include PlainTextMultiloc
     QUESTION_TYPES = %w[single_option multiple_options]
 
     acts_as_list column: :ordering, top_of_list: 0, add_new_at: :bottom, scope: %i[phase_id]
@@ -26,6 +27,7 @@ module Polls
     belongs_to :phase
     has_many :options, class_name: 'Polls::Option', dependent: :destroy
 
+    plain_text_multiloc :title_multiloc
     validates :title_multiloc, presence: true, multiloc: { presence: true }
     validates :question_type, presence: true, inclusion: { in: QUESTION_TYPES }
     validates :max_options, numericality: { only_integer: true, greater_than_or_equal_to: 1 }, allow_nil: true, if: :multiple_options?

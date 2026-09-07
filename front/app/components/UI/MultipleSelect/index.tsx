@@ -10,6 +10,8 @@ import ReactSelect, { SelectInstance } from 'react-select';
 import { useTheme } from 'styled-components';
 import { IOption } from 'typings';
 
+import useA11yMessages from 'components/UI/ReactSelect/useA11yMessages';
+
 import selectStyles from './styles';
 
 export type Props = {
@@ -50,6 +52,8 @@ const MultipleSelect = ({
   minHeight,
 }: Props) => {
   const theme = useTheme();
+  const { ariaLiveMessages, noOptionsMessage, screenReaderStatus } =
+    useA11yMessages<IOption, true>();
   const selectRef = useRef<SelectInstance<IOption, true>>(null);
   const handleOnChange = (newValue: IOption[]) => {
     onChange(newValue);
@@ -120,6 +124,9 @@ const MultipleSelect = ({
         isSearchable={isSearchable}
         aria-invalid={ariaInvalid}
         aria-describedby={ariaDescribedBy}
+        ariaLiveMessages={ariaLiveMessages}
+        noOptionsMessage={noOptionsMessage}
+        screenReaderStatus={screenReaderStatus}
         blurInputOnSelect={typeof autoBlur === 'boolean' ? autoBlur : false}
         backspaceRemovesValue={true}
         menuShouldScrollIntoView={false}
@@ -132,12 +139,6 @@ const MultipleSelect = ({
         isDisabled={disabled}
         styles={{
           ...selectStyles(theme, { fontSize, minHeight }),
-          menuPortal: (base) => ({
-            ...base,
-            // zIndex needed so dropdown is not overlapped by
-            // subsequent dropdown questions (see TAN-4671).
-            zIndex: 1001,
-          }),
           option: (base, state) => ({
             ...base,
             cursor: state.isDisabled ? 'not-allowed' : 'pointer',

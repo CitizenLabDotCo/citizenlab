@@ -542,6 +542,7 @@ ar-SA:
       yesterday: أمس
     new_phone_confirmation:
       sms_body: رمز التأكيد الخاص بك هو %{code}.
+      sms_body2: '%{organization_name}: رمز التأكيد الخاص بك هو %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: انتقل إلى هذا الإدخال
       event_description: "%{feedback_author_name} أعطى تحديثًا حول '%{input_title}'."
@@ -556,6 +557,7 @@ ar-SA:
       title: اختر كلمة مرور جديدة
     phone_confirmation:
       sms_body: رمز التأكيد الخاص بك هو %{code}.
+      sms_body2: '%{organization_name}: رمز التأكيد الخاص بك هو %{code}.'
     preview_data:
       author_display_name: جين دو
       author_first_name: جين

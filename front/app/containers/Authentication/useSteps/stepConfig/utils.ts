@@ -1,6 +1,6 @@
 import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
-import { requestCodeEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
-import { requestCodePhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
+import { requestReconfirmCodeEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
+import { requestReconfirmCodePhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import { redirectToSSOProvider } from 'api/authentication/singleSignOn';
 import { checkEmail, checkPhone } from 'api/users/checkUser';
 
@@ -26,15 +26,15 @@ export const checkMissingData = async (
     // Re-confirmation (confirmed_email_expiry elapsed) lands the user on the
     // confirmation step without a code having been auto-sent, so request one.
     // The call is idempotent (onlyIfFirstTime) and authenticated (backend uses
-    // current_user), so no email is passed and reopening the flow won't
-    // duplicate. Awaited on purpose: the code only exists once this resolves, so
-    // returning earlier would show the code input for a code that hasn't been
-    // generated yet, and a code submitted in that window is rejected as invalid.
-    // Failures are swallowed - the user falls back to the resend button.
+    // current_user), so reopening the flow won't duplicate. Awaited on purpose:
+    // the code only exists once this resolves, so returning earlier would show
+    // the code input for a code that hasn't been generated yet, and a code
+    // submitted in that window is rejected as invalid. Failures are swallowed -
+    // the user falls back to the resend button.
     if (
       requirements.authentication.email_action_required === 'reconfirm_email'
     ) {
-      await requestCodeEmail({ onlyIfFirstTime: true });
+      await requestReconfirmCodeEmail({ onlyIfFirstTime: true });
     }
     return emailStep;
   }
@@ -44,7 +44,7 @@ export const checkMissingData = async (
     if (
       requirements.authentication.phone_action_required === 'reconfirm_phone'
     ) {
-      await requestCodePhone({ onlyIfFirstTime: true });
+      await requestReconfirmCodePhone({ onlyIfFirstTime: true });
     }
     return phoneStep;
   }
@@ -120,6 +120,8 @@ const phoneActionStep = (
   switch (requirements.authentication.phone_action_required) {
     case 'provide_new_phone':
       return 'missing-data:new_phone';
+    case 'confirm_phone':
+      return 'pre-auth:unauthenticated-phone-confirmation';
     case 'confirm_new_phone':
       return 'confirmation:new_phone';
     case 'reconfirm_phone':
