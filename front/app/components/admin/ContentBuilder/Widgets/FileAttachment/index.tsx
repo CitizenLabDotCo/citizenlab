@@ -34,11 +34,7 @@ const FilePreview = ({ fileId }: { fileId?: string }) => {
 
   if (!fileId) {
     return (
-      <Box
-        maxWidth="1200px"
-        margin="0 auto"
-        data-cy="e2e-file-attachment-placeholder"
-      >
+      <Box maxWidth="1200px" margin="0 auto">
         <FilePlaceholder>
           <FormattedMessage {...messages.selectFilePrompt} />
         </FilePlaceholder>
@@ -61,7 +57,12 @@ const FilePreview = ({ fileId }: { fileId?: string }) => {
   }
 
   return (
-    <Box id="e2e-file-attachment" maxWidth="1200px" pointerEvents="none">
+    <Box
+      id="e2e-file-attachment"
+      maxWidth="1200px"
+      margin="0 auto"
+      pointerEvents="none"
+    >
       <FileDisplay
         file={{
           id: file.data.id,
