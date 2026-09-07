@@ -6,6 +6,7 @@ import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import {
   PHASE_TAB_ROUTES,
+  PhaseLandingTab,
   PhaseTabTarget,
 } from '../../../projectPage/phaseRowUtils';
 import { FeatureFlags, getTabs } from '../../../tabs';
@@ -20,16 +21,12 @@ export type PhaseView = {
   to?: PhaseTabTarget;
 };
 
-// Which of the three views each phase tab belongs under. `getTabs` stays the
-// authority on which tabs a phase actually has; this only says where they land.
-const VIEW_BY_TAB: Record<string, PhaseViewKey | undefined> = {
+// Which view each linkable phase tab lands under. Keyed by the same union as
+// PHASE_TAB_ROUTES, so a tab added there has to be given a view here. Tabs
+// without a route of their own (description, form, emails, …) are reached from
+// inside their view rather than from the switch.
+const VIEW_BY_TAB: Record<PhaseLandingTab, PhaseViewKey> = {
   setup: 'build',
-  description: 'build',
-  form: 'build',
-  'survey-form': 'build',
-  map: 'build',
-  'access-rights': 'build',
-  emails: 'build',
   ideas: 'manage',
   proposals: 'manage',
   polls: 'manage',
@@ -38,7 +35,22 @@ const VIEW_BY_TAB: Record<string, PhaseViewKey | undefined> = {
   'survey-results': 'insights',
 };
 
-const TAB_ROUTES: Record<string, PhaseTabTarget | undefined> = PHASE_TAB_ROUTES;
+// Matched on the tab's url rather than its name: the url is the route segment,
+// which is what PHASE_TAB_ROUTES is keyed by.
+const isLandingTab = (url: string): url is PhaseLandingTab =>
+  Object.hasOwn(VIEW_BY_TAB, url);
+
+/**
+ * The view the given route sits under. Tabs the switch doesn't link to
+ * (description, form, emails, …) are worked on from the build view.
+ */
+export const viewFromPathname = (pathname: string): PhaseViewKey => {
+  const tab = Object.entries(VIEW_BY_TAB).find(([url]) =>
+    pathname.endsWith(`/${url}`)
+  );
+
+  return tab?.[1] ?? 'build';
+};
 
 const VIEW_LABELS: { key: PhaseViewKey; label: MessageDescriptor }[] = [
   { key: 'build', label: messages.buildView },
@@ -61,15 +73,17 @@ const usePhaseViews = (phase: IPhaseData | undefined): PhaseView[] => {
 
   if (!phase) return [];
 
-  const tabs = getTabs(phase, featureFlags, formatMessage);
+  const landingTabs = getTabs(phase, featureFlags, formatMessage)
+    .map((tab) => tab.url)
+    .filter(isLandingTab);
 
   return VIEW_LABELS.map(({ key, label }) => {
-    const tab = tabs.find((candidate) => VIEW_BY_TAB[candidate.name] === key);
+    const tab = landingTabs.find((url) => VIEW_BY_TAB[url] === key);
 
     return {
       key,
       label: formatMessage(label),
-      to: tab && TAB_ROUTES[tab.name],
+      to: tab && PHASE_TAB_ROUTES[tab],
     };
   });
 };

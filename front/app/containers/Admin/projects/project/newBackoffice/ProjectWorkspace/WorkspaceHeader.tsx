@@ -19,7 +19,7 @@ import messages from './messages';
 import usePhaseViews, { PhaseViewKey } from './Phase/usePhaseViews';
 import ViewSwitch from './Phase/ViewSwitch';
 
-export const HEADER_HEIGHT = '48px';
+const HEADER_HEIGHT = '48px';
 
 interface Props {
   project: IProjectData;

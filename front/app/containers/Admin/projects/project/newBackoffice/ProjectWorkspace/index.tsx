@@ -7,22 +7,11 @@ import { IProjectData } from 'api/projects/types';
 
 import { useLocation } from 'utils/router';
 
-import { PhaseViewKey } from './Phase/usePhaseViews';
+import { viewFromPathname } from './Phase/usePhaseViews';
 import WorkspaceHeader from './WorkspaceHeader';
 
 const LEFT_PANEL_WIDTH = '280px';
 const RIGHT_PANEL_WIDTH = '384px';
-
-const activeViewFromPath = (pathname: string): PhaseViewKey => {
-  if (pathname.endsWith('/ideas') || pathname.endsWith('/proposals')) {
-    return 'manage';
-  }
-  if (pathname.endsWith('/insights') || pathname.endsWith('/survey-results')) {
-    return 'insights';
-  }
-
-  return 'build';
-};
 
 interface Props {
   project: IProjectData;
@@ -53,7 +42,7 @@ const ProjectWorkspace = ({
       <WorkspaceHeader
         project={project}
         phase={phase}
-        activeView={activeViewFromPath(pathname)}
+        activeView={viewFromPathname(pathname)}
       />
 
       <Box display="flex" flexGrow={1} minHeight="0" overflow="hidden">

@@ -376,7 +376,7 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        project_workspace: {
+        project_backoffice_redesign: {
           enabled: true,
           allowed: true
         }

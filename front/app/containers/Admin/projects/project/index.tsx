@@ -24,7 +24,9 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
   const { data: authUser } = useAuthUser();
   const { phaseId } = useParams({ strict: false });
   const { data: phase } = usePhase(phaseId);
-  const workspaceEnabled = useFeatureFlag({ name: 'project_workspace' });
+  const workspaceEnabled = useFeatureFlag({
+    name: 'project_backoffice_redesign',
+  });
   const projectId = project.id;
 
   const selectedPhase = phaseId ? phase?.data : undefined;
