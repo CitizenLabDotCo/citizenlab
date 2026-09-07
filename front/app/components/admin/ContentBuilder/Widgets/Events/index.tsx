@@ -1,7 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Title,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import { UserComponent, useEditor } from '@craftjs/core';
+import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
 import { InputParameters } from 'api/events/types';
@@ -9,27 +15,17 @@ import useEvents from 'api/events/useEvents';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
+import eventsPageMessages from 'containers/EventsPage/messages';
 
-import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 import useWidgetProjectId from 'components/admin/ContentBuilder/useWidgetProjectId';
 import landingPageMessages from 'components/LandingPages/citizen/messages';
-import EditModeHeightCap from 'components/ProjectPageBuilder/Widgets/EditModeHeightCap';
 import EmptyEvents from 'components/ProjectPageBuilder/Widgets/Events/EmptyEvents';
 import EventsSection from 'components/ProjectPageBuilder/Widgets/Events/EventsSection';
 import projectPageMessages from 'components/ProjectPageBuilder/Widgets/messages';
-import SectionBackground, {
-  SectionBackgroundChoice,
-} from 'components/ProjectPageBuilder/Widgets/SectionBackground';
-import useIsPageBodyChild from 'components/ProjectPageBuilder/Widgets/useIsPageBodyChild';
 
 import { useIntl } from 'utils/cl-intl';
 import Link, { typedStyled } from 'utils/cl-router/Link';
 import sharedMessages from 'utils/messages';
-import { useLocation, useParams } from 'utils/router';
-import { scrollToElement } from 'utils/scroll';
-
-export const EVENTS_ANCHOR_ID = 'e2e-project-page-events';
 
 const PAGINATED_PAGE_SIZE = 15;
 const CURRENT_PROJECT_STATUSES = ['published', 'draft', 'archived'] as const;
@@ -52,8 +48,19 @@ export type EventsProps = {
   timeFilters?: EventsTimeFilter[];
   limit?: EventsLimit;
   projectPublicationStatuses?: EventsPublicationStatus[];
-  sectionBackground?: SectionBackgroundChoice;
+  showEmptyMessage?: boolean;
 };
+
+const NoEventsText = styled.div`
+  margin: auto 0px;
+  text-align: center;
+  color: ${colors.textSecondary};
+  font-size: ${fontSizes.xl}px;
+`;
+
+const ViewAllEventsLink = typedStyled(Link)`
+  color: ${colors.textSecondary};
+`;
 
 const selectionParams = (
   source: EventsSource,
@@ -83,15 +90,11 @@ const EventsWidget: UserComponent<EventsProps> = ({
   timeFilters = ['upcoming'],
   limit = 3,
   projectPublicationStatuses = ['published'],
-  sectionBackground,
+  showEmptyMessage = false,
 }) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const currentProjectId = useWidgetProjectId();
-  const { slug } = useParams({ strict: false }) as { slug?: string };
-  const { hash } = useLocation();
-  const isPageBodyChild = useIsPageBodyChild();
-  const padding = useCraftComponentDefaultPadding();
   const { enabled: inEditor } = useEditor((state) => ({
     enabled: state.options.enabled,
   }));
@@ -105,8 +108,8 @@ const EventsWidget: UserComponent<EventsProps> = ({
 
   const params: InputParameters = {
     ...selectionParams(source, ids, currentProjectId),
-    // Filtering the one project by its own status would hide an archived project's own
-    // events from its page.
+    // Filtering the one project by its own status would hide an archived project's events
+    // from its own page.
     projectPublicationStatuses:
       source === 'currentProject'
         ? [...CURRENT_PROJECT_STATUSES]
@@ -126,87 +129,72 @@ const EventsWidget: UserComponent<EventsProps> = ({
     { enabled: showPast && !waitingForProject }
   );
 
-  const upcomingCount = upcomingEvents?.data.length ?? 0;
-  const pastCount = pastEvents?.data.length ?? 0;
-  const anchorRendered = upcomingCount > 0 || pastCount > 0;
-
-  useEffect(() => {
-    if (hash === EVENTS_ANCHOR_ID && anchorRendered) {
-      scrollToElement({ id: EVENTS_ANCHOR_ID });
-    }
-  }, [hash, anchorRendered]);
-
   if (waitingForProject) return null;
   if (showUpcoming && !upcomingEvents) return null;
   if (showPast && !pastEvents) return null;
 
-  if (!anchorRendered) {
+  const isEmpty =
+    (upcomingEvents?.data.length ?? 0) === 0 &&
+    (pastEvents?.data.length ?? 0) === 0;
+
+  if (isEmpty && !showEmptyMessage) {
     return inEditor ? <EmptyEvents /> : null;
   }
 
-  const heading = titleMultiloc
-    ? localize(titleMultiloc)
-    : formatMessage(
-        source === 'currentProject'
-          ? projectPageMessages.eventsWidgetTitle
-          : landingPageMessages.upcomingEventsWidgetTitle
-      );
-
   return (
-    <EditModeHeightCap>
-      <SectionBackground
-        colored={(sectionBackground ?? 'white') === 'colored'}
-        fullBleed={!!slug && isPageBodyChild}
-        py="40px"
-      >
-        <Box
-          id={EVENTS_ANCHOR_ID}
-          mx="auto"
-          maxWidth={`${maxPageWidth}px`}
-          px={padding}
-        >
-          <Title variant="h2" color="tenantText" m="0" mb="24px">
-            {heading}
-          </Title>
-          <Box display="flex" flexDirection="column" gap="48px">
-            {upcomingEvents && (
-              <EventsSection
-                id="e2e-project-page-upcoming-events"
-                title={sharedMessages.upcomingAndOngoingEvents}
-                showTitle={showUpcoming && showPast}
-                events={upcomingEvents}
-                currentPage={upcomingPage}
-                onPageChange={setUpcomingPage}
-                showPagination={paginated}
-              />
+    <Box display="flex" flexDirection="column">
+      <Title variant="h2" color="tenantText" m="0" mb="24px">
+        {titleMultiloc
+          ? localize(titleMultiloc)
+          : formatMessage(
+              source === 'currentProject'
+                ? projectPageMessages.eventsWidgetTitle
+                : landingPageMessages.upcomingEventsWidgetTitle
             )}
-            {pastEvents && (
-              <EventsSection
-                id="e2e-project-page-past-events"
-                title={sharedMessages.pastEvents}
-                showTitle={showUpcoming && showPast}
-                events={pastEvents}
-                currentPage={pastPage}
-                onPageChange={setPastPage}
-                showPagination={paginated}
-              />
-            )}
-          </Box>
-          {!paginated && (
-            <Box alignSelf="center" display="flex" justifyContent="center">
-              <ViewAllEventsLink to="/events">
-                {formatMessage(landingPageMessages.viewAllEventsText)}
-              </ViewAllEventsLink>
-            </Box>
+      </Title>
+
+      {isEmpty ? (
+        <Box display="flex" alignItems="center" mb="32px">
+          <NoEventsText>
+            {formatMessage(eventsPageMessages.noUpcomingOrOngoingEvents)}
+          </NoEventsText>
+        </Box>
+      ) : (
+        <Box display="flex" flexDirection="column" gap="48px">
+          {upcomingEvents && (
+            <EventsSection
+              id="e2e-project-page-upcoming-events"
+              title={sharedMessages.upcomingAndOngoingEvents}
+              showTitle={showUpcoming && showPast}
+              events={upcomingEvents}
+              currentPage={upcomingPage}
+              onPageChange={setUpcomingPage}
+              showPagination={paginated}
+            />
+          )}
+          {pastEvents && (
+            <EventsSection
+              id="e2e-project-page-past-events"
+              title={sharedMessages.pastEvents}
+              showTitle={showUpcoming && showPast}
+              events={pastEvents}
+              currentPage={pastPage}
+              onPageChange={setPastPage}
+              showPagination={paginated}
+            />
           )}
         </Box>
-      </SectionBackground>
-    </EditModeHeightCap>
+      )}
+
+      {!paginated && (
+        <Box alignSelf="center" mt="24px">
+          <ViewAllEventsLink to="/events">
+            {formatMessage(landingPageMessages.viewAllEventsText)}
+          </ViewAllEventsLink>
+        </Box>
+      )}
+    </Box>
   );
 };
-
-const ViewAllEventsLink = typedStyled(Link)`
-  margin-top: 24px;
-`;
 
 export default EventsWidget;
