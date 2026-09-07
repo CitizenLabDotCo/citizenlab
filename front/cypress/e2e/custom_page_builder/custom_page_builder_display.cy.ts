@@ -75,7 +75,14 @@ describe('Custom page builder display', () => {
       .first()
       .click({ force: true });
 
-    cy.dataCy('e2e-file-attachment-file-select').should('exist');
+    // The placeholder and empty options are hidden, so these are the real choices.
+    cy.dataCy('e2e-file-attachment-file-select')
+      .find('option:not([hidden])')
+      .then((options) => {
+        expect(options.toArray().map((o) => o.textContent)).to.eql([
+          'example.pdf',
+        ]);
+      });
     cy.dataCy('e2e-upload-files-to-page').should('be.visible');
   });
 
