@@ -4,7 +4,6 @@ import moment = require('moment');
 describe('Idea form settings', () => {
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString();
-  const projectDescription = randomString();
 
   let projectId: string;
 
@@ -13,7 +12,6 @@ describe('Idea form settings', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;
@@ -47,7 +45,6 @@ describe('Idea form settings', () => {
       cy.apiCreateProject({
         title: projectTitle,
         descriptionPreview: description,
-        description,
         publicationStatus: 'published',
       })
         .then((project) => {
@@ -70,7 +67,6 @@ describe('Idea form settings', () => {
       cy.apiCreateProject({
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
-        description,
         publicationStatus: 'published',
       })
         .then((project) => {

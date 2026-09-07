@@ -6,6 +6,7 @@ import {
   SerializedNodes,
   Resolver,
 } from '@craftjs/core';
+import styled from 'styled-components';
 
 import RenderNode from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Editor/RenderNode';
 
@@ -18,11 +19,22 @@ type EditorProps = {
   children?: React.ReactNode;
 };
 
+// A widget can render nothing (e.g. events on a project without events) while its
+// wrapper stays in the DOM; collapsing the empty wrapper stops its rhythm margin
+// from showing up as a phantom gap.
+const CollapsingWhenEmptyBox = styled(Box)`
+  &:empty {
+    display: none;
+  }
+`;
+
 // Without a wrapper element, craftjs crashes.
 const PlainDiv = ({ render }) => {
   const marginTop = useVerticalRhythmMargin();
 
-  return <Box mt={marginTop}>{render}</Box>;
+  return (
+    <CollapsingWhenEmptyBox mt={marginTop}>{render}</CollapsingWhenEmptyBox>
+  );
 };
 
 const Editor: React.FC<EditorProps> = ({

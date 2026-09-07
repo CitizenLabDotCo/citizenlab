@@ -63,7 +63,7 @@ resource 'Campaign consents' do
       end
 
       context 'when sms is enabled' do
-        include_context 'with sms feature enabled'
+        include_context 'with sms manual campaigns feature enabled'
 
         example 'Exposes the campaign channel on each consent' do
           sms_campaign = create(:sms_manual_campaign)

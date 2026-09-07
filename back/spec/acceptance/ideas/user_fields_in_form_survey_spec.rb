@@ -13,7 +13,7 @@ resource 'Ideas' do
     @phase = @project.phases.first
     @permission = @phase.permissions.find_by(action: 'posting_idea')
     @permission.update!(
-      global_custom_fields: false
+      custom_fields_behavior: 'custom'
     )
 
     @custom_form = create(:custom_form, :with_default_fields, participation_context: @phase)

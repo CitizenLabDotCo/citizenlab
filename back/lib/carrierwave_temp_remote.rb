@@ -42,11 +42,11 @@ class CarrierwaveTempRemote
       version_name.present? ? identifier.gsub(%r{/([^/]+)\Z}, "/#{version_name}_\\1") : identifier
     end
 
-    private
-
     def url?(identifier)
       identifier.present? && identifier.start_with?('http')
     end
+
+    private
 
     def remote_url_field_name_to_column(remote_url_field_name)
       raise ArgumentError unless remote_url_field_name.to_s.match?(REMOTE_URL_REGEX)

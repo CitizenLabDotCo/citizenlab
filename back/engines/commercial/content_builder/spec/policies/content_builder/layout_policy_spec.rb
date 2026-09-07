@@ -97,6 +97,52 @@ RSpec.describe ContentBuilder::LayoutPolicy do
     end
   end
 
+  # Unstubbed, unlike the contexts above: UserRoleService#can_moderate? has no StaticPage
+  # branch, so only admins get past it. That covers layouts only — the pages themselves follow
+  # StaticPagePolicy, which does let a moderator edit a project-scoped page. Those have no
+  # layout today, so the two never disagree.
+  context 'for a custom page layout' do
+    let(:layout) do
+      create(:layout, content_buildable: create(:static_page), code: ContentBuilder::CustomPageLayoutService::CODE)
+    end
+
+    context 'for a visitor' do
+      let(:user) { nil }
+
+      it { is_expected.to permit(:show) }
+      it { is_expected.not_to permit(:upsert) }
+      it { is_expected.not_to permit(:update) }
+      it { is_expected.not_to permit(:destroy) }
+    end
+
+    context 'for a regular user' do
+      let(:user) { create(:user) }
+
+      it { is_expected.to permit(:show) }
+      it { is_expected.not_to permit(:upsert) }
+      it { is_expected.not_to permit(:update) }
+      it { is_expected.not_to permit(:destroy) }
+    end
+
+    context 'for a project moderator' do
+      let(:user) { create(:project_moderator) }
+
+      it { is_expected.to permit(:show) }
+      it { is_expected.not_to permit(:upsert) }
+      it { is_expected.not_to permit(:update) }
+      it { is_expected.not_to permit(:destroy) }
+    end
+
+    context 'for an admin' do
+      let(:user) { create(:admin) }
+
+      it { is_expected.to permit(:show) }
+      it { is_expected.to permit(:upsert) }
+      it { is_expected.to permit(:update) }
+      it { is_expected.to permit(:destroy) }
+    end
+  end
+
   describe 'Scope' do
     subject(:resolved_scope) { described_class::Scope.new(user, ContentBuilder::Layout).resolve }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Text, Radio, colors } from '@citizenlab/cl2-component-library';
+import { Box, Text, Radio } from '@citizenlab/cl2-component-library';
 
 import { UserFieldsInFormFrontendDescriptor } from 'api/permissions/types';
 
@@ -82,8 +82,6 @@ const DemographicsPlacement = ({
           <Warning>{formatMessage(EXPLANATION_MESSAGES[explanation])}</Warning>
         </Box>
       )}
-
-      <Box mt="12px" mb="8px" borderTop={`1px solid ${colors.divider}`} />
     </Box>
   );
 };

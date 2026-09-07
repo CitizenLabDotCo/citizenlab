@@ -167,6 +167,51 @@ RSpec.describe UserConfirmationService do
     end
   end
 
+  describe '#validate_and_reconfirm_email!' do
+    let(:user) { create(:user, email_confirmed_at: 1.year.ago) }
+
+    before do
+      RequestEmailConfirmationCodeJob.perform_now user
+      user.reload
+    end
+
+    include_examples 'validation and confirmation', :validate_and_reconfirm_email!, :email_confirmation, :email_confirmed_at
+
+    context 'when the code is correct' do
+      it 'refreshes email_confirmed_at' do
+        old_confirmed_at = user.email_confirmed_at
+
+        result = service.validate_and_reconfirm_email!(user, confirmation.code)
+
+        expect(result.success?).to be true
+        expect(user.reload.email_confirmed_at).to be > old_confirmed_at
+      end
+    end
+
+    # Unlike validate_and_confirm_email!: an account created through SSO must
+    # still be able to re-confirm.
+    context 'when password_login is disabled' do
+      before { SettingsService.new.deactivate_feature! 'password_login' }
+
+      it 'still confirms the user' do
+        result = service.validate_and_reconfirm_email!(user, confirmation.code)
+
+        expect(result.success?).to be true
+      end
+    end
+
+    context 'when the email is blank' do
+      before { user.update_columns(email: nil) }
+
+      it 'returns a no email error' do
+        result = service.validate_and_reconfirm_email!(user, confirmation.code)
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(user: [{ error: :no_email }])
+      end
+    end
+  end
+
   describe '#validate_and_confirm_new_email!' do
     let(:user) { create(:user, new_email: 'new@email.com') }
 
@@ -198,6 +243,7 @@ RSpec.describe UserConfirmationService do
 
     before do
       SettingsService.new.activate_feature! 'password_login'
+      RequestPhoneConfirmationCodeJob.issue_code!(user)
       RequestPhoneConfirmationCodeJob.perform_now(user)
     end
 
@@ -251,6 +297,66 @@ RSpec.describe UserConfirmationService do
     end
   end
 
+  describe '#validate_and_reconfirm_phone!' do
+    let(:user) { create(:user, phone: '+14155552671', phone_confirmed_at: 1.year.ago) }
+
+    # The code request sends the OTP synchronously, so the provider is invoked.
+    include_context 'with stubbed SMS provider'
+
+    before do
+      RequestPhoneConfirmationCodeJob.issue_code!(user)
+      RequestPhoneConfirmationCodeJob.perform_now(user)
+      user.reload
+    end
+
+    include_examples 'validation and confirmation', :validate_and_reconfirm_phone!, :phone_confirmation, :phone_confirmed_at
+
+    context 'when the code is correct' do
+      it 'refreshes phone_confirmed_at' do
+        old_confirmed_at = user.phone_confirmed_at
+
+        result = service.validate_and_reconfirm_phone!(user, confirmation.code)
+
+        expect(result.success?).to be true
+        expect(user.reload.phone_confirmed_at).to be > old_confirmed_at
+      end
+    end
+
+    # Unlike validate_and_confirm_phone!, which is a login path.
+    context 'when password_login is disabled' do
+      before { SettingsService.new.deactivate_feature! 'password_login' }
+
+      it 'still confirms the user' do
+        result = service.validate_and_reconfirm_phone!(user, confirmation.code)
+
+        expect(result.success?).to be true
+      end
+    end
+
+    # The sms feature carries the settings the code is sent through.
+    context 'when the sms feature is disabled' do
+      before { SettingsService.new.deactivate_feature! 'sms' }
+
+      it 'returns an sms feature disabled error' do
+        result = service.validate_and_reconfirm_phone!(user, confirmation.code)
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(base: [{ error: :sms_feature_disabled }])
+      end
+    end
+
+    context 'when the phone number is blank' do
+      before { user.update_columns(phone: nil) }
+
+      it 'returns a no phone error' do
+        result = service.validate_and_reconfirm_phone!(user, confirmation.code)
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(user: [{ error: :no_phone }])
+      end
+    end
+  end
+
   describe '#validate_and_confirm_new_phone!' do
     let(:user) { create(:user) }
     let(:new_phone) { '+14155552671' }
@@ -259,6 +365,7 @@ RSpec.describe UserConfirmationService do
     include_context 'with stubbed SMS provider'
 
     before do
+      RequestNewPhoneConfirmationCodeJob.issue_code!(user, new_phone: new_phone)
       RequestNewPhoneConfirmationCodeJob.perform_now(user, new_phone: new_phone)
     end
 

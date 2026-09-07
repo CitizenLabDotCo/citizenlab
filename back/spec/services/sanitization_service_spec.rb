@@ -470,9 +470,26 @@ describe SanitizationService do
   end
 
   describe 'label_links_with_urls' do
-    it 'rewrites a link label to the URL it points at' do
+    it 'rewrites a label that disagrees with the URL it points at' do
       expect(service.label_links_with_urls('<a href="https://example.com">click here</a>'))
         .to eq '<a href="https://example.com" target="_blank" rel="noreferrer noopener nofollow">https://example.com</a>'
+    end
+
+    # A schemeless label names the same address, the way a browser shows one. Rewriting it would
+    # edit text its author got right.
+    it 'leaves a label alone when linkifying it would rebuild this very link' do
+      expect(service.label_links_with_urls('<a href="http://www.example.com/x">www.example.com/x</a>'))
+        .to eq '<a href="http://www.example.com/x" target="_blank" rel="noreferrer noopener nofollow">www.example.com/x</a>'
+    end
+
+    it 'leaves a label alone where only an escaping differs' do
+      expect(service.label_links_with_urls('<a href="http://www.exampl%C3%B3.com">www.exampló.com</a>'))
+        .to eq '<a href="http://www.exampl%C3%B3.com" target="_blank" rel="noreferrer noopener nofollow">www.exampló.com</a>'
+    end
+
+    it 'keeps an address whose label already matches it' do
+      expect(service.label_links_with_urls('<a href="mailto:a@b.com">a@b.com</a>'))
+        .to eq '<a href="mailto:a@b.com" target="_blank" rel="noreferrer noopener nofollow">a@b.com</a>'
     end
 
     # `linkify` writes an address without its scheme, so a kept link shows one the same way.
@@ -584,6 +601,25 @@ describe SanitizationService do
           '<iframe src="https://evil.example"></iframe>' => '<iframe'
         }.each do |input, forbidden|
           expect(service.sanitize_comment_body(input)).not_to include forbidden
+        end
+      end
+
+      # A label only survives when `linkify` rebuilds this link from it, so one that reads like a
+      # different host is rewritten however it is dressed up.
+      it 'leaves no label naming somewhere the link does not go' do
+        {
+          '<a href="https://evil.example">www.google.com</a>' =>
+            '<a href="https://evil.example" target="_blank" rel="noreferrer noopener nofollow">https://evil.example</a>',
+          '<a href="https://evil.example">https://google.com</a>' =>
+            '<a href="https://evil.example" target="_blank" rel="noreferrer noopener nofollow">https://evil.example</a>',
+          '<a href="https://evil.example/x">https://evil.example</a>' =>
+            '<a href="https://evil.example/x" target="_blank" rel="noreferrer noopener nofollow">https://evil.example/x</a>',
+          '<a href="https://evil.example">a@b.com</a>' =>
+            '<a href="https://evil.example" target="_blank" rel="noreferrer noopener nofollow">https://evil.example</a>',
+          '<a href="mailto:evil@example.com">good@example.com</a>' =>
+            '<a href="mailto:evil@example.com" target="_blank" rel="noreferrer noopener nofollow">evil@example.com</a>'
+        }.each do |input, expected|
+          expect(service.sanitize_comment_body(input)).to eq expected
         end
       end
 

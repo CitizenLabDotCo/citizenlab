@@ -106,9 +106,10 @@ class McpServer::LayoutWidgets
         nothing when there are none. Defaults to "white".
     DOC
     'ExtraSurveysWidget' => <<~DOC
-      ExtraSurveysWidget — call to action for one survey that runs alongside the timeline.
+      ExtraSurveysWidget — call to action for one spotlight survey, which runs alongside the
+      timeline. Named "Spotlight surveys" in the UI; the node name is kept for stored layouts.
         props: {"surveyPhaseId":"<phase id>","buttonFormat":"button"|"card","buttonStyle":"primary"|"secondary-outlined","buttonText":{"<locale>":"label"}}
-        custom: {"title":{"id":"app.components.ProjectPageBuilder.Widgets.extraSurveysWidgetTitle","defaultMessage":"Extra surveys"},"noPointerEvents":true}
+        custom: {"title":{"id":"app.components.ProjectPageBuilder.Widgets.extraSurveysWidgetTitle2","defaultMessage":"Spotlight surveys"},"noPointerEvents":true}
         surveyPhaseId must be a phase with placement_type "standalone" and participation_method
         "native_survey" (list_phases). "card" shows title, dates and status; "button" is just the
         button. Defaults: buttonFormat "card", buttonStyle "primary". Only renders when the

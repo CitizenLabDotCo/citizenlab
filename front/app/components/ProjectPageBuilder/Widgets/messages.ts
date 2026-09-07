@@ -111,13 +111,13 @@ export default defineMessages({
       'Shortened here to keep the page easy to arrange — the live page shows this section in full.',
   },
   extraSurveysWidgetTitle: {
-    id: 'app.components.ProjectPageBuilder.Widgets.extraSurveysWidgetTitle',
-    defaultMessage: 'Extra surveys',
+    id: 'app.components.ProjectPageBuilder.Widgets.extraSurveysWidgetTitle2',
+    defaultMessage: 'Spotlight surveys',
   },
   extraSurveysManagedNote: {
-    id: 'app.components.ProjectPageBuilder.Widgets.extraSurveysManagedNote',
+    id: 'app.components.ProjectPageBuilder.Widgets.extraSurveysManagedNote2',
     defaultMessage:
-      'Only surveys under Extras can be linked. Add them in the {projectEditorLink}.',
+      'Only spotlight surveys can be linked. Add them in the {projectEditorLink}.',
   },
   extraSurveysSurveyLabel: {
     id: 'app.components.ProjectPageBuilder.Widgets.extraSurveysSurveyLabel',

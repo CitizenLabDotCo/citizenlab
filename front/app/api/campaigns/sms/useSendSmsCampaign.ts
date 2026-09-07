@@ -3,7 +3,9 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
+import smsBalanceKeys from './balance/keys';
 import smsCampaignsKeys from './keys';
+import smsSendSummaryKeys from './send_summary/keys';
 import { ISmsCampaign } from './types';
 
 const sendSmsCampaign = async (id: string) =>
@@ -19,6 +21,8 @@ const useSendSmsCampaign = () => {
     mutationFn: sendSmsCampaign,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: smsCampaignsKeys.all() });
+      queryClient.invalidateQueries({ queryKey: smsBalanceKeys.all() });
+      queryClient.invalidateQueries({ queryKey: smsSendSummaryKeys.all() });
     },
   });
 };

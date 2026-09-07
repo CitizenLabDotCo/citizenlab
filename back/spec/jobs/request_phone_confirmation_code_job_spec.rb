@@ -12,54 +12,71 @@ RSpec.describe RequestPhoneConfirmationCodeJob do
   # is actually invoked.
   include_context 'with stubbed SMS provider'
 
-  it 'creates a campaign-linked EmailCampaigns::Sms::Delivery for the user' do
-    expect { job.perform(user) }
-      .to change(EmailCampaigns::Sms::Delivery, :count).by(1)
+  describe '.issue_code_and_deliver_later' do
+    it 'issues the code synchronously and queues only the delivery' do
+      expect { described_class.issue_code_and_deliver_later(user) }
+        .to enqueue_job(described_class).with(user).once
 
-    delivery = EmailCampaigns::Sms::Delivery.last
-    expect(delivery.user_id).to eq user.id
-    expect(delivery.campaign).to be_a(EmailCampaigns::Campaigns::PhoneConfirmation)
+      expect(user.reload.phone_confirmation.code).to be_present
+      expect(sms_provider).not_to have_received(:send)
+    end
   end
 
-  it 'sends the code synchronously to the confirmed phone number, not via a background job' do
-    expect { job.perform(user) }
-      .not_to have_enqueued_job(EmailCampaigns::Sms::SendJob)
+  describe '.issue_code!' do
+    it 'sets the code delivery timestamp and resets the retry count' do
+      user.find_or_create_confirmation(:phone_confirmation).update!(code_retry_count: 3)
 
-    code = user.phone_confirmation.code
-    expect(sms_provider).to have_received(:send)
-      .with(to: phone, body: a_string_including(code), use_case: EmailCampaigns::Sms::UseCase::CONFIRMATION_CODES)
+      expect { described_class.issue_code!(user) }
+        .to change { user.phone_confirmation.reload.code_sent_at }
+      expect(user.phone_confirmation.reload.code_retry_count).to eq 0
+    end
+
+    it 'creates the phone confirmation on demand' do
+      expect(user.phone_confirmation).to be_nil
+
+      expect { described_class.issue_code!(user) }.to change(PhoneConfirmation, :count).by(1)
+      expect(user.reload.phone_confirmation.code_sent_at).to be_present
+    end
+
+    it 'reuses an existing phone confirmation instead of replacing it' do
+      confirmation = user.find_or_create_confirmation(:phone_confirmation)
+
+      expect { described_class.issue_code!(user) }.not_to change(PhoneConfirmation, :count)
+      expect(user.reload.phone_confirmation.id).to eq confirmation.id
+      expect(user.phone_confirmation.code_reset_count).to eq 1
+    end
   end
 
-  it 'sets the code delivery timestamp and resets the retry count' do
-    user.find_or_create_confirmation(:phone_confirmation).update!(code_retry_count: 3)
-    expect { job.perform(user) }
-      .to change { user.phone_confirmation.reload.code_sent_at }
-    expect(user.phone_confirmation.reload.code_retry_count).to eq 0
-  end
+  describe '#perform' do
+    before { described_class.issue_code!(user) }
 
-  it 'creates the phone confirmation on demand' do
-    expect(user.phone_confirmation).to be_nil
+    it 'creates a campaign-linked EmailCampaigns::Sms::Delivery for the user' do
+      expect { job.perform(user) }
+        .to change(EmailCampaigns::Sms::Delivery, :count).by(1)
 
-    expect { job.perform(user) }.to change(PhoneConfirmation, :count).by(1)
-    expect(user.reload.phone_confirmation.code_sent_at).to be_present
-  end
+      delivery = EmailCampaigns::Sms::Delivery.last
+      expect(delivery.user_id).to eq user.id
+      expect(delivery.campaign).to be_a(EmailCampaigns::Campaigns::PhoneConfirmation)
+    end
 
-  it 'reuses an existing phone confirmation instead of replacing it' do
-    confirmation = user.find_or_create_confirmation(:phone_confirmation)
+    it 'sends the code synchronously to the confirmed phone number, not via a background job' do
+      expect { job.perform(user) }
+        .not_to have_enqueued_job(EmailCampaigns::Sms::SendJob)
 
-    expect { job.perform(user) }.not_to change(PhoneConfirmation, :count)
-    expect(user.reload.phone_confirmation.id).to eq confirmation.id
-    expect(user.phone_confirmation.code_reset_count).to eq 1
-  end
+      code = user.phone_confirmation.code
+      expect(sms_provider).to have_received(:send)
+        .with(to: phone, body: a_string_including(code), use_case: EmailCampaigns::Sms::UseCase::CONFIRMATION_CODES)
+    end
 
-  it 'enqueues a code expiration job' do
-    expect { job.perform(user) }
-      .to enqueue_job(ExpireConfirmationCodeOrDeleteJob)
-  end
+    it 'enqueues a code expiration job' do
+      expect { job.perform(user) }
+        .to enqueue_job(ExpireConfirmationCodeOrDeleteJob)
+    end
 
-  it 'enqueues a "requested_confirmation_code" activity job' do
-    expect { job.perform(user) }
-      .to enqueue_job(LogActivityJob)
-      .with(user, 'requested_confirmation_code', user, anything, payload: { new_phone: nil })
+    it 'enqueues a "requested_confirmation_code" activity job' do
+      expect { job.perform(user) }
+        .to enqueue_job(LogActivityJob)
+        .with(user, 'requested_confirmation_code', user, anything, payload: { new_phone: nil })
+    end
   end
 end

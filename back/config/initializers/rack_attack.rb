@@ -165,21 +165,25 @@ class Rack::Attack
   # is throttled on the caller it is actually about:
   #   - the identifier in the request body (email / phone / new_email /
   #     new_phone), which is what an attacker rotating IPs would hold fixed;
-  #   - the authenticated user, for the callers that omit the identifier and let
-  #     the endpoint fall back to current_user.
+  #   - the authenticated user, for the endpoints that act on current_user.
   # A request is counted against both keys when both apply, and each key gets a
   # burst limit and a longer window. The endpoints that take no identifier (the
-  # `code`-only confirmations) are keyed on the user only. IP is deliberately not
-  # one of these keys - see the separate, looser per-IP throttle below.
+  # `code`-only confirmations and the re-confirmations) are keyed on the user
+  # only. IP is deliberately not one of these keys - see the separate, looser
+  # per-IP throttle below.
   CONFIRMATION_CODE_ENDPOINTS = {
     '/web_api/v1/user/request_code_email' => %w[request_code email],
     '/web_api/v1/user/request_code_new_email' => %w[request_code new_email],
     '/web_api/v1/user/request_code_phone' => %w[request_code phone],
     '/web_api/v1/user/request_code_new_phone' => %w[request_code new_phone],
+    '/web_api/v1/user/request_reconfirm_code_email' => nil,
+    '/web_api/v1/user/request_reconfirm_code_phone' => nil,
     '/web_api/v1/user/confirm_code_email' => %w[confirmation email],
     '/web_api/v1/user/confirm_code_new_email' => nil,
     '/web_api/v1/user/confirm_code_phone' => %w[confirmation phone],
-    '/web_api/v1/user/confirm_code_new_phone' => nil
+    '/web_api/v1/user/confirm_code_new_phone' => nil,
+    '/web_api/v1/user/reconfirm_code_email' => nil,
+    '/web_api/v1/user/reconfirm_code_phone' => nil
   }.freeze
 
   CONFIRMATION_CODE_LIMITS = { '5s' => [1, 5.seconds], '2min' => [5, 2.minutes] }.freeze

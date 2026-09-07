@@ -3,12 +3,23 @@ import React from 'react';
 import { Box, Label } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
-import ReactSelect from 'react-select';
+import ReactSelect, { GroupBase, SelectComponentsConfig } from 'react-select';
 import { useTheme } from 'styled-components';
 import { CLError, IOption, RHFErrors } from 'typings';
 
 import Error, { TFieldName } from 'components/UI/Error';
 import selectStyles from 'components/UI/MultipleSelect/styles';
+import useA11yMessages from 'components/UI/ReactSelect/useA11yMessages';
+import {
+  VirtualizedMenuList,
+  VirtualizedOption,
+} from 'components/UI/ReactSelect/VirtualizedMenu';
+
+const selectComponents: SelectComponentsConfig<
+  IOption,
+  false,
+  GroupBase<IOption>
+> = { MenuList: VirtualizedMenuList, Option: VirtualizedOption };
 
 interface Props {
   name: string;
@@ -17,6 +28,7 @@ interface Props {
   isSearchable?: boolean;
   isClearable?: boolean;
   isDisabled?: boolean;
+  required?: boolean;
   blurInputOnSelect?: boolean;
   className?: string;
   label?: React.ReactNode;
@@ -33,13 +45,16 @@ const SearchSelect = ({
   isSearchable = true,
   isClearable = false,
   isDisabled,
-  blurInputOnSelect = true,
+  required,
+  blurInputOnSelect,
   className,
   label,
   scrollErrorIntoView,
   onChange,
 }: Props) => {
   const theme = useTheme();
+  const { ariaLiveMessages, noOptionsMessage, screenReaderStatus } =
+    useA11yMessages<IOption, false>();
   const {
     trigger,
     setValue,
@@ -80,19 +95,30 @@ const SearchSelect = ({
                 isSearchable={isSearchable}
                 isClearable={isClearable}
                 isDisabled={isDisabled}
+                required={required}
                 blurInputOnSelect={blurInputOnSelect}
                 placeholder={placeholder ?? ''}
                 aria-invalid={!!fieldState.error}
                 aria-describedby={ariaDescribedBy}
+                ariaLiveMessages={ariaLiveMessages}
+                noOptionsMessage={noOptionsMessage}
+                screenReaderStatus={screenReaderStatus}
+                components={selectComponents}
                 isOptionDisabled={(option) => !!option.disabled}
                 menuPosition="fixed"
                 menuPlacement="auto"
+                menuShouldScrollIntoView={false}
                 onChange={(option) => {
                   setValue(name, option?.value ?? '', { shouldDirty: true });
                   trigger(name);
                   onChange?.(option);
                 }}
-                styles={selectStyles(theme)}
+                styles={{
+                  ...selectStyles(theme),
+                  // The focus ring's white shadow lands on the placeholder,
+                  // which the search input sits on top of.
+                  input: (base) => ({ ...base, input: { boxShadow: 'none' } }),
+                }}
               />
             </Box>
           );

@@ -146,7 +146,6 @@ resource 'ProjectFolder' do
     post 'web_api/v1/project_folders' do
       with_options scope: :project_folder do
         parameter :title_multiloc, 'The title of the folder', required: true
-        parameter :description_multiloc, 'HTML info about the folder', required: false
         parameter :description_preview_multiloc, 'Text info about the folder', required: false
         parameter :header_bg, 'Base64 encoded header image', required: false
       end
@@ -156,33 +155,22 @@ resource 'ProjectFolder' do
       ValidationErrorHelper.new.error_fields(self, ProjectFolders::Folder)
 
       let(:title_multiloc) { { 'en' => 'Folder title' } }
-      let(:description_multiloc) { { 'en' => 'Folder desc' } }
       let(:description_preview_multiloc) { { 'en' => 'Folder short desc' } }
       let(:publication_status) { 'draft' }
 
       example_request 'Create a folder' do
         expect(response_status).to eq 201
         expect(response_data.dig(:attributes, :title_multiloc).stringify_keys).to match title_multiloc
-        expect(response_data.dig(:attributes, :description_multiloc).stringify_keys).to match description_multiloc
         expect(response_data.dig(:attributes, :description_preview_multiloc).stringify_keys).to match description_preview_multiloc
         expect(json_response_body[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'draft'
         # New folders are added to the top
         expect(json_response_body[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
-      end
-
-      context 'when the folder description contains images' do
-        let(:description_multiloc) { { 'en' => html_with_base64_image } }
-
-        it_behaves_like 'creates record with text images',
-          model_class: ProjectFolders::Folder,
-          field: :description_multiloc
       end
     end
 
     patch 'web_api/v1/project_folders/:id' do
       with_options scope: :project_folder do
         parameter :title_multiloc, 'The title of the folder'
-        parameter :description_multiloc, 'HTML info about the folder'
         parameter :description_preview_multiloc, 'Text info about the folder'
         parameter :header_bg, 'Base64 encoded header image'
       end
@@ -194,7 +182,6 @@ resource 'ProjectFolder' do
       let(:project_folder) { @folders.last }
       let(:id) { project_folder.id }
       let(:title_multiloc) { { 'en' => "The mayor's favourites" } }
-      let(:description_multiloc) { { 'en' => "An ultimate selection of the mayor's favourite projects!" } }
       let(:publication_status) { 'archived' }
 
       example 'Update a folder' do
@@ -205,16 +192,7 @@ resource 'ProjectFolder' do
         # admin publications should not be replaced, but rather should be updated
         expect(AdminPublication.ids).to match_array old_publcation_ids
         expect(response_data.dig(:attributes, :title_multiloc).stringify_keys).to match title_multiloc
-        expect(response_data.dig(:attributes, :description_multiloc).stringify_keys).to match description_multiloc
         expect(json_response_body[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'archived'
-      end
-
-      context 'when description_multiloc contains images' do
-        let(:description_multiloc) { { 'en' => html_with_base64_image } }
-
-        it_behaves_like 'updates record with text images',
-          model_class: ProjectFolders::Folder,
-          field: :description_multiloc
       end
 
       describe do
@@ -457,7 +435,6 @@ resource 'ProjectFolder' do
     post 'web_api/v1/project_folders' do
       with_options scope: :project_folder do
         parameter :title_multiloc, 'The title of the folder', required: true
-        parameter :description_multiloc, 'HTML info about the folder', required: false
         parameter :description_preview_multiloc, 'Text info about the folder', required: false
         parameter :header_bg, 'Base64 encoded header image', required: false
         parameter :space_id, 'The space the folder belongs to', required: false
@@ -470,7 +447,6 @@ resource 'ProjectFolder' do
       ValidationErrorHelper.new.error_fields(self, ProjectFolders::Folder)
 
       let(:title_multiloc) { { 'en' => 'Folder title' } }
-      let(:description_multiloc) { { 'en' => 'Folder desc' } }
       let(:description_preview_multiloc) { { 'en' => 'Folder short desc' } }
       let(:publication_status) { 'draft' }
 
@@ -504,7 +480,6 @@ resource 'ProjectFolder' do
     patch 'web_api/v1/project_folders/:id' do
       with_options scope: :project_folder do
         parameter :title_multiloc, 'The title of the folder'
-        parameter :description_multiloc, 'HTML info about the folder'
         parameter :description_preview_multiloc, 'Text info about the folder'
         parameter :header_bg, 'Base64 encoded header image'
         parameter :space_id, 'The space the folder belongs to'
@@ -517,7 +492,6 @@ resource 'ProjectFolder' do
       ValidationErrorHelper.new.error_fields(self, ProjectFolders::Folder)
 
       let(:title_multiloc) { { 'en' => 'Updated folder title' } }
-      let(:description_multiloc) { { 'en' => 'Updated folder desc' } }
       let(:publication_status) { 'published' }
 
       context 'when folder belongs to the moderated space' do
@@ -532,7 +506,6 @@ resource 'ProjectFolder' do
           expect(AdminPublication.ids).to match_array old_publication_ids
 
           expect(response_data.dig(:attributes, :title_multiloc).stringify_keys).to match title_multiloc
-          expect(response_data.dig(:attributes, :description_multiloc).stringify_keys).to match description_multiloc
         end
       end
 
@@ -602,7 +575,6 @@ resource 'ProjectFolder' do
     post 'web_api/v1/project_folders' do
       with_options scope: :project_folder do
         parameter :title_multiloc, 'The title of the folder', required: true
-        parameter :description_multiloc, 'HTML info about the folder', required: false
         parameter :description_preview_multiloc, 'Text info about the folder', required: false
         parameter :header_bg, 'Base64 encoded header image', required: false
       end
@@ -614,7 +586,6 @@ resource 'ProjectFolder' do
       ValidationErrorHelper.new.error_fields(self, ProjectFolders::Folder)
 
       let(:title_multiloc) { { 'en' => 'Folder title' } }
-      let(:description_multiloc) { { 'en' => 'Folder desc' } }
       let(:description_preview_multiloc) { { 'en' => 'Folder short desc' } }
       let(:publication_status) { 'draft' }
 
@@ -626,7 +597,6 @@ resource 'ProjectFolder' do
     patch 'web_api/v1/project_folders/:id' do
       with_options scope: :project_folder do
         parameter :title_multiloc, 'The title of the folder', required: true
-        parameter :description_multiloc, 'HTML info about the folder', required: false
         parameter :description_preview_multiloc, 'Text info about the folder', required: false
         parameter :header_bg, 'Base64 encoded header image', required: false
       end
@@ -638,7 +608,6 @@ resource 'ProjectFolder' do
       ValidationErrorHelper.new.error_fields(self, ProjectFolders::Folder)
 
       let(:title_multiloc) { { 'en' => 'Folder title' } }
-      let(:description_multiloc) { { 'en' => 'Folder desc' } }
       let(:description_preview_multiloc) { { 'en' => 'Folder short desc' } }
       let(:publication_status) { 'draft' }
 
@@ -654,7 +623,6 @@ resource 'ProjectFolder' do
         attributes = response_data[:attributes]
 
         expect(attributes[:title_multiloc].stringify_keys).to match title_multiloc
-        expect(attributes[:description_multiloc].stringify_keys).to match description_multiloc
         expect(response_admin_publication.dig(:attributes, :publication_status)).to eq publication_status
       end
     end

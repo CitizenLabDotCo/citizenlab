@@ -37,8 +37,8 @@ module ContentBuilder
 
     # Extracts inline image data into image records before the layout is saved:
     # structured ImageMultiloc nodes via LayoutImage, and legacy HTML inside
-    # RichTextMultiloc bridge nodes via TextImage (owned by the content
-    # buildable, like the legacy description images they sit alongside).
+    # RichTextMultiloc bridge nodes via TextImage. The TextImage records hang off
+    # the content buildable, not the layout, so they survive a layout rewrite.
     def swap_data_images(layout)
       layout.craftjs_json = LayoutImageService.new.swap_data_images layout.craftjs_json
       layout.craftjs_json = LayoutTextImageService.new.swap_data_images(

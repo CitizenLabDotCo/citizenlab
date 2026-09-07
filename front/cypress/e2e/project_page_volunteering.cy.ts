@@ -3,7 +3,6 @@ import { randomString, randomEmail } from '../support/commands';
 
 describe('Volunteering survey CTA', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
@@ -20,10 +19,8 @@ describe('Volunteering survey CTA', () => {
       })
       .then(() => {
         cy.apiCreateProject({
-          withAboutBox: true,
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
-          description: projectDescription,
           publicationStatus: 'published',
         }).then((project) => {
           projectId = project.body.data.id;

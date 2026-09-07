@@ -540,7 +540,7 @@ const AdminPhaseEditWrapper = () => {
   const { projectId, phaseId } = useParams({ strict: false });
   const { placement } = useSearch({ strict: false });
   const { data: phase } = usePhase(phaseId);
-  const extraSurveysEnabled = useFeatureFlag({
+  const spotlightSurveysEnabled = useFeatureFlag({
     name: 'parallel_participation',
   });
 
@@ -553,7 +553,7 @@ const AdminPhaseEditWrapper = () => {
     <AdminPhaseEdit
       projectId={projectId}
       phase={phaseId ? phase : undefined}
-      standaloneSurvey={extraSurveysEnabled && placement === 'standalone'}
+      standaloneSurvey={spotlightSurveysEnabled && placement === 'standalone'}
     />
   );
 };

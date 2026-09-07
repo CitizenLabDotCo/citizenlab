@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe NavBarItem do
+  it_behaves_like 'a plain text multiloc', factory: :nav_bar_item
+
   describe 'Default factory' do
     it 'is valid' do
       expect(build(:nav_bar_item)).to be_valid

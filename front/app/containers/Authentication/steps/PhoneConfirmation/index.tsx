@@ -5,6 +5,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
 
+import { tooSoonRetryAfter } from 'api/authentication/confirm_phone/resendCooldown';
+
 import Input from 'components/HookForm/Input';
 
 import { useIntl } from 'utils/cl-intl';
@@ -18,6 +20,7 @@ import { SetError } from '../../typings';
 import CodeSentMessage from './CodeSentMessage';
 import FooterNotes from './FooterNotes';
 import messages from './messages';
+import useResendCooldown from './useResendCooldown';
 
 interface Props {
   phone: string | null;
@@ -50,6 +53,7 @@ const PhoneConfirmation = ({
 }: Props) => {
   const [codeResent, setCodeResent] = useState(false);
   const [resendingCode, setResendingCode] = useState(false);
+  const { secondsUntilResend, syncCooldown } = useResendCooldown();
 
   const { formatMessage } = useIntl();
   const busy = loading || resendingCode;
@@ -106,10 +110,16 @@ const PhoneConfirmation = ({
         setResendingCode(false);
         setCodeResent(true);
       })
-      .catch((_errors) => {
-        setError('resending_code_failed');
+      .catch((errors) => {
+        // A refused resend is not worth an error message: the countdown that
+        // comes with it already says what is going on.
+        if (tooSoonRetryAfter(errors) === undefined) {
+          setError('resending_code_failed');
+        }
+
         setResendingCode(false);
-      });
+      })
+      .finally(syncCooldown);
   };
 
   const handleChangePhone = onChangePhone
@@ -147,6 +157,7 @@ const PhoneConfirmation = ({
         <Box mt="24px">
           <FooterNotes
             codeResent={codeResent}
+            secondsUntilResend={secondsUntilResend}
             onResendCode={handleResendCode}
             onChangePhone={handleChangePhone}
           />

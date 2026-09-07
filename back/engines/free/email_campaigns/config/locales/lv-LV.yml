@@ -542,6 +542,7 @@ lv-LV:
       yesterday: Vakar
     new_phone_confirmation:
       sms_body: Jūsu apstiprinājuma kods ir %{code}.
+      sms_body2: '%{organization_name}: Jūsu apstiprinājuma kods ir %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Dodieties uz šo ievades
       event_description: '%{feedback_author_name} sniedza atjauninātu informāciju par "%{input_title}".'
@@ -556,6 +557,7 @@ lv-LV:
       title: Izvēlieties jaunu paroli
     phone_confirmation:
       sms_body: Jūsu apstiprinājuma kods ir %{code}.
+      sms_body2: '%{organization_name}: Jūsu apstiprinājuma kods ir %{code}.'
     preview_data:
       author_display_name: Džeina Doe
       author_first_name: Jane

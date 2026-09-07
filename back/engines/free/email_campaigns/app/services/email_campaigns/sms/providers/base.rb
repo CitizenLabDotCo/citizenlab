@@ -14,6 +14,14 @@ module EmailCampaigns
           raise NotImplementedError
         end
 
+        # Whether the provider holds everything it needs to send on this use case, so
+        # callers can refuse a send before creating any delivery.
+        # @param use_case [String] one of UseCase::ALL
+        # @return [Boolean]
+        def configured?(use_case)
+          raise NotImplementedError
+        end
+
         # @param request [ActionDispatch::Request] the inbound callback request
         # @return [Boolean] whether the request genuinely originates from the provider
         def verify_signature(request)

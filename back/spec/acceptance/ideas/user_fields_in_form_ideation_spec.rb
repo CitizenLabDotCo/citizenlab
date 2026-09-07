@@ -18,7 +18,7 @@ resource 'Ideas' do
       @project = create(:single_phase_ideation_project, phase_attrs: { with_permissions: true })
       @phase = @project.phases.first
       @phase.permissions.find_by(action: 'posting_idea').update!(
-        global_custom_fields: false
+        custom_fields_behavior: 'custom'
       )
 
       @permission = @phase.permissions.find_by(action: 'posting_idea')

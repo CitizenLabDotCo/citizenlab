@@ -59,10 +59,10 @@ declare global {
       apiAddComment: typeof apiAddComment;
       apiRemoveComment: typeof apiRemoveComment;
       apiCreateProject: typeof apiCreateProject;
-      apiAddAboutBox: typeof apiAddAboutBox;
       apiEditProject: typeof apiEditProject;
       apiEditPhase: typeof apiEditPhase;
       apiCreateFolder: typeof apiCreateFolder;
+      apiSetFolderDescription: typeof apiSetFolderDescription;
       apiRemoveFolder: typeof apiRemoveFolder;
       apiRemoveProject: typeof apiRemoveProject;
       apiRemovePhase: typeof apiRemovePhase;
@@ -79,7 +79,6 @@ declare global {
       apiVerifyBogus: typeof apiVerifyBogus;
       apiCreateEvent: typeof apiCreateEvent;
       apiRemoveEvent: typeof apiRemoveEvent;
-      apiToggleProjectDescriptionBuilder: typeof apiToggleProjectDescriptionBuilder;
       apiCreateReportBuilder: typeof apiCreateReportBuilder;
       apiRemoveReportBuilder: typeof apiRemoveReportBuilder;
       apiRemoveAllReports: typeof apiRemoveAllReports;
@@ -88,6 +87,7 @@ declare global {
       apiOverridePhasePermission: typeof apiOverridePhasePermission;
       intersectsViewport: typeof intersectsViewport;
       notIntersectsViewport: typeof notIntersectsViewport;
+      apiGetHomepageLayout: typeof apiGetHomepageLayout;
       apiUpdateHomepageLayout: typeof apiUpdateHomepageLayout;
       apiUpdateAppConfiguration: typeof apiUpdateAppConfiguration;
       clickLocaleSwitcherAndType: typeof clickLocaleSwitcherAndType;
@@ -896,141 +896,52 @@ function apiRemoveComment(commentId: string) {
   });
 }
 
-// The participation AboutBox widget node, serialised as the Content Builder editor
-// produces it. It renders the project sidebar (action buttons / "see ideas" etc).
-function aboutBoxNode(parent: string) {
-  return {
-    type: { resolvedName: 'AboutBox' },
-    isCanvas: false,
-    props: { hideParticipationAvatars: false },
-    displayName: 'AboutBox',
-    custom: {
-      title: {
-        id: 'app.containers.admin.ContentBuilder.participationBox',
-        defaultMessage: 'Participation Box',
-      },
-      noPointerEvents: true,
-    },
-    parent,
-    hidden: false,
-    nodes: [],
-    linkedNodes: {},
-  };
-}
-
-// Appends the participation AboutBox to a project's project_page layout, so its
-// page renders the sidebar/CTAs. Idempotent — a no-op if the AboutBox is already
-// there.
-function apiAddAboutBox(projectId: string) {
-  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
-    const authHeaders = {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${response.body.jwt}`,
-    };
-    const layoutPath = `web_api/v1/projects/${projectId}/content_builder_layouts/project_page`;
-
-    return cy
-      .request({ headers: authHeaders, method: 'GET', url: layoutPath })
-      .then((layout) => {
-        const craftjs = layout.body.data.attributes.craftjs_json;
-        const hasAboutBox = Object.values(craftjs).some(
-          (node: any) => node?.type?.resolvedName === 'AboutBox'
-        );
-        if (hasAboutBox) return;
-
-        const parentId = ['ProjectDescriptionSection', 'ProjectPageBody']
-          .map((name) =>
-            Object.keys(craftjs).find(
-              (id) => craftjs[id]?.type?.resolvedName === name
-            )
-          )
-          .find((id) => id !== undefined);
-        if (!parentId) {
-          throw new Error(
-            `project_page layout of project ${projectId} has no page body`
-          );
-        }
-
-        craftjs.aboutBox = aboutBoxNode(parentId);
-        craftjs[parentId].nodes = [...craftjs[parentId].nodes, 'aboutBox'];
-
-        return cy.request({
-          headers: authHeaders,
-          method: 'POST',
-          url: `${layoutPath}/upsert`,
-          body: {
-            content_builder_layout: { enabled: true, craftjs_json: craftjs },
-          },
-        });
-      });
-  });
-}
-
 function apiCreateProject({
   title,
   descriptionPreview,
-  description,
   publicationStatus = 'published',
   assigneeId,
   visibleTo,
   folderId,
-  withAboutBox = false,
 }: {
   title: string;
   descriptionPreview?: string;
-  description: string;
   publicationStatus?: IProjectAttributes['publication_status'];
   assigneeId?: string;
   visibleTo?: IProjectAttributes['visible_to'];
   folderId?: string;
-  // When true, adds the participation AboutBox (sidebar/CTAs) to the project's Content
-  // Builder description layout, for tests that assert sidebar elements.
-  withAboutBox?: boolean;
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy
-      .request({
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${adminJwt}`,
-        },
-        method: 'POST',
-        url: 'web_api/v1/projects',
-        body: {
-          project: {
-            admin_publication_attributes: {
-              publication_status: publicationStatus,
-            },
-            title_multiloc: {
-              en: title,
-              'nl-BE': title,
-              'nl-NL': title,
-              'fr-BE': title,
-            },
-            description_preview_multiloc: {
-              en: descriptionPreview,
-              'nl-BE': descriptionPreview,
-            },
-            description_multiloc: {
-              en: description,
-              'nl-BE': description,
-            },
-            default_assignee_id: assigneeId,
-            visible_to: visibleTo,
-            folder_id: folderId,
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: 'web_api/v1/projects',
+      body: {
+        project: {
+          admin_publication_attributes: {
+            publication_status: publicationStatus,
           },
+          title_multiloc: {
+            en: title,
+            'nl-BE': title,
+            'nl-NL': title,
+            'fr-BE': title,
+          },
+          description_preview_multiloc: {
+            en: descriptionPreview,
+            'nl-BE': descriptionPreview,
+          },
+          default_assignee_id: assigneeId,
+          visible_to: visibleTo,
+          folder_id: folderId,
         },
-      })
-      .then((project) => {
-        // cy.wrap keeps both branches yielding `Chainable<Response>` so callers can
-        // read `project.body.data`.
-        if (!withAboutBox) {
-          return cy.wrap(project, { log: false });
-        }
-        return cy.apiAddAboutBox(project.body.data.id).then(() => project);
-      });
+      },
+    });
   });
 }
 
@@ -1068,7 +979,6 @@ function apiEditProject({
   projectId,
   title,
   descriptionPreview,
-  description,
   publicationStatus = 'published',
   assigneeId,
   submission_enabled,
@@ -1076,7 +986,6 @@ function apiEditProject({
   projectId: string;
   title?: string;
   descriptionPreview?: string;
-  description?: string;
   publicationStatus?: IProjectAttributes['publication_status'];
   assigneeId?: string;
   surveyUrl?: string;
@@ -1114,12 +1023,6 @@ function apiEditProject({
               'nl-BE': descriptionPreview,
             },
           }),
-          ...(description && {
-            description_multiloc: {
-              en: description,
-              'nl-BE': description,
-            },
-          }),
           ...(submission_enabled && {
             submission_enabled,
           }),
@@ -1130,16 +1033,53 @@ function apiEditProject({
   });
 }
 
+// Authors a folder's description in the Content Builder, where folder descriptions live.
+// Replaces the description text of the folder's default layout, keeping its other widgets.
+function apiSetFolderDescription(folderId: string, description: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const authHeaders = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${response.body.jwt}`,
+    };
+    const layoutPath = `web_api/v1/project_folders/${folderId}/content_builder_layouts/project_folder_description`;
+
+    return cy
+      .request({ headers: authHeaders, method: 'GET', url: layoutPath })
+      .then((layout) => {
+        const craftjs = layout.body.data.attributes.craftjs_json;
+        const textId = Object.keys(craftjs).find(
+          (id) => craftjs[id]?.type?.resolvedName === 'TextMultiloc'
+        );
+        if (!textId) {
+          throw new Error(`folder ${folderId} has no description text widget`);
+        }
+        craftjs[textId].props.text = {
+          en: `<p>${description}</p>`,
+          'nl-BE': `<p>${description}</p>`,
+          'nl-NL': `<p>${description}</p>`,
+          'fr-BE': `<p>${description}</p>`,
+        };
+
+        return cy.request({
+          headers: authHeaders,
+          method: 'POST',
+          url: `${layoutPath}/upsert`,
+          body: {
+            content_builder_layout: { enabled: true, craftjs_json: craftjs },
+          },
+        });
+      });
+  });
+}
+
 function apiCreateFolder({
   title,
-  descriptionPreview,
-  description,
+  descriptionPreview = randomString(),
   publicationStatus = 'published',
   spaceId,
 }: {
   title: string;
   descriptionPreview?: string;
-  description: string;
   publicationStatus?: 'draft' | 'published' | 'archived';
   spaceId?: string;
 }) {
@@ -1165,16 +1105,10 @@ function apiCreateFolder({
             'fr-BE': title,
           },
           description_preview_multiloc: {
-            en: descriptionPreview ?? description,
-            'nl-BE': descriptionPreview ?? description,
-            'nl-NL': descriptionPreview ?? description,
-            'fr-BE': descriptionPreview ?? description,
-          },
-          description_multiloc: {
-            en: description,
-            'nl-BE': description,
-            'nl-NL': description,
-            'fr-BE': description,
+            en: descriptionPreview,
+            'nl-BE': descriptionPreview,
+            'nl-NL': descriptionPreview,
+            'fr-BE': descriptionPreview,
           },
           space_id: spaceId,
         },
@@ -1614,32 +1548,6 @@ function apiCreateEvent({
   });
 }
 
-function apiToggleProjectDescriptionBuilder({
-  projectId,
-  enabled = true,
-}: {
-  projectId: string;
-  enabled?: boolean;
-}) {
-  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
-    const adminJwt = response.body.jwt;
-
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
-      },
-      method: 'POST',
-      url: `web_api/v1/projects/${projectId}/content_builder_layouts/project_description/upsert`,
-      body: {
-        content_builder_layout: {
-          enabled,
-        },
-      },
-    });
-  });
-}
-
 function apiCreateReportBuilder(phaseId?: string, visible: boolean = true) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1850,14 +1758,45 @@ function apiUpdateAppConfiguration(
   });
 }
 
-function clickLocaleSwitcherAndType(title: string) {
-  cy.wait(1000);
-  cy.get('.e2e-localeswitcher').each((button) => {
+// Fills a multiloc field in every locale of the tenant, through its locale switcher.
+// Pass `field` on forms holding more than one multiloc field: the switcher and the
+// input are then looked up inside that field instead of page-wide. `input` is a
+// selector within it ('input', 'textarea', '.ql-editor', …).
+function clickLocaleSwitcherAndType(
+  text: string,
+  field?: { container: string; input: string }
+) {
+  if (!field) {
+    cy.wait(1000);
+    cy.get('.e2e-localeswitcher').each((button) => {
+      cy.wrap(button).click();
+      cy.get('#title_multiloc').clear().type(text);
+    });
+    return;
+  }
+
+  cy.get(`${field.container} .e2e-localeswitcher`).each((button) => {
     cy.wrap(button).click();
-    cy.get('#title_multiloc').clear().type(title);
+    cy.wrap(button).should('have.class', 'selected');
+    cy.get(field.container).find(field.input).first().clear().type(text);
+    cy.wrap(button).find('div').should('have.class', 'notEmpty');
   });
 }
 
+function apiGetHomepageLayout() {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'GET',
+      url: `web_api/v1/home_pages/content_builder_layouts/homepage`,
+    });
+  });
+}
 function apiUpdateHomepageLayout({
   craftjs_json,
 }: {
@@ -1939,7 +1878,8 @@ function apiRemoveSmartGroup(smartGroupId: string) {
 }
 
 const createBaseCustomField =
-  (imageId?: string) => (input_type: ICustomFieldInputType, i: number) => ({
+  (imageId?: string, optionCount?: number) =>
+  (input_type: ICustomFieldInputType, i: number) => ({
     title_multiloc:
       input_type === 'page' ? {} : { en: `Question: ${input_type}` },
     description_multiloc: {},
@@ -1950,7 +1890,7 @@ const createBaseCustomField =
     logic: {},
     required: false,
     input_type,
-    options: getOptions(input_type, imageId),
+    options: getOptions(input_type, imageId, optionCount),
     ordering: i,
     ...(input_type === 'linear_scale'
       ? {
@@ -1961,20 +1901,13 @@ const createBaseCustomField =
       : {}),
   });
 
-const getOptions = (input_type: string, imageId?: string) => {
+const getOptions = (input_type: string, imageId?: string, optionCount = 2) => {
   if (['select', 'multiselect', 'multiselect_image'].indexOf(input_type) > -1) {
-    return [
-      {
-        temp_id: `TEMP-ID-${randomString()}`,
-        title_multiloc: { en: `${input_type}: Option 1` },
-        ...(imageId ? { image_id: imageId } : {}),
-      },
-      {
-        temp_id: `TEMP-ID-${randomString()}`,
-        title_multiloc: { en: `${input_type}: Option 2` },
-        ...(imageId ? { image_id: imageId } : {}),
-      },
-    ];
+    return Array.from({ length: optionCount }, (_, index) => ({
+      temp_id: `TEMP-ID-${randomString()}`,
+      title_multiloc: { en: `${input_type}: Option ${index + 1}` },
+      ...(imageId ? { image_id: imageId } : {}),
+    }));
   }
 
   return undefined;
@@ -1983,7 +1916,8 @@ const getOptions = (input_type: string, imageId?: string) => {
 function apiCreateSurveyQuestions(
   phaseId: string,
   inputTypes: ICustomFieldInputType[],
-  imageId?: string
+  imageId?: string,
+  optionCount?: number
 ) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1997,7 +1931,7 @@ function apiCreateSurveyQuestions(
       url: `web_api/v1/phases/${phaseId}/custom_fields/update_all`,
       body: {
         custom_fields: [
-          ...inputTypes.map(createBaseCustomField(imageId)),
+          ...inputTypes.map(createBaseCustomField(imageId, optionCount)),
           {
             id: randomString(),
             input_type: 'page',
@@ -2235,7 +2169,6 @@ type NativeSurveyPhaseResult = {
 function createProjectWithNativeSurveyPhase({
   projectTitle = randomString(),
   projectDescriptionPreview = randomString(30),
-  projectDescription = randomString(),
   publicationStatus = 'published',
   phaseTitle = randomString(),
   phaseStartAt = moment().subtract(9, 'month').format('DD/MM/YYYY'),
@@ -2250,7 +2183,6 @@ function createProjectWithNativeSurveyPhase({
 }: {
   projectTitle?: string;
   projectDescriptionPreview?: string;
-  projectDescription?: string;
   publicationStatus?: IProjectAttributes['publication_status'];
   phaseTitle?: string;
   phaseStartAt?: string;
@@ -2268,12 +2200,7 @@ function createProjectWithNativeSurveyPhase({
     .apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus,
-      // The project page renders via the Content Builder; add the AboutBox so the
-      // participation sidebar (survey / idea action button) is present for tests
-      // that visit the project page and click it.
-      withAboutBox: true,
     })
     .then((project) => {
       const projectId = project.body.data.id;
@@ -2332,7 +2259,6 @@ function createProjectWithIdeationPhase({
     .apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: projectPublicationStatus,
     })
     .then((project) => {
@@ -2495,10 +2421,10 @@ Cypress.Commands.add(
 Cypress.Commands.add('apiAddComment', apiAddComment);
 Cypress.Commands.add('apiRemoveComment', apiRemoveComment);
 Cypress.Commands.add('apiCreateProject', apiCreateProject);
-Cypress.Commands.add('apiAddAboutBox', apiAddAboutBox);
 Cypress.Commands.add('apiEditProject', apiEditProject);
 Cypress.Commands.add('apiEditPhase', apiEditPhase);
 Cypress.Commands.add('apiCreateFolder', apiCreateFolder);
+Cypress.Commands.add('apiSetFolderDescription', apiSetFolderDescription);
 Cypress.Commands.add('apiRemoveFolder', apiRemoveFolder);
 Cypress.Commands.add('apiRemoveProject', apiRemoveProject);
 Cypress.Commands.add('apiRemovePhase', apiRemovePhase);
@@ -2521,10 +2447,6 @@ Cypress.Commands.add('setLoginCookie', setLoginCookie);
 Cypress.Commands.add('apiVerifyBogus', apiVerifyBogus);
 Cypress.Commands.add('apiCreateEvent', apiCreateEvent);
 Cypress.Commands.add('apiRemoveEvent', apiRemoveEvent);
-Cypress.Commands.add(
-  'apiToggleProjectDescriptionBuilder',
-  apiToggleProjectDescriptionBuilder
-);
 Cypress.Commands.add('apiCreateReportBuilder', apiCreateReportBuilder);
 Cypress.Commands.add('apiRemoveReportBuilder', apiRemoveReportBuilder);
 Cypress.Commands.add('apiRemoveAllReports', apiRemoveAllReports);
@@ -2538,6 +2460,7 @@ Cypress.Commands.add(
   { prevSubject: true },
   notIntersectsViewport
 );
+Cypress.Commands.add('apiGetHomepageLayout', apiGetHomepageLayout);
 Cypress.Commands.add('apiUpdateHomepageLayout', apiUpdateHomepageLayout);
 Cypress.Commands.add('apiRemoveCustomPage', apiRemoveCustomPage);
 Cypress.Commands.add('apiCreateCustomPage', apiCreateCustomPage);

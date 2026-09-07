@@ -542,6 +542,7 @@ es-ES:
       yesterday: Ayer
     new_phone_confirmation:
       sms_body: Tu código de confirmación es %{code}.
+      sms_body2: '%{organization_name}: Tu código de confirmación es %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Ir a esta entrada
       event_description: "%{feedback_author_name} dejó una respuesta oficial sobre %{input_title}'."
@@ -556,6 +557,7 @@ es-ES:
       title: Elige una nueva contraseña
     phone_confirmation:
       sms_body: Tu código de confirmación es %{code}.
+      sms_body2: '%{organization_name}: Tu código de confirmación es %{code}.'
     preview_data:
       author_display_name: María Rodríguez
       author_first_name: Jane

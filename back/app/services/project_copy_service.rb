@@ -265,20 +265,19 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   def yml_projects(shift_timestamps: 0, new_slug: nil, new_title_multiloc: nil, new_publication_status: nil)
     yml_project = {
       'title_multiloc' => new_title_multiloc || @project.title_multiloc,
-      'description_multiloc' => @project.description_multiloc,
       'created_at' => shift_timestamp(@project.created_at, shift_timestamps)&.iso8601,
       'updated_at' => shift_timestamp(@project.updated_at, shift_timestamps)&.iso8601,
       'remote_header_bg_url' => @project.header_bg_url,
       'visible_to' => @project.visible_to,
       'description_preview_multiloc' => @project.description_preview_multiloc,
       'admin_publication_attributes' => { 'publication_status' => new_publication_status || @project.admin_publication.publication_status },
-      'text_images_attributes' => @project.text_images.map do |ti|
+      'text_images_attributes' => @project.text_images.map do |text_image|
         {
-          'imageable_field' => ti.imageable_field,
-          'remote_image_url' => ti.image_url,
-          'text_reference' => ti.text_reference,
-          'created_at' => ti.created_at.to_s,
-          'updated_at' => ti.updated_at.to_s
+          'imageable_field' => text_image.imageable_field,
+          'remote_image_url' => text_image.image_url,
+          'text_reference' => text_image.text_reference,
+          'created_at' => text_image.created_at.to_s,
+          'updated_at' => text_image.updated_at.to_s
         }
       end,
       'include_all_areas' => @project.include_all_areas,
@@ -296,10 +295,14 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   end
 
   def yml_project_images(shift_timestamps: 0)
-    @project.project_images.map do |p|
+    @project.project_images.filter_map do |p|
+      image_url = exportable_image_url(p.image)
+      # avoid creating an empty project_image record if the image is missing (e.g. deleted from S3)
+      next if image_url.blank?
+
       {
         'project_ref' => lookup_ref(p.project_id, :project),
-        'remote_image_url' => p.image_url,
+        'remote_image_url' => image_url,
         'alt_text_multiloc' => p.alt_text_multiloc,
         'ordering' => p.ordering,
         'created_at' => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
@@ -617,7 +620,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'action' => p.action,
         'permitted_by' => p.permitted_by,
         'permission_scope_ref' => lookup_ref(p.permission_scope_id, :phase),
-        'global_custom_fields' => p.global_custom_fields,
+        'custom_fields_behavior' => p.custom_fields_behavior,
         'access_denied_explanation_multiloc' => p.access_denied_explanation_multiloc,
         'everyone_tracking_enabled' => p.everyone_tracking_enabled,
         'verification_expiry' => p.verification_expiry,

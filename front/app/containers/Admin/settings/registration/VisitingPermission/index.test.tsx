@@ -71,7 +71,7 @@ describe('<VisitingPermission />', () => {
 
     await userEvent.click(screen.getByText('Security requirements'));
     await userEvent.click(
-      screen.getByText('Require identity verification from all participants')
+      screen.getByText('Require identity verification from all users')
     );
 
     expect(mockUpdatePermission).toHaveBeenCalledWith({

@@ -9,7 +9,6 @@ describe('Project images', () => {
     cy.apiCreateProject({
       title,
       descriptionPreview: randomString(30),
-      description: randomString(),
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;
@@ -53,7 +52,6 @@ describe('Project folder images', () => {
     cy.apiCreateFolder({
       title,
       descriptionPreview: randomString(30),
-      description: randomString(),
       publicationStatus: 'published',
     }).then((folder) => {
       folderId = folder.body.data.id;

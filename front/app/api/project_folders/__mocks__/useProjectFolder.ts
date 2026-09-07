@@ -18,7 +18,6 @@ export const projectFolderData = {
       slug: 'new-folder',
       created_at: '2023-05-08T14:56:00.360Z',
       updated_at: '2023-05-08T14:56:00.385Z',
-      description_multiloc: { en: '', 'fr-BE': '', 'nl-BE': '', 'nl-NL': '' },
       header_bg: { large: null, medium: null, small: null },
       visible_projects_count: 0,
     },
@@ -45,12 +44,6 @@ export const projectFolderData = {
           'fr-BE': 'new folder',
           'nl-BE': 'new folder',
           'nl-NL': 'new folder',
-        },
-        publication_description_multiloc: {
-          en: '',
-          'fr-BE': '',
-          'nl-BE': '',
-          'nl-NL': '',
         },
         publication_description_preview_multiloc: {
           en: ' ',

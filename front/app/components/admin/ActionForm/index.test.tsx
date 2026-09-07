@@ -103,7 +103,7 @@ const buildPermission = (
     attributes: {
       action: 'commenting_idea',
       permitted_by: 'users',
-      global_custom_fields: false,
+      custom_fields_behavior: 'global',
       verification_expiry: null,
       access_denied_explanation_multiloc: {},
       everyone_tracking_enabled: false,
@@ -242,7 +242,7 @@ describe('<ActionForm />', () => {
       renderForm();
 
       await userEvent.click(screen.getByText('Security requirements'));
-      const passwordRow = screen.getByText('Require user to set a password')
+      const passwordRow = screen.getByText('Require users to set a password')
         .parentElement!;
       await userEvent.hover(
         within(passwordRow).getByTestId('tooltip-icon-button')
@@ -260,7 +260,7 @@ describe('<ActionForm />', () => {
       renderForm();
 
       await userEvent.click(screen.getByText('Security requirements'));
-      const passwordRow = screen.getByText('Require user to set a password')
+      const passwordRow = screen.getByText('Require users to set a password')
         .parentElement!;
       expect(
         within(passwordRow).queryByTestId('tooltip-icon-button')
@@ -303,7 +303,7 @@ describe('<ActionForm />', () => {
 
       await userEvent.click(screen.getByText('Security requirements'));
       expect(
-        screen.getByText('Require user to set a password')
+        screen.getByText('Require users to set a password')
       ).toBeInTheDocument();
       expect(onChange).not.toHaveBeenCalled();
     });

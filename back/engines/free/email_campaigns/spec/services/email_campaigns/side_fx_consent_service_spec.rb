@@ -29,23 +29,11 @@ describe EmailCampaigns::SideFxConsentService do
       expect { service.after_update(consent, user) }
         .not_to enqueue_job(LogActivityJob)
     end
-  end
 
-  describe 'after_grant' do
-    it "logs 'consent_given' when consent is granted" do
-      consent = create(:consent, user: user, consented: false)
-      consent.update!(consented: true)
-
-      expect { service.after_grant(consent, user) }
-        .to enqueue_job(LogActivityJob)
-        .with(consent, 'consent_given', user, kind_of(Integer), payload: { campaign_type: consent.campaign_type })
-    end
-
-    it 'logs when consented did not change' do
+    it 'logs an unchanged consent when always_log is set' do
       consent = create(:consent, user: user, consented: true)
       consent.reload
-
-      expect { service.after_grant(consent, user) }
+      expect { service.after_update(consent, user, always_log: true) }
         .to enqueue_job(LogActivityJob)
         .with(consent, 'consent_given', user, kind_of(Integer), payload: { campaign_type: consent.campaign_type })
     end

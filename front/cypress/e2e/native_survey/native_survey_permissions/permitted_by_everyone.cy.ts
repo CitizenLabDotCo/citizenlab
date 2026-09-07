@@ -2,7 +2,7 @@ import { randomString, randomEmail } from '../../../support/commands';
 import {
   updatePermission,
   confirmUserCustomFieldHasValue,
-  addPermissionsCustomField,
+  askOnlyDemographicQuestion,
   setupProject,
 } from '../../../support/permitted_by_utils';
 
@@ -38,7 +38,7 @@ describe('Native survey permitted by: everyone', () => {
             user_data_collection: 'all_data',
           }).then(() => {
             // Add one permissions custom field
-            return addPermissionsCustomField({
+            return askOnlyDemographicQuestion({
               adminJwt,
               phaseId,
               customFieldId,

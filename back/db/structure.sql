@@ -1456,7 +1456,6 @@ CREATE TABLE public.analytics_dimension_locales_fact_visits (
 CREATE TABLE public.projects (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
     title_multiloc jsonb DEFAULT '{}'::jsonb,
-    description_multiloc jsonb DEFAULT '{}'::jsonb,
     slug character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
@@ -3433,7 +3432,6 @@ CREATE TABLE public.permissions (
     permission_scope_type character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    global_custom_fields boolean DEFAULT false NOT NULL,
     verification_expiry integer,
     access_denied_explanation_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     everyone_tracking_enabled boolean DEFAULT false NOT NULL,
@@ -3445,7 +3443,8 @@ CREATE TABLE public.permissions (
     require_password boolean DEFAULT true NOT NULL,
     require_verification boolean DEFAULT false NOT NULL,
     require_confirmed_phone_number boolean DEFAULT false NOT NULL,
-    confirmed_phone_number_expiry integer
+    confirmed_phone_number_expiry integer,
+    custom_fields_behavior character varying DEFAULT 'global'::character varying NOT NULL
 );
 
 
@@ -3586,7 +3585,6 @@ COMMENT ON COLUMN public.project_folders_files.migrated_file_id IS 'References t
 CREATE TABLE public.project_folders_folders (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
     title_multiloc jsonb,
-    description_multiloc jsonb,
     description_preview_multiloc jsonb,
     header_bg character varying,
     slug character varying,
@@ -4275,7 +4273,8 @@ CREATE TABLE public.sms_deliveries (
     status character varying NOT NULL,
     error_message character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    segments_count integer
 );
 
 
@@ -9555,7 +9554,12 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260821210000'),
+('20260821090000'),
+('20260821000000'),
+('20260820000000'),
 ('20260811145845'),
+('20260811105004'),
 ('20260810100000'),
 ('20260805000000'),
 ('20260727100000'),

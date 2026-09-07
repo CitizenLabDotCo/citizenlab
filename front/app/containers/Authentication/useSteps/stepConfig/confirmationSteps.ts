@@ -1,19 +1,19 @@
 import requirementKeys from 'api/authentication/authentication_requirements/keys';
 import {
-  confirmCodeEmail,
   confirmCodeNewEmail,
+  reconfirmCodeEmail,
 } from 'api/authentication/confirm_email/confirmEmailConfirmationCode';
 import {
-  requestCodeEmail,
   requestCodeNewEmail,
+  requestReconfirmCodeEmail,
 } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
 import {
-  confirmCodePhone,
   confirmCodeNewPhone,
+  reconfirmCodePhone,
 } from 'api/authentication/confirm_phone/confirmPhoneConfirmationCode';
 import {
-  requestCodePhone,
   requestCodeNewPhone,
+  requestReconfirmCodePhone,
 } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import { invalidateCacheAfterUpdateUser } from 'api/users/useUpdateUser';
 
@@ -42,8 +42,8 @@ export const confirmationSteps = (
     // your email.
     'confirmation:reconfirm-email': {
       CLOSE: () => setCurrentStep('closed'),
-      SUBMIT_CODE: async (email: string, code: string) => {
-        await confirmCodeEmail(email, code);
+      SUBMIT_CODE: async (_: string, code: string) => {
+        await reconfirmCodeEmail(code);
         await queryClient.invalidateQueries({
           queryKey: requirementKeys.all(),
         });
@@ -70,7 +70,7 @@ export const confirmationSteps = (
         setCurrentStep('success');
       },
       RESEND_CODE: async () => {
-        await requestCodeEmail();
+        await requestReconfirmCodeEmail();
       },
     },
 
@@ -116,7 +116,7 @@ export const confirmationSteps = (
     'confirmation:reconfirm-phone': {
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT_CODE: async (code: string) => {
-        await confirmCodePhone(code);
+        await reconfirmCodePhone(code);
         invalidateCacheAfterUpdateUser(queryClient);
 
         const { requirements } = await getRequirements();
@@ -136,7 +136,7 @@ export const confirmationSteps = (
         setCurrentStep('success');
       },
       RESEND_CODE: async () => {
-        await requestCodePhone();
+        await requestReconfirmCodePhone();
       },
     },
 

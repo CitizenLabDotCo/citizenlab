@@ -11,7 +11,6 @@ describe('New timeline project with proposals phase', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: 'Description preview',
-      description: 'Description full',
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;

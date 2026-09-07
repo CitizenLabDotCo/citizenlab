@@ -2,24 +2,14 @@
 
 module EmailCampaigns
   class SideFxConsentService < BaseSideFxService
-    # Logs only when consent flips, so toggling to the same value is a no-op.
-    def after_update(consent, user)
-      return unless consent.saved_change_to_consented?
+    # Logs only when consent flips. always_log is for consent implied by an action, where each submission is a fresh act.
+    def after_update(consent, user, always_log: false)
+      changed = consent.saved_change_to_consented?
+      return unless always_log || changed
 
-      log_activity(consent, user, consent.updated_at.to_i)
-    end
-
-    # Consent granted by performing an action that implies it (e.g. submitting a
-    # phone number to be confirmed). Every grant is a fresh act, so it is logged
-    # even when the stored value is unchanged.
-    def after_grant(consent, user)
-      log_activity(consent, user, Time.now.to_i)
-    end
-
-    private
-
-    def log_activity(consent, user, acted_at)
       action = consent.consented ? 'consent_given' : 'consent_withdrawn'
+      # updated_at is stale when the value did not change, so it would misdate the activity.
+      acted_at = changed ? consent.updated_at.to_i : Time.now.to_i
       LogActivityJob.perform_later(
         consent,
         action,
@@ -28,6 +18,8 @@ module EmailCampaigns
         payload: { campaign_type: consent.campaign_type }
       )
     end
+
+    private
 
     def resource_name
       :consent
