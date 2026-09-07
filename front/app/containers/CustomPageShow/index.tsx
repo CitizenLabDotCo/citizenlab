@@ -30,7 +30,8 @@ import PageSections from './PageSections';
 
 // Builder content is one white block, so the page's grey would only show as a strip below it.
 const PageContainer = styled(Container)<{ builderContent: boolean }>`
-  ${({ builderContent }) => builderContent && 'background: #fff;'}
+  ${({ builderContent, theme }) =>
+    builderContent && `background: ${theme.colors.white};`}
 `;
 
 const PageTitle = styled.h1`
