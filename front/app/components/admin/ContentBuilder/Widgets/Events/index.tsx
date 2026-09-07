@@ -8,7 +8,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { UserComponent, useEditor } from '@craftjs/core';
 import styled from 'styled-components';
-import { Multiloc } from 'typings';
 
 import { InputParameters } from 'api/events/types';
 import useEvents from 'api/events/useEvents';
@@ -21,41 +20,20 @@ import useWidgetProjectId from 'components/admin/ContentBuilder/useWidgetProject
 import landingPageMessages from 'components/LandingPages/citizen/messages';
 import EmptyEvents from 'components/ProjectPageBuilder/Widgets/Events/EmptyEvents';
 import EventsSection from 'components/ProjectPageBuilder/Widgets/Events/EventsSection';
-import projectPageMessages from 'components/ProjectPageBuilder/Widgets/messages';
 
 import { useIntl } from 'utils/cl-intl';
 import Link, { typedStyled } from 'utils/cl-router/Link';
 import sharedMessages from 'utils/messages';
 
+import defaultHeadingMessage from './defaultHeading';
 import messages from './messages';
 import EventsSettings from './Settings';
+import { EventsProps, EventsSource } from './types';
 
 export const EVENTS_WIDGET_NAME = 'EventsList';
 
 const PAGINATED_PAGE_SIZE = 15;
 const CURRENT_PROJECT_STATUSES = ['published', 'draft', 'archived'] as const;
-
-export type EventsSource =
-  | 'all'
-  | 'currentProject'
-  | 'projects'
-  | 'global_topics'
-  | 'areas'
-  | 'spaces';
-export type EventsTimeFilter = 'upcoming' | 'past';
-export type EventsLimit = number | 'all';
-export type EventsPublicationStatus = 'published' | 'archived';
-
-export type EventsProps = {
-  source?: EventsSource;
-  ids?: string[];
-  titleMultiloc?: Multiloc;
-  timeFilters?: EventsTimeFilter[];
-  limit?: EventsLimit;
-  projectPublicationStatuses?: EventsPublicationStatus[];
-  showEmptyMessage?: boolean;
-  renderFrame?: (contents: React.ReactNode) => React.ReactNode;
-};
 
 const NoEventsText = styled.div`
   margin: auto 0px;
@@ -154,11 +132,7 @@ const EventsWidget: UserComponent<EventsProps> = ({
       <Title variant="h2" color="tenantText" m="0" mb="24px">
         {titleMultiloc
           ? localize(titleMultiloc)
-          : formatMessage(
-              source === 'currentProject'
-                ? projectPageMessages.eventsWidgetTitle
-                : landingPageMessages.upcomingEventsWidgetTitle
-            )}
+          : formatMessage(defaultHeadingMessage(source))}
       </Title>
 
       {isEmpty ? (
