@@ -6,7 +6,7 @@ describe Export::Geojson::ValueVisitor do
   end
 
   let(:option_index) { {} }
-  let(:model) { instance_double Idea, custom_field_values: { field_key => 'John' } }
+  let(:model) { build(:idea, custom_field_answers: [build(:custom_field_answer, key: field_key, value: 'John')]) }
   let(:field) { create(:custom_field, input_type: 'text', key: field_key) }
 
   describe '#default' do
@@ -29,9 +29,9 @@ describe Export::Geojson::ValueVisitor do
     context 'for a non built-in field' do
       let(:field_key) { 'name' }
       let(:field) { create(:custom_field, input_type: 'text', key: field_key) }
-      let(:model) { instance_double Idea, custom_field_values: { field_key => 'John' } }
+      let(:model) { build(:idea, custom_field_answers: [build(:custom_field_answer, key: field_key, value: 'John')]) }
 
-      it 'returns the field value from custom_field_values' do
+      it 'returns the field value from the answer' do
         expect(visitor.default(field)).to eq 'John'
       end
     end
@@ -50,7 +50,8 @@ describe Export::Geojson::ValueVisitor do
         code: code
       )
     end
-    let(:model) { instance_double Idea, custom_field_values: { field_key => value } }
+    let(:answers) { value.nil? ? [] : [build(:custom_field_answer, key: field_key, value: value)] }
+    let(:model) { build(:idea, custom_field_answers: answers) }
 
     describe '#visit_text' do
       let(:input_type) { 'text' }
@@ -382,7 +383,7 @@ describe Export::Geojson::ValueVisitor do
         let!(:file) { create(:idea_file, name: 'File1.pdf', idea: model) }
 
         it 'returns the value for the report' do
-          model.update!(custom_field_values: { field_key => { 'id' => file.id, 'name' => file.name } })
+          create(:custom_field_answer, answerable: model, custom_field: field, value: { 'id' => file.id, 'name' => file.name })
           expect(visitor.visit_file_upload(field)).to eq file.file.url
         end
       end
@@ -408,7 +409,7 @@ describe Export::Geojson::ValueVisitor do
         let!(:file) { create(:idea_file, name: 'File1.pdf', idea: model) }
 
         it 'returns the value for the report' do
-          model.update!(custom_field_values: { field_key => { 'id' => file.id, 'name' => file.name } })
+          create(:custom_field_answer, answerable: model, custom_field: field, value: { 'id' => file.id, 'name' => file.name })
           expect(visitor.visit_shapefile_upload(field)).to eq file.file.url
         end
       end
