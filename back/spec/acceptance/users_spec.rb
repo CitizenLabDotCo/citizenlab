@@ -1923,7 +1923,7 @@ resource 'Users' do
           example "Clear out a user's custom field value if set to nil" do
             cf = create(:custom_field)
             cf2 = create(:custom_field)
-            @user.update!(custom_field_values: { cf.key => 'somevalue' })
+            create(:custom_field_answer, answerable: @user, key: cf.key, value: 'somevalue')
 
             do_request(user: { custom_field_values: {
               cf.key => nil,
@@ -1931,28 +1931,28 @@ resource 'Users' do
             } })
 
             expect(response_status).to eq 200
-            expect(@user.reload.custom_field_values).to eq({
-              cf2.key => 'another_value'
-            })
+            expect(@user.reload.custom_field_answers.pluck(:key, :value)).to contain_exactly(
+              [cf2.key, 'another_value']
+            )
           end
 
           example "Add to user's existing custom field values" do
             cf = create(:custom_field)
             cf2 = create(:custom_field)
-            @user.update!(custom_field_values: { cf.key => 'somevalue' })
+            create(:custom_field_answer, answerable: @user, key: cf.key, value: 'somevalue')
 
             do_request(user: { custom_field_values: { cf2.key => 'another_value' } })
             expect(response_status).to eq 200
-            expect(@user.reload.custom_field_values).to eq({
-              cf.key => 'somevalue',
-              cf2.key => 'another_value'
-            })
+            expect(@user.reload.custom_field_answers.pluck(:key, :value)).to contain_exactly(
+              [cf.key, 'somevalue'],
+              [cf2.key, 'another_value']
+            )
           end
 
           example "Replace a user's existing custom field value" do
             cf = create(:custom_field)
             cf2 = create(:custom_field)
-            @user.update!(custom_field_values: { cf.key => 'somevalue' })
+            create(:custom_field_answer, answerable: @user, key: cf.key, value: 'somevalue')
 
             do_request(user: { custom_field_values: {
               cf.key => 'new_value',
@@ -1960,34 +1960,34 @@ resource 'Users' do
             } })
 
             expect(response_status).to eq 200
-            expect(@user.reload.custom_field_values).to eq({
-              cf.key => 'new_value',
-              cf2.key => 'another_value'
-            })
+            expect(@user.reload.custom_field_answers.pluck(:key, :value)).to contain_exactly(
+              [cf.key, 'new_value'],
+              [cf2.key, 'another_value']
+            )
           end
 
           example 'Cannot modify values of hidden custom fields' do
             cf = create(:custom_field, hidden: true, enabled: true)
             some_value = 'some_value'
-            @user.update!(custom_field_values: { cf.key => some_value })
+            create(:custom_field_answer, answerable: @user, key: cf.key, value: some_value)
 
             do_request(user: { custom_field_values: { cf.key => 'another_value' } })
             json_response = json_parse(response_body)
 
             expect(json_response.dig(:data, :attributes, :custom_field_values)).not_to include(cf.key.to_sym)
-            expect(@user.custom_field_values[cf.key]).to eq(some_value)
+            expect(@user.reload.answer_for_key(cf.key)&.value).to eq(some_value)
           end
 
           example 'Can modify values of disabled custom fields' do
             cf = create(:custom_field, hidden: false, enabled: false)
             some_value = 'some_value'
-            @user.update!(custom_field_values: { cf.key => some_value })
+            create(:custom_field_answer, answerable: @user, key: cf.key, value: some_value)
 
             do_request(user: { custom_field_values: { cf.key => 'another_value' } })
             json_response = json_parse(response_body)
 
             expect(json_response.dig(:data, :attributes, :custom_field_values)).to include(cf.key.to_sym)
-            expect(@user.custom_field_values[cf.key]).to eq(some_value)
+            expect(@user.reload.answer_for_key(cf.key)&.value).to eq('another_value')
           end
 
           # To allow for custom fields to be required or not depending on the action
@@ -2052,11 +2052,12 @@ resource 'Users' do
 
           example "Can't change some attributes of a user verified with FranceConnect", document: false do
             create(:verification, method_name: 'franceconnect', user: @user)
-            @user.update!(custom_field_values: { cf.key => 'original value', birthyear_cf.key => 1950 })
+            create(:custom_field_answer, answerable: @user, key: cf.key, value: 'original value')
+            create(:custom_field_answer, answerable: @user, key: birthyear_cf.key, value: 1950)
             do_request
             expect(response_status).to eq 200
             @user.reload
-            expect(@user.custom_field_values[cf.key]).to eq 'new value'
+            expect(@user.answer_for_key(cf.key)&.value).to eq 'new value'
             expect(@user.first_name).not_to eq first_name
             expect(@user.last_name).not_to eq last_name
           end
@@ -2083,12 +2084,13 @@ resource 'Users' do
 
           example "Can't change gender of a user verified with Bogus", document: false do
             create(:verification, method_name: 'bogus', user: @user)
-            @user.update!(custom_field_values: { cf.key => 'original value', gender_cf.key => 'male' })
+            create(:custom_field_answer, answerable: @user, key: cf.key, value: 'original value')
+            create(:custom_field_answer, answerable: @user, key: gender_cf.key, value: 'male')
             do_request
             expect(response_status).to eq 200
             @user.reload
-            expect(@user.custom_field_values[cf.key]).to eq 'new value'
-            expect(@user.custom_field_values[gender_cf.key]).to eq 'male'
+            expect(@user.answer_for_key(cf.key)&.value).to eq 'new value'
+            expect(@user.answer_for_key(gender_cf.key)&.value).to eq 'male'
           end
         end
 
