@@ -217,8 +217,6 @@
   "app.components.admin.ContentBuilder.Widgets.Events.byArea": "Projects in chosen areas",
   "app.components.admin.ContentBuilder.Widgets.Events.bySpace": "Projects in chosen spaces",
   "app.components.admin.ContentBuilder.Widgets.Events.byTopic": "Projects with chosen tags",
-  "app.components.admin.ContentBuilder.Widgets.Events.clearSearch": "Clear search",
-  "app.components.admin.ContentBuilder.Widgets.Events.clearSelection": "Clear selection",
   "app.components.admin.ContentBuilder.Widgets.Events.eventsListTitle": "Events",
   "app.components.admin.ContentBuilder.Widgets.Events.everyProject": "Every project",
   "app.components.admin.ContentBuilder.Widgets.Events.everyProjectOnly": "This widget shows events from every project. Filtering by area, tag or space is part of a paid plan.",
