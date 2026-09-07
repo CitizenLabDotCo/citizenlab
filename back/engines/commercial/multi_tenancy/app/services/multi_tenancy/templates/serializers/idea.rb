@@ -22,7 +22,6 @@ module MultiTenancy
 
         attribute(:submitted_at) { |idea| serialize_timestamp(idea.submitted_at) }
         attribute(:published_at) { |idea| serialize_timestamp(idea.published_at) }
-
       end
     end
   end

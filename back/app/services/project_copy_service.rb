@@ -642,8 +642,6 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   end
 
   def yml_ideas(exported_ideas, shift_timestamps: 0)
-    custom_fields = CustomField.where(resource: CustomForm.where(participation_context: (@project.phases + [@project])))
-
     exported_ideas.map do |idea|
       yml_idea = {
         'title_multiloc' => idea.title_multiloc,
