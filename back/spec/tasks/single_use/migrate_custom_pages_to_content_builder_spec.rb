@@ -86,6 +86,18 @@ describe 'single_use:migrate_custom_pages_to_content_builder' do
     expect(archived['context']).to include('page_id' => page.id, 'slug' => page.slug)
   end
 
+  it 'derives an events widget from the page filter' do
+    area = create(:area)
+    page.update!(events_widget_enabled: true, projects_filter_type: 'areas', areas: [area])
+
+    task.invoke('execute')
+
+    events = layout_for(page).craftjs_json.values.find do |node|
+      node.dig('type', 'resolvedName') == 'EventsList'
+    end
+    expect(events['props']).to include('source' => 'areas', 'ids' => [area.id])
+  end
+
   context 'with overwrite' do
     subject(:run) { task.invoke('execute', nil, 'overwrite') }
 

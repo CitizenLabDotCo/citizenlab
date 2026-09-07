@@ -14,6 +14,7 @@ module ContentBuilder
     BODY_ID = 'CUSTOM_PAGE_BODY'
     TOP_INFO_ID = 'CUSTOM_PAGE_TOP_INFO'
     FILE_ID_PREFIX = 'CUSTOM_PAGE_FILE_'
+    EVENTS_ID = 'CUSTOM_PAGE_EVENTS'
     BOTTOM_INFO_ID = 'CUSTOM_PAGE_BOTTOM_INFO'
 
     def craftjs_json_for(static_page)
@@ -24,6 +25,7 @@ module ContentBuilder
           enabled: static_page.top_info_section_enabled
         ),
         **file_nodes(static_page),
+        EVENTS_ID => events_node(static_page),
         BOTTOM_INFO_ID => section_node(
           static_page.bottom_info_section_multiloc,
           enabled: static_page.bottom_info_section_enabled
@@ -47,6 +49,35 @@ module ContentBuilder
           "#{FILE_ID_PREFIX}#{attachment.file_id}",
           Craftjs::Nodes.file_attachment(attachment.file_id, BODY_ID)
         ]
+      end
+    end
+
+    # `hideProjects` in CustomPageProjectsAndEvents returns null above the events block too, so a
+    # page with no project filter shows no events today whatever its events toggle says.
+    def events_node(static_page)
+      return unless static_page.events_widget_enabled
+      return if static_page.projects_filter_type == 'no_filter'
+
+      Craftjs::Nodes.events(
+        {
+          'source' => static_page.projects_filter_type,
+          'ids' => events_filter_ids(static_page),
+          'timeFilters' => ['upcoming'],
+          'limit' => 3,
+          'projectPublicationStatuses' => ['published']
+        },
+        BODY_ID
+      )
+    end
+
+    # The dimension, not the projects it resolves to: legacy re-resolves on every request, so
+    # freezing project ids here would drop a project tagged into the area later.
+    def events_filter_ids(static_page)
+      case static_page.projects_filter_type
+      when 'areas' then static_page.areas_static_pages.pluck(:area_id)
+      when 'global_topics' then static_page.static_pages_global_topics.pluck(:global_topic_id)
+      when 'spaces' then static_page.static_pages_spaces.pluck(:space_id)
+      else []
       end
     end
 
