@@ -34,9 +34,9 @@ export default defineMessages({
     id: 'app.components.formBuilder.copySurveyModal.noPhaseSelected',
     defaultMessage: 'No phase selected. Please select a phase first.',
   },
-  surveyPhase: {
-    id: 'app.components.formBuilder.copySurveyModal.surveyPhase',
-    defaultMessage: 'Survey phase',
+  survey: {
+    id: 'app.components.formBuilder.copySurveyModal.survey',
+    defaultMessage: 'Survey',
   },
   surveyFormPersistedWarning: {
     id: 'app.components.formBuilder.copySurveyModal.surveyFormPersistedWarning',

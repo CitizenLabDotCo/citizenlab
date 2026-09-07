@@ -116,7 +116,7 @@ module Analysis
     end
 
     def ranking_field_value(input, custom_field, options_by_key)
-      stored_value = input.custom_field_values[custom_field.key]
+      stored_value = input.answer_for_key(custom_field.key)&.value
       (stored_value || []).map.with_index do |option_key, index|
         title_multiloc = options_by_key[option_key]&.title_multiloc
         option_title = title_multiloc ? @multiloc_service.t(title_multiloc) : ''
@@ -125,7 +125,7 @@ module Analysis
     end
 
     def matrix_linear_scale_field_value(input, custom_field)
-      stored_values = input.custom_field_values[custom_field.key]
+      stored_values = input.answer_for_key(custom_field.key)&.value
       return '' if !stored_values
 
       statements_by_key = custom_field.matrix_statements.index_by(&:key)
