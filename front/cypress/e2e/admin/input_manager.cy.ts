@@ -28,7 +28,6 @@ describe('Input manager', () => {
       cy.getAdminAuthUser().then((user) => {
         const projectTitle = randomString();
         const projectDescriptionPreview = randomString();
-        const projectDescription = randomString();
         const userId = user.body.data.id;
         let projectId: string;
         const phaseTitle = randomString();
@@ -37,7 +36,6 @@ describe('Input manager', () => {
         cy.apiCreateProject({
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
-          description: projectDescription,
           publicationStatus: 'published',
           assigneeId: userId,
         })
@@ -82,7 +80,6 @@ describe('Input manager', () => {
       cy.getAdminAuthUser().then((user) => {
         const projectTitle = randomString();
         const projectDescriptionPreview = randomString();
-        const projectDescription = randomString();
         const userId = user.body.data.id;
         let projectId: string;
 
@@ -90,7 +87,6 @@ describe('Input manager', () => {
         cy.apiCreateProject({
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
-          description: projectDescription,
           publicationStatus: 'published',
           assigneeId: userId,
         })
@@ -177,7 +173,6 @@ describe('Input manager', () => {
       cy.getAdminAuthUser().then((user) => {
         const projectTitle = randomString();
         const projectDescriptionPreview = randomString();
-        const projectDescription = randomString();
         const userId = user.body.data.id;
         let projectId: string;
 
@@ -185,7 +180,6 @@ describe('Input manager', () => {
         cy.apiCreateProject({
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
-          description: projectDescription,
           publicationStatus: 'published',
           assigneeId: userId,
         })
@@ -258,21 +252,37 @@ describe('Input manager', () => {
     });
 
     it('Assigns a user to an idea', () => {
-      cy.visit('/admin/ideas/');
       const optionLabelText1 = 'Unassigned';
+      const optionLabelText2 = `Assigned to ${newAdminFirstName} ${newAdminLastName}`;
+
+      cy.intercept('GET', '**/web_api/v1/ideas?*assignee=unassigned*').as(
+        'unassignedIdeas'
+      );
+      cy.intercept('PATCH', '**/web_api/v1/ideas/*').as('assignIdea');
+
+      cy.visit('/admin/ideas/');
       selectAssigneeFilter(optionLabelText1);
       checkSelectedAssigneeFilter(optionLabelText1);
-      // Pick first idea in idea table and assign it to our user
-      cy.wait(500);
-      cy.get('#post-row-select-assignee')
-        .first()
-        .select(`Assigned to ${newAdminFirstName} ${newAdminLastName}`);
+
+      cy.wait('@unassignedIdeas')
+        .its('response.body.data')
+        .then((ideas: { id: string }[]) => {
+          cy.get(`[data-cy="e2e-idea-row-${ideas[0].id}"]`)
+            .find('#post-row-select-assignee')
+            .select(optionLabelText2);
+        });
+
+      cy.wait('@assignIdea').its('response.statusCode').should('eq', 200);
+
       // Select this user in the assignee filter
-      const optionLabelText2 = `Assigned to ${newAdminFirstName} ${newAdminLastName}`;
+      cy.intercept('GET', `**/web_api/v1/ideas?*assignee=${adminUserId}*`).as(
+        'assignedIdeas'
+      );
       selectAssigneeFilter(optionLabelText2);
       checkSelectedAssigneeFilter(optionLabelText2);
 
       // Check if idea is there
+      cy.wait('@assignedIdeas');
       cy.get('.e2e-idea-manager-idea-row').should('have.length', 1);
     });
   });

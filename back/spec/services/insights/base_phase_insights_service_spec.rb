@@ -162,9 +162,50 @@ RSpec.describe Insights::BasePhaseInsightsService do
     end
   end
 
+  # A phase action only gets a permission row of its own once an admin overrides
+  # it; until then it follows the global 'visiting' permission.
+  # See Permissions::PermissionInheritanceService.
+  describe '#phase_permissions' do
+    let!(:visiting_permission) { create(:global_permission, action: 'visiting') }
+
+    before { Permissions::PermissionInheritanceService.clear_source_permission_cache }
+
+    it 'combines the overridden permissions of the phase with the inherited ones' do
+      permissions = service.send(:phase_permissions)
+
+      expect(permissions.map(&:action)).to match_array %w[voting commenting_idea]
+      expect(permissions.find { |permission| permission.action == 'voting' }).not_to be_inherited
+      expect(permissions.find { |permission| permission.action == 'commenting_idea' }).to be_inherited
+    end
+
+    it 'inherits every action when the phase has overridden none' do
+      permission1.destroy!
+
+      permissions = service.send(:phase_permissions)
+
+      expect(permissions.map(&:action)).to match_array %w[voting commenting_idea]
+      expect(permissions).to all(be_inherited)
+    end
+
+    it 'excludes attending_event, whether it is inherited or overridden' do
+      expect(service.send(:phase_permissions).map(&:action)).not_to include 'attending_event'
+
+      create(:permission, action: 'attending_event', permission_scope: phase)
+
+      expect(service.send(:phase_permissions).map(&:action)).not_to include 'attending_event'
+    end
+
+    it 'excludes actions that are disabled on the phase, including overridden ones' do
+      create(:permission, action: 'commenting_idea', permission_scope: phase)
+      phase.update!(commenting_enabled: false)
+
+      expect(service.send(:phase_permissions).map(&:action)).to eq %w[voting]
+    end
+  end
+
   describe '#demographics_data' do
     it 'only includes data related to fields used in phase-level action permissions' do
-      permission1.update!(global_custom_fields: false)
+      permission1.update!(custom_fields_behavior: 'custom')
 
       field1 = create(:custom_field, resource_type: 'User', key: 'single_select1', code: nil, input_type: 'select', title_multiloc: { en: 'Single Select 1' })
       create(:custom_field, resource_type: 'User', key: 'single_select2', code: nil, input_type: 'select', title_multiloc: { en: 'Single Select 2' })
@@ -172,7 +213,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
       create(:permissions_custom_field, permission: permission1, custom_field: field1)
 
       permission2 = create(:permission, action: 'commenting_idea', permission_scope: phase)
-      permission2.update!(global_custom_fields: false)
+      permission2.update!(custom_fields_behavior: 'custom')
 
       field3 = create(:custom_field, resource_type: 'User', key: 'single_select3', code: nil, input_type: 'select', title_multiloc: { en: 'Single Select 3' })
       create(:permissions_custom_field, permission: permission2, custom_field: field3)
@@ -184,6 +225,53 @@ RSpec.describe Insights::BasePhaseInsightsService do
       result = service.send(:demographics_data, flattened_participations, participant_ids)
 
       expect(result.pluck(:key)).to match_array(%w[single_select1 single_select3])
+    end
+
+    # See Permissions::PermissionInheritanceService.
+    context 'when the phase has not overridden all of its permissions' do
+      let!(:visiting_permission) { create(:global_permission, action: 'visiting', custom_fields_behavior: 'custom') }
+
+      let(:participations) { [create(:basket_participation)] }
+      let(:participant_ids) { participations.pluck(:participant_id).uniq }
+
+      before { Permissions::PermissionInheritanceService.clear_source_permission_cache }
+
+      it "includes the fields of the global 'visiting' permission for the inherited actions" do
+        permission1.destroy! # The phase now inherits all of its permissions
+
+        inherited_field = create(:custom_field, resource_type: 'User', key: 'inherited_select', code: nil, input_type: 'select')
+        create(:custom_field, resource_type: 'User', key: 'unrelated_select', code: nil, input_type: 'select')
+        create(:permissions_custom_field, permission: visiting_permission, custom_field: inherited_field)
+
+        result = service.send(:demographics_data, participations, participant_ids)
+
+        expect(result.pluck(:key)).to eq %w[inherited_select]
+      end
+
+      it "includes no fields when the global 'visiting' permission has its demographic questions disabled" do
+        permission1.destroy!
+        visiting_permission.update!(custom_fields_behavior: 'disabled')
+        create(:custom_field, resource_type: 'User', key: 'unrelated_select', code: nil, input_type: 'select')
+
+        result = service.send(:demographics_data, participations, participant_ids)
+
+        expect(result).to be_empty
+      end
+
+      it 'prefers the fields of the overridden permission over the inherited ones' do
+        phase.update!(commenting_enabled: false) # Leaves 'voting' as the only action
+
+        permission1.update!(custom_fields_behavior: 'custom')
+        overridden_field = create(:custom_field, resource_type: 'User', key: 'overridden_select', code: nil, input_type: 'select')
+        create(:permissions_custom_field, permission: permission1, custom_field: overridden_field)
+
+        inherited_field = create(:custom_field, resource_type: 'User', key: 'inherited_select', code: nil, input_type: 'select')
+        create(:permissions_custom_field, permission: visiting_permission, custom_field: inherited_field)
+
+        result = service.send(:demographics_data, participations, participant_ids)
+
+        expect(result.pluck(:key)).to eq %w[overridden_select]
+      end
     end
 
     it 'only includes data related to specific types of user custom fields' do

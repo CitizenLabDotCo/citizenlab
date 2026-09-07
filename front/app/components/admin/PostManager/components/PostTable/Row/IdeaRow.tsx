@@ -13,7 +13,6 @@ import { IPhaseData } from 'api/phases/types';
 
 import usePostManagerColumnFilter from 'hooks/usePostManagerColumnFilter';
 
-import AssigneeSelect from 'components/admin/PostManager/components/PostTable/AssigneeSelect';
 import FeatureFlag from 'components/FeatureFlag';
 import T from 'components/T';
 import Checkbox from 'components/UI/Checkbox';
@@ -32,6 +31,7 @@ import IdeaOfficialFeedbackModal, {
   getIdeaOfficialFeedbackModalEventName,
 } from '../../IdeaOfficialFeedbackModal';
 
+import AssigneeCell from './AssigneeCell';
 import LikeIndicator from './LikeIndicator';
 import PhaseDeselectModal from './PhaseDeselectModal';
 import StyledRow from './StyledRow';
@@ -164,24 +164,7 @@ const IdeaRow = ({
           idea: ideaId,
         });
       },
-      Component: ({
-        idea,
-        onChange,
-      }: Override<
-        IdeaCellComponentProps,
-        {
-          onChange: (idea: IIdeaData) => (assigneeId?: string) => void;
-        }
-      >) => {
-        const projectId = idea.relationships.project.data.id;
-        return (
-          <AssigneeSelect
-            onAssigneeChange={onChange(idea)}
-            projectId={projectId}
-            assigneeId={idea.relationships.assignee?.data?.id}
-          />
-        );
-      },
+      Component: AssigneeCell,
     },
     {
       name: 'votes',
@@ -442,6 +425,7 @@ const IdeaRow = ({
     <>
       <StyledRow
         className={`${className} e2e-idea-manager-idea-row`}
+        dataCy={`e2e-idea-row-${idea.id}`}
         undraggable={false}
         background={active ? colors.grey300 : undefined}
         ref={drag}

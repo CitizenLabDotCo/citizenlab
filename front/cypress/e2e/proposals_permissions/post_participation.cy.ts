@@ -3,7 +3,7 @@ import { signUpEmailConformation, enterUserInfo } from '../../support/auth';
 import {
   updatePermission,
   setupProject,
-  addPermissionsCustomField,
+  askOnlyDemographicQuestion,
   confirmUserCustomFieldHasValue,
 } from '../../support/permitted_by_utils';
 import { fillOutTitleAndBody } from '../ideation_permissions/_utils';
@@ -37,7 +37,7 @@ describe('Post Participation Signup: ideation', () => {
             phaseId,
             permitted_by: 'everyone',
           }).then(() => {
-            return addPermissionsCustomField({
+            return askOnlyDemographicQuestion({
               adminJwt,
               phaseId,
               customFieldId,

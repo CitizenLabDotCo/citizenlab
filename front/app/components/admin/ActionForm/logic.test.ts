@@ -63,12 +63,11 @@ describe('ActionForm logic', () => {
     });
 
     describe('phone', () => {
-      it('is shown if the SMS feature and password login are enabled', () => {
+      it('is shown if the SMS feature is enabled', () => {
         expect(
           getVisibleSecurityRequirements({
             ...ALL_DISABLED,
             smsEnabled: true,
-            passwordLoginEnabled: true,
           }).phone
         ).toBe(true);
       });
@@ -96,17 +95,17 @@ describe('ActionForm logic', () => {
         ).toBe(false);
       });
 
-      it('is hidden if password login is disabled', () => {
-        // Phone confirmation codes belong to the password_login flow: with that
-        // feature off, nobody can request one, so a confirmed phone number is
-        // not something an admin can require.
+      // Re-confirming an existing phone number goes through
+      // reconfirm_code_phone, which is not gated by password_login, so an
+      // SSO-only platform can still require a confirmed phone number.
+      it('is shown even if password login is disabled', () => {
         expect(
           getVisibleSecurityRequirements({
             ...ALL_DISABLED,
             smsEnabled: true,
             smsLoginEnabled: true,
           }).phone
-        ).toBe(false);
+        ).toBe(true);
       });
     });
 
@@ -251,7 +250,7 @@ describe('ActionForm logic', () => {
           true,
           { ...NONE_VISIBLE, email: true, verification: true, password: true },
         ],
-        [true, false, false, false, false, NONE_VISIBLE],
+        [true, false, false, false, false, { ...NONE_VISIBLE, phone: true }],
         [
           true,
           false,
@@ -260,7 +259,14 @@ describe('ActionForm logic', () => {
           true,
           { ...NONE_VISIBLE, phone: true, password: true },
         ],
-        [true, false, false, true, false, { ...NONE_VISIBLE, email: true }],
+        [
+          true,
+          false,
+          false,
+          true,
+          false,
+          { ...NONE_VISIBLE, email: true, phone: true },
+        ],
         [
           true,
           false,
@@ -275,7 +281,7 @@ describe('ActionForm logic', () => {
           true,
           false,
           false,
-          { ...NONE_VISIBLE, verification: true },
+          { ...NONE_VISIBLE, phone: true, verification: true },
         ],
         [
           true,
@@ -283,12 +289,7 @@ describe('ActionForm logic', () => {
           true,
           false,
           true,
-          {
-            ...NONE_VISIBLE,
-            phone: true,
-            verification: true,
-            password: true,
-          },
+          { ...NONE_VISIBLE, phone: true, verification: true, password: true },
         ],
         [
           true,
@@ -296,52 +297,13 @@ describe('ActionForm logic', () => {
           true,
           true,
           false,
-          { ...NONE_VISIBLE, email: true, verification: true },
+          { ...NONE_VISIBLE, email: true, phone: true, verification: true },
         ],
         [
           true,
           false,
           true,
           true,
-          true,
-          {
-            email: true,
-            phone: true,
-            verification: true,
-            password: true,
-          },
-        ],
-        [true, true, false, false, false, { ...NONE_VISIBLE, email: true }],
-        [
-          true,
-          true,
-          false,
-          false,
-          true,
-          { ...NONE_VISIBLE, email: true, phone: true, password: true },
-        ],
-        [true, true, false, true, false, { ...NONE_VISIBLE, email: true }],
-        [
-          true,
-          true,
-          false,
-          true,
-          true,
-          { ...NONE_VISIBLE, email: true, phone: true, password: true },
-        ],
-        [
-          true,
-          true,
-          true,
-          false,
-          false,
-          { ...NONE_VISIBLE, email: true, verification: true },
-        ],
-        [
-          true,
-          true,
-          true,
-          false,
           true,
           {
             email: true,
@@ -353,10 +315,63 @@ describe('ActionForm logic', () => {
         [
           true,
           true,
+          false,
+          false,
+          false,
+          { ...NONE_VISIBLE, email: true, phone: true },
+        ],
+        [
           true,
           true,
           false,
-          { ...NONE_VISIBLE, email: true, verification: true },
+          false,
+          true,
+          { ...NONE_VISIBLE, email: true, phone: true, password: true },
+        ],
+        [
+          true,
+          true,
+          false,
+          true,
+          false,
+          { ...NONE_VISIBLE, email: true, phone: true },
+        ],
+        [
+          true,
+          true,
+          false,
+          true,
+          true,
+          { ...NONE_VISIBLE, email: true, phone: true, password: true },
+        ],
+        [
+          true,
+          true,
+          true,
+          false,
+          false,
+          { ...NONE_VISIBLE, email: true, phone: true, verification: true },
+        ],
+        [
+          true,
+          true,
+          true,
+          false,
+          true,
+          {
+            email: true,
+            phone: true,
+            verification: true,
+            password: true,
+          },
+        ],
+        [
+          true,
+          true,
+          true,
+          true,
+          false,
+          { ...NONE_VISIBLE, email: true, phone: true, verification: true },
         ],
         [
           true,

@@ -103,32 +103,92 @@ describe('Sign up - either email or SMS', () => {
       .should('include.text', 'Invalid confirmation code.');
   });
 
-  it('allows changing the phone number before confirming it', () => {
-    startFlow();
+  // 'Change your number' on the confirmation step sends the participant back to
+  // the flow start. Because a number is already known, that step has to open on
+  // the phone form prefilled with it, not on the email form.
+  describe('when going back from the confirmation step to change the number', () => {
+    // The confirmation step shows the full number (+32...), the input only the
+    // national part, and both are formatted for display - so compare digits.
+    const expectConfirmationNumber = (phone: { national: string }) => {
+      cy.dataCy('confirmation-phone-number')
+        .invoke('text')
+        .should((text: string) => {
+          expect(text.replace(/\D/g, '')).to.contain(phone.national);
+        });
+    };
 
-    enterPhone(cy);
-    acceptPolicies(cy);
+    const goBackToPrefilledPhoneForm = (phone: { national: string }) => {
+      cy.dataCy('go-to-change-phone').click();
 
-    // On the confirmation step, go back to enter a different number
-    cy.dataCy('go-to-change-phone').click();
+      cy.dataCy('phone-flow-start-phone-input').should('exist');
+      cy.get('input#phone')
+        .invoke('val')
+        .should((value) => {
+          expect(String(value).replace(/\D/g, '')).to.contain(phone.national);
+        });
+    };
 
-    signUpPhoneConfirmation(cy);
-    enterUserInfo(cy);
+    it.only('gets back to the confirmation step when the number is kept', () => {
+      const phone = randomPhoneNumber();
 
-    cy.get('#e2e-success-continue-button').click();
+      startFlow();
 
-    expectSurveyOpened();
-    cy.logout();
+      enterPhone(cy, phone.national);
+      acceptPolicies(cy);
+      expectConfirmationNumber(phone);
+      goBackToPrefilledPhoneForm(phone);
+      // Submitting the same number again: the (unconfirmed) account already
+      // exists, so the policies are not asked a second time and we land back on
+      // the confirmation step for that same number.
+      cy.dataCy('phone-flow-start-continue-button').click({ force: true });
+      expectConfirmationNumber(phone);
+      confirmPhone(cy);
+      enterUserInfo(cy);
+
+      cy.get('#e2e-success-continue-button').click();
+
+      expectSurveyOpened();
+      cy.logout();
+    });
+
+    it('shows the new number on the confirmation step when it is changed', () => {
+      const phone = randomPhoneNumber();
+      const newPhone = randomPhoneNumber();
+
+      startFlow();
+
+      enterPhone(cy, phone.national);
+      acceptPolicies(cy);
+      expectConfirmationNumber(phone);
+
+      goBackToPrefilledPhoneForm(phone);
+
+      enterPhone(cy, newPhone.national, { alreadyOnPhoneForm: true });
+      acceptPolicies(cy);
+
+      expectConfirmationNumber(newPhone);
+
+      confirmPhone(cy);
+      enterUserInfo(cy);
+
+      cy.get('#e2e-success-continue-button').click();
+
+      expectSurveyOpened();
+      cy.logout();
+    });
   });
 
-  it('allows requesting a new confirmation code', () => {
+  // A code was just sent, so a new one can only be requested a minute later. The
+  // countdown running out is covered by the backend spec: the interval is kept by
+  // the server clock, which cypress cannot move forward.
+  it('counts down before a new confirmation code can be requested', () => {
     startFlow();
 
     enterPhone(cy);
     acceptPolicies(cy);
 
-    cy.dataCy('resend-code').click();
-    cy.dataCy('confirmation-code-sent-message').should('exist');
+    cy.dataCy('resend-code-countdown').should('exist');
+    cy.dataCy('resend-code').should('not.exist');
 
     confirmPhone(cy);
     enterUserInfo(cy);

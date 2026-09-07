@@ -542,6 +542,7 @@ ur-PK:
       yesterday: کل
     new_phone_confirmation:
       sms_body: آپ کی تصدیق کا کوڈ %{code} ہے۔
+      sms_body2: '%{organization_name}: آپ کا تصدیقی کوڈ %{code} ہے۔'
     official_feedback_on_idea_you_follow:
       cta_button: اس ان پٹ پر جائیں۔
       event_description: "%{feedback_author_name} نے '%{input_title}' پر ایک اپ ڈیٹ دیا۔"
@@ -556,6 +557,7 @@ ur-PK:
       title: نیا پاس ورڈ منتخب کریں
     phone_confirmation:
       sms_body: آپ کا تصدیقی کوڈ %{code} ہے۔
+      sms_body2: '%{organization_name}: آپ کا تصدیقی کوڈ %{code} ہے۔'
     preview_data:
       author_display_name: جین ڈو
       author_first_name: جین

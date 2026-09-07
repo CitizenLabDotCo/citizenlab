@@ -13,6 +13,8 @@ module ContentBuilder
         case content_buildable.class.name
         when 'ProjectFolders::Folder'
           folder_layout(content_buildable)
+        when 'StaticPage'
+          CustomPageLayoutService.new.craftjs_json_for(content_buildable)
         else
           {}
         end
@@ -46,7 +48,7 @@ module ContentBuilder
           TEXT: {
             type: { resolvedName: 'TextMultiloc' },
             nodes: [],
-            props: { text: folder.description_multiloc || {} },
+            props: { text: {} },
             custom: {},
             hidden: false,
             parent: 'ROOT',

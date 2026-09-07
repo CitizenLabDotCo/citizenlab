@@ -19,7 +19,11 @@ module EmailCampaigns
       return head :not_found if delivery.nil?
 
       if parsed[:opted_out]
-        EmailCampaigns::Sms::UseCaseConsentService.new.withdraw!(delivery.user, delivery.campaign_use_case)
+        EmailCampaigns::ConsentService.new.record_for_sms_use_case!(
+          delivery.user,
+          delivery.campaign_use_case,
+          consented: false
+        )
       end
 
       # If an unknown status is returned we log it for investigation but still

@@ -45,6 +45,27 @@ export const confirmCodeEmail = async (email: string, code: string) => {
   }
 };
 
+// Re-confirmation of the signed-in user's own email. The caller keeps the token
+// it already has, so - unlike confirmCodeEmail - no JWT is set here.
+export const reconfirmCodeEmail = async (code: string) => {
+  try {
+    await fetcher({
+      path: `/user/reconfirm_code_email`,
+      action: 'post',
+      body: {
+        confirmation: { code },
+      },
+    });
+
+    queryClient.invalidateQueries({ queryKey: meKeys.all() });
+    queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
+
+    return true;
+  } catch (errors) {
+    throw errors.errors;
+  }
+};
+
 export const confirmCodeNewEmail = async (code: string) => {
   try {
     await fetcher({

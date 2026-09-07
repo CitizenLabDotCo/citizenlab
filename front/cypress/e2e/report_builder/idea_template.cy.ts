@@ -8,7 +8,6 @@ describe('Idea template', () => {
 
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString();
-  const projectDescription = randomString();
   const phaseTitle = randomString();
 
   const ideaTitle = randomString();
@@ -23,7 +22,6 @@ describe('Idea template', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     })
       .then((project) => {

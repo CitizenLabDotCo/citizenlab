@@ -34,7 +34,7 @@ const ProjectShowPageMeta = ({ project }: Props) => {
     }),
   });
   const description = stripHtml(
-    localize(project.attributes.description_multiloc),
+    localize(project.attributes.description_preview_multiloc),
     250
   );
   const image = project.attributes.header_bg.large;

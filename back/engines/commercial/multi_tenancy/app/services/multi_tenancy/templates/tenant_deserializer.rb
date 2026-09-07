@@ -13,7 +13,15 @@ module MultiTenancy
         Comment
       ].to_set.freeze
 
-      SKIP_IMAGE_PRESENCE_VALIDATION = %w[IdeaImage ContentBuilder::LayoutImage].freeze
+      SKIP_IMAGE_PRESENCE_VALIDATION = %w[IdeaImage ContentBuilder::LayoutImage ProjectImage].freeze
+
+      # Attributes that were removed from the schema but may still be present in
+      # templates serialized before their removal; assigning them would raise
+      # ActiveModel::UnknownAttributeError and abort the whole template application.
+      REMOVED_ATTRIBUTES = {
+        'Project' => %w[description_multiloc],
+        'ProjectFolders::Folder' => %w[description_multiloc]
+      }.freeze
 
       def initialize(save_temp_remote_urls: false)
         @save_temp_remote_urls = save_temp_remote_urls
@@ -153,8 +161,12 @@ module MultiTenancy
         start_of_day = AppConfiguration.timezone.now.beginning_of_day
         locales = USER_INPUT_CLASSES.include?(model_class) ? app_settings.dig('core', 'locales') : all_supported_locales
 
+        removed_attributes = REMOVED_ATTRIBUTES[model_class&.name] || []
+
         new_attributes = {}
         attributes.each do |field_name, field_value|
+          next if removed_attributes.include?(field_name)
+
           if multiloc?(field_name)
             new_attributes[field_name] = restore_multiloc_attribute(field_value, locales)
 
@@ -184,19 +196,23 @@ module MultiTenancy
           end
         end
 
-        # Required to make templates tests work in which case file storage is used
-        if Rails.env.test?
-          keys = new_attributes.keys.select do |key|
-            key.start_with?('remote_') && key.end_with?('_url') && new_attributes[key]&.start_with?('/')
-          end
-          keys.each do |key|
-            new_key = key.gsub('remote_', '').gsub('_url', '')
-            new_attributes[new_key] = File.open "public#{new_attributes[key]}"
-            new_attributes.delete key
-          end
-        end
+        localize_remote_files_for_test!(new_attributes)
 
         new_attributes
+      end
+
+      # Required to make templates tests work in which case file storage is used
+      def localize_remote_files_for_test!(new_attributes)
+        return if !Rails.env.test?
+
+        keys = new_attributes.keys.select do |key|
+          key.start_with?('remote_') && key.end_with?('_url') && new_attributes[key]&.start_with?('/')
+        end
+        keys.each do |key|
+          new_key = key.gsub('remote_', '').gsub('_url', '')
+          new_attributes[new_key] = File.open "public#{new_attributes[key]}"
+          new_attributes.delete key
+        end
       end
 
       def restore_multiloc_attribute(field_value, locales)

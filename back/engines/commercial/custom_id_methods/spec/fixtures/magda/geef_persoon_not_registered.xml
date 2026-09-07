@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <web:GeefPersoonResponse xmlns:web="http://magda.vlaanderen.be/persoon/soap/geefpersoon/v02_02">
+      <Repliek>
+        <Context>
+          <Naam>GeefPersoon</Naam>
+          <Versie>02.02.0000</Versie>
+          <Bericht>
+            <Type>ANTWOORD</Type>
+            <Tijdstip>
+              <Datum>2026-08-26</Datum>
+              <Tijd>10:15:08.477</Tijd>
+            </Tijdstip>
+            <Afzender>
+              <Identificatie>vip.vlaanderen.be</Identificatie>
+              <Naam>MagdaGateway</Naam>
+              <Referte>2d032342-860e-4aa6-a6eb-415be1f1c6c4</Referte>
+            </Afzender>
+            <Ontvanger>
+              <Identificatie>bornem.be/govocal/ipdc77332-aip</Identificatie>
+              <Referte>d7176ee5-0eda-430c-a9b8-abc32d3a23da</Referte>
+              <Hoedanigheid>ipdc77332</Hoedanigheid>
+            </Ontvanger>
+          </Bericht>
+        </Context>
+        <Antwoorden>
+          <Antwoord>
+            <Referte>d7176ee5-0eda-430c-a9b8-abc32d3a23da</Referte>
+            <Uitzonderingen>
+              <Uitzondering>
+                <Identificatie>40003</Identificatie>
+                <Oorsprong>MAGDA</Oorsprong>
+                <Type>FOUT</Type>
+                <Tijdstip>
+                  <Datum>2026-08-26</Datum>
+                  <Tijd>10:15:08.400</Tijd>
+                </Tijdstip>
+                <Diagnose>Geen inschrijving aanwezig voor het INSZ in de vraag</Diagnose>
+              </Uitzondering>
+            </Uitzonderingen>
+          </Antwoord>
+        </Antwoorden>
+      </Repliek>
+    </web:GeefPersoonResponse>
+  </soapenv:Body>
+</soapenv:Envelope>

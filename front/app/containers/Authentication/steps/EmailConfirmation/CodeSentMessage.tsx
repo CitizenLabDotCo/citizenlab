@@ -53,7 +53,11 @@ const CodeSentMessage = ({ email, codeResent }: Props) => {
           <FormattedMessage
             {...messages.anExampleCodeHasBeenSent}
             values={{
-              userEmail: <strong>{storedEmail ?? userEmail}</strong>,
+              userEmail: (
+                <strong data-cy="confirmation-email">
+                  {storedEmail ?? userEmail}
+                </strong>
+              ),
             }}
           />
         }

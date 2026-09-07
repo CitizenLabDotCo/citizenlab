@@ -18,7 +18,7 @@ describe TextImageService do
         <img src="data:image/jpeg;base64,/9j/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/yQALCAABAAEBAREA/8wABgAQEAX/2gAIAQEAAD8A0s8g/9k=" />
         <img src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg" />
       HTML
-      imageable = create(:project, description_multiloc: { 'fr-BE' => input })
+      imageable = create(:phase, description_multiloc: { 'fr-BE' => input })
       output = service.swap_data_images imageable.description_multiloc, field: :description_multiloc, imageable: imageable
       codes = imageable.reload.text_images.order(:created_at).pluck :text_reference
       expected_html = <<~HTML
@@ -31,15 +31,15 @@ describe TextImageService do
 
     it 'does not modify the empty string' do
       input = ''
-      imageable = create(:project, description_multiloc: { 'en' => input })
+      imageable = create(:phase, description_multiloc: { 'en' => input })
       expect(service.swap_data_images(imageable.description_multiloc, field: :description_multiloc, imageable: imageable)).to eq({ 'en' => input })
     end
 
     # NOTE: We build the multiloc hash directly instead of passing it through the model
-    # because Project's sanitize_description_multiloc callback converts nil to ''.
+    # because Phase's sanitize_description_multiloc callback converts nil to ''.
     # This test verifies that swap_data_images itself preserves nil values.
     it 'preserves nil values in multiloc' do
-      imageable = create(:project)
+      imageable = create(:phase)
       multiloc = {
         'nl-BE' => nil,
         'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">'
@@ -68,43 +68,43 @@ describe TextImageService do
 
   describe 'swap_data_images!' do
     it 'extracts images and updates content field' do
-      project = create(:project, description_multiloc: {
+      phase = create(:phase, description_multiloc: {
         'en' => html_with_base64_image,
         'fr-FR' => html_with_base64_image(alt_text: 'Point rouge')
       })
 
-      service.swap_data_images!(project, :description_multiloc, :text_images)
+      service.swap_data_images!(phase, :description_multiloc, :text_images)
 
-      expect(project.text_images.size).to eq(2)
-      project.description_multiloc.each_value do |value|
+      expect(phase.text_images.size).to eq(2)
+      phase.description_multiloc.each_value do |value|
         expect(value).to include('data-cl2-text-image-text-reference')
         expect(value).not_to include('data:image/png;base64')
       end
     end
 
     it 'builds images through association with correct foreign keys' do
-      project = create(:project, description_multiloc: { 'en' => html_with_base64_image })
+      phase = create(:phase, description_multiloc: { 'en' => html_with_base64_image })
 
-      service.swap_data_images!(project, :description_multiloc, :text_images)
+      service.swap_data_images!(phase, :description_multiloc, :text_images)
 
-      text_image = project.text_images.sole
-      expect(text_image.imageable_id).to eq(project.id)
+      text_image = phase.text_images.sole
+      expect(text_image.imageable_id).to eq(phase.id)
     end
 
     it 'skips images that are already stored' do
-      project = create(:project)
-      text_image = create(:text_image, imageable: project)
-      project.description_multiloc = {
+      phase = create(:phase)
+      text_image = create(:text_image, imageable: phase)
+      phase.description_multiloc = {
         'en' => %(<img data-cl2-text-image-text-reference="#{text_image.text_reference}">)
       }
 
       expect do
-        service.swap_data_images!(project, :description_multiloc, :text_images)
+        service.swap_data_images!(phase, :description_multiloc, :text_images)
       end.not_to(change(TextImage, :count))
     end
 
     it 'skips processing for malformed HTML' do
-      imageable = create(:project)
+      imageable = create(:phase)
       malformed_html = '<<<<invalid>>>>'
       imageable.description_multiloc = { 'en' => malformed_html }
 
@@ -131,13 +131,13 @@ describe TextImageService do
         <img data-cl2-text-image-text-reference="#{text_image2.text_reference}" src="#{text_image2.image.url}">
       HTML
 
-      imageable = build(:project, description_multiloc: { 'de' => input })
+      imageable = build(:phase, description_multiloc: { 'de' => input })
       output = service.render_data_images_multiloc imageable.description_multiloc, field: :description_multiloc, imageable: imageable
       expect(output).to eq({ 'de' => expected_html })
     end
 
     it 'gets all text images in one query' do
-      imageable = create(:project)
+      imageable = create(:phase)
       input = <<~HTML
         <img data-cl2-text-image-text-reference="#{create(:text_image, imageable: imageable).text_reference}">
         <img data-cl2-text-image-text-reference="#{create(:text_image, imageable: imageable).text_reference}">
@@ -152,7 +152,7 @@ describe TextImageService do
 
   describe 'render_data_images' do
     it 'preserves nil in round-trip with swap_data_images' do
-      imageable = create(:project)
+      imageable = create(:phase)
       swapped = service.swap_data_images(nil, imageable: imageable, field: :description_multiloc)
       rendered = service.render_data_images(swapped, imageable: imageable, field: :description_multiloc)
 

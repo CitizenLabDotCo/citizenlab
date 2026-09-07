@@ -96,6 +96,7 @@ export interface IAppConfigurationSettings {
     allowed_country_codes?: string[];
   };
   sms_login?: AppConfigurationFeature;
+  sms_manual_campaigns?: AppConfigurationFeature;
   smart_groups?: AppConfigurationFeature;
   typeform_surveys?: {
     allowed: boolean;
@@ -207,6 +208,7 @@ export interface IAppConfigurationSettings {
   project_static_pages?: AppConfigurationFeature;
   parallel_participation?: AppConfigurationFeature;
   html_block_in_content_builder?: AppConfigurationFeature;
+  custom_page_builder?: AppConfigurationFeature;
   configurable_dropdown?: AppConfigurationFeature;
 }
 

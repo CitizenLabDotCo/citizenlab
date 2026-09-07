@@ -32,6 +32,7 @@
 #  fk_rails_...  (static_page_id => static_pages.id)
 #
 class NavBarItem < ApplicationRecord
+  include PlainTextMultiloc
   # The codes must be listed in the correct default ordering.
   CODES = %w[home projects events all_input custom].freeze
 
@@ -53,6 +54,7 @@ class NavBarItem < ApplicationRecord
   validate :dropdown_constraints
   validate :static_page_not_project_scoped
 
+  plain_text_multiloc :title_multiloc
   before_validation :set_code, on: :create
 
   # Top-level items only; dropdown children live under their parent.

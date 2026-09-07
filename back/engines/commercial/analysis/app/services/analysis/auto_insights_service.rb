@@ -222,6 +222,12 @@ module Analysis
         end
       end
 
+      # The participants come from a plain User relation, so their answers are
+      # preloaded here rather than through an `includes` on the query.
+      ActiveRecord::Associations::Preloader.new(
+        records: output.keys, associations: :custom_field_answers
+      ).call
+
       @participant_to_inputs_map = output
     end
 

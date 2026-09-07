@@ -1,6 +1,6 @@
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 
-import { isExtraSurveyPhase } from 'components/ProjectPageBuilder/Widgets/ExtraSurveys/utils';
+import { isSpotlightSurveyPhase } from 'components/ProjectPageBuilder/Widgets/SpotlightSurveys/utils';
 
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
@@ -19,11 +19,11 @@ export function phaseHasPrimaryCTA(phase: IPhaseData) {
 // Splits a project's standalone survey phases into the ones open for
 // participation right now and the ones that open later. Past surveys are
 // dropped — they never surface in the participation box.
-export function groupExtraSurveys(phases: IPhaseData[] | undefined) {
+export function groupSpotlightSurveys(phases: IPhaseData[] | undefined) {
   const open: IPhaseData[] = [];
   const upcoming: IPhaseData[] = [];
 
-  (phases ?? []).filter(isExtraSurveyPhase).forEach((phase) => {
+  (phases ?? []).filter(isSpotlightSurveyPhase).forEach((phase) => {
     const temporal = pastPresentOrFuture([
       phase.attributes.start_at,
       phase.attributes.end_at,

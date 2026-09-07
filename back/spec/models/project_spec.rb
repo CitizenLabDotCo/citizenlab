@@ -127,16 +127,8 @@ RSpec.describe Project do
     end
   end
 
-  describe 'description sanitizer' do
-    it 'sanitizes script tags in the description' do
-      project = create(:project, description_multiloc: {
-        'en' => '<p>Test</p><script>This should be removed!</script><h2>Title</h2><ul><li>A bullet</li></ul><ol type="1"><li>And a listing</li></ol>'
-      })
-      expect(project.description_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!<h2>Title</h2><ul><li>A bullet</li></ul><ol type="1"><li>And a listing</li></ol>' })
-    end
-  end
-
-  it_behaves_like 'a sanitized title_multiloc', factory: :project
+  it_behaves_like 'a plain text multiloc', factory: :project
+  it_behaves_like 'a plain text multiloc', factory: :project, attribute: :header_bg_alt_text_multiloc
 
   describe 'title sanitizer' do
     it 'is not rewritten by a save that does not touch the title' do
@@ -145,7 +137,7 @@ RSpec.describe Project do
       project.update_columns(title_multiloc: { 'en' => 'Fish & chips' })
       project.reload
 
-      project.update!(description_multiloc: { 'en' => '<p>updated</p>' })
+      project.update!(description_preview_multiloc: { 'en' => '<p>updated</p>' })
 
       expect(project.reload.title_multiloc['en']).to eq 'Fish & chips'
     end

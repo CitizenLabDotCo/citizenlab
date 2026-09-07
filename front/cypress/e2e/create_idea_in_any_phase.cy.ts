@@ -18,7 +18,6 @@ describe('Idea creation', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: description,
-      description,
       publicationStatus: 'published',
     })
       .then((project) => {

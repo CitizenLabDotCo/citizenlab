@@ -431,7 +431,7 @@ describe IdeaPolicy do
       let(:user) { create(:user) }
 
       before do
-        permission.update!(permitted_by: 'users', global_custom_fields: true)
+        permission.update!(permitted_by: 'users', custom_fields_behavior: 'global')
         create(:custom_field_gender, required: true)
       end
 

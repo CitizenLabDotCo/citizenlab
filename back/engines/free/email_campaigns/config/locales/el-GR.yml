@@ -542,6 +542,7 @@ el-GR:
       yesterday: Χθες
     new_phone_confirmation:
       sms_body: Ο κωδικός επιβεβαίωσής σας είναι %{code}.
+      sms_body2: '%{organization_name}: Ο κωδικός επιβεβαίωσής σας είναι %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Πηγαίνετε σε αυτή την είσοδο
       event_description: "%{feedback_author_name} ενημέρωσε για το '%{input_title}'."
@@ -556,6 +557,7 @@ el-GR:
       title: Επιλέξτε έναν νέο κωδικό πρόσβασης
     phone_confirmation:
       sms_body: Ο κωδικός επιβεβαίωσής σας είναι %{code}.
+      sms_body2: '%{organization_name}: Ο κωδικός επιβεβαίωσής σας είναι %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane

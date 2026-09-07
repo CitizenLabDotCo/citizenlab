@@ -12,6 +12,8 @@ export interface UserCheckResponse {
     type: 'check';
     attributes: {
       action: Action;
+      // Only returned by check_phone: seconds until a new SMS code may be requested.
+      code_retry_after?: number;
     };
   };
 }

@@ -37,6 +37,14 @@ FactoryBot.define do
     end
   end
 
+  factory :new_phone_confirmation_campaign, class: 'EmailCampaigns::Campaigns::NewPhoneConfirmation' do
+    enabled { true }
+  end
+
+  factory :phone_confirmation_campaign, class: 'EmailCampaigns::Campaigns::PhoneConfirmation' do
+    enabled { true }
+  end
+
   factory :admin_rights_received_campaign, class: 'EmailCampaigns::Campaigns::AdminRightsReceived' do
     enabled { true }
   end

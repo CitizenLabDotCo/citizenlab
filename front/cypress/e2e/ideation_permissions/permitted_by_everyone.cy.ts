@@ -3,7 +3,7 @@ import { randomString, randomEmail } from '../../support/commands';
 import {
   updatePermission,
   confirmUserCustomFieldHasValue,
-  addPermissionsCustomField,
+  askOnlyDemographicQuestion,
   setupProject,
 } from '../../support/permitted_by_utils';
 import { fillOutTitleAndBody } from './_utils';
@@ -38,7 +38,7 @@ describe('Ideation permitted by: everyone', () => {
             phaseId,
             permitted_by: 'everyone',
           }).then(() => {
-            return addPermissionsCustomField({
+            return askOnlyDemographicQuestion({
               adminJwt,
               phaseId,
               customFieldId,

@@ -14,8 +14,9 @@ export default defineMessages({
     defaultMessage: 'Admin & managers only',
   },
   restrictedToStaff: {
-    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff',
-    defaultMessage: 'Restricted to staff',
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff2',
+    defaultMessage:
+      'Restricted to admins and whoever has management rights this project. No other requirements apply.',
   },
   onlyAdminsAndManagers: {
     id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers',

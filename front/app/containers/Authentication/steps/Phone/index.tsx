@@ -7,12 +7,15 @@ import { string, object, boolean } from 'yup';
 
 import useAuthUser from 'api/me/useAuthUser';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { SetError, State } from 'containers/Authentication/typings';
 
 import PhoneInput from 'components/HookForm/PhoneInput';
 import isValidPhoneNumber from 'components/HookForm/PhoneInput/isValidPhoneNumber';
+import ConsentDisclosure from 'components/SmsConsent/ConsentDisclosure';
 import ManualCampaignConsent from 'components/SmsConsent/ManualCampaignConsent';
-import PhoneConfirmationConsent from 'components/SmsConsent/PhoneConfirmationConsent';
+import smsConsentMessages from 'components/SmsConsent/messages';
 import { FormLabel } from 'components/UI/FormComponents';
 
 import { useIntl } from 'utils/cl-intl';
@@ -36,6 +39,9 @@ interface Props {
 const Phone = ({ state, loading, setError, onSubmit }: Props) => {
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
+  const smsManualCampaignsEnabled = useFeatureFlag({
+    name: 'sms_manual_campaigns',
+  });
 
   const schema = useMemo(
     () =>
@@ -94,7 +100,9 @@ const Phone = ({ state, loading, setError, onSubmit }: Props) => {
             />
             <PhoneInput name="new_phone" />
           </Box>
-          <ManualCampaignConsent />
+          <Box mt="20px" mb="8px">
+            <ManualCampaignConsent />
+          </Box>
           <Box w="100%" display="flex" mt="32px">
             <Button
               dataCy="phone-continue-button"
@@ -106,7 +114,13 @@ const Phone = ({ state, loading, setError, onSubmit }: Props) => {
               {formatMessage(sharedMessages.continue)}
             </Button>
           </Box>
-          <PhoneConfirmationConsent />
+          <ConsentDisclosure
+            disclosureMessage={
+              smsManualCampaignsEnabled
+                ? smsConsentMessages.phoneConfirmationDisclosureWithCampaignsEnabled
+                : smsConsentMessages.phoneConfirmationDisclosureWithoutCampaignsEnabled
+            }
+          />
         </form>
       </FormProvider>
     </Box>

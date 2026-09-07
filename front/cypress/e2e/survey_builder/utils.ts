@@ -4,7 +4,6 @@ import moment = require('moment');
 export const createSurveyProject = (cy: any) => {
   const projectTitle = randomString();
   const phaseTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
@@ -15,7 +14,6 @@ export const createSurveyProject = (cy: any) => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     })
       .then((project: any) => {

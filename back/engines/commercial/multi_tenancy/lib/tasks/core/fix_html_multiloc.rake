@@ -9,7 +9,6 @@ namespace :fix_existing_tenants do
       Event => [:description_multiloc],
       Idea => [:body_multiloc],
       Phase => [:description_multiloc],
-      Project => [:description_multiloc],
       StaticPage => [:body_multiloc]
     }
 
@@ -246,9 +245,7 @@ def imageable_html_multilocs
     Event => [:description_multiloc],
     StaticPage => [:body_multiloc],
     Phase => [:description_multiloc],
-    Project => [:description_multiloc],
     CustomField => [:description_multiloc],
-    ProjectFolders::Folder => [:description_multiloc],
     EmailCampaigns::Campaign => [:body_multiloc]
   }
 end

@@ -2,12 +2,7 @@ import React, { FunctionComponent, ReactElement } from 'react';
 
 import { castArray, clamp, mergeWith, cloneDeep } from 'lodash-es';
 import { IntlFormatters } from 'react-intl';
-import {
-  InsertConfigurationOptions,
-  ITab,
-  SupportedLocale,
-  Multiloc,
-} from 'typings';
+import { InsertConfigurationOptions, ITab, SupportedLocale } from 'typings';
 
 import { IGroupDataAttributes, MembershipType } from 'api/groups/types';
 import { IdMethodData } from 'api/id_methods/types';
@@ -38,19 +33,6 @@ export interface OutletsPropertyMap {
   };
   'app.containers.Admin.projects.all.createProject.tabs': {
     onData: (data: InsertConfigurationOptions<ITabItem>) => void;
-  };
-  'app.containers.Admin.projects.edit.description.projectDescriptionBuilder': {
-    onMount: () => void;
-    valueMultiloc: Multiloc | null | undefined;
-    onChange: (
-      description_multiloc: Multiloc,
-      _locale: SupportedLocale
-    ) => void;
-    label: string;
-    labelTooltipText: string;
-  };
-  'app.ProjectsShowPage.shared.header.ProjectInfo.projectDescriptionBuilder': {
-    id: string;
   };
   'app.containers.Admin.users.GroupsListPanel.listitem.icon': {
     type: MembershipType;

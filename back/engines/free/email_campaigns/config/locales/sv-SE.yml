@@ -542,6 +542,7 @@ sv-SE:
       yesterday: Igår
     new_phone_confirmation:
       sms_body: Din bekräftelsekod är %{code}.
+      sms_body2: '%{organization_name}: Din bekräftelsekod är %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Gå till denna ingång
       event_description: '%{feedback_author_name} gav en uppdatering om "%{input_title}".'
@@ -556,6 +557,7 @@ sv-SE:
       title: Välj ett nytt lösenord
     phone_confirmation:
       sms_body: Din bekräftelsekod är %{code}.
+      sms_body2: '%{organization_name}: Din bekräftelsekod är %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane

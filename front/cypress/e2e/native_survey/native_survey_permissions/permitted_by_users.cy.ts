@@ -2,8 +2,8 @@ import moment = require('moment');
 import { randomString, randomEmail } from '../../../support/commands';
 import {
   updatePermission,
+  askOnlyDemographicQuestion,
   confirmUserCustomFieldHasValue,
-  addPermissionsCustomField,
   setupProject,
 } from '../../../support/permitted_by_utils';
 
@@ -33,25 +33,18 @@ describe('Native survey permitted by: users', () => {
         .then((response) => {
           const adminJwt = response.body.jwt;
 
-          return updatePermission({
+          return askOnlyDemographicQuestion({
             adminJwt,
             phaseId,
-            global_custom_fields: false,
+            customFieldId,
           }).then(() => {
-            // Add one permissions custom field
-            return addPermissionsCustomField({
-              adminJwt,
-              phaseId,
-              customFieldId,
-            }).then(() => {
-              // Finally: go into the survey and save it
-              cy.setAdminLoginCookie();
-              cy.visit(
-                `/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`
-              );
-              cy.get('form').submit();
-              cy.get('[data-testid="feedbackSuccessMessage"]');
-            });
+            // Finally: go into the survey and save it
+            cy.setAdminLoginCookie();
+            cy.visit(
+              `/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`
+            );
+            cy.get('form').submit();
+            cy.get('[data-testid="feedbackSuccessMessage"]');
           });
         });
     });

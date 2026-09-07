@@ -9,8 +9,8 @@ import useProjectById from 'api/projects/useProjectById';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import { Outlet as RouterOutlet, useParams } from 'utils/router';
 
-import ProjectSidebar from './newBackoffice/ProjectSidebar';
 import ProjectHeader from './projectHeader';
+import ProjectSidebar from './projectPage/ProjectSidebar';
 
 const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
   const { data: authUser } = useAuthUser();
