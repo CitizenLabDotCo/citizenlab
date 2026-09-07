@@ -40,6 +40,8 @@ import { generateTemporaryFileAttachment } from 'utils/fileUtils';
 import { useParams, useSearch } from 'utils/router';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
+import PhasePreview from '../newBackoffice/ProjectWorkspace/Phase/PhasePreview';
+
 import DateSetup from './components/DateSetup';
 import PhaseParticipationConfig from './components/PhaseParticipationConfig';
 import {
@@ -543,11 +545,19 @@ const AdminPhaseEditWrapper = () => {
   const spotlightSurveysEnabled = useFeatureFlag({
     name: 'parallel_participation',
   });
+  const workspaceEnabled = useFeatureFlag({ name: 'project_workspace' });
 
   if (!projectId) return null;
 
   const phaseLoading = phaseId && phase?.data.id !== phaseId;
   if (phaseLoading) return null;
+
+  // In the workspace these fields are edited in the side panels, so the centre
+  // shows the resident's view instead. Creating a phase still runs through
+  // this form.
+  if (workspaceEnabled && phase) {
+    return <PhasePreview projectId={projectId} phase={phase.data} />;
+  }
 
   return (
     <AdminPhaseEdit
