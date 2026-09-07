@@ -9,6 +9,8 @@ import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableE
 import Section from 'components/admin/ContentBuilder/Toolbox/Section';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
+import EventsList from 'components/admin/ContentBuilder/Widgets/Events';
+import eventsMessages from 'components/admin/ContentBuilder/Widgets/Events/messages';
 import FileAttachment from 'components/admin/ContentBuilder/Widgets/FileAttachment';
 import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
@@ -97,6 +99,14 @@ const CustomPageBuilderToolbox = () => {
           }
           icon="button"
           label={formatMessage(ButtonMultiloc.craft.custom.title)}
+        />
+        <DraggableElement
+          id="e2e-draggable-events"
+          component={
+            <EventsList source="all" timeFilters={['upcoming']} limit={3} />
+          }
+          icon="calendar"
+          label={formatMessage(eventsMessages.eventsListTitle)}
         />
         <DraggableElement
           id="e2e-draggable-file-attachment"

@@ -18,6 +18,7 @@ import AccordionMultiloc, {
 import ButtonMultiloc, {
   buttonMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
+import EventsList from 'components/admin/ContentBuilder/Widgets/Events';
 import HtmlBlockMultiloc, {
   htmlBlockMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
@@ -51,7 +52,6 @@ import CommunityMonitorCTA, {
   communityMonitorCTATitle,
 } from '../Widgets/CommunityMonitorCTA';
 import CustomPages, { customPagesTitle } from '../Widgets/CustomPages';
-import Events from '../Widgets/Events';
 import FinishedOrArchived, {
   finishedOrArchivedTitle,
 } from '../Widgets/FinishedOrArchived';
@@ -202,7 +202,14 @@ const HomepageBuilderToolbox = () => {
         />
         <DraggableElement
           id="e2e-draggable-events"
-          component={<Events />}
+          component={
+            <EventsList
+              source="all"
+              timeFilters={['upcoming']}
+              limit={3}
+              showEmptyMessage
+            />
+          }
           icon="calendar"
           label={formatMessage(messages.eventsTitle)}
         />
