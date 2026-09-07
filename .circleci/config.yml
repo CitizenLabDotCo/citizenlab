@@ -588,8 +588,29 @@ jobs:
             - /root/.npm
           key: v2-npm-cache-{{ checksum "package-lock.json" }}
       - run:
-          command: TEST_BUILD="true" npm run build
+          # This doubles as a test that the build succeeds, and also produces a
+          # build artifact for preview deployments (epic platform).
+          name: Build (epic previews)
+          command: |
+            SENTRY_ENV=epic SENTRY_DSN="${EPIC_SENTRY_DSN:-}" POSTHOG_API_KEY="${EPIC_POSTHOG_API_KEY:-}" \
+              TEST_BUILD="true" npm run build
           no_output_timeout: "30m"
+      - run:
+          name: Publish the bundle for epic previews
+          command: |
+            if [ -z "${EPIC_BUNDLE_ACCESS_KEY_ID:-}" ]; then
+              echo "No bundle credentials in this build (fork?), skipping the upload."
+              exit 0
+            fi
+            rm -f build/*.map build/assets/*.map
+            tar -czf /tmp/build.tar.gz -C build .
+            AWS_ACCESS_KEY_ID="$EPIC_BUNDLE_ACCESS_KEY_ID" \
+            AWS_SECRET_ACCESS_KEY="$EPIC_BUNDLE_SECRET_ACCESS_KEY" \
+            AWS_DEFAULT_REGION="${EPIC_BUNDLE_REGION:-fr-par}" \
+              aws s3 cp /tmp/build.tar.gz "s3://$EPIC_BUNDLE_BUCKET/$CIRCLE_SHA1/build.tar.gz" \
+                --endpoint-url "${EPIC_BUNDLE_ENDPOINT:-https://s3.fr-par.scw.cloud}" \
+                --acl public-read
+            echo "Published $EPIC_BUNDLE_BUCKET/$CIRCLE_SHA1/build.tar.gz"
 
   front-extract-intl:
     docker:
@@ -1365,7 +1386,8 @@ workflows:
                 - crowdin_master
                 - /l10n_.*/
       - front-build:
-          context: citizenlab-ee-environment
+          # Test build is used on epics, uses a different context
+          context: epic-front-bundles
           filters:
             branches:
               ignore:
