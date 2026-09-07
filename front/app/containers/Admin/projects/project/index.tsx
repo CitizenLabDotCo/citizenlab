@@ -40,12 +40,18 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
         phase={selectedPhase}
         leftPanel={
           selectedPhase ? (
-            <PhaseLeftPanel projectId={projectId} />
+            <PhaseLeftPanel projectId={projectId} phase={selectedPhase} />
           ) : (
             <ProjectLeftPanel projectId={projectId} />
           )
         }
-        rightPanel={selectedPhase ? <PhaseRightPanel /> : <ProjectRightPanel />}
+        rightPanel={
+          selectedPhase ? (
+            <PhaseRightPanel projectId={projectId} phase={selectedPhase} />
+          ) : (
+            <ProjectRightPanel />
+          )
+        }
       >
         <RouterOutlet />
       </ProjectWorkspace>
