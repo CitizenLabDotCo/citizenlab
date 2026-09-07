@@ -50,22 +50,33 @@ const AdminProjectPhaseIndex = ({ project, selectedPhase }: DataProps) => {
       }))
     : [];
 
+  // In the workspace the centre is a stage the phase preview fills edge to
+  // edge, so the page chrome the standalone phase pages need is dropped.
+  const fullBleed = workspaceEnabled && pathname.endsWith('/setup');
+
   return (
-    <Box display="flex" flexDirection="column" flexGrow={1}>
+    <Box
+      display="flex"
+      flexDirection="column"
+      flexGrow={1}
+      minHeight={fullBleed ? '0' : undefined}
+    >
       <Box
-        p="8px 24px 24px 24px"
+        p={fullBleed ? '0' : '8px 24px 24px 24px'}
         display="flex"
         flexDirection="column"
         flexGrow={1}
+        minHeight={fullBleed ? '0' : undefined}
       >
         {!isNewPhaseLink && selectedPhase && !workspaceEnabled && (
           <PhaseHeader phase={selectedPhase} tabs={tabs} />
         )}
 
         <Box
-          p={`${defaultAdminCardPadding}px`}
-          background={colors.white}
+          p={fullBleed ? '0' : `${defaultAdminCardPadding}px`}
+          background={fullBleed ? undefined : colors.white}
           flexGrow={1}
+          minHeight={fullBleed ? '0' : undefined}
         >
           <RouterOutlet />
         </Box>
