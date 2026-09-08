@@ -6,6 +6,9 @@ class ApplicationController < ActionController::API
   include ActionController::Cookies
 
   before_action :authenticate_user
+  # Before anything that checks a feature, and deliberately not skipped alongside
+  # +authenticate_user+: +current_user+ resolves from the token on its own.
+  before_action :set_early_access_features
   before_action :set_policy_context
   before_action :set_current_location_headers
 
@@ -197,6 +200,10 @@ class ApplicationController < ActionController::API
 
     # setting the image attribute to nil will not remove the image
     resource.public_send(:"remove_#{image_field_name}!")
+  end
+
+  def set_early_access_features
+    Current.early_access_features = current_user&.active_early_access_features
   end
 
   def set_policy_context

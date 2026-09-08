@@ -38,6 +38,37 @@ resource 'AppConfigurations' do
     end
   end
 
+  context 'with a feature in early access, off for the tenant' do
+    let(:feature) { AppConfiguration::Settings.early_access_features.first }
+    let(:admin) { create(:admin) }
+
+    before do
+      config = AppConfiguration.instance
+      config.settings[feature] = { 'allowed' => false, 'enabled' => false }
+      config.save!
+      header_token_for admin
+    end
+
+    get 'web_api/v1/app_configuration' do
+      example 'Reports the feature as on for the admin who opted into it' do
+        admin.update!(early_access_features: [feature])
+        do_request
+
+        assert_status 200
+        expect(response_data.dig(:attributes, :settings, feature.to_sym))
+          .to include(allowed: true, enabled: true)
+      end
+
+      example 'Reports the feature as off for an admin who did not', document: false do
+        do_request
+
+        assert_status 200
+        expect(response_data.dig(:attributes, :settings, feature.to_sym))
+          .to include(allowed: false, enabled: false)
+      end
+    end
+  end
+
   patch 'web_api/v1/app_configuration' do
     with_options scope: :app_configuration do
       parameter :logo, 'Base64 encoded logo'

@@ -1053,6 +1053,47 @@ RSpec.describe User do
     end
   end
 
+  describe 'early_access_features' do
+    let(:feature) { AppConfiguration::Settings.early_access_features.first }
+
+    it 'is empty by default' do
+      expect(create(:admin).early_access_features).to eq []
+    end
+
+    it 'accepts a feature that is in early access' do
+      expect(build(:admin, early_access_features: [feature])).to be_valid
+    end
+
+    it 'is invalid when the feature is not in early access' do
+      expect(build(:admin, early_access_features: ['analysis'])).to be_invalid
+    end
+
+    it 'is invalid when the same feature is listed twice' do
+      expect(build(:admin, early_access_features: [feature, feature])).to be_invalid
+    end
+
+    describe '#active_early_access_features' do
+      it 'returns what an admin opted into' do
+        admin = build(:admin, early_access_features: [feature])
+        expect(admin.active_early_access_features).to eq Set.new([feature])
+      end
+
+      it 'returns nothing for a resident' do
+        resident = build(:user)
+        resident.early_access_features = [feature]
+
+        expect(resident.active_early_access_features).to be_empty
+      end
+
+      it 'drops a stored feature that left early access' do
+        admin = build(:admin, early_access_features: [feature])
+        allow(AppConfiguration::Settings).to receive(:early_access_features).and_return([])
+
+        expect(admin.active_early_access_features).to be_empty
+      end
+    end
+  end
+
   describe 'custom_field_values' do
     # TODO: Allow light users without required fields
     # it 'validates when custom_field_values have changed' do

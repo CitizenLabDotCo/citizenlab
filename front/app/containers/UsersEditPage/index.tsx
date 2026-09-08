@@ -11,6 +11,7 @@ import Unauthorized from 'components/Unauthorized';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 
+import EarlyAccess from './EarlyAccess';
 import LoginCredentials from './LoginCredentials';
 import messages from './messages';
 import ProfileDeletion from './ProfileDeletion';
@@ -55,6 +56,7 @@ const UsersEditPage = () => {
       */}
           <div>
             <VerificationStatus />
+            <EarlyAccess />
             <ProfileForm />
             <LoginCredentials user={authUser.data} />
             <ProfileDeletion />

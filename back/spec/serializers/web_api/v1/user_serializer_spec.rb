@@ -3,6 +3,22 @@
 require 'rails_helper'
 
 describe WebApi::V1::UserSerializer do
+  describe 'early_access_features' do
+    let(:admin) { create(:admin, early_access_features: [AppConfiguration::Settings.early_access_features.first]) }
+
+    def attributes_for(current_user)
+      described_class.new(admin, params: { current_user: current_user }).serializable_hash.dig(:data, :attributes)
+    end
+
+    it 'is serialized for the user themselves' do
+      expect(attributes_for(admin)).to include(early_access_features: admin.early_access_features)
+    end
+
+    it 'is not serialized for somebody else' do
+      expect(attributes_for(create(:user))).not_to have_key(:early_access_features)
+    end
+  end
+
   context "with 'abbreviated user names' enabled" do
     before { SettingsService.new.activate_feature! 'abbreviated_user_names' }
 

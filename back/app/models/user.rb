@@ -38,6 +38,7 @@ require Rails.root.join('lib/email_domain_blacklist')
 #  phone                     :string
 #  new_phone                 :string
 #  phone_confirmed_at        :datetime
+#  early_access_features     :jsonb            not null
 #
 # Indexes
 #
@@ -120,6 +121,17 @@ class User < ApplicationRecord
       end
     end
     private :deletion_job_user_id
+
+    def early_access_features_json_schema
+      {
+        'type' => 'array',
+        'uniqueItems' => true,
+        'items' => {
+          'type' => 'string',
+          'enum' => AppConfiguration::Settings.early_access_features
+        }
+      }
+    end
 
     def onboarding_json_schema
       {
@@ -258,6 +270,10 @@ class User < ApplicationRecord
   }, on: :form_submission, if: :custom_field_values_changed? # only called if `save` is called w/ `context: :form_submission`
 
   validates :onboarding, json: { schema: -> { User.onboarding_json_schema } }
+  # An empty registry rejects every name, so a feature that leaves early access
+  # can no longer be opted into.
+  validates :early_access_features, json: { schema: -> { User.early_access_features_json_schema } },
+    if: :early_access_features_changed?
 
   validate :validate_not_duplicate_email
   validate :validate_not_duplicate_new_email
@@ -331,6 +347,14 @@ class User < ApplicationRecord
 
   def no_name?
     self[:last_name].blank? && self[:first_name].blank? && !invite_pending?
+  end
+
+  # Early access features this user was actually granted: what they opted into,
+  # narrowed to what is still on offer, and only for admins.
+  def active_early_access_features
+    return Set.new unless admin?
+
+    Set.new(early_access_features) & AppConfiguration::Settings.early_access_features
   end
 
   # Authenticating ALWAYS requires a non-blank password that matches the stored digest.

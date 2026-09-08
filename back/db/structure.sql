@@ -1609,7 +1609,8 @@ CREATE TABLE public.users (
     token_expiry_key character varying,
     phone character varying,
     new_phone character varying,
-    phone_confirmed_at timestamp(6) without time zone
+    phone_confirmed_at timestamp(6) without time zone,
+    early_access_features jsonb DEFAULT '[]'::jsonb NOT NULL
 );
 
 
@@ -9554,6 +9555,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260827120000'),
 ('20260821210000'),
 ('20260821090000'),
 ('20260821000000'),

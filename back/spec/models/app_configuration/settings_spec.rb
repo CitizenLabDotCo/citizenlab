@@ -76,6 +76,44 @@ RSpec.describe AppConfiguration::Settings do
     describe '.extension_features_specs' do
       it { expect(described_class.extension_features_specs.length).to eq(1) }
     end
+
+    describe '.early_access_features' do
+      it 'does not include the feature by default' do
+        expect(described_class.early_access_features).not_to include(feature_spec.feature_name)
+      end
+
+      context 'when the feature declares itself early access' do
+        before { feature_spec.define_singleton_method(:early_access?) { true } }
+
+        it 'includes the feature' do
+          expect(described_class.early_access_features).to include(feature_spec.feature_name)
+        end
+
+        it 'marks the feature in the json schema' do
+          expect(described_class.json_schema.dig('properties', feature_spec.feature_name, 'early_access')).to be true
+        end
+      end
+    end
+  end
+
+  describe '.early_access_features' do
+    it 'includes the core features marked early access' do
+      marked = described_class.core_settings_json_schema['properties']
+        .select { |_name, feature| feature['early_access'] }.keys
+
+      expect(described_class.early_access_features).to match_array(marked)
+    end
+
+    # The override only lifts `allowed`/`enabled`, so it cannot satisfy a
+    # dependency or conjure a required setting.
+    it 'only marks features that need nothing else to work' do
+      schema = described_class.json_schema
+
+      described_class.early_access_features.each do |feature|
+        expect(schema.dig('properties', feature, 'required-settings')).to be_nil
+        expect(schema.dig('dependencies', feature)).to be_nil
+      end
+    end
   end
 
   describe 'core settings' do

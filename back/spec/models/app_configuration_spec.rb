@@ -126,4 +126,60 @@ RSpec.describe AppConfiguration do
         .to eq('https://my-bucket.s3.fr-par.scw.cloud')
     end
   end
+
+  describe 'early access' do
+    let(:config) { described_class.instance }
+    let(:feature) { 'parallel_participation' }
+
+    before do
+      config.settings[feature] = { 'allowed' => false, 'enabled' => false }
+      config.save!
+    end
+
+    describe '#feature_activated?' do
+      it 'is false when the feature is off and nobody opted in' do
+        expect(config.feature_activated?(feature)).to be false
+      end
+
+      it 'is true when the current user opted into the feature' do
+        Current.early_access_features = Set.new([feature])
+
+        expect(config.feature_activated?(feature)).to be true
+      end
+
+      it 'leaves other features alone' do
+        Current.early_access_features = Set.new([feature])
+        config.settings['user_avatars'] = { 'allowed' => false, 'enabled' => false }
+
+        expect(config.feature_activated?('user_avatars')).to be false
+      end
+    end
+
+    describe '#public_settings' do
+      it 'reports an opted-into feature as allowed and enabled' do
+        Current.early_access_features = Set.new([feature])
+
+        expect(config.public_settings[feature]).to include('allowed' => true, 'enabled' => true)
+      end
+
+      it 'reports the feature as off for everybody else' do
+        expect(config.public_settings[feature]).to include('allowed' => false, 'enabled' => false)
+      end
+
+      it 'adds a feature that is not in the persisted settings yet' do
+        config.update_column(:settings, config.settings.except(feature))
+        Current.early_access_features = Set.new([feature])
+
+        expect(described_class.instance.public_settings[feature]).to eq({ 'allowed' => true, 'enabled' => true })
+      end
+
+      it 'does not write the override to the persisted settings' do
+        Current.early_access_features = Set.new([feature])
+        config.public_settings
+
+        expect(config.settings[feature]).to include('allowed' => false, 'enabled' => false)
+        expect(config.reload.settings[feature]).to include('allowed' => false, 'enabled' => false)
+      end
+    end
+  end
 end

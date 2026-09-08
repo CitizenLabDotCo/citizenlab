@@ -69,6 +69,15 @@ class AppConfiguration < ApplicationRecord
       extension_features_hash.keys
     end
 
+    # Features that are released but hidden: off for every tenant, and switchable
+    # per admin through User#early_access_features. Deliberately reads the memoized
+    # core schema and the specs directly instead of +json_schema+, which rebuilds
+    # the whole tree on every call.
+    def self.early_access_features
+      core_settings_json_schema['properties'].select { |_name, feature| feature['early_access'] }.keys +
+        extension_features_specs.select(&:early_access?).map(&:feature_name)
+    end
+
     # @param [CitizenLab::Mixins::FeatureSpecification] specification
     def self.add_feature(specification)
       feature_name = specification.feature_name
@@ -143,6 +152,8 @@ class AppConfiguration < ApplicationRecord
   end
 
   def feature_activated?(setting_name)
+    return true if Current.early_access_features.include?(setting_name)
+
     settings[setting_name]&.values_at('enabled', 'allowed')&.all?
   end
 
@@ -152,8 +163,20 @@ class AppConfiguration < ApplicationRecord
     locales.any? { |l| l.include?(locale) } ? locales.find { |l| l.include?(locale) } : locales.first
   end
 
+  # The early access overrides are layered on top of the memoized settings rather
+  # than baked into them, so the result never depends on which caller ran first.
+  # Serving a different body per admin is only safe because the aggressive caching
+  # engine excludes them from the action cache (see +caching_and_non_admin?+).
   def public_settings
-    @public_settings ||= SettingsService.new.format_for_front_end(settings, Settings.json_schema)
+    base = (@public_settings ||= SettingsService.new.format_for_front_end(settings, Settings.json_schema))
+    early_access_features = Current.early_access_features
+    return base if early_access_features.empty?
+
+    base.deep_dup.tap do |res|
+      early_access_features.each do |feature|
+        res[feature] = (res[feature] || {}).merge('allowed' => true, 'enabled' => true)
+      end
+    end
   end
 
   def location
