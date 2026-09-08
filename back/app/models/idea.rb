@@ -26,7 +26,6 @@
 #  assignee_id                     :uuid
 #  assigned_at                     :datetime
 #  proposed_budget                 :integer
-#  custom_field_values             :jsonb            not null
 #  creation_phase_id               :uuid
 #  author_hash                     :string
 #  anonymous                       :boolean          default(FALSE), not null

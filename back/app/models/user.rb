@@ -20,7 +20,6 @@ require Rails.root.join('lib/email_domain_blacklist')
 #  locale                    :string
 #  bio_multiloc              :jsonb
 #  invite_status             :string
-#  custom_field_values       :jsonb
 #  registration_completed_at :datetime
 #  verified                  :boolean          default(FALSE), not null
 #  email_confirmed_at        :datetime
