@@ -152,7 +152,7 @@ const EventsList: UserComponent<EventsProps> = ({
       <Title variant="h2" color="tenantText" m="0" mb="24px">
         {titleMultiloc
           ? localize(titleMultiloc)
-          : formatMessage(defaultHeadingMessage(source))}
+          : formatMessage(defaultHeadingMessage(source, timeFilters))}
       </Title>
 
       {isEmpty ? (

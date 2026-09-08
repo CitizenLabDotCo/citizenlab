@@ -31,6 +31,25 @@ describe('Events widget settings panel', () => {
     cy.wait('@updateHomepage').its('response.statusCode').should('eq', 200);
   }
 
+  // A homepage may already carry events widgets of its own, and this test compares two
+  // headings that must come from the same widget. Drop any before dragging the one under test.
+  const homepageWithoutEvents = () => {
+    const nodes = JSON.parse(JSON.stringify(homepageLayout)) as Record<
+      string,
+      { type?: { resolvedName?: string }; nodes?: string[] }
+    >;
+    const eventIds = Object.keys(nodes).filter((id) =>
+      ['Events', 'EventsList'].includes(nodes[id].type?.resolvedName ?? '')
+    );
+    eventIds.forEach((id) => delete nodes[id]);
+    Object.values(nodes).forEach((node) => {
+      if (node.nodes) {
+        node.nodes = node.nodes.filter((id) => !eventIds.includes(id));
+      }
+    });
+    return nodes;
+  };
+
   before(() => {
     cy.setAdminLoginCookie();
 
@@ -119,6 +138,30 @@ describe('Events widget settings panel', () => {
           .should((placeholder) => {
             expect(rendered).to.contain(placeholder);
           });
+      });
+  });
+
+  // With both buckets on each section gets its own subheading, and the widget heading has to
+  // say something else — a default that repeats the first subheading reads as a stray title.
+  it('does not repeat the section subheading as the widget heading', () => {
+    cy.apiUpdateHomepageLayout({ craftjs_json: homepageWithoutEvents() });
+    goToHomepageBuilder();
+
+    cy.get('#e2e-draggable-events').dragAndDrop('#e2e-content-builder-frame', {
+      position: 'inside',
+    });
+    cy.contains('label', 'Past').click();
+
+    cy.get('#e2e-project-page-upcoming-events')
+      .find('h3')
+      .first()
+      .invoke('text')
+      .then((subheading) => {
+        cy.dataCy('e2e-events-widget')
+          .find('h2')
+          .first()
+          .invoke('text')
+          .should('not.eq', subheading);
       });
   });
 });

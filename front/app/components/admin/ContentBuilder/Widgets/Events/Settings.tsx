@@ -56,7 +56,7 @@ const EventsSettings = () => {
         type="text"
         label={formatMessage(messages.heading)}
         placeholder={formatMessage(
-          defaultHeadingMessage(props.source ?? 'all')
+          defaultHeadingMessage(props.source ?? 'all', timeFilters)
         )}
         name="events_heading"
         valueMultiloc={props.titleMultiloc}
