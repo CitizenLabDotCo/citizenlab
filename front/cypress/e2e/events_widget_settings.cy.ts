@@ -3,13 +3,9 @@ import { randomString } from '../support/commands';
 // The panel is where an admin picks whose events a widget shows, and it is gated: without
 // `advanced_custom_pages` there is nothing to choose and the widget shows every project.
 describe('Events widget settings panel', () => {
-  const areaTitle = randomString();
-  const inAreaEvent = `InArea ${randomString()}`;
-  const outsideEvent = `Outside ${randomString()}`;
+  const eventTitle = `Event ${randomString()}`;
 
-  let areaId = '';
-  let inAreaProjectId = '';
-  let outsideProjectId = '';
+  let projectId = '';
   let homepageLayout: Record<string, unknown>;
   let filteringWasEnabled = false;
 
@@ -54,40 +50,19 @@ describe('Events widget settings panel', () => {
       homepageLayout = layout.body.data.attributes.craftjs_json;
     });
 
-    cy.apiCreateArea(areaTitle).then((area) => {
-      areaId = area.body.data.id;
-
-      cy.apiCreateProject({
-        title: randomString(),
-        descriptionPreview: randomString(),
-        publicationStatus: 'published',
-      }).then((project) => {
-        inAreaProjectId = project.body.data.id;
-        cy.apiSetProjectAreas(inAreaProjectId, [areaId]);
-        cy.apiCreateEvent({
-          projectId: inAreaProjectId,
-          title: inAreaEvent,
-          description: inAreaEvent,
-          location: 'Brussels',
-          startDate: soon(1),
-          endDate: soon(2),
-        });
-      });
-
-      cy.apiCreateProject({
-        title: randomString(),
-        descriptionPreview: randomString(),
-        publicationStatus: 'published',
-      }).then((project) => {
-        outsideProjectId = project.body.data.id;
-        cy.apiCreateEvent({
-          projectId: outsideProjectId,
-          title: outsideEvent,
-          description: outsideEvent,
-          location: 'Brussels',
-          startDate: soon(1),
-          endDate: soon(2),
-        });
+    cy.apiCreateProject({
+      title: randomString(),
+      descriptionPreview: randomString(),
+      publicationStatus: 'published',
+    }).then((project) => {
+      projectId = project.body.data.id;
+      cy.apiCreateEvent({
+        projectId,
+        title: eventTitle,
+        description: eventTitle,
+        location: 'Brussels',
+        startDate: soon(1),
+        endDate: soon(2),
       });
     });
   });
@@ -99,8 +74,7 @@ describe('Events widget settings panel', () => {
   after(() => {
     cy.apiUpdateHomepageLayout({ craftjs_json: homepageLayout });
     setFiltering(filteringWasEnabled);
-    if (inAreaProjectId) cy.apiRemoveProject(inAreaProjectId);
-    if (outsideProjectId) cy.apiRemoveProject(outsideProjectId);
+    if (projectId) cy.apiRemoveProject(projectId);
   });
 
   // Filtering is gated on custom pages only, so the homepage offers it whatever the
@@ -116,6 +90,23 @@ describe('Events widget settings panel', () => {
 
     cy.get('label[for="events-source-all"]').should('exist');
     cy.get('label[for="events-source-areas"]').should('exist');
+  });
+
+  // A project description page is only ever about its own project, so the panel offers nothing
+  // to choose — not the dimensions, and not the archived-projects filter the widget ignores there.
+  it('offers no source or status choice on a project page', () => {
+    cy.setAdminLoginCookie();
+    cy.visit(`/admin/project-page-builder/projects/${projectId}`);
+    cy.get('div#ROOT');
+
+    cy.get('[data-cy="e2e-events-widget"]')
+      .parents('.e2e-render-node')
+      .first()
+      .click({ force: true });
+
+    cy.get('label[for="events-source-all"]').should('not.exist');
+    cy.get('label[for="events-source-areas"]').should('not.exist');
+    cy.contains('Include events from archived projects').should('not.exist');
   });
 
   it('shows the heading the widget falls back to as the placeholder', () => {

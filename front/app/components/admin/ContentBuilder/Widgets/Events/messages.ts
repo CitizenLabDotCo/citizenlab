@@ -45,10 +45,6 @@ export default defineMessages({
     id: 'app.components.admin.ContentBuilder.Widgets.Events.everyProject',
     defaultMessage: 'Every project',
   },
-  thisProject: {
-    id: 'app.components.admin.ContentBuilder.Widgets.Events.thisProject',
-    defaultMessage: 'This project',
-  },
   byArea: {
     id: 'app.components.admin.ContentBuilder.Widgets.Events.byArea',
     defaultMessage: 'Projects in chosen areas',

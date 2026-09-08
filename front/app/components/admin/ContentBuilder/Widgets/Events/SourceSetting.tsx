@@ -27,15 +27,10 @@ const SourceSetting = () => {
     props,
   } = useNode((node) => ({ props: node.data.props as EventsProps }));
 
-  // Route params, as FileAttachment's panel does: `currentProject` reads them at render time,
-  // so offering it anywhere else would resolve the custom page's slug as a project.
   const { projectId, customPageId } = useParams({ strict: false });
   const advancedCustomPages = useFeatureFlag({ name: 'advanced_custom_pages' });
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
 
-  // Filtering is the paid capability on custom pages and only there — it is what
-  // `advanced_custom_pages` gates today. The homepage and project pages have never had it, so
-  // introducing it there is not something that flag governs.
   const filteringEnabled = !customPageId || advancedCustomPages;
 
   const source = props.source ?? 'all';
@@ -45,16 +40,12 @@ const SourceSetting = () => {
   const { data: topics, isLoading: topicsLoading } = useGlobalTopics();
   const { data: spaces, isLoading: spacesLoading } = useSpaces();
 
+  // A project page's events widget is about that project, so there is nothing to choose. The
+  // toolbox and the EventsWidget shim both write `currentProject` for this surface.
+  if (projectId) return null;
+
   const options: { value: EventsSource; label: string }[] = [
     { value: 'all', label: formatMessage(messages.everyProject) },
-    ...(projectId
-      ? [
-          {
-            value: 'currentProject' as const,
-            label: formatMessage(messages.thisProject),
-          },
-        ]
-      : []),
     ...(filteringEnabled
       ? [
           { value: 'areas' as const, label: formatMessage(messages.byArea) },

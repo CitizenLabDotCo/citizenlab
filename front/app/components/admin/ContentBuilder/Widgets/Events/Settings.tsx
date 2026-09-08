@@ -12,6 +12,7 @@ import { useNode } from '@craftjs/core';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import defaultHeadingMessage from './defaultHeading';
 import messages from './messages';
@@ -24,6 +25,7 @@ import {
 
 const EventsSettings = () => {
   const { formatMessage } = useIntl();
+  const { projectId } = useParams({ strict: false });
   const {
     actions: { setProp },
     props,
@@ -110,16 +112,21 @@ const EventsSettings = () => {
         )}
       </Box>
 
-      <CheckboxWithLabel
-        label={formatMessage(messages.includeArchived)}
-        checked={statuses.includes('archived')}
-        onChange={() => {
-          const next: EventsPublicationStatus[] = statuses.includes('archived')
-            ? ['published']
-            : ['published', 'archived'];
-          setProp((p: EventsProps) => (p.projectPublicationStatuses = next));
-        }}
-      />
+      {/* Under `currentProject` the widget pins the statuses itself, so there is nothing to set. */}
+      {!projectId && (
+        <CheckboxWithLabel
+          label={formatMessage(messages.includeArchived)}
+          checked={statuses.includes('archived')}
+          onChange={() => {
+            const next: EventsPublicationStatus[] = statuses.includes(
+              'archived'
+            )
+              ? ['published']
+              : ['published', 'archived'];
+            setProp((p: EventsProps) => (p.projectPublicationStatuses = next));
+          }}
+        />
+      )}
     </Box>
   );
 };
