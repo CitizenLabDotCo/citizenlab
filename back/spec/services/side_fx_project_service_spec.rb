@@ -302,7 +302,7 @@ describe SideFxProjectService do
         project.save!
         expect { service.after_update(project, admin) }
           .not_to have_enqueued_job(LogActivityJob)
-                    .with(encode_frozen_resource(review), 'deleted', admin, anything, anything)
+          .with(encode_frozen_resource(review), 'deleted', admin, anything, anything)
 
         expect(project.reload.review).to eq(review)
       end
@@ -365,7 +365,7 @@ describe SideFxProjectService do
         project.save!
         expect { service.after_update(project, admin) }
           .to have_enqueued_job(LogActivityJob)
-                .with(encode_frozen_resource(review), 'deleted', admin, anything, anything)
+          .with(encode_frozen_resource(review), 'deleted', admin, anything, anything)
 
         expect(project.reload.review).to be_nil
       end
@@ -377,7 +377,7 @@ describe SideFxProjectService do
         project.save!
         expect { service.after_update(project, admin) }
           .to have_enqueued_job(LogActivityJob)
-                .with(encode_frozen_resource(review), 'deleted', admin, anything, anything)
+          .with(encode_frozen_resource(review), 'deleted', admin, anything, anything)
 
         expect(project.reload.review).to be_nil
       end
