@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Box,
@@ -24,6 +24,8 @@ import EventsSection from 'components/ProjectPageBuilder/Widgets/Events/EventsSe
 import { useIntl } from 'utils/cl-intl';
 import Link, { typedStyled } from 'utils/cl-router/Link';
 import sharedMessages from 'utils/messages';
+import { useLocation } from 'utils/router';
+import { scrollToElement } from 'utils/scroll';
 
 import defaultHeadingMessage from './defaultHeading';
 import messages from './messages';
@@ -31,6 +33,9 @@ import EventsSettings from './Settings';
 import { EventsProps, EventsSource } from './types';
 
 export const EVENTS_WIDGET_NAME = 'EventsList';
+// The project page's events CTAs scroll to this. It lives here so a node stored under
+// either name offers the target.
+export const EVENTS_WIDGET_ANCHOR_ID = 'e2e-project-page-events';
 
 const PAGINATED_PAGE_SIZE = 15;
 const CURRENT_PROJECT_STATUSES = ['published', 'draft', 'archived'] as const;
@@ -80,12 +85,21 @@ const EventsWidget: UserComponent<EventsProps> = ({
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const currentProjectId = useWidgetProjectId();
+  const { hash } = useLocation();
   const { enabled: inEditor } = useEditor((state) => ({
     enabled: state.options.enabled,
   }));
 
   const [upcomingPage, setUpcomingPage] = useState(1);
   const [pastPage, setPastPage] = useState(1);
+
+  const isProjectEvents = source === 'currentProject';
+
+  useEffect(() => {
+    if (isProjectEvents && hash === EVENTS_WIDGET_ANCHOR_ID) {
+      scrollToElement({ id: EVENTS_WIDGET_ANCHOR_ID });
+    }
+  }, [hash, isProjectEvents]);
 
   const showUpcoming = timeFilters.includes('upcoming');
   const showPast = timeFilters.includes('past');
@@ -95,15 +109,14 @@ const EventsWidget: UserComponent<EventsProps> = ({
     ...selectionParams(source, ids, currentProjectId),
     // Filtering the one project by its own status would hide an archived project's events
     // from its own page.
-    projectPublicationStatuses:
-      source === 'currentProject'
-        ? [...CURRENT_PROJECT_STATUSES]
-        : projectPublicationStatuses,
+    projectPublicationStatuses: isProjectEvents
+      ? [...CURRENT_PROJECT_STATUSES]
+      : projectPublicationStatuses,
     pageSize: paginated ? PAGINATED_PAGE_SIZE : limit,
     // `-start_at` is ascending: SortByParamsService inverts the usual convention.
     sort: '-start_at',
   };
-  const waitingForProject = source === 'currentProject' && !currentProjectId;
+  const waitingForProject = isProjectEvents && !currentProjectId;
 
   const { data: upcomingEvents } = useEvents(
     { ...params, currentAndFutureOnly: true, pageNumber: upcomingPage },
@@ -128,7 +141,12 @@ const EventsWidget: UserComponent<EventsProps> = ({
   }
 
   const contents = (
-    <Box display="flex" flexDirection="column" data-cy="e2e-events-widget">
+    <Box
+      id={isProjectEvents ? EVENTS_WIDGET_ANCHOR_ID : undefined}
+      display="flex"
+      flexDirection="column"
+      data-cy="e2e-events-widget"
+    >
       <Title variant="h2" color="tenantText" m="0" mb="24px">
         {titleMultiloc
           ? localize(titleMultiloc)
