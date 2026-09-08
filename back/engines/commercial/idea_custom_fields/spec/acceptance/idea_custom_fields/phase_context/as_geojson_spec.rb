@@ -158,7 +158,12 @@ resource 'Idea Custom Fields' do
     end
     let!(:area) { create(:area, title_multiloc: { 'en' => 'Brussels', 'nl-NL' => 'Bruxelles' }) }
 
-    let(:user) { create(:user, custom_field_values: { gender: 'female', domicile: area.id }) }
+    let(:user) do
+      create(:user, custom_field_answers: [
+        build(:custom_field_answer, key: 'gender', value: 'female'),
+        build(:custom_field_answer, key: 'domicile', value: area.id)
+      ])
+    end
 
     let(:idea1) do
       create(
@@ -166,18 +171,18 @@ resource 'Idea Custom Fields' do
         author: user,
         creation_phase: phase,
         project: project,
-        custom_field_values: {
-          custom_field_text.key => 'Text answer',
-          custom_field_multiline_text.key => 'Multiline answer',
-          custom_field_select.key => custom_field_option1.key,
-          custom_field_multiselect.key => [custom_field_option2.key, custom_field_option3.key],
-          custom_field_multiselect_image.key => [custom_field_option4.key, custom_field_option5.key],
-          custom_field_linear_scale.key => 3,
-          custom_field_number.key => 42,
-          custom_field_point.key => { type: 'Point', coordinates: [1.1, 2.2] },
-          custom_field_line.key => { type: 'LineString', coordinates: [[1.1, 2.2], [3.3, 4.4]] },
-          custom_field_polygon.key => { type: 'Polygon', coordinates: [[[1, 2], [3, 4], [5, 6], [1, 2]]] }
-        }
+        custom_field_answers: [
+          build(:custom_field_answer, key: custom_field_text.key, value: 'Text answer'),
+          build(:custom_field_answer, key: custom_field_multiline_text.key, value: 'Multiline answer'),
+          build(:custom_field_answer, key: custom_field_select.key, value: custom_field_option1.key),
+          build(:custom_field_answer, key: custom_field_multiselect.key, value: [custom_field_option2.key, custom_field_option3.key]),
+          build(:custom_field_answer, key: custom_field_multiselect_image.key, value: [custom_field_option4.key, custom_field_option5.key]),
+          build(:custom_field_answer, key: custom_field_linear_scale.key, value: 3),
+          build(:custom_field_answer, key: custom_field_number.key, value: 42),
+          build(:custom_field_answer, key: custom_field_point.key, value: { type: 'Point', coordinates: [1.1, 2.2] }),
+          build(:custom_field_answer, key: custom_field_line.key, value: { type: 'LineString', coordinates: [[1.1, 2.2], [3.3, 4.4]] }),
+          build(:custom_field_answer, key: custom_field_polygon.key, value: { type: 'Polygon', coordinates: [[[1, 2], [3, 4], [5, 6], [1, 2]]] })
+        ]
       )
     end
     let!(:file) { create(:idea_file, name: 'File1.pdf', idea: idea1) }
@@ -189,7 +194,7 @@ resource 'Idea Custom Fields' do
         author_id: nil,
         creation_phase: phase,
         project: project,
-        custom_field_values: { custom_field_point.key => { type: 'Point', coordinates: [3.3, 4.4] } }
+        custom_field_answers: [build(:custom_field_answer, key: custom_field_point.key, value: { type: 'Point', coordinates: [3.3, 4.4] })]
       )
     end
     let!(:idea_phase2) { create(:ideas_phase, idea: idea2, phase: phase) }
@@ -198,9 +203,11 @@ resource 'Idea Custom Fields' do
     let(:custom_field_id) { custom_field_point.id } # The generated GeoJSON Features will be for responses to this q.
 
     before do
-      cf_values = idea1.custom_field_values
-      cf_values[custom_field_file_upload.key] = { 'id' => file.id, 'name' => file.name }
-      idea1.update!(custom_field_values: cf_values)
+      idea1.custom_field_answers.create!(
+        key: custom_field_file_upload.key,
+        value: { 'id' => file.id, 'name' => file.name },
+        custom_field: custom_field_file_upload
+      )
     end
 
     context 'when admin' do
