@@ -36,6 +36,7 @@ const mobileEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
 export const ModalContentContainer = styled.div<{
   padding?: string;
+  fillContent?: boolean;
 }>`
   flex: 1 1 auto;
   width: 100%;
@@ -43,6 +44,15 @@ export const ModalContentContainer = styled.div<{
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   padding: ${({ padding }) => padding || '8px 24px 24px'};
+
+  /* Children scroll on their own, so this box stops being the scroller and
+     becomes their flex parent, which gives them a definite height to fill. */
+  ${({ fillContent }) =>
+    fillContent &&
+    `
+      display: flex;
+      overflow: hidden;
+    `}
 
   ${media.phone`
     padding: ${({ padding }) => padding || '8px 20px 20px'};
@@ -260,6 +270,7 @@ interface BaseProps {
   'data-testid'?: string;
   opened: boolean;
   fixedHeight?: boolean;
+  fillContent?: boolean;
   width?: number | string;
   close: () => void;
   className?: string;
@@ -287,6 +298,7 @@ const Modal: React.FC<Props> = ({
   'data-testid': dataTestId,
   opened,
   fixedHeight = false,
+  fillContent = false,
   width = 650,
   close,
   className,
@@ -302,7 +314,7 @@ const Modal: React.FC<Props> = ({
   ariaLabelledBy,
   returnFocusRef,
 }) => {
-  const nodeRef = useRef(null); // Needed to fix React StrictMode warning
+  const nodeRef = useRef<HTMLDivElement>(null); // Needed to fix React StrictMode warning
   const [modalHasBeenOpened, setModalHasBeenOpened] = useState(false);
   const [windowDimensions, setWindowDimensions] = useState({
     windowWidth: window.innerWidth,
@@ -321,14 +333,30 @@ const Modal: React.FC<Props> = ({
     close();
   }, [close]);
 
+  // Modals portal into one shared container as siblings, so a dismiss aimed at
+  // a modal stacked on top of this one also reaches this one. Only the topmost
+  // modal may act on it.
+  const isTopmostModal = useCallback(() => {
+    const openModals = document
+      .getElementById('modal-portal')
+      ?.querySelectorAll('[aria-modal="true"]');
+
+    if (!openModals?.length) return true;
+
+    const topmost = openModals[openModals.length - 1];
+    return nodeRef.current?.contains(topmost) ?? true;
+  }, []);
+
   const handleKeypress = useCallback(
     (event: KeyboardEvent) => {
       if (event.type === 'keydown' && event.key === 'Escape') {
+        if (!isTopmostModal()) return;
+
         event.preventDefault();
         close();
       }
     },
-    [close]
+    [close, isTopmostModal]
   );
 
   const cleanup = useCallback(() => {
@@ -378,11 +406,13 @@ const Modal: React.FC<Props> = ({
   }, [opened, handleResize, handlePopstateEvent, handleKeypress, cleanup]);
 
   const clickOutsideModal = useCallback(() => {
+    if (!isTopmostModal()) return;
+
     if (closeOnClickOutside) {
       trackEventByName(tracks.clickOutsideModal);
       close();
     }
-  }, [closeOnClickOutside, close]);
+  }, [closeOnClickOutside, close, isTopmostModal]);
 
   const clickCloseButton = useCallback(
     (event: React.MouseEvent<any>) => {
@@ -470,7 +500,10 @@ const Modal: React.FC<Props> = ({
               closeButton
             )}
 
-            <ModalContentContainer padding={calculatedPadding}>
+            <ModalContentContainer
+              padding={calculatedPadding}
+              fillContent={fillContent}
+            >
               {children}
             </ModalContentContainer>
 
