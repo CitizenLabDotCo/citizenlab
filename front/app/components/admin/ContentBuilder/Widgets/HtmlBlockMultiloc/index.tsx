@@ -10,6 +10,7 @@ import useLocalize from 'hooks/useLocalize';
 import { CUSTOM_PAGE_BUILDER_PATH } from 'components/admin/ContentBuilder/constants';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { useLocation } from 'utils/router';
 
 import messages from './messages';
@@ -64,6 +65,7 @@ const HtmlBlockMultiloc = ({ html }: Props) => {
 };
 
 const HtmlBlockMultilocSettings = () => {
+  const { formatMessage } = useIntl();
   const {
     actions: { setProp },
     html,
@@ -75,6 +77,25 @@ const HtmlBlockMultilocSettings = () => {
     <StyledBox background={colors.white} marginBottom="20px">
       <TextAreaMultilocWithLocaleSwitcher
         id="html-block-textarea"
+        label={formatMessage(messages.htmlBlockCode)}
+        labelTooltipText={
+          <FormattedMessage
+            {...messages.htmlBlockCodeTooltip}
+            values={{
+              supportArticle: (
+                <a
+                  href={formatMessage(messages.htmlBlockCodeTooltipLinkUrl)}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <FormattedMessage
+                    {...messages.htmlBlockCodeTooltipLinkText}
+                  />
+                </a>
+              ),
+            }}
+          />
+        }
         minRows={16}
         valueMultiloc={html}
         onChange={(value) => {
