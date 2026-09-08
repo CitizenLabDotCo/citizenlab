@@ -115,6 +115,7 @@ module McpServer
       McpServer::Tools::ReplaceFormFields,
       McpServer::Tools::ListProjects,
       McpServer::Tools::ListPhases,
+      McpServer::Tools::ListInputs,
       McpServer::Tools::ListEvents,
       McpServer::Tools::ListCauses,
       McpServer::Tools::ListPollQuestions,
