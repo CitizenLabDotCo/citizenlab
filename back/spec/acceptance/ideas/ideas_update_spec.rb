@@ -791,7 +791,7 @@ resource 'Ideas' do
         project
       end
 
-      let(:author) { create(:user, custom_field_values: { age: 30 }) }
+      let(:author) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'age', value: 30)]) }
       let(:input) { create(:native_survey_response, project: project, author: author) }
 
       context 'when author' do
@@ -808,7 +808,7 @@ resource 'Ideas' do
 
             # It also saves the custom field values into the idea
             idea = Idea.find(response_data[:id])
-            expect(idea.custom_field_values['u_age']).to eq 30
+            expect(idea.answer_for_key('u_age')&.value).to eq 30
           end
 
           context 'when the phase is standalone' do

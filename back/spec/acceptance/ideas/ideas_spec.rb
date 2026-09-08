@@ -339,10 +339,9 @@ resource 'Ideas' do
       let!(:form) { create(:custom_form, participation_context: project.phases.first) }
       let!(:text_field) { create(:custom_field_text, key: extra_field_key, required: true, resource: form) }
       let!(:idea) do
-        idea = create(:native_survey_response, project: project, author: @user)
-        idea.custom_field_values = { extra_field_key => extra_field_answer }
-        idea.save!
-        idea
+        create(:native_survey_response, project: project, author: @user, custom_field_answers: [
+          build(:custom_field_answer, key: extra_field_key, value: extra_field_answer)
+        ])
       end
       let!(:id) { idea.id }
 
@@ -409,7 +408,7 @@ resource 'Ideas' do
             project: phase.project,
             author: @user, publication_status:
             'draft',
-            custom_field_values: { 'field' => 'value' }
+            custom_field_answers: [build(:custom_field_answer, key: 'field', value: 'value')]
           )
         end
 
