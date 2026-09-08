@@ -295,7 +295,7 @@ RSpec.describe Idea do
       %i[create publication].each do |validation_context|
         context "on #{validation_context}" do
           it 'can persist an idea with invalid field values' do
-            CustomFieldValuesTransitionService.new.assign(idea, { 'nonexisting_field' => 22 })
+            idea.custom_field_answers.build(key: 'nonexisting_field', value: 22)
             expect(idea.valid?(validation_context)).to be true
           end
         end
@@ -308,7 +308,7 @@ RSpec.describe Idea do
       %i[update publication].each do |validation_context|
         context "on #{validation_context}" do
           it 'can persist an idea with invalid field values' do
-            CustomFieldValuesTransitionService.new.assign(idea, { 'nonexisting_field' => 65 })
+            idea.custom_field_answers.build(key: 'nonexisting_field', value: 65)
             expect(idea.valid?(validation_context)).to be true
           end
         end
@@ -325,11 +325,9 @@ RSpec.describe Idea do
       let(:idea) { build(:idea, creation_phase: active_phase) }
 
       it 'converts valid wkt strings to GeoJSON' do
-        CustomFieldValuesTransitionService.new.assign(idea, {
-          point_field: 'POINT (4.31 50.85)',
-          line_field: 'LINESTRING (4.30 50.85, 4.660 51.15)',
-          polygon_field: 'POLYGON ((4.3 50.85, 4.31 50.85, 4.31 50.86, 4.3 50.85))'
-        })
+        idea.custom_field_answers.build(key: 'point_field', value: 'POINT (4.31 50.85)')
+        idea.custom_field_answers.build(key: 'line_field', value: 'LINESTRING (4.30 50.85, 4.660 51.15)')
+        idea.custom_field_answers.build(key: 'polygon_field', value: 'POLYGON ((4.3 50.85, 4.31 50.85, 4.31 50.86, 4.3 50.85))')
         idea.send(:convert_wkt_geo_custom_field_values_to_geojson)
         expect(idea.custom_field_answers.to_h { [it.key, it.value] }).to eq({
           'point_field' => { 'type' => 'Point', 'coordinates' => [4.31, 50.85] },
@@ -342,11 +340,9 @@ RSpec.describe Idea do
       end
 
       it 'does not mutate non-string values (e.g. GeoJSON)' do
-        CustomFieldValuesTransitionService.new.assign(idea, {
-          polygon_field: {
-            type: 'Polygon',
-            coordinates: [[[4.3, 50.85], [4.31, 50.85], [4.31, 50.86], [4.3, 50.85]]]
-          }
+        idea.custom_field_answers.build(key: 'polygon_field', value: {
+          'type' => 'Polygon',
+          'coordinates' => [[[4.3, 50.85], [4.31, 50.85], [4.31, 50.86], [4.3, 50.85]]]
         })
 
         idea.send(:convert_wkt_geo_custom_field_values_to_geojson)
@@ -360,7 +356,7 @@ RSpec.describe Idea do
       end
 
       it 'adds closing coordinates to polygon if not in wkt string' do
-        CustomFieldValuesTransitionService.new.assign(idea, { polygon_field: 'POLYGON ((4.3 50.85, 4.31 50.85, 4.31 50.86))' })
+        idea.custom_field_answers.build(key: 'polygon_field', value: 'POLYGON ((4.3 50.85, 4.31 50.85, 4.31 50.86))')
         idea.send(:convert_wkt_geo_custom_field_values_to_geojson)
 
         expect(idea.custom_field_answers.to_h { [it.key, it.value] }).to eq({
@@ -372,21 +368,21 @@ RSpec.describe Idea do
       end
 
       it 'raises error for an invalid coordinate in wkt string' do
-        CustomFieldValuesTransitionService.new.assign(idea, { point_field: 'POINT (4.31)' })
+        idea.custom_field_answers.build(key: 'point_field', value: 'POINT (4.31)')
 
         expect { idea.send(:convert_wkt_geo_custom_field_values_to_geojson) }
           .to raise_error(RGeo::Error::ParseError, 'Numeric expected but :end found.')
       end
 
       it 'raises error for an insufficient coordinates in wkt string' do
-        CustomFieldValuesTransitionService.new.assign(idea, { line_field: 'LINESTRING (4.30 50.85)' })
+        idea.custom_field_answers.build(key: 'line_field', value: 'LINESTRING (4.30 50.85)')
 
         expect { idea.send(:convert_wkt_geo_custom_field_values_to_geojson) }
           .to raise_error(RGeo::Error::InvalidGeometry, 'LineString Cannot Have 1 Point')
       end
 
       it 'raises error for missing parentheses in wkt string' do
-        CustomFieldValuesTransitionService.new.assign(idea, { polygon_field: 'POLYGON (4.3 50.85, 4.31 50.85, 4.31 50.86)' })
+        idea.custom_field_answers.build(key: 'polygon_field', value: 'POLYGON (4.3 50.85, 4.31 50.85, 4.31 50.86)')
 
         expect { idea.send(:convert_wkt_geo_custom_field_values_to_geojson) }
           .to raise_error(RGeo::Error::ParseError, ':begin expected but 4.3 found.')
