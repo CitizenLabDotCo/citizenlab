@@ -74,6 +74,8 @@ class SideFxProjectService
     CheckProjectPublicationConsistencyJob.perform_later(project.id)
 
     after_folder_changed project, user if @folder_id_was != project.folder_id
+    # Changing a project from published to draft or archived implicitly deletes an approved review.
+    delete_approved_review(project, user) if project.admin_publication.publication_status != 'published' && @publication_status_was == 'published'
     # Publishing a project (draft or archived) directly implicitly approves a review that is still pending.
     # Both sides read the raw column: `published?` also reports a due but not yet applied scheduled
     # transition as published, which would approve the review on any unrelated update.
@@ -171,6 +173,14 @@ class SideFxProjectService
 
     review.approve!(user)
     SideFxProjectReviewService.new.after_update(review, user)
+  end
+
+  def delete_approved_review(project, user)
+    review = project.review
+    return if review.nil? || !review.approved?
+
+    review.destroy!
+    SideFxProjectReviewService.new.after_destroy(review, user)
   end
 end
 
