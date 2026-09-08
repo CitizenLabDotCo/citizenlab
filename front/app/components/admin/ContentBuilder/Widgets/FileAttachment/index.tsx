@@ -152,10 +152,9 @@ const FileAttachmentSettings = () => {
     isLoading: isLoadingFiles,
     isFetching: isFetchingFiles,
     refetch: refetchFiles,
-  } = useFiles({
-    project: projectId ? [projectId] : undefined,
-    staticPage: projectId ? undefined : customPageId,
-  });
+  } = useFiles(
+    projectId ? { project: [projectId] } : { staticPage: customPageId }
+  );
 
   // Get current layout state to check for duplicate files
   const craftjsJson = useMemo(() => {
