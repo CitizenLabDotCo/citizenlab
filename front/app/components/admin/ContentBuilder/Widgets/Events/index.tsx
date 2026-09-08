@@ -82,7 +82,6 @@ const EventsWidget: UserComponent<EventsProps> = ({
   limit = 3,
   projectPublicationStatuses = ['published'],
   showEmptyMessage = false,
-  renderFrame,
 }) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -199,18 +198,12 @@ const EventsWidget: UserComponent<EventsProps> = ({
     </Box>
   );
 
-  // A node stored under the canonical name has no shim to frame it, so it frames itself the
-  // way the other shared widgets do.
+  // Every node frames itself, whatever name it is stored under, so the shims only add what
+  // is theirs: the spacing around the widget.
   return (
-    <>
-      {renderFrame ? (
-        renderFrame(contents)
-      ) : (
-        <Box maxWidth={BUILDER_CONTENT_MAX_WIDTH} margin="0 auto" px={padding}>
-          {contents}
-        </Box>
-      )}
-    </>
+    <Box maxWidth={BUILDER_CONTENT_MAX_WIDTH} margin="0 auto" px={padding}>
+      {contents}
+    </Box>
   );
 };
 

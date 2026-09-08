@@ -19,5 +19,4 @@ export type EventsProps = {
   limit?: EventsLimit;
   projectPublicationStatuses?: EventsPublicationStatus[];
   showEmptyMessage?: boolean;
-  renderFrame?: (contents: React.ReactNode) => React.ReactNode;
 };

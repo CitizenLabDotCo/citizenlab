@@ -188,4 +188,28 @@ describe('Events widget added from a toolbox', () => {
       .invoke('outerWidth')
       .should('be.lte', 1200);
   });
+
+  // One card layout on every surface: three to a row at desktop width. A card wider than a
+  // third of the widget means it has fallen back to the wide two-column grid.
+  it('lays events out three to a row on both surfaces', () => {
+    cy.apiUpdateHomepageLayout({
+      craftjs_json: homepageLayoutWithEventsList(),
+    });
+    cy.goToLandingPage();
+    cy.contains(upcomingTitle).should('exist');
+    cy.get('[data-cy="e2e-events-widget"]')
+      .find('li')
+      .first()
+      .invoke('outerWidth')
+      .should('be.lt', 420);
+
+    cy.apiUpdateProjectPageLayout(projectId, projectPageLayoutWithEventsList());
+    cy.visit(`/en/projects/${projectSlug}`);
+    cy.contains(upcomingTitle).should('exist');
+    cy.get('[data-cy="e2e-events-widget"]')
+      .find('li')
+      .first()
+      .invoke('outerWidth')
+      .should('be.lt', 420);
+  });
 });

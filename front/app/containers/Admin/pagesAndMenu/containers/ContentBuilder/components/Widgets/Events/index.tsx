@@ -14,22 +14,18 @@ import messages from './messages';
 const Events = () => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   return (
-    <Box data-cy="e2e-events">
-      <Box
-        maxWidth="1200px"
-        margin="0 auto"
-        pt={isSmallerThanTablet ? DEFAULT_PADDING : DEFAULT_Y_PADDING}
-        pb={isSmallerThanTablet ? DEFAULT_PADDING : DEFAULT_Y_PADDING}
-        px={isSmallerThanTablet ? DEFAULT_PADDING : '0px'}
-      >
-        <SharedEventsWidget
-          source="all"
-          timeFilters={['upcoming']}
-          limit={3}
-          projectPublicationStatuses={['published']}
-          showEmptyMessage
-        />
-      </Box>
+    <Box
+      data-cy="e2e-events"
+      pt={isSmallerThanTablet ? DEFAULT_PADDING : DEFAULT_Y_PADDING}
+      pb={isSmallerThanTablet ? DEFAULT_PADDING : DEFAULT_Y_PADDING}
+    >
+      <SharedEventsWidget
+        source="all"
+        timeFilters={['upcoming']}
+        limit={3}
+        projectPublicationStatuses={['published']}
+        showEmptyMessage
+      />
     </Box>
   );
 };
