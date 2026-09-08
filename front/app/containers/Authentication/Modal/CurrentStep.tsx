@@ -12,7 +12,6 @@ import FlowStart from '../steps/FlowStart';
 import Invitation from '../steps/Invitation';
 import InviteSignUp from '../steps/InviteSignUp';
 import InviteTaken from '../steps/InviteTaken';
-import MergeAccountConfirmation from '../steps/MergeAccountConfirmation';
 import Onboarding from '../steps/Onboarding';
 import Password from '../steps/Password';
 import Phone from '../steps/Phone';
@@ -176,9 +175,12 @@ const CurrentStep = ({
         />
       );
 
+    // Deliberately no fallback to authUser.new_email, unlike the step above: a
+    // merge never writes it, so anything sitting there is a different, unrelated
+    // address the user was part-way through confirming.
     case 'confirmation:merge-account':
       return (
-        <MergeAccountConfirmation
+        <EmailConfirmation
           email={state.new_email ?? null}
           loading={loading}
           setError={setError}

@@ -27,7 +27,6 @@ interface Props {
   onConfirm: (email: string, code: string) => void;
   onChangeEmail?: () => void;
   onResendCode: (email: string) => Promise<void>;
-  showCodeSentMessage?: boolean;
 }
 
 interface FormValues {
@@ -49,7 +48,6 @@ const EmailConfirmation = ({
   onConfirm,
   onChangeEmail,
   onResendCode,
-  showCodeSentMessage = true,
 }: Props) => {
   const [codeResent, setCodeResent] = useState(false);
   const [resendingCode, setResendingCode] = useState(false);
@@ -126,11 +124,7 @@ const EmailConfirmation = ({
     <FormProvider {...methods}>
       <form noValidate onSubmit={methods.handleSubmit(handleConfirm)}>
         <Box mt="-8px">
-          <CodeSentMessage
-            email={email}
-            codeResent={codeResent}
-            showBanner={showCodeSentMessage}
-          />
+          <CodeSentMessage email={email} codeResent={codeResent} />
         </Box>
         <Box>
           <Input

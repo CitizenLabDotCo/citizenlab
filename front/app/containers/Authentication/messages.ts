@@ -64,11 +64,6 @@ export default defineMessages({
     id: 'app.containers.Authentication.linkYourAccount',
     defaultMessage: 'Link your account',
   },
-  mergeAccountExplanation: {
-    id: 'app.containers.Authentication.mergeAccountExplanation',
-    defaultMessage:
-      'An account already exists with the email {email}. We have sent a confirmation code to it. Entering the code here will link this sign-in to your existing account. If this is not correct then please change your email address using the link below.',
-  },
   accountMergeNotAllowed: {
     id: 'app.containers.Authentication.accountMergeNotAllowed',
     defaultMessage:
