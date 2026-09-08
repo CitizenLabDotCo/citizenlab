@@ -56,6 +56,26 @@ const projectPageLayoutWithEventsList = () => ({
   }),
 });
 
+const homepageLayoutWithEventsList = () => ({
+  ROOT: node({
+    type: { resolvedName: 'Container' },
+    nodes: ['HOMEPAGE_EVENTS'],
+    isCanvas: true,
+    displayName: 'Container',
+  }),
+  HOMEPAGE_EVENTS: node({
+    type: { resolvedName: 'EventsList' },
+    props: {
+      source: 'all',
+      timeFilters: ['upcoming'],
+      limit: 3,
+      showEmptyMessage: true,
+    },
+    parent: 'ROOT',
+    displayName: 'EventsList',
+  }),
+});
+
 function waitForLayoutToRender() {
   cy.get('#e2e-content-builder-frame').children().should('have.length.gt', 0);
 }
@@ -152,5 +172,20 @@ describe('Events widget added from a toolbox', () => {
     cy.contains(upcomingTitle).should('exist');
 
     cy.get('#e2e-project-page-events').should('contain', upcomingTitle);
+  });
+
+  // No shim frames a canonical node, so the widget has to constrain its own width. On the
+  // homepage nothing above it does: every other widget there stops at the content width.
+  it('constrains its own width on the homepage', () => {
+    cy.apiUpdateHomepageLayout({
+      craftjs_json: homepageLayoutWithEventsList(),
+    });
+
+    cy.goToLandingPage();
+    cy.contains(upcomingTitle).should('exist');
+
+    cy.get('[data-cy="e2e-events-widget"]')
+      .invoke('outerWidth')
+      .should('be.lte', 1200);
   });
 });

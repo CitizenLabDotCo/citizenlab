@@ -16,6 +16,8 @@ import useLocalize from 'hooks/useLocalize';
 
 import eventsPageMessages from 'containers/EventsPage/messages';
 
+import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
+import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 import useWidgetProjectId from 'components/admin/ContentBuilder/useWidgetProjectId';
 import landingPageMessages from 'components/LandingPages/citizen/messages';
 import EmptyEvents from 'components/ProjectPageBuilder/Widgets/Events/EmptyEvents';
@@ -85,6 +87,7 @@ const EventsWidget: UserComponent<EventsProps> = ({
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const currentProjectId = useWidgetProjectId();
+  const padding = useCraftComponentDefaultPadding();
   const { hash } = useLocation();
   const { enabled: inEditor } = useEditor((state) => ({
     enabled: state.options.enabled,
@@ -196,7 +199,19 @@ const EventsWidget: UserComponent<EventsProps> = ({
     </Box>
   );
 
-  return <>{renderFrame ? renderFrame(contents) : contents}</>;
+  // A node stored under the canonical name has no shim to frame it, so it frames itself the
+  // way the other shared widgets do.
+  return (
+    <>
+      {renderFrame ? (
+        renderFrame(contents)
+      ) : (
+        <Box maxWidth={BUILDER_CONTENT_MAX_WIDTH} margin="0 auto" px={padding}>
+          {contents}
+        </Box>
+      )}
+    </>
+  );
 };
 
 EventsWidget.craft = {
