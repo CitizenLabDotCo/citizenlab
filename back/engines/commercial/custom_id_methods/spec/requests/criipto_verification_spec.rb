@@ -116,13 +116,13 @@ context 'criipto verification' do
     expect(user.reload).to have_attributes({
       verified: true,
       first_name: 'Bulenga',
-      last_name: 'Poulsen',
-      custom_field_values: {
-        'birthdate' => '1977-12-31',
-        'birthyear' => 1977,
-        'municipality_code' => '0173',
-        'postal_code' => '3400'
-      }
+      last_name: 'Poulsen'
+    })
+    expect(user.custom_field_answers.pluck(:key, :value).to_h).to eq({
+      'birthdate' => '1977-12-31',
+      'birthyear' => 1977,
+      'municipality_code' => '0173',
+      'postal_code' => '3400'
     })
     expect(user.verifications.first).to have_attributes({
       method_name: 'DK MitID',
@@ -174,7 +174,11 @@ context 'criipto verification' do
       auth_hash['extra']['raw_info']['address_details']['municipality_code'] = '0666'
       auth_hash['extra']['raw_info']['address']['postal_code'] = '3500'
       OmniAuth.config.mock_auth[:criipto] = OmniAuth::AuthHash.new(auth_hash)
-      @user.update!(verified: true, custom_field_values: { 'birthdate' => '1902-12-25', 'birthyear' => 1902, 'municipality_code' => '0123', 'postal_code' => '1234' })
+      @user.custom_field_answers.build(key: 'birthdate', value: '1902-12-25')
+      @user.custom_field_answers.build(key: 'birthyear', value: 1902)
+      @user.custom_field_answers.build(key: 'municipality_code', value: '0123')
+      @user.custom_field_answers.build(key: 'postal_code', value: '1234')
+      @user.update!(verified: true)
     end
 
     it 'updates custom fields when reverifying' do
@@ -184,7 +188,7 @@ context 'criipto verification' do
       expect(User.count).to eq(1)
       expect(@user.reload.identities.count).to eq(0)
       expect(@user.reload.verified).to be true
-      expect(@user.reload.custom_field_values).to eq({ 'birthdate' => '1978-01-01', 'birthyear' => 1978, 'municipality_code' => '0666', 'postal_code' => '3500' })
+      expect(@user.reload.custom_field_answers.pluck(:key, :value).to_h).to eq({ 'birthdate' => '1978-01-01', 'birthyear' => 1978, 'municipality_code' => '0666', 'postal_code' => '3500' })
     end
 
     it 'updates custom fields when authenticating as an existing user' do
@@ -196,7 +200,7 @@ context 'criipto verification' do
       expect(User.count).to eq(1)
       expect(@user.reload.verified).to be true
       expect(@user.reload.identities.count).to eq(1)
-      expect(@user.reload.custom_field_values).to eq({ 'birthdate' => '1978-01-01', 'birthyear' => 1978, 'municipality_code' => '0666', 'postal_code' => '3500' })
+      expect(@user.reload.custom_field_answers.pluck(:key, :value).to_h).to eq({ 'birthdate' => '1978-01-01', 'birthyear' => 1978, 'municipality_code' => '0666', 'postal_code' => '3500' })
     end
   end
 
@@ -370,7 +374,7 @@ context 'criipto verification' do
       expect(response).to redirect_to('/en/yipie?random-passthrough-param=somevalue&verification_success=true')
 
       expect(@user.reload).to have_attributes(verified: true)
-      expect(@user.custom_field_values['birthdate']).to eq '1977-12-31'
+      expect(@user.answer_for_key('birthdate')&.value).to eq '1977-12-31'
       expect(@user.verifications.first).to have_attributes({
         method_name: 'auth0',
         user_id: @user.id,
