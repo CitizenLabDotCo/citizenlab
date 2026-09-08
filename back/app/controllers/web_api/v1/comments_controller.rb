@@ -90,7 +90,7 @@ class WebApi::V1::CommentsController < ApplicationController
 
     I18n.with_locale(current_user&.locale) do
       service = XlsxService.new
-      xlsx = service.generate_comments_xlsx @comments, view_private_attributes: true
+      xlsx = service.generate_comments_xlsx @comments.includes(author: :custom_field_answers), view_private_attributes: true
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'comments.xlsx'
     end
   end

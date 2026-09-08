@@ -112,8 +112,8 @@ module Surveys
     # Generate a flat object for each response including additional attributes
     # Can add user fields and demographics in here when needed
     def all_answers
-      @all_answers ||= @inputs.flat_map do |input|
-        input.custom_field_values
+      @all_answers ||= @inputs.includes(:custom_field_answers).flat_map do |input|
+        input.custom_field_answers.to_h { [it.key, it.value] }
           .merge({ 'quarter' => date_to_quarter(input.created_at) })
       end
     end
