@@ -207,6 +207,7 @@ const HomepageBuilderToolbox = () => {
               source="all"
               timeFilters={['upcoming']}
               limit={3}
+              projectPublicationStatuses={['published']}
               showEmptyMessage
             />
           }

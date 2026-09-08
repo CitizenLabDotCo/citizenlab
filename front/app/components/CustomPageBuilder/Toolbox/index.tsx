@@ -103,7 +103,12 @@ const CustomPageBuilderToolbox = () => {
         <DraggableElement
           id="e2e-draggable-events"
           component={
-            <EventsList source="all" timeFilters={['upcoming']} limit={3} />
+            <EventsList
+              source="all"
+              timeFilters={['upcoming']}
+              limit={3}
+              projectPublicationStatuses={['published']}
+            />
           }
           icon="calendar"
           label={formatMessage(eventsMessages.eventsListTitle)}
