@@ -26,6 +26,7 @@ import {
 const EventsSettings = () => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams({ strict: false });
+  // craft stores props as untyped JSON; this widget is their only writer.
   const {
     actions: { setProp },
     props,

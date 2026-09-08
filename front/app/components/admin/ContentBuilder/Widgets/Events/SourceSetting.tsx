@@ -13,7 +13,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import MultiSelect from 'components/UI/MultiSelect';
 
-import { useIntl } from 'utils/cl-intl';
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { useParams } from 'utils/router';
 
 import messages from './messages';
@@ -22,6 +22,7 @@ import { EventsProps, EventsSource } from './types';
 const SourceSetting = () => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  // craft stores props as untyped JSON; this widget is their only writer.
   const {
     actions: { setProp },
     props,
@@ -73,26 +74,34 @@ const SourceSetting = () => {
       label: localize(record.attributes.title_multiloc),
     })) ?? [];
 
-  const selection =
-    source === 'areas'
-      ? {
-          title: messages.selectAreas,
-          isLoading: areasLoading,
-          options: toOptions(areas?.data),
-        }
-      : source === 'global_topics'
-      ? {
-          title: messages.selectTopics,
-          isLoading: topicsLoading,
-          options: toOptions(topics?.data),
-        }
-      : source === 'spaces'
-      ? {
-          title: messages.selectSpaces,
-          isLoading: spacesLoading,
-          options: toOptions(spaces?.data),
-        }
-      : undefined;
+  const selections: Partial<
+    Record<
+      EventsSource,
+      {
+        title: MessageDescriptor;
+        isLoading: boolean;
+        options: { value: string; label: string }[];
+      }
+    >
+  > = {
+    areas: {
+      title: messages.selectAreas,
+      isLoading: areasLoading,
+      options: toOptions(areas?.data),
+    },
+    global_topics: {
+      title: messages.selectTopics,
+      isLoading: topicsLoading,
+      options: toOptions(topics?.data),
+    },
+    spaces: {
+      title: messages.selectSpaces,
+      isLoading: spacesLoading,
+      options: toOptions(spaces?.data),
+    },
+  };
+
+  const selection = selections[source];
 
   return (
     <Box display="flex" flexDirection="column" gap="12px">
