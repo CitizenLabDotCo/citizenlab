@@ -3922,6 +3922,7 @@
   "app.containers.admin.ContentBuilder.imageMultiloc": "Vaizdas",
   "app.containers.admin.ContentBuilder.imageMultilocAltLabel": "Trumpas vaizdo aprašymas",
   "app.containers.admin.ContentBuilder.imageMultilocAltTooltip": "Norint, kad jūsų platforma būtų prieinama naudotojams, naudojantiems ekrano skaitytuvus, svarbu prie paveikslėlių pridėti \"alt tekstą\".",
+  "app.containers.admin.ContentBuilder.lockedNodeLabel": "{widgetName} – spustelėkite, kad redaguotumėte – negalima perkelti ar pašalinti",
   "app.containers.admin.ContentBuilder.noFilesAvailable": "Failų nėra. Pirmiausia įkelkite failus į projektą.",
   "app.containers.admin.ContentBuilder.noPageSelected": "Nepasirinktas joks puslapis.",
   "app.containers.admin.ContentBuilder.noPagesAvailable": "Puslapių nėra. Pirmiausia pridėkite puslapį prie projekto.",

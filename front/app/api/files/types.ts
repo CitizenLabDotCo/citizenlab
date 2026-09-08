@@ -55,16 +55,20 @@ export interface QueryParameters {
   'page[size]'?: number;
 }
 
-export interface GetFilesParameters {
+interface GetFilesBaseParameters {
   pageNumber?: number;
   pageSize?: number;
   uploaderId?: string;
-  project?: string[];
-  staticPage?: string;
   sort?: FileSortOptions;
   search?: string;
   deleted?: boolean;
 }
+
+export type GetFilesParameters = GetFilesBaseParameters &
+  (
+    | { project?: string[]; staticPage?: never }
+    | { project?: never; staticPage?: string }
+  );
 
 export interface IFiles {
   data: IFileData[];
