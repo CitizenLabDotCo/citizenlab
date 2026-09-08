@@ -74,7 +74,7 @@ const selectionParams = (
   }
 };
 
-const EventsWidget: UserComponent<EventsProps> = ({
+const EventsList: UserComponent<EventsProps> = ({
   source = 'all',
   ids = [],
   titleMultiloc,
@@ -207,7 +207,7 @@ const EventsWidget: UserComponent<EventsProps> = ({
   );
 };
 
-EventsWidget.craft = {
+EventsList.craft = {
   related: {
     settings: EventsSettings,
   },
@@ -217,4 +217,4 @@ EventsWidget.craft = {
   },
 };
 
-export default EventsWidget;
+export default EventsList;
