@@ -167,10 +167,7 @@ describe SideFxProjectService do
 
     context 'when the project has a pending review' do
       let(:admin) { create(:admin) }
-
-      before do
-        create(:project_review, project: project, approved_at: nil)
-      end
+      let!(:review) { create(:project_review, project: project, approved_at: nil) }
 
       it 'approves the pending review when the project is published from draft' do
         project.admin_publication.update!(publication_status: 'draft')
@@ -297,6 +294,19 @@ describe SideFxProjectService do
         expect(project.review.reload.approved_at).to be_nil
       end
 
+      it 'does not delete the pending review when the project is set back to draft' do
+        project.admin_publication.update!(publication_status: 'published')
+        project.assign_attributes(admin_publication_attributes: { publication_status: 'draft' })
+        service.before_update(project, admin)
+
+        project.save!
+        expect { service.after_update(project, admin) }
+          .not_to have_enqueued_job(LogActivityJob)
+                    .with(encode_frozen_resource(review), 'deleted', admin, anything, anything)
+
+        expect(project.reload.review).to eq(review)
+      end
+
       context 'when the project is in a folder' do
         let(:folder) { create(:project_folder) }
         let(:project) { create(:project, admin_publication_attributes: { parent_id: folder.admin_publication.id }) }
@@ -337,6 +347,39 @@ describe SideFxProjectService do
           expect(review.approved_at).not_to be_nil
           expect(review.reviewer_id).to eq(moderator.id)
         end
+      end
+    end
+
+    context 'when the project has an approved review' do
+      let(:admin) { create(:admin) }
+      let!(:review) { create(:project_review, project: project, approved_at: Time.current, reviewer: admin) }
+
+      before do
+        project.admin_publication.update!(publication_status: 'published')
+      end
+
+      it 'deletes the approved review when the project is set back to draft' do
+        project.assign_attributes(admin_publication_attributes: { publication_status: 'draft' })
+        service.before_update(project, admin)
+
+        project.save!
+        expect { service.after_update(project, admin) }
+          .to have_enqueued_job(LogActivityJob)
+                .with(encode_frozen_resource(review), 'deleted', admin, anything, anything)
+
+        expect(project.reload.review).to be_nil
+      end
+
+      it 'deletes the approved review when the project is set back to archived' do
+        project.assign_attributes(admin_publication_attributes: { publication_status: 'archived' })
+        service.before_update(project, admin)
+
+        project.save!
+        expect { service.after_update(project, admin) }
+          .to have_enqueued_job(LogActivityJob)
+                .with(encode_frozen_resource(review), 'deleted', admin, anything, anything)
+
+        expect(project.reload.review).to be_nil
       end
     end
   end
