@@ -230,7 +230,6 @@
   "app.components.admin.ContentBuilder.Widgets.Events.selectTopics": "Tags",
   "app.components.admin.ContentBuilder.Widgets.Events.showAllPaginated2": "All of them, across pages",
   "app.components.admin.ContentBuilder.Widgets.Events.showLimited": "A limited number",
-  "app.components.admin.ContentBuilder.Widgets.Events.thisProject": "This project",
   "app.components.admin.ContentBuilder.Widgets.Events.upcomingEvents": "Upcoming and ongoing",
   "app.components.admin.ContentBuilder.Widgets.Events.whichEvents2": "Include events which are",
   "app.components.admin.ContentBuilder.Widgets.Events.whichProjects": "Show events from",
