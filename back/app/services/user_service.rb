@@ -33,7 +33,9 @@ class UserService
       # Putting an unconfirmed email directly in email is only done
       # when creating a user in the normal email sign up flow.
       if user_params[:email].present? && !confirm_user
-        user_params = user_params.except(:email).merge(new_email: user_params[:email])
+        email = user_params[:email]
+        user_params = user_params.except(:email)
+        user_params = user_params.merge(new_email: email) unless absorbable_by_merge?(email)
       end
 
       user = User.new(user_params)
@@ -120,8 +122,33 @@ class UserService
         user_params.delete(:email)
       else
         user_params.delete(:email)
-        user_params[:new_email] = sso_email
+        # Same reason as build_in_sso, except that here the failure would lock an
+        # existing user out of signing in rather than refusing to create one.
+        user_params[:new_email] = sso_email unless owned_by_other?(sso_email, user)
       end
+    end
+
+    # Whether an unconfirmed address the SSO returned belongs to an account the
+    # user can be merged into later.
+    #
+    # It cannot be parked on new_email either way: validate_not_duplicate_new_email
+    # rejects an address somebody else holds, so the save raises and the whole
+    # sign-in fails with nothing created. Leaving the account without an email
+    # instead drops the user into the missing-data flow, which asks for an address
+    # and offers the merge when they supply this one - proving control of that
+    # inbox with a code, which is what the SSO's unconfirmed email did not.
+    #
+    # Invitees are the exception. The invite flow owns claiming those accounts and
+    # merging into a pending invite would strand it, so the address is left in
+    # place for the validation to reject as before.
+    def absorbable_by_merge?(email)
+      owner = User.find_by_cimail(email)
+      owner.present? && !owner.invite_pending?
+    end
+
+    def owned_by_other?(email, user)
+      owner = User.find_by_cimail(email)
+      owner.present? && owner.id != user.id
     end
 
     # In-memory equivalent of the old `user.confirm` from UserConfirmation concern.

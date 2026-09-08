@@ -83,6 +83,7 @@ const rootSearchSchema = yup.object({
   sso_success: yup.string(),
   verification_success: yup.string(),
   sso_flow: yup.string().oneOf(['signup', 'signin']),
+  sso_email: yup.string(),
   sso_verification_action: yup.string(),
   sso_verification_id: yup.string(),
   sso_verification_type: yup.string(),

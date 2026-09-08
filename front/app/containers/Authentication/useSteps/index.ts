@@ -308,10 +308,17 @@ export default function useSteps() {
     ) {
       const {
         sso_flow,
+        sso_email,
         sso_verification_action,
         sso_verification_id,
         sso_verification_type,
       } = search as SSOParams;
+
+      // The provider gave us an address the account could not keep (somebody else
+      // owns it). Seed it so the missing-data form opens with it filled in.
+      if (sso_email) {
+        updateState({ new_email: sso_email });
+      }
 
       // Check if there is a success action in local storage (from SSO or verification)
       const actionFromLocalStorage = localStorage.getItem(

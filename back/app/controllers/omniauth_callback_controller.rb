@@ -94,6 +94,7 @@ class OmniauthCallbackController < ApplicationController
   def auth_callback(verify: false, authver_method: nil) # rubocop:disable Metrics/MethodLength
     auth = request.env['omniauth.auth']
     user_attrs = authver_method.profile_to_user_attrs(auth)
+    @sso_email = user_attrs[:email]
 
     @identity = Identity.find_or_build_with_omniauth(auth, authver_method)
 
@@ -191,6 +192,7 @@ class OmniauthCallbackController < ApplicationController
     omniauth_params = filter_omniauth_params
     omniauth_params['sso_flow'] = 'signin'
     omniauth_params['sso_success'] = true
+    omniauth_params['sso_email'] = prefillable_sso_email if prefillable_sso_email
     redirect_to(
       add_uri_params(
         Frontend::UrlService.new.sso_return_url(pathname: sso_redirect_path, locale: Locale.new(@user.locale)),
@@ -203,6 +205,7 @@ class OmniauthCallbackController < ApplicationController
     omniauth_params = filter_omniauth_params
     omniauth_params['sso_flow'] = 'signup'
     omniauth_params['sso_success'] = true
+    omniauth_params['sso_email'] = prefillable_sso_email if prefillable_sso_email
     redirect_to(
       add_uri_params(
         Frontend::UrlService.new.sso_return_url(pathname: sso_redirect_path, locale: Locale.new(@user.locale)),
@@ -234,6 +237,21 @@ class OmniauthCallbackController < ApplicationController
   end
 
   # Reject any parameters we don't need to be passed to the frontend in the URL
+  # The address the provider returned, handed back to the frontend so the
+  # missing-data form can pre-fill the email field instead of asking the user to
+  # retype what we were just told.
+  #
+  # Only when the account ended up without an address of its own, which is what
+  # UserService.build_in_sso does with an unconfirmed one another account already
+  # holds. Returning it otherwise would put an email in a redirect URL - and so in
+  # the access log - for no gain.
+  def prefillable_sso_email
+    return if @sso_email.blank?
+    return if @user.nil? || @user.email.present? || @user.new_email.present?
+
+    @sso_email
+  end
+
   def filter_omniauth_params
     omniauth_params&.except('token', 'verification_pathname', 'sso_pathname', 'RelayState') || {}
   end

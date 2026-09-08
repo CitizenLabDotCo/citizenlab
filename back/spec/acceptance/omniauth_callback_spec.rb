@@ -322,6 +322,14 @@ resource 'Omniauth Callback', document: false do
     end
 
     get '/auth/fake_sso/callback' do
+      # Only when the account could not keep the address. Otherwise this would put
+      # an email in a redirect URL, and so in the access log, for nothing.
+      example 'does not hand the address back when the account kept it' do
+        do_request
+
+        expect(response_headers['Location']).not_to include('sso_email')
+      end
+
       example 'a new user is created but email is not confirmed' do
         do_request
 
@@ -408,6 +416,35 @@ resource 'Omniauth Callback', document: false do
         end
       end
 
+      # The mirror of the new-account case, one step worse: parking the address on
+      # new_email made update_in_sso! raise, which locked an existing user out of
+      # signing in at all. They now sign in and keep the account they had.
+      context 'when identity already exists and the SSO email is owned by somebody else' do
+        let!(:owner) { create(:user, email: 'billy_fixed@example.com') }
+        let!(:existing_user) do
+          user = build(:unconfirmed_user, email: nil)
+          user.identities.build(provider: 'fake_sso', uid: 'billy_fixed', auth_hash: {})
+          user.save!
+          user
+        end
+
+        # :email only reaches update_in_sso! when password_login is off - that is
+        # what puts it in updateable_user_attrs (IdMethods::Base#updateable_user_attrs).
+        before { SettingsService.new.deactivate_feature!('password_login') }
+
+        example 'signs the user in without claiming the address' do
+          do_request
+
+          assert_status(302)
+          expect(response_headers['Location']).not_to include('authentication_error=true')
+
+          existing_user.reload
+          expect(existing_user.email).to be_nil
+          expect(existing_user.new_email).to be_nil
+          expect(owner.reload.email).to eq 'billy_fixed@example.com'
+        end
+      end
+
       context 'when identity already exists and user does not have an email yet' do
         let!(:existing_user) do
           user = build(:unconfirmed_user, email: nil)
@@ -431,16 +468,41 @@ resource 'Omniauth Callback', document: false do
         end
       end
 
+      # The address cannot be parked on new_email - validate_not_duplicate_new_email
+      # rejects one somebody else holds, which used to fail the whole sign-in and
+      # leave nothing behind. The account is created without an email instead, so
+      # the missing-data flow can ask for one; typing this same address there
+      # offers the merge, which proves control of the inbox with a code - the proof
+      # an unconfirmed SSO email did not provide.
       context 'when email is already taken by another confirmed user' do
         let!(:existing_user) { create(:user, email: 'billy_fixed@example.com') }
 
-        example 'Returns error' do
-          expect(User.count).to eq(1) # Only the existing user
+        example 'Signs the user in on a new account carrying no email' do
           do_request
 
-          expect(response_headers['Location']).to include('authentication_error=true')
-          expect(User.count).to eq(1) # Still only the existing user
-          expect(User.first.identities.length).to eq(0) # No identity should be created for the existing user
+          expect(response_headers['Location']).not_to include('authentication_error=true')
+
+          created = User.where.not(id: existing_user.id).first
+          expect(created).not_to be_nil
+          expect(created.email).to be_nil
+          expect(created.new_email).to be_nil
+          expect(created.identities.pluck(:provider)).to eq ['fake_sso']
+        end
+
+        example 'Leaves the account that owns the address untouched' do
+          do_request
+
+          existing_user.reload
+          expect(existing_user.email).to eq 'billy_fixed@example.com'
+          expect(existing_user.identities).to be_empty
+        end
+
+        # Handed back so the missing-data form opens with the address filled in
+        # rather than asking the user to retype what the provider just told us.
+        example 'Hands the address back on the redirect' do
+          do_request
+
+          expect(response_headers['Location']).to include('sso_email=billy_fixed%40example.com')
         end
       end
     end

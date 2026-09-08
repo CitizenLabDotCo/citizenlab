@@ -260,6 +260,7 @@ const CurrentStep = ({
         <BuiltInFields
           loading={loading}
           authenticationData={authenticationData}
+          state={state}
           setError={setError}
           onSubmit={transition(currentStep, 'SUBMIT')}
         />

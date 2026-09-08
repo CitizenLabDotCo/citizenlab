@@ -32,11 +32,10 @@ describe('SSO: user without email', () => {
     cy.get('#e2e-built-in-fields-submit-button').click();
 
     // The code goes to the other account's inbox, so the screen explains what
-    // entering it will do before asking for it.
-    cy.get('#e2e-authentication-modal').should(
-      'include.text',
-      'An account already uses'
-    );
+    // entering it will do, and names the address, before asking for it.
+    cy.get('#e2e-authentication-modal')
+      .should('include.text', 'An account already exists with the email')
+      .and('include.text', existingEmail);
     confirmEmail(cy);
 
     cy.get('#e2e-sign-up-success-modal').should('exist');
