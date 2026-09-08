@@ -116,17 +116,11 @@ module Verification
     private
 
     def make_verification(user:, uid:, method:, activity_payload: {})
-      existing_users = existing_verified_users(user, uid, method)
-      taken = existing_users.present?
-
-      if taken
-        # it means sth went wrong and user wasn't fully created (e.g., they didn't enter email)
-        if existing_users.all?(&:blank_and_can_be_deleted?)
-          existing_users.each { |u| DeleteUserJob.perform_now(u) }
-        else
-          raise VerificationTakenError
-        end
-      end
+      # Other accounts already verified with this uid. Either they are blank SSO
+      # shells belonging to the same person - who is now arriving with an email -
+      # or somebody else is claiming this identity, which is a hard refusal.
+      absorbable = existing_verified_users(user, uid, method)
+      raise VerificationTakenError unless absorbable.all? { |u| merge_eligibility_service.source_eligible?(u) }
 
       verification = ::Verification::Verification.new(
         method_name: method.name_for_hashing,
@@ -141,9 +135,22 @@ module Verification
       ActiveRecord::Base.transaction do
         verification.save!
         sfxv_service.after_create(verification, user, activity_payload)
+
+        # Deliberately after the verification is saved: the shell's own copy is then
+        # a duplicate of one +user+ already holds, so the merge drops it instead of
+        # leaving two identical rows behind.
+        absorbable.each { |shell| account_merge_service.absorb!(source: shell, target: user) }
       end
 
       verification
+    end
+
+    def merge_eligibility_service
+      @merge_eligibility_service ||= AccountMergeEligibilityService.new
+    end
+
+    def account_merge_service
+      @account_merge_service ||= AccountMergeService.new
     end
 
     def existing_verified_users(user, uid, method)

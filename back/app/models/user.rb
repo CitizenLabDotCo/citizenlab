@@ -366,11 +366,6 @@ class User < ApplicationRecord
     registered? && !blocked? && authenticated_at_least_once?
   end
 
-  def blank_and_can_be_deleted?
-    # atm it can be true only for users registered with ClaveUnica and MitID who haven't entered email
-    sso? && email.blank? && new_email.blank? && password_digest.blank? && identity_ids.count == 1
-  end
-
   def show_public_profile?
     # Only show the public profile if the user has contributed publicly to the platform,
     # either by posting ideas or comments in phases with public participation methods,

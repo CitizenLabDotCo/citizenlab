@@ -140,6 +140,51 @@ describe Verification::VerificationService do
 
       expect { service.verify_sync(**params2) }.to raise_error(Verification::VerificationService::VerificationTakenError)
     end
+
+    # The blank, email-less shell an SSO method leaves behind when the user never
+    # supplies an email. Arriving again with an email used to delete it, which
+    # nullified its ideas and comments and destroyed its follows and attendances
+    # outright. It is absorbed now, so nothing it contributed is lost.
+    context 'when a blank SSO account already holds the identity' do
+      let(:shell) do
+        create(:user, registration_completed_at: Time.zone.now).tap do |u|
+          u.update_columns(email: nil, password_digest: nil)
+          create(:identity, user: u, provider: 'clave_unica', uid: '11111')
+        end
+      end
+
+      def verify!(as:)
+        allow_any_instance_of(CustomIdMethods::Bogus::BogusVerification)
+          .to receive(:verify_sync).and_return({ uid: 'shared-uid' })
+
+        service.verify_sync(
+          user: as,
+          method_name: 'bogus',
+          verification_parameters: { desired_error: nil }
+        )
+      end
+
+      it 'absorbs the shell rather than deleting it, keeping its participation' do
+        verify!(as: shell)
+        idea = create(:idea, author: shell)
+        follow = create(:follower, user: shell)
+
+        verify!(as: user)
+
+        expect { shell.reload }.to raise_error ActiveRecord::RecordNotFound
+        expect(idea.reload.author_id).to eq user.id
+        expect(follow.reload.user_id).to eq user.id
+      end
+
+      it 'leaves the survivor with a single verification for the shared uid' do
+        verify!(as: shell)
+
+        verify!(as: user)
+
+        expect(Verification::Verification.where(user_id: user.id).count).to eq 1
+        expect(user.reload.verified).to be true
+      end
+    end
   end
 
   describe 'locked_attributes' do

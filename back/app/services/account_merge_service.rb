@@ -66,51 +66,87 @@ class AccountMergeService
     @verification_service = Verification::VerificationService.new
   end
 
+  # Confirmation-driven merge: the caller entered a code sent to the address the
+  # confirmation names, so the target is resolved from that address and has to
+  # clear the full target-side eligibility rules.
+  #
   # @return [User] the surviving account the caller should be signed in as.
   # @raise [IneligibleError] if the target may not be merged into.
   # @raise [IncompleteMergeError] if anything would have been left on the source.
   def merge!(source:, confirmation:)
-    target_email = confirmation.target_email
+    run!(source: source, confirmation: confirmation)
+  end
+
+  # Provider-driven merge: an identity provider has asserted that +source+ and
+  # +target+ are one person, by returning the same verification uid for both. The
+  # target is given rather than resolved, and there is no confirmation to consume.
+  #
+  # The target-side eligibility rules deliberately do not apply. They exist because
+  # merge! hands somebody else's account to whoever could read an inbox; here the
+  # target is the account being signed in to and the provider's assertion is the
+  # stronger proof, so refusing an admin (say) would only break re-verification.
+  #
+  # The target's token is left alone for the same reason - nobody new gains access,
+  # and expiring it would cut off the verification request in flight.
+  #
+  # @return [User] +target+, with everything the source owned moved onto it.
+  # @raise [IneligibleError] if the source is not an absorbable blank account.
+  # @raise [IncompleteMergeError] if anything would have been left on the source.
+  def absorb!(source:, target:)
+    run!(source: source, target: target)
+  end
+
+  private
+
+  def run!(source:, target: nil, confirmation: nil)
     frozen_source = nil
     moved = {}
 
-    target = ActiveRecord::Base.transaction do
-      target = User.find_by_cimail(target_email)
+    survivor = ActiveRecord::Base.transaction do
+      resolved = target || User.find_by_cimail(confirmation.target_email)
 
       # Nobody owns the address any more (the target deleted their account, or
       # changed it while the code was outstanding). Nothing to merge into, so fall
       # back to what the ordinary new-email flow would have done all along.
-      next promote_email_onto_source!(source, target_email, confirmation) if target.nil?
+      next promote_email_onto_source!(source, confirmation.target_email, confirmation) if resolved.nil?
 
-      lock_in_id_order!(source, target)
+      lock_in_id_order!(source, resolved)
 
-      reason = @eligibility_service.ineligibility_reason(source: source, target: target)
+      reason = ineligibility_reason(source, resolved, confirmation)
       raise IneligibleError, reason.to_s if reason
 
-      moved = move_all!(source, target)
-      apply_verified_identity!(source, target)
-      recompute_counters!(target)
+      moved = move_all!(source, resolved)
+      apply_verified_identity!(source, resolved)
+      recompute_counters!(resolved)
 
       # The target has just gained an entirely new way to authenticate. That is a
       # credential change, so existing sessions elsewhere should not survive it.
-      target.expire_token!
+      # See absorb! for why the provider-driven path is exempt.
+      resolved.expire_token! if confirmation
 
       assert_source_emptied!(source)
-      confirmation.destroy!
+      confirmation&.destroy!
 
       source.destroy!
       frozen_source = source
 
-      target
+      resolved
     end
 
-    return target if frozen_source.nil? # degraded path: no merge happened
+    return survivor if frozen_source.nil? # degraded path: no merge happened
 
-    run_side_effects!(target, frozen_source, moved)
-    target
+    run_side_effects!(survivor, frozen_source, moved)
+    survivor
   end
 
-  private
+  # Which rules apply depends on what proved the two accounts are one person.
+  def ineligibility_reason(source, target, confirmation)
+    return @eligibility_service.ineligibility_reason(source: source, target: target) if confirmation
+
+    return :target_is_source if target.id == source.id
+
+    @eligibility_service.source_reason(source)
+  end
 
   # Deterministic ordering, or two merges into the same target deadlock each other.
   def lock_in_id_order!(source, target)

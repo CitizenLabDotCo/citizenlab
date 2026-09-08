@@ -183,6 +183,54 @@ describe AccountMergeService do
     end
   end
 
+  # The provider-driven entry point, used by VerificationService#make_verification
+  # when an identity provider returns a uid that a blank SSO shell already holds.
+  describe '#absorb!' do
+    def absorb!(into: target)
+      service.absorb!(source: source, target: into)
+    end
+
+    it 'moves participation onto the target and deletes the source' do
+      idea = create(:idea, author: source)
+      reaction = create(:reaction, user: source)
+
+      expect(absorb!).to eq target
+
+      expect { source.reload }.to raise_error ActiveRecord::RecordNotFound
+      expect(idea.reload.author_id).to eq target.id
+      expect(reaction.reload.user_id).to eq target.id
+    end
+
+    # The target-side rules guard against handing a stranger's account to whoever
+    # could read an inbox. Here the provider has tied the two accounts together,
+    # so an admin re-verifying must not be refused.
+    it 'allows a target the confirmation-driven merge would refuse' do
+      target.add_role('admin')
+      target.save!
+
+      expect { absorb! }.not_to raise_error
+      expect(target.reload).to be_admin
+    end
+
+    it 'still refuses a source that is not an absorbable blank account' do
+      source.update!(email: 'someone@example.org')
+
+      expect { absorb! }.to raise_error described_class::IneligibleError
+      expect(source.reload).to be_present
+    end
+
+    # Nobody new gains access - the provider has just confirmed the target is the
+    # person holding the identity - and expiring would cut off the verification
+    # request that is in flight.
+    it 'leaves the target token alone, unlike the confirmation-driven merge' do
+      before_key = target.token_expiry_key
+
+      absorb!
+
+      expect(target.reload.token_expiry_key).to eq before_key
+    end
+  end
+
   describe 'refusals' do
     it 'raises and changes nothing when the target may not be merged into' do
       # Free the address before handing it to an admin: the merge resolves its

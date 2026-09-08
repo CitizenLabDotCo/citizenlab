@@ -31,11 +31,15 @@ class AccountMergeEligibilityService
     source_reason(source).nil?
   end
 
-  private
-
-  # These also serve as the scope fence. request_code_new_email is shared with the
-  # ordinary "change my email" flow in the profile, and these guards are what keep
-  # the merge from ever being offered there.
+  # Whether this account may be absorbed and deleted, and why not if it may not.
+  # Public because AccountMergeService#absorb! applies only this half: there an
+  # identity provider has already tied the two accounts together, so the
+  # target-side rules (which guard against handing over a stranger's account)
+  # have nothing to protect.
+  #
+  # These also serve as the scope fence for the confirmation-driven merge.
+  # request_code_new_email is shared with the ordinary "change my email" flow in
+  # the profile, and these guards are what keep it from ever being offered there.
   def source_reason(source)
     return :source_missing if source.blank?
     return :source_not_sso unless source.sso?
@@ -48,6 +52,8 @@ class AccountMergeEligibilityService
 
     nil
   end
+
+  private
 
   def target_reason(source, target)
     return :target_missing if target.blank?
