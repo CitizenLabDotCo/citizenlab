@@ -132,7 +132,7 @@ resource 'Ideas' do
           attachment2 = input.file_attachments.find(file_attachment2_id)
           expect(attachment2.file.name).to eq(filename2)
 
-          expect(input.custom_field_values).to match(
+          expect(input.custom_field_answers.pluck(:key, :value).to_h).to match(
             'custom_field_name1' => { 'id' => file_attachment1_id, 'name' => filename1 },
             'custom_field_name2' => { 'id' => file_attachment2_id, 'name' => filename2 }
           )
@@ -146,7 +146,7 @@ resource 'Ideas' do
           assert_status 201
           survey = project.reload.ideas.first
           expect(survey.publication_status).to eq 'draft'
-          expect(survey.custom_field_values.values).to match_array(
+          expect(survey.custom_field_answers.pluck(:value)).to match_array(
             survey.file_attachments.map { |attachment| { 'id' => attachment.id, 'name' => attachment.file.name } }
           )
         end
@@ -242,7 +242,7 @@ resource 'Ideas' do
           attachment2 = input.file_attachments.find(file_attachment2_id)
           expect(attachment2.file.name).to eq filename2
 
-          expect(input.custom_field_values).to match(
+          expect(input.custom_field_answers.pluck(:key, :value).to_h).to match(
             'custom_field_name1' => { 'id' => file_attachment1_id, 'name' => filename1 },
             'custom_field_name2' => { 'id' => file_attachment2_id, 'name' => filename2 }
           )
@@ -256,7 +256,7 @@ resource 'Ideas' do
           assert_status 201
           survey = project.reload.ideas.first
           expect(survey.publication_status).to eq 'draft'
-          expect(survey.custom_field_values.values).to match_array(
+          expect(survey.custom_field_answers.pluck(:value)).to match_array(
             survey.file_attachments.map { |attachment| { 'id' => attachment.id, 'name' => attachment.file.name } }
           )
         end
@@ -348,7 +348,7 @@ resource 'Ideas' do
         assert_status 201
         json_response = json_parse(response_body)
         input = Idea.find(json_response[:data][:id])
-        expect(input.custom_field_values).to eq({
+        expect(input.custom_field_answers.pluck(:key, :value).to_h).to eq({
           'text_field' => 'A text answer',
           'multiline_field' => "Line 1\nLine 2",
           'number_field' => 42,
@@ -405,7 +405,7 @@ resource 'Ideas' do
           expect(inputs.size).to eq 1
           input = inputs.first
           expect(inputs.first.phase_ids).to eq [active_phase.id]
-          expect(input.custom_field_values).to eq({ 'custom_field_name1' => 'Cat' })
+          expect(input.custom_field_answers.pluck(:key, :value)).to eq [%w[custom_field_name1 Cat]]
           expect(input.creation_phase_id).to eq active_phase.id
         end
 
@@ -474,9 +474,7 @@ resource 'Ideas' do
         :idea,
         author: user,
         project: project,
-        custom_field_values: {
-          custom_field_name1: 'Cat'
-        },
+        custom_field_answers: [build(:custom_field_answer, key: 'custom_field_name1', value: 'Cat')],
         creation_phase: creation_phase,
         phases: [creation_phase].compact
       )
@@ -539,7 +537,7 @@ resource 'Ideas' do
             expect(IdeaFile.count).to eq 1
 
             # Verify that the custom field value is still the existing referenced file.
-            expect(input.reload.custom_field_values).to eq({
+            expect(input.reload.custom_field_answers.pluck(:key, :value).to_h).to eq({
               'custom_field_name2' => { 'id' => existing_file.id, 'name' => 'existing_file.pdf' }
             })
           end
@@ -568,7 +566,7 @@ resource 'Ideas' do
             file_attachment = input.file_attachments.sole
             expect(file_attachment.file.name).to eq(file_name)
 
-            expect(input.reload.custom_field_values).to eq({
+            expect(input.reload.custom_field_answers.pluck(:key, :value).to_h).to eq({
               'custom_field_name2' => { 'id' => file_attachment.id, 'name' => file_name }
             })
           end
@@ -594,7 +592,7 @@ resource 'Ideas' do
             expect(inputs.size).to eq 1
 
             # Verify that the custom field values are saved correctly.
-            expect(input.reload.custom_field_values).to eq({
+            expect(input.reload.custom_field_answers.pluck(:key, :value).to_h).to eq({
               'custom_field_name3' => { 'type' => 'Point', 'coordinates' => [4.31, 50.85] },
               'custom_field_name4' => { 'type' => 'LineString', 'coordinates' => [[4.30, 50.85], [4.660, 51.15]] },
               'custom_field_name5' => {
@@ -634,16 +632,16 @@ resource 'Ideas' do
               :idea,
               author: user,
               project: project,
-              custom_field_values: {
-                'custom_field_name1' => 'Cat',
-                'select_field' => 'other',
-                'select_field_other' => 'A ferret',
-                'multiselect_field' => %w[option1 option2],
-                'checkbox_field' => true,
-                'number_field' => 42,
-                'matrix_field' => { 'send_more_animals_to_space' => 1, 'ride_bicycles_more_often' => 2 },
-                'disabled_field' => 'legacy value'
-              },
+              custom_field_answers: [
+                build(:custom_field_answer, key: 'custom_field_name1', value: 'Cat'),
+                build(:custom_field_answer, key: 'select_field', value: 'other'),
+                build(:custom_field_answer, key: 'select_field_other', value: 'A ferret', custom_field: select_cf),
+                build(:custom_field_answer, key: 'multiselect_field', value: %w[option1 option2]),
+                build(:custom_field_answer, key: 'checkbox_field', value: true),
+                build(:custom_field_answer, key: 'number_field', value: 42),
+                build(:custom_field_answer, key: 'matrix_field', value: { 'send_more_animals_to_space' => 1, 'ride_bicycles_more_often' => 2 }),
+                build(:custom_field_answer, key: 'disabled_field', value: 'legacy value')
+              ],
               creation_phase: creation_phase,
               phases: [creation_phase]
             )
@@ -663,7 +661,7 @@ resource 'Ideas' do
             example_request 'Update merges values, clears omitted keys and keeps policy-stripped values', document: false do
               assert_status 200
               # number_field (omitted) and select_field_other (stale) were cleared.
-              expect(input.reload.custom_field_values).to eq({
+              expect(input.reload.custom_field_answers.pluck(:key, :value).to_h).to eq({
                 'custom_field_name1' => 'Dog',
                 'select_field' => 'cat',
                 'checkbox_field' => false,
@@ -679,7 +677,7 @@ resource 'Ideas' do
 
             example_request 'Update does not change the custom field values', document: false do
               assert_status 200
-              expect(input.reload.custom_field_values).to eq({
+              expect(input.reload.custom_field_answers.pluck(:key, :value).to_h).to eq({
                 'custom_field_name1' => 'Cat',
                 'select_field' => 'other',
                 'select_field_other' => 'A ferret',

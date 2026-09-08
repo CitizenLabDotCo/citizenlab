@@ -534,7 +534,7 @@ resource 'Ideas' do
 
             idea = Idea.find(response_data[:id])
             expect(idea.author_id).to be_nil
-            expect(idea.custom_field_values.to_h).to eq(extra_field_name => 'test value')
+            expect(idea.custom_field_answers.pluck(:key, :value)).to eq [[extra_field_name, 'test value']]
 
             expect(idea.claim_token).to be_present
             expect(response_data.dig(:attributes, :claim_token)).to be_present.and eq(idea.claim_token.token)
@@ -546,7 +546,7 @@ resource 'Ideas' do
       context 'when resident' do
         before { header_token_for(resident) }
 
-        let(:resident) { create(:user, custom_field_values: { age: 30 }) }
+        let(:resident) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'age', value: 30)]) }
         let(:publication_status) { 'published' }
 
         example 'does not assign anyone to the created idea', document: false do
@@ -615,7 +615,7 @@ resource 'Ideas' do
 
             # It also saves the custom field values into the idea
             idea = Idea.find(response_data[:id])
-            expect(idea.custom_field_values['u_age']).to eq 30
+            expect(idea.answer_for_key('u_age')&.value).to eq 30
           end
         end
       end
@@ -646,9 +646,7 @@ resource 'Ideas' do
             assert_status 201
             idea_from_db = Idea.find(response_data[:id])
             expect(idea_from_db.author_id).to be_nil
-            expect(idea_from_db.custom_field_values.to_h).to eq({
-              extra_field_name => 'test value'
-            })
+            expect(idea_from_db.custom_field_answers.pluck(:key, :value)).to eq [[extra_field_name, 'test value']]
           end
         end
 
@@ -794,7 +792,7 @@ resource 'Ideas' do
         end
 
         context 'Creating a community monitor survey response when only demographics are collected' do
-          let(:resident) { create(:user, custom_field_values: { age: 30 }) }
+          let(:resident) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'age', value: 30)]) }
 
           before do
             permission = phase.permissions.find_by(action: 'posting_idea')
@@ -816,7 +814,7 @@ resource 'Ideas' do
 
             idea = Idea.find(response_data[:id])
             expect(idea.author_id).to be_nil
-            expect(idea.custom_field_values['u_age']).to eq 30
+            expect(idea.answer_for_key('u_age')&.value).to eq 30
           end
 
           context 'when user_data_collection is anonymous' do
@@ -828,7 +826,7 @@ resource 'Ideas' do
               assert_status 201
               idea = Idea.find(response_data[:id])
               expect(idea.author_id).to be_nil
-              expect(idea.custom_field_values.keys).not_to include 'u_age'
+              expect(idea.custom_field_answers.pluck(:key)).not_to include 'u_age'
             end
           end
         end

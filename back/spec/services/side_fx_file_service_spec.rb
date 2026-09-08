@@ -16,7 +16,7 @@ describe SideFxFileService do
 
       service.after_destroy(idea_file)
       expect(idea.reload.custom_field_answers.pluck(:key, :value)).to contain_exactly(
-        ['some_survey_question', 'option2'],
+        %w[some_survey_question option2],
         ['other_file_upload', { 'id' => 'fake_id', 'name' => 'fake_filename' }]
       )
     end
