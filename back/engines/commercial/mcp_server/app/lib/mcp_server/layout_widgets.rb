@@ -12,7 +12,8 @@ class McpServer::LayoutWidgets
   # Suggested replacement per legacy node type, used in error messages.
   LEGACY_ALTERNATIVES = {
     'RichTextMultiloc' => 'use TextMultiloc for rich text',
-    'ProjectDescriptionSection' => "put the content directly in the #{BODY_WIDGET} node"
+    'ProjectDescriptionSection' => "put the content directly in the #{BODY_WIDGET} node",
+    'EventsWidget' => 'use EventsList'
   }.freeze
 
   # WidgetSpecs widgets deliberately not advertised as insertable: structural
@@ -99,9 +100,9 @@ class McpServer::LayoutWidgets
         It paints a full-width band, so alternate it with the plain content around it rather than
         stacking two "colored" bands together.
     DOC
-    'EventsWidget' => <<~DOC,
-      EventsWidget — the project's upcoming and past events. props: {}
-        custom: {"title":{"id":"app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle","defaultMessage":"Events"},"noPointerEvents":true}
+    'EventsList' => <<~DOC,
+      EventsList — the project's upcoming and past events. props: {}
+        custom: {"title":{"id":"app.components.admin.ContentBuilder.Widgets.Events.eventsListTitle","defaultMessage":"Events"},"noPointerEvents":true}
         Renders entirely from the project's events (create them with create_event); it renders
         nothing when there are none. Renders on white; it has no background setting.
     DOC
@@ -142,11 +143,12 @@ class McpServer::LayoutWidgets
     ## Page content (yours to arrange)
 
     - ALL your content lives inside the #{BODY_WIDGET} node.
-    - PhasesWidget, EventsWidget and ExtraSurveysWidget are ordinary widgets: reorder, nest,
+    - PhasesWidget, EventsList and ExtraSurveysWidget are ordinary widgets: reorder, nest,
       remove or leave them out like any other.
-    - Two node types are legacy: a RichTextMultiloc holding a migrated description, and a
+    - Three node types are legacy: a RichTextMultiloc holding a migrated description, a
       ProjectDescriptionSection wrapping the content of a page saved before the builder was
-      unlocked. Edit them in place or delete them, but creating new ones is rejected.
+      unlocked, and an EventsWidget, which EventsList replaced. Edit them in place or delete
+      them, but creating new ones is rejected.
     - Ignore any custom.locked marker on a stored node — this document is what may be edited.
   RULES
 
