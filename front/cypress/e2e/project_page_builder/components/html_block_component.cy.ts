@@ -40,6 +40,9 @@ describe('Project description builder HtmlBlock component', () => {
       position: 'inside',
     });
 
+    cy.get('div#e2e-content-builder-settings').contains('HTML code').should('be.visible');
+    cy.get('div#e2e-content-builder-settings').get('button.tooltip-icon').click()
+    cy.contains('Paste the HTML you want to display on your page').should('be.visible');
     cy.get('div.e2e-html-block').click();
     cy.get('#html-block-textarea-en').type('<p>Html paragraph</p>', {
       force: true,
