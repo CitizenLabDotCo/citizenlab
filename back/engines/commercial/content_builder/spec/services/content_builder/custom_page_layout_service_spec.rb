@@ -158,6 +158,16 @@ describe ContentBuilder::CustomPageLayoutService do
         expect(props['ids']).to eq [topic.id]
       end
 
+      it 'maps the space filter onto the widget selection' do
+        space = create(:space)
+        page = page_with_events(projects_filter_type: 'spaces', spaces: [space])
+
+        props = service.craftjs_json_for(page)[events_id]['props']
+
+        expect(props['source']).to eq 'spaces'
+        expect(props['ids']).to eq [space.id]
+      end
+
       it 'adds nothing when the events section is off' do
         area = create(:area)
         page = page_with_events(
