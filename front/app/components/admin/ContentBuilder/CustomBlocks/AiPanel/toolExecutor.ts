@@ -4,7 +4,7 @@ import { BlockManifest, BlockMessages } from 'api/custom_blocks/types';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import { compileAndCheckBlockSource } from '../compiler';
-import { SDK_DATA_HOOKS } from '../runtime/sdkContract';
+import { SDK_DATA_HOOKS, SDK_VERSION } from '../runtime/sdkContract';
 
 export interface DraftFiles {
   source: string;
@@ -130,8 +130,8 @@ const validateManifest = (manifest: UnknownRecord): string[] => {
   if (manifest.manifest_version !== 1) {
     errors.push('manifest_version must be 1.');
   }
-  if (manifest.sdk_version !== 1) {
-    errors.push('sdk_version must be 1.');
+  if (manifest.sdk_version !== SDK_VERSION) {
+    errors.push(`sdk_version must be ${SDK_VERSION}.`);
   }
   if (
     !Array.isArray(manifest.targets) ||
@@ -202,7 +202,9 @@ const executeSetMessages = (
     messages === null ||
     Array.isArray(messages)
   ) {
-    errors.push('messages must be an object: { locale: { message_id: text } }.');
+    errors.push(
+      'messages must be an object: { locale: { message_id: text } }.'
+    );
   } else {
     Object.entries(messages).forEach(([locale, catalog]) => {
       if (typeof catalog !== 'object' || catalog === null) {
@@ -262,7 +264,10 @@ const executeGetDataSample = async (
     const data = await sample();
     return { content: JSON.stringify(data).slice(0, 5000), isError: false };
   } catch (error) {
-    return { content: `Sample request failed: ${String(error)}`, isError: true };
+    return {
+      content: `Sample request failed: ${String(error)}`,
+      isError: true,
+    };
   }
 };
 

@@ -2,14 +2,13 @@ import { useCallback, useRef, useState } from 'react';
 
 import { Multiloc } from 'typings';
 
-import {
-  IAiToolCall,
-  IAiToolResult,
-} from 'api/custom_block_ai_sessions/types';
+import { IAiToolCall, IAiToolResult } from 'api/custom_block_ai_sessions/types';
 import useAddAiTurn from 'api/custom_block_ai_sessions/useAddAiTurn';
 import useAddCustomBlockAiSession from 'api/custom_block_ai_sessions/useAddCustomBlockAiSession';
 import { BlockManifest, BlockMessages } from 'api/custom_blocks/types';
 import useAddCustomBlock from 'api/custom_blocks/useAddCustomBlock';
+
+import { SDK_VERSION } from '../runtime/sdkContract';
 
 import { DraftFiles, executeToolCall } from './toolExecutor';
 import { planToolRound } from './turnHandling';
@@ -24,7 +23,7 @@ export interface ChatItem {
 
 const EMPTY_MANIFEST: BlockManifest = {
   manifest_version: 1,
-  sdk_version: 1,
+  sdk_version: SDK_VERSION,
   targets: ['homepage'],
   data_uses: [],
   config_schema: [],

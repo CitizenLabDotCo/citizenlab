@@ -1,9 +1,3 @@
-import { Keys } from 'utils/cl-react-query/types';
-
-import customBlockAiSessionsKeys from './keys';
-
-export type CustomBlockAiSessionsKeys = Keys<typeof customBlockAiSessionsKeys>;
-
 export type AiToolName =
   | 'set_title'
   | 'set_source'
