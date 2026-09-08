@@ -115,8 +115,12 @@ class AccountMergeService
       reason = ineligibility_reason(source, resolved, confirmation)
       raise IneligibleError, reason.to_s if reason
 
+      # Captured before the move: afterwards the target holds the source's
+      # verifications too, and there is no telling whose lock is whose.
+      target_locks = locks_held_by(resolved)
+
       moved = move_all!(source, resolved)
-      apply_verified_identity!(source, resolved)
+      apply_verified_identity!(source, resolved, target_locks)
       recompute_counters!(resolved)
 
       # The target has just gained an entirely new way to authenticate. That is a
@@ -254,31 +258,46 @@ class AccountMergeService
     assignment
   end
 
+  # What +user+'s own verifications lock right now.
+  def locks_held_by(user)
+    {
+      attributes: @verification_service.locked_attributes(user),
+      custom_fields: @verification_service.locked_custom_fields(user).map(&:to_s)
+    }
+  end
+
   # users.verified is written by SideFxVerificationService#after_create, not by a
   # callback on Verification, so moving the rows does not by itself flip it.
   #
-  # The attributes a verification method locks are then no longer editable by the
-  # user, so the target has to end up holding the values the identity provider
-  # actually asserted rather than whatever it had chosen for itself.
-  def apply_verified_identity!(source, target)
+  # Then the two profiles have to be reconciled. Precedence, strongest first:
+  #
+  #   1. values locked by a verification the target already held. Its provider
+  #      asserted those about the target, and the source has no standing to
+  #      overwrite them - so they are excluded from what the source may write.
+  #   2. values locked by a verification the source brought. The user can no
+  #      longer edit these, so the target must end up holding what the provider
+  #      actually said rather than the name it had chosen for itself.
+  #   3. whatever the target already had. A long-standing profile is not
+  #      overwritten by a fresh SSO account.
+  #   4. the source's remaining answers, which fill the gaps. Same person, so an
+  #      answer only one of the two accounts has is still theirs, and filling a
+  #      blank can never destroy anything.
+  def apply_verified_identity!(source, target, target_locks)
     target.verified = true if target.verifications.active.exists?
 
-    locked = @verification_service.locked_attributes(target)
-    locked.each do |attribute|
+    fillable = @verification_service.locked_attributes(target) - target_locks[:attributes]
+    fillable.each do |attribute|
       value = source.public_send(attribute)
       target.public_send(:"#{attribute}=", value) if value.present?
     end
 
-    locked_keys = @verification_service.locked_custom_fields(target).map(&:to_s)
-    locked_values = source.custom_field_values.slice(*locked_keys)
+    locked_keys = @verification_service.locked_custom_fields(target).map(&:to_s) - target_locks[:custom_fields]
 
-    if locked_values.present?
-      # Only the locked keys: merging the whole hash would let a brand-new SSO
-      # account's blanks overwrite a long-standing profile.
-      target.update_merging_custom_fields!(custom_field_values: locked_values)
-    else
-      target.save!
-    end
+    merged = source.custom_field_values
+      .merge(target.custom_field_values)
+      .merge(source.custom_field_values.slice(*locked_keys))
+
+    target.update_merging_custom_fields!(custom_field_values: merged)
   end
 
   def recompute_counters!(target)

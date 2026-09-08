@@ -181,6 +181,50 @@ describe AccountMergeService do
 
       expect(target.reload.first_name).to eq 'Bob'
     end
+
+    # bosa_fas locks first_name and last_name; bogus locks last_name only. The
+    # target's own verification asserted its last name, so the source may fill the
+    # first name it has no lock on but must not touch the last.
+    it 'does not overwrite a value the target had already locked' do
+      source.update_columns(first_name: 'Robert', last_name: 'Smit')
+      target.update!(first_name: 'Bob', last_name: 'Smith')
+      create(:verification, user: target, method_name: 'bogus', hashed_uid: 'bbb')
+      create(:verification, user: source, method_name: 'bogus', hashed_uid: 'bbb')
+      create(:verification, user: source, method_name: 'bosa_fas', hashed_uid: 'aaa')
+
+      merge!
+
+      target.reload
+      expect(target.first_name).to eq 'Robert'
+      expect(target.last_name).to eq 'Smith'
+    end
+  end
+
+  describe 'custom field values' do
+    it "fills gaps in the target's profile without overwriting its answers" do
+      create(:custom_field, key: 'hobby')
+      source.update!(custom_field_values: { 'birthyear' => 1980, 'hobby' => 'chess' })
+      target.update!(custom_field_values: { 'birthyear' => 1990 })
+
+      merge!
+
+      expect(target.reload.custom_field_values).to eq(
+        'birthyear' => 1990, 'hobby' => 'chess'
+      )
+    end
+
+    # bogus locks gender, so there the source's answer is the provider's and wins
+    # over whatever the target had chosen.
+    it 'lets a locked answer from the source win over the target' do
+      create(:custom_field_gender, :with_options)
+      source.update!(custom_field_values: { 'gender' => 'female' })
+      target.update!(custom_field_values: { 'gender' => 'male' })
+      create(:verification, user: source, method_name: 'bogus', hashed_uid: 'aaa')
+
+      merge!
+
+      expect(target.reload.custom_field_values['gender']).to eq 'female'
+    end
   end
 
   # The provider-driven entry point, used by VerificationService#make_verification
