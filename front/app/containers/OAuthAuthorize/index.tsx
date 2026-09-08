@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Box,
@@ -24,6 +24,7 @@ import Card from './components/Card';
 import IconBadge from './components/IconBadge';
 import InfoCard from './components/InfoCard';
 import messages from './messages';
+import { isSafeRedirectUrl, navigateToUrl } from './utils';
 
 const scopeContent = (scope: string) => {
   switch (scope) {
@@ -68,6 +69,25 @@ const OAuthAuthorize = () => {
   const { mutate: authorize, isPending: authorizing } =
     useCreateOAuthAuthorization();
 
+  const [redirectBlocked, setRedirectBlocked] = useState(false);
+
+  // A client is registered with a redirect_uri of its choosing, so the URI we
+  // are asked to send the user back to is attacker-controlled. Refuse the whole
+  // consent screen when the scheme is not http(s), rather than only guarding the navigation.
+  const unsafeRedirect =
+    !authorization ||
+    !isSafeRedirectUrl(authorization.data.attributes.redirect_uri);
+
+  // Single choke point for leaving the platform: window.location never receives
+  // a URL whose scheme we have not validated ourselves.
+  const navigateToClient = (url: string) => {
+    if (!isSafeRedirectUrl(url)) {
+      setRedirectBlocked(true);
+      return;
+    }
+    navigateToUrl(url);
+  };
+
   // Not logged in: open the normal sign-in flow in place. Once authenticated,
   // authUser updates and the consent details load. The OAuth params live in the
   // URL, which the in-page auth modal does not change, so they survive sign-in.
@@ -101,7 +121,7 @@ const OAuthAuthorize = () => {
         </Box>
       </Card>
     );
-  } else if (isError || !authorization) {
+  } else if (isError || unsafeRedirect || redirectBlocked) {
     content = (
       <Card>
         <Box p="40px">
@@ -126,20 +146,22 @@ const OAuthAuthorize = () => {
     const handleAuthorize = () => {
       authorize(echoedParams, {
         onSuccess: (res) => {
-          window.location.assign(res.data.attributes.redirect_uri);
+          navigateToClient(res.data.attributes.redirect_uri);
         },
       });
     };
 
     // Denial persists nothing server-side: redirect the client back with
-    // error=access_denied, using the redirect_uri the server already validated.
+    // error=access_denied. The server validated this redirect_uri as one
+    // registered for the client; the scheme check above is what makes it safe
+    // to navigate to.
     const handleDeny = () => {
       const url = new URL(redirect_uri);
       url.searchParams.set('error', 'access_denied');
       if (params.state) {
         url.searchParams.set('state', params.state);
       }
-      window.location.assign(url.toString());
+      navigateToClient(url.toString());
     };
 
     content = (
