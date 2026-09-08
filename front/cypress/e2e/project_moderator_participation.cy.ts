@@ -24,7 +24,6 @@ describe('Poll for admins and collaborators only', () => {
     cy.apiCreateProject({
       title: randomString(),
       descriptionPreview: randomString(),
-      description: randomString(),
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;

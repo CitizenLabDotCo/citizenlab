@@ -13,7 +13,6 @@ describe('Idea show page actions', () => {
     cy.apiCreateProject({
       title: randomString(20),
       descriptionPreview: randomString(),
-      description: randomString(),
       publicationStatus: 'published',
     })
       .then((project) => {

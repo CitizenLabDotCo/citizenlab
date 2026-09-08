@@ -54,6 +54,47 @@ RSpec.describe DecidimImporter::Importer do
     end
   end
 
+  describe "layout reuse (reuse_matchers['ContentBuilder::Layout'])" do
+    let(:matcher) { described_class.reuse_matchers['ContentBuilder::Layout'] }
+
+    it 'reuses the layout the content buildable already has under that code' do
+      folder = create(:project_folder)
+      existing = create(:layout, content_buildable: folder, code: 'project_folder_description')
+
+      found = matcher.call({ 'content_buildable' => folder, 'code' => 'project_folder_description' }, ContentBuilder::Layout)
+      expect(found).to eq(existing)
+    end
+
+    it 'returns nil when the buildable has no layout under that code, so one is created' do
+      folder = create(:project_folder)
+      create(:layout, content_buildable: folder, code: 'project_folder_description')
+
+      expect(matcher.call({ 'content_buildable' => folder, 'code' => 'project_page' }, ContentBuilder::Layout)).to be_nil
+      expect(matcher.call({ 'content_buildable' => create(:project), 'code' => 'project_page' }, ContentBuilder::Layout)).to be_nil
+      expect(matcher.call({}, ContentBuilder::Layout)).to be_nil
+    end
+
+    # Folders are reused by slug, so importing into a tenant that already holds them re-stages their
+    # description layout against a folder that already has one — and `(content_buildable, code)` is unique.
+    it 'imports into a tenant whose folders already carry a description layout' do
+      template = YAML.load(DecidimImporter::TemplateCreator.from_directory(export_root).to_yaml, aliases: true)
+      title_multiloc = template['models']['project_folders/folder'].first['title_multiloc']
+      # Folders are reused by title slug, so the pre-existing one has to carry that slug.
+      folder = create(
+        :project_folder,
+        title_multiloc: title_multiloc,
+        slug: DecidimImporter::Slug.sanitize(title_multiloc.values.find(&:present?))
+      )
+      create(:layout, content_buildable: folder, code: 'project_folder_description')
+
+      expect { described_class.apply_template(template, import_uploads: false) }.not_to raise_error
+
+      # The pre-existing folder was reused (the fixture holds 2), and kept its single layout.
+      expect(ProjectFolders::Folder.count).to eq(2)
+      expect(ContentBuilder::Layout.where(content_buildable: folder, code: 'project_folder_description').count).to eq(1)
+    end
+  end
+
   describe "user reuse fallback by email (reuse_matchers['User'])" do
     let(:matcher) { described_class.reuse_matchers['User'] }
 
@@ -196,7 +237,8 @@ RSpec.describe DecidimImporter::Importer do
       ContentBuilder::Layout.find_by(content_buildable: project, code: 'project_page')
     end
 
-    it 'regenerates the page for imported projects and leaves non-imported ones untouched' do
+    it 'gives an imported project without a page a default one, leaving existing pages untouched' do
+      without_page = create(:project)
       imported = create(:project)
       other = create(:project) # e.g. a pre-existing demo project, not part of the import
       imported_page = ContentBuilder::Layout.create!(
@@ -206,12 +248,13 @@ RSpec.describe DecidimImporter::Importer do
         content_buildable: other, code: 'project_page', enabled: true, craftjs_json: stale
       )
 
-      described_class.provision_project_pages!('Project' => [imported.id])
+      described_class.provision_project_pages!('Project' => [without_page.id, imported.id])
 
-      # the imported project's stale page is dropped and rebuilt (a fresh record, real craftjs)
-      rebuilt = project_page(imported)
-      expect(rebuilt.id).not_to eq(imported_page.id)
-      expect(rebuilt.craftjs_json).not_to eq(stale)
+      # the project the extractor built no page for gets the canonical default one
+      expect(project_page(without_page).craftjs_json).to include('PROJECT_PAGE_BODY')
+      # the page the extractor imported is kept as-is
+      expect(project_page(imported)).to eq(imported_page)
+      expect(imported_page.reload.craftjs_json).to eq(stale)
       # the non-imported project is left exactly as it was
       expect(project_page(other)).to eq(other_page)
       expect(other_page.reload.craftjs_json).to eq(stale)

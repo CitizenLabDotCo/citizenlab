@@ -12,7 +12,6 @@ describe('Report builder Participants timeline widget', () => {
     cy.setAdminLoginCookie();
 
     const projectDescriptionPreview = randomString();
-    const projectDescription = randomString();
     const phaseTitle = randomString();
     const ideaTitle = randomString();
     const ideaContent = randomString();
@@ -20,7 +19,6 @@ describe('Report builder Participants timeline widget', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     })
       .then((project) => {

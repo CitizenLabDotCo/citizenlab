@@ -429,6 +429,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            custom_page_builder: {
+              enabled: true,
+              allowed: true
+            },
             sms: {
               enabled: false,
               allowed: false

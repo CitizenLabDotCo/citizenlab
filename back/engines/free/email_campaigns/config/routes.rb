@@ -12,6 +12,7 @@ EmailCampaigns::Engine.routes.draw do
         get :sms_deliveries, on: :member
         get :email_stats, on: :member
         get :sms_stats, on: :member
+        get :sms_send_summary, on: :member
         resources :examples, only: %i[index]
         get 'examples/:id', action: 'show', controller: 'examples', on: :collection
       end
@@ -22,6 +23,11 @@ EmailCampaigns::Engine.routes.draw do
             get :supported_campaign_names, on: :collection
           end
         end
+      end
+
+      namespace :sms do
+        # Tenant-wide message balance, as opposed to the per-campaign sms_stats above.
+        get :balance, to: 'balance#show'
       end
 
       resources :consents, only: %i[index update] do

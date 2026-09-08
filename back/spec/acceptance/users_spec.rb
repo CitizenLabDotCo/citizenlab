@@ -327,6 +327,23 @@ resource 'Users' do
           example_request 'Returns "terms"' do
             assert_status 200
             expect(json_response_body[:data][:attributes][:action]).to eq('terms')
+            expect(json_response_body[:data][:attributes][:code_retry_after]).to eq 0
+          end
+        end
+
+        # The confirmation step counts this down instead of offering a resend that
+        # the backend would reject.
+        context 'when a code was sent moments ago', document: false do
+          before do
+            @user = create(:unconfirmed_phone_user, phone: '+14155552671')
+            RequestPhoneConfirmationCodeJob.issue_code!(@user)
+          end
+
+          let(:phone) { '+14155552671' }
+
+          example_request 'Returns how long until a new code can be requested' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:code_retry_after]).to be_between(1, 60)
           end
         end
 

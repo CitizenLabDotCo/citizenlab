@@ -22,7 +22,6 @@ describe('All events page', () => {
         return cy.apiCreateProject({
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
-          description: randomString(),
           publicationStatus: 'published',
         });
       })

@@ -60,6 +60,12 @@ function getSelectStyles(theme: DefaultTheme, settings?: Settings) {
       ...base,
       color: '#999',
     }),
+    menuPortal: (base) => ({
+      ...base,
+      // Without this an open menu is painted under the control of the next
+      // question on the form (see TAN-4671).
+      zIndex: 1001,
+    }),
     menuList: (base) => ({
       ...base,
       borderRadius: stylingConsts.borderRadius,

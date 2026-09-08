@@ -37,7 +37,13 @@ const CodeSentMessage = ({ phoneNumber, codeResent }: Props) => {
         text={
           <FormattedMessage
             {...messages.anSMSCodeHasBeenSent}
-            values={{ phoneNumber: <strong>{phoneNumber}</strong> }}
+            values={{
+              phoneNumber: (
+                <strong data-cy="confirmation-phone-number">
+                  {phoneNumber}
+                </strong>
+              ),
+            }}
           />
         }
       />

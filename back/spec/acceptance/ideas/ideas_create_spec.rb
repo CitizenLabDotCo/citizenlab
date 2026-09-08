@@ -793,8 +793,50 @@ resource 'Ideas' do
           end
         end
 
+        context 'Creating a community monitor survey response when only demographics are collected' do
+          let(:resident) { create(:user, custom_field_values: { age: 30 }) }
+
+          before do
+            permission = phase.permissions.find_by(action: 'posting_idea')
+            permission.update!(
+              permitted_by: 'users',
+              custom_fields_behavior: 'custom',
+              user_data_collection: 'demographics_only'
+            )
+            permission.permissions_custom_fields = [
+              create(:permissions_custom_field, custom_field: create(:custom_field, key: 'age'))
+            ]
+          end
+
+          example_request 'Posting a survey sets anonymous to true but still stores the demographic fields' do
+            assert_status 201
+            expect(response_data.dig(:attributes, :anonymous)).to be true
+            expect(response_data.dig(:attributes, :author_name)).to be_nil
+            expect(response_data.dig(:relationships, :author, :data)).to be_nil
+
+            idea = Idea.find(response_data[:id])
+            expect(idea.author_id).to be_nil
+            expect(idea.custom_field_values['u_age']).to eq 30
+          end
+
+          context 'when user_data_collection is anonymous' do
+            before do
+              phase.permissions.find_by(action: 'posting_idea').update!(user_data_collection: 'anonymous')
+            end
+
+            example_request 'Posting a survey does not store the demographic fields' do
+              assert_status 201
+              idea = Idea.find(response_data[:id])
+              expect(idea.author_id).to be_nil
+              expect(idea.custom_field_values.keys).not_to include 'u_age'
+            end
+          end
+        end
+
         context 'Creating a community monitor survey response when posting anonymously is not enabled' do
-          before { phase.update! allow_anonymous_participation: false }
+          before do
+            phase.permissions.find_by(action: 'posting_idea').update!(user_data_collection: 'all_data')
+          end
 
           example_request 'Posting a survey does not set the survey to anonymous' do
             assert_status 201

@@ -85,7 +85,6 @@ namespace :tenant_template do
     csv_projects.map do |csv_project|
       yml_project = {
         'title_multiloc' => make_multiloc(csv_project['Title'], locales),
-        'description_multiloc' => make_multiloc(md_to_html(csv_project['Description']), locales),
         'remote_header_bg_url' => csv_project['Background Image URL']
       }
       add_project_images(csv_project, yml_project, yml_project_images)

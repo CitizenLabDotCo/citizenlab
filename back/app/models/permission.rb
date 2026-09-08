@@ -131,14 +131,6 @@ class Permission < ApplicationRecord
     false
   end
 
-  # Admins and managers are never asked demographic questions. Masked rather than
-  # stored, so the choice comes back if the action is opened up again.
-  def custom_fields_behavior
-    return 'disabled' if permitted_by == 'admins_moderators'
-
-    super
-  end
-
   def everyone_tracking_enabled?
     permitted_by == 'everyone' && everyone_tracking_enabled
   end

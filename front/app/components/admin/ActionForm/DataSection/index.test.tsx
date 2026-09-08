@@ -6,7 +6,8 @@ import { render, screen, userEvent } from 'utils/testUtils/rtl';
 
 import DataSection from '.';
 
-// DataSection only shows the anonymity section for native survey posting.
+// DataSection only shows the anonymity section for survey posting (native
+// survey and community monitor).
 let mockParticipationMethod = 'ideation';
 
 jest.mock('api/phases/usePhase', () =>
@@ -106,8 +107,14 @@ describe('<DataSection />', () => {
       expect(screen.getByText('ANONYMITY_SECTION')).toBeInTheDocument();
     });
 
+    it('is shown for community monitor survey submissions', () => {
+      mockParticipationMethod = 'community_monitor_survey';
+      renderSection({ action: 'posting_idea' });
+      expect(screen.getByText('ANONYMITY_SECTION')).toBeInTheDocument();
+    });
+
     it('is hidden for non-survey actions', () => {
-      mockParticipationMethod = 'native_survey';
+      mockParticipationMethod = 'community_monitor_survey';
       renderSection({ action: 'commenting_idea' });
       expect(screen.queryByText('ANONYMITY_SECTION')).not.toBeInTheDocument();
     });

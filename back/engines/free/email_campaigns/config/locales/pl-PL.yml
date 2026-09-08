@@ -542,6 +542,7 @@ pl-PL:
       yesterday: Wczoraj
     new_phone_confirmation:
       sms_body: Twój kod potwierdzający to %{code}.
+      sms_body2: '%{organization_name}: Twój kod potwierdzający to %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Przejdź do tego wejścia
       event_description: '%{feedback_author_name} przedstawił aktualizację na stronie "%{input_title}".'
@@ -556,6 +557,7 @@ pl-PL:
       title: Wybierz nowe hasło
     phone_confirmation:
       sms_body: Twój kod potwierdzający to %{code}.
+      sms_body2: '%{organization_name}: Twój kod potwierdzający to %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane

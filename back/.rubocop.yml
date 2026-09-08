@@ -206,7 +206,7 @@ Metrics/ClassLength:
   Max: 564
 
 Metrics/CyclomaticComplexity:
-  Max: 26
+  Max: 22
 
 Metrics/ModuleLength:
   Max: 102
@@ -215,7 +215,7 @@ Metrics/ParameterLists:
   Max: 10
 
 Metrics/PerceivedComplexity:
-  Max: 28
+  Max: 23
 
 RSpec/AnyInstance:
   Enabled: false

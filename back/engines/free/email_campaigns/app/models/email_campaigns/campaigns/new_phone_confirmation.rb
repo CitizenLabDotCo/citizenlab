@@ -54,10 +54,12 @@ module EmailCampaigns
     # *pending* new_phone being verified, not the confirmed phone
     # (which may still be blank until confirmation completes).
     def sms_body(command)
+      locale = command[:recipient].locale
       I18n.t(
-        'email_campaigns.new_phone_confirmation.sms_body',
+        'email_campaigns.new_phone_confirmation.sms_body2',
         code: command.dig(:event_payload, :code),
-        locale: command[:recipient].locale
+        organization_name: organization_name(locale),
+        locale: locale
       )
     end
 

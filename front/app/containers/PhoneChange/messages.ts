@@ -21,17 +21,17 @@ export default defineMessages({
     id: 'app.containers.PhoneChange.submitButton',
     defaultMessage: 'Submit',
   },
-  newPhoneLabel: {
-    id: 'app.containers.PhoneChange.newPhoneLabel',
-    defaultMessage: 'New phone number (include the country code)',
+  newPhoneLabel2: {
+    id: 'app.containers.PhoneChange.newPhoneLabel2',
+    defaultMessage: 'New phone number',
   },
   phoneEmptyError: {
     id: 'app.containers.PhoneChange.phoneEmptyError',
     defaultMessage: 'Provide a phone number',
   },
-  phoneInvalid: {
-    id: 'app.containers.PhoneChange.phoneInvalid2',
-    defaultMessage: 'Provide a valid phone number, including the country code.',
+  phoneInvalid3: {
+    id: 'app.containers.PhoneChange.phoneInvalid3',
+    defaultMessage: 'Provide a valid phone number.',
   },
   phoneTaken: {
     id: 'app.containers.PhoneChange.phoneTaken',

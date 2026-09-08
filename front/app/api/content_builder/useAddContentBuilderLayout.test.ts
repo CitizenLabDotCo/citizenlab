@@ -9,7 +9,7 @@ import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 import { contentBuilderLayoutData } from './__mocks__/contentBuilderLayout';
 
 const apiPath =
-  '*projects/:projectId/content_builder_layouts/project_description/upsert';
+  '*project_folders/:folderId/content_builder_layouts/project_folder_description/upsert';
 
 const server = setupServer(
   http.post(apiPath, () => {
@@ -31,8 +31,8 @@ describe('useAddContentBuilderLayout', () => {
 
     act(() => {
       result.current.mutate({
-        contentBuildableType: 'project',
-        contentBuildableId: 'projectId',
+        contentBuildableType: 'folder',
+        contentBuildableId: 'folderId',
         enabled: true,
       });
     });
@@ -54,8 +54,8 @@ describe('useAddContentBuilderLayout', () => {
 
     act(() => {
       result.current.mutate({
-        contentBuildableType: 'project',
-        contentBuildableId: 'projectId',
+        contentBuildableType: 'folder',
+        contentBuildableId: 'folderId',
         enabled: true,
       });
     });

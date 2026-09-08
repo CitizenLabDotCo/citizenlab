@@ -15,9 +15,11 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
 
   def description
     <<~DESC.squish
-      Updates a phase permission (auto-created with the phase). Sets who can perform an action,
-      with optional group restrictions, demographic-question requirements, verification recency,
-      and a custom rejection message.
+      Updates a phase permission. Sets who can perform an action, with optional group
+      restrictions, demographic-question requirements, verification recency, and a custom
+      rejection message. An action the phase has not customised yet follows the platform-wide
+      sign-in settings (inherited: true in list_phase_permissions); updating it gives the phase
+      settings of its own, starting from the ones it was inheriting.
     DESC
   end
 
@@ -130,7 +132,10 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
 
       authorize_project!(phase.project)
 
-      permission = phase.permissions.find_by(action: params[:action])
+      # Resolves to the row the phase owns or, for an action it has not
+      # customised, to the copy of the global 'visiting' permission it follows.
+      # See Permissions::PermissionInheritanceService.
+      permission = inheritance_service.find(phase, params[:action])
       return invalid_action_response(phase, params[:action]) unless permission
 
       authorize(permission, :update?)
@@ -152,6 +157,10 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
       )
 
       ActiveRecord::Base.transaction do
+        # Customising an action means detaching it from the global 'visiting'
+        # permission first: a no-op once the phase owns the action. Inside the
+        # transaction so that a rejected update leaves no override behind.
+        permission = inheritance_service.override!(phase, params[:action])
         permission.update!(merge_multilocs(permission, attributes))
         replace_demographic_questions(permission, params[:demographic_questions]) if params.key?(:demographic_questions)
       end
@@ -165,6 +174,10 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
     end
 
     private
+
+    def inheritance_service
+      @inheritance_service ||= Permissions::PermissionInheritanceService.new
+    end
 
     def invalid_action_response(phase, action)
       valid_actions = Permission.available_actions(phase) || []

@@ -544,6 +544,7 @@ lb-LU:
       yesterday: Gëschter
     new_phone_confirmation:
       sms_body: Däi Bestätegungscode ass %{code}.
+      sms_body2: '%{organization_name}: Äre Bestätegungscode ass %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Gitt op dësen Input
       event_description: "%{feedback_author_name} huet en Update zu '%{input_title}' ginn."
@@ -558,6 +559,7 @@ lb-LU:
       title: Wielt en neit Passwuert
     phone_confirmation:
       sms_body: Äre Bestätegungscode ass %{code}.
+      sms_body2: '%{organization_name}: Äre Bestätegungscode ass %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane

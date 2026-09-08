@@ -45,7 +45,6 @@ export const setupProject = ({
       return cy.apiCreateProject({
         title: randomString(),
         descriptionPreview: randomString(),
-        description: randomString(),
         publicationStatus: 'published',
       });
     })
