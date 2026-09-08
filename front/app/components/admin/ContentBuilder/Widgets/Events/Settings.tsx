@@ -34,7 +34,7 @@ const EventsSettings = () => {
   const timeFilters = props.timeFilters ?? ['upcoming'];
   const limit = props.limit ?? 3;
   const paginated = limit === 'all';
-  const lastNumericLimit = typeof limit === 'number' ? limit : 3;
+  const numericLimit = typeof limit === 'number' ? limit : 3;
   const statuses = props.projectPublicationStatuses ?? ['published'];
 
   const toggleTimeFilter = (filter: EventsTimeFilter) => {
@@ -91,9 +91,7 @@ const EventsSettings = () => {
           label={formatMessage(messages.showAllPaginated2)}
         />
         <Radio
-          onChange={() =>
-            setProp((p: EventsProps) => (p.limit = lastNumericLimit))
-          }
+          onChange={() => setProp((p: EventsProps) => (p.limit = numericLimit))}
           currentValue={paginated ? 'all' : 'limited'}
           id="events-limit-limited"
           name="events-limit"
@@ -104,7 +102,7 @@ const EventsSettings = () => {
           <Input
             type="number"
             label={formatMessage(messages.howManyAtMost)}
-            value={String(lastNumericLimit)}
+            value={String(numericLimit)}
             onChange={(value) =>
               setProp((p: EventsProps) => (p.limit = parseInt(value, 10) || 1))
             }

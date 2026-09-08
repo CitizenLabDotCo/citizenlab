@@ -31,13 +31,6 @@ describe('Events widget settings panel', () => {
     cy.wait('@updateHomepage').its('response.statusCode').should('eq', 200);
   }
 
-  function selectTheWidget() {
-    cy.get('[data-cy="e2e-events-widget"]')
-      .parents('.e2e-render-node')
-      .first()
-      .click({ force: true });
-  }
-
   before(() => {
     cy.setAdminLoginCookie();
 
@@ -86,7 +79,6 @@ describe('Events widget settings panel', () => {
     cy.get('#e2e-draggable-events').dragAndDrop('#e2e-content-builder-frame', {
       position: 'inside',
     });
-    selectTheWidget();
 
     cy.get('label[for="events-source-all"]').should('exist');
     cy.get('label[for="events-source-areas"]').should('exist');
@@ -116,7 +108,6 @@ describe('Events widget settings panel', () => {
     cy.get('#e2e-draggable-events').dragAndDrop('#e2e-content-builder-frame', {
       position: 'inside',
     });
-    selectTheWidget();
 
     // Whatever the widget renders when the field is blank has to be what the field promises.
     cy.get('[data-cy="e2e-events-widget"]')
