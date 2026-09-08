@@ -8,7 +8,9 @@ import AccordionMultiloc, {
 import ButtonMultiloc, {
   buttonMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
-import EventsList from 'components/admin/ContentBuilder/Widgets/Events';
+import EventsList, {
+  eventsListTitle,
+} from 'components/admin/ContentBuilder/Widgets/Events';
 import HtmlBlockMultiloc, {
   htmlBlockMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
@@ -78,6 +80,7 @@ export const WIDGETS = {
   Published,
   Selection,
   Spotlight,
+  EventsList,
 
   // Homepage builder widgets
   Areas,
@@ -85,7 +88,6 @@ export const WIDGETS = {
   CommunityMonitorCTA,
   CustomPages,
   Events,
-  EventsList,
   FollowedItems,
   FinishedOrArchived,
   HomepageBanner,
@@ -125,6 +127,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   Published: publishedTitle,
   Selection: selectionTitle,
   Spotlight: spotlightTitle,
+  EventsList: eventsListTitle,
 
   // Homepage builder widgets
   Areas: areasTitle,
@@ -132,7 +135,6 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   CommunityMonitorCTA: communityMonitorCTATitle,
   CustomPages: customPagesTitle,
   Events: eventsTitle,
-  EventsList: eventsTitle,
   FollowedItems: followedItemsTitle,
   FinishedOrArchived: finishedOrArchivedTitle,
   HomepageBanner: homepageBannerTitle,

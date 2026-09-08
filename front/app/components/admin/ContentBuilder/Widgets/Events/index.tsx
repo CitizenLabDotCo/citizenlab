@@ -217,4 +217,6 @@ EventsList.craft = {
   },
 };
 
+export const eventsListTitle = messages.eventsListTitle;
+
 export default EventsList;
