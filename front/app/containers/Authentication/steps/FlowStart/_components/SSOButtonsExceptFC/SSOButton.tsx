@@ -4,7 +4,11 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import { IDKeycloakMethod, IdMethodName } from 'api/id_methods/types';
 import useIdMethods from 'api/id_methods/useIdMethods';
-import { getAzureB2cConfig, getAzureConfig } from 'api/id_methods/utils';
+import {
+  getAzureB2cConfig,
+  getAzureConfig,
+  getPublikConfig,
+} from 'api/id_methods/utils';
 
 import useIdMethodNames from 'hooks/useIdMethodNames';
 
@@ -151,6 +155,7 @@ const SSOButton = ({ provider, onClickSSO }: Props) => {
       return (
         <WrappedAuthProviderButton
           icon="shield-check"
+          imageUrl={getPublikConfig(idMethods)?.attributes.logo_url}
           authProvider="publik"
           onClick={onClickSSO}
         >

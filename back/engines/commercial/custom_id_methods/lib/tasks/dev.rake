@@ -185,7 +185,8 @@ DEV_ID_METHOD_CONFIGS = {
     'issuer' => ENV.fetch('DEFAULT_PUBLIK_ISSUER', 'https://connexion.meyzieu.fr/'),
     'client_id' => ENV.fetch('DEFAULT_PUBLIK_CLIENT_ID', 'fake id'),
     'client_secret' => ENV.fetch('DEFAULT_PUBLIK_CLIENT_SECRET', 'fake secret'),
-    'ui_method_name' => 'Connexion Meyzieu'
+    'ui_method_name' => 'Connexion Meyzieu',
+    'logo_url' => 'https://mon.meyzieu.fr/media/uploads/2018/05/18/blason.png'
   },
   'vienna_citizen' => {
     'name' => 'vienna_citizen',

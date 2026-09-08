@@ -4,7 +4,11 @@ import {
   IdMethodName,
 } from 'api/id_methods/types';
 import useIdMethods from 'api/id_methods/useIdMethods';
-import { getAzureB2cConfig, getAzureConfig } from 'api/id_methods/utils';
+import {
+  getAzureB2cConfig,
+  getAzureConfig,
+  getPublikConfig,
+} from 'api/id_methods/utils';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -32,9 +36,7 @@ const useIdMethodNames = () => {
     (method) => method.attributes.name === 'keycloak'
   ) as IDKeycloakMethod | undefined;
 
-  const publikMethod = idMethods?.data.find(
-    (method) => method.attributes.name === 'publik'
-  );
+  const publikMethod = getPublikConfig(idMethods);
 
   return {
     franceconnect: 'FranceConnect',

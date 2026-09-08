@@ -134,6 +134,8 @@ export type IDKeycloakMethod = TGenericMethod<
   { ui_method_name: string; provider: IconNames }
 >;
 
+export type IDPublikMethod = TGenericMethod<'publik', { logo_url?: string }>;
+
 export type IDTwodayMethod = TGenericMethod<
   'twoday',
   { ui_method_name: string }
@@ -151,6 +153,7 @@ type TOtherMethodName = Exclude<
   | 'id_austria'
   | 'id_card_lookup'
   | 'keycloak'
+  | 'publik'
   | 'twoday'
 >;
 
@@ -166,5 +169,6 @@ export type IdMethodData =
   | IDIdAustriaMethod
   | IDKeycloakMethod
   | IDLookupMethod
+  | IDPublikMethod
   | IDTwodayMethod
   | IDOtherMethod;
