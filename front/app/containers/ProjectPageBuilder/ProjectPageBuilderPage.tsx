@@ -18,6 +18,7 @@ import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import DescriptionBuilderContent from 'components/DescriptionBuilder/DescriptionBuilderContent';
 import ContentBuilderSettings from 'components/DescriptionBuilder/Settings';
 import { normalizeProjectPageLayout } from 'components/ProjectPageBuilder/defaultLayout';
+import DropPlacementOverlay from 'components/ProjectPageBuilder/DropFeedback/DropPlacementOverlay';
 import ProjectPageBuilderEditModePreview from 'components/ProjectPageBuilder/EditModePreview';
 import Editor from 'components/ProjectPageBuilder/Editor';
 import {
@@ -187,6 +188,7 @@ const ProjectPageBuilderPage = ({
               editorData={editorData}
             />
             <ContentBuilderSettings />
+            <DropPlacementOverlay />
           </Box>
         </Editor>
         <Box justifyContent="center" display={previewEnabled ? 'flex' : 'none'}>

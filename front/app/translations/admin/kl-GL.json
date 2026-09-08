@@ -3922,6 +3922,7 @@
   "app.containers.admin.ContentBuilder.imageMultiloc": "Assiliaq",
   "app.containers.admin.ContentBuilder.imageMultilocAltLabel": "Assip naatsumik nassuiarnera",
   "app.containers.admin.ContentBuilder.imageMultilocAltTooltip": "Assinut \"alt text\"-imik ilanngussineq pingaaruteqarpoq, nittartagaq atuisunut atuaasartunik (screen readers) atuisunut ammanerulersinniarlugu.",
+  "app.containers.admin.ContentBuilder.lockedNodeLabel": "{widgetName} - tooruk aaqqissuunniarlugu — nuunneqarsinnaanngilaq peerneqarsinnaananilu",
   "app.containers.admin.ContentBuilder.noFilesAvailable": "Fiilinik peqanngilaq. Siullermik suliniutimut fiilinik ikkussigit.",
   "app.containers.admin.ContentBuilder.noPageSelected": "Quppernernik toqqagaqanngilaq.",
   "app.containers.admin.ContentBuilder.noPagesAvailable": "Quppernernik peqanngilaq. Siullermik suliniut quppernernik ilanngussiffigiuk.",
