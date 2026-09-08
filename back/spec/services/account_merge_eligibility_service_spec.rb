@@ -97,9 +97,29 @@ describe AccountMergeEligibilityService do
       expect(reason).to be_nil
     end
 
-    it 'allows when the target is verified through a different method' do
+    # A platform can run more than one method, so a per-method comparison would
+    # wave through two different people: the survivor would carry both
+    # verifications while the target's locked attributes were overwritten with
+    # the source's.
+    it 'refuses when the target is verified as somebody else through another method' do
       create(:verification, user: source, method_name: 'cow', hashed_uid: 'aaa')
       create(:verification, user: target, method_name: 'bogus', hashed_uid: 'bbb')
+      expect(reason).to eq :verification_conflict
+    end
+
+    it 'refuses when the target holds a verification the source does not' do
+      create(:verification, user: source, method_name: 'cow', hashed_uid: 'aaa')
+      create(:verification, user: target, method_name: 'cow', hashed_uid: 'aaa')
+      create(:verification, user: target, method_name: 'bogus', hashed_uid: 'bbb')
+      expect(reason).to eq :verification_conflict
+    end
+
+    # The source bringing extra verifications is the ordinary case: it is the
+    # account being absorbed, and its rows move onto the target.
+    it 'allows when the source holds verifications the target does not' do
+      create(:verification, user: source, method_name: 'cow', hashed_uid: 'aaa')
+      create(:verification, user: source, method_name: 'bogus', hashed_uid: 'bbb')
+      create(:verification, user: target, method_name: 'cow', hashed_uid: 'aaa')
       expect(reason).to be_nil
     end
 

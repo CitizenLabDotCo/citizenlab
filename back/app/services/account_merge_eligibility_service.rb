@@ -72,17 +72,28 @@ class AccountMergeEligibilityService
     target.confirmation_required? && target.email_confirmed_at.nil? && target.password_digest.present?
   end
 
-  # Two different real people. The target is already verified as someone else
-  # under the same method, so the merge would silently replace one verified
-  # identity with another.
+  # Two different real people. Any active verification the target holds that the
+  # source does not hold too is somebody else's assertion of who this account is,
+  # so the merge is refused.
+  #
+  # Deliberately not scoped to the source's own methods. A platform can run more
+  # than one (MitID and NemLog-in, the two Vienna methods), and a per-method
+  # comparison would wave through a target verified as Alice via one method being
+  # absorbed by a source verified as Bob via another: the survivor would carry two
+  # people's verifications, and apply_verified_identity! overwrites the union of
+  # every method's locked attributes with the source's, so Alice's asserted name
+  # would be replaced by Bob's while her verification row still claimed her.
+  #
+  # The cost is refusing a genuine same-person merge where the two accounts were
+  # verified different ways. That falls back to the existing "sign out and log in
+  # with this email" route, which is the safe direction to fail in.
   def verification_conflict(source, target)
     target_verifications = target.verifications.active.to_a
     return nil if target_verifications.empty?
 
-    conflicting = source.verifications.active.any? do |verification|
-      target_verifications.any? do |theirs|
-        theirs.method_name == verification.method_name && theirs.hashed_uid != verification.hashed_uid
-      end
+    source_uids = source.verifications.active.to_set { |verification| [verification.method_name, verification.hashed_uid] }
+    conflicting = target_verifications.any? do |theirs|
+      source_uids.exclude?([theirs.method_name, theirs.hashed_uid])
     end
 
     :verification_conflict if conflicting
