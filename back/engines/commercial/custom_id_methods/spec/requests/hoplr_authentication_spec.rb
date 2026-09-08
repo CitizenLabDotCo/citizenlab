@@ -90,7 +90,7 @@ context 'hoplr authentication' do
       email: 'developers+sso@citizenlab.co',
       locale: 'en'
     })
-    expect(user.custom_field_answers.pluck(:key, :value)).to eq [['neighbourhood', '2133']]
+    expect(user.custom_field_answers.pluck(:key, :value)).to eq [%w[neighbourhood 2133]]
   end
 
   it 'successfully authenticates new user' do
@@ -112,7 +112,7 @@ context 'hoplr authentication' do
       new_email: 'developers+sso@citizenlab.co',
       locale: 'en'
     })
-    expect(user.custom_field_answers.pluck(:key, :value)).to eq [['neighbourhood', '2133']]
+    expect(user.custom_field_answers.pluck(:key, :value)).to eq [%w[neighbourhood 2133]]
     expect(cookies[:cl2_jwt]).to be_present
 
     expect(user.confirmation_required?).to be(true)
