@@ -91,7 +91,8 @@ describe('Events widget settings panel', () => {
     cy.visit(`/admin/project-page-builder/projects/${projectId}`);
     cy.get('div#ROOT');
 
-    cy.get('[data-cy="e2e-events-widget"]')
+    // The widget takes no pointer events in the builder, so select the node around it.
+    cy.dataCy('e2e-events-widget')
       .parents('.e2e-render-node')
       .first()
       .click({ force: true });
@@ -110,7 +111,7 @@ describe('Events widget settings panel', () => {
     });
 
     // Whatever the widget renders when the field is blank has to be what the field promises.
-    cy.get('[data-cy="e2e-events-widget"]')
+    cy.dataCy('e2e-events-widget')
       .invoke('text')
       .then((rendered) => {
         cy.get('#events_heading')

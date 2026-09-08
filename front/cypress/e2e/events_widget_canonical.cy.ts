@@ -184,9 +184,7 @@ describe('Events widget added from a toolbox', () => {
     cy.goToLandingPage();
     cy.contains(upcomingTitle).should('exist');
 
-    cy.get('[data-cy="e2e-events-widget"]')
-      .invoke('outerWidth')
-      .should('be.lte', 1200);
+    cy.dataCy('e2e-events-widget').invoke('outerWidth').should('be.lte', 1200);
   });
 
   // One card layout on every surface: three to a row at desktop width. A card wider than a
@@ -197,7 +195,7 @@ describe('Events widget added from a toolbox', () => {
     });
     cy.goToLandingPage();
     cy.contains(upcomingTitle).should('exist');
-    cy.get('[data-cy="e2e-events-widget"]')
+    cy.dataCy('e2e-events-widget')
       .find('li')
       .first()
       .invoke('outerWidth')
@@ -206,7 +204,7 @@ describe('Events widget added from a toolbox', () => {
     cy.apiUpdateProjectPageLayout(projectId, projectPageLayoutWithEventsList());
     cy.visit(`/en/projects/${projectSlug}`);
     cy.contains(upcomingTitle).should('exist');
-    cy.get('[data-cy="e2e-events-widget"]')
+    cy.dataCy('e2e-events-widget')
       .find('li')
       .first()
       .invoke('outerWidth')

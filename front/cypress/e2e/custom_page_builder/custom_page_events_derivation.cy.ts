@@ -101,7 +101,8 @@ describe('Custom page events derivation', () => {
     cy.visit(`/admin/custom-page-builder/pages/${pageId}`);
     cy.get('div#ROOT');
 
-    cy.get('[data-cy="e2e-events-widget"]')
+    // The widget takes no pointer events in the builder, so select the node around it.
+    cy.dataCy('e2e-events-widget')
       .parents('.e2e-render-node')
       .first()
       .click({ force: true });
