@@ -2564,6 +2564,7 @@
   "app.containers.landing.createAccount": "Registrera dig",
   "app.containers.landing.defaultSignedInMessage": "{orgName} lyssnar på dig. Det är din tur att göra din röst hörd!",
   "app.containers.landing.doItLater": "Jag gör det senare",
+  "app.containers.landing.editHomepage": "Redigera startsidan",
   "app.containers.landing.new": "nytt",
   "app.containers.landing.subtitleCity": "Välkommen till plattformen för involvering från {orgName}",
   "app.containers.landing.titleCity": "Vi formar framtiden för {orgName} tillsammans",

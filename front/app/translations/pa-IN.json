@@ -2564,6 +2564,7 @@
   "app.containers.landing.createAccount": "ਸਾਇਨ ਅਪ",
   "app.containers.landing.defaultSignedInMessage": "{orgName} ਤੁਹਾਨੂੰ ਸੁਣ ਰਿਹਾ ਹੈ। ਆਪਣੀ ਆਵਾਜ਼ ਸੁਣਾਉਣ ਦੀ ਤੁਹਾਡੀ ਵਾਰੀ ਹੈ!",
   "app.containers.landing.doItLater": "ਮੈਂ ਇਸਨੂੰ ਬਾਅਦ ਵਿੱਚ ਕਰਾਂਗਾ",
+  "app.containers.landing.editHomepage": "ਮੁੱਖ ਪੰਨਾ ਸੋਧੋ",
   "app.containers.landing.new": "ਨਵਾਂ",
   "app.containers.landing.subtitleCity": "{orgName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਵਿੱਚ ਤੁਹਾਡਾ ਸੁਆਗਤ ਹੈ",
   "app.containers.landing.titleCity": "ਆਉ ਮਿਲ ਕੇ {orgName} ਦੇ ਭਵਿੱਖ ਨੂੰ ਆਕਾਰ ਦੇਈਏ",

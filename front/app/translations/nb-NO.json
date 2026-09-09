@@ -2564,6 +2564,7 @@
   "app.containers.landing.createAccount": "Registrer deg",
   "app.containers.landing.defaultSignedInMessage": "{orgName} lytter til deg. Nå er det din tur til å bli hørt!",
   "app.containers.landing.doItLater": "Jeg gjør det senere",
+  "app.containers.landing.editHomepage": "Rediger startside",
   "app.containers.landing.new": "ny",
   "app.containers.landing.subtitleCity": "Velkommen til medvirkningsplattformen til {orgName}",
   "app.containers.landing.titleCity": "La oss forme fremtiden til {orgName} sammen",

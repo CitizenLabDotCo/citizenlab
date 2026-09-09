@@ -2564,6 +2564,7 @@
   "app.containers.landing.createAccount": "Cofrestru",
   "app.containers.landing.defaultSignedInMessage": "Mae {orgName} yn gwrando arnoch chi. Eich tro chi yw sicrhau bod eich llais yn cael ei glywed!",
   "app.containers.landing.doItLater": "Fe'i gwnaf yn nes ymlaen",
+  "app.containers.landing.editHomepage": "Golygu'r hafan",
   "app.containers.landing.new": "newydd",
   "app.containers.landing.subtitleCity": "Croeso i blatfform cyfranogiad {orgName}",
   "app.containers.landing.titleCity": "Gadewch i ni siapio dyfodol {orgName} gyda'n gilydd",

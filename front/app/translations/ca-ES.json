@@ -2564,6 +2564,7 @@
   "app.containers.landing.createAccount": "Registreu-vos",
   "app.containers.landing.defaultSignedInMessage": "{orgName} t'està escoltant. Et toca fer sentir la vostra veu!",
   "app.containers.landing.doItLater": "Ho faré més tard",
+  "app.containers.landing.editHomepage": "Edita la pàgina d'inici",
   "app.containers.landing.new": "nou",
   "app.containers.landing.subtitleCity": "Benvingut a la plataforma de participació de {orgName}",
   "app.containers.landing.titleCity": "Donem forma junts al futur de {orgName}",

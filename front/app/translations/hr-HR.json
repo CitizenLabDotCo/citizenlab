@@ -2564,6 +2564,7 @@
   "app.containers.landing.createAccount": "Registracija",
   "app.containers.landing.defaultSignedInMessage": "{orgName} vas sluša. Na vama je da se čuje vaš glas!",
   "app.containers.landing.doItLater": "Uradit ću to kasnije",
+  "app.containers.landing.editHomepage": "Uredi početnu stranicu",
   "app.containers.landing.new": "novo",
   "app.containers.landing.subtitleCity": "Dobrodošli na platformu za sudjelovanje {orgName}",
   "app.containers.landing.titleCity": "Oblikujmo budućnost {orgName} zajedno",

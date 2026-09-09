@@ -2564,6 +2564,7 @@
   "app.containers.landing.createAccount": "Inscríbete",
   "app.containers.landing.defaultSignedInMessage": "{firstName} ¡Impulsa un cambio hoy!",
   "app.containers.landing.doItLater": "Lo voy a hacer más tarde",
+  "app.containers.landing.editHomepage": "Editar página de inicio",
   "app.containers.landing.new": "nuevo",
   "app.containers.landing.subtitleCity": "Les damos la bienvenida a la plataforma de participación oficial de {orgName}",
   "app.containers.landing.titleCity": "Construyamos el futuro de {orgName} juntos",

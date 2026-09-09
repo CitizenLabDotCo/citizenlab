@@ -2564,6 +2564,7 @@
   "app.containers.landing.createAccount": "Cláraigh",
   "app.containers.landing.defaultSignedInMessage": "Tá {orgName} ag éisteacht leat. Is é do sheal féin é do ghlór a chur in iúl!",
   "app.containers.landing.doItLater": "Déanfaidh mé é níos déanaí",
+  "app.containers.landing.editHomepage": "Cuir an leathanach baile in eagar",
   "app.containers.landing.new": "nua",
   "app.containers.landing.subtitleCity": "Fáilte go dtí ardán rannpháirtíochta {orgName}",
   "app.containers.landing.titleCity": "Múnlaimis todhchaí {orgName} le chéile",
