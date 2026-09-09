@@ -16,10 +16,12 @@ import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../../../../../../messages';
+import configMessages from '../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
+import PanelGroup from '../../shared/PanelGroup';
 import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
 import ViewSelector from '../../shared/ViewSelector';
 import PrescreeningModeSelector from '../_shared/PrescreeningModeSelector';
@@ -68,6 +70,8 @@ interface Props {
   similarity_enabled?: boolean | null;
   similarity_threshold_title: number | null | undefined;
   similarity_threshold_body: number | null | undefined;
+  /** 'panel' groups the settings by concern for the narrow workspace panel. */
+  layout?: 'page' | 'panel';
   handleSimilarityEnabledChange: (value: boolean) => void;
   handleThresholdChange: (
     field: 'similarity_threshold_title' | 'similarity_threshold_body',
@@ -112,110 +116,168 @@ const ProposalsInputs = ({
   similarity_threshold_body,
   handleSimilarityEnabledChange,
   handleThresholdChange,
+  layout = 'page',
 }: Props) => {
+  const { formatMessage } = useIntl();
   const prescreeningFeatureEnabled = useFeatureFlag({
     name: 'prescreening',
   });
 
+  const inputTerm = (
+    <CustomFieldPicker
+      input_term={input_term}
+      handleInputTermChange={handleInputTermChange}
+    />
+  );
+
+  const expiry = (
+    <SectionField>
+      <SubSectionTitle>
+        <FormattedMessage {...messages.expireDaysLimit} />
+      </SubSectionTitle>
+      <Input
+        id="expire_days_limit"
+        type="number"
+        min="1"
+        placeholder=""
+        value={expire_days_limit ? expire_days_limit.toString() : null}
+        onChange={handleDaysLimitChange}
+      />
+      <Error
+        text={expireDateLimitError}
+        apiErrors={apiErrors && apiErrors.expire_days_limit}
+      />
+    </SectionField>
+  );
+
+  const threshold = (
+    <SectionField>
+      <SubSectionTitle>
+        <FormattedMessage {...messages.reactingThreshold} />
+      </SubSectionTitle>
+      <Input
+        id="reacting_threshold"
+        type="number"
+        min="2"
+        placeholder=""
+        value={reacting_threshold ? reacting_threshold.toString() : null}
+        onChange={handleReactingThresholdChange}
+      />
+      <Error
+        text={reactingThresholdError}
+        apiErrors={apiErrors && apiErrors.reacting_threshold}
+      />
+    </SectionField>
+  );
+
+  const anonymity = (
+    <AnonymousPostingToggle
+      allow_anonymous_participation={allow_anonymous_participation}
+      handleAllowAnonymousParticipationOnChange={
+        handleAllowAnonymousParticipationOnChange
+      }
+      disabledReason={toggleAnonymousPostingDisabledReason}
+    />
+  );
+
+  const screening = prescreeningFeatureEnabled ? (
+    <PrescreeningModeSelector
+      prescreening_mode={prescreening_mode}
+      onPrescreeningModeChange={onPrescreeningModeChange}
+    />
+  ) : null;
+
+  const userActions = (
+    <UserActions
+      submission_enabled={submission_enabled || false}
+      commenting_enabled={commenting_enabled || false}
+      reacting_enabled={reacting_enabled || false}
+      togglePostingEnabled={togglePostingEnabled}
+      toggleCommentingEnabled={toggleCommentingEnabled}
+      toggleReactingEnabled={toggleReactingEnabled}
+      apiErrors={apiErrors}
+      reacting_like_method={reacting_like_method}
+      reacting_like_limited_max={reacting_like_limited_max}
+      noLikingLimitError={noLikingLimitError}
+      handleReactingLikeMethodOnChange={handleReactingLikeMethodOnChange}
+      handleLikingLimitOnChange={handleLikingLimitOnChange}
+    />
+  );
+
+  const similarity = (
+    <SimilarityDetectionConfig
+      apiErrors={apiErrors}
+      similarity_enabled={similarity_enabled}
+      similarity_threshold_title={similarity_threshold_title}
+      similarity_threshold_body={similarity_threshold_body}
+      handleSimilarityEnabledChange={handleSimilarityEnabledChange}
+      handleThresholdChange={handleThresholdChange}
+    />
+  );
+
+  const views = (
+    <ViewSelector
+      presentation_mode={presentation_mode}
+      available_views={available_views}
+      apiErrors={apiErrors}
+      handleIdeasDisplayChange={handleIdeasDisplayChange}
+      handleAvailableViewsChange={handleAvailableViewsChange}
+      hideFeed
+    />
+  );
+
+  const sorting = (
+    <SortingPicker
+      options={[
+        { key: 'trending', value: 'trending' },
+        { key: 'comments_count', value: 'comments_count' },
+        { key: 'random', value: 'random' },
+        { key: 'popular', value: 'popular' },
+        { key: 'newest', value: 'new' },
+        { key: 'oldest', value: '-new' },
+      ]}
+      ideas_order={ideas_order}
+      apiErrors={apiErrors}
+      handleIdeaDefaultSortMethodChange={handleIdeaDefaultSortMethodChange}
+    />
+  );
+
+  if (layout === 'panel') {
+    return (
+      <>
+        {inputTerm}
+        {expiry}
+        {threshold}
+        <PanelGroup
+          label={formatMessage(configMessages.participantActionsGroup)}
+          defaultOpen
+        >
+          {userActions}
+        </PanelGroup>
+        <PanelGroup label={formatMessage(configMessages.moderationGroup)}>
+          {anonymity}
+          {screening}
+          {similarity}
+        </PanelGroup>
+        <PanelGroup label={formatMessage(configMessages.displayGroup)}>
+          {views}
+          {sorting}
+        </PanelGroup>
+      </>
+    );
+  }
+
   return (
     <>
-      <CustomFieldPicker
-        input_term={input_term}
-        handleInputTermChange={handleInputTermChange}
-      />
-      <SectionField>
-        <SubSectionTitle>
-          <FormattedMessage {...messages.expireDaysLimit} />
-        </SubSectionTitle>
-        <Input
-          id="expire_days_limit"
-          type="number"
-          min="1"
-          placeholder=""
-          value={expire_days_limit ? expire_days_limit.toString() : null}
-          onChange={handleDaysLimitChange}
-        />
-        <Error
-          text={expireDateLimitError}
-          apiErrors={apiErrors && apiErrors.expire_days_limit}
-        />
-      </SectionField>
-      <SectionField>
-        <SubSectionTitle>
-          <FormattedMessage {...messages.reactingThreshold} />
-        </SubSectionTitle>
-        <Input
-          id="reacting_threshold"
-          type="number"
-          min="2"
-          placeholder=""
-          value={reacting_threshold ? reacting_threshold.toString() : null}
-          onChange={handleReactingThresholdChange}
-        />
-        <Error
-          text={reactingThresholdError}
-          apiErrors={apiErrors && apiErrors.reacting_threshold}
-        />
-      </SectionField>
-      <AnonymousPostingToggle
-        allow_anonymous_participation={allow_anonymous_participation}
-        handleAllowAnonymousParticipationOnChange={
-          handleAllowAnonymousParticipationOnChange
-        }
-        disabledReason={toggleAnonymousPostingDisabledReason}
-      />
-      {prescreeningFeatureEnabled && (
-        <PrescreeningModeSelector
-          prescreening_mode={prescreening_mode}
-          onPrescreeningModeChange={onPrescreeningModeChange}
-        />
-      )}
-      <UserActions
-        submission_enabled={submission_enabled || false}
-        commenting_enabled={commenting_enabled || false}
-        reacting_enabled={reacting_enabled || false}
-        togglePostingEnabled={togglePostingEnabled}
-        toggleCommentingEnabled={toggleCommentingEnabled}
-        toggleReactingEnabled={toggleReactingEnabled}
-        apiErrors={apiErrors}
-        reacting_like_method={reacting_like_method}
-        reacting_like_limited_max={reacting_like_limited_max}
-        noLikingLimitError={noLikingLimitError}
-        handleReactingLikeMethodOnChange={handleReactingLikeMethodOnChange}
-        handleLikingLimitOnChange={handleLikingLimitOnChange}
-      />
-
-      <SimilarityDetectionConfig
-        apiErrors={apiErrors}
-        similarity_enabled={similarity_enabled}
-        similarity_threshold_title={similarity_threshold_title}
-        similarity_threshold_body={similarity_threshold_body}
-        handleSimilarityEnabledChange={handleSimilarityEnabledChange}
-        handleThresholdChange={handleThresholdChange}
-      />
-
-      <ViewSelector
-        presentation_mode={presentation_mode}
-        available_views={available_views}
-        apiErrors={apiErrors}
-        handleIdeasDisplayChange={handleIdeasDisplayChange}
-        handleAvailableViewsChange={handleAvailableViewsChange}
-        hideFeed
-      />
-
-      <SortingPicker
-        options={[
-          { key: 'trending', value: 'trending' },
-          { key: 'comments_count', value: 'comments_count' },
-          { key: 'random', value: 'random' },
-          { key: 'popular', value: 'popular' },
-          { key: 'newest', value: 'new' },
-          { key: 'oldest', value: '-new' },
-        ]}
-        ideas_order={ideas_order}
-        apiErrors={apiErrors}
-        handleIdeaDefaultSortMethodChange={handleIdeaDefaultSortMethodChange}
-      />
+      {inputTerm}
+      {expiry}
+      {threshold}
+      {anonymity}
+      {screening}
+      {userActions}
+      {similarity}
+      {views}
+      {sorting}
     </>
   );
 };
