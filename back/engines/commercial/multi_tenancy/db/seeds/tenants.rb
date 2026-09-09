@@ -454,7 +454,7 @@ module MultiTenancy
               allowed: true
             },
             project_backoffice_redesign: {
-              enabled: true,
+              enabled: false,
               allowed: true
             }
           })
