@@ -8,6 +8,27 @@ module ContentBuilder
       module_function
 
       EVENTS_WIDGET_NAME = 'EventsList'
+      PROJECTS_WIDGET_NAME = 'ProjectsByFilter'
+
+      def projects_by_filter(props, parent_id)
+        {
+          'type' => { 'resolvedName' => PROJECTS_WIDGET_NAME },
+          'nodes' => [],
+          'props' => props,
+          'custom' => {
+            'title' => {
+              'id' => 'app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filteredProjects',
+              'defaultMessage' => 'Filtered projects'
+            },
+            'noPointerEvents' => true
+          },
+          'hidden' => false,
+          'parent' => parent_id,
+          'isCanvas' => false,
+          'displayName' => PROJECTS_WIDGET_NAME,
+          'linkedNodes' => {}
+        }
+      end
 
       def events(props, parent_id)
         {
