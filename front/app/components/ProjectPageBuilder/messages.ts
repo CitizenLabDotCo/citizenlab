@@ -9,4 +9,12 @@ export default defineMessages({
     id: 'app.containers.ProjectPageBuilder.saveError',
     defaultMessage: 'There was an error saving the project page.',
   },
+  lockedZoneLabel: {
+    id: 'app.containers.ProjectPageBuilder.lockedZoneLabel',
+    defaultMessage: 'Fixed — editable only',
+  },
+  editableContent: {
+    id: 'app.containers.ProjectPageBuilder.editableContent',
+    defaultMessage: 'Editable content',
+  },
 });
