@@ -9,6 +9,7 @@ import useAppConfigurationLocales, {
 } from 'hooks/useAppConfigurationLocales';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import CustomBlocksToolboxSection from 'components/admin/ContentBuilder/CustomBlocks/CustomBlocksToolboxSection';
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 import Section from 'components/admin/ContentBuilder/Toolbox/Section';
@@ -91,6 +92,9 @@ const HomepageBuilderToolbox = () => {
   const communityMonitorEnabled = useFeatureFlag({ name: 'community_monitor' });
   const isHtmlBlockMultilocEnabled = useFeatureFlag({
     name: 'html_block_in_content_builder',
+  });
+  const customPageBlocksEnabled = useFeatureFlag({
+    name: 'custom_page_blocks',
   });
   const { data: appConfiguration } = useAppConfiguration();
 
@@ -335,6 +339,7 @@ const HomepageBuilderToolbox = () => {
           label={formatMessage(messages.imageTextCards)}
         />
       </Section>
+      {customPageBlocksEnabled && <CustomBlocksToolboxSection />}
     </Container>
   );
 };

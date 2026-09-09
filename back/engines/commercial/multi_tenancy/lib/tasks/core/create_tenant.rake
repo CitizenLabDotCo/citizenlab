@@ -354,6 +354,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        custom_page_blocks: {
+          enabled: true,
+          allowed: true
+        },
         sms: {
           enabled: true,
           allowed: true,

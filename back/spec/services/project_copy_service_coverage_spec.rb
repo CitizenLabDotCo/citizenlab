@@ -257,6 +257,14 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
         StaticPagesSpace
       ],
 
+      # AI-authored page builder blocks — tenant-wide CMS content, not scoped to
+      # a project, so a project copy does not carry them.
+      custom_page_blocks: %w[
+        ContentBuilder::CustomBlock
+        ContentBuilder::CustomBlockAISession
+        ContentBuilder::CustomBlockVersion
+      ],
+
       # Per-tenant admin moderation runtime (internal comments on ideas — not
       # part of project content surfaced to end users).
       admin_runtime: %w[
