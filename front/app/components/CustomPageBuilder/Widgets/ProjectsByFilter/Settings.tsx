@@ -3,7 +3,8 @@ import React from 'react';
 import {
   Box,
   colors,
-  Select,
+  Label,
+  Radio,
   Spinner,
   Text,
 } from '@citizenlab/cl2-component-library';
@@ -102,18 +103,26 @@ const Settings = () => {
       />
       {!unavailable && (
         <>
-          <Select
-            value={filterType}
-            options={filterTypeOptions}
-            label={formatMessage(messages.filterByLabel)}
-            onChange={(option) => {
-              setProp((props: ProjectsByFilterProps) => {
-                props.filterType = option.value;
-                // Ids only mean something within their own dimension.
-                props.ids = [];
-              });
-            }}
-          />
+          <Box>
+            <Label>{formatMessage(messages.filterByLabel)}</Label>
+            {filterTypeOptions.map((option) => (
+              <Radio
+                key={option.value}
+                onChange={() =>
+                  setProp((props: ProjectsByFilterProps) => {
+                    props.filterType = option.value;
+                    // Ids only mean something within their own dimension.
+                    props.ids = [];
+                  })
+                }
+                currentValue={filterType}
+                id={`projects-filter-${option.value}`}
+                name="projects-filter"
+                value={option.value}
+                label={option.label}
+              />
+            ))}
+          </Box>
           {/* Only the selector waits on its entity list; the rest of the panel stays usable. */}
           {options ? (
             <MultipleSelect
