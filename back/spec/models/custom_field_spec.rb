@@ -610,17 +610,18 @@ RSpec.describe CustomField do
     let!(:option3) { create(:custom_field_option, custom_field: field, key: 'by_train') }
     let!(:option4) { create(:custom_field_option, custom_field: field, key: 'by_horse') }
 
-    def create_idea(custom_field_values)
-      create(:idea, project: custom_form.participation_context, custom_field_values: custom_field_values)
+    def create_idea(ranking = nil)
+      answers = ranking ? [build(:custom_field_answer, key: field.key, value: ranking, custom_field: field)] : []
+      create(:idea, project: custom_form.participation_context, custom_field_answers: answers)
     end
 
     it 'calculates average rankings for field options' do
-      create_idea({ field.key => %w[by_bike by_horse by_train by_foot] })
-      create_idea({ field.key => %w[by_train by_bike by_foot by_horse] })
-      create_idea({})
-      create_idea({ field.key => %w[by_horse by_foot by_train by_bike] })
-      create_idea({ field.key => %w[by_bike by_foot by_train by_horse] })
-      excluded_idea = create_idea({ field.key => %w[by_bike by_horse by_foot by_train] })
+      create_idea(%w[by_bike by_horse by_train by_foot])
+      create_idea(%w[by_train by_bike by_foot by_horse])
+      create_idea
+      create_idea(%w[by_horse by_foot by_train by_bike])
+      create_idea(%w[by_bike by_foot by_train by_horse])
+      excluded_idea = create_idea(%w[by_bike by_horse by_foot by_train])
 
       expect(field.average_rankings(Idea.where.not(id: [excluded_idea.id]))).to eq({
         'by_bike' => 2,
@@ -638,13 +639,18 @@ RSpec.describe CustomField do
     let!(:option3) { create(:custom_field_option, custom_field: field, key: 'by_train') }
     let!(:option4) { create(:custom_field_option, custom_field: field, key: 'by_horse') }
 
+    def create_user(ranking = nil)
+      answers = ranking ? [build(:custom_field_answer, key: field.key, value: ranking, custom_field: field)] : []
+      create(:user, custom_field_answers: answers)
+    end
+
     it 'returns ranking position counts for each option' do
-      create(:user, custom_field_values: { field.key => %w[by_bike by_horse by_train by_foot] })
-      create(:user, custom_field_values: { field.key => %w[by_train by_bike by_foot by_horse] })
-      create(:user, custom_field_values: {})
-      create(:user, custom_field_values: { field.key => %w[by_horse by_foot by_train by_bike] })
-      create(:user, custom_field_values: { field.key => %w[by_bike by_foot by_train by_horse] })
-      excluded_user = create(:user, custom_field_values: { field.key => %w[by_bike by_horse by_foot by_train] })
+      create_user(%w[by_bike by_horse by_train by_foot])
+      create_user(%w[by_train by_bike by_foot by_horse])
+      create_user
+      create_user(%w[by_horse by_foot by_train by_bike])
+      create_user(%w[by_bike by_foot by_train by_horse])
+      excluded_user = create_user(%w[by_bike by_horse by_foot by_train])
 
       expect(field.rankings_counts(User.where.not(id: [excluded_user.id]))).to eq({
         'by_foot' => {
