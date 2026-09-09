@@ -525,6 +525,13 @@ describe Permissions::UserRequirementsService do
         let(:groups) { [create(:group), create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])] }
         let(:group_permission) { create(:permission, permitted_by: 'users', groups: groups) }
 
+        before do
+          # A verification group only asks for verification where verifying is possible.
+          AppConfiguration.instance.settings['id_config'] =
+            { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+          AppConfiguration.instance.save!
+        end
+
         context 'there is no user' do
           it 'requires verification' do
             requirements = service.requirements(group_permission, nil)
@@ -718,6 +725,25 @@ describe Permissions::UserRequirementsService do
           expect(requirements[:authentication][:missing_user_attributes]).to eq []
           expect(requirements[:authentication][:email_action_required]).to eq :confirm_email
         end
+      end
+    end
+
+    # A verification method is what makes a user verifiable at all, so a permission that kept
+    # require_verification after the platform's last method was removed must not ask for it.
+    # See Permission#require_verification.
+    context 'verification via require_verification without a configured verification method' do
+      let(:verified_permission) { create(:permission, :by_verified) }
+
+      it 'does not require verification when there is no user' do
+        requirements = service.requirements(verified_permission, nil)
+        expect(requirements[:verification]).to be false
+      end
+
+      it 'does not require verification for an unverified user' do
+        user.update!(verified: false)
+        requirements = service.requirements(verified_permission, user)
+        expect(requirements[:verification]).to be false
+        expect(service.permitted?(requirements)).to be true
       end
     end
 
@@ -946,6 +972,28 @@ describe Permissions::UserRequirementsService do
             expect(requirements[:authentication][:phone_action_required]).to eq :reconfirm_phone
           end
         end
+      end
+    end
+
+    # A password is not a credential anyone can log in with once password_login is off, and the
+    # admin UI stops offering the toggle. See Permission#require_password.
+    context 'when a password is required but password_login is off' do
+      let(:permission) do
+        create(:permission, permitted_by: 'users', require_name: false, require_password: true)
+      end
+
+      before { SettingsService.new.deactivate_feature!('password_login') }
+
+      it 'does not ask for a password from a user without one' do
+        user.update!(password_digest: nil)
+        requirements = service.requirements(permission, user)
+        expect(requirements[:authentication][:missing_user_attributes]).not_to include(:password)
+        expect(service.permitted?(requirements)).to be true
+      end
+
+      it 'does not ask for a password when there is no user' do
+        requirements = service.requirements(permission, nil)
+        expect(requirements[:authentication][:missing_user_attributes]).not_to include(:password)
       end
     end
 
