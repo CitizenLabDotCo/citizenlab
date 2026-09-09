@@ -27,31 +27,47 @@ const FormSection = ({ projectId, phase }: Props) => {
   const [importModalOpened, setImportModalOpened] = useState(false);
 
   const participationMethod = phase.attributes.participation_method;
+  const formEditor = getMethodConfig(participationMethod).formEditor;
 
-  // Only methods that collect submissions through the simple form editor have
-  // an input form to configure here. A native survey builds its form elsewhere.
-  if (getMethodConfig(participationMethod).formEditor !== 'simpleFormEditor') {
-    return null;
-  }
+  // Methods that collect no submissions have no form to build here.
+  if (formEditor === null) return null;
+
+  const survey = formEditor === 'surveyEditor';
 
   return (
     <>
       <Divider />
 
-      <PanelField label={formatMessage(inputFormMessages.inputForm)}>
+      <PanelField
+        label={formatMessage(
+          survey ? messages.surveyForm : inputFormMessages.inputForm
+        )}
+      >
         <Text fontSize="s" color="textSecondary" mt="0" mb="12px">
           {formatMessage(inputFormMessages.inputFormDescription)}
         </Text>
         <Box display="flex">
-          <ButtonWithLink
-            to="/admin/projects/$projectId/phases/$phaseId/form/edit"
-            params={{ projectId, phaseId: phase.id }}
-            buttonStyle="admin-dark"
-            icon="edit"
-            size="s"
-          >
-            {formatMessage(inputFormMessages.editInputForm)}
-          </ButtonWithLink>
+          {survey ? (
+            <ButtonWithLink
+              to="/admin/projects/$projectId/phases/$phaseId/survey-form/edit"
+              params={{ projectId, phaseId: phase.id }}
+              buttonStyle="admin-dark"
+              icon="edit"
+              size="s"
+            >
+              {formatMessage(messages.editSurveyForm)}
+            </ButtonWithLink>
+          ) : (
+            <ButtonWithLink
+              to="/admin/projects/$projectId/phases/$phaseId/form/edit"
+              params={{ projectId, phaseId: phase.id }}
+              buttonStyle="admin-dark"
+              icon="edit"
+              size="s"
+            >
+              {formatMessage(inputFormMessages.editInputForm)}
+            </ButtonWithLink>
+          )}
         </Box>
       </PanelField>
 
