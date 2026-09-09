@@ -14,6 +14,7 @@ describe('Custom page events derivation', () => {
   let pageSlug = '';
   let projectId = '';
   let otherProjectId = '';
+  let areaId = '';
   let filteringWasEnabled = false;
 
   const setBuilderFeature = (enabled: boolean) =>
@@ -37,7 +38,7 @@ describe('Custom page events derivation', () => {
     });
 
     cy.apiCreateArea(areaTitle).then((area) => {
-      const areaId = area.body.data.id;
+      areaId = area.body.data.id;
 
       cy.apiCreateProject({
         title: projectTitle,
@@ -91,6 +92,7 @@ describe('Custom page events derivation', () => {
     if (pageId) cy.apiRemoveCustomPage(pageId);
     if (projectId) cy.apiRemoveProject(projectId);
     if (otherProjectId) cy.apiRemoveProject(otherProjectId);
+    if (areaId) cy.apiRemoveArea(areaId);
   });
 
   // Filtering is the paid capability on this surface, and the only surface it is gated on.
