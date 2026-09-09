@@ -84,18 +84,6 @@ export default defineMessages({
     defaultMessage:
       "This project has a single phase without an end date or description, so visitors won't see a timeline.",
   },
-  sectionBackgroundLabel: {
-    id: 'app.components.ProjectPageBuilder.Widgets.sectionBackgroundLabel',
-    defaultMessage: 'Section background',
-  },
-  sectionBackgroundColored: {
-    id: 'app.components.ProjectPageBuilder.Widgets.sectionBackgroundColored',
-    defaultMessage: 'Colored',
-  },
-  sectionBackgroundWhite: {
-    id: 'app.components.ProjectPageBuilder.Widgets.sectionBackgroundWhite',
-    defaultMessage: 'White',
-  },
   eventsEmptyMessage: {
     id: 'app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage',
     defaultMessage:

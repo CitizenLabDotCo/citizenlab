@@ -41,11 +41,7 @@ const Header = styled.div`
   `}
 `;
 
-type Props = {
-  colored: boolean;
-};
-
-const TimelineSection = ({ colored }: Props) => {
+const TimelineSection = () => {
   const projectId = useWidgetProjectId();
   const isPageBodyChild = useIsPageBodyChild();
   const { slug, phaseNumber } = useParams({ strict: false }) as {
@@ -95,11 +91,7 @@ const TimelineSection = ({ colored }: Props) => {
   };
 
   return (
-    <SectionBackground
-      colored={colored}
-      fullBleed={!!slug && isPageBodyChild}
-      py="40px"
-    >
+    <SectionBackground fullBleed={!!slug && isPageBodyChild} py="40px">
       <Box
         id="e2e-project-page-timeline"
         maxWidth={`${maxPageWidth}px`}

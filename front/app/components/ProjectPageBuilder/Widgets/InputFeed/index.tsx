@@ -7,11 +7,7 @@ import { useParams } from 'utils/router';
 
 import InputFeedContent from './InputFeedContent';
 
-type Props = {
-  colored: boolean;
-};
-
-const InputFeedSection = ({ colored }: Props) => {
+const InputFeedSection = () => {
   const { slug } = useParams({ strict: false }) as { slug?: string };
   const { enabled: inEditor } = useEditor((state) => ({
     enabled: state.options.enabled,
@@ -23,7 +19,7 @@ const InputFeedSection = ({ colored }: Props) => {
       pointerEvents={slug ? 'auto' : 'none'}
       minHeight={inEditor ? '40px' : undefined}
     >
-      <InputFeedContent colored={colored} />
+      <InputFeedContent />
     </Box>
   );
 };

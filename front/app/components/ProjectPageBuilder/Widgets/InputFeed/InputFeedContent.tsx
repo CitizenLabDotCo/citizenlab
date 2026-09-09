@@ -18,11 +18,7 @@ import useIsPageBodyChild from '../useIsPageBodyChild';
 
 const PublicInputContent = React.lazy(() => import('./PublicInputContent'));
 
-type Props = {
-  colored: boolean;
-};
-
-const InputFeedContent = ({ colored }: Props) => {
+const InputFeedContent = () => {
   const projectId = useWidgetProjectId();
   const isPageBodyChild = useIsPageBodyChild();
   const { slug } = useParams({ strict: false }) as { slug?: string };
@@ -45,7 +41,6 @@ const InputFeedContent = ({ colored }: Props) => {
   return (
     <EditModeHeightCap>
       <SectionBackground
-        colored={colored}
         fullBleed={!!slug && isPageBodyChild}
         pb="40px"
         pt={startsGreyBand ? '40px' : undefined}

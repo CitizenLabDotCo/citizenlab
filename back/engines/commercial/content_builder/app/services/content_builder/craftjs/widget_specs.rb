@@ -61,7 +61,7 @@ module ContentBuilder
         },
         'ThreeColumn' => { 'slots' => %w[column1 column2 column3] },
         'HtmlBlockMultiloc' => { 'multilocs' => %w[html] },
-        'PhasesWidget' => { 'enums' => { 'sectionBackground' => %w[colored white] } },
+        'PhasesWidget' => {},
         'EventsList' => {},
         'EventsWidget' => {},
         'ExtraSurveysWidget' => {

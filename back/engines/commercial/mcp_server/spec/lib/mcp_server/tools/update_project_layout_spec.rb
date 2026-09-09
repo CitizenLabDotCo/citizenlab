@@ -106,31 +106,21 @@ describe McpServer::Tools::UpdateProjectLayout do
         expect(layout.reload.craftjs_json[body]['nodes']).to eq(reordered)
       end
 
-      # Editing these was rejected while they counted as scaffold; sectionBackground is
-      # the prop the unlock added, so this is the case the new enum exists for.
+      # Editing these was rejected while they counted as scaffold. The widget has no props of
+      # its own, so moving it is the edit to make.
       it 'edits the phases widget, which is no longer part of the scaffold' do
-        phases = initial_graph['PROJECT_PAGE_PHASES'].merge('props' => { 'sectionBackground' => 'white' })
+        reordered = ['PROJECT_PAGE_PHASES'] + (initial_graph[body]['nodes'] - ['PROJECT_PAGE_PHASES'])
 
-        response = patch(nodes: { 'PROJECT_PAGE_PHASES' => phases })
+        response = patch(nodes: { body => initial_graph[body].merge('nodes' => reordered) })
 
         expect(response).not_to be_error
-        expect(layout.reload.craftjs_json.dig('PROJECT_PAGE_PHASES', 'props', 'sectionBackground')).to eq('white')
-      end
-
-      it 'rejects a sectionBackground outside its enum' do
-        phases = initial_graph['PROJECT_PAGE_PHASES'].merge('props' => { 'sectionBackground' => 'chartreuse' })
-
-        response = patch(nodes: { 'PROJECT_PAGE_PHASES' => phases })
-
-        expect(response).to be_error
-        expect(response.content.first[:text]).to include('must be one of: colored, white')
-        expect(layout.reload.craftjs_json).to eq(initial_graph)
+        expect(layout.reload.craftjs_json[body]['nodes']).to eq(reordered)
       end
 
       it 'inserts a second phases widget, so a deleted one can be put back' do
         response = patch(nodes: {
           body => body_with(%w[T1 PH2]),
-          'PH2' => craftjs_node('PhasesWidget', parent: body, props: { 'sectionBackground' => 'colored' })
+          'PH2' => craftjs_node('PhasesWidget', parent: body)
         })
 
         expect(response).not_to be_error

@@ -92,13 +92,11 @@ class McpServer::LayoutWidgets
     DOC
     'PhasesWidget' => <<~DOC,
       PhasesWidget — the project's phase timeline plus the input feed of the current phase.
-        props: {"sectionBackground":"colored"|"white"}
+        props: {}
         custom: {"title":{"id":"app.components.ProjectPageBuilder.Widgets.phasesWidgetTitle","defaultMessage":"Phases"},"noPointerEvents":true}
         Renders entirely from the project's phases, which are managed with create_phase/update_phase.
-        Keep one on the page unless the project has no participation at all. sectionBackground
-        defaults to "colored" as a direct child of ProjectPageBody, "white" when nested deeper.
-        It paints a full-width band, so alternate it with the plain content around it rather than
-        stacking two "colored" bands together.
+        Keep one on the page unless the project has no participation at all. Renders on white;
+        it has no background setting.
     DOC
     'EventsList' => <<~DOC,
       EventsList — the project's upcoming and past events. props: {}
