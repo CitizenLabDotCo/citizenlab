@@ -101,8 +101,14 @@ describe('Custom page events derivation', () => {
     setBuilderFeature(true);
     setFiltering(true);
     cy.setAdminLoginCookie();
+    // A page with no layout yet derives one and saves it on this first open. The reload below
+    // has to come after that write, or it derives again with the feature already off.
+    cy.intercept('POST', '**/content_builder_layouts/custom_page/upsert').as(
+      'deriveLayout'
+    );
     cy.visit(`/admin/custom-page-builder/pages/${pageId}`);
     cy.get('div#ROOT');
+    cy.wait('@deriveLayout');
     cy.dataCy('e2e-events-widget');
 
     setFiltering(false);

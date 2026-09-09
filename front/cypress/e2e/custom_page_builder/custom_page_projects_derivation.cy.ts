@@ -80,9 +80,14 @@ describe('Custom page projects derivation', () => {
     setBuilderFeature(true);
     setFiltering(true);
     cy.setAdminLoginCookie();
-    // Open the builder once so the layout is derived, then check what a visitor sees.
+    // A page with no layout yet derives one and saves it on this first open, so the front
+    // office below has to wait for that write rather than the frame appearing.
+    cy.intercept('POST', '**/content_builder_layouts/custom_page/upsert').as(
+      'deriveLayout'
+    );
     cy.visit(`/admin/custom-page-builder/pages/${pageId}`);
     cy.get('div#ROOT');
+    cy.wait('@deriveLayout');
 
     cy.visit(`/pages/${pageSlug}`);
 
