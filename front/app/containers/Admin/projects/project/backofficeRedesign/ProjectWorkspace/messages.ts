@@ -70,4 +70,24 @@ export default defineMessages({
     defaultMessage:
       'Results are collected in the external tool you linked, so they cannot be analysed here.',
   },
+  notifications: {
+    id: 'app.containers.Admin.projects.project.workspace.notifications',
+    defaultMessage: 'Notifications',
+  },
+  surveyForm: {
+    id: 'app.containers.Admin.projects.project.workspace.surveyForm',
+    defaultMessage: 'Survey form',
+  },
+  editSurveyForm: {
+    id: 'app.containers.Admin.projects.project.workspace.editSurveyForm',
+    defaultMessage: 'Edit survey form',
+  },
+  accessRights: {
+    id: 'app.containers.Admin.projects.project.workspace.accessRights',
+    defaultMessage: 'Access rights',
+  },
+  mapConfiguration: {
+    id: 'app.containers.Admin.projects.project.workspace.mapConfiguration',
+    defaultMessage: 'Map configuration',
+  },
 });
