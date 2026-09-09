@@ -91,9 +91,12 @@ describe('Custom page projects derivation', () => {
     cy.get('div#ROOT');
     cy.wait('@deriveLayout');
 
+    // Cards mount one at a time, so a count alone is satisfied by the first one to land — even
+    // on an unfiltered page. Waiting for the list response first makes the count meaningful.
+    cy.intercept('GET', '**/admin_publications?*').as('publications');
     cy.visit(`/pages/${pageSlug}`);
+    cy.wait('@publications');
 
-    // The grid pages at six, so a missing card proves nothing on its own.
     cy.dataCy('e2e-project-card').should('have.length', 1);
     cy.contains(projectTitle).should('be.visible');
   });
