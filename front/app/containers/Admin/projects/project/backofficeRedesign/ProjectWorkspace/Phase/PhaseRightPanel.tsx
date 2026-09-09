@@ -18,7 +18,10 @@ import phaseSetupMessages from '../../../phaseSetup/messages';
 import { SubmitStateType, ValidationErrors } from '../../../phaseSetup/typings';
 import validate from '../../../phaseSetup/validate';
 
+import AccessRow from './AccessRow';
 import changedFields from './changedFields';
+import MapConfigurationRow from './MapConfigurationRow';
+import NotificationsRow from './NotificationsRow';
 import ReportSection from './ReportSection';
 
 interface Props {
@@ -109,6 +112,14 @@ const PhaseRightPanel = ({ projectId, phase }: Props) => {
             layout="panel"
           />
         )}
+
+        {/* Reached from a tab strip the workspace no longer has. Each row
+            follows the same rule the strip used for that tab. */}
+        <AccessRow phaseId={phase.id} />
+        <MapConfigurationRow
+          participationMethod={phase.attributes.participation_method}
+        />
+        <NotificationsRow />
       </Box>
 
       {!isInformation && (
