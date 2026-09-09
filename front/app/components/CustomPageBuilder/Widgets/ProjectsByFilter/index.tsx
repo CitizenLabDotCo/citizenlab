@@ -9,6 +9,7 @@ import useAdminPublicationsStatusCounts from 'api/admin_publications_status_coun
 import getStatusCounts from 'api/admin_publications_status_counts/util/getAdminPublicationsStatusCount';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
 
 import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
@@ -52,6 +53,7 @@ const ProjectsByFilterInner = ({
   statusCountsWithoutFilters,
 }: InnerProps) => {
   const padding = useCraftComponentDefaultPadding();
+  const locale = useLocale();
   const allStatusCountsWithoutFilters = getStatusCounts(
     statusCountsWithoutFilters
   );
@@ -78,7 +80,7 @@ const ProjectsByFilterInner = ({
     >
       <ProjectAndFolderCardsInner
         statusCounts={allStatusCountsWithoutFilters}
-        showTitle={hasTitle(titleMultiloc)}
+        showTitle={hasTitle(titleMultiloc, locale)}
         currentlyWorkingOnText={titleMultiloc}
         showFilters={false}
         showSearch={false}
