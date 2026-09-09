@@ -18,6 +18,7 @@ import phaseSetupMessages from '../../../phaseSetup/messages';
 import { SubmitStateType, ValidationErrors } from '../../../phaseSetup/typings';
 import validate from '../../../phaseSetup/validate';
 
+import changedFields from './changedFields';
 import ReportSection from './ReportSection';
 
 interface Props {
@@ -47,8 +48,11 @@ const PhaseRightPanel = ({ projectId, phase }: Props) => {
 
   const handleChange = (config: IUpdatedPhaseProperties) => {
     setSubmitState('enabled');
-    setFormData((formData) => ({ ...formData, ...config }));
-    setChanges((changes) => ({ ...changes, ...config }));
+    setChanges((changes) => ({
+      ...changes,
+      ...changedFields(config, formData),
+    }));
+    setFormData(config);
   };
 
   const handleSave = () => {
@@ -102,6 +106,7 @@ const PhaseRightPanel = ({ projectId, phase }: Props) => {
             onChange={handleChange}
             setValidationErrors={setValidationErrors}
             hideMethodPicker
+            layout="panel"
           />
         )}
       </Box>
