@@ -76,10 +76,8 @@ parameters:
     type: boolean
     default: false
 
-  # Set by .circleci/monorepo.sh for the halves whose full workflow it is
-  # NOT triggering: epic previews (cl2-deployment/epic, TAN-8612) deploy
-  # the head sha of every labelled PR and need the back image and the
-  # front bundle to exist for every push.
+  # Set by .circleci/monorepo.sh in case nothing changed in back/front. This
+  # causes the builds to still happen, necessary for the epic platform
   epic_back_artifact:
     type: boolean
     default: false
@@ -238,10 +236,8 @@ jobs:
     parameters:
       docker_layer_caching:
         type: boolean
-        # DLC bills a flat 200 credits per job run on top of the compute
-        # minutes: worth it on the developer-facing path (warm build ~20 s),
-        # not for the epic-artifact fallback (cold build ~3-5 min, nothing
-        # urgent waits on it).
+        # DLC bills costs 200 credits per job run, and the extra speed is not
+        # always needed
         default: true
     steps:
       - echo_pipeline_parameters
@@ -1432,11 +1428,8 @@ workflows:
               only:
                 - master
 
-  # Epic previews need both artifacts for every sha; monorepo.sh sets
-  # these parameters exactly for the halves it is not building through the
-  # full workflows (including pushes where nothing changed at all). No
-  # Docker layer caching on the image build: DLC bills a flat 200 credits
-  # per job run, several times this job's cold build time.
+  # Epic previews need both artifacts to be built for every sha; monorepo.sh
+  # sets these parameters only in case nothing has changed on back/front
   epic-back-artifact:
     when:
       and:
