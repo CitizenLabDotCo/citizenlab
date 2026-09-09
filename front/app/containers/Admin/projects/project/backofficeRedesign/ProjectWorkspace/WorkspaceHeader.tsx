@@ -17,6 +17,7 @@ import messages from './messages';
 import usePhaseViews, { PhaseViewKey } from './Phase/usePhaseViews';
 import ViewSwitch from './Phase/ViewSwitch';
 import PublishDropdown from './PublishDropdown';
+import { ProjectSection } from './SectionLinks';
 import ShareDropdown from './ShareDropdown';
 
 const HEADER_HEIGHT = '48px';
@@ -25,6 +26,7 @@ interface Props {
   project: IProjectData;
   phase?: IPhaseData;
   activeView: PhaseViewKey;
+  section?: ProjectSection;
   openDropdown: HeaderDropdownName | null;
   onOpenDropdown: (dropdown: HeaderDropdownName | null) => void;
 }
@@ -33,6 +35,7 @@ const WorkspaceHeader = ({
   project,
   phase,
   activeView,
+  section,
   openDropdown,
   onOpenDropdown,
 }: Props) => {
@@ -47,7 +50,7 @@ const WorkspaceHeader = ({
     },
     {
       label: localize(project.attributes.title_multiloc),
-      ...(phase && {
+      ...((phase || section) && {
         link: {
           to: '/admin/projects/$projectId' as const,
           params: { projectId: project.id },
@@ -55,6 +58,7 @@ const WorkspaceHeader = ({
       }),
     },
     ...(phase ? [{ label: localize(phase.attributes.title_multiloc) }] : []),
+    ...(section ? [{ label: formatMessage(section.label) }] : []),
   ];
 
   return (

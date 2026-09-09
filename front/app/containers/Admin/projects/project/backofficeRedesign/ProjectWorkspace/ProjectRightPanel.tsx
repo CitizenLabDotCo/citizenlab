@@ -10,6 +10,7 @@ import GetStarted from './GetStarted';
 import { HeaderDropdownName } from './HeaderDropdown';
 import messages from './messages';
 import ProjectSettingsModal from './ProjectSettingsModal';
+import SectionLinks from './SectionLinks';
 import SetupFields from './SetupFields';
 
 interface Props {
@@ -48,6 +49,8 @@ const ProjectRightPanel = ({ project, shareOpened, onOpenDropdown }: Props) => {
       />
 
       <SetupFields project={project} />
+
+      <SectionLinks projectId={project.id} />
 
       <ProjectSettingsModal
         project={project}
