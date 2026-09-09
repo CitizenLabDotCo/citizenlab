@@ -24,14 +24,26 @@ describe ContentBuilder::Craftjs::WidgetSpecs do
   end
 
   describe 'CUSTOM_PAGE_WIDGETS' do
-    it 'covers what the custom page layout service derives' do
+    before { SettingsService.new.activate_feature!('advanced_custom_pages') }
+
+    # Compared against PROJECT_PAGE_SPECS rather than against the list under test: a widget the
+    # custom page derives but nobody added to CUSTOM_PAGE_WIDGETS stays in PROJECT_PAGE_SPECS,
+    # drops out of this difference, and fails here rather than on a project page in production.
+    it 'covers every widget the custom page layout service derives' do
+      page = create(
+        :static_page,
+        projects_enabled: true,
+        projects_filter_type: 'areas',
+        areas: [create(:area)]
+      )
+
       derived = ContentBuilder::CustomPageLayoutService.new
-        .craftjs_json_for(build(:static_page))
+        .craftjs_json_for(page)
         .values
         .filter_map { |node| node.dig('type', 'resolvedName') }
 
-      custom_page_only = derived.uniq & described_class::CUSTOM_PAGE_WIDGETS
-      expect(custom_page_only).to include('CustomPageRoot', 'CustomPageBody')
+      expect(derived.uniq - described_class::PROJECT_PAGE_SPECS.keys)
+        .to include('ProjectsByFilter', 'CustomPageRoot', 'CustomPageBody')
     end
   end
 end
