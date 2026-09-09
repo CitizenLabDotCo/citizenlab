@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
+import { IconTooltip, Box, Spinner } from '@citizenlab/cl2-component-library';
 
 import useInheritPhasePermission from 'api/phase_permissions/useInheritPhasePermission';
 import useOverridePhasePermission from 'api/phase_permissions/useOverridePhasePermission';
@@ -9,6 +9,7 @@ import useUpdatePhasePermission from 'api/phase_permissions/useUpdatePhasePermis
 import usePhase from 'api/phases/usePhase';
 
 import ActionForm from 'components/admin/ActionForm';
+import Centerer from 'components/UI/Centerer';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 
@@ -28,7 +29,13 @@ const ActionForms = ({ phaseId }: Props) => {
   const { mutateAsync: overridePhasePermission } = useOverridePhasePermission();
   const { mutateAsync: inheritPhasePermission } = useInheritPhasePermission();
 
-  if (!permissions || !phase) return null;
+  if (!permissions || !phase) {
+    return (
+      <Centerer height="200px">
+        <Spinner />
+      </Centerer>
+    );
+  }
 
   const participationMethod = phase.data.attributes.participation_method;
 
