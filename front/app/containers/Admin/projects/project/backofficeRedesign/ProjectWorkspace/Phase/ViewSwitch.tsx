@@ -77,8 +77,8 @@ const ViewSwitch = ({ views, activeView, projectId, phaseId }: Props) => {
             content={view.lockedReason}
             disabled={!view.lockedReason}
             theme="dark"
-            // The switch is centred with a transform, which traps the tooltip
-            // in that stacking context and lets the preview paint over it.
+            // Portalled so the tooltip is not painted over by the scaled
+            // preview iframe that sits directly below the header.
             appendTo={() => document.body}
           >
             <LockedSegment aria-disabled="true">{view.label}</LockedSegment>
