@@ -76,6 +76,18 @@ parameters:
     type: boolean
     default: false
 
+  # Set by .circleci/monorepo.sh for the halves whose full workflow it is
+  # NOT triggering: epic previews (cl2-deployment/epic, TAN-8612) deploy
+  # the head sha of every labelled PR and need the back image and the
+  # front bundle to exist for every push.
+  epic_back_artifact:
+    type: boolean
+    default: false
+
+  epic_front_artifact:
+    type: boolean
+    default: false
+
 executors:
   cl2-back:
     parameters:
@@ -223,11 +235,19 @@ jobs:
     working_directory: ~/
     docker:
       - image: cimg/base:2025.01
+    parameters:
+      docker_layer_caching:
+        type: boolean
+        # DLC bills a flat 200 credits per job run on top of the compute
+        # minutes: worth it on the developer-facing path (warm build ~20 s),
+        # not for the epic-artifact fallback (cold build ~3-5 min, nothing
+        # urgent waits on it).
+        default: true
     steps:
       - echo_pipeline_parameters
       - shallow-clone
       - setup_remote_docker:
-          docker_layer_caching: true
+          docker_layer_caching: << parameters.docker_layer_caching >>
       - run: |
           docker build -t citizenlabdotco/back-ee:amd64-$CIRCLE_SHA1 --build-arg BUNDLE_JOBS=4 -f citizenlab/back/Dockerfile citizenlab/.
       - run: |
@@ -1411,6 +1431,33 @@ workflows:
             branches:
               only:
                 - master
+
+  # Epic previews need both artifacts for every sha; monorepo.sh sets
+  # these parameters exactly for the halves it is not building through the
+  # full workflows (including pushes where nothing changed at all). No
+  # Docker layer caching on the image build: DLC bills a flat 200 credits
+  # per job run, several times this job's cold build time.
+  epic-back-artifact:
+    when:
+      and:
+        - << pipeline.parameters.epic_back_artifact >>
+        - not:
+            equal: ["production", << pipeline.git.branch >>]
+    jobs:
+      - back-build-docker-image-amd64:
+          context:
+            - docker-hub-access
+          docker_layer_caching: false
+
+  epic-front-artifact:
+    when:
+      and:
+        - << pipeline.parameters.epic_front_artifact >>
+        - not:
+            equal: ["production", << pipeline.git.branch >>]
+    jobs:
+      - front-build:
+          context: epic-front-bundles
 
   front-deploy-staging:
     when:
