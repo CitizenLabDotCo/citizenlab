@@ -54,7 +54,9 @@ const SourceSetting = () => {
             value: 'global_topics' as const,
             label: formatMessage(messages.byTopic),
           },
-          ...(spacesEnabled
+          // A stored dimension stays listed once its feature is off: the widget still filters
+          // by it, so dropping it would read as unset, and picking another discards the ids.
+          ...(spacesEnabled || source === 'spaces'
             ? [
                 {
                   value: 'spaces' as const,

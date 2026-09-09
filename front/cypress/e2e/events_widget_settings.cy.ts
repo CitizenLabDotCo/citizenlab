@@ -9,10 +9,16 @@ describe('Events widget settings panel', () => {
   let projectId = '';
   let homepageLayout: Record<string, unknown>;
   let filteringWasEnabled = false;
+  let spacesWasEnabled = false;
 
   const setFiltering = (enabled: boolean) =>
     cy.apiUpdateAppConfiguration({
       settings: { advanced_custom_pages: { allowed: enabled, enabled } },
+    });
+
+  const setSpaces = (enabled: boolean) =>
+    cy.apiUpdateAppConfiguration({
+      settings: { spaces: { allowed: enabled, enabled } },
     });
 
   const soon = (hours: number) => new Date(Date.now() + hours * 60 * 60 * 1000);
@@ -59,6 +65,8 @@ describe('Events widget settings panel', () => {
       filteringWasEnabled =
         config.body.data.attributes.settings.advanced_custom_pages?.enabled ===
         true;
+      spacesWasEnabled =
+        config.body.data.attributes.settings.spaces?.enabled === true;
     });
     cy.apiGetHomepageLayout().then((layout) => {
       homepageLayout = layout.body.data.attributes.craftjs_json;
@@ -98,6 +106,7 @@ describe('Events widget settings panel', () => {
   after(() => {
     cy.apiUpdateHomepageLayout({ craftjs_json: homepageLayout });
     setFiltering(filteringWasEnabled);
+    setSpaces(spacesWasEnabled);
     if (projectId) cy.apiRemoveProject(projectId);
   });
 
@@ -175,6 +184,30 @@ describe('Events widget settings panel', () => {
           .invoke('text')
           .should('not.eq', subheading);
       });
+  });
+
+  // A widget already filtering by spaces keeps that option once the feature goes, so the panel
+  // shows what the page is doing. Drop it and nothing is selected, and the next click clears
+  // the stored ids.
+  it('keeps a stored spaces filter selectable once the feature is off', () => {
+    setSpaces(true);
+    cy.apiUpdateHomepageLayout({ craftjs_json: homepageWithoutEvents() });
+    goToHomepageBuilder();
+
+    cy.get('#e2e-draggable-events').dragAndDrop('#e2e-content-builder-frame', {
+      position: 'inside',
+    });
+    cy.get('label[for="events-source-spaces"]').click();
+    saveHomepage();
+
+    setSpaces(false);
+    goToHomepageBuilder();
+    cy.dataCy('e2e-events-widget')
+      .parents('.e2e-render-node')
+      .first()
+      .click({ force: true });
+
+    cy.get('#events-source-spaces').should('exist').and('be.checked');
   });
 
   // A query that is switched off keeps serving its last result, so a bucket has to be read
