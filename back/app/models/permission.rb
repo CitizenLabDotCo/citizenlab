@@ -131,6 +131,12 @@ class Permission < ApplicationRecord
     false
   end
 
+  def require_confirmed_phone_number
+    return false unless AppConfiguration.instance.feature_activated?('sms')
+
+    super
+  end
+
   def everyone_tracking_enabled?
     permitted_by == 'everyone' && everyone_tracking_enabled
   end

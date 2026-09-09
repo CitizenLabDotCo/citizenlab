@@ -131,6 +131,35 @@ RSpec.describe Permission do
     end
   end
 
+  describe '#require_confirmed_phone_number' do
+    let(:permission) { create(:permission, :by_users, require_confirmed_phone_number: true) }
+
+    context 'when the sms feature is enabled' do
+      include_context 'with sms feature enabled'
+
+      it 'returns the stored value' do
+        expect(permission.require_confirmed_phone_number).to be true
+        expect(permission.require_confirmed_phone_number?).to be true
+      end
+    end
+
+    context 'when the sms feature is disabled' do
+      it 'is false, whatever is stored' do
+        expect(permission.require_confirmed_phone_number).to be false
+        expect(permission.require_confirmed_phone_number?).to be false
+      end
+
+      it 'masks the stored value rather than clearing it' do
+        expect(permission.reload.read_attribute(:require_confirmed_phone_number)).to be true
+      end
+
+      it 'returns the stored value again once the feature is switched back on' do
+        SettingsService.new.activate_feature!('sms')
+        expect(permission.require_confirmed_phone_number).to be true
+      end
+    end
+  end
+
   describe '#verification_enabled?' do
     it 'is true when require_verification is true' do
       expect(build(:permission, :by_users, require_verification: true).verification_enabled?).to be true

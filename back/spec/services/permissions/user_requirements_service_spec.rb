@@ -780,6 +780,41 @@ describe Permissions::UserRequirementsService do
       end
     end
 
+    # The sms feature is what makes a phone number addable and confirmable at all,
+    # so a permission that kept require_confirmed_phone_number after it was switched
+    # off must not ask for one. See Permission#require_confirmed_phone_number.
+    context 'when a confirmed phone number is required but the sms feature is off' do
+      let(:permission) do
+        create(
+          :permission,
+          permitted_by: 'users',
+          require_confirmed_email: false,
+          require_name: false,
+          require_password: false,
+          require_confirmed_phone_number: true
+        )
+      end
+
+      it 'asks nothing of a user without a phone number' do
+        user.update!(phone: nil, new_phone: nil, phone_confirmed_at: nil)
+        requirements = service.requirements(permission, user)
+        expect(requirements[:authentication][:phone_action_required]).to be_nil
+        expect(service.permitted?(requirements)).to be true
+      end
+
+      it 'asks nothing of a user with an unconfirmed phone number' do
+        user.update!(phone: '+3212345678', phone_confirmed_at: nil)
+        requirements = service.requirements(permission, user)
+        expect(requirements[:authentication][:phone_action_required]).to be_nil
+        expect(service.permitted?(requirements)).to be true
+      end
+
+      it 'asks nothing when there is no user yet' do
+        requirements = service.requirements(permission, nil)
+        expect(requirements[:authentication][:phone_action_required]).to be_nil
+      end
+    end
+
     # Re-confirmation of an already-confirmed email once confirmed_email_expiry has
     # elapsed. The top-level `user` has a confirmed email (email_confirmed_at: Time.now,
     # confirmation_required? false), so the only thing that can put them back into a
