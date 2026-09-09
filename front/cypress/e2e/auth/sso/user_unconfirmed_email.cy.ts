@@ -99,6 +99,14 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
     // Sign up through Fake SSO (return confirmed email)
     fakeSSOGlobalSignup(cy, 'john_doe', { email });
 
+    // The account signed up above has no name - only an address - so the flow
+    // asks for one before it can finish. fake_sso locks no attributes, so the
+    // profile's names are not carried over.
+    cy.get('#e2e-built-in-fields-container').should('exist');
+    cy.get('#firstName', { timeout: 60000 }).type(randomString());
+    cy.get('#lastName').type(randomString());
+    cy.get('#e2e-built-in-fields-submit-button').click();
+
     // We expect to arrive on the success message
     cy.get('#e2e-sign-up-success-modal').should('exist');
 
@@ -137,6 +145,14 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
 
     // Confirm email
     confirmEmail(cy);
+
+    // The account signed up above has no name - only an address - so the flow
+    // asks for one before it can finish. fake_sso locks no attributes, so the
+    // profile's names are not carried over.
+    cy.get('#e2e-built-in-fields-container').should('exist');
+    cy.get('#firstName', { timeout: 60000 }).type(randomString());
+    cy.get('#lastName').type(randomString());
+    cy.get('#e2e-built-in-fields-submit-button').click();
 
     // After confirming email, we expect to arrive on the success message
     cy.get('#e2e-sign-up-success-modal').should('exist');

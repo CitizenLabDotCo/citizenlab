@@ -25,6 +25,9 @@ describe('SSO: verifying an email account that already has a blank SSO account',
     cy.apiSignup(randomString(), randomString(), email, password);
     cy.setLoginCookie(email, password);
     cy.visit('/profile/edit');
+    // clearCookies above dropped the consent choice, so the banner is back and
+    // holds a focus lock over the page until it is answered.
+    cy.acceptCookies();
     cy.get('#e2e-verify-user-button').click();
     cy.get('#e2e-verification-wizard-method-selection-step').should('exist');
 

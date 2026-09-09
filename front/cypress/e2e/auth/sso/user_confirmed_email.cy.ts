@@ -19,7 +19,9 @@ describe('SSO: user with confirmed email', () => {
 
     fakeSSOGlobalSignup(cy, 'john_doe', { email });
 
-    cy.get('#e2e-sign-up-success-modal').should('exist');
+    // Matching an existing account is a sign-in, not a sign-up, and only the
+    // sign-up flow ends on the success step.
+    cy.get('#e2e-user-menu-container').should('exist');
 
     cy.getAuthUser().then((user) => {
       expect(user.body.data.attributes.email).to.eq(email);
