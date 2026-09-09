@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import {
   Box,
@@ -49,6 +49,17 @@ const ShareDropdown = ({ project, opened, onOpenChange }: Props) => {
 
   const [invitees, setInvitees] = useState('');
   const [linkCopied, setLinkCopied] = useState(false);
+  const peopleListRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const peopleList = peopleListRef.current;
+    if (!peopleList) return;
+
+    const keepWheelLocal = (event: WheelEvent) => event.stopPropagation();
+    peopleList.addEventListener('wheel', keepWheelLocal);
+
+    return () => peopleList.removeEventListener('wheel', keepWheelLocal);
+  }, [opened]);
 
   const { slug, preview_token } = project.attributes;
 
@@ -112,7 +123,14 @@ const ShareDropdown = ({ project, opened, onOpenChange }: Props) => {
           <Text m="16px 0 0 0" fontSize="s" color="textSecondary">
             {formatMessage(messages.sharePeopleWithAccess)}
           </Text>
-          <Box display="flex" flexDirection="column">
+          <Box
+            ref={peopleListRef}
+            display="flex"
+            flexDirection="column"
+            maxHeight="300px"
+            overflowY="auto"
+            pr="12px"
+          >
             {moderators?.data.map((moderator) => (
               <AccessPeopleRow
                 key={moderator.id}
