@@ -21,6 +21,7 @@ import { trackEventByName } from 'utils/analytics';
 
 import tracks from '../tracks';
 
+import AdminHomePageEditButton from './AdminHomePageEditButton';
 import Skeleton from './Skeleton';
 
 const CompleteProfileStep = lazy(() => import('./CompleteProfileStep'));
@@ -145,53 +146,59 @@ const SignedInHeader = ({
       data-cy="e2e-full-width-banner-layout-container"
       className={`e2e-signed-in-header`}
     >
-      <Header
-        id="hook-header"
-        desktopHeight={desktopHeight}
-        tabletHeight={tabletHeight}
-        phoneHeight={phoneHeight}
-      >
-        <HeaderImage id="hook-header-image">
-          <HeaderImageBackground
-            data-testid="full-width-banner-layout-header-image"
-            data-cy="e2e-full-width-banner-layout-header-image"
-            src={homepageSettings.header_bg?.large || null}
-          />
-          {homepageSettingColor &&
-            typeof homepageSettingOpacity === 'number' && (
-              <HeaderImageOverlay
-                data-cy="e2e-full-width-layout-header-image-overlay"
-                overlayColor={homepageSettingColor}
-                overlayOpacity={homepageSettingOpacity}
-              />
-            )}
-        </HeaderImage>
+      {/* Positioning context for the absolutely-placed edit button: the shared
+          banner Container isn't positioned, and Header is covered edge-to-edge
+          by the onboarding step overlays. */}
+      <Box position="relative" w="100%">
+        <Header
+          id="hook-header"
+          desktopHeight={desktopHeight}
+          tabletHeight={tabletHeight}
+          phoneHeight={phoneHeight}
+        >
+          <HeaderImage id="hook-header-image">
+            <HeaderImageBackground
+              data-testid="full-width-banner-layout-header-image"
+              data-cy="e2e-full-width-banner-layout-header-image"
+              src={homepageSettings.header_bg?.large || null}
+            />
+            {homepageSettingColor &&
+              typeof homepageSettingOpacity === 'number' && (
+                <HeaderImageOverlay
+                  data-cy="e2e-full-width-layout-header-image-overlay"
+                  overlayColor={homepageSettingColor}
+                  overlayOpacity={homepageSettingOpacity}
+                />
+              )}
+          </HeaderImage>
 
-        <Box>
-          <Suspense fallback={null}>
-            <VerificationOnboardingStep
-              currentOnboardingCampaignName={onboardingCampaignName}
-              onSkip={handleSkip('verification')}
-            />
-            <CompleteProfileStep
-              currentOnboardingCampaignName={onboardingCampaignName}
-              onSkip={handleSkip('complete_profile')}
-            />
-            {/*
+          <Box>
+            <Suspense fallback={null}>
+              <VerificationOnboardingStep
+                currentOnboardingCampaignName={onboardingCampaignName}
+                onSkip={handleSkip('verification')}
+              />
+              <CompleteProfileStep
+                currentOnboardingCampaignName={onboardingCampaignName}
+                onSkip={handleSkip('complete_profile')}
+              />
+              {/*
             This step is configured via AdminHQ.
               See https://citizenlab.atlassian.net/browse/CL-2289
             */}
-            <CustomCTAStep
-              currentOnboardingCampaignName={onboardingCampaignName}
-              onSkip={handleSkip('custom_cta')}
-            />
-            <FallbackStep
-              currentOnboardingCampaignName={onboardingCampaignName}
-              homepageSettings={homepageSettings}
-            />
-          </Suspense>
-        </Box>
-      </Header>
+              <CustomCTAStep
+                currentOnboardingCampaignName={onboardingCampaignName}
+                onSkip={handleSkip('custom_cta')}
+              />
+              <FallbackStep
+                currentOnboardingCampaignName={onboardingCampaignName}
+                homepageSettings={homepageSettings}
+              />
+            </Suspense>
+          </Box>
+        </Header>
+        {!isContentBuilderDisplay && <AdminHomePageEditButton />}
+      </Box>
     </Container>
   );
 };
