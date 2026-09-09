@@ -33,8 +33,10 @@ describe('SSO: verifying an email account that already has a blank SSO account',
 
     fakeSSOVerify(cy, 'jane_doe', { sub });
 
-    cy.get('#e2e-verification-success').should('exist');
-    cy.get('#e2e-verification-success-close-button').click();
+    // An SSO method verifies through a full redirect, so it lands back on the
+    // profile page rather than on the wizard's success step.
+    cy.location('search').should('include', 'verification_success=true');
+    cy.get('.e2e-verified').should('exist');
 
     // Still signed in as the email account, now verified. The blank account and
     // everything it owned have moved onto this one.

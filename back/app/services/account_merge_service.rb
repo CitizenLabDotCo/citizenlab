@@ -120,6 +120,12 @@ class AccountMergeService
       target_locks = locks_held_by(resolved)
 
       moved = move_all!(source, resolved)
+
+      # The code went to the target's own address and the caller read it back, so
+      # that address is now proven. Without this the survivor would be asked to
+      # confirm the very address it just used to authorise the merge.
+      confirm_target_email!(resolved) if confirmation
+
       apply_verified_identity!(source, resolved, target_locks)
       recompute_counters!(resolved)
 
@@ -256,6 +262,14 @@ class AccountMergeService
     assignment = { fk => target.id }
     assignment[:updated_at] = Time.zone.now if model.column_names.include?('updated_at')
     assignment
+  end
+
+  # Left to apply_verified_identity! to save, along with everything else it sets.
+  def confirm_target_email!(target)
+    return if target.email_confirmed_at.present?
+
+    target.email_confirmed_at = Time.zone.now
+    target.confirmation_required = false
   end
 
   # What +user+'s own verifications lock right now.

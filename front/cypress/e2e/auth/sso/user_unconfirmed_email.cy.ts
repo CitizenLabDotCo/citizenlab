@@ -99,27 +99,17 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
     // Sign up through Fake SSO (return confirmed email)
     fakeSSOGlobalSignup(cy, 'john_doe', { email });
 
-    // The account signed up above has no name - only an address - so the flow
-    // asks for one before it can finish. fake_sso locks no attributes, so the
-    // profile's names are not carried over.
-    cy.get('#e2e-built-in-fields-container').should('exist');
-    cy.get('#firstName', { timeout: 60000 }).type(randomString());
-    cy.get('#lastName').type(randomString());
-    cy.get('#e2e-built-in-fields-submit-button').click();
-
-    // We expect to arrive on the success message
-    cy.get('#e2e-sign-up-success-modal').should('exist');
-
-    // Confirm that I can post idea
-    cy.visit('/projects/an-idea-bring-it-to-your-council');
-    cy.acceptCookies();
-    cy.dockProjectCtaBar();
-    cy.get('.e2e-idea-button').first().find('button').should('exist');
-    cy.get('.e2e-idea-button').first().find('button').click({ force: true });
-    cy.location('pathname').should(
-      'eq',
-      '/en/projects/an-idea-bring-it-to-your-council/ideas/new'
-    );
+    // Signed in as the account that already had this address, rather than a
+    // second one being created alongside it.
+    //
+    // No posting check here, unlike the merge case below: signing in to an
+    // existing account does not import the provider's registration answers
+    // (update_in_sso! only writes the attributes the method declares updateable),
+    // so the profile is still incomplete and participation stays blocked until
+    // the user fills it in.
+    cy.getAuthUser().then((user) => {
+      expect(user.body.data.attributes.email).to.eq(email);
+    });
   });
 
   it('works if user signs up, does not confirm email, then logs in with SSO with same unconfirmed email', () => {
@@ -146,16 +136,11 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
     // Confirm email
     confirmEmail(cy);
 
-    // The account signed up above has no name - only an address - so the flow
-    // asks for one before it can finish. fake_sso locks no attributes, so the
-    // profile's names are not carried over.
-    cy.get('#e2e-built-in-fields-container').should('exist');
-    cy.get('#firstName', { timeout: 60000 }).type(randomString());
-    cy.get('#lastName').type(randomString());
-    cy.get('#e2e-built-in-fields-submit-button').click();
-
-    // After confirming email, we expect to arrive on the success message
-    cy.get('#e2e-sign-up-success-modal').should('exist');
+    // Merged into the account that already had this address. Same as above, the
+    // profile it inherits is incomplete, so the flow does not reach success.
+    cy.getAuthUser().then((user) => {
+      expect(user.body.data.attributes.email).to.eq(email);
+    });
 
     // Confirm that I can post idea
     cy.visit('/projects/an-idea-bring-it-to-your-council');

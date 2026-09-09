@@ -55,6 +55,31 @@ describe AccountMergeService do
     expect(MergeAccountConfirmation.count).to eq 0
   end
 
+  # The code proving the merge went to the target's own address, so asking it to
+  # confirm that same address afterwards would be asking twice.
+  it 'confirms the target email the code was sent to' do
+    # No password: an unconfirmed account that has one is the hijacking shape and
+    # is refused outright, so it never reaches this.
+    target.update_columns(password_digest: nil)
+    target.update!(email_confirmed_at: nil, confirmation_required: true)
+
+    merge!
+
+    target.reload
+    expect(target.email_confirmed_at).to be_present
+    expect(target.confirmation_required).to be false
+  end
+
+  # absorb! has no such proof: an identity provider tied the accounts together,
+  # which says nothing about who can read the target's inbox.
+  it 'leaves the target email unconfirmed when absorbing' do
+    target.update!(email_confirmed_at: nil, confirmation_required: true)
+
+    service.absorb!(source: source, target: target)
+
+    expect(target.reload.email_confirmed_at).to be_nil
+  end
+
   describe 'reactions' do
     let(:idea) { create(:idea) }
 
