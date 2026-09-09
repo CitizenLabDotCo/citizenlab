@@ -133,9 +133,13 @@ const EventsList: UserComponent<EventsProps> = ({
   if (showUpcoming && !upcomingEvents) return null;
   if (showPast && !pastEvents) return null;
 
+  // A disabled query keeps serving its last result, so a bucket is read through its own filter
+  // rather than through the query: switching one off has to stop it rendering.
+  const upcoming = showUpcoming ? upcomingEvents : undefined;
+  const past = showPast ? pastEvents : undefined;
+
   const isEmpty =
-    (upcomingEvents?.data.length ?? 0) === 0 &&
-    (pastEvents?.data.length ?? 0) === 0;
+    (upcoming?.data.length ?? 0) === 0 && (past?.data.length ?? 0) === 0;
 
   // EmptyEvents brings its own frame, and the caller's frame should not paint an empty band.
   if (isEmpty && !showEmptyMessage) {
@@ -163,23 +167,23 @@ const EventsList: UserComponent<EventsProps> = ({
         </Box>
       ) : (
         <Box display="flex" flexDirection="column" gap="48px">
-          {upcomingEvents && (
+          {upcoming && (
             <EventsSection
               id="e2e-project-page-upcoming-events"
               title={sharedMessages.upcomingAndOngoingEvents}
               showTitle={showUpcoming && showPast}
-              events={upcomingEvents}
+              events={upcoming}
               currentPage={upcomingPage}
               onPageChange={setUpcomingPage}
               showPagination={paginated}
             />
           )}
-          {pastEvents && (
+          {past && (
             <EventsSection
               id="e2e-project-page-past-events"
               title={sharedMessages.pastEvents}
               showTitle={showUpcoming && showPast}
-              events={pastEvents}
+              events={past}
               currentPage={pastPage}
               onPageChange={setPastPage}
               showPagination={paginated}

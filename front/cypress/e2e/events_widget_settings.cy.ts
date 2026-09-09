@@ -4,6 +4,7 @@ import { randomString } from '../support/commands';
 // `advanced_custom_pages` there is nothing to choose and the widget shows every project.
 describe('Events widget settings panel', () => {
   const eventTitle = `Event ${randomString()}`;
+  const pastEventTitle = `Past event ${randomString()}`;
 
   let projectId = '';
   let homepageLayout: Record<string, unknown>;
@@ -15,6 +16,7 @@ describe('Events widget settings panel', () => {
     });
 
   const soon = (hours: number) => new Date(Date.now() + hours * 60 * 60 * 1000);
+  const ago = (hours: number) => new Date(Date.now() - hours * 60 * 60 * 1000);
 
   function goToHomepageBuilder() {
     cy.setAdminLoginCookie();
@@ -75,6 +77,16 @@ describe('Events widget settings panel', () => {
         location: 'Brussels',
         startDate: soon(1),
         endDate: soon(2),
+      });
+      // A past bucket renders nothing when it is empty, so switching it on has to have
+      // something to show.
+      cy.apiCreateEvent({
+        projectId,
+        title: pastEventTitle,
+        description: pastEventTitle,
+        location: 'Brussels',
+        startDate: ago(48),
+        endDate: ago(47),
       });
     });
   });
@@ -163,5 +175,28 @@ describe('Events widget settings panel', () => {
           .invoke('text')
           .should('not.eq', subheading);
       });
+  });
+
+  // A query that is switched off keeps serving its last result, so a bucket has to be read
+  // through its own setting rather than through the query: switching one off and back on must
+  // not leave the old section on screen.
+  it('stops showing a bucket that is switched off again', () => {
+    cy.apiUpdateHomepageLayout({ craftjs_json: homepageWithoutEvents() });
+    goToHomepageBuilder();
+
+    cy.get('#e2e-draggable-events').dragAndDrop('#e2e-content-builder-frame', {
+      position: 'inside',
+    });
+
+    cy.contains('label', 'Past').click();
+    cy.get('#e2e-project-page-past-events').should('exist');
+    cy.contains('label', 'Past').click();
+    cy.get('#e2e-project-page-past-events').should('not.exist');
+
+    // The other bucket, which cannot be switched off until this one is back on.
+    cy.contains('label', 'Past').click();
+    cy.contains('label', 'Upcoming and ongoing').click();
+    cy.get('#e2e-project-page-upcoming-events').should('not.exist');
+    cy.get('#e2e-project-page-past-events').should('exist');
   });
 });
