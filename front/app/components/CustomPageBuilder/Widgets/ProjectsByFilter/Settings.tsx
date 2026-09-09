@@ -5,11 +5,9 @@ import {
   colors,
   Label,
   Radio,
-  Spinner,
   Text,
 } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
-import { IOption } from 'typings';
 
 import useAreas from 'api/areas/useAreas';
 import useGlobalTopics from 'api/global_topics/useGlobalTopics';
@@ -19,7 +17,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import MultipleSelect from 'components/UI/MultipleSelect';
+import MultiSelect from 'components/UI/MultiSelect';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -44,9 +42,9 @@ const Settings = () => {
   // The whole widget is the paid capability, so with it off nothing here is worth offering.
   const unavailable = !useFeatureFlag({ name: 'advanced_custom_pages' });
 
-  const { data: topics } = useGlobalTopics();
-  const { data: areas } = useAreas({});
-  const { data: spaces } = useSpaces();
+  const { data: topics, isLoading: topicsLoading } = useGlobalTopics();
+  const { data: areas, isLoading: areasLoading } = useAreas({});
+  const { data: spaces, isLoading: spacesLoading } = useSpaces();
 
   // A stored dimension stays listed even once its feature is off: the widget still filters by
   // it, so dropping it would read as unset, and picking another discards the selection.
@@ -65,13 +63,13 @@ const Settings = () => {
       : []),
   ];
 
-  const entities = {
-    global_topics: topics?.data,
-    areas: areas?.data,
-    spaces: spaces?.data,
+  const { entities, isLoading } = {
+    global_topics: { entities: topics?.data, isLoading: topicsLoading },
+    areas: { entities: areas?.data, isLoading: areasLoading },
+    spaces: { entities: spaces?.data, isLoading: spacesLoading },
   }[filterType];
 
-  const options: IOption[] | undefined = entities?.map((entity) => ({
+  const options = (entities ?? []).map((entity) => ({
     value: entity.id,
     label: localize(entity.attributes.title_multiloc),
   }));
@@ -124,20 +122,15 @@ const Settings = () => {
             ))}
           </Box>
           {/* Only the selector waits on its entity list; the rest of the panel stays usable. */}
-          {options ? (
-            <MultipleSelect
-              value={options.filter((option) => ids.includes(option.value))}
-              options={options}
-              label={formatMessage(messages.selectionLabel)}
-              onChange={(selected) => {
-                setProp((props: ProjectsByFilterProps) => {
-                  props.ids = selected.map((option) => option.value);
-                });
-              }}
-            />
-          ) : (
-            <Spinner />
-          )}
+          <MultiSelect
+            title={formatMessage(messages.selectionLabel)}
+            selected={ids}
+            isLoading={isLoading}
+            options={options}
+            onChange={(values) =>
+              setProp((props: ProjectsByFilterProps) => (props.ids = values))
+            }
+          />
         </>
       )}
     </Box>
