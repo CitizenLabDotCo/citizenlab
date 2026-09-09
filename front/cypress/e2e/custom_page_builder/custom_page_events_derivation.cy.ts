@@ -94,10 +94,18 @@ describe('Custom page events derivation', () => {
   });
 
   // Filtering is the paid capability on this surface, and the only surface it is gated on.
-  it('offers no choice of source without advanced_custom_pages', () => {
+  // The widget has to be derived while the tenant still has the feature: the derivation writes
+  // no events node without it, which is the layout service's own spec to cover, not this one.
+  // So this is the downgrade a stored node outlives — entitled at migration, not afterwards.
+  it('offers no choice of source once the tenant loses advanced_custom_pages', () => {
     setBuilderFeature(true);
-    setFiltering(false);
+    setFiltering(true);
     cy.setAdminLoginCookie();
+    cy.visit(`/admin/custom-page-builder/pages/${pageId}`);
+    cy.get('div#ROOT');
+    cy.dataCy('e2e-events-widget');
+
+    setFiltering(false);
     cy.visit(`/admin/custom-page-builder/pages/${pageId}`);
     cy.get('div#ROOT');
 
