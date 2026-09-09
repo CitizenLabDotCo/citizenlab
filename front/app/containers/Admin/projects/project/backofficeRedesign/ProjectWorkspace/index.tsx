@@ -12,6 +12,7 @@ import PhaseRightPanel from './Phase/PhaseRightPanel';
 import { viewFromPathname } from './Phase/usePhaseViews';
 import ProjectRightPanel from './ProjectRightPanel';
 import { sectionFromPathname } from './SectionLinks';
+import useMarkSetupStep from './useMarkSetupStep';
 import WorkspaceHeader from './WorkspaceHeader';
 
 const LEFT_PANEL_WIDTH = '280px';
@@ -29,11 +30,11 @@ const ProjectWorkspace = ({ project, phase, leftPanel, children }: Props) => {
   const [openDropdown, setOpenDropdown] = useState<HeaderDropdownName | null>(
     null
   );
-  const [shareOpened, setShareOpened] = useState(false);
+  const markSetupStep = useMarkSetupStep(project);
 
   const showDropdown = (dropdown: HeaderDropdownName | null) => {
     setOpenDropdown(dropdown);
-    if (dropdown === 'share') setShareOpened(true);
+    if (dropdown === 'share') markSetupStep('share');
   };
 
   const section = sectionFromPathname(pathname, project.id);
@@ -87,7 +88,6 @@ const ProjectWorkspace = ({ project, phase, leftPanel, children }: Props) => {
             ) : (
               <ProjectRightPanel
                 project={project}
-                shareOpened={shareOpened}
                 onOpenDropdown={showDropdown}
               />
             )}

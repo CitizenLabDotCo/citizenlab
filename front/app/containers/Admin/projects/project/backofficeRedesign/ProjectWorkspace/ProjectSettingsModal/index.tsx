@@ -34,10 +34,9 @@ interface Props {
   project: IProjectData;
   opened: boolean;
   onClose: () => void;
-  onSaved: () => void;
 }
 
-const ProjectSettingsModal = ({ project, opened, onClose, onSaved }: Props) => {
+const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const projectId = project.id;
 
@@ -156,7 +155,6 @@ const ProjectSettingsModal = ({ project, opened, onClose, onSaved }: Props) => {
       setProjectAttributesDiff({});
       setCardImageToRemove(null);
       setProcessing(false);
-      onSaved();
       onClose();
     } catch (errors) {
       setApiErrors((errors as { errors: CLErrors }).errors);

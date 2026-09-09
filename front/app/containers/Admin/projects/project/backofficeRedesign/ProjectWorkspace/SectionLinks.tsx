@@ -13,7 +13,7 @@ import Link, { typedStyled } from 'utils/cl-router/Link';
 
 import projectMessages from '../../messages';
 
-const SECTIONS = [
+const LINKED_SECTIONS = [
   {
     path: 'events',
     label: projectMessages.eventsTab,
@@ -23,6 +23,17 @@ const SECTIONS = [
     path: 'files',
     label: projectMessages.filesTab,
     to: '/admin/projects/$projectId/files',
+  },
+] as const;
+
+// Messaging takes over the workspace like the sections above, but is reached
+// from the Next actions list instead of a link here.
+const SECTIONS = [
+  ...LINKED_SECTIONS,
+  {
+    path: 'messaging',
+    label: projectMessages.messagingTab,
+    to: '/admin/projects/$projectId/messaging',
   },
 ] as const;
 
@@ -62,7 +73,7 @@ const SectionLinks = ({ projectId }: Props) => {
 
   return (
     <Box display="flex" flexDirection="column" gap="12px">
-      {SECTIONS.map(({ path, label, to }) => (
+      {LINKED_SECTIONS.map(({ path, label, to }) => (
         <Row key={path} to={to} params={{ projectId }}>
           <Text as="span" m="0" fontSize="l" color="textPrimary">
             {formatMessage(label)}

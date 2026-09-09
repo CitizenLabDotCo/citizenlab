@@ -17,25 +17,19 @@ import StepRow, { Step } from './StepRow';
 
 interface Props {
   project: IProjectData;
-  settingsSaved: boolean;
-  shareOpened: boolean;
   onOpenSettings: () => void;
   onOpenDropdown: (dropdown: HeaderDropdownName) => void;
 }
 
-const GetStarted = ({
-  project,
-  settingsSaved,
-  shareOpened,
-  onOpenSettings,
-  onOpenDropdown,
-}: Props) => {
+const GetStarted = ({ project, onOpenSettings, onOpenDropdown }: Props) => {
   const { formatMessage } = useIntl();
   const projectId = project.id;
   const { data: phases } = usePhases(projectId);
   const { data: layout } = useProjectPageLayout(projectId);
 
   const [methodModalOpened, setMethodModalOpened] = useState(false);
+
+  const goneThrough = project.attributes.completed_setup_steps ?? [];
 
   const steps: Step[] = [
     {
@@ -48,9 +42,7 @@ const GetStarted = ({
     {
       name: 'settings',
       label: messages.stepConfigureProjectSettings,
-      // No backend signal for "the settings were reviewed", so saving the
-      // settings modal counts as done — until the page is reloaded.
-      done: settingsSaved,
+      done: goneThrough.includes('settings'),
       onClick: onOpenSettings,
     },
     {
@@ -62,9 +54,7 @@ const GetStarted = ({
     {
       name: 'share',
       label: messages.stepSharePrivateLink,
-      // No backend signal for "the link was shared", so opening the share
-      // dropdown counts as done — until the page is reloaded.
-      done: shareOpened,
+      done: goneThrough.includes('share'),
       onClick: () => onOpenDropdown('share'),
     },
     {

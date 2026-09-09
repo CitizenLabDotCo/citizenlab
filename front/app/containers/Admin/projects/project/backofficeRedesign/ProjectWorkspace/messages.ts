@@ -57,6 +57,31 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.workspace.stepAddPhaseOrSurvey',
     defaultMessage: 'Add a phase or survey',
   },
+  nextActions: {
+    id: 'app.containers.Admin.projects.project.workspace.nextActions',
+    defaultMessage: 'Next actions',
+  },
+  noParticipantsYet: {
+    id: 'app.containers.Admin.projects.project.workspace.noParticipantsYet',
+    defaultMessage: 'No participants yet',
+  },
+  participantCount: {
+    id: 'app.containers.Admin.projects.project.workspace.participantCount',
+    defaultMessage:
+      '{count, plural, one {# participant} other {# participants}}',
+  },
+  actionNewIdeas: {
+    id: 'app.containers.Admin.projects.project.workspace.actionNewIdeas',
+    defaultMessage: 'New ideas',
+  },
+  actionMessageParticipants: {
+    id: 'app.containers.Admin.projects.project.workspace.actionMessageParticipants',
+    defaultMessage: 'Message participants',
+  },
+  actionCreateReport: {
+    id: 'app.containers.Admin.projects.project.workspace.actionCreateReport',
+    defaultMessage: 'Create report',
+  },
   stepPublishProject: {
     id: 'app.containers.Admin.projects.project.workspace.stepPublishProject',
     defaultMessage: 'Publish project',
