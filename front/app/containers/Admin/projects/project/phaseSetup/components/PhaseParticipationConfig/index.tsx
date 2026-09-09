@@ -64,6 +64,8 @@ interface Props {
   onChange: (arg: IUpdatedPhaseProperties) => void;
   setValidationErrors: React.Dispatch<React.SetStateAction<ValidationErrors>>;
   hideMethodPicker?: boolean;
+  /** 'panel' groups the settings by concern for the narrow workspace panel. */
+  layout?: 'page' | 'panel';
 }
 
 const MAX_VOTES_PER_VOTING_METHOD: Record<VotingMethod, number> = {
@@ -82,6 +84,7 @@ const PhaseParticipationConfig = ({
   onChange,
   setValidationErrors,
   hideMethodPicker,
+  layout = 'page',
 }: Props) => {
   const surveys_enabled = useFeatureFlag({ name: 'surveys' });
   const typeform_enabled = useFeatureFlag({ name: 'typeform_surveys' });
@@ -508,7 +511,7 @@ const PhaseParticipationConfig = ({
           />
         )}
         {project_library_enabled && (
-          <Box mb="20px" width="750px">
+          <Box mb="20px" maxWidth="750px">
             <FeatureCallout
               icon="info-solid"
               title={<FormattedMessage {...projectMessages.needInspiration} />}
@@ -629,6 +632,7 @@ const PhaseParticipationConfig = ({
             similarity_threshold_body={similarity_threshold_body}
             handleSimilarityEnabledChange={handleSimilarityEnabledChange}
             handleThresholdChange={handleThresholdChange}
+            layout={layout}
           />
         )}
 
@@ -676,6 +680,7 @@ const PhaseParticipationConfig = ({
             similarity_threshold_body={similarity_threshold_body}
             handleSimilarityEnabledChange={handleSimilarityEnabledChange}
             handleThresholdChange={handleThresholdChange}
+            layout={layout}
           />
         )}
 
