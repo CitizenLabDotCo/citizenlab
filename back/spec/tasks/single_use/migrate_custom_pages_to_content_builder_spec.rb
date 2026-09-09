@@ -87,6 +87,7 @@ describe 'single_use:migrate_custom_pages_to_content_builder' do
   end
 
   it 'derives an events widget from the page filter' do
+    SettingsService.new.activate_feature!('advanced_custom_pages')
     area = create(:area)
     page.update!(events_widget_enabled: true, projects_filter_type: 'areas', areas: [area])
 

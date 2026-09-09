@@ -1,10 +1,17 @@
 # frozen_string_literal: true
 
 module ContentBuilder
-  # Builds the craftjs graph for a custom page: a root and a body region holding the page's
-  # content in the order it renders today. A section of plain text goes in a native
-  # TextMultiloc widget; one holding media the text widget cannot render losslessly (inline
-  # images, videos, CTA buttons) goes in the RichTextMultiloc bridge widget.
+  # Builds the craftjs graph a custom page's layout starts as, read from the page's own columns:
+  # a root and a body region holding the page's content in the order the front office renders it.
+  #
+  # It runs only where a page has no layout yet — the backfill task, a newly created page, a new
+  # tenant's template, and a layout created empty through the API. Once a layout exists the
+  # builder owns it: an admin's edits are saved as sent, and nothing here runs again. So every
+  # rule below decides what a page *starts* with, never what may be put on it afterwards.
+  #
+  # A section of plain text goes in a native TextMultiloc widget; one holding media the text
+  # widget cannot render losslessly (inline images, videos, CTA buttons) goes in the
+  # RichTextMultiloc bridge widget.
   #
   # A disabled section is skipped, because the front office does not render one either.
   class CustomPageLayoutService
@@ -52,10 +59,12 @@ module ContentBuilder
       end
     end
 
-    # `hideProjects` in CustomPageProjectsAndEvents returns null above the events block too, so a
-    # page with no project filter shows no events today whatever its events toggle says.
+    # Both guards mirror `hideProjects` in CustomPageProjectsAndEvents, whose early return sits
+    # above the events block: a page shows no events without the feature, or without a project
+    # filter. Deriving one would also hand a tenant without the feature a live area filter.
     def events_node(static_page)
       return unless static_page.events_widget_enabled
+      return unless AppConfiguration.instance.feature_activated?('advanced_custom_pages')
       return if static_page.projects_filter_type == 'no_filter'
 
       Craftjs::Nodes.events(

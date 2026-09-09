@@ -119,6 +119,8 @@ describe ContentBuilder::CustomPageLayoutService do
     context 'with an events section' do
       let(:events_id) { described_class::EVENTS_ID }
 
+      before { SettingsService.new.activate_feature!('advanced_custom_pages') }
+
       def page_with_events(**attributes)
         create(
           :static_page,
@@ -180,6 +182,16 @@ describe ContentBuilder::CustomPageLayoutService do
       # `hideProjects` hides the events block too, so a no_filter page shows no events today.
       it 'adds nothing when the page has no project filter' do
         page = page_with_events(projects_filter_type: 'no_filter')
+
+        expect(service.craftjs_json_for(page).keys).not_to include events_id
+      end
+
+      # The other arm of `hideProjects`: a page on a tenant without the feature shows no events
+      # either, and a derived node would filter by area with no setting to show for it.
+      it 'adds nothing when the tenant does not have advanced_custom_pages' do
+        SettingsService.new.deactivate_feature!('advanced_custom_pages')
+        area = create(:area)
+        page = page_with_events(projects_filter_type: 'areas', areas: [area])
 
         expect(service.craftjs_json_for(page).keys).not_to include events_id
       end
