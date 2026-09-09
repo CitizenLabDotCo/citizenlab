@@ -13,6 +13,7 @@ describe('Custom page projects derivation', () => {
   let pageSlug = '';
   let projectId = '';
   let otherProjectId = '';
+  let areaId = '';
   let filteringWasEnabled = false;
 
   const setBuilderFeature = (enabled: boolean) =>
@@ -36,7 +37,7 @@ describe('Custom page projects derivation', () => {
     });
 
     cy.apiCreateArea(areaTitle).then((area) => {
-      const areaId = area.body.data.id;
+      areaId = area.body.data.id;
 
       cy.apiCreateProject({
         title: projectTitle,
@@ -74,6 +75,7 @@ describe('Custom page projects derivation', () => {
     if (pageId) cy.apiRemoveCustomPage(pageId);
     if (projectId) cy.apiRemoveProject(projectId);
     if (otherProjectId) cy.apiRemoveProject(otherProjectId);
+    if (areaId) cy.apiRemoveArea(areaId);
   });
 
   it('carries the page filter onto the derived projects widget', () => {

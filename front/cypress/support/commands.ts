@@ -93,6 +93,7 @@ declare global {
       apiUpdateHomepageLayout: typeof apiUpdateHomepageLayout;
       apiUpdateProjectPageLayout: typeof apiUpdateProjectPageLayout;
       apiCreateArea: typeof apiCreateArea;
+      apiRemoveArea: typeof apiRemoveArea;
       apiSetProjectAreas: typeof apiSetProjectAreas;
       apiUpdateAppConfiguration: typeof apiUpdateAppConfiguration;
       clickLocaleSwitcherAndType: typeof clickLocaleSwitcherAndType;
@@ -1871,6 +1872,21 @@ function apiUpdateHomepageLayout({
   });
 }
 
+function apiRemoveArea(areaId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'DELETE',
+      url: `web_api/v1/areas/${areaId}`,
+    });
+  });
+}
+
 function apiCreateArea(title: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -2575,6 +2591,7 @@ Cypress.Commands.add('apiGetHomepageLayout', apiGetHomepageLayout);
 Cypress.Commands.add('apiUpdateHomepageLayout', apiUpdateHomepageLayout);
 Cypress.Commands.add('apiUpdateProjectPageLayout', apiUpdateProjectPageLayout);
 Cypress.Commands.add('apiCreateArea', apiCreateArea);
+Cypress.Commands.add('apiRemoveArea', apiRemoveArea);
 Cypress.Commands.add('apiSetProjectAreas', apiSetProjectAreas);
 Cypress.Commands.add('apiRemoveCustomPage', apiRemoveCustomPage);
 Cypress.Commands.add('apiCreateCustomPage', apiCreateCustomPage);
