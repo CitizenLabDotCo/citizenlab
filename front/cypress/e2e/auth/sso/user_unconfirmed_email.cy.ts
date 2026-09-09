@@ -1,6 +1,6 @@
-import { randomEmail } from '../../../support/commands';
+import { randomEmail, randomString } from '../../../support/commands';
 import { fakeSSOGlobalSignup } from './utils';
-import { confirmEmail, enterEmail } from '../../../support/auth';
+import { confirmEmail, signUp } from '../../../support/auth';
 
 describe('SSO: user with unconfirmed email', () => {
   it('signs the user in after a round-trip through the fake OIDC provider', () => {
@@ -23,6 +23,31 @@ describe('SSO: user with unconfirmed email', () => {
 
     // Confirm email with the new code (which is always the same in the e2e env)
     confirmEmail(cy);
+  });
+
+  // The other shape of "account with this email exists": a fully established
+  // account, confirmed and with a password. The SSO says its address is
+  // unverified, so it is never trusted - the user has to prove they own that
+  // inbox with a code before the two accounts are joined.
+  it('merges into an established account when the SSO email is already taken', () => {
+    const email = randomEmail();
+    cy.apiSignup(randomString(), randomString(), email, randomString());
+
+    fakeSSOGlobalSignup(cy, 'tracy_smith', { email });
+
+    cy.get('#e2e-built-in-fields-container')
+      .find('input[type="email"]')
+      .should('have.value', email);
+    cy.get('#e2e-built-in-fields-submit-button').click();
+
+    confirmEmail(cy);
+    cy.get('#e2e-sign-up-success-modal').should('exist');
+
+    // Signed in as the account that survived, now carrying the SSO verification.
+    cy.getAuthUser().then((user) => {
+      expect(user.body.data.attributes.email).to.eq(email);
+      expect(user.body.data.attributes.verified).to.eq(true);
+    });
   });
 
   it('allows user to change email', () => {
@@ -59,11 +84,13 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
     cy.get('#e2e-authentication-modal').should('exist');
   });
 
+  // The account is only created once the policies are accepted, so signing up has
+  // to run that far for there to be an account to collide with.
   it('works if user signs up, does not confirm email, then logs in with SSO with same confirmed email', () => {
     const email = randomEmail();
 
-    // Create account with unconfirmed email
-    enterEmail(cy, email);
+    // Create account with unconfirmed email and no password
+    signUp(cy, email);
 
     // Close modal, log out
     cy.get('.e2e-modal-close-button').first().click();
@@ -90,8 +117,8 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
   it('works if user signs up, does not confirm email, then logs in with SSO with same unconfirmed email', () => {
     const email = randomEmail();
 
-    // Create account with unconfirmed email
-    enterEmail(cy, email);
+    // Create account with unconfirmed email and no password
+    signUp(cy, email);
 
     // Close modal, log out
     cy.get('.e2e-modal-close-button').first().click();
@@ -99,6 +126,14 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
 
     // Sign up through Fake SSO (return unconfirmed email)
     fakeSSOGlobalSignup(cy, 'tracy_smith', { email });
+
+    // The address belongs to the account above and the SSO says it is
+    // unverified, so it is not saved on the new account. The missing-data form
+    // opens pre-filled with it, and submitting offers to merge the two.
+    cy.get('#e2e-built-in-fields-container')
+      .find('input[type="email"]')
+      .should('have.value', email);
+    cy.get('#e2e-built-in-fields-submit-button').click();
 
     // Confirm email
     confirmEmail(cy);
