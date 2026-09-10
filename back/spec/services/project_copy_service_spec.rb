@@ -446,6 +446,52 @@ describe ProjectCopyService do
       expect(copied_project.files.filter_map(&:uploader)).to be_present
     end
 
+    it 'copies anonymized users with demographic answers reusing the registration fields' do
+      gender_field = create(:custom_field_gender, :with_options)
+      birthyear_field = create(:custom_field_birthyear)
+      author = create(:user, custom_field_answers: [
+        build(:custom_field_answer, key: 'gender', value: 'female', custom_field: gender_field),
+        build(:custom_field_answer, key: 'birthyear', value: 1984, custom_field: birthyear_field),
+        build(:custom_field_answer, key: 'postal_code', value: '1000')
+      ])
+      idea = create(:idea, author: author)
+
+      template = service.export idea.project, include_ideas: true
+
+      yml_author = template['models']['user'].first
+      expect(yml_author).not_to have_key('custom_field_values')
+      author_answers = template['models']['custom_field_answer'].select { |answer| answer['answerable_ref'].equal?(yml_author) }
+      expect(author_answers.map { |answer| answer.values_at('key', 'value') }).to contain_exactly(
+        %w[gender female],
+        ['birthyear', 1984]
+      )
+      registration_codes = template['models']['custom_field'].filter_map { |field| field['code'] if field['resource_type'] == 'User' }
+      expect(registration_codes).to contain_exactly('gender', 'birthyear')
+
+      create(:idea_status_proposed)
+      copied_project = nil
+      expect { copied_project = service.import template }.not_to change(CustomField.registration, :count)
+      copied_author = copied_project.ideas.first.author
+      expect(copied_author.custom_field_answers.pluck(:custom_field_id, :key, :value)).to contain_exactly(
+        [gender_field.id, 'gender', 'female'],
+        [birthyear_field.id, 'birthyear', 1984]
+      )
+    end
+
+    it 'drops the demographic answers when the target has no matching registration fields' do
+      create(:custom_field_gender, :with_options)
+      create(:custom_field_birthyear)
+      idea = create(:idea, author: create(:user))
+
+      template = service.export idea.project, include_ideas: true
+
+      CustomField.registration.destroy_all
+      create(:idea_status_proposed)
+      copied_project = nil
+      expect { copied_project = service.import template }.not_to change(CustomField.registration, :count)
+      expect(copied_project.ideas.first.author.custom_field_answers).to be_empty
+    end
+
     it 'includes phases with no end date' do
       project = create(:project_with_active_ideation_phase)
       project.phases.last.update!(end_at: nil)
