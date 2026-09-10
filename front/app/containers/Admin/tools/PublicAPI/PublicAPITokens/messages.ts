@@ -30,6 +30,10 @@ export default defineMessages({
     id: 'app.containers.Admin.tools.apiTokens.lastUsedAt',
     defaultMessage: 'Last used',
   },
+  lastUserAgent: {
+    id: 'app.containers.Admin.tools.apiTokens.lastUserAgent',
+    defaultMessage: 'Last user agent: {userAgent}',
+  },
   delete: {
     id: 'app.containers.Admin.tools.apiTokens.delete',
     defaultMessage: 'Delete token',
