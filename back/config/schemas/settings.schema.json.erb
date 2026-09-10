@@ -1553,8 +1553,8 @@
 
       "sms": {
         "type": "object",
-        "title": "SMS (DO NOT USE YET)",
-        "description": "(DO NOT USE YET) Send SMS messages to users via the tenant's own Twilio account.",
+        "title": "SMS",
+        "description": "Send SMS messages to users via the tenant's own Twilio account. ONLY ENABLE IF YOU HAVE CONFIGURED TWILIO CORRECTLY.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1600,8 +1600,8 @@
 
       "sms_login": {
         "type": "object",
-        "title": "SMS login (DO NOT USE YET)",
-        "description": "(DO NOT USE YET) Allow users to log in or sign up via SMS as an alternative to email.",
+        "title": "SMS login",
+        "description": "Allow users to log in or sign up via SMS as an alternative to email. ONLY USE IF SMS FEATURE FLAG IS ENABLED.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1612,8 +1612,8 @@
 
       "sms_manual_campaigns": {
         "type": "object",
-        "title": "SMS manual campaigns (DO NOT USE YET)",
-        "description": "(DO NOT USE YET) Allow admins to send manual SMS campaigns. Requires the SMS feature, which holds the Twilio account credentials.",
+        "title": "SMS manual campaigns",
+        "description": "Allow admins to send manual SMS campaigns. ONLY USE IF SMS FEATURE FLAG IS ENABLED. ONLY USE IF twilio_manual_campaigns_messaging_service_sid IS CONFIGURED.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
