@@ -2604,6 +2604,7 @@
   "app.errors.bulk_import_maximum_pdf_pages_exceeded": "Het maximum van {value} pagina's in een PDF is overschreden.",
   "app.errors.bulk_import_not_enough_pdf_pages": "De geüploade PDF heeft niet genoeg pagina's - hij moet minstens evenveel pagina's hebben als de gedownloade sjabloon.",
   "app.errors.bulk_import_pdf_pages_not_divisible": "Het totale aantal pagina's in de PDF moet deelbaar zijn door het opgegeven aantal pagina's per formulier.",
+  "app.errors.bulk_import_pdf_parsing_timeout": "Het verwerken van de geüploade pdf duurt te lang. Probeer de pdf opnieuw te exporteren vanuit de bron en upload deze vervolgens opnieuw.",
   "app.errors.bulk_import_publication_date_invalid_format": "Idee met ongeldig datumformaat \"{value}\". Gebruik het formaat \"DD-MM-JJJJ\".",
   "app.errors.bulk_import_user_not_valid": "Er kon geen gebruiker worden aangemaakt op basis van de importgegevens: {value}. Dit probleem doet zich voor in de rij met ID {row}.",
   "app.errors.cannot_contain_ideas": "Er {ideasCount, plural, one {is één idee} other {zijn {ideasCount} ideeën}} in deze fase en de participatiemethode die je koos ondersteunt geen ideeën. Gelieve daarom {ideasCount, plural, one {het idee} other {de ideeën}} eerst uit deze fase te verwijderen en opnieuw te proberen.",

@@ -2604,6 +2604,7 @@
   "app.errors.bulk_import_maximum_pdf_pages_exceeded": "Det maksimale antal {value} sider i en PDF er overskredet.",
   "app.errors.bulk_import_not_enough_pdf_pages": "Den uploadede PDF har ikke nok sider - den skal have mindst det samme antal sider som den downloadede skabelon.",
   "app.errors.bulk_import_pdf_pages_not_divisible": "Det samlede antal sider i PDF'en skal være jævnt deleligt med det angivne antal sider pr. formular.",
+  "app.errors.bulk_import_pdf_parsing_timeout": "Den uploadede PDF-fil tager for lang tid at behandle. Prøv at eksportere PDF-filen igen fra din kilde, og upload den derefter igen.",
   "app.errors.bulk_import_publication_date_invalid_format": "Idé med ugyldigt format for udgivelsesdato \"{value}\". Brug venligst formatet \"DD-MM-YYYY\".",
   "app.errors.bulk_import_user_not_valid": "En bruger kunne ikke oprettes ud fra importdataene: {value}. Dette problem opstår i rækken med ID {row}.",
   "app.errors.cannot_contain_ideas": "Den valgte metode til borgerinddragelse understøtter ikke denne type indlæg. Redigér dit valg, og prøv igen.",
