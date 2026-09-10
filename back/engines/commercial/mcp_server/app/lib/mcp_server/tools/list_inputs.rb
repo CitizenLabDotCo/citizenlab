@@ -8,7 +8,9 @@ class McpServer::Tools::ListInputs < McpServer::BaseTool
     <<~DESC.squish
       Lists the published inputs (ideas, proposals or native survey responses) of a phase,
       newest first, in a lean row shape. Search by title or body. Read a single input's
-      full content (body, form answers) with get_resource type 'input'.
+      full content (body, form answers) with get_resource type 'input'. For bulk analysis
+      across many inputs (e.g. summarizing all survey answers), use run_reporting_sql_query
+      instead of paging through this tool.
     DESC
   end
 
