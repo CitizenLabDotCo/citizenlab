@@ -70,17 +70,9 @@ export default defineMessages({
     defaultMessage:
       '{count, plural, one {# participant} other {# participants}}',
   },
-  actionNewIdeas: {
-    id: 'app.containers.Admin.projects.project.workspace.actionNewIdeas',
-    defaultMessage: 'New ideas',
-  },
   actionMessageParticipants: {
     id: 'app.containers.Admin.projects.project.workspace.actionMessageParticipants',
     defaultMessage: 'Message participants',
-  },
-  actionCreateReport: {
-    id: 'app.containers.Admin.projects.project.workspace.actionCreateReport',
-    defaultMessage: 'Create report',
   },
   stepPublishProject: {
     id: 'app.containers.Admin.projects.project.workspace.stepPublishProject',

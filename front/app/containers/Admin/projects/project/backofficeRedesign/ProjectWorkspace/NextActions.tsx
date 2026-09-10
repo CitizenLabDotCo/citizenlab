@@ -2,8 +2,6 @@ import React from 'react';
 
 import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
 
-import usePhases from 'api/phases/usePhases';
-import { getLatestRelevantPhase } from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
 
 import { useIntl } from 'utils/cl-intl';
@@ -32,9 +30,7 @@ interface Props {
 const NextActions = ({ project }: Props) => {
   const { formatMessage } = useIntl();
   const projectId = project.id;
-  const { data: phases } = usePhases(projectId);
 
-  const phase = phases && getLatestRelevantPhase(phases.data);
   const participants = project.attributes.participants_count;
 
   return (
@@ -59,33 +55,6 @@ const NextActions = ({ project }: Props) => {
       </Box>
 
       <Box display="flex" flexDirection="column">
-        {phase && (
-          <Row
-            to="/admin/projects/$projectId/phases/$phaseId/ideas"
-            params={{ projectId, phaseId: phase.id }}
-          >
-            <Box display="flex" alignItems="center" gap="12px" minWidth="0">
-              <Icon
-                name="idea"
-                width="20px"
-                height="20px"
-                fill={colors.textPrimary}
-                my="0px"
-              />
-              <Text as="span" m="0" fontSize="s" color="textPrimary">
-                {formatMessage(messages.actionNewIdeas)}
-              </Text>
-            </Box>
-            <Icon
-              name="chevron-right"
-              width="16px"
-              height="16px"
-              fill={colors.textSecondary}
-              my="0px"
-            />
-          </Row>
-        )}
-
         <Row to="/admin/projects/$projectId/messaging" params={{ projectId }}>
           <Box display="flex" alignItems="center" gap="12px" minWidth="0">
             <Icon
@@ -107,33 +76,6 @@ const NextActions = ({ project }: Props) => {
             my="0px"
           />
         </Row>
-
-        {phase && (
-          <Row
-            to="/admin/projects/$projectId/phases/$phaseId/report"
-            params={{ projectId, phaseId: phase.id }}
-          >
-            <Box display="flex" alignItems="center" gap="12px" minWidth="0">
-              <Icon
-                name="reports"
-                width="20px"
-                height="20px"
-                fill={colors.textPrimary}
-                my="0px"
-              />
-              <Text as="span" m="0" fontSize="s" color="textPrimary">
-                {formatMessage(messages.actionCreateReport)}
-              </Text>
-            </Box>
-            <Icon
-              name="chevron-right"
-              width="16px"
-              height="16px"
-              fill={colors.textSecondary}
-              my="0px"
-            />
-          </Row>
-        )}
       </Box>
     </Box>
   );
