@@ -2162,6 +2162,7 @@
   "app.containers.Admin.tools.apiTokens.deleteConfirmation": "Er du sikker på, at du vil slette dette token?",
   "app.containers.Admin.tools.apiTokens.description": "Administrer dine API-tokens til vores offentlige API. For mere information, se vores {link}.",
   "app.containers.Admin.tools.apiTokens.lastUsedAt": "Sidst brugt",
+  "app.containers.Admin.tools.apiTokens.lastUserAgent": "Seneste brugeragent: {userAgent}",
   "app.containers.Admin.tools.apiTokens.link": "API-dokumentation",
   "app.containers.Admin.tools.apiTokens.linkUrl2": "https://developers.citizenlab.co/api",
   "app.containers.Admin.tools.apiTokens.name": "Navn",

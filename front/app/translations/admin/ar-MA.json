@@ -2162,6 +2162,7 @@
   "app.containers.Admin.tools.apiTokens.deleteConfirmation": "واش متأكد بغيتي تمسح هاد الرمز (token)؟",
   "app.containers.Admin.tools.apiTokens.description": "قم بإدارة رموز API الخاصة بك لواجهة برمجة التطبيقات العامة لدينا. لمزيد من المعلومات، راجع {link}.",
   "app.containers.Admin.tools.apiTokens.lastUsedAt": "آخر استخدام",
+  "app.containers.Admin.tools.apiTokens.lastUserAgent": "آخر وكيل مستخدم: {userAgent}",
   "app.containers.Admin.tools.apiTokens.link": "وثائق واجهة برمجة التطبيقات (API)",
   "app.containers.Admin.tools.apiTokens.linkUrl2": "https://developers.citizenlab.co/api",
   "app.containers.Admin.tools.apiTokens.name": "الاسم",

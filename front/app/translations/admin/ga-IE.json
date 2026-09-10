@@ -2162,6 +2162,7 @@
   "app.containers.Admin.tools.apiTokens.deleteConfirmation": "An bhfuil tú cinnte gur mian leat an comhartha seo a scriosadh?",
   "app.containers.Admin.tools.apiTokens.description": "Bainistigh do chomharthaí API dár n-API poiblí. Le haghaidh tuilleadh eolais, féach ar ár {link}.",
   "app.containers.Admin.tools.apiTokens.lastUsedAt": "Úsáidte go deireanach",
+  "app.containers.Admin.tools.apiTokens.lastUserAgent": "An gníomhaire úsáideora deireanach: {userAgent}",
   "app.containers.Admin.tools.apiTokens.link": "Doiciméadú API",
   "app.containers.Admin.tools.apiTokens.linkUrl2": "https://developers.citizenlab.co/api",
   "app.containers.Admin.tools.apiTokens.name": "Ainm",

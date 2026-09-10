@@ -3,6 +3,7 @@ import {
   IDAzureAdMethod,
   IDAzureAdB2cMethod,
   IDFacebookMethod,
+  IDPublikMethod,
   IdMethodName,
   IdMethodData,
 } from './types';
@@ -21,6 +22,14 @@ export const getAzureB2cConfig = (idMethods?: IdMethods) => {
   ) as IDAzureAdB2cMethod | undefined;
 
   return azureAdB2cConfig;
+};
+
+export const getPublikConfig = (idMethods?: IdMethods) => {
+  const publikConfig = idMethods?.data.find(
+    (method): method is IDPublikMethod => method.attributes.name === 'publik'
+  );
+
+  return publikConfig;
 };
 
 export const getFacebookConfig = (idMethods?: IdMethods) => {

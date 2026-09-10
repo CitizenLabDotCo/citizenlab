@@ -2162,6 +2162,7 @@
   "app.containers.Admin.tools.apiTokens.deleteConfirmation": "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτό το διακριτικό;",
   "app.containers.Admin.tools.apiTokens.description": "Διαχειριστείτε τα κουπόνια API για το δημόσιο API μας. Για περισσότερες πληροφορίες, δείτε το {link}.",
   "app.containers.Admin.tools.apiTokens.lastUsedAt": "Τελευταία χρήση",
+  "app.containers.Admin.tools.apiTokens.lastUserAgent": "Τελευταίο user agent: {userAgent}",
   "app.containers.Admin.tools.apiTokens.link": "Τεκμηρίωση API",
   "app.containers.Admin.tools.apiTokens.linkUrl2": "https://developers.citizenlab.co/api",
   "app.containers.Admin.tools.apiTokens.name": "Όνομα",
