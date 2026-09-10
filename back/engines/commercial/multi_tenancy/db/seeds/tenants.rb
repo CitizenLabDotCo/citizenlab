@@ -431,7 +431,8 @@ module MultiTenancy
             },
             sms: {
               enabled: true,
-              allowed: true
+              allowed: true,
+              use_test_mode: true
             },
             sms_login: {
               enabled: true,
