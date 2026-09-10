@@ -56,7 +56,6 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def seats
-
     authorize :user, :seats?
 
     attributes = {
