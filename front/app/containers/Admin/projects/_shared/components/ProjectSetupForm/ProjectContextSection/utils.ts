@@ -2,6 +2,18 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import { isAdmin } from 'utils/permissions/roles';
 
+/*
+  The space or folder is what gives a manager access to the project, so only
+  users above that role may move it out of one.
+*/
+export const useCanEditProjectContext = () => {
+  const { data: authUser } = useAuthUser();
+
+  return (
+    !!authUser && authUser.data.attributes.highest_role !== 'project_moderator'
+  );
+};
+
 interface Params {
   spaceId?: string | null;
   folderId?: string | null;

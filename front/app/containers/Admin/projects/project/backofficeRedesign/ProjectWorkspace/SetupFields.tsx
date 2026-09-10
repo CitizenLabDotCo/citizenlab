@@ -3,11 +3,11 @@ import React from 'react';
 import { Box, Select } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
-import useAuthUser from 'api/me/useAuthUser';
 import { IProjectData, Visibility } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
 import ProjectContextInner from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/Inner';
+import { useCanEditProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/utils';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -22,7 +22,7 @@ interface Props {
 
 const SetupFields = ({ project }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: authUser } = useAuthUser();
+  const canEditProjectContext = useCanEditProjectContext();
   const { mutate: updateProject } = useUpdateProject();
 
   const { listed, visible_to, space_id, folder_id } = project.attributes;
@@ -37,9 +37,6 @@ const SetupFields = ({ project }: Props) => {
     { value: 'admins', label: formatMessage(messages.publishOpenAdmins) },
     { value: 'groups', label: formatMessage(messages.publishOpenGroups) },
   ];
-
-  const canEditContext =
-    authUser && authUser.data.attributes.highest_role !== 'project_moderator';
 
   return (
     <Box display="flex" flexDirection="column" gap="20px">
@@ -66,7 +63,7 @@ const SetupFields = ({ project }: Props) => {
         className="e2e-setup-fields-visible-to"
       />
 
-      {canEditContext && (
+      {canEditProjectContext && (
         <ProjectContextInner
           spaceId={space_id}
           folderId={folder_id}

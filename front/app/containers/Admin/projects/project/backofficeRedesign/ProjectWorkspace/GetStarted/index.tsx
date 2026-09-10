@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 import usePhases from 'api/phases/usePhases';
 import useProjectPageLayout from 'api/project_page_layout/useProjectPageLayout';
@@ -11,6 +11,7 @@ import clHistory from 'utils/cl-router/history';
 
 import { HeaderDropdownName } from '../HeaderDropdown';
 import messages from '../messages';
+import PanelHeading from '../PanelHeading';
 import SelectMethodModal from '../SelectMethodModal';
 
 import StepRow, { Step } from './StepRow';
@@ -69,23 +70,13 @@ const GetStarted = ({ project, onOpenSettings, onOpenDropdown }: Props) => {
 
   return (
     <Box>
-      <Box
-        display="flex"
-        alignItems="baseline"
-        justifyContent="space-between"
-        gap="8px"
-        mb="6px"
-      >
-        <Text m="0" fontSize="s" fontWeight="bold" color="textPrimary">
-          {formatMessage(messages.getStarted)}
-        </Text>
-        <Text m="0" fontSize="xs" color="textSecondary">
-          {formatMessage(messages.stepsDone, {
-            done: doneCount,
-            total: steps.length,
-          })}
-        </Text>
-      </Box>
+      <PanelHeading
+        title={formatMessage(messages.getStarted)}
+        meta={formatMessage(messages.stepsDone, {
+          done: doneCount,
+          total: steps.length,
+        })}
+      />
 
       <Box display="flex" flexDirection="column">
         {steps.map((step, index) => (

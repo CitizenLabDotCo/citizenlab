@@ -8,6 +8,7 @@ import { useIntl } from 'utils/cl-intl';
 import Link, { typedStyled } from 'utils/cl-router/Link';
 
 import messages from './messages';
+import PanelHeading from './PanelHeading';
 
 const Row = typedStyled(Link)`
   display: flex;
@@ -35,24 +36,14 @@ const NextActions = ({ project }: Props) => {
 
   return (
     <Box>
-      <Box
-        display="flex"
-        alignItems="baseline"
-        justifyContent="space-between"
-        gap="8px"
-        mb="6px"
-      >
-        <Text m="0" fontSize="s" fontWeight="bold" color="textPrimary">
-          {formatMessage(messages.nextActions)}
-        </Text>
-        <Text m="0" fontSize="xs" color="textSecondary">
-          {participants === 0
+      <PanelHeading
+        title={formatMessage(messages.nextActions)}
+        meta={
+          participants === 0
             ? formatMessage(messages.noParticipantsYet)
-            : formatMessage(messages.participantCount, {
-                count: participants,
-              })}
-        </Text>
-      </Box>
+            : formatMessage(messages.participantCount, { count: participants })
+        }
+      />
 
       <Box display="flex" flexDirection="column">
         <Row to="/admin/projects/$projectId/messaging" params={{ projectId }}>

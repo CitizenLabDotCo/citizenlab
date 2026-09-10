@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { Box, Button } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
@@ -68,27 +68,30 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
   const projectInRoot =
     !project.attributes.space_id && !project.attributes.folder_id;
 
-  useEffect(() => {
-    (async () => {
-      if (!remoteProjectImages) return;
+  const loadRemoteCardImage = useCallback(async () => {
+    setCardImage(null);
+    setCardImageAltText(null);
 
-      for (const projectImage of remoteProjectImages.data) {
-        const url = projectImage.attributes.versions.large;
-        if (!url) continue;
+    for (const projectImage of remoteProjectImages?.data ?? []) {
+      const url = projectImage.attributes.versions.large;
+      if (!url) continue;
 
-        const uploadFile = await convertUrlToUploadFile(
-          url,
-          projectImage.id,
-          null
-        );
-        if (isUploadFile(uploadFile)) {
-          setCardImage(uploadFile);
-          setCardImageAltText(projectImage.attributes.alt_text_multiloc);
-          break;
-        }
+      const uploadFile = await convertUrlToUploadFile(
+        url,
+        projectImage.id,
+        null
+      );
+      if (isUploadFile(uploadFile)) {
+        setCardImage(uploadFile);
+        setCardImageAltText(projectImage.attributes.alt_text_multiloc);
+        break;
       }
-    })();
+    }
   }, [remoteProjectImages]);
+
+  useEffect(() => {
+    loadRemoteCardImage();
+  }, [loadRemoteCardImage]);
 
   const applyDiff = (diff: IUpdatedProjectProperties) =>
     setProjectAttributesDiff((current) => ({ ...current, ...diff }));
@@ -154,6 +157,7 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
 
       setProjectAttributesDiff({});
       setCardImageToRemove(null);
+      setCroppedCardBase64(null);
       setProcessing(false);
       onClose();
     } catch (errors) {
@@ -168,6 +172,11 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
     setShowSlugErrorMessage(false);
     setProjectContextError(false);
     setApiErrors({});
+    setCardImageToRemove(null);
+    setCroppedCardBase64(null);
+    // The modal stays mounted between openings, so the card image the manager
+    // edited has to be read back from the server to undo it.
+    loadRemoteCardImage();
     onClose();
   };
 
