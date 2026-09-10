@@ -100,7 +100,7 @@ class UserFieldsInFormService
         .select { |key, _value| key.start_with?(prefix) }
         .transform_keys { |key| key[prefix.length..] }
 
-      user.update_merging_custom_fields!('custom_field_values' => user_values_from_idea)
+      UserService.assign_merging_custom_fields(user, 'custom_field_values' => user_values_from_idea).save!
     end
 
     # Append user custom fields to form

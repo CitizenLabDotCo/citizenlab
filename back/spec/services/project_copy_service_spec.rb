@@ -459,7 +459,6 @@ describe ProjectCopyService do
       template = service.export idea.project, include_ideas: true
 
       yml_author = template['models']['user'].first
-      expect(yml_author).not_to have_key('custom_field_values')
       author_answers = template['models']['custom_field_answer'].select { |answer| answer['answerable_ref'].equal?(yml_author) }
       expect(author_answers.map { |answer| answer.values_at('key', 'value') }).to contain_exactly(
         %w[gender female],

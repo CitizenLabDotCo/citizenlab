@@ -68,7 +68,17 @@ class UserService
 
       resolve_sso_email!(user, user_params, sso_user_attrs[:email], authver_method.email_confirmed?(auth))
 
-      user.update_merging_custom_fields!(user_params)
+      assign_merging_custom_fields(user, user_params).save!
+    end
+
+    def assign_merging_custom_fields(user, attributes)
+      attributes = attributes.deep_stringify_keys
+      incoming_values = (attributes.delete('custom_field_values') || {})
+        .merge(attributes.extract!('gender', 'birthyear', 'domicile').compact)
+      values = user.custom_field_answers.to_h { [it.key, it.value] }.merge(incoming_values)
+      CustomFieldValuesTransitionService.new.assign(user, values)
+      user.assign_attributes(attributes)
+      user
     end
 
     def assign_params_in_accept_invite(user, user_params, confirm_user: false)
@@ -79,8 +89,7 @@ class UserService
       # If the user's email came from/matches the authver one, and the provider
       # says it was confirmed: we mark the user's email as confirmed.
       user.find_or_create_confirmation(:email_confirmation).confirm! if confirm_user
-      user.assign_attributes(user_params.merge(invite_status: 'accepted'))
-      user
+      assign_merging_custom_fields(user, user_params.merge('invite_status' => 'accepted'))
     end
 
     # User can also be updated in input importer by PATCH /users/:id (`update_in_web_api` is called)

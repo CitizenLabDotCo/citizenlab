@@ -283,15 +283,6 @@ class User < ApplicationRecord
     answer_for_code('domicile')&.value
   end
 
-  def update_merging_custom_fields!(attributes)
-    attributes = attributes.deep_stringify_keys
-    incoming_values = (attributes.delete('custom_field_values') || {})
-      .merge(attributes.extract!('gender', 'birthyear', 'domicile').compact)
-    values = custom_field_answers.to_h { [it.key, it.value] }.merge(incoming_values)
-    CustomFieldValuesTransitionService.new.assign(self, values)
-    update!(attributes)
-  end
-
   def to_token_payload
     # Converting into hours to avoid issues when crossing DST boundaries. In other words,
     # days don't always have 24 hours in timezone-aware calculations.
