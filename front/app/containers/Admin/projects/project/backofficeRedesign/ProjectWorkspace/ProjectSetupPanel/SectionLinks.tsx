@@ -11,42 +11,7 @@ import {
 import { useIntl } from 'utils/cl-intl';
 import Link, { typedStyled } from 'utils/cl-router/Link';
 
-import projectMessages from '../../messages';
-
-const LINKED_SECTIONS = [
-  {
-    path: 'events',
-    label: projectMessages.eventsTab,
-    to: '/admin/projects/$projectId/events',
-  },
-  {
-    path: 'files',
-    label: projectMessages.filesTab,
-    to: '/admin/projects/$projectId/files',
-  },
-] as const;
-
-// Messaging takes over the workspace like the sections above, but is reached
-// from the Next actions list instead of a link here.
-const SECTIONS = [
-  ...LINKED_SECTIONS,
-  {
-    path: 'messaging',
-    label: projectMessages.messagingTab,
-    to: '/admin/projects/$projectId/messaging',
-  },
-] as const;
-
-export type ProjectSection = (typeof SECTIONS)[number];
-
-export const sectionFromPathname = (
-  pathname: string,
-  projectId: string
-): ProjectSection | undefined => {
-  const segment = pathname.split(`/${projectId}/`)[1]?.split('/')[0];
-
-  return SECTIONS.find((section) => section.path === segment);
-};
+import { LINKED_SECTIONS } from '../_shared/sections';
 
 const Row = typedStyled(Link)`
   display: flex;

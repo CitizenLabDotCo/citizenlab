@@ -9,8 +9,8 @@ import { IProjectData } from 'api/projects/types';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
-import { HeaderDropdownName } from '../HeaderDropdown';
-import messages from '../messages';
+import { HeaderDropdownName } from '../../Header/HeaderDropdown';
+import messages from '../../messages';
 import PanelHeading from '../PanelHeading';
 import SelectMethodModal from '../SelectMethodModal';
 

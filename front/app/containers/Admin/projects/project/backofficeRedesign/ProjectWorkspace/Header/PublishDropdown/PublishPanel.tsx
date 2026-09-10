@@ -17,7 +17,7 @@ import useUpdateProject from 'api/projects/useUpdateProject';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
-import messages from '../messages';
+import messages from '../../messages';
 
 import OptionRow from './OptionRow';
 import getPublicationState, { PublicationState } from './publicationState';

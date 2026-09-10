@@ -11,7 +11,7 @@ import { useCanEditProjectContext } from 'containers/Admin/projects/_shared/comp
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from './messages';
+import messages from '../messages';
 
 const LISTED = 'listed';
 const UNLISTED = 'unlisted';

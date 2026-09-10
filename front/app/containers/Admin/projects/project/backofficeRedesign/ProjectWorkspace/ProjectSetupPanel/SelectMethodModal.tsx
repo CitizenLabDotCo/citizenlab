@@ -6,9 +6,8 @@ import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
-import ParticipationMethodPicker from '../../phaseSetup/components/PhaseParticipationConfig/components/ParticipationMethodPicker';
-
-import messages from './messages';
+import ParticipationMethodPicker from '../../../phaseSetup/components/PhaseParticipationConfig/components/ParticipationMethodPicker';
+import messages from '../messages';
 
 interface Props {
   opened: boolean;

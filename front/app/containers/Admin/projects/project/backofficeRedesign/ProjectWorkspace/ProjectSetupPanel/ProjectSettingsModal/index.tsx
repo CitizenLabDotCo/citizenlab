@@ -23,8 +23,8 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 import { validateSlug } from 'utils/textUtils';
 
-import ProjectInputTopics from '../../../topics';
-import messages from '../messages';
+import ProjectInputTopics from '../../../../topics';
+import messages from '../../messages';
 
 import FrontOfficeSection from './FrontOfficeSection';
 import GeneralSection from './GeneralSection';

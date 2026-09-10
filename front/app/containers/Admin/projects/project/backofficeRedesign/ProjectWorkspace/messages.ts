@@ -37,6 +37,18 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.workspace.backToProjectSetup',
     defaultMessage: 'Project setup',
   },
+  eventsSection: {
+    id: 'app.containers.Admin.projects.project.workspace.eventsSection',
+    defaultMessage: 'Events',
+  },
+  filesSection: {
+    id: 'app.containers.Admin.projects.project.workspace.filesSection',
+    defaultMessage: '360 Input',
+  },
+  messagingSection: {
+    id: 'app.containers.Admin.projects.project.workspace.messagingSection',
+    defaultMessage: 'Messaging',
+  },
   getStarted: {
     id: 'app.containers.Admin.projects.project.workspace.getStarted',
     defaultMessage: 'Get started',

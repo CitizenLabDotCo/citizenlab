@@ -6,9 +6,9 @@ import { IProjectData } from 'api/projects/types';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
-import ScheduleLaunchModal from '../../../projectHeader/PublicationButtons/ScheduleLaunchModal';
+import ScheduleLaunchModal from '../../../../projectHeader/PublicationButtons/ScheduleLaunchModal';
+import messages from '../../messages';
 import HeaderDropdown from '../HeaderDropdown';
-import messages from '../messages';
 
 import getPublicationState, { PublicationState } from './publicationState';
 import PublishPanel from './PublishPanel';

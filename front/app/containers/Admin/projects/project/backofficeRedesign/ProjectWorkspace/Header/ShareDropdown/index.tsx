@@ -4,7 +4,7 @@ import { IProjectData } from 'api/projects/types';
 
 import { useIntl } from 'utils/cl-intl';
 
-import projectHeaderMessages from '../../../projectHeader/messages';
+import projectHeaderMessages from '../../../../projectHeader/messages';
 import HeaderDropdown from '../HeaderDropdown';
 
 import SharePanel from './SharePanel';

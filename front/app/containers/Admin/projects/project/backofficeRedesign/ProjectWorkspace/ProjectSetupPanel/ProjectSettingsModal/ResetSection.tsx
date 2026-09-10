@@ -8,7 +8,7 @@ import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
-import dataMessages from '../../../data/messages';
+import dataMessages from '../../../../data/messages';
 
 interface Props {
   projectId: string;

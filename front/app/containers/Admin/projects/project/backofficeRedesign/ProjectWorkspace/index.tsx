@@ -7,13 +7,13 @@ import { IProjectData } from 'api/projects/types';
 
 import { useLocation } from 'utils/router';
 
-import { HeaderDropdownName } from './HeaderDropdown';
+import { sectionFromPathname } from './_shared/sections';
+import useMarkSetupStep from './_shared/useMarkSetupStep';
+import WorkspaceHeader from './Header';
+import { HeaderDropdownName } from './Header/HeaderDropdown';
 import PhaseRightPanel from './Phase/PhaseRightPanel';
 import { viewFromPathname } from './Phase/usePhaseViews';
-import ProjectRightPanel from './ProjectRightPanel';
-import { sectionFromPathname } from './SectionLinks';
-import useMarkSetupStep from './useMarkSetupStep';
-import WorkspaceHeader from './WorkspaceHeader';
+import ProjectSetupPanel from './ProjectSetupPanel';
 
 const LEFT_PANEL_WIDTH = '280px';
 const RIGHT_PANEL_WIDTH = '384px';
@@ -86,7 +86,7 @@ const ProjectWorkspace = ({ project, phase, leftPanel, children }: Props) => {
             {phase ? (
               <PhaseRightPanel />
             ) : (
-              <ProjectRightPanel
+              <ProjectSetupPanel
                 project={project}
                 onOpenDropdown={showDropdown}
               />

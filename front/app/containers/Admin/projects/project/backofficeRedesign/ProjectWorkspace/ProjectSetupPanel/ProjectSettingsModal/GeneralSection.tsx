@@ -12,7 +12,7 @@ import SlugInput from 'components/admin/SlugInput';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import generalMessages from '../../../general/messages';
+import generalMessages from '../../../../general/messages';
 
 interface Props {
   spaceId?: string | null;

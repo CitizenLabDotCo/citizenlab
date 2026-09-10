@@ -7,7 +7,8 @@ import { IProjectData } from 'api/projects/types';
 import { useIntl } from 'utils/cl-intl';
 import Link, { typedStyled } from 'utils/cl-router/Link';
 
-import messages from './messages';
+import messages from '../messages';
+
 import PanelHeading from './PanelHeading';
 
 const Row = typedStyled(Link)`

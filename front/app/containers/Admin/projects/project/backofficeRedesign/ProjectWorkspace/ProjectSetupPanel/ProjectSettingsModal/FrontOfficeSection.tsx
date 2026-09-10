@@ -22,8 +22,8 @@ import { SubSectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import { TOnProjectAttributesDiffChangeFunction } from '../../../general';
-import generalMessages from '../../../general/messages';
+import { TOnProjectAttributesDiffChangeFunction } from '../../../../general';
+import generalMessages from '../../../../general/messages';
 
 interface Props {
   selectedTopicIds: string[];

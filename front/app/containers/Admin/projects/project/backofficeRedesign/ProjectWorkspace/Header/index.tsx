@@ -12,12 +12,13 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { ProjectSection } from '../_shared/sections';
+import messages from '../messages';
+import usePhaseViews, { PhaseViewKey } from '../Phase/usePhaseViews';
+import ViewSwitch from '../Phase/ViewSwitch';
+
 import { HeaderDropdownName } from './HeaderDropdown';
-import messages from './messages';
-import usePhaseViews, { PhaseViewKey } from './Phase/usePhaseViews';
-import ViewSwitch from './Phase/ViewSwitch';
 import PublishDropdown from './PublishDropdown';
-import { ProjectSection } from './SectionLinks';
 import ShareDropdown from './ShareDropdown';
 
 const HEADER_HEIGHT = '48px';

@@ -6,21 +6,22 @@ import { IProjectData } from 'api/projects/types';
 
 import { useIntl } from 'utils/cl-intl';
 
+import useMarkSetupStep from '../_shared/useMarkSetupStep';
+import { HeaderDropdownName } from '../Header/HeaderDropdown';
+import messages from '../messages';
+
 import GetStarted from './GetStarted';
-import { HeaderDropdownName } from './HeaderDropdown';
-import messages from './messages';
 import NextActions from './NextActions';
 import ProjectSettingsModal from './ProjectSettingsModal';
 import SectionLinks from './SectionLinks';
 import SetupFields from './SetupFields';
-import useMarkSetupStep from './useMarkSetupStep';
 
 interface Props {
   project: IProjectData;
   onOpenDropdown: (dropdown: HeaderDropdownName) => void;
 }
 
-const ProjectRightPanel = ({ project, onOpenDropdown }: Props) => {
+const ProjectSetupPanel = ({ project, onOpenDropdown }: Props) => {
   const { formatMessage } = useIntl();
   const [settingsOpened, setSettingsOpened] = useState(false);
   const markSetupStep = useMarkSetupStep(project);
@@ -71,4 +72,4 @@ const ProjectRightPanel = ({ project, onOpenDropdown }: Props) => {
   );
 };
 
-export default ProjectRightPanel;
+export default ProjectSetupPanel;
