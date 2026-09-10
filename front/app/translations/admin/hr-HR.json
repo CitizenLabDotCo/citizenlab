@@ -2162,6 +2162,7 @@
   "app.containers.Admin.tools.apiTokens.deleteConfirmation": "Jeste li sigurni da želite izbrisati ovaj token?",
   "app.containers.Admin.tools.apiTokens.description": "Upravljajte svojim API tokenima za naš javni API. Za više informacija pogledajte naš {link}.",
   "app.containers.Admin.tools.apiTokens.lastUsedAt": "Zadnje korišteno",
+  "app.containers.Admin.tools.apiTokens.lastUserAgent": "Posljednji korisnički agent: {userAgent}",
   "app.containers.Admin.tools.apiTokens.link": "API dokumentacija",
   "app.containers.Admin.tools.apiTokens.linkUrl2": "https://developers.citizenlab.co/api",
   "app.containers.Admin.tools.apiTokens.name": "Ime",

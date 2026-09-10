@@ -2162,6 +2162,7 @@
   "app.containers.Admin.tools.apiTokens.deleteConfirmation": "Haluatko varmasti poistaa tämän tunnuksen?",
   "app.containers.Admin.tools.apiTokens.description": "Hallinnoi julkisen sovellusliittymämme API-tunnuksia. Lisätietoja on osoitteessa {link}.",
   "app.containers.Admin.tools.apiTokens.lastUsedAt": "Viimeksi käytetty",
+  "app.containers.Admin.tools.apiTokens.lastUserAgent": "Viimeisin user agent: {userAgent}",
   "app.containers.Admin.tools.apiTokens.link": "API-dokumentaatio",
   "app.containers.Admin.tools.apiTokens.linkUrl2": "https://developers.citizenlab.co/api",
   "app.containers.Admin.tools.apiTokens.name": "Nimi",

@@ -2162,6 +2162,7 @@
   "app.containers.Admin.tools.apiTokens.deleteConfirmation": "Tem a certeza de que pretende apagar esta ficha?",
   "app.containers.Admin.tools.apiTokens.description": "Gerencie suas fichas de API para nossa API pública. Para obter mais informações, consulte nosso {link}.",
   "app.containers.Admin.tools.apiTokens.lastUsedAt": "Última utilização",
+  "app.containers.Admin.tools.apiTokens.lastUserAgent": "Último agente do usuário: {userAgent}",
   "app.containers.Admin.tools.apiTokens.link": "Documentação da API",
   "app.containers.Admin.tools.apiTokens.linkUrl2": "https://developers.citizenlab.co/api",
   "app.containers.Admin.tools.apiTokens.name": "Nome",

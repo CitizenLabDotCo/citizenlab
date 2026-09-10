@@ -2162,6 +2162,7 @@
   "app.containers.Admin.tools.apiTokens.deleteConfirmation": "Sidd Dir sécher, datt Dir dësen Token läsche wëllt?",
   "app.containers.Admin.tools.apiTokens.description": "Verwalt Är API-Tokene fir eis ëffentlech API. Fir méi Informatiounen, kuckt eise {link}.",
   "app.containers.Admin.tools.apiTokens.lastUsedAt": "Lescht benotzt",
+  "app.containers.Admin.tools.apiTokens.lastUserAgent": "Leschten User-Agent: {userAgent}",
   "app.containers.Admin.tools.apiTokens.link": "API-Dokumentatioun",
   "app.containers.Admin.tools.apiTokens.linkUrl2": "https://developers.citizenlab.co/api",
   "app.containers.Admin.tools.apiTokens.name": "Numm",

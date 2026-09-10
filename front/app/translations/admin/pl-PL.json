@@ -2162,6 +2162,7 @@
   "app.containers.Admin.tools.apiTokens.deleteConfirmation": "Czy na pewno chcesz usunąć ten token?",
   "app.containers.Admin.tools.apiTokens.description": "Zarządzaj tokenami API dla naszego publicznego interfejsu API. Aby uzyskać więcej informacji, odwiedź naszą stronę {link}.",
   "app.containers.Admin.tools.apiTokens.lastUsedAt": "Ostatnio używany",
+  "app.containers.Admin.tools.apiTokens.lastUserAgent": "Ostatni user agent: {userAgent}",
   "app.containers.Admin.tools.apiTokens.link": "Dokumentacja API",
   "app.containers.Admin.tools.apiTokens.linkUrl2": "https://developers.citizenlab.co/api",
   "app.containers.Admin.tools.apiTokens.name": "Nazwa",

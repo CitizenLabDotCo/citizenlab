@@ -2162,6 +2162,7 @@
   "app.containers.Admin.tools.apiTokens.deleteConfirmation": "Ar tikrai norite ištrinti šį simbolį?",
   "app.containers.Admin.tools.apiTokens.description": "Tvarkykite savo API žetonus, skirtus mūsų viešajai API. Daugiau informacijos rasite mūsų svetainėje {link}.",
   "app.containers.Admin.tools.apiTokens.lastUsedAt": "Paskutinį kartą naudotas",
+  "app.containers.Admin.tools.apiTokens.lastUserAgent": "Paskutinis naudotojo agentas: {userAgent}",
   "app.containers.Admin.tools.apiTokens.link": "API dokumentacija",
   "app.containers.Admin.tools.apiTokens.linkUrl2": "https://developers.citizenlab.co/api",
   "app.containers.Admin.tools.apiTokens.name": "Pavadinimas",

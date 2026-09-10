@@ -2162,6 +2162,7 @@
   "app.containers.Admin.tools.apiTokens.deleteConfirmation": "Ydych chi'n siŵr eich bod am ddileu'r tocyn hwn?",
   "app.containers.Admin.tools.apiTokens.description": "Rheoli eich tocynnau API ar gyfer ein API cyhoeddus. Am ragor o wybodaeth, gweler ein {link}.",
   "app.containers.Admin.tools.apiTokens.lastUsedAt": "Defnyddiwyd ddiwethaf",
+  "app.containers.Admin.tools.apiTokens.lastUserAgent": "Asiant defnyddiwr diwethaf: {userAgent}",
   "app.containers.Admin.tools.apiTokens.link": "Dogfennaeth API",
   "app.containers.Admin.tools.apiTokens.linkUrl2": "https://developers.citizenlab.co/api",
   "app.containers.Admin.tools.apiTokens.name": "Enw",

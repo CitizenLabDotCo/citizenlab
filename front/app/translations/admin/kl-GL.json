@@ -2162,6 +2162,7 @@
   "app.containers.Admin.tools.apiTokens.deleteConfirmation": "Qularinngiliuk una token piiarusullugu?",
   "app.containers.Admin.tools.apiTokens.description": "Tamanut ammasumik API-mut API tokens-itit aqqussuk. Paasissutissat amerlanerusut uani takukkit {link}.",
   "app.containers.Admin.tools.apiTokens.lastUsedAt": "Kingullermik atorneqartoq",
+  "app.containers.Admin.tools.apiTokens.lastUserAgent": "Atuisup atortua kingulleq: {userAgent}",
   "app.containers.Admin.tools.apiTokens.link": "API-mut najoqqutassat",
   "app.containers.Admin.tools.apiTokens.linkUrl2": "https://developers.citizenlab.co/api",
   "app.containers.Admin.tools.apiTokens.name": "Ateq",
