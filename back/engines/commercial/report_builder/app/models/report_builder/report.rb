@@ -15,6 +15,7 @@
 #  year              :integer
 #  quarter           :integer
 #  community_monitor :boolean          default(FALSE), not null
+#  project_id        :uuid
 #
 # Indexes
 #
@@ -22,11 +23,13 @@
 #  index_report_builder_reports_on_name_tsvector  (name_tsvector) USING gin
 #  index_report_builder_reports_on_owner_id       (owner_id)
 #  index_report_builder_reports_on_phase_id       (phase_id)
+#  index_report_builder_reports_on_project_id     (project_id) UNIQUE
 #
 # Foreign Keys
 #
 #  fk_rails_...  (owner_id => users.id)
 #  fk_rails_...  (phase_id => phases.id)
+#  fk_rails_...  (project_id => projects.id)
 #
 module ReportBuilder
   class Report < ::ApplicationRecord
@@ -34,7 +37,10 @@ module ReportBuilder
 
     belongs_to :owner, class_name: 'User', optional: true
     belongs_to :phase, class_name: 'Phase', optional: true
+    # A report is about a phase or about a whole project, never both.
+    belongs_to :project, optional: true
     has_many :published_graph_data_units, dependent: :destroy
+    has_one :chat, class_name: 'ReportBuilder::ReportChat', dependent: :destroy, inverse_of: :report
 
     has_one(
       :layout,
@@ -51,12 +57,20 @@ module ReportBuilder
 
     validates :name, uniqueness: true, allow_nil: true
     validates :phase_id, uniqueness: true, unless: :supports_multiple_phase_reports?, allow_nil: true
+    validates :project_id, uniqueness: true, allow_nil: true
+    validates :project_id, absence: true, if: :phase?
     validates :visible, inclusion: { in: [false], unless: :phase? }
     validates :year, numericality: { in: 2024..2050 }, allow_nil: true
     validates :quarter, numericality: { in: 1..4 }, allow_nil: true
 
     def phase?
       !phase_id.nil?
+    end
+
+    # The project the report is about, whether it is scoped to the whole project or
+    # to one of its phases.
+    def reported_project
+      project || phase&.project
     end
 
     def public?

@@ -7,6 +7,9 @@ ReportBuilder::Engine.routes.draw do
         member do
           get :layout
           post :copy
+          post :generate
+          get :chat
+          post 'chat', to: 'reports#chat_turn'
         end
 
         collection do
