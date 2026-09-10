@@ -2719,7 +2719,6 @@
   "app.containers.AdminPage.SettingsPage.approvalDescription": "Select which admins will receive notifications to approve projects. Folder Managers are by default approvers for all projects within their folders.",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Save",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Project approval settings",
-  "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Да ли сте сигурни да желите да избришете ову област?",
   "app.containers.AdminPage.SettingsPage.areaTerm": "Израз за једну област (једнина)",
   "app.containers.AdminPage.SettingsPage.areaTermPlaceholder": "области",
   "app.containers.AdminPage.SettingsPage.areas.deleteButtonLabel": "Избриши",
