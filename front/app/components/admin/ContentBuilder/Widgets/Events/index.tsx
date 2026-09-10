@@ -26,6 +26,7 @@ import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/use
 import useWidgetProjectId from 'components/admin/ContentBuilder/useWidgetProjectId';
 import { VerticalRhythmContext } from 'components/admin/ContentBuilder/verticalRhythm';
 import landingPageMessages from 'components/LandingPages/citizen/messages';
+import EditModeHeightCap from 'components/ProjectPageBuilder/Widgets/EditModeHeightCap';
 import EmptyEvents from 'components/ProjectPageBuilder/Widgets/Events/EmptyEvents';
 import EventsSection from 'components/ProjectPageBuilder/Widgets/Events/EventsSection';
 
@@ -218,7 +219,7 @@ const EventsList: UserComponent<EventsProps> = ({
     : DEFAULT_Y_PADDING;
   const bandPadding = underRhythm ? BAND_Y_PADDING : homepagePadding;
 
-  return (
+  const band = (
     <Box
       maxWidth={BUILDER_CONTENT_MAX_WIDTH}
       margin="0 auto"
@@ -228,6 +229,10 @@ const EventsList: UserComponent<EventsProps> = ({
       {contents}
     </Box>
   );
+
+  // A project page lists every event it has, which is the one case where the list can swallow
+  // the builder canvas.
+  return isProjectEvents ? <EditModeHeightCap>{band}</EditModeHeightCap> : band;
 };
 
 EventsList.craft = {
