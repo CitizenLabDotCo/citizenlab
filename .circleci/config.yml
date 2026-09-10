@@ -76,6 +76,16 @@ parameters:
     type: boolean
     default: false
 
+  # Set by .circleci/monorepo.sh in case nothing changed in back/front. This
+  # causes the builds to still happen, necessary for the epic platform
+  epic_back_artifact:
+    type: boolean
+    default: false
+
+  epic_front_artifact:
+    type: boolean
+    default: false
+
 executors:
   cl2-back:
     parameters:
@@ -223,11 +233,17 @@ jobs:
     working_directory: ~/
     docker:
       - image: cimg/base:2025.01
+    parameters:
+      docker_layer_caching:
+        type: boolean
+        # DLC bills costs 200 credits per job run, and the extra speed is not
+        # always needed
+        default: true
     steps:
       - echo_pipeline_parameters
       - shallow-clone
       - setup_remote_docker:
-          docker_layer_caching: true
+          docker_layer_caching: << parameters.docker_layer_caching >>
       - run: |
           docker build -t citizenlabdotco/back-ee:amd64-$CIRCLE_SHA1 --build-arg BUNDLE_JOBS=4 -f citizenlab/back/Dockerfile citizenlab/.
       - run: |
@@ -1411,6 +1427,30 @@ workflows:
             branches:
               only:
                 - master
+
+  # Epic previews need both artifacts to be built for every sha; monorepo.sh
+  # sets these parameters only in case nothing has changed on back/front
+  epic-back-artifact:
+    when:
+      and:
+        - << pipeline.parameters.epic_back_artifact >>
+        - not:
+            equal: ["production", << pipeline.git.branch >>]
+    jobs:
+      - back-build-docker-image-amd64:
+          context:
+            - docker-hub-access
+          docker_layer_caching: false
+
+  epic-front-artifact:
+    when:
+      and:
+        - << pipeline.parameters.epic_front_artifact >>
+        - not:
+            equal: ["production", << pipeline.git.branch >>]
+    jobs:
+      - front-build:
+          context: epic-front-bundles
 
   front-deploy-staging:
     when:
