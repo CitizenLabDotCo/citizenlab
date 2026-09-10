@@ -2162,6 +2162,7 @@
   "app.containers.Admin.tools.apiTokens.deleteConfirmation": "ਕੀ ਤੁਸੀਂ ਯਕੀਨਨ ਇਸ ਟੋਕਨ ਨੂੰ ਮਿਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ?",
   "app.containers.Admin.tools.apiTokens.description": "ਸਾਡੇ ਜਨਤਕ API ਲਈ ਆਪਣੇ API ਟੋਕਨਾਂ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ। ਹੋਰ ਜਾਣਕਾਰੀ ਲਈ, ਸਾਡਾ {link}ਦੇਖੋ।",
   "app.containers.Admin.tools.apiTokens.lastUsedAt": "ਪਿਛਲੀ ਵਾਰ ਵਰਤਿਆ ਗਿਆ",
+  "app.containers.Admin.tools.apiTokens.lastUserAgent": "ਆਖਰੀ ਯੂਜ਼ਰ ਏਜੰਟ: {userAgent}",
   "app.containers.Admin.tools.apiTokens.link": "API ਦਸਤਾਵੇਜ਼",
   "app.containers.Admin.tools.apiTokens.linkUrl2": "https://developers.citizenlab.co/api",
   "app.containers.Admin.tools.apiTokens.name": "ਨਾਮ",

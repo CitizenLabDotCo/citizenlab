@@ -2162,6 +2162,7 @@
   "app.containers.Admin.tools.apiTokens.deleteConfirmation": "Bu belirteci silmek istediğinizden emin misiniz?",
   "app.containers.Admin.tools.apiTokens.description": "Genel API'miz için API belirteçlerinizi yönetin. Daha fazla bilgi için {link}adresimize bakın.",
   "app.containers.Admin.tools.apiTokens.lastUsedAt": "Son kullanılan",
+  "app.containers.Admin.tools.apiTokens.lastUserAgent": "Son kullanıcı aracısı: {userAgent}",
   "app.containers.Admin.tools.apiTokens.link": "API belgeleri",
   "app.containers.Admin.tools.apiTokens.linkUrl2": "https://developers.citizenlab.co/api",
   "app.containers.Admin.tools.apiTokens.name": "İsim",
