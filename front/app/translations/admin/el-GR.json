@@ -3217,7 +3217,6 @@
   "app.containers.AdminPage.SettingsPage.approvalDescription": "Επιλέξτε ποιοι διαχειριστές θα λαμβάνουν ειδοποιήσεις για την έγκριση έργων. Οι Διαχειριστές Φακέλων είναι από προεπιλογή εγκρίνοντες για όλα τα έργα εντός των φακέλων τους.",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Αποθήκευση",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Ρυθμίσεις έγκρισης έργου",
-  "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτή την περιοχή;",
   "app.containers.AdminPage.SettingsPage.areaTerm": "Όρος για μία περιοχή (ενικός)",
   "app.containers.AdminPage.SettingsPage.areaTermPlaceholder": "περιοχή",
   "app.containers.AdminPage.SettingsPage.areas.deleteButtonLabel": "Delete",

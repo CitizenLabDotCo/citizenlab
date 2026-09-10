@@ -3217,7 +3217,6 @@
   "app.containers.AdminPage.SettingsPage.approvalDescription": "Sélectionnez les administrateurs qui recevront les notifications pour vérifier et approuver les projets. Pour les projets dans un dossier, les notifications seront également envoyées aux gestionnaires du dossier.",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Enregistrer",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Révisions des projets",
-  "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Êtes-vous sûr(e) de vouloir supprimer ce lieu ?",
   "app.containers.AdminPage.SettingsPage.areaTerm": "Terme pour une zone (singulier)",
   "app.containers.AdminPage.SettingsPage.areaTermPlaceholder": "lieu",
   "app.containers.AdminPage.SettingsPage.areas.deleteButtonLabel": "Supprimer",

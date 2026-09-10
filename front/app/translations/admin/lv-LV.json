@@ -3217,7 +3217,6 @@
   "app.containers.AdminPage.SettingsPage.approvalDescription": "Izvēlieties, kuri administratori saņems paziņojumus par projektu apstiprināšanu. Mapju pārvaldnieki pēc noklusējuma ir visu projektu apstiprinātāji savās mapēs.",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Saglabāt",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Projekta apstiprināšanas iestatījumi",
-  "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Vai esat pārliecināts, ka vēlaties dzēst šo zonu?",
   "app.containers.AdminPage.SettingsPage.areaTerm": "Vienas zonas apzīmējums (vienskaitlī)",
   "app.containers.AdminPage.SettingsPage.areaTermPlaceholder": "zona",
   "app.containers.AdminPage.SettingsPage.areas.deleteButtonLabel": "Dzēst",

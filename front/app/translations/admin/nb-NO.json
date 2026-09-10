@@ -3217,7 +3217,6 @@
   "app.containers.AdminPage.SettingsPage.approvalDescription": "Velg hvilke administratorer som skal motta varsler om å godkjenne prosjekter. Mappeadministratorer er som standard godkjennere for alle prosjekter i mappene sine.",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Spar",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Innstillinger for prosjektgodkjenning",
-  "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Er du sikker på at du vil slette dette området?",
   "app.containers.AdminPage.SettingsPage.areaTerm": "Betegnelse for ett område (entall)",
   "app.containers.AdminPage.SettingsPage.areaTermPlaceholder": "område",
   "app.containers.AdminPage.SettingsPage.areas.deleteButtonLabel": "Slett",

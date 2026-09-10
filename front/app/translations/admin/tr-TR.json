@@ -3217,7 +3217,6 @@
   "app.containers.AdminPage.SettingsPage.approvalDescription": "Projeleri onaylamak için hangi yöneticilerin bildirim alacağını seçin. Klasör Yöneticileri varsayılan olarak kendi klasörlerindeki tüm projeler için onaylayıcıdır.",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Kaydet",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Proje onay ayarları",
-  "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Bu alanı silmek istediğinizden emin misiniz?",
   "app.containers.AdminPage.SettingsPage.areaTerm": "Tek alan için kullanılan terim (tekil)",
   "app.containers.AdminPage.SettingsPage.areaTermPlaceholder": "alan",
   "app.containers.AdminPage.SettingsPage.areas.deleteButtonLabel": "Sil",

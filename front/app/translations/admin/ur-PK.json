@@ -3217,7 +3217,6 @@
   "app.containers.AdminPage.SettingsPage.approvalDescription": "منتخب کریں کہ کون سے منتظمین کو پروجیکٹس کی منظوری کے لیے اطلاعات موصول ہوں گی۔ فولڈر مینیجر اپنے فولڈرز کے اندر موجود تمام پروجیکٹس کے لیے بطور ڈیفالٹ منظوری دینے والے ہوتے ہیں۔",
   "app.containers.AdminPage.SettingsPage.approvalSave": "محفوظ کریں۔",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "پروجیکٹ کی منظوری کی ترتیبات",
-  "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "کیا آپ واقعی اس علاقے کو حذف کرنا چاہتے ہیں؟",
   "app.containers.AdminPage.SettingsPage.areaTerm": "ایک علاقے کے لیے اصطلاح (واحد)",
   "app.containers.AdminPage.SettingsPage.areaTermPlaceholder": "علاقہ",
   "app.containers.AdminPage.SettingsPage.areas.deleteButtonLabel": "حذف کریں۔",

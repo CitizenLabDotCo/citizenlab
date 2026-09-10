@@ -3217,7 +3217,6 @@
   "app.containers.AdminPage.SettingsPage.approvalDescription": "Pasirinkite, kurie administratoriai gaus pranešimus apie projektų patvirtinimą. Aplankų valdytojai pagal numatytuosius nustatymus yra visų jų aplankuose esančių projektų tvirtintojai.",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Išsaugoti",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Projekto patvirtinimo nustatymai",
-  "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Ar tikrai norite ištrinti šią sritį?",
   "app.containers.AdminPage.SettingsPage.areaTerm": "Vienos srities terminas (vienaskaita)",
   "app.containers.AdminPage.SettingsPage.areaTermPlaceholder": "sritis",
   "app.containers.AdminPage.SettingsPage.areas.deleteButtonLabel": "Ištrinti",

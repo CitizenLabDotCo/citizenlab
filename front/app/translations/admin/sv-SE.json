@@ -3217,7 +3217,6 @@
   "app.containers.AdminPage.SettingsPage.approvalDescription": "Välj vilka administratörer som ska få meddelanden om att godkänna projekt. Mapphanterare är som standard godkännare för alla projekt inom sina mappar.",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Spara",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Inställningar för projektgodkännande",
-  "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Är du säker på att du vill ta bort det här området?",
   "app.containers.AdminPage.SettingsPage.areaTerm": "Term för ett område (singular)",
   "app.containers.AdminPage.SettingsPage.areaTermPlaceholder": "område",
   "app.containers.AdminPage.SettingsPage.areas.deleteButtonLabel": "Radera",

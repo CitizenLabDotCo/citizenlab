@@ -3217,7 +3217,6 @@
   "app.containers.AdminPage.SettingsPage.approvalDescription": "Wybierz, którzy administratorzy będą otrzymywać powiadomienia o zatwierdzeniu projektów. Menedżerowie folderów domyślnie zatwierdzają wszystkie projekty w swoich folderach.",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Oszczędzaj",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Ustawienia zatwierdzania projektu",
-  "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Jesteś pewien, że chcesz usunąć ten obszar?",
   "app.containers.AdminPage.SettingsPage.areaTerm": "Termin dla jednego obszaru (pojedynczy)",
   "app.containers.AdminPage.SettingsPage.areaTermPlaceholder": "obszar",
   "app.containers.AdminPage.SettingsPage.areas.deleteButtonLabel": "Usuń",

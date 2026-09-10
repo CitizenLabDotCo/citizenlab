@@ -3217,7 +3217,6 @@
   "app.containers.AdminPage.SettingsPage.approvalDescription": "Selecciona quins administradors rebran notificacions per aprovar projectes. Els gestors de carpetes són, per defecte, aprovadors de tots els projectes de les seves carpetes.",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Desar",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Configuració de l'aprovació del projecte",
-  "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Esteu segur que voleu eliminar aquesta àrea?",
   "app.containers.AdminPage.SettingsPage.areaTerm": "Terme per a una àrea (singular)",
   "app.containers.AdminPage.SettingsPage.areaTermPlaceholder": "zona",
   "app.containers.AdminPage.SettingsPage.areas.deleteButtonLabel": "Delete",

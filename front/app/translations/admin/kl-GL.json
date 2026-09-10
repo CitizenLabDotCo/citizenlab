@@ -3217,7 +3217,6 @@
   "app.containers.AdminPage.SettingsPage.approvalDescription": "Aqutsisut sorliit suliniutinik akuersinissamut nalunaarutinik tigusaqartassanersut toqqaruk. Folder Manager-it folderiisa iluanni suliniutinut tamanut akuersisussatut inissereerput.",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Toqqoruk",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Suliniutip akuerineqarnissaanut aalajangersakkat",
-  "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Ilumoortumik nunap immikkoortua una peerniarpiuk?",
   "app.containers.AdminPage.SettingsPage.areaTerm": "Immikkoortumut ataatsimut taaguusersuut (ataasersiut)",
   "app.containers.AdminPage.SettingsPage.areaTermPlaceholder": "immikkoortoq",
   "app.containers.AdminPage.SettingsPage.areas.deleteButtonLabel": "Delete",

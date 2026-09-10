@@ -3217,7 +3217,6 @@
   "app.containers.AdminPage.SettingsPage.approvalDescription": "Vælg hvilke administratorer som skal modtage meddelelser om godkendelse af projekter. Mappeadministratorer godkender som standard alle projekter i deres mapper.",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Gem",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Indstillinger for projektgodkendelse",
-  "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Er du sikker på, at du ønsker at slette dette område?",
   "app.containers.AdminPage.SettingsPage.areaTerm": "Betegnelse for et område (ental)",
   "app.containers.AdminPage.SettingsPage.areaTermPlaceholder": "område",
   "app.containers.AdminPage.SettingsPage.areas.deleteButtonLabel": "Slet",

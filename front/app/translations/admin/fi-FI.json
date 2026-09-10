@@ -3217,7 +3217,6 @@
   "app.containers.AdminPage.SettingsPage.approvalDescription": "Valitse, ketkä järjestelmänvalvojat saavat ilmoituksia projektien hyväksymisestä. Kansionhallintaohjelmat ovat oletusarvoisesti kaikkien kansioidensa projektien hyväksyjiä.",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Tallenna",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Projektin hyväksymisasetukset",
-  "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Haluatko varmasti poistaa tämän alueen?",
   "app.containers.AdminPage.SettingsPage.areaTerm": "Termi yhdelle alueelle (yksikkö)",
   "app.containers.AdminPage.SettingsPage.areaTermPlaceholder": "alueella",
   "app.containers.AdminPage.SettingsPage.areas.deleteButtonLabel": "Poistaa",

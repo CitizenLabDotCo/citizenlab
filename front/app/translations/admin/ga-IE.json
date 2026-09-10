@@ -3217,7 +3217,6 @@
   "app.containers.AdminPage.SettingsPage.approvalDescription": "Roghnaigh cé na riarthóirí a gheobhaidh fógraí chun tionscadail a cheadú. Is iad Bainisteoirí Fillteán na ceadaitheoirí réamhshocraithe do gach tionscadal laistigh dá bhfillteáin.",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Sábháil",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Socruithe ceadaithe tionscadail",
-  "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "An bhfuil tú cinnte gur mian leat an limistéar seo a scriosadh?",
   "app.containers.AdminPage.SettingsPage.areaTerm": "Téarma do cheantar amháin (uatha)",
   "app.containers.AdminPage.SettingsPage.areaTermPlaceholder": "limistéar",
   "app.containers.AdminPage.SettingsPage.areas.deleteButtonLabel": "Scrios",

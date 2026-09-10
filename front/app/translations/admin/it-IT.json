@@ -3217,7 +3217,6 @@
   "app.containers.AdminPage.SettingsPage.approvalDescription": "Seleziona quali amministratori riceveranno le notifiche per approvare i progetti. I gestori delle cartelle sono gli approvatori predefiniti di tutti i progetti all'interno delle loro cartelle.",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Salva",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Impostazioni di approvazione del progetto",
-  "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Sei sicuro di voler eliminare quest'area?",
   "app.containers.AdminPage.SettingsPage.areaTerm": "Termine per indicare un'area (singolare)",
   "app.containers.AdminPage.SettingsPage.areaTermPlaceholder": "area",
   "app.containers.AdminPage.SettingsPage.areas.deleteButtonLabel": "Elimina",

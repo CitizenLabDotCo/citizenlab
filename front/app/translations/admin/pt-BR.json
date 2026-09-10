@@ -3217,7 +3217,6 @@
   "app.containers.AdminPage.SettingsPage.approvalDescription": "Selecione quais administradores receberão notificações para aprovar projetos. Por padrão, os gerentes de pasta são aprovadores de todos os projetos em suas pastas.",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Salvar",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Configurações de aprovação do projeto",
-  "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Tem certeza de que deseja excluir esta área?",
   "app.containers.AdminPage.SettingsPage.areaTerm": "Término de uma localidade/bairro/zona (singular)",
   "app.containers.AdminPage.SettingsPage.areaTermPlaceholder": "Localidade/bairro/zona",
   "app.containers.AdminPage.SettingsPage.areas.deleteButtonLabel": "Deletar",

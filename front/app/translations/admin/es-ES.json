@@ -3217,7 +3217,6 @@
   "app.containers.AdminPage.SettingsPage.approvalDescription": "Selecciona qué administradores recibirán notificaciones para aprobar proyectos. Por defecto, los administradores de carpetas aprueban todos los proyectos de sus carpetas.",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Guardar",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Ajustes de aprobación del proyecto",
-  "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "¿Está seguro que desea eliminar este campo?",
   "app.containers.AdminPage.SettingsPage.areaTerm": "Término para una localidad/barrio/zona (singular)",
   "app.containers.AdminPage.SettingsPage.areaTermPlaceholder": "Localidad/barrio/zona",
   "app.containers.AdminPage.SettingsPage.areas.deleteButtonLabel": "Eliminar",
