@@ -56,6 +56,6 @@ const PositionWrapper = styled.div`
     width: fit-content;
     margin-top: 16px;
     margin-bottom: 16px;
-    margin-left: 20px;
+    margin-left: 15px;
   `}
 `;
