@@ -3938,12 +3938,11 @@ UNION ALL
 CREATE VIEW public.reporting_input_question_answers AS
  WITH form_inputs AS (
          SELECT i.id,
-            i.custom_field_values,
             COALESCE(phase_form.id, project_form.id) AS form_id
            FROM ((public.ideas i
              LEFT JOIN public.custom_forms phase_form ON ((((phase_form.participation_context_type)::text = 'Phase'::text) AND (phase_form.participation_context_id = i.creation_phase_id))))
              LEFT JOIN public.custom_forms project_form ON ((((project_form.participation_context_type)::text = 'Project'::text) AND (project_form.participation_context_id = i.project_id))))
-          WHERE ((i.publication_status)::text = ANY (ARRAY[('submitted'::character varying)::text, ('published'::character varying)::text]))
+          WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]))
         )
  SELECT i.id AS input_id,
     q.id AS question_id,
@@ -3957,16 +3956,16 @@ CREATE VIEW public.reporting_input_question_answers AS
           ORDER BY t.key
          LIMIT 1)) AS question_label,
         CASE
-            WHEN ((q.input_type)::text = ANY (ARRAY[('number'::character varying)::text, ('linear_scale'::character varying)::text, ('rating'::character varying)::text, ('sentiment_linear_scale'::character varying)::text])) THEN NULL::text
-            ELSE (i.custom_field_values ->> (q.key)::text)
+            WHEN ((q.input_type)::text = ANY ((ARRAY['number'::character varying, 'linear_scale'::character varying, 'rating'::character varying, 'sentiment_linear_scale'::character varying])::text[])) THEN NULL::text
+            ELSE (a.value #>> '{}'::text[])
         END AS value_text,
         CASE
-            WHEN (((q.input_type)::text = ANY (ARRAY[('number'::character varying)::text, ('linear_scale'::character varying)::text, ('rating'::character varying)::text, ('sentiment_linear_scale'::character varying)::text])) AND (jsonb_typeof((i.custom_field_values -> (q.key)::text)) = 'number'::text)) THEN ((i.custom_field_values ->> (q.key)::text))::numeric
+            WHEN (((q.input_type)::text = ANY ((ARRAY['number'::character varying, 'linear_scale'::character varying, 'rating'::character varying, 'sentiment_linear_scale'::character varying])::text[])) AND (jsonb_typeof(a.value) = 'number'::text)) THEN ((a.value #>> '{}'::text[]))::numeric
             ELSE NULL::numeric
         END AS value_numeric
-   FROM (form_inputs i
-     JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = ANY (ARRAY[('text'::character varying)::text, ('multiline_text'::character varying)::text, ('select'::character varying)::text, ('select_image'::character varying)::text, ('checkbox'::character varying)::text, ('date'::character varying)::text, ('number'::character varying)::text, ('linear_scale'::character varying)::text, ('rating'::character varying)::text, ('sentiment_linear_scale'::character varying)::text])))))
-  WHERE jsonb_exists(i.custom_field_values, (q.key)::text)
+   FROM ((form_inputs i
+     JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = ANY ((ARRAY['text'::character varying, 'multiline_text'::character varying, 'select'::character varying, 'select_image'::character varying, 'checkbox'::character varying, 'date'::character varying, 'number'::character varying, 'linear_scale'::character varying, 'rating'::character varying, 'sentiment_linear_scale'::character varying])::text[])))))
+     JOIN public.custom_field_answers a ON ((((a.answerable_type)::text = 'Idea'::text) AND (a.answerable_id = i.id) AND ((a.key)::text = (q.key)::text))))
 UNION ALL
  SELECT i.id AS input_id,
     q.id AS question_id,
@@ -3981,10 +3980,11 @@ UNION ALL
          LIMIT 1)) AS question_label,
     selected.value AS value_text,
     NULL::numeric AS value_numeric
-   FROM ((form_inputs i
-     JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = ANY (ARRAY[('multiselect'::character varying)::text, ('multiselect_image'::character varying)::text])))))
-     CROSS JOIN LATERAL jsonb_array_elements_text((i.custom_field_values -> (q.key)::text)) selected(value))
-  WHERE (jsonb_typeof((i.custom_field_values -> (q.key)::text)) = 'array'::text);
+   FROM (((form_inputs i
+     JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = ANY ((ARRAY['multiselect'::character varying, 'multiselect_image'::character varying])::text[])))))
+     JOIN public.custom_field_answers a ON ((((a.answerable_type)::text = 'Idea'::text) AND (a.answerable_id = i.id) AND ((a.key)::text = (q.key)::text))))
+     CROSS JOIN LATERAL jsonb_array_elements_text(a.value) selected(value))
+  WHERE (jsonb_typeof(a.value) = 'array'::text);
 
 
 --
@@ -4226,11 +4226,12 @@ CREATE VIEW public.reporting_user_question_answers AS
           WHERE (t.value <> ''::text)
           ORDER BY t.key
          LIMIT 1)) AS question_label,
-    (u.custom_field_values ->> (q.key)::text) AS answer_value
-   FROM ((public.reporting_users ru
+    (a.value #>> '{}'::text[]) AS answer_value
+   FROM (((public.reporting_users ru
      JOIN public.users u ON ((u.id = ru.id)))
      JOIN public.custom_fields q ON ((((q.resource_type)::text = 'User'::text) AND q.enabled)))
-  WHERE (((q.input_type)::text <> 'multiselect'::text) AND jsonb_exists(u.custom_field_values, (q.key)::text))
+     JOIN public.custom_field_answers a ON ((((a.answerable_type)::text = 'User'::text) AND (a.answerable_id = u.id) AND ((a.key)::text = (q.key)::text))))
+  WHERE ((q.input_type)::text <> 'multiselect'::text)
 UNION ALL
  SELECT u.id AS user_id,
     q.id AS question_id,
@@ -4244,11 +4245,12 @@ UNION ALL
           ORDER BY t.key
          LIMIT 1)) AS question_label,
     selected.value AS answer_value
-   FROM (((public.reporting_users ru
+   FROM ((((public.reporting_users ru
      JOIN public.users u ON ((u.id = ru.id)))
      JOIN public.custom_fields q ON ((((q.resource_type)::text = 'User'::text) AND q.enabled AND ((q.input_type)::text = 'multiselect'::text))))
-     CROSS JOIN LATERAL jsonb_array_elements_text((u.custom_field_values -> (q.key)::text)) selected(value))
-  WHERE (jsonb_typeof((u.custom_field_values -> (q.key)::text)) = 'array'::text);
+     JOIN public.custom_field_answers a ON ((((a.answerable_type)::text = 'User'::text) AND (a.answerable_id = u.id) AND ((a.key)::text = (q.key)::text))))
+     CROSS JOIN LATERAL jsonb_array_elements_text(a.value) selected(value))
+  WHERE (jsonb_typeof(a.value) = 'array'::text);
 
 
 --
@@ -9554,6 +9556,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260908144646'),
 ('20260821210000'),
 ('20260821090000'),
 ('20260821000000'),

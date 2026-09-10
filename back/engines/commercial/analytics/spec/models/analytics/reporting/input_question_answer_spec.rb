@@ -13,11 +13,9 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
     let(:response) do
       create(:idea_status_proposed)
       create(:native_survey_response, project: project).tap do |response|
-        response.update_column(:custom_field_values, {
-          select_question.key => 'option1',
-          scale_question.key => 4,
-          multiselect_question.key => %w[option1 option2]
-        })
+        response.custom_field_answers.create!(key: select_question.key, value: 'option1')
+        response.custom_field_answers.create!(key: scale_question.key, value: 4)
+        response.custom_field_answers.create!(key: multiselect_question.key, value: %w[option1 option2])
       end
     end
 
@@ -40,7 +38,6 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
     it 'has no rows for skipped questions' do
       create(:idea_status_proposed)
       empty_response = create(:native_survey_response, project: project)
-      empty_response.update_column(:custom_field_values, {})
 
       expect(described_class.where(input_id: empty_response.id)).to be_empty
     end
@@ -52,7 +49,7 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
       form = create(:custom_form, participation_context: project)
       question = create(:custom_field, resource: form, input_type: 'text')
       idea = create(:idea, project: project)
-      idea.update_column(:custom_field_values, { question.key => 'By bicycle' })
+      idea.custom_field_answers.create!(key: question.key, value: 'By bicycle')
       row = described_class.find_by!(input_id: idea.id)
 
       expect(row.question_id).to eq question.id
@@ -66,7 +63,7 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
     ranking = create(:custom_field_ranking, :with_options, resource: form)
     create(:idea_status_proposed)
     response = create(:native_survey_response, project: project)
-    response.update_column(:custom_field_values, { ranking.key => %w[option1 option2] })
+    response.custom_field_answers.create!(key: ranking.key, value: %w[option1 option2])
 
     expect(described_class.where(input_id: response.id)).to be_empty
   end

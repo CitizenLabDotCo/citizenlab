@@ -35,12 +35,12 @@ class CustomFieldAnswer < ApplicationRecord
 
   validates :answerable_type, inclusion: { in: ANSWERABLE_TYPES }
   validates :key, presence: true
-  # presence would reject false/[]; exclusion checks arrays element-wise.
-  validate :value_is_not_nil
+  # presence would reject false/[]; this also checks arrays element-wise.
+  validate :value_has_no_nils
 
   private
 
-  def value_is_not_nil
-    errors.add(:value, 'must not be nil') if value.nil?
+  def value_has_no_nils
+    errors.add(:value, 'must not be or contain nil') if value.nil? || (value.is_a?(Array) && value.include?(nil))
   end
 end

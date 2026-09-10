@@ -559,11 +559,11 @@ resource 'Permissions' do
           create(:custom_field_gender, required: false)
           create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field')
 
+          @user.custom_field_answers.build(key: 'gender', value: 'male')
           @user.update!(
             first_name: 'Jack',
             last_name: nil,
-            password_digest: nil,
-            custom_field_values: { 'gender' => 'male' }
+            password_digest: nil
           )
         end
 
@@ -656,12 +656,12 @@ resource 'Permissions' do
           create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field')
           create(:custom_field, resource_type: 'User', enabled: false, key: 'disabled_field') # Should not be returned
 
+          @user.custom_field_answers.build(key: 'gender', value: 'male')
           @user.update!(
             email: 'my@email.com',
             first_name: 'Jack',
             last_name: nil,
-            password_digest: nil,
-            custom_field_values: { 'gender' => 'male' }
+            password_digest: nil
           )
 
           create(:topic, include_in_onboarding: true)

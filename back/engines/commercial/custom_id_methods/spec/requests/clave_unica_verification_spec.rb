@@ -284,7 +284,7 @@ context 'clave_unica verification' do
         get "/auth/clave_unica?token=#{@token}"
         follow_redirect!
 
-        expect(@user.reload.custom_field_values).to eq({ 'rut_verified' => true })
+        expect(@user.reload.custom_field_answers.pluck(:key, :value)).to eq [['rut_verified', true]]
       end
     end
 
@@ -295,7 +295,7 @@ context 'clave_unica verification' do
         get "/auth/clave_unica?token=#{@token}"
         follow_redirect!
 
-        expect(@user.reload.custom_field_values).to eq({})
+        expect(@user.reload.custom_field_answers).to be_empty
       end
     end
   end

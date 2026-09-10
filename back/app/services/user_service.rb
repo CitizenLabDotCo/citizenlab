@@ -7,15 +7,22 @@
 class UserService
   class << self
     def upsert_in_web_api(new_or_existing_user, user_params, &)
+      custom_field_values = user_params.delete(:custom_field_values)
       new_or_existing_user.assign_attributes(user_params)
       yield if block_given?
+      add_custom_field_values_schema_errors(new_or_existing_user, custom_field_values)
+      return false if new_or_existing_user.errors.any?
+
+      CustomFieldValuesTransitionService.new.assign(new_or_existing_user, custom_field_values) if custom_field_values
       # `on: :create` and `on: :update` callbacks/validations are not called
       new_or_existing_user.save(context: :form_submission)
     end
 
     def create_in_admin_api(user_params, confirm_user)
+      custom_field_values = user_params.delete(:custom_field_values)
       user = User.new(user_params)
       user.locale ||= AppConfiguration.instance.settings('core', 'locales').first
+      CustomFieldValuesTransitionService.new.assign(user, custom_field_values) if custom_field_values
       build_user_confirmation(user) if confirm_user
       user.save
 
@@ -23,7 +30,9 @@ class UserService
     end
 
     def update_in_admin_api(user, user_params, confirm_user)
+      custom_field_values = user_params.delete(:custom_field_values)
       build_user_confirmation(user) if confirm_user
+      CustomFieldValuesTransitionService.new.assign(user, custom_field_values) if custom_field_values
       user.update(user_params)
     end
 
@@ -36,8 +45,11 @@ class UserService
         user_params = user_params.except(:email).merge(new_email: user_params[:email])
       end
 
+      custom_field_values = (user_params.delete(:custom_field_values) || {})
+        .merge(user_params.extract!(:gender, :birthyear, :domicile).compact.stringify_keys)
       user = User.new(user_params)
       user.locale = locale
+      CustomFieldValuesTransitionService.new.assign(user, custom_field_values) if custom_field_values.present?
 
       build_user_confirmation(user) if confirm_user && user.email.present?
       user
@@ -56,7 +68,17 @@ class UserService
 
       resolve_sso_email!(user, user_params, sso_user_attrs[:email], authver_method.email_confirmed?(auth))
 
-      user.update_merging_custom_fields!(user_params)
+      assign_merging_custom_fields(user, user_params).save!
+    end
+
+    def assign_merging_custom_fields(user, attributes)
+      attributes = attributes.deep_stringify_keys
+      incoming_values = (attributes.delete('custom_field_values') || {})
+        .merge(attributes.extract!('gender', 'birthyear', 'domicile').compact)
+      values = user.custom_field_answers.to_h { [it.key, it.value] }.merge(incoming_values)
+      CustomFieldValuesTransitionService.new.assign(user, values)
+      user.assign_attributes(attributes)
+      user
     end
 
     def assign_params_in_accept_invite(user, user_params, confirm_user: false)
@@ -67,13 +89,14 @@ class UserService
       # If the user's email came from/matches the authver one, and the provider
       # says it was confirmed: we mark the user's email as confirmed.
       user.find_or_create_confirmation(:email_confirmation).confirm! if confirm_user
-      user.assign_attributes(user_params.merge(invite_status: 'accepted'))
-      user
+      assign_merging_custom_fields(user, user_params.merge('invite_status' => 'accepted'))
     end
 
     # User can also be updated in input importer by PATCH /users/:id (`update_in_web_api` is called)
     def build_in_input_importer(user_params, new_user = User.new)
+      custom_field_values = user_params.delete(:custom_field_values)
       new_user.assign_attributes(user_params)
+      CustomFieldValuesTransitionService.new.assign(new_user, custom_field_values) if custom_field_values
       if new_user.email.blank?
         new_user.unique_code = SecureRandom.uuid
       end
@@ -85,7 +108,9 @@ class UserService
     end
 
     def update_in_tenant_template!(user, user_params = {})
+      custom_field_values = user_params.delete(:custom_field_values) || user_params.delete('custom_field_values')
       user.assign_attributes(user_params)
+      CustomFieldValuesTransitionService.new.assign(user, custom_field_values) if custom_field_values
       build_user_confirmation(user)
       user.save!
     end
@@ -130,6 +155,19 @@ class UserService
     def build_user_confirmation(user)
       user.email_confirmed_at = Time.zone.now
       user.confirmation_required = false
+    end
+
+    def add_custom_field_values_schema_errors(user, values)
+      return if values.nil?
+
+      values = values.to_h
+      errors = CustomFieldValuesValidationService.new.json_schema_validation_errors(
+        CustomField.registration.includes(:options),
+        values
+      )
+      errors.each do |error|
+        user.errors.add(:custom_field_values, error, value: values)
+      end
     end
   end
 end

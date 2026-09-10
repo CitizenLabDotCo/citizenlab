@@ -63,7 +63,7 @@ describe ProjectCopyService do
       open_ended_project = create(:single_phase_native_survey_project, title_multiloc: { en: 'open ended' })
       form1 = create(:custom_form, participation_context: open_ended_project.phases.first)
       field1 = create(:custom_field_linear_scale, :for_custom_form, resource: form1)
-      create(:idea, project: open_ended_project, custom_field_values: { field1.key => 1 }, phases: open_ended_project.phases, creation_phase: open_ended_project.phases.first)
+      create(:idea, project: open_ended_project, custom_field_answers: [build(:custom_field_answer, key: field1.key, value: 1, custom_field: field1)], phases: open_ended_project.phases, creation_phase: open_ended_project.phases.first)
 
       two_phase_project = create(:project_with_future_native_survey_phase, title_multiloc: { en: 'two phase' })
       survey_phase = two_phase_project.phases.last
@@ -72,7 +72,7 @@ describe ProjectCopyService do
       form2 = create(:custom_form, participation_context: survey_phase)
       field2 = create(:custom_field, :for_custom_form, resource: form2)
       create(:idea, project: two_phase_project, phases: [ideation_phase])
-      create(:idea, project: two_phase_project, phases: [survey_phase], creation_phase: survey_phase, custom_field_values: { field2.key => 'My value' })
+      create(:idea, project: two_phase_project, phases: [survey_phase], creation_phase: survey_phase, custom_field_answers: [build(:custom_field_answer, key: field2.key, value: 'My value', custom_field: field2)])
 
       template1 = service.export open_ended_project, include_ideas: true
       template2 = service.export two_phase_project, include_ideas: true
@@ -94,7 +94,7 @@ describe ProjectCopyService do
         expect(new_open_ended_project.phases.first.custom_form.custom_fields.pluck(:input_type)).to eq ['linear_scale']
         new_field1 = new_open_ended_project.phases.first.custom_form.custom_fields.first
         expect(new_open_ended_project.ideas_count).to eq 1
-        expect(new_open_ended_project.ideas.first.custom_field_values[new_field1.key]).to eq 1
+        expect(new_open_ended_project.ideas.first.answer_for_key(new_field1.key)&.value).to eq 1
 
         new_two_phase_project = Project.find_by(title_multiloc: { en: 'two phase' })
         new_survey_phase = new_two_phase_project.phases.order(:start_at).last
@@ -102,7 +102,7 @@ describe ProjectCopyService do
         expect(new_survey_phase.custom_form.custom_fields.pluck(:input_type)).to eq ['text']
         new_field2 = new_survey_phase.custom_form.custom_fields.first
         expect(new_survey_phase.ideas_count).to eq 1
-        expect(new_survey_phase.ideas.first.custom_field_values[new_field2.key]).to eq 'My value'
+        expect(new_survey_phase.ideas.first.answer_for_key(new_field2.key)&.value).to eq 'My value'
       end
     end
 
@@ -233,24 +233,20 @@ describe ProjectCopyService do
       unsupported_field1 = create(:custom_field, :for_custom_form, input_type: 'file_upload', resource: custom_form)
       unsupported_field2 = create(:custom_field, :for_custom_form, input_type: 'shapefile_upload', resource: custom_form)
       response = create(:native_survey_response, project: project)
-      custom_field_values = {
-        supported_fields[0].key => 7,
-        supported_fields[1].key => 1,
-        unsupported_field1.key => create(:file_upload, idea: response).id,
-        unsupported_field2.key => create(:file_upload, idea: response).id,
-        supported_fields[2].key => false
-      }
-      response.update! custom_field_values: custom_field_values
+      create(:custom_field_answer, answerable: response, key: supported_fields[0].key, value: 7, custom_field: supported_fields[0])
+      create(:custom_field_answer, answerable: response, key: supported_fields[1].key, value: 1, custom_field: supported_fields[1])
+      create(:custom_field_answer, answerable: response, key: unsupported_field1.key, value: create(:file_upload, idea: response).id, custom_field: unsupported_field1)
+      create(:custom_field_answer, answerable: response, key: unsupported_field2.key, value: create(:file_upload, idea: response).id, custom_field: unsupported_field2)
+      create(:custom_field_answer, answerable: response, key: supported_fields[2].key, value: false, custom_field: supported_fields[2])
 
       template = service.export project.reload, include_ideas: true
 
-      expected_custom_field_values = {
-        supported_fields[0].key => 7,
-        supported_fields[1].key => 1,
-        supported_fields[2].key => false
-      }
       expect(template['models']['idea'].size).to eq 1
-      expect(template['models']['idea'].first['custom_field_values']).to match expected_custom_field_values
+      expect(template['models']['custom_field_answer'].pluck('key', 'value')).to contain_exactly(
+        [supported_fields[0].key, 7],
+        [supported_fields[1].key, 1],
+        [supported_fields[2].key, false]
+      )
     end
 
     it 'successfully copies map_configs associated with phase-level form custom_fields, and their layers' do
@@ -448,6 +444,51 @@ describe ProjectCopyService do
       expect(copied_project.ideas.first.file_attachments.count).to eq 1
       # The uploader (unrelated to the idea graph) is pulled in so its ref resolves.
       expect(copied_project.files.filter_map(&:uploader)).to be_present
+    end
+
+    it 'copies anonymized users with demographic answers reusing the registration fields' do
+      gender_field = create(:custom_field_gender, :with_options)
+      birthyear_field = create(:custom_field_birthyear)
+      author = create(:user, custom_field_answers: [
+        build(:custom_field_answer, key: 'gender', value: 'female', custom_field: gender_field),
+        build(:custom_field_answer, key: 'birthyear', value: 1984, custom_field: birthyear_field),
+        build(:custom_field_answer, key: 'postal_code', value: '1000')
+      ])
+      idea = create(:idea, author: author)
+
+      template = service.export idea.project, include_ideas: true
+
+      yml_author = template['models']['user'].first
+      author_answers = template['models']['custom_field_answer'].select { |answer| answer['answerable_ref'].equal?(yml_author) }
+      expect(author_answers.map { |answer| answer.values_at('key', 'value') }).to contain_exactly(
+        %w[gender female],
+        ['birthyear', 1984]
+      )
+      registration_codes = template['models']['custom_field'].filter_map { |field| field['code'] if field['resource_type'] == 'User' }
+      expect(registration_codes).to contain_exactly('gender', 'birthyear')
+
+      create(:idea_status_proposed)
+      copied_project = nil
+      expect { copied_project = service.import template }.not_to change(CustomField.registration, :count)
+      copied_author = copied_project.ideas.first.author
+      expect(copied_author.custom_field_answers.pluck(:custom_field_id, :key, :value)).to contain_exactly(
+        [gender_field.id, 'gender', 'female'],
+        [birthyear_field.id, 'birthyear', 1984]
+      )
+    end
+
+    it 'drops the demographic answers when the target has no matching registration fields' do
+      create(:custom_field_gender, :with_options)
+      create(:custom_field_birthyear)
+      idea = create(:idea, author: create(:user))
+
+      template = service.export idea.project, include_ideas: true
+
+      CustomField.registration.destroy_all
+      create(:idea_status_proposed)
+      copied_project = nil
+      expect { copied_project = service.import template }.not_to change(CustomField.registration, :count)
+      expect(copied_project.ideas.first.author.custom_field_answers).to be_empty
     end
 
     it 'includes phases with no end date' do

@@ -37,6 +37,10 @@ class PublicApi::V2::UserSerializer < PublicApi::V2::BaseSerializer
     multiloc_service.t(object.bio_multiloc)
   end
 
+  def custom_field_values
+    object.custom_field_answers.to_h { [it.key, it.value] }
+  end
+
   private
 
   def multiloc_service

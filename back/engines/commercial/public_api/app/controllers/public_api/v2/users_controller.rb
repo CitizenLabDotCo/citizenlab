@@ -8,6 +8,7 @@ module PublicApi
 
     def index
       users = User
+        .includes(:custom_field_answers)
         .order(created_at: :desc)
         .page(params[:page_number])
         .per(num_per_page)

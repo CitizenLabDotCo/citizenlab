@@ -50,7 +50,7 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :custom_field_values, if: PRIVATE do |object|
-    CustomFieldService.remove_hidden_custom_fields(object.custom_field_values)
+    CustomFieldService.remove_hidden_custom_fields(object.custom_field_answers.to_h { [it.key, it.value] })
   end
 
   attribute :unread_notifications, if: PRIVATE do |object|

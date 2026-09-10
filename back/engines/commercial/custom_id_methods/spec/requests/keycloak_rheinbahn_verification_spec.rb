@@ -90,10 +90,8 @@ context 'keycloak verification (Rheinbahn)' do
   end
 
   def expect_user_to_not_be_verified(user)
-    expect(user.reload).to have_attributes({
-      verified: false,
-      custom_field_values: {}
-    })
+    expect(user.reload).to have_attributes({ verified: false })
+    expect(user.custom_field_answers).to be_empty
     expect(user.verifications.count).to eq 0
   end
 

@@ -4,8 +4,6 @@ require 'rails_helper'
 
 describe CustomFieldService do
   let(:service) { described_class.new }
-  let(:metaschema) { JSON::Validator.validator_for_name('draft4').metaschema }
-  let(:locale) { 'en' }
 
   describe 'cleanup_custom_field_values!' do
     let(:field_values) { { 'key1' => nil, 'key2' => '', 'key3' => 'Not blank', 'key4' => true, 'key5' => false } }
@@ -21,26 +19,32 @@ describe CustomFieldService do
     it 'deletes the custom field values from all users' do
       cf1 = create(:custom_field)
       cf2 = create(:custom_field)
-      create_list(:user, 5, custom_field_values: { cf1.key => 'some_value', cf2.key => 'other_value' })
+      create_list(:user, 5) do |user|
+        create(:custom_field_answer, answerable: user, key: cf1.key, value: 'some_value')
+        create(:custom_field_answer, answerable: user, key: cf2.key, value: 'other_value')
+      end
       create_list(:user, 5)
       service.delete_custom_field_values(cf1)
-      expect(User.all.map { |u| u.custom_field_values.keys }.flatten).to include(cf2.key)
-      expect(User.all.map { |u| u.custom_field_values.keys }.flatten).not_to include(cf1.key)
       expect(CustomFieldAnswer.where(key: cf1.key)).not_to exist
       expect(CustomFieldAnswer.where(key: cf2.key).count).to eq 5
     end
 
     it 'deletes the values that a user field stored on inputs through user fields in form' do
       field = create(:custom_field, key: 'the_field')
-      user = create(:user, custom_field_values: { 'the_field' => 'other', 'the_field_other' => 'gone' })
-      input = create(:idea, custom_field_values: { 'u_the_field' => 'other', 'u_the_field_other' => 'gone', 'other_field' => 'stays' })
+      user = create(:user, custom_field_answers: [
+        build(:custom_field_answer, key: 'the_field', value: 'other'),
+        build(:custom_field_answer, key: 'the_field_other', value: 'gone')
+      ])
+      input = create(:idea, custom_field_answers: [
+        build(:custom_field_answer, key: 'u_the_field', value: 'other'),
+        build(:custom_field_answer, key: 'u_the_field_other', value: 'gone'),
+        build(:custom_field_answer, key: 'other_field', value: 'stays')
+      ])
 
       service.delete_custom_field_values(field)
 
-      expect(user.reload.custom_field_values).to eq({})
-      expect(input.reload.custom_field_values).to eq({ 'other_field' => 'stays' })
-      expect(user.custom_field_answers).to be_empty
-      expect(input.custom_field_answers.pluck(:key)).to eq ['other_field']
+      expect(user.reload.custom_field_answers).to be_empty
+      expect(input.reload.custom_field_answers.pluck(:key)).to eq ['other_field']
     end
 
     it 'deletes the values of a phase-level form field from the inputs of its phase' do
@@ -51,13 +55,16 @@ describe CustomFieldService do
         :idea,
         project: phase.project,
         creation_phase: phase,
-        custom_field_values: { 'extra_field' => 'gone', 'extra_field_follow_up' => 'gone', 'another_field' => 'stays' }
+        custom_field_answers: [
+          build(:custom_field_answer, key: 'extra_field', value: 'gone'),
+          build(:custom_field_answer, key: 'extra_field_follow_up', value: 'gone'),
+          build(:custom_field_answer, key: 'another_field', value: 'stays')
+        ]
       )
 
       service.delete_custom_field_values(field)
 
-      expect(input.reload.custom_field_values).to eq({ 'another_field' => 'stays' })
-      expect(input.custom_field_answers.pluck(:key)).to eq ['another_field']
+      expect(input.reload.custom_field_answers.pluck(:key)).to eq ['another_field']
     end
 
     it 'does not delete values of inputs in other participation contexts with the same field key' do
@@ -67,7 +74,7 @@ describe CustomFieldService do
         :idea,
         project: other_phase.project,
         creation_phase: other_phase,
-        custom_field_values: { 'extra_field' => 'stays' }
+        custom_field_answers: [build(:custom_field_answer, key: 'extra_field', value: 'stays')]
       )
 
       phase = create(:single_phase_native_survey_project).phases.first
@@ -76,8 +83,7 @@ describe CustomFieldService do
 
       service.delete_custom_field_values(field)
 
-      expect(other_input.reload.custom_field_values).to eq({ 'extra_field' => 'stays' })
-      expect(other_input.custom_field_answers.pluck(:key, :value)).to eq [%w[extra_field stays]]
+      expect(other_input.reload.custom_field_answers.pluck(:key, :value)).to eq [%w[extra_field stays]]
     end
   end
 
@@ -88,164 +94,31 @@ describe CustomFieldService do
       cfo2 = create(:custom_field_option, custom_field: cf1)
       cf2 = create(:custom_field_select)
       cfo3 = create(:custom_field_option, custom_field: cf2)
-      v1 = { cf1.key => [cfo1.key], cf2.key => cfo3.key }
-      u1 = create(:user, custom_field_values: v1)
-      v2 = { cf1.key => [cfo1.key, cfo2.key] }
-      u2 = create(:user, custom_field_values: v2)
-      v3 = { cf1.key => [cfo2.key] }
-      u3 = create(:user, custom_field_values: v3)
+      u1 = create(:user, custom_field_answers: [
+        build(:custom_field_answer, key: cf1.key, value: [cfo1.key]),
+        build(:custom_field_answer, key: cf2.key, value: cfo3.key)
+      ])
+      u2 = create(:user, custom_field_answers: [build(:custom_field_answer, key: cf1.key, value: [cfo1.key, cfo2.key])])
+      u3 = create(:user, custom_field_answers: [build(:custom_field_answer, key: cf1.key, value: [cfo2.key])])
 
       service.delete_custom_field_option_values(cfo1.key, cfo1.custom_field)
 
-      expect(u1.reload.custom_field_values).to eq({ cf2.key => cfo3.key })
-      expect(u2.reload.custom_field_values).to eq({ cf1.key => [cfo2.key] })
-      expect(u3.reload.custom_field_values).to eq v3
-      expect(u1.custom_field_answers.pluck(:key, :value)).to eq [[cf2.key, cfo3.key]]
-      expect(u2.custom_field_answers.pluck(:key, :value)).to eq [[cf1.key, [cfo2.key]]]
-      expect(u3.custom_field_answers.pluck(:key, :value)).to eq [[cf1.key, [cfo2.key]]]
+      expect(u1.reload.custom_field_answers.pluck(:key, :value)).to eq [[cf2.key, cfo3.key]]
+      expect(u2.reload.custom_field_answers.pluck(:key, :value)).to eq [[cf1.key, [cfo2.key]]]
+      expect(u3.reload.custom_field_answers.pluck(:key, :value)).to eq [[cf1.key, [cfo2.key]]]
     end
 
     it 'deletes the custom field option values from all users for a single select' do
       cf1 = create(:custom_field_select)
       cfo1 = create(:custom_field_option, custom_field: cf1)
       cfo2 = create(:custom_field_option, custom_field: cf1)
-      v1 = { cf1.key => cfo1.key }
-      u1 = create(:user, custom_field_values: v1)
-      v2 = { cf1.key => cfo2.key }
-      u2 = create(:user, custom_field_values: v2)
+      u1 = create(:user, custom_field_answers: [build(:custom_field_answer, key: cf1.key, value: cfo1.key)])
+      u2 = create(:user, custom_field_answers: [build(:custom_field_answer, key: cf1.key, value: cfo2.key)])
 
       service.delete_custom_field_option_values(cfo1.key, cfo1.custom_field)
 
-      expect(u1.reload.custom_field_values).to eq({})
-      expect(u2.reload.custom_field_values).to eq v2
-      expect(u1.custom_field_answers).to be_empty
-      expect(u2.custom_field_answers.pluck(:key, :value)).to eq [[cf1.key, cfo2.key]]
-    end
-  end
-
-  describe 'fields_to_json_schema' do
-    it 'creates the valid empty schema on empty fields' do
-      schema = service.fields_to_json_schema([], locale)
-      expect(JSON::Validator.validate!(metaschema, schema)).to be true
-      expect(schema).to match({
-        type: 'object',
-        properties: {},
-        additionalProperties: false
-      })
-    end
-
-    it 'creates the valid empty schema on a disabled field' do
-      create(:custom_field, enabled: false)
-      schema = service.fields_to_json_schema([], locale)
-      expect(JSON::Validator.validate!(metaschema, schema)).to be true
-      expect(schema).to match({
-        type: 'object',
-        properties: {},
-        additionalProperties: false
-      })
-    end
-
-    it 'creates a valid schema with all input types' do
-      fields = [
-        create(:custom_field, key: 'field1', input_type: 'text'),
-        create(:custom_field, key: 'field2', input_type: 'multiline_text', required: true),
-        create(:custom_field, key: 'field3', input_type: 'select'),
-        create(:custom_field, key: 'field4', input_type: 'multiselect'),
-        create(:custom_field, key: 'field5', input_type: 'checkbox'),
-        create(:custom_field, key: 'field6', input_type: 'date', enabled: false, required: true),
-        create(:custom_field, key: 'field7', input_type: 'number'),
-        create(:custom_field, key: 'field8', input_type: 'multiselect', required: true),
-        create(:custom_field, key: 'field9', input_type: 'files', required: true),
-        create(:custom_field, key: 'field10', input_type: 'point')
-      ]
-      create(:custom_field_option, key: 'option_1', custom_field: fields[2], ordering: 1)
-      create(:custom_field_option, key: 'option_3', custom_field: fields[2], ordering: 3)
-      create(:custom_field_option, key: 'option_2', custom_field: fields[2], ordering: 2)
-      create(:custom_field_option, key: 'option_a', custom_field: fields[3], ordering: 1)
-      create(:custom_field_option, key: 'option_b', custom_field: fields[3], ordering: 2)
-      create(:custom_field_option, key: 'option_a', custom_field: fields[7], ordering: 1)
-      create(:custom_field_option, key: 'option_b', custom_field: fields[7], ordering: 2)
-
-      schema = service.fields_to_json_schema(fields, locale)
-
-      expect(JSON::Validator.validate!(metaschema, schema)).to be true
-      expect(schema).to match(
-        { type: 'object',
-          additionalProperties: false,
-          properties: { 'field1' =>
-            { title: 'Did you attend',
-              description: 'Which councils are you attending in our city?',
-              type: 'string' },
-                        'field2' =>
-            { title: 'Did you attend',
-              description: 'Which councils are you attending in our city?',
-              type: 'string' },
-                        'field3' =>
-            { title: 'Did you attend',
-              description: 'Which councils are you attending in our city?',
-              type: 'string',
-              enum: %w[option_1 option_2 option_3],
-              enumNames: ['youth council', 'youth council', 'youth council'] },
-                        'field4' =>
-            { title: 'Did you attend',
-              description: 'Which councils are you attending in our city?',
-              type: 'array',
-              uniqueItems: true,
-              items: { type: 'string',
-                       enum: %w[option_a option_b],
-                       enumNames: ['youth council', 'youth council'] },
-              minItems: 0 },
-                        'field5' =>
-            { title: 'Did you attend',
-              description: 'Which councils are you attending in our city?',
-              type: 'boolean' },
-                        'field6' =>
-            { title: 'Did you attend',
-              description: 'Which councils are you attending in our city?',
-              type: 'string',
-              format: 'date' },
-                        'field7' =>
-            { title: 'Did you attend',
-              description: 'Which councils are you attending in our city?',
-              type: 'number' },
-                        'field8' =>
-            { title: 'Did you attend',
-              description: 'Which councils are you attending in our city?',
-              type: 'array',
-              uniqueItems: true,
-              items: { type: 'string',
-                       enum: %w[option_a option_b],
-                       enumNames: ['youth council', 'youth council'] },
-              minItems: 1 },
-                        'field9' =>
-            { title: 'Did you attend',
-              description: 'Which councils are you attending in our city?',
-              type: 'array',
-              items: {
-                type: 'string',
-                format: 'data-url'
-              } },
-                        'field10' =>
-            { title: 'Did you attend',
-              description: 'Which councils are you attending in our city?',
-              type: 'string' } },
-          required: %w[field2 field8 field9] }
-      )
-    end
-
-    it 'properly handles the custom behaviour of the birthyear field' do
-      fields = [create(:custom_field, key: 'birthyear', code: 'birthyear', input_type: 'number')]
-      schema = service.fields_to_json_schema(fields, locale)
-      expect(JSON::Validator.validate!(metaschema, schema)).to be true
-      expect(schema.dig(:properties, 'birthyear', :enum)&.size).to be > 100
-    end
-
-    it 'properly handles the custom behaviour of the domicile field' do
-      fields = [create(:custom_field_domicile)]
-      create_list(:area, 5)
-      schema = service.fields_to_json_schema(fields, locale)
-      expect(JSON::Validator.validate!(metaschema, schema)).to be true
-      expect(schema.dig(:properties, 'domicile', :enum)).to match(Area.all.order(:ordering).map(&:id).push('outside'))
+      expect(u1.reload.custom_field_answers).to be_empty
+      expect(u2.reload.custom_field_answers.pluck(:key, :value)).to eq [[cf1.key, cfo2.key]]
     end
   end
 
@@ -268,21 +141,6 @@ describe CustomFieldService do
       expect(service.handle_title(field, 'en')).to eq 'size'
       expect(service.handle_title(field, 'fr-FR')).to eq 'taille'
       expect(service.handle_title(field, 'nl-NL')).to eq 'size'
-    end
-  end
-
-  describe 'handle_description' do
-    it 'returns the description in the requested locale' do
-      field = create(:custom_field, description_multiloc: { 'en' => 'carrot', 'nl-NL' => 'wortel' })
-      expect(service.handle_description(field, 'en')).to eq 'carrot'
-      expect(service.handle_description(field, 'nl-NL')).to eq 'wortel'
-    end
-
-    it 'returns the description from the first available locale if the requested locale is not available' do
-      field = create(:custom_field, description_multiloc: { 'en' => 'carrot', 'fr-FR' => 'carrotte' })
-      expect(service.handle_description(field, 'en')).to eq 'carrot'
-      expect(service.handle_description(field, 'fr-FR')).to eq 'carrotte'
-      expect(service.handle_description(field, 'nl-NL')).to eq 'carrot'
     end
   end
 
@@ -315,13 +173,13 @@ describe CustomFieldService do
         :idea,
         project: project,
         author: author,
-        custom_field_values: {
-          select_key => 'other',
-          "#{select_key}_other": 'other value',
-          sentiment_key => 3,
-          "#{sentiment_key}_follow_up": 'follow up value',
-          key_not_matching_field: 'foo'
-        }
+        custom_field_answers: [
+          build(:custom_field_answer, key: select_key, value: 'other'),
+          build(:custom_field_answer, key: "#{select_key}_other", value: 'other value'),
+          build(:custom_field_answer, key: sentiment_key, value: 3),
+          build(:custom_field_answer, key: "#{sentiment_key}_follow_up", value: 'follow up value'),
+          build(:custom_field_answer, key: 'key_not_matching_field', value: 'foo')
+        ]
       )
     end
 

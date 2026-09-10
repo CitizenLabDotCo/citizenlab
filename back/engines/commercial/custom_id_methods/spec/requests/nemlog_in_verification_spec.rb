@@ -81,7 +81,7 @@ describe CustomIdMethods::NemlogIn::NemlogInOmniauth do
       first_name: 'Rudolphi',
       last_name: 'Raindeari'
     })
-    expect(user.custom_field_values).to have_key('municipality_code')
+    expect(user.answer_for_key('municipality_code')).to be_nil
     expect(user.verifications.first).to have_attributes({
       method_name: 'nemlog_in',
       user_id: user.id,
@@ -165,7 +165,7 @@ describe CustomIdMethods::NemlogIn::NemlogInOmniauth do
         get "/auth/nemlog_in?token=#{token}&verification_pathname=/some-page"
         follow_redirect!
 
-        expect(user.reload.custom_field_values['birthyear']).to eq(1944)
+        expect(user.reload.answer_for_key('birthyear')&.value).to eq(1944)
       end
     end
 
@@ -181,7 +181,7 @@ describe CustomIdMethods::NemlogIn::NemlogInOmniauth do
         get "/auth/nemlog_in?token=#{token}&verification_pathname=/some-page"
         follow_redirect!
 
-        expect(user.reload.custom_field_values['birthyear']).to be_nil
+        expect(user.reload.answer_for_key('birthyear')).to be_nil
       end
     end
   end

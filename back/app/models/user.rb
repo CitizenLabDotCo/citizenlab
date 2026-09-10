@@ -20,7 +20,6 @@ require Rails.root.join('lib/email_domain_blacklist')
 #  locale                    :string
 #  bio_multiloc              :jsonb
 #  invite_status             :string
-#  custom_field_values       :jsonb
 #  registration_completed_at :datetime
 #  verified                  :boolean          default(FALSE), not null
 #  email_confirmed_at        :datetime
@@ -234,7 +233,8 @@ class User < ApplicationRecord
   has_many :jobs_trackers, class_name: 'Jobs::Tracker', foreign_key: :owner_id, dependent: :nullify
   has_many :invites_imports, foreign_key: :importer_id, dependent: :destroy
 
-  store_accessor :custom_field_values, :gender, :birthyear, :domicile
+  self.ignored_columns += %w[custom_field_values] # backup only; the answers are the source of truth
+
   store_accessor :onboarding, :topics_and_areas
 
   validates :locale, presence: true, unless: :invite_pending?
@@ -251,11 +251,6 @@ class User < ApplicationRecord
   validates :birthyear, numericality: { only_integer: true, greater_than_or_equal_to: 1900, less_than: Time.zone.now.year }, allow_nil: true
   validates :domicile, inclusion: { in: proc { ['outside'] + Area.select(:id).map(&:id) } }, allow_nil: true
   validates :invite_status, inclusion: { in: INVITE_STATUSES }, allow_nil: true
-
-  # NOTE: All validation except for required
-  validates :custom_field_values, json: {
-    schema: -> { CustomFieldService.new.fields_to_json_schema_ignore_required(CustomField.registration) }
-  }, on: :form_submission, if: :custom_field_values_changed? # only called if `save` is called w/ `context: :form_submission`
 
   validates :onboarding, json: { schema: -> { User.onboarding_json_schema } }
 
@@ -276,12 +271,16 @@ class User < ApplicationRecord
   scope :not_blocked, -> { where(block_end_at: nil).or(where('? > block_end_at', Time.zone.now)) }
   scope :active, -> { registered.not_blocked }
 
-  def update_merging_custom_fields!(attributes)
-    attributes = attributes.deep_stringify_keys
-    update!(
-      **attributes,
-      custom_field_values: custom_field_values.merge(attributes['custom_field_values'] || {})
-    )
+  def gender
+    answer_for_code('gender')&.value
+  end
+
+  def birthyear
+    answer_for_code('birthyear')&.value
+  end
+
+  def domicile
+    answer_for_code('domicile')&.value
   end
 
   def to_token_payload
@@ -412,6 +411,11 @@ class User < ApplicationRecord
   end
 
   private
+
+  def answer_for_code(code)
+    key = CustomField.registration.find_by(code: code)&.key
+    key && answer_for_key(key)
+  end
 
   # Concurrent requests race here; the savepoint lets the caller's transaction survive the losing insert.
   def create_confirmation!(association_name)

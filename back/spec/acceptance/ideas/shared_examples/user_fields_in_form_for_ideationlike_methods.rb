@@ -23,9 +23,7 @@ RSpec.shared_examples 'user fields in form for input methods' do
         assert_status 201
         expect(Idea.count).to eq 1
         idea = Idea.first
-        expect(idea.custom_field_values).to eq({
-          'u_select_field' => 'option1'
-        })
+        expect(idea.custom_field_answers.pluck(:key, :value)).to eq [%w[u_select_field option1]]
         expect(idea.title_multiloc).to eq({ 'en' => 'My Title' })
         expect(idea.body_multiloc).to eq({ 'en' => 'My Body' })
       end
@@ -50,9 +48,7 @@ RSpec.shared_examples 'user fields in form for input methods' do
         assert_status 201
         expect(Idea.count).to eq 1
         idea = Idea.first
-        expect(idea.custom_field_values).to eq({
-          'u_select_field' => 'option1'
-        })
+        expect(idea.custom_field_answers.pluck(:key, :value)).to eq [%w[u_select_field option1]]
         expect(idea.title_multiloc).to eq({ 'en' => 'My Title' })
         expect(idea.body_multiloc).to eq({ 'en' => 'My Body' })
 
@@ -61,9 +57,7 @@ RSpec.shared_examples 'user fields in form for input methods' do
 
         # Make sure also stored in user profile
         user = User.find(@user.id)
-        expect(user.custom_field_values).to eq({
-          'select_field' => 'option1'
-        })
+        expect(user.custom_field_answers.pluck(:key, :value)).to eq [%w[select_field option1]]
       end
     end
 
@@ -88,9 +82,7 @@ RSpec.shared_examples 'user fields in form for input methods' do
         assert_status 201
         expect(Idea.count).to eq 1
         idea = Idea.first
-        expect(idea.custom_field_values).to eq({
-          'u_select_field' => 'option1'
-        })
+        expect(idea.custom_field_answers.pluck(:key, :value)).to eq [%w[u_select_field option1]]
         expect(idea.title_multiloc).to eq({ 'en' => 'My Title' })
         expect(idea.body_multiloc).to eq({ 'en' => 'My Body' })
 
@@ -99,7 +91,7 @@ RSpec.shared_examples 'user fields in form for input methods' do
 
         # Make sure not stored in user profile
         user = User.find(@user.id)
-        expect(user.custom_field_values).to eq({})
+        expect(user.custom_field_answers).to be_empty
       end
     end
   end
@@ -116,7 +108,7 @@ RSpec.shared_examples 'user fields in form for input methods' do
 
       context 'when logged in' do
         before do
-          @user = create(:user, custom_field_values: { select_field: 'option2' })
+          @user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'select_field', value: 'option2')])
           header_token_for @user
         end
 
@@ -131,9 +123,7 @@ RSpec.shared_examples 'user fields in form for input methods' do
           assert_status 201
           expect(Idea.count).to eq 1
           idea = Idea.first
-          expect(idea.custom_field_values).to eq({
-            'u_select_field' => 'option2'
-          })
+          expect(idea.custom_field_answers.pluck(:key, :value)).to eq [%w[u_select_field option2]]
           expect(idea.title_multiloc).to eq({ 'en' => 'My Title' })
           expect(idea.body_multiloc).to eq({ 'en' => 'My Body' })
 
@@ -144,7 +134,7 @@ RSpec.shared_examples 'user fields in form for input methods' do
 
       context 'when logged in but anonymous' do
         before do
-          @user = create(:user, custom_field_values: { select_field: 'option2' })
+          @user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'select_field', value: 'option2')])
           header_token_for @user
           @phase.update!(allow_anonymous_participation: true)
         end
@@ -161,7 +151,7 @@ RSpec.shared_examples 'user fields in form for input methods' do
           assert_status 201
           expect(Idea.count).to eq 1
           idea = Idea.first
-          expect(idea.custom_field_values).to eq({})
+          expect(idea.custom_field_answers).to be_empty
           expect(idea.title_multiloc).to eq({ 'en' => 'My Title' })
           expect(idea.body_multiloc).to eq({ 'en' => 'My Body' })
 
@@ -195,9 +185,7 @@ RSpec.shared_examples 'user fields in form for input methods' do
           assert_status 201
           expect(Idea.count).to eq 1
           idea = Idea.first
-          expect(idea.custom_field_values).to eq({
-            'u_select_field' => 'option1'
-          })
+          expect(idea.custom_field_answers.pluck(:key, :value)).to eq [%w[u_select_field option1]]
           expect(idea.title_multiloc).to eq({ 'en' => 'My Title' })
           expect(idea.body_multiloc).to eq({ 'en' => 'My Body' })
 
@@ -206,9 +194,7 @@ RSpec.shared_examples 'user fields in form for input methods' do
 
           # Make sure also stored in user profile
           user = User.find(@user.id)
-          expect(user.custom_field_values).to eq({
-            'select_field' => 'option1'
-          })
+          expect(user.custom_field_answers.pluck(:key, :value)).to eq [%w[select_field option1]]
         end
       end
 
@@ -234,9 +220,7 @@ RSpec.shared_examples 'user fields in form for input methods' do
           assert_status 201
           expect(Idea.count).to eq 1
           idea = Idea.first
-          expect(idea.custom_field_values).to eq({
-            'u_select_field' => 'option1'
-          })
+          expect(idea.custom_field_answers.pluck(:key, :value)).to eq [%w[u_select_field option1]]
           expect(idea.title_multiloc).to eq({ 'en' => 'My Title' })
           expect(idea.body_multiloc).to eq({ 'en' => 'My Body' })
 
@@ -245,7 +229,7 @@ RSpec.shared_examples 'user fields in form for input methods' do
 
           # Make sure not stored in user profile
           user = User.find(@user.id)
-          expect(user.custom_field_values).to eq({})
+          expect(user.custom_field_answers).to be_empty
         end
       end
     end

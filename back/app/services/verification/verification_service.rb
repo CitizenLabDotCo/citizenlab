@@ -57,9 +57,9 @@ module Verification
       response = method.verify_sync(**verification_parameters)
       uid = response[:uid]
       user_attributes = response[:attributes] || {}
-      user.update_merging_custom_fields!(
-        user_attributes.merge(custom_field_values: response[:custom_field_values] || {})
-      )
+      UserService.assign_merging_custom_fields(
+        user, user_attributes.merge(custom_field_values: response[:custom_field_values] || {})
+      ).save!
       make_verification(user:, method:, uid:)
     end
 

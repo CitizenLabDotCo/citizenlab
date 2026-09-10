@@ -196,9 +196,9 @@ RSpec.describe DecidimImporter::Importer do
   describe '.resolve_scope_areas!' do
     it 'rewrites each idea’s parked scope pointer to the imported area’s id and title' do
       area = create(:area, title_multiloc: { 'en' => 'Utah' })
-      scoped = create(:idea, custom_field_values: {})
-      plain = create(:idea, custom_field_values: {})
       area_attrs = { 'title_multiloc' => { 'en' => 'Utah' } }
+      scoped = create(:idea, custom_field_answers: [build(:custom_field_answer, key: 'decidim_scope', value: area_attrs)])
+      plain = create(:idea)
       template = {
         'models' => {
           'area' => [area_attrs],
@@ -210,19 +210,19 @@ RSpec.describe DecidimImporter::Importer do
 
       described_class.resolve_scope_areas!(template, created)
 
-      expect(scoped.reload.custom_field_values['decidim_scope']).to eq(
+      expect(scoped.reload.answer_for_key('decidim_scope').value).to eq(
         'area_id' => area.id, 'title_multiloc' => { 'en' => 'Utah' }
       )
-      expect(plain.reload.custom_field_values).to eq({})
+      expect(plain.reload.custom_field_answers).to be_empty
     end
 
     it 'skips the pass when idea/area counts do not line up with the created ids' do
-      idea = create(:idea, custom_field_values: { 'decidim_scope' => { 'title_multiloc' => {} } })
-      template = { 'models' => { 'area' => [{}], 'idea' => [idea.attributes.slice('custom_field_values')] } }
+      idea = create(:idea, custom_field_answers: [build(:custom_field_answer, key: 'decidim_scope', value: { 'title_multiloc' => {} })])
+      template = { 'models' => { 'area' => [{}], 'idea' => [{ 'custom_field_values' => { 'decidim_scope' => { 'title_multiloc' => {} } } }] } }
 
       described_class.resolve_scope_areas!(template, { 'Area' => [], 'Idea' => [idea.id] })
 
-      expect(idea.reload.custom_field_values['decidim_scope']).to eq('title_multiloc' => {})
+      expect(idea.reload.answer_for_key('decidim_scope').value).to eq('title_multiloc' => {})
     end
 
     it 'is a no-op when the template has no ideas or areas' do

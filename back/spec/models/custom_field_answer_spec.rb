@@ -18,11 +18,11 @@ RSpec.describe CustomFieldAnswer do
     expect(answer.reload.value).to be false
   end
 
-  it 'accepts empty and nil-containing array values' do
+  it 'accepts empty array values but rejects nil-containing ones' do
     answer.value = []
     expect(answer).to be_valid
     answer.value = [nil]
-    expect(answer).to be_valid
+    expect(answer).not_to be_valid
   end
 
   it 'is valid without a custom field' do
@@ -37,8 +37,9 @@ RSpec.describe CustomFieldAnswer do
   end
 
   it 'is deleted when its custom field is deleted' do
-    answer = create(:custom_field_answer)
-    answer.custom_field.destroy!
+    field = create(:custom_field)
+    answer = create(:custom_field_answer, key: field.key)
+    field.destroy!
     expect(described_class.exists?(answer.id)).to be false
   end
 

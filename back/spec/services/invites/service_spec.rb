@@ -280,25 +280,25 @@ describe Invites::Service do
         expect { service.bulk_create_xlsx(xlsx, {}) }.to change(Invite, :count).from(0).to(7)
 
         user = User.find_by(email: 'user1@domain.net')
-        expect(user.custom_field_values).to eq({ 'text_field' => 'some_value' })
+        expect(user.custom_field_answers.pluck(:key, :value)).to eq [%w[text_field some_value]]
 
         user = User.find_by(email: 'user2@domain.net')
-        expect(user.custom_field_values).to eq({ 'checkbox_field' => true })
+        expect(user.custom_field_answers.pluck(:key, :value)).to eq [['checkbox_field', true]]
 
         user = User.find_by(email: 'user3@domain.net')
-        expect(user.custom_field_values).to eq({ 'checkbox_field' => true })
+        expect(user.custom_field_answers.pluck(:key, :value)).to eq [['checkbox_field', true]]
 
         user = User.find_by(email: 'user4@domain.net')
-        expect(user.custom_field_values).to eq({ 'checkbox_field' => false })
+        expect(user.custom_field_answers.pluck(:key, :value)).to eq [['checkbox_field', false]]
 
         user = User.find_by(email: 'user5@domain.net')
-        expect(user.custom_field_values).to eq({ 'checkbox_field' => false })
+        expect(user.custom_field_answers.pluck(:key, :value)).to eq [['checkbox_field', false]]
 
         user = User.find_by(email: 'user6@domain.net')
-        expect(user.custom_field_values).to eq({ 'float_field' => 666.34 })
+        expect(user.custom_field_answers.pluck(:key, :value)).to eq [['float_field', 666.34]]
 
         user = User.find_by(email: 'user7@domain.net')
-        expect(user.custom_field_values).to eq({ 'integer_field' => 1_873_050_293_742_134 })
+        expect(user.custom_field_answers.pluck(:key, :value)).to eq [['integer_field', 1_873_050_293_742_134]]
       end
     end
 
@@ -325,6 +325,23 @@ describe Invites::Service do
       it 'trims the spaces' do
         expect { service.bulk_create_xlsx(xlsx) }.to change(User, :count).from(0).to(1)
         expect(User.first.email).to eq('user@domain.net')
+      end
+    end
+
+    context 'with a multiselect custom field column' do
+      before do
+        create(:custom_field_multiselect, :with_options, key: 'multiselect_field')
+      end
+
+      let(:hash_array) do
+        [{ email: 'user@domain.net', multiselect_field: 'option1' }]
+      end
+
+      # Pins the current behaviour, which is likely not the desired one:
+      # importing the selected options would make more sense.
+      it 'does not store a value' do
+        expect { service.bulk_create_xlsx(xlsx) }.to change(User, :count).from(0).to(1)
+        expect(User.first.custom_field_answers).to be_empty
       end
     end
 

@@ -124,22 +124,20 @@ RSpec.describe ClaimTokenService do
 
     it 'syncs user demographics by most recently created idea' do
       user = create(:user)
-      idea1 = create(:idea, author: nil, created_at: 2.hours.ago, custom_field_values: {
-        field: 'value',
-        u_gender: 'male'
-      })
-      idea2 = create(:idea, author: nil, created_at: 1.hour.ago, custom_field_values: {
-        field: 'value',
-        u_gender: 'female'
-      })
+      idea1 = create(:idea, author: nil, created_at: 2.hours.ago, custom_field_answers: [
+        build(:custom_field_answer, key: 'field', value: 'value'),
+        build(:custom_field_answer, key: 'u_gender', value: 'male')
+      ])
+      idea2 = create(:idea, author: nil, created_at: 1.hour.ago, custom_field_answers: [
+        build(:custom_field_answer, key: 'field', value: 'value'),
+        build(:custom_field_answer, key: 'u_gender', value: 'female')
+      ])
       create(:claim_token, item: idea1, pending_claimer: user)
       create(:claim_token, item: idea2, pending_claimer: user)
 
       described_class.complete(user)
 
-      expect(user.reload.custom_field_values).to eq({
-        'gender' => 'female'
-      })
+      expect(user.reload.custom_field_answers.pluck(:key, :value)).to eq [%w[gender female]]
     end
 
     context 'idea in survey phase' do
@@ -147,10 +145,10 @@ RSpec.describe ClaimTokenService do
         @project = create(:single_phase_native_survey_project, phase_attrs: { with_permissions: true })
         @phase = @project.phases.first
         @permission = @phase.permissions.find_by(action: 'posting_idea')
-        @idea = create(:idea, author: nil, project: @project, creation_phase: @phase, custom_field_values: {
-          field: 'value',
-          u_gender: 'male'
-        })
+        @idea = create(:idea, author: nil, project: @project, creation_phase: @phase, custom_field_answers: [
+          build(:custom_field_answer, key: 'field', value: 'value'),
+          build(:custom_field_answer, key: 'u_gender', value: 'male')
+        ])
         @user = create(:user)
         @claim_token = create(:claim_token, item: @idea, pending_claimer: @user)
       end
@@ -159,9 +157,7 @@ RSpec.describe ClaimTokenService do
         it 'syncs user demographics and sets author_id' do
           expect(@permission.user_data_collection).to eq('all_data')
           described_class.complete(@user)
-          expect(@user.reload.custom_field_values).to eq({
-            'gender' => 'male'
-          })
+          expect(@user.reload.custom_field_answers.pluck(:key, :value)).to eq [%w[gender male]]
           expect(@idea.reload.author_id).to eq(@user.id)
         end
       end
@@ -175,9 +171,7 @@ RSpec.describe ClaimTokenService do
 
         it 'syncs user demographics but DOES NOT set author_id' do
           described_class.complete(@user)
-          expect(@user.reload.custom_field_values).to eq({
-            'gender' => 'male'
-          })
+          expect(@user.reload.custom_field_answers.pluck(:key, :value)).to eq [%w[gender male]]
           expect(@idea.reload.author_id).to be_nil
         end
       end

@@ -98,7 +98,7 @@ describe Export::CustomFieldForExport do
         end
 
         context 'when the field value is "outside"' do
-          let(:model) { create(:user, custom_field_values: { 'domicile' => 'outside' }) }
+          let(:model) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'domicile', value: 'outside')]) }
 
           it 'returns "Somewhere else"' do
             expect(report_field.value_from(model)).to eq 'Somewhere else'
@@ -112,7 +112,7 @@ describe Export::CustomFieldForExport do
               title_multiloc: { 'en' => 'Paris', 'nl-NL' => 'Parijs' }
             )
           end
-          let(:model) { create(:user, custom_field_values: { 'domicile' => area.id }) }
+          let(:model) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'domicile', value: area.id)]) }
 
           it 'returns the area for the field' do
             I18n.with_locale('nl-NL') do

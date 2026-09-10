@@ -1,37 +1,26 @@
 # frozen_string_literal: true
 
-# Projects the custom_field_values hash of an idea or user onto
-# custom_field_answers rows: one row per top-level key. Keys without a matching
-# custom field produce rows without custom_field_id.
-class CustomFieldAnswerService
-  # Idempotent reconciliation; nil values count as absent answers.
-  def sync!(record)
-    custom_field_values = normalized_custom_field_values(record).compact
-    answers = record.custom_field_answers.reload.index_by(&:key)
-    field_ids = field_ids_by_key(record, custom_field_values.keys)
+# Transitional adapter: stages a custom_field_values-style hash onto the
+# custom_field_answers association (persisted by the record's save). To be
+# deleted once the API and the importers speak answers directly.
+class CustomFieldValuesTransitionService
+  # nil values count as absent answers.
+  def assign(record, values)
+    values = (values || {}).as_json.compact
+    answers = record.custom_field_answers.reject(&:marked_for_destruction?).index_by(&:key)
+    field_ids = field_ids_by_key(record, values.keys)
 
-    stale_keys = answers.keys - custom_field_values.keys
-    record.custom_field_answers.where(key: stale_keys).delete_all if stale_keys.any?
-
-    custom_field_values.each do |key, value|
-      answer = answers[key]
-      if !answer
-        record.custom_field_answers.create!(key: key, value: value, custom_field_id: field_ids[key])
-      elsif answer.value != value || answer.custom_field_id != field_ids[key]
-        answer.update!(value: value, custom_field_id: field_ids[key])
+    (answers.keys - values.keys).each { |key| answers[key].mark_for_destruction }
+    values.each do |key, value|
+      if (answer = answers[key])
+        answer.assign_attributes(value: value, custom_field_id: field_ids[key])
+      else
+        record.custom_field_answers.build(key: key, value: value, custom_field_id: field_ids[key])
       end
     end
-
-    record.custom_field_answers.reset
   end
 
   private
-
-  # The hash exactly as jsonb stores it: string keys, JSON scalars.
-  def normalized_custom_field_values(record)
-    type = record.class.type_for_attribute('custom_field_values')
-    type.deserialize(type.serialize(record.custom_field_values)) || {}
-  end
 
   def field_ids_by_key(record, keys)
     return {} if keys.empty?

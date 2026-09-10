@@ -121,9 +121,9 @@ resource 'Inputs' do
       example 'supports input_custom_uuid[] filter', document: false do
         custom_form = create(:custom_form, participation_context: analysis.source_project)
         custom_field = create(:custom_field_select, :with_options, resource: custom_form)
-        idea = create(:idea, project: analysis.source_project, custom_field_values: {
-          custom_field.key => custom_field.options[0].key
-        })
+        idea = create(:idea, project: analysis.source_project, custom_field_answers: [
+          build(:custom_field_answer, key: custom_field.key, value: custom_field.options[0].key)
+        ])
         do_request("input_custom_#{custom_field.id}" => [custom_field.options[0].key])
         expect(status).to eq(200)
         expect(response_data.pluck(:id)).to eq([idea.id])
@@ -151,8 +151,8 @@ resource 'Inputs' do
 
       example 'supports custom_author_<uuid>[] filter', document: false do
         cf = create(:custom_field_number)
-        author1 = create(:user, custom_field_values: { cf.key => 7 })
-        author2 = create(:user, custom_field_values: { cf.key => 8 })
+        author1 = create(:user, custom_field_answers: [build(:custom_field_answer, key: cf.key, value: 7)])
+        author2 = create(:user, custom_field_answers: [build(:custom_field_answer, key: cf.key, value: 8)])
         idea1 = create(:idea, project: analysis.source_project, author: author1)
         _idea2 = create(:idea, project: analysis.source_project, author: author2)
         do_request("author_custom_#{cf.id}": ['7'])

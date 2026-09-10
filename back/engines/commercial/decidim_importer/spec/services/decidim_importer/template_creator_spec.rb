@@ -230,7 +230,7 @@ RSpec.describe DecidimImporter::TemplateCreator do
       expect(field).to be_present
       expect(field.input_type).to eq('text')
       admin = User.find_by(unique_code: 'decidim-user-1')
-      expect(admin.custom_field_values['phone_number']).to eq('+33124124124')
+      expect(admin.answer_for_key('phone_number')&.value).to eq('+33124124124')
     end
 
     context 'with a process that has a proposals component' do
@@ -336,16 +336,16 @@ RSpec.describe DecidimImporter::TemplateCreator do
         # Dates come from the answer row, not the import time (submitted_at would otherwise be today).
         expect(first.created_at.to_date.iso8601).to eq('2022-11-16')
         expect(first.submitted_at.to_date.iso8601).to eq('2022-11-16')
-        expect(first.custom_field_values['field_10']).to eq('Bonjour le monde')
-        expect(first.custom_field_values['field_11']).to eq('option_100') # single choice → one option key
-        expect(first.custom_field_values['field_12']).to match_array(%w[option_102 option_103]) # multiple choice
-        expect(first.custom_field_values['field_13']).to eq('Une reponse detaillee')
+        expect(first.answer_for_key('field_10')&.value).to eq('Bonjour le monde')
+        expect(first.answer_for_key('field_11')&.value).to eq('option_100') # single choice → one option key
+        expect(first.answer_for_key('field_12')&.value).to match_array(%w[option_102 option_103]) # multiple choice
+        expect(first.answer_for_key('field_13')&.value).to eq('Une reponse detaillee')
 
         # An answer whose author wasn't imported still becomes a response, just author-less (not anonymous).
         anonymous = responses.last
         expect(anonymous.author).to be_nil
         expect(anonymous.anonymous).to be(false)
-        expect(anonymous.custom_field_values['field_10']).to eq('Reponse sans auteur connu')
+        expect(anonymous.answer_for_key('field_10')&.value).to eq('Reponse sans auteur connu')
       end
 
       it 'resolves the posting permission of a native_survey phase from the global permission' do

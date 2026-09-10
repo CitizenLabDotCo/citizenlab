@@ -108,6 +108,15 @@ module InputTypeStrategy
       false
     end
 
+    # The JSON schema for a single value, permissive by default.
+    def json_schema
+      {}
+    end
+
+    def cast_xlsx_value(value)
+      String(value)
+    end
+
     def answers_present(answers)
       answers
     end

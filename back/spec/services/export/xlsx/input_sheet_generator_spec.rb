@@ -84,7 +84,7 @@ describe Export::Xlsx::InputSheetGenerator do
             :idea_with_topics,
             project: phase.project,
             phases: [phase],
-            author: create(:user, custom_field_values: { create(:custom_field_birthyear).code => 1999 }),
+            author: create(:user, custom_field_answers: [build(:custom_field_answer, key: create(:custom_field_birthyear).key, value: 1999)]),
             assignee: assignee,
             manual_votes_amount: 5
           )
@@ -169,7 +169,7 @@ describe Export::Xlsx::InputSheetGenerator do
             :idea_with_topics,
             project: phase.project,
             phases: [phase],
-            custom_field_values: { extra_idea_field.key => 'Answer' },
+            custom_field_answers: [build(:custom_field_answer, key: extra_idea_field.key, value: 'Answer')],
             assignee: assignee
           )
         end
@@ -400,8 +400,14 @@ describe Export::Xlsx::InputSheetGenerator do
           project: phase.project,
           creation_phase: phase,
           phases: [phase],
-          custom_field_values: { multiselect_field.key => %w[cat dog], ranking_field.key => %w[by_train by_bike] },
-          author: create(:user, custom_field_values: { 'birthyear' => 1999, 'gender' => 'female' })
+          custom_field_answers: [
+            build(:custom_field_answer, key: multiselect_field.key, value: %w[cat dog]),
+            build(:custom_field_answer, key: ranking_field.key, value: %w[by_train by_bike])
+          ],
+          author: create(:user, custom_field_answers: [
+            build(:custom_field_answer, key: 'birthyear', value: 1999),
+            build(:custom_field_answer, key: 'gender', value: 'female')
+          ])
         )
       end
       let(:survey_response2) do
@@ -410,7 +416,10 @@ describe Export::Xlsx::InputSheetGenerator do
           project: phase.project,
           creation_phase: phase,
           phases: [phase],
-          custom_field_values: { multiselect_field.key => %w[cat], matrix_field.key => { 'send_more_animals_to_space' => 3, 'ride_bicycles_more_often' => 4 } }
+          custom_field_answers: [
+            build(:custom_field_answer, key: multiselect_field.key, value: %w[cat]),
+            build(:custom_field_answer, key: matrix_field.key, value: { 'send_more_animals_to_space' => 3, 'ride_bicycles_more_often' => 4 })
+          ]
         )
       end
       let(:survey_response3) do
@@ -419,7 +428,10 @@ describe Export::Xlsx::InputSheetGenerator do
           project: phase.project,
           creation_phase: phase,
           phases: [phase],
-          custom_field_values: { multiselect_field.key => %w[dog], ranking_field.key => %w[by_bike by_train] },
+          custom_field_answers: [
+            build(:custom_field_answer, key: multiselect_field.key, value: %w[dog]),
+            build(:custom_field_answer, key: ranking_field.key, value: %w[by_bike by_train])
+          ],
           author: nil
         )
       end
@@ -489,7 +501,10 @@ describe Export::Xlsx::InputSheetGenerator do
         context 'when there are "other" options' do
           it 'Generates an sheet with the phase inputs, including the "other" column' do
             create(:custom_field_option, custom_field: multiselect_field, key: 'other', title_multiloc: { 'en' => 'Other' }, other: true)
-            survey_response1.update!(custom_field_values: { multiselect_field.key => %w[cat dog other], "#{multiselect_field.key}_other" => 'Fish' })
+            survey_response1.answer_for_key(multiselect_field.key).update!(value: %w[cat dog other])
+            survey_response1.answer_for_key(ranking_field.key).destroy!
+            create(:custom_field_answer, answerable: survey_response1, key: "#{multiselect_field.key}_other", value: 'Fish', custom_field: multiselect_field)
+            survey_response1.custom_field_answers.reset
             expect(xlsx).to match([
               {
                 sheet_name: 'My sheet',
@@ -586,7 +601,10 @@ describe Export::Xlsx::InputSheetGenerator do
 
           it 'Generates an sheet with user fields from the inputs' do
             phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
-            survey_response1.update!(custom_field_values: { multiselect_field.key => %w[cat dog], 'u_birthyear' => 1998, 'u_gender' => 'male' })
+            survey_response1.answer_for_key(ranking_field.key).destroy!
+            create(:custom_field_answer, answerable: survey_response1, key: 'u_birthyear', value: 1998, custom_field: CustomField.find_by(code: 'birthyear'))
+            create(:custom_field_answer, answerable: survey_response1, key: 'u_gender', value: 'male', custom_field: CustomField.find_by(code: 'gender'))
+            survey_response1.custom_field_answers.reset
             expect(xlsx.first[:column_headers]).to match([
               'ID',
               'What are your favourite pets?',
@@ -842,7 +860,7 @@ describe Export::Xlsx::InputSheetGenerator do
             :idea_with_topics,
             project: phase.project,
             phases: [phase],
-            author: create(:user, custom_field_values: { create(:custom_field_birthyear).code => 1999 }),
+            author: create(:user, custom_field_answers: [build(:custom_field_answer, key: create(:custom_field_birthyear).key, value: 1999)]),
             assignee: assignee,
             manual_votes_amount: 12
           )
@@ -927,7 +945,7 @@ describe Export::Xlsx::InputSheetGenerator do
             :idea_with_topics,
             project: phase.project,
             phases: [phase],
-            custom_field_values: { extra_idea_field.key => 'Answer' },
+            custom_field_answers: [build(:custom_field_answer, key: extra_idea_field.key, value: 'Answer')],
             assignee: assignee
           )
         end

@@ -110,7 +110,7 @@ resource 'Volunteering Volunteers' do
       @cause1 = create(:cause, title_multiloc: { en: 'For sure works with very long titles too!!!' }, phase: @phase)
       create(:custom_field_domicile)
       area = create(:area, title_multiloc: { 'en' => 'Center' })
-      user = create(:user, custom_field_values: { 'domicile' => area.id })
+      user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'domicile', value: area.id)])
       @volunteer1 = create(:volunteer, cause: @cause1, user: user)
       @other_volunteers = create_list(:volunteer, 2, cause: @cause1)
       @cause2 = create(:cause, phase: @phase)

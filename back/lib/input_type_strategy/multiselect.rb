@@ -26,6 +26,18 @@ module InputTypeStrategy
       true
     end
 
+    def json_schema
+      items = { type: 'string' }
+      option_keys = custom_field.ordered_options.map(&:key)
+      items[:enum] = option_keys if !option_keys.empty?
+
+      { type: 'array', uniqueItems: true, items: items }
+    end
+
+    def cast_xlsx_value(_value)
+      nil
+    end
+
     def answers_present(answers)
       answers.where("value != '[]'::jsonb")
     end

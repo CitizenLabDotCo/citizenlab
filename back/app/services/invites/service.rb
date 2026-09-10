@@ -18,7 +18,7 @@ class Invites::Service
   end
 
   def bulk_create_xlsx(xlsx_param, default_params = {})
-    xlsx_processor = Invites::XlsxProcessor.new(@error_storage, custom_field_schema)
+    xlsx_processor = Invites::XlsxProcessor.new(@error_storage, registration_custom_fields)
     hash_array, map_rows = xlsx_processor.param_to_hash_array(xlsx_param)
 
     bulk_create(hash_array, default_params)
@@ -55,13 +55,8 @@ class Invites::Service
 
   private
 
-  def custom_field_schema
-    @custom_field_schema ||= CustomFieldService.new.fields_to_json_schema(CustomField.registration)
-  end
-
-  # @return [Array<String>]
-  def custom_field_keys
-    custom_field_schema[:properties].keys
+  def registration_custom_fields
+    @registration_custom_fields ||= CustomField.registration.to_a
   end
 
   def build_invitees(hash_array, default_params = {})
@@ -101,16 +96,17 @@ class Invites::Service
     group_ids = params['group_ids'] || default_params['group_ids'] || []
     roles = ((params['roles'] || []) + (default_params['roles'] || [])).uniq
 
-    user =
-      User.find_by_cimail(email) ||
-      User.new({
+    user = User.find_by_cimail(email)
+    if !user
+      user = User.new({
         email: email,
         first_name: params['first_name'],
         last_name: params['last_name'],
         locale: params['locale'] || default_params['locale'] || AppConfiguration.instance.settings('core', 'locales').first,
-        custom_field_values: params.slice(*custom_field_keys),
         invite_status: 'pending'
       })
+      CustomFieldValuesTransitionService.new.assign(user, params.slice(*registration_custom_fields.map(&:key)))
+    end
 
     user.manual_group_ids = (user.manual_group_ids + group_ids).uniq
     user.roles = (user.roles + roles).map(&:to_h).uniq

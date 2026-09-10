@@ -47,19 +47,18 @@ namespace :cl2_back do
         next if d['value'].nil?
 
         user = User.find_by(id: d['id'])
-        next if user.nil? || user.custom_field_values[custom_field.key].present?
+        next if user.nil? || user.answer_for_key(custom_field.key).present?
 
         value = d['value'].delete(' ').strip.downcase
         option = options.find { |o| o.title_multiloc[locale].downcase == value }
 
         if option
           puts "Updating custom_field_value '#{custom_field.key}': '#{option.key}' for user.id #{user.id}."
-          cfv = user.custom_field_values
-          cfv[custom_field.key] = option.key
+          user.custom_field_answers.build(key: custom_field.key, value: option.key, custom_field: custom_field)
 
           next unless execute
 
-          if user.update(custom_field_values: cfv)
+          if user.save
             count += 1
             puts "  success!\n"
           else
