@@ -1,3 +1,6 @@
+import CustomBlock, {
+  customBlockTitle,
+} from 'components/admin/ContentBuilder/CustomBlocks/Widget';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import whiteSpaceMessages from 'components/admin/ContentBuilder/Widgets/WhiteSpace/messages';
 
@@ -53,6 +56,7 @@ export const WIDGETS = {
   TextMultiloc,
   ImageMultiloc,
   WhiteSpace,
+  CustomBlock,
   SurveyQuestionResultWidget,
   CommunityMonitorHealthScoreWidget,
   VisitorsWidget,
@@ -96,6 +100,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   TextMultiloc: textMultilocTitle,
   TwoColumn: twoColumnTitle,
   ImageMultiloc: imageMultilocTitle,
+  CustomBlock: customBlockTitle,
   SurveyQuestionResultWidget: surveyQuestionResultTitle,
   CommunityMonitorHealthScoreWidget: communityMonitorHealthScoreTitle,
   MostReactedIdeasWidget: mostReactedIdeasTitle,
@@ -128,6 +133,7 @@ export const hasChildren = (nodeName: string) => {
 };
 
 const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
+  'CustomBlock',
   'VisitorsTrafficSourcesWidget',
   'VisitorsWidget',
   'SurveyQuestionResultWidget',

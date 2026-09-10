@@ -163,7 +163,7 @@ const ReportBuilder = ({ report, reportLayout, templateConfig }: Props) => {
                   </ViewContainer>
                 </ContentBuilderCanvas>
               </LanguageProvider>
-              <Settings />
+              <Settings reportId={reportId} setSaved={handleSetSaved} />
             </Box>
           </ReportWordExportProvider>
         </Editor>

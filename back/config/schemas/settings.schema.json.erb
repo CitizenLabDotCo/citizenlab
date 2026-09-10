@@ -1479,6 +1479,18 @@
         }
       },
 
+      "llm_reporting": {
+        "type": "object",
+        "title": "LLM-generated reports [DO NOT ENABLE]",
+        "description": "Generate a whole report with an LLM from the report builder, and iterate on it with a chat panel. Under development, not ready for customer use.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "custom_page_builder": {
         "type": "object",
         "title": "Custom page builder [DO NOT ENABLE]",

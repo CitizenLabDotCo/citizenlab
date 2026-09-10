@@ -58,9 +58,11 @@ module ReportBuilder
             copy = report.dup.tap do |copy_|
               copy_.name = generate_copy_name(report.name)
               copy_.owner_id = current_user.id
-              # Copies are never associated with a phase, even if the source report was.
-              # That's because, currently, there can be only one report per phase.
+              # Copies are never associated with a phase or a project, even if the source
+              # report was. That's because there can be only one report per phase and
+              # one per project.
               copy_.phase_id = nil
+              copy_.project_id = nil
               copy_.visible = false
               copy_.layout = report.layout.duplicate!
             end
@@ -115,7 +117,110 @@ module ReportBuilder
           ).serializable_hash
         end
 
+        # Composes the whole report layout with an LLM in the background and returns
+        # the Jobs::Tracker for the frontend to poll. Overwrites whatever the layout
+        # holds, which is why the frontend confirms first.
+        #
+        # Refuses with 409 while a run is in progress: a second run would race the
+        # first to write the same layout, and both are paid model calls.
+        def generate
+          # The lock makes the in-progress check + enqueue atomic across concurrent requests.
+          tracker = begin
+            ::CitizenLab::LockManager.try_with_transaction_lock("generate_report/#{report.id}") do
+              enqueue_generate_report_job.tracker unless in_progress_generation_tracker
+            end
+          rescue ::CitizenLab::LockManager::FailedToLock
+            nil
+          end
+
+          if tracker
+            render json: ::WebApi::V1::Jobs::TrackerSerializer.new(
+              tracker,
+              params: jsonapi_serializer_params
+            ).serializable_hash, status: :accepted
+          else
+            render json: { errors: { base: [{ error: 'generation_in_progress' }] } }, status: :conflict
+          end
+        end
+
+        # The report chat: the conversation and what it changed.
+        def chat
+          render json: chat_json(report.chat)
+        end
+
+        # Adds the admin's turn and starts the model's. The turn itself runs in the
+        # background; the panel follows it by polling #chat.
+        #
+        # The panel sends the layout as it stands in the editor, unsaved edits and all,
+        # and that is what the model revises. Without it a turn would silently discard
+        # whatever the admin had changed but not yet saved.
+        def chat_turn
+          chat = report.chat || report.create_chat!
+
+          # Authorize first (reading `report` does that), then look at the input.
+          # Not `require`: a blank message is a 422 with a code the panel can read,
+          # not a raised ParameterMissing.
+          message = params[:message].to_s.strip
+          if message.blank?
+            return render json: { errors: { message: [{ error: 'blank' }] } },
+              status: :unprocessable_entity
+          end
+
+          chat.update!(transcript: chat.transcript + [
+            { 'role' => 'user', 'text' => message, 'at' => Time.current.iso8601 }
+          ])
+
+          ReportBuilder::ReviseReportJob
+            .with_tracking(owner: current_user)
+            .perform_later(
+              report,
+              instruction: message,
+              locale: current_user.locale.to_s,
+              craftjs_json: params[:craftjs_json]&.to_unsafe_h
+            )
+
+          render json: chat_json(chat), status: :created
+        end
+
         private
+
+        # The transcript is the whole resource: a turn is a role, a line of text and a
+        # timestamp. `pending` is true while the model still owes an answer.
+        def chat_json(chat)
+          turns = chat&.transcript || []
+          {
+            data: {
+              id: chat&.id || report.id,
+              type: 'report_chat',
+              attributes: {
+                turns: turns,
+                pending: turns.last&.dig('role') == 'user'
+              }
+            }
+          }
+        end
+
+        # A generation that is still running for this report, if any. Failed jobs
+        # complete their tracker (with job_errors), so they don't block a new run;
+        # the time window is a safety valve against trackers orphaned by e.g. a dev
+        # environment without a running worker.
+        def in_progress_generation_tracker
+          ::Jobs::Tracker
+            .where(
+              context: report.phase || report.project,
+              root_job_type: ReportBuilder::GenerateReportJob.name,
+              completed_at: nil
+            )
+            .where(created_at: 1.hour.ago..)
+            .order(created_at: :desc)
+            .first
+        end
+
+        def enqueue_generate_report_job
+          ReportBuilder::GenerateReportJob
+            .with_tracking(owner: current_user)
+            .perform_later(report, locale: current_user.locale.to_s)
+        end
 
         def report
           @report ||= authorize(
@@ -124,15 +229,30 @@ module ReportBuilder
         end
 
         def create_params
-          {
+          attributes = {
             'owner' => current_user,
             'layout_attributes' => {
               'craftjs_json' => {},
               'enabled' => true,
               'code' => 'report'
             }
-          }.deep_merge(params.require(:report).permit(:phase_id, :community_monitor))
+          }.deep_merge(params.require(:report).permit(:phase_id, :project_id, :community_monitor))
             .deep_merge(shared_params.to_h)
+
+          if attributes['name'].blank? && attributes['project_id'].present?
+            attributes['name'] = project_report_name(attributes['project_id'])
+          end
+
+          attributes
+        end
+
+        # A project's report is named after the project, so the caller needs no name
+        # field. Report names are unique platform-wide, hence the numbered fallback.
+        def project_report_name(project_id)
+          basename = MultilocService.new.t(::Project.find(project_id).title_multiloc)
+          return basename unless ReportBuilder::Report.exists?(name: basename)
+
+          generate_copy_name(basename)
         end
 
         def update_params

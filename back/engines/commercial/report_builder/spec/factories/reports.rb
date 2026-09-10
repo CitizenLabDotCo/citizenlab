@@ -15,8 +15,19 @@ FactoryBot.define do
       phase factory: :phase
     end
 
+    trait :with_project do
+      project
+    end
+
     trait :with_image do
       layout { association :report_layout, :with_image, content_buildable: instance }
     end
+  end
+end
+
+FactoryBot.define do
+  factory :report_chat, class: 'ReportBuilder::ReportChat' do
+    report
+    transcript { [] }
   end
 end

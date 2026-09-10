@@ -24,6 +24,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 
+import CustomBlocksToolboxSection from 'components/admin/ContentBuilder/CustomBlocks/CustomBlocksToolboxSection';
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 import Section from 'components/admin/ContentBuilder/Toolbox/Section';
@@ -106,6 +107,7 @@ const ReportBuilderToolbox = ({
   const projectPlanningCalendarEnabled = useFeatureFlag({
     name: 'project_planning_calendar',
   });
+  const llmReportingEnabled = useFeatureFlag({ name: 'llm_reporting' });
 
   if (
     !appConfigurationLocales ||
@@ -426,6 +428,7 @@ const ReportBuilderToolbox = ({
               />
             )}
           </Section>
+          {llmReportingEnabled && <CustomBlocksToolboxSection />}
         </Box>
         <Box p="8px" display={selectedTab === 'ai' ? 'block' : 'none'}>
           <Analysis selectedLocale={selectedLocale} />

@@ -220,6 +220,16 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         UserCustomFields::Representativeness::RefDistribution
       ],
 
+      # AI-authored page builder blocks. The block code, its versions and the
+      # authoring transcripts stay in the tenant that made them: the feature is
+      # behind the `llm_reporting` flag and has no template story yet.
+      llm_reporting: %w[
+        ContentBuilder::CustomBlock
+        ContentBuilder::CustomBlockAISession
+        ContentBuilder::CustomBlockVersion
+        ReportBuilder::ReportChat
+      ],
+
       # Files engine — Preview/Transcript are derived artifacts (generated from the file),
       # not template content. File/FileAttachment/FilesProject ARE serialized.
       files: %w[
