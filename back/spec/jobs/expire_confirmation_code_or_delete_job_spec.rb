@@ -32,9 +32,10 @@ RSpec.describe ExpireConfirmationCodeOrDeleteJob do
     end
 
     it 'does nothing when the user does not require confirmation' do
+      code = user.email_confirmation.code
       user.email_confirmation.confirm!
-      described_class.perform_now(user.id, 'EmailConfirmation', user.email_confirmation.reload.code)
-      expect(user.email_confirmation.reload.code).to be_nil
+      described_class.perform_now(user.id, 'EmailConfirmation', code)
+      expect(user.reload.email_confirmation).to be_nil
       expect(DeleteUserJob).not_to have_been_enqueued
     end
 
@@ -85,9 +86,10 @@ RSpec.describe ExpireConfirmationCodeOrDeleteJob do
     end
 
     it 'does nothing when the user has already confirmed their phone number' do
+      code = user.phone_confirmation.code
       user.phone_confirmation.confirm!
-      described_class.perform_now(user.id, 'PhoneConfirmation', user.phone_confirmation.reload.code)
-      expect(user.phone_confirmation.reload.code).to be_nil
+      described_class.perform_now(user.id, 'PhoneConfirmation', code)
+      expect(user.reload.phone_confirmation).to be_nil
       expect(DeleteUserJob).not_to have_been_enqueued
     end
   end
@@ -132,9 +134,9 @@ RSpec.describe ExpireConfirmationCodeOrDeleteJob do
     end
 
     it 'does nothing to a user when the user is already confirmed' do
-      expect(user.email_confirmation.code).to be_nil
-      described_class.perform_now(user.id, 'EmailConfirmation', user.email_confirmation.code)
-      expect(user.email_confirmation.reload.code).to be_nil
+      expect(user.reload.email_confirmation).to be_nil
+      described_class.perform_now(user.id, 'EmailConfirmation', '123456')
+      expect(user.reload.email_confirmation).to be_nil
       expect(DeleteUserJob).not_to have_been_enqueued
     end
 

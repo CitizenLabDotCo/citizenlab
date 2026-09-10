@@ -583,7 +583,7 @@ class User < ApplicationRecord
   def auto_confirm_on_invite_accept
     self.email_confirmed_at = Time.zone.now
     self.confirmation_required = false
-    email_confirmation&.clear_code!
+    email_confirmation&.consume!
   end
 
   def remove_initiated_notifications
