@@ -111,7 +111,7 @@ const PublicationButtons = ({ project }: { project: IProjectData }) => {
         </Tooltip>
       )}
 
-      {isProjectReviewEnabled && !isPublished &&
+      {isProjectReviewEnabled &&
         (<ReviewFlow project={project} />
         )}
 
