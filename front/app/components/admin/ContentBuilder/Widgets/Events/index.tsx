@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import {
   Box,
   Title,
   colors,
   fontSizes,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import { UserComponent, useEditor } from '@craftjs/core';
 import styled from 'styled-components';
@@ -14,11 +15,16 @@ import useEvents from 'api/events/useEvents';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { DEFAULT_Y_PADDING } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/constants';
 import eventsPageMessages from 'containers/EventsPage/messages';
 
-import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
+import {
+  BUILDER_CONTENT_MAX_WIDTH,
+  DEFAULT_PADDING,
+} from 'components/admin/ContentBuilder/constants';
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 import useWidgetProjectId from 'components/admin/ContentBuilder/useWidgetProjectId';
+import { VerticalRhythmContext } from 'components/admin/ContentBuilder/verticalRhythm';
 import landingPageMessages from 'components/LandingPages/citizen/messages';
 import EmptyEvents from 'components/ProjectPageBuilder/Widgets/Events/EmptyEvents';
 import EventsSection from 'components/ProjectPageBuilder/Widgets/Events/EventsSection';
@@ -40,6 +46,7 @@ export const EVENTS_WIDGET_NAME = 'EventsList';
 export const EVENTS_WIDGET_ANCHOR_ID = 'e2e-project-page-events';
 
 const PAGINATED_PAGE_SIZE = 15;
+const BAND_Y_PADDING = '40px';
 const CURRENT_PROJECT_STATUSES = ['published', 'draft', 'archived'] as const;
 
 const NoEventsText = styled.div`
@@ -87,6 +94,8 @@ const EventsList: UserComponent<EventsProps> = ({
   const { formatMessage } = useIntl();
   const currentProjectId = useWidgetProjectId();
   const padding = useCraftComponentDefaultPadding();
+  const isSmallerThanTablet = useBreakpoint('tablet');
+  const underRhythm = useContext(VerticalRhythmContext);
   const { hash } = useLocation();
   const { enabled: inEditor } = useEditor((state) => ({
     enabled: state.options.enabled,
@@ -202,10 +211,20 @@ const EventsList: UserComponent<EventsProps> = ({
     </Box>
   );
 
-  // Every node frames itself, whatever name it is stored under, so the shims only add what
-  // is theirs: the spacing around the widget.
+  // A band pads itself, which is why the rhythm system leaves no margin between two of them.
+  // The homepage is outside that system and spaces its widgets on a smaller scale of its own.
+  const homepagePadding = isSmallerThanTablet
+    ? DEFAULT_PADDING
+    : DEFAULT_Y_PADDING;
+  const bandPadding = underRhythm ? BAND_Y_PADDING : homepagePadding;
+
   return (
-    <Box maxWidth={BUILDER_CONTENT_MAX_WIDTH} margin="0 auto" px={padding}>
+    <Box
+      maxWidth={BUILDER_CONTENT_MAX_WIDTH}
+      margin="0 auto"
+      px={padding}
+      py={bandPadding}
+    >
       {contents}
     </Box>
   );

@@ -1,34 +1,24 @@
 import React from 'react';
 
-import { Box, useBreakpoint, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
-import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 import SharedEventsWidget from 'components/admin/ContentBuilder/Widgets/Events';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { DEFAULT_Y_PADDING } from '../constants';
-
 import messages from './messages';
 
-const Events = () => {
-  const isSmallerThanTablet = useBreakpoint('tablet');
-  return (
-    <Box
-      data-cy="e2e-events"
-      pt={isSmallerThanTablet ? DEFAULT_PADDING : DEFAULT_Y_PADDING}
-      pb={isSmallerThanTablet ? DEFAULT_PADDING : DEFAULT_Y_PADDING}
-    >
-      <SharedEventsWidget
-        source="all"
-        timeFilters={['upcoming']}
-        limit={3}
-        projectPublicationStatuses={['published']}
-        showEmptyMessage
-      />
-    </Box>
-  );
-};
+const Events = () => (
+  <Box data-cy="e2e-events">
+    <SharedEventsWidget
+      source="all"
+      timeFilters={['upcoming']}
+      limit={3}
+      projectPublicationStatuses={['published']}
+      showEmptyMessage
+    />
+  </Box>
+);
 
 const EventsSettings = () => {
   const { formatMessage } = useIntl();
