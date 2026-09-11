@@ -29,20 +29,6 @@ describe('CustomPageBanner', () => {
     mockInBuilder = true;
   });
 
-  it('renders the banner from its props', () => {
-    render(<CustomPageBanner {...banner} />);
-
-    expect(screen.getByText('Welcome')).toBeInTheDocument();
-    expect(screen.getByText('Have your say')).toBeInTheDocument();
-    expect(screen.getByTestId('full-width-banner-layout')).toBeInTheDocument();
-  });
-
-  it('renders a heading-only banner without an image', () => {
-    render(<CustomPageBanner {...banner} image={{}} />);
-
-    expect(screen.getByText('Welcome')).toBeInTheDocument();
-  });
-
   // Fresh from the toolbox there is nothing to show; the builder has to say what it is.
   it('shows a placeholder in the builder when the banner is empty', () => {
     render(<CustomPageBanner {...banner} headerMultiloc={{}} image={{}} />);

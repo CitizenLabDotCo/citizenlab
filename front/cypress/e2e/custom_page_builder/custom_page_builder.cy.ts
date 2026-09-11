@@ -11,6 +11,7 @@ describe('Custom page builder', () => {
   const topInfoText = randomString();
   const bottomInfoText = randomString();
   const bannerHeaderText = `Banner ${randomString()}`;
+  const editedBannerHeaderText = `Edited banner ${randomString()}`;
   const areaTitle = randomString();
   const projectTitle = `In area ${randomString()}`;
   const otherProjectTitle = `Outside ${randomString()}`;
@@ -232,9 +233,16 @@ describe('Custom page builder', () => {
   });
 
   // The title is the page's own name, so editing it in the builder renames the page; showing
-  // it puts the heading under the banner rather than above it.
-  it('shows the edited title under the banner once switched on', () => {
+  // it puts the heading under the banner rather than above it. The banner's text lives in
+  // the layout instead, so its edit goes out with the layout save.
+  it('shows the edited title under the edited banner once switched on', () => {
     openBuilder();
+
+    selectNodeContaining(() => cy.get('#ROOT .e2e-signed-out-header-title'));
+    cy.dataCy('e2e-signed-out-header-section')
+      .find('input')
+      .clear()
+      .type(editedBannerHeaderText);
 
     selectNodeContaining(() => cy.contains(`still called "${pageTitle}"`));
     cy.get('#e2e-custom-page-title-toggle').click({ force: true });
@@ -249,6 +257,10 @@ describe('Custom page builder', () => {
     cy.wait('@saveCustomPageLayout');
 
     cy.visit(`/pages/${pageSlug}`);
+    cy.get('.e2e-signed-out-header-title').should(
+      'contain',
+      editedBannerHeaderText
+    );
     cy.contains('h1', renamedPageTitle).should('be.visible');
     // The document title reads the page record, so this is the rename having landed there.
     cy.title().should('include', renamedPageTitle);

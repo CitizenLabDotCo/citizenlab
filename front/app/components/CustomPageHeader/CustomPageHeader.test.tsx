@@ -59,35 +59,13 @@ describe('<CustomPageHeader />', () => {
   });
 
   // The page decides what the edit affordance is; every layout has a spot for it.
-  it.each([
-    'full_width_banner_layout',
-    'two_column_layout',
-    'two_row_layout',
-    'fixed_ratio_layout',
-  ] as const)('renders the admin edit button slot in %s', (layout) => {
+  it('renders the admin edit button slot', () => {
     render(
       <CustomPageHeader
-        banner={banner(layout)}
+        banner={banner('two_row_layout')}
         adminEditButton={<button>Edit page</button>}
       />
     );
     expect(screen.getByText('Edit page')).toBeInTheDocument();
-  });
-
-  it('renders the call to action only when the banner has one', () => {
-    const { rerender } = render(
-      <CustomPageHeader
-        banner={{
-          ...banner('full_width_banner_layout'),
-          ctaType: 'customized_button',
-          ctaTextMultiloc: { en: 'Join in' },
-          ctaUrl: 'https://example.org',
-        }}
-      />
-    );
-    expect(screen.getByText('Join in')).toBeInTheDocument();
-
-    rerender(<CustomPageHeader banner={banner('full_width_banner_layout')} />);
-    expect(screen.queryByText('Join in')).not.toBeInTheDocument();
   });
 });

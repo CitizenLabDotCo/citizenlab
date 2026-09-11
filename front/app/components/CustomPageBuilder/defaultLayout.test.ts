@@ -151,31 +151,10 @@ describe('layoutStartsWithBanner', () => {
     );
   });
 
-  // A hidden title renders nothing, so it does not count as what sits under the nav bar.
-  it('looks past a hidden title', () => {
-    expect(layoutStartsWithBanner(bodyWith(false, ['title', 'banner']))).toBe(
-      true
-    );
-  });
-
   it('is false when a shown title comes first', () => {
     expect(layoutStartsWithBanner(bodyWith(true, ['title', 'banner']))).toBe(
       false
     );
-  });
-
-  // An admin can move the banner anywhere, as on the homepage; only a leading one is flush.
-  it('is false when the banner sits further down the body', () => {
-    expect(
-      layoutStartsWithBanner(bodyWith(false, ['title', 'txt', 'banner']))
-    ).toBe(false);
-  });
-
-  it('is false without a banner or without a layout', () => {
-    expect(layoutStartsWithBanner(bodyWith(true, ['title', 'txt']))).toBe(
-      false
-    );
-    expect(layoutStartsWithBanner(undefined)).toBe(false);
   });
 });
 

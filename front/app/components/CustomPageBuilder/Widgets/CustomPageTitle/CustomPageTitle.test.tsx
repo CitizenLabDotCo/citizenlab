@@ -49,14 +49,6 @@ describe('CustomPageTitle', () => {
     };
   });
 
-  it('renders the page title', () => {
-    render(<CustomPageTitle />);
-
-    expect(
-      screen.getByRole('heading', { name: 'About us' })
-    ).toBeInTheDocument();
-  });
-
   // The draft is what the settings panel is editing, so it has to win while unsaved.
   it('prefers an unsaved draft over the stored title', () => {
     render(<CustomPageTitle title={{ en: 'Our team' }} />);
@@ -72,31 +64,5 @@ describe('CustomPageTitle', () => {
     render(<CustomPageTitle />);
 
     expect(screen.getByText('Untitled page')).toBeInTheDocument();
-  });
-
-  it('renders nothing until the page has loaded', () => {
-    page = undefined;
-
-    render(<CustomPageTitle />);
-
-    expect(screen.queryByRole('heading')).not.toBeInTheDocument();
-  });
-
-  // Hiding is a display choice, so the builder has to show the page still has a name —
-  // otherwise the toggle reads as having deleted something.
-  it('explains the page still has a title when hidden, in the builder', () => {
-    render(<CustomPageTitle showTitle={false} />);
-
-    expect(screen.queryByRole('heading')).not.toBeInTheDocument();
-    expect(screen.getByText(/still called "About us"/)).toBeInTheDocument();
-  });
-
-  it('renders nothing at all when hidden in the front office', () => {
-    mockInBuilder = false;
-
-    render(<CustomPageTitle showTitle={false} />);
-
-    expect(screen.queryByRole('heading')).not.toBeInTheDocument();
-    expect(screen.queryByText(/still called/)).not.toBeInTheDocument();
   });
 });

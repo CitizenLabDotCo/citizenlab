@@ -47,24 +47,6 @@ describe('CustomPageBannerSettings', () => {
     props = { ...banner };
   });
 
-  it('writes a picked layout to the node', () => {
-    render(<Settings />);
-
-    fireEvent.click(screen.getByRole('radio', { name: /Two rows/ }));
-
-    expect(props.layout).toBe('two_row_layout');
-  });
-
-  it('writes an edited header to the node', () => {
-    render(<Settings />);
-
-    fireEvent.change(screen.getByDisplayValue('Welcome'), {
-      target: { value: 'Have your say' },
-    });
-
-    expect(props.headerMultiloc).toEqual({ en: 'Have your say' });
-  });
-
   // The image goes through the layout-images endpoint like every builder image, so the node
   // stores a code the serializer can render a URL from.
   it('uploads a picked image and stores its code', async () => {

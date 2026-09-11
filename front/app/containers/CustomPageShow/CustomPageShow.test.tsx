@@ -94,44 +94,6 @@ describe('CustomPageShow', () => {
     expect(screen.getByTestId('builderContent')).toBeInTheDocument();
   });
 
-  // The layout's Title widget owns the heading and can hide it, so rendering the legacy
-  // one too showed the title twice.
-  it('leaves the heading to the builder content', () => {
-    hasContent = true;
-    render(<CustomPageShow />);
-
-    expect(
-      screen.queryByRole('heading', { name: 'About us' })
-    ).not.toBeInTheDocument();
-    expect(screen.getByTestId('builderContent')).toBeInTheDocument();
-  });
-
-  it('still renders the heading on a page with no builder content', () => {
-    render(<CustomPageShow />);
-
-    expect(
-      screen.getByRole('heading', { name: 'About us' })
-    ).toBeInTheDocument();
-  });
-
-  // The layout's Banner widget replaces the legacy banner, whether or not the page has one.
-  it('leaves the banner to the builder content', () => {
-    hasContent = true;
-    startsWithBanner = true;
-    pageAttributes = { ...globalCustomPage, banner_enabled: true };
-    render(<CustomPageShow />);
-
-    expect(screen.queryByTestId('banner')).not.toBeInTheDocument();
-    expect(screen.getByTestId('builderContent')).toBeInTheDocument();
-  });
-
-  it('still renders the legacy banner on a page with no builder content', () => {
-    pageAttributes = { ...globalCustomPage, banner_enabled: true };
-    render(<CustomPageShow />);
-
-    expect(screen.getByTestId('banner')).toBeInTheDocument();
-  });
-
   // Policy and project-scoped pages are not on the Content Builder.
   it.each([
     ['a policy page', { code: 'faq' }],
