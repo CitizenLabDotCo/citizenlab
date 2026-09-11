@@ -1388,7 +1388,7 @@ RSpec.describe User do
 
         user2.reload
         expect(user2.new_email).to be_nil
-        expect(user2.new_email_confirmation.reload.code).to be_nil
+        expect(user2.new_email_confirmation).to be_nil
       end
     end
   end

@@ -27,7 +27,9 @@ class PublicApi::V2::UserSerializer < PublicApi::V2::BaseSerializer
 
   # Preserves the v2 API shape: previously a column on users, now lives on the
   # active confirmation row (new_email_confirmation if a change is in flight,
-  # otherwise email_confirmation).
+  # otherwise email_confirmation). That row is deleted once its code has been
+  # used, so this reads as null for a user with no code outstanding — where the
+  # old column kept the last send time for good.
   def email_confirmation_code_sent_at
     active = object.new_email.present? ? object.new_email_confirmation : object.email_confirmation
     active&.code_sent_at
