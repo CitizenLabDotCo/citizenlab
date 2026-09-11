@@ -274,6 +274,15 @@ describe AccountMergeService do
       expect(target.reload).to be_admin
     end
 
+    # The provider-driven path applies the source rules too, so a block holds here as
+    # well as on the confirmation path.
+    it 'refuses a blocked source' do
+      source.update_columns(block_end_at: 1.week.from_now)
+
+      expect { absorb! }.to raise_error described_class::IneligibleError
+      expect(source.reload).to be_present
+    end
+
     it 'still refuses a source that is not an absorbable blank account' do
       source.update!(email: 'someone@example.org')
 

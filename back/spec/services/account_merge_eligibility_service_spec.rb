@@ -48,6 +48,13 @@ describe AccountMergeEligibilityService do
       expect(reason).to eq :source_has_roles
     end
 
+    # Otherwise a blocked user merges into a clean account they also own and walks
+    # away unblocked, taking the verification that made the block stick with them.
+    it 'refuses a blocked source' do
+      source.update_columns(block_end_at: 1.week.from_now)
+      expect(reason).to eq :source_blocked
+    end
+
     it 'reports source_eligible? without needing a target' do
       expect(service.source_eligible?(source)).to be true
       expect(service.source_eligible?(create(:user))).to be false

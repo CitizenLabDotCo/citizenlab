@@ -39,6 +39,9 @@ class AccountMergeEligibilityService
     # never be the source: it would quietly remove an admin or moderator. A fresh
     # email-less SSO account never has any.
     return :source_has_roles if source.roles.present?
+    # A block lives on the user row, so merging would carry the account's content and
+    # verification onto a clean one and leave the block behind with the deleted row.
+    return :source_blocked if source.blocked?
 
     nil
   end
