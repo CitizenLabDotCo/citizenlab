@@ -57,7 +57,10 @@ const emaillessAuthMethod = {
     name: 'fake_sso',
     authentication_method: true,
     verification_method: false,
-    method_metadata: { name: 'Fake SSO', email_always_present: false },
+    method_metadata: {
+      name: 'Fake SSO',
+      confirmed_email_always_present: false,
+    },
   },
 } as IdMethodData;
 

@@ -32,7 +32,7 @@ const emaillessSsoMethod = {
   ...ssoMethod,
   attributes: {
     ...ssoMethod.attributes,
-    method_metadata: { name: 'ItsMe', email_always_present: false },
+    method_metadata: { name: 'ItsMe', confirmed_email_always_present: false },
   },
 } as IdMethodData;
 
