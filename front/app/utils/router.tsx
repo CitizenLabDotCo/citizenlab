@@ -13,12 +13,14 @@ import {
   createRoute,
   createRouter,
   useLocation,
+  useMatchRoute,
   useParams,
   useSearch,
 } from '@tanstack/react-router';
 
 export {
   useLocation,
+  useMatchRoute,
   useParams,
   useSearch,
   Link,

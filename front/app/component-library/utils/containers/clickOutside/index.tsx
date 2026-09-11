@@ -34,8 +34,10 @@ const ClickOutside = ({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const handle = useCallback(
     (event: any) => {
-      // Press esc to close
-      if (event.type === 'keyup' && event.key === 'Escape') {
+      // Press esc to close. Modals run their own Escape handling on keydown,
+      // so closing here as well would dismiss a second modal on the keyup of
+      // the same keypress.
+      if (event.type === 'keyup' && event.key === 'Escape' && !isModal) {
         event.preventDefault();
         onClickOutside(event);
       }
@@ -58,7 +60,7 @@ const ClickOutside = ({
         onClickOutside(event);
       }
     },
-    [onClickOutside]
+    [onClickOutside, isModal]
   );
 
   useEffect(() => {

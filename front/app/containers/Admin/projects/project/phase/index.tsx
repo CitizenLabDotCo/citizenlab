@@ -12,9 +12,15 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { Outlet as RouterOutlet, useParams, useLocation } from 'utils/router';
+import {
+  Outlet as RouterOutlet,
+  useLocation,
+  useMatchRoute,
+  useParams,
+} from 'utils/router';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
+import PhasePreview from '../backofficeRedesign/ProjectWorkspace/Phase/PhasePreview';
 import { FeatureFlags, getTabs, IPhaseTab } from '../tabs';
 
 import { PhaseHeader } from './PhaseHeader';
@@ -27,6 +33,10 @@ interface DataProps {
 const AdminProjectPhaseIndex = ({ project, selectedPhase }: DataProps) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
+  const matchRoute = useMatchRoute();
+  const isBackofficeRedesignEnabled = useFeatureFlag({
+    name: 'project_backoffice_redesign',
+  });
   const featureFlags: FeatureFlags = {
     typeform_enabled: useFeatureFlag({
       name: 'typeform_surveys',
@@ -49,24 +59,44 @@ const AdminProjectPhaseIndex = ({ project, selectedPhase }: DataProps) => {
       }))
     : [];
 
+  const onPhaseSetupRoute =
+    !!matchRoute({
+      to: '/$locale/admin/projects/$projectId/phases/$phaseId/setup',
+    }) ||
+    !!matchRoute({ to: '/$locale/admin/projects/$projectId/phases/$phaseId' });
+
+  const showPhasePreview =
+    isBackofficeRedesignEnabled && !!selectedPhase && onPhaseSetupRoute;
+
   return (
-    <Box display="flex" flexDirection="column" flexGrow={1}>
+    <Box
+      display="flex"
+      flexDirection="column"
+      flexGrow={1}
+      minHeight={showPhasePreview ? '0' : undefined}
+    >
       <Box
-        p="8px 24px 24px 24px"
+        p={showPhasePreview ? '0' : '8px 24px 24px 24px'}
         display="flex"
         flexDirection="column"
         flexGrow={1}
+        minHeight={showPhasePreview ? '0' : undefined}
       >
-        {!isNewPhaseLink && selectedPhase && (
+        {!isNewPhaseLink && selectedPhase && !isBackofficeRedesignEnabled && (
           <PhaseHeader phase={selectedPhase} tabs={tabs} />
         )}
 
         <Box
-          p={`${defaultAdminCardPadding}px`}
-          background={colors.white}
+          p={showPhasePreview ? '0' : `${defaultAdminCardPadding}px`}
+          background={showPhasePreview ? undefined : colors.white}
           flexGrow={1}
+          minHeight={showPhasePreview ? '0' : undefined}
         >
-          <RouterOutlet />
+          {showPhasePreview ? (
+            <PhasePreview projectId={project.id} phase={selectedPhase} />
+          ) : (
+            <RouterOutlet />
+          )}
         </Box>
       </Box>
     </Box>

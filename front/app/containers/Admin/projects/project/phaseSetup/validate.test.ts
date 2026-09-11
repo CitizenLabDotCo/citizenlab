@@ -1,6 +1,6 @@
 import { IPhaseData, IUpdatedPhaseProperties } from 'api/phases/types';
 
-import validate from './validate';
+import validate, { validateDates, validateParticipation } from './validate';
 
 const formatMessage = () => 'some message';
 
@@ -98,5 +98,65 @@ describe('validate', () => {
 
     expect(result.isValidated).toBe(true);
     expect(result.errors.phaseDateError).toBeUndefined();
+  });
+});
+
+describe('validateDates', () => {
+  it('reports a missing start date', () => {
+    const formData = { ...baseFormData, start_at: undefined };
+
+    const result = validateDates(formData, { data: [] }, formatMessage);
+
+    expect(result.isValidated).toBe(false);
+    expect(result.errors.phaseDateError).toBeDefined();
+  });
+
+  it('ignores the participation settings', () => {
+    const formData = {
+      ...baseFormData,
+      start_at: '2024-11-01',
+      end_at: '2024-12-20',
+      voting_min_total: 10,
+      voting_max_total: 1,
+    };
+
+    expect(validate(formData, { data: [] }, formatMessage).isValidated).toBe(
+      false
+    );
+    expect(
+      validateDates(formData, { data: [] }, formatMessage).isValidated
+    ).toBe(true);
+  });
+});
+
+describe('validateParticipation', () => {
+  it('reports a minimum larger than the maximum', () => {
+    const formData = {
+      ...baseFormData,
+      voting_min_total: 10,
+      voting_max_total: 1,
+    };
+
+    const result = validateParticipation(formData, formatMessage);
+
+    expect(result.isValidated).toBe(false);
+    expect(result.errors.minTotalVotesError).toBeDefined();
+  });
+
+  it('ignores the dates', () => {
+    const firstPhaseId = 'first-phase-id';
+    const phases = {
+      data: [
+        makePhase(firstPhaseId, '2024-01-15', '2024-02-01'),
+        makePhase('last-phase-id', '2024-06-01', null),
+      ],
+    };
+
+    expect(
+      validate(baseFormData, phases, formatMessage, firstPhaseId).isValidated
+    ).toBe(false);
+    expect(validateParticipation(baseFormData, formatMessage).isValidated).toBe(
+      true
+    );
   });
 });

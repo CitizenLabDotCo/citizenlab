@@ -61,9 +61,14 @@ interface Props {
   formData: IUpdatedPhaseProperties;
   validationErrors: ValidationErrors;
   apiErrors: CLErrors | null;
-  onChange: (arg: IUpdatedPhaseProperties) => void;
+  onChange: (
+    formData: IUpdatedPhaseProperties,
+    changes: Partial<IUpdatedPhaseProperties>
+  ) => void;
   setValidationErrors: React.Dispatch<React.SetStateAction<ValidationErrors>>;
   hideMethodPicker?: boolean;
+  /** 'panel' groups the settings by concern for the narrow workspace panel. */
+  layout?: 'page' | 'panel';
 }
 
 const MAX_VOTES_PER_VOTING_METHOD: Record<VotingMethod, number> = {
@@ -71,8 +76,6 @@ const MAX_VOTES_PER_VOTING_METHOD: Record<VotingMethod, number> = {
   multiple_voting: 10,
   budgeting: 100,
 };
-
-type SetFn = (config: IUpdatedPhaseProperties) => IUpdatedPhaseProperties;
 
 const PhaseParticipationConfig = ({
   phase,
@@ -82,6 +85,7 @@ const PhaseParticipationConfig = ({
   onChange,
   setValidationErrors,
   hideMethodPicker,
+  layout = 'page',
 }: Props) => {
   const surveys_enabled = useFeatureFlag({ name: 'surveys' });
   const typeform_enabled = useFeatureFlag({ name: 'typeform_surveys' });
@@ -114,9 +118,8 @@ const PhaseParticipationConfig = ({
       ? formatMessage(anonymousMessages.anonymousParticipationAutoEnabled)
       : undefined;
 
-  const updateFormData = (fn: SetFn) => {
-    const updatedFormData = fn(formData);
-    onChange(updatedFormData);
+  const updateFormData = (changes: Partial<IUpdatedPhaseProperties>) => {
+    onChange({ ...formData, ...changes }, changes);
   };
 
   const handleParticipationMethodOnChange = (
@@ -128,10 +131,7 @@ const PhaseParticipationConfig = ({
     const survey = participation_method === 'survey';
     const proposals = participation_method === 'proposals';
 
-    updateFormData(() => ({
-      // These two lines should not be needed as we use defaultParticipationConfig
-      // already in the participationMethodConfigs.ts file for each specific config
-      // as its starting point.
+    updateFormData({
       ...defaultParticipationConfig,
       participation_method,
       ...(ideation ? ideationDefaultConfig : {}),
@@ -139,76 +139,67 @@ const PhaseParticipationConfig = ({
       ...(survey ? surveyDefaultConfig : {}),
       ...(native_survey ? nativeSurveyDefaultConfig : {}),
       ...(proposals ? proposalsDefaultConfig : {}),
-    }));
+    });
   };
 
   const handleSurveyProviderChange = (survey_service: TSurveyService) => {
-    updateFormData((state) => ({
-      ...state,
+    updateFormData({
       survey_service,
-    }));
+    });
   };
 
   const handleSurveyEmbedUrlChange = (survey_embed_url: string) => {
-    updateFormData((state) => ({
-      ...state,
+    updateFormData({
       survey_embed_url,
-    }));
+    });
   };
 
   const handleDocumentAnnotationEmbedUrlChange = (
     document_annotation_embed_url: string
   ) => {
-    updateFormData((state) => ({
-      ...state,
+    updateFormData({
       document_annotation_embed_url,
-    }));
+    });
   };
 
   const togglePostingEnabled = () => {
-    updateFormData((state) => ({
-      ...state,
-      submission_enabled: !state.submission_enabled,
-    }));
+    updateFormData({
+      submission_enabled: !formData.submission_enabled,
+    });
   };
 
   const toggleCommentingEnabled = () => {
-    updateFormData((state) => ({
-      ...state,
-      commenting_enabled: !state.commenting_enabled,
-    }));
+    updateFormData({
+      commenting_enabled: !formData.commenting_enabled,
+    });
   };
 
   const toggleAutoshareResultsEnabled = () => {
-    updateFormData((state) => ({
-      ...state,
-      autoshare_results_enabled: !state.autoshare_results_enabled,
-    }));
+    updateFormData({
+      autoshare_results_enabled: !formData.autoshare_results_enabled,
+    });
   };
 
   const toggleReactingEnabled = () => {
-    updateFormData((state) => ({
-      ...state,
-      reacting_enabled: !state.reacting_enabled,
-    }));
+    updateFormData({
+      reacting_enabled: !formData.reacting_enabled,
+    });
   };
 
   const handleReactingLikeMethodOnChange = (
     reacting_like_method: 'unlimited' | 'limited'
   ) => {
-    updateFormData((state) => ({
-      ...state,
+    updateFormData({
       reacting_like_method,
       reacting_like_limited_max:
         reacting_like_method === 'unlimited' ? null : 5,
-    }));
+    });
   };
 
   const handleLikingLimitOnChange = (reacting_like_limited_max: string) => {
-    updateFormData((state) => ({
-      ...state,
+    updateFormData({
       reacting_like_limited_max: parseInt(reacting_like_limited_max, 10),
-    }));
+    });
     setValidationErrors((errors) => ({
       ...errors,
       noLikingLimitError: undefined,
@@ -218,51 +209,48 @@ const PhaseParticipationConfig = ({
   const handleReactingDislikeEnabledOnChange = (
     reacting_dislike_enabled: boolean
   ) => {
-    updateFormData((state) => ({
-      ...state,
+    updateFormData({
       reacting_dislike_enabled,
-    }));
+    });
   };
 
   const handleAllowAnonymousParticipationOnChange = (
     allow_anonymous_participation: boolean
   ) => {
-    updateFormData((state) => ({
-      ...state,
+    updateFormData({
       allow_anonymous_participation,
-    }));
+    });
   };
 
   const handleVotingMethodOnChange = (voting_method: VotingMethod) => {
     const maxVotes = MAX_VOTES_PER_VOTING_METHOD[voting_method];
 
-    updateFormData((state) => ({
-      ...state,
+    updateFormData({
       voting_method,
       voting_max_votes_per_idea:
-        voting_method === 'single_voting' ? 1 : state.voting_max_votes_per_idea,
+        voting_method === 'single_voting'
+          ? 1
+          : formData.voting_max_votes_per_idea,
       voting_max_total: maxVotes,
-    }));
+    });
   };
 
   const handleReactingDislikeMethodOnChange = (
     reacting_dislike_method: 'unlimited' | 'limited'
   ) => {
-    updateFormData((state) => ({
-      ...state,
+    updateFormData({
       reacting_dislike_method,
       reacting_dislike_limited_max:
         reacting_dislike_method === 'unlimited' ? null : 5,
-    }));
+    });
   };
 
   const handleDislikingLimitOnChange = (
     rreacting_dislike_limited_max: string
   ) => {
-    updateFormData((state) => ({
-      ...state,
+    updateFormData({
       reacting_dislike_limited_max: parseInt(rreacting_dislike_limited_max, 10),
-    }));
+    });
     setValidationErrors((errors) => ({
       ...errors,
       noDislikingLimitError: undefined,
@@ -270,36 +258,32 @@ const PhaseParticipationConfig = ({
   };
 
   const handleIdeasDisplayChange = (presentation_mode: PresentationMode) => {
-    updateFormData((state) => ({
-      ...state,
+    updateFormData({
       presentation_mode,
-    }));
+    });
   };
 
   const handleAvailableViewsChange = (
     available_views: PresentationMode[],
     presentation_mode?: PresentationMode
   ) => {
-    updateFormData((state) => ({
-      ...state,
+    updateFormData({
       available_views,
       ...(presentation_mode !== undefined ? { presentation_mode } : {}),
-    }));
+    });
   };
 
   const handleIdeaDefaultSortMethodChange = (ideas_order: IdeaSortMethod) => {
-    updateFormData((state) => ({
-      ...state,
+    updateFormData({
       ideas_order,
-    }));
+    });
   };
 
   const handleVotingMinTotalChange = (newVotingMinTotal: string) => {
     const voting_min_total = parseInt(newVotingMinTotal, 10);
-    updateFormData((state) => ({
-      ...state,
+    updateFormData({
       voting_min_total,
-    }));
+    });
     setValidationErrors((errors) => ({
       ...errors,
       minTotalVotesError: undefined,
@@ -310,10 +294,9 @@ const PhaseParticipationConfig = ({
     const voting_max_total = newVotingMaxTotal
       ? parseInt(newVotingMaxTotal, 10)
       : null;
-    updateFormData((state) => ({
-      ...state,
+    updateFormData({
       voting_max_total,
-    }));
+    });
     setValidationErrors((errors) => ({
       ...errors,
       maxTotalVotesError: undefined,
@@ -322,10 +305,9 @@ const PhaseParticipationConfig = ({
 
   const handleVotingMaxPerIdeaChange = (newVotingMaxPerIdeaTotal: string) => {
     const voting_max_votes_per_idea = parseInt(newVotingMaxPerIdeaTotal, 10);
-    updateFormData((state) => ({
-      ...state,
+    updateFormData({
       voting_max_votes_per_idea,
-    }));
+    });
     setValidationErrors((errors) => ({
       ...errors,
       maxVotesPerOptionError: undefined,
@@ -336,10 +318,9 @@ const PhaseParticipationConfig = ({
     const voting_min_selected_options = newMinVotingOptions
       ? parseInt(newMinVotingOptions, 10)
       : null;
-    updateFormData((state) => ({
-      ...state,
+    updateFormData({
       voting_min_selected_options,
-    }));
+    });
     setValidationErrors((errors) => ({
       ...errors,
       minSelectedOptionsError: undefined,
@@ -347,96 +328,84 @@ const PhaseParticipationConfig = ({
   };
 
   const toggleVotingFilteringEnabled = () => {
-    updateFormData((state) => ({
-      ...state,
-      voting_filtering_enabled: !state.voting_filtering_enabled,
-    }));
+    updateFormData({
+      voting_filtering_enabled: !formData.voting_filtering_enabled,
+    });
   };
 
   const handleInputTermChange = (option: IOption) => {
     const input_term: InputTerm = option.value;
 
-    updateFormData((state) => ({
-      ...state,
+    updateFormData({
       input_term,
-    }));
+    });
   };
 
   const handleVoteTermChange = (option: IOption) => {
     const voteTerm: VoteTerm = option.value;
 
-    updateFormData((state) => ({
-      ...state,
+    updateFormData({
       vote_term: voteTerm,
-    }));
+    });
   };
 
   const togglePollAnonymous = () => {
-    updateFormData((state) => ({
-      ...state,
-      poll_anonymous: !state.poll_anonymous,
-    }));
+    updateFormData({
+      poll_anonymous: !formData.poll_anonymous,
+    });
   };
 
   const handleDaysLimitChange = (limit: string) => {
-    updateFormData((state) => ({
-      ...state,
+    updateFormData({
       expire_days_limit: parseInt(limit, 10),
-    }));
+    });
   };
 
   const handleReactingThresholdChange = (threshold: string) => {
-    updateFormData((state) => ({
-      ...state,
+    updateFormData({
       reacting_threshold: parseInt(threshold, 10),
-    }));
+    });
   };
 
   const onPrescreeningModeChange = (
     prescreening_mode: PrescreeningMode | null
   ) => {
-    updateFormData((state) => ({
-      ...state,
+    updateFormData({
       prescreening_mode,
-    }));
+    });
   };
 
   const handleSurveyTitleChange = (surveyTitle: Multiloc) => {
-    updateFormData((state) => ({
-      ...state,
+    updateFormData({
       native_survey_title_multiloc: surveyTitle,
-    }));
+    });
   };
 
   const handleSurveyCTAChange = (CTATitle: Multiloc) => {
-    updateFormData((state) => ({
-      ...state,
+    updateFormData({
       native_survey_button_multiloc: CTATitle,
-    }));
+    });
   };
 
   const handleAllowMultipleResponsesChange = (value: boolean) => {
-    updateFormData((state) => ({
-      ...state,
+    updateFormData({
       allow_multiple_responses: value,
-    }));
+    });
   };
 
   const handleSimilarityEnabledChange = (value: boolean) => {
-    updateFormData((state) => ({
-      ...state,
+    updateFormData({
       similarity_enabled: value,
-    }));
+    });
   };
 
   const handleThresholdChange = (
     field: 'similarity_threshold_title' | 'similarity_threshold_body',
     value: number
   ) => {
-    updateFormData((state) => ({
-      ...state,
+    updateFormData({
       [field]: value,
-    }));
+    });
   };
 
   const surveyProviders = {
@@ -508,7 +477,7 @@ const PhaseParticipationConfig = ({
           />
         )}
         {project_library_enabled && (
-          <Box mb="20px" width="750px">
+          <Box mb="20px" maxWidth="750px">
             <FeatureCallout
               icon="info-solid"
               title={<FormattedMessage {...projectMessages.needInspiration} />}
@@ -629,6 +598,7 @@ const PhaseParticipationConfig = ({
             similarity_threshold_body={similarity_threshold_body}
             handleSimilarityEnabledChange={handleSimilarityEnabledChange}
             handleThresholdChange={handleThresholdChange}
+            layout={layout}
           />
         )}
 
@@ -676,6 +646,7 @@ const PhaseParticipationConfig = ({
             similarity_threshold_body={similarity_threshold_body}
             handleSimilarityEnabledChange={handleSimilarityEnabledChange}
             handleThresholdChange={handleThresholdChange}
+            layout={layout}
           />
         )}
 

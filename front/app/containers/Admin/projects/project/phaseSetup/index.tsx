@@ -1,12 +1,9 @@
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
 
 import { Box, Title, colors } from '@citizenlab/cl2-component-library';
-import { CLErrors, Multiloc, SupportedLocale, UploadFile } from 'typings';
+import { CLErrors, Multiloc, SupportedLocale } from 'typings';
 
-import { IFileAttachmentData } from 'api/file_attachments/types';
 import useFileAttachments from 'api/file_attachments/useFileAttachments';
-import { IFileData } from 'api/files/types';
-import useAddFile from 'api/files/useAddFile';
 import { IPhase, IUpdatedPhaseProperties } from 'api/phases/types';
 import useAddPhase from 'api/phases/useAddPhase';
 import usePhase from 'api/phases/usePhase';
@@ -14,10 +11,13 @@ import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 import { getPhaseLandingTab, isTimelinePhase } from 'api/phases/utils';
 
-import { useSyncFiles } from 'hooks/files/useSyncFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import usePhaseFileAttachments, {
+  fileAttachmentErrors,
+} from 'containers/Admin/projects/_shared/usePhaseFileAttachments';
 
 import {
   Section,
@@ -36,7 +36,6 @@ import {
   useIntl,
 } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { generateTemporaryFileAttachment } from 'utils/fileUtils';
 import { useParams, useSearch } from 'utils/router';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
@@ -78,16 +77,15 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
   const { data: phases } = usePhases(projectId);
   const { mutate: addPhase } = useAddPhase();
   const { mutate: updatePhase } = useUpdatePhase();
-  const { mutate: addFile, isPending: isAddingFile } = useAddFile();
-  const syncPhaseFiles = useSyncFiles();
   const [errors, setErrors] = useState<CLErrors | null>(null);
   const [processing, setProcessing] = useState<boolean>(false);
-  const [inStatePhaseFileAttachments, setInStatePhaseFileAttachments] =
-    useState<IFileAttachmentData[] | undefined>(phaseFileAttachments?.data);
-  const [phaseFileAttachmentsToRemove, setPhaseFileAttachmentsToRemove] =
-    useState<IFileAttachmentData[]>([]);
-
   const [submitState, setSubmitState] = useState<SubmitStateType>('disabled');
+  const files = usePhaseFileAttachments({
+    projectId,
+    phaseId,
+    savedAttachments: phaseFileAttachments?.data,
+    onStage: () => setSubmitState('enabled'),
+  });
   const [formData, setFormData] = useState<IUpdatedPhaseProperties>();
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
     {}
@@ -142,12 +140,6 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
     setFormData(ideationDefaultConfig);
   }, [phase, standaloneSurvey, tenantLocales, formatMessageWithLocale]);
 
-  useEffect(() => {
-    if (phaseFileAttachments) {
-      setInStatePhaseFileAttachments(phaseFileAttachments.data);
-    }
-  }, [phaseFileAttachments]);
-
   if (!formatMessageWithLocale) return null;
 
   const handlePhaseParticipationConfigChange = (
@@ -199,108 +191,6 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
     updateFormData({ title_multiloc });
   };
 
-  const handlePhaseFileOnAttach = (file: IFileData) => {
-    const isDuplicate = inStatePhaseFileAttachments?.some((fileAttachment) => {
-      return fileAttachment.relationships.file.data.id === file.id;
-    });
-
-    if (isDuplicate) return;
-
-    const temporaryFileAttachment = generateTemporaryFileAttachment({
-      fileId: file.id,
-      attachableId: phaseId,
-      attachableType: 'Phase',
-      position: inStatePhaseFileAttachments
-        ? inStatePhaseFileAttachments.length
-        : 0,
-    });
-
-    setInStatePhaseFileAttachments((inStatePhaseFileAttachments) => [
-      ...(inStatePhaseFileAttachments || []),
-      temporaryFileAttachment,
-    ]);
-    setSubmitState('enabled');
-  };
-
-  const handlePhaseFileOnAdd = (fileToAdd: UploadFile) => {
-    // Upload the file to the Data Repository, so we can make the attachment later.
-    addFile(
-      {
-        content: fileToAdd.base64,
-        project: projectId,
-        name: fileToAdd.name,
-        category: 'other', // Default to 'other' when added from phase setup
-        ai_processing_allowed: false, // Default to false when added from phase setup
-      },
-      {
-        onSuccess: (newFile) => {
-          // Create a temporary file attachment to add to the state, so the user sees it in the list.
-          const temporaryFileAttachment = generateTemporaryFileAttachment({
-            fileId: newFile.data.id,
-            attachableId: phaseId,
-            attachableType: 'Phase',
-            position: inStatePhaseFileAttachments
-              ? inStatePhaseFileAttachments.length
-              : 0,
-          });
-
-          const isDuplicate = inStatePhaseFileAttachments?.some(
-            (fileAttachment) => {
-              return (
-                fileAttachment.relationships.file.data.id ===
-                temporaryFileAttachment.relationships.file.data.id
-              );
-            }
-          );
-
-          setInStatePhaseFileAttachments(
-            isDuplicate
-              ? inStatePhaseFileAttachments
-              : [
-                  ...(inStatePhaseFileAttachments || []),
-                  temporaryFileAttachment,
-                ]
-          );
-
-          setSubmitState(isDuplicate ? submitState : 'enabled');
-        },
-      }
-    );
-  };
-
-  const handlePhaseFileOnRemove = (
-    fileAttachmentToRemove: IFileAttachmentData
-  ) => {
-    setInStatePhaseFileAttachments(
-      inStatePhaseFileAttachments?.filter(
-        (fileAttachment) => fileAttachment.id !== fileAttachmentToRemove.id
-      )
-    );
-    setPhaseFileAttachmentsToRemove([
-      ...phaseFileAttachmentsToRemove,
-      fileAttachmentToRemove,
-    ]);
-    setSubmitState('enabled');
-  };
-
-  const handleFilesReorder = (
-    updatedFileAttachments: IFileAttachmentData[]
-  ) => {
-    // Update the position of the updated file attachments
-    const updatedFileAttachmentsWithPosition = updatedFileAttachments.map(
-      (fileAttachment, index) => ({
-        ...fileAttachment,
-        attributes: {
-          ...fileAttachment.attributes,
-          position: index,
-        },
-      })
-    );
-
-    setInStatePhaseFileAttachments(updatedFileAttachmentsWithPosition);
-    setSubmitState('enabled');
-  };
-
   const handleOnSubmit = async (event: FormEvent<any>) => {
     event.preventDefault();
     if (!formData) return;
@@ -335,52 +225,28 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
     const phaseResponse = response.data;
     const phaseId = phaseResponse.id;
 
-    const initialFileAttachmentOrdering = phaseFileAttachments?.data.reduce(
-      (acc, file) => {
-        if (file.id) {
-          acc[file.id] = file.attributes.position;
-        }
-        return acc;
-      },
-      {}
-    );
+    try {
+      await files.save(phaseId);
+    } catch (reason) {
+      setErrors(fileAttachmentErrors(reason));
+      setProcessing(false);
+      setSubmitState('error');
+      return;
+    }
 
-    await syncPhaseFiles({
-      attachableId: phaseId,
-      attachableType: 'Phase',
-      fileAttachments: inStatePhaseFileAttachments || [],
-      fileAttachmentsToRemove: phaseFileAttachmentsToRemove,
-      fileAttachmentOrdering: initialFileAttachmentOrdering || {},
-    })
-      .then(() => {
-        setPhaseFileAttachmentsToRemove([]);
-        setProcessing(false);
-        setErrors(null);
-        setSubmitState('success');
+    setProcessing(false);
+    setErrors(null);
+    setSubmitState('success');
 
-        if (redirectAfterSave) {
-          const redirectTab = getPhaseLandingTab(phaseResponse);
-          window.scrollTo(0, 0);
-          clHistory.push(
-            `/admin/projects/${projectId}/phases/${phaseId}/${redirectTab}${window.location.search}`
-          );
-        } else {
-          setFormData(response.data.attributes);
-        }
-      })
-      .catch(({ errors }) => {
-        // For some reason, the BE adds a 'blank' error
-        // to the file errors array when the real error is
-        // extension_whitelist_error. So if we get that error,
-        // we filter out the blank error and only show the
-        // extension_whitelist_error.
-        errors.file[0].error === 'extension_whitelist_error'
-          ? setErrors({ file: [errors.file[0]] })
-          : setErrors({ ...errors });
-
-        setProcessing(false);
-        setSubmitState('error');
-      });
+    if (redirectAfterSave) {
+      const redirectTab = getPhaseLandingTab(phaseResponse);
+      window.scrollTo(0, 0);
+      clHistory.push(
+        `/admin/projects/${projectId}/phases/${phaseId}/${redirectTab}${window.location.search}`
+      );
+    } else {
+      setFormData(response.data.attributes);
+    }
   };
 
   const save = async (formData: IUpdatedPhaseProperties) => {
@@ -476,15 +342,15 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
             </SubSectionTitle>
             <FileRepositorySelectAndUpload
               id="project-timeline-edit-form-file-uploader"
-              onFileAdd={handlePhaseFileOnAdd}
-              onFileRemove={handlePhaseFileOnRemove}
-              onFileReorder={handleFilesReorder}
-              onFileAttach={handlePhaseFileOnAttach}
-              fileAttachments={inStatePhaseFileAttachments}
+              onFileAdd={files.uploadFile}
+              onFileRemove={files.removeFile}
+              onFileReorder={files.reorderFiles}
+              onFileAttach={files.attachFile}
+              fileAttachments={files.attachments}
               enableDragAndDrop
               apiErrors={errors}
               maxSizeMb={10}
-              isUploadingFile={isAddingFile}
+              isUploadingFile={files.isUploadingFile}
             />
           </SectionField>
 
@@ -543,7 +409,6 @@ const AdminPhaseEditWrapper = () => {
   const spotlightSurveysEnabled = useFeatureFlag({
     name: 'parallel_participation',
   });
-
   if (!projectId) return null;
 
   const phaseLoading = phaseId && phase?.data.id !== phaseId;

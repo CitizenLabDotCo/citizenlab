@@ -5,16 +5,51 @@ import { IUpdatedPhaseProperties, IPhases } from 'api/phases/types';
 
 import messages from '../messages';
 
-const validate = (
+export const validateDates = (
   state: IUpdatedPhaseProperties,
   phases: IPhases | undefined,
   formatMessage: FormatMessage,
   phaseId?: string,
   standalone?: boolean
 ) => {
+  const { start_at, end_at } = state;
+
+  let isValidated = true;
+  let phaseDateError: string | undefined;
+
+  if (!start_at) {
+    phaseDateError = formatMessage(messages.missingStartDateError);
+    isValidated = false;
+  } else if (!standalone && phases && phases.data.length > 0 && !end_at) {
+    const startAtDates = phases.data.map((phase) =>
+      new Date(phase.attributes.start_at).getTime()
+    );
+    const maxStartAt = Math.max(...startAtDates);
+
+    if (new Date(start_at).getTime() < maxStartAt) {
+      // Allow open end when editing the last phase (phase with latest start_at).
+      const phaseBeingEdited = phaseId
+        ? phases.data.find((p) => p.id === phaseId)
+        : undefined;
+      const isEditingLastPhase =
+        phaseBeingEdited &&
+        new Date(phaseBeingEdited.attributes.start_at).getTime() === maxStartAt;
+
+      if (!isEditingLastPhase) {
+        phaseDateError = formatMessage(messages.missingEndDateError);
+        isValidated = false;
+      }
+    }
+  }
+
+  return { isValidated, errors: { phaseDateError } };
+};
+
+export const validateParticipation = (
+  state: IUpdatedPhaseProperties,
+  formatMessage: FormatMessage
+) => {
   const {
-    start_at,
-    end_at,
     reacting_like_method,
     reacting_dislike_method,
     reacting_like_limited_max,
@@ -30,7 +65,6 @@ const validate = (
   } = state;
 
   let isValidated = true;
-  let phaseDateError: string | undefined;
   let noLikingLimitError: string | undefined;
   let noDislikingLimitError: string | undefined;
   let minTotalVotesError: string | undefined;
@@ -39,40 +73,6 @@ const validate = (
   let expireDateLimitError: string | undefined;
   let reactingThresholdError: string | undefined;
   let minSelectedOptionsError: string | undefined;
-
-  if (standalone || !phases || phases.data.length === 0) {
-    if (!start_at) {
-      phaseDateError = formatMessage(messages.missingStartDateError);
-      isValidated = false;
-    }
-  } else {
-    if (!start_at) {
-      phaseDateError = formatMessage(messages.missingStartDateError);
-      isValidated = false;
-    } else {
-      if (!end_at) {
-        const startAtDates = phases.data.map((phase) =>
-          new Date(phase.attributes.start_at).getTime()
-        );
-        const maxStartAt = Math.max(...startAtDates);
-        const formStartAt = new Date(start_at).getTime();
-        if (formStartAt < maxStartAt) {
-          // Allow open end when editing the last phase (phase with latest start_at).
-          const phaseBeingEdited = phaseId
-            ? phases.data.find((p) => p.id === phaseId)
-            : undefined;
-          const isEditingLastPhase =
-            phaseBeingEdited &&
-            new Date(phaseBeingEdited.attributes.start_at).getTime() ===
-              maxStartAt;
-          if (!isEditingLastPhase) {
-            phaseDateError = formatMessage(messages.missingEndDateError);
-            isValidated = false;
-          }
-        }
-      }
-    }
-  }
 
   if (
     participation_method === 'voting' &&
@@ -185,7 +185,6 @@ const validate = (
   return {
     isValidated,
     errors: {
-      phaseDateError,
       noLikingLimitError,
       noDislikingLimitError,
       minTotalVotesError,
@@ -195,6 +194,28 @@ const validate = (
       reactingThresholdError,
       minSelectedOptionsError,
     },
+  };
+};
+
+const validate = (
+  state: IUpdatedPhaseProperties,
+  phases: IPhases | undefined,
+  formatMessage: FormatMessage,
+  phaseId?: string,
+  standalone?: boolean
+) => {
+  const dates = validateDates(
+    state,
+    phases,
+    formatMessage,
+    phaseId,
+    standalone
+  );
+  const participation = validateParticipation(state, formatMessage);
+
+  return {
+    isValidated: dates.isValidated && participation.isValidated,
+    errors: { ...dates.errors, ...participation.errors },
   };
 };
 
