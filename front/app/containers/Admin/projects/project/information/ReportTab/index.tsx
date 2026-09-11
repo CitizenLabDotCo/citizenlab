@@ -70,13 +70,13 @@ const ReportTab = () => {
       </Box>
       {hasReport ? (
         <>
-          <Box maxWidth={MAX_REPORT_WIDTH}>
-            <Warning>
-              {report
-                ? formatMessage(visibilityWarning(report, phase.data))
-                : ''}
-            </Warning>
-          </Box>
+          {report && (
+            <Box maxWidth={MAX_REPORT_WIDTH}>
+              <Warning>
+                {formatMessage(visibilityWarning(report, phase.data))}
+              </Warning>
+            </Box>
+          )}
           <Box mt="32px">
             <ReportPreview reportId={reportId} phaseId={phase.data.id} />
           </Box>

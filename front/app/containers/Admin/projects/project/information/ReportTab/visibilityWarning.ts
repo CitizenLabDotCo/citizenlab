@@ -6,10 +6,6 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 
 import messages from './messages';
 
-/**
- * What to tell a manager about who can see the report, which depends on both
- * the report's own visibility and whether the phase has started.
- */
 const visibilityWarning = (
   report: ReportResponse,
   phase: IPhaseData
