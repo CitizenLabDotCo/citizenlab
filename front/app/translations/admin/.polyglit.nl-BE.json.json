@@ -21269,6 +21269,26 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.containers.admin.content_builder.html_block.code": {
+    "state": "verified",
+    "verified_at": "2026-09-09T21:32:37.425412Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.admin.content_builder.html_block.code_tooltip": {
+    "state": "verified",
+    "verified_at": "2026-09-09T21:32:37.425412Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.admin.content_builder.html_block.code_tooltip_link_text": {
+    "state": "verified",
+    "verified_at": "2026-09-09T21:32:37.425412Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.admin.content_builder.html_block.code_tooltip_link_url": {
+    "state": "verified",
+    "verified_at": "2026-09-09T21:32:37.425412Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.admin.content_builder.html_block.label": {
     "state": "verified",
     "verified_at": "2026-06-24T08:09:30.017140Z",
