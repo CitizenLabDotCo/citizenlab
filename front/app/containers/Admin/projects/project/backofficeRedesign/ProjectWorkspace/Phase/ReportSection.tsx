@@ -23,8 +23,8 @@ interface Props {
 }
 
 /**
- * An information phase collects nothing, so instead of participation settings
- * its panel is where the report shared with residents is created and managed.
+ * An information phase collects nothing, so its panel manages the report shared
+ * with residents rather than participation settings.
  */
 const ReportSection = ({ projectId, phase }: Props) => {
   const { formatMessage } = useIntl();
