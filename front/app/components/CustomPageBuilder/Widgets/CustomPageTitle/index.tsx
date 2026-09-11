@@ -23,7 +23,8 @@ import messages from './messages';
 type Props = {
   // Set only while the builder is open; the saved value lives on the page record.
   title?: Multiloc;
-  // A page always has a title_multiloc, but only shows it when it has no banner.
+  // A page always has a title_multiloc; derivation seeds this hidden when the page has a
+  // banner, and the admin can switch it either way.
   showTitle?: boolean;
 };
 

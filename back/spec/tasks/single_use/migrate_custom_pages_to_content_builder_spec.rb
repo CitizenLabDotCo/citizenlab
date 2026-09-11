@@ -113,7 +113,7 @@ describe 'single_use:migrate_custom_pages_to_content_builder' do
   end
 
   # The equality against the service above passes whatever the service emits, so this pins
-  # that a migrated page actually gets the pinned header.
+  # that a migrated page actually gets its title widget.
   it 'seeds the title widget at the top of the body' do
     task.invoke('execute')
 

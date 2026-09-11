@@ -111,8 +111,9 @@ export const normalizeCustomPageLayout = (
   });
 
   const root = next[ROOT_ID];
-  // Pinned slots stay on ROOT in their stored order. When the body was just created they
-  // were adopted into it instead, so ROOT keeps only the body.
+  // Derivation puts nothing but the body on ROOT, but a stored graph may hold more; any such
+  // sibling keeps its stored order. When the body was just created they were adopted into it
+  // instead, so ROOT keeps only the body.
   const storedRootIds = existingBodyId
     ? childIdsOf(root).filter((id) => id in next)
     : [];

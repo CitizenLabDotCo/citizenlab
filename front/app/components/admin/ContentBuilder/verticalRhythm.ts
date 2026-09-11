@@ -43,8 +43,8 @@ const BOUNDARY_MARGINS = {
   section: { desktop: '48px', phone: '32px' },
 } as const;
 
-// The gap at a major boundary the rhythm cannot see: between a page's pinned header and its
-// first widget, which sits in a region and so has no previous sibling to be spaced against.
+// The gap at a major boundary the rhythm cannot see: above a page's first widget, which has
+// no previous sibling to be spaced against, or below a heading that sits outside the rhythm.
 export const useSectionBoundaryMargin = () =>
   BOUNDARY_MARGINS.section[useBreakpoint('phone') ? 'phone' : 'desktop'];
 

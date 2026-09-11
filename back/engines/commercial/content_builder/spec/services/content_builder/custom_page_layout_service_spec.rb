@@ -65,9 +65,8 @@ describe ContentBuilder::CustomPageLayoutService do
 
     describe 'the title' do
       # CustomPageShow renders <PageTitle> only on its !banner_enabled branch; the heading
-      # inside a banner comes from banner_header_multiloc. The node is always seeded, and
-      # showTitle carries which of the two the page shows.
-      # Body content like everything else, so an admin can move it; nothing is pinned.
+      # inside a banner comes from banner_header_multiloc. So the node is always seeded, with
+      # showTitle carrying which of the two the page shows, as body content an admin can move.
       it 'seeds a shown title at the top of the body on a page with no banner' do
         craftjs = service.craftjs_json_for(build_page(banner_enabled: false))
 
