@@ -37,7 +37,8 @@ const ProjectWorkspace = ({
   const activeView = viewFromPathname(pathname);
 
   // A phase is built in three columns, but managed and analysed across the
-  // full width, so its panels step aside on those two views.
+  // full width, so its panels step aside on those two views. They stay mounted
+  // while hidden: unmounting would throw away edits that are not saved yet.
   const showPanels = !phase || activeView === 'build';
 
   return (
@@ -55,8 +56,9 @@ const ProjectWorkspace = ({
       />
 
       <Box display="flex" flexGrow={1} minHeight="0" overflow="hidden">
-        {showPanels && leftPanel && (
+        {leftPanel && (
           <Box
+            display={showPanels ? 'block' : 'none'}
             flex={`0 0 ${leftPanelWidth}`}
             width={leftPanelWidth}
             minHeight="0"
@@ -67,8 +69,8 @@ const ProjectWorkspace = ({
           </Box>
         )}
 
-        {/* A flex column so a centre that fills the stage (the phase preview)
-            stretches to it, rather than collapsing to its content. */}
+        {/* A flex column so a centre that fills the stage stretches to it,
+            rather than collapsing to its content. */}
         <Box
           flexGrow={1}
           minWidth="0"
@@ -80,8 +82,9 @@ const ProjectWorkspace = ({
           {children}
         </Box>
 
-        {showPanels && rightPanel && (
+        {rightPanel && (
           <Box
+            display={showPanels ? 'block' : 'none'}
             flex={`0 0 ${RIGHT_PANEL_WIDTH}`}
             width={RIGHT_PANEL_WIDTH}
             minHeight="0"
