@@ -47,27 +47,21 @@ const FormSection = ({ projectId, phase }: Props) => {
           {formatMessage(inputFormMessages.inputFormDescription)}
         </Text>
         <Box display="flex">
-          {survey ? (
-            <ButtonWithLink
-              to="/admin/projects/$projectId/phases/$phaseId/survey-form/edit"
-              params={{ projectId, phaseId: phase.id }}
-              buttonStyle="admin-dark"
-              icon="edit"
-              size="s"
-            >
-              {formatMessage(messages.editSurveyForm)}
-            </ButtonWithLink>
-          ) : (
-            <ButtonWithLink
-              to="/admin/projects/$projectId/phases/$phaseId/form/edit"
-              params={{ projectId, phaseId: phase.id }}
-              buttonStyle="admin-dark"
-              icon="edit"
-              size="s"
-            >
-              {formatMessage(inputFormMessages.editInputForm)}
-            </ButtonWithLink>
-          )}
+          <ButtonWithLink
+            to={
+              survey
+                ? '/admin/projects/$projectId/phases/$phaseId/survey-form/edit'
+                : '/admin/projects/$projectId/phases/$phaseId/form/edit'
+            }
+            params={{ projectId, phaseId: phase.id }}
+            buttonStyle="admin-dark"
+            icon="edit"
+            size="s"
+          >
+            {formatMessage(
+              survey ? messages.editSurveyForm : inputFormMessages.editInputForm
+            )}
+          </ButtonWithLink>
         </Box>
       </PanelField>
 
@@ -90,7 +84,7 @@ const FormSection = ({ projectId, phase }: Props) => {
       >
         <Box p="24px">
           <ImportInputsSection
-            formType="input_form"
+            formType={survey ? 'survey' : 'input_form'}
             pdfImportSupported={isPDFUploadSupported(participationMethod)}
           />
         </Box>
