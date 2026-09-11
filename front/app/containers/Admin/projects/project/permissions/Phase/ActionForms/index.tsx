@@ -23,19 +23,22 @@ type Props = {
 
 const ActionForms = ({ phaseId }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: phase } = usePhase(phaseId);
-  const { data: permissions } = usePhasePermissions({ phaseId });
+  const { data: phase, isLoading: isLoadingPhase } = usePhase(phaseId);
+  const { data: permissions, isLoading: isLoadingPermissions } =
+    usePhasePermissions({ phaseId });
   const { mutateAsync: updatePhasePermission } = useUpdatePhasePermission();
   const { mutateAsync: overridePhasePermission } = useOverridePhasePermission();
   const { mutateAsync: inheritPhasePermission } = useInheritPhasePermission();
 
-  if (!permissions || !phase) {
+  if (isLoadingPermissions || isLoadingPhase) {
     return (
       <Centerer height="200px">
         <Spinner />
       </Centerer>
     );
   }
+
+  if (!permissions || !phase) return null;
 
   const participationMethod = phase.data.attributes.participation_method;
 
