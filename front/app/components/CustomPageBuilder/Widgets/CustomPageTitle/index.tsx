@@ -81,7 +81,7 @@ const CustomPageTitleSettings = () => {
     showTitle,
   } = useNode((node) => ({
     draftTitle: node.data.props.title as Multiloc | undefined,
-    showTitle: (node.data.props.showTitle ?? true) as boolean,
+    showTitle: node.data.props.showTitle !== false,
   }));
 
   if (!page) return null;
@@ -109,7 +109,7 @@ const CustomPageTitleSettings = () => {
           });
         }}
       />
-      <LockedNote message={messages.pinnedNote} />
+      <LockedNote message={messages.lockedNote} />
     </Box>
   );
 };
