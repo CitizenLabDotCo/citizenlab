@@ -2,7 +2,8 @@
 
 module ContentBuilder
   # Builds the craftjs graph a custom page's layout starts as, read from the page's own columns:
-  # a root and a body region holding the page's content in the order the front office renders it.
+  # a root holding the pinned title and a body region with the page's content, in the order the
+  # front office renders it.
   #
   # It runs only where a page has no layout yet — the backfill task, a newly created page, a new
   # tenant's template, and a layout created empty through the API. Once a layout exists the
@@ -18,6 +19,7 @@ module ContentBuilder
     CODE = 'custom_page'
 
     ROOT_ID = 'ROOT'
+    TITLE_ID = 'CUSTOM_PAGE_TITLE'
     BODY_ID = 'CUSTOM_PAGE_BODY'
     TOP_INFO_ID = 'CUSTOM_PAGE_TOP_INFO'
     FILE_ID_PREFIX = 'CUSTOM_PAGE_FILE_'
@@ -41,10 +43,37 @@ module ContentBuilder
         )
       }.compact
 
-      canonical_nodes(sections.keys).merge(sections)
+      canonical_nodes(sections.keys).merge(TITLE_ID => title_node(static_page)).merge(sections)
     end
 
     private
+
+    # Every page has a title_multiloc — it is the page name — but only a page without a banner
+    # displays it; a banner carries its own banner_header_multiloc. So the node is always there
+    # and `showTitle` carries what the page shows. The heading itself is read from the record,
+    # not copied here: title_multiloc also names the page in the admin list and is the nav bar
+    # item's fallback title, so the layout cannot be its only home.
+    def title_node(static_page)
+      {
+        'type' => { 'resolvedName' => 'CustomPageTitle' },
+        'nodes' => [],
+        'props' => { 'showTitle' => !static_page.banner_enabled },
+        'custom' => {
+          'title' => {
+            'id' => 'app.components.CustomPageBuilder.Widgets.CustomPageTitle.title',
+            'defaultMessage' => 'Title'
+          },
+          # Settings panel yes, delete button no: hiding the heading is what `showTitle` is for.
+          'locked' => true,
+          'noPointerEvents' => true
+        },
+        'hidden' => false,
+        'parent' => ROOT_ID,
+        'isCanvas' => false,
+        'displayName' => 'CustomPageTitle',
+        'linkedNodes' => {}
+      }
+    end
 
     def file_nodes(static_page)
       return {} unless static_page.files_section_enabled
@@ -172,7 +201,7 @@ module ContentBuilder
       {
         ROOT_ID => {
           'type' => { 'resolvedName' => 'CustomPageRoot' },
-          'nodes' => [BODY_ID],
+          'nodes' => [TITLE_ID, BODY_ID],
           'props' => {},
           'custom' => { 'region' => true },
           'hidden' => false,

@@ -27,6 +27,7 @@ module ContentBuilder
       CUSTOM_PAGE_WIDGETS = %w[
         ProjectsByFilter
         CustomPageRoot
+        CustomPageTitle
         CustomPageBody
       ].freeze
 
@@ -91,6 +92,7 @@ module ContentBuilder
         'ProjectPageBody' => {},
         # The custom page scaffold, same idea.
         'CustomPageRoot' => {},
+        'CustomPageTitle' => {},
         'CustomPageBody' => {}
       }.freeze
 

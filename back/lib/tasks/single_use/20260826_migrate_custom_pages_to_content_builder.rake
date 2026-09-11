@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
-# Derives a `custom_page` Content Builder layout for every global custom page, from the info
-# sections and attachments the page renders today. It derives whatever
+# Derives a `custom_page` Content Builder layout for every global custom page, from the title,
+# info sections and attachments the page renders today. It derives whatever
 # CustomPageLayoutService emits, so it grows with each widget that lands rather than needing
-# changes of its own.
+# changes of its own. A layout derived before a widget existed lacks its node; `overwrite`
+# re-derives it, which is the upgrade path for an already-migrated page.
 #
 # Run it while `custom_page_builder` is still off for the tenant: no admin can have opened the
 # builder, so there is no builder edit for a re-derive to overwrite. `overwrite` refuses a

@@ -112,6 +112,15 @@ describe 'single_use:migrate_custom_pages_to_content_builder' do
     expect(events['props']).to include('source' => 'areas', 'ids' => [area.id])
   end
 
+  # The equality against the service above passes whatever the service emits, so this pins
+  # that a migrated page actually gets the pinned header.
+  it 'seeds the title widget above the body' do
+    task.invoke('execute')
+
+    root = layout_for(page).craftjs_json.fetch('ROOT')
+    expect(root['nodes']).to start_with ContentBuilder::CustomPageLayoutService::TITLE_ID
+  end
+
   context 'with overwrite' do
     subject(:run) { task.invoke('execute', nil, 'overwrite') }
 
