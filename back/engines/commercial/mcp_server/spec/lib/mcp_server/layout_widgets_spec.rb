@@ -9,7 +9,7 @@ describe McpServer::LayoutWidgets do
 
   describe 'DOCS' do
     it 'documents only widgets that exist in the widget specs' do
-      undeclared = described_class::DOCS.keys - ContentBuilder::Craftjs::WidgetSpecs::SPECS.keys
+      undeclared = described_class::DOCS.keys - ContentBuilder::Craftjs::WidgetSpecs::PROJECT_PAGE_SPECS.keys
 
       expect(undeclared).to be_empty
     end
@@ -17,12 +17,12 @@ describe McpServer::LayoutWidgets do
     it 'partitions the widget specs exactly into documented, scaffold and explicitly undocumented widgets' do
       covered = described_class::DOCS.keys + scaffold_widgets + described_class::UNDOCUMENTED_WIDGETS
 
-      expect(covered).to match_array(ContentBuilder::Craftjs::WidgetSpecs::SPECS.keys)
+      expect(covered).to match_array(ContentBuilder::Craftjs::WidgetSpecs::PROJECT_PAGE_SPECS.keys)
     end
 
     it 'documents every enum value (except the legacy empty string) in the widget doc' do
       described_class::DOCS.each do |name, doc|
-        enums = ContentBuilder::Craftjs::WidgetSpecs::SPECS.dig(name, 'enums') || {}
+        enums = ContentBuilder::Craftjs::WidgetSpecs::PROJECT_PAGE_SPECS.dig(name, 'enums') || {}
         enums.each do |prop, values|
           values.reject { |value| value == '' }.each do |value|
             expect(doc).to include(value),
@@ -34,7 +34,7 @@ describe McpServer::LayoutWidgets do
 
     it 'documents every linkedNodes slot name in the widget doc' do
       described_class::DOCS.each do |name, doc|
-        slots = ContentBuilder::Craftjs::WidgetSpecs::SPECS.dig(name, 'slots') || []
+        slots = ContentBuilder::Craftjs::WidgetSpecs::PROJECT_PAGE_SPECS.dig(name, 'slots') || []
         slots.each do |slot|
           expect(doc).to include(slot), "expected the #{name} doc to mention slot '#{slot}'"
         end
@@ -68,7 +68,7 @@ describe McpServer::LayoutWidgets do
   describe 'the page scaffold' do
     it 'are all registered widgets, without insertable docs' do
       scaffold_widgets.each do |name|
-        expect(ContentBuilder::Craftjs::WidgetSpecs::SPECS).to have_key(name)
+        expect(ContentBuilder::Craftjs::WidgetSpecs::PROJECT_PAGE_SPECS).to have_key(name)
         expect(described_class::DOCS).not_to have_key(name),
           "scaffold widget #{name} must not be advertised as insertable"
       end
@@ -84,7 +84,7 @@ describe McpServer::LayoutWidgets do
       # phases and events widgets and the default template content).
       expect(seeded).to include(*scaffold_widgets)
       movable = seeded.uniq - scaffold_widgets
-      expect(ContentBuilder::Craftjs::WidgetSpecs::SPECS.keys).to include(*movable)
+      expect(ContentBuilder::Craftjs::WidgetSpecs::PROJECT_PAGE_SPECS.keys).to include(*movable)
       expect(described_class::DOCS).to include('PhasesWidget', 'EventsList')
     end
   end

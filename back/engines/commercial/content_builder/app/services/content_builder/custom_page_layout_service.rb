@@ -21,6 +21,7 @@ module ContentBuilder
     BODY_ID = 'CUSTOM_PAGE_BODY'
     TOP_INFO_ID = 'CUSTOM_PAGE_TOP_INFO'
     FILE_ID_PREFIX = 'CUSTOM_PAGE_FILE_'
+    PROJECTS_ID = 'CUSTOM_PAGE_PROJECTS'
     EVENTS_ID = 'CUSTOM_PAGE_EVENTS'
     BOTTOM_INFO_ID = 'CUSTOM_PAGE_BOTTOM_INFO'
 
@@ -32,6 +33,7 @@ module ContentBuilder
           enabled: static_page.top_info_section_enabled
         ),
         **file_nodes(static_page),
+        PROJECTS_ID => projects_node(static_page),
         EVENTS_ID => events_node(static_page),
         BOTTOM_INFO_ID => section_node(
           static_page.bottom_info_section_multiloc,
@@ -59,18 +61,36 @@ module ContentBuilder
       end
     end
 
-    # Both guards mirror `hideProjects` in CustomPageProjectsAndEvents, whose early return sits
-    # above the events block: a page shows no events without the feature, or without a project
-    # filter. Deriving one would also hand a tenant without the feature a live area filter.
+    # `hideProjects` in CustomPageProjectsAndEvents returns null above *both* blocks, despite its
+    # name, so neither list renders without the feature or without a project filter. Deriving
+    # either would also hand a tenant without the feature a live area filter it has no setting for.
+    def project_lists_rendered?(static_page)
+      static_page.projects_filter_type != 'no_filter' &&
+        AppConfiguration.instance.feature_activated?('advanced_custom_pages')
+    end
+
+    def projects_node(static_page)
+      return unless static_page.projects_enabled && project_lists_rendered?(static_page)
+
+      Craftjs::Nodes.projects_by_filter(
+        {
+          'filterType' => static_page.projects_filter_type,
+          'ids' => filter_ids(static_page),
+          # The legacy section renders with `showTitle` false, so a migrated page shows no
+          # heading until an admin writes one.
+          'titleMultiloc' => {}
+        },
+        BODY_ID
+      )
+    end
+
     def events_node(static_page)
-      return unless static_page.events_widget_enabled
-      return unless AppConfiguration.instance.feature_activated?('advanced_custom_pages')
-      return if static_page.projects_filter_type == 'no_filter'
+      return unless static_page.events_widget_enabled && project_lists_rendered?(static_page)
 
       Craftjs::Nodes.events(
         {
           'source' => static_page.projects_filter_type,
-          'ids' => events_filter_ids(static_page),
+          'ids' => filter_ids(static_page),
           'timeFilters' => ['upcoming'],
           'limit' => 3,
           'projectPublicationStatuses' => ['published']
@@ -81,7 +101,7 @@ module ContentBuilder
 
     # The dimension, not the projects it resolves to: legacy re-resolves on every request, so
     # freezing project ids here would drop a project tagged into the area later.
-    def events_filter_ids(static_page)
+    def filter_ids(static_page)
       case static_page.projects_filter_type
       when 'areas' then static_page.areas_static_pages.pluck(:area_id)
       when 'global_topics' then static_page.static_pages_global_topics.pluck(:global_topic_id)
