@@ -96,5 +96,45 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::LLMFormParser do
 
       expect { parser.parse_idea('mock_uploader', 1) }.to raise_error(RubyLLM::BadRequestError, 'invalid request')
     end
+
+    context 'when the LLM returns a string response' do
+      before do
+        allow(llm_instance).to receive(:chat) do |_message, **kwargs|
+          raise RubyLLM::BadRequestError.new(nil, 'The compiled grammar is too large') if kwargs[:response_schema]
+
+          json_response
+        end
+      end
+
+      context 'with text surrounding the JSON object' do
+        let(:json_response) { "Here is the extracted data:\n{\"question_1\": \"SE17 1AA\"}\nLet me know if you need more." }
+
+        it 'extracts and parses the JSON object' do
+          result = parser.parse_idea('mock_uploader', 1)
+
+          expect(result[:fields]).to eq({ 'postcode' => 'SE17 1AA' })
+        end
+      end
+
+      context 'with unescaped newlines inside string values' do
+        let(:json_response) { "{\n  \"question_1\":   \"SE17\n1AA\"\n}" }
+
+        it 'squishes whitespace so the JSON can be parsed' do
+          result = parser.parse_idea('mock_uploader', 1)
+
+          expect(result[:fields]).to eq({ 'postcode' => 'SE17 1AA' })
+        end
+      end
+
+      context 'without a JSON object' do
+        let(:json_response) { 'No answers could be found.' }
+
+        it 'returns no fields' do
+          result = parser.parse_idea('mock_uploader', 1)
+
+          expect(result).to eq({ pdf_pages: [1], fields: {} })
+        end
+      end
+    end
   end
 end

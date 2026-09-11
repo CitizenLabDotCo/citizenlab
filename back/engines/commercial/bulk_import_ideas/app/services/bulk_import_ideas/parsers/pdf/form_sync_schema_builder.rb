@@ -145,7 +145,7 @@ module BulkImportIdeas::Parsers::Pdf
 
     def add_selection_property(field, question_key, question_num, properties, required)
       title = field_title(field)
-      option_titles = field.options.map { |o| o.title_multiloc[@locale.to_s] }
+      option_titles = field.options.map { |o| o.title_multiloc[@locale.to_s]&.squish }
 
       properties[question_key] = {
         type: 'array',
@@ -178,7 +178,7 @@ module BulkImportIdeas::Parsers::Pdf
 
     def add_ranking_property(field, question_key, question_num, properties, required)
       title = field_title(field)
-      option_titles = field.options.map { |o| o.title_multiloc[@locale.to_s] }
+      option_titles = field.options.map { |o| o.title_multiloc[@locale.to_s]&.squish }
 
       properties[question_key] = {
         type: 'array',
@@ -198,7 +198,7 @@ module BulkImportIdeas::Parsers::Pdf
       title = field_title(field)
       labels = (1..field.maximum).map do |label_num|
         attr_name = :"linear_scale_label_#{label_num}_multiloc"
-        field[attr_name][@locale.to_s]
+        field[attr_name][@locale.to_s]&.squish
       end.compact_blank
 
       columns_description = labels.each_with_index.map { |label, i| "#{i + 1} = '#{label}'" }.join(', ')
@@ -209,7 +209,7 @@ module BulkImportIdeas::Parsers::Pdf
 
       field.matrix_statements.each_with_index do |statement, index|
         sub_key = "#{question_key}.#{index + 1}"
-        statement_title = statement.title_multiloc[@locale.to_s]
+        statement_title = statement.title_multiloc[@locale.to_s]&.squish
 
         sub_properties[sub_key] = {
           type: 'integer',
@@ -264,7 +264,7 @@ module BulkImportIdeas::Parsers::Pdf
     end
 
     def field_title(field)
-      field.title_multiloc[@locale.to_s]
+      field.title_multiloc[@locale.to_s]&.squish
     end
 
     def printable_form_fields
