@@ -44,7 +44,7 @@ const NativeSurveyInputs = ({
   );
 
   return (
-    <>
+    <Box className="intercom-product-tour-survey-settings">
       <SectionField>
         <Toggle
           checked={!!formData.allow_multiple_responses}
@@ -117,7 +117,7 @@ const NativeSurveyInputs = ({
           {localize(formData.native_survey_button_multiloc)}
         </ButtonWithLink>
       </SectionField>
-    </>
+    </Box>
   );
 };
 
