@@ -12,18 +12,15 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
 
+import PhonePreview from 'containers/Admin/projects/_shared/components/PhonePreview';
+
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { useParams } from 'utils/router';
 
-import useFitPhonePreview, {
-  PHONE_LOGICAL_HEIGHT,
-  PHONE_LOGICAL_WIDTH,
-  PHONE_PREVIEW_PADDING,
-} from '../../../_shared/useFitPhonePreview';
 import messages from '../messages';
 
-const Card = styled(Box)`
+const Preview = styled(PhonePreview)`
   transition: transform 150ms ease-out, box-shadow 150ms ease-out;
 
   &:hover,
@@ -37,8 +34,8 @@ const Card = styled(Box)`
 const CornerEditButton = styled(Button)`
   transition: opacity 140ms ease-out;
 
-  ${Card}:hover &,
-  ${Card}:focus-within & {
+  ${Preview}:hover &,
+  ${Preview}:focus-within & {
     opacity: 0;
     pointer-events: none;
   }
@@ -47,8 +44,8 @@ const CornerEditButton = styled(Button)`
 const Overlay = styled(Box)`
   transition: opacity 160ms ease-out, visibility 160ms ease-out;
 
-  ${Card}:hover &,
-  ${Card}:focus-within & {
+  ${Preview}:hover &,
+  ${Preview}:focus-within & {
     opacity: 1;
     visibility: visible;
   }
@@ -57,8 +54,8 @@ const Overlay = styled(Box)`
 const CtaWrapper = styled(Box)`
   transition: transform 160ms ease-out;
 
-  ${Card}:hover &,
-  ${Card}:focus-within & {
+  ${Preview}:hover &,
+  ${Preview}:focus-within & {
     transform: translateY(0);
   }
 `;
@@ -70,7 +67,6 @@ const ProjectPage = () => {
     from: '/$locale/admin/projects/$projectId/project-page',
   });
   const { data: project } = useProjectById(projectId);
-  const { scale, containerRef } = useFitPhonePreview();
 
   if (!project) {
     return (
@@ -87,7 +83,6 @@ const ProjectPage = () => {
   }
 
   const slug = project.data.attributes.slug;
-  const previewSrc = `/${locale}/projects/${slug}${window.location.search}`;
 
   const openContentBuilder = () => {
     clHistory.push(
@@ -96,82 +91,53 @@ const ProjectPage = () => {
   };
 
   return (
-    <Box
-      ref={containerRef}
-      minHeight="100%"
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      p={`${PHONE_PREVIEW_PADDING}px`}
-      background={`radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.04) 1px, transparent 0) 0 0 / 18px 18px, ${colors.background}`}
+    <Preview
+      dataCy="e2e-project-page-preview"
+      src={`/${locale}/projects/${slug}${window.location.search}`}
+      title={formatMessage(messages.projectPagePreviewTitle)}
     >
-      <Card
-        data-cy="e2e-project-page-preview"
-        position="relative"
-        w={`${PHONE_LOGICAL_WIDTH * scale}px`}
-        h={`${PHONE_LOGICAL_HEIGHT * scale}px`}
-        background={colors.white}
-        border={`1.5px solid ${colors.grey300}`}
-        borderRadius="22px"
-        overflow="hidden"
-        boxShadow="0 10px 30px rgba(20, 25, 40, 0.07)"
+      <CornerEditButton
+        position="absolute"
+        top="12px"
+        right="12px"
+        buttonStyle="primary"
+        size="s"
+        icon="edit"
+        iconSize="16px"
+        borderColor={colors.grey300}
+        borderRadius="6px"
+        padding="4px 10px"
+        fontSize="12px"
+        onClick={openContentBuilder}
+        text={formatMessage(messages.edit)}
+      />
+      <Overlay
+        position="absolute"
+        top="0"
+        right="0"
+        bottom="0"
+        left="0"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        background="rgba(18, 38, 44, 0.3)"
+        opacity={0}
+        visibility="hidden"
+        // Let wheel/scroll fall through to the iframe so the preview stays scrollable
+        pointerEvents="none"
       >
-        <Box
-          as="iframe"
-          src={previewSrc}
-          title={formatMessage(messages.projectPagePreviewTitle)}
-          display="block"
-          w={`${PHONE_LOGICAL_WIDTH}px`}
-          h={`${PHONE_LOGICAL_HEIGHT}px`}
-          border="none"
-          transform={`scale(${scale})`}
-          style={{ transformOrigin: 'top left' }}
-        />
-        <CornerEditButton
-          position="absolute"
-          top="12px"
-          right="12px"
-          buttonStyle="primary"
-          size="s"
-          icon="edit"
-          iconSize="16px"
-          borderColor={colors.grey300}
-          borderRadius="6px"
-          padding="4px 10px"
-          fontSize="12px"
-          onClick={openContentBuilder}
-          text={formatMessage(messages.edit)}
-        />
-        <Overlay
-          position="absolute"
-          top="0"
-          right="0"
-          bottom="0"
-          left="0"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          background="rgba(18, 38, 44, 0.3)"
-          opacity={0}
-          visibility="hidden"
-          // Let wheel/scroll fall through to the iframe so the preview stays scrollable
-          pointerEvents="none"
-        >
-          <CtaWrapper pointerEvents="auto" transform="translateY(7px)">
-            <Button
-              icon="edit"
-              buttonStyle="primary"
-              onClick={openContentBuilder}
-              ariaLabel={formatMessage(
-                messages.editProjectPageInContentBuilder
-              )}
-              dataCy="e2e-edit-page-content"
-              text={formatMessage(messages.editPageContent)}
-            />
-          </CtaWrapper>
-        </Overlay>
-      </Card>
-    </Box>
+        <CtaWrapper pointerEvents="auto" transform="translateY(7px)">
+          <Button
+            icon="edit"
+            buttonStyle="primary"
+            onClick={openContentBuilder}
+            ariaLabel={formatMessage(messages.editProjectPageInContentBuilder)}
+            dataCy="e2e-edit-page-content"
+            text={formatMessage(messages.editPageContent)}
+          />
+        </CtaWrapper>
+      </Overlay>
+    </Preview>
   );
 };
 
