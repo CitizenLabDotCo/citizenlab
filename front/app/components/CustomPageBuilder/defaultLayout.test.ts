@@ -4,6 +4,7 @@ import {
   BODY_NODE_ID,
   defaultCustomPageLayout,
   layoutHasContent,
+  layoutStartsWithBanner,
   normalizeCustomPageLayout,
 } from './defaultLayout';
 
@@ -103,7 +104,67 @@ describe('normalizeCustomPageLayout', () => {
   });
 });
 
+const titleNode = (showTitle: boolean) => ({
+  type: { resolvedName: 'CustomPageTitle' },
+  nodes: [],
+  props: { showTitle },
+  custom: {},
+  hidden: false,
+  parent: BODY_NODE_ID,
+  isCanvas: false,
+  displayName: 'CustomPageTitle',
+  linkedNodes: {},
+});
+
+const bannerNode = () => ({
+  type: { resolvedName: 'CustomPageBanner' },
+  nodes: [],
+  props: {},
+  custom: {},
+  hidden: false,
+  parent: BODY_NODE_ID,
+  isCanvas: false,
+  displayName: 'CustomPageBanner',
+  linkedNodes: {},
+});
+
+// A body in the given order, holding a title, a banner and a text widget.
+const bodyWith = (showTitle: boolean, bodyIds: string[]) =>
+  ({
+    ...defaultCustomPageLayout(),
+    [BODY_NODE_ID]: {
+      ...defaultCustomPageLayout()[BODY_NODE_ID],
+      nodes: bodyIds,
+    },
+    title: titleNode(showTitle),
+    banner: bannerNode(),
+    txt: textNode(BODY_NODE_ID),
+  } as unknown as SerializedNodes);
+
+describe('layoutStartsWithBanner', () => {
+  it('is true when the body opens with a banner', () => {
+    expect(layoutStartsWithBanner(bodyWith(false, ['banner', 'title']))).toBe(
+      true
+    );
+    expect(layoutStartsWithBanner(bodyWith(true, ['banner', 'title']))).toBe(
+      true
+    );
+  });
+
+  it('is false when a shown title comes first', () => {
+    expect(layoutStartsWithBanner(bodyWith(true, ['title', 'banner']))).toBe(
+      false
+    );
+  });
+});
+
 describe('layoutHasContent', () => {
+  // Every derived layout carries the title, so it must not count as content: the page would
+  // otherwise hand itself to an empty builder and drop its legacy sections.
+  it('is false for a layout that holds only the scaffold and the title', () => {
+    expect(layoutHasContent(bodyWith(true, ['title']))).toBe(false);
+  });
+
   it('is false for a layout that holds only the scaffold', () => {
     expect(layoutHasContent(defaultCustomPageLayout())).toBe(false);
   });

@@ -3,7 +3,7 @@
 module ContentBuilder
   class LayoutImageService < ::ContentImageService
     # Widgets holding a single image, under an `image` prop.
-    IMAGE_ELEMENT_TYPES = %w[ImageMultiloc HomepageBanner]
+    IMAGE_ELEMENT_TYPES = %w[ImageMultiloc HomepageBanner CustomPageBanner]
     # The CustomPages widget holds one optional icon image per selected page, so its
     # images sit under `image` keys nested in its `customPages` prop instead.
     CUSTOM_PAGES_ELEMENT_TYPE = 'CustomPages'

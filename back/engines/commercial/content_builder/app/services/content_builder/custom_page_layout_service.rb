@@ -2,7 +2,9 @@
 
 module ContentBuilder
   # Builds the craftjs graph a custom page's layout starts as, read from the page's own columns:
-  # a root and a body region holding the page's content in the order the front office renders it.
+  # a root and a body region holding the page's content in the order the front office renders
+  # it — the banner (when the page shows one), the title, then the sections. Nothing is pinned:
+  # as on the homepage, an admin can reorder any of it.
   #
   # It runs only where a page has no layout yet — the backfill task, a newly created page, a new
   # tenant's template, and a layout created empty through the API. Once a layout exists the
@@ -18,6 +20,8 @@ module ContentBuilder
     CODE = 'custom_page'
 
     ROOT_ID = 'ROOT'
+    BANNER_ID = 'CUSTOM_PAGE_BANNER'
+    TITLE_ID = 'CUSTOM_PAGE_TITLE'
     BODY_ID = 'CUSTOM_PAGE_BODY'
     TOP_INFO_ID = 'CUSTOM_PAGE_TOP_INFO'
     FILE_ID_PREFIX = 'CUSTOM_PAGE_FILE_'
@@ -25,9 +29,18 @@ module ContentBuilder
     EVENTS_ID = 'CUSTOM_PAGE_EVENTS'
     BOTTOM_INFO_ID = 'CUSTOM_PAGE_BOTTOM_INFO'
 
-    def craftjs_json_for(static_page)
-      # Key order is the render order, and matches PageSections.tsx.
+    # Namespace for the banner image's code (see #banner_image). Arbitrary, but must not change:
+    # a different namespace derives a different code for every page and copies every image again.
+    BANNER_IMAGE_NAMESPACE = '3f1c7b2e-6a4d-4e8b-9c5f-2d7a8e1b4c60'
+
+    # `persist_images: false` derives the same graph without copying the banner image, for a
+    # dry run that only compares.
+    def craftjs_json_for(static_page, persist_images: true)
+      # Key order is the render order: the header pair, then the sections as PageSections.tsx
+      # has them.
       sections = {
+        BANNER_ID => banner_node(static_page, persist_images: persist_images),
+        TITLE_ID => title_node(static_page),
         TOP_INFO_ID => section_node(
           static_page.top_info_section_multiloc,
           enabled: static_page.top_info_section_enabled
@@ -45,6 +58,101 @@ module ContentBuilder
     end
 
     private
+
+    # Unlike the title, a page may simply not have a banner, so this is seeded only when the page
+    # shows one — deletable, where the title is not. It leads the body because that is where the
+    # legacy page renders it. Its content is copied into the node, as the info sections' is: nothing
+    # outside the page reads the banner_* columns, and the legacy hero tab goes at the cutover.
+    # Prop names are neutral rather than the homepage banner's `banner_signed_out_*` so a merged
+    # banner widget could adopt them as its base variant unchanged.
+    def banner_node(static_page, persist_images:)
+      return unless static_page.banner_enabled
+
+      {
+        'type' => { 'resolvedName' => 'CustomPageBanner' },
+        'nodes' => [],
+        'props' => {
+          'layout' => static_page.banner_layout,
+          'headerMultiloc' => static_page.banner_header_multiloc,
+          'subheaderMultiloc' => static_page.banner_subheader_multiloc,
+          'overlayColor' => static_page.banner_overlay_color,
+          'overlayOpacity' => static_page.banner_overlay_opacity,
+          'ctaType' => static_page.banner_cta_button_type,
+          'ctaTextMultiloc' => static_page.banner_cta_button_multiloc,
+          'ctaUrl' => static_page.banner_cta_button_url,
+          'image' => banner_image(static_page, persist: persist_images)
+        },
+        'custom' => {
+          'title' => {
+            'id' => 'app.components.CustomPageBuilder.Widgets.CustomPageBanner.title',
+            'defaultMessage' => 'Banner'
+          },
+          'noPointerEvents' => true
+        },
+        'hidden' => false,
+        'parent' => BODY_ID,
+        'isCanvas' => false,
+        'displayName' => 'CustomPageBanner',
+        'linkedNodes' => {}
+      }
+    end
+
+    # The image becomes a LayoutImage, referenced by code like any builder image, so the layout
+    # serializer, duplication and tenant templates all handle it as they do the homepage's. The
+    # code is derived from the page and the stored filename rather than generated: a re-derive
+    # then finds the copy it made before, so an unchanged page derives an identical graph and the
+    # migration task's overwrite leaves it alone. A replaced header image gets a new code and a
+    # new copy, which is the rewrite that should happen. The `large` version is copied because it
+    # is the one every banner layout renders.
+    def banner_image(static_page, persist:)
+      return {} unless static_page.header_bg?
+
+      code = Digest::UUID.uuid_v5(BANNER_IMAGE_NAMESPACE, "#{static_page.id}/#{static_page.header_bg_identifier}")
+      if persist
+        LayoutImage.find_or_create_by!(code: code) do |image|
+          image.image = header_bg_data_uri(static_page)
+        end
+      end
+
+      { 'dataCode' => code }
+    end
+
+    # A data URI rather than `remote_image_url`, which would download the tenant's own upload
+    # over HTTP and cannot work in a test environment with local storage.
+    def header_bg_data_uri(static_page)
+      data = static_page.header_bg.large.read
+      mime = Marcel::MimeType.for(StringIO.new(data), name: static_page.header_bg_identifier)
+      "data:#{mime};base64,#{Base64.strict_encode64(data)}"
+    end
+
+    # Every page has a title_multiloc — it is the page name — but only a page without a banner
+    # displays it; a banner carries its own banner_header_multiloc. So the node is always there
+    # and `showTitle` carries what the page shows. It follows the banner so that switching it on
+    # puts the heading under the banner, not above it. The heading itself is read from the
+    # record, not copied here: title_multiloc also names the page in the admin list and is the
+    # nav bar item's fallback title, so the layout cannot be its only home.
+    def title_node(static_page)
+      {
+        'type' => { 'resolvedName' => 'CustomPageTitle' },
+        'nodes' => [],
+        'props' => { 'showTitle' => !static_page.banner_enabled },
+        'custom' => {
+          'title' => {
+            'id' => 'app.components.CustomPageBuilder.Widgets.CustomPageTitle.title',
+            'defaultMessage' => 'Title'
+          },
+          # Settings panel yes, delete button no: hiding the heading is what `showTitle` is for.
+          # Not `locked`, which would also pin it in place.
+          'deletable' => false,
+          'noPointerEvents' => true
+        },
+        'hidden' => false,
+        'parent' => BODY_ID,
+        'isCanvas' => false,
+        'displayName' => 'CustomPageTitle',
+        'linkedNodes' => {}
+      }
+    end
 
     def file_nodes(static_page)
       return {} unless static_page.files_section_enabled

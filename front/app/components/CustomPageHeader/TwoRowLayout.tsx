@@ -1,27 +1,24 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
-import { ICustomPageData } from 'api/custom_pages/types';
-
-import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
-
+import { homepageBannerLayoutHeights } from 'components/admin/GenericHeroBannerForm/HeaderImageDropzone';
 import ContentContainer from 'components/ContentContainer';
 import {
   Container,
   HeaderImage,
 } from 'components/LandingPages/citizen/TwoRowLayout';
 
-import AdminCustomPageEditButton from './AdminCustomPageEditButton';
 import HeaderContent from './HeaderContent';
+import { CustomPageBannerContent } from './types';
 
 interface Props {
-  pageData: ICustomPageData;
+  banner: CustomPageBannerContent;
+  adminEditButton?: ReactNode;
 }
 
-const TwoRowLayout = ({ pageData }: Props) => {
-  const pageAttributes = pageData.attributes;
-  const imageUrl = pageAttributes.header_bg?.large;
+const TwoRowLayout = ({ banner, adminEditButton }: Props) => {
+  const { imageUrl } = banner;
   const isSmallerThanTablet = useBreakpoint('tablet');
 
   return (
@@ -29,7 +26,7 @@ const TwoRowLayout = ({ pageData }: Props) => {
       <Box
         position="relative"
         // Needed when the Hero banner is turned on, but there is no image yet
-        // Otherwise the AdminCustomPageEditButton is not clickable.
+        // Otherwise the admin edit button is not clickable.
         height={
           isSmallerThanTablet
             ? `${homepageBannerLayoutHeights['two_row_layout'].tablet}px`
@@ -46,17 +43,14 @@ const TwoRowLayout = ({ pageData }: Props) => {
             alt=""
           />
         )}
-        <AdminCustomPageEditButton
-          pageId={pageData.id}
-          projectId={pageData.attributes.project_id}
-        />
+        {adminEditButton}
       </Box>
       <ContentContainer mode="page">
         <Container>
           <HeaderContent
             hasHeaderBannerImage={imageUrl != null}
             fontColors="dark"
-            pageAttributes={pageAttributes}
+            banner={banner}
           />
         </Container>
       </ContentContainer>

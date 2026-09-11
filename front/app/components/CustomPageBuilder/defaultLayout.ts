@@ -36,15 +36,19 @@ export const defaultCustomPageLayout = (): SerializedNodes => ({
 const resolvedNameOf = (node: SerializedNode) =>
   typeof node.type === 'object' ? node.type.resolvedName : undefined;
 
-const findNodeIdByName = (nodes: SerializedNodes, name: string) =>
+export const findNodeIdByName = (nodes: SerializedNodes, name: string) =>
   Object.keys(nodes).find((id) => resolvedNameOf(nodes[id]) === name);
 
 // A node off the wire may have no children array at all, whatever the type says.
 const childIdsOf = (node: SerializedNode): string[] =>
   Array.isArray(node.nodes) ? node.nodes : [];
 
-// Every stored layout carries the scaffold, so an unused builder still yields a non-empty
-// graph. Content means the body region holds something — or ROOT, on a graph with no body.
+const isTitle = (nodes: SerializedNodes, id: string) =>
+  resolvedNameOf(nodes[id]) === 'CustomPageTitle';
+
+// Every stored layout carries the scaffold and the title, so an unused builder still yields
+// a non-empty graph. Content means the body region holds something else — or ROOT does, on a
+// graph with no body.
 export const layoutHasContent = (nodes?: SerializedNodes): boolean => {
   if (!nodes) return false;
 
@@ -54,12 +58,30 @@ export const layoutHasContent = (nodes?: SerializedNodes): boolean => {
     | SerializedNode
     | undefined;
 
-  return !!container && childIdsOf(container).length > 0;
+  return !!container && childIdsOf(container).some((id) => !isTitle(nodes, id));
 };
 
-// Guarantees the scaffold the editor relies on: a CustomPageRoot holding one CustomPageBody,
-// with ordinary nodes under the body and the pinned header slots left alongside it. A layout
-// saved against an older scaffold is repaired rather than discarded.
+// Whether the first thing the page renders is a banner: the first body node that is not a
+// hidden title. A full-bleed banner sits flush under the nav bar, so the page and its previews
+// drop their top gap, and the edit button anchors to the window edge.
+export const layoutStartsWithBanner = (nodes?: SerializedNodes): boolean => {
+  if (!nodes) return false;
+
+  const bodyId = findNodeIdByName(nodes, 'CustomPageBody');
+  if (!bodyId) return false;
+
+  const firstVisibleId = childIdsOf(nodes[bodyId]).find(
+    (id) => !(isTitle(nodes, id) && nodes[id].props.showTitle === false)
+  );
+  return (
+    firstVisibleId !== undefined &&
+    resolvedNameOf(nodes[firstVisibleId]) === 'CustomPageBanner'
+  );
+};
+
+// Guarantees the scaffold the editor relies on: a CustomPageRoot holding one CustomPageBody
+// with every other node under the body. A layout saved against an older scaffold is repaired
+// rather than discarded.
 export const normalizeCustomPageLayout = (
   nodes?: SerializedNodes
 ): SerializedNodes => {
@@ -89,8 +111,9 @@ export const normalizeCustomPageLayout = (
   });
 
   const root = next[ROOT_ID];
-  // Pinned slots stay on ROOT in their stored order. When the body was just created they
-  // were adopted into it instead, so ROOT keeps only the body.
+  // Derivation puts nothing but the body on ROOT, but a stored graph may hold more; any such
+  // sibling keeps its stored order. When the body was just created they were adopted into it
+  // instead, so ROOT keeps only the body.
   const storedRootIds = existingBodyId
     ? childIdsOf(root).filter((id) => id in next)
     : [];

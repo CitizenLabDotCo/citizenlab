@@ -19,13 +19,24 @@ const EDITED_NODES = {
   },
   CUSTOM_PAGE_BODY: {
     type: { resolvedName: 'CustomPageBody' },
-    nodes: ['txt'],
+    nodes: ['CUSTOM_PAGE_TITLE', 'txt'],
     props: {},
     custom: { region: true },
     hidden: false,
     parent: 'ROOT',
     isCanvas: true,
     displayName: 'CustomPageBody',
+    linkedNodes: {},
+  },
+  CUSTOM_PAGE_TITLE: {
+    type: { resolvedName: 'CustomPageTitle' },
+    nodes: [],
+    props: { showTitle: true },
+    custom: { deletable: false },
+    hidden: false,
+    parent: 'CUSTOM_PAGE_BODY',
+    isCanvas: false,
+    displayName: 'CustomPageTitle',
     linkedNodes: {},
   },
   txt: {
@@ -41,10 +52,16 @@ const EDITED_NODES = {
   },
 } as unknown as SerializedNodes;
 
+// What the editor hands to save; an example overrides it to simulate a widget's edit.
+let mockEditedNodes: SerializedNodes = EDITED_NODES;
+
 jest.mock('components/CustomPageBuilder/TopBar', () => ({
   __esModule: true,
   default: ({ onSave }: { onSave: (nodes: SerializedNodes) => void }) => (
-    <button data-testid="mockSaveButton" onClick={() => onSave(EDITED_NODES)}>
+    <button
+      data-testid="mockSaveButton"
+      onClick={() => onSave(mockEditedNodes)}
+    >
       save
     </button>
   ),
@@ -88,6 +105,10 @@ const mockUpsertCustomPageLayout = jest.fn(() => Promise.resolve());
 jest.mock('api/custom_page_layout/useUpsertCustomPageLayout', () =>
   jest.fn(() => ({ mutateAsync: mockUpsertCustomPageLayout }))
 );
+const mockUpdateCustomPage = jest.fn(() => Promise.resolve());
+jest.mock('api/custom_pages/useUpdateCustomPage', () =>
+  jest.fn(() => ({ mutateAsync: mockUpdateCustomPage }))
+);
 
 jest.mock('api/custom_page_layout/useCustomPageLayout', () => ({
   __esModule: true,
@@ -111,16 +132,43 @@ const defaultProps: React.ComponentProps<typeof CustomPageBuilderPage> = {
 describe('CustomPageBuilderPage save contract', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockEditedNodes = EDITED_NODES;
   });
 
-  // No widget writes back to the page record yet, so there are no drafts to commit first.
-  // The banner and title widgets make this a two-step save, and should fail this assertion.
-  it('saves the layout directly, with no page-attribute commit', async () => {
+  // An untouched title widget must not send the page an update on every save.
+  it('saves the layout directly when no widget edited the page', async () => {
     render(<CustomPageBuilderPage {...defaultProps} />);
     fireEvent.click(screen.getByTestId('mockSaveButton'));
 
     await waitFor(() => expect(mockUpsertCustomPageLayout).toHaveBeenCalled());
 
+    expect(mockUpdateCustomPage).not.toHaveBeenCalled();
+    expect(mockUpsertCustomPageLayout).toHaveBeenCalledWith({
+      staticPageId: 'page-1',
+      craftjs_json: EDITED_NODES,
+    });
+  });
+
+  // The title lives on the page record, so the draft is committed there and never stored
+  // in the layout, where it would go stale on the next rename.
+  it('commits an edited title to the page, then stores the layout without it', async () => {
+    mockEditedNodes = {
+      ...EDITED_NODES,
+      CUSTOM_PAGE_TITLE: {
+        ...EDITED_NODES.CUSTOM_PAGE_TITLE,
+        props: { showTitle: true, title: { en: 'Our team' } },
+      },
+    };
+
+    render(<CustomPageBuilderPage {...defaultProps} />);
+    fireEvent.click(screen.getByTestId('mockSaveButton'));
+
+    await waitFor(() => expect(mockUpsertCustomPageLayout).toHaveBeenCalled());
+
+    expect(mockUpdateCustomPage).toHaveBeenCalledWith({
+      id: 'page-1',
+      title_multiloc: { en: 'Our team' },
+    });
     expect(mockUpsertCustomPageLayout).toHaveBeenCalledWith({
       staticPageId: 'page-1',
       craftjs_json: EDITED_NODES,
