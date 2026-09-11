@@ -33,6 +33,7 @@ const WIDGET_ROLES: Record<string, WidgetRole> = {
   EventsWidget: 'band',
   EventsList: 'band',
   ProjectsByFilter: 'band',
+  CustomPageBanner: 'band',
 };
 
 const BOUNDARY_MARGINS = {

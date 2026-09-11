@@ -13,7 +13,7 @@ import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import { useSectionBoundaryMargin } from 'components/admin/ContentBuilder/verticalRhythm';
 import {
-  layoutHasBanner,
+  layoutStartsWithBanner,
   normalizeCustomPageLayout,
 } from 'components/CustomPageBuilder/defaultLayout';
 import Editor from 'components/CustomPageBuilder/Editor';
@@ -55,7 +55,7 @@ const FullScreenPreview = ({ staticPageId }: Props) => {
         {!isLoading && editorData && (
           <Box
             ref={(el: HTMLElement | null) => el?.setAttribute('inert', '')}
-            pt={layoutHasBanner(editorData) ? undefined : paddingTop}
+            pt={layoutStartsWithBanner(editorData) ? undefined : paddingTop}
           >
             <ContentBuilderLayoutProvider layoutId={layout?.data.id}>
               <Editor isPreview={true}>

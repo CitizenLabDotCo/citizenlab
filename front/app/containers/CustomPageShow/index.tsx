@@ -133,7 +133,9 @@ const CustomPageShow = () => {
               position="relative"
               w="100%"
               maxWidth={
-                builderContent.hasBanner ? undefined : BUILDER_CONTENT_MAX_WIDTH
+                builderContent.startsWithBanner
+                  ? undefined
+                  : BUILDER_CONTENT_MAX_WIDTH
               }
               zIndex="40000"
             >

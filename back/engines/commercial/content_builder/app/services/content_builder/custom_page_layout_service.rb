@@ -2,8 +2,8 @@
 
 module ContentBuilder
   # Builds the craftjs graph a custom page's layout starts as, read from the page's own columns:
-  # a root holding the banner (when the page shows one) and the pinned title, and a body region
-  # with the page's content, in the order the front office renders it.
+  # a root holding the pinned title and a body region with the page's content — the banner
+  # first, when the page shows one — in the order the front office renders it.
   #
   # It runs only where a page has no layout yet — the backfill task, a newly created page, a new
   # tenant's template, and a layout created empty through the API. Once a layout exists the
@@ -35,8 +35,9 @@ module ContentBuilder
     # `persist_images: false` derives the same graph without copying the banner image, for a
     # dry run that only compares.
     def craftjs_json_for(static_page, persist_images: true)
-      # Key order is the render order, and matches PageSections.tsx.
+      # Key order is the render order: the banner, then the sections as PageSections.tsx has them.
       sections = {
+        BANNER_ID => banner_node(static_page, persist_images: persist_images),
         TOP_INFO_ID => section_node(
           static_page.top_info_section_multiloc,
           enabled: static_page.top_info_section_enabled
@@ -50,21 +51,18 @@ module ContentBuilder
         )
       }.compact
 
-      headers = {
-        BANNER_ID => banner_node(static_page, persist_images: persist_images),
-        TITLE_ID => title_node(static_page)
-      }.compact
-
-      canonical_nodes(headers.keys, sections.keys).merge(headers, sections)
+      canonical_nodes(sections.keys).merge(TITLE_ID => title_node(static_page)).merge(sections)
     end
 
     private
 
     # Unlike the title, a page may simply not have a banner, so this is seeded only when the page
-    # shows one and stays deletable. Its content is copied into the node, as the info sections'
-    # is: nothing outside the page reads the banner_* columns, and the legacy hero tab goes at
-    # the cutover. Prop names are neutral rather than the homepage banner's `banner_signed_out_*`
-    # so a merged banner widget could adopt them as its base variant unchanged.
+    # shows one — and it is ordinary body content like the homepage's banner: deletable, and
+    # placeable wherever an admin wants it. It leads the body because that is where the legacy
+    # page renders it. Its content is copied into the node, as the info sections' is: nothing
+    # outside the page reads the banner_* columns, and the legacy hero tab goes at the cutover.
+    # Prop names are neutral rather than the homepage banner's `banner_signed_out_*` so a merged
+    # banner widget could adopt them as its base variant unchanged.
     def banner_node(static_page, persist_images:)
       return unless static_page.banner_enabled
 
@@ -90,7 +88,7 @@ module ContentBuilder
           'noPointerEvents' => true
         },
         'hidden' => false,
-        'parent' => ROOT_ID,
+        'parent' => BODY_ID,
         'isCanvas' => false,
         'displayName' => 'CustomPageBanner',
         'linkedNodes' => {}
@@ -274,11 +272,11 @@ module ContentBuilder
       fragment.at('img') || fragment.at('iframe') || fragment.at_css('.custom-button')
     end
 
-    def canonical_nodes(header_ids, section_ids)
+    def canonical_nodes(section_ids)
       {
         ROOT_ID => {
           'type' => { 'resolvedName' => 'CustomPageRoot' },
-          'nodes' => header_ids + [BODY_ID],
+          'nodes' => [TITLE_ID, BODY_ID],
           'props' => {},
           'custom' => { 'region' => true },
           'hidden' => false,

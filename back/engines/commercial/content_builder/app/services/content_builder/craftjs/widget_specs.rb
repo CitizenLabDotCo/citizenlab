@@ -95,7 +95,7 @@ module ContentBuilder
         'CustomPageRoot' => {},
         'CustomPageTitle' => {},
         'CustomPageBody' => {},
-        # Pinned above the body like the title, but optional: a page shows a banner or not.
+        # Ordinary body content, like the homepage banner: a page shows one or not.
         'CustomPageBanner' => {
           'multilocs' => %w[headerMultiloc subheaderMultiloc ctaTextMultiloc],
           'enums' => {

@@ -7,7 +7,7 @@ import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/co
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import { useSectionBoundaryMargin } from 'components/admin/ContentBuilder/verticalRhythm';
 import {
-  layoutHasBanner,
+  layoutStartsWithBanner,
   normalizeCustomPageLayout,
 } from 'components/CustomPageBuilder/defaultLayout';
 import Editor from 'components/CustomPageBuilder/Editor';
@@ -38,7 +38,7 @@ const CustomPageContentViewer = ({ staticPageId }: Props) => {
   return (
     <Box
       data-testid="customPageContentViewer"
-      pt={layoutHasBanner(craftjsJson) ? undefined : paddingTop}
+      pt={layoutStartsWithBanner(craftjsJson) ? undefined : paddingTop}
     >
       <ContentBuilderLayoutProvider layoutId={layoutId}>
         <Editor isPreview={true}>

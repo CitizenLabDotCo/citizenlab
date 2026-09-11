@@ -3,8 +3,8 @@ import { SerializedNodes } from '@craftjs/core';
 import {
   BODY_NODE_ID,
   defaultCustomPageLayout,
-  layoutHasBanner,
   layoutHasContent,
+  layoutStartsWithBanner,
   normalizeCustomPageLayout,
 } from './defaultLayout';
 
@@ -104,98 +104,69 @@ describe('normalizeCustomPageLayout', () => {
   });
 });
 
-describe('normalizeCustomPageLayout header hoisting', () => {
-  const headerNodes = () => ({
-    ROOT: {
-      ...defaultCustomPageLayout().ROOT,
-      nodes: ['CUSTOM_PAGE_TITLE', 'CUSTOM_PAGE_BODY'],
-    },
-    CUSTOM_PAGE_TITLE: {
-      type: { resolvedName: 'CustomPageTitle' },
-      nodes: [],
-      props: {},
-      custom: {},
-      hidden: false,
-      parent: 'ROOT',
-      isCanvas: false,
-      displayName: 'CustomPageTitle',
-      linkedNodes: {},
-    },
-    CUSTOM_PAGE_BODY: {
-      ...defaultCustomPageLayout().CUSTOM_PAGE_BODY,
-      nodes: ['txt', 'banner'],
-    },
-    txt: {
-      type: { resolvedName: 'TextMultiloc' },
-      nodes: [],
-      props: {},
-      custom: {},
-      hidden: false,
-      parent: 'CUSTOM_PAGE_BODY',
-      isCanvas: false,
-      displayName: 'TextMultiloc',
-      linkedNodes: {},
-    },
-    banner: {
-      type: { resolvedName: 'CustomPageBanner' },
-      nodes: [],
-      props: {},
-      custom: {},
-      hidden: false,
-      parent: 'CUSTOM_PAGE_BODY',
-      isCanvas: false,
-      displayName: 'CustomPageBanner',
-      linkedNodes: {},
-    },
-  });
-
-  // CustomPageRoot refuses drops, so a banner from the toolbox lands in the body.
-  it('hoists a banner dropped in the body to ROOT, above the title', () => {
-    const result = normalizeCustomPageLayout(headerNodes());
-
-    expect(result.ROOT.nodes).toEqual([
-      'banner',
-      'CUSTOM_PAGE_TITLE',
-      'CUSTOM_PAGE_BODY',
-    ]);
-    expect(result.banner.parent).toBe('ROOT');
-    expect(result.CUSTOM_PAGE_BODY.nodes).toEqual(['txt']);
-  });
-
-  it('puts a banner stored after the title back above it', () => {
-    const nodes = headerNodes();
-    nodes.ROOT.nodes = ['CUSTOM_PAGE_TITLE', 'banner', 'CUSTOM_PAGE_BODY'];
-    nodes.CUSTOM_PAGE_BODY.nodes = ['txt'];
-    nodes.banner.parent = 'ROOT';
-
-    expect(normalizeCustomPageLayout(nodes).ROOT.nodes).toEqual([
-      'banner',
-      'CUSTOM_PAGE_TITLE',
-      'CUSTOM_PAGE_BODY',
-    ]);
-  });
+const titleNode = (showTitle: boolean) => ({
+  type: { resolvedName: 'CustomPageTitle' },
+  nodes: [],
+  props: { showTitle },
+  custom: {},
+  hidden: false,
+  parent: 'ROOT',
+  isCanvas: false,
+  displayName: 'CustomPageTitle',
+  linkedNodes: {},
 });
 
-describe('layoutHasBanner', () => {
-  it('is true only when the layout holds a banner widget', () => {
-    expect(layoutHasBanner(defaultCustomPageLayout())).toBe(false);
-    expect(layoutHasBanner(undefined)).toBe(false);
-    expect(
-      layoutHasBanner({
-        ...defaultCustomPageLayout(),
-        banner: {
-          type: { resolvedName: 'CustomPageBanner' },
-          nodes: [],
-          props: {},
-          custom: {},
-          hidden: false,
-          parent: 'ROOT',
-          isCanvas: false,
-          displayName: 'CustomPageBanner',
-          linkedNodes: {},
-        },
-      })
-    ).toBe(true);
+const bannerNode = () => ({
+  type: { resolvedName: 'CustomPageBanner' },
+  nodes: [],
+  props: {},
+  custom: {},
+  hidden: false,
+  parent: BODY_NODE_ID,
+  isCanvas: false,
+  displayName: 'CustomPageBanner',
+  linkedNodes: {},
+});
+
+const pageWith = (showTitle: boolean, bodyIds: string[]) =>
+  ({
+    ROOT: {
+      ...defaultCustomPageLayout().ROOT,
+      nodes: ['CUSTOM_PAGE_TITLE', BODY_NODE_ID],
+    },
+    CUSTOM_PAGE_TITLE: titleNode(showTitle),
+    [BODY_NODE_ID]: {
+      ...defaultCustomPageLayout()[BODY_NODE_ID],
+      nodes: bodyIds,
+    },
+    banner: bannerNode(),
+    txt: textNode(BODY_NODE_ID),
+  } as unknown as SerializedNodes);
+
+describe('layoutStartsWithBanner', () => {
+  it('is true when the title is hidden and the body opens with a banner', () => {
+    expect(layoutStartsWithBanner(pageWith(false, ['banner', 'txt']))).toBe(
+      true
+    );
+  });
+
+  // A shown title renders above the body, so the banner is not what sits under the nav bar.
+  it('is false when the title is shown', () => {
+    expect(layoutStartsWithBanner(pageWith(true, ['banner', 'txt']))).toBe(
+      false
+    );
+  });
+
+  // An admin can move the banner anywhere, as on the homepage; only a leading one is flush.
+  it('is false when the banner sits further down the body', () => {
+    expect(layoutStartsWithBanner(pageWith(false, ['txt', 'banner']))).toBe(
+      false
+    );
+  });
+
+  it('is false without a banner or without a layout', () => {
+    expect(layoutStartsWithBanner(pageWith(false, ['txt']))).toBe(false);
+    expect(layoutStartsWithBanner(undefined)).toBe(false);
   });
 });
 

@@ -74,7 +74,7 @@ describe ContentBuilder::CustomPageLayoutService do
         craftjs = service.craftjs_json_for(build_page(banner_enabled: true))
 
         expect(craftjs[title_id]['props']).to eq({ 'showTitle' => false })
-        expect(craftjs[root_id]['nodes']).to eq [banner_id, title_id, body_id]
+        expect(craftjs[root_id]['nodes']).to eq [title_id, body_id]
       end
 
       # The heading renders from title_multiloc on the page record; a copy in the layout
@@ -130,15 +130,20 @@ describe ContentBuilder::CustomPageLayoutService do
         craftjs = service.craftjs_json_for(build_page(banner_enabled: false))
 
         expect(craftjs).not_to have_key banner_id
-        expect(craftjs[root_id]['nodes']).to eq [title_id, body_id]
+        expect(craftjs[body_id]['nodes']).to be_empty
       end
 
-      it 'seeds the banner above the title, hanging off the root' do
-        craftjs = service.craftjs_json_for(page_with_banner)
+      # Ordinary content rather than a pinned slot, so an admin can move or delete it as on
+      # the homepage; it leads the body because that is where the legacy page renders it.
+      it 'seeds the banner at the top of the body' do
+        craftjs = service.craftjs_json_for(
+          page_with_banner(top_info_section_multiloc: plain_text, top_info_section_enabled: true)
+        )
 
         expect(resolved_name(craftjs, banner_id)).to eq 'CustomPageBanner'
-        expect(craftjs[banner_id]['parent']).to eq root_id
-        expect(craftjs[root_id]['nodes']).to eq [banner_id, title_id, body_id]
+        expect(craftjs[banner_id]['parent']).to eq body_id
+        expect(craftjs[body_id]['nodes']).to eq [banner_id, top_id]
+        expect(craftjs[root_id]['nodes']).to eq [title_id, body_id]
       end
 
       # Content is copied in, as for the info sections, under names a merged banner widget could

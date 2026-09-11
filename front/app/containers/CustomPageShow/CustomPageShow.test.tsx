@@ -61,7 +61,7 @@ jest.mock('api/custom_pages/useCustomPageBySlug', () =>
 );
 
 let hasContent = false;
-let hasBanner = false;
+let startsWithBanner = false;
 let isLoading = false;
 jest.mock(
   'components/CustomPageBuilder/ContentViewer/useCustomPageBuilderContent',
@@ -70,8 +70,8 @@ jest.mock(
     // Mirrors the real hook, which is disabled without an id and so reports nothing.
     default: jest.fn((staticPageId?: string) =>
       staticPageId
-        ? { hasContent, hasBanner, isLoading }
-        : { hasContent: false, hasBanner: false, isLoading: false }
+        ? { hasContent, startsWithBanner, isLoading }
+        : { hasContent: false, startsWithBanner: false, isLoading: false }
     ),
   })
 );
@@ -79,7 +79,7 @@ jest.mock(
 describe('CustomPageShow', () => {
   beforeEach(() => {
     hasContent = false;
-    hasBanner = false;
+    startsWithBanner = false;
     isLoading = false;
     pageAttributes = globalCustomPage;
   });
@@ -117,7 +117,7 @@ describe('CustomPageShow', () => {
   // The layout's Banner widget replaces the legacy banner, whether or not the page has one.
   it('leaves the banner to the builder content', () => {
     hasContent = true;
-    hasBanner = true;
+    startsWithBanner = true;
     pageAttributes = { ...globalCustomPage, banner_enabled: true };
     render(<CustomPageShow />);
 

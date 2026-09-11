@@ -57,17 +57,26 @@ export const layoutHasContent = (nodes?: SerializedNodes): boolean => {
   return !!container && childIdsOf(container).length > 0;
 };
 
-// Pinned above the body, in this order. CustomPageRoot refuses drops, so a banner dragged from
-// the toolbox lands in the body; hoisting it back to its slot is what makes it pinned rather
-// than ordinary content.
-const HEADER_WIDGETS = ['CustomPageBanner', 'CustomPageTitle'];
+// Whether the first thing the page renders is a banner: the pinned title is hidden or absent,
+// and the body opens with one. A full-bleed banner sits flush under the nav bar, so the page
+// and its previews drop their top gap, and the edit button anchors to the window edge.
+export const layoutStartsWithBanner = (nodes?: SerializedNodes): boolean => {
+  if (!nodes) return false;
 
-export const layoutHasBanner = (nodes?: SerializedNodes): boolean =>
-  !!nodes && findNodeIdByName(nodes, 'CustomPageBanner') !== undefined;
+  const titleId = findNodeIdByName(nodes, 'CustomPageTitle');
+  if (titleId && nodes[titleId].props.showTitle !== false) return false;
+
+  const bodyId = findNodeIdByName(nodes, 'CustomPageBody');
+  const firstId = bodyId ? childIdsOf(nodes[bodyId])[0] : undefined;
+  return (
+    firstId !== undefined &&
+    resolvedNameOf(nodes[firstId]) === 'CustomPageBanner'
+  );
+};
 
 // Guarantees the scaffold the editor relies on: a CustomPageRoot holding one CustomPageBody,
-// with ordinary nodes under the body and the pinned header slots on ROOT above it, banner
-// first. A layout saved against an older scaffold is repaired rather than discarded.
+// with ordinary nodes under the body and the pinned title left alongside it. A layout saved
+// against an older scaffold is repaired rather than discarded.
 export const normalizeCustomPageLayout = (
   nodes?: SerializedNodes
 ): SerializedNodes => {
@@ -84,17 +93,10 @@ export const normalizeCustomPageLayout = (
     next[bodyId] = bodyNode(childIdsOf(next[ROOT_ID]));
   }
 
-  const headerIds = HEADER_WIDGETS.map((name) =>
-    findNodeIdByName(next, name)
-  ).filter((id): id is string => id !== undefined);
-  headerIds.forEach((id) => {
-    next[id] = { ...next[id], parent: ROOT_ID };
-  });
-
   next[bodyId] = {
     ...next[bodyId],
     parent: ROOT_ID,
-    nodes: childIdsOf(next[bodyId]).filter((id) => !headerIds.includes(id)),
+    nodes: childIdsOf(next[bodyId]),
   };
   next[bodyId].nodes.forEach((childId) => {
     const child = next[childId] as SerializedNode | undefined;
@@ -104,15 +106,14 @@ export const normalizeCustomPageLayout = (
   });
 
   const root = next[ROOT_ID];
-  // Other ROOT children keep their stored order after the headers. When the body was just
-  // created they were adopted into it instead, so ROOT keeps only the headers and the body.
+  // Pinned slots stay on ROOT in their stored order. When the body was just created they
+  // were adopted into it instead, so ROOT keeps only the body.
   const storedRootIds = existingBodyId
-    ? childIdsOf(root).filter((id) => id in next && !headerIds.includes(id))
+    ? childIdsOf(root).filter((id) => id in next)
     : [];
-  const withBody = storedRootIds.includes(bodyId)
+  const rootIds = storedRootIds.includes(bodyId)
     ? storedRootIds
     : [...storedRootIds, bodyId];
-  const rootIds = [...headerIds, ...withBody];
 
   next[ROOT_ID] = {
     ...root,

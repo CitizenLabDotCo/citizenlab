@@ -57,9 +57,6 @@ const CustomPageBuilderToolbox = () => {
     <Container>
       {!hasBanner && (
         <Section>
-          {/* Lands in the body like any dropped widget; normalizeCustomPageLayout returns it
-              to its pinned slot above the title when the layout is next loaded, and the
-              preview shows it there straight away. */}
           <DraggableElement
             id="e2e-draggable-custom-page-banner"
             component={
