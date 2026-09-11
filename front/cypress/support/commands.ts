@@ -68,6 +68,8 @@ declare global {
       apiRemovePhase: typeof apiRemovePhase;
       apiRemoveCustomPage: typeof apiRemoveCustomPage;
       apiCreateCustomPage: typeof apiCreateCustomPage;
+      apiUpdateCustomPage: typeof apiUpdateCustomPage;
+      apiAddFileToCustomPage: typeof apiAddFileToCustomPage;
       apiAddProjectsToFolder: typeof apiAddProjectsToFolder;
       apiCreatePhase: typeof apiCreatePhase;
       apiCreateCustomField: typeof apiCreateCustomField;
@@ -1232,6 +1234,50 @@ function apiRemoveCustomPage(customPageId: string) {
       method: 'DELETE',
       url: `web_api/v1/static_pages/${customPageId}`,
     });
+  });
+}
+
+function apiUpdateCustomPage(
+  customPageId: string,
+  attributes: Record<string, unknown>
+) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'PATCH',
+      url: `web_api/v1/static_pages/${customPageId}`,
+      body: { static_page: attributes },
+    });
+  });
+}
+
+// `fixture` is a filename under cypress/fixtures, read as base64.
+function apiAddFileToCustomPage(
+  customPageId: string,
+  name: string,
+  fixture: string
+) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.fixture(fixture, 'base64').then((content) =>
+      cy.request({
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`,
+        },
+        method: 'POST',
+        url: `web_api/v1/static_pages/${customPageId}/files`,
+        body: {
+          file: { name, file: `data:application/pdf;base64,${content}` },
+        },
+      })
+    );
   });
 }
 
@@ -2464,6 +2510,8 @@ Cypress.Commands.add('apiGetHomepageLayout', apiGetHomepageLayout);
 Cypress.Commands.add('apiUpdateHomepageLayout', apiUpdateHomepageLayout);
 Cypress.Commands.add('apiRemoveCustomPage', apiRemoveCustomPage);
 Cypress.Commands.add('apiCreateCustomPage', apiCreateCustomPage);
+Cypress.Commands.add('apiUpdateCustomPage', apiUpdateCustomPage);
+Cypress.Commands.add('apiAddFileToCustomPage', apiAddFileToCustomPage);
 Cypress.Commands.add('clickLocaleSwitcherAndType', clickLocaleSwitcherAndType);
 Cypress.Commands.add('apiCreateSmartGroup', apiCreateSmartGroup);
 Cypress.Commands.add(

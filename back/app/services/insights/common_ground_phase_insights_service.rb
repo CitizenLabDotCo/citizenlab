@@ -17,7 +17,7 @@ module Insights
         .transitive(false)
         .where.not(published_at: nil)
         .where(created_at: @phase.start_at...end_time, publication_status: 'published')
-        .includes(:author)
+        .includes(:custom_field_answers, author: :custom_field_answers)
 
       ideas.map do |idea|
         {
