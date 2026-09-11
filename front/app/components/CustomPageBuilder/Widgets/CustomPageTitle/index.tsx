@@ -10,8 +10,8 @@ import useLocalize from 'hooks/useLocalize';
 
 import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
+import LockedNote from 'components/admin/ContentBuilder/Widgets/LockedNote';
 import WidgetPlaceholder from 'components/admin/ContentBuilder/Widgets/WidgetPlaceholder';
-import LockedNote from 'components/ProjectPageBuilder/Widgets/LockedNote';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
