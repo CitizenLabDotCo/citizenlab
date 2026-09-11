@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { CLErrors, Multiloc, UploadFile } from 'typings';
+import { CLErrors, Multiloc } from 'typings';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
-import { IFileData } from 'api/files/types';
-import useAddFile from 'api/files/useAddFile';
 import { IPhaseData, IUpdatedPhaseProperties } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 import { isTimelinePhase } from 'api/phases/utils';
 
-import { useSyncFiles } from 'hooks/files/useSyncFiles';
+import usePhaseFileAttachments, {
+  fileAttachmentErrors,
+} from 'containers/Admin/projects/_shared/usePhaseFileAttachments';
 
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Error from 'components/UI/Error';
@@ -19,7 +19,6 @@ import FileRepositorySelectAndUpload from 'components/UI/FileRepositorySelectAnd
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { generateTemporaryFileAttachment } from 'utils/fileUtils';
 
 import PhaseDescription from '../../../../phaseDescription';
 import phaseSetupMessages from '../../../../phaseSetup/messages';
@@ -27,7 +26,7 @@ import {
   SubmitStateType,
   ValidationErrors,
 } from '../../../../phaseSetup/typings';
-import validate from '../../../../phaseSetup/validate';
+import { validateDates } from '../../../../phaseSetup/validate';
 
 import FormSection from './FormSection';
 import PanelField from './PanelField';
@@ -43,8 +42,6 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
   const { formatMessage } = useIntl();
   const { data: phases } = usePhases(projectId);
   const { mutate: updatePhase } = useUpdatePhase();
-  const { mutate: addFile, isPending: isAddingFile } = useAddFile();
-  const syncPhaseFiles = useSyncFiles();
 
   const [formData, setFormData] = useState<IUpdatedPhaseProperties>(
     phase.attributes
@@ -56,15 +53,12 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
     {}
   );
 
-  // Attachments are staged here until the panel is saved. Falling back to the
-  // saved list means a successful save drops the temporary ids in one go.
-  const [stagedAttachments, setStagedAttachments] = useState<
-    IFileAttachmentData[] | null
-  >(null);
-  const [attachmentsToRemove, setAttachmentsToRemove] = useState<
-    IFileAttachmentData[]
-  >([]);
-  const attachments = stagedAttachments ?? savedAttachments;
+  const files = usePhaseFileAttachments({
+    projectId,
+    phaseId: phase.id,
+    savedAttachments,
+    onStage: () => setSubmitState('enabled'),
+  });
 
   // Detached phases skip the timeline rules: their dates may overlap and stay
   // open-ended.
@@ -75,93 +69,8 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
     setFormData((formData) => ({ ...formData, ...newData }));
   };
 
-  const stageAttachments = (next: IFileAttachmentData[]) => {
-    setStagedAttachments(next);
-    setSubmitState('enabled');
-  };
-
-  const handleFileAttach = (file: IFileData) => {
-    const isDuplicate = attachments.some(
-      (attachment) => attachment.relationships.file.data.id === file.id
-    );
-    if (isDuplicate) return;
-
-    stageAttachments([
-      ...attachments,
-      generateTemporaryFileAttachment({
-        fileId: file.id,
-        attachableId: phase.id,
-        attachableType: 'Phase',
-        position: attachments.length,
-      }),
-    ]);
-  };
-
-  // The file itself goes to the Data Repository straight away; only the
-  // attachment to this phase waits for the save.
-  const handleFileAdd = (fileToAdd: UploadFile) => {
-    addFile(
-      {
-        content: fileToAdd.base64,
-        project: projectId,
-        name: fileToAdd.name,
-        category: 'other',
-        ai_processing_allowed: false,
-      },
-      { onSuccess: (newFile) => handleFileAttach(newFile.data) }
-    );
-  };
-
-  const handleFileRemove = (attachmentToRemove: IFileAttachmentData) => {
-    stageAttachments(
-      attachments.filter(
-        (attachment) => attachment.id !== attachmentToRemove.id
-      )
-    );
-    setAttachmentsToRemove((toRemove) => [...toRemove, attachmentToRemove]);
-  };
-
-  const handleFileReorder = (reordered: IFileAttachmentData[]) => {
-    stageAttachments(
-      reordered.map((attachment, position) => ({
-        ...attachment,
-        attributes: { ...attachment.attributes, position },
-      }))
-    );
-  };
-
-  const savedOrdering = savedAttachments.reduce<Record<string, number>>(
-    (ordering, attachment) => {
-      ordering[attachment.id] = attachment.attributes.position;
-      return ordering;
-    },
-    {}
-  );
-
-  const saveFiles = async () => {
-    await syncPhaseFiles({
-      attachableId: phase.id,
-      attachableType: 'Phase',
-      fileAttachments: attachments,
-      fileAttachmentsToRemove: attachmentsToRemove,
-      fileAttachmentOrdering: savedOrdering,
-    });
-
-    setAttachmentsToRemove([]);
-    setStagedAttachments(null);
-    setErrors(null);
-    setProcessing(false);
-    setSubmitState('success');
-  };
-
-  const handleFileError = ({ errors }: { errors: CLErrors }) => {
-    // The API adds a 'blank' error next to extension_whitelist_error, which
-    // would otherwise be the one shown.
-    setErrors(
-      errors.file[0].error === 'extension_whitelist_error'
-        ? { file: [errors.file[0]] }
-        : errors
-    );
+  const handleSaveError = (reason: unknown) => {
+    setErrors(fileAttachmentErrors(reason));
     setProcessing(false);
     setSubmitState('error');
   };
@@ -169,7 +78,7 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
   const handleSave = () => {
     if (processing) return;
 
-    const { isValidated, errors } = validate(
+    const { isValidated, errors } = validateDates(
       formData,
       phases,
       formatMessage,
@@ -193,13 +102,16 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
       {
         onSuccess: (response) => {
           setFormData(response.data.attributes);
-          saveFiles().catch(handleFileError);
+          files
+            .save(phase.id)
+            .then(() => {
+              setErrors(null);
+              setProcessing(false);
+              setSubmitState('success');
+            })
+            .catch(handleSaveError);
         },
-        onError: ({ errors }: { errors: CLErrors }) => {
-          setErrors(errors);
-          setProcessing(false);
-          setSubmitState('error');
-        },
+        onError: handleSaveError,
       }
     );
   };
@@ -247,15 +159,15 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
         >
           <FileRepositorySelectAndUpload
             id="phase-build-panel-file-uploader"
-            onFileAdd={handleFileAdd}
-            onFileRemove={handleFileRemove}
-            onFileReorder={handleFileReorder}
-            onFileAttach={handleFileAttach}
-            fileAttachments={attachments}
+            onFileAdd={files.uploadFile}
+            onFileRemove={files.removeFile}
+            onFileReorder={files.reorderFiles}
+            onFileAttach={files.attachFile}
+            fileAttachments={files.attachments}
             enableDragAndDrop
             apiErrors={errors}
             maxSizeMb={10}
-            isUploadingFile={isAddingFile}
+            isUploadingFile={files.isUploadingFile}
           />
         </PanelField>
 
