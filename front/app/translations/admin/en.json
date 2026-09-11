@@ -1950,8 +1950,6 @@
   "app.containers.Admin.projects.project.workspace.notifications": "Notifications",
   "app.containers.Admin.projects.project.workspace.offlineCollection": "Offline collection",
   "app.containers.Admin.projects.project.workspace.phasePreviewTitle": "Preview of this phase",
-  "app.containers.Admin.projects.project.workspace.phaseSettings": "Phase settings",
-  "app.containers.Admin.projects.project.workspace.phaseSetupPanel": "Phase setup",
   "app.containers.Admin.projects.project.workspace.projectSettings": "Project settings",
   "app.containers.Admin.projects.project.workspace.projectSetupPanel": "Project setup",
   "app.containers.Admin.projects.project.workspace.projectsCrumb": "Projects",
