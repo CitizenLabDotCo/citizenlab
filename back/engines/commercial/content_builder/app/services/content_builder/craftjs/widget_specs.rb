@@ -93,9 +93,10 @@ module ContentBuilder
         'ProjectPageBody' => {},
         # The custom page scaffold, same idea.
         'CustomPageRoot' => {},
-        'CustomPageTitle' => {},
         'CustomPageBody' => {},
-        # Ordinary body content, like the homepage banner: a page shows one or not.
+        # Body content, like the homepage banner. The title cannot be deleted but can move;
+        # the banner is there or not.
+        'CustomPageTitle' => {},
         'CustomPageBanner' => {
           'multilocs' => %w[headerMultiloc subheaderMultiloc ctaTextMultiloc],
           'enums' => {

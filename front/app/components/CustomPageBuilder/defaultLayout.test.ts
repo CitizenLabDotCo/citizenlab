@@ -110,7 +110,7 @@ const titleNode = (showTitle: boolean) => ({
   props: { showTitle },
   custom: {},
   hidden: false,
-  parent: 'ROOT',
+  parent: BODY_NODE_ID,
   isCanvas: false,
   displayName: 'CustomPageTitle',
   linkedNodes: {},
@@ -128,49 +128,64 @@ const bannerNode = () => ({
   linkedNodes: {},
 });
 
-const pageWith = (showTitle: boolean, bodyIds: string[]) =>
+// A body in the given order, holding a title, a banner and a text widget.
+const bodyWith = (showTitle: boolean, bodyIds: string[]) =>
   ({
-    ROOT: {
-      ...defaultCustomPageLayout().ROOT,
-      nodes: ['CUSTOM_PAGE_TITLE', BODY_NODE_ID],
-    },
-    CUSTOM_PAGE_TITLE: titleNode(showTitle),
+    ...defaultCustomPageLayout(),
     [BODY_NODE_ID]: {
       ...defaultCustomPageLayout()[BODY_NODE_ID],
       nodes: bodyIds,
     },
+    title: titleNode(showTitle),
     banner: bannerNode(),
     txt: textNode(BODY_NODE_ID),
   } as unknown as SerializedNodes);
 
 describe('layoutStartsWithBanner', () => {
-  it('is true when the title is hidden and the body opens with a banner', () => {
-    expect(layoutStartsWithBanner(pageWith(false, ['banner', 'txt']))).toBe(
+  it('is true when the body opens with a banner', () => {
+    expect(layoutStartsWithBanner(bodyWith(false, ['banner', 'title']))).toBe(
+      true
+    );
+    expect(layoutStartsWithBanner(bodyWith(true, ['banner', 'title']))).toBe(
       true
     );
   });
 
-  // A shown title renders above the body, so the banner is not what sits under the nav bar.
-  it('is false when the title is shown', () => {
-    expect(layoutStartsWithBanner(pageWith(true, ['banner', 'txt']))).toBe(
+  // A hidden title renders nothing, so it does not count as what sits under the nav bar.
+  it('looks past a hidden title', () => {
+    expect(layoutStartsWithBanner(bodyWith(false, ['title', 'banner']))).toBe(
+      true
+    );
+  });
+
+  it('is false when a shown title comes first', () => {
+    expect(layoutStartsWithBanner(bodyWith(true, ['title', 'banner']))).toBe(
       false
     );
   });
 
   // An admin can move the banner anywhere, as on the homepage; only a leading one is flush.
   it('is false when the banner sits further down the body', () => {
-    expect(layoutStartsWithBanner(pageWith(false, ['txt', 'banner']))).toBe(
-      false
-    );
+    expect(
+      layoutStartsWithBanner(bodyWith(false, ['title', 'txt', 'banner']))
+    ).toBe(false);
   });
 
   it('is false without a banner or without a layout', () => {
-    expect(layoutStartsWithBanner(pageWith(false, ['txt']))).toBe(false);
+    expect(layoutStartsWithBanner(bodyWith(true, ['title', 'txt']))).toBe(
+      false
+    );
     expect(layoutStartsWithBanner(undefined)).toBe(false);
   });
 });
 
 describe('layoutHasContent', () => {
+  // Every derived layout carries the title, so it must not count as content: the page would
+  // otherwise hand itself to an empty builder and drop its legacy sections.
+  it('is false for a layout that holds only the scaffold and the title', () => {
+    expect(layoutHasContent(bodyWith(true, ['title']))).toBe(false);
+  });
+
   it('is false for a layout that holds only the scaffold', () => {
     expect(layoutHasContent(defaultCustomPageLayout())).toBe(false);
   });

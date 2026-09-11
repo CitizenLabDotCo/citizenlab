@@ -34,6 +34,7 @@ const WIDGET_ROLES: Record<string, WidgetRole> = {
   EventsList: 'band',
   ProjectsByFilter: 'band',
   CustomPageBanner: 'band',
+  CustomPageTitle: 'flow',
 };
 
 const BOUNDARY_MARGINS = {

@@ -16,8 +16,8 @@ describe ContentBuilder::CustomPageLayoutService do
   let(:plain_text) { { 'en' => '<p>Hello</p>' } }
   let(:text_with_image) { { 'en' => '<p>Hello</p><img src="https://example.com/a.png">' } }
 
-  # What every derived page carries before any content. Examples about the body assert
-  # against this rather than listing the header themselves.
+  # What every derived page carries before any content: the title node is always seeded, so
+  # examples about the sections assert against this rather than listing it themselves.
   let(:scaffold_ids) { [root_id, title_id, body_id] }
 
   # The factory fills the info section multilocs with Faker text, so blank them here and let
@@ -38,12 +38,17 @@ describe ContentBuilder::CustomPageLayoutService do
     craftjs.dig(id, 'type', 'resolvedName')
   end
 
+  # The body's nodes without the always-seeded title, for examples about the sections' order.
+  def section_ids(craftjs)
+    craftjs[body_id]['nodes'] - [title_id]
+  end
+
   describe '#craftjs_json_for' do
     it 'wraps the sections in the root and body scaffold' do
       craftjs = service.craftjs_json_for(build_page)
 
       expect(resolved_name(craftjs, root_id)).to eq 'CustomPageRoot'
-      expect(craftjs[root_id]['nodes']).to eq [title_id, body_id]
+      expect(craftjs[root_id]['nodes']).to eq [body_id]
       expect(craftjs[root_id]['isCanvas']).to be true
 
       expect(resolved_name(craftjs, body_id)).to eq 'CustomPageBody'
@@ -55,26 +60,29 @@ describe ContentBuilder::CustomPageLayoutService do
       craftjs = service.craftjs_json_for(build_page)
 
       expect(craftjs.keys).to match_array(scaffold_ids)
-      expect(craftjs[body_id]['nodes']).to be_empty
+      expect(craftjs[body_id]['nodes']).to eq [title_id]
     end
 
     describe 'the title' do
       # CustomPageShow renders <PageTitle> only on its !banner_enabled branch; the heading
       # inside a banner comes from banner_header_multiloc. The node is always seeded, and
       # showTitle carries which of the two the page shows.
-      it 'seeds a shown title on a page with no banner' do
+      # Body content like everything else, so an admin can move it; nothing is pinned.
+      it 'seeds a shown title at the top of the body on a page with no banner' do
         craftjs = service.craftjs_json_for(build_page(banner_enabled: false))
 
         expect(resolved_name(craftjs, title_id)).to eq 'CustomPageTitle'
-        expect(craftjs[title_id]['parent']).to eq root_id
+        expect(craftjs[title_id]['parent']).to eq body_id
+        expect(craftjs[body_id]['nodes'].first).to eq title_id
         expect(craftjs[title_id]['props']).to eq({ 'showTitle' => true })
       end
 
-      it 'seeds a hidden title on a page with a banner' do
+      # Switching it on then shows the heading under the banner rather than above it.
+      it 'seeds a hidden title after the banner on a page with one' do
         craftjs = service.craftjs_json_for(build_page(banner_enabled: true))
 
         expect(craftjs[title_id]['props']).to eq({ 'showTitle' => false })
-        expect(craftjs[root_id]['nodes']).to eq [title_id, body_id]
+        expect(craftjs[body_id]['nodes']).to eq [banner_id, title_id]
       end
 
       # The heading renders from title_multiloc on the page record; a copy in the layout
@@ -86,9 +94,9 @@ describe ContentBuilder::CustomPageLayoutService do
       end
 
       # craftjs restores `custom` from the stored graph, and RenderNode makes a node
-      # selectable only when it has a title. `locked` keeps the settings panel while
-      # removing the delete button.
-      it 'carries the custom a pinned widget needs' do
+      # selectable only when it has a title. `deletable: false` removes the delete button
+      # while leaving the node movable, where `locked` would pin it.
+      it 'carries the custom an undeletable widget needs' do
         craftjs = service.craftjs_json_for(build_page)
 
         expect(craftjs[title_id]['custom']).to eq(
@@ -96,7 +104,7 @@ describe ContentBuilder::CustomPageLayoutService do
             'id' => 'app.components.CustomPageBuilder.Widgets.CustomPageTitle.title',
             'defaultMessage' => 'Title'
           },
-          'locked' => true,
+          'deletable' => false,
           'noPointerEvents' => true
         )
       end
@@ -130,7 +138,7 @@ describe ContentBuilder::CustomPageLayoutService do
         craftjs = service.craftjs_json_for(build_page(banner_enabled: false))
 
         expect(craftjs).not_to have_key banner_id
-        expect(craftjs[body_id]['nodes']).to be_empty
+        expect(craftjs[body_id]['nodes']).to eq [title_id]
       end
 
       # Ordinary content rather than a pinned slot, so an admin can move or delete it as on
@@ -142,8 +150,8 @@ describe ContentBuilder::CustomPageLayoutService do
 
         expect(resolved_name(craftjs, banner_id)).to eq 'CustomPageBanner'
         expect(craftjs[banner_id]['parent']).to eq body_id
-        expect(craftjs[body_id]['nodes']).to eq [banner_id, top_id]
-        expect(craftjs[root_id]['nodes']).to eq [title_id, body_id]
+        expect(craftjs[body_id]['nodes']).to eq [banner_id, title_id, top_id]
+        expect(craftjs[root_id]['nodes']).to eq [body_id]
       end
 
       # Content is copied in, as for the info sections, under names a merged banner widget could
@@ -235,7 +243,7 @@ describe ContentBuilder::CustomPageLayoutService do
       expect(resolved_name(craftjs, top_id)).to eq 'TextMultiloc'
       expect(craftjs[top_id]['props']['text']).to eq plain_text
       expect(craftjs[top_id]['parent']).to eq body_id
-      expect(craftjs[body_id]['nodes']).to eq [top_id]
+      expect(section_ids(craftjs)).to eq [top_id]
     end
 
     it 'puts a section holding media in the RichTextMultiloc bridge' do
@@ -257,7 +265,7 @@ describe ContentBuilder::CustomPageLayoutService do
 
       craftjs = service.craftjs_json_for(page)
 
-      expect(craftjs[body_id]['nodes']).to eq [top_id, bottom_id]
+      expect(section_ids(craftjs)).to eq [top_id, bottom_id]
       expect(craftjs[bottom_id]['parent']).to eq body_id
     end
 
@@ -267,7 +275,7 @@ describe ContentBuilder::CustomPageLayoutService do
       craftjs = service.craftjs_json_for(page)
 
       expect(craftjs).not_to have_key top_id
-      expect(craftjs[body_id]['nodes']).to be_empty
+      expect(section_ids(craftjs)).to be_empty
     end
 
     it 'skips a section that is enabled but blank' do
@@ -276,7 +284,7 @@ describe ContentBuilder::CustomPageLayoutService do
       craftjs = service.craftjs_json_for(page)
 
       expect(craftjs).not_to have_key top_id
-      expect(craftjs[body_id]['nodes']).to be_empty
+      expect(section_ids(craftjs)).to be_empty
     end
 
     # The migration task compares a stored graph with a freshly derived one to decide whether
@@ -380,7 +388,7 @@ describe ContentBuilder::CustomPageLayoutService do
           bottom_info_section_enabled: true
         )
 
-        expect(service.craftjs_json_for(page)[body_id]['nodes']).to eq [events_id, bottom_id]
+        expect(section_ids(service.craftjs_json_for(page))).to eq [events_id, bottom_id]
       end
     end
 
@@ -468,7 +476,7 @@ describe ContentBuilder::CustomPageLayoutService do
           events_widget_enabled: true
         )
 
-        expect(service.craftjs_json_for(page)[body_id]['nodes']).to eq [projects_id, events_id]
+        expect(section_ids(service.craftjs_json_for(page))).to eq [projects_id, events_id]
       end
     end
 
@@ -497,7 +505,7 @@ describe ContentBuilder::CustomPageLayoutService do
         craftjs = service.craftjs_json_for(page)
 
         expect(Files::FileAttachment.where(attachable: page).pluck(:position).uniq).to eq [nil]
-        expect(craftjs[body_id]['nodes']).to eq [
+        expect(section_ids(craftjs)).to eq [
           "#{file_prefix}#{older.file_id}",
           "#{file_prefix}#{newer.file_id}"
         ]
@@ -510,7 +518,7 @@ describe ContentBuilder::CustomPageLayoutService do
         craftjs = service.craftjs_json_for(page)
 
         expected_ids = file_ids.map { |id| "#{file_prefix}#{id}" }
-        expect(craftjs[body_id]['nodes']).to eq expected_ids
+        expect(section_ids(craftjs)).to eq expected_ids
         expected_ids.each do |node_id|
           expect(resolved_name(craftjs, node_id)).to eq 'FileAttachment'
           expect(craftjs[node_id]['parent']).to eq body_id
@@ -542,7 +550,7 @@ describe ContentBuilder::CustomPageLayoutService do
 
         craftjs = service.craftjs_json_for(page)
 
-        expect(craftjs[body_id]['nodes']).to eq [top_id, "#{file_prefix}#{file_id}", bottom_id]
+        expect(section_ids(craftjs)).to eq [top_id, "#{file_prefix}#{file_id}", bottom_id]
       end
 
       # Layout's file syncing is written against content_buildable in general, not Project.

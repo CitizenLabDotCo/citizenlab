@@ -15,13 +15,13 @@ jest.mock('../../useWidgetCustomPageId', () => ({
   __esModule: true,
   default: () => 'page-1',
 }));
-// The widget sits on ROOT, so useCraftComponentDefaultPadding resolves its parent there.
+// useCraftComponentDefaultPadding resolves the widget's parent, the body region.
 let mockInBuilder = true;
 jest.mock('@craftjs/core', () => ({
   ROOT_NODE: 'ROOT',
   useNode: (collect?: (node: { data: unknown }) => unknown) => ({
     ...(collect
-      ? (collect({ data: { parent: 'ROOT', props: {} } }) as object)
+      ? (collect({ data: { parent: 'CUSTOM_PAGE_BODY', props: {} } }) as object)
       : {}),
     actions: { setProp: jest.fn() },
   }),
@@ -31,7 +31,7 @@ jest.mock('@craftjs/core', () => ({
   ) => ({
     query: {
       node: () => ({
-        get: () => ({ data: { displayName: 'CustomPageRoot' } }),
+        get: () => ({ data: { displayName: 'CustomPageBody' } }),
       }),
     },
     ...(collect ? collect({ options: { enabled: mockInBuilder } }) : {}),

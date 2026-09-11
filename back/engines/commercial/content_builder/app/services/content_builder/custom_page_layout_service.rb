@@ -2,8 +2,9 @@
 
 module ContentBuilder
   # Builds the craftjs graph a custom page's layout starts as, read from the page's own columns:
-  # a root holding the pinned title and a body region with the page's content — the banner
-  # first, when the page shows one — in the order the front office renders it.
+  # a root and a body region holding the page's content in the order the front office renders
+  # it — the banner (when the page shows one), the title, then the sections. Nothing is pinned:
+  # as on the homepage, an admin can reorder any of it.
   #
   # It runs only where a page has no layout yet — the backfill task, a newly created page, a new
   # tenant's template, and a layout created empty through the API. Once a layout exists the
@@ -35,9 +36,11 @@ module ContentBuilder
     # `persist_images: false` derives the same graph without copying the banner image, for a
     # dry run that only compares.
     def craftjs_json_for(static_page, persist_images: true)
-      # Key order is the render order: the banner, then the sections as PageSections.tsx has them.
+      # Key order is the render order: the header pair, then the sections as PageSections.tsx
+      # has them.
       sections = {
         BANNER_ID => banner_node(static_page, persist_images: persist_images),
+        TITLE_ID => title_node(static_page),
         TOP_INFO_ID => section_node(
           static_page.top_info_section_multiloc,
           enabled: static_page.top_info_section_enabled
@@ -51,15 +54,14 @@ module ContentBuilder
         )
       }.compact
 
-      canonical_nodes(sections.keys).merge(TITLE_ID => title_node(static_page)).merge(sections)
+      canonical_nodes(sections.keys).merge(sections)
     end
 
     private
 
     # Unlike the title, a page may simply not have a banner, so this is seeded only when the page
-    # shows one — and it is ordinary body content like the homepage's banner: deletable, and
-    # placeable wherever an admin wants it. It leads the body because that is where the legacy
-    # page renders it. Its content is copied into the node, as the info sections' is: nothing
+    # shows one — deletable, where the title is not. It leads the body because that is where the
+    # legacy page renders it. Its content is copied into the node, as the info sections' is: nothing
     # outside the page reads the banner_* columns, and the legacy hero tab goes at the cutover.
     # Prop names are neutral rather than the homepage banner's `banner_signed_out_*` so a merged
     # banner widget could adopt them as its base variant unchanged.
@@ -125,9 +127,10 @@ module ContentBuilder
 
     # Every page has a title_multiloc — it is the page name — but only a page without a banner
     # displays it; a banner carries its own banner_header_multiloc. So the node is always there
-    # and `showTitle` carries what the page shows. The heading itself is read from the record,
-    # not copied here: title_multiloc also names the page in the admin list and is the nav bar
-    # item's fallback title, so the layout cannot be its only home.
+    # and `showTitle` carries what the page shows. It follows the banner so that switching it on
+    # puts the heading under the banner, not above it. The heading itself is read from the
+    # record, not copied here: title_multiloc also names the page in the admin list and is the
+    # nav bar item's fallback title, so the layout cannot be its only home.
     def title_node(static_page)
       {
         'type' => { 'resolvedName' => 'CustomPageTitle' },
@@ -139,11 +142,12 @@ module ContentBuilder
             'defaultMessage' => 'Title'
           },
           # Settings panel yes, delete button no: hiding the heading is what `showTitle` is for.
-          'locked' => true,
+          # Not `locked`, which would also pin it in place.
+          'deletable' => false,
           'noPointerEvents' => true
         },
         'hidden' => false,
-        'parent' => ROOT_ID,
+        'parent' => BODY_ID,
         'isCanvas' => false,
         'displayName' => 'CustomPageTitle',
         'linkedNodes' => {}
@@ -276,7 +280,7 @@ module ContentBuilder
       {
         ROOT_ID => {
           'type' => { 'resolvedName' => 'CustomPageRoot' },
-          'nodes' => [TITLE_ID, BODY_ID],
+          'nodes' => [BODY_ID],
           'props' => {},
           'custom' => { 'region' => true },
           'hidden' => false,

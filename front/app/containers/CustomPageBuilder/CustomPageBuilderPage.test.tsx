@@ -21,7 +21,7 @@ const EDITED_NODES = {
     type: { resolvedName: 'CustomPageTitle' },
     nodes: [],
     props: { showTitle: true },
-    custom: { locked: true },
+    custom: { deletable: false },
     hidden: false,
     parent: 'ROOT',
     isCanvas: false,

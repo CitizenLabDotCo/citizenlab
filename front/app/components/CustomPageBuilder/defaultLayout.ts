@@ -43,8 +43,12 @@ export const findNodeIdByName = (nodes: SerializedNodes, name: string) =>
 const childIdsOf = (node: SerializedNode): string[] =>
   Array.isArray(node.nodes) ? node.nodes : [];
 
-// Every stored layout carries the scaffold, so an unused builder still yields a non-empty
-// graph. Content means the body region holds something — or ROOT, on a graph with no body.
+const isTitle = (nodes: SerializedNodes, id: string) =>
+  resolvedNameOf(nodes[id]) === 'CustomPageTitle';
+
+// Every stored layout carries the scaffold and the title, so an unused builder still yields
+// a non-empty graph. Content means the body region holds something else — or ROOT does, on a
+// graph with no body.
 export const layoutHasContent = (nodes?: SerializedNodes): boolean => {
   if (!nodes) return false;
 
@@ -54,29 +58,30 @@ export const layoutHasContent = (nodes?: SerializedNodes): boolean => {
     | SerializedNode
     | undefined;
 
-  return !!container && childIdsOf(container).length > 0;
+  return !!container && childIdsOf(container).some((id) => !isTitle(nodes, id));
 };
 
-// Whether the first thing the page renders is a banner: the pinned title is hidden or absent,
-// and the body opens with one. A full-bleed banner sits flush under the nav bar, so the page
-// and its previews drop their top gap, and the edit button anchors to the window edge.
+// Whether the first thing the page renders is a banner: the first body node that is not a
+// hidden title. A full-bleed banner sits flush under the nav bar, so the page and its previews
+// drop their top gap, and the edit button anchors to the window edge.
 export const layoutStartsWithBanner = (nodes?: SerializedNodes): boolean => {
   if (!nodes) return false;
 
-  const titleId = findNodeIdByName(nodes, 'CustomPageTitle');
-  if (titleId && nodes[titleId].props.showTitle !== false) return false;
-
   const bodyId = findNodeIdByName(nodes, 'CustomPageBody');
-  const firstId = bodyId ? childIdsOf(nodes[bodyId])[0] : undefined;
+  if (!bodyId) return false;
+
+  const firstVisibleId = childIdsOf(nodes[bodyId]).find(
+    (id) => !(isTitle(nodes, id) && nodes[id].props.showTitle === false)
+  );
   return (
-    firstId !== undefined &&
-    resolvedNameOf(nodes[firstId]) === 'CustomPageBanner'
+    firstVisibleId !== undefined &&
+    resolvedNameOf(nodes[firstVisibleId]) === 'CustomPageBanner'
   );
 };
 
-// Guarantees the scaffold the editor relies on: a CustomPageRoot holding one CustomPageBody,
-// with ordinary nodes under the body and the pinned title left alongside it. A layout saved
-// against an older scaffold is repaired rather than discarded.
+// Guarantees the scaffold the editor relies on: a CustomPageRoot holding one CustomPageBody
+// with every other node under the body. A layout saved against an older scaffold is repaired
+// rather than discarded.
 export const normalizeCustomPageLayout = (
   nodes?: SerializedNodes
 ): SerializedNodes => {

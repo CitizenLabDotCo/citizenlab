@@ -10,7 +10,6 @@ import useLocalize from 'hooks/useLocalize';
 
 import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
-import { useSectionBoundaryMargin } from 'components/admin/ContentBuilder/verticalRhythm';
 import WidgetPlaceholder from 'components/admin/ContentBuilder/Widgets/WidgetPlaceholder';
 import LockedNote from 'components/ProjectPageBuilder/Widgets/LockedNote';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
@@ -33,7 +32,6 @@ const CustomPageTitle = ({ title: draftTitle, showTitle = true }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const padding = useCraftComponentDefaultPadding();
-  const marginBottom = useSectionBoundaryMargin();
   const { enabled: inBuilder } = useEditor((state) => ({
     enabled: state.options.enabled,
   }));
@@ -59,12 +57,7 @@ const CustomPageTitle = ({ title: draftTitle, showTitle = true }: Props) => {
   }
 
   return (
-    <Box
-      maxWidth={BUILDER_CONTENT_MAX_WIDTH}
-      margin="0 auto"
-      px={padding}
-      mb={marginBottom}
-    >
+    <Box maxWidth={BUILDER_CONTENT_MAX_WIDTH} margin="0 auto" px={padding}>
       <Title color="tenantText" variant="h1" m="0px">
         {title || formatMessage(messages.untitledPage)}
       </Title>
@@ -118,12 +111,11 @@ CustomPageTitle.craft = {
   related: {
     settings: CustomPageTitleSettings,
   },
-  rules: {
-    canDrag: () => false,
-  },
+  // Movable like any body widget, but never deleted: the page always has a name, and hiding
+  // the heading is what showTitle is for. Not `locked`, which would also pin it.
   custom: {
     title: messages.title,
-    locked: true,
+    deletable: false,
     noPointerEvents: true,
   },
 };

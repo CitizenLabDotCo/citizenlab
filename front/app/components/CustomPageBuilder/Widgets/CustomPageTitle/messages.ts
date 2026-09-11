@@ -23,8 +23,8 @@ export default defineMessages({
       'Title hidden. The page is still called "{title}" in the admin pages list and in the navigation bar.',
   },
   pinnedNote: {
-    id: 'app.components.CustomPageBuilder.Widgets.CustomPageTitle.pinnedNote',
+    id: 'app.components.CustomPageBuilder.Widgets.CustomPageTitle.lockedNote',
     defaultMessage:
-      "Pinned to the top of the page — editable, but can't be moved or removed. Hide it with the toggle above.",
+      "The page always has a title, so this can't be removed. Hide it with the toggle above.",
   },
 });
