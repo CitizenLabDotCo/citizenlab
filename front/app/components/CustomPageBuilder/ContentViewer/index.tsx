@@ -5,6 +5,7 @@ import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
+import { useSectionBoundaryMargin } from 'components/admin/ContentBuilder/verticalRhythm';
 import { normalizeCustomPageLayout } from 'components/CustomPageBuilder/defaultLayout';
 import Editor from 'components/CustomPageBuilder/Editor';
 
@@ -23,12 +24,15 @@ const handleLoadImages = () => {
 const CustomPageContentViewer = ({ staticPageId }: Props) => {
   const { isLoading, hasContent, craftjsJson, layoutId } =
     useCustomPageBuilderContent(staticPageId);
+  // The rhythm spaces widgets against each other, so the gap under the nav bar is the
+  // page's to set. FullScreenPreview applies the same, or the preview reads tighter.
+  const paddingTop = useSectionBoundaryMargin();
 
   if (isLoading) return <Spinner />;
   if (!hasContent) return null;
 
   return (
-    <Box data-testid="customPageContentViewer">
+    <Box data-testid="customPageContentViewer" pt={paddingTop}>
       <ContentBuilderLayoutProvider layoutId={layoutId}>
         <Editor isPreview={true}>
           <ContentBuilderFrame

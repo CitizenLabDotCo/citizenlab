@@ -134,13 +134,23 @@ const CustomPageShow = () => {
                 <CustomPageHeader pageData={page.data} />
               </Box>
             </>
-          ) : (
-            // The default is narrower, so the title would not line up with the content.
-            <NoBannerContainer
-              maxWidth={
-                showBuilderContent ? BUILDER_CONTENT_MAX_WIDTH : undefined
-              }
+          ) : showBuilderContent ? (
+            // The layout's Title widget owns the heading and can hide it, so the page
+            // renders only the edit button. Full width or the flex parent collapses the
+            // anchor to nothing and the button lands mid-page.
+            <Box
+              position="relative"
+              w="100%"
+              maxWidth={BUILDER_CONTENT_MAX_WIDTH}
+              zIndex="40000"
             >
+              <AdminCustomPageEditButton
+                pageId={page.data.id}
+                projectId={pageAttributes.project_id}
+              />
+            </Box>
+          ) : (
+            <NoBannerContainer>
               {pageAttributes.project_id && (
                 <Box mb="8px">
                   <BackToProjectLink projectId={pageAttributes.project_id} />

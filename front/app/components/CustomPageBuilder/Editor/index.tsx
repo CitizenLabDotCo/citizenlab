@@ -22,6 +22,7 @@ import {
   CustomPageRoot,
   CustomPageBody,
 } from 'components/CustomPageBuilder/regions';
+import CustomPageTitle from 'components/CustomPageBuilder/Widgets/CustomPageTitle';
 import ProjectsByFilter from 'components/CustomPageBuilder/Widgets/ProjectsByFilter';
 import BaseEditor from 'components/DescriptionBuilder/Editor/Editor';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
@@ -58,6 +59,7 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
           ButtonMultiloc,
           PageLink,
           CustomPageRoot,
+          CustomPageTitle,
           CustomPageBody,
         }}
         isPreview={isPreview}
