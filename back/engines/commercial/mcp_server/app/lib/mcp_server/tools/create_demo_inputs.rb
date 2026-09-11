@@ -120,11 +120,8 @@ class McpServer::Tools::CreateDemoInputs < McpServer::BaseTool
                      "of max #{McpServer::DemoData::MAX_INPUTS_PER_PROJECT}. Do not create more.")
       end
 
-      user_count = McpServer::DemoData.demo_users.count
-      return unless user_count + requested > McpServer::DemoData::MAX_USERS_PER_TENANT
-
-      error("Demo user ceiling reached: this platform has #{user_count} demo users " \
-            "of max #{McpServer::DemoData::MAX_USERS_PER_TENANT}. Do not create more.")
+      user_ceiling_message = McpServer::DemoData.user_ceiling_error_message(requested)
+      error(user_ceiling_message) if user_ceiling_message
     end
 
     def build_ideas(phase)
