@@ -4,14 +4,14 @@ import { CLErrors } from 'typings';
 
 import { IUpdatedPhaseProperties } from 'api/phases/types';
 
-import { FormattedMessage } from 'utils/cl-intl';
-
 import PhaseDatePicker, {
   PhaseDates as Dates,
-} from '../../../../phaseSetup/components/PhaseDatePicker';
-import usePhaseDateRanges from '../../../../phaseSetup/components/PhaseDatePicker/usePhaseDateRanges';
-import phaseSetupMessages from '../../../../phaseSetup/messages';
-import { ValidationErrors } from '../../../../phaseSetup/typings';
+} from 'containers/Admin/projects/project/phaseSetup/components/PhaseDatePicker';
+import usePhaseDateRanges from 'containers/Admin/projects/project/phaseSetup/components/PhaseDatePicker/usePhaseDateRanges';
+import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
+import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import PanelField from './PanelField';
 

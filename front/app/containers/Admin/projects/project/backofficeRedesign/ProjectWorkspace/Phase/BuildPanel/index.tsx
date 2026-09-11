@@ -12,6 +12,13 @@ import { isTimelinePhase } from 'api/phases/utils';
 import usePhaseFileAttachments, {
   fileAttachmentErrors,
 } from 'containers/Admin/projects/_shared/usePhaseFileAttachments';
+import PhaseDescription from 'containers/Admin/projects/project/phaseDescription';
+import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
+import {
+  SubmitStateType,
+  ValidationErrors,
+} from 'containers/Admin/projects/project/phaseSetup/typings';
+import { validateDates } from 'containers/Admin/projects/project/phaseSetup/validate';
 
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Error from 'components/UI/Error';
@@ -19,14 +26,6 @@ import FileRepositorySelectAndUpload from 'components/UI/FileRepositorySelectAnd
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-import PhaseDescription from '../../../../phaseDescription';
-import phaseSetupMessages from '../../../../phaseSetup/messages';
-import {
-  SubmitStateType,
-  ValidationErrors,
-} from '../../../../phaseSetup/typings';
-import { validateDates } from '../../../../phaseSetup/validate';
 
 import FormSection from './FormSection';
 import PanelField from './PanelField';
@@ -90,8 +89,6 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
     if (!isValidated) return;
 
     setProcessing(true);
-    // Only the fields this panel owns are sent. The right panel edits the same
-    // phase, so sending the whole attribute set would undo its saved changes.
     updatePhase(
       {
         phaseId: phase.id,
@@ -117,8 +114,6 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
   };
 
   return (
-    // Not a <form>: the description publishes and discards through its own
-    // buttons, which would submit this one along with them.
     <Box display="flex" flexDirection="column" flexGrow={1} minHeight="0">
       <Box flexGrow={1} px="20px" pb="20px">
         <PhaseDates

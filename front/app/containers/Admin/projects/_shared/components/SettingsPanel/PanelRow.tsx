@@ -9,7 +9,6 @@ interface Props {
   onClick: () => void;
 }
 
-/** A settings panel row that opens its own surface rather than expanding. */
 const PanelRow = ({ label, onClick }: Props) => (
   <Box borderTop={`1px solid ${colors.grey200}`}>
     <PanelRowButton label={label} icon="chevron-right" onClick={onClick} />

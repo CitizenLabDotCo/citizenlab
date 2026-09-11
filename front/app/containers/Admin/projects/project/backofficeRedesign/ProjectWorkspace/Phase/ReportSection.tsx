@@ -7,25 +7,20 @@ import useReport from 'api/reports/useReport';
 import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
 import useUpdateReport from 'api/reports/useUpdateReport';
 
+import EmptyState from 'containers/Admin/projects/project/information/ReportTab/EmptyState';
+import messages from 'containers/Admin/projects/project/information/ReportTab/messages';
+import visibilityWarning from 'containers/Admin/projects/project/information/ReportTab/visibilityWarning';
 import Buttons from 'containers/Admin/reporting/components/ReportBuilderPage/ReportRow/Buttons';
 
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 
-import EmptyState from '../../../information/ReportTab/EmptyState';
-import messages from '../../../information/ReportTab/messages';
-import visibilityWarning from '../../../information/ReportTab/visibilityWarning';
-
 interface Props {
   projectId: string;
   phase: IPhaseData;
 }
 
-/**
- * An information phase collects nothing, so its panel manages the report shared
- * with residents rather than participation settings.
- */
 const ReportSection = ({ projectId, phase }: Props) => {
   const { formatMessage } = useIntl();
   const reportId = phase.relationships.report?.data?.id;

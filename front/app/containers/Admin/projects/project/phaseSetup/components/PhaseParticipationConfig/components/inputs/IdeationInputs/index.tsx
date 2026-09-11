@@ -80,7 +80,6 @@ interface Props {
     field: 'similarity_threshold_title' | 'similarity_threshold_body',
     value: number
   ) => void;
-  /** 'panel' groups the settings by concern for the narrow workspace panel. */
   layout?: 'page' | 'panel';
 }
 

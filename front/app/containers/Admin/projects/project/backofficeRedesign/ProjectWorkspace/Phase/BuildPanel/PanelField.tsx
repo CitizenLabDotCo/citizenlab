@@ -7,7 +7,6 @@ interface Props {
   children: ReactNode;
 }
 
-/** The admin `SectionField` is too loud and too tall at panel width. */
 const PanelField = ({ label, children }: Props) => (
   <Box mb="16px">
     <Text

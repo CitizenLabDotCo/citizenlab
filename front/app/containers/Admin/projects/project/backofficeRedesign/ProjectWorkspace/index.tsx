@@ -11,8 +11,6 @@ import { viewFromPathname } from './Phase/usePhaseViews';
 import WorkspaceHeader from './WorkspaceHeader';
 
 const PROJECT_PANEL_WIDTH = '280px';
-// The phase panel holds form fields rather than a list, so it needs the same
-// room as the right panel.
 const PHASE_PANEL_WIDTH = '384px';
 const RIGHT_PANEL_WIDTH = '384px';
 
@@ -35,10 +33,6 @@ const ProjectWorkspace = ({
   const divider = `1px solid ${colors.grey200}`;
   const leftPanelWidth = phase ? PHASE_PANEL_WIDTH : PROJECT_PANEL_WIDTH;
   const activeView = viewFromPathname(pathname);
-
-  // A phase is built in three columns, but managed and analysed across the
-  // full width, so its panels step aside on those two views. They stay mounted
-  // while hidden: unmounting would throw away edits that are not saved yet.
   const showPanels = !phase || activeView === 'build';
 
   return (
@@ -68,9 +62,6 @@ const ProjectWorkspace = ({
             {leftPanel}
           </Box>
         )}
-
-        {/* A flex column so a centre that fills the stage stretches to it,
-            rather than collapsing to its content. */}
         <Box
           flexGrow={1}
           minWidth="0"

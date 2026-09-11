@@ -25,11 +25,6 @@ interface Options {
   standalone?: boolean;
 }
 
-/**
- * The ranges the phase date picker draws. Returns nothing until they are
- * consistent: in between switching phases they can briefly disagree, and the
- * picker cannot draw them then.
- */
 const usePhaseDateRanges = ({
   formData,
   standalone,

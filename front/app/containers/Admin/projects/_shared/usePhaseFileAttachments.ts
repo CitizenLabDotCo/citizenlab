@@ -23,7 +23,6 @@ export const fileAttachmentErrors = (reason: unknown): CLErrors => {
     return { base: [{ error: 'unknown' }] };
   }
 
-  // CLErrors is an index signature, so its type claims every field is present.
   const { file = [] } = reason.errors;
   const whitelistError = file.find(
     (error) => error.error === 'extension_whitelist_error'
@@ -39,18 +38,11 @@ const isAttached = (attachments: IFileAttachmentData[], fileId: string) =>
 
 interface Options {
   projectId: string;
-  /** The phase being edited. Staged work is dropped when it changes. */
   phaseId: string | undefined;
   savedAttachments: IFileAttachmentData[] | undefined;
-  /** Called whenever the staged set changes, so the form can mark itself dirty. */
   onStage: () => void;
 }
 
-/**
- * Phase attachments are staged until the form around them is saved. Falling
- * back to the saved list means a successful save drops the temporary ids in
- * one go.
- */
 const usePhaseFileAttachments = ({
   projectId,
   phaseId,
@@ -63,8 +55,6 @@ const usePhaseFileAttachments = ({
   const [staged, setStaged] = useState<IFileAttachmentData[] | null>(null);
   const [toRemove, setToRemove] = useState<IFileAttachmentData[]>([]);
 
-  // The phase setup form stays mounted while the selected phase changes, so
-  // the staged work has to be dropped here or it follows the manager over.
   const [stagedFor, setStagedFor] = useState(phaseId);
   if (stagedFor !== phaseId) {
     setStagedFor(phaseId);
@@ -99,8 +89,6 @@ const usePhaseFileAttachments = ({
     );
   };
 
-  // The file itself goes to the Data Repository straight away; only the
-  // attachment to the phase waits for the save.
   const uploadFile = (fileToAdd: UploadFile) => {
     addFile(
       {
@@ -130,8 +118,6 @@ const usePhaseFileAttachments = ({
     );
   };
 
-  // Takes the id rather than using the one above, because a phase created by
-  // this save only gets one in the response.
   const save = async (attachableId: string) => {
     const savedOrdering = (savedAttachments ?? []).reduce<
       Record<string, number>

@@ -11,26 +11,17 @@ import useFitPhonePreview, {
 interface Props {
   src: string;
   title: string;
-  /** Applied to the phone frame, so callers can style its hover state. */
   className?: string;
   dataCy?: string;
-  /** Overlays, positioned against the frame. */
   children?: ReactNode;
 }
 
-/**
- * Renders a page at a fixed logical phone viewport and scales the whole thing
- * to fit its container, so components keep their real proportions instead of
- * being squeezed into a narrow iframe ("scale, don't shrink").
- */
 const PhonePreview = ({ src, title, className, dataCy, children }: Props) => {
   const { scale, containerRef } = useFitPhonePreview();
 
   return (
     <Box
       ref={containerRef}
-      // Both, so the stage fills its container whether or not that container
-      // hands down a definite height.
       h="100%"
       minHeight="100%"
       display="flex"

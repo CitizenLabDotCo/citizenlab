@@ -5,11 +5,6 @@ import { IUpdatedPhaseProperties, IPhases } from 'api/phases/types';
 
 import messages from '../messages';
 
-/**
- * Split from the participation rules because the workspace edits the two in
- * separate panels: a panel that fails on an error it has nowhere to show
- * refuses to save with no explanation.
- */
 export const validateDates = (
   state: IUpdatedPhaseProperties,
   phases: IPhases | undefined,

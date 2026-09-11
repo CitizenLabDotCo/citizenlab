@@ -34,7 +34,7 @@ const AdminProjectPhaseIndex = ({ project, selectedPhase }: DataProps) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
   const matchRoute = useMatchRoute();
-  const workspaceEnabled = useFeatureFlag({
+  const isBackofficeRedesignEnabled = useFeatureFlag({
     name: 'project_backoffice_redesign',
   });
   const featureFlags: FeatureFlags = {
@@ -65,11 +65,8 @@ const AdminProjectPhaseIndex = ({ project, selectedPhase }: DataProps) => {
     }) ||
     !!matchRoute({ to: '/$locale/admin/projects/$projectId/phases/$phaseId' });
 
-  // The workspace edits the setup fields in its side panels, so the centre
-  // shows the resident's view instead. It fills the stage edge to edge, so the
-  // page chrome the standalone phase pages need is dropped with it.
   const showPhasePreview =
-    workspaceEnabled && !!selectedPhase && onPhaseSetupRoute;
+    isBackofficeRedesignEnabled && !!selectedPhase && onPhaseSetupRoute;
 
   return (
     <Box
@@ -85,7 +82,7 @@ const AdminProjectPhaseIndex = ({ project, selectedPhase }: DataProps) => {
         flexGrow={1}
         minHeight={showPhasePreview ? '0' : undefined}
       >
-        {!isNewPhaseLink && selectedPhase && !workspaceEnabled && (
+        {!isNewPhaseLink && selectedPhase && !isBackofficeRedesignEnabled && (
           <PhaseHeader phase={selectedPhase} tabs={tabs} />
         )}
 

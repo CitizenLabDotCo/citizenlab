@@ -4,6 +4,9 @@ import { Box, Button, Divider, Text } from '@citizenlab/cl2-component-library';
 
 import { IPhaseData } from 'api/phases/types';
 
+import inputFormMessages from 'containers/Admin/projects/project/inputForm/messages';
+import { isPDFUploadSupported } from 'containers/Admin/projects/project/inputImporter/ReviewSection/utils';
+
 import ImportInputsSection from 'components/admin/FormSync/ImportInputsSection';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
@@ -11,8 +14,6 @@ import Modal from 'components/UI/Modal';
 import { useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
-import inputFormMessages from '../../../../inputForm/messages';
-import { isPDFUploadSupported } from '../../../../inputImporter/ReviewSection/utils';
 import messages from '../../messages';
 
 import PanelField from './PanelField';

@@ -25,8 +25,6 @@ const PhasePreview = ({ projectId, phase }: Props) => {
 
   if (!project || !phases) return null;
 
-  // The resident page addresses phases by their position in the timeline, not
-  // by id. A detached phase has no position, so it falls back to the project.
   const phaseIndex = phases.data.findIndex(({ id }) => id === phase.id);
   const slug = project.data.attributes.slug;
   const path =

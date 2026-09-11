@@ -10,6 +10,15 @@ import useUpdatePhase from 'api/phases/useUpdatePhase';
 
 import CustomMapConfigPage from 'containers/Admin/CustomMapConfigPage';
 import PanelRowModal from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelRowModal';
+import AdminPhaseEmailWrapper from 'containers/Admin/projects/project/admin_phase_email_wrapper';
+import ActionForms from 'containers/Admin/projects/project/permissions/Phase/ActionForms';
+import PhaseParticipationConfig from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig';
+import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
+import {
+  SubmitStateType,
+  ValidationErrors,
+} from 'containers/Admin/projects/project/phaseSetup/typings';
+import { validateParticipation } from 'containers/Admin/projects/project/phaseSetup/validate';
 
 import { SubSectionTitle } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -17,18 +26,10 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
-import AdminPhaseEmailWrapper from '../../../admin_phase_email_wrapper';
-import ActionForms from '../../../permissions/Phase/ActionForms';
-import PhaseParticipationConfig from '../../../phaseSetup/components/PhaseParticipationConfig';
-import phaseSetupMessages from '../../../phaseSetup/messages';
-import { SubmitStateType, ValidationErrors } from '../../../phaseSetup/typings';
-import { validateParticipation } from '../../../phaseSetup/validate';
 import messages from '../messages';
 
 import ReportSection from './ReportSection';
 
-// The settings are built for a full-width page, where their own titles carry
-// the section. Here the group row carries it, so they step down to label scale.
 const PanelSettings = styled(Box)`
   ${SubSectionTitle} {
     font-size: ${fontSizes.s}px;
@@ -49,8 +50,6 @@ const PhaseRightPanel = ({ projectId, phase }: Props) => {
   const [formData, setFormData] = useState<IUpdatedPhaseProperties>(
     phase.attributes
   );
-  // The left panel edits the same phase, so only the fields this one changed
-  // are sent: the whole attribute set would undo what the left panel saved.
   const [changes, setChanges] = useState<Partial<IUpdatedPhaseProperties>>({});
   const [submitState, setSubmitState] = useState<SubmitStateType>('disabled');
   const [processing, setProcessing] = useState(false);

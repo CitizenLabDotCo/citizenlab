@@ -13,6 +13,7 @@ import {
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
+import messages from 'containers/Admin/projects/project/messages';
 
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
@@ -20,7 +21,6 @@ import Error from 'components/UI/Error';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-import messages from '../../../../../../messages';
 import configMessages from '../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
 import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
@@ -71,7 +71,6 @@ interface Props {
   similarity_enabled?: boolean | null;
   similarity_threshold_title: number | null | undefined;
   similarity_threshold_body: number | null | undefined;
-  /** 'panel' groups the settings by concern for the narrow workspace panel. */
   layout?: 'page' | 'panel';
   handleSimilarityEnabledChange: (value: boolean) => void;
   handleThresholdChange: (

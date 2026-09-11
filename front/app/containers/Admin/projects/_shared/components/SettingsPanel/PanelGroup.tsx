@@ -10,11 +10,6 @@ interface Props {
   children: ReactNode;
 }
 
-/**
- * One concern in a settings panel. The panel is too narrow to show every
- * setting at once, so each group opens on demand and the rows in between stay
- * scannable.
- */
 const PanelGroup = ({ label, defaultOpen = false, children }: Props) => {
   const [open, setOpen] = useState(defaultOpen);
 

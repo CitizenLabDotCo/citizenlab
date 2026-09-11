@@ -12,7 +12,6 @@ interface Props {
   children: ReactNode;
 }
 
-/** A settings panel row whose surface is a modal. */
 const PanelRowModal = ({ label, width, children }: Props) => {
   const [opened, setOpened] = useState(false);
 

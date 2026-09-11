@@ -20,7 +20,6 @@ export type PhaseView = {
   label: string;
   /** Absent when the phase has no tab under this view, which makes it unreachable. */
   to?: PhaseTabTarget;
-  /** Why the view is unreachable, so a locked one says more than nothing. */
   lockedReason?: string;
 };
 
@@ -55,12 +54,6 @@ export const viewFromPathname = (pathname: string): PhaseViewKey => {
   return tab?.[1] ?? 'build';
 };
 
-/**
- * Why a view has no tab to land on. The reasons differ by method rather than
- * being one line: a survey does collect input, it just isn't managed here.
- * Returns nothing when the combination isn't one we can explain, so the switch
- * stays silent rather than asserting something untrue.
- */
 const lockedReason = (
   view: PhaseViewKey,
   method: ParticipationMethod

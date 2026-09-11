@@ -40,8 +40,6 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
       <ProjectWorkspace
         project={project}
         phase={selectedPhase}
-        // Both panels are keyed so switching phases starts them from the new
-        // phase's values instead of carrying the previous one's edits over.
         leftPanel={
           selectedPhase ? (
             <PhaseLeftPanel

@@ -15,10 +15,6 @@ interface Props {
   onClick: () => void;
 }
 
-/**
- * The row both kinds of settings-panel entry present, so a list of the two
- * reads as one set of choices.
- */
 const PanelRowButton = ({ label, icon, ariaExpanded, onClick }: Props) => (
   <Box
     as="button"

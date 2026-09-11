@@ -22,8 +22,6 @@ import ViewSwitch from './Phase/ViewSwitch';
 
 const HEADER_HEIGHT = '48px';
 
-// Each crumb sets its own white-space, so nowrap has to reach the text rather
-// than be inherited. Without it a long name wraps and outgrows the header.
 const CrumbBar = styled(Box)`
   span {
     white-space: nowrap;
@@ -69,9 +67,6 @@ const WorkspaceHeader = ({ project, phase, activeView }: Props) => {
       background={colors.white}
       borderBottom={`1px solid ${colors.grey200}`}
     >
-      {/* The two outer cells share the leftover width equally, which centres
-          the switch without taking it out of flow and letting it paint over a
-          long project or phase name. */}
       <CrumbBar flex="1 1 0" minWidth="0" overflow="hidden">
         <Breadcrumbs
           breadcrumbs={crumbs}

@@ -3,13 +3,15 @@ import React from 'react';
 import { Radio, IconTooltip } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import messages from 'containers/Admin/projects/project/messages';
+
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import FeatureFlag from 'components/FeatureFlag';
 import Error from 'components/UI/Error';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import messages from '../../../../../../messages';
 import { ReactingLimitInput } from '../../shared/styling';
 
 interface Props {
@@ -39,10 +41,12 @@ const DislikingSettings = ({
   handleReactingDislikeMethodOnChange,
   handleDislikingLimitOnChange,
 }: Props) => {
-  if (!reacting_enabled) return null;
+  const dislikingConfigurable = useFeatureFlag({ name: 'disable_disliking' });
+
+  if (!reacting_enabled || !dislikingConfigurable) return null;
 
   return (
-    <FeatureFlag name="disable_disliking">
+    <>
       <SectionField>
         <SubSectionTitle>
           <FormattedMessage {...messages.dislikingPosts} />
@@ -114,7 +118,7 @@ const DislikingSettings = ({
           )}
         </SectionField>
       )}
-    </FeatureFlag>
+    </>
   );
 };
 
