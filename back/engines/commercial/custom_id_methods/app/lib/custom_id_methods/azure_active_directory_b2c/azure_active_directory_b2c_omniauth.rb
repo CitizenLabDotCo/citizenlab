@@ -119,5 +119,9 @@ module CustomIdMethods::AzureActiveDirectoryB2c
         locale: AppConfiguration.instance.settings('core', 'locales').first
       }
     end
+
+    def email_confirmed?(auth)
+      auth.extra.raw_info['emails'].first.present?
+    end
   end
 end
