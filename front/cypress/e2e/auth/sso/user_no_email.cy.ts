@@ -17,9 +17,8 @@ describe('SSO: user without email', () => {
     cy.get('#e2e-sign-up-success-modal').should('exist');
   });
 
-  // An address that already has an account is not a dead end for an email-less
-  // SSO user: it offers to merge the two, confirmed by a code sent to that
-  // account's inbox.
+  // A taken address is not a dead end for an email-less SSO user: it offers to merge
+  // the two, confirmed by a code sent to that account's inbox.
   it('merges into the existing account when the email is already taken', () => {
     const existingEmail = randomEmail();
     cy.apiSignup('Existing', 'User', existingEmail, 'democracy2.0');
@@ -31,8 +30,7 @@ describe('SSO: user without email', () => {
       .type(existingEmail);
     cy.get('#e2e-built-in-fields-submit-button').click();
 
-    // The code goes to the other account's inbox, and the standard confirmation
-    // screen names the address it was sent to.
+    // The confirmation screen names the inbox the code went to.
     cy.get('#e2e-authentication-modal').should('include.text', existingEmail);
     confirmEmail(cy);
 
@@ -45,9 +43,8 @@ describe('SSO: user without email', () => {
     });
   });
 
-  // Whether the merge is allowed is only settled once the code has been entered -
-  // deciding earlier would let anyone probe which addresses belong to admins. So
-  // an admin target gets as far as the code screen and is refused there.
+  // Settled only once the code is entered - deciding earlier would let anyone probe
+  // which addresses belong to admins - so an admin target is refused at that screen.
   it('refuses to merge into an admin account', () => {
     fakeSSOGlobalSignup(cy, 'jane_doe');
 

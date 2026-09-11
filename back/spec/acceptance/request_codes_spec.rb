@@ -245,8 +245,8 @@ resource 'Request codes' do
       expect(delivery_service).not_to have_received(:send_now_to_user)
     end
 
-    # This caller has an email and a password of its own, so it is not eligible to
-    # be merged away - the taken address stays a plain error for it.
+    # This caller has an email and a password, so it cannot be merged away - the
+    # taken address stays a plain error.
     example 'It does not work if new_email is already taken by another user' do
       existing_user = create(:user, email: 'existing_email@example.com')
       user = create(:user)
@@ -286,9 +286,8 @@ resource 'Request codes' do
         expect(sso_user.new_email).to be_nil
       end
 
-      # Whether the target may actually be merged into is settled at confirm time.
-      # Refusing here would tell an unauthenticated prober which addresses belong
-      # to admins; the code goes to the admin's own inbox, so nothing leaks.
+      # Settled at confirm time: refusing here would tell a prober which addresses
+      # belong to admins. The code goes to the admin's own inbox, so nothing leaks.
       example 'It gives the same answer when the address belongs to an admin' do
         admin = create(:admin, email: 'admin_email@example.com')
         header_token_for(sso_user)
@@ -321,8 +320,8 @@ resource 'Request codes' do
         expect(delivery_service).not_to have_received(:send_now_to_user)
       end
 
-      # Changing your mind is the way out of an offered merge, so an exhausted
-      # merge budget must not take the ordinary path down with it.
+      # Changing your mind is the way out of an offered merge, so an exhausted merge
+      # budget must not take the ordinary path with it.
       example 'It still starts an ordinary confirmation once the merge budget is spent' do
         sso_user.find_or_create_confirmation(:merge_account_confirmation, target_email: 'existing_email@example.com')
           .update!(code_reset_count: 4)

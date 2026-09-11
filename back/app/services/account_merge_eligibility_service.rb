@@ -1,21 +1,16 @@
 # frozen_string_literal: true
 
 # Decides whether an email-less SSO account (+source+) may be merged into the
-# account that owns the email it just supplied (+target+).
+# account owning the email it supplied (+target+). Every rule here is a refusal;
+# getting one wrong hands somebody's verified identity, and a session, to another.
 #
-# The merge moves the source's identity, verification and participation onto the
-# target and then deletes the source, so getting this wrong hands one person's
-# verified identity - and a session - to another. Every rule here is a refusal.
-#
-# The caller proves control of the target's inbox by entering a code sent to it,
-# which is why these checks run at *confirm* time rather than when the code is
-# requested: refusing up front would let anyone probe which addresses belong to
-# admins. They are re-run inside the merge transaction because the 24h code
-# window is ample time for the target to be granted a role or verified.
+# Checked at confirm time rather than when the code is requested: refusing up front
+# would let anyone probe which addresses belong to admins. Re-run inside the merge
+# transaction, because the 24h code window is long enough for the target to gain a
+# role or a verification.
 class AccountMergeEligibilityService
-  # @return [Symbol, nil] the reason the merge must be refused, or nil if allowed.
-  #   Never expose the reason to the client - it would turn the endpoint into an
-  #   account-role oracle.
+  # @return [Symbol, nil] why the merge is refused, or nil if allowed. Never expose
+  #   the reason to the client: it would turn the endpoint into an account-role oracle.
   def ineligibility_reason(source:, target:)
     source_reason(source) || target_reason(source, target)
   end
@@ -24,22 +19,17 @@ class AccountMergeEligibilityService
     ineligibility_reason(source: source, target: target).nil?
   end
 
-  # The source-side half on its own. Safe to answer before the caller has proved
-  # anything, because it is entirely about the caller's own account - unlike the
-  # target-side rules, which are only checked once the code has been entered.
+  # Safe to answer before the caller has proved anything: it is entirely about their
+  # own account, unlike the target-side rules.
   def source_eligible?(source)
     source_reason(source).nil?
   end
 
-  # Whether this account may be absorbed and deleted, and why not if it may not.
-  # Public because AccountMergeService#absorb! applies only this half: there an
-  # identity provider has already tied the two accounts together, so the
-  # target-side rules (which guard against handing over a stranger's account)
-  # have nothing to protect.
+  # Whether this account may be absorbed and deleted. Public because
+  # AccountMergeService#absorb! applies only this half - see there for why.
   #
-  # These also serve as the scope fence for the confirmation-driven merge.
-  # request_code_new_email is shared with the ordinary "change my email" flow in
-  # the profile, and these guards are what keep it from ever being offered there.
+  # Also the scope fence: request_code_new_email is shared with the profile's
+  # "change my email" flow, and these guards keep the merge out of it.
   def source_reason(source)
     return :source_missing if source.blank?
     return :source_not_sso unless source.sso?
@@ -61,14 +51,12 @@ class AccountMergeEligibilityService
     return :target_is_admin_or_moderator if target.admin? || target.moderator?
     return :target_blocked if target.blocked?
 
-    # The invite flow owns account claiming for invitees, including its own
-    # acceptance side effects. Merging into a pending invite would strand it.
+    # The invite flow owns claiming those accounts; merging would strand the invite.
     return :target_is_invitee if target.invite_pending?
 
-    # The shape AuthenticationService#prevent_user_account_hijacking guards
-    # against: someone registered this address with a password and never proved
-    # they own it. Merging would hand them the source's verified identity along
-    # with a password only they know.
+    # The shape prevent_user_account_hijacking guards against: registered with a
+    # password, never proved they own the address. Merging would hand them the
+    # source's verified identity plus a password only they know.
     return :target_unconfirmed_password_account if unconfirmed_password_account?(target)
 
     verification_conflict(source, target) || identity_conflict(source, target)
@@ -78,21 +66,15 @@ class AccountMergeEligibilityService
     target.confirmation_required? && target.email_confirmed_at.nil? && target.password_digest.present?
   end
 
-  # Two different real people. Any active verification the target holds that the
-  # source does not hold too is somebody else's assertion of who this account is,
-  # so the merge is refused.
+  # Any active verification the target holds that the source does not is somebody
+  # else's assertion of who this account is.
   #
-  # Deliberately not scoped to the source's own methods. A platform can run more
-  # than one (MitID and NemLog-in, the two Vienna methods), and a per-method
-  # comparison would wave through a target verified as Alice via one method being
-  # absorbed by a source verified as Bob via another: the survivor would carry two
-  # people's verifications, and apply_verified_identity! overwrites the union of
-  # every method's locked attributes with the source's, so Alice's asserted name
-  # would be replaced by Bob's while her verification row still claimed her.
-  #
-  # The cost is refusing a genuine same-person merge where the two accounts were
-  # verified different ways. That falls back to the existing "sign out and log in
-  # with this email" route, which is the safe direction to fail in.
+  # Deliberately not scoped per method. A platform can run several (MitID and
+  # NemLog-in, the two Vienna ones), and comparing within a method would let a target
+  # verified as Alice be absorbed by a source verified as Bob: the survivor would hold
+  # both verifications while apply_verified_identity! replaced Alice's asserted name
+  # with Bob's. The cost is refusing a genuine same-person merge across two methods,
+  # which falls back to "sign out and log in with this email".
   def verification_conflict(source, target)
     target_verifications = target.verifications.active.to_a
     return nil if target_verifications.empty?
@@ -105,8 +87,8 @@ class AccountMergeEligibilityService
     :verification_conflict if conflicting
   end
 
-  # The same clash one level down, for login-only SSO methods that produce an
-  # identity but no verification row - those are invisible to the check above.
+  # The same clash for login-only SSO methods, which produce an identity but no
+  # verification row and so are invisible above.
   def identity_conflict(source, target)
     target_identities = target.identities.to_a
     return nil if target_identities.empty?

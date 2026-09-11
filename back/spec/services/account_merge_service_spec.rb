@@ -6,7 +6,7 @@ describe AccountMergeService do
   subject(:service) { described_class.new }
 
   # An email-less SSO account: an identity, a verification, and whatever it has
-  # managed to participate in before being asked for an email.
+  # participated in before being asked for an email.
   let!(:source) do
     create(:user, registration_completed_at: Time.zone.now).tap do |user|
       user.update_columns(email: nil, password_digest: nil)
@@ -34,8 +34,8 @@ describe AccountMergeService do
     expect(target.verifications.active.pluck(:hashed_uid)).to eq ['aaa']
   end
 
-  # users.verified is written by SideFxVerificationService#after_create, not by a
-  # callback on Verification, so moving the row is not enough on its own.
+  # users.verified is written by SideFxVerificationService#after_create, so moving the
+  # row is not enough on its own.
   it 'marks the target verified' do
     create(:verification, user: source, method_name: 'cow', hashed_uid: 'aaa')
     expect(target.verified).to be false
@@ -55,11 +55,9 @@ describe AccountMergeService do
     expect(MergeAccountConfirmation.count).to eq 0
   end
 
-  # The code proving the merge went to the target's own address, so asking it to
-  # confirm that same address afterwards would be asking twice.
+  # The code went to the target's own address, so confirming it again is asking twice.
   it 'confirms the target email the code was sent to' do
-    # No password: an unconfirmed account that has one is the hijacking shape and
-    # is refused outright, so it never reaches this.
+    # No password: an unconfirmed account with one is the hijacking shape, refused.
     target.update_columns(password_digest: nil)
     target.update!(email_confirmed_at: nil, confirmation_required: true)
 
@@ -70,8 +68,8 @@ describe AccountMergeService do
     expect(target.confirmation_required).to be false
   end
 
-  # absorb! has no such proof: an identity provider tied the accounts together,
-  # which says nothing about who can read the target's inbox.
+  # absorb! has no such proof: tying two accounts together says nothing about who can
+  # read the target's inbox.
   it 'leaves the target email unconfirmed when absorbing' do
     target.update!(email_confirmed_at: nil, confirmation_required: true)
 
@@ -91,9 +89,8 @@ describe AccountMergeService do
       expect(Reaction.where(user_id: target.id).pluck(:reactable_id)).to eq [idea.id]
     end
 
-    # The unique index is (reactable_type, reactable_id, user_id) - it is NOT
-    # scoped by mode, unlike Reaction's own validation. Deduping on mode would
-    # leave two rows for one user on one idea, which the database rejects.
+    # The unique index is not scoped by mode, unlike Reaction's validation, so
+    # deduping on mode leaves two rows for one user on one idea.
     it 'drops a reaction on something the target already reacted to, whatever the mode' do
       create(:reaction, user: target, reactable: idea, mode: 'down')
       create(:reaction, user: source, reactable: idea, mode: 'up')
@@ -184,8 +181,7 @@ describe AccountMergeService do
   end
 
   describe 'locked identity attributes' do
-    # A verification method that locks the name means the target can no longer
-    # edit it, so it has to end up holding what the provider actually asserted.
+    # A locked name is no longer editable, so it must hold what the provider asserted.
     it 'overwrites the name the target chose with the verified one' do
       source.update_columns(first_name: 'Robert', last_name: 'Smit')
       target.update!(first_name: 'Bob', last_name: 'Smith')
@@ -207,9 +203,8 @@ describe AccountMergeService do
       expect(target.reload.first_name).to eq 'Bob'
     end
 
-    # bosa_fas locks first_name and last_name; bogus locks last_name only. The
-    # target's own verification asserted its last name, so the source may fill the
-    # first name it has no lock on but must not touch the last.
+    # bosa_fas locks both names, bogus only the last. The target's own verification
+    # asserted its last name, so the source may fill the first but not the last.
     it 'does not overwrite a value the target had already locked' do
       source.update_columns(first_name: 'Robert', last_name: 'Smit')
       target.update!(first_name: 'Bob', last_name: 'Smith')
@@ -238,8 +233,7 @@ describe AccountMergeService do
       )
     end
 
-    # bogus locks gender, so there the source's answer is the provider's and wins
-    # over whatever the target had chosen.
+    # bogus locks gender, so the source's answer is the provider's and wins.
     it 'lets a locked answer from the source win over the target' do
       create(:custom_field_gender, :with_options)
       source.update!(custom_field_values: { 'gender' => 'female' })
@@ -252,8 +246,8 @@ describe AccountMergeService do
     end
   end
 
-  # The provider-driven entry point, used by VerificationService#make_verification
-  # when an identity provider returns a uid that a blank SSO shell already holds.
+  # The provider-driven entry point, used when a verification uid is already held by
+  # a blank SSO shell.
   describe '#absorb!' do
     def absorb!(into: target)
       service.absorb!(source: source, target: into)
@@ -270,9 +264,8 @@ describe AccountMergeService do
       expect(reaction.reload.user_id).to eq target.id
     end
 
-    # The target-side rules guard against handing a stranger's account to whoever
-    # could read an inbox. Here the provider has tied the two accounts together,
-    # so an admin re-verifying must not be refused.
+    # Target-side rules guard against handing a stranger's account to whoever read an
+    # inbox. The provider has tied these two together, so an admin must not be refused.
     it 'allows a target the confirmation-driven merge would refuse' do
       target.add_role('admin')
       target.save!
@@ -288,9 +281,7 @@ describe AccountMergeService do
       expect(source.reload).to be_present
     end
 
-    # Nobody new gains access - the provider has just confirmed the target is the
-    # person holding the identity - and expiring would cut off the verification
-    # request that is in flight.
+    # Nobody new gains access, and expiring would cut off the request in flight.
     it 'leaves the target token alone, unlike the confirmation-driven merge' do
       before_key = target.token_expiry_key
 
@@ -302,8 +293,8 @@ describe AccountMergeService do
 
   describe 'refusals' do
     it 'raises and changes nothing when the target may not be merged into' do
-      # Free the address before handing it to an admin: the merge resolves its
-      # target by email, so it is the admin that must own it by the time it runs.
+      # The merge resolves its target by email, so the admin must own the address by
+      # the time it runs.
       target.update!(email: 'somewhere-else@example.org')
       admin = create(:admin, email: 'existing@example.org')
 
@@ -313,12 +304,11 @@ describe AccountMergeService do
       expect(admin.reload.identities).to be_empty
     end
 
-    # The last line of defence: source.destroy! silently nullifies ideas and
-    # comments, so anything left behind must abort rather than be lost.
+    # source.destroy! silently nullifies ideas and comments, so anything left behind
+    # must abort rather than be lost.
     it 'refuses to delete the source if a surface was left behind' do
       idea = create(:idea, author: source)
-      # The guard only ever fires on programmer error - a surface added to the
-      # model layer but not to MOVES - so provoking it means breaking a mover.
+      # The guard only fires on programmer error, so provoking it means breaking a mover.
       allow(service).to receive(:move_and_rehash!).and_return(0) # rubocop:disable RSpec/SubjectStub
 
       expect { merge! }.to raise_error described_class::IncompleteMergeError
@@ -328,8 +318,8 @@ describe AccountMergeService do
     end
   end
 
-  # The address stopped belonging to anyone while the code was outstanding, so
-  # there is nothing to merge into - but the user still proved they own it.
+  # Nobody owns the address any more, so there is nothing to merge into - but the
+  # user still proved they own it.
   describe 'when the target no longer exists' do
     it 'promotes the email onto the source instead of merging' do
       confirmation

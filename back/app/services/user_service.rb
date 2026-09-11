@@ -128,19 +128,13 @@ class UserService
       end
     end
 
-    # Whether an unconfirmed address the SSO returned belongs to an account the
-    # user can be merged into later.
+    # An unconfirmed address somebody else owns cannot be parked on new_email:
+    # validate_not_duplicate_new_email rejects it and the whole sign-in fails with
+    # nothing created. Leaving the account without an email instead drops the user
+    # into the missing-data flow, where supplying this address offers the merge -
+    # which proves the inbox with a code, as the SSO did not.
     #
-    # It cannot be parked on new_email either way: validate_not_duplicate_new_email
-    # rejects an address somebody else holds, so the save raises and the whole
-    # sign-in fails with nothing created. Leaving the account without an email
-    # instead drops the user into the missing-data flow, which asks for an address
-    # and offers the merge when they supply this one - proving control of that
-    # inbox with a code, which is what the SSO's unconfirmed email did not.
-    #
-    # Invitees are the exception. The invite flow owns claiming those accounts and
-    # merging into a pending invite would strand it, so the address is left in
-    # place for the validation to reject as before.
+    # Invitees keep the old refusal: the invite flow owns claiming those accounts.
     def absorbable_by_merge?(email)
       owner = User.find_by_cimail(email)
       owner.present? && !owner.invite_pending?

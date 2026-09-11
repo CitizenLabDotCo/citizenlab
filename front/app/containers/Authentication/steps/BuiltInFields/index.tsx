@@ -85,8 +85,8 @@ const BuiltInFields = ({
 
   const methods = useForm({
     mode: 'onSubmit',
-    // state.new_email carries the address an SSO method returned that the account
-    // could not keep, so the user does not have to retype what we were just told.
+    // state.new_email holds an address the SSO returned but the account could not
+    // keep, so the user need not retype it.
     defaultValues: { ...DEFAULT_VALUES, email: state.new_email ?? undefined },
     resolver: yupResolver(schema),
   });
@@ -126,9 +126,8 @@ const BuiltInFields = ({
         return;
       }
 
-      // A `base` error belongs to no form field, so react-hook-form would record
-      // it against a field that is never rendered and the user would be left
-      // staring at an unchanged form. Surface it on the modal instead.
+      // A `base` error belongs to no form field, so react-hook-form would record it
+      // against one that is never rendered and nothing would appear to happen.
       if (e?.errors?.base) {
         setError('unknown');
         return;

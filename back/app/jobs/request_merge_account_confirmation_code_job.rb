@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
-# Issues a code proving control of +target_email+, the address of the account the
-# (email-less, SSO) user is asking to be merged into.
+# Issues a code proving control of +target_email+, the account the SSO user wants to
+# be merged into.
 #
-# Unlike RequestNewEmailConfirmationCodeJob this never writes user.new_email: the
-# address belongs to somebody else, and User#validate_not_duplicate_new_email would
-# reject it. The address lives on the confirmation instead.
+# Never writes user.new_email, unlike RequestNewEmailConfirmationCodeJob: the address
+# belongs to somebody else and validate_not_duplicate_new_email would reject it, so it
+# lives on the confirmation instead.
 class RequestMergeAccountConfirmationCodeJob < ApplicationJob
   self.priority = 30 # More important than default (50)
 
   def run(user, target_email:)
-    # Deliberately no target_email in the payload: activities are readable by
-    # admins, and this one would record an address the user merely typed.
+    # No target_email in the payload: activities are admin-readable, and this would
+    # record an address the user merely typed.
     LogActivityJob.perform_later(user, 'requested_confirmation_code', user, Time.now.to_i)
 
     confirmation = user.find_or_create_confirmation(:merge_account_confirmation, target_email: target_email)

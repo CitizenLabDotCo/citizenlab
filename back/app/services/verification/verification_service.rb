@@ -116,9 +116,8 @@ module Verification
     private
 
     def make_verification(user:, uid:, method:, activity_payload: {})
-      # Other accounts already verified with this uid. Either they are blank SSO
-      # shells belonging to the same person - who is now arriving with an email -
-      # or somebody else is claiming this identity, which is a hard refusal.
+      # Other accounts already verified with this uid: either blank SSO shells
+      # belonging to the same person, or somebody else claiming this identity.
       absorbable = existing_verified_users(user, uid, method)
       raise VerificationTakenError unless absorbable.all? { |u| merge_eligibility_service.source_eligible?(u) }
 
@@ -136,9 +135,8 @@ module Verification
         verification.save!
         sfxv_service.after_create(verification, user, activity_payload)
 
-        # Deliberately after the verification is saved: the shell's own copy is then
-        # a duplicate of one +user+ already holds, so the merge drops it instead of
-        # leaving two identical rows behind.
+        # After the save on purpose: the shell's copy is then a duplicate of one
+        # +user+ holds, so the merge drops it rather than leaving two identical rows.
         absorbable.each { |shell| account_merge_service.absorb!(source: shell, target: user) }
       end
 

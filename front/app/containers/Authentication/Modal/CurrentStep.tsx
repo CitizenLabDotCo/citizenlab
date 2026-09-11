@@ -175,9 +175,8 @@ const CurrentStep = ({
         />
       );
 
-    // Deliberately no fallback to authUser.new_email, unlike the step above: a
-    // merge never writes it, so anything sitting there is a different, unrelated
-    // address the user was part-way through confirming.
+    // No fallback to authUser.new_email, unlike the step above: a merge never writes
+    // it, so anything there is an unrelated address.
     case 'confirmation:merge-account':
       return (
         <EmailConfirmation

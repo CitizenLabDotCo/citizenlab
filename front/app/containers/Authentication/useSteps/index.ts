@@ -314,8 +314,7 @@ export default function useSteps() {
         sso_verification_type,
       } = search as SSOParams;
 
-      // The provider gave us an address the account could not keep (somebody else
-      // owns it). Seed it so the missing-data form opens with it filled in.
+      // An address the account could not keep, seeded so the form opens filled in.
       if (sso_email) {
         updateState({ new_email: sso_email });
       }

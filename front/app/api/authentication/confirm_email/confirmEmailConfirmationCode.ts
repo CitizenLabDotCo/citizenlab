@@ -66,10 +66,9 @@ export const reconfirmCodeEmail = async (code: string) => {
   }
 };
 
-// Consumes a merge-account code. On success the account that made the request no
-// longer exists - it has been merged into the account owning the confirmed address -
-// so the response carries a token for that surviving account. The whole cache is
-// reset rather than a few keys: the signed-in user is now a different person.
+// On success the requesting account no longer exists, so the response carries a
+// token for the survivor. The whole cache is reset rather than a few keys: the
+// signed-in user is now a different person.
 export const confirmCodeMergeAccount = async (code: string) => {
   try {
     const res = await fetcher<ConfirmCodeResponse>({

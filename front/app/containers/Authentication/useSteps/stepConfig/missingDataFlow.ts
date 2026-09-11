@@ -77,9 +77,8 @@ export const missingDataFlow = (
           const confirmationType = await requestCodeNewEmail(email);
 
           // A merge never writes user.new_email, so email_action_required stays
-          // `provide_new_email` and checkMissingData below would bounce the user
-          // straight back to this form with nothing shown. Go to the code entry
-          // directly instead.
+          // `provide_new_email` and checkMissingData would bounce the user back here
+          // with nothing shown. Go straight to the code entry.
           if (confirmationType === 'merge_account') {
             if (!isEmpty(restBuiltInFieldUpdate)) {
               await updateUser({

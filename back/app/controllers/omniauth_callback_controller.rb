@@ -237,14 +237,11 @@ class OmniauthCallbackController < ApplicationController
   end
 
   # Reject any parameters we don't need to be passed to the frontend in the URL
-  # The address the provider returned, handed back to the frontend so the
-  # missing-data form can pre-fill the email field instead of asking the user to
-  # retype what we were just told.
+  # Handed back so the missing-data form can pre-fill rather than asking the user to
+  # retype what the provider just told us.
   #
-  # Only when the account ended up without an address of its own, which is what
-  # UserService.build_in_sso does with an unconfirmed one another account already
-  # holds. Returning it otherwise would put an email in a redirect URL - and so in
-  # the access log - for no gain.
+  # Only when the account ended up without an address of its own. Otherwise this would
+  # put an email in a redirect URL, and so in the access log, for no gain.
   def prefillable_sso_email
     return if @sso_email.blank?
     return if @user.nil? || @user.email.present? || @user.new_email.present?
@@ -354,10 +351,9 @@ class OmniauthCallbackController < ApplicationController
         rescue Verification::VerificationService::NotEntitledError => e
           verification_failure_redirect(not_entitled_error(e))
         rescue AccountMergeService::IneligibleError, AccountMergeService::IncompleteMergeError => e
-          # The blank account holding this identity could not be absorbed, so the
-          # verification is still on it - which is exactly what 'taken' tells the
-          # user. Reported rather than swallowed: IncompleteMergeError means a
-          # participation surface is missing from AccountMergeService::MOVES.
+          # The blank account could not be absorbed, so the verification is still on
+          # it - which is what 'taken' says. Reported, not swallowed:
+          # IncompleteMergeError means a surface is missing from MOVES.
           ErrorReporter.report(e)
           verification_failure_redirect('taken')
         end

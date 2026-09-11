@@ -44,11 +44,9 @@ class WebApi::V1::RequestCodesController < ApplicationController
     user_associated_with_new_email = new_email.present? ? User.find_by_cimail(new_email) : nil
 
     if user_associated_with_new_email && user_associated_with_new_email != current_user
-      # An email-less SSO user typing an address that already has an account is
-      # almost always the same person arriving a second way, so offer to merge the
-      # two rather than dead-ending them. The source-side guards are also the scope
-      # fence: this endpoint is shared with the ordinary profile email change, and
-      # they keep the merge from ever being offered there.
+      # Almost always the same person arriving a second way, so offer the merge
+      # rather than dead-ending them. The source guards are also the scope fence:
+      # this endpoint is shared with the profile's email change.
       unless account_merge_offerable?(current_user)
         render json: { errors: { new_email: [{ error: 'is already taken' }] } }, status: :unprocessable_entity
         return
@@ -58,10 +56,9 @@ class WebApi::V1::RequestCodesController < ApplicationController
       # of merging must still leave "change your email" usable.
       authorize current_user, :request_merge_account_code?, policy_class: RequestCodePolicy
 
-      # Whether the *target* may be merged into is deliberately not checked here.
-      # Refusing up front would let anyone probe which addresses belong to admins;
-      # the code goes to the target's own inbox, so nobody who cannot read it gets
-      # any further. AccountMergeEligibilityService runs at confirm time instead.
+      # The target is deliberately not checked here: refusing up front would let
+      # anyone probe which addresses belong to admins. The code goes to the target's
+      # inbox, so eligibility can wait until confirm time.
       RequestMergeAccountConfirmationCodeJob.perform_now(current_user, target_email: new_email)
 
       render json: raw_json({ confirmation_type: 'merge_account' })

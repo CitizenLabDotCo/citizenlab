@@ -103,10 +103,9 @@ export type Overrides = {
   sub?: string;
 };
 
-// Drives the fake OIDC provider's own page: pick a profile, optionally override
-// the email or the subject (which becomes the verification uid), then submit.
-// Shared by the login and verification entry points, which differ only in which
-// button opens it.
+// Drives the fake OIDC provider's page: pick a profile, optionally override the
+// email or subject (the verification uid), submit. Shared by the login and
+// verification entry points, which differ only in which button opens it.
 const fakeSSOProviderScreen = (
   cy: Cypress.Chainable,
   profileName: ProfileName,
@@ -129,9 +128,8 @@ const fakeSSOProviderScreen = (
   );
 };
 
-// Verifies an already signed-in user from the verification wizard. Unlike
-// fakeSSOAuth there is no new session to wait for - the user keeps the one they
-// arrived with - so the caller asserts the outcome itself.
+// Verifies an already signed-in user. Unlike fakeSSOAuth there is no new session to
+// wait for, so the caller asserts the outcome itself.
 export const fakeSSOVerify = (
   cy: Cypress.Chainable,
   profileName: ProfileName,

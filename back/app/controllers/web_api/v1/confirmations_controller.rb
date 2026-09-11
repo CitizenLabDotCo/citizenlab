@@ -65,13 +65,10 @@ class WebApi::V1::ConfirmationsController < ApplicationController
     end
   end
 
-  # Consumes a merge-account code: the caller is an email-less SSO account that has
-  # asked to be absorbed into the account owning the address the code was sent to.
-  #
-  # On success the caller's own account no longer exists, so its JWT is dead
-  # (from_token_payload looks the user up by id). A token for the survivor is
-  # returned instead - the same handover confirm_code_email performs. reset_jwt_cookie
-  # would be wrong here: it is built around current_user, i.e. the deleted account.
+  # On success the caller's account no longer exists, so its JWT is dead
+  # (from_token_payload looks the user up by id). A token for the survivor is returned
+  # instead, as confirm_code_email does. reset_jwt_cookie would be wrong: it is built
+  # around current_user, i.e. the deleted account.
   def confirm_code_merge_account
     result = user_confirmation_service.validate_and_confirm_merge_account!(
       current_user,

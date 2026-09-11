@@ -25,10 +25,8 @@ describe('SSO: user with unconfirmed email', () => {
     confirmEmail(cy);
   });
 
-  // The other shape of "account with this email exists": a fully established
-  // account, confirmed and with a password. The SSO says its address is
-  // unverified, so it is never trusted - the user has to prove they own that
-  // inbox with a code before the two accounts are joined.
+  // The other shape of "this email exists": a fully established account. The SSO
+  // says the address is unverified, so the user must prove the inbox with a code.
   it('merges into an established account when the SSO email is already taken', () => {
     const email = randomEmail();
     cy.apiSignup(randomString(), randomString(), email, randomString());
@@ -84,8 +82,8 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
     cy.get('#e2e-authentication-modal').should('exist');
   });
 
-  // The account is only created once the policies are accepted, so signing up has
-  // to run that far for there to be an account to collide with.
+  // The account is only created once the policies are accepted, so signing up has to
+  // run that far for there to be one to collide with.
   it('works if user signs up, does not confirm email, then logs in with SSO with same confirmed email', () => {
     const email = randomEmail();
 
@@ -99,14 +97,12 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
     // Sign up through Fake SSO (return confirmed email)
     fakeSSOGlobalSignup(cy, 'john_doe', { email });
 
-    // Signed in as the account that already had this address, rather than a
-    // second one being created alongside it.
+    // Signed in as the existing account, not a second one alongside it.
     //
-    // No posting check here, unlike the merge case below: signing in to an
-    // existing account does not import the provider's registration answers
-    // (update_in_sso! only writes the attributes the method declares updateable),
-    // so the profile is still incomplete and participation stays blocked until
-    // the user fills it in.
+    // No posting check, unlike the merge case: signing in imports none of the
+    // provider's registration answers (update_in_sso! writes only what the method
+    // declares updateable), so participation stays blocked until the user fills in
+    // the profile.
     cy.getAuthUser().then((user) => {
       expect(user.body.data.attributes.email).to.eq(email);
     });

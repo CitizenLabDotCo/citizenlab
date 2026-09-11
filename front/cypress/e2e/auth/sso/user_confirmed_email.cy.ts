@@ -10,17 +10,15 @@ describe('SSO: user with confirmed email', () => {
     cy.get('#e2e-sign-up-success-modal').should('exist');
   });
 
-  // A verified address is trusted, so the existing account is matched on it and
-  // signed straight in. No code, and deliberately no merge prompt: there is only
-  // ever one account here, not two to join.
+  // A verified address is trusted, so the existing account is matched and signed
+  // straight in. No merge prompt: there is one account here, not two to join.
   it('signs straight in to the existing account when the email is already taken', () => {
     const email = randomEmail();
     cy.apiSignup(randomString(), randomString(), email, randomString());
 
     fakeSSOGlobalSignup(cy, 'john_doe', { email });
 
-    // Matching an existing account is a sign-in, not a sign-up, and only the
-    // sign-up flow ends on the success step.
+    // This is a sign-in, and only the sign-up flow ends on the success step.
     cy.get('#e2e-user-menu-container').should('exist');
 
     cy.getAuthUser().then((user) => {

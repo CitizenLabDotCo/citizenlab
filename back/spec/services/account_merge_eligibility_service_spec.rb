@@ -5,8 +5,8 @@ require 'rails_helper'
 describe AccountMergeEligibilityService do
   subject(:service) { described_class.new }
 
-  # The shape the merge flow always starts from: signed in through an SSO method
-  # that returned no email, so there is nothing but the identity to go on.
+  # Where the merge flow always starts: an SSO method returned no email, so there is
+  # nothing but the identity to go on.
   let(:source) do
     create(:user, email: nil, password: nil, registration_completed_at: Time.zone.now).tap do |user|
       user.update_columns(email: nil, password_digest: nil)
@@ -36,8 +36,8 @@ describe AccountMergeEligibilityService do
       expect(reason).to eq :source_has_email
     end
 
-    # The scope fence: this is what keeps the shared request_code_new_email
-    # endpoint from offering a merge during an ordinary profile email change.
+    # The scope fence that keeps the shared endpoint from offering a merge during an
+    # ordinary profile email change.
     it 'refuses a source that has a password' do
       source.update_columns(password_digest: BCrypt::Password.create('democracy2.0'))
       expect(reason).to eq :source_has_password
@@ -73,9 +73,8 @@ describe AccountMergeEligibilityService do
       expect(reason(source, invitee)).to eq :target_is_invitee
     end
 
-    # The shape AuthenticationService#prevent_user_account_hijacking guards
-    # against: someone claimed this address with a password and never proved
-    # they own it.
+    # The shape prevent_user_account_hijacking guards against: claimed with a
+    # password, never proved.
     it 'refuses a target that set a password but never confirmed the email' do
       target.update_columns(
         email_confirmed_at: nil,
@@ -97,10 +96,8 @@ describe AccountMergeEligibilityService do
       expect(reason).to be_nil
     end
 
-    # A platform can run more than one method, so a per-method comparison would
-    # wave through two different people: the survivor would carry both
-    # verifications while the target's locked attributes were overwritten with
-    # the source's.
+    # A platform can run several methods, so comparing within one would wave through
+    # two different people and overwrite the target's locked attributes.
     it 'refuses when the target is verified as somebody else through another method' do
       create(:verification, user: source, method_name: 'cow', hashed_uid: 'aaa')
       create(:verification, user: target, method_name: 'bogus', hashed_uid: 'bbb')
@@ -114,8 +111,7 @@ describe AccountMergeEligibilityService do
       expect(reason).to eq :verification_conflict
     end
 
-    # The source bringing extra verifications is the ordinary case: it is the
-    # account being absorbed, and its rows move onto the target.
+    # The ordinary case: the source is the account being absorbed, so its rows move.
     it 'allows when the source holds verifications the target does not' do
       create(:verification, user: source, method_name: 'cow', hashed_uid: 'aaa')
       create(:verification, user: source, method_name: 'bogus', hashed_uid: 'bbb')
@@ -123,8 +119,8 @@ describe AccountMergeEligibilityService do
       expect(reason).to be_nil
     end
 
-    # Login-only SSO methods produce an identity but no verification, so the
-    # verification rule alone would let two different people collide.
+    # Login-only SSO methods produce an identity but no verification, so the rule
+    # above would miss them.
     it 'refuses when the target has a different identity for the same provider' do
       create(:identity, user: target, provider: 'clave_unica', uid: '22222')
       expect(reason).to eq :identity_conflict

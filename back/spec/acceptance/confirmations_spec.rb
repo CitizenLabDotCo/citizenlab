@@ -358,8 +358,8 @@ resource 'Confirmations' do
         expect(target.reload.identities.pluck(:uid)).to eq ['11111']
         expect(target.verified).to be true
 
-        # The caller's own account is gone, so its JWT is dead - the response has
-        # to hand back a token for the account that survived.
+        # The caller's account is gone and its JWT with it, so the response has to
+        # hand back a token for the survivor.
         token = response_data[:attributes][:auth_token]
         expect(token[:payload][:sub]).to eq target.id
       end

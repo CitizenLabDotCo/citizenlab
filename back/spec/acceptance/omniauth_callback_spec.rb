@@ -416,9 +416,8 @@ resource 'Omniauth Callback', document: false do
         end
       end
 
-      # The mirror of the new-account case, one step worse: parking the address on
-      # new_email made update_in_sso! raise, which locked an existing user out of
-      # signing in at all. They now sign in and keep the account they had.
+      # The new-account case one step worse: parking the address on new_email made
+      # update_in_sso! raise, locking an existing user out of signing in at all.
       context 'when identity already exists and the SSO email is owned by somebody else' do
         let!(:owner) { create(:user, email: 'billy_fixed@example.com') }
         let!(:existing_user) do
@@ -468,12 +467,9 @@ resource 'Omniauth Callback', document: false do
         end
       end
 
-      # The address cannot be parked on new_email - validate_not_duplicate_new_email
-      # rejects one somebody else holds, which used to fail the whole sign-in and
-      # leave nothing behind. The account is created without an email instead, so
-      # the missing-data flow can ask for one; typing this same address there
-      # offers the merge, which proves control of the inbox with a code - the proof
-      # an unconfirmed SSO email did not provide.
+      # validate_not_duplicate_new_email rejects an address somebody else holds, so
+      # parking it would fail the whole sign-in. The account is created without one
+      # instead, and the missing-data flow offers the merge when the user types it.
       context 'when email is already taken by another confirmed user' do
         let!(:existing_user) { create(:user, email: 'billy_fixed@example.com') }
 
@@ -497,8 +493,7 @@ resource 'Omniauth Callback', document: false do
           expect(existing_user.identities).to be_empty
         end
 
-        # Handed back so the missing-data form opens with the address filled in
-        # rather than asking the user to retype what the provider just told us.
+        # So the missing-data form opens with it filled in.
         example 'Hands the address back on the redirect' do
           do_request
 

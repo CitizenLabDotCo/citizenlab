@@ -1,42 +1,33 @@
 # frozen_string_literal: true
 
-# Merges an email-less SSO account (+source+) into the account that owns the email
-# it supplied (+target+), then deletes the source.
+# Merges an email-less SSO account (+source+) into the account owning the email it
+# supplied (+target+), then deletes the source.
 #
-# Reached only from the merge-account confirmation flow, i.e. after the caller has
-# entered a code sent to the target's inbox. See AccountMergeEligibilityService for
-# who may be merged into, and MergeAccountConfirmation for how the request is held.
-#
-# Not built on UserReduceService: that one blacklists exactly the tables this has to
-# move (identities, verifications, followers, memberships), interpolates ids into raw
-# SQL, and has no test coverage.
+# Not built on UserReduceService: that blacklists the very tables this has to move,
+# interpolates ids into raw SQL, and has no test coverage.
 class AccountMergeService
   class IneligibleError < StandardError; end
   class IncompleteMergeError < StandardError; end
 
   # Everything the source can own that must end up on the target.
   #
-  # +dedup_by+ names the columns that must stay unique per user - almost all of them
-  # are backed by a unique index, so skipping the dedup doesn't produce a duplicate,
-  # it aborts the merge. +dupes+ is :destroy where a counter_culture counter hangs off
-  # the row and :delete where nothing observes it.
+  # +dedup_by+ columns are mostly backed by a unique index, so a missing dedup aborts
+  # the merge rather than duplicating. +dupes+ is :destroy where a counter_culture
+  # counter hangs off the row, :delete where nothing observes it.
   #
-  # The emptiness assertion is derived from this same list, so a surface added here is
-  # automatically one the merge refuses to silently leave behind.
+  # assert_source_emptied! derives from this same list, so a surface added here cannot
+  # be silently left behind.
   MOVES = [
-    # Auth. These are the point of the whole exercise. Eligibility already refuses a
-    # target holding a *different* identity or verification for the same provider or
-    # method; an exactly matching one is the same person twice, so it is dropped
-    # rather than duplicated.
+    # Auth. Eligibility already refuses a target holding a *different* identity or
+    # verification, so an exact match here is the same person twice - drop it.
     { model: 'Identity', fk: :user_id, dedup_by: %i[provider uid], dupes: :delete },
     { model: 'Verification::Verification', fk: :user_id, dedup_by: %i[method_name hashed_uid], dupes: :delete },
 
     # Participation.
     { model: 'Idea', fk: :author_id, rehash: true },
     { model: 'Comment', fk: :author_id, rehash: true },
-    # The DB index on reactions is (reactable_type, reactable_id, user_id) - it is NOT
-    # scoped by mode, even though Reaction's own validation is. Dedup on mode and a
-    # user who liked what the other disliked breaks the merge.
+    # The DB index is not scoped by mode, even though Reaction's validation is. Dedup
+    # on mode and a user who liked what the other disliked breaks the merge.
     { model: 'Reaction', fk: :user_id, dedup_by: %i[reactable_type reactable_id], dupes: :destroy },
     { model: 'Basket', fk: :user_id, dedup_by: %i[phase_id], dupes: :destroy },
     { model: 'Polls::Response', fk: :user_id, dedup_by: %i[phase_id], dupes: :destroy },
@@ -45,8 +36,7 @@ class AccountMergeService
     { model: 'Cosponsorship', fk: :user_id, dedup_by: %i[idea_id], dupes: :destroy },
     { model: 'Follower', fk: :user_id, dedup_by: %i[followable_type followable_id], dupes: :destroy },
     { model: 'IdeaExposure', fk: :user_id, dedup_by: %i[idea_id phase_id], dupes: :delete },
-    # No association on User, no foreign key: these rows outlive source.destroy!
-    # pointing at an id that no longer exists unless they are moved here.
+    # No association on User and no foreign key, so these dangle unless moved here.
     { model: 'Surveys::Response', fk: :user_id },
 
     { model: 'SpamReport', fk: :user_id },
@@ -77,17 +67,14 @@ class AccountMergeService
     run!(source: source, confirmation: confirmation)
   end
 
-  # Provider-driven merge: an identity provider has asserted that +source+ and
-  # +target+ are one person, by returning the same verification uid for both. The
-  # target is given rather than resolved, and there is no confirmation to consume.
+  # Provider-driven merge: an identity provider returned the same verification uid
+  # for both accounts, so they are one person.
   #
-  # The target-side eligibility rules deliberately do not apply. They exist because
-  # merge! hands somebody else's account to whoever could read an inbox; here the
-  # target is the account being signed in to and the provider's assertion is the
-  # stronger proof, so refusing an admin (say) would only break re-verification.
-  #
-  # The target's token is left alone for the same reason - nobody new gains access,
-  # and expiring it would cut off the verification request in flight.
+  # Target-side eligibility does not apply here. Those rules exist because merge!
+  # hands over somebody else's account to whoever could read an inbox; here the
+  # target is the account being signed in to, so refusing an admin would only break
+  # re-verification. The token is left alone for the same reason - nobody new gains
+  # access, and expiring it would cut off the verification request in flight.
   #
   # @return [User] +target+, with everything the source owned moved onto it.
   # @raise [IneligibleError] if the source is not an absorbable blank account.
@@ -105,9 +92,8 @@ class AccountMergeService
     survivor = ActiveRecord::Base.transaction do
       resolved = target || User.find_by_cimail(confirmation.target_email)
 
-      # Nobody owns the address any more (the target deleted their account, or
-      # changed it while the code was outstanding). Nothing to merge into, so fall
-      # back to what the ordinary new-email flow would have done all along.
+      # Nobody owns the address any more, so there is nothing to merge into. Fall
+      # back to what the ordinary new-email flow would have done.
       next promote_email_onto_source!(source, confirmation.target_email, confirmation) if resolved.nil?
 
       lock_in_id_order!(source, resolved)
@@ -115,23 +101,20 @@ class AccountMergeService
       reason = ineligibility_reason(source, resolved, confirmation)
       raise IneligibleError, reason.to_s if reason
 
-      # Captured before the move: afterwards the target holds the source's
-      # verifications too, and there is no telling whose lock is whose.
+      # Before the move: afterwards there is no telling whose lock is whose.
       target_locks = locks_held_by(resolved)
 
       moved = move_all!(source, resolved)
 
-      # The code went to the target's own address and the caller read it back, so
-      # that address is now proven. Without this the survivor would be asked to
-      # confirm the very address it just used to authorise the merge.
+      # The caller read a code sent to this address, so it is proven. Otherwise the
+      # survivor would be asked to confirm the address that authorised the merge.
       confirm_target_email!(resolved) if confirmation
 
       apply_verified_identity!(source, resolved, target_locks)
       recompute_counters!(resolved)
 
-      # The target has just gained an entirely new way to authenticate. That is a
-      # credential change, so existing sessions elsewhere should not survive it.
-      # See absorb! for why the provider-driven path is exempt.
+      # A new way to authenticate is a credential change, so other sessions should
+      # not survive it. See absorb! for why that path is exempt.
       resolved.expire_token! if confirmation
 
       assert_source_emptied!(source)
@@ -220,14 +203,13 @@ class AccountMergeService
     end
   end
 
-  # :destroy where a counter_culture counter (or a dependent association) hangs off the
-  # row, :delete where nothing observes it and the callbacks are pure overhead.
+  # :destroy where a counter or dependent association observes the row, else :delete.
   def discard_duplicates!(model, ids, strategy)
     scope = model.where(id: ids)
 
     if strategy == :destroy && model == Basket
-      # Basket's own destroy path orphans submitted baskets to user_id: nil rather
-      # than removing them, and its counts are raw SQL rather than counter_culture.
+      # destroy_or_keep! orphans submitted baskets to user_id: nil instead of
+      # removing them, and basket counts are raw SQL, not counter_culture.
       phases = Phase.where(id: scope.distinct.pluck(:phase_id)).to_a
       scope.each(&:destroy!)
       phases.each { |phase| Basket.update_counts(phase) }
@@ -238,11 +220,9 @@ class AccountMergeService
     end
   end
 
-  # author_hash is recomputed by a before_validation that only fires when author_id
-  # actually changes, so update_all would leave it pointing at the deleted account.
-  # update_columns rather than update! deliberately: an old record need not still
-  # satisfy today's validations, and a merge must not fail because of one.
-  # Anonymous records carry no author_id and so never appear here.
+  # set_author_hash only fires on author_id_changed?, so update_all would leave the
+  # hash pointing at the deleted account. update_columns, not update!: an old record
+  # need not still pass today's validations and a merge must not fail on one.
   def move_and_rehash!(model, fk, source, target)
     records = model.where(fk => source.id).to_a
     now = Time.zone.now
@@ -281,21 +261,12 @@ class AccountMergeService
   end
 
   # users.verified is written by SideFxVerificationService#after_create, not by a
-  # callback on Verification, so moving the rows does not by itself flip it.
+  # callback on Verification, so moving the rows does not flip it.
   #
-  # Then the two profiles have to be reconciled. Precedence, strongest first:
-  #
-  #   1. values locked by a verification the target already held. Its provider
-  #      asserted those about the target, and the source has no standing to
-  #      overwrite them - so they are excluded from what the source may write.
-  #   2. values locked by a verification the source brought. The user can no
-  #      longer edit these, so the target must end up holding what the provider
-  #      actually said rather than the name it had chosen for itself.
-  #   3. whatever the target already had. A long-standing profile is not
-  #      overwritten by a fresh SSO account.
-  #   4. the source's remaining answers, which fill the gaps. Same person, so an
-  #      answer only one of the two accounts has is still theirs, and filling a
-  #      blank can never destroy anything.
+  # Profile precedence, strongest first: values the target's own verification locks
+  # (its provider asserted those, so the source may not overwrite them); values the
+  # source's verification locks; whatever the target already had; the source's
+  # remaining answers, filling gaps only.
   def apply_verified_identity!(source, target, target_locks)
     target.verified = true if target.verifications.active.exists?
 
@@ -321,9 +292,8 @@ class AccountMergeService
   end
 
   # source.destroy! silently nullifies ideas/comments/reactions and destroys
-  # follows/baskets/attendances/cosponsorships - there is no foreign key to raise if a
-  # surface was missed. Refusing to delete is the only thing standing between a missed
-  # surface and silent data loss.
+  # follows/baskets/attendances/cosponsorships, with no foreign key to raise on a
+  # missed surface. Refusing to delete is all that stands between one and data loss.
   def assert_source_emptied!(source)
     leftovers = MOVES.filter_map do |move|
       model = resolve_model(move[:model])

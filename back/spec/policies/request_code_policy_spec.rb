@@ -111,9 +111,8 @@ RSpec.describe RequestCodePolicy do
       expect(described_class.new(user, user)).not_to permit(:request_merge_account_code)
     end
 
-    # The budgets are deliberately separate: both codes are issued by the same
-    # endpoint, and sharing one would leave a user who has exhausted their merge
-    # attempts unable to type a different address - the only way out of that flow.
+    # Separate budgets: one endpoint issues both codes, and sharing a budget would
+    # leave an exhausted merge unable to type a different address.
     it 'still permits request_code_new_email when the merge budget is exhausted' do
       user.find_or_create_confirmation(:merge_account_confirmation, target_email: 'other@test.com')
         .update!(code_reset_count: 4)

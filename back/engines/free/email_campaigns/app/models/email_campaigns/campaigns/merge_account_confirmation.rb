@@ -38,15 +38,10 @@ module EmailCampaigns
     include Trackable
     include ContentConfigurable
 
-    # Sent synchronously when someone signed in through an email-less SSO method
-    # supplies an email address that already belongs to another account, and asks
-    # for that account to absorb their sign-in (see
-    # RequestMergeAccountConfirmationCodeJob).
-    #
-    # The recipient of the campaign is the SSO account, but the mail is delivered to
-    # the *other* account's inbox - entering the code is what proves the two are the
-    # same person. Mandatory and transactional, like its NewEmailConfirmation
-    # sibling, so it never goes through the scheduled/activity pipeline.
+    # The campaign's recipient is the SSO account, but the mail goes to the *other*
+    # account's inbox - reading the code is what proves they are the same person.
+    # Mandatory and transactional like NewEmailConfirmation, so it never goes through
+    # the scheduled/activity pipeline.
     filter :exclude_from_send_pipeline
 
     def mailer_class

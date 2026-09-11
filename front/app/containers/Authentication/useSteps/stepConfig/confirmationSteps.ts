@@ -112,11 +112,9 @@ export const confirmationSteps = (
       },
     },
 
-    // The email the user supplied already belongs to another account, and a code
-    // was sent to that account's inbox. Entering it merges this (email-less, SSO)
-    // account into that one and signs the user in as it - so on success this
-    // session belongs to a different user than it did a moment ago, and the
-    // requirements have to be re-fetched for that user rather than reused.
+    // Entering the code merges this email-less SSO account into the one owning the
+    // address and signs the user in as it. The session now belongs to a different
+    // user, so requirements have to be re-fetched rather than reused.
     'confirmation:merge-account': {
       CLOSE: () => setCurrentStep('closed'),
       CHANGE_EMAIL: async () => {
@@ -150,9 +148,8 @@ export const confirmationSteps = (
         setCurrentStep('success');
       },
       RESEND_CODE: async () => {
-        // The address has to be passed explicitly: unlike the new_email flow, a
-        // merge never writes user.new_email (it belongs to somebody else), so the
-        // backend has nothing to fall back on.
+        // Passed explicitly: a merge never writes user.new_email, so the backend has
+        // nothing to fall back on.
         await requestCodeNewEmail(state.new_email ?? undefined);
       },
     },

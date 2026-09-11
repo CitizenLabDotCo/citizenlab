@@ -141,10 +141,9 @@ describe Verification::VerificationService do
       expect { service.verify_sync(**params2) }.to raise_error(Verification::VerificationService::VerificationTakenError)
     end
 
-    # The blank, email-less shell an SSO method leaves behind when the user never
-    # supplies an email. Arriving again with an email used to delete it, which
-    # nullified its ideas and comments and destroyed its follows and attendances
-    # outright. It is absorbed now, so nothing it contributed is lost.
+    # The email-less shell an SSO method leaves behind. Arriving again with an email
+    # used to delete it, nullifying its ideas and destroying its follows; it is
+    # absorbed now, so nothing it contributed is lost.
     context 'when a blank SSO account already holds the identity' do
       let(:shell) do
         create(:user, registration_completed_at: Time.zone.now).tap do |u|
