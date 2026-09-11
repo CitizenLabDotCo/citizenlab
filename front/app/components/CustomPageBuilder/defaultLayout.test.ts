@@ -3,6 +3,7 @@ import { SerializedNodes } from '@craftjs/core';
 import {
   BODY_NODE_ID,
   defaultCustomPageLayout,
+  layoutHasBanner,
   layoutHasContent,
   normalizeCustomPageLayout,
 } from './defaultLayout';
@@ -100,6 +101,101 @@ describe('normalizeCustomPageLayout', () => {
     nodes[BODY_NODE_ID].nodes = ['TXT'];
 
     expect(normalizeCustomPageLayout(nodes).TXT.parent).toBe(BODY_NODE_ID);
+  });
+});
+
+describe('normalizeCustomPageLayout header hoisting', () => {
+  const headerNodes = () => ({
+    ROOT: {
+      ...defaultCustomPageLayout().ROOT,
+      nodes: ['CUSTOM_PAGE_TITLE', 'CUSTOM_PAGE_BODY'],
+    },
+    CUSTOM_PAGE_TITLE: {
+      type: { resolvedName: 'CustomPageTitle' },
+      nodes: [],
+      props: {},
+      custom: {},
+      hidden: false,
+      parent: 'ROOT',
+      isCanvas: false,
+      displayName: 'CustomPageTitle',
+      linkedNodes: {},
+    },
+    CUSTOM_PAGE_BODY: {
+      ...defaultCustomPageLayout().CUSTOM_PAGE_BODY,
+      nodes: ['txt', 'banner'],
+    },
+    txt: {
+      type: { resolvedName: 'TextMultiloc' },
+      nodes: [],
+      props: {},
+      custom: {},
+      hidden: false,
+      parent: 'CUSTOM_PAGE_BODY',
+      isCanvas: false,
+      displayName: 'TextMultiloc',
+      linkedNodes: {},
+    },
+    banner: {
+      type: { resolvedName: 'CustomPageBanner' },
+      nodes: [],
+      props: {},
+      custom: {},
+      hidden: false,
+      parent: 'CUSTOM_PAGE_BODY',
+      isCanvas: false,
+      displayName: 'CustomPageBanner',
+      linkedNodes: {},
+    },
+  });
+
+  // CustomPageRoot refuses drops, so a banner from the toolbox lands in the body.
+  it('hoists a banner dropped in the body to ROOT, above the title', () => {
+    const result = normalizeCustomPageLayout(headerNodes());
+
+    expect(result.ROOT.nodes).toEqual([
+      'banner',
+      'CUSTOM_PAGE_TITLE',
+      'CUSTOM_PAGE_BODY',
+    ]);
+    expect(result.banner.parent).toBe('ROOT');
+    expect(result.CUSTOM_PAGE_BODY.nodes).toEqual(['txt']);
+  });
+
+  it('puts a banner stored after the title back above it', () => {
+    const nodes = headerNodes();
+    nodes.ROOT.nodes = ['CUSTOM_PAGE_TITLE', 'banner', 'CUSTOM_PAGE_BODY'];
+    nodes.CUSTOM_PAGE_BODY.nodes = ['txt'];
+    nodes.banner.parent = 'ROOT';
+
+    expect(normalizeCustomPageLayout(nodes).ROOT.nodes).toEqual([
+      'banner',
+      'CUSTOM_PAGE_TITLE',
+      'CUSTOM_PAGE_BODY',
+    ]);
+  });
+});
+
+describe('layoutHasBanner', () => {
+  it('is true only when the layout holds a banner widget', () => {
+    expect(layoutHasBanner(defaultCustomPageLayout())).toBe(false);
+    expect(layoutHasBanner(undefined)).toBe(false);
+    expect(
+      layoutHasBanner({
+        ...defaultCustomPageLayout(),
+        banner: {
+          type: { resolvedName: 'CustomPageBanner' },
+          nodes: [],
+          props: {},
+          custom: {},
+          hidden: false,
+          parent: 'ROOT',
+          isCanvas: false,
+          displayName: 'CustomPageBanner',
+          linkedNodes: {},
+        },
+      })
+    ).toBe(true);
   });
 });
 

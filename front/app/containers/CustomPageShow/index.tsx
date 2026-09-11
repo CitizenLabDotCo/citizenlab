@@ -124,7 +124,25 @@ const CustomPageShow = () => {
       />
       <main className={`e2e-page-${pageSlugToUse}`}>
         <PageContainer builderContent={showBuilderContent}>
-          {pageAttributes.banner_enabled ? (
+          {showBuilderContent ? (
+            // The layout owns the header: its Banner and Title widgets replace both legacy
+            // branches below, so the page renders only the edit button. Full width or the
+            // flex parent collapses the anchor to nothing and the button lands mid-page; it
+            // lines up with the content unless a full-bleed banner puts it at the window edge.
+            <Box
+              position="relative"
+              w="100%"
+              maxWidth={
+                builderContent.hasBanner ? undefined : BUILDER_CONTENT_MAX_WIDTH
+              }
+              zIndex="40000"
+            >
+              <AdminCustomPageEditButton
+                pageId={page.data.id}
+                projectId={pageAttributes.project_id}
+              />
+            </Box>
+          ) : pageAttributes.banner_enabled ? (
             <>
               {pageAttributes.project_id && (
                 <BackLinkContainer>
@@ -143,21 +161,6 @@ const CustomPageShow = () => {
                 />
               </Box>
             </>
-          ) : showBuilderContent ? (
-            // The layout's Title widget owns the heading and can hide it, so the page
-            // renders only the edit button. Full width or the flex parent collapses the
-            // anchor to nothing and the button lands mid-page.
-            <Box
-              position="relative"
-              w="100%"
-              maxWidth={BUILDER_CONTENT_MAX_WIDTH}
-              zIndex="40000"
-            >
-              <AdminCustomPageEditButton
-                pageId={page.data.id}
-                projectId={pageAttributes.project_id}
-              />
-            </Box>
           ) : (
             <NoBannerContainer>
               {pageAttributes.project_id && (

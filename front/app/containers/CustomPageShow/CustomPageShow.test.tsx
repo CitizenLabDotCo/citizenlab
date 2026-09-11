@@ -61,6 +61,7 @@ jest.mock('api/custom_pages/useCustomPageBySlug', () =>
 );
 
 let hasContent = false;
+let hasBanner = false;
 let isLoading = false;
 jest.mock(
   'components/CustomPageBuilder/ContentViewer/useCustomPageBuilderContent',
@@ -69,8 +70,8 @@ jest.mock(
     // Mirrors the real hook, which is disabled without an id and so reports nothing.
     default: jest.fn((staticPageId?: string) =>
       staticPageId
-        ? { hasContent, isLoading }
-        : { hasContent: false, isLoading: false }
+        ? { hasContent, hasBanner, isLoading }
+        : { hasContent: false, hasBanner: false, isLoading: false }
     ),
   })
 );
@@ -78,6 +79,7 @@ jest.mock(
 describe('CustomPageShow', () => {
   beforeEach(() => {
     hasContent = false;
+    hasBanner = false;
     isLoading = false;
     pageAttributes = globalCustomPage;
   });
@@ -110,6 +112,24 @@ describe('CustomPageShow', () => {
     expect(
       screen.getByRole('heading', { name: 'About us' })
     ).toBeInTheDocument();
+  });
+
+  // The layout's Banner widget replaces the legacy banner, whether or not the page has one.
+  it('leaves the banner to the builder content', () => {
+    hasContent = true;
+    hasBanner = true;
+    pageAttributes = { ...globalCustomPage, banner_enabled: true };
+    render(<CustomPageShow />);
+
+    expect(screen.queryByTestId('banner')).not.toBeInTheDocument();
+    expect(screen.getByTestId('builderContent')).toBeInTheDocument();
+  });
+
+  it('still renders the legacy banner on a page with no builder content', () => {
+    pageAttributes = { ...globalCustomPage, banner_enabled: true };
+    render(<CustomPageShow />);
+
+    expect(screen.getByTestId('banner')).toBeInTheDocument();
   });
 
   // Policy and project-scoped pages are not on the Content Builder.
