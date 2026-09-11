@@ -108,9 +108,7 @@ class UserService
     end
 
     def update_in_tenant_template!(user, user_params = {})
-      custom_field_values = user_params.delete(:custom_field_values) || user_params.delete('custom_field_values')
       user.assign_attributes(user_params)
-      CustomFieldValuesTransitionService.new.assign(user, custom_field_values) if custom_field_values
       build_user_confirmation(user)
       user.save!
     end

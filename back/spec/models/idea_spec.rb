@@ -315,7 +315,7 @@ RSpec.describe Idea do
       end
     end
 
-    describe '#convert_wkt_geo_custom_field_values_to_geojson' do
+    describe '#convert_wkt_geo_answers_to_geojson' do
       let(:project) { create(:project_with_active_native_survey_phase) }
       let(:active_phase) { project.phases.first }
       let(:custom_form) { create(:custom_form, participation_context: active_phase) }
@@ -328,7 +328,7 @@ RSpec.describe Idea do
         idea.custom_field_answers.build(key: 'point_field', value: 'POINT (4.31 50.85)')
         idea.custom_field_answers.build(key: 'line_field', value: 'LINESTRING (4.30 50.85, 4.660 51.15)')
         idea.custom_field_answers.build(key: 'polygon_field', value: 'POLYGON ((4.3 50.85, 4.31 50.85, 4.31 50.86, 4.3 50.85))')
-        idea.send(:convert_wkt_geo_custom_field_values_to_geojson)
+        idea.send(:convert_wkt_geo_answers_to_geojson)
         expect(idea.custom_field_answers.to_h { [it.key, it.value] }).to eq({
           'point_field' => { 'type' => 'Point', 'coordinates' => [4.31, 50.85] },
           'line_field' => { 'type' => 'LineString', 'coordinates' => [[4.3, 50.85], [4.66, 51.15]] },
@@ -345,7 +345,7 @@ RSpec.describe Idea do
           'coordinates' => [[[4.3, 50.85], [4.31, 50.85], [4.31, 50.86], [4.3, 50.85]]]
         })
 
-        idea.send(:convert_wkt_geo_custom_field_values_to_geojson)
+        idea.send(:convert_wkt_geo_answers_to_geojson)
 
         expect(idea.custom_field_answers.to_h { [it.key, it.value] }).to eq({
           'polygon_field' => {
@@ -357,7 +357,7 @@ RSpec.describe Idea do
 
       it 'adds closing coordinates to polygon if not in wkt string' do
         idea.custom_field_answers.build(key: 'polygon_field', value: 'POLYGON ((4.3 50.85, 4.31 50.85, 4.31 50.86))')
-        idea.send(:convert_wkt_geo_custom_field_values_to_geojson)
+        idea.send(:convert_wkt_geo_answers_to_geojson)
 
         expect(idea.custom_field_answers.to_h { [it.key, it.value] }).to eq({
           'polygon_field' => {
@@ -370,21 +370,21 @@ RSpec.describe Idea do
       it 'raises error for an invalid coordinate in wkt string' do
         idea.custom_field_answers.build(key: 'point_field', value: 'POINT (4.31)')
 
-        expect { idea.send(:convert_wkt_geo_custom_field_values_to_geojson) }
+        expect { idea.send(:convert_wkt_geo_answers_to_geojson) }
           .to raise_error(RGeo::Error::ParseError, 'Numeric expected but :end found.')
       end
 
       it 'raises error for an insufficient coordinates in wkt string' do
         idea.custom_field_answers.build(key: 'line_field', value: 'LINESTRING (4.30 50.85)')
 
-        expect { idea.send(:convert_wkt_geo_custom_field_values_to_geojson) }
+        expect { idea.send(:convert_wkt_geo_answers_to_geojson) }
           .to raise_error(RGeo::Error::InvalidGeometry, 'LineString Cannot Have 1 Point')
       end
 
       it 'raises error for missing parentheses in wkt string' do
         idea.custom_field_answers.build(key: 'polygon_field', value: 'POLYGON (4.3 50.85, 4.31 50.85, 4.31 50.86)')
 
-        expect { idea.send(:convert_wkt_geo_custom_field_values_to_geojson) }
+        expect { idea.send(:convert_wkt_geo_answers_to_geojson) }
           .to raise_error(RGeo::Error::ParseError, ':begin expected but 4.3 found.')
       end
     end
