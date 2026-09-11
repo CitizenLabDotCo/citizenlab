@@ -94,6 +94,7 @@ class OmniauthCallbackController < ApplicationController
   def auth_callback(verify: false, authver_method: nil) # rubocop:disable Metrics/MethodLength
     auth = request.env['omniauth.auth']
     user_attrs = authver_method.profile_to_user_attrs(auth)
+    @sso_email = user_attrs[:email]
 
     @identity = Identity.find_or_build_with_omniauth(auth, authver_method)
 
@@ -191,6 +192,7 @@ class OmniauthCallbackController < ApplicationController
     omniauth_params = filter_omniauth_params
     omniauth_params['sso_flow'] = 'signin'
     omniauth_params['sso_success'] = true
+    omniauth_params['sso_email'] = prefillable_sso_email if prefillable_sso_email
     redirect_to(
       add_uri_params(
         Frontend::UrlService.new.sso_return_url(pathname: sso_redirect_path, locale: Locale.new(@user.locale)),
@@ -203,6 +205,7 @@ class OmniauthCallbackController < ApplicationController
     omniauth_params = filter_omniauth_params
     omniauth_params['sso_flow'] = 'signup'
     omniauth_params['sso_success'] = true
+    omniauth_params['sso_email'] = prefillable_sso_email if prefillable_sso_email
     redirect_to(
       add_uri_params(
         Frontend::UrlService.new.sso_return_url(pathname: sso_redirect_path, locale: Locale.new(@user.locale)),
@@ -234,6 +237,18 @@ class OmniauthCallbackController < ApplicationController
   end
 
   # Reject any parameters we don't need to be passed to the frontend in the URL
+  # Handed back so the missing-data form can pre-fill rather than asking the user to
+  # retype what the provider just told us.
+  #
+  # Only when the account ended up without an address of its own. Otherwise this would
+  # put an email in a redirect URL, and so in the access log, for no gain.
+  def prefillable_sso_email
+    return if @sso_email.blank?
+    return if @user.nil? || @user.email.present? || @user.new_email.present?
+
+    @sso_email
+  end
+
   def filter_omniauth_params
     omniauth_params&.except('token', 'verification_pathname', 'sso_pathname', 'RelayState') || {}
   end
@@ -335,6 +350,12 @@ class OmniauthCallbackController < ApplicationController
           verification_failure_redirect('taken')
         rescue Verification::VerificationService::NotEntitledError => e
           verification_failure_redirect(not_entitled_error(e))
+        rescue AccountMergeService::IneligibleError, AccountMergeService::IncompleteMergeError => e
+          # The blank account could not be absorbed, so the verification is still on
+          # it - which is what 'taken' says. Reported, not swallowed:
+          # IncompleteMergeError means a surface is missing from MOVES.
+          ErrorReporter.report(e)
+          verification_failure_redirect('taken')
         end
       end
     rescue ActiveRecord::RecordNotFound
@@ -345,6 +366,12 @@ class OmniauthCallbackController < ApplicationController
   def verified_for_sso?(auth, user, user_created)
     handle_verification(auth, user)
     true
+  rescue AccountMergeService::IneligibleError, AccountMergeService::IncompleteMergeError => e
+    # The same absorb failure as in verification_callback, on the sign-in path.
+    ErrorReporter.report(e)
+    user.destroy if user_created
+    signin_failure_redirect
+    false
   rescue Verification::VerificationService::NotEntitledError => e
     # In some cases, it may be fine not to verify during SSO, so we enable this specifically in the method
     return true unless verification_method.respond_to?(:check_entitled_on_sso?) && verification_method.check_entitled_on_sso?

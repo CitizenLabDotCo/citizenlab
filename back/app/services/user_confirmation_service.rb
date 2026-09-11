@@ -73,6 +73,26 @@ class UserConfirmationService
     failure_result(e)
   end
 
+  # Unlike its siblings this confirms nothing on +user+: it hands +user+'s identity,
+  # verification and participation to the account owning the confirmed address and
+  # deletes +user+. The result carries the survivor, who the caller must become.
+  def validate_and_confirm_merge_account!(user, code)
+    validate_user!(user)
+    confirmation = user.merge_account_confirmation
+    raise ValidationError.new(:code, :invalid) if confirmation.nil?
+
+    validate_code!(confirmation, code)
+    target = AccountMergeService.new.merge!(source: user, confirmation: confirmation)
+
+    success_result(target)
+  rescue ValidationError => e
+    failure_result(e)
+  rescue AccountMergeService::IneligibleError
+    # Never say which rule refused: that would be an oracle for which addresses
+    # belong to admins.
+    failure_result(ValidationError.new(:base, :merge_not_allowed))
+  end
+
   def validate_and_confirm_phone!(user, code)
     # Ensure that password login (i.e. 'normal', non-SSO login)
     # feature is enabled for phone confirmation
@@ -119,10 +139,16 @@ class UserConfirmationService
   def validate_and_confirm!(confirmation, code)
     raise ValidationError.new(:code, :invalid) if confirmation.nil?
 
+    validate_code!(confirmation, code)
+    confirm_user!(confirmation)
+  end
+
+  # The code checks without the confirm! that follows them elsewhere - the merge
+  # flow's "confirm" is a multi-table operation, not a model method.
+  def validate_code!(confirmation, code)
     validate_retry_count!(confirmation, code)
     validate_code_value!(confirmation, code)
     validate_code_expiration!(confirmation)
-    confirm_user!(confirmation)
   end
 
   def validate_password_login_enabled!

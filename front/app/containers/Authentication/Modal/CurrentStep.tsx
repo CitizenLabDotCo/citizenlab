@@ -175,6 +175,20 @@ const CurrentStep = ({
         />
       );
 
+    // No fallback to authUser.new_email, unlike the step above: a merge never writes
+    // it, so anything there is an unrelated address.
+    case 'confirmation:merge-account':
+      return (
+        <EmailConfirmation
+          email={state.new_email ?? null}
+          loading={loading}
+          setError={setError}
+          onConfirm={transition(currentStep, 'SUBMIT_CODE')}
+          onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
+          onResendCode={transition(currentStep, 'RESEND_CODE')}
+        />
+      );
+
     case 'confirmation:reconfirm-phone':
       return (
         <PhoneConfirmation
@@ -247,6 +261,7 @@ const CurrentStep = ({
         <BuiltInFields
           loading={loading}
           authenticationData={authenticationData}
+          state={state}
           setError={setError}
           onSubmit={transition(currentStep, 'SUBMIT')}
         />

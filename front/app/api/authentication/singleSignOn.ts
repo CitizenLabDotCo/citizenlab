@@ -37,6 +37,9 @@ export type SSOProvider = SSOProviderMap[keyof SSOProviderMap];
 // All are optional as there may be cases the backend does not always return these
 export interface SSOParams {
   sso_flow?: 'signup' | 'signin';
+  // Set when the account came back without an email of its own, so the missing-data
+  // form can pre-fill the address the provider returned.
+  sso_email?: string;
   sso_pathname?: string;
   sso_verification?: string;
   sso_verification_action?: string;

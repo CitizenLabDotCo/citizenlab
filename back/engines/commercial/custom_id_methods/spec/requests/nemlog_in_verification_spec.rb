@@ -108,6 +108,37 @@ describe CustomIdMethods::NemlogIn::NemlogInOmniauth do
     expect(response).to redirect_to('/en?verification_success=true')
   end
 
+  # A blank SSO account holding this identity is absorbed rather than blocking the
+  # verification. If that absorb hits its own safety guard, the whole thing rolls
+  # back, so the verification is still on the other account - which is what
+  # 'taken' tells the user. It is reported rather than swallowed, because it means
+  # a participation surface is missing from AccountMergeService::MOVES.
+  it 'fails gracefully when the account holding the identity cannot be absorbed' do
+    shell = create(:user).tap do |u|
+      u.update_columns(email: nil, password_digest: nil)
+      create(:identity, user: u, provider: 'nemlog_in', uid: 'shell-uid')
+    end
+    create(
+      :verification,
+      user: shell,
+      method_name: 'nemlog_in',
+      hashed_uid: Verification::VerificationService.new.send(:hashed_uid, saml_auth_response[:uid], 'nemlog_in')
+    )
+    allow_any_instance_of(AccountMergeService)
+      .to receive(:absorb!).and_raise(AccountMergeService::IncompleteMergeError)
+    allow(ErrorReporter).to receive(:report)
+
+    get "/auth/nemlog_in?token=#{token}&verification_pathname=/some-page"
+    follow_redirect!
+
+    expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
+    expect(ErrorReporter).to have_received(:report)
+      .with(instance_of(AccountMergeService::IncompleteMergeError))
+    # Rolled back: neither account changed hands.
+    expect(user.reload.verified).to be false
+    expect(shell.reload.verifications.active.count).to eq 1
+  end
+
   it 'fails when the cprUuid has already been used' do
     create(
       :verification,

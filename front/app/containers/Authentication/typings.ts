@@ -26,7 +26,8 @@ export type ErrorCode =
   | 'auth_no_match'
   | 'auth_service_error'
   | 'verification_taken'
-  | 'resending_code_failed';
+  | 'resending_code_failed'
+  | 'account_merge_not_allowed';
 
 export interface State {
   flow: 'signup' | 'signin';

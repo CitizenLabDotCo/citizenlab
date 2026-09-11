@@ -103,14 +103,14 @@ export type Overrides = {
   sub?: string;
 };
 
-export const fakeSSOAuth = (
+// Drives the fake OIDC provider's page: pick a profile, optionally override the
+// email or subject (the verification uid), submit. Shared by the login and
+// verification entry points, which differ only in which button opens it.
+const fakeSSOProviderScreen = (
   cy: Cypress.Chainable,
   profileName: ProfileName,
   { email, sub }: Overrides = {}
 ) => {
-  cy.get('#e2e-login-with-fake-sso').click();
-
-  // Browser is now on the fake_sso authorize page.
   cy.origin(
     FAKE_SSO_ORIGIN,
     { args: { profileName, email, sub } },
@@ -126,6 +126,28 @@ export const fakeSSOAuth = (
       cy.get('#submit-button').click();
     }
   );
+};
+
+// Verifies an already signed-in user. Unlike fakeSSOAuth there is no new session to
+// wait for, so the caller asserts the outcome itself.
+export const fakeSSOVerify = (
+  cy: Cypress.Chainable,
+  profileName: ProfileName,
+  overrides: Overrides = {}
+) => {
+  cy.get('#e2e-fake_sso-verification-button').click();
+  fakeSSOProviderScreen(cy, profileName, overrides);
+};
+
+export const fakeSSOAuth = (
+  cy: Cypress.Chainable,
+  profileName: ProfileName,
+  overrides: Overrides = {}
+) => {
+  cy.get('#e2e-login-with-fake-sso').click();
+
+  // Browser is now on the fake_sso authorize page.
+  fakeSSOProviderScreen(cy, profileName, overrides);
 
   // The back-end /auth/fake_sso/callback set the JWT cookie and redirected
   // the browser to the front-end with `sso_success=true`. The front-end

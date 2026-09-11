@@ -16,6 +16,7 @@ export type Step =
   // confirmation steps (code entry for email / phone)
   | 'confirmation:reconfirm-email'
   | 'confirmation:new_email'
+  | 'confirmation:merge-account'
   | 'confirmation:reconfirm-phone'
   | 'confirmation:new_phone'
 

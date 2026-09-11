@@ -308,10 +308,16 @@ export default function useSteps() {
     ) {
       const {
         sso_flow,
+        sso_email,
         sso_verification_action,
         sso_verification_id,
         sso_verification_type,
       } = search as SSOParams;
+
+      // An address the account could not keep, seeded so the form opens filled in.
+      if (sso_email) {
+        updateState({ new_email: sso_email });
+      }
 
       // Check if there is a success action in local storage (from SSO or verification)
       const actionFromLocalStorage = localStorage.getItem(

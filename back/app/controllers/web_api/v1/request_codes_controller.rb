@@ -44,7 +44,24 @@ class WebApi::V1::RequestCodesController < ApplicationController
     user_associated_with_new_email = new_email.present? ? User.find_by_cimail(new_email) : nil
 
     if user_associated_with_new_email && user_associated_with_new_email != current_user
-      render json: { errors: { new_email: [{ error: 'is already taken' }] } }, status: :unprocessable_entity
+      # Almost always the same person arriving a second way, so offer the merge
+      # rather than dead-ending them. The source guards are also the scope fence:
+      # this endpoint is shared with the profile's email change.
+      unless account_merge_offerable?(current_user)
+        render json: { errors: { new_email: [{ error: 'is already taken' }] } }, status: :unprocessable_entity
+        return
+      end
+
+      # Throttled against its own budget, not the new-email one: being locked out
+      # of merging must still leave "change your email" usable.
+      authorize current_user, :request_merge_account_code?, policy_class: RequestCodePolicy
+
+      # The target is deliberately not checked here: refusing up front would let
+      # anyone probe which addresses belong to admins. The code goes to the target's
+      # inbox, so eligibility can wait until confirm time.
+      RequestMergeAccountConfirmationCodeJob.perform_now(current_user, target_email: new_email)
+
+      render json: raw_json({ confirmation_type: 'merge_account' })
       return
     end
 
@@ -55,7 +72,7 @@ class WebApi::V1::RequestCodesController < ApplicationController
       new_email: new_email_with_fallback
     )
 
-    head :ok
+    render json: raw_json({ confirmation_type: 'new_email' })
   end
 
   # The phone mirror of request_code_email: phone signup / passwordless login,
@@ -155,6 +172,10 @@ class WebApi::V1::RequestCodesController < ApplicationController
   end
 
   private
+
+  def account_merge_offerable?(user)
+    AccountMergeEligibilityService.new.source_eligible?(user)
+  end
 
   # Whether the previous code's cooldown still has to run out.
   def resend_too_soon?(confirmation)

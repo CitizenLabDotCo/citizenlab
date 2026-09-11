@@ -140,7 +140,9 @@ const EmailChange = () => {
               loading={loading}
               setError={setConfirmationError}
               onConfirm={onEmailConfirmation}
-              onResendCode={requestCodeNewEmail}
+              onResendCode={async (email: string) => {
+                await requestCodeNewEmail(email);
+              }}
             />
           </Box>
         </Modal>

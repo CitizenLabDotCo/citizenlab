@@ -116,17 +116,10 @@ module Verification
     private
 
     def make_verification(user:, uid:, method:, activity_payload: {})
-      existing_users = existing_verified_users(user, uid, method)
-      taken = existing_users.present?
-
-      if taken
-        # it means sth went wrong and user wasn't fully created (e.g., they didn't enter email)
-        if existing_users.all?(&:blank_and_can_be_deleted?)
-          existing_users.each { |u| DeleteUserJob.perform_now(u) }
-        else
-          raise VerificationTakenError
-        end
-      end
+      # Other accounts already verified with this uid: either blank SSO shells
+      # belonging to the same person, or somebody else claiming this identity.
+      absorbable = existing_verified_users(user, uid, method)
+      raise VerificationTakenError unless absorbable.all? { |u| absorbable?(u, method) }
 
       verification = ::Verification::Verification.new(
         method_name: method.name_for_hashing,
@@ -141,9 +134,29 @@ module Verification
       ActiveRecord::Base.transaction do
         verification.save!
         sfxv_service.after_create(verification, user, activity_payload)
+
+        # After the save on purpose: the shell's copy is then a duplicate of one
+        # +user+ holds, so the merge drops it rather than leaving two identical rows.
+        absorbable.each { |shell| account_merge_service.absorb!(source: shell, target: user) }
       end
 
       verification
+    end
+
+    # Only for methods whose uid an identity provider asserts. A manual_sync uid is
+    # typed by the user and merely looked up, so knowing somebody's number would
+    # otherwise be enough to take their account. try so an unknown method fails closed.
+    def absorbable?(other_user, method)
+      method.try(:verification_method_type) == :omniauth &&
+        merge_eligibility_service.source_eligible?(other_user)
+    end
+
+    def merge_eligibility_service
+      @merge_eligibility_service ||= AccountMergeEligibilityService.new
+    end
+
+    def account_merge_service
+      @account_merge_service ||= AccountMergeService.new
     end
 
     def existing_verified_users(user, uid, method)

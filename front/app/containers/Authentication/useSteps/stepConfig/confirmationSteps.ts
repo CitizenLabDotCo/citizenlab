@@ -1,5 +1,6 @@
 import requirementKeys from 'api/authentication/authentication_requirements/keys';
 import {
+  confirmCodeMergeAccount,
   confirmCodeNewEmail,
   reconfirmCodeEmail,
 } from 'api/authentication/confirm_email/confirmEmailConfirmationCode';
@@ -108,6 +109,48 @@ export const confirmationSteps = (
       },
       RESEND_CODE: async () => {
         await requestCodeNewEmail();
+      },
+    },
+
+    // Entering the code merges this email-less SSO account into the one owning the
+    // address and signs the user in as it. The session now belongs to a different
+    // user, so requirements have to be re-fetched rather than reused.
+    'confirmation:merge-account': {
+      CLOSE: () => setCurrentStep('closed'),
+      CHANGE_EMAIL: async () => {
+        setCurrentStep('missing-data:change-new-email');
+      },
+      SUBMIT_CODE: async (_: string, code: string) => {
+        await confirmCodeMergeAccount(code);
+        await queryClient.invalidateQueries({
+          queryKey: requirementKeys.all(),
+        });
+
+        const { requirements } = await getRequirements();
+        const authenticationData = getAuthenticationData();
+
+        const missingDataStep = await checkMissingData(
+          requirements,
+          authenticationData,
+          state.flow
+        );
+
+        if (missingDataStep) {
+          setCurrentStep(missingDataStep);
+          return;
+        }
+
+        if (doesNotMeetGroupCriteria(requirements)) {
+          setCurrentStep('access-denied');
+          return;
+        }
+
+        setCurrentStep('success');
+      },
+      RESEND_CODE: async () => {
+        // Passed explicitly: a merge never writes user.new_email, so the backend has
+        // nothing to fall back on.
+        await requestCodeNewEmail(state.new_email ?? undefined);
       },
     },
 

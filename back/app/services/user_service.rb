@@ -28,12 +28,14 @@ class UserService
     end
 
     def build_in_sso(user_params, confirm_user, locale)
-      # If the SSO returns an unconfirmed email, we still need to
-      # confirm it. This is done by putting the email in new_email and leaving email blank.
-      # Putting an unconfirmed email directly in email is only done
-      # when creating a user in the normal email sign up flow.
+      # An unconfirmed SSO email is held in new_email, leaving email blank, so it
+      # still has to be confirmed - unless somebody else owns it, see
+      # absorbable_by_merge?. Only the normal email signup puts an unconfirmed
+      # address straight into email.
       if user_params[:email].present? && !confirm_user
-        user_params = user_params.except(:email).merge(new_email: user_params[:email])
+        email = user_params[:email]
+        user_params = user_params.except(:email)
+        user_params = user_params.merge(new_email: email) unless absorbable_by_merge?(email)
       end
 
       user = User.new(user_params)
@@ -120,8 +122,25 @@ class UserService
         user_params.delete(:email)
       else
         user_params.delete(:email)
-        user_params[:new_email] = sso_email
+        # Same reason as build_in_sso, except that here the failure would lock an
+        # existing user out of signing in rather than refusing to create one.
+        user_params[:new_email] = sso_email unless owned_by_other?(sso_email, user)
       end
+    end
+
+    # validate_not_duplicate_new_email rejects an address somebody else owns, so
+    # parking it fails the whole sign-in. Leaving the account without an email drops
+    # the user into the missing-data flow, where supplying it offers the merge.
+    #
+    # Invitees keep the old refusal: the invite flow owns claiming those accounts.
+    def absorbable_by_merge?(email)
+      owner = User.find_by_cimail(email)
+      owner.present? && !owner.invite_pending?
+    end
+
+    def owned_by_other?(email, user)
+      owner = User.find_by_cimail(email)
+      owner.present? && owner.id != user.id
     end
 
     # In-memory equivalent of the old `user.confirm` from UserConfirmation concern.

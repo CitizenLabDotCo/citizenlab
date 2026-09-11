@@ -322,6 +322,14 @@ resource 'Omniauth Callback', document: false do
     end
 
     get '/auth/fake_sso/callback' do
+      # Only when the account could not keep the address. Otherwise this would put
+      # an email in a redirect URL, and so in the access log, for nothing.
+      example 'does not hand the address back when the account kept it' do
+        do_request
+
+        expect(response_headers['Location']).not_to include('sso_email')
+      end
+
       example 'a new user is created but email is not confirmed' do
         do_request
 
@@ -408,6 +416,34 @@ resource 'Omniauth Callback', document: false do
         end
       end
 
+      # The new-account case one step worse: parking the address on new_email made
+      # update_in_sso! raise, locking an existing user out of signing in at all.
+      context 'when identity already exists and the SSO email is owned by somebody else' do
+        let!(:owner) { create(:user, email: 'billy_fixed@example.com') }
+        let!(:existing_user) do
+          user = build(:unconfirmed_user, email: nil)
+          user.identities.build(provider: 'fake_sso', uid: 'billy_fixed', auth_hash: {})
+          user.save!
+          user
+        end
+
+        # :email only reaches update_in_sso! when password_login is off - that is
+        # what puts it in updateable_user_attrs (IdMethods::Base#updateable_user_attrs).
+        before { SettingsService.new.deactivate_feature!('password_login') }
+
+        example 'signs the user in without claiming the address' do
+          do_request
+
+          assert_status(302)
+          expect(response_headers['Location']).not_to include('authentication_error=true')
+
+          existing_user.reload
+          expect(existing_user.email).to be_nil
+          expect(existing_user.new_email).to be_nil
+          expect(owner.reload.email).to eq 'billy_fixed@example.com'
+        end
+      end
+
       context 'when identity already exists and user does not have an email yet' do
         let!(:existing_user) do
           user = build(:unconfirmed_user, email: nil)
@@ -431,16 +467,37 @@ resource 'Omniauth Callback', document: false do
         end
       end
 
+      # validate_not_duplicate_new_email rejects an address somebody else holds, so
+      # parking it would fail the whole sign-in. The account is created without one
+      # instead, and the missing-data flow offers the merge when the user types it.
       context 'when email is already taken by another confirmed user' do
         let!(:existing_user) { create(:user, email: 'billy_fixed@example.com') }
 
-        example 'Returns error' do
-          expect(User.count).to eq(1) # Only the existing user
+        example 'Signs the user in on a new account carrying no email' do
           do_request
 
-          expect(response_headers['Location']).to include('authentication_error=true')
-          expect(User.count).to eq(1) # Still only the existing user
-          expect(User.first.identities.length).to eq(0) # No identity should be created for the existing user
+          expect(response_headers['Location']).not_to include('authentication_error=true')
+
+          created = User.where.not(id: existing_user.id).first
+          expect(created).not_to be_nil
+          expect(created.email).to be_nil
+          expect(created.new_email).to be_nil
+          expect(created.identities.pluck(:provider)).to eq ['fake_sso']
+        end
+
+        example 'Leaves the account that owns the address untouched' do
+          do_request
+
+          existing_user.reload
+          expect(existing_user.email).to eq 'billy_fixed@example.com'
+          expect(existing_user.identities).to be_empty
+        end
+
+        # So the missing-data form opens with it filled in.
+        example 'Hands the address back on the redirect' do
+          do_request
+
+          expect(response_headers['Location']).to include('sso_email=billy_fixed%40example.com')
         end
       end
     end

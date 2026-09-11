@@ -31,12 +31,25 @@ export const requestReconfirmCodeEmail = async ({
   return true;
 };
 
+// Which confirmation the backend started. A taken address does not fail here: for an
+// email-less SSO user it starts a merge, confirmed by a code sent to that inbox.
+export type RequestCodeNewEmailResponse = {
+  data: {
+    type: string;
+    attributes: {
+      confirmation_type: 'new_email' | 'merge_account';
+    };
+  };
+};
+
 export const requestCodeNewEmail = async (new_email?: string) => {
-  await fetcher({
+  const res = await fetcher<RequestCodeNewEmailResponse>({
     path: `/user/request_code_new_email`,
     action: 'post',
     body: {
       request_code: { new_email },
     },
   });
+
+  return res.data.attributes.confirmation_type;
 };
