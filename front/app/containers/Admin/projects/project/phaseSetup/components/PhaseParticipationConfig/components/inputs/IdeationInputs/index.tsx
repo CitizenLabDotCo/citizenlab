@@ -12,13 +12,14 @@ import {
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
+
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle';
 
 import { useIntl } from 'utils/cl-intl';
 
 import configMessages from '../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
-import PanelGroup from '../../shared/PanelGroup';
 import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
 import ViewSelector from '../../shared/ViewSelector';
 import PrescreeningModeSelector from '../_shared/PrescreeningModeSelector';

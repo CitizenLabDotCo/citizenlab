@@ -12,6 +12,8 @@ import {
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
+
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
@@ -21,7 +23,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../../../../../messages';
 import configMessages from '../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
-import PanelGroup from '../../shared/PanelGroup';
 import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
 import ViewSelector from '../../shared/ViewSelector';
 import PrescreeningModeSelector from '../_shared/PrescreeningModeSelector';
