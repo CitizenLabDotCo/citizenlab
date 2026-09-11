@@ -57,7 +57,12 @@ const CustomPageTitle = ({ title: draftTitle, showTitle = true }: Props) => {
   }
 
   return (
-    <Box maxWidth={BUILDER_CONTENT_MAX_WIDTH} margin="0 auto" px={padding}>
+    <Box
+      data-cy="e2e-custom-page-title"
+      maxWidth={BUILDER_CONTENT_MAX_WIDTH}
+      margin="0 auto"
+      px={padding}
+    >
       <Title color="tenantText" variant="h1" m="0px">
         {title || formatMessage(messages.untitledPage)}
       </Title>
@@ -83,6 +88,7 @@ const CustomPageTitleSettings = () => {
   return (
     <Box my="20px" display="flex" flexDirection="column" gap="16px">
       <Toggle
+        id="e2e-custom-page-title-toggle"
         checked={showTitle}
         label={formatMessage(messages.showTitleLabel)}
         onChange={() => {
@@ -92,6 +98,7 @@ const CustomPageTitleSettings = () => {
         }}
       />
       <InputMultilocWithLocaleSwitcher
+        id="e2e-custom-page-title-input"
         type="text"
         label={formatMessage(messages.titleLabel)}
         valueMultiloc={draftTitle ?? page.data.attributes.title_multiloc}
