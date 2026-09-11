@@ -10,6 +10,7 @@ import CustomPageHeader from 'components/CustomPageHeader';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
+import Settings from './Settings';
 import { CustomPageBannerProps } from './types';
 
 // The admin edit button is deliberately not passed: the page renders one for itself, since
@@ -46,6 +47,9 @@ const CustomPageBanner: UserComponent<CustomPageBannerProps> = ({
 
 CustomPageBanner.craft = {
   props: {},
+  related: {
+    settings: Settings,
+  },
   // Pinned above the body like the title, but a page may have no banner at all, so this one
   // is deletable and can be dragged back from the toolbox.
   rules: {

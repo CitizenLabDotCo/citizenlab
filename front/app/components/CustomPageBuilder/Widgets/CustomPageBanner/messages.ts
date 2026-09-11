@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.components.CustomPageBuilder.Widgets.CustomPageBanner.title',
     defaultMessage: 'Banner',
   },
+  buttonTitle: {
+    id: 'app.components.CustomPageBuilder.Widgets.CustomPageBanner.buttonTitle',
+    defaultMessage: 'Button',
+  },
   noBannerYet: {
     id: 'app.components.CustomPageBuilder.Widgets.CustomPageBanner.noBannerYet',
     defaultMessage:
