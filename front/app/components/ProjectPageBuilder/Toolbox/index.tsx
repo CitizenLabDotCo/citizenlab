@@ -5,8 +5,8 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 import Section from 'components/admin/ContentBuilder/Toolbox/Section';
+import EventsList from 'components/admin/ContentBuilder/Widgets/Events';
 import DescriptionToolboxSections from 'components/DescriptionBuilder/DescriptionBuilderToolbox/DescriptionToolboxSections';
-import EventsWidget from 'components/ProjectPageBuilder/Widgets/Events';
 import widgetMessages from 'components/ProjectPageBuilder/Widgets/messages';
 import PhasesWidget from 'components/ProjectPageBuilder/Widgets/Phases';
 import SpotlightSurveysWidget from 'components/ProjectPageBuilder/Widgets/SpotlightSurveys';
@@ -32,7 +32,13 @@ const ProjectPageBuilderToolbox = () => {
         />
         <DraggableElement
           id="e2e-draggable-events"
-          component={<EventsWidget />}
+          component={
+            <EventsList
+              source="currentProject"
+              timeFilters={['upcoming', 'past']}
+              limit="all"
+            />
+          }
           icon="calendar"
           label={formatMessage(widgetMessages.eventsWidgetTitle)}
         />

@@ -78,7 +78,7 @@ describe ContentBuilder::ProjectPageLayoutService do
   def canonical_names
     %w[
       ProjectPageRoot ProjectBanner ProjectTitle ProjectPageBody
-      PhasesWidget EventsWidget
+      PhasesWidget EventsList
     ]
   end
 

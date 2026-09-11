@@ -91,6 +91,10 @@ declare global {
       notIntersectsViewport: typeof notIntersectsViewport;
       apiGetHomepageLayout: typeof apiGetHomepageLayout;
       apiUpdateHomepageLayout: typeof apiUpdateHomepageLayout;
+      apiUpdateProjectPageLayout: typeof apiUpdateProjectPageLayout;
+      apiCreateArea: typeof apiCreateArea;
+      apiRemoveArea: typeof apiRemoveArea;
+      apiSetProjectAreas: typeof apiSetProjectAreas;
       apiUpdateAppConfiguration: typeof apiUpdateAppConfiguration;
       clickLocaleSwitcherAndType: typeof clickLocaleSwitcherAndType;
       apiCreateSmartGroup: typeof apiCreateSmartGroup;
@@ -1867,6 +1871,83 @@ function apiUpdateHomepageLayout({
     });
   });
 }
+
+function apiRemoveArea(areaId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'DELETE',
+      url: `web_api/v1/areas/${areaId}`,
+    });
+  });
+}
+
+function apiCreateArea(title: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: 'web_api/v1/areas',
+      body: {
+        area: {
+          title_multiloc: { en: title, 'nl-BE': title },
+          description_multiloc: { en: title, 'nl-BE': title },
+        },
+      },
+    });
+  });
+}
+
+function apiSetProjectAreas(projectId: string, areaIds: string[]) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'PATCH',
+      url: `web_api/v1/projects/${projectId}`,
+      body: { project: { area_ids: areaIds } },
+    });
+  });
+}
+
+function apiUpdateProjectPageLayout(
+  projectId: string,
+  craftjs_json: Record<string, unknown>
+) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/projects/${projectId}/content_builder_layouts/project_page/upsert`,
+      body: {
+        content_builder_layout: {
+          enabled: true,
+          craftjs_json,
+        },
+      },
+    });
+  });
+}
+
 function apiCreateSmartGroup(groupName: string, rules: TRule[]) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -2508,6 +2589,10 @@ Cypress.Commands.add(
 );
 Cypress.Commands.add('apiGetHomepageLayout', apiGetHomepageLayout);
 Cypress.Commands.add('apiUpdateHomepageLayout', apiUpdateHomepageLayout);
+Cypress.Commands.add('apiUpdateProjectPageLayout', apiUpdateProjectPageLayout);
+Cypress.Commands.add('apiCreateArea', apiCreateArea);
+Cypress.Commands.add('apiRemoveArea', apiRemoveArea);
+Cypress.Commands.add('apiSetProjectAreas', apiSetProjectAreas);
 Cypress.Commands.add('apiRemoveCustomPage', apiRemoveCustomPage);
 Cypress.Commands.add('apiCreateCustomPage', apiCreateCustomPage);
 Cypress.Commands.add('apiUpdateCustomPage', apiUpdateCustomPage);

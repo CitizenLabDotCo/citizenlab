@@ -1,10 +1,17 @@
 # frozen_string_literal: true
 
 module ContentBuilder
-  # Builds the craftjs graph for a custom page: a root and a body region holding the page's
-  # content in the order it renders today. A section of plain text goes in a native
-  # TextMultiloc widget; one holding media the text widget cannot render losslessly (inline
-  # images, videos, CTA buttons) goes in the RichTextMultiloc bridge widget.
+  # Builds the craftjs graph a custom page's layout starts as, read from the page's own columns:
+  # a root and a body region holding the page's content in the order the front office renders it.
+  #
+  # It runs only where a page has no layout yet — the backfill task, a newly created page, a new
+  # tenant's template, and a layout created empty through the API. Once a layout exists the
+  # builder owns it: an admin's edits are saved as sent, and nothing here runs again. So every
+  # rule below decides what a page *starts* with, never what may be put on it afterwards.
+  #
+  # A section of plain text goes in a native TextMultiloc widget; one holding media the text
+  # widget cannot render losslessly (inline images, videos, CTA buttons) goes in the
+  # RichTextMultiloc bridge widget.
   #
   # A disabled section is skipped, because the front office does not render one either.
   class CustomPageLayoutService
@@ -14,6 +21,7 @@ module ContentBuilder
     BODY_ID = 'CUSTOM_PAGE_BODY'
     TOP_INFO_ID = 'CUSTOM_PAGE_TOP_INFO'
     FILE_ID_PREFIX = 'CUSTOM_PAGE_FILE_'
+    EVENTS_ID = 'CUSTOM_PAGE_EVENTS'
     BOTTOM_INFO_ID = 'CUSTOM_PAGE_BOTTOM_INFO'
 
     def craftjs_json_for(static_page)
@@ -24,6 +32,7 @@ module ContentBuilder
           enabled: static_page.top_info_section_enabled
         ),
         **file_nodes(static_page),
+        EVENTS_ID => events_node(static_page),
         BOTTOM_INFO_ID => section_node(
           static_page.bottom_info_section_multiloc,
           enabled: static_page.bottom_info_section_enabled
@@ -47,6 +56,37 @@ module ContentBuilder
           "#{FILE_ID_PREFIX}#{attachment.file_id}",
           Craftjs::Nodes.file_attachment(attachment.file_id, BODY_ID)
         ]
+      end
+    end
+
+    # Both guards mirror `hideProjects` in CustomPageProjectsAndEvents, whose early return sits
+    # above the events block: a page shows no events without the feature, or without a project
+    # filter. Deriving one would also hand a tenant without the feature a live area filter.
+    def events_node(static_page)
+      return unless static_page.events_widget_enabled
+      return unless AppConfiguration.instance.feature_activated?('advanced_custom_pages')
+      return if static_page.projects_filter_type == 'no_filter'
+
+      Craftjs::Nodes.events(
+        {
+          'source' => static_page.projects_filter_type,
+          'ids' => events_filter_ids(static_page),
+          'timeFilters' => ['upcoming'],
+          'limit' => 3,
+          'projectPublicationStatuses' => ['published']
+        },
+        BODY_ID
+      )
+    end
+
+    # The dimension, not the projects it resolves to: legacy re-resolves on every request, so
+    # freezing project ids here would drop a project tagged into the area later.
+    def events_filter_ids(static_page)
+      case static_page.projects_filter_type
+      when 'areas' then static_page.areas_static_pages.pluck(:area_id)
+      when 'global_topics' then static_page.static_pages_global_topics.pluck(:global_topic_id)
+      when 'spaces' then static_page.static_pages_spaces.pluck(:space_id)
+      else []
       end
     end
 

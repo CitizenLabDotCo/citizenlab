@@ -3,7 +3,7 @@ import React from 'react';
 import useEvents from 'api/events/useEvents';
 import useProjectById from 'api/projects/useProjectById';
 
-import { EVENTS_WIDGET_ANCHOR_ID } from 'components/ProjectPageBuilder/Widgets/Events';
+import { EVENTS_WIDGET_ANCHOR_ID } from 'components/admin/ContentBuilder/Widgets/Events';
 import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';

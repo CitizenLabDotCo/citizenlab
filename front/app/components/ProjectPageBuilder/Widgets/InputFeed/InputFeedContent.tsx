@@ -6,6 +6,8 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
 
+import useWidgetProjectId from 'components/admin/ContentBuilder/useWidgetProjectId';
+
 import { usePermission } from 'utils/permissions';
 import { useParams } from 'utils/router';
 
@@ -13,7 +15,6 @@ import EditModeHeightCap from '../EditModeHeightCap';
 import EmptyParticipationPreview from '../EmptyState/EmptyParticipationPreview';
 import SectionBackground from '../SectionBackground';
 import useIsPageBodyChild from '../useIsPageBodyChild';
-import useWidgetProjectId from '../useWidgetProjectId';
 
 const PublicInputContent = React.lazy(() => import('./PublicInputContent'));
 

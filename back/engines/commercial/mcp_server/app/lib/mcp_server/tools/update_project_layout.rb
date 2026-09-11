@@ -66,7 +66,7 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
       withDivider at strong breaks). Use TwoColumn/ThreeColumn for parallel content,
       AccordionMultiloc (body in its linked Container) for FAQs and concerns, ButtonMultiloc
       for calls to action, AboutBox near the end. Avoid all-text pages. PhasesWidget and
-      EventsWidget render the project's phases and events wherever you place them in the
+      EventsList render the project's phases and events wherever you place them in the
       body — reorder or remove them, but never rebuild them as content.
     DESC
   end
