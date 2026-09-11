@@ -1,6 +1,11 @@
-import React, { useState } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 
-import { Box, colors, fontSizes } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  colors,
+  fontSizes,
+  Spinner,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { CLErrors } from 'typings';
 
@@ -8,7 +13,6 @@ import { IPhaseData, IUpdatedPhaseProperties } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 
-import CustomMapConfigPage from 'containers/Admin/CustomMapConfigPage';
 import PanelRowModal from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelRowModal';
 import AdminPhaseEmailWrapper from 'containers/Admin/projects/project/admin_phase_email_wrapper';
 import ActionForms from 'containers/Admin/projects/project/permissions/Phase/ActionForms';
@@ -22,6 +26,7 @@ import { validateParticipation } from 'containers/Admin/projects/project/phaseSe
 
 import { SubSectionTitle } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+import Centerer from 'components/UI/Centerer';
 
 import { useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
@@ -29,6 +34,12 @@ import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import messages from '../messages';
 
 import ReportSection from './ReportSection';
+
+// Lazy so ArcGIS stays out of the chunk every workspace page loads, and only
+// arrives once the map modal is opened.
+const CustomMapConfigPage = lazy(
+  () => import('containers/Admin/CustomMapConfigPage')
+);
 
 const PanelSettings = styled(Box)`
   ${SubSectionTitle} {
@@ -127,7 +138,15 @@ const PhaseRightPanel = ({ projectId, phase }: Props) => {
             label={formatMessage(messages.mapConfiguration)}
             width="1100px"
           >
-            <CustomMapConfigPage />
+            <Suspense
+              fallback={
+                <Centerer height="500px">
+                  <Spinner />
+                </Centerer>
+              }
+            >
+              <CustomMapConfigPage />
+            </Suspense>
           </PanelRowModal>
         )}
 
