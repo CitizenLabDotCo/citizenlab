@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ExpireConfirmationCodeOrDeleteJob < ApplicationJob
-  # The type is enqueued as a class name; only these five are expected.
+  # The type is enqueued as a class name, so it has to be mapped back.
   ASSOCIATION_NAMES = {
     'EmailConfirmation' => :email_confirmation,
     'NewEmailConfirmation' => :new_email_confirmation,

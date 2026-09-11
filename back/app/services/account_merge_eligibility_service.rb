@@ -73,10 +73,10 @@ class AccountMergeEligibilityService
   # Any active verification the target holds that the source does not is somebody
   # else's assertion of who this account is.
   #
-  # Not scoped per method on purpose. A platform can run several, and comparing within
-  # one would let two different people merge: the survivor would hold both
-  # verifications while apply_verified_identity! overwrote the target's locked name.
-  # The cost is refusing a same-person merge across two methods.
+  # Not scoped per method: a target verified one way absorbed by a source verified
+  # another would leave the survivor holding two people's verifications, with the
+  # target's locked name overwritten. Platforms are expected to run a single method,
+  # so this usually reduces to the same-method case.
   def verification_conflict(source, target)
     target_verifications = target.verifications.active.to_a
     return nil if target_verifications.empty?

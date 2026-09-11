@@ -109,8 +109,8 @@ describe AccountMergeEligibilityService do
       expect(reason).to be_nil
     end
 
-    # A platform can run several methods, so comparing within one would wave through
-    # two different people and overwrite the target's locked attributes.
+    # Comparing within a method would wave through two different people and overwrite
+    # the target's locked attributes.
     it 'refuses when the target is verified as somebody else through another method' do
       create(:verification, user: source, method_name: 'cow', hashed_uid: 'aaa')
       create(:verification, user: target, method_name: 'bogus', hashed_uid: 'bbb')
