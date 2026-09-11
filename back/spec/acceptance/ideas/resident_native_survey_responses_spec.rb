@@ -408,6 +408,38 @@ resource 'Ideas' do
           expect(input.custom_field_values).to eq({ 'custom_field_name1' => 'Cat' })
           expect(input.creation_phase_id).to eq active_phase.id
         end
+
+        describe 'when a value does not match its field schema' do
+          with_options scope: :idea do
+            parameter :select_field, 'A select field'
+          end
+
+          let!(:select_cf) do
+            create(:custom_field_select, resource: custom_form, key: 'select_field').tap do |field|
+              create(:custom_field_option, custom_field: field, key: 'cat')
+            end
+          end
+          let(:publication_status) { 'published' }
+          let(:select_field) { 'unlisted_animal' }
+
+          example_request '[error] Create an input with a value that is not an option' do
+            assert_status 422
+            expect(json_response_body.dig(:errors, :custom_field_values)).to be_present
+            expect(project.reload.ideas).to be_empty
+          end
+
+          context 'with a draft input' do
+            let(:publication_status) { 'draft' }
+
+            example_request 'Create a draft input with a value that is not an option' do
+              assert_status 201
+              expect(project.reload.ideas.first.custom_field_answers.pluck(:key, :value)).to contain_exactly(
+                %w[custom_field_name1 Cat],
+                %w[select_field unlisted_animal]
+              )
+            end
+          end
+        end
       end
     end
 
@@ -658,6 +690,28 @@ resource 'Ideas' do
                 'disabled_field' => 'legacy value'
               })
             end
+          end
+        end
+
+        context 'when publishing a value that does not match its field schema' do
+          with_options scope: :idea do
+            parameter :select_field, 'A select field'
+          end
+
+          let!(:select_cf) do
+            create(:custom_field_select, resource: custom_form, key: 'select_field').tap do |field|
+              create(:custom_field_option, custom_field: field, key: 'cat')
+            end
+          end
+          let(:publication_status) { 'published' }
+          let(:select_field) { 'unlisted_animal' }
+
+          before { input.update!(publication_status: 'draft') }
+
+          example_request '[error] Publish an input with a value that is not an option' do
+            assert_status 422
+            expect(json_response_body.dig(:errors, :custom_field_values)).to be_present
+            expect(input.reload.publication_status).to eq 'draft'
           end
         end
       end

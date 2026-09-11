@@ -252,11 +252,6 @@ class User < ApplicationRecord
   validates :domicile, inclusion: { in: proc { ['outside'] + Area.select(:id).map(&:id) } }, allow_nil: true
   validates :invite_status, inclusion: { in: INVITE_STATUSES }, allow_nil: true
 
-  # NOTE: All validation except for required
-  validates :custom_field_values, json: {
-    schema: -> { CustomFieldService.new.fields_to_json_schema_ignore_required(CustomField.registration) }
-  }, on: :form_submission, if: :custom_field_values_changed? # only called if `save` is called w/ `context: :form_submission`
-
   validates :onboarding, json: { schema: -> { User.onboarding_json_schema } }
 
   validate :validate_not_duplicate_email
