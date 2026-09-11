@@ -1,28 +1,40 @@
 import React, { useState } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors, fontSizes } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { CLErrors } from 'typings';
 
 import { IPhaseData, IUpdatedPhaseProperties } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
-import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
-import { isTimelinePhase } from 'api/phases/utils';
 
+import CustomMapConfigPage from 'containers/Admin/CustomMapConfigPage';
+import PanelRowModal from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelRowModal';
+
+import { SubSectionTitle } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 
 import { useIntl } from 'utils/cl-intl';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
+import AdminPhaseEmailWrapper from '../../../admin_phase_email_wrapper';
+import ActionForms from '../../../permissions/Phase/ActionForms';
 import PhaseParticipationConfig from '../../../phaseSetup/components/PhaseParticipationConfig';
 import phaseSetupMessages from '../../../phaseSetup/messages';
 import { SubmitStateType, ValidationErrors } from '../../../phaseSetup/typings';
-import validate from '../../../phaseSetup/validate';
+import { validateParticipation } from '../../../phaseSetup/validate';
+import messages from '../messages';
 
-import AccessRow from './AccessRow';
-import changedFields from './changedFields';
-import MapConfigurationRow from './MapConfigurationRow';
-import NotificationsRow from './NotificationsRow';
 import ReportSection from './ReportSection';
+
+// The settings are built for a full-width page, where their own titles carry
+// the section. Here the group row carries it, so they step down to label scale.
+const PanelSettings = styled(Box)`
+  ${SubSectionTitle} {
+    font-size: ${fontSizes.s}px;
+    color: ${colors.textPrimary};
+  }
+`;
 
 interface Props {
   projectId: string;
@@ -31,17 +43,15 @@ interface Props {
 
 const PhaseRightPanel = ({ projectId, phase }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: phases } = usePhases(projectId);
   const { data: phaseWithRelationships } = usePhase(phase.id);
   const { mutate: updatePhase } = useUpdatePhase();
 
   const [formData, setFormData] = useState<IUpdatedPhaseProperties>(
     phase.attributes
   );
-  // The method settings are spread across many fields, so the panel tracks
-  // what it actually changed rather than sending the whole attribute set and
-  // undoing what the left panel saved.
-  const [changes, setChanges] = useState<IUpdatedPhaseProperties>({});
+  // The left panel edits the same phase, so only the fields this one changed
+  // are sent: the whole attribute set would undo what the left panel saved.
+  const [changes, setChanges] = useState<Partial<IUpdatedPhaseProperties>>({});
   const [submitState, setSubmitState] = useState<SubmitStateType>('disabled');
   const [processing, setProcessing] = useState(false);
   const [errors, setErrors] = useState<CLErrors | null>(null);
@@ -49,24 +59,24 @@ const PhaseRightPanel = ({ projectId, phase }: Props) => {
     {}
   );
 
-  const handleChange = (config: IUpdatedPhaseProperties) => {
+  const participationMethod = phase.attributes.participation_method;
+  const isInformation = participationMethod === 'information';
+
+  const handleChange = (
+    config: IUpdatedPhaseProperties,
+    changedFields: Partial<IUpdatedPhaseProperties>
+  ) => {
     setSubmitState('enabled');
-    setChanges((changes) => ({
-      ...changes,
-      ...changedFields(config, formData),
-    }));
+    setChanges((changes) => ({ ...changes, ...changedFields }));
     setFormData(config);
   };
 
   const handleSave = () => {
     if (processing) return;
 
-    const { isValidated, errors } = validate(
+    const { isValidated, errors } = validateParticipation(
       formData,
-      phases,
-      formatMessage,
-      phase.id,
-      !isTimelinePhase(phase)
+      formatMessage
     );
 
     setValidationErrors(errors);
@@ -91,13 +101,9 @@ const PhaseRightPanel = ({ projectId, phase }: Props) => {
     );
   };
 
-  // An information phase has no participation to configure, so its panel holds
-  // the report instead, which saves through its own builder.
-  const isInformation = phase.attributes.participation_method === 'information';
-
   return (
     <Box display="flex" flexDirection="column" minHeight="100%">
-      <Box flexGrow={1} p="20px">
+      <PanelSettings flexGrow={1} p="20px">
         {isInformation ? (
           <ReportSection projectId={projectId} phase={phase} />
         ) : (
@@ -113,14 +119,23 @@ const PhaseRightPanel = ({ projectId, phase }: Props) => {
           />
         )}
 
-        {/* Reached from a tab strip the workspace no longer has. Each row
-            follows the same rule the strip used for that tab. */}
-        <AccessRow phaseId={phase.id} />
-        <MapConfigurationRow
-          participationMethod={phase.attributes.participation_method}
-        />
-        <NotificationsRow />
-      </Box>
+        <PanelRowModal label={formatMessage(messages.accessRights)}>
+          <ActionForms phaseId={phase.id} />
+        </PanelRowModal>
+
+        {getMethodConfig(participationMethod).supportsMapView && (
+          <PanelRowModal
+            label={formatMessage(messages.mapConfiguration)}
+            width="1100px"
+          >
+            <CustomMapConfigPage />
+          </PanelRowModal>
+        )}
+
+        <PanelRowModal label={formatMessage(messages.notifications)}>
+          <AdminPhaseEmailWrapper />
+        </PanelRowModal>
+      </PanelSettings>
 
       {!isInformation && (
         <Box
