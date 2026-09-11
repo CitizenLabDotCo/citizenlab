@@ -88,6 +88,19 @@ describe McpServer::Tools::DestroyResource do
     expect { phase.reload }.not_to raise_error
   end
 
+  # Deliberate: lifting the draft-only rule on demo platforms extends to destruction.
+  # The inputs-present guards below still apply there.
+  it 'destroys a phase of a published project on a demo platform' do
+    change_lifecycle_stage('demo')
+    published_project = create(:project, admin_publication_attributes: { publication_status: 'published' })
+    phase = create(:phase, project: published_project)
+
+    response = destroy('phase', phase.id)
+
+    expect(response).not_to be_error
+    expect { phase.reload }.to raise_error(ActiveRecord::RecordNotFound)
+  end
+
   it 'refuses to destroy a project that has inputs' do
     create(:idea_status_proposed)
     phase = create(:native_survey_phase, project: draft_project)

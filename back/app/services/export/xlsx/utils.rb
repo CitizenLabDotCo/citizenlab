@@ -39,6 +39,14 @@ module Export
         sanitized_name
       end
 
+      # `HtmlToPlainText#convert_to_text` starts with `txt = html` and then rewrites it with
+      # `gsub!`, so it edits the very string it is handed. Callers read that string off a record
+      # - `MultilocService#t` returns the string held in the multiloc itself - so without a copy
+      # the record is rewritten in memory, and the next save of it persists plain text.
+      def convert_to_text(html, *)
+        super(html.dup, *)
+      end
+
       def convert_to_text_long_lines(html)
         convert_to_text(html).tr("\n", ' ')
       end

@@ -23,7 +23,6 @@ describe('Timeline project with past and future phases', () => {
     cy.apiCreateProject({
       title: randomString(),
       descriptionPreview: randomString(),
-      description: randomString(),
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;

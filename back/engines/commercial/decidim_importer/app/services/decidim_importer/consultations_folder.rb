@@ -15,7 +15,7 @@ module DecidimImporter
     # Assemblies folder is created during import (title from {ExportReader::ASSEMBLIES_FOLDER_TITLE});
     # located here by the slug that title slugifies to.
     ASSEMBLIES_FOLDER_SLUG = 'assemblies'
-    FOLDER_LAYOUT_CODE = 'project_folder_description'
+    FOLDER_LAYOUT_CODE = ContentBuilder::LayoutProvisioningService::FOLDER_LAYOUT_CODE
     # Stable craftjs node id for the "other folders" Selection widget, so re-running replaces it in
     # place rather than appending a duplicate.
     OTHER_FOLDERS_NODE_ID = 'other-folders-selection'
@@ -75,9 +75,38 @@ module DecidimImporter
     # widget) plus a homepage card preview.
     def provision_folders
       ProjectFolders::Folder.find_each do |folder|
-        ContentBuilder::DescriptionLayoutService.new.provision_for(folder)
+        ensure_standard_layout(folder)
         ensure_homepage_description(folder)
       end
+    end
+
+    # {Extractors::FoldersExtractor} stages an imported description as a description-only layout,
+    # because the `FolderTitle`/`Published` widgets need a folder id that only exists now. Complete it
+    # here, keeping the staged description. Idempotent: a layout that already has the widgets is left be.
+    def ensure_standard_layout(folder)
+      layout = folder_layout(folder)
+      return ContentBuilder::LayoutProvisioningService.new.provision_for(folder) if layout.nil?
+      return if node_names(layout).include?('FolderTitle')
+
+      layout.update!(
+        enabled: true,
+        craftjs_json: ContentBuilder::LayoutProvisioningService.new
+          .default_folder_craftjs_json(folder, staged_description(layout))
+      )
+    end
+
+    def folder_layout(folder)
+      ContentBuilder::Layout.find_by(content_buildable: folder, code: FOLDER_LAYOUT_CODE)
+    end
+
+    def node_names(layout)
+      layout.craftjs_json.each_value.filter_map do |node|
+        node['type']['resolvedName'] if node.is_a?(Hash) && node['type'].is_a?(Hash)
+      end
+    end
+
+    def staged_description(layout)
+      layout.craftjs_json.dig('TEXT', 'props', 'text') || {}
     end
 
     # Sets `description_preview_multiloc` when absent: a plain-text lead from the description, falling
@@ -88,8 +117,10 @@ module DecidimImporter
       folder.update!(description_preview_multiloc: homepage_description_for(folder))
     end
 
+    # Runs after {#ensure_standard_layout}, so the description sits in the layout's `TEXT` node.
     def homepage_description_for(folder)
-      preview = preview_from_description(folder.description_multiloc)
+      layout = folder_layout(folder)
+      preview = layout ? preview_from_description(staged_description(layout)) : {}
       multiloc_present?(preview) ? preview : folder.title_multiloc
     end
 

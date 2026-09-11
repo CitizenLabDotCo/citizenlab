@@ -29,9 +29,6 @@ export const project: IProjectData = {
     scheduled_status: null,
     scheduled_at: null,
     listed: true,
-    description_multiloc: {
-      en: '<p>You can propose anywhere you like, but we will only accept Koekenbakstraat</p>',
-    },
     header_bg: {
       large:
         'https://demo.stg.govocal.com/uploads/c7e20cb9-f253-4c0c-aea1-e6e3c23c04c7/project/header_bg/be3f645b-3e1d-4afc-b91b-d68c4dc0100b/large_header_bg.jpeg',
@@ -45,7 +42,6 @@ export const project: IProjectData = {
     },
     avatars_count: 8,
     participants_count: 8,
-    uses_content_builder: false,
     preview_token: 'fake-token-0123456789',
     baskets_count: 0,
     votes_count: 0,

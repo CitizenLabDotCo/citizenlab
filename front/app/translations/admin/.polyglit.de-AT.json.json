@@ -3909,6 +3909,11 @@
     "verified_at": "2026-03-30T13:12:31.834001Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Admin.PagesAndMenu.EditCustomPage.editInContentBuilder": {
+    "state": "verified",
+    "verified_at": "2026-09-03T08:29:21.787030Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.PagesAndMenu.EditCustomPage.sectionDescription": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
@@ -20768,6 +20773,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.admin.ContentBuilder.lockedNodeLabel": {
+    "state": "verified",
+    "verified_at": "2026-09-03T09:31:31.065976Z",
+    "verified_by": "Jelena"
   },
   "app.containers.admin.ContentBuilder.noFilesAvailable": {
     "state": "verified",

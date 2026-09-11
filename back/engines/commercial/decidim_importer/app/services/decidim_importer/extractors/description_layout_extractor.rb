@@ -2,10 +2,10 @@
 
 module DecidimImporter
   module Extractors
-    # Builds a Content Builder project-description layout (`ContentBuilder::Layout`, code
-    # `project_description`) per project, replacing the plain `description_multiloc`.
+    # Builds a Content Builder project page (`ContentBuilder::Layout`, code `project_page`) per project
+    # from the Decidim description, carrying it into the canonical page body.
     #
-    # The `craftjs_json` holds, in order: a `2-1` `TwoColumn` main section (subtitle/short/full
+    # The imported body holds, in order: a `2-1` `TwoColumn` main section (subtitle/short/full
     # description on the left; optional source link, participation `AboutBox`, and regular page links on
     # the right — left spans full width when the right column is empty); a separate "Blog" section for
     # pages imported from `blogs` posts; then the project's files (collection-less at root, otherwise
@@ -57,9 +57,9 @@ module DecidimImporter
         return nil if blocks.empty?
 
         layout = Record.new('content_builder/layout', {
-          'code' => 'project_description',
+          'code' => ContentBuilder::ProjectPageLayoutService::CODE,
           'enabled' => true,
-          'craftjs_json' => craftjs_tree(blocks)
+          'craftjs_json' => project_page_craftjs(blocks)
         })
         layout.reference('content_buildable', project)
         ref_map.register("#{uid}-description-layout", layout)
@@ -187,6 +187,11 @@ module DecidimImporter
 
       def leaf(id, component, props)
         { id: id, component: component, props: props }
+      end
+
+      # The imported blocks, wrapped in the canonical project page (banner, title, body, phases, events).
+      def project_page_craftjs(blocks)
+        ContentBuilder::ProjectPageLayoutService.new.craftjs_json_from_body(craftjs_tree(blocks))
       end
 
       # Wraps the ordered blocks in a craft.js ROOT canvas, expanding accordions and two-columns into

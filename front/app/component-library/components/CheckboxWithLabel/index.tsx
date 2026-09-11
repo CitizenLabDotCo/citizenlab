@@ -1,5 +1,6 @@
 import React from 'react';
 
+import useInstanceId from '../../hooks/useInstanceId';
 import testEnv from '../../utils/testUtils/testEnv';
 import Box, { BoxMarginProps, BoxPaddingProps } from '../Box';
 import Checkbox, { CheckboxProps } from '../Checkbox';
@@ -10,6 +11,7 @@ type Props = {
   labelTooltipText?: string | JSX.Element | null;
   // This should be used for testing. Only add id prop if there's no other option
   dataTestId?: string;
+  id?: string;
   ariaLabel?: string;
   tabIndex?: number;
   dataCy?: string;
@@ -29,6 +31,7 @@ const CheckboxWithLabel = ({
   checkedColor,
   labelTooltipText,
   dataTestId,
+  id,
   usePrimaryBorder,
   required,
   ariaLabel,
@@ -39,13 +42,15 @@ const CheckboxWithLabel = ({
   ariaDescribedBy,
   ...boxProps
 }: Props) => {
+  const uuid = useInstanceId();
+  const inputId = id ?? uuid;
+
   const handleLabelClick = (event: React.MouseEvent) => {
     stopLabelPropagation && event.stopPropagation();
   };
 
   return (
     <Box
-      as="label"
       position="relative"
       display="flex"
       flex="1"
@@ -57,6 +62,7 @@ const CheckboxWithLabel = ({
       {...boxProps}
     >
       <Checkbox
+        id={inputId}
         onChange={onChange}
         checked={checked}
         disabled={disabled}
@@ -66,14 +72,22 @@ const CheckboxWithLabel = ({
         usePrimaryBorder={usePrimaryBorder}
         name={name}
         required={required}
-        aria-label={ariaLabel}
+        ariaLabel={ariaLabel}
         tabIndex={tabIndex}
         setRef={setRef}
         ariaInvalid={ariaInvalid}
         ariaDescribedBy={ariaDescribedBy}
         mr="8px"
       />
-      {label}
+      <Box
+        as="label"
+        htmlFor={inputId}
+        flex="1"
+        aria-hidden={ariaLabel ? true : undefined}
+        style={{ cursor: 'pointer' }}
+      >
+        {label}
+      </Box>
       &nbsp;
       {labelTooltipText && (
         <IconTooltip

@@ -25,7 +25,6 @@ describe('Admin: add projects to folder', () => {
     cy.apiCreateProject({
       title: projectTitle1,
       descriptionPreview: description,
-      description,
       publicationStatus: 'published',
     }).then((project) => {
       projectId1 = project.body.data.id;
@@ -34,7 +33,6 @@ describe('Admin: add projects to folder', () => {
     cy.apiCreateProject({
       title: projectTitle2,
       descriptionPreview: description,
-      description,
       publicationStatus: 'published',
     }).then((project) => {
       projectId2 = project.body.data.id;
@@ -43,7 +41,6 @@ describe('Admin: add projects to folder', () => {
     cy.apiCreateFolder({
       title: folderTitle,
       descriptionPreview: description,
-      description,
       publicationStatus: 'published',
     }).then((folder) => {
       folderId = folder.body.data.id;

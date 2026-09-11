@@ -75,7 +75,7 @@ class WebApi::V1::IdeasController < ApplicationController
     ideas = ideas.includes(:cosponsors) if with_cosponsors
 
     I18n.with_locale(current_user&.locale) do
-      xlsx = XlsxService.new.generate_ideas_xlsx(ideas, view_private_attributes: true, with_cosponsors:)
+      xlsx = XlsxService.new.generate_ideas_xlsx(ideas.includes(author: :custom_field_answers), view_private_attributes: true, with_cosponsors:)
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
     end
   end
@@ -309,7 +309,9 @@ class WebApi::V1::IdeasController < ApplicationController
       update_file_upload_fields input, input.custom_form, update_params
 
       if anonymize_user_at_the_end
-        input.author_id = nil
+        # the anonymous_participation concern will set author_id to nil
+        # setting anonymous to true ensures that author_hash is generated with salt_anon
+        input.anonymous = true
         input.save!
       end
 

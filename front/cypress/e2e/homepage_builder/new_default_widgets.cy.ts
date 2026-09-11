@@ -11,7 +11,6 @@ describe('New default widgets', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: randomString(),
-      description: randomString(),
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;

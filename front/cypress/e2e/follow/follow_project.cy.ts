@@ -14,7 +14,6 @@ describe('Follow project', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: '',
-      description: '',
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;

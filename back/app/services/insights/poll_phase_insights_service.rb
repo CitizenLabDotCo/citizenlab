@@ -10,6 +10,7 @@ module Insights
     def participation_taking_poll
       Polls::Response
         .where(phase_id: @phase.id)
+        .includes(user: :custom_field_answers)
         .map do |response|
           {
             item_id: response.id,
@@ -17,7 +18,7 @@ module Insights
             acted_at: response.created_at,
             classname: 'Response',
             participant_id: participant_id(response.id, response.user_id),
-            user_custom_field_values: response&.user&.custom_field_values || {}
+            user_custom_field_values: response.user&.custom_field_answers.to_h { [it.key, it.value] } || {}
           }
         end
     end

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, fontSizes } from '@citizenlab/cl2-component-library';
 
 import { TCustomPageEnabledSetting } from 'api/custom_pages/types';
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
@@ -18,10 +18,15 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 import { useParams } from 'utils/router';
 
 import messages from './messages';
+
+const StyledLink = typedStyled(Link)`
+  font-size: ${fontSizes.base}px;
+`;
 
 export interface ICustomPageSectionToggleData extends ISectionToggleData {
   name: TCustomPageEnabledSetting;
@@ -37,6 +42,9 @@ const CustomPagesEditContent = () => {
   const { data: customPage } = useCustomPageById(customPageId);
   const advancedCustomPagesEnabled = useFeatureFlag({
     name: 'advanced_custom_pages',
+  });
+  const customPageBuilderEnabled = useFeatureFlag({
+    name: 'custom_page_builder',
   });
 
   if (isNilOrError(customPage)) {
@@ -122,6 +130,16 @@ const CustomPagesEditContent = () => {
             <FormattedMessage {...messages.sectionDescription} />
           </Warning>
         </Box>
+        {customPageBuilderEnabled && (
+          <Box mb="28px">
+            <StyledLink
+              to="/admin/custom-page-builder/pages/$customPageId"
+              params={{ customPageId }}
+            >
+              <FormattedMessage {...messages.editInContentBuilder} />
+            </StyledLink>
+          </Box>
+        )}
         {sectionTogglesData.map((sectionToggleData, index) => {
           if (sectionToggleData.hideSection) {
             return;
