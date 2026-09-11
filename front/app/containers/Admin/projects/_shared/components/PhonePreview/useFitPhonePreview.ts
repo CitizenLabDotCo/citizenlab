@@ -8,14 +8,10 @@ const DEFAULT_SCALE = 0.8;
 const MAX_SCALE = 1;
 
 /**
- * Renders a preview at a fixed logical phone viewport and scales the whole
- * thing to fit its container, so components keep their real proportions
- * instead of being squeezed into a narrow iframe ("scale, don't shrink").
- *
- * Height is measured against the window rather than the container, because
- * the container's own height follows its content. The container is tracked in
- * state so the fit is measured again whenever the node attaches, which is
- * what makes it work for callers that render a spinner first.
+ * Height is measured against the window rather than the container, because the
+ * container's own height follows its content. The container is tracked in state
+ * so the fit is measured again whenever the node attaches, which is what makes
+ * it work for callers that render a spinner first.
  */
 const useFitPhonePreview = () => {
   const [scale, setScale] = useState(DEFAULT_SCALE);
