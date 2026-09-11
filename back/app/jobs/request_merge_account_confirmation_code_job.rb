@@ -4,8 +4,7 @@
 # be merged into.
 #
 # Never writes user.new_email, unlike RequestNewEmailConfirmationCodeJob: the address
-# belongs to somebody else and validate_not_duplicate_new_email would reject it, so it
-# lives on the confirmation instead.
+# belongs to somebody else, so it lives on the confirmation instead.
 class RequestMergeAccountConfirmationCodeJob < ApplicationJob
   self.priority = 30 # More important than default (50)
 

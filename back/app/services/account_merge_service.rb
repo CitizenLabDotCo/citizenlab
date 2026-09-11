@@ -12,8 +12,9 @@ class AccountMergeService
   # Everything the source can own that must end up on the target.
   #
   # +dedup_by+ columns are mostly backed by a unique index, so a missing dedup aborts
-  # the merge rather than duplicating. +dupes+ is :destroy where a counter_culture
-  # counter hangs off the row, :delete where nothing observes it.
+  # the merge rather than duplicating. +dedup_where+ narrows which of the target's
+  # rows count as already held. +dupes+ is :destroy where a counter_culture counter
+  # hangs off the row, :delete where nothing observes it.
   #
   # assert_source_emptied! derives from this same list, so a surface added here cannot
   # be silently left behind.
@@ -21,7 +22,9 @@ class AccountMergeService
     # Auth. Eligibility already refuses a target holding a *different* identity or
     # verification, so an exact match here is the same person twice - drop it.
     { model: 'Identity', fk: :user_id, dedup_by: %i[provider uid], dupes: :delete },
-    { model: 'Verification::Verification', fk: :user_id, dedup_by: %i[method_name hashed_uid], dupes: :delete },
+    # dedup_where keeps a revoked verification on the target from swallowing the
+    # source's active one and leaving the survivor unverified.
+    { model: 'Verification::Verification', fk: :user_id, dedup_by: %i[method_name hashed_uid], dupes: :delete, dedup_where: { active: true } },
 
     # Participation.
     { model: 'Idea', fk: :author_id, rehash: true },
@@ -70,11 +73,10 @@ class AccountMergeService
   # Provider-driven merge: an identity provider returned the same verification uid
   # for both accounts, so they are one person.
   #
-  # Target-side eligibility does not apply here. Those rules exist because merge!
-  # hands over somebody else's account to whoever could read an inbox; here the
-  # target is the account being signed in to, so refusing an admin would only break
-  # re-verification. The token is left alone for the same reason - nobody new gains
-  # access, and expiring it would cut off the verification request in flight.
+  # Target-side eligibility does not apply. Those rules guard against handing over a
+  # stranger's account to whoever read an inbox; here the target is the account being
+  # signed in to, so refusing an admin would only break re-verification. The token is
+  # left alone for the same reason.
   #
   # @return [User] +target+, with everything the source owned moved onto it.
   # @raise [IneligibleError] if the source is not an absorbable blank account.
@@ -142,8 +144,10 @@ class AccountMergeService
   end
 
   # Deterministic ordering, or two merges into the same target deadlock each other.
+  # lock! reloads as it locks, so the rules that follow see the rows as they are now
+  # rather than as they were when these records were first loaded.
   def lock_in_id_order!(source, target)
-    User.lock.where(id: [source.id, target.id]).order(:id).to_a
+    [source, target].sort_by(&:id).each(&:lock!)
   end
 
   def promote_email_onto_source!(source, target_email, confirmation)
@@ -170,8 +174,8 @@ class AccountMergeService
     end
   end
 
-  # Engine models. All the engines referenced above ship by default, but a model that
-  # genuinely isn't loaded must not take the whole merge down with it.
+  # The engines above all ship by default, but a model that isn't loaded must not take
+  # the merge down with it.
   def resolve_model(name)
     name.safe_constantize
   end
@@ -194,8 +198,9 @@ class AccountMergeService
 
   def duplicate_ids_for(model, move, source, target)
     columns = move[:dedup_by]
-    existing = model.where(move[:fk] => target.id).pluck(*columns)
-    existing = existing.to_set { |key| columns.one? ? [key] : key }
+    held = model.where(move[:fk] => target.id)
+    held = held.where(move[:dedup_where]) if move[:dedup_where]
+    existing = held.pluck(*columns).to_set { |key| columns.one? ? [key] : key }
 
     model.where(move[:fk] => source.id).pluck(:id, *columns).filter_map do |row|
       id, *key = row
@@ -260,13 +265,12 @@ class AccountMergeService
     }
   end
 
-  # users.verified is written by SideFxVerificationService#after_create, not by a
-  # callback on Verification, so moving the rows does not flip it.
+  # users.verified is written by SideFxVerificationService#after_create, so moving the
+  # rows does not flip it.
   #
-  # Profile precedence, strongest first: values the target's own verification locks
-  # (its provider asserted those, so the source may not overwrite them); values the
-  # source's verification locks; whatever the target already had; the source's
-  # remaining answers, filling gaps only.
+  # Profile precedence, strongest first: what the target's own verification locks (its
+  # provider asserted that); what the source's locks; what the target already had; the
+  # source's remaining answers, filling gaps only.
   def apply_verified_identity!(source, target, target_locks)
     target.verified = true if target.verifications.active.exists?
 

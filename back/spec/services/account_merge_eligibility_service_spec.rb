@@ -50,6 +50,12 @@ describe AccountMergeEligibilityService do
 
     # Otherwise a blocked user merges into a clean account they also own and walks
     # away unblocked, taking the verification that made the block stick with them.
+    # One code away from owning the account, so absorbing would discard that claim.
+    it 'refuses a source part-way through confirming an email' do
+      source.update_columns(new_email: 'pending@example.org')
+      expect(reason).to eq :source_has_pending_email
+    end
+
     it 'refuses a blocked source' do
       source.update_columns(block_end_at: 1.week.from_now)
       expect(reason).to eq :source_blocked

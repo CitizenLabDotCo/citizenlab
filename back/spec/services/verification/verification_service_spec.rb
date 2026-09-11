@@ -152,14 +152,11 @@ describe Verification::VerificationService do
         end
       end
 
+      # An omniauth method: only those assert their own uid, and only those absorb.
       def verify!(as:)
-        allow_any_instance_of(CustomIdMethods::Bogus::BogusVerification)
-          .to receive(:verify_sync).and_return({ uid: 'shared-uid' })
-
-        service.verify_sync(
+        service.verify_omniauth(
           user: as,
-          method_name: 'bogus',
-          verification_parameters: { desired_error: nil }
+          auth: OmniAuth::AuthHash.new(provider: 'fake_sso', uid: 'shared-uid')
         )
       end
 
@@ -182,6 +179,21 @@ describe Verification::VerificationService do
 
         expect(Verification::Verification.where(user_id: user.id).count).to eq 1
         expect(user.reload.verified).to be true
+      end
+
+      # A manual_sync uid is typed by the user, so absorbing on it would let anyone
+      # knowing somebody's number take their account.
+      it 'refuses instead of absorbing when the uid was typed rather than asserted' do
+        allow_any_instance_of(CustomIdMethods::Bogus::BogusVerification)
+          .to receive(:verify_sync).and_return({ uid: 'typed-uid' })
+        typed = lambda do |as|
+          service.verify_sync(user: as, method_name: 'bogus', verification_parameters: { desired_error: nil })
+        end
+
+        typed.call(shell)
+
+        expect { typed.call(user) }.to raise_error described_class::VerificationTakenError
+        expect(shell.reload).to be_present
       end
     end
   end

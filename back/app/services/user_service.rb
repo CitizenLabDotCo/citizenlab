@@ -128,11 +128,9 @@ class UserService
       end
     end
 
-    # An unconfirmed address somebody else owns cannot be parked on new_email:
-    # validate_not_duplicate_new_email rejects it and the whole sign-in fails with
-    # nothing created. Leaving the account without an email instead drops the user
-    # into the missing-data flow, where supplying this address offers the merge -
-    # which proves the inbox with a code, as the SSO did not.
+    # validate_not_duplicate_new_email rejects an address somebody else owns, so
+    # parking it fails the whole sign-in. Leaving the account without an email drops
+    # the user into the missing-data flow, where supplying it offers the merge.
     #
     # Invitees keep the old refusal: the invite flow owns claiming those accounts.
     def absorbable_by_merge?(email)

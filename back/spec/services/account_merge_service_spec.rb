@@ -78,6 +78,19 @@ describe AccountMergeService do
     expect(target.reload.email_confirmed_at).to be_nil
   end
 
+  # An inactive row is not something the target "already holds", so it must not
+  # swallow the source's active one and leave the survivor unverified.
+  it 'keeps the active verification when the target holds a revoked one for it' do
+    create(:verification, user: source, method_name: 'cow', hashed_uid: 'aaa')
+    create(:verification, user: target, method_name: 'cow', hashed_uid: 'aaa', active: false)
+
+    merge!
+
+    target.reload
+    expect(target.verifications.active.pluck(:hashed_uid)).to eq ['aaa']
+    expect(target.verified).to be true
+  end
+
   describe 'reactions' do
     let(:idea) { create(:idea) }
 

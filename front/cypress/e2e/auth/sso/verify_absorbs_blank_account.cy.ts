@@ -3,10 +3,8 @@ import { fakeSSOVerify } from '../utils';
 import { fakeSSOGlobalSignup } from './utils';
 
 // The mirror of the merge flow in user_no_email.cy.ts: there the SSO account is
-// absorbed into the email one, here the email account absorbs the SSO one. The
-// provider returning the same subject for both is what ties them together.
-//
-// The refusal side is settled by AccountMergeEligibilityService and covered by the
+// absorbed into the email one, here the reverse. The provider returning the same
+// subject for both is what ties them together. The refusal side is covered by the
 // backend specs.
 describe('SSO: verifying an email account that already has a blank SSO account', () => {
   it('absorbs the blank account into the one being verified', () => {

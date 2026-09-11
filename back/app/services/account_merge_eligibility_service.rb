@@ -35,12 +35,13 @@ class AccountMergeEligibilityService
     return :source_not_sso unless source.sso?
     return :source_has_email if source.email.present?
     return :source_has_password if source.password_digest.present?
-    # Deleting the source is part of the merge, so an account carrying roles must
-    # never be the source: it would quietly remove an admin or moderator. A fresh
-    # email-less SSO account never has any.
+    # A pending confirmation means the user is actively claiming this account and is
+    # one code away from owning it. Absorbing would discard that silently.
+    return :source_has_pending_email if source.new_email.present?
+    # The merge deletes the source, which would quietly remove an admin or moderator.
     return :source_has_roles if source.roles.present?
-    # A block lives on the user row, so merging would carry the account's content and
-    # verification onto a clean one and leave the block behind with the deleted row.
+    # A block lives on the user row, so merging would carry the content and
+    # verification to a clean account and leave the block behind with the deleted one.
     return :source_blocked if source.blocked?
 
     nil
@@ -72,12 +73,10 @@ class AccountMergeEligibilityService
   # Any active verification the target holds that the source does not is somebody
   # else's assertion of who this account is.
   #
-  # Deliberately not scoped per method. A platform can run several (MitID and
-  # NemLog-in, the two Vienna ones), and comparing within a method would let a target
-  # verified as Alice be absorbed by a source verified as Bob: the survivor would hold
-  # both verifications while apply_verified_identity! replaced Alice's asserted name
-  # with Bob's. The cost is refusing a genuine same-person merge across two methods,
-  # which falls back to "sign out and log in with this email".
+  # Not scoped per method on purpose. A platform can run several, and comparing within
+  # one would let two different people merge: the survivor would hold both
+  # verifications while apply_verified_identity! overwrote the target's locked name.
+  # The cost is refusing a same-person merge across two methods.
   def verification_conflict(source, target)
     target_verifications = target.verifications.active.to_a
     return nil if target_verifications.empty?

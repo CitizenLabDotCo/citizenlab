@@ -100,9 +100,8 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
     // Signed in as the existing account, not a second one alongside it.
     //
     // No posting check, unlike the merge case: signing in imports none of the
-    // provider's registration answers (update_in_sso! writes only what the method
-    // declares updateable), so participation stays blocked until the user fills in
-    // the profile.
+    // provider's registration answers, so participation stays blocked until the
+    // user fills in the profile.
     cy.getAuthUser().then((user) => {
       expect(user.body.data.attributes.email).to.eq(email);
     });
@@ -121,9 +120,8 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
     // Sign up through Fake SSO (return unconfirmed email)
     fakeSSOGlobalSignup(cy, 'tracy_smith', { email });
 
-    // The address belongs to the account above and the SSO says it is
-    // unverified, so it is not saved on the new account. The missing-data form
-    // opens pre-filled with it, and submitting offers to merge the two.
+    // The SSO says the address is unverified and it belongs to the account above, so
+    // it is not saved. The form opens pre-filled, and submitting offers the merge.
     cy.get('#e2e-built-in-fields-container')
       .find('input[type="email"]')
       .should('have.value', email);

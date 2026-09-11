@@ -119,7 +119,7 @@ module Verification
       # Other accounts already verified with this uid: either blank SSO shells
       # belonging to the same person, or somebody else claiming this identity.
       absorbable = existing_verified_users(user, uid, method)
-      raise VerificationTakenError unless absorbable.all? { |u| merge_eligibility_service.source_eligible?(u) }
+      raise VerificationTakenError unless absorbable.all? { |u| absorbable?(u, method) }
 
       verification = ::Verification::Verification.new(
         method_name: method.name_for_hashing,
@@ -141,6 +141,14 @@ module Verification
       end
 
       verification
+    end
+
+    # Only for methods whose uid an identity provider asserts. A manual_sync uid is
+    # typed by the user and merely looked up, so knowing somebody's number would
+    # otherwise be enough to take their account. try so an unknown method fails closed.
+    def absorbable?(other_user, method)
+      method.try(:verification_method_type) == :omniauth &&
+        merge_eligibility_service.source_eligible?(other_user)
     end
 
     def merge_eligibility_service
