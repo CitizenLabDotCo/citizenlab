@@ -14,9 +14,7 @@ import { Outlet as RouterOutlet, useParams } from 'utils/router';
 
 import ProjectWorkspace from './backofficeRedesign/ProjectWorkspace';
 import PhaseLeftPanel from './backofficeRedesign/ProjectWorkspace/Phase/PhaseLeftPanel';
-import PhaseRightPanel from './backofficeRedesign/ProjectWorkspace/Phase/PhaseRightPanel';
 import ProjectLeftPanel from './backofficeRedesign/ProjectWorkspace/ProjectLeftPanel';
-import ProjectRightPanel from './backofficeRedesign/ProjectWorkspace/ProjectRightPanel';
 import ProjectHeader from './projectHeader';
 import ProjectSidebar from './projectPage/ProjectSidebar';
 
@@ -47,7 +45,6 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
             <ProjectLeftPanel projectId={projectId} />
           )
         }
-        rightPanel={selectedPhase ? <PhaseRightPanel /> : <ProjectRightPanel />}
       >
         <RouterOutlet />
       </ProjectWorkspace>
