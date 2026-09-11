@@ -21,17 +21,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.workspace.projectSetupPanel',
     defaultMessage: 'Project setup',
   },
-  phaseSetupPanel: {
-    id: 'app.containers.Admin.projects.project.workspace.phaseSetupPanel',
-    defaultMessage: 'Phase setup',
-  },
   projectSettings: {
     id: 'app.containers.Admin.projects.project.workspace.projectSettings',
     defaultMessage: 'Project settings',
-  },
-  phaseSettings: {
-    id: 'app.containers.Admin.projects.project.workspace.phaseSettings',
-    defaultMessage: 'Phase settings',
   },
   backToProjectSetup: {
     id: 'app.containers.Admin.projects.project.workspace.backToProjectSetup',
