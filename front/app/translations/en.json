@@ -210,6 +210,7 @@
   "app.components.CustomFieldsForm.uploadShapefileInstructions": "* Upload a zip file containing one or more shapefiles.",
   "app.components.CustomFieldsForm.validCordinatesTooltip2": "If the location is not displayed among the options as you type, you can add valid coordinates in the format 'latitude, longitude' to specify a precise location (eg: -33.019808, -71.495676).",
   "app.components.CustomFieldsForm.yesSubmit": "Yes, submit",
+  "app.components.CustomPageBuilder.Widgets.CustomPageBanner.buttonTitle": "Button",
   "app.components.CustomPageBuilder.Widgets.CustomPageBanner.noBannerYet": "Banner. Add an image or a heading in the settings panel to show it on the page.",
   "app.components.CustomPageBuilder.Widgets.CustomPageBanner.title": "Banner",
   "app.components.CustomPageBuilder.Widgets.CustomPageTitle.hiddenNote": "Title hidden. The page is still called \"{title}\" in the admin pages list and in the navigation bar.",
