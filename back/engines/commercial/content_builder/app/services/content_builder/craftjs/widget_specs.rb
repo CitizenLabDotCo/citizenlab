@@ -27,6 +27,7 @@ module ContentBuilder
       CUSTOM_PAGE_WIDGETS = %w[
         ProjectsByFilter
         CustomPageRoot
+        CustomPageBanner
         CustomPageTitle
         CustomPageBody
       ].freeze
@@ -93,7 +94,15 @@ module ContentBuilder
         # The custom page scaffold, same idea.
         'CustomPageRoot' => {},
         'CustomPageTitle' => {},
-        'CustomPageBody' => {}
+        'CustomPageBody' => {},
+        # Pinned above the body like the title, but optional: a page shows a banner or not.
+        'CustomPageBanner' => {
+          'multilocs' => %w[headerMultiloc subheaderMultiloc ctaTextMultiloc],
+          'enums' => {
+            'layout' => %w[full_width_banner_layout two_column_layout two_row_layout fixed_ratio_layout],
+            'ctaType' => %w[customized_button no_button]
+          }
+        }
       }.freeze
 
       PROJECT_PAGE_SPECS = SPECS.except(*CUSTOM_PAGE_WIDGETS).freeze

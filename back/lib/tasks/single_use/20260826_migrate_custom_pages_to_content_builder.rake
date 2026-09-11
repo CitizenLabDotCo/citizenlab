@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# Derives a `custom_page` Content Builder layout for every global custom page, from the title,
-# info sections and attachments the page renders today. It derives whatever
+# Derives a `custom_page` Content Builder layout for every global custom page, from the banner,
+# title, info sections and attachments the page renders today. It derives whatever
 # CustomPageLayoutService emits, so it grows with each widget that lands rather than needing
 # changes of its own. A layout derived before a widget existed lacks its node; `overwrite`
 # re-derives it, which is the upgrade path for an already-migrated page.
@@ -94,7 +94,8 @@ namespace :single_use do
 
         context = { tenant: tenant.host, page_id: page.id, slug: page.slug }
         layout = ContentBuilder::Layout.find_by(content_buildable: page, code: code)
-        craftjs_json = service.craftjs_json_for(page)
+        # A dry run must not copy banner images; the derived graph is the same either way.
+        craftjs_json = service.craftjs_json_for(page, persist_images: script.execute?)
         archive_dropped_lists.call(page, craftjs_json, tenant, script)
 
         if layout.nil?
