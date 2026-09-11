@@ -8,7 +8,12 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     template, translate_logs = MultiTenancy::Templates::Utils.translate_and_fix_locales(template) unless local_copy
 
     created_objects_ids = ActiveRecord::Base.transaction do
-      tenant_deserializer.deserialize(template, validate: false, local_copy: local_copy, reuse_by: reuse_matchers)
+      tenant_deserializer.deserialize(
+        template,
+        validate: false,
+        local_copy: local_copy,
+        reuse_by: { 'CustomField' => MultiTenancy::Templates::ReuseMatchers.registration_custom_field }
+      )
     end
 
     project = Project.find(created_objects_ids['Project'].first)
@@ -182,17 +187,9 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   def keep_custom_field?(field_attrs)
     case field_attrs['resource_type']
     when 'CustomForm' then true
-    when 'User' then target_registration_field(field_attrs).present?
+    when 'User' then MultiTenancy::Templates::ReuseMatchers.registration_custom_field.call(field_attrs, CustomField).present?
     else raise "Unexpected custom_field resource_type in project copy template: #{field_attrs['resource_type'].inspect}"
     end
-  end
-
-  def target_registration_field(field_attrs)
-    CustomField.registration.find_by(code: field_attrs['code']) if field_attrs['code'].present?
-  end
-
-  def reuse_matchers
-    { 'CustomField' => ->(attrs, _klass) { target_registration_field(attrs) if attrs['resource_type'] == 'User' } }
   end
 
   def yml_custom_fields(shift_timestamps: 0)

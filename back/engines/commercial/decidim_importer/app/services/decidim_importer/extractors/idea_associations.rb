@@ -39,9 +39,9 @@ module DecidimImporter
       end
 
       # Parks a pointer back to the `Area` the idea's Decidim scope became. Go Vocal ideas have no area
-      # association (areas hang off projects/users), so the link lives in `custom_field_values` under the
-      # reserved `decidim_scope` key. The value is *seeded* with the area record's own (shared) attributes
-      # hash: {ScopesExtractor} imported the scope as an area, and the area's real id only exists after the
+      # association (areas hang off projects/users), so the link lives in an answer under the reserved
+      # `decidim_scope` key. The value is *seeded* with the area record's own (shared) attributes hash:
+      # {ScopesExtractor} imported the scope as an area, and the area's real id only exists after the
       # template is applied, so {DecidimImporter::Importer.resolve_scope_areas!} swaps this hash for
       # `{ 'area_id' => …, 'title_multiloc' => … }` once it does. No-op when the row has no scope or the
       # scope wasn't imported as an area.
@@ -49,23 +49,21 @@ module DecidimImporter
         area = ref_map.fetch(present_value(scope_uid))
         return unless area&.model_name == 'area'
 
-        values = (idea.attributes['custom_field_values'] ||= {})
-        values['decidim_scope'] = area.attributes
+        register_answer(idea, 'decidim_scope', area.attributes)
       end
 
-      # Parks the proposal's *original* Decidim status (its token + citizen-facing label) in the idea's
-      # `custom_field_values` under the reserved `decidim_status` key, for provenance — the Go Vocal status
-      # the proposal was mapped onto is the idea's own `idea_status`, so this only needs the source value.
-      # Unlike {#register_scope_area} it stores literal data, so no post-import resolution is needed. No-op
-      # when neither token nor label is known (e.g. a proposal with a blank state). See {ProposalStatusResolver}.
+      # Parks the proposal's *original* Decidim status (its token + citizen-facing label) in an answer
+      # under the reserved `decidim_status` key, for provenance — the Go Vocal status the proposal was
+      # mapped onto is the idea's own `idea_status`, so this only needs the source value. Unlike
+      # {#register_scope_area} it stores literal data, so no post-import resolution is needed. No-op when
+      # neither token nor label is known (e.g. a proposal with a blank state). See {ProposalStatusResolver}.
       def register_decidim_status(idea, decision)
         original = {}
         original['token'] = decision.token if decision.token.present?
         original['title_multiloc'] = decision.original_title_multiloc if decision.original_title_multiloc.present?
         return if original.empty?
 
-        values = (idea.attributes['custom_field_values'] ||= {})
-        values['decidim_status'] = original
+        register_answer(idea, 'decidim_status', original)
       end
     end
   end

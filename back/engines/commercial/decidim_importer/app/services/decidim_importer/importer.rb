@@ -38,10 +38,7 @@ module DecidimImporter
           id ||= (email = attrs['email']).present? ? user_ids_by_email[email.downcase] : nil
           klass.find(id) if id
         },
-        'CustomField' => lambda { |attrs, klass|
-          key = attrs['key']
-          klass.find_by(key: key) if key.present?
-        },
+        'CustomField' => MultiTenancy::Templates::ReuseMatchers.registration_custom_field,
         'ProjectFolders::Folder' => lambda { |attrs, klass|
           slug = Slug.sanitize((attrs['title_multiloc'] || {}).values.find(&:present?))
           klass.find_by(slug: slug) if slug
@@ -118,33 +115,33 @@ module DecidimImporter
     end
 
     # Resolves the scope→area pointer parked on each imported idea. {Extractors::IdeaAssociations#register_scope_area}
-    # seeds `custom_field_values['decidim_scope']` with the (shared) attributes hash of the `Area` the
-    # idea's Decidim scope became; here — now that the area is a real row — that hash is swapped for
+    # seeds a `decidim_scope` answer with the (shared) attributes hash of the `Area` the idea's Decidim
+    # scope became; here — now that the area is a real row — that hash is swapped for
     # `{ 'area_id' => <uuid>, 'title_multiloc' => … }`, giving the imported input a durable pointer back
-    # to its area (ideas have no first-class area association). Idea/area template records line up
+    # to its area (ideas have no first-class area association). Answer/area template records line up
     # positionally with the deserializer's created ids (same trick as {.restore_update_timestamps}); a
     # size mismatch skips the pass rather than mislinking. Run in the target tenant.
     def self.resolve_scope_areas!(template, created_object_ids)
-      ideas = template.dig('models', 'idea')
+      answers = template.dig('models', 'custom_field_answer')
       areas = template.dig('models', 'area')
-      return if ideas.blank? || areas.blank?
+      return if answers.blank? || areas.blank?
 
-      idea_ids = created_object_ids['Idea'] || []
+      answer_ids = created_object_ids['CustomFieldAnswer'] || []
       area_ids = created_object_ids['Area'] || []
-      return unless ideas.size == idea_ids.size && areas.size == area_ids.size
+      return if answers.size != answer_ids.size || areas.size != area_ids.size
 
       area_id_by_attrs = {}.compare_by_identity
       areas.each_with_index { |attrs, i| area_id_by_attrs[attrs] = area_ids[i] }
 
-      ideas.each_with_index do |attrs, i|
-        area_attrs = attrs['custom_field_values']&.fetch('decidim_scope', nil)
-        area_id = area_attrs.is_a?(Hash) && area_id_by_attrs[area_attrs]
-        next unless area_id
+      answers.each_with_index do |attrs, i|
+        next if attrs['key'] != 'decidim_scope'
 
-        resolved = { 'area_id' => area_id, 'title_multiloc' => area_attrs['title_multiloc'] }
-        values = attrs['custom_field_values'].merge('decidim_scope' => resolved)
-        attrs['custom_field_values'] = values
-        CustomFieldAnswer.where(answerable_type: 'Idea', answerable_id: idea_ids[i], key: 'decidim_scope').update_all(value: resolved)
+        area_id = attrs['value'].is_a?(Hash) && area_id_by_attrs[attrs['value']]
+        next if !area_id
+
+        resolved = { 'area_id' => area_id, 'title_multiloc' => attrs['value']['title_multiloc'] }
+        attrs['value'] = resolved
+        CustomFieldAnswer.where(id: answer_ids[i]).update_all(value: resolved)
       end
     end
 

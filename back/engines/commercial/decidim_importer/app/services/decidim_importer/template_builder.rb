@@ -40,6 +40,7 @@ module DecidimImporter
       basket
       baskets_idea
       files/file_attachment
+      custom_field_answer
     ].freeze
 
     def initialize(ref_map)

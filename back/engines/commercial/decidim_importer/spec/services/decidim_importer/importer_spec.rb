@@ -194,7 +194,7 @@ RSpec.describe DecidimImporter::Importer do
   end
 
   describe '.resolve_scope_areas!' do
-    it 'rewrites each idea’s parked scope pointer to the imported area’s id and title' do
+    it 'rewrites each parked scope pointer to the imported area’s id and title' do
       area = create(:area, title_multiloc: { 'en' => 'Utah' })
       area_attrs = { 'title_multiloc' => { 'en' => 'Utah' } }
       scoped = create(:idea, custom_field_answers: [build(:custom_field_answer, key: 'decidim_scope', value: area_attrs)])
@@ -202,11 +202,11 @@ RSpec.describe DecidimImporter::Importer do
       template = {
         'models' => {
           'area' => [area_attrs],
-          # The scoped idea's pointer is the *same* area attributes hash (a YAML anchor/alias in practice).
-          'idea' => [{ 'custom_field_values' => { 'decidim_scope' => area_attrs } }, { 'custom_field_values' => {} }]
+          # The pointer's value is the *same* area attributes hash (a YAML anchor/alias in practice).
+          'custom_field_answer' => [{ 'key' => 'decidim_scope', 'value' => area_attrs }]
         }
       }
-      created = { 'Area' => [area.id], 'Idea' => [scoped.id, plain.id] }
+      created = { 'Area' => [area.id], 'CustomFieldAnswer' => [scoped.custom_field_answers.first.id] }
 
       described_class.resolve_scope_areas!(template, created)
 
@@ -216,11 +216,11 @@ RSpec.describe DecidimImporter::Importer do
       expect(plain.reload.custom_field_answers).to be_empty
     end
 
-    it 'skips the pass when idea/area counts do not line up with the created ids' do
+    it 'skips the pass when answer/area counts do not line up with the created ids' do
       idea = create(:idea, custom_field_answers: [build(:custom_field_answer, key: 'decidim_scope', value: { 'title_multiloc' => {} })])
-      template = { 'models' => { 'area' => [{}], 'idea' => [{ 'custom_field_values' => { 'decidim_scope' => { 'title_multiloc' => {} } } }] } }
+      template = { 'models' => { 'area' => [{}], 'custom_field_answer' => [{ 'key' => 'decidim_scope', 'value' => { 'title_multiloc' => {} } }] } }
 
-      described_class.resolve_scope_areas!(template, { 'Area' => [], 'Idea' => [idea.id] })
+      described_class.resolve_scope_areas!(template, { 'Area' => [], 'CustomFieldAnswer' => [idea.custom_field_answers.first.id] })
 
       expect(idea.reload.answer_for_key('decidim_scope').value).to eq('title_multiloc' => {})
     end

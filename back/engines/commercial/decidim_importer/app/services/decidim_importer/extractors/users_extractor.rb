@@ -14,7 +14,7 @@ module DecidimImporter
     # whole import — so they're skipped here. The Decidim `uid` is preserved verbatim in
     # `unique_code` so contributions can be re-linked. The plain-text "about" and personal URL are
     # folded into the bio; demographics found in `extended_data` (Decidim's JSON blob for the
-    # configured extra user fields) go into `custom_field_values`.
+    # configured extra user fields) become custom field answers.
     class UsersExtractor < BaseExtractor
       COLUMNS = {
         uid: 'uid',
@@ -37,7 +37,7 @@ module DecidimImporter
 
       # @param extra_text_field_keys [Array<String>] `extended_data` keys that the organization's
       #   `extra_user_fields` config exposes as free-text Go Vocal custom fields (e.g.
-      #   'phone_number'). Their raw values are copied verbatim onto `custom_field_values`.
+      #   'phone_number'). Their raw values are copied verbatim as answers.
       # @param anonymize_users [Boolean] when true, every directly-identifying field is faked or
       #   dropped so no real PII leaves the source (see {#anonymize_pii!}): the name and a deterministic
       #   `*@example.org` email are faked; the avatar, free-text bio/personal URL and free-text
@@ -83,14 +83,16 @@ module DecidimImporter
         roles = roles_for(row)
         attributes['roles'] = roles if roles.any?
 
-        cfv = custom_field_values(row)
-        attributes['custom_field_values'] = cfv if cfv.any?
+        values = answer_values(row)
 
         avatar = present_value(row[COLUMNS[:avatar]])
         attributes['remote_avatar_url'] = avatar if avatar
 
         # Scrub PII last, once every identifying field is present, so nothing is added back after.
-        anonymize_pii!(attributes, uid) if @anonymize_users
+        if @anonymize_users
+          anonymize_pii!(attributes, uid)
+          values = values.except(*@extra_text_field_keys)
+        end
 
         # Go Vocal requires case-insensitively unique emails; Decidim occasionally has two accounts on the
         # same one. Collapse the duplicate onto the first: alias this uid to that user so its references
@@ -102,7 +104,11 @@ module DecidimImporter
           return skip(uid, "duplicate email #{attributes['email']}")
         end
 
-        seen_users_by_email[email_key] = ref_map.register(uid, Record.new('user', attributes))
+        user = ref_map.register(uid, Record.new('user', attributes))
+        values.each do |key, value|
+          register_answer(user, key, value, custom_field: ref_map.fetch("decidim-userfield-#{key}"))
+        end
+        seen_users_by_email[email_key] = user
       end
 
       def seen_users_by_email
@@ -125,26 +131,15 @@ module DecidimImporter
       # Replaces or removes every directly-identifying field so no real PII leaves the source: a fake
       # name, a fake-but-stable-and-unique email derived from the Decidim uid (so it stays unique across
       # the dump and reproducible; `example.org` is reserved and never blacklisted), and removal of the
-      # avatar, the free-text bio/personal URL, and the free-text demographic answers (phone number,
-      # postal code, …). The coarse aggregates Go Vocal reports on (gender, birthyear) are kept so
-      # anonymised dumps stay useful for testing.
+      # avatar and the free-text bio/personal URL. {#build_user} drops the free-text demographic answers
+      # (phone number, postal code, …); the coarse aggregates Go Vocal reports on (gender, birthyear)
+      # are kept so anonymised dumps stay useful for testing.
       def anonymize_pii!(attributes, uid)
         attributes['email'] = "user-#{Digest::SHA256.hexdigest(uid)[0, 12]}@example.org"
         attributes['first_name'] = Faker::Name.first_name
         attributes['last_name'] = Faker::Name.last_name
         attributes.delete('bio_multiloc')
         attributes.delete('remote_avatar_url')
-        scrub_free_text_demographics!(attributes)
-      end
-
-      # Removes the free-text custom-field answers (the configured extra fields, e.g. phone number,
-      # postal code), leaving only the built-in gender/birthyear aggregates.
-      def scrub_free_text_demographics!(attributes)
-        values = attributes['custom_field_values']
-        return unless values
-
-        @extra_text_field_keys.each { |key| values.delete(key) }
-        attributes.delete('custom_field_values') if values.empty?
       end
 
       # Decidim stores a single display name; split into first/last (last token => last name).
@@ -187,8 +182,8 @@ module DecidimImporter
 
       # Decidim's `extended_data` is a JSON blob holding the configured extra user fields
       # (gender, phone_number, date_of_birth, …). Pick the demographic ones GV has built-in slots
-      # for.
-      def custom_field_values(row)
+      # for, plus the configured extra text fields, keyed by the field they answer.
+      def answer_values(row)
         data = Parsing.parse_json(row[COLUMNS[:extended_data]]) || {}
         values = {}
 

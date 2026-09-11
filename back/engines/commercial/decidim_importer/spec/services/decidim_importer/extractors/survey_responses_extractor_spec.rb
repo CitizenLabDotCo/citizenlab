@@ -66,6 +66,16 @@ RSpec.describe DecidimImporter::Extractors::SurveyResponsesExtractor do
     }.merge(answers)
   end
 
+  def answer_records(idea)
+    ref_map.records.select do |r|
+      r.model_name == 'custom_field_answer' && r.attributes['answerable_ref'].equal?(idea.attributes)
+    end
+  end
+
+  def answers(idea)
+    answer_records(idea).to_h { |r| r.attributes.values_at('key', 'value') }
+  end
+
   it 'creates a published idea bound to the survey phase, project and author' do
     idea = extract([answer_row]).first
 
@@ -96,29 +106,34 @@ RSpec.describe DecidimImporter::Extractors::SurveyResponsesExtractor do
   end
 
   it 'encodes a text answer verbatim' do
-    cfv = extract([answer_row('decidim--forms--question--10' => 'Bonjour')]).first.attributes['custom_field_values']
-    expect(cfv).to eq('field_10' => 'Bonjour')
+    idea = extract([answer_row('decidim--forms--question--10' => 'Bonjour')]).first
+    expect(answers(idea)).to eq('field_10' => 'Bonjour')
   end
 
   it 'encodes single and multiple choice as option keys, with custom_body as the _other companion' do
+    field = ref_map.register("#{component_uid}-field-decidim--forms--question--11", DecidimImporter::Record.new('custom_field', { 'key' => 'field_11' }))
     row = answer_row(
       'decidim--forms--question--11' => [choice('decidim--forms--answer-option--21', custom_body: 'Autre chose')].to_json,
       'decidim--forms--question--12' => [choice('decidim--forms--answer-option--22'),
         choice('decidim--forms--answer-option--23')].to_json
     )
-    cfv = extract([row]).first.attributes['custom_field_values']
+    idea = extract([row]).first
+    values = answers(idea)
 
-    expect(cfv['field_11']).to eq('option_21')
-    expect(cfv['field_11_other']).to eq('Autre chose')
-    expect(cfv['field_12']).to eq(%w[option_22 option_23])
+    expect(values['field_11']).to eq('option_21')
+    expect(values['field_11_other']).to eq('Autre chose')
+    expect(values['field_12']).to eq(%w[option_22 option_23])
+    # The option answer and its _other companion both reference the question's field.
+    field_11_answers = answer_records(idea).select { |r| r.attributes['key'].start_with?('field_11') }
+    expect(field_11_answers.map { |r| r.attributes['custom_field_ref'] }).to all(be(field.attributes))
   end
 
   it 'orders a ranking answer by position' do
     row = answer_row('decidim--forms--question--13' => [
       choice('decidim--forms--answer-option--25', position: 1), choice('decidim--forms--answer-option--24', position: 0)
     ].to_json)
-    cfv = extract([row]).first.attributes['custom_field_values']
-    expect(cfv['field_13']).to eq(%w[option_24 option_25])
+    idea = extract([row]).first
+    expect(answers(idea)['field_13']).to eq(%w[option_24 option_25])
   end
 
   it 'encodes a matrix answer as statement_key => 1-based scale point' do
@@ -126,9 +141,9 @@ RSpec.describe DecidimImporter::Extractors::SurveyResponsesExtractor do
       { 'decidim--forms--question-matrix-row--30' => [choice('decidim--forms--answer-option--41')] },
       { 'decidim--forms--question-matrix-row--31' => [choice('decidim--forms--answer-option--42')] }
     ].to_json)
-    cfv = extract([row]).first.attributes['custom_field_values']
+    idea = extract([row]).first
     # option 41 is the 2nd scale column, option 42 the 3rd.
-    expect(cfv['field_14']).to eq('statement_30' => 2, 'statement_31' => 3)
+    expect(answers(idea)['field_14']).to eq('statement_30' => 2, 'statement_31' => 3)
   end
 
   it 'turns a file answer into a file_upload record referenced by { id, name }' do
@@ -138,7 +153,7 @@ RSpec.describe DecidimImporter::Extractors::SurveyResponsesExtractor do
     file = ref_map.records.find { |r| r.model_name == 'file_upload' }
     expect(file.attributes).to include('name' => 'plan.pdf', 'remote_file_url' => url)
     expect(file.attributes['idea_ref']).to be(idea.attributes)
-    expect(idea.attributes['custom_field_values']['field_15']).to eq('id' => file.attributes['id'], 'name' => 'plan.pdf')
+    expect(answers(idea)['field_15']).to eq('id' => file.attributes['id'], 'name' => 'plan.pdf')
   end
 
   it 'skips a response whose survey phase is missing' do

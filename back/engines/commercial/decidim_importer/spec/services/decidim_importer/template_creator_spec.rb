@@ -322,7 +322,7 @@ RSpec.describe DecidimImporter::TemplateCreator do
         expect(matrix.matrix_statements.first.title_multiloc).to eq('fr-FR' => '[1]')
       end
 
-      it 'imports survey answers as native_survey response ideas with encoded custom_field_values' do
+      it 'imports survey answers as native_survey response ideas with encoded answers' do
         survey_phase = project.phases.find_by(participation_method: 'native_survey')
         responses = Idea.where(creation_phase: survey_phase).order(:created_at)
         expect(responses.count).to eq(2)

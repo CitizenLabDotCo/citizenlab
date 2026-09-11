@@ -89,8 +89,8 @@ module DecidimImporter
 
       # Sets the idea's status from its Decidim state. With a {ProposalStatusResolver} the state maps to a
       # standard code (kept as `idea_status_code`, resolved to a tenant id by {IdeaStatuses.resolve!}) or a
-      # custom `idea_status` record (referenced), and the original Decidim status is parked in
-      # `custom_field_values` for provenance. Without a resolver, the status is derived from the token alone.
+      # custom `idea_status` record (referenced), and the original Decidim status is parked in a
+      # `decidim_status` answer for provenance. Without a resolver, the status is derived from the token alone.
       def apply_status(idea, row)
         unless @status_resolver
           idea.attributes['idea_status_code'] = IdeaStatuses.code_for_state_token(row[COLUMNS[:state_token]])

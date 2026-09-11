@@ -4,8 +4,8 @@ module DecidimImporter
   module Extractors
     # Decidim survey answers (`02---answers.csv`) ──▶ Go Vocal native-survey responses: one `Idea` per
     # answer row, bound to the survey phase via both `creation_phase` *and* an `ideas_phase` join — the
-    # latter is what `Phase#ideas` reads, so without it the survey results show nothing. Answers go in
-    # `custom_field_values`; dates come from the answer row (not the import date).
+    # latter is what `Phase#ideas` reads, so without it the survey results show nothing. Answers become
+    # custom field answers; dates come from the answer row (not the import date).
     #
     # The CSV has `author`, `created_at`, then one column per question headed by the question uid. Each
     # cell is encoded by question type:
@@ -47,17 +47,14 @@ module DecidimImporter
         idea.reference('author', author) if author
         ref_map.register(response_uid, idea)
         register_ideas_phase(response_uid, idea, phase)
-
-        # Built after registration so file-upload records can reference the (now-registered) idea, then
-        # merged into the same attributes hash held by the ref map.
-        idea.attributes['custom_field_values'] = answer_values(questions, row, idea, response_uid)
+        register_answers(questions, row, idea, response_uid, component_uid)
         idea
       end
 
       def idea_attributes(row)
         created = timestamp(row[COLUMNS[:created_at]])
         { 'publication_status' => 'published', 'created_at' => created, 'published_at' => created,
-          'submitted_at' => created, 'custom_field_values' => {} }
+          'submitted_at' => created }
       end
 
       # The join that surfaces the response in `Phase#ideas` (and so in the survey results). Without it
@@ -79,12 +76,15 @@ module DecidimImporter
         record if record&.model_name == 'user'
       end
 
-      # Each question's cell encoded into `{ field_key => value }` pairs, merged across questions. The
-      # question id is stringified for the lookup (older exports carry numeric ids that parse as integers).
-      def answer_values(questions, row, idea, response_uid)
-        questions.each_with_index.with_object({}) do |(question, q_index), values|
-          encode_answer(question, row[question['id'].to_s], idea, "#{response_uid}-q#{q_index}")
-            .each { |key, value| values[key] = value }
+      # Each question's cell encoded into `{ field_key => value }` pairs (the `_other` companion
+      # included) becomes the response's answers to the question's field. The question id is stringified
+      # for the lookup (older exports carry numeric ids that parse as integers).
+      def register_answers(questions, row, idea, response_uid, component_uid)
+        questions.each_with_index do |question, q_index|
+          field = ref_map.fetch("#{component_uid}-field-#{question['id']}")
+          encode_answer(question, row[question['id'].to_s], idea, "#{response_uid}-q#{q_index}").each do |key, value|
+            register_answer(idea, key, value, custom_field: field)
+          end
         end
       end
 

@@ -23,8 +23,19 @@ RSpec.describe DecidimImporter::Extractors::UsersExtractor do
     }.merge(overrides)
   end
 
+  def answer_records(record)
+    ref_map.records.select do |r|
+      r.model_name == 'custom_field_answer' && r.attributes['answerable_ref'].equal?(record.attributes)
+    end
+  end
+
+  def answer_pairs(record)
+    answer_records(record).map { |r| r.attributes.values_at('key', 'value') }
+  end
+
   it 'maps a confirmed user with unique_code from uid, mapped locale, bio and demographics' do
-    attrs = extract([row]).first.attributes
+    user = extract([row]).first
+    attrs = user.attributes
 
     expect(attrs['email']).to eq 'marie@example.fr'
     expect(attrs['locale']).to eq 'fr-FR'
@@ -33,7 +44,7 @@ RSpec.describe DecidimImporter::Extractors::UsersExtractor do
     expect(attrs['last_name']).to eq 'Curie'
     expect(attrs['imported']).to be true
     expect(attrs['roles']).to eq [{ 'type' => 'admin' }]
-    expect(attrs['custom_field_values']).to eq({ 'gender' => 'female', 'birthyear' => 1967 })
+    expect(answer_pairs(user)).to contain_exactly(%w[gender female], ['birthyear', 1967])
     expect(attrs['bio_multiloc']['fr-FR']).to include('Chercheuse').and include('https://marie.example.fr')
     # No password is migrated — imported accounts are passwordless until claimed.
     expect(attrs).not_to have_key('password')
@@ -87,16 +98,20 @@ RSpec.describe DecidimImporter::Extractors::UsersExtractor do
     expect(first.attributes['email']).to eq 'Shared@Example.fr'
   end
 
-  it 'reads gender and birthyear out of extended_data JSON' do
-    attrs = extract([row('extended_data' => '{"gender":"other","date_of_birth":"1990-05-12"}')]).first.attributes
-    expect(attrs['custom_field_values']).to eq({ 'gender' => 'unspecified', 'birthyear' => 1990 })
+  it 'reads gender and birthyear out of extended_data JSON as answers to the registered fields' do
+    gender_field = ref_map.register('decidim-userfield-gender', DecidimImporter::Record.new('custom_field', { 'key' => 'gender' }))
+    user = extract([row('extended_data' => '{"gender":"other","date_of_birth":"1990-05-12"}')]).first
+
+    expect(answer_pairs(user)).to contain_exactly(%w[gender unspecified], ['birthyear', 1990])
+    gender_answer = answer_records(user).find { |r| r.attributes['key'] == 'gender' }
+    expect(gender_answer.attributes['custom_field_ref']).to be(gender_field.attributes)
   end
 
-  it 'copies configured extra text fields out of extended_data into custom_field_values' do
+  it 'copies configured extra text fields out of extended_data as answers' do
     rows = [row('extended_data' => '{"gender":"female","phone_number":"+33123","postal_code":"75001"}')]
-    attrs = extract(rows, extra_text_field_keys: %w[phone_number postal_code]).first.attributes
-    expect(attrs['custom_field_values']).to eq(
-      'gender' => 'female', 'phone_number' => '+33123', 'postal_code' => '75001'
+    user = extract(rows, extra_text_field_keys: %w[phone_number postal_code]).first
+    expect(answer_pairs(user)).to contain_exactly(
+      %w[gender female], ['phone_number', '+33123'], %w[postal_code 75001]
     )
   end
 
@@ -119,16 +134,17 @@ RSpec.describe DecidimImporter::Extractors::UsersExtractor do
   end
 
   it 'strips every directly-identifying field when anonymising, keeping only coarse demographics' do
-    attrs = described_class.new(
+    user = described_class.new(
       [row('avatar' => 'https://decidim.example/avatars/marie.png')],
       ref_map, locale_mapper: mapper, primary_locale: 'fr-FR',
       extra_text_field_keys: %w[phone_number], anonymize_users: true
-    ).run.first.attributes
+    ).run.first
+    attrs = user.attributes
 
     # The real bio (about + personal URL), avatar and free-text phone number must not survive.
     expect(attrs).not_to have_key('bio_multiloc')
     expect(attrs).not_to have_key('remote_avatar_url')
-    expect(attrs['custom_field_values']).to eq({ 'gender' => 'female', 'birthyear' => 1967 })
+    expect(answer_pairs(user)).to contain_exactly(%w[gender female], ['birthyear', 1967])
   end
 
   it 'derives a unique anonymised email per user (from the uid)' do
@@ -160,7 +176,7 @@ RSpec.describe DecidimImporter::Extractors::UsersExtractor do
     it "promotes the export's admin to a Go Vocal admin role" do
       admin_record = records.find { |r| r.attributes['unique_code'] == 'decidim-user-1' }
       expect(admin_record.attributes['roles']).to eq [{ 'type' => 'admin' }]
-      expect(admin_record.attributes['custom_field_values']['gender']).to eq 'unspecified'
+      expect(answer_pairs(admin_record)).to include(%w[gender unspecified])
     end
   end
 end
