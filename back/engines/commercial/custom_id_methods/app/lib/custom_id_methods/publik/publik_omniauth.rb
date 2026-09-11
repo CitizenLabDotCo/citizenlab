@@ -108,10 +108,6 @@ module CustomIdMethods::Publik
       super + %i[first_name last_name]
     end
 
-    def email_confirmed?(auth)
-      auth.info.email_verified
-    end
-
     def filter_auth_to_persist(auth)
       auth.deep_dup.tap { |h| h.delete(:credentials) }
     end
