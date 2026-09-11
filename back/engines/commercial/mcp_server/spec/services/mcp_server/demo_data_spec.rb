@@ -26,6 +26,16 @@ describe McpServer::DemoData do
       expect(AppConfiguration.instance.settings('core', 'locales')).to include(author.locale)
     end
 
+    it 'fills in random answers for enabled registration fields' do
+      gender = create(:custom_field_gender, :with_options, required: true)
+      create(:custom_field_checkbox, resource_type: 'User', key: 'disabled_one', enabled: false)
+
+      author = described_class.build_author(Time.zone.now)
+
+      expect(gender.options.map(&:key)).to include(author.custom_field_values[gender.key])
+      expect(author.custom_field_values).not_to have_key('disabled_one')
+    end
+
     it 'builds a valid email from names with apostrophes and accents' do
       allow(Faker::Name).to receive_messages(first_name: 'Zoë', last_name: "O'Conner")
 
