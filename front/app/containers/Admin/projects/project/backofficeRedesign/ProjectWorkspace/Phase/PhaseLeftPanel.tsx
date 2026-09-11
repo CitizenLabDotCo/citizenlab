@@ -42,10 +42,7 @@ const PhaseLeftPanel = ({ projectId, phase }: Props) => {
       </Box>
 
       {fileAttachments && (
-        // Keyed so switching phases starts the form from the new phase's
-        // values instead of carrying the previous one's edits over.
         <BuildPanel
-          key={phase.id}
           projectId={projectId}
           phase={phase}
           savedAttachments={fileAttachments.data}
