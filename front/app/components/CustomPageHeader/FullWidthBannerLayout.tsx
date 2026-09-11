@@ -1,46 +1,38 @@
 import React from 'react';
 
-import { colors, stylingConsts } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
-
 import { ICustomPageData } from 'api/custom_pages/types';
+
+import AdminCustomPageEditButton from 'containers/CustomPageShow/AdminCustomPageEditButton';
 
 import {
   Container,
   Header,
-} from 'components/LandingPages/citizen/FixedRatioLayout';
-import {
   HeaderImage,
   HeaderImageBackground,
   HeaderImageOverlay,
 } from 'components/LandingPages/citizen/FullWidthBannerLayout';
 
-import AdminCustomPageEditButton from './AdminCustomPageEditButton';
 import HeaderContent from './HeaderContent';
 
 export interface Props {
+  className?: string;
   pageData: ICustomPageData;
 }
 
-const CustomPageLayoutContainer = styled(Container)`
-  background: ${colors.white};
-`;
-
-const CustomPageLayoutHeader = styled(Header)`
-  max-width: ${stylingConsts.maxPageWidth}px;
-`;
-
-const FixedRatioLayout = ({ pageData }: Props) => {
+const FullWidthBannerLayout = ({ className, pageData }: Props) => {
   const imageUrl = pageData.attributes.header_bg?.large;
   const overlayColor = pageData.attributes.banner_overlay_color;
   const overlayOpacity = pageData.attributes.banner_overlay_opacity;
 
   return (
-    <CustomPageLayoutContainer data-testid="fixed-ratio-layout">
-      <CustomPageLayoutHeader>
-        <HeaderImage>
+    <Container
+      data-testid="full-width-banner-layout"
+      className={`e2e-signed-out-header ${className}`}
+    >
+      <Header id="hook-header">
+        <HeaderImage id="hook-header-image">
           <HeaderImageBackground
-            data-testid="header-image-background"
+            data-cy="e2e-header-image-background"
             src={imageUrl || null}
           />
           {overlayColor && typeof overlayOpacity === 'number' && (
@@ -55,13 +47,13 @@ const FixedRatioLayout = ({ pageData }: Props) => {
           hasHeaderBannerImage={imageUrl != null}
           pageAttributes={pageData.attributes}
         />
-      </CustomPageLayoutHeader>
+      </Header>
       <AdminCustomPageEditButton
         pageId={pageData.id}
         projectId={pageData.attributes.project_id}
       />
-    </CustomPageLayoutContainer>
+    </Container>
   );
 };
 
-export default FixedRatioLayout;
+export default FullWidthBannerLayout;

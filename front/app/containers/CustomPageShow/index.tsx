@@ -18,14 +18,14 @@ import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/const
 import ContentContainer from 'components/ContentContainer';
 import CustomPageContentViewer from 'components/CustomPageBuilder/ContentViewer';
 import useCustomPageBuilderContent from 'components/CustomPageBuilder/ContentViewer/useCustomPageBuilderContent';
+import CustomPageHeader from 'components/CustomPageHeader';
 import { Container, Content } from 'components/LandingPages/citizen';
 import PageNotFound from 'components/PageNotFound';
 
 import { useParams } from 'utils/router';
 
+import AdminCustomPageEditButton from './AdminCustomPageEditButton';
 import BackToProjectLink from './BackToProjectLink';
-import CustomPageHeader from './CustomPageHeader';
-import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
 import PageSections from './PageSections';
 
 // Builder content is one white block, so the page's grey would only show as a strip below it.

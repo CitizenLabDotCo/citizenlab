@@ -2,6 +2,8 @@ import React from 'react';
 
 import { ICustomPageData } from 'api/custom_pages/types';
 
+import AdminCustomPageEditButton from 'containers/CustomPageShow/AdminCustomPageEditButton';
+
 import {
   Container,
   HeaderImageWrapper,
@@ -9,7 +11,6 @@ import {
   TextWrapper,
 } from 'components/LandingPages/citizen/TwoColumnLayout';
 
-import AdminCustomPageEditButton from './AdminCustomPageEditButton';
 import HeaderContent from './HeaderContent';
 
 interface Props {

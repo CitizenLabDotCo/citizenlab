@@ -21,7 +21,7 @@ jest.mock('./CustomPageProjectsAndEvents', () => ({
   __esModule: true,
   default: () => <div data-testid="legacyProjects" />,
 }));
-jest.mock('./CustomPageHeader', () => ({
+jest.mock('components/CustomPageHeader', () => ({
   __esModule: true,
   default: () => <div data-testid="banner" />,
 }));
