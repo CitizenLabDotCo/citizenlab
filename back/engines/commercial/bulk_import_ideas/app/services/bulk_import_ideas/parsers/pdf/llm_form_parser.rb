@@ -53,7 +53,7 @@ module BulkImportIdeas::Parsers::Pdf
       return response if response.is_a?(Hash)
 
       parsed = response.match(/\{.+\}/m)&.try(:[], 0)
-      parsed.present? ? JSON.parse(parsed) : nil
+      parsed.present? ? JSON.parse(parsed.squish) : nil
     end
 
     def map_response_to_fields(response)

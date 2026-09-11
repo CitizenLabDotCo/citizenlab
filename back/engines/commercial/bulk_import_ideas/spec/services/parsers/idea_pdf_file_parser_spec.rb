@@ -16,6 +16,72 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
 
   before { allow(service).to receive(:template_data).and_return(template_data) }
 
+  describe 'parse_rows' do
+    let(:file) { create(:idea_import_file, num_pages: 2) }
+    let(:llm_parser) { instance_double(BulkImportIdeas::Parsers::Pdf::LLMFormParser, parser_name: 'claude-sonnet-4-6') }
+
+    before do
+      allow(BulkImportIdeas::Parsers::Pdf::LLMFormParser).to receive(:new).and_return(llm_parser)
+      allow(llm_parser).to receive(:parse_idea).and_return(parsed_idea)
+    end
+
+    context 'when the LLM parser returns a parsed idea' do
+      let(:parsed_idea) { { pdf_pages: [1, 2], fields: { 'title' => 'A title', 'body' => 'A body' } } }
+
+      it 'returns a single idea row built from the parsed idea' do
+        rows = service.parse_rows(file)
+
+        expect(rows.count).to eq 1
+        expect(rows[0]).to include(
+          file: file,
+          project_id: project.id,
+          phase_id: project.phases.first.id,
+          pdf_pages: [1, 2]
+        )
+      end
+
+      it 'stores the parsed value on the file' do
+        service.parse_rows(file)
+
+        expect(file.reload.parsed_value).to eq({
+          'parser' => 'claude-sonnet-4-6',
+          'value' => { 'pdf_pages' => [1, 2], 'fields' => { 'title' => 'A title', 'body' => 'A body' } }
+        })
+      end
+    end
+
+    context 'when the LLM parser returns no fields' do
+      let(:parsed_idea) { { pdf_pages: [1, 2], fields: {} } }
+
+      it 'returns no rows' do
+        expect(service.parse_rows(file)).to eq []
+      end
+
+      it 'still stores the parsed value on the file' do
+        service.parse_rows(file)
+
+        expect(file.reload.parsed_value).to eq({
+          'parser' => 'claude-sonnet-4-6',
+          'value' => { 'pdf_pages' => [1, 2], 'fields' => {} }
+        })
+      end
+    end
+
+    context 'when the LLM parser returns nothing' do
+      let(:parsed_idea) { nil }
+
+      it 'returns no rows' do
+        expect(service.parse_rows(file)).to eq []
+      end
+
+      it 'still stores the parsed value on the file' do
+        service.parse_rows(file)
+
+        expect(file.reload.parsed_value).to eq({ 'parser' => 'claude-sonnet-4-6', 'value' => nil })
+      end
+    end
+  end
+
   describe 'create_files' do
     let(:service_with_split) { described_class.new create(:admin), 'en', project.phases.first&.id, false, pages_per_form: 2 }
 

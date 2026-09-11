@@ -4,7 +4,6 @@ RubyLLM.configure do |config|
   config.bedrock_secret_key = ENV.fetch('AWS_SECRET_ACCESS_KEY', nil)
   config.bedrock_api_key = ENV.fetch('AWS_ACCESS_KEY_ID', nil)
   config.bedrock_region = ENV.fetch('AWS_TOXICITY_DETECTION_REGION', nil)
-  config.request_timeout = 900
 end
 
 # The model refresh can fail if the remote service is unavailable. We had to choose
