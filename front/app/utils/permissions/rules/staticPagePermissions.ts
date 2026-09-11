@@ -15,10 +15,3 @@ definePermissionRule(
   (_page, user, _tenant, project?: IProjectData) =>
     project ? canModerateProject(project, user) : isAdmin(user)
 );
-
-// Mirrors the backend ContentBuilder::LayoutPolicy#update?: the homepage layout
-// has no content_buildable, so the policy falls back to admin-only. Unlike
-// static pages there is no scoping project, hence no moderator case.
-definePermissionRule('homepage', 'edit', (_page, user) => {
-  return isAdmin(user);
-});

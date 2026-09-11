@@ -1,15 +1,15 @@
 import React from 'react';
 
-import { colors, media } from '@citizenlab/cl2-component-library';
-import { WrappedComponentProps } from 'react-intl';
-import styled from 'styled-components';
+import { colors, Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+
+import useAuthUser from 'api/me/useAuthUser';
 
 import { ADMIN_HOMEPAGE_BUILDER_PATH } from 'containers/Admin/pagesAndMenu/routes';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
-import { injectIntl } from 'utils/cl-intl';
-import { usePermission } from 'utils/permissions';
+import { useIntl } from 'utils/cl-intl';
+import { isAdmin } from 'utils/permissions/roles';
 
 import messages from '../messages';
 
@@ -17,16 +17,22 @@ import messages from '../messages';
 // in-flow on narrow viewports / 400% zoom so the button doesn't overlap
 // the page heading (WCAG 1.4.10 Reflow).
 
-const AdminHomePageEditButton = ({
-  intl: { formatMessage },
-}: WrappedComponentProps) => {
-  const userCanEditPage = usePermission({
-    item: { type: 'homepage' },
-    action: 'edit',
-  });
+const AdminHomePageEditButton = () => {
+  const { data: authUser } = useAuthUser();
+  const userIsAdmin = isAdmin(authUser);
+  const { formatMessage } = useIntl();
+  const isSmallerThanTablet = useBreakpoint('tablet');
 
-  return userCanEditPage ? (
-    <PositionWrapper>
+  return userIsAdmin ? (
+    <Box
+      position={isSmallerThanTablet ? 'static' : 'absolute'}
+      top="30px"
+      right="30px"
+      width="fit-content"
+      marginTop={isSmallerThanTablet ? "16px" : ''}
+      marginBottom={isSmallerThanTablet ? "16px" : ''}
+      marginLeft={isSmallerThanTablet ? "15px" : ''}
+    >
       <ButtonWithLink
         id="e2e-edit-homepage-button"
         icon="edit"
@@ -37,25 +43,8 @@ const AdminHomePageEditButton = ({
       >
         {formatMessage(messages.editHomepage)}
       </ButtonWithLink>
-    </PositionWrapper>
+    </Box>
   ) : null;
 };
 
-export default injectIntl(AdminHomePageEditButton);
-
-// The reflowed gutter matches the 20px NoBannerContainer gives the custom page's
-// edit button, so the button lines up with page content rather than sitting flush
-// against the viewport edge.
-const PositionWrapper = styled.div`
-  position: absolute;
-  top: 30px;
-  right: 30px;
-
-  ${media.tablet`
-    position: static;
-    width: fit-content;
-    margin-top: 16px;
-    margin-bottom: 16px;
-    margin-left: 15px;
-  `}
-`;
+export default AdminHomePageEditButton;

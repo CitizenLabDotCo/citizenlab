@@ -146,9 +146,6 @@ const SignedInHeader = ({
       data-cy="e2e-full-width-banner-layout-container"
       className={`e2e-signed-in-header`}
     >
-      {/* Positioning context for the absolutely-placed edit button: the shared
-          banner Container isn't positioned, and Header is covered edge-to-edge
-          by the onboarding step overlays. */}
       <Box position="relative" w="100%">
         <Header
           id="hook-header"
