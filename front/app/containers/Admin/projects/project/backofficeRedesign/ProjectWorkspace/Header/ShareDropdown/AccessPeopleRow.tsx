@@ -11,6 +11,14 @@ import { isAdmin } from 'utils/permissions/roles';
 
 import messages from '../../messages';
 
+const getRoleMessage = (user: IUserData, isInvitePending: boolean) => {
+  if (isInvitePending) return messages.shareRolePending;
+
+  return isAdmin({ data: user })
+    ? messages.shareRoleOwner
+    : messages.shareRoleManager;
+};
+
 interface Props {
   user: IUserData;
   isAuthUser: boolean;
@@ -22,11 +30,7 @@ const AccessPeopleRow = ({ user, isAuthUser }: Props) => {
   const isInvitePending = invite_status === 'pending';
   const name = [first_name, last_name].filter(Boolean).join(' ');
 
-  const roleMessage = isInvitePending
-    ? messages.shareRolePending
-    : isAdmin({ data: user })
-    ? messages.shareRoleOwner
-    : messages.shareRoleManager;
+  const roleMessage = getRoleMessage(user, isInvitePending);
 
   return (
     <Box display="flex" alignItems="center" gap="12px" py="8px">

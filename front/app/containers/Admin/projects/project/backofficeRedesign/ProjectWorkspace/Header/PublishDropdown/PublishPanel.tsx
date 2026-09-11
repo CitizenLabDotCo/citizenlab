@@ -91,20 +91,24 @@ const PublishPanel = ({ project, onSchedule, onPublished }: Props) => {
 
   const publicationState = getPublicationState(project);
 
+  const dateOptions: Intl.DateTimeFormatOptions = {
+    timeZone: tenantTimezone,
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  };
+
+  const timeOptions: Intl.DateTimeFormatOptions = {
+    timeZone: tenantTimezone,
+    hour: 'numeric',
+    minute: '2-digit',
+  };
+
   const header =
     publicationState === 'scheduled' && scheduled_at
       ? formatMessage(messages.publishStateScheduledAt, {
-          date: formatDate(scheduled_at, {
-            timeZone: tenantTimezone,
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric',
-          }),
-          time: formatTime(scheduled_at, {
-            timeZone: tenantTimezone,
-            hour: 'numeric',
-            minute: '2-digit',
-          }),
+          date: formatDate(scheduled_at, dateOptions),
+          time: formatTime(scheduled_at, timeOptions),
         })
       : formatMessage(HEADER_MESSAGES[publicationState]);
 

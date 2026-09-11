@@ -69,8 +69,6 @@ export interface IProject {
   data: IProjectData;
 }
 
-// Steps of the admin setup checklist that have no signal of their own, so
-// opening them is what marks them done. Mirrors Project::SETUP_STEPS.
 export type ProjectSetupStep = 'settings' | 'share';
 
 export interface IProjectAttributes {
