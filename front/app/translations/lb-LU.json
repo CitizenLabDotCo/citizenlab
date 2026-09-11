@@ -2564,6 +2564,7 @@
   "app.containers.landing.createAccount": "Aschreiwen",
   "app.containers.landing.defaultSignedInMessage": "{orgName} lauschtert Iech no. Dir sidd un der Rei, fir Ärer Stëmm Gehéier ze verschafen!",
   "app.containers.landing.doItLater": "Ech maachen et méi spéit",
+  "app.containers.landing.editHomepage": "Startäit beaarbechten",
   "app.containers.landing.new": "Nei",
   "app.containers.landing.subtitleCity": "Wëllkomm op der participativer Plattform {orgName}",
   "app.containers.landing.titleCity": "Loosst eis d'administrativ Vereinfachung op {orgName} gemeinsam gestalten",

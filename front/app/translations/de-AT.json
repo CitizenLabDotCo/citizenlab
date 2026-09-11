@@ -2564,6 +2564,7 @@
   "app.containers.landing.createAccount": "Registrieren",
   "app.containers.landing.defaultSignedInMessage": "{orgName} hört Ihnen zu. Jetzt sind Sie an der Reihe, Ihre Stimme abzugeben!",
   "app.containers.landing.doItLater": "Ich werde das später machen",
+  "app.containers.landing.editHomepage": "Startseite bearbeiten",
   "app.containers.landing.new": "neu",
   "app.containers.landing.subtitleCity": "Herzlich wilkommen auf der Beteiligungsplattform {orgName}",
   "app.containers.landing.titleCity": "Lassen Sie uns die Zukunft von {orgName} zusammen gestalten",

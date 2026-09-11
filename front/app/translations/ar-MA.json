@@ -2564,6 +2564,7 @@
   "app.containers.landing.createAccount": "التسجيل",
   "app.containers.landing.defaultSignedInMessage": "{orgName} تستمع إليك. حان دورك لجعل صوتك مسموعًا!",
   "app.containers.landing.doItLater": "سأقوم بالأمر لاحقًا",
+  "app.containers.landing.editHomepage": "تعديل الصفحة الرئيسية",
   "app.containers.landing.new": "جديد",
   "app.containers.landing.subtitleCity": "أهلًا بك في منصة مشاركة {orgName}",
   "app.containers.landing.titleCity": "دعنا نشكّل مستقبل {orgName} معًا",
