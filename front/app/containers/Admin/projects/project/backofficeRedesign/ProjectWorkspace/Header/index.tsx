@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
@@ -22,6 +23,12 @@ import PublishDropdown from './PublishDropdown';
 import ShareDropdown from './ShareDropdown';
 
 const HEADER_HEIGHT = '48px';
+
+const CrumbBar = styled(Box)`
+  span {
+    white-space: nowrap;
+  }
+`;
 
 interface Props {
   project: IProjectData;
@@ -65,38 +72,40 @@ const WorkspaceHeader = ({
   return (
     <Box
       as="header"
-      position="relative"
       display="flex"
       alignItems="center"
-      justifyContent="space-between"
       flex={`0 0 ${HEADER_HEIGHT}`}
       height={HEADER_HEIGHT}
       px="16px"
       background={colors.white}
       borderBottom={`1px solid ${colors.grey200}`}
     >
-      <Breadcrumbs
-        breadcrumbs={crumbs}
-        icon="folder-outline"
-        separator="chevron"
-      />
+      <CrumbBar flex="1 1 0" minWidth="0" overflow="hidden">
+        <Breadcrumbs
+          breadcrumbs={crumbs}
+          icon="folder-outline"
+          separator="chevron"
+        />
+      </CrumbBar>
 
-      {phase && (
-        <Box
-          position="absolute"
-          left="50%"
-          style={{ transform: 'translateX(-50%)' }}
-        >
+      <Box flex="0 0 auto">
+        {phase && (
           <ViewSwitch
             views={views}
             activeView={activeView}
             projectId={project.id}
             phaseId={phase.id}
           />
-        </Box>
-      )}
+        )}
+      </Box>
 
-      <Box display="flex" alignItems="center" gap="10px">
+      <Box
+        flex="1 1 0"
+        display="flex"
+        alignItems="center"
+        justifyContent="flex-end"
+        gap="10px"
+      >
         <ButtonWithLink
           to="/projects/$slug"
           params={{ slug: project.attributes.slug }}

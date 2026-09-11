@@ -19,4 +19,16 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle',
     defaultMessage: 'support article',
   },
+  participantActionsGroup: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.participantActionsGroup',
+    defaultMessage: 'Participant actions',
+  },
+  moderationGroup: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.moderationGroup',
+    defaultMessage: 'Moderation',
+  },
+  displayGroup: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.displayGroup',
+    defaultMessage: 'Display',
+  },
 });

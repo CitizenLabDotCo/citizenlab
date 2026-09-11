@@ -40,7 +40,11 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
         phase={selectedPhase}
         leftPanel={
           selectedPhase ? (
-            <PhaseLeftPanel projectId={projectId} />
+            <PhaseLeftPanel
+              key={selectedPhase.id}
+              projectId={projectId}
+              phase={selectedPhase}
+            />
           ) : (
             <ProjectLeftPanel projectId={projectId} />
           )

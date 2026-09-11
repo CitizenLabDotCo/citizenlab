@@ -15,7 +15,8 @@ import PhaseRightPanel from './Phase/PhaseRightPanel';
 import { viewFromPathname } from './Phase/usePhaseViews';
 import ProjectSetupPanel from './ProjectSetupPanel';
 
-const LEFT_PANEL_WIDTH = '280px';
+const PROJECT_PANEL_WIDTH = '280px';
+const PHASE_PANEL_WIDTH = '384px';
 const RIGHT_PANEL_WIDTH = '384px';
 
 interface Props {
@@ -38,8 +39,11 @@ const ProjectWorkspace = ({ project, phase, leftPanel, children }: Props) => {
   };
 
   const section = sectionFromPathname(pathname, project.id);
+  const activeView = viewFromPathname(pathname);
 
   const divider = `1px solid ${colors.grey200}`;
+  const leftPanelWidth = phase ? PHASE_PANEL_WIDTH : PROJECT_PANEL_WIDTH;
+  const showPanels = !phase || activeView === 'build';
 
   return (
     <Box
@@ -52,7 +56,7 @@ const ProjectWorkspace = ({ project, phase, leftPanel, children }: Props) => {
       <WorkspaceHeader
         project={project}
         phase={phase}
-        activeView={viewFromPathname(pathname)}
+        activeView={activeView}
         section={section}
         openDropdown={openDropdown}
         onOpenDropdown={showDropdown}
@@ -61,8 +65,9 @@ const ProjectWorkspace = ({ project, phase, leftPanel, children }: Props) => {
       <Box display="flex" flexGrow={1} minHeight="0" overflow="hidden">
         {leftPanel && (
           <Box
-            flex={`0 0 ${LEFT_PANEL_WIDTH}`}
-            width={LEFT_PANEL_WIDTH}
+            display={showPanels ? 'block' : 'none'}
+            flex={`0 0 ${leftPanelWidth}`}
+            width={leftPanelWidth}
             minHeight="0"
             overflowY="auto"
             borderRight={divider}
@@ -71,12 +76,20 @@ const ProjectWorkspace = ({ project, phase, leftPanel, children }: Props) => {
           </Box>
         )}
 
-        <Box flexGrow={1} minWidth="0" minHeight="0" overflowY="auto">
+        <Box
+          flexGrow={1}
+          minWidth="0"
+          minHeight="0"
+          overflowY="auto"
+          display="flex"
+          flexDirection="column"
+        >
           {children}
         </Box>
 
         {!section && (
           <Box
+            display={showPanels ? 'block' : 'none'}
             flex={`0 0 ${RIGHT_PANEL_WIDTH}`}
             width={RIGHT_PANEL_WIDTH}
             minHeight="0"
@@ -84,7 +97,11 @@ const ProjectWorkspace = ({ project, phase, leftPanel, children }: Props) => {
             borderLeft={divider}
           >
             {phase ? (
-              <PhaseRightPanel />
+              <PhaseRightPanel
+                key={phase.id}
+                projectId={project.id}
+                phase={phase}
+              />
             ) : (
               <ProjectSetupPanel
                 project={project}
