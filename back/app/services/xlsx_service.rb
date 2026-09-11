@@ -133,6 +133,7 @@ class XlsxService
       { header: 'created_at', f: ->(u) { u.created_at }, skip_sanitization: true },
       { header: 'registration_completed_at', f: ->(u) { u.registration_completed_at }, skip_sanitization: true },
       { header: 'invite_status', f: ->(u) { u.invite_status }, skip_sanitization: true },
+      *id_method_columns,
       *user_custom_field_columns(:itself)
     ]
     columns.reject! { |c| %w[id email first_name last_name].include?(c[:header]) } unless view_private_attributes
@@ -243,6 +244,22 @@ class XlsxService
 
   private
 
+  # Only platforms that configured SSO or verification methods have anything to report here.
+  def id_method_columns
+    id_methods = IdMethodService.new.configured_methods(AppConfiguration.instance)
+    columns = []
+
+    if id_methods.any?(&:authentication?)
+      columns << { header: 'sso_methods', f: ->(u) { u.identities.map(&:provider).uniq.sort.join(', ') }, skip_sanitization: true }
+    end
+
+    if id_methods.any?(&:verification?)
+      columns << { header: 'verifications', f: ->(u) { u.verifications.select(&:active?).map(&:method_name).uniq.sort.join(', ') }, skip_sanitization: true }
+    end
+
+    columns
+  end
+
   def multiloc_service
     @multiloc_service ||= MultilocService.new app_configuration: AppConfiguration.instance
   end
@@ -250,13 +267,13 @@ class XlsxService
   def title_multiloc_for(record, field, options)
     return unless record
 
-    case record.custom_field_values[field.key]
+    case (value = record.answer_for_key(field.key)&.value)
     when Array
-      record.custom_field_values[field.key].map do |key|
+      value.map do |key|
         multiloc_service.t(options[namespace(field.id, key)]&.title_multiloc)
       end.join(', ')
     when String
-      multiloc_service.t(options[namespace(field.id, record.custom_field_values[field.key])]&.title_multiloc)
+      multiloc_service.t(options[namespace(field.id, value)]&.title_multiloc)
     end
   end
 
@@ -273,7 +290,7 @@ class XlsxService
     else # all other custom fields
       lambda do |record|
         user = record.send(record_to_user)
-        user && user.custom_field_values[field.key]
+        user&.answer_for_key(field.key)&.value
       end
     end
   end

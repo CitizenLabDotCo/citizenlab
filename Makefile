@@ -196,6 +196,20 @@ be-up-twoday:
 fe-up-twoday:
 	cd front && npm run start:sso:twoday
 
+# Publik (Meyzieu). No test environment exists, so this points at the production
+# IDP and the tenant's live host; only the platform runs locally.
+# The /etc/hosts line below hijacks jeparticipe.meyzieu.fr on this machine — run
+# `make sso-reset` when done, or you cannot reach the live platform.
+be-up-publik:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[publik]'
+	@grep -q '^127\.0\.0\.1 jeparticipe\.meyzieu\.fr$$' /etc/hosts || \
+		echo '127.0.0.1 jeparticipe.meyzieu.fr' | sudo tee -a /etc/hosts > /dev/null
+	BASE_DEV_URI=https://jeparticipe.meyzieu.fr ASSET_HOST_URI=https://jeparticipe.meyzieu.fr docker compose up
+
+fe-up-publik:
+	cd front && npm run start:sso:publik
+
 # Hoplr
 be-up-hoplr:
 	docker compose down
@@ -242,10 +256,11 @@ be-up-azure:
 fe-up-azure:
 	cd front && npm start
 
-# Reset any overrides to demo.stg.govocal.com in /etc/hosts that were added for sso local testing
+# Reset the /etc/hosts overrides that were added for sso local testing
 sso-reset:
 	docker compose run --rm web bundle exec rake 'dev:enable_id_method[fake_sso]'
 	sudo sed -i '' 's/^127\.0\.0\.1 demo\.stg\.govocal\.com$$/# 127.0.0.1 demo.stg.govocal.com/' /etc/hosts
+	sudo sed -i '' '/^127\.0\.0\.1 jeparticipe\.meyzieu\.fr$$/d' /etc/hosts
 
 # Run it with:
 # make c

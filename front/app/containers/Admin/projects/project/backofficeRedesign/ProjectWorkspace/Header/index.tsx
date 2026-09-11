@@ -13,12 +13,14 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 
-import PublicationButtons from '../../projectHeader/PublicationButtons';
-import ShareLink from '../../projectHeader/ShareLink';
+import { ProjectSection } from '../_shared/sections';
+import messages from '../messages';
+import usePhaseViews, { PhaseViewKey } from '../Phase/usePhaseViews';
+import ViewSwitch from '../Phase/ViewSwitch';
 
-import messages from './messages';
-import usePhaseViews, { PhaseViewKey } from './Phase/usePhaseViews';
-import ViewSwitch from './Phase/ViewSwitch';
+import { HeaderDropdownName } from './HeaderDropdown';
+import PublishDropdown from './PublishDropdown';
+import ShareDropdown from './ShareDropdown';
 
 const HEADER_HEIGHT = '48px';
 
@@ -32,9 +34,19 @@ interface Props {
   project: IProjectData;
   phase?: IPhaseData;
   activeView: PhaseViewKey;
+  section?: ProjectSection;
+  openDropdown: HeaderDropdownName | null;
+  onOpenDropdown: (dropdown: HeaderDropdownName | null) => void;
 }
 
-const WorkspaceHeader = ({ project, phase, activeView }: Props) => {
+const WorkspaceHeader = ({
+  project,
+  phase,
+  activeView,
+  section,
+  openDropdown,
+  onOpenDropdown,
+}: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const views = usePhaseViews(phase);
@@ -46,7 +58,7 @@ const WorkspaceHeader = ({ project, phase, activeView }: Props) => {
     },
     {
       label: localize(project.attributes.title_multiloc),
-      ...(phase && {
+      ...((phase || section) && {
         link: {
           to: '/admin/projects/$projectId' as const,
           params: { projectId: project.id },
@@ -54,6 +66,7 @@ const WorkspaceHeader = ({ project, phase, activeView }: Props) => {
       }),
     },
     ...(phase ? [{ label: localize(phase.attributes.title_multiloc) }] : []),
+    ...(section ? [{ label: formatMessage(section.label) }] : []),
   ];
 
   return (
@@ -101,12 +114,16 @@ const WorkspaceHeader = ({ project, phase, activeView }: Props) => {
           size="s"
           padding="4px 8px"
         />
-        <ShareLink
-          projectId={project.id}
-          projectSlug={project.attributes.slug}
-          token={project.attributes.preview_token}
+        <ShareDropdown
+          project={project}
+          opened={openDropdown === 'share'}
+          onOpenChange={(opened) => onOpenDropdown(opened ? 'share' : null)}
         />
-        <PublicationButtons project={project} />
+        <PublishDropdown
+          project={project}
+          opened={openDropdown === 'publish'}
+          onOpenChange={(opened) => onOpenDropdown(opened ? 'publish' : null)}
+        />
       </Box>
     </Box>
   );

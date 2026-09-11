@@ -69,6 +69,8 @@ export interface IProject {
   data: IProjectData;
 }
 
+export type ProjectSetupStep = 'settings' | 'share';
+
 export interface IProjectAttributes {
   title_multiloc: Multiloc;
   description_preview_multiloc: Multiloc;
@@ -100,6 +102,8 @@ export interface IProjectAttributes {
   publication_email_enabled: boolean;
   global_publication_email_enabled: boolean;
   space_id?: string | null;
+  // Only serialized for users who can moderate the project.
+  completed_setup_steps?: ProjectSetupStep[];
 }
 
 export type PhaseActionDescriptors = {
@@ -222,4 +226,5 @@ export interface IUpdatedProjectProperties {
   space_id?: string | null;
   scheduled_at?: string | null;
   publication_email_enabled?: boolean;
+  completed_setup_steps?: ProjectSetupStep[];
 }

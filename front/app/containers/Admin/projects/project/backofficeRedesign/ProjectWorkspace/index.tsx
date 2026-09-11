@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
@@ -7,8 +7,13 @@ import { IProjectData } from 'api/projects/types';
 
 import { useLocation } from 'utils/router';
 
+import { sectionFromPathname } from './_shared/sections';
+import useMarkSetupStep from './_shared/useMarkSetupStep';
+import WorkspaceHeader from './Header';
+import { HeaderDropdownName } from './Header/HeaderDropdown';
+import PhaseRightPanel from './Phase/PhaseRightPanel';
 import { viewFromPathname } from './Phase/usePhaseViews';
-import WorkspaceHeader from './WorkspaceHeader';
+import ProjectSetupPanel from './ProjectSetupPanel';
 
 const PROJECT_PANEL_WIDTH = '280px';
 const PHASE_PANEL_WIDTH = '384px';
@@ -18,21 +23,26 @@ interface Props {
   project: IProjectData;
   phase?: IPhaseData;
   leftPanel?: ReactNode;
-  rightPanel?: ReactNode;
   children: ReactNode;
 }
 
-const ProjectWorkspace = ({
-  project,
-  phase,
-  leftPanel,
-  rightPanel,
-  children,
-}: Props) => {
+const ProjectWorkspace = ({ project, phase, leftPanel, children }: Props) => {
   const { pathname } = useLocation();
+  const [openDropdown, setOpenDropdown] = useState<HeaderDropdownName | null>(
+    null
+  );
+  const markSetupStep = useMarkSetupStep(project);
+
+  const showDropdown = (dropdown: HeaderDropdownName | null) => {
+    setOpenDropdown(dropdown);
+    if (dropdown === 'share') markSetupStep('share');
+  };
+
+  const section = sectionFromPathname(pathname, project.id);
+  const activeView = viewFromPathname(pathname);
+
   const divider = `1px solid ${colors.grey200}`;
   const leftPanelWidth = phase ? PHASE_PANEL_WIDTH : PROJECT_PANEL_WIDTH;
-  const activeView = viewFromPathname(pathname);
   const showPanels = !phase || activeView === 'build';
 
   return (
@@ -47,6 +57,9 @@ const ProjectWorkspace = ({
         project={project}
         phase={phase}
         activeView={activeView}
+        section={section}
+        openDropdown={openDropdown}
+        onOpenDropdown={showDropdown}
       />
 
       <Box display="flex" flexGrow={1} minHeight="0" overflow="hidden">
@@ -62,6 +75,7 @@ const ProjectWorkspace = ({
             {leftPanel}
           </Box>
         )}
+
         <Box
           flexGrow={1}
           minWidth="0"
@@ -73,7 +87,7 @@ const ProjectWorkspace = ({
           {children}
         </Box>
 
-        {rightPanel && (
+        {!section && (
           <Box
             display={showPanels ? 'block' : 'none'}
             flex={`0 0 ${RIGHT_PANEL_WIDTH}`}
@@ -82,7 +96,18 @@ const ProjectWorkspace = ({
             overflowY="auto"
             borderLeft={divider}
           >
-            {rightPanel}
+            {phase ? (
+              <PhaseRightPanel
+                key={phase.id}
+                projectId={project.id}
+                phase={phase}
+              />
+            ) : (
+              <ProjectSetupPanel
+                project={project}
+                onOpenDropdown={showDropdown}
+              />
+            )}
           </Box>
         )}
       </Box>

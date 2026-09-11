@@ -1,3 +1,6 @@
 ---
 ignore:
   - CVE-2026-38969 # webrick: transitive dependancy transitive of rackup 1.x, never loaded — Puma is the applicative server
+  - GHSA-47m2-wp7j-p9vc # rubyzip < 3.4.0: the flawed prefix check is 2.4+/3.x code (Entry#extract_v3);
+  # 1.3.0 has no such check. Both our extract sites validate the destination
+  # themselves with a separator-terminated prefix guard. Revisit with the rubyzip 3 bump.

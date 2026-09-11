@@ -430,16 +430,17 @@ module MultiTenancy
               allowed: true
             },
             sms: {
-              enabled: false,
-              allowed: false
+              enabled: true,
+              allowed: true,
+              use_test_mode: true
             },
             sms_login: {
-              enabled: false,
-              allowed: false
+              enabled: true,
+              allowed: true
             },
             sms_manual_campaigns: {
-              enabled: false,
-              allowed: false
+              enabled: true,
+              allowed: true
             },
             decidim_importer: {
               enabled: true,
