@@ -39,6 +39,10 @@ module BulkImportIdeas::Parsers::Pdf
         raise unless e.message.include?('grammar is too large')
 
         response = llm.chat(message)
+      rescue RubyLLM::ForbiddenError => e
+        raise unless e.message.include?('Signature expired')
+
+        raise BulkImportIdeas::Error.new 'bulk_import_pdf_parsing_timeout', value: file_uploader.url
       end
       parse_response(response)
     end

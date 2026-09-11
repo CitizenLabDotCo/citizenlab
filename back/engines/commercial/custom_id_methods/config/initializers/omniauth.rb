@@ -124,6 +124,13 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   provider :saml, setup: NEMLOG_IN_SAML_SETUP_PROC, name: 'nemlog_in'
 end
 
+PUBLIK_SETUP_PROC = lambda do |env|
+  CustomIdMethods::Publik::PublikOmniauth.new.omniauth_setup(AppConfiguration.instance, env)
+end
+Rails.application.config.middleware.use OmniAuth::Builder do
+  provider :openid_connect, setup: PUBLIK_SETUP_PROC, name: 'publik', issuer: CustomIdMethods::Publik::PublikOmniauth.new.method(:issuer)
+end
+
 TWODAY_SETUP_PROC = lambda do |env|
   CustomIdMethods::Twoday::TwodayOmniauth.new.omniauth_setup(AppConfiguration.instance, env)
 end
