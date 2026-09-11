@@ -72,7 +72,7 @@ class UserService
     end
 
     def assign_merging_custom_fields(user, attributes)
-      attributes = attributes.deep_stringify_keys
+      attributes = attributes.to_h.deep_stringify_keys
       incoming_values = (attributes.delete('custom_field_values') || {})
         .merge(attributes.extract!('gender', 'birthyear', 'domicile').compact)
       values = user.custom_field_answers.to_h { [it.key, it.value] }.merge(incoming_values)
