@@ -31,6 +31,19 @@ describe McpServer::Tools::GetResource do
     )
   end
 
+  it 'gets an input with its full content' do
+    idea = create(:idea)
+    response = get('input', idea.id)
+    expect(response).not_to be_error
+    expect(response.structured_content).to include(
+      id: idea.id,
+      title_multiloc: idea.title_multiloc,
+      body_multiloc: idea.body_multiloc,
+      author_name: idea.author.full_name,
+      public_url: be_present
+    )
+  end
+
   it 'gets an event' do
     event = create(:event)
     response = get('event', event.id)
