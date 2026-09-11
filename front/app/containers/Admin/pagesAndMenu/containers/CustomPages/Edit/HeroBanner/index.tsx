@@ -15,11 +15,12 @@ import {
 } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 import ShownOnPageBadge from 'containers/Admin/pagesAndMenu/components/ShownOnPageBadge';
 import CTAButtonFields from 'containers/Admin/pagesAndMenu/containers/CustomPages/Edit/HeroBanner/CTAButtonFields';
-import BannerHeaderFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerHeaderFields';
-import BannerImageFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields';
-import LayoutSettingField from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/LayoutSettingField';
 import { adminCustomPageContentLink } from 'containers/Admin/pagesAndMenu/routes';
 
+import BannerHeaderFields from 'components/admin/GenericHeroBannerForm/BannerHeaderFields';
+import BannerImageFields from 'components/admin/GenericHeroBannerForm/BannerImageFields';
+import LayoutSettingField from 'components/admin/GenericHeroBannerForm/LayoutSettingField';
+import messages from 'components/admin/GenericHeroBannerForm/messages';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
 import HelmetIntl from 'components/HelmetIntl';
 
@@ -28,7 +29,6 @@ import { isNilOrError, isNil } from 'utils/helperUtils';
 import { useParams } from 'utils/router';
 
 import GenericHeroBannerForm from '../../../GenericHeroBannerForm';
-import messages from '../../../GenericHeroBannerForm/messages';
 
 export type CustomPageBannerSettingKeyType = Extract<
   keyof ICustomPageAttributes,

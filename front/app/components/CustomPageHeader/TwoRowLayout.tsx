@@ -2,8 +2,7 @@ import React, { ReactNode } from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
-import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
-
+import { homepageBannerLayoutHeights } from 'components/admin/GenericHeroBannerForm/HeaderImageDropzone';
 import ContentContainer from 'components/ContentContainer';
 import {
   Container,

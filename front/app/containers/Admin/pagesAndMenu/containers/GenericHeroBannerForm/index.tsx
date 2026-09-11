@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import messages from 'components/admin/GenericHeroBannerForm/messages';
 import { Section } from 'components/admin/Section';
 import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 import Warning from 'components/UI/Warning';
@@ -12,7 +13,6 @@ import { type TypedLinkProps } from 'utils/cl-router/Link';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
 import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
 
-import messages from './messages';
 import SubmitWrapper, { ISubmitState } from './SubmitWrapper';
 
 interface Props {
