@@ -1,34 +1,38 @@
-import React from 'react';
-
-import { ICustomPageData } from 'api/custom_pages/types';
+import React, { ReactNode } from 'react';
 
 import FixedRatioLayout from './FixedRatioLayout';
 import FullWidthBannerLayout from './FullWidthBannerLayout';
 import TwoColumnLayout from './TwoColumnLayout';
 import TwoRowLayout from './TwoRowLayout';
+import { CustomPageBannerContent } from './types';
 
-interface Props {
-  pageData: ICustomPageData;
-}
+export type Props = {
+  banner: CustomPageBannerContent;
+  // Each layout has its own spot for the page's edit affordance; the page decides what goes
+  // there, so this component needs nothing from the admin side.
+  adminEditButton?: ReactNode;
+};
 
-const CustomPageHeader = ({ pageData }: Props) => {
-  const pageAttributes = pageData.attributes;
-  return (
-    <>
-      {pageAttributes.banner_layout === 'full_width_banner_layout' && (
-        <FullWidthBannerLayout pageData={pageData} />
-      )}
-      {pageAttributes.banner_layout === 'two_column_layout' && (
-        <TwoColumnLayout pageData={pageData} />
-      )}
-      {pageAttributes.banner_layout === 'two_row_layout' && (
-        <TwoRowLayout pageData={pageData} />
-      )}
-      {pageAttributes.banner_layout === 'fixed_ratio_layout' && (
-        <FixedRatioLayout pageData={pageData} />
-      )}
-    </>
-  );
+const CustomPageHeader = ({ banner, adminEditButton }: Props) => {
+  switch (banner.layout) {
+    case 'full_width_banner_layout':
+      return (
+        <FullWidthBannerLayout
+          banner={banner}
+          adminEditButton={adminEditButton}
+        />
+      );
+    case 'two_column_layout':
+      return (
+        <TwoColumnLayout banner={banner} adminEditButton={adminEditButton} />
+      );
+    case 'two_row_layout':
+      return <TwoRowLayout banner={banner} adminEditButton={adminEditButton} />;
+    case 'fixed_ratio_layout':
+      return (
+        <FixedRatioLayout banner={banner} adminEditButton={adminEditButton} />
+      );
+  }
 };
 
 export default CustomPageHeader;

@@ -1,8 +1,4 @@
-import React from 'react';
-
-import { ICustomPageData } from 'api/custom_pages/types';
-
-import AdminCustomPageEditButton from 'containers/CustomPageShow/AdminCustomPageEditButton';
+import React, { ReactNode } from 'react';
 
 import {
   Container,
@@ -13,16 +9,20 @@ import {
 } from 'components/LandingPages/citizen/FullWidthBannerLayout';
 
 import HeaderContent from './HeaderContent';
+import { CustomPageBannerContent } from './types';
 
 export interface Props {
   className?: string;
-  pageData: ICustomPageData;
+  banner: CustomPageBannerContent;
+  adminEditButton?: ReactNode;
 }
 
-const FullWidthBannerLayout = ({ className, pageData }: Props) => {
-  const imageUrl = pageData.attributes.header_bg?.large;
-  const overlayColor = pageData.attributes.banner_overlay_color;
-  const overlayOpacity = pageData.attributes.banner_overlay_opacity;
+const FullWidthBannerLayout = ({
+  className,
+  banner,
+  adminEditButton,
+}: Props) => {
+  const { imageUrl, overlayColor, overlayOpacity } = banner;
 
   return (
     <Container
@@ -33,7 +33,7 @@ const FullWidthBannerLayout = ({ className, pageData }: Props) => {
         <HeaderImage id="hook-header-image">
           <HeaderImageBackground
             data-cy="e2e-header-image-background"
-            src={imageUrl || null}
+            src={imageUrl}
           />
           {overlayColor && typeof overlayOpacity === 'number' && (
             <HeaderImageOverlay
@@ -45,13 +45,10 @@ const FullWidthBannerLayout = ({ className, pageData }: Props) => {
         <HeaderContent
           fontColors="light"
           hasHeaderBannerImage={imageUrl != null}
-          pageAttributes={pageData.attributes}
+          banner={banner}
         />
       </Header>
-      <AdminCustomPageEditButton
-        pageId={pageData.id}
-        projectId={pageData.attributes.project_id}
-      />
+      {adminEditButton}
     </Container>
   );
 };

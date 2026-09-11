@@ -26,6 +26,7 @@ import { useParams } from 'utils/router';
 
 import AdminCustomPageEditButton from './AdminCustomPageEditButton';
 import BackToProjectLink from './BackToProjectLink';
+import bannerContentFromPage from './bannerContentFromPage';
 import PageSections from './PageSections';
 
 // Builder content is one white block, so the page's grey would only show as a strip below it.
@@ -131,7 +132,15 @@ const CustomPageShow = () => {
                 </BackLinkContainer>
               )}
               <Box background="#fff" width="100%">
-                <CustomPageHeader pageData={page.data} />
+                <CustomPageHeader
+                  banner={bannerContentFromPage(pageAttributes)}
+                  adminEditButton={
+                    <AdminCustomPageEditButton
+                      pageId={page.data.id}
+                      projectId={pageAttributes.project_id}
+                    />
+                  }
+                />
               </Box>
             </>
           ) : showBuilderContent ? (
