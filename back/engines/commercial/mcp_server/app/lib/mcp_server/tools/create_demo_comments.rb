@@ -35,7 +35,10 @@ class McpServer::Tools::CreateDemoComments < McpServer::BaseTool
             type: 'object',
             properties: {
               idea_id: { type: 'string', description: 'The ID of the input to comment on.' },
-              body_multiloc: { **multiloc_schema, description: 'Comment body (HTML).' },
+              body_multiloc: {
+                **multiloc_schema,
+                description: 'Comment body. Minimal-markup HTML: links and @-mentions are kept, other tags are stripped.'
+              },
               parent_id: {
                 type: 'string',
                 description: 'ID of an existing comment on the same input, to create a threaded reply.'
@@ -61,6 +64,8 @@ class McpServer::Tools::CreateDemoComments < McpServer::BaseTool
       missing_idea_id = params[:comments].pluck(:idea_id).find { |id| !ideas[id] }
       return not_found_error('Idea', missing_idea_id) if missing_idea_id
 
+      # Not covered by Comment validations: without this, a missing parent would silently
+      # create a top-level comment, and a parent from another input would nest across inputs.
       parents = Comment.where(id: params[:comments].pluck(:parent_id).compact).index_by(&:id)
       bad_parent = params[:comments].find do |attributes|
         attributes[:parent_id] && parents[attributes[:parent_id]]&.idea_id != attributes[:idea_id]
