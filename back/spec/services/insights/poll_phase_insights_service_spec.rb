@@ -20,14 +20,14 @@ RSpec.describe Insights::PollPhaseInsightsService do
         acted_at: a_kind_of(Time),
         classname: 'Response',
         participant_id: user1.id,
-        user_custom_field_values: {}
+        user_answers: {}
       }, {
         item_id: response2.id,
         action: 'taking_poll',
         acted_at: a_kind_of(Time),
         classname: 'Response',
         participant_id: user2.id,
-        user_custom_field_values: {}
+        user_answers: {}
       })
 
       first_participation = participation_taking_poll.first

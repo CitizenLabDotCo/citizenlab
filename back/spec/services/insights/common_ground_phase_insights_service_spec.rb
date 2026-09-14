@@ -29,28 +29,28 @@ RSpec.describe Insights::CommonGroundPhaseInsightsService do
         acted_at: a_kind_of(Time),
         classname: 'Idea',
         participant_id: user1.id,
-        user_custom_field_values: {}
+        user_answers: {}
       }, {
         item_id: idea4.id,
         action: 'posting_idea',
         acted_at: a_kind_of(Time),
         classname: 'Idea',
         participant_id: user2.id,
-        user_custom_field_values: {}
+        user_answers: {}
       }, {
         item_id: idea6.id,
         action: 'posting_idea',
         acted_at: a_kind_of(Time),
         classname: 'Idea',
         participant_id: 'some_author_hash',
-        user_custom_field_values: {}
+        user_answers: {}
       }, {
         item_id: idea7.id,
         action: 'posting_idea',
         acted_at: a_kind_of(Time),
         classname: 'Idea',
         participant_id: idea7.id,
-        user_custom_field_values: {}
+        user_answers: {}
       })
 
       first_participation = participations_posting_idea.first
@@ -72,10 +72,10 @@ RSpec.describe Insights::CommonGroundPhaseInsightsService do
 
       # We expect that:
       # - field_1 value comes from idea2 (item), preferred over value from user1, which collides after removing key prefix
-      # - field_2 comes from user1 custom_field_values (not present in idea2)
-      # - field_3 filtered from idea2 (item) custom_field_values (no prefix)
-      # - field_4 comes from idea2 (item) custom_field_values, with key prefix removed
-      expect(idea2_participation[:user_custom_field_values]).to eq({ 'field_1' => 'value_1i', 'field_2' => 'value_2u', 'field_4' => 'value_4i' })
+      # - field_2 comes from user1 answers (not present in idea2)
+      # - field_3 filtered from idea2 (item) answers (no prefix)
+      # - field_4 comes from idea2 (item) answers, with key prefix removed
+      expect(idea2_participation[:user_answers]).to eq({ 'field_1' => 'value_1i', 'field_2' => 'value_2u', 'field_4' => 'value_4i' })
     end
 
     it 'correctly handles phases with no end date' do

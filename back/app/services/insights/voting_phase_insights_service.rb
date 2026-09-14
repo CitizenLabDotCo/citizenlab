@@ -46,7 +46,7 @@ module Insights
     end
 
     def idea_vote_counts_data(voting_participations, field, total_phase_votes)
-      idea_ids_to_user_custom_field_values = idea_ids_to_user_custom_field_values(voting_participations)
+      idea_ids_to_user_answers = idea_ids_to_user_answers(voting_participations)
       ideas = ideas_ordered_by_total_votes
 
       ideas.map do |idea|
@@ -59,7 +59,7 @@ module Insights
         offline_votes = idea&.manual_votes_amount || 0
         total_votes = online_votes + offline_votes
         votes_demographics = if field.present?
-          idea_votes_demographics(field, idea_ids_to_user_custom_field_values, idea, total_votes, offline_votes)
+          idea_votes_demographics(field, idea_ids_to_user_answers, idea, total_votes, offline_votes)
         end
 
         {
@@ -75,26 +75,26 @@ module Insights
     end
 
     # Because we are grouping/slicing by votes per demographic attribute (and for blank == no answer),
-    # we need to duplicate the user_custom_field_values for each vote a user cast for that idea.
+    # we need to duplicate the user_answers for each vote a user cast for that idea.
     # This handles mutliple voting phases correctly, but could/should be simplified for
     # single and budgeting voting phases.
-    def idea_ids_to_user_custom_field_values(voting_participations)
+    def idea_ids_to_user_answers(voting_participations)
       grouped_data = voting_participations.flat_map do |participation|
         participation[:votes_per_idea].flat_map do |idea_id, vote_count|
-          # Duplicate the user_custom_field_values hash 'vote_count' times
-          Array.new(vote_count) { [idea_id, participation[:user_custom_field_values]] }
+          # Duplicate the user_answers hash 'vote_count' times
+          Array.new(vote_count) { [idea_id, participation[:user_answers]] }
         end
       end
 
       grouped_data.group_by(&:first).transform_values { |arr| arr.map(&:last) }
     end
 
-    def idea_votes_demographics(field, idea_ids_to_user_custom_field_values, idea, total_votes, offline_votes)
-      vote_custom_field_values = idea_ids_to_user_custom_field_values[idea.id] || []
+    def idea_votes_demographics(field, idea_ids_to_user_answers, idea, total_votes, offline_votes)
+      vote_answers = idea_ids_to_user_answers[idea.id] || []
       counts = if field.key == 'birthyear'
-        birthyear_counts(vote_custom_field_values)
+        birthyear_counts(vote_answers)
       else
-        select_or_checkbox_counts_for_field(vote_custom_field_values, field)
+        select_or_checkbox_counts_for_field(vote_answers, field)
       end
 
       counts['_blank'] ||= 0
@@ -108,8 +108,8 @@ module Insights
       end
     end
 
-    def birthyear_counts(vote_custom_field_values)
-      age_stats = UserCustomFields::AgeStats.calculate(vote_custom_field_values)
+    def birthyear_counts(vote_answers)
+      age_stats = UserCustomFields::AgeStats.calculate(vote_answers)
       age_stats.format_in_ranges[:ranged_series]
     end
 
@@ -146,7 +146,7 @@ module Insights
             acted_at: basket.submitted_at,
             classname: 'Basket',
             participant_id: participant_id(basket.id, basket.user_id),
-            user_custom_field_values: basket.user&.custom_field_answers.to_h { [it.key, it.value] } || {},
+            user_answers: basket.user&.custom_field_answers.to_h { [it.key, it.value] } || {},
             total_votes: total_votes,
             ideas_count: basket.ideas.count,
             votes_per_idea: votes_per_idea

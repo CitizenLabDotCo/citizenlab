@@ -57,7 +57,7 @@ module Export
         return {} if input&.author.nil?
 
         user_data_key = sanitized_translation_for('user_data')
-        basic_author_data(input, user_data_key).merge(user_custom_field_values_data(input, user_data_key))
+        basic_author_data(input, user_data_key).merge(user_answers_data(input, user_data_key))
       end
 
       def basic_author_data(input, user_data_key)
@@ -68,7 +68,7 @@ module Export
         }
       end
 
-      def user_custom_field_values_data(input, user_data_key)
+      def user_answers_data(input, user_data_key)
         registration_fields.each_with_object({}) do |field, accu|
           key = "#{user_data_key}__#{sanitize_key(@multiloc_service.t(field.title_multiloc))}"
           accu[key] = Export::CustomFieldForExport.new(field, @value_visitor, :author).value_from(input)
