@@ -63,11 +63,11 @@ context 'Azure AD B2C authentication' do
       verified: false,
       first_name: 'Alexander',
       last_name: 'CitizenLab',
-      email: nil,
-      new_email: 'alexander@citizenlab.co',
+      email: 'alexander@citizenlab.co',
+      new_email: nil,
       locale: 'en'
     })
-    expect(user.confirmation_required?).to be(true)
+    expect(user.confirmation_required?).to be(false)
   end
 
   it 'successfully authenticates new user' do
