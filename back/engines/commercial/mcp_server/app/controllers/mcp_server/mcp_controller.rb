@@ -103,6 +103,7 @@ module McpServer
       McpServer::Tools::CreatePollOption,
       McpServer::Tools::CreateDemoInputs,
       McpServer::Tools::CreateDemoComments,
+      McpServer::Tools::SeedDemoVotes,
       McpServer::Tools::DestroyResource,
       McpServer::Tools::UpdateResource,
       McpServer::Tools::UpdateProject,
