@@ -296,6 +296,11 @@ export default defineMessages({
     defaultMessage:
       'The uploaded PDF file appears to be malformed. Try exporting the PDF again from your source and then upload again.',
   },
+  bulk_import_pdf_parsing_timeout: {
+    id: 'app.errors.bulk_import_pdf_parsing_timeout',
+    defaultMessage:
+      'The uploaded PDF is taking too long to process. Try exporting the PDF again from your source and then upload again.',
+  },
   bulk_import_maximum_pdf_pages_exceeded: {
     id: 'app.errors.bulk_import_maximum_pdf_pages_exceeded',
     defaultMessage: 'The maximum of {value} pages in a PDF has been exceeded.',

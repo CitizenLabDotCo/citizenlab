@@ -14,7 +14,6 @@ import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import { normalizeProjectPageLayout } from 'components/ProjectPageBuilder/defaultLayout';
 import Editor from 'components/ProjectPageBuilder/Editor';
 
-import { isNilOrError } from 'utils/helperUtils';
 import { useSearch } from 'utils/router';
 
 type Props = {
@@ -37,10 +36,6 @@ export const FullScreenPreview = ({ projectId }: Props) => {
         : undefined,
     [layout]
   );
-
-  if (isNilOrError(platformLocale)) {
-    return null;
-  }
 
   const isLoading = layout === undefined;
   const editorData = draftData || savedEditorData;
