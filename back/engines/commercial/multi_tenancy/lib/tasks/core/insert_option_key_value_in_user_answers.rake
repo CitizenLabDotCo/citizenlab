@@ -1,5 +1,5 @@
 # This rake task is designed specifically to insert custom_field key: custom_field_option key value pairs
-# into the user.custom_field_values, if given a value for the user matches (after sanitization) an
+# into the user answers, if given a value for the user matches (after sanitization) an
 # existing related custom_field_option multiloc value.
 # The task is designed only for single-locale tenants.
 #
@@ -7,7 +7,7 @@
 # and replaced with a single-select option question. Typically, this would be used for postcode-like values.
 #
 # The task assumes that the values have been exported from the database, probably before the related custom_field was
-# deleted, which would result in the loss of the respective data from the user.custom_field_values.
+# deleted, which would result in the loss of the respective data from the user answers.
 #
 # The task always uses the first locale in the core locales list as the locale for the custom_field_option titles.
 # This will probably work even on multi-locale tenants when the options are postcode-like values, but care should
@@ -19,10 +19,10 @@
 # Given a CSV file with the following headers: 'id,value', where id is the User ID and value is the value
 # to be checked against existing custom_field_option values.
 #
-# $ rake cl2_back:insert_option_key_values_in_user_custom_field_values['/user_values.csv','cqc.citizenlab.co','custom_field_id','execute']
+# $ rake cl2_back:insert_option_key_values_in_user_answers['/user_values.csv','cqc.citizenlab.co','custom_field_id','execute']
 namespace :cl2_back do
-  desc 'Insert option key-value pairs to user custom_field_values hashes.'
-  task :insert_option_key_values_in_user_custom_field_values, %i[url host custom_field_id execute] => [:environment] do |_t, args|
+  desc 'Insert option answers for users.'
+  task :insert_option_key_values_in_user_answers, %i[url host custom_field_id execute] => [:environment] do |_t, args|
     data = CSV.parse(open(args[:url]).read, headers: true, col_sep: ',', converters: [])
 
     execute = args[:execute] == 'execute'
@@ -71,7 +71,7 @@ namespace :cl2_back do
       end
     end
 
-    puts "Updated #{count} user.custom_field_values."
+    puts "Updated #{count} user answers."
 
     if errors.any?
       puts 'Errors:'

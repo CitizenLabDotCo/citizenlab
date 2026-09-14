@@ -1,12 +1,12 @@
 require 'rails_helper'
 require 'csv'
 
-describe 'rake cl2_back:insert_option_key_values_in_user_custom_field_values' do # rubocop:disable RSpec/DescribeClass
+describe 'rake cl2_back:insert_option_key_values_in_user_answers' do # rubocop:disable RSpec/DescribeClass
   before { load_rake_tasks_if_not_loaded }
 
-  after { Rake::Task['cl2_back:insert_option_key_values_in_user_custom_field_values'].reenable }
+  after { Rake::Task['cl2_back:insert_option_key_values_in_user_answers'].reenable }
 
-  let(:task) { Rake::Task['cl2_back:insert_option_key_values_in_user_custom_field_values'] }
+  let(:task) { Rake::Task['cl2_back:insert_option_key_values_in_user_answers'] }
   let(:csv_data) { CSV.parse(open(csv).read, headers: true, col_sep: ',', converters: []) }
   let(:custom_field) { create(:custom_field, input_type: 'select', resource_type: 'User', key: 'postcode_ex6') }
   let!(:custom_field_option1) do
@@ -28,7 +28,7 @@ describe 'rake cl2_back:insert_option_key_values_in_user_custom_field_values' do
     create(:user, id: csv_data[5]['id'], custom_field_answers: [build(:custom_field_answer, key: custom_field.key, value: custom_field_option2.key, custom_field: custom_field)])
   end
 
-  let_it_be(:csv) { Rails.root.join('engines/commercial/multi_tenancy/spec/fixtures/user_custom_field_values.csv') }
+  let_it_be(:csv) { Rails.root.join('engines/commercial/multi_tenancy/spec/fixtures/user_answers.csv') }
 
   it 'inserts key-value pairs when sanitized given value matches an option' do
     expect(csv_data[0]['value']).to eq('1234  AB')
@@ -42,7 +42,7 @@ describe 'rake cl2_back:insert_option_key_values_in_user_custom_field_values' do
     expect(User.find(csv_data[2]['id']).answer_for_key(custom_field.key)&.value).to eq(custom_field_option1.key)
   end
 
-  it 'merges inserted key-value pairs into existing custom_field_values hash' do
+  it "keeps the user's other answers" do
     task.invoke(csv, 'example.org', custom_field.id, 'execute')
 
     expect(User.find(csv_data[0]['id']).answer_for_key('unrelated_key')&.value).to eq('some_value')
