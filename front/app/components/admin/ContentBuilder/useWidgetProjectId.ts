@@ -6,10 +6,7 @@ import { useLocation, useParams } from 'utils/router';
 // `slug` param exists on other routes too — a custom page's `/pages/:slug` — where it is not a
 // project's, so the lookup is limited to project routes.
 const useWidgetProjectId = () => {
-  const { projectId, slug } = useParams({ strict: false }) as {
-    projectId?: string;
-    slug?: string;
-  };
+  const { projectId, slug } = useParams({ strict: false });
   const { pathname } = useLocation();
   const projectSlug = pathname.includes('/projects/') ? slug : undefined;
   const { data: project } = useProjectBySlug(projectSlug);
