@@ -9,7 +9,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 
-import landingPageMessages from 'components/LandingPages/citizen/messages';
 import projectPageMessages from 'components/ProjectPageBuilder/Widgets/messages';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
@@ -36,7 +35,7 @@ export const defaultHeadingMessage = (
   }
   if (timeFilters.includes('past')) return sharedMessages.pastEvents;
 
-  return landingPageMessages.upcomingEventsWidgetTitle;
+  return sharedMessages.upcomingAndOngoingEvents;
 };
 
 const EventsSettings = () => {

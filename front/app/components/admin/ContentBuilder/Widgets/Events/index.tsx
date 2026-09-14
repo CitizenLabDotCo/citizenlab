@@ -22,10 +22,6 @@ import {
   BUILDER_CONTENT_MAX_WIDTH,
   DEFAULT_PADDING,
 } from 'components/admin/ContentBuilder/constants';
-import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
-import useWidgetProjectId from 'components/admin/ContentBuilder/useWidgetProjectId';
-import { VerticalRhythmContext } from 'components/admin/ContentBuilder/verticalRhythm';
-import landingPageMessages from 'components/LandingPages/citizen/messages';
 import EditModeHeightCap from 'components/ProjectPageBuilder/Widgets/EditModeHeightCap';
 import EmptyEvents from 'components/ProjectPageBuilder/Widgets/Events/EmptyEvents';
 import EventsSection from 'components/ProjectPageBuilder/Widgets/Events/EventsSection';
@@ -35,6 +31,10 @@ import Link, { typedStyled } from 'utils/cl-router/Link';
 import sharedMessages from 'utils/messages';
 import { useLocation } from 'utils/router';
 import { scrollToElement } from 'utils/scroll';
+
+import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
+import useWidgetProjectId from '../../useWidgetProjectId';
+import { VerticalRhythmContext } from '../../verticalRhythm';
 
 import messages from './messages';
 import EventsSettings, { defaultHeadingMessage } from './Settings';
@@ -204,7 +204,7 @@ const EventsList: UserComponent<EventsProps> = ({
       {!paginated && (
         <Box alignSelf="center" mt="24px">
           <ViewAllEventsLink to="/events">
-            {formatMessage(landingPageMessages.viewAllEventsText)}
+            {formatMessage(sharedMessages.viewAllEvents)}
           </ViewAllEventsLink>
         </Box>
       )}
