@@ -19,7 +19,13 @@ describe Permissions::PermissionInheritanceService do
     )
   end
 
-  before { described_class.clear_source_permission_cache }
+  before do
+    # The copied require_verification is only carried through on a platform that can verify.
+    AppConfiguration.instance.settings['id_config'] =
+      { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+    AppConfiguration.instance.save!
+    described_class.clear_source_permission_cache
+  end
 
   describe '#inheritable?' do
     it 'is true for any action of a phase' do

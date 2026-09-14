@@ -79,7 +79,11 @@ const TimelinePhases = ({ projectId }: Props) => {
 
       {sortedPhases.length === 0 && <EmptyState />}
 
-      <Box display="flex" flexDirection="column">
+      <Box 
+        className="intercom-product-tour-project-timeline-phases"
+        display="flex"
+        flexDirection="column"
+      >
         {sortedPhases.map((phase, index) => {
           const status = phaseStatus(phase);
           const isSelected = phase.id === phaseId;
@@ -123,7 +127,11 @@ const TimelinePhases = ({ projectId }: Props) => {
         })}
       </Box>
 
-      <Box display="flex" mt="4px">
+      <Box 
+        display="flex"
+        mt="4px"
+        className="intercom-product-tour-project-timeline-new-phase"
+      >
         <ButtonWithLink
           to="/admin/projects/$projectId/phases/new"
           params={{ projectId }}

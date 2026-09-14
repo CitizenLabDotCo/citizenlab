@@ -68,6 +68,8 @@ declare global {
       apiRemovePhase: typeof apiRemovePhase;
       apiRemoveCustomPage: typeof apiRemoveCustomPage;
       apiCreateCustomPage: typeof apiCreateCustomPage;
+      apiUpdateCustomPage: typeof apiUpdateCustomPage;
+      apiAddFileToCustomPage: typeof apiAddFileToCustomPage;
       apiAddProjectsToFolder: typeof apiAddProjectsToFolder;
       apiCreatePhase: typeof apiCreatePhase;
       apiCreateCustomField: typeof apiCreateCustomField;
@@ -118,6 +120,7 @@ declare global {
       apiCreateInputTopic: typeof apiCreateInputTopic;
       deleteEventAttendances: typeof deleteEventAttendances;
       apiRemoveIdeas: typeof apiRemoveIdeas;
+      apiRequestProjectReview: typeof apiRequestProjectReview;
     }
   }
 }
@@ -1235,6 +1238,50 @@ function apiRemoveCustomPage(customPageId: string) {
   });
 }
 
+function apiUpdateCustomPage(
+  customPageId: string,
+  attributes: Record<string, unknown>
+) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'PATCH',
+      url: `web_api/v1/static_pages/${customPageId}`,
+      body: { static_page: attributes },
+    });
+  });
+}
+
+// `fixture` is a filename under cypress/fixtures, read as base64.
+function apiAddFileToCustomPage(
+  customPageId: string,
+  name: string,
+  fixture: string
+) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.fixture(fixture, 'base64').then((content) =>
+      cy.request({
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`,
+        },
+        method: 'POST',
+        url: `web_api/v1/static_pages/${customPageId}/files`,
+        body: {
+          file: { name, file: `data:application/pdf;base64,${content}` },
+        },
+      })
+    );
+  });
+}
+
 function apiAddPoll(
   phaseId: string,
   questions: { title: string; type: 'single_option' | 'multiple_options' }[],
@@ -2289,6 +2336,24 @@ function createProjectWithIdeationPhase({
     });
 }
 
+function apiRequestProjectReview(
+  projectId: string,
+  email: string,
+  password: string
+) {
+  return cy.apiLogin(email, password).then((response) => {
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${response.body.jwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/projects/${projectId}/review`,
+      body: {},
+    });
+  });
+}
+
 /**
  * Get an element by its data-cy attribute.
  * This is a utility function to make it easier to find elements by their data-cy attribute.
@@ -2464,6 +2529,8 @@ Cypress.Commands.add('apiGetHomepageLayout', apiGetHomepageLayout);
 Cypress.Commands.add('apiUpdateHomepageLayout', apiUpdateHomepageLayout);
 Cypress.Commands.add('apiRemoveCustomPage', apiRemoveCustomPage);
 Cypress.Commands.add('apiCreateCustomPage', apiCreateCustomPage);
+Cypress.Commands.add('apiUpdateCustomPage', apiUpdateCustomPage);
+Cypress.Commands.add('apiAddFileToCustomPage', apiAddFileToCustomPage);
 Cypress.Commands.add('clickLocaleSwitcherAndType', clickLocaleSwitcherAndType);
 Cypress.Commands.add('apiCreateSmartGroup', apiCreateSmartGroup);
 Cypress.Commands.add(
@@ -2519,3 +2586,4 @@ Cypress.Commands.add(
   createProjectWithIdeationPhase
 );
 Cypress.Commands.add('apiCreateInputTopic', apiCreateInputTopic);
+Cypress.Commands.add('apiRequestProjectReview', apiRequestProjectReview);
