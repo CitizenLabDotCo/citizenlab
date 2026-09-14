@@ -69,7 +69,7 @@ module CustomIdMethods::EtatLu
     # James: Steve from Luxembourg said that the email
     # returned by this method is always verified, even
     # though it does not return email_verified: true
-    def email_confirmed?
+    def email_confirmed?(_auth)
       true
     end
   end
