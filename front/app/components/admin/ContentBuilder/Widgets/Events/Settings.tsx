@@ -62,6 +62,13 @@ const EventsSettings = () => {
     setProp((p: EventsProps) => (p.timeFilters = next));
   };
 
+  const toggleArchived = () => {
+    const next: EventsPublicationStatus[] = statuses.includes('archived')
+      ? ['published']
+      : ['published', 'archived'];
+    setProp((p: EventsProps) => (p.projectPublicationStatuses = next));
+  };
+
   return (
     <Box my="20px" display="flex" flexDirection="column" gap="20px">
       <SourceSetting />
@@ -129,14 +136,7 @@ const EventsSettings = () => {
         <CheckboxWithLabel
           label={formatMessage(messages.includeArchived)}
           checked={statuses.includes('archived')}
-          onChange={() => {
-            const next: EventsPublicationStatus[] = statuses.includes(
-              'archived'
-            )
-              ? ['published']
-              : ['published', 'archived'];
-            setProp((p: EventsProps) => (p.projectPublicationStatuses = next));
-          }}
+          onChange={toggleArchived}
         />
       )}
     </Box>
