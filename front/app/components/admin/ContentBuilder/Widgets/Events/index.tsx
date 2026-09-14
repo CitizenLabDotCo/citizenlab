@@ -36,9 +36,8 @@ import sharedMessages from 'utils/messages';
 import { useLocation } from 'utils/router';
 import { scrollToElement } from 'utils/scroll';
 
-import defaultHeadingMessage from './defaultHeading';
 import messages from './messages';
-import EventsSettings from './Settings';
+import EventsSettings, { defaultHeadingMessage } from './Settings';
 import { EventsProps, EventsSource } from './types';
 
 export const EVENTS_WIDGET_NAME = 'EventsList';
