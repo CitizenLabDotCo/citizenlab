@@ -30,7 +30,8 @@ class McpServer::Tools::ListInputs < McpServer::BaseTool
       phase = Phase.find_by(id: params[:phase_id])
       return not_found_error('Phase', params[:phase_id]) unless phase
 
-      scope = phase.ideas.published.order(created_at: :desc)
+      # :author and :idea_status are read per row by the serializer.
+      scope = phase.ideas.published.includes(:author, :idea_status).order(created_at: :desc)
       scope = scope.search_by_all(params[:search]) if params[:search].present?
 
       paginated_response(
