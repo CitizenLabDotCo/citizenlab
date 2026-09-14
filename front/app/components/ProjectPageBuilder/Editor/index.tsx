@@ -68,6 +68,10 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
           ProjectPageRoot,
           ProjectPageBody,
         }}
+        // DropPlacementOverlay draws the drop indicator instead: craft.js only
+        // knows how to paint a plain rectangle, with no room for the reason a
+        // drop is refused.
+        indicator={{ style: { display: 'none' } }}
         isPreview={isPreview}
         onNodesChange={onNodesChange}
       >
