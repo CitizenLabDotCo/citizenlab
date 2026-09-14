@@ -47,8 +47,4 @@ class Identity < ApplicationRecord
     auth_to_persist = authver_method.filter_auth_to_persist(auth)
     update!(auth_hash: auth_to_persist)
   end
-
-  def confirmed_email_always_present?
-    IdMethodService.new.method_by_name(provider).confirmed_email_always_present?
-  end
 end
