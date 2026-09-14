@@ -120,7 +120,7 @@ module Insights
     # and/or the participant (user) referenced in each participation.
     # Item values take precedence over participant values in case of key collisions,
     # to prefer demographics at the time of participation.
-    def parse_user_answers(item, participant)
+    def parse_user_custom_field_values(item, participant)
       user_values = participant&.custom_field_answers.to_h { [it.key, it.value] } || {}
 
       return user_values if !item.respond_to?(:custom_field_answers) || item.custom_field_answers.none?
@@ -135,7 +135,7 @@ module Insights
     end
 
     def demographics_data(participations, participant_ids)
-      participant_answers = participants_answers(participations, participant_ids)
+      participant_custom_field_values = participants_custom_field_values(participations, participant_ids)
       permissions_custom_fields_service = Permissions::PermissionsCustomFieldsService.new
 
       custom_fields = phase_permissions.flat_map do |permission|
@@ -158,11 +158,11 @@ module Insights
         }
 
         if custom_field.key == 'birthyear'
-          birthyear_data = birthyear_demographics_data(participant_answers)
+          birthyear_data = birthyear_demographics_data(participant_custom_field_values)
           result[:series] = birthyear_data[:series]
           reference_distribution = birthyear_data[:reference_distribution]
         elsif custom_field.supports_reference_distribution?
-          select_or_checkbox_data = select_or_checkbox_field_demographics_data(participant_answers, custom_field)
+          select_or_checkbox_data = select_or_checkbox_field_demographics_data(participant_custom_field_values, custom_field)
           result[:series] = select_or_checkbox_data[:series]
           result[:options] = select_or_checkbox_data[:options] if select_or_checkbox_data[:options]
           reference_distribution = select_or_checkbox_data[:reference_distribution]
@@ -188,8 +188,8 @@ module Insights
         .reject { |permission| permission.action == 'attending_event' }
     end
 
-    def birthyear_demographics_data(participant_answers)
-      age_stats = UserCustomFields::AgeStats.calculate(participant_answers)
+    def birthyear_demographics_data(participant_custom_field_values)
+      age_stats = UserCustomFields::AgeStats.calculate(participant_custom_field_values)
       reference_distribution = nil
 
       if age_stats.reference_distribution.present?
@@ -209,8 +209,8 @@ module Insights
       }
     end
 
-    def select_or_checkbox_field_demographics_data(participant_answers, custom_field)
-      counts = select_or_checkbox_counts_for_field(participant_answers, custom_field)
+    def select_or_checkbox_field_demographics_data(participant_custom_field_values, custom_field)
+      counts = select_or_checkbox_counts_for_field(participant_custom_field_values, custom_field)
       reference_distribution = calculate_reference_distribution(custom_field)
 
       options = nil
@@ -227,8 +227,8 @@ module Insights
       }
     end
 
-    def select_or_checkbox_counts_for_field(participant_answers, custom_field)
-      counts = UserCustomFields::FieldValueCounter.counts_by_field_option(participant_answers, custom_field)
+    def select_or_checkbox_counts_for_field(participant_custom_field_values, custom_field)
+      counts = UserCustomFields::FieldValueCounter.counts_by_field_option(participant_custom_field_values, custom_field)
 
       # Ensure checkbox fields always include both true and false options in consistent order
       if custom_field.input_type == 'checkbox'
@@ -242,15 +242,15 @@ module Insights
       counts
     end
 
-    def participants_answers(participations, participant_ids)
+    def participants_custom_field_values(participations, participant_ids)
       # Build lookup hash to avoid O(n × p) repeated searches. Reduces to O(n + p).
       participation_by_user = participations.group_by { |p| p[:participant_id] }
 
       # Get first participation's custom field values for each unique user
       participant_ids.map do |participant_id|
         participation_by_user[participant_id]
-          .find { |p| p[:user_answers].present? }
-          &.dig(:user_answers) || {}
+          .find { |p| p[:user_custom_field_values].present? }
+          &.dig(:user_custom_field_values) || {}
       end
     end
 

@@ -43,28 +43,28 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
         acted_at: a_kind_of(Time),
         classname: 'Idea',
         participant_id: user1.id,
-        user_answers: {}
+        user_custom_field_values: {}
       }, {
         item_id: idea4.id,
         action: 'posting_idea',
         acted_at: a_kind_of(Time),
         classname: 'Idea',
         participant_id: user2.id,
-        user_answers: {}
+        user_custom_field_values: {}
       }, {
         item_id: idea6.id,
         action: 'posting_idea',
         acted_at: a_kind_of(Time),
         classname: 'Idea',
         participant_id: 'some_author_hash',
-        user_answers: {}
+        user_custom_field_values: {}
       }, {
         item_id: idea7.id,
         action: 'posting_idea',
         acted_at: a_kind_of(Time),
         classname: 'Idea',
         participant_id: idea7.id,
-        user_answers: {}
+        user_custom_field_values: {}
       })
 
       first_participation = participations_posting_idea.first
@@ -86,10 +86,10 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
 
       # We expect that:
       # - field_1 value comes from idea2 (item), preferred over value from user1, which collides after removing key prefix
-      # - field_2 comes from user1 answers (not present in idea2)
-      # - field_3 filtered from idea2 (item) answers (no prefix)
-      # - field_4 comes from idea2 (item) answers, with key prefix removed
-      expect(idea2_participation[:user_answers]).to eq({ 'field_1' => 'value_1i', 'field_2' => 'value_2u', 'field_4' => 'value_4i' })
+      # - field_2 comes from user1 custom_field_values (not present in idea2)
+      # - field_3 filtered from idea2 (item) custom_field_values (no prefix)
+      # - field_4 comes from idea2 (item) custom_field_values, with key prefix removed
+      expect(idea2_participation[:user_custom_field_values]).to eq({ 'field_1' => 'value_1i', 'field_2' => 'value_2u', 'field_4' => 'value_4i' })
     end
 
     it 'correctly handles phases with no end date' do
@@ -126,28 +126,28 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
         acted_at: a_kind_of(Time),
         classname: 'Comment',
         participant_id: user1.id,
-        user_answers: {}
+        user_custom_field_values: {}
       }, {
         item_id: comment4.id,
         action: 'commenting_idea',
         acted_at: a_kind_of(Time),
         classname: 'Comment',
         participant_id: user2.id,
-        user_answers: {}
+        user_custom_field_values: {}
       }, {
         item_id: comment5.id,
         action: 'commenting_idea',
         acted_at: a_kind_of(Time),
         classname: 'Comment',
         participant_id: 'some_author_hash',
-        user_answers: {}
+        user_custom_field_values: {}
       }, {
         item_id: comment6.id,
         action: 'commenting_idea',
         acted_at: a_kind_of(Time),
         classname: 'Comment',
         participant_id: comment6.id,
-        user_answers: {}
+        user_custom_field_values: {}
       })
 
       first_participation = participations_commenting_idea.first
@@ -173,21 +173,21 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
         acted_at: a_kind_of(Time),
         classname: 'Reaction',
         participant_id: user1.id,
-        user_answers: {}
+        user_custom_field_values: {}
       }, {
         item_id: reaction4.id,
         action: 'reacting_idea',
         acted_at: a_kind_of(Time),
         classname: 'Reaction',
         participant_id: user2.id,
-        user_answers: {}
+        user_custom_field_values: {}
       }, {
         item_id: reaction5.id,
         action: 'reacting_idea',
         acted_at: a_kind_of(Time),
         classname: 'Reaction',
         participant_id: reaction5.id,
-        user_answers: {}
+        user_custom_field_values: {}
       })
 
       first_participation = participations_reacting_idea.first

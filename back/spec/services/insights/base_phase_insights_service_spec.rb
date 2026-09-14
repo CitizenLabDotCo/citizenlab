@@ -339,8 +339,8 @@ RSpec.describe Insights::BasePhaseInsightsService do
       let!(:option_a) { create(:custom_field_option, custom_field: single_select_field, key: 'a', title_multiloc: { en: 'Option A' }) }
       let!(:option_b) { create(:custom_field_option, custom_field: single_select_field, key: 'b', title_multiloc: { en: 'Option B' }) }
 
-      let(:participation1) { create(:basket_participation, user: create(:user), user_answers: { 'single_select' => 'a' }) }
-      let(:participation2) { create(:basket_participation, user: create(:user), user_answers: { 'single_select' => 'b' }) }
+      let(:participation1) { create(:basket_participation, user: create(:user), user_custom_field_values: { 'single_select' => 'a' }) }
+      let(:participation2) { create(:basket_participation, user: create(:user), user_custom_field_values: { 'single_select' => 'b' }) }
 
       let(:flattened_participations) { [participation1, participation2] }
       let(:participant_ids) { flattened_participations.pluck(:participant_id).uniq }
@@ -427,8 +427,8 @@ RSpec.describe Insights::BasePhaseInsightsService do
       let!(:option_x) { create(:custom_field_option, custom_field: multi_select_field, key: 'x', title_multiloc: { en: 'Option X' }) }
       let!(:option_y) { create(:custom_field_option, custom_field: multi_select_field, key: 'y', title_multiloc: { en: 'Option Y' }) }
 
-      let(:participation1) { create(:basket_participation, user_answers: { 'multi_select' => ['x'] }) }
-      let(:participation2) { create(:basket_participation, user_answers: { 'multi_select' => %w[x y] }) }
+      let(:participation1) { create(:basket_participation, user_custom_field_values: { 'multi_select' => ['x'] }) }
+      let(:participation2) { create(:basket_participation, user_custom_field_values: { 'multi_select' => %w[x y] }) }
       let(:flattened_participations) { [participation1, participation2] }
       let(:participant_ids) { flattened_participations.pluck(:participant_id).uniq }
 
@@ -468,8 +468,8 @@ RSpec.describe Insights::BasePhaseInsightsService do
     context 'checkbox field' do
       let!(:checkbox_field) { create(:custom_field, resource_type: 'User', key: 'checkbox', input_type: 'checkbox', title_multiloc: { en: 'Check if you agree' }) }
 
-      let(:participation1) { create(:basket_participation, user_answers: { 'checkbox' => true }) }
-      let(:participation2) { create(:basket_participation, user_answers: { 'checkbox' => false }) }
+      let(:participation1) { create(:basket_participation, user_custom_field_values: { 'checkbox' => true }) }
+      let(:participation2) { create(:basket_participation, user_custom_field_values: { 'checkbox' => false }) }
       let(:flattened_participations) { [participation1, participation2] }
       let(:participant_ids) { flattened_participations.pluck(:participant_id).uniq }
 
@@ -502,10 +502,10 @@ RSpec.describe Insights::BasePhaseInsightsService do
   describe '#birthyear_demographics_data' do
     let!(:custom_field_birthyear) { create(:custom_field, resource_type: 'User', key: 'birthyear', input_type: 'number', title_multiloc: { en: 'Birthyear' }) }
 
-    let(:participation1) { create(:basket_participation, user_answers: { 'birthyear' => Date.current.year - 25 }) }
-    let(:participation2) { create(:basket_participation, user_answers: { 'birthyear' => Date.current.year - 25 }) }
-    let(:participation3) { create(:basket_participation, user_answers: { 'birthyear' => Date.current.year - 35 }) }
-    let(:participation4) { create(:basket_participation, user_answers: {}) }
+    let(:participation1) { create(:basket_participation, user_custom_field_values: { 'birthyear' => Date.current.year - 25 }) }
+    let(:participation2) { create(:basket_participation, user_custom_field_values: { 'birthyear' => Date.current.year - 25 }) }
+    let(:participation3) { create(:basket_participation, user_custom_field_values: { 'birthyear' => Date.current.year - 35 }) }
+    let(:participation4) { create(:basket_participation, user_custom_field_values: {}) }
 
     let(:participations) { { voting: [participation1, participation2, participation3, participation4] } }
     let(:participant_ids) { participations[:voting].pluck(:participant_id).uniq }
@@ -515,8 +515,8 @@ RSpec.describe Insights::BasePhaseInsightsService do
 
     context 'without reference distribution' do
       it 'calculates demographics data correctly' do
-        participant_answers = service.send(:participants_answers, participations.values.flatten, participant_ids)
-        result = service.send(:birthyear_demographics_data, participant_answers)
+        participant_custom_field_values = service.send(:participants_custom_field_values, participations.values.flatten, participant_ids)
+        result = service.send(:birthyear_demographics_data, participant_custom_field_values)
 
         expect(result).to match({
           series: {
@@ -537,8 +537,8 @@ RSpec.describe Insights::BasePhaseInsightsService do
       end
 
       it 'performs as expected when no participations' do
-        participant_answers = service.send(:participants_answers, [], [])
-        result = service.send(:birthyear_demographics_data, participant_answers)
+        participant_custom_field_values = service.send(:participants_custom_field_values, [], [])
+        result = service.send(:birthyear_demographics_data, participant_custom_field_values)
 
         expect(result).to match({
           series: {
@@ -570,8 +570,8 @@ RSpec.describe Insights::BasePhaseInsightsService do
       end
 
       it 'calculates demographics data correctly' do
-        participant_answers = service.send(:participants_answers, participations.values.flatten, participant_ids)
-        result = service.send(:birthyear_demographics_data, participant_answers)
+        participant_custom_field_values = service.send(:participants_custom_field_values, participations.values.flatten, participant_ids)
+        result = service.send(:birthyear_demographics_data, participant_custom_field_values)
 
         expect(result).to match({
           series: { '18-24' => 0, '25-34' => 2, '35-44' => 1, '45-54' => 0, '55-64' => 0, '65+' => 0, '_blank' => 1 },
@@ -580,8 +580,8 @@ RSpec.describe Insights::BasePhaseInsightsService do
       end
 
       it 'performs as expected when no participations' do
-        participant_answers = service.send(:participants_answers, [], [])
-        result = service.send(:birthyear_demographics_data, participant_answers)
+        participant_custom_field_values = service.send(:participants_custom_field_values, [], [])
+        result = service.send(:birthyear_demographics_data, participant_custom_field_values)
 
         expect(result).to match({
           series: { '18-24' => 0, '25-34' => 0, '35-44' => 0, '45-54' => 0, '55-64' => 0, '65+' => 0, '_blank' => 0 },
@@ -600,14 +600,14 @@ RSpec.describe Insights::BasePhaseInsightsService do
       let!(:option_a) { create(:custom_field_option, custom_field: custom_field_single_select, key: 'a', title_multiloc: { en: 'Option A' }) }
       let!(:option_b) { create(:custom_field_option, custom_field: custom_field_single_select, key: 'b', title_multiloc: { en: 'Option B' }) }
 
-      let(:participation1) { create(:basket_participation, user_answers: { 'single_select' => 'a' }) }
-      let(:participation2) { create(:basket_participation, user_answers: { 'single_select' => 'a' }) }
-      let(:participation3) { create(:basket_participation, user_answers: { 'single_select' => 'b' }) }
-      let(:participation4) { create(:basket_participation, user_answers: {}) }
+      let(:participation1) { create(:basket_participation, user_custom_field_values: { 'single_select' => 'a' }) }
+      let(:participation2) { create(:basket_participation, user_custom_field_values: { 'single_select' => 'a' }) }
+      let(:participation3) { create(:basket_participation, user_custom_field_values: { 'single_select' => 'b' }) }
+      let(:participation4) { create(:basket_participation, user_custom_field_values: {}) }
 
       it 'calculates demographics data correctly when no reference distribution' do
-        participant_answers = service.send(:participants_answers, participations.values.flatten, participant_ids)
-        result = service.send(:select_or_checkbox_field_demographics_data, participant_answers, custom_field_single_select)
+        participant_custom_field_values = service.send(:participants_custom_field_values, participations.values.flatten, participant_ids)
+        result = service.send(:select_or_checkbox_field_demographics_data, participant_custom_field_values, custom_field_single_select)
 
         expect(result).to match({
           series: { 'a' => 2, 'b' => 1, '_blank' => 1 },
@@ -626,8 +626,8 @@ RSpec.describe Insights::BasePhaseInsightsService do
           population_counts: [480, 510]
         )
 
-        participant_answers = service.send(:participants_answers, participations.values.flatten, participant_ids)
-        result = service.send(:select_or_checkbox_field_demographics_data, participant_answers, custom_field_single_select)
+        participant_custom_field_values = service.send(:participants_custom_field_values, participations.values.flatten, participant_ids)
+        result = service.send(:select_or_checkbox_field_demographics_data, participant_custom_field_values, custom_field_single_select)
 
         expect(result).to match({
           series: { 'a' => 2, 'b' => 1, '_blank' => 1 },
@@ -645,16 +645,16 @@ RSpec.describe Insights::BasePhaseInsightsService do
       let!(:option_a) { create(:custom_field_option, custom_field: custom_field_multi_select, key: 'a', title_multiloc: { en: 'Option A' }) }
       let!(:option_b) { create(:custom_field_option, custom_field: custom_field_multi_select, key: 'b', title_multiloc: { en: 'Option B' }) }
 
-      let(:participation1) { create(:basket_participation, user_answers: { 'multi_select' => ['a'] }) }
-      let(:participation2) { create(:basket_participation, user_answers: { 'multi_select' => %w[a b] }) }
-      let(:participation3) { create(:basket_participation, user_answers: { 'multi_select' => ['b'] }) }
-      let(:participation4) { create(:basket_participation, user_answers: {}) }
+      let(:participation1) { create(:basket_participation, user_custom_field_values: { 'multi_select' => ['a'] }) }
+      let(:participation2) { create(:basket_participation, user_custom_field_values: { 'multi_select' => %w[a b] }) }
+      let(:participation3) { create(:basket_participation, user_custom_field_values: { 'multi_select' => ['b'] }) }
+      let(:participation4) { create(:basket_participation, user_custom_field_values: {}) }
 
       # We currently do not support the creation of reference distributions for multiselect fields in the front-end,
       # nor would our existing back-end implementation make sense for multiselect fields.
       it 'calculates demographics data correctly' do
-        participant_answers = service.send(:participants_answers, participations.values.flatten, participant_ids)
-        result = service.send(:select_or_checkbox_field_demographics_data, participant_answers, custom_field_multi_select)
+        participant_custom_field_values = service.send(:participants_custom_field_values, participations.values.flatten, participant_ids)
+        result = service.send(:select_or_checkbox_field_demographics_data, participant_custom_field_values, custom_field_multi_select)
 
         expect(result).to match({
           series: { 'a' => 2, 'b' => 2, '_blank' => 1 },
@@ -670,16 +670,16 @@ RSpec.describe Insights::BasePhaseInsightsService do
     context 'with checkbox field' do
       let!(:custom_field_checkbox) { create(:custom_field, resource_type: 'User', key: 'checkbox', input_type: 'checkbox', title_multiloc: { en: 'Check if you agree' }) }
 
-      let(:participation1) { create(:basket_participation, user_answers: { 'checkbox' => false }) }
-      let(:participation2) { create(:basket_participation, user_answers: { 'checkbox' => false }) }
-      let(:participation3) { create(:basket_participation, user_answers: {}) }
-      let(:participation4) { create(:basket_participation, user_answers: {}) }
+      let(:participation1) { create(:basket_participation, user_custom_field_values: { 'checkbox' => false }) }
+      let(:participation2) { create(:basket_participation, user_custom_field_values: { 'checkbox' => false }) }
+      let(:participation3) { create(:basket_participation, user_custom_field_values: {}) }
+      let(:participation4) { create(:basket_participation, user_custom_field_values: {}) }
 
       # We currently do not support the creation of reference distributions for checkbox fields in the front-end,
       # and the back-end currently only supports categorical distributions for select fields.
       it 'calculates demographics data correctly' do
-        participant_answers = service.send(:participants_answers, participations.values.flatten, participant_ids)
-        result = service.send(:select_or_checkbox_field_demographics_data, participant_answers, custom_field_checkbox)
+        participant_custom_field_values = service.send(:participants_custom_field_values, participations.values.flatten, participant_ids)
+        result = service.send(:select_or_checkbox_field_demographics_data, participant_custom_field_values, custom_field_checkbox)
 
         expect(result).to match({
           series: { true => 0, false => 2, '_blank' => 2 },
@@ -909,91 +909,91 @@ RSpec.describe Insights::BasePhaseInsightsService do
     end
   end
 
-  describe '#parse_user_answers' do
+  describe '#parse_user_custom_field_values' do
     let(:prefix) { UserFieldsInFormService.prefix }
 
-    it 'preferentially merges the parsed item.answers if present' do
+    it 'preferentially merges the parsed item.custom_field_values if present' do
       item = create(:idea, custom_field_answers: [
         build(:custom_field_answer, key: "#{prefix}key1", value: 'value1'),
         build(:custom_field_answer, key: 'other_key', value: 'other_value')
       ])
 
-      result = service.send(:parse_user_answers, item, nil)
+      result = service.send(:parse_user_custom_field_values, item, nil)
       expect(result).to eq({ 'key1' => 'value1' })
 
       user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'key1', value: 'value2')])
 
-      result = service.send(:parse_user_answers, item, user)
+      result = service.send(:parse_user_custom_field_values, item, user)
       expect(result).to eq({ 'key1' => 'value1' })
     end
 
-    it 'merges user.answers not parsed from item.answers' do
+    it 'merges user.custom_field_values not parsed from item.custom_field_values' do
       item = create(:idea, custom_field_answers: [
         build(:custom_field_answer, key: "#{prefix}key1", value: 'value1'),
         build(:custom_field_answer, key: 'other_key', value: 'other_value')
       ])
       user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'key2', value: 'value2')])
 
-      result = service.send(:parse_user_answers, item, user)
+      result = service.send(:parse_user_custom_field_values, item, user)
       expect(result).to eq({ 'key1' => 'value1', 'key2' => 'value2' })
     end
 
-    it 'avoids collisions with similar keys in idea answers' do
+    it 'avoids collisions with similar keys in idea custom_field_values' do
       item = create(:idea, custom_field_answers: [
         build(:custom_field_answer, key: "#{prefix}key", value: 'value1'),
         build(:custom_field_answer, key: 'key', value: 'value2')
       ])
       user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'key', value: 'value3')])
 
-      result = service.send(:parse_user_answers, item, user)
+      result = service.send(:parse_user_custom_field_values, item, user)
       expect(result).to eq({ 'key' => 'value1' })
     end
 
-    it 'returns the user.answers if item.answers is not present' do
+    it 'returns the user.custom_field_values if item.custom_field_values is not present' do
       item = create(:idea)
       user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'key2', value: 'value2')])
 
-      result = service.send(:parse_user_answers, item, user)
+      result = service.send(:parse_user_custom_field_values, item, user)
       expect(result).to eq({ 'key2' => 'value2' })
     end
 
-    it 'returns an empty hash if neither item nor user have answers' do
+    it 'returns an empty hash if neither item nor user have custom_field_values' do
       item = create(:idea)
       user = create(:user)
 
-      result = service.send(:parse_user_answers, item, user)
+      result = service.send(:parse_user_custom_field_values, item, user)
       expect(result).to eq({})
     end
 
-    it 'excludes empty string values from item answers' do
+    it 'excludes empty string values from item custom_field_values' do
       item = create(:idea, custom_field_answers: [
         build(:custom_field_answer, key: "#{prefix}domicile", value: ''),
         build(:custom_field_answer, key: "#{prefix}gender", value: ''),
         build(:custom_field_answer, key: "#{prefix}postcode", value: '2324km')
       ])
 
-      result = service.send(:parse_user_answers, item, nil)
+      result = service.send(:parse_user_custom_field_values, item, nil)
       expect(result).to eq({ 'postcode' => '2324km' })
     end
 
-    it 'excludes empty string values when merging item and user answers' do
+    it 'excludes empty string values when merging item and user custom_field_values' do
       item = create(:idea, custom_field_answers: [build(:custom_field_answer, key: "#{prefix}key1", value: '')])
       user = create(:user, custom_field_answers: [
         build(:custom_field_answer, key: 'key1', value: 'value1'),
         build(:custom_field_answer, key: 'key2', value: 'value2')
       ])
 
-      result = service.send(:parse_user_answers, item, user)
+      result = service.send(:parse_user_custom_field_values, item, user)
       expect(result).to eq({ 'key2' => 'value2' })
     end
 
-    it 'excludes whitespace-only string values from item answers' do
+    it 'excludes whitespace-only string values from item custom_field_values' do
       item = create(:idea, custom_field_answers: [
         build(:custom_field_answer, key: "#{prefix}key1", value: '  '),
         build(:custom_field_answer, key: "#{prefix}key2", value: 'value2')
       ])
 
-      result = service.send(:parse_user_answers, item, nil)
+      result = service.send(:parse_user_custom_field_values, item, nil)
       expect(result).to eq({ 'key2' => 'value2' })
     end
   end

@@ -39,7 +39,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           acted_at: basket1.submitted_at,
           classname: 'Basket',
           participant_id: user.id,
-          user_answers: { 'gender' => 'male' },
+          user_custom_field_values: { 'gender' => 'male' },
           total_votes: 5,
           ideas_count: 2,
           votes_per_idea: {
@@ -53,7 +53,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           acted_at: basket2.submitted_at,
           classname: 'Basket',
           participant_id: basket2.id,
-          user_answers: {},
+          user_custom_field_values: {},
           total_votes: 42,
           ideas_count: 1,
           votes_per_idea: {
@@ -114,14 +114,14 @@ RSpec.describe Insights::VotingPhaseInsightsService do
     end
   end
 
-  describe '#idea_ids_to_user_answers' do
+  describe '#idea_ids_to_user_custom_field_values' do
     it 'returns a mapping of idea IDs to user custom field values from the participations' do
       participations = [
-        create(:basket_participation, user: user, user_answers: { 'gender' => 'female' }, votes_per_idea: { idea1.id => 1, idea2.id => 1 }),
-        create(:basket_participation, user: user, user_answers: { 'gender' => 'male' }, votes_per_idea: { idea2.id => 2 })
+        create(:basket_participation, user: user, user_custom_field_values: { 'gender' => 'female' }, votes_per_idea: { idea1.id => 1, idea2.id => 1 }),
+        create(:basket_participation, user: user, user_custom_field_values: { 'gender' => 'male' }, votes_per_idea: { idea2.id => 2 })
       ]
 
-      mapping = service.send(:idea_ids_to_user_answers, participations)
+      mapping = service.send(:idea_ids_to_user_custom_field_values, participations)
 
       expect(mapping).to eq({
         idea1.id => [{ 'gender' => 'female' }],
@@ -130,7 +130,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
     end
 
     it 'handles empty participations' do
-      mapping = service.send(:idea_ids_to_user_answers, [])
+      mapping = service.send(:idea_ids_to_user_custom_field_values, [])
       expect(mapping).to eq({})
     end
   end
@@ -143,8 +143,8 @@ RSpec.describe Insights::VotingPhaseInsightsService do
     let!(:custom_field_option_unspecified) { create(:custom_field_option, custom_field: custom_field, key: 'unspecified', title_multiloc: { en: 'Unspecified' }) }
 
     it 'returns the correct vote counts data per idea for a given custom field' do
-      participations[0][:user_answers] = { 'gender' => 'female' }
-      participations[1][:user_answers] = { 'gender' => 'male' }
+      participations[0][:user_custom_field_values] = { 'gender' => 'female' }
+      participations[1][:user_custom_field_values] = { 'gender' => 'male' }
 
       phase_total_votes = 57
       data = service.send(:idea_vote_counts_data, participations, custom_field, phase_total_votes)

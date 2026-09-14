@@ -19,7 +19,7 @@ module Insights
             acted_at: volunteering_volunteer.created_at,
             classname: 'Volunteer',
             participant_id: participant_id(volunteering_volunteer.id, volunteering_volunteer.user_id),
-            user_answers: volunteering_volunteer.user&.custom_field_answers.to_h { [it.key, it.value] } || {}
+            user_custom_field_values: volunteering_volunteer.user&.custom_field_answers.to_h { [it.key, it.value] } || {}
           }
         end
     end
