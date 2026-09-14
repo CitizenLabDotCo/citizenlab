@@ -94,15 +94,15 @@ module SeedNativeSurveyResponses
 
       responses_created = 0
       users_created = 0
+      fields_by_key = answerable_fields.index_by(&:key)
       num_responses.times do |i|
-        custom_field_values = generate_response(answerable_fields)
+        answers = generate_response(answerable_fields)
 
         idea_attrs = {
           project: @project,
           creation_phase: @phase,
           phase_ids: [@phase.id],
-          publication_status: 'published',
-          custom_field_values: custom_field_values
+          publication_status: 'published'
         }
 
         if anonymous
@@ -120,6 +120,7 @@ module SeedNativeSurveyResponses
         end
 
         idea = Idea.new(idea_attrs)
+        build_answers(idea, answers, fields_by_key)
 
         if idea.save
           responses_created += 1
@@ -140,17 +141,15 @@ module SeedNativeSurveyResponses
       last_name = Faker::Name.last_name
       email = "#{first_name.downcase}.#{last_name.downcase}.#{SecureRandom.hex(4)}@example.com"
 
-      user_custom_field_values = generate_user_custom_field_values
-
       user = User.new(
         first_name: first_name,
         last_name: last_name,
         email: email,
         password: SecureRandom.hex(16),
         locale: @locale,
-        custom_field_values: user_custom_field_values,
         registration_completed_at: Time.current
       )
+      build_answers(user, generate_user_answers, @user_fields.index_by(&:key))
 
       if user.save
         user
@@ -160,7 +159,13 @@ module SeedNativeSurveyResponses
       end
     end
 
-    def generate_user_custom_field_values
+    def build_answers(record, values, fields_by_key)
+      values.each do |key, value|
+        record.custom_field_answers.build(key:, value:, custom_field: fields_by_key[key])
+      end
+    end
+
+    def generate_user_answers
       return {} if @user_fields.blank?
 
       {}.tap do |values|

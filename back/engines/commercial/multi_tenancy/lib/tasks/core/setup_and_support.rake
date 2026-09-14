@@ -256,7 +256,7 @@ namespace :setup_and_support do
         user.birthyear.present?
       end
       users_with_birthyear.each do |user|
-        user.custom_field_values[field.key] = user.birthyear.to_s
+        user.custom_field_answers.build(key: field.key, value: user.birthyear.to_s, custom_field: field)
         unless user.save
           errors += [user.errors.messages]
         end
@@ -442,8 +442,9 @@ namespace :setup_and_support do
   end
 
   def add_anonymous_reaction(reactable, mode)
-    attrs = AnonymizeUserService.new.anonymized_attributes AppConfiguration.instance.settings('core', 'locales')
-    attrs.delete 'custom_field_values'
+    anonymizer = AnonymizeUserService.new
+    answers = anonymizer.anonymized_answers
+    attrs = anonymizer.anonymized_attributes(AppConfiguration.instance.settings('core', 'locales'), answers:)
     user = User.create! attrs
     Reaction.create!(reactable: reactable, mode: mode, user: user)
     user.destroy!
