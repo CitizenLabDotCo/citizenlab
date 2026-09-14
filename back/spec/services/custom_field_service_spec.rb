@@ -15,7 +15,7 @@ describe CustomFieldService do
     end
   end
 
-  describe 'delete_custom_field_values' do
+  describe 'delete_field_answers' do
     it 'deletes the custom field values from all users' do
       cf1 = create(:custom_field)
       cf2 = create(:custom_field)
@@ -24,7 +24,7 @@ describe CustomFieldService do
         create(:custom_field_answer, answerable: user, key: cf2.key, value: 'other_value')
       end
       create_list(:user, 5)
-      service.delete_custom_field_values(cf1)
+      service.delete_field_answers(cf1)
       expect(CustomFieldAnswer.where(key: cf1.key)).not_to exist
       expect(CustomFieldAnswer.where(key: cf2.key).count).to eq 5
     end
@@ -41,7 +41,7 @@ describe CustomFieldService do
         build(:custom_field_answer, key: 'other_field', value: 'stays')
       ])
 
-      service.delete_custom_field_values(field)
+      service.delete_field_answers(field)
 
       expect(user.reload.custom_field_answers).to be_empty
       expect(input.reload.custom_field_answers.pluck(:key)).to eq ['other_field']
@@ -62,7 +62,7 @@ describe CustomFieldService do
         ]
       )
 
-      service.delete_custom_field_values(field)
+      service.delete_field_answers(field)
 
       expect(input.reload.custom_field_answers.pluck(:key)).to eq ['another_field']
     end
@@ -81,7 +81,7 @@ describe CustomFieldService do
       form = create(:custom_form, participation_context: phase)
       field = create(:custom_field_text, resource: form, key: 'extra_field')
 
-      service.delete_custom_field_values(field)
+      service.delete_field_answers(field)
 
       expect(other_input.reload.custom_field_answers.pluck(:key, :value)).to eq [%w[extra_field stays]]
     end

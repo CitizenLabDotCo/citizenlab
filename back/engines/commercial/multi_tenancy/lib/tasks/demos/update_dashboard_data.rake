@@ -5,7 +5,7 @@
 #   - ImpactTracking::Session referrer: 50% empty, 15% google, 20% facebook, 15% govocal
 #   - OfficialFeedback: creates records so 38% of non-native-survey ideas have one
 #   - Idea statuses + Activity: updates status for 80% of ideas and creates changed_status activities
-#   - User custom_field_values: populates select/multiselect fields and birthyear with random values
+#   - User answers: populates select/multiselect fields and birthyear with random values
 #   - EmailCampaigns::Delivery: creates deliveries for sent campaigns (~50 users per campaign)
 #     2% failed, 98% delivered, 70% opened, 40% clicked
 #
@@ -44,7 +44,7 @@ namespace :demos do
       UpdateDemoDashboardData.update_referrers
       UpdateDemoDashboardData.create_official_feedback
       UpdateDemoDashboardData.create_idea_status_change_activities
-      UpdateDemoDashboardData.update_user_custom_field_values
+      UpdateDemoDashboardData.update_user_answers
       UpdateDemoDashboardData.create_email_campaign_deliveries
 
       puts 'Done.'
@@ -190,7 +190,7 @@ module UpdateDemoDashboardData
     end
   end
 
-  def update_user_custom_field_values
+  def update_user_answers
     select_fields = CustomField.where(resource_type: 'User', input_type: %w[select multiselect])
     birthyear_field = CustomField.find_by(resource_type: 'User', key: 'birthyear')
 

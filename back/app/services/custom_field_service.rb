@@ -29,7 +29,7 @@ class CustomFieldService
     end
   end
 
-  def delete_custom_field_values(field)
+  def delete_field_answers(field)
     case field.resource_type
     when 'User'
       delete_keys_from_values(User.all, keys_with_companions(field.key))

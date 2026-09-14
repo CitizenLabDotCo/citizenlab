@@ -5,7 +5,7 @@ module CustomFields
 
       def destroy!(option, user = nil)
         ActiveRecord::Base.transaction do
-          update_custom_field_values(option)
+          delete_option_answers(option)
           option.destroy!
           update_form_logic(option)
         end
@@ -22,7 +22,7 @@ module CustomFields
 
       private
 
-      def update_custom_field_values(option)
+      def delete_option_answers(option)
         cf = option.custom_field
 
         if cf.resource_type == 'User'
