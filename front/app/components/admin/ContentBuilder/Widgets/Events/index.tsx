@@ -22,10 +22,7 @@ import {
   BUILDER_CONTENT_MAX_WIDTH,
   DEFAULT_PADDING,
 } from 'components/admin/ContentBuilder/constants';
-import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
-import useWidgetProjectId from 'components/admin/ContentBuilder/useWidgetProjectId';
-import { VerticalRhythmContext } from 'components/admin/ContentBuilder/verticalRhythm';
-import landingPageMessages from 'components/LandingPages/citizen/messages';
+import EventCardsSkeleton from 'components/EventCards/Skeleton';
 import EditModeHeightCap from 'components/ProjectPageBuilder/Widgets/EditModeHeightCap';
 import EmptyEvents from 'components/ProjectPageBuilder/Widgets/Events/EmptyEvents';
 import EventsSection from 'components/ProjectPageBuilder/Widgets/Events/EventsSection';
@@ -36,9 +33,12 @@ import sharedMessages from 'utils/messages';
 import { useLocation } from 'utils/router';
 import { scrollToElement } from 'utils/scroll';
 
-import defaultHeadingMessage from './defaultHeading';
+import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
+import useWidgetProjectId from '../../useWidgetProjectId';
+import { VerticalRhythmContext } from '../../verticalRhythm';
+
 import messages from './messages';
-import EventsSettings from './Settings';
+import EventsSettings, { defaultHeadingMessage } from './Settings';
 import { EventsProps, EventsSource } from './types';
 
 export const EVENTS_WIDGET_NAME = 'EventsList';
@@ -130,18 +130,19 @@ const EventsList: UserComponent<EventsProps> = ({
   };
   const waitingForProject = isProjectEvents && !currentProjectId;
 
-  const { data: upcomingEvents } = useEvents(
+  const { data: upcomingEvents, isLoading: loadingUpcoming } = useEvents(
     { ...params, currentAndFutureOnly: true, pageNumber: upcomingPage },
     { enabled: showUpcoming && !waitingForProject }
   );
-  const { data: pastEvents } = useEvents(
+  const { data: pastEvents, isLoading: loadingPast } = useEvents(
     { ...params, pastOnly: true, pageNumber: pastPage },
     { enabled: showPast && !waitingForProject }
   );
 
-  if (waitingForProject) return null;
-  if (showUpcoming && !upcomingEvents) return null;
-  if (showPast && !pastEvents) return null;
+  const loading = waitingForProject || loadingUpcoming || loadingPast;
+  // Not loading and still no data: the request failed.
+  if (!loading && showUpcoming && !upcomingEvents) return null;
+  if (!loading && showPast && !pastEvents) return null;
 
   // A disabled query keeps serving its last result, so a bucket is read through its own filter
   // rather than through the query: switching one off has to stop it rendering.
@@ -152,22 +153,31 @@ const EventsList: UserComponent<EventsProps> = ({
     (upcoming?.data.length ?? 0) === 0 && (past?.data.length ?? 0) === 0;
 
   // EmptyEvents brings its own frame, and the caller's frame should not paint an empty band.
-  if (isEmpty && !showEmptyMessage) {
+  if (!loading && isEmpty && !showEmptyMessage) {
     return inEditor ? <EmptyEvents /> : null;
   }
 
-  const contents = (
+  const heading = (
+    <Title variant="h2" color="tenantText" m="0" mb="24px">
+      {titleMultiloc
+        ? localize(titleMultiloc)
+        : formatMessage(defaultHeadingMessage(timeFilters))}
+    </Title>
+  );
+
+  const contents = loading ? (
+    <Box display="flex" flexDirection="column">
+      {heading}
+      <EventCardsSkeleton count={paginated ? 3 : Math.min(limit, 3)} />
+    </Box>
+  ) : (
     <Box
       id={isProjectEvents ? EVENTS_WIDGET_ANCHOR_ID : undefined}
       display="flex"
       flexDirection="column"
       data-cy="e2e-events-widget"
     >
-      <Title variant="h2" color="tenantText" m="0" mb="24px">
-        {titleMultiloc
-          ? localize(titleMultiloc)
-          : formatMessage(defaultHeadingMessage(timeFilters))}
-      </Title>
+      {heading}
 
       {isEmpty ? (
         <Box display="flex" alignItems="center" mb="32px">
@@ -205,7 +215,7 @@ const EventsList: UserComponent<EventsProps> = ({
       {!paginated && (
         <Box alignSelf="center" mt="24px">
           <ViewAllEventsLink to="/events">
-            {formatMessage(landingPageMessages.viewAllEventsText)}
+            {formatMessage(sharedMessages.viewAllEvents)}
           </ViewAllEventsLink>
         </Box>
       )}

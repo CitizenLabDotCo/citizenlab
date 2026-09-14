@@ -9,12 +9,13 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 
+import projectPageMessages from 'components/ProjectPageBuilder/Widgets/messages';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
-import { useIntl } from 'utils/cl-intl';
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import sharedMessages from 'utils/messages';
 import { useParams } from 'utils/router';
 
-import defaultHeadingMessage from './defaultHeading';
 import messages from './messages';
 import SourceSetting from './SourceSetting';
 import {
@@ -22,6 +23,20 @@ import {
   EventsPublicationStatus,
   EventsTimeFilter,
 } from './types';
+
+// Shown as the heading placeholder and used by the widget as its fallback heading.
+export const defaultHeadingMessage = (
+  timeFilters: EventsTimeFilter[]
+): MessageDescriptor => {
+  // With both buckets on, each section has its own subheading, so a bucket-named heading
+  // would repeat the one below it word for word.
+  if (timeFilters.includes('upcoming') && timeFilters.includes('past')) {
+    return projectPageMessages.eventsWidgetTitle;
+  }
+  if (timeFilters.includes('past')) return sharedMessages.pastEvents;
+
+  return sharedMessages.upcomingAndOngoingEvents;
+};
 
 const EventsSettings = () => {
   const { formatMessage } = useIntl();
@@ -45,6 +60,13 @@ const EventsSettings = () => {
     // One bucket has to stay on, or the widget queries nothing and renders nothing.
     if (next.length === 0) return;
     setProp((p: EventsProps) => (p.timeFilters = next));
+  };
+
+  const toggleArchived = () => {
+    const next: EventsPublicationStatus[] = statuses.includes('archived')
+      ? ['published']
+      : ['published', 'archived'];
+    setProp((p: EventsProps) => (p.projectPublicationStatuses = next));
   };
 
   return (
@@ -114,14 +136,7 @@ const EventsSettings = () => {
         <CheckboxWithLabel
           label={formatMessage(messages.includeArchived)}
           checked={statuses.includes('archived')}
-          onChange={() => {
-            const next: EventsPublicationStatus[] = statuses.includes(
-              'archived'
-            )
-              ? ['published']
-              : ['published', 'archived'];
-            setProp((p: EventsProps) => (p.projectPublicationStatuses = next));
-          }}
+          onChange={toggleArchived}
         />
       )}
     </Box>

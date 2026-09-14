@@ -32,6 +32,29 @@ resource 'Authentication' do
       expect(json_response_body[:jwt]).to be_present
     end
 
+    # This endpoint adds the caller metadata itself: it does not inherit from
+    # PublicApiController, which adds it everywhere else.
+    example 'logs the tenant, the client and what called it', document: false do
+      header 'User-Agent', 'Microsoft.Data.Mashup (https://go.microsoft.com/fwlink/?LinkID=304225)'
+      header 'X-GoVocal-Client', 'powerbi-report-template/2026.09'
+
+      payload = nil
+      subscriber = ActiveSupport::Notifications.subscribe('process_action.action_controller') do |_name, _start, _finish, _id, event_payload|
+        payload = event_payload if event_payload[:controller] == 'PublicApi::V2::ApiTokenController'
+      end
+      do_request
+      ActiveSupport::Notifications.unsubscribe(subscriber)
+
+      assert_status 201
+      expect(payload).to include(
+        tenant_id: Tenant.current.id,
+        tenant_host: Tenant.current.host,
+        api_client_id: @api_token.id,
+        user_agent: 'Microsoft.Data.Mashup (https://go.microsoft.com/fwlink/?LinkID=304225)',
+        api_client_app: 'powerbi-report-template/2026.09'
+      )
+    end
+
     # TODO: Do 404 response
   end
 end
