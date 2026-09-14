@@ -17,6 +17,14 @@ module McpServer::DemoData
     project.ideas.where(author: demo_users).count
   end
 
+  def user_ceiling_error_message(requested)
+    count = demo_users.count
+    return if count + requested <= MAX_USERS_PER_TENANT
+
+    "Demo user ceiling reached: this platform has #{count} demo users " \
+      "of max #{MAX_USERS_PER_TENANT}. Do not create more."
+  end
+
   # Built without a password, so demo users cannot sign in.
   def build_author(registered_at)
     first_name = Faker::Name.first_name
@@ -27,6 +35,7 @@ module McpServer::DemoData
       first_name: first_name,
       last_name: last_name,
       locale: AppConfiguration.instance.settings('core', 'locales').sample,
+      custom_field_values: RandomCustomFieldValuesService.new.generate(CustomField.registration.enabled),
       confirmation_required: false,
       email_confirmed_at: registered_at,
       registration_completed_at: registered_at,
