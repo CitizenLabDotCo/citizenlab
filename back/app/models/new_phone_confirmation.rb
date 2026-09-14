@@ -36,8 +36,8 @@ class NewPhoneConfirmation < Confirmation
         new_phone: nil,
         phone_confirmed_at: Time.zone.now
       )
-      clear_code!
       cancel_other_users_pending_phone_change(new_phone)
+      consume!
     end
     true
   end

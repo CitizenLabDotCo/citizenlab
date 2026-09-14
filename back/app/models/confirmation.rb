@@ -52,13 +52,19 @@ class Confirmation < ApplicationRecord
   # Whether a code has been sent and not yet consumed. Used by the idempotent
   # "send a code only if it's the first time this cycle" path
   # (request_reconfirm_code_email / request_reconfirm_code_phone with
-  # only_if_first_time): a successful confirmation runs
-  # clear_code! (code -> nil), so an outstanding code means one was already sent for
-  # the current cycle and re-sending would both spam the user and invalidate the
-  # code they hold. Mirrors the code_sent_at.nil? guard in
+  # only_if_first_time): an outstanding code means one was already sent for the
+  # current cycle and re-sending would both spam the user and invalidate the code
+  # they hold. Mirrors the code_sent_at.nil? guard in
   # SideFxUserService#should_send_confirmation_email?.
   def code_outstanding?
     code.present?
+  end
+
+  # The name of the User has_one that points here, which is also this class's own
+  # name: :email_confirmation, :new_email_confirmation, :phone_confirmation or
+  # :new_phone_confirmation.
+  def association_name
+    self.class.name.underscore.to_sym
   end
 
   def reset_code!
@@ -73,8 +79,15 @@ class Confirmation < ApplicationRecord
     update!(code: self.class.generate_code)
   end
 
-  def clear_code!
-    update!(code: nil, code_retry_count: 0, code_reset_count: 0)
+  # Drops the row once its code has done its job. A confirmation carries nothing
+  # but the state of one code cycle, so an absent row and a used-up row mean the
+  # same thing everywhere: whether a flow still has to happen is read from the
+  # user (User#confirmation_pending?), never from here. The owner's cached has_one
+  # has to let go of the deleted record too, or callers holding the user would
+  # keep reading it back.
+  def consume!
+    destroy!
+    user.association(association_name).reset
   end
 
   def self.generate_code
@@ -90,7 +103,7 @@ class Confirmation < ApplicationRecord
     return if other_user_ids.empty?
 
     User.where(id: other_user_ids).update_all(new_email: nil, updated_at: Time.zone.now)
-    NewEmailConfirmation.where(user_id: other_user_ids).update_all(code: nil, updated_at: Time.zone.now)
+    NewEmailConfirmation.where(user_id: other_user_ids).delete_all
   end
 
   # Cancel pending phone-change requests on OTHER users that target `phone`,
@@ -100,6 +113,6 @@ class Confirmation < ApplicationRecord
     return if other_user_ids.empty?
 
     User.where(id: other_user_ids).update_all(new_phone: nil, updated_at: Time.zone.now)
-    NewPhoneConfirmation.where(user_id: other_user_ids).update_all(code: nil, updated_at: Time.zone.now)
+    NewPhoneConfirmation.where(user_id: other_user_ids).delete_all
   end
 end
