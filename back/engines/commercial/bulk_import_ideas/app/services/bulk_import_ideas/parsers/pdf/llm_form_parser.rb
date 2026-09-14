@@ -53,7 +53,12 @@ module BulkImportIdeas::Parsers::Pdf
       return response if response.is_a?(Hash)
 
       parsed = response.match(/\{.+\}/m)&.try(:[], 0)
-      parsed.present? ? JSON.parse(parsed.squish) : nil
+      return nil if parsed.blank?
+
+      JSON.parse(parsed.squish)
+    rescue JSON::ParserError => e
+      ErrorReporter.report_msg("LLM form parser returned malformed JSON: #{e.message}")
+      nil
     end
 
     def map_response_to_fields(response)

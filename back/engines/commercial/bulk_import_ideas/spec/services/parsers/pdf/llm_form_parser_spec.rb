@@ -126,6 +126,18 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::LLMFormParser do
         end
       end
 
+      context 'with malformed JSON that squishing cannot repair' do
+        let(:json_response) { '{"question_1": "SE17 1AA", "question_2": }' }
+
+        it 'reports the error and returns no fields instead of raising' do
+          expect(ErrorReporter).to receive(:report_msg).with(/malformed JSON/)
+
+          result = parser.parse_idea('mock_uploader', 1)
+
+          expect(result).to eq({ pdf_pages: [1], fields: {} })
+        end
+      end
+
       context 'without a JSON object' do
         let(:json_response) { 'No answers could be found.' }
 
