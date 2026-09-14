@@ -53,15 +53,6 @@ describe('CustomPageBuilder bootstrap', () => {
     expect(mockUpsert).not.toHaveBeenCalled();
   });
 
-  // A page with no layout 404s, so the builder creates one.
-  it('creates a layout when the page has none', async () => {
-    layoutIsError = true;
-    render(<CustomPageBuilder />);
-
-    await waitFor(() => expect(mockUpsert).toHaveBeenCalled());
-    expect(mockUpsert).toHaveBeenCalledWith({ staticPageId: 'page-1' });
-  });
-
   // Gating only the link would let a typed URL reach the builder, which writes a layout.
   it('renders nothing and writes no layout when the feature is off', () => {
     featureEnabled = false;

@@ -126,6 +126,24 @@ describe FlagInappropriateContent::ToxicityDetectionService do
 
       expect(service.check_toxicity(comment)).to be_nil
     end
+
+    # Serializing the input to text used to rewrite the body in place, images and all, and the
+    # caller then persisted that flattened body on its next save of the same object.
+    it 'leaves the input it serializes untouched' do
+      html = '<p><img data-cl2-text-image-text-reference="c0ffee">Trees for the square</p>'
+      idea = create(:idea, body_multiloc: { 'en' => html.dup })
+
+      expect(llm).to receive(:chat) do |prompt, **|
+        expect(prompt).to include 'Trees for the square'
+        expect(prompt).not_to include '<p>'
+        { 'category' => 'E', 'reason' => 'Not toxic.' }
+      end
+
+      service.check_toxicity(idea, attributes: %i[title_multiloc body_multiloc])
+
+      expect(idea).not_to be_changed
+      expect(idea.body_multiloc).to eq({ 'en' => html })
+    end
   end
 
   private
