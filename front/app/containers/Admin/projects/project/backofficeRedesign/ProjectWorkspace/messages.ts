@@ -118,14 +118,21 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.workspace.nextActions',
     defaultMessage: 'Next actions',
   },
-  noParticipantsYet: {
-    id: 'app.containers.Admin.projects.project.workspace.noParticipantsYet',
-    defaultMessage: 'No participants yet',
+  collectingNow: {
+    id: 'app.containers.Admin.projects.project.workspace.collectingNow',
+    defaultMessage: 'Collecting now',
   },
-  participantCount: {
-    id: 'app.containers.Admin.projects.project.workspace.participantCount',
-    defaultMessage:
-      '{count, plural, one {# participant} other {# participants}}',
+  participantsGraphLabel: {
+    id: 'app.containers.Admin.projects.project.workspace.participantsGraphLabel',
+    defaultMessage: 'Participants',
+  },
+  participantsGraphLastPeriod: {
+    id: 'app.containers.Admin.projects.project.workspace.participantsGraphLastPeriod',
+    defaultMessage: '<b>+{count}</b> last 7 days',
+  },
+  participantsGraphScale: {
+    id: 'app.containers.Admin.projects.project.workspace.participantsGraphScale',
+    defaultMessage: 'Weekly, since {date}',
   },
   actionMessageParticipants: {
     id: 'app.containers.Admin.projects.project.workspace.actionMessageParticipants',
