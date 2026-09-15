@@ -159,7 +159,7 @@ describe CommonGround::ResultsService do
         end
 
         context 'when excluding admins and moderators' do
-          subject(:service) { described_class.new(phase, exclude_roles: 'exclude_admins_and_moderators') }
+          subject(:service) { described_class.new(phase, exclude_admins_and_moderators: true) }
 
           it 'leaves their reactions out of the rankings, the vote counts and the stats' do
             expect(results.top_consensus_ideas).to eq [idea1, idea2]

@@ -41,7 +41,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::Participation do
       )
     end
 
-    context 'with exclude_roles' do
+    context 'with exclude_admins_and_moderators' do
       before do
         admin = create(:admin)
         moderator = create(:project_moderator)
@@ -66,7 +66,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::Participation do
       end
 
       it 'excludes participation of admins and moderators' do
-        counts = query.run_query(**params, exclude_roles: 'exclude_admins_and_moderators')
+        counts = query.run_query(**params, exclude_admins_and_moderators: true)
           .map { |result| result.first['count'] }
         expect(counts).to eq([2, 1, 1, 2, 1, 1])
       end

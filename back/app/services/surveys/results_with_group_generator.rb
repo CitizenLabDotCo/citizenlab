@@ -2,8 +2,8 @@
 
 module Surveys
   class ResultsWithGroupGenerator < ResultsWithDateGenerator
-    def initialize(phase, group_mode: nil, group_field_id: nil, year: nil, quarter: nil, options_sort_order: 'count', exclude_roles: nil)
-      super(phase, year:, quarter:, options_sort_order:, exclude_roles:)
+    def initialize(phase, group_mode: nil, group_field_id: nil, year: nil, quarter: nil, options_sort_order: 'count', exclude_admins_and_moderators: false)
+      super(phase, year:, quarter:, options_sort_order:, exclude_admins_and_moderators:)
       @group_mode = group_mode
       @group_field_id = group_field_id
     end

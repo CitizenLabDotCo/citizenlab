@@ -167,7 +167,7 @@ RSpec.describe ReportBuilder::Queries::Projects do
       })
     end
 
-    context 'with exclude_roles' do
+    context 'with exclude_admins_and_moderators' do
       let(:params) do
         {
           start_at: Date.new(2021, 1, 1),
@@ -189,7 +189,7 @@ RSpec.describe ReportBuilder::Queries::Projects do
       end
 
       it 'excludes admins and moderators from participant counts' do
-        result = query.run_query(**params, exclude_roles: 'exclude_admins_and_moderators')
+        result = query.run_query(**params, exclude_admins_and_moderators: true)
 
         expect(result[:participants]).to eq({ @project1.id => 6, @project2.id => 10 })
       end

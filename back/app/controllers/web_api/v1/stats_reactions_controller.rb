@@ -5,7 +5,7 @@ class WebApi::V1::StatsReactionsController < WebApi::V1::StatsController
 
   def reactions_count
     reactions = policy_scope(Reaction, policy_scope_class: StatReactionPolicy::Scope)
-    count = apply_exclude_roles_filter(reactions, :user_id)
+    count = apply_exclude_admins_and_moderators_filter(reactions, :user_id)
       .where(reactable_type: 'Idea')
       .where(created_at: @start_at..@end_at)
       .group(:mode)
@@ -23,7 +23,7 @@ class WebApi::V1::StatsReactionsController < WebApi::V1::StatsController
       .joins('JOIN ideas ON ideas.id = reactions.reactable_id')
 
     reactions = apply_group_filter(reactions)
-    reactions = apply_exclude_roles_filter(reactions, :user_id)
+    reactions = apply_exclude_admins_and_moderators_filter(reactions, :user_id)
     reactions = apply_project_filter(reactions)
 
     serie = reactions
@@ -65,7 +65,7 @@ class WebApi::V1::StatsReactionsController < WebApi::V1::StatsController
       .joins('JOIN ideas ON ideas.id = reactions.reactable_id')
 
     reactions = apply_group_filter(reactions)
-    reactions = apply_exclude_roles_filter(reactions, :user_id)
+    reactions = apply_exclude_admins_and_moderators_filter(reactions, :user_id)
     reactions = apply_topic_filter(reactions)
 
     reactions

@@ -2,10 +2,10 @@ module Insights
   class BasePhaseInsightsService
     attr_reader :phase
 
-    # @param exclude_roles [String] Flag to exclude certain roles from the insights ('exclude_admins_and_moderators')
-    def initialize(phase, exclude_roles: nil)
+    # @param exclude_admins_and_moderators [Boolean] Leave out the participation and visits of admins and moderators
+    def initialize(phase, exclude_admins_and_moderators: false)
       @phase = phase
-      @exclude_roles = exclude_roles
+      @exclude_admins_and_moderators = exclude_admins_and_moderators
     end
 
     # --- TEMPLATE METHOD (Instance Method) ---
@@ -17,7 +17,7 @@ module Insights
     private
 
     def exclude_admins_and_moderators?
-      @exclude_roles == 'exclude_admins_and_moderators'
+      @exclude_admins_and_moderators
     end
 
     # Removes the participations of admins and moderators when requested.
@@ -36,7 +36,7 @@ module Insights
     end
 
     def insights_data(participations)
-      visits_service = VisitsService.new(@phase.project_id, start_at: @phase.start_at, end_at: @phase.end_at, exclude_roles: @exclude_roles)
+      visits_service = VisitsService.new(@phase.project_id, start_at: @phase.start_at, end_at: @phase.end_at, exclude_admins_and_moderators: @exclude_admins_and_moderators)
       flattened_participations = participations.values.flatten
       participant_ids = flattened_participations.pluck(:participant_id).uniq
       participation_method_metrics = phase_participation_method_metrics(participations)
@@ -87,7 +87,7 @@ module Insights
         p[:acted_at] < 7.days.ago
       end.pluck(:participant_id).uniq.count
 
-      visits_service_7_days_ago = VisitsService.new(@phase.project_id, start_at: @phase.start_at, end_at: 7.days.ago, exclude_roles: @exclude_roles)
+      visits_service_7_days_ago = VisitsService.new(@phase.project_id, start_at: @phase.start_at, end_at: 7.days.ago, exclude_admins_and_moderators: @exclude_admins_and_moderators)
       visitors_count_7_days_ago = visits_service_7_days_ago.total_visits[:visitors]
 
       participation_rate_7_day_percent_change = if visitors_count > 0 && visitors_count_7_days_ago > 0

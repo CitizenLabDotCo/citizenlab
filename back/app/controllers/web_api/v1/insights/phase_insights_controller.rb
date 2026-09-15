@@ -40,7 +40,7 @@ module WebApi
         end
 
         def phase_insights_service
-          @phase.pmethod.phase_insights_class.new(@phase, exclude_roles: StatisticsRoleExclusion.exclude_roles)
+          @phase.pmethod.phase_insights_class.new(@phase, exclude_admins_and_moderators: StatisticsRoleExclusion.exclude_admins_and_moderators?)
         end
 
         def validate_voting_phase_and_custom_field(group_by, custom_field)

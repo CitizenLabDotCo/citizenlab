@@ -32,8 +32,8 @@ describe Analytics::MultipleQueries do
       expect(paginations).to be_present
     end
 
-    context 'when exclude_roles is present' do
-      subject(:service) { described_class.new(exclude_roles: 'exclude_admins_and_moderators') }
+    context 'when exclude_admins_and_moderators is present' do
+      subject(:service) { described_class.new(exclude_admins_and_moderators: true) }
 
       before { create(:idea, author: create(:admin)) }
 

@@ -7,9 +7,4 @@ module StatisticsRoleExclusion
   def self.exclude_admins_and_moderators?
     AppConfiguration.instance.settings('core', 'exclude_admins_and_moderators_from_statistics') == true
   end
-
-  # The value to pass as `exclude_roles` to services and queries.
-  def self.exclude_roles
-    'exclude_admins_and_moderators' if exclude_admins_and_moderators?
-  end
 end

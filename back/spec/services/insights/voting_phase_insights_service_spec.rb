@@ -229,7 +229,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
   end
 
   describe '#vote_counts_with_user_custom_field_grouping' do
-    context 'with exclude_roles' do
+    context 'with exclude_admins_and_moderators' do
       before do
         admin_basket = create(:basket, phase: phase, user: create(:admin), submitted_at: phase.start_at + 1.day)
         create(:baskets_idea, basket: admin_basket, idea: idea1, votes: 60)
@@ -248,7 +248,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       end
 
       it 'excludes the votes of admins and moderators and re-sorts the ideas' do
-        service = described_class.new(phase, exclude_roles: 'exclude_admins_and_moderators')
+        service = described_class.new(phase, exclude_admins_and_moderators: true)
         result = service.vote_counts_with_user_custom_field_grouping(nil)
 
         expect(result).to include(online_votes: 47, offline_votes: 10, total_votes: 57)
@@ -259,7 +259,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       end
 
       it 'excludes admins and moderators from the voters metric' do
-        service = described_class.new(phase, exclude_roles: 'exclude_admins_and_moderators')
+        service = described_class.new(phase, exclude_admins_and_moderators: true)
         participations = service.send(:filtered_phase_participations)
 
         expect(service.send(:phase_participation_method_metrics, participations)).to include(online_votes: 47, voters: 2)

@@ -44,8 +44,8 @@ class ReportBuilder::Queries::Analytics::Base < ReportBuilder::Queries::Base
 
   # Keeps participations without a known user (e.g. anonymous ones), since we
   # cannot tell whether they were made by an admin or moderator.
-  def exclude_roles_filter(exclude_roles)
-    return {} unless exclude_admins_and_moderators?(exclude_roles)
+  def exclude_admins_and_moderators_filter(exclude_admins_and_moderators)
+    return {} unless exclude_admins_and_moderators
 
     { 'dimension_user.role': ['citizen', nil] }
   end

@@ -38,7 +38,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::ReactionsByTime do
       )
     end
 
-    context 'with exclude_roles' do
+    context 'with exclude_admins_and_moderators' do
       before do
         create(:reaction, created_at: created_at, reactable: idea, user: create(:admin))
         create(:dislike, created_at: created_at, reactable: idea, user: create(:project_moderator))
@@ -54,7 +54,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::ReactionsByTime do
       end
 
       it 'excludes reactions of admins and moderators' do
-        result = query.run_query(**params, exclude_roles: 'exclude_admins_and_moderators')
+        result = query.run_query(**params, exclude_admins_and_moderators: true)
 
         expect(result.first.first).to include('sum_likes_count' => 1, 'sum_dislikes_count' => 0)
         expect(result.last).to eq([{ 'sum_reactions_count' => 1 }])

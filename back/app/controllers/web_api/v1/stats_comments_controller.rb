@@ -5,7 +5,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
 
   def comments_count
     comments = policy_scope(Comment.published, policy_scope_class: StatCommentPolicy::Scope)
-    count = apply_exclude_roles_filter(comments, :author_id)
+    count = apply_exclude_admins_and_moderators_filter(comments, :author_id)
       .where(created_at: @start_at..@end_at)
       .published
       .count
@@ -17,7 +17,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
     comments = policy_scope(Comment.published, policy_scope_class: StatCommentPolicy::Scope)
     comments = apply_project_filter(comments)
     comments = apply_group_filter(comments)
-    comments = apply_exclude_roles_filter(comments, :author_id)
+    comments = apply_exclude_admins_and_moderators_filter(comments, :author_id)
 
     serie = comments
       .where(created_at: @start_at..@end_at)
@@ -59,7 +59,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
     comments = policy_scope(Comment.published, policy_scope_class: StatCommentPolicy::Scope)
     comments = apply_topic_filter(comments)
     comments = apply_group_filter(comments)
-    comments = apply_exclude_roles_filter(comments, :author_id)
+    comments = apply_exclude_admins_and_moderators_filter(comments, :author_id)
 
     comments
       .where(created_at: @start_at..@end_at)

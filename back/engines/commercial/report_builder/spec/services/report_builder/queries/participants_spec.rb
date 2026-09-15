@@ -185,7 +185,7 @@ RSpec.describe ReportBuilder::Queries::Participants do
       })
     end
 
-    it 'applies exclude_roles filter' do
+    it 'applies exclude_admins_and_moderators filter' do
       project = create(:single_phase_ideation_project)
 
       # Create 4 participants and 8 visitors for project with user role
@@ -216,7 +216,7 @@ RSpec.describe ReportBuilder::Queries::Participants do
       params = {
         start_at: @date_september - 1.day,
         end_at: @date_september + 1.day,
-        exclude_roles: 'exclude_admins_and_moderators'
+        exclude_admins_and_moderators: true
       }
 
       expect(query.run_query(**params)).to eq({
@@ -229,7 +229,7 @@ RSpec.describe ReportBuilder::Queries::Participants do
       })
     end
 
-    it 'keeps participations without a known user when applying exclude_roles filter' do
+    it 'keeps participations without a known user when applying exclude_admins_and_moderators filter' do
       project = create(:single_phase_ideation_project)
 
       create(:idea, created_at: @date_september, project: project, author: create(:user))
@@ -239,7 +239,7 @@ RSpec.describe ReportBuilder::Queries::Participants do
       params = {
         start_at: @date_september - 1.day,
         end_at: @date_september + 1.day,
-        exclude_roles: 'exclude_admins_and_moderators'
+        exclude_admins_and_moderators: true
       }
 
       expect(query.run_query(**params)[:participants_whole_period]).to eq 2

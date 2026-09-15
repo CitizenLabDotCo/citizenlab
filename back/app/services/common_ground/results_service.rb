@@ -1,12 +1,12 @@
 module CommonGround
   class ResultsService
-    # @param [String] exclude_roles 'exclude_admins_and_moderators' to leave out the reactions of users
+    # @param [Boolean] exclude_admins_and_moderators Leave out the reactions of users
     #   with an admin or moderator role. Reactions without a known user are kept.
-    def initialize(phase, exclude_roles: nil)
+    def initialize(phase, exclude_admins_and_moderators: false)
       CommonGround::Utils.check_common_ground!(phase)
 
       @phase = phase
-      @exclude_roles = exclude_roles
+      @exclude_admins_and_moderators = exclude_admins_and_moderators
     end
 
     # @param [Integer] num_ideas Number of ideas to return for each category
@@ -24,7 +24,7 @@ module CommonGround
     REACTION_COUNT_COLUMNS = %w[likes_count dislikes_count neutral_reactions_count].freeze
 
     # The vote counts are computed from the (filtered) reactions rather than taken from the
-    # counter caches on ideas, so that they respect exclude_roles. The returned ideas carry
+    # counter caches on ideas, so that they respect exclude_admins_and_moderators. The returned ideas carry
     # the computed counts in place of their likes_count, dislikes_count and
     # neutral_reactions_count attributes.
     def top_consensus_ideas(n, reverse: false)
@@ -68,7 +68,7 @@ module CommonGround
 
     def reactions
       reactions = Reaction.where(reactable: ideas)
-      return reactions unless @exclude_roles == 'exclude_admins_and_moderators'
+      return reactions unless @exclude_admins_and_moderators
 
       reactions
         .where(user_id: nil)

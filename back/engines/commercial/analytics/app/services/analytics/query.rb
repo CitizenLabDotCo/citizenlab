@@ -21,9 +21,9 @@ module Analytics
     # nil keeps the rows without a known user (e.g. anonymous participations).
     ROLES_KEPT_WHEN_EXCLUDING_ADMINS_AND_MODERATORS = ['citizen', nil].freeze
 
-    # @param exclude_roles [String] 'exclude_admins_and_moderators' to leave out the rows of users with
+    # @param exclude_admins_and_moderators [Boolean] Leave out the rows of users with
     #   an admin or moderator role. Only applies to facts with a dimension_user.
-    def initialize(query, exclude_roles: nil)
+    def initialize(query, exclude_admins_and_moderators: false)
       @json_query =
         case query
         when ActionController::Parameters
@@ -34,7 +34,7 @@ module Analytics
           raise ArgumentError, "Invalid query type: #{query.class}"
         end
 
-      apply_exclude_roles_filter if exclude_roles == 'exclude_admins_and_moderators'
+      apply_exclude_admins_and_moderators_filter if exclude_admins_and_moderators
     end
 
     attr_reader :valid, :error_messages, :results, :pagination, :json_query, :failed
@@ -166,7 +166,7 @@ module Analytics
 
     # Adds a dimension_user.role filter. If the query already filters on role, only the
     # requested roles that are not excluded are kept.
-    def apply_exclude_roles_filter
+    def apply_exclude_admins_and_moderators_filter
       fact_model = MODELS[@json_query[:fact].to_s.to_sym]
       return unless fact_model&.reflect_on_association(:dimension_user)
 

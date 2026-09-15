@@ -160,7 +160,7 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
     end
   end
 
-  context 'with exclude_roles' do
+  context 'with exclude_admins_and_moderators' do
     before do
       create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, author: create(:admin), creation_phase_id: phase.id)
       create(
@@ -182,7 +182,7 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
     end
 
     it 'excludes the responses of admins and moderators, but keeps responses without an author' do
-      service = described_class.new(phase, exclude_roles: 'exclude_admins_and_moderators')
+      service = described_class.new(phase, exclude_admins_and_moderators: true)
       participations = service.send(:filtered_phase_participations)
       metrics = service.send(:phase_participation_method_metrics, participations)
 

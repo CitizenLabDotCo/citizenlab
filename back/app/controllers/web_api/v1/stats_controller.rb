@@ -16,7 +16,7 @@ class WebApi::V1::StatsController < ApplicationController
   # out the records of users with an admin or moderator role. Records without a known
   # user (e.g. anonymous ones) are kept, since we cannot tell whether they were made by
   # an admin or moderator.
-  def apply_exclude_roles_filter(records, user_column)
+  def apply_exclude_admins_and_moderators_filter(records, user_column)
     return records unless StatisticsRoleExclusion.exclude_admins_and_moderators?
 
     records

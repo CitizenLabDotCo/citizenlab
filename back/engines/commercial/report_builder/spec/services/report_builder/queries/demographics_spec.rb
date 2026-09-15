@@ -61,7 +61,7 @@ RSpec.describe ReportBuilder::Queries::Demographics do
         })
       end
 
-      it 'works with exclude_roles filter' do
+      it 'works with exclude_admins_and_moderators filter' do
         create(:admin, custom_field_values: { @custom_field.key => @option1.key })
         create(:project_moderator, custom_field_values: { @custom_field.key => @option2.key })
 
@@ -72,7 +72,7 @@ RSpec.describe ReportBuilder::Queries::Demographics do
           '_blank' => 1
         })
 
-        result = query.run_query(custom_field_id: @custom_field.id, exclude_roles: 'exclude_admins_and_moderators')
+        result = query.run_query(custom_field_id: @custom_field.id, exclude_admins_and_moderators: true)
 
         expect(result[:series]).to match({
           @option1.key => 3,

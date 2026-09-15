@@ -8,7 +8,7 @@ module ReportBuilder
       year: nil,
       quarter: nil,
       options_sort_order: 'count',
-      exclude_roles: nil,
+      exclude_admins_and_moderators: false,
       **_other_props
     )
       return {} if phase_id.blank? || question_id.blank?
@@ -23,7 +23,7 @@ module ReportBuilder
           year:,
           quarter:,
           options_sort_order:,
-          exclude_roles:
+          exclude_admins_and_moderators:
         )
       elsif year && quarter
         Surveys::ResultsWithDateGenerator.new(
@@ -31,10 +31,10 @@ module ReportBuilder
           year:,
           quarter:,
           options_sort_order:,
-          exclude_roles:
+          exclude_admins_and_moderators:
         )
       else
-        Surveys::ResultsGenerator.new(phase, options_sort_order:, exclude_roles:)
+        Surveys::ResultsGenerator.new(phase, options_sort_order:, exclude_admins_and_moderators:)
       end
 
       service.generate_result_for_field(question_id)

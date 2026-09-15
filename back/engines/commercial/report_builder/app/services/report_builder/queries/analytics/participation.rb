@@ -7,7 +7,7 @@ module ReportBuilder
       end_at: nil,
       project_id: nil,
       resolution: nil,
-      exclude_roles: nil,
+      exclude_admins_and_moderators: false,
       compare_start_at: nil,
       compare_end_at: nil,
       **_other_props
@@ -18,7 +18,7 @@ module ReportBuilder
         filters: {
           **date_filter('dimension_date_created', start_at, end_at),
           **project_filter('dimension_project_id', project_id),
-          **exclude_roles_filter(exclude_roles),
+          **exclude_admins_and_moderators_filter(exclude_admins_and_moderators),
           'dimension_type.name': %w[idea],
           publication_status: 'published'
         },
@@ -34,7 +34,7 @@ module ReportBuilder
         filters: {
           **date_filter('dimension_date_created', start_at, end_at),
           **project_filter('dimension_project_id', project_id),
-          **exclude_roles_filter(exclude_roles),
+          **exclude_admins_and_moderators_filter(exclude_admins_and_moderators),
           'dimension_type.name': 'comment',
           'dimension_type.parent': %w[idea]
         },
@@ -50,7 +50,7 @@ module ReportBuilder
         filters: {
           **date_filter('dimension_date_created', start_at, end_at),
           **project_filter('dimension_project_id', project_id),
-          **exclude_roles_filter(exclude_roles),
+          **exclude_admins_and_moderators_filter(exclude_admins_and_moderators),
           'dimension_type.name': 'basket'
         },
         groups: "dimension_date_created.#{interval(resolution)}",
@@ -75,7 +75,7 @@ module ReportBuilder
           filters: {
             **date_filter('dimension_date_created', compare_start_at, compare_end_at),
             **project_filter('dimension_project_id', project_id),
-            **exclude_roles_filter(exclude_roles),
+            **exclude_admins_and_moderators_filter(exclude_admins_and_moderators),
             'dimension_type.name': 'idea',
             publication_status: 'published'
           },
@@ -89,7 +89,7 @@ module ReportBuilder
           filters: {
             **date_filter('dimension_date_created', compare_start_at, compare_end_at),
             **project_filter('dimension_project_id', project_id),
-            **exclude_roles_filter(exclude_roles),
+            **exclude_admins_and_moderators_filter(exclude_admins_and_moderators),
             'dimension_type.name': 'comment',
             'dimension_type.parent': %w[idea]
           },
@@ -103,7 +103,7 @@ module ReportBuilder
           filters: {
             **date_filter('dimension_date_created', compare_start_at, compare_end_at),
             **project_filter('dimension_project_id', project_id),
-            **exclude_roles_filter(exclude_roles),
+            **exclude_admins_and_moderators_filter(exclude_admins_and_moderators),
             'dimension_type.name': 'basket'
           },
           aggregations: {

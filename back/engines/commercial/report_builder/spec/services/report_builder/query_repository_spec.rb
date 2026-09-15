@@ -23,22 +23,22 @@ RSpec.describe ReportBuilder::QueryRepository do
       end
     end
 
-    describe 'exclude_roles' do
+    describe 'exclude_admins_and_moderators' do
       let(:graph_resolved_name) { 'VisitorsWidget' }
-      let(:props) { { 'excludeRoles' => 'exclude_admins_and_moderators', 'resolution' => 'month' } }
+      let(:props) { { 'excludeAdminsAndModerators' => true, 'resolution' => 'month' } }
 
-      it 'ignores exclude_roles from the props when the setting is disabled' do
+      it 'ignores exclude_admins_and_moderators from the props when the setting is disabled' do
         expect_any_instance_of(ReportBuilder::Queries::Visitors)
-          .to receive(:run_query).with(exclude_roles: nil, resolution: 'month')
+          .to receive(:run_query).with(exclude_admins_and_moderators: false, resolution: 'month')
 
         query_repository.data_by_graph(graph_resolved_name, props)
       end
 
-      it 'passes exclude_roles when the setting is enabled' do
+      it 'passes exclude_admins_and_moderators when the setting is enabled' do
         enable_exclude_admins_and_moderators_from_statistics
 
         expect_any_instance_of(ReportBuilder::Queries::Visitors)
-          .to receive(:run_query).with(exclude_roles: 'exclude_admins_and_moderators', resolution: 'month')
+          .to receive(:run_query).with(exclude_admins_and_moderators: true, resolution: 'month')
 
         query_repository.data_by_graph(graph_resolved_name, { 'resolution' => 'month' })
       end

@@ -56,7 +56,7 @@ RSpec.describe ReportBuilder::Queries::SurveyQuestionResult do
       end
     end
 
-    context 'with exclude_roles' do
+    context 'with exclude_admins_and_moderators' do
       let_it_be(:group_field) do
         create(
           :custom_field_select,
@@ -87,7 +87,7 @@ RSpec.describe ReportBuilder::Queries::SurveyQuestionResult do
       end
 
       let(:base_params) { { phase_id: survey_phase.id } }
-      let(:exclude) { { exclude_roles: 'exclude_admins_and_moderators' } }
+      let(:exclude) { { exclude_admins_and_moderators: true } }
 
       it 'includes responses of admins and moderators by default' do
         result = query.run_query(**base_params, question_id: select_field.id)

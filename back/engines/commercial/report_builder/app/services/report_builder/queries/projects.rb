@@ -23,7 +23,7 @@ module ReportBuilder
         projects: serialize(projects, ::WebApi::V1::ProjectSerializer),
         project_images: fetch_project_images(projects),
         periods: fetch_project_periods(filtered_project_ids),
-        participants: fetch_project_participants(filtered_project_ids, params[:exclude_roles])
+        participants: fetch_project_participants(filtered_project_ids, params[:exclude_admins_and_moderators])
       }
     end
 
@@ -78,10 +78,10 @@ module ReportBuilder
         .to_h { |project_image| [project_image.id, serialize(project_image, ::WebApi::V1::ImageSerializer)] }
     end
 
-    def fetch_project_participants(project_ids, exclude_roles)
+    def fetch_project_participants(project_ids, exclude_admins_and_moderators)
       participations = Analytics::FactParticipation.where(dimension_project_id: project_ids)
 
-      exclude_roles_from_participations(participations, exclude_roles)
+      exclude_admins_and_moderators_from_participations(participations, exclude_admins_and_moderators)
         .group(:dimension_project_id)
         .select('COUNT(DISTINCT participant_id) as participants_count, dimension_project_id')
         .to_h { |participant| [participant.dimension_project_id, participant.participants_count] }

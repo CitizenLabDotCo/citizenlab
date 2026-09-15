@@ -48,7 +48,7 @@ RSpec.describe Insights::PollPhaseInsightsService do
     end
   end
 
-  describe '#call with exclude_roles' do
+  describe '#call with exclude_admins_and_moderators' do
     let(:phase) { create(:poll_phase, start_at: 17.days.ago, end_at: 2.days.ago) }
 
     before do
@@ -69,7 +69,7 @@ RSpec.describe Insights::PollPhaseInsightsService do
     end
 
     it 'excludes participations and visits of admins and moderators' do
-      metrics = described_class.new(phase, exclude_roles: 'exclude_admins_and_moderators').call[:metrics]
+      metrics = described_class.new(phase, exclude_admins_and_moderators: true).call[:metrics]
 
       expect(metrics).to include(visitors: 1, participants: 2, participation_rate_as_percent: 200.0)
       expect(metrics['poll']).to include(responses: 2)
