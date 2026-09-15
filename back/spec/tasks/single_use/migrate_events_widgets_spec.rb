@@ -9,7 +9,7 @@ describe 'single_use:migrate_events_widgets' do
   before { load_rake_tasks_if_not_loaded }
 
   let(:task) { Rake::Task['single_use:migrate_events_widgets'] }
-  let(:canonical) { ContentBuilder::Craftjs::Nodes::EVENTS_WIDGET_NAME }
+  let(:new_events_widget_name) { ContentBuilder::Craftjs::Nodes::EVENTS_WIDGET_NAME }
   let(:after_earliest_date) { Date.new(2026, 10, 1) }
 
   after do
@@ -92,8 +92,8 @@ describe 'single_use:migrate_events_widgets' do
       task.invoke('execute')
 
       node = events_node(homepage)
-      expect(node.dig('type', 'resolvedName')).to eq canonical
-      expect(node['displayName']).to eq canonical
+      expect(node.dig('type', 'resolvedName')).to eq new_events_widget_name
+      expect(node['displayName']).to eq new_events_widget_name
       expect(node['props']).to eq(
         'source' => 'all',
         'timeFilters' => ['upcoming'],
@@ -112,13 +112,13 @@ describe 'single_use:migrate_events_widgets' do
       task.invoke('execute')
 
       node = events_node(project_page)
-      expect(node.dig('type', 'resolvedName')).to eq canonical
+      expect(node.dig('type', 'resolvedName')).to eq new_events_widget_name
       expect(node['props']).to eq('source' => 'currentProject', 'timeFilters' => %w[upcoming past], 'limit' => 'all')
     end
 
     it 'leaves other nodes and layouts alone' do
       homepage = homepage_layout('Events')
-      already = project_page_layout(canonical, props: { 'source' => 'areas', 'ids' => ['a'] })
+      already = project_page_layout(new_events_widget_name, props: { 'source' => 'areas', 'ids' => ['a'] })
 
       task.invoke('execute')
 
@@ -145,7 +145,7 @@ describe 'single_use:migrate_events_widgets' do
 
       travel_to(after_earliest_date - 1) { task.invoke('execute', nil, nil, 'force') }
 
-      expect(events_node(homepage).dig('type', 'resolvedName')).to eq canonical
+      expect(events_node(homepage).dig('type', 'resolvedName')).to eq new_events_widget_name
     end
 
     it 'does not apply to a dry run' do
@@ -159,7 +159,7 @@ describe 'single_use:migrate_events_widgets' do
 
   describe 'revert' do
     it 'renames a homepage node back and drops its props' do
-      homepage = homepage_layout(canonical, props: { 'source' => 'all', 'limit' => 3 })
+      homepage = homepage_layout(new_events_widget_name, props: { 'source' => 'all', 'limit' => 3 })
 
       task.invoke('execute', nil, 'revert')
 
@@ -172,7 +172,7 @@ describe 'single_use:migrate_events_widgets' do
     end
 
     it 'renames a project page node back' do
-      project_page = project_page_layout(canonical, props: { 'source' => 'currentProject' })
+      project_page = project_page_layout(new_events_widget_name, props: { 'source' => 'currentProject' })
 
       task.invoke('execute', nil, 'revert')
 
@@ -182,7 +182,7 @@ describe 'single_use:migrate_events_widgets' do
     end
 
     it 'removes a node from a surface that had no events widget, and records it' do
-      custom_page = custom_page_layout(canonical, props: { 'source' => 'areas' })
+      custom_page = custom_page_layout(new_events_widget_name, props: { 'source' => 'areas' })
 
       task.invoke('execute', nil, 'revert')
 
@@ -194,7 +194,7 @@ describe 'single_use:migrate_events_widgets' do
     end
 
     it 'is not held by the date guard' do
-      homepage = homepage_layout(canonical)
+      homepage = homepage_layout(new_events_widget_name)
 
       travel_to(after_earliest_date - 1) { task.invoke('execute', nil, 'revert') }
 
@@ -202,11 +202,11 @@ describe 'single_use:migrate_events_widgets' do
     end
 
     it 'can be dry run' do
-      homepage = homepage_layout(canonical)
+      homepage = homepage_layout(new_events_widget_name)
 
-      expect { task.invoke(nil, nil, 'revert') }.to output(/#{canonical} nodes found: 1/).to_stdout
+      expect { task.invoke(nil, nil, 'revert') }.to output(/#{new_events_widget_name} nodes found: 1/).to_stdout
 
-      expect(events_node(homepage).dig('type', 'resolvedName')).to eq canonical
+      expect(events_node(homepage).dig('type', 'resolvedName')).to eq new_events_widget_name
     end
   end
 end

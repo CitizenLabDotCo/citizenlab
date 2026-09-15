@@ -2,8 +2,6 @@ import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import ProjectNavRail from '../ProjectNavRail';
 import SpotlightSurveys from '../SpotlightSurveys';
 import TimelinePhases from '../TimelinePhases';
@@ -15,10 +13,6 @@ interface Props {
 }
 
 const ProjectSidebar = ({ projectId }: Props) => {
-  const spotlightSurveysEnabled = useFeatureFlag({
-    name: 'parallel_participation',
-  });
-
   return (
     <Box
       flex={`0 0 ${SIDEBAR_WIDTH}`}
@@ -34,7 +28,7 @@ const ProjectSidebar = ({ projectId }: Props) => {
       <Box flex="1 1 auto" minHeight="0" overflowY="auto">
         <ProjectNavRail projectId={projectId} />
         <TimelinePhases projectId={projectId} />
-        {spotlightSurveysEnabled && <SpotlightSurveys projectId={projectId} />}
+        <SpotlightSurveys projectId={projectId} />
       </Box>
     </Box>
   );
