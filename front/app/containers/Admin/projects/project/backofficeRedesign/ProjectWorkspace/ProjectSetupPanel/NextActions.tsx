@@ -45,6 +45,11 @@ const NextActions = ({ project }: Props) => {
         title={formatMessage(
           collecting ? messages.collectingNow : messages.nextActions
         )}
+        meta={
+          participants === 0
+            ? formatMessage(messages.noParticipantsYet)
+            : undefined
+        }
       />
 
       <ParticipantsGraph project={project} />

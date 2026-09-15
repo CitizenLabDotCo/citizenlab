@@ -134,6 +134,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.workspace.participantsGraphScale',
     defaultMessage: 'Weekly, since {date}',
   },
+  noParticipantsYet: {
+    id: 'app.containers.Admin.projects.project.workspace.noParticipantsYet',
+    defaultMessage: 'No participants yet',
+  },
   actionMessageParticipants: {
     id: 'app.containers.Admin.projects.project.workspace.actionMessageParticipants',
     defaultMessage: 'Message participants',
