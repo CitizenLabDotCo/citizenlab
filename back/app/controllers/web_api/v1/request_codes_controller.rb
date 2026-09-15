@@ -34,7 +34,9 @@ class WebApi::V1::RequestCodesController < ApplicationController
   # provide a confirmed email.
   def request_code_new_email
     authorize current_user, policy_class: RequestCodePolicy
-    new_email = request_code_new_email_params[:new_email]
+    # A resend carries no address, so a pending merge falls back to its target - as a
+    # pending new_email does further down.
+    new_email = request_code_new_email_params[:new_email].presence || current_user.merge_target_email
 
     if current_user.new_email.blank? && new_email.blank?
       render json: { errors: { new_email: [{ error: 'cannot be blank' }] } }, status: :unprocessable_entity
@@ -59,7 +61,7 @@ class WebApi::V1::RequestCodesController < ApplicationController
       # The target is deliberately not checked here: refusing up front would let
       # anyone probe which addresses belong to admins. The code goes to the target's
       # inbox, so eligibility can wait until confirm time.
-      RequestMergeAccountConfirmationCodeJob.perform_now(current_user, target_email: new_email)
+      RequestMergeAccountConfirmationCodeJob.perform_now(current_user, merge_target_email: new_email)
 
       render json: raw_json({ confirmation_type: 'merge_account' })
       return

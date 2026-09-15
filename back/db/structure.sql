@@ -1609,7 +1609,8 @@ CREATE TABLE public.users (
     token_expiry_key character varying,
     phone character varying,
     new_phone character varying,
-    phone_confirmed_at timestamp(6) without time zone
+    phone_confirmed_at timestamp(6) without time zone,
+    merge_target_email character varying
 );
 
 
@@ -2308,8 +2309,7 @@ CREATE TABLE public.confirmations (
     code_reset_count integer DEFAULT 0 NOT NULL,
     code_sent_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    target_email character varying
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -9556,8 +9556,8 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260915103146'),
 ('20260904074654'),
-('20260903000000'),
 ('20260821210000'),
 ('20260821090000'),
 ('20260821000000'),

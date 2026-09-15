@@ -320,14 +320,6 @@ resource 'Omniauth Callback', document: false do
     end
 
     get '/auth/fake_sso/callback' do
-      # Only when the account could not keep the address. Otherwise this would put
-      # an email in a redirect URL, and so in the access log, for nothing.
-      example 'does not hand the address back when the account kept it' do
-        do_request
-
-        expect(response_headers['Location']).not_to include('sso_email')
-      end
-
       example 'a new user is created but email is not confirmed' do
         do_request
 
@@ -465,22 +457,24 @@ resource 'Omniauth Callback', document: false do
         end
       end
 
-      # validate_not_duplicate_new_email rejects an address somebody else holds, so
-      # parking it would fail the whole sign-in. The account is created without one
-      # instead, and the missing-data flow offers the merge when the user types it.
+      # Somebody else's address cannot go in new_email, so it is held as
+      # merge_target_email and the merge code is sent straight away.
       context 'when email is already taken by another confirmed user' do
         let!(:existing_user) { create(:user, email: 'billy_fixed@example.com') }
 
-        example 'Signs the user in on a new account carrying no email' do
+        example 'Signs the user in on a new account waiting to merge into it' do
           do_request
 
           expect(response_headers['Location']).not_to include('authentication_error=true')
 
           created = User.where.not(id: existing_user.id).first
-          expect(created).not_to be_nil
           expect(created.email).to be_nil
           expect(created.new_email).to be_nil
+          expect(created.merge_target_email).to eq 'billy_fixed@example.com'
           expect(created.identities.pluck(:provider)).to eq ['fake_sso']
+          expect(delivery_service).to have_received(:send_now_to_user)
+            .with(an_instance_of(EmailCampaigns::Campaigns::MergeAccountConfirmation), created, hash_including(:code))
+            .once
         end
 
         example 'Leaves the account that owns the address untouched' do
@@ -489,13 +483,6 @@ resource 'Omniauth Callback', document: false do
           existing_user.reload
           expect(existing_user.email).to eq 'billy_fixed@example.com'
           expect(existing_user.identities).to be_empty
-        end
-
-        # So the missing-data form opens with it filled in.
-        example 'Hands the address back on the redirect' do
-          do_request
-
-          expect(response_headers['Location']).to include('sso_email=billy_fixed%40example.com')
         end
       end
     end

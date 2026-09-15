@@ -280,10 +280,28 @@ resource 'Request codes' do
             hash_including(code: anything, email: existing_user.email)
           ).once
 
-        confirmation = sso_user.reload.merge_account_confirmation
-        expect(confirmation.target_email).to eq existing_user.email
+        sso_user.reload
+        expect(sso_user.merge_target_email).to eq existing_user.email
+        expect(sso_user.merge_account_confirmation.code).to be_present
         # The address belongs to someone else, so it must never land on new_email.
         expect(sso_user.new_email).to be_nil
+      end
+
+      example 'It resends the pending merge code when no address is given' do
+        existing_user = create(:user, email: 'existing_email@example.com')
+        sso_user.update_columns(merge_target_email: existing_user.email)
+        header_token_for(sso_user)
+
+        do_request
+
+        expect(response_status).to eq 200
+        expect(response_data[:attributes][:confirmation_type]).to eq 'merge_account'
+        expect(delivery_service).to have_received(:send_now_to_user)
+          .with(
+            an_instance_of(EmailCampaigns::Campaigns::MergeAccountConfirmation),
+            sso_user,
+            hash_including(email: existing_user.email)
+          ).once
       end
 
       # Settled at confirm time: refusing here would tell a prober which addresses
@@ -310,8 +328,8 @@ resource 'Request codes' do
 
       example 'It refuses a further merge code once the merge budget is spent' do
         existing_user = create(:user, email: 'existing_email@example.com')
-        sso_user.find_or_create_confirmation(:merge_account_confirmation, target_email: existing_user.email)
-          .update!(code_reset_count: 4)
+        sso_user.update_columns(merge_target_email: existing_user.email)
+        sso_user.find_or_create_confirmation(:merge_account_confirmation).update!(code_reset_count: 4)
         header_token_for(sso_user)
 
         do_request(request_code: { new_email: existing_user.email })
@@ -323,8 +341,8 @@ resource 'Request codes' do
       # Changing your mind is the way out of an offered merge, so an exhausted merge
       # budget must not take the ordinary path with it.
       example 'It still starts an ordinary confirmation once the merge budget is spent' do
-        sso_user.find_or_create_confirmation(:merge_account_confirmation, target_email: 'existing_email@example.com')
-          .update!(code_reset_count: 4)
+        sso_user.update_columns(merge_target_email: 'existing_email@example.com')
+        sso_user.find_or_create_confirmation(:merge_account_confirmation).update!(code_reset_count: 4)
         header_token_for(sso_user)
 
         do_request(request_code: { new_email: 'nobody@example.com' })

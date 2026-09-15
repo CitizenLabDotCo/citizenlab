@@ -175,12 +175,15 @@ const CurrentStep = ({
         />
       );
 
-    // No fallback to authUser.new_email, unlike the step above: a merge never writes
-    // it, so anything there is an unrelated address.
+    // The pending address is merge_target_email; a merge clears new_email.
     case 'confirmation:merge-account':
       return (
         <EmailConfirmation
-          email={state.new_email ?? null}
+          email={
+            state.new_email ??
+            authUser?.data.attributes.merge_target_email ??
+            null
+          }
           loading={loading}
           setError={setError}
           onConfirm={transition(currentStep, 'SUBMIT_CODE')}
@@ -261,7 +264,6 @@ const CurrentStep = ({
         <BuiltInFields
           loading={loading}
           authenticationData={authenticationData}
-          state={state}
           setError={setError}
           onSubmit={transition(currentStep, 'SUBMIT')}
         />

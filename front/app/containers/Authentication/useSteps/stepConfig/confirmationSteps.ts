@@ -148,8 +148,7 @@ export const confirmationSteps = (
         setCurrentStep('success');
       },
       RESEND_CODE: async () => {
-        // Passed explicitly: a merge never writes user.new_email, so the backend has
-        // nothing to fall back on.
+        // Without an address the backend falls back to the pending merge_target_email.
         await requestCodeNewEmail(state.new_email ?? undefined);
       },
     },

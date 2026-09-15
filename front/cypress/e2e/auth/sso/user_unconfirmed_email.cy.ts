@@ -33,11 +33,6 @@ describe('SSO: user with unconfirmed email', () => {
 
     fakeSSOGlobalSignup(cy, 'tracy_smith', { email });
 
-    cy.get('#e2e-built-in-fields-container')
-      .find('input[type="email"]')
-      .should('have.value', email);
-    cy.get('#e2e-built-in-fields-submit-button').click();
-
     confirmEmail(cy);
     cy.get('#e2e-sign-up-success-modal').should('exist');
 
@@ -120,13 +115,7 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
     // Sign up through Fake SSO (return unconfirmed email)
     fakeSSOGlobalSignup(cy, 'tracy_smith', { email });
 
-    // The SSO says the address is unverified and it belongs to the account above, so
-    // it is not saved. The form opens pre-filled, and submitting offers the merge.
-    cy.get('#e2e-built-in-fields-container')
-      .find('input[type="email"]')
-      .should('have.value', email);
-    cy.get('#e2e-built-in-fields-submit-button').click();
-
+    // The address belongs to the account above, so the merge code is sent straight away.
     // Confirm email
     confirmEmail(cy);
 

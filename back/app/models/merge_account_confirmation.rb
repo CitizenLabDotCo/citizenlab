@@ -13,7 +13,6 @@
 #  code_sent_at     :datetime
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  target_email     :string
 #
 # Indexes
 #
@@ -24,6 +23,4 @@
 #
 #  fk_rails_...  (user_id => users.id) ON DELETE => cascade
 #
-class MergeAccountConfirmation < Confirmation
-  validates :target_email, presence: true, format: { with: User::EMAIL_REGEX }
-end
+class MergeAccountConfirmation < Confirmation; end

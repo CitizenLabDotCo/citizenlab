@@ -17,7 +17,8 @@ describe AccountMergeService do
   let!(:target) { create(:user, email: 'existing@example.org') }
 
   let(:confirmation) do
-    create(:merge_account_confirmation, user: source, target_email: 'existing@example.org')
+    source.update_columns(merge_target_email: 'existing@example.org')
+    create(:merge_account_confirmation, user: source)
   end
 
   def merge!

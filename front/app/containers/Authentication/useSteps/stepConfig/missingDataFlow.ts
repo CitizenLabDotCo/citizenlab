@@ -74,24 +74,7 @@ export const missingDataFlow = (
         { email, ...restBuiltInFieldUpdate }: BuiltInFieldsUpdate
       ) => {
         if (email) {
-          const confirmationType = await requestCodeNewEmail(email);
-
-          // A merge never writes user.new_email, so email_action_required stays
-          // `provide_new_email` and checkMissingData would bounce the user back here
-          // with nothing shown. Go straight to the code entry.
-          if (confirmationType === 'merge_account') {
-            if (!isEmpty(restBuiltInFieldUpdate)) {
-              await updateUser({
-                userId,
-                ...restBuiltInFieldUpdate,
-              });
-            }
-
-            updateState({ new_email: email });
-            invalidateCacheAfterUpdateUser(queryClient);
-            setCurrentStep('confirmation:merge-account');
-            return;
-          }
+          await requestCodeNewEmail(email);
         }
 
         if (!isEmpty(restBuiltInFieldUpdate)) {
@@ -126,8 +109,8 @@ export const missingDataFlow = (
       },
     },
 
-    // The user has a pending new_email (email_action_required is confirm_new_email)
-    // but wants to enter a different one.
+    // The user has a pending new_email or merge_target_email but wants to enter a
+    // different one.
     // We cannot handle this by going back to missing-data:built-in because
     // the email is already marked by requirements API as provided,
     // so the field would never show up in that step.

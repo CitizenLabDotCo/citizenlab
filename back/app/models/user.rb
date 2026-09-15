@@ -38,6 +38,7 @@ require Rails.root.join('lib/email_domain_blacklist')
 #  phone                     :string
 #  new_phone                 :string
 #  phone_confirmed_at        :datetime
+#  merge_target_email        :string
 #
 # Indexes
 #
@@ -245,6 +246,7 @@ class User < ApplicationRecord
   validate :validate_phone_format
   validate :validate_new_phone_format
   validates :new_email, format: { with: EMAIL_REGEX }, allow_nil: true
+  validates :merge_target_email, format: { with: EMAIL_REGEX }, allow_nil: true
   validates :first_name, :last_name, format: { without: /@/ }, allow_nil: true
   validates :locale, inclusion: { in: proc { AppConfiguration.instance.settings('core', 'locales') } }
   validates :bio_multiloc, multiloc: { presence: false, html: true }
@@ -374,10 +376,8 @@ class User < ApplicationRecord
       cosponsorships.exists?(status: 'accepted')
   end
 
-  # +attributes+ is for confirmation kinds that cannot exist empty -
-  # MergeAccountConfirmation needs the address it is proving from the outset.
-  def find_or_create_confirmation(association_name, attributes = {})
-    public_send(association_name) || create_confirmation!(association_name, attributes)
+  def find_or_create_confirmation(association_name)
+    public_send(association_name) || create_confirmation!(association_name)
   end
 
   # Whether a confirmation flow still has to happen. Whether it does depends
@@ -405,14 +405,14 @@ class User < ApplicationRecord
   end
 
   def merge_account_confirmation_pending?
-    merge_account_confirmation&.target_email.present?
+    merge_target_email.present?
   end
 
   private
 
   # Concurrent requests race here; the savepoint lets the caller's transaction survive the losing insert.
-  def create_confirmation!(association_name, attributes = {})
-    transaction(requires_new: true) { public_send(:"create_#{association_name}!", attributes) }
+  def create_confirmation!(association_name)
+    transaction(requires_new: true) { public_send(:"create_#{association_name}!") }
   rescue ActiveRecord::RecordNotUnique
     association(association_name).reload
     public_send(association_name)

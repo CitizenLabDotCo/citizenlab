@@ -31,14 +31,14 @@ class UserService
     end
 
     def build_in_sso(user_params, confirm_user, locale)
-      # An unconfirmed SSO email is held in new_email, leaving email blank, so it
-      # still has to be confirmed - unless somebody else owns it, see
-      # absorbable_by_merge?. Only the normal email signup puts an unconfirmed
-      # address straight into email.
+      # An unconfirmed SSO email is held as a pending address, leaving email blank, so it
+      # still has to be confirmed: in merge_target_email when another account owns it,
+      # otherwise in new_email. Only the normal email signup puts an unconfirmed address
+      # straight into email.
       if user_params[:email].present? && !confirm_user
         email = user_params[:email]
-        user_params = user_params.except(:email)
-        user_params = user_params.merge(new_email: email) unless absorbable_by_merge?(email)
+        pending = merge_target?(email) ? :merge_target_email : :new_email
+        user_params = user_params.except(:email).merge(pending => email)
       end
 
       user = User.new(user_params)
@@ -131,12 +131,10 @@ class UserService
       end
     end
 
-    # validate_not_duplicate_new_email rejects an address somebody else owns, so
-    # parking it fails the whole sign-in. Leaving the account without an email drops
-    # the user into the missing-data flow, where supplying it offers the merge.
-    #
-    # Invitees keep the old refusal: the invite flow owns claiming those accounts.
-    def absorbable_by_merge?(email)
+    # Somebody else's address cannot go in new_email (validate_not_duplicate_new_email
+    # rejects it), so it is held as merge_target_email and confirming it merges the two
+    # accounts. Invitees keep the old refusal: the invite flow owns claiming those.
+    def merge_target?(email)
       owner = User.find_by_cimail(email)
       owner.present? && !owner.invite_pending?
     end

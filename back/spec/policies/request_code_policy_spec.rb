@@ -106,16 +106,14 @@ RSpec.describe RequestCodePolicy do
     end
 
     it 'does not permit request_merge_account_code once its own code_reset_count limit is reached' do
-      user.find_or_create_confirmation(:merge_account_confirmation, target_email: 'other@test.com')
-        .update!(code_reset_count: 4)
+      user.find_or_create_confirmation(:merge_account_confirmation).update!(code_reset_count: 4)
       expect(described_class.new(user, user)).not_to permit(:request_merge_account_code)
     end
 
     # Separate budgets: one endpoint issues both codes, and sharing a budget would
     # leave an exhausted merge unable to type a different address.
     it 'still permits request_code_new_email when the merge budget is exhausted' do
-      user.find_or_create_confirmation(:merge_account_confirmation, target_email: 'other@test.com')
-        .update!(code_reset_count: 4)
+      user.find_or_create_confirmation(:merge_account_confirmation).update!(code_reset_count: 4)
       expect(described_class.new(user, user)).to permit(:request_code_new_email)
     end
 

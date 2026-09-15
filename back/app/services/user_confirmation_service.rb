@@ -78,6 +78,7 @@ class UserConfirmationService
   # deletes +user+. The result carries the survivor, who the caller must become.
   def validate_and_confirm_merge_account!(user, code)
     validate_user!(user)
+    validate_email!(user.merge_target_email)
     confirmation = user.merge_account_confirmation
     raise ValidationError.new(:code, :invalid) if confirmation.nil?
 

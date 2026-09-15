@@ -14,7 +14,6 @@ import useLocale from 'hooks/useLocale';
 import {
   AuthenticationData,
   SetError,
-  State,
 } from 'containers/Authentication/typings';
 
 import Input from 'components/HookForm/Input';
@@ -41,7 +40,6 @@ import messages from './messages';
 
 interface BaseProps {
   loading: boolean;
-  state: State;
   setError: SetError;
   onSubmit: (userId: string, update: BuiltInFieldsUpdate) => Promise<void>;
 }
@@ -52,7 +50,6 @@ interface Props extends BaseProps {
 
 const BuiltInFields = ({
   loading,
-  state,
   setError,
   authenticationRequirements,
   onSubmit,
@@ -85,9 +82,7 @@ const BuiltInFields = ({
 
   const methods = useForm({
     mode: 'onSubmit',
-    // state.new_email holds an address the SSO returned but the account could not
-    // keep, so the user need not retype it.
-    defaultValues: { ...DEFAULT_VALUES, email: state.new_email ?? undefined },
+    defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),
   });
 

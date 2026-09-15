@@ -347,7 +347,7 @@ resource 'Confirmations' do
     context 'when user is authenticated' do
       before do
         header_token_for sso_user
-        RequestMergeAccountConfirmationCodeJob.perform_now(sso_user, target_email: target.email)
+        RequestMergeAccountConfirmationCodeJob.perform_now(sso_user, merge_target_email: target.email)
       end
 
       example 'merges the account and returns a token for the surviving one' do

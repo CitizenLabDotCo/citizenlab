@@ -59,8 +59,8 @@ class AccountMergeService
     @verification_service = Verification::VerificationService.new
   end
 
-  # Confirmation-driven merge: the caller entered a code sent to the address the
-  # confirmation names, so the target is resolved from that address and has to
+  # Confirmation-driven merge: the caller entered a code sent to their
+  # merge_target_email, so the target is the account owning that address and has to
   # clear the full target-side eligibility rules.
   #
   # @return [User] the surviving account the caller should be signed in as.
@@ -92,11 +92,11 @@ class AccountMergeService
     moved = {}
 
     survivor = ActiveRecord::Base.transaction do
-      resolved = target || User.find_by_cimail(confirmation.target_email)
+      resolved = target || User.find_by_cimail(source.merge_target_email)
 
       # Nobody owns the address any more, so there is nothing to merge into. Fall
       # back to what the ordinary new-email flow would have done.
-      next promote_email_onto_source!(source, confirmation.target_email, confirmation) if resolved.nil?
+      next promote_email_onto_source!(source, confirmation) if resolved.nil?
 
       lock_in_id_order!(source, resolved)
 
@@ -150,9 +150,10 @@ class AccountMergeService
     [source, target].sort_by(&:id).each(&:lock!)
   end
 
-  def promote_email_onto_source!(source, target_email, confirmation)
+  def promote_email_onto_source!(source, confirmation)
     source.update!(
-      email: target_email,
+      email: source.merge_target_email,
+      merge_target_email: nil,
       email_confirmed_at: Time.zone.now,
       confirmation_required: false
     )

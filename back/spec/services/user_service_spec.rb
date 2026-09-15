@@ -84,6 +84,25 @@ describe UserService do
           expect(user.new_email).to eq('test@example.com')
           expect(user.confirmation_required).to be true
         end
+
+        # Somebody else's address cannot go in new_email, so it waits to be merged into.
+        it 'holds the email as merge_target_email when another account owns it' do
+          create(:user, email: 'test@example.com')
+
+          user = service.build_in_sso(user_params, false, 'en')
+          expect(user.email).to be_nil
+          expect(user.new_email).to be_nil
+          expect(user.merge_target_email).to eq('test@example.com')
+        end
+
+        # The invite flow owns claiming invitees, so their address is left to be refused.
+        it 'still puts the email in new_email when an invitee owns it' do
+          create(:invited_user, email: 'test@example.com')
+
+          user = service.build_in_sso(user_params, false, 'en')
+          expect(user.new_email).to eq('test@example.com')
+          expect(user.merge_target_email).to be_nil
+        end
       end
     end
 
