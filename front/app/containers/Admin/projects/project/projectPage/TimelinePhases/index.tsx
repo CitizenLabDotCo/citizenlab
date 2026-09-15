@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import { Box, Button, Text, colors } from '@citizenlab/cl2-component-library';
 
 import { ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
@@ -44,9 +44,11 @@ const METHOD_LABELS: Record<ParticipationMethod, MessageDescriptor> = {
 
 interface Props {
   projectId: string;
+  /** When given, "New phase" calls this instead of linking to the phase form. */
+  onNewPhase?: () => void;
 }
 
-const TimelinePhases = ({ projectId }: Props) => {
+const TimelinePhases = ({ projectId, onNewPhase }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { phaseId } = useParams({ strict: false });
@@ -132,16 +134,28 @@ const TimelinePhases = ({ projectId }: Props) => {
         mt="4px"
         className="intercom-product-tour-project-timeline-new-phase"
       >
-        <ButtonWithLink
-          to="/admin/projects/$projectId/phases/new"
-          params={{ projectId }}
-          buttonStyle="text"
-          size="s"
-          icon="plus"
-          width="auto"
-        >
-          {formatMessage(messages.newPhase)}
-        </ButtonWithLink>
+        {onNewPhase ? (
+          <Button
+            buttonStyle="text"
+            size="s"
+            icon="plus"
+            width="auto"
+            onClick={onNewPhase}
+          >
+            {formatMessage(messages.newPhase)}
+          </Button>
+        ) : (
+          <ButtonWithLink
+            to="/admin/projects/$projectId/phases/new"
+            params={{ projectId }}
+            buttonStyle="text"
+            size="s"
+            icon="plus"
+            width="auto"
+          >
+            {formatMessage(messages.newPhase)}
+          </ButtonWithLink>
+        )}
       </Box>
     </Box>
   );

@@ -19,14 +19,27 @@ const PROJECT_PANEL_WIDTH = '280px';
 const PHASE_PANEL_WIDTH = '384px';
 const RIGHT_PANEL_WIDTH = '384px';
 
+/** A phase that is being created: it has no id yet, only its own panels. */
+interface Draft {
+  label: string;
+  rightPanel: ReactNode;
+}
+
 interface Props {
   project: IProjectData;
   phase?: IPhaseData;
+  draft?: Draft;
   leftPanel?: ReactNode;
   children: ReactNode;
 }
 
-const ProjectWorkspace = ({ project, phase, leftPanel, children }: Props) => {
+const ProjectWorkspace = ({
+  project,
+  phase,
+  draft,
+  leftPanel,
+  children,
+}: Props) => {
   const { pathname } = useLocation();
   const [openDropdown, setOpenDropdown] = useState<HeaderDropdownName | null>(
     null
@@ -42,7 +55,8 @@ const ProjectWorkspace = ({ project, phase, leftPanel, children }: Props) => {
   const activeView = viewFromPathname(pathname);
 
   const divider = `1px solid ${colors.grey200}`;
-  const leftPanelWidth = phase ? PHASE_PANEL_WIDTH : PROJECT_PANEL_WIDTH;
+  const leftPanelWidth =
+    phase || draft ? PHASE_PANEL_WIDTH : PROJECT_PANEL_WIDTH;
   const showPanels = !phase || activeView === 'build';
 
   return (
@@ -56,6 +70,7 @@ const ProjectWorkspace = ({ project, phase, leftPanel, children }: Props) => {
       <WorkspaceHeader
         project={project}
         phase={phase}
+        draftLabel={draft?.label}
         activeView={activeView}
         section={section}
         openDropdown={openDropdown}
@@ -96,7 +111,9 @@ const ProjectWorkspace = ({ project, phase, leftPanel, children }: Props) => {
             overflowY="auto"
             borderLeft={divider}
           >
-            {phase ? (
+            {draft ? (
+              draft.rightPanel
+            ) : phase ? (
               <PhaseRightPanel
                 key={phase.id}
                 projectId={project.id}

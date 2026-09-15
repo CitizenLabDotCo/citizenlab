@@ -1,12 +1,6 @@
 import React, { lazy, Suspense, useState } from 'react';
 
-import {
-  Box,
-  colors,
-  fontSizes,
-  Spinner,
-} from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import { Box, colors, Spinner } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import { IPhaseData, IUpdatedPhaseProperties } from 'api/phases/types';
@@ -24,7 +18,6 @@ import {
 } from 'containers/Admin/projects/project/phaseSetup/typings';
 import { validateParticipation } from 'containers/Admin/projects/project/phaseSetup/validate';
 
-import { SubSectionTitle } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Centerer from 'components/UI/Centerer';
 
@@ -33,6 +26,7 @@ import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 import messages from '../messages';
 
+import PanelSettings from './PanelSettings';
 import ReportSection from './ReportSection';
 
 // Lazy so ArcGIS stays out of the chunk every workspace page loads, and only
@@ -40,13 +34,6 @@ import ReportSection from './ReportSection';
 const CustomMapConfigPage = lazy(
   () => import('containers/Admin/CustomMapConfigPage')
 );
-
-const PanelSettings = styled(Box)`
-  ${SubSectionTitle} {
-    font-size: ${fontSizes.s}px;
-    color: ${colors.textPrimary};
-  }
-`;
 
 interface Props {
   projectId: string;

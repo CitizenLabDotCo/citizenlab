@@ -89,6 +89,7 @@ const GetStarted = ({ project, onOpenSettings, onOpenDropdown }: Props) => {
       </Box>
 
       <SelectMethodModal
+        projectId={projectId}
         opened={methodModalOpened}
         onClose={() => setMethodModalOpened(false)}
       />

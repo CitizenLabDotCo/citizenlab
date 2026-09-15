@@ -1,7 +1,7 @@
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
 
 import { Box, Title, colors } from '@citizenlab/cl2-component-library';
-import { CLErrors, Multiloc, SupportedLocale } from 'typings';
+import { CLErrors, Multiloc } from 'typings';
 
 import useFileAttachments from 'api/file_attachments/useFileAttachments';
 import { IPhase, IUpdatedPhaseProperties } from 'api/phases/types';
@@ -31,7 +31,6 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 
 import {
   FormattedMessage,
-  MessageDescriptor,
   useFormatMessageWithLocale,
   useIntl,
 } from 'utils/cl-intl';
@@ -41,26 +40,11 @@ import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import DateSetup from './components/DateSetup';
 import PhaseParticipationConfig from './components/PhaseParticipationConfig';
-import {
-  ideationDefaultConfig,
-  nativeSurveyDefaultConfig,
-} from './components/PhaseParticipationConfig/utils/participationMethodConfigs';
+import { ideationDefaultConfig } from './components/PhaseParticipationConfig/utils/participationMethodConfigs';
 import messages from './messages';
+import { getNewPhaseDefaults, localizedDefaults } from './newPhaseDefaults';
 import { SubmitStateType, ValidationErrors } from './typings';
 import validate from './validate';
-
-const localizedDefaults = (
-  message: MessageDescriptor,
-  tenantLocales: SupportedLocale[],
-  formatMessageWithLocale: (
-    locale: SupportedLocale,
-    message: MessageDescriptor
-  ) => string
-): Multiloc =>
-  tenantLocales.reduce<Multiloc>((acc, locale) => {
-    acc[locale] = formatMessageWithLocale(locale, message);
-    return acc;
-  }, {});
 
 interface Props {
   projectId: string;
@@ -118,20 +102,14 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
         return;
       }
 
-      setFormData({
-        ...nativeSurveyDefaultConfig,
-        placement_type: 'standalone',
-        native_survey_title_multiloc: localizedDefaults(
-          messages.defaultSurveyTitleLabel,
+      setFormData(
+        getNewPhaseDefaults({
+          participationMethod: 'native_survey',
+          standalone: true,
           tenantLocales,
-          formatMessageWithLocale
-        ),
-        native_survey_button_multiloc: localizedDefaults(
-          messages.defaultSurveyCTALabel,
-          tenantLocales,
-          formatMessageWithLocale
-        ),
-      });
+          formatMessageWithLocale,
+        })
+      );
       standaloneSeededRef.current = true;
       return;
     }
