@@ -95,15 +95,7 @@ module ReportBuilder
           .where(dimension_project_id: project_id)
       end
 
-      if exclude_roles == 'exclude_admins_and_moderators'
-        participations = participations
-          .joins('INNER JOIN users ON users.id = analytics_fact_participations.dimension_user_id')
-
-        # Normal users have a 'rules' attribute which is just an empty array.
-        participations = participations.where('jsonb_array_length(users.roles) = 0')
-      end
-
-      participations
+      exclude_roles_from_participations(participations, exclude_roles)
     end
 
     def participation_rate_as_percent(participants, start_at, end_at, project_id: nil, exclude_roles: nil)

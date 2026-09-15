@@ -41,6 +41,37 @@ RSpec.describe ReportBuilder::Queries::Analytics::Participation do
       )
     end
 
+    context 'with exclude_roles' do
+      before do
+        admin = create(:admin)
+        moderator = create(:project_moderator)
+        idea = create(:idea, created_at: @created_at, author: admin)
+        create(:idea, created_at: @created_at, author: nil)
+        create(:comment, created_at: @created_at, idea: idea, author: moderator)
+        create(:basket, created_at: @created_at, user: admin)
+      end
+
+      let(:params) do
+        {
+          start_at: @date - 1.day,
+          end_at: @date + 1.day,
+          compare_start_at: @date - 1.day,
+          compare_end_at: @date + 1.day
+        }
+      end
+
+      it 'includes admins and moderators by default' do
+        counts = query.run_query(**params).map { |result| result.first['count'] }
+        expect(counts).to eq([3, 2, 2, 3, 2, 2])
+      end
+
+      it 'excludes participation of admins and moderators' do
+        counts = query.run_query(**params, exclude_roles: 'exclude_admins_and_moderators')
+          .map { |result| result.first['count'] }
+        expect(counts).to eq([2, 1, 1, 2, 1, 1])
+      end
+    end
+
     it 'returns correct compared period' do
       params = {
         start_at: @date - 1.day,

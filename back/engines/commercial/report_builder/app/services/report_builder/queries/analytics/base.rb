@@ -42,6 +42,14 @@ class ReportBuilder::Queries::Analytics::Base < ReportBuilder::Queries::Base
     RESOLUTION_TO_INTERVAL.fetch(resolution || 'month')
   end
 
+  # Keeps participations without a known user (e.g. anonymous ones), since we
+  # cannot tell whether they were made by an admin or moderator.
+  def exclude_roles_filter(exclude_roles)
+    return {} unless exclude_admins_and_moderators?(exclude_roles)
+
+    { 'dimension_user.role': ['citizen', nil] }
+  end
+
   def visitor_filter(apply)
     return {} unless apply
 

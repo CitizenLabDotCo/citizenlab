@@ -197,10 +197,10 @@ RSpec.describe ReportBuilder::Queries::Participants do
         create(:session, :with_pageview, created_at: @date_september, monthly_user_hash: "visitor_#{i}", pageview_created_at: @date_september, project: project)
       end
 
-      # Create 3 participants and 4 visitors with admin role
-      3.times do
-        create(:idea, created_at: @date_september, project: project, author: create(:admin))
-      end
+      # Create 3 participants and 4 visitors with admin or moderator role
+      create(:idea, created_at: @date_september, project: project, author: create(:admin))
+      create(:idea, created_at: @date_september, project: project, author: create(:admin))
+      create(:idea, created_at: @date_september, project: project, author: create(:project_moderator, projects: [project]))
 
       4.times do |i|
         create(
@@ -227,6 +227,22 @@ RSpec.describe ReportBuilder::Queries::Participants do
         participants_whole_period: 4,
         participation_rate_whole_period: 0.5
       })
+    end
+
+    it 'keeps participations without a known user when applying exclude_roles filter' do
+      project = create(:single_phase_ideation_project)
+
+      create(:idea, created_at: @date_september, project: project, author: create(:user))
+      create(:idea, created_at: @date_september, project: project, author: create(:admin))
+      create(:idea, created_at: @date_september, project: project, author: nil)
+
+      params = {
+        start_at: @date_september - 1.day,
+        end_at: @date_september + 1.day,
+        exclude_roles: 'exclude_admins_and_moderators'
+      }
+
+      expect(query.run_query(**params)[:participants_whole_period]).to eq 2
     end
 
     it 'handles cases where there is no data' do

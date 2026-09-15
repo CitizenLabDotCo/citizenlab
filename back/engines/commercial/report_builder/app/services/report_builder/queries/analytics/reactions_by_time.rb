@@ -2,12 +2,13 @@ module ReportBuilder
   class Queries::Analytics::ReactionsByTime < Queries::Analytics::Base
     protected
 
-    def query(start_at: nil, end_at: nil, project_id: nil, resolution: nil, **_other_props)
+    def query(start_at: nil, end_at: nil, project_id: nil, resolution: nil, exclude_roles: nil, **_other_props)
       time_series_query = {
         fact: 'participation',
         filters: {
           **date_filter('dimension_date_created', start_at, end_at),
           **project_filter('dimension_project_id', project_id),
+          **exclude_roles_filter(exclude_roles),
           'dimension_type.name': 'reaction',
           'dimension_type.parent': 'idea'
         },
@@ -24,6 +25,7 @@ module ReportBuilder
         filters: {
           **date_filter('dimension_date_created', start_at, end_at),
           **project_filter('dimension_project_id', project_id),
+          **exclude_roles_filter(exclude_roles),
           'dimension_type.name': 'reaction',
           'dimension_type.parent': 'idea'
         },
