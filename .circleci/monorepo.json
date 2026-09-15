@@ -3,10 +3,12 @@
   "pages": 3,
   "packages": {
     "back": [
-      "back/"
+      "back/",
+      ".circleci/"
     ],
     "front": [
-      "front/"
+      "front/",
+      ".circleci/"
     ]
   }
 }
