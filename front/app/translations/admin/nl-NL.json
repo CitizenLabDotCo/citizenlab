@@ -1883,7 +1883,6 @@
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Selecteer aan welke fase je deze bijdragen wilt toevoegen.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Input Importeur",
   "app.containers.Admin.projects.project.ongoing": "Lopend",
-  "app.containers.Admin.projects.project.participantCount": "{count, plural, one {# deelnemer} other {# deelnemers}}",
   "app.containers.Admin.projects.project.participation.comments": "Reacties",
   "app.containers.Admin.projects.project.participation.demographicsTab": "Demografie",
   "app.containers.Admin.projects.project.participation.inputs": "Bijdragen",

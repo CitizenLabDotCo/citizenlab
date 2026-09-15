@@ -1883,7 +1883,6 @@
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Wielt wgl. aus, zu wéi enger Phas Dir dës Inpute bäisetze wëllt.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Input-Importer",
   "app.containers.Admin.projects.project.ongoing": "Am Gaang",
-  "app.containers.Admin.projects.project.participantCount": "{count, plural, one {# Participant} other {# Participanten}}",
   "app.containers.Admin.projects.project.participation.comments": "Kommentaren",
   "app.containers.Admin.projects.project.participation.demographicsTab": "Demographie",
   "app.containers.Admin.projects.project.participation.inputs": "Inputen",

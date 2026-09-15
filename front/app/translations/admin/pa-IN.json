@@ -1883,7 +1883,6 @@
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "ਕਿਰਪਾ ਕਰਕੇ ਚੁਣੋ ਕਿ ਤੁਸੀਂ ਇਹਨਾਂ ਇਨਪੁਟਸ ਨੂੰ ਕਿਸ ਪੜਾਅ ਵਿੱਚ ਸ਼ਾਮਲ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ।",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "ਇੰਪੁੱਟ ਆਯਾਤਕ",
   "app.containers.Admin.projects.project.ongoing": "ਚੱਲ ਰਿਹਾ ਹੈ",
-  "app.containers.Admin.projects.project.participantCount": "{count, plural, one {# ਭਾਗੀਦਾਰ} other {# ਭਾਗੀਦਾਰ}}",
   "app.containers.Admin.projects.project.participation.comments": "ਟਿੱਪਣੀਆਂ",
   "app.containers.Admin.projects.project.participation.demographicsTab": "ਜਨਸੰਖਿਆ",
   "app.containers.Admin.projects.project.participation.inputs": "ਇਨਪੁਟਸ",

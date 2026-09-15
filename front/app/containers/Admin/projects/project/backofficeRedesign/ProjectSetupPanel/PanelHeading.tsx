@@ -4,7 +4,7 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 
 interface Props {
   title: string;
-  meta: string;
+  meta?: string;
 }
 
 const PanelHeading = ({ title, meta }: Props) => (
@@ -18,9 +18,11 @@ const PanelHeading = ({ title, meta }: Props) => (
     <Text m="0" fontSize="s" fontWeight="bold" color="textPrimary">
       {title}
     </Text>
-    <Text m="0" fontSize="xs" color="textSecondary">
-      {meta}
-    </Text>
+    {meta && (
+      <Text m="0" fontSize="xs" color="textSecondary">
+        {meta}
+      </Text>
+    )}
   </Box>
 );
 

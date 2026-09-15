@@ -1883,7 +1883,6 @@
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "براہ کرم منتخب کریں کہ آپ ان پٹ کو کس مرحلے میں شامل کرنا چاہتے ہیں۔",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "ان پٹ درآمد کنندہ",
   "app.containers.Admin.projects.project.ongoing": "جاری",
-  "app.containers.Admin.projects.project.participantCount": "{count, plural, one {# شریک} other {# شرکاء}}",
   "app.containers.Admin.projects.project.participation.comments": "تبصرے",
   "app.containers.Admin.projects.project.participation.demographicsTab": "ڈیموگرافکس",
   "app.containers.Admin.projects.project.participation.inputs": "ان پٹ",

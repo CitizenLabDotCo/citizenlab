@@ -1883,7 +1883,6 @@
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Pasirinkite, prie kurio etapo norite pridėti šiuos įėjimus.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Įvesties importuotojas",
   "app.containers.Admin.projects.project.ongoing": "Vykstantys",
-  "app.containers.Admin.projects.project.participantCount": "{count, plural, one {# dalyvis} few {# dalyviai} other {# dalyvių}}",
   "app.containers.Admin.projects.project.participation.comments": "Komentarai",
   "app.containers.Admin.projects.project.participation.demographicsTab": "Demografiniai duomenys",
   "app.containers.Admin.projects.project.participation.inputs": "Įėjimai",

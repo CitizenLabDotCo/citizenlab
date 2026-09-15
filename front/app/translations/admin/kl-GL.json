@@ -1883,7 +1883,6 @@
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Toqqaruk immikkoortoq sorleq immersukkat ilanngunniarneritit.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Isissutinik eqqussissut",
   "app.containers.Admin.projects.project.ongoing": "Ingerlasoq",
-  "app.containers.Admin.projects.project.participantCount": "{count, plural, one {# peqataasoq} other {# peqataasut}}",
   "app.containers.Admin.projects.project.participation.comments": "Oqaaseqaatit",
   "app.containers.Admin.projects.project.participation.demographicsTab": "Innuttaasut agguataarnerat",
   "app.containers.Admin.projects.project.participation.inputs": "Ilanngussat",

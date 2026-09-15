@@ -1883,7 +1883,6 @@
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Wybierz fazę, do której chcesz dodać te wejścia.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Importer danych wejściowych",
   "app.containers.Admin.projects.project.ongoing": "Trwające",
-  "app.containers.Admin.projects.project.participantCount": "{count, plural, one {# uczestnik} other {# uczestników}}",
   "app.containers.Admin.projects.project.participation.comments": "Komentarze",
   "app.containers.Admin.projects.project.participation.demographicsTab": "Dane demograficzne",
   "app.containers.Admin.projects.project.participation.inputs": "Wejścia",

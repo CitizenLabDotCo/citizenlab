@@ -1883,7 +1883,6 @@
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "يرجى تحديد المرحلة التي تريد إضافة هذه المدخلات إليها.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "مستورد المدخلات",
   "app.containers.Admin.projects.project.ongoing": "جارٍ",
-  "app.containers.Admin.projects.project.participantCount": "{count, plural, one {# مشارك} other {# مشاركين}}",
   "app.containers.Admin.projects.project.participation.comments": "تعليقات",
   "app.containers.Admin.projects.project.participation.demographicsTab": "البيانات الديموغرافية",
   "app.containers.Admin.projects.project.participation.inputs": "المدخلات",
