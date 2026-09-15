@@ -618,6 +618,28 @@ resource 'Phases' do
           )
         end
 
+        context 'with reactions of admins and moderators' do
+          before do
+            # Without exclude_roles, these would be counted in the stats and in the votes of i1
+            create(:reaction, reactable: i1, user: create(:admin), mode: 'down')
+            create(:reaction, reactable: i1, user: create(:project_moderator, projects: [phase.project]), mode: 'down')
+          end
+
+          example 'Get common ground results excluding admins and moderators' do
+            do_request(exclude_roles: 'exclude_admins_and_moderators')
+            assert_status 200
+
+            expect(response_data.dig(:attributes, :stats)).to eq({
+              num_participants: 9,
+              num_ideas: 4,
+              votes: { up: 3, down: 3, neutral: 3 }
+            })
+            expect(response_data.dig(:attributes, :top_consensus_ideas).pluck(:id)).to eq [i2.id, i1.id, i3.id]
+            expect(response_data.dig(:attributes, :top_controversial_ideas).pluck(:id)).to eq [i3.id, i1.id, i2.id]
+            expect(response_data.dig(:attributes, :top_consensus_ideas, 1, :votes)).to eq({ up: 2, down: 1, neutral: 0 })
+          end
+        end
+
         context 'when the phase is not "common ground"' do
           let(:id) { create(:phase).id }
 

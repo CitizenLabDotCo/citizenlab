@@ -177,7 +177,7 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def common_ground_results
-    results = CommonGround::ResultsService.new(@phase).results
+    results = CommonGround::ResultsService.new(@phase, exclude_roles: params[:exclude_roles]).results
 
     render json: WebApi::V1::CommonGround::ResultsSerializer
       .new(results, params: jsonapi_serializer_params)

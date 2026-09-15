@@ -10,6 +10,7 @@ resource 'R-scores (Representativeness scores)' do
     parameter :project, <<-DESC, required: false
           Project ID. Only participants of this project will be considered to compute the score.
     DESC
+    parameter :exclude_roles, "Set to 'exclude_admins_and_moderators' to leave out users with an admin or moderator role", required: false
 
     # `custom_field_id` is overridden in the `when admin` context below.
     # For the other (non-authorized) users, it's value does not matter and the custom
@@ -86,6 +87,22 @@ resource 'R-scores (Representativeness scores)' do
               expect(response_data.dig(:attributes, :counts)).to match(expected_counts)
             end
           end
+
+          context 'with exclude_roles' do
+            let(:exclude_roles) { 'exclude_admins_and_moderators' }
+
+            before do
+              create(:project_moderator, custom_field_values: { custom_field.key => custom_field.options.first.key })
+            end
+
+            example_request 'returns the R-score (excluding admins and moderators)' do
+              expect(status).to eq(200)
+              expect(json_response_body).to match(response_structure)
+              # Neither the moderator nor the admin performing the request (who has no value, i.e. _blank) are counted
+              expected_counts = custom_field.options.to_h { |option| [option.id.to_sym, 1] }.merge(_blank: 0)
+              expect(response_data.dig(:attributes, :counts)).to match(expected_counts)
+            end
+          end
         end
 
         context 'for birthyear custom field' do
@@ -106,6 +123,27 @@ resource 'R-scores (Representativeness scores)' do
             # account. The user born in 2020 is also not taken into account because they
             # are too young (wrt the age bins).
             expect(response_data.dig(:attributes, :counts)).to eq [2, 1, 0]
+          end
+
+          context 'with admins and moderators' do
+            before do
+              create(:admin, birthyear: 1980)
+              create(:project_moderator, birthyear: 1970)
+            end
+
+            example 'returns the R-score including admins and moderators by default', document: false do
+              travel_to(Time.zone.local(2010)) { do_request }
+
+              expect(status).to eq(200)
+              expect(response_data.dig(:attributes, :counts)).to eq [3, 2, 0]
+            end
+
+            example 'returns the R-score excluding admins and moderators' do
+              travel_to(Time.zone.local(2010)) { do_request(exclude_roles: 'exclude_admins_and_moderators') }
+
+              expect(status).to eq(200)
+              expect(response_data.dig(:attributes, :counts)).to eq [2, 1, 0]
+            end
           end
         end
       end
