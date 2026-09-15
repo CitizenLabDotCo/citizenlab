@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Box, Success } from '@citizenlab/cl2-component-library';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 
-import { requestCodeNewEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
+import { requestCodeForEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
 import { IUser } from 'api/users/types';
 import { invalidateCacheAfterUpdateUser } from 'api/users/useUpdateUser';
 
@@ -48,7 +48,7 @@ const UpdateEmailForm = ({
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
-      return requestCodeNewEmail(formValues.email)
+      return requestCodeForEmail(formValues.email)
         .then((confirmationType) => {
           setError(undefined);
 

@@ -87,39 +87,54 @@ RSpec.describe RequestCodePolicy do
     end
   end
 
-  describe '#request_code_new_email? and #request_merge_account_code?' do
+  describe '#request_code_new_email?' do
     let(:user) { create(:user, email: 'test@test.com') }
 
-    it 'permits both for an authenticated user with no codes issued yet' do
+    it 'permits an authenticated user with no codes issued yet' do
       expect(described_class.new(user, user)).to permit(:request_code_new_email)
-      expect(described_class.new(user, user)).to permit(:request_merge_account_code)
     end
 
-    it 'does not permit either without an authenticated user' do
+    it 'does not permit without an authenticated user' do
       expect(described_class.new(nil, nil)).not_to permit(:request_code_new_email)
-      expect(described_class.new(nil, nil)).not_to permit(:request_merge_account_code)
     end
 
-    it 'does not permit request_code_new_email once its own code_reset_count limit is reached' do
+    it 'does not permit once the code_reset_count limit is reached' do
       user.find_or_create_confirmation(:new_email_confirmation).update!(code_reset_count: 4)
       expect(described_class.new(user, user)).not_to permit(:request_code_new_email)
     end
+  end
 
-    it 'does not permit request_merge_account_code once its own code_reset_count limit is reached' do
-      user.find_or_create_confirmation(:merge_account_confirmation).update!(code_reset_count: 4)
-      expect(described_class.new(user, user)).not_to permit(:request_merge_account_code)
+  describe '#request_code_merge_account?' do
+    # An email-less SSO account, the only kind that may be merged away.
+    let(:user) do
+      create(:user).tap do |u|
+        u.update_columns(email: nil, password_digest: nil)
+        create(:identity, user: u, provider: 'clave_unica', uid: '11111')
+      end
     end
 
-    # Separate budgets: one endpoint issues both codes, and sharing a budget would
-    # leave an exhausted merge unable to type a different address.
-    it 'still permits request_code_new_email when the merge budget is exhausted' do
-      user.find_or_create_confirmation(:merge_account_confirmation).update!(code_reset_count: 4)
-      expect(described_class.new(user, user)).to permit(:request_code_new_email)
+    it 'permits an email-less SSO user with no codes issued yet' do
+      expect(described_class.new(user, user)).to permit(:request_code_merge_account)
     end
 
-    it 'still permits request_merge_account_code when the new-email budget is exhausted' do
+    it 'does not permit without an authenticated user' do
+      expect(described_class.new(nil, nil)).not_to permit(:request_code_merge_account)
+    end
+
+    it 'does not permit a user who could not be merged away' do
+      user_with_email = create(:user)
+      expect(described_class.new(user_with_email, user_with_email)).not_to permit(:request_code_merge_account)
+    end
+
+    it 'does not permit once the code_reset_count limit is reached' do
+      user.find_or_create_confirmation(:merge_account_confirmation).update!(code_reset_count: 4)
+      expect(described_class.new(user, user)).not_to permit(:request_code_merge_account)
+    end
+
+    # Separate budgets, so being locked out of one still leaves the other usable.
+    it 'does not count codes issued for a new email' do
       user.find_or_create_confirmation(:new_email_confirmation).update!(code_reset_count: 4)
-      expect(described_class.new(user, user)).to permit(:request_merge_account_code)
+      expect(described_class.new(user, user)).to permit(:request_code_merge_account)
     end
   end
 

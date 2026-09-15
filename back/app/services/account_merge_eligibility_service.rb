@@ -29,9 +29,9 @@ class AccountMergeEligibilityService
   # proven by an identity provider applies only this half - see
   # AccountMergeService::PROOFS for why.
   #
-  # Also what keeps ordinary email changes out of the merge: request_code_new_email
-  # serves the profile's "change my email" page too, where only an email-less
-  # account like this one is offered a merge.
+  # Also what keeps ordinary email changes out of the merge: the profile's "change my
+  # email" page asks for a merge code whenever an address is taken, and only an
+  # email-less account like this one gets one.
   def source_reason(source)
     return :source_missing if source.blank?
     return :source_not_sso unless source.sso?

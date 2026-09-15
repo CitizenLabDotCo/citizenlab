@@ -34,9 +34,7 @@ class WebApi::V1::RequestCodesController < ApplicationController
   # provide a confirmed email.
   def request_code_new_email
     authorize current_user, policy_class: RequestCodePolicy
-    # A resend carries no address, so a pending merge falls back to its target - as a
-    # pending new_email does further down.
-    new_email = request_code_new_email_params[:new_email].presence || current_user.merge_target_email
+    new_email = request_code_new_email_params[:new_email]
 
     if current_user.new_email.blank? && new_email.blank?
       render json: { errors: { new_email: [{ error: 'cannot be blank' }] } }, status: :unprocessable_entity
@@ -46,24 +44,7 @@ class WebApi::V1::RequestCodesController < ApplicationController
     user_associated_with_new_email = new_email.present? ? User.find_by_cimail(new_email) : nil
 
     if user_associated_with_new_email && user_associated_with_new_email != current_user
-      # Almost always the same person arriving a second way, so offer the merge
-      # rather than dead-ending them. The source guards keep it to email-less
-      # accounts, from the missing-data form and the profile's email change alike.
-      unless account_merge_offerable?(current_user)
-        render json: { errors: { new_email: [{ error: 'is already taken' }] } }, status: :unprocessable_entity
-        return
-      end
-
-      # Throttled against its own budget, not the new-email one: being locked out
-      # of merging must still leave "change your email" usable.
-      authorize current_user, :request_merge_account_code?, policy_class: RequestCodePolicy
-
-      # The target is deliberately not checked here: refusing up front would let
-      # anyone probe which addresses belong to admins. The code goes to the target's
-      # inbox, so eligibility can wait until confirm time.
-      RequestMergeAccountConfirmationCodeJob.perform_now(current_user, merge_target_email: new_email)
-
-      render json: raw_json({ confirmation_type: 'merge_account' })
+      render json: { errors: { new_email: [{ error: 'is already taken' }] } }, status: :unprocessable_entity
       return
     end
 
@@ -74,7 +55,30 @@ class WebApi::V1::RequestCodesController < ApplicationController
       new_email: new_email_with_fallback
     )
 
-    render json: raw_json({ confirmation_type: 'new_email' })
+    head :ok
+  end
+
+  # Sends a merge code to the address of the account an email-less SSO user wants to
+  # be merged into. The front end asks for one when request_code_new_email refuses
+  # that address as taken: almost always the same person arriving a second way.
+  #
+  # Nobody is looked up here. Who owns the address, and whether they may be merged
+  # into, is settled at confirm time; answering now would let anyone probe which
+  # addresses belong to admins.
+  def request_code_merge_account
+    authorize current_user, policy_class: RequestCodePolicy
+    # A resend carries no address, so it goes to the pending one.
+    merge_target_email = request_code_merge_account_params[:merge_target_email].presence ||
+                         current_user.merge_target_email
+
+    if merge_target_email.blank?
+      render json: { errors: { merge_target_email: [{ error: 'cannot be blank' }] } }, status: :unprocessable_entity
+      return
+    end
+
+    RequestMergeAccountConfirmationCodeJob.perform_now(current_user, merge_target_email: merge_target_email)
+
+    head :ok
   end
 
   # The phone mirror of request_code_email: phone signup / passwordless login,
@@ -175,10 +179,6 @@ class WebApi::V1::RequestCodesController < ApplicationController
 
   private
 
-  def account_merge_offerable?(user)
-    AccountMergeEligibilityService.new.source_eligible?(user)
-  end
-
   # Whether the previous code's cooldown still has to run out.
   def resend_too_soon?(confirmation)
     confirmation&.seconds_until_resend_allowed.to_i.positive?
@@ -211,6 +211,10 @@ class WebApi::V1::RequestCodesController < ApplicationController
 
   def request_code_new_email_params
     params.fetch(:request_code, {}).permit(:new_email)
+  end
+
+  def request_code_merge_account_params
+    params.fetch(:request_code, {}).permit(:merge_target_email)
   end
 
   def request_code_phone_params

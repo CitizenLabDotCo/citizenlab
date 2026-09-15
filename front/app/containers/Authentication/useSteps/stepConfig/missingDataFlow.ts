@@ -1,4 +1,4 @@
-import { requestCodeNewEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
+import { requestCodeForEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
 import { requestCodeNewPhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import { tooSoonRetryAfter } from 'api/authentication/confirm_phone/resendCooldown';
 import { OnboardingType } from 'api/users/types';
@@ -74,7 +74,7 @@ export const missingDataFlow = (
         { email, ...restBuiltInFieldUpdate }: BuiltInFieldsUpdate
       ) => {
         if (email) {
-          await requestCodeNewEmail(email);
+          await requestCodeForEmail(email);
         }
 
         if (!isEmpty(restBuiltInFieldUpdate)) {
@@ -117,7 +117,7 @@ export const missingDataFlow = (
     'missing-data:change-new-email': {
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT: async (new_email: string) => {
-        const confirmationType = await requestCodeNewEmail(new_email);
+        const confirmationType = await requestCodeForEmail(new_email);
         updateState({ new_email });
         invalidateCacheAfterUpdateUser(queryClient);
         setCurrentStep(

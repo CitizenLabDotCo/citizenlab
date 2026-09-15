@@ -37,11 +37,12 @@ class RequestCodePolicy < ApplicationPolicy
     true
   end
 
-  # Merge-account codes ride the same endpoint but keep their own budget. A
-  # shared one would let an exhausted merge lock the user out of typing a
-  # different address, which is the only way out of that flow.
-  def request_merge_account_code?
+  # For an email-less SSO user asking to be merged into the account owning an
+  # address. The source rules only look at the caller's own account, so they can
+  # refuse before anything is proven. The target rules wait for the code.
+  def request_code_merge_account?
     return false if user.nil?
+    return false unless AccountMergeEligibilityService.new.source_eligible?(user)
     return false if code_reset_count(user.merge_account_confirmation) >= max_retries - 1
 
     true

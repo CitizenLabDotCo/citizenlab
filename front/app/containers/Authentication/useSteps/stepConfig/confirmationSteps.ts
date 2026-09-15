@@ -5,6 +5,7 @@ import {
   reconfirmCodeEmail,
 } from 'api/authentication/confirm_email/confirmEmailConfirmationCode';
 import {
+  requestCodeMergeAccount,
   requestCodeNewEmail,
   requestReconfirmCodeEmail,
 } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
@@ -149,7 +150,7 @@ export const confirmationSteps = (
       },
       RESEND_CODE: async () => {
         // Without an address the backend falls back to the pending merge_target_email.
-        await requestCodeNewEmail(state.new_email ?? undefined);
+        await requestCodeMergeAccount(state.new_email ?? undefined);
       },
     },
 

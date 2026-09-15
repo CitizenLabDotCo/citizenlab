@@ -164,7 +164,8 @@ class Rack::Attack
   # account enumeration, using the platform as a mailer), so every endpoint below
   # is throttled on the caller it is actually about:
   #   - the identifier in the request body (email / phone / new_email /
-  #     new_phone), which is what an attacker rotating IPs would hold fixed;
+  #     new_phone / merge_target_email), which is what an attacker rotating IPs
+  #     would hold fixed;
   #   - the authenticated user, for the endpoints that act on current_user.
   # A request is counted against both keys when both apply, and each key gets a
   # burst limit and a longer window. The endpoints that take no identifier (the
@@ -174,6 +175,7 @@ class Rack::Attack
   CONFIRMATION_CODE_ENDPOINTS = {
     '/web_api/v1/user/request_code_email' => %w[request_code email],
     '/web_api/v1/user/request_code_new_email' => %w[request_code new_email],
+    '/web_api/v1/user/request_code_merge_account' => %w[request_code merge_target_email],
     '/web_api/v1/user/request_code_phone' => %w[request_code phone],
     '/web_api/v1/user/request_code_new_phone' => %w[request_code new_phone],
     '/web_api/v1/user/request_reconfirm_code_email' => nil,

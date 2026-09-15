@@ -245,8 +245,6 @@ resource 'Request codes' do
       expect(delivery_service).not_to have_received(:send_now_to_user)
     end
 
-    # This caller already has an email, so it cannot be merged away - the
-    # taken address stays a plain error.
     example 'It does not work if new_email is already taken by another user' do
       existing_user = create(:user, email: 'existing_email@example.com')
       user = create(:user)
@@ -256,101 +254,105 @@ resource 'Request codes' do
       expect(json_response_body).to include_response_error(:new_email, 'is already taken')
       expect(delivery_service).not_to have_received(:send_now_to_user)
     end
+  end
 
-    context 'when the caller signed in through an SSO method that gave no email' do
-      let(:sso_user) do
-        create(:user).tap do |user|
-          user.update_columns(email: nil, password_digest: nil)
-          create(:identity, user: user, provider: 'clave_unica', uid: '11111')
-        end
+  post 'web_api/v1/user/request_code_merge_account' do
+    with_options scope: :request_code do
+      parameter :merge_target_email, 'The email of the account to be merged into. Defaults to the pending one.', required: false
+    end
+
+    # An email-less SSO account, the only kind that may be merged away.
+    let(:sso_user) do
+      create(:user).tap do |user|
+        user.update_columns(email: nil, password_digest: nil)
+        create(:identity, user: user, provider: 'clave_unica', uid: '11111')
       end
+    end
 
-      example 'It offers an account merge instead of failing on a taken address' do
-        existing_user = create(:user, email: 'existing_email@example.com')
-        header_token_for(sso_user)
+    example 'It does not work for an unauthenticated user' do
+      do_request(request_code: { merge_target_email: 'existing_email@example.com' })
+      expect(response_status).to eq 401
+    end
 
-        do_request(request_code: { new_email: existing_user.email })
+    example 'It sends a merge code to the address' do
+      existing_user = create(:user, email: 'existing_email@example.com')
+      header_token_for(sso_user)
 
-        expect(response_status).to eq 200
-        expect(response_data[:attributes][:confirmation_type]).to eq 'merge_account'
-        expect(delivery_service).to have_received(:send_now_to_user)
-          .with(
-            an_instance_of(EmailCampaigns::Campaigns::MergeAccountConfirmation),
-            sso_user,
-            hash_including(code: anything, email: existing_user.email)
-          ).once
+      do_request(request_code: { merge_target_email: existing_user.email })
 
-        sso_user.reload
-        expect(sso_user.merge_target_email).to eq existing_user.email
-        expect(sso_user.merge_account_confirmation.code).to be_present
-        # The address belongs to someone else, so it must never land on new_email.
-        expect(sso_user.new_email).to be_nil
-      end
+      expect(response_status).to eq 200
+      expect(delivery_service).to have_received(:send_now_to_user)
+        .with(
+          an_instance_of(EmailCampaigns::Campaigns::MergeAccountConfirmation),
+          sso_user,
+          hash_including(code: anything, email: existing_user.email)
+        ).once
 
-      example 'It resends the pending merge code when no address is given' do
-        existing_user = create(:user, email: 'existing_email@example.com')
-        sso_user.update_columns(merge_target_email: existing_user.email)
-        header_token_for(sso_user)
+      sso_user.reload
+      expect(sso_user.merge_target_email).to eq existing_user.email
+      expect(sso_user.merge_account_confirmation.code).to be_present
+      # The address belongs to someone else, so it must never land on new_email.
+      expect(sso_user.new_email).to be_nil
+    end
 
-        do_request
+    example 'It resends the pending merge code when no address is given' do
+      existing_user = create(:user, email: 'existing_email@example.com')
+      sso_user.update_columns(merge_target_email: existing_user.email)
+      header_token_for(sso_user)
 
-        expect(response_status).to eq 200
-        expect(response_data[:attributes][:confirmation_type]).to eq 'merge_account'
-        expect(delivery_service).to have_received(:send_now_to_user)
-          .with(
-            an_instance_of(EmailCampaigns::Campaigns::MergeAccountConfirmation),
-            sso_user,
-            hash_including(email: existing_user.email)
-          ).once
-      end
+      do_request
 
-      # Settled at confirm time: refusing here would tell a prober which addresses
-      # belong to admins. The code goes to the admin's own inbox, so nothing leaks.
-      example 'It gives the same answer when the address belongs to an admin' do
-        admin = create(:admin, email: 'admin_email@example.com')
-        header_token_for(sso_user)
+      expect(response_status).to eq 200
+      expect(delivery_service).to have_received(:send_now_to_user)
+        .with(
+          an_instance_of(EmailCampaigns::Campaigns::MergeAccountConfirmation),
+          sso_user,
+          hash_including(email: existing_user.email)
+        ).once
+    end
 
-        do_request(request_code: { new_email: admin.email })
+    example 'It does not work without an address or a pending one' do
+      header_token_for(sso_user)
 
-        expect(response_status).to eq 200
-        expect(response_data[:attributes][:confirmation_type]).to eq 'merge_account'
-      end
+      do_request(request_code: { merge_target_email: '' })
 
-      example 'It still starts an ordinary confirmation for an unused address' do
-        header_token_for(sso_user)
+      expect(response_status).to eq 422
+      expect(json_response_body).to include_response_error(:merge_target_email, 'cannot be blank')
+      expect(delivery_service).not_to have_received(:send_now_to_user)
+    end
 
-        do_request(request_code: { new_email: 'nobody@example.com' })
+    # Settled at confirm time: refusing here would tell a prober which addresses
+    # belong to admins. The code goes to the admin's own inbox, so nothing leaks.
+    example 'It gives the same answer when the address belongs to an admin' do
+      admin = create(:admin, email: 'admin_email@example.com')
+      header_token_for(sso_user)
 
-        expect(response_status).to eq 200
-        expect(response_data[:attributes][:confirmation_type]).to eq 'new_email'
-        expect(sso_user.reload.new_email).to eq 'nobody@example.com'
-      end
+      do_request(request_code: { merge_target_email: admin.email })
 
-      example 'It refuses a further merge code once the merge budget is spent' do
-        existing_user = create(:user, email: 'existing_email@example.com')
-        sso_user.update_columns(merge_target_email: existing_user.email)
-        sso_user.find_or_create_confirmation(:merge_account_confirmation).update!(code_reset_count: 4)
-        header_token_for(sso_user)
+      expect(response_status).to eq 200
+      expect(delivery_service).to have_received(:send_now_to_user).once
+    end
 
-        do_request(request_code: { new_email: existing_user.email })
+    # The source rules are about the caller's own account, so they can refuse up front.
+    example 'It does not work for a caller that could not be merged away' do
+      existing_user = create(:user, email: 'existing_email@example.com')
+      header_token_for(create(:user))
 
-        expect(response_status).to eq 401
-        expect(delivery_service).not_to have_received(:send_now_to_user)
-      end
+      do_request(request_code: { merge_target_email: existing_user.email })
 
-      # Changing your mind is the way out of an offered merge, so an exhausted merge
-      # budget must not take the ordinary path with it.
-      example 'It still starts an ordinary confirmation once the merge budget is spent' do
-        sso_user.update_columns(merge_target_email: 'existing_email@example.com')
-        sso_user.find_or_create_confirmation(:merge_account_confirmation).update!(code_reset_count: 4)
-        header_token_for(sso_user)
+      expect(response_status).to eq 401
+      expect(delivery_service).not_to have_received(:send_now_to_user)
+    end
 
-        do_request(request_code: { new_email: 'nobody@example.com' })
+    example 'It does not work once the merge budget is spent' do
+      existing_user = create(:user, email: 'existing_email@example.com')
+      sso_user.find_or_create_confirmation(:merge_account_confirmation).update!(code_reset_count: 4)
+      header_token_for(sso_user)
 
-        expect(response_status).to eq 200
-        expect(response_data[:attributes][:confirmation_type]).to eq 'new_email'
-        expect(sso_user.reload.new_email).to eq 'nobody@example.com'
-      end
+      do_request(request_code: { merge_target_email: existing_user.email })
+
+      expect(response_status).to eq 401
+      expect(delivery_service).not_to have_received(:send_now_to_user)
     end
   end
 
