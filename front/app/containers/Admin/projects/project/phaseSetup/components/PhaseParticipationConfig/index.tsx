@@ -47,14 +47,7 @@ import VotingInputs from './components/inputs/VotingInputs';
 import ParticipationMethodPicker from './components/ParticipationMethodPicker';
 import { Container, StyledSection } from './components/shared/styling';
 import messages from './messages';
-import {
-  defaultParticipationConfig,
-  ideationDefaultConfig,
-  nativeSurveyDefaultConfig,
-  proposalsDefaultConfig,
-  surveyDefaultConfig,
-  votingDefaultConfig,
-} from './utils/participationMethodConfigs';
+import { defaultConfigForMethod } from './utils/participationMethodConfigs';
 
 interface Props {
   phase?: IPhase;
@@ -125,21 +118,7 @@ const PhaseParticipationConfig = ({
   const handleParticipationMethodOnChange = (
     participation_method: ParticipationMethod
   ) => {
-    const ideation = participation_method === 'ideation';
-    const native_survey = participation_method === 'native_survey';
-    const voting = participation_method === 'voting';
-    const survey = participation_method === 'survey';
-    const proposals = participation_method === 'proposals';
-
-    updateFormData({
-      ...defaultParticipationConfig,
-      participation_method,
-      ...(ideation ? ideationDefaultConfig : {}),
-      ...(voting ? votingDefaultConfig : {}),
-      ...(survey ? surveyDefaultConfig : {}),
-      ...(native_survey ? nativeSurveyDefaultConfig : {}),
-      ...(proposals ? proposalsDefaultConfig : {}),
-    });
+    updateFormData(defaultConfigForMethod(participation_method));
   };
 
   const handleSurveyProviderChange = (survey_service: TSurveyService) => {
