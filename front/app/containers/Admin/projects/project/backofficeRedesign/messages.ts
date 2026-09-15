@@ -139,6 +139,27 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.selectAMethod',
     defaultMessage: 'Select a method',
   },
+  newPhaseCrumb: {
+    id: 'app.containers.Admin.projects.project.newPhaseCrumb',
+    defaultMessage: 'New phase',
+  },
+  newSurveyCrumb: {
+    id: 'app.containers.Admin.projects.project.newSurveyCrumb',
+    defaultMessage: 'New survey',
+  },
+  selectMethodContinue: {
+    id: 'app.containers.Admin.projects.project.selectMethodContinue',
+    defaultMessage: 'Continue',
+  },
+  saveToEditForm: {
+    id: 'app.containers.Admin.projects.project.saveToEditForm',
+    defaultMessage: 'Save the phase to add questions and import offline input.',
+  },
+  saveToEditSettings: {
+    id: 'app.containers.Admin.projects.project.saveToEditSettings',
+    defaultMessage:
+      'Access rights, notifications and other settings become available once you save the phase.',
+  },
   publishButton: {
     id: 'app.containers.Admin.projects.project.publishButton',
     defaultMessage: 'Publish',
