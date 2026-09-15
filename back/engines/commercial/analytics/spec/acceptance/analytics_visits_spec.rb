@@ -162,6 +162,21 @@ resource 'Analytics - Visits model' do
       expect(response_data[:attributes].size).to eq(1)
     end
 
+    example 'exclude visits of admins and moderators' do
+      do_request({
+        query: {
+          fact: 'visit',
+          aggregations: {
+            all: 'count',
+            visitor_id: 'count'
+          }
+        },
+        exclude_roles: 'exclude_admins_and_moderators'
+      })
+      assert_status 200
+      expect(response_data[:attributes]).to contain_exactly({ count: 2, count_visitor_id: 1 })
+    end
+
     example 'filter only visits by citizens or non-registered users (not admins or moderators)' do
       do_request({
         query: {

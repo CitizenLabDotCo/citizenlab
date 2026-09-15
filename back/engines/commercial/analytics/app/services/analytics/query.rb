@@ -17,7 +17,13 @@ module Analytics
       MODELS.keys.map(&:to_s)
     end
 
-    def initialize(query)
+    # Role values of analytics_dimension_users kept when excluding admins and moderators.
+    # nil keeps the rows without a known user (e.g. anonymous participations).
+    ROLES_KEPT_WHEN_EXCLUDING_ADMINS_AND_MODERATORS = ['citizen', nil].freeze
+
+    # @param exclude_roles [String] 'exclude_admins_and_moderators' to leave out the rows of users with
+    #   an admin or moderator role. Only applies to facts with a dimension_user.
+    def initialize(query, exclude_roles: nil)
       @json_query =
         case query
         when ActionController::Parameters
@@ -27,6 +33,8 @@ module Analytics
         else
           raise ArgumentError, "Invalid query type: #{query.class}"
         end
+
+      apply_exclude_roles_filter if exclude_roles == 'exclude_admins_and_moderators'
     end
 
     attr_reader :valid, :error_messages, :results, :pagination, :json_query, :failed
@@ -155,6 +163,23 @@ module Analytics
     end
 
     private
+
+    # Adds a dimension_user.role filter. If the query already filters on role, only the
+    # requested roles that are not excluded are kept.
+    def apply_exclude_roles_filter
+      fact_model = MODELS[@json_query[:fact].to_s.to_sym]
+      return unless fact_model&.reflect_on_association(:dimension_user)
+
+      filters = @json_query[:filters].presence || {}
+      roles = ROLES_KEPT_WHEN_EXCLUDING_ADMINS_AND_MODERATORS
+
+      if filters.key?('dimension_user.role')
+        requested_roles = Array.wrap(filters['dimension_user.role']).map(&:presence)
+        roles = requested_roles & roles
+      end
+
+      @json_query[:filters] = filters.merge('dimension_user.role' => roles)
+    end
 
     def calculate_fact_attributes
       model_attributes = model.columns_hash.transform_values(&:type)

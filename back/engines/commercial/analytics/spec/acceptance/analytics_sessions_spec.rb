@@ -36,5 +36,23 @@ resource 'Analytics - Sessions model' do
           count_monthly_user_hash: 1
         })
     end
+
+    example 'exclude sessions of admins and moderators' do
+      create(:session, user_id: create(:user).id)
+      create(:session, user_id: create(:admin).id)
+      create(:session, user_id: create(:project_moderator).id)
+
+      do_request({
+        query: {
+          fact: 'session',
+          aggregations: {
+            all: 'count'
+          }
+        },
+        exclude_roles: 'exclude_admins_and_moderators'
+      })
+      assert_status 200
+      expect(response_data[:attributes]).to contain_exactly({ count: 6 }) # 5 anonymous sessions and 1 of a citizen
+    end
   end
 end

@@ -32,6 +32,24 @@ describe Analytics::MultipleQueries do
       expect(paginations).to be_present
     end
 
+    context 'when exclude_roles is present' do
+      subject(:service) { described_class.new(exclude_roles: 'exclude_admins_and_moderators') }
+
+      before { create(:idea, author: create(:admin)) }
+
+      it 'applies it to every query' do
+        query = [
+          { fact: 'post', aggregations: { all: 'count' } },
+          { fact: 'post', aggregations: { all: 'count' } }
+        ]
+
+        results, errors, _paginations = service.run(query)
+        expect(errors).to be_empty
+        expect(results).to eq([[{ 'count' => 1 }], [{ 'count' => 1 }]])
+        expect(described_class.new.run(query).first).to eq([[{ 'count' => 2 }], [{ 'count' => 2 }]])
+      end
+    end
+
     context 'when original_url is present' do
       subject(:service) { described_class.new(original_url: 'http://example.com') }
 

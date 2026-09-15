@@ -28,7 +28,9 @@ module Analytics
       def handle_request(query)
         authorize :analytics, policy_class: AnalyticsPolicy
 
-        results, errors, paginations = Analytics::MultipleQueries.new(original_url: request.original_url).run(query)
+        results, errors, paginations = Analytics::MultipleQueries
+          .new(original_url: request.original_url, exclude_roles: params[:exclude_roles])
+          .run(query)
 
         if errors.present?
           render json: { 'messages' => errors }, status: :bad_request

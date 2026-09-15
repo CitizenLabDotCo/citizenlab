@@ -1678,7 +1678,8 @@ CREATE VIEW public.analytics_fact_email_deliveries AS
     (ecd.sent_at)::date AS dimension_date_sent_id,
     ecd.campaign_id,
     p.id AS dimension_project_id,
-    ((ecc.type)::text <> ALL (ARRAY[('EmailCampaigns::Campaigns::Manual'::character varying)::text, ('EmailCampaigns::Campaigns::ManualProjectParticipants'::character varying)::text])) AS automated
+    ((ecc.type)::text <> ALL (ARRAY[('EmailCampaigns::Campaigns::Manual'::character varying)::text, ('EmailCampaigns::Campaigns::ManualProjectParticipants'::character varying)::text])) AS automated,
+    ecd.user_id AS dimension_user_id
    FROM ((public.email_campaigns_deliveries ecd
      JOIN public.email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)))
      LEFT JOIN public.projects p ON ((p.id = ecc.context_id)));
@@ -9555,6 +9556,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260915120000'),
 ('20260904074654'),
 ('20260821210000'),
 ('20260821090000'),

@@ -74,6 +74,23 @@ resource 'Analytics - FactParticipations' do
       expect(response_data[:attributes]).to contain_exactly({ count: 1 })
     end
 
+    example 'exclude participations of admins and moderators' do
+      do_request({
+        query: {
+          fact: 'participation',
+          filters: {
+            'dimension_date_created.date': { from: '2022-10-01', to: '2022-10-31' }
+          },
+          aggregations: {
+            all: 'count'
+          }
+        },
+        exclude_roles: 'exclude_admins_and_moderators'
+      })
+      assert_status 200
+      expect(response_data[:attributes]).to contain_exactly({ count: 1 })
+    end
+
     example 'filter participations by project' do
       do_request({
         query: {
