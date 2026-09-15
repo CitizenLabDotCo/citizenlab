@@ -19,7 +19,6 @@ import useEmailCampaign from 'api/campaigns/email/useEmailCampaign';
 import useSendEmailCampaign from 'api/campaigns/email/useSendEmailCampaign';
 import useSendEmailCampaignPreview from 'api/campaigns/email/useSendEmailCampaignPreview';
 import { isEmailCampaignDraft } from 'api/campaigns/email/util';
-import useUserById from 'api/users/useUserById';
 
 import DraftCampaignDetails from 'components/admin/Email/DraftCampaignDetails';
 import EmailScheduling from 'components/admin/Email/Scheduling';
@@ -75,10 +74,6 @@ const Show = () => {
 
   const { data: tenant } = useAppConfiguration();
   const { data: campaign } = useEmailCampaign(campaignId);
-
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const authorId = campaign?.data.relationships.author.data?.id;
-  const { data: sender } = useUserById(authorId);
 
   const {
     mutate: sendCampaign,

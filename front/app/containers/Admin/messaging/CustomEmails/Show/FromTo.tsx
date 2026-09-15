@@ -61,8 +61,7 @@ const FromTo = ({ campaign }: Props) => {
       senderName = getFullName(sender.data);
     } else if (senderType === 'organization' && tenant) {
       senderName = localize(
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        tenant?.data.attributes.settings.core.organization_name
+        tenant.data.attributes.settings.core.organization_name
       );
     }
 
@@ -72,6 +71,7 @@ const FromTo = ({ campaign }: Props) => {
   const groupIds: string[] = campaign.data.relationships.groups.data.map(
     (group) => group.id
   );
+  const noGroupsSelected = groupIds.length === 0;
   const senderType = campaign.data.attributes.sender;
   const senderName = getSenderName(senderType);
 
