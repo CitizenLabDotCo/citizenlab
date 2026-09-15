@@ -31,6 +31,10 @@ def feedback_needed_filter_parameter(s)
   s.parameter :feedback_needed, 'Only count ideas that need feedback', required: false
 end
 
+def exclude_roles_parameter(s)
+  s.parameter :exclude_roles, "Set to 'exclude_admins_and_moderators' to leave out the participation of users with an admin or moderator role", required: false
+end
+
 resource 'Stats - Ideas' do
   explanation 'The various stats endpoints can be used to show certain properties of ideas.'
   header 'Content-Type', 'application/json'
@@ -339,6 +343,91 @@ resource 'Stats - Ideas' do
         idea_col = worksheet.map { |col| col.cells[2].value }
         _header, *ideas = idea_col
         expect(ideas.sum).to eq 1
+      end
+    end
+  end
+
+  describe 'exclude_roles filter' do
+    def xlsx_column_sum(column_name)
+      worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+      header, *rows = worksheet.map { |row| row.cells.map(&:value) }
+      rows.sum { |row| row[header.index(column_name)] }
+    end
+
+    before do
+      @project = create(:single_phase_ideation_project)
+      topic = create(:input_topic, project: @project)
+
+      travel_to start_at + 3.months do
+        create(:idea, project: @project, input_topics: [topic], author: create(:user))
+        create(:idea, project: @project, input_topics: [topic], author: create(:user), anonymous: true)
+        create(:idea, project: @project, input_topics: [topic], author: create(:admin))
+        create(:idea, project: @project, input_topics: [topic], author: create(:project_moderator, projects: [@project]))
+      end
+    end
+
+    get 'web_api/v1/stats/ideas_by_topic' do
+      time_boundary_parameters self
+      project_filter_parameter self
+      exclude_roles_parameter self
+
+      let(:project) { @project.id }
+
+      example 'Ideas by topic includes ideas of admins and moderators by default', document: false do
+        do_request
+        assert_status 200
+        expect(json_parse(response_body).dig(:data, :attributes, :series, :ideas).values.sum).to eq 4
+      end
+
+      example 'Ideas by topic excluding admins and moderators' do
+        do_request(exclude_roles: 'exclude_admins_and_moderators')
+        assert_status 200
+        expect(json_parse(response_body).dig(:data, :attributes, :series, :ideas).values.sum).to eq 2
+      end
+    end
+
+    get 'web_api/v1/stats/ideas_by_topic_as_xlsx' do
+      time_boundary_parameters self
+      project_filter_parameter self
+      exclude_roles_parameter self
+
+      let(:project) { @project.id }
+      let(:exclude_roles) { 'exclude_admins_and_moderators' }
+
+      example_request 'Ideas by topic excluding admins and moderators' do
+        assert_status 200
+        expect(xlsx_column_sum('ideas')).to eq 2
+      end
+    end
+
+    get 'web_api/v1/stats/ideas_by_project' do
+      time_boundary_parameters self
+      exclude_roles_parameter self
+
+      example 'Ideas by project includes ideas of admins and moderators by default', document: false do
+        do_request
+        assert_status 200
+        series = json_parse(response_body).dig(:data, :attributes, :series, :ideas).stringify_keys
+        expect(series).to include(@project.id => 4, @project1.id => 5)
+      end
+
+      example 'Ideas by project excluding admins and moderators' do
+        do_request(exclude_roles: 'exclude_admins_and_moderators')
+        assert_status 200
+        series = json_parse(response_body).dig(:data, :attributes, :series, :ideas).stringify_keys
+        expect(series).to include(@project.id => 2, @project1.id => 5)
+      end
+    end
+
+    get 'web_api/v1/stats/ideas_by_project_as_xlsx' do
+      time_boundary_parameters self
+      exclude_roles_parameter self
+
+      let(:exclude_roles) { 'exclude_admins_and_moderators' }
+
+      example_request 'Ideas by project excluding admins and moderators' do
+        assert_status 200
+        expect(xlsx_column_sum('ideas')).to eq 8 # 5 in project1, 1 in project2 and 2 in the new project
       end
     end
   end

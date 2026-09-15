@@ -27,6 +27,10 @@ def topic_filter_parameter(s)
   s.parameter :input_topic, 'Topic ID. Only count comments on ideas that have the given topic assigned', required: false
 end
 
+def exclude_roles_parameter(s)
+  s.parameter :exclude_roles, "Set to 'exclude_admins_and_moderators' to leave out the participation of users with an admin or moderator role", required: false
+end
+
 resource 'Stats - Comments' do
   before { header 'Content-Type', 'application/json' }
 
@@ -577,5 +581,99 @@ resource 'Stats - Comments' do
     end
 
     include_examples 'unauthorized requests'
+  end
+
+  describe 'exclude_roles filter' do
+    def xlsx_column_sum(column_name)
+      worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+      header, *rows = worksheet.map { |row| row.cells.map(&:value) }
+      rows.sum { |row| row[header.index(column_name)] }
+    end
+
+    before do
+      admin_header_token
+      @project = create(:single_phase_ideation_project)
+      idea = create(:idea_with_topics, project: @project, topics_count: 1)
+
+      create(:comment, idea: idea, author: create(:user))
+      create(:comment, idea: idea, author: create(:user), anonymous: true)
+      create(:comment, idea: idea, author: create(:admin))
+      create(:comment, idea: idea, author: create(:project_moderator, projects: [@project]))
+    end
+
+    get 'web_api/v1/stats/comments_count' do
+      time_boundary_parameters self
+      exclude_roles_parameter self
+
+      example 'Count all comments includes comments of admins and moderators by default', document: false do
+        do_request
+        assert_status 200
+        expect(json_response.dig(:data, :attributes, :count)).to eq 4
+      end
+
+      example 'Count all comments excluding admins and moderators' do
+        do_request(exclude_roles: 'exclude_admins_and_moderators')
+        assert_status 200
+        expect(json_response.dig(:data, :attributes, :count)).to eq 2
+      end
+    end
+
+    get 'web_api/v1/stats/comments_by_topic' do
+      time_boundary_parameters self
+      exclude_roles_parameter self
+
+      example 'Comments by topic includes comments of admins and moderators by default', document: false do
+        do_request
+        assert_status 200
+        expect(json_response.dig(:data, :attributes, :series, :comments).values.sum).to eq 4
+      end
+
+      example 'Comments by topic excluding admins and moderators' do
+        do_request(exclude_roles: 'exclude_admins_and_moderators')
+        assert_status 200
+        expect(json_response.dig(:data, :attributes, :series, :comments).values.sum).to eq 2
+      end
+    end
+
+    get 'web_api/v1/stats/comments_by_topic_as_xlsx' do
+      time_boundary_parameters self
+      exclude_roles_parameter self
+
+      let(:exclude_roles) { 'exclude_admins_and_moderators' }
+
+      example_request 'Comments by topic excluding admins and moderators' do
+        assert_status 200
+        expect(xlsx_column_sum('comments')).to eq 2
+      end
+    end
+
+    get 'web_api/v1/stats/comments_by_project' do
+      time_boundary_parameters self
+      exclude_roles_parameter self
+
+      example 'Comments by project includes comments of admins and moderators by default', document: false do
+        do_request
+        assert_status 200
+        expect(json_response.dig(:data, :attributes, :series, :comments).stringify_keys).to eq({ @project.id => 4 })
+      end
+
+      example 'Comments by project excluding admins and moderators' do
+        do_request(exclude_roles: 'exclude_admins_and_moderators')
+        assert_status 200
+        expect(json_response.dig(:data, :attributes, :series, :comments).stringify_keys).to eq({ @project.id => 2 })
+      end
+    end
+
+    get 'web_api/v1/stats/comments_by_project_as_xlsx' do
+      time_boundary_parameters self
+      exclude_roles_parameter self
+
+      let(:exclude_roles) { 'exclude_admins_and_moderators' }
+
+      example_request 'Comments by project excluding admins and moderators' do
+        assert_status 200
+        expect(xlsx_column_sum('comments')).to eq 2
+      end
+    end
   end
 end

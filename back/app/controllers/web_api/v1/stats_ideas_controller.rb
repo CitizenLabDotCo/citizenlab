@@ -6,6 +6,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   def ideas_by_topic_serie(limit = nil)
     ideas = policy_scope(Idea.published, policy_scope_class: StatIdeaPolicy::Scope)
     ideas = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records
+    ideas = apply_exclude_roles_filter(ideas, :author_id)
 
     serie = ideas
       .where(published_at: @start_at..@end_at)
@@ -47,6 +48,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   def ideas_by_project_serie
     ideas = policy_scope(Idea.published, policy_scope_class: StatIdeaPolicy::Scope)
     ideas = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records
+    ideas = apply_exclude_roles_filter(ideas, :author_id)
 
     ideas
       .where(published_at: @start_at..@end_at)

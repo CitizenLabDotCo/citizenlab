@@ -25,6 +25,10 @@ def topic_filter_parameter(s)
   s.parameter :input_topic, 'Topic ID. Only count reactions on ideas that have the given topic assigned', required: false
 end
 
+def exclude_roles_parameter(s)
+  s.parameter :exclude_roles, "Set to 'exclude_admins_and_moderators' to leave out the participation of users with an admin or moderator role", required: false
+end
+
 resource 'Stats - Reactions' do
   explanation 'The various stats endpoints can be used to show how certain properties of reactions.'
   header 'Content-Type', 'application/json'
@@ -453,6 +457,99 @@ resource 'Stats - Reactions' do
         amount_col = worksheet.map { |col| col.cells[2].value }
         _header, *amounts = amount_col
         expect(amounts.sum).to eq 1
+      end
+    end
+  end
+
+  describe 'exclude_roles filter' do
+    def xlsx_column_sum(column_name)
+      worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+      header, *rows = worksheet.map { |row| row.cells.map(&:value) }
+      rows.sum { |row| row[header.index(column_name)] }
+    end
+
+    before do
+      @project = create(:project)
+      idea = create(:idea_with_topics, idea_status: @idea_status, project: @project, topics_count: 1)
+
+      create(:reaction, reactable: idea, user: create(:user))
+      create(:reaction, reactable: idea, user: nil)
+      create(:reaction, reactable: idea, user: create(:admin), mode: 'down')
+      create(:reaction, reactable: idea, user: create(:project_moderator, projects: [@project]))
+    end
+
+    get 'web_api/v1/stats/reactions_count' do
+      time_boundary_parameters self
+      exclude_roles_parameter self
+
+      example 'Count all reactions includes reactions of admins and moderators by default', document: false do
+        do_request
+        assert_status 200
+        expect(json_parse(response_body)).to eq({ up: 3, down: 1, total: 4 })
+      end
+
+      example 'Count all reactions excluding admins and moderators' do
+        do_request(exclude_roles: 'exclude_admins_and_moderators')
+        assert_status 200
+        expect(json_parse(response_body)).to eq({ up: 2, down: nil, total: 2 })
+      end
+    end
+
+    get 'web_api/v1/stats/reactions_by_topic' do
+      time_boundary_parameters self
+      exclude_roles_parameter self
+
+      example 'Reactions by topic includes reactions of admins and moderators by default', document: false do
+        do_request
+        assert_status 200
+        expect(json_parse(response_body).dig(:data, :attributes, :series, :total).values.sum).to eq 4
+      end
+
+      example 'Reactions by topic excluding admins and moderators' do
+        do_request(exclude_roles: 'exclude_admins_and_moderators')
+        assert_status 200
+        expect(json_parse(response_body).dig(:data, :attributes, :series, :total).values.sum).to eq 2
+      end
+    end
+
+    get 'web_api/v1/stats/reactions_by_topic_as_xlsx' do
+      time_boundary_parameters self
+      exclude_roles_parameter self
+
+      let(:exclude_roles) { 'exclude_admins_and_moderators' }
+
+      example_request 'Reactions by topic excluding admins and moderators' do
+        assert_status 200
+        expect(xlsx_column_sum('reactions')).to eq 2
+      end
+    end
+
+    get 'web_api/v1/stats/reactions_by_project' do
+      time_boundary_parameters self
+      exclude_roles_parameter self
+
+      example 'Reactions by project includes reactions of admins and moderators by default', document: false do
+        do_request
+        assert_status 200
+        expect(json_parse(response_body).dig(:data, :attributes, :series, :total).stringify_keys).to eq({ @project.id => 4 })
+      end
+
+      example 'Reactions by project excluding admins and moderators' do
+        do_request(exclude_roles: 'exclude_admins_and_moderators')
+        assert_status 200
+        expect(json_parse(response_body).dig(:data, :attributes, :series, :total).stringify_keys).to eq({ @project.id => 2 })
+      end
+    end
+
+    get 'web_api/v1/stats/reactions_by_project_as_xlsx' do
+      time_boundary_parameters self
+      exclude_roles_parameter self
+
+      let(:exclude_roles) { 'exclude_admins_and_moderators' }
+
+      example_request 'Reactions by project excluding admins and moderators' do
+        assert_status 200
+        expect(xlsx_column_sum('reactions')).to eq 2
       end
     end
   end
