@@ -3,6 +3,11 @@
 class McpServer::Tools::CreateDemoInputs < McpServer::BaseTool
   MAX_INPUTS_PER_CALL = 50
 
+  # Built-in codes an admin can set manually, across participation methods. Excludes
+  # 'custom' (only addressable by id) and the automated codes (prescreening,
+  # threshold_reached, expired) the real UI cannot set either.
+  SETTABLE_STATUS_CODES = %w[proposed viewed under_consideration accepted implemented rejected answered ineligible].freeze
+
   def name = 'create_demo_inputs'
 
   def annotations
@@ -21,7 +26,9 @@ class McpServer::Tools::CreateDemoInputs < McpServer::BaseTool
       over the phase's date range, so participation charts look realistic. Only
       available on demo and trial platforms. Write content that fits the project's
       context. For form fields (native surveys, extra ideation fields), read the
-      form via get_form_fields first and answer via custom_field_values.
+      form via get_form_fields first and answer via custom_field_values. Optionally
+      give inputs a status, spread for a realistic triage picture; pair answered
+      proposals with create_demo_official_updates.
       Max #{MAX_INPUTS_PER_CALL} inputs per call; call repeatedly for more.
     DESC
   end
@@ -64,6 +71,12 @@ class McpServer::Tools::CreateDemoInputs < McpServer::BaseTool
               budget: {
                 type: 'number',
                 description: 'Cost of the input. Only for budgeting (participatory budget) phases.'
+              },
+              status: {
+                type: 'string',
+                enum: SETTABLE_STATUS_CODES,
+                description: 'Status code for the input. Which codes are available depends on the ' \
+                             "phase's participation method; omit for the default. Not for native surveys."
               }
             },
             additionalProperties: false
@@ -86,7 +99,16 @@ class McpServer::Tools::CreateDemoInputs < McpServer::BaseTool
       ceiling = ceiling_error(phase.project)
       return ceiling if ceiling
 
-      ideas = build_ideas(phase)
+      statuses = IdeaStatus
+        .where(participation_method: phase.pmethod.idea_status_method, code: SETTABLE_STATUS_CODES)
+        .index_by(&:code)
+      unavailable = params[:inputs].filter_map { |attributes| attributes[:status] }.find { |code| !statuses[code] }
+      if unavailable
+        available = statuses.any? ? " Available: #{statuses.keys.join(', ')}." : ''
+        return error("Status '#{unavailable}' is not available for this phase.#{available}")
+      end
+
+      ideas = build_ideas(phase, statuses)
       ideas.each { |idea| authorize(idea, :create?) }
 
       errors = ideas.each_with_index.filter_map do |idea, index|
@@ -124,23 +146,26 @@ class McpServer::Tools::CreateDemoInputs < McpServer::BaseTool
       error(user_ceiling_message) if user_ceiling_message
     end
 
-    def build_ideas(phase)
+    def build_ideas(phase, statuses)
       times = McpServer::DemoData.sample_times(
         params[:inputs].size,
         from: input_window_start(phase),
         to: phase.end_at&.in_time_zone&.end_of_day || Time.zone.now,
         event_times: phase.project.events.pluck(:start_at)
       )
-      params[:inputs].zip(times).map { |attributes, time| build_idea(phase, attributes, time) }
+      params[:inputs].zip(times).map do |attributes, time|
+        build_idea(phase, attributes, time, statuses[attributes[:status]])
+      end
     end
 
-    def build_idea(phase, attributes, time)
+    def build_idea(phase, attributes, time, idea_status)
       location = attributes[:location]
       Idea.new(
         project: phase.project,
         phases: [phase],
         creation_phase: phase.pmethod.transitive? ? nil : phase,
         publication_status: 'published',
+        idea_status: idea_status,
         author: McpServer::DemoData.build_author(time - rand(72).hours),
         created_at: time,
         published_at: time,
