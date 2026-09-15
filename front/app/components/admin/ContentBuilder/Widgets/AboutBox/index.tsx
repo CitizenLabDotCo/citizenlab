@@ -18,7 +18,7 @@ import {
 } from 'containers/ProjectsShowPage/shared/header/participationOptions';
 import ProjectInfoSideBar from 'containers/ProjectsShowPage/shared/header/ProjectInfoSideBar';
 
-import useWidgetProjectId from 'components/ProjectPageBuilder/Widgets/useWidgetProjectId';
+import useWidgetProjectId from 'components/admin/ContentBuilder/useWidgetProjectId';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { useIntl } from 'utils/cl-intl';

@@ -7,6 +7,28 @@ module ContentBuilder
     module Nodes
       module_function
 
+      EVENTS_WIDGET_NAME = 'EventsList'
+
+      def events(props, parent_id)
+        {
+          'type' => { 'resolvedName' => EVENTS_WIDGET_NAME },
+          'nodes' => [],
+          'props' => props,
+          'custom' => {
+            'title' => {
+              'id' => 'app.components.admin.ContentBuilder.Widgets.Events.eventsListTitle',
+              'defaultMessage' => 'Events'
+            },
+            'noPointerEvents' => true
+          },
+          'hidden' => false,
+          'parent' => parent_id,
+          'isCanvas' => false,
+          'displayName' => EVENTS_WIDGET_NAME,
+          'linkedNodes' => {}
+        }
+      end
+
       def file_attachment(file_id, parent_id)
         {
           'type' => { 'resolvedName' => 'FileAttachment' },
