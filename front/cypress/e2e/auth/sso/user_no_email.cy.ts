@@ -61,6 +61,31 @@ describe('SSO: user without email', () => {
     );
   });
 
+  // The profile page reaches the same merge as the missing-data form: the address
+  // is taken, so the auth modal takes over with the merge step.
+  it('merges into the existing account from the profile email change page', () => {
+    const existingEmail = randomEmail();
+    cy.apiSignup('Existing', 'User', existingEmail, 'democracy2.0');
+
+    fakeSSOGlobalSignup(cy, 'jane_doe');
+    cy.get('.e2e-modal-close-button').click();
+
+    // Not linked from the user menu while the profile is incomplete, but reachable.
+    cy.visit('/profile/change-email');
+    cy.get('input[name="email"]').type(existingEmail);
+    cy.dataCy('change-email-submit-button').click();
+
+    // The header sits outside #e2e-authentication-modal, so it is matched on its own.
+    cy.contains('Link your account').should('be.visible');
+    cy.get('#e2e-authentication-modal').should('include.text', existingEmail);
+    confirmEmail(cy);
+    cy.get('#e2e-sign-up-success-modal').should('exist');
+
+    cy.getAuthUser().then((user) => {
+      expect(user.body.data.attributes.email).to.eq(existingEmail);
+    });
+  });
+
   it('allows user to re-request a code', () => {
     fakeSSOGlobalSignup(cy, 'jane_doe');
 

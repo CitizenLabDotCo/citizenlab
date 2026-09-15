@@ -5,6 +5,9 @@ import { FormProvider, UseFormReturn } from 'react-hook-form';
 
 import { requestCodeNewEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
 import { IUser } from 'api/users/types';
+import { invalidateCacheAfterUpdateUser } from 'api/users/useUpdateUser';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import Input from 'components/HookForm/Input';
 import {
@@ -18,6 +21,7 @@ import { FormLabel } from 'components/UI/FormComponents';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isAdmin } from 'utils/permissions/roles';
 
@@ -45,9 +49,19 @@ const UpdateEmailForm = ({
   const onFormSubmit = async (formValues: FormValues) => {
     try {
       return requestCodeNewEmail(formValues.email)
-        .then(() => {
-          setOpenConfirmationModal(true);
+        .then((confirmationType) => {
           setError(undefined);
+
+          // The address belongs to another account, so the code proves a merge, not
+          // an email change. The auth modal owns that step, and the refreshed
+          // requirements route straight to it.
+          if (confirmationType === 'merge_account') {
+            invalidateCacheAfterUpdateUser(queryClient);
+            triggerAuthenticationFlow();
+            return;
+          }
+
+          setOpenConfirmationModal(true);
         })
         .catch(() => {
           setError('taken');

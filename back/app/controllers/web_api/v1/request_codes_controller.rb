@@ -47,8 +47,8 @@ class WebApi::V1::RequestCodesController < ApplicationController
 
     if user_associated_with_new_email && user_associated_with_new_email != current_user
       # Almost always the same person arriving a second way, so offer the merge
-      # rather than dead-ending them. The source guards are also the scope fence:
-      # this endpoint is shared with the profile's email change.
+      # rather than dead-ending them. The source guards keep it to email-less
+      # accounts, from the missing-data form and the profile's email change alike.
       unless account_merge_offerable?(current_user)
         render json: { errors: { new_email: [{ error: 'is already taken' }] } }, status: :unprocessable_entity
         return

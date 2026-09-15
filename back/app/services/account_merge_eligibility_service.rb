@@ -28,8 +28,9 @@ class AccountMergeEligibilityService
   # Whether this account may be absorbed and deleted. Public because
   # AccountMergeService#absorb! applies only this half - see there for why.
   #
-  # Also the scope fence: request_code_new_email is shared with the profile's
-  # "change my email" flow, and these guards keep the merge out of it.
+  # Also what keeps ordinary email changes out of the merge: request_code_new_email
+  # serves the profile's "change my email" page too, where only an email-less
+  # account like this one is offered a merge.
   def source_reason(source)
     return :source_missing if source.blank?
     return :source_not_sso unless source.sso?
