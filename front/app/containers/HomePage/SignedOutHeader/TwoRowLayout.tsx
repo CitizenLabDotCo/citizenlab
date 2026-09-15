@@ -4,9 +4,9 @@ import { Box, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/HomepageBanner';
-import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
 import HeaderContent from 'containers/HomePage/SignedOutHeader/HeaderContent';
 
+import { homepageBannerLayoutHeights } from 'components/admin/GenericHeroBannerForm/HeaderImageDropzone';
 import ContentContainer from 'components/ContentContainer';
 import { Container } from 'components/LandingPages/citizen/TwoRowLayout';
 import Image from 'components/UI/Image';

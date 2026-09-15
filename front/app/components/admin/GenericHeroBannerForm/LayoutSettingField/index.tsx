@@ -27,14 +27,13 @@ import TwoRowLayoutActive from './layout_previews/two_row_layout_active.jpg';
 import TwoRowLayoutInactive from './layout_previews/two_row_layout_inactive.jpg';
 
 const LayoutPreview = styled.img`
-  width: 220px;
+  width: 100%;
 `;
 
 const LayoutOption = styled.label`
   display: flex;
   flex-direction: column;
   align-items: start;
-  margin-right: 20px;
   font-size: ${fontSizes.base}px;
   cursor: pointer;
 `;
@@ -57,7 +56,9 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
       <SubSectionTitle>
         <FormattedMessage {...messages.chooseLayout} />
       </SubSectionTitle>
-      <Box display="flex">
+      {/* Stacked with full-width previews, as the homepage banner's picker is, so the
+          options fit a builder settings panel without scrolling sideways. */}
+      <Box display="flex" flexDirection="column" gap="16px">
         <LayoutOption data-cy="e2e-full-width-banner-layout-option">
           <LayoutOptionTop>
             <Radio

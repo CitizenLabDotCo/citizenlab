@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { useEditor } from '@craftjs/core';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from 'containers/DescriptionBuilder/messages';
@@ -21,6 +23,8 @@ import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import CustomPageBanner from 'components/CustomPageBuilder/Widgets/CustomPageBanner';
+import bannerMessages from 'components/CustomPageBuilder/Widgets/CustomPageBanner/messages';
 import ProjectsByFilter from 'components/CustomPageBuilder/Widgets/ProjectsByFilter';
 import projectsMessages from 'components/CustomPageBuilder/Widgets/ProjectsByFilter/messages';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
@@ -41,9 +45,38 @@ const CustomPageBuilderToolbox = () => {
   const filteredProjectsEnabled = useFeatureFlag({
     name: 'advanced_custom_pages',
   });
+  // A page has one banner, so the entry goes once one is placed and comes back when it is
+  // deleted — the same reason FileAttachment's picker drops files already in the layout.
+  const { hasBanner } = useEditor((state) => ({
+    hasBanner: Object.values(state.nodes).some(
+      (node) => node.data.name === 'CustomPageBanner'
+    ),
+  }));
 
   return (
     <Container>
+      {!hasBanner && (
+        <Section>
+          <DraggableElement
+            id="e2e-draggable-custom-page-banner"
+            component={
+              <CustomPageBanner
+                layout="full_width_banner_layout"
+                headerMultiloc={{}}
+                subheaderMultiloc={{}}
+                overlayColor={null}
+                overlayOpacity={null}
+                ctaType="no_button"
+                ctaTextMultiloc={{}}
+                ctaUrl={null}
+                image={{}}
+              />
+            }
+            icon="image"
+            label={formatMessage(bannerMessages.title)}
+          />
+        </Section>
+      )}
       <Section>
         <DraggableElement
           id="e2e-draggable-image-text-cards"

@@ -1,11 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  fontSizes,
-  isRtl,
-  media,
-} from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 
@@ -15,7 +10,6 @@ import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
 import useLocalize from 'hooks/useLocalize';
 
 import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
-import ContentContainer from 'components/ContentContainer';
 import CustomPageContentViewer from 'components/CustomPageBuilder/ContentViewer';
 import useCustomPageBuilderContent from 'components/CustomPageBuilder/ContentViewer/useCustomPageBuilderContent';
 import { Container, Content } from 'components/LandingPages/citizen';
@@ -23,54 +17,14 @@ import PageNotFound from 'components/PageNotFound';
 
 import { useParams } from 'utils/router';
 
-import BackToProjectLink from './BackToProjectLink';
-import CustomPageHeader from './CustomPageHeader';
-import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
+import AdminCustomPageEditButton from './AdminCustomPageEditButton';
+import LegacyPageHeader from './LegacyPageHeader';
 import PageSections from './PageSections';
 
 // Builder content is one white block, so the page's grey would only show as a strip below it.
 const PageContainer = styled(Container)<{ builderContent: boolean }>`
   ${({ builderContent, theme }) =>
     builderContent && `background: ${theme.colors.white};`}
-`;
-
-const PageTitle = styled.h1`
-  color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.xxxxl}px;
-  line-height: normal;
-  font-weight: 600;
-  text-align: left;
-  margin: 0;
-  padding: 0;
-
-  ${media.tablet`
-    font-size: ${fontSizes.xxxl}px;
-  `}
-
-  ${isRtl`
-    text-align: right;
-    direction: rtl;
-  `}
-`;
-
-const NoBannerContainer = styled(ContentContainer)`
-  background: #fff;
-  padding: 50px 50px 50px 50px;
-
-  ${media.tablet`
-    padding: 50px 20px 50px 20px;
-  `}
-`;
-
-// When a banner is shown, the back link sits above it sharing the same
-// horizontal padding, with little vertical space so it hugs the banner.
-const BackLinkContainer = styled(ContentContainer)`
-  background: #fff;
-  padding: 50px 50px 8px 50px;
-
-  ${media.tablet`
-    padding: 50px 20px 8px 20px;
-  `}
 `;
 
 const CustomPageShow = () => {
@@ -123,38 +77,28 @@ const CustomPageShow = () => {
       />
       <main className={`e2e-page-${pageSlugToUse}`}>
         <PageContainer builderContent={showBuilderContent}>
-          {pageAttributes.banner_enabled ? (
-            <>
-              {pageAttributes.project_id && (
-                <BackLinkContainer>
-                  <BackToProjectLink projectId={pageAttributes.project_id} />
-                </BackLinkContainer>
-              )}
-              <Box background="#fff" width="100%">
-                <CustomPageHeader pageData={page.data} />
-              </Box>
-            </>
-          ) : (
-            // The default is narrower, so the title would not line up with the content.
-            <NoBannerContainer
+          {showBuilderContent ? (
+            // The layout owns the header: its Banner and Title widgets replace the legacy
+            // one, so the page renders only the edit button. Full width or the flex parent
+            // collapses the anchor to nothing and the button lands mid-page; it lines up
+            // with the content unless a full-bleed banner puts it at the window edge.
+            <Box
+              position="relative"
+              w="100%"
               maxWidth={
-                showBuilderContent ? BUILDER_CONTENT_MAX_WIDTH : undefined
+                builderContent.startsWithBanner
+                  ? undefined
+                  : BUILDER_CONTENT_MAX_WIDTH
               }
+              zIndex="40000"
             >
-              {pageAttributes.project_id && (
-                <Box mb="8px">
-                  <BackToProjectLink projectId={pageAttributes.project_id} />
-                </Box>
-              )}
-              {/* show page text title if the banner is disabled */}
-              <PageTitle>{localize(pageAttributes.title_multiloc)}</PageTitle>
-              <Box zIndex="40000">
-                <AdminCustomPageEditButton
-                  pageId={page.data.id}
-                  projectId={pageAttributes.project_id}
-                />
-              </Box>
-            </NoBannerContainer>
+              <AdminCustomPageEditButton
+                pageId={page.data.id}
+                projectId={pageAttributes.project_id}
+              />
+            </Box>
+          ) : (
+            <LegacyPageHeader page={page.data} />
           )}
           <Content>
             {showBuilderContent ? (
