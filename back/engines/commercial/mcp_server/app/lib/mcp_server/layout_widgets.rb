@@ -112,8 +112,7 @@ class McpServer::LayoutWidgets
         custom: {"title":{"id":"app.components.ProjectPageBuilder.Widgets.extraSurveysWidgetTitle2","defaultMessage":"Spotlight surveys"},"noPointerEvents":true}
         surveyPhaseId must be a phase with placement_type "standalone" and participation_method
         "native_survey" (list_phases). "card" shows title, dates and status; "button" is just the
-        button. Defaults: buttonFormat "card", buttonStyle "primary". Only renders when the
-        platform has the parallel_participation feature.
+        button. Defaults: buttonFormat "card", buttonStyle "primary".
     DOC
   }.freeze
 
