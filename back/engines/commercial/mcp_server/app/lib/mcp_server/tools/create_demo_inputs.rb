@@ -3,11 +3,6 @@
 class McpServer::Tools::CreateDemoInputs < McpServer::BaseTool
   MAX_INPUTS_PER_CALL = 50
 
-  # Built-in codes an admin can set manually, across participation methods. Excludes
-  # 'custom' (only addressable by id) and the automated codes (prescreening,
-  # threshold_reached, expired) the real UI cannot set either.
-  SETTABLE_STATUS_CODES = %w[proposed viewed under_consideration accepted implemented rejected answered ineligible].freeze
-
   def name = 'create_demo_inputs'
 
   def annotations
@@ -74,7 +69,7 @@ class McpServer::Tools::CreateDemoInputs < McpServer::BaseTool
               },
               status: {
                 type: 'string',
-                enum: SETTABLE_STATUS_CODES,
+                enum: McpServer::DemoData::SETTABLE_STATUS_CODES,
                 description: 'Status code for the input. Which codes are available depends on the ' \
                              "phase's participation method; omit for the default. Not for native surveys."
               }
@@ -99,9 +94,7 @@ class McpServer::Tools::CreateDemoInputs < McpServer::BaseTool
       ceiling = ceiling_error(phase.project)
       return ceiling if ceiling
 
-      statuses = IdeaStatus
-        .where(participation_method: phase.pmethod.idea_status_method, code: SETTABLE_STATUS_CODES)
-        .index_by(&:code)
+      statuses = McpServer::DemoData.settable_statuses(phase.pmethod.idea_status_method)
       unavailable = params[:inputs].filter_map { |attributes| attributes[:status] }.find { |code| !statuses[code] }
       if unavailable
         available = statuses.any? ? " Available: #{statuses.keys.join(', ')}." : ''
