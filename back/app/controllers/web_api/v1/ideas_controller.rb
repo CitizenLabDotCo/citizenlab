@@ -709,10 +709,15 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   # User field values merged into the input (u_-prefixed keys) are not validated.
+  # Transitive inputs can be moved to a project with a different form, so their stored keys are not all known.
   def validate_custom_field_values!(input, custom_form)
     fields = IdeaCustomFieldsService.new(custom_form).all_fields.select(&:supports_submission?)
     values = input.custom_field_values.reject { |key, _| key.start_with?(UserFieldsInFormService.prefix) }
-    errors = CustomFieldValuesValidationService.new.json_schema_validation_errors(fields, values)
+    errors = CustomFieldValuesValidationService.new.json_schema_validation_errors(
+      fields,
+      values,
+      allow_unknown_keys: input.participation_method_on_creation.transitive?
+    )
     return if errors.empty?
 
     errors.each do |error|
