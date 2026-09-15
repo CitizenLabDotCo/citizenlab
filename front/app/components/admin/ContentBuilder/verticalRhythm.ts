@@ -9,7 +9,7 @@ export const VerticalRhythmContext = createContext(false);
 
 // flow: inline content that reads as one column of text (paragraphs, images,
 // buttons). card: a visually bounded box (accordions, info boxes). band: a
-// full-width section with its own background (phases, events).
+// full-width section of its own (phases, events).
 type WidgetRole = 'flow' | 'card' | 'band';
 
 const WIDGET_ROLES: Record<string, WidgetRole> = {
@@ -31,6 +31,7 @@ const WIDGET_ROLES: Record<string, WidgetRole> = {
   ExtraSurveysWidget: 'card',
   PhasesWidget: 'band',
   EventsWidget: 'band',
+  EventsList: 'band',
 };
 
 const BOUNDARY_MARGINS = {

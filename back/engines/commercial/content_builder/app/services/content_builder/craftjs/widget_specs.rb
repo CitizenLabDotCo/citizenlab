@@ -19,7 +19,7 @@ module ContentBuilder
     module WidgetSpecs
       # Node types kept only for graphs that already contain them: editable and
       # deletable in place, but never newly created.
-      LEGACY_WIDGETS = %w[RichTextMultiloc ProjectDescriptionSection].freeze
+      LEGACY_WIDGETS = %w[RichTextMultiloc ProjectDescriptionSection EventsWidget].freeze
 
       SPECS = {
         'TextMultiloc' => { 'multilocs' => %w[text] },
@@ -53,7 +53,8 @@ module ContentBuilder
         'ThreeColumn' => { 'slots' => %w[column1 column2 column3] },
         'HtmlBlockMultiloc' => { 'multilocs' => %w[html] },
         'PhasesWidget' => { 'enums' => { 'sectionBackground' => %w[colored white] } },
-        'EventsWidget' => { 'enums' => { 'sectionBackground' => %w[colored white] } },
+        'EventsList' => {},
+        'EventsWidget' => {},
         'ExtraSurveysWidget' => {
           'multilocs' => %w[buttonText],
           'enums' => {
