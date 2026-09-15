@@ -2619,6 +2619,11 @@
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
   },
+  "app.components.app.containers.AdminPage.ProjectEdit.displayGroup": {
+    "state": "verified",
+    "verified_at": "2026-09-15T12:28:36.709615Z",
+    "verified_by": "Luuc"
+  },
   "app.components.app.containers.AdminPage.ProjectEdit.expireDateLimitRequired": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
@@ -2744,6 +2749,11 @@
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
   },
+  "app.components.app.containers.AdminPage.ProjectEdit.moderationGroup": {
+    "state": "verified",
+    "verified_at": "2026-09-15T12:28:36.709615Z",
+    "verified_by": "Luuc"
+  },
   "app.components.app.containers.AdminPage.ProjectEdit.observationTerm": {
     "state": "verified",
     "verified_at": "2026-07-01T08:21:13.710908Z",
@@ -2768,6 +2778,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
+  },
+  "app.components.app.containers.AdminPage.ProjectEdit.participantActionsGroup": {
+    "state": "verified",
+    "verified_at": "2026-09-15T12:28:36.709615Z",
+    "verified_by": "Luuc"
   },
   "app.components.app.containers.AdminPage.ProjectEdit.participationOptions": {
     "state": "verified",
@@ -8479,6 +8494,16 @@
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.accessRights": {
+    "state": "verified",
+    "verified_at": "2026-09-15T12:28:36.709615Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.actionMessageParticipants": {
+    "state": "verified",
+    "verified_at": "2026-09-15T12:28:36.709615Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
@@ -8514,6 +8539,16 @@
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.backToProjectSetup": {
+    "state": "verified",
+    "verified_at": "2026-09-15T12:28:36.709615Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.buildView": {
+    "state": "verified",
+    "verified_at": "2026-09-15T12:28:36.709615Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.edit": {
     "state": "verified",
     "verified_at": "2026-06-29T09:12:16.498966Z",
@@ -8527,6 +8562,11 @@
   "app.containers.Admin.projects.project.editProjectPageInContentBuilder": {
     "state": "verified",
     "verified_at": "2026-06-29T09:12:16.498966Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.editSurveyForm": {
+    "state": "verified",
+    "verified_at": "2026-09-15T12:28:36.709615Z",
     "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.examplePhaseCollectIdeas": {
