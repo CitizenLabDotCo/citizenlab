@@ -106,6 +106,7 @@ module McpServer
       McpServer::Tools::SeedDemoVotes,
       McpServer::Tools::SeedDemoReactions,
       McpServer::Tools::SeedDemoAttendees,
+      McpServer::Tools::CreateDemoOfficialUpdates,
       McpServer::Tools::DestroyResource,
       McpServer::Tools::UpdateResource,
       McpServer::Tools::UpdateProject,
