@@ -125,7 +125,7 @@ describe CustomIdMethods::NemlogIn::NemlogInOmniauth do
       hashed_uid: Verification::VerificationService.new.send(:hashed_uid, saml_auth_response[:uid], 'nemlog_in')
     )
     allow_any_instance_of(AccountMergeService)
-      .to receive(:absorb!).and_raise(AccountMergeService::IncompleteMergeError)
+      .to receive(:merge!).and_raise(AccountMergeService::IncompleteMergeError)
     allow(ErrorReporter).to receive(:report)
 
     get "/auth/nemlog_in?token=#{token}&verification_pathname=/some-page"

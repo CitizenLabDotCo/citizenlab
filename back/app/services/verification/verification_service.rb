@@ -138,7 +138,9 @@ module Verification
 
         # After the save on purpose: the source's copy is then a duplicate of one
         # +user+ holds, so the merge drops it rather than leaving two identical rows.
-        other_accounts.each { |source| account_merge_service.absorb!(source: source, target: user) }
+        other_accounts.each do |source|
+          account_merge_service.merge!(source: source, target: user, proof: :identity_provider)
+        end
       end
 
       verification

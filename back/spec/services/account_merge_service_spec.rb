@@ -22,7 +22,8 @@ describe AccountMergeService do
   end
 
   def merge!
-    service.merge!(source: source, confirmation: confirmation)
+    confirmation
+    service.merge!(source: source, target: target, proof: :email_code)
   end
 
   it 'moves the identity and verification, then deletes the source' do
@@ -69,12 +70,12 @@ describe AccountMergeService do
     expect(target.confirmation_required).to be false
   end
 
-  # absorb! has no such proof: tying two accounts together says nothing about who can
-  # read the target's inbox.
-  it 'leaves the target email unconfirmed on the provider-driven merge' do
+  # A provider tying two accounts together says nothing about who can read the
+  # target's inbox.
+  it 'leaves the target email unconfirmed when the identity provider proved the merge' do
     target.update!(email_confirmed_at: nil, confirmation_required: true)
 
-    service.absorb!(source: source, target: target)
+    service.merge!(source: source, target: target, proof: :identity_provider)
 
     expect(target.reload.email_confirmed_at).to be_nil
   end
@@ -260,18 +261,17 @@ describe AccountMergeService do
     end
   end
 
-  # The provider-driven entry point, used when a verification uid is already held by
-  # an email-less SSO account.
-  describe '#absorb!' do
-    def absorb!(into: target)
-      service.absorb!(source: source, target: into)
+  # Used when a verification uid is already held by an email-less SSO account.
+  describe 'when the identity provider proved the merge' do
+    def merge_by_provider!
+      service.merge!(source: source, target: target, proof: :identity_provider)
     end
 
     it 'moves participation onto the target and deletes the source' do
       idea = create(:idea, author: source)
       reaction = create(:reaction, user: source)
 
-      expect(absorb!).to eq target
+      expect(merge_by_provider!).to eq target
 
       expect { source.reload }.to raise_error ActiveRecord::RecordNotFound
       expect(idea.reload.author_id).to eq target.id
@@ -280,35 +280,34 @@ describe AccountMergeService do
 
     # Target-side rules guard against handing a stranger's account to whoever read an
     # inbox. The provider has tied these two together, so an admin must not be refused.
-    it 'allows a target the confirmation-driven merge would refuse' do
+    it 'allows a target the email-code merge would refuse' do
       target.add_role('admin')
       target.save!
 
-      expect { absorb! }.not_to raise_error
+      expect { merge_by_provider! }.not_to raise_error
       expect(target.reload).to be_admin
     end
 
-    # The provider-driven path applies the source rules too, so a block holds here as
-    # well as on the confirmation path.
+    # The source rules apply here too, so a block holds on both kinds of merge.
     it 'refuses a blocked source' do
       source.update_columns(block_end_at: 1.week.from_now)
 
-      expect { absorb! }.to raise_error described_class::IneligibleError
+      expect { merge_by_provider! }.to raise_error described_class::IneligibleError
       expect(source.reload).to be_present
     end
 
     it 'still refuses a source that is not an email-less SSO account' do
       source.update!(email: 'someone@example.org')
 
-      expect { absorb! }.to raise_error described_class::IneligibleError
+      expect { merge_by_provider! }.to raise_error described_class::IneligibleError
       expect(source.reload).to be_present
     end
 
     # Nobody new gains access, and expiring would cut off the request in flight.
-    it 'leaves the target token alone, unlike the confirmation-driven merge' do
+    it 'leaves the target token alone, unlike the email-code merge' do
       before_key = target.token_expiry_key
 
-      absorb!
+      merge_by_provider!
 
       expect(target.reload.token_expiry_key).to eq before_key
     end
@@ -316,15 +315,29 @@ describe AccountMergeService do
 
   describe 'refusals' do
     it 'raises and changes nothing when the target may not be merged into' do
-      # The merge resolves its target by email, so the admin must own the address by
-      # the time it runs.
-      target.update!(email: 'somewhere-else@example.org')
-      admin = create(:admin, email: 'existing@example.org')
+      target.update!(roles: [{ type: 'admin' }])
 
       expect { merge! }.to raise_error described_class::IneligibleError
 
       expect(source.reload).to be_present
-      expect(admin.reload.identities).to be_empty
+      expect(target.reload.identities).to be_empty
+    end
+
+    # The caller looks the target up by address before the merge locks it.
+    it 'refuses when the target no longer owns the address the code was sent to' do
+      confirmation
+      target.update!(email: 'somewhere-else@example.org')
+
+      expect { merge! }.to raise_error described_class::IneligibleError
+
+      expect(source.reload).to be_present
+      expect(target.reload.identities).to be_empty
+    end
+
+    it 'refuses an unknown proof' do
+      expect { service.merge!(source: source, target: target, proof: :guess) }
+        .to raise_error ArgumentError
+      expect(source.reload).to be_present
     end
 
     # source.destroy! silently nullifies ideas and comments, so anything left behind
@@ -338,22 +351,6 @@ describe AccountMergeService do
 
       expect(source.reload).to be_present
       expect(idea.reload.author_id).to eq source.id
-    end
-  end
-
-  # Nobody owns the address any more, so there is nothing to merge into - but the
-  # user still proved they own it.
-  describe 'when the target no longer exists' do
-    it 'promotes the email onto the source instead of merging' do
-      confirmation
-      target.destroy!
-
-      expect(merge!).to eq source
-
-      source.reload
-      expect(source.email).to eq 'existing@example.org'
-      expect(source.confirmation_required).to be false
-      expect(source.email_confirmed_at).to be_present
     end
   end
 end

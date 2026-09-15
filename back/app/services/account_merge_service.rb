@@ -54,93 +54,81 @@ class AccountMergeService
     { model: 'Activity', fk: :user_id }
   ].freeze
 
+  # What proved the two accounts belong to one person, which decides the rules.
+  #
+  # :email_code - the source entered a code sent to its merge_target_email, which the
+  #   target owns. Reading an inbox is all it takes, so the full target rules apply,
+  #   and the target's email counts as confirmed.
+  # :identity_provider - a provider returned the same verification uid for both.
+  #   Only the source rules apply: the target is the account being signed in to, so
+  #   refusing an admin would only break re-verification.
+  PROOFS = %i[email_code identity_provider].freeze
+
   def initialize
     @eligibility_service = AccountMergeEligibilityService.new
     @verification_service = Verification::VerificationService.new
   end
 
-  # Confirmation-driven merge: the caller entered a code sent to their
-  # merge_target_email, so the target is the account owning that address and has to
-  # clear the full target-side eligibility rules.
+  # Moves everything +source+ owns onto +target+, then deletes +source+. Its pending
+  # merge confirmation goes with it.
   #
-  # @return [User] the surviving account the caller should be signed in as.
-  # @raise [IneligibleError] if the target may not be merged into.
+  # @param proof [Symbol] one of PROOFS.
+  # @return [User] +target+, the account the caller should be signed in as.
+  # @raise [ArgumentError] for an unknown +proof+.
+  # @raise [IneligibleError] if the two accounts may not be merged.
   # @raise [IncompleteMergeError] if anything would have been left on the source.
-  def merge!(source:, confirmation:)
-    run!(source: source, confirmation: confirmation)
-  end
+  def merge!(source:, target:, proof:)
+    raise ArgumentError, "unknown proof: #{proof.inspect}" unless PROOFS.include?(proof)
 
-  # Provider-driven merge: an identity provider returned the same verification uid
-  # for both accounts, so they are one person.
-  #
-  # Target-side eligibility does not apply. Those rules guard against handing over a
-  # stranger's account to whoever read an inbox; here the target is the account being
-  # signed in to, so refusing an admin would only break re-verification. The token is
-  # left alone for the same reason.
-  #
-  # @return [User] +target+, with everything the source owned moved onto it.
-  # @raise [IneligibleError] if the source may not be merged.
-  # @raise [IncompleteMergeError] if anything would have been left on the source.
-  def absorb!(source:, target:)
-    run!(source: source, target: target)
+    email_code = proof == :email_code
+
+    moved = ActiveRecord::Base.transaction do
+      lock_in_id_order!(source, target)
+
+      reason = ineligibility_reason(source, target, proof)
+      raise IneligibleError, reason.to_s if reason
+
+      # Before the move: afterwards there is no telling whose lock is whose.
+      target_locks = locks_held_by(target)
+
+      moved_counts = move_all!(source, target)
+
+      # The caller read a code sent to this address, so it is proven. Otherwise the
+      # survivor would be asked to confirm the address that authorised the merge.
+      confirm_target_email!(target) if email_code
+
+      apply_verified_identity!(source, target, target_locks)
+      recompute_counters!(target)
+
+      # A new way to authenticate is a credential change, so other sessions should not
+      # survive it. A provider-proven merge gives nobody new access, and expiring would
+      # cut off the request in flight.
+      target.expire_token! if email_code
+
+      assert_source_emptied!(source)
+      source.destroy!
+
+      moved_counts
+    end
+
+    run_side_effects!(target, source, moved)
+    target
   end
 
   private
 
-  def run!(source:, target: nil, confirmation: nil)
-    frozen_source = nil
-    moved = {}
+  def ineligibility_reason(source, target, proof)
+    if proof == :identity_provider
+      return :target_is_source if target.id == source.id
 
-    survivor = ActiveRecord::Base.transaction do
-      resolved = target || User.find_by_cimail(source.merge_target_email)
-
-      # Nobody owns the address any more, so there is nothing to merge into. Fall
-      # back to what the ordinary new-email flow would have done.
-      next promote_email_onto_source!(source, confirmation) if resolved.nil?
-
-      lock_in_id_order!(source, resolved)
-
-      reason = ineligibility_reason(source, resolved, confirmation)
-      raise IneligibleError, reason.to_s if reason
-
-      # Before the move: afterwards there is no telling whose lock is whose.
-      target_locks = locks_held_by(resolved)
-
-      moved = move_all!(source, resolved)
-
-      # The caller read a code sent to this address, so it is proven. Otherwise the
-      # survivor would be asked to confirm the address that authorised the merge.
-      confirm_target_email!(resolved) if confirmation
-
-      apply_verified_identity!(source, resolved, target_locks)
-      recompute_counters!(resolved)
-
-      # A new way to authenticate is a credential change, so other sessions should
-      # not survive it. See absorb! for why that path is exempt.
-      resolved.expire_token! if confirmation
-
-      assert_source_emptied!(source)
-      confirmation&.destroy!
-
-      source.destroy!
-      frozen_source = source
-
-      resolved
+      return @eligibility_service.source_reason(source)
     end
 
-    return survivor if frozen_source.nil? # degraded path: no merge happened
+    # The caller looked the target up by this address before the lock, and the owner
+    # may have changed it since. The code proves nothing about the new address.
+    return :target_email_changed unless target.email.to_s.casecmp?(source.merge_target_email.to_s)
 
-    run_side_effects!(survivor, frozen_source, moved)
-    survivor
-  end
-
-  # Which rules apply depends on what proved the two accounts are one person.
-  def ineligibility_reason(source, target, confirmation)
-    return @eligibility_service.ineligibility_reason(source: source, target: target) if confirmation
-
-    return :target_is_source if target.id == source.id
-
-    @eligibility_service.source_reason(source)
+    @eligibility_service.ineligibility_reason(source: source, target: target)
   end
 
   # Deterministic ordering, or two merges into the same target deadlock each other.
@@ -148,17 +136,6 @@ class AccountMergeService
   # rather than as they were when these records were first loaded.
   def lock_in_id_order!(source, target)
     [source, target].sort_by(&:id).each(&:lock!)
-  end
-
-  def promote_email_onto_source!(source, confirmation)
-    source.update!(
-      email: source.merge_target_email,
-      merge_target_email: nil,
-      email_confirmed_at: Time.zone.now,
-      confirmation_required: false
-    )
-    confirmation.destroy!
-    source
   end
 
   def move_all!(source, target)

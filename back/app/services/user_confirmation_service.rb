@@ -83,9 +83,11 @@ class UserConfirmationService
     raise ValidationError.new(:code, :invalid) if confirmation.nil?
 
     validate_code!(confirmation, code)
-    target = AccountMergeService.new.merge!(source: user, confirmation: confirmation)
 
-    success_result(target)
+    target = User.find_by_cimail(user.merge_target_email)
+    return success_result(promote_merge_target_email!(user, confirmation)) if target.nil?
+
+    success_result(AccountMergeService.new.merge!(source: user, target: target, proof: :email_code))
   rescue ValidationError => e
     failure_result(e)
   rescue AccountMergeService::IneligibleError
@@ -150,6 +152,23 @@ class UserConfirmationService
     validate_retry_count!(confirmation, code)
     validate_code_value!(confirmation, code)
     validate_code_expiration!(confirmation)
+  end
+
+  # Nobody owns the address any more, so there is nothing to merge into. The code
+  # still proved the user reads that inbox, so it becomes their email, as a confirmed
+  # new_email would.
+  def promote_merge_target_email!(user, confirmation)
+    ActiveRecord::Base.transaction do
+      user.update!(
+        email: user.merge_target_email,
+        merge_target_email: nil,
+        email_confirmed_at: Time.zone.now,
+        confirmation_required: false
+      )
+      confirmation.destroy!
+    end
+
+    user
   end
 
   def validate_password_login_enabled!

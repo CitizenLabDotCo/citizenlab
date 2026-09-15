@@ -25,8 +25,9 @@ class AccountMergeEligibilityService
     source_reason(source).nil?
   end
 
-  # Whether this account may be merged away and deleted. Public because
-  # AccountMergeService#absorb! applies only this half - see there for why.
+  # Whether this account may be merged away and deleted. Public because a merge
+  # proven by an identity provider applies only this half - see
+  # AccountMergeService::PROOFS for why.
   #
   # Also what keeps ordinary email changes out of the merge: request_code_new_email
   # serves the profile's "change my email" page too, where only an email-less
