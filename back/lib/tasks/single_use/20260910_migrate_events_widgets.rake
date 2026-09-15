@@ -26,7 +26,7 @@ namespace :single_use do
   task :migrate_events_widgets, %i[execute host revert force] => [:environment] do |_t, args|
     # Two weeks after the release that ships the shims (PR #14736).
     earliest_execute_on = Date.new(2026, 10, 1)
-    canonical = ContentBuilder::Craftjs::Nodes::EVENTS_WIDGET_NAME
+    new_events_widget_name = ContentBuilder::Craftjs::Nodes::EVENTS_WIDGET_NAME
 
     # What each surface's own widget rendered, as props of the shared one.
     props_by_name = {
@@ -64,7 +64,7 @@ namespace :single_use do
 
     revert = args[:revert] == 'revert'
     force = args[:force] == 'force'
-    names = revert ? [canonical] : props_by_name.keys
+    names = revert ? [new_events_widget_name] : props_by_name.keys
     template_tenant = ->(tenant) { tenant.host.include?('.template') || tenant.host.include?('-template') }
     remaining = Hash.new(0)
     tenant_lines = []
@@ -103,7 +103,7 @@ namespace :single_use do
     TenantScript.run(
       revert ? 'migrate_events_widgets_revert' : 'migrate_events_widgets',
       args: args,
-      description: revert ? "renaming #{canonical} nodes back to their surface names" : "rewriting events nodes to #{canonical}",
+      description: revert ? "renaming #{new_events_widget_name} nodes back to their surface names" : "rewriting events nodes to #{new_events_widget_name}",
       # A tenant whose creation never finalized can still hold a template's layout, and the shims
       # can only go once no tenant that could be served holds a surface name.
       tenants: Tenant.not_deleted,
@@ -124,7 +124,7 @@ namespace :single_use do
               script.reporter.add_change(node, state.json[id], context: context.merge(node_id: id))
             elsif revert
               state.delete_node(id)
-              script.reporter.add_delete("#{canonical} node", id, context: context.merge(node: node))
+              script.reporter.add_delete("#{new_events_widget_name} node", id, context: context.merge(node: node))
             else
               state.json[id] = rewrite.call(node)
               script.reporter.add_change(node, state.json[id], context: context.merge(node_id: id))
