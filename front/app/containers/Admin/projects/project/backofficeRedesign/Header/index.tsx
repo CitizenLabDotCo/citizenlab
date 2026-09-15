@@ -33,6 +33,7 @@ const CrumbBar = styled(Box)`
 interface Props {
   project: IProjectData;
   phase?: IPhaseData;
+  draftLabel?: string;
   activeView: PhaseViewKey;
   section?: ProjectSection;
   openDropdown: HeaderDropdownName | null;
@@ -42,6 +43,7 @@ interface Props {
 const WorkspaceHeader = ({
   project,
   phase,
+  draftLabel,
   activeView,
   section,
   openDropdown,
@@ -58,7 +60,7 @@ const WorkspaceHeader = ({
     },
     {
       label: localize(project.attributes.title_multiloc),
-      ...((phase || section) && {
+      ...((phase || draftLabel || section) && {
         link: {
           to: '/admin/projects/$projectId' as const,
           params: { projectId: project.id },
@@ -66,6 +68,7 @@ const WorkspaceHeader = ({
       }),
     },
     ...(phase ? [{ label: localize(phase.attributes.title_multiloc) }] : []),
+    ...(draftLabel ? [{ label: draftLabel }] : []),
     ...(section ? [{ label: formatMessage(section.label) }] : []),
   ];
 
