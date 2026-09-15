@@ -249,6 +249,36 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.workspace.publishNow',
     defaultMessage: 'Publish now',
   },
+  publishRestoreToDraft: {
+    id: 'app.containers.Admin.projects.project.workspace.publishRestoreToDraft',
+    defaultMessage: 'Restore to draft',
+  },
+  publishRestoreToDraftTitle: {
+    id: 'app.containers.Admin.projects.project.workspace.publishRestoreToDraftTitle',
+    defaultMessage: 'Restore to draft?',
+  },
+  publishRestoreToDraftBody: {
+    id: 'app.containers.Admin.projects.project.workspace.publishRestoreToDraftBody',
+    defaultMessage:
+      'The project goes back to draft and is no longer visible to residents.',
+  },
+  publishCancel: {
+    id: 'app.containers.Admin.projects.project.workspace.publishCancel',
+    defaultMessage: 'Cancel',
+  },
+  publishMoveToArchive: {
+    id: 'app.containers.Admin.projects.project.workspace.publishMoveToArchive',
+    defaultMessage: 'Move to archive',
+  },
+  publishArchiveTitle: {
+    id: 'app.containers.Admin.projects.project.workspace.publishArchiveTitle',
+    defaultMessage: 'Archive this project?',
+  },
+  publishArchiveBody: {
+    id: 'app.containers.Admin.projects.project.workspace.publishArchiveBody',
+    defaultMessage:
+      'The project moves to your Archive folder on the platform. Residents can no longer see it or take part, and it stops appearing on the homepage, but everything stays saved and you can restore it to draft at any time.',
+  },
   stepSharePrivateLink: {
     id: 'app.containers.Admin.projects.project.workspace.stepSharePrivateLink2',
     defaultMessage: 'Share a private link',
