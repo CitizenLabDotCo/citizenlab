@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Box, IconTooltip, colors } from '@citizenlab/cl2-component-library';
 
@@ -21,8 +21,10 @@ import {
 } from 'components/admin/Section';
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
+import TypedDeleteConfirmationModal from 'components/UI/TypedDeleteConfirmationModal';
+import typedDeleteConfirmationMessages from 'components/UI/TypedDeleteConfirmationModal/messages';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import Link, { typedStyled } from 'utils/cl-router/Link';
 
 import messages from '../messages';
@@ -43,17 +45,34 @@ const AreaList = () => {
   const { mutate: deleteArea } = useDeleteArea();
   const { mutate: reorderArea } = useReorderArea();
 
-  const { formatMessage } = useIntl();
+  const localize = useLocalize();
 
-  const handleDeleteClick =
-    (areaId: string) => (event: React.FormEvent<any>) => {
-      const deleteMessage = formatMessage(messages.areaDeletionConfirmation);
-      event.preventDefault();
+  const [areaToDelete, setAreaToDelete] = useState<IAreaData | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
-      if (window.confirm(deleteMessage)) {
-        deleteArea(areaId);
-      }
-    };
+  const handleDeleteClick = (area: IAreaData) => (event: React.FormEvent) => {
+    event.preventDefault();
+    setAreaToDelete(area);
+  };
+
+  const handleCloseDeleteModal = () => {
+    if (!isDeleting) {
+      setAreaToDelete(null);
+    }
+  };
+
+  const handleDeleteArea = () => {
+    if (!areaToDelete) return;
+
+    setIsDeleting(true);
+
+    deleteArea(areaToDelete.id, {
+      onSettled: () => {
+        setIsDeleting(false);
+        setAreaToDelete(null);
+      },
+    });
+  };
 
   const handleReorderArea = (areaId: string, newOrder: number) => {
     reorderArea({ id: areaId, ordering: newOrder });
@@ -106,6 +125,21 @@ const AreaList = () => {
           </>
         )}
       </SortableList>
+      <TypedDeleteConfirmationModal
+        opened={!!areaToDelete}
+        onClose={handleCloseDeleteModal}
+        onConfirm={handleDeleteArea}
+        title={messages.deleteAreaModalTitle}
+        entityName={
+          areaToDelete ? localize(areaToDelete.attributes.title_multiloc) : ''
+        }
+        mainWarning={messages.deleteAreaModalWarning}
+        confirmationWord={
+          typedDeleteConfirmationMessages.confirmationWordDelete
+        }
+        deleteButtonText={messages.deleteAreaButton}
+        isDeleting={isDeleting}
+      />
     </Section>
   );
 };
@@ -116,7 +150,7 @@ interface AreaListRowProps {
   handleDropRow: (itemId: string, toIndex: number) => void;
   index: number;
   isLastItem: boolean;
-  handleDeleteClick: (areaId: string) => (event: React.FormEvent<any>) => void;
+  handleDeleteClick: (area: IAreaData) => (event: React.FormEvent) => void;
 }
 
 const AreaListRow = ({
@@ -177,7 +211,7 @@ const AreaListRow = ({
         </Box>
       )}
       <ButtonWithLink
-        onClick={handleDeleteClick(item.id)}
+        onClick={handleDeleteClick(item)}
         buttonStyle="text"
         icon="delete"
         disabled={staticPageIds && staticPageIds.length > 0}

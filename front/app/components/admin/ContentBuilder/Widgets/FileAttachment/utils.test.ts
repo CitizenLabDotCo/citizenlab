@@ -52,5 +52,33 @@ describe('FileAttachment utils', () => {
       expect(getIsFileAlreadyUsed(craftjsJson, 'file-456')).toBe(true);
       expect(getIsFileAlreadyUsed(craftjsJson, 'file-999')).toBe(false);
     });
+
+    it('recognises a file widget by its resolvedName when displayName is minified', () => {
+      const craftjsJson = {
+        ROOT: {
+          type: 'div',
+          props: {},
+          displayName: 'div',
+          isCanvas: true,
+          parent: null,
+          nodes: ['file1'],
+          hidden: false,
+          linkedNodes: {},
+        },
+        file1: {
+          type: { resolvedName: 'FileAttachment' },
+          props: { fileId: 'file-123' },
+          displayName: 'n',
+          isCanvas: false,
+          parent: 'ROOT',
+          nodes: [],
+          hidden: false,
+          linkedNodes: {},
+        },
+      } satisfies SerializedNodes;
+
+      expect(getIsFileAlreadyUsed(craftjsJson, 'file-123')).toBe(true);
+      expect(getIsFileAlreadyUsed(craftjsJson, 'file-999')).toBe(false);
+    });
   });
 });
