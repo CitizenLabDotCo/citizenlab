@@ -79,6 +79,13 @@ module CustomIdMethods::Facebook
       super + %i[remote_avatar_url]
     end
 
+    # Facebook does not use the email_verified attribute,
+    # but only returns emails if they are verified. Source:
+    # https://stackoverflow.com/questions/14280535/is-it-possible-to-check-if-an-email-is-confirmed-on-facebook
+    def email_confirmed?(auth)
+      auth.info['email'].present?
+    end
+
     private
 
     def remote_avatar_url(auth)
