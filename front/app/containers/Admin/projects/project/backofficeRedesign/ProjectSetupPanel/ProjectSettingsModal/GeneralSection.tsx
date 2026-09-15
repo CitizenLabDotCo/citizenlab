@@ -6,13 +6,12 @@ import { CLErrors } from 'typings';
 import ProjectContextSection from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection';
 import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
 import { StyledSectionField } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/styling';
+import generalMessages from 'containers/Admin/projects/project/general/messages';
 
 import { SubSectionTitle } from 'components/admin/Section';
 import SlugInput from 'components/admin/SlugInput';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
-import generalMessages from '../../../../general/messages';
 
 interface Props {
   spaceId?: string | null;

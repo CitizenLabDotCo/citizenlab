@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 
 import { IProjectData } from 'api/projects/types';
 
+import projectHeaderMessages from 'containers/Admin/projects/project/projectHeader/messages';
+
 import { useIntl } from 'utils/cl-intl';
 
-import projectHeaderMessages from '../../../../projectHeader/messages';
 import HeaderDropdown from '../HeaderDropdown';
 
 import SharePanel from './SharePanel';

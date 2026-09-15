@@ -4,8 +4,8 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import SpotlightSurveys from '../../projectPage/SpotlightSurveys';
-import TimelinePhases from '../../projectPage/TimelinePhases';
+import SpotlightSurveys from 'containers/Admin/projects/project/projectPage/SpotlightSurveys';
+import TimelinePhases from 'containers/Admin/projects/project/projectPage/TimelinePhases';
 
 interface Props {
   projectId: string;

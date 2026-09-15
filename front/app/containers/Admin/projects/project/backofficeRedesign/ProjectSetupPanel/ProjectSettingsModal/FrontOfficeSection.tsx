@@ -16,14 +16,13 @@ import {
   StyledSectionField,
 } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/styling';
 import TopicInputs from 'containers/Admin/projects/_shared/components/ProjectSetupForm/TopicInputs';
+import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
+import generalMessages from 'containers/Admin/projects/project/general/messages';
 
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import { SubSectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
-import { TOnProjectAttributesDiffChangeFunction } from '../../../../general';
-import generalMessages from '../../../../general/messages';
 
 interface Props {
   selectedTopicIds: string[];

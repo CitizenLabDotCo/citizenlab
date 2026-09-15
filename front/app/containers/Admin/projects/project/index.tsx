@@ -12,9 +12,9 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import { Outlet as RouterOutlet, useParams } from 'utils/router';
 
-import ProjectWorkspace from './backofficeRedesign/ProjectWorkspace';
-import PhaseLeftPanel from './backofficeRedesign/ProjectWorkspace/Phase/PhaseLeftPanel';
-import ProjectLeftPanel from './backofficeRedesign/ProjectWorkspace/ProjectLeftPanel';
+import ProjectWorkspace from './backofficeRedesign';
+import PhaseLeftPanel from './backofficeRedesign/Phase/PhaseLeftPanel';
+import ProjectLeftPanel from './backofficeRedesign/ProjectLeftPanel';
 import ProjectHeader from './projectHeader';
 import ProjectSidebar from './projectPage/ProjectSidebar';
 

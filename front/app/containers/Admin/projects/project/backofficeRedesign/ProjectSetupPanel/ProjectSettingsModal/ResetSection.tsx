@@ -4,11 +4,11 @@ import { Box, Button, Text, Title } from '@citizenlab/cl2-component-library';
 
 import useResetProject from 'api/projects/useResetProject';
 
+import dataMessages from 'containers/Admin/projects/project/data/messages';
+
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
-
-import dataMessages from '../../../../data/messages';
 
 interface Props {
   projectId: string;

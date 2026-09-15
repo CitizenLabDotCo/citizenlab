@@ -2,11 +2,12 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import ParticipationMethodPicker from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/ParticipationMethodPicker';
+
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
-import ParticipationMethodPicker from '../../../phaseSetup/components/PhaseParticipationConfig/components/ParticipationMethodPicker';
 import messages from '../messages';
 
 interface Props {

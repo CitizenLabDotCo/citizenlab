@@ -13,6 +13,7 @@ import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/P
 import { useValidateProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/utils';
 import useSyncProjectImages from 'containers/Admin/projects/_shared/useSyncProjectImages';
 import { getSelectedTopicIds } from 'containers/Admin/projects/_shared/utils/getSelectedTopicIds';
+import ProjectInputTopics from 'containers/Admin/projects/project/topics';
 
 import SettingsModal, {
   SettingsModalSection,
@@ -23,7 +24,6 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 import { validateSlug } from 'utils/textUtils';
 
-import ProjectInputTopics from '../../../../topics';
 import messages from '../../messages';
 
 import FrontOfficeSection from './FrontOfficeSection';

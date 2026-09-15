@@ -2,15 +2,16 @@ import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { MessageDescriptor, useIntl } from 'utils/cl-intl';
-
-import { supportsNativeSurvey } from '../../../inputImporter/ReviewSection/utils';
+import { supportsNativeSurvey } from 'containers/Admin/projects/project/inputImporter/ReviewSection/utils';
 import {
   PHASE_TAB_ROUTES,
   PhaseLandingTab,
   PhaseTabTarget,
-} from '../../../projectPage/phaseRowUtils';
-import { FeatureFlags, getTabs } from '../../../tabs';
+} from 'containers/Admin/projects/project/projectPage/phaseRowUtils';
+import { FeatureFlags, getTabs } from 'containers/Admin/projects/project/tabs';
+
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+
 import messages from '../messages';
 
 export type PhaseViewKey = 'build' | 'manage' | 'insights';

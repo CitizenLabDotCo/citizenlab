@@ -17,11 +17,12 @@ import { IProjectData } from 'api/projects/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import projectHeaderMessages from 'containers/Admin/projects/project/projectHeader/messages';
+import shareLinkTracks from 'containers/Admin/projects/project/projectHeader/ShareLink/tracks';
+
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
-import projectHeaderMessages from '../../../../projectHeader/messages';
-import shareLinkTracks from '../../../../projectHeader/ShareLink/tracks';
 import messages from '../../messages';
 
 import AccessPeopleRow from './AccessPeopleRow';

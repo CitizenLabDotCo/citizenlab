@@ -20,7 +20,7 @@ import {
 } from 'utils/router';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
-import PhasePreview from '../backofficeRedesign/ProjectWorkspace/Phase/PhasePreview';
+import PhasePreview from '../backofficeRedesign/Phase/PhasePreview';
 import { FeatureFlags, getTabs, IPhaseTab } from '../tabs';
 
 import { PhaseHeader } from './PhaseHeader';

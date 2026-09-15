@@ -4,9 +4,10 @@ import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 
 import { IProjectData } from 'api/projects/types';
 
+import ScheduleLaunchModal from 'containers/Admin/projects/project/projectHeader/PublicationButtons/ScheduleLaunchModal';
+
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
-import ScheduleLaunchModal from '../../../../projectHeader/PublicationButtons/ScheduleLaunchModal';
 import messages from '../../messages';
 import HeaderDropdown from '../HeaderDropdown';
 
