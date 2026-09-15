@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 
-import { IProjectData } from 'api/projects/types';
+import { IProjectData, PublicationStatus } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
 import Modal from 'components/UI/Modal';
@@ -15,25 +15,29 @@ export type ConfirmableStatus = 'draft' | 'archived';
 
 const COPY: Record<
   ConfirmableStatus,
-  {
-    title: MessageDescriptor;
-    body: MessageDescriptor;
-    confirm: MessageDescriptor;
-    id: string;
-  }
+  { title: MessageDescriptor; confirm: MessageDescriptor; id: string }
 > = {
   draft: {
     title: messages.publishRestoreToDraftTitle,
-    body: messages.publishRestoreToDraftBody,
     confirm: messages.publishRestoreToDraft,
     id: 'e2e-confirm-restore-to-draft',
   },
   archived: {
     title: messages.publishArchiveTitle,
-    body: messages.publishArchiveBody,
     confirm: messages.publishMoveToArchive,
     id: 'e2e-confirm-move-to-archive',
   },
+};
+
+const getBodyMessage = (
+  target: ConfirmableStatus,
+  current: PublicationStatus
+): MessageDescriptor => {
+  if (target === 'archived') return messages.publishArchiveBody;
+
+  return current === 'archived'
+    ? messages.publishRestoreToDraftFromArchiveBody
+    : messages.publishRestoreToDraftBody;
 };
 
 interface Props {
@@ -53,6 +57,7 @@ const ConfirmStatusChangeModal = ({
   const { mutate: updateProject, isPending } = useUpdateProject();
 
   const copy = COPY[status];
+  const body = getBodyMessage(status, project.attributes.publication_status);
 
   const confirm = () =>
     updateProject(
@@ -94,7 +99,7 @@ const ConfirmStatusChangeModal = ({
     >
       <Box p="28px">
         <Text m="0" color="textPrimary">
-          {formatMessage(copy.body)}
+          {formatMessage(body)}
         </Text>
       </Box>
     </Modal>

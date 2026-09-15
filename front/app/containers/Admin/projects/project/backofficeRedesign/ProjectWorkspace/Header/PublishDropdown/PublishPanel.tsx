@@ -98,6 +98,9 @@ const PublishPanel = ({
 
   const publicationState = getPublicationState(project);
 
+  const isDraftOrScheduled =
+    publicationState === 'draft' || publicationState === 'scheduled';
+
   const dateOptions: Intl.DateTimeFormatOptions = {
     timeZone: tenantTimezone,
     day: 'numeric',
@@ -246,27 +249,30 @@ const PublishPanel = ({
           </>
         )}
 
-        {publicationState !== 'published' && (
+        {publicationState === 'archived' && (
+          <Box flex="1">
+            <Button
+              buttonStyle="secondary-outlined"
+              size="s"
+              width="100%"
+              onClick={() => onConfirmStatusChange('draft')}
+              id="e2e-restore-to-draft"
+            >
+              {formatMessage(messages.publishRestoreToDraft)}
+            </Button>
+          </Box>
+        )}
+
+        {isDraftOrScheduled && (
           <>
-            {publicationState === 'archived' ? (
-              <Button
-                buttonStyle="secondary-outlined"
-                size="s"
-                onClick={() => onConfirmStatusChange('draft')}
-                id="e2e-restore-to-draft"
-              >
-                {formatMessage(messages.publishRestoreToDraft)}
-              </Button>
-            ) : (
-              <Button
-                buttonStyle="secondary-outlined"
-                size="s"
-                icon="calendar"
-                onClick={onSchedule}
-              >
-                {formatMessage(messages.publishSchedule)}
-              </Button>
-            )}
+            <Button
+              buttonStyle="secondary-outlined"
+              size="s"
+              icon="calendar"
+              onClick={onSchedule}
+            >
+              {formatMessage(messages.publishSchedule)}
+            </Button>
             <Button
               buttonStyle="admin-dark"
               size="s"

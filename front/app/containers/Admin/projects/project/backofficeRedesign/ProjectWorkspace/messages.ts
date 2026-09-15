@@ -270,6 +270,11 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.workspace.publishMoveToArchive',
     defaultMessage: 'Move to archive',
   },
+  publishRestoreToDraftFromArchiveBody: {
+    id: 'app.containers.Admin.projects.project.workspace.publishRestoreToDraftFromArchiveBody',
+    defaultMessage:
+      'The project moves out of the archive and back to draft. It stays hidden from residents until you publish it again.',
+  },
   publishArchiveTitle: {
     id: 'app.containers.Admin.projects.project.workspace.publishArchiveTitle',
     defaultMessage: 'Archive this project?',
