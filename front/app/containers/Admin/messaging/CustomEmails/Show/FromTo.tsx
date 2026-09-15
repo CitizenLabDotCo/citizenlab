@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
@@ -11,6 +11,7 @@ import useUserById from 'api/users/useUserById';
 import useLocalize from 'hooks/useLocalize';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import { groupIncludedResources } from 'utils/cl-react-query/groupIncludedResources';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 import { getFullName } from 'utils/textUtils';
@@ -44,6 +45,11 @@ const FromTo = ({ campaign }: Props) => {
   const { formatMessage } = useIntl();
   const { data: tenant } = useAppConfiguration();
 
+  const groups = useMemo(() => {
+    const groups = groupIncludedResources(campaign.included ?? []).group;
+    return groups || [];
+  }, [campaign.included]);
+
   const handleGroupLinkClick =
     (groupId?: string) => (event: React.FormEvent<any>) => {
       event.preventDefault();
@@ -68,10 +74,7 @@ const FromTo = ({ campaign }: Props) => {
     return senderName;
   };
 
-  const groupIds: string[] = campaign.data.relationships.groups.data.map(
-    (group) => group.id
-  );
-  const noGroupsSelected = groupIds.length === 0;
+  const noGroupsSelected = groups.length === 0;
   const senderType = campaign.data.attributes.sender;
   const senderName = getSenderName(senderType);
 
@@ -109,24 +112,14 @@ const FromTo = ({ campaign }: Props) => {
               {formatMessage(messages.allUsers)}
             </GroupLink>
           )}
-        {groupIds.map((groupId, index) => (
-          <GetGroup key={groupId} id={groupId}>
-            {(group) => {
-              if (index < groupIds.length - 1) {
-                return (
-                  <GroupLink onClick={handleGroupLinkClick(groupId)}>
-                    {group && localize(group.attributes.title_multiloc)},{' '}
-                  </GroupLink>
-                );
-              }
-              return (
-                <GroupLink onClick={handleGroupLinkClick(groupId)}>
-                  {group && localize(group.attributes.title_multiloc)}
-                </GroupLink>
-              );
-            }}
-          </GetGroup>
-        ))}
+        {groups.map((group, index) => {
+          return (
+            <GroupLink key={group.id} onClick={handleGroupLinkClick(group.id)}>
+              {localize(group.attributes.title_multiloc)}
+              {index < groups.length - 1 && ', '}
+            </GroupLink>
+          );
+        })}
       </div>
     </Box>
   );
