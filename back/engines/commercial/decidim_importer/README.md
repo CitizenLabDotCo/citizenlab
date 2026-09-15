@@ -63,9 +63,10 @@ meaning matches and proposes a handful of new `custom` statuses for the genuinel
 the customs (target ~12 statuses total). **`ProposalStatusResolver`** turns the result into `idea_status`
 records (emitted before the ideas that reference them) and resolves each proposal's `(component, token)`
 to its status. Best-effort: if the model is unavailable or misbehaves, it falls back to a deterministic
-token→standard-code mapping (no customs) so the import still succeeds. Each imported idea keeps its
-original Decidim status (token + citizen-facing label) in `custom_field_values['decidim_status']` for
-provenance — mirroring the scope→area pointer in `custom_field_values['decidim_scope']`.
+token→standard-code mapping (no customs) so the import still succeeds. Every imported idea gets a
+`BulkImportIdeas::IdeaImport` record, whose `extra_info` holds the Decidim data an idea has no field for.
+Each proposal keeps its original Decidim status (token + citizen-facing label) there in
+`extra_info['decidim_status']` for provenance — next to the scope→area pointer in `extra_info['decidim_scope']`.
 
 ### The rake tasks
 
