@@ -4,6 +4,7 @@ import * as yup from 'yup';
 
 import { reviewStates } from 'api/admin_publications/types';
 import { ideaSortValues } from 'api/ideas/types';
+import { participationMethods } from 'api/phases/types';
 import { projectSortableParams } from 'api/projects_mini_admin/types';
 
 import PageLoading from 'components/UI/PageLoading';
@@ -528,6 +529,8 @@ const phasesSearchSchema = yup.object({
   // Set by the Extras sidebar "New survey" action: creates the phase as a
   // standalone (detached) survey instead of a timeline phase.
   placement: yup.string().oneOf(['standalone']).optional(),
+  // Set by the method picker: the method of the phase being created.
+  participation_method: yup.string().oneOf(participationMethods).optional(),
 });
 
 const projectPhasesRoute = createRoute({
