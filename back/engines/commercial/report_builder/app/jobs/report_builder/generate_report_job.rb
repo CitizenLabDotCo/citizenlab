@@ -35,6 +35,7 @@ module ReportBuilder
       report.layout.craftjs_json = craftjs_json
       raise ActiveRecord::RecordInvalid, report unless ReportSaver.new(report, tracker.owner).save
 
+      SideFxReportService.new.after_generate(report, tracker.owner)
       track_progress
       mark_as_complete!
     end

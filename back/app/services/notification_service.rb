@@ -28,6 +28,7 @@ class NotificationService
     Notifications::ProjectPublished,
     Notifications::ProjectReviewRequest,
     Notifications::ProjectReviewStateChange,
+    Notifications::ReportGenerated,
     Notifications::ProposalExpiredForAdmin,
     Notifications::SpaceModerationRightsReceived,
     Notifications::StatusChangeOnIdeaYouFollow,

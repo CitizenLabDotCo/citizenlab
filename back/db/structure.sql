@@ -177,6 +177,7 @@ ALTER TABLE IF EXISTS ONLY public.areas_static_pages DROP CONSTRAINT IF EXISTS f
 ALTER TABLE IF EXISTS ONLY public.input_topics DROP CONSTRAINT IF EXISTS fk_rails_1843964cdc;
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS fk_rails_16b3d1e637;
 ALTER TABLE IF EXISTS ONLY public.spam_reports DROP CONSTRAINT IF EXISTS fk_rails_121f3a2011;
+ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_111fe5fcc3;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_0e5b472696;
 ALTER TABLE IF EXISTS ONLY public.invites DROP CONSTRAINT IF EXISTS fk_rails_0b6ac3e1da;
 ALTER TABLE IF EXISTS ONLY public.project_files DROP CONSTRAINT IF EXISTS fk_rails_092f3b7f98;
@@ -3403,7 +3404,8 @@ CREATE TABLE public.notifications (
     basket_id uuid,
     cosponsorship_id uuid,
     project_review_id uuid,
-    space_id uuid
+    space_id uuid,
+    report_id uuid
 );
 
 
@@ -8437,6 +8439,14 @@ ALTER TABLE ONLY public.ideas
 
 
 --
+-- Name: notifications fk_rails_111fe5fcc3; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT fk_rails_111fe5fcc3 FOREIGN KEY (report_id) REFERENCES public.report_builder_reports(id) NOT VALID;
+
+
+--
 -- Name: spam_reports fk_rails_121f3a2011; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -9787,6 +9797,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260915081521'),
 ('20260910103205'),
 ('20260910082118'),
 ('20260824210220'),

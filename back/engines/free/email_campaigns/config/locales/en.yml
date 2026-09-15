@@ -36,6 +36,7 @@ en:
         project_participants: To project participants
         registered_users: To registered users
       recipient_segment:
+        admin_who_generated_the_report: The admin who asked for the report
         admins: Admins
         admins_and_managers: Admins & managers
         admins_and_managers_assigned_to_the_input: Admins & managers assigned to the input
@@ -96,6 +97,7 @@ en:
         phase_starts: A phase starts
         project_published: Project published
         project_review_request: Moderator requested a project review
+        report_generated: A report finished generating
         project_review_state_change: Reviewer approved the project
         proposal_expired: A proposal expires without reaching the threshold
         proposal_gets_reported_as_spam: Proposal gets reported as spam
@@ -196,6 +198,7 @@ en:
       project_phase_upcoming: Phase starting soon
       project_published: Project published
       project_review_request: Project review request
+      report_generated: Report generated
       project_review_state_change: Project approved
       proposal_expired_for_admin: Proposal expired without reaching the voting threshold
       screening_digest: Weekly screening reminder
@@ -620,6 +623,12 @@ en:
       preheader: A new project was published
       subject: A new project was published on the platform of %{organizationName}
       title: A new project was published
+    report_generated:
+      cta_button: Open the report
+      event_description: The report has been written and is ready for you to review and edit.
+      preheader: Your report is ready
+      subject: Your report for '%{projectName}' is ready
+      title: Your report is ready
     project_review_request:
       cta_button: Review the project
       event_description: "Currently, the project is in draft mode and isn't visible to users. Once you've reviewed and approved it, the moderator will be able to publish it."

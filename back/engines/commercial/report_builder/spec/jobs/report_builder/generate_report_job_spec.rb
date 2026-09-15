@@ -70,6 +70,13 @@ RSpec.describe ReportBuilder::GenerateReportJob do
       expect(job.tracker).to be_completed
     end
 
+    it 'reports that the report was generated, which is what notifies the admin' do
+      expect_any_instance_of(ReportBuilder::SideFxReportService)
+        .to receive(:after_generate).with(report, owner)
+
+      enqueue_job.perform_now
+    end
+
     it 'composes for the project behind the phase, naming the phase it reports on' do
       expect(ReportBuilder::Composition::ReportComposer)
         .to receive(:new).with(phase.project, locale: 'en', phase: phase, author: owner).and_call_original

@@ -19,6 +19,7 @@ import {
   IProjectPhaseStartedNotificationData,
   IProjectPhaseUpcomingNotificationData,
   IProjectPublishedNotificationData,
+  IReportGeneratedNotificationData,
   IProjectReviewRequestNotificationData,
   IProjectReviewStateChangeNotificationData,
   IStatusChangeOnIdeaYouFollowNotificationData,
@@ -56,6 +57,7 @@ import ProjectPhaseUpcomingNotification from '../ProjectPhaseUpcomingNotificatio
 import ProjectPublishedNotification from '../ProjectPublishedNotification';
 import ProjectReviewRequestNotification from '../ProjectReviewRequestNotification';
 import ProjectReviewStateChangeNotification from '../ProjectReviewStateChangeNotification';
+import ReportGeneratedNotification from '../ReportGeneratedNotification';
 import SpaceModerationRightsReceivedNotification from '../SpaceModerationRightsReceivedNotification';
 import StatusChangeOnIdeaYouFollowNotification from '../StatusChangeOnIdeaYouFollowNotification';
 import VotingBasketNotSubmittedNotification from '../VotingBasketNotSubmittedNotification';
@@ -193,6 +195,12 @@ const Notification = ({ notification }: Props) => {
       return (
         <ProjectPhaseUpcomingNotification
           notification={notification as IProjectPhaseUpcomingNotificationData}
+        />
+      );
+    case 'report_generated':
+      return (
+        <ReportGeneratedNotification
+          notification={notification as IReportGeneratedNotificationData}
         />
       );
     case 'project_published':

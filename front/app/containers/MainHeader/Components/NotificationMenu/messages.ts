@@ -339,6 +339,10 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.projectPhaseUpcoming',
     defaultMessage: '{phaseTitle} starts on {phaseStartAt} in {projectTitle}',
   },
+  reportGenerated: {
+    id: 'app.containers.NotificationMenu.reportGenerated',
+    defaultMessage: 'Your report for {projectTitle} is ready',
+  },
   projectPublished: {
     id: 'app.containers.NotificationMenu.projectPublished',
     defaultMessage: 'A new project was published',
