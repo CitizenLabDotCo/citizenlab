@@ -48,6 +48,12 @@ describe AccountMergeEligibilityService do
       expect(reason).to eq :source_has_roles
     end
 
+    # No roles here: the rule has to hold for an ordinary invite too.
+    it 'refuses a source with a pending invite' do
+      source.update_columns(invite_status: 'pending')
+      expect(reason).to eq :source_is_invitee
+    end
+
     # One code away from owning the account, so merging would discard that claim.
     it 'refuses a source part-way through confirming an email' do
       source.update_columns(new_email: 'pending@example.org')

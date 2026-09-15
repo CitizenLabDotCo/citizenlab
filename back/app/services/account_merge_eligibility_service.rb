@@ -40,6 +40,10 @@ class AccountMergeEligibilityService
     return :source_has_pending_email if source.new_email.present?
     # The merge deletes the source, which would quietly remove an admin or moderator.
     return :source_has_roles if source.roles.present?
+    # Any invite, not only an admin one: an invite also adds the invitee to groups,
+    # which can unlock restricted projects. Merging would pass that access to an
+    # account nobody invited, and delete the invite without a trace.
+    return :source_is_invitee if source.invite_pending?
     # A block lives on the user row, so merging would carry the content and
     # verification to a clean account and leave the block behind with the deleted one.
     return :source_blocked if source.blocked?
@@ -70,8 +74,14 @@ class AccountMergeEligibilityService
     target.confirmation_required? && target.email_confirmed_at.nil? && target.password_digest.present?
   end
 
-  # Any active verification the target holds that the source does not is somebody
-  # else's assertion of who this account is.
+  # A conflict is an active verification on the target that the source does not also
+  # hold, compared by method and uid. A verification says who a real person is, so
+  # one the source lacks means the target may be somebody else.
+  #
+  # - Target has no verifications: no conflict.
+  # - Target holds the same method and uid as the source: no conflict, same person.
+  # - Source holds verifications the target lacks: no conflict, they move over.
+  # - Target holds any other verification: conflict, even under another method.
   #
   # Not scoped per method: a target verified one way merged with a source verified
   # another would leave the survivor holding two people's verifications, with the
@@ -89,8 +99,17 @@ class AccountMergeEligibilityService
     :verification_conflict if conflicting
   end
 
-  # The same clash for login-only SSO methods, which produce an identity but no
-  # verification row and so are invisible above.
+  # The same check for login-only SSO methods, which create an identity but no
+  # verification, so the rule above cannot see them.
+  #
+  # A conflict is a source identity and a target identity from the same provider with
+  # different uids: the provider says they are two different people. Merging would
+  # let both of them sign in to the survivor.
+  #
+  # Identities from different providers never conflict. Their uids cannot be
+  # compared, and one account signing in through several providers is normal.
+  # Unlike a verification, an identity is only a way to sign in, not a claim about
+  # who the person is, so the stricter cross-method rule above does not apply.
   def identity_conflict(source, target)
     target_identities = target.identities.to_a
     return nil if target_identities.empty?
