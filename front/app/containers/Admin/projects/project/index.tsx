@@ -10,9 +10,10 @@ import useProjectById from 'api/projects/useProjectById';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-import { Outlet as RouterOutlet, useParams } from 'utils/router';
+import { Outlet as RouterOutlet, useMatchRoute, useParams } from 'utils/router';
 
 import ProjectWorkspace from './backofficeRedesign';
+import NewPhase from './backofficeRedesign/NewPhase';
 import PhaseLeftPanel from './backofficeRedesign/Phase/PhaseLeftPanel';
 import ProjectLeftPanel from './backofficeRedesign/ProjectLeftPanel';
 import ProjectHeader from './projectHeader';
@@ -25,6 +26,10 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
   const workspaceEnabled = useFeatureFlag({
     name: 'project_backoffice_redesign',
   });
+  const matchRoute = useMatchRoute();
+  const onNewPhaseRoute = !!matchRoute({
+    to: '/$locale/admin/projects/$projectId/phases/new',
+  });
   const projectId = project.id;
 
   const selectedPhase = phaseId ? phase?.data : undefined;
@@ -34,6 +39,10 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
   }
 
   if (workspaceEnabled) {
+    if (onNewPhaseRoute) {
+      return <NewPhase project={project} />;
+    }
+
     return (
       <ProjectWorkspace
         project={project}
