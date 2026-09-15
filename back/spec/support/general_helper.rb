@@ -31,4 +31,10 @@ module GeneralHelper
   def uuid_regex
     /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/ # After https://stackoverflow.com/a/6640851/3585671
   end
+
+  def enable_exclude_admins_and_moderators_from_statistics
+    config = AppConfiguration.instance
+    config.settings['core']['exclude_admins_and_moderators_from_statistics'] = true
+    config.save!
+  end
 end

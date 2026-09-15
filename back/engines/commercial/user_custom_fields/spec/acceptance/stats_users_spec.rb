@@ -16,10 +16,6 @@ def participant_filter_parameter(s)
   s.parameter :filter_by_participation, 'Filter by participants', required: false
 end
 
-def exclude_roles_parameter(s)
-  s.parameter :exclude_roles, "Set to 'exclude_admins_and_moderators' to leave out users with an admin or moderator role", required: false
-end
-
 shared_examples 'xlsx export' do |field_name, request_time|
   example "Users xlsx by #{field_name}" do
     if request_time.present?
@@ -72,7 +68,6 @@ resource 'Stats - Users' do
     get 'web_api/v1/stats/users_by_custom_field/:custom_field_id' do
       time_boundary_parameters self
       group_filter_parameter self
-      exclude_roles_parameter self
       parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
 
       describe 'with select field' do
@@ -231,7 +226,6 @@ resource 'Stats - Users' do
     get 'web_api/v1/stats/users_by_custom_field/:custom_field_id' do
       time_boundary_parameters self
       group_filter_parameter self
-      exclude_roles_parameter self
       participant_filter_parameter self
       before do
         @group = create(:group)
@@ -289,7 +283,7 @@ resource 'Stats - Users' do
         end
       end
 
-      describe 'with exclude_roles' do
+      describe 'when admins and moderators are excluded from statistics' do
         before do
           travel_to(start_at + 24.days) do
             create(:admin, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
@@ -307,7 +301,8 @@ resource 'Stats - Users' do
         end
 
         example 'Users by custom field excluding admins and moderators' do
-          do_request(exclude_roles: 'exclude_admins_and_moderators')
+          enable_exclude_admins_and_moderators_from_statistics
+          do_request
           expect(response_status).to eq 200
           expect(json_response_body.dig(:data, :attributes, :series, :users)).to eq({ false: 3, _blank: 0 }) # rubocop:disable Lint/BooleanSymbol
         end
@@ -317,7 +312,6 @@ resource 'Stats - Users' do
     get 'web_api/v1/stats/users_by_custom_field_as_xlsx/:custom_field_id' do
       time_boundary_parameters self
       group_filter_parameter self
-      exclude_roles_parameter self
 
       describe 'with select field' do
         before do
@@ -350,15 +344,14 @@ resource 'Stats - Users' do
         let(:group) { @group.id }
         let(:custom_field_id) { @custom_field.id }
 
-        describe 'with exclude_roles' do
+        describe 'when admins and moderators are excluded from statistics' do
           before do
+            enable_exclude_admins_and_moderators_from_statistics
             travel_to(start_at + 4.days) do
               create(:admin, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
               create(:project_moderator, custom_field_values: { @custom_field.key => @option3.key }, manual_groups: [@group])
             end
           end
-
-          let(:exclude_roles) { 'exclude_admins_and_moderators' }
 
           include_examples('xlsx export', 'custom field (select) excluding admins and moderators') do
             let(:expected_worksheet_name) { 'users_by_select_field' }
@@ -510,7 +503,6 @@ resource 'Stats - Users' do
     get 'web_api/v1/stats/users_by_age' do
       time_boundary_parameters self
       group_filter_parameter self
-      exclude_roles_parameter self
       parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
 
       context 'when the birthyear custom field has no reference distribution' do
@@ -555,7 +547,7 @@ resource 'Stats - Users' do
         end
       end
 
-      context 'with exclude_roles' do
+      context 'when admins and moderators are excluded from statistics' do
         before do
           travel_to start_at + 16.days do
             @group.members << create(:admin, birthyear: 1990) << create(:project_moderator, birthyear: nil)
@@ -570,7 +562,8 @@ resource 'Stats - Users' do
         end
 
         example 'Users counts by age excluding admins and moderators' do
-          travel_to(Time.zone.local(2020, 1, 1)) { do_request(exclude_roles: 'exclude_admins_and_moderators') }
+          enable_exclude_admins_and_moderators_from_statistics
+          travel_to(Time.zone.local(2020, 1, 1)) { do_request }
 
           expect(response_status).to eq 200
           expect(json_response_body.dig(:data, :attributes)).to match(
@@ -589,7 +582,6 @@ resource 'Stats - Users' do
     get 'web_api/v1/stats/users_by_age_as_xlsx' do
       time_boundary_parameters self
       group_filter_parameter self
-      exclude_roles_parameter self
       parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
 
       context 'when the birthyear custom field has no reference distribution' do
@@ -638,14 +630,13 @@ resource 'Stats - Users' do
         end
       end
 
-      context 'with exclude_roles' do
+      context 'when admins and moderators are excluded from statistics' do
         before do
+          enable_exclude_admins_and_moderators_from_statistics
           travel_to start_at + 16.days do
             @group.members << create(:admin, birthyear: 1990) << create(:project_moderator, birthyear: nil)
           end
         end
-
-        let(:exclude_roles) { 'exclude_admins_and_moderators' }
 
         include_examples('xlsx export', 'age excluding admins and moderators', Time.zone.local(2020, 1, 1)) do
           let(:expected_worksheet_name) { 'users_by_age' }

@@ -42,6 +42,7 @@ resource 'Analytics - FactRegistrations model' do
       end
 
       example 'group complete registrations by month, excluding admins and moderators' do
+        enable_exclude_admins_and_moderators_from_statistics
         do_request({
           query: {
             fact: 'registration',
@@ -49,8 +50,7 @@ resource 'Analytics - FactRegistrations model' do
             aggregations: {
               all: 'count'
             }
-          },
-          exclude_roles: 'exclude_admins_and_moderators'
+          }
         })
         assert_status 200
         expect(response_data[:attributes]).to contain_exactly({ 'dimension_date_registration.month': '2022-08', count: 1 }, { 'dimension_date_registration.month': '2022-09', count: 1 })

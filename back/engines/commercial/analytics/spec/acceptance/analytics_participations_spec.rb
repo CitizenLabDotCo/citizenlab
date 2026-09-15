@@ -75,6 +75,7 @@ resource 'Analytics - FactParticipations' do
     end
 
     example 'exclude participations of admins and moderators' do
+      enable_exclude_admins_and_moderators_from_statistics
       do_request({
         query: {
           fact: 'participation',
@@ -84,8 +85,7 @@ resource 'Analytics - FactParticipations' do
           aggregations: {
             all: 'count'
           }
-        },
-        exclude_roles: 'exclude_admins_and_moderators'
+        }
       })
       assert_status 200
       expect(response_data[:attributes]).to contain_exactly({ count: 1 })

@@ -20,7 +20,6 @@ def filter_parameters(s)
     s.parameter :votes_to, 'Filter by number of votes on the input, smaller than or equal to', type: :integer
     s.parameter :comments_from, 'Filter by number of comments on the input, larger than or equal to', type: :integer
     s.parameter :comments_to, 'Filter by number of comments on the input, smaller than or equal to', type: :integer
-    s.parameter :exclude_roles, "Set to 'exclude_admins_and_moderators' to leave out authors with an admin or moderator role"
   end
 end
 
@@ -73,13 +72,12 @@ resource 'Analysis - Stats - Users' do
       }.deep_symbolize_keys)
     end
 
-    describe 'with exclude_roles' do
+    describe 'when admins and moderators are excluded from statistics' do
       before do
+        enable_exclude_admins_and_moderators_from_statistics
         create(:idea, project: project, author: create(:admin, domicile: @area2.id), likes_count: 5)
         create(:idea, project: project, author: create(:project_moderator, projects: [project], domicile: @area3.id), likes_count: 5)
       end
-
-      let(:exclude_roles) { 'exclude_admins_and_moderators' }
 
       example_request 'Authors by domicile excluding admins and moderators' do
         expect(response_status).to eq 200
@@ -125,7 +123,7 @@ resource 'Analysis - Stats - Users' do
       )
     end
 
-    describe 'with exclude_roles' do
+    describe 'when admins and moderators are excluded from statistics' do
       before do
         create(:idea, project: project, author: create(:admin, birthyear: 1990))
         create(:idea, project: project, author: create(:project_moderator, projects: [project], birthyear: nil))
@@ -141,7 +139,8 @@ resource 'Analysis - Stats - Users' do
       end
 
       example 'Authors by age excluding admins and moderators' do
-        travel_to(Time.zone.local(2020, 1, 1)) { do_request(exclude_roles: 'exclude_admins_and_moderators') }
+        enable_exclude_admins_and_moderators_from_statistics
+        travel_to(Time.zone.local(2020, 1, 1)) { do_request }
         expect(response_status).to eq 200
         expect(json_response_body.dig(:data, :attributes)).to match(
           unknown_age_count: 1,
@@ -189,13 +188,12 @@ resource 'Analysis - Stats - Users' do
           }.deep_symbolize_keys)
         end
 
-        describe 'with exclude_roles' do
+        describe 'when admins and moderators are excluded from statistics' do
           before do
+            enable_exclude_admins_and_moderators_from_statistics
             create(:idea, project: project, author: create(:admin, custom_field_values: { @custom_field.key => @option1.key }))
             create(:idea, project: project, author: create(:project_moderator, projects: [project]))
           end
-
-          let(:exclude_roles) { 'exclude_admins_and_moderators' }
 
           example_request 'Authors by custom field (select) excluding admins and moderators' do
             expect(response_status).to eq 200

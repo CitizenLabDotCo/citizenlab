@@ -163,6 +163,7 @@ resource 'Analytics - Visits model' do
     end
 
     example 'exclude visits of admins and moderators' do
+      enable_exclude_admins_and_moderators_from_statistics
       do_request({
         query: {
           fact: 'visit',
@@ -170,8 +171,7 @@ resource 'Analytics - Visits model' do
             all: 'count',
             visitor_id: 'count'
           }
-        },
-        exclude_roles: 'exclude_admins_and_moderators'
+        }
       })
       assert_status 200
       expect(response_data[:attributes]).to contain_exactly({ count: 2, count_visitor_id: 1 })

@@ -620,13 +620,14 @@ resource 'Phases' do
 
         context 'with reactions of admins and moderators' do
           before do
-            # Without exclude_roles, these would be counted in the stats and in the votes of i1
+            # Unless admins and moderators are excluded from statistics, these would be counted in the stats and in the votes of i1
             create(:reaction, reactable: i1, user: create(:admin), mode: 'down')
             create(:reaction, reactable: i1, user: create(:project_moderator, projects: [phase.project]), mode: 'down')
           end
 
           example 'Get common ground results excluding admins and moderators' do
-            do_request(exclude_roles: 'exclude_admins_and_moderators')
+            enable_exclude_admins_and_moderators_from_statistics
+            do_request
             assert_status 200
 
             expect(response_data.dig(:attributes, :stats)).to eq({
@@ -708,6 +709,69 @@ resource 'Phases' do
             }
           }
         })
+      end
+
+      context 'with survey responses of admins and moderators' do
+        before do
+          [create(:admin), create(:project_moderator, projects: [project])].each do |author|
+            create(
+              :native_survey_response,
+              project: project,
+              creation_phase: active_phase,
+              author: author,
+              custom_field_values: { sentiment_question1.key => 5, sentiment_question2.key => 5 },
+              created_at: Time.new(2025, 1, 1)
+            )
+          end
+        end
+
+        example 'Get survey sentiment by quarter excluding admins and moderators' do
+          enable_exclude_admins_and_moderators_from_statistics
+          do_request
+          expect(status).to eq 200
+          expect(response_data.dig(:attributes, :overall)).to eq({
+            averages: { '2025-1': 3.0, '2025-2': 2.0 },
+            totals: {
+              '2025-1': { '1': 0, '2': 1, '3': 0, '4': 1, '5': 0 },
+              '2025-2': { '1': 1, '2': 0, '3': 1, '4': 0, '5': 0 }
+            }
+          })
+        end
+      end
+    end
+
+    get 'web_api/v1/phases/:id/survey_results' do
+      let!(:proposed_idea_status) { create(:idea_status_proposed) }
+
+      let(:project) { create(:community_monitor_project) }
+      let(:active_phase) { project.phases.first }
+      let(:form) { create(:custom_form, participation_context: active_phase) }
+      let(:sentiment_question) { create(:custom_field_sentiment_linear_scale, resource: form, question_category: 'quality_of_life') }
+      let(:id) { active_phase.id }
+
+      let!(:survey_responses) do
+        [create(:user), create(:admin), create(:project_moderator, projects: [project])].map do |author|
+          create(
+            :native_survey_response,
+            project: project,
+            creation_phase: active_phase,
+            author: author,
+            custom_field_values: { sentiment_question.key => 3 }
+          )
+        end
+      end
+
+      example 'Get community monitor survey results includes admins and moderators by default', document: false do
+        do_request
+        expect(status).to eq 200
+        expect(response_data.dig(:attributes, :totalSubmissions)).to eq 3
+      end
+
+      example 'Get community monitor survey results excluding admins and moderators' do
+        enable_exclude_admins_and_moderators_from_statistics
+        do_request
+        expect(status).to eq 200
+        expect(response_data.dig(:attributes, :totalSubmissions)).to eq 1
       end
     end
 

@@ -82,7 +82,13 @@ class WebApi::V1::PhasesController < ApplicationController
     results = if @phase.pmethod.class.method_str == 'community_monitor_survey'
       year = params[:year]
       quarter = params[:quarter]
-      Surveys::ResultsWithDateGenerator.new(@phase, structure_by_category: true, year: year, quarter: quarter).generate_results
+      Surveys::ResultsWithDateGenerator.new(
+        @phase,
+        structure_by_category: true,
+        year: year,
+        quarter: quarter,
+        exclude_roles: StatisticsRoleExclusion.exclude_roles
+      ).generate_results
     else
       logic_ids = params[:filter_logic_ids].presence || [] # Array of page and option IDs
       Surveys::ResultsWithLogicGenerator.new(@phase).generate_results(logic_ids:)
@@ -177,7 +183,7 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def common_ground_results
-    results = CommonGround::ResultsService.new(@phase, exclude_roles: params[:exclude_roles]).results
+    results = CommonGround::ResultsService.new(@phase, exclude_roles: StatisticsRoleExclusion.exclude_roles).results
 
     render json: WebApi::V1::CommonGround::ResultsSerializer
       .new(results, params: jsonapi_serializer_params)
@@ -188,7 +194,11 @@ class WebApi::V1::PhasesController < ApplicationController
 
   # Used for community_monitor_survey dashboard
   def sentiment_by_quarter
-    average_generator = Surveys::AverageGenerator.new(@phase, input_type: 'sentiment_linear_scale')
+    average_generator = Surveys::AverageGenerator.new(
+      @phase,
+      input_type: 'sentiment_linear_scale',
+      exclude_roles: StatisticsRoleExclusion.exclude_roles
+    )
     render json: raw_json(average_generator.summary_averages_by_quarter)
   end
 

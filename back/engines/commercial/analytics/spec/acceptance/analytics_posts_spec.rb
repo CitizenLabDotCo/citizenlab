@@ -55,14 +55,14 @@ resource 'Analytics - FactPosts model' do
       create(:idea, created_at: @times[0], author: create(:admin))
       create(:proposal, created_at: @times[0], author: create(:project_moderator))
 
+      enable_exclude_admins_and_moderators_from_statistics
       do_request({
         query: {
           fact: 'post',
           aggregations: {
             all: 'count'
           }
-        },
-        exclude_roles: 'exclude_admins_and_moderators'
+        }
       })
       assert_status 200
       expect(response_data[:attributes]).to contain_exactly({ count: 2 })

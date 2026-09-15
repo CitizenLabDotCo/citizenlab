@@ -70,14 +70,14 @@ resource 'Analytics - FactEmailDeliveries model' do
       create(:delivery, user: create(:admin))
       create(:delivery, user: create(:project_moderator))
 
+      enable_exclude_admins_and_moderators_from_statistics
       do_request({
         query: {
           fact: 'email_delivery',
           aggregations: {
             all: 'count'
           }
-        },
-        exclude_roles: 'exclude_admins_and_moderators'
+        }
       })
 
       assert_status 200

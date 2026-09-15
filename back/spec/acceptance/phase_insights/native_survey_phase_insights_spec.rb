@@ -141,5 +141,32 @@ resource 'Phase insights' do
     include_examples 'phase insights demographics',
       gender_blank: 1,
       birthyear_blank: 1
+
+    context 'with survey responses of admins and moderators' do
+      before do
+        [create(:admin), create(:project_moderator, projects: [native_survey_phase.project])].each do |author|
+          create(:idea, phases: [native_survey_phase], created_at: 5.days.ago, submitted_at: 5.days.ago, author: author, creation_phase_id: native_survey_phase.id)
+        end
+      end
+
+      example 'returns insights data including admins and moderators by default', document: false do
+        do_request
+        assert_status 200
+
+        metrics = json_response_body.dig(:data, :attributes, :metrics)
+        expect(metrics[:participants]).to eq 5
+        expect(metrics.dig(:native_survey, :surveys_submitted)).to eq 6
+      end
+
+      example 'returns insights data excluding admins and moderators' do
+        enable_exclude_admins_and_moderators_from_statistics
+        do_request
+        assert_status 200
+
+        metrics = json_response_body.dig(:data, :attributes, :metrics)
+        expect(metrics[:participants]).to eq 3
+        expect(metrics.dig(:native_survey, :surveys_submitted)).to eq 4
+      end
+    end
   end
 end

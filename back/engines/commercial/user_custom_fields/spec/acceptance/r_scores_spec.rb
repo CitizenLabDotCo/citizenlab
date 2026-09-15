@@ -10,7 +10,6 @@ resource 'R-scores (Representativeness scores)' do
     parameter :project, <<-DESC, required: false
           Project ID. Only participants of this project will be considered to compute the score.
     DESC
-    parameter :exclude_roles, "Set to 'exclude_admins_and_moderators' to leave out users with an admin or moderator role", required: false
 
     # `custom_field_id` is overridden in the `when admin` context below.
     # For the other (non-authorized) users, it's value does not matter and the custom
@@ -88,10 +87,9 @@ resource 'R-scores (Representativeness scores)' do
             end
           end
 
-          context 'with exclude_roles' do
-            let(:exclude_roles) { 'exclude_admins_and_moderators' }
-
+          context 'when admins and moderators are excluded from statistics' do
             before do
+              enable_exclude_admins_and_moderators_from_statistics
               create(:project_moderator, custom_field_values: { custom_field.key => custom_field.options.first.key })
             end
 
@@ -139,7 +137,8 @@ resource 'R-scores (Representativeness scores)' do
             end
 
             example 'returns the R-score excluding admins and moderators' do
-              travel_to(Time.zone.local(2010)) { do_request(exclude_roles: 'exclude_admins_and_moderators') }
+              enable_exclude_admins_and_moderators_from_statistics
+              travel_to(Time.zone.local(2010)) { do_request }
 
               expect(status).to eq(200)
               expect(response_data.dig(:attributes, :counts)).to eq [2, 1, 0]
