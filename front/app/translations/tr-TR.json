@@ -2564,6 +2564,7 @@
   "app.containers.landing.createAccount": "Kaydolun",
   "app.containers.landing.defaultSignedInMessage": "{orgName} sizi dinliyor. Sesinizi duyurma sırası sizde!",
   "app.containers.landing.doItLater": "Daha sonra yapacağım",
+  "app.containers.landing.editHomepage": "Ana sayfayı düzenle",
   "app.containers.landing.new": "yeni",
   "app.containers.landing.subtitleCity": "{orgName} katılım platformuna hoş geldiniz",
   "app.containers.landing.titleCity": "{orgName} için geleceği birlikte şekillendirelim",

@@ -2564,6 +2564,7 @@
   "app.containers.landing.createAccount": "Crie seu login",
   "app.containers.landing.defaultSignedInMessage": "{orgName} está te ouvindo. É a sua chance de fazer ouvir a sua voz!",
   "app.containers.landing.doItLater": "Irei fazer mais tarde.",
+  "app.containers.landing.editHomepage": "Editar página inicial",
   "app.containers.landing.new": "novo",
   "app.containers.landing.subtitleCity": "Bem vindo à plataforma de participação oficial de {orgName}",
   "app.containers.landing.titleCity": "Vamos construir o futuro de {orgName} juntos",

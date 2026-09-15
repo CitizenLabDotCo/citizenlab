@@ -2564,6 +2564,7 @@
   "app.containers.landing.createAccount": "Zarejestruj się",
   "app.containers.landing.defaultSignedInMessage": "{orgName} czeka na Twoje pomysły!",
   "app.containers.landing.doItLater": "Zrobię to później",
+  "app.containers.landing.editHomepage": "Edytuj stronę główną",
   "app.containers.landing.new": "nowy",
   "app.containers.landing.subtitleCity": "{orgName} wita na oficjalnej platformie partycypacji",
   "app.containers.landing.titleCity": "Tworzymy razem {orgName} przyszłości",

@@ -2564,6 +2564,7 @@
   "app.containers.landing.createAccount": "Regisztráljon",
   "app.containers.landing.defaultSignedInMessage": "{orgName} hallgat téged. Rajtad a sor, hogy hallasd a hangod!",
   "app.containers.landing.doItLater": "később megcsinálom",
+  "app.containers.landing.editHomepage": "Főoldal szerkesztése",
   "app.containers.landing.new": "új",
   "app.containers.landing.subtitleCity": "Üdvözöljük a {orgName}részvételi platformján",
   "app.containers.landing.titleCity": "Alakítsuk együtt {orgName} jövőjét",

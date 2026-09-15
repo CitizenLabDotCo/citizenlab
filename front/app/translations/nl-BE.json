@@ -2564,6 +2564,7 @@
   "app.containers.landing.createAccount": "Registreren",
   "app.containers.landing.defaultSignedInMessage": "{orgName} luistert naar je. Laat je stem horen!",
   "app.containers.landing.doItLater": "Ik doe het later",
+  "app.containers.landing.editHomepage": "Startpagina bewerken",
   "app.containers.landing.new": "nieuw",
   "app.containers.landing.subtitleCity": "Welkom op het participatieplatform van {orgName}",
   "app.containers.landing.titleCity": "Laten we samen de toekomst van {orgName} vormgeven",

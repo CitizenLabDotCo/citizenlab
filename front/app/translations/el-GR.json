@@ -2564,6 +2564,7 @@
   "app.containers.landing.createAccount": "Εγγραφείτε",
   "app.containers.landing.defaultSignedInMessage": "Το {orgName} σας ακούει. Είναι η σειρά σας να κάνετε τη φωνή σας να ακουστεί!",
   "app.containers.landing.doItLater": "Θα το κάνω αργότερα",
+  "app.containers.landing.editHomepage": "Επεξεργασία αρχικής σελίδας",
   "app.containers.landing.new": "νέα",
   "app.containers.landing.subtitleCity": "Καλώς ήρθατε στην πλατφόρμα συμμετοχής και διαλόγου του οργανισμού \"{orgName}\"",
   "app.containers.landing.titleCity": "Ας διαμορφώσουμε μαζί το μέλλον του {orgName}",

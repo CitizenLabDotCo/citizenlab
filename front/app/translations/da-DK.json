@@ -2564,6 +2564,7 @@
   "app.containers.landing.createAccount": "Registrer dig",
   "app.containers.landing.defaultSignedInMessage": "{orgName} lytter til dig. Nu er det din tur til at blive hørt!",
   "app.containers.landing.doItLater": "Jeg gør det senere",
+  "app.containers.landing.editHomepage": "Rediger forside",
   "app.containers.landing.new": "ny",
   "app.containers.landing.subtitleCity": "Velkommen til borgerinddragelsesplatformen for {orgName}",
   "app.containers.landing.titleCity": "Lad os forme fremtiden for {orgName} sammen",

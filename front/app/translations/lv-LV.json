@@ -2564,6 +2564,7 @@
   "app.containers.landing.createAccount": "Reģistrēties",
   "app.containers.landing.defaultSignedInMessage": "{orgName} jūs uzklausa. Tagad ir jūsu kārta, lai jūsu viedoklis tiktu sadzirdēts!",
   "app.containers.landing.doItLater": "Es to izdarīšu vēlāk",
+  "app.containers.landing.editHomepage": "Rediģēt sākumlapu",
   "app.containers.landing.new": "jauns",
   "app.containers.landing.subtitleCity": "Laipni lūgti {orgName} līdzdalības platformā",
   "app.containers.landing.titleCity": "Veidosim {orgName} nākotni kopā",

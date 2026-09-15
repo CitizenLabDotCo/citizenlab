@@ -2564,6 +2564,7 @@
   "app.containers.landing.createAccount": "Užsiregistruokite",
   "app.containers.landing.defaultSignedInMessage": "{orgName} klausosi jūsų. Atėjo jūsų eilė pareikšti, kad jūsų balsas būtų išgirstas!",
   "app.containers.landing.doItLater": "Tai padarysiu vėliau",
+  "app.containers.landing.editHomepage": "Redaguoti pagrindinį puslapį",
   "app.containers.landing.new": "naujas",
   "app.containers.landing.subtitleCity": "Sveiki atvykę į {orgName}dalyvavimo platformą",
   "app.containers.landing.titleCity": "Kurkime {orgName} ateitį kartu",

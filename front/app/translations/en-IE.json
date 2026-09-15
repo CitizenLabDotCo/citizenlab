@@ -2564,6 +2564,7 @@
   "app.containers.landing.createAccount": "Sign up",
   "app.containers.landing.defaultSignedInMessage": "{orgName} is listening to you. It’s your turn to make your voice heard!",
   "app.containers.landing.doItLater": "I'll do it later",
+  "app.containers.landing.editHomepage": "Edit homepage",
   "app.containers.landing.new": "new",
   "app.containers.landing.subtitleCity": "Welcome to the participation platform of {orgName}",
   "app.containers.landing.titleCity": "Let’s shape the future of {orgName} together",

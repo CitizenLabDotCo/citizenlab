@@ -2564,6 +2564,7 @@
   "app.containers.landing.createAccount": "Rekisteröidy",
   "app.containers.landing.defaultSignedInMessage": "{orgName} kuuntelee sinua. On sinun vuorosi saada äänesi kuuluviin!",
   "app.containers.landing.doItLater": "Teen sen myöhemmin",
+  "app.containers.landing.editHomepage": "Muokkaa etusivua",
   "app.containers.landing.new": "Uusi",
   "app.containers.landing.subtitleCity": "Tervetuloa {orgName}osallistumisalustaan",
   "app.containers.landing.titleCity": "Muodostetaan {orgName} :n tulevaisuus yhdessä",

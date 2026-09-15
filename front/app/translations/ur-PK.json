@@ -2564,6 +2564,7 @@
   "app.containers.landing.createAccount": "سائن اپ کریں۔",
   "app.containers.landing.defaultSignedInMessage": "{orgName} آپ کو سن رہا ہے۔ اپنی آواز سنانے کی باری ہے!",
   "app.containers.landing.doItLater": "میں بعد میں کروں گا۔",
+  "app.containers.landing.editHomepage": "ہوم پیج میں ترمیم کریں",
   "app.containers.landing.new": "نیا",
   "app.containers.landing.subtitleCity": "{orgName}کے شرکت کے پلیٹ فارم میں خوش آمدید",
   "app.containers.landing.titleCity": "آئیے مل کر {orgName} کے مستقبل کو تشکیل دیں۔",
