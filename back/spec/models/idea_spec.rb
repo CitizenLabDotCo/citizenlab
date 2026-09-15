@@ -826,4 +826,34 @@ RSpec.describe Idea do
       expect(described_class.with_content).to contain_exactly(idea_with_only_title, idea_with_only_body, idea_with_both)
     end
   end
+
+  describe 'excluding_admin_and_moderator_authors scope' do
+    let_it_be(:project) { create(:single_phase_ideation_project) }
+    let_it_be(:user_idea) { create(:idea, project: project, author: create(:user)) }
+    let_it_be(:anonymous_idea) { create(:idea, project: project, author: create(:user), anonymous: true) }
+    let_it_be(:authorless_idea) { create(:idea, project: project, author: nil) }
+
+    before_all do
+      create(:idea, project: project, author: create(:admin))
+      create(:idea, project: project, author: create(:admin, :project_reviewer))
+      create(:idea, project: project, author: create(:project_moderator, projects: [project]))
+      create(:idea, project: project, author: create(:project_folder_moderator))
+    end
+
+    it 'excludes ideas of admins and moderators, but keeps ideas without a known author' do
+      expect(anonymous_idea.reload.author_id).to be_nil
+      expect(described_class.excluding_admin_and_moderator_authors)
+        .to contain_exactly(user_idea, anonymous_idea, authorless_idea)
+    end
+
+    it 'can be chained with other scopes and associations' do
+      phase = project.phases.first
+      draft_idea = create(:idea, project: project, author: create(:user), publication_status: 'draft')
+
+      expect(phase.ideas.excluding_admin_and_moderator_authors)
+        .to contain_exactly(user_idea, anonymous_idea, authorless_idea, draft_idea)
+      expect(phase.ideas.published.excluding_admin_and_moderator_authors)
+        .to contain_exactly(user_idea, anonymous_idea, authorless_idea)
+    end
+  end
 end
