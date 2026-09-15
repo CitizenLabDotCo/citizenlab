@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Box, Button, Divider, Text } from '@citizenlab/cl2-component-library';
 
-import { IPhaseData } from 'api/phases/types';
+import { ParticipationMethod } from 'api/phases/types';
 
 import inputFormMessages from 'containers/Admin/projects/project/inputForm/messages';
 import { isPDFUploadSupported } from 'containers/Admin/projects/project/inputImporter/ReviewSection/utils';
@@ -20,20 +20,24 @@ import PanelField from './PanelField';
 
 interface Props {
   projectId: string;
-  phase: IPhaseData;
+  participationMethod: ParticipationMethod;
+  /** Absent while the phase isn't saved yet: its form can't be edited then. */
+  phaseId?: string;
 }
 
-const FormSection = ({ projectId, phase }: Props) => {
+const FormSection = ({ projectId, participationMethod, phaseId }: Props) => {
   const { formatMessage } = useIntl();
   const [importModalOpened, setImportModalOpened] = useState(false);
 
-  const participationMethod = phase.attributes.participation_method;
   const formEditor = getMethodConfig(participationMethod).formEditor;
 
   // Methods that collect no submissions have no form to build here.
   if (formEditor === null) return null;
 
   const survey = formEditor === 'surveyEditor';
+  const editLabel = formatMessage(
+    survey ? messages.editSurveyForm : inputFormMessages.editInputForm
+  );
 
   return (
     <>
@@ -45,24 +49,32 @@ const FormSection = ({ projectId, phase }: Props) => {
         )}
       >
         <Text fontSize="s" color="textSecondary" mt="0" mb="12px">
-          {formatMessage(inputFormMessages.inputFormDescription)}
+          {formatMessage(
+            phaseId
+              ? inputFormMessages.inputFormDescription
+              : messages.saveToEditForm
+          )}
         </Text>
         <Box display="flex">
-          <ButtonWithLink
-            to={
-              survey
-                ? '/admin/projects/$projectId/phases/$phaseId/survey-form/edit'
-                : '/admin/projects/$projectId/phases/$phaseId/form/edit'
-            }
-            params={{ projectId, phaseId: phase.id }}
-            buttonStyle="admin-dark"
-            icon="edit"
-            size="s"
-          >
-            {formatMessage(
-              survey ? messages.editSurveyForm : inputFormMessages.editInputForm
-            )}
-          </ButtonWithLink>
+          {phaseId ? (
+            <ButtonWithLink
+              to={
+                survey
+                  ? '/admin/projects/$projectId/phases/$phaseId/survey-form/edit'
+                  : '/admin/projects/$projectId/phases/$phaseId/form/edit'
+              }
+              params={{ projectId, phaseId }}
+              buttonStyle="admin-dark"
+              icon="edit"
+              size="s"
+            >
+              {editLabel}
+            </ButtonWithLink>
+          ) : (
+            <Button buttonStyle="admin-dark" icon="edit" size="s" disabled>
+              {editLabel}
+            </Button>
+          )}
         </Box>
       </PanelField>
 
@@ -73,6 +85,7 @@ const FormSection = ({ projectId, phase }: Props) => {
         iconPos="right"
         iconSize="16px"
         px="0"
+        disabled={!phaseId}
         onClick={() => setImportModalOpened(true)}
       >
         {formatMessage(messages.offlineCollection)}
