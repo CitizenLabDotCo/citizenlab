@@ -1,7 +1,5 @@
 import React from 'react';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 import Section from 'components/admin/ContentBuilder/Toolbox/Section';
@@ -16,9 +14,6 @@ import { useIntl } from 'utils/cl-intl';
 
 const ProjectPageBuilderToolbox = () => {
   const { formatMessage } = useIntl();
-  const spotlightSurveysEnabled = useFeatureFlag({
-    name: 'parallel_participation',
-  });
 
   return (
     <Container>
@@ -36,15 +31,13 @@ const ProjectPageBuilderToolbox = () => {
           icon="calendar"
           label={formatMessage(widgetMessages.eventsWidgetTitle)}
         />
-        {spotlightSurveysEnabled && (
-          <DraggableElement
-            id="e2e-draggable-spotlight-surveys"
-            component={<SpotlightSurveysWidget />}
-            icon="survey"
-            label={formatMessage(widgetMessages.extraSurveysWidgetTitle)}
-            labelSuffix={<NewLabel expiryDate={new Date('2026-11-24')} />}
-          />
-        )}
+        <DraggableElement
+          id="e2e-draggable-spotlight-surveys"
+          component={<SpotlightSurveysWidget />}
+          icon="survey"
+          label={formatMessage(widgetMessages.extraSurveysWidgetTitle)}
+          labelSuffix={<NewLabel expiryDate={new Date('2026-11-24')} />}
+        />
       </Section>
     </Container>
   );
