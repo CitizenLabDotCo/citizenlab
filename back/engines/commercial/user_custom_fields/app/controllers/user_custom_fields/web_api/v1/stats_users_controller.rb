@@ -81,6 +81,7 @@ module UserCustomFields
 
         def find_users
           users = policy_scope(User.active, policy_scope_class: StatUserPolicy::Scope)
+          users = users.normal_user if params[:exclude_roles] == 'exclude_admins_and_moderators'
           finder_params = if params[:filter_by_participation]
             params.permit(:group, :project).merge(participation_date_range: { since: @start_at, to: @end_at })
           else
