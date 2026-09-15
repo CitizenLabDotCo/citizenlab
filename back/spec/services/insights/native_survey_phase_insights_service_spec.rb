@@ -160,6 +160,42 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
     end
   end
 
+  context 'with exclude_roles' do
+    before do
+      create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, author: create(:admin), creation_phase_id: phase.id)
+      create(
+        :idea,
+        phases: [phase],
+        created_at: 10.days.ago,
+        submitted_at: nil,
+        author: create(:project_moderator, projects: [phase.project]),
+        publication_status: 'draft',
+        creation_phase_id: phase.id
+      )
+    end
+
+    it 'includes the responses of admins and moderators by default' do
+      participations = service.send(:filtered_phase_participations)
+      metrics = service.send(:phase_participation_method_metrics, participations)
+
+      expect(metrics).to include(surveys_submitted: 7, completion_rate_as_percent: 77.8) # 7 submitted out of 9 ideas
+    end
+
+    it 'excludes the responses of admins and moderators, but keeps responses without an author' do
+      service = described_class.new(phase, exclude_roles: 'exclude_admins_and_moderators')
+      participations = service.send(:filtered_phase_participations)
+      metrics = service.send(:phase_participation_method_metrics, participations)
+
+      expect(participations[:submitting_idea].pluck(:item_id)).to contain_exactly(idea1.id, idea2.id, idea3.id, idea4.id, idea6.id, idea7.id)
+      expect(metrics).to eq({
+        surveys_submitted: 6,
+        surveys_submitted_7_day_percent_change: 50.0,
+        completion_rate_as_percent: 85.7,
+        completion_rate_7_day_percent_change: 7.1
+      })
+    end
+  end
+
   describe '#survey_7_day_changes' do
     it 'handles zero ideas created as expected' do
       Idea.all.each { |idea| idea.update!(created_at: 5.days.ago) } # all ideas created in last 7 days
