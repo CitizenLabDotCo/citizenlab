@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, {memo, useEffect, useState} from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
@@ -204,6 +204,11 @@ const ProjectActionButtons = memo<Props>(
       }
     };
 
+    const handleVolunteerClick = () => {
+      setModalOpened(false);
+      scrollToElementWithId('volunteering');
+    };
+
     const { publication_status } = project.data.attributes;
 
     const participationMethod = currentPhase?.attributes.participation_method;
@@ -224,6 +229,10 @@ const ProjectActionButtons = memo<Props>(
       !!currentPhase &&
       !!hiddenOptionIds?.includes(currentPhase.id);
 
+    const showVolunteeringCTAButton =
+      !!currentPhase &&
+      currentPhase.attributes.participation_method === 'volunteering' &&
+      !hasCurrentPhaseEnded
     const showBoxCTAs = publication_status !== 'archived';
     const showSeeIdeasButton =
       participationMethod === 'ideation' &&
@@ -262,7 +271,8 @@ const ProjectActionButtons = memo<Props>(
       showTakeNativeSurveyButton ||
       showTakeSurveyButton ||
       showTakePollButton ||
-      showDocumentAnnotationCTAButton;
+      showDocumentAnnotationCTAButton ||
+      showVolunteeringCTAButton;
     const showPrimaryMethodCTA =
       showPostIdeaButton ||
       showTakeNativeSurveyButton ||
@@ -280,7 +290,8 @@ const ProjectActionButtons = memo<Props>(
       !showMethodCTA &&
       surveyCTAs.length === 0 &&
       !showSeeIdeasButton &&
-      !showEventsCTAButton;
+      !showEventsCTAButton &&
+      !showVolunteeringCTAButton;
 
     const methodCTAButton = showMethodCTA ? (
       <>
@@ -325,6 +336,11 @@ const ProjectActionButtons = memo<Props>(
         {showDocumentAnnotationCTAButton && (
           <ButtonWithLink onClick={handleReviewDocumentClick} fontWeight="500">
             <FormattedMessage {...messages.reviewDocument} />
+          </ButtonWithLink>
+        )}
+        {showVolunteeringCTAButton && (
+          <ButtonWithLink id="e2e-show-volunteering-cta" onClick={handleVolunteerClick} fontWeight="500">
+            <FormattedMessage {...messages.seeVolunteering} />
           </ButtonWithLink>
         )}
       </>
