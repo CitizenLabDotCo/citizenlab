@@ -1954,6 +1954,7 @@
   "app.containers.Admin.projects.project.workspace.nextActions": "Next actions",
   "app.containers.Admin.projects.project.workspace.noInputToAnalyse": "This phase collects no input, so there is nothing to analyse.",
   "app.containers.Admin.projects.project.workspace.noInputToManage": "This phase collects no input, so there is nothing to manage.",
+  "app.containers.Admin.projects.project.workspace.noParticipantsYet": "No participants yet",
   "app.containers.Admin.projects.project.workspace.notifications": "Notifications",
   "app.containers.Admin.projects.project.workspace.offlineCollection": "Offline collection",
   "app.containers.Admin.projects.project.workspace.participantsGraphLabel": "Participants",
