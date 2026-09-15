@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Radio, IconTooltip, IOption } from '@citizenlab/cl2-component-library';
+import { IOption } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import {
@@ -12,21 +12,21 @@ import {
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
+
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle';
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import FeatureFlag from 'components/FeatureFlag';
-import Error from 'components/UI/Error';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../../../../../messages';
+import configMessages from '../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
 import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
-import { ReactingLimitInput } from '../../shared/styling';
 import ViewSelector from '../../shared/ViewSelector';
 import PrescreeningModeSelector from '../_shared/PrescreeningModeSelector';
 import SortingPicker from '../_shared/SortingPicker';
 import UserActions from '../_shared/UserActions';
+
+import DislikingSettings from './DislikingSettings';
 
 interface Props {
   input_term: InputTerm | undefined;
@@ -80,6 +80,7 @@ interface Props {
     field: 'similarity_threshold_title' | 'similarity_threshold_body',
     value: number
   ) => void;
+  layout?: 'page' | 'panel';
 }
 
 const IdeationInputs = ({
@@ -120,155 +121,141 @@ const IdeationInputs = ({
   similarity_threshold_body,
   handleSimilarityEnabledChange,
   handleThresholdChange,
+  layout = 'page',
 }: Props) => {
+  const { formatMessage } = useIntl();
   const prescreeningIdeationEnabled = useFeatureFlag({
     name: 'prescreening_ideation',
   });
 
+  const anonymity = (
+    <AnonymousPostingToggle
+      allow_anonymous_participation={allow_anonymous_participation}
+      handleAllowAnonymousParticipationOnChange={
+        handleAllowAnonymousParticipationOnChange
+      }
+      disabledReason={toggleAnonymousPostingDisabledReason}
+    />
+  );
+
+  const inputTerm = (
+    <CustomFieldPicker
+      input_term={input_term}
+      handleInputTermChange={handleInputTermChange}
+    />
+  );
+
+  const screening = prescreeningIdeationEnabled ? (
+    <PrescreeningModeSelector
+      prescreening_mode={prescreening_mode}
+      onPrescreeningModeChange={onPrescreeningModeChange}
+    />
+  ) : null;
+
+  const userActions = (
+    <UserActions
+      submission_enabled={submission_enabled || false}
+      commenting_enabled={commenting_enabled || false}
+      reacting_enabled={reacting_enabled || false}
+      togglePostingEnabled={togglePostingEnabled}
+      toggleCommentingEnabled={toggleCommentingEnabled}
+      toggleReactingEnabled={toggleReactingEnabled}
+      apiErrors={apiErrors}
+      reacting_like_method={reacting_like_method}
+      reacting_like_limited_max={reacting_like_limited_max}
+      noLikingLimitError={noLikingLimitError}
+      handleReactingLikeMethodOnChange={handleReactingLikeMethodOnChange}
+      handleLikingLimitOnChange={handleLikingLimitOnChange}
+    />
+  );
+
+  const disliking = (
+    <DislikingSettings
+      reacting_enabled={reacting_enabled}
+      reacting_dislike_enabled={reacting_dislike_enabled}
+      reacting_dislike_method={reacting_dislike_method}
+      reacting_dislike_limited_max={reacting_dislike_limited_max}
+      noDislikingLimitError={noDislikingLimitError}
+      apiErrors={apiErrors}
+      handleReactingDislikeEnabledOnChange={
+        handleReactingDislikeEnabledOnChange
+      }
+      handleReactingDislikeMethodOnChange={handleReactingDislikeMethodOnChange}
+      handleDislikingLimitOnChange={handleDislikingLimitOnChange}
+    />
+  );
+
+  const similarity = (
+    <SimilarityDetectionConfig
+      apiErrors={apiErrors}
+      similarity_enabled={similarity_enabled}
+      similarity_threshold_title={similarity_threshold_title}
+      similarity_threshold_body={similarity_threshold_body}
+      handleSimilarityEnabledChange={handleSimilarityEnabledChange}
+      handleThresholdChange={handleThresholdChange}
+    />
+  );
+
+  const views = (
+    <ViewSelector
+      presentation_mode={presentation_mode}
+      available_views={available_views}
+      apiErrors={apiErrors}
+      handleIdeasDisplayChange={handleIdeasDisplayChange}
+      handleAvailableViewsChange={handleAvailableViewsChange}
+    />
+  );
+
+  const sorting = (
+    <SortingPicker
+      options={[
+        { key: 'trending', value: 'trending' },
+        { key: 'comments_count', value: 'comments_count' },
+        { key: 'random', value: 'random' },
+        { key: 'popular', value: 'popular' },
+        { key: 'newest', value: 'new' },
+        { key: 'oldest', value: '-new' },
+      ]}
+      ideas_order={ideas_order}
+      apiErrors={apiErrors}
+      handleIdeaDefaultSortMethodChange={handleIdeaDefaultSortMethodChange}
+    />
+  );
+
+  if (layout === 'panel') {
+    return (
+      <>
+        {inputTerm}
+        <PanelGroup
+          label={formatMessage(configMessages.participantActionsGroup)}
+          defaultOpen
+        >
+          {userActions}
+          {disliking}
+        </PanelGroup>
+        <PanelGroup label={formatMessage(configMessages.moderationGroup)}>
+          {anonymity}
+          {screening}
+          {similarity}
+        </PanelGroup>
+        <PanelGroup label={formatMessage(configMessages.displayGroup)}>
+          {views}
+          {sorting}
+        </PanelGroup>
+      </>
+    );
+  }
+
   return (
     <>
-      <AnonymousPostingToggle
-        allow_anonymous_participation={allow_anonymous_participation}
-        handleAllowAnonymousParticipationOnChange={
-          handleAllowAnonymousParticipationOnChange
-        }
-        disabledReason={toggleAnonymousPostingDisabledReason}
-      />
-      <CustomFieldPicker
-        input_term={input_term}
-        handleInputTermChange={handleInputTermChange}
-      />
-      {prescreeningIdeationEnabled && (
-        <PrescreeningModeSelector
-          prescreening_mode={prescreening_mode}
-          onPrescreeningModeChange={onPrescreeningModeChange}
-        />
-      )}
-      <UserActions
-        submission_enabled={submission_enabled || false}
-        commenting_enabled={commenting_enabled || false}
-        reacting_enabled={reacting_enabled || false}
-        togglePostingEnabled={togglePostingEnabled}
-        toggleCommentingEnabled={toggleCommentingEnabled}
-        toggleReactingEnabled={toggleReactingEnabled}
-        apiErrors={apiErrors}
-        reacting_like_method={reacting_like_method}
-        reacting_like_limited_max={reacting_like_limited_max}
-        noLikingLimitError={noLikingLimitError}
-        handleReactingLikeMethodOnChange={handleReactingLikeMethodOnChange}
-        handleLikingLimitOnChange={handleLikingLimitOnChange}
-      />
-
-      {reacting_enabled && (
-        <FeatureFlag name="disable_disliking">
-          <SectionField>
-            <SubSectionTitle>
-              <FormattedMessage {...messages.dislikingPosts} />
-              <IconTooltip
-                content={
-                  <FormattedMessage {...messages.disableDislikingTooltip} />
-                }
-              />
-            </SubSectionTitle>
-            <Radio
-              onChange={handleReactingDislikeEnabledOnChange}
-              currentValue={reacting_dislike_enabled}
-              value={true}
-              name="enableDisliking"
-              id="enableDisliking-true"
-              label={<FormattedMessage {...messages.dislikingEnabled} />}
-            />
-            <Radio
-              onChange={handleReactingDislikeEnabledOnChange}
-              currentValue={reacting_dislike_enabled}
-              value={false}
-              name="enableDisliking"
-              id="enableDisliking-false"
-              label={<FormattedMessage {...messages.dislikingDisabled} />}
-            />
-            <Error
-              apiErrors={apiErrors && apiErrors.reacting_dislike_enabled}
-            />
-          </SectionField>
-          {reacting_dislike_enabled && (
-            <SectionField>
-              <SubSectionTitle>
-                <FormattedMessage {...messages.dislikingMethodTitle} />
-              </SubSectionTitle>
-              <Radio
-                onChange={handleReactingDislikeMethodOnChange}
-                currentValue={reacting_dislike_method}
-                value="unlimited"
-                name="dislikingmethod"
-                id="dislikingmethod-unlimited"
-                label={<FormattedMessage {...messages.unlimited} />}
-              />
-              <Radio
-                onChange={handleReactingDislikeMethodOnChange}
-                currentValue={reacting_dislike_method}
-                value="limited"
-                name="dislikingmethod"
-                id="dislikingmethod-limited"
-                label={<FormattedMessage {...messages.limited} />}
-              />
-              {reacting_dislike_method === 'limited' && (
-                <>
-                  <SubSectionTitle>
-                    <FormattedMessage {...messages.maxDislikes} />
-                  </SubSectionTitle>
-                  <ReactingLimitInput
-                    id="disliking-limit"
-                    type="number"
-                    min="1"
-                    placeholder=""
-                    value={
-                      reacting_dislike_limited_max
-                        ? reacting_dislike_limited_max.toString()
-                        : null
-                    }
-                    onChange={handleDislikingLimitOnChange}
-                  />
-                  <Error
-                    text={noDislikingLimitError}
-                    apiErrors={apiErrors && apiErrors.reacting_limit}
-                  />
-                </>
-              )}
-            </SectionField>
-          )}
-        </FeatureFlag>
-      )}
-
-      <SimilarityDetectionConfig
-        apiErrors={apiErrors}
-        similarity_enabled={similarity_enabled}
-        similarity_threshold_title={similarity_threshold_title}
-        similarity_threshold_body={similarity_threshold_body}
-        handleSimilarityEnabledChange={handleSimilarityEnabledChange}
-        handleThresholdChange={handleThresholdChange}
-      />
-
-      <ViewSelector
-        presentation_mode={presentation_mode}
-        available_views={available_views}
-        apiErrors={apiErrors}
-        handleIdeasDisplayChange={handleIdeasDisplayChange}
-        handleAvailableViewsChange={handleAvailableViewsChange}
-      />
-
-      <SortingPicker
-        options={[
-          { key: 'trending', value: 'trending' },
-          { key: 'comments_count', value: 'comments_count' },
-          { key: 'random', value: 'random' },
-          { key: 'popular', value: 'popular' },
-          { key: 'newest', value: 'new' },
-          { key: 'oldest', value: '-new' },
-        ]}
-        ideas_order={ideas_order}
-        apiErrors={apiErrors}
-        handleIdeaDefaultSortMethodChange={handleIdeaDefaultSortMethodChange}
-      />
+      {anonymity}
+      {inputTerm}
+      {screening}
+      {userActions}
+      {disliking}
+      {similarity}
+      {views}
+      {sorting}
     </>
   );
 };
