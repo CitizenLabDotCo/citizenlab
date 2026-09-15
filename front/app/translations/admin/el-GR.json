@@ -1883,7 +1883,6 @@
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Παρακαλούμε επιλέξτε σε ποια φάση θέλετε να προσθέσετε αυτές τις εισαγωγές.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Εισαγωγέας δεδομένων",
   "app.containers.Admin.projects.project.ongoing": "Σε εξέλιξη",
-  "app.containers.Admin.projects.project.participantCount": "{count, plural, one {# συμμετέχων} other {# συμμετέχοντες}}",
   "app.containers.Admin.projects.project.participation.comments": "Σχόλια",
   "app.containers.Admin.projects.project.participation.demographicsTab": "Δημογραφικά στοιχεία",
   "app.containers.Admin.projects.project.participation.inputs": "Εισαγωγές",

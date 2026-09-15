@@ -1883,7 +1883,6 @@
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Kérjük, válassza ki, melyik szakaszhoz szeretné hozzáadni ezeket a bejegyzéseket.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Bejegyzés-importáló",
   "app.containers.Admin.projects.project.ongoing": "Folyamatban",
-  "app.containers.Admin.projects.project.participantCount": "{count, plural, one {# résztvevő} other {# résztvevő}}",
   "app.containers.Admin.projects.project.participation.comments": "Hozzászólások",
   "app.containers.Admin.projects.project.participation.demographicsTab": "Demográfia",
   "app.containers.Admin.projects.project.participation.inputs": "Beküldések",

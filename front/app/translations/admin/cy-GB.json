@@ -1883,7 +1883,6 @@
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Dewiswch i ba gyfnod yr hoffech ychwanegu'r mewnbynnau hyn.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Mewnforiwr mewnbwn",
   "app.containers.Admin.projects.project.ongoing": "Ar y gweill",
-  "app.containers.Admin.projects.project.participantCount": "{count, plural, one {# cyfranogwr} other {# cyfranogwyr}}",
   "app.containers.Admin.projects.project.participation.comments": "Sylwadau",
   "app.containers.Admin.projects.project.participation.demographicsTab": "Demograffeg",
   "app.containers.Admin.projects.project.participation.inputs": "Mewnbynnau",

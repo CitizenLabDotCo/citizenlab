@@ -1883,7 +1883,6 @@
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Välj till vilken fas du vill lägga till dessa ingångar.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Importör av indata",
   "app.containers.Admin.projects.project.ongoing": "Pågående",
-  "app.containers.Admin.projects.project.participantCount": "{count, plural, one {# deltagare} other {# deltagare}}",
   "app.containers.Admin.projects.project.participation.comments": "Kommentarer",
   "app.containers.Admin.projects.project.participation.demographicsTab": "Demografi",
   "app.containers.Admin.projects.project.participation.inputs": "Bidrag",

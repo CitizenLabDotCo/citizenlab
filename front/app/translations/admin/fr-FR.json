@@ -1883,7 +1883,6 @@
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Veuillez sélectionner la phase à laquelle vous souhaitez ajouter ces contributions.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Importateur de contributions",
   "app.containers.Admin.projects.project.ongoing": "En cours",
-  "app.containers.Admin.projects.project.participantCount": "{count, plural, one {# participant} other {# participants}}",
   "app.containers.Admin.projects.project.participation.comments": "Commentaires",
   "app.containers.Admin.projects.project.participation.demographicsTab": "Démographie",
   "app.containers.Admin.projects.project.participation.inputs": "Entrées",

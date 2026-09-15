@@ -1883,7 +1883,6 @@
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Vælg venligst hvilken fase du vil tilføje disse input til.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Import af input",
   "app.containers.Admin.projects.project.ongoing": "Igangværende",
-  "app.containers.Admin.projects.project.participantCount": "{count, plural, one {# deltager} other {# deltagere}}",
   "app.containers.Admin.projects.project.participation.comments": "Høringssvar",
   "app.containers.Admin.projects.project.participation.demographicsTab": "Demografi",
   "app.containers.Admin.projects.project.participation.inputs": "Input",

@@ -1883,7 +1883,6 @@
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Roghnaigh cén chéim ar mhaith leat na hionchuir seo a chur leis.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Allmhaireoir ionchuir",
   "app.containers.Admin.projects.project.ongoing": "Ar siúl",
-  "app.containers.Admin.projects.project.participantCount": "{count, plural, one {# rannpháirtí} other {# rannpháirtithe}}",
   "app.containers.Admin.projects.project.participation.comments": "Tráchtanna",
   "app.containers.Admin.projects.project.participation.demographicsTab": "Déimeagrafaic",
   "app.containers.Admin.projects.project.participation.inputs": "Ionchuir",

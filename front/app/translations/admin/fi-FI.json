@@ -1883,7 +1883,6 @@
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Valitse, mihin vaiheeseen haluat lisätä nämä tulot.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Syötteiden maahantuoja",
   "app.containers.Admin.projects.project.ongoing": "Käynnissä",
-  "app.containers.Admin.projects.project.participantCount": "{count, plural, one {# osallistuja} other {# osallistujaa}}",
   "app.containers.Admin.projects.project.participation.comments": "Kommentit",
   "app.containers.Admin.projects.project.participation.demographicsTab": "Väestötiedot",
   "app.containers.Admin.projects.project.participation.inputs": "Toiminnat",

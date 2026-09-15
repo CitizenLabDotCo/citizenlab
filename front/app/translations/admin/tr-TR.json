@@ -1883,7 +1883,6 @@
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Lütfen bu girişleri hangi faza eklemek istediğinizi seçin.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Girdi ithalatçısı",
   "app.containers.Admin.projects.project.ongoing": "Devam eden",
-  "app.containers.Admin.projects.project.participantCount": "{count, plural, one {# katılımcı} other {# katılımcı}}",
   "app.containers.Admin.projects.project.participation.comments": "Yorumlar",
   "app.containers.Admin.projects.project.participation.demographicsTab": "Demografik Bilgiler",
   "app.containers.Admin.projects.project.participation.inputs": "Girişler",
