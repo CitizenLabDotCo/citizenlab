@@ -1,7 +1,15 @@
 # frozen_string_literal: true
 
 class ProfanityService
-  IGNORE_SPECIAL_CHARS = '.?¿!,:;\'"(){}[]#@_'
+  # Removed, so the masked word is glued back together: f_u_c_k => fuck.
+  MASKING_CHARS = /[\p{Pc}#@]/
+
+  # Separators become a space rather than nothing, otherwise "l'idiot" would
+  # become "lidiot" and stop matching. Quote ornaments (U+275B-E) are listed one
+  # by one because their category (So) also holds every emoji. The hyphen (Pd)
+  # is left out on purpose: splitting on it surfaces the parts of compound
+  # words, and "dix-huit" would then match the blocked word "dix".
+  WORD_SEPARATORS = /[\p{Pi}\p{Pf}\p{Ps}\p{Pe}\p{Po}\p{Sk}❛❜❝❞]/
 
   def search_blocked_words(text)
     AppConfiguration.instance.settings.dig('core', 'locales').map do |locale|
@@ -11,6 +19,7 @@ class ProfanityService
         Set.new(fetch_blocked_words(lang).map { |w| normalize_text w })
       end
       words = without_special_chars(normalize_text(text)).split
+      debugger
       blocked_words.intersection(words).map do |blocked_word|
         {
           word: blocked_word,
@@ -48,7 +57,9 @@ class ProfanityService
   end
 
   def without_special_chars(text)
-    text.tr(IGNORE_SPECIAL_CHARS, '')
+    # Masking chars go first: Po also holds # and @, which must be removed
+    # rather than turned into a space.
+    text.gsub(MASKING_CHARS, '').gsub(WORD_SEPARATORS, ' ')
   end
 
   def fetch_blocked_words(lang)
