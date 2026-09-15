@@ -1985,6 +1985,7 @@
   "app.containers.Admin.projects.project.workspace.publishOpenGroupsDescription": "Only people in the groups you choose.",
   "app.containers.Admin.projects.project.workspace.publishRestoreToDraft": "Restore to draft",
   "app.containers.Admin.projects.project.workspace.publishRestoreToDraftBody": "The project goes back to draft and is no longer visible to residents.",
+  "app.containers.Admin.projects.project.workspace.publishRestoreToDraftFromArchiveBody": "The project moves out of the archive and back to draft. It stays hidden from residents until you publish it again.",
   "app.containers.Admin.projects.project.workspace.publishRestoreToDraftTitle": "Restore to draft?",
   "app.containers.Admin.projects.project.workspace.publishSchedule": "Schedule",
   "app.containers.Admin.projects.project.workspace.publishSendEmail": "Send a \"Project published\" email",
