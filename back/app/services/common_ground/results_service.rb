@@ -21,18 +21,24 @@ module CommonGround
 
     private
 
+    REACTION_COUNT_COLUMNS = %w[likes_count dislikes_count neutral_reactions_count].freeze
+
     # The vote counts are computed from the (filtered) reactions rather than taken from the
     # counter caches on ideas, so that they respect exclude_roles. The returned ideas carry
-    # them as up_count, down_count and neutral_count attributes.
+    # the computed counts in place of their likes_count, dislikes_count and
+    # neutral_reactions_count attributes.
     def top_consensus_ideas(n, reverse: false)
-      consensus_score_sql = Arel.sql('greatest(reaction_counts.up_count, reaction_counts.down_count) * 1.0 / (reaction_counts.up_count + reaction_counts.down_count)')
+      consensus_score_sql = Arel.sql('greatest(reaction_counts.likes_count, reaction_counts.dislikes_count) * 1.0 / (reaction_counts.likes_count + reaction_counts.dislikes_count)')
       # The votes counts (excluding neutral votes) are used to break ties.
-      votes_count_sql = Arel.sql('(reaction_counts.up_count + reaction_counts.down_count)')
+      votes_count_sql = Arel.sql('(reaction_counts.likes_count + reaction_counts.dislikes_count)')
+
+      idea_columns = (Idea.column_names - REACTION_COUNT_COLUMNS).map { |column| "ideas.#{column}" }
+      reaction_count_columns = REACTION_COUNT_COLUMNS.map { |column| "reaction_counts.#{column}" }
 
       ideas
         .joins("INNER JOIN (#{reaction_counts_by_idea.to_sql}) reaction_counts ON reaction_counts.idea_id = ideas.id")
-        .select('ideas.*', 'reaction_counts.up_count', 'reaction_counts.down_count', 'reaction_counts.neutral_count')
-        .where('reaction_counts.up_count + reaction_counts.down_count > 0')
+        .select(*idea_columns, *reaction_count_columns)
+        .where('reaction_counts.likes_count + reaction_counts.dislikes_count > 0')
         .order(reverse ? consensus_score_sql.asc : consensus_score_sql.desc, votes_count_sql.desc)
         .limit(n)
     end
@@ -42,9 +48,9 @@ module CommonGround
         .group(:reactable_id)
         .select(
           'reactions.reactable_id AS idea_id',
-          "COUNT(*) FILTER (WHERE reactions.mode = 'up') AS up_count",
-          "COUNT(*) FILTER (WHERE reactions.mode = 'down') AS down_count",
-          "COUNT(*) FILTER (WHERE reactions.mode = 'neutral') AS neutral_count"
+          "COUNT(*) FILTER (WHERE reactions.mode = 'up') AS likes_count",
+          "COUNT(*) FILTER (WHERE reactions.mode = 'down') AS dislikes_count",
+          "COUNT(*) FILTER (WHERE reactions.mode = 'neutral') AS neutral_reactions_count"
         )
     end
 

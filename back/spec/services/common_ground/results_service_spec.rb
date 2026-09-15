@@ -138,7 +138,7 @@ describe CommonGround::ResultsService do
       end
 
       it 'returns the vote counts on the top ideas' do
-        expect(results.top_consensus_ideas.map { |idea| [idea.up_count, idea.down_count, idea.neutral_count] })
+        expect(results.top_consensus_ideas.map { |idea| [idea.likes_count, idea.dislikes_count, idea.neutral_reactions_count] })
           .to eq([[3, 0, 1], [2, 1, 0]])
       end
 
@@ -154,7 +154,7 @@ describe CommonGround::ResultsService do
         it 'includes them by default' do
           expect(results.top_consensus_ideas).to eq [idea2, idea1]
           expect(results.top_controversial_ideas).to eq [idea3, idea1]
-          expect(results.top_consensus_ideas.last.down_count).to eq 2
+          expect(results.top_consensus_ideas.last.dislikes_count).to eq 2
           expect(results.stats).to eq({ num_participants: 7, num_ideas: 4, votes: { up: 6, down: 4, neutral: 3 } })
         end
 
@@ -164,7 +164,7 @@ describe CommonGround::ResultsService do
           it 'leaves their reactions out of the rankings, the vote counts and the stats' do
             expect(results.top_consensus_ideas).to eq [idea1, idea2]
             expect(results.top_controversial_ideas).to eq [idea3, idea2]
-            expect(results.top_consensus_ideas.map { |idea| [idea.up_count, idea.down_count, idea.neutral_count] })
+            expect(results.top_consensus_ideas.map { |idea| [idea.likes_count, idea.dislikes_count, idea.neutral_reactions_count] })
               .to eq([[3, 0, 1], [2, 1, 0]])
             expect(results.stats).to eq({ num_participants: 5, num_ideas: 4, votes: { up: 6, down: 2, neutral: 3 } })
           end
