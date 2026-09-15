@@ -67,6 +67,8 @@ describe CustomIdMethods::NemlogIn::NemlogInOmniauth do
       }]
     }
     configuration.save!
+    # SSO values are only stored for fields the platform has.
+    %w[municipality_code birthyear].each { |key| create(:custom_field, key: key) }
     host! 'example.org'
   end
 

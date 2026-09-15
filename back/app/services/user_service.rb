@@ -41,7 +41,7 @@ class UserService
         user_params = user_params.except(:email).merge(pending => email)
       end
 
-      user = User.new(user_params)
+      user = User.new(with_known_custom_field_values(user_params))
       user.locale = locale
 
       build_user_confirmation(user) if confirm_user && user.email.present?
@@ -56,7 +56,7 @@ class UserService
     def update_in_sso!(user, auth, authver_method)
       attrs = authver_method.updateable_user_attrs
       sso_user_attrs = authver_method.profile_to_user_attrs(auth)
-      user_params = sso_user_attrs.slice(*attrs).compact
+      user_params = with_known_custom_field_values(sso_user_attrs.slice(*attrs).compact)
       user_params.delete(:remote_avatar_url) if user.avatar.present? # don't overwrite avatar if already present
 
       resolve_sso_email!(user, user_params, sso_user_attrs[:email], authver_method.email_confirmed?(auth))
@@ -150,6 +150,15 @@ class UserService
     def build_user_confirmation(user)
       user.email_confirmed_at = Time.zone.now
       user.confirmation_required = false
+    end
+
+    # An identity provider can return values for fields this platform does not have.
+    def with_known_custom_field_values(user_params)
+      return user_params unless user_params.key?(:custom_field_values)
+
+      user_params.merge(
+        custom_field_values: CustomFieldService.remove_unknown_registration_custom_fields(user_params[:custom_field_values])
+      )
     end
 
     def add_custom_field_values_schema_errors(user, values)

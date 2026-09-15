@@ -88,6 +88,19 @@ describe Verification::VerificationService do
       })
     end
 
+    # Stored, a key with no field makes the profile form refuse every later save.
+    it 'ignores custom_field_values for fields that do not exist' do
+      field = create(:custom_field)
+
+      allow_any_instance_of(CustomIdMethods::Bogus::BogusVerification)
+        .to receive(:verify_sync)
+        .and_return({ uid: '123', custom_field_values: { field.key => 'kept', 'postal_code' => '1212' } })
+
+      service.verify_sync(user: user, method_name: 'bogus', verification_parameters: {})
+
+      expect(user.reload.custom_field_values).to eq(field.key => 'kept')
+    end
+
     it 'adds a verification' do
       params = {
         user: user,
