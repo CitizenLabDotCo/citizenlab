@@ -136,8 +136,12 @@ fe-up-franceconnect:
 # Prerequisite: clone https://github.com/CitizenLabDotCo/fake_sso next to this
 # repo (or set FAKE_SSO_PATH to its checkout) and add
 # `127.0.0.1 host.docker.internal` to /etc/hosts.
+#
+# The profile is named on `down` as well: without it the fake_sso container survives
+# while the network is recreated, and the next `up` cannot attach it to a network that
+# no longer exists.
 be-up-fake-sso:
-	docker compose down
+	docker compose --profile fake_sso down --remove-orphans
 	docker compose run --rm web bundle exec rake 'dev:enable_id_method[fake_sso]'
 	docker compose --profile fake_sso up
 
