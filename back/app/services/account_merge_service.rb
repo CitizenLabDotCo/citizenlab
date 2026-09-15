@@ -79,7 +79,7 @@ class AccountMergeService
   # left alone for the same reason.
   #
   # @return [User] +target+, with everything the source owned moved onto it.
-  # @raise [IneligibleError] if the source is not an absorbable blank account.
+  # @raise [IneligibleError] if the source may not be merged.
   # @raise [IncompleteMergeError] if anything would have been left on the source.
   def absorb!(source:, target:)
     run!(source: source, target: target)

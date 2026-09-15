@@ -2,18 +2,18 @@ import { randomEmail, randomString } from '../../../support/commands';
 import { fakeSSOVerify } from '../utils';
 import { fakeSSOGlobalSignup } from './utils';
 
-// The mirror of the merge flow in user_no_email.cy.ts: there the SSO account is
-// absorbed into the email one, here the reverse. The provider returning the same
+// The mirror of the merge flow in user_no_email.cy.ts: there the user is signed in
+// to the SSO account, here to the email one. The provider returning the same
 // subject for both is what ties them together. The refusal side is covered by the
 // backend specs.
-describe('SSO: verifying an email account that already has a blank SSO account', () => {
-  it('absorbs the blank account into the one being verified', () => {
+describe('SSO: verifying an email account that already has an email-less SSO account', () => {
+  it('merges the SSO account into the one being verified', () => {
     const email = randomEmail();
     const password = randomString();
     const sub = randomString();
 
-    // A blank SSO account: identity and verification, no email or password, because
-    // the user abandoned the flow before supplying one.
+    // An email-less SSO account: identity and verification, no email or password,
+    // because the user abandoned the flow before supplying one.
     fakeSSOGlobalSignup(cy, 'jane_doe', { sub });
     cy.get('.e2e-modal-close-button').click();
     cy.clearCookies();
@@ -34,7 +34,7 @@ describe('SSO: verifying an email account that already has a blank SSO account',
     cy.location('search').should('include', 'verification_success=true');
     cy.get('.e2e-verified').should('exist');
 
-    // Still the email account, now verified, holding everything the blank one owned.
+    // Still the email account, now verified, holding everything the SSO one owned.
     cy.getAuthUser().then((user) => {
       expect(user.body.data.attributes.email).to.eq(email);
       expect(user.body.data.attributes.verified).to.eq(true);

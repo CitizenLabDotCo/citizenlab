@@ -327,7 +327,7 @@ resource 'Confirmations' do
 
     let!(:target) { create(:user, email: 'existing@example.com') }
 
-    # An email-less SSO account that has asked to be absorbed into `target`.
+    # An email-less SSO account that has asked to be merged into `target`.
     let(:sso_user) do
       create(:user).tap do |user|
         user.update_columns(email: nil, password_digest: nil)

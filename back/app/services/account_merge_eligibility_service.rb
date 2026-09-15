@@ -25,7 +25,7 @@ class AccountMergeEligibilityService
     source_reason(source).nil?
   end
 
-  # Whether this account may be absorbed and deleted. Public because
+  # Whether this account may be merged away and deleted. Public because
   # AccountMergeService#absorb! applies only this half - see there for why.
   #
   # Also what keeps ordinary email changes out of the merge: request_code_new_email
@@ -35,9 +35,8 @@ class AccountMergeEligibilityService
     return :source_missing if source.blank?
     return :source_not_sso unless source.sso?
     return :source_has_email if source.email.present?
-    return :source_has_password if source.password_digest.present?
     # A pending confirmation means the user is actively claiming this account and is
-    # one code away from owning it. Absorbing would discard that silently.
+    # one code away from owning it. Merging would discard that silently.
     return :source_has_pending_email if source.new_email.present?
     # The merge deletes the source, which would quietly remove an admin or moderator.
     return :source_has_roles if source.roles.present?
@@ -74,7 +73,7 @@ class AccountMergeEligibilityService
   # Any active verification the target holds that the source does not is somebody
   # else's assertion of who this account is.
   #
-  # Not scoped per method: a target verified one way absorbed by a source verified
+  # Not scoped per method: a target verified one way merged with a source verified
   # another would leave the survivor holding two people's verifications, with the
   # target's locked name overwritten. Platforms are expected to run a single method,
   # so this usually reduces to the same-method case.

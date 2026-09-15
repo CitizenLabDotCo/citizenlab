@@ -336,7 +336,7 @@ class OmniauthCallbackController < ApplicationController
         rescue Verification::VerificationService::NotEntitledError => e
           verification_failure_redirect(not_entitled_error(e))
         rescue AccountMergeService::IneligibleError, AccountMergeService::IncompleteMergeError => e
-          # The blank account could not be absorbed, so the verification is still on
+          # The source account could not be merged, so the verification is still on
           # it - which is what 'taken' says. Reported, not swallowed:
           # IncompleteMergeError means a surface is missing from MOVES.
           ErrorReporter.report(e)
@@ -352,7 +352,7 @@ class OmniauthCallbackController < ApplicationController
     handle_verification(auth, user)
     true
   rescue AccountMergeService::IneligibleError, AccountMergeService::IncompleteMergeError => e
-    # The same absorb failure as in verification_callback, on the sign-in path.
+    # The same merge failure as in verification_callback, on the sign-in path.
     ErrorReporter.report(e)
     user.destroy if user_created
     signin_failure_redirect

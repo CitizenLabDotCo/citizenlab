@@ -36,11 +36,11 @@ describe AccountMergeEligibilityService do
       expect(reason).to eq :source_has_email
     end
 
-    # The scope fence that keeps the shared endpoint from offering a merge during an
-    # ordinary profile email change.
-    it 'refuses a source that has a password' do
+    # Without an email the password can't be used to sign in, and the merge never
+    # copies it onto the target.
+    it 'allows a source that has a password' do
       source.update_columns(password_digest: BCrypt::Password.create('democracy2.0'))
-      expect(reason).to eq :source_has_password
+      expect(service.source_eligible?(source)).to be true
     end
 
     it 'refuses a source carrying roles, since the merge would delete it' do
@@ -48,14 +48,14 @@ describe AccountMergeEligibilityService do
       expect(reason).to eq :source_has_roles
     end
 
-    # Otherwise a blocked user merges into a clean account they also own and walks
-    # away unblocked, taking the verification that made the block stick with them.
-    # One code away from owning the account, so absorbing would discard that claim.
+    # One code away from owning the account, so merging would discard that claim.
     it 'refuses a source part-way through confirming an email' do
       source.update_columns(new_email: 'pending@example.org')
       expect(reason).to eq :source_has_pending_email
     end
 
+    # Otherwise a blocked user merges into a clean account they also own and walks
+    # away unblocked, taking the verification that made the block stick with them.
     it 'refuses a blocked source' do
       source.update_columns(block_end_at: 1.week.from_now)
       expect(reason).to eq :source_blocked
@@ -124,7 +124,7 @@ describe AccountMergeEligibilityService do
       expect(reason).to eq :verification_conflict
     end
 
-    # The ordinary case: the source is the account being absorbed, so its rows move.
+    # The ordinary case: the source is the account being merged away, so its rows move.
     it 'allows when the source holds verifications the target does not' do
       create(:verification, user: source, method_name: 'cow', hashed_uid: 'aaa')
       create(:verification, user: source, method_name: 'bogus', hashed_uid: 'bbb')

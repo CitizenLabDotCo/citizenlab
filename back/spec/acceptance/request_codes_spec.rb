@@ -245,7 +245,7 @@ resource 'Request codes' do
       expect(delivery_service).not_to have_received(:send_now_to_user)
     end
 
-    # This caller has an email and a password, so it cannot be merged away - the
+    # This caller already has an email, so it cannot be merged away - the
     # taken address stays a plain error.
     example 'It does not work if new_email is already taken by another user' do
       existing_user = create(:user, email: 'existing_email@example.com')

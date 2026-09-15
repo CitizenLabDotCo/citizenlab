@@ -116,10 +116,11 @@ module Verification
     private
 
     def make_verification(user:, uid:, method:, activity_payload: {})
-      # Other accounts already verified with this uid: either blank SSO shells
-      # belonging to the same person, or somebody else claiming this identity.
-      absorbable = existing_verified_users(user, uid, method)
-      raise VerificationTakenError unless absorbable.all? { |u| absorbable?(u, method) }
+      # Other accounts already verified with this uid: either an email-less SSO account
+      # belonging to the same person, or somebody else claiming this identity. Normally
+      # at most one, but nothing enforces a unique uid, so older data can hold more.
+      other_accounts = existing_verified_users(user, uid, method)
+      raise VerificationTakenError unless other_accounts.all? { |u| merge_source?(u, method) }
 
       verification = ::Verification::Verification.new(
         method_name: method.name_for_hashing,
@@ -135,18 +136,22 @@ module Verification
         verification.save!
         sfxv_service.after_create(verification, user, activity_payload)
 
-        # After the save on purpose: the shell's copy is then a duplicate of one
+        # After the save on purpose: the source's copy is then a duplicate of one
         # +user+ holds, so the merge drops it rather than leaving two identical rows.
-        absorbable.each { |shell| account_merge_service.absorb!(source: shell, target: user) }
+        other_accounts.each { |source| account_merge_service.absorb!(source: source, target: user) }
       end
 
       verification
     end
 
-    # Only for methods whose uid an identity provider asserts. A manual_sync uid is
-    # typed by the user and merely looked up, so knowing somebody's number would
-    # otherwise be enough to take their account. try so an unknown method fails closed.
-    def absorbable?(other_user, method)
+    # Whether another account holding this uid is merged into the user verifying now,
+    # rather than blocking the verification as taken.
+    #
+    # Only when an identity provider asserted the uid: then both accounts proved they
+    # are the same person. A manual_sync uid is typed by the user and merely looked up,
+    # so knowing somebody's number would otherwise be enough to take their account.
+    # try so an unknown method fails closed.
+    def merge_source?(other_user, method)
       method.try(:verification_method_type) == :omniauth &&
         merge_eligibility_service.source_eligible?(other_user)
     end

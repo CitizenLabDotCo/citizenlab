@@ -71,7 +71,7 @@ describe AccountMergeService do
 
   # absorb! has no such proof: tying two accounts together says nothing about who can
   # read the target's inbox.
-  it 'leaves the target email unconfirmed when absorbing' do
+  it 'leaves the target email unconfirmed on the provider-driven merge' do
     target.update!(email_confirmed_at: nil, confirmation_required: true)
 
     service.absorb!(source: source, target: target)
@@ -261,7 +261,7 @@ describe AccountMergeService do
   end
 
   # The provider-driven entry point, used when a verification uid is already held by
-  # a blank SSO shell.
+  # an email-less SSO account.
   describe '#absorb!' do
     def absorb!(into: target)
       service.absorb!(source: source, target: into)
@@ -297,7 +297,7 @@ describe AccountMergeService do
       expect(source.reload).to be_present
     end
 
-    it 'still refuses a source that is not an absorbable blank account' do
+    it 'still refuses a source that is not an email-less SSO account' do
       source.update!(email: 'someone@example.org')
 
       expect { absorb! }.to raise_error described_class::IneligibleError
