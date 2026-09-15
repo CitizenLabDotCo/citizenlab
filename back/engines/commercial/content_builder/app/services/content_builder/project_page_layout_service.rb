@@ -401,20 +401,14 @@ module ContentBuilder
           'displayName' => 'PhasesWidget',
           'linkedNodes' => {}
         },
-        EVENTS_ID => {
-          'type' => { 'resolvedName' => 'EventsWidget' },
-          'nodes' => [],
-          'props' => {},
-          'custom' => {
-            'title' => message('app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle', 'Events'),
-            'noPointerEvents' => true
+        EVENTS_ID => Craftjs::Nodes.events(
+          {
+            'source' => 'currentProject',
+            'timeFilters' => %w[upcoming past],
+            'limit' => 'all'
           },
-          'hidden' => false,
-          'parent' => BODY_ID,
-          'isCanvas' => false,
-          'displayName' => 'EventsWidget',
-          'linkedNodes' => {}
-        }
+          BODY_ID
+        )
       }
     end
 

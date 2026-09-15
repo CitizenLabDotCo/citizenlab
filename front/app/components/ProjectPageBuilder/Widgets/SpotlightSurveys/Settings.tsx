@@ -14,13 +14,13 @@ import usePhases from 'api/phases/usePhases';
 
 import useLocalize from 'hooks/useLocalize';
 
+import useWidgetProjectId from 'components/admin/ContentBuilder/useWidgetProjectId';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
 import messages from '../messages';
-import useWidgetProjectId from '../useWidgetProjectId';
 
 import {
   SpotlightSurveysProps,
