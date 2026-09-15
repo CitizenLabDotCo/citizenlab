@@ -19,7 +19,6 @@ class ProfanityService
         Set.new(fetch_blocked_words(lang).map { |w| normalize_text w })
       end
       words = without_special_chars(normalize_text(text)).split
-      debugger
       blocked_words.intersection(words).map do |blocked_word|
         {
           word: blocked_word,
