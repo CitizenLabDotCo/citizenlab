@@ -85,7 +85,7 @@ describe McpServer::LayoutWidgets do
       expect(seeded).to include(*scaffold_widgets)
       movable = seeded.uniq - scaffold_widgets
       expect(ContentBuilder::Craftjs::WidgetSpecs::SPECS.keys).to include(*movable)
-      expect(described_class::DOCS).to include('PhasesWidget', 'EventsWidget')
+      expect(described_class::DOCS).to include('PhasesWidget', 'EventsList')
     end
   end
 

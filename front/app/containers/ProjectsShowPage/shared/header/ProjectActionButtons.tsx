@@ -23,9 +23,9 @@ import { SuccessAction } from 'containers/Authentication/SuccessActions/actions'
 import { scrollTo } from 'containers/Authentication/SuccessActions/actions/scrollTo';
 import messages from 'containers/ProjectsShowPage/messages';
 
+import { EVENTS_WIDGET_ANCHOR_ID } from 'components/admin/ContentBuilder/Widgets/Events';
 import IdeaButton from 'components/IdeaButton';
 import EmptyParticipationPreview from 'components/ProjectPageBuilder/Widgets/EmptyState/EmptyParticipationPreview';
-import { EVENTS_WIDGET_ANCHOR_ID } from 'components/ProjectPageBuilder/Widgets/Events';
 import useHasEventsWidget from 'components/ProjectPageBuilder/Widgets/Events/useHasEventsWidget';
 import SpotlightSurveyActionButton from 'components/ProjectPageBuilder/Widgets/SpotlightSurveys/ActionButton';
 import ButtonWithLink from 'components/UI/ButtonWithLink';

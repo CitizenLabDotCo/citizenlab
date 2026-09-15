@@ -18,6 +18,9 @@ resource 'Events' do
   get 'web_api/v1/events' do
     parameter :project_ids, 'The ids of the project to filter events by', type: :array
     parameter :static_page_id, 'The id of the static page that shows events linked by projects', type: :string
+    parameter :areas, 'The ids of the areas whose projects to filter events by', type: :array
+    parameter :global_topics, 'The ids of the global topics whose projects to filter events by', type: :array
+    parameter :spaces, 'The ids of the spaces whose projects to filter events by', type: :array
     parameter :start_at_lt, 'Filter by maximum start at', type: :string
     parameter :start_at_gteq, 'Filter by minimum start at', type: :string
     parameter :project_publication_statuses, 'The publication statuses of the project to filter events by', type: :array
@@ -52,6 +55,18 @@ resource 'Events' do
       example_request 'List all events of a page' do
         assert_status 200
         expect(response_data.size).to eq 2
+        expect(response_ids).to match_array(@project.events.pluck(:id))
+      end
+    end
+
+    context 'passing areas' do
+      let(:area) { create(:area) }
+      let(:areas) { [area.id] }
+
+      before { @project.update!(areas: [area]) }
+
+      example_request 'List all events of projects in an area' do
+        assert_status 200
         expect(response_ids).to match_array(@project.events.pluck(:id))
       end
     end
