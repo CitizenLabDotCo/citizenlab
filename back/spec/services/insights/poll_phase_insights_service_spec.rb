@@ -48,6 +48,34 @@ RSpec.describe Insights::PollPhaseInsightsService do
     end
   end
 
+  describe '#call with exclude_admins_and_moderators' do
+    let(:phase) { create(:poll_phase, start_at: 17.days.ago, end_at: 2.days.ago) }
+
+    before do
+      AppConfiguration.instance.update!(platform_start_at: 1.year.ago.beginning_of_day)
+
+      create(:poll_response, phase: phase, user: create(:admin))
+      create(:poll_response, phase: phase, user: create(:project_moderator, projects: [phase.project]))
+
+      create(:session, :with_pageview, monthly_user_hash: 'user', project: phase.project, pageview_created_at: 10.days.ago)
+      create(:session, :with_pageview, monthly_user_hash: 'admin', highest_role: 'admin', project: phase.project, pageview_created_at: 10.days.ago)
+    end
+
+    it 'includes admins and moderators by default' do
+      metrics = described_class.new(phase).call[:metrics]
+
+      expect(metrics).to include(visitors: 2, participants: 4, participation_rate_as_percent: 200.0)
+      expect(metrics['poll']).to include(responses: 4)
+    end
+
+    it 'excludes participations and visits of admins and moderators' do
+      metrics = described_class.new(phase, exclude_admins_and_moderators: true).call[:metrics]
+
+      expect(metrics).to include(visitors: 1, participants: 2, participation_rate_as_percent: 200.0)
+      expect(metrics['poll']).to include(responses: 2)
+    end
+  end
+
   describe 'phase_participation_method_metrics' do
     let(:user1) { create(:user) }
     let(:participation1) { create(:taking_poll_participation, acted_at: 10.days.ago, user: user1) }

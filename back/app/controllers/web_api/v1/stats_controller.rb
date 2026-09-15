@@ -11,4 +11,16 @@ class WebApi::V1::StatsController < ApplicationController
   def parse_time_boundaries
     @start_at, @end_at, @no_data = TimeBoundaries.parse(params[:start_at], params[:end_at])
   end
+
+  # When the exclude_admins_and_moderators_from_statistics setting is enabled, leaves
+  # out the records of users with an admin or moderator role. Records without a known
+  # user (e.g. anonymous ones) are kept, since we cannot tell whether they were made by
+  # an admin or moderator.
+  def apply_exclude_admins_and_moderators_filter(records, user_column)
+    return records unless StatisticsRoleExclusion.exclude_admins_and_moderators?
+
+    records
+      .where(user_column => nil)
+      .or(records.where.not(user_column => User.not_normal_user.select(:id)))
+  end
 end

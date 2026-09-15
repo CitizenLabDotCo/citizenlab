@@ -81,7 +81,7 @@ RSpec.describe ReportBuilder::Queries::DeviceTypes do
       })
     end
 
-    it 'applies exclude_roles filter' do
+    it 'applies exclude_admins_and_moderators filter' do
       2.times do
         create(:session, :with_pageview, device_type: 'desktop_or_other', highest_role: 'admin', pageview_created_at: Date.new(2023, 2, 1))
       end
@@ -93,7 +93,7 @@ RSpec.describe ReportBuilder::Queries::DeviceTypes do
       params = {
         start_at: Date.new(2023, 1, 1),
         end_at: Date.new(2023, 3, 1),
-        exclude_roles: 'exclude_admins_and_moderators'
+        exclude_admins_and_moderators: true
       }
 
       expect(query.run_query(**params)).to eq({

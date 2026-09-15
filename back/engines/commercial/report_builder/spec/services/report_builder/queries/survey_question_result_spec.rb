@@ -56,6 +56,82 @@ RSpec.describe ReportBuilder::Queries::SurveyQuestionResult do
       end
     end
 
+    context 'with exclude_admins_and_moderators' do
+      let_it_be(:group_field) do
+        create(
+          :custom_field_select,
+          resource: form,
+          key: 'color',
+          options: [
+            create(:custom_field_option, key: 'red'),
+            create(:custom_field_option, key: 'blue')
+          ]
+        )
+      end
+      let_it_be(:linear_scale_field) { create(:custom_field_linear_scale, resource: form, maximum: 5) }
+
+      before_all do
+        created_at = Time.zone.local(2025, 2, 10)
+        {
+          create(:user) => { select_field.key => 'la', group_field.key => 'red', linear_scale_field.key => 2 },
+          create(:admin) => { select_field.key => 'ny', group_field.key => 'blue', linear_scale_field.key => 5 },
+          create(:project_moderator, projects: [project]) => { select_field.key => 'ny', group_field.key => 'blue', linear_scale_field.key => 5 },
+          nil => { select_field.key => 'ny', group_field.key => 'red', linear_scale_field.key => 4 }
+        }.each do |author, custom_field_values|
+          create(:native_survey_response, project:, phases: phases_of_inputs, author:, created_at:, custom_field_values:)
+        end
+      end
+
+      def answer_counts(result)
+        result[:answers].to_h { |answer| [answer[:answer], answer[:count]] }
+      end
+
+      let(:base_params) { { phase_id: survey_phase.id } }
+      let(:exclude) { { exclude_admins_and_moderators: true } }
+
+      it 'includes responses of admins and moderators by default' do
+        result = query.run_query(**base_params, question_id: select_field.id)
+
+        expect(answer_counts(result)).to eq({ 'la' => 2, 'ny' => 3, nil => 0 })
+        expect(result[:questionResponseCount]).to eq(5)
+      end
+
+      it 'excludes responses of admins and moderators, but keeps responses without an author' do
+        result = query.run_query(**base_params, **exclude, question_id: select_field.id)
+
+        expect(answer_counts(result)).to eq({ 'la' => 2, 'ny' => 1, nil => 0 })
+        expect(result[:questionResponseCount]).to eq(3)
+        expect(result[:totalResponseCount]).to eq(3)
+      end
+
+      it 'excludes responses of admins and moderators from averages' do
+        result = query.run_query(**base_params, question_id: linear_scale_field.id)
+        expect(result[:averages]).to eq({ this_period: 4.0 })
+
+        result = query.run_query(**base_params, **exclude, question_id: linear_scale_field.id)
+        expect(result[:averages]).to eq({ this_period: 3.0 })
+      end
+
+      it 'excludes responses of admins and moderators when filtering by quarter' do
+        params = { **base_params, **exclude, question_id: linear_scale_field.id, year: 2025, quarter: 1 }
+        result = query.run_query(**params)
+
+        expect(result[:totalResponseCount]).to eq(2)
+        expect(result[:averages]).to include(this_period: 3.0)
+      end
+
+      it 'excludes responses of admins and moderators when grouping' do
+        params = { **base_params, **exclude, question_id: select_field.id, group_mode: 'survey_question', group_field_id: group_field.id }
+        result = query.run_query(**params)
+
+        expect(result[:answers]).to eq([
+          { answer: 'la', count: 2, groups: [{ group: 'red', count: 1 }, { group: nil, count: 1 }] },
+          { answer: 'ny', count: 1, groups: [{ group: 'red', count: 1 }] },
+          { answer: nil, count: 0, groups: [] }
+        ])
+      end
+    end
+
     context 'when phase_id is not provided' do
       it 'returns an empty hash' do
         expect(query.run_query).to eq({})

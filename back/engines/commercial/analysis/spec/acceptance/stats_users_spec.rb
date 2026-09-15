@@ -71,6 +71,25 @@ resource 'Analysis - Stats - Users' do
         }
       }.deep_symbolize_keys)
     end
+
+    describe 'when admins and moderators are excluded from statistics' do
+      before do
+        enable_exclude_admins_and_moderators_from_statistics
+        create(:idea, project: project, author: create(:admin, domicile: @area2.id), likes_count: 5)
+        create(:idea, project: project, author: create(:project_moderator, projects: [project], domicile: @area3.id), likes_count: 5)
+      end
+
+      example_request 'Authors by domicile excluding admins and moderators' do
+        expect(response_status).to eq 200
+        expect(json_response_body.dig(:data, :attributes, :series, :users)).to match({
+          @area1.custom_field_option.id => 2,
+          @area2.custom_field_option.id => 0,
+          @area3.custom_field_option.id => 0,
+          @somewhere_else_option.id => 1,
+          _blank: 1
+        }.symbolize_keys)
+      end
+    end
   end
 
   get 'web_api/v1/analyses/:analysis_id/stats/authors_by_age' do
@@ -102,6 +121,35 @@ resource 'Analysis - Stats - Users' do
           bins:        [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, nil]
         }
       )
+    end
+
+    describe 'when admins and moderators are excluded from statistics' do
+      before do
+        create(:idea, project: project, author: create(:admin, birthyear: 1990))
+        create(:idea, project: project, author: create(:project_moderator, projects: [project], birthyear: nil))
+      end
+
+      example 'Authors by age includes admins and moderators by default', document: false do
+        travel_to(Time.zone.local(2020, 1, 1)) { do_request }
+        expect(response_status).to eq 200
+        expect(json_response_body.dig(:data, :attributes)).to include(
+          unknown_age_count: 2,
+          series: include(user_counts: [0, 0, 3, 1, 1, 1, 0, 0, 0, 0])
+        )
+      end
+
+      example 'Authors by age excluding admins and moderators' do
+        enable_exclude_admins_and_moderators_from_statistics
+        travel_to(Time.zone.local(2020, 1, 1)) { do_request }
+        expect(response_status).to eq 200
+        expect(json_response_body.dig(:data, :attributes)).to match(
+          unknown_age_count: 1,
+          series: {
+            user_counts: [0, 0,  2,  1,  1,  1,  0,  0,  0,  0],
+            bins:        [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, nil]
+          }
+        )
+      end
     end
   end
 
@@ -138,6 +186,23 @@ resource 'Analysis - Stats - Users' do
               }
             }
           }.deep_symbolize_keys)
+        end
+
+        describe 'when admins and moderators are excluded from statistics' do
+          before do
+            enable_exclude_admins_and_moderators_from_statistics
+            create(:idea, project: project, author: create(:admin, custom_field_values: { @custom_field.key => @option1.key }))
+            create(:idea, project: project, author: create(:project_moderator, projects: [project]))
+          end
+
+          example_request 'Authors by custom field (select) excluding admins and moderators' do
+            expect(response_status).to eq 200
+            expect(json_response_body.dig(:data, :attributes, :series, :users)).to match({
+              @option1.key => 1,
+              @option2.key => 1,
+              _blank: 1
+            }.symbolize_keys)
+          end
         end
       end
 

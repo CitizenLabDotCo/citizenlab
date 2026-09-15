@@ -145,7 +145,7 @@ RSpec.describe ReportBuilder::Queries::VisitorsLanguages do
       params = {
         start_at: Date.new(2022, 8, 1),
         end_at: Date.new(2022, 11, 1),
-        exclude_roles: 'exclude_admins_and_moderators'
+        exclude_admins_and_moderators: true
       }
 
       expect(query.run_query(**params)).to eq({

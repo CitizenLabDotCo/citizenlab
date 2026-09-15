@@ -31,6 +31,8 @@ module ReportBuilder
       return unless klass
 
       kwargs = props.to_h.transform_keys { |key| ::Utils.snakecase(key) }.symbolize_keys
+      # Always determined by the platform setting, never by the widget props.
+      kwargs[:exclude_admins_and_moderators] = StatisticsRoleExclusion.exclude_admins_and_moderators?
       klass.new(@current_user).run_query(**kwargs)
     end
   end

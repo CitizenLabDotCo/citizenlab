@@ -66,6 +66,24 @@ resource 'Analytics - FactEmailDeliveries model' do
       expect(response_data[:attributes]).to eq([{ count_campaign_id: 3 }])
     end
 
+    example 'exclude email deliveries to admins and moderators' do
+      create(:delivery, user: create(:admin))
+      create(:delivery, user: create(:project_moderator))
+
+      enable_exclude_admins_and_moderators_from_statistics
+      do_request({
+        query: {
+          fact: 'email_delivery',
+          aggregations: {
+            all: 'count'
+          }
+        }
+      })
+
+      assert_status 200
+      expect(response_data[:attributes]).to eq([{ count: 4 }])
+    end
+
     example 'filter emails by project' do
       do_request({
         query: {

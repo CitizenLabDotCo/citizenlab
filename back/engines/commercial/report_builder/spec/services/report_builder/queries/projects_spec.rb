@@ -167,6 +167,34 @@ RSpec.describe ReportBuilder::Queries::Projects do
       })
     end
 
+    context 'with exclude_admins_and_moderators' do
+      let(:params) do
+        {
+          start_at: Date.new(2021, 1, 1),
+          end_at: Date.new(2021, 4, 1),
+          publication_statuses: %w[published]
+        }
+      end
+
+      before do
+        create(:idea, project: @project1, author: create(:admin))
+        create(:idea, project: @project1, author: create(:project_moderator, projects: [@project1]))
+        create(:idea, project: @project1, author: nil)
+      end
+
+      it 'includes admins and moderators in participant counts by default' do
+        result = query.run_query(**params)
+
+        expect(result[:participants]).to eq({ @project1.id => 8, @project2.id => 10 })
+      end
+
+      it 'excludes admins and moderators from participant counts' do
+        result = query.run_query(**params, exclude_admins_and_moderators: true)
+
+        expect(result[:participants]).to eq({ @project1.id => 6, @project2.id => 10 })
+      end
+    end
+
     context 'when sorting is applied' do
       let(:start_at) { Date.new(2021, 1, 1) }
       let(:end_at) { Date.new(2021, 4, 1) }

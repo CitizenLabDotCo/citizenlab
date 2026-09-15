@@ -6,7 +6,7 @@ module WebApi
         before_action :set_phase, only: %i[show_insights votes_with_grouping]
 
         def show_insights
-          insights_data = @phase.pmethod.phase_insights_class.new(@phase).call
+          insights_data = phase_insights_service.call
 
           render json: WebApi::V1::Insights::PhaseInsightsSerializer.new(
             @phase,
@@ -24,7 +24,7 @@ module WebApi
             return
           end
 
-          counts_data = @phase.pmethod.phase_insights_class.new(@phase).vote_counts_with_user_custom_field_grouping(custom_field)
+          counts_data = phase_insights_service.vote_counts_with_user_custom_field_grouping(custom_field)
 
           render json: WebApi::V1::Insights::VotingPhaseVotesSerializer.new(
             @phase,
@@ -37,6 +37,10 @@ module WebApi
         def set_phase
           @phase = Phase.find params[:phase_id]
           authorize @phase
+        end
+
+        def phase_insights_service
+          @phase.pmethod.phase_insights_class.new(@phase, exclude_admins_and_moderators: StatisticsRoleExclusion.exclude_admins_and_moderators?)
         end
 
         def validate_voting_phase_and_custom_field(group_by, custom_field)
