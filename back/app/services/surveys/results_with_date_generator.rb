@@ -2,8 +2,8 @@
 
 module Surveys
   class ResultsWithDateGenerator < ResultsGenerator
-    def initialize(phase, structure_by_category: false, year: nil, quarter: nil, options_sort_order: 'count')
-      super(phase, structure_by_category: structure_by_category, options_sort_order: options_sort_order)
+    def initialize(phase, structure_by_category: false, year: nil, quarter: nil, options_sort_order: 'count', exclude_roles: nil)
+      super(phase, structure_by_category: structure_by_category, options_sort_order: options_sort_order, exclude_roles: exclude_roles)
       @year = year&.to_i
       @quarter = quarter&.to_i
       filter_inputs_by_quarter
@@ -23,7 +23,7 @@ module Surveys
       return super unless @year && @quarter
 
       # Get the averages by quarter
-      averages = AverageGenerator.new(phase).field_averages_by_quarter
+      averages = AverageGenerator.new(phase, exclude_roles: @exclude_roles).field_averages_by_quarter
 
       # Merge the averages into the main results
       results.each do |result|

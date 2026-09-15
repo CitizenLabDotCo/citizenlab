@@ -2,12 +2,13 @@
 
 module Surveys
   class AverageGenerator
-    def initialize(phase, input_type: nil)
+    def initialize(phase, input_type: nil, exclude_roles: nil)
       form = phase.custom_form || CustomForm.new(participation_context: phase)
       @fields = IdeaCustomFieldsService.new(form).enabled_fields.select do |f|
         input_type ? f.input_type == input_type : f.supports_average? # Defaults to returning all fields that support averages
       end
       @inputs = phase.ideas.supports_survey.published
+      @inputs = @inputs.excluding_admin_and_moderator_authors if exclude_roles == 'exclude_admins_and_moderators'
       @phase = phase
     end
 

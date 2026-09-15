@@ -8,14 +8,17 @@
 module Surveys
   class ResultsGenerator < FieldVisitorService
     # options_sort_order: 'count' (default) sorts options by count descending, 'original' preserves option order
-    def initialize(phase, structure_by_category: false, options_sort_order: 'count')
+    # exclude_roles: 'exclude_admins_and_moderators' leaves out inputs of users with an admin or moderator role
+    def initialize(phase, structure_by_category: false, options_sort_order: 'count', exclude_roles: nil)
       super()
       @phase = phase
       @options_sort_order = options_sort_order
+      @exclude_roles = exclude_roles
       form = phase.custom_form || CustomForm.new(participation_context: phase)
       @fields = IdeaCustomFieldsService.new(form).survey_results_fields(structure_by_category:)
       @locales = AppConfiguration.instance.settings('core', 'locales')
       @all_inputs = phase.ideas.supports_survey.published
+      @all_inputs = @all_inputs.excluding_admin_and_moderator_authors if exclude_roles == 'exclude_admins_and_moderators'
       @structure_by_category = structure_by_category
     end
 
@@ -457,7 +460,7 @@ module Surveys
 
     def add_averages(results)
       # By default 'this_period' is all time
-      averages = AverageGenerator.new(phase).field_averages
+      averages = AverageGenerator.new(phase, exclude_roles: @exclude_roles).field_averages
 
       # Merge the averages into the main results
       results.each do |result|
