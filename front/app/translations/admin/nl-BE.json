@@ -1928,7 +1928,7 @@
   "app.containers.Admin.projects.project.publishWhoCanOpen": "Wie kan dit openen",
   "app.containers.Admin.projects.project.selectAMethod": "Selecteer een methode",
   "app.containers.Admin.projects.project.settingsCancel": "Annuleren",
-  "app.containers.Admin.projects.project.settingsFrontOffice": "Frontoffice",
+  "app.containers.Admin.projects.project.settingsFrontOffice": "Publieke weergave",
   "app.containers.Admin.projects.project.settingsGeneral": "Algemeen",
   "app.containers.Admin.projects.project.settingsIdeaTags": "Idee-tags",
   "app.containers.Admin.projects.project.settingsNav": "Instellingen",
