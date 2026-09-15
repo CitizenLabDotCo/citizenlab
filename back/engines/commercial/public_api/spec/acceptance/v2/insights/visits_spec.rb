@@ -41,6 +41,7 @@ resource 'Insights Visits' do
     parameter :start_at, 'Start date for the time range (YYYY-MM-DD)', in: :query, required: false, type: 'string'
     parameter :end_at, 'End date for the time range (YYYY-MM-DD)', in: :query, required: false, type: 'string'
     parameter :resolution, 'Time grouping resolution: all, year, month, day, hour. Defaults to month.', in: :query, required: false, type: 'string'
+    parameter :exclude_admins_and_moderators, 'Leave out the visits of admins and moderators. Visits without a known user are kept. Defaults to false.', in: :query, required: false, type: :boolean
 
     example_request 'Returns visits grouped by month (default)' do
       assert_status 200
@@ -140,6 +141,32 @@ resource 'Insights Visits' do
         expect(json_response_body[:visits].first).to have_key(:visits)
         expect(json_response_body[:visits].first).to have_key(:visitors)
         expect(json_response_body[:visits].first).not_to have_key(:date_group)
+      end
+    end
+
+    context 'with visits of admins and moderators' do
+      let(:resolution) { 'all' }
+      let(:project_id) { project.id }
+
+      before do
+        admin_session = create(:session, monthly_user_hash: 'admin_hash', highest_role: 'admin')
+        moderator_session = create(:session, monthly_user_hash: 'moderator_hash', highest_role: 'project_moderator')
+        create(:pageview, session: admin_session, project_id: project.id, created_at: '2025-01-16')
+        create(:pageview, session: moderator_session, project_id: project.id, created_at: '2025-01-17')
+      end
+
+      example_request 'Includes visits of admins and moderators by default', document: false do
+        assert_status 200
+        expect(json_response_body[:visits].first).to eq({ visits: 5, visitors: 5 })
+      end
+
+      context 'with exclude_admins_and_moderators=true' do
+        let(:exclude_admins_and_moderators) { true }
+
+        example_request 'Returns visits excluding admins and moderators' do
+          assert_status 200
+          expect(json_response_body[:visits].first).to eq({ visits: 3, visitors: 3 })
+        end
       end
     end
 
