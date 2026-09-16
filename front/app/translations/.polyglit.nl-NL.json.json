@@ -12064,6 +12064,11 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.containers.SignIn.signInError2": {
+    "state": "verified",
+    "verified_at": "2026-09-16T09:25:40.847942Z",
+    "verified_by": "KenVM"
+  },
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
