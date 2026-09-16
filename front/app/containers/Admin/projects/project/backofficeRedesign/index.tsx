@@ -115,8 +115,9 @@ const ProjectWorkspace = ({
               draft.rightPanel
             ) : phase ? (
               <PhaseRightPanel
-                key={phase.id}
-                projectId={project.id}
+                // Its unsaved settings belong to one method: a switch starts
+                // them over.
+                key={`${phase.id}-${phase.attributes.participation_method}`}
                 phase={phase}
               />
             ) : (
