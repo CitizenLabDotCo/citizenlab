@@ -3,14 +3,20 @@ import React, { lazy, Suspense, useState } from 'react';
 import { Box, colors, Spinner } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
-import { IPhaseData, IUpdatedPhaseProperties } from 'api/phases/types';
+import {
+  IPhaseData,
+  IUpdatedPhaseProperties,
+  ParticipationMethod,
+} from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 
+import { AccessOnlyAction } from 'containers/Admin/projects/_shared/components/PhaseActionAccessRow';
 import PanelRowModal from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelRowModal';
 import AdminPhaseEmailWrapper from 'containers/Admin/projects/project/admin_phase_email_wrapper';
-import ActionForms from 'containers/Admin/projects/project/permissions/Phase/ActionForms';
+import projectMessages from 'containers/Admin/projects/project/messages';
 import PhaseParticipationConfig from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig';
+import configMessages from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/messages';
 import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
 import {
   SubmitStateType,
@@ -26,8 +32,9 @@ import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 import messages from '../messages';
 
+import EditAccessButton from './EditAccessButton';
 import PanelSettings from './PanelSettings';
-import ReportSection from './ReportSection';
+import ParticipantActionsGroup from './ParticipantActionsGroup';
 
 // Lazy so ArcGIS stays out of the chunk every workspace page loads, and only
 // arrives once the map modal is opened.
@@ -35,12 +42,32 @@ const CustomMapConfigPage = lazy(
   () => import('containers/Admin/CustomMapConfigPage')
 );
 
+// The methods that render the participant action toggles, each with a link to
+// that action's access rights.
+const ACTIONS_WITH_TOGGLES: ParticipationMethod[] = [
+  'ideation',
+  'proposals',
+  'common_ground',
+];
+
+// The methods whose only settings are who may take each action.
+const ACCESS_ONLY_ACTIONS: Partial<
+  Record<ParticipationMethod, AccessOnlyAction[]>
+> = {
+  information: [
+    { action: 'attending_event', label: projectMessages.attendingEventAction },
+  ],
+  volunteering: [
+    { action: 'volunteering', label: configMessages.volunteeringAction },
+    { action: 'attending_event', label: projectMessages.attendingEventAction },
+  ],
+};
+
 interface Props {
-  projectId: string;
   phase: IPhaseData;
 }
 
-const PhaseRightPanel = ({ projectId, phase }: Props) => {
+const PhaseRightPanel = ({ phase }: Props) => {
   const { formatMessage } = useIntl();
   const { data: phaseWithRelationships } = usePhase(phase.id);
   const { mutate: updatePhase } = useUpdatePhase();
@@ -57,7 +84,7 @@ const PhaseRightPanel = ({ projectId, phase }: Props) => {
   );
 
   const participationMethod = phase.attributes.participation_method;
-  const isInformation = participationMethod === 'information';
+  const accessOnlyActions = ACCESS_ONLY_ACTIONS[participationMethod];
 
   const handleChange = (
     config: IUpdatedPhaseProperties,
@@ -101,8 +128,11 @@ const PhaseRightPanel = ({ projectId, phase }: Props) => {
   return (
     <Box display="flex" flexDirection="column" minHeight="100%">
       <PanelSettings flexGrow={1} p="20px">
-        {isInformation ? (
-          <ReportSection projectId={projectId} phase={phase} />
+        {accessOnlyActions ? (
+          <ParticipantActionsGroup
+            phaseId={phase.id}
+            actions={accessOnlyActions}
+          />
         ) : (
           <PhaseParticipationConfig
             phase={phaseWithRelationships}
@@ -116,9 +146,10 @@ const PhaseRightPanel = ({ projectId, phase }: Props) => {
           />
         )}
 
-        <PanelRowModal label={formatMessage(messages.accessRights)}>
-          <ActionForms phaseId={phase.id} />
-        </PanelRowModal>
+        {!accessOnlyActions &&
+          !ACTIONS_WITH_TOGGLES.includes(participationMethod) && (
+            <EditAccessButton phaseId={phase.id} />
+          )}
 
         {getMethodConfig(participationMethod).supportsMapView && (
           <PanelRowModal
@@ -142,7 +173,7 @@ const PhaseRightPanel = ({ projectId, phase }: Props) => {
         </PanelRowModal>
       </PanelSettings>
 
-      {!isInformation && (
+      {!accessOnlyActions && (
         <Box
           position="sticky"
           bottom="0"
