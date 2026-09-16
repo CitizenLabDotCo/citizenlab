@@ -21,6 +21,8 @@ import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import ProjectsByFilter from 'components/CustomPageBuilder/Widgets/ProjectsByFilter';
+import projectsMessages from 'components/CustomPageBuilder/Widgets/ProjectsByFilter/messages';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
 import NewLabel from 'components/UI/NewLabel';
 
@@ -33,6 +35,11 @@ const CustomPageBuilderToolbox = () => {
   });
   const projectStaticPagesEnabled = useFeatureFlag({
     name: 'project_static_pages',
+  });
+  // The legacy project-list section is itself the paid capability, unlike events where only
+  // the filtering is, so the whole entry is gated.
+  const filteredProjectsEnabled = useFeatureFlag({
+    name: 'advanced_custom_pages',
   });
 
   return (
@@ -100,6 +107,14 @@ const CustomPageBuilderToolbox = () => {
           icon="button"
           label={formatMessage(ButtonMultiloc.craft.custom.title)}
         />
+        {filteredProjectsEnabled && (
+          <DraggableElement
+            id="e2e-draggable-projects-by-filter"
+            component={<ProjectsByFilter />}
+            icon="projects"
+            label={formatMessage(projectsMessages.filteredProjects)}
+          />
+        )}
         <DraggableElement
           id="e2e-draggable-events"
           component={
