@@ -44,8 +44,7 @@ export interface Props {
   bannerLayout: ICustomPageAttributes['banner_layout'];
 
   onChange: (bannerLayout: TCustomPageBannerLayout) => void;
-  // A builder settings panel is too narrow for the options side by side, so it stacks them
-  // with full-width previews, as the homepage banner's picker does.
+  // Stacks the options for a narrow builder settings panel.
   stacked?: boolean;
 }
 

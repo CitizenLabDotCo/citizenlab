@@ -45,8 +45,7 @@ const CustomPageBuilderToolbox = () => {
   const filteredProjectsEnabled = useFeatureFlag({
     name: 'advanced_custom_pages',
   });
-  // A page has one banner, so the entry goes once one is placed and comes back when it is
-  // deleted — the same reason FileAttachment's picker drops files already in the layout.
+  // One banner per page, so the entry is hidden while one is placed.
   const { hasBanner } = useEditor((state) => ({
     hasBanner: Object.values(state.nodes).some(
       (node) => node.data.name === 'CustomPageBanner'

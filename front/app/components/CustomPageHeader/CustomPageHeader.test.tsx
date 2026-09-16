@@ -58,7 +58,6 @@ describe('<CustomPageHeader />', () => {
     expect(screen.getByTestId('fixed-ratio-layout')).toBeInTheDocument();
   });
 
-  // The page decides what the edit affordance is; every layout has a spot for it.
   it('renders the admin edit button slot', () => {
     render(
       <CustomPageHeader

@@ -149,8 +149,6 @@ describe('CustomPageBuilderPage save contract', () => {
     });
   });
 
-  // The title lives on the page record, so the draft is committed there and never stored
-  // in the layout, where it would go stale on the next rename.
   it('commits an edited title to the page, then stores the layout without it', async () => {
     mockEditedNodes = {
       ...EDITED_NODES,

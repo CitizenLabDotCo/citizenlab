@@ -47,8 +47,6 @@ describe('CustomPageBannerSettings', () => {
     props = { ...banner };
   });
 
-  // The image goes through the layout-images endpoint like every builder image, so the node
-  // stores a code the serializer can render a URL from.
   it('uploads a picked image and stores its code', async () => {
     render(<Settings />);
 

@@ -3,10 +3,9 @@ import { Multiloc } from 'typings';
 
 import { findNodeIdByName } from './defaultLayout';
 
-// The title widget renders from the StaticPage record, not from layout props: title_multiloc
-// also names the page in the admin list and is the nav bar item's fallback title. Its settings
-// panel parks edits in a craft prop; the builder's save commits that to the page and strips it
-// before storing the layout, as the project page builder does.
+// The title renders from the page record, which also names the page in the admin list and the nav
+// bar. The settings panel keeps edits in a prop; saving commits it to the page and strips it from
+// the layout.
 export type CustomPageAttributeDrafts = {
   titleMultiloc?: Multiloc;
 };

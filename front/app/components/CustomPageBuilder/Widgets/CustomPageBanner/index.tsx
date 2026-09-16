@@ -13,9 +13,7 @@ import messages from './messages';
 import Settings from './Settings';
 import { CustomPageBannerProps } from './types';
 
-// Ordinary body content like the homepage's banner: an admin can place, move or delete it.
-// The admin edit button is deliberately not passed: the page renders one for itself, since
-// the banner may be absent and the title hidden.
+// No edit button passed: the page renders its own, since the banner may be absent.
 const CustomPageBanner: UserComponent<CustomPageBannerProps> = ({
   image,
   ...content

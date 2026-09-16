@@ -2,8 +2,7 @@ import { ICustomPageAttributes } from 'api/custom_pages/types';
 
 import { CustomPageBannerContent } from 'components/CustomPageHeader/types';
 
-// The legacy render path: the banner as the page's own columns describe it. Under builder
-// content the layout's banner widget carries the same shape in its props instead.
+// The banner as the page's banner_* columns describe it.
 const bannerContentFromPage = (
   attributes: ICustomPageAttributes
 ): CustomPageBannerContent => ({

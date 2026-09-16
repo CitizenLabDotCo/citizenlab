@@ -94,8 +94,7 @@ module ContentBuilder
         # The custom page scaffold, same idea.
         'CustomPageRoot' => {},
         'CustomPageBody' => {},
-        # Body content, like the homepage banner. The title cannot be deleted but can move;
-        # the banner is there or not.
+        # The custom page header widgets: movable body content.
         'CustomPageTitle' => {},
         'CustomPageBanner' => {
           'multilocs' => %w[headerMultiloc subheaderMultiloc ctaTextMultiloc],

@@ -24,9 +24,6 @@ const CTA_TYPES: ICustomPageAttributes['banner_cta_button_type'][] = [
   'customized_button',
 ];
 
-// The legacy hero banner tab's own fields, wired to the node instead of the page. The image
-// goes through the layout-images endpoint as every builder image does, so the node stores a
-// code and the serializer renders the URL.
 const CustomPageBannerSettings = () => {
   const { formatMessage } = useIntl();
   const { mutateAsync: addContentBuilderImage } = useAddContentBuilderImage();
@@ -37,10 +34,8 @@ const CustomPageBannerSettings = () => {
     banner: node.data.props as CustomPageBannerProps,
   }));
 
-  // The image fields keep their own local copy of a picked image, which is what lets the
-  // cropper stay open while the admin adjusts it. Feeding every upload back in as the stored
-  // image would replace that copy with a fetched one and close the cropper after the first
-  // crop, so they only ever see the image the panel opened with.
+  // Pass only the image the panel opened with. The fields keep a local copy of a picked image for
+  // the cropper, and feeding each upload back in would close it after the first crop.
   const openedWithImageUrl = useRef(banner.image?.imageUrl);
   const openedWithImage: ImageSizes | null = openedWithImageUrl.current
     ? {
@@ -63,7 +58,7 @@ const CustomPageBannerSettings = () => {
     });
   };
 
-  // The legacy tab clears the overlay with the image, since no layout shows one without it.
+  // No layout shows an overlay without an image.
   const handleRemoveImage = () =>
     set((props) => {
       props.image = {};

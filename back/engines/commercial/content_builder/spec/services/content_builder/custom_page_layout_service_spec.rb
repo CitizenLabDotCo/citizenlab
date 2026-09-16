@@ -16,8 +16,7 @@ describe ContentBuilder::CustomPageLayoutService do
   let(:plain_text) { { 'en' => '<p>Hello</p>' } }
   let(:text_with_image) { { 'en' => '<p>Hello</p><img src="https://example.com/a.png">' } }
 
-  # What every derived page carries before any content: the title node is always seeded, so
-  # examples about the sections assert against this rather than listing it themselves.
+  # The title node is always seeded, so section examples assert against this.
   let(:scaffold_ids) { [root_id, title_id, body_id] }
 
   # The factory fills the info section multilocs with Faker text, so blank them here and let
@@ -64,9 +63,6 @@ describe ContentBuilder::CustomPageLayoutService do
     end
 
     describe 'the title' do
-      # CustomPageShow renders <PageTitle> only on its !banner_enabled branch; the heading
-      # inside a banner comes from banner_header_multiloc. So the node is always seeded, with
-      # showTitle carrying which of the two the page shows, as body content an admin can move.
       it 'seeds a shown title at the top of the body on a page with no banner' do
         craftjs = service.craftjs_json_for(build_page(banner_enabled: false))
 
@@ -84,17 +80,14 @@ describe ContentBuilder::CustomPageLayoutService do
         expect(craftjs[body_id]['nodes']).to eq [banner_id, title_id]
       end
 
-      # The heading renders from title_multiloc on the page record; a copy in the layout
-      # would be a second source of truth that goes stale on the next rename.
       it 'does not copy the title text into the layout' do
         craftjs = service.craftjs_json_for(build_page(title_multiloc: { 'en' => 'About us' }))
 
         expect(craftjs[title_id]['props']).not_to have_key 'title'
       end
 
-      # craftjs restores `custom` from the stored graph, and RenderNode makes a node
-      # selectable only when it has a title. `deletable: false` removes the delete button
-      # while leaving the node movable, where `locked` would pin it.
+      # craftjs restores `custom` from the stored graph, and RenderNode makes a node selectable only
+      # when it has a title.
       it 'carries the custom an undeletable widget needs' do
         craftjs = service.craftjs_json_for(build_page)
 
@@ -140,8 +133,6 @@ describe ContentBuilder::CustomPageLayoutService do
         expect(craftjs[body_id]['nodes']).to eq [title_id]
       end
 
-      # Ordinary content rather than a pinned slot, so an admin can move or delete it as on
-      # the homepage; it leads the body because that is where the legacy page renders it.
       it 'seeds the banner at the top of the body' do
         craftjs = service.craftjs_json_for(
           page_with_banner(top_info_section_multiloc: plain_text, top_info_section_enabled: true)
@@ -153,8 +144,6 @@ describe ContentBuilder::CustomPageLayoutService do
         expect(craftjs[root_id]['nodes']).to eq [body_id]
       end
 
-      # Content is copied in, as for the info sections, under names a merged banner widget could
-      # keep rather than the homepage banner's `banner_signed_out_*`.
       it 'copies the banner columns into neutral props' do
         craftjs = service.craftjs_json_for(page_with_banner)
 
@@ -171,7 +160,6 @@ describe ContentBuilder::CustomPageLayoutService do
         )
       end
 
-      # Deletable, unlike the title, so no `locked`.
       it 'carries the custom a toolbox widget would have' do
         craftjs = service.craftjs_json_for(page_with_banner)
 

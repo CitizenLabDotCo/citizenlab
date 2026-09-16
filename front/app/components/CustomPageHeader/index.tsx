@@ -8,8 +8,7 @@ import { CustomPageBannerContent } from './types';
 
 export type Props = {
   banner: CustomPageBannerContent;
-  // Each layout has its own spot for the page's edit affordance; the page decides what goes
-  // there, so this component needs nothing from the admin side.
+  // Each layout has a slot for the edit button, and the page fills it.
   adminEditButton?: ReactNode;
 };
 

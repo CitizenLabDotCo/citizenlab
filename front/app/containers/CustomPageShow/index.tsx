@@ -78,10 +78,8 @@ const CustomPageShow = () => {
       <main className={`e2e-page-${pageSlugToUse}`}>
         <PageContainer builderContent={showBuilderContent}>
           {showBuilderContent ? (
-            // The layout owns the header: its Banner and Title widgets replace the legacy
-            // one, so the page renders only the edit button. Full width or the flex parent
-            // collapses the anchor to nothing and the button lands mid-page; it lines up
-            // with the content unless a full-bleed banner puts it at the window edge.
+            // The layout draws the header, so only the edit button renders here. Full width, or the
+            // flex parent collapses its anchor.
             <Box
               position="relative"
               w="100%"

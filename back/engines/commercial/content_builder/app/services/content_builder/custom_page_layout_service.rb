@@ -59,12 +59,8 @@ module ContentBuilder
 
     private
 
-    # Unlike the title, a page may simply not have a banner, so this is seeded only when the page
-    # shows one — deletable, where the title is not. It leads the body because that is where the
-    # legacy page renders it. Its content is copied into the node, as the info sections' is: nothing
-    # outside the page reads the banner_* columns, and the legacy hero tab goes at the cutover.
-    # Prop names are neutral rather than the homepage banner's `banner_signed_out_*` so a merged
-    # banner widget could adopt them as its base variant unchanged.
+    # Seeded only for a page that shows a banner. Its content is copied into the node, like the info
+    # sections', since nothing else reads the banner_* columns.
     def banner_node(static_page, persist_images:)
       return unless static_page.banner_enabled
 
@@ -97,13 +93,9 @@ module ContentBuilder
       }
     end
 
-    # The image becomes a LayoutImage, referenced by code like any builder image, so the layout
-    # serializer, duplication and tenant templates all handle it as they do the homepage's. The
-    # code is derived from the page and the stored filename rather than generated: a re-derive
-    # then finds the copy it made before, so an unchanged page derives an identical graph and the
-    # migration task's overwrite leaves it alone. A replaced header image gets a new code and a
-    # new copy, which is the rewrite that should happen. The `large` version is copied because it
-    # is the one every banner layout renders.
+    # The code comes from the page and its stored filename rather than being generated, so a
+    # re-derive finds its earlier copy and an unchanged page derives an identical graph. `large` is
+    # the version every banner layout renders.
     def banner_image(static_page, persist:)
       return {} unless static_page.header_bg?
 
@@ -125,12 +117,9 @@ module ContentBuilder
       "data:#{mime};base64,#{Base64.strict_encode64(data)}"
     end
 
-    # Every page has a title_multiloc — it is the page name — but only a page without a banner
-    # displays it; a banner carries its own banner_header_multiloc. So the node is always there
-    # and `showTitle` carries what the page shows. It follows the banner so that switching it on
-    # puts the heading under the banner, not above it. The heading itself is read from the
-    # record, not copied here: title_multiloc also names the page in the admin list and is the
-    # nav bar item's fallback title, so the layout cannot be its only home.
+    # Always seeded: title_multiloc is the page name, but only a page without a banner shows it.
+    # Read from the record rather than copied, because it also names the page in the admin list and
+    # the nav bar.
     def title_node(static_page)
       {
         'type' => { 'resolvedName' => 'CustomPageTitle' },
@@ -141,8 +130,7 @@ module ContentBuilder
             'id' => 'app.components.CustomPageBuilder.Widgets.CustomPageTitle.title',
             'defaultMessage' => 'Title'
           },
-          # Settings panel yes, delete button no: hiding the heading is what `showTitle` is for.
-          # Not `locked`, which would also pin it in place.
+          # Movable but not deletable: showTitle hides it. `locked` would also pin it.
           'deletable' => false,
           'noPointerEvents' => true
         },

@@ -22,8 +22,7 @@ const useCustomPageBuilderContent = (staticPageId?: string) => {
     // Which way to render is unknown until the query settles, so callers wait.
     isLoading: featureEnabled && isLoading,
     hasContent: featureEnabled && hasContent,
-    // The page anchors its edit button on this: a full-bleed banner under the nav bar puts
-    // it at the window edge rather than the content's.
+    // Under a full-bleed banner, the page anchors its edit button to the window edge.
     startsWithBanner:
       featureEnabled &&
       layoutStartsWithBanner(layout?.data.attributes.craftjs_json),

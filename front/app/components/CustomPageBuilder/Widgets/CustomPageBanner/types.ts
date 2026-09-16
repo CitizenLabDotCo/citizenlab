@@ -1,7 +1,6 @@
 import { CustomPageBannerContent } from 'components/CustomPageHeader/types';
 
-// Stored node props. The image follows the homepage banner's shape: a layout image's code,
-// with the URL the serializer renders from it on read.
+// `image.imageUrl` is not stored: the serializer adds it from `dataCode` on read.
 export type CustomPageBannerProps = Omit<
   CustomPageBannerContent,
   'imageUrl'

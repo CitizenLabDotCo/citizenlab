@@ -65,8 +65,7 @@ export const layoutHasContent = (nodes?: SerializedNodes): boolean => {
   return !!container && childIdsOf(container).some((id) => !isTitle(nodes, id));
 };
 
-// Whether a banner draws anything. Anything the header draws counts: a derived banner may
-// carry only a subheader or a button.
+// A derived banner may hold only a subheader or a button, so those count.
 export const bannerHasContent = ({
   image,
   headerMultiloc,
@@ -81,10 +80,8 @@ export const bannerHasContent = ({
   !isEmptyMultiloc(subheaderMultiloc) ||
   ctaType === 'customized_button';
 
-// Whether the first thing the page renders is a banner: the first body node that is not a
-// hidden title, holding a banner that draws something. A full-bleed banner sits flush under
-// the nav bar, so the page and its previews drop their top gap, and the edit button anchors to
-// the window edge. An empty banner renders nothing, so it must not take the gap away.
+// True when the first visible body node is a banner that draws something. The page then drops its
+// top gap and anchors the edit button to the window edge.
 export const layoutStartsWithBanner = (nodes?: SerializedNodes): boolean => {
   if (!nodes) return false;
 

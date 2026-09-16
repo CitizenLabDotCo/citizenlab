@@ -37,7 +37,6 @@ describe('CustomPageBanner', () => {
     mockInBuilder = true;
   });
 
-  // Fresh from the toolbox there is nothing to show; the builder has to say what it is.
   it('shows a placeholder in the builder when the banner is empty', () => {
     render(<CustomPageBanner {...empty} />);
 
@@ -58,7 +57,7 @@ describe('CustomPageBanner', () => {
     ).not.toBeInTheDocument();
   });
 
-  // A page's banner is derived whatever it holds, and the page rendered it before the builder.
+  // A derived banner may hold only one of these.
   it('renders a banner that has only a subheader', () => {
     mockInBuilder = false;
 

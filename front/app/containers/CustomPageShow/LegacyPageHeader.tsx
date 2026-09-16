@@ -62,8 +62,7 @@ type Props = {
   page: ICustomPageData;
 };
 
-// The header a page renders from its own columns: the banner when it has one, otherwise the
-// page title. A page on the content builder renders neither; its layout owns the header.
+// The banner when the page has one, otherwise the title.
 const LegacyPageHeader = ({ page }: Props) => {
   const localize = useLocalize();
   const pageAttributes = page.attributes;

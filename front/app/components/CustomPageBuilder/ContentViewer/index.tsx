@@ -27,9 +27,8 @@ const handleLoadImages = () => {
 const CustomPageContentViewer = ({ staticPageId }: Props) => {
   const { isLoading, hasContent, craftjsJson, layoutId } =
     useCustomPageBuilderContent(staticPageId);
-  // The rhythm spaces widgets against each other, so the gap under the nav bar is the
-  // page's to set — unless a banner sits there, full bleed. FullScreenPreview applies the
-  // same rule, or the preview reads tighter than the page.
+  // The page sets its own top gap, except under a full-bleed banner. FullScreenPreview uses the
+  // same rule.
   const paddingTop = useSectionBoundaryMargin();
 
   if (isLoading) return <Spinner />;

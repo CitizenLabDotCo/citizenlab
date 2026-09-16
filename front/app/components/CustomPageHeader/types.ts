@@ -2,8 +2,7 @@ import { Multiloc } from 'typings';
 
 import { ICustomPageAttributes } from 'api/custom_pages/types';
 
-// What a custom page banner shows. The legacy page builds it from its banner_* columns and
-// the builder's banner widget stores it as node props, so neither side is the shape's owner.
+// Built from a page's banner_* columns, or from the builder banner widget's props.
 export type CustomPageBannerContent = {
   layout: ICustomPageAttributes['banner_layout'];
   headerMultiloc: Multiloc;

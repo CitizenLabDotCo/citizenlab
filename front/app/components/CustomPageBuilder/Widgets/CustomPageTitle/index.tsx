@@ -23,8 +23,6 @@ import messages from './messages';
 type Props = {
   // Set only while the builder is open; the saved value lives on the page record.
   title?: Multiloc;
-  // A page always has a title_multiloc; derivation seeds this hidden when the page has a
-  // banner, and the admin can switch it either way.
   showTitle?: boolean;
 };
 
@@ -119,8 +117,7 @@ CustomPageTitle.craft = {
   related: {
     settings: CustomPageTitleSettings,
   },
-  // Movable like any body widget, but never deleted: the page always has a name, and hiding
-  // the heading is what showTitle is for. Not `locked`, which would also pin it.
+  // Movable but not deletable: showTitle hides it.
   custom: {
     title: messages.title,
     deletable: false,

@@ -1,10 +1,8 @@
 import { base64 } from '../../fixtures/base64img';
 import { randomString } from '../../support/commands';
 
-// One page carrying everything the builder derives — info sections, an attachment, a filtered
-// projects list and events list, a banner — so one derivation on the first builder visit
-// serves every check below. The examples build on each other in order, as the flag and the
-// paid filtering feature are switched through the run.
+// One page holds everything the builder derives, so one derivation serves every example. The
+// examples run in order and build on each other.
 describe('Custom page builder', () => {
   const pageTitle = randomString();
   const renamedPageTitle = `Renamed ${randomString()}`;
@@ -48,10 +46,8 @@ describe('Custom page builder', () => {
     cy.get('#e2e-draggable-text');
   };
 
-  // The widgets take no pointer events in the builder, so select the node around them. The
-  // layout is fetched more than once while the builder settles, and each refetch
-  // re-deserializes the frame and drops the selection, so a click in the first seconds after
-  // load is lost: retry until the settings panel is open.
+  // Widgets take no pointer events in the builder, so click the node around them. The layout is
+  // refetched while the builder settles, which drops the selection, so retry until the panel opens.
   const selectNodeContaining = (find: () => Cypress.Chainable, attempt = 0) => {
     find()
       .parents('.e2e-render-node')
@@ -188,7 +184,6 @@ describe('Custom page builder', () => {
       .scrollIntoView()
       .should('be.visible');
     cy.dataCy('e2e-events-widget').should('exist');
-    // The page already has its banner, so the toolbox does not offer another.
     cy.get('#e2e-draggable-custom-page-banner').should('not.exist');
   });
 
@@ -215,8 +210,6 @@ describe('Custom page builder', () => {
     cy.visit(`/pages/${pageSlug}`);
     cy.wait('@publications');
 
-    // The layout owns the header now: the banner renders from it, and the legacy page title
-    // is not rendered alongside.
     cy.get('.e2e-signed-out-header-title').should('contain', bannerHeaderText);
     cy.contains('h1', pageTitle).should('not.exist');
     // The load-bearing assertion for attachments: without the layout context this renders as
@@ -232,9 +225,7 @@ describe('Custom page builder', () => {
     cy.contains(otherEventTitle).should('not.exist');
   });
 
-  // The title is the page's own name, so editing it in the builder renames the page; showing
-  // it puts the heading under the banner rather than above it. The banner's text lives in
-  // the layout instead, so its edit goes out with the layout save.
+  // Renaming the title updates the page record. The banner's text saves with the layout.
   it('shows the edited title under the edited banner once switched on', () => {
     openBuilder();
 
@@ -270,10 +261,8 @@ describe('Custom page builder', () => {
       .should('have.class', 'e2e-signed-out-header-title');
   });
 
-  // Filtering is the paid capability on this surface. The nodes were derived while the tenant
-  // still had it, so this is the downgrade a stored node outlives: the events widget keeps its
-  // filter but offers no choice of source, and the projects list — itself the paid capability
-  // here — leaves the toolbox altogether.
+  // With filtering off, a stored events node keeps its filter but offers no source choice, and the
+  // projects list leaves the toolbox.
   it('withdraws the filtering choices once the tenant loses advanced_custom_pages', () => {
     setFiltering(false);
     openBuilder();
