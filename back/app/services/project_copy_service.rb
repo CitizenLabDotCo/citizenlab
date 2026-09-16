@@ -195,7 +195,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   def yml_custom_fields(shift_timestamps: 0)
     custom_form_ids = ([@project.custom_form_id] + @project.phases.map(&:custom_form_id)).compact
     fields = CustomField.where(resource: custom_form_ids).to_a
-    fields += anonymized_registration_fields if @include_ideas && @anonymize_users
+    fields += exported_registration_fields if @include_ideas
     fields.map do |field|
       yml_custom_field = {
         'resource_ref' => field.resource_id && lookup_ref(field.resource_id, :custom_form),
@@ -756,8 +756,12 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     end
   end
 
-  def anonymized_registration_fields
-    @anonymized_registration_fields ||= CustomField.registration.where(code: AnonymizeUserService::DEMOGRAPHIC_CODES).to_a
+  def exported_registration_fields
+    @exported_registration_fields ||= if @anonymize_users
+      CustomField.registration.where(code: AnonymizeUserService::DEMOGRAPHIC_CODES).to_a
+    else
+      CustomField.registration.to_a
+    end
   end
 
   def yml_baskets_ideas(exported_ideas)

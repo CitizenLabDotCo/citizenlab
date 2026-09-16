@@ -491,6 +491,35 @@ describe ProjectCopyService do
       expect(copied_project.ideas.first.author.custom_field_answers).to be_empty
     end
 
+    it 'copies non-anonymized users with their registration answers, reusing the registration fields' do
+      gender_field = create(:custom_field_gender, :with_options)
+      postal_code_field = create(:custom_field, resource_type: 'User', key: 'postal_code')
+      create(:custom_field, resource_type: 'User', key: 'unanswered')
+      author = create(:user, custom_field_answers: [
+        build(:custom_field_answer, key: 'gender', value: 'female', custom_field: gender_field),
+        build(:custom_field_answer, key: 'postal_code', value: '1000', custom_field: postal_code_field)
+      ])
+      idea = create(:idea, author: author)
+
+      template = service.export idea.project, anonymize_users: false, include_ideas: true
+
+      registration_keys = template['models']['custom_field'].filter_map { |field| field['key'] if field['resource_type'] == 'User' }
+      expect(registration_keys).to contain_exactly('gender', 'postal_code', 'unanswered')
+
+      create(:tenant).switch do
+        create(:idea_status_proposed)
+        target_gender_field = create(:custom_field_gender, :with_options)
+        target_postal_code_field = create(:custom_field, resource_type: 'User', key: 'postal_code')
+        copied_project = nil
+        expect { copied_project = service.import template }.not_to change(CustomField.registration, :count)
+        copied_author = copied_project.ideas.first.author
+        expect(copied_author.custom_field_answers.pluck(:custom_field_id, :key, :value)).to contain_exactly(
+          [target_gender_field.id, 'gender', 'female'],
+          [target_postal_code_field.id, 'postal_code', '1000']
+        )
+      end
+    end
+
     it 'includes phases with no end date' do
       project = create(:project_with_active_ideation_phase)
       project.phases.last.update!(end_at: nil)
