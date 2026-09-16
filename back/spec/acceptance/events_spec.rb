@@ -649,7 +649,7 @@ resource 'Events' do
 
     let_it_be(:unlisted_project) { create(:project, listed: false) }
     let_it_be(:unlisted_event) { create(:event, project: unlisted_project) }
-    let_it_be(:second_unlisted_event) { create(:event, project: unlisted_project) }
+    let_it_be(:unattended_unlisted_event) { create(:event, project: unlisted_project) }
     let_it_be(:user) { create(:user) }
     let_it_be(:user_id) { user.id }
 
