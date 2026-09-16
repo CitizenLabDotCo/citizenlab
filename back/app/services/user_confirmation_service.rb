@@ -183,11 +183,28 @@ class UserConfirmationService
   end
 
   def confirm_user!(confirmation)
-    return if confirmation.confirm!
+    # Built before confirming: confirm! promotes new_email / new_phone and clears them.
+    payload = confirmed_code_activity_payload(confirmation)
 
-    raise ValidationError.new(
-      :user, :confirmation, message: 'Something went wrong.'
-    )
+    unless confirmation.confirm!
+      raise ValidationError.new(
+        :user, :confirmation, message: 'Something went wrong.'
+      )
+    end
+
+    user = confirmation.user
+    LogActivityJob.perform_later(user, 'confirmed_confirmation_code', user, Time.now.to_i, payload: payload)
+  end
+
+  # The same payload as the requested_confirmation_code and received_confirmation_code
+  # activities logged by the Request*ConfirmationCodeJobs.
+  def confirmed_code_activity_payload(confirmation)
+    case confirmation
+    when EmailConfirmation then { new_email: nil }
+    when NewEmailConfirmation then { new_email: confirmation.user.new_email }
+    when PhoneConfirmation then { new_phone: nil }
+    when NewPhoneConfirmation then { new_phone: confirmation.user.new_phone }
+    end
   end
 
   def success_result(user)

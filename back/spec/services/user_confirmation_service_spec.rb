@@ -5,7 +5,9 @@ require 'rails_helper'
 RSpec.describe UserConfirmationService do
   subject(:service) { described_class.new }
 
-  shared_examples 'validation and confirmation' do |method_name, confirmation_assoc, confirmed_at_attr|
+  # activity_payload_key is :new_email or :new_phone; pending_attr is the attribute
+  # holding the value being confirmed, for the flows that change an existing one.
+  shared_examples 'validation and confirmation' do |method_name, confirmation_assoc, confirmed_at_attr, activity_payload_key, pending_attr = nil|
     let(:confirmation) { user.send(confirmation_assoc) }
 
     context 'when the code is correct' do
@@ -13,6 +15,14 @@ RSpec.describe UserConfirmationService do
         result = service.public_send(method_name, user, confirmation.code)
         expect(result.success?).to be true
         expect(user.reload.public_send(confirmed_at_attr)).to be_present
+      end
+
+      it 'enqueues a "confirmed_confirmation_code" activity job' do
+        payload = { activity_payload_key => pending_attr && user.public_send(pending_attr) }
+
+        expect { service.public_send(method_name, user, confirmation.code) }
+          .to enqueue_job(LogActivityJob)
+          .with(user, 'confirmed_confirmation_code', user, anything, payload: payload)
       end
     end
 
@@ -40,6 +50,11 @@ RSpec.describe UserConfirmationService do
 
         expect(result.success?).to be false
         expect(result.errors.details).to eq(code: [{ error: :invalid }])
+      end
+
+      it 'does not enqueue a "confirmed_confirmation_code" activity job' do
+        expect { service.public_send(method_name, user, 'failcode') }
+          .not_to enqueue_job(LogActivityJob).with(anything, 'confirmed_confirmation_code', any_args)
       end
     end
 
@@ -140,7 +155,7 @@ RSpec.describe UserConfirmationService do
       expect(user.confirmation_required?).to be false
     end
 
-    include_examples 'validation and confirmation', :validate_and_confirm_email!, :email_confirmation, :email_confirmed_at
+    include_examples 'validation and confirmation', :validate_and_confirm_email!, :email_confirmation, :email_confirmed_at, :new_email
 
     context 'when password_login is disabled' do
       before do
@@ -191,7 +206,7 @@ RSpec.describe UserConfirmationService do
       user.reload
     end
 
-    include_examples 'validation and confirmation', :validate_and_reconfirm_email!, :email_confirmation, :email_confirmed_at
+    include_examples 'validation and confirmation', :validate_and_reconfirm_email!, :email_confirmation, :email_confirmed_at, :new_email
 
     context 'when the code is correct' do
       it 'refreshes email_confirmed_at' do
@@ -235,7 +250,7 @@ RSpec.describe UserConfirmationService do
       RequestNewEmailConfirmationCodeJob.perform_now(user, new_email: user.new_email)
     end
 
-    include_examples 'validation and confirmation', :validate_and_confirm_new_email!, :new_email_confirmation, :email_confirmed_at
+    include_examples 'validation and confirmation', :validate_and_confirm_new_email!, :new_email_confirmation, :email_confirmed_at, :new_email, :new_email
 
     context 'when the new email is blank' do
       before do
@@ -263,7 +278,7 @@ RSpec.describe UserConfirmationService do
       RequestPhoneConfirmationCodeJob.perform_now(user)
     end
 
-    include_examples 'validation and confirmation', :validate_and_confirm_phone!, :phone_confirmation, :phone_confirmed_at
+    include_examples 'validation and confirmation', :validate_and_confirm_phone!, :phone_confirmation, :phone_confirmed_at, :new_phone
 
     context 'when the code is correct' do
       it 'completes pending claim tokens' do
@@ -325,7 +340,7 @@ RSpec.describe UserConfirmationService do
       user.reload
     end
 
-    include_examples 'validation and confirmation', :validate_and_reconfirm_phone!, :phone_confirmation, :phone_confirmed_at
+    include_examples 'validation and confirmation', :validate_and_reconfirm_phone!, :phone_confirmation, :phone_confirmed_at, :new_phone
 
     context 'when the code is correct' do
       it 'refreshes phone_confirmed_at' do
@@ -385,7 +400,7 @@ RSpec.describe UserConfirmationService do
       RequestNewPhoneConfirmationCodeJob.perform_now(user, new_phone: new_phone)
     end
 
-    include_examples 'validation and confirmation', :validate_and_confirm_new_phone!, :new_phone_confirmation, :phone_confirmed_at
+    include_examples 'validation and confirmation', :validate_and_confirm_new_phone!, :new_phone_confirmation, :phone_confirmed_at, :new_phone, :new_phone
 
     context 'when the code is correct' do
       it 'promotes new_phone to phone and stamps it confirmed' do
