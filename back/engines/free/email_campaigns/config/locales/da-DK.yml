@@ -186,6 +186,7 @@ da-DK:
       manual_project_participants: Officielle meddelelser til projektdeltagerne
       mention_in_internal_comment: Nævnes i en intern kommentar
       mention_in_official_feedback: Nævnelse i en opdatering
+      merge_account_confirmation: Bekræftelseskode til sammenlægning af konti
       moderator_digest: Ugentlig oversigt for projektledere
       native_survey_not_submitted: Undersøgelse ikke indsendt
       new_comment_for_admin: Ny kommentar i et projekt jeg modererer
@@ -477,6 +478,15 @@ da-DK:
       preheader: '%{commentAuthor} nævnte dig i sin kommentar'
       subject: '%{organizationName} har nævnt dig i en kommentar'
       title: Du er blevet nævnt
+    merge_account_confirmation:
+      best_regards: Med venlig hilsen,
+      event_description: 'Nogen har logget ind på %{organizationName}s borgerinddragelsesplatform og anmodet om at tilknytte dette login til kontoen med denne e-mailadresse. Hvis det var dig, skal du indtaste denne bekræftelseskode for at fortsætte:'
+      expire_code: Denne kode udløber om
+      hours_24: 24 timer.
+      ignore_email: Hvis det ikke var dig, kan du roligt ignorere denne e-mail. Intet er ændret, og ingen kan bruge denne kode uden adgang til denne indbakke.
+      preheader: Bekræft din e-mailadresse til %{organizationName}
+      subject: Bekræft din e-mailadresse til %{organizationName}s borgerinddragelsesplatform
+      title: Bekræft din e-mailadresse
     moderator_digest:
       cta_button: Administrer dit projekt
       event_description: Vi har samlet en liste over de idéer, der har genereret mest aktivitet i den seneste uge. Find ud af hvad der sker i dit projekt!

@@ -186,6 +186,7 @@ pl-PL:
       manual_project_participants: Oficjalne wiadomości dla uczestników projektu
       mention_in_internal_comment: Wzmianka w komentarzu wewnętrznym
       mention_in_official_feedback: Wzmianka w aktualizacji
+      merge_account_confirmation: Kod potwierdzający połączenie kont
       moderator_digest: Tygodniowy przegląd dla menadżerów projektu
       native_survey_not_submitted: Ankieta nie została przesłana
       new_comment_for_admin: Nowy komentarz w projekcie, który moderuję
@@ -477,6 +478,15 @@ pl-PL:
       preheader: '%{commentAuthor} wspomniał o Tobie w informacji zwrotnej'
       subject: '%{organizationName} wspomniał o Tobie w swojej informacji zwrotnej'
       title: Zostałeś wspomniany
+    merge_account_confirmation:
+      best_regards: Pozdrawiamy,
+      event_description: 'Ktoś zalogował się na platformę partycypacyjną organizacji %{organizationName} i poprosił o powiązanie tego logowania z kontem przypisanym do tego adresu e-mail. Jeśli to Ty, wprowadź poniższy kod potwierdzający, aby kontynuować:'
+      expire_code: Ten kod wygaśnie za
+      hours_24: 24 godziny.
+      ignore_email: Jeśli to nie Ty, możesz bezpiecznie zignorować tę wiadomość. Nic się nie zmieniło i nikt nie może użyć tego kodu bez dostępu do tej skrzynki odbiorczej.
+      preheader: Potwierdź swój adres e-mail dla %{organizationName}
+      subject: Potwierdź swój adres e-mail na platformie partycypacyjnej organizacji %{organizationName}
+      title: Potwierdź swój adres e-mail
     moderator_digest:
       cta_button: Zarządzaj swoim projektem
       event_description: Wybraliśmy dla Ciebie dane wejściowe, które wygenerowały największą aktywność w ciągu ostatniego tygodnia. Dowiedz się, co dzieje się z Twoim projektem!

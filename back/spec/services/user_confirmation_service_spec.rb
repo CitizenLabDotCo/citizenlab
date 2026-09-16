@@ -266,6 +266,44 @@ RSpec.describe UserConfirmationService do
     end
   end
 
+  describe '#validate_and_confirm_merge_account!' do
+    # An email-less SSO account that asked to be merged into whoever owns the address.
+    let(:user) do
+      create(:user).tap do |u|
+        u.update_columns(email: nil, password_digest: nil)
+        create(:identity, user: u, provider: 'clave_unica', uid: '11111')
+      end
+    end
+
+    let(:result) do
+      RequestMergeAccountConfirmationCodeJob.perform_now(user, merge_target_email: 'existing@example.org')
+      service.validate_and_confirm_merge_account!(user, user.merge_account_confirmation.code)
+    end
+
+    it 'merges into the account owning the address' do
+      target = create(:user, email: 'existing@example.org')
+
+      expect(result.success?).to be true
+      expect(result.user).to eq target
+      expect { user.reload }.to raise_error ActiveRecord::RecordNotFound
+    end
+
+    # The code still proved the user reads that inbox.
+    context 'when nobody owns the address any more' do
+      it "makes it the user's own confirmed email instead of merging" do
+        expect(result.success?).to be true
+        expect(result.user).to eq user
+
+        user.reload
+        expect(user.email).to eq 'existing@example.org'
+        expect(user.merge_target_email).to be_nil
+        expect(user.email_confirmed_at).to be_present
+        expect(user.confirmation_required).to be false
+        expect(MergeAccountConfirmation.count).to eq 0
+      end
+    end
+  end
+
   describe '#validate_and_confirm_phone!' do
     let(:user) { create(:user, phone: '+14155552671') }
 

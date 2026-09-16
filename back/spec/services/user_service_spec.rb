@@ -65,6 +65,16 @@ describe UserService do
       expect(user.persisted?).to be false
     end
 
+    # Stored, a key with no field makes the profile form refuse every later save.
+    it 'drops custom field values for fields that do not exist' do
+      field = create(:custom_field)
+      params = user_params.merge(custom_field_values: { field.key => 'kept', 'postal_code' => '1212' })
+
+      user = service.build_in_sso(params, confirm_user, 'en')
+
+      expect(user.custom_field_values).to eq(field.key => 'kept')
+    end
+
     context 'when the SSO returns an email' do
       let(:user_params) { super().merge(email: 'test@example.com') }
 
@@ -83,6 +93,25 @@ describe UserService do
           expect(user.email).to be_nil
           expect(user.new_email).to eq('test@example.com')
           expect(user.confirmation_required).to be true
+        end
+
+        # Somebody else's address cannot go in new_email, so it waits to be merged into.
+        it 'holds the email as merge_target_email when another account owns it' do
+          create(:user, email: 'test@example.com')
+
+          user = service.build_in_sso(user_params, false, 'en')
+          expect(user.email).to be_nil
+          expect(user.new_email).to be_nil
+          expect(user.merge_target_email).to eq('test@example.com')
+        end
+
+        # The invite flow owns claiming invitees, so their address is left to be refused.
+        it 'still puts the email in new_email when an invitee owns it' do
+          create(:invited_user, email: 'test@example.com')
+
+          user = service.build_in_sso(user_params, false, 'en')
+          expect(user.new_email).to eq('test@example.com')
+          expect(user.merge_target_email).to be_nil
         end
       end
     end
@@ -148,6 +177,21 @@ describe UserService do
       )
 
       service.update_in_sso!(user, auth, authver_method)
+    end
+
+    it 'drops custom field values for fields that do not exist' do
+      field = create(:custom_field)
+      user = create(:user)
+      authver_method = instance_double(
+        IdMethods::Base,
+        updateable_user_attrs: %i[custom_field_values],
+        profile_to_user_attrs: { custom_field_values: { field.key => 'kept', 'postal_code' => '1212' } },
+        email_confirmed?: false
+      )
+
+      service.update_in_sso!(user, auth, authver_method)
+
+      expect(user.reload.custom_field_values).to eq(field.key => 'kept')
     end
 
     context 'when the user has a confirmed email' do
