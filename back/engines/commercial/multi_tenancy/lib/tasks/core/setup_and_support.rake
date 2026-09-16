@@ -401,12 +401,19 @@ namespace :setup_and_support do
       User.find_each do |u|
         start_at = Tenant.current.created_at
         start_at = 1.month.ago if start_at > Time.now.to_i
-        attrs = service.anonymized_attributes [u.locale], start_at: start_at
+        answers = service.anonymized_answers(user: u)
+        attrs = service.anonymized_attributes [u.locale], answers:, start_at: start_at
         if u.email == 'moderator@citizenlab.co'
           attrs.delete 'email'
           attrs.delete 'password'
         end
         u.update! attrs
+        answers.each do |answer|
+          field = answer['custom_field']
+          next if u.answer_for_key(field.key)
+
+          u.custom_field_answers.create!(key: field.key, value: answer['value'], custom_field: field)
+        end
 
         u.remove_avatar! if !attrs['remote_avatar_url'] && !attrs['avatar']
         u.slug = nil
