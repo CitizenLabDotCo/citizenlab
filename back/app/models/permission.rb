@@ -124,11 +124,46 @@ class Permission < ApplicationRecord
   end
 
   def verification_enabled?
-    # Verification can be enabled by the require_verification attribute OR by a verification group
+    # Verification can be enabled by the require_verification attribute OR by a verification group.
+    # Neither means anything without a method to be verified by. A verification group does still
+    # restrict membership, which is reported separately.
+    return false unless verification_possible?
     return true if require_verification
     return true if groups.any? && Verification::VerificationService.new.find_verification_group(groups)
 
     false
+  end
+
+  # The settings below are masked rather than cleared once the platform loses what makes them
+  # meaningful: the admin UI stops offering them, so nobody can switch them off, and enforcing
+  # them holds participation behind a step nobody can complete. The stored choice comes back
+  # with the feature.
+  def require_verification
+    return false unless verification_possible?
+
+    super
+  end
+
+  def require_confirmed_phone_number
+    return false unless AppConfiguration.instance.feature_activated?('sms')
+
+    super
+  end
+
+  def require_password
+    return false unless AppConfiguration.instance.feature_activated?('password_login')
+
+    super
+  end
+
+  # Falls back to the platform-wide questions, which is where the one-off
+  # single_use:reset_custom_fields_behavior_without_feature task put these permissions too.
+  # The curated permissions_custom_fields rows are kept, and served again if the feature returns.
+  def custom_fields_behavior
+    behavior = super
+    return 'global' if behavior == 'custom' && !AppConfiguration.instance.feature_activated?('permissions_custom_fields')
+
+    behavior
   end
 
   def everyone_tracking_enabled?
@@ -177,6 +212,10 @@ class Permission < ApplicationRecord
   end
 
   private
+
+  def verification_possible?
+    Verification::VerificationService.new.active_methods(AppConfiguration.instance).any?
+  end
 
   def sanitize_access_denied_explanation_multiloc
     self.access_denied_explanation_multiloc = SanitizationService.new.sanitize_body_multiloc(

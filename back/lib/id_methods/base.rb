@@ -87,13 +87,15 @@ module IdMethods
       raise NotImplementedError
     end
 
-    def email_always_present?
-      true
+    def confirmed_email_always_present?
+      false
     end
 
-    def email_confirmed?(_auth)
-      # TODO: (Luuc): should we set this to be auth.extra.raw_info.email_verified? by default?
-      true
+    def email_confirmed?(auth)
+      raw_info = auth&.dig(:extra, :raw_info)
+      email_verified = auth&.info&.email_verified
+      email_verified ||= raw_info[:email_verified] if raw_info.is_a?(Hash)
+      !!email_verified
     end
 
     def enforced_email_domains

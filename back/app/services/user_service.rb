@@ -9,6 +9,9 @@ class UserService
     def upsert_in_web_api(new_or_existing_user, user_params, &)
       new_or_existing_user.assign_attributes(user_params)
       yield if block_given?
+      add_custom_field_values_schema_errors(new_or_existing_user, user_params[:custom_field_values])
+      return false if new_or_existing_user.errors.any?
+
       # `on: :create` and `on: :update` callbacks/validations are not called
       new_or_existing_user.save(context: :form_submission)
     end
@@ -130,6 +133,19 @@ class UserService
     def build_user_confirmation(user)
       user.email_confirmed_at = Time.zone.now
       user.confirmation_required = false
+    end
+
+    def add_custom_field_values_schema_errors(user, values)
+      return if values.nil?
+
+      values = values.to_h
+      errors = CustomFieldValuesValidationService.new.json_schema_validation_errors(
+        CustomField.registration.includes(:options),
+        values
+      )
+      errors.each do |error|
+        user.errors.add(:custom_field_values, error, value: values)
+      end
     end
   end
 end
