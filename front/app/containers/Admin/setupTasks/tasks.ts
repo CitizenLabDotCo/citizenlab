@@ -144,43 +144,6 @@ const setupSections: SetupSection[] = [
       },
     ],
   },
-  {
-    id: 'launch',
-    title: 'Go live',
-    subtitle: 'The last checks before you tell the world.',
-    tasks: [
-      {
-        id: 'policies',
-        title: 'Review your privacy policy and terms',
-        description:
-          'Check the default texts and adjust them to your organisation.',
-        link: '/admin/settings/policies',
-        duration: '20 min',
-        required: true,
-        done: false,
-      },
-      {
-        id: 'test-run',
-        title: 'Do a test run as a resident',
-        description:
-          'Sign up, post something and vote, to see the platform as they will.',
-        link: '/',
-        duration: '15 min',
-        required: false,
-        done: false,
-      },
-      {
-        id: 'announce',
-        title: 'Announce your platform',
-        description:
-          'Email your mailing list and share the link on your channels.',
-        link: '/admin/messaging',
-        duration: '30 min',
-        required: false,
-        done: false,
-      },
-    ],
-  },
 ];
 
 export default setupSections;
