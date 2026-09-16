@@ -51,6 +51,9 @@ type SortType = 'start_at' | '-start_at';
 export interface InputParameters {
   projectIds?: string[];
   staticPageId?: string;
+  areas?: string[];
+  globalTopics?: string[];
+  spaces?: string[];
   endsOnOrAfterDate?: string;
   endsBeforeDate?: string;
   currentAndFutureOnly?: boolean;

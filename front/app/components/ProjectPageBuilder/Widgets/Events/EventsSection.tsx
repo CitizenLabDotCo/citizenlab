@@ -5,20 +5,11 @@ import styled from 'styled-components';
 
 import { IEvents } from 'api/events/types';
 
-import EventCard from 'components/EventCards/EventCard';
+import EventCards from 'components/EventCards';
 import Pagination from 'components/Pagination';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
-
-const Grid = styled.ul`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 400px), 1fr));
-  gap: 16px;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-`;
 
 const StyledPagination = styled(Pagination)`
   justify-content: center;
@@ -28,17 +19,21 @@ const StyledPagination = styled(Pagination)`
 type Props = {
   id?: string;
   title: MessageDescriptor;
+  showTitle?: boolean;
   events: IEvents;
   currentPage: number;
   onPageChange: (page: number) => void;
+  showPagination?: boolean;
 };
 
 const EventsSection = ({
   id,
   title,
+  showTitle = true,
   events,
   currentPage,
   onPageChange,
+  showPagination = true,
 }: Props) => {
   if (events.data.length === 0) {
     return null;
@@ -46,20 +41,20 @@ const EventsSection = ({
 
   return (
     <Box id={id}>
-      <Title variant="h3" color="tenantText" m="0" mb="16px">
-        <FormattedMessage {...title} />
-      </Title>
-      <Grid>
-        {events.data.map((event) => (
-          <EventCard key={event.id} id={event.id} event={event} />
-        ))}
-      </Grid>
-      <StyledPagination
-        currentPage={currentPage}
-        totalPages={getPageNumberFromUrl(events.links.last) ?? 1}
-        loadPage={onPageChange}
-        useColorsTheme
-      />
+      {showTitle && (
+        <Title variant="h3" color="tenantText" m="0" mb="16px">
+          <FormattedMessage {...title} />
+        </Title>
+      )}
+      <EventCards events={events} />
+      {showPagination && (
+        <StyledPagination
+          currentPage={currentPage}
+          totalPages={getPageNumberFromUrl(events.links.last) ?? 1}
+          loadPage={onPageChange}
+          useColorsTheme
+        />
+      )}
     </Box>
   );
 };
