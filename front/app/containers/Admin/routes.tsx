@@ -32,6 +32,7 @@ import createProjectFoldersRoutes from './projectFolders/routes';
 import createAdminProjectsRoutes from './projects/routes';
 import createAdminReportingRoutes from './reporting/routes';
 import createAdminSettingsRoutes from './settings/routes';
+import createAdminSetupTasksRoutes from './setupTasks/routes';
 import createAdminSpacesRoutes from './spaces/routes';
 import createAdminToolsRoutes from './tools/routes';
 import createAdminUsersRoutes from './users/routes';
@@ -311,6 +312,7 @@ export const createAdminRoutes = (moduleRoutes: Partial<Routes> = {}) => {
     createAdminCommunityMonitorRoutes(),
     createAdminInspirationHubRoutes(),
     createAdminSpacesRoutes(),
+    createAdminSetupTasksRoutes(),
     faviconRoute,
     projectDescriptionRoute,
     projectPreviewRoute,

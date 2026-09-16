@@ -18,6 +18,13 @@ export type NavItem = {
 const defaultNavItems: NavItem[] = [
   /* Top items */
   {
+    name: 'setup_tasks',
+    link: '/admin/setup-tasks',
+    iconName: 'list',
+    message: 'setupTasks',
+    showAtBottom: false,
+  },
+  {
     name: 'dashboard',
     link: '/admin/dashboard/overview',
     iconName: 'dashboard',
