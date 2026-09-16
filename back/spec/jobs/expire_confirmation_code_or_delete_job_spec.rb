@@ -15,11 +15,17 @@ RSpec.describe ExpireConfirmationCodeOrDeleteJob do
       user
     end
 
-    it 'changes the confirmation code of a user requiring confirmation' do
+    it 'clears the confirmation code of a user requiring confirmation' do
       old_code = user.email_confirmation.code
       described_class.perform_now(user.id, 'EmailConfirmation', old_code)
-      expect(user.email_confirmation.reload.code).not_to eq(old_code)
+      expect(user.email_confirmation.reload.code).to be_nil
       expect(DeleteUserJob).not_to have_been_enqueued
+    end
+
+    it 'keeps the row and its counters' do
+      user.email_confirmation.update!(code_retry_count: 2, code_reset_count: 3)
+      described_class.perform_now(user.id, 'EmailConfirmation', user.email_confirmation.code)
+      expect(user.email_confirmation.reload).to have_attributes(code: nil, code_retry_count: 2, code_reset_count: 3)
     end
 
     it 'does nothing when the code to expire is not the current code' do
@@ -53,10 +59,37 @@ RSpec.describe ExpireConfirmationCodeOrDeleteJob do
       user
     end
 
-    it 'changes the confirmation code and deletes a user requiring confirmation' do
+    # The job loads the confirmation before taking the lock; these simulate a
+    # concurrent request committing in between.
+    context 'when the confirmation changes after the job loaded it' do
+      let(:old_code) { user.email_confirmation.code }
+
+      before do
+        old_code
+        allow(User).to receive(:find_by).with(id: user.id).and_return(user)
+      end
+
+      it 'does not clear a code that was reissued in the meantime' do
+        Confirmation.find(user.email_confirmation.id).update_columns(code: '654321')
+
+        described_class.perform_now(user.id, 'EmailConfirmation', old_code)
+
+        expect(user.email_confirmation.reload.code).to eq('654321')
+        expect(DeleteUserJob).not_to have_been_enqueued
+      end
+
+      it 'does nothing when the confirmation was consumed in the meantime' do
+        Confirmation.where(id: user.email_confirmation.id).delete_all
+
+        expect { described_class.perform_now(user.id, 'EmailConfirmation', old_code) }.not_to raise_error
+        expect(DeleteUserJob).not_to have_been_enqueued
+      end
+    end
+
+    it 'clears the confirmation code and deletes a user requiring confirmation' do
       old_code = user.email_confirmation.code
       described_class.perform_now(user.id, 'EmailConfirmation', old_code)
-      expect(user.email_confirmation.reload.code).not_to eq(old_code)
+      expect(user.email_confirmation.reload.code).to be_nil
       expect(DeleteUserJob).to have_been_enqueued
     end
   end
@@ -70,10 +103,10 @@ RSpec.describe ExpireConfirmationCodeOrDeleteJob do
       user
     end
 
-    it 'changes the confirmation code and deletes a user requiring confirmation' do
+    it 'clears the confirmation code and deletes a user requiring confirmation' do
       old_code = user.phone_confirmation.code
       described_class.perform_now(user.id, 'PhoneConfirmation', old_code)
-      expect(user.phone_confirmation.reload.code).not_to eq(old_code)
+      expect(user.phone_confirmation.reload.code).to be_nil
       expect(DeleteUserJob).to have_been_enqueued
     end
 
@@ -104,7 +137,7 @@ RSpec.describe ExpireConfirmationCodeOrDeleteJob do
     it 'expires the code but keeps a user who has a password and completed registration' do
       old_code = user.phone_confirmation.code
       described_class.perform_now(user.id, 'PhoneConfirmation', old_code)
-      expect(user.phone_confirmation.reload.code).not_to eq(old_code)
+      expect(user.phone_confirmation.reload.code).to be_nil
       expect(DeleteUserJob).not_to have_been_enqueued
     end
   end
@@ -121,7 +154,7 @@ RSpec.describe ExpireConfirmationCodeOrDeleteJob do
     it 'expires the code without deleting the user' do
       old_code = user.new_phone_confirmation.code
       described_class.perform_now(user.id, 'NewPhoneConfirmation', old_code)
-      expect(user.new_phone_confirmation.reload.code).not_to eq(old_code)
+      expect(user.new_phone_confirmation.reload.code).to be_nil
       expect(DeleteUserJob).not_to have_been_enqueued
     end
   end
@@ -145,7 +178,7 @@ RSpec.describe ExpireConfirmationCodeOrDeleteJob do
       RequestEmailConfirmationCodeJob.perform_now(user)
       old_code = user.email_confirmation.code
       described_class.perform_now(user.id, 'EmailConfirmation', old_code)
-      expect(user.email_confirmation.reload.code).not_to eq(old_code)
+      expect(user.email_confirmation.reload.code).to be_nil
       expect(DeleteUserJob).not_to have_been_enqueued.with(user)
     end
   end

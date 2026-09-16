@@ -118,6 +118,9 @@ class UserConfirmationService
 
   def validate_and_confirm!(confirmation, code)
     raise ValidationError.new(:code, :invalid) if confirmation.nil?
+    # An expired (or not yet issued) code is nil: nothing can match it, so bail out
+    # before a submitted blank or nil code could be compared against it.
+    raise ValidationError.new(:code, :expired) unless confirmation.code_outstanding?
 
     validate_retry_count!(confirmation, code)
     validate_code_value!(confirmation, code)

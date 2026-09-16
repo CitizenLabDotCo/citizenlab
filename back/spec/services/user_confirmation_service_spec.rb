@@ -69,6 +69,22 @@ RSpec.describe UserConfirmationService do
       end
     end
 
+    context 'when the code has been expired' do
+      before { confirmation.expire_code! }
+
+      [nil, ''].each do |submitted_code|
+        it "rejects #{submitted_code.inspect} without counting a retry" do
+          result = nil
+          expect { result = service.public_send(method_name, user, submitted_code) }
+            .not_to change { user.reload.public_send(confirmed_at_attr) }
+
+          expect(result.success?).to be false
+          expect(result.errors.details).to eq(code: [{ error: :expired }])
+          expect(confirmation.reload.code_retry_count).to eq(0)
+        end
+      end
+    end
+
     # Codes sent before the 4 -> 6 digit switch must stay usable until they expire.
     context 'when the stored code still has 4 digits' do
       before { confirmation.update!(code: '1234') }

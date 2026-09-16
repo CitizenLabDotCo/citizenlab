@@ -50,10 +50,6 @@ class NewPhoneConfirmation < Confirmation
     )
   end
 
-  def expire_code!
-    update!(code: generate_code)
-  end
-
   def generate_code
     return '123456' if AppConfiguration.instance.settings('sms', 'use_test_mode')
 

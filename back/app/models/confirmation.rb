@@ -75,8 +75,12 @@ class Confirmation < ApplicationRecord
     )
   end
 
+  # Clears the code but keeps the row: the retry and reset counters have to
+  # survive expiry, or waiting out a code would lift the limit on requesting new
+  # ones. A row without a code can never be confirmed (see
+  # UserConfirmationService#validate_and_confirm!).
   def expire_code!
-    update!(code: self.class.generate_code)
+    update!(code: nil)
   end
 
   # Drops the row once its code has done its job. A confirmation carries nothing
