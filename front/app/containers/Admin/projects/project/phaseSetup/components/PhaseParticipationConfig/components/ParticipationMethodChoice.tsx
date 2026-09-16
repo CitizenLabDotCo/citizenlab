@@ -6,6 +6,7 @@ import {
   Title,
   Text,
   Image,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { lighten } from 'polished';
 
@@ -17,6 +18,9 @@ type Props = {
   onClick?: (event) => void;
   children?: JSX.Element;
   participation_method: string;
+  width?: string;
+  /** Shown on hover when the method can't be picked. */
+  disabledReason?: string;
 };
 
 export const backgroundColor = lighten(0.1, colors.tealLight);
@@ -47,18 +51,23 @@ const ParticipationMethodChoice = ({
   onClick,
   children,
   participation_method,
+  width = '240px',
+  disabledReason,
 }: Props) => {
   const [isHover, setIsHover] = useState(false);
-  const borderColor = selected || isHover ? colors.primary : colors.borderLight;
+  const disabled = !!disabledReason;
+  const highlighted = selected || (isHover && !disabled);
+  const borderColor = highlighted ? colors.primary : colors.borderLight;
 
-  return (
+  const card = (
     <Box
       display="flex"
-      width="240px"
+      width={width}
       flexDirection="column"
       borderRadius="3px"
       border={`1px solid ${borderColor}`}
-      background={selected || isHover ? backgroundColor : colors.white}
+      background={highlighted ? backgroundColor : colors.white}
+      opacity={disabled ? 0.6 : 1}
       padding="16px"
       gap="8px"
       flex="1 0 0"
@@ -70,8 +79,9 @@ const ParticipationMethodChoice = ({
       onMouseLeave={() => {
         setIsHover(false);
       }}
-      onClick={onClick}
-      style={{ cursor: 'pointer' }}
+      onClick={disabled ? undefined : onClick}
+      aria-disabled={disabled}
+      style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
       height="100%"
       id={`e2e-participation-method-choice-${participation_method}`}
     >
@@ -112,6 +122,21 @@ const ParticipationMethodChoice = ({
         </Text>
       )}
     </Box>
+  );
+
+  // Only a disabled card is wrapped: the tooltip's wrapper would otherwise stop
+  // the card from filling its grid cell.
+  if (!disabled) return card;
+
+  return (
+    <Tooltip
+      content={disabledReason}
+      placement="top"
+      theme="dark"
+      width={width}
+    >
+      {card}
+    </Tooltip>
   );
 };
 
