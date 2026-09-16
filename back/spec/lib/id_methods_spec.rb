@@ -24,4 +24,25 @@ describe IdMethods do
       expect(described_class.all_methods.select { |m| m.id == '9fb591e7-f577-40a7-8596-03e406d7eebe' }).to contain_exactly(mthd2)
     end
   end
+
+  # An omniauth method writes an existing user's profile only through
+  # UserService.update_in_sso!, which is limited to updateable_user_attrs. A locked
+  # attribute that is not also updateable stays blank and cannot be filled in by the
+  # user either.
+  describe 'omniauth methods' do
+    it 'can update every attribute they lock' do
+      omniauth_methods = described_class.all_methods.select do |method|
+        method.respond_to?(:verification_method_type) && method.verification_method_type == :omniauth &&
+          method.respond_to?(:locked_attributes)
+      end
+      expect(omniauth_methods).not_to be_empty
+
+      aggregate_failures do
+        omniauth_methods.each do |method|
+          expect(method.locked_attributes - method.updateable_user_attrs)
+            .to be_empty, "#{method.name} locks #{method.locked_attributes - method.updateable_user_attrs} without updating them"
+        end
+      end
+    end
+  end
 end

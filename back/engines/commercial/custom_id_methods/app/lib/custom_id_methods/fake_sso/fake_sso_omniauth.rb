@@ -33,6 +33,10 @@ module CustomIdMethods::FakeSso
       }
     end
 
+    def updateable_user_attrs
+      super + %i[first_name last_name]
+    end
+
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
       return unless Verification::VerificationService.new.active?(configuration, name)

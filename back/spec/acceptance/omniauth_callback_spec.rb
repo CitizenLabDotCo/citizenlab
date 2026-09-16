@@ -295,6 +295,26 @@ resource 'Omniauth Callback', document: false do
           expect(existing_user.new_email).to be_nil
         end
       end
+
+      # Signed up with email only (no name), logged out, then logged in with SSO.
+      context 'when a passwordless user with a confirmed email but no name exists' do
+        let!(:existing_user) do
+          create(:user, email: 'billy_fixed@example.com', password: nil, first_name: nil, last_name: nil, avatar: nil)
+        end
+
+        example 'fills in the name the SSO method locks', document: false do
+          do_request
+
+          assert_status(302)
+          expect(User.count).to eq(1)
+
+          existing_user.reload
+          expect(existing_user.verified).to be true
+          expect(Verification::VerificationService.new.locked_attributes(existing_user)).to include(:first_name, :last_name)
+          expect(existing_user.first_name).to eq 'Billy'
+          expect(existing_user.last_name).to eq 'Fixed'
+        end
+      end
     end
   end
 
