@@ -9,13 +9,13 @@ import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
+import useWidgetProjectId from 'components/admin/ContentBuilder/useWidgetProjectId';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { useIntl } from 'utils/cl-intl';
 
 import LockedNote from '../LockedNote';
 import messages from '../messages';
-import useWidgetProjectId from '../useWidgetProjectId';
 
 type Props = {
   title?: Multiloc;

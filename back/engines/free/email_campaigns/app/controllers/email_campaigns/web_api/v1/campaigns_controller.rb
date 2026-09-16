@@ -47,7 +47,11 @@ module EmailCampaigns
     end
 
     def show
-      render json: WebApi::V1::CampaignSerializer.new(@campaign, params: jsonapi_serializer_params).serializable_hash
+      render json: WebApi::V1::CampaignSerializer.new(
+        @campaign,
+        params: jsonapi_serializer_params,
+        include: %i[groups]
+      ).serializable_hash
     end
 
     def create
