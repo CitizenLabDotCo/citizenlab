@@ -1826,7 +1826,6 @@
   "app.containers.Admin.projects.project.nextActions": "Na chéad ghníomhartha eile",
   "app.containers.Admin.projects.project.noInputToAnalyse": "Ní bhailíonn an chéim seo aon ionchur, mar sin níl aon rud le hanailísiú.",
   "app.containers.Admin.projects.project.noInputToManage": "Ní bhailíonn an chéim seo aon ionchur, mar sin níl aon rud le bainistiú.",
-  "app.containers.Admin.projects.project.noParticipantsYet": "Gan rannpháirtithe fós",
   "app.containers.Admin.projects.project.notOnProjectPage": "Níl ar leathanach an tionscadail",
   "app.containers.Admin.projects.project.notifications": "Fógraí",
   "app.containers.Admin.projects.project.offlineCollection": "Bailiú as líne",

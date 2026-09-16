@@ -1826,7 +1826,6 @@
   "app.containers.Admin.projects.project.nextActions": "Kiti veiksmai",
   "app.containers.Admin.projects.project.noInputToAnalyse": "Šiame etape duomenys nerenkami, todėl nėra ko analizuoti.",
   "app.containers.Admin.projects.project.noInputToManage": "Šiame etape duomenys nerenkami, todėl nėra ko tvarkyti.",
-  "app.containers.Admin.projects.project.noParticipantsYet": "Dalyvių dar nėra",
   "app.containers.Admin.projects.project.notOnProjectPage": "Nėra projekto puslapyje",
   "app.containers.Admin.projects.project.notifications": "Pranešimai",
   "app.containers.Admin.projects.project.offlineCollection": "Rinkimas ne internetu",

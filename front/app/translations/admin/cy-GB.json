@@ -1826,7 +1826,6 @@
   "app.containers.Admin.projects.project.nextActions": "Camau nesaf",
   "app.containers.Admin.projects.project.noInputToAnalyse": "Nid yw'r cam hwn yn casglu unrhyw fewnbwn, felly nid oes dim i'w ddadansoddi.",
   "app.containers.Admin.projects.project.noInputToManage": "Nid yw'r cam hwn yn casglu unrhyw fewnbwn, felly nid oes dim i'w reoli.",
-  "app.containers.Admin.projects.project.noParticipantsYet": "Dim cyfranogwyr eto",
   "app.containers.Admin.projects.project.notOnProjectPage": "Ddim ar dudalen y prosiect",
   "app.containers.Admin.projects.project.notifications": "Hysbysiadau",
   "app.containers.Admin.projects.project.offlineCollection": "Casglu all-lein",

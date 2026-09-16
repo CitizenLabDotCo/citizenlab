@@ -1826,7 +1826,6 @@
   "app.containers.Admin.projects.project.nextActions": "Następne działania",
   "app.containers.Admin.projects.project.noInputToAnalyse": "Ta faza nie zbiera żadnych danych, więc nie ma nic do przeanalizowania.",
   "app.containers.Admin.projects.project.noInputToManage": "Ta faza nie zbiera żadnych danych, więc nie ma nic do zarządzania.",
-  "app.containers.Admin.projects.project.noParticipantsYet": "Brak uczestników",
   "app.containers.Admin.projects.project.notOnProjectPage": "Poza stroną projektu",
   "app.containers.Admin.projects.project.notifications": "Powiadomienia",
   "app.containers.Admin.projects.project.offlineCollection": "Zbieranie danych offline",

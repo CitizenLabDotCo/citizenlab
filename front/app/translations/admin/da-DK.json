@@ -1826,7 +1826,6 @@
   "app.containers.Admin.projects.project.nextActions": "Næste handlinger",
   "app.containers.Admin.projects.project.noInputToAnalyse": "Denne fase indsamler ingen input, så der er intet at analysere.",
   "app.containers.Admin.projects.project.noInputToManage": "Denne fase indsamler ingen input, så der er intet at administrere.",
-  "app.containers.Admin.projects.project.noParticipantsYet": "Ingen deltagere endnu",
   "app.containers.Admin.projects.project.notOnProjectPage": "Ikke på projektsiden",
   "app.containers.Admin.projects.project.notifications": "Notifikationer",
   "app.containers.Admin.projects.project.offlineCollection": "Offline-indsamling",

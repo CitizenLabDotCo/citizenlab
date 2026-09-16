@@ -1826,7 +1826,6 @@
   "app.containers.Admin.projects.project.nextActions": "Következő lépések",
   "app.containers.Admin.projects.project.noInputToAnalyse": "Ez a szakasz nem gyűjt adatokat, így nincs mit elemezni.",
   "app.containers.Admin.projects.project.noInputToManage": "Ez a szakasz nem gyűjt adatokat, így nincs mit kezelni.",
-  "app.containers.Admin.projects.project.noParticipantsYet": "Még nincsenek résztvevők",
   "app.containers.Admin.projects.project.notOnProjectPage": "Nincs a projektoldalon",
   "app.containers.Admin.projects.project.notifications": "Értesítések",
   "app.containers.Admin.projects.project.offlineCollection": "Offline gyűjtés",

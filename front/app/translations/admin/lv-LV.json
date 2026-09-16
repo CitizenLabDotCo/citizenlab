@@ -1826,7 +1826,6 @@
   "app.containers.Admin.projects.project.nextActions": "Nākamās darbības",
   "app.containers.Admin.projects.project.noInputToAnalyse": "Šajā posmā netiek vākti dati, tāpēc nav nekā, ko analizēt.",
   "app.containers.Admin.projects.project.noInputToManage": "Šajā posmā netiek vākti dati, tāpēc nav nekā, ko pārvaldīt.",
-  "app.containers.Admin.projects.project.noParticipantsYet": "Vēl nav dalībnieku",
   "app.containers.Admin.projects.project.notOnProjectPage": "Nav projekta lapā",
   "app.containers.Admin.projects.project.notifications": "Paziņojumi",
   "app.containers.Admin.projects.project.offlineCollection": "Bezsaistes apkopošana",

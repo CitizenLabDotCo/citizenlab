@@ -1826,7 +1826,6 @@
   "app.containers.Admin.projects.project.nextActions": "Nächste Aktionen",
   "app.containers.Admin.projects.project.noInputToAnalyse": "In dieser Phase werden keine Beiträge gesammelt, daher gibt es nichts zu analysieren.",
   "app.containers.Admin.projects.project.noInputToManage": "In dieser Phase wird kein Beitrag gesammelt, daher gibt es nichts zu verwalten.",
-  "app.containers.Admin.projects.project.noParticipantsYet": "Noch keine Teilnehmer*innen",
   "app.containers.Admin.projects.project.notOnProjectPage": "Nicht auf der Projektseite",
   "app.containers.Admin.projects.project.notifications": "Benachrichtigungen",
   "app.containers.Admin.projects.project.offlineCollection": "Offline-Sammlung",

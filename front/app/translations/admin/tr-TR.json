@@ -1826,7 +1826,6 @@
   "app.containers.Admin.projects.project.nextActions": "Sıradaki eylemler",
   "app.containers.Admin.projects.project.noInputToAnalyse": "Bu aşamada girdi toplanmadığı için analiz edilecek bir şey yok.",
   "app.containers.Admin.projects.project.noInputToManage": "Bu aşamada girdi toplanmaz, bu nedenle yönetilecek bir şey yoktur.",
-  "app.containers.Admin.projects.project.noParticipantsYet": "Henüz katılımcı yok",
   "app.containers.Admin.projects.project.notOnProjectPage": "Proje sayfasında değil",
   "app.containers.Admin.projects.project.notifications": "Bildirimler",
   "app.containers.Admin.projects.project.offlineCollection": "Çevrimdışı toplama",

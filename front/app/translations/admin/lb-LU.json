@@ -1826,7 +1826,6 @@
   "app.containers.Admin.projects.project.nextActions": "Nächst Aktiounen",
   "app.containers.Admin.projects.project.noInputToAnalyse": "Dës Phas sammelt keen Input, dofir gëtt et näischt ze analyséieren.",
   "app.containers.Admin.projects.project.noInputToManage": "Dës Phas sammelt keng Inputen, dofir gëtt et näischt ze geréieren.",
-  "app.containers.Admin.projects.project.noParticipantsYet": "Nach keng Participanten",
   "app.containers.Admin.projects.project.notOnProjectPage": "Net op der Projetsäit",
   "app.containers.Admin.projects.project.notifications": "Notifikatiounen",
   "app.containers.Admin.projects.project.offlineCollection": "Offline-Sammlung",

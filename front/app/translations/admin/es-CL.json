@@ -1826,7 +1826,6 @@
   "app.containers.Admin.projects.project.nextActions": "Próximas acciones",
   "app.containers.Admin.projects.project.noInputToAnalyse": "Esta fase no recoge aportaciones, por lo que no hay nada que analizar.",
   "app.containers.Admin.projects.project.noInputToManage": "Esta fase no recopila aportaciones, por lo que no hay nada que gestionar.",
-  "app.containers.Admin.projects.project.noParticipantsYet": "Aún no hay participantes",
   "app.containers.Admin.projects.project.notOnProjectPage": "No está en la página del proyecto",
   "app.containers.Admin.projects.project.notifications": "Notificaciones",
   "app.containers.Admin.projects.project.offlineCollection": "Recopilación fuera de línea",

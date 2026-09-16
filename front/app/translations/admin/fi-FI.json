@@ -1826,7 +1826,6 @@
   "app.containers.Admin.projects.project.nextActions": "Seuraavat toimenpiteet",
   "app.containers.Admin.projects.project.noInputToAnalyse": "Tämä vaihe ei kerää vastauksia, joten analysoitavaa ei ole.",
   "app.containers.Admin.projects.project.noInputToManage": "Tässä vaiheessa ei kerätä vastauksia, joten hallinnoitavia tietoja ei ole.",
-  "app.containers.Admin.projects.project.noParticipantsYet": "Ei vielä osallistujia",
   "app.containers.Admin.projects.project.notOnProjectPage": "Ei projektisivulla",
   "app.containers.Admin.projects.project.notifications": "Ilmoitukset",
   "app.containers.Admin.projects.project.offlineCollection": "Offline-keruu",

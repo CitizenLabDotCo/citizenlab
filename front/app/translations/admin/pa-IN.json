@@ -1826,7 +1826,6 @@
   "app.containers.Admin.projects.project.nextActions": "ਅਗਲੀਆਂ ਕਾਰਵਾਈਆਂ",
   "app.containers.Admin.projects.project.noInputToAnalyse": "ਇਹ ਪੜਾਅ ਕੋਈ ਇਨਪੁਟ ਇਕੱਠਾ ਨਹੀਂ ਕਰਦਾ, ਇਸ ਲਈ ਵਿਸ਼ਲੇਸ਼ਣ ਕਰਨ ਲਈ ਕੁਝ ਵੀ ਨਹੀਂ ਹੈ।",
   "app.containers.Admin.projects.project.noInputToManage": "ਇਹ ਪੜਾਅ ਕੋਈ ਇਨਪੁਟ ਇਕੱਠਾ ਨਹੀਂ ਕਰਦਾ, ਇਸ ਲਈ ਪ੍ਰਬੰਧਨ ਕਰਨ ਲਈ ਕੁਝ ਵੀ ਨਹੀਂ ਹੈ।",
-  "app.containers.Admin.projects.project.noParticipantsYet": "ਅਜੇ ਤੱਕ ਕੋਈ ਭਾਗੀਦਾਰ ਨਹੀਂ ਹੈ",
   "app.containers.Admin.projects.project.notOnProjectPage": "ਪ੍ਰੋਜੈਕਟ ਪੰਨੇ 'ਤੇ ਨਹੀਂ",
   "app.containers.Admin.projects.project.notifications": "ਨੋਟੀਫਿਕੇਸ਼ਨ",
   "app.containers.Admin.projects.project.offlineCollection": "ਔਫਲਾਈਨ ਸੰਗ੍ਰਹਿ",

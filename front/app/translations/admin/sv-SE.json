@@ -1826,7 +1826,6 @@
   "app.containers.Admin.projects.project.nextActions": "Nästa åtgärder",
   "app.containers.Admin.projects.project.noInputToAnalyse": "Den här fasen samlar inte in någon input, så det finns inget att analysera.",
   "app.containers.Admin.projects.project.noInputToManage": "Denna fas samlar inte in några bidrag, så det finns inget att hantera.",
-  "app.containers.Admin.projects.project.noParticipantsYet": "Inga deltagare ännu",
   "app.containers.Admin.projects.project.notOnProjectPage": "Inte på projektsidan",
   "app.containers.Admin.projects.project.notifications": "Notiser",
   "app.containers.Admin.projects.project.offlineCollection": "Offline-insamling",

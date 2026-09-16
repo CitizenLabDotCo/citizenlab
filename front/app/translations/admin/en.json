@@ -1827,7 +1827,6 @@
   "app.containers.Admin.projects.project.nextActions": "Next actions",
   "app.containers.Admin.projects.project.noInputToAnalyse": "This phase collects no input, so there is nothing to analyse.",
   "app.containers.Admin.projects.project.noInputToManage": "This phase collects no input, so there is nothing to manage.",
-  "app.containers.Admin.projects.project.noParticipantsYet": "No participants yet",
   "app.containers.Admin.projects.project.notOnProjectPage": "Not on the project page",
   "app.containers.Admin.projects.project.notifications": "Notifications",
   "app.containers.Admin.projects.project.offlineCollection": "Offline collection",

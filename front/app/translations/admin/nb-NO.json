@@ -1826,7 +1826,6 @@
   "app.containers.Admin.projects.project.nextActions": "Neste handlinger",
   "app.containers.Admin.projects.project.noInputToAnalyse": "Denne fasen samler ikke inn innspill, så det er ingenting å analysere.",
   "app.containers.Admin.projects.project.noInputToManage": "Denne fasen samler ikke inn innspill, så det er ingenting å administrere.",
-  "app.containers.Admin.projects.project.noParticipantsYet": "Ingen deltakere ennå",
   "app.containers.Admin.projects.project.notOnProjectPage": "Ikke på prosjektsiden",
   "app.containers.Admin.projects.project.notifications": "Varslinger",
   "app.containers.Admin.projects.project.offlineCollection": "Offline-innsamling",

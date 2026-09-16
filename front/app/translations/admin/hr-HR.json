@@ -1826,7 +1826,6 @@
   "app.containers.Admin.projects.project.nextActions": "Sljedeće radnje",
   "app.containers.Admin.projects.project.noInputToAnalyse": "Ova faza ne prikuplja unose, pa nema ničega za analizu.",
   "app.containers.Admin.projects.project.noInputToManage": "Ova faza ne prikuplja unose, stoga nema ničega čime bi se moglo upravljati.",
-  "app.containers.Admin.projects.project.noParticipantsYet": "Još nema sudionika",
   "app.containers.Admin.projects.project.notOnProjectPage": "Nije na stranici projekta",
   "app.containers.Admin.projects.project.notifications": "Obavijesti",
   "app.containers.Admin.projects.project.offlineCollection": "Izvanmrežno prikupljanje",
