@@ -1,13 +1,13 @@
 import React from 'react';
 
 import { Box, media } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { IEvents } from 'api/events/types';
 
 import EventCard from 'components/EventCards/EventCard';
 
-const StyledEventCard = styled(EventCard)`
+export const cardColumn = css`
   flex: 0 0 32.3%;
 
   ${media.tablet`
@@ -17,6 +17,10 @@ const StyledEventCard = styled(EventCard)`
   ${media.phone`
     flex: 0 0 100%;
   `}
+`;
+
+const StyledEventCard = styled(EventCard)`
+  ${cardColumn}
 `;
 
 interface Props {

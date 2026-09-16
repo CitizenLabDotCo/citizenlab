@@ -292,6 +292,18 @@ resource 'Ideas' do
           end
         end
 
+        describe do
+          let(:publication_status) { 'published' }
+
+          before { input.update!(custom_field_values: { 'unknown_field' => 'legacy value' }) }
+
+          example 'Update an idea that carries a value without a field in its form', document: false do
+            do_request
+            assert_status 200
+            expect(input.reload.custom_field_values).to eq('unknown_field' => 'legacy value')
+          end
+        end
+
         example 'Removing the author of a published idea', document: false do
           input.update! publication_status: 'published'
           do_request idea: { author_id: nil }
