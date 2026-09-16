@@ -446,10 +446,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            parallel_participation: {
-              enabled: true,
-              allowed: true
-            },
             configurable_dropdown: {
               enabled: true,
               allowed: true

@@ -11,6 +11,22 @@ class EventsFinder < ApplicationFinder
     where(project_id: project_ids)
   end
 
+  def areas_condition(area_ids)
+    where(project_id: projects_filtered_by(areas: area_ids))
+  end
+
+  def global_topics_condition(global_topic_ids)
+    where(project_id: projects_filtered_by(global_topics: global_topic_ids))
+  end
+
+  def spaces_condition(space_ids)
+    where(project_id: projects_filtered_by(spaces: space_ids))
+  end
+
+  def projects_filtered_by(options)
+    ProjectsFilteringService.new.filter(Project.all, options)
+  end
+
   def project_publication_statuses_condition(project_publication_statuses)
     scope(:with_project_publication_statuses, project_publication_statuses) if project_publication_statuses.present?
   end

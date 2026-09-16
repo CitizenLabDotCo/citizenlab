@@ -7,6 +7,7 @@ import { VerticalRhythmContext } from 'components/admin/ContentBuilder/verticalR
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
+import EventsList from 'components/admin/ContentBuilder/Widgets/Events';
 import FileAttachment from 'components/admin/ContentBuilder/Widgets/FileAttachment';
 import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
@@ -21,6 +22,7 @@ import {
   CustomPageRoot,
   CustomPageBody,
 } from 'components/CustomPageBuilder/regions';
+import ProjectsByFilter from 'components/CustomPageBuilder/Widgets/ProjectsByFilter';
 import BaseEditor from 'components/DescriptionBuilder/Editor/Editor';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
 import RichTextMultiloc from 'components/DescriptionBuilder/Widgets/RichTextMultiloc';
@@ -37,6 +39,7 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
       <BaseEditor
         resolver={{
           Box,
+          EventsList,
           Container,
           TwoColumn,
           ThreeColumn,
@@ -44,6 +47,7 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
           ImageMultiloc,
           IframeMultiloc,
           FileAttachment,
+          ProjectsByFilter,
           AccordionMultiloc,
           WhiteSpace,
           InfoWithAccordions,

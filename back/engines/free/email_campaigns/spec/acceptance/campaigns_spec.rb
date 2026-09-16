@@ -211,6 +211,15 @@ resource 'Campaigns' do
         expect(json_response[:data][:attributes][:delivery_stats]).to be_nil
       end
 
+      example 'Get a campaign includes its groups', document: false do
+        groups = create_list(:group, 2)
+        campaign.update!(groups: groups)
+        do_request
+        assert_status 200
+        expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array groups.map(&:id)
+        expect(json_response_body[:included].select { |i| i[:type] == 'group' }.pluck(:id)).to match_array groups.map(&:id)
+      end
+
       example 'Get a scheduled campaign includes scheduled_at', document: false do
         campaign.scheduled_at = 2.hours.from_now
         campaign.save!
