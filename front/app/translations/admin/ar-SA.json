@@ -777,7 +777,7 @@
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsAndFoldersList": "قائمة المشاريع والمجلدات",
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsAndFoldersListTooltip": "عرض المشاريع والمجلدات بناءً على إعدادات صفحتك. يمكنك معاينة المشاريع والمجلدات التي سيتم عرضها.",
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsList": "قائمة المشاريع",
-  "app.containers.Admin.PagesAndMenu.SectionToggle.projectsListTooltip": "عرض المشاريع بناءً على إعدادات صفحتك. يمكنك معاينة المشاريع التي ستظهر.",
+  "app.containers.Admin.PagesAndMenu.SectionToggle.projectsListTooltip": "عرض المشاريع بناءً على إعدادات صفحتك. يمكنك معاينة المشاريع التي سيتم عرضها.",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSection": "قسم المعلومات العلوي",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSectionTooltip": "أضف محتواك الخاص إلى القسم القابل للتخصيص في الجزء العلوي من الصفحة.",
   "app.containers.Admin.PagesAndMenu.components.NavbarItemForm.navbarItemTitle": "الاسم في شريط التنقل",

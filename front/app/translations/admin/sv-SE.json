@@ -777,7 +777,7 @@
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsAndFoldersList": "Lista över projekt och mappar",
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsAndFoldersListTooltip": "Visa projekt och mappar baserat på dina sidinställningar. Du kan förhandsgranska de projekt och mappar som kommer att visas.",
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsList": "Projektlista",
-  "app.containers.Admin.PagesAndMenu.SectionToggle.projectsListTooltip": "Visa projekten baserat på dina sidinställningar. Du kan förhandsgranska projekten som kommer att visas.",
+  "app.containers.Admin.PagesAndMenu.SectionToggle.projectsListTooltip": "Visa projekten baserat på dina sidinställningar. Du kan förhandsgranska de projekt som kommer att visas.",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSection": "Övre informationsavsnitt",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSectionTooltip": "Lägg till ditt eget innehåll i det anpassningsbara avsnittet högst upp på sidan.",
   "app.containers.Admin.PagesAndMenu.components.NavbarItemForm.navbarItemTitle": "Namn i navigeringsfältet",

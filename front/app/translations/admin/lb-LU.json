@@ -777,7 +777,7 @@
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsAndFoldersList": "Lëscht vun de Projeten an Dossieren",
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsAndFoldersListTooltip": "Weis d'Projeten an d'Dossieren op Basis vun Äre Säiteneinstellungen. Dir kënnt d'Projeten an d'Dossieren, déi gewise ginn, an der Virschau kucken.",
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsList": "Projetslëscht",
-  "app.containers.Admin.PagesAndMenu.SectionToggle.projectsListTooltip": "Weist d'Projeten op Basis vun Äre Säitenastellungen un. Dir kënnt eng Virschau vun de Projete gesinn, déi gewise ginn.",
+  "app.containers.Admin.PagesAndMenu.SectionToggle.projectsListTooltip": "Weis d'Projeten op Basis vun Ären Astellunge fir d'Säit. Dir kënnt eng Virschau vun de Projete gesinn, déi gewise ginn.",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSection": "Top info section",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSectionTooltip": "Add your own content to the customizable section at the top of the page.",
   "app.containers.Admin.PagesAndMenu.components.NavbarItemForm.navbarItemTitle": "Numm an Navigatiounsleescht",

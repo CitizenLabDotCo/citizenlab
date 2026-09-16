@@ -777,7 +777,7 @@
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsAndFoldersList": "Projektu un mapju saraksts",
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsAndFoldersListTooltip": "Rādīt projektus un mapes, pamatojoties uz jūsu lapas iestatījumiem. Jūs varat priekšskatīt projektus un mapes, kas tiks rādīti.",
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsList": "Projektu saraksts",
-  "app.containers.Admin.PagesAndMenu.SectionToggle.projectsListTooltip": "Rādīt projektus, pamatojoties uz jūsu lapas iestatījumiem. Jūs varat priekšskatīt projektus, kas tiks rādīti.",
+  "app.containers.Admin.PagesAndMenu.SectionToggle.projectsListTooltip": "Rādīt projektus atbilstoši jūsu lapas iestatījumiem. Jūs varat priekšskatīt projektus, kas tiks rādīti.",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSection": "Augšējā informācijas sadaļa",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSectionTooltip": "Pievienot saturu pielāgojamā sadaļā lapas augšpusē.",
   "app.containers.Admin.PagesAndMenu.components.NavbarItemForm.navbarItemTitle": "Nosaukums navigācijas joslā",

@@ -777,7 +777,7 @@
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsAndFoldersList": "Liste der Projekte und Ordner",
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsAndFoldersListTooltip": "Zeigen Sie die Projekte und Ordner basierend auf Ihren Seiteneinstellungen an. Sie können eine Vorschau der Projekte und Ordner anzeigen, die eingeblendet werden.",
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsList": "Projektliste",
-  "app.containers.Admin.PagesAndMenu.SectionToggle.projectsListTooltip": "Zeigen Sie die Projekte basierend auf Ihren Seiteneinstellungen an. Sie können eine Vorschau der Projekte anzeigen, die eingeblendet werden.",
+  "app.containers.Admin.PagesAndMenu.SectionToggle.projectsListTooltip": "Zeigen Sie die Projekte basierend auf Ihren Seiteneinstellungen an. Sie können eine Vorschau der Projekte sehen, die angezeigt werden.",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSection": "Oberer Infobereich",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSectionTooltip": "Füge deine eigenen Inhalte in den anpassbaren Bereich oben auf der Seite ein.",
   "app.containers.Admin.PagesAndMenu.components.NavbarItemForm.navbarItemTitle": "Name in der Navigationsleiste",

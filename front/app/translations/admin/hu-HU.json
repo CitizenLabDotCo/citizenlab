@@ -777,7 +777,7 @@
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsAndFoldersList": "Projektek és mappák listája",
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsAndFoldersListTooltip": "Jelenítse meg a projekteket és mappákat az oldal beállításai alapján. Megtekintheti a megjelenítendő projektek és mappák előnézetét.",
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsList": "Projektlista",
-  "app.containers.Admin.PagesAndMenu.SectionToggle.projectsListTooltip": "A projektek megjelenítése az oldalbeállítások alapján. Megtekintheti a megjelenítendő projektek előnézetét.",
+  "app.containers.Admin.PagesAndMenu.SectionToggle.projectsListTooltip": "Jelenítse meg a projekteket az oldalbeállítások alapján. Megtekintheti a megjelenő projektek előnézetét.",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSection": "Felső információs szakasz",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSectionTooltip": "Adja hozzá saját tartalmát az oldal tetején található testreszabható szakaszhoz.",
   "app.containers.Admin.PagesAndMenu.components.NavbarItemForm.navbarItemTitle": "Név a navigációs sávban",

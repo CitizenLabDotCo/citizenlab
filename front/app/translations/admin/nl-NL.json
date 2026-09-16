@@ -777,7 +777,7 @@
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsAndFoldersList": "Lijst van projecten en mappen",
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsAndFoldersListTooltip": "Toon de projecten en mappen op basis van je pagina-instellingen. Je kunt een voorbeeld bekijken van de projecten en mappen die getoond zullen worden.",
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsList": "Projectenlijst",
-  "app.containers.Admin.PagesAndMenu.SectionToggle.projectsListTooltip": "Toon de projecten op basis van je pagina-instellingen. Je kunt een voorbeeld bekijken van de projecten die worden getoond.",
+  "app.containers.Admin.PagesAndMenu.SectionToggle.projectsListTooltip": "Toon de projecten op basis van je pagina-instellingen. Je kunt een voorbeeld bekijken van de projecten die getoond zullen worden.",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSection": "Bovenste infosectie",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSectionTooltip": "Voeg je eigen inhoud toe aan het aanpasbare gedeelte boven aan de pagina.",
   "app.containers.Admin.PagesAndMenu.components.NavbarItemForm.navbarItemTitle": "Naam in navigatiebalk",
