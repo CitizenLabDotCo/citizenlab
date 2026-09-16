@@ -74,6 +74,7 @@ const CustomPageBannerSettings = () => {
   return (
     <Box my="20px" display="flex" flexDirection="column" gap="16px">
       <LayoutSettingField
+        stacked
         bannerLayout={banner.layout}
         onChange={(layout) =>
           set((props) => {
