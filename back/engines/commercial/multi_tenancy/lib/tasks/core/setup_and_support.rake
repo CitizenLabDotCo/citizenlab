@@ -252,11 +252,13 @@ namespace :setup_and_support do
         )
       end
 
-      users_with_birthyear = User.all.select do |user|
-        user.birthyear.present?
-      end
+      birthyear_field = CustomField.registration.find_by!(code: 'birthyear')
+      users_with_birthyear = User
+        .where(id: CustomFieldAnswer.where(custom_field: birthyear_field).select(:answerable_id))
+        .includes(:custom_field_answers)
       users_with_birthyear.each do |user|
-        user.custom_field_answers.build(key: field.key, value: user.birthyear.to_s, custom_field: field)
+        birthyear = user.answer_for_key(birthyear_field.key).value
+        user.custom_field_answers.build(key: field.key, value: birthyear.to_s, custom_field: field)
         unless user.save
           errors += [user.errors.messages]
         end

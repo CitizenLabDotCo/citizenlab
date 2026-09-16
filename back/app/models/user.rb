@@ -247,9 +247,6 @@ class User < ApplicationRecord
   validates :first_name, :last_name, format: { without: /@/ }, allow_nil: true
   validates :locale, inclusion: { in: proc { AppConfiguration.instance.settings('core', 'locales') } }
   validates :bio_multiloc, multiloc: { presence: false, html: true }
-  validates :gender, inclusion: { in: GENDERS }, allow_nil: true
-  validates :birthyear, numericality: { only_integer: true, greater_than_or_equal_to: 1900, less_than: Time.zone.now.year }, allow_nil: true
-  validates :domicile, inclusion: { in: proc { ['outside'] + Area.select(:id).map(&:id) } }, allow_nil: true
   validates :invite_status, inclusion: { in: INVITE_STATUSES }, allow_nil: true
 
   validates :onboarding, json: { schema: -> { User.onboarding_json_schema } }
@@ -270,18 +267,6 @@ class User < ApplicationRecord
   scope :blocked, -> { where('? < block_end_at', Time.zone.now) }
   scope :not_blocked, -> { where(block_end_at: nil).or(where('? > block_end_at', Time.zone.now)) }
   scope :active, -> { registered.not_blocked }
-
-  def gender
-    answer_for_code('gender')&.value
-  end
-
-  def birthyear
-    answer_for_code('birthyear')&.value
-  end
-
-  def domicile
-    answer_for_code('domicile')&.value
-  end
 
   def to_token_payload
     # Converting into hours to avoid issues when crossing DST boundaries. In other words,
@@ -410,12 +395,12 @@ class User < ApplicationRecord
     new_phone.present?
   end
 
-  private
-
   def answer_for_code(code)
     key = CustomField.registration.find_by(code: code)&.key
     key && answer_for_key(key)
   end
+
+  private
 
   # Concurrent requests race here; the savepoint lets the caller's transaction survive the losing insert.
   def create_confirmation!(association_name)

@@ -12,6 +12,42 @@ RSpec.describe CustomFieldAnswer do
     expect(answer).to be_invalid
   end
 
+  describe 'built-in values' do
+    before do
+      create(:custom_field_gender, :with_options)
+      create(:custom_field_birthyear)
+      create(:custom_field_domicile)
+    end
+
+    def answer_for(key, value)
+      build(:custom_field_answer, key:, value:)
+    end
+
+    it 'accepts male, female or unspecified as gender' do
+      expect(answer_for('gender', 'male')).to be_valid
+      expect(answer_for('gender', 'female')).to be_valid
+      expect(answer_for('gender', 'unspecified')).to be_valid
+      expect(answer_for('gender', 'somethingelse')).to be_invalid
+    end
+
+    it 'accepts a realistic integer year as birthyear' do
+      expect(answer_for('birthyear', Time.zone.now.year - 117)).to be_valid
+      expect(answer_for('birthyear', Time.zone.now.year - 13)).to be_valid
+      expect(answer_for('birthyear', Time.zone.now.year + 1)).to be_invalid
+      expect(answer_for('birthyear', 1850)).to be_invalid
+      expect(answer_for('birthyear', 1930.4)).to be_invalid
+      expect(answer_for('birthyear', 'eighteen hundred')).to be_invalid
+    end
+
+    it "accepts an area id or 'outside' as domicile" do
+      area = create(:area)
+      expect(answer_for('domicile', area.id)).to be_valid
+      expect(answer_for('domicile', 'outside')).to be_valid
+      expect(answer_for('domicile', 'somethingelse')).to be_invalid
+      expect(answer_for('domicile', 5)).to be_invalid
+    end
+  end
+
   it 'stores a false value' do
     answer.value = false
     expect(answer.save).to be true
