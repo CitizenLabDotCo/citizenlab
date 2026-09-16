@@ -11,28 +11,20 @@ import { Changes } from 'components/admin/ActionForm/types';
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
 
 import messages from '../../messages';
 
 interface Props {
-  projectId: string;
   phaseId: string;
-  survey: boolean;
   opened: boolean;
   onClose: () => void;
+  onContinue: () => void;
 }
 
 // What participants are asked for besides the form itself, on the way to the
 // form builder. The settings belong to the submission permission, so its access
 // modal shows them too.
-const AddQuestionsModal = ({
-  projectId,
-  phaseId,
-  survey,
-  opened,
-  onClose,
-}: Props) => {
+const AddQuestionsModal = ({ phaseId, opened, onClose, onContinue }: Props) => {
   const { formatMessage } = useIntl();
   const { data: permissions } = usePhasePermissions({ phaseId });
   const { mutate: updatePhasePermission } = useUpdatePhasePermission();
@@ -52,15 +44,6 @@ const AddQuestionsModal = ({
     });
   };
 
-  const openForm = () => {
-    onClose();
-    clHistory.push(
-      `/admin/projects/${projectId}/phases/${phaseId}/${
-        survey ? 'survey-form' : 'form'
-      }/edit`
-    );
-  };
-
   return (
     <Modal
       opened={opened}
@@ -69,7 +52,7 @@ const AddQuestionsModal = ({
       header={formatMessage(messages.informationCollected)}
       footer={
         <Box display="flex" justifyContent="flex-end" width="100%">
-          <Button buttonStyle="admin-dark" onClick={openForm}>
+          <Button buttonStyle="admin-dark" onClick={onContinue}>
             {formatMessage(messages.continueToTheForm)}
           </Button>
         </Box>
