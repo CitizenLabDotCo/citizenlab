@@ -218,6 +218,21 @@ resource 'Events' do
           expect(response_ids.sort).to match_array(expected_ids.sort)
         end
       end
+
+      context 'when filtering by attendee ID' do
+        before do
+          @attendee = create(:user)
+          [@events.first, @unlisted_events.first].each { |event| event.attendees << @attendee }
+          header_token_for @attendee
+        end
+
+        example 'Does list unlisted project the attendee is registered to' do
+          do_request(attendee_id: @attendee.id)
+          assert_status 200
+          expected_ids = [@events.first.id, @unlisted_events.first.id]
+          expect(response_ids.sort).to match_array(expected_ids.sort)
+        end
+      end
     end
 
     context 'when the event has an image' do
@@ -632,11 +647,14 @@ resource 'Events' do
   get 'web_api/v1/users/:user_id/events' do
     route_summary 'List all events to which a user is registered'
 
+    let_it_be(:unlisted_project) { create(:project, listed: false) }
+    let_it_be(:unlisted_event) { create(:event, project: unlisted_project) }
+    let_it_be(:second_unlisted_event) { create(:event, project: unlisted_project) }
     let_it_be(:user) { create(:user) }
     let_it_be(:user_id) { user.id }
 
     let_it_be(:user_events) do
-      [@events.first, @other_events.first].tap do |events|
+      [@events.first, @other_events.first, unlisted_event].tap do |events|
         events.each { |event| event.attendees << user }
       end
     end
@@ -664,6 +682,18 @@ resource 'Events' do
       before { header_token_for(user) }
 
       include_examples 'authorized'
+    end
+
+    context 'when moderator' do
+      before do
+        moderator = create(:user, roles: [{ type: 'project_moderator', project_id: unlisted_project.id }])
+        header_token_for moderator
+      end
+
+      example_request 'Lists only the events of the projects the moderator moderates' do
+        assert_status 200
+        expect(response_ids).to contain_exactly(unlisted_event.id)
+      end
     end
 
     context "when 'user_id' does not correspond to the current user" do
