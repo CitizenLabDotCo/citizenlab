@@ -7,10 +7,10 @@ module ContentBuilder
     module Nodes
       module_function
 
-      EVENTS_WIDGET_NAME = 'EventsList'
       PROJECTS_WIDGET_NAME = 'ProjectsByFilter'
+      EVENTS_WIDGET_NAME = 'EventsList'
 
-      def projects_by_filter(props, parent_id)
+      def projects(props, parent_id)
         {
           'type' => { 'resolvedName' => PROJECTS_WIDGET_NAME },
           'nodes' => [],

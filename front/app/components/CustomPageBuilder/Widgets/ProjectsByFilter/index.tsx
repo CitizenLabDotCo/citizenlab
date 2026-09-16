@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { useEditor } from '@craftjs/core';
+import { Multiloc, SupportedLocale } from 'typings';
 
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import { IStatusCounts } from 'api/admin_publications_status_counts/types';
@@ -29,7 +30,16 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import Settings from './Settings';
 import { ProjectsByFilterProps, ProjectsFilterType } from './types';
-import { hasTitle } from './utils';
+
+// The grid's own fallback heading is homepage phrasing, so show a heading only once an admin
+// has written one, as the legacy section does. Not `isEmptyMultiloc`, which counts a
+// whitespace-only value as written. Per visitor locale, not per multiloc: the grid falls
+// straight back to its own message when the visitor's locale is missing, so a heading written
+// in another locale only would otherwise show the homepage phrasing.
+const hasTitle = (
+  titleMultiloc: Multiloc | undefined,
+  locale: SupportedLocale
+) => !!titleMultiloc?.[locale]?.trim();
 
 // Spaces carry folders as well as projects, so they page over top-level publications while
 // the other two page over projects.

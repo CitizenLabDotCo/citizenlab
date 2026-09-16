@@ -40,7 +40,9 @@ const Settings = () => {
   const localize = useLocalize();
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
   // The whole widget is the paid capability, so with it off nothing here is worth offering.
-  const unavailable = !useFeatureFlag({ name: 'advanced_custom_pages' });
+  const advancedCustomPagesEnabled = useFeatureFlag({
+    name: 'advanced_custom_pages',
+  });
 
   const { data: topics, isLoading: topicsLoading } = useGlobalTopics();
   const { data: areas, isLoading: areasLoading } = useAreas({});
@@ -84,7 +86,9 @@ const Settings = () => {
     >
       <Text m="0px" color="textSecondary">
         {formatMessage(
-          unavailable ? messages.notAvailable : messages.description
+          advancedCustomPagesEnabled
+            ? messages.description
+            : messages.notAvailable
         )}
       </Text>
       <InputMultilocWithLocaleSwitcher
@@ -99,7 +103,7 @@ const Settings = () => {
           });
         }}
       />
-      {!unavailable && (
+      {advancedCustomPagesEnabled && (
         <>
           <Box>
             <Label>{formatMessage(messages.filterByLabel)}</Label>

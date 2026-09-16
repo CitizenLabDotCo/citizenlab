@@ -20,7 +20,7 @@ module BulkImportIdeas::Parsers
 
       file.update!(parsed_value: { parser: llm_parser.parser_name, value: form_parsed_idea })
 
-      [idea_to_idea_row(form_parsed_idea, file)]
+      form_parsed_idea&.dig(:fields).present? ? [idea_to_idea_row(form_parsed_idea, file)] : []
     end
 
     def idea_to_idea_row(idea, file, index: 0)

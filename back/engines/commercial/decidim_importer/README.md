@@ -85,7 +85,7 @@ counts and every skipped record):
 - **`<base>.template.yml`** — the record graph, the main artifact.
 - **`<base>.app_config.json`** — the small `AppConfiguration` patch the import applies: just the export's
   locales (from `01--organization.csv`) plus the feature flags the import turns on
-  (`project_static_pages`, `parallel_participation`). Nothing else from the org row is mapped.
+  (`project_static_pages`). Nothing else from the org row is mapped.
 - **`<base>.url_mapping.csv`** — old-Decidim-URL → new-target map for links embedded in descriptions,
   applied post-import.
 - **`<base>.moderators.csv`** — project-moderator assignments (user `unique_code` → project `slug`),
@@ -109,7 +109,7 @@ already-imported users/folders rather than duplicating them (see "Reuse" below).
 there (its own `.import.log`/`.broken_links.csv` are written beside the zip). First applies the
 `<base>.app_config.json` patch: unions the export's locales into the tenant's `core.locales` (additive —
 never dropping the tenant's own, so the template's multilocs have every locale they reference) and
-allows+enables the import's feature flags (`project_static_pages`, `parallel_participation`), leaving the
+allows+enables the import's feature flags (`project_static_pages`), leaving the
 rest of the tenant's app config untouched. Then deserializes the template — resolving idea statuses and area orderings,
 letting **TemplateCleaner** drop uploads it can't fetch (and the file/image/craftjs nodes they'd
 orphan), then bulk-inserting under `no_touching` so source dates survive — and backfills
@@ -202,7 +202,7 @@ tenant, so it can be run locally / on staging. It produces the loose artifacts a
 single `<base>.template.zip` — the only file `import` needs. Inside the bundle:
 
 - `<base>.template.yml` — the graph to deserialize
-- `<base>.app_config.json` — app-config patch `import` applies first: the export's locales (unioned in) + the feature flags it enables (`project_static_pages`, `parallel_participation`)
+- `<base>.app_config.json` — app-config patch `import` applies first: the export's locales (unioned in) + the feature flags it enables (`project_static_pages`)
 - `<base>.url_mapping.csv` — post-import link correction
 - `<base>.moderators.csv` — post-import project-moderator assignment (present only when the export has process admins)
 

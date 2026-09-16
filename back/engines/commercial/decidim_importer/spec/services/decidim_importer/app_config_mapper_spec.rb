@@ -11,8 +11,7 @@ RSpec.describe DecidimImporter::AppConfigMapper do
 
   def flags
     {
-      'project_static_pages' => { 'allowed' => true, 'enabled' => true },
-      'parallel_participation' => { 'allowed' => true, 'enabled' => true }
+      'project_static_pages' => { 'allowed' => true, 'enabled' => true }
     }
   end
 
@@ -37,15 +36,13 @@ RSpec.describe DecidimImporter::AppConfigMapper do
 
     expect(settings['core'].keys).to contain_exactly('locales')
     expect(settings).not_to have_key('remote_logo_url')
-    expect(settings.keys).to contain_exactly('core', 'project_static_pages', 'parallel_participation')
+    expect(settings.keys).to contain_exactly('core', 'project_static_pages')
   end
 
   it 'always allows and enables the features the import relies on' do
-    # Project-level static pages and the parallel-participation back office both need their flags on for
-    # the imported projects/pages to be usable.
+    # Project-level static pages need their flag on for the imported pages to be usable.
     settings = patch_for('default_locale' => 'fr', 'available_locales' => '["fr"]')['settings']
     expect(settings['project_static_pages']).to eq('allowed' => true, 'enabled' => true)
-    expect(settings['parallel_participation']).to eq('allowed' => true, 'enabled' => true)
   end
 
   it 'still turns on those features when there is no organization row (no locales, just the flags)' do

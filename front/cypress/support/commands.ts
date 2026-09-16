@@ -124,6 +124,7 @@ declare global {
       apiCreateInputTopic: typeof apiCreateInputTopic;
       deleteEventAttendances: typeof deleteEventAttendances;
       apiRemoveIdeas: typeof apiRemoveIdeas;
+      apiRequestProjectReview: typeof apiRequestProjectReview;
     }
   }
 }
@@ -2416,6 +2417,24 @@ function createProjectWithIdeationPhase({
     });
 }
 
+function apiRequestProjectReview(
+  projectId: string,
+  email: string,
+  password: string
+) {
+  return cy.apiLogin(email, password).then((response) => {
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${response.body.jwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/projects/${projectId}/review`,
+      body: {},
+    });
+  });
+}
+
 /**
  * Get an element by its data-cy attribute.
  * This is a utility function to make it easier to find elements by their data-cy attribute.
@@ -2652,3 +2671,4 @@ Cypress.Commands.add(
   createProjectWithIdeationPhase
 );
 Cypress.Commands.add('apiCreateInputTopic', apiCreateInputTopic);
+Cypress.Commands.add('apiRequestProjectReview', apiRequestProjectReview);

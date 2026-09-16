@@ -76,6 +76,38 @@ const projectPageLayoutWith = (
   }),
 });
 
+// The builder's frame is the root node's own id. Craft.js serializes a TwoColumn's columns as
+// linked nodes, not as children.
+const homepageLayoutWithColumns = () => ({
+  ROOT: node({
+    type: 'div',
+    props: { id: 'e2e-content-builder-frame' },
+    nodes: ['COLUMNS'],
+    isCanvas: true,
+    displayName: 'div',
+  }),
+  COLUMNS: node({
+    type: { resolvedName: 'TwoColumn' },
+    props: { columnLayout: '1-1' },
+    custom: { hasChildren: true },
+    parent: 'ROOT',
+    displayName: 'TwoColumn',
+    linkedNodes: { left: 'LEFT', right: 'RIGHT' },
+  }),
+  LEFT: node({
+    type: { resolvedName: 'Container' },
+    parent: 'COLUMNS',
+    isCanvas: true,
+    displayName: 'Container',
+  }),
+  RIGHT: node({
+    type: { resolvedName: 'Container' },
+    parent: 'COLUMNS',
+    isCanvas: true,
+    displayName: 'Container',
+  }),
+});
+
 const TOOLBOX_PROJECT_PAGE_PROPS = {
   source: 'currentProject',
   timeFilters: ['upcoming', 'past'],
@@ -207,6 +239,26 @@ describe('Events widget', () => {
     cy.goToLandingPage();
     cy.contains(upcomingTitle).should('be.visible');
     cy.contains(pastTitle).should('not.exist');
+  });
+
+  // Event cards are sized for the full page width, so a column squashes them. The text
+  // widget lands in the same columns, which shows the columns took the drop and only the
+  // events widget was refused.
+  it('refuses a drop into a column', () => {
+    cy.apiUpdateHomepageLayout({ craftjs_json: homepageLayoutWithColumns() });
+    goToHomepageBuilder();
+
+    cy.get('#e2e-draggable-events').dragAndDrop('div.e2e-single-column', {
+      position: 'inside',
+    });
+    cy.dataCy('e2e-events-widget').should('not.exist');
+
+    cy.get('#e2e-draggable-text-multiloc').dragAndDrop(
+      'div.e2e-single-column',
+      { position: 'inside' }
+    );
+    cy.get('div.e2e-text-box').should('have.length', 2);
+    cy.dataCy('e2e-events-widget').should('not.exist');
   });
 
   // The project page's events CTAs scroll to this id. A page whose events widget is stored
