@@ -51,9 +51,7 @@ const Image = ({ alt = {}, image }: Props) => {
 
   const emitImageLoaded = useCallback(() => {
     if (!image?.imageUrl) return;
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    eventEmitter.emit(IMAGE_LOADED_EVENT, image?.imageUrl);
+    eventEmitter.emit(IMAGE_LOADED_EVENT, image.imageUrl);
   }, [image?.imageUrl]);
 
   return (
@@ -70,14 +68,13 @@ const Image = ({ alt = {}, image }: Props) => {
       {image?.imageUrl && (
         <ImageComponent
           width="100%"
-          // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          src={image?.imageUrl}
+          src={image.imageUrl}
           alt={localize(alt) || ''}
-          // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          data-code={image?.dataCode}
+          data-code={image.dataCode}
           onLoad={emitImageLoaded}
+          // A broken image never fires onLoad; report it anyway so the
+          // page-level wait for images can finish.
+          onError={emitImageLoaded}
         />
       )}
       {/* In edit view, show an image placeholder if image is not set. */}

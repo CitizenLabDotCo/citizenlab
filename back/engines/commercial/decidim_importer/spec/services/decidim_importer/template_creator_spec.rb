@@ -63,7 +63,7 @@ RSpec.describe DecidimImporter::TemplateCreator do
     it 'builds the app-config patch (locales + feature flags) from the organization CSV' do
       patch = described_class.from_directory(export_root).app_config_patch
       expect(patch.dig('settings', 'core', 'locales')).to eq(%w[fr-FR en])
-      expect(patch.dig('settings', 'parallel_participation')).to eq('allowed' => true, 'enabled' => true)
+      expect(patch.dig('settings', 'project_static_pages')).to eq('allowed' => true, 'enabled' => true)
     end
 
     it 'imports a process\'s attachments as Files engine files owned by (but not attached to) the project' do
