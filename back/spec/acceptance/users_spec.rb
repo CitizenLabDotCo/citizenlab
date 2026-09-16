@@ -2120,6 +2120,46 @@ resource 'Users' do
             end
           end
         end
+
+        describe 'updating the name of a passwordless, verified user without a name' do
+          let(:user) do
+            create(
+              :user,
+              email: 'aa@bb.com',
+              password: nil,
+              first_name: nil,
+              last_name: nil,
+              avatar: nil,
+              locale: 'en',
+              verified: true,
+              registration_completed_at: Time.zone.now,
+              last_active_at: Time.zone.now
+            ).tap { |u| u.update!(email_confirmed_at: Time.zone.now, confirmation_required: false) }
+          end
+          let(:id) { user.id }
+          let(:first_name) { 'My' }
+          let(:last_name) { 'Name' }
+
+          before { header_token_for user }
+
+          example_request 'Updates the first and last name', document: false do
+            assert_status 200
+            user.reload
+            expect(user.first_name).to eq 'My'
+            expect(user.last_name).to eq 'Name'
+          end
+
+          context 'when the user has an active verification that locks the name' do
+            before { create(:verification, user: user, method_name: 'fake_sso') }
+
+            example_request 'Updates the first and last name', document: false do
+              assert_status 200
+              user.reload
+              expect(user.first_name).to eq 'My'
+              expect(user.last_name).to eq 'Name'
+            end
+          end
+        end
       end
 
       post 'web_api/v1/users/update_password' do
