@@ -12,9 +12,7 @@ const ParticipantsGraph = ({ project }: Props) => {
   const { participants_count, first_published_at } = project.attributes;
   if (participants_count === 0 || !first_published_at) return null;
 
-  return (
-    <GraphCard projectId={project.id} firstPublishedAt={first_published_at} />
-  );
+  return <GraphCard projectId={project.id} />;
 };
 
 export default ParticipantsGraph;

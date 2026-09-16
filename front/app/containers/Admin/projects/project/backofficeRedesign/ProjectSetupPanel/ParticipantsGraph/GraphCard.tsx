@@ -40,21 +40,16 @@ const Card = typedStyled(Link)`
 
 interface Props {
   projectId: string;
-  firstPublishedAt: string;
 }
 
-const GraphCard = ({ projectId, firstPublishedAt }: Props) => {
+const GraphCard = ({ projectId }: Props) => {
   const { formatMessage, formatDate } = useIntl();
 
-  const startAtMoment = useMemo(
-    () => moment(firstPublishedAt),
-    [firstPublishedAt]
-  );
   const endAtMoment = useMemo(() => moment(), []);
 
   const { timeSeries, stats } = useParticipants({
     projectId,
-    startAtMoment,
+    startAtMoment: null,
     endAtMoment,
     resolution: 'week',
   });
