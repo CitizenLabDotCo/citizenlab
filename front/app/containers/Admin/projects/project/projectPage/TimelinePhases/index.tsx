@@ -27,6 +27,8 @@ import {
 } from '../phaseRowUtils';
 
 import EmptyState from './EmptyState';
+import PhaseOptionsMenu from './PhaseOptionsMenu';
+import PhaseRowWithOptions from './PhaseRowWithOptions';
 
 const METHOD_LABELS: Record<ParticipationMethod, MessageDescriptor> = {
   ideation: methodMessages.ideation,
@@ -46,9 +48,15 @@ interface Props {
   projectId: string;
   /** When given, "New phase" calls this instead of linking to the phase form. */
   onNewPhase?: () => void;
+  /** Adds a menu to each phase, with the actions that apply to it. */
+  withPhaseOptions?: boolean;
 }
 
-const TimelinePhases = ({ projectId, onNewPhase }: Props) => {
+const TimelinePhases = ({
+  projectId,
+  onNewPhase,
+  withPhaseOptions = false,
+}: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { phaseId } = useParams({ strict: false });
@@ -99,9 +107,8 @@ const TimelinePhases = ({ projectId, onNewPhase }: Props) => {
             METHOD_LABELS[phase.attributes.participation_method]
           );
 
-          return (
+          const row = (
             <Link
-              key={phase.id}
               to={PHASE_TAB_ROUTES[getPhaseLandingTab(phase)]}
               params={{ projectId, phaseId: phase.id }}
             >
@@ -110,7 +117,11 @@ const TimelinePhases = ({ projectId, onNewPhase }: Props) => {
                   <Connector isFirst={index === 0} isLast={isLast} />
                 )}
                 <PhaseDot status={status} />
-                <Box flexGrow={1} pb="4px">
+                <Box
+                  flexGrow={1}
+                  pb="4px"
+                  pr={withPhaseOptions ? '24px' : undefined}
+                >
                   <Text
                     as="span"
                     m="0"
@@ -125,6 +136,17 @@ const TimelinePhases = ({ projectId, onNewPhase }: Props) => {
                 </Box>
               </Row>
             </Link>
+          );
+
+          return withPhaseOptions ? (
+            <PhaseRowWithOptions
+              key={phase.id}
+              options={<PhaseOptionsMenu projectId={projectId} phase={phase} />}
+            >
+              {row}
+            </PhaseRowWithOptions>
+          ) : (
+            <React.Fragment key={phase.id}>{row}</React.Fragment>
           );
         })}
       </Box>
@@ -142,7 +164,7 @@ const TimelinePhases = ({ projectId, onNewPhase }: Props) => {
             width="auto"
             onClick={onNewPhase}
           >
-            {formatMessage(messages.newPhase)}
+            {formatMessage(messages.newParticipationMethod)}
           </Button>
         ) : (
           <ButtonWithLink
