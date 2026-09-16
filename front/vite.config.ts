@@ -33,6 +33,16 @@ export default defineConfig(({ mode }) => {
 
   const API_HOST = process.env.API_HOST || 'localhost';
   const API_PORT = process.env.API_PORT || '4000';
+  // API_URL points the SPA at a remote back end (staging, an epic) instead of
+  // the local Docker stack. The tenant comes from the Host header, so the
+  // proxy must rewrite it (changeOrigin). Example:
+  //   API_URL=https://prototype.stg.govocal.com npm start
+  const API_URL = process.env.API_URL;
+  const apiProxy = {
+    target: API_URL ?? `http://${API_HOST}:${API_PORT}`,
+    changeOrigin: API_URL !== undefined,
+    secure: true,
+  };
   const GRAPHQL_HOST = process.env.GRAPHQL_HOST || 'localhost';
   const GRAPHQL_PORT = process.env.GRAPHQL_PORT || '5001';
   const DEV_WORKSHOPS_HOST = process.env.DEV_WORKSHOPS_HOST || 'localhost';
@@ -57,14 +67,8 @@ export default defineConfig(({ mode }) => {
         ignored: ['**/public/twemoji/**'],
       },
       proxy: {
-        '/web_api/': {
-          target: `http://${API_HOST}:${API_PORT}`,
-          changeOrigin: false,
-        },
-        '/auth/': {
-          target: `http://${API_HOST}:${API_PORT}`,
-          changeOrigin: false,
-        },
+        '/web_api/': apiProxy,
+        '/auth/': apiProxy,
         '/widgets/': {
           target: `http://${API_HOST}:3200`,
           changeOrigin: false,
@@ -73,10 +77,7 @@ export default defineConfig(({ mode }) => {
           target: `http://${GRAPHQL_HOST}:${GRAPHQL_PORT}`,
           changeOrigin: false,
         },
-        '/uploads': {
-          target: `http://${API_HOST}:${API_PORT}`,
-          changeOrigin: false,
-        },
+        '/uploads': apiProxy,
         '/workshops': {
           target: `http://${DEV_WORKSHOPS_HOST}:${DEV_WORKSHOPS_PORT}`,
           changeOrigin: false,

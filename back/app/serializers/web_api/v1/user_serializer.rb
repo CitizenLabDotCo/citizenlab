@@ -66,6 +66,7 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :new_email, if: PRIVATE
+  attribute :merge_target_email, if: PRIVATE
 
   attribute :phone, if: PRIVATE
   attribute :phone_confirmed_at, if: PRIVATE
