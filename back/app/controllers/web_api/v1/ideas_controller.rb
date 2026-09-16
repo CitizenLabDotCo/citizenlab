@@ -31,7 +31,7 @@ class WebApi::V1::IdeasController < ApplicationController
         phases: { permissions: [:groups] },
         creation_phase: { permissions: [:groups] },
         project: [:phases, { phases: { permissions: [:groups] } }, { custom_form: [:custom_fields] }],
-        author: [:unread_notifications]
+        author: %i[unread_notifications custom_field_answers]
       }
     )
     ideas = ideas.includes(:idea_import) unless current_user&.normal_user? # defined through BulkImportIdeas engine
