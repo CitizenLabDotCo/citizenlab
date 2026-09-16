@@ -1,27 +1,33 @@
 describe('Block user', () => {
+  let userBlockingWasAllowed = false;
+  let userBlockingWasEnabled = false;
+
+  before(() => {
+    cy.apiGetAppConfiguration().then((config) => {
+      const userBlocking = config.body.data.attributes.settings.user_blocking;
+      userBlockingWasAllowed = userBlocking?.allowed === true;
+      userBlockingWasEnabled = userBlocking?.enabled === true;
+    });
+  });
+
   beforeEach(() => {
     cy.setAdminLoginCookie();
-    cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
-      const adminJwt = response.body.jwt;
-      cy.request({
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${adminJwt}`,
-        },
-        method: 'PATCH',
-        url: `web_api/v1/app_configuration`,
-        body: {
-          settings: {
-            user_blocking: {
-              enabled: true,
-              allowed: true,
-            },
-          },
-        },
-      });
+    cy.apiUpdateAppConfiguration({
+      settings: { user_blocking: { allowed: true, enabled: true } },
     });
 
     cy.visit('/admin/users');
+  });
+
+  after(() => {
+    cy.apiUpdateAppConfiguration({
+      settings: {
+        user_blocking: {
+          allowed: userBlockingWasAllowed,
+          enabled: userBlockingWasEnabled,
+        },
+      },
+    });
   });
 
   it('Block from User Manager', () => {

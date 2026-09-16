@@ -65,6 +65,7 @@ function toggleFollowArea() {
 
 describe('"In your area" (areas) widget', () => {
   const projectTitleEN = 'Project linked to Carrotgem area';
+  let projectId: string | undefined;
 
   beforeEach(() => {
     addWidget();
@@ -79,10 +80,16 @@ describe('"In your area" (areas) widget', () => {
       .should('be.visible');
 
     cleanUpWidget();
+
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+      projectId = undefined;
+    }
   });
 
   it('shows projects of the areas I follow', () => {
     // Create project with area
+    cy.intercept('POST', '**/web_api/v1/projects').as('createProject');
     cy.visit('/admin/projects');
     cy.dataCy('e2e-new-project-button').should('be.visible').click();
     cy.get('.e2e-project-general-form');
@@ -107,6 +114,9 @@ describe('"In your area" (areas) widget', () => {
 
     // Submit and publish project
     cy.get('.e2e-submit-wrapper-button button').click();
+    cy.wait('@createProject').then((interception) => {
+      projectId = interception.response?.body.data.id;
+    });
     cy.get('#e2e-publish').click();
     cy.dataCy('e2e-mode-toggle-now').click();
     cy.get('#e2e-schedule-launch-submit').click();

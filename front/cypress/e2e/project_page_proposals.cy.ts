@@ -29,6 +29,10 @@ describe('New timeline project with proposals phase', () => {
     });
   });
 
+  after(() => {
+    cy.apiRemoveProject(projectId);
+  });
+
   it('shows the correct proposals statuses in the filters', () => {
     // Visit proposals project
     cy.visit(`/projects/${projectSlug}`);

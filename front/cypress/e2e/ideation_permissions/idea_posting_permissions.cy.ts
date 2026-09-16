@@ -184,6 +184,7 @@ describe('idea posting restricted to a group', () => {
 
   after(() => {
     cy.apiRemoveProject(projectId);
+    cy.apiRemoveSmartGroup(groupId);
     cy.apiRemoveUser(permittedUserId);
     cy.apiRemoveUser(nonPermittedUserId);
   });

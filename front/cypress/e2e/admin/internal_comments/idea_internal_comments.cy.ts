@@ -12,26 +12,18 @@ describe('Idea internal comments', () => {
   const ideaTitle2 = randomString();
   const ideaContent2 = randomString();
   let phaseId: string;
+  let internalCommentingWasAllowed = false;
+  let internalCommentingWasEnabled = false;
 
   before(() => {
-    cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
-      const adminJwt = response.body.jwt;
-      cy.request({
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${adminJwt}`,
-        },
-        method: 'PATCH',
-        url: `web_api/v1/app_configuration`,
-        body: {
-          settings: {
-            internal_commenting: {
-              enabled: true,
-              allowed: true,
-            },
-          },
-        },
-      });
+    cy.apiGetAppConfiguration().then((config) => {
+      const internalCommenting =
+        config.body.data.attributes.settings.internal_commenting;
+      internalCommentingWasAllowed = internalCommenting?.allowed === true;
+      internalCommentingWasEnabled = internalCommenting?.enabled === true;
+    });
+    cy.apiUpdateAppConfiguration({
+      settings: { internal_commenting: { allowed: true, enabled: true } },
     });
 
     cy.apiCreateProject({
@@ -158,5 +150,13 @@ describe('Idea internal comments', () => {
   after(() => {
     cy.apiRemoveIdea(ideaId1);
     cy.apiRemoveProject(projectId);
+    cy.apiUpdateAppConfiguration({
+      settings: {
+        internal_commenting: {
+          allowed: internalCommentingWasAllowed,
+          enabled: internalCommentingWasEnabled,
+        },
+      },
+    });
   });
 });

@@ -13,10 +13,12 @@ describe('Event preview cards on timeline project', () => {
   const lastName = randomString();
   const email = randomEmail();
   const password = randomString();
+  let userId: string;
 
   before(() => {
     cy.apiSignup(firstName, lastName, email, password)
-      .then(() => {
+      .then((user) => {
+        userId = user.body.data.id;
         cy.apiLogin(email, password);
       })
       .then(() => {
@@ -108,5 +110,6 @@ describe('Event preview cards on timeline project', () => {
 
   after(() => {
     cy.apiRemoveProject(projectId);
+    cy.apiRemoveUser(userId);
   });
 });

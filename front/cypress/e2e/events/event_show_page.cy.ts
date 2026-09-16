@@ -13,10 +13,12 @@ describe('Event show page', () => {
   let projectSlug: string;
   let eventIdNoCoordinates: string;
   let eventIdWithCoordinates: string;
+  let userId: string;
 
   before(() => {
     cy.apiSignup(firstName, lastName, email, password)
-      .then(() => {
+      .then((user) => {
+        userId = user.body.data.id;
         cy.apiLogin(email, password);
       })
       .then(() => {
@@ -87,6 +89,9 @@ describe('Event show page', () => {
   after(() => {
     if (projectId) {
       cy.apiRemoveProject(projectId);
+    }
+    if (userId) {
+      cy.apiRemoveUser(userId);
     }
   });
 

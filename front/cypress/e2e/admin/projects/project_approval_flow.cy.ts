@@ -34,6 +34,7 @@ describe('Admin project approval flow', () => {
   after(() => {
     if (projectId && userId) {
       cy.apiRemoveProject(projectId);
+      cy.apiRemoveUser(userId);
     }
   });
 

@@ -68,15 +68,12 @@ describe('Report builder Participants timeline widget', () => {
       });
   });
 
-  after(() => {
-    if (projectId) {
-      cy.apiRemoveProject(projectId);
-    }
-  });
-
   afterEach(() => {
     if (reportId) {
       cy.apiRemoveReportBuilder(reportId);
+    }
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
     }
   });
 

@@ -30,6 +30,10 @@ describe('New timeline project with ideation phase with default map view', () =>
     });
   });
 
+  after(() => {
+    cy.apiRemoveProject(projectId);
+  });
+
   it('shows the ideas map if the project presentation mode set to map', () => {
     // Visit ideation project where default view is map
     cy.visit(`/projects/${projectSlug}`);
@@ -49,10 +53,12 @@ describe('New timeline project with active ideation phase', () => {
   const ideaContent = Math.random().toString(36);
   let projectId: string;
   let ideaId: string;
+  let userId: string;
 
   before(() => {
     cy.apiSignup(firstName, lastName, email, password)
-      .then(() => {
+      .then((user) => {
+        userId = user.body.data.id;
         cy.apiLogin(email, password);
       })
       .then(() => {
@@ -161,6 +167,9 @@ describe('New timeline project with active ideation phase', () => {
       cy.apiRemoveProject(projectId);
       projectId = '';
     }
+    if (userId) {
+      cy.apiRemoveUser(userId);
+    }
   });
 });
 
@@ -175,10 +184,12 @@ describe('Archived timeline project with ideation phase', () => {
   const ideaContent = Math.random().toString(36);
   let projectId: string;
   let ideaId: string;
+  let userId: string;
 
   before(() => {
     cy.apiSignup(firstName, lastName, email, password)
-      .then(() => {
+      .then((user) => {
+        userId = user.body.data.id;
         cy.apiLogin(email, password);
       })
       .then(() => {
@@ -258,6 +269,9 @@ describe('Archived timeline project with ideation phase', () => {
     if (projectId) {
       cy.apiRemoveProject(projectId);
       projectId = '';
+    }
+    if (userId) {
+      cy.apiRemoveUser(userId);
     }
   });
 });
@@ -342,10 +356,12 @@ describe('Ideation CTA bar', () => {
   const password = randomString();
   const phaseTitle = randomString();
   let firstPhaseId: string;
+  let userId: string;
 
   before(() => {
     cy.apiSignup(firstName, lastName, email, password)
-      .then(() => {
+      .then((user) => {
+        userId = user.body.data.id;
         cy.apiLogin(email, password);
       })
       .then(() => {
@@ -432,5 +448,6 @@ describe('Ideation CTA bar', () => {
         cy.apiRemoveProject(id);
       }
     });
+    cy.apiRemoveUser(userId);
   });
 });

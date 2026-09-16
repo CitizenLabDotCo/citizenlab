@@ -6,6 +6,7 @@ describe('Volunteering survey CTA', () => {
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
+  let userId: string;
 
   const firstName = randomString();
   const lastName = randomString();
@@ -14,7 +15,8 @@ describe('Volunteering survey CTA', () => {
 
   before(() => {
     cy.apiSignup(firstName, lastName, email, password)
-      .then(() => {
+      .then((user) => {
+        userId = user.body.data.id;
         cy.apiLogin(email, password);
       })
       .then(() => {
@@ -58,5 +60,6 @@ describe('Volunteering survey CTA', () => {
 
   after(() => {
     cy.apiRemoveProject(projectId);
+    cy.apiRemoveUser(userId);
   });
 });

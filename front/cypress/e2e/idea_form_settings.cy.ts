@@ -31,7 +31,6 @@ describe('Idea form settings', () => {
   });
 
   describe('Input form tab', () => {
-    const projectIds: string[] = [];
     let ideationPhaseIdInTimelineProject: string;
     let timelineWithIdeationProjectId: string;
     let budgetPhaseInTimelineproject: string;
@@ -97,9 +96,8 @@ describe('Idea form settings', () => {
     });
 
     after(() => {
-      projectIds.forEach((id) => {
-        cy.apiRemoveProject(id);
-      });
+      cy.apiRemoveProject(timelineWithIdeationProjectId);
+      cy.apiRemoveProject(timelineWithBudgetProjectId);
     });
 
     it('is shown for projects with ideation or participatory budgeting', () => {

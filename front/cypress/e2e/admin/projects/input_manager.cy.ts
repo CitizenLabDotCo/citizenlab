@@ -2,8 +2,16 @@ import { randomString } from '../../../support/commands';
 import moment = require('moment');
 
 describe('Admin: project input manager', () => {
+  let projectId: string;
+
   beforeEach(() => {
     cy.setAdminLoginCookie();
+  });
+
+  after(() => {
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+    }
   });
 
   it('navigates to the project tags when the user clicks "Edit tags" in the tags tab', () => {
@@ -11,7 +19,7 @@ describe('Admin: project input manager', () => {
       title: randomString(),
       descriptionPreview: randomString(),
     }).then((project) => {
-      const projectId = project.body.data.id;
+      projectId = project.body.data.id;
 
       cy.apiCreatePhase({
         projectId,

@@ -220,6 +220,7 @@ describe('Report builder: AI widget', () => {
       .should('be.visible');
   });
   after(() => {
+    cy.apiRemoveReportBuilder(reportId);
     cy.apiRemoveProject(projectId);
   });
 });

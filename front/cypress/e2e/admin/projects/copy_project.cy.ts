@@ -4,6 +4,7 @@ describe('Copy projects outside folder', () => {
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString();
   let projectId: string;
+  let copiedProjectId: string | undefined;
 
   beforeEach(() => {
     cy.apiCreateProject({
@@ -20,6 +21,10 @@ describe('Copy projects outside folder', () => {
   afterEach(() => {
     if (projectId) {
       cy.apiRemoveProject(projectId);
+    }
+    if (copiedProjectId) {
+      cy.apiRemoveProject(copiedProjectId);
+      copiedProjectId = undefined;
     }
   });
 
@@ -39,7 +44,9 @@ describe('Copy projects outside folder', () => {
     cy.contains('Copy project').should('exist');
     cy.contains('Copy project').click({ force: true });
 
-    cy.wait('@copyProject');
+    cy.wait('@copyProject').then((interception) => {
+      copiedProjectId = interception.response?.body.data.id;
+    });
     cy.wait('@getProjectsForAdmin');
 
     // A draft project is created and appears at the top of the list

@@ -13,6 +13,7 @@ describe('Survey Builder - Creation and Basic Flow', () => {
   let projectId: string;
   let projectSlug: string;
   let phaseId: string;
+  let userId: string | undefined;
 
   beforeEach(() => {
     cy.setAdminLoginCookie();
@@ -28,6 +29,10 @@ describe('Survey Builder - Creation and Basic Flow', () => {
   afterEach(() => {
     if (projectId) {
       cy.apiRemoveProject(projectId);
+    }
+    if (userId) {
+      cy.apiRemoveUser(userId);
+      userId = undefined;
     }
   });
 
@@ -214,7 +219,9 @@ describe('Survey Builder - Creation and Basic Flow', () => {
 
     cy.visit(`admin/projects/${projectId}`);
     cy.logout();
-    cy.apiSignup(firstName, lastName, email, password);
+    cy.apiSignup(firstName, lastName, email, password).then((user) => {
+      userId = user.body.data.id;
+    });
     cy.setLoginCookie(email, password);
     cy.acceptCookies();
 

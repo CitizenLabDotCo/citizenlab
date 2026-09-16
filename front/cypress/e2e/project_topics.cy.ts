@@ -38,6 +38,21 @@ describe('Project topics', () => {
   });
 
   describe('Global topic manager', () => {
+    let globalTopicId: string | undefined;
+
+    beforeEach(() => {
+      cy.intercept('POST', '**/web_api/v1/global_topics').as(
+        'createGlobalTopic'
+      );
+    });
+
+    afterEach(() => {
+      if (globalTopicId) {
+        cy.apiRemoveGlobalTopic(globalTopicId);
+        globalTopicId = undefined;
+      }
+    });
+
     it('Adding and removing a topic in the global topic manager makes it available/unavailable in the project general settings', () => {
       const topicTitle = randomString();
 
@@ -45,6 +60,9 @@ describe('Project topics', () => {
       cy.visit('admin/settings/topics/platform/new');
       cy.clickLocaleSwitcherAndType(topicTitle);
       cy.get('#e2e-submit-wrapper-button').click();
+      cy.wait('@createGlobalTopic').then((interception) => {
+        globalTopicId = interception.response?.body.data.id;
+      });
       cy.wait(1000);
       cy.get('.e2e-admin-list-row').contains(topicTitle);
 
@@ -56,11 +74,19 @@ describe('Project topics', () => {
       cy.visit('admin/settings/topics');
 
       // Remove custom topic
+      cy.intercept('DELETE', '**/web_api/v1/global_topics/*').as(
+        'deleteGlobalTopic'
+      );
       cy.get('.e2e-topic-field-row')
         .first()
         .find('#e2e-custom-topic-delete-button')
         .click();
       cy.get('#e2e-custom-topic-delete-confirmation-button').click();
+      cy.wait('@deleteGlobalTopic').then((interception) => {
+        if (interception.request.url.endsWith(`/${globalTopicId}`)) {
+          globalTopicId = undefined;
+        }
+      });
 
       // Go to our project topic settings and check that topic is not available
       cy.visit(`admin/projects/${projectId}/general`);
@@ -77,6 +103,9 @@ describe('Project topics', () => {
       cy.visit('admin/settings/topics/platform/new');
       cy.clickLocaleSwitcherAndType(topicTitle);
       cy.get('#e2e-submit-wrapper-button').click();
+      cy.wait('@createGlobalTopic').then((interception) => {
+        globalTopicId = interception.response?.body.data.id;
+      });
       cy.wait(1000);
       cy.get('.e2e-admin-list-row').contains(topicTitle);
 

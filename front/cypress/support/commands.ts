@@ -67,6 +67,8 @@ declare global {
       apiRemoveProject: typeof apiRemoveProject;
       apiRemovePhase: typeof apiRemovePhase;
       apiRemoveCustomPage: typeof apiRemoveCustomPage;
+      apiRemoveGlobalTopic: typeof apiRemoveGlobalTopic;
+      apiRemoveEmailCampaign: typeof apiRemoveEmailCampaign;
       apiCreateCustomPage: typeof apiCreateCustomPage;
       apiUpdateCustomPage: typeof apiUpdateCustomPage;
       apiAddFileToCustomPage: typeof apiAddFileToCustomPage;
@@ -410,6 +412,9 @@ function apiRemoveUser(userId: string) {
       },
       method: 'DELETE',
       url: `web_api/v1/users/${userId}`,
+      // Otherwise the user's ideas, reactions and votes stay behind anonymized
+      // and keep skewing counts on data that other specs share.
+      qs: { delete_participation_data: true },
     });
   });
 }
@@ -1238,6 +1243,36 @@ function apiRemoveCustomPage(customPageId: string) {
       },
       method: 'DELETE',
       url: `web_api/v1/static_pages/${customPageId}`,
+    });
+  });
+}
+
+function apiRemoveGlobalTopic(globalTopicId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'DELETE',
+      url: `web_api/v1/global_topics/${globalTopicId}`,
+    });
+  });
+}
+
+function apiRemoveEmailCampaign(campaignId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'DELETE',
+      url: `web_api/v1/campaigns/${campaignId}`,
     });
   });
 }
@@ -2613,6 +2648,8 @@ Cypress.Commands.add('apiCreateArea', apiCreateArea);
 Cypress.Commands.add('apiRemoveArea', apiRemoveArea);
 Cypress.Commands.add('apiSetProjectAreas', apiSetProjectAreas);
 Cypress.Commands.add('apiRemoveCustomPage', apiRemoveCustomPage);
+Cypress.Commands.add('apiRemoveGlobalTopic', apiRemoveGlobalTopic);
+Cypress.Commands.add('apiRemoveEmailCampaign', apiRemoveEmailCampaign);
 Cypress.Commands.add('apiCreateCustomPage', apiCreateCustomPage);
 Cypress.Commands.add('apiUpdateCustomPage', apiUpdateCustomPage);
 Cypress.Commands.add('apiAddFileToCustomPage', apiAddFileToCustomPage);
