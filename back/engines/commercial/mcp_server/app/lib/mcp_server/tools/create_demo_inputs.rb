@@ -3,10 +3,10 @@
 class McpServer::Tools::CreateDemoInputs < McpServer::BaseTool
   MAX_INPUTS_PER_CALL = 50
 
-  # Built-in codes an admin can set manually, across participation methods. Excludes
-  # 'custom' (only addressable by id) and the automated codes (prescreening,
-  # threshold_reached, expired) the real UI cannot set either.
-  SETTABLE_STATUS_CODES = %w[proposed viewed under_consideration accepted implemented rejected answered ineligible].freeze
+  # Built-in codes an admin can set manually, across participation methods. Drops the
+  # automated codes (prescreening, threshold_reached, expired) and 'custom' (only
+  # addressable by id, not by the shared 'custom' code).
+  SETTABLE_STATUS_CODES = (IdeaStatus::CODES - IdeaStatus::MANUAL_TRANSITION_NOT_ALLOWED_CODES - %w[custom]).freeze
 
   def name = 'create_demo_inputs'
 
