@@ -12,6 +12,7 @@ import { isTimelinePhase } from 'api/phases/utils';
 import usePhaseFileAttachments, {
   fileAttachmentErrors,
 } from 'containers/Admin/projects/_shared/usePhaseFileAttachments';
+import { SurveyMethod } from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/SurveyMethodChoices';
 import {
   SubmitStateType,
   ValidationErrors,
@@ -22,6 +23,8 @@ import { useIntl } from 'utils/cl-intl';
 
 import BuildFields from './BuildFields';
 import SaveBar from './SaveBar';
+import SwitchSurveyMethodModal from './SwitchSurveyMethodModal';
+import useSurveyMethodLocks from './useSurveyMethodLocks';
 
 interface Props {
   projectId: string;
@@ -43,6 +46,9 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
     {}
   );
+  const [pendingSurveyMethod, setPendingSurveyMethod] =
+    useState<SurveyMethod | null>(null);
+  const surveyMethodLocks = useSurveyMethodLocks(phase);
 
   const files = usePhaseFileAttachments({
     projectId,
@@ -117,6 +123,10 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
           validationErrors={validationErrors}
           standalone={standalone}
           files={files}
+          surveyMethodSwitch={{
+            disabledReasons: surveyMethodLocks,
+            onSelect: setPendingSurveyMethod,
+          }}
           onChange={updateFormData}
           onDatesChange={(dates) => {
             setValidationErrors((errors) => ({
@@ -129,6 +139,12 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
       </Box>
 
       <SaveBar status={submitState} loading={processing} onClick={handleSave} />
+
+      <SwitchSurveyMethodModal
+        phase={phase}
+        method={pendingSurveyMethod}
+        onClose={() => setPendingSurveyMethod(null)}
+      />
     </Box>
   );
 };
