@@ -2,6 +2,7 @@ import { SerializedNodes } from '@craftjs/core';
 
 import {
   BODY_NODE_ID,
+  bannerHasContent,
   defaultCustomPageLayout,
   layoutHasContent,
   layoutStartsWithBanner,
@@ -144,6 +145,28 @@ const bodyWith = (
     banner: bannerNode(bannerHeader),
     txt: textNode(BODY_NODE_ID),
   } as unknown as SerializedNodes);
+
+describe('bannerHasContent', () => {
+  const empty = {
+    image: {},
+    headerMultiloc: {},
+    subheaderMultiloc: {},
+    ctaType: 'no_button' as const,
+  };
+
+  it('is false for a banner fresh from the toolbox', () => {
+    expect(bannerHasContent(empty)).toBe(false);
+  });
+
+  it.each([
+    ['an image', { image: { imageUrl: 'https://example.com/header.jpg' } }],
+    ['a heading', { headerMultiloc: { en: 'Welcome' } }],
+    ['a subheader', { subheaderMultiloc: { en: 'Have your say' } }],
+    ['a button', { ctaType: 'customized_button' as const }],
+  ])('is true for a banner with only %s', (_, content) => {
+    expect(bannerHasContent({ ...empty, ...content })).toBe(true);
+  });
+});
 
 describe('layoutStartsWithBanner', () => {
   it('is true when the body opens with a banner', () => {

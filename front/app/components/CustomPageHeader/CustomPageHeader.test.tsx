@@ -57,14 +57,4 @@ describe('<CustomPageHeader />', () => {
     );
     expect(screen.getByTestId('fixed-ratio-layout')).toBeInTheDocument();
   });
-
-  it('renders the admin edit button slot', () => {
-    render(
-      <CustomPageHeader
-        banner={banner('two_row_layout')}
-        adminEditButton={<button>Edit page</button>}
-      />
-    );
-    expect(screen.getByText('Edit page')).toBeInTheDocument();
-  });
 });

@@ -34,16 +34,17 @@ const CustomPageBannerSettings = () => {
     banner: node.data.props as CustomPageBannerProps,
   }));
 
-  // Pass only the image the panel opened with. The fields keep a local copy of a picked image for
-  // the cropper, and feeding each upload back in would close it after the first crop.
-  const openedWithImageUrl = useRef(banner.image?.imageUrl);
-  const openedWithImage: ImageSizes | null = openedWithImageUrl.current
-    ? {
-        large: openedWithImageUrl.current,
-        medium: openedWithImageUrl.current,
-        small: openedWithImageUrl.current,
-      }
-    : null;
+  // Pass only the image the panel opened with, as one object for the panel's lifetime. The fields
+  // reload their preview whenever it changes, which would undo a removal or close the cropper.
+  const { current: openedWithImage } = useRef<ImageSizes | null>(
+    banner.image?.imageUrl
+      ? {
+          large: banner.image.imageUrl,
+          medium: banner.image.imageUrl,
+          small: banner.image.imageUrl,
+        }
+      : null
+  );
 
   const set = (change: (props: CustomPageBannerProps) => void) =>
     setProp((props: CustomPageBannerProps) => change(props));

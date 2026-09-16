@@ -56,32 +56,4 @@ describe('CustomPageBanner', () => {
       screen.queryByTestId('full-width-banner-layout')
     ).not.toBeInTheDocument();
   });
-
-  // A derived banner may hold only one of these.
-  it('renders a banner that has only a subheader', () => {
-    mockInBuilder = false;
-
-    render(
-      <CustomPageBanner
-        {...empty}
-        subheaderMultiloc={{ en: 'Have your say' }}
-      />
-    );
-
-    expect(screen.getByTestId('full-width-banner-layout')).toBeInTheDocument();
-  });
-
-  it('renders a banner that has only a button', () => {
-    mockInBuilder = false;
-
-    render(
-      <CustomPageBanner
-        {...empty}
-        ctaType="customized_button"
-        ctaTextMultiloc={{ en: 'Join' }}
-      />
-    );
-
-    expect(screen.getByTestId('full-width-banner-layout')).toBeInTheDocument();
-  });
 });

@@ -235,9 +235,21 @@ describe('Custom page builder', () => {
       .clear()
       .type(editedBannerHeaderText);
 
+    // The dropzone takes no file while it holds one.
+    cy.dataCy('e2e-remove-image-button').click();
+    cy.intercept('POST', '**/content_builder_layout_images').as('postImage');
+    cy.get('#header-dropzone').attachFile('testimage.png');
+    cy.wait('@postImage')
+      .its('response.body.data.attributes.code')
+      .as('uploadedImageCode');
+
     selectNodeContaining(() => cy.contains(`still called "${pageTitle}"`));
     cy.get('#e2e-custom-page-title-toggle').click({ force: true });
     cy.get('#e2e-custom-page-title-input').clear().type(renamedPageTitle);
+    cy.get('#ROOT [data-cy="e2e-custom-page-title"]').should(
+      'contain',
+      renamedPageTitle
+    );
 
     cy.intercept('PATCH', `**/static_pages/${pageId}`).as('renamePage');
     cy.intercept('**/content_builder_layouts/custom_page/upsert').as(
@@ -245,7 +257,21 @@ describe('Custom page builder', () => {
     );
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@renamePage');
-    cy.wait('@saveCustomPageLayout');
+    cy.wait('@saveCustomPageLayout').then(({ request }) => {
+      const nodes: {
+        type: { resolvedName?: string };
+        props: { title?: unknown; image?: { dataCode?: string } };
+      }[] = Object.values(request.body.content_builder_layout.craftjs_json);
+      const nodeNamed = (name: string) =>
+        nodes.find((node) => node.type.resolvedName === name);
+
+      expect(nodeNamed('CustomPageTitle')?.props).not.to.have.property('title');
+      cy.get('@uploadedImageCode').then((code) => {
+        expect(nodeNamed('CustomPageBanner')?.props.image?.dataCode).to.eq(
+          code
+        );
+      });
+    });
 
     cy.visit(`/pages/${pageSlug}`);
     cy.get('.e2e-signed-out-header-title').should(

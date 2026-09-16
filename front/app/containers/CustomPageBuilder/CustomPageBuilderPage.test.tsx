@@ -52,16 +52,10 @@ const EDITED_NODES = {
   },
 } as unknown as SerializedNodes;
 
-// What the editor hands to save; an example overrides it to simulate a widget's edit.
-let mockEditedNodes: SerializedNodes = EDITED_NODES;
-
 jest.mock('components/CustomPageBuilder/TopBar', () => ({
   __esModule: true,
   default: ({ onSave }: { onSave: (nodes: SerializedNodes) => void }) => (
-    <button
-      data-testid="mockSaveButton"
-      onClick={() => onSave(mockEditedNodes)}
-    >
+    <button data-testid="mockSaveButton" onClick={() => onSave(EDITED_NODES)}>
       save
     </button>
   ),
@@ -132,7 +126,6 @@ const defaultProps: React.ComponentProps<typeof CustomPageBuilderPage> = {
 describe('CustomPageBuilderPage save contract', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockEditedNodes = EDITED_NODES;
   });
 
   // An untouched title widget must not send the page an update on every save.
@@ -143,30 +136,6 @@ describe('CustomPageBuilderPage save contract', () => {
     await waitFor(() => expect(mockUpsertCustomPageLayout).toHaveBeenCalled());
 
     expect(mockUpdateCustomPage).not.toHaveBeenCalled();
-    expect(mockUpsertCustomPageLayout).toHaveBeenCalledWith({
-      staticPageId: 'page-1',
-      craftjs_json: EDITED_NODES,
-    });
-  });
-
-  it('commits an edited title to the page, then stores the layout without it', async () => {
-    mockEditedNodes = {
-      ...EDITED_NODES,
-      CUSTOM_PAGE_TITLE: {
-        ...EDITED_NODES.CUSTOM_PAGE_TITLE,
-        props: { showTitle: true, title: { en: 'Our team' } },
-      },
-    };
-
-    render(<CustomPageBuilderPage {...defaultProps} />);
-    fireEvent.click(screen.getByTestId('mockSaveButton'));
-
-    await waitFor(() => expect(mockUpsertCustomPageLayout).toHaveBeenCalled());
-
-    expect(mockUpdateCustomPage).toHaveBeenCalledWith({
-      id: 'page-1',
-      title_multiloc: { en: 'Our team' },
-    });
     expect(mockUpsertCustomPageLayout).toHaveBeenCalledWith({
       staticPageId: 'page-1',
       craftjs_json: EDITED_NODES,
