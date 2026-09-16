@@ -99,6 +99,10 @@ const PhaseParticipationConfig = ({
 
   const { formatMessage } = useIntl();
 
+  // The access rights of each action are only shown in the workspace panel,
+  // and only once the phase exists.
+  const panelPhaseId = layout === 'panel' ? phase?.data.id : undefined;
+
   const { data: permissions } = usePhasePermissions({
     phaseId: phase?.data.id,
   });
@@ -491,6 +495,13 @@ const PhaseParticipationConfig = ({
             handleLikingLimitOnChange={handleLikingLimitOnChange}
             showCommentingToggle={false}
             showReactingToggle={false}
+            phaseId={panelPhaseId}
+            accessOnlyActions={[
+              {
+                action: 'reacting_idea',
+                label: messages.votingOnInputsAction,
+              },
+            ]}
           />
         )}
 
@@ -525,6 +536,7 @@ const PhaseParticipationConfig = ({
             handleThresholdChange={handleThresholdChange}
             handleVoteTermChange={handleVoteTermChange}
             voteTerm={voteTerm}
+            layout={layout}
           />
         )}
 
@@ -578,6 +590,7 @@ const PhaseParticipationConfig = ({
             handleSimilarityEnabledChange={handleSimilarityEnabledChange}
             handleThresholdChange={handleThresholdChange}
             layout={layout}
+            phaseId={panelPhaseId}
           />
         )}
 
@@ -626,6 +639,7 @@ const PhaseParticipationConfig = ({
             handleSimilarityEnabledChange={handleSimilarityEnabledChange}
             handleThresholdChange={handleThresholdChange}
             layout={layout}
+            phaseId={panelPhaseId}
           />
         )}
 
