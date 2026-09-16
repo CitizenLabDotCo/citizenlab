@@ -33,6 +33,9 @@ interface Props {
   label: string;
   standalone: boolean;
   initialFormData: IUpdatedPhaseProperties;
+  defaultsForMethod: (
+    participationMethod: ParticipationMethod
+  ) => IUpdatedPhaseProperties;
 }
 
 const hasTitle = ({ title_multiloc }: IUpdatedPhaseProperties) =>
@@ -43,16 +46,20 @@ const hasTitle = ({ title_multiloc }: IUpdatedPhaseProperties) =>
 // phase takes over from there.
 const NewPhaseWorkspace = ({
   project,
-  participationMethod,
+  participationMethod: initialParticipationMethod,
   label,
   standalone,
   initialFormData,
+  defaultsForMethod,
 }: Props) => {
   const { formatMessage } = useIntl();
   const projectId = project.id;
   const { data: phases } = usePhases(projectId);
   const { mutate: addPhase } = useAddPhase();
 
+  const [participationMethod, setParticipationMethod] = useState(
+    initialParticipationMethod
+  );
   const [formData, setFormData] = useState(initialFormData);
   const [dirty, setDirty] = useState(false);
   const [submitState, setSubmitState] = useState<SubmitStateType>('enabled');
@@ -167,6 +174,14 @@ const NewPhaseWorkspace = ({
                 validationErrors={validationErrors}
                 standalone={standalone}
                 files={files}
+                surveyMethodSwitch={{
+                  // Nothing depends on a phase that isn't saved yet, so the
+                  // method can change without asking.
+                  onSelect: (method) => {
+                    setParticipationMethod(method);
+                    updateFormData(defaultsForMethod(method));
+                  },
+                }}
                 onChange={updateFormData}
                 onDatesChange={(dates) => {
                   setValidationErrors((errors) => ({
