@@ -8,6 +8,7 @@ import { IUpdatedPhaseProperties, ParticipationMethod } from 'api/phases/types';
 import usePhaseFileAttachments from 'containers/Admin/projects/_shared/usePhaseFileAttachments';
 import PhaseDescription from 'containers/Admin/projects/project/phaseDescription';
 import { PhaseDates as Dates } from 'containers/Admin/projects/project/phaseSetup/components/PhaseDatePicker';
+import { isSurveyMethod } from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/SurveyMethodChoices';
 import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 
@@ -17,9 +18,10 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import FormSection from './FormSection';
+import MethodSection from './MethodSection';
 import PanelField from './PanelField';
 import PhaseDates from './PhaseDates';
+import SurveyMethodSection, { SurveyMethodSwitch } from './SurveyMethodSection';
 
 interface Props {
   projectId: string;
@@ -31,6 +33,7 @@ interface Props {
   validationErrors: ValidationErrors;
   standalone: boolean;
   files: ReturnType<typeof usePhaseFileAttachments>;
+  surveyMethodSwitch: SurveyMethodSwitch;
   onChange: (newData: Partial<IUpdatedPhaseProperties>) => void;
   onDatesChange: (dates: Dates) => void;
 }
@@ -44,6 +47,7 @@ const BuildFields = ({
   validationErrors,
   standalone,
   files,
+  surveyMethodSwitch,
   onChange,
   onDatesChange,
 }: Props) => (
@@ -91,7 +95,17 @@ const BuildFields = ({
       />
     </PanelField>
 
-    <FormSection
+    {/* Only timeline phases can switch: a standalone phase must stay a
+        native survey. */}
+    {!standalone && isSurveyMethod(participationMethod) && (
+      <SurveyMethodSection
+        selected={participationMethod}
+        disabledReasons={surveyMethodSwitch.disabledReasons}
+        onSelect={surveyMethodSwitch.onSelect}
+      />
+    )}
+
+    <MethodSection
       projectId={projectId}
       participationMethod={participationMethod}
       phaseId={phaseId}
