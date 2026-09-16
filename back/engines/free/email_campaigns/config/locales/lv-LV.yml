@@ -186,6 +186,7 @@ lv-LV:
       manual_project_participants: Oficiāli paziņojumi projekta dalībniekiem
       mention_in_internal_comment: Pieminēšana iekšējā komentārā
       mention_in_official_feedback: Minēt atjauninājumā
+      merge_account_confirmation: Kontu apvienošanas apstiprinājuma kods
       moderator_digest: Nedēļas pārskats projektu vadītājiem
       native_survey_not_submitted: Aptauja nav iesniegta
       new_comment_for_admin: Jauns komentārs projektā, kuru es moderēju
@@ -477,6 +478,15 @@ lv-LV:
       preheader: '%{commentAuthor} pieminēja jūs atsauksmē'
       subject: '%{organizationName} pieminēja jūs savā atsauksmē'
       title: Jūs esat pieminēts
+    merge_account_confirmation:
+      best_regards: Ar cieņu,
+      event_description: 'Kāds ir pieteicies %{organizationName} līdzdalības platformā un lūdzis piesaistīt šo pieteikšanos kontam, kurā tiek izmantota šī e-pasta adrese. Ja tas bijāt jūs, ievadiet šo apstiprinājuma kodu, lai turpinātu:'
+      expire_code: Šis kods beigsies pēc
+      hours_24: 24 stundas.
+      ignore_email: Ja tas nebijāt jūs, varat droši ignorēt šo e-pastu. Nekas nav mainījies, un neviens nevar izmantot šo kodu bez piekļuves šai iesūtnei.
+      preheader: Apstipriniet savu e-pasta adresi platformā %{organizationName}
+      subject: Apstipriniet savu e-pasta adresi %{organizationName} līdzdalības platformā
+      title: Apstipriniet savu e-pasta adresi
     moderator_digest:
       cta_button: Projekta pārvaldība
       event_description: Mēs esam atlasījuši tos ievades datus, kas pagājušajā nedēļā ir izraisījuši vislielāko aktivitāti. Uzziniet, kas notiek ar jūsu projektu!
