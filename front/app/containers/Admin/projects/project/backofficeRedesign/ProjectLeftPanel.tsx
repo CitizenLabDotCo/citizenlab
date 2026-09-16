@@ -24,6 +24,7 @@ const ProjectLeftPanel = ({ projectId }: Props) => {
       <TimelinePhases
         projectId={projectId}
         onNewPhase={() => setMethodModalOpened(true)}
+        withPhaseOptions
       />
       {spotlightSurveysEnabled && <SpotlightSurveys projectId={projectId} />}
       <SelectMethodModal
