@@ -2,12 +2,11 @@ import React from 'react';
 
 import { IProjectData } from 'api/projects/types';
 
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { getNewPhaseDefaults } from 'containers/Admin/projects/project/phaseSetup/newPhaseDefaults';
+import useNewPhaseDefaults from 'containers/Admin/projects/project/phaseSetup/useNewPhaseDefaults';
 
-import { useFormatMessageWithLocale, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import Navigate from 'utils/cl-router/Navigate';
 import { useSearch } from 'utils/router';
 
@@ -21,8 +20,7 @@ interface Props {
 
 const NewPhase = ({ project }: Props) => {
   const { formatMessage } = useIntl();
-  const formatMessageWithLocale = useFormatMessageWithLocale();
-  const tenantLocales = useAppConfigurationLocales();
+  const newPhaseDefaults = useNewPhaseDefaults();
   const { participation_method, placement } = useSearch({ strict: false });
   const spotlightSurveysEnabled = useFeatureFlag({
     name: 'parallel_participation',
@@ -44,7 +42,7 @@ const NewPhase = ({ project }: Props) => {
     );
   }
 
-  if (!tenantLocales || !formatMessageWithLocale) return null;
+  if (!newPhaseDefaults) return null;
 
   return (
     <NewPhaseWorkspace
@@ -56,12 +54,8 @@ const NewPhase = ({ project }: Props) => {
       label={formatMessage(
         standalone ? messages.newSurveyCrumb : messages.newPhaseCrumb
       )}
-      initialFormData={getNewPhaseDefaults({
-        participationMethod,
-        standalone,
-        tenantLocales,
-        formatMessageWithLocale,
-      })}
+      initialFormData={newPhaseDefaults(participationMethod, standalone)}
+      defaultsForMethod={newPhaseDefaults}
     />
   );
 };
