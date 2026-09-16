@@ -4574,6 +4574,16 @@
     "verified_at": "2026-06-08T08:57:38.087053Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.projectsPageMetaTitle": {
+    "state": "verified",
+    "verified_at": "2026-09-16T15:42:31.134662Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.projectsPageTitle": {
+    "state": "verified",
+    "verified_at": "2026-09-16T15:42:31.134662Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.sectionDescription": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
