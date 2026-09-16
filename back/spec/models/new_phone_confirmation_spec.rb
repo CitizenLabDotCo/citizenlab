@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe NewPhoneConfirmation do
   describe '#confirm!' do
-    it 'promotes new_phone to phone, stamps confirmed_at and clears the code' do
+    it 'promotes new_phone to phone, stamps confirmed_at and deletes the confirmation' do
       user = create(:user)
       user.update!(new_phone: '+14155552671')
       confirmation = user.find_or_create_confirmation(:new_phone_confirmation)
@@ -12,11 +12,12 @@ RSpec.describe NewPhoneConfirmation do
 
       expect(confirmation.confirm!).to be true
 
+      expect(user.new_phone_confirmation).to be_nil
       user.reload
       expect(user.phone).to eq('+14155552671')
       expect(user.new_phone).to be_nil
       expect(user.phone_confirmed_at).to be_present
-      expect(confirmation.reload.code).to be_nil
+      expect(described_class.where(id: confirmation.id)).to be_empty
     end
 
     it 'returns false when there is no pending phone number' do

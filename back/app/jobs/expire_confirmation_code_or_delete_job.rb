@@ -26,10 +26,8 @@ class ExpireConfirmationCodeOrDeleteJob < ApplicationJob
 
     confirmation = user.public_send(association_name)
     return unless confirmation
-    return unless confirmation.code == code_to_expire
     return unless user.confirmation_pending?(association_name)
-
-    confirmation.expire_code!
+    return unless expire_code_if_current(confirmation, code_to_expire)
 
     # Garbage-collect freshly-signed-up users who never finished confirming.
     # A password or a completed registration means the user has another way into
@@ -39,5 +37,25 @@ class ExpireConfirmationCodeOrDeleteJob < ApplicationJob
     if SIGNUP_ASSOCIATION_NAMES.include?(association_name) && user.no_password? && !user.registration_completed_at
       DeleteUserJob.perform_later(user)
     end
+  end
+
+  private
+
+  # Compares and clears under a row lock. Otherwise a new code issued between
+  # the comparison and the write (a resend right as the old code expires) would
+  # be wiped before the user could use it. The lock reloads the row, so the
+  # comparison sees a committed resend, and a resend that starts afterwards
+  # waits for the lock and then writes its code over the cleared one.
+  def expire_code_if_current(confirmation, code_to_expire)
+    expired = false
+    confirmation.with_lock do
+      if confirmation.code == code_to_expire
+        confirmation.expire_code!
+        expired = true
+      end
+    end
+    expired
+  rescue ActiveRecord::RecordNotFound
+    false # consumed (confirmed, or cancelled by another user's change) in the meantime
   end
 end

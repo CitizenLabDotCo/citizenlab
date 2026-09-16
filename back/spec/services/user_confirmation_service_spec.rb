@@ -5,7 +5,9 @@ require 'rails_helper'
 RSpec.describe UserConfirmationService do
   subject(:service) { described_class.new }
 
-  shared_examples 'validation and confirmation' do |method_name, confirmation_assoc, confirmed_at_attr|
+  # activity_payload_key is :new_email or :new_phone; pending_attr is the attribute
+  # holding the value being confirmed, for the flows that change an existing one.
+  shared_examples 'validation and confirmation' do |method_name, confirmation_assoc, confirmed_at_attr, activity_payload_key, pending_attr = nil|
     let(:confirmation) { user.send(confirmation_assoc) }
 
     context 'when the code is correct' do
@@ -13,6 +15,14 @@ RSpec.describe UserConfirmationService do
         result = service.public_send(method_name, user, confirmation.code)
         expect(result.success?).to be true
         expect(user.reload.public_send(confirmed_at_attr)).to be_present
+      end
+
+      it 'enqueues a "confirmed_confirmation_code" activity job' do
+        payload = { activity_payload_key => pending_attr && user.public_send(pending_attr) }
+
+        expect { service.public_send(method_name, user, confirmation.code) }
+          .to enqueue_job(LogActivityJob)
+          .with(user, 'confirmed_confirmation_code', user, anything, payload: payload)
       end
     end
 
@@ -41,6 +51,11 @@ RSpec.describe UserConfirmationService do
         expect(result.success?).to be false
         expect(result.errors.details).to eq(code: [{ error: :invalid }])
       end
+
+      it 'does not enqueue a "confirmed_confirmation_code" activity job' do
+        expect { service.public_send(method_name, user, 'failcode') }
+          .not_to enqueue_job(LogActivityJob).with(anything, 'confirmed_confirmation_code', any_args)
+      end
     end
 
     context 'when the code has expired' do
@@ -66,6 +81,22 @@ RSpec.describe UserConfirmationService do
 
         expect(result.success?).to be false
         expect(result.errors.details).to eq(code: [{ error: :invalid }])
+      end
+    end
+
+    context 'when the code has been expired' do
+      before { confirmation.expire_code! }
+
+      [nil, ''].each do |submitted_code|
+        it "rejects #{submitted_code.inspect} without counting a retry" do
+          result = nil
+          expect { result = service.public_send(method_name, user, submitted_code) }
+            .not_to change { user.reload.public_send(confirmed_at_attr) }
+
+          expect(result.success?).to be false
+          expect(result.errors.details).to eq(code: [{ error: :expired }])
+          expect(confirmation.reload.code_retry_count).to eq(0)
+        end
       end
     end
 
@@ -124,7 +155,7 @@ RSpec.describe UserConfirmationService do
       expect(user.confirmation_required?).to be false
     end
 
-    include_examples 'validation and confirmation', :validate_and_confirm_email!, :email_confirmation, :email_confirmed_at
+    include_examples 'validation and confirmation', :validate_and_confirm_email!, :email_confirmation, :email_confirmed_at, :new_email
 
     context 'when password_login is disabled' do
       before do
@@ -175,7 +206,7 @@ RSpec.describe UserConfirmationService do
       user.reload
     end
 
-    include_examples 'validation and confirmation', :validate_and_reconfirm_email!, :email_confirmation, :email_confirmed_at
+    include_examples 'validation and confirmation', :validate_and_reconfirm_email!, :email_confirmation, :email_confirmed_at, :new_email
 
     context 'when the code is correct' do
       it 'refreshes email_confirmed_at' do
@@ -219,7 +250,7 @@ RSpec.describe UserConfirmationService do
       RequestNewEmailConfirmationCodeJob.perform_now(user, new_email: user.new_email)
     end
 
-    include_examples 'validation and confirmation', :validate_and_confirm_new_email!, :new_email_confirmation, :email_confirmed_at
+    include_examples 'validation and confirmation', :validate_and_confirm_new_email!, :new_email_confirmation, :email_confirmed_at, :new_email, :new_email
 
     context 'when the new email is blank' do
       before do
@@ -257,6 +288,44 @@ RSpec.describe UserConfirmationService do
       expect { user.reload }.to raise_error ActiveRecord::RecordNotFound
     end
 
+    # The merged-away user is deleted, so the activity goes to the survivor.
+    it 'enqueues a "confirmed_confirmation_code" activity job for the account merged into' do
+      target = create(:user, email: 'existing@example.org')
+
+      expect { result }.to enqueue_job(LogActivityJob).with(target, 'confirmed_confirmation_code', target, anything)
+    end
+
+    context 'when the code is incorrect' do
+      before { RequestMergeAccountConfirmationCodeJob.perform_now(user, merge_target_email: 'existing@example.org') }
+
+      it 'returns a code invalid error without enqueueing a "confirmed_confirmation_code" activity job' do
+        create(:user, email: 'existing@example.org')
+        result = nil
+
+        expect { result = service.validate_and_confirm_merge_account!(user, 'failcode') }
+          .not_to enqueue_job(LogActivityJob).with(anything, 'confirmed_confirmation_code', any_args)
+        expect(result.errors.details).to eq(code: [{ error: :invalid }])
+      end
+    end
+
+    context 'when the code has been expired' do
+      before do
+        RequestMergeAccountConfirmationCodeJob.perform_now(user, merge_target_email: 'existing@example.org')
+        create(:user, email: 'existing@example.org')
+        user.merge_account_confirmation.expire_code!
+      end
+
+      [nil, ''].each do |submitted_code|
+        it "rejects #{submitted_code.inspect} without counting a retry or merging" do
+          result = service.validate_and_confirm_merge_account!(user, submitted_code)
+
+          expect(result.success?).to be false
+          expect(result.errors.details).to eq(code: [{ error: :expired }])
+          expect(user.reload.merge_account_confirmation.code_retry_count).to eq(0)
+        end
+      end
+    end
+
     # The code still proved the user reads that inbox.
     context 'when nobody owns the address any more' do
       it "makes it the user's own confirmed email instead of merging" do
@@ -269,6 +338,10 @@ RSpec.describe UserConfirmationService do
         expect(user.email_confirmed_at).to be_present
         expect(user.confirmation_required).to be false
         expect(MergeAccountConfirmation.count).to eq 0
+      end
+
+      it 'enqueues a "confirmed_confirmation_code" activity job for the user' do
+        expect { result }.to enqueue_job(LogActivityJob).with(user, 'confirmed_confirmation_code', user, anything)
       end
     end
   end
@@ -285,7 +358,7 @@ RSpec.describe UserConfirmationService do
       RequestPhoneConfirmationCodeJob.perform_now(user)
     end
 
-    include_examples 'validation and confirmation', :validate_and_confirm_phone!, :phone_confirmation, :phone_confirmed_at
+    include_examples 'validation and confirmation', :validate_and_confirm_phone!, :phone_confirmation, :phone_confirmed_at, :new_phone
 
     context 'when the code is correct' do
       it 'completes pending claim tokens' do
@@ -347,7 +420,7 @@ RSpec.describe UserConfirmationService do
       user.reload
     end
 
-    include_examples 'validation and confirmation', :validate_and_reconfirm_phone!, :phone_confirmation, :phone_confirmed_at
+    include_examples 'validation and confirmation', :validate_and_reconfirm_phone!, :phone_confirmation, :phone_confirmed_at, :new_phone
 
     context 'when the code is correct' do
       it 'refreshes phone_confirmed_at' do
@@ -407,7 +480,7 @@ RSpec.describe UserConfirmationService do
       RequestNewPhoneConfirmationCodeJob.perform_now(user, new_phone: new_phone)
     end
 
-    include_examples 'validation and confirmation', :validate_and_confirm_new_phone!, :new_phone_confirmation, :phone_confirmed_at
+    include_examples 'validation and confirmation', :validate_and_confirm_new_phone!, :new_phone_confirmation, :phone_confirmed_at, :new_phone, :new_phone
 
     context 'when the code is correct' do
       it 'promotes new_phone to phone and stamps it confirmed' do
