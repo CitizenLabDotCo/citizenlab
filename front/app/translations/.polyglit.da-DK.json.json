@@ -12089,11 +12089,6 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
-  "app.containers.SignIn.signInError2": {
-    "state": "verified",
-    "verified_at": "2026-03-18T12:49:36.657470Z",
-    "verified_by": "Admin"
-  },
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
