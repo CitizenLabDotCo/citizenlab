@@ -61,8 +61,8 @@ class Confirmation < ApplicationRecord
   end
 
   # The name of the User has_one that points here, which is also this class's own
-  # name: :email_confirmation, :new_email_confirmation, :phone_confirmation or
-  # :new_phone_confirmation.
+  # name: :email_confirmation, :new_email_confirmation, :phone_confirmation,
+  # :new_phone_confirmation or :merge_account_confirmation.
   def association_name
     self.class.name.underscore.to_sym
   end

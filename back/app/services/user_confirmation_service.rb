@@ -80,14 +80,22 @@ class UserConfirmationService
     validate_user!(user)
     validate_email!(user.merge_target_email)
     confirmation = user.merge_account_confirmation
-    raise ValidationError.new(:code, :invalid) if confirmation.nil?
-
     validate_code!(confirmation, code)
 
+    # merge_target_email is only set when another account owns the address, so target is
+    # nil only in a rare edge case: that account was deleted or changed its email between
+    # the code being sent and being entered (a window of at most CODE_DURATION).
     target = User.find_by_cimail(user.merge_target_email)
-    return success_result(promote_merge_target_email!(user, confirmation)) if target.nil?
+    survivor = if target.nil?
+      promote_merge_target_email!(user, confirmation)
+    else
+      AccountMergeService.new.merge!(source: user, target: target, proof: :email_code)
+    end
+    # On the survivor: a merged-away user is deleted, and its activities have moved
+    # to the target. No payload, like the merge flow's requested_confirmation_code.
+    log_confirmed_code(survivor)
 
-    success_result(AccountMergeService.new.merge!(source: user, target: target, proof: :email_code))
+    success_result(survivor)
   rescue ValidationError => e
     failure_result(e)
   rescue AccountMergeService::IneligibleError
@@ -140,11 +148,6 @@ class UserConfirmationService
   private
 
   def validate_and_confirm!(confirmation, code)
-    raise ValidationError.new(:code, :invalid) if confirmation.nil?
-    # An expired (or not yet issued) code is nil: nothing can match it, so bail out
-    # before a submitted blank or nil code could be compared against it.
-    raise ValidationError.new(:code, :expired) unless confirmation.code_outstanding?
-
     validate_code!(confirmation, code)
     confirm_user!(confirmation)
   end
@@ -152,6 +155,11 @@ class UserConfirmationService
   # The code checks without the confirm! that follows them elsewhere - the merge
   # flow's "confirm" is a multi-table operation, not a model method.
   def validate_code!(confirmation, code)
+    raise ValidationError.new(:code, :invalid) if confirmation.nil?
+    # An expired (or not yet issued) code is nil: nothing can match it, so bail out
+    # before a submitted blank or nil code could be compared against it.
+    raise ValidationError.new(:code, :expired) unless confirmation.code_outstanding?
+
     validate_retry_count!(confirmation, code)
     validate_code_value!(confirmation, code)
     validate_code_expiration!(confirmation)
@@ -168,7 +176,7 @@ class UserConfirmationService
         email_confirmed_at: Time.zone.now,
         confirmation_required: false
       )
-      confirmation.destroy!
+      confirmation.consume!
     end
 
     user
@@ -238,8 +246,11 @@ class UserConfirmationService
       )
     end
 
-    user = confirmation.user
-    LogActivityJob.perform_later(user, 'confirmed_confirmation_code', user, Time.now.to_i, payload: payload)
+    log_confirmed_code(confirmation.user, payload: payload)
+  end
+
+  def log_confirmed_code(user, **)
+    LogActivityJob.perform_later(user, 'confirmed_confirmation_code', user, Time.now.to_i, **)
   end
 
   # The same payload as the requested_confirmation_code and received_confirmation_code

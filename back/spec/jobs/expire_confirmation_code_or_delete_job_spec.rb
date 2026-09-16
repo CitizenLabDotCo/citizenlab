@@ -159,6 +159,36 @@ RSpec.describe ExpireConfirmationCodeOrDeleteJob do
     end
   end
 
+  # Abandoning a merge leaves a real SSO account behind, which must never be deleted.
+  context 'users with a pending account merge' do
+    let(:user) do
+      user = create(:user)
+      user.update_columns(email: nil, password_digest: nil, registration_completed_at: nil)
+      RequestMergeAccountConfirmationCodeJob.perform_now(user, merge_target_email: 'existing@example.org')
+      user
+    end
+
+    it 'clears the code, keeps the counters and does not delete the user' do
+      confirmation = user.merge_account_confirmation
+      confirmation.update!(code_retry_count: 2)
+
+      described_class.perform_now(user.id, 'MergeAccountConfirmation', confirmation.code)
+
+      expect(confirmation.reload).to have_attributes(code: nil, code_retry_count: 2, code_reset_count: 1)
+      expect(DeleteUserJob).not_to have_been_enqueued
+    end
+
+    it 'does nothing when the merge is no longer pending' do
+      confirmation = user.merge_account_confirmation
+      old_code = confirmation.code
+      user.update!(merge_target_email: nil)
+
+      described_class.perform_now(user.id, 'MergeAccountConfirmation', old_code)
+
+      expect(confirmation.reload.code).to eq(old_code)
+    end
+  end
+
   context 'confirmed users with no password' do
     let(:user) do
       user = create(:unconfirmed_user)

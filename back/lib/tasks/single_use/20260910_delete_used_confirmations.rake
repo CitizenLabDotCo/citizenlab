@@ -26,7 +26,8 @@ namespace :single_use do
       EmailConfirmation => -> { User.where(confirmation_required: false) },
       NewEmailConfirmation => -> { User.where(new_email: nil) },
       PhoneConfirmation => -> { User.where.not(phone_confirmed_at: nil) },
-      NewPhoneConfirmation => -> { User.where(new_phone: nil) }
+      NewPhoneConfirmation => -> { User.where(new_phone: nil) },
+      MergeAccountConfirmation => -> { User.where(merge_target_email: nil) }
     }
     rows_per_type = Hash.new(0)
 

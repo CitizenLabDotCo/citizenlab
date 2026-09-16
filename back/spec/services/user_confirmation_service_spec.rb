@@ -288,6 +288,44 @@ RSpec.describe UserConfirmationService do
       expect { user.reload }.to raise_error ActiveRecord::RecordNotFound
     end
 
+    # The merged-away user is deleted, so the activity goes to the survivor.
+    it 'enqueues a "confirmed_confirmation_code" activity job for the account merged into' do
+      target = create(:user, email: 'existing@example.org')
+
+      expect { result }.to enqueue_job(LogActivityJob).with(target, 'confirmed_confirmation_code', target, anything)
+    end
+
+    context 'when the code is incorrect' do
+      before { RequestMergeAccountConfirmationCodeJob.perform_now(user, merge_target_email: 'existing@example.org') }
+
+      it 'returns a code invalid error without enqueueing a "confirmed_confirmation_code" activity job' do
+        create(:user, email: 'existing@example.org')
+        result = nil
+
+        expect { result = service.validate_and_confirm_merge_account!(user, 'failcode') }
+          .not_to enqueue_job(LogActivityJob).with(anything, 'confirmed_confirmation_code', any_args)
+        expect(result.errors.details).to eq(code: [{ error: :invalid }])
+      end
+    end
+
+    context 'when the code has been expired' do
+      before do
+        RequestMergeAccountConfirmationCodeJob.perform_now(user, merge_target_email: 'existing@example.org')
+        create(:user, email: 'existing@example.org')
+        user.merge_account_confirmation.expire_code!
+      end
+
+      [nil, ''].each do |submitted_code|
+        it "rejects #{submitted_code.inspect} without counting a retry or merging" do
+          result = service.validate_and_confirm_merge_account!(user, submitted_code)
+
+          expect(result.success?).to be false
+          expect(result.errors.details).to eq(code: [{ error: :expired }])
+          expect(user.reload.merge_account_confirmation.code_retry_count).to eq(0)
+        end
+      end
+    end
+
     # The code still proved the user reads that inbox.
     context 'when nobody owns the address any more' do
       it "makes it the user's own confirmed email instead of merging" do
@@ -300,6 +338,10 @@ RSpec.describe UserConfirmationService do
         expect(user.email_confirmed_at).to be_present
         expect(user.confirmation_required).to be false
         expect(MergeAccountConfirmation.count).to eq 0
+      end
+
+      it 'enqueues a "confirmed_confirmation_code" activity job for the user' do
+        expect { result }.to enqueue_job(LogActivityJob).with(user, 'confirmed_confirmation_code', user, anything)
       end
     end
   end

@@ -102,6 +102,24 @@ describe 'single_use:delete_used_confirmations rake task' do
     expect(confirmation.reload).to be_present
   end
 
+  it 'deletes a merge account confirmation once the merge is no longer pending' do
+    user = create(:user)
+    confirmation = MergeAccountConfirmation.create!(user: user)
+
+    run_task
+
+    expect(MergeAccountConfirmation.where(id: confirmation.id)).to be_empty
+  end
+
+  it 'keeps a merge account confirmation while the merge is pending' do
+    user = create(:user, merge_target_email: 'existing@example.org')
+    confirmation = MergeAccountConfirmation.create!(user: user)
+
+    run_task
+
+    expect(confirmation.reload).to be_present
+  end
+
   it 'deletes nothing on a dry run' do
     user = create(:user)
     confirmation = EmailConfirmation.create!(user: user)
