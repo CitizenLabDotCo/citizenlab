@@ -9,6 +9,8 @@ import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableE
 import Section from 'components/admin/ContentBuilder/Toolbox/Section';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
+import EventsList from 'components/admin/ContentBuilder/Widgets/Events';
+import eventsMessages from 'components/admin/ContentBuilder/Widgets/Events/messages';
 import FileAttachment from 'components/admin/ContentBuilder/Widgets/FileAttachment';
 import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
@@ -19,6 +21,8 @@ import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import ProjectsByFilter from 'components/CustomPageBuilder/Widgets/ProjectsByFilter';
+import projectsMessages from 'components/CustomPageBuilder/Widgets/ProjectsByFilter/messages';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
 import NewLabel from 'components/UI/NewLabel';
 
@@ -31,6 +35,11 @@ const CustomPageBuilderToolbox = () => {
   });
   const projectStaticPagesEnabled = useFeatureFlag({
     name: 'project_static_pages',
+  });
+  // The legacy project-list section is itself the paid capability, unlike events where only
+  // the filtering is, so the whole entry is gated.
+  const filteredProjectsEnabled = useFeatureFlag({
+    name: 'advanced_custom_pages',
   });
 
   return (
@@ -97,6 +106,27 @@ const CustomPageBuilderToolbox = () => {
           }
           icon="button"
           label={formatMessage(ButtonMultiloc.craft.custom.title)}
+        />
+        {filteredProjectsEnabled && (
+          <DraggableElement
+            id="e2e-draggable-projects-by-filter"
+            component={<ProjectsByFilter />}
+            icon="projects"
+            label={formatMessage(projectsMessages.filteredProjects)}
+          />
+        )}
+        <DraggableElement
+          id="e2e-draggable-events"
+          component={
+            <EventsList
+              source="all"
+              timeFilters={['upcoming']}
+              limit={3}
+              projectPublicationStatuses={['published']}
+            />
+          }
+          icon="calendar"
+          label={formatMessage(eventsMessages.eventsListTitle)}
         />
         <DraggableElement
           id="e2e-draggable-file-attachment"

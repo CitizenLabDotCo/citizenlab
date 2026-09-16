@@ -1,5 +1,7 @@
 import { SerializedNodes } from '@craftjs/core';
 
+import { getResolvedName } from 'components/admin/ContentBuilder/resolvedName';
+
 /**
  * Check if a specific fileId is used in the layout
  */
@@ -15,7 +17,7 @@ export const getIsFileAlreadyUsed = (
 
   Object.values(craftjsJson).forEach((node) => {
     if (typeof node === 'object') {
-      const isFileAttachmentWidget = node.displayName === 'FileAttachment';
+      const isFileAttachmentWidget = getResolvedName(node) === 'FileAttachment';
       if (isFileAttachmentWidget && node.props?.fileId === fileId) {
         fileUsed = true;
       }
