@@ -7,6 +7,8 @@ import useCustomBlock from 'api/custom_blocks/useCustomBlock';
 
 import useLocale from 'hooks/useLocale';
 
+import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
+
 import { FormattedMessage } from 'utils/cl-intl';
 import { useLocation } from 'utils/router';
 
@@ -95,7 +97,13 @@ const CustomBlock = ({ blockId, version, config = {} }: Props) => {
   const msg = buildMessageLookup(attributes?.current_version?.messages, locale);
 
   return (
-    <Box maxWidth="1200px" margin="0 auto" className="e2e-custom-block">
+    // PageBreakBox, not Box: a report is read as a PDF, and a chart split across a
+    // page break is unreadable. The text widget wraps itself the same way.
+    <PageBreakBox
+      maxWidth="1200px"
+      margin="0 auto"
+      className="e2e-custom-block"
+    >
       <CustomBlockRenderer
         component={BlockComponent}
         config={config}
@@ -105,7 +113,7 @@ const CustomBlock = ({ blockId, version, config = {} }: Props) => {
           inBuilder ? <BuilderNotice message={messages.blockLoadError} /> : null
         }
       />
-    </Box>
+    </PageBreakBox>
   );
 };
 

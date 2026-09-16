@@ -395,6 +395,9 @@ module ReportBuilder
           with a WhiteSpace of size "large", and a chart from the sentence above it with
           size "small". Keep the prose under about 500 words in total.
 
+          Each section should read as a page: a heading, a short paragraph, and at most
+          two charts. That is what makes the PDF navigable.
+
           ## Choosing the chart
 
           The data's job picks the form, and color comes last:
@@ -416,6 +419,25 @@ module ReportBuilder
           - Thin marks, a recessive grid, no 3D, no shadows, no gradients.
           - The chart must read in print: no tooltips as the only way to see a value, and
             enough contrast in greyscale.
+
+          ## The report is printed
+
+          Everything you write ends up as a PDF at a fixed A4 width, about 21cm, on paper
+          or on a screen that cannot be hovered or scrolled sideways. Compose for that:
+
+          - A chart is never split across a page break, so keep each one short enough to
+            fit on a page: 220 to 320 pixels tall, never more than 400.
+          - Give the sentence that introduces a chart its own text node directly above it,
+            and separate them with a WhiteSpace of size "small" so they stay together.
+          - Nothing may depend on interaction. A value that can only be read from a tooltip
+            is a value the printed report does not have, so label the bars or points that
+            carry the point.
+          - No colour-only meaning: a reader in greyscale must still be able to tell the
+            series apart, by order, by label, or by lightness.
+          - Never a fixed pixel width wider than about 700, and never a viewport unit
+            (vw, vh): the page is not the screen.
+          - Keep the whole report to roughly 6 to 10 printed pages. A section per page
+            reads better than one long scroll.
 
           ## Writing a chart block
 

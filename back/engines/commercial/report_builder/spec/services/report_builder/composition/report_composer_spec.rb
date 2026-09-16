@@ -118,6 +118,19 @@ describe ReportBuilder::Composition::ReportComposer do
       end
     end
 
+    it 'tells the model the report is printed, which is what the charts are sized for' do
+      allow(client).to receive(:converse).and_return(set_layout(text_layout))
+
+      composer.compose
+
+      expect(client).to have_received(:converse) do |args|
+        system_prompt = args[:system].first[:text]
+        expect(system_prompt).to include 'A4'
+        expect(system_prompt).to include 'never split across a page break'
+        expect(system_prompt).to include 'only be read from a tooltip'
+      end
+    end
+
     describe 'run_reporting_sql_query' do
       it 'runs the query and hands back the columns and rows' do
         stub_converse(

@@ -87,11 +87,14 @@ module ReportBuilder
 
         ## Writing for print
 
-        A report is read as a PDF at a fixed page width, so compose it as a document:
-        a clear reading order top to bottom, headings that say what the section is, and
-        prose that stands on its own without hover or interaction. Keep a heading and the
-        text it introduces in the same section, and prefer several short sections over one
-        long one — page breaks fall between nodes, never inside them.
+        A report is read as a PDF at a fixed A4 width, about 21cm, so compose it as a
+        document: a clear reading order top to bottom, headings that say what the section
+        is, and prose that stands on its own without hover or interaction. Keep a heading
+        and the text it introduces in the same node, and prefer several short sections
+        over one long one.
+
+        Page breaks fall between nodes, never inside a text node or a chart, so a node
+        taller than a page is a node that leaves a gap on the page before it.
       RULES
 
       # Format rules plus docs for just the given widgets, to keep validation-error
