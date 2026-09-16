@@ -4354,6 +4354,16 @@
     "verified_at": "2026-06-17T14:06:06.041999Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.projectsPageMetaTitle": {
+    "state": "verified",
+    "verified_at": "2026-09-16T19:58:42.775537Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.projectsPageTitle": {
+    "state": "verified",
+    "verified_at": "2026-09-16T19:58:42.775537Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.sectionDescription": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
