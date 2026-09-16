@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Toggle,
@@ -11,6 +11,9 @@ import styled from 'styled-components';
 import { CLErrors, IOption } from 'typings';
 
 import { PresentationMode, VoteTerm, VotingMethod } from 'api/phases/types';
+import usePhase from 'api/phases/usePhase';
+
+import PhaseActionAccess from 'containers/Admin/projects/_shared/components/PhaseActionAccess';
 
 import {
   SectionDescription,
@@ -31,6 +34,7 @@ import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
 import { ToggleRow } from '../../shared/styling';
 import ViewSelector from '../../shared/ViewSelector';
 
+import VotingMethodChangeModal from './VotingMethodChangeModal';
 import BudgetingInputs from './votingMethodInputs/BudgetingInputs';
 import MultipleVotingInputs from './votingMethodInputs/MultipleVotingInputs';
 import ShareResultsToggle from './votingMethodInputs/ShareResultsToggle/ShareResultsToggle';
@@ -84,6 +88,7 @@ export interface VotingInputsProps {
     field: 'similarity_threshold_title' | 'similarity_threshold_body',
     value: number
   ) => void;
+  layout?: 'page' | 'panel';
 }
 
 const VotingInputs = ({
@@ -116,9 +121,29 @@ const VotingInputs = ({
   handleThresholdChange,
   handleVoteTermChange,
   voteTerm,
+  layout = 'page',
 }: VotingInputsProps) => {
   const { formatMessage } = useIntl();
   const { projectId, phaseId } = useParams({ strict: false });
+  const { data: phase } = usePhase(phaseId);
+  const [pendingVotingMethod, setPendingVotingMethod] =
+    useState<VotingMethod | null>(null);
+
+  const hasVotes =
+    !!phase &&
+    (phase.data.attributes.votes_count > 0 ||
+      phase.data.attributes.baskets_count > 0);
+  const panel = layout === 'panel';
+
+  const handleVotingMethodSelect = (method: VotingMethod) => {
+    if (method === voting_method) return;
+
+    if (panel && hasVotes && method !== phase.data.attributes.voting_method) {
+      setPendingVotingMethod(method);
+    } else {
+      handleVotingMethodOnChange(method);
+    }
+  };
 
   const getVoteTypeDescription = () => {
     switch (voting_method) {
@@ -137,31 +162,47 @@ const VotingInputs = ({
     <>
       <VotingMethodSelector
         voting_method={voting_method}
-        handleVotingMethodOnChange={handleVotingMethodOnChange}
+        handleVotingMethodOnChange={handleVotingMethodSelect}
+        layout={layout}
       />
-      <Box paddingLeft="32px" borderLeft={`1px solid ${colors.divider}`}>
-        <Box my="16px" maxWidth="700px">
-          <Warning>
-            <FormattedMessage
-              {...messages.learnMoreVotingMethod}
-              values={{
-                b: (chunks) => (
-                  <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-                ),
-                voteTypeDescription: getVoteTypeDescription(),
-                optionAnalysisArticleLink: (
-                  <a
-                    href="https://support.govocal.com/en/articles/527581-voting-and-prioritization-methods-for-enhanced-decision-making"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <FormattedMessage {...messages.optionAnalysisLinkText} />
-                  </a>
-                ),
-              }}
-            />
-          </Warning>
-        </Box>
+      <VotingMethodChangeModal
+        opened={pendingVotingMethod !== null}
+        onClose={() => setPendingVotingMethod(null)}
+        onConfirm={() => {
+          if (pendingVotingMethod) {
+            handleVotingMethodOnChange(pendingVotingMethod);
+          }
+          setPendingVotingMethod(null);
+        }}
+      />
+      <Box
+        paddingLeft={panel ? undefined : '32px'}
+        borderLeft={panel ? undefined : `1px solid ${colors.divider}`}
+      >
+        {!panel && (
+          <Box my="16px" maxWidth="700px">
+            <Warning>
+              <FormattedMessage
+                {...messages.learnMoreVotingMethod}
+                values={{
+                  b: (chunks) => (
+                    <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+                  ),
+                  voteTypeDescription: getVoteTypeDescription(),
+                  optionAnalysisArticleLink: (
+                    <a
+                      href="https://support.govocal.com/en/articles/527581-voting-and-prioritization-methods-for-enhanced-decision-making"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <FormattedMessage {...messages.optionAnalysisLinkText} />
+                    </a>
+                  ),
+                }}
+              />
+            </Warning>
+          </Box>
+        )}
         <SectionField>
           <SubSectionTitleWithDescription>
             <FormattedMessage {...messages.optionsToVoteOn} />
@@ -242,6 +283,11 @@ const VotingInputs = ({
               label={formatMessage(messages.inputCommentingEnabled)}
             />
           </ToggleRow>
+          {panel && phaseId && (
+            <Box mt="-6px" mb="8px" ml="52px">
+              <PhaseActionAccess phaseId={phaseId} action="commenting_idea" />
+            </Box>
+          )}
           <Text mb="0px" pb="0px" color={'textSecondary'} fontSize="s">
             {formatMessage(messages.commentingBias)}
           </Text>
