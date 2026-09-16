@@ -72,7 +72,7 @@ module ContentBuilder
     def projects_node(static_page)
       return unless static_page.projects_enabled && project_lists_rendered?(static_page)
 
-      Craftjs::Nodes.projects_by_filter(
+      Craftjs::Nodes.projects(
         {
           'filterType' => static_page.projects_filter_type,
           'ids' => filter_ids(static_page),
