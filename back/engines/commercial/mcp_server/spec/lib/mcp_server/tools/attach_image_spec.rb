@@ -34,6 +34,33 @@ describe McpServer::Tools::AttachImage do
     expect(event.event_images.first.image.file.read).to eq(fixture_path.binread)
   end
 
+  it 'attaches an image to an input (idea)' do
+    idea = create(:idea, project: project)
+
+    response = run_mcp_tool(
+      described_class,
+      params: { resource_type: 'idea', resource_id: idea.id, remote_url: remote_url },
+      current_user:
+    )
+
+    expect(response).not_to be_error
+    expect(idea.reload.idea_images.count).to eq(1)
+    expect(idea.idea_images.first.image.file.read).to eq(fixture_path.binread)
+  end
+
+  it 'ignores alt text for inputs, which have no alt-text field' do
+    idea = create(:idea, project: project)
+
+    response = run_mcp_tool(
+      described_class,
+      params: { resource_type: 'idea', resource_id: idea.id, remote_url: remote_url, alt_text_multiloc: { 'en' => 'A tree' } },
+      current_user:
+    )
+
+    expect(response).not_to be_error
+    expect(idea.reload.idea_images.count).to eq(1)
+  end
+
   it 'returns an error when the download fails' do
     failing_url = 'https://example.com/missing.jpg'
     stub_failing_remote_download(failing_url)
