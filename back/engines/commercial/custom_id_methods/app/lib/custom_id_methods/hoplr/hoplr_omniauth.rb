@@ -118,9 +118,5 @@ module CustomIdMethods::Hoplr
     def locked_custom_fields
       %i[neighbourhood]
     end
-
-    def email_confirmed?(auth)
-      auth.info.email_verified
-    end
   end
 end

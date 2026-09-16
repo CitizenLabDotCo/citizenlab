@@ -259,6 +259,10 @@ export default defineMessages({
     id: 'app.containers.Projects.pastEvents',
     defaultMessage: 'Past events',
   },
+  viewAllEvents: {
+    id: 'app.containers.landing.viewAllEventsText',
+    defaultMessage: 'View all events',
+  },
   noUpcomingOrOngoingEvents: {
     id: 'app.containers.Projects.noUpcomingOrOngoingEvents',
     defaultMessage: 'No upcoming or ongoing events are currently scheduled.',
