@@ -3400,6 +3400,7 @@
   "app.containers.AdminPage.SideBar.projectManager": "Project manager",
   "app.containers.AdminPage.SideBar.projects": "Projects",
   "app.containers.AdminPage.SideBar.settings": "Settings",
+  "app.containers.AdminPage.SideBar.setupTasks": "Set up",
   "app.containers.AdminPage.SideBar.signOut": "Sign out",
   "app.containers.AdminPage.SideBar.spaceManager": "Space manager",
   "app.containers.AdminPage.SideBar.support": "Support",
