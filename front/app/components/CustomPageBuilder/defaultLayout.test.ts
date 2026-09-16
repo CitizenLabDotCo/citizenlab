@@ -116,10 +116,10 @@ const titleNode = (showTitle: boolean) => ({
   linkedNodes: {},
 });
 
-const bannerNode = () => ({
+const bannerNode = (headerMultiloc: Record<string, string>) => ({
   type: { resolvedName: 'CustomPageBanner' },
   nodes: [],
-  props: {},
+  props: { headerMultiloc, subheaderMultiloc: {}, ctaType: 'no_button' },
   custom: {},
   hidden: false,
   parent: BODY_NODE_ID,
@@ -129,7 +129,11 @@ const bannerNode = () => ({
 });
 
 // A body in the given order, holding a title, a banner and a text widget.
-const bodyWith = (showTitle: boolean, bodyIds: string[]) =>
+const bodyWith = (
+  showTitle: boolean,
+  bodyIds: string[],
+  bannerHeader: Record<string, string> = { en: 'Welcome' }
+) =>
   ({
     ...defaultCustomPageLayout(),
     [BODY_NODE_ID]: {
@@ -137,7 +141,7 @@ const bodyWith = (showTitle: boolean, bodyIds: string[]) =>
       nodes: bodyIds,
     },
     title: titleNode(showTitle),
-    banner: bannerNode(),
+    banner: bannerNode(bannerHeader),
     txt: textNode(BODY_NODE_ID),
   } as unknown as SerializedNodes);
 
@@ -155,6 +159,13 @@ describe('layoutStartsWithBanner', () => {
     expect(layoutStartsWithBanner(bodyWith(true, ['title', 'banner']))).toBe(
       false
     );
+  });
+
+  // The page renders nothing for it, so the first real widget would sit under the nav bar.
+  it('is false when the banner that opens the body draws nothing', () => {
+    expect(
+      layoutStartsWithBanner(bodyWith(false, ['banner', 'title'], {}))
+    ).toBe(false);
   });
 });
 

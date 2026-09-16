@@ -1,5 +1,9 @@
 import { SerializedNodes, SerializedNode } from '@craftjs/core';
 
+import { isEmptyMultiloc } from 'utils/helperUtils';
+
+import { CustomPageBannerProps } from './Widgets/CustomPageBanner/types';
+
 export const BODY_NODE_ID = 'CUSTOM_PAGE_BODY';
 
 const ROOT_ID = 'ROOT';
@@ -61,9 +65,26 @@ export const layoutHasContent = (nodes?: SerializedNodes): boolean => {
   return !!container && childIdsOf(container).some((id) => !isTitle(nodes, id));
 };
 
+// Whether a banner draws anything. Anything the header draws counts: a derived banner may
+// carry only a subheader or a button.
+export const bannerHasContent = ({
+  image,
+  headerMultiloc,
+  subheaderMultiloc,
+  ctaType,
+}: Pick<
+  CustomPageBannerProps,
+  'image' | 'headerMultiloc' | 'subheaderMultiloc' | 'ctaType'
+>) =>
+  !!image?.imageUrl ||
+  !isEmptyMultiloc(headerMultiloc) ||
+  !isEmptyMultiloc(subheaderMultiloc) ||
+  ctaType === 'customized_button';
+
 // Whether the first thing the page renders is a banner: the first body node that is not a
-// hidden title. A full-bleed banner sits flush under the nav bar, so the page and its previews
-// drop their top gap, and the edit button anchors to the window edge.
+// hidden title, holding a banner that draws something. A full-bleed banner sits flush under
+// the nav bar, so the page and its previews drop their top gap, and the edit button anchors to
+// the window edge. An empty banner renders nothing, so it must not take the gap away.
 export const layoutStartsWithBanner = (nodes?: SerializedNodes): boolean => {
   if (!nodes) return false;
 
@@ -75,7 +96,8 @@ export const layoutStartsWithBanner = (nodes?: SerializedNodes): boolean => {
   );
   return (
     firstVisibleId !== undefined &&
-    resolvedNameOf(nodes[firstVisibleId]) === 'CustomPageBanner'
+    resolvedNameOf(nodes[firstVisibleId]) === 'CustomPageBanner' &&
+    bannerHasContent(nodes[firstVisibleId].props)
   );
 };
 
