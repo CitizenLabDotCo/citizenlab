@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { Box, Button, Divider, Text } from '@citizenlab/cl2-component-library';
 
+import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 import { ParticipationMethod } from 'api/phases/types';
 
 import inputFormMessages from 'containers/Admin/projects/project/inputForm/messages';
@@ -11,6 +12,7 @@ import ImportInputsSection from 'components/admin/FormSync/ImportInputsSection';
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 import messages from '../../messages';
@@ -31,6 +33,7 @@ const FormSection = ({ projectId, participationMethod, phaseId }: Props) => {
   const [importModalOpened, setImportModalOpened] = useState(false);
   const [questionsModalOpened, setQuestionsModalOpened] = useState(false);
   const [ideasModalOpened, setIdeasModalOpened] = useState(false);
+  const { data: permissions } = usePhasePermissions({ phaseId });
 
   const formEditor = getMethodConfig(participationMethod).formEditor;
 
@@ -38,6 +41,22 @@ const FormSection = ({ projectId, participationMethod, phaseId }: Props) => {
   if (formEditor === null) return null;
 
   const survey = formEditor === 'surveyEditor';
+
+  // Only a phase where participants submit inputs asks them for personal info
+  // and demographics. Voting options are added by admins, so their form opens
+  // straight away.
+  const asksParticipants = !!permissions?.data.some(
+    ({ attributes }) => attributes.action === 'posting_idea'
+  );
+
+  const openForm = () => {
+    setQuestionsModalOpened(false);
+    clHistory.push(
+      `/admin/projects/${projectId}/phases/${phaseId}/${
+        survey ? 'survey-form' : 'form'
+      }/edit`
+    );
+  };
 
   return (
     <>
@@ -55,8 +74,10 @@ const FormSection = ({ projectId, participationMethod, phaseId }: Props) => {
         )}
         <Button
           buttonStyle="secondary-outlined"
-          disabled={!phaseId}
-          onClick={() => setQuestionsModalOpened(true)}
+          disabled={!phaseId || !permissions}
+          onClick={() =>
+            asksParticipants ? setQuestionsModalOpened(true) : openForm()
+          }
         >
           {formatMessage(messages.addQuestions)}
         </Button>
@@ -83,11 +104,10 @@ const FormSection = ({ projectId, participationMethod, phaseId }: Props) => {
 
       {phaseId && (
         <AddQuestionsModal
-          projectId={projectId}
           phaseId={phaseId}
-          survey={survey}
           opened={questionsModalOpened}
           onClose={() => setQuestionsModalOpened(false)}
+          onContinue={openForm}
         />
       )}
 
