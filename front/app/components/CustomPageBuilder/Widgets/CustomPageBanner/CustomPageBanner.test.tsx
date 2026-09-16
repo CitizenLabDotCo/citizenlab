@@ -24,6 +24,14 @@ const banner: CustomPageBannerProps = {
   image: { dataCode: 'abc', imageUrl: 'https://example.com/header.jpg' },
 };
 
+// What the toolbox drops: nothing the header would draw.
+const empty: CustomPageBannerProps = {
+  ...banner,
+  headerMultiloc: {},
+  subheaderMultiloc: {},
+  image: {},
+};
+
 describe('CustomPageBanner', () => {
   beforeEach(() => {
     mockInBuilder = true;
@@ -31,7 +39,7 @@ describe('CustomPageBanner', () => {
 
   // Fresh from the toolbox there is nothing to show; the builder has to say what it is.
   it('shows a placeholder in the builder when the banner is empty', () => {
-    render(<CustomPageBanner {...banner} headerMultiloc={{}} image={{}} />);
+    render(<CustomPageBanner {...empty} />);
 
     expect(screen.getByText(/Banner\. Add an image/)).toBeInTheDocument();
     expect(
@@ -42,11 +50,39 @@ describe('CustomPageBanner', () => {
   it('renders nothing in the front office when the banner is empty', () => {
     mockInBuilder = false;
 
-    render(<CustomPageBanner {...banner} headerMultiloc={{}} image={{}} />);
+    render(<CustomPageBanner {...empty} />);
 
     expect(screen.queryByText(/Banner\. Add an image/)).not.toBeInTheDocument();
     expect(
       screen.queryByTestId('full-width-banner-layout')
     ).not.toBeInTheDocument();
+  });
+
+  // A page's banner is derived whatever it holds, and the page rendered it before the builder.
+  it('renders a banner that has only a subheader', () => {
+    mockInBuilder = false;
+
+    render(
+      <CustomPageBanner
+        {...empty}
+        subheaderMultiloc={{ en: 'Have your say' }}
+      />
+    );
+
+    expect(screen.getByTestId('full-width-banner-layout')).toBeInTheDocument();
+  });
+
+  it('renders a banner that has only a button', () => {
+    mockInBuilder = false;
+
+    render(
+      <CustomPageBanner
+        {...empty}
+        ctaType="customized_button"
+        ctaTextMultiloc={{ en: 'Join' }}
+      />
+    );
+
+    expect(screen.getByTestId('full-width-banner-layout')).toBeInTheDocument();
   });
 });

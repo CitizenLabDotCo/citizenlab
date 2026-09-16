@@ -6,6 +6,7 @@ import WidgetPlaceholder from 'components/admin/ContentBuilder/Widgets/WidgetPla
 import CustomPageHeader from 'components/CustomPageHeader';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { isEmptyMultiloc } from 'utils/helperUtils';
 
 import messages from './messages';
 import Settings from './Settings';
@@ -24,9 +25,13 @@ const CustomPageBanner: UserComponent<CustomPageBannerProps> = ({
 
   const imageUrl = image?.imageUrl ?? null;
   // A banner fresh from the toolbox has nothing to show, and the layouts would render a bare
-  // coloured block that reads as broken rather than as unconfigured.
+  // coloured block that reads as broken rather than as unconfigured. Anything the header draws
+  // counts: a derived legacy banner may carry only a subheader or a button.
   const isEmpty =
-    !imageUrl && Object.values(content.headerMultiloc).every((text) => !text);
+    !imageUrl &&
+    isEmptyMultiloc(content.headerMultiloc) &&
+    isEmptyMultiloc(content.subheaderMultiloc) &&
+    content.ctaType !== 'customized_button';
 
   if (isEmpty) {
     return inBuilder ? (
