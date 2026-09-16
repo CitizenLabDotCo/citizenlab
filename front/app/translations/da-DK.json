@@ -216,7 +216,7 @@
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filterBySpaces": "Et af disse rum",
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filterByTags": "Et af disse tags",
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filteredProjects": "Filtrerede projekter",
-  "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.notAvailable": "Filtrerede projektlister er ikke tilgængelige på denne platform, så dette vises ikke for beboere.",
+  "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.notAvailable": "Filtrerede projektlister er ikke tilgængelige på denne platform, så dette vises ikke for borgerne.",
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.nothingSelected": "Vælg mindst én for at vise projekter her.",
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.selectionLabel": "Valg",
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.titleLabel": "Titel",
