@@ -74,10 +74,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.editSurveyForm',
     defaultMessage: 'Edit survey form',
   },
-  accessRights: {
-    id: 'app.containers.Admin.projects.project.accessRights',
-    defaultMessage: 'Access rights',
-  },
   mapConfiguration: {
     id: 'app.containers.Admin.projects.project.mapConfiguration',
     defaultMessage: 'Map configuration',
@@ -135,10 +131,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.stepPublishProject',
     defaultMessage: 'Publish project',
   },
-  selectAMethod: {
-    id: 'app.containers.Admin.projects.project.selectAMethod',
-    defaultMessage: 'Select a method',
-  },
   newPhaseCrumb: {
     id: 'app.containers.Admin.projects.project.newPhaseCrumb',
     defaultMessage: 'New phase',
@@ -150,6 +142,18 @@ export default defineMessages({
   selectMethodContinue: {
     id: 'app.containers.Admin.projects.project.selectMethodContinue',
     defaultMessage: 'Continue',
+  },
+  addQuestions: {
+    id: 'app.containers.Admin.projects.project.addQuestions',
+    defaultMessage: 'Add questions',
+  },
+  informationCollected: {
+    id: 'app.containers.Admin.projects.project.informationCollected',
+    defaultMessage: 'Information collected from participants',
+  },
+  continueToTheForm: {
+    id: 'app.containers.Admin.projects.project.continueToTheForm',
+    defaultMessage: 'Continue to the form',
   },
   saveToEditForm: {
     id: 'app.containers.Admin.projects.project.saveToEditForm',
@@ -327,5 +331,101 @@ export default defineMessages({
   settingsSaveChanges: {
     id: 'app.containers.Admin.projects.project.settingsSaveChanges',
     defaultMessage: 'Save changes',
+  },
+  placementTimeline: {
+    id: 'app.containers.Admin.projects.project.placementTimeline',
+    defaultMessage: 'Timeline',
+  },
+  placementStandalone: {
+    id: 'app.containers.Admin.projects.project.placementStandalone',
+    defaultMessage: 'Standalone',
+  },
+  placementTimelineDescription: {
+    id: 'app.containers.Admin.projects.project.placementTimelineDescription',
+    defaultMessage: 'Runs as a phase, in the order you set.',
+  },
+  placementStandaloneDescription: {
+    id: 'app.containers.Admin.projects.project.placementStandaloneDescription',
+    defaultMessage: 'Runs on its own, outside the timeline.',
+  },
+  switchLockedResponses: {
+    id: 'app.containers.Admin.projects.project.switchLockedResponses',
+    defaultMessage:
+      'This phase already has responses, so the kind of survey can no longer change.',
+  },
+  switchLockedPollQuestions: {
+    id: 'app.containers.Admin.projects.project.switchLockedPollQuestions',
+    defaultMessage:
+      'This poll already has questions. Delete them first to use another kind of survey.',
+  },
+  switchSurveyMethodTitle: {
+    id: 'app.containers.Admin.projects.project.switchSurveyMethodTitle',
+    defaultMessage: 'Change the kind of survey?',
+  },
+  switchSurveyMethodIntro: {
+    id: 'app.containers.Admin.projects.project.switchSurveyMethodIntro',
+    defaultMessage:
+      'The phase stays, but some of its setup does not carry over:',
+  },
+  switchLosesAccessSettings: {
+    id: 'app.containers.Admin.projects.project.switchLosesAccessSettings',
+    defaultMessage:
+      'Access settings you changed for taking part in this phase are removed. The new kind of survey starts from the platform defaults.',
+  },
+  switchHidesSurveyForm: {
+    id: 'app.containers.Admin.projects.project.switchHidesSurveyForm',
+    defaultMessage:
+      'The survey questions are hidden. They come back if you switch back to a survey.',
+  },
+  switchClearsEmbedUrl: {
+    id: 'app.containers.Admin.projects.project.switchClearsEmbedUrl',
+    defaultMessage: 'The external survey link is removed.',
+  },
+  switchChangesNotifications: {
+    id: 'app.containers.Admin.projects.project.switchChangesNotifications',
+    defaultMessage:
+      'Notifications, insights and reports follow the new kind of survey.',
+  },
+  switchCancel: {
+    id: 'app.containers.Admin.projects.project.switchCancel',
+    defaultMessage: 'Cancel',
+  },
+  switchConfirm: {
+    id: 'app.containers.Admin.projects.project.switchConfirm',
+    defaultMessage: 'Change',
+  },
+  pollQuestions: {
+    id: 'app.containers.Admin.projects.project.pollQuestions',
+    defaultMessage: 'Poll questions',
+  },
+  inputsSection: {
+    id: 'app.containers.Admin.projects.project.inputsSection',
+    defaultMessage: 'Inputs',
+  },
+  causesSection: {
+    id: 'app.containers.Admin.projects.project.causesSection',
+    defaultMessage: 'Causes',
+  },
+  causesSectionDescription: {
+    id: 'app.containers.Admin.projects.project.causesSectionDescription',
+    defaultMessage: 'Set up the causes people can volunteer for.',
+  },
+  addIdeasFromPreviousPhase: {
+    id: 'app.containers.Admin.projects.project.addIdeasFromPreviousPhase',
+    defaultMessage: 'Add ideas from previous phase',
+  },
+  addIdeasFromPreviousPhaseDescription: {
+    id: 'app.containers.Admin.projects.project.addIdeasFromPreviousPhaseDescription',
+    defaultMessage:
+      'Pick a phase in the timeline, then drag its ideas onto this phase to use them as voting options.',
+  },
+  editAccess: {
+    id: 'app.containers.Admin.projects.project.editAccess',
+    defaultMessage: 'Edit access',
+  },
+  editAccessDescription: {
+    id: 'app.containers.Admin.projects.project.editAccessDescription',
+    defaultMessage:
+      'You can specify who can take each action, and ask additional questions to participants to collect more information.',
   },
 });
