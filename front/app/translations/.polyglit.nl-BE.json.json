@@ -12066,8 +12066,8 @@
   },
   "app.containers.SignIn.signInError2": {
     "state": "verified",
-    "verified_at": "2026-03-18T11:49:32.481338Z",
-    "verified_by": "Admin"
+    "verified_at": "2026-09-16T09:25:41.015073Z",
+    "verified_by": "KenVM"
   },
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": {
     "state": "verified",
