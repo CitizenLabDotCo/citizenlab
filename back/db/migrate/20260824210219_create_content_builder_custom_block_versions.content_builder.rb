@@ -15,10 +15,6 @@ class CreateContentBuilderCustomBlockVersions < ActiveRecord::Migration[7.2]
       t.jsonb :messages, null: false, default: {}
       t.integer :sdk_version, null: false, default: 1
       t.jsonb :toolchain, null: false, default: {}
-      # No foreign key: content_builder_custom_block_ai_sessions is created by the next
-      # migration, and a version can outlive the session that produced it.
-      t.uuid :ai_session_id, null: true
-
       t.timestamps
     end
 

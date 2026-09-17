@@ -187,7 +187,6 @@ resource 'CustomBlocks' do
       parameter :compile_state, 'One of pending, compiled, failed. Defaults to pending.'
       parameter :manifest, 'The manifest describing the block.'
       parameter :messages, 'The message catalogs of the block, per locale.'
-      parameter :ai_session_id, 'The AI session this version originates from.'
     end
 
     let(:custom_block) { create(:custom_block) }

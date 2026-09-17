@@ -59,6 +59,20 @@ module ReportBuilder
     accepts_nested_attributes_for :layout
 
     scope :global, -> { where(phase_id: nil) }
+
+    # A report about a whole project is created as an empty shell the moment an
+    # admin asks for one, and the composer only fills it minutes later. Listing
+    # the shell offers a report that opens onto nothing, so a project report
+    # earns its place in the list by having content — which also keeps a run that
+    # died out of the list rather than leaving an empty report behind.
+    #
+    # Reports that are not about a project are listed the moment they exist:
+    # those are created by hand, and starting one empty is the point.
+    scope :listable, lambda {
+      left_joins(:layout).where(
+        "report_builder_reports.project_id IS NULL OR content_builder_layouts.craftjs_json <> '{}'::jsonb"
+      )
+    }
     pg_search_scope :search_name, against: :name_tsvector, using: {
       tsearch: { tsvector_column: 'name_tsvector', prefix: true }
     }

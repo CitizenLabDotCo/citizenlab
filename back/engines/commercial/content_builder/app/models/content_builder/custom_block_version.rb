@@ -14,7 +14,6 @@
 #  messages        :jsonb            not null
 #  sdk_version     :integer          default(1), not null
 #  toolchain       :jsonb            not null
-#  ai_session_id   :uuid
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #

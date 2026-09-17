@@ -29,9 +29,7 @@ ContentBuilder::Engine.routes.draw do
         resources :versions, only: %i[index create], controller: 'custom_block_versions'
         get 'versions/:number/bundle', to: 'custom_block_versions#bundle', constraints: { number: /\d+/ }
         patch 'versions/:number/compile', to: 'custom_block_versions#compile', constraints: { number: /\d+/ }
-        resources :ai_sessions, only: :create, controller: 'custom_block_ai_sessions'
       end
-      post 'custom_block_ai_sessions/:id/turns', to: 'custom_block_ai_sessions#create_turn'
       resources :reporting_queries, only: %i[create]
     end
   end

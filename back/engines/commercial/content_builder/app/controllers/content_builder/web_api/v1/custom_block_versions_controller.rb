@@ -73,7 +73,7 @@ module ContentBuilder
         end
 
         def params_for_create
-          params.require(:version).permit(:source, :bundle, :compile_state, :ai_session_id, { manifest: {}, messages: {} })
+          params.require(:version).permit(:source, :bundle, :compile_state, { manifest: {}, messages: {} })
         end
 
         def params_for_compile

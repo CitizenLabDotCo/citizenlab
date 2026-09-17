@@ -102,25 +102,9 @@ export interface ICustomBlock {
   data: ICustomBlockData;
 }
 
-export interface ICustomBlocks {
-  data: ICustomBlockData[];
-}
-
 export interface ICustomBlocksParams {
-  status?: CustomBlockStatus;
   // Set when listing the versions of one block rather than the blocks themselves.
   versionsOf?: string;
-}
-
-export interface IAddCustomBlock {
-  title_multiloc: Multiloc;
-}
-
-export interface IUpdateCustomBlock {
-  id: string;
-  title_multiloc?: Multiloc;
-  description_multiloc?: Multiloc;
-  status?: CustomBlockStatus;
 }
 
 export interface ICustomBlockVersionData {
@@ -143,16 +127,6 @@ export interface ICustomBlockVersion {
 
 export interface ICustomBlockVersions {
   data: ICustomBlockVersionData[];
-}
-
-export interface IAddCustomBlockVersion {
-  customBlockId: string;
-  source: string;
-  bundle: string;
-  compile_state: CustomBlockCompileState;
-  manifest: BlockManifest;
-  messages: BlockMessages;
-  ai_session_id?: string;
 }
 
 // Served with Content-Type: text/javascript; imported at runtime by the

@@ -24,7 +24,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 
-import CustomBlocksToolboxSection from 'components/admin/ContentBuilder/CustomBlocks/CustomBlocksToolboxSection';
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 import Section from 'components/admin/ContentBuilder/Toolbox/Section';
@@ -221,36 +220,42 @@ const ReportBuilderToolbox = ({
               icon="layout-white-space"
               label={formatMessage(WIDGET_TITLES.WhiteSpace)}
             />
-            <DraggableElement
-              id="e2e-draggable-cover"
-              component={<Cover />}
-              icon="page"
-              label={formatMessage(WIDGET_TITLES.Cover)}
-            />
-            <DraggableElement
-              id="e2e-draggable-table-of-contents"
-              component={<TableOfContents />}
-              icon="list"
-              label={formatMessage(WIDGET_TITLES.TableOfContents)}
-            />
-            <DraggableElement
-              id="e2e-draggable-divider"
-              component={<Divider />}
-              icon="minus"
-              label={formatMessage(WIDGET_TITLES.Divider)}
-            />
-            <DraggableElement
-              id="e2e-draggable-key-figures"
-              component={<KeyFigures />}
-              icon="chart-bar"
-              label={formatMessage(WIDGET_TITLES.KeyFigures)}
-            />
-            <DraggableElement
-              id="e2e-draggable-page-break"
-              component={<PageBreak />}
-              icon="page"
-              label={formatMessage(WIDGET_TITLES.PageBreak)}
-            />
+            {/* The document furniture the generated reports are composed from.
+                Behind the same flag as the composer that places them. */}
+            {llmReportingEnabled && (
+              <>
+                <DraggableElement
+                  id="e2e-draggable-cover"
+                  component={<Cover />}
+                  icon="page"
+                  label={formatMessage(WIDGET_TITLES.Cover)}
+                />
+                <DraggableElement
+                  id="e2e-draggable-table-of-contents"
+                  component={<TableOfContents />}
+                  icon="list"
+                  label={formatMessage(WIDGET_TITLES.TableOfContents)}
+                />
+                <DraggableElement
+                  id="e2e-draggable-divider"
+                  component={<Divider />}
+                  icon="minus"
+                  label={formatMessage(WIDGET_TITLES.Divider)}
+                />
+                <DraggableElement
+                  id="e2e-draggable-key-figures"
+                  component={<KeyFigures />}
+                  icon="chart-bar"
+                  label={formatMessage(WIDGET_TITLES.KeyFigures)}
+                />
+                <DraggableElement
+                  id="e2e-draggable-page-break"
+                  component={<PageBreak />}
+                  icon="page"
+                  label={formatMessage(WIDGET_TITLES.PageBreak)}
+                />
+              </>
+            )}
             <DraggableElement
               id="e2e-draggable-iframe"
               component={
@@ -463,7 +468,6 @@ const ReportBuilderToolbox = ({
               />
             )}
           </Section>
-          {llmReportingEnabled && <CustomBlocksToolboxSection />}
         </Box>
         <Box p="8px" display={selectedTab === 'ai' ? 'block' : 'none'}>
           <Analysis selectedLocale={selectedLocale} />

@@ -7,7 +7,7 @@ module ReportBuilder
         skip_before_action :authenticate_user
 
         def index
-          default_scope = ReportBuilder::Report.global # No phase_id means global reports
+          default_scope = ReportBuilder::Report.global.listable # No phase_id means global reports
           finder_params = {}.tap do |f_params|
             # Avoid to create params with nil values if they are not present
             f_params[:text_search] = params[:search] if params.key?(:search)
@@ -21,7 +21,7 @@ module ReportBuilder
             end
 
             if params.key?(:community_monitor)
-              default_scope = ReportBuilder::Report.all # We need to include reports with a phase id to find community_monitor
+              default_scope = ReportBuilder::Report.listable # We need to include reports with a phase id to find community_monitor
               f_params[:community_monitor] = true # Just the presence of the param is enough - false does not mean anything
             end
           end

@@ -37,11 +37,4 @@ FactoryBot.define do
       compile_state { 'pending' }
     end
   end
-
-  factory :custom_block_ai_session, class: 'ContentBuilder::CustomBlockAISession' do
-    association :custom_block
-
-    status { 'active' }
-    transcript { [] }
-  end
 end

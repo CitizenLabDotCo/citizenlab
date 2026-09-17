@@ -70,13 +70,11 @@ RSpec.describe ContentBuilder::CustomBlock do
   end
 
   describe 'destroying' do
-    it 'destroys the versions and the AI sessions of the block' do
+    it 'destroys the versions of the block' do
       custom_block = create(:custom_block, :published)
-      create(:custom_block_ai_session, custom_block: custom_block)
 
       expect { custom_block.destroy! }
         .to change(ContentBuilder::CustomBlockVersion, :count).by(-1)
-        .and change(ContentBuilder::CustomBlockAISession, :count).by(-1)
     end
   end
 end

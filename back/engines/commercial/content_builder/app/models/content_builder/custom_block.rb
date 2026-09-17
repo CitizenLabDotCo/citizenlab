@@ -35,11 +35,6 @@ module ContentBuilder
       class_name: 'ContentBuilder::CustomBlockVersion',
       inverse_of: :custom_block,
       dependent: :destroy
-    has_many :ai_sessions,
-      class_name: 'ContentBuilder::CustomBlockAISession',
-      inverse_of: :custom_block,
-      dependent: :destroy
-
     belongs_to :current_version, class_name: 'ContentBuilder::CustomBlockVersion', optional: true
     belongs_to :created_by, class_name: 'User', optional: true
 

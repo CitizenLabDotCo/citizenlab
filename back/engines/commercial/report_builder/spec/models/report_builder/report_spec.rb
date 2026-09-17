@@ -83,6 +83,29 @@ RSpec.describe ReportBuilder::Report do
     end
   end
 
+  describe '.listable' do
+    it 'hides a project report until the run that created it has written something' do
+      report = create(:report, :with_project)
+      report.layout.update!(craftjs_json: {})
+
+      expect(described_class.listable).not_to include(report)
+    end
+
+    it 'lists a project report once it has content' do
+      report = create(:report, :with_project)
+      report.layout.update!(craftjs_json: { 'ROOT' => { 'type' => 'div' } })
+
+      expect(described_class.listable).to include(report)
+    end
+
+    it 'lists a report that is not about a project even while it is empty' do
+      report = create(:report)
+      report.layout.update!(craftjs_json: {})
+
+      expect(described_class.listable).to include(report)
+    end
+  end
+
   describe 'deletion' do
     it 'takes its ready notifications with it, rather than being refused by the foreign key' do
       report = create(:report, :with_phase)

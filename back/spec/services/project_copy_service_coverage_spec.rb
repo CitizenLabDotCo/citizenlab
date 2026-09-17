@@ -261,7 +261,6 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
       # a project, so a project copy does not carry them.
       llm_reporting: %w[
         ContentBuilder::CustomBlock
-        ContentBuilder::CustomBlockAISession
         ContentBuilder::CustomBlockVersion
         ReportBuilder::ReportChat
       ],

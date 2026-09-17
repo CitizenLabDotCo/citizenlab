@@ -225,7 +225,6 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
       # behind the `llm_reporting` flag and has no template story yet.
       llm_reporting: %w[
         ContentBuilder::CustomBlock
-        ContentBuilder::CustomBlockAISession
         ContentBuilder::CustomBlockVersion
         ReportBuilder::ReportChat
       ],
