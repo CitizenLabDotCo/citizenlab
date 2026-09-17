@@ -111,9 +111,7 @@ const PublicationButtons = ({ project }: { project: IProjectData }) => {
         </Tooltip>
       )}
 
-      {isProjectReviewEnabled &&
-        (<ReviewFlow project={project} />
-        )}
+      {isProjectReviewEnabled && <ReviewFlow project={project} />}
 
       <ScheduleLaunchModal
         opened={scheduleModalOpen}

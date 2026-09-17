@@ -121,6 +121,17 @@ describe CustomFieldService do
     end
   end
 
+  describe 'remove_unknown_registration_custom_fields' do
+    it 'keeps values for registration fields that exist and drops the rest' do
+      create(:custom_field, key: 'birthyear_known')
+      create(:custom_field, key: 'idea_only', resource_type: 'CustomForm', resource: create(:custom_form))
+
+      values = { birthyear_known: 1990, 'postal_code' => '1212', 'idea_only' => 'x' }
+
+      expect(described_class.remove_unknown_registration_custom_fields(values)).to eq('birthyear_known' => 1990)
+    end
+  end
+
   describe 'keyify' do
     it 'throws out non-valid chars' do
       str = (0..255).map { |i| i.chr('UTF-8').to_s }.join # keyify (parameterize call) does not work with ASCII strings

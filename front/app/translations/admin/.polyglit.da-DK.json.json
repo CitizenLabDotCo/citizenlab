@@ -12044,6 +12044,11 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.tools.apiTokens.lastUserAgent": {
+    "state": "verified",
+    "verified_at": "2026-09-16T15:47:07.758757Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Admin.tools.apiTokens.link": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
@@ -17564,6 +17569,21 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.SettingsPage.deleteAreaButton": {
+    "state": "verified",
+    "verified_at": "2026-09-16T15:47:07.758757Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.AdminPage.SettingsPage.deleteAreaModalTitle": {
+    "state": "verified",
+    "verified_at": "2026-09-16T15:47:07.758757Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.AdminPage.SettingsPage.deleteAreaModalWarning": {
+    "state": "verified",
+    "verified_at": "2026-09-16T15:47:07.758757Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.AdminPage.SettingsPage.demographicQuestions": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
@@ -20814,6 +20834,11 @@
     "verified_at": "2026-07-20T17:26:51.287036Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.containers.admin.ContentBuilder.allFilesAlreadyUsed": {
+    "state": "verified",
+    "verified_at": "2026-09-16T15:47:07.758757Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.admin.ContentBuilder.buttonMultiloc": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
@@ -21009,6 +21034,11 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "app.containers.admin.ContentBuilder.noFilesYet": {
+    "state": "verified",
+    "verified_at": "2026-09-16T15:47:07.758757Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.admin.ContentBuilder.noPageSelected": {
     "state": "verified",
     "verified_at": "2026-07-20T17:26:51.287036Z",
@@ -21123,6 +21153,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
+  },
+  "app.containers.admin.ContentBuilder.uploadFilesToPage": {
+    "state": "verified",
+    "verified_at": "2026-09-16T15:47:07.758757Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.containers.admin.ContentBuilder.urlPlaceholder": {
     "state": "verified",
