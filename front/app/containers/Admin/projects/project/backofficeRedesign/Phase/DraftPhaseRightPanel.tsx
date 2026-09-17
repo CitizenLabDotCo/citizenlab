@@ -23,7 +23,7 @@ interface Props {
 }
 
 // The settings of a phase that isn't saved yet. They are sent along when the
-// build panel creates the phase, so there is no save button here.
+// phase is created, which the header's save button does.
 const DraftPhaseRightPanel = ({
   formData,
   validationErrors,
