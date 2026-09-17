@@ -15,6 +15,7 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
+import { usePhaseSave } from '../../_shared/PhaseSaveContext';
 import messages from '../../messages';
 
 import AddPreviousPhaseIdeasModal from './AddPreviousPhaseIdeasModal';
@@ -34,6 +35,7 @@ const FormSection = ({ projectId, participationMethod, phaseId }: Props) => {
   const [questionsModalOpened, setQuestionsModalOpened] = useState(false);
   const [ideasModalOpened, setIdeasModalOpened] = useState(false);
   const { data: permissions } = usePhasePermissions({ phaseId });
+  const phaseSave = usePhaseSave();
 
   const formEditor = getMethodConfig(participationMethod).formEditor;
 
@@ -51,11 +53,18 @@ const FormSection = ({ projectId, participationMethod, phaseId }: Props) => {
 
   const openForm = () => {
     setQuestionsModalOpened(false);
-    clHistory.push(
-      `/admin/projects/${projectId}/phases/${phaseId}/${
-        survey ? 'survey-form' : 'form'
-      }/edit`
-    );
+    const go = () =>
+      clHistory.push(
+        `/admin/projects/${projectId}/phases/${phaseId}/${
+          survey ? 'survey-form' : 'form'
+        }/edit`
+      );
+
+    if (phaseSave) {
+      phaseSave.leave(go);
+    } else {
+      go();
+    }
   };
 
   return (
