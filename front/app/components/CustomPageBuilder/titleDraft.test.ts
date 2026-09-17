@@ -1,9 +1,6 @@
 import { SerializedNodes } from '@craftjs/core';
 
-import {
-  extractCustomPageAttributeDrafts,
-  hasCustomPageAttributeDrafts,
-} from './customPageAttributeDrafts';
+import { getTitleDraft } from './titleDraft';
 
 const nodesWithTitle = (props: Record<string, unknown>) =>
   ({
@@ -11,13 +8,11 @@ const nodesWithTitle = (props: Record<string, unknown>) =>
     T: { type: { resolvedName: 'CustomPageTitle' }, nodes: [], props },
   } as unknown as SerializedNodes);
 
-describe('customPageAttributeDrafts', () => {
+describe('getTitleDraft', () => {
   // title_multiloc is the page name, so a blanked title would leave the page unnamed.
   it('refuses a title emptied in every locale', () => {
-    const drafts = extractCustomPageAttributeDrafts(
-      nodesWithTitle({ title: { en: '  ', nl: '' } })
-    );
-
-    expect(hasCustomPageAttributeDrafts(drafts)).toBe(false);
+    expect(
+      getTitleDraft(nodesWithTitle({ title: { en: '  ', nl: '' } }))
+    ).toBeUndefined();
   });
 });

@@ -15,14 +15,13 @@ import { CUSTOM_PAGE_BUILDER_PATH } from 'components/admin/ContentBuilder/consta
 import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
-import {
-  extractCustomPageAttributeDrafts,
-  hasCustomPageAttributeDrafts,
-  stripCustomPageAttributeDrafts,
-} from 'components/CustomPageBuilder/customPageAttributeDrafts';
 import { normalizeCustomPageLayout } from 'components/CustomPageBuilder/defaultLayout';
 import CustomPageBuilderEditModePreview from 'components/CustomPageBuilder/EditModePreview';
 import Editor from 'components/CustomPageBuilder/Editor';
+import {
+  getTitleDraft,
+  stripTitleDraft,
+} from 'components/CustomPageBuilder/titleDraft';
 import CustomPageBuilderToolbox from 'components/CustomPageBuilder/Toolbox';
 import CustomPageBuilderTopBar from 'components/CustomPageBuilder/TopBar';
 import DescriptionBuilderContent from 'components/DescriptionBuilder/DescriptionBuilderContent';
@@ -95,24 +94,21 @@ const CustomPageBuilderPage = ({
     0;
 
   // Two-step save: commit the title widget's draft to the page, then store the layout
-  // without it (see customPageAttributeDrafts.ts).
+  // without it (see titleDraft.ts).
   const handleSave = async (nodes: SerializedNodes): Promise<void> => {
     if (isSaving) return;
     setIsSaving(true);
     setSaveError(false);
 
     try {
-      const drafts = extractCustomPageAttributeDrafts(nodes);
-      if (hasCustomPageAttributeDrafts(drafts)) {
-        await updateCustomPage({
-          id: staticPageId,
-          title_multiloc: drafts.titleMultiloc,
-        });
+      const title = getTitleDraft(nodes);
+      if (title) {
+        await updateCustomPage({ id: staticPageId, title_multiloc: title });
       }
 
       await upsertCustomPageLayout({
         staticPageId,
-        craftjs_json: stripCustomPageAttributeDrafts(nodes),
+        craftjs_json: stripTitleDraft(nodes),
       });
       iframeRef.current?.contentWindow?.postMessage(
         { layoutSaved: true },
