@@ -37,13 +37,11 @@ const volunteeringPhase = buildPhase('volunteering-phase', 'volunteering');
 const spotlightSurvey = (id: string) =>
   buildPhase(id, 'native_survey', { placement_type: 'standalone' });
 
-let mockParallelParticipation = false;
 let mockPublicationStatus: IProjectData['attributes']['publication_status'] =
   'published';
 let mockTimelinePhases: IPhaseData[] = [volunteeringPhase];
 let mockStandalonePhases: IPhaseData[] = [];
 
-jest.mock('hooks/useFeatureFlag', () => () => mockParallelParticipation);
 jest.mock('api/me/useAuthUser', () => () => ({ data: undefined }));
 jest.mock('api/events/useEvents', () => () => ({ data: { data: [] } }));
 jest.mock(
@@ -81,7 +79,6 @@ jest.mock(
 
 describe('ProjectActionButtons — volunteering CTA', () => {
   beforeEach(() => {
-    mockParallelParticipation = false;
     mockPublicationStatus = 'published';
     mockTimelinePhases = [volunteeringPhase];
     mockStandalonePhases = [];
@@ -110,7 +107,6 @@ describe('ProjectActionButtons — volunteering CTA', () => {
   });
 
   it('hides the Volunteer button when the timeline option is unchecked in the participation box', () => {
-    mockParallelParticipation = true;
     render(
       <ProjectActionButtons
         projectId="projectId"
@@ -121,7 +117,6 @@ describe('ProjectActionButtons — volunteering CTA', () => {
   });
 
   it('collapses into the Participate modal when volunteering is joined by two open spotlight surveys', () => {
-    mockParallelParticipation = true;
     mockStandalonePhases = [
       spotlightSurvey('survey-1'),
       spotlightSurvey('survey-2'),
