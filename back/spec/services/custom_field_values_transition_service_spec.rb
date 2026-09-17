@@ -82,4 +82,19 @@ RSpec.describe CustomFieldValuesTransitionService do
       expect(answers['u_unknown']).to have_attributes(custom_field_id: nil, value: 'x')
     end
   end
+
+  describe '#custom_field_values' do
+    it 'returns the answers as a hash, without the answers marked for destruction' do
+      user = build(:user, custom_field_answers: [
+        build(:custom_field_answer, key: 'kept', value: 'yes'),
+        build(:custom_field_answer, key: 'gone', value: 'no').tap(&:mark_for_destruction)
+      ])
+
+      expect(service.custom_field_values(user)).to eq('kept' => 'yes')
+    end
+
+    it 'returns an empty hash without a record' do
+      expect(service.custom_field_values(nil)).to eq({})
+    end
+  end
 end

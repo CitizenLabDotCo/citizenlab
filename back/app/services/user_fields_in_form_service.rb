@@ -59,8 +59,7 @@ class UserFieldsInFormService
 
       allowed_keys = permissions_custom_fields.map { |pcf| pcf.custom_field.key }.uniq
 
-      user_values = current_user
-        .custom_field_answers.to_h { [it.key, it.value] }
+      user_values = CustomFieldValuesTransitionService.new.custom_field_values(current_user)
         .select { |key, _value| allowed_keys.include?(key) }
         .transform_keys do |key|
           prefix_key(key)
@@ -96,7 +95,7 @@ class UserFieldsInFormService
     def merge_user_fields_from_idea_into_user!(idea, user)
       return unless user
 
-      user_values_from_idea = idea.custom_field_answers.to_h { [it.key, it.value] }
+      user_values_from_idea = CustomFieldValuesTransitionService.new.custom_field_values(idea)
         .select { |key, _value| key.start_with?(prefix) }
         .transform_keys { |key| key[prefix.length..] }
 

@@ -69,7 +69,7 @@ class PublicApi::V2::IdeaSerializer < PublicApi::V2::BaseSerializer
   end
 
   def custom_field_values
-    object.custom_field_answers.to_h { [it.key, it.value] }
+    CustomFieldValuesTransitionService.new.custom_field_values(object)
   end
 
   def creation_phase_title

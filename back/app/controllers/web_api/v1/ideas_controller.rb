@@ -410,7 +410,7 @@ class WebApi::V1::IdeasController < ApplicationController
     end
     params[:idea][:cosponsor_ids] ||= [] if params[:idea].key?(:cosponsor_ids)
     params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
-    stored_values = input.custom_field_answers.to_h { [it.key, it.value] }
+    stored_values = CustomFieldValuesTransitionService.new.custom_field_values(input)
     params_service.mark_custom_field_values_to_clear!(stored_values, params[:idea][:custom_field_values])
 
     update_params = idea_params(input.custom_form).to_h

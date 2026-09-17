@@ -75,8 +75,8 @@ class UserService
       attributes = attributes.to_h.deep_stringify_keys
       incoming_values = (attributes.delete('custom_field_values') || {})
         .merge(attributes.extract!('gender', 'birthyear', 'domicile').compact)
-      values = user.custom_field_answers.to_h { [it.key, it.value] }.merge(incoming_values)
-      CustomFieldValuesTransitionService.new.assign(user, values)
+      transition_service = CustomFieldValuesTransitionService.new
+      transition_service.assign(user, transition_service.custom_field_values(user).merge(incoming_values))
       user.assign_attributes(attributes)
       user
     end

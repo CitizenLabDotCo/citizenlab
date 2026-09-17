@@ -399,7 +399,7 @@ class WebApi::V1::UsersController < ApplicationController
   def update_params
     @update_params ||= permitted_attributes(@user).tap do |attrs|
       attrs[:onboarding] = @user.onboarding.merge(attrs[:onboarding].to_h)
-      stored_values = @user.custom_field_answers.to_h { [it.key, it.value] }
+      stored_values = CustomFieldValuesTransitionService.new.custom_field_values(@user)
       attrs[:custom_field_values] = params_service.updated_custom_field_values(stored_values, attrs[:custom_field_values].to_h)
       CustomFieldService.new.compact_custom_field_values!(attrs[:custom_field_values])
 

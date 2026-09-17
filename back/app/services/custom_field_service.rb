@@ -67,7 +67,7 @@ class CustomFieldService
 
   # NOTE: Needs refactor. This is called by idea serializer so will have an n+1 issue
   def self.remove_not_visible_fields(idea, current_user)
-    custom_field_values = idea.custom_field_answers.to_h { [it.key, it.value] }
+    custom_field_values = CustomFieldValuesTransitionService.new.custom_field_values(idea)
     return custom_field_values if idea.draft?
 
     # If super admin, we return all custom fields.

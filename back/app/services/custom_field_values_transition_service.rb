@@ -20,6 +20,12 @@ class CustomFieldValuesTransitionService
     end
   end
 
+  def custom_field_values(record)
+    return {} if !record
+
+    record.custom_field_answers.reject(&:marked_for_destruction?).to_h { [it.key, it.value] }
+  end
+
   private
 
   def field_ids_by_key(record, keys)

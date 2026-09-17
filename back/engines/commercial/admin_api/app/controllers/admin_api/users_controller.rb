@@ -64,7 +64,7 @@ module AdminApi
 
     # The API keeps exposing custom_field_values, now derived from the answers.
     def serialize_user(user)
-      user.as_json.merge('custom_field_values' => user.custom_field_answers.to_h { [it.key, it.value] })
+      user.as_json.merge('custom_field_values' => CustomFieldValuesTransitionService.new.custom_field_values(user))
     end
 
     def set_user

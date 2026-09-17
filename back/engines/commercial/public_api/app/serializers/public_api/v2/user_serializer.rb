@@ -38,7 +38,7 @@ class PublicApi::V2::UserSerializer < PublicApi::V2::BaseSerializer
   end
 
   def custom_field_values
-    object.custom_field_answers.to_h { [it.key, it.value] }
+    CustomFieldValuesTransitionService.new.custom_field_values(object)
   end
 
   private
