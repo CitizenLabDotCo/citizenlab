@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
@@ -11,19 +11,16 @@ import { IProjectData } from 'api/projects/types';
 import usePhaseFileAttachments, {
   fileAttachmentErrors,
 } from 'containers/Admin/projects/_shared/usePhaseFileAttachments';
-import {
-  SubmitStateType,
-  ValidationErrors,
-} from 'containers/Admin/projects/project/phaseSetup/typings';
+import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 import validate from 'containers/Admin/projects/project/phaseSetup/validate';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import ProjectWorkspace from '..';
+import { SaveReason, useRegisterPhaseSaver } from '../_shared/PhaseSaveContext';
 import BackToProjectSetup from '../Phase/BackToProjectSetup';
 import BuildFields from '../Phase/BuildPanel/BuildFields';
-import SaveBar from '../Phase/BuildPanel/SaveBar';
 import DraftPhaseRightPanel from '../Phase/DraftPhaseRightPanel';
 import PhasePreview from '../Phase/PhasePreview';
 
@@ -37,9 +34,6 @@ interface Props {
     participationMethod: ParticipationMethod
   ) => IUpdatedPhaseProperties;
 }
-
-const hasTitle = ({ title_multiloc }: IUpdatedPhaseProperties) =>
-  Object.values(title_multiloc ?? {}).some((title) => title.trim() !== '');
 
 // Builds a phase in the browser only. The phase is created in one request once
 // the admin saves it with a title and dates, and the build view of the saved
@@ -55,15 +49,13 @@ const NewPhaseWorkspace = ({
   const { formatMessage } = useIntl();
   const projectId = project.id;
   const { data: phases } = usePhases(projectId);
-  const { mutate: addPhase } = useAddPhase();
+  const { mutateAsync: addPhase } = useAddPhase();
 
   const [participationMethod, setParticipationMethod] = useState(
     initialParticipationMethod
   );
   const [formData, setFormData] = useState(initialFormData);
   const [dirty, setDirty] = useState(false);
-  const [submitState, setSubmitState] = useState<SubmitStateType>('enabled');
-  const [processing, setProcessing] = useState(false);
   const [errors, setErrors] = useState<CLErrors | null>(null);
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
     {}
@@ -79,45 +71,13 @@ const NewPhaseWorkspace = ({
     onStage: () => setDirty(true),
   });
 
-  useEffect(() => {
-    if (!dirty) return;
-
-    window.onbeforeunload = () => true;
-    return () => {
-      window.onbeforeunload = null;
-    };
-  }, [dirty]);
-
   const updateFormData = (newData: Partial<IUpdatedPhaseProperties>) => {
     setDirty(true);
-    setSubmitState('enabled');
     setFormData((formData) => ({ ...formData, ...newData }));
   };
 
-  const handleError = (reason: unknown) => {
-    setErrors(fileAttachmentErrors(reason));
-    setProcessing(false);
-    setSubmitState('error');
-  };
-
-  const saveAttachmentsAndOpen = (phaseId: string) => {
-    files
-      .save(phaseId)
-      .then(() => {
-        setDirty(false);
-        clHistory.push(`/admin/projects/${projectId}/phases/${phaseId}/setup`);
-      })
-      .catch(handleError);
-  };
-
-  const handleSave = () => {
-    if (processing) return;
-
-    if (createdPhaseId.current) {
-      setProcessing(true);
-      saveAttachmentsAndOpen(createdPhaseId.current);
-      return;
-    }
+  const createPhase = async () => {
+    if (createdPhaseId.current) return createdPhaseId.current;
 
     const { isValidated, errors } = validate(
       formData,
@@ -128,22 +88,31 @@ const NewPhaseWorkspace = ({
     );
 
     setValidationErrors(errors);
-    if (!isValidated) return;
+    if (!isValidated) throw new Error('Invalid phase');
 
-    setProcessing(true);
-    addPhase(
-      { projectId, ...formData },
-      {
-        onSuccess: ({ data: phase }) => {
-          createdPhaseId.current = phase.id;
-          saveAttachmentsAndOpen(phase.id);
-        },
-        onError: handleError,
-      }
-    );
+    const { data: phase } = await addPhase({ projectId, ...formData });
+    createdPhaseId.current = phase.id;
+    return phase.id;
   };
 
-  const canSave = hasTitle(formData) && !!formData.start_at;
+  const save = async (reason: SaveReason) => {
+    try {
+      const phaseId = await createPhase();
+      await files.save(phaseId);
+      setDirty(false);
+
+      // Leaving goes on to wherever the admin was headed. Saving from the
+      // header opens the build view of the new phase.
+      if (reason === 'button') {
+        clHistory.push(`/admin/projects/${projectId}/phases/${phaseId}/setup`);
+      }
+    } catch (error) {
+      setErrors(fileAttachmentErrors(error));
+      throw error;
+    }
+  };
+
+  useRegisterPhaseSaver('draft', { dirty, save });
 
   return (
     <ProjectWorkspace
@@ -192,12 +161,6 @@ const NewPhaseWorkspace = ({
                 }}
               />
             </Box>
-
-            <SaveBar
-              status={canSave ? submitState : 'disabled'}
-              loading={processing}
-              onClick={handleSave}
-            />
           </Box>
         </Box>
       }
