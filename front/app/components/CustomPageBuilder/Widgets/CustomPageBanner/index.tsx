@@ -3,13 +3,13 @@ import React from 'react';
 import { UserComponent, useEditor } from '@craftjs/core';
 
 import WidgetPlaceholder from 'components/admin/ContentBuilder/Widgets/WidgetPlaceholder';
+import heroBannerMessages from 'components/admin/GenericHeroBannerForm/messages';
 import CustomPageHeader from 'components/CustomPageHeader';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import { bannerHasContent } from '../../defaultLayout';
 
-import messages from './messages';
 import Settings from './Settings';
 import { CustomPageBannerProps } from './types';
 
@@ -28,7 +28,7 @@ const CustomPageBanner: UserComponent<CustomPageBannerProps> = ({
   if (!bannerHasContent({ image, ...content })) {
     return inBuilder ? (
       <WidgetPlaceholder iconName="image">
-        <FormattedMessage {...messages.noBannerYet} />
+        <FormattedMessage {...heroBannerMessages.noBannerYet} />
       </WidgetPlaceholder>
     ) : null;
   }
@@ -42,7 +42,7 @@ CustomPageBanner.craft = {
     settings: Settings,
   },
   custom: {
-    title: messages.title,
+    title: heroBannerMessages.bannerWidgetTitle,
     noPointerEvents: true,
   },
 };

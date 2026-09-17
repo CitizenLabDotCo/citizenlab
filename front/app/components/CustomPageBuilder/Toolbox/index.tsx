@@ -21,8 +21,8 @@ import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import heroBannerMessages from 'components/admin/GenericHeroBannerForm/messages';
 import CustomPageBanner from 'components/CustomPageBuilder/Widgets/CustomPageBanner';
-import bannerMessages from 'components/CustomPageBuilder/Widgets/CustomPageBanner/messages';
 import ProjectsByFilter from 'components/CustomPageBuilder/Widgets/ProjectsByFilter';
 import projectsMessages from 'components/CustomPageBuilder/Widgets/ProjectsByFilter/messages';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
@@ -62,7 +62,7 @@ const CustomPageBuilderToolbox = () => {
             />
           }
           icon="image"
-          label={formatMessage(bannerMessages.title)}
+          label={formatMessage(heroBannerMessages.bannerWidgetTitle)}
         />
       </Section>
       <Section>

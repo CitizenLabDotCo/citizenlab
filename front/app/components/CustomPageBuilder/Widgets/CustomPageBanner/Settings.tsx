@@ -16,7 +16,6 @@ import CTARadioButtons from 'components/LandingPages/admin/CTARadioButtons';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from './messages';
 import { CustomPageBannerProps } from './types';
 
 const CTA_TYPES: ICustomPageAttributes['banner_cta_button_type'][] = [
@@ -111,7 +110,9 @@ const CustomPageBannerSettings = () => {
           heroBannerMessages.bannerHeaderSubtitle
         )}
       />
-      <SubSectionTitle>{formatMessage(messages.buttonTitle)}</SubSectionTitle>
+      <SubSectionTitle>
+        {formatMessage(heroBannerMessages.buttonTitle)}
+      </SubSectionTitle>
       <SectionField>
         <CTARadioButtons
           id="custom"
