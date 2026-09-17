@@ -98,6 +98,7 @@ module McpServer
       McpServer::Tools::CreateProject,
       McpServer::Tools::CreatePhase,
       McpServer::Tools::CreateEvent,
+      McpServer::Tools::CreateArea,
       McpServer::Tools::CreateCause,
       McpServer::Tools::CreatePollQuestion,
       McpServer::Tools::CreatePollOption,
