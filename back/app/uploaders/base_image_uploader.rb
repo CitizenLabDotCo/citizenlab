@@ -13,12 +13,6 @@ class BaseImageUploader < BaseUploader
   # Using process at the class level applies it to all versions, including the original.
   process :strip
 
-  # `private` keeps CloudFront from caching images, so a deleted image or one flagged
-  # as malware stops being served straight away. Browsers keep them for an hour.
-  def fog_attributes
-    { 'Cache-Control' => 'private, max-age=3600' }
-  end
-
   # from https://github.com/carrierwaveuploader/carrierwave/wiki/how-to:-create-random-and-unique-filenames-for-all-versioned-files#unique-filenames
   def filename
     "#{secure_token}.#{file.extension}"
