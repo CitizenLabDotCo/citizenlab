@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { useEditor } from '@craftjs/core';
-
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from 'containers/DescriptionBuilder/messages';
@@ -45,37 +43,28 @@ const CustomPageBuilderToolbox = () => {
   const filteredProjectsEnabled = useFeatureFlag({
     name: 'advanced_custom_pages',
   });
-  // One banner per page, so the entry is hidden while one is placed.
-  const { hasBanner } = useEditor((state) => ({
-    hasBanner: Object.values(state.nodes).some(
-      (node) => node.data.name === 'CustomPageBanner'
-    ),
-  }));
-
   return (
     <Container>
-      {!hasBanner && (
-        <Section>
-          <DraggableElement
-            id="e2e-draggable-custom-page-banner"
-            component={
-              <CustomPageBanner
-                layout="full_width_banner_layout"
-                headerMultiloc={{}}
-                subheaderMultiloc={{}}
-                overlayColor={null}
-                overlayOpacity={null}
-                ctaType="no_button"
-                ctaTextMultiloc={{}}
-                ctaUrl={null}
-                image={{}}
-              />
-            }
-            icon="image"
-            label={formatMessage(bannerMessages.title)}
-          />
-        </Section>
-      )}
+      <Section>
+        <DraggableElement
+          id="e2e-draggable-custom-page-banner"
+          component={
+            <CustomPageBanner
+              layout="full_width_banner_layout"
+              headerMultiloc={{}}
+              subheaderMultiloc={{}}
+              overlayColor={null}
+              overlayOpacity={null}
+              ctaType="no_button"
+              ctaTextMultiloc={{}}
+              ctaUrl={null}
+              image={{}}
+            />
+          }
+          icon="image"
+          label={formatMessage(bannerMessages.title)}
+        />
+      </Section>
       <Section>
         <DraggableElement
           id="e2e-draggable-image-text-cards"

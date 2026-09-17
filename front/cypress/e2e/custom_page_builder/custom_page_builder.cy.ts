@@ -184,7 +184,6 @@ describe('Custom page builder', () => {
       .scrollIntoView()
       .should('be.visible');
     cy.dataCy('e2e-events-widget').should('exist');
-    cy.get('#e2e-draggable-custom-page-banner').should('not.exist');
   });
 
   it('offers the page’s own files in the widget settings', () => {
