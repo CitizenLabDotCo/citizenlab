@@ -428,4 +428,17 @@ export default defineMessages({
     defaultMessage:
       'You can specify who can take each action, and ask additional questions to participants to collect more information.',
   },
+  unsavedChangesTitle: {
+    id: 'app.containers.Admin.projects.project.unsavedChangesTitle',
+    defaultMessage: 'Unsaved changes',
+  },
+  unsavedChangesDescription: {
+    id: 'app.containers.Admin.projects.project.unsavedChangesDescription',
+    defaultMessage:
+      'This phase has unsaved changes. Leaving now discards them.',
+  },
+  discardChanges: {
+    id: 'app.containers.Admin.projects.project.discardChanges',
+    defaultMessage: 'Discard changes',
+  },
 });
