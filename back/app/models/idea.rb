@@ -113,7 +113,6 @@ class Idea < ApplicationRecord
   plain_text_multiloc :title_multiloc, prepend: true
 
   # Must appear before before_destroy
-  before_save :convert_wkt_geo_answers_to_geojson
   after_update :fix_comments_count_on_projects
 
   belongs_to :assignee, class_name: 'User', optional: true
@@ -482,18 +481,6 @@ class Idea < ApplicationRecord
   #
   # RGeo gem & wkt strings:
   # https://github.com/rgeo/rgeo/blob/52d42407769d9fb5267e328ed4023db013f2b7d5/Spatial_Programming_With_RGeo.md?plain=1#L521-L528
-  def convert_wkt_geo_answers_to_geojson
-    geo_cf_keys = custom_form
-      &.custom_fields.to_a
-      .select { |field| field.input_type.in? CustomField::GEOGRAPHIC_INPUT_TYPES }
-      .map(&:key)
-    return if geo_cf_keys.empty?
-
-    custom_field_answers.each do |answer|
-      answer.value = wkt_string_to_geojson(answer.value) if answer.key.in?(geo_cf_keys) && answer.value.is_a?(String)
-    end
-  end
-
   def transitive_input_term
     current_phase_input_term || last_past_phase_input_term || first_future_phase_input_term || Phase::FALLBACK_INPUT_TERM
   end

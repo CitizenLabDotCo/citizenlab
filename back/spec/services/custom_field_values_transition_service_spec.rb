@@ -18,6 +18,14 @@ RSpec.describe CustomFieldValuesTransitionService do
       expect(answers['unknown_key']).to have_attributes(custom_field_id: nil, value: 'x')
     end
 
+    it "normalizes values through the field's input type" do
+      create(:custom_field_point, resource_type: 'User', key: 'location')
+      user = build(:user)
+      service.assign(user, { 'location' => 'POINT (4.31 50.85)' })
+
+      expect(user.answer_for_key('location').value).to eq('type' => 'Point', 'coordinates' => [4.31, 50.85])
+    end
+
     it 'links _other and _follow_up companion keys to their parent field' do
       user = build(:user)
       service.assign(user, { 'pet' => 'other', 'pet_other' => 'A ferret' })
