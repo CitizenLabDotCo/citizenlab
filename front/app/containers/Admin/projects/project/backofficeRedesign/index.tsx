@@ -7,6 +7,7 @@ import { IProjectData } from 'api/projects/types';
 
 import { useLocation } from 'utils/router';
 
+import { usePhaseSave } from './_shared/PhaseSaveContext';
 import { sectionFromPathname } from './_shared/sections';
 import useMarkSetupStep from './_shared/useMarkSetupStep';
 import WorkspaceHeader from './Header';
@@ -45,6 +46,7 @@ const ProjectWorkspace = ({
     null
   );
   const markSetupStep = useMarkSetupStep(project);
+  const phaseSave = usePhaseSave();
 
   const showDropdown = (dropdown: HeaderDropdownName | null) => {
     setOpenDropdown(dropdown);
@@ -115,9 +117,9 @@ const ProjectWorkspace = ({
               draft.rightPanel
             ) : phase ? (
               <PhaseRightPanel
-                // Its unsaved settings belong to one method: a switch starts
-                // them over.
-                key={`${phase.id}-${phase.attributes.participation_method}`}
+                // Its unsaved settings belong to one method: a switch, or
+                // discarding the changes, starts them over.
+                key={`${phase.id}-${phase.attributes.participation_method}-${phaseSave?.revision}`}
                 phase={phase}
               />
             ) : (
