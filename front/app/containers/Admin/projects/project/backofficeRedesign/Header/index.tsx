@@ -20,6 +20,7 @@ import ViewSwitch from '../Phase/ViewSwitch';
 
 import { HeaderDropdownName } from './HeaderDropdown';
 import PublishDropdown from './PublishDropdown';
+import SaveChangesButton from './SaveChangesButton';
 import ShareDropdown from './ShareDropdown';
 
 const HEADER_HEIGHT = '48px';
@@ -109,6 +110,7 @@ const WorkspaceHeader = ({
         justifyContent="flex-end"
         gap="10px"
       >
+        {(phase || draftLabel) && <SaveChangesButton />}
         <ButtonWithLink
           to="/projects/$slug"
           params={{ slug: project.attributes.slug }}
