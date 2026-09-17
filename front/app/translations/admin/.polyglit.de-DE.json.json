@@ -4484,6 +4484,16 @@
     "verified_at": "2026-06-09T07:42:55.877011Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.projectsPageMetaTitle": {
+    "state": "verified",
+    "verified_at": "2026-09-17T12:00:03.348089Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.projectsPageTitle": {
+    "state": "verified",
+    "verified_at": "2026-09-17T12:00:03.348089Z",
+    "verified_by": "eva@govocal.com"
+  },
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.sectionDescription": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
