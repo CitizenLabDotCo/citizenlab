@@ -33,6 +33,38 @@ module MultiTenancy
       datetime || raise(UnknownChurnDatetime)
     end
 
+    # The host a churned tenant moves to once its own domain is given up, or nil if it is
+    # already on `domain`. Keeps the subdomains and the registrable name, joined by dashes:
+    #   participate.mycity.gov.uk -> participate-mycity.govocal.com
+    #   www.mycity.be             -> mycity.govocal.com
+    # A citizenlab.co host keeps its subdomain as is (x.citizenlab.co -> x.govocal.com), the
+    # one rename cl2-tenant-setup installs a redirect from the old host for.
+    def govocal_host(host, domain: 'govocal.com')
+      return if host == domain || host.end_with?(".#{domain}")
+
+      labels = if host.end_with?('.citizenlab.co')
+        host.delete_suffix('.citizenlab.co').split('.')
+      else
+        parsed = PublicSuffix.parse(host, ignore_private: true)
+        [*parsed.trd&.split('.'), parsed.sld]
+      end
+      labels.shift if labels.first == 'www' && labels.size > 1
+
+      subdomain = labels.join('-')
+      raise ArgumentError, "#{subdomain} is longer than a DNS label allows" if subdomain.length > 63
+
+      "#{subdomain}.#{domain}"
+    end
+
+    # Host uniqueness is only enforced within a cluster, so a name another cluster already uses
+    # only shows up in DNS.
+    def host_resolves?(host)
+      Resolv::DNS.open do |dns|
+        dns.timeouts = 5
+        dns.getaddresses(host).any?
+      end
+    end
+
     private
 
     def _churn_datetime(tenant)
