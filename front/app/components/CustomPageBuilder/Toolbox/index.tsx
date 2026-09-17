@@ -4,6 +4,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from 'containers/DescriptionBuilder/messages';
 
+import heroBannerMessages from 'components/admin/BannerFields/messages';
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 import Section from 'components/admin/ContentBuilder/Toolbox/Section';
@@ -21,7 +22,6 @@ import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
-import heroBannerMessages from 'components/admin/GenericHeroBannerForm/messages';
 import CustomPageBanner from 'components/CustomPageBuilder/Widgets/CustomPageBanner';
 import ProjectsByFilter from 'components/CustomPageBuilder/Widgets/ProjectsByFilter';
 import projectsMessages from 'components/CustomPageBuilder/Widgets/ProjectsByFilter/messages';

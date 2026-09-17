@@ -17,10 +17,10 @@ import ShownOnPageBadge from 'containers/Admin/pagesAndMenu/components/ShownOnPa
 import CTAButtonFields from 'containers/Admin/pagesAndMenu/containers/CustomPages/Edit/HeroBanner/CTAButtonFields';
 import { adminCustomPageContentLink } from 'containers/Admin/pagesAndMenu/routes';
 
-import BannerHeaderFields from 'components/admin/GenericHeroBannerForm/BannerHeaderFields';
-import BannerImageFields from 'components/admin/GenericHeroBannerForm/BannerImageFields';
-import LayoutSettingField from 'components/admin/GenericHeroBannerForm/LayoutSettingField';
-import messages from 'components/admin/GenericHeroBannerForm/messages';
+import BannerHeaderFields from 'components/admin/BannerFields/BannerHeaderFields';
+import BannerImageFields from 'components/admin/BannerFields/BannerImageFields';
+import LayoutSettingField from 'components/admin/BannerFields/LayoutSettingField';
+import messages from 'components/admin/BannerFields/messages';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
 import HelmetIntl from 'components/HelmetIntl';
 

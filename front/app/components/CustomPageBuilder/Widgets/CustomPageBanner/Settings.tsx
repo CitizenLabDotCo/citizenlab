@@ -7,10 +7,10 @@ import { ImageSizes, Multiloc } from 'typings';
 import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
 import { ICustomPageAttributes } from 'api/custom_pages/types';
 
-import BannerHeaderFields from 'components/admin/GenericHeroBannerForm/BannerHeaderFields';
-import BannerImageFields from 'components/admin/GenericHeroBannerForm/BannerImageFields';
-import LayoutSettingField from 'components/admin/GenericHeroBannerForm/LayoutSettingField';
-import heroBannerMessages from 'components/admin/GenericHeroBannerForm/messages';
+import BannerHeaderFields from 'components/admin/BannerFields/BannerHeaderFields';
+import BannerImageFields from 'components/admin/BannerFields/BannerImageFields';
+import LayoutSettingField from 'components/admin/BannerFields/LayoutSettingField';
+import heroBannerMessages from 'components/admin/BannerFields/messages';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import CTARadioButtons from 'components/LandingPages/admin/CTARadioButtons';
 

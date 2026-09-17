@@ -2,8 +2,8 @@ import React from 'react';
 
 import { UserComponent, useEditor } from '@craftjs/core';
 
+import heroBannerMessages from 'components/admin/BannerFields/messages';
 import WidgetPlaceholder from 'components/admin/ContentBuilder/Widgets/WidgetPlaceholder';
-import heroBannerMessages from 'components/admin/GenericHeroBannerForm/messages';
 import CustomPageHeader from 'components/CustomPageHeader';
 
 import { FormattedMessage } from 'utils/cl-intl';

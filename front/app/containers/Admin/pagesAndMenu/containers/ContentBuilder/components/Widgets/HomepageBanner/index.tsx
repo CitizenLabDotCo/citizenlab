@@ -24,11 +24,11 @@ import homepageMessages from 'containers/HomePage/messages';
 import SignedInHeader from 'containers/HomePage/SignedInHeader';
 import SignedOutHeader from 'containers/HomePage/SignedOutHeader';
 
+import { homepageBannerLayoutHeights } from 'components/admin/BannerFields/HeaderImageDropzone';
 import {
   CONTENT_BUILDER_ERROR_EVENT,
   IMAGE_UPLOADING_EVENT,
 } from 'components/admin/ContentBuilder/constants';
-import { homepageBannerLayoutHeights } from 'components/admin/GenericHeroBannerForm/HeaderImageDropzone';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import Error from 'components/UI/Error';
 import ImagesDropzone from 'components/UI/ImagesDropzone';

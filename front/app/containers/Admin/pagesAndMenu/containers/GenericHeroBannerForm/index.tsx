@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import messages from 'components/admin/GenericHeroBannerForm/messages';
+import messages from 'components/admin/BannerFields/messages';
 import { Section } from 'components/admin/Section';
 import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 import Warning from 'components/UI/Warning';
