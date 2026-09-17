@@ -11729,6 +11729,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.Projects.seeVolunteering": {
+    "state": "verified",
+    "verified_at": "2026-09-17T12:01:19.726787Z",
+    "verified_by": "eva@govocal.com"
+  },
   "app.containers.Projects.share": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",

@@ -195,6 +195,11 @@ const ProjectActionButtons = memo<Props>(
       }
     };
 
+    const handleVolunteerClick = () => {
+      setModalOpened(false);
+      scrollToElementWithId('volunteering');
+    };
+
     const { publication_status } = project.data.attributes;
 
     const participationMethod = currentPhase?.attributes.participation_method;
@@ -212,8 +217,12 @@ const ProjectActionButtons = memo<Props>(
     // that hides its primary CTA only.
     const currentPhaseHidden =
       !!currentPhase && !!hiddenOptionIds?.includes(currentPhase.id);
-
     const showBoxCTAs = publication_status !== 'archived';
+    const showVolunteeringCTAButton =
+      showBoxCTAs &&
+      !currentPhaseHidden &&
+      !hasCurrentPhaseEnded &&
+      participationMethod === 'volunteering';
     const showSeeIdeasButton =
       participationMethod === 'ideation' &&
       typeof ideas_count === 'number' &&
@@ -251,12 +260,14 @@ const ProjectActionButtons = memo<Props>(
       showTakeNativeSurveyButton ||
       showTakeSurveyButton ||
       showTakePollButton ||
-      showDocumentAnnotationCTAButton;
+      showDocumentAnnotationCTAButton ||
+      showVolunteeringCTAButton;
     const showPrimaryMethodCTA =
       showPostIdeaButton ||
       showTakeNativeSurveyButton ||
       showTakePollButton ||
-      showDocumentAnnotationCTAButton;
+      showDocumentAnnotationCTAButton ||
+      showVolunteeringCTAButton;
     const surveyCTAs = showBoxCTAs ? visibleOpenSurveys : [];
     const participationWaysCount =
       (showPrimaryMethodCTA ? 1 : 0) + surveyCTAs.length;
@@ -313,6 +324,15 @@ const ProjectActionButtons = memo<Props>(
         {showDocumentAnnotationCTAButton && (
           <ButtonWithLink onClick={handleReviewDocumentClick} fontWeight="500">
             <FormattedMessage {...messages.reviewDocument} />
+          </ButtonWithLink>
+        )}
+        {showVolunteeringCTAButton && (
+          <ButtonWithLink
+            id="e2e-show-volunteering-cta"
+            onClick={handleVolunteerClick}
+            fontWeight="500"
+          >
+            <FormattedMessage {...messages.seeVolunteering} />
           </ButtonWithLink>
         )}
       </>
