@@ -13,9 +13,11 @@ import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import { Outlet as RouterOutlet, useMatchRoute, useParams } from 'utils/router';
 
 import ProjectWorkspace from './backofficeRedesign';
+import { PhaseSaveProvider } from './backofficeRedesign/_shared/PhaseSaveContext';
 import NewPhase from './backofficeRedesign/NewPhase';
 import PhaseLeftPanel from './backofficeRedesign/Phase/PhaseLeftPanel';
 import ProjectLeftPanel from './backofficeRedesign/ProjectLeftPanel';
+import UnsavedChangesGuard from './backofficeRedesign/UnsavedChangesGuard';
 import ProjectHeader from './projectHeader';
 import ProjectSidebar from './projectPage/ProjectSidebar';
 
@@ -39,28 +41,31 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
   }
 
   if (workspaceEnabled) {
-    if (onNewPhaseRoute) {
-      return <NewPhase project={project} />;
-    }
-
     return (
-      <ProjectWorkspace
-        project={project}
-        phase={selectedPhase}
-        leftPanel={
-          selectedPhase ? (
-            <PhaseLeftPanel
-              key={selectedPhase.id}
-              projectId={projectId}
-              phase={selectedPhase}
-            />
-          ) : (
-            <ProjectLeftPanel projectId={projectId} />
-          )
-        }
-      >
-        <RouterOutlet />
-      </ProjectWorkspace>
+      <PhaseSaveProvider>
+        <UnsavedChangesGuard />
+        {onNewPhaseRoute ? (
+          <NewPhase project={project} />
+        ) : (
+          <ProjectWorkspace
+            project={project}
+            phase={selectedPhase}
+            leftPanel={
+              selectedPhase ? (
+                <PhaseLeftPanel
+                  key={selectedPhase.id}
+                  projectId={projectId}
+                  phase={selectedPhase}
+                />
+              ) : (
+                <ProjectLeftPanel projectId={projectId} />
+              )
+            }
+          >
+            <RouterOutlet />
+          </ProjectWorkspace>
+        )}
+      </PhaseSaveProvider>
     );
   }
 
