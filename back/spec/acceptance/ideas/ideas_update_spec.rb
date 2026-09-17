@@ -292,6 +292,25 @@ resource 'Ideas' do
           end
         end
 
+        example 'Move the idea to a project with another form, relinking the answers by key', document: false do
+          source_form = create(:custom_form, :with_default_fields, participation_context: project)
+          shared_field = create(:custom_field_text, resource: source_form, key: 'shared')
+          only_here_field = create(:custom_field_text, resource: source_form, key: 'only_here')
+          input.custom_field_answers.create!(key: 'shared', value: 'kept', custom_field: shared_field)
+          input.custom_field_answers.create!(key: 'only_here', value: 'also kept', custom_field: only_here_field)
+          destination_project = create(:single_phase_ideation_project)
+          destination_form = create(:custom_form, :with_default_fields, participation_context: destination_project)
+          destination_shared_field = create(:custom_field_text, resource: destination_form, key: 'shared')
+
+          do_request idea: { project_id: destination_project.id }
+
+          assert_status 200
+          expect(input.reload.custom_field_answers.pluck(:key, :value, :custom_field_id)).to contain_exactly(
+            ['shared', 'kept', destination_shared_field.id],
+            ['only_here', 'also kept', nil]
+          )
+        end
+
         example 'Removing the author of a published idea', document: false do
           input.update! publication_status: 'published'
           do_request idea: { author_id: nil }
