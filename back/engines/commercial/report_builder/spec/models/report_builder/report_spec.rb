@@ -82,4 +82,19 @@ RSpec.describe ReportBuilder::Report do
       expect(report.reload.owner).to be_nil
     end
   end
+
+  describe 'deletion' do
+    it 'takes its ready notifications with it, rather than being refused by the foreign key' do
+      report = create(:report, :with_phase)
+      notification = Notifications::ReportGenerated.create!(
+        recipient: create(:admin),
+        report: report,
+        project: report.reported_project,
+        phase: report.phase
+      )
+
+      expect { report.destroy! }.not_to raise_error
+      expect(Notification.where(id: notification.id)).to be_empty
+    end
+  end
 end

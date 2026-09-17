@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { Text, Spinner, Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
@@ -45,16 +45,14 @@ export interface Props {
 export const PrintReport = ({ reportId, _print = true }: Props) => {
   const [isPrintReady, setIsPrintReady] = useState(false);
 
-  useEffect(() => {
-    if (!_print) return;
+  // Printing waits for the report to be laid out into pages, not for a fixed
+  // number of seconds. The old timer was a race: a slow report printed half-drawn.
+  const handlePaginated = useCallback(() => setIsPrintReady(true), []);
 
-    if (isPrintReady) {
-      window.print();
-    } else {
-      setTimeout(() => {
-        setIsPrintReady(true);
-      }, 5000);
-    }
+  useEffect(() => {
+    if (!_print || !isPrintReady) return;
+
+    window.print();
   }, [_print, isPrintReady]);
 
   useEffect(() => {
@@ -87,7 +85,7 @@ export const PrintReport = ({ reportId, _print = true }: Props) => {
           </Text>
         </PreparingBox>
       )}
-      <Report reportId={reportId} />
+      <Report reportId={reportId} onPaginated={handlePaginated} />
     </>
   );
 };

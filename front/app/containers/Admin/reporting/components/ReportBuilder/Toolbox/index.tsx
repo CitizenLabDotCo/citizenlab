@@ -54,13 +54,18 @@ import RegistrationsWidget from '../Widgets/ChartWidgets/RegistrationsWidget';
 import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
 import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
 import CommunityMonitorHealthScoreWidget from '../Widgets/CommunityMonitorHealthScoreWidget';
+import Cover from '../Widgets/Cover';
+import Divider from '../Widgets/Divider';
 import IframeMultiloc from '../Widgets/IframeMultiloc';
 import ImageMultiloc from '../Widgets/ImageMultiloc';
+import KeyFigures from '../Widgets/KeyFigures';
 import MostReactedIdeasWidget from '../Widgets/MostReactedIdeasWidget';
+import PageBreak from '../Widgets/PageBreak';
 import ProjectsTimelineWidget from '../Widgets/ProjectsTimelineWidget';
 import ProjectsWidget from '../Widgets/ProjectsWidget';
 import SingleIdeaWidget from '../Widgets/SingleIdeaWidget';
 import SurveyQuestionResultWidget from '../Widgets/SurveyQuestionResultWidget';
+import TableOfContents from '../Widgets/TableOfContents';
 import TextMultiloc from '../Widgets/TextMultiloc';
 import TwoColumn from '../Widgets/TwoColumn';
 
@@ -215,6 +220,36 @@ const ReportBuilderToolbox = ({
               component={<WhiteSpace size="small" />}
               icon="layout-white-space"
               label={formatMessage(WIDGET_TITLES.WhiteSpace)}
+            />
+            <DraggableElement
+              id="e2e-draggable-cover"
+              component={<Cover />}
+              icon="page"
+              label={formatMessage(WIDGET_TITLES.Cover)}
+            />
+            <DraggableElement
+              id="e2e-draggable-table-of-contents"
+              component={<TableOfContents />}
+              icon="list"
+              label={formatMessage(WIDGET_TITLES.TableOfContents)}
+            />
+            <DraggableElement
+              id="e2e-draggable-divider"
+              component={<Divider />}
+              icon="minus"
+              label={formatMessage(WIDGET_TITLES.Divider)}
+            />
+            <DraggableElement
+              id="e2e-draggable-key-figures"
+              component={<KeyFigures />}
+              icon="chart-bar"
+              label={formatMessage(WIDGET_TITLES.KeyFigures)}
+            />
+            <DraggableElement
+              id="e2e-draggable-page-break"
+              component={<PageBreak />}
+              icon="page"
+              label={formatMessage(WIDGET_TITLES.PageBreak)}
             />
             <DraggableElement
               id="e2e-draggable-iframe"

@@ -31,7 +31,9 @@ module ReportBuilder
 
       # The widgets the layout may use. Every chart is a CustomBlock; the built-in
       # report charts are deliberately not offered.
-      COMPOSABLE_WIDGETS = %w[TextMultiloc WhiteSpace TwoColumn Container CustomBlock].freeze
+      COMPOSABLE_WIDGETS = %w[
+        Cover Divider KeyFigures TextMultiloc WhiteSpace PageBreak TableOfContents TwoColumn Container CustomBlock
+      ].freeze
 
       TOOLS = [
         {
@@ -60,9 +62,30 @@ module ReportBuilder
                 properties: {
                   title: { type: 'string', description: 'Short name for the block, for admins.' },
                   sql: { type: 'string', description: 'The one query this chart draws.' },
-                  source: { type: 'string', description: 'The complete TSX of the block.' }
+                  source: { type: 'string', description: 'The complete TSX of the block.' },
+                  config_schema: {
+                    type: 'array',
+                    description: 'The settings an admin can change on this chart without ' \
+                                 'editing code. Each becomes a field in the report builder ' \
+                                 'sidebar, and its value reaches the block as config[key].',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        key: { type: 'string' },
+                        label: { type: 'object', description: 'Locale to label, e.g. {"en":"Chart title"}.' },
+                        type: { type: 'string', enum: %w[text number boolean multiloc_text select] },
+                        default: { description: 'Matching the type; a multiloc object for multiloc_text.' },
+                        options: {
+                          type: 'array',
+                          description: 'Required for select: [{"value":"...","label":{"en":"..."}}].',
+                          items: { type: 'object' }
+                        }
+                      },
+                      required: %w[key label type]
+                    }
+                  }
                 },
-                required: %w[title sql source]
+                required: %w[title sql source config_schema]
               }
             }
           }
@@ -217,7 +240,10 @@ module ReportBuilder
 
       def author_block(input)
         result = ChartBlockAuthor.new(@project, @author).author(
-          title: input['title'], sql: input['sql'], source: input['source']
+          title: input['title'],
+          sql: input['sql'],
+          source: input['source'],
+          config_schema: input['config_schema']
         )
         @authored_blocks << result.block_id
 
@@ -381,15 +407,34 @@ module ReportBuilder
 
           ## The report
 
-          1. Title. The project name as an <h2>, then a short paragraph on what the project
-             was, over what period, and what it asked of residents.
-          2. Summary. What the council set out to do, from the description.
-          3. Taking part. How participation went, with a chart.
-          4. Results. What people actually said or chose — usually the heart of the report,
+          The first three are not optional, and they come in this order. A report that
+          opens straight onto a chart is not a report.
+
+          1. Cover. One Cover node, filled in for this project, then a PageBreak.
+          2. Contents. One TableOfContents, then a PageBreak, so the contents have a
+             page to themselves.
+          3. Executive summary. Four to six bullet points in one TextMultiloc, under an
+             <h2> reading "Executive summary" in the report's locale. Each bullet opens
+             with the finding itself in <b>, then the evidence for it. This is the only
+             part some readers will read, so it carries the whole argument — and every
+             number in it must be one you saw in a query result.
+          4. Taking part. How participation went, with a chart.
+          5. Results. What people actually said or chose — usually the heart of the report,
              and usually more than one chart.
-          5. Who took part. The demographics of participants, if the data supports it.
-          6. Reach. Visitors and where they came from, if the data supports it.
-          7. What happens next.
+          6. Who took part. The demographics of participants, if the data supports it.
+          7. Reach. Visitors and where they came from, if the data supports it.
+          8. What happens next.
+
+          Every section from 3 onwards opens the same way: a Divider with variant
+          "section", then a TextMultiloc whose first tag is the <h2> naming the section.
+          That repetition is the report's spine — keep it exact, and put a Divider
+          nowhere else.
+
+          Where a section's point is a handful of headline counts — how many took part,
+          how many visitors, what share completed something — open it with a KeyFigures
+          band directly under the heading, and let it carry those numbers instead of a
+          sentence that lists them. Two or three sections usually deserve one; a section
+          whose point is a shape or a trend does not, that is what the chart is for.
 
           Between four and seven charts is right for a project report. Separate sections
           with a WhiteSpace of size "large", and a chart from the sentence above it with
@@ -411,6 +456,9 @@ module ReportBuilder
           - One number that matters on its own: large text, not a one-bar chart.
 
           Rules that hold for every chart:
+          - The council's own colours are the default palette. theme.colors.tenantPrimary
+            for a single series, tenantSecondary for a second one. Reach for the platform
+            greys for everything that is not data. Never invent a brand colour.
           - Never two y-axes. Two measures of different scale are two charts.
           - One hue, light to dark, unless the series themselves are the subject; then use
             distinct hues, at most six, and always with a legend.
@@ -420,6 +468,13 @@ module ReportBuilder
           - The chart must read in print: no tooltips as the only way to see a value, and
             enough contrast in greyscale.
 
+          Every chart block is laid out the same way, so a run of them reads as one
+          document: a heading, the chart filling the full width of the column, then one
+          line of caption under it in small secondary text saying what the reader should
+          take from it or what it leaves out. The chart's box is the width of the column
+          — never narrower and never given a fixed pixel width, or it sits off-centre on
+          the page.
+
           ## The report is printed
 
           Everything you write ends up as a PDF at a fixed A4 width, about 21cm, on paper
@@ -427,6 +482,9 @@ module ReportBuilder
 
           - A chart is never split across a page break, so keep each one short enough to
             fit on a page: 220 to 320 pixels tall, never more than 400.
+          - A PageBreak is the only way to decide where a page ends. Use it after the cover
+            and after the contents, and otherwise only where a section really deserves to
+            start at the top of a page.
           - Give the sentence that introduces a chart its own text node directly above it,
             and separate them with a WhiteSpace of size "small" so they stay together.
           - Nothing may depend on interaction. A value that can only be read from a tooltip
@@ -441,41 +499,86 @@ module ReportBuilder
 
           ## Writing a chart block
 
-          author_chart_block takes a title, the sql, and the complete TSX source. The source
-          must contain the sql verbatim, as one template literal at the top:
+          author_chart_block takes a title, the sql, the complete TSX source, and a
+          config_schema. The source must contain the sql verbatim, as one template literal
+          at the top:
 
           const SQL = `SELECT ... FROM reporting_contributions ...`;
 
-          The file default-exports a React component and may import only from 'gv-sdk':
+          ### config_schema — what an admin can change afterwards
 
-          import { React, Box, Text, Title, Spinner, colors, useTheme, useReportingData,
-                   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
-                   Legend, LineChart, Line, AreaChart, Area, PieChart, Pie, Cell, LabelList } from 'gv-sdk';
+          A generated chart is not the last word: whoever owns the report has to be able to
+          correct it without editing code. Each field becomes an input in the builder
+          sidebar, and its value arrives as config[key].
+
+          Every chart exposes its title and its caption, so the wording can always be fixed:
+
+          [{"key":"title","type":"multiloc_text","label":{"#{@locale}":"Chart title"},
+            "default":{"#{@locale}":"Participants per phase"}},
+           {"key":"caption","type":"multiloc_text","label":{"#{@locale}":"Caption"},
+            "default":{"#{@locale}":"One line on what this shows."}},
+           {"key":"showValues","type":"boolean","label":{"#{@locale}":"Show the value on each bar"},
+            "default":true}]
+
+          Then add one or two more where the chart has a real choice in it: how many rows to
+          show ("topN", number), the sort direction ("sort", select), which measure to plot.
+          Six fields is the maximum. A field the block never reads is worse than no field,
+          so read every one you declare, and give every one a default that matches what the
+          chart does now — the block must render identically before anything is touched.
+
+          Types: text, number, boolean, multiloc_text, select (select needs options, each
+          {"value":"...","label":{"<locale>":"..."}}).
+
+          ### The source
+
+          The file default-exports a React component taking { config }, and may import only
+          from 'gv-sdk':
+
+          import { React, Box, Text, Title, Spinner, colors, useTheme, useLocalize,
+                   useReportingData, ResponsiveContainer, BarChart, Bar, XAxis, YAxis,
+                   CartesianGrid, Tooltip, Legend, LineChart, Line, AreaChart, Area,
+                   PieChart, Pie, Cell, LabelList } from 'gv-sdk';
 
           const SQL = `SELECT ...`;
 
-          export default function Block() {
+          export default function Block({ config }) {
             const theme = useTheme();
+            const localize = useLocalize();
             const { data, isLoading } = useReportingData(SQL);
             if (isLoading) return <Box p="24px" display="flex" justifyContent="center"><Spinner /></Box>;
             const rows = data ? data.rows : [];
             if (rows.length === 0) return <Text color="textSecondary">No data for this chart.</Text>;
 
+            // Every declared field is read, and falls back to what the chart would
+            // have shown anyway.
+            const showValues = config.showValues !== false;
+
             return (
-              <Box>
-                <Title variant="h4" m="0 0 8px">A title that says what this shows</Title>
-                <Box height="280px">
+              <Box width="100%">
+                <Title variant="h4" m="0 0 12px">
+                  {localize(config.title) || 'A title that says what this shows'}
+                </Title>
+                <Box width="100%" height="280px">
                   <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={rows} layout="vertical" margin={{ left: 120 }}>
+                    <BarChart data={rows} layout="vertical"
+                              margin={{ top: 4, right: 48, bottom: 4, left: 0 }}>
                       <CartesianGrid stroke={colors.grey200} horizontal={false} />
-                      <XAxis type="number" stroke={colors.textSecondary} fontSize={12} />
-                      <YAxis type="category" dataKey="label" width={120}
-                             stroke={colors.textSecondary} fontSize={12} />
-                      <Tooltip />
-                      <Bar dataKey="count" fill={theme.colors.tenantPrimary} radius={[0, 4, 4, 0]} />
+                      <XAxis type="number" hide />
+                      <YAxis type="category" dataKey="label" width={160} tickLine={false}
+                             axisLine={false} stroke={colors.textSecondary} fontSize={12} />
+                      <Bar dataKey="count" fill={theme.colors.tenantPrimary}
+                           radius={[0, 4, 4, 0]} barSize={18}>
+                        {showValues && (
+                          <LabelList dataKey="count" position="right" fontSize={12}
+                                     fill={colors.textPrimary} />
+                        )}
+                      </Bar>
                     </BarChart>
                   </ResponsiveContainer>
                 </Box>
+                <Text m="8px 0 0" fontSize="s" color="textSecondary">
+                  {localize(config.caption)}
+                </Text>
               </Box>
             );
           }
@@ -484,7 +587,14 @@ module ReportBuilder
           - `data.rows` is an array of plain objects keyed by your column names. Alias your
             columns to the keys you use in the chart.
           - A chart needs an explicit pixel height on its container; ResponsiveContainer
-            fills its parent and a parent with no height renders nothing.
+            fills its parent and a parent with no height renders nothing. Give that
+            container width="100%" too, so the chart spans the column.
+          - Room for the labels comes from the axis, not the margin: set YAxis width and
+            leave margin.left at 0. Setting both indents the plot twice and leaves the
+            chart stranded against the right edge of the page.
+          - Label the bars or points directly with LabelList. A printed chart has no
+            hover, so a value that is only in a Tooltip is a value the report does not
+            have — which is why the example has no Tooltip at all.
           - theme.colors.tenantPrimary and tenantSecondary are the council's own colours.
             colors.grey200, colors.textSecondary and friends are the platform tokens.
           - No fetch, no storage, no dangerouslySetInnerHTML, no imports other than 'gv-sdk'.

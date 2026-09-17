@@ -59,6 +59,43 @@ module ReportBuilder
           WhiteSpace — vertical spacing. props: {"size":"small"|"medium"|"large"}
             Separate major sections with "large", related blocks within a section with "small".
         DOC
+        'PageBreak' => <<~DOC,
+          PageBreak — ends the page it sits on. props: {}
+            The only way to decide where a page ends. Use it after the cover, and wherever
+            a section deserves to start at the top of a page. Do not use it between every
+            section: the layout already avoids breaking a chart or a paragraph in half.
+        DOC
+        'TableOfContents' => <<~DOC,
+          TableOfContents — lists the report's headings with the page each one is on. props: {}
+            Place one, after the cover and its page break. It fills itself in from the
+            headings you wrote, so it needs no content of its own.
+        DOC
+        'Cover' => <<~DOC,
+          Cover — the title page. Always the first node of the report.
+          props: {"title":{"<locale>":"..."},"subtitle":{"<locale>":"..."},"eyebrow":{"<locale>":"..."},"footnote":{"<locale>":"..."},"showLogo":true}
+            Plain text per locale, no HTML. It draws itself — the platform logo, a rule in
+            the council's own colour, the platform name along the foot — and fills a whole
+            page, so follow it with a PageBreak and leave showLogo true.
+            title    — the project's name, as a reader would say it.
+            subtitle — one line saying what the report covers, not a finding.
+            eyebrow  — the small line above the title, e.g. the kind of report. Optional.
+            footnote — when the report was generated and the period it covers. Optional.
+        DOC
+        'Divider' => <<~DOC,
+          Divider — a horizontal rule. props: {"variant":"section"|"hairline"|"dots"}
+            "section" is a thick rule in the council's colour: one directly above every
+            section heading and nowhere else, which is what makes the report read as a
+            document. "hairline" and "dots" are quieter separators, used inside a section.
+        DOC
+        'KeyFigures' => <<~DOC,
+          KeyFigures — the handful of numbers worth pulling out of the prose, in one band.
+          props: {"figures":[{"value":"5,663","label":{"<locale>":"Visitors"}}]}
+            Two to five figures, never more: the band divides the width between them.
+            value is already formatted for reading — "5,663", "61%", "4.5/5" — and label
+            is one or two words. Every value must be one you saw in a query result.
+            Use it to open a section whose point is a few headline counts. It replaces
+            those sentences rather than repeating them.
+        DOC
         'CustomBlock' => <<~DOC
           CustomBlock — hosts a chart you generated with author_chart_block.
           props: {"blockId":"<the id author_chart_block returned>","version":1}
@@ -67,35 +104,7 @@ module ReportBuilder
         DOC
       }.freeze
 
-      FORMAT_RULES = <<~RULES
-        # Report craftjs_json format
-
-        The layout is a flat JSON object mapping node-id to node. Children hang off canvases
-        via `nodes` (ordered). Every node has exactly these keys:
-        {"type":{"resolvedName":"<Widget>"},"isCanvas":false,"props":{...},"displayName":"<Widget>","custom":{},"parent":"<parent-id>","hidden":false,"nodes":[],"linkedNodes":{}}
-
-        New node ids are 10 characters of [A-Za-z0-9_-] and must be unique in the graph.
-
-        ## The ROOT node
-
-        Every report has exactly one ROOT, and it is not a widget:
-        {"type":"div","isCanvas":true,"props":{"id":"e2e-content-builder-frame"},"custom":{},"hidden":false,"nodes":[...],"linkedNodes":{},"displayName":"div"}
-
-        ROOT's `nodes` array is the top-level order of the report. Every node you add is a
-        descendant of ROOT, and every node you add must appear in exactly one parent's
-        `nodes` array, with its own `parent` set to that parent's id.
-
-        ## Writing for print
-
-        A report is read as a PDF at a fixed A4 width, about 21cm, so compose it as a
-        document: a clear reading order top to bottom, headings that say what the section
-        is, and prose that stands on its own without hover or interaction. Keep a heading
-        and the text it introduces in the same node, and prefer several short sections
-        over one long one.
-
-        Page breaks fall between nodes, never inside a text node or a chart, so a node
-        taller than a page is a node that leaves a gap on the page before it.
-      RULES
+      FORMAT_RULES = LayoutFormatRules::TEXT
 
       # Format rules plus docs for just the given widgets, to keep validation-error
       # responses small. (reference_for(DOCS.keys) is the full cheatsheet.)

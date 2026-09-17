@@ -33,6 +33,13 @@ module ReportBuilder
           'enums' => { 'columnLayout' => %w[1-1 2-1 1-2] }
         },
         'WhiteSpace' => { 'enums' => { 'size' => ['small', 'medium', 'large', ''] } },
+        'PageBreak' => {},
+        'TableOfContents' => {},
+        'Cover' => { 'multilocs' => %w[title subtitle eyebrow footnote] },
+        'Divider' => { 'enums' => { 'variant' => %w[section hairline dots] } },
+        # figures is an array of {value, label}; the validator's conventions describe
+        # top-level props only, so the widget itself renders defensively instead.
+        'KeyFigures' => {},
         'Container' => {},
         # The host for a generated chart. blockId is pinned per request to the blocks
         # the composer actually authored (see with_allowed_ids).

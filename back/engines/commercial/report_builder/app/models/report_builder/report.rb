@@ -42,6 +42,14 @@ module ReportBuilder
     has_many :published_graph_data_units, dependent: :destroy
     has_one :chat, class_name: 'ReportBuilder::ReportChat', dependent: :destroy, inverse_of: :report
 
+    # The "your report is ready" notification points at the report, so deleting one
+    # would otherwise be refused by the foreign key. Nullifying is tried first and
+    # fails — ReportGenerated validates the report's presence — which leaves the
+    # notification to be destroyed along with the report it was about.
+    # before_destroy must be declared above the association: rails/rails#5205.
+    before_destroy :remove_notifications
+    has_many :notifications, class_name: '::Notification', dependent: :nullify
+
     has_one(
       :layout,
       class_name: 'ContentBuilder::Layout', as: :content_buildable,
@@ -78,6 +86,12 @@ module ReportBuilder
     end
 
     private
+
+    def remove_notifications
+      notifications.each do |notification|
+        notification.destroy! unless notification.update(report: nil)
+      end
+    end
 
     def supports_multiple_phase_reports?
       phase&.pmethod&.supports_multiple_phase_reports?
