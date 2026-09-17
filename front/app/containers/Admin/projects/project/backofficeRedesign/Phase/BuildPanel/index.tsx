@@ -13,16 +13,14 @@ import usePhaseFileAttachments, {
   fileAttachmentErrors,
 } from 'containers/Admin/projects/_shared/usePhaseFileAttachments';
 import { SurveyMethod } from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/SurveyMethodChoices';
-import {
-  SubmitStateType,
-  ValidationErrors,
-} from 'containers/Admin/projects/project/phaseSetup/typings';
+import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 import { validateDates } from 'containers/Admin/projects/project/phaseSetup/validate';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { useRegisterPhaseSaver } from '../../_shared/PhaseSaveContext';
+
 import BuildFields from './BuildFields';
-import SaveBar from './SaveBar';
 import SwitchSurveyMethodModal from './SwitchSurveyMethodModal';
 import useSurveyMethodLocks from './useSurveyMethodLocks';
 
@@ -35,13 +33,12 @@ interface Props {
 const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
   const { formatMessage } = useIntl();
   const { data: phases } = usePhases(projectId);
-  const { mutate: updatePhase } = useUpdatePhase();
+  const { mutateAsync: updatePhase } = useUpdatePhase();
 
   const [formData, setFormData] = useState<IUpdatedPhaseProperties>(
     phase.attributes
   );
-  const [submitState, setSubmitState] = useState<SubmitStateType>('disabled');
-  const [processing, setProcessing] = useState(false);
+  const [dirty, setDirty] = useState(false);
   const [errors, setErrors] = useState<CLErrors | null>(null);
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
     {}
@@ -54,7 +51,7 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
     projectId,
     phaseId: phase.id,
     savedAttachments,
-    onStage: () => setSubmitState('enabled'),
+    onStage: () => setDirty(true),
   });
 
   // Detached phases skip the timeline rules: their dates may overlap and stay
@@ -62,19 +59,11 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
   const standalone = !isTimelinePhase(phase);
 
   const updateFormData = (newData: Partial<IUpdatedPhaseProperties>) => {
-    setSubmitState('enabled');
+    setDirty(true);
     setFormData((formData) => ({ ...formData, ...newData }));
   };
 
-  const handleSaveError = (reason: unknown) => {
-    setErrors(fileAttachmentErrors(reason));
-    setProcessing(false);
-    setSubmitState('error');
-  };
-
-  const handleSave = () => {
-    if (processing) return;
-
+  const save = async () => {
     const { isValidated, errors } = validateDates(
       formData,
       phases,
@@ -84,32 +73,26 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
     );
 
     setValidationErrors(errors);
-    if (!isValidated) return;
+    if (!isValidated) throw new Error('Invalid phase dates');
 
-    setProcessing(true);
-    updatePhase(
-      {
+    try {
+      const response = await updatePhase({
         phaseId: phase.id,
         title_multiloc: formData.title_multiloc,
         start_at: formData.start_at,
         end_at: formData.end_at,
-      },
-      {
-        onSuccess: (response) => {
-          setFormData(response.data.attributes);
-          files
-            .save(phase.id)
-            .then(() => {
-              setErrors(null);
-              setProcessing(false);
-              setSubmitState('success');
-            })
-            .catch(handleSaveError);
-        },
-        onError: handleSaveError,
-      }
-    );
+      });
+      setFormData(response.data.attributes);
+      await files.save(phase.id);
+      setErrors(null);
+      setDirty(false);
+    } catch (reason) {
+      setErrors(fileAttachmentErrors(reason));
+      throw reason;
+    }
   };
+
+  useRegisterPhaseSaver('build', { dirty, save });
 
   return (
     <Box display="flex" flexDirection="column" flexGrow={1} minHeight="0">
@@ -137,8 +120,6 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
           }}
         />
       </Box>
-
-      <SaveBar status={submitState} loading={processing} onClick={handleSave} />
 
       <SwitchSurveyMethodModal
         phase={phase}
