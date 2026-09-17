@@ -4491,12 +4491,12 @@
   },
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.channelsAndDevices": {
     "state": "verified",
-    "verified_at": "2026-09-17T08:12:19.547078Z",
+    "verified_at": "2026-09-17T08:12:28.069145Z",
     "verified_by": "Amanda A"
   },
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.channelsAndDevicesDescription": {
     "state": "verified",
-    "verified_at": "2026-09-17T08:12:19.547078Z",
+    "verified_at": "2026-09-17T08:12:28.069145Z",
     "verified_by": "Amanda A"
   },
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.comments": {
@@ -4551,12 +4551,12 @@
   },
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.goals2": {
     "state": "verified",
-    "verified_at": "2026-09-17T08:12:19.547078Z",
+    "verified_at": "2026-09-17T08:12:28.069145Z",
     "verified_by": "Amanda A"
   },
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.howDoTheyParticipate": {
     "state": "verified",
-    "verified_at": "2026-09-17T08:12:19.547078Z",
+    "verified_at": "2026-09-17T08:12:28.069145Z",
     "verified_by": "Amanda A"
   },
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.imageInclusionLabel": {
@@ -4591,7 +4591,7 @@
   },
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.internalOrganization2": {
     "state": "verified",
-    "verified_at": "2026-09-17T08:12:19.547078Z",
+    "verified_at": "2026-09-17T08:12:28.069145Z",
     "verified_by": "Amanda A"
   },
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.participants": {
@@ -4606,7 +4606,7 @@
   },
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.participationIndicators2": {
     "state": "verified",
-    "verified_at": "2026-09-17T08:12:19.547078Z",
+    "verified_at": "2026-09-17T08:12:28.069145Z",
     "verified_by": "Amanda A"
   },
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.participationIndicatorsDescription": {
@@ -4616,7 +4616,7 @@
   },
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.participationIndicatorsDescription2": {
     "state": "verified",
-    "verified_at": "2026-09-17T08:12:19.547078Z",
+    "verified_at": "2026-09-17T08:12:28.069145Z",
     "verified_by": "Amanda A"
   },
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.projectManagers": {
@@ -4646,17 +4646,17 @@
   },
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.whatHappensToInput": {
     "state": "verified",
-    "verified_at": "2026-09-17T08:12:19.547078Z",
+    "verified_at": "2026-09-17T08:12:28.069145Z",
     "verified_by": "Amanda A"
   },
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.whatHappensToInputDescription": {
     "state": "verified",
-    "verified_at": "2026-09-17T08:12:19.547078Z",
+    "verified_at": "2026-09-17T08:12:28.069145Z",
     "verified_by": "Amanda A"
   },
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.whoParticipated": {
     "state": "verified",
-    "verified_at": "2026-09-17T08:12:19.547078Z",
+    "verified_at": "2026-09-17T08:12:28.069145Z",
     "verified_by": "Amanda A"
   },
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.yourProjects": {
@@ -11086,12 +11086,12 @@
   },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.internalAdoptionWidgetFromStart": {
     "state": "verified",
-    "verified_at": "2026-09-17T08:12:19.547078Z",
+    "verified_at": "2026-09-17T08:12:28.069145Z",
     "verified_by": "Amanda A"
   },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.internalAdoptionWidgetSince": {
     "state": "verified",
-    "verified_at": "2026-09-17T08:12:19.547078Z",
+    "verified_at": "2026-09-17T08:12:28.069145Z",
     "verified_by": "Amanda A"
   },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": {
