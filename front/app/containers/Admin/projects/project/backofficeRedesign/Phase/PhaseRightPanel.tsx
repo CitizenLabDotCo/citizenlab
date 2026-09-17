@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useState } from 'react';
 
-import { Box, colors, Spinner } from '@citizenlab/cl2-component-library';
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import {
@@ -17,19 +17,15 @@ import AdminPhaseEmailWrapper from 'containers/Admin/projects/project/admin_phas
 import projectMessages from 'containers/Admin/projects/project/messages';
 import PhaseParticipationConfig from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig';
 import configMessages from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/messages';
-import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
-import {
-  SubmitStateType,
-  ValidationErrors,
-} from 'containers/Admin/projects/project/phaseSetup/typings';
+import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 import { validateParticipation } from 'containers/Admin/projects/project/phaseSetup/validate';
 
-import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Centerer from 'components/UI/Centerer';
 
 import { useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
+import { useRegisterPhaseSaver } from '../_shared/PhaseSaveContext';
 import messages from '../messages';
 
 import EditAccessButton from './EditAccessButton';
@@ -76,8 +72,6 @@ const PhaseRightPanel = ({ phase }: Props) => {
     phase.attributes
   );
   const [changes, setChanges] = useState<Partial<IUpdatedPhaseProperties>>({});
-  const [submitState, setSubmitState] = useState<SubmitStateType>('disabled');
-  const [processing, setProcessing] = useState(false);
   const [errors, setErrors] = useState<CLErrors | null>(null);
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
     {}
@@ -90,40 +84,41 @@ const PhaseRightPanel = ({ phase }: Props) => {
     config: IUpdatedPhaseProperties,
     changedFields: Partial<IUpdatedPhaseProperties>
   ) => {
-    setSubmitState('enabled');
     setChanges((changes) => ({ ...changes, ...changedFields }));
     setFormData(config);
   };
 
-  const handleSave = () => {
-    if (processing) return;
-
+  const save = async () => {
     const { isValidated, errors } = validateParticipation(
       formData,
       formatMessage
     );
 
     setValidationErrors(errors);
-    if (!isValidated) return;
+    if (!isValidated) throw new Error('Invalid participation settings');
 
-    setProcessing(true);
-    updatePhase(
-      { phaseId: phase.id, ...changes },
-      {
-        onSuccess: () => {
-          setChanges({});
-          setErrors(null);
-          setProcessing(false);
-          setSubmitState('success');
-        },
-        onError: ({ errors }: { errors: CLErrors }) => {
-          setErrors(errors);
-          setProcessing(false);
-          setSubmitState('error');
-        },
-      }
-    );
+    await new Promise<void>((resolve, reject) => {
+      updatePhase(
+        { phaseId: phase.id, ...changes },
+        {
+          onSuccess: () => {
+            setChanges({});
+            setErrors(null);
+            resolve();
+          },
+          onError: ({ errors }) => {
+            setErrors(errors);
+            reject(errors);
+          },
+        }
+      );
+    });
   };
+
+  useRegisterPhaseSaver('settings', {
+    dirty: Object.keys(changes).length > 0,
+    save,
+  });
 
   return (
     <Box display="flex" flexDirection="column" minHeight="100%">
@@ -172,29 +167,6 @@ const PhaseRightPanel = ({ phase }: Props) => {
           <AdminPhaseEmailWrapper />
         </PanelRowModal>
       </PanelSettings>
-
-      {!accessOnlyActions && (
-        <Box
-          position="sticky"
-          bottom="0"
-          px="20px"
-          py="12px"
-          background={colors.white}
-          borderTop={`1px solid ${colors.grey200}`}
-        >
-          <SubmitWrapper
-            onClick={handleSave}
-            loading={processing}
-            status={submitState}
-            messages={{
-              buttonSave: phaseSetupMessages.saveChangesLabel,
-              buttonSuccess: phaseSetupMessages.saveSuccessLabel,
-              messageError: phaseSetupMessages.saveErrorMessage,
-              messageSuccess: phaseSetupMessages.saveSuccessMessage,
-            }}
-          />
-        </Box>
-      )}
     </Box>
   );
 };
