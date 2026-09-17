@@ -45,11 +45,8 @@ class UserService
         user_params = user_params.except(:email).merge(new_email: user_params[:email])
       end
 
-      custom_field_values = (user_params.delete(:custom_field_values) || {})
-        .merge(user_params.extract!(:gender, :birthyear, :domicile).compact.stringify_keys)
-      user = User.new(user_params)
+      user = assign_merging_custom_fields(User.new, user_params)
       user.locale = locale
-      CustomFieldValuesTransitionService.new.assign(user, custom_field_values) if custom_field_values.present?
 
       build_user_confirmation(user) if confirm_user && user.email.present?
       user
