@@ -1,4 +1,4 @@
-import React, {memo, useEffect, useState} from 'react';
+import React, { memo, useEffect, useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
@@ -217,12 +217,12 @@ const ProjectActionButtons = memo<Props>(
     // that hides its primary CTA only.
     const currentPhaseHidden =
       !!currentPhase && !!hiddenOptionIds?.includes(currentPhase.id);
-
-    const showVolunteeringCTAButton =
-      !!currentPhase &&
-      currentPhase.attributes.participation_method === 'volunteering' &&
-      !hasCurrentPhaseEnded
     const showBoxCTAs = publication_status !== 'archived';
+    const showVolunteeringCTAButton =
+      showBoxCTAs &&
+      !currentPhaseHidden &&
+      !hasCurrentPhaseEnded &&
+      participationMethod === 'volunteering';
     const showSeeIdeasButton =
       participationMethod === 'ideation' &&
       typeof ideas_count === 'number' &&
@@ -266,7 +266,8 @@ const ProjectActionButtons = memo<Props>(
       showPostIdeaButton ||
       showTakeNativeSurveyButton ||
       showTakePollButton ||
-      showDocumentAnnotationCTAButton;
+      showDocumentAnnotationCTAButton ||
+      showVolunteeringCTAButton;
     const surveyCTAs = showBoxCTAs ? visibleOpenSurveys : [];
     const participationWaysCount =
       (showPrimaryMethodCTA ? 1 : 0) + surveyCTAs.length;
@@ -278,8 +279,7 @@ const ProjectActionButtons = memo<Props>(
       !showMethodCTA &&
       surveyCTAs.length === 0 &&
       !showSeeIdeasButton &&
-      !showEventsCTAButton &&
-      !showVolunteeringCTAButton;
+      !showEventsCTAButton;
 
     const methodCTAButton = showMethodCTA ? (
       <>
@@ -327,7 +327,11 @@ const ProjectActionButtons = memo<Props>(
           </ButtonWithLink>
         )}
         {showVolunteeringCTAButton && (
-          <ButtonWithLink id="e2e-show-volunteering-cta" onClick={handleVolunteerClick} fontWeight="500">
+          <ButtonWithLink
+            id="e2e-show-volunteering-cta"
+            onClick={handleVolunteerClick}
+            fontWeight="500"
+          >
             <FormattedMessage {...messages.seeVolunteering} />
           </ButtonWithLink>
         )}
