@@ -16,6 +16,7 @@ describe Export::Xlsx::ValueVisitor do
       let(:field) do
         create(
           :custom_field,
+          :for_custom_form,
           input_type: 'number',
           key: 'proposed_budget',
           code: 'proposed_budget'

@@ -142,7 +142,7 @@ module Export
       end
 
       def value_for(field)
-        stored_value = if field.built_in?
+        stored_value = if field.built_in? && !field.user_type?
           model.public_send field.key
         else
           model.answer_for_key(field.key)&.value
