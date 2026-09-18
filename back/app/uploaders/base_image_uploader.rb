@@ -6,15 +6,12 @@ class BaseImageUploader < BaseUploader
   include CarrierWave::MiniMagick
 
   ALLOWED_TYPES = %w[jpg jpeg gif png webp avif]
+  # Cameras and image editors often save at 90+, which makes a small version several
+  # times bigger than it needs to be, with no difference visible at its size.
+  VERSION_QUALITY = 80
 
   # Using process at the class level applies it to all versions, including the original.
   process :strip
-
-  # We're not caching, since the external image optimization process will
-  # quickly generate a new version that should replace this one asap
-  def fog_attributes
-    { 'Cache-Control' => 'no-cache' }
-  end
 
   # from https://github.com/carrierwaveuploader/carrierwave/wiki/how-to:-create-random-and-unique-filenames-for-all-versioned-files#unique-filenames
   def filename
@@ -38,6 +35,17 @@ class BaseImageUploader < BaseUploader
   def secure_token
     var = :"@#{mounted_as}_secure_token"
     model.instance_variable_get(var) or model.instance_variable_set(var, SecureRandom.uuid)
+  end
+
+  # For versions. PNGs are left as they are: they are often logos or graphics, where
+  # lossy compression shows.
+  def compress
+    return unless %w[image/jpeg image/jpg image/webp].include?(@file.content_type)
+
+    manipulate! do |image|
+      image.quality(VERSION_QUALITY) if image['%Q'].to_i > VERSION_QUALITY
+      image
+    end
   end
 
   # Modified from https://vivianbrown.net/blog/cropping-gifs.html
