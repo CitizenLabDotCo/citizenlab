@@ -17,7 +17,6 @@ interface Props extends AccessOnlyAction {
   phaseId: string;
 }
 
-// An action that has no toggle of its own: only who may take it can be set.
 const PhaseActionAccessRow = ({ phaseId, action, label }: Props) => {
   const { formatMessage } = useIntl();
 

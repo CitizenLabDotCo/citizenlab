@@ -11,7 +11,6 @@ interface Props {
   action: IPhasePermissionAction;
 }
 
-// Placed right under an action's toggle, lined up with the toggle's label.
 const ToggleActionAccess = ({ phaseId, action }: Props) => (
   <Box mt="-6px" mb="12px" ml="52px">
     <PhaseActionAccess phaseId={phaseId} action={action} />

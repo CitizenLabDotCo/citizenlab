@@ -39,15 +39,12 @@ const CustomMapConfigPage = lazy(
   () => import('containers/Admin/CustomMapConfigPage')
 );
 
-// The methods that render the participant action toggles, each with a link to
-// that action's access rights.
 const METHODS_WITH_ACTION_TOGGLES: ParticipationMethod[] = [
   'ideation',
   'proposals',
   'common_ground',
 ];
 
-// The methods whose only settings are who may take each action.
 const ACCESS_ONLY_ACTIONS: Partial<
   Record<ParticipationMethod, AccessOnlyAction[]>
 > = {

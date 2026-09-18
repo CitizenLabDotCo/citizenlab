@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 
 // The options button is a sibling of the row's link, since a button can't sit
-// inside one. It only shows while the row is hovered, focused or its menu open.
+// inside one.
 const Container = styled.div`
   position: relative;
 

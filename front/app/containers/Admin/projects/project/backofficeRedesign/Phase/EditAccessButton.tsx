@@ -14,8 +14,6 @@ interface Props {
   phaseId: string;
 }
 
-// Who may take each of the phase's actions, for methods whose settings have no
-// action toggles to hang that on.
 const EditAccessButton = ({ phaseId }: Props) => {
   const { formatMessage } = useIntl();
   const [opened, setOpened] = useState(false);

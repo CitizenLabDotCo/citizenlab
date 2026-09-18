@@ -12,8 +12,8 @@ import { useBlocker } from 'utils/router';
 import { usePhaseSave } from './_shared/PhaseSaveContext';
 import messages from './messages';
 
-// Stops the admin from leaving a phase with unsaved changes. Only a change of
-// page counts: filters and modals that only touch the search params don't.
+// Only a change of page counts as leaving: filters and modals that just touch
+// the search params don't.
 const UnsavedChangesGuard = () => {
   const { formatMessage } = useIntl();
   const phaseSave = usePhaseSave();

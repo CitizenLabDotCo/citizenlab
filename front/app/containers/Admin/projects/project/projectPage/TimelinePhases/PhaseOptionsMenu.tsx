@@ -51,7 +51,6 @@ const PhaseOptionsMenu = ({ projectId, phase }: Props) => {
         showLabel={false}
         color={colors.coolGrey500}
         ideaTitle={title}
-        // Pulled towards the rail's edge so the menu clears its left side.
         menuRight="-12px"
         actions={[
           {

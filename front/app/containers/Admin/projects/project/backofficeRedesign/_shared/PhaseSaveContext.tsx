@@ -91,8 +91,8 @@ export const PhaseSaveProvider = ({ children }: { children: ReactNode }) => {
 
 export const usePhaseSave = () => useContext(PhaseSaveContext);
 
-// Hands a panel's unsaved changes to the header. The latest save function is
-// read through a ref, so the registration doesn't change on every render.
+// The latest save function is read through a ref, so the registration doesn't
+// change on every render.
 export const useRegisterPhaseSaver = (
   key: string,
   { dirty, save }: { dirty: boolean; save: SaveFn }

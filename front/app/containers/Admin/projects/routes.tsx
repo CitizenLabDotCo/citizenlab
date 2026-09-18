@@ -526,11 +526,9 @@ const phasesSearchSchema = yup.object({
     .oneOf(['topics', 'phases', 'projects', 'statuses'])
     .optional(),
   selected_idea_id: yup.string().optional(),
-  // Set by the Extras sidebar "New survey" action and the method picker's
-  // standalone tab: creates the phase as a standalone (detached) survey
-  // instead of a timeline phase.
+  // Creates the phase as a standalone (detached) survey rather than a phase on
+  // the timeline.
   placement: yup.string().oneOf(['standalone']).optional(),
-  // Set by the method picker: the method of the phase being created.
   participation_method: yup.string().oneOf(participationMethods).optional(),
 });
 

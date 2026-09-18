@@ -37,7 +37,6 @@ const DESCRIPTION_STYLE = {
   lineHeight: '21px',
 } as const;
 
-// Rendered as siblings, so the caller lays them out.
 const SurveyMethodChoices = ({
   selected,
   showExternalSurvey,
