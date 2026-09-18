@@ -13,7 +13,7 @@ import { CLErrors, IOption } from 'typings';
 import { PresentationMode, VoteTerm, VotingMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 
-import PhaseActionAccess from 'containers/Admin/projects/_shared/components/PhaseActionAccess';
+import ToggleActionAccess from 'containers/Admin/projects/_shared/components/ToggleActionAccess';
 
 import {
   SectionDescription,
@@ -284,9 +284,7 @@ const VotingInputs = ({
             />
           </ToggleRow>
           {panel && phaseId && (
-            <Box mt="-6px" mb="8px" ml="52px">
-              <PhaseActionAccess phaseId={phaseId} action="commenting_idea" />
-            </Box>
+            <ToggleActionAccess phaseId={phaseId} action="commenting_idea" />
           )}
           <Text mb="0px" pb="0px" color={'textSecondary'} fontSize="s">
             {formatMessage(messages.commentingBias)}
