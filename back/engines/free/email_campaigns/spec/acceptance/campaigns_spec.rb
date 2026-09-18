@@ -92,7 +92,7 @@ resource 'Campaigns' do
         end
 
         do_request(manual: false)
-        expect(response_data.size).to eq 55
+        expect(response_data.size).to eq 56
       end
 
       example 'List all manual campaigns when one has been sent' do
@@ -209,6 +209,15 @@ resource 'Campaigns' do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq id
         expect(json_response[:data][:attributes][:delivery_stats]).to be_nil
+      end
+
+      example 'Get a campaign includes its groups', document: false do
+        groups = create_list(:group, 2)
+        campaign.update!(groups: groups)
+        do_request
+        assert_status 200
+        expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array groups.map(&:id)
+        expect(json_response_body[:included].select { |i| i[:type] == 'group' }.pluck(:id)).to match_array groups.map(&:id)
       end
 
       example 'Get a scheduled campaign includes scheduled_at', document: false do

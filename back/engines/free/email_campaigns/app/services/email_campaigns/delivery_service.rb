@@ -27,6 +27,7 @@ module EmailCampaigns
       Campaigns::ManualProjectParticipants,
       Campaigns::MentionInInternalComment,
       Campaigns::MentionInOfficialFeedback,
+      Campaigns::MergeAccountConfirmation,
       Campaigns::ModeratorDigest,
       Campaigns::NativeSurveyNotSubmitted,
       Campaigns::NewCommentForAdmin,

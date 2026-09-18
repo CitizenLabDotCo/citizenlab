@@ -15,7 +15,6 @@ import {
 } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -58,13 +57,7 @@ const ProjectActionButtons = memo<Props>(
     const [modalOpened, setModalOpened] = useState(false);
     const { formatMessage } = useIntl();
     const localize = useLocalize();
-    const isParallelParticipationEnabled = useFeatureFlag({
-      name: 'parallel_participation',
-    });
-    const { data: standalonePhases } = usePhases(
-      isParallelParticipationEnabled ? projectId : undefined,
-      'standalone'
-    );
+    const { data: standalonePhases } = usePhases(projectId, 'standalone');
     const { pathname, hash: divId } = useLocation();
     const { data: events } = useEvents({
       projectIds: [projectId],
@@ -92,15 +85,13 @@ const ProjectActionButtons = memo<Props>(
 
     const { open: openSurveyPhases, upcoming: upcomingSurveyPhases } =
       groupSpotlightSurveys(standalonePhases?.data);
-    const visibleOpenSurveys = isParallelParticipationEnabled
-      ? excludeHidden(openSurveyPhases, hiddenOptionIds)
-      : [];
-    const visibleUpcomingSurveys = isParallelParticipationEnabled
-      ? excludeHidden(upcomingSurveyPhases, hiddenOptionIds)
-      : [];
+    const visibleOpenSurveys = excludeHidden(openSurveyPhases, hiddenOptionIds);
+    const visibleUpcomingSurveys = excludeHidden(
+      upcomingSurveyPhases,
+      hiddenOptionIds
+    );
 
-    const canSeeEmptyState =
-      isParallelParticipationEnabled && isAdmin(authUser);
+    const canSeeEmptyState = isAdmin(authUser);
     const showEventsCTAButton = !!events?.data.length && hasEventsWidget;
 
     if (
@@ -204,6 +195,11 @@ const ProjectActionButtons = memo<Props>(
       }
     };
 
+    const handleVolunteerClick = () => {
+      setModalOpened(false);
+      scrollToElementWithId('volunteering');
+    };
+
     const { publication_status } = project.data.attributes;
 
     const participationMethod = currentPhase?.attributes.participation_method;
@@ -217,14 +213,16 @@ const ProjectActionButtons = memo<Props>(
       : false;
     const inputTerm = getInputTerm(phases?.data);
 
-    // With parallel participation, the timeline option can be unchecked in the
-    // participation box settings — that hides its primary CTA only.
+    // The timeline option can be unchecked in the participation box settings —
+    // that hides its primary CTA only.
     const currentPhaseHidden =
-      isParallelParticipationEnabled &&
-      !!currentPhase &&
-      !!hiddenOptionIds?.includes(currentPhase.id);
-
+      !!currentPhase && !!hiddenOptionIds?.includes(currentPhase.id);
     const showBoxCTAs = publication_status !== 'archived';
+    const showVolunteeringCTAButton =
+      showBoxCTAs &&
+      !currentPhaseHidden &&
+      !hasCurrentPhaseEnded &&
+      participationMethod === 'volunteering';
     const showSeeIdeasButton =
       participationMethod === 'ideation' &&
       typeof ideas_count === 'number' &&
@@ -262,17 +260,18 @@ const ProjectActionButtons = memo<Props>(
       showTakeNativeSurveyButton ||
       showTakeSurveyButton ||
       showTakePollButton ||
-      showDocumentAnnotationCTAButton;
+      showDocumentAnnotationCTAButton ||
+      showVolunteeringCTAButton;
     const showPrimaryMethodCTA =
       showPostIdeaButton ||
       showTakeNativeSurveyButton ||
       showTakePollButton ||
-      showDocumentAnnotationCTAButton;
+      showDocumentAnnotationCTAButton ||
+      showVolunteeringCTAButton;
     const surveyCTAs = showBoxCTAs ? visibleOpenSurveys : [];
     const participationWaysCount =
       (showPrimaryMethodCTA ? 1 : 0) + surveyCTAs.length;
-    const collapseOptions =
-      isParallelParticipationEnabled && participationWaysCount > 2;
+    const collapseOptions = participationWaysCount > 2;
     const showAdminEmptyState =
       canSeeEmptyState &&
       showBoxCTAs &&
@@ -325,6 +324,15 @@ const ProjectActionButtons = memo<Props>(
         {showDocumentAnnotationCTAButton && (
           <ButtonWithLink onClick={handleReviewDocumentClick} fontWeight="500">
             <FormattedMessage {...messages.reviewDocument} />
+          </ButtonWithLink>
+        )}
+        {showVolunteeringCTAButton && (
+          <ButtonWithLink
+            id="e2e-show-volunteering-cta"
+            onClick={handleVolunteerClick}
+            fontWeight="500"
+          >
+            <FormattedMessage {...messages.seeVolunteering} />
           </ButtonWithLink>
         )}
       </>

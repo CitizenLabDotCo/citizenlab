@@ -38,6 +38,7 @@ require Rails.root.join('lib/email_domain_blacklist')
 #  phone                     :string
 #  new_phone                 :string
 #  phone_confirmed_at        :datetime
+#  merge_target_email        :string
 #
 # Indexes
 #
@@ -225,6 +226,7 @@ class User < ApplicationRecord
   has_one :new_email_confirmation, dependent: :destroy
   has_one :phone_confirmation, dependent: :destroy
   has_one :new_phone_confirmation, dependent: :destroy
+  has_one :merge_account_confirmation, dependent: :destroy
   has_many :baskets, -> { order(:phase_id) }
   before_destroy :destroy_baskets
 
@@ -244,6 +246,7 @@ class User < ApplicationRecord
   validate :validate_phone_format
   validate :validate_new_phone_format
   validates :new_email, format: { with: EMAIL_REGEX }, allow_nil: true
+  validates :merge_target_email, format: { with: EMAIL_REGEX }, allow_nil: true
   validates :first_name, :last_name, format: { without: /@/ }, allow_nil: true
   validates :locale, inclusion: { in: proc { AppConfiguration.instance.settings('core', 'locales') } }
   validates :bio_multiloc, multiloc: { presence: false, html: true }
@@ -360,11 +363,6 @@ class User < ApplicationRecord
     registered? && !blocked? && authenticated_at_least_once?
   end
 
-  def blank_and_can_be_deleted?
-    # atm it can be true only for users registered with ClaveUnica and MitID who haven't entered email
-    sso? && email.blank? && new_email.blank? && password_digest.blank? && identity_ids.count == 1
-  end
-
   def show_public_profile?
     # Only show the public profile if the user has contributed publicly to the platform,
     # either by posting ideas or comments in phases with public participation methods,
@@ -404,6 +402,10 @@ class User < ApplicationRecord
 
   def new_phone_confirmation_pending?
     new_phone.present?
+  end
+
+  def merge_account_confirmation_pending?
+    merge_target_email.present?
   end
 
   private
@@ -578,7 +580,7 @@ class User < ApplicationRecord
   def auto_confirm_on_invite_accept
     self.email_confirmed_at = Time.zone.now
     self.confirmation_required = false
-    email_confirmation&.clear_code!
+    email_confirmation&.consume!
   end
 
   def remove_initiated_notifications

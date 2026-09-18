@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 
 import { IProjectData } from 'api/projects/types';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import useNewPhaseDefaults from 'containers/Admin/projects/project/phaseSetup/useNewPhaseDefaults';
 
 import { useIntl } from 'utils/cl-intl';
@@ -26,12 +24,9 @@ const NewPhase = ({ project }: Props) => {
   const { formatMessage } = useIntl();
   const newPhaseDefaults = useNewPhaseDefaults();
   const { participation_method, placement } = useSearch({ strict: false });
-  const spotlightSurveysEnabled = useFeatureFlag({
-    name: 'parallel_participation',
-  });
   const [pickerClosed, setPickerClosed] = useState(false);
 
-  const standalone = spotlightSurveysEnabled && placement === 'standalone';
+  const standalone = placement === 'standalone';
   const participationMethod = standalone
     ? 'native_survey'
     : participation_method;

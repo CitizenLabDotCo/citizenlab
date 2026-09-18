@@ -10,16 +10,25 @@ module ContentBuilder
     # a spec there keeps the two in sync. The rules live here so consumers outside the
     # mcp_server engine can use them.
     #
-    # The allowlist covers the FE project page toolbox (including the phases, events,
-    # spotlight-surveys and PageLink widgets), the page scaffold and node types found in
-    # existing graphs. ExtraSurveysWidget and PageLink sit behind feature flags, but
-    # those gate rendering or the FE toolbox, never whether a stored graph may hold
-    # the node. The '' enum entries exist because the FE writes empty strings as
+    # The allowlist covers the project page and custom page toolboxes, both page scaffolds,
+    # and node types found in existing graphs. ExtraSurveysWidget and PageLink sit behind
+    # feature flags, but those gate rendering or the FE toolbox, never whether a stored graph
+    # may hold the node. The '' enum entries exist because the FE writes empty strings as
     # prop defaults.
     module WidgetSpecs
       # Node types kept only for graphs that already contain them: editable and
       # deletable in place, but never newly created.
       LEGACY_WIDGETS = %w[RichTextMultiloc ProjectDescriptionSection EventsWidget].freeze
+
+      # Widgets and scaffold only the custom page builder resolves. A project page has no
+      # resolver entry for them, and an unknown resolvedName throws inside a pass over every
+      # node — taking the whole route down — so anything validating a project layout works
+      # from PROJECT_PAGE_SPECS instead.
+      CUSTOM_PAGE_WIDGETS = %w[
+        ProjectsByFilter
+        CustomPageRoot
+        CustomPageBody
+      ].freeze
 
       SPECS = {
         'TextMultiloc' => { 'multilocs' => %w[text] },
@@ -71,12 +80,21 @@ module ContentBuilder
         # The container that used to hold all page content. No longer seeded, but stored
         # graphs carry one until the editor next saves them flat. Tolerated, never created.
         'ProjectDescriptionSection' => {},
+        'ProjectsByFilter' => {
+          'multilocs' => %w[titleMultiloc],
+          'enums' => { 'filterType' => %w[global_topics areas spaces] }
+        },
         # The project page scaffold (no rules: nodes patches may not add, move or delete).
         'ProjectPageRoot' => {},
         'ProjectBanner' => {},
         'ProjectTitle' => {},
-        'ProjectPageBody' => {}
+        'ProjectPageBody' => {},
+        # The custom page scaffold, same idea.
+        'CustomPageRoot' => {},
+        'CustomPageBody' => {}
       }.freeze
+
+      PROJECT_PAGE_SPECS = SPECS.except(*CUSTOM_PAGE_WIDGETS).freeze
     end
   end
 end

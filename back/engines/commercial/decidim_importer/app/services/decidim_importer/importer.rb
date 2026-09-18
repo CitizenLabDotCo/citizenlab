@@ -192,7 +192,7 @@ module DecidimImporter
     # Applies the import's app-config patch (`<base>.app_config.json`) to the current tenant: additively
     # unions the export's locales into `core.locales` — *without* replacing the tenant's own set, so no
     # user is stranded and no `validate_locales` migration is needed — and allows+enables the feature flags
-    # the import relies on (`project_static_pages`, `parallel_participation`), merged onto whatever the
+    # the import relies on (`project_static_pages`), merged onto whatever the
     # tenant already has. Nothing else in the app config is touched. Run before the template deserializes,
     # so its records have the locales they reference. Returns the locales added (empty when none/no file).
     def self.apply_import_app_config_file(path)

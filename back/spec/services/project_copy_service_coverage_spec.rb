@@ -75,6 +75,7 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
         imported
         invite_status
         last_active_at
+        merge_target_email
         new_email
         new_phone
         onboarding
