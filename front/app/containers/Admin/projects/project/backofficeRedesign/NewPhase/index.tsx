@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { IProjectData } from 'api/projects/types';
 
@@ -10,7 +10,11 @@ import { useIntl } from 'utils/cl-intl';
 import Navigate from 'utils/cl-router/Navigate';
 import { useSearch } from 'utils/router';
 
+import ProjectWorkspace from '..';
 import messages from '../messages';
+import PhasePreview from '../Phase/PhasePreview';
+import ProjectLeftPanel from '../ProjectLeftPanel';
+import SelectMethodModal from '../ProjectSetupPanel/SelectMethodModal';
 
 import NewPhaseWorkspace from './NewPhaseWorkspace';
 
@@ -25,20 +29,40 @@ const NewPhase = ({ project }: Props) => {
   const spotlightSurveysEnabled = useFeatureFlag({
     name: 'parallel_participation',
   });
+  const [pickerClosed, setPickerClosed] = useState(false);
 
   const standalone = spotlightSurveysEnabled && placement === 'standalone';
   const participationMethod = standalone
     ? 'native_survey'
     : participation_method;
 
-  // The method is picked on the project page before a phase is built.
+  // Some links reach this page without a method, so the picker is shown over
+  // the project page first.
   if (!participationMethod) {
+    if (pickerClosed) {
+      return (
+        <Navigate
+          to="/admin/projects/$projectId"
+          params={{ projectId: project.id }}
+          replace
+        />
+      );
+    }
+
     return (
-      <Navigate
-        to="/admin/projects/$projectId"
-        params={{ projectId: project.id }}
-        replace
-      />
+      <>
+        <ProjectWorkspace
+          project={project}
+          leftPanel={<ProjectLeftPanel projectId={project.id} />}
+        >
+          <PhasePreview projectId={project.id} />
+        </ProjectWorkspace>
+        <SelectMethodModal
+          projectId={project.id}
+          opened
+          onClose={() => setPickerClosed(true)}
+        />
+      </>
     );
   }
 
