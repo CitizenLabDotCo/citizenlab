@@ -8,7 +8,6 @@ import {
   Image,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { lighten } from 'polished';
 
 type Props = {
   selected: boolean;
@@ -22,8 +21,6 @@ type Props = {
   /** Shown on hover when the method can't be picked. */
   disabledReason?: string;
 };
-
-export const backgroundColor = lighten(0.1, colors.tealLight);
 
 interface ChildTextProps {
   selected: boolean;
@@ -66,7 +63,7 @@ const ParticipationMethodChoice = ({
       flexDirection="column"
       borderRadius="3px"
       border={`1px solid ${borderColor}`}
-      background={highlighted ? backgroundColor : colors.white}
+      background={highlighted ? colors.teal50 : colors.white}
       opacity={disabled ? 0.6 : 1}
       padding="16px"
       gap="8px"
