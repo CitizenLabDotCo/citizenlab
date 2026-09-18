@@ -118,14 +118,21 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.nextActions',
     defaultMessage: 'Next actions',
   },
-  noParticipantsYet: {
-    id: 'app.containers.Admin.projects.project.noParticipantsYet',
-    defaultMessage: 'No participants yet',
+  collectingNow: {
+    id: 'app.containers.Admin.projects.project.collectingNow',
+    defaultMessage: 'Collecting now',
   },
-  participantCount: {
-    id: 'app.containers.Admin.projects.project.participantCount',
-    defaultMessage:
-      '{count, plural, one {# participant} other {# participants}}',
+  participantsGraphLabel: {
+    id: 'app.containers.Admin.projects.project.participantsGraphLabel',
+    defaultMessage: 'Participants',
+  },
+  participantsGraphLastPeriod: {
+    id: 'app.containers.Admin.projects.project.participantsGraphLastPeriod',
+    defaultMessage: '<b>+{count}</b> last 7 days',
+  },
+  participantsGraphScale: {
+    id: 'app.containers.Admin.projects.project.participantsGraphScale',
+    defaultMessage: 'Weekly, since {date}',
   },
   actionMessageParticipants: {
     id: 'app.containers.Admin.projects.project.actionMessageParticipants',
@@ -237,6 +244,41 @@ export default defineMessages({
   publishNow: {
     id: 'app.containers.Admin.projects.project.publishNow',
     defaultMessage: 'Publish now',
+  },
+  publishRestoreToDraft: {
+    id: 'app.containers.Admin.projects.project.publishRestoreToDraft',
+    defaultMessage: 'Restore to draft',
+  },
+  publishRestoreToDraftTitle: {
+    id: 'app.containers.Admin.projects.project.publishRestoreToDraftTitle',
+    defaultMessage: 'Restore to draft?',
+  },
+  publishRestoreToDraftBody: {
+    id: 'app.containers.Admin.projects.project.publishRestoreToDraftBody',
+    defaultMessage:
+      'The project goes back to draft and is no longer visible to residents.',
+  },
+  publishCancel: {
+    id: 'app.containers.Admin.projects.project.publishCancel',
+    defaultMessage: 'Cancel',
+  },
+  publishMoveToArchive: {
+    id: 'app.containers.Admin.projects.project.publishMoveToArchive',
+    defaultMessage: 'Move to archive',
+  },
+  publishRestoreToDraftFromArchiveBody: {
+    id: 'app.containers.Admin.projects.project.publishRestoreToDraftFromArchiveBody',
+    defaultMessage:
+      'The project moves out of the archive and back to draft. It stays hidden from residents until you publish it again.',
+  },
+  publishArchiveTitle: {
+    id: 'app.containers.Admin.projects.project.publishArchiveTitle',
+    defaultMessage: 'Archive this project?',
+  },
+  publishArchiveBody: {
+    id: 'app.containers.Admin.projects.project.publishArchiveBody',
+    defaultMessage:
+      'The project moves to your Archive folder on the platform. Residents can no longer see it or take part, and it stops appearing on the homepage, but everything stays saved and you can restore it to draft at any time.',
   },
   stepSharePrivateLink: {
     id: 'app.containers.Admin.projects.project.stepSharePrivateLink2',

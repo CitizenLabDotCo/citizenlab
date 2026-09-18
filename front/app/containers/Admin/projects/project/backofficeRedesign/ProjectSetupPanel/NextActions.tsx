@@ -10,6 +10,7 @@ import Link, { typedStyled } from 'utils/cl-router/Link';
 import messages from '../messages';
 
 import PanelHeading from './PanelHeading';
+import ParticipantsGraph from './ParticipantsGraph';
 
 const Row = typedStyled(Link)`
   display: flex;
@@ -33,18 +34,20 @@ const NextActions = ({ project }: Props) => {
   const { formatMessage } = useIntl();
   const projectId = project.id;
 
-  const participants = project.attributes.participants_count;
+  const { participants_count: participants, participation_status } =
+    project.attributes;
+
+  const collecting = participation_status === 'active' && participants > 0;
 
   return (
     <Box>
       <PanelHeading
-        title={formatMessage(messages.nextActions)}
-        meta={
-          participants === 0
-            ? formatMessage(messages.noParticipantsYet)
-            : formatMessage(messages.participantCount, { count: participants })
-        }
+        title={formatMessage(
+          collecting ? messages.collectingNow : messages.nextActions
+        )}
       />
+
+      <ParticipantsGraph project={project} />
 
       <Box display="flex" flexDirection="column">
         <Row to="/admin/projects/$projectId/messaging" params={{ projectId }}>
