@@ -2,19 +2,19 @@ import React from 'react';
 
 import { Box, colors, Text } from '@citizenlab/cl2-component-library';
 
+import { PhasePlacementType } from 'api/phases/types';
+
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-export type Placement = 'timeline' | 'standalone';
-
 interface Props {
-  selected: Placement;
-  onSelect: (placement: Placement) => void;
+  selected: PhasePlacementType;
+  onSelect: (placement: PhasePlacementType) => void;
 }
 
 const PLACEMENTS = [
-  { key: 'timeline', label: messages.placementTimeline },
+  { key: 'on_timeline', label: messages.placementTimeline },
   { key: 'standalone', label: messages.placementStandalone },
 ] as const;
 
