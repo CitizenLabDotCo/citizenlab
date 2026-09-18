@@ -15,8 +15,6 @@ interface Props {
   phaseId?: string;
 }
 
-// What the admin sets up for the phase besides its name and dates: its form,
-// questions, inputs, causes or report, depending on the method.
 const MethodSection = ({ projectId, participationMethod, phaseId }: Props) => {
   switch (participationMethod) {
     case 'poll':
