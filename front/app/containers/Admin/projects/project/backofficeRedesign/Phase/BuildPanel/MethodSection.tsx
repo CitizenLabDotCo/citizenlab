@@ -11,7 +11,6 @@ import PollSection from './PollSection';
 interface Props {
   projectId: string;
   participationMethod: ParticipationMethod;
-  /** Absent while the phase isn't saved yet. */
   phaseId?: string;
 }
 

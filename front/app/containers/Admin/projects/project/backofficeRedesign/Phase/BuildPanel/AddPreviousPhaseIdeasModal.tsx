@@ -18,8 +18,6 @@ interface Props {
   onClose: () => void;
 }
 
-// The input manager's timeline filter is how ideas are added to a phase: they
-// are dragged from another phase onto this one.
 const AddPreviousPhaseIdeasModal = ({
   projectId,
   phaseId,

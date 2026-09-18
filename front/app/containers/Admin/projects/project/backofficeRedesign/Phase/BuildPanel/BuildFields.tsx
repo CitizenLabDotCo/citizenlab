@@ -71,7 +71,6 @@ const BuildFields = ({
       <Error apiErrors={errors?.title_multiloc} />
     </PanelField>
 
-    {/* The description saves itself against an existing phase. */}
     {phaseId && (
       <Box mb="16px">
         <PhaseDescription />
@@ -95,8 +94,6 @@ const BuildFields = ({
       />
     </PanelField>
 
-    {/* Only timeline phases can switch: a standalone phase must stay a
-        native survey. */}
     {!standalone && isSurveyMethod(participationMethod) && (
       <SurveyMethodSection
         selected={participationMethod}

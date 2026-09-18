@@ -18,9 +18,7 @@ interface PhaseSaveContextValue {
   setDirty: (key: string, dirty: boolean) => void;
   dirty: boolean;
   saving: boolean;
-  /** Saves every panel with changes. Resolves to whether all of them saved. */
   saveAll: (reason: SaveReason) => Promise<boolean>;
-  /** Drops every unsaved change. Panels key on `revision` to start over. */
   discardAll: () => void;
   revision: number;
 }
@@ -91,8 +89,6 @@ export const PhaseSaveProvider = ({ children }: { children: ReactNode }) => {
 
 export const usePhaseSave = () => useContext(PhaseSaveContext);
 
-// The latest save function is read through a ref, so the registration doesn't
-// change on every render.
 export const useRegisterPhaseSaver = (
   key: string,
   { dirty, save }: { dirty: boolean; save: SaveFn }

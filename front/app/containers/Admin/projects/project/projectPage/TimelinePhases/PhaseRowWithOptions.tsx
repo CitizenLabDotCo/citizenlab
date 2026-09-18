@@ -1,16 +1,10 @@
 import React, { ReactNode } from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-// The options button is a sibling of the row's link, since a button can't sit
-// inside one.
-const Container = styled.div`
-  position: relative;
-
+const Container = styled(Box)`
   .phase-options {
-    position: absolute;
-    top: 6px;
-    right: 6px;
     opacity: 0;
     transition: opacity 80ms ease-out;
   }
@@ -28,9 +22,11 @@ interface Props {
 }
 
 const PhaseRowWithOptions = ({ options, children }: Props) => (
-  <Container>
+  <Container position="relative">
     {children}
-    <div className="phase-options">{options}</div>
+    <Box className="phase-options" position="absolute" top="6px" right="6px">
+      {options}
+    </Box>
   </Container>
 );
 

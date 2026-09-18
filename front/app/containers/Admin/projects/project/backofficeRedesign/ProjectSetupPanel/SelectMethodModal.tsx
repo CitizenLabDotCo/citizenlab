@@ -72,7 +72,6 @@ const SelectMethodModal = ({ projectId, opened, onClose }: Props) => {
           )}
         </Text>
         {standalone ? (
-          // Only native surveys can run outside the timeline.
           <Box width="240px">
             <ParticipationMethodChoice
               selected

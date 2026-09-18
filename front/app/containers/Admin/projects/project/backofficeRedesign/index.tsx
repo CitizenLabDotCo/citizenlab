@@ -20,7 +20,6 @@ const PROJECT_PANEL_WIDTH = '280px';
 const PHASE_PANEL_WIDTH = '384px';
 const RIGHT_PANEL_WIDTH = '384px';
 
-/** A phase that is being created: it has no id yet. */
 interface Draft {
   label: string;
   rightPanel: ReactNode;

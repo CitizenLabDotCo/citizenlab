@@ -24,7 +24,6 @@ import PanelField from './PanelField';
 interface Props {
   projectId: string;
   participationMethod: ParticipationMethod;
-  /** Absent while the phase isn't saved yet: its form can't be edited then. */
   phaseId?: string;
 }
 
@@ -42,9 +41,6 @@ const FormSection = ({ projectId, participationMethod, phaseId }: Props) => {
 
   const survey = formEditor === 'surveyEditor';
 
-  // Only a phase where participants submit inputs asks them for personal info
-  // and demographics. Voting options are added by admins, so their form opens
-  // straight away.
   const asksParticipants = !!permissions?.data.some(
     ({ attributes }) => attributes.action === 'posting_idea'
   );

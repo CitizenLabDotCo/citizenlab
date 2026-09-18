@@ -94,15 +94,9 @@ const PhaseParticipationConfig = ({
   const microsoft_forms_enabled = useFeatureFlag({
     name: 'microsoft_forms_surveys',
   });
-
   const project_library_enabled = useFeatureFlag({ name: 'project_library' });
-
   const { formatMessage } = useIntl();
-
-  // The access rights of each action are only shown in the workspace panel,
-  // and only once the phase exists.
   const panelPhaseId = layout === 'panel' ? phase?.data.id : undefined;
-
   const { data: permissions } = usePhasePermissions({
     phaseId: phase?.data.id,
   });

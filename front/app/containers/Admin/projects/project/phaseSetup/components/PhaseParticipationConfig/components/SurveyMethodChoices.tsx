@@ -26,7 +26,6 @@ interface Props {
   selected: ParticipationMethod;
   showExternalSurvey: boolean;
   onSelect: (event: React.MouseEvent, method: SurveyMethod) => void;
-  /** Methods that can't be picked, with the reason shown on hover. */
   disabledReasons?: Partial<Record<SurveyMethod, string>>;
   cardWidth?: string;
 }

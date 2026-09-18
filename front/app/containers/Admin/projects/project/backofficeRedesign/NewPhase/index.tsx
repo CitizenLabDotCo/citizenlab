@@ -31,8 +31,6 @@ const NewPhase = ({ project }: Props) => {
     ? 'native_survey'
     : participation_method;
 
-  // Some links reach this page without a method, so the picker is shown over
-  // the project page first.
   if (!participationMethod) {
     if (pickerClosed) {
       return (
@@ -65,7 +63,6 @@ const NewPhase = ({ project }: Props) => {
 
   return (
     <NewPhaseWorkspace
-      // Picking another method starts the phase over.
       key={`${participationMethod}-${standalone}`}
       project={project}
       participationMethod={participationMethod}

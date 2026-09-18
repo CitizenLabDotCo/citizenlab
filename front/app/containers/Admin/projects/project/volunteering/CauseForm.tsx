@@ -39,7 +39,6 @@ type PageFormProps = {
   onSubmit: (formValues: SubmitValues) => void | Promise<void>;
   defaultValues?: Partial<FormValues>;
   imageUrl?: string | null;
-  /** 'inline' puts the save button under the fields, for use inside a modal. */
   submitPlacement?: 'fixed' | 'inline';
 };
 

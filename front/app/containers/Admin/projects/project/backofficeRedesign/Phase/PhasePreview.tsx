@@ -14,7 +14,6 @@ import messages from '../messages';
 
 interface Props {
   projectId: string;
-  /** Without a phase, the project page is shown. */
   phase?: IPhaseData;
 }
 

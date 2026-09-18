@@ -30,8 +30,6 @@ const PlatformDefaultsNote = ({ as, mt, ml, mb, lineHeight }: Props) => {
       <FormattedMessage
         {...messages.usingPlatformDefaults}
         values={{
-          // Only admins can reach the platform-wide settings the link points
-          // at, so managers get the same sentence as plain text.
           link: (chunks) =>
             userIsAdmin ? (
               <Link to="/admin/settings/registration">{chunks}</Link>

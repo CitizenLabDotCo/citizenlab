@@ -10,8 +10,6 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from '../../messages';
 
-// The backend refuses to change the method of a phase that has responses or
-// poll questions, so those switches are locked up front.
 const useSurveyMethodLocks = (
   phase: IPhaseData
 ): Partial<Record<SurveyMethod, string>> => {

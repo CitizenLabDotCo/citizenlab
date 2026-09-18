@@ -23,8 +23,6 @@ interface Props {
   onClose: () => void;
 }
 
-// These settings belong to the submission permission, so its access modal
-// shows them too.
 const AddQuestionsModal = ({
   projectId,
   phaseId,

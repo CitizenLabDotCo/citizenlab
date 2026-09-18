@@ -46,9 +46,7 @@ const UserActions = ({
 }: {
   showCommentingToggle?: boolean;
   showReactingToggle?: boolean;
-  /** Given once the phase exists: each action then shows who may take it. */
   phaseId?: string;
-  /** Actions of the method that have no toggle here, listed before events. */
   accessOnlyActions?: AccessOnlyAction[];
   submission_enabled: boolean;
   commenting_enabled: boolean;

@@ -35,9 +35,6 @@ interface Props {
   ) => IUpdatedPhaseProperties;
 }
 
-// Builds a phase in the browser only. The phase is created in one request once
-// the admin saves it with a title and dates, and the build view of the saved
-// phase takes over from there.
 const NewPhaseWorkspace = ({
   project,
   participationMethod: initialParticipationMethod,
@@ -60,8 +57,6 @@ const NewPhaseWorkspace = ({
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
     {}
   );
-  // Set once the phase exists, so retrying after a failed attachment upload
-  // doesn't create the phase a second time.
   const createdPhaseId = useRef<string>();
 
   const files = usePhaseFileAttachments({
@@ -103,8 +98,6 @@ const NewPhaseWorkspace = ({
       await files.save(phaseId);
       setDirty(false);
 
-      // Leaving goes on to wherever the admin was headed. Saving from the
-      // header opens the build view of the new phase.
       if (reason === 'button') {
         clHistory.push(`/admin/projects/${projectId}/phases/${phaseId}/setup`);
       }
@@ -146,8 +139,6 @@ const NewPhaseWorkspace = ({
                 standalone={standalone}
                 files={files}
                 surveyMethodSwitch={{
-                  // Nothing depends on a phase that isn't saved yet, so the
-                  // method can change without asking.
                   onSelect: (method) => {
                     setParticipationMethod(method);
                     updateFormData(defaultsForMethod(method));

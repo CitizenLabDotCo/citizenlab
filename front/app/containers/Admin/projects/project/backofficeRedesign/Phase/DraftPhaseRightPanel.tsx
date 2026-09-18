@@ -22,8 +22,6 @@ interface Props {
   setValidationErrors: React.Dispatch<React.SetStateAction<ValidationErrors>>;
 }
 
-// The settings are sent along when the phase is created, which the header's
-// save button does.
 const DraftPhaseRightPanel = ({
   formData,
   validationErrors,

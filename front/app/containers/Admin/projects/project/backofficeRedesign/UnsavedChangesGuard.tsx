@@ -12,14 +12,10 @@ import { useBlocker } from 'utils/router';
 import { usePhaseSave } from './_shared/PhaseSaveContext';
 import messages from './messages';
 
-// Only a change of page counts as leaving: filters and modals that just touch
-// the search params don't.
 const UnsavedChangesGuard = () => {
   const { formatMessage } = useIntl();
   const phaseSave = usePhaseSave();
   const dirty = !!phaseSave?.dirty;
-  // Set once the admin chose to go: leaving can take more than one navigation
-  // (the project URL redirects to its page) before the panels report clean.
   const leaving = useRef(false);
 
   useEffect(() => {

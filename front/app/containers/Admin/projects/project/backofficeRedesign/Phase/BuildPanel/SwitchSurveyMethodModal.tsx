@@ -19,13 +19,10 @@ import messages from '../../messages';
 
 interface Props {
   phase: IPhaseData;
-  /** The method the admin picked; the modal is closed while it's null. */
   method: SurveyMethod | null;
   onClose: () => void;
 }
 
-// Switching the kind of survey keeps the phase, but not everything that was
-// set up for the previous kind. The admin confirms after reading what goes.
 const SwitchSurveyMethodModal = ({ phase, method, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const queryClient = useQueryClient();
@@ -52,7 +49,6 @@ const SwitchSurveyMethodModal = ({ phase, method, onClose }: Props) => {
       {
         phaseId: phase.id,
         ...defaults,
-        // Keep the survey labels the admin already wrote.
         native_survey_title_multiloc:
           phase.attributes.native_survey_title_multiloc ??
           native_survey_title_multiloc,

@@ -14,9 +14,6 @@ interface Props {
   onConfirm: () => void;
 }
 
-// Votes are stored as plain numbers: a budget amount under budget allocation,
-// a count of votes otherwise. Changing the method keeps the numbers but not
-// their meaning, which is why the admin is warned first.
 const VotingMethodChangeModal = ({ opened, onClose, onConfirm }: Props) => {
   const { formatMessage } = useIntl();
 
