@@ -207,6 +207,11 @@ describe('Projects overview: folder moderator', () => {
     });
   });
 
+  after(() => {
+    cy.apiRemoveFolder(folderId);
+    cy.apiRemoveUser(userId);
+  });
+
   it('shows projects in the folder you can moderate', () => {
     cy.setLoginCookie(email, password);
     cy.visit('/admin/projects');

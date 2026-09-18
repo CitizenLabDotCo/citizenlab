@@ -36,9 +36,12 @@ describe('Timeline project with poll phase', () => {
   let projectId: string;
   let projectSlug: string;
   let phaseId: string;
+  let userId: string;
 
   before(() => {
-    cy.apiSignup(firstName, lastName, email, password);
+    cy.apiSignup(firstName, lastName, email, password).then((user) => {
+      userId = user.body.data.id;
+    });
 
     cy.apiCreateProject({
       title: projectTitle,
@@ -115,5 +118,6 @@ describe('Timeline project with poll phase', () => {
 
   after(() => {
     cy.apiRemoveProject(projectId);
+    cy.apiRemoveUser(userId);
   });
 });

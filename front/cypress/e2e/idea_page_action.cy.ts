@@ -122,15 +122,25 @@ describe('Idea show page actions', () => {
 
   describe('logged in as normal user', () => {
     describe('Reaction', () => {
+      let userId = '';
+
       beforeEach(() => {
         const firstName = randomString();
         const lastName = randomString();
         const email = randomEmail();
         const password = randomString();
 
-        cy.apiSignup(firstName, lastName, email, password);
+        cy.apiSignup(firstName, lastName, email, password).then((user) => {
+          userId = user.body.data.id;
+        });
         cy.setLoginCookie(email, password);
         cy.reload();
+      });
+
+      afterEach(() => {
+        if (userId) {
+          cy.apiRemoveUser(userId);
+        }
       });
 
       it('has working up and dislike buttons', () => {
@@ -195,6 +205,7 @@ describe('Idea show page actions', () => {
     describe('No reaction possible when canReact is false', () => {
       let ideaIdBis = '';
       let ideaSlugBis = '';
+      let userIdBis = '';
 
       before(() => {
         const firstName = randomString();
@@ -202,7 +213,9 @@ describe('Idea show page actions', () => {
         const email = randomEmail();
         const password = randomString();
 
-        cy.apiSignup(firstName, lastName, email, password);
+        cy.apiSignup(firstName, lastName, email, password).then((user) => {
+          userIdBis = user.body.data.id;
+        });
         cy.setLoginCookie(email, password);
         cy.apiCreatePhase({
           projectId,
@@ -232,6 +245,7 @@ describe('Idea show page actions', () => {
 
       after(() => {
         cy.apiRemoveIdea(ideaIdBis);
+        cy.apiRemoveUser(userIdBis);
       });
 
       it('has no up and dislike buttons', () => {
@@ -253,11 +267,14 @@ describe('Idea show page actions', () => {
 
       let ideaId2 = '';
       let ideaSlug2 = '';
+      let userId2 = '';
 
       before(() => {
         const firstName = randomString();
         const lastName = randomString();
-        cy.apiSignup(firstName, lastName, email, password);
+        cy.apiSignup(firstName, lastName, email, password).then((user) => {
+          userId2 = user.body.data.id;
+        });
 
         cy.apiCreateIdea({
           phaseId,
@@ -273,6 +290,7 @@ describe('Idea show page actions', () => {
 
       after(() => {
         cy.apiRemoveIdea(ideaId2);
+        cy.apiRemoveUser(userId2);
       });
 
       beforeEach(() => {

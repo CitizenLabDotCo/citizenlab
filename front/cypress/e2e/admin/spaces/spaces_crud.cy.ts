@@ -3,9 +3,18 @@ import { randomEmail, randomString } from '../../../support/commands';
 describe('Spaces CRUD', () => {
   const spaceName = randomString(10);
   const spaceModEmail = randomEmail();
+  let spaceModId: string;
 
   before(() => {
-    cy.apiSignup('Space', 'Moderator', spaceModEmail, 'password');
+    cy.apiSignup('Space', 'Moderator', spaceModEmail, 'password').then(
+      (user) => {
+        spaceModId = user.body.data.id;
+      }
+    );
+  });
+
+  after(() => {
+    cy.apiRemoveUser(spaceModId);
   });
 
   it('Space can be created', () => {

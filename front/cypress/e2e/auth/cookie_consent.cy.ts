@@ -15,12 +15,20 @@ describe('Cookie consent form for signed-in users', () => {
   const lastName = randomString();
   const email = randomEmail();
   const password = randomString();
+  let userId: string;
 
   beforeEach(() => {
     cy.clearCookies();
     cy.apiSignup(firstName, lastName, email, password).then((user) => {
+      userId = user.body.data.id;
       cy.setLoginCookie(email, password);
     });
+  });
+
+  afterEach(() => {
+    if (userId) {
+      cy.apiRemoveUser(userId);
+    }
   });
 
   it('Shows the correct options when signed up as normal user', () => {

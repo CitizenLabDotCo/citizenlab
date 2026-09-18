@@ -93,15 +93,22 @@ describe('Native survey data collection', () => {
     });
 
     describe('as a logged in user', () => {
+      let userId: string;
+
       before(() => {
         const email = randomEmail();
         const password = randomString();
 
         cy.apiSignup(randomString(), randomString(), email, password).then(
-          () => {
+          (user) => {
+            userId = user.body.data.id;
             cy.setLoginCookie(email, password);
           }
         );
+      });
+
+      after(() => {
+        cy.apiRemoveUser(userId);
       });
 
       it('saves all survey data', () => {

@@ -17,6 +17,14 @@ describe('Input manager', () => {
   });
 
   describe('Assignee filter', () => {
+    let projectId: string;
+
+    after(() => {
+      if (projectId) {
+        cy.apiRemoveProject(projectId);
+      }
+    });
+
     it('Filters on All ideas', () => {
       cy.visit('/admin/ideas/');
       checkSelectedAssigneeFilter('Any administrator');
@@ -29,7 +37,6 @@ describe('Input manager', () => {
         const projectTitle = randomString();
         const projectDescriptionPreview = randomString();
         const userId = user.body.data.id;
-        let projectId: string;
         const phaseTitle = randomString();
 
         // create project with signed-in admin/user as default assignee
@@ -76,12 +83,19 @@ describe('Input manager', () => {
   });
 
   describe('Need feedback toggle', () => {
+    let projectId: string;
+
+    after(() => {
+      if (projectId) {
+        cy.apiRemoveProject(projectId);
+      }
+    });
+
     it('Filters on ideas that need feedback', () => {
       cy.getAdminAuthUser().then((user) => {
         const projectTitle = randomString();
         const projectDescriptionPreview = randomString();
         const userId = user.body.data.id;
-        let projectId: string;
 
         // create project with signed-in admin/user as default assignee
         cy.apiCreateProject({
@@ -151,6 +165,14 @@ describe('Input manager', () => {
   });
 
   describe('Idea preview ', () => {
+    let projectId: string;
+
+    after(() => {
+      if (projectId) {
+        cy.apiRemoveProject(projectId);
+      }
+    });
+
     it('Opens when you click an idea title, then closes with X button', () => {
       cy.visit('/admin/ideas/');
       checkSelectedAssigneeFilter('Any administrator');
@@ -174,7 +196,6 @@ describe('Input manager', () => {
         const projectTitle = randomString();
         const projectDescriptionPreview = randomString();
         const userId = user.body.data.id;
-        let projectId: string;
 
         // create project with signed-in admin/user as default assignee
         cy.apiCreateProject({

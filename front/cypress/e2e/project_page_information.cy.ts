@@ -7,6 +7,7 @@ describe('Information with events CTA', () => {
   let projectId: string;
   let projectSlug: string;
   let ctaEventId: string;
+  let userId: string;
 
   const firstName = randomString();
   const lastName = randomString();
@@ -15,7 +16,8 @@ describe('Information with events CTA', () => {
 
   before(() => {
     cy.apiSignup(firstName, lastName, email, password)
-      .then(() => {
+      .then((user) => {
+        userId = user.body.data.id;
         cy.apiLogin(email, password);
       })
       .then(() => {
@@ -127,5 +129,6 @@ describe('Information with events CTA', () => {
 
   after(() => {
     cy.apiRemoveProject(projectId);
+    cy.apiRemoveUser(userId);
   });
 });

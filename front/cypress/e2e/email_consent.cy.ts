@@ -1,7 +1,16 @@
 describe('email consent', () => {
+  let campaignId: string | undefined;
+
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit('/admin/messaging/emails/custom/new');
+  });
+
+  afterEach(() => {
+    if (campaignId) {
+      cy.apiRemoveEmailCampaign(campaignId);
+      campaignId = undefined;
+    }
   });
 
   it('lets admins create a custom email, this email contains a link to unsubscribe', () => {
@@ -33,7 +42,11 @@ describe('email consent', () => {
       cy.wrap(button).find('div').should('have.class', 'notEmpty');
     });
 
+    cy.intercept('POST', '**/web_api/v1/campaigns').as('createCampaign');
     cy.get('#e2e-campaign-form-save-button').click();
+    cy.wait('@createCampaign').then((interception) => {
+      campaignId = interception.response?.body.data.id;
+    });
 
     cy.get('#e2e-email-preview-iframe')
       .its('0.contentDocument.body')

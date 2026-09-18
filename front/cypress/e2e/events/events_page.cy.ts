@@ -12,10 +12,12 @@ describe('All events page', () => {
 
   let projectId: string;
   let projectSlug: string;
+  let userId: string;
 
   before(() => {
     cy.apiSignup(firstName, lastName, email, password)
-      .then(() => {
+      .then((user) => {
+        userId = user.body.data.id;
         cy.apiLogin(email, password);
       })
       .then(() => {
@@ -44,6 +46,7 @@ describe('All events page', () => {
 
   after(() => {
     cy.apiRemoveProject(projectId);
+    cy.apiRemoveUser(userId);
   });
 
   it('shows event information when authorized', () => {
