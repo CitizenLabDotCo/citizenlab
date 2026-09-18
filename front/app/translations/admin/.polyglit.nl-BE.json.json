@@ -4589,6 +4589,16 @@
     "verified_at": "2026-06-09T13:13:18.853307Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.projectsPageMetaTitle": {
+    "state": "verified",
+    "verified_at": "2026-09-16T16:52:27.633253Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.projectsPageTitle": {
+    "state": "verified",
+    "verified_at": "2026-09-16T16:52:27.633253Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.sectionDescription": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
