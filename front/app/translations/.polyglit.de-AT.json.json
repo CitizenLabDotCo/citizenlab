@@ -4069,6 +4069,21 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.admin.UserFilterConditions.emailListCount": {
+    "state": "verified",
+    "verified_at": "2026-09-17T12:01:54.692542Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.components.admin.UserFilterConditions.emailListInvalid": {
+    "state": "verified",
+    "verified_at": "2026-09-17T12:01:54.692542Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.components.admin.UserFilterConditions.emailListPlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-09-17T12:01:54.692542Z",
+    "verified_by": "eva@govocal.com"
+  },
   "app.components.admin.UserFilterConditions.field_email": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -6888,6 +6903,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.AdminPage.Users.UsersGroup.emailListTooLongError": {
+    "state": "verified",
+    "verified_at": "2026-09-17T12:01:54.692542Z",
+    "verified_by": "eva@govocal.com"
   },
   "app.containers.AdminPage.Users.UsersGroup.rulesError": {
     "state": "verified",
@@ -11729,6 +11749,7 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+
   "app.containers.Projects.seeVolunteering": {
     "state": "verified",
     "verified_at": "2026-09-17T12:01:19.726787Z",
@@ -13104,6 +13125,7 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+
   "app.containers.landing.editHomepage": {
     "state": "verified",
     "verified_at": "2026-09-17T11:52:51.577851Z",
