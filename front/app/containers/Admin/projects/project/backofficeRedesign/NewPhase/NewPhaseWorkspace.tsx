@@ -79,23 +79,25 @@ const NewPhaseWorkspace = ({
   const createPhase = async () => {
     if (createdPhaseId.current) return createdPhaseId.current;
 
-    const { isValidated, errors } = validate(
-      formData,
-      phases,
-      formatMessage,
-      undefined,
-      standalone
-    );
-
-    setValidationErrors(errors);
-    if (!isValidated) throw new Error('Invalid phase');
-
     const { data: phase } = await addPhase({ projectId, ...formData });
     createdPhaseId.current = phase.id;
     return phase.id;
   };
 
   const save = async (reason: SaveReason) => {
+    if (!createdPhaseId.current) {
+      const { isValidated, errors } = validate(
+        formData,
+        phases,
+        formatMessage,
+        undefined,
+        standalone
+      );
+
+      setValidationErrors(errors);
+      if (!isValidated) throw new Error('Invalid phase');
+    }
+
     try {
       const phaseId = await createPhase();
       await files.save(phaseId);
