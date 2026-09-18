@@ -10,11 +10,14 @@ import useProjectById from 'api/projects/useProjectById';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-import { Outlet as RouterOutlet, useParams } from 'utils/router';
+import { Outlet as RouterOutlet, useMatchRoute, useParams } from 'utils/router';
 
 import ProjectWorkspace from './backofficeRedesign';
+import { PhaseSaveProvider } from './backofficeRedesign/_shared/PhaseSaveContext';
+import NewPhase from './backofficeRedesign/NewPhase';
 import PhaseLeftPanel from './backofficeRedesign/Phase/PhaseLeftPanel';
 import ProjectLeftPanel from './backofficeRedesign/ProjectLeftPanel';
+import UnsavedChangesGuard from './backofficeRedesign/UnsavedChangesGuard';
 import ProjectHeader from './projectHeader';
 import ProjectSidebar from './projectPage/ProjectSidebar';
 
@@ -24,6 +27,10 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
   const { data: phase } = usePhase(phaseId);
   const workspaceEnabled = useFeatureFlag({
     name: 'project_backoffice_redesign',
+  });
+  const matchRoute = useMatchRoute();
+  const onNewPhaseRoute = !!matchRoute({
+    to: '/$locale/admin/projects/$projectId/phases/new',
   });
   const projectId = project.id;
 
@@ -35,23 +42,30 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
 
   if (workspaceEnabled) {
     return (
-      <ProjectWorkspace
-        project={project}
-        phase={selectedPhase}
-        leftPanel={
-          selectedPhase ? (
-            <PhaseLeftPanel
-              key={selectedPhase.id}
-              projectId={projectId}
-              phase={selectedPhase}
-            />
-          ) : (
-            <ProjectLeftPanel projectId={projectId} />
-          )
-        }
-      >
-        <RouterOutlet />
-      </ProjectWorkspace>
+      <PhaseSaveProvider>
+        <UnsavedChangesGuard />
+        {onNewPhaseRoute ? (
+          <NewPhase project={project} />
+        ) : (
+          <ProjectWorkspace
+            project={project}
+            phase={selectedPhase}
+            leftPanel={
+              selectedPhase ? (
+                <PhaseLeftPanel
+                  key={selectedPhase.id}
+                  projectId={projectId}
+                  phase={selectedPhase}
+                />
+              ) : (
+                <ProjectLeftPanel projectId={projectId} />
+              )
+            }
+          >
+            <RouterOutlet />
+          </ProjectWorkspace>
+        )}
+      </PhaseSaveProvider>
     );
   }
 
