@@ -46,9 +46,8 @@ const METHOD_LABELS: Record<ParticipationMethod, MessageDescriptor> = {
 
 interface Props {
   projectId: string;
-  /** When given, "New phase" calls this instead of linking to the phase form. */
+  /** When given, the add button calls this instead of linking to the phase form. */
   onNewPhase?: () => void;
-  /** Adds a menu to each phase, with the actions that apply to it. */
   withPhaseOptions?: boolean;
 }
 
