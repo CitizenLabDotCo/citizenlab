@@ -11514,6 +11514,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.Projects.seeVolunteering": {
+    "state": "verified",
+    "verified_at": "2026-09-16T20:00:57.828023Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Projects.share": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -11880,11 +11885,6 @@
     "verified_by": "Admin"
   },
   "app.containers.SignIn.or": {
-    "state": "verified",
-    "verified_at": "2026-03-18T11:50:36.510849Z",
-    "verified_by": "Admin"
-  },
-  "app.containers.SignIn.signInError2": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
@@ -12888,6 +12888,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.containers.landing.editHomepage": {
+    "state": "verified",
+    "verified_at": "2026-09-14T08:15:27.223655Z",
+    "verified_by": "stephanie"
   },
   "app.containers.landing.new": {
     "state": "verified",

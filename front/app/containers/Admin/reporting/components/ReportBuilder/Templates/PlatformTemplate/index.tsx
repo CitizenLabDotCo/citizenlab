@@ -34,6 +34,7 @@ import {
 } from '../../Widgets/ChartWidgets/DemographicsWidget/Settings';
 const {
   DemographicsWidget,
+  InternalAdoptionWidget,
   MethodsUsedWidget,
   ParticipantsWidget,
   ParticipationWidget,
@@ -138,8 +139,7 @@ const PlatformTemplateContent = ({
     });
 
     return withoutSpacing`
-      <h2>${formatMessage(messages.reportTitle)}</h2>
-      <h3>${formatMessage(messages.executiveSummary)}</h3>
+      <h2>${formatMessage(messages.executiveSummary)}</h2>
       <ul>
         ${period ? `<li>${period}</li>` : ''}
         ${dateLastReport}
@@ -160,7 +160,7 @@ const PlatformTemplateContent = ({
   ) => {
     return buildMultiloc((formatMessage) => {
       return withoutSpacing`
-        <h3>${formatMessage(title)}</h3>
+        <h2>${formatMessage(title)}</h2>
         <p>${formatMessage(description)}</p>
       `;
     });
@@ -177,7 +177,7 @@ const PlatformTemplateContent = ({
 
   const toTitleMultiloc = (
     message: MessageDescriptor,
-    variant: 'h1' | 'h3'
+    variant: 'h1' | 'h2' | 'h3'
   ) => {
     return createMultiloc(appConfigurationLocales, (locale) => {
       return `<${variant}>${formatMessageWithLocale(
@@ -209,17 +209,23 @@ const PlatformTemplateContent = ({
 
   return (
     <Element id="platform-report-template" is={Box} canvas>
+      {/* ----- LOGO, TITLE & BANNER ----- */}
       <ImageMultiloc
         image={{
           imageUrl: appConfiguration.data.attributes.logo?.medium ?? undefined,
         }}
         stretch={false}
       />
+      <TextMultiloc text={toTitleMultiloc(messages.reportTitle, 'h2')} />
+      {/* Empty placeholder for the banner image */}
+      <ImageMultiloc stretch />
+      <WhiteSpace size="small" />
+
       {/* ----- EXECUTIVE SUMMARY ----- */}
       <TextMultiloc text={reportStats} />
       <WhiteSpace size="small" />
 
-      {/* ----- TOP-LEVEL PARTICIPATION INDICATORS ----- */}
+      {/* ----- 1. TOP-LEVEL PARTICIPATION INDICATORS ----- */}
       <TextMultiloc
         text={getSectionTitleAndDescription(
           messages.participationIndicators,
@@ -248,6 +254,79 @@ const PlatformTemplateContent = ({
           />
         </Element>
       </TwoColumn>
+      <WhiteSpace size="small" withDivider />
+      <TwoColumn columnLayout="1-1">
+        {/* REGISTRATIONS */}
+        <Element id="column-registrations-left" is={Container} canvas>
+          <RegistrationsWidget
+            title={toMultiloc(
+              CUSTOM_TEMPLATE_WIDGET_TITLES.RegistrationsWidgetFromStart
+            )}
+            endAt={dateRange.endAt}
+          />
+        </Element>
+        <Element id="column-registrations-right" is={Container} canvas>
+          <RegistrationsWidget
+            title={toMultiloc(
+              CUSTOM_TEMPLATE_WIDGET_TITLES.RegistrationsWidgetSince,
+              { date: formattedStartDate }
+            )}
+            {...dateRange}
+            {...comparedDateRange}
+          />
+        </Element>
+      </TwoColumn>
+      <WhiteSpace size="small" withDivider />
+      <TwoColumn columnLayout="1-1">
+        {/* PARTICIPANTS */}
+        <Element id="column-participants-left" is={Container} canvas>
+          <ParticipantsWidget
+            title={toMultiloc(
+              CUSTOM_TEMPLATE_WIDGET_TITLES.ParticipantsWidgetFromStart
+            )}
+            endAt={dateRange.endAt}
+          />
+        </Element>
+        <Element id="column-participants-right" is={Container} canvas>
+          <ParticipantsWidget
+            title={toMultiloc(
+              CUSTOM_TEMPLATE_WIDGET_TITLES.ParticipantsWidgetSince,
+              { date: formattedStartDate }
+            )}
+            {...dateRange}
+            {...comparedDateRange}
+          />
+        </Element>
+      </TwoColumn>
+      <WhiteSpace size="small" withDivider />
+      <TwoColumn columnLayout="1-1">
+        {/* EMAILS */}
+        <Element id="column-emails-left" is={Container} canvas>
+          <TextMultiloc text={toTextMultiloc(messages.emailsFromStart, true)} />
+          <ImageMultiloc />
+        </Element>
+        <Element id="column-emails-right" is={Container} canvas>
+          <TextMultiloc
+            text={toTextMultiloc(messages.emailsSince, true, {
+              date: formattedStartDate,
+            })}
+          />
+          <ImageMultiloc />
+        </Element>
+      </TwoColumn>
+
+      {/* COMMENTS */}
+      <WhiteSpace size="small" withDivider />
+      <TextMultiloc text={toTitleMultiloc(messages.comments, 'h3')} />
+      <WhiteSpace size="small" withDivider />
+
+      {/* ----- 2. CHANNELS & DEVICES ----- */}
+      <TextMultiloc
+        text={getSectionTitleAndDescription(
+          messages.channelsAndDevices,
+          messages.channelsAndDevicesDescription
+        )}
+      />
       <TwoColumn columnLayout="1-1">
         {/* TRAFFIC SOURCES */}
         <Element id="column-traffic-sources-left" is={Container} canvas>
@@ -292,75 +371,12 @@ const PlatformTemplateContent = ({
       <TextMultiloc text={toTitleMultiloc(messages.comments, 'h3')} />
       <WhiteSpace size="small" withDivider />
 
-      <TwoColumn columnLayout="1-1">
-        {/* REGISTRATIONS */}
-        <Element id="column-registrations-left" is={Container} canvas>
-          <RegistrationsWidget
-            title={toMultiloc(
-              CUSTOM_TEMPLATE_WIDGET_TITLES.RegistrationsWidgetFromStart
-            )}
-            endAt={dateRange.endAt}
-          />
-        </Element>
-        <Element id="column-registrations-right" is={Container} canvas>
-          <RegistrationsWidget
-            title={toMultiloc(
-              CUSTOM_TEMPLATE_WIDGET_TITLES.RegistrationsWidgetSince,
-              { date: formattedStartDate }
-            )}
-            {...dateRange}
-            {...comparedDateRange}
-          />
-        </Element>
-      </TwoColumn>
-      <TwoColumn columnLayout="1-1">
-        {/* PARTICIPANTS */}
-        <Element id="column-participants-left" is={Container} canvas>
-          <ParticipantsWidget
-            title={toMultiloc(
-              CUSTOM_TEMPLATE_WIDGET_TITLES.ParticipantsWidgetFromStart
-            )}
-            endAt={dateRange.endAt}
-          />
-        </Element>
-        <Element id="column-participants-right" is={Container} canvas>
-          <ParticipantsWidget
-            title={toMultiloc(
-              CUSTOM_TEMPLATE_WIDGET_TITLES.ParticipantsWidgetSince,
-              { date: formattedStartDate }
-            )}
-            {...dateRange}
-            {...comparedDateRange}
-          />
-        </Element>
-      </TwoColumn>
-      <TwoColumn columnLayout="1-1">
-        {/* EMAILS */}
-        <Element id="column-emails-left" is={Container} canvas>
-          <TextMultiloc text={toTextMultiloc(messages.emailsFromStart, true)} />
-          <ImageMultiloc />
-        </Element>
-        <Element id="column-emails-right" is={Container} canvas>
-          <TextMultiloc
-            text={toTextMultiloc(messages.emailsSince, true, {
-              date: formattedStartDate,
-            })}
-          />
-          <ImageMultiloc />
-        </Element>
-      </TwoColumn>
-
-      {/* COMMENTS */}
-      <WhiteSpace size="small" withDivider />
-      <TextMultiloc text={toTitleMultiloc(messages.comments, 'h3')} />
-      <WhiteSpace size="small" withDivider />
-
-      {/* ----- TOP-LEVEL INCLUSION INDICATORS ----- */}
+      {/* ----- 3. WHO PARTICIPATED ----- */}
       <TwoColumn columnLayout="1-1">
         <Element id="column-inclusion-left" is={Container} canvas>
           <TextMultiloc
             text={getSectionTitleAndDescription(
-              messages.inclusionIndicators,
+              messages.whoParticipated,
               messages.inclusionIndicatorsDescription
             )}
           />
@@ -400,10 +416,10 @@ const PlatformTemplateContent = ({
       <TextMultiloc text={toTitleMultiloc(messages.comments, 'h3')} />
       <WhiteSpace size="small" withDivider />
 
-      {/* ----- YOUR PROJECTS ----- */}
+      {/* ----- 4A. HOW DO THEY PARTICIPATE ----- */}
       <TextMultiloc
         text={getSectionTitleAndDescription(
-          messages.yourProjects,
+          messages.howDoTheyParticipate,
           messages.yourProjectsDescription
         )}
       />
@@ -420,7 +436,32 @@ const PlatformTemplateContent = ({
         {...dateRange}
         {...comparedDateRange}
       />
+      <WhiteSpace size="small" />
+      {/* PARTICIPATION */}
+      <ParticipationWidget
+        title={toMultiloc(WIDGET_TITLES.ParticipationWidget)}
+        {...dateRange}
+        {...comparedDateRange}
+        participationTypes={{
+          inputs: true,
+          comments: true,
+          votes: true,
+        }}
+      />
 
+      {/* COMMENTS */}
+      <WhiteSpace size="small" withDivider />
+      <TextMultiloc text={toTitleMultiloc(messages.comments, 'h3')} />
+      <WhiteSpace size="small" withDivider />
+
+      {/* ----- 4B. WHAT HAPPENS TO THE INPUT ----- */}
+      <TextMultiloc
+        text={getSectionTitleAndDescription(
+          messages.whatHappensToInput,
+          messages.whatHappensToInputDescription
+        )}
+      />
+      <WhiteSpace size="small" />
       <TwoColumn columnLayout="1-1">
         {/* INPUT STATUS */}
         <Element id="column-input-status-left" is={Container} canvas>
@@ -439,37 +480,35 @@ const PlatformTemplateContent = ({
         </Element>
       </TwoColumn>
 
-      {/* PARTICIPATION */}
-      <ParticipationWidget
-        title={toMultiloc(WIDGET_TITLES.ParticipationWidget)}
-        {...dateRange}
-        {...comparedDateRange}
-        participationTypes={{
-          inputs: true,
-          comments: true,
-          votes: true,
-        }}
-      />
-
       {/* COMMENTS */}
       <WhiteSpace size="small" withDivider />
       <TextMultiloc text={toTitleMultiloc(messages.comments, 'h3')} />
       <WhiteSpace size="small" withDivider />
 
-      {/* ----- INTERNAL ORGANISATION ----- */}
+      {/* ----- 5. INTERNAL ORGANISATION ----- */}
       <TextMultiloc
-        text={toTitleMultiloc(messages.internalOrganization, 'h3')}
+        text={toTitleMultiloc(messages.internalOrganization, 'h2')}
       />
 
       <TwoColumn columnLayout="1-1">
-        {/* ADMIN & PROJECT MANAGERS */}
-        <Element id="column-admin-pms-left" is={Container} canvas>
-          <TextMultiloc text={toTextMultiloc(messages.admins, true)} />
-          <ImageMultiloc />
+        {/* INTERNAL ADOPTION */}
+        <Element id="column-internal-adoption-left" is={Container} canvas>
+          <InternalAdoptionWidget
+            title={toMultiloc(
+              CUSTOM_TEMPLATE_WIDGET_TITLES.InternalAdoptionWidgetFromStart
+            )}
+            endAt={dateRange.endAt}
+          />
         </Element>
-        <Element id="column-admin-pms-right" is={Container} canvas>
-          <TextMultiloc text={toTextMultiloc(messages.projectManagers, true)} />
-          <ImageMultiloc />
+        <Element id="column-internal-adoption-right" is={Container} canvas>
+          <InternalAdoptionWidget
+            title={toMultiloc(
+              CUSTOM_TEMPLATE_WIDGET_TITLES.InternalAdoptionWidgetSince,
+              { date: formattedStartDate }
+            )}
+            {...dateRange}
+            {...comparedDateRange}
+          />
         </Element>
       </TwoColumn>
 
@@ -478,8 +517,8 @@ const PlatformTemplateContent = ({
       <TextMultiloc text={toTitleMultiloc(messages.comments, 'h3')} />
       <WhiteSpace size="small" withDivider />
 
-      {/* ----- GOALS & ENDING ----- */}
-      <TextMultiloc text={toTitleMultiloc(messages.goals, 'h3')} />
+      {/* ----- 6. GOALS & ENDING ----- */}
+      <TextMultiloc text={toTitleMultiloc(messages.goals, 'h2')} />
       <TwoColumn columnLayout="1-1">
         <Element id="column-goals-left" is={Container} canvas>
           <TextMultiloc text={undefined} />
