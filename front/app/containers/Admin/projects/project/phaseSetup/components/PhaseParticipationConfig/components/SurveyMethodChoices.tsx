@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { colors } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import { ParticipationMethod } from 'api/phases/types';
 
@@ -13,20 +12,6 @@ import messages from './messages';
 import ParticipationMethodChoice, {
   ChildText,
 } from './ParticipationMethodChoice';
-
-const LeftAlignedList = styled.ul`
-  text-align: left;
-`;
-
-const DescriptionWrapper = styled.div<{ selected: boolean }>`
-  width: 100%;
-  color: ${({ selected }) => (selected ? colors.primary : colors.coolGrey500)};
-
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  text-align: left;
-  line-height: 21px;
-`;
 
 export const SURVEY_METHODS = ['native_survey', 'poll', 'survey'] as const;
 
@@ -46,7 +31,13 @@ interface Props {
   cardWidth?: string;
 }
 
-// The three kinds of survey. Rendered as siblings, so the caller lays them out.
+const DESCRIPTION_STYLE = {
+  overflowWrap: 'break-word',
+  textAlign: 'left',
+  lineHeight: '21px',
+} as const;
+
+// Rendered as siblings, so the caller lays them out.
 const SurveyMethodChoices = ({
   selected,
   showExternalSurvey,
@@ -73,8 +64,14 @@ const SurveyMethodChoices = ({
         width={cardWidth}
         disabledReason={disabledReasons.native_survey}
       >
-        <DescriptionWrapper selected={selected === 'native_survey'}>
-          <LeftAlignedList>
+        <Box
+          width="100%"
+          color={
+            selected === 'native_survey' ? colors.primary : colors.coolGrey500
+          }
+          style={DESCRIPTION_STYLE}
+        >
+          <ul>
             <li>
               <FormattedMessage {...messages.aiPoweredInsights} />
             </li>
@@ -87,8 +84,8 @@ const SurveyMethodChoices = ({
             <li>
               <FormattedMessage {...messages.linkWithReportBuilder} />
             </li>
-          </LeftAlignedList>
-        </DescriptionWrapper>
+          </ul>
+        </Box>
       </ParticipationMethodChoice>
 
       {pollsEnabled && (
@@ -115,17 +112,21 @@ const SurveyMethodChoices = ({
           width={cardWidth}
           disabledReason={disabledReasons.survey}
         >
-          <DescriptionWrapper selected={selected === 'survey'}>
+          <Box
+            width="100%"
+            color={selected === 'survey' ? colors.primary : colors.coolGrey500}
+            style={DESCRIPTION_STYLE}
+          >
             <FormattedMessage {...messages.embedSurvey} />
-            <LeftAlignedList>
+            <ul>
               <li>
                 <FormattedMessage {...messages.lacksAIText} />
               </li>
               <li>
                 <FormattedMessage {...messages.lacksReportingText} />
               </li>
-            </LeftAlignedList>
-          </DescriptionWrapper>
+            </ul>
+          </Box>
         </ParticipationMethodChoice>
       )}
     </>
