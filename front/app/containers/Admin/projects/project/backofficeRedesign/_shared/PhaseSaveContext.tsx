@@ -20,13 +20,6 @@ interface PhaseSaveContextValue {
   saving: boolean;
   /** Saves every panel with changes. Resolves to whether all of them saved. */
   saveAll: (reason: SaveReason) => Promise<boolean>;
-  /**
-   * Runs a navigation the router can't block (one through clHistory), asking
-   * first when there are unsaved changes.
-   */
-  leave: (go: () => void) => void;
-  pendingLeave: (() => void) | null;
-  cancelLeave: () => void;
   /** Drops every unsaved change. Panels key on `revision` to start over. */
   discardAll: () => void;
   revision: number;
@@ -41,10 +34,6 @@ export const PhaseSaveProvider = ({ children }: { children: ReactNode }) => {
   const [dirtyKeys, setDirtyKeys] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
   const [revision, setRevision] = useState(0);
-  // Held in an object, since a function passed to a state setter is called.
-  const [pendingLeave, setPendingLeave] = useState<{ go: () => void } | null>(
-    null
-  );
 
   const register = useCallback((key: string, save: SaveFn) => {
     savers.current.set(key, save);
@@ -85,22 +74,13 @@ export const PhaseSaveProvider = ({ children }: { children: ReactNode }) => {
       dirty,
       saving,
       saveAll,
-      leave: (go: () => void) => {
-        if (dirty) {
-          setPendingLeave({ go });
-        } else {
-          go();
-        }
-      },
-      pendingLeave: pendingLeave?.go ?? null,
-      cancelLeave: () => setPendingLeave(null),
       discardAll: () => {
         setDirtyKeys([]);
         setRevision((revision) => revision + 1);
       },
       revision,
     };
-  }, [register, setDirty, dirtyKeys, saving, saveAll, pendingLeave, revision]);
+  }, [register, setDirty, dirtyKeys, saving, saveAll, revision]);
 
   return (
     <PhaseSaveContext.Provider value={value}>
