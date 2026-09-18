@@ -9,13 +9,12 @@ import inputFormMessages from 'containers/Admin/projects/project/inputForm/messa
 import { isPDFUploadSupported } from 'containers/Admin/projects/project/inputImporter/ReviewSection/utils';
 
 import ImportInputsSection from 'components/admin/FormSync/ImportInputsSection';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
-import { usePhaseSave } from '../../_shared/PhaseSaveContext';
 import messages from '../../messages';
 
 import AddPreviousPhaseIdeasModal from './AddPreviousPhaseIdeasModal';
@@ -35,7 +34,6 @@ const FormSection = ({ projectId, participationMethod, phaseId }: Props) => {
   const [questionsModalOpened, setQuestionsModalOpened] = useState(false);
   const [ideasModalOpened, setIdeasModalOpened] = useState(false);
   const { data: permissions } = usePhasePermissions({ phaseId });
-  const phaseSave = usePhaseSave();
 
   const formEditor = getMethodConfig(participationMethod).formEditor;
 
@@ -51,22 +49,6 @@ const FormSection = ({ projectId, participationMethod, phaseId }: Props) => {
     ({ attributes }) => attributes.action === 'posting_idea'
   );
 
-  const openForm = () => {
-    setQuestionsModalOpened(false);
-    const go = () =>
-      clHistory.push(
-        `/admin/projects/${projectId}/phases/${phaseId}/${
-          survey ? 'survey-form' : 'form'
-        }/edit`
-      );
-
-    if (phaseSave) {
-      phaseSave.leave(go);
-    } else {
-      go();
-    }
-  };
-
   return (
     <>
       <Divider />
@@ -81,15 +63,27 @@ const FormSection = ({ projectId, participationMethod, phaseId }: Props) => {
             {formatMessage(messages.saveToEditForm)}
           </Text>
         )}
-        <Button
-          buttonStyle="secondary-outlined"
-          disabled={!phaseId || !permissions}
-          onClick={() =>
-            asksParticipants ? setQuestionsModalOpened(true) : openForm()
-          }
-        >
-          {formatMessage(messages.addQuestions)}
-        </Button>
+        {phaseId && permissions && !asksParticipants ? (
+          <ButtonWithLink
+            buttonStyle="secondary-outlined"
+            to={
+              survey
+                ? '/admin/projects/$projectId/phases/$phaseId/survey-form/edit'
+                : '/admin/projects/$projectId/phases/$phaseId/form/edit'
+            }
+            params={{ projectId, phaseId }}
+          >
+            {formatMessage(messages.addQuestions)}
+          </ButtonWithLink>
+        ) : (
+          <Button
+            buttonStyle="secondary-outlined"
+            disabled={!phaseId || !permissions}
+            onClick={() => setQuestionsModalOpened(true)}
+          >
+            {formatMessage(messages.addQuestions)}
+          </Button>
+        )}
         {participationMethod === 'voting' && (
           <Button
             buttonStyle="secondary-outlined"
@@ -113,10 +107,11 @@ const FormSection = ({ projectId, participationMethod, phaseId }: Props) => {
 
       {phaseId && (
         <AddQuestionsModal
+          projectId={projectId}
           phaseId={phaseId}
+          survey={survey}
           opened={questionsModalOpened}
           onClose={() => setQuestionsModalOpened(false)}
-          onContinue={openForm}
         />
       )}
 
