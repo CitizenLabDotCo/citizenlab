@@ -7,22 +7,26 @@ describe ContentBuilder::Craftjs::WidgetSpecs do
   # CUSTOM_PAGE_WIDGETS by definition, so comparing the three would pass whatever the lists held.
   describe 'CUSTOM_PAGE_WIDGETS' do
     it 'lists the widgets and scaffold only the custom page builder resolves' do
-      expect(described_class::CUSTOM_PAGE_WIDGETS)
-        .to match_array(%w[ProjectsByFilter CustomPageRoot CustomPageBody])
+      expect(described_class::CUSTOM_PAGE_WIDGETS).to match_array(
+        %w[ProjectsByFilter CustomPageRoot CustomPageBanner CustomPageTitle CustomPageBody]
+      )
     end
 
     # Naming a widget that no longer exists would silently stop excluding anything.
     it 'names only widgets that are actually specified' do
-      expect(described_class::SPECS.keys)
-        .to include('ProjectsByFilter', 'CustomPageRoot', 'CustomPageBody')
+      expect(described_class::SPECS.keys).to include(
+        'ProjectsByFilter', 'CustomPageRoot', 'CustomPageBanner', 'CustomPageTitle', 'CustomPageBody'
+      )
     end
 
     # The difference is exact, not a subset: a node the custom page derives without a spec of its
     # own shows up here as an extra name, rather than once something validates the layout.
     it 'covers every widget the custom page layout service derives' do
       SettingsService.new.activate_feature!('advanced_custom_pages')
+      # The banner node is derived only for a page that shows one.
       page = create(
         :static_page,
+        banner_enabled: true,
         projects_enabled: true,
         projects_filter_type: 'areas',
         areas: [create(:area)]
@@ -33,8 +37,9 @@ describe ContentBuilder::Craftjs::WidgetSpecs do
         .values
         .filter_map { |node| node.dig('type', 'resolvedName') }
 
-      expect(derived.uniq - described_class::PROJECT_PAGE_SPECS.keys)
-        .to match_array(%w[ProjectsByFilter CustomPageRoot CustomPageBody])
+      expect(derived.uniq - described_class::PROJECT_PAGE_SPECS.keys).to match_array(
+        %w[ProjectsByFilter CustomPageRoot CustomPageBanner CustomPageTitle CustomPageBody]
+      )
     end
   end
 
