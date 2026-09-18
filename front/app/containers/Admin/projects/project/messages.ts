@@ -672,6 +672,10 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.insights',
     defaultMessage: 'Insights',
   },
+  opinionGroupsTab: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.opinionGroups',
+    defaultMessage: 'Opinion groups',
+  },
   lockedTooltip: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.lockedTooltip',
     defaultMessage:

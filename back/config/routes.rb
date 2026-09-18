@@ -272,6 +272,8 @@ Rails.application.routes.draw do
           get :voting, action: 'votes_with_grouping'
         end
 
+        resource :opinion_groups, only: [:show], controller: 'opinion_groups'
+
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
         get 'custom_form', on: :member, controller: 'custom_forms', action: 'show', defaults: { container_type: 'Phase' }
         patch 'custom_form', on: :member, controller: 'custom_forms', action: 'update', defaults: { container_type: 'Phase' }
