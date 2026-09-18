@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-import { Box, Button, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
-import { ParticipationMethod } from 'api/phases/types';
+import { ParticipationMethod, PhasePlacementType } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -12,14 +12,14 @@ import ParticipationMethodChoice from 'containers/Admin/projects/project/phaseSe
 import ParticipationMethodPicker from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/ParticipationMethodPicker';
 import projectPageMessages from 'containers/Admin/projects/project/projectPage/messages';
 
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
 
 import messages from '../messages';
 
-import PlacementTabs, { Placement } from './PlacementTabs';
+import PlacementTabs from './PlacementTabs';
 
 interface Props {
   projectId: string;
@@ -37,21 +37,11 @@ const SelectMethodModal = ({ projectId, opened, onClose }: Props) => {
   const spotlightSurveysEnabled = useFeatureFlag({
     name: 'parallel_participation',
   });
-  const [placement, setPlacement] = useState<Placement>('timeline');
+  const [placement, setPlacement] = useState<PhasePlacementType>('on_timeline');
   const [participationMethod, setParticipationMethod] =
     useState<ParticipationMethod>('ideation');
 
   const standalone = spotlightSurveysEnabled && placement === 'standalone';
-
-  const handleContinue = () => {
-    onClose();
-    clHistory.push({
-      pathname: `/admin/projects/${projectId}/phases/new`,
-      search: standalone
-        ? '?placement=standalone'
-        : `?participation_method=${participationMethod}`,
-    });
-  };
 
   return (
     <Modal
@@ -62,9 +52,18 @@ const SelectMethodModal = ({ projectId, opened, onClose }: Props) => {
       header={formatMessage(projectPageMessages.newParticipationMethod)}
       footer={
         <Box display="flex" justifyContent="flex-end" width="100%">
-          <Button buttonStyle="admin-dark" onClick={handleContinue}>
+          <ButtonWithLink
+            buttonStyle="admin-dark"
+            to="/admin/projects/$projectId/phases/new"
+            params={{ projectId }}
+            search={
+              standalone
+                ? { placement: 'standalone' }
+                : { participation_method: participationMethod }
+            }
+          >
             {formatMessage(messages.selectMethodContinue)}
-          </Button>
+          </ButtonWithLink>
         </Box>
       }
     >
