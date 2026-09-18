@@ -128,10 +128,6 @@ module CustomIdMethods::Federa
       auth_to_persist.tap { |h| h[:extra].delete(:response_object) }
     end
 
-    def updateable_user_attrs
-      super + %i[first_name last_name]
-    end
-
     private
 
     # SAML attributes are inherently multi-valued, so ruby-saml exposes every

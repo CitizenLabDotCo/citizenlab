@@ -109,6 +109,16 @@ class UserService
     #   - an unconfirmed SSO email is ignored when the user already has a
     #     confirmed email, otherwise it goes into `new_email` to be confirmed
     #     later (mirroring `build_in_sso`).
+    #
+    # This makes email the exception among the updateable attrs: the others are written
+    # as-is by the slice in #update_in_sso!, so for them "updateable" means "written".
+    # Here it only means "considered". `user_params.key?(:email)` is the first gate, and
+    # it is open only where IdMethods::Base#updateable_user_attrs put :email in, i.e.
+    # where password_login is disabled; the rules above are the second. With
+    # password_login enabled the SSO therefore never fills in an email the user does not
+    # already have, not even a vouched-for one - the user owns their address and can add
+    # it themselves. See the 'identity already exists' examples in
+    # spec/acceptance/omniauth_callback_spec.rb.
     def resolve_sso_email!(user, user_params, sso_email, sso_email_confirmed)
       return if sso_email.blank?
 
