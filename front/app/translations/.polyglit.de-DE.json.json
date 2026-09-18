@@ -4069,6 +4069,21 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.UserFilterConditions.emailListCount": {
+    "state": "verified",
+    "verified_at": "2026-09-17T12:01:54.570386Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.components.admin.UserFilterConditions.emailListInvalid": {
+    "state": "verified",
+    "verified_at": "2026-09-17T12:01:54.570386Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.components.admin.UserFilterConditions.emailListPlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-09-17T12:01:54.570386Z",
+    "verified_by": "eva@govocal.com"
+  },
   "app.components.admin.UserFilterConditions.field_email": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -6888,6 +6903,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.Users.UsersGroup.emailListTooLongError": {
+    "state": "verified",
+    "verified_at": "2026-09-17T12:01:54.570386Z",
+    "verified_by": "eva@govocal.com"
   },
   "app.containers.AdminPage.Users.UsersGroup.rulesError": {
     "state": "verified",
