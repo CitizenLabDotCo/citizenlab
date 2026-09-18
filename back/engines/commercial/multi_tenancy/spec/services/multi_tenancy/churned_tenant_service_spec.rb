@@ -112,6 +112,29 @@ RSpec.describe MultiTenancy::ChurnedTenantService do
     end
   end
 
+  describe '#govocal_host' do
+    using RSpec::Parameterized::TableSyntax
+
+    where(:host, :expected) do
+      'participate.mycity.gov.uk'   | 'participate-mycity.govocal.com'
+      'mitgestalten.ueberlingen.de' | 'mitgestalten-ueberlingen.govocal.com'
+      'a.b.mycity.com'              | 'a-b-mycity.govocal.com'
+      'www.mycity.be'               | 'mycity.govocal.com'
+      'mycity.be'                   | 'mycity.govocal.com'
+      'mycity.citizenlab.co'        | 'mycity.govocal.com'
+      'mycity.govocal.com'          | nil
+      'mycity.stg.govocal.com'      | nil
+    end
+
+    with_them do
+      specify { expect(service.govocal_host(host)).to eq(expected) }
+    end
+
+    it 'refuses a subdomain longer than a DNS label' do
+      expect { service.govocal_host("#{'a' * 60}.mycity.com") }.to raise_error(ArgumentError)
+    end
+  end
+
   describe '#pii_expired?' do
     using RSpec::Parameterized::TableSyntax
 
