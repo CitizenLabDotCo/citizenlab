@@ -83,6 +83,7 @@ const AdminCustomMapConfigComponent = lazy(
 const AdminProjectAnalysis = lazy(() => import('./project/analysis'));
 const ReportTab = lazy(() => import('./project/information/ReportTab'));
 const AdminPhaseInsights = lazy(() => import('./project/insights'));
+const AdminPhaseTradeoffs = lazy(() => import('./project/tradeoffs'));
 
 const AdminProjectProposals = lazy(() => import('./project/proposals'));
 
@@ -792,6 +793,16 @@ const phaseInsightsRoute = createRoute({
   ),
 });
 
+const phaseTradeoffsRoute = createRoute({
+  getParentRoute: () => projectPhasesRoute,
+  path: '$phaseId/trade-offs',
+  component: () => (
+    <PageLoading>
+      <AdminPhaseTradeoffs />
+    </PageLoading>
+  ),
+});
+
 // Factory function to create the admin projects route tree
 const createAdminProjectsRoutes = (moduleRoutes: RouteConfiguration[] = []) => {
   return projectsRoute.addChildren([
@@ -849,6 +860,7 @@ const createAdminProjectsRoutes = (moduleRoutes: RouteConfiguration[] = []) => {
         phaseInputImporterRoute,
         phaseReportRoute,
         phaseInsightsRoute,
+        phaseTradeoffsRoute,
       ]),
     ]),
     ...(parseModuleRoutes(moduleRoutes, projectsRoute) as never[]),
