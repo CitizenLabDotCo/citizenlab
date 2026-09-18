@@ -140,7 +140,7 @@ const VotingInputs = ({
         handleVotingMethodOnChange={handleVotingMethodOnChange}
       />
       <Box paddingLeft="32px" borderLeft={`1px solid ${colors.divider}`}>
-        <Box my="16px" width="700px">
+        <Box my="16px" maxWidth="700px">
           <Warning>
             <FormattedMessage
               {...messages.learnMoreVotingMethod}

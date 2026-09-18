@@ -30,7 +30,7 @@ const VotingMethodSelector = ({
   const { formatMessage } = useIntl();
 
   return (
-    <Box mb="35px" width="800px">
+    <Box mb="35px" maxWidth="800px">
       <SubSectionTitle>
         {formatMessage(messages.votingMethodSelectorTitle)}
         <IconTooltip
@@ -42,7 +42,7 @@ const VotingMethodSelector = ({
       <Text mt="0px" mb="24px" color="textSecondary">
         {formatMessage(messages.votingMethodSelectorSubtitle)}
       </Text>
-      <Box display="flex" gap="16px">
+      <Box display="flex" gap="16px" flexWrap="wrap">
         <CardButton
           selected={voting_method === 'single_voting'}
           icon={
