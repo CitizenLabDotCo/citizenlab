@@ -91,7 +91,6 @@ export interface Props {
   'data-cy'?: string;
   onClick?: (event: React.MouseEvent) => void;
   ideaTitle?: string;
-  /** Offset of the menu's right edge from the button's. */
   menuRight?: string;
 }
 
