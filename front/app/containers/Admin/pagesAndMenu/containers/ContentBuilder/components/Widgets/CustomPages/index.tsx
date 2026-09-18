@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy } from 'react';
 
 import { Box, Shimmer, Title, colors } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
@@ -13,8 +13,11 @@ import { CARD_ICON_SIZE } from './constants';
 import CustomPageCard from './CustomPageCard';
 import GridContainer, { Grid } from './GridContainer';
 import messages from './messages';
-import Settings from './Settings';
 import { CustomPageItem } from './typings';
+
+// Lazy, as the settings (page search, icon upload) are only needed in the
+// builder, not on the homepage.
+const Settings = lazy(() => import('./Settings'));
 
 type SkeletonProps = {
   title: string;
