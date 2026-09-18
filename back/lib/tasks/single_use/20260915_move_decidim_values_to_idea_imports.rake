@@ -47,8 +47,8 @@ namespace :single_use do
           else
             BulkImportIdeas::IdeaImport.create!(idea: idea, extra_info: extra_info)
           end
-          # Skips the idea's validations and callbacks, and keeps its imported `updated_at`.
-          idea.update_columns(custom_field_values: remaining_values)
+          # Update the values (triggers sync to answers table too)
+          idea.update!(custom_field_values: remaining_values)
         end
       end
     end

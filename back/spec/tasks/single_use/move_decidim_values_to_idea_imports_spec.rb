@@ -21,12 +21,24 @@ describe 'single_use:move_decidim_values_to_idea_imports' do
     FileUtils.rm_f(%w[move_decidim_values_to_idea_imports.json move_decidim_values_to_idea_imports_dry_run.json])
   end
 
+  def answer_keys(idea)
+    CustomFieldAnswer.where(answerable: idea).pluck(:key)
+  end
+
   it 'moves the decidim values into a new idea import, keeping the other values' do
     run
 
     idea.reload
     expect(idea.custom_field_values).to eq('field_1' => 'kept')
     expect(idea.idea_import.extra_info).to eq('decidim_scope' => scope, 'decidim_status' => status)
+  end
+
+  it 'removes the answers for the decidim values, keeping the other answers' do
+    expect(answer_keys(idea)).to contain_exactly('decidim_scope', 'decidim_status', 'field_1')
+
+    run
+
+    expect(answer_keys(idea)).to contain_exactly('field_1')
   end
 
   it 'merges the decidim values into an existing idea import' do
@@ -52,6 +64,7 @@ describe 'single_use:move_decidim_values_to_idea_imports' do
     idea.reload
     expect(idea.custom_field_values).to include('decidim_scope', 'decidim_status')
     expect(idea.idea_import).to be_nil
+    expect(answer_keys(idea)).to contain_exactly('decidim_scope', 'decidim_status', 'field_1')
   end
 
   it 'requires a host' do
