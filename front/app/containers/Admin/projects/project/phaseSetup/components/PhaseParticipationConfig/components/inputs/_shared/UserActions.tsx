@@ -8,10 +8,10 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
-import PhaseActionAccess from 'containers/Admin/projects/_shared/components/PhaseActionAccess';
 import PhaseActionAccessRow, {
   AccessOnlyAction,
 } from 'containers/Admin/projects/_shared/components/PhaseActionAccessRow';
+import ToggleActionAccess from 'containers/Admin/projects/_shared/components/ToggleActionAccess';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
@@ -85,9 +85,7 @@ const UserActions = ({
           <Error apiErrors={apiErrors && apiErrors.submission_enabled} />
         </ToggleRow>
         {phaseId && (
-          <Box mt="-6px" mb="12px" ml="52px">
-            <PhaseActionAccess phaseId={phaseId} action="posting_idea" />
-          </Box>
+          <ToggleActionAccess phaseId={phaseId} action="posting_idea" />
         )}
 
         {showCommentingToggle && (
@@ -101,9 +99,7 @@ const UserActions = ({
           </ToggleRow>
         )}
         {showCommentingToggle && phaseId && (
-          <Box mt="-6px" mb="12px" ml="52px">
-            <PhaseActionAccess phaseId={phaseId} action="commenting_idea" />
-          </Box>
+          <ToggleActionAccess phaseId={phaseId} action="commenting_idea" />
         )}
 
         {showReactingToggle && (
@@ -117,9 +113,7 @@ const UserActions = ({
           </ToggleRow>
         )}
         {showReactingToggle && phaseId && (
-          <Box mt="-6px" mb="12px" ml="52px">
-            <PhaseActionAccess phaseId={phaseId} action="reacting_idea" />
-          </Box>
+          <ToggleActionAccess phaseId={phaseId} action="reacting_idea" />
         )}
 
         {phaseId && (
