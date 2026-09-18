@@ -11729,6 +11729,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.Projects.seeVolunteering": {
+    "state": "verified",
+    "verified_at": "2026-09-17T12:01:19.726787Z",
+    "verified_by": "eva@govocal.com"
+  },
   "app.containers.Projects.share": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -13098,6 +13103,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.landing.editHomepage": {
+    "state": "verified",
+    "verified_at": "2026-09-17T11:52:51.577851Z",
+    "verified_by": "eva@govocal.com"
   },
   "app.containers.landing.new": {
     "state": "verified",

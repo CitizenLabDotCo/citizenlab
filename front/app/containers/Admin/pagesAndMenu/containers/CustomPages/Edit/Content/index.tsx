@@ -54,6 +54,10 @@ const CustomPagesEditContent = () => {
   const hideProjects =
     !advancedCustomPagesEnabled ||
     customPage.data.attributes.projects_filter_type === 'no_filter';
+  // Folders can only be listed when filtering by space: areas and tags are
+  // project-level associations, so the list is projects-only in those cases.
+  const showsFolders =
+    customPage.data.attributes.projects_filter_type === 'spaces';
 
   const sectionTogglesData: ICustomPageSectionToggleData[] = [
     {
@@ -80,10 +84,16 @@ const CustomPagesEditContent = () => {
     },
     {
       name: 'projects_enabled',
-      titleMessage: formatMessage(sectionToggleMessages.projectsAndFoldersList),
+      titleMessage: formatMessage(
+        showsFolders
+          ? sectionToggleMessages.projectsAndFoldersList
+          : sectionToggleMessages.projectsList
+      ),
       tooltipMessage: (
         <FormattedMessage
-          {...sectionToggleMessages.projectsAndFoldersListTooltip}
+          {...(showsFolders
+            ? sectionToggleMessages.projectsAndFoldersListTooltip
+            : sectionToggleMessages.projectsListTooltip)}
         />
       ),
       hideSection: hideProjects,
