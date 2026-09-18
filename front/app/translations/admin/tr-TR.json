@@ -1606,7 +1606,6 @@
   "app.containers.Admin.projects.project.edit": "Düzenle",
   "app.containers.Admin.projects.project.editPageContent": "Sayfa içeriğini düzenle",
   "app.containers.Admin.projects.project.editProjectPageInContentBuilder": "Proje sayfasını içerik oluşturucuda düzenle",
-  "app.containers.Admin.projects.project.editSurveyForm": "Anket formunu düzenle",
   "app.containers.Admin.projects.project.eventsSection": "Etkinlikler",
   "app.containers.Admin.projects.project.examplePhaseCollectIdeas": "Fikir toplayın",
   "app.containers.Admin.projects.project.examplePhaseShareWhatWeHeard": "Öğrendiklerimizi paylaşın",

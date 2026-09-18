@@ -1606,7 +1606,6 @@
   "app.containers.Admin.projects.project.edit": "Edit",
   "app.containers.Admin.projects.project.editPageContent": "Edit page content",
   "app.containers.Admin.projects.project.editProjectPageInContentBuilder": "Edit the project page in the content builder",
-  "app.containers.Admin.projects.project.editSurveyForm": "Edit survey form",
   "app.containers.Admin.projects.project.eventsSection": "Events",
   "app.containers.Admin.projects.project.examplePhaseCollectIdeas": "Collect ideas",
   "app.containers.Admin.projects.project.examplePhaseShareWhatWeHeard": "Share what we heard",

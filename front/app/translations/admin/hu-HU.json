@@ -1606,7 +1606,6 @@
   "app.containers.Admin.projects.project.edit": "Szerkesztés",
   "app.containers.Admin.projects.project.editPageContent": "Oldaltartalom szerkesztése",
   "app.containers.Admin.projects.project.editProjectPageInContentBuilder": "Projektoldal szerkesztése a tartalomépítőben",
-  "app.containers.Admin.projects.project.editSurveyForm": "Kérdőív szerkesztése",
   "app.containers.Admin.projects.project.eventsSection": "Események",
   "app.containers.Admin.projects.project.examplePhaseCollectIdeas": "Ötletgyűjtés",
   "app.containers.Admin.projects.project.examplePhaseShareWhatWeHeard": "A beérkezett vélemények megosztása",

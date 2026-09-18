@@ -1606,7 +1606,6 @@
   "app.containers.Admin.projects.project.edit": "Uredi",
   "app.containers.Admin.projects.project.editPageContent": "Uredi sadržaj stranice",
   "app.containers.Admin.projects.project.editProjectPageInContentBuilder": "Uredite stranicu projekta u alatu za izradu sadržaja",
-  "app.containers.Admin.projects.project.editSurveyForm": "Uredi obrazac ankete",
   "app.containers.Admin.projects.project.eventsSection": "Događanja",
   "app.containers.Admin.projects.project.examplePhaseCollectIdeas": "Prikupite ideje",
   "app.containers.Admin.projects.project.examplePhaseShareWhatWeHeard": "Podijelite ono što smo čuli",

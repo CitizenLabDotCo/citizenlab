@@ -1606,7 +1606,6 @@
   "app.containers.Admin.projects.project.edit": "Edita",
   "app.containers.Admin.projects.project.editPageContent": "Edita el contingut de la pàgina",
   "app.containers.Admin.projects.project.editProjectPageInContentBuilder": "Edita la pàgina del projecte al constructor de continguts",
-  "app.containers.Admin.projects.project.editSurveyForm": "Edita el formulari de l'enquesta",
   "app.containers.Admin.projects.project.eventsSection": "Esdeveniments",
   "app.containers.Admin.projects.project.examplePhaseCollectIdeas": "Recollir idees",
   "app.containers.Admin.projects.project.examplePhaseShareWhatWeHeard": "Compartir el que hem escoltat",
