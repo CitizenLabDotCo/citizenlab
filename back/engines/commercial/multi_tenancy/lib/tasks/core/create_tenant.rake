@@ -373,7 +373,7 @@ namespace :cl2_back do
           allowed: true
         },
         project_backoffice_redesign: {
-          enabled: false,
+          enabled: true,
           allowed: true
         }
       }
