@@ -81,6 +81,59 @@ describe McpServer::Tools::CreateDemoInputs do
     expect(proposal.created_at).to be > 30.days.ago
   end
 
+  it 'assigns the requested statuses, defaulting the rest' do
+    create(:idea_status_proposed)
+    accepted = create(:idea_status, code: 'accepted', participation_method: 'ideation')
+    phase = create(:phase)
+
+    response = create_inputs(
+      phase_id: phase.id,
+      inputs: [idea_input('Bike lanes').merge(status: 'accepted'), idea_input('More trees')]
+    )
+
+    expect(response).not_to be_error
+    statuses_by_title = phase.reload.ideas.to_h { |idea| [idea.title_multiloc['en'], idea.idea_status] }
+    expect(statuses_by_title['Bike lanes']).to eq(accepted)
+    expect(statuses_by_title['More trees'].code).to eq('proposed')
+  end
+
+  it 'assigns proposals statuses on proposals phases' do
+    answered = create(:idea_status, code: 'answered', participation_method: 'proposals')
+    phase = create(:proposals_phase)
+
+    response = create_inputs(phase_id: phase.id, inputs: [idea_input('Car-free Sundays').merge(status: 'answered')])
+
+    expect(response).not_to be_error
+    expect(phase.reload.ideas.sole.idea_status).to eq(answered)
+  end
+
+  it 'refuses a status that is not available for the phase' do
+    create(:idea_status_proposed)
+    create(:idea_status, code: 'answered', participation_method: 'proposals')
+    phase = create(:phase)
+
+    response = create_inputs(phase_id: phase.id, inputs: [idea_input('Bike lanes').merge(status: 'answered')])
+
+    expect(response).to be_error
+    expect(response.content.first[:text]).to include("'answered' is not available", 'proposed')
+    expect(Idea.count).to eq(0)
+  end
+
+  it 'refuses statuses on native survey phases' do
+    create(:idea_status_proposed)
+    phase = create(:native_survey_phase, start_at: 10.days.ago, end_at: 5.days.from_now)
+    form = create(:custom_form, participation_context: phase)
+    field = create(:custom_field, resource: form)
+
+    response = create_inputs(
+      phase_id: phase.id,
+      inputs: [{ custom_field_values: { field.key => 'An answer' }, status: 'accepted' }]
+    )
+
+    expect(response).to be_error
+    expect(response.content.first[:text]).to include("'accepted' is not available")
+  end
+
   it 'refuses on platforms that are not demo or trial' do
     change_lifecycle_stage('active')
     phase = create(:phase)

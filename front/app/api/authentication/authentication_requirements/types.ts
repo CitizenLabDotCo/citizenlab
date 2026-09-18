@@ -43,7 +43,8 @@ export type EmailAction =
   // step as confirm_email, but no code was auto-sent, so the frontend requests one.
   | 'reconfirm_email'
   | 'provide_new_email'
-  | 'confirm_new_email';
+  | 'confirm_new_email'
+  | 'confirm_merge_account';
 
 // The phone step the user must still complete (or null). Mirrors the backend
 // #phone_action_required. `provide_phone` is reserved for a not-yet-built flow.

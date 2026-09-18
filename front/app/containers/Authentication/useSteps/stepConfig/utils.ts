@@ -96,7 +96,8 @@ export const doesNotMeetGroupCriteria = (
 // Maps email_action_required to the step that resolves it. The provide actions
 // return null here because the email input lives on the built-in step (see
 // requiredBuiltInFields); confirm_email uses the unauthenticated in-place
-// confirmation, confirm_new_email the authenticated new_email confirmation.
+// confirmation, confirm_new_email the authenticated new_email confirmation, and
+// confirm_merge_account the code sent to the pending merge_target_email.
 const emailActionStep = (
   requirements: AuthenticationRequirements['requirements']
 ): Step | null => {
@@ -105,6 +106,8 @@ const emailActionStep = (
       return 'pre-auth:unauthenticated-confirmation';
     case 'confirm_new_email':
       return 'confirmation:new_email';
+    case 'confirm_merge_account':
+      return 'confirmation:merge-account';
     case 'reconfirm_email':
       return 'confirmation:reconfirm-email';
     default:

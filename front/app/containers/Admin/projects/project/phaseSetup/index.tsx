@@ -13,7 +13,6 @@ import { getPhaseLandingTab, isTimelinePhase } from 'api/phases/utils';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import usePhaseFileAttachments, {
   fileAttachmentErrors,
@@ -406,9 +405,7 @@ const AdminPhaseEditWrapper = () => {
   const { projectId, phaseId } = useParams({ strict: false });
   const { placement } = useSearch({ strict: false });
   const { data: phase } = usePhase(phaseId);
-  const spotlightSurveysEnabled = useFeatureFlag({
-    name: 'parallel_participation',
-  });
+
   if (!projectId) return null;
 
   const phaseLoading = phaseId && phase?.data.id !== phaseId;
@@ -418,7 +415,7 @@ const AdminPhaseEditWrapper = () => {
     <AdminPhaseEdit
       projectId={projectId}
       phase={phaseId ? phase : undefined}
-      standaloneSurvey={spotlightSurveysEnabled && placement === 'standalone'}
+      standaloneSurvey={placement === 'standalone'}
     />
   );
 };

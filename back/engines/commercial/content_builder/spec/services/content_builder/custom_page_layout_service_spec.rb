@@ -209,6 +209,94 @@ describe ContentBuilder::CustomPageLayoutService do
       end
     end
 
+    context 'with a projects section' do
+      let(:projects_id) { described_class::PROJECTS_ID }
+      let(:events_id) { described_class::EVENTS_ID }
+
+      before { SettingsService.new.activate_feature!('advanced_custom_pages') }
+
+      def page_with_projects(**attributes)
+        create(
+          :static_page,
+          {
+            top_info_section_multiloc: {},
+            top_info_section_enabled: false,
+            bottom_info_section_multiloc: {},
+            bottom_info_section_enabled: false,
+            projects_enabled: true
+          }.merge(attributes)
+        )
+      end
+
+      it 'maps the area filter onto the widget selection' do
+        area = create(:area)
+        page = page_with_projects(projects_filter_type: 'areas', areas: [area])
+
+        craftjs = service.craftjs_json_for(page)
+
+        expect(resolved_name(craftjs, projects_id)).to eq 'ProjectsByFilter'
+        expect(craftjs[projects_id]['props']).to eq({
+          'filterType' => 'areas',
+          'ids' => [area.id],
+          'titleMultiloc' => {}
+        })
+      end
+
+      it 'maps the topic filter onto the widget selection' do
+        topic = create(:global_topic)
+        page = page_with_projects(projects_filter_type: 'topics', global_topics: [topic])
+
+        props = service.craftjs_json_for(page)[projects_id]['props']
+
+        expect(props['filterType']).to eq 'global_topics'
+        expect(props['ids']).to eq [topic.id]
+      end
+
+      it 'maps the space filter onto the widget selection' do
+        space = create(:space)
+        page = page_with_projects(projects_filter_type: 'spaces', spaces: [space])
+
+        props = service.craftjs_json_for(page)[projects_id]['props']
+
+        expect(props['filterType']).to eq 'spaces'
+        expect(props['ids']).to eq [space.id]
+      end
+
+      it 'adds nothing when the projects section is off' do
+        area = create(:area)
+        page = page_with_projects(
+          projects_filter_type: 'areas', areas: [area], projects_enabled: false
+        )
+
+        expect(service.craftjs_json_for(page).keys).not_to include projects_id
+      end
+
+      it 'adds nothing when the page has no project filter' do
+        page = page_with_projects(projects_filter_type: 'no_filter')
+
+        expect(service.craftjs_json_for(page).keys).not_to include projects_id
+      end
+
+      it 'adds nothing when the tenant does not have advanced_custom_pages' do
+        SettingsService.new.deactivate_feature!('advanced_custom_pages')
+        area = create(:area)
+        page = page_with_projects(projects_filter_type: 'areas', areas: [area])
+
+        expect(service.craftjs_json_for(page).keys).not_to include projects_id
+      end
+
+      it 'puts the projects ahead of the events' do
+        area = create(:area)
+        page = page_with_projects(
+          projects_filter_type: 'areas',
+          areas: [area],
+          events_widget_enabled: true
+        )
+
+        expect(service.craftjs_json_for(page)[body_id]['nodes']).to eq [projects_id, events_id]
+      end
+    end
+
     context 'with attachments' do
       def page_with_files(count, **attributes)
         page = create(

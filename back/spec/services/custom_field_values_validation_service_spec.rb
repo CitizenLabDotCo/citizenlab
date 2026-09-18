@@ -53,6 +53,11 @@ describe CustomFieldValuesValidationService do
       expect(errors.first[:human_message]).to include 'unknown_field'
     end
 
+    it 'ignores values of a field that does not exist when unknown keys are allowed' do
+      errors = service.json_schema_validation_errors([], { 'unknown_field' => 'some value' }, allow_unknown_keys: true)
+      expect(errors).to be_empty
+    end
+
     it 'returns an error when the value has the wrong type' do
       errors = service.json_schema_validation_errors([number_field], { 'number_field' => 'forty-two' })
       expect(errors.size).to eq 1
