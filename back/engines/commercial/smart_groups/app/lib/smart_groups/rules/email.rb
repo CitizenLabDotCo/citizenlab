@@ -51,7 +51,7 @@ module SmartGroups::Rules
               enum: MULTIVALUE_PREDICATES
             },
             'value' => {
-              'description' => 'A list of e-mail addresses',
+              'description' => 'A list of email addresses',
               'type' => 'array',
               'items' => {
                 'type' => 'string'
@@ -147,12 +147,12 @@ module SmartGroups::Rules
     def validate_value_shape
       if multivalue_predicate?
         if !value.is_a?(Array)
-          errors.add(:value, :invalid, message: 'must be an array of e-mail addresses')
+          errors.add(:value, :invalid, message: 'must be an array of email addresses')
         elsif value.size > MAX_VALUES
-          errors.add(:value, :too_long, message: "must hold at most #{MAX_VALUES} e-mail addresses")
+          errors.add(:value, :too_long, message: "must hold at most #{MAX_VALUES} email addresses")
         end
       elsif value.is_a?(Array)
-        errors.add(:value, :invalid, message: 'must be a single e-mail address')
+        errors.add(:value, :invalid, message: 'must be a single email address')
       end
     end
   end

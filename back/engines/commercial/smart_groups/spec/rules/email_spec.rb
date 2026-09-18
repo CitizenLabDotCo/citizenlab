@@ -124,7 +124,7 @@ describe SmartGroups::Rules::Email do
       expect(rule.filter(User).count).to eq 2
     end
 
-    it "includes users without an e-mail on the 'not_is_one_of' predicate" do
+    it "includes users without an email on the 'not_is_one_of' predicate" do
       create(:user, email: nil, unique_code: '1234abcd')
       rule = described_class.new('not_is_one_of', %w[sebi@hotmail.com])
 
