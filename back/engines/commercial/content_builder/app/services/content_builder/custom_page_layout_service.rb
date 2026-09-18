@@ -61,7 +61,7 @@ module ContentBuilder
 
     # Seeded only for a page that shows a banner. Its content is copied into the node, like the info
     # sections', since nothing else reads the banner_* columns.
-    def banner_node(static_page, persist_images:)
+    def banner_node(static_page, persist_images: true)
       return unless static_page.banner_enabled
 
       {
@@ -96,7 +96,7 @@ module ContentBuilder
     # The code comes from the page and its stored filename rather than being generated, so a
     # re-derive finds its earlier copy and an unchanged page derives an identical graph. `large` is
     # the version every banner layout renders.
-    def banner_image(static_page, persist:)
+    def banner_image(static_page, persist: true)
       return {} unless static_page.header_bg?
 
       code = Digest::UUID.uuid_v5(BANNER_IMAGE_NAMESPACE, "#{static_page.id}/#{static_page.header_bg_identifier}")
@@ -206,7 +206,7 @@ module ContentBuilder
       end
     end
 
-    def section_node(multiloc, enabled:)
+    def section_node(multiloc, enabled: false)
       return unless enabled
       return if section_blank?(multiloc)
 
