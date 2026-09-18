@@ -81,6 +81,7 @@ interface Props {
     value: number
   ) => void;
   layout?: 'page' | 'panel';
+  phaseId?: string;
 }
 
 const IdeationInputs = ({
@@ -122,6 +123,7 @@ const IdeationInputs = ({
   handleSimilarityEnabledChange,
   handleThresholdChange,
   layout = 'page',
+  phaseId,
 }: Props) => {
   const { formatMessage } = useIntl();
   const prescreeningIdeationEnabled = useFeatureFlag({
@@ -166,6 +168,7 @@ const IdeationInputs = ({
       noLikingLimitError={noLikingLimitError}
       handleReactingLikeMethodOnChange={handleReactingLikeMethodOnChange}
       handleLikingLimitOnChange={handleLikingLimitOnChange}
+      phaseId={phaseId}
     />
   );
 
@@ -225,7 +228,6 @@ const IdeationInputs = ({
   if (layout === 'panel') {
     return (
       <>
-        {inputTerm}
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
           defaultOpen
@@ -233,14 +235,26 @@ const IdeationInputs = ({
           {userActions}
           {disliking}
         </PanelGroup>
-        <PanelGroup label={formatMessage(configMessages.moderationGroup)}>
+        <PanelGroup
+          label={formatMessage(configMessages.moderationGroup)}
+          defaultOpen
+        >
           {anonymity}
           {screening}
           {similarity}
         </PanelGroup>
-        <PanelGroup label={formatMessage(configMessages.displayGroup)}>
+        <PanelGroup
+          label={formatMessage(configMessages.displayGroup)}
+          defaultOpen
+        >
           {views}
           {sorting}
+        </PanelGroup>
+        <PanelGroup
+          label={formatMessage(configMessages.submissionNameGroup)}
+          defaultOpen
+        >
+          {inputTerm}
         </PanelGroup>
       </>
     );

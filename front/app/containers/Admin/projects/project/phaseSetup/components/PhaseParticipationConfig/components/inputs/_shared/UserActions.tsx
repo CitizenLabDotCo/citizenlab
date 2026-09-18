@@ -1,7 +1,17 @@
 import React from 'react';
 
-import { IconTooltip, Radio, Toggle } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconTooltip,
+  Radio,
+  Toggle,
+} from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
+
+import PhaseActionAccessRow, {
+  AccessOnlyAction,
+} from 'containers/Admin/projects/_shared/components/PhaseActionAccessRow';
+import ToggleActionAccess from 'containers/Admin/projects/_shared/components/ToggleActionAccess';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
@@ -31,9 +41,13 @@ const UserActions = ({
   handleLikingLimitOnChange,
   showCommentingToggle = true,
   showReactingToggle = true,
+  phaseId,
+  accessOnlyActions = [],
 }: {
   showCommentingToggle?: boolean;
   showReactingToggle?: boolean;
+  phaseId?: string;
+  accessOnlyActions?: AccessOnlyAction[];
   submission_enabled: boolean;
   commenting_enabled: boolean;
   reacting_enabled: boolean;
@@ -68,6 +82,9 @@ const UserActions = ({
           />
           <Error apiErrors={apiErrors && apiErrors.submission_enabled} />
         </ToggleRow>
+        {phaseId && (
+          <ToggleActionAccess phaseId={phaseId} action="posting_idea" />
+        )}
 
         {showCommentingToggle && (
           <ToggleRow>
@@ -79,6 +96,9 @@ const UserActions = ({
             <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
           </ToggleRow>
         )}
+        {showCommentingToggle && phaseId && (
+          <ToggleActionAccess phaseId={phaseId} action="commenting_idea" />
+        )}
 
         {showReactingToggle && (
           <ToggleRow className="last">
@@ -89,6 +109,27 @@ const UserActions = ({
             />
             <Error apiErrors={apiErrors && apiErrors.reacting_enabled} />
           </ToggleRow>
+        )}
+        {showReactingToggle && phaseId && (
+          <ToggleActionAccess phaseId={phaseId} action="reacting_idea" />
+        )}
+
+        {phaseId && (
+          <Box mt="4px">
+            {accessOnlyActions.map(({ action, label }) => (
+              <PhaseActionAccessRow
+                key={action}
+                phaseId={phaseId}
+                action={action}
+                label={label}
+              />
+            ))}
+            <PhaseActionAccessRow
+              phaseId={phaseId}
+              action="attending_event"
+              label={messages.attendingEventAction}
+            />
+          </Box>
         )}
       </StyledSectionField>
       {reacting_enabled && (

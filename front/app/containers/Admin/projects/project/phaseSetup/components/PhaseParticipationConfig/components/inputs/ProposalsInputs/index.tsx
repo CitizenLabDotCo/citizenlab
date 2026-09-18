@@ -72,6 +72,7 @@ interface Props {
   similarity_threshold_title: number | null | undefined;
   similarity_threshold_body: number | null | undefined;
   layout?: 'page' | 'panel';
+  phaseId?: string;
   handleSimilarityEnabledChange: (value: boolean) => void;
   handleThresholdChange: (
     field: 'similarity_threshold_title' | 'similarity_threshold_body',
@@ -117,6 +118,7 @@ const ProposalsInputs = ({
   handleSimilarityEnabledChange,
   handleThresholdChange,
   layout = 'page',
+  phaseId,
 }: Props) => {
   const { formatMessage } = useIntl();
   const prescreeningFeatureEnabled = useFeatureFlag({
@@ -201,6 +203,7 @@ const ProposalsInputs = ({
       noLikingLimitError={noLikingLimitError}
       handleReactingLikeMethodOnChange={handleReactingLikeMethodOnChange}
       handleLikingLimitOnChange={handleLikingLimitOnChange}
+      phaseId={phaseId}
     />
   );
 
@@ -245,23 +248,39 @@ const ProposalsInputs = ({
   if (layout === 'panel') {
     return (
       <>
-        {inputTerm}
-        {expiry}
-        {threshold}
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
           defaultOpen
         >
           {userActions}
         </PanelGroup>
-        <PanelGroup label={formatMessage(configMessages.moderationGroup)}>
+        <PanelGroup
+          label={formatMessage(configMessages.votesGroup)}
+          defaultOpen
+        >
+          {expiry}
+          {threshold}
+        </PanelGroup>
+        <PanelGroup
+          label={formatMessage(configMessages.moderationGroup)}
+          defaultOpen
+        >
           {anonymity}
           {screening}
           {similarity}
         </PanelGroup>
-        <PanelGroup label={formatMessage(configMessages.displayGroup)}>
+        <PanelGroup
+          label={formatMessage(configMessages.displayGroup)}
+          defaultOpen
+        >
           {views}
           {sorting}
+        </PanelGroup>
+        <PanelGroup
+          label={formatMessage(configMessages.submissionNameGroup)}
+          defaultOpen
+        >
+          {inputTerm}
         </PanelGroup>
       </>
     );

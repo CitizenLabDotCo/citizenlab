@@ -45,6 +45,9 @@ export type Props = {
   title: ReactNode;
   // Whether the panel starts expanded. Defaults to closed.
   defaultOpen?: boolean;
+  // 'plain' drops the collapsible card, for a form that already sits under its
+  // own heading, such as a modal titled with the action.
+  variant?: 'card' | 'plain';
   onChange: (changes: Changes) => Promise<void>;
   // Called when the admin opts the action out of the platform defaults, and
   // when they put it back. Omitted where the distinction doesn't apply (the

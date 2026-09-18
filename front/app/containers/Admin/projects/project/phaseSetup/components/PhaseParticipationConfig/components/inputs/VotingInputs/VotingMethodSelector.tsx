@@ -18,16 +18,50 @@ import MultipleVotingIcon from './CardIcons/MultipleVotingIcon';
 import SingleVotingIcon from './CardIcons/SingleVotingIcon';
 import messages from './messages';
 
+const VOTING_METHODS = [
+  { method: 'single_voting', title: messages.singleVotingMethodTitle },
+  { method: 'multiple_voting', title: messages.multipleVotingMethodTitle },
+  { method: 'budgeting', title: messages.budgetingVotingMethodTitle },
+] as const;
+
 type VotingMethodSelectorProps = {
   voting_method?: VotingMethod | null;
   handleVotingMethodOnChange: (voting_method: VotingMethod) => void;
+  /** 'panel' shows the methods as a narrow list of titles. */
+  layout?: 'page' | 'panel';
 };
 
 const VotingMethodSelector = ({
   voting_method,
   handleVotingMethodOnChange,
+  layout = 'page',
 }: VotingMethodSelectorProps) => {
   const { formatMessage } = useIntl();
+
+  if (layout === 'panel') {
+    return (
+      <Box mb="24px">
+        <SubSectionTitle>
+          {formatMessage(messages.votingMethodSelectorTitle)}
+        </SubSectionTitle>
+        <Box display="flex" flexDirection="column" gap="12px">
+          {VOTING_METHODS.map(({ method, title }) => (
+            <CardButton
+              key={method}
+              width="100%"
+              minHeight="auto"
+              selected={voting_method === method}
+              onClick={(e) => {
+                e.preventDefault();
+                handleVotingMethodOnChange(method);
+              }}
+              title={formatMessage(title)}
+            />
+          ))}
+        </Box>
+      </Box>
+    );
+  }
 
   return (
     <Box mb="35px" maxWidth="800px">

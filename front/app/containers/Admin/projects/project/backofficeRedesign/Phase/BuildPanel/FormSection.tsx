@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 
 import { Box, Button, Divider, Text } from '@citizenlab/cl2-component-library';
 
-import { IPhaseData } from 'api/phases/types';
+import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
+import { ParticipationMethod } from 'api/phases/types';
 
 import inputFormMessages from 'containers/Admin/projects/project/inputForm/messages';
 import { isPDFUploadSupported } from 'containers/Admin/projects/project/inputImporter/ReviewSection/utils';
@@ -16,24 +17,33 @@ import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 import messages from '../../messages';
 
+import AddPreviousPhaseIdeasModal from './AddPreviousPhaseIdeasModal';
+import AddQuestionsModal from './AddQuestionsModal';
 import PanelField from './PanelField';
 
 interface Props {
   projectId: string;
-  phase: IPhaseData;
+  participationMethod: ParticipationMethod;
+  phaseId?: string;
 }
 
-const FormSection = ({ projectId, phase }: Props) => {
+const FormSection = ({ projectId, participationMethod, phaseId }: Props) => {
   const { formatMessage } = useIntl();
   const [importModalOpened, setImportModalOpened] = useState(false);
+  const [questionsModalOpened, setQuestionsModalOpened] = useState(false);
+  const [ideasModalOpened, setIdeasModalOpened] = useState(false);
+  const { data: permissions } = usePhasePermissions({ phaseId });
 
-  const participationMethod = phase.attributes.participation_method;
   const formEditor = getMethodConfig(participationMethod).formEditor;
 
   // Methods that collect no submissions have no form to build here.
   if (formEditor === null) return null;
 
   const survey = formEditor === 'surveyEditor';
+
+  const asksParticipants = !!permissions?.data.some(
+    ({ attributes }) => attributes.action === 'posting_idea'
+  );
 
   return (
     <>
@@ -44,27 +54,62 @@ const FormSection = ({ projectId, phase }: Props) => {
           survey ? messages.surveyForm : inputFormMessages.inputForm
         )}
       >
-        <Text fontSize="s" color="textSecondary" mt="0" mb="12px">
-          {formatMessage(inputFormMessages.inputFormDescription)}
-        </Text>
-        <Box display="flex">
+        {!phaseId && (
+          <Text fontSize="s" color="textSecondary" mt="0" mb="12px">
+            {formatMessage(messages.saveToEditForm)}
+          </Text>
+        )}
+        {phaseId && permissions && !asksParticipants ? (
           <ButtonWithLink
+            buttonStyle="secondary-outlined"
             to={
               survey
                 ? '/admin/projects/$projectId/phases/$phaseId/survey-form/edit'
                 : '/admin/projects/$projectId/phases/$phaseId/form/edit'
             }
-            params={{ projectId, phaseId: phase.id }}
-            buttonStyle="admin-dark"
-            icon="edit"
-            size="s"
+            params={{ projectId, phaseId }}
           >
-            {formatMessage(
-              survey ? messages.editSurveyForm : inputFormMessages.editInputForm
-            )}
+            {formatMessage(messages.addQuestions)}
           </ButtonWithLink>
-        </Box>
+        ) : (
+          <Button
+            buttonStyle="secondary-outlined"
+            disabled={!phaseId || !permissions}
+            onClick={() => setQuestionsModalOpened(true)}
+          >
+            {formatMessage(messages.addQuestions)}
+          </Button>
+        )}
+        {participationMethod === 'voting' && (
+          <Button
+            buttonStyle="secondary-outlined"
+            mt="8px"
+            disabled={!phaseId}
+            onClick={() => setIdeasModalOpened(true)}
+          >
+            {formatMessage(messages.addIdeasFromPreviousPhase)}
+          </Button>
+        )}
       </PanelField>
+
+      {phaseId && participationMethod === 'voting' && (
+        <AddPreviousPhaseIdeasModal
+          projectId={projectId}
+          phaseId={phaseId}
+          opened={ideasModalOpened}
+          onClose={() => setIdeasModalOpened(false)}
+        />
+      )}
+
+      {phaseId && (
+        <AddQuestionsModal
+          projectId={projectId}
+          phaseId={phaseId}
+          survey={survey}
+          opened={questionsModalOpened}
+          onClose={() => setQuestionsModalOpened(false)}
+        />
+      )}
 
       <Button
         buttonStyle="text"
@@ -73,6 +118,7 @@ const FormSection = ({ projectId, phase }: Props) => {
         iconPos="right"
         iconSize="16px"
         px="0"
+        disabled={!phaseId}
         onClick={() => setImportModalOpened(true)}
       >
         {formatMessage(messages.offlineCollection)}
