@@ -29,6 +29,9 @@ describe IdMethods do
   # UserService.update_in_sso!, which is limited to updateable_user_attrs. A locked
   # attribute that is not also updateable stays blank and cannot be filled in by the
   # user either.
+  #
+  # IdMethods::Base#updateable_user_attrs already folds in locked_attributes, so this
+  # guards against an override that adds attributes without calling `super`.
   describe 'omniauth methods' do
     it 'can update every attribute they lock' do
       omniauth_methods = described_class.all_methods.select do |method|

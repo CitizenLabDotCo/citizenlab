@@ -69,8 +69,12 @@ module IdMethods
     end
 
     # @return [Array<Symbol>] Returns a list of user attributes that can be updated from the auth response hash
+    #
+    # Every locked attribute is updateable: a locked attribute we never write stays
+    # blank forever, since the user cannot fill it in either. Overrides only add the
+    # attributes this method updates *without* locking them, and must call `super`.
     def updateable_user_attrs
-      result = []
+      result = respond_to?(:locked_attributes) ? locked_attributes.dup : []
       # If password_login is disabled, users cannot update their emails on UI,
       # but we still want to keep their emails up to date.
       result << :email if !AppConfiguration.instance.feature_activated?('password_login')

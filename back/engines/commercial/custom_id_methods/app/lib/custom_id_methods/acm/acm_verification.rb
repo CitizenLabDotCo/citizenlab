@@ -139,7 +139,7 @@ module CustomIdMethods::Acm
     end
 
     def updateable_user_attrs
-      super + %i[first_name last_name custom_field_values]
+      super + %i[custom_field_values]
     end
 
     def ui_method_name
