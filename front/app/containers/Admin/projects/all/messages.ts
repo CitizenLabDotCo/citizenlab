@@ -54,6 +54,22 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.all.createProjectFolder',
     defaultMessage: 'New folder',
   },
+  fromScratch: {
+    id: 'app.containers.Admin.projects.all.NewProjectModal.fromScratch',
+    defaultMessage: 'Start from scratch',
+  },
+  fromScratchDescription: {
+    id: 'app.containers.Admin.projects.all.NewProjectModal.fromScratchDescription',
+    defaultMessage: 'An empty project you set up yourself.',
+  },
+  fromTemplate: {
+    id: 'app.containers.Admin.projects.all.NewProjectModal.fromTemplate',
+    defaultMessage: 'Start from a template',
+  },
+  fromTemplateDescription: {
+    id: 'app.containers.Admin.projects.all.NewProjectModal.fromTemplateDescription',
+    defaultMessage: 'A project that already has its phases and questions.',
+  },
   newProject: {
     id: 'app.containers.AdminPage.ProjectEdit.createProject',
     defaultMessage: 'New project',

@@ -3,21 +3,70 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
+import usePhase from 'api/phases/usePhase';
 import { IProjectData } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-import { Outlet as RouterOutlet, useParams } from 'utils/router';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+import { Outlet as RouterOutlet, useMatchRoute, useParams } from 'utils/router';
+
+import ProjectWorkspace from './backofficeRedesign';
+import { PhaseSaveProvider } from './backofficeRedesign/_shared/PhaseSaveContext';
+import NewPhase from './backofficeRedesign/NewPhase';
+import PhaseLeftPanel from './backofficeRedesign/Phase/PhaseLeftPanel';
+import ProjectLeftPanel from './backofficeRedesign/ProjectLeftPanel';
+import UnsavedChangesGuard from './backofficeRedesign/UnsavedChangesGuard';
 import ProjectHeader from './projectHeader';
 import ProjectSidebar from './projectPage/ProjectSidebar';
 
 const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
   const { data: authUser } = useAuthUser();
+  const { phaseId } = useParams({ strict: false });
+  const { data: phase } = usePhase(phaseId);
+  const workspaceEnabled = useFeatureFlag({
+    name: 'project_backoffice_redesign',
+  });
+  const matchRoute = useMatchRoute();
+  const onNewPhaseRoute = !!matchRoute({
+    to: '/$locale/admin/projects/$projectId/phases/new',
+  });
   const projectId = project.id;
+
+  const selectedPhase = phaseId ? phase?.data : undefined;
 
   if (!canModerateProject(project, authUser)) {
     return null;
+  }
+
+  if (workspaceEnabled) {
+    return (
+      <PhaseSaveProvider>
+        <UnsavedChangesGuard />
+        {onNewPhaseRoute ? (
+          <NewPhase project={project} />
+        ) : (
+          <ProjectWorkspace
+            project={project}
+            phase={selectedPhase}
+            leftPanel={
+              selectedPhase ? (
+                <PhaseLeftPanel
+                  key={selectedPhase.id}
+                  projectId={projectId}
+                  phase={selectedPhase}
+                />
+              ) : (
+                <ProjectLeftPanel projectId={projectId} />
+              )
+            }
+          >
+            <RouterOutlet />
+          </ProjectWorkspace>
+        )}
+      </PhaseSaveProvider>
+    );
   }
 
   return (

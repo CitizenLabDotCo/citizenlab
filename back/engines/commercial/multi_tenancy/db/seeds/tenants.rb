@@ -449,6 +449,10 @@ module MultiTenancy
             configurable_dropdown: {
               enabled: true,
               allowed: true
+            },
+            project_backoffice_redesign: {
+              enabled: true,
+              allowed: true
             }
           })
         )

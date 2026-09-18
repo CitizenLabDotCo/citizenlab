@@ -206,6 +206,7 @@ export interface IAppConfigurationSettings {
   custom_smtp?: AppConfigurationFeature;
   hide_submission_removal_text?: AppConfigurationFeature;
   project_static_pages?: AppConfigurationFeature;
+  project_backoffice_redesign?: AppConfigurationFeature;
   html_block_in_content_builder?: AppConfigurationFeature;
   custom_page_builder?: AppConfigurationFeature;
   configurable_dropdown?: AppConfigurationFeature;

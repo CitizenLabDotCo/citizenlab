@@ -9,12 +9,18 @@ type AppConfigSettingProps = {
   onlyCheckEnabled?: boolean;
 };
 
+// Test branch only: force these on for every tenant, whatever their stored
+// settings say, so the epic preview shows them to all users. Not for master.
+const FORCED_ON: TAppConfigurationSetting[] = ['project_backoffice_redesign'];
+
 export default function useFeatureFlag({
   name,
   onlyCheckAllowed = false,
   onlyCheckEnabled = false,
 }: Parameters): boolean {
   const { data: appConfiguration } = useAppConfiguration();
+
+  if (FORCED_ON.includes(name)) return true;
 
   if (!appConfiguration) return false;
 
