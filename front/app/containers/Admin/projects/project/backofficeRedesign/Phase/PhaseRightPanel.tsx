@@ -24,6 +24,7 @@ import Centerer from 'components/UI/Centerer';
 
 import { useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { isCLErrorsWrapper } from 'utils/errorUtils';
 
 import { useRegisterPhaseSaver } from '../_shared/PhaseSaveContext';
 import messages from '../messages';
@@ -40,7 +41,7 @@ const CustomMapConfigPage = lazy(
 
 // The methods that render the participant action toggles, each with a link to
 // that action's access rights.
-const ACTIONS_WITH_TOGGLES: ParticipationMethod[] = [
+const METHODS_WITH_ACTION_TOGGLES: ParticipationMethod[] = [
   'ideation',
   'proposals',
   'common_ground',
@@ -66,7 +67,7 @@ interface Props {
 const PhaseRightPanel = ({ phase }: Props) => {
   const { formatMessage } = useIntl();
   const { data: phaseWithRelationships } = usePhase(phase.id);
-  const { mutate: updatePhase } = useUpdatePhase();
+  const { mutateAsync: updatePhase } = useUpdatePhase();
 
   const [formData, setFormData] = useState<IUpdatedPhaseProperties>(
     phase.attributes
@@ -97,22 +98,14 @@ const PhaseRightPanel = ({ phase }: Props) => {
     setValidationErrors(errors);
     if (!isValidated) throw new Error('Invalid participation settings');
 
-    await new Promise<void>((resolve, reject) => {
-      updatePhase(
-        { phaseId: phase.id, ...changes },
-        {
-          onSuccess: () => {
-            setChanges({});
-            setErrors(null);
-            resolve();
-          },
-          onError: ({ errors }) => {
-            setErrors(errors);
-            reject(errors);
-          },
-        }
-      );
-    });
+    try {
+      await updatePhase({ phaseId: phase.id, ...changes });
+      setChanges({});
+      setErrors(null);
+    } catch (error) {
+      if (isCLErrorsWrapper(error)) setErrors(error.errors);
+      throw error;
+    }
   };
 
   useRegisterPhaseSaver('settings', {
@@ -142,7 +135,7 @@ const PhaseRightPanel = ({ phase }: Props) => {
         )}
 
         {!accessOnlyActions &&
-          !ACTIONS_WITH_TOGGLES.includes(participationMethod) && (
+          !METHODS_WITH_ACTION_TOGGLES.includes(participationMethod) && (
             <EditAccessButton phaseId={phase.id} />
           )}
 
