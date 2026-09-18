@@ -119,8 +119,9 @@ export default defineConfig(({ mode }) => {
               // match — hence 0 artifacts on every release.
               uploadLegacySourcemaps: {
                 paths: ['build'],
-                // Sentry matches artifacts by request URL, `~` standing in for
-                // scheme+host.
+                // Uploads are named after the URL they're served from. `~`
+                // means any scheme and host, so one upload covers every
+                // tenant domain.
                 urlPrefix: '~',
                 ext: ['js', 'map'],
               },
@@ -139,10 +140,8 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         input: path.resolve(__dirname, 'app/index.html'),
         output: {
-          // Every file lives under assets/ with a content hash in its name, as
-          // all releases share that folder in S3: a file that changes gets a new
-          // name, and one that doesn't keeps its URL, and so stays cached,
-          // across releases.
+          // All releases share assets/ in S3. Content hashes give changed files
+          // new names, while unchanged ones keep their URL and stay cached.
           entryFileNames: 'assets/[name].[hash].min.js',
           chunkFileNames: 'assets/[name].[hash].chunk.js',
           assetFileNames: 'assets/[name].[hash][extname]',

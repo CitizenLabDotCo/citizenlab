@@ -745,13 +745,11 @@ jobs:
             rm -f build/assets/*.map
       - run:
           # 1. Only upload ~4k Twemoji if anything changes.
-          # 2. Upload the build into assets/, which all releases share. Files have
-          #    content-hashed names, so unchanged ones keep their URL and stay
-          #    cached. Use `cp`, not `sync`: `cp` re-uploads every file, which
-          #    refreshes its date so the S3 lifecycle rule on assets/ (expire 60
-          #    days after the last upload) only removes files that no release
-          #    since has used. `sync` would also list the whole folder first.
-          # 3. Upload index.html last: the atomic switch to the new release.
+          # 2. Upload the build to assets/, shared by all releases. Use `cp`, not
+          #    `sync`: `cp` re-uploads every file, refreshing its date, so the S3
+          #    lifecycle rule (expire 60 days after upload) only removes files no
+          #    recent release uses. `sync` also lists the whole folder first.
+          # 3. Upload index.html last: the switch to the new release.
           name: Deploy to S3 if tests pass and branch is Master
           command: |
             # Assigned outside the `if` so that a failed call (e.g. missing
@@ -794,13 +792,11 @@ jobs:
             rm -f build/assets/*.map
       - run:
           # 1. Only upload ~4k Twemoji if anything changes.
-          # 2. Upload the build into assets/, which all releases share. Files have
-          #    content-hashed names, so unchanged ones keep their URL and stay
-          #    cached. Use `cp`, not `sync`: `cp` re-uploads every file, which
-          #    refreshes its date so the S3 lifecycle rule on assets/ (expire 60
-          #    days after the last upload) only removes files that no release
-          #    since has used. `sync` would also list the whole folder first.
-          # 3. Upload index.html last: the atomic switch to the new release.
+          # 2. Upload the build to assets/, shared by all releases. Use `cp`, not
+          #    `sync`: `cp` re-uploads every file, refreshing its date, so the S3
+          #    lifecycle rule (expire 60 days after upload) only removes files no
+          #    recent release uses. `sync` also lists the whole folder first.
+          # 3. Upload index.html last: the switch to the new release.
           name: Deploy production version
           command: |
             TWEMOJI_KEY_COUNT=$(aws s3api list-objects-v2 --bucket cl2-front-production-benelux --prefix "${TWEMOJI_BASE_URL#/}" --max-keys 1 --query 'KeyCount' --output text)
