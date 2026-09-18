@@ -23,8 +23,6 @@ interface Props {
   action: IPhasePermissionAction;
 }
 
-// Who may take one action, summarised in the settings panel and edited in a
-// modal.
 const PhaseActionAccess = ({ phaseId, action }: Props) => {
   const { formatMessage } = useIntl();
   const [opened, setOpened] = useState(false);
