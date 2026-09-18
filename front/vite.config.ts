@@ -24,13 +24,6 @@ export default defineConfig(({ mode }) => {
   const isTestBuild = process.env.TEST_BUILD === 'true';
   const sourceMapToSentry = !isDev && !isTestBuild && !!process.env.CI;
 
-  // CI sets ASSET_BASE_URL=/<git-sha>/ so each build's assets get immutable,
-  // per-build URLs. Unset locally, so dev serves everything from '/'.
-  const assetBase = process.env.ASSET_BASE_URL || '/';
-  // Sentry matches artifacts by request URL, `~` standing in for scheme+host,
-  // so artifact names need the same prefix: '/<sha>/' -> '~/<sha>'.
-  const sentryUrlPrefix = `~${assetBase}`.replace(/\/+$/, '');
-
   const API_HOST = process.env.API_HOST || 'localhost';
   const API_PORT = process.env.API_PORT || '4000';
   // API_URL points the SPA at a remote back end (staging, an epic) instead of
@@ -57,7 +50,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     root: path.resolve(__dirname, 'app'), // Root directory
-    base: assetBase,
+    base: '/',
     server: {
       port: USE_HTTPS ? 443 : Number(process.env.PORT) || 3000,
       host: '0.0.0.0',
@@ -126,7 +119,9 @@ export default defineConfig(({ mode }) => {
               // match — hence 0 artifacts on every release.
               uploadLegacySourcemaps: {
                 paths: ['build'],
-                urlPrefix: sentryUrlPrefix,
+                // Sentry matches artifacts by request URL, `~` standing in for
+                // scheme+host.
+                urlPrefix: '~',
                 ext: ['js', 'map'],
               },
             },
@@ -144,9 +139,13 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         input: path.resolve(__dirname, 'app/index.html'),
         output: {
-          entryFileNames: '[name].[hash].min.js', // Generate the main.*.min.js file
+          // Every file lives under assets/ with a content hash in its name, as
+          // all releases share that folder in S3: a file that changes gets a new
+          // name, and one that doesn't keeps its URL, and so stays cached,
+          // across releases.
+          entryFileNames: 'assets/[name].[hash].min.js',
           chunkFileNames: 'assets/[name].[hash].chunk.js',
-          assetFileNames: '[name].[ext]',
+          assetFileNames: 'assets/[name].[hash][extname]',
         },
       },
     },
