@@ -14,7 +14,6 @@ import messages from './messages';
 
 // Stops the admin from leaving a phase with unsaved changes. Only a change of
 // page counts: filters and modals that only touch the search params don't.
-// Router links are blocked here; other navigation goes through `leave`.
 const UnsavedChangesGuard = () => {
   const { formatMessage } = useIntl();
   const phaseSave = usePhaseSave();
@@ -34,28 +33,11 @@ const UnsavedChangesGuard = () => {
     withResolver: true,
   });
 
-  if (!phaseSave) return null;
-
-  const { pendingLeave, cancelLeave } = phaseSave;
-
-  const choice =
-    blocker.status === 'blocked'
-      ? { cancel: blocker.reset, go: blocker.proceed }
-      : pendingLeave
-      ? {
-          cancel: cancelLeave,
-          go: () => {
-            cancelLeave();
-            pendingLeave();
-          },
-        }
-      : null;
-
-  if (!choice) return null;
+  if (!phaseSave || blocker.status !== 'blocked') return null;
 
   const proceed = () => {
     leaving.current = true;
-    choice.go();
+    blocker.proceed();
   };
 
   const handleSave = async () => {
@@ -63,20 +45,20 @@ const UnsavedChangesGuard = () => {
     if (saved) {
       proceed();
     } else {
-      choice.cancel();
+      blocker.reset();
     }
   };
 
   return (
     <Modal
       opened
-      close={choice.cancel}
+      close={blocker.reset}
       width={560}
       header={formatMessage(messages.unsavedChangesTitle)}
       footer={
         <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">
-          <Button buttonStyle="secondary-outlined" onClick={choice.cancel}>
-            {formatMessage(messages.switchCancel)}
+          <Button buttonStyle="secondary-outlined" onClick={blocker.reset}>
+            {formatMessage(messages.unsavedChangesCancel)}
           </Button>
           <Button
             buttonStyle="secondary-outlined"
