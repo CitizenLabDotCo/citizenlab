@@ -66,7 +66,7 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
       withDivider at strong breaks). Use TwoColumn/ThreeColumn for parallel content,
       AccordionMultiloc (body in its linked Container) for FAQs and concerns, ButtonMultiloc
       for calls to action, AboutBox near the end. Avoid all-text pages. PhasesWidget and
-      EventsWidget render the project's phases and events wherever you place them in the
+      EventsList render the project's phases and events wherever you place them in the
       body — reorder or remove them, but never rebuild them as content.
     DESC
   end
@@ -287,7 +287,7 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
 
       errors = ContentBuilder::Craftjs::Validator.new(
         graph,
-        widget_specs: ContentBuilder::Craftjs::WidgetSpecs::SPECS,
+        widget_specs: ContentBuilder::Craftjs::WidgetSpecs::PROJECT_PAGE_SPECS,
         root_type: ContentBuilder::ProjectPageLayoutService::ROOT_TYPE,
         # Only the patched nodes must follow widget conventions, so pre-existing
         # legacy nodes cannot fail an unrelated update.

@@ -11,7 +11,11 @@ import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/co
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
-import { normalizeCustomPageLayout } from 'components/CustomPageBuilder/defaultLayout';
+import { useSectionBoundaryMargin } from 'components/admin/ContentBuilder/verticalRhythm';
+import {
+  layoutStartsWithBanner,
+  normalizeCustomPageLayout,
+} from 'components/CustomPageBuilder/defaultLayout';
 import Editor from 'components/CustomPageBuilder/Editor';
 
 import { useSearch } from 'utils/router';
@@ -26,6 +30,8 @@ const FullScreenPreview = ({ staticPageId }: Props) => {
 
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
   const platformLocale = useLocale();
+  // Matches CustomPageContentViewer, so the preview shows the page's real top gap.
+  const paddingTop = useSectionBoundaryMargin();
 
   const { data: layout, isLoading } = useCustomPageLayout(staticPageId);
 
@@ -47,7 +53,10 @@ const FullScreenPreview = ({ staticPageId }: Props) => {
       <FullScreenWrapper onUpdateDraftData={setDraftData} padding="0px">
         {isLoading && <Spinner />}
         {!isLoading && editorData && (
-          <Box ref={(el: HTMLElement | null) => el?.setAttribute('inert', '')}>
+          <Box
+            ref={(el: HTMLElement | null) => el?.setAttribute('inert', '')}
+            pt={layoutStartsWithBanner(editorData) ? undefined : paddingTop}
+          >
             <ContentBuilderLayoutProvider layoutId={layout?.data.id}>
               <Editor isPreview={true}>
                 <ContentBuilderFrame editorData={editorData} />

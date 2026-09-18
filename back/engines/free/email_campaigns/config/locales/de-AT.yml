@@ -186,6 +186,7 @@ de-AT:
       manual_project_participants: E-Mails an Projektteilnehmende
       mention_in_internal_comment: Erwähnung in einem internen Kommentar
       mention_in_official_feedback: Erwähnung in einem offiziellen Update
+      merge_account_confirmation: Bestätigungscode für die Kontozusammenführung
       moderator_digest: Wöchentliche Übersicht für Ordner- und Projektmanager*innen
       native_survey_not_submitted: Umfrage nicht eingereicht
       new_comment_for_admin: Neuer Kommentar zu einem Projekt, das ich moderiere
@@ -477,6 +478,15 @@ de-AT:
       preheader: '%{commentAuthor} hat Sie in der Rückmeldung erwähnt'
       subject: '%{organizationName} hat Sie in ihrem Feedback erwähnt'
       title: Sie wurden erwähnt
+    merge_account_confirmation:
+      best_regards: Mit freundlichen Grüßen,
+      event_description: 'Jemand hat sich auf der Beteiligungsplattform von %{organizationName} angemeldet und darum gebeten, diese Anmeldung mit dem Konto zu verknüpfen, das diese E-Mail-Adresse verwendet. Wenn Sie das waren, geben Sie diesen Bestätigungscode ein, um fortzufahren:'
+      expire_code: Dieser Code läuft ab in
+      hours_24: 24 Stunden.
+      ignore_email: Wenn Sie das nicht waren, können Sie diese E-Mail ignorieren. Es hat sich nichts geändert, und niemand kann diesen Code ohne Zugriff auf diesen Posteingang verwenden.
+      preheader: Bestätigen Sie Ihre E-Mail-Adresse für %{organizationName}
+      subject: Bestätigen Sie Ihre E-Mail-Adresse für die Beteiligungsplattform von %{organizationName}
+      title: E-Mail-Adresse bestätigen
     moderator_digest:
       cta_button: Projekt verwalten
       event_description: Wir haben für Sie die Beiträge zusammengestellt, die in der vergangenen Woche die meiste Aktivität hatten. Finden Sie heraus, was auf Ihrer Plattform passiert ist!

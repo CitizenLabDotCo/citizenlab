@@ -14,7 +14,9 @@ import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 
 import { IMAGE_UPLOADING_EVENT } from 'components/admin/ContentBuilder/constants';
+import useWidgetProjectId from 'components/admin/ContentBuilder/useWidgetProjectId';
 import imageMessages from 'components/admin/ContentBuilder/Widgets/ImageMultiloc/messages';
+import LockedNote from 'components/admin/ContentBuilder/Widgets/LockedNote';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import {
   HeaderImage,
@@ -29,9 +31,7 @@ import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { usePermission } from 'utils/permissions';
 
-import LockedNote from '../LockedNote';
 import messages from '../messages';
-import useWidgetProjectId from '../useWidgetProjectId';
 
 import EmptyBanner from './EmptyBanner';
 

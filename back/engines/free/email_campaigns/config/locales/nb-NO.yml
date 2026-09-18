@@ -186,6 +186,7 @@ nb-NO:
       manual_project_participants: Offisielle meldinger til prosjektdeltakerne
       mention_in_internal_comment: Nevn i en intern kommentar
       mention_in_official_feedback: Nevn i en oppdatering
+      merge_account_confirmation: Bekreftelseskode for sammenslåing av kontoer
       moderator_digest: Ukentlig oversikt for prosjektledere
       native_survey_not_submitted: Undersøkelsen er ikke sendt inn
       new_comment_for_admin: Ny kommentar i et prosjekt jeg modererer
@@ -477,6 +478,15 @@ nb-NO:
       preheader: '%{commentAuthor} nevnte deg i tilbakemeldingen'
       subject: '%{organizationName} nevnte deg i tilbakemeldingen sin'
       title: Du har blitt nevnt
+    merge_account_confirmation:
+      best_regards: Med vennlig hilsen,
+      event_description: 'Noen har logget inn på %{organizationName} sin plattform for medvirkning og bedt om å koble denne innloggingen til kontoen som bruker denne e-postadressen. Hvis det var deg, skriv inn denne bekreftelseskoden for å fortsette:'
+      expire_code: Denne koden utløper om
+      hours_24: 24 timer.
+      ignore_email: Hvis dette ikke var deg, kan du trygt se bort fra denne e-posten. Ingenting er endret, og ingen kan bruke denne koden uten tilgang til denne innboksen.
+      preheader: Bekreft e-postadressen din for %{organizationName}
+      subject: Bekreft e-postadressen din for %{organizationName} sin plattform for medvirkning
+      title: Bekreft e-postadressen din
     moderator_digest:
       cta_button: Administrer prosjektet ditt
       event_description: Vi har samlet de innspillene som har generert mest aktivitet den siste uken. Finn ut hva som skjer med prosjektet ditt!

@@ -65,6 +65,7 @@ export interface IUserAttributes {
   followings_count: number;
   last_active_at?: string | null;
   new_email?: string | null;
+  merge_target_email?: string | null;
   phone?: string | null;
   phone_confirmed_at?: string | null;
   new_phone?: string | null;

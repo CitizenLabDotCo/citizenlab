@@ -87,6 +87,57 @@ RSpec.describe RequestCodePolicy do
     end
   end
 
+  describe '#request_code_new_email?' do
+    let(:user) { create(:user, email: 'test@test.com') }
+
+    it 'permits an authenticated user with no codes issued yet' do
+      expect(described_class.new(user, user)).to permit(:request_code_new_email)
+    end
+
+    it 'does not permit without an authenticated user' do
+      expect(described_class.new(nil, nil)).not_to permit(:request_code_new_email)
+    end
+
+    it 'does not permit once the code_reset_count limit is reached' do
+      user.find_or_create_confirmation(:new_email_confirmation).update!(code_reset_count: 4)
+      expect(described_class.new(user, user)).not_to permit(:request_code_new_email)
+    end
+  end
+
+  describe '#request_code_merge_account?' do
+    # An email-less SSO account, the only kind that may be merged away.
+    let(:user) do
+      create(:user).tap do |u|
+        u.update_columns(email: nil, password_digest: nil)
+        create(:identity, user: u, provider: 'clave_unica', uid: '11111')
+      end
+    end
+
+    it 'permits an email-less SSO user with no codes issued yet' do
+      expect(described_class.new(user, user)).to permit(:request_code_merge_account)
+    end
+
+    it 'does not permit without an authenticated user' do
+      expect(described_class.new(nil, nil)).not_to permit(:request_code_merge_account)
+    end
+
+    it 'does not permit a user who could not be merged away' do
+      user_with_email = create(:user)
+      expect(described_class.new(user_with_email, user_with_email)).not_to permit(:request_code_merge_account)
+    end
+
+    it 'does not permit once the code_reset_count limit is reached' do
+      user.find_or_create_confirmation(:merge_account_confirmation).update!(code_reset_count: 4)
+      expect(described_class.new(user, user)).not_to permit(:request_code_merge_account)
+    end
+
+    # Separate budgets, so being locked out of one still leaves the other usable.
+    it 'does not count codes issued for a new email' do
+      user.find_or_create_confirmation(:new_email_confirmation).update!(code_reset_count: 4)
+      expect(described_class.new(user, user)).to permit(:request_code_merge_account)
+    end
+  end
+
   describe '#request_code_phone?' do
     include_context 'with sms feature enabled'
 
