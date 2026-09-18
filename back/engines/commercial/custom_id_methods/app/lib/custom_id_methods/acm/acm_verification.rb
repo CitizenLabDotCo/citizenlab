@@ -138,10 +138,6 @@ module CustomIdMethods::Acm
       auth['uid']
     end
 
-    def updateable_user_attrs
-      super + %i[custom_field_values]
-    end
-
     def ui_method_name
       config[:ui_method_name] || name
     end

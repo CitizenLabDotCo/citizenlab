@@ -71,10 +71,6 @@ module CustomIdMethods::ClaveUnica
       "https://#{host}/openid"
     end
 
-    def updateable_user_attrs
-      super + %i[custom_field_values]
-    end
-
     def locked_custom_fields
       %i[rut_verified]
     end

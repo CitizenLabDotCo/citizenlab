@@ -111,12 +111,10 @@ module CustomIdMethods::Hoplr
       "https://#{host}/"
     end
 
+    # Hoplr is a login-only method, so it locks nothing and the base class does not
+    # open the :custom_field_values gate for it. It still writes the neighbourhood.
     def updateable_user_attrs
       super + %i[first_name last_name custom_field_values]
-    end
-
-    def locked_custom_fields
-      %i[neighbourhood]
     end
   end
 end

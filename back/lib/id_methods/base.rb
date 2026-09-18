@@ -73,8 +73,14 @@ module IdMethods
     # Every locked attribute is updateable: a locked attribute we never write stays
     # blank forever, since the user cannot fill it in either. Overrides only add the
     # attributes this method updates *without* locking them, and must call `super`.
+    #
+    # Locked custom fields work the same way, except that they are not listed here
+    # individually: they are all written through the single :custom_field_values key.
+    # (User exposes gender, birthyear and domicile as store accessors too, but
+    # User#update_merging_custom_fields! overwrites those, so they are no use here.)
     def updateable_user_attrs
       result = respond_to?(:locked_attributes) ? locked_attributes.dup : []
+      result << :custom_field_values if respond_to?(:locked_custom_fields) && locked_custom_fields.any?
       # If password_login is disabled, users cannot update their emails on UI,
       # but we still want to keep their emails up to date.
       result << :email if !AppConfiguration.instance.feature_activated?('password_login')

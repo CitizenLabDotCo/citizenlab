@@ -32,22 +32,29 @@ module CustomIdMethods::Franceconnect
     SSO_VERIFICATION_PARAM_VALUE = 'true'
 
     def profile_to_user_attrs(auth)
+      # birthyear and gender have to travel in custom_field_values, even though User
+      # exposes them as store accessors: UserService.update_in_sso! writes through
+      # User#update_merging_custom_fields!, which rebuilds custom_field_values from the
+      # user's current values and so overwrites whatever a store accessor just set.
+      enabled_codes = CustomField.registration.enabled.pluck(:code)
+      custom_field_values = {}
+
+      birthdate = auth.extra.raw_info.birthdate
+      if enabled_codes.include?('birthyear') && birthdate.present?
+        custom_field_values['birthyear'] = Date.parse(birthdate).year
+      end
+
+      gender = auth.extra.raw_info.gender
+      custom_field_values['gender'] = gender if enabled_codes.include?('gender') && gender.present?
+
       {
         first_name: auth.info['first_name'],
         email: auth.info['email'],
         last_name: auth.extra.raw_info.preferred_username.presence&.titleize || auth.info['last_name']&.titleize, # FC returns preferred usernames && last names in ALL CAPITALS
         locale: AppConfiguration.instance.closest_locale_to('fr-FR'),
-        remote_avatar_url: auth.info['image']
-      }.tap do |attrs|
-        custom_fields = CustomField.registration.enabled.pluck(:code)
-        if custom_fields.include?('birthyear')
-          birthdate = auth.extra.raw_info.birthdate
-          attrs[:birthyear] = Date.parse(birthdate).year if birthdate.present?
-        end
-        if custom_fields.include?('gender')
-          attrs[:gender] = auth.extra.raw_info.gender
-        end
-      end
+        remote_avatar_url: auth.info['image'],
+        custom_field_values: custom_field_values
+      }
     end
 
     # @param [AppConfiguration] configuration
@@ -117,7 +124,7 @@ module CustomIdMethods::Franceconnect
     end
 
     def updateable_user_attrs
-      super + %i[birthyear gender remote_avatar_url]
+      super + %i[custom_field_values remote_avatar_url]
     end
 
     # To make this method return false and so to reproduce merging error, you need:
