@@ -70,10 +70,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.surveyForm',
     defaultMessage: 'Survey form',
   },
-  editSurveyForm: {
-    id: 'app.containers.Admin.projects.project.editSurveyForm',
-    defaultMessage: 'Edit survey form',
-  },
   mapConfiguration: {
     id: 'app.containers.Admin.projects.project.mapConfiguration',
     defaultMessage: 'Map configuration',
@@ -436,6 +432,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.unsavedChangesDescription',
     defaultMessage:
       'This phase has unsaved changes. Leaving now discards them.',
+  },
+  unsavedChangesCancel: {
+    id: 'app.containers.Admin.projects.project.unsavedChangesCancel',
+    defaultMessage: 'Cancel',
   },
   discardChanges: {
     id: 'app.containers.Admin.projects.project.discardChanges',
