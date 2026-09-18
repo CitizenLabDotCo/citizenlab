@@ -86,6 +86,10 @@ class PhasePolicy < ApplicationPolicy
     active_moderator?
   end
 
+  def opinion_groups?
+    active_moderator?
+  end
+
   def active_moderator?
     policy_for(record.project).active_moderator?
   end
