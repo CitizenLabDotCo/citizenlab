@@ -3,6 +3,7 @@ import React from 'react';
 import {
   Box,
   fontSizes,
+  Image,
   Radio,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
@@ -26,15 +27,10 @@ import TwoColumnLayoutInactive from './layout_previews/two_column_layout_inactiv
 import TwoRowLayoutActive from './layout_previews/two_row_layout_active.jpg';
 import TwoRowLayoutInactive from './layout_previews/two_row_layout_inactive.jpg';
 
-const LayoutPreview = styled.img`
-  width: 220px;
-`;
-
 const LayoutOption = styled.label`
   display: flex;
   flex-direction: column;
   align-items: start;
-  margin-right: 20px;
   font-size: ${fontSizes.base}px;
   cursor: pointer;
 `;
@@ -48,16 +44,27 @@ export interface Props {
   bannerLayout: ICustomPageAttributes['banner_layout'];
 
   onChange: (bannerLayout: TCustomPageBannerLayout) => void;
+  // Stacks the options for a narrow builder settings panel.
+  stacked?: boolean;
 }
 
-const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
+const LayoutSettingField = ({
+  bannerLayout,
+  onChange,
+  stacked = false,
+}: Props) => {
   const { formatMessage } = useIntl();
+  const previewWidth = stacked ? '100%' : '220px';
   return (
     <SectionField key="layout">
       <SubSectionTitle>
         <FormattedMessage {...messages.chooseLayout} />
       </SubSectionTitle>
-      <Box display="flex">
+      <Box
+        display="flex"
+        flexDirection={stacked ? 'column' : 'row'}
+        gap={stacked ? '16px' : '20px'}
+      >
         <LayoutOption data-cy="e2e-full-width-banner-layout-option">
           <LayoutOptionTop>
             <Radio
@@ -97,7 +104,9 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
               }
             />
           </LayoutOptionTop>
-          <LayoutPreview
+          <Image
+            alt=""
+            width={previewWidth}
             src={
               bannerLayout === 'full_width_banner_layout'
                 ? FullWidthBannerLayoutActive
@@ -118,7 +127,9 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
                 label={formatMessage(messages.TwoColumnLayout)}
               />
             </LayoutOptionTop>
-            <LayoutPreview
+            <Image
+              alt=""
+              width={previewWidth}
               src={
                 // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 bannerLayout === 'two_column_layout'
@@ -168,7 +179,9 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
               }
             />
           </LayoutOptionTop>
-          <LayoutPreview
+          <Image
+            alt=""
+            width={previewWidth}
             src={
               bannerLayout === 'two_row_layout'
                 ? TwoRowLayoutActive
@@ -215,7 +228,9 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
               }
             />
           </LayoutOptionTop>
-          <LayoutPreview
+          <Image
+            alt=""
+            width={previewWidth}
             src={
               bannerLayout === 'fixed_ratio_layout'
                 ? FullWidthBannerLayoutActive

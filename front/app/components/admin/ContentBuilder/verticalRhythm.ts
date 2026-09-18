@@ -33,6 +33,8 @@ const WIDGET_ROLES: Record<string, WidgetRole> = {
   EventsWidget: 'band',
   EventsList: 'band',
   ProjectsByFilter: 'band',
+  CustomPageBanner: 'band',
+  CustomPageTitle: 'flow',
 };
 
 const BOUNDARY_MARGINS = {
@@ -40,6 +42,11 @@ const BOUNDARY_MARGINS = {
   flow: { desktop: '32px', phone: '24px' },
   section: { desktop: '48px', phone: '32px' },
 } as const;
+
+// The gap at a major boundary the rhythm cannot see: above a page's first widget, which has
+// no previous sibling to be spaced against, or below a heading that sits outside the rhythm.
+export const useSectionBoundaryMargin = () =>
+  BOUNDARY_MARGINS.section[useBreakpoint('phone') ? 'phone' : 'desktop'];
 
 export const getBoundaryMargin = (
   previousRole: WidgetRole | undefined,
