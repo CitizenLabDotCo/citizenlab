@@ -260,6 +260,7 @@ describe Invites::Service do
           key: 'integer_field',
           input_type: 'number'
         )
+        create(:custom_field_birthyear)
       end
 
       let(:hash_array) do
@@ -272,12 +273,14 @@ describe Invites::Service do
           { email: 'user5@domain.net', checkbox_field: 'FALSE' },
 
           { email: 'user6@domain.net', float_field: '666.34' },
-          { email: 'user7@domain.net', integer_field: '1873050293742134' }
+          { email: 'user7@domain.net', integer_field: '1873050293742134' },
+
+          { email: 'user8@domain.net', birthyear: '1990' }
         ]
       end
 
       it 'initializes custom_field_values with matching column names and appropriate types' do
-        expect { service.bulk_create_xlsx(xlsx, {}) }.to change(Invite, :count).from(0).to(7)
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to change(Invite, :count).from(0).to(8)
 
         user = User.find_by(email: 'user1@domain.net')
         expect(user.custom_field_answers.pluck(:key, :value)).to eq [%w[text_field some_value]]
@@ -299,6 +302,9 @@ describe Invites::Service do
 
         user = User.find_by(email: 'user7@domain.net')
         expect(user.custom_field_answers.pluck(:key, :value)).to eq [['integer_field', 1_873_050_293_742_134]]
+
+        user = User.find_by(email: 'user8@domain.net')
+        expect(user.custom_field_answers.pick(:value)).to be 1990
       end
     end
 
