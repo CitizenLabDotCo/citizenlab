@@ -6,8 +6,9 @@ class McpServer::Tools::GetPlatformBranding < McpServer::BaseTool
 
   def description
     <<~DESC.squish
-      Reads the platform's branding: organization name, locales, brand colours,
-      logo URLs and style customizations (fonts, header colours, etc.).
+      Reads the platform's branding and core settings: organization name, locales,
+      brand colours, logo and favicon URLs, timezone, currency, country, SEO metadata
+      and style customizations (fonts, header colours, etc.).
     DESC
   end
 
@@ -16,21 +17,9 @@ class McpServer::Tools::GetPlatformBranding < McpServer::BaseTool
   class Runner < McpServer::BaseTool::Runner
     def run
       config = AppConfiguration.instance
-      core = config.settings('core')
-
       response(
         "Branding of platform #{config.host}",
-        structured: {
-          organization_name_multiloc: core['organization_name'],
-          locales: core['locales'],
-          colors: {
-            main: core['color_main'],
-            secondary: core['color_secondary'],
-            text: core['color_text']
-          },
-          logo_urls: (config.logo.versions.transform_values(&:url) if config.logo.file),
-          style: config.style
-        }
+        structured: McpServer::PlatformBranding.structured(config)
       )
     end
   end

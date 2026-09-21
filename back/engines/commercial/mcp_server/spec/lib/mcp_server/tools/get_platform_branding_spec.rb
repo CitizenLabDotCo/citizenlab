@@ -19,7 +19,7 @@ describe McpServer::Tools::GetPlatformBranding do
     response = fetch_branding
 
     expect(response).not_to be_error
-    expect(response.structured_content).to match(
+    expect(response.structured_content).to include(
       organization_name_multiloc: config.settings('core', 'organization_name'),
       locales: config.settings('core', 'locales'),
       colors: {
@@ -27,6 +27,9 @@ describe McpServer::Tools::GetPlatformBranding do
         secondary: config.settings('core', 'color_secondary'),
         text: config.settings('core', 'color_text')
       },
+      timezone: config.settings('core', 'timezone'),
+      currency: config.settings('core', 'currency'),
+      country_code: config.settings('core', 'country_code'),
       logo_urls: {
         small: end_with('.png'),
         medium: end_with('.png'),
