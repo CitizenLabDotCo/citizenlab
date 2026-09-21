@@ -10,7 +10,7 @@ module InputTypeStrategy
       false
     end
 
-    # The map fields submit WKT strings; the stored value is GeoJSON.
+    # The FE submits WKT strings because GeoJSON's nested arrays are rejected by strong params.
     def normalize_value(value)
       return value if !value.is_a?(String)
 

@@ -475,12 +475,6 @@ class Idea < ApplicationRecord
     )
   end
 
-  # The FE sends geographic values as wkt strings, since GeoJSON often includes nested arrays
-  # which are not supported by Rails strong params.
-  # This method converts the wkt strings for geographic values (e.g. for point, line, polygon, etc.) to GeoJSON.
-  #
-  # RGeo gem & wkt strings:
-  # https://github.com/rgeo/rgeo/blob/52d42407769d9fb5267e328ed4023db013f2b7d5/Spatial_Programming_With_RGeo.md?plain=1#L521-L528
   def transitive_input_term
     current_phase_input_term || last_past_phase_input_term || first_future_phase_input_term || Phase::FALLBACK_INPUT_TERM
   end
