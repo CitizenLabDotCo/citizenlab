@@ -75,7 +75,7 @@ module Export
       attr_reader :model, :option_index, :multiloc_service
 
       def value_for(field)
-        return model.public_send field.key if field.built_in? && !field.user_type?
+        return model.public_send field.key if field.stored_on_model?
 
         model.answer_for_key(field.key)&.value
       end
