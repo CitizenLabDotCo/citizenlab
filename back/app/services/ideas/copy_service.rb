@@ -29,6 +29,7 @@ module Ideas
           # The following associations are not copied over:
           # Reactions, baskets, comments, internal comments, official feedback, followers
           # votes.
+          # Answers are not copied: they belong to the source context's form, which the destination may not share.
           i.likes_count = 0
           i.dislikes_count = 0
           i.neutral_reactions_count = 0

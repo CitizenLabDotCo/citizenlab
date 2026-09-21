@@ -179,6 +179,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
 
     template['models']['custom_field'] = kept
     answers = template.dig('models', 'custom_field_answer') || []
+    # A ref holds the field entry itself, not a copy with equal values — YAML anchors keep it that way.
     template['models']['custom_field_answer'] = answers.reject do |answer|
       dropped.any? { |field| answer['custom_field_ref'].equal?(field) }
     end
