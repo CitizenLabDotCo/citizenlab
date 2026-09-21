@@ -32,10 +32,10 @@ class CustomFieldService
   def delete_field_answers(field)
     case field.resource_type
     when 'User'
-      delete_keys_from_values(User.all, keys_with_companions(field.key))
-      delete_keys_from_values(Idea.all, keys_with_companions(UserFieldsInFormService.prefix_key(field.key)))
+      delete_answers_for_keys(User.all, keys_with_companions(field.key))
+      delete_answers_for_keys(Idea.all, keys_with_companions(UserFieldsInFormService.prefix_key(field.key)))
     when 'CustomForm'
-      delete_keys_from_values(form_inputs(field.resource), keys_with_companions(field.key))
+      delete_answers_for_keys(form_inputs(field.resource), keys_with_companions(field.key))
     end
   end
 
@@ -124,7 +124,7 @@ class CustomFieldService
     [key, "#{key}_other", "#{key}_follow_up"]
   end
 
-  def delete_keys_from_values(scope, keys)
+  def delete_answers_for_keys(scope, keys)
     CustomFieldAnswer.where(answerable: scope, key: keys).delete_all
   end
 end
