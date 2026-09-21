@@ -12,8 +12,6 @@ class SideFxFileService
   private
 
   def destroy_file_answers(file)
-    file.idea.custom_field_answers.each do |answer|
-      answer.destroy! if answer.value.is_a?(Hash) && answer.value['id'] == file.id
-    end
+    CustomFieldAnswer.where(answerable: file.idea).where("value->>'id' = ?", file.id).delete_all
   end
 end
