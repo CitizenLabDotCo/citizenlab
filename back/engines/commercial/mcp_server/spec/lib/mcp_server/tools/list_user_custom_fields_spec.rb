@@ -29,6 +29,19 @@ describe McpServer::Tools::ListUserCustomFields do
       .to match_array(%i[id title_multiloc input_type code required])
   end
 
+  it 'includes options (key and title) for select fields' do
+    field = create(:custom_field_gender, :with_options)
+
+    response = list
+
+    gender = response.structured_content[:data].find { |f| f[:id] == field.id }
+    expect(gender[:options]).to match_array([
+      { 'key' => 'male', 'title_multiloc' => { 'en' => 'Male' } },
+      { 'key' => 'female', 'title_multiloc' => { 'en' => 'Female' } },
+      { 'key' => 'unspecified', 'title_multiloc' => { 'en' => 'Unspecified' } }
+    ])
+  end
+
   it_behaves_like 'a paginated list tool'
 
   it 'excludes disabled and hidden fields' do
