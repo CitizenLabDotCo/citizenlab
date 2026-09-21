@@ -20,6 +20,7 @@ import ViewSwitch from '../Phase/ViewSwitch';
 
 import { HeaderDropdownName } from './HeaderDropdown';
 import PublishDropdown from './PublishDropdown';
+import SaveChangesButton from './SaveChangesButton';
 import ShareDropdown from './ShareDropdown';
 
 const HEADER_HEIGHT = '48px';
@@ -33,6 +34,7 @@ const CrumbBar = styled(Box)`
 interface Props {
   project: IProjectData;
   phase?: IPhaseData;
+  draftLabel?: string;
   activeView: PhaseViewKey;
   section?: ProjectSection;
   openDropdown: HeaderDropdownName | null;
@@ -42,6 +44,7 @@ interface Props {
 const WorkspaceHeader = ({
   project,
   phase,
+  draftLabel,
   activeView,
   section,
   openDropdown,
@@ -58,7 +61,7 @@ const WorkspaceHeader = ({
     },
     {
       label: localize(project.attributes.title_multiloc),
-      ...((phase || section) && {
+      ...((phase || draftLabel || section) && {
         link: {
           to: '/admin/projects/$projectId' as const,
           params: { projectId: project.id },
@@ -66,6 +69,7 @@ const WorkspaceHeader = ({
       }),
     },
     ...(phase ? [{ label: localize(phase.attributes.title_multiloc) }] : []),
+    ...(draftLabel ? [{ label: draftLabel }] : []),
     ...(section ? [{ label: formatMessage(section.label) }] : []),
   ];
 
@@ -106,6 +110,7 @@ const WorkspaceHeader = ({
         justifyContent="flex-end"
         gap="10px"
       >
+        {(phase || draftLabel) && <SaveChangesButton />}
         <ButtonWithLink
           to="/projects/$slug"
           params={{ slug: project.attributes.slug }}

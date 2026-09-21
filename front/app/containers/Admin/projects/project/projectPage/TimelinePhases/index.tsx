@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import { Box, Button, Text, colors } from '@citizenlab/cl2-component-library';
 
 import { ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
@@ -27,6 +27,8 @@ import {
 } from '../phaseRowUtils';
 
 import EmptyState from './EmptyState';
+import PhaseOptionsMenu from './PhaseOptionsMenu';
+import PhaseRowWithOptions from './PhaseRowWithOptions';
 
 const METHOD_LABELS: Record<ParticipationMethod, MessageDescriptor> = {
   ideation: methodMessages.ideation,
@@ -44,9 +46,15 @@ const METHOD_LABELS: Record<ParticipationMethod, MessageDescriptor> = {
 
 interface Props {
   projectId: string;
+  onNewPhase?: () => void;
+  withPhaseOptions?: boolean;
 }
 
-const TimelinePhases = ({ projectId }: Props) => {
+const TimelinePhases = ({
+  projectId,
+  onNewPhase,
+  withPhaseOptions = false,
+}: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { phaseId } = useParams({ strict: false });
@@ -97,9 +105,8 @@ const TimelinePhases = ({ projectId }: Props) => {
             METHOD_LABELS[phase.attributes.participation_method]
           );
 
-          return (
+          const row = (
             <Link
-              key={phase.id}
               to={PHASE_TAB_ROUTES[getPhaseLandingTab(phase)]}
               params={{ projectId, phaseId: phase.id }}
             >
@@ -108,7 +115,11 @@ const TimelinePhases = ({ projectId }: Props) => {
                   <Connector isFirst={index === 0} isLast={isLast} />
                 )}
                 <PhaseDot status={status} />
-                <Box flexGrow={1} pb="4px">
+                <Box
+                  flexGrow={1}
+                  pb="4px"
+                  pr={withPhaseOptions ? '24px' : undefined}
+                >
                   <Text
                     as="span"
                     m="0"
@@ -124,6 +135,17 @@ const TimelinePhases = ({ projectId }: Props) => {
               </Row>
             </Link>
           );
+
+          return withPhaseOptions ? (
+            <PhaseRowWithOptions
+              key={phase.id}
+              options={<PhaseOptionsMenu projectId={projectId} phase={phase} />}
+            >
+              {row}
+            </PhaseRowWithOptions>
+          ) : (
+            <React.Fragment key={phase.id}>{row}</React.Fragment>
+          );
         })}
       </Box>
 
@@ -132,16 +154,28 @@ const TimelinePhases = ({ projectId }: Props) => {
         mt="4px"
         className="intercom-product-tour-project-timeline-new-phase"
       >
-        <ButtonWithLink
-          to="/admin/projects/$projectId/phases/new"
-          params={{ projectId }}
-          buttonStyle="text"
-          size="s"
-          icon="plus"
-          width="auto"
-        >
-          {formatMessage(messages.newPhase)}
-        </ButtonWithLink>
+        {onNewPhase ? (
+          <Button
+            buttonStyle="text"
+            size="s"
+            icon="plus"
+            width="auto"
+            onClick={onNewPhase}
+          >
+            {formatMessage(messages.newParticipationMethod)}
+          </Button>
+        ) : (
+          <ButtonWithLink
+            to="/admin/projects/$projectId/phases/new"
+            params={{ projectId }}
+            buttonStyle="text"
+            size="s"
+            icon="plus"
+            width="auto"
+          >
+            {formatMessage(messages.newPhase)}
+          </ButtonWithLink>
+        )}
       </Box>
     </Box>
   );
