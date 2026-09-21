@@ -120,4 +120,72 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.startDate',
     defaultMessage: 'Start date',
   },
+  placementLabel: {
+    id: 'app.containers.AdminPage.ProjectTimeline.placementLabel',
+    defaultMessage: 'Placement',
+  },
+  placementOnTimelineDescription: {
+    id: 'app.containers.AdminPage.ProjectTimeline.placementOnTimelineDescription',
+    defaultMessage:
+      'This survey is a phase on the project timeline. It runs in sequence with the other phases.',
+  },
+  placementStandaloneDescription: {
+    id: 'app.containers.AdminPage.ProjectTimeline.placementStandaloneDescription',
+    defaultMessage:
+      'This survey runs alongside the timeline as an extra survey. It can overlap other phases.',
+  },
+  moveOffTimelineButton: {
+    id: 'app.containers.AdminPage.ProjectTimeline.moveOffTimelineButton',
+    defaultMessage: 'Make it an extra survey',
+  },
+  moveOnTimelineButton: {
+    id: 'app.containers.AdminPage.ProjectTimeline.moveOnTimelineButton',
+    defaultMessage: 'Move onto the timeline',
+  },
+  moveOffTimelineModalTitle: {
+    id: 'app.containers.AdminPage.ProjectTimeline.moveOffTimelineModalTitle',
+    defaultMessage: 'Make this an extra survey?',
+  },
+  moveOnTimelineModalTitle: {
+    id: 'app.containers.AdminPage.ProjectTimeline.moveOnTimelineModalTitle',
+    defaultMessage: 'Move this survey onto the timeline?',
+  },
+  moveOffTimelineExplanation: {
+    id: 'app.containers.AdminPage.ProjectTimeline.moveOffTimelineExplanation',
+    defaultMessage:
+      'The survey will no longer be a phase on the timeline. It keeps its questions and its responses.',
+  },
+  moveOnTimelineExplanation: {
+    id: 'app.containers.AdminPage.ProjectTimeline.moveOnTimelineExplanation',
+    defaultMessage:
+      'The survey will become a phase on the timeline. It keeps its questions and its responses.',
+  },
+  moveWarningVisibility: {
+    id: 'app.containers.AdminPage.ProjectTimeline.moveWarningVisibility',
+    defaultMessage:
+      'Residents will find the survey in a different place on the project page, so any link you shared to it may no longer work.',
+  },
+  moveWarningWidgetRemoved: {
+    id: 'app.containers.AdminPage.ProjectTimeline.moveWarningWidgetRemoved',
+    defaultMessage:
+      'The survey is shown in a block on your project page. That block will be removed.',
+  },
+  moveWarningTimelineDates: {
+    id: 'app.containers.AdminPage.ProjectTimeline.moveWarningTimelineDates',
+    defaultMessage:
+      'Timeline phases cannot overlap. If the dates clash with another phase, the move is refused and the phase before this one may get an end date.',
+  },
+  moveWarningResponseEditing: {
+    id: 'app.containers.AdminPage.ProjectTimeline.moveWarningResponseEditing',
+    defaultMessage:
+      'Whether residents can still edit the answers they already submitted may change.',
+  },
+  moveConfirmButton: {
+    id: 'app.containers.AdminPage.ProjectTimeline.moveConfirmButton',
+    defaultMessage: 'Move the survey',
+  },
+  moveCancelButton: {
+    id: 'app.containers.AdminPage.ProjectTimeline.moveCancelButton',
+    defaultMessage: 'Cancel',
+  },
 });
