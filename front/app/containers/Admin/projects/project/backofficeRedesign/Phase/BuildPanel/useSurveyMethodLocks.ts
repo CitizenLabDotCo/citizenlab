@@ -14,8 +14,11 @@ const useSurveyMethodLocks = (
   phase: IPhaseData
 ): Partial<Record<SurveyMethod, string>> => {
   const { formatMessage } = useIntl();
-  const { data: pollQuestions } = usePollQuestions({ phaseId: phase.id });
   const method = phase.attributes.participation_method;
+  const { data: pollQuestions } = usePollQuestions({
+    phaseId: phase.id,
+    enabled: method === 'poll',
+  });
 
   const reason =
     method === 'poll' && pollQuestions && pollQuestions.data.length > 0
