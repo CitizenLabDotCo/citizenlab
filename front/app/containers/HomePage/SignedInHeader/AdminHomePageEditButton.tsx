@@ -29,9 +29,9 @@ const AdminHomePageEditButton = () => {
       top="30px"
       right="30px"
       width="fit-content"
-      marginTop={isSmallerThanTablet ? "16px" : ''}
-      marginBottom={isSmallerThanTablet ? "16px" : ''}
-      marginLeft={isSmallerThanTablet ? "15px" : ''}
+      marginTop={isSmallerThanTablet ? '16px' : ''}
+      marginBottom={isSmallerThanTablet ? '16px' : ''}
+      marginLeft={isSmallerThanTablet ? '15px' : ''}
     >
       <ButtonWithLink
         id="e2e-edit-homepage-button"
