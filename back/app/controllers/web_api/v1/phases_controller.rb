@@ -249,12 +249,11 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def phase_params_for_create
-    # placement_type can only be set on creation, not changed afterwards.
     params.require(:phase).permit(:placement_type, *shared_phase_params)
   end
 
   def phase_params_for_update
-    params.require(:phase).permit(shared_phase_params)
+    params.require(:phase).permit(:placement_type, *shared_phase_params)
   end
 
   def ensure_input_export_review
