@@ -408,10 +408,9 @@ namespace :setup_and_support do
           attrs.delete 'password'
         end
         u.update! attrs
+        u.custom_field_answers.delete_all
         answers.each do |answer|
           field = answer['custom_field']
-          next if u.answer_for_key(field.key)
-
           u.custom_field_answers.create!(key: field.key, value: answer['value'], custom_field: field)
         end
 
