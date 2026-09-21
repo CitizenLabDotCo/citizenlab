@@ -83,8 +83,6 @@ module SmartGroups::Rules
       true
     end
 
-    # A user without an email satisfies every negative predicate, so those branches
-    # need an explicit NULL check: SQL comparisons against NULL would drop them.
     def filter(users_scope)
       case predicate
       when 'is'
