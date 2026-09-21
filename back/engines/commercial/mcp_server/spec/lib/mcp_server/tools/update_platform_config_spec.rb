@@ -9,7 +9,7 @@ describe McpServer::Tools::UpdatePlatformConfig do
     run_mcp_tool(described_class, params:, current_user:)
   end
 
-  def set_core(attrs)
+  def preset_core(attrs)
     config = AppConfiguration.instance
     settings = config.settings
     settings['core'].merge!(attrs)
@@ -27,7 +27,7 @@ describe McpServer::Tools::UpdatePlatformConfig do
   end
 
   it 'merges organization_name per locale' do
-    set_core('locales' => %w[en nl-BE], 'organization_name' => { 'en' => 'Old', 'nl-BE' => 'Oud' })
+    preset_core('locales' => %w[en nl-BE], 'organization_name' => { 'en' => 'Old', 'nl-BE' => 'Oud' })
 
     response = update(organization_name_multiloc: { 'en' => 'New' })
 
