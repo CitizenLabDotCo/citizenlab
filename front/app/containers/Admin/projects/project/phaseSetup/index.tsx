@@ -45,6 +45,7 @@ import {
   ideationDefaultConfig,
   nativeSurveyDefaultConfig,
 } from './components/PhaseParticipationConfig/utils/participationMethodConfigs';
+import PhasePlacement from './components/PhasePlacement';
 import messages from './messages';
 import { SubmitStateType, ValidationErrors } from './typings';
 import validate from './validate';
@@ -387,6 +388,10 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
     setProcessing(true);
 
     if (phase) {
+      // Placement is moved through PhasePlacement, not this form. The form data is a
+      // snapshot taken when the phase loaded, so sending it back would undo a move.
+      const { placement_type: _placementType, ...phaseData } = formData;
+
       updatePhase(
         // TODO: Fix this the next time the file is edited.
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -394,7 +399,7 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
           // TODO: Fix this the next time the file is edited.
           // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           phaseId: phase?.data.id,
-          ...formData,
+          ...phaseData,
         },
         {
           onSuccess: (response) => {
@@ -469,6 +474,7 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
             setValidationErrors={setValidationErrors}
             hideMethodPicker={standalone}
           />
+          {phase && <PhasePlacement phase={phase.data} />}
           <SectionField>
             <SubSectionTitle>
               <FormattedMessage {...messages.uploadAttachments} />
