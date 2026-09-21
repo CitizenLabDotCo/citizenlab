@@ -78,6 +78,43 @@ describe SmartGroups::Rules::Email do
     end
   end
 
+  describe 'filter on an email stored with mixed case' do
+    using RSpec::Parameterized::TableSyntax
+
+    let!(:user) { create(:user, email: 'Sebi@CitizenLab.co') }
+
+    where(:predicate, :value, :matches) do
+      'is'              | 'sebi@citizenlab.co' | true
+      'not_is'          | 'sebi@citizenlab.co' | false
+      'contains'        | 'SEBI@citizenlab'    | true
+      'not_contains'    | 'SEBI@citizenlab'    | false
+      'begins_with'     | 'SEBI'               | true
+      'not_begins_with' | 'SEBI'               | false
+      'ends_on'         | 'CITIZENLAB.co'      | true
+      'not_ends_on'     | 'CITIZENLAB.co'      | false
+    end
+
+    with_them do
+      it 'ignores the case of both the email and the value' do
+        expect(described_class.new(predicate, value).filter(User).exists?(user.id)).to eq matches
+      end
+    end
+  end
+
+  describe 'filter on a user without an email' do
+    let!(:user) { create(:user, email: nil) }
+
+    where(:predicate) do
+      [['not_is'], ['not_contains'], ['not_begins_with'], ['not_ends_on']]
+    end
+
+    with_them do
+      it 'keeps the user, who cannot match the value' do
+        expect(described_class.new(predicate, 'citizenlab.co').filter(User)).to include user
+      end
+    end
+  end
+
   describe 'description_multiloc' do
     let(:email_is_rule) do
       described_class.from_json({
