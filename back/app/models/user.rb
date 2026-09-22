@@ -45,6 +45,7 @@ require Rails.root.join('lib/email_domain_blacklist')
 #  index_users_on_email                      (email)
 #  index_users_on_phone                      (phone) UNIQUE WHERE (phone IS NOT NULL)
 #  index_users_on_registration_completed_at  (registration_completed_at)
+#  index_users_on_roles                      (roles) USING gin
 #  index_users_on_slug                       (slug) UNIQUE
 #  index_users_on_token_expiry_key           (token_expiry_key)
 #  index_users_on_unique_code                (unique_code) UNIQUE

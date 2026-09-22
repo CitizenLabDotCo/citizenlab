@@ -127,13 +127,12 @@ class UserRoleService
   def moderators_per_resource(resource_ids, role_type:, id_field:)
     return {} if resource_ids.empty?
 
-    users = User.where(<<~SQL.squish, resource_ids)
-      EXISTS (
-        SELECT 1 FROM jsonb_array_elements(roles) AS role
-        WHERE role->>'type' = '#{role_type}'
-          AND role->>'#{id_field}' = ANY (ARRAY[?]::varchar[])
-      )
-    SQL
+    # One containment term per resource, so the GIN index on users.roles can
+    # serve the query as a bitmap OR. Unpacking the array with
+    # jsonb_array_elements instead forces a sequential scan.
+    condition = Array.new(resource_ids.size, 'roles @> ?').join(' OR ')
+    role_json = resource_ids.map { |id| JSON.generate([{ 'type' => role_type, id_field => id }]) }
+    users = User.where(condition, *role_json)
 
     users.each_with_object({}) do |user, hash|
       user.roles.each do |role|
