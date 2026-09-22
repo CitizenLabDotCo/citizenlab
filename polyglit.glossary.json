@@ -105,6 +105,9 @@
     "de-DE": "automatische Einblicke",
     "nl-NL": "auto-inzichten"
   },
+  "area": {
+    "de-DE": "Gebiet"
+  },
   "log in": {
     "nl-NL": "inloggen"
   },
