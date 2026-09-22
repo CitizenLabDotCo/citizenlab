@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Box, Button, Radio, Text } from '@citizenlab/cl2-component-library';
-import { Multiloc } from 'typings';
+import { CLErrors, Multiloc } from 'typings';
 
 import { IUpdatedProjectProperties } from 'api/projects/types';
 
@@ -24,11 +24,18 @@ import messages from './messages';
 interface Props {
   processing: boolean;
   failed: boolean;
+  apiErrors: CLErrors;
   onCancel: () => void;
   onSubmit: (attributes: IUpdatedProjectProperties) => void;
 }
 
-const NewProjectForm = ({ processing, failed, onCancel, onSubmit }: Props) => {
+const NewProjectForm = ({
+  processing,
+  failed,
+  apiErrors,
+  onCancel,
+  onSubmit,
+}: Props) => {
   const { formatMessage } = useIntl();
   const locales = useAppConfigurationLocales();
 
@@ -67,7 +74,7 @@ const NewProjectForm = ({ processing, failed, onCancel, onSubmit }: Props) => {
       <ProjectNameInput
         titleMultiloc={titleMultiloc}
         titleError={titleError}
-        apiErrors={{}}
+        apiErrors={apiErrors}
         handleTitleMultilocOnChange={handleTitleChange}
       />
 
