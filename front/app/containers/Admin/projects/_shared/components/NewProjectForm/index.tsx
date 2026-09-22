@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { Box, Button, Radio, Text } from '@citizenlab/cl2-component-library';
-import { isEmpty } from 'lodash-es';
 import { Multiloc } from 'typings';
 
 import { IUpdatedProjectProperties } from 'api/projects/types';
@@ -55,7 +54,7 @@ const NewProjectForm = ({ processing, failed, onCancel, onSubmit }: Props) => {
       formatMessage(generalMessages.noTitleErrorMessage)
     );
 
-    if (!isEmpty(error)) {
+    if (Object.keys(error).length > 0) {
       setTitleError(error);
       return;
     }
