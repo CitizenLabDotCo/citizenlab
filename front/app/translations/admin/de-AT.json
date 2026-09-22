@@ -2973,7 +2973,7 @@
   "app.containers.AdminPage.ProjectEvents.editButtonLabel": "Bearbeiten",
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "Veranstaltung bearbeiten",
   "app.containers.AdminPage.ProjectEvents.eventAttendanceExport1": "Um registrierte Personen direkt von der Plattform aus per E-Mail zu kontaktieren, müssen Administratoren auf der Registerkarte {userTabLink} eine Benutzergruppe erstellen. {supportArticleLink}.",
-  "app.containers.AdminPage.ProjectEvents.eventDates": "Veranstaltungstermine",
+  "app.containers.AdminPage.ProjectEvents.eventDates": "Datum",
   "app.containers.AdminPage.ProjectEvents.eventImage": "Bild der Veranstaltung",
   "app.containers.AdminPage.ProjectEvents.eventImageAltTextTitle": "Alternativtext für das Veranstaltungsbild",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Veranstaltungsort",
