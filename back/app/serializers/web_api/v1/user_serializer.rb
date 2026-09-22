@@ -2,6 +2,7 @@
 
 class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   PRIVATE = proc { |object, params| view_private_attributes? object, params }
+  OWN_EARLY_ACCESS = proc { |object, params| own_early_access_features? object, params }
 
   # Public attributes
   attributes :locale,
@@ -44,7 +45,8 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   attribute :verified, if: PRIVATE
   attribute :followings_count, if: PRIVATE
   attribute :onboarding, if: PRIVATE
-  attribute :early_access_features, if: PRIVATE
+  attribute :early_access_features, if: OWN_EARLY_ACCESS
+  attribute :offered_early_access_features, if: OWN_EARLY_ACCESS
 
   attribute :no_password, if: PRIVATE do |object|
     object.no_password?
@@ -79,5 +81,9 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
 
   def self.view_private_attributes?(object, params = {})
     Pundit.policy!(user_context(params), object).view_private_attributes?
+  end
+
+  def self.own_early_access_features?(object, params = {})
+    Pundit.policy!(user_context(params), object).own_early_access_features?
   end
 end
