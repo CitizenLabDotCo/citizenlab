@@ -9,6 +9,12 @@ import usersKeys from './keys';
 
 export type UsersKeys = Keys<typeof usersKeys>;
 
+export type EarlyAccessLevel = 'general' | 'internal';
+
+export type OfferedEarlyAccessFeatures = Partial<
+  Record<TAppConfigurationSetting, EarlyAccessLevel>
+>;
+
 export interface UserCheckResponse {
   data: {
     type: 'check';
@@ -55,6 +61,7 @@ export interface IUserAttributes {
   custom_field_values?: Record<string, any>;
   onboarding?: OnboardingType;
   early_access_features?: TAppConfigurationSetting[];
+  offered_early_access_features?: OfferedEarlyAccessFeatures;
   avatar?: ImageSizes;
   roles?: TRole[];
   email?: string;
