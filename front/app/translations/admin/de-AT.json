@@ -629,7 +629,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.timelineTab": "Zeitleiste",
   "app.components.app.containers.AdminPage.ProjectEdit.topicTerm": "Thema",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Besucher*innen",
-  "app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction": "Freiwilligenarbeit",
+  "app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction": "Teilnehmende finden",
   "app.components.app.containers.AdminPage.ProjectEdit.votesGroup": "Stimmen",
   "app.components.app.containers.AdminPage.ProjectEdit.votingOnInputsAction": "Abstimmung über Beiträge",
   "app.components.formBuilder.copySurveyModal.cancel": "Abbrechen",
