@@ -9,6 +9,18 @@ import { endsWith } from 'utils/helperUtils';
 
 import logoutUrl from './logoutUrl';
 
+/*
+  Pages a user signing out should be redirected away from.
+  /admin listed separately to match on all admin paths
+*/
+const PATHS_TO_REDIRECT = [
+  '/sign-up',
+  '/profile/edit',
+  '/profile/change-email',
+  '/profile/change-password',
+  '/profile/change-phone',
+];
+
 export default async function signOut() {
   const jwt = getJwt();
 
@@ -27,7 +39,7 @@ export default async function signOut() {
 
       if (
         pathname &&
-        (endsWith(pathname, '/sign-up') || pathname.startsWith('/admin'))
+        (endsWith(pathname, PATHS_TO_REDIRECT) || pathname.startsWith('/admin'))
       ) {
         clHistory.push('/');
       }

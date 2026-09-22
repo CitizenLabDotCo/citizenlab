@@ -73,6 +73,23 @@ describe SideFxUserService do
       end
     end
 
+    # An SSO signup whose unconfirmed email another account already owns.
+    context 'when a user is created waiting to merge into another account' do
+      let(:sso_user) do
+        create(:user).tap do |u|
+          u.update_columns(email: nil, password_digest: nil, confirmation_required: true, merge_target_email: 'existing@example.org')
+        end
+      end
+
+      it 'sends the merge code instead of an email confirmation' do
+        expect(RequestMergeAccountConfirmationCodeJob).to receive(:perform_now)
+          .with(sso_user, merge_target_email: 'existing@example.org')
+        expect(RequestNewEmailConfirmationCodeJob).not_to receive(:perform_now)
+
+        service.after_create(sso_user, current_user)
+      end
+    end
+
     context 'when a user is created with a phone number' do
       let(:phone_user) { create(:unconfirmed_phone_user) }
 

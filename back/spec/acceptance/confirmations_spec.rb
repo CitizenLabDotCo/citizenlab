@@ -35,11 +35,11 @@ resource 'Confirmations' do
       expect(token[0..2]).to eq 'eyJ' # JWTs start with 'eyJ'
     end
 
-    example 'sets code_reset_count to 0 upon successful confirmation' do
+    example 'deletes the confirmation upon successful confirmation' do
       user.email_confirmation.update!(code_reset_count: 3)
       do_request(confirmation: { email: user.email, code: user.email_confirmation.code })
       assert_status 200
-      expect(user.email_confirmation.reload.code_reset_count).to eq 0
+      expect(user.reload.email_confirmation).to be_nil
     end
 
     example 'returns an code.blank error code when no code is passed' do
@@ -85,8 +85,8 @@ resource 'Confirmations' do
       do_request(confirmation: { email: user.email, code: code })
       assert_status 200
 
-      RequestEmailConfirmationCodeJob.perform_now user
-      code = user.reload.email_confirmation.code
+      RequestEmailConfirmationCodeJob.perform_now user.reload
+      code = user.email_confirmation.code
       do_request(confirmation: { email: user.email, code: code })
       assert_status 200
     end
@@ -207,12 +207,12 @@ resource 'Confirmations' do
         expect(response_body).to be_blank
       end
 
-      example 'sets code_reset_count to 0 upon successful confirmation' do
+      example 'deletes the confirmation upon successful confirmation' do
         user.reload.email_confirmation.update!(code_reset_count: 3)
         do_request(confirmation: { code: user.email_confirmation.code })
 
         assert_status 200
-        expect(user.email_confirmation.reload.code_reset_count).to eq 0
+        expect(user.reload.email_confirmation).to be_nil
       end
 
       # Unlike confirm_code_email: an account created through SSO must still be
@@ -280,11 +280,11 @@ resource 'Confirmations' do
         expect(user.new_email).to be_nil
       end
 
-      example 'sets code_reset_count to 0 upon successful confirmation' do
+      example 'deletes the confirmation upon successful confirmation' do
         user.new_email_confirmation.update!(code_reset_count: 3)
         do_request(confirmation: { code: user.new_email_confirmation.code })
         assert_status 200
-        expect(user.new_email_confirmation.reload.code_reset_count).to eq 0
+        expect(user.reload.new_email_confirmation).to be_nil
       end
 
       example 'resets the user JWT upon successful confirmation' do
@@ -316,6 +316,72 @@ resource 'Confirmations' do
         user.update!(new_email: nil)
         do_request(confirmation: { code: code })
         assert_status 422
+      end
+    end
+  end
+
+  post 'web_api/v1/user/confirm_code_merge_account' do
+    with_options scope: :confirmation do
+      parameter :code, 'The 6-digit confirmation code sent to the address being claimed.'
+    end
+
+    let!(:target) { create(:user, email: 'existing@example.com') }
+
+    # An email-less SSO account that has asked to be merged into `target`.
+    let(:sso_user) do
+      create(:user).tap do |user|
+        user.update_columns(email: nil, password_digest: nil)
+        create(:identity, user: user, provider: 'clave_unica', uid: '11111')
+        create(:verification, user: user, method_name: 'cow', hashed_uid: 'aaa')
+      end
+    end
+
+    context 'when user is not authenticated' do
+      let(:code) { '123456' }
+
+      example_request 'returns an unauthorized status' do
+        expect(status).to eq 401
+      end
+    end
+
+    context 'when user is authenticated' do
+      before do
+        header_token_for sso_user
+        RequestMergeAccountConfirmationCodeJob.perform_now(sso_user, merge_target_email: target.email)
+      end
+
+      example 'merges the account and returns a token for the surviving one' do
+        do_request(confirmation: { code: sso_user.merge_account_confirmation.code })
+
+        assert_status 200
+        expect { sso_user.reload }.to raise_error ActiveRecord::RecordNotFound
+        expect(target.reload.identities.pluck(:uid)).to eq ['11111']
+        expect(target.verified).to be true
+
+        # The caller's account is gone and its JWT with it, so the response has to
+        # hand back a token for the survivor.
+        token = response_data[:attributes][:auth_token]
+        expect(token[:payload][:sub]).to eq target.id
+      end
+
+      example 'returns a code.invalid error when the code is wrong' do
+        do_request(confirmation: { code: 'badcode' })
+
+        assert_status 422
+        expect(json_parse(response_body)).to include_response_error(:code, 'invalid')
+        expect(sso_user.reload).to be_present
+        expect(target.reload.identities).to be_empty
+      end
+
+      example 'refuses, without saying why, when the target became an admin meanwhile' do
+        target.update!(roles: [{ type: 'admin' }])
+
+        do_request(confirmation: { code: sso_user.merge_account_confirmation.code })
+
+        assert_status 422
+        expect(json_parse(response_body)).to include_response_error(:base, 'merge_not_allowed')
+        expect(sso_user.reload).to be_present
+        expect(target.reload.identities).to be_empty
       end
     end
   end
@@ -517,11 +583,11 @@ resource 'Confirmations' do
         assert_status 422
       end
 
-      example 'sets code_reset_count to 0 upon successful confirmation' do
+      example 'deletes the confirmation upon successful confirmation' do
         user.phone_confirmation.update!(code_reset_count: 3)
         do_request(confirmation: { code: user.phone_confirmation.code })
         assert_status 200
-        expect(user.phone_confirmation.reload.code_reset_count).to eq 0
+        expect(user.reload.phone_confirmation).to be_nil
       end
 
       example 'returns a code.blank error code when no code is passed' do
@@ -585,11 +651,11 @@ resource 'Confirmations' do
         expect(user.phone_confirmed_at).to be_present
       end
 
-      example 'sets code_reset_count to 0 upon successful confirmation' do
+      example 'deletes the confirmation upon successful confirmation' do
         user.new_phone_confirmation.update!(code_reset_count: 3)
         do_request(confirmation: { code: user.new_phone_confirmation.code })
         assert_status 200
-        expect(user.new_phone_confirmation.reload.code_reset_count).to eq 0
+        expect(user.reload.new_phone_confirmation).to be_nil
       end
 
       example 'returns a code.blank error code when no code is passed' do

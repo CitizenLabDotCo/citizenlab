@@ -86,6 +86,19 @@ describe 'single_use:migrate_custom_pages_to_content_builder' do
     expect(archived['context']).to include('page_id' => page.id, 'slug' => page.slug)
   end
 
+  # A list can be switched on and still derive nothing — here because the page has no project
+  # filter. The setting dies with the columns, so the report has to say it was ever on.
+  it 'records a list that is switched on but derives nothing' do
+    page.update!(projects_enabled: true, events_widget_enabled: true, projects_filter_type: 'no_filter')
+
+    task.invoke('execute')
+
+    dropped = report['changes'].select { |change| change.dig('context', 'reason') == 'list not migrated' }
+    expect(dropped.map { |change| change.dig('context', 'section') }).to contain_exactly('projects', 'events')
+    expect(dropped.first['old_value']).to include('enabled' => true, 'projects_filter_type' => 'no_filter')
+    expect(dropped.first['context']).to include('page_id' => page.id, 'slug' => page.slug)
+  end
+
   it 'derives an events widget from the page filter' do
     SettingsService.new.activate_feature!('advanced_custom_pages')
     area = create(:area)

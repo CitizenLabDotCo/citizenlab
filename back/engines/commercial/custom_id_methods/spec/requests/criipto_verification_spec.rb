@@ -109,6 +109,8 @@ context 'criipto verification' do
       }]
     }
     configuration.save!
+    # SSO values are only stored for fields the platform has.
+    %w[birthdate birthyear municipality_code postal_code].each { |key| create(:custom_field, key: key) }
     host! 'example.org'
   end
 
