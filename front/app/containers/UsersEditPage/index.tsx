@@ -56,13 +56,13 @@ const UsersEditPage = () => {
       */}
           <div>
             <VerificationStatus />
-            <EarlyAccess />
             <ProfileForm />
             <LoginCredentials user={authUser.data} />
             <ProfileDeletion />
             <CampaignsConsentForm
               trackEventName={tracks.defaultSettingsChanged}
             />
+            <EarlyAccess />
           </div>
         </Container>
       </main>
