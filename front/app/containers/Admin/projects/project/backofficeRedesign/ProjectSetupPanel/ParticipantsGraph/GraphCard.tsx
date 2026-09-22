@@ -43,7 +43,7 @@ interface Props {
 }
 
 const GraphCard = ({ projectId }: Props) => {
-  const { formatMessage, formatDate } = useIntl();
+  const { formatMessage, formatDate, formatNumber } = useIntl();
 
   const endAtMoment = useMemo(() => moment(), []);
 
@@ -54,15 +54,19 @@ const GraphCard = ({ projectId }: Props) => {
     resolution: 'week',
   });
 
-  if (!stats || Number(stats.participants.value) === 0) return null;
+  if (!stats) return null;
+
+  const participants = Number(stats.participants.value);
+
+  if (participants === 0) return null;
 
   const weeks = timeSeries?.slice(0, -1) ?? [];
-  const since = weeks[0]?.date;
-  const showGraph = weeks.length >= MIN_WEEKS && !!since;
+  const since = weeks.length >= MIN_WEEKS ? weeks[0].date : undefined;
+  const sinceDate = since ? parseISO(since) : null;
 
   const lastPeriod = Number(stats.participants.lastPeriod);
   const sinceThisYear =
-    !!since && parseISO(since).getFullYear() === new Date().getFullYear();
+    !!sinceDate && sinceDate.getFullYear() === new Date().getFullYear();
 
   return (
     <Card to="/admin/projects/$projectId/audience" params={{ projectId }}>
@@ -83,7 +87,7 @@ const GraphCard = ({ projectId }: Props) => {
             fontWeight="bold"
             color="textPrimary"
           >
-            {stats.participants.value}
+            {formatNumber(participants)}
           </Text>
           {lastPeriod > 0 && (
             <Text m="0" mt="2px" fontSize="xs" color="coolGrey600">
@@ -116,14 +120,14 @@ const GraphCard = ({ projectId }: Props) => {
         />
       </Box>
 
-      {showGraph && (
+      {sinceDate && (
         <>
           <Box mt="8px" mx={`-${CARD_PADDING}px`}>
             <Sparkline values={weeks.map((week) => week.participants)} />
           </Box>
           <Text m="0" mt="4px" fontSize="xs" color="coolGrey500">
             {formatMessage(messages.participantsGraphScale, {
-              date: formatDate(since, {
+              date: formatDate(sinceDate, {
                 day: 'numeric',
                 month: 'short',
                 ...(sinceThisYear ? {} : { year: 'numeric' }),

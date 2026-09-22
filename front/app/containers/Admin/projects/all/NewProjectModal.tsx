@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
+import { CLErrors } from 'typings';
 
-import { IUpdatedProjectProperties } from 'api/projects/types';
+import { IProject, IUpdatedProjectProperties } from 'api/projects/types';
 import useAddProject from 'api/projects/useAddProject';
 
 import NewProjectForm from 'containers/Admin/projects/_shared/components/NewProjectForm';
@@ -13,6 +14,7 @@ import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { isCLErrorsWrapper } from 'utils/errorUtils';
 
 import messages from './messages';
 
@@ -29,29 +31,36 @@ const NewProjectModal = ({ mode, onClose }: Props) => {
 
   const [processing, setProcessing] = useState(false);
   const [failed, setFailed] = useState(false);
+  const [apiErrors, setApiErrors] = useState<CLErrors>({});
 
   const close = () => {
     setProcessing(false);
     setFailed(false);
+    setApiErrors({});
     onClose();
   };
 
   const handleSubmit = async (attributes: IUpdatedProjectProperties) => {
     setProcessing(true);
     setFailed(false);
+    setApiErrors({});
+
+    let project: IProject;
 
     try {
-      const project = await addProject({
+      project = await addProject({
         ...attributes,
         admin_publication_attributes: { publication_status: 'draft' },
       });
-
-      clHistory.push(adminProjectsProjectPath(project.data.id));
-      close();
-    } catch {
+    } catch (error) {
+      setApiErrors(isCLErrorsWrapper(error) ? error.errors : {});
       setFailed(true);
       setProcessing(false);
+      return;
     }
+
+    clHistory.push(adminProjectsProjectPath(project.data.id));
+    close();
   };
 
   if (mode === 'template') {
@@ -75,6 +84,7 @@ const NewProjectModal = ({ mode, onClose }: Props) => {
         <NewProjectForm
           processing={processing}
           failed={failed}
+          apiErrors={apiErrors}
           onCancel={close}
           onSubmit={handleSubmit}
         />

@@ -121,6 +121,13 @@ const BuiltInFields = ({
         return;
       }
 
+      // A `base` error belongs to no form field, so react-hook-form would record it
+      // against one that is never rendered and nothing would appear to happen.
+      if (e?.errors?.base) {
+        setError('unknown');
+        return;
+      }
+
       if (isCLErrorsWrapper(e)) {
         handleHookFormSubmissionError(e, methods.setError);
         return;

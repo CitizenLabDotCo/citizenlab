@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 
 import { Box, Button, Radio, Text } from '@citizenlab/cl2-component-library';
-import { isEmpty } from 'lodash-es';
-import { Multiloc } from 'typings';
+import { CLErrors, Multiloc } from 'typings';
 
 import { IUpdatedProjectProperties } from 'api/projects/types';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
+import validateTitle from 'containers/Admin/projects/_shared/utils/validateTitle';
 import generalMessages from 'containers/Admin/projects/project/general/messages';
-import validateTitle from 'containers/Admin/projects/project/general/utils/validateTitle';
 
 import { SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
@@ -18,7 +17,6 @@ import { useIntl } from 'utils/cl-intl';
 
 import ProjectContextSection from '../ProjectSetupForm/ProjectContextSection';
 import { SpaceAndFolderId } from '../ProjectSetupForm/ProjectContextSection/types';
-import { useValidateProjectContext } from '../ProjectSetupForm/ProjectContextSection/utils';
 import ProjectNameInput from '../ProjectSetupForm/ProjectNameInput';
 
 import messages from './messages';
@@ -26,14 +24,20 @@ import messages from './messages';
 interface Props {
   processing: boolean;
   failed: boolean;
+  apiErrors: CLErrors;
   onCancel: () => void;
   onSubmit: (attributes: IUpdatedProjectProperties) => void;
 }
 
-const NewProjectForm = ({ processing, failed, onCancel, onSubmit }: Props) => {
+const NewProjectForm = ({
+  processing,
+  failed,
+  apiErrors,
+  onCancel,
+  onSubmit,
+}: Props) => {
   const { formatMessage } = useIntl();
   const locales = useAppConfigurationLocales();
-  const validateProjectContext = useValidateProjectContext();
 
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc>({});
   const [titleError, setTitleError] = useState<Multiloc | null>(null);
@@ -41,7 +45,6 @@ const NewProjectForm = ({ processing, failed, onCancel, onSubmit }: Props) => {
     space_id: null,
     folder_id: null,
   });
-  const [contextError, setContextError] = useState(false);
   const [listed, setListed] = useState(true);
 
   if (!locales) return null;
@@ -51,11 +54,6 @@ const NewProjectForm = ({ processing, failed, onCancel, onSubmit }: Props) => {
     setTitleError(null);
   };
 
-  const handleContextChange = (spaceAndFolderId: SpaceAndFolderId) => {
-    setContext(spaceAndFolderId);
-    setContextError(false);
-  };
-
   const handleSubmit = () => {
     const error = validateTitle(
       locales,
@@ -63,19 +61,8 @@ const NewProjectForm = ({ processing, failed, onCancel, onSubmit }: Props) => {
       formatMessage(generalMessages.noTitleErrorMessage)
     );
 
-    if (!isEmpty(error)) {
+    if (Object.keys(error).length > 0) {
       setTitleError(error);
-      return;
-    }
-
-    if (
-      !validateProjectContext({
-        spaceId: context.space_id,
-        folderId: context.folder_id,
-        projectInRoot: true,
-      })
-    ) {
-      setContextError(true);
       return;
     }
 
@@ -87,7 +74,7 @@ const NewProjectForm = ({ processing, failed, onCancel, onSubmit }: Props) => {
       <ProjectNameInput
         titleMultiloc={titleMultiloc}
         titleError={titleError}
-        apiErrors={{}}
+        apiErrors={apiErrors}
         handleTitleMultilocOnChange={handleTitleChange}
       />
 
@@ -95,8 +82,8 @@ const NewProjectForm = ({ processing, failed, onCancel, onSubmit }: Props) => {
         spaceId={context.space_id}
         folderId={context.folder_id}
         projectInRoot
-        error={contextError}
-        onChange={handleContextChange}
+        error={false}
+        onChange={setContext}
       />
 
       <Box>

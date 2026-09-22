@@ -92,6 +92,14 @@ module DecidimImporter
         # Scrub PII last, once every identifying field is present, so nothing is added back after.
         anonymize_pii!(attributes, uid) if @anonymize_users
 
+        # Preset the slug from the (unique) uid so the User model skips its own slug generation on insert
+        # (Sluggable#generate_slug returns early when a slug is present). That generation probes the DB for
+        # each candidate slug — for thousands of nameless users all basing off `anonym-`, it climbs
+        # `anonym-N` a query at a time, degrading to O(n²). A uid-derived slug is unique and valid, so no
+        # probing is needed; the slug isn't user-facing here.
+        slug = Slug.sanitize(uid)
+        attributes['slug'] = slug if slug
+
         # Go Vocal requires case-insensitively unique emails; Decidim occasionally has two accounts on the
         # same one. Collapse the duplicate onto the first: alias this uid to that user so its references
         # (authorship, follows, votes) still resolve, and emit a single user — otherwise the second insert

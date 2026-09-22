@@ -1,4 +1,4 @@
-import { requestCodeNewEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
+import { requestCodeForEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
 import { requestCodeNewPhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import { tooSoonRetryAfter } from 'api/authentication/confirm_phone/resendCooldown';
 import { OnboardingType } from 'api/users/types';
@@ -74,7 +74,7 @@ export const missingDataFlow = (
         { email, ...restBuiltInFieldUpdate }: BuiltInFieldsUpdate
       ) => {
         if (email) {
-          await requestCodeNewEmail(email);
+          await requestCodeForEmail(email);
         }
 
         if (!isEmpty(restBuiltInFieldUpdate)) {
@@ -109,18 +109,22 @@ export const missingDataFlow = (
       },
     },
 
-    // The user has a pending new_email (email_action_required is confirm_new_email)
-    // but wants to enter a different one.
+    // The user has a pending new_email or merge_target_email but wants to enter a
+    // different one.
     // We cannot handle this by going back to missing-data:built-in because
     // the email is already marked by requirements API as provided,
     // so the field would never show up in that step.
     'missing-data:change-new-email': {
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT: async (new_email: string) => {
-        await requestCodeNewEmail(new_email);
+        const confirmationType = await requestCodeForEmail(new_email);
         updateState({ new_email });
         invalidateCacheAfterUpdateUser(queryClient);
-        setCurrentStep('confirmation:new_email');
+        setCurrentStep(
+          confirmationType === 'merge_account'
+            ? 'confirmation:merge-account'
+            : 'confirmation:new_email'
+        );
       },
     },
 

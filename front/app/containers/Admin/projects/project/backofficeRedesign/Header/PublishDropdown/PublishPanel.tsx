@@ -230,7 +230,6 @@ const PublishPanel = ({
                 size="s"
                 width="100%"
                 onClick={() => onConfirmStatusChange('draft')}
-                id="e2e-restore-to-draft"
               >
                 {formatMessage(messages.publishRestoreToDraft)}
               </Button>
@@ -241,7 +240,6 @@ const PublishPanel = ({
                 size="s"
                 width="100%"
                 onClick={() => onConfirmStatusChange('archived')}
-                id="e2e-move-to-archive"
               >
                 {formatMessage(messages.publishMoveToArchive)}
               </Button>
@@ -256,7 +254,6 @@ const PublishPanel = ({
               size="s"
               width="100%"
               onClick={() => onConfirmStatusChange('draft')}
-              id="e2e-restore-to-draft"
             >
               {formatMessage(messages.publishRestoreToDraft)}
             </Button>
