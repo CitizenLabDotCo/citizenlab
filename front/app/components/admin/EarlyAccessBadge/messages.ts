@@ -10,4 +10,13 @@ export default defineMessages({
     defaultMessage:
       'This is a newly released feature available in Early Access.',
   },
+  internalEarlyAccessLabel: {
+    id: 'app.containers.Admin.internalEarlyAccessLabel',
+    defaultMessage: 'Internal Early Access',
+  },
+  internalEarlyAccessLabelExplanation: {
+    id: 'app.containers.Admin.internalEarlyAccessLabelExplanation',
+    defaultMessage:
+      'This feature is still being built and is only available to Go Vocal staff. Do not show it to customers.',
+  },
 });
