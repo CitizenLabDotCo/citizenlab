@@ -127,10 +127,7 @@ class User < ApplicationRecord
       {
         'type' => 'array',
         'uniqueItems' => true,
-        'items' => {
-          'type' => 'string',
-          'enum' => AppConfiguration::Settings.early_access_features
-        }
+        'items' => { 'type' => 'string' }
       }
     end
 
@@ -238,6 +235,7 @@ class User < ApplicationRecord
   has_one :new_email_confirmation, dependent: :destroy
   has_one :phone_confirmation, dependent: :destroy
   has_one :new_phone_confirmation, dependent: :destroy
+  has_one :merge_account_confirmation, dependent: :destroy
   has_many :baskets, -> { order(:phase_id) }
   before_destroy :destroy_baskets
 
@@ -257,6 +255,7 @@ class User < ApplicationRecord
   validate :validate_phone_format
   validate :validate_new_phone_format
   validates :new_email, format: { with: EMAIL_REGEX }, allow_nil: true
+  validates :merge_target_email, format: { with: EMAIL_REGEX }, allow_nil: true
   validates :first_name, :last_name, format: { without: /@/ }, allow_nil: true
   validates :locale, inclusion: { in: proc { AppConfiguration.instance.settings('core', 'locales') } }
   validates :bio_multiloc, multiloc: { presence: false, html: true }
@@ -265,16 +264,10 @@ class User < ApplicationRecord
   validates :domicile, inclusion: { in: proc { ['outside'] + Area.select(:id).map(&:id) } }, allow_nil: true
   validates :invite_status, inclusion: { in: INVITE_STATUSES }, allow_nil: true
 
-  # NOTE: All validation except for required
-  validates :custom_field_values, json: {
-    schema: -> { CustomFieldService.new.fields_to_json_schema_ignore_required(CustomField.registration) }
-  }, on: :form_submission, if: :custom_field_values_changed? # only called if `save` is called w/ `context: :form_submission`
-
   validates :onboarding, json: { schema: -> { User.onboarding_json_schema } }
-  # An empty registry rejects every name, so a feature that leaves early access
-  # can no longer be opted into.
   validates :early_access_features, json: { schema: -> { User.early_access_features_json_schema } },
     if: :early_access_features_changed?
+  validate :validate_early_access_features_offered, if: :early_access_features_changed?
 
   validate :validate_not_duplicate_email
   validate :validate_not_duplicate_new_email
@@ -350,12 +343,28 @@ class User < ApplicationRecord
     self[:last_name].blank? && self[:first_name].blank? && !invite_pending?
   end
 
-  # Early access features this user was actually granted: what they opted into,
-  # narrowed to what is still on offer, and only for admins.
-  def active_early_access_features
-    return Set.new unless admin?
+  # Early access tiers this user may opt into. Go Vocal staff also get the
+  # internal tier, so a feature can be dogfooded before it is fit for a customer.
+  def early_access_levels
+    return [] unless admin?
 
-    Set.new(early_access_features) & AppConfiguration::Settings.early_access_features
+    super_admin? ? AppConfiguration::Settings::EARLY_ACCESS_LEVELS : %w[general]
+  end
+
+  # Early access features on offer to this user: the registry narrowed to the
+  # tiers they may opt into.
+  def offered_early_access_features
+    levels = early_access_levels
+    AppConfiguration::Settings.early_access_features.filter_map do |name, level|
+      name if levels.include?(level)
+    end
+  end
+
+  # Early access features this user was actually granted: what they opted into,
+  # narrowed to what is still on offer to them. A feature that left early access,
+  # or that they are no longer eligible for, drops out on its own.
+  def active_early_access_features
+    Set.new(early_access_features) & offered_early_access_features
   end
 
   # Authenticating ALWAYS requires a non-blank password that matches the stored digest.
@@ -388,11 +397,6 @@ class User < ApplicationRecord
 
   def active?
     registered? && !blocked? && authenticated_at_least_once?
-  end
-
-  def blank_and_can_be_deleted?
-    # atm it can be true only for users registered with ClaveUnica and MitID who haven't entered email
-    sso? && email.blank? && new_email.blank? && password_digest.blank? && identity_ids.count == 1
   end
 
   def show_public_profile?
@@ -434,6 +438,10 @@ class User < ApplicationRecord
 
   def new_phone_confirmation_pending?
     new_phone.present?
+  end
+
+  def merge_account_confirmation_pending?
+    merge_target_email.present?
   end
 
   private
@@ -605,10 +613,21 @@ class User < ApplicationRecord
     Rails.logger.info "Validation error! Email banned: #{value.split('@')&.last}"
   end
 
+  # The offered set already accounts for the tier, so this rejects both a name
+  # that is not in early access at all and one the user is not eligible for.
+  def validate_early_access_features_offered
+    return unless early_access_features.is_a?(Array)
+
+    not_offered = early_access_features - offered_early_access_features
+    return if not_offered.empty?
+
+    errors.add(:early_access_features, :not_offered, value: not_offered)
+  end
+
   def auto_confirm_on_invite_accept
     self.email_confirmed_at = Time.zone.now
     self.confirmation_required = false
-    email_confirmation&.clear_code!
+    email_confirmation&.consume!
   end
 
   def remove_initiated_notifications
