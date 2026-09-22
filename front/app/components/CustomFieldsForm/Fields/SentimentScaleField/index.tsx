@@ -32,7 +32,7 @@ const SentimentScaleField = ({ question, scrollErrorIntoView }: Props) => {
   const name = question.key;
   const followUpName = `${name}_follow_up`;
 
-  const value: number | undefined = watch(name);
+  const value: number | null | undefined = watch(name);
 
   const errors = formContextErrors[name] as RHFErrors;
   const validationError = errors?.message;
@@ -50,8 +50,8 @@ const SentimentScaleField = ({ question, scrollErrorIntoView }: Props) => {
               {...field}
               onChange={(value) => {
                 // On reset value, also reset follow up value
-                if (value === undefined) {
-                  setValue(followUpName, undefined);
+                if (value === null) {
+                  setValue(followUpName, null);
                 }
                 onChange(value);
               }}
@@ -76,7 +76,7 @@ const SentimentScaleField = ({ question, scrollErrorIntoView }: Props) => {
           scrollIntoView={scrollErrorIntoView}
         />
       )}
-      {value !== undefined && question.ask_follow_up && (
+      {value != null && question.ask_follow_up && (
         <Box mt="12px">
           <Input
             name={followUpName}

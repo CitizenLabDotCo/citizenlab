@@ -65,4 +65,45 @@ describe('generateYupSchema', () => {
       ).toBe(true);
     });
   });
+
+  // Controls that let the user clear their answer write null rather than
+  // undefined, because react-hook-form reads an undefined value back as the
+  // field's defaultValue.
+  describe('answers cleared with null', () => {
+    const clearableQuestions = [
+      ['linear_scale', {}],
+      ['sentiment_linear_scale', {}],
+      ['ranking', { options: [{ key: 'a' }, { key: 'b' }] }],
+      ['matrix_linear_scale', { matrix_statements: [{ key: 's1' }] }],
+    ] as const;
+
+    const schemaFor = (inputType: string, required: boolean, extra: object) =>
+      generateYupSchema({
+        pageQuestions: [
+          { input_type: inputType, required, key: 'q', ...extra },
+        ] as any,
+        formatMessage,
+        localize,
+      });
+
+    it.each(clearableQuestions)(
+      'accepts null on an optional %s',
+      (inputType, extra) => {
+        expect(
+          schemaFor(inputType, false, extra).isValidSync({ q: null })
+        ).toBe(true);
+      }
+    );
+
+    // Without nullable(), yup reports null as a type error ("must be a
+    // `number` type") instead of the translated 'this field is required'.
+    it.each(clearableQuestions)(
+      'reports null on a required %s as a missing answer',
+      (inputType, extra) => {
+        expect(() =>
+          schemaFor(inputType, true, extra).validateSync({ q: null })
+        ).toThrow('formatMessage');
+      }
+    );
+  });
 });

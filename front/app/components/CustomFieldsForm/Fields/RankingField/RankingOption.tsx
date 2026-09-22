@@ -42,7 +42,7 @@ const StyledBox = styled(Box)`
 `;
 
 interface Props {
-  data?: string[];
+  data?: string[] | null;
   option: IOption;
   options: IOption[];
   index: number;

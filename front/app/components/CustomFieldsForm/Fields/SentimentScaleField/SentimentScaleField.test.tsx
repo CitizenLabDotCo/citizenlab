@@ -9,27 +9,31 @@ import { render, screen } from 'utils/testUtils/rtl';
 
 import SentimentScaleField from './index';
 
-jest.mock('./SentimentScale', () => ({ onChange }: any) => (
-  <div
-    data-testid="sentiment-scale"
-    onClick={() => onChange(4)}
-    role="button"
-    tabIndex={0}
-    onKeyDown={(e) => {
-      if (e.key === 'Enter' || e.key === ' ') onChange(4);
-    }}
-  >
-    Sentiment Scale Mock
-  </div>
-));
+// Clicking the scale picks 4, or clears the answer when 4 is already picked.
+jest.mock('./SentimentScale', () => ({ value, onChange }: any) => {
+  const toggle = () => onChange(value === 4 ? null : 4);
 
-const renderComponent = (question: IFlatCustomField) => {
+  return (
+    <div
+      data-testid="sentiment-scale"
+      onClick={toggle}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') toggle();
+      }}
+    >
+      Sentiment Scale Mock
+    </div>
+  );
+});
+
+const renderComponent = (
+  question: IFlatCustomField,
+  defaultValues: Record<string, unknown> = { [question.key]: undefined }
+) => {
   const Wrapper = () => {
-    const methods = useForm({
-      defaultValues: {
-        [question.key]: undefined,
-      },
-    });
+    const methods = useForm({ defaultValues });
 
     return (
       <FormProvider {...methods}>
@@ -71,5 +75,23 @@ describe('SentimentScaleField', () => {
     expect(
       screen.queryByPlaceholderText(/tell us why/i)
     ).not.toBeInTheDocument();
+  });
+
+  // Default values are what a page remounted after back navigation starts
+  // from. Clearing has to survive them, for the follow-up as much as for the
+  // answer it belongs to.
+  it('clears the follow-up answer when the answer is cleared', async () => {
+    renderComponent(baseQuestion, {
+      experience: 4,
+      experience_follow_up: 'my reason',
+    });
+
+    await userEvent.click(screen.getByTestId('sentiment-scale'));
+    expect(
+      screen.queryByPlaceholderText(/tell us why/i)
+    ).not.toBeInTheDocument();
+
+    await userEvent.click(screen.getByTestId('sentiment-scale'));
+    expect(await screen.findByPlaceholderText(/tell us why/i)).toHaveValue('');
   });
 });

@@ -10,9 +10,9 @@ import Labels from './Labels';
 import LinearScaleOption from './LinearScaleButton';
 
 interface Props {
-  value?: number;
+  value?: number | null;
   question: IFlatCustomField;
-  onChange: (value: number | undefined) => void;
+  onChange: (value: number | null) => void;
 }
 
 const LinearScale = ({ value: data, question, onChange }: Props) => {
