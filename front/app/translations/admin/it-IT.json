@@ -1490,7 +1490,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.listed": "In elenco",
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.unlisted": "Non in elenco",
   "app.containers.Admin.projects.all.new.Projects.Filters.Folders.folders": "Cartelle",
-  "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.filterByCurrentPhaseMethod": "Filtra per il metodo di partecipazione della fase corrente",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.ideation": "Ideazione",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.information": "Informazione",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.label": "Metodo di partecipazione",

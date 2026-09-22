@@ -1490,7 +1490,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.listed": "Opført på listen",
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.unlisted": "Ikke-listet",
   "app.containers.Admin.projects.all.new.Projects.Filters.Folders.folders": "Mapper",
-  "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.filterByCurrentPhaseMethod": "Filtrer efter den aktuelle inddragelsesmetode",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.ideation": "Idéudvikling",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.information": "information",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.label": "Metode til inddragelse",

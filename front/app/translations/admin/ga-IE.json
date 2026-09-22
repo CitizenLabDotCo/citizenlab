@@ -1490,7 +1490,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.listed": "Liostaithe",
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.unlisted": "Gan liosta",
   "app.containers.Admin.projects.all.new.Projects.Filters.Folders.folders": "Fillteáin",
-  "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.filterByCurrentPhaseMethod": "Scag de réir modh rannpháirtíochta na céime reatha",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.ideation": "Smaointeoireacht",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.information": "Eolas",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.label": "Modh rannpháirtíochta",

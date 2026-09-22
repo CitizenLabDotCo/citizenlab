@@ -1490,7 +1490,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.listed": "مُدرج",
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.unlisted": "غير مدرج",
   "app.containers.Admin.projects.all.new.Projects.Filters.Folders.folders": "المجلدات",
-  "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.filterByCurrentPhaseMethod": "تصفية حسب طريقة المشاركة في المرحلة الحالية",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.ideation": "فكرة",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.information": "معلومة",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.label": "طريقة المشاركة",
