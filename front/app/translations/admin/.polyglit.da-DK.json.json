@@ -6539,6 +6539,16 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.internalEarlyAccessLabel": {
+    "state": "verified",
+    "verified_at": "2026-09-22T16:30:02.092921Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.internalEarlyAccessLabelExplanation": {
+    "state": "verified",
+    "verified_at": "2026-09-22T16:30:02.092921Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Admin.messaging.addSmsCampaignButton": {
     "state": "verified",
     "verified_at": "2026-07-14T16:35:52.450315Z",
