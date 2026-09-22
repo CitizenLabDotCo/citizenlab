@@ -69,13 +69,25 @@ class AppConfiguration < ApplicationRecord
       extension_features_hash.keys
     end
 
+    # Tiers a hidden feature can be offered in. 'internal' reaches Go Vocal staff
+    # only, so we can dogfood something before it is fit to show a customer;
+    # 'general' reaches every admin.
+    EARLY_ACCESS_LEVELS = %w[general internal].freeze
+
     # Features that are released but hidden: off for every tenant, and switchable
-    # per admin through User#early_access_features. Deliberately reads the memoized
-    # core schema and the specs directly instead of +json_schema+, which rebuilds
-    # the whole tree on every call.
+    # per admin through User#early_access_features. Maps each feature name to the
+    # tier it is offered in. Deliberately reads the memoized core schema and the
+    # specs directly instead of +json_schema+, which rebuilds the whole tree on
+    # every call.
     def self.early_access_features
-      core_settings_json_schema['properties'].select { |_name, feature| feature['early_access'] }.keys +
-        extension_features_specs.select(&:early_access?).map(&:feature_name)
+      core = core_settings_json_schema['properties'].filter_map do |name, feature|
+        [name, feature['early_access']] if feature['early_access']
+      end
+      extensions = extension_features_specs.filter_map do |spec|
+        [spec.feature_name, spec.early_access] if spec.early_access
+      end
+
+      (core + extensions).to_h
     end
 
     # @param [CitizenLab::Mixins::FeatureSpecification] specification
