@@ -3,11 +3,11 @@ import React from 'react';
 import { Box, colors, Icon, Tooltip } from '@citizenlab/cl2-component-library';
 import Badge from 'component-library/components/Badge';
 
+import { EarlyAccessLevel } from 'api/users/types';
+
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-
-export type EarlyAccessLevel = 'general' | 'internal';
 
 type Props = {
   level?: EarlyAccessLevel;
