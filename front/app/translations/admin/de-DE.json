@@ -227,7 +227,7 @@
   "app.components.admin.ContentBuilder.Widgets.Events.howMany": "Wie viele angezeigt werden sollen",
   "app.components.admin.ContentBuilder.Widgets.Events.howManyAtMost": "Maximal anzeigen",
   "app.components.admin.ContentBuilder.Widgets.Events.includeArchived": "Veranstaltungen aus archivierten Projekten einschließen",
-  "app.components.admin.ContentBuilder.Widgets.Events.pastEvents": "Vergangene",
+  "app.components.admin.ContentBuilder.Widgets.Events.pastEvents": "Vergangen",
   "app.components.admin.ContentBuilder.Widgets.Events.selectAreas": "Gebiete",
   "app.components.admin.ContentBuilder.Widgets.Events.selectSpaces": "Spaces",
   "app.components.admin.ContentBuilder.Widgets.Events.selectTopics": "Tags",
