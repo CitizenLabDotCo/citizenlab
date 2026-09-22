@@ -1,7 +1,7 @@
 import Quill, { Range } from 'quill';
+import Toolbar from 'quill/modules/toolbar';
 import Uploader from 'quill/modules/uploader';
-
-import type Toolbar from 'quill/modules/toolbar';
+import BaseTheme from 'quill/themes/base';
 
 // Matches the limit used by ImagesDropzone and our file uploaders. Note that
 // Quill inlines images as base64 data URLs, which adds roughly a third to the
@@ -281,4 +281,21 @@ export const createQuill = (
   }
 
   return quill;
+};
+
+// Only matters in development, where StrictMode mounts the editor twice. The toolbar outlives
+// the first Quill, and Quill can't remove its listeners, so leave them nothing to act on.
+export const detachQuillFromToolbar = (quill: Quill) => {
+  const toolbar = quill.getModule('toolbar');
+  if (toolbar instanceof Toolbar) {
+    toolbar.controls = [];
+  }
+
+  if (quill.theme instanceof BaseTheme) {
+    quill.theme.pickers.forEach((picker) => {
+      picker.container.remove();
+      // The next picker copies the select's inline style, so it would be built hidden.
+      picker.select.style.display = '';
+    });
+  }
 };
