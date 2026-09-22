@@ -43,7 +43,7 @@ interface Props {
 }
 
 const GraphCard = ({ projectId }: Props) => {
-  const { formatMessage, formatDate } = useIntl();
+  const { formatMessage, formatDate, formatNumber } = useIntl();
 
   const endAtMoment = useMemo(() => moment(), []);
 
@@ -54,7 +54,11 @@ const GraphCard = ({ projectId }: Props) => {
     resolution: 'week',
   });
 
-  if (!stats || Number(stats.participants.value) === 0) return null;
+  if (!stats) return null;
+
+  const participants = Number(stats.participants.value);
+
+  if (participants === 0) return null;
 
   const weeks = timeSeries?.slice(0, -1) ?? [];
   const since = weeks[0]?.date;
@@ -83,7 +87,7 @@ const GraphCard = ({ projectId }: Props) => {
             fontWeight="bold"
             color="textPrimary"
           >
-            {stats.participants.value}
+            {formatNumber(participants)}
           </Text>
           {lastPeriod > 0 && (
             <Text m="0" mt="2px" fontSize="xs" color="coolGrey600">
