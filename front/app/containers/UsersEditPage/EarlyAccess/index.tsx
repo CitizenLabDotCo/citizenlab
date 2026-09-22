@@ -7,9 +7,10 @@ import { TAppConfigurationSetting } from 'api/app_configuration/types';
 import useAuthUser from 'api/me/useAuthUser';
 import useUpdateUser from 'api/users/useUpdateUser';
 
+import { EarlyAccessLevel } from 'components/admin/EarlyAccessBadge';
 import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
 
-import { isAdmin } from 'utils/permissions/roles';
+import { isAdmin, isSuperAdmin } from 'utils/permissions/roles';
 
 import { EARLY_ACCESS_FEATURES } from './features';
 import FeatureToggle from './FeatureToggle';
@@ -20,7 +21,20 @@ const EarlyAccess = () => {
   const { mutate: updateUser } = useUpdateUser();
   const queryClient = useQueryClient();
 
-  if (!authUser || !isAdmin(authUser) || EARLY_ACCESS_FEATURES.length === 0) {
+  if (!authUser || !isAdmin(authUser)) {
+    return null;
+  }
+
+  // The back end draws the same line and rejects anything else, so this only
+  // decides what is worth showing.
+  const levels: EarlyAccessLevel[] = isSuperAdmin(authUser)
+    ? ['general', 'internal']
+    : ['general'];
+  const features = EARLY_ACCESS_FEATURES.filter(({ level }) =>
+    levels.includes(level)
+  );
+
+  if (features.length === 0) {
     return null;
   }
 
@@ -51,11 +65,12 @@ const EarlyAccess = () => {
         message={messages.earlyAccessTitle}
         subtitleMessage={messages.earlyAccessSubtitle}
       />
-      {EARLY_ACCESS_FEATURES.map(({ name, title, description }) => (
+      {features.map(({ name, level, title, description }) => (
         <FeatureToggle
           key={name}
           title={title}
           description={description}
+          level={level}
           checked={optedIn.includes(name)}
           onChange={handleChange(name)}
         />
