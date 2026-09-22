@@ -2440,6 +2440,8 @@
   "app.containers.SpamReport.other": "Annan orsak",
   "app.containers.SpamReport.otherReasonPlaceholder": "Beskrivning",
   "app.containers.SpamReport.wrong_content": "Det här är inte relevant",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "Prova funktioner som vi fortfarande arbetar med. Det du aktiverar här ändrar bara vad du ser, inte vad någon annan på plattformen ser.",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "Tidig åtkomst",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Ta bort profilbild",
   "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "Dina röster på förslag som fortfarande är öppna för omröstning kommer att raderas. Röster på förslag där omröstningsperioden har avslutats kommer inte att raderas.",
   "app.containers.UsersEditPage.addPassword": "Lägg till lösenord",

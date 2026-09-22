@@ -1220,6 +1220,8 @@
   "app.containers.Admin.inspirationHub.filters": "فلٹرز",
   "app.containers.Admin.inspirationHub.resetFilters": "فلٹرز کو دوبارہ ترتیب دیں۔",
   "app.containers.Admin.inspirationHub.seemsLike": "ایسا لگتا ہے کہ مزید پروجیکٹس نہیں ہیں۔ {filters}کو تبدیل کرنے کی کوشش کریں۔",
+  "app.containers.Admin.internalEarlyAccessLabel": "اندرونی قبل از وقت رسائی",
+  "app.containers.Admin.internalEarlyAccessLabelExplanation": "یہ فیچر ابھی تیار کیا جا رہا ہے اور صرف Go Vocal کے عملے کے لیے دستیاب ہے۔ اسے صارفین کو نہ دکھائیں۔",
   "app.containers.Admin.messaging.addSmsCampaignButton": "ایس ایم ایس بنائیں",
   "app.containers.Admin.messaging.addSmsCampaignTitle": "نیا ایس ایم ایس پیغام",
   "app.containers.Admin.messaging.automated.editModalTitle": "مہم کے شعبوں میں ترمیم کریں۔",

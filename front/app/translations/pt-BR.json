@@ -2440,6 +2440,8 @@
   "app.containers.SpamReport.other": "Outro motivo",
   "app.containers.SpamReport.otherReasonPlaceholder": "Descrição",
   "app.containers.SpamReport.wrong_content": "Isto não pertence aqui.",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "Experimente recursos que ainda estamos finalizando. O que você ativar aqui altera apenas o que você vê, não o que as outras pessoas na plataforma veem.",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "Acesso antecipado",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Remover imagem de perfil",
   "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "Seus votos nas propostas que ainda estiverem abertas para votação serão deletados. As votações em propostas cujo período de votação tenha encerrado não serão eliminadas.",
   "app.containers.UsersEditPage.addPassword": "Adicionar palavra-passe",

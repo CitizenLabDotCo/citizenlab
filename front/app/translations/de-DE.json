@@ -2440,6 +2440,8 @@
   "app.containers.SpamReport.other": "Anderer Grund",
   "app.containers.SpamReport.otherReasonPlaceholder": "Beschreibung",
   "app.containers.SpamReport.wrong_content": "Das gehört hier nicht her",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "Probieren Sie Funktionen aus, an denen wir noch arbeiten. Was Sie hier aktivieren, ändert nur Ihre eigene Ansicht, nicht die Ansicht anderer Personen auf der Plattform.",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "Vorabzugriff",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Entferne Profilbild",
   "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "Ihre Stimmen zu Vorschlägen, über die noch abgestimmt werden kann, werden gelöscht. Stimmen zu Vorschlägen, bei denen die Abstimmungsfrist abgelaufen ist, werden nicht gelöscht.",
   "app.containers.UsersEditPage.addPassword": "Passwort hinzufügen",

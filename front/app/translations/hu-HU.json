@@ -2440,6 +2440,8 @@
   "app.containers.SpamReport.other": "Más ok",
   "app.containers.SpamReport.otherReasonPlaceholder": "Leírás",
   "app.containers.SpamReport.wrong_content": "Ez nem releváns",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "Próbálja ki a még fejlesztés alatt álló funkciókat. Amit itt bekapcsol, az csak az Ön számára módosítja a megjelenítést, a platformon senki más számára nem.",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "Korai hozzáférés",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Profilkép eltávolítása",
   "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "A még szavazásra váró javaslatokra leadott szavazatait töröljük. Azokra a javaslatokra vonatkozó szavazatokat, amelyeknél a szavazási időszak lejárt, nem töröljük.",
   "app.containers.UsersEditPage.addPassword": "Jelszó hozzáadása",

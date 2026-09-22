@@ -1220,6 +1220,8 @@
   "app.containers.Admin.inspirationHub.filters": "فلاتر",
   "app.containers.Admin.inspirationHub.resetFilters": "إعادة ضبط الفلاتر",
   "app.containers.Admin.inspirationHub.seemsLike": "يبدو أنه لا توجد مشاريع أخرى. جرب تغيير {filters}.",
+  "app.containers.Admin.internalEarlyAccessLabel": "الوصول المبكر الداخلي",
+  "app.containers.Admin.internalEarlyAccessLabelExplanation": "هذه الميزة لا تزال قيد التطوير وهي متاحة فقط لطاقم Go Vocal. لا تقم بعرضها للزبناء.",
   "app.containers.Admin.messaging.addSmsCampaignButton": "إنشاء رسالة نصية (SMS)",
   "app.containers.Admin.messaging.addSmsCampaignTitle": "رسالة نصية (SMS) جديدة",
   "app.containers.Admin.messaging.automated.editModalTitle": "تعديل حقول الحملة",

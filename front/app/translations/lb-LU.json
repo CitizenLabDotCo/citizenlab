@@ -2440,6 +2440,8 @@
   "app.containers.SpamReport.other": "Anere Grond",
   "app.containers.SpamReport.otherReasonPlaceholder": "Beschreiwung",
   "app.containers.SpamReport.wrong_content": "Dat hei gehéiert net hei hin",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "Probéiert Funktiounen aus, un deene mir nach schaffen. Wat Dir hei aschalt, ännert nëmmen dat, wat Dir gesitt, an net dat, wat soss een op der Plattform gesäit.",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "Virzäitegen Zougang",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Profilbild ewechhuelen",
   "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "Är Stëmmen iwwer Propositiounen déi nach op fir ofstëmmen sinn, ginn geläscht. D'Stëmmen iwwer Propositiounen, wou d'Wahlzäit ofgeschloss ass, ginn net geläscht.",
   "app.containers.UsersEditPage.addPassword": "Passwuert dobäisetzen",

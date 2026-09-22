@@ -1220,6 +1220,8 @@
   "app.containers.Admin.inspirationHub.filters": "ffilterau",
   "app.containers.Admin.inspirationHub.resetFilters": "Ailosod hidlwyr",
   "app.containers.Admin.inspirationHub.seemsLike": "Mae'n ymddangos nad oes mwy o brosiectau. Ceisiwch newid y {filters}.",
+  "app.containers.Admin.internalEarlyAccessLabel": "Mynediad Cynnar Mewnol",
+  "app.containers.Admin.internalEarlyAccessLabelExplanation": "Mae'r nodwedd hon yn dal i gael ei hadeiladu ac mae ar gael i staff Go Vocal yn unig. Peidiwch â'i dangos i gwsmeriaid.",
   "app.containers.Admin.messaging.addSmsCampaignButton": "Creu SMS",
   "app.containers.Admin.messaging.addSmsCampaignTitle": "Neges SMS newydd",
   "app.containers.Admin.messaging.automated.editModalTitle": "Golygu meysydd ymgyrch",

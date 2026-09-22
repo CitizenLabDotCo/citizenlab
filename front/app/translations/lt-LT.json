@@ -2440,6 +2440,8 @@
   "app.containers.SpamReport.other": "Kita priežastis",
   "app.containers.SpamReport.otherReasonPlaceholder": "Aprašymas",
   "app.containers.SpamReport.wrong_content": "Tai nėra svarbu",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "Išbandykite funkcijas, kurias dar baigiame kurti. Tai, ką čia įjungsite, pakeis tik tai, ką matote jūs, o ne kiti platformos naudotojai.",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "Ankstyvoji prieiga",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Pašalinti profilio nuotrauką",
   "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "Jūsų balsai už pasiūlymus, už kuriuos vis dar galima balsuoti, bus ištrinti. Balsai už pasiūlymus, kurių balsavimo laikotarpis jau baigėsi, nebus ištrinti.",
   "app.containers.UsersEditPage.addPassword": "Pridėti slaptažodį",

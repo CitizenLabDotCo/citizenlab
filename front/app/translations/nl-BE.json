@@ -2440,6 +2440,8 @@
   "app.containers.SpamReport.other": "Andere reden",
   "app.containers.SpamReport.otherReasonPlaceholder": "Beschrijving",
   "app.containers.SpamReport.wrong_content": "Dit hoort hier niet thuis",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "Probeer functies uit waar we nog aan werken. Wat je hier inschakelt, verandert alleen wat jij ziet, niet wat anderen op het platform zien.",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "Vroege toegang",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Verwijder de profielfoto",
   "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "Je stemmen op voorstellen waarover nog gestemd kan worden, worden verwijderd. Stemmen op voorstellen waarvan de stemperiode is gesloten worden niet verwijderd.",
   "app.containers.UsersEditPage.addPassword": "Voeg wachtwoord toe",

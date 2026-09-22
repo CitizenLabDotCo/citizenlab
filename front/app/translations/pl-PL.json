@@ -2440,6 +2440,8 @@
   "app.containers.SpamReport.other": "Inny powód",
   "app.containers.SpamReport.otherReasonPlaceholder": "Opis",
   "app.containers.SpamReport.wrong_content": "To jest bez związku",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "Wypróbuj funkcje, nad którymi wciąż pracujemy. To, co tutaj włączysz, zmieni widok tylko dla Ciebie i nie wpłynie na to, co widzą inni użytkownicy platformy.",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "Wczesny dostęp",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Usuń zdjęcie profilowe",
   "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "Twoje głosy oddane na propozycje, na które nadal można głosować, zostaną usunięte. Głosy oddane na propozycje, w przypadku których okres głosowania został zamknięty, nie zostaną usunięte.",
   "app.containers.UsersEditPage.addPassword": "Dodaj hasło",

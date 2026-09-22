@@ -1220,6 +1220,8 @@
   "app.containers.Admin.inspirationHub.filters": "filtri",
   "app.containers.Admin.inspirationHub.resetFilters": "Atiestatīt filtrus",
   "app.containers.Admin.inspirationHub.seemsLike": "Šķiet, ka projektu vairs nav. Mēģiniet mainīt {filters}.",
+  "app.containers.Admin.internalEarlyAccessLabel": "Iekšējā agrīnā piekļuve",
+  "app.containers.Admin.internalEarlyAccessLabelExplanation": "Šī funkcija vēl tiek izstrādāta un ir pieejama tikai Go Vocal darbiniekiem. Nerādiet to klientiem.",
   "app.containers.Admin.messaging.addSmsCampaignButton": "Izveidot SMS",
   "app.containers.Admin.messaging.addSmsCampaignTitle": "Jauna SMS ziņa",
   "app.containers.Admin.messaging.automated.editModalTitle": "Kampaņas lauku rediģēšana",

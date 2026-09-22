@@ -1220,6 +1220,8 @@
   "app.containers.Admin.inspirationHub.filters": "siftingerutit",
   "app.containers.Admin.inspirationHub.resetFilters": "Sifitit piiakkit",
   "app.containers.Admin.inspirationHub.seemsLike": "Suliniumnik allanik peqarpasinngilaq. {filters} allanngortillugit misiliguk.",
+  "app.containers.Admin.internalEarlyAccessLabel": "Iluinnakkut siusissukkut atuisinnaaneq",
+  "app.containers.Admin.internalEarlyAccessLabelExplanation": "Atuutilersussaq suli suliarineqarpoq Go Vocal-imilu sulisunut taamaallaat atugassaalluni. Atuisartunut takutissanngilat.",
   "app.containers.Admin.messaging.addSmsCampaignButton": "SMS-imik pilersitsigit",
   "app.containers.Admin.messaging.addSmsCampaignTitle": "SMS nutaaq",
   "app.containers.Admin.messaging.automated.editModalTitle": "Suliiniutip immikkoortui aaqqissukkit",

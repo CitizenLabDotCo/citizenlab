@@ -2440,6 +2440,8 @@
   "app.containers.SpamReport.other": "سبب آخر",
   "app.containers.SpamReport.otherReasonPlaceholder": "الوصف",
   "app.containers.SpamReport.wrong_content": "هذا لا ينتمي إلى هنا",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "جرب ميزات ما زلنا بصدد إنهائها. ما تقوم بتفعيله هنا يغير فقط ما تراه أنت، ولا يؤثر على ما يراه أي شخص آخر على المنصة.",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "الوصول المبكر",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "إزالة صورة ملف التعريف",
   "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "سيتم حذف أصواتك على المقترحات التي لا تزال مفتوحة للتصويت. لن يتم حذف الأصوات على المقترحات التي أغلقت فيها فترة التصويت.",
   "app.containers.UsersEditPage.addPassword": "أضف كلمة المرور",

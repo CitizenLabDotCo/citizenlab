@@ -2440,6 +2440,8 @@
   "app.containers.SpamReport.other": "دوسری وجہ",
   "app.containers.SpamReport.otherReasonPlaceholder": "تفصیل",
   "app.containers.SpamReport.wrong_content": "یہ متعلقہ نہیں ہے۔",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "ان فیچرز کو آزمائیں جنہیں ہم ابھی مکمل کر رہے ہیں۔ آپ یہاں جو کچھ بھی فعال کریں گے وہ صرف آپ کو نظر آئے گا، پلیٹ فارم پر موجود کسی اور کو نہیں۔",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "قبل از وقت رسائی",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "پروفائل تصویر ہٹا دیں۔",
   "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "ان تجاویز پر آپ کے ووٹ جو ابھی ووٹنگ کے لیے کھلے ہیں حذف کر دیے جائیں گے۔ ان تجاویز پر ووٹ جہاں ووٹنگ کا دورانیہ بند ہو گیا ہے حذف نہیں کیا جائے گا۔",
   "app.containers.UsersEditPage.addPassword": "پاس ورڈ شامل کریں۔",

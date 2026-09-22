@@ -1220,6 +1220,8 @@
   "app.containers.Admin.inspirationHub.filters": "Filteren",
   "app.containers.Admin.inspirationHub.resetFilters": "Filteren zerécksetzen",
   "app.containers.Admin.inspirationHub.seemsLike": "Et gesäit esou aus, wéi wann et keng Projete méi géif ginn. Versicht d' {filters} z'änneren.",
+  "app.containers.Admin.internalEarlyAccessLabel": "Internen virzäitegen Zougang",
+  "app.containers.Admin.internalEarlyAccessLabelExplanation": "Dës Funktioun gëtt nach entwéckelt an ass nëmme fir d'Mataarbechter vu Go Vocal disponibel. Weist se net de Clienten.",
   "app.containers.Admin.messaging.addSmsCampaignButton": "SMS erstellen",
   "app.containers.Admin.messaging.addSmsCampaignTitle": "Nei SMS",
   "app.containers.Admin.messaging.automated.editModalTitle": "Kampagnefelder beaarbechten",

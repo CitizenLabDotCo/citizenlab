@@ -1220,6 +1220,8 @@
   "app.containers.Admin.inspirationHub.filters": "filteri",
   "app.containers.Admin.inspirationHub.resetFilters": "Resetiraj filtere",
   "app.containers.Admin.inspirationHub.seemsLike": "Čini se da više nema projekata. Pokušajte promijeniti {filters}.",
+  "app.containers.Admin.internalEarlyAccessLabel": "Interni rani pristup",
+  "app.containers.Admin.internalEarlyAccessLabelExplanation": "Ova se značajka još uvijek razvija i dostupna je samo osoblju tvrtke Go Vocal. Nemojte je pokazivati klijentima.",
   "app.containers.Admin.messaging.addSmsCampaignButton": "Izradi SMS",
   "app.containers.Admin.messaging.addSmsCampaignTitle": "Nova SMS poruka",
   "app.containers.Admin.messaging.automated.editModalTitle": "Uredi polja kampanje",

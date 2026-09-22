@@ -2440,6 +2440,8 @@
   "app.containers.SpamReport.other": "Annen årsak",
   "app.containers.SpamReport.otherReasonPlaceholder": "Beskrivelse",
   "app.containers.SpamReport.wrong_content": "Dette er ikke relevant",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "Prøv ut funksjoner vi fortsatt jobber med å ferdigstille. Det du slår på her, endrer bare hva du ser, ikke hva andre på plattformen ser.",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "Tidlig tilgang",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Fjern profilbilde",
   "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "Dine stemmer på forslag som fortsatt er åpne for avstemning, vil bli slettet. Stemmer på forslag der avstemningsperioden er avsluttet, vil ikke bli slettet.",
   "app.containers.UsersEditPage.addPassword": "Legg til passord",
