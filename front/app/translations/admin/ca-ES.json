@@ -1490,7 +1490,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.listed": "Llistat",
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.unlisted": "No llistat",
   "app.containers.Admin.projects.all.new.Projects.Filters.Folders.folders": "Carpetes",
-  "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.filterByCurrentPhaseMethod": "Filtra pel mètode de participació de la fase actual",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.ideation": "Ideació",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.information": "Informació",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.label": "Mètode de participació",

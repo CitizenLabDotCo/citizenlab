@@ -1490,7 +1490,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.listed": "Į sąrašą įtrauktas",
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.unlisted": "Neįtrauktas į sąrašą",
   "app.containers.Admin.projects.all.new.Projects.Filters.Folders.folders": "Aplankalai",
-  "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.filterByCurrentPhaseMethod": "Filtravimas pagal dabartinės fazės dalyvavimo metodą",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.ideation": "Idėjos",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.information": "Informacija",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.label": "Dalyvavimo metodas",

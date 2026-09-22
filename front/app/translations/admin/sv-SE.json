@@ -1490,7 +1490,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.listed": "Listad",
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.unlisted": "Olistad",
   "app.containers.Admin.projects.all.new.Projects.Filters.Folders.folders": "Mappar",
-  "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.filterByCurrentPhaseMethod": "Filtrera efter den aktuella fasens deltagandemetod",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.ideation": "Idé",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.information": "Information om",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.label": "Metod för deltagande",

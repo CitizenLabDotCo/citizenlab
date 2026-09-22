@@ -1490,7 +1490,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.listed": "Vindbaar",
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.unlisted": "Onvindbaar",
   "app.containers.Admin.projects.all.new.Projects.Filters.Folders.folders": "Mappen",
-  "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.filterByCurrentPhaseMethod": "Filter op de participatiemethode van de huidige fase",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.ideation": "Ideeënvorming",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.information": "Informatie delen",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.label": "Participatiemethode",
