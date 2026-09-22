@@ -349,15 +349,14 @@ class User < ApplicationRecord
     super_admin? ? AppConfiguration::Settings::EARLY_ACCESS_LEVELS : %w[general]
   end
 
+  # @return [Hash] the features this user may opt into, mapped to the level they are offered in
   def offered_early_access_features
     levels = early_access_levels
-    AppConfiguration::Settings.early_access_features.filter_map do |name, level|
-      name if levels.include?(level)
-    end
+    AppConfiguration::Settings.early_access_features.select { |_name, level| levels.include?(level) }
   end
 
   def active_early_access_features
-    Set.new(early_access_features) & offered_early_access_features
+    Set.new(early_access_features) & offered_early_access_features.keys
   end
 
   # Authenticating ALWAYS requires a non-blank password that matches the stored digest.
@@ -610,7 +609,7 @@ class User < ApplicationRecord
     return unless early_access_features.is_a?(Array)
 
     added = early_access_features - Array(early_access_features_was)
-    not_offered = added - offered_early_access_features
+    not_offered = added - offered_early_access_features.keys
     return if not_offered.empty?
 
     errors.add(:early_access_features, 'not_offered', value: not_offered)
