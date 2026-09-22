@@ -29,6 +29,7 @@ module DecidimImporter
       custom_field_matrix_statement
       idea_status
       idea
+      bulk_import_ideas/idea_import
       file_upload
       ideas_phase
       ideas_input_topic

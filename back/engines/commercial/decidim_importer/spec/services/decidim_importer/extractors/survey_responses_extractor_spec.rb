@@ -99,6 +99,14 @@ RSpec.describe DecidimImporter::Extractors::SurveyResponsesExtractor do
     expect(join.attributes['idea_ref']).to be(ref_map.fetch("#{component_uid}-response-0").attributes)
   end
 
+  it 'registers an idea import for the response' do
+    idea = extract([answer_row]).first
+
+    idea_import = ref_map.fetch("#{component_uid}-response-0-idea-import")
+    expect(idea_import.model_name).to eq('bulk_import_ideas/idea_import')
+    expect(idea_import.attributes['idea_ref']).to be(idea.attributes)
+  end
+
   it 'leaves the author nil (never anonymous) when the user was not imported' do
     idea = extract([answer_row('author' => 'decidim--user--999')]).first
     expect(idea.attributes).not_to have_key('author_ref')

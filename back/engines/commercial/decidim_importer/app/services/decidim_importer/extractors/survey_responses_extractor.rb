@@ -16,6 +16,8 @@ module DecidimImporter
     # Keys are reproduced from the same {SurveyKeys} the form was built with, so values address the fields
     # {Extractors::SurveysExtractor} created. Runs after the surveys and users extractors.
     class SurveyResponsesExtractor < BaseExtractor
+      include IdeaAssociations
+
       COLUMNS = { author: 'author', created_at: 'created_at',
                   process: 'decidim_participatory_process', component: 'decidim_component' }.freeze
 
@@ -47,6 +49,7 @@ module DecidimImporter
         idea.reference('author', author) if author
         ref_map.register(response_uid, idea)
         register_ideas_phase(response_uid, idea, phase)
+        register_idea_import(response_uid, idea)
         register_answers(questions, row, idea, response_uid, component_uid)
         idea
       end
@@ -55,15 +58,6 @@ module DecidimImporter
         created = timestamp(row[COLUMNS[:created_at]])
         { 'publication_status' => 'published', 'created_at' => created, 'published_at' => created,
           'submitted_at' => created }
-      end
-
-      # The join that surfaces the response in `Phase#ideas` (and so in the survey results). Without it
-      # the idea exists with a `creation_phase` but is invisible to the results generator.
-      def register_ideas_phase(uid, idea, phase)
-        join = Record.new('ideas_phase', {})
-        join.reference('idea', idea)
-        join.reference('phase', phase)
-        ref_map.register("#{uid}-ideas-phase", join)
       end
 
       # The response's author is the imported user matching the `author` uid; left nil (never anonymous)

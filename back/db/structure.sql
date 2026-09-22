@@ -2974,7 +2974,8 @@ CREATE TABLE public.idea_imports (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     user_consent boolean DEFAULT false NOT NULL,
-    content_changes jsonb DEFAULT '{}'::jsonb
+    content_changes jsonb DEFAULT '{}'::jsonb,
+    extra_info jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -9558,6 +9559,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260915134812'),
 ('20260915103146'),
 ('20260908144646'),
 ('20260904074654'),

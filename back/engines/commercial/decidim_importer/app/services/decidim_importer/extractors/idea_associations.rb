@@ -3,7 +3,8 @@
 module DecidimImporter
   module Extractors
     # Shared idea-join helpers for extractors turning Decidim items into ideas: the `ideas_phase` link
-    # surfacing the idea in its phase, and the `ideas_input_topic` tag to its category's `InputTopic`.
+    # surfacing the idea in its phase, the `ideas_input_topic` tag to its category's `InputTopic`, and the
+    # `IdeaImport` holding the Decidim data an idea has no field for.
     module IdeaAssociations
       private
 
@@ -38,32 +39,40 @@ module DecidimImporter
         ref_map.register("#{uid}-ideas-input-topic", join)
       end
 
+      # Every imported idea gets an `IdeaImport`. It marks the idea as imported and keeps Decidim data
+      # with no Go Vocal field in `extra_info`. Returns the record so that data can be added to it.
+      def register_idea_import(uid, idea)
+        idea_import = Record.new('bulk_import_ideas/idea_import', { 'extra_info' => {} })
+        idea_import.reference('idea', idea)
+        ref_map.register("#{uid}-idea-import", idea_import)
+      end
+
       # Parks a pointer back to the `Area` the idea's Decidim scope became. Go Vocal ideas have no area
-      # association (areas hang off projects/users), so the link lives in an answer under the reserved
-      # `decidim_scope` key. The value is *seeded* with the area record's own (shared) attributes hash:
-      # {ScopesExtractor} imported the scope as an area, and the area's real id only exists after the
+      # association (areas hang off projects/users), so the link lives in the idea import's `extra_info`
+      # under the `decidim_scope` key. The value is *seeded* with the area record's own (shared) attributes
+      # hash: {ScopesExtractor} imported the scope as an area, and the area's real id only exists after the
       # template is applied, so {DecidimImporter::Importer.resolve_scope_areas!} swaps this hash for
       # `{ 'area_id' => …, 'title_multiloc' => … }` once it does. No-op when the row has no scope or the
       # scope wasn't imported as an area.
-      def register_scope_area(idea, scope_uid)
+      def register_scope_area(idea_import, scope_uid)
         area = ref_map.fetch(present_value(scope_uid))
         return unless area&.model_name == 'area'
 
-        register_answer(idea, 'decidim_scope', area.attributes)
+        idea_import.attributes['extra_info']['decidim_scope'] = area.attributes
       end
 
-      # Parks the proposal's *original* Decidim status (its token + citizen-facing label) in an answer
-      # under the reserved `decidim_status` key, for provenance — the Go Vocal status the proposal was
-      # mapped onto is the idea's own `idea_status`, so this only needs the source value. Unlike
-      # {#register_scope_area} it stores literal data, so no post-import resolution is needed. No-op when
-      # neither token nor label is known (e.g. a proposal with a blank state). See {ProposalStatusResolver}.
-      def register_decidim_status(idea, decision)
+      # Parks the proposal's *original* Decidim status (its token + citizen-facing label) in the idea
+      # import's `extra_info` under the `decidim_status` key, for provenance — the Go Vocal status the
+      # proposal was mapped onto is the idea's own `idea_status`, so this only needs the source value.
+      # Unlike {#register_scope_area} it stores literal data, so no post-import resolution is needed. No-op
+      # when neither token nor label is known (e.g. a proposal with a blank state). See {ProposalStatusResolver}.
+      def register_decidim_status(idea_import, decision)
         original = {}
         original['token'] = decision.token if decision.token.present?
         original['title_multiloc'] = decision.original_title_multiloc if decision.original_title_multiloc.present?
         return if original.empty?
 
-        register_answer(idea, 'decidim_status', original)
+        idea_import.attributes['extra_info']['decidim_status'] = original
       end
     end
   end

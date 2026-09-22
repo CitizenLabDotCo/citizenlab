@@ -194,38 +194,38 @@ RSpec.describe DecidimImporter::Importer do
   end
 
   describe '.resolve_scope_areas!' do
-    it 'rewrites each parked scope pointer to the imported area’s id and title' do
+    it 'rewrites each idea import’s parked scope pointer to the imported area’s id and title' do
       area = create(:area, title_multiloc: { 'en' => 'Utah' })
+      scoped = create(:idea_import)
+      plain = create(:idea_import)
       area_attrs = { 'title_multiloc' => { 'en' => 'Utah' } }
-      scoped = create(:idea, custom_field_answers: [build(:custom_field_answer, key: 'decidim_scope', value: area_attrs)])
-      plain = create(:idea)
       template = {
         'models' => {
           'area' => [area_attrs],
-          # The pointer's value is the *same* area attributes hash (a YAML anchor/alias in practice).
-          'custom_field_answer' => [{ 'key' => 'decidim_scope', 'value' => area_attrs }]
+          # The scoped import's pointer is the *same* area attributes hash (a YAML anchor/alias in practice).
+          'bulk_import_ideas/idea_import' => [{ 'extra_info' => { 'decidim_scope' => area_attrs } }, { 'extra_info' => {} }]
         }
       }
-      created = { 'Area' => [area.id], 'CustomFieldAnswer' => [scoped.custom_field_answers.first.id] }
+      created = { 'Area' => [area.id], 'BulkImportIdeas::IdeaImport' => [scoped.id, plain.id] }
 
       described_class.resolve_scope_areas!(template, created)
 
-      expect(scoped.reload.answer_for_key('decidim_scope').value).to eq(
+      expect(scoped.reload.extra_info['decidim_scope']).to eq(
         'area_id' => area.id, 'title_multiloc' => { 'en' => 'Utah' }
       )
-      expect(plain.reload.custom_field_answers).to be_empty
+      expect(plain.reload.extra_info).to eq({})
     end
 
-    it 'skips the pass when answer/area counts do not line up with the created ids' do
-      idea = create(:idea, custom_field_answers: [build(:custom_field_answer, key: 'decidim_scope', value: { 'title_multiloc' => {} })])
-      template = { 'models' => { 'area' => [{}], 'custom_field_answer' => [{ 'key' => 'decidim_scope', 'value' => { 'title_multiloc' => {} } }] } }
+    it 'skips the pass when idea-import/area counts do not line up with the created ids' do
+      idea_import = create(:idea_import, extra_info: { 'decidim_scope' => { 'title_multiloc' => {} } })
+      template = { 'models' => { 'area' => [{}], 'bulk_import_ideas/idea_import' => [idea_import.attributes.slice('extra_info')] } }
 
-      described_class.resolve_scope_areas!(template, { 'Area' => [], 'CustomFieldAnswer' => [idea.custom_field_answers.first.id] })
+      described_class.resolve_scope_areas!(template, { 'Area' => [], 'BulkImportIdeas::IdeaImport' => [idea_import.id] })
 
-      expect(idea.reload.answer_for_key('decidim_scope').value).to eq('title_multiloc' => {})
+      expect(idea_import.reload.extra_info['decidim_scope']).to eq('title_multiloc' => {})
     end
 
-    it 'is a no-op when the template has no ideas or areas' do
+    it 'is a no-op when the template has no idea imports or areas' do
       expect { described_class.resolve_scope_areas!({ 'models' => {} }, {}) }.not_to raise_error
     end
   end

@@ -114,34 +114,35 @@ module DecidimImporter
       end
     end
 
-    # Resolves the scope→area pointer parked on each imported idea. {Extractors::IdeaAssociations#register_scope_area}
-    # seeds a `decidim_scope` answer with the (shared) attributes hash of the `Area` the idea's Decidim
-    # scope became; here — now that the area is a real row — that hash is swapped for
-    # `{ 'area_id' => <uuid>, 'title_multiloc' => … }`, giving the imported input a durable pointer back
-    # to its area (ideas have no first-class area association). Answer/area template records line up
-    # positionally with the deserializer's created ids (same trick as {.restore_update_timestamps}); a
-    # size mismatch skips the pass rather than mislinking. Run in the target tenant.
+    # Resolves the scope→area pointer parked on each imported idea's `IdeaImport`.
+    # {Extractors::IdeaAssociations#register_scope_area} seeds `extra_info['decidim_scope']` with the
+    # (shared) attributes hash of the `Area` the idea's Decidim scope became; here — now that the area is
+    # a real row — that hash is swapped for `{ 'area_id' => <uuid>, 'title_multiloc' => … }`, giving the
+    # imported input a durable pointer back to its area (ideas have no first-class area association).
+    # Idea-import/area template records line up positionally with the deserializer's created ids (same
+    # trick as {.restore_update_timestamps}); a size mismatch skips the pass rather than mislinking. Run in
+    # the target tenant.
     def self.resolve_scope_areas!(template, created_object_ids)
-      answers = template.dig('models', 'custom_field_answer')
+      idea_imports = template.dig('models', 'bulk_import_ideas/idea_import')
       areas = template.dig('models', 'area')
-      return if answers.blank? || areas.blank?
+      return if idea_imports.blank? || areas.blank?
 
-      answer_ids = created_object_ids['CustomFieldAnswer'] || []
+      idea_import_ids = created_object_ids['BulkImportIdeas::IdeaImport'] || []
       area_ids = created_object_ids['Area'] || []
-      return if answers.size != answer_ids.size || areas.size != area_ids.size
+      return unless idea_imports.size == idea_import_ids.size && areas.size == area_ids.size
 
       area_id_by_attrs = {}.compare_by_identity
       areas.each_with_index { |attrs, i| area_id_by_attrs[attrs] = area_ids[i] }
 
-      answers.each_with_index do |attrs, i|
-        next if attrs['key'] != 'decidim_scope'
+      idea_imports.each_with_index do |attrs, i|
+        area_attrs = attrs['extra_info']&.fetch('decidim_scope', nil)
+        area_id = area_attrs.is_a?(Hash) && area_id_by_attrs[area_attrs]
+        next unless area_id
 
-        area_id = attrs['value'].is_a?(Hash) && area_id_by_attrs[attrs['value']]
-        next if !area_id
-
-        resolved = { 'area_id' => area_id, 'title_multiloc' => attrs['value']['title_multiloc'] }
-        attrs['value'] = resolved
-        CustomFieldAnswer.where(id: answer_ids[i]).update_all(value: resolved)
+        resolved = { 'area_id' => area_id, 'title_multiloc' => area_attrs['title_multiloc'] }
+        values = attrs['extra_info'].merge('decidim_scope' => resolved)
+        attrs['extra_info'] = values
+        BulkImportIdeas::IdeaImport.where(id: idea_import_ids[i]).update_all(extra_info: values)
       end
     end
 
