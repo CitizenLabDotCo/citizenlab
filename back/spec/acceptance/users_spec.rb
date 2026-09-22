@@ -1602,7 +1602,15 @@ resource 'Users' do
         let(:first_name) { 'Edmond' }
 
         describe 'early access' do
-          let(:feature) { AppConfiguration::Settings.early_access_features.first }
+          # Stand-ins for whatever is in early access at the time: the registry is
+          # stubbed, so only the tier each name is offered in matters here.
+          let(:feature) { 'spaces' }
+          let(:internal_feature) { 'project_planning_calendar' }
+
+          before do
+            allow(AppConfiguration::Settings).to receive(:early_access_features)
+              .and_return({ feature => 'general', internal_feature => 'internal' })
+          end
 
           example 'Opt into an early access feature' do
             do_request(user: { early_access_features: [feature] })
@@ -1625,6 +1633,22 @@ resource 'Users' do
 
             assert_status 422
             expect(@user.reload.early_access_features).to eq []
+          end
+
+          example '[error] Opt into a feature reserved for Go Vocal staff', document: false do
+            do_request(user: { early_access_features: [internal_feature] })
+
+            assert_status 422
+            expect(@user.reload.early_access_features).to eq []
+          end
+
+          example 'Opt into a Go Vocal only feature as a Go Vocal admin', document: false do
+            govocal_admin = create(:super_admin)
+            header_token_for govocal_admin
+            do_request(id: govocal_admin.id, user: { early_access_features: [internal_feature] })
+
+            assert_status 200
+            expect(govocal_admin.reload.early_access_features).to eq [internal_feature]
           end
 
           example '[error] Opt another admin into an early access feature', document: false do
