@@ -18,11 +18,13 @@ module McpServer::BaseTool::ResponseHelpers
   end
 
   def invalid_record_error(record)
-    errors = record.errors.map do |e|
+    error('Validation failed:', structured: { errors: record_errors(record) })
+  end
+
+  def record_errors(record)
+    record.errors.map do |e|
       e.details.merge(attribute: e.attribute.to_s, message: e.message)
     end
-
-    error('Validation failed:', structured: { errors: errors })
   end
 
   def not_found_error(label, id) = error("#{label} not found: #{id}")
