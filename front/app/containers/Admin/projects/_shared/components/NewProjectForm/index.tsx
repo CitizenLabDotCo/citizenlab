@@ -8,8 +8,8 @@ import { IUpdatedProjectProperties } from 'api/projects/types';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
+import validateTitle from 'containers/Admin/projects/_shared/utils/validateTitle';
 import generalMessages from 'containers/Admin/projects/project/general/messages';
-import validateTitle from 'containers/Admin/projects/project/general/utils/validateTitle';
 
 import { SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';

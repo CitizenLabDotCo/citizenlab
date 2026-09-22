@@ -27,8 +27,8 @@ import {
 } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/styling';
 import TopicInputs from 'containers/Admin/projects/_shared/components/ProjectSetupForm/TopicInputs';
 import { getSelectedTopicIds } from 'containers/Admin/projects/_shared/utils/getSelectedTopicIds';
+import validateTitle from 'containers/Admin/projects/_shared/utils/validateTitle';
 import messages from 'containers/Admin/projects/project/general/messages';
-import validateTitle from 'containers/Admin/projects/project/general/utils/validateTitle';
 import { fragmentId } from 'containers/Admin/projects/project/projectHeader';
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
