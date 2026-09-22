@@ -651,6 +651,14 @@ describe Permissions::UserRequirementsService do
             expect(requirements[:authentication][:email_action_required]).to eq :provide_new_email
           end
 
+          it 'asks for the merge code while a merge into another account is pending' do
+            verified_permission.update!(require_confirmed_email: true)
+            user.update!(unique_code: '1234abcd', email: nil, new_email: nil, password: nil)
+            user.update_columns(merge_target_email: 'existing@example.org')
+            requirements = service.requirements(verified_permission, user)
+            expect(requirements[:authentication][:email_action_required]).to eq :confirm_merge_account
+          end
+
           it 'removes locked custom fields if verified' do
             verified_permission.update!(custom_fields_behavior: 'custom')
             create(:permissions_custom_field, custom_field: CustomField.find_by(key: 'gender'), permission: verified_permission, required: true) # locked

@@ -186,6 +186,7 @@ ca-ES:
       manual_project_participants: Missatges oficials als participants del projecte
       mention_in_internal_comment: Esmenta en un comentari intern
       mention_in_official_feedback: Esmenta en una actualització
+      merge_account_confirmation: Codi de confirmació de la fusió de comptes
       moderator_digest: Visió general setmanal per a gestors de projectes
       native_survey_not_submitted: Enquesta no enviada
       new_comment_for_admin: Nou comentari en un projecte que modero
@@ -477,6 +478,15 @@ ca-ES:
       preheader: "%{commentAuthor} t'han mencionat als comentaris"
       subject: "%{organizationName} t'han mencionat als seus comentaris"
       title: T'han esmentat
+    merge_account_confirmation:
+      best_regards: Salutacions cordials,
+      event_description: 'Algú ha iniciat la sessió a la plataforma de participació de %{organizationName} i ha demanat enllaçar aquest inici de sessió amb el compte que utilitza aquesta adreça de correu electrònic. Si has estat tu, introdueix aquest codi de confirmació per continuar:'
+      expire_code: Aquest codi caducarà en
+      hours_24: 24 hores.
+      ignore_email: Si no has estat tu, pots ignorar aquest correu electrònic sense perill. No ha canviat res i ningú pot utilitzar aquest codi sense tenir accés a aquesta bústia d'entrada.
+      preheader: Confirma la teva adreça de correu electrònic per a %{organizationName}
+      subject: Confirma la teva adreça de correu electrònic per a la plataforma de participació de %{organizationName}
+      title: Confirma la teva adreça de correu electrònic
     moderator_digest:
       cta_button: Gestiona el teu projecte
       event_description: Hem seleccionat per a vosaltres les aportacions que han generat més activitat durant la setmana passada. Descobriu què està passant amb el vostre projecte!

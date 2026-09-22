@@ -30,6 +30,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   // confirmation steps (code entry for email / phone)
   'confirmation:reconfirm-email': messages.confirmYourEmail,
   'confirmation:new_email': messages.confirmYourEmail,
+  'confirmation:merge-account': messages.linkYourAccount,
   'confirmation:reconfirm-phone': messages.confirmYourPhoneNumber,
   'confirmation:new_phone': messages.confirmYourPhoneNumber,
 
@@ -94,6 +95,7 @@ export const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
   auth_service_error: messages.serviceErrorAuthFailed,
   resending_code_failed: errorMessages.resending_code_failed,
   verification_taken: errorMessages.verification_taken,
+  account_merge_not_allowed: messages.accountMergeNotAllowed,
 };
 
 type HelperTextKey =

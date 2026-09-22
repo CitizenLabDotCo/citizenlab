@@ -7,10 +7,21 @@ module McpServer::DemoData
   MAX_INPUTS_PER_PROJECT = 1_000
   MAX_USERS_PER_TENANT = 5_000
 
+  # Built-in codes an admin can set manually, across participation methods. Drops the
+  # automated codes (prescreening, threshold_reached, expired) and 'custom' (only
+  # addressable by id, not by the shared 'custom' code).
+  SETTABLE_STATUS_CODES = (IdeaStatus::CODES - IdeaStatus::MANUAL_TRANSITION_NOT_ALLOWED_CODES - %w[custom]).freeze
+
   module_function
 
   def demo_users
     User.where('email LIKE ?', "%@#{EMAIL_DOMAIN}")
+  end
+
+  # Settable statuses for a participation method, keyed by code (empty for methods
+  # without settable statuses, e.g. native_survey).
+  def settable_statuses(participation_method)
+    IdeaStatus.where(participation_method:, code: SETTABLE_STATUS_CODES).index_by(&:code)
   end
 
   def demo_input_count(project)

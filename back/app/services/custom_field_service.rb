@@ -65,6 +65,16 @@ class CustomFieldService
     custom_field_values.except(*hidden_keys)
   end
 
+  # Drops values for registration fields this platform does not have. An identity
+  # provider can return such a key, and once stored it makes the profile form refuse
+  # every later save.
+  # @param [Hash] custom_field_values with string or symbol keys
+  # @return [Hash<String, _>]
+  def self.remove_unknown_registration_custom_fields(custom_field_values)
+    values = custom_field_values.to_h.stringify_keys
+    values.slice(*CustomField.registration.where(key: values.keys).pluck(:key))
+  end
+
   # NOTE: Needs refactor. This is called by idea serializer so will have an n+1 issue
   def self.remove_not_visible_fields(idea, current_user)
     custom_field_values = CustomFieldValuesTransitionService.new.custom_field_values(idea)

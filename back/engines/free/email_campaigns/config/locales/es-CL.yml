@@ -186,6 +186,7 @@ es-CL:
       manual_project_participants: Mensajes oficiales a los participantes en el proyecto
       mention_in_internal_comment: Mención en un comentario interno
       mention_in_official_feedback: Mención en una actualización
+      merge_account_confirmation: Código de confirmación de fusión de cuentas
       moderator_digest: Resumen semanal para administradores de proyecto
       native_survey_not_submitted: Encuesta no presentada
       new_comment_for_admin: Nuevo comentario en un proyecto moderado por mí
@@ -477,6 +478,15 @@ es-CL:
       preheader: '%{commentAuthor} te mencionó en sus comentarios'
       subject: '%{organizationName} te mencionó en sus comentarios'
       title: Has sido mencionado
+    merge_account_confirmation:
+      best_regards: Saludos cordiales,
+      event_description: 'Alguien ha iniciado sesión en la plataforma de participación de %{organizationName} y ha solicitado vincular ese inicio de sesión a la cuenta que usa esta dirección de correo. Si has sido tú, introduce este código de confirmación para continuar:'
+      expire_code: Este código caducará en
+      hours_24: 24 horas.
+      ignore_email: Si no has sido tú, puedes ignorar este correo con total seguridad. No ha cambiado nada y nadie puede usar este código sin tener acceso a esta bandeja de entrada.
+      preheader: Confirma tu dirección de correo para %{organizationName}
+      subject: Confirma tu dirección de correo para la plataforma de participación de %{organizationName}
+      title: Confirma tu dirección de correo
     moderator_digest:
       cta_button: Gestione su proyecto
       event_description: Hemos editado para ti la lista de ideas que han generado más actividad durante la última semana. Descubre lo que está sucediendo en tu proyecto!

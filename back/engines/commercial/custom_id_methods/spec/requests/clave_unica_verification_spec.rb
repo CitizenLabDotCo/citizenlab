@@ -277,6 +277,9 @@ context 'clave_unica verification' do
   end
 
   context 'when checking against list of verified RUTs registered in municipality' do
+    # SSO values are only stored for fields the platform has.
+    before { create(:custom_field, key: 'rut_verified') }
+
     context 'when RUT is added to list' do
       before { CustomIdMethods::IdCardLookup::IdCard.create!(card_id: '44.444.444-4') }
 
