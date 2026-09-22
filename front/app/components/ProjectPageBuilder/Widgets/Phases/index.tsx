@@ -3,6 +3,8 @@ import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { UserComponent } from '@craftjs/core';
 
+import useWidgetProjectId from 'components/admin/ContentBuilder/useWidgetProjectId';
+
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
@@ -14,7 +16,6 @@ import {
 } from '../SectionBackground';
 import SectionBackgroundSetting from '../SectionBackgroundSetting';
 import TimelineSection from '../Timeline';
-import useWidgetProjectId from '../useWidgetProjectId';
 
 export const PHASES_WIDGET_SELECTOR = '[data-project-page-phases]';
 

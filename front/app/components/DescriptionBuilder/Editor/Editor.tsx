@@ -3,6 +3,7 @@ import React from 'react';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import {
   Editor as CraftEditor,
+  Options,
   SerializedNodes,
   Resolver,
 } from '@craftjs/core';
@@ -11,12 +12,21 @@ import styled from 'styled-components';
 import RenderNode from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Editor/RenderNode';
 
 import { useVerticalRhythmMargin } from 'components/admin/ContentBuilder/verticalRhythm';
+import { ScopedDndContext } from 'components/admin/ResourceList/SortableList';
 
 type EditorProps = {
   isPreview: boolean;
   resolver?: Resolver;
   onNodesChange?: (nodes: SerializedNodes) => void;
+  // Builders that paint their own drop feedback pass their own config here.
+  indicator?: Options['indicator'];
   children?: React.ReactNode;
+};
+
+const DEFAULT_INDICATOR: Options['indicator'] = {
+  success: colors.green300,
+  error: 'red',
+  transition: 'none',
 };
 
 // A widget can render nothing (e.g. events on a project without events) while its
@@ -41,23 +51,22 @@ const Editor: React.FC<EditorProps> = ({
   isPreview,
   resolver,
   onNodesChange,
+  indicator,
   children,
 }) => {
   return (
     <CraftEditor
       resolver={resolver}
-      indicator={{
-        success: colors.green300,
-        error: 'red',
-        transition: 'none',
-      }}
+      indicator={indicator ?? DEFAULT_INDICATOR}
       onRender={isPreview ? PlainDiv : RenderNode}
       enabled={!isPreview}
       onNodesChange={(data) => {
         onNodesChange && onNodesChange(data.getSerializedNodes());
       }}
     >
-      {children}
+      <ScopedDndContext.Provider value={!isPreview}>
+        {children}
+      </ScopedDndContext.Provider>
     </CraftEditor>
   );
 };

@@ -117,34 +117,35 @@ module DecidimImporter
       end
     end
 
-    # Resolves the scope→area pointer parked on each imported idea. {Extractors::IdeaAssociations#register_scope_area}
-    # seeds `custom_field_values['decidim_scope']` with the (shared) attributes hash of the `Area` the
-    # idea's Decidim scope became; here — now that the area is a real row — that hash is swapped for
-    # `{ 'area_id' => <uuid>, 'title_multiloc' => … }`, giving the imported input a durable pointer back
-    # to its area (ideas have no first-class area association). Idea/area template records line up
-    # positionally with the deserializer's created ids (same trick as {.restore_update_timestamps}); a
-    # size mismatch skips the pass rather than mislinking. Run in the target tenant.
+    # Resolves the scope→area pointer parked on each imported idea's `IdeaImport`.
+    # {Extractors::IdeaAssociations#register_scope_area} seeds `extra_info['decidim_scope']` with the
+    # (shared) attributes hash of the `Area` the idea's Decidim scope became; here — now that the area is
+    # a real row — that hash is swapped for `{ 'area_id' => <uuid>, 'title_multiloc' => … }`, giving the
+    # imported input a durable pointer back to its area (ideas have no first-class area association).
+    # Idea-import/area template records line up positionally with the deserializer's created ids (same
+    # trick as {.restore_update_timestamps}); a size mismatch skips the pass rather than mislinking. Run in
+    # the target tenant.
     def self.resolve_scope_areas!(template, created_object_ids)
-      ideas = template.dig('models', 'idea')
+      idea_imports = template.dig('models', 'bulk_import_ideas/idea_import')
       areas = template.dig('models', 'area')
-      return if ideas.blank? || areas.blank?
+      return if idea_imports.blank? || areas.blank?
 
-      idea_ids = created_object_ids['Idea'] || []
+      idea_import_ids = created_object_ids['BulkImportIdeas::IdeaImport'] || []
       area_ids = created_object_ids['Area'] || []
-      return unless ideas.size == idea_ids.size && areas.size == area_ids.size
+      return unless idea_imports.size == idea_import_ids.size && areas.size == area_ids.size
 
       area_id_by_attrs = {}.compare_by_identity
       areas.each_with_index { |attrs, i| area_id_by_attrs[attrs] = area_ids[i] }
 
-      ideas.each_with_index do |attrs, i|
-        area_attrs = attrs['custom_field_values']&.fetch('decidim_scope', nil)
+      idea_imports.each_with_index do |attrs, i|
+        area_attrs = attrs['extra_info']&.fetch('decidim_scope', nil)
         area_id = area_attrs.is_a?(Hash) && area_id_by_attrs[area_attrs]
         next unless area_id
 
         resolved = { 'area_id' => area_id, 'title_multiloc' => area_attrs['title_multiloc'] }
-        values = attrs['custom_field_values'].merge('decidim_scope' => resolved)
-        attrs['custom_field_values'] = values
-        Idea.where(id: idea_ids[i]).update_all(custom_field_values: values)
+        values = attrs['extra_info'].merge('decidim_scope' => resolved)
+        attrs['extra_info'] = values
+        BulkImportIdeas::IdeaImport.where(id: idea_import_ids[i]).update_all(extra_info: values)
       end
     end
 
@@ -192,7 +193,7 @@ module DecidimImporter
     # Applies the import's app-config patch (`<base>.app_config.json`) to the current tenant: additively
     # unions the export's locales into `core.locales` — *without* replacing the tenant's own set, so no
     # user is stranded and no `validate_locales` migration is needed — and allows+enables the feature flags
-    # the import relies on (`project_static_pages`, `parallel_participation`), merged onto whatever the
+    # the import relies on (`project_static_pages`), merged onto whatever the
     # tenant already has. Nothing else in the app config is touched. Run before the template deserializes,
     # so its records have the locales they reference. Returns the locales added (empty when none/no file).
     def self.apply_import_app_config_file(path)

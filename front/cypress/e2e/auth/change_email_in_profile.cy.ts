@@ -1,3 +1,4 @@
+import { fakeSSOAuth } from './utils';
 import {
   signUpEmailConformation,
   confirmEmail,
@@ -71,6 +72,33 @@ describe('Change email in profile', () => {
     cy.get('.e2e-error-message')
       .first()
       .should('contain.text', 'This email is already in use.');
+  });
+
+  // An email-less SSO account gets the merge offered here instead of that error:
+  // almost always the same person, arriving a second way.
+  it('merges into the existing account when the email is already in use', () => {
+    const existingEmail = randomEmail();
+    cy.apiSignup('Existing', 'User', existingEmail, 'democracy2.0');
+
+    fakeSSOAuth(cy, 'jane_doe');
+    cy.get('.e2e-modal-close-button').click();
+
+    // Not linked from the user menu while the profile is incomplete, but reachable.
+    cy.visit('/profile/change-email');
+    cy.get('input[name="email"]').type(existingEmail);
+    cy.dataCy('change-email-submit-button').click();
+
+    // The auth modal takes over with the merge step. Its header sits outside
+    // #e2e-authentication-modal, so it is matched on its own.
+    cy.contains('Link your account').should('be.visible');
+    cy.get('#e2e-authentication-modal').should('include.text', existingEmail);
+    confirmEmail(cy);
+    cy.get('#e2e-sign-up-success-modal').should('exist');
+
+    // Signed in as the account that survived.
+    cy.getAuthUser().then((user) => {
+      expect(user.body.data.attributes.email).to.eq(existingEmail);
+    });
   });
 
   it('allows resending code', () => {

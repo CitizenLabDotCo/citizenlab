@@ -256,6 +256,106 @@ resource 'Request codes' do
     end
   end
 
+  post 'web_api/v1/user/request_code_merge_account' do
+    with_options scope: :request_code do
+      parameter :merge_target_email, 'The email of the account to be merged into. Defaults to the pending one.', required: false
+    end
+
+    # An email-less SSO account, the only kind that may be merged away.
+    let(:sso_user) do
+      create(:user).tap do |user|
+        user.update_columns(email: nil, password_digest: nil)
+        create(:identity, user: user, provider: 'clave_unica', uid: '11111')
+      end
+    end
+
+    example 'It does not work for an unauthenticated user' do
+      do_request(request_code: { merge_target_email: 'existing_email@example.com' })
+      expect(response_status).to eq 401
+    end
+
+    example 'It sends a merge code to the address' do
+      existing_user = create(:user, email: 'existing_email@example.com')
+      header_token_for(sso_user)
+
+      do_request(request_code: { merge_target_email: existing_user.email })
+
+      expect(response_status).to eq 200
+      expect(delivery_service).to have_received(:send_now_to_user)
+        .with(
+          an_instance_of(EmailCampaigns::Campaigns::MergeAccountConfirmation),
+          sso_user,
+          hash_including(code: anything, email: existing_user.email)
+        ).once
+
+      sso_user.reload
+      expect(sso_user.merge_target_email).to eq existing_user.email
+      expect(sso_user.merge_account_confirmation.code).to be_present
+      # The address belongs to someone else, so it must never land on new_email.
+      expect(sso_user.new_email).to be_nil
+    end
+
+    example 'It resends the pending merge code when no address is given' do
+      existing_user = create(:user, email: 'existing_email@example.com')
+      sso_user.update_columns(merge_target_email: existing_user.email)
+      header_token_for(sso_user)
+
+      do_request
+
+      expect(response_status).to eq 200
+      expect(delivery_service).to have_received(:send_now_to_user)
+        .with(
+          an_instance_of(EmailCampaigns::Campaigns::MergeAccountConfirmation),
+          sso_user,
+          hash_including(email: existing_user.email)
+        ).once
+    end
+
+    example 'It does not work without an address or a pending one' do
+      header_token_for(sso_user)
+
+      do_request(request_code: { merge_target_email: '' })
+
+      expect(response_status).to eq 422
+      expect(json_response_body).to include_response_error(:merge_target_email, 'cannot be blank')
+      expect(delivery_service).not_to have_received(:send_now_to_user)
+    end
+
+    # Settled at confirm time: refusing here would tell a prober which addresses
+    # belong to admins. The code goes to the admin's own inbox, so nothing leaks.
+    example 'It gives the same answer when the address belongs to an admin' do
+      admin = create(:admin, email: 'admin_email@example.com')
+      header_token_for(sso_user)
+
+      do_request(request_code: { merge_target_email: admin.email })
+
+      expect(response_status).to eq 200
+      expect(delivery_service).to have_received(:send_now_to_user).once
+    end
+
+    # The source rules are about the caller's own account, so they can refuse up front.
+    example 'It does not work for a caller that could not be merged away' do
+      existing_user = create(:user, email: 'existing_email@example.com')
+      header_token_for(create(:user))
+
+      do_request(request_code: { merge_target_email: existing_user.email })
+
+      expect(response_status).to eq 401
+      expect(delivery_service).not_to have_received(:send_now_to_user)
+    end
+
+    example 'It does not work once the merge budget is spent' do
+      existing_user = create(:user, email: 'existing_email@example.com')
+      sso_user.find_or_create_confirmation(:merge_account_confirmation).update!(code_reset_count: 4)
+      header_token_for(sso_user)
+
+      do_request(request_code: { merge_target_email: existing_user.email })
+
+      expect(response_status).to eq 401
+      expect(delivery_service).not_to have_received(:send_now_to_user)
+    end
+  end
+
   post 'web_api/v1/user/request_code_phone' do
     with_options scope: :request_code do
       parameter :phone, 'The phone number to send the code to.', required: true

@@ -1,4 +1,4 @@
-.PHONY: build reset-dev-env claude-setup configure-worktree migrate be-up be-up-debug be-up-fake-sso fe-up up up-fake-sso c rails-console rails-console-exec e2e-setup e2e-setup-and-up e2e-setup-and-up-fake-sso e2e-run-test e2e-ci-env-setup e2e-ci-env-setup-and-up e2e-ci-env-run-test ci-regenerate-templates ci-trigger-build ci-run-e2e release_pr
+.PHONY: build reset-dev-env claude-setup configure-worktree migrate be-up be-up-debug be-up-fake-sso fe-up fe-only up up-fake-sso c rails-console rails-console-exec e2e-setup e2e-setup-and-up e2e-setup-and-up-fake-sso e2e-run-test e2e-ci-env-setup e2e-ci-env-setup-and-up e2e-ci-env-run-test ci-regenerate-templates ci-trigger-build ci-run-e2e release_pr
 
 # You can run this file with `make` command:
 # make reset-dev-env
@@ -77,6 +77,13 @@ be-up-debug:
 fe-up:
 	cd front && npm start
 
+# Front end only, against a remote back end. No Docker, no secrets.
+# Default: the prototype tenant on staging. Any epic works too:
+#   make fe-only api=https://pr-123.epic.hq.govocal.com
+api ?= https://prototype.stg.govocal.com
+fe-only:
+	cd front && { [ -d node_modules ] || npm install; } && API_URL=$(api) npm start
+
 up:
 	make -j 2 be-up fe-up
 
@@ -136,8 +143,12 @@ fe-up-franceconnect:
 # Prerequisite: clone https://github.com/CitizenLabDotCo/fake_sso next to this
 # repo (or set FAKE_SSO_PATH to its checkout) and add
 # `127.0.0.1 host.docker.internal` to /etc/hosts.
+#
+# The profile is named on `down` as well: without it the fake_sso container survives
+# while the network is recreated, and the next `up` cannot attach it to a network that
+# no longer exists.
 be-up-fake-sso:
-	docker compose down
+	docker compose --profile fake_sso down --remove-orphans
 	docker compose run --rm web bundle exec rake 'dev:enable_id_method[fake_sso]'
 	docker compose --profile fake_sso up
 
@@ -196,6 +207,20 @@ be-up-twoday:
 fe-up-twoday:
 	cd front && npm run start:sso:twoday
 
+# Publik (Meyzieu). No test environment exists, so this points at the production
+# IDP and the tenant's live host; only the platform runs locally.
+# The /etc/hosts line below hijacks jeparticipe.meyzieu.fr on this machine — run
+# `make sso-reset` when done, or you cannot reach the live platform.
+be-up-publik:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[publik]'
+	@grep -q '^127\.0\.0\.1 jeparticipe\.meyzieu\.fr$$' /etc/hosts || \
+		echo '127.0.0.1 jeparticipe.meyzieu.fr' | sudo tee -a /etc/hosts > /dev/null
+	BASE_DEV_URI=https://jeparticipe.meyzieu.fr ASSET_HOST_URI=https://jeparticipe.meyzieu.fr docker compose up
+
+fe-up-publik:
+	cd front && npm run start:sso:publik
+
 # Hoplr
 be-up-hoplr:
 	docker compose down
@@ -242,10 +267,11 @@ be-up-azure:
 fe-up-azure:
 	cd front && npm start
 
-# Reset any overrides to demo.stg.govocal.com in /etc/hosts that were added for sso local testing
+# Reset the /etc/hosts overrides that were added for sso local testing
 sso-reset:
 	docker compose run --rm web bundle exec rake 'dev:enable_id_method[fake_sso]'
 	sudo sed -i '' 's/^127\.0\.0\.1 demo\.stg\.govocal\.com$$/# 127.0.0.1 demo.stg.govocal.com/' /etc/hosts
+	sudo sed -i '' '/^127\.0\.0\.1 jeparticipe\.meyzieu\.fr$$/d' /etc/hosts
 
 # Run it with:
 # make c

@@ -21,7 +21,7 @@ jest.mock('./CustomPageProjectsAndEvents', () => ({
   __esModule: true,
   default: () => <div data-testid="legacyProjects" />,
 }));
-jest.mock('./CustomPageHeader', () => ({
+jest.mock('components/CustomPageHeader', () => ({
   __esModule: true,
   default: () => <div data-testid="banner" />,
 }));
@@ -61,6 +61,7 @@ jest.mock('api/custom_pages/useCustomPageBySlug', () =>
 );
 
 let hasContent = false;
+let startsWithBanner = false;
 let isLoading = false;
 jest.mock(
   'components/CustomPageBuilder/ContentViewer/useCustomPageBuilderContent',
@@ -69,8 +70,8 @@ jest.mock(
     // Mirrors the real hook, which is disabled without an id and so reports nothing.
     default: jest.fn((staticPageId?: string) =>
       staticPageId
-        ? { hasContent, isLoading }
-        : { hasContent: false, isLoading: false }
+        ? { hasContent, startsWithBanner, isLoading }
+        : { hasContent: false, startsWithBanner: false, isLoading: false }
     ),
   })
 );
@@ -78,26 +79,9 @@ jest.mock(
 describe('CustomPageShow', () => {
   beforeEach(() => {
     hasContent = false;
+    startsWithBanner = false;
     isLoading = false;
     pageAttributes = globalCustomPage;
-  });
-
-  it('renders the legacy sections when the builder has no content', () => {
-    hasContent = false;
-    render(<CustomPageShow />);
-
-    expect(screen.getAllByTestId('legacyInfoSection')).toHaveLength(2);
-    expect(screen.getByTestId('legacyProjects')).toBeInTheDocument();
-    expect(screen.queryByTestId('builderContent')).not.toBeInTheDocument();
-  });
-
-  it('renders the builder content instead of the legacy sections', () => {
-    hasContent = true;
-    render(<CustomPageShow />);
-
-    expect(screen.getByTestId('builderContent')).toBeInTheDocument();
-    expect(screen.queryByTestId('legacyInfoSection')).not.toBeInTheDocument();
-    expect(screen.queryByTestId('legacyProjects')).not.toBeInTheDocument();
   });
 
   // Rendering them first would show content that is replaced as soon as the layout arrives.

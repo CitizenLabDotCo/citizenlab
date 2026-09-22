@@ -1,26 +1,53 @@
 # frozen_string_literal: true
 
 module ContentBuilder
-  # Builds the craftjs graph for a custom page: a root and a body region wrapping the page's
-  # top and bottom info sections. A section of plain text goes in a native TextMultiloc
-  # widget; one holding media the text widget cannot render losslessly (inline images,
-  # videos, CTA buttons) goes in the RichTextMultiloc bridge widget.
+  # Builds the craftjs graph a custom page's layout starts as, read from the page's own columns:
+  # a root and a body region holding the page's content in the order the front office renders
+  # it — the banner (when the page shows one), the title, then the sections. Nothing is pinned:
+  # as on the homepage, an admin can reorder any of it.
+  #
+  # It runs only where a page has no layout yet — the backfill task, a newly created page, a new
+  # tenant's template, and a layout created empty through the API. Once a layout exists the
+  # builder owns it: an admin's edits are saved as sent, and nothing here runs again. So every
+  # rule below decides what a page *starts* with, never what may be put on it afterwards.
+  #
+  # A section of plain text goes in a native TextMultiloc widget; one holding media the text
+  # widget cannot render losslessly (inline images, videos, CTA buttons) goes in the
+  # RichTextMultiloc bridge widget.
   #
   # A disabled section is skipped, because the front office does not render one either.
   class CustomPageLayoutService
     CODE = 'custom_page'
 
     ROOT_ID = 'ROOT'
+    BANNER_ID = 'CUSTOM_PAGE_BANNER'
+    TITLE_ID = 'CUSTOM_PAGE_TITLE'
     BODY_ID = 'CUSTOM_PAGE_BODY'
     TOP_INFO_ID = 'CUSTOM_PAGE_TOP_INFO'
+    FILE_ID_PREFIX = 'CUSTOM_PAGE_FILE_'
+    PROJECTS_ID = 'CUSTOM_PAGE_PROJECTS'
+    EVENTS_ID = 'CUSTOM_PAGE_EVENTS'
     BOTTOM_INFO_ID = 'CUSTOM_PAGE_BOTTOM_INFO'
 
-    def craftjs_json_for(static_page)
+    # Namespace for the banner image's code (see #banner_image). Arbitrary, but must not change:
+    # a different namespace derives a different code for every page and copies every image again.
+    BANNER_IMAGE_NAMESPACE = '3f1c7b2e-6a4d-4e8b-9c5f-2d7a8e1b4c60'
+
+    # `persist_images: false` derives the same graph without copying the banner image, for a
+    # dry run that only compares.
+    def craftjs_json_for(static_page, persist_images: true)
+      # Key order is the render order: the header pair, then the sections as PageSections.tsx
+      # has them.
       sections = {
+        BANNER_ID => banner_node(static_page, persist_images: persist_images),
+        TITLE_ID => title_node(static_page),
         TOP_INFO_ID => section_node(
           static_page.top_info_section_multiloc,
           enabled: static_page.top_info_section_enabled
         ),
+        **file_nodes(static_page),
+        PROJECTS_ID => projects_node(static_page),
+        EVENTS_ID => events_node(static_page),
         BOTTOM_INFO_ID => section_node(
           static_page.bottom_info_section_multiloc,
           enabled: static_page.bottom_info_section_enabled
@@ -32,7 +59,154 @@ module ContentBuilder
 
     private
 
-    def section_node(multiloc, enabled:)
+    # Seeded only for a page that shows a banner. Its content is copied into the node, like the info
+    # sections', since nothing else reads the banner_* columns.
+    def banner_node(static_page, persist_images: true)
+      return unless static_page.banner_enabled
+
+      {
+        'type' => { 'resolvedName' => 'CustomPageBanner' },
+        'nodes' => [],
+        'props' => {
+          'layout' => static_page.banner_layout,
+          'headerMultiloc' => static_page.banner_header_multiloc,
+          'subheaderMultiloc' => static_page.banner_subheader_multiloc,
+          'overlayColor' => static_page.banner_overlay_color,
+          'overlayOpacity' => static_page.banner_overlay_opacity,
+          'ctaType' => static_page.banner_cta_button_type,
+          'ctaTextMultiloc' => static_page.banner_cta_button_multiloc,
+          'ctaUrl' => static_page.banner_cta_button_url,
+          'image' => banner_image(static_page, persist: persist_images)
+        },
+        'custom' => {
+          'title' => {
+            'id' => 'app.components.CustomPageBuilder.Widgets.CustomPageBanner.title',
+            'defaultMessage' => 'Banner'
+          },
+          'noPointerEvents' => true
+        },
+        'hidden' => false,
+        'parent' => BODY_ID,
+        'isCanvas' => false,
+        'displayName' => 'CustomPageBanner',
+        'linkedNodes' => {}
+      }
+    end
+
+    # The code comes from the page and its stored filename rather than being generated, so a
+    # re-derive finds its earlier copy and an unchanged page derives an identical graph. `large` is
+    # the version every banner layout renders.
+    def banner_image(static_page, persist: true)
+      return {} unless static_page.header_bg?
+
+      code = Digest::UUID.uuid_v5(BANNER_IMAGE_NAMESPACE, "#{static_page.id}/#{static_page.header_bg_identifier}")
+      if persist
+        LayoutImage.find_or_create_by!(code: code) do |image|
+          image.image = header_bg_data_uri(static_page)
+        end
+      end
+
+      { 'dataCode' => code }
+    end
+
+    # A data URI rather than `remote_image_url`, which would download the tenant's own upload
+    # over HTTP and cannot work in a test environment with local storage.
+    def header_bg_data_uri(static_page)
+      data = static_page.header_bg.large.read
+      mime = Marcel::MimeType.for(StringIO.new(data), name: static_page.header_bg_identifier)
+      "data:#{mime};base64,#{Base64.strict_encode64(data)}"
+    end
+
+    # Always seeded: title_multiloc is the page name, but only a page without a banner shows it.
+    # Read from the record rather than copied, because it also names the page in the admin list and
+    # the nav bar.
+    def title_node(static_page)
+      {
+        'type' => { 'resolvedName' => 'CustomPageTitle' },
+        'nodes' => [],
+        'props' => { 'showTitle' => !static_page.banner_enabled },
+        'custom' => {
+          'title' => {
+            'id' => 'app.components.CustomPageBuilder.Widgets.CustomPageTitle.title',
+            'defaultMessage' => 'Title'
+          },
+          # Movable but not deletable: showTitle hides it. `locked` would also pin it.
+          'deletable' => false,
+          'noPointerEvents' => true
+        },
+        'hidden' => false,
+        'parent' => BODY_ID,
+        'isCanvas' => false,
+        'displayName' => 'CustomPageTitle',
+        'linkedNodes' => {}
+      }
+    end
+
+    def file_nodes(static_page)
+      return {} unless static_page.files_section_enabled
+
+      # `file_attachments` sorts on position alone, and position is NULL on every row until TAN-5126
+      # turns position management back on. Without a tie-break two derives of one page can
+      # differ by order alone, so the migration task's overwrite rewrites rows nothing changed in.
+      attachments = static_page.file_attachments.order(:created_at, :id)
+      attachments.to_h do |attachment|
+        [
+          "#{FILE_ID_PREFIX}#{attachment.file_id}",
+          Craftjs::Nodes.file_attachment(attachment.file_id, BODY_ID)
+        ]
+      end
+    end
+
+    # `hideProjects` in CustomPageProjectsAndEvents returns null above *both* blocks, despite its
+    # name, so neither list renders without the feature or without a project filter. Deriving
+    # either would also hand a tenant without the feature a live area filter it has no setting for.
+    def project_lists_rendered?(static_page)
+      static_page.projects_filter_type != 'no_filter' &&
+        AppConfiguration.instance.feature_activated?('advanced_custom_pages')
+    end
+
+    def projects_node(static_page)
+      return unless static_page.projects_enabled && project_lists_rendered?(static_page)
+
+      Craftjs::Nodes.projects(
+        {
+          'filterType' => static_page.projects_filter_type,
+          'ids' => filter_ids(static_page),
+          # The legacy section renders with `showTitle` false, so a migrated page shows no
+          # heading until an admin writes one.
+          'titleMultiloc' => {}
+        },
+        BODY_ID
+      )
+    end
+
+    def events_node(static_page)
+      return unless static_page.events_widget_enabled && project_lists_rendered?(static_page)
+
+      Craftjs::Nodes.events(
+        {
+          'source' => static_page.projects_filter_type,
+          'ids' => filter_ids(static_page),
+          'timeFilters' => ['upcoming'],
+          'limit' => 3,
+          'projectPublicationStatuses' => ['published']
+        },
+        BODY_ID
+      )
+    end
+
+    # The dimension, not the projects it resolves to: legacy re-resolves on every request, so
+    # freezing project ids here would drop a project tagged into the area later.
+    def filter_ids(static_page)
+      case static_page.projects_filter_type
+      when 'areas' then static_page.areas_static_pages.pluck(:area_id)
+      when 'global_topics' then static_page.static_pages_global_topics.pluck(:global_topic_id)
+      when 'spaces' then static_page.static_pages_spaces.pluck(:space_id)
+      else []
+      end
+    end
+
+    def section_node(multiloc, enabled: false)
       return unless enabled
       return if section_blank?(multiloc)
 

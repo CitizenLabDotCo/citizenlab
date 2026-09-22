@@ -4,8 +4,6 @@ import { IUser } from 'api/users/types';
 
 import { render, screen, userEvent, waitFor } from 'utils/testUtils/rtl';
 
-import { EARLY_ACCESS_FEATURES } from './features';
-
 import EarlyAccess from '.';
 
 const mockUpdateUser = jest.fn();
@@ -24,7 +22,19 @@ const buildUser = (roles: { type: string }[], optedIn: string[]) =>
     },
   } as unknown as IUser);
 
-const firstFeature = EARLY_ACCESS_FEATURES[0];
+// The real registry is empty between features, so the section is exercised
+// against a stand-in.
+jest.mock('./features', () => ({
+  EARLY_ACCESS_FEATURES: [
+    {
+      name: 'spaces',
+      title: { id: 'stand_in.title', defaultMessage: 'Stand-in feature' },
+      description: { id: 'stand_in.description', defaultMessage: 'A feature.' },
+    },
+  ],
+}));
+
+const firstFeature = { name: 'spaces' };
 
 describe('<EarlyAccess />', () => {
   beforeEach(() => mockUpdateUser.mockClear());
@@ -47,9 +57,7 @@ describe('<EarlyAccess />', () => {
     mockAuthUser = buildUser([{ type: 'admin' }], []);
     render(<EarlyAccess />);
 
-    expect(screen.getAllByRole('checkbox')).toHaveLength(
-      EARLY_ACCESS_FEATURES.length
-    );
+    expect(screen.getAllByRole('checkbox')).toHaveLength(1);
     expect(screen.getByRole('checkbox')).not.toBeChecked();
   });
 

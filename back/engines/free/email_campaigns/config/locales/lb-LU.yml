@@ -188,6 +188,7 @@ lb-LU:
       manual_project_participants: Offiziell Messagen un de Projet Participanten
       mention_in_internal_comment: Ernimmen an engem internen Commentaire
       mention_in_official_feedback: Ernimmung an engem Update
+      merge_account_confirmation: Bestätegungscode fir d'Zesummeleeë vu Konten
       moderator_digest: Wéchentlech Iwwersiicht fir Projetsmanageren
       native_survey_not_submitted: Ëmfro net presentéiert
       new_comment_for_admin: Neie Kommentar an engem Projet, deen ech moderéieren
@@ -479,6 +480,15 @@ lb-LU:
       preheader: '%{commentAuthor} huet Iech am Feedback ernimmt'
       subject: '%{organizationName} hunn Iech an hirem Feedback ernimmmt'
       title: Dir sidd ernimmt ginn
+    merge_account_confirmation:
+      best_regards: Mat beschte Gréiss,
+      event_description: 'Et huet sech iergendee bei der Partizipatiounsplattform vu %{organizationName} ugemellt an huet gefrot, dës Umeldung mat dem Kont ze verknëppen, deen dës E-Mail-Adress benotzt. Wann Dir dat waart, gitt dëse Bestätegungscode an, fir weiderzemaachen:'
+      expire_code: Dëse Code leeft of an
+      hours_24: 24 Stonnen.
+      ignore_email: Wann Dir dat net waart, kënnt Dir dës E-Mail einfach ignoréieren. Et huet sech näischt geännert, a kee kann dëse Code benotzen ouni Zougang zu dëser Inbox ze hunn.
+      preheader: Bestätegt Är E-Mail-Adress fir %{organizationName}
+      subject: Bestätegt Är E-Mail-Adress fir d'Partizipatiounsplattform vu %{organizationName}
+      title: Bestätegt Är E-Mail-Adress
     moderator_digest:
       cta_button: Verwalt Äert Projet
       event_description: Mir hunn fir Iech déi Input zesummegestallt, déi an der leschter Woch am meeschten Aktivitéit generéiert hunn. Fannt eraus, wat mat Ärem Projet lass ass!

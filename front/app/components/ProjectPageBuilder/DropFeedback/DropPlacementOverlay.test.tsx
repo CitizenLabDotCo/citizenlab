@@ -1,0 +1,160 @@
+import React from 'react';
+
+import { EditorState, ROOT_NODE } from '@craftjs/core';
+
+import { render, screen, act } from 'utils/testUtils/rtl';
+
+import DropPlacementOverlay from './DropPlacementOverlay';
+
+const BODY_ID = 'PROJECT_PAGE_BODY';
+
+let editorState: EditorState;
+// The canvas scrolls in its own container, which shifts every measured rect.
+let scrollOffset = 0;
+
+jest.mock('@craftjs/core', () => {
+  const originalModule = jest.requireActual('@craftjs/core');
+  return {
+    ...originalModule,
+    useEditor: (collector: (state: EditorState) => unknown) =>
+      collector(editorState),
+  };
+});
+
+const elementAt = (documentTop: number) => {
+  const element = document.createElement('div');
+  element.getBoundingClientRect = () => {
+    const top = documentTop - scrollOffset;
+    return {
+      top,
+      bottom: top + 100,
+      left: 0,
+      right: 500,
+      width: 500,
+      height: 100,
+    } as DOMRect;
+  };
+  return element;
+};
+
+const buildState = (
+  error: string | null,
+  parentId: string,
+  currentNodeName = 'PhasesWidget',
+  where: 'before' | 'after' = 'before'
+): EditorState =>
+  ({
+    nodes: {
+      [ROOT_NODE]: { dom: elementAt(0), data: { name: 'ProjectPageRoot' } },
+      [BODY_ID]: { dom: elementAt(300), data: { name: 'ProjectPageBody' } },
+    },
+    indicator: {
+      placement: {
+        parent: { id: parentId, dom: elementAt(300) },
+        index: 0,
+        where,
+        currentNode: { dom: elementAt(300), data: { name: currentNodeName } },
+      },
+      error,
+    },
+  } as unknown as EditorState);
+
+// Scroll events do not bubble, so the overlay has to catch them on the way
+// down from the window.
+const scrollCanvasBy = (offset: number) => {
+  const scroller = document.createElement('div');
+  document.body.appendChild(scroller);
+
+  act(() => {
+    scrollOffset = offset;
+    scroller.dispatchEvent(new Event('scroll'));
+  });
+};
+
+const startDrag = () => {
+  const source = document.createElement('div');
+  source.setAttribute('draggable', 'true');
+  document.body.appendChild(source);
+
+  act(() => {
+    source.dispatchEvent(new Event('dragstart', { bubbles: true }));
+  });
+};
+
+afterEach(() => {
+  document.body.innerHTML = '';
+  scrollOffset = 0;
+});
+
+describe('DropPlacementOverlay', () => {
+  it('renders nothing while no drag is running', () => {
+    editorState = buildState(null, BODY_ID);
+    render(<DropPlacementOverlay />);
+
+    expect(screen.queryByText('Place here')).not.toBeInTheDocument();
+  });
+
+  it('invites the drop when the placement is accepted', () => {
+    editorState = buildState(null, BODY_ID);
+    render(<DropPlacementOverlay />);
+    startDrag();
+
+    expect(screen.getByText('Place here')).toBeInTheDocument();
+    expect(
+      screen.queryByText('The project image and title are fixed')
+    ).not.toBeInTheDocument();
+  });
+
+  it('explains the fixed header when the placement lands above the body', () => {
+    editorState = buildState(
+      'Parent node cannot accept incoming node',
+      ROOT_NODE,
+      'ProjectTitle'
+    );
+    render(<DropPlacementOverlay />);
+    startDrag();
+
+    expect(
+      screen.getByText("Can't place widgets in the fixed header")
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('The project image and title are fixed')
+    ).toBeInTheDocument();
+  });
+
+  it('follows the fixed zone when the canvas scrolls under a still pointer', () => {
+    editorState = buildState(
+      'Parent node cannot accept incoming node',
+      ROOT_NODE,
+      'ProjectTitle'
+    );
+    render(<DropPlacementOverlay />);
+    startDrag();
+
+    const veil = () => document.querySelector('[data-cy="fixed-zone-veil"]');
+
+    expect(veil()).toHaveStyle({ top: '0px' });
+
+    scrollCanvasBy(120);
+
+    expect(veil()).toHaveStyle({ top: '-120px' });
+  });
+
+  it('leaves the fixed zone alone when the placement slips below the body', () => {
+    editorState = buildState(
+      'Parent node cannot accept incoming node',
+      ROOT_NODE,
+      'ProjectPageBody',
+      'after'
+    );
+    render(<DropPlacementOverlay />);
+    startDrag();
+
+    expect(
+      screen.getByText("Can't place widgets below the page content")
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText('The project image and title are fixed')
+    ).not.toBeInTheDocument();
+  });
+});

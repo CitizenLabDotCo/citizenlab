@@ -33,8 +33,8 @@ const CopySurveyModal = ({
 }: Props) => {
   const { formatMessage } = useIntl();
 
-  const [projectId, setProjectId] = useState();
-  const [phaseId, setPhaseId] = useState();
+  const [projectId, setProjectId] = useState<string>();
+  const [phaseId, setPhaseId] = useState<string>();
 
   // TODO: Very similar to what happens in report builder - could we combine?
   const handleProjectFilter = useCallback(
@@ -77,14 +77,13 @@ const CopySurveyModal = ({
             emptyOptionMessage={messages.noProject}
             onProjectFilter={handleProjectFilter}
           />
-          {/* TODO: Fix this the next time the file is edited. */}
-          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           {projectId !== undefined && (
             <PhaseFilter
-              label={formatMessage(messages.surveyPhase)}
+              label={formatMessage(messages.survey)}
               projectId={projectId}
               phaseId={phaseId}
               participationMethods={['native_survey']}
+              placementType="all"
               onPhaseFilter={handlePhaseFilter}
             />
           )}

@@ -1610,7 +1610,8 @@ CREATE TABLE public.users (
     phone character varying,
     new_phone character varying,
     phone_confirmed_at timestamp(6) without time zone,
-    early_access_features jsonb DEFAULT '[]'::jsonb NOT NULL
+    early_access_features jsonb DEFAULT '[]'::jsonb NOT NULL,
+    merge_target_email character varying
 );
 
 
@@ -2974,7 +2975,8 @@ CREATE TABLE public.idea_imports (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     user_consent boolean DEFAULT false NOT NULL,
-    content_changes jsonb DEFAULT '{}'::jsonb
+    content_changes jsonb DEFAULT '{}'::jsonb,
+    extra_info jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -3683,7 +3685,8 @@ CREATE TABLE public.public_api_api_clients (
     updated_at timestamp without time zone NOT NULL,
     last_used_at timestamp(6) without time zone,
     secret_digest character varying NOT NULL,
-    secret_postfix character varying NOT NULL
+    secret_postfix character varying NOT NULL,
+    last_user_agent character varying
 );
 
 
@@ -9555,6 +9558,9 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260915134812'),
+('20260915103146'),
+('20260904074654'),
 ('20260827120000'),
 ('20260821210000'),
 ('20260821090000'),

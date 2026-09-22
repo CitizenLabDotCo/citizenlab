@@ -1094,27 +1094,6 @@ RSpec.describe User do
     end
   end
 
-  describe 'custom_field_values' do
-    # TODO: Allow light users without required fields
-    # it 'validates when custom_field_values have changed' do
-    #   u = create(:user)
-    #   u.custom_field_values = {
-    #     somekey: 'somevalue'
-    #   }
-    #   expect { u.save }.to(change { u.errors[:custom_field_values] })
-    # end
-
-    it "doesn't validate on creation without form submission" do
-      u = build(:user, custom_field_values: { somekey: 'somevalue' })
-      expect { u.save }.not_to(change { u.errors[:custom_field_values] })
-    end
-
-    it 'validates on form submission' do
-      u = build(:user, custom_field_values: { somekey: 'somevalue' })
-      expect { u.save(context: :form_submission) }.to(change { u.errors[:custom_field_values] })
-    end
-  end
-
   describe 'registered?' do
     it 'returns false when the user has not completed registration' do
       u = build(:user, registration_completed_at: nil)
@@ -1429,7 +1408,7 @@ RSpec.describe User do
 
         user2.reload
         expect(user2.new_email).to be_nil
-        expect(user2.new_email_confirmation.reload.code).to be_nil
+        expect(user2.new_email_confirmation).to be_nil
       end
     end
   end

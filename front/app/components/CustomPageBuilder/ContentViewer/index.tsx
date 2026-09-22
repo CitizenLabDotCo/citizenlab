@@ -3,8 +3,13 @@ import React from 'react';
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 
 import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
+import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
-import { normalizeCustomPageLayout } from 'components/CustomPageBuilder/defaultLayout';
+import { useSectionBoundaryMargin } from 'components/admin/ContentBuilder/verticalRhythm';
+import {
+  layoutStartsWithBanner,
+  normalizeCustomPageLayout,
+} from 'components/CustomPageBuilder/defaultLayout';
 import Editor from 'components/CustomPageBuilder/Editor';
 
 import eventEmitter from 'utils/eventEmitter';
@@ -20,20 +25,28 @@ const handleLoadImages = () => {
 };
 
 const CustomPageContentViewer = ({ staticPageId }: Props) => {
-  const { isLoading, hasContent, craftjsJson } =
+  const { isLoading, hasContent, craftjsJson, layoutId } =
     useCustomPageBuilderContent(staticPageId);
+  // The page sets its own top gap, except under a full-bleed banner. FullScreenPreview uses the
+  // same rule.
+  const paddingTop = useSectionBoundaryMargin();
 
   if (isLoading) return <Spinner />;
   if (!hasContent) return null;
 
   return (
-    <Box data-testid="customPageContentViewer">
-      <Editor isPreview={true}>
-        <ContentBuilderFrame
-          editorData={normalizeCustomPageLayout(craftjsJson)}
-          onLoadImages={handleLoadImages}
-        />
-      </Editor>
+    <Box
+      data-testid="customPageContentViewer"
+      pt={layoutStartsWithBanner(craftjsJson) ? undefined : paddingTop}
+    >
+      <ContentBuilderLayoutProvider layoutId={layoutId}>
+        <Editor isPreview={true}>
+          <ContentBuilderFrame
+            editorData={normalizeCustomPageLayout(craftjsJson)}
+            onLoadImages={handleLoadImages}
+          />
+        </Editor>
+      </ContentBuilderLayoutProvider>
     </Box>
   );
 };

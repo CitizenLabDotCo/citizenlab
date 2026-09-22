@@ -24,15 +24,18 @@ export default defineConfig(({ mode }) => {
   const isTestBuild = process.env.TEST_BUILD === 'true';
   const sourceMapToSentry = !isDev && !isTestBuild && !!process.env.CI;
 
-  // CI sets ASSET_BASE_URL=/<git-sha>/ so each build's assets get immutable,
-  // per-build URLs. Unset locally, so dev serves everything from '/'.
-  const assetBase = process.env.ASSET_BASE_URL || '/';
-  // Sentry matches artifacts by request URL, `~` standing in for scheme+host,
-  // so artifact names need the same prefix: '/<sha>/' -> '~/<sha>'.
-  const sentryUrlPrefix = `~${assetBase}`.replace(/\/+$/, '');
-
   const API_HOST = process.env.API_HOST || 'localhost';
   const API_PORT = process.env.API_PORT || '4000';
+  // API_URL points the SPA at a remote back end (staging, an epic) instead of
+  // the local Docker stack. The tenant comes from the Host header, so the
+  // proxy must rewrite it (changeOrigin). Example:
+  //   API_URL=https://prototype.stg.govocal.com npm start
+  const API_URL = process.env.API_URL;
+  const apiProxy = {
+    target: API_URL ?? `http://${API_HOST}:${API_PORT}`,
+    changeOrigin: API_URL !== undefined,
+    secure: true,
+  };
   const GRAPHQL_HOST = process.env.GRAPHQL_HOST || 'localhost';
   const GRAPHQL_PORT = process.env.GRAPHQL_PORT || '5001';
   const DEV_WORKSHOPS_HOST = process.env.DEV_WORKSHOPS_HOST || 'localhost';
@@ -47,7 +50,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     root: path.resolve(__dirname, 'app'), // Root directory
-    base: assetBase,
+    base: '/',
     server: {
       port: USE_HTTPS ? 443 : Number(process.env.PORT) || 3000,
       host: '0.0.0.0',
@@ -57,14 +60,8 @@ export default defineConfig(({ mode }) => {
         ignored: ['**/public/twemoji/**'],
       },
       proxy: {
-        '/web_api/': {
-          target: `http://${API_HOST}:${API_PORT}`,
-          changeOrigin: false,
-        },
-        '/auth/': {
-          target: `http://${API_HOST}:${API_PORT}`,
-          changeOrigin: false,
-        },
+        '/web_api/': apiProxy,
+        '/auth/': apiProxy,
         '/widgets/': {
           target: `http://${API_HOST}:3200`,
           changeOrigin: false,
@@ -73,10 +70,7 @@ export default defineConfig(({ mode }) => {
           target: `http://${GRAPHQL_HOST}:${GRAPHQL_PORT}`,
           changeOrigin: false,
         },
-        '/uploads': {
-          target: `http://${API_HOST}:${API_PORT}`,
-          changeOrigin: false,
-        },
+        '/uploads': apiProxy,
         '/workshops': {
           target: `http://${DEV_WORKSHOPS_HOST}:${DEV_WORKSHOPS_PORT}`,
           changeOrigin: false,
@@ -125,7 +119,10 @@ export default defineConfig(({ mode }) => {
               // match — hence 0 artifacts on every release.
               uploadLegacySourcemaps: {
                 paths: ['build'],
-                urlPrefix: sentryUrlPrefix,
+                // Uploads are named after the URL they're served from. `~`
+                // means any scheme and host, so one upload covers every
+                // tenant domain.
+                urlPrefix: '~',
                 ext: ['js', 'map'],
               },
             },
@@ -143,9 +140,11 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         input: path.resolve(__dirname, 'app/index.html'),
         output: {
-          entryFileNames: '[name].[hash].min.js', // Generate the main.*.min.js file
+          // All releases share assets/ in S3. Content hashes give changed files
+          // new names, while unchanged ones keep their URL and stay cached.
+          entryFileNames: 'assets/[name].[hash].min.js',
           chunkFileNames: 'assets/[name].[hash].chunk.js',
-          assetFileNames: '[name].[ext]',
+          assetFileNames: 'assets/[name].[hash][extname]',
         },
       },
     },

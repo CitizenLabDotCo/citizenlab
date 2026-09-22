@@ -25,7 +25,9 @@ RSpec.describe BulkImportIdeas::Parsers::IdeaRowMapper do
         { key: 'blue', name: 'Blue', type: 'option', input_type: 'option', parent_key: 'colour' },
         { key: 'multi', name: 'Multi', type: 'field', input_type: 'multiselect', parent_key: nil },
         { key: 'opt_a', name: 'A', type: 'option', input_type: 'option', parent_key: 'multi' },
-        { key: 'opt_b', name: 'B', type: 'option', input_type: 'option', parent_key: 'multi' }
+        { key: 'opt_b', name: 'B', type: 'option', input_type: 'option', parent_key: 'multi' },
+        { key: 'spaced', name: 'Spaced', type: 'field', input_type: 'select', parent_key: nil },
+        { key: 'opt_spaced', name: "  Option \r\n  A  ", type: 'option', input_type: 'option', parent_key: 'spaced' }
       ]
     end
 
@@ -39,6 +41,14 @@ RSpec.describe BulkImportIdeas::Parsers::IdeaRowMapper do
       field = { key: 'multi', input_type: 'multiselect', value: %w[A B] }
       result = mapper.process_field_value(field, form_fields)
       expect(result[:value]).to match_array %w[opt_a opt_b]
+    end
+
+    it 'maps values to option keys regardless of whitespace differences in the option title' do
+      # The LLM schema enum squishes option titles (FormSyncSchemaBuilder), so the LLM answers with
+      # the squished value. Matching must tolerate that so the answer is not silently dropped.
+      field = { key: 'spaced', input_type: 'select', value: ['Option A'] }
+      result = mapper.process_field_value(field, form_fields)
+      expect(result[:value]).to eq ['opt_spaced']
     end
 
     it 'converts number fields to integer' do

@@ -39,6 +39,7 @@ require Rails.root.join('lib/email_domain_blacklist')
 #  new_phone                 :string
 #  phone_confirmed_at        :datetime
 #  early_access_features     :jsonb            not null
+#  merge_target_email        :string
 #
 # Indexes
 #
