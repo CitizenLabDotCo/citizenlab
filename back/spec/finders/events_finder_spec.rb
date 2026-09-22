@@ -32,6 +32,51 @@ describe EventsFinder do
     end
   end
 
+  describe '#areas_condition' do
+    let(:area) { create(:area) }
+    let(:project) { create(:project, areas: [area]) }
+
+    before do
+      create_list(:event, 2, project: create(:project))
+      create_list(:event, 2, project: project)
+      params[:areas] = [area.id]
+    end
+
+    it 'returns only events of projects in the area' do
+      expect(result_record_ids).to match_array Event.where(project: project).pluck(:id)
+    end
+  end
+
+  describe '#global_topics_condition' do
+    let(:global_topic) { create(:global_topic) }
+    let(:project) { create(:project, global_topics: [global_topic]) }
+
+    before do
+      create_list(:event, 2, project: create(:project))
+      create_list(:event, 2, project: project)
+      params[:global_topics] = [global_topic.id]
+    end
+
+    it 'returns only events of projects with the topic' do
+      expect(result_record_ids).to match_array Event.where(project: project).pluck(:id)
+    end
+  end
+
+  describe '#spaces_condition' do
+    let(:space) { create(:space) }
+    let(:project) { create(:project, space: space) }
+
+    before do
+      create_list(:event, 2, project: create(:project))
+      create_list(:event, 2, project: project)
+      params[:spaces] = [space.id]
+    end
+
+    it 'returns only events of projects in the space' do
+      expect(result_record_ids).to match_array Event.where(project: project).pluck(:id)
+    end
+  end
+
   describe '#project_publication_statuses_condition' do
     let(:project) { create(:project) }
     let(:project2) { create(:project, { admin_publication_attributes: { publication_status: 'draft' } }) }

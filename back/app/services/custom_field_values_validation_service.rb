@@ -3,8 +3,8 @@
 # Validates custom_field_values against the JSON schemas of the custom fields,
 # as provided by the input type strategies. Required fields are not enforced.
 class CustomFieldValuesValidationService
-  def json_schema_validation_errors(fields, values)
-    JSON::Validator.fully_validate(json_schema(fields), values, errors_as_objects: true).map do |error|
+  def json_schema_validation_errors(fields, values, allow_unknown_keys: false)
+    JSON::Validator.fully_validate(json_schema(fields, allow_unknown_keys), values, errors_as_objects: true).map do |error|
       { fragment: error[:fragment], error: error[:failed_attribute], human_message: error[:message] }
     end
   end
@@ -12,10 +12,10 @@ class CustomFieldValuesValidationService
   private
 
   # Companion answers (_other and _follow_up) are stored under their own keys.
-  def json_schema(fields)
+  def json_schema(fields, allow_unknown_keys)
     {
       type: 'object',
-      additionalProperties: false,
+      additionalProperties: allow_unknown_keys,
       properties: fields.each_with_object({}) do |field, properties|
         properties[field.key] = field.input_type_strategy.json_schema
         properties["#{field.key}_other"] = { type: 'string' } if field.includes_other_option?

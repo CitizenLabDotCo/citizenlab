@@ -23,6 +23,7 @@ import EventCards from 'components/EventCards';
 import { useIntl } from 'utils/cl-intl';
 import Link, { typedStyled } from 'utils/cl-router/Link';
 import { isNilOrError, isNil, isError } from 'utils/helperUtils';
+import sharedMessages from 'utils/messages';
 
 import messages from './messages';
 
@@ -113,7 +114,7 @@ const EventsWidget = ({ staticPageId }: Props) => {
 
           <Box alignSelf="center">
             <EventPageLink to="/events">
-              {formatMessage(messages.viewAllEventsText)}
+              {formatMessage(sharedMessages.viewAllEvents)}
             </EventPageLink>
           </Box>
         </>

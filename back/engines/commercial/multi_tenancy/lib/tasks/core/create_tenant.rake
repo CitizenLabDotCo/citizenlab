@@ -368,10 +368,6 @@ namespace :cl2_back do
           allowed: true,
           messages_purchased: 10_000
         },
-        parallel_participation: {
-          enabled: true,
-          allowed: true
-        },
         configurable_dropdown: {
           enabled: true,
           allowed: true

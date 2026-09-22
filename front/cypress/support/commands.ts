@@ -91,6 +91,10 @@ declare global {
       notIntersectsViewport: typeof notIntersectsViewport;
       apiGetHomepageLayout: typeof apiGetHomepageLayout;
       apiUpdateHomepageLayout: typeof apiUpdateHomepageLayout;
+      apiUpdateProjectPageLayout: typeof apiUpdateProjectPageLayout;
+      apiCreateArea: typeof apiCreateArea;
+      apiRemoveArea: typeof apiRemoveArea;
+      apiSetProjectAreas: typeof apiSetProjectAreas;
       apiUpdateAppConfiguration: typeof apiUpdateAppConfiguration;
       clickLocaleSwitcherAndType: typeof clickLocaleSwitcherAndType;
       apiCreateSmartGroup: typeof apiCreateSmartGroup;
@@ -120,6 +124,7 @@ declare global {
       apiCreateInputTopic: typeof apiCreateInputTopic;
       deleteEventAttendances: typeof deleteEventAttendances;
       apiRemoveIdeas: typeof apiRemoveIdeas;
+      apiRequestProjectReview: typeof apiRequestProjectReview;
     }
   }
 }
@@ -1867,6 +1872,83 @@ function apiUpdateHomepageLayout({
     });
   });
 }
+
+function apiRemoveArea(areaId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'DELETE',
+      url: `web_api/v1/areas/${areaId}`,
+    });
+  });
+}
+
+function apiCreateArea(title: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: 'web_api/v1/areas',
+      body: {
+        area: {
+          title_multiloc: { en: title, 'nl-BE': title },
+          description_multiloc: { en: title, 'nl-BE': title },
+        },
+      },
+    });
+  });
+}
+
+function apiSetProjectAreas(projectId: string, areaIds: string[]) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'PATCH',
+      url: `web_api/v1/projects/${projectId}`,
+      body: { project: { area_ids: areaIds } },
+    });
+  });
+}
+
+function apiUpdateProjectPageLayout(
+  projectId: string,
+  craftjs_json: Record<string, unknown>
+) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/projects/${projectId}/content_builder_layouts/project_page/upsert`,
+      body: {
+        content_builder_layout: {
+          enabled: true,
+          craftjs_json,
+        },
+      },
+    });
+  });
+}
+
 function apiCreateSmartGroup(groupName: string, rules: TRule[]) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -2335,6 +2417,24 @@ function createProjectWithIdeationPhase({
     });
 }
 
+function apiRequestProjectReview(
+  projectId: string,
+  email: string,
+  password: string
+) {
+  return cy.apiLogin(email, password).then((response) => {
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${response.body.jwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/projects/${projectId}/review`,
+      body: {},
+    });
+  });
+}
+
 /**
  * Get an element by its data-cy attribute.
  * This is a utility function to make it easier to find elements by their data-cy attribute.
@@ -2508,6 +2608,10 @@ Cypress.Commands.add(
 );
 Cypress.Commands.add('apiGetHomepageLayout', apiGetHomepageLayout);
 Cypress.Commands.add('apiUpdateHomepageLayout', apiUpdateHomepageLayout);
+Cypress.Commands.add('apiUpdateProjectPageLayout', apiUpdateProjectPageLayout);
+Cypress.Commands.add('apiCreateArea', apiCreateArea);
+Cypress.Commands.add('apiRemoveArea', apiRemoveArea);
+Cypress.Commands.add('apiSetProjectAreas', apiSetProjectAreas);
 Cypress.Commands.add('apiRemoveCustomPage', apiRemoveCustomPage);
 Cypress.Commands.add('apiCreateCustomPage', apiCreateCustomPage);
 Cypress.Commands.add('apiUpdateCustomPage', apiUpdateCustomPage);
@@ -2567,3 +2671,4 @@ Cypress.Commands.add(
   createProjectWithIdeationPhase
 );
 Cypress.Commands.add('apiCreateInputTopic', apiCreateInputTopic);
+Cypress.Commands.add('apiRequestProjectReview', apiRequestProjectReview);

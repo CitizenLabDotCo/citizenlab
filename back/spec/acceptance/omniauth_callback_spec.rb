@@ -79,8 +79,6 @@ resource 'Omniauth Callback', document: false do
 
   context 'when authenticating via OAuth' do
     before do
-      @user = create(:user, email: 'facebook_user@example.com')
-
       AppConfiguration.instance.settings['id_config'] = {
         allowed: true,
         enabled: true,
@@ -93,9 +91,9 @@ resource 'Omniauth Callback', document: false do
         provider: 'facebook',
         uid: '12345',
         info: {
-          email: @user.email,
-          first_name: @user.first_name,
-          last_name: @user.last_name
+          email: 'facebook_user@example.com',
+          first_name: 'Facebook',
+          last_name: 'User'
         },
         extra: {
           raw_info: {

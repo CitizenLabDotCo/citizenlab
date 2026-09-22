@@ -275,8 +275,7 @@ RSpec.describe DecidimImporter::Importer do
 
     def flags
       {
-        'project_static_pages' => { 'allowed' => true, 'enabled' => true },
-        'parallel_participation' => { 'allowed' => true, 'enabled' => true }
+        'project_static_pages' => { 'allowed' => true, 'enabled' => true }
       }
     end
 
@@ -304,7 +303,6 @@ RSpec.describe DecidimImporter::Importer do
 
       config = AppConfiguration.instance.reload
       expect(config.feature_activated?('project_static_pages')).to be(true)
-      expect(config.feature_activated?('parallel_participation')).to be(true)
       expect(config.settings('core', 'organization_name')).to eq(name_before) # untouched
     ensure
       file&.unlink
@@ -315,7 +313,7 @@ RSpec.describe DecidimImporter::Importer do
         .merge(flags))
 
       expect(described_class.apply_import_app_config_file(file.path)).to eq([])
-      expect(AppConfiguration.instance.reload.feature_activated?('parallel_participation')).to be(true)
+      expect(AppConfiguration.instance.reload.feature_activated?('project_static_pages')).to be(true)
     ensure
       file&.unlink
     end
