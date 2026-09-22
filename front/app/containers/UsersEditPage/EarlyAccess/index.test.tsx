@@ -13,8 +13,6 @@ jest.mock('api/users/useUpdateUser', () => () => ({ mutate: mockUpdateUser }));
 let mockAuthUser: IUser | undefined;
 jest.mock('api/me/useAuthUser', () => () => ({ data: mockAuthUser }));
 
-// The real registry is empty between features, so the section is exercised
-// against a stand-in that covers both tiers.
 jest.mock('./features', () => ({
   EARLY_ACCESS_FEATURES: [
     {

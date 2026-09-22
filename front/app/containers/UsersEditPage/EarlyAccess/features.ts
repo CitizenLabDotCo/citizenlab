@@ -11,8 +11,4 @@ type EarlyAccessFeature = {
   description: MessageDescriptor;
 };
 
-// Mirrors the features marked "early_access" in the back-end settings schema.
-// Both sides are needed: the back end decides what may be switched on and by
-// whom, this list decides what is offered and how it is described. The section
-// hides itself while the list is empty.
 export const EARLY_ACCESS_FEATURES: EarlyAccessFeature[] = [];

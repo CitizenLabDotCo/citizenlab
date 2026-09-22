@@ -25,8 +25,6 @@ const EarlyAccess = () => {
     return null;
   }
 
-  // The back end draws the same line and rejects anything else, so this only
-  // decides what is worth showing.
   const levels: EarlyAccessLevel[] = isSuperAdmin(authUser)
     ? ['general', 'internal']
     : ['general'];
@@ -48,8 +46,6 @@ const EarlyAccess = () => {
     updateUser(
       { userId: authUser.data.id, early_access_features: next },
       {
-        // The features live on the app configuration, which useUpdateUser does
-        // not invalidate, so without this the toggle flips but nothing changes.
         onSuccess: () => {
           queryClient.invalidateQueries({
             queryKey: appConfigurationKeys.all(),

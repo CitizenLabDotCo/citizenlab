@@ -183,8 +183,6 @@ class ApplicationController < ActionController::API
       .per(pagination_param(:size))
   end
 
-  # Reads `page[number]`/`page[size]` defensively: malformed input yields nil so Kaminari
-  # uses its defaults instead of raising (`String does not have #dig`, `to_i` on Parameters).
   def pagination_param(key)
     page = params[:page]
     return nil unless page.is_a?(ActionController::Parameters)

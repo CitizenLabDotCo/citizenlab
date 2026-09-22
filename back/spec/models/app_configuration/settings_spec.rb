@@ -111,8 +111,6 @@ RSpec.describe AppConfiguration::Settings do
         .to all(be_in(described_class::EARLY_ACCESS_LEVELS))
     end
 
-    # The override only lifts `allowed`/`enabled`, so it cannot satisfy a
-    # dependency or conjure a required setting.
     it 'only marks features that need nothing else to work' do
       schema = described_class.json_schema
 

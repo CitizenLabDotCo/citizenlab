@@ -69,16 +69,8 @@ class AppConfiguration < ApplicationRecord
       extension_features_hash.keys
     end
 
-    # Tiers a hidden feature can be offered in. 'internal' reaches Go Vocal staff
-    # only, so we can dogfood something before it is fit to show a customer;
-    # 'general' reaches every admin.
     EARLY_ACCESS_LEVELS = %w[general internal].freeze
 
-    # Features that are released but hidden: off for every tenant, and switchable
-    # per admin through User#early_access_features. Maps each feature name to the
-    # tier it is offered in. Deliberately reads the memoized core schema and the
-    # specs directly instead of +json_schema+, which rebuilds the whole tree on
-    # every call.
     def self.early_access_features
       core = core_settings_json_schema['properties'].filter_map do |name, feature|
         [name, feature['early_access']] if feature['early_access']
@@ -175,10 +167,6 @@ class AppConfiguration < ApplicationRecord
     locales.any? { |l| l.include?(locale) } ? locales.find { |l| l.include?(locale) } : locales.first
   end
 
-  # The early access overrides are layered on top of the memoized settings rather
-  # than baked into them, so the result never depends on which caller ran first.
-  # Serving a different body per admin is only safe because the aggressive caching
-  # engine excludes them from the action cache (see +caching_and_non_admin?+).
   def public_settings
     base = (@public_settings ||= SettingsService.new.format_for_front_end(settings, Settings.json_schema))
     early_access_features = Current.early_access_features

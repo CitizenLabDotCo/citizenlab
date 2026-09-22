@@ -129,8 +129,6 @@ RSpec.describe AppConfiguration do
 
   describe 'early access' do
     let(:config) { described_class.instance }
-    # Stands in for whatever is in early access: the override layer under test
-    # reads Current, not the registry, so any feature in the schema will do.
     let(:feature) { 'spaces' }
 
     before do

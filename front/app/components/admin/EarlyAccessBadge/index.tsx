@@ -7,7 +7,6 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-// 'internal' is offered to Go Vocal staff only, 'general' to every admin.
 export type EarlyAccessLevel = 'general' | 'internal';
 
 type Props = {

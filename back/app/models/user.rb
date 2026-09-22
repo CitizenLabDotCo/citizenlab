@@ -343,16 +343,12 @@ class User < ApplicationRecord
     self[:last_name].blank? && self[:first_name].blank? && !invite_pending?
   end
 
-  # Early access tiers this user may opt into. Go Vocal staff also get the
-  # internal tier, so a feature can be dogfooded before it is fit for a customer.
   def early_access_levels
     return [] unless admin?
 
     super_admin? ? AppConfiguration::Settings::EARLY_ACCESS_LEVELS : %w[general]
   end
 
-  # Early access features on offer to this user: the registry narrowed to the
-  # tiers they may opt into.
   def offered_early_access_features
     levels = early_access_levels
     AppConfiguration::Settings.early_access_features.filter_map do |name, level|
@@ -360,9 +356,6 @@ class User < ApplicationRecord
     end
   end
 
-  # Early access features this user was actually granted: what they opted into,
-  # narrowed to what is still on offer to them. A feature that left early access,
-  # or that they are no longer eligible for, drops out on its own.
   def active_early_access_features
     Set.new(early_access_features) & offered_early_access_features
   end
@@ -613,11 +606,6 @@ class User < ApplicationRecord
     Rails.logger.info "Validation error! Email banned: #{value.split('@')&.last}"
   end
 
-  # Only what this change adds is checked. A feature that graduated out of early
-  # access, or that the user stopped being eligible for, stays in the stored list
-  # without blocking them from switching anything else -- #active_early_access_features
-  # already ignores it. The offered set accounts for the tier, so a name that is
-  # not in early access at all and one reserved for Go Vocal staff both land here.
   def validate_early_access_features_offered
     return unless early_access_features.is_a?(Array)
 

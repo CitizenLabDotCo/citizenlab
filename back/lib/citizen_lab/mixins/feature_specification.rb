@@ -43,9 +43,6 @@ module CitizenLab
         []
       end
 
-      # Tier this feature is offered in while it is still hidden, or nil for a
-      # normal feature. 'internal' reaches Go Vocal staff only, 'general' every
-      # admin. See AppConfiguration::Settings.early_access_features.
       # @return [String, nil]
       def early_access
         nil
