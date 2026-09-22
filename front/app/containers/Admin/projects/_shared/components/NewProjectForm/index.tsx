@@ -18,7 +18,6 @@ import { useIntl } from 'utils/cl-intl';
 
 import ProjectContextSection from '../ProjectSetupForm/ProjectContextSection';
 import { SpaceAndFolderId } from '../ProjectSetupForm/ProjectContextSection/types';
-import { useValidateProjectContext } from '../ProjectSetupForm/ProjectContextSection/utils';
 import ProjectNameInput from '../ProjectSetupForm/ProjectNameInput';
 
 import messages from './messages';
@@ -33,7 +32,6 @@ interface Props {
 const NewProjectForm = ({ processing, failed, onCancel, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
   const locales = useAppConfigurationLocales();
-  const validateProjectContext = useValidateProjectContext();
 
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc>({});
   const [titleError, setTitleError] = useState<Multiloc | null>(null);
@@ -41,7 +39,6 @@ const NewProjectForm = ({ processing, failed, onCancel, onSubmit }: Props) => {
     space_id: null,
     folder_id: null,
   });
-  const [contextError, setContextError] = useState(false);
   const [listed, setListed] = useState(true);
 
   if (!locales) return null;
@@ -49,11 +46,6 @@ const NewProjectForm = ({ processing, failed, onCancel, onSubmit }: Props) => {
   const handleTitleChange = (titleMultiloc: Multiloc) => {
     setTitleMultiloc(titleMultiloc);
     setTitleError(null);
-  };
-
-  const handleContextChange = (spaceAndFolderId: SpaceAndFolderId) => {
-    setContext(spaceAndFolderId);
-    setContextError(false);
   };
 
   const handleSubmit = () => {
@@ -65,17 +57,6 @@ const NewProjectForm = ({ processing, failed, onCancel, onSubmit }: Props) => {
 
     if (!isEmpty(error)) {
       setTitleError(error);
-      return;
-    }
-
-    if (
-      !validateProjectContext({
-        spaceId: context.space_id,
-        folderId: context.folder_id,
-        projectInRoot: true,
-      })
-    ) {
-      setContextError(true);
       return;
     }
 
@@ -95,8 +76,8 @@ const NewProjectForm = ({ processing, failed, onCancel, onSubmit }: Props) => {
         spaceId={context.space_id}
         folderId={context.folder_id}
         projectInRoot
-        error={contextError}
-        onChange={handleContextChange}
+        error={false}
+        onChange={setContext}
       />
 
       <Box>
