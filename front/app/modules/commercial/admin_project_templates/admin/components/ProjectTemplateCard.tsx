@@ -78,7 +78,8 @@ const Container = styled.div`
   border-radius: ${({ theme }) => theme.borderRadius};
   background: #f2f4f5;
   border: solid 1px #eaeaea;
-  overflow: hidden;
+  overflow: clip;
+  min-width: 0;
   position: relative;
 
   &:hover {
@@ -105,10 +106,11 @@ interface Props {
   title: string;
   body: string;
   className?: string;
+  onUse?: (projectTemplateId: string) => void;
 }
 
 const ProjectTemplateCard = memo<Props>(
-  ({ projectTemplateId, imageUrl, title, body, className }) => {
+  ({ projectTemplateId, imageUrl, title, body, className, onUse }) => {
     const [useTemplateModalOpened, setUseTemplateModalOpened] =
       useState<boolean>(false);
     const [previewModalOpened, setPreviewModalOpened] =
@@ -127,9 +129,14 @@ const ProjectTemplateCard = memo<Props>(
         projectTemplateId,
         title,
       });
+
+      if (onUse) {
+        onUse(projectTemplateId);
+        return;
+      }
+
       setUseTemplateModalOpened(true);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [onUse, projectTemplateId, title]);
 
     const onCloseUseTemplateModal = useCallback(() => {
       trackEventByName(tracks.useTemplateModalClosed, {
@@ -170,11 +177,13 @@ const ProjectTemplateCard = memo<Props>(
           </MoreDetailsButton>
         </Buttons>
 
-        <UseTemplateModal
-          projectTemplateId={projectTemplateId}
-          opened={useTemplateModalOpened}
-          close={onCloseUseTemplateModal}
-        />
+        {useTemplateModalOpened && (
+          <UseTemplateModal
+            projectTemplateId={projectTemplateId}
+            opened
+            close={onCloseUseTemplateModal}
+          />
+        )}
         <Modal
           opened={previewModalOpened}
           close={() => {

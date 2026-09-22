@@ -54,33 +54,30 @@ const NewProjectModal = ({ mode, onClose }: Props) => {
     }
   };
 
-  const template = mode === 'template';
+  if (mode === 'template') {
+    return (
+      <Outlet
+        id="app.containers.Admin.projects.all.createProject"
+        selectedTabValue="template"
+        onClose={close}
+      />
+    );
+  }
 
   return (
     <Modal
       opened={mode !== null}
       close={close}
-      width={template ? 1000 : 600}
-      header={formatMessage(
-        template ? messages.fromTemplate : messages.fromScratch
-      )}
+      width={600}
+      header={formatMessage(messages.fromScratch)}
     >
       <Box p="24px">
-        {template ? (
-          // The templates grid as the projects page renders it, including the
-          // modal each card opens to name the project.
-          <Outlet
-            id="app.containers.Admin.projects.all.createProject"
-            selectedTabValue="template"
-          />
-        ) : (
-          <NewProjectForm
-            processing={processing}
-            failed={failed}
-            onCancel={close}
-            onSubmit={handleSubmit}
-          />
-        )}
+        <NewProjectForm
+          processing={processing}
+          failed={failed}
+          onCancel={close}
+          onSubmit={handleSubmit}
+        />
       </Box>
     </Modal>
   );

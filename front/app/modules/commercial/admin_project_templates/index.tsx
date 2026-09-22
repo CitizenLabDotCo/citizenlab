@@ -53,7 +53,7 @@ const configuration: ModuleConfiguration = {
   outlets: {
     'app.containers.Admin.projects.all.createProject': (props) => (
       <RenderOnSelectedTabValue selectedTabValue={props.selectedTabValue}>
-        <CreateProjectFromTemplate />
+        <CreateProjectFromTemplate onClose={props.onClose} />
       </RenderOnSelectedTabValue>
     ),
     'app.containers.Admin.projects.all.createProject.tabs': (props) => {
