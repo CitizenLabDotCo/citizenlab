@@ -74,6 +74,8 @@ context 'hoplr authentication' do
       ]
     }
     configuration.save!
+    # SSO values are only stored for fields the platform has.
+    create(:custom_field, key: 'neighbourhood')
     host! 'example.org'
   end
 

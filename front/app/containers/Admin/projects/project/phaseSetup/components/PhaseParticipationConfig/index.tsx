@@ -47,14 +47,7 @@ import VotingInputs from './components/inputs/VotingInputs';
 import ParticipationMethodPicker from './components/ParticipationMethodPicker';
 import { Container, StyledSection } from './components/shared/styling';
 import messages from './messages';
-import {
-  defaultParticipationConfig,
-  ideationDefaultConfig,
-  nativeSurveyDefaultConfig,
-  proposalsDefaultConfig,
-  surveyDefaultConfig,
-  votingDefaultConfig,
-} from './utils/participationMethodConfigs';
+import { defaultConfigForMethod } from './utils/participationMethodConfigs';
 
 interface Props {
   phase?: IPhase;
@@ -101,11 +94,9 @@ const PhaseParticipationConfig = ({
   const microsoft_forms_enabled = useFeatureFlag({
     name: 'microsoft_forms_surveys',
   });
-
   const project_library_enabled = useFeatureFlag({ name: 'project_library' });
-
   const { formatMessage } = useIntl();
-
+  const panelPhaseId = layout === 'panel' ? phase?.data.id : undefined;
   const { data: permissions } = usePhasePermissions({
     phaseId: phase?.data.id,
   });
@@ -125,21 +116,7 @@ const PhaseParticipationConfig = ({
   const handleParticipationMethodOnChange = (
     participation_method: ParticipationMethod
   ) => {
-    const ideation = participation_method === 'ideation';
-    const native_survey = participation_method === 'native_survey';
-    const voting = participation_method === 'voting';
-    const survey = participation_method === 'survey';
-    const proposals = participation_method === 'proposals';
-
-    updateFormData({
-      ...defaultParticipationConfig,
-      participation_method,
-      ...(ideation ? ideationDefaultConfig : {}),
-      ...(voting ? votingDefaultConfig : {}),
-      ...(survey ? surveyDefaultConfig : {}),
-      ...(native_survey ? nativeSurveyDefaultConfig : {}),
-      ...(proposals ? proposalsDefaultConfig : {}),
-    });
+    updateFormData(defaultConfigForMethod(participation_method));
   };
 
   const handleSurveyProviderChange = (survey_service: TSurveyService) => {
@@ -512,6 +489,13 @@ const PhaseParticipationConfig = ({
             handleLikingLimitOnChange={handleLikingLimitOnChange}
             showCommentingToggle={false}
             showReactingToggle={false}
+            phaseId={panelPhaseId}
+            accessOnlyActions={[
+              {
+                action: 'reacting_idea',
+                label: messages.votingOnInputsAction,
+              },
+            ]}
           />
         )}
 
@@ -546,6 +530,7 @@ const PhaseParticipationConfig = ({
             handleThresholdChange={handleThresholdChange}
             handleVoteTermChange={handleVoteTermChange}
             voteTerm={voteTerm}
+            layout={layout}
           />
         )}
 
@@ -599,6 +584,7 @@ const PhaseParticipationConfig = ({
             handleSimilarityEnabledChange={handleSimilarityEnabledChange}
             handleThresholdChange={handleThresholdChange}
             layout={layout}
+            phaseId={panelPhaseId}
           />
         )}
 
@@ -647,6 +633,7 @@ const PhaseParticipationConfig = ({
             handleSimilarityEnabledChange={handleSimilarityEnabledChange}
             handleThresholdChange={handleThresholdChange}
             layout={layout}
+            phaseId={panelPhaseId}
           />
         )}
 

@@ -81,4 +81,19 @@ describe('Project page builder drop feedback', () => {
 
     cy.get('#e2e-draggable-events').drop();
   });
+
+  // The default layout ships two-column widgets, so the first one's left column is the target.
+  it('refuses the events widget inside a column', () => {
+    cy.get('#e2e-draggable-events').dragOver(
+      '.e2e-two-column:first div.e2e-single-column:first',
+      { position: 'inside' }
+    );
+
+    cy.get('[data-cy="drop-indicator-bar"]')
+      .should('exist')
+      .and('have.css', 'background-color', RED_600);
+    cy.contains("This widget can't go here").should('exist');
+
+    cy.get('#e2e-draggable-events').drop();
+  });
 });

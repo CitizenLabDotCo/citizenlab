@@ -1610,7 +1610,8 @@ CREATE TABLE public.users (
     token_expiry_key character varying,
     phone character varying,
     new_phone character varying,
-    phone_confirmed_at timestamp(6) without time zone
+    phone_confirmed_at timestamp(6) without time zone,
+    merge_target_email character varying
 );
 
 
@@ -9556,6 +9557,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260915103146'),
 ('20260909100000'),
 ('20260904074654'),
 ('20260821210000'),

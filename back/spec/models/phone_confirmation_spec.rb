@@ -4,16 +4,17 @@ require 'rails_helper'
 
 RSpec.describe PhoneConfirmation do
   describe '#confirm!' do
-    it 'stamps phone_confirmed_at and clears the confirmation code' do
+    it 'stamps phone_confirmed_at and deletes the confirmation' do
       user = create(:user, phone: '+14155552671')
       confirmation = user.find_or_create_confirmation(:phone_confirmation)
       confirmation.update!(code: '1234', code_sent_at: Time.zone.now)
 
       expect(confirmation.confirm!).to be true
 
+      expect(user.phone_confirmation).to be_nil
       user.reload
       expect(user.phone_confirmed_at).to be_present
-      expect(confirmation.reload.code).to be_nil
+      expect(described_class.where(id: confirmation.id)).to be_empty
     end
 
     it "cancels other users' pending change requests targeting the same number" do

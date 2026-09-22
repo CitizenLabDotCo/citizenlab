@@ -14,7 +14,7 @@ import messages from '../messages';
 
 interface Props {
   projectId: string;
-  phase: IPhaseData;
+  phase?: IPhaseData;
 }
 
 const PhasePreview = ({ projectId, phase }: Props) => {
@@ -25,7 +25,7 @@ const PhasePreview = ({ projectId, phase }: Props) => {
 
   if (!project || !phases) return null;
 
-  const phaseIndex = phases.data.findIndex(({ id }) => id === phase.id);
+  const phaseIndex = phases.data.findIndex(({ id }) => id === phase?.id);
   const slug = project.data.attributes.slug;
   const path =
     phaseIndex === -1

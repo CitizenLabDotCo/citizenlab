@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.newPhase',
     defaultMessage: 'New phase',
   },
+  newParticipationMethod: {
+    id: 'app.containers.Admin.projects.project.newParticipationMethod',
+    defaultMessage: 'New participation method',
+  },
   timelineEmptyDescription2: {
     id: 'app.containers.Admin.projects.project.timelineEmptyDescription2',
     defaultMessage: 'Phases are the steps people move through, for example:',
