@@ -39,10 +39,11 @@ resource 'AppConfigurations' do
   end
 
   context 'with a feature in early access, off for the tenant' do
-    let(:feature) { AppConfiguration::Settings.early_access_features.first }
+    let(:feature) { 'spaces' }
     let(:admin) { create(:admin) }
 
     before do
+      allow(AppConfiguration::Settings).to receive(:early_access_features).and_return({ feature => 'general' })
       config = AppConfiguration.instance
       config.settings[feature] = { 'allowed' => false, 'enabled' => false }
       config.save!

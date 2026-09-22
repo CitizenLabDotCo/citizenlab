@@ -4,7 +4,11 @@ require 'rails_helper'
 
 describe WebApi::V1::UserSerializer do
   describe 'early_access_features' do
-    let(:admin) { create(:admin, early_access_features: [AppConfiguration::Settings.early_access_features.first]) }
+    let(:admin) { create(:admin, early_access_features: ['spaces']) }
+
+    before do
+      allow(AppConfiguration::Settings).to receive(:early_access_features).and_return({ 'spaces' => 'general' })
+    end
 
     def attributes_for(current_user)
       described_class.new(admin, params: { current_user: current_user }).serializable_hash.dig(:data, :attributes)
