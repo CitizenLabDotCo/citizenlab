@@ -2440,6 +2440,7 @@
   "app.containers.SpamReport.other": "Cúis eile",
   "app.containers.SpamReport.otherReasonPlaceholder": "Cur síos",
   "app.containers.SpamReport.wrong_content": "Níl sé seo ábhartha",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSaveError": "Níorbh fhéidir linn an t-athrú sin a shábháil. Seans nach bhfuil an ghné seo ar fáil duit a thuilleadh. Athlódáil an leathanach agus bain triail as arís.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "Bain triail as gnéithe atáimid fós á gcur i gcrích. Ní athraíonn an méid a ghníomhaíonn tú anseo ach an méid a fheiceann tusa, ní an méid a fheiceann aon duine eile ar an ardán.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "Luathrochtain",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Bain pictiúr próifíle",

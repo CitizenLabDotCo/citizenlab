@@ -2440,6 +2440,7 @@
   "app.containers.SpamReport.other": "Anderer Grund",
   "app.containers.SpamReport.otherReasonPlaceholder": "Beschreibung",
   "app.containers.SpamReport.wrong_content": "Das gehört hier nicht her",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSaveError": "Wir konnten diese Änderung nicht speichern. Diese Funktion ist möglicherweise nicht mehr für Sie verfügbar. Laden Sie die Seite neu und versuchen Sie es erneut.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "Probieren Sie Funktionen aus, an denen wir noch arbeiten. Was Sie hier aktivieren, ändert nur Ihre eigene Ansicht, nicht die Ansicht anderer Personen auf der Plattform.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "Vorabzugriff",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Entferne Profilbild",

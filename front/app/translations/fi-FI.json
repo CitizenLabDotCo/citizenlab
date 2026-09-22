@@ -2440,6 +2440,7 @@
   "app.containers.SpamReport.other": "Muu syy",
   "app.containers.SpamReport.otherReasonPlaceholder": "Kuvaus",
   "app.containers.SpamReport.wrong_content": "Tämä ei ole relevanttia",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSaveError": "Muutosta ei voitu tallentaa. Tämä ominaisuus ei ehkä ole enää käytettävissäsi. Lataa sivu uudelleen ja yritä uudelleen.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "Kokeile ominaisuuksia, joita viimeistelemme vielä. Täällä käyttöön ottamasi ominaisuudet vaikuttavat vain siihen, mitä itse näet, eivätkä ne vaikuta muihin alustan käyttäjiin.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "Ennakkopääsy",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Poista profiilikuva",

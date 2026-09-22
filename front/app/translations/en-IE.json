@@ -2440,6 +2440,7 @@
   "app.containers.SpamReport.other": "Other reason",
   "app.containers.SpamReport.otherReasonPlaceholder": "Description",
   "app.containers.SpamReport.wrong_content": "This is not relevant",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSaveError": "We could not save that change. This feature may no longer be available to you. Reload the page and try again.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "Try out features we are still finishing. What you switch on here only changes what you see, not what anyone else on the platform sees.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "Early access",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Remove profile picture",

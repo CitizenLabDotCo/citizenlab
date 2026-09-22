@@ -2440,6 +2440,7 @@
   "app.containers.SpamReport.other": "سبب آخر",
   "app.containers.SpamReport.otherReasonPlaceholder": "الوصف",
   "app.containers.SpamReport.wrong_content": "هذا لا ينتمي إلى هنا",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSaveError": "تعذر علينا حفظ هذا التغيير. قد لا تكون هذه الميزة متاحة لك بعد الآن. أعد تحميل الصفحة وحاول مرة أخرى.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "جرب ميزات ما زلنا بصدد إنهائها. ما تقوم بتفعيله هنا يغير فقط ما تراه أنت، ولا يؤثر على ما يراه أي شخص آخر على المنصة.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "الوصول المبكر",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "إزالة صورة ملف التعريف",

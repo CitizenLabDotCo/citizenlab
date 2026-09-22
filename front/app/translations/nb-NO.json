@@ -2440,6 +2440,7 @@
   "app.containers.SpamReport.other": "Annen årsak",
   "app.containers.SpamReport.otherReasonPlaceholder": "Beskrivelse",
   "app.containers.SpamReport.wrong_content": "Dette er ikke relevant",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSaveError": "Vi kunne ikke lagre endringen. Denne funksjonen er kanskje ikke lenger tilgjengelig for deg. Last inn siden på nytt og prøv igjen.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "Prøv ut funksjoner vi fortsatt jobber med å ferdigstille. Det du slår på her, endrer bare hva du ser, ikke hva andre på plattformen ser.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "Tidlig tilgang",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Fjern profilbilde",

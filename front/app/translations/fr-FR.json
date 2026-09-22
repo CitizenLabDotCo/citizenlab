@@ -2440,6 +2440,7 @@
   "app.containers.SpamReport.other": "Autre raison",
   "app.containers.SpamReport.otherReasonPlaceholder": "Description",
   "app.containers.SpamReport.wrong_content": "Cela n'appartient pas ici",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSaveError": "Nous n'avons pas pu enregistrer cette modification. Cette fonctionnalité n'est peut-être plus disponible pour vous. Actualisez la page et réessayez.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "Essayez des fonctionnalités en cours de finalisation. Ce que vous activez ici ne modifie que votre propre interface et n'affecte aucun autre utilisateur de la plateforme.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "Accès anticipé",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Supprimer l'image du profil",

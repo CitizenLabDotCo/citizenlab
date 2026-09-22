@@ -2440,6 +2440,7 @@
   "app.containers.SpamReport.other": "Outro motivo",
   "app.containers.SpamReport.otherReasonPlaceholder": "Descrição",
   "app.containers.SpamReport.wrong_content": "Isto não pertence aqui.",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSaveError": "Não foi possível salvar essa alteração. Este recurso pode não estar mais disponível para você. Recarregue a página e tente novamente.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "Experimente recursos que ainda estamos finalizando. O que você ativar aqui altera apenas o que você vê, não o que as outras pessoas na plataforma veem.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "Acesso antecipado",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Remover imagem de perfil",

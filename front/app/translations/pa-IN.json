@@ -2440,6 +2440,7 @@
   "app.containers.SpamReport.other": "ਹੋਰ ਕਾਰਨ",
   "app.containers.SpamReport.otherReasonPlaceholder": "ਵਰਣਨ",
   "app.containers.SpamReport.wrong_content": "ਇਹ ਸੰਬੰਧਿਤ ਨਹੀਂ ਹੈ",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSaveError": "ਅਸੀਂ ਉਹ ਬਦਲਾਅ ਸੇਵ ਨਹੀਂ ਕਰ ਸਕੇ। ਹੋ ਸਕਦਾ ਹੈ ਕਿ ਇਹ ਵਿਸ਼ੇਸ਼ਤਾ ਹੁਣ ਤੁਹਾਡੇ ਲਈ ਉਪਲਬਧ ਨਾ ਹੋਵੇ। ਪੰਨੇ ਨੂੰ ਰੀਲੋਡ ਕਰੋ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "ਉਹਨਾਂ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ ਨੂੰ ਅਜ਼ਮਾਓ ਜਿਨ੍ਹਾਂ ਨੂੰ ਅਸੀਂ ਅਜੇ ਪੂਰਾ ਕਰ ਰਹੇ ਹਾਂ। ਤੁਸੀਂ ਇੱਥੇ ਜੋ ਵੀ ਚਾਲੂ ਕਰਦੇ ਹੋ, ਉਹ ਸਿਰਫ਼ ਤੁਹਾਡੇ ਲਈ ਬਦਲੇਗਾ, ਪਲੇਟਫਾਰਮ 'ਤੇ ਕਿਸੇ ਹੋਰ ਲਈ ਨਹੀਂ।",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "ਅਗੇਤੀ ਪਹੁੰਚ",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "ਪ੍ਰੋਫਾਈਲ ਤਸਵੀਰ ਹਟਾਓ",

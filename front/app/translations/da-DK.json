@@ -2440,6 +2440,7 @@
   "app.containers.SpamReport.other": "Anden årsag",
   "app.containers.SpamReport.otherReasonPlaceholder": "Beskrivelse",
   "app.containers.SpamReport.wrong_content": "Dette hører ikke hjemme her",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSaveError": "Vi kunne ikke gemme den ændring. Denne funktion er muligvis ikke længere tilgængelig for dig. Genindlæs siden, og prøv igen.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "Prøv funktioner, som vi stadig er ved at færdiggøre. Det, du slår til her, ændrer kun det, du ser, og ikke hvad andre på platformen ser.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "Tidlig adgang",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Fjern profilbillede",

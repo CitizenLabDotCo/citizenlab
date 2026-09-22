@@ -2440,6 +2440,7 @@
   "app.containers.SpamReport.other": "Más ok",
   "app.containers.SpamReport.otherReasonPlaceholder": "Leírás",
   "app.containers.SpamReport.wrong_content": "Ez nem releváns",
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSaveError": "Nem sikerült menteni a módosítást. Lehet, hogy ez a funkció már nem érhető el számodra. Frissítsd az oldalt, és próbáld újra.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "Próbálja ki a még fejlesztés alatt álló funkciókat. Amit itt bekapcsol, az csak az Ön számára módosítja a megjelenítést, a platformon senki más számára nem.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "Korai hozzáférés",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Profilkép eltávolítása",
