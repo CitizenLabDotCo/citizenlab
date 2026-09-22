@@ -6,8 +6,9 @@ class ApplicationController < ActionController::API
   include ActionController::Cookies
 
   before_action :authenticate_user
-  # Before anything that checks a feature, and deliberately not skipped alongside
-  # +authenticate_user+: +current_user+ resolves from the token on its own.
+  # Runs even where +authenticate_user+ is skipped, so that feature checks on public
+  # endpoints see the override too. +current_user+ resolves from the token on its own and
+  # returns nil when there is no valid one.
   before_action :set_early_access_features
   before_action :set_policy_context
   before_action :set_current_location_headers
@@ -183,6 +184,8 @@ class ApplicationController < ActionController::API
       .per(pagination_param(:size))
   end
 
+  # Reads `page[number]`/`page[size]` defensively: malformed input yields nil so Kaminari
+  # uses its defaults instead of raising (`String does not have #dig`, `to_i` on Parameters).
   def pagination_param(key)
     page = params[:page]
     return nil unless page.is_a?(ActionController::Parameters)
