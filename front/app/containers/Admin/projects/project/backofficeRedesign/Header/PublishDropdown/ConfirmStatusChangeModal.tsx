@@ -15,17 +15,15 @@ export type ConfirmableStatus = 'draft' | 'archived';
 
 const COPY: Record<
   ConfirmableStatus,
-  { title: MessageDescriptor; confirm: MessageDescriptor; id: string }
+  { title: MessageDescriptor; confirm: MessageDescriptor }
 > = {
   draft: {
     title: messages.publishRestoreToDraftTitle,
     confirm: messages.publishRestoreToDraft,
-    id: 'e2e-confirm-restore-to-draft',
   },
   archived: {
     title: messages.publishArchiveTitle,
     confirm: messages.publishMoveToArchive,
-    id: 'e2e-confirm-move-to-archive',
   },
 };
 
@@ -90,7 +88,6 @@ const ConfirmStatusChangeModal = ({
             buttonStyle="admin-dark"
             onClick={confirm}
             processing={isPending}
-            id={copy.id}
           >
             {formatMessage(copy.confirm)}
           </Button>

@@ -28,7 +28,7 @@ const OptionCard = ({ icon, title, description, onClick }: Props) => (
     background="transparent"
     border="none"
     onClick={onClick}
-    style={{ cursor: 'pointer' }}
+    cursor="pointer"
   >
     <Icon name={icon} fill={colors.textSecondary} mt="2px" />
     <Box>
