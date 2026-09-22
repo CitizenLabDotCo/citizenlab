@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
@@ -54,15 +54,12 @@ const FieldSelectionModal = ({
       close={() => {
         setShowSelectionModal(false);
       }}
-      niceHeader={true}
       header={
-        <Title ml="20px" variant="h3" color="primary">
-          <FormattedMessage
-            {...(showAddFieldPage
-              ? messages.createAQuestion
-              : messages.addQuestion)}
-          />
-        </Title>
+        <FormattedMessage
+          {...(showAddFieldPage
+            ? messages.createAQuestion
+            : messages.addQuestion)}
+        />
       }
       closeOnClickOutside={false}
       width={'550px'}

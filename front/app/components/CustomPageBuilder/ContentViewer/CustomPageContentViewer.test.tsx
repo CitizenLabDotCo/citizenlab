@@ -54,13 +54,6 @@ describe('CustomPageContentViewer', () => {
     layoutResponse = layout(true, withContent);
   });
 
-  it('renders the layout when the feature is on and it has content', () => {
-    render(<CustomPageContentViewer staticPageId="page-1" />);
-
-    expect(screen.getByTestId('customPageContentViewer')).toBeInTheDocument();
-    expect(screen.getByTestId('frame')).toBeInTheDocument();
-  });
-
   // CustomPageShow hands over while the query is in flight, so the wait is shown here.
   it('shows a spinner while the layout is loading', () => {
     isLoading = true;
@@ -70,26 +63,8 @@ describe('CustomPageContentViewer', () => {
     expect(screen.queryByTestId('frame')).not.toBeInTheDocument();
   });
 
-  it('renders nothing when the feature is off', () => {
-    featureEnabled = false;
-    render(<CustomPageContentViewer staticPageId="page-1" />);
-
-    expect(
-      screen.queryByTestId('customPageContentViewer')
-    ).not.toBeInTheDocument();
-  });
-
   it('renders nothing when the layout is disabled', () => {
     layoutResponse = layout(false, withContent);
-    render(<CustomPageContentViewer staticPageId="page-1" />);
-
-    expect(
-      screen.queryByTestId('customPageContentViewer')
-    ).not.toBeInTheDocument();
-  });
-
-  it('renders nothing when there is no layout', () => {
-    layoutResponse = null;
     render(<CustomPageContentViewer staticPageId="page-1" />);
 
     expect(

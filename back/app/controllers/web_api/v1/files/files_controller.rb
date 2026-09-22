@@ -97,10 +97,15 @@ class WebApi::V1::Files::FilesController < ApplicationController
   end
 
   def finder_params
-    params.permit(
-      :search, :uploader, :project, :category,
+    permitted = params.permit(
+      :search, :uploader, :project, :category, :static_page,
       uploader: [], project: [], category: []
     ).to_h.symbolize_keys
+
+    static_page_id = permitted.delete(:static_page)
+    return permitted if static_page_id.blank?
+
+    permitted.merge(attachable: StaticPage.find(static_page_id))
   end
 
   def order_params
