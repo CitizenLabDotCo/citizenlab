@@ -232,7 +232,7 @@
   "app.components.admin.ContentBuilder.Widgets.Events.selectSpaces": "Spaces",
   "app.components.admin.ContentBuilder.Widgets.Events.selectTopics": "Tags",
   "app.components.admin.ContentBuilder.Widgets.Events.showAllPaginated2": "Alle, seitenübergreifend",
-  "app.components.admin.ContentBuilder.Widgets.Events.showLimited": "Eine begrenzte Anzahl",
+  "app.components.admin.ContentBuilder.Widgets.Events.showLimited": "Begrenzte Anzahl",
   "app.components.admin.ContentBuilder.Widgets.Events.upcomingEvents": "Bevorstehend und laufend",
   "app.components.admin.ContentBuilder.Widgets.Events.whichEvents2": "Veranstaltungen einschließen, die ... sind",
   "app.components.admin.ContentBuilder.Widgets.Events.whichProjects": "Veranstaltungen anzeigen seit",
