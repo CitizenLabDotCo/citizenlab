@@ -18,8 +18,19 @@ describe WebApi::V1::UserSerializer do
       expect(attributes_for(admin)).to include(early_access_features: admin.early_access_features)
     end
 
-    it 'is not serialized for somebody else' do
+    it 'reports which features the user is offered' do
+      expect(attributes_for(admin)).to include(offered_early_access_features: { 'spaces' => 'general' })
+    end
+
+    it 'is not serialized for a resident' do
       expect(attributes_for(create(:user))).not_to have_key(:early_access_features)
+    end
+
+    it 'is not serialized for another admin' do
+      attributes = attributes_for(create(:admin))
+
+      expect(attributes).not_to have_key(:early_access_features)
+      expect(attributes).not_to have_key(:offered_early_access_features)
     end
   end
 
