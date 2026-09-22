@@ -1651,11 +1651,20 @@ resource 'Users' do
             expect(govocal_admin.reload.early_access_features).to eq [internal_feature]
           end
 
-          example '[error] Opt another admin into an early access feature', document: false do
+          example 'Silently ignore opting another admin into an early access feature', document: false do
             other_admin = create(:admin)
             do_request(id: other_admin.id, user: { early_access_features: [feature] })
 
+            assert_status 200
             expect(other_admin.reload.early_access_features).to eq []
+          end
+
+          example "Does not report another admin's opt-ins", document: false do
+            other_admin = create(:admin, early_access_features: [feature])
+            do_request(id: other_admin.id)
+
+            assert_status 200
+            expect(response_data[:attributes]).not_to have_key(:early_access_features)
           end
         end
 
