@@ -9,18 +9,27 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { MessageDescriptor } from 'react-intl';
 
-import EarlyAccessBadge from 'components/admin/EarlyAccessBadge';
+import EarlyAccessBadge, {
+  EarlyAccessLevel,
+} from 'components/admin/EarlyAccessBadge';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 type Props = {
   title: MessageDescriptor;
   description: MessageDescriptor;
+  level: EarlyAccessLevel;
   checked: boolean;
   onChange: () => void;
 };
 
-const FeatureToggle = ({ title, description, checked, onChange }: Props) => (
+const FeatureToggle = ({
+  title,
+  description,
+  level,
+  checked,
+  onChange,
+}: Props) => (
   <Box as="label" display="flex" mb="20px">
     <Box w="fit-content" display="flex" flexDirection="row-reverse">
       <Toggle
@@ -39,7 +48,7 @@ const FeatureToggle = ({ title, description, checked, onChange }: Props) => (
         >
           <FormattedMessage {...title} />
         </Title>
-        <EarlyAccessBadge />
+        <EarlyAccessBadge level={level} />
       </Box>
       <Text fontSize="s" color="textSecondary" mt="4px">
         <FormattedMessage {...description} />
