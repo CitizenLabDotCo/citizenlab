@@ -1083,6 +1083,18 @@ RSpec.describe User do
       expect(build(:admin, early_access_features: %w[general_feature general_feature])).to be_invalid
     end
 
+    # The front end sends back the stored list plus the toggled feature, so a
+    # graduated name rides along on every later change.
+    it 'accepts a change that carries a feature which left early access' do
+      admin = create(:admin, early_access_features: ['general_feature'])
+      allow(AppConfiguration::Settings).to receive(:early_access_features)
+        .and_return({ 'other_feature' => 'general' })
+
+      admin.early_access_features = %w[general_feature other_feature]
+
+      expect(admin).to be_valid
+    end
+
     describe '#early_access_levels' do
       it 'offers the general tier to an admin' do
         expect(build(:admin).early_access_levels).to eq %w[general]
