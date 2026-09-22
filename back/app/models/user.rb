@@ -613,15 +613,19 @@ class User < ApplicationRecord
     Rails.logger.info "Validation error! Email banned: #{value.split('@')&.last}"
   end
 
-  # The offered set already accounts for the tier, so this rejects both a name
-  # that is not in early access at all and one the user is not eligible for.
+  # Only what this change adds is checked. A feature that graduated out of early
+  # access, or that the user stopped being eligible for, stays in the stored list
+  # without blocking them from switching anything else -- #active_early_access_features
+  # already ignores it. The offered set accounts for the tier, so a name that is
+  # not in early access at all and one reserved for Go Vocal staff both land here.
   def validate_early_access_features_offered
     return unless early_access_features.is_a?(Array)
 
-    not_offered = early_access_features - offered_early_access_features
+    added = early_access_features - Array(early_access_features_was)
+    not_offered = added - offered_early_access_features
     return if not_offered.empty?
 
-    errors.add(:early_access_features, :not_offered, value: not_offered)
+    errors.add(:early_access_features, 'not_offered', value: not_offered)
   end
 
   def auto_confirm_on_invite_accept
