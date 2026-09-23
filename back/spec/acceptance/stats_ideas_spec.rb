@@ -357,8 +357,9 @@ resource 'Stats - Ideas' do
       travel_to start_at + 3.months do
         create(:idea, project: @project, input_topics: [topic], author: create(:user))
         create(:idea, project: @project, input_topics: [topic], author: create(:user), anonymous: true)
-        create(:idea, project: @project, input_topics: [topic], author: create(:admin))
-        create(:idea, project: @project, input_topics: [topic], author: create(:project_moderator, projects: [@project]))
+        create_admins_and_moderators(project: @project).each do |author|
+          create(:idea, project: @project, input_topics: [topic], author: author)
+        end
       end
     end
 
@@ -371,7 +372,7 @@ resource 'Stats - Ideas' do
       example 'Ideas by topic includes ideas of admins and moderators by default', document: false do
         do_request
         assert_status 200
-        expect(json_parse(response_body).dig(:data, :attributes, :series, :ideas).values.sum).to eq 4
+        expect(json_parse(response_body).dig(:data, :attributes, :series, :ideas).values.sum).to eq 7
       end
 
       example 'Ideas by topic excluding admins and moderators' do
@@ -404,7 +405,7 @@ resource 'Stats - Ideas' do
         do_request
         assert_status 200
         series = json_parse(response_body).dig(:data, :attributes, :series, :ideas).stringify_keys
-        expect(series).to include(@project.id => 4, @project1.id => 5)
+        expect(series).to include(@project.id => 7, @project1.id => 5)
       end
 
       example 'Ideas by project excluding admins and moderators' do

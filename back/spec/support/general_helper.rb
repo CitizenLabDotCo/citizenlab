@@ -37,4 +37,24 @@ module GeneralHelper
     config.settings['core']['exclude_admins_and_moderators_from_statistics'] = true
     config.save!
   end
+
+  # Creates one user for every kind of admin and moderator: an admin, a moderator of
+  # `project`, a moderator of another project, a folder moderator and a space
+  # moderator. When admins and moderators are excluded from statistics, ALL of them
+  # are excluded, not only the moderators of the project in question. The given
+  # attributes are applied to every user.
+  def create_admins_and_moderators(project: create(:project), **attributes)
+    [
+      create(:admin, **attributes),
+      create(:project_moderator, projects: [project], **attributes),
+      create(:project_moderator, projects: [create(:project)], **attributes),
+      create(:project_folder_moderator, **attributes),
+      create(:space_moderator, **attributes)
+    ]
+  end
+
+  # The highest roles (e.g. of sessions) of all kinds of admins and moderators.
+  def admin_and_moderator_highest_roles
+    %w[admin super_admin project_moderator project_folder_moderator space_moderator]
+  end
 end

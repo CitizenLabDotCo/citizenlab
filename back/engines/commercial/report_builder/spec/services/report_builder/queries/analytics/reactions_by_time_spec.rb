@@ -40,8 +40,9 @@ RSpec.describe ReportBuilder::Queries::Analytics::ReactionsByTime do
 
     context 'with exclude_admins_and_moderators' do
       before do
-        create(:reaction, created_at: created_at, reactable: idea, user: create(:admin))
-        create(:dislike, created_at: created_at, reactable: idea, user: create(:project_moderator))
+        create_admins_and_moderators.each_with_index do |user, i|
+          create(:reaction, created_at: created_at, reactable: idea, user: user, mode: i.even? ? 'up' : 'down')
+        end
       end
 
       let(:params) { { start_at: date - 1.day, end_at: date + 1.day, project_id: idea.project_id } }
@@ -49,8 +50,8 @@ RSpec.describe ReportBuilder::Queries::Analytics::ReactionsByTime do
       it 'includes reactions of admins and moderators by default' do
         result = query.run_query(**params)
 
-        expect(result.first.first).to include('sum_likes_count' => 2, 'sum_dislikes_count' => 1)
-        expect(result.last).to eq([{ 'sum_reactions_count' => 3 }])
+        expect(result.first.first).to include('sum_likes_count' => 4, 'sum_dislikes_count' => 2)
+        expect(result.last).to eq([{ 'sum_reactions_count' => 6 }])
       end
 
       it 'excludes reactions of admins and moderators' do

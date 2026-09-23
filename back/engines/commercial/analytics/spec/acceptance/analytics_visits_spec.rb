@@ -163,6 +163,10 @@ resource 'Analytics - Visits model' do
     end
 
     example 'exclude visits of admins and moderators' do
+      create_admins_and_moderators.each do |user|
+        create(:fact_visit, dimension_user: Analytics::DimensionUser.find(user.id))
+      end
+
       enable_exclude_admins_and_moderators_from_statistics
       do_request({
         query: {

@@ -231,9 +231,12 @@ RSpec.describe Insights::VotingPhaseInsightsService do
   describe '#vote_counts_with_user_custom_field_grouping' do
     context 'with exclude_admins_and_moderators' do
       before do
-        admin_basket = create(:basket, phase: phase, user: create(:admin), submitted_at: phase.start_at + 1.day)
-        create(:baskets_idea, basket: admin_basket, idea: idea1, votes: 60)
-        # As in production, the cached counter includes the admin's votes
+        # 5 admins and moderators each give 12 votes to idea1
+        create_admins_and_moderators(project: phase.project).each do |user|
+          basket = create(:basket, phase: phase, user: user, submitted_at: phase.start_at + 1.day)
+          create(:baskets_idea, basket: basket, idea: idea1, votes: 12)
+        end
+        # As in production, the cached counter includes the votes of the admins and moderators
         idea1.update_column(:votes_count, 62)
       end
 

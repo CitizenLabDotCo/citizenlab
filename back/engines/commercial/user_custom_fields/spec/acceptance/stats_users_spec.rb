@@ -286,8 +286,7 @@ resource 'Stats - Users' do
       describe 'when admins and moderators are excluded from statistics' do
         before do
           travel_to(start_at + 24.days) do
-            create(:admin, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
-            create(:project_moderator, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
+            create_admins_and_moderators(custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
           end
         end
 
@@ -297,7 +296,7 @@ resource 'Stats - Users' do
         example 'Users by custom field includes admins and moderators by default' do
           do_request
           expect(response_status).to eq 200
-          expect(json_response_body.dig(:data, :attributes, :series, :users)).to eq({ false: 5, _blank: 0 }) # rubocop:disable Lint/BooleanSymbol
+          expect(json_response_body.dig(:data, :attributes, :series, :users)).to eq({ false: 8, _blank: 0 }) # rubocop:disable Lint/BooleanSymbol
         end
 
         example 'Users by custom field excluding admins and moderators' do
@@ -348,8 +347,7 @@ resource 'Stats - Users' do
           before do
             enable_exclude_admins_and_moderators_from_statistics
             travel_to(start_at + 4.days) do
-              create(:admin, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
-              create(:project_moderator, custom_field_values: { @custom_field.key => @option3.key }, manual_groups: [@group])
+              create_admins_and_moderators(custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
             end
           end
 
@@ -550,7 +548,7 @@ resource 'Stats - Users' do
       context 'when admins and moderators are excluded from statistics' do
         before do
           travel_to start_at + 16.days do
-            @group.members << create(:admin, birthyear: 1990) << create(:project_moderator, birthyear: nil)
+            @group.members.push(*create_admins_and_moderators(birthyear: 1990))
           end
         end
 
@@ -558,7 +556,7 @@ resource 'Stats - Users' do
           travel_to(Time.zone.local(2020, 1, 1)) { do_request }
 
           expect(response_status).to eq 200
-          expect(json_response_body.dig(:data, :attributes)).to include(total_user_count: 10, unknown_age_count: 2)
+          expect(json_response_body.dig(:data, :attributes)).to include(total_user_count: 13, unknown_age_count: 1)
         end
 
         example 'Users counts by age excluding admins and moderators' do
@@ -634,7 +632,7 @@ resource 'Stats - Users' do
         before do
           enable_exclude_admins_and_moderators_from_statistics
           travel_to start_at + 16.days do
-            @group.members << create(:admin, birthyear: 1990) << create(:project_moderator, birthyear: nil)
+            @group.members.push(*create_admins_and_moderators(birthyear: 1990))
           end
         end
 

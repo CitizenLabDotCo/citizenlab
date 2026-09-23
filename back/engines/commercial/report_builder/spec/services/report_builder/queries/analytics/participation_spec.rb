@@ -43,12 +43,12 @@ RSpec.describe ReportBuilder::Queries::Analytics::Participation do
 
     context 'with exclude_admins_and_moderators' do
       before do
-        admin = create(:admin)
-        moderator = create(:project_moderator)
-        idea = create(:idea, created_at: @created_at, author: admin)
         create(:idea, created_at: @created_at, author: nil)
-        create(:comment, created_at: @created_at, idea: idea, author: moderator)
-        create(:basket, created_at: @created_at, user: admin)
+        create_admins_and_moderators.each do |user|
+          idea = create(:idea, created_at: @created_at, author: user)
+          create(:comment, created_at: @created_at, idea: idea, author: user)
+          create(:basket, created_at: @created_at, user: user)
+        end
       end
 
       let(:params) do
@@ -62,7 +62,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::Participation do
 
       it 'includes admins and moderators by default' do
         counts = query.run_query(**params).map { |result| result.first['count'] }
-        expect(counts).to eq([3, 2, 2, 3, 2, 2])
+        expect(counts).to eq([7, 6, 6, 7, 6, 6])
       end
 
       it 'excludes participation of admins and moderators' do

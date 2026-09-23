@@ -621,8 +621,9 @@ resource 'Phases' do
         context 'with reactions of admins and moderators' do
           before do
             # Unless admins and moderators are excluded from statistics, these would be counted in the stats and in the votes of i1
-            create(:reaction, reactable: i1, user: create(:admin), mode: 'down')
-            create(:reaction, reactable: i1, user: create(:project_moderator, projects: [phase.project]), mode: 'down')
+            create_admins_and_moderators(project: phase.project).each do |user|
+              create(:reaction, reactable: i1, user: user, mode: 'down')
+            end
           end
 
           example 'Get common ground results excluding admins and moderators' do
@@ -713,7 +714,7 @@ resource 'Phases' do
 
       context 'with survey responses of admins and moderators' do
         before do
-          [create(:admin), create(:project_moderator, projects: [project])].each do |author|
+          create_admins_and_moderators(project: project).each do |author|
             create(
               :native_survey_response,
               project: project,
@@ -750,7 +751,7 @@ resource 'Phases' do
       let(:id) { active_phase.id }
 
       let!(:survey_responses) do
-        [create(:user), create(:admin), create(:project_moderator, projects: [project])].map do |author|
+        [create(:user), *create_admins_and_moderators(project: project)].map do |author|
           create(
             :native_survey_response,
             project: project,
@@ -764,7 +765,7 @@ resource 'Phases' do
       example 'Get community monitor survey results includes admins and moderators by default', document: false do
         do_request
         expect(status).to eq 200
-        expect(response_data.dig(:attributes, :totalSubmissions)).to eq 3
+        expect(response_data.dig(:attributes, :totalSubmissions)).to eq 6
       end
 
       example 'Get community monitor survey results excluding admins and moderators' do

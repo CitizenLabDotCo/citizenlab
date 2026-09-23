@@ -593,8 +593,9 @@ resource 'Stats - Comments' do
 
       create(:comment, idea: idea, author: create(:user))
       create(:comment, idea: idea, author: create(:user), anonymous: true)
-      create(:comment, idea: idea, author: create(:admin))
-      create(:comment, idea: idea, author: create(:project_moderator, projects: [@project]))
+      create_admins_and_moderators(project: @project).each do |author|
+        create(:comment, idea: idea, author: author)
+      end
     end
 
     get 'web_api/v1/stats/comments_count' do
@@ -603,7 +604,7 @@ resource 'Stats - Comments' do
       example 'Count all comments includes comments of admins and moderators by default', document: false do
         do_request
         assert_status 200
-        expect(json_response.dig(:data, :attributes, :count)).to eq 4
+        expect(json_response.dig(:data, :attributes, :count)).to eq 7
       end
 
       example 'Count all comments excluding admins and moderators' do
@@ -620,7 +621,7 @@ resource 'Stats - Comments' do
       example 'Comments by topic includes comments of admins and moderators by default', document: false do
         do_request
         assert_status 200
-        expect(json_response.dig(:data, :attributes, :series, :comments).values.sum).to eq 4
+        expect(json_response.dig(:data, :attributes, :series, :comments).values.sum).to eq 7
       end
 
       example 'Comments by topic excluding admins and moderators' do
@@ -650,7 +651,7 @@ resource 'Stats - Comments' do
       example 'Comments by project includes comments of admins and moderators by default', document: false do
         do_request
         assert_status 200
-        expect(json_response.dig(:data, :attributes, :series, :comments).stringify_keys).to eq({ @project.id => 4 })
+        expect(json_response.dig(:data, :attributes, :series, :comments).stringify_keys).to eq({ @project.id => 7 })
       end
 
       example 'Comments by project excluding admins and moderators' do

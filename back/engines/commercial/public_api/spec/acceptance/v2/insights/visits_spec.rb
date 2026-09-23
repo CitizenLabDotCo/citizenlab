@@ -149,15 +149,15 @@ resource 'Insights Visits' do
       let(:project_id) { project.id }
 
       before do
-        admin_session = create(:session, monthly_user_hash: 'admin_hash', highest_role: 'admin')
-        moderator_session = create(:session, monthly_user_hash: 'moderator_hash', highest_role: 'project_moderator')
-        create(:pageview, session: admin_session, project_id: project.id, created_at: '2025-01-16')
-        create(:pageview, session: moderator_session, project_id: project.id, created_at: '2025-01-17')
+        admin_and_moderator_highest_roles.each do |role|
+          session = create(:session, monthly_user_hash: "#{role}_hash", highest_role: role)
+          create(:pageview, session: session, project_id: project.id, created_at: '2025-01-16')
+        end
       end
 
       example_request 'Includes visits of admins and moderators by default', document: false do
         assert_status 200
-        expect(json_response_body[:visits].first).to eq({ visits: 5, visitors: 5 })
+        expect(json_response_body[:visits].first).to eq({ visits: 8, visitors: 8 })
       end
 
       context 'with exclude_admins_and_moderators=true' do

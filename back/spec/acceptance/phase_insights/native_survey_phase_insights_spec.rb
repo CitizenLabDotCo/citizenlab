@@ -144,7 +144,7 @@ resource 'Phase insights' do
 
     context 'with survey responses of admins and moderators' do
       before do
-        [create(:admin), create(:project_moderator, projects: [native_survey_phase.project])].each do |author|
+        create_admins_and_moderators(project: native_survey_phase.project).each do |author|
           create(:idea, phases: [native_survey_phase], created_at: 5.days.ago, submitted_at: 5.days.ago, author: author, creation_phase_id: native_survey_phase.id)
         end
       end
@@ -154,8 +154,8 @@ resource 'Phase insights' do
         assert_status 200
 
         metrics = json_response_body.dig(:data, :attributes, :metrics)
-        expect(metrics[:participants]).to eq 5
-        expect(metrics.dig(:native_survey, :surveys_submitted)).to eq 6
+        expect(metrics[:participants]).to eq 8
+        expect(metrics.dig(:native_survey, :surveys_submitted)).to eq 9
       end
 
       example 'returns insights data excluding admins and moderators' do

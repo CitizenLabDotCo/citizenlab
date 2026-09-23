@@ -75,6 +75,11 @@ resource 'Analytics - FactParticipations' do
     end
 
     example 'exclude participations of admins and moderators' do
+      idea = Idea.first
+      create_admins_and_moderators.each do |user|
+        create(:comment, created_at: Time.utc(2022, 10, 15), idea: idea, author: user)
+      end
+
       enable_exclude_admins_and_moderators_from_statistics
       do_request({
         query: {

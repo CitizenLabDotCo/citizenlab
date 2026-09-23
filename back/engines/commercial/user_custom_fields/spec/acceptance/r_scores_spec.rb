@@ -90,13 +90,13 @@ resource 'R-scores (Representativeness scores)' do
           context 'when admins and moderators are excluded from statistics' do
             before do
               enable_exclude_admins_and_moderators_from_statistics
-              create(:project_moderator, custom_field_values: { custom_field.key => custom_field.options.first.key })
+              create_admins_and_moderators(custom_field_values: { custom_field.key => custom_field.options.first.key })
             end
 
             example_request 'returns the R-score (excluding admins and moderators)' do
               expect(status).to eq(200)
               expect(json_response_body).to match(response_structure)
-              # Neither the moderator nor the admin performing the request (who has no value, i.e. _blank) are counted
+              # Neither the admins and moderators nor the admin performing the request (who has no value, i.e. _blank) are counted
               expected_counts = custom_field.options.to_h { |option| [option.id.to_sym, 1] }.merge(_blank: 0)
               expect(response_data.dig(:attributes, :counts)).to match(expected_counts)
             end
@@ -125,15 +125,14 @@ resource 'R-scores (Representativeness scores)' do
 
           context 'with admins and moderators' do
             before do
-              create(:admin, birthyear: 1980)
-              create(:project_moderator, birthyear: 1970)
+              create_admins_and_moderators(birthyear: 1980)
             end
 
             example 'returns the R-score including admins and moderators by default', document: false do
               travel_to(Time.zone.local(2010)) { do_request }
 
               expect(status).to eq(200)
-              expect(response_data.dig(:attributes, :counts)).to eq [3, 2, 0]
+              expect(response_data.dig(:attributes, :counts)).to eq [7, 1, 0]
             end
 
             example 'returns the R-score excluding admins and moderators' do

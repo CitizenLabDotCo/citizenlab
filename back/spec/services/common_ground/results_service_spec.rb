@@ -144,9 +144,10 @@ describe CommonGround::ResultsService do
 
       context 'with reactions of admins and moderators' do
         before do
-          # Idea1 drops from 1.0 to 0.6 when counting these (3 likes, 2 dislikes)
-          create(:reaction, reactable: idea1, user: create(:admin), mode: 'down')
-          create(:reaction, reactable: idea1, user: create(:project_moderator, projects: [phase.project]), mode: 'down')
+          # Idea1 drops from 1.0 to 0.625 when counting these (3 likes, 5 dislikes)
+          create_admins_and_moderators(project: phase.project).each do |user|
+            create(:reaction, reactable: idea1, user: user, mode: 'down')
+          end
           # Reactions without a known user are kept
           create(:reaction, reactable: idea4, user: nil, mode: 'neutral')
         end
@@ -154,8 +155,8 @@ describe CommonGround::ResultsService do
         it 'includes them by default' do
           expect(results.top_consensus_ideas).to eq [idea2, idea1]
           expect(results.top_controversial_ideas).to eq [idea3, idea1]
-          expect(results.top_consensus_ideas.last.dislikes_count).to eq 2
-          expect(results.stats).to eq({ num_participants: 7, num_ideas: 4, votes: { up: 6, down: 4, neutral: 3 } })
+          expect(results.top_consensus_ideas.last.dislikes_count).to eq 5
+          expect(results.stats).to eq({ num_participants: 10, num_ideas: 4, votes: { up: 6, down: 7, neutral: 3 } })
         end
 
         context 'when excluding admins and moderators' do

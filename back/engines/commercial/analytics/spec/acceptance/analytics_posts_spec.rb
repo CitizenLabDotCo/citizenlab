@@ -52,8 +52,10 @@ resource 'Analytics - FactPosts model' do
     example 'exclude posts of admins and moderators' do
       create(:idea, created_at: @times[0], author: create(:user))
       create(:idea, created_at: @times[0], author: create(:user), anonymous: true)
-      create(:idea, created_at: @times[0], author: create(:admin))
-      create(:proposal, created_at: @times[0], author: create(:project_moderator))
+      create_admins_and_moderators.each do |author|
+        create(:idea, created_at: @times[0], author: author)
+        create(:proposal, created_at: @times[0], author: author)
+      end
 
       enable_exclude_admins_and_moderators_from_statistics
       do_request({

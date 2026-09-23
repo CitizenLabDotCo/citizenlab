@@ -177,15 +177,16 @@ RSpec.describe ReportBuilder::Queries::Projects do
       end
 
       before do
-        create(:idea, project: @project1, author: create(:admin))
-        create(:idea, project: @project1, author: create(:project_moderator, projects: [@project1]))
+        create_admins_and_moderators(project: @project1).each do |author|
+          create(:idea, project: @project1, author: author)
+        end
         create(:idea, project: @project1, author: nil)
       end
 
       it 'includes admins and moderators in participant counts by default' do
         result = query.run_query(**params)
 
-        expect(result[:participants]).to eq({ @project1.id => 8, @project2.id => 10 })
+        expect(result[:participants]).to eq({ @project1.id => 11, @project2.id => 10 })
       end
 
       it 'excludes admins and moderators from participant counts' do

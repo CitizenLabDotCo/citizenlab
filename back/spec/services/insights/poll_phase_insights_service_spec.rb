@@ -54,18 +54,21 @@ RSpec.describe Insights::PollPhaseInsightsService do
     before do
       AppConfiguration.instance.update!(platform_start_at: 1.year.ago.beginning_of_day)
 
-      create(:poll_response, phase: phase, user: create(:admin))
-      create(:poll_response, phase: phase, user: create(:project_moderator, projects: [phase.project]))
+      create_admins_and_moderators(project: phase.project).each do |user|
+        create(:poll_response, phase: phase, user: user)
+      end
 
       create(:session, :with_pageview, monthly_user_hash: 'user', project: phase.project, pageview_created_at: 10.days.ago)
-      create(:session, :with_pageview, monthly_user_hash: 'admin', highest_role: 'admin', project: phase.project, pageview_created_at: 10.days.ago)
+      admin_and_moderator_highest_roles.each do |highest_role|
+        create(:session, :with_pageview, monthly_user_hash: highest_role, highest_role: highest_role, project: phase.project, pageview_created_at: 10.days.ago)
+      end
     end
 
     it 'includes admins and moderators by default' do
       metrics = described_class.new(phase).call[:metrics]
 
-      expect(metrics).to include(visitors: 2, participants: 4, participation_rate_as_percent: 200.0)
-      expect(metrics['poll']).to include(responses: 4)
+      expect(metrics).to include(visitors: 6, participants: 7, participation_rate_as_percent: 116.7)
+      expect(metrics['poll']).to include(responses: 7)
     end
 
     it 'excludes participations and visits of admins and moderators' do

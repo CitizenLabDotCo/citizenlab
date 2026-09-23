@@ -42,6 +42,8 @@ resource 'Analytics - FactRegistrations model' do
       end
 
       example 'group complete registrations by month, excluding admins and moderators' do
+        create_admins_and_moderators(registration_completed_at: '2022-08-15 16:30:00')
+
         enable_exclude_admins_and_moderators_from_statistics
         do_request({
           query: {

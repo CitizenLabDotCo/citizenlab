@@ -35,7 +35,7 @@ describe Analytics::MultipleQueries do
     context 'when exclude_admins_and_moderators is present' do
       subject(:service) { described_class.new(exclude_admins_and_moderators: true) }
 
-      before { create(:idea, author: create(:admin)) }
+      before { create_admins_and_moderators.each { |author| create(:idea, author: author) } }
 
       it 'applies it to every query' do
         query = [
@@ -46,7 +46,7 @@ describe Analytics::MultipleQueries do
         results, errors, _paginations = service.run(query)
         expect(errors).to be_empty
         expect(results).to eq([[{ 'count' => 1 }], [{ 'count' => 1 }]])
-        expect(described_class.new.run(query).first).to eq([[{ 'count' => 2 }], [{ 'count' => 2 }]])
+        expect(described_class.new.run(query).first).to eq([[{ 'count' => 6 }], [{ 'count' => 6 }]])
       end
     end
 

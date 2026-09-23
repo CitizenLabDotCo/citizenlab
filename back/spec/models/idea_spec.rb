@@ -834,10 +834,10 @@ RSpec.describe Idea do
     let_it_be(:authorless_idea) { create(:idea, project: project, author: nil) }
 
     before_all do
-      create(:idea, project: project, author: create(:admin))
+      create_admins_and_moderators(project: project).each do |author|
+        create(:idea, project: project, author: author)
+      end
       create(:idea, project: project, author: create(:admin, :project_reviewer))
-      create(:idea, project: project, author: create(:project_moderator, projects: [project]))
-      create(:idea, project: project, author: create(:project_folder_moderator))
     end
 
     it 'excludes ideas of admins and moderators, but keeps ideas without a known author' do

@@ -137,10 +137,12 @@ RSpec.describe ReportBuilder::Queries::VisitorsLanguages do
       create(:pageview, session_id: session1.id, path: '/en/', created_at: DateTime.new(2022, 10, 10, 11, 0, 0))
       create(:pageview, session_id: session1.id, path: '/en/ideas', created_at: DateTime.new(2022, 10, 10, 11, 2, 0))
 
-      # Session by admin
-      session2 = create(:session, created_at: DateTime.new(2022, 10, 11, 11, 0, 0), highest_role: 'admin')
-      create(:pageview, session_id: session2.id, path: '/nl-BE/', created_at: DateTime.new(2022, 10, 11, 11, 0, 0))
-      create(:pageview, session_id: session2.id, path: '/nl-BE/ideas', created_at: DateTime.new(2022, 10, 11, 11, 2, 0))
+      # Sessions by all kinds of admins and moderators
+      admin_and_moderator_highest_roles.each do |highest_role|
+        session = create(:session, created_at: DateTime.new(2022, 10, 11, 11, 0, 0), highest_role: highest_role)
+        create(:pageview, session_id: session.id, path: '/nl-BE/', created_at: DateTime.new(2022, 10, 11, 11, 0, 0))
+        create(:pageview, session_id: session.id, path: '/nl-BE/ideas', created_at: DateTime.new(2022, 10, 11, 11, 2, 0))
+      end
 
       params = {
         start_at: Date.new(2022, 8, 1),

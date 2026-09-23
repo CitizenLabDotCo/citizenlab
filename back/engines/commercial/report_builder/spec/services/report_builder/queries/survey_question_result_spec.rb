@@ -72,11 +72,11 @@ RSpec.describe ReportBuilder::Queries::SurveyQuestionResult do
 
       before_all do
         created_at = Time.zone.local(2025, 2, 10)
+        admin_and_moderator_values = { select_field.key => 'ny', group_field.key => 'blue', linear_scale_field.key => 5 }
         {
           create(:user) => { select_field.key => 'la', group_field.key => 'red', linear_scale_field.key => 2 },
-          create(:admin) => { select_field.key => 'ny', group_field.key => 'blue', linear_scale_field.key => 5 },
-          create(:project_moderator, projects: [project]) => { select_field.key => 'ny', group_field.key => 'blue', linear_scale_field.key => 5 },
-          nil => { select_field.key => 'ny', group_field.key => 'red', linear_scale_field.key => 4 }
+          nil => { select_field.key => 'ny', group_field.key => 'red', linear_scale_field.key => 4 },
+          **create_admins_and_moderators(project: project).index_with(admin_and_moderator_values)
         }.each do |author, custom_field_values|
           create(:native_survey_response, project:, phases: phases_of_inputs, author:, created_at:, custom_field_values:)
         end
@@ -92,8 +92,8 @@ RSpec.describe ReportBuilder::Queries::SurveyQuestionResult do
       it 'includes responses of admins and moderators by default' do
         result = query.run_query(**base_params, question_id: select_field.id)
 
-        expect(answer_counts(result)).to eq({ 'la' => 2, 'ny' => 3, nil => 0 })
-        expect(result[:questionResponseCount]).to eq(5)
+        expect(answer_counts(result)).to eq({ 'la' => 2, 'ny' => 6, nil => 0 })
+        expect(result[:questionResponseCount]).to eq(8)
       end
 
       it 'excludes responses of admins and moderators, but keeps responses without an author' do
@@ -106,7 +106,7 @@ RSpec.describe ReportBuilder::Queries::SurveyQuestionResult do
 
       it 'excludes responses of admins and moderators from averages' do
         result = query.run_query(**base_params, question_id: linear_scale_field.id)
-        expect(result[:averages]).to eq({ this_period: 4.0 })
+        expect(result[:averages]).to eq({ this_period: 4.4 }) # (2 + 4 + 5 * 5) / 7
 
         result = query.run_query(**base_params, **exclude, question_id: linear_scale_field.id)
         expect(result[:averages]).to eq({ this_period: 3.0 })

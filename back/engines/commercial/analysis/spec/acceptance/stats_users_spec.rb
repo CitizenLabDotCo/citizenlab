@@ -75,8 +75,9 @@ resource 'Analysis - Stats - Users' do
     describe 'when admins and moderators are excluded from statistics' do
       before do
         enable_exclude_admins_and_moderators_from_statistics
-        create(:idea, project: project, author: create(:admin, domicile: @area2.id), likes_count: 5)
-        create(:idea, project: project, author: create(:project_moderator, projects: [project], domicile: @area3.id), likes_count: 5)
+        create_admins_and_moderators(project: project, domicile: @area2.id).each do |author|
+          create(:idea, project: project, author: author, likes_count: 5)
+        end
       end
 
       example_request 'Authors by domicile excluding admins and moderators' do
@@ -125,16 +126,17 @@ resource 'Analysis - Stats - Users' do
 
     describe 'when admins and moderators are excluded from statistics' do
       before do
-        create(:idea, project: project, author: create(:admin, birthyear: 1990))
-        create(:idea, project: project, author: create(:project_moderator, projects: [project], birthyear: nil))
+        create_admins_and_moderators(project: project, birthyear: 1990).each do |author|
+          create(:idea, project: project, author: author)
+        end
       end
 
       example 'Authors by age includes admins and moderators by default', document: false do
         travel_to(Time.zone.local(2020, 1, 1)) { do_request }
         expect(response_status).to eq 200
         expect(json_response_body.dig(:data, :attributes)).to include(
-          unknown_age_count: 2,
-          series: include(user_counts: [0, 0, 3, 1, 1, 1, 0, 0, 0, 0])
+          unknown_age_count: 1,
+          series: include(user_counts: [0, 0, 7, 1, 1, 1, 0, 0, 0, 0])
         )
       end
 
@@ -191,8 +193,9 @@ resource 'Analysis - Stats - Users' do
         describe 'when admins and moderators are excluded from statistics' do
           before do
             enable_exclude_admins_and_moderators_from_statistics
-            create(:idea, project: project, author: create(:admin, custom_field_values: { @custom_field.key => @option1.key }))
-            create(:idea, project: project, author: create(:project_moderator, projects: [project]))
+            create_admins_and_moderators(project: project, custom_field_values: { @custom_field.key => @option1.key }).each do |author|
+              create(:idea, project: project, author: author)
+            end
           end
 
           example_request 'Authors by custom field (select) excluding admins and moderators' do

@@ -39,8 +39,7 @@ resource 'Analytics - Sessions model' do
 
     example 'exclude sessions of admins and moderators' do
       create(:session, user_id: create(:user).id)
-      create(:session, user_id: create(:admin).id)
-      create(:session, user_id: create(:project_moderator).id)
+      create_admins_and_moderators.each { |user| create(:session, user_id: user.id) }
 
       enable_exclude_admins_and_moderators_from_statistics
       do_request({

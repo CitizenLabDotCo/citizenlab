@@ -470,8 +470,9 @@ resource 'Stats - Reactions' do
 
       create(:reaction, reactable: idea, user: create(:user))
       create(:reaction, reactable: idea, user: nil)
-      create(:reaction, reactable: idea, user: create(:admin), mode: 'down')
-      create(:reaction, reactable: idea, user: create(:project_moderator, projects: [@project]))
+      create_admins_and_moderators(project: @project).each_with_index do |user, i|
+        create(:reaction, reactable: idea, user: user, mode: i.even? ? 'down' : 'up')
+      end
     end
 
     get 'web_api/v1/stats/reactions_count' do
@@ -480,7 +481,7 @@ resource 'Stats - Reactions' do
       example 'Count all reactions includes reactions of admins and moderators by default', document: false do
         do_request
         assert_status 200
-        expect(json_parse(response_body)).to eq({ up: 3, down: 1, total: 4 })
+        expect(json_parse(response_body)).to eq({ up: 4, down: 3, total: 7 })
       end
 
       example 'Count all reactions excluding admins and moderators' do
@@ -497,7 +498,7 @@ resource 'Stats - Reactions' do
       example 'Reactions by topic includes reactions of admins and moderators by default', document: false do
         do_request
         assert_status 200
-        expect(json_parse(response_body).dig(:data, :attributes, :series, :total).values.sum).to eq 4
+        expect(json_parse(response_body).dig(:data, :attributes, :series, :total).values.sum).to eq 7
       end
 
       example 'Reactions by topic excluding admins and moderators' do
@@ -527,7 +528,7 @@ resource 'Stats - Reactions' do
       example 'Reactions by project includes reactions of admins and moderators by default', document: false do
         do_request
         assert_status 200
-        expect(json_parse(response_body).dig(:data, :attributes, :series, :total).stringify_keys).to eq({ @project.id => 4 })
+        expect(json_parse(response_body).dig(:data, :attributes, :series, :total).stringify_keys).to eq({ @project.id => 7 })
       end
 
       example 'Reactions by project excluding admins and moderators' do

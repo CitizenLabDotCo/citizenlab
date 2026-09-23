@@ -92,11 +92,11 @@ RSpec.describe ReportBuilder::Queries::Registrations do
 
     context 'with exclude_admins_and_moderators' do
       before do
-        # Admins and moderators registered in September, with 6 unique admin/moderator visitors
-        create(:admin, registration_completed_at: Date.new(2022, 9, 10))
-        create(:project_moderator, registration_completed_at: Date.new(2022, 9, 10))
-        6.times do |i|
-          create(:session, :with_pageview, monthly_user_hash: "september_admin_#{i}", highest_role: 'admin', pageview_created_at: Date.new(2022, 9, 10))
+        # 5 admins and moderators registered in September, with 5 unique admin/moderator visitors
+        create_admins_and_moderators(registration_completed_at: Date.new(2022, 9, 10))
+        admin_and_moderator_highest_roles.each do |highest_role|
+          session_attributes = { monthly_user_hash: "september_#{highest_role}", highest_role: highest_role, pageview_created_at: Date.new(2022, 9, 10) }
+          create(:session, :with_pageview, **session_attributes)
         end
       end
 
@@ -112,8 +112,8 @@ RSpec.describe ReportBuilder::Queries::Registrations do
       it 'includes admins and moderators by default' do
         result = query.run_query(**params)
 
-        expect(result[:registrations_compared_period]).to eq(5)
-        expect(result[:registration_rate_compared_period]).to eq(5 / 12.0)
+        expect(result[:registrations_compared_period]).to eq(8)
+        expect(result[:registration_rate_compared_period]).to eq(8 / 11.0)
       end
 
       it 'excludes admins and moderators from registrations and visitors' do

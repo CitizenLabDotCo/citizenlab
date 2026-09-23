@@ -65,7 +65,7 @@ describe Analytics::Query do
 
         expect(role_filter.call('citizen')).to eq(['citizen'])
         expect(role_filter.call(['citizen', ''])).to eq(['citizen', nil])
-        expect(role_filter.call(%w[admin project_moderator])).to eq([])
+        expect(role_filter.call(%w[admin project_moderator project_folder_moderator space_moderator])).to eq([])
       end
 
       it 'does nothing when exclude_admins_and_moderators is not set or false' do

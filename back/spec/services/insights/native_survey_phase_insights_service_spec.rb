@@ -162,23 +162,26 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
 
   context 'with exclude_admins_and_moderators' do
     before do
-      create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, author: create(:admin), creation_phase_id: phase.id)
-      create(
-        :idea,
-        phases: [phase],
-        created_at: 10.days.ago,
-        submitted_at: nil,
-        author: create(:project_moderator, projects: [phase.project]),
-        publication_status: 'draft',
-        creation_phase_id: phase.id
-      )
+      # 3 submitted responses and 2 drafts
+      create_admins_and_moderators(project: phase.project).each_with_index do |author, i|
+        submitted = i.even?
+        create(
+          :idea,
+          phases: [phase],
+          created_at: 10.days.ago,
+          submitted_at: submitted ? 10.days.ago : nil,
+          author: author,
+          publication_status: submitted ? 'published' : 'draft',
+          creation_phase_id: phase.id
+        )
+      end
     end
 
     it 'includes the responses of admins and moderators by default' do
       participations = service.send(:filtered_phase_participations)
       metrics = service.send(:phase_participation_method_metrics, participations)
 
-      expect(metrics).to include(surveys_submitted: 7, completion_rate_as_percent: 77.8) # 7 submitted out of 9 ideas
+      expect(metrics).to include(surveys_submitted: 9, completion_rate_as_percent: 75.0) # 9 submitted out of 12 ideas
     end
 
     it 'excludes the responses of admins and moderators, but keeps responses without an author' do

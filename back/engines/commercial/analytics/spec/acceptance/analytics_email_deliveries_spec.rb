@@ -67,8 +67,7 @@ resource 'Analytics - FactEmailDeliveries model' do
     end
 
     example 'exclude email deliveries to admins and moderators' do
-      create(:delivery, user: create(:admin))
-      create(:delivery, user: create(:project_moderator))
+      create_admins_and_moderators.each { |user| create(:delivery, user: user) }
 
       enable_exclude_admins_and_moderators_from_statistics
       do_request({
