@@ -38,6 +38,7 @@ import {
   isProjectFolderModerator,
 } from 'utils/permissions/rules/projectFolderPermissions';
 import { useParams } from 'utils/router';
+import validateTitle from 'utils/validateTitle';
 
 import tracks from '../../tracks';
 import useApplyProjectTemplate from '../api/useApplyProjectTemplate';
@@ -146,10 +147,18 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
     const [responseError, setResponseError] = useState<any>(null);
 
     const onCreateProject = useCallback(async () => {
-      const missingLocales = isNilOrError(tenantLocales)
-        ? []
-        : tenantLocales.filter((locale) => isEmpty(titleMultiloc?.[locale]));
-      const invalidTitle = missingLocales.length > 0;
+      const titleErrors = isNilOrError(tenantLocales)
+        ? {}
+        : validateTitle(
+            tenantLocales,
+            titleMultiloc ?? undefined,
+            intl.formatMessage(
+              tenantLocales.length === 1
+                ? messages.projectTitleError
+                : messages.projectTitleMultilocError
+            )
+          );
+      const invalidTitle = Object.keys(titleErrors).length > 0;
       const noDate = isEmpty(startDate);
       const invalidDate = !moment(
         startDate || '',
@@ -161,17 +170,8 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
         projectTemplateId,
       });
 
-      if (invalidTitle && !isNilOrError(tenantLocales)) {
-        const message = intl.formatMessage(
-          tenantLocales.length === 1
-            ? messages.projectTitleError
-            : messages.projectTitleMultilocError
-        );
-        const errors: Multiloc = {};
-        missingLocales.forEach((locale) => {
-          errors[locale] = message;
-        });
-        setTitleError(errors);
+      if (invalidTitle) {
+        setTitleError(titleErrors);
       }
 
       if (noDate) {
@@ -182,8 +182,6 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
         );
       }
 
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!invalidTitle && !invalidDate && titleMultiloc && startDate) {
         setResponseError(null);
         setTitleError(null);
