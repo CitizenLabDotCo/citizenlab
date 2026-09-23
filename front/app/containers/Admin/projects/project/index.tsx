@@ -7,7 +7,7 @@ import usePhase from 'api/phases/usePhase';
 import { IProjectData } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import { Outlet as RouterOutlet, useMatchRoute, useParams } from 'utils/router';
@@ -25,9 +25,7 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
   const { data: authUser } = useAuthUser();
   const { phaseId } = useParams({ strict: false });
   const { data: phase } = usePhase(phaseId);
-  const workspaceEnabled = useFeatureFlag({
-    name: 'project_backoffice_redesign',
-  });
+  const workspaceEnabled = useProjectBackofficeRedesign();
   const matchRoute = useMatchRoute();
   const onNewPhaseRoute = !!matchRoute({
     to: '/$locale/admin/projects/$projectId/phases/new',
