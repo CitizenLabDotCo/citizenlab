@@ -119,6 +119,7 @@
   "app.components.ProjectTemplatePreview.close": "kiinni",
   "app.components.ProjectTemplatePreview.createProject": "Luo projekti",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Luo projekti mallin ''{templateTitle}'' pohjalta",
+  "app.components.ProjectTemplatePreview.findItInProjectsList": "Löydät sen projektiluettelosta.",
   "app.components.ProjectTemplatePreview.goBack": "Mene takaisin",
   "app.components.ProjectTemplatePreview.goBackTo": "Palaa kohtaan {goBackLink}.",
   "app.components.ProjectTemplatePreview.govocalExpert": "CitizenLabin asiantuntija",

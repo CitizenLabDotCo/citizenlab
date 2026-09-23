@@ -119,6 +119,7 @@
   "app.components.ProjectTemplatePreview.close": "إغلاق",
   "app.components.ProjectTemplatePreview.createProject": "أنشئ مشروعًا",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "إنشاء مشروع بناءً على القالب ''{templateTitle}''",
+  "app.components.ProjectTemplatePreview.findItInProjectsList": "يمكنك العثور عليه في قائمة المشاريع.",
   "app.components.ProjectTemplatePreview.goBack": "العودة",
   "app.components.ProjectTemplatePreview.goBackTo": "العودة إلى {goBackLink}.",
   "app.components.ProjectTemplatePreview.govocalExpert": "خبير Go Vocal",

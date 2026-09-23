@@ -119,6 +119,7 @@
   "app.components.ProjectTemplatePreview.close": "Luk",
   "app.components.ProjectTemplatePreview.createProject": "Opret projekt",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Opret et projekt baseret på skabelonen ''{templateTitle}''.",
+  "app.components.ProjectTemplatePreview.findItInProjectsList": "Du kan finde det i projektlisten.",
   "app.components.ProjectTemplatePreview.goBack": "Gå tilbage",
   "app.components.ProjectTemplatePreview.goBackTo": "Gå tilbage til {goBackLink}.",
   "app.components.ProjectTemplatePreview.govocalExpert": "CitizenLab-ekspert",

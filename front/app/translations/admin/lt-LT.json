@@ -119,6 +119,7 @@
   "app.components.ProjectTemplatePreview.close": "Uždaryti",
   "app.components.ProjectTemplatePreview.createProject": "Sukurti projektą",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Sukurkite projektą pagal šabloną ''{templateTitle}''",
+  "app.components.ProjectTemplatePreview.findItInProjectsList": "Jį rasite projektų sąraše.",
   "app.components.ProjectTemplatePreview.goBack": "Grįžti atgal",
   "app.components.ProjectTemplatePreview.goBackTo": "Grįžkite į {goBackLink}.",
   "app.components.ProjectTemplatePreview.govocalExpert": "Eiti Vokalo ekspertas",

@@ -119,6 +119,7 @@
   "app.components.ProjectTemplatePreview.close": "Cau",
   "app.components.ProjectTemplatePreview.createProject": "Creu prosiect",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Creu prosiect yn seiliedig ar y templed ''{templateTitle}''",
+  "app.components.ProjectTemplatePreview.findItInProjectsList": "Gallwch ddod o hyd iddo yn y rhestr prosiectau.",
   "app.components.ProjectTemplatePreview.goBack": "Mynd yn ôl",
   "app.components.ProjectTemplatePreview.goBackTo": "Ewch yn ôl i'r {goBackLink}.",
   "app.components.ProjectTemplatePreview.govocalExpert": "Ewch yn arbenigwr lleisiol",

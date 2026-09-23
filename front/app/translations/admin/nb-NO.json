@@ -119,6 +119,7 @@
   "app.components.ProjectTemplatePreview.close": "Lukk",
   "app.components.ProjectTemplatePreview.createProject": "Opprett prosjekt",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Opprett et prosjekt basert på malen ''{templateTitle}''",
+  "app.components.ProjectTemplatePreview.findItInProjectsList": "Du finner det i prosjektlisten.",
   "app.components.ProjectTemplatePreview.goBack": "Gå tilbake",
   "app.components.ProjectTemplatePreview.goBackTo": "Gå tilbake til {goBackLink}.",
   "app.components.ProjectTemplatePreview.govocalExpert": "Go Vocal-ekspert",

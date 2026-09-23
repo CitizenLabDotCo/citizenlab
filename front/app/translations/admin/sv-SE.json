@@ -119,6 +119,7 @@
   "app.components.ProjectTemplatePreview.close": "Stäng",
   "app.components.ProjectTemplatePreview.createProject": "Skapa projekt",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Skapa ett projekt baserat på mallen ''{templateTitle}''",
+  "app.components.ProjectTemplatePreview.findItInProjectsList": "Du hittar det i projektlistan.",
   "app.components.ProjectTemplatePreview.goBack": "Gå tillbaka",
   "app.components.ProjectTemplatePreview.goBackTo": "Gå tillbaka till {goBackLink}.",
   "app.components.ProjectTemplatePreview.govocalExpert": "Go Vocal-expert",

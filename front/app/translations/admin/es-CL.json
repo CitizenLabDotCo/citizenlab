@@ -119,6 +119,7 @@
   "app.components.ProjectTemplatePreview.close": "Cerrar",
   "app.components.ProjectTemplatePreview.createProject": "Crear proyecto",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Crea un proyecto basado en la plantilla ''{templateTitle}''",
+  "app.components.ProjectTemplatePreview.findItInProjectsList": "Puedes encontrarlo en la lista de proyectos.",
   "app.components.ProjectTemplatePreview.goBack": "Volver atrás",
   "app.components.ProjectTemplatePreview.goBackTo": "Volver atrás a {goBackLink}.",
   "app.components.ProjectTemplatePreview.govocalExpert": "Experto de Go Vocal",

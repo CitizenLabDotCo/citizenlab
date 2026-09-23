@@ -119,6 +119,7 @@
   "app.components.ProjectTemplatePreview.close": "Close",
   "app.components.ProjectTemplatePreview.createProject": "Create project",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "E Projet op Basis vun der Virlag ''{templateTitle}'' erstellen",
+  "app.components.ProjectTemplatePreview.findItInProjectsList": "Dir fannt et an der Projetslëscht.",
   "app.components.ProjectTemplatePreview.goBack": "Go back",
   "app.components.ProjectTemplatePreview.goBackTo": "Go back to the {goBackLink}.",
   "app.components.ProjectTemplatePreview.govocalExpert": "Go Vocal Expert",

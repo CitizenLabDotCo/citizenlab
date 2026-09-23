@@ -119,6 +119,7 @@
   "app.components.ProjectTemplatePreview.close": "ਬੰਦ ਕਰੋ",
   "app.components.ProjectTemplatePreview.createProject": "ਪ੍ਰੋਜੈਕਟ ਬਣਾਓ",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "''{templateTitle}'' ਟੈਂਪਲੇਟ ਦੇ ਆਧਾਰ 'ਤੇ ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਬਣਾਓ।",
+  "app.components.ProjectTemplatePreview.findItInProjectsList": "ਤੁਸੀਂ ਇਸਨੂੰ ਪ੍ਰੋਜੈਕਟਾਂ ਦੀ ਸੂਚੀ ਵਿੱਚ ਲੱਭ ਸਕਦੇ ਹੋ।",
   "app.components.ProjectTemplatePreview.goBack": "ਵਾਪਸ ਜਾਓ",
   "app.components.ProjectTemplatePreview.goBackTo": "{goBackLink}'ਤੇ ਵਾਪਸ ਜਾਓ।",
   "app.components.ProjectTemplatePreview.govocalExpert": "ਵੋਕਲ ਮਾਹਰ ਜਾਓ",

@@ -119,6 +119,7 @@
   "app.components.ProjectTemplatePreview.close": "Schließen",
   "app.components.ProjectTemplatePreview.createProject": "Projekt erstellen",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Erstelle ein Projekt auf der Grundlage der Vorlage ''{templateTitle}''",
+  "app.components.ProjectTemplatePreview.findItInProjectsList": "Sie finden es in der Projektliste.",
   "app.components.ProjectTemplatePreview.goBack": "Zurück",
   "app.components.ProjectTemplatePreview.goBackTo": "﻿Gehe zurück zum {goBackLink}.",
   "app.components.ProjectTemplatePreview.govocalExpert": "CitizenLab-Experte",

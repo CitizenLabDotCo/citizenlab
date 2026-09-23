@@ -119,6 +119,7 @@
   "app.components.ProjectTemplatePreview.close": "بند",
   "app.components.ProjectTemplatePreview.createProject": "پروجیکٹ بنائیں",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "ٹیمپلیٹ ''{templateTitle}'' کی بنیاد پر ایک پروجیکٹ بنائیں",
+  "app.components.ProjectTemplatePreview.findItInProjectsList": "آپ اسے منصوبوں کی فہرست میں پا سکتے ہیں۔",
   "app.components.ProjectTemplatePreview.goBack": "واپس جاؤ",
   "app.components.ProjectTemplatePreview.goBackTo": "{goBackLink}پر واپس جائیں۔",
   "app.components.ProjectTemplatePreview.govocalExpert": "آواز کے ماہر پر جائیں۔",
