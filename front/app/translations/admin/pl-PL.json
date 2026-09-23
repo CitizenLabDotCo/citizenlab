@@ -119,7 +119,7 @@
   "app.components.ProjectTemplatePreview.close": "Zamknij",
   "app.components.ProjectTemplatePreview.createProject": "Stwórz projekt",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Utwórz projekt na podstawie szablonu ''{templateTitle}''",
-  "app.components.ProjectTemplatePreview.findItInProjectsList": "Znajdziesz to na liście projektów.",
+  "app.components.ProjectTemplatePreview.findItInProjectsList": "Znajdziesz go na liście projektów.",
   "app.components.ProjectTemplatePreview.goBack": "Wróć",
   "app.components.ProjectTemplatePreview.goBackTo": "Wróć do {goBackLink}.",
   "app.components.ProjectTemplatePreview.govocalExpert": "Go Vocal ekspert",

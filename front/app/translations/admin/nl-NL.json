@@ -119,7 +119,7 @@
   "app.components.ProjectTemplatePreview.close": "Sluiten",
   "app.components.ProjectTemplatePreview.createProject": "Maak een project aan",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Maak een project aan op basis van het sjabloon ''{templateTitle}''.",
-  "app.components.ProjectTemplatePreview.findItInProjectsList": "Je vindt het in de projectenlijst.",
+  "app.components.ProjectTemplatePreview.findItInProjectsList": "Je kunt het vinden in de projectenlijst.",
   "app.components.ProjectTemplatePreview.goBack": "Ga terug",
   "app.components.ProjectTemplatePreview.goBackTo": "Ga terug naar de {goBackLink}.",
   "app.components.ProjectTemplatePreview.govocalExpert": "CitizenLab-expert",

@@ -119,7 +119,7 @@
   "app.components.ProjectTemplatePreview.close": "Dún",
   "app.components.ProjectTemplatePreview.createProject": "Cruthaigh tionscadal",
   "app.components.ProjectTemplatePreview.createProjectBasedOn2": "Cruthaigh tionscadal bunaithe ar an teimpléad ''{templateTitle}''",
-  "app.components.ProjectTemplatePreview.findItInProjectsList": "Is féidir teacht air i liosta na dtionscadal.",
+  "app.components.ProjectTemplatePreview.findItInProjectsList": "Is féidir é a fháil i liosta na dtionscadal.",
   "app.components.ProjectTemplatePreview.goBack": "Téigh ar ais",
   "app.components.ProjectTemplatePreview.goBackTo": "Téigh ar ais go dtí an {goBackLink}.",
   "app.components.ProjectTemplatePreview.govocalExpert": "Go saineolaí gutha",
