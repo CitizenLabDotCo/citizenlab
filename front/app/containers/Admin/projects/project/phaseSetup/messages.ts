@@ -170,15 +170,15 @@ export default defineMessages({
     defaultMessage:
       'The survey is shown in a block on your project page. That block will be removed.',
   },
-  moveWarningTimelineDates: {
-    id: 'app.containers.AdminPage.ProjectTimeline.moveWarningTimelineDates',
+  moveWarningTimelineOverlap: {
+    id: 'app.containers.AdminPage.ProjectTimeline.moveWarningTimelineOverlap',
     defaultMessage:
-      'Timeline phases cannot overlap. If the dates clash with another phase, the move is refused and the phase before this one may get an end date.',
+      "Timeline phases cannot overlap. If this survey's dates overlap another phase, the move is refused.",
   },
-  moveWarningResponseEditing: {
-    id: 'app.containers.AdminPage.ProjectTimeline.moveWarningResponseEditing',
+  moveWarningPreviousPhaseEnds: {
+    id: 'app.containers.AdminPage.ProjectTimeline.moveWarningPreviousPhaseEnds',
     defaultMessage:
-      'Whether residents can still edit the answers they already submitted may change.',
+      '"{phaseName}" has no end date. It will end on {date}, when this survey starts.',
   },
   moveConfirmButton: {
     id: 'app.containers.AdminPage.ProjectTimeline.moveConfirmButton',
