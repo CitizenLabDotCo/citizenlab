@@ -7,13 +7,13 @@ import { IUpdatedProjectProperties } from 'api/projects/types';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
-import validateTitle from 'containers/Admin/projects/_shared/utils/validateTitle';
 import generalMessages from 'containers/Admin/projects/project/general/messages';
 
 import { SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
+import validateTitle from 'utils/validateTitle';
 
 import ProjectContextSection from '../ProjectSetupForm/ProjectContextSection';
 import { SpaceAndFolderId } from '../ProjectSetupForm/ProjectContextSection/types';

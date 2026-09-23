@@ -14,14 +14,21 @@ import tracks from '../../tracks';
 import { Templates } from '../../types';
 import usePublishedProjectTemplates from '../api/usePublishedProjectTemplates';
 import ProjectTemplateCards from '../components/ProjectTemplateCards';
+import UseTemplateModal from '../components/UseTemplateModal';
 interface Props {
   className?: string;
   graphqlTenantLocales: string[];
+  onDone?: () => void;
 }
 
 const CreateProjectFromTemplate = memo(
-  ({ graphqlTenantLocales, className }: Props): ReactElement => {
+  ({ graphqlTenantLocales, className, onDone }: Props): ReactElement => {
     const { data: appConfig } = useAppConfiguration();
+    const [namedTemplate, setNamedTemplate] = useState<{
+      id: string;
+      title: string;
+    } | null>(null);
+    const [created, setCreated] = useState(false);
 
     const organizationTypes = !isNilOrError(appConfig)
       ? appConfig.data.attributes.settings.core.organization_type
@@ -123,35 +130,67 @@ const CreateProjectFromTemplate = memo(
       setSearch(!isEmpty(searchValue) ? searchValue : null);
     }, []);
 
+    const handleUseTemplate = useCallback((id: string, title: string) => {
+      setNamedTemplate({ id, title });
+    }, []);
+
+    const handleNameModalOnClose = useCallback(() => {
+      trackEventByName(tracks.useTemplateModalClosed, {
+        projectTemplateId: namedTemplate?.id,
+        title: namedTemplate?.title,
+      });
+      setNamedTemplate(null);
+
+      if (created) {
+        setCreated(false);
+        onDone?.();
+      }
+    }, [created, namedTemplate, onDone]);
+
     return (
-      <ProjectTemplateCards
-        templates={templates}
-        className={className}
-        loading={loading}
-        onLoadMore={handleLoadMoreTemplatesOnClick}
-        loadingMore={isFetchingNextPage}
-        onSearchChange={handleSearchOnChange}
-        onPurposeFilterChange={handlePurposeFilterOnChange}
-        onDepartmentFilterChange={handleDepartmentFilterOnChange}
-        onParticipationLevelFilterChange={
-          handleParticipationLevelFilterOnChange
-        }
-      />
+      <>
+        <ProjectTemplateCards
+          templates={templates}
+          className={className}
+          loading={loading}
+          onLoadMore={handleLoadMoreTemplatesOnClick}
+          loadingMore={isFetchingNextPage}
+          onSearchChange={handleSearchOnChange}
+          onPurposeFilterChange={handlePurposeFilterOnChange}
+          onDepartmentFilterChange={handleDepartmentFilterOnChange}
+          onParticipationLevelFilterChange={
+            handleParticipationLevelFilterOnChange
+          }
+          onUseTemplate={handleUseTemplate}
+        />
+
+        {namedTemplate && (
+          <UseTemplateModal
+            projectTemplateId={namedTemplate.id}
+            opened
+            close={handleNameModalOnClose}
+            onCreated={() => setCreated(true)}
+          />
+        )}
+      </>
     );
   }
 );
 
-const CreateProjectFromTemplateWithGraphqlLocales = memo((props) => {
-  const graphqlTenantLocales = useGraphqlTenantLocales();
+const CreateProjectFromTemplateWithGraphqlLocales = memo(
+  (props: Omit<Props, 'graphqlTenantLocales'>) => {
+    const graphqlTenantLocales = useGraphqlTenantLocales();
 
-  if (isNilOrError(graphqlTenantLocales)) return null;
+    if (isNilOrError(graphqlTenantLocales)) return null;
 
-  return (
-    <CreateProjectFromTemplate
-      graphqlTenantLocales={graphqlTenantLocales}
-      {...props}
-    />
-  );
-});
+    return (
+      <CreateProjectFromTemplate
+        graphqlTenantLocales={graphqlTenantLocales}
+        className={props.className}
+        onDone={props.onDone}
+      />
+    );
+  }
+);
 
 export default CreateProjectFromTemplateWithGraphqlLocales;
