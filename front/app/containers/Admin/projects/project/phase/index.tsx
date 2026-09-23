@@ -9,6 +9,7 @@ import { IProjectData } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -34,9 +35,7 @@ const AdminProjectPhaseIndex = ({ project, selectedPhase }: DataProps) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
   const matchRoute = useMatchRoute();
-  const isBackofficeRedesignEnabled = useFeatureFlag({
-    name: 'project_backoffice_redesign',
-  });
+  const isBackofficeRedesignEnabled = useProjectBackofficeRedesign();
   const featureFlags: FeatureFlags = {
     typeform_enabled: useFeatureFlag({
       name: 'typeform_surveys',
