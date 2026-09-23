@@ -6,6 +6,8 @@ import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import CommonGroundInputManager from 'components/admin/PostManager/CommonGroundInputManager';
 import ImportInputsModal from 'components/admin/PostManager/CommonGroundInputManager/ImportInputsModal';
 import InputManager, {
@@ -19,6 +21,7 @@ import { useParams } from 'utils/router';
 
 import AnalysisBanner from '../../_shared/components/AnalysisBanner';
 import NewIdeaButton from '../../_shared/components/NewIdeaButton';
+import ManageIdeas from '../backofficeRedesign/Manage';
 import messages from '../messages';
 
 import ownMessages from './messages';
@@ -38,11 +41,21 @@ const AdminProjectIdeas = () => {
   const { data: phases } = usePhases(projectId);
   const { data: phase } = usePhase(phaseId);
   const [showPastInputsModal, setShowPastInputsModal] = useState(false);
+  const isBackofficeRedesignEnabled = useFeatureFlag({
+    name: 'project_backoffice_redesign',
+  });
   const isCommonGround =
     phase?.data.attributes.participation_method === 'common_ground';
 
   if (project === undefined) {
     return null;
+  }
+
+  if (
+    isBackofficeRedesignEnabled &&
+    phase?.data.attributes.participation_method === 'ideation'
+  ) {
+    return <ManageIdeas project={project.data} phase={phase.data} />;
   }
 
   return (
