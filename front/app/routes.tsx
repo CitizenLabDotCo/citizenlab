@@ -4,7 +4,9 @@ import {
   createRoute,
   createRootRoute,
   createRouter,
+  defaultStringifySearch,
   Outlet,
+  retainSearchParams,
 } from '@tanstack/react-router';
 import * as yup from 'yup';
 
@@ -108,6 +110,7 @@ const rootSearchSchema = yup.object({
   // Used by LocationInput to pre-fill map coordinates (idea forms, survey forms, admin events)
   lat: yup.number().optional(),
   lng: yup.number().optional(),
+  project_backoffice_redesign: yup.string().optional(),
 });
 
 export type RootSearchParams = yup.InferType<typeof rootSearchSchema>;
@@ -116,6 +119,11 @@ export type RootSearchParams = yup.InferType<typeof rootSearchSchema>;
 const rootRoute = createRootRoute({
   validateSearch: (search: Record<string, unknown>): RootSearchParams =>
     rootSearchSchema.validateSync(search),
+  search: {
+    // Keep `project_backoffice_redesign` in the URL across client-side
+    // navigations, so it sticks while moving through the project's pages
+    middlewares: [retainSearchParams(['project_backoffice_redesign'])],
+  },
   component: () => (
     <App>
       <Outlet />
@@ -692,6 +700,19 @@ const buildRouteTree = (moduleRoutes: Partial<Routes> = {}) =>
     ]),
   ]);
 
+// Writes `project_backoffice_redesign` as a bare key, since only its presence
+// matters. The default would write `project_backoffice_redesign=`.
+const stringifySearch = (search: Record<string, unknown>) => {
+  const { project_backoffice_redesign, ...rest } = search;
+  const searchStr = defaultStringifySearch(rest);
+
+  if (project_backoffice_redesign === undefined) return searchStr;
+
+  return searchStr
+    ? `${searchStr}&project_backoffice_redesign`
+    : '?project_backoffice_redesign';
+};
+
 // Create and export the router.
 // createAppRouter is called from root.tsx so that module routes can be
 // injected without creating a circular dependency.
@@ -699,6 +720,7 @@ export const createAppRouter = (moduleRoutes: Partial<Routes> = {}) =>
   createRouter({
     routeTree: buildRouteTree(moduleRoutes),
     trailingSlash: 'preserve',
+    stringifySearch,
     defaultNotFoundComponent: () => (
       <PageLoading>
         <PageNotFound />
