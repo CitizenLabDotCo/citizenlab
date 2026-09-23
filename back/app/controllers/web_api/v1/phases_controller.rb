@@ -85,8 +85,8 @@ class WebApi::V1::PhasesController < ApplicationController
       Surveys::ResultsWithDateGenerator.new(
         @phase,
         structure_by_category: true,
-        year: year,
-        quarter: quarter,
+        year:,
+        quarter:,
         exclude_admins_and_moderators: StatisticsRoleExclusion.exclude_admins_and_moderators?
       ).generate_results
     else
