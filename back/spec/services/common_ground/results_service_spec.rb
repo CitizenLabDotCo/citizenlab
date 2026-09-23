@@ -137,6 +137,41 @@ describe CommonGround::ResultsService do
         )
       end
 
+      it 'returns the vote counts on the top ideas' do
+        expect(results.top_consensus_ideas.map { |idea| [idea.likes_count, idea.dislikes_count, idea.neutral_reactions_count] })
+          .to eq([[3, 0, 1], [2, 1, 0]])
+      end
+
+      context 'with reactions of admins and moderators' do
+        before do
+          # Idea1 drops from 1.0 to 0.625 when counting these (3 likes, 5 dislikes)
+          create_admins_and_moderators(project: phase.project).each do |user|
+            create(:reaction, reactable: idea1, user: user, mode: 'down')
+          end
+          # Reactions without a known user are kept
+          create(:reaction, reactable: idea4, user: nil, mode: 'neutral')
+        end
+
+        it 'includes them by default' do
+          expect(results.top_consensus_ideas).to eq [idea2, idea1]
+          expect(results.top_controversial_ideas).to eq [idea3, idea1]
+          expect(results.top_consensus_ideas.last.dislikes_count).to eq 5
+          expect(results.stats).to eq({ num_participants: 10, num_ideas: 4, votes: { up: 6, down: 7, neutral: 3 } })
+        end
+
+        context 'when excluding admins and moderators' do
+          subject(:service) { described_class.new(phase, exclude_admins_and_moderators: true) }
+
+          it 'leaves their reactions out of the rankings, the vote counts and the stats' do
+            expect(results.top_consensus_ideas).to eq [idea1, idea2]
+            expect(results.top_controversial_ideas).to eq [idea3, idea2]
+            expect(results.top_consensus_ideas.map { |idea| [idea.likes_count, idea.dislikes_count, idea.neutral_reactions_count] })
+              .to eq([[3, 0, 1], [2, 1, 0]])
+            expect(results.stats).to eq({ num_participants: 5, num_ideas: 4, votes: { up: 6, down: 2, neutral: 3 } })
+          end
+        end
+      end
+
       context 'when there are draft ideas' do
         let!(:draft_idea) { create(:idea, project: phase.project, phases: [phase], publication_status: 'draft') }
         let(:n) { IdeasPhase.where(phase: phase).count }
