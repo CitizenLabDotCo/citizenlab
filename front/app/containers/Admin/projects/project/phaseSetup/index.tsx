@@ -388,8 +388,7 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
     setProcessing(true);
 
     if (phase) {
-      // Placement is moved through PhasePlacement, not this form. The form data is a
-      // snapshot taken when the phase loaded, so sending it back would undo a move.
+      // Placement only changes through PhasePlacement, so the form never sends it.
       const { placement_type: _placementType, ...phaseData } = formData;
 
       updatePhase(
@@ -474,7 +473,14 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
             setValidationErrors={setValidationErrors}
             hideMethodPicker={standalone}
           />
-          {phase && <PhasePlacement phase={phase.data} />}
+          {phase && (
+            <PhasePlacement
+              phase={phase.data}
+              hasUnsavedChanges={
+                submitState === 'enabled' || submitState === 'error'
+              }
+            />
+          )}
           <SectionField>
             <SubSectionTitle>
               <FormattedMessage {...messages.uploadAttachments} />
