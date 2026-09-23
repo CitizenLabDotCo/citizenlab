@@ -58,7 +58,7 @@ module Verification
       uid = response[:uid]
       user_attributes = response[:attributes] || {}
       custom_field_values = CustomFieldService.remove_unknown_registration_custom_fields(response[:custom_field_values] || {})
-      user.update_merging_custom_fields!(user_attributes.merge(custom_field_values: custom_field_values))
+      UserService.assign_merging_custom_fields(user, user_attributes.merge(custom_field_values: custom_field_values)).save!
       make_verification(user:, method:, uid:)
     end
 

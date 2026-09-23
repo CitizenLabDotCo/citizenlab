@@ -57,7 +57,7 @@ resource 'R-scores (Representativeness scores)' do
 
           def create_one_user_for_each_option(custom_field)
             custom_field.options.map do |option|
-              create(:user, custom_field_values: { custom_field.key => option.key })
+              create(:user, custom_field_answers: [build(:custom_field_answer, key: custom_field.key, value: option.key)])
             end
           end
 
@@ -72,7 +72,7 @@ resource 'R-scores (Representativeness scores)' do
             let(:option) { custom_field.options.first }
             let!(:project) do
               # project with only 1 participant
-              participant = User.where(custom_field_values: { custom_field.key => option.key }).first
+              participant = User.joins(:custom_field_answers).where(custom_field_answers: { key: custom_field.key, value: option.key }).first
               create(:idea, author: participant).project_id
             end
 
@@ -93,7 +93,9 @@ resource 'R-scores (Representativeness scores)' do
 
           before do
             birthyears = [1970, 1980, 1990, 2000]
-            _users = birthyears.map { |year| create(:user, birthyear: year) }
+            _users = birthyears.map do |year|
+              create(:user, custom_field_answers: [build(:custom_field_answer, key: 'birthyear', value: year)])
+            end
           end
 
           example 'returns the R-score' do

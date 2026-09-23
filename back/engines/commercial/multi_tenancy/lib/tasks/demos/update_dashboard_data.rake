@@ -5,7 +5,7 @@
 #   - ImpactTracking::Session referrer: 50% empty, 15% google, 20% facebook, 15% govocal
 #   - OfficialFeedback: creates records so 38% of non-native-survey ideas have one
 #   - Idea statuses + Activity: updates status for 80% of ideas and creates changed_status activities
-#   - User custom_field_values: populates select/multiselect fields and birthyear with random values
+#   - User answers: populates select/multiselect fields and birthyear with random values
 #   - EmailCampaigns::Delivery: creates deliveries for sent campaigns (~50 users per campaign)
 #     2% failed, 98% delivered, 70% opened, 40% clicked
 #
@@ -44,7 +44,7 @@ namespace :demos do
       UpdateDemoDashboardData.update_referrers
       UpdateDemoDashboardData.create_official_feedback
       UpdateDemoDashboardData.create_idea_status_change_activities
-      UpdateDemoDashboardData.update_user_custom_field_values
+      UpdateDemoDashboardData.update_user_answers
       UpdateDemoDashboardData.create_email_campaign_deliveries
 
       puts 'Done.'
@@ -190,7 +190,7 @@ module UpdateDemoDashboardData
     end
   end
 
-  def update_user_custom_field_values
+  def update_user_answers
     select_fields = CustomField.where(resource_type: 'User', input_type: %w[select multiselect])
     birthyear_field = CustomField.find_by(resource_type: 'User', key: 'birthyear')
 
@@ -226,32 +226,34 @@ module UpdateDemoDashboardData
 
     field_names = field_pickers.map { |p| p[:field].key }
     field_names << 'birthyear' if birthyear_picker
-    puts "\nUpdating user custom_field_values for #{field_names.join(', ')} (#{total_users - skip_count} users)..."
+    puts "\nUpdating user answers for #{field_names.join(', ')} (#{total_users - skip_count} users)..."
 
     updated = 0
     users_to_update.find_each do |user|
-      new_values = {}
-
       field_pickers.each do |picker|
         value = weighted_random_pick(picker[:values], picker[:weights], picker[:weight_sum])
         if picker[:field].input_type == 'multiselect'
           value = [value, *picker[:values].sample(rand(0..picker[:values].size - 1))].uniq
         end
-        new_values[picker[:field].key] = value
+        assign_answer(user, picker[:field], value)
       end
 
       if birthyear_picker
-        new_values['birthyear'] = weighted_random_pick(
+        assign_answer(user, birthyear_field, weighted_random_pick(
           birthyear_picker[:values], birthyear_picker[:weights], birthyear_picker[:weight_sum]
-        )
+        ))
       end
 
-      cfv = (user.custom_field_values || {}).merge(new_values)
-      user.update_column(:custom_field_values, cfv)
+      user.save(validate: false)
       updated += 1
     end
 
     puts "  Updated #{updated} users, skipped #{skip_count}"
+  end
+
+  def assign_answer(user, field, value)
+    answer = user.answer_for_key(field.key) || user.custom_field_answers.build(key: field.key, custom_field: field)
+    answer.value = value
   end
 
   def create_email_campaign_deliveries

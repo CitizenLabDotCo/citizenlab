@@ -252,11 +252,13 @@ namespace :setup_and_support do
         )
       end
 
-      users_with_birthyear = User.all.select do |user|
-        user.birthyear.present?
-      end
+      birthyear_field = CustomField.registration.find_by!(code: 'birthyear')
+      users_with_birthyear = User
+        .where(id: CustomFieldAnswer.where(custom_field: birthyear_field).select(:answerable_id))
+        .includes(:custom_field_answers)
       users_with_birthyear.each do |user|
-        user.custom_field_values[field.key] = user.birthyear.to_s
+        birthyear = user.answer_for_key(birthyear_field.key).value
+        user.custom_field_answers.build(key: field.key, value: birthyear.to_s, custom_field: field)
         unless user.save
           errors += [user.errors.messages]
         end
@@ -399,12 +401,18 @@ namespace :setup_and_support do
       User.find_each do |u|
         start_at = Tenant.current.created_at
         start_at = 1.month.ago if start_at > Time.now.to_i
-        attrs = service.anonymized_attributes [u.locale], start_at: start_at
+        answers = service.anonymized_answers(user: u)
+        attrs = service.anonymized_attributes [u.locale], answers:, start_at: start_at
         if u.email == 'moderator@citizenlab.co'
           attrs.delete 'email'
           attrs.delete 'password'
         end
         u.update! attrs
+        u.custom_field_answers.delete_all
+        answers.each do |answer|
+          field = answer['custom_field']
+          u.custom_field_answers.create!(key: field.key, value: answer['value'], custom_field: field)
+        end
 
         u.remove_avatar! if !attrs['remote_avatar_url'] && !attrs['avatar']
         u.slug = nil
@@ -442,8 +450,9 @@ namespace :setup_and_support do
   end
 
   def add_anonymous_reaction(reactable, mode)
-    attrs = AnonymizeUserService.new.anonymized_attributes AppConfiguration.instance.settings('core', 'locales')
-    attrs.delete 'custom_field_values'
+    anonymizer = AnonymizeUserService.new
+    answers = anonymizer.anonymized_answers
+    attrs = anonymizer.anonymized_attributes(AppConfiguration.instance.settings('core', 'locales'), answers:)
     user = User.create! attrs
     Reaction.create!(reactable: reactable, mode: mode, user: user)
     user.destroy!

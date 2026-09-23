@@ -7,7 +7,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
   let!(:idea1) { create(:idea, phases: [phase]) }
   let!(:idea2) { create(:idea, phases: [phase], manual_votes_amount: 10) }
 
-  let(:user) { create(:user, custom_field_values: { gender: 'male' }) }
+  let(:user) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'male')]) }
   let!(:basket1) { create(:basket, phase: phase, user: user, submitted_at: phase.start_at + 1.day) }
   let!(:baskets_idea1) { create(:baskets_idea, basket: basket1, idea: idea1, votes: 2) }
   let!(:baskets_idea2) { create(:baskets_idea, basket: basket1, idea: idea2, votes: 3) }
@@ -319,7 +319,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       create(:custom_field_option, custom_field: custom_field, key: 'option_a', title_multiloc: { en: 'Option A' })
       create(:custom_field_option, custom_field: custom_field, key: 'option_b', title_multiloc: { en: 'Option B' })
 
-      user.update!(custom_field_values: { 'multiselect' => %w[option_a option_b] })
+      create(:custom_field_answer, answerable: user, key: 'multiselect', value: %w[option_a option_b])
 
       result = service.vote_counts_with_user_custom_field_grouping(custom_field)
 
@@ -366,7 +366,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
 
     it 'gives expected results when grouping by a checkbox custom field' do
       custom_field = create(:custom_field, resource_type: 'User', key: 'checkbox', input_type: 'checkbox', title_multiloc: { en: 'Checkbox' })
-      user.update!(custom_field_values: { 'checkbox' => true })
+      create(:custom_field_answer, answerable: user, key: 'checkbox', value: true)
 
       result = service.vote_counts_with_user_custom_field_grouping(custom_field)
 
@@ -420,7 +420,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           counts: [50, 200, 400, 300, 50, 700] # Population in each bin
         )
 
-        user.update!(custom_field_values: { 'birthyear' => Date.current.year - 30 }) # Age 30
+        create(:custom_field_answer, answerable: user, key: 'birthyear', value: Date.current.year - 30) # Age 30
 
         result = service.vote_counts_with_user_custom_field_grouping(custom_field)
 

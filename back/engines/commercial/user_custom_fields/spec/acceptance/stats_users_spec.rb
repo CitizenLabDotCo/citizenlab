@@ -83,18 +83,18 @@ resource 'Stats - Users' do
           create(:custom_field_option, key: @option1.key, title_multiloc: { en: 'different' }, custom_field: @custom_field2)
 
           travel_to(start_at - 1.day) do
-            create(:user, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
+            create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: @option1.key)], manual_groups: [@group])
           end
 
           travel_to(start_at + 4.days) do
-            create(:user, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
-            create(:user, custom_field_values: { @custom_field.key => @option2.key }, manual_groups: [@group])
+            create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: @option1.key)], manual_groups: [@group])
+            create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: @option2.key)], manual_groups: [@group])
             create(:user, manual_groups: [@group])
-            create(:user, custom_field_values: { @custom_field.key => @option3.key })
+            create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: @option3.key)])
           end
 
           travel_to(end_at + 1.day) do
-            create(:user, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
+            create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: @option1.key)], manual_groups: [@group])
           end
         end
 
@@ -144,18 +144,18 @@ resource 'Stats - Users' do
           @custom_field = create(:custom_field_multiselect)
           @option1, @option2, @option3 = create_list(:custom_field_option, 3, custom_field: @custom_field)
           travel_to(start_at - 1.day) do
-            create(:user, custom_field_values: { @custom_field.key => [@option1.key] }, manual_groups: [@group])
+            create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: [@option1.key])], manual_groups: [@group])
           end
 
           travel_to(start_at + 6.days) do
-            create(:user, custom_field_values: { @custom_field.key => [@option1.key] }, manual_groups: [@group])
-            create(:user, custom_field_values: { @custom_field.key => [@option1.key, @option2.key] }, manual_groups: [@group])
+            create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: [@option1.key])], manual_groups: [@group])
+            create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: [@option1.key, @option2.key])], manual_groups: [@group])
             create(:user, manual_groups: [@group])
-            create(:user, custom_field_values: { @custom_field.key => [@option3.key] })
+            create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: [@option3.key])])
           end
 
           travel_to(end_at + 1.day) do
-            create(:user, custom_field_values: { @custom_field.key => [@option1.key] }, manual_groups: [@group])
+            create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: [@option1.key])], manual_groups: [@group])
           end
         end
 
@@ -188,17 +188,17 @@ resource 'Stats - Users' do
           @group = create(:group)
           @custom_field = create(:custom_field_checkbox)
           travel_to(start_at - 1.day) do
-            create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
+            create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: false)], manual_groups: [@group])
           end
 
           travel_to(start_at + 24.days) do
-            create(:user, custom_field_values: { @custom_field.key => true }, manual_groups: [@group])
-            create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
+            create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: true)], manual_groups: [@group])
+            create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: false)], manual_groups: [@group])
             create(:user, manual_groups: [@group])
           end
 
           travel_to(end_at + 1.day) do
-            create(:user, custom_field_values: { @custom_field.key => true }, manual_groups: [@group])
+            create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: true)], manual_groups: [@group])
           end
         end
 
@@ -232,9 +232,9 @@ resource 'Stats - Users' do
         @custom_field = create(:custom_field_checkbox)
 
         travel_to(start_at + 24.days) do
-          create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
-          create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
-          user = create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
+          create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: false)], manual_groups: [@group])
+          create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: false)], manual_groups: [@group])
+          user = create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: false)], manual_groups: [@group])
           idea = create(:idea, author: nil)
           create(:comment, idea: idea, author: user)
         end
@@ -301,18 +301,18 @@ resource 'Stats - Users' do
           create(:custom_field_option, key: @option1.key, title_multiloc: { en: 'different' }, custom_field: @custom_field2)
 
           travel_to(start_at - 1.day) do
-            create(:user, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
+            create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: @option1.key)], manual_groups: [@group])
           end
 
           travel_to(start_at + 4.days) do
-            create(:user, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
-            create(:user, custom_field_values: { @custom_field.key => @option2.key }, manual_groups: [@group])
+            create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: @option1.key)], manual_groups: [@group])
+            create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: @option2.key)], manual_groups: [@group])
             create(:user, manual_groups: [@group])
-            create(:user, custom_field_values: { @custom_field.key => @option3.key })
+            create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: @option3.key)])
           end
 
           travel_to(end_at + 1.day) do
-            create(:user, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
+            create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: @option1.key)], manual_groups: [@group])
           end
         end
 
@@ -362,18 +362,18 @@ resource 'Stats - Users' do
           @custom_field = create(:custom_field_multiselect, key: 'multiselect_field')
           @option1, @option2, @option3 = create_list(:custom_field_option, 3, custom_field: @custom_field)
           travel_to(start_at - 1.day) do
-            create(:user, custom_field_values: { @custom_field.key => [@option1.key] }, manual_groups: [@group])
+            create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: [@option1.key])], manual_groups: [@group])
           end
 
           travel_to(start_at + 6.days) do
-            create(:user, custom_field_values: { @custom_field.key => [@option1.key] }, manual_groups: [@group])
-            create(:user, custom_field_values: { @custom_field.key => [@option1.key, @option2.key] }, manual_groups: [@group])
+            create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: [@option1.key])], manual_groups: [@group])
+            create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: [@option1.key, @option2.key])], manual_groups: [@group])
             create(:user, manual_groups: [@group])
-            create(:user, custom_field_values: { @custom_field.key => [@option3.key] })
+            create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: [@option3.key])])
           end
 
           travel_to(end_at + 1.day) do
-            create(:user, custom_field_values: { @custom_field.key => [@option1.key] }, manual_groups: [@group])
+            create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: [@option1.key])], manual_groups: [@group])
           end
         end
 
@@ -399,17 +399,17 @@ resource 'Stats - Users' do
           @group = create(:group)
           @custom_field = create(:custom_field_checkbox, key: 'checkbox_field')
           travel_to(start_at - 1.day) do
-            create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
+            create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: false)], manual_groups: [@group])
           end
 
           travel_to(start_at + 24.days) do
-            create(:user, custom_field_values: { @custom_field.key => true }, manual_groups: [@group])
-            create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
+            create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: true)], manual_groups: [@group])
+            create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: false)], manual_groups: [@group])
             create(:user, manual_groups: [@group])
           end
 
           travel_to(end_at + 1.day) do
-            create(:user, custom_field_values: { @custom_field.key => true }, manual_groups: [@group])
+            create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: true)], manual_groups: [@group])
           end
         end
 
@@ -445,8 +445,10 @@ resource 'Stats - Users' do
 
       travel_to start_at + 16.days do
         birthyears = [1962, 1976, 1980, 1990, 1991, 2005, 2006]
-        users = birthyears.map { |year| create(:user, birthyear: year) }
-        user_without_birthyear = create(:user, birthyear: nil)
+        users = birthyears.map do |year|
+          create(:user, custom_field_answers: [build(:custom_field_answer, key: 'birthyear', value: year)])
+        end
+        user_without_birthyear = create(:user)
 
         @group = create_group(users + [user_without_birthyear])
       end

@@ -20,7 +20,6 @@ require Rails.root.join('lib/email_domain_blacklist')
 #  locale                    :string
 #  bio_multiloc              :jsonb
 #  invite_status             :string
-#  custom_field_values       :jsonb
 #  registration_completed_at :datetime
 #  verified                  :boolean          default(FALSE), not null
 #  email_confirmed_at        :datetime
@@ -236,7 +235,8 @@ class User < ApplicationRecord
   has_many :jobs_trackers, class_name: 'Jobs::Tracker', foreign_key: :owner_id, dependent: :nullify
   has_many :invites_imports, foreign_key: :importer_id, dependent: :destroy
 
-  store_accessor :custom_field_values, :gender, :birthyear, :domicile
+  self.ignored_columns += %w[custom_field_values] # backup only; the answers are the source of truth
+
   store_accessor :onboarding, :topics_and_areas
 
   validates :locale, presence: true, unless: :invite_pending?
@@ -250,9 +250,6 @@ class User < ApplicationRecord
   validates :first_name, :last_name, format: { without: /@/ }, allow_nil: true
   validates :locale, inclusion: { in: proc { AppConfiguration.instance.settings('core', 'locales') } }
   validates :bio_multiloc, multiloc: { presence: false, html: true }
-  validates :gender, inclusion: { in: GENDERS }, allow_nil: true
-  validates :birthyear, numericality: { only_integer: true, greater_than_or_equal_to: 1900, less_than: Time.zone.now.year }, allow_nil: true
-  validates :domicile, inclusion: { in: proc { ['outside'] + Area.select(:id).map(&:id) } }, allow_nil: true
   validates :invite_status, inclusion: { in: INVITE_STATUSES }, allow_nil: true
 
   validates :onboarding, json: { schema: -> { User.onboarding_json_schema } }
@@ -273,14 +270,6 @@ class User < ApplicationRecord
   scope :blocked, -> { where('? < block_end_at', Time.zone.now) }
   scope :not_blocked, -> { where(block_end_at: nil).or(where('? > block_end_at', Time.zone.now)) }
   scope :active, -> { registered.not_blocked }
-
-  def update_merging_custom_fields!(attributes)
-    attributes = attributes.deep_stringify_keys
-    update!(
-      **attributes,
-      custom_field_values: custom_field_values.merge(attributes['custom_field_values'] || {})
-    )
-  end
 
   def to_token_payload
     # Converting into hours to avoid issues when crossing DST boundaries. In other words,
@@ -402,6 +391,11 @@ class User < ApplicationRecord
 
   def new_phone_confirmation_pending?
     new_phone.present?
+  end
+
+  def answer_for_code(code)
+    key = CustomField.registration.find_by(code: code)&.key
+    key && answer_for_key(key)
   end
 
   def merge_account_confirmation_pending?
