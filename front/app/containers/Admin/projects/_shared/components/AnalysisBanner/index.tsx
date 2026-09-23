@@ -9,22 +9,15 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
-import useAddAnalysis from 'api/analyses/useAddAnalysis';
-import useAnalyses from 'api/analyses/useAnalyses';
-import usePhase from 'api/phases/usePhase';
-
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import messages from 'containers/Admin/projects/project/ideas/messages';
 
 import UpsellTooltip from 'components/UpsellTooltip';
 
-import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
 
-import { getAnalysisScope } from './utils';
+import useGoToAnalysis from './useGoToAnalysis';
 
 type Props = {
   projectId: string;
@@ -32,15 +25,10 @@ type Props = {
 };
 
 const AnalysisBanner = ({ projectId, phaseId }: Props) => {
-  const { data: phase } = usePhase(phaseId);
-  const scope = getAnalysisScope(phase?.data.attributes.participation_method);
-
-  const { data: analyses, isLoading: isLoadingAnalyses } = useAnalyses({
-    projectId: scope === 'project' ? projectId : undefined,
-    phaseId: scope === 'phase' ? phaseId : undefined,
-  });
-
-  const { mutate: createAnalysis, isPending } = useAddAnalysis();
+  const { goToAnalysis, isLoading, isPending } = useGoToAnalysis(
+    projectId,
+    phaseId
+  );
   const { formatMessage } = useIntl();
 
   const isAnalysisAllowed = useFeatureFlag({
@@ -48,39 +36,7 @@ const AnalysisBanner = ({ projectId, phaseId }: Props) => {
     onlyCheckAllowed: true,
   });
 
-  const handleGoToAnalysis = () => {
-    if (analyses?.data.length) {
-      clHistory.push(
-        `/admin/projects/${
-          projectId || phase?.data.relationships.project.data.id
-        }/analysis/${analyses.data[0].id}?phase_id=${phaseId}`
-      );
-    } else {
-      createAnalysis(
-        {
-          projectId: scope === 'project' ? projectId : undefined,
-          phaseId: scope === 'phase' ? phaseId : undefined,
-        },
-        {
-          onSuccess: (analysis) => {
-            clHistory.push(
-              `/admin/projects/${
-                projectId || phase?.data.relationships.project.data.id
-              }/analysis/${analysis.data.id}?phase_id=${phaseId}`
-            );
-            trackEventByName(tracks.analysisCreated, {
-              projectId,
-              phaseId,
-              participationMethod:
-                phase?.data.attributes.participation_method || 'ideation',
-            });
-          },
-        }
-      );
-    }
-  };
-
-  if (isLoadingAnalyses) return null;
+  if (isLoading) return null;
 
   return (
     <Box
@@ -100,7 +56,7 @@ const AnalysisBanner = ({ projectId, phaseId }: Props) => {
         <Button
           buttonStyle="text"
           textColor={colors.teal500}
-          onClick={handleGoToAnalysis}
+          onClick={goToAnalysis}
           fontWeight="bold"
           icon="arrow-right"
           iconPos="right"
