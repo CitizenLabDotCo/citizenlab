@@ -700,8 +700,6 @@ const buildRouteTree = (moduleRoutes: Partial<Routes> = {}) =>
     ]),
   ]);
 
-// Writes `project_backoffice_redesign` as a bare key, since only its presence
-// matters. The default would write `project_backoffice_redesign=`.
 const stringifySearch = (search: Record<string, unknown>) => {
   const { project_backoffice_redesign, ...rest } = search;
   const searchStr = defaultStringifySearch(rest);
