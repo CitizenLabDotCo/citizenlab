@@ -277,10 +277,8 @@ class Idea < ApplicationRecord
   scope :supports_survey, -> { where(creation_phase: Phase.where(participation_method: %w[native_survey community_monitor_survey])) }
   scope :supports_proposal, -> { where(creation_phase: Phase.where(participation_method: %w[proposals])) }
   scope :supports_idea, -> { where(creation_phase: nil) }
-  # Inputs without an author (e.g. anonymous ones) are kept, since we cannot
-  # tell whether they were submitted by an admin or moderator.
   scope :excluding_admin_and_moderator_authors, lambda {
-    where(author_id: nil).or(where.not(author_id: User.not_normal_user.select(:id)))
+    StatisticsRoleExclusion.exclude_admin_and_moderator_records(all, :author_id)
   }
 
   # Filters out all the ideas for which the ParticipationMethod responds truety

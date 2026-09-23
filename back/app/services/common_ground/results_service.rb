@@ -70,9 +70,7 @@ module CommonGround
       reactions = Reaction.where(reactable: ideas)
       return reactions unless @exclude_admins_and_moderators
 
-      reactions
-        .where(user_id: nil)
-        .or(reactions.where.not(user_id: User.not_normal_user.select(:id)))
+      StatisticsRoleExclusion.exclude_admin_and_moderator_records(reactions, :user_id)
     end
 
     def num_participants
