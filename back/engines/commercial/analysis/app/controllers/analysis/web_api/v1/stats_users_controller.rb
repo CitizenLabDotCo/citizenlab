@@ -66,7 +66,7 @@ module Analysis
         def find_users
           inputs = InputsFinder.new(@analysis, filters(params)).execute
           users = User.where(id: inputs.select(:author_id))
-          users = users.normal_user if StatisticsRoleExclusion.exclude_admins_and_moderators?
+          users = users.normal_user if StatisticsRoleExclusion.new.exclude_admins_and_moderators?
           users
         end
 

@@ -29,7 +29,7 @@ module Analytics
         authorize :analytics, policy_class: AnalyticsPolicy
 
         results, errors, paginations = Analytics::MultipleQueries
-          .new(original_url: request.original_url, exclude_admins_and_moderators: StatisticsRoleExclusion.exclude_admins_and_moderators?)
+          .new(original_url: request.original_url, exclude_admins_and_moderators: StatisticsRoleExclusion.new.exclude_admins_and_moderators?)
           .run(query)
 
         if errors.present?

@@ -13,8 +13,9 @@ class WebApi::V1::StatsController < ApplicationController
   end
 
   def apply_exclude_admins_and_moderators_filter(records, user_column)
-    return records unless StatisticsRoleExclusion.exclude_admins_and_moderators?
+    role_exclusion = StatisticsRoleExclusion.new
+    return records unless role_exclusion.exclude_admins_and_moderators?
 
-    StatisticsRoleExclusion.exclude_admin_and_moderator_records(records, user_column)
+    role_exclusion.exclude_admin_and_moderator_records(records, user_column)
   end
 end

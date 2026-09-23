@@ -87,7 +87,7 @@ class WebApi::V1::PhasesController < ApplicationController
         structure_by_category: true,
         year:,
         quarter:,
-        exclude_admins_and_moderators: StatisticsRoleExclusion.exclude_admins_and_moderators?
+        exclude_admins_and_moderators: StatisticsRoleExclusion.new.exclude_admins_and_moderators?
       ).generate_results
     else
       logic_ids = params[:filter_logic_ids].presence || [] # Array of page and option IDs
@@ -183,7 +183,7 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def common_ground_results
-    results = CommonGround::ResultsService.new(@phase, exclude_admins_and_moderators: StatisticsRoleExclusion.exclude_admins_and_moderators?).results
+    results = CommonGround::ResultsService.new(@phase, exclude_admins_and_moderators: StatisticsRoleExclusion.new.exclude_admins_and_moderators?).results
 
     render json: WebApi::V1::CommonGround::ResultsSerializer
       .new(results, params: jsonapi_serializer_params)
@@ -197,7 +197,7 @@ class WebApi::V1::PhasesController < ApplicationController
     average_generator = Surveys::AverageGenerator.new(
       @phase,
       input_type: 'sentiment_linear_scale',
-      exclude_admins_and_moderators: StatisticsRoleExclusion.exclude_admins_and_moderators?
+      exclude_admins_and_moderators: StatisticsRoleExclusion.new.exclude_admins_and_moderators?
     )
     render json: raw_json(average_generator.summary_averages_by_quarter)
   end

@@ -18,7 +18,7 @@ module UserCustomFields
         def find_users
           finder_params = params.permit(:project)
           users = User.active
-          users = users.normal_user if StatisticsRoleExclusion.exclude_admins_and_moderators?
+          users = users.normal_user if StatisticsRoleExclusion.new.exclude_admins_and_moderators?
           UsersFinder.new(users, finder_params).execute
         end
 
