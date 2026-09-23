@@ -3148,6 +3148,8 @@
   "app.containers.AdminPage.ProjectTimeline.moveOnTimelineButton": "Move onto the timeline",
   "app.containers.AdminPage.ProjectTimeline.moveOnTimelineExplanation": "The survey will become a phase on the timeline. It keeps its questions and its responses.",
   "app.containers.AdminPage.ProjectTimeline.moveOnTimelineModalTitle": "Move this survey onto the timeline?",
+  "app.containers.AdminPage.ProjectTimeline.movePreviousPhaseError": "The phase before this survey has no end date, and it cannot end on the start date of this survey. Change the dates and try again.",
+  "app.containers.AdminPage.ProjectTimeline.moveSaveChangesFirst": "Save your changes before you move the survey.",
   "app.containers.AdminPage.ProjectTimeline.moveWarningResponseEditing": "Whether residents can still edit the answers they already submitted may change.",
   "app.containers.AdminPage.ProjectTimeline.moveWarningTimelineDates": "Timeline phases cannot overlap. If the dates clash with another phase, the move is refused and the phase before this one may get an end date.",
   "app.containers.AdminPage.ProjectTimeline.moveWarningVisibility": "Residents will find the survey in a different place on the project page, so any link you shared to it may no longer work.",
