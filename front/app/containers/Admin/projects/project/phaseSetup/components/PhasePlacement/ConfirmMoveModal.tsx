@@ -72,7 +72,11 @@ const ConfirmMoveModal = ({
           </Box>
         </Warning>
         <Box display="flex" gap="8px" mt="20px" flexDirection="column">
-          <Button onClick={onConfirm} processing={processing}>
+          <Button
+            onClick={onConfirm}
+            processing={processing}
+            data-cy="e2e-phase-placement-confirm"
+          >
             {formatMessage(messages.moveConfirmButton)}
           </Button>
           <Button buttonStyle="secondary-outlined" onClick={onClose}>
