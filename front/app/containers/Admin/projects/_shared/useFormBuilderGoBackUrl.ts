@@ -1,4 +1,4 @@
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 type FormTab = 'form' | 'survey-form';
 
@@ -7,9 +7,7 @@ const useFormBuilderGoBackUrl = (
   phaseId: string,
   tab: FormTab
 ) => {
-  const backofficeRedesignEnabled = useFeatureFlag({
-    name: 'project_backoffice_redesign',
-  });
+  const backofficeRedesignEnabled = useProjectBackofficeRedesign();
 
   return backofficeRedesignEnabled
     ? `/admin/projects/${projectId}/phases/${phaseId}/setup`
