@@ -2,7 +2,9 @@ import React from 'react';
 
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 
-import { PhasePlacementType } from 'api/phases/types';
+import { IPhaseData, PhasePlacementType } from 'api/phases/types';
+
+import useLocalize from 'hooks/useLocalize';
 
 import Modal from 'components/UI/Modal';
 import Warning from 'components/UI/Warning';
@@ -15,6 +17,8 @@ interface Props {
   opened: boolean;
   target: PhasePlacementType;
   shownOnProjectPage: boolean;
+  phaseToClose?: IPhaseData;
+  surveyStartAt: string;
   processing: boolean;
   onConfirm: () => void;
   onClose: () => void;
@@ -24,11 +28,14 @@ const ConfirmMoveModal = ({
   opened,
   target,
   shownOnProjectPage,
+  phaseToClose,
+  surveyStartAt,
   processing,
   onConfirm,
   onClose,
 }: Props) => {
-  const { formatMessage } = useIntl();
+  const { formatMessage, formatDate } = useIntl();
+  const localize = useLocalize();
   const movingOntoTimeline = target === 'on_timeline';
 
   return (
@@ -63,12 +70,17 @@ const ConfirmMoveModal = ({
             )}
             {movingOntoTimeline && (
               <Text as="li" m="0">
-                {formatMessage(messages.moveWarningTimelineDates)}
+                {formatMessage(messages.moveWarningTimelineOverlap)}
               </Text>
             )}
-            <Text as="li" m="0">
-              {formatMessage(messages.moveWarningResponseEditing)}
-            </Text>
+            {movingOntoTimeline && phaseToClose && (
+              <Text as="li" m="0">
+                {formatMessage(messages.moveWarningPreviousPhaseEnds, {
+                  phaseName: localize(phaseToClose.attributes.title_multiloc),
+                  date: formatDate(surveyStartAt, { dateStyle: 'long' }),
+                })}
+              </Text>
+            )}
           </Box>
         </Warning>
         <Box display="flex" gap="8px" mt="20px" flexDirection="column">
