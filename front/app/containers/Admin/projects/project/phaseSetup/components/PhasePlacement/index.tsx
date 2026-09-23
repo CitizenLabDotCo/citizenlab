@@ -5,8 +5,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import { IPhaseData, PhasePlacementType } from 'api/phases/types';
+import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
-import { isTimelinePhase } from 'api/phases/utils';
+import { getPreviousTimelinePhase, isTimelinePhase } from 'api/phases/utils';
 import projectPageLayoutKeys from 'api/project_page_layout/keys';
 import useProjectPageLayout from 'api/project_page_layout/useProjectPageLayout';
 
@@ -33,16 +34,25 @@ const PhasePlacement = ({ phase, hasUnsavedChanges }: Props) => {
   const projectId = phase.relationships.project.data.id;
   const isSurvey = phase.attributes.participation_method === 'native_survey';
   const onTimeline = isTimelinePhase(phase);
+  const canMoveOntoTimeline = isSurvey && !onTimeline;
   // Only a standalone survey can be shown in a project page block.
-  const { data: layout } = useProjectPageLayout(
-    projectId,
-    isSurvey && !onTimeline
+  const { data: layout } = useProjectPageLayout(projectId, canMoveOntoTimeline);
+  const { data: timelinePhases } = usePhases(
+    canMoveOntoTimeline ? projectId : undefined,
+    'on_timeline'
   );
 
   // Only surveys can run alongside the timeline, so no other method can be moved.
   if (!isSurvey) return null;
 
   const target: PhasePlacementType = onTimeline ? 'standalone' : 'on_timeline';
+  const previousPhase =
+    timelinePhases && getPreviousTimelinePhase(timelinePhases.data, phase);
+  // Moving onto the timeline ends an open-ended previous phase where this one starts.
+  const phaseToClose =
+    previousPhase && !previousPhase.attributes.end_at
+      ? previousPhase
+      : undefined;
 
   const handleConfirm = () => {
     setErrors(null);
@@ -114,6 +124,8 @@ const PhasePlacement = ({ phase, hasUnsavedChanges }: Props) => {
         shownOnProjectPage={linkedSurveyPhaseIds(
           layout?.data.attributes.craftjs_json
         ).has(phase.id)}
+        phaseToClose={phaseToClose}
+        surveyStartAt={phase.attributes.start_at}
         processing={isPending}
         onConfirm={handleConfirm}
         onClose={() => setModalOpened(false)}
