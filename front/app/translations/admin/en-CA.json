@@ -1490,7 +1490,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.listed": "Listed",
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.unlisted": "Unlisted",
   "app.containers.Admin.projects.all.new.Projects.Filters.Folders.folders": "Folders",
-  "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.filterByCurrentPhaseMethod": "Filter by the current phase participation method",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.ideation": "Ideation",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.information": "Information",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.label": "Participation method",

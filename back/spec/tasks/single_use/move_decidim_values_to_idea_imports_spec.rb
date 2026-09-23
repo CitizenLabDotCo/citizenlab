@@ -13,7 +13,11 @@ describe 'single_use:move_decidim_values_to_idea_imports' do
   let(:scope) { { 'area_id' => SecureRandom.uuid, 'title_multiloc' => { 'en' => 'Utah' } } }
   let(:status) { { 'token' => 'accepted', 'title_multiloc' => { 'en' => 'Accepted' } } }
   let!(:idea) do
-    create(:idea, custom_field_values: { 'decidim_scope' => scope, 'decidim_status' => status, 'field_1' => 'kept' })
+    create(:idea).tap do |idea|
+      idea.custom_field_answers.create!(key: 'decidim_scope', value: scope)
+      idea.custom_field_answers.create!(key: 'decidim_status', value: status)
+      idea.custom_field_answers.create!(key: 'field_1', value: 'kept')
+    end
   end
 
   after do
@@ -25,12 +29,10 @@ describe 'single_use:move_decidim_values_to_idea_imports' do
     CustomFieldAnswer.where(answerable: idea).pluck(:key)
   end
 
-  it 'moves the decidim values into a new idea import, keeping the other values' do
+  it 'moves the decidim values into a new idea import' do
     run
 
-    idea.reload
-    expect(idea.custom_field_values).to eq('field_1' => 'kept')
-    expect(idea.idea_import.extra_info).to eq('decidim_scope' => scope, 'decidim_status' => status)
+    expect(idea.reload.idea_import.extra_info).to eq('decidim_scope' => scope, 'decidim_status' => status)
   end
 
   it 'removes the answers for the decidim values, keeping the other answers' do
@@ -50,20 +52,19 @@ describe 'single_use:move_decidim_values_to_idea_imports' do
   end
 
   it 'leaves ideas without decidim values alone' do
-    plain = create(:idea, custom_field_values: { 'field_1' => 'kept' })
+    plain = create(:idea)
+    plain.custom_field_answers.create!(key: 'field_1', value: 'kept')
 
     run
 
-    expect(plain.reload.custom_field_values).to eq('field_1' => 'kept')
-    expect(plain.idea_import).to be_nil
+    expect(CustomFieldAnswer.where(answerable: plain).pluck(:key, :value)).to eq [%w[field_1 kept]]
+    expect(plain.reload.idea_import).to be_nil
   end
 
   it 'changes nothing on a dry run' do
     task.invoke(Tenant.current.host)
 
-    idea.reload
-    expect(idea.custom_field_values).to include('decidim_scope', 'decidim_status')
-    expect(idea.idea_import).to be_nil
+    expect(idea.reload.idea_import).to be_nil
     expect(answer_keys(idea)).to contain_exactly('decidim_scope', 'decidim_status', 'field_1')
   end
 

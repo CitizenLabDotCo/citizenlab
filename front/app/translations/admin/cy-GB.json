@@ -1490,7 +1490,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.listed": "Rhestredig",
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.unlisted": "Heb ei restru",
   "app.containers.Admin.projects.all.new.Projects.Filters.Folders.folders": "Ffolderi",
-  "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.filterByCurrentPhaseMethod": "Hidlo yn ôl y dull cyfranogiad cyfnod cyfredol",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.ideation": "Syniadaeth",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.information": "Gwybodaeth",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.label": "Dull cyfranogiad",

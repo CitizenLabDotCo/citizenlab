@@ -1490,7 +1490,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.listed": "Listattu",
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.unlisted": "Ei listattu",
   "app.containers.Admin.projects.all.new.Projects.Filters.Folders.folders": "Kansiot",
-  "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.filterByCurrentPhaseMethod": "Suodata nykyisen vaiheen osallistumistavan mukaan",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.ideation": "Ideointi",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.information": "Tiedot",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.label": "Osallistumismenetelmä",

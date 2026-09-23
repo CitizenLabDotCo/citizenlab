@@ -153,7 +153,7 @@ class McpServer::Tools::CreateDemoInputs < McpServer::BaseTool
 
     def build_idea(phase, attributes, time, idea_status)
       location = attributes[:location]
-      Idea.new(
+      idea = Idea.new(
         project: phase.project,
         phases: [phase],
         creation_phase: phase.pmethod.transitive? ? nil : phase,
@@ -164,11 +164,12 @@ class McpServer::Tools::CreateDemoInputs < McpServer::BaseTool
         published_at: time,
         title_multiloc: attributes[:title_multiloc],
         body_multiloc: attributes[:body_multiloc],
-        custom_field_values: attributes[:custom_field_values] || {},
         budget: attributes[:budget],
         location_description: location&.dig(:description),
         location_point_geojson: location && { 'type' => 'Point', 'coordinates' => [location[:lng], location[:lat]] }
       )
+      CustomFieldValuesTransitionService.new.assign(idea, attributes[:custom_field_values])
+      idea
     end
 
     def input_window_start(phase)

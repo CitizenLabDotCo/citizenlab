@@ -1490,7 +1490,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.listed": "Καταχωρημένο",
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.unlisted": "Μη καταχωρισμένο",
   "app.containers.Admin.projects.all.new.Projects.Filters.Folders.folders": "Φάκελοι",
-  "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.filterByCurrentPhaseMethod": "Φιλτράρισμα με βάση τη μέθοδο συμμετοχής της τρέχουσας φάσης",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.ideation": "Συλλογή ιδεών",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.information": "Πληροφορίες",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.label": "Μέθοδος συμμετοχής",

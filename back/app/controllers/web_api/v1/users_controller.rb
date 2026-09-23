@@ -50,6 +50,7 @@ class WebApi::V1::UsersController < ApplicationController
     sort_by_sort_param if params[:search].blank?
 
     @users = paginate @users
+    @users = @users.includes(:custom_field_answers)
 
     LogActivityJob.perform_later(current_user, 'searched_users', current_user, Time.now.to_i, payload: { search_query: params[:search] }) if params[:search].present?
     render json: linked_json(@users, WebApi::V1::UserSerializer, params: jsonapi_serializer_params)
@@ -67,13 +68,13 @@ class WebApi::V1::UsersController < ApplicationController
 
   def billed_admins
     authorize :user, :billed_admins?
-    @users = paginate User.billed_admins
+    @users = paginate(User.billed_admins).includes(:custom_field_answers)
     render json: linked_json(@users, WebApi::V1::UserSerializer, params: jsonapi_serializer_params)
   end
 
   def billed_moderators
     authorize :user, :billed_moderators?
-    @users = paginate User.billed_moderators
+    @users = paginate(User.billed_moderators).includes(:custom_field_answers)
     render json: linked_json(@users, WebApi::V1::UserSerializer, params: jsonapi_serializer_params)
   end
 
@@ -397,7 +398,8 @@ class WebApi::V1::UsersController < ApplicationController
   def update_params
     @update_params ||= permitted_attributes(@user).tap do |attrs|
       attrs[:onboarding] = @user.onboarding.merge(attrs[:onboarding].to_h)
-      attrs[:custom_field_values] = params_service.updated_custom_field_values(@user.custom_field_values, attrs[:custom_field_values].to_h)
+      stored_values = CustomFieldValuesTransitionService.new.custom_field_values(@user)
+      attrs[:custom_field_values] = params_service.updated_custom_field_values(stored_values, attrs[:custom_field_values].to_h)
       CustomFieldService.new.compact_custom_field_values!(attrs[:custom_field_values])
 
       first_name = attrs[:first_name]

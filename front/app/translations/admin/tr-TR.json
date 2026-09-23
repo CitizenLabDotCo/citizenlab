@@ -1490,7 +1490,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.listed": "Listelendi",
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.unlisted": "Liste dışı",
   "app.containers.Admin.projects.all.new.Projects.Filters.Folders.folders": "Klasörler",
-  "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.filterByCurrentPhaseMethod": "Geçerli faz katılım yöntemine göre filtreleme",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.ideation": "Düşünce",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.information": "Bilgi",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.label": "Katılım yöntemi",

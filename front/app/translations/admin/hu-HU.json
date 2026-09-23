@@ -1490,7 +1490,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.listed": "Listázott",
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.unlisted": "Nem listázott",
   "app.containers.Admin.projects.all.new.Projects.Filters.Folders.folders": "Mappák",
-  "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.filterByCurrentPhaseMethod": "Szűrés a jelenlegi szakasz részvételi módja szerint",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.ideation": "Ötletgyűjtés",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.information": "Információ",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.label": "Részvételi mód",

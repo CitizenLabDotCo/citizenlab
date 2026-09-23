@@ -1490,7 +1490,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.listed": "Sarakstā",
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.unlisted": "Neiekļauts",
   "app.containers.Admin.projects.all.new.Projects.Filters.Folders.folders": "Mapes",
-  "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.filterByCurrentPhaseMethod": "Filtrēšana pēc pašreizējās fāzes dalības metodes",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.ideation": "Ideju izstrāde",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.information": "Informācija",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.label": "Līdzdalības metode",

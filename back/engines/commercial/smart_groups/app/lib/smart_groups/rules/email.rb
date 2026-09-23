@@ -86,21 +86,21 @@ module SmartGroups::Rules
     def filter(users_scope)
       case predicate
       when 'is'
-        users_scope.where(email: value)
+        users_scope.where('lower(email) = lower(?)', value)
       when 'not_is'
-        users_scope.where('email IS NULL or email != ?', value)
+        users_scope.where('email IS NULL or lower(email) != lower(?)', value)
       when 'contains'
-        users_scope.where('email LIKE ?', "%#{value}%")
+        users_scope.where('email ILIKE ?', "%#{value}%")
       when 'not_contains'
-        users_scope.where('email NOT LIKE ?', "%#{value}%")
+        users_scope.where('email IS NULL or email NOT ILIKE ?', "%#{value}%")
       when 'begins_with'
-        users_scope.where('email LIKE ?', "#{value}%")
+        users_scope.where('email ILIKE ?', "#{value}%")
       when 'not_begins_with'
-        users_scope.where('email NOT LIKE ?', "#{value}%")
+        users_scope.where('email IS NULL or email NOT ILIKE ?', "#{value}%")
       when 'ends_on'
-        users_scope.where('email LIKE ?', "%#{value}")
+        users_scope.where('email ILIKE ?', "%#{value}")
       when 'not_ends_on'
-        users_scope.where('email NOT LIKE ?', "%#{value}")
+        users_scope.where('email IS NULL or email NOT ILIKE ?', "%#{value}")
       when 'is_one_of'
         users_scope.where('lower(email) IN (?)', normalized_values)
       when 'not_is_one_of'

@@ -64,17 +64,18 @@ module BulkImportIdeas::Importers
               # Though they have to reset their password by email after import anyway
               custom_field_values = process_user_custom_field_values(platform_fields, user_row)
 
-              user = User.create!(
+              user = User.new(
                 email: user_row[USER_EMAIL],
                 first_name: user_row[USER_FIRST_NAME],
                 last_name: user_row[USER_LAST_NAME] || '',
-                custom_field_values: custom_field_values,
                 created_at: user_row[USER_CREATED_AT] ? user_row[USER_CREATED_AT].to_time : Time.now,
                 last_active_at: user_row[USER_LAST_ACTIVE_AT] ? user_row[USER_LAST_ACTIVE_AT].to_time : Time.now,
                 registration_completed_at: user_row[USER_CREATED_AT] ? user_row[USER_CREATED_AT].to_time : Time.now,
                 locale: @locale,
                 imported: true
               )
+              CustomFieldValuesTransitionService.new.assign(user, custom_field_values)
+              user.save!
 
               # Assume all imported users are confirmed and change date to created_at if it exists
               user.find_or_create_confirmation(:email_confirmation).confirm!

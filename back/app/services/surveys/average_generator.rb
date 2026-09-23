@@ -113,7 +113,7 @@ module Surveys
     # Can add user fields and demographics in here when needed
     def all_answers
       @all_answers ||= @inputs.includes(:custom_field_answers).flat_map do |input|
-        input.custom_field_answers.to_h { [it.key, it.value] }
+        CustomFieldValuesTransitionService.new.custom_field_values(input)
           .merge({ 'quarter' => date_to_quarter(input.created_at) })
       end
     end

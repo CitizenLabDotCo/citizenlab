@@ -1490,7 +1490,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.listed": "Oppført",
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.unlisted": "Unotert",
   "app.containers.Admin.projects.all.new.Projects.Filters.Folders.folders": "Mapper",
-  "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.filterByCurrentPhaseMethod": "Filtrer etter gjeldende fasedeltakelsesmetode",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.ideation": "Idéutvikling",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.information": "Informasjon",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.label": "Metode for deltakelse",
