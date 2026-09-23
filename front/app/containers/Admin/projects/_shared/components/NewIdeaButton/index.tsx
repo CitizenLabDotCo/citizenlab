@@ -17,6 +17,10 @@ interface Props extends TypedLinkProps {
   linkTo?: string;
   inputTerm: InputTerm;
   participationMethod: ParticipationMethod;
+  buttonStyle?: 'admin-dark' | 'secondary-outlined';
+  padding?: string;
+  fontSize?: string;
+  iconSize?: string;
 }
 
 const NewIdeaButton = ({
@@ -26,6 +30,10 @@ const NewIdeaButton = ({
   linkTo,
   inputTerm,
   participationMethod,
+  buttonStyle = 'admin-dark',
+  padding,
+  fontSize,
+  iconSize,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
@@ -56,7 +64,10 @@ const NewIdeaButton = ({
   return (
     <ButtonWithLink
       id="e2e-new-idea"
-      buttonStyle="admin-dark"
+      buttonStyle={buttonStyle}
+      padding={padding}
+      fontSize={fontSize}
+      iconSize={iconSize}
       icon="plus"
       to={to}
       params={params}
