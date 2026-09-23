@@ -22,20 +22,26 @@ import ConfirmMoveModal from './ConfirmMoveModal';
 
 interface Props {
   phase: IPhaseData;
+  hasUnsavedChanges: boolean;
 }
 
-const PhasePlacement = ({ phase }: Props) => {
+const PhasePlacement = ({ phase, hasUnsavedChanges }: Props) => {
   const [modalOpened, setModalOpened] = useState(false);
   const [errors, setErrors] = useState<CLErrors | null>(null);
   const { mutate: updatePhase, isPending } = useUpdatePhase();
   const queryClient = useQueryClient();
   const projectId = phase.relationships.project.data.id;
-  const { data: layout } = useProjectPageLayout(projectId);
+  const isSurvey = phase.attributes.participation_method === 'native_survey';
+  const onTimeline = isTimelinePhase(phase);
+  // Only a standalone survey can be shown in a project page block.
+  const { data: layout } = useProjectPageLayout(
+    projectId,
+    isSurvey && !onTimeline
+  );
 
   // Only surveys can run alongside the timeline, so no other method can be moved.
-  if (phase.attributes.participation_method !== 'native_survey') return null;
+  if (!isSurvey) return null;
 
-  const onTimeline = isTimelinePhase(phase);
   const target: PhasePlacementType = onTimeline ? 'standalone' : 'on_timeline';
 
   const handleConfirm = () => {
@@ -78,6 +84,8 @@ const PhasePlacement = ({ phase }: Props) => {
           size="s"
           width="auto"
           icon="calendar"
+          disabled={hasUnsavedChanges}
+          data-cy="e2e-phase-placement-move"
           onClick={() => setModalOpened(true)}
         >
           <FormattedMessage
@@ -87,10 +95,19 @@ const PhasePlacement = ({ phase }: Props) => {
           />
         </Button>
       </Box>
+      {hasUnsavedChanges && (
+        <Text mb="0" fontSize="s" color="textSecondary">
+          <FormattedMessage {...messages.moveSaveChangesFirst} />
+        </Text>
+      )}
       <Error apiErrors={errors?.base} />
       <Error apiErrors={errors?.participation_method} />
       <Error apiErrors={errors?.end_at} />
-      <Error apiErrors={errors?.previous_phase} />
+      {errors?.previous_phase && (
+        <Error
+          text={<FormattedMessage {...messages.movePreviousPhaseError} />}
+        />
+      )}
       <ConfirmMoveModal
         opened={modalOpened}
         target={target}
