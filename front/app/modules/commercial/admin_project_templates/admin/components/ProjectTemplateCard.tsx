@@ -105,7 +105,7 @@ interface Props {
   title: string;
   body: string;
   className?: string;
-  onUse: (projectTemplateId: string) => void;
+  onUse: (projectTemplateId: string, title: string) => void;
 }
 
 const ProjectTemplateCard = memo<Props>(
@@ -126,7 +126,7 @@ const ProjectTemplateCard = memo<Props>(
         projectTemplateId,
         title,
       });
-      onUse(projectTemplateId);
+      onUse(projectTemplateId, title);
     }, [onUse, projectTemplateId, title]);
 
     return (

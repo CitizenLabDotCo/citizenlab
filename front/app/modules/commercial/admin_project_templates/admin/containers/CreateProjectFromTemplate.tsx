@@ -24,7 +24,10 @@ interface Props {
 const CreateProjectFromTemplate = memo(
   ({ graphqlTenantLocales, className, onDone }: Props): ReactElement => {
     const { data: appConfig } = useAppConfiguration();
-    const [namedTemplateId, setNamedTemplateId] = useState<string | null>(null);
+    const [namedTemplate, setNamedTemplate] = useState<{
+      id: string;
+      title: string;
+    } | null>(null);
     const [created, setCreated] = useState(false);
 
     const organizationTypes = !isNilOrError(appConfig)
@@ -127,17 +130,22 @@ const CreateProjectFromTemplate = memo(
       setSearch(!isEmpty(searchValue) ? searchValue : null);
     }, []);
 
+    const handleUseTemplate = useCallback((id: string, title: string) => {
+      setNamedTemplate({ id, title });
+    }, []);
+
     const handleNameModalOnClose = useCallback(() => {
       trackEventByName(tracks.useTemplateModalClosed, {
-        projectTemplateId: namedTemplateId,
+        projectTemplateId: namedTemplate?.id,
+        title: namedTemplate?.title,
       });
-      setNamedTemplateId(null);
+      setNamedTemplate(null);
 
       if (created) {
         setCreated(false);
         onDone?.();
       }
-    }, [created, namedTemplateId, onDone]);
+    }, [created, namedTemplate, onDone]);
 
     return (
       <>
@@ -153,12 +161,12 @@ const CreateProjectFromTemplate = memo(
           onParticipationLevelFilterChange={
             handleParticipationLevelFilterOnChange
           }
-          onUseTemplate={setNamedTemplateId}
+          onUseTemplate={handleUseTemplate}
         />
 
-        {namedTemplateId && (
+        {namedTemplate && (
           <UseTemplateModal
-            projectTemplateId={namedTemplateId}
+            projectTemplateId={namedTemplate.id}
             opened
             close={handleNameModalOnClose}
             onCreated={() => setCreated(true)}
