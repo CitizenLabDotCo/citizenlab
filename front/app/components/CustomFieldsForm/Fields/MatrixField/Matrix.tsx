@@ -34,6 +34,8 @@ import { sanitizeForClassname } from 'utils/JSONFormUtils';
 import messages from '../../messages';
 import { getLinearScaleLabel } from '../LinearScale/utils';
 
+import StatementList from './StatementList';
+
 const StickyTh = styled(Th)<{ hasLongContent: boolean }>`
   position: sticky;
   inset-inline-start: 0px;
@@ -310,12 +312,13 @@ const Matrix = ({ value: data, question, onChange }: Props) => {
           </Table>
         </Box>
       ) : (
-        // TODO: replace with alternative (non-scrolling) matrix layout
-        <Box id="e2e-matrix-control">
-          <Text m="0px" color="textPrimary">
-            Placeholder: matrix does not fit horizontally
-          </Text>
-        </Box>
+        <StatementList
+          id={id}
+          statements={statements}
+          columns={columnsFromSchema}
+          value={data}
+          onChange={onChange}
+        />
       )}
       {data !== undefined && (
         <Box display="flex">
