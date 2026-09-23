@@ -1,6 +1,5 @@
 import React, { ReactElement, memo, useState, useCallback } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import useGraphqlTenantLocales from 'modules/commercial/admin_project_templates/admin/api/useGraphqlTenantLocales';
 
@@ -8,12 +7,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
-import projectsMessages from 'containers/Admin/projects/all/messages';
-
-import Modal from 'components/UI/Modal';
-
 import { trackEventByName } from 'utils/analytics';
-import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import tracks from '../../tracks';
@@ -24,12 +18,11 @@ import UseTemplateModal from '../components/UseTemplateModal';
 interface Props {
   className?: string;
   graphqlTenantLocales: string[];
-  onClose?: () => void;
+  onDone?: () => void;
 }
 
 const CreateProjectFromTemplate = memo(
-  ({ graphqlTenantLocales, className, onClose }: Props): ReactElement => {
-    const { formatMessage } = useIntl();
+  ({ graphqlTenantLocales, className, onDone }: Props): ReactElement => {
     const { data: appConfig } = useAppConfiguration();
     const [namedTemplateId, setNamedTemplateId] = useState<string | null>(null);
     const [created, setCreated] = useState(false);
@@ -134,41 +127,40 @@ const CreateProjectFromTemplate = memo(
       setSearch(!isEmpty(searchValue) ? searchValue : null);
     }, []);
 
-    const cards = (
-      <ProjectTemplateCards
-        templates={templates}
-        className={className}
-        loading={loading}
-        onLoadMore={handleLoadMoreTemplatesOnClick}
-        loadingMore={isFetchingNextPage}
-        onSearchChange={handleSearchOnChange}
-        onPurposeFilterChange={handlePurposeFilterOnChange}
-        onDepartmentFilterChange={handleDepartmentFilterOnChange}
-        onParticipationLevelFilterChange={
-          handleParticipationLevelFilterOnChange
-        }
-        onUseTemplate={onClose && setNamedTemplateId}
-      />
-    );
+    const handleNameModalOnClose = useCallback(() => {
+      trackEventByName(tracks.useTemplateModalClosed, {
+        projectTemplateId: namedTemplateId,
+      });
+      setNamedTemplateId(null);
 
-    if (!onClose) return cards;
+      if (created) {
+        setCreated(false);
+        onDone?.();
+      }
+    }, [created, namedTemplateId, onDone]);
 
     return (
       <>
-        <Modal
-          opened={namedTemplateId === null}
-          close={onClose}
-          width={1000}
-          header={formatMessage(projectsMessages.fromTemplate)}
-        >
-          <Box p="24px">{cards}</Box>
-        </Modal>
+        <ProjectTemplateCards
+          templates={templates}
+          className={className}
+          loading={loading}
+          onLoadMore={handleLoadMoreTemplatesOnClick}
+          loadingMore={isFetchingNextPage}
+          onSearchChange={handleSearchOnChange}
+          onPurposeFilterChange={handlePurposeFilterOnChange}
+          onDepartmentFilterChange={handleDepartmentFilterOnChange}
+          onParticipationLevelFilterChange={
+            handleParticipationLevelFilterOnChange
+          }
+          onUseTemplate={setNamedTemplateId}
+        />
 
         {namedTemplateId && (
           <UseTemplateModal
             projectTemplateId={namedTemplateId}
             opened
-            close={created ? onClose : () => setNamedTemplateId(null)}
+            close={handleNameModalOnClose}
             onCreated={() => setCreated(true)}
           />
         )}
@@ -187,7 +179,7 @@ const CreateProjectFromTemplateWithGraphqlLocales = memo(
       <CreateProjectFromTemplate
         graphqlTenantLocales={graphqlTenantLocales}
         className={props.className}
-        onClose={props.onClose}
+        onDone={props.onDone}
       />
     );
   }

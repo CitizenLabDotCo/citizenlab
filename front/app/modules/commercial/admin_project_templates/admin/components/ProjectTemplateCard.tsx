@@ -15,7 +15,6 @@ import tracks from '../../tracks';
 import ProjectTemplatePreviewAdmin from '../containers/ProjectTemplatePreviewAdmin';
 
 import messages from './messages';
-import UseTemplateModal from './UseTemplateModal';
 
 const duration = 300;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
@@ -106,13 +105,11 @@ interface Props {
   title: string;
   body: string;
   className?: string;
-  onUse?: (projectTemplateId: string) => void;
+  onUse: (projectTemplateId: string) => void;
 }
 
 const ProjectTemplateCard = memo<Props>(
   ({ projectTemplateId, imageUrl, title, body, className, onUse }) => {
-    const [useTemplateModalOpened, setUseTemplateModalOpened] =
-      useState<boolean>(false);
     const [previewModalOpened, setPreviewModalOpened] =
       useState<boolean>(false);
 
@@ -124,28 +121,13 @@ const ProjectTemplateCard = memo<Props>(
       setPreviewModalOpened(true);
     }, [projectTemplateId, title]);
 
-    const onOpenUseTemplateModal = useCallback(() => {
+    const onUseTemplateBtnClick = useCallback(() => {
       trackEventByName(tracks.useTemplateButtonClicked, {
         projectTemplateId,
         title,
       });
-
-      if (onUse) {
-        onUse(projectTemplateId);
-        return;
-      }
-
-      setUseTemplateModalOpened(true);
+      onUse(projectTemplateId);
     }, [onUse, projectTemplateId, title]);
-
-    const onCloseUseTemplateModal = useCallback(() => {
-      trackEventByName(tracks.useTemplateModalClosed, {
-        projectTemplateId,
-        title,
-      });
-      setUseTemplateModalOpened(false);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     return (
       <Container className={`${className} ${imageUrl ? 'hasImage' : ''}`}>
@@ -159,7 +141,7 @@ const ProjectTemplateCard = memo<Props>(
 
         <Buttons>
           <UseTemplateButton
-            onClick={onOpenUseTemplateModal}
+            onClick={onUseTemplateBtnClick}
             buttonStyle="secondary-outlined"
             fullWidth={true}
             bgColor={darken(0.05, colors.grey200)}
@@ -177,13 +159,6 @@ const ProjectTemplateCard = memo<Props>(
           </MoreDetailsButton>
         </Buttons>
 
-        {useTemplateModalOpened && (
-          <UseTemplateModal
-            projectTemplateId={projectTemplateId}
-            opened
-            close={onCloseUseTemplateModal}
-          />
-        )}
         <Modal
           opened={previewModalOpened}
           close={() => {

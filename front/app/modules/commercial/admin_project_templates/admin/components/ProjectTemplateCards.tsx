@@ -97,7 +97,7 @@ interface Props {
   onDepartmentFilterChange: (departments: string[]) => void;
   onParticipationLevelFilterChange: (participationLevels: string[]) => void;
   templates: Templates;
-  onUseTemplate?: (projectTemplateId: string) => void;
+  onUseTemplate: (projectTemplateId: string) => void;
 }
 
 const ProjectTemplateCards = memo<Props & WrappedComponentProps>(

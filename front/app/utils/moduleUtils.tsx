@@ -30,7 +30,7 @@ export type ITabsOutlet = {
 export interface OutletsPropertyMap {
   'app.containers.Admin.projects.all.createProject': {
     selectedTabValue: TTabName;
-    onClose?: () => void;
+    onDone?: () => void;
   };
   'app.containers.Admin.projects.all.createProject.tabs': {
     onData: (data: InsertConfigurationOptions<ITabItem>) => void;

@@ -63,33 +63,40 @@ const NewProjectModal = ({ mode, onClose }: Props) => {
     close();
   };
 
-  if (mode === 'template') {
-    return (
-      <Outlet
-        id="app.containers.Admin.projects.all.createProject"
-        selectedTabValue="template"
-        onClose={close}
-      />
-    );
-  }
-
   return (
-    <Modal
-      opened={mode !== null}
-      close={close}
-      width={600}
-      header={formatMessage(messages.fromScratch)}
-    >
-      <Box p="24px">
-        <NewProjectForm
-          processing={processing}
-          failed={failed}
-          apiErrors={apiErrors}
-          onCancel={close}
-          onSubmit={handleSubmit}
-        />
-      </Box>
-    </Modal>
+    <>
+      <Modal
+        opened={mode === 'scratch'}
+        close={close}
+        width={600}
+        header={formatMessage(messages.fromScratch)}
+      >
+        <Box p="24px">
+          <NewProjectForm
+            processing={processing}
+            failed={failed}
+            apiErrors={apiErrors}
+            onCancel={close}
+            onSubmit={handleSubmit}
+          />
+        </Box>
+      </Modal>
+
+      <Modal
+        opened={mode === 'template'}
+        close={close}
+        width={1000}
+        header={formatMessage(messages.fromTemplate)}
+      >
+        <Box p="24px">
+          <Outlet
+            id="app.containers.Admin.projects.all.createProject"
+            selectedTabValue="template"
+            onDone={close}
+          />
+        </Box>
+      </Modal>
+    </>
   );
 };
 
