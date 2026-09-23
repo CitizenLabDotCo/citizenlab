@@ -7,11 +7,16 @@
 # Responses that are already compressed (PDF, xlsx, images, ...) are skipped.
 # `sync: false` because we don't stream responses, and flushing after every chunk
 # hurts the compression ratio.
+#
+# Only enabled when API_GZIP=true. The flag is read per request (not at boot) so
+# specs can toggle it.
 compressible_content_type = %r{\A(text/|application/(json|vnd\.api\+json|javascript|xml))}
 
 Rails.application.config.middleware.insert_after Rack::Sendfile, Rack::Deflater,
   sync: false,
   if: lambda { |_env, _status, headers, _body|
+    next false unless ENV['API_GZIP'] == 'true'
+
     content_length = headers['Content-Length']
 
     headers['Content-Type'].to_s.match?(compressible_content_type) &&

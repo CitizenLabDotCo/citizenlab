@@ -5,6 +5,8 @@ require 'rails_helper'
 describe 'Rack::Deflater' do
   let(:request) { Rack::MockRequest.new(Cl2Back::Application) }
 
+  before { stub_const('ENV', ENV.to_h.merge('API_GZIP' => 'true')) }
+
   it 'gzips JSON responses when the client accepts gzip' do
     response = request.get('/web_api/v1/app_configuration', 'HTTP_ACCEPT_ENCODING' => 'gzip')
 
@@ -17,6 +19,15 @@ describe 'Rack::Deflater' do
 
   it 'does not compress when the client does not accept gzip' do
     response = request.get('/web_api/v1/app_configuration')
+
+    expect(response.headers['Content-Encoding']).to be_nil
+    expect(JSON.parse(response.body)).to include('data')
+  end
+
+  it 'does not compress when API_GZIP is not set' do
+    stub_const('ENV', ENV.to_h.except('API_GZIP'))
+
+    response = request.get('/web_api/v1/app_configuration', 'HTTP_ACCEPT_ENCODING' => 'gzip')
 
     expect(response.headers['Content-Encoding']).to be_nil
     expect(JSON.parse(response.body)).to include('data')
