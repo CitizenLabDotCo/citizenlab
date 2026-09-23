@@ -286,7 +286,7 @@ resource 'Stats - Users' do
       describe 'when admins and moderators are excluded from statistics' do
         before do
           travel_to(start_at + 24.days) do
-            create_admins_and_moderators(custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
+            create_admins_and_moderators(answers: { @custom_field.key => false }, manual_groups: [@group])
           end
         end
 
@@ -347,7 +347,7 @@ resource 'Stats - Users' do
           before do
             enable_exclude_admins_and_moderators_from_statistics
             travel_to(start_at + 4.days) do
-              create_admins_and_moderators(custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
+              create_admins_and_moderators(answers: { @custom_field.key => @option1.key }, manual_groups: [@group])
             end
           end
 
@@ -550,7 +550,7 @@ resource 'Stats - Users' do
       context 'when admins and moderators are excluded from statistics' do
         before do
           travel_to start_at + 16.days do
-            @group.members.push(*create_admins_and_moderators(birthyear: 1990))
+            @group.members.push(*create_admins_and_moderators(answers: { 'birthyear' => 1990 }))
           end
         end
 
@@ -634,7 +634,7 @@ resource 'Stats - Users' do
         before do
           enable_exclude_admins_and_moderators_from_statistics
           travel_to start_at + 16.days do
-            @group.members.push(*create_admins_and_moderators(birthyear: 1990))
+            @group.members.push(*create_admins_and_moderators(answers: { 'birthyear' => 1990 }))
           end
         end
 

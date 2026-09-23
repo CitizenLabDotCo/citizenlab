@@ -726,7 +726,10 @@ resource 'Phases' do
               project: project,
               creation_phase: active_phase,
               author: author,
-              custom_field_values: { sentiment_question1.key => 5, sentiment_question2.key => 5 },
+              custom_field_answers: [
+                build(:custom_field_answer, key: sentiment_question1.key, value: 5),
+                build(:custom_field_answer, key: sentiment_question2.key, value: 5)
+              ],
               created_at: Time.new(2025, 1, 1)
             )
           end
@@ -763,7 +766,7 @@ resource 'Phases' do
             project: project,
             creation_phase: active_phase,
             author: author,
-            custom_field_values: { sentiment_question.key => 3 }
+            custom_field_answers: [build(:custom_field_answer, key: sentiment_question.key, value: 3)]
           )
         end
       end

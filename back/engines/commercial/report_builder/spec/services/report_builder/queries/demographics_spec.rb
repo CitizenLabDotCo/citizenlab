@@ -62,7 +62,7 @@ RSpec.describe ReportBuilder::Queries::Demographics do
       end
 
       it 'works with exclude_admins_and_moderators filter' do
-        create_admins_and_moderators(custom_field_values: { @custom_field.key => @option1.key })
+        create_admins_and_moderators(answers: { @custom_field.key => @option1.key })
 
         expect(query.run_query(custom_field_id: @custom_field.id)[:series]).to match({
           @option1.key => 8,

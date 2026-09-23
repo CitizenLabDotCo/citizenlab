@@ -78,7 +78,7 @@ resource 'Analysis - Stats - Users' do
     describe 'when admins and moderators are excluded from statistics' do
       before do
         enable_exclude_admins_and_moderators_from_statistics
-        create_admins_and_moderators(project: project, domicile: @area2.id).each do |author|
+        create_admins_and_moderators(project: project, answers: { 'domicile' => @area2.id }).each do |author|
           create(:idea, project: project, author: author, likes_count: 5)
         end
       end
@@ -131,7 +131,7 @@ resource 'Analysis - Stats - Users' do
 
     describe 'when admins and moderators are excluded from statistics' do
       before do
-        create_admins_and_moderators(project: project, birthyear: 1990).each do |author|
+        create_admins_and_moderators(project: project, answers: { 'birthyear' => 1990 }).each do |author|
           create(:idea, project: project, author: author)
         end
       end
@@ -198,7 +198,7 @@ resource 'Analysis - Stats - Users' do
         describe 'when admins and moderators are excluded from statistics' do
           before do
             enable_exclude_admins_and_moderators_from_statistics
-            create_admins_and_moderators(project: project, custom_field_values: { @custom_field.key => @option1.key }).each do |author|
+            create_admins_and_moderators(project: project, answers: { @custom_field.key => @option1.key }).each do |author|
               create(:idea, project: project, author: author)
             end
           end

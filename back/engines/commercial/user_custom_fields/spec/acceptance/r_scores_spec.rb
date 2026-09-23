@@ -90,7 +90,7 @@ resource 'R-scores (Representativeness scores)' do
           context 'when admins and moderators are excluded from statistics' do
             before do
               enable_exclude_admins_and_moderators_from_statistics
-              create_admins_and_moderators(custom_field_values: { custom_field.key => custom_field.options.first.key })
+              create_admins_and_moderators(answers: { custom_field.key => custom_field.options.first.key })
             end
 
             example_request 'returns the R-score (excluding admins and moderators)' do
@@ -127,7 +127,7 @@ resource 'R-scores (Representativeness scores)' do
 
           context 'with admins and moderators' do
             before do
-              create_admins_and_moderators(birthyear: 1980)
+              create_admins_and_moderators(answers: { 'birthyear' => 1980 })
             end
 
             example 'returns the R-score including admins and moderators by default', document: false do

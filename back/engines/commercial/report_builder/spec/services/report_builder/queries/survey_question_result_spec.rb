@@ -77,8 +77,9 @@ RSpec.describe ReportBuilder::Queries::SurveyQuestionResult do
           create(:user) => { select_field.key => 'la', group_field.key => 'red', linear_scale_field.key => 2 },
           nil => { select_field.key => 'ny', group_field.key => 'red', linear_scale_field.key => 4 },
           **create_admins_and_moderators(project: project).index_with(admin_and_moderator_values)
-        }.each do |author, custom_field_values|
-          create(:native_survey_response, project:, phases: phases_of_inputs, author:, created_at:, custom_field_values:)
+        }.each do |author, answers|
+          custom_field_answers = answers.map { |key, value| build(:custom_field_answer, key: key, value: value) }
+          create(:native_survey_response, project:, phases: phases_of_inputs, author:, created_at:, custom_field_answers:)
         end
       end
 
