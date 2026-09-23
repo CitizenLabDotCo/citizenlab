@@ -604,6 +604,11 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.ProjectTemplatePreview.findItInProjectsList": {
+    "state": "verified",
+    "verified_at": "2026-09-23T17:57:41.119318Z",
+    "verified_by": "Jelena"
+  },
   "app.components.ProjectTemplatePreview.goBack": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
