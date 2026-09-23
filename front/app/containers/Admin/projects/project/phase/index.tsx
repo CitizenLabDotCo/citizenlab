@@ -67,30 +67,37 @@ const AdminProjectPhaseIndex = ({ project, selectedPhase }: DataProps) => {
 
   const showPhasePreview =
     isBackofficeRedesignEnabled && !!selectedPhase && onPhaseSetupRoute;
+  const showManageIdeas =
+    isBackofficeRedesignEnabled &&
+    selectedPhase?.attributes.participation_method === 'ideation' &&
+    !!matchRoute({
+      to: '/$locale/admin/projects/$projectId/phases/$phaseId/ideas',
+    });
+  const fullBleed = showPhasePreview || showManageIdeas;
 
   return (
     <Box
       display="flex"
       flexDirection="column"
       flexGrow={1}
-      minHeight={showPhasePreview ? '0' : undefined}
+      minHeight={fullBleed ? '0' : undefined}
     >
       <Box
-        p={showPhasePreview ? '0' : '8px 24px 24px 24px'}
+        p={fullBleed ? '0' : '8px 24px 24px 24px'}
         display="flex"
         flexDirection="column"
         flexGrow={1}
-        minHeight={showPhasePreview ? '0' : undefined}
+        minHeight={fullBleed ? '0' : undefined}
       >
         {!isNewPhaseLink && selectedPhase && !isBackofficeRedesignEnabled && (
           <PhaseHeader phase={selectedPhase} tabs={tabs} />
         )}
 
         <Box
-          p={showPhasePreview ? '0' : `${defaultAdminCardPadding}px`}
-          background={showPhasePreview ? undefined : colors.white}
+          p={fullBleed ? '0' : `${defaultAdminCardPadding}px`}
+          background={fullBleed ? undefined : colors.white}
           flexGrow={1}
-          minHeight={showPhasePreview ? '0' : undefined}
+          minHeight={fullBleed ? '0' : undefined}
         >
           {showPhasePreview ? (
             <PhasePreview projectId={project.id} phase={selectedPhase} />
