@@ -188,4 +188,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.moveCancelButton',
     defaultMessage: 'Cancel',
   },
+  moveSaveChangesFirst: {
+    id: 'app.containers.AdminPage.ProjectTimeline.moveSaveChangesFirst',
+    defaultMessage: 'Save your changes before you move the survey.',
+  },
+  movePreviousPhaseError: {
+    id: 'app.containers.AdminPage.ProjectTimeline.movePreviousPhaseError',
+    defaultMessage:
+      'The phase before this survey has no end date, and it cannot end on the start date of this survey. Change the dates and try again.',
+  },
 });
