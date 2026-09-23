@@ -1490,7 +1490,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.listed": "Allattorsimasut",
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.unlisted": "Allattorsimanngitsoq",
   "app.containers.Admin.projects.all.new.Projects.Filters.Folders.folders": "Toqqorsiviit",
-  "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.filterByCurrentPhaseMethod": "Maannakkut immikkoortumi peqataariaaseq malillugu immikkoortiteruk",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.ideation": "Isumassarsiorneq",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.information": "Paasissutissat",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.label": "Peqataariaaseq",

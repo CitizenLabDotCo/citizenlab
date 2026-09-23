@@ -31,7 +31,7 @@ RSpec.describe ReportBuilder::Queries::SurveyQuestionResult do
         :native_survey_response,
         project: project,
         phases: phases_of_inputs,
-        custom_field_values: { select_field.key => 'la' }
+        custom_field_answers: [build(:custom_field_answer, key: select_field.key, value: 'la')]
       )
     end
 

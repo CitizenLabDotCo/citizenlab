@@ -479,7 +479,7 @@ de-DE:
       subject: '%{organizationName} hat Sie in ihrem Feedback erwähnt'
       title: Sie wurden erwähnt
     merge_account_confirmation:
-      best_regards: Mit freundlichen Grüßen,
+      best_regards: Mit freundlichen Grüßen
       event_description: 'Jemand hat sich auf der Beteiligungsplattform von %{organizationName} angemeldet und darum gebeten, diese Anmeldung mit dem Konto zu verknüpfen, das diese E-Mail-Adresse verwendet. Wenn Sie das waren, geben Sie diesen Bestätigungscode ein, um fortzufahren:'
       expire_code: Dieser Code läuft ab in
       hours_24: 24 Stunden.

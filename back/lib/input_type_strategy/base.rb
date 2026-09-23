@@ -117,6 +117,10 @@ module InputTypeStrategy
       String(value)
     end
 
+    def normalize_value(value)
+      value
+    end
+
     def answers_present(answers)
       answers
     end

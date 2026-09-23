@@ -1490,7 +1490,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.listed": "درج",
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.unlisted": "غیر فہرست شدہ",
   "app.containers.Admin.projects.all.new.Projects.Filters.Folders.folders": "فولڈرز",
-  "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.filterByCurrentPhaseMethod": "موجودہ مرحلے میں شرکت کے طریقہ سے فلٹر کریں۔",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.ideation": "خیال",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.information": "معلومات",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.label": "شرکت کا طریقہ",

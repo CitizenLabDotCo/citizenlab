@@ -9,7 +9,7 @@ class WebApi::V1::MembershipsController < ApplicationController
     @memberships = policy_scope(Membership)
       .where(group_id: params[:group_id])
     @memberships = paginate @memberships
-    @memberships = @memberships.includes(user: [:unread_notifications])
+    @memberships = @memberships.includes(user: %i[unread_notifications custom_field_answers])
 
     render json: linked_json(
       @memberships,

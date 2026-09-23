@@ -57,7 +57,7 @@ resource 'Verifications' do
           active: true,
           hashed_uid: '2a77e70b71b206c4c9dcf263250847b101180a8303938ed88caa8e60bb5a5fcf'
         })
-        expect(@user.custom_field_values[@custom_field.key]).to eq @cfo5.key
+        expect(@user.answer_for_key(@custom_field.key)&.value).to eq @cfo5.key
       end
     end
 
@@ -78,7 +78,7 @@ resource 'Verifications' do
           active: true,
           hashed_uid: '2a77e70b71b206c4c9dcf263250847b101180a8303938ed88caa8e60bb5a5fcf'
         })
-        expect(@user.custom_field_values[@custom_field.key]).to be_nil
+        expect(@user.answer_for_key(@custom_field.key)).to be_nil
       end
     end
 
@@ -92,7 +92,7 @@ resource 'Verifications' do
         do_request
         assert_status 422
         expect(@user.reload.verified).to be false
-        expect(@user.custom_field_values[@custom_field.key]).to be_nil
+        expect(@user.answer_for_key(@custom_field.key)).to be_nil
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:base, 'not_entitled', why: 'lives_outside')
       end
@@ -108,7 +108,7 @@ resource 'Verifications' do
         do_request
         assert_status 422
         expect(@user.reload.verified).to be false
-        expect(@user.custom_field_values[@custom_field.key]).to be_nil
+        expect(@user.answer_for_key(@custom_field.key)).to be_nil
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:base, 'not_entitled', why: 'under_minimum_age')
       end
@@ -121,7 +121,7 @@ resource 'Verifications' do
         do_request
         assert_status 422
         expect(@user.reload.verified).to be false
-        expect(@user.custom_field_values[@custom_field.key]).to be_nil
+        expect(@user.answer_for_key(@custom_field.key)).to be_nil
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:rrn, 'invalid')
       end
@@ -137,7 +137,7 @@ resource 'Verifications' do
         do_request
         assert_status 422
         expect(@user.reload.verified).to be false
-        expect(@user.custom_field_values[@custom_field.key]).to be_nil
+        expect(@user.answer_for_key(@custom_field.key)).to be_nil
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:base, 'no_match')
       end

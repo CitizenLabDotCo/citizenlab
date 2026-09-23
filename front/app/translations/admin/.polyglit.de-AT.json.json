@@ -499,6 +499,21 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.CustomPageBuilder.Widgets.CustomPageBanner.buttonTitle": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.CustomPageBuilder.Widgets.CustomPageBanner.noBannerYet": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.CustomPageBuilder.Widgets.CustomPageBanner.title": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
+  },
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
@@ -1248,6 +1263,101 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.components.admin.ContentBuilder.Widgets.Events.byArea": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ContentBuilder.Widgets.Events.bySpace": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ContentBuilder.Widgets.Events.byTopic": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ContentBuilder.Widgets.Events.eventsListTitle": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ContentBuilder.Widgets.Events.everyProject": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ContentBuilder.Widgets.Events.everyProjectOnly": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ContentBuilder.Widgets.Events.heading": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ContentBuilder.Widgets.Events.howMany": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ContentBuilder.Widgets.Events.howManyAtMost": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ContentBuilder.Widgets.Events.includeArchived": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ContentBuilder.Widgets.Events.pastEvents": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ContentBuilder.Widgets.Events.selectAreas": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ContentBuilder.Widgets.Events.selectSpaces": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ContentBuilder.Widgets.Events.selectTopics": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ContentBuilder.Widgets.Events.showAllPaginated2": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ContentBuilder.Widgets.Events.showLimited": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ContentBuilder.Widgets.Events.upcomingEvents": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ContentBuilder.Widgets.Events.whichEvents2": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ContentBuilder.Widgets.Events.whichProjects": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
   },
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": {
     "state": "verified",
@@ -3253,6 +3363,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.components.formBuilder.copySurveyModal.survey": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
   },
   "app.components.formBuilder.copySurveyModal.surveyFormPersistedWarning": {
     "state": "verified",
@@ -11899,6 +12014,11 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.Admin.tools.apiTokens.lastUserAgent": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.tools.apiTokens.link": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
@@ -17409,6 +17529,21 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.AdminPage.SettingsPage.deleteAreaButton": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.AdminPage.SettingsPage.deleteAreaModalTitle": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.AdminPage.SettingsPage.deleteAreaModalWarning": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.AdminPage.SettingsPage.demographicQuestions": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
@@ -20659,6 +20794,11 @@
     "verified_at": "2026-07-23T10:05:13.907952Z",
     "verified_by": "Jelena"
   },
+  "app.containers.admin.ContentBuilder.allFilesAlreadyUsed": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.admin.ContentBuilder.buttonMultiloc": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
@@ -20854,6 +20994,11 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.admin.ContentBuilder.noFilesYet": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.admin.ContentBuilder.noPageSelected": {
     "state": "verified",
     "verified_at": "2026-07-23T10:05:13.907952Z",
@@ -20968,6 +21113,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.admin.ContentBuilder.uploadFilesToPage": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.542944Z",
+    "verified_by": "Jelena"
   },
   "app.containers.admin.ContentBuilder.urlPlaceholder": {
     "state": "verified",

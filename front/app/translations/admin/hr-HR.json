@@ -1490,7 +1490,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.listed": "Navedeno",
   "app.containers.Admin.projects.all.new.Projects.Filters.Discoverability.unlisted": "Nije javno dostupno",
   "app.containers.Admin.projects.all.new.Projects.Filters.Folders.folders": "Mape",
-  "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.filterByCurrentPhaseMethod": "Filtriraj prema metodi sudjelovanja u trenutnoj fazi",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.ideation": "Idejacija",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.information": "Informacija",
   "app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.label": "Metoda sudjelovanja",
