@@ -238,26 +238,27 @@ describe AccountMergeService do
   describe 'custom field values' do
     it "fills gaps in the target's profile without overwriting its answers" do
       create(:custom_field, key: 'hobby')
-      source.update!(custom_field_values: { 'birthyear' => 1980, 'hobby' => 'chess' })
-      target.update!(custom_field_values: { 'birthyear' => 1990 })
+      source.custom_field_answers.create!(key: 'birthyear', value: 1980)
+      source.custom_field_answers.create!(key: 'hobby', value: 'chess')
+      target.custom_field_answers.create!(key: 'birthyear', value: 1990)
 
       merge!
 
-      expect(target.reload.custom_field_values).to eq(
-        'birthyear' => 1990, 'hobby' => 'chess'
+      expect(target.reload.custom_field_answers.pluck(:key, :value)).to contain_exactly(
+        ['birthyear', 1990], %w[hobby chess]
       )
     end
 
     # bogus locks gender, so the source's answer is the provider's and wins.
     it 'lets a locked answer from the source win over the target' do
       create(:custom_field_gender, :with_options)
-      source.update!(custom_field_values: { 'gender' => 'female' })
-      target.update!(custom_field_values: { 'gender' => 'male' })
+      source.custom_field_answers.create!(key: 'gender', value: 'female')
+      target.custom_field_answers.create!(key: 'gender', value: 'male')
       create(:verification, user: source, method_name: 'bogus', hashed_uid: 'aaa')
 
       merge!
 
-      expect(target.reload.custom_field_values['gender']).to eq 'female'
+      expect(target.reload.answer_for_key('gender')&.value).to eq 'female'
     end
   end
 

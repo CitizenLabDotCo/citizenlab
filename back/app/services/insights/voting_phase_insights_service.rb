@@ -146,7 +146,7 @@ module Insights
             acted_at: basket.submitted_at,
             classname: 'Basket',
             participant_id: participant_id(basket.id, basket.user_id),
-            user_custom_field_values: basket.user&.custom_field_answers.to_h { [it.key, it.value] } || {},
+            user_custom_field_values: CustomFieldValuesTransitionService.new.custom_field_values(basket.user),
             total_votes: total_votes,
             ideas_count: basket.ideas.count,
             votes_per_idea: votes_per_idea

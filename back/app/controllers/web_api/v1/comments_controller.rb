@@ -11,7 +11,7 @@ class WebApi::V1::CommentsController < ApplicationController
   MINIMAL_SUBCOMMENTS = 2
 
   def index
-    include_attrs = [author: [:unread_notifications]]
+    include_attrs = [author: %i[unread_notifications custom_field_answers]]
     root_comments = policy_scope(Comment)
       .where(idea_id: params[:idea_id])
       .where(parent: nil)

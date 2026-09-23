@@ -13,7 +13,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { injectIntl } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
 
-import messages from '../messages';
+import messages from './messages';
 
 // Absolutely positioned at top-right on wider viewports, but switches to
 // in-flow on narrow viewports / 400% zoom so the button doesn't overlap

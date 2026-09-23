@@ -31,14 +31,15 @@ module MultiTenancy
         answers = question_keys.index_with { |_k| rand(1..5) }
         follow_ups = question_keys.each_with_object({}) { |key, accu| accu["#{key}_follow_up"] = random_follow_up(key, index) }
 
-        Idea.create!({
+        idea = Idea.new({
           project: @project,
           phases: [@phase],
           creation_phase: @phase,
           publication_status: 'published',
-          created_at: created_at,
-          custom_field_values: answers.merge(follow_ups)
+          created_at: created_at
         })
+        CustomFieldValuesTransitionService.new.assign(idea, answers.merge(follow_ups))
+        idea.save!
       end
 
       def random_follow_up(question_key, index)

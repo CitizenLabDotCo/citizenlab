@@ -18,20 +18,20 @@ RSpec.describe ReportBuilder::Queries::Demographics do
         @project = create(:project_with_active_ideation_phase)
 
         travel_to(start_at - 1.day) do
-          user1 = create(:user, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
+          user1 = create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: @option1.key)], manual_groups: [@group])
           create(:idea, author: user1, project: @project)
         end
 
         travel_to(start_at + 4.days) do
-          create(:user, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
-          create(:user, custom_field_values: { @custom_field.key => @option2.key }, manual_groups: [@group])
+          create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: @option1.key)], manual_groups: [@group])
+          create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: @option2.key)], manual_groups: [@group])
           create(:user, manual_groups: [@group])
-          user2 = create(:user, custom_field_values: { @custom_field.key => @option3.key })
+          user2 = create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: @option3.key)])
           create(:idea, author: user2, project: @project)
         end
 
         travel_to(end_at + 1.day) do
-          create(:user, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
+          create(:user, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: @option1.key)], manual_groups: [@group])
         end
 
         AppConfiguration.instance.update!(
@@ -99,9 +99,9 @@ RSpec.describe ReportBuilder::Queries::Demographics do
           create(:idea_status_proposed)
           phase = create(:native_survey_phase, project: @project, with_permissions: true)
           phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
-          create(:native_survey_response, project: @project, creation_phase: phase, author: nil, created_at: now - 1.year, custom_field_values: { "u_#{@custom_field.key}" => @option1.key })
-          create(:native_survey_response, project: @project, creation_phase: phase, author: nil, custom_field_values: { "u_#{@custom_field.key}" => @option2.key })
-          create(:native_survey_response, project: @project, creation_phase: phase, author: nil, custom_field_values: {})
+          create(:native_survey_response, project: @project, creation_phase: phase, author: nil, created_at: now - 1.year, custom_field_answers: [build(:custom_field_answer, key: "u_#{@custom_field.key}", value: @option1.key, custom_field: @custom_field)])
+          create(:native_survey_response, project: @project, creation_phase: phase, author: nil, custom_field_answers: [build(:custom_field_answer, key: "u_#{@custom_field.key}", value: @option2.key, custom_field: @custom_field)])
+          create(:native_survey_response, project: @project, creation_phase: phase, author: nil)
         end
 
         it 'adds demographics from user fields stored in ideas when the project filter is used' do
@@ -136,7 +136,7 @@ RSpec.describe ReportBuilder::Queries::Demographics do
         create(
           :user,
           registration_completed_at: start_at + 4.days,
-          custom_field_values: { birthyear: 1977 }
+          custom_field_answers: [build(:custom_field_answer, key: 'birthyear', value: 1977)]
         )
 
         AppConfiguration.instance.update!(

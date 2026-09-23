@@ -1070,7 +1070,7 @@ resource 'Projects' do
 
         @ideation_response = create(
           :idea,
-          custom_field_values: { @extra_idea_field.key => 'Answer' },
+          custom_field_answers: [build(:custom_field_answer, key: @extra_idea_field.key, value: 'Answer')],
           phases: [ideation_phase, single_voting_phase],
           manual_votes_amount: 24
         )
@@ -1079,7 +1079,7 @@ resource 'Projects' do
           :idea,
           creation_phase: native_survey_phase,
           phases: [native_survey_phase],
-          custom_field_values: { @linear_scale_field.key => 2 }
+          custom_field_answers: [build(:custom_field_answer, key: @linear_scale_field.key, value: 2)]
         )
       end
 

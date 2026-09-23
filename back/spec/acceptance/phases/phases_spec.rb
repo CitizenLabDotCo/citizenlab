@@ -509,7 +509,7 @@ resource 'Phases' do
           project: project,
           creation_phase: active_phase,
           phases: [active_phase],
-          custom_field_values: { multiselect_field.key => %w[cat dog] }
+          custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[cat dog])]
         )
       end
       let!(:survey_response2) do
@@ -518,7 +518,7 @@ resource 'Phases' do
           project: project,
           creation_phase: active_phase,
           phases: [active_phase],
-          custom_field_values: { multiselect_field.key => %w[cat] }
+          custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[cat])]
         )
       end
 
@@ -643,7 +643,10 @@ resource 'Phases' do
           :native_survey_response,
           project: project,
           creation_phase: active_phase,
-          custom_field_values: { sentiment_question1.key => 2, sentiment_question2.key => 4 },
+          custom_field_answers: [
+            build(:custom_field_answer, key: sentiment_question1.key, value: 2),
+            build(:custom_field_answer, key: sentiment_question2.key, value: 4)
+          ],
           created_at: Time.new(2025, 1, 1)
         )
       end
@@ -652,7 +655,10 @@ resource 'Phases' do
           :native_survey_response,
           project: project,
           creation_phase: active_phase,
-          custom_field_values: { sentiment_question1.key => 3, sentiment_question2.key => 1 },
+          custom_field_answers: [
+            build(:custom_field_answer, key: sentiment_question1.key, value: 3),
+            build(:custom_field_answer, key: sentiment_question2.key, value: 1)
+          ],
           created_at: Time.new(2025, 4, 1)
         )
       end
@@ -714,7 +720,7 @@ resource 'Phases' do
           project: project,
           creation_phase: active_phase,
           phases: [active_phase],
-          custom_field_values: { multiselect_field.key => %w[cat dog] }
+          custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[cat dog])]
         )
       end
       let!(:survey_response2) do
@@ -723,7 +729,7 @@ resource 'Phases' do
           project: project,
           creation_phase: active_phase,
           phases: [active_phase],
-          custom_field_values: { multiselect_field.key => %w[cat] }
+          custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[cat])]
         )
       end
       let!(:survey_response3) do
@@ -732,7 +738,7 @@ resource 'Phases' do
           project: project,
           creation_phase: active_phase,
           phases: [active_phase],
-          custom_field_values: { multiselect_field.key => %w[dog] }
+          custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[dog])]
         )
       end
 
@@ -781,7 +787,7 @@ resource 'Phases' do
               project: project,
               creation_phase: active_phase,
               phases: [active_phase],
-              custom_field_values: { multiselect_field.key => %w[cat dog] }
+              custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[cat dog])]
             )
           end
           let!(:survey_response2) do
@@ -790,7 +796,7 @@ resource 'Phases' do
               project: project,
               creation_phase: active_phase,
               phases: [active_phase],
-              custom_field_values: { multiselect_field.key => %w[cat] }
+              custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[cat])]
             )
           end
 
@@ -927,7 +933,7 @@ resource 'Phases' do
           project: project,
           creation_phase: active_phase,
           phases: [active_phase],
-          custom_field_values: { multiselect_field.key => %w[cat dog] }
+          custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[cat dog])]
         )
       end
 

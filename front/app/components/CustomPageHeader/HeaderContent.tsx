@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { ICustomPageAttributes } from 'api/custom_pages/types';
-
 import useLocalize from 'hooks/useLocalize';
 
 import BannerButton from 'components/LandingPages/citizen/BannerButton';
@@ -13,25 +11,25 @@ import {
   TAlign,
 } from 'components/LandingPages/citizen/HeaderContent';
 
+import { CustomPageBannerContent } from './types';
+
 interface Props {
   fontColors: 'light' | 'dark';
   align?: TAlign;
   hasHeaderBannerImage: boolean;
-  pageAttributes: ICustomPageAttributes;
+  banner: CustomPageBannerContent;
 }
 
 const HeaderContent = ({
   align = 'center',
   fontColors,
   hasHeaderBannerImage,
-  pageAttributes,
+  banner,
 }: Props) => {
   const localize = useLocalize();
 
-  const formattedHeaderTitle = localize(pageAttributes.banner_header_multiloc);
-  const formattedSubheaderTitle = localize(
-    pageAttributes.banner_subheader_multiloc
-  );
+  const formattedHeaderTitle = localize(banner.headerMultiloc);
+  const formattedSubheaderTitle = localize(banner.subheaderMultiloc);
 
   return (
     <Container
@@ -58,11 +56,11 @@ const HeaderContent = ({
       >
         {formattedSubheaderTitle}
       </HeaderSubtitle>
-      {pageAttributes.banner_cta_button_type === 'customized_button' && (
+      {banner.ctaType === 'customized_button' && (
         <BannerButton
           buttonStyle={fontColors === 'light' ? 'primary-inverse' : 'primary'}
-          text={localize(pageAttributes.banner_cta_button_multiloc)}
-          linkTo={pageAttributes.banner_cta_button_url}
+          text={localize(banner.ctaTextMultiloc)}
+          linkTo={banner.ctaUrl}
           openLinkInNewTab={true}
         />
       )}

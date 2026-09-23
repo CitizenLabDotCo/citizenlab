@@ -182,4 +182,17 @@ export default defineMessages({
     defaultMessage:
       'https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
   },
+  bannerWidgetTitle: {
+    id: 'app.components.CustomPageBuilder.Widgets.CustomPageBanner.title',
+    defaultMessage: 'Banner',
+  },
+  buttonTitle: {
+    id: 'app.components.CustomPageBuilder.Widgets.CustomPageBanner.buttonTitle',
+    defaultMessage: 'Button',
+  },
+  noBannerYet: {
+    id: 'app.components.CustomPageBuilder.Widgets.CustomPageBanner.noBannerYet',
+    defaultMessage:
+      'Banner. Add an image or a heading in the settings panel to show it on the page.',
+  },
 });
