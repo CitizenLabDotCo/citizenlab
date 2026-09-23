@@ -19,6 +19,7 @@ import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import messages from '../../messages';
 
+import { ConfirmableStatus } from './ConfirmStatusChangeModal';
 import OptionRow from './OptionRow';
 import getPublicationState, { PublicationState } from './publicationState';
 
@@ -68,10 +69,16 @@ const HEADER_MESSAGES: Record<PublicationState, MessageDescriptor> = {
 interface Props {
   project: IProjectData;
   onSchedule: () => void;
-  onPublished: () => void;
+  onConfirmStatusChange: (status: ConfirmableStatus) => void;
+  onDone: () => void;
 }
 
-const PublishPanel = ({ project, onSchedule, onPublished }: Props) => {
+const PublishPanel = ({
+  project,
+  onSchedule,
+  onConfirmStatusChange,
+  onDone,
+}: Props) => {
   const { formatMessage, formatDate, formatTime } = useIntl();
   const { mutate: updateProject, isPending } = useUpdateProject();
   const { data: recipientCount } = useProjectPublicationRecipientCount(
@@ -90,6 +97,9 @@ const PublishPanel = ({ project, onSchedule, onPublished }: Props) => {
   } = project.attributes;
 
   const publicationState = getPublicationState(project);
+
+  const isDraftOrScheduled =
+    publicationState === 'draft' || publicationState === 'scheduled';
 
   const dateOptions: Intl.DateTimeFormatOptions = {
     timeZone: tenantTimezone,
@@ -133,7 +143,7 @@ const PublishPanel = ({ project, onSchedule, onPublished }: Props) => {
         admin_publication_attributes: { publication_status: 'published' },
         publication_email_enabled,
       },
-      { onSuccess: onPublished }
+      { onSuccess: onDone }
     );
 
   const count = recipientCount?.data.attributes.count;
@@ -204,35 +214,75 @@ const PublishPanel = ({ project, onSchedule, onPublished }: Props) => {
         </Text>
       )}
 
-      {publicationState !== 'published' && (
-        <Box
-          display="flex"
-          justifyContent="flex-end"
-          gap="8px"
-          mt="16px"
-          pt="16px"
-          borderTop={`1px solid ${colors.grey200}`}
-        >
-          <Button
-            buttonStyle="secondary-outlined"
-            size="s"
-            icon="calendar"
-            onClick={onSchedule}
-          >
-            {formatMessage(messages.publishSchedule)}
-          </Button>
-          <Button
-            buttonStyle="admin-dark"
-            size="s"
-            icon="send"
-            onClick={publishNow}
-            processing={isPending}
-            id="e2e-publish-now"
-          >
-            {formatMessage(messages.publishNow)}
-          </Button>
-        </Box>
-      )}
+      <Box
+        display="flex"
+        justifyContent="flex-end"
+        gap="8px"
+        mt="16px"
+        pt="16px"
+        borderTop={`1px solid ${colors.grey200}`}
+      >
+        {publicationState === 'published' && (
+          <>
+            <Box flex="1">
+              <Button
+                buttonStyle="secondary-outlined"
+                size="s"
+                width="100%"
+                onClick={() => onConfirmStatusChange('draft')}
+              >
+                {formatMessage(messages.publishRestoreToDraft)}
+              </Button>
+            </Box>
+            <Box flex="1">
+              <Button
+                buttonStyle="secondary-outlined"
+                size="s"
+                width="100%"
+                onClick={() => onConfirmStatusChange('archived')}
+              >
+                {formatMessage(messages.publishMoveToArchive)}
+              </Button>
+            </Box>
+          </>
+        )}
+
+        {publicationState === 'archived' && (
+          <Box flex="1">
+            <Button
+              buttonStyle="secondary-outlined"
+              size="s"
+              width="100%"
+              onClick={() => onConfirmStatusChange('draft')}
+            >
+              {formatMessage(messages.publishRestoreToDraft)}
+            </Button>
+          </Box>
+        )}
+
+        {isDraftOrScheduled && (
+          <>
+            <Button
+              buttonStyle="secondary-outlined"
+              size="s"
+              icon="calendar"
+              onClick={onSchedule}
+            >
+              {formatMessage(messages.publishSchedule)}
+            </Button>
+            <Button
+              buttonStyle="admin-dark"
+              size="s"
+              icon="send"
+              onClick={publishNow}
+              processing={isPending}
+              id="e2e-publish-now"
+            >
+              {formatMessage(messages.publishNow)}
+            </Button>
+          </>
+        )}
+      </Box>
     </Box>
   );
 };
