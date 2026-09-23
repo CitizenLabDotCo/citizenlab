@@ -22,6 +22,9 @@ import {
   CustomPageRoot,
   CustomPageBody,
 } from 'components/CustomPageBuilder/regions';
+import CustomPageBanner from 'components/CustomPageBuilder/Widgets/CustomPageBanner';
+import CustomPageTitle from 'components/CustomPageBuilder/Widgets/CustomPageTitle';
+import ProjectsByFilter from 'components/CustomPageBuilder/Widgets/ProjectsByFilter';
 import BaseEditor from 'components/DescriptionBuilder/Editor/Editor';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
 import RichTextMultiloc from 'components/DescriptionBuilder/Widgets/RichTextMultiloc';
@@ -46,6 +49,7 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
           ImageMultiloc,
           IframeMultiloc,
           FileAttachment,
+          ProjectsByFilter,
           AccordionMultiloc,
           WhiteSpace,
           InfoWithAccordions,
@@ -56,6 +60,8 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
           ButtonMultiloc,
           PageLink,
           CustomPageRoot,
+          CustomPageBanner,
+          CustomPageTitle,
           CustomPageBody,
         }}
         isPreview={isPreview}

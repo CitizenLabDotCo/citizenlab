@@ -186,6 +186,7 @@ ga-IE:
       manual_project_participants: Teachtaireachtaí oifigiúla chuig rannpháirtithe tionscadail
       mention_in_internal_comment: Luaigh i dtrácht inmheánach
       mention_in_official_feedback: Luaigh i nuashonrú
+      merge_account_confirmation: Cód deimhnithe chun cuntais a chumasc
       moderator_digest: Forbhreathnú seachtainiúil do bhainisteoirí tionscadal
       native_survey_not_submitted: Níor cuireadh isteach an suirbhé
       new_comment_for_admin: Trácht nua i dtionscadal a dhéanaim modhnóireacht air
@@ -477,6 +478,15 @@ ga-IE:
       preheader: Luaigh %{organizationName} thú san aiseolas
       subject: Luaigh %{organizationName} thú ina n-aiseolas
       title: Tá tú luaite
+    merge_account_confirmation:
+      best_regards: Le gach dea-ghuí,
+      event_description: "Logáil duine éigin isteach in ardán rannpháirtíochta %{organizationName} agus d'iarr siad an logáil isteach sin a nascadh leis an gcuntas ag baint úsáide as an seoladh ríomhphoist seo. Más tusa a bhí i gceist, cuir isteach an cód deimhnithe seo chun leanúint ar aghaidh:"
+      expire_code: Rachaidh an cód seo as feidhm i gceann
+      hours_24: 24 uair an chloig.
+      ignore_email: Mura tusa a rinne é seo, is féidir neamhaird a dhéanamh den ríomhphost seo go sábháilte. Níl aon rud athraithe, agus ní féidir le haon duine an cód seo a úsáid gan rochtain a bheith acu ar an mbosca isteach seo.
+      preheader: Deimhnigh do sheoladh ríomhphoist do %{organizationName}
+      subject: Deimhnigh do sheoladh ríomhphoist d'ardán rannpháirtíochta %{organizationName}
+      title: Deimhnigh do sheoladh ríomhphoist
     moderator_digest:
       cta_button: Bainistigh do thionscadal
       event_description: Tá an ionchur a ghin an ghníomhaíocht is mó le seachtain anuas curtha le chéile againn duit. Faigh amach cad atá ag tarlú le do thionscadal!

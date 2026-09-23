@@ -277,6 +277,9 @@ context 'clave_unica verification' do
   end
 
   context 'when checking against list of verified RUTs registered in municipality' do
+    # SSO values are only stored for fields the platform has.
+    before { create(:custom_field, key: 'rut_verified') }
+
     context 'when RUT is added to list' do
       before { CustomIdMethods::IdCardLookup::IdCard.create!(card_id: '44.444.444-4') }
 
@@ -284,7 +287,7 @@ context 'clave_unica verification' do
         get "/auth/clave_unica?token=#{@token}"
         follow_redirect!
 
-        expect(@user.reload.custom_field_values).to eq({ 'rut_verified' => true })
+        expect(@user.reload.custom_field_answers.pluck(:key, :value)).to eq [['rut_verified', true]]
       end
     end
 
@@ -295,7 +298,7 @@ context 'clave_unica verification' do
         get "/auth/clave_unica?token=#{@token}"
         follow_redirect!
 
-        expect(@user.reload.custom_field_values).to eq({})
+        expect(@user.reload.custom_field_answers).to be_empty
       end
     end
   end

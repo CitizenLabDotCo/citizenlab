@@ -35,7 +35,8 @@ const ReviewFlow = ({ project }: Props) => {
   const isPublished = project.attributes.publication_status === 'published';
 
   const showProjectApprovalButton = approvalPending && canReview;
-  const showReviewRequestButton = !canReview && !approvalGranted && !isPublished;
+  const showReviewRequestButton =
+    !canReview && !approvalGranted && !isPublished;
 
   return (
     <>

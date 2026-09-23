@@ -68,13 +68,14 @@ namespace :inconsistent_data do
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         deleted_keys = {}
+        user_answers = CustomFieldAnswer.where(answerable_type: 'User')
         CustomField.registration.where(input_type: 'multiselect').pluck(:key).each do |key|
-          used_keys = User.select("custom_field_values->'#{key}' as user_options").filter_map(&:user_options).flatten.uniq
+          used_keys = user_answers.where(key: key).pluck(:value).flatten.uniq
           deleted_keys[key] =
             used_keys - CustomField.registration.find_by(key: key).custom_field_options.pluck(:key)
         end
         CustomField.registration.where(input_type: 'select').pluck(:key).each do |key|
-          used_keys = User.select("custom_field_values->'#{key}' as user_option").filter_map(&:user_option).uniq
+          used_keys = user_answers.where(key: key).pluck(:value).uniq
           deleted_keys[key] =
             used_keys - (CustomField.registration.find_by(key: key).custom_field_options.pluck(:key) + ['outside'])
         end
@@ -100,19 +101,6 @@ namespace :inconsistent_data do
         deleted_area_ids.each do |area_id|
           service.delete_custom_field_option_values area_id,
             CustomField.registration.find_by(key: 'domicile')
-        end
-      end
-    end
-  end
-
-  task fix_null_values_in_custom_field_values: :environment do
-    service = CustomFieldService.new
-
-    Tenant.all.each do |tenant|
-      Apartment::Tenant.switch(tenant.schema_name) do
-        affected_users = User.where("custom_field_values::text LIKE '%null%'")
-        affected_users.each do |user|
-          user.update_columns custom_field_values: service.compact_custom_field_values!(user.custom_field_values)
         end
       end
     end

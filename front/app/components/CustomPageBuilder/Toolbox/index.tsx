@@ -4,6 +4,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from 'containers/DescriptionBuilder/messages';
 
+import heroBannerMessages from 'components/admin/BannerFields/messages';
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 import Section from 'components/admin/ContentBuilder/Toolbox/Section';
@@ -21,6 +22,9 @@ import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import CustomPageBanner from 'components/CustomPageBuilder/Widgets/CustomPageBanner';
+import ProjectsByFilter from 'components/CustomPageBuilder/Widgets/ProjectsByFilter';
+import projectsMessages from 'components/CustomPageBuilder/Widgets/ProjectsByFilter/messages';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
 import NewLabel from 'components/UI/NewLabel';
 
@@ -34,9 +38,33 @@ const CustomPageBuilderToolbox = () => {
   const projectStaticPagesEnabled = useFeatureFlag({
     name: 'project_static_pages',
   });
-
+  // The legacy project-list section is itself the paid capability, unlike events where only
+  // the filtering is, so the whole entry is gated.
+  const filteredProjectsEnabled = useFeatureFlag({
+    name: 'advanced_custom_pages',
+  });
   return (
     <Container>
+      <Section>
+        <DraggableElement
+          id="e2e-draggable-custom-page-banner"
+          component={
+            <CustomPageBanner
+              layout="full_width_banner_layout"
+              headerMultiloc={{}}
+              subheaderMultiloc={{}}
+              overlayColor={null}
+              overlayOpacity={null}
+              ctaType="no_button"
+              ctaTextMultiloc={{}}
+              ctaUrl={null}
+              image={{}}
+            />
+          }
+          icon="image"
+          label={formatMessage(heroBannerMessages.bannerWidgetTitle)}
+        />
+      </Section>
       <Section>
         <DraggableElement
           id="e2e-draggable-image-text-cards"
@@ -100,6 +128,14 @@ const CustomPageBuilderToolbox = () => {
           icon="button"
           label={formatMessage(ButtonMultiloc.craft.custom.title)}
         />
+        {filteredProjectsEnabled && (
+          <DraggableElement
+            id="e2e-draggable-projects-by-filter"
+            component={<ProjectsByFilter />}
+            icon="projects"
+            label={formatMessage(projectsMessages.filteredProjects)}
+          />
+        )}
         <DraggableElement
           id="e2e-draggable-events"
           component={

@@ -35,11 +35,11 @@ describe SmartGroups::Rules::CustomFieldText do
     let(:custom_field) { create(:custom_field) }
     let!(:users) do
       users = build_list(:user, 5)
-      users[0].custom_field_values[custom_field.key] = 'one'
-      users[1].custom_field_values[custom_field.key] = 'two'
-      users[2].custom_field_values[custom_field.key] = 'three'
-      users[3].custom_field_values[custom_field.key] = 'four'
-      users[4].custom_field_values[custom_field.key] = 'five'
+      users[0].custom_field_answers.build(key: custom_field.key, value: 'one', custom_field: custom_field)
+      users[1].custom_field_answers.build(key: custom_field.key, value: 'two', custom_field: custom_field)
+      users[2].custom_field_answers.build(key: custom_field.key, value: 'three', custom_field: custom_field)
+      users[3].custom_field_answers.build(key: custom_field.key, value: 'four', custom_field: custom_field)
+      users[4].custom_field_answers.build(key: custom_field.key, value: 'five', custom_field: custom_field)
       users.each(&:save)
     end
 

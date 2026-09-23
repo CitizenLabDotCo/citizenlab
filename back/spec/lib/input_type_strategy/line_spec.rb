@@ -31,4 +31,12 @@ RSpec.describe InputTypeStrategy::Line do
   its(:supports_reference_distribution?) { is_expected.to be false }
   its(:supports_file_upload?) { is_expected.to be false }
   its(:supports_logic?) { is_expected.to be false }
+
+  describe '#normalize_value' do
+    it 'converts a WKT string to GeoJSON' do
+      expect(input_type_strategy.normalize_value('LINESTRING (4.30 50.85, 4.660 51.15)')).to eq(
+        'type' => 'LineString', 'coordinates' => [[4.3, 50.85], [4.66, 51.15]]
+      )
+    end
+  end
 end

@@ -80,10 +80,13 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
     end
 
     it 'adds user custom field values as expected' do
-      user1.update!(custom_field_values: { 'field_1' => 'value_1u', 'field_2' => 'value_2u' })
+      create(:custom_field_answer, answerable: user1, key: 'field_1', value: 'value_1u')
+      create(:custom_field_answer, answerable: user1, key: 'field_2', value: 'value_2u')
 
       prefix = UserFieldsInFormService.prefix
-      idea2.update!(custom_field_values: { "#{prefix}field_1" => 'value_1i', 'field_3' => 'value_3i', "#{prefix}field_4" => 'value_4i' })
+      create(:custom_field_answer, answerable: idea2, key: "#{prefix}field_1", value: 'value_1i')
+      create(:custom_field_answer, answerable: idea2, key: 'field_3', value: 'value_3i')
+      create(:custom_field_answer, answerable: idea2, key: "#{prefix}field_4", value: 'value_4i')
 
       participations_submitting_idea = service.send(:participations_submitting_idea)
       idea2_participation = participations_submitting_idea.find { |p| p[:item_id] == idea2.id }

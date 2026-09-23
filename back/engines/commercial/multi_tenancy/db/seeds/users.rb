@@ -67,7 +67,16 @@ module MultiTenancy
 
       def build_attrs
         locales = AppConfiguration.instance.settings('core', 'locales')
-        anonymizer.anonymized_attributes(locales)
+        answers = anonymizer.anonymized_answers
+        anonymizer.anonymized_attributes(locales, answers: answers).merge(
+          custom_field_answers: answers.map do |answer|
+            CustomFieldAnswer.new(
+              key: answer['custom_field'].key,
+              value: answer['value'],
+              custom_field: answer['custom_field']
+            )
+          end
+        )
       end
     end
   end

@@ -186,6 +186,7 @@ sv-SE:
       manual_project_participants: Officiella meddelanden till projektdeltagare
       mention_in_internal_comment: Omnämnande i en intern kommentar
       mention_in_official_feedback: Nämnd i en uppdatering
+      merge_account_confirmation: Bekräftelsekod för sammanslagning av konton
       moderator_digest: Veckoöversikt för projektledare
       native_survey_not_submitted: Enkät ej inlämnad
       new_comment_for_admin: Ny kommentar i ett projekt jag modererar
@@ -477,6 +478,15 @@ sv-SE:
       preheader: '%{commentAuthor} nämnde dig i återkoppling'
       subject: '%{organizationName} nämnde dig i sin återkoppling'
       title: Du har blivit omnämnd
+    merge_account_confirmation:
+      best_regards: Med vänliga hälsningar,
+      event_description: 'Någon har loggat in på %{organizationName}s plattform för medborgarinflytande och bett om att koppla inloggningen till kontot med den här e-postadressen. Om det var du, ange den här bekräftelsekoden för att fortsätta:'
+      expire_code: Den här koden går ut om
+      hours_24: 24 timmar.
+      ignore_email: Om det inte var du kan du bortse från det här e-postmeddelandet. Ingenting har ändrats och ingen kan använda koden utan tillgång till den här inkorgen.
+      preheader: Bekräfta din e-postadress för %{organizationName}
+      subject: Bekräfta din e-postadress för %{organizationName}s plattform för medborgarinflytande
+      title: Bekräfta din e-postadress
     moderator_digest:
       cta_button: Hantera ditt projekt
       event_description: Vi har sammanställt den input som har genererat mest aktivitet under den senaste veckan. Ta reda på vad som händer med ditt projekt!

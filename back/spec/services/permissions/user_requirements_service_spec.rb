@@ -19,12 +19,12 @@ describe Permissions::UserRequirementsService do
         first_name: 'Jane',
         last_name: 'Jacobs',
         email: 'jane@jacobs.com',
-        custom_field_values: {
-          'gender' => 'female',
-          'birthyear' => 1975,
-          'extra_required_field' => false,
-          'extra_optional_field' => 29
-        },
+        custom_field_answers: [
+          build(:custom_field_answer, key: 'gender', value: 'female'),
+          build(:custom_field_answer, key: 'birthyear', value: 1975),
+          build(:custom_field_answer, key: 'extra_required_field', value: false),
+          build(:custom_field_answer, key: 'extra_optional_field', value: 29)
+        ],
         password: 'supersecret',
         email_confirmed_at: Time.now
       )
@@ -128,7 +128,8 @@ describe Permissions::UserRequirementsService do
         end
 
         it 'permits a light confirmed resident' do
-          user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
+          user.custom_field_answers.destroy_all
+          user.update!(password_digest: nil, identity_ids: [], first_name: nil)
           requirements = service.requirements(permission, user)
           expect(service.permitted?(requirements)).to be true
           expect(requirements).to eq({
@@ -293,7 +294,8 @@ describe Permissions::UserRequirementsService do
         end
 
         it 'does not permit a light confirmed resident' do
-          user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
+          user.custom_field_answers.destroy_all
+          user.update!(password_digest: nil, identity_ids: [], first_name: nil)
           requirements = service.requirements(permission, user)
           expect(service.permitted?(requirements)).to be false
           expect(requirements).to eq({
@@ -647,6 +649,14 @@ describe Permissions::UserRequirementsService do
             user.update!(unique_code: '1234abcd', email: nil, new_email: nil, password: nil)
             requirements = service.requirements(verified_permission, user)
             expect(requirements[:authentication][:email_action_required]).to eq :provide_new_email
+          end
+
+          it 'asks for the merge code while a merge into another account is pending' do
+            verified_permission.update!(require_confirmed_email: true)
+            user.update!(unique_code: '1234abcd', email: nil, new_email: nil, password: nil)
+            user.update_columns(merge_target_email: 'existing@example.org')
+            requirements = service.requirements(verified_permission, user)
+            expect(requirements[:authentication][:email_action_required]).to eq :confirm_merge_account
           end
 
           it 'removes locked custom fields if verified' do

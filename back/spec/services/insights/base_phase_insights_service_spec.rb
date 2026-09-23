@@ -913,66 +913,85 @@ RSpec.describe Insights::BasePhaseInsightsService do
     let(:prefix) { UserFieldsInFormService.prefix }
 
     it 'preferentially merges the parsed item.custom_field_values if present' do
-      item = create(:idea, custom_field_values: { "#{prefix}key1" => 'value1', 'other_key' => 'other_value' })
+      item = create(:idea, custom_field_answers: [
+        build(:custom_field_answer, key: "#{prefix}key1", value: 'value1'),
+        build(:custom_field_answer, key: 'other_key', value: 'other_value')
+      ])
 
       result = service.send(:parse_user_custom_field_values, item, nil)
       expect(result).to eq({ 'key1' => 'value1' })
 
-      user = create(:user, custom_field_values: { 'key1' => 'value2' })
+      user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'key1', value: 'value2')])
 
       result = service.send(:parse_user_custom_field_values, item, user)
       expect(result).to eq({ 'key1' => 'value1' })
     end
 
     it 'merges user.custom_field_values not parsed from item.custom_field_values' do
-      item = create(:idea, custom_field_values: { "#{prefix}key1" => 'value1', 'other_key' => 'other_value' })
-      user = create(:user, custom_field_values: { 'key2' => 'value2' })
+      item = create(:idea, custom_field_answers: [
+        build(:custom_field_answer, key: "#{prefix}key1", value: 'value1'),
+        build(:custom_field_answer, key: 'other_key', value: 'other_value')
+      ])
+      user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'key2', value: 'value2')])
 
       result = service.send(:parse_user_custom_field_values, item, user)
       expect(result).to eq({ 'key1' => 'value1', 'key2' => 'value2' })
     end
 
     it 'avoids collisions with similar keys in idea custom_field_values' do
-      item = create(:idea, custom_field_values: { "#{prefix}key" => 'value1', 'key' => 'value2' })
-      user = create(:user, custom_field_values: { 'key' => 'value3' })
+      item = create(:idea, custom_field_answers: [
+        build(:custom_field_answer, key: "#{prefix}key", value: 'value1'),
+        build(:custom_field_answer, key: 'key', value: 'value2')
+      ])
+      user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'key', value: 'value3')])
 
       result = service.send(:parse_user_custom_field_values, item, user)
       expect(result).to eq({ 'key' => 'value1' })
     end
 
     it 'returns the user.custom_field_values if item.custom_field_values is not present' do
-      item = create(:idea, custom_field_values: {})
-      user = create(:user, custom_field_values: { 'key2' => 'value2' })
+      item = create(:idea)
+      user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'key2', value: 'value2')])
 
       result = service.send(:parse_user_custom_field_values, item, user)
       expect(result).to eq({ 'key2' => 'value2' })
     end
 
     it 'returns an empty hash if neither item nor user have custom_field_values' do
-      item = create(:idea, custom_field_values: {})
-      user = create(:user, custom_field_values: {})
+      item = create(:idea)
+      user = create(:user)
 
       result = service.send(:parse_user_custom_field_values, item, user)
       expect(result).to eq({})
     end
 
     it 'excludes empty string values from item custom_field_values' do
-      item = create(:idea, custom_field_values: { "#{prefix}domicile" => '', "#{prefix}gender" => '', "#{prefix}postcode" => '2324km' })
+      item = create(:idea, custom_field_answers: [
+        build(:custom_field_answer, key: "#{prefix}domicile", value: ''),
+        build(:custom_field_answer, key: "#{prefix}gender", value: ''),
+        build(:custom_field_answer, key: "#{prefix}postcode", value: '2324km')
+      ])
 
       result = service.send(:parse_user_custom_field_values, item, nil)
       expect(result).to eq({ 'postcode' => '2324km' })
     end
 
     it 'excludes empty string values when merging item and user custom_field_values' do
-      item = create(:idea, custom_field_values: { "#{prefix}key1" => '' })
-      user = create(:user, custom_field_values: { 'key1' => 'value1', 'key2' => 'value2' })
+      item = create(:idea, custom_field_answers: [build(:custom_field_answer, key: "#{prefix}key1", value: '')])
+      user = create(:user, custom_field_answers: [
+        build(:custom_field_answer, key: 'key1', value: 'value1'),
+        build(:custom_field_answer, key: 'key2', value: 'value2')
+      ])
 
       result = service.send(:parse_user_custom_field_values, item, user)
       expect(result).to eq({ 'key2' => 'value2' })
     end
 
     it 'excludes whitespace-only string values from item custom_field_values' do
-      item = create(:idea, custom_field_values: { "#{prefix}key1" => '  ', "#{prefix}key2" => 'value2' })
+      item = create(:idea, custom_field_answers: [
+        build(:custom_field_answer, key: "#{prefix}key1", value: '  '),
+        build(:custom_field_answer, key: "#{prefix}key2", value: 'value2')
+      ])
 
       result = service.send(:parse_user_custom_field_values, item, nil)
       expect(result).to eq({ 'key2' => 'value2' })

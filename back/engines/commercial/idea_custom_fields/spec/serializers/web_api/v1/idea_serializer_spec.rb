@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe WebApi::V1::IdeaSerializer do
-  context 'with custom_field_values' do
+  context 'with custom field answers' do
     describe '#serializable_hash' do
       let(:project) { create(:project) }
       let(:form) { create(:custom_form, participation_context: project) }
@@ -16,15 +16,14 @@ describe WebApi::V1::IdeaSerializer do
       let(:visible_admin_value) { 2 }
       let(:disabled_value) { 3 }
 
-      let(:custom_field_values) do
-        {
-          visible_public_field.key => visible_public_value,
-          visible_admin_field.key => visible_admin_value,
-          disabled_field.key => disabled_value
-        }
-      end
       let(:idea_author) { create(:user) }
-      let(:idea) { create(:idea, project: project, custom_field_values: custom_field_values, author: idea_author) }
+      let(:idea) do
+        create(:idea, project: project, author: idea_author, custom_field_answers: [
+          build(:custom_field_answer, key: visible_public_field.key, value: visible_public_value),
+          build(:custom_field_answer, key: visible_admin_field.key, value: visible_admin_value),
+          build(:custom_field_answer, key: disabled_field.key, value: disabled_value)
+        ])
+      end
 
       it 'serializes all visible extra fields at the same level as the idea fields for the idea author' do
         output = described_class.new(idea, params: { current_user: idea_author }).serializable_hash

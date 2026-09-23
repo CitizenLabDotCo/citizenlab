@@ -7,10 +7,21 @@ module McpServer::DemoData
   MAX_INPUTS_PER_PROJECT = 1_000
   MAX_USERS_PER_TENANT = 5_000
 
+  # Built-in codes an admin can set manually, across participation methods. Drops the
+  # automated codes (prescreening, threshold_reached, expired) and 'custom' (only
+  # addressable by id, not by the shared 'custom' code).
+  SETTABLE_STATUS_CODES = (IdeaStatus::CODES - IdeaStatus::MANUAL_TRANSITION_NOT_ALLOWED_CODES - %w[custom]).freeze
+
   module_function
 
   def demo_users
     User.where('email LIKE ?', "%@#{EMAIL_DOMAIN}")
+  end
+
+  # Settable statuses for a participation method, keyed by code (empty for methods
+  # without settable statuses, e.g. native_survey).
+  def settable_statuses(participation_method)
+    IdeaStatus.where(participation_method:, code: SETTABLE_STATUS_CODES).index_by(&:code)
   end
 
   def demo_input_count(project)
@@ -29,18 +40,25 @@ module McpServer::DemoData
   def build_author(registered_at)
     first_name = Faker::Name.first_name
     last_name = Faker::Name.last_name
+    fields = CustomField.registration.enabled
+    values = RandomCustomFieldValuesService.new.generate(fields)
     # parameterize: Faker names can contain apostrophes/accents, invalid in emails.
     User.new(
       email: "#{"#{first_name}.#{last_name}".parameterize(separator: '.')}.#{SecureRandom.hex(4)}@#{EMAIL_DOMAIN}",
       first_name: first_name,
       last_name: last_name,
       locale: AppConfiguration.instance.settings('core', 'locales').sample,
-      custom_field_values: RandomCustomFieldValuesService.new.generate(CustomField.registration.enabled),
       confirmation_required: false,
       email_confirmed_at: registered_at,
       registration_completed_at: registered_at,
       created_at: registered_at
-    )
+    ).tap do |user|
+      fields.each do |field|
+        next if !values.key?(field.key)
+
+        user.custom_field_answers.build(key: field.key, value: values[field.key], custom_field: field)
+      end
+    end
   end
 
   # Timestamps shaped like a real participation curve over [from, to] (clamped
