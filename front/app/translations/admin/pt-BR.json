@@ -1441,7 +1441,7 @@
   "app.containers.Admin.projects.NewProjectForm.privateDescription": "Oculto desses locais. Apenas pessoas com o link podem acessá-lo.",
   "app.containers.Admin.projects.NewProjectForm.public": "Público",
   "app.containers.Admin.projects.NewProjectForm.publicDescription": "Aparece na página inicial, na lista de projetos e na busca.",
-  "app.containers.Admin.projects.NewProjectForm.whoCanFindIt": "Quem pode encontrar",
+  "app.containers.Admin.projects.NewProjectForm.whoCanFindIt": "Quem pode encontrá-lo",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithSpaces2": "Este projeto não está em um espaço ou em uma pasta. Você precisará da aprovação de um administrador para publicá-lo.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces2": "Este projeto não está em uma pasta. Você precisará da aprovação de um administrador para publicá-lo.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.canOnlyMoveToManagedFolder": "Você só pode mover este projeto para outra pasta que você gerencia.",
