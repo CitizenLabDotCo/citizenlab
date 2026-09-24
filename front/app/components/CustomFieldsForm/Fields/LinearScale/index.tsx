@@ -17,10 +17,15 @@ interface Props {
 const LinearScaleField = ({ question, scrollErrorIntoView }: Props) => {
   const {
     control,
+    watch,
     formState: { errors: formContextErrors },
   } = useFormContext();
 
   const name = question.key;
+  // Use watch() rather than field.value: Controller falls back to the value the
+  // field had when it mounted whenever the value is undefined, so clearing an
+  // answer on a revisited page would not show.
+  const value = watch(name);
 
   const errors = formContextErrors[name] as RHFErrors;
   const validationError = errors?.message;
@@ -32,7 +37,7 @@ const LinearScaleField = ({ question, scrollErrorIntoView }: Props) => {
         name={name}
         control={control}
         render={({ field: { ref: _ref, ...field } }) => {
-          return <LinearScale question={question} {...field} />;
+          return <LinearScale question={question} {...field} value={value} />;
         }}
       />
       {validationError && (

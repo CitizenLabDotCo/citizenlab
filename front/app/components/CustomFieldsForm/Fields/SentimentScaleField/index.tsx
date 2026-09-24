@@ -48,6 +48,10 @@ const SentimentScaleField = ({ question, scrollErrorIntoView }: Props) => {
             <SentimentScale
               question={question}
               {...field}
+              // Use watch() rather than field.value: Controller falls back to the
+              // value the field had when it mounted whenever the value is
+              // undefined, so clearing an answer on a revisited page would not show.
+              value={value}
               onChange={(value) => {
                 // On reset value, also reset follow up value
                 if (value === undefined) {
