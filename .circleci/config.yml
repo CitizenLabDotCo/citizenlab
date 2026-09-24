@@ -298,7 +298,7 @@ jobs:
           path: spec/reports
 
   back-test-tenant-templates:
-    resource_class: small
+    resource_class: medium
     executor:
       name: cl2-back
       image-tag: amd64-$CIRCLE_SHA1

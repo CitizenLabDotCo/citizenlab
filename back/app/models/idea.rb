@@ -277,6 +277,9 @@ class Idea < ApplicationRecord
   scope :supports_survey, -> { where(creation_phase: Phase.where(participation_method: %w[native_survey community_monitor_survey])) }
   scope :supports_proposal, -> { where(creation_phase: Phase.where(participation_method: %w[proposals])) }
   scope :supports_idea, -> { where(creation_phase: nil) }
+  scope :excluding_admin_and_moderator_authors, lambda {
+    StatisticsRoleExclusion.new.exclude_admin_and_moderator_records(all, :author_id)
+  }
 
   # Filters out all the ideas for which the ParticipationMethod responds truety
   # to the given block. The block receives the ParticipationMethod object as an
