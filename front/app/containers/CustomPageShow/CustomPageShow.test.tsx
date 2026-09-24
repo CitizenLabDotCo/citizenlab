@@ -21,7 +21,7 @@ jest.mock('./CustomPageProjectsAndEvents', () => ({
   __esModule: true,
   default: () => <div data-testid="legacyProjects" />,
 }));
-jest.mock('./CustomPageHeader', () => ({
+jest.mock('components/CustomPageHeader', () => ({
   __esModule: true,
   default: () => <div data-testid="banner" />,
 }));
@@ -61,6 +61,7 @@ jest.mock('api/custom_pages/useCustomPageBySlug', () =>
 );
 
 let hasContent = false;
+let startsWithBanner = false;
 let isLoading = false;
 jest.mock(
   'components/CustomPageBuilder/ContentViewer/useCustomPageBuilderContent',
@@ -69,8 +70,8 @@ jest.mock(
     // Mirrors the real hook, which is disabled without an id and so reports nothing.
     default: jest.fn((staticPageId?: string) =>
       staticPageId
-        ? { hasContent, isLoading }
-        : { hasContent: false, isLoading: false }
+        ? { hasContent, startsWithBanner, isLoading }
+        : { hasContent: false, startsWithBanner: false, isLoading: false }
     ),
   })
 );
@@ -78,6 +79,7 @@ jest.mock(
 describe('CustomPageShow', () => {
   beforeEach(() => {
     hasContent = false;
+    startsWithBanner = false;
     isLoading = false;
     pageAttributes = globalCustomPage;
   });

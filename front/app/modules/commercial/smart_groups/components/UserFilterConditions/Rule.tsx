@@ -11,11 +11,12 @@ import { FormattedMessage } from 'utils/cl-intl';
 import FieldSelector, { FieldDescriptor } from './FieldSelector';
 import messages from './messages';
 import PredicateSelector from './PredicateSelector';
-import { TRule, ruleTypeConstraints } from './rules';
+import { TRule, isEmailListRule, ruleTypeConstraints } from './rules';
 import ValueSelector from './ValueSelector';
 
 const Container = styled.div`
   display: flex;
+  flex-wrap: wrap;
 `;
 
 const IconCell = styled.div`
@@ -36,6 +37,11 @@ const SelectorCell = styled.div`
   padding: 10px 5px;
   display: flex;
   flex-direction: column;
+
+  /* A pasted list of email addresses does not fit a third of the row. */
+  &.wide {
+    flex: 1 1 100%;
+  }
 `;
 
 const StyledRemoveButton = styled(ButtonWithLink)``;
@@ -61,8 +67,16 @@ class Rule extends PureComponent<Props, State> {
   };
 
   handleChangePredicate = (predicate: TRule['predicate']) => {
-    const newRule = omit({ ...this.props.rule, predicate }, 'value') as TRule;
-    this.props.onChange(newRule);
+    const newRule = { ...this.props.rule, predicate } as TRule;
+    // Predicates that take the same kind of value keep it ("is one of" ->
+    // "is not one of"); any other switch leaves the old value meaningless.
+    const keepsValue =
+      this.ruleToValueSelector(this.props.rule) ===
+      this.ruleToValueSelector(newRule);
+
+    this.props.onChange(
+      keepsValue ? newRule : (omit(newRule, 'value') as TRule)
+    );
   };
 
   handleChangeValue = (value: any) => {
@@ -82,10 +96,7 @@ class Rule extends PureComponent<Props, State> {
 
   render() {
     const { rule, onRemove, showLabels, ruleName } = this.props;
-    const hasValue =
-      rule.ruleType && rule.predicate
-        ? ruleTypeConstraints[rule.ruleType as any][rule.predicate]
-        : true;
+    const hasValue = !!this.ruleToValueSelector(rule);
 
     return (
       <Container>
@@ -120,7 +131,7 @@ class Rule extends PureComponent<Props, State> {
             </Fragment>
           )}
         </SelectorCell>
-        <SelectorCell>
+        <SelectorCell className={isEmailListRule(rule) ? 'wide' : ''}>
           {rule.predicate && (
             <Fragment key={rule.ruleType}>
               {showLabels && hasValue && (

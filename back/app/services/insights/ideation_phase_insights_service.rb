@@ -47,7 +47,7 @@ module Insights
           acted_at: comment.created_at,
           classname: 'Comment',
           participant_id: participant_id(comment.id, comment.author_id, comment.author_hash),
-          user_custom_field_values: comment.author&.custom_field_answers.to_h { [it.key, it.value] } || {}
+          user_custom_field_values: CustomFieldValuesTransitionService.new.custom_field_values(comment.author)
         }
       end
     end
@@ -68,7 +68,7 @@ module Insights
           acted_at: reaction.created_at,
           classname: 'Reaction',
           participant_id: participant_id(reaction.id, reaction.user_id),
-          user_custom_field_values: reaction.user&.custom_field_answers.to_h { [it.key, it.value] } || {}
+          user_custom_field_values: CustomFieldValuesTransitionService.new.custom_field_values(reaction.user)
         }
       end
     end

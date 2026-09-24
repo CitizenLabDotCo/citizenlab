@@ -46,7 +46,7 @@ class WebApi::V1::InvitesController < ApplicationController
       end
     end
 
-    @invites = paginate @invites
+    @invites = paginate(@invites).includes(invitee: [:custom_field_answers])
     render json: linked_json(@invites, WebApi::V1::InviteSerializer, params: jsonapi_serializer_params, include: [:invitee])
   end
 

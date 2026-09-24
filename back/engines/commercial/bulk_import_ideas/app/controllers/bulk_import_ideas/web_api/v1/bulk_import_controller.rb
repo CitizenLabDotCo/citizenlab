@@ -74,7 +74,7 @@ module BulkImportIdeas
 
       records.each do |record|
         # Validate required custom fields have values before approving
-        missing = required_custom_fields.any? { |f| record.custom_field_values[f.key].blank? }
+        missing = required_custom_fields.any? { |f| record.answer_for_key(f.key)&.value.blank? }
         if missing
           not_approved += 1
           next

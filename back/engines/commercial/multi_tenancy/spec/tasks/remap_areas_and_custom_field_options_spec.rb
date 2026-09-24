@@ -30,8 +30,8 @@ describe 'rake fix_existing_tenants:remap_areas_and_custom_field_options' do # r
       project = create(:project)
       area_graauw.projects << project
       area_paal.projects << project
-      user1 = create(:user, custom_field_values: { 'domicile' => area_paal.id })
-      user2 = create(:user, custom_field_values: { 'domicile' => area_zandberg.id })
+      user1 = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'domicile', value: area_paal.id)])
+      user2 = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'domicile', value: area_zandberg.id)])
       area_graauw.update!(title_multiloc: { 'en' => 'Graauw', 'nl-NL' => 'Graauw Nederlands', 'fr-FR' => 'Graauw Français' })
       user3 = create(:user)
       create(:follower, followable: area_graauw, user: user1)
@@ -61,8 +61,8 @@ describe 'rake fix_existing_tenants:remap_areas_and_custom_field_options' do # r
       expect(area_graauw.custom_field_option.title_multiloc['en']).to eq('Graauw')
 
       # Users should now reference Graauw
-      expect(user1.reload.custom_field_values['domicile']).to eq(area_graauw.id)
-      expect(user2.reload.custom_field_values['domicile']).to eq(area_graauw.id)
+      expect(user1.reload.answer_for_key('domicile')&.value).to eq(area_graauw.id)
+      expect(user2.reload.answer_for_key('domicile')&.value).to eq(area_graauw.id)
 
       # Project should still be associated with Graauw (and not duplicated)
       expect(area_graauw.projects).to include(project)

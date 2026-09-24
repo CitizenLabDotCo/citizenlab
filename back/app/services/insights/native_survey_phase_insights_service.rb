@@ -8,7 +8,11 @@ module Insights
     end
 
     def phase_ideas
-      @phase_ideas ||= @phase.ideas.transitive(false).includes(:custom_field_answers, author: :custom_field_answers)
+      @phase_ideas ||= begin
+        ideas = @phase.ideas.transitive(false)
+        ideas = ideas.excluding_admin_and_moderator_authors if exclude_admins_and_moderators?
+        ideas.includes(:custom_field_answers, author: :custom_field_answers)
+      end
     end
 
     def participations_submitting_idea

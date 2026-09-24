@@ -11,7 +11,7 @@ describe Onboarding::OnboardingService do
       create(
         :user,
         bio_multiloc: { en: "I'm a great bloke" },
-        custom_field_values: { custom_field.key => 'Quite often' }
+        custom_field_answers: [build(:custom_field_answer, key: custom_field.key, value: 'Quite often')]
       )
     end
 
@@ -25,7 +25,7 @@ describe Onboarding::OnboardingService do
     end
 
     it 'returns :complete_profile when the user has empty signup fields' do
-      user.update!(custom_field_values: {})
+      user.custom_field_answers.destroy_all
       expect(service.current_campaign(user)).to eq :complete_profile
     end
 

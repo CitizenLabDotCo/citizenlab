@@ -22,10 +22,18 @@ class AnonymizeUserService
     ).map(&:to_h)
   end
 
-  def anonymized_attributes(locales, user: nil, start_at: nil)
+  DEMOGRAPHIC_CODES = %w[gender birthyear].freeze
+
+  def anonymized_answers(user: nil)
+    registration_fields.map do |field|
+      value = user&.answer_for_key(field.key)&.value || random_value_for(field)
+      { 'custom_field' => field, 'value' => value }
+    end
+  end
+
+  def anonymized_attributes(locales, answers:, user: nil, start_at: nil)
     locale = locales.sample
-    custom_field_values = random_custom_field_values user: user
-    gender = custom_field_values['gender']
+    gender = answers.find { |answer| answer['custom_field'].code == 'gender' }&.fetch('value')
     first_name = random_first_name gender
     last_name = random_last_name locale
     email = random_email first_name, last_name
@@ -43,7 +51,6 @@ class AnonymizeUserService
       'email' => email,
       'password' => SecureRandom.urlsafe_base64(32),
       'locale' => locale,
-      'custom_field_values' => custom_field_values,
       'bio_multiloc' => bio,
       'registration_completed_at' => registration,
       'created_at' => registration,
@@ -54,19 +61,15 @@ class AnonymizeUserService
 
   private
 
-  def random_custom_field_values(user: nil)
-    custom_field_values = {}
-    if user
-      properties = %w[gender birthyear]
-      user[:custom_field_values].each do |property, value|
-        if properties.include? property
-          custom_field_values[property] = value
-        end
-      end
+  def registration_fields
+    @registration_fields ||= CustomField.registration.where(code: DEMOGRAPHIC_CODES).to_a
+  end
+
+  def random_value_for(field)
+    case field.code
+    when 'gender' then User::GENDERS.sample
+    when 'birthyear' then random_birthyear
     end
-    custom_field_values['gender'] ||= User::GENDERS.sample
-    custom_field_values['birthyear'] ||= random_birthyear
-    custom_field_values
   end
 
   def mismatch_gender(gender)
