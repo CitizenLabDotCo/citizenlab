@@ -65,8 +65,9 @@ module DecidimImporter
 
         register_ideas_phase(uid, idea, phase)
         register_input_topic(uid, idea, row[COLUMNS[:category]])
-        register_scope_area(idea, row[COLUMNS[:scope]])
-        apply_status(idea, row)
+        idea_import = register_idea_import(uid, idea)
+        register_scope_area(idea_import, row[COLUMNS[:scope]])
+        apply_status(idea, idea_import, row)
         register_official_feedback(uid, idea, row)
         idea
       end
@@ -89,9 +90,9 @@ module DecidimImporter
 
       # Sets the idea's status from its Decidim state. With a {ProposalStatusResolver} the state maps to a
       # standard code (kept as `idea_status_code`, resolved to a tenant id by {IdeaStatuses.resolve!}) or a
-      # custom `idea_status` record (referenced), and the original Decidim status is parked in
-      # `custom_field_values` for provenance. Without a resolver, the status is derived from the token alone.
-      def apply_status(idea, row)
+      # custom `idea_status` record (referenced), and the original Decidim status is parked in the idea
+      # import's `extra_info` for provenance. Without a resolver, the status is derived from the token alone.
+      def apply_status(idea, idea_import, row)
         unless @status_resolver
           idea.attributes['idea_status_code'] = IdeaStatuses.code_for_state_token(row[COLUMNS[:state_token]])
           return
@@ -103,7 +104,7 @@ module DecidimImporter
         else
           idea.attributes['idea_status_code'] = decision.idea_status_code
         end
-        register_decidim_status(idea, decision)
+        register_decidim_status(idea_import, decision)
       end
 
       # Proposals can carry a geocoded address (`address` + `latitude`/`longitude`). Map the free-text

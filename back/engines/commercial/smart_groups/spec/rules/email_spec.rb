@@ -20,9 +20,41 @@ describe SmartGroups::Rules::Email do
   end
 
   describe 'validations' do
+    let(:valid_json_list_rule) do
+      {
+        'ruleType' => 'email',
+        'predicate' => 'is_one_of',
+        'value' => %w[hello@citizenlab.co sebi@hotmail.com]
+      }
+    end
+
     it 'successfully validate the valid rule' do
       expect(valid_rule).to be_valid
       expect(build(:smart_group, rules: [valid_json_rule])).to be_valid
+    end
+
+    it 'successfully validates a list rule' do
+      expect(described_class.from_json(valid_json_list_rule)).to be_valid
+      expect(build(:smart_group, rules: [valid_json_list_rule])).to be_valid
+    end
+
+    it 'rejects a single value for a list predicate' do
+      rule = described_class.new('is_one_of', 'hello@citizenlab.co')
+
+      expect(rule).to be_invalid
+      expect(build(:smart_group, rules: [valid_json_list_rule.merge('value' => 'hello@citizenlab.co')])).to be_invalid
+    end
+
+    it 'rejects a list for a single value predicate' do
+      expect(described_class.new('is', %w[hello@citizenlab.co])).to be_invalid
+      expect(build(:smart_group, rules: [valid_json_rule.merge('value' => %w[hello@citizenlab.co])])).to be_invalid
+    end
+
+    it 'rejects a list longer than the maximum' do
+      values = Array.new(described_class::MAX_VALUES + 1) { |i| "user#{i}@citizenlab.co" }
+
+      expect(described_class.new('is_one_of', values)).to be_invalid
+      expect(build(:smart_group, rules: [valid_json_list_rule.merge('value' => values)])).to be_invalid
     end
   end
 
@@ -75,6 +107,65 @@ describe SmartGroups::Rules::Email do
     it "correctly filters on 'not_ends_on' predicate" do
       rule = described_class.new('not_ends_on', 'citizenlab.co')
       expect(rule.filter(User).count).to eq User.count - 2
+    end
+
+    it "correctly filters on 'is_one_of' predicate" do
+      rule = described_class.new('is_one_of', %w[sebi@hotmail.com gerard@yahoo.fr nobody@citizenlab.co])
+      expect(rule.filter(User).count).to eq 2
+    end
+
+    it "correctly filters on 'not_is_one_of' predicate" do
+      rule = described_class.new('not_is_one_of', %w[sebi@hotmail.com gerard@yahoo.fr])
+      expect(rule.filter(User).count).to eq User.count - 2
+    end
+
+    it "ignores casing and surrounding whitespace on the 'is_one_of' predicate" do
+      rule = described_class.new('is_one_of', ['  SEBI@Hotmail.com ', 'Gerard@YAHOO.fr'])
+      expect(rule.filter(User).count).to eq 2
+    end
+
+    it "includes users without an email on the 'not_is_one_of' predicate" do
+      create(:user, email: nil, unique_code: '1234abcd')
+      rule = described_class.new('not_is_one_of', %w[sebi@hotmail.com])
+
+      expect(rule.filter(User).count).to eq User.count - 1
+    end
+  end
+
+  describe 'filter on an email stored with mixed case' do
+    using RSpec::Parameterized::TableSyntax
+
+    let!(:user) { create(:user, email: 'Sebi@CitizenLab.co') }
+
+    where(:predicate, :value, :matches) do
+      'is'              | 'sebi@citizenlab.co' | true
+      'not_is'          | 'sebi@citizenlab.co' | false
+      'contains'        | 'SEBI@citizenlab'    | true
+      'not_contains'    | 'SEBI@citizenlab'    | false
+      'begins_with'     | 'SEBI'               | true
+      'not_begins_with' | 'SEBI'               | false
+      'ends_on'         | 'CITIZENLAB.co'      | true
+      'not_ends_on'     | 'CITIZENLAB.co'      | false
+    end
+
+    with_them do
+      it 'ignores the case of both the email and the value' do
+        expect(described_class.new(predicate, value).filter(User).exists?(user.id)).to eq matches
+      end
+    end
+  end
+
+  describe 'filter on a user without an email' do
+    let!(:user) { create(:user, email: nil) }
+
+    where(:predicate) do
+      [['not_is'], ['not_contains'], ['not_begins_with'], ['not_ends_on']]
+    end
+
+    with_them do
+      it 'keeps the user, who cannot match the value' do
+        expect(described_class.new(predicate, 'citizenlab.co').filter(User)).to include user
+      end
     end
   end
 
@@ -177,6 +268,15 @@ describe SmartGroups::Rules::Email do
         'fr-FR' => 'adresse e-mail ne se termine pas sur citizenlab.co',
         'nl-NL' => 'e-mail eindigt niet op citizenlab.co'
       })
+    end
+
+    it 'describes the list predicates' do
+      values = %w[sebi@citizenlab.co gerard@yahoo.fr]
+
+      expect(described_class.new('is_one_of', values).description_multiloc['en'])
+        .to eq 'e-mail is one of: sebi@citizenlab.co, gerard@yahoo.fr'
+      expect(described_class.new('not_is_one_of', values).description_multiloc['en'])
+        .to eq 'e-mail is not one of: sebi@citizenlab.co, gerard@yahoo.fr'
     end
   end
 end

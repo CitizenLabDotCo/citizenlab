@@ -509,7 +509,7 @@ resource 'Phases' do
           project: project,
           creation_phase: active_phase,
           phases: [active_phase],
-          custom_field_values: { multiselect_field.key => %w[cat dog] }
+          custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[cat dog])]
         )
       end
       let!(:survey_response2) do
@@ -518,7 +518,7 @@ resource 'Phases' do
           project: project,
           creation_phase: active_phase,
           phases: [active_phase],
-          custom_field_values: { multiselect_field.key => %w[cat] }
+          custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[cat])]
         )
       end
 
@@ -618,6 +618,30 @@ resource 'Phases' do
           )
         end
 
+        context 'with reactions of admins and moderators' do
+          before do
+            # Unless admins and moderators are excluded from statistics, these would be counted in the stats and in the votes of i1
+            create_admins_and_moderators(project: phase.project).each do |user|
+              create(:reaction, reactable: i1, user: user, mode: 'down')
+            end
+          end
+
+          example 'Get common ground results excluding admins and moderators' do
+            enable_exclude_admins_and_moderators_from_statistics
+            do_request
+            assert_status 200
+
+            expect(response_data.dig(:attributes, :stats)).to eq({
+              num_participants: 9,
+              num_ideas: 4,
+              votes: { up: 3, down: 3, neutral: 3 }
+            })
+            expect(response_data.dig(:attributes, :top_consensus_ideas).pluck(:id)).to eq [i2.id, i1.id, i3.id]
+            expect(response_data.dig(:attributes, :top_controversial_ideas).pluck(:id)).to eq [i3.id, i1.id, i2.id]
+            expect(response_data.dig(:attributes, :top_consensus_ideas, 1, :votes)).to eq({ up: 2, down: 1, neutral: 0 })
+          end
+        end
+
         context 'when the phase is not "common ground"' do
           let(:id) { create(:phase).id }
 
@@ -643,7 +667,10 @@ resource 'Phases' do
           :native_survey_response,
           project: project,
           creation_phase: active_phase,
-          custom_field_values: { sentiment_question1.key => 2, sentiment_question2.key => 4 },
+          custom_field_answers: [
+            build(:custom_field_answer, key: sentiment_question1.key, value: 2),
+            build(:custom_field_answer, key: sentiment_question2.key, value: 4)
+          ],
           created_at: Time.new(2025, 1, 1)
         )
       end
@@ -652,7 +679,10 @@ resource 'Phases' do
           :native_survey_response,
           project: project,
           creation_phase: active_phase,
-          custom_field_values: { sentiment_question1.key => 3, sentiment_question2.key => 1 },
+          custom_field_answers: [
+            build(:custom_field_answer, key: sentiment_question1.key, value: 3),
+            build(:custom_field_answer, key: sentiment_question2.key, value: 1)
+          ],
           created_at: Time.new(2025, 4, 1)
         )
       end
@@ -687,6 +717,72 @@ resource 'Phases' do
           }
         })
       end
+
+      context 'with survey responses of admins and moderators' do
+        before do
+          create_admins_and_moderators(project: project).each do |author|
+            create(
+              :native_survey_response,
+              project: project,
+              creation_phase: active_phase,
+              author: author,
+              custom_field_answers: [
+                build(:custom_field_answer, key: sentiment_question1.key, value: 5),
+                build(:custom_field_answer, key: sentiment_question2.key, value: 5)
+              ],
+              created_at: Time.new(2025, 1, 1)
+            )
+          end
+        end
+
+        example 'Get survey sentiment by quarter excluding admins and moderators' do
+          enable_exclude_admins_and_moderators_from_statistics
+          do_request
+          expect(status).to eq 200
+          expect(response_data.dig(:attributes, :overall)).to eq({
+            averages: { '2025-1': 3.0, '2025-2': 2.0 },
+            totals: {
+              '2025-1': { '1': 0, '2': 1, '3': 0, '4': 1, '5': 0 },
+              '2025-2': { '1': 1, '2': 0, '3': 1, '4': 0, '5': 0 }
+            }
+          })
+        end
+      end
+    end
+
+    get 'web_api/v1/phases/:id/survey_results' do
+      let!(:proposed_idea_status) { create(:idea_status_proposed) }
+
+      let(:project) { create(:community_monitor_project) }
+      let(:active_phase) { project.phases.first }
+      let(:form) { create(:custom_form, participation_context: active_phase) }
+      let(:sentiment_question) { create(:custom_field_sentiment_linear_scale, resource: form, question_category: 'quality_of_life') }
+      let(:id) { active_phase.id }
+
+      let!(:survey_responses) do
+        [create(:user), *create_admins_and_moderators(project: project)].map do |author|
+          create(
+            :native_survey_response,
+            project: project,
+            creation_phase: active_phase,
+            author: author,
+            custom_field_answers: [build(:custom_field_answer, key: sentiment_question.key, value: 3)]
+          )
+        end
+      end
+
+      example 'Get community monitor survey results includes admins and moderators by default', document: false do
+        do_request
+        expect(status).to eq 200
+        expect(response_data.dig(:attributes, :totalSubmissions)).to eq 6
+      end
+
+      example 'Get community monitor survey results excluding admins and moderators' do
+        enable_exclude_admins_and_moderators_from_statistics
+        do_request
+        expect(status).to eq 200
+        expect(response_data.dig(:attributes, :totalSubmissions)).to eq 1
+      end
     end
 
     get 'web_api/v1/phases/:id/submission_count' do
@@ -714,7 +810,7 @@ resource 'Phases' do
           project: project,
           creation_phase: active_phase,
           phases: [active_phase],
-          custom_field_values: { multiselect_field.key => %w[cat dog] }
+          custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[cat dog])]
         )
       end
       let!(:survey_response2) do
@@ -723,7 +819,7 @@ resource 'Phases' do
           project: project,
           creation_phase: active_phase,
           phases: [active_phase],
-          custom_field_values: { multiselect_field.key => %w[cat] }
+          custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[cat])]
         )
       end
       let!(:survey_response3) do
@@ -732,7 +828,7 @@ resource 'Phases' do
           project: project,
           creation_phase: active_phase,
           phases: [active_phase],
-          custom_field_values: { multiselect_field.key => %w[dog] }
+          custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[dog])]
         )
       end
 
@@ -781,7 +877,7 @@ resource 'Phases' do
               project: project,
               creation_phase: active_phase,
               phases: [active_phase],
-              custom_field_values: { multiselect_field.key => %w[cat dog] }
+              custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[cat dog])]
             )
           end
           let!(:survey_response2) do
@@ -790,7 +886,7 @@ resource 'Phases' do
               project: project,
               creation_phase: active_phase,
               phases: [active_phase],
-              custom_field_values: { multiselect_field.key => %w[cat] }
+              custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[cat])]
             )
           end
 
@@ -927,7 +1023,7 @@ resource 'Phases' do
           project: project,
           creation_phase: active_phase,
           phases: [active_phase],
-          custom_field_values: { multiselect_field.key => %w[cat dog] }
+          custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[cat dog])]
         )
       end
 

@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
-import styled, { useTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 
 import useAreas from 'api/areas/useAreas';
 import { IFlatCustomField } from 'api/custom_fields/types';
@@ -20,13 +19,7 @@ import { SEARCHABLE_OPTION_COUNT } from '../constants';
 import messages from '../messages';
 import { extractOptions, isDropdownLayoutForced } from '../util';
 
-const StyledBox = styled(Box)<{ selected: boolean }>`
-  cursor: pointer;
-  &:hover {
-    box-shadow: 0 0 0 1px
-      ${({ selected }) => (selected ? 'undefined' : colors.borderDark)};
-  }
-`;
+import RadioOptionBox from './_shared/RadioOptionBox';
 
 const SingleSelectField = ({
   question,
@@ -84,17 +77,8 @@ const SingleSelectField = ({
           aria-required={question.required}
         >
           {options.map((option) => (
-            <StyledBox
-              style={{ cursor: 'pointer' }}
-              mb="12px"
-              padding="20px 20px 8px 20px"
-              border={
-                option.value === value
-                  ? `2px solid ${theme.colors.tenantPrimary}`
-                  : `1px solid ${theme.colors.borderDark}`
-              }
+            <RadioOptionBox
               key={option.value}
-              borderRadius="3px"
               selected={option.value === value}
             >
               <Radio
@@ -107,7 +91,7 @@ const SingleSelectField = ({
                 canDeselect
                 disabled={disabled}
               />
-            </StyledBox>
+            </RadioOptionBox>
           ))}
         </RadioGroup>
       )}
