@@ -313,25 +313,57 @@ describe ProjectsFinderAdminService do
     end
   end
 
-  describe 'self.filter_current_phase_participation_method' do
+  describe 'self.filter_participation_methods' do
     let!(:project_ideation) { create(:ideation_phase, start_at: 10.days.ago, end_at: 10.days.from_now).project }
     let!(:project_voting) { create(:single_voting_phase, start_at: 10.days.ago, end_at: 10.days.from_now).project }
     let!(:project_information) { create(:information_phase, start_at: 10.days.ago, end_at: 10.days.from_now).project }
     let!(:project_ideation_future) { create(:ideation_phase, start_at: 10.days.from_now, end_at: 20.days.from_now).project }
+    let!(:project_ideation_past) { create(:ideation_phase, start_at: 20.days.ago, end_at: 10.days.ago).project }
+
+    # A project whose current phase is information, but which also has a past
+    # voting phase and a future ideation phase.
+    let!(:project_multi_phase) do
+      project = create(:information_phase, start_at: 10.days.ago, end_at: 10.days.from_now).project
+      create(:single_voting_phase, project: project, start_at: 20.days.ago, end_at: 11.days.ago)
+      create(:ideation_phase, project: project, start_at: 11.days.from_now, end_at: 20.days.from_now)
+      project
+    end
 
     it 'returns all projects when no participation_methods specified' do
-      result = described_class.filter_current_phase_participation_method(Project.all, {})
-      expect(result.pluck(:id)).to contain_exactly(project_ideation.id, project_voting.id, project_information.id, project_ideation_future.id)
+      result = described_class.filter_participation_methods(Project.all, {})
+      expect(result.pluck(:id)).to contain_exactly(
+        project_ideation.id, project_voting.id, project_information.id,
+        project_ideation_future.id, project_ideation_past.id, project_multi_phase.id
+      )
     end
 
     it 'filters projects by a single participation method' do
-      result = described_class.filter_current_phase_participation_method(Project.all, { participation_methods: ['ideation'] })
-      expect(result.pluck(:id)).to eq([project_ideation.id])
+      result = described_class.filter_participation_methods(Project.all, { participation_methods: ['ideation'] })
+      expect(result.pluck(:id)).to contain_exactly(project_ideation.id, project_ideation_future.id, project_ideation_past.id, project_multi_phase.id)
     end
 
     it 'filters projects by multiple participation methods' do
-      result = described_class.filter_current_phase_participation_method(Project.all, { participation_methods: %w[ideation voting] })
-      expect(result.pluck(:id)).to contain_exactly(project_ideation.id, project_voting.id)
+      result = described_class.filter_participation_methods(Project.all, { participation_methods: %w[ideation voting] })
+      expect(result.pluck(:id)).to contain_exactly(
+        project_ideation.id, project_voting.id, project_ideation_future.id,
+        project_ideation_past.id, project_multi_phase.id
+      )
+    end
+
+    it 'matches on phases that are not current' do
+      result = described_class.filter_participation_methods(Project.all, { participation_methods: ['voting'] })
+      expect(result.pluck(:id)).to contain_exactly(project_voting.id, project_multi_phase.id)
+    end
+
+    it 'returns each matching project only once when several of its phases match' do
+      result = described_class.filter_participation_methods(Project.all, { participation_methods: %w[information voting] })
+      expect(result.pluck(:id)).to contain_exactly(project_information.id, project_voting.id, project_multi_phase.id)
+    end
+
+    it 'excludes projects without phases' do
+      project_without_phases = create(:project)
+      result = described_class.filter_participation_methods(Project.all, { participation_methods: ['ideation'] })
+      expect(result.pluck(:id)).not_to include(project_without_phases.id)
     end
   end
 

@@ -26,7 +26,6 @@
 #  assignee_id                     :uuid
 #  assigned_at                     :datetime
 #  proposed_budget                 :integer
-#  custom_field_values             :jsonb            not null
 #  creation_phase_id               :uuid
 #  author_hash                     :string
 #  anonymous                       :boolean          default(FALSE), not null
@@ -106,13 +105,14 @@ class Idea < ApplicationRecord
     delta_magnitude: proc { |idea| idea.comments_count }
   )
 
+  self.ignored_columns += %w[custom_field_values] # backup only; the answers are the source of truth
+
   has_many_text_images from: :body_multiloc
 
   before_validation :sanitize_body_multiloc, if: :body_multiloc
   plain_text_multiloc :title_multiloc, prepend: true
 
   # Must appear before before_destroy
-  before_save :convert_wkt_geo_custom_field_values_to_geojson
   after_update :fix_comments_count_on_projects
 
   belongs_to :assignee, class_name: 'User', optional: true
@@ -277,6 +277,9 @@ class Idea < ApplicationRecord
   scope :supports_survey, -> { where(creation_phase: Phase.where(participation_method: %w[native_survey community_monitor_survey])) }
   scope :supports_proposal, -> { where(creation_phase: Phase.where(participation_method: %w[proposals])) }
   scope :supports_idea, -> { where(creation_phase: nil) }
+  scope :excluding_admin_and_moderator_authors, lambda {
+    StatisticsRoleExclusion.new.exclude_admin_and_moderator_records(all, :author_id)
+  }
 
   # Filters out all the ideas for which the ParticipationMethod responds truety
   # to the given block. The block receives the ParticipationMethod object as an
@@ -473,25 +476,6 @@ class Idea < ApplicationRecord
       :invalid_status,
       message: 'Inputs can only be published in public statuses'
     )
-  end
-
-  # The FE sends geographic values as wkt strings, since GeoJSON often includes nested arrays
-  # which are not supported by Rails strong params.
-  # This method converts the wkt strings for geographic values (e.g. for point, line, polygon, etc.) to GeoJSON.
-  #
-  # RGeo gem & wkt strings:
-  # https://github.com/rgeo/rgeo/blob/52d42407769d9fb5267e328ed4023db013f2b7d5/Spatial_Programming_With_RGeo.md?plain=1#L521-L528
-  def convert_wkt_geo_custom_field_values_to_geojson
-    return if custom_field_values.blank?
-
-    geo_cf_keys = custom_form
-      &.custom_fields.to_a
-      .select { |field| field.input_type.in? CustomField::GEOGRAPHIC_INPUT_TYPES }
-      .map(&:key)
-
-    custom_field_values.slice(*geo_cf_keys).each do |key, value|
-      custom_field_values[key] = wkt_string_to_geojson(value) if value.is_a?(String)
-    end
   end
 
   def transitive_input_term

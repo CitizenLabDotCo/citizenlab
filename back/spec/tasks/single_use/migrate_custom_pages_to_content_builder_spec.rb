@@ -112,6 +112,48 @@ describe 'single_use:migrate_custom_pages_to_content_builder' do
     expect(events['props']).to include('source' => 'areas', 'ids' => [area.id])
   end
 
+  # The equality against the service above passes whatever the service emits, so this pins
+  # that a migrated page actually gets its title widget.
+  it 'seeds the title widget at the top of the body' do
+    task.invoke('execute')
+
+    body = layout_for(page).craftjs_json.fetch(ContentBuilder::CustomPageLayoutService::BODY_ID)
+    expect(body['nodes']).to start_with ContentBuilder::CustomPageLayoutService::TITLE_ID
+  end
+
+  context 'with a banner' do
+    before do
+      page.update!(banner_enabled: true, header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
+    end
+
+    it 'seeds the banner first, then the title' do
+      task.invoke('execute')
+
+      body = layout_for(page).craftjs_json.fetch(ContentBuilder::CustomPageLayoutService::BODY_ID)
+      expect(body['nodes'].first(2)).to eq [
+        ContentBuilder::CustomPageLayoutService::BANNER_ID,
+        ContentBuilder::CustomPageLayoutService::TITLE_ID
+      ]
+    end
+
+    it 'copies the header image only when executing' do
+      expect { task.invoke }.not_to change(ContentBuilder::LayoutImage, :count)
+
+      task.reenable
+      expect { task.invoke('execute') }.to change(ContentBuilder::LayoutImage, :count).by(1)
+    end
+
+    # The copied image must not make an unchanged page look changed on every run.
+    it 'leaves an up-to-date layout untouched on overwrite' do
+      task.invoke('execute')
+      task.reenable
+
+      task.invoke('execute', nil, 'overwrite')
+
+      expect(report['changes']).to be_empty
+    end
+  end
+
   context 'with overwrite' do
     subject(:run) { task.invoke('execute', nil, 'overwrite') }
 

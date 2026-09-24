@@ -28,11 +28,11 @@ describe SmartGroups::Rules::CustomFieldDate do
 
       let!(:users) do
         users = build_list(:user, 5)
-        users[0].custom_field_values[custom_field.key] = Date.today
-        users[1].custom_field_values[custom_field.key] = (Date.today - 1.day)
-        users[2].custom_field_values[custom_field.key] = (Date.today + 1.day)
-        users[3].custom_field_values[custom_field.key] = (Date.today - 1.year)
-        # users[4].custom_field_values[custom_field.key] = nil
+        users[0].custom_field_answers.build(key: custom_field.key, value: Date.today, custom_field: custom_field)
+        users[1].custom_field_answers.build(key: custom_field.key, value: (Date.today - 1.day), custom_field: custom_field)
+        users[2].custom_field_answers.build(key: custom_field.key, value: (Date.today + 1.day), custom_field: custom_field)
+        users[3].custom_field_answers.build(key: custom_field.key, value: (Date.today - 1.year), custom_field: custom_field)
+        # users[4] has no answer
         users.each(&:save!)
       end
 

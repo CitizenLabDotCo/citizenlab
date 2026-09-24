@@ -62,7 +62,10 @@ describe BulkImportIdeas::Importers::IdeaImporter do
 
       expect(project.ideas.count).to eq 2
       expect(project.reload.ideas_count).to eq 0
-      expect(project.reload.ideas.pluck(:custom_field_values)).to contain_exactly({ 'text_field' => 'custom text field content' }, { 'text_field' => 'custom text field content 2' })
+      expect(project.reload.ideas.map { |idea| idea.custom_field_answers.pluck(:key, :value) }).to contain_exactly(
+        [['text_field', 'custom text field content']],
+        [['text_field', 'custom text field content 2']]
+      )
     end
 
     it 'imports draft ideas with idea import meta data' do
@@ -306,11 +309,11 @@ describe BulkImportIdeas::Importers::IdeaImporter do
         expect(User.count).to eq 2
 
         expect(Idea.first.publication_status).to eq 'draft'
-        expect(Idea.first.custom_field_values).to eq({
-          'text_field' => 'Some text',
-          'u_gender' => 'male'
-        })
-        expect(User.order(:created_at).last.custom_field_values).to eq({})
+        expect(Idea.first.custom_field_answers.pluck(:key, :value)).to contain_exactly(
+          ['text_field', 'Some text'],
+          %w[u_gender male]
+        )
+        expect(User.order(:created_at).last.custom_field_answers).to be_empty
       end
     end
 

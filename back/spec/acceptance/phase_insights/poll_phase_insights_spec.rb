@@ -36,8 +36,8 @@ resource 'Phase insights' do
   let(:poll_phase) do
     create(:poll_phase, start_at: 20.days.ago, end_at: 3.days.ago, with_permissions: true).tap do |phase|
       # Users
-      user1 = create(:user, custom_field_values: { gender: 'female', birthyear: 1980 })
-      user2 = create(:user, custom_field_values: { gender: 'male', birthyear: 1990 })
+      user1 = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'female'), build(:custom_field_answer, key: 'birthyear', value: 1980)])
+      user2 = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'male'), build(:custom_field_answer, key: 'birthyear', value: 1990)])
       user3 = create(:user)
 
       # Poll responses

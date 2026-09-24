@@ -3,11 +3,17 @@
 class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   def import(template, folder: nil, local_copy: false)
     fix_project_slugs_in_template!(template)
+    drop_unmatchable_registration_fields!(template)
     # No translation required if it's a local copy
     template, translate_logs = MultiTenancy::Templates::Utils.translate_and_fix_locales(template) unless local_copy
 
     created_objects_ids = ActiveRecord::Base.transaction do
-      tenant_deserializer.deserialize(template, validate: false, local_copy: local_copy)
+      tenant_deserializer.deserialize(
+        template,
+        validate: false,
+        local_copy: local_copy,
+        reuse_by: { 'CustomField' => MultiTenancy::Templates::ReuseMatchers.registration_custom_field }
+      )
     end
 
     project = Project.find(created_objects_ids['Project'].first)
@@ -41,6 +47,8 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     include_ideas = false if local_copy
     max_ideas = max_ideas.presence&.to_i
     @include_ideas = include_ideas
+    @anonymize_users = anonymize_users
+    @anonymized_answers_by_user = {}
     @local_copy = local_copy
     @project = project
     @project_map_configs = project_map_configs
@@ -87,6 +95,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       @template['models']['cosponsorship']          = yml_cosponsorships exported_ideas, shift_timestamps: shift_timestamps
       @template['models']['reaction']               = yml_reactions exported_ideas, shift_timestamps: shift_timestamps
       @template['models']['follower']               = yml_followers exported_ideas, shift_timestamps: shift_timestamps
+      @template['models']['custom_field_answer']    = yml_custom_field_answers exported_ideas, shift_timestamps: shift_timestamps
       @template['models']['volunteering/volunteer'] = yml_volunteers shift_timestamps: shift_timestamps
       @template['models']['events/attendance']      = yml_attendances shift_timestamps: shift_timestamps
     end
@@ -161,11 +170,37 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     end
   end
 
+  # Registration fields (and their answers) ride along only as ref targets for anonymized
+  # demographics; ones the target can't match are dropped before deserialization, never created.
+  def drop_unmatchable_registration_fields!(template)
+    fields = template.dig('models', 'custom_field') || []
+    kept, dropped = fields.partition { |field| keep_custom_field?(field) }
+    return if dropped.empty?
+
+    template['models']['custom_field'] = kept
+    answers = template.dig('models', 'custom_field_answer') || []
+    # A ref holds the field entry itself, not a copy with equal values — YAML anchors keep it that way.
+    template['models']['custom_field_answer'] = answers.reject do |answer|
+      dropped.any? { |field| answer['custom_field_ref'].equal?(field) }
+    end
+  end
+
+  def keep_custom_field?(field_attrs)
+    case field_attrs['resource_type']
+    when 'CustomForm' then true
+    when 'User' then MultiTenancy::Templates::ReuseMatchers.registration_custom_field.call(field_attrs, CustomField).present?
+    else raise "Unexpected custom_field resource_type in project copy template: #{field_attrs['resource_type'].inspect}"
+    end
+  end
+
   def yml_custom_fields(shift_timestamps: 0)
     custom_form_ids = ([@project.custom_form_id] + @project.phases.map(&:custom_form_id)).compact
-    CustomField.where(resource: custom_form_ids).map do |field|
+    fields = CustomField.where(resource: custom_form_ids).to_a
+    fields += exported_registration_fields if @include_ideas
+    fields.map do |field|
       yml_custom_field = {
         'resource_ref' => field.resource_id && lookup_ref(field.resource_id, :custom_form),
+        'resource_type' => field.resource_type,
         'key' => field.key,
         'input_type' => field.input_type,
         'title_multiloc' => field.title_multiloc,
@@ -518,7 +553,9 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     @user_ids = user_ids.uniq # set globally so we can restrict follower export later
     User.where(id: @user_ids).map do |user|
       yml_user = if anonymize_users
-        service.anonymized_attributes AppConfiguration.instance.settings('core', 'locales'), user: user
+        answers = service.anonymized_answers(user: user)
+        @anonymized_answers_by_user[user.id] = answers
+        service.anonymized_attributes AppConfiguration.instance.settings('core', 'locales'), answers: answers, user: user
       else
         yml_user_from user, shift_timestamps
       end
@@ -538,7 +575,6 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       'last_name' => user.last_name,
       'locale' => user.locale,
       'bio_multiloc' => user.bio_multiloc,
-      'custom_field_values' => user.custom_field_values.delete_if { |_k, v| v.nil? },
       'registration_completed_at' => shift_timestamp(user.registration_completed_at, shift_timestamps)&.iso8601,
       'verified' => user.verified,
       'block_start_at' => user.block_start_at,
@@ -642,8 +678,6 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   end
 
   def yml_ideas(exported_ideas, shift_timestamps: 0)
-    custom_fields = CustomField.where(resource: CustomForm.where(participation_context: (@project.phases + [@project])))
-
     exported_ideas.map do |idea|
       yml_idea = {
         'title_multiloc' => idea.title_multiloc,
@@ -678,9 +712,56 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'creation_phase_ref' => lookup_ref(idea.creation_phase_id, :phase)
       }
 
-      yml_idea['custom_field_values'] = filter_custom_field_values(idea.custom_field_values, custom_fields) if custom_fields
       store_ref yml_idea, idea.id, :idea
       yml_idea
+    end
+  end
+
+  # Answers whose field is not part of the template and file answers (their values reference
+  # uploads by id) are not copied. Real users' registration answers are never copied; anonymized
+  # users get fake demographic answers instead.
+  def yml_custom_field_answers(exported_ideas, shift_timestamps: 0)
+    answers = CustomFieldAnswer.where(answerable: exported_ideas)
+    answers = answers.or(CustomFieldAnswer.where(answerable_type: 'User', answerable_id: @user_ids)) if !@anonymize_users
+    answers = answers.includes(:custom_field)
+
+    yml_answers = answers.filter_map do |answer|
+      next if answer.custom_field&.supports_file_upload?
+
+      custom_field_ref = lookup_ref(answer.custom_field_id, :custom_field)
+      answerable_ref = lookup_ref(answer.answerable_id, %i[idea user])
+      next if !custom_field_ref || !answerable_ref
+
+      {
+        'answerable_ref' => answerable_ref,
+        'custom_field_ref' => custom_field_ref,
+        'key' => answer.key,
+        'value' => answer.value,
+        'created_at' => shift_timestamp(answer.created_at, shift_timestamps)&.iso8601,
+        'updated_at' => shift_timestamp(answer.updated_at, shift_timestamps)&.iso8601
+      }
+    end
+    yml_answers + yml_anonymized_user_answers
+  end
+
+  def yml_anonymized_user_answers
+    @anonymized_answers_by_user.flat_map do |user_id, answers|
+      answers.map do |answer|
+        {
+          'answerable_ref' => lookup_ref(user_id, :user),
+          'custom_field_ref' => lookup_ref(answer['custom_field'].id, :custom_field),
+          'key' => answer['custom_field'].key,
+          'value' => answer['value']
+        }
+      end
+    end
+  end
+
+  def exported_registration_fields
+    @exported_registration_fields ||= if @anonymize_users
+      CustomField.registration.where(code: AnonymizeUserService::DEMOGRAPHIC_CODES).to_a
+    else
+      CustomField.registration.to_a
     end
   end
 

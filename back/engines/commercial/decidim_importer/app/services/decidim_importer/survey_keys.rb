@@ -3,7 +3,7 @@
 module DecidimImporter
   # Deterministic Go Vocal `CustomField` keys derived from Decidim question/option/matrix-row
   # references, shared by {Extractors::SurveysExtractor} (builds the form) and
-  # {Extractors::SurveyResponsesExtractor} (builds `custom_field_values`). Both must agree on a
+  # {Extractors::SurveyResponsesExtractor} (builds the answers). Both must agree on a
   # reference's key so responses address the fields the form created, without threading form records
   # between the two passes.
   #
