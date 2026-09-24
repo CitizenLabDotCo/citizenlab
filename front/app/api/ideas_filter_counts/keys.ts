@@ -10,7 +10,7 @@ const baseKey = {
 
 const ideaFilterCountsKeys = {
   all: () => [baseKey],
-  items: () => [{ ...baseKey, operation: 'item' }],
+  items: () => [{ ...itemKey, operation: 'item' }],
   item: (parameters: IIdeasFilterCountsQueryParameters) => [
     { ...itemKey, operation: 'item', parameters },
   ],

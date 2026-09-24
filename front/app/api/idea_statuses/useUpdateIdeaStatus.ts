@@ -26,7 +26,7 @@ const useUpdateIdeaStatus = () => {
     mutationFn: updateIdeaStatus,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ideaStatusKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: ideaFilterCountsKeys.all() });
+      queryClient.invalidateQueries({ queryKey: ideaFilterCountsKeys.items() });
     },
   });
 };
