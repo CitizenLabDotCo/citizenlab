@@ -81,6 +81,76 @@ describe ProfanityService do
       })
     end
 
+    context 'when the word is wrapped in quotes' do
+      where(:text) do
+        [
+          'Il est un peu "débile".',
+          "Il est un peu 'débile'.",
+          'Il est un peu `débile`.',
+          'Il est un peu « débile ».',
+          'Il est un peu “débile”.',
+          'Il est un peu ‘débile’.',
+          'Il est un peu „débile“.',
+          'Il est un peu ‹débile›.',
+          'Il est un peu 〝débile〞.',
+          'Il est un peu ＂débile＂.',
+          'Il est un peu ′débile″.',
+          'Il est un peu ❝débile❞.'
+        ]
+      end
+
+      with_them do
+        it 'matches the word' do
+          expect(service.search_blocked_words(text)).to contain_exactly({
+            word: 'débile',
+            language: 'fr'
+          })
+        end
+      end
+    end
+
+    context 'when an apostrophe glues the word to the previous one' do
+      where(:text) do
+        [
+          "C'est l'idiot du village.",
+          'C’est l’idiot du village.'
+        ]
+      end
+
+      with_them do
+        it 'matches the word' do
+          expect(service.search_blocked_words(text)).to contain_exactly({
+            word: 'idiot',
+            language: 'fr'
+          }, {
+            word: 'idiot',
+            language: 'en'
+          })
+        end
+      end
+    end
+
+    it 'matches when punctuation glues the word to the next one' do
+      text = 'Il est un peu débile.Vraiment.'
+      expect(service.search_blocked_words(text)).to contain_exactly({
+        word: 'débile',
+        language: 'fr'
+      })
+    end
+
+    it 'matches a word masked with underscores' do
+      text = 'Il est un peu d_é_b_i_l_e.'
+      expect(service.search_blocked_words(text)).to contain_exactly({
+        word: 'débile',
+        language: 'fr'
+      })
+    end
+
+    it "doesn't split on hyphens" do
+      text = 'Il est un peu demi-débile.'
+      expect(service.search_blocked_words(text)).to be_blank
+    end
+
     it "doesn't match on accents or digits" do
       text = 'Il est un peu debile et id1ot.'
       expect(service.search_blocked_words(text)).to be_blank

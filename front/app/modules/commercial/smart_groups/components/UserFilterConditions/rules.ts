@@ -3,6 +3,7 @@ import AreaValuesSelector from './ValueSelector/AreaValuesSelector';
 import CustomFieldOptionValueSelector from './ValueSelector/CustomFieldOptionValueSelector';
 import CustomFieldOptionValuesSelector from './ValueSelector/CustomFieldOptionValuesSelector';
 import DateValueSelector from './ValueSelector/DateValueSelector';
+import EmailListValueSelector from './ValueSelector/EmailListValueSelector';
 import EventValuesSelector from './ValueSelector/EventValuesSelector';
 import GlobalTopicValueSelector from './ValueSelector/GlobalTopicValueSelector';
 import GlobalTopicValuesSelector from './ValueSelector/GlobalTopicValuesSelector';
@@ -112,7 +113,9 @@ type TEmailPredicate =
   | 'begins_with'
   | 'not_begins_with'
   | 'ends_on'
-  | 'not_ends_on';
+  | 'not_ends_on'
+  | 'is_one_of'
+  | 'not_is_one_of';
 
 type TEventAttendancePredicate =
   | 'attends_something'
@@ -380,6 +383,14 @@ export type TRule =
       value?: string;
     }
   | {
+      ruleType?: 'email';
+      predicate?: 'is_one_of' | 'not_is_one_of';
+      /**
+       * A list of email addresses
+       */
+      value?: string[];
+    }
+  | {
       ruleType?: 'event_attendances';
       predicate?: 'attends_something' | 'attends_nothing';
       value?: undefined;
@@ -627,6 +638,8 @@ export const ruleTypeConstraints = {
     not_begins_with: TextValueSelector,
     ends_on: TextValueSelector,
     not_ends_on: TextValueSelector,
+    is_one_of: EmailListValueSelector,
+    not_is_one_of: EmailListValueSelector,
   },
   event_attendances: {
     attends_something: null,
@@ -751,5 +764,18 @@ export const ruleTypeConstraints = {
     not_taken_survey: null,
   },
 };
+
+// Mirrors SmartGroups::Rules::Email::MAX_VALUES, which the API enforces.
+export const MAX_EMAIL_LIST_SIZE = 5000;
+
+export type TEmailListRule = {
+  ruleType: 'email';
+  predicate: 'is_one_of' | 'not_is_one_of';
+  value?: string[];
+};
+
+export const isEmailListRule = (rule: TRule): rule is TEmailListRule =>
+  rule.ruleType === 'email' &&
+  (rule.predicate === 'is_one_of' || rule.predicate === 'not_is_one_of');
 
 // Extract rule types (ruleType) and their predicates from TRule

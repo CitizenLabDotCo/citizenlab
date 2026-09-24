@@ -320,6 +320,10 @@ export default defineMessages({
     id: 'app.containers.Projects.seeTheObservations',
     defaultMessage: 'See the observations',
   },
+  seeVolunteering: {
+    id: 'app.containers.Projects.seeVolunteering',
+    defaultMessage: 'Volunteer',
+  },
   meetMinBudgetRequirement: {
     id: 'app.containers.Projects.meetMinBudgetRequirement',
     defaultMessage: 'Meet the minimum budget to submit your basket.',

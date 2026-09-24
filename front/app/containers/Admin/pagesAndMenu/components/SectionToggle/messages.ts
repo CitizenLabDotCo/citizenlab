@@ -31,6 +31,15 @@ export default defineMessages({
     defaultMessage:
       'Show the projects and folders based on your page settings. You can preview the projects and folders that will be shown.',
   },
+  projectsList: {
+    id: 'app.containers.Admin.PagesAndMenu.SectionToggle.projectsList',
+    defaultMessage: 'Projects list',
+  },
+  projectsListTooltip: {
+    id: 'app.containers.Admin.PagesAndMenu.SectionToggle.projectsListTooltip',
+    defaultMessage:
+      'Show the projects based on your page settings. You can preview the projects that will be shown.',
+  },
   eventsList: {
     id: 'app.containers.Admin.PagesAndMenu.SectionToggle.eventsList',
     defaultMessage: 'Events list',

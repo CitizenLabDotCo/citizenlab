@@ -254,6 +254,11 @@ class CustomField < ApplicationRecord
     resource_type == 'CustomForm'
   end
 
+  # The value of a built-in input field is an attribute of the input, not an answer.
+  def stored_on_model?
+    built_in? && custom_form_type?
+  end
+
   def user_type?
     resource_type == 'User'
   end

@@ -17,12 +17,6 @@ module Ideas
           i.idea_status = proposed_idea_status
           i.creation_phase = transitive_pmethod ? nil : dest_phase
 
-          # We discard the custom field values because they are tied to the custom form
-          # model, which is specific to the source participation context. In the future,
-          # this could be improved by supporting a way to map source fields to
-          # corresponding fields in the destination custom form.
-          i.custom_field_values = {}
-
           i.slug = nil
           i.assignee_id = nil
           i.assigned_at = nil
@@ -35,6 +29,7 @@ module Ideas
           # The following associations are not copied over:
           # Reactions, baskets, comments, internal comments, official feedback, followers
           # votes.
+          # Answers are not copied: they belong to the source context's form, which the destination may not share.
           i.likes_count = 0
           i.dislikes_count = 0
           i.neutral_reactions_count = 0

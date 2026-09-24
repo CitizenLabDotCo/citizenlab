@@ -53,8 +53,9 @@ describe SideFxUserService do
     end
 
     it 'creates a follower for the domicile' do
+      create(:custom_field_domicile)
       area = create(:area)
-      user = create(:user, domicile: area.id)
+      user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'domicile', value: area.id)])
 
       expect do
         service.after_create user, user
@@ -69,6 +70,23 @@ describe SideFxUserService do
       it 'does not send a confirmation code email' do
         expect(RequestEmailConfirmationCodeJob).not_to receive(:perform_now)
         service.after_create(invitee, current_user)
+      end
+    end
+
+    # An SSO signup whose unconfirmed email another account already owns.
+    context 'when a user is created waiting to merge into another account' do
+      let(:sso_user) do
+        create(:user).tap do |u|
+          u.update_columns(email: nil, password_digest: nil, confirmation_required: true, merge_target_email: 'existing@example.org')
+        end
+      end
+
+      it 'sends the merge code instead of an email confirmation' do
+        expect(RequestMergeAccountConfirmationCodeJob).to receive(:perform_now)
+          .with(sso_user, merge_target_email: 'existing@example.org')
+        expect(RequestNewEmailConfirmationCodeJob).not_to receive(:perform_now)
+
+        service.after_create(sso_user, current_user)
       end
     end
 
@@ -243,8 +261,9 @@ describe SideFxUserService do
     end
 
     it 'creates a follower for the domicile' do
+      create(:custom_field_domicile)
       area = create(:area)
-      user.update!(domicile: area.id)
+      user.custom_field_answers.create!(key: 'domicile', value: area.id)
 
       expect do
         service.after_update user, user

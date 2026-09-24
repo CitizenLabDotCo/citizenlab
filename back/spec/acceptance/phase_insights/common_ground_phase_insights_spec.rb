@@ -43,9 +43,9 @@ resource 'Phase insights' do
     ).tap do |phase|
       # Users
       user1 = create(:user)
-      user2 = create(:user, custom_field_values: { gender: 'female', birthyear: 1980 })
+      user2 = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'female'), build(:custom_field_answer, key: 'birthyear', value: 1980)])
       user3 = create(:user)
-      user4 = create(:user, custom_field_values: { gender: 'male', birthyear: 1990 })
+      user4 = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'male'), build(:custom_field_answer, key: 'birthyear', value: 1990)])
 
       # Ideas
       idea1 = create(:idea, phases: [phase], author: user1, created_at: 25.days.ago, published_at: 25.days.ago, creation_phase_id: phase.id) # published before phase (not counted)

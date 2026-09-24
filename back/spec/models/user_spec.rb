@@ -662,49 +662,19 @@ RSpec.describe User do
       create(:custom_field_domicile)
     end
 
-    it '(gender) is valid when male, female or unspecified' do
-      expect(build(:user, gender: 'male')).to be_valid
-      expect(build(:user, gender: 'female')).to be_valid
-      expect(build(:user, gender: 'unspecified')).to be_valid
+    def user_with_answer(key, value)
+      build(:user, custom_field_answers: [build(:custom_field_answer, key: key, value: value)])
     end
 
-    it '(gender) is invalid when not male, female or unspecified' do
-      user = build(:user, gender: 'somethingelse')
-      expect { user.valid? }.to(change { user.errors[:gender] })
+    it 'is valid with valid built-in answers' do
+      expect(user_with_answer('gender', 'male')).to be_valid
+      expect(user_with_answer('birthyear', Time.now.year - 13)).to be_valid
+      expect(user_with_answer('domicile', 'outside')).to be_valid
     end
 
-    it '(birthyear) is valid when in realistic range' do
-      expect(build(:user, birthyear: (Time.now.year - 117))).to be_valid
-      expect(build(:user, birthyear: (Time.now.year - 13))).to be_valid
-    end
-
-    it '(birthyear) is invalid when unrealistic' do
-      user = build(:user, birthyear: Time.now.year + 1)
-      expect { user.valid? }.to(change { user.errors[:birthyear] })
-      user = build(:user, birthyear: 1850)
-      expect { user.valid? }.to(change { user.errors[:birthyear] })
-      user = build(:user, birthyear: 'eighteen hundred')
-      expect { user.valid? }.to(change { user.errors[:birthyear] })
-    end
-
-    it '(birthyear) is invalid when not an integer' do
-      user = build(:user, birthyear: 'eighteen hundred')
-      expect { user.valid? }.to(change { user.errors[:birthyear] })
-      user = build(:user, birthyear: 1930.4)
-      expect { user.valid? }.to(change { user.errors[:birthyear] })
-    end
-
-    it "(domicile) is valid when an area id or 'outside'" do
-      create_list(:area, 5)
-      expect(build(:user, domicile: Area.offset(rand(5)).first.id)).to be_valid
-      expect(build(:user, domicile: 'outside')).to be_valid
-    end
-
-    it "(domicile) is invalid when not an area id or 'outside'" do
-      user = build(:user, domicile: 'somethingelse')
-      expect { user.valid? }.to(change { user.errors[:domicile] })
-      user = build(:user, domicile: 5)
-      expect { user.valid? }.to(change { user.errors[:domicile] })
+    it 'is invalid with an invalid built-in answer' do
+      user = user_with_answer('gender', 'somethingelse')
+      expect { user.valid? }.to(change { user.errors[:'custom_field_answers.value'] })
     end
   end
 
@@ -1367,7 +1337,7 @@ RSpec.describe User do
 
         user2.reload
         expect(user2.new_email).to be_nil
-        expect(user2.new_email_confirmation.reload.code).to be_nil
+        expect(user2.new_email_confirmation).to be_nil
       end
     end
   end

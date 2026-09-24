@@ -32,6 +32,15 @@ module DecidimImporter
         nil
       end
 
+      # A user's or idea's answer to a custom field. Answers under the reserved keys (`decidim_scope`,
+      # `decidim_status`) have no field.
+      def register_answer(record, key, value, custom_field: nil)
+        answer = Record.new('custom_field_answer', { 'key' => key, 'value' => value })
+        answer.reference('answerable', record)
+        answer.reference('custom_field', custom_field) if custom_field
+        ref_map.register("#{record.key}-answer-#{key}", answer)
+      end
+
       # The ownership join placing an imported file in a project's file repository, so it's
       # linkable/attachable from the project. Shared by the file and attachment extractors.
       def register_files_project(uid, file, project)

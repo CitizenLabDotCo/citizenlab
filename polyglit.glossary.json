@@ -49,6 +49,9 @@
   "information (participation method)": {
     "nl-NL": "informatie delen"
   },
+  "idea": {
+    "de-DE": "Beitrag"
+  },
   "survey respondents": {
     "nl-NL": "deelnemers van de vragenlijst"
   },
@@ -101,6 +104,9 @@
   "auto-insights": {
     "de-DE": "automatische Einblicke",
     "nl-NL": "auto-inzichten"
+  },
+  "area": {
+    "de-DE": "Gebiet"
   },
   "log in": {
     "nl-NL": "inloggen"
@@ -207,6 +213,9 @@
     "fr-FR": "Spécialiste en participation Go Vocal",
     "nl-NL": "GovSuccess Manager"
   },
+  "residents": {
+    "de-DE": "Bürger*innen"
+  },
   "sort": {
     "nl-NL": "sorteer"
   },
@@ -293,6 +302,9 @@
   },
   "ideation": {
     "nl-NL": "ideeënvorming"
+  },
+  "Volunteering": {
+    "de-DE": "Teilnehmende finden"
   },
   "stale": {
     "nl-NL": "inactief"
