@@ -9,9 +9,9 @@ import { getPhaseLandingTab } from 'api/phases/utils';
 
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
-type PhaseLandingTab = ReturnType<typeof getPhaseLandingTab>;
+export type PhaseLandingTab = ReturnType<typeof getPhaseLandingTab>;
 
-type PhaseTabTarget =
+export type PhaseTabTarget =
   | '/admin/projects/$projectId/phases/$phaseId/setup'
   | '/admin/projects/$projectId/phases/$phaseId/ideas'
   | '/admin/projects/$projectId/phases/$phaseId/proposals'
