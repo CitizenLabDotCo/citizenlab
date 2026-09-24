@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 # Shared structured view of a platform's branding + exposed core settings, so the
-# read (get_platform_branding) and write (update_platform_config) tools stay in sync.
-module McpServer::PlatformBranding
+# read (get_platform_config) and write (update_platform_config) tools stay in sync.
+module McpServer::PlatformConfig
   module_function
 
   def structured(config)
@@ -18,11 +18,8 @@ module McpServer::PlatformBranding
       timezone: core['timezone'],
       currency: core['currency'],
       country_code: core['country_code'],
-      meta_title_multiloc: core['meta_title'],
-      meta_description_multiloc: core['meta_description'],
       logo_urls: (config.logo.versions.transform_values(&:url) if config.logo.file),
-      favicon_urls: (config.favicon.versions.transform_values(&:url) if config.favicon.file),
-      style: config.style
+      favicon_urls: (config.favicon.versions.transform_values(&:url) if config.favicon.file)
     }
   end
 end

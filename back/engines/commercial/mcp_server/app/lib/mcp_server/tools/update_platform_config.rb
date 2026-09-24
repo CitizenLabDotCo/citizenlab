@@ -15,9 +15,9 @@ class McpServer::Tools::UpdatePlatformConfig < McpServer::BaseTool
   def description
     <<~DESC.squish
       Updates the platform's branding and core settings: brand colours, organization
-      name, logo, favicon, languages, timezone, currency, country and SEO metadata.
+      name, logo, favicon, languages, timezone, currency and country.
       Partial update — only the fields you pass change, and *_multiloc fields merge per
-      locale. Read the current values with get_platform_branding first. Only available
+      locale. Read the current values with get_platform_config first. Only available
       on demo and trial platforms.
     DESC
   end
@@ -44,8 +44,6 @@ class McpServer::Tools::UpdatePlatformConfig < McpServer::BaseTool
         timezone: { type: 'string', description: 'IANA timezone, e.g. Europe/London.' },
         currency: { type: 'string', description: 'ISO 4217 currency code, e.g. GBP.' },
         country_code: { type: 'string', description: 'ISO 3166-1 alpha-2 country code, e.g. GB.' },
-        meta_title_multiloc: { **multiloc_schema, description: 'SEO / browser-tab title.' },
-        meta_description_multiloc: { **multiloc_schema, description: 'SEO / social-share description.' },
         logo_url: { type: 'string', format: 'uri', description: 'Public URL of the logo image to download.' },
         favicon_url: { type: 'string', format: 'uri', description: 'Public URL of the favicon image to download.' }
       },
@@ -62,9 +60,7 @@ class McpServer::Tools::UpdatePlatformConfig < McpServer::BaseTool
       locales: 'locales',
       timezone: 'timezone',
       currency: 'currency',
-      country_code: 'country_code',
-      meta_title_multiloc: 'meta_title',
-      meta_description_multiloc: 'meta_description'
+      country_code: 'country_code'
     }.freeze
 
     def run
@@ -90,7 +86,7 @@ class McpServer::Tools::UpdatePlatformConfig < McpServer::BaseTool
 
       response(
         "Updated platform config of #{config.host}",
-        structured: McpServer::PlatformBranding.structured(config)
+        structured: McpServer::PlatformConfig.structured(config)
       )
     rescue ActiveRecord::RecordInvalid => e
       invalid_record_error(e.record)

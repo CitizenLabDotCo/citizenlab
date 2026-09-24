@@ -114,7 +114,7 @@ module McpServer
       McpServer::Tools::UpdateProject,
       McpServer::Tools::UpdatePhase,
       McpServer::Tools::GetResource,
-      McpServer::Tools::GetPlatformBranding,
+      McpServer::Tools::GetPlatformConfig,
       McpServer::Tools::UpdatePlatformConfig,
       McpServer::Tools::GetFormFields,
       McpServer::Tools::GetProjectLayout,

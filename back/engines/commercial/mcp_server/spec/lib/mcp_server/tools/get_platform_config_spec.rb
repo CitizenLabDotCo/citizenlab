@@ -2,21 +2,20 @@
 
 require 'rails_helper'
 
-describe McpServer::Tools::GetPlatformBranding do
+describe McpServer::Tools::GetPlatformConfig do
   let(:current_user) { create(:super_admin) }
 
-  def fetch_branding
+  def fetch_config
     run_mcp_tool(described_class, params: {}, current_user:)
   end
 
-  it 'returns the platform branding' do
+  it 'returns the platform config' do
     config = AppConfiguration.instance
     config.settings['core']['color_main'] = '#163B6D'
-    config.style = { 'customFontName' => 'Fira Sans' }
     config.logo = Rails.root.join('spec/fixtures/logo.png').open
     config.save!
 
-    response = fetch_branding
+    response = fetch_config
 
     expect(response).not_to be_error
     expect(response.structured_content).to include(
@@ -34,15 +33,14 @@ describe McpServer::Tools::GetPlatformBranding do
         small: end_with('.png'),
         medium: end_with('.png'),
         large: end_with('.png')
-      },
-      style: { 'customFontName' => 'Fira Sans' }
+      }
     )
   end
 
   it 'returns nil logo_urls when the platform has no logo' do
     AppConfiguration.instance.remove_logo!
 
-    response = fetch_branding
+    response = fetch_config
 
     expect(response).not_to be_error
     expect(response.structured_content[:logo_urls]).to be_nil
