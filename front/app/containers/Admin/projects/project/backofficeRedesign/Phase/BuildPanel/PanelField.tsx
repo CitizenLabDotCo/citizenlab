@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import { Box, NewBOText } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
 interface Props {
   label: ReactNode;
@@ -9,9 +9,9 @@ interface Props {
 
 const PanelField = ({ label, children }: Props) => (
   <Box mb="16px">
-    <NewBOText variant="section" mb="8px">
+    <Text variant="bo-section" mb="8px">
       {label}
-    </NewBOText>
+    </Text>
     {children}
   </Box>
 );

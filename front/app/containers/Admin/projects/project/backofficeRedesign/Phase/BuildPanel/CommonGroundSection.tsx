@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
-import { Box, Divider, NewBOButton } from '@citizenlab/cl2-component-library';
+import { Box, Divider, Button } from '@citizenlab/cl2-component-library';
 
 import useProjectById from 'api/projects/useProjectById';
 
 import ImportInputsModal from 'components/admin/PostManager/CommonGroundInputManager/ImportInputsModal';
 import commonGroundMessages from 'components/admin/PostManager/CommonGroundInputManager/messages';
-import NewBOLinkButton from 'components/UI/NewBOLinkButton';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -30,8 +30,8 @@ const CommonGroundSection = ({ projectId, phaseId }: Props) => {
       <Divider />
       <PanelField label={formatMessage(messages.inputsSection)}>
         <Box display="flex" gap="8px" flexWrap="wrap">
-          <NewBOLinkButton
-            buttonStyle="secondary-outlined"
+          <ButtonWithLink
+            buttonStyle="bo-secondary"
             width="auto"
             to={slug ? '/projects/$slug/ideas/new' : undefined}
             params={slug ? { slug } : undefined}
@@ -39,14 +39,14 @@ const CommonGroundSection = ({ projectId, phaseId }: Props) => {
             disabled={!slug}
           >
             {formatMessage(commonGroundMessages.createInput)}
-          </NewBOLinkButton>
-          <NewBOButton
-            buttonStyle="admin-dark"
+          </ButtonWithLink>
+          <Button
+            buttonStyle="bo-primary"
             width="auto"
             onClick={() => setImportOpened(true)}
           >
             {formatMessage(commonGroundMessages.startFromPastInputs)}
-          </NewBOButton>
+          </Button>
         </Box>
       </PanelField>
 

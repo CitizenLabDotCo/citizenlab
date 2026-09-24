@@ -2,9 +2,9 @@ import React from 'react';
 
 import {
   Box,
+  Button,
   Divider,
-  NewBOButton,
-  NewBOText,
+  Text,
   Toggle,
   Tooltip,
   colors,
@@ -150,13 +150,13 @@ const PublishPanel = ({
 
   return (
     <Box>
-      <NewBOText variant="section" mb="12px">
+      <Text variant="bo-section" mb="12px">
         {header}
-      </NewBOText>
+      </Text>
 
-      <NewBOText variant="section" mb="4px">
+      <Text variant="bo-section" mb="4px">
         {formatMessage(messages.publishWhoCanFind)}
-      </NewBOText>
+      </Text>
       <Box role="radiogroup" display="flex" flexDirection="column">
         {FIND_OPTIONS.map((option) => (
           <OptionRow
@@ -170,9 +170,9 @@ const PublishPanel = ({
         ))}
       </Box>
 
-      <NewBOText variant="section" mt="12px" mb="4px">
+      <Text variant="bo-section" mt="12px" mb="4px">
         {formatMessage(messages.publishWhoCanOpen)}
-      </NewBOText>
+      </Text>
       <Box role="radiogroup" display="flex" flexDirection="column">
         {OPEN_OPTIONS.map((option) => (
           <OptionRow
@@ -194,9 +194,9 @@ const PublishPanel = ({
         alignItems="center"
         gap="12px"
       >
-        <NewBOText variant="label">
+        <Text variant="bo-label">
           {formatMessage(messages.publishSendEmail)}
-        </NewBOText>
+        </Text>
         <Tooltip
           content={formatMessage(messages.publishEmailUnavailable)}
           disabled={!emailToggleDisabled}
@@ -209,9 +209,9 @@ const PublishPanel = ({
         </Tooltip>
       </Box>
       {count !== undefined && (
-        <NewBOText variant="micro" mt="4px">
+        <Text variant="bo-micro" mt="4px">
           {formatMessage(messages.publishEmailRecipients, { count })}
-        </NewBOText>
+        </Text>
       )}
 
       <Box
@@ -225,53 +225,53 @@ const PublishPanel = ({
         {publicationState === 'published' && (
           <>
             <Box flex="1">
-              <NewBOButton
-                buttonStyle="secondary-outlined"
+              <Button
+                buttonStyle="bo-secondary"
                 width="100%"
                 onClick={() => onConfirmStatusChange('draft')}
               >
                 {formatMessage(messages.publishRestoreToDraft)}
-              </NewBOButton>
+              </Button>
             </Box>
             <Box flex="1">
-              <NewBOButton
-                buttonStyle="secondary-outlined"
+              <Button
+                buttonStyle="bo-secondary"
                 width="100%"
                 onClick={() => onConfirmStatusChange('archived')}
               >
                 {formatMessage(messages.publishMoveToArchive)}
-              </NewBOButton>
+              </Button>
             </Box>
           </>
         )}
 
         {publicationState === 'archived' && (
           <Box flex="1">
-            <NewBOButton
-              buttonStyle="secondary-outlined"
+            <Button
+              buttonStyle="bo-secondary"
               width="100%"
               onClick={() => onConfirmStatusChange('draft')}
             >
               {formatMessage(messages.publishRestoreToDraft)}
-            </NewBOButton>
+            </Button>
           </Box>
         )}
 
         {isDraftOrScheduled && (
           <>
             <Box flex="1">
-              <NewBOButton
-                buttonStyle="secondary-outlined"
+              <Button
+                buttonStyle="bo-secondary"
                 width="100%"
                 icon="calendar"
                 onClick={onSchedule}
               >
                 {formatMessage(messages.publishSchedule)}
-              </NewBOButton>
+              </Button>
             </Box>
             <Box flex="1">
-              <NewBOButton
-                buttonStyle="admin-dark"
+              <Button
+                buttonStyle="bo-primary"
                 width="100%"
                 icon="send"
                 onClick={publishNow}
@@ -279,7 +279,7 @@ const PublishPanel = ({
                 id="e2e-publish-now"
               >
                 {formatMessage(messages.publishNow)}
-              </NewBOButton>
+              </Button>
             </Box>
           </>
         )}

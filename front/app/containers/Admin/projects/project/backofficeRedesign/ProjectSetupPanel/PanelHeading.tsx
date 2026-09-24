@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, NewBOText } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
 interface Props {
   title: string;
@@ -15,10 +15,10 @@ const PanelHeading = ({ title, meta }: Props) => (
     gap="8px"
     mb="6px"
   >
-    <NewBOText variant="section" color="textSecondary">
+    <Text variant="bo-section" color="textSecondary">
       {title}
-    </NewBOText>
-    {meta && <NewBOText variant="micro">{meta}</NewBOText>}
+    </Text>
+    {meta && <Text variant="bo-micro">{meta}</Text>}
   </Box>
 );
 

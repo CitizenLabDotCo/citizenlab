@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, NewBOButton, NewBOText } from '@citizenlab/cl2-component-library';
+import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 
 import ActionForms from 'containers/Admin/projects/project/permissions/Phase/ActionForms';
 
@@ -21,13 +21,13 @@ const EditAccessButton = ({ phaseId }: Props) => {
   return (
     <>
       <Box display="flex" py="16px">
-        <NewBOButton
-          buttonStyle="secondary-outlined"
+        <Button
+          buttonStyle="bo-secondary"
           width="auto"
           onClick={() => setOpened(true)}
         >
           {formatMessage(messages.editAccess)}
-        </NewBOButton>
+        </Button>
       </Box>
 
       <Modal
@@ -37,9 +37,9 @@ const EditAccessButton = ({ phaseId }: Props) => {
         header={formatMessage(messages.editAccess)}
       >
         <Box p="24px">
-          <NewBOText variant="helper" mb="16px">
+          <Text variant="bo-helper" mb="16px">
             {formatMessage(messages.editAccessDescription)}
-          </NewBOText>
+          </Text>
           <ActionForms phaseId={phaseId} />
         </Box>
       </Modal>

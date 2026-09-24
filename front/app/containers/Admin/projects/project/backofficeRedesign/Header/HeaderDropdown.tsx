@@ -2,10 +2,10 @@ import React, { ReactNode, useRef } from 'react';
 
 import {
   Box,
+  Button,
+  ButtonStyles,
   Dropdown,
   IconNames,
-  NewBOButton,
-  NewBOButtonStyle,
 } from '@citizenlab/cl2-component-library';
 
 export type HeaderDropdownName = 'publish' | 'share';
@@ -14,7 +14,7 @@ interface Props {
   opened: boolean;
   onOpenChange: (opened: boolean) => void;
   label: ReactNode;
-  buttonStyle: NewBOButtonStyle;
+  buttonStyle: ButtonStyles;
   icon?: IconNames;
   id: string;
   width: string;
@@ -41,7 +41,7 @@ const HeaderDropdown = ({
   return (
     <Box position="relative">
       <Box ref={triggerRef} display="inline-block">
-        <NewBOButton
+        <Button
           buttonStyle={buttonStyle}
           icon={icon}
           iconPos="right"
@@ -49,7 +49,7 @@ const HeaderDropdown = ({
           id={id}
         >
           {label}
-        </NewBOButton>
+        </Button>
       </Box>
 
       <Dropdown

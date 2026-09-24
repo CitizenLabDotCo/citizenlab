@@ -37,3 +37,31 @@ export const BodyXs: Story = {
     variant: 'bodyXs',
   },
 };
+
+export const BOSection: Story = {
+  args: {
+    children: 'Section header · group / field label',
+    variant: 'bo-section',
+  },
+};
+
+export const BOLabel: Story = {
+  args: {
+    children: 'Control / option label',
+    variant: 'bo-label',
+  },
+};
+
+export const BOHelper: Story = {
+  args: {
+    children: 'Helper / description text',
+    variant: 'bo-helper',
+  },
+};
+
+export const BOMicro: Story = {
+  args: {
+    children: 'Micro / hint',
+    variant: 'bo-micro',
+  },
+};

@@ -89,3 +89,59 @@ export const ButtonLink = {
     children: 'Button that is actually a link',
   },
 };
+
+export const BOPrimary = {
+  args: {
+    buttonStyle: 'bo-primary',
+    children: 'Publish',
+  },
+};
+
+export const BOSecondary = {
+  args: {
+    buttonStyle: 'bo-secondary',
+    children: 'Share',
+  },
+};
+
+export const BOSecondaryWithIcon = {
+  args: {
+    buttonStyle: 'bo-secondary',
+    icon: 'chevron-down',
+    iconPos: 'right',
+    children: 'Share',
+  },
+};
+
+export const BOStatus = {
+  args: {
+    buttonStyle: 'bo-status',
+    icon: 'chevron-down',
+    iconPos: 'right',
+    children: 'Live',
+  },
+};
+
+export const BOText = {
+  args: {
+    buttonStyle: 'bo-text',
+    children: 'Back to project setup',
+  },
+};
+
+export const BODelete = {
+  args: {
+    buttonStyle: 'bo-delete',
+    children: 'Reset participation data',
+  },
+};
+
+export const BOIconOnly = {
+  args: {
+    buttonStyle: 'bo-text',
+    icon: 'settings',
+    width: '36px',
+    padding: '0',
+    ariaLabel: 'Project settings',
+  },
+};

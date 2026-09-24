@@ -200,8 +200,8 @@ export const focusRing = css`
   box-shadow: 0 0 0 2px ${colors.white};
 `;
 
-// New back office theme
-export const newBO = {
+// Back office theme
+export const bo = {
   colors: {
     textHeadingStrong: '#1E1E1E',
     textHeading: '#474747',

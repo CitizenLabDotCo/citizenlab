@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, NewBOText, colors } from '@citizenlab/cl2-component-library';
+import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 
 import { PhasePlacementType } from 'api/phases/types';
 
@@ -49,12 +49,12 @@ const PlacementTabs = ({ selected, onSelect }: Props) => {
             style={{ cursor: 'pointer' }}
             onClick={() => onSelect(key)}
           >
-            <NewBOText
-              variant={active ? 'section' : 'label'}
+            <Text
+              variant={active ? 'bo-section' : 'bo-label'}
               color={active ? 'primary' : undefined}
             >
               {formatMessage(label)}
-            </NewBOText>
+            </Text>
           </Box>
         );
       })}

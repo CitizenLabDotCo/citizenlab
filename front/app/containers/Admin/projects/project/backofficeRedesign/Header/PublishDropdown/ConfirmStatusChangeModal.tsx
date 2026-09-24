@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, NewBOButton, NewBOText } from '@citizenlab/cl2-component-library';
+import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 
 import { IProjectData, PublicationStatus } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
@@ -73,25 +73,25 @@ const ConfirmStatusChangeModal = ({
       header={formatMessage(copy.title)}
       footer={
         <Box display="flex" justifyContent="flex-end" gap="8px" w="100%">
-          <NewBOButton
-            buttonStyle="secondary-outlined"
+          <Button
+            buttonStyle="bo-secondary"
             onClick={onClose}
             disabled={isPending}
           >
             {formatMessage(messages.publishCancel)}
-          </NewBOButton>
-          <NewBOButton
-            buttonStyle="admin-dark"
+          </Button>
+          <Button
+            buttonStyle="bo-primary"
             onClick={confirm}
             processing={isPending}
           >
             {formatMessage(copy.confirm)}
-          </NewBOButton>
+          </Button>
         </Box>
       }
     >
       <Box p="28px">
-        <NewBOText variant="helper">{formatMessage(body)}</NewBOText>
+        <Text variant="bo-helper">{formatMessage(body)}</Text>
       </Box>
     </Modal>
   );

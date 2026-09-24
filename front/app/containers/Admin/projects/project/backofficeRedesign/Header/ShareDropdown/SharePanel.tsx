@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import {
   Box,
+  Button,
   Divider,
   Input,
-  NewBOButton,
-  NewBOText,
+  Text,
   Tooltip,
   colors,
 } from '@citizenlab/cl2-component-library';
@@ -84,13 +84,13 @@ const SharePanel = ({ project, linkCopied, onLinkCopied }: Props) => {
 
   return (
     <Box>
-      <NewBOText variant="section" mb="16px">
+      <Text variant="bo-section" mb="16px">
         {formatMessage(projectHeaderMessages.shareTitle)}
-      </NewBOText>
+      </Text>
 
-      <NewBOText variant="section" mb="4px">
+      <Text variant="bo-section" mb="4px">
         {formatMessage(messages.shareInvitePeople)}
-      </NewBOText>
+      </Text>
       <Box display="flex" gap="8px" alignItems="flex-start">
         <Box flex="1 1 auto" minWidth="0">
           <Input
@@ -101,19 +101,19 @@ const SharePanel = ({ project, linkCopied, onLinkCopied }: Props) => {
             aria-label={formatMessage(messages.shareInvitePeople)}
           />
         </Box>
-        <NewBOButton
-          buttonStyle="admin-dark"
+        <Button
+          buttonStyle="bo-primary"
           onClick={handleInvite}
           processing={isInviting}
           disabled={splitEmails(invitees).length === 0}
         >
           {formatMessage(messages.shareInvite)}
-        </NewBOButton>
+        </Button>
       </Box>
 
-      <NewBOText variant="section" mt="16px">
+      <Text variant="bo-section" mt="16px">
         {formatMessage(messages.sharePeopleWithAccess)}
-      </NewBOText>
+      </Text>
       <Box
         ref={peopleListRef}
         display="flex"
@@ -133,16 +133,16 @@ const SharePanel = ({ project, linkCopied, onLinkCopied }: Props) => {
 
       <Divider />
 
-      <NewBOText variant="helper" mb="12px">
+      <Text variant="bo-helper" mb="12px">
         {formatMessage(messages.sharePreviewExplanation)}
-      </NewBOText>
+      </Text>
       <Tooltip
         content={formatMessage(projectHeaderMessages.shareLinkUpsellTooltip)}
         disabled={isPreviewLinkEnabled}
         width="100%"
       >
-        <NewBOButton
-          buttonStyle="secondary-outlined"
+        <Button
+          buttonStyle="bo-secondary"
           icon={linkCopied ? 'check-circle' : 'link'}
           iconColor={linkCopied ? colors.success : undefined}
           onClick={handleCopyPreviewLink}
@@ -155,7 +155,7 @@ const SharePanel = ({ project, linkCopied, onLinkCopied }: Props) => {
               ? projectHeaderMessages.shareLinkCopied
               : messages.sharePreviewLink
           )}
-        </NewBOButton>
+        </Button>
       </Tooltip>
     </Box>
   );

@@ -4,7 +4,6 @@ import {
   Box,
   Icon,
   IconNames,
-  NewBOText,
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
@@ -96,9 +95,9 @@ const Breadcrumbs = ({
               </Text>
             )}
             {isHeading && (
-              <NewBOText variant="section" as="span">
+              <Text variant="bo-section" as="span">
                 {label}
-              </NewBOText>
+              </Text>
             )}
             {!isLastBreadcrumb &&
               (separator === 'chevron' ? (

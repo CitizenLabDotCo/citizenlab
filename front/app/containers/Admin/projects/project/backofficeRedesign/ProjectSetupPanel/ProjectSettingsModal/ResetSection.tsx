@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 
-import {
-  Box,
-  NewBOButton,
-  NewBOText,
-  Title,
-} from '@citizenlab/cl2-component-library';
+import { Box, Button, Text, Title } from '@citizenlab/cl2-component-library';
 
 import useResetProject from 'api/projects/useResetProject';
 
@@ -26,23 +21,23 @@ const ResetSection = ({ projectId }: Props) => {
 
   return (
     <Box>
-      <NewBOText variant="section" mb="8px">
+      <Text variant="bo-section" mb="8px">
         {formatMessage(dataMessages.dataTitle)}
-      </NewBOText>
-      <NewBOText variant="helper" mb="4px">
+      </Text>
+      <Text variant="bo-helper" mb="4px">
         {formatMessage(dataMessages.dataDescription)}
-      </NewBOText>
-      <NewBOText variant="helper" color="error" mb="16px">
+      </Text>
+      <Text variant="bo-helper" color="error" mb="16px">
         {formatMessage(dataMessages.confirmationDescription)}
-      </NewBOText>
-      <NewBOButton
-        buttonStyle="delete"
+      </Text>
+      <Button
+        buttonStyle="bo-delete"
         width="auto"
         onClick={() => setConfirmOpened(true)}
         id="e2e-reset-participation-data"
       >
         {formatMessage(dataMessages.resetParticipationData)}
-      </NewBOButton>
+      </Button>
 
       <Modal
         opened={confirmOpened}
@@ -56,19 +51,19 @@ const ResetSection = ({ projectId }: Props) => {
         >
           {formatMessage(dataMessages.confirmationTitle)}
         </Title>
-        <NewBOText variant="helper" mb="16px">
+        <Text variant="bo-helper" mb="16px">
           {formatMessage(dataMessages.confirmationDescription)}
-        </NewBOText>
+        </Text>
         <Box display="flex" justifyContent="flex-end" gap="12px">
-          <NewBOButton
-            buttonStyle="secondary-outlined"
+          <Button
+            buttonStyle="bo-secondary"
             width="auto"
             onClick={() => setConfirmOpened(false)}
           >
             {formatMessage(dataMessages.confirmationNo)}
-          </NewBOButton>
-          <NewBOButton
-            buttonStyle="delete"
+          </Button>
+          <Button
+            buttonStyle="bo-delete"
             width="auto"
             processing={isPending}
             onClick={() =>
@@ -78,7 +73,7 @@ const ResetSection = ({ projectId }: Props) => {
             }
           >
             {formatMessage(dataMessages.confirmationYes)}
-          </NewBOButton>
+          </Button>
         </Box>
       </Modal>
     </Box>

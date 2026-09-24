@@ -1,11 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  Icon,
-  NewBOText,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
 
 import { IProjectData } from 'api/projects/types';
 
@@ -64,9 +59,9 @@ const NextActions = ({ project }: Props) => {
               fill={colors.textPrimary}
               my="0px"
             />
-            <NewBOText variant="label" as="span">
+            <Text variant="bo-label" as="span">
               {formatMessage(messages.actionMessageParticipants)}
-            </NewBOText>
+            </Text>
           </Box>
           <Icon
             name="chevron-right"

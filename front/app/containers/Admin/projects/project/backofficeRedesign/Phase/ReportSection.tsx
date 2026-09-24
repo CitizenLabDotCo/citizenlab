@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, NewBOText, Toggle } from '@citizenlab/cl2-component-library';
+import { Box, Text, Toggle } from '@citizenlab/cl2-component-library';
 
 import { IPhaseData } from 'api/phases/types';
 import useReport from 'api/reports/useReport';
@@ -32,7 +32,7 @@ const ReportSection = ({ projectId, phase }: Props) => {
 
   return (
     <Box display="flex" flexDirection="column" gap="12px">
-      <NewBOText variant="section">{formatMessage(messages.report)}</NewBOText>
+      <Text variant="bo-section">{formatMessage(messages.report)}</Text>
 
       {reportId ? (
         <>
@@ -57,9 +57,9 @@ const ReportSection = ({ projectId, phase }: Props) => {
           </Box>
           {report && (
             <Warning>
-              <NewBOText variant="helper">
+              <Text variant="bo-helper">
                 {formatMessage(visibilityWarning(report, phase))}
-              </NewBOText>
+              </Text>
             </Warning>
           )}
         </>

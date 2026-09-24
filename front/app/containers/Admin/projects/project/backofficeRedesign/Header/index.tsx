@@ -9,7 +9,7 @@ import { IProjectData } from 'api/projects/types';
 import useLocalize from 'hooks/useLocalize';
 
 import Breadcrumbs, { TBreadcrumbs } from 'components/UI/Breadcrumbs';
-import NewBOLinkButton from 'components/UI/NewBOLinkButton';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -118,10 +118,10 @@ const WorkspaceHeader = ({
           theme="dark"
           placement="bottom"
         >
-          <NewBOLinkButton
+          <ButtonWithLink
             to="/projects/$slug"
             params={{ slug: project.attributes.slug }}
-            buttonStyle="text"
+            buttonStyle="bo-text"
             icon="eye"
             width="36px"
             padding="0"

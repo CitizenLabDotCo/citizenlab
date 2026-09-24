@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import {
   Box,
-  NewBOButton,
+  Button,
   Title,
   Tooltip,
   colors,
@@ -50,8 +50,8 @@ const ProjectSetupPanel = ({ project, onOpenDropdown }: Props) => {
           theme="dark"
           placement="bottom"
         >
-          <NewBOButton
-            buttonStyle="text"
+          <Button
+            buttonStyle="bo-text"
             icon="settings"
             width="36px"
             padding="0"

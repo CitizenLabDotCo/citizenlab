@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, NewBOText } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import { IUserData } from 'api/users/types';
 
@@ -36,16 +36,16 @@ const AccessPeopleRow = ({ user, isAuthUser }: Props) => {
     <Box display="flex" alignItems="center" gap="12px" py="8px">
       <Avatar userId={user.id} size={36} />
       <Box flex="1 1 auto" minWidth="0">
-        <NewBOText variant="label">
+        <Text variant="bo-label">
           {isInvitePending ? email : name}
           {isAuthUser && (
-            <NewBOText variant="helper" as="span" ml="4px">
+            <Text variant="bo-helper" as="span" ml="4px">
               {formatMessage(messages.shareYou)}
-            </NewBOText>
+            </Text>
           )}
-        </NewBOText>
+        </Text>
       </Box>
-      <NewBOText variant="helper">{formatMessage(roleMessage)}</NewBOText>
+      <Text variant="bo-helper">{formatMessage(roleMessage)}</Text>
     </Box>
   );
 };

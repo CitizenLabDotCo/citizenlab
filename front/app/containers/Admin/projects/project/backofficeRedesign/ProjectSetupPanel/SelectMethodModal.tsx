@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, NewBOText } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import { ParticipationMethod, PhasePlacementType } from 'api/phases/types';
 
@@ -10,8 +10,8 @@ import ParticipationMethodChoice from 'containers/Admin/projects/project/phaseSe
 import ParticipationMethodPicker from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/ParticipationMethodPicker';
 import projectPageMessages from 'containers/Admin/projects/project/projectPage/messages';
 
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
-import NewBOLinkButton from 'components/UI/NewBOLinkButton';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -47,8 +47,8 @@ const SelectMethodModal = ({ projectId, opened, onClose }: Props) => {
       header={formatMessage(projectPageMessages.newParticipationMethod)}
       footer={
         <Box display="flex" justifyContent="flex-end" width="100%">
-          <NewBOLinkButton
-            buttonStyle="admin-dark"
+          <ButtonWithLink
+            buttonStyle="bo-primary"
             to="/admin/projects/$projectId/phases/new"
             params={{ projectId }}
             search={
@@ -58,19 +58,19 @@ const SelectMethodModal = ({ projectId, opened, onClose }: Props) => {
             }
           >
             {formatMessage(messages.selectMethodContinue)}
-          </NewBOLinkButton>
+          </ButtonWithLink>
         </Box>
       }
     >
       <PlacementTabs selected={placement} onSelect={setPlacement} />
       <Box p="24px">
-        <NewBOText variant="helper" mb="16px">
+        <Text variant="bo-helper" mb="16px">
           {formatMessage(
             standalone
               ? messages.placementStandaloneDescription
               : messages.placementTimelineDescription
           )}
-        </NewBOText>
+        </Text>
         {standalone ? (
           <Box width="240px">
             <ParticipationMethodChoice

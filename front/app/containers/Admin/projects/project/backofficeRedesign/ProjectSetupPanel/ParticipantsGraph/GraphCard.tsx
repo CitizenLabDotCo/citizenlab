@@ -3,7 +3,6 @@ import React, { useMemo } from 'react';
 import {
   Box,
   Icon,
-  NewBOText,
   Text,
   colors,
   stylingConsts,
@@ -78,9 +77,9 @@ const GraphCard = ({ projectId }: Props) => {
         gap="8px"
       >
         <Box minWidth="0">
-          <NewBOText variant="micro">
+          <Text variant="bo-micro">
             {formatMessage(messages.participantsGraphLabel)}
-          </NewBOText>
+          </Text>
           <Text
             m="0"
             mt="2px"
@@ -91,7 +90,7 @@ const GraphCard = ({ projectId }: Props) => {
             {formatNumber(participants)}
           </Text>
           {lastPeriod > 0 && (
-            <NewBOText variant="micro" mt="2px">
+            <Text variant="bo-micro" mt="2px">
               <FormattedMessage
                 {...messages.participantsGraphLastPeriod}
                 values={{
@@ -109,7 +108,7 @@ const GraphCard = ({ projectId }: Props) => {
                   ),
                 }}
               />
-            </NewBOText>
+            </Text>
           )}
         </Box>
         <Icon
@@ -126,7 +125,7 @@ const GraphCard = ({ projectId }: Props) => {
           <Box mt="8px" mx={`-${CARD_PADDING}px`}>
             <Sparkline values={weeks.map((week) => week.participants)} />
           </Box>
-          <NewBOText variant="micro" mt="4px">
+          <Text variant="bo-micro" mt="4px">
             {formatMessage(messages.participantsGraphScale, {
               date: formatDate(sinceDate, {
                 day: 'numeric',
@@ -134,7 +133,7 @@ const GraphCard = ({ projectId }: Props) => {
                 ...(sinceThisYear ? {} : { year: 'numeric' }),
               }),
             })}
-          </NewBOText>
+          </Text>
         </>
       )}
     </Card>

@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 
-import {
-  Box,
-  Divider,
-  NewBOButton,
-  NewBOText,
-} from '@citizenlab/cl2-component-library';
+import { Box, Divider, Button, Text } from '@citizenlab/cl2-component-library';
 
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 import { ParticipationMethod } from 'api/phases/types';
@@ -14,8 +9,8 @@ import inputFormMessages from 'containers/Admin/projects/project/inputForm/messa
 import { isPDFUploadSupported } from 'containers/Admin/projects/project/inputImporter/ReviewSection/utils';
 
 import ImportInputsSection from 'components/admin/FormSync/ImportInputsSection';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
-import NewBOLinkButton from 'components/UI/NewBOLinkButton';
 
 import { useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
@@ -60,13 +55,13 @@ const FormSection = ({ projectId, participationMethod, phaseId }: Props) => {
         )}
       >
         {!phaseId && (
-          <NewBOText variant="helper" mb="12px">
+          <Text variant="bo-helper" mb="12px">
             {formatMessage(messages.saveToEditForm)}
-          </NewBOText>
+          </Text>
         )}
         {phaseId && permissions && !asksParticipants ? (
-          <NewBOLinkButton
-            buttonStyle="secondary-outlined"
+          <ButtonWithLink
+            buttonStyle="bo-secondary"
             to={
               survey
                 ? '/admin/projects/$projectId/phases/$phaseId/survey-form/edit'
@@ -75,25 +70,25 @@ const FormSection = ({ projectId, participationMethod, phaseId }: Props) => {
             params={{ projectId, phaseId }}
           >
             {formatMessage(messages.addQuestions)}
-          </NewBOLinkButton>
+          </ButtonWithLink>
         ) : (
-          <NewBOButton
-            buttonStyle="secondary-outlined"
+          <Button
+            buttonStyle="bo-secondary"
             disabled={!phaseId || !permissions}
             onClick={() => setQuestionsModalOpened(true)}
           >
             {formatMessage(messages.addQuestions)}
-          </NewBOButton>
+          </Button>
         )}
         {participationMethod === 'voting' && (
-          <NewBOButton
-            buttonStyle="secondary-outlined"
+          <Button
+            buttonStyle="bo-secondary"
             mt="8px"
             disabled={!phaseId}
             onClick={() => setIdeasModalOpened(true)}
           >
             {formatMessage(messages.addIdeasFromPreviousPhase)}
-          </NewBOButton>
+          </Button>
         )}
       </PanelField>
 
@@ -116,8 +111,8 @@ const FormSection = ({ projectId, participationMethod, phaseId }: Props) => {
         />
       )}
 
-      <NewBOButton
-        buttonStyle="text"
+      <Button
+        buttonStyle="bo-text"
         justify="space-between"
         icon="chevron-right"
         iconPos="right"
@@ -126,7 +121,7 @@ const FormSection = ({ projectId, participationMethod, phaseId }: Props) => {
         onClick={() => setImportModalOpened(true)}
       >
         {formatMessage(messages.offlineCollection)}
-      </NewBOButton>
+      </Button>
 
       <Modal
         opened={importModalOpened}
