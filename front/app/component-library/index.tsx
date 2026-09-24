@@ -49,6 +49,11 @@ import LocaleSwitcher from './components/LocaleSwitcher';
 import MultiSelect, {
   Props as MultiSelectProps,
 } from './components/MultiSelect';
+import NewBOButton, {
+  newBOButtonProps,
+  NewBOButtonProps,
+  NewBOButtonStyle,
+} from './components/NewBOButton';
 import Quote from './components/Quote';
 import Radio, { Props as RadioProps } from './components/Radio';
 import SearchInput, {
@@ -92,6 +97,7 @@ import {
   defaultCardHoverStyle,
   defaultOutline,
   defaultInputStyle,
+  newBO,
   stylingConsts,
   quillEditedContent,
   getTheme,
@@ -140,6 +146,8 @@ export type {
   ButtonContainerProps,
   ButtonProps,
   ButtonStyles,
+  NewBOButtonProps,
+  NewBOButtonStyle,
   TooltipProps,
 };
 
@@ -170,6 +178,8 @@ export {
   DropdownListItem,
   Success,
   Button,
+  NewBOButton,
+  newBOButtonProps,
   StatusLabel,
   viewportWidths,
   media,
@@ -181,6 +191,7 @@ export {
   defaultCardHoverStyle,
   defaultOutline,
   defaultInputStyle,
+  newBO,
   stylingConsts,
   quillEditedContent,
   getTheme,

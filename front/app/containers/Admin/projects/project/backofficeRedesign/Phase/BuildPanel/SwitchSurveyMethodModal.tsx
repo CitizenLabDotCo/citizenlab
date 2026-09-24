@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Button, Text } from '@citizenlab/cl2-component-library';
+import { Box, NewBOButton, Text } from '@citizenlab/cl2-component-library';
 import { useQueryClient } from '@tanstack/react-query';
 
 import phasePermissionKeys from 'api/phase_permissions/keys';
@@ -82,16 +82,16 @@ const SwitchSurveyMethodModal = ({ phase, method, onClose }: Props) => {
       header={formatMessage(messages.switchSurveyMethodTitle)}
       footer={
         <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">
-          <Button buttonStyle="secondary-outlined" onClick={close}>
+          <NewBOButton buttonStyle="secondary-outlined" onClick={close}>
             {formatMessage(messages.switchCancel)}
-          </Button>
-          <Button
+          </NewBOButton>
+          <NewBOButton
             buttonStyle="admin-dark"
             processing={isPending}
             onClick={handleConfirm}
           >
             {formatMessage(messages.switchConfirm)}
-          </Button>
+          </NewBOButton>
         </Box>
       }
     >

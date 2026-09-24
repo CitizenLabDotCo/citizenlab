@@ -2,8 +2,8 @@ import React from 'react';
 
 import {
   Box,
-  Button,
   Divider,
+  NewBOButton,
   Text,
   Toggle,
   Tooltip,
@@ -225,61 +225,62 @@ const PublishPanel = ({
         {publicationState === 'published' && (
           <>
             <Box flex="1">
-              <Button
+              <NewBOButton
                 buttonStyle="secondary-outlined"
-                size="s"
                 width="100%"
                 onClick={() => onConfirmStatusChange('draft')}
               >
                 {formatMessage(messages.publishRestoreToDraft)}
-              </Button>
+              </NewBOButton>
             </Box>
             <Box flex="1">
-              <Button
+              <NewBOButton
                 buttonStyle="secondary-outlined"
-                size="s"
                 width="100%"
                 onClick={() => onConfirmStatusChange('archived')}
               >
                 {formatMessage(messages.publishMoveToArchive)}
-              </Button>
+              </NewBOButton>
             </Box>
           </>
         )}
 
         {publicationState === 'archived' && (
           <Box flex="1">
-            <Button
+            <NewBOButton
               buttonStyle="secondary-outlined"
-              size="s"
               width="100%"
               onClick={() => onConfirmStatusChange('draft')}
             >
               {formatMessage(messages.publishRestoreToDraft)}
-            </Button>
+            </NewBOButton>
           </Box>
         )}
 
         {isDraftOrScheduled && (
           <>
-            <Button
-              buttonStyle="secondary-outlined"
-              size="s"
-              icon="calendar"
-              onClick={onSchedule}
-            >
-              {formatMessage(messages.publishSchedule)}
-            </Button>
-            <Button
-              buttonStyle="admin-dark"
-              size="s"
-              icon="send"
-              onClick={publishNow}
-              processing={isPending}
-              id="e2e-publish-now"
-            >
-              {formatMessage(messages.publishNow)}
-            </Button>
+            <Box flex="1">
+              <NewBOButton
+                buttonStyle="secondary-outlined"
+                width="100%"
+                icon="calendar"
+                onClick={onSchedule}
+              >
+                {formatMessage(messages.publishSchedule)}
+              </NewBOButton>
+            </Box>
+            <Box flex="1">
+              <NewBOButton
+                buttonStyle="admin-dark"
+                width="100%"
+                icon="send"
+                onClick={publishNow}
+                processing={isPending}
+                id="e2e-publish-now"
+              >
+                {formatMessage(messages.publishNow)}
+              </NewBOButton>
+            </Box>
           </>
         )}
       </Box>

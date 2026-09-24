@@ -10,8 +10,8 @@ import ParticipationMethodChoice from 'containers/Admin/projects/project/phaseSe
 import ParticipationMethodPicker from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/ParticipationMethodPicker';
 import projectPageMessages from 'containers/Admin/projects/project/projectPage/messages';
 
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
+import NewBOLinkButton from 'components/UI/NewBOLinkButton';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -47,7 +47,7 @@ const SelectMethodModal = ({ projectId, opened, onClose }: Props) => {
       header={formatMessage(projectPageMessages.newParticipationMethod)}
       footer={
         <Box display="flex" justifyContent="flex-end" width="100%">
-          <ButtonWithLink
+          <NewBOLinkButton
             buttonStyle="admin-dark"
             to="/admin/projects/$projectId/phases/new"
             params={{ projectId }}
@@ -58,7 +58,7 @@ const SelectMethodModal = ({ projectId, opened, onClose }: Props) => {
             }
           >
             {formatMessage(messages.selectMethodContinue)}
-          </ButtonWithLink>
+          </NewBOLinkButton>
         </Box>
       }
     >

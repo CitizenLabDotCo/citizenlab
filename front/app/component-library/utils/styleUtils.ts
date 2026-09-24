@@ -200,6 +200,17 @@ export const focusRing = css`
   box-shadow: 0 0 0 2px ${colors.white};
 `;
 
+// New back office theme
+export const newBO = {
+  colors: {
+    textHeadingStrong: '#1E1E1E',
+    // green600 (#096F03) at 12% and 18%; the label is colors.green700
+    statusFill: 'rgba(9, 111, 3, 0.12)',
+    statusFillHover: 'rgba(9, 111, 3, 0.18)',
+  },
+  borderRadius: '8px',
+};
+
 export const stylingConsts = {
   menuHeight: 78,
   mobileMenuHeight: 72,

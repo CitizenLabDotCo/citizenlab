@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.projectSettings',
     defaultMessage: 'Project settings',
   },
+  previewProject: {
+    id: 'app.containers.Admin.projects.project.previewProject',
+    defaultMessage: 'Preview the project page',
+  },
   backToProjectSetup: {
     id: 'app.containers.Admin.projects.project.backToProjectSetup',
     defaultMessage: 'Project setup',

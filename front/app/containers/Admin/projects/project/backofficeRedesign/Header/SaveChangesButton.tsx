@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button } from '@citizenlab/cl2-component-library';
+import { NewBOButton } from '@citizenlab/cl2-component-library';
 
 import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
 
@@ -15,17 +15,15 @@ const SaveChangesButton = () => {
   if (!phaseSave) return null;
 
   return (
-    <Button
+    <NewBOButton
       buttonStyle="admin-dark"
-      size="s"
-      padding="4px 8px"
       width="auto"
       disabled={!phaseSave.dirty}
       processing={phaseSave.saving}
       onClick={() => phaseSave.saveAll('button')}
     >
       {formatMessage(phaseSetupMessages.saveChangesLabel)}
-    </Button>
+    </NewBOButton>
   );
 };
 

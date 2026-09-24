@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, Tooltip, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
@@ -9,7 +9,7 @@ import { IProjectData } from 'api/projects/types';
 import useLocalize from 'hooks/useLocalize';
 
 import Breadcrumbs, { TBreadcrumbs } from 'components/UI/Breadcrumbs';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
+import NewBOLinkButton from 'components/UI/NewBOLinkButton';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -111,14 +111,23 @@ const WorkspaceHeader = ({
         gap="10px"
       >
         {(phase || draftLabel) && <SaveChangesButton />}
-        <ButtonWithLink
-          to="/projects/$slug"
-          params={{ slug: project.attributes.slug }}
-          buttonStyle="secondary-outlined"
-          icon="eye"
-          size="s"
-          padding="4px 8px"
-        />
+        <Tooltip
+          content={formatMessage(messages.previewProject)}
+          theme="dark"
+          placement="bottom"
+        >
+          <NewBOLinkButton
+            to="/projects/$slug"
+            params={{ slug: project.attributes.slug }}
+            buttonStyle="text"
+            icon="eye"
+            width="36px"
+            padding="0"
+            bgHoverColor={colors.grey100}
+            iconHoverColor={colors.textPrimary}
+            ariaLabel={formatMessage(messages.previewProject)}
+          />
+        </Tooltip>
         <ShareDropdown
           project={project}
           opened={openDropdown === 'share'}

@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import {
   Box,
-  Button,
   Divider,
   Input,
+  NewBOButton,
   Text,
   Tooltip,
   colors,
@@ -101,14 +101,14 @@ const SharePanel = ({ project, linkCopied, onLinkCopied }: Props) => {
             aria-label={formatMessage(messages.shareInvitePeople)}
           />
         </Box>
-        <Button
+        <NewBOButton
           buttonStyle="admin-dark"
           onClick={handleInvite}
           processing={isInviting}
           disabled={splitEmails(invitees).length === 0}
         >
           {formatMessage(messages.shareInvite)}
-        </Button>
+        </NewBOButton>
       </Box>
 
       <Text m="16px 0 0 0" fontSize="s" color="textSecondary">
@@ -141,7 +141,7 @@ const SharePanel = ({ project, linkCopied, onLinkCopied }: Props) => {
         disabled={isPreviewLinkEnabled}
         width="100%"
       >
-        <Button
+        <NewBOButton
           buttonStyle="secondary-outlined"
           icon={linkCopied ? 'check-circle' : 'link'}
           iconColor={linkCopied ? colors.success : undefined}
@@ -155,7 +155,7 @@ const SharePanel = ({ project, linkCopied, onLinkCopied }: Props) => {
               ? projectHeaderMessages.shareLinkCopied
               : messages.sharePreviewLink
           )}
-        </Button>
+        </NewBOButton>
       </Tooltip>
     </Box>
   );

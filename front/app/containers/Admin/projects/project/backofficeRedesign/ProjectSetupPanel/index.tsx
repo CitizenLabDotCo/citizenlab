@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 
-import { Box, Button, Title } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  NewBOButton,
+  Title,
+  Tooltip,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 import { IProjectData } from 'api/projects/types';
 
@@ -39,14 +45,22 @@ const ProjectSetupPanel = ({ project, onOpenDropdown }: Props) => {
         <Title variant="h4" m="0">
           {formatMessage(messages.projectSetupPanel)}
         </Title>
-        <Button
-          buttonStyle="secondary-outlined"
-          size="s"
-          padding="4px 8px"
-          onClick={openSettings}
+        <Tooltip
+          content={formatMessage(messages.projectSettings)}
+          theme="dark"
+          placement="bottom"
         >
-          {formatMessage(messages.projectSettings)}
-        </Button>
+          <NewBOButton
+            buttonStyle="text"
+            icon="settings"
+            width="36px"
+            padding="0"
+            bgHoverColor={colors.grey100}
+            iconHoverColor={colors.textPrimary}
+            ariaLabel={formatMessage(messages.projectSettings)}
+            onClick={openSettings}
+          />
+        </Tooltip>
       </Box>
 
       {published ? (

@@ -8,8 +8,8 @@ import useUpdatePhasePermission from 'api/phase_permissions/useUpdatePhasePermis
 import DemographicSection from 'components/admin/ActionForm/DataSection/DemographicSection';
 import PersonalInfoSection from 'components/admin/ActionForm/DataSection/PersonalInfoSection';
 import { Changes } from 'components/admin/ActionForm/types';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
+import NewBOLinkButton from 'components/UI/NewBOLinkButton';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -57,7 +57,7 @@ const AddQuestionsModal = ({
       header={formatMessage(messages.informationCollected)}
       footer={
         <Box display="flex" justifyContent="flex-end" width="100%">
-          <ButtonWithLink
+          <NewBOLinkButton
             buttonStyle="admin-dark"
             to={
               survey
@@ -68,7 +68,7 @@ const AddQuestionsModal = ({
             onClick={onClose}
           >
             {formatMessage(messages.continueToTheForm)}
-          </ButtonWithLink>
+          </NewBOLinkButton>
         </Box>
       }
     >

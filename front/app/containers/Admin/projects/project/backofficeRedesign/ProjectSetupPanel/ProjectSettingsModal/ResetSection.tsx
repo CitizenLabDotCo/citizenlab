@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 
-import { Box, Button, Text, Title } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  NewBOButton,
+  Text,
+  Title,
+} from '@citizenlab/cl2-component-library';
 
 import useResetProject from 'api/projects/useResetProject';
 
@@ -30,14 +35,14 @@ const ResetSection = ({ projectId }: Props) => {
       <Text m="0 0 16px 0" color="error">
         {formatMessage(dataMessages.confirmationDescription)}
       </Text>
-      <Button
+      <NewBOButton
         buttonStyle="delete"
         width="auto"
         onClick={() => setConfirmOpened(true)}
         id="e2e-reset-participation-data"
       >
         {formatMessage(dataMessages.resetParticipationData)}
-      </Button>
+      </NewBOButton>
 
       <Modal
         opened={confirmOpened}
@@ -49,14 +54,14 @@ const ResetSection = ({ projectId }: Props) => {
         </Title>
         <Text>{formatMessage(dataMessages.confirmationDescription)}</Text>
         <Box display="flex" justifyContent="flex-end" gap="12px">
-          <Button
+          <NewBOButton
             buttonStyle="secondary-outlined"
             width="auto"
             onClick={() => setConfirmOpened(false)}
           >
             {formatMessage(dataMessages.confirmationNo)}
-          </Button>
-          <Button
+          </NewBOButton>
+          <NewBOButton
             buttonStyle="delete"
             width="auto"
             processing={isPending}
@@ -67,7 +72,7 @@ const ResetSection = ({ projectId }: Props) => {
             }
           >
             {formatMessage(dataMessages.confirmationYes)}
-          </Button>
+          </NewBOButton>
         </Box>
       </Modal>
     </Box>

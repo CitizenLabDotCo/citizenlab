@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-import { Box, Button, Text } from '@citizenlab/cl2-component-library';
+import { Box, NewBOButton, Text } from '@citizenlab/cl2-component-library';
 
 import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
 
@@ -53,10 +53,10 @@ const UnsavedChangesGuard = () => {
       header={formatMessage(messages.unsavedChangesTitle)}
       footer={
         <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">
-          <Button buttonStyle="secondary-outlined" onClick={blocker.reset}>
+          <NewBOButton buttonStyle="secondary-outlined" onClick={blocker.reset}>
             {formatMessage(messages.unsavedChangesCancel)}
-          </Button>
-          <Button
+          </NewBOButton>
+          <NewBOButton
             buttonStyle="secondary-outlined"
             onClick={() => {
               phaseSave.discardAll();
@@ -64,14 +64,14 @@ const UnsavedChangesGuard = () => {
             }}
           >
             {formatMessage(messages.discardChanges)}
-          </Button>
-          <Button
+          </NewBOButton>
+          <NewBOButton
             buttonStyle="admin-dark"
             processing={phaseSave.saving}
             onClick={handleSave}
           >
             {formatMessage(phaseSetupMessages.saveChangesLabel)}
-          </Button>
+          </NewBOButton>
         </Box>
       }
     >

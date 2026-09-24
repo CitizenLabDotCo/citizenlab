@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Box, NewBOButton } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { CLErrors, Multiloc, UploadFile } from 'typings';
 
@@ -242,14 +242,14 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
       sections={sections}
       footer={
         <Box display="flex" gap="8px">
-          <Button
+          <NewBOButton
             buttonStyle="secondary-outlined"
             width="auto"
             onClick={handleCancel}
           >
             {formatMessage(messages.settingsCancel)}
-          </Button>
-          <Button
+          </NewBOButton>
+          <NewBOButton
             buttonStyle="admin-dark"
             width="auto"
             processing={processing}
@@ -257,7 +257,7 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
             id="e2e-project-settings-save"
           >
             {formatMessage(messages.settingsSaveChanges)}
-          </Button>
+          </NewBOButton>
         </Box>
       }
     />

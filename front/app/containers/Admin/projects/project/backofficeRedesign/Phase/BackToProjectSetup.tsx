@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import ButtonWithLink from 'components/UI/ButtonWithLink';
+import NewBOLinkButton from 'components/UI/NewBOLinkButton';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -17,17 +17,16 @@ const BackToProjectSetup = ({ projectId }: Props) => {
 
   return (
     <Box pt="16px" px="16px">
-      <ButtonWithLink
+      <NewBOLinkButton
         to="/admin/projects/$projectId"
         params={{ projectId }}
         buttonStyle="text"
         icon="chevron-left"
-        size="s"
-        padding="4px 8px"
+        padding="0 8px"
         justify="left"
       >
         {formatMessage(messages.backToProjectSetup)}
-      </ButtonWithLink>
+      </NewBOLinkButton>
     </Box>
   );
 };
