@@ -322,7 +322,9 @@ resource 'Omniauth Callback', document: false do
         before do
           create(:custom_field_gender, :with_options)
           create(:custom_field_birthyear)
+        end
 
+        example 'fills in the custom fields the SSO method locks', document: false do
           client.post(
             '/web_api/v1/users',
             { user: { email: 'billy_fixed@example.com', password: 'democracy2.0', locale: 'en' } }.to_json,
@@ -337,9 +339,7 @@ resource 'Omniauth Callback', document: false do
             headers
           )
           expect(client.status).to eq 200
-        end
 
-        example 'fills in the custom fields the SSO method locks', document: false do
           do_request
 
           assert_status(302)
