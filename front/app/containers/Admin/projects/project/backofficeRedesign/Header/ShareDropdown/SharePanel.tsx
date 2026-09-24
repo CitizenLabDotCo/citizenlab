@@ -5,7 +5,7 @@ import {
   Divider,
   Input,
   NewBOButton,
-  Text,
+  NewBOText,
   Tooltip,
   colors,
 } from '@citizenlab/cl2-component-library';
@@ -84,13 +84,13 @@ const SharePanel = ({ project, linkCopied, onLinkCopied }: Props) => {
 
   return (
     <Box>
-      <Text m="0 0 16px 0" fontSize="m" color="teal500">
+      <NewBOText variant="section" mb="16px">
         {formatMessage(projectHeaderMessages.shareTitle)}
-      </Text>
+      </NewBOText>
 
-      <Text m="0 0 4px 0" fontSize="s" color="textSecondary">
+      <NewBOText variant="section" mb="4px">
         {formatMessage(messages.shareInvitePeople)}
-      </Text>
+      </NewBOText>
       <Box display="flex" gap="8px" alignItems="flex-start">
         <Box flex="1 1 auto" minWidth="0">
           <Input
@@ -111,9 +111,9 @@ const SharePanel = ({ project, linkCopied, onLinkCopied }: Props) => {
         </NewBOButton>
       </Box>
 
-      <Text m="16px 0 0 0" fontSize="s" color="textSecondary">
+      <NewBOText variant="section" mt="16px">
         {formatMessage(messages.sharePeopleWithAccess)}
-      </Text>
+      </NewBOText>
       <Box
         ref={peopleListRef}
         display="flex"
@@ -133,9 +133,9 @@ const SharePanel = ({ project, linkCopied, onLinkCopied }: Props) => {
 
       <Divider />
 
-      <Text m="0 0 12px 0" fontSize="s" color="textSecondary">
+      <NewBOText variant="helper" mb="12px">
         {formatMessage(messages.sharePreviewExplanation)}
-      </Text>
+      </NewBOText>
       <Tooltip
         content={formatMessage(projectHeaderMessages.shareLinkUpsellTooltip)}
         disabled={isPreviewLinkEnabled}

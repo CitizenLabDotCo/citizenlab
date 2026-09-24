@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  NewBOText,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
@@ -62,15 +67,14 @@ const StepRow = ({ step, isLast }: Props) => {
         onClick={step.onClick}
         id={`e2e-get-started-${step.name}`}
       >
-        <Text
+        <NewBOText
+          variant="label"
           as="span"
-          m="0"
-          fontSize="s"
           textAlign="left"
-          color={step.done ? 'textSecondary' : 'textPrimary'}
+          color={step.done ? 'coolGrey500' : undefined}
         >
           {formatMessage(step.label)}
-        </Text>
+        </NewBOText>
         <Icon
           name="chevron-right"
           width="16px"

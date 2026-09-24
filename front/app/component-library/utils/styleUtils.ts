@@ -204,6 +204,7 @@ export const focusRing = css`
 export const newBO = {
   colors: {
     textHeadingStrong: '#1E1E1E',
+    textHeading: '#474747',
     // green600 (#096F03) at 12% and 18%; the label is colors.green700
     statusFill: 'rgba(9, 111, 3, 0.12)',
     statusFillHover: 'rgba(9, 111, 3, 0.18)',

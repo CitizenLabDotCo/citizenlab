@@ -42,7 +42,7 @@ const ProjectSetupPanel = ({ project, onOpenDropdown }: Props) => {
   return (
     <Box p="20px" display="flex" flexDirection="column" gap="20px">
       <Box display="flex" alignItems="center" justifyContent="space-between">
-        <Title variant="h4" m="0">
+        <Title variant="h4" fontSize="s" fontWeight="semi-bold" m="0">
           {formatMessage(messages.projectSetupPanel)}
         </Title>
         <Tooltip

@@ -89,6 +89,8 @@ const WorkspaceHeader = ({
           breadcrumbs={crumbs}
           icon="folder-outline"
           separator="chevron"
+          fontSize="s"
+          highlightCurrentPage
         />
       </CrumbBar>
 

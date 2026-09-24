@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, NewBOButton, Text } from '@citizenlab/cl2-component-library';
+import { Box, NewBOButton, NewBOText } from '@citizenlab/cl2-component-library';
 import { useQueryClient } from '@tanstack/react-query';
 
 import phasePermissionKeys from 'api/phase_permissions/keys';
@@ -96,11 +96,15 @@ const SwitchSurveyMethodModal = ({ phase, method, onClose }: Props) => {
       }
     >
       <Box p="24px">
-        <Text mt="0">{formatMessage(messages.switchSurveyMethodIntro)}</Text>
+        <NewBOText variant="helper" mb="12px">
+          {formatMessage(messages.switchSurveyMethodIntro)}
+        </NewBOText>
         <Box as="ul" pl="20px" m="0">
           {consequences.map((message) => (
             <li key={message.id}>
-              <Text my="4px">{formatMessage(message)}</Text>
+              <NewBOText variant="helper" my="4px">
+                {formatMessage(message)}
+              </NewBOText>
             </li>
           ))}
         </Box>

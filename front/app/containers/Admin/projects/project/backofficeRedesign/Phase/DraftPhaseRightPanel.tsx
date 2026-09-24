@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Text } from '@citizenlab/cl2-component-library';
+import { NewBOText } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import { IUpdatedPhaseProperties } from 'api/phases/types';
@@ -45,9 +45,9 @@ const DraftPhaseRightPanel = ({
         />
       )}
 
-      <Text fontSize="s" color="textSecondary">
+      <NewBOText variant="helper">
         {formatMessage(messages.saveToEditSettings)}
-      </Text>
+      </NewBOText>
     </PanelSettings>
   );
 };

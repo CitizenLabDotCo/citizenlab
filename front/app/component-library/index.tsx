@@ -54,6 +54,10 @@ import NewBOButton, {
   NewBOButtonProps,
   NewBOButtonStyle,
 } from './components/NewBOButton';
+import NewBOText, {
+  NewBOTextProps,
+  NewBOTextVariant,
+} from './components/NewBOText';
 import Quote from './components/Quote';
 import Radio, { Props as RadioProps } from './components/Radio';
 import SearchInput, {
@@ -148,6 +152,8 @@ export type {
   ButtonStyles,
   NewBOButtonProps,
   NewBOButtonStyle,
+  NewBOTextProps,
+  NewBOTextVariant,
   TooltipProps,
 };
 
@@ -180,6 +186,7 @@ export {
   Button,
   NewBOButton,
   newBOButtonProps,
+  NewBOText,
   StatusLabel,
   viewportWidths,
   media,

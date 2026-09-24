@@ -3,7 +3,7 @@ import React from 'react';
 import {
   Box,
   Icon,
-  Text,
+  NewBOText,
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
@@ -40,9 +40,9 @@ const SectionLinks = ({ projectId }: Props) => {
     <Box display="flex" flexDirection="column" gap="12px">
       {LINKED_SECTIONS.map(({ path, label, to }) => (
         <Row key={path} to={to} params={{ projectId }}>
-          <Text as="span" m="0" fontSize="l" color="textPrimary">
+          <NewBOText variant="label" as="span">
             {formatMessage(label)}
-          </Text>
+          </NewBOText>
           <Icon
             name="chevron-right"
             width="20px"

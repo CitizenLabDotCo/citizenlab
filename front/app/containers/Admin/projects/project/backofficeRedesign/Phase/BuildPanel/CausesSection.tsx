@@ -4,7 +4,7 @@ import {
   Box,
   Divider,
   NewBOButton,
-  Text,
+  NewBOText,
 } from '@citizenlab/cl2-component-library';
 
 import useAddCause from 'api/causes/useAddCause';
@@ -52,16 +52,16 @@ const CausesSection = ({ phaseId }: Props) => {
     <>
       <Divider />
       <PanelField label={formatMessage(messages.causesSection)}>
-        <Text fontSize="s" color="textSecondary" mt="0" mb="12px">
+        <NewBOText variant="helper" mb="12px">
           {formatMessage(messages.causesSectionDescription)}
-        </Text>
+        </NewBOText>
         {causes && causes.data.length > 0 && (
           <Box as="ul" pl="20px" mt="0" mb="12px">
             {causes.data.map((cause) => (
               <li key={cause.id}>
-                <Text fontSize="s" my="2px">
+                <NewBOText variant="label" my="2px">
                   <T value={cause.attributes.title_multiloc} />
-                </Text>
+                </NewBOText>
               </li>
             ))}
           </Box>
@@ -81,9 +81,9 @@ const CausesSection = ({ phaseId }: Props) => {
         header={formatMessage(volunteeringMessages.newCauseTitle)}
       >
         <Box p="24px">
-          <Text mt="0" color="textSecondary">
+          <NewBOText variant="helper" mb="16px">
             {formatMessage(volunteeringMessages.newCauseSubtitle)}
-          </Text>
+          </NewBOText>
           <CauseForm onSubmit={handleSubmit} submitPlacement="inline" />
         </Box>
       </Modal>

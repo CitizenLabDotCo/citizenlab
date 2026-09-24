@@ -4,7 +4,7 @@ import {
   Box,
   Divider,
   NewBOButton,
-  Text,
+  NewBOText,
   Toggle,
   Tooltip,
   colors,
@@ -150,13 +150,13 @@ const PublishPanel = ({
 
   return (
     <Box>
-      <Text m="0 0 12px 0" fontSize="m" color="teal500">
+      <NewBOText variant="section" mb="12px">
         {header}
-      </Text>
+      </NewBOText>
 
-      <Text m="0 0 4px 0" fontSize="xs" color="textSecondary">
+      <NewBOText variant="section" mb="4px">
         {formatMessage(messages.publishWhoCanFind)}
-      </Text>
+      </NewBOText>
       <Box role="radiogroup" display="flex" flexDirection="column">
         {FIND_OPTIONS.map((option) => (
           <OptionRow
@@ -170,9 +170,9 @@ const PublishPanel = ({
         ))}
       </Box>
 
-      <Text m="12px 0 4px 0" fontSize="xs" color="textSecondary">
+      <NewBOText variant="section" mt="12px" mb="4px">
         {formatMessage(messages.publishWhoCanOpen)}
-      </Text>
+      </NewBOText>
       <Box role="radiogroup" display="flex" flexDirection="column">
         {OPEN_OPTIONS.map((option) => (
           <OptionRow
@@ -194,9 +194,9 @@ const PublishPanel = ({
         alignItems="center"
         gap="12px"
       >
-        <Text m="0" fontSize="s" color="textPrimary">
+        <NewBOText variant="label">
           {formatMessage(messages.publishSendEmail)}
-        </Text>
+        </NewBOText>
         <Tooltip
           content={formatMessage(messages.publishEmailUnavailable)}
           disabled={!emailToggleDisabled}
@@ -209,9 +209,9 @@ const PublishPanel = ({
         </Tooltip>
       </Box>
       {count !== undefined && (
-        <Text m="4px 0 0 0" fontSize="xs" color="textSecondary">
+        <NewBOText variant="micro" mt="4px">
           {formatMessage(messages.publishEmailRecipients, { count })}
-        </Text>
+        </NewBOText>
       )}
 
       <Box

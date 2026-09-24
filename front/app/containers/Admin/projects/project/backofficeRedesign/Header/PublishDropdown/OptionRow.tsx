@@ -4,7 +4,7 @@ import {
   Box,
   Icon,
   IconNames,
-  Text,
+  NewBOText,
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
@@ -54,17 +54,12 @@ const OptionRow = ({ icon, label, description, selected, onClick }: Props) => {
         my="2px"
       />
       <Box flex="1 1 auto" minWidth="0">
-        <Text m="0" fontSize="s" color="textPrimary" textAlign="left">
+        <NewBOText variant="label" textAlign="left">
           {formatMessage(label)}
-        </Text>
-        <Text
-          m="2px 0 0 0"
-          fontSize="xs"
-          color="textSecondary"
-          textAlign="left"
-        >
+        </NewBOText>
+        <NewBOText variant="helper" mt="2px" textAlign="left">
           {formatMessage(description)}
-        </Text>
+        </NewBOText>
       </Box>
       {selected && (
         <Icon

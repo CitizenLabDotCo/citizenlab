@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-import { Box, NewBOButton, Text } from '@citizenlab/cl2-component-library';
+import { Box, NewBOButton, NewBOText } from '@citizenlab/cl2-component-library';
 
 import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
 
@@ -76,7 +76,9 @@ const UnsavedChangesGuard = () => {
       }
     >
       <Box p="24px">
-        <Text m="0">{formatMessage(messages.unsavedChangesDescription)}</Text>
+        <NewBOText variant="helper">
+          {formatMessage(messages.unsavedChangesDescription)}
+        </NewBOText>
       </Box>
     </Modal>
   );

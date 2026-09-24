@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import {
   Box,
   NewBOButton,
-  Text,
+  NewBOText,
   Title,
 } from '@citizenlab/cl2-component-library';
 
@@ -26,15 +26,15 @@ const ResetSection = ({ projectId }: Props) => {
 
   return (
     <Box>
-      <Title variant="h3" m="0 0 8px 0">
+      <NewBOText variant="section" mb="8px">
         {formatMessage(dataMessages.dataTitle)}
-      </Title>
-      <Text m="0 0 4px 0" color="textSecondary">
+      </NewBOText>
+      <NewBOText variant="helper" mb="4px">
         {formatMessage(dataMessages.dataDescription)}
-      </Text>
-      <Text m="0 0 16px 0" color="error">
+      </NewBOText>
+      <NewBOText variant="helper" color="error" mb="16px">
         {formatMessage(dataMessages.confirmationDescription)}
-      </Text>
+      </NewBOText>
       <NewBOButton
         buttonStyle="delete"
         width="auto"
@@ -49,10 +49,16 @@ const ResetSection = ({ projectId }: Props) => {
         close={() => setConfirmOpened(false)}
         ariaLabelledBy="reset-participation-data-title"
       >
-        <Title id="reset-participation-data-title" variant="h3">
+        <Title
+          id="reset-participation-data-title"
+          variant="h4"
+          fontWeight="semi-bold"
+        >
           {formatMessage(dataMessages.confirmationTitle)}
         </Title>
-        <Text>{formatMessage(dataMessages.confirmationDescription)}</Text>
+        <NewBOText variant="helper" mb="16px">
+          {formatMessage(dataMessages.confirmationDescription)}
+        </NewBOText>
         <Box display="flex" justifyContent="flex-end" gap="12px">
           <NewBOButton
             buttonStyle="secondary-outlined"

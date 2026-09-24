@@ -4,7 +4,7 @@ import {
   Box,
   Divider,
   NewBOButton,
-  Text,
+  NewBOText,
 } from '@citizenlab/cl2-component-library';
 
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
@@ -60,9 +60,9 @@ const FormSection = ({ projectId, participationMethod, phaseId }: Props) => {
         )}
       >
         {!phaseId && (
-          <Text fontSize="s" color="textSecondary" mt="0" mb="12px">
+          <NewBOText variant="helper" mb="12px">
             {formatMessage(messages.saveToEditForm)}
-          </Text>
+          </NewBOText>
         )}
         {phaseId && permissions && !asksParticipants ? (
           <NewBOLinkButton
