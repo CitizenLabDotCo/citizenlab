@@ -125,17 +125,17 @@ const EventsList: UserComponent<EventsProps> = ({
       ? [...CURRENT_PROJECT_STATUSES]
       : projectPublicationStatuses,
     pageSize: paginated ? PAGINATED_PAGE_SIZE : limit,
-    // `-start_at` is ascending: SortByParamsService inverts the usual convention.
-    sort: '-start_at',
   };
   const waitingForProject = isProjectEvents && !currentProjectId;
 
   const { data: upcomingEvents, isLoading: loadingUpcoming } = useEvents(
-    { ...params, currentAndFutureOnly: true, pageNumber: upcomingPage },
+    // `-start_at` is ascending: SortByParamsService inverts the usual convention.
+    { ...params, sort: '-start_at', currentAndFutureOnly: true, pageNumber: upcomingPage },
     { enabled: showUpcoming && !waitingForProject }
   );
   const { data: pastEvents, isLoading: loadingPast } = useEvents(
-    { ...params, pastOnly: true, pageNumber: pastPage },
+    // `start_at` is descending
+    { ...params, sort: 'start_at', pastOnly: true, pageNumber: pastPage },
     { enabled: showPast && !waitingForProject }
   );
 
