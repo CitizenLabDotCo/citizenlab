@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 
-class McpServer::Tools::GetPlatformBranding < McpServer::BaseTool
-  def name = 'get_platform_branding'
+class McpServer::Tools::GetPlatformConfig < McpServer::BaseTool
+  def name = 'get_platform_config'
   def annotations = READ_ANNOTATIONS
 
   def description
     <<~DESC.squish
       Reads the platform's branding and core settings: organization name, locales,
-      brand colours, logo and favicon URLs, timezone, currency, country, SEO metadata
-      and style customizations (fonts, header colours, etc.).
+      brand colours, logo and favicon URLs, timezone, currency and country.
     DESC
   end
 
@@ -18,8 +17,8 @@ class McpServer::Tools::GetPlatformBranding < McpServer::BaseTool
     def run
       config = AppConfiguration.instance
       response(
-        "Branding of platform #{config.host}",
-        structured: McpServer::PlatformBranding.structured(config)
+        "Config of platform #{config.host}",
+        structured: McpServer::PlatformConfig.structured(config)
       )
     end
   end
