@@ -12,6 +12,12 @@ class ReportBuilder::Queries::Base
 
   private
 
+  def exclude_admins_and_moderators_from_participations(participations, exclude_admins_and_moderators)
+    return participations unless exclude_admins_and_moderators
+
+    StatisticsRoleExclusion.new.exclude_admin_and_moderator_records(participations, :dimension_user_id)
+  end
+
   def sanitize_sql(*args)
     ActiveRecord::Base.sanitize_sql_array(args)
   end

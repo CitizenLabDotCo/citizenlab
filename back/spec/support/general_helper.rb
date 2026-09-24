@@ -31,4 +31,33 @@ module GeneralHelper
   def uuid_regex
     /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/ # After https://stackoverflow.com/a/6640851/3585671
   end
+
+  def enable_exclude_admins_and_moderators_from_statistics
+    config = AppConfiguration.instance
+    config.settings['core']['exclude_admins_and_moderators_from_statistics'] = true
+    config.save!
+  end
+
+  # Creates one user for every kind of admin and moderator: an admin, a moderator of
+  # `project`, a moderator of another project, a folder moderator and a space
+  # moderator. When admins and moderators are excluded from statistics, ALL of them
+  # are excluded, not only the moderators of the project in question. The given
+  # custom field answers (as `{ key => value }`) and attributes are applied to every user.
+  def create_admins_and_moderators(project: create(:project), answers: {}, **attributes)
+    [
+      [:admin],
+      [:project_moderator, { projects: [project] }],
+      [:project_moderator, { projects: [create(:project)] }],
+      [:project_folder_moderator],
+      [:space_moderator]
+    ].map do |factory, role_attributes = {}|
+      custom_field_answers = answers.map { |key, value| build(:custom_field_answer, key: key, value: value) }
+      create(factory, **role_attributes, custom_field_answers: custom_field_answers, **attributes)
+    end
+  end
+
+  # The highest roles (e.g. of sessions) of all kinds of admins and moderators.
+  def admin_and_moderator_highest_roles
+    %w[admin super_admin project_moderator project_folder_moderator space_moderator]
+  end
 end

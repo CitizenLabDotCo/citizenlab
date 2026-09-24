@@ -47,7 +47,6 @@ export type ParametersLive =
   | InternalAdoptionParams;
 
 export type GroupMode = 'user_field' | 'survey_question';
-type ExcludeRoles = 'exclude_admins_and_moderators';
 export type OptionsSortOrder = 'count' | 'original';
 
 export interface SurveyQuestionResultProps {
@@ -110,9 +109,7 @@ export interface VisitorsParams extends BaseParams {
   props: VisitorsProps;
 }
 
-export interface VisitorsTrafficSourcesProps extends DateProps, ProjectId {
-  exclude_roles?: ExcludeRoles;
-}
+export interface VisitorsTrafficSourcesProps extends DateProps, ProjectId {}
 
 export interface VisitorsTrafficSourcesParams extends BaseParams {
   resolved_name: 'VisitorsTrafficSourcesWidget';
@@ -121,7 +118,6 @@ export interface VisitorsTrafficSourcesParams extends BaseParams {
 
 export interface VisitorsLanguagesProps extends DateProps {
   project_id?: string;
-  exclude_roles?: ExcludeRoles;
 }
 
 export interface VisitorsLanguagesParams extends BaseParams {
@@ -142,9 +138,7 @@ export interface DemographicsParams extends BaseParams {
   props: DemographicsProps;
 }
 
-export interface ParticipantsProps extends AnalyticsProps, CompareProps {
-  exclude_roles?: ExcludeRoles;
-}
+export interface ParticipantsProps extends AnalyticsProps, CompareProps {}
 
 export interface ParticipantsParams extends BaseParams {
   resolved_name: 'ParticipantsWidget';
@@ -211,9 +205,7 @@ export interface ProjectsTimelineParams extends BaseParams {
   props: ProjectsTimelineProps;
 }
 
-export interface DeviceTypesProps extends DateProps, ProjectId {
-  exclude_roles?: ExcludeRoles;
-}
+export interface DeviceTypesProps extends DateProps, ProjectId {}
 
 export interface DeviceTypesParams extends BaseParams {
   resolved_name: 'DeviceTypesWidget';

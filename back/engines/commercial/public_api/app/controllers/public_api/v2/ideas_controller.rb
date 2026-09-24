@@ -10,7 +10,7 @@ module PublicApi
         **finder_params
       ).execute
 
-      list_items(ideas, V2::IdeaSerializer, includes: %i[idea_images project creation_phase idea_status])
+      list_items(ideas, V2::IdeaSerializer, includes: %i[idea_images project creation_phase idea_status custom_field_answers])
     end
 
     def show

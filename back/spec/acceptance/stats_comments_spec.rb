@@ -578,4 +578,101 @@ resource 'Stats - Comments' do
 
     include_examples 'unauthorized requests'
   end
+
+  describe 'excluding admins and moderators from statistics' do
+    def xlsx_column_sum(column_name)
+      worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+      header, *rows = worksheet.map { |row| row.cells.map(&:value) }
+      rows.sum { |row| row[header.index(column_name)] }
+    end
+
+    before do
+      admin_header_token
+      @project = create(:single_phase_ideation_project)
+      idea = create(:idea_with_topics, project: @project, topics_count: 1)
+
+      create(:comment, idea: idea, author: create(:user))
+      create(:comment, idea: idea, author: create(:user), anonymous: true)
+      create_admins_and_moderators(project: @project).each do |author|
+        create(:comment, idea: idea, author: author)
+      end
+    end
+
+    get 'web_api/v1/stats/comments_count' do
+      time_boundary_parameters self
+
+      example 'Count all comments includes comments of admins and moderators by default', document: false do
+        do_request
+        assert_status 200
+        expect(json_response.dig(:data, :attributes, :count)).to eq 7
+      end
+
+      example 'Count all comments excluding admins and moderators' do
+        enable_exclude_admins_and_moderators_from_statistics
+        do_request
+        assert_status 200
+        expect(json_response.dig(:data, :attributes, :count)).to eq 2
+      end
+    end
+
+    get 'web_api/v1/stats/comments_by_topic' do
+      time_boundary_parameters self
+
+      example 'Comments by topic includes comments of admins and moderators by default', document: false do
+        do_request
+        assert_status 200
+        expect(json_response.dig(:data, :attributes, :series, :comments).values.sum).to eq 7
+      end
+
+      example 'Comments by topic excluding admins and moderators' do
+        enable_exclude_admins_and_moderators_from_statistics
+        do_request
+        assert_status 200
+        expect(json_response.dig(:data, :attributes, :series, :comments).values.sum).to eq 2
+      end
+    end
+
+    get 'web_api/v1/stats/comments_by_topic_as_xlsx' do
+      time_boundary_parameters self
+
+      context 'when admins and moderators are excluded from statistics' do
+        before { enable_exclude_admins_and_moderators_from_statistics }
+
+        example_request 'Comments by topic excluding admins and moderators' do
+          assert_status 200
+          expect(xlsx_column_sum('comments')).to eq 2
+        end
+      end
+    end
+
+    get 'web_api/v1/stats/comments_by_project' do
+      time_boundary_parameters self
+
+      example 'Comments by project includes comments of admins and moderators by default', document: false do
+        do_request
+        assert_status 200
+        expect(json_response.dig(:data, :attributes, :series, :comments).stringify_keys).to eq({ @project.id => 7 })
+      end
+
+      example 'Comments by project excluding admins and moderators' do
+        enable_exclude_admins_and_moderators_from_statistics
+        do_request
+        assert_status 200
+        expect(json_response.dig(:data, :attributes, :series, :comments).stringify_keys).to eq({ @project.id => 2 })
+      end
+    end
+
+    get 'web_api/v1/stats/comments_by_project_as_xlsx' do
+      time_boundary_parameters self
+
+      context 'when admins and moderators are excluded from statistics' do
+        before { enable_exclude_admins_and_moderators_from_statistics }
+
+        example_request 'Comments by project excluding admins and moderators' do
+          assert_status 200
+          expect(xlsx_column_sum('comments')).to eq 2
+        end
+      end
+    end
+  end
 end

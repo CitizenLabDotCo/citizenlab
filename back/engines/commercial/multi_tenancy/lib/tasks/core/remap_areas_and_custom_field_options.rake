@@ -244,11 +244,8 @@ module RemapAreasTask
   def update_user_domicile(area_to_keep, area_to_merge, domicile_field)
     return unless domicile_field
 
-    User.where("custom_field_values->>'domicile' = ?", area_to_merge.id).each do |user|
-      user.custom_field_values['domicile'] = area_to_keep.id
-      user.save(validate: false)
-      stats[:users_updated] += 1
-    end
+    answers = CustomFieldAnswer.where(answerable_type: 'User', key: 'domicile').where("value #>> '{}' = ?", area_to_merge.id)
+    stats[:users_updated] += answers.update_all(value: area_to_keep.id)
   end
 
   def recalculate_followers_count

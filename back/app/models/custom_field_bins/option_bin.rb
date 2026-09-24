@@ -49,7 +49,7 @@ module CustomFieldBins
 
     def custom_field_option_value
       if custom_field.domicile?
-        # For the domicile the value stores in custom_field_values is the area
+        # For the domicile the answer value is the area
         # id, whereas the custom_field_option this bin is associated to is an
         # instance that is kept in sync between the area and the custom field
         # options through code in the `area` model

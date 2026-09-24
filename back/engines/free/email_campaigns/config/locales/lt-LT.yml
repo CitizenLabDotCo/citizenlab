@@ -186,6 +186,7 @@ lt-LT:
       manual_project_participants: Oficialūs pranešimai projekto dalyviams
       mention_in_internal_comment: Paminėjimas vidaus komentare
       mention_in_official_feedback: Paminėjimas atnaujinime
+      merge_account_confirmation: Paskyrų sujungimo patvirtinimo kodas
       moderator_digest: Savaitės apžvalga projektų vadovams
       native_survey_not_submitted: Nepateikta apklausa
       new_comment_for_admin: Naujas komentaras projekte, kurį moderuoju
@@ -477,6 +478,15 @@ lt-LT:
       preheader: '%{commentAuthor} paminėjo jus atsiliepimuose'
       subject: '%{organizationName} paminėjo jus savo atsiliepimuose'
       title: Buvote paminėtas
+    merge_account_confirmation:
+      best_regards: Pagarbiai,
+      event_description: 'Kažkas prisijungė prie „%{organizationName}“ dalyvavimo platformos ir paprašė susieti šį prisijungimą su paskyra, naudojančia šį el. pašto adresą. Jei tai buvote jūs, įveskite šį patvirtinimo kodą, kad tęstumėte:'
+      expire_code: Šio kodo galiojimo laikas baigsis po
+      hours_24: 24 valandos.
+      ignore_email: Jei tai buvote ne jūs, galite saugiai ignoruoti šį laišką. Nieko nebuvo pakeista, o šio kodo niekas negali panaudoti neturėdamas prieigos prie šios pašto dėžutės.
+      preheader: Patvirtinkite savo el. pašto adresą „%{organizationName}“
+      subject: Patvirtinkite savo el. pašto adresą „%{organizationName}“ dalyvavimo platformoje
+      title: Patvirtinkite savo el. pašto adresą
     moderator_digest:
       cta_button: Tvarkykite savo projektą
       event_description: Atrinkome jums informaciją, kuri per pastarąją savaitę sulaukė didžiausio susidomėjimo. Sužinokite, kas vyksta su jūsų projektu!

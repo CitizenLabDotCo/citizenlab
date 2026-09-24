@@ -50,7 +50,7 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :custom_field_values, if: PRIVATE do |object|
-    CustomFieldService.remove_hidden_custom_fields(object.custom_field_values)
+    CustomFieldService.remove_hidden_custom_fields(CustomFieldValuesTransitionService.new.custom_field_values(object))
   end
 
   attribute :unread_notifications, if: PRIVATE do |object|
@@ -66,6 +66,7 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :new_email, if: PRIVATE
+  attribute :merge_target_email, if: PRIVATE
 
   attribute :phone, if: PRIVATE
   attribute :phone_confirmed_at, if: PRIVATE

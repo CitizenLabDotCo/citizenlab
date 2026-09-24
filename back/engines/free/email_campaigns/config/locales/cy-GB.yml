@@ -186,6 +186,7 @@ cy-GB:
       manual_project_participants: Negeseuon swyddogol i gyfranogwyr y prosiect
       mention_in_internal_comment: Crybwyll mewn sylw mewnol
       mention_in_official_feedback: Soniwch mewn diweddariad
+      merge_account_confirmation: Cod cadarnhau uno cyfrifon
       moderator_digest: Trosolwg wythnosol ar gyfer rheolwyr prosiect
       native_survey_not_submitted: Arolwg heb ei gyflwyno
       new_comment_for_admin: Sylw newydd mewn prosiect dwi'n ei gymedroli
@@ -477,6 +478,15 @@ cy-GB:
       preheader: '%{commentAuthor} sôn amdanoch chi mewn adborth'
       subject: '%{organizationName} sôn amdanoch chi yn eu hadborth'
       title: Rydych chi wedi cael eich crybwyll
+    merge_account_confirmation:
+      best_regards: Cofion gorau,
+      event_description: "Mae rhywun wedi mewngofnodi i blatfform cyfranogi %{organizationName} ac wedi gofyn am gysylltu'r mewngofnodi hwnnw â'r cyfrif sy'n defnyddio'r cyfeiriad e-bost hwn. Os chi oedd hwnnw, nodwch y cod cadarnhau hwn i barhau:"
+      expire_code: Bydd y cod hwn yn dod i ben ymhen
+      hours_24: 24 awr.
+      ignore_email: "Os nad chi oedd hwn, gallwch anwybyddu'r e-bost hwn yn ddiogel. Nid oes dim wedi newid, ac ni all neb ddefnyddio'r cod hwn heb fynediad i'r mewnflwch hwn."
+      preheader: Cadarnhewch eich cyfeiriad e-bost ar gyfer %{organizationName}
+      subject: Cadarnhewch eich cyfeiriad e-bost ar gyfer platfform cyfranogi %{organizationName}
+      title: Cadarnhewch eich cyfeiriad e-bost
     moderator_digest:
       cta_button: Rheoli eich prosiect
       event_description: "Rydyn ni wedi curadu i chi'r mewnbwn sydd wedi creu'r gweithgaredd mwyaf dros yr wythnos ddiwethaf. Darganfyddwch beth sy'n digwydd gyda'ch prosiect!"

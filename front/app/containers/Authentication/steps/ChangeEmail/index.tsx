@@ -32,9 +32,9 @@ interface Props {
   onSubmit: (email: string) => Promise<void>;
 }
 
-// A minimal, email-only form for when the user has a pending new_email
-// (email_action_required is confirm_new_email) but wants to enter a different
-// one. It is deliberately separate from the built-in-fields step: that step is
+// A minimal, email-only form for when the user has a pending new_email or
+// merge_target_email (email_action_required is confirm_new_email or
+// confirm_merge_account) but wants to enter a different one. It is deliberately separate from the built-in-fields step: that step is
 // driven by the requirements, which here say "confirm", not "provide".
 const ChangeEmail = ({ state, loading, setError, onSubmit }: Props) => {
   const { data: authUser } = useAuthUser();
@@ -44,7 +44,10 @@ const ChangeEmail = ({ state, loading, setError, onSubmit }: Props) => {
     new_email: getEmailSchema(formatMessage),
   });
 
-  const newEmail = state.new_email ?? authUser?.data.attributes.new_email;
+  const newEmail =
+    state.new_email ??
+    authUser?.data.attributes.new_email ??
+    authUser?.data.attributes.merge_target_email;
 
   const methods = useForm<FormValues>({
     mode: 'onSubmit',
@@ -58,6 +61,13 @@ const ChangeEmail = ({ state, loading, setError, onSubmit }: Props) => {
     } catch (e: any) {
       if (e?.errors?.new_email?.[0]?.error === 'is already taken') {
         setError('email_taken_and_user_can_be_verified');
+        return;
+      }
+
+      // A `base` error belongs to no form field, so react-hook-form would record it
+      // against one that is never rendered and nothing would appear to happen.
+      if (e?.errors?.base) {
+        setError('unknown');
         return;
       }
 

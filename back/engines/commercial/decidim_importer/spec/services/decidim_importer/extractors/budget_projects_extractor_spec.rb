@@ -40,6 +40,9 @@ RSpec.describe DecidimImporter::Extractors::BudgetProjectsExtractor do
     expect(join.model_name).to eq('ideas_phase')
     expect(join.attributes['phase_ref']).to be(phase.attributes)
     expect(join.attributes['idea_ref']).to be(idea.attributes)
+
+    idea_import = ref_map.fetch('decidim--budgets--project--1-idea-import')
+    expect(idea_import.attributes['idea_ref']).to be(idea.attributes)
   end
 
   it 'maps a geocoded address to the idea’s location description and map pin' do

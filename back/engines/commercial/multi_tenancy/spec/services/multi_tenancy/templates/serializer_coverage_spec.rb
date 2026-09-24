@@ -83,6 +83,7 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         imported
         invite_status
         last_active_at
+        merge_target_email
         new_email
         new_phone
         onboarding
@@ -142,7 +143,6 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
       # Activity logs, telemetry and derived caches — runtime data, not content.
       tracking_and_caches: %w[
         Activity
-        CustomFieldAnswer
         IdeaExposure
         ImpactTracking::Pageview
         ImpactTracking::Salt

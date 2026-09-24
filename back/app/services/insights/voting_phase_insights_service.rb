@@ -1,7 +1,7 @@
 module Insights
   class VotingPhaseInsightsService < IdeationPhaseInsightsService
     def vote_counts_with_user_custom_field_grouping(custom_field = nil)
-      participations = phase_participations
+      participations = filtered_phase_participations
       voting_participations = participations[:voting]
       offline_votes = @phase.manual_votes_count
       online_votes = if @phase.voting_method == 'budgeting'
@@ -48,9 +48,14 @@ module Insights
     def idea_vote_counts_data(voting_participations, field, total_phase_votes)
       idea_ids_to_user_custom_field_values = idea_ids_to_user_custom_field_values(voting_participations)
       ideas = ideas_ordered_by_total_votes
+      # The cached vote counters of ideas include the votes of admins and moderators,
+      # so we count the votes of the (filtered) participations instead.
+      online_votes_by_idea_id = online_votes_by_idea_id(voting_participations) if exclude_admins_and_moderators?
 
-      ideas.map do |idea|
-        online_votes = if @phase.voting_method == 'budgeting'
+      data = ideas.map do |idea|
+        online_votes = if online_votes_by_idea_id
+          online_votes_by_idea_id[idea.id] || 0
+        elsif @phase.voting_method == 'budgeting'
           idea&.baskets_count || 0
         else
           idea&.votes_count || 0
@@ -71,6 +76,19 @@ module Insights
           percentage: a_as_percentage_of_b(total_votes, total_phase_votes),
           series: votes_demographics
         }
+      end
+
+      return data unless online_votes_by_idea_id
+
+      # Re-sort by the filtered totals, with the same tie-breakers as ideas_ordered_by_total_votes.
+      ideas_by_id = ideas.index_by(&:id)
+      data.sort_by { |row| [-row[:total_votes], ideas_by_id[row[:id]].created_at, row[:id]] }
+    end
+
+    # For budgeting, votes_per_idea counts each basket as one vote (a pick) per idea.
+    def online_votes_by_idea_id(voting_participations)
+      voting_participations.each_with_object(Hash.new(0)) do |participation, counts|
+        participation[:votes_per_idea].each { |idea_id, votes| counts[idea_id] += votes }
       end
     end
 
@@ -146,7 +164,7 @@ module Insights
             acted_at: basket.submitted_at,
             classname: 'Basket',
             participant_id: participant_id(basket.id, basket.user_id),
-            user_custom_field_values: basket.user&.custom_field_answers.to_h { [it.key, it.value] } || {},
+            user_custom_field_values: CustomFieldValuesTransitionService.new.custom_field_values(basket.user),
             total_votes: total_votes,
             ideas_count: basket.ideas.count,
             votes_per_idea: votes_per_idea
