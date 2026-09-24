@@ -320,7 +320,7 @@ jobs:
             - failed-templates.txt
 
   back-release-tenant-templates:
-    resource_class: small
+    resource_class: medium
     executor:
       name: cl2-back
       image-tag: amd64-$CIRCLE_SHA1
