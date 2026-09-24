@@ -1941,6 +1941,7 @@
   "app.containers.Admin.projects.project.placementTimeline": "Timeline",
   "app.containers.Admin.projects.project.placementTimelineDescription": "Runs as a phase, in the order you set.",
   "app.containers.Admin.projects.project.pollQuestions": "Poll questions",
+  "app.containers.Admin.projects.project.previewProject": "Preview the project page",
   "app.containers.Admin.projects.project.projectHomepage": "Project homepage",
   "app.containers.Admin.projects.project.projectPagePreviewTitle": "Project page preview",
   "app.containers.Admin.projects.project.projectSettings": "Project settings",
