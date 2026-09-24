@@ -22,9 +22,9 @@ const LinearScaleField = ({ question, scrollErrorIntoView }: Props) => {
   } = useFormContext();
 
   const name = question.key;
-  // Use watch() rather than field.value: Controller falls back to the value the
-  // field had when it mounted whenever the value is undefined, so clearing an
-  // answer on a revisited page would not show.
+  // field.value falls back to the value the field had when it first appeared
+  // whenever the answer is cleared, so the old answer stays selected.
+  // watch() always gives the real current value.
   const value = watch(name);
 
   const errors = formContextErrors[name] as RHFErrors;
