@@ -5,6 +5,8 @@
 # It makes it easier to understand what and when can happen to user.
 #
 class UserService
+  STORE_ACCESSOR_CUSTOM_FIELDS = %i[gender birthyear domicile].freeze
+
   class << self
     def upsert_in_web_api(new_or_existing_user, user_params, &)
       custom_field_values = user_params.delete(:custom_field_values)
@@ -61,7 +63,7 @@ class UserService
     # @param [IdMethods::Base] authver_method
     def update_in_sso!(user, auth, authver_method)
       attrs = authver_method.updateable_user_attrs
-      sso_user_attrs = authver_method.profile_to_user_attrs(auth)
+      sso_user_attrs = nest_custom_field_attrs(authver_method.profile_to_user_attrs(auth))
       user_params = with_known_custom_field_values(sso_user_attrs.slice(*attrs).compact)
       user_params.delete(:remote_avatar_url) if user.avatar.present? # don't overwrite avatar if already present
 
@@ -177,6 +179,20 @@ class UserService
     def build_user_confirmation(user)
       user.email_confirmed_at = Time.zone.now
       user.confirmation_required = false
+    end
+
+    # Custom fields that User also exposes as store accessors (gender, birthyear,
+    # domicile) may come back from an authver method as top-level attributes. Move them
+    # into custom_field_values, as that is the only key IdMethods::Base#updateable_user_attrs
+    # lets locked custom fields through with; the slice in #update_in_sso! would drop them
+    # otherwise. A top-level value wins over a nested one, as in #assign_merging_custom_fields.
+    def nest_custom_field_attrs(user_attrs)
+      top_level_values = user_attrs.slice(*STORE_ACCESSOR_CUSTOM_FIELDS).compact
+      return user_attrs if top_level_values.empty?
+
+      user_attrs.except(*STORE_ACCESSOR_CUSTOM_FIELDS).merge(
+        custom_field_values: user_attrs[:custom_field_values].to_h.stringify_keys.merge(top_level_values.stringify_keys)
+      )
     end
 
     # An identity provider can return values for fields this platform does not have.

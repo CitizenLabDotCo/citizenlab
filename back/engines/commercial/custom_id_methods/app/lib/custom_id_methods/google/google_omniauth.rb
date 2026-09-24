@@ -59,7 +59,7 @@ module CustomIdMethods::Google
         last_name: auth.info['last_name'],
         email: auth.info['email'],
         remote_avatar_url: remote_avatar_url(auth),
-        gender: auth.extra.raw_info.gender,
+        custom_field_values: { 'gender' => auth.extra.raw_info.gender }.compact,
         locale: AppConfiguration.instance.closest_locale_to(auth.extra.raw_info.locale)
       }
     end
