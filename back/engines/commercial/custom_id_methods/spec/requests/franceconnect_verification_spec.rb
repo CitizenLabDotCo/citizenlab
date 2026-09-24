@@ -182,7 +182,7 @@ context 'franceconnect verification' do
       follow_redirect!
 
       user = User.find_by(new_email: 'wossewodda-3728@yopmail.com')
-      expect(user.custom_field_values).to include('birthyear' => 1962, 'gender' => 'female')
+      expect(CustomFieldValuesTransitionService.new.custom_field_values(user)).to include('birthyear' => 1962, 'gender' => 'female')
     end
 
     it 'fills them in when verifying an existing user' do
@@ -191,7 +191,7 @@ context 'franceconnect verification' do
       get "/auth/franceconnect?sso_verification=true&token=#{token}&verification_pathname=/yipie"
       follow_redirect!
 
-      expect(user.reload.custom_field_values).to include('birthyear' => 1962, 'gender' => 'female')
+      expect(CustomFieldValuesTransitionService.new.custom_field_values(user.reload)).to include('birthyear' => 1962, 'gender' => 'female')
     end
   end
 
