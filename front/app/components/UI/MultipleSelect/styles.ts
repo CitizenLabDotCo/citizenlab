@@ -28,28 +28,37 @@ function getSelectStyles(theme: DefaultTheme, settings?: Settings) {
     input: (base) => ({
       ...base,
     }),
-    control: (base, { isFocused }) => ({
+    control: (base, { isFocused, isDisabled }) => ({
       ...base,
       fontSize: `${fontSize}px`,
       borderWidth: isFocused ? '2px' : '1px',
-      borderColor: isFocused
+      borderColor: isDisabled
+        ? '#ccc'
+        : isFocused
         ? theme.colors.tenantPrimary
         : `${colors.borderDark}`,
       borderRadius: stylingConsts.borderRadius,
       minHeight,
-      backgroundColor: '#fff',
+      // Matches the disabled style of defaultInputStyle (e.g. Input)
+      backgroundColor: isDisabled ? '#f9f9f9' : '#fff',
       boxShadow: 'none',
       cursor: 'pointer',
       '&:hover': {
-        borderColor: `${theme.colors.tenantPrimary}`,
+        borderColor: isDisabled ? '#ccc' : `${theme.colors.tenantPrimary}`,
       },
+    }),
+    singleValue: (base, { isDisabled }) => ({
+      ...base,
+      color: isDisabled ? '#666' : base.color,
     }),
     indicatorSeparator: () => ({
       display: 'none',
     }),
-    dropdownIndicator: (base, { isFocused }) => ({
+    dropdownIndicator: (base, { isFocused, isDisabled }) => ({
       ...base,
-      color: isFocused
+      color: isDisabled
+        ? '#ccc'
+        : isFocused
         ? `${theme.colors.tenantPrimary}`
         : `${colors.borderDark}`,
       '&:hover': {
