@@ -4,6 +4,10 @@
 # which serializes form fields (options and matrix statements inlined).
 class McpServer::Serializers::UserCustomField < McpServer::Serializers::Base
   def attributes(record)
-    record.slice(:id, :title_multiloc, :input_type, :code, :required)
+    attrs = record.slice(:id, :title_multiloc, :input_type, :code, :required)
+    return attrs unless record.input_type == 'select'
+
+    # Options (with their keys) are needed to key a categorical reference distribution.
+    attrs.merge(options: record.options.map { |option| { key: option.key, title_multiloc: option.title_multiloc } })
   end
 end

@@ -99,6 +99,7 @@ module McpServer
       McpServer::Tools::CreatePhase,
       McpServer::Tools::CreateEvent,
       McpServer::Tools::CreateArea,
+      McpServer::Tools::SetReferenceDistribution,
       McpServer::Tools::CreateCause,
       McpServer::Tools::CreatePollQuestion,
       McpServer::Tools::CreatePollOption,
