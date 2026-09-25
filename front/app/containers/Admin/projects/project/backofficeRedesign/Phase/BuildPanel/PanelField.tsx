@@ -9,13 +9,7 @@ interface Props {
 
 const PanelField = ({ label, children }: Props) => (
   <Box mb="16px">
-    <Text
-      fontSize="s"
-      fontWeight="semi-bold"
-      color="textPrimary"
-      m="0"
-      mb="8px"
-    >
+    <Text variant="bo-section" mb="8px">
       {label}
     </Text>
     {children}

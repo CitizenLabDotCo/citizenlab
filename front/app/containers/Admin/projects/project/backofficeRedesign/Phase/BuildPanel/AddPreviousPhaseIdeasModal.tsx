@@ -35,7 +35,7 @@ const AddPreviousPhaseIdeasModal = ({
       header={formatMessage(messages.addIdeasFromPreviousPhase)}
     >
       <Box p="24px">
-        <Text mt="0" color="textSecondary">
+        <Text variant="bo-helper" mb="16px">
           {formatMessage(messages.addIdeasFromPreviousPhaseDescription)}
         </Text>
         <InputManager

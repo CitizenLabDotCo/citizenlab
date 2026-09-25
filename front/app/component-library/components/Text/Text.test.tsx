@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { colors, fontSizes } from '../../utils/styleUtils';
+import { bo, colors, fontSizes } from '../../utils/styleUtils';
 import { render, screen } from '../../utils/testUtils/rtl';
 
 import Text from '.';
@@ -122,5 +122,66 @@ describe('<Text />', () => {
     const text = container.querySelector('p');
 
     expect(text).toHaveStyle(`margin-bottom: 2px;`);
+  });
+
+  // The back office type hierarchy pins these, so they are worth failing a
+  // build over: https://govocal.augur.page/ux-ui-audit/design-system/#type
+  describe('back office roles', () => {
+    it('renders bo-section at 14/500 heading-strong', () => {
+      render(<Text variant="bo-section">Tags</Text>);
+
+      expect(screen.getByText('Tags')).toHaveStyle({
+        'font-size': `${fontSizes.s}px`,
+        'font-weight': '500',
+        color: bo.colors.textHeadingStrong,
+      });
+    });
+
+    it('renders bo-label one weight below, at 14/400', () => {
+      render(<Text variant="bo-label">Public</Text>);
+
+      expect(screen.getByText('Public')).toHaveStyle({
+        'font-size': `${fontSizes.s}px`,
+        'font-weight': '400',
+        color: bo.colors.textHeading,
+      });
+    });
+
+    it('renders bo-helper one colour below the label, at 14/400', () => {
+      render(<Text variant="bo-helper">Help residents</Text>);
+
+      expect(screen.getByText('Help residents')).toHaveStyle({
+        'font-size': `${fontSizes.s}px`,
+        'font-weight': '400',
+        color: colors.coolGrey600,
+      });
+    });
+
+    it('renders bo-micro at 12/400', () => {
+      render(<Text variant="bo-micro">max 10 MB</Text>);
+
+      expect(screen.getByText('max 10 MB')).toHaveStyle({
+        'font-size': `${fontSizes.xs}px`,
+        'font-weight': '400',
+      });
+    });
+
+    it('lets a state colour override the role colour', () => {
+      render(
+        <Text variant="bo-helper" color="error">
+          Cannot be undone
+        </Text>
+      );
+
+      expect(screen.getByText('Cannot be undone')).toHaveStyle({
+        color: colors.error,
+      });
+    });
+
+    it('carries no margin, unlike the body variants', () => {
+      render(<Text variant="bo-label">Public</Text>);
+
+      expect(screen.getByText('Public')).toHaveStyle({ margin: '0' });
+    });
   });
 });

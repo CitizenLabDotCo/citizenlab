@@ -20,10 +20,9 @@ const BackToProjectSetup = ({ projectId }: Props) => {
       <ButtonWithLink
         to="/admin/projects/$projectId"
         params={{ projectId }}
-        buttonStyle="text"
+        buttonStyle="bo-text"
         icon="chevron-left"
-        size="s"
-        padding="4px 8px"
+        padding="0 8px"
         justify="left"
       >
         {formatMessage(messages.backToProjectSetup)}

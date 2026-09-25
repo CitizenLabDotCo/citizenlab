@@ -22,8 +22,7 @@ const EditAccessButton = ({ phaseId }: Props) => {
     <>
       <Box display="flex" py="16px">
         <Button
-          buttonStyle="secondary-outlined"
-          size="s"
+          buttonStyle="bo-secondary"
           width="auto"
           onClick={() => setOpened(true)}
         >
@@ -38,7 +37,7 @@ const EditAccessButton = ({ phaseId }: Props) => {
         header={formatMessage(messages.editAccess)}
       >
         <Box p="24px">
-          <Text mt="0" color="textSecondary">
+          <Text variant="bo-helper" mb="16px">
             {formatMessage(messages.editAccessDescription)}
           </Text>
           <ActionForms phaseId={phaseId} />

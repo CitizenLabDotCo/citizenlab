@@ -5,6 +5,7 @@ import styled, { css } from 'styled-components';
 
 import {
   MainThemeProps,
+  bo,
   colors,
   fontSizes,
   isRtl,
@@ -24,7 +25,16 @@ import Box, {
   BoxProps,
 } from '../Box';
 
-type Variant = 'bodyL' | 'bodyM' | 'bodyS' | 'bodyXs';
+type Variant =
+  | 'bodyL'
+  | 'bodyM'
+  | 'bodyS'
+  | 'bodyXs'
+  | 'bo-section'
+  | 'bo-label'
+  | 'bo-helper'
+  | 'bo-micro';
+
 type FontSize = keyof typeof fontSizes;
 type FontStyle = 'italic' | 'normal';
 type TextDecoration = string;
@@ -45,6 +55,61 @@ type TextAlign =
   | 'inherit';
 
 type WordBreak = 'normal' | 'break-all' | 'keep-all' | 'break-word';
+
+type Role = {
+  fontSize: number;
+  fontWeight: number;
+  lineHeight: number;
+  color: string;
+};
+
+// The back office type hierarchy. Unlike the body variants, a role also pins
+// the weight and the colour: https://govocal.augur.page/ux-ui-audit/design-system/#type
+const BO_ROLES: Partial<Record<Variant, Role>> = {
+  'bo-section': {
+    fontSize: fontSizes.s,
+    fontWeight: 500,
+    lineHeight: 1.4,
+    color: bo.colors.textHeadingStrong,
+  },
+  'bo-label': {
+    fontSize: fontSizes.s,
+    fontWeight: 400,
+    lineHeight: 1.4,
+    color: bo.colors.textHeading,
+  },
+  'bo-helper': {
+    fontSize: fontSizes.s,
+    fontWeight: 400,
+    lineHeight: 1.4,
+    color: colors.coolGrey600,
+  },
+  'bo-micro': {
+    fontSize: fontSizes.xs,
+    fontWeight: 400,
+    lineHeight: 1.4,
+    color: colors.coolGrey600,
+  },
+};
+
+const roleCSS = ({
+  variant,
+  color,
+  fontSize,
+  fontWeight,
+  lineHeight,
+  theme,
+}: TextProps & { theme: MainThemeProps }) => {
+  const role = variant ? BO_ROLES[variant] : undefined;
+  if (!role) return '';
+
+  return `
+    font-size: ${fontSize ? fontSizes[fontSize] : role.fontSize}px;
+    font-weight: ${fontWeight ? getFontWeightCSS(fontWeight) : role.fontWeight};
+    line-height: ${lineHeight || role.lineHeight};
+    color: ${color ? theme.colors[color] : role.color};
+  `;
+};
 
 export type TextProps = {
   variant?: Variant;
@@ -120,6 +185,7 @@ const StyledText = styled(Box)<BoxProps & TextProps>`
           font-size: ${fontSize ? fontSizes[fontSize] : fontSizes.xs}px;
         `
       : ''}
+    ${roleCSS({ variant, color, fontSize, fontWeight, lineHeight, theme })}
   `}
 `;
 
@@ -132,7 +198,9 @@ const Text: React.FC<TextProps> = ({
   fontWeight,
   ...props
 }) => {
-  const mb = props.mb || props.my || props.m || '16px';
+  // A back office role brings its own spacing; the body variants keep theirs.
+  const role = BO_ROLES[variant];
+  const mb = props.mb || props.my || props.m || (role ? '0' : '16px');
 
   return (
     <StyledText
@@ -141,6 +209,7 @@ const Text: React.FC<TextProps> = ({
       as={as || 'p'}
       fontSize={fontSize}
       fontWeight={fontWeight}
+      m={role ? '0' : undefined}
       mb={mb}
       {...props}
     >

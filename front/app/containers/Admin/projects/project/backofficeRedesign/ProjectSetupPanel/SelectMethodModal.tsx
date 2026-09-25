@@ -48,7 +48,7 @@ const SelectMethodModal = ({ projectId, opened, onClose }: Props) => {
       footer={
         <Box display="flex" justifyContent="flex-end" width="100%">
           <ButtonWithLink
-            buttonStyle="admin-dark"
+            buttonStyle="bo-primary"
             to="/admin/projects/$projectId/phases/new"
             params={{ projectId }}
             search={
@@ -64,7 +64,7 @@ const SelectMethodModal = ({ projectId, opened, onClose }: Props) => {
     >
       <PlacementTabs selected={placement} onSelect={setPlacement} />
       <Box p="24px">
-        <Text mt="0" mb="16px" color="textSecondary">
+        <Text variant="bo-helper" mb="16px">
           {formatMessage(
             standalone
               ? messages.placementStandaloneDescription

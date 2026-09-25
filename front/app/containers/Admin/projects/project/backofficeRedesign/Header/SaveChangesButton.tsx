@@ -16,9 +16,7 @@ const SaveChangesButton = () => {
 
   return (
     <Button
-      buttonStyle="admin-dark"
-      size="s"
-      padding="4px 8px"
+      buttonStyle="bo-primary"
       width="auto"
       disabled={!phaseSave.dirty}
       processing={phaseSave.saving}

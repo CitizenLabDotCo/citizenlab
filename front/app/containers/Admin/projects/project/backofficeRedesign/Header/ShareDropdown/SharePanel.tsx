@@ -84,11 +84,11 @@ const SharePanel = ({ project, linkCopied, onLinkCopied }: Props) => {
 
   return (
     <Box>
-      <Text m="0 0 16px 0" fontSize="m" color="teal500">
+      <Text variant="bo-section" mb="16px">
         {formatMessage(projectHeaderMessages.shareTitle)}
       </Text>
 
-      <Text m="0 0 4px 0" fontSize="s" color="textSecondary">
+      <Text variant="bo-section" mb="4px">
         {formatMessage(messages.shareInvitePeople)}
       </Text>
       <Box display="flex" gap="8px" alignItems="flex-start">
@@ -102,7 +102,7 @@ const SharePanel = ({ project, linkCopied, onLinkCopied }: Props) => {
           />
         </Box>
         <Button
-          buttonStyle="admin-dark"
+          buttonStyle="bo-primary"
           onClick={handleInvite}
           processing={isInviting}
           disabled={splitEmails(invitees).length === 0}
@@ -111,7 +111,7 @@ const SharePanel = ({ project, linkCopied, onLinkCopied }: Props) => {
         </Button>
       </Box>
 
-      <Text m="16px 0 0 0" fontSize="s" color="textSecondary">
+      <Text variant="bo-section" mt="16px">
         {formatMessage(messages.sharePeopleWithAccess)}
       </Text>
       <Box
@@ -133,7 +133,7 @@ const SharePanel = ({ project, linkCopied, onLinkCopied }: Props) => {
 
       <Divider />
 
-      <Text m="0 0 12px 0" fontSize="s" color="textSecondary">
+      <Text variant="bo-helper" mb="12px">
         {formatMessage(messages.sharePreviewExplanation)}
       </Text>
       <Tooltip
@@ -142,7 +142,7 @@ const SharePanel = ({ project, linkCopied, onLinkCopied }: Props) => {
         width="100%"
       >
         <Button
-          buttonStyle="secondary-outlined"
+          buttonStyle="bo-secondary"
           icon={linkCopied ? 'check-circle' : 'link'}
           iconColor={linkCopied ? colors.success : undefined}
           onClick={handleCopyPreviewLink}

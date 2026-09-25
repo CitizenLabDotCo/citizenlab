@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 
-import { Box, Button, Title } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  Title,
+  Tooltip,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 import { IProjectData } from 'api/projects/types';
 
@@ -14,7 +20,7 @@ import GetStarted from './GetStarted';
 import NextActions from './NextActions';
 import ProjectSettingsModal from './ProjectSettingsModal';
 import SectionLinks from './SectionLinks';
-import SetupFields from './SetupFields';
+import SetupDropdowns from './SetupDropdowns';
 
 interface Props {
   project: IProjectData;
@@ -36,17 +42,25 @@ const ProjectSetupPanel = ({ project, onOpenDropdown }: Props) => {
   return (
     <Box p="20px" display="flex" flexDirection="column" gap="20px">
       <Box display="flex" alignItems="center" justifyContent="space-between">
-        <Title variant="h4" m="0">
+        <Title variant="h4" fontSize="s" fontWeight="semi-bold" m="0">
           {formatMessage(messages.projectSetupPanel)}
         </Title>
-        <Button
-          buttonStyle="secondary-outlined"
-          size="s"
-          padding="4px 8px"
-          onClick={openSettings}
+        <Tooltip
+          content={formatMessage(messages.projectSettings)}
+          theme="dark"
+          placement="bottom"
         >
-          {formatMessage(messages.projectSettings)}
-        </Button>
+          <Button
+            buttonStyle="bo-text"
+            icon="settings"
+            width="36px"
+            padding="0"
+            bgHoverColor={colors.grey100}
+            iconHoverColor={colors.textPrimary}
+            ariaLabel={formatMessage(messages.projectSettings)}
+            onClick={openSettings}
+          />
+        </Tooltip>
       </Box>
 
       {published ? (
@@ -59,7 +73,7 @@ const ProjectSetupPanel = ({ project, onOpenDropdown }: Props) => {
         />
       )}
 
-      <SetupFields project={project} />
+      <SetupDropdowns project={project} />
 
       <SectionLinks projectId={project.id} />
 

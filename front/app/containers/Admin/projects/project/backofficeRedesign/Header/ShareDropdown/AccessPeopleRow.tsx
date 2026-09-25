@@ -36,18 +36,16 @@ const AccessPeopleRow = ({ user, isAuthUser }: Props) => {
     <Box display="flex" alignItems="center" gap="12px" py="8px">
       <Avatar userId={user.id} size={36} />
       <Box flex="1 1 auto" minWidth="0">
-        <Text m="0" fontSize="s" color="textPrimary">
+        <Text variant="bo-label">
           {isInvitePending ? email : name}
           {isAuthUser && (
-            <Text as="span" ml="4px" fontSize="s" color="textSecondary">
+            <Text variant="bo-helper" as="span" ml="4px">
               {formatMessage(messages.shareYou)}
             </Text>
           )}
         </Text>
       </Box>
-      <Text m="0" fontSize="s" color="textSecondary">
-        {formatMessage(roleMessage)}
-      </Text>
+      <Text variant="bo-helper">{formatMessage(roleMessage)}</Text>
     </Box>
   );
 };

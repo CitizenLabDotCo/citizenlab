@@ -15,49 +15,15 @@ import useProjectPublicationRecipientCount from 'api/project_publication_recipie
 import { IProjectData, Visibility } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
+import OptionRow from 'components/UI/OptionRow';
+
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
+import { FIND_OPTIONS, OPEN_OPTIONS } from '../../_shared/visibilityOptions';
 import messages from '../../messages';
 
 import { ConfirmableStatus } from './ConfirmStatusChangeModal';
-import OptionRow from './OptionRow';
 import getPublicationState, { PublicationState } from './publicationState';
-
-const FIND_OPTIONS = [
-  {
-    listed: true,
-    icon: 'eye',
-    label: messages.publishFindPublic,
-    description: messages.publishFindPublicDescription,
-  },
-  {
-    listed: false,
-    icon: 'eye-off',
-    label: messages.publishFindPrivate,
-    description: messages.publishFindPrivateDescription,
-  },
-] as const;
-
-const OPEN_OPTIONS = [
-  {
-    visibleTo: 'public',
-    icon: 'users',
-    label: messages.publishOpenEveryone,
-    description: messages.publishOpenEveryoneDescription,
-  },
-  {
-    visibleTo: 'admins',
-    icon: 'lock',
-    label: messages.publishOpenAdmins,
-    description: messages.publishOpenAdminsDescription,
-  },
-  {
-    visibleTo: 'groups',
-    icon: 'lock',
-    label: messages.publishOpenGroups,
-    description: messages.publishOpenGroupsDescription,
-  },
-] as const;
 
 const HEADER_MESSAGES: Record<PublicationState, MessageDescriptor> = {
   published: messages.publishStatePublished,
@@ -150,38 +116,42 @@ const PublishPanel = ({
 
   return (
     <Box>
-      <Text m="0 0 12px 0" fontSize="m" color="teal500">
+      <Text variant="bo-section" mb="12px">
         {header}
       </Text>
 
-      <Text m="0 0 4px 0" fontSize="xs" color="textSecondary">
+      <Text variant="bo-section" mb="4px">
         {formatMessage(messages.publishWhoCanFind)}
       </Text>
       <Box role="radiogroup" display="flex" flexDirection="column">
-        {FIND_OPTIONS.map((option) => (
-          <OptionRow
-            key={String(option.listed)}
-            icon={option.icon}
-            label={option.label}
-            description={option.description}
-            selected={listed === option.listed}
-            onClick={() => setListed(option.listed)}
-          />
-        ))}
+        {FIND_OPTIONS.map((option) => {
+          const optionListed = option.value === 'listed';
+
+          return (
+            <OptionRow
+              key={option.value}
+              icon={option.icon}
+              label={formatMessage(option.label)}
+              description={formatMessage(option.description)}
+              selected={listed === optionListed}
+              onClick={() => setListed(optionListed)}
+            />
+          );
+        })}
       </Box>
 
-      <Text m="12px 0 4px 0" fontSize="xs" color="textSecondary">
+      <Text variant="bo-section" mt="12px" mb="4px">
         {formatMessage(messages.publishWhoCanOpen)}
       </Text>
       <Box role="radiogroup" display="flex" flexDirection="column">
         {OPEN_OPTIONS.map((option) => (
           <OptionRow
-            key={option.visibleTo}
+            key={option.value}
             icon={option.icon}
-            label={option.label}
-            description={option.description}
-            selected={visible_to === option.visibleTo}
-            onClick={() => setVisibleTo(option.visibleTo)}
+            label={formatMessage(option.label)}
+            description={formatMessage(option.description)}
+            selected={visible_to === option.value}
+            onClick={() => setVisibleTo(option.value)}
           />
         ))}
       </Box>
@@ -194,7 +164,7 @@ const PublishPanel = ({
         alignItems="center"
         gap="12px"
       >
-        <Text m="0" fontSize="s" color="textPrimary">
+        <Text variant="bo-label">
           {formatMessage(messages.publishSendEmail)}
         </Text>
         <Tooltip
@@ -209,7 +179,7 @@ const PublishPanel = ({
         </Tooltip>
       </Box>
       {count !== undefined && (
-        <Text m="4px 0 0 0" fontSize="xs" color="textSecondary">
+        <Text variant="bo-micro" mt="4px">
           {formatMessage(messages.publishEmailRecipients, { count })}
         </Text>
       )}
@@ -226,8 +196,7 @@ const PublishPanel = ({
           <>
             <Box flex="1">
               <Button
-                buttonStyle="secondary-outlined"
-                size="s"
+                buttonStyle="bo-secondary"
                 width="100%"
                 onClick={() => onConfirmStatusChange('draft')}
               >
@@ -236,8 +205,7 @@ const PublishPanel = ({
             </Box>
             <Box flex="1">
               <Button
-                buttonStyle="secondary-outlined"
-                size="s"
+                buttonStyle="bo-secondary"
                 width="100%"
                 onClick={() => onConfirmStatusChange('archived')}
               >
@@ -250,8 +218,7 @@ const PublishPanel = ({
         {publicationState === 'archived' && (
           <Box flex="1">
             <Button
-              buttonStyle="secondary-outlined"
-              size="s"
+              buttonStyle="bo-secondary"
               width="100%"
               onClick={() => onConfirmStatusChange('draft')}
             >
@@ -262,24 +229,28 @@ const PublishPanel = ({
 
         {isDraftOrScheduled && (
           <>
-            <Button
-              buttonStyle="secondary-outlined"
-              size="s"
-              icon="calendar"
-              onClick={onSchedule}
-            >
-              {formatMessage(messages.publishSchedule)}
-            </Button>
-            <Button
-              buttonStyle="admin-dark"
-              size="s"
-              icon="send"
-              onClick={publishNow}
-              processing={isPending}
-              id="e2e-publish-now"
-            >
-              {formatMessage(messages.publishNow)}
-            </Button>
+            <Box flex="1">
+              <Button
+                buttonStyle="bo-secondary"
+                width="100%"
+                icon="calendar"
+                onClick={onSchedule}
+              >
+                {formatMessage(messages.publishSchedule)}
+              </Button>
+            </Box>
+            <Box flex="1">
+              <Button
+                buttonStyle="bo-primary"
+                width="100%"
+                icon="send"
+                onClick={publishNow}
+                processing={isPending}
+                id="e2e-publish-now"
+              >
+                {formatMessage(messages.publishNow)}
+              </Button>
+            </Box>
           </>
         )}
       </Box>

@@ -21,17 +21,17 @@ const ResetSection = ({ projectId }: Props) => {
 
   return (
     <Box>
-      <Title variant="h3" m="0 0 8px 0">
+      <Text variant="bo-section" mb="8px">
         {formatMessage(dataMessages.dataTitle)}
-      </Title>
-      <Text m="0 0 4px 0" color="textSecondary">
+      </Text>
+      <Text variant="bo-helper" mb="4px">
         {formatMessage(dataMessages.dataDescription)}
       </Text>
-      <Text m="0 0 16px 0" color="error">
+      <Text variant="bo-helper" color="error" mb="16px">
         {formatMessage(dataMessages.confirmationDescription)}
       </Text>
       <Button
-        buttonStyle="delete"
+        buttonStyle="bo-delete"
         width="auto"
         onClick={() => setConfirmOpened(true)}
         id="e2e-reset-participation-data"
@@ -44,20 +44,26 @@ const ResetSection = ({ projectId }: Props) => {
         close={() => setConfirmOpened(false)}
         ariaLabelledBy="reset-participation-data-title"
       >
-        <Title id="reset-participation-data-title" variant="h3">
+        <Title
+          id="reset-participation-data-title"
+          variant="h4"
+          fontWeight="semi-bold"
+        >
           {formatMessage(dataMessages.confirmationTitle)}
         </Title>
-        <Text>{formatMessage(dataMessages.confirmationDescription)}</Text>
+        <Text variant="bo-helper" mb="16px">
+          {formatMessage(dataMessages.confirmationDescription)}
+        </Text>
         <Box display="flex" justifyContent="flex-end" gap="12px">
           <Button
-            buttonStyle="secondary-outlined"
+            buttonStyle="bo-secondary"
             width="auto"
             onClick={() => setConfirmOpened(false)}
           >
             {formatMessage(dataMessages.confirmationNo)}
           </Button>
           <Button
-            buttonStyle="delete"
+            buttonStyle="bo-delete"
             width="auto"
             processing={isPending}
             onClick={() =>

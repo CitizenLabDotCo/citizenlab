@@ -53,11 +53,11 @@ const UnsavedChangesGuard = () => {
       header={formatMessage(messages.unsavedChangesTitle)}
       footer={
         <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">
-          <Button buttonStyle="secondary-outlined" onClick={blocker.reset}>
+          <Button buttonStyle="bo-secondary" onClick={blocker.reset}>
             {formatMessage(messages.unsavedChangesCancel)}
           </Button>
           <Button
-            buttonStyle="secondary-outlined"
+            buttonStyle="bo-secondary"
             onClick={() => {
               phaseSave.discardAll();
               proceed();
@@ -66,7 +66,7 @@ const UnsavedChangesGuard = () => {
             {formatMessage(messages.discardChanges)}
           </Button>
           <Button
-            buttonStyle="admin-dark"
+            buttonStyle="bo-primary"
             processing={phaseSave.saving}
             onClick={handleSave}
           >
@@ -76,7 +76,9 @@ const UnsavedChangesGuard = () => {
       }
     >
       <Box p="24px">
-        <Text m="0">{formatMessage(messages.unsavedChangesDescription)}</Text>
+        <Text variant="bo-helper">
+          {formatMessage(messages.unsavedChangesDescription)}
+        </Text>
       </Box>
     </Modal>
   );

@@ -3,6 +3,7 @@ import React, { ReactNode, useRef } from 'react';
 import {
   Box,
   Button,
+  ButtonStyles,
   Dropdown,
   IconNames,
 } from '@citizenlab/cl2-component-library';
@@ -13,6 +14,7 @@ interface Props {
   opened: boolean;
   onOpenChange: (opened: boolean) => void;
   label: ReactNode;
+  buttonStyle: ButtonStyles;
   icon?: IconNames;
   id: string;
   width: string;
@@ -23,6 +25,7 @@ const HeaderDropdown = ({
   opened,
   onOpenChange,
   label,
+  buttonStyle,
   icon,
   id,
   width,
@@ -39,12 +42,9 @@ const HeaderDropdown = ({
     <Box position="relative">
       <Box ref={triggerRef} display="inline-block">
         <Button
-          buttonStyle="admin-dark"
-          size="s"
-          padding="4px 8px"
+          buttonStyle={buttonStyle}
           icon={icon}
           iconPos="right"
-          iconSize="16px"
           onClick={() => onOpenChange(!opened)}
           id={id}
         >

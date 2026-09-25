@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Button, Divider, Text } from '@citizenlab/cl2-component-library';
+import { Box, Divider, Button, Text } from '@citizenlab/cl2-component-library';
 
 import useAddCause from 'api/causes/useAddCause';
 import useCauses from 'api/causes/useCauses';
@@ -47,24 +47,21 @@ const CausesSection = ({ phaseId }: Props) => {
     <>
       <Divider />
       <PanelField label={formatMessage(messages.causesSection)}>
-        <Text fontSize="s" color="textSecondary" mt="0" mb="12px">
+        <Text variant="bo-helper" mb="12px">
           {formatMessage(messages.causesSectionDescription)}
         </Text>
         {causes && causes.data.length > 0 && (
           <Box as="ul" pl="20px" mt="0" mb="12px">
             {causes.data.map((cause) => (
               <li key={cause.id}>
-                <Text fontSize="s" my="2px">
+                <Text variant="bo-label" my="2px">
                   <T value={cause.attributes.title_multiloc} />
                 </Text>
               </li>
             ))}
           </Box>
         )}
-        <Button
-          buttonStyle="secondary-outlined"
-          onClick={() => setOpened(true)}
-        >
+        <Button buttonStyle="bo-secondary" onClick={() => setOpened(true)}>
           {formatMessage(volunteeringMessages.addCauseButton)}
         </Button>
       </PanelField>
@@ -76,7 +73,7 @@ const CausesSection = ({ phaseId }: Props) => {
         header={formatMessage(volunteeringMessages.newCauseTitle)}
       >
         <Box p="24px">
-          <Text mt="0" color="textSecondary">
+          <Text variant="bo-helper" mb="16px">
             {formatMessage(volunteeringMessages.newCauseSubtitle)}
           </Text>
           <CauseForm onSubmit={handleSubmit} submitPlacement="inline" />

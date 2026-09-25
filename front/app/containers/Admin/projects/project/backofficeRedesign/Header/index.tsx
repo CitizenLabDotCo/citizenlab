@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, Tooltip, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
@@ -89,6 +89,8 @@ const WorkspaceHeader = ({
           breadcrumbs={crumbs}
           icon="folder-outline"
           separator="chevron"
+          fontSize="s"
+          highlightCurrentPage
         />
       </CrumbBar>
 
@@ -111,14 +113,23 @@ const WorkspaceHeader = ({
         gap="10px"
       >
         {(phase || draftLabel) && <SaveChangesButton />}
-        <ButtonWithLink
-          to="/projects/$slug"
-          params={{ slug: project.attributes.slug }}
-          buttonStyle="secondary-outlined"
-          icon="eye"
-          size="s"
-          padding="4px 8px"
-        />
+        <Tooltip
+          content={formatMessage(messages.previewProject)}
+          theme="dark"
+          placement="bottom"
+        >
+          <ButtonWithLink
+            to="/projects/$slug"
+            params={{ slug: project.attributes.slug }}
+            buttonStyle="bo-text"
+            icon="eye"
+            width="36px"
+            padding="0"
+            bgHoverColor={colors.grey100}
+            iconHoverColor={colors.textPrimary}
+            ariaLabel={formatMessage(messages.previewProject)}
+          />
+        </Tooltip>
         <ShareDropdown
           project={project}
           opened={openDropdown === 'share'}

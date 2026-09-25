@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Button, Divider, Text } from '@citizenlab/cl2-component-library';
+import { Box, Divider, Button, Text } from '@citizenlab/cl2-component-library';
 
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 import { ParticipationMethod } from 'api/phases/types';
@@ -55,13 +55,13 @@ const FormSection = ({ projectId, participationMethod, phaseId }: Props) => {
         )}
       >
         {!phaseId && (
-          <Text fontSize="s" color="textSecondary" mt="0" mb="12px">
+          <Text variant="bo-helper" mb="12px">
             {formatMessage(messages.saveToEditForm)}
           </Text>
         )}
         {phaseId && permissions && !asksParticipants ? (
           <ButtonWithLink
-            buttonStyle="secondary-outlined"
+            buttonStyle="bo-secondary"
             to={
               survey
                 ? '/admin/projects/$projectId/phases/$phaseId/survey-form/edit'
@@ -73,7 +73,7 @@ const FormSection = ({ projectId, participationMethod, phaseId }: Props) => {
           </ButtonWithLink>
         ) : (
           <Button
-            buttonStyle="secondary-outlined"
+            buttonStyle="bo-secondary"
             disabled={!phaseId || !permissions}
             onClick={() => setQuestionsModalOpened(true)}
           >
@@ -82,7 +82,7 @@ const FormSection = ({ projectId, participationMethod, phaseId }: Props) => {
         )}
         {participationMethod === 'voting' && (
           <Button
-            buttonStyle="secondary-outlined"
+            buttonStyle="bo-secondary"
             mt="8px"
             disabled={!phaseId}
             onClick={() => setIdeasModalOpened(true)}
@@ -112,12 +112,11 @@ const FormSection = ({ projectId, participationMethod, phaseId }: Props) => {
       )}
 
       <Button
-        buttonStyle="text"
+        buttonStyle="bo-text"
         justify="space-between"
         icon="chevron-right"
         iconPos="right"
-        iconSize="16px"
-        px="0"
+        padding="0"
         disabled={!phaseId}
         onClick={() => setImportModalOpened(true)}
       >

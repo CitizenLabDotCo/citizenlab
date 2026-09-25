@@ -70,22 +70,18 @@ const ConfirmStatusChangeModal = ({
     <Modal
       opened={opened}
       close={onClose}
-      header={
-        <Text fontSize="xl" fontWeight="bold" m="0px">
-          {formatMessage(copy.title)}
-        </Text>
-      }
+      header={formatMessage(copy.title)}
       footer={
         <Box display="flex" justifyContent="flex-end" gap="8px" w="100%">
           <Button
-            buttonStyle="secondary-outlined"
+            buttonStyle="bo-secondary"
             onClick={onClose}
             disabled={isPending}
           >
             {formatMessage(messages.publishCancel)}
           </Button>
           <Button
-            buttonStyle="admin-dark"
+            buttonStyle="bo-primary"
             onClick={confirm}
             processing={isPending}
           >
@@ -95,9 +91,7 @@ const ConfirmStatusChangeModal = ({
       }
     >
       <Box p="28px">
-        <Text m="0" color="textPrimary">
-          {formatMessage(body)}
-        </Text>
+        <Text variant="bo-helper">{formatMessage(body)}</Text>
       </Box>
     </Modal>
   );

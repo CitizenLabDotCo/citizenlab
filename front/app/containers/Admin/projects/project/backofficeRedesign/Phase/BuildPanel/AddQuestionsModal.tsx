@@ -58,7 +58,7 @@ const AddQuestionsModal = ({
       footer={
         <Box display="flex" justifyContent="flex-end" width="100%">
           <ButtonWithLink
-            buttonStyle="admin-dark"
+            buttonStyle="bo-primary"
             to={
               survey
                 ? '/admin/projects/$projectId/phases/$phaseId/survey-form/edit'

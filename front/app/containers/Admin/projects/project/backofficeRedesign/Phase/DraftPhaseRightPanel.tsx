@@ -45,7 +45,7 @@ const DraftPhaseRightPanel = ({
         />
       )}
 
-      <Text fontSize="s" color="textSecondary">
+      <Text variant="bo-helper">
         {formatMessage(messages.saveToEditSettings)}
       </Text>
     </PanelSettings>

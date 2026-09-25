@@ -63,11 +63,10 @@ const StepRow = ({ step, isLast }: Props) => {
         id={`e2e-get-started-${step.name}`}
       >
         <Text
+          variant="bo-label"
           as="span"
-          m="0"
-          fontSize="s"
           textAlign="left"
-          color={step.done ? 'textSecondary' : 'textPrimary'}
+          color={step.done ? 'coolGrey500' : undefined}
         >
           {formatMessage(step.label)}
         </Text>

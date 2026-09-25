@@ -77,7 +77,7 @@ const GraphCard = ({ projectId }: Props) => {
         gap="8px"
       >
         <Box minWidth="0">
-          <Text m="0" fontSize="xs" color="coolGrey600">
+          <Text variant="bo-micro">
             {formatMessage(messages.participantsGraphLabel)}
           </Text>
           <Text
@@ -90,7 +90,7 @@ const GraphCard = ({ projectId }: Props) => {
             {formatNumber(participants)}
           </Text>
           {lastPeriod > 0 && (
-            <Text m="0" mt="2px" fontSize="xs" color="coolGrey600">
+            <Text variant="bo-micro" mt="2px">
               <FormattedMessage
                 {...messages.participantsGraphLastPeriod}
                 values={{
@@ -125,7 +125,7 @@ const GraphCard = ({ projectId }: Props) => {
           <Box mt="8px" mx={`-${CARD_PADDING}px`}>
             <Sparkline values={weeks.map((week) => week.participants)} />
           </Box>
-          <Text m="0" mt="4px" fontSize="xs" color="coolGrey500">
+          <Text variant="bo-micro" mt="4px">
             {formatMessage(messages.participantsGraphScale, {
               date: formatDate(sinceDate, {
                 day: 'numeric',

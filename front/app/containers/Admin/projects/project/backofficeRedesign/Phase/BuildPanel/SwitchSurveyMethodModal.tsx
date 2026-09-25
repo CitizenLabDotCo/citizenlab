@@ -82,11 +82,11 @@ const SwitchSurveyMethodModal = ({ phase, method, onClose }: Props) => {
       header={formatMessage(messages.switchSurveyMethodTitle)}
       footer={
         <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">
-          <Button buttonStyle="secondary-outlined" onClick={close}>
+          <Button buttonStyle="bo-secondary" onClick={close}>
             {formatMessage(messages.switchCancel)}
           </Button>
           <Button
-            buttonStyle="admin-dark"
+            buttonStyle="bo-primary"
             processing={isPending}
             onClick={handleConfirm}
           >
@@ -96,11 +96,15 @@ const SwitchSurveyMethodModal = ({ phase, method, onClose }: Props) => {
       }
     >
       <Box p="24px">
-        <Text mt="0">{formatMessage(messages.switchSurveyMethodIntro)}</Text>
+        <Text variant="bo-helper" mb="12px">
+          {formatMessage(messages.switchSurveyMethodIntro)}
+        </Text>
         <Box as="ul" pl="20px" m="0">
           {consequences.map((message) => (
             <li key={message.id}>
-              <Text my="4px">{formatMessage(message)}</Text>
+              <Text variant="bo-helper" my="4px">
+                {formatMessage(message)}
+              </Text>
             </li>
           ))}
         </Box>
