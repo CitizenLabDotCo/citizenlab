@@ -68,10 +68,15 @@ export const getVisibleSecurityRequirements = ({
     visibleSecurityRequirements.email = true;
   }
 
-  if (smsEnabled) {
-    visibleSecurityRequirements.phone = true;
-  } else if (passwordLoginEnabled) {
-    visibleSecurityRequirements.phoneUpsell = true;
+  // Without password login the phone requirement is never on offer, whether
+  // or not SMS is enabled. With it, it is a real toggle if SMS is enabled, and
+  // an upsell otherwise.
+  if (passwordLoginEnabled) {
+    if (smsEnabled) {
+      visibleSecurityRequirements.phone = true;
+    } else {
+      visibleSecurityRequirements.phoneUpsell = true;
+    }
   }
 
   if (verificationMethodEnabled) {

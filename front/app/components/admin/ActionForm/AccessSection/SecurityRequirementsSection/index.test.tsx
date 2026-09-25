@@ -163,7 +163,7 @@ describe('<SecurityRequirementsSection />', () => {
     it('leaves an unavailable check out of the summary', () => {
       // Both required checks are unavailable here: no verification method is
       // configured, and password login is off. Only the checks the platform
-      // still offers (email, phone) keep the section on screen.
+      // still offers (email) keep the section on screen.
       mockVerificationMethodConfigured = false;
       mockPasswordLoginEnabled = false;
       renderSection({
@@ -240,16 +240,13 @@ describe('<SecurityRequirementsSection />', () => {
       expect(screen.getByText(EMAIL_LABEL)).toBeInTheDocument();
     });
 
-    it('hides the password row when password login is off, but keeps the phone one', async () => {
-      // Re-confirming a phone number goes through reconfirm_code_phone, which
-      // is not gated by password_login, so an SSO-only platform can still
-      // require a confirmed phone number.
+    it('hides the password and phone rows when password login is off', async () => {
       mockPasswordLoginEnabled = false;
       renderSection();
       await openSection();
 
       expect(screen.queryByText(PASSWORD_LABEL)).not.toBeInTheDocument();
-      expect(screen.getByText(PHONE_LABEL)).toBeInTheDocument();
+      expect(screen.queryByText(PHONE_LABEL)).not.toBeInTheDocument();
       expect(screen.getByText(EMAIL_LABEL)).toBeInTheDocument();
     });
 
@@ -269,7 +266,7 @@ describe('<SecurityRequirementsSection />', () => {
         screen.getByText(PHONE_LABEL).closest('label')!.parentElement!
       ).getByTestId('toggle');
 
-    describe('when SMS and password login are both enabled', () => {
+    describe('when password login and SMS are both enabled', () => {
       it('shows a working toggle', async () => {
         const onChange = renderSection();
         await openSection();
@@ -296,7 +293,7 @@ describe('<SecurityRequirementsSection />', () => {
       });
     });
 
-    describe('when SMS is disabled but password login is enabled', () => {
+    describe('when password login is enabled but SMS is not', () => {
       beforeEach(() => {
         mockSmsEnabled = false;
         mockPasswordLoginEnabled = true;
@@ -352,29 +349,33 @@ describe('<SecurityRequirementsSection />', () => {
       });
     });
 
-    describe('when SMS and password login are both disabled', () => {
-      beforeEach(() => {
-        mockSmsEnabled = false;
-        mockPasswordLoginEnabled = false;
-      });
-
-      it('does not show the phone row', async () => {
-        renderSection();
-        await openSection();
-
-        expect(screen.queryByText(PHONE_LABEL)).not.toBeInTheDocument();
-        expect(screen.queryByText(/Not configured/)).not.toBeInTheDocument();
-        expect(screen.getByText(VERIFICATION_LABEL)).toBeInTheDocument();
-      });
-
-      it('leaves the requirement out of the summary', () => {
-        renderSection({
-          require_confirmed_email: false,
-          require_confirmed_phone_number: true,
+    describe('when password login is disabled', () => {
+      // SMS makes no difference here: without password login there is no
+      // phone requirement, not even as an upsell.
+      describe.each([true, false])('(sms=%p)', (smsEnabled) => {
+        beforeEach(() => {
+          mockSmsEnabled = smsEnabled;
+          mockPasswordLoginEnabled = false;
         });
 
-        expect(screen.queryByText(PHONE_SUMMARY)).not.toBeInTheDocument();
-        expect(screen.getByText('None')).toBeInTheDocument();
+        it('does not show the phone row', async () => {
+          renderSection();
+          await openSection();
+
+          expect(screen.queryByText(PHONE_LABEL)).not.toBeInTheDocument();
+          expect(screen.queryByText(/Not configured/)).not.toBeInTheDocument();
+          expect(screen.getByText(VERIFICATION_LABEL)).toBeInTheDocument();
+        });
+
+        it('leaves the requirement out of the summary', () => {
+          renderSection({
+            require_confirmed_email: false,
+            require_confirmed_phone_number: true,
+          });
+
+          expect(screen.queryByText(PHONE_SUMMARY)).not.toBeInTheDocument();
+          expect(screen.getByText('None')).toBeInTheDocument();
+        });
       });
     });
   });

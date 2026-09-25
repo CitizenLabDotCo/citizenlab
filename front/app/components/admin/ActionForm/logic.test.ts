@@ -68,12 +68,13 @@ describe('ActionForm logic', () => {
     });
 
     describe('phone', () => {
-      // Three cases, driven by the SMS feature and password login:
-      // - SMS on: a real toggle, and a summary entry when required.
-      // - SMS off, password login on: a disabled toggle (upsell), never in the
+      // Three cases, driven by password login and the SMS feature:
+      // - Password login on, SMS on: a real toggle, and a summary entry when
+      //   required.
+      // - Password login on, SMS off: a disabled toggle (upsell), never in the
       //   summary.
-      // - SMS off, password login off: not shown at all.
-      describe('when SMS and password login are both enabled', () => {
+      // - Password login off: not shown at all, whatever the SMS feature.
+      describe('when password login and SMS are both enabled', () => {
         it('is a configurable requirement, not an upsell', () => {
           const visible = getVisibleSecurityRequirements({
             ...ALL_DISABLED,
@@ -86,7 +87,7 @@ describe('ActionForm logic', () => {
         });
       });
 
-      describe('when SMS is disabled but password login is enabled', () => {
+      describe('when password login is enabled but SMS is not', () => {
         it('is shown as an upsell, but not as a configurable requirement', () => {
           const visible = getVisibleSecurityRequirements({
             ...ALL_DISABLED,
@@ -112,11 +113,10 @@ describe('ActionForm logic', () => {
         });
       });
 
-      describe('when SMS and password login are both disabled', () => {
-        it('is not shown at all', () => {
+      describe('when password login is disabled', () => {
+        it.each([true, false])('is not shown at all (sms=%p)', (smsEnabled) => {
           const visible = getVisibleSecurityRequirements({
-            ...ALL_DISABLED,
-            smsEnabled: false,
+            smsEnabled,
             smsLoginEnabled: true,
             hasAuthMethodNotReturningEmail: true,
             verificationMethodEnabled: true,
@@ -134,20 +134,6 @@ describe('ActionForm logic', () => {
           smsEnabled: true,
           smsLoginEnabled: false,
           passwordLoginEnabled: true,
-        });
-
-        expect(visible.phone).toBe(true);
-        expect(visible.phoneUpsell).toBe(false);
-      });
-
-      // Re-confirming an existing phone number goes through
-      // reconfirm_code_phone, which is not gated by password_login, so an
-      // SSO-only platform can still require a confirmed phone number.
-      it('is configurable even if password login is disabled', () => {
-        const visible = getVisibleSecurityRequirements({
-          ...ALL_DISABLED,
-          smsEnabled: true,
-          smsLoginEnabled: true,
         });
 
         expect(visible.phone).toBe(true);
@@ -332,7 +318,7 @@ describe('ActionForm logic', () => {
             phoneUpsell: true,
           },
         ],
-        [true, false, false, false, false, { ...NONE_VISIBLE, phone: true }],
+        [true, false, false, false, false, { ...NONE_VISIBLE }],
         [
           true,
           false,
@@ -341,14 +327,7 @@ describe('ActionForm logic', () => {
           true,
           { ...NONE_VISIBLE, phone: true, password: true },
         ],
-        [
-          true,
-          false,
-          false,
-          true,
-          false,
-          { ...NONE_VISIBLE, email: true, phone: true },
-        ],
+        [true, false, false, true, false, { ...NONE_VISIBLE, email: true }],
         [
           true,
           false,
@@ -363,7 +342,7 @@ describe('ActionForm logic', () => {
           true,
           false,
           false,
-          { ...NONE_VISIBLE, phone: true, verification: true },
+          { ...NONE_VISIBLE, verification: true },
         ],
         [
           true,
@@ -379,7 +358,7 @@ describe('ActionForm logic', () => {
           true,
           true,
           false,
-          { ...NONE_VISIBLE, email: true, phone: true, verification: true },
+          { ...NONE_VISIBLE, email: true, verification: true },
         ],
         [
           true,
@@ -395,14 +374,7 @@ describe('ActionForm logic', () => {
             phoneUpsell: false,
           },
         ],
-        [
-          true,
-          true,
-          false,
-          false,
-          false,
-          { ...NONE_VISIBLE, email: true, phone: true },
-        ],
+        [true, true, false, false, false, { ...NONE_VISIBLE, email: true }],
         [
           true,
           true,
@@ -411,14 +383,7 @@ describe('ActionForm logic', () => {
           true,
           { ...NONE_VISIBLE, email: true, phone: true, password: true },
         ],
-        [
-          true,
-          true,
-          false,
-          true,
-          false,
-          { ...NONE_VISIBLE, email: true, phone: true },
-        ],
+        [true, true, false, true, false, { ...NONE_VISIBLE, email: true }],
         [
           true,
           true,
@@ -433,7 +398,7 @@ describe('ActionForm logic', () => {
           true,
           false,
           false,
-          { ...NONE_VISIBLE, email: true, phone: true, verification: true },
+          { ...NONE_VISIBLE, email: true, verification: true },
         ],
         [
           true,
@@ -455,7 +420,7 @@ describe('ActionForm logic', () => {
           true,
           true,
           false,
-          { ...NONE_VISIBLE, email: true, phone: true, verification: true },
+          { ...NONE_VISIBLE, email: true, verification: true },
         ],
         [
           true,
@@ -524,7 +489,7 @@ describe('ActionForm logic', () => {
       );
 
     describe('the phone requirement', () => {
-      it('is summarised when SMS and password login are both enabled', () => {
+      it('is summarised when password login and SMS are both enabled', () => {
         const visible = getVisibleSecurityRequirements({
           ...ALL_DISABLED,
           smsEnabled: true,
@@ -534,7 +499,7 @@ describe('ActionForm logic', () => {
         expect(summaryKeys(visible)).toContain('phone');
       });
 
-      it('is not summarised when SMS is disabled but password login is enabled', () => {
+      it('is not summarised when password login is enabled but SMS is not', () => {
         const visible = getVisibleSecurityRequirements({
           ...ALL_DISABLED,
           smsEnabled: false,
@@ -544,15 +509,18 @@ describe('ActionForm logic', () => {
         expect(summaryKeys(visible)).not.toContain('phone');
       });
 
-      it('is not summarised when SMS and password login are both disabled', () => {
-        const visible = getVisibleSecurityRequirements({
-          ...ALL_DISABLED,
-          smsEnabled: false,
-          passwordLoginEnabled: false,
-        });
+      it.each([true, false])(
+        'is not summarised when password login is disabled (sms=%p)',
+        (smsEnabled) => {
+          const visible = getVisibleSecurityRequirements({
+            ...ALL_DISABLED,
+            smsEnabled,
+            passwordLoginEnabled: false,
+          });
 
-        expect(summaryKeys(visible)).not.toContain('phone');
-      });
+          expect(summaryKeys(visible)).not.toContain('phone');
+        }
+      );
     });
   });
 });
