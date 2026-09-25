@@ -15,49 +15,15 @@ import useProjectPublicationRecipientCount from 'api/project_publication_recipie
 import { IProjectData, Visibility } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
+import OptionRow from 'components/UI/OptionRow';
+
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
+import { FIND_OPTIONS, OPEN_OPTIONS } from '../../_shared/visibilityOptions';
 import messages from '../../messages';
 
 import { ConfirmableStatus } from './ConfirmStatusChangeModal';
-import OptionRow from './OptionRow';
 import getPublicationState, { PublicationState } from './publicationState';
-
-const FIND_OPTIONS = [
-  {
-    listed: true,
-    icon: 'eye',
-    label: messages.publishFindPublic,
-    description: messages.publishFindPublicDescription,
-  },
-  {
-    listed: false,
-    icon: 'eye-off',
-    label: messages.publishFindPrivate,
-    description: messages.publishFindPrivateDescription,
-  },
-] as const;
-
-const OPEN_OPTIONS = [
-  {
-    visibleTo: 'public',
-    icon: 'users',
-    label: messages.publishOpenEveryone,
-    description: messages.publishOpenEveryoneDescription,
-  },
-  {
-    visibleTo: 'admins',
-    icon: 'lock',
-    label: messages.publishOpenAdmins,
-    description: messages.publishOpenAdminsDescription,
-  },
-  {
-    visibleTo: 'groups',
-    icon: 'lock',
-    label: messages.publishOpenGroups,
-    description: messages.publishOpenGroupsDescription,
-  },
-] as const;
 
 const HEADER_MESSAGES: Record<PublicationState, MessageDescriptor> = {
   published: messages.publishStatePublished,
@@ -158,16 +124,20 @@ const PublishPanel = ({
         {formatMessage(messages.publishWhoCanFind)}
       </Text>
       <Box role="radiogroup" display="flex" flexDirection="column">
-        {FIND_OPTIONS.map((option) => (
-          <OptionRow
-            key={String(option.listed)}
-            icon={option.icon}
-            label={option.label}
-            description={option.description}
-            selected={listed === option.listed}
-            onClick={() => setListed(option.listed)}
-          />
-        ))}
+        {FIND_OPTIONS.map((option) => {
+          const optionListed = option.value === 'listed';
+
+          return (
+            <OptionRow
+              key={option.value}
+              icon={option.icon}
+              label={formatMessage(option.label)}
+              description={formatMessage(option.description)}
+              selected={listed === optionListed}
+              onClick={() => setListed(optionListed)}
+            />
+          );
+        })}
       </Box>
 
       <Text variant="bo-section" mt="12px" mb="4px">
@@ -176,12 +146,12 @@ const PublishPanel = ({
       <Box role="radiogroup" display="flex" flexDirection="column">
         {OPEN_OPTIONS.map((option) => (
           <OptionRow
-            key={option.visibleTo}
+            key={option.value}
             icon={option.icon}
-            label={option.label}
-            description={option.description}
-            selected={visible_to === option.visibleTo}
-            onClick={() => setVisibleTo(option.visibleTo)}
+            label={formatMessage(option.label)}
+            description={formatMessage(option.description)}
+            selected={visible_to === option.value}
+            onClick={() => setVisibleTo(option.value)}
           />
         ))}
       </Box>

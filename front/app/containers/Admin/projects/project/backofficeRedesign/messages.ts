@@ -203,6 +203,11 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.publishWhoCanFind',
     defaultMessage: 'Who can find it',
   },
+  publishWhoCanFindDescription: {
+    id: 'app.containers.Admin.projects.project.publishWhoCanFindDescription',
+    defaultMessage:
+      'Whether residents can discover this project, or only reach it by link.',
+  },
   publishFindPublic: {
     id: 'app.containers.Admin.projects.project.publishFindPublic',
     defaultMessage: 'Public',
@@ -224,6 +229,10 @@ export default defineMessages({
   publishWhoCanOpen: {
     id: 'app.containers.Admin.projects.project.publishWhoCanOpen',
     defaultMessage: 'Who can open it',
+  },
+  publishWhoCanOpenDescription: {
+    id: 'app.containers.Admin.projects.project.publishWhoCanOpenDescription',
+    defaultMessage: 'Who is allowed to open this project and take part.',
   },
   publishOpenEveryone: {
     id: 'app.containers.Admin.projects.project.publishOpenEveryone',
@@ -486,5 +495,34 @@ export default defineMessages({
   discardChanges: {
     id: 'app.containers.Admin.projects.project.discardChanges',
     defaultMessage: 'Discard changes',
+  },
+  visibility: {
+    id: 'app.containers.Admin.projects.project.visibility',
+    defaultMessage: 'Visibility',
+  },
+  contextSpaceDescription: {
+    id: 'app.containers.Admin.projects.project.contextSpaceDescription',
+    defaultMessage:
+      'Where this project lives at the top level of your platform.',
+  },
+  contextFolderDescription: {
+    id: 'app.containers.Admin.projects.project.contextFolderDescription',
+    defaultMessage: 'A folder groups related projects inside a space.',
+  },
+  contextNoSpace: {
+    id: 'app.containers.Admin.projects.project.contextNoSpace',
+    defaultMessage: 'No space',
+  },
+  contextNoFolder: {
+    id: 'app.containers.Admin.projects.project.contextNoFolder',
+    defaultMessage: 'No folder',
+  },
+  contextSearchSpaces: {
+    id: 'app.containers.Admin.projects.project.contextSearchSpaces',
+    defaultMessage: 'Search spaces',
+  },
+  contextSearchFolders: {
+    id: 'app.containers.Admin.projects.project.contextSearchFolders',
+    defaultMessage: 'Search folders',
   },
 });

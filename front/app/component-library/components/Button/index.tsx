@@ -41,7 +41,8 @@ export type ButtonStyles =
   | 'bo-secondary'
   | 'bo-text'
   | 'bo-delete'
-  | 'bo-status';
+  | 'bo-status'
+  | 'bo-picker';
 
 type DefaultStyleValues = {
   [key in ButtonStyles]: {
@@ -77,6 +78,14 @@ const BO_GEOMETRY = {
   lineHeight: '20px',
   iconSize: '16px',
   borderThickness: '0',
+};
+
+const BO_PICKER_GEOMETRY = {
+  ...BO_GEOMETRY,
+  height: '30px',
+  padding: '0 10px 0 12px',
+  borderRadius: '999px',
+  fontWeight: '400',
 };
 
 function getFontSize(props: ButtonContainerProps & { theme: MainThemeProps }) {
@@ -252,6 +261,15 @@ function getButtonStyle(
       textHoverColor: colors.green700,
       iconColor: colors.green700,
       iconHoverColor: colors.green700,
+    },
+    'bo-picker': {
+      ...BO_PICKER_GEOMETRY,
+      bgColor: colors.grey100,
+      bgHoverColor: colors.grey200,
+      textColor: bo.colors.textHeadingStrong,
+      textHoverColor: bo.colors.textHeadingStrong,
+      iconColor: colors.coolGrey500,
+      iconHoverColor: colors.coolGrey500,
     },
   };
 
@@ -541,6 +559,13 @@ const Container = styled(Box)<ButtonContainerProps>`
 
   ${StyledButton} {
     ${(props) => getButtonStyle(props)}
+  }
+
+  /* The trigger is sized by its shape, not its text, so a label too long for
+     it truncates rather than spilling outside the fill. */
+  ${StyledButton}.bo-picker ${ButtonText} {
+    min-width: 0;
+    overflow: hidden;
   }
 `;
 
