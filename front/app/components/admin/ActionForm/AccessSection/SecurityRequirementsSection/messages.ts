@@ -16,7 +16,7 @@ export default defineMessages({
   phoneUpsellTooltip: {
     id: 'front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.phoneUpsellTooltip',
     defaultMessage:
-      'To learn more about how to enable SMS 2-step access confirmation, talk to your GovSuccess manager',
+      'To learn more about how to enable SMS 2-step access confirmation, talk to your GovSuccess manager.',
   },
   emailMethodDescription: {
     id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription2',
