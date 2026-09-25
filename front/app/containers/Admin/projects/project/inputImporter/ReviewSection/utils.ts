@@ -1,5 +1,9 @@
 import { ParticipationMethod } from 'api/phases/types';
 
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+
+import messages from './messages';
+
 export const supportsNativeSurvey = (
   participationMethod?: ParticipationMethod
 ) => {
@@ -21,4 +25,18 @@ export const isPDFUploadSupported = (
     default:
       return true;
   }
+};
+
+// Phases without an input manager (e.g. native surveys) show their
+// approved responses in the Insights tab instead.
+export const getApproveAllExplanationMessage = (
+  participationMethod?: ParticipationMethod
+) => {
+  if (
+    participationMethod &&
+    !getMethodConfig(participationMethod).showInputManager
+  ) {
+    return messages.confirmApproveAllExplanationInsights;
+  }
+  return messages.confirmApproveAllExplanation;
 };
