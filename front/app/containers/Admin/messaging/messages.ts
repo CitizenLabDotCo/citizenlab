@@ -327,6 +327,11 @@ export default defineMessages({
     id: 'app.containers.Admin.messaging.tabSms',
     defaultMessage: 'SMS',
   },
+  smsUpsellTooltip: {
+    id: 'app.containers.Admin.messaging.smsUpsellTooltip',
+    defaultMessage:
+      'To learn more about how to enable SMS campaigns, talk to your GovSuccess manager',
+  },
   smsCampaignsDescription: {
     id: 'app.containers.Admin.messaging.smsCampaignsDescription',
     defaultMessage: 'Send text messages to your participants.',
