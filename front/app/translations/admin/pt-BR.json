@@ -1220,6 +1220,8 @@
   "app.containers.Admin.inspirationHub.filters": "filtros",
   "app.containers.Admin.inspirationHub.resetFilters": "Redefinir filtros",
   "app.containers.Admin.inspirationHub.seemsLike": "Parece que não há mais projetos. Tente alterar o endereço {filters}.",
+  "app.containers.Admin.internalEarlyAccessLabel": "Acesso antecipado interno",
+  "app.containers.Admin.internalEarlyAccessLabelExplanation": "Este recurso ainda está sendo desenvolvido e está disponível apenas para a equipe da Go Vocal. Não o mostre para clientes.",
   "app.containers.Admin.messaging.addSmsCampaignButton": "Criar SMS",
   "app.containers.Admin.messaging.addSmsCampaignTitle": "Nova mensagem SMS",
   "app.containers.Admin.messaging.automated.editModalTitle": "Editar campos de campanha",

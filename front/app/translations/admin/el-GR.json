@@ -1220,6 +1220,8 @@
   "app.containers.Admin.inspirationHub.filters": "φίλτρα",
   "app.containers.Admin.inspirationHub.resetFilters": "Επαναφορά φίλτρων",
   "app.containers.Admin.inspirationHub.seemsLike": "Φαίνεται ότι δεν υπάρχουν άλλα έργα. Δοκιμάστε να αλλάξετε τα {filters}.",
+  "app.containers.Admin.internalEarlyAccessLabel": "Εσωτερική πρόωρη πρόσβαση",
+  "app.containers.Admin.internalEarlyAccessLabelExplanation": "Αυτή η λειτουργία βρίσκεται ακόμη υπό κατασκευή και είναι διαθέσιμη μόνο στο προσωπικό της Go Vocal. Μην την επιδεικνύετε σε πελάτες.",
   "app.containers.Admin.messaging.addSmsCampaignButton": "Δημιουργία SMS",
   "app.containers.Admin.messaging.addSmsCampaignTitle": "Νέο μήνυμα SMS",
   "app.containers.Admin.messaging.automated.editModalTitle": "Επεξεργασία πεδίων καμπάνιας",

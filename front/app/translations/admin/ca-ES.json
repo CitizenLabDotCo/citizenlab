@@ -1220,6 +1220,8 @@
   "app.containers.Admin.inspirationHub.filters": "filtres",
   "app.containers.Admin.inspirationHub.resetFilters": "Restableix els filtres",
   "app.containers.Admin.inspirationHub.seemsLike": "Sembla que no hi ha més projectes. Prova de canviar els {filters}.",
+  "app.containers.Admin.internalEarlyAccessLabel": "Accés anticipat intern",
+  "app.containers.Admin.internalEarlyAccessLabelExplanation": "Aquesta funcionalitat encara s'està desenvolupant i només està disponible per al personal de Go Vocal. No la mostris als clients.",
   "app.containers.Admin.messaging.addSmsCampaignButton": "Crea un SMS",
   "app.containers.Admin.messaging.addSmsCampaignTitle": "Nou missatge SMS",
   "app.containers.Admin.messaging.automated.editModalTitle": "Edita els camps de la campanya",

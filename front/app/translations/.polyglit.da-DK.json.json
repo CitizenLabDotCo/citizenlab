@@ -1069,61 +1069,51 @@
     "verified_at": "2026-03-27T11:35:57.044515Z",
     "verified_by": "kielgast@govocal.com"
   },
-
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.description": {
     "state": "verified",
     "verified_at": "2026-09-16T15:47:07.702574Z",
     "verified_by": "kielgast@govocal.com"
   },
-
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filterByAreas": {
     "state": "verified",
     "verified_at": "2026-09-16T15:47:07.702574Z",
     "verified_by": "kielgast@govocal.com"
   },
-
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filterByLabel": {
     "state": "verified",
     "verified_at": "2026-09-16T15:47:07.702574Z",
     "verified_by": "kielgast@govocal.com"
   },
-
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filterBySpaces": {
     "state": "verified",
     "verified_at": "2026-09-16T15:47:07.702574Z",
     "verified_by": "kielgast@govocal.com"
   },
-
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filterByTags": {
     "state": "verified",
     "verified_at": "2026-09-16T15:47:07.702574Z",
     "verified_by": "kielgast@govocal.com"
   },
-
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filteredProjects": {
     "state": "verified",
     "verified_at": "2026-09-16T15:47:07.702574Z",
     "verified_by": "kielgast@govocal.com"
   },
-
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.notAvailable": {
     "state": "verified",
     "verified_at": "2026-09-16T15:47:07.702574Z",
     "verified_by": "kielgast@govocal.com"
   },
-
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.nothingSelected": {
     "state": "verified",
     "verified_at": "2026-09-16T15:47:07.702574Z",
     "verified_by": "kielgast@govocal.com"
   },
-
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.selectionLabel": {
     "state": "verified",
     "verified_at": "2026-09-16T15:47:07.702574Z",
     "verified_by": "kielgast@govocal.com"
   },
-
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.titleLabel": {
     "state": "verified",
     "verified_at": "2026-09-16T15:47:07.702574Z",
@@ -7079,7 +7069,6 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Authentication.accountMergeNotAllowed": {
     "state": "verified",
     "verified_at": "2026-09-16T15:47:07.702574Z",
@@ -7100,7 +7089,6 @@
     "verified_at": "2026-07-21T07:18:56.038873Z",
     "verified_by": "kielgast@govocal.com"
   },
-
   "app.containers.Authentication.linkYourAccount": {
     "state": "verified",
     "verified_at": "2026-09-16T15:47:07.702574Z",
@@ -11811,7 +11799,6 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Projects.seeVolunteering": {
     "state": "verified",
     "verified_at": "2026-09-16T07:52:52.390589Z",
@@ -12426,6 +12413,21 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSaveError": {
+    "state": "verified",
+    "verified_at": "2026-09-22T16:30:02.037897Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": {
+    "state": "verified",
+    "verified_at": "2026-09-22T16:30:02.037897Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": {
+    "state": "verified",
+    "verified_at": "2026-09-22T16:30:02.037897Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": {
     "state": "verified",
@@ -13187,7 +13189,6 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
-
   "app.containers.landing.editHomepage": {
     "state": "verified",
     "verified_at": "2026-09-09T15:22:13.133105Z",
@@ -13393,7 +13394,6 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
-
   "app.errors.bulk_import_pdf_parsing_timeout": {
     "state": "verified",
     "verified_at": "2026-09-16T15:47:07.702574Z",

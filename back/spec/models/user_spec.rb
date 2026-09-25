@@ -1023,6 +1023,89 @@ RSpec.describe User do
     end
   end
 
+  describe 'early_access_features' do
+    before do
+      allow(AppConfiguration::Settings).to receive(:early_access_features)
+        .and_return({ 'general_feature' => 'general', 'internal_feature' => 'internal' })
+    end
+
+    it 'is empty by default' do
+      expect(create(:admin).early_access_features).to eq []
+    end
+
+    it 'accepts a feature offered to the user' do
+      expect(build(:admin, early_access_features: ['general_feature'])).to be_valid
+    end
+
+    it 'is invalid when the feature is not in early access' do
+      expect(build(:admin, early_access_features: ['analysis'])).to be_invalid
+    end
+
+    it 'is invalid when the feature is only offered to Go Vocal staff' do
+      expect(build(:admin, early_access_features: ['internal_feature'])).to be_invalid
+    end
+
+    it 'accepts an internal feature for a Go Vocal admin' do
+      expect(build(:super_admin, early_access_features: ['internal_feature'])).to be_valid
+    end
+
+    it 'is invalid when the same feature is listed twice' do
+      expect(build(:admin, early_access_features: %w[general_feature general_feature])).to be_invalid
+    end
+
+    it 'accepts a change that carries a feature which left early access' do
+      admin = create(:admin, early_access_features: ['general_feature'])
+      allow(AppConfiguration::Settings).to receive(:early_access_features)
+        .and_return({ 'other_feature' => 'general' })
+
+      admin.early_access_features = %w[general_feature other_feature]
+
+      expect(admin).to be_valid
+    end
+
+    describe '#early_access_levels' do
+      it 'offers the general tier to an admin' do
+        expect(build(:admin).early_access_levels).to eq %w[general]
+      end
+
+      it 'offers both tiers to a Go Vocal admin' do
+        expect(build(:super_admin).early_access_levels).to match_array(%w[general internal])
+      end
+
+      it 'offers nothing to a resident' do
+        expect(build(:user).early_access_levels).to be_empty
+      end
+    end
+
+    describe '#active_early_access_features' do
+      it 'returns what an admin opted into' do
+        admin = build(:admin, early_access_features: ['general_feature'])
+        expect(admin.active_early_access_features).to eq Set.new(['general_feature'])
+      end
+
+      it 'returns nothing for a resident' do
+        resident = build(:user)
+        resident.early_access_features = ['general_feature']
+
+        expect(resident.active_early_access_features).to be_empty
+      end
+
+      it 'drops an internal feature an admin is no longer eligible for' do
+        admin = build(:super_admin, early_access_features: ['internal_feature'])
+        admin.email = 'someone@example.com'
+
+        expect(admin.active_early_access_features).to be_empty
+      end
+
+      it 'drops a stored feature that left early access' do
+        admin = build(:admin, early_access_features: ['general_feature'])
+        allow(AppConfiguration::Settings).to receive(:early_access_features).and_return({})
+
+        expect(admin.active_early_access_features).to be_empty
+      end
+    end
+  end
+
   describe 'registered?' do
     it 'returns false when the user has not completed registration' do
       u = build(:user, registration_completed_at: nil)

@@ -69,6 +69,19 @@ class AppConfiguration < ApplicationRecord
       extension_features_hash.keys
     end
 
+    EARLY_ACCESS_LEVELS = %w[general internal].freeze
+
+    def self.early_access_features
+      core = core_settings_json_schema['properties'].filter_map do |name, feature|
+        [name, feature['early_access']] if feature['early_access']
+      end
+      extensions = extension_features_specs.filter_map do |spec|
+        [spec.feature_name, spec.early_access] if spec.early_access
+      end
+
+      (core + extensions).to_h
+    end
+
     # @param [CitizenLab::Mixins::FeatureSpecification] specification
     def self.add_feature(specification)
       feature_name = specification.feature_name
@@ -143,6 +156,8 @@ class AppConfiguration < ApplicationRecord
   end
 
   def feature_activated?(setting_name)
+    return true if Current.early_access_features.include?(setting_name)
+
     settings[setting_name]&.values_at('enabled', 'allowed')&.all?
   end
 
@@ -153,7 +168,15 @@ class AppConfiguration < ApplicationRecord
   end
 
   def public_settings
-    @public_settings ||= SettingsService.new.format_for_front_end(settings, Settings.json_schema)
+    base = (@public_settings ||= SettingsService.new.format_for_front_end(settings, Settings.json_schema))
+    early_access_features = Current.early_access_features
+    return base if early_access_features.empty?
+
+    base.deep_dup.tap do |res|
+      early_access_features.each do |feature|
+        res[feature] = (res[feature] || {}).merge('allowed' => true, 'enabled' => true)
+      end
+    end
   end
 
   def location

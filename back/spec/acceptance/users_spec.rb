@@ -1601,6 +1601,73 @@ resource 'Users' do
         let(:id) { @user.id }
         let(:first_name) { 'Edmond' }
 
+        describe 'early access' do
+          # Stand-ins for whatever is in early access at the time: the registry is
+          # stubbed, so only the tier each name is offered in matters here.
+          let(:feature) { 'spaces' }
+          let(:internal_feature) { 'project_planning_calendar' }
+
+          before do
+            allow(AppConfiguration::Settings).to receive(:early_access_features)
+              .and_return({ feature => 'general', internal_feature => 'internal' })
+          end
+
+          example 'Opt into an early access feature' do
+            do_request(user: { early_access_features: [feature] })
+
+            assert_status 200
+            expect(response_data.dig(:attributes, :early_access_features)).to eq [feature]
+            expect(@user.reload.early_access_features).to eq [feature]
+          end
+
+          example 'Opt out of an early access feature again', document: false do
+            @user.update!(early_access_features: [feature])
+            do_request(user: { early_access_features: [] })
+
+            assert_status 200
+            expect(@user.reload.early_access_features).to eq []
+          end
+
+          example '[error] Opt into a feature that is not in early access', document: false do
+            do_request(user: { early_access_features: ['analysis'] })
+
+            assert_status 422
+            expect(@user.reload.early_access_features).to eq []
+          end
+
+          example '[error] Opt into a feature reserved for Go Vocal staff', document: false do
+            do_request(user: { early_access_features: [internal_feature] })
+
+            assert_status 422
+            expect(@user.reload.early_access_features).to eq []
+          end
+
+          example 'Opt into a Go Vocal only feature as a Go Vocal admin', document: false do
+            govocal_admin = create(:super_admin)
+            header_token_for govocal_admin
+            do_request(id: govocal_admin.id, user: { early_access_features: [internal_feature] })
+
+            assert_status 200
+            expect(govocal_admin.reload.early_access_features).to eq [internal_feature]
+          end
+
+          example 'Silently ignore opting another admin into an early access feature', document: false do
+            other_admin = create(:admin)
+            do_request(id: other_admin.id, user: { early_access_features: [feature] })
+
+            assert_status 200
+            expect(other_admin.reload.early_access_features).to eq []
+          end
+
+          example "Does not report another admin's opt-ins", document: false do
+            other_admin = create(:admin, early_access_features: [feature])
+            do_request(id: other_admin.id)
+
+            assert_status 200
+            expect(response_data[:attributes]).not_to have_key(:early_access_features)
+          end
+        end
+
         describe do
           let(:custom_field_values) { { birthyear: 1984 } }
           let(:project) { create(:single_phase_ideation_project, phase_attrs: { with_permissions: true }) }

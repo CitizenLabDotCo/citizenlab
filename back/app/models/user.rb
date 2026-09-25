@@ -37,6 +37,7 @@ require Rails.root.join('lib/email_domain_blacklist')
 #  phone                     :string
 #  new_phone                 :string
 #  phone_confirmed_at        :datetime
+#  early_access_features     :jsonb            not null
 #  merge_target_email        :string
 #
 # Indexes
@@ -120,6 +121,14 @@ class User < ApplicationRecord
       end
     end
     private :deletion_job_user_id
+
+    def early_access_features_json_schema
+      {
+        'type' => 'array',
+        'uniqueItems' => true,
+        'items' => { 'type' => 'string' }
+      }
+    end
 
     def onboarding_json_schema
       {
@@ -253,6 +262,9 @@ class User < ApplicationRecord
   validates :invite_status, inclusion: { in: INVITE_STATUSES }, allow_nil: true
 
   validates :onboarding, json: { schema: -> { User.onboarding_json_schema } }
+  validates :early_access_features, json: { schema: -> { User.early_access_features_json_schema } },
+    if: :early_access_features_changed?
+  validate :validate_early_access_features_offered, if: :early_access_features_changed?
 
   validate :validate_not_duplicate_email
   validate :validate_not_duplicate_new_email
@@ -318,6 +330,22 @@ class User < ApplicationRecord
 
   def no_name?
     self[:last_name].blank? && self[:first_name].blank? && !invite_pending?
+  end
+
+  def early_access_levels
+    return [] unless admin?
+
+    super_admin? ? AppConfiguration::Settings::EARLY_ACCESS_LEVELS : %w[general]
+  end
+
+  # @return [Hash] the features this user may opt into, mapped to the level they are offered in
+  def offered_early_access_features
+    levels = early_access_levels
+    AppConfiguration::Settings.early_access_features.select { |_name, level| levels.include?(level) }
+  end
+
+  def active_early_access_features
+    Set.new(early_access_features) & offered_early_access_features.keys
   end
 
   # Authenticating ALWAYS requires a non-blank password that matches the stored digest.
@@ -569,6 +597,16 @@ class User < ApplicationRecord
 
     errors.add(field, 'something_went_wrong', code: 'zrb-43')
     Rails.logger.info "Validation error! Email banned: #{value.split('@')&.last}"
+  end
+
+  def validate_early_access_features_offered
+    return unless early_access_features.is_a?(Array)
+
+    added = early_access_features - Array(early_access_features_was)
+    not_offered = added - offered_early_access_features.keys
+    return if not_offered.empty?
+
+    errors.add(:early_access_features, 'not_offered', value: not_offered)
   end
 
   def auto_confirm_on_invite_accept

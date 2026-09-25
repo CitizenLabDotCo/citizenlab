@@ -70,6 +70,7 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
 
       'User' => %w[
         confirmation_required
+        early_access_features
         email_confirmed_at
         imported
         invite_status
@@ -83,7 +84,7 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
         reset_password_token
         roles
         token_expiry_key
-      ] # auth/session/role/contact state — deliberately not exported (privacy/security)
+      ] # auth/session/role/contact state and personal settings — deliberately not exported (privacy/security)
     }.freeze
   end
 

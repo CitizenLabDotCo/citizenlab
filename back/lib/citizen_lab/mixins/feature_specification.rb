@@ -15,6 +15,7 @@ module CitizenLab
           'additionalProperties' => false,
           'required' => %w[allowed enabled],
           'required-settings' => required_settings.presence,
+          'early_access' => early_access,
           'properties' => {
             'allowed' => { 'type' => 'boolean', 'default' => allowed_by_default },
             'enabled' => { 'type' => 'boolean', 'default' => enabled_by_default }
@@ -40,6 +41,11 @@ module CitizenLab
 
       def dependencies
         []
+      end
+
+      # @return [String, nil]
+      def early_access
+        nil
       end
 
       # @return [Boolean]

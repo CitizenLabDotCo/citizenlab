@@ -1,11 +1,19 @@
 import { ImageSizes, SupportedLocale, Multiloc } from 'typings';
 
+import { TAppConfigurationSetting } from 'api/app_configuration/types';
+
 import { Keys } from 'utils/cl-react-query/types';
 import { TRole } from 'utils/permissions/roles';
 
 import usersKeys from './keys';
 
 export type UsersKeys = Keys<typeof usersKeys>;
+
+export type EarlyAccessLevel = 'general' | 'internal';
+
+export type OfferedEarlyAccessFeatures = Partial<
+  Record<TAppConfigurationSetting, EarlyAccessLevel>
+>;
 
 export interface UserCheckResponse {
   data: {
@@ -52,6 +60,8 @@ export interface IUserAttributes {
   confirmation_required: boolean;
   custom_field_values?: Record<string, any>;
   onboarding?: OnboardingType;
+  early_access_features?: TAppConfigurationSetting[];
+  offered_early_access_features?: OfferedEarlyAccessFeatures;
   avatar?: ImageSizes;
   roles?: TRole[];
   email?: string;
@@ -107,6 +117,7 @@ export interface IUserUpdate {
   bio_multiloc?: Multiloc;
   custom_field_values?: Record<string, any>;
   onboarding?: OnboardingType;
+  early_access_features?: TAppConfigurationSetting[];
   phone?: string;
 }
 
