@@ -1842,6 +1842,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "مؤلف:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAll": "هل تريد الموافقة على جميع المدخلات؟",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation": "سيؤدي هذا إلى الموافقة على جميع المدخلات المستوردة البالغ عددها {numIdeas} ونشرها دفعة واحدة. لا يزال بإمكانك العثور عليها في مدير المدخلات بعد ذلك.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": "سيؤدي هذا إلى اعتماد ونشر جميع الردود المستوردة البالغ عددها {numIdeas} دفعة واحدة. يمكنك العثور عليها في علامة تبويب \"الرؤى\" لهذه المرحلة بعد ذلك.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": "هل تريد إزالة جميع المدخلات؟",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAllExplanation": "لا يمكن التراجع عن هذا الإجراء.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "تنزيل ملف PDF",

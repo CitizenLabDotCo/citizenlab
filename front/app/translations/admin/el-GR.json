@@ -1842,6 +1842,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Δημιουργός:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAll": "Έγκριση όλων των καταχωρίσεων;",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation": "Αυτή η ενέργεια θα εγκρίνει και θα δημοσιεύσει και τις {numIdeas} εισαγόμενες καταχωρίσεις ταυτόχρονα. Μπορείτε να τις βρείτε στη συνέχεια στη διαχείριση καταχωρίσεων.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": "Αυτό θα εγκρίνει και θα δημοσιεύσει όλες τις {numIdeas} εισαγόμενες απαντήσεις ταυτόχρονα. Μπορείτε να τις βρείτε στην καρτέλα «Στατιστικά» αυτής της φάσης στη συνέχεια.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": "Κατάργηση όλων των καταχωρίσεων;",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAllExplanation": "Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "Λήψη PDF",

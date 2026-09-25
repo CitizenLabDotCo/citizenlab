@@ -1842,6 +1842,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "مصنف:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAll": "کیا تمام ان پٹس کو منظور کریں؟",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation": "اس سے تمام {numIdeas} درآمد شدہ ان پٹس ایک ساتھ منظور اور شائع ہو جائیں گے۔ آپ بعد میں انہیں ان پٹ مینیجر میں تلاش کر سکتے ہیں۔",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": "اس سے تمام {numIdeas} درآمد شدہ جوابات ایک ساتھ منظور اور شائع ہو جائیں گے۔ آپ انہیں بعد میں اس مرحلے کے 'بصیرت' ٹیب میں دیکھ سکتے ہیں۔",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": "کیا تمام ان پٹس کو ہٹا دیں؟",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAllExplanation": "اس عمل کو واپس نہیں لیا جا سکتا۔",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "پی ڈی ایف ڈاؤن لوڈ کریں۔",

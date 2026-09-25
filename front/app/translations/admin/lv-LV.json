@@ -1842,6 +1842,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Autors:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAll": "Apstiprināt visas ievades?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation": "Šī darbība apstiprinās un publicēs visas {numIdeas} importētās ievades uzreiz. Pēc tam tās joprojām varēsiet atrast ievades pārvaldniekā.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": "Tādējādi vienlaikus tiks apstiprinātas un publicētas visas {numIdeas} importētās atbildes. Pēc tam tās varēsiet atrast šī posma cilnē Ieskati.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": "Noņemt visas ievades?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAllExplanation": "Šo darbību nevarēs atcelt.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "Lejupielādēt PDF",

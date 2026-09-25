@@ -1842,6 +1842,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Autor:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAll": "¿Aprobar todas las aportaciones?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation": "Esto aprobará y publicará las {numIdeas} aportaciones importadas a la vez. Podrás seguir encontrándolas en el gestor de aportaciones después.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": "Esto aprobará y publicará las {numIdeas} respuestas importadas a la vez. Podrás encontrarlas después en la pestaña Análisis de esta fase.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": "¿Eliminar todas las aportaciones?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAllExplanation": "Esta acción no se puede deshacer.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "Descargar PDF",

@@ -1842,6 +1842,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Yazar:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAll": "Tüm girdiler onaylansın mı?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation": "Bu işlem, içe aktarılan {numIdeas} girdinin tamamını tek seferde onaylayıp yayınlayacaktır. Bunları daha sonra girdi yöneticisinde bulabilirsiniz.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": "Bu işlem, içe aktarılan {numIdeas} yanıtın tamamını tek seferde onaylayacak ve yayınlayacaktır. Bunları daha sonra bu aşamanın Analizler sekmesinde bulabilirsiniz.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": "Tüm girdiler kaldırılsın mı?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAllExplanation": "Bu işlem geri alınamaz.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "İndir PDF",
