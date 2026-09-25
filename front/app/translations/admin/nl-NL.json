@@ -1842,6 +1842,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Auteur:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAll": "Alle bijdragen goedkeuren?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation": "Hiermee worden alle {numIdeas} geïmporteerde items tegelijk goedgekeurd en gepubliceerd. Je kunt ze daarna nog steeds terugvinden onder \"Beheer bijdragen\".",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": "Hiermee worden alle {numIdeas} geïmporteerde reacties tegelijk goedgekeurd en gepubliceerd. Je kunt ze daarna terugvinden in het tabblad Inzichten van deze fase.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": "Alle bijdragen verwijderen?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAllExplanation": "Deze actie kan niet ongedaan worden gemaakt.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "Downloaden PDF",

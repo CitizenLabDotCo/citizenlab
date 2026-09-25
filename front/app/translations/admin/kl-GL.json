@@ -1842,6 +1842,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Allattoq:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAll": "Siunnersuutit tamaasa akuerineqassappat?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation": "Tamatumuuna siunnersuutit eqqunneqartut {numIdeas}-it ataatsikkut akuerineqarlutillu saqqummiunneqassapput. Kingorna siunnersuutinik aqutsivimmi suli nassaarisinnaavatit.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": "Akissutit eqqussukkat {numIdeas}-it tamarmik ataatsikkut akuerineqarlutillu saqqummiunneqassapput. Kingorna immikkoortup matuma Insights-imi nassaarisinnaavatit.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": "Siunnersuutit tamaasa piiarneqassappat?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAllExplanation": "Iliuseq taamaatinneqarsinnaanngilaq.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "PDF aajuk",

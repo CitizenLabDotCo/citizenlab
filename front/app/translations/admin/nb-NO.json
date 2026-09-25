@@ -1842,6 +1842,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Forfatter:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAll": "Godkjenne alle innspill?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation": "Dette vil godkjenne og publisere alle de {numIdeas} importerte innspillene samtidig. Du finner dem fortsatt i innspillsbehandleren etterpå.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": "Dette vil godkjenne og publisere alle de {numIdeas} importerte svarene samtidig. Du finner dem i Innsikt-fanen for denne fasen etterpå.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": "Fjerne alle innspill?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAllExplanation": "Denne handlingen kan ikke angres.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "Last ned PDF",

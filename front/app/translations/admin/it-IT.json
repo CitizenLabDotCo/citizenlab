@@ -1842,6 +1842,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Autore:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAll": "Approvare tutti i contributi?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation": "Questa azione approverà e pubblicherà tutti i {numIdeas} contributi importati contemporaneamente. Potrai comunque trovarli in seguito nella pagina Contributi.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": "Questa operazione approverà e pubblicherà contemporaneamente tutte le {numIdeas} risposte importate. In seguito, potrai trovarle nella scheda Approfondimenti di questa fase.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": "Rimuovere tutti i contributi?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAllExplanation": "Questa azione non può essere annullata.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "Scarica il PDF",

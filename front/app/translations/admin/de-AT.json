@@ -1842,6 +1842,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Autor*in:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAll": "Alle Beiträge freigeben?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation": "Dies wird alle {numIdeas} importierten Beiträge auf einmal freigeben und veröffentlichen. Sie können sie anschließend weiterhin im Beitrags-Manager finden.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": "Dadurch werden alle {numIdeas} importierten Antworten gleichzeitig freigegeben und veröffentlicht. Sie finden diese anschließend im Tab „Insights“ dieser Phase.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": "Alle Beiträge freigeben?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAllExplanation": "Diese Aktion kann nicht rückgängig gemacht werden.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "PDF herunterladen",
