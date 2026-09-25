@@ -9894,6 +9894,11 @@
     "verified_at": "2026-04-20T13:09:52.177644Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": {
+    "state": "verified",
+    "verified_at": "2026-09-25T10:57:52.006738Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": {
     "state": "verified",
     "verified_at": "2026-04-20T13:09:52.177644Z",
