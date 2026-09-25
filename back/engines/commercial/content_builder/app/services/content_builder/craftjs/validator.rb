@@ -190,14 +190,29 @@ module ContentBuilder
         [error(id, :unknown_keys, "unknown keys in 'type': #{unknown.join(', ')} (allowed: resolvedName)")]
       end
 
+      # A widget that declares slots holds its content only there; the FE renders
+      # nothing from its `nodes`. So every declared slot must be wired and no content
+      # may sit in `nodes` — either mistake renders the widget blank and uneditable.
       def slot_errors(id, node, spec)
-        allowed = spec['slots'] || []
-        node['linkedNodes'].keys.filter_map do |slot|
-          if allowed.exclude?(slot)
-            suffix = allowed.any? ? " (allowed: #{allowed.join(', ')})" : ''
-            error(id, :unknown_slot, "unknown linkedNodes slot '#{slot}'#{suffix}")
-          end
+        slots = spec['slots'] || []
+        errors = node['linkedNodes'].keys.filter_map do |slot|
+          next if slots.include?(slot)
+
+          suffix = slots.any? ? " (allowed: #{slots.join(', ')})" : ''
+          error(id, :unknown_slot, "unknown linkedNodes slot '#{slot}'#{suffix}")
         end
+        return errors if slots.empty?
+
+        missing = slots - node['linkedNodes'].keys
+        if missing.any?
+          errors << error(id, :missing_slot,
+            "missing linkedNodes slot(s): #{missing.join(', ')}; each must point to a Container node")
+        end
+        if node['nodes'].present?
+          errors << error(id, :slot_widget_nodes,
+            "content must be wired through linkedNodes slots (#{slots.join(', ')}), not 'nodes'")
+        end
+        errors
       end
 
       # Slot containers must be canvases. An edge is checked when either its parent

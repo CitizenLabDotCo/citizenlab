@@ -232,7 +232,10 @@ RSpec.describe ContentBuilder::Craftjs::Validator do
     it 'rejects an unknown linkedNodes slot' do
       json.delete('T')
       json['ROOT']['nodes'] = ['TC']
-      json['TC'] = craftjs_node('TwoColumn', parent: 'ROOT', linkedNodes: { 'top' => 'C' })
+      json['TC'] = craftjs_node('TwoColumn', parent: 'ROOT',
+        linkedNodes: { 'left' => 'L', 'right' => 'R', 'top' => 'C' })
+      json['L'] = craftjs_node('Container', parent: 'TC', isCanvas: true)
+      json['R'] = craftjs_node('Container', parent: 'TC', isCanvas: true)
       json['C'] = craftjs_node('Container', parent: 'TC', isCanvas: true)
 
       expect(errors).to contain_exactly(
@@ -243,12 +246,63 @@ RSpec.describe ContentBuilder::Craftjs::Validator do
     it 'rejects a linkedNodes slot container that is not a canvas' do
       json.delete('T')
       json['ROOT']['nodes'] = ['TC']
-      json['TC'] = craftjs_node('TwoColumn', parent: 'ROOT', linkedNodes: { 'left' => 'C' })
+      json['TC'] = craftjs_node('TwoColumn', parent: 'ROOT', linkedNodes: { 'left' => 'C', 'right' => 'R' })
       json['C'] = craftjs_node('Container', parent: 'TC', isCanvas: false)
+      json['R'] = craftjs_node('Container', parent: 'TC', isCanvas: true)
 
       expect(errors).to contain_exactly(
         match(/\Anode C: slot containers must be a canvas/)
       )
+    end
+
+    it 'rejects a slot widget missing a declared slot' do
+      json.delete('T')
+      json['ROOT']['nodes'] = ['TC']
+      json['TC'] = craftjs_node('TwoColumn', parent: 'ROOT', linkedNodes: { 'left' => 'C' })
+      json['C'] = craftjs_node('Container', parent: 'TC', isCanvas: true)
+
+      expect(errors).to contain_exactly(
+        match(/\Anode TC: missing linkedNodes slot\(s\): right/)
+      )
+    end
+
+    it "rejects a slot widget with content wired through 'nodes'" do
+      json.delete('T')
+      json['ROOT']['nodes'] = ['TC']
+      json['TC'] = craftjs_node('TwoColumn', parent: 'ROOT',
+        linkedNodes: { 'left' => 'L', 'right' => 'R' }, nodes: ['X'])
+      json['L'] = craftjs_node('Container', parent: 'TC', isCanvas: true)
+      json['R'] = craftjs_node('Container', parent: 'TC', isCanvas: true)
+      json['X'] = text_node(parent: 'TC')
+
+      expect(errors).to contain_exactly(
+        match(/\Anode TC: content must be wired through linkedNodes slots/)
+      )
+    end
+
+    it 'accepts a correctly wired slot widget' do
+      json.delete('T')
+      json['ROOT']['nodes'] = ['TC']
+      json['TC'] = craftjs_node('TwoColumn', parent: 'ROOT', linkedNodes: { 'left' => 'L', 'right' => 'R' })
+      json['L'] = craftjs_node('Container', parent: 'TC', isCanvas: true)
+      json['R'] = craftjs_node('Container', parent: 'TC', isCanvas: true)
+
+      expect(errors).to eq([])
+    end
+
+    context 'when a slot widget wired through nodes is outside the convention_scope' do
+      let(:json) do
+        {
+          'ROOT' => craftjs_root(['TC']),
+          'TC' => craftjs_node('TwoColumn', parent: 'ROOT', nodes: ['X']),
+          'X' => text_node(parent: 'TC')
+        }
+      end
+      let(:convention_scope) { %w[X] }
+
+      it 'does not flag the out-of-scope slot widget' do
+        expect(errors).to eq([])
+      end
     end
 
     context 'when a patch flips a slot container to isCanvas: false without re-sending its parent' do
