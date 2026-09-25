@@ -24,7 +24,7 @@ jest.mock('utils/router', () => ({
 
 const SMS_TAB = 'SMS';
 const UPSELL_TOOLTIP =
-  'To learn more about how to enable SMS campaigns, talk to your GovSuccess manager';
+  'To learn more about how to enable SMS campaigns, talk to your GovSuccess manager.';
 
 const smsTabLink = () => screen.getByText(SMS_TAB).closest('a')!;
 

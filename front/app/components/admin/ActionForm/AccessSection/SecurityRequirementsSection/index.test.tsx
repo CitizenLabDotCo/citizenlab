@@ -332,7 +332,7 @@ describe('<SecurityRequirementsSection />', () => {
 
         expect(
           await screen.findByText(
-            'To learn more about how to enable SMS 2-step access confirmation, talk to your GovSuccess manager'
+            'To learn more about how to enable SMS 2-step access confirmation, talk to your GovSuccess manager.'
           )
         ).toBeInTheDocument();
       });
