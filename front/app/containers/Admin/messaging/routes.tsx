@@ -9,6 +9,8 @@ import { createRoute } from 'utils/router';
 
 import { adminRoute } from '../routes';
 
+import SmsGuard from './Sms/SmsGuard';
+
 const MessagingIndex = lazy(() => import('.'));
 const CustomEmailsIndex = lazy(() => import('./CustomEmails/All'));
 const CustomEmailsNew = lazy(() => import('./CustomEmails/New'));
@@ -124,9 +126,11 @@ const smsRoute = createRoute({
   getParentRoute: () => messagingRoute,
   path: 'sms',
   component: () => (
-    <PageLoading>
-      <SmsIndex />
-    </PageLoading>
+    <SmsGuard>
+      <PageLoading>
+        <SmsIndex />
+      </PageLoading>
+    </SmsGuard>
   ),
 });
 
@@ -134,9 +138,11 @@ const smsNewRoute = createRoute({
   getParentRoute: () => messagingRoute,
   path: 'sms/new',
   component: () => (
-    <PageLoading>
-      <SmsNew />
-    </PageLoading>
+    <SmsGuard>
+      <PageLoading>
+        <SmsNew />
+      </PageLoading>
+    </SmsGuard>
   ),
 });
 
@@ -144,9 +150,11 @@ const smsShowRoute = createRoute({
   getParentRoute: () => messagingRoute,
   path: 'sms/$campaignId',
   component: () => (
-    <PageLoading>
-      <SmsShow />
-    </PageLoading>
+    <SmsGuard>
+      <PageLoading>
+        <SmsShow />
+      </PageLoading>
+    </SmsGuard>
   ),
 });
 
@@ -154,9 +162,11 @@ const smsEditRoute = createRoute({
   getParentRoute: () => messagingRoute,
   path: 'sms/$campaignId/edit',
   component: () => (
-    <PageLoading>
-      <SmsEdit />
-    </PageLoading>
+    <SmsGuard>
+      <PageLoading>
+        <SmsEdit />
+      </PageLoading>
+    </SmsGuard>
   ),
 });
 
