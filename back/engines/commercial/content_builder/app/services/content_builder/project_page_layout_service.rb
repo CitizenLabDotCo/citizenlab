@@ -118,6 +118,21 @@ module ContentBuilder
       canonical_nodes(injected_top_level_ids).merge(injected_nodes)
     end
 
+    # Clears the ProjectBanner node's image so the banner renders from the record's header_bg
+    # (the FE does this on save; API callers that set header_bg don't). `alt` has no record
+    # fallback, so it's left alone.
+    def reset_banner_image!(project)
+      layout = ContentBuilder::Layout.find_by(content_buildable: project, code: CODE)
+      return if layout&.craftjs_json.blank?
+
+      json = layout.craftjs_json.deep_dup
+      banner_id = find_node_id(json, 'ProjectBanner')
+      return if banner_id.nil? || json.dig(banner_id, 'props', 'image').blank?
+
+      json[banner_id]['props']['image'] = {}
+      layout.update!(craftjs_json: json)
+    end
+
     private
 
     def inject_body(body)
