@@ -1842,7 +1842,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Författare:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAll": "Godkänn alla bidrag?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation": "Detta kommer att godkänna och publicera alla {numIdeas} importerade bidrag på en gång. Du kan fortfarande hitta dem i bidragshanteraren efteråt.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": "Detta kommer att godkänna och publicera alla {numIdeas} importerade svar samtidigt. Du hittar dem i fliken Insikter för den här fasen efteråt.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": "Detta kommer att godkänna och publicera alla {numIdeas} importerade svar på en gång. Du hittar dem i fliken Insikter för denna fas efteråt.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": "Ta bort alla bidrag?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAllExplanation": "Denna åtgärd kan inte ångras.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "Ladda ner PDF",

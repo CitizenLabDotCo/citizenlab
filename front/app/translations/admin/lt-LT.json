@@ -1842,7 +1842,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Autorius:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAll": "Patvirtinti visas įvestis?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation": "Tai patvirtins ir paskelbs visas {numIdeas} importuotas įvestis vienu metu. Vėliau jas vis tiek galėsite rasti įvesčių tvarkyklėje.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": "Tai patvirtins ir paskelbs visus {numIdeas} importuotus atsakymus vienu metu. Vėliau juos rasite šio etapo skirtuke „Įžvalgos“.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": "Tai vienu metu patvirtins ir paskelbs visus {numIdeas} importuotus atsakymus. Vėliau juos galėsite rasti šio etapo skirtuke „Įžvalgos“.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": "Pašalinti visas įvestis?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAllExplanation": "Šio veiksmo atšaukti negalima.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "Atsisiųsti PDF",

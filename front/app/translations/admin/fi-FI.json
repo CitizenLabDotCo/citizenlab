@@ -1842,7 +1842,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Tekijä:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAll": "Hyväksytäänkö kaikki syötteet?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation": "Tämä hyväksyy ja julkaisee kaikki {numIdeas} tuotua syötettä kerralla. Löydät ne edelleen syötteiden hallinnasta jälkikäteen.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": "Tämä hyväksyy ja julkaisee kaikki {numIdeas} tuotua vastausta kerralla. Löydät ne tämän vaiheen Tilastot-välilehdeltä sen jälkeen.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": "Tämä hyväksyy ja julkaisee kaikki {numIdeas} tuotua vastausta kerralla. Löydät ne tämän vaiheen Oivallukset-välilehdeltä sen jälkeen.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": "Poistetaanko kaikki syötteet?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAllExplanation": "Tätä toimintoa ei voi kumota.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "Lataa PDF-tiedosto",

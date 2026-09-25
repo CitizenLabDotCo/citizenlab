@@ -1842,7 +1842,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Autor:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAll": "Vols aprovar totes les entrades?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation": "Això aprovarà i publicarà les {numIdeas} entrades importades alhora. Després les podràs trobar al gestor d'entrades.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": "Això aprovarà i publicarà totes les {numIdeas} respostes importades alhora. Després les podràs trobar a la pestanya Estadístiques d'aquesta fase.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": "Això aprovarà i publicarà totes les {numIdeas} respostes importades alhora. Després les podràs trobar a la pestanya d'Estadístiques d'aquesta fase.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": "Vols eliminar totes les entrades?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAllExplanation": "Aquesta acció no es pot desfer.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "Baixa el PDF",

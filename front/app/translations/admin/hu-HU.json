@@ -1842,7 +1842,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Szerző:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAll": "Jóváhagyja az összes bejegyzést?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation": "Ezzel egyszerre jóváhagyja és közzéteszi mind a(z) {numIdeas} importált bejegyzést. Később továbbra is megtalálhatja őket a bejegyzéskezelőben.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": "Ez egyszerre jóváhagyja és közzéteszi mind a(z) {numIdeas} importált választ. Ezt követően a szakasz Elemzések fülén találhatja meg őket.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": "Ezzel egyszerre jóváhagyja és közzéteszi mind a(z) {numIdeas} importált választ. Ezt követően a szakasz Elemzések fülén találja majd meg őket.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": "Eltávolítja az összes bejegyzést?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAllExplanation": "Ez a művelet nem vonható vissza.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "PDF letöltése",

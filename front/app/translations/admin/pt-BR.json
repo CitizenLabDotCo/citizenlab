@@ -1842,7 +1842,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Autor:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAll": "Aprovar todas as entradas?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation": "Isso aprovará e publicará todas as {numIdeas} entradas importadas de uma só vez. Você ainda poderá encontrá-las no gerenciador de entradas depois.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": "Isso aprovará e publicará todas as {numIdeas} respostas importadas de uma só vez. Você poderá encontrá-las na aba Insights desta fase depois.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": "Isso aprovará e publicará todas as {numIdeas} respostas importadas de uma só vez. Você poderá encontrá-las na aba Insights desta etapa depois.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": "Remover todas as entradas?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAllExplanation": "Esta ação não pode ser desfeita.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "Baixar PDF",

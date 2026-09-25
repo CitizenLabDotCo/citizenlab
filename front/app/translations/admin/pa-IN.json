@@ -1842,7 +1842,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "ਲੇਖਕ:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAll": "ਕੀ ਸਾਰੇ ਇਨਪੁਟਸ ਮਨਜ਼ੂਰ ਕਰਨੇ ਹਨ?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation": "ਇਹ ਸਾਰੇ {numIdeas} ਇੰਪੋਰਟ ਕੀਤੇ ਇਨਪੁਟਸ ਨੂੰ ਇੱਕੋ ਵਾਰ ਮਨਜ਼ੂਰ ਅਤੇ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰ ਦੇਵੇਗਾ। ਤੁਸੀਂ ਬਾਅਦ ਵਿੱਚ ਉਹਨਾਂ ਨੂੰ ਇਨਪੁਟ ਮੈਨੇਜਰ ਵਿੱਚ ਲੱਭ ਸਕਦੇ ਹੋ।",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": "ਇਹ ਇੱਕੋ ਵਾਰ ਵਿੱਚ ਸਾਰੀਆਂ {numIdeas} ਆਯਾਤ ਕੀਤੀਆਂ ਪ੍ਰਤੀਕਿਰਿਆਵਾਂ ਨੂੰ ਮਨਜ਼ੂਰ ਅਤੇ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰ ਦੇਵੇਗਾ। ਤੁਸੀਂ ਬਾਅਦ ਵਿੱਚ ਉਹਨਾਂ ਨੂੰ ਇਸ ਪੜਾਅ ਦੇ Insights ਟੈਬ ਵਿੱਚ ਦੇਖ ਸਕਦੇ ਹੋ।",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": "ਇਹ ਇੱਕੋ ਵਾਰ ਵਿੱਚ ਸਾਰੀਆਂ {numIdeas} ਆਯਾਤ ਕੀਤੀਆਂ ਪ੍ਰਤੀਕਿਰਿਆਵਾਂ ਨੂੰ ਮਨਜ਼ੂਰ ਅਤੇ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰ ਦੇਵੇਗਾ। ਤੁਸੀਂ ਬਾਅਦ ਵਿੱਚ ਉਹਨਾਂ ਨੂੰ ਇਸ ਪੜਾਅ ਦੇ ਇਨਸਾਈਟਸ ਟੈਬ ਵਿੱਚ ਦੇਖ ਸਕਦੇ ਹੋ।",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": "ਕੀ ਸਾਰੇ ਇਨਪੁਟਸ ਹਟਾਉਣੇ ਹਨ?",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAllExplanation": "ਇਸ ਕਾਰਵਾਈ ਨੂੰ ਵਾਪਸ ਨਹੀਂ ਲਿਆ ਜਾ ਸਕਦਾ।",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "PDF ਡਾਊਨਲੋਡ ਕਰੋ",
