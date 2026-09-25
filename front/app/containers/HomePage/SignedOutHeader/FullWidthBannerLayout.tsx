@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/HomepageBanner';
 
-import { homepageBannerLayoutHeights } from 'components/admin/BannerFields/HeaderImageDropzone';
+import { homepageBannerLayoutHeights } from 'components/admin/BannerFields/constants';
 import {
   Container,
   HeaderImage,
