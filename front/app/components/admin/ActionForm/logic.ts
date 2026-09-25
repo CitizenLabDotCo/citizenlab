@@ -29,7 +29,13 @@ type SecurityRequirementKey = 'email' | 'phone' | 'verification' | 'password';
 export type VisibleSecurityRequirements = Record<
   SecurityRequirementKey,
   boolean
->;
+> & {
+  // The phone toggle is shown switched off and disabled, as an upsell: SMS is
+  // not enabled, but the platform has password login, so requiring a confirmed
+  // phone number is something the admin could get. It never counts as a
+  // configurable requirement, so it never shows up in a summary.
+  phoneUpsell: boolean;
+};
 
 type VisibleSecurityRequirementsParams = {
   smsEnabled: boolean;
@@ -51,6 +57,7 @@ export const getVisibleSecurityRequirements = ({
     phone: false,
     verification: false,
     password: false,
+    phoneUpsell: false,
   };
 
   if ((smsEnabled && smsLoginEnabled) || hasAuthMethodNotReturningEmail) {
@@ -63,6 +70,8 @@ export const getVisibleSecurityRequirements = ({
 
   if (smsEnabled) {
     visibleSecurityRequirements.phone = true;
+  } else if (passwordLoginEnabled) {
+    visibleSecurityRequirements.phoneUpsell = true;
   }
 
   if (verificationMethodEnabled) {

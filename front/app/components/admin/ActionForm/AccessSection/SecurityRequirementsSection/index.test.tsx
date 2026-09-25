@@ -192,14 +192,13 @@ describe('<SecurityRequirementsSection />', () => {
       ).toBeInTheDocument();
     });
 
-    it('hides the phone and email rows when SMS is off', async () => {
-      // Without SMS nobody can sign up by phone, so neither the phone check nor
-      // the (then unconditional) email confirmation is configurable.
+    it('hides the email row when SMS is off', async () => {
+      // Without SMS nobody can sign up by phone, so the (then unconditional)
+      // email confirmation is not configurable.
       mockSmsEnabled = false;
       renderSection();
       await openSection();
 
-      expect(screen.queryByText(PHONE_LABEL)).not.toBeInTheDocument();
       expect(screen.queryByText(EMAIL_LABEL)).not.toBeInTheDocument();
       expect(screen.getByText(VERIFICATION_LABEL)).toBeInTheDocument();
     });
@@ -261,6 +260,122 @@ describe('<SecurityRequirementsSection />', () => {
       renderSection();
 
       expect(screen.queryByText(SECTION_TITLE)).not.toBeInTheDocument();
+    });
+  });
+
+  describe('the phone row', () => {
+    const phoneToggle = () =>
+      within(
+        screen.getByText(PHONE_LABEL).closest('label')!.parentElement!
+      ).getByTestId('toggle');
+
+    describe('when SMS and password login are both enabled', () => {
+      it('shows a working toggle', async () => {
+        const onChange = renderSection();
+        await openSection();
+
+        expect(screen.getByText(PHONE_LABEL)).toBeInTheDocument();
+        expect(screen.queryByText(/Not configured/)).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getByText(PHONE_LABEL));
+
+        expect(onChange).toHaveBeenCalledWith({
+          require_confirmed_phone_number: true,
+          confirmed_phone_number_expiry: null,
+        });
+      });
+
+      it('shows the requirement in the summary when required', () => {
+        renderSection({
+          require_confirmed_email: false,
+          require_password: false,
+          require_confirmed_phone_number: true,
+        });
+
+        expect(screen.getByText(PHONE_SUMMARY)).toBeInTheDocument();
+      });
+    });
+
+    describe('when SMS is disabled but password login is enabled', () => {
+      beforeEach(() => {
+        mockSmsEnabled = false;
+        mockPasswordLoginEnabled = true;
+      });
+
+      it('shows a switched off, disabled toggle marked as not configured', async () => {
+        // Even if the permission still carries the flag from before SMS was
+        // switched off, the upsell toggle shows as off.
+        renderSection({ require_confirmed_phone_number: true });
+        await openSection();
+
+        expect(screen.getByText(PHONE_LABEL)).toBeInTheDocument();
+        expect(screen.getByText('(Not configured)')).toBeInTheDocument();
+
+        const toggle = phoneToggle();
+        const checkbox = toggle.parentElement!.querySelector('input')!;
+        expect(checkbox).not.toBeChecked();
+        expect(checkbox).toBeDisabled();
+      });
+
+      it('does not emit anything when clicked', async () => {
+        const onChange = renderSection();
+        await openSection();
+
+        await userEvent.click(screen.getByText(PHONE_LABEL));
+        await userEvent.click(phoneToggle());
+
+        expect(onChange).not.toHaveBeenCalled();
+      });
+
+      it('explains how to enable SMS on hover', async () => {
+        renderSection();
+        await openSection();
+
+        await userEvent.hover(screen.getByTestId('phone-upsell-row'));
+
+        expect(
+          await screen.findByText(
+            'To learn more about how to enable SMS 2-step access confirmation, talk to your GovSuccess manager'
+          )
+        ).toBeInTheDocument();
+      });
+
+      it('leaves the requirement out of the summary', () => {
+        renderSection({
+          require_confirmed_email: false,
+          require_password: false,
+          require_confirmed_phone_number: true,
+        });
+
+        expect(screen.queryByText(PHONE_SUMMARY)).not.toBeInTheDocument();
+        expect(screen.getByText('None')).toBeInTheDocument();
+      });
+    });
+
+    describe('when SMS and password login are both disabled', () => {
+      beforeEach(() => {
+        mockSmsEnabled = false;
+        mockPasswordLoginEnabled = false;
+      });
+
+      it('does not show the phone row', async () => {
+        renderSection();
+        await openSection();
+
+        expect(screen.queryByText(PHONE_LABEL)).not.toBeInTheDocument();
+        expect(screen.queryByText(/Not configured/)).not.toBeInTheDocument();
+        expect(screen.getByText(VERIFICATION_LABEL)).toBeInTheDocument();
+      });
+
+      it('leaves the requirement out of the summary', () => {
+        renderSection({
+          require_confirmed_email: false,
+          require_confirmed_phone_number: true,
+        });
+
+        expect(screen.queryByText(PHONE_SUMMARY)).not.toBeInTheDocument();
+        expect(screen.getByText('None')).toBeInTheDocument();
+      });
     });
   });
 

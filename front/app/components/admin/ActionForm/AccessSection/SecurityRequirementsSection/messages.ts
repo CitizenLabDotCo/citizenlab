@@ -9,6 +9,15 @@ export default defineMessages({
     id: 'front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.none',
     defaultMessage: 'None',
   },
+  notConfigured: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.notConfigured',
+    defaultMessage: 'Not configured',
+  },
+  phoneUpsellTooltip: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.phoneUpsellTooltip',
+    defaultMessage:
+      'To learn more about how to enable SMS 2-step access confirmation, talk to your GovSuccess manager',
+  },
   emailMethodDescription: {
     id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription2',
     defaultMessage: 'Users must have a confirmed email address.',
