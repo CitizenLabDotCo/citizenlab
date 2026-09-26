@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { Element } from '@craftjs/core';
-import moment from 'moment';
+import { format } from 'date-fns';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
@@ -92,7 +92,7 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
 
   const projectPeriod = hasPhases
     ? getProjectPeriod(phases.data)
-    : { startAt: undefined, endAt: moment().format('YYYY-MM-DD') };
+    : { startAt: undefined, endAt: format(new Date(), 'yyyy-MM-dd') };
 
   if (!appConfigurationLocales) return null;
 
@@ -117,7 +117,7 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
 
       const { startAt, endAt } = projectPeriod;
 
-      const period = getPeriod({ startAt, endAt, formatMessage });
+      const period = getPeriod({ startAt, endAt, formatMessage, locale });
 
       return withoutSpacing`
         <ul>

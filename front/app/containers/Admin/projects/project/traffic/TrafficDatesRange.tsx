@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Box, IconTooltip, Text } from '@citizenlab/cl2-component-library';
-import moment from 'moment';
+import { parseISO } from 'date-fns';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
@@ -66,8 +66,8 @@ const TrafficDatesRange = ({
       <Box mx="36px">
         <Charts
           projectId={projectId}
-          startAtMoment={moment(startAt)}
-          endAtMoment={moment(endAt)}
+          startAtMoment={startAt ? parseISO(startAt) : null}
+          endAtMoment={endAt ? parseISO(endAt) : null}
           resolution={resolution}
         />
       </Box>

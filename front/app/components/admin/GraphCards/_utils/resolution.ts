@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { subDays } from 'date-fns';
 import { FormatMessage } from 'typings';
 
 import { IResolution } from 'components/admin/ResolutionControl';
@@ -39,5 +39,5 @@ export const getTimePeriodMoment = (resolution: IResolution = 'month') => {
   let days = 30;
   if (resolution === 'week') days = 7;
   if (resolution === 'day') days = 1;
-  return moment().subtract({ days });
+  return subDays(new Date(), days);
 };

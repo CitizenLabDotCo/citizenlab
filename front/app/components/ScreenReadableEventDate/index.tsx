@@ -1,12 +1,18 @@
 import React from 'react';
 
-import moment from 'moment-timezone';
-
 import { IEventData } from 'api/events/types';
+
+import useLocale from 'hooks/useLocale';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
-import { userTimezone } from 'utils/dateUtils';
+import {
+  formatLongDate,
+  formatTime,
+  formatTimeZoneAbbreviation,
+  getViewerZone,
+  isSameDayInZone,
+} from 'utils/dateFormat';
 
 import messages from './messages';
 
@@ -22,31 +28,36 @@ interface Props {
  * easy for a user using a screen reader to understand the date.
  */
 const ScreenReadableEventDate = ({ event }: Props) => {
+  const locale = useLocale();
   const { formatMessage } = useIntl();
-  const startAtMoment = moment.tz(event.attributes.start_at, userTimezone);
-  const endAtMoment = moment.tz(event.attributes.end_at, userTimezone);
-  const tzLabel = startAtMoment.format('z');
-  const isEventMultipleDays =
-    startAtMoment.dayOfYear() !== endAtMoment.dayOfYear();
+  const { start_at, end_at } = event.attributes;
+  // Event times read in the VIEWER's zone, with the zone named explicitly.
+  const inViewerZone = { timeZone: getViewerZone() };
+  const tzLabel = formatTimeZoneAbbreviation(start_at, locale, inViewerZone);
+  const isEventMultipleDays = !isSameDayInZone(
+    start_at,
+    end_at,
+    inViewerZone.timeZone
+  );
 
   return (
     <ScreenReaderOnly>
       {isEventMultipleDays ? (
         <p>
           {formatMessage(messages.multiDayScreenReaderDate, {
-            startDate: startAtMoment.format('MMMM Do, YYYY'),
-            startTime: startAtMoment.format('LT'),
-            endDate: endAtMoment.format('MMMM Do, YYYY'),
-            endTime: endAtMoment.format('LT'),
+            startDate: formatLongDate(start_at, locale, inViewerZone),
+            startTime: formatTime(start_at, locale, inViewerZone),
+            endDate: formatLongDate(end_at, locale, inViewerZone),
+            endTime: formatTime(end_at, locale, inViewerZone),
             timezone: tzLabel,
           })}
         </p>
       ) : (
         <p>
           {formatMessage(messages.singleDayScreenReaderDate, {
-            eventDate: startAtMoment.format('MMMM Do, YYYY'),
-            startTime: startAtMoment.format('LT'),
-            endTime: endAtMoment.format('LT'),
+            eventDate: formatLongDate(start_at, locale, inViewerZone),
+            startTime: formatTime(start_at, locale, inViewerZone),
+            endTime: formatTime(end_at, locale, inViewerZone),
             timezone: tzLabel,
           })}
         </p>

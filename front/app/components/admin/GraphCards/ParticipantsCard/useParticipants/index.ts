@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react';
 
+import { format } from 'date-fns';
+
 import { useParticipantsLive } from 'api/graph_data_units';
 
 import { useIntl } from 'utils/cl-intl';
@@ -23,8 +25,8 @@ export default function useParticipants({
     {
       project_id: projectId,
       // We use local time to avoid timezone issues and use the timezone of the user making changes
-      start_at: startAtMoment?.local().format('YYYY-MM-DD'),
-      end_at: endAtMoment?.local().format('YYYY-MM-DD'),
+      start_at: startAtMoment ? format(startAtMoment, 'yyyy-MM-dd') : undefined,
+      end_at: endAtMoment ? format(endAtMoment, 'yyyy-MM-dd') : undefined,
       resolution,
       ...getComparedPeriod(resolution),
     },

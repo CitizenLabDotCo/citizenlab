@@ -1,4 +1,4 @@
-import hr from 'date-fns/locale/hr';
+import { hr } from 'date-fns/locale/hr';
 
 import { addLocale } from 'components/admin/DatePickers/_shared/locales';
 

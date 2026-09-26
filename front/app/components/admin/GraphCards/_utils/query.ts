@@ -1,8 +1,6 @@
-import moment, { Moment } from 'moment';
+import { differenceInDays, format, parseISO, subDays } from 'date-fns';
 
 import { IResolution } from 'components/admin/ResolutionControl';
-
-import { momentToIsoDate } from 'utils/dateUtils';
 
 type ProjectFilter = { [key: string]: string };
 type EmptyObject = Record<string, unknown>;
@@ -14,8 +12,10 @@ export const getProjectFilter = (
   return projectId ? { [`${filter}.id`]: projectId } : {};
 };
 
+// parseISO, not `new Date()`: a bare "2026-03-22" is UTC midnight to the Date
+// constructor but local midnight to parseISO — and local is what moment did.
 const formatDate = (dateString: string) =>
-  moment(dateString).format('yyyy-MM-DD');
+  format(parseISO(dateString), 'yyyy-MM-dd');
 
 type DateFilter = {
   [key: string]: {
@@ -26,11 +26,16 @@ type DateFilter = {
 
 export const getDateFilter = (
   filter: string,
-  startAtMoment: Moment | null | undefined,
-  endAtMoment: Moment | null | undefined
+  startAtMoment: Date | null | undefined,
+  endAtMoment: Date | null | undefined
 ): DateFilter | EmptyObject => {
-  const startAt = startAtMoment?.local().format('YYYY-MM-DD');
-  const endAt = endAtMoment?.local().format('YYYY-MM-DD');
+  // Deliberately the browser's zone, matching moment's `.local()` — these are
+  // filter bounds the user picked on their own calendar, not tenant-zone
+  // values. Plain date-fns `format` is local; `toIsoDate` would not be.
+  const startAt = startAtMoment
+    ? format(startAtMoment, 'yyyy-MM-dd')
+    : undefined;
+  const endAt = endAtMoment ? format(endAtMoment, 'yyyy-MM-dd') : undefined;
 
   if (!startAt && !endAt) return {};
 
@@ -55,35 +60,36 @@ export const getInterval = (resolution: IResolution) =>
 
 const getLastPeriod = (resolution: IResolution) => {
   if (resolution === 'month') {
-    return moment().subtract({ days: 30 }).format('YYYY-MM-DD');
+    return format(subDays(new Date(), 30), 'yyyy-MM-dd');
   }
 
   if (resolution === 'week') {
-    return moment().subtract({ days: 7 }).format('YYYY-MM-DD');
+    return format(subDays(new Date(), 7), 'yyyy-MM-dd');
   }
 
-  return moment().subtract({ days: 1 }).format('YYYY-MM-DD');
+  return format(subDays(new Date(), 1), 'yyyy-MM-dd');
 };
 
 export const getComparedTimeRange = (startAt?: string, endAt?: string) => {
   if (!startAt || !endAt) return {};
 
-  const startAtMoment = moment(startAt, 'YYYY-MM-DD');
-  const endAtMoment = moment(endAt, 'YYYY-MM-DD');
+  const start = parseISO(startAt);
+  const end = parseISO(endAt);
 
-  const days = endAtMoment.diff(startAtMoment, 'days');
+  const days = differenceInDays(end, start);
 
-  const prevEndAtMoment = startAtMoment.clone().subtract(1, 'days');
-  const prevStartAtMoment = prevEndAtMoment.clone().subtract(days, 'days');
+  // The immediately preceding window of equal length, ending the day before.
+  const prevEnd = subDays(start, 1);
+  const prevStart = subDays(prevEnd, days);
 
   return {
-    compare_start_at: momentToIsoDate(prevStartAtMoment),
-    compare_end_at: momentToIsoDate(prevEndAtMoment),
+    compare_start_at: format(prevStart, 'yyyy-MM-dd'),
+    compare_end_at: format(prevEnd, 'yyyy-MM-dd'),
   };
 };
 
 export const getComparedPeriod = (resolution: IResolution) => {
-  const today = moment().format('YYYY-MM-DD');
+  const today = format(new Date(), 'yyyy-MM-dd');
   const lastPeriod = getLastPeriod(resolution);
 
   return {

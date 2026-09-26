@@ -1,4 +1,4 @@
-import moment, { Moment } from 'moment';
+import { format, max, min, parseISO } from 'date-fns';
 
 import {
   ParticipationResponse,
@@ -16,33 +16,33 @@ import { get } from 'utils/helperUtils';
 
 import { CombinedTimeSeriesRow, GenericTimeSeriesRow } from '../../typings';
 
-const getEmptyRow = (date: Moment) => ({
-  date: date.format('YYYY-MM-DD'),
+const getEmptyRow = (date: Date) => ({
+  date: format(date, 'yyyy-MM-dd'),
   count: 0,
 });
 
 const parseRow = (
-  date: Moment,
+  date: Date,
   row?: TimeSeriesResponseRow
 ): GenericTimeSeriesRow => {
   if (!row) return getEmptyRow(date);
 
   return {
     count: row.count,
-    date: date.format('YYYY-MM-DD'),
+    date: format(date, 'yyyy-MM-dd'),
   };
 };
 
 const getDate = (row: TimeSeriesResponseRow) => {
-  return moment(get(row, 'first_dimension_date_created_date'));
+  return parseISO(get(row, 'first_dimension_date_created_date'));
 };
 
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
 
 const parseTimeSeries = (
   responseTimeSeries: TimeSeriesResponseRow[],
-  startAtMoment: Moment | null | undefined,
-  endAtMoment: Moment | null,
+  startAtMoment: Date | null | undefined,
+  endAtMoment: Date | null,
   resolution: IResolution
 ): GenericTimeSeriesRow[] | null => {
   return _parseTimeSeries(
@@ -76,8 +76,8 @@ export const parseCombinedTimeSeries = (
     commentsTimeSeries,
     votesTimeSeries,
   ]: ParticipationResponse['data']['attributes'],
-  providedStartAtMoment: Moment | null | undefined,
-  providedEndAtMoment: Moment | null,
+  providedStartAtMoment: Date | null | undefined,
+  providedEndAtMoment: Date | null,
   resolution: IResolution
 ) => {
   const startAtMoment =
@@ -134,7 +134,7 @@ const getFirstDateInTimeSeries = (
   );
   const firstDateInDataVotes = getFirstDateInData(votesTimeSeries, getDate);
 
-  return moment.min([
+  return min([
     firstDateInDataInputs,
     firstDateInDataComments,
     firstDateInDataVotes,
@@ -150,7 +150,7 @@ const getLastDateInTimeSeries = (
   const lastDateInDataComments = getLastDateInData(commentsTimeSeries, getDate);
   const lastDateInDataVotes = getLastDateInData(votesTimeSeries, getDate);
 
-  return moment.max([
+  return max([
     lastDateInDataInputs,
     lastDateInDataComments,
     lastDateInDataVotes,

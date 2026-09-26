@@ -1,5 +1,3 @@
-import { Moment } from 'moment';
-
 import { IResolution } from 'components/admin/ResolutionControl';
 
 // Parameters
@@ -8,8 +6,11 @@ export interface ProjectId {
 }
 
 export interface Dates {
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null;
+  // Property names kept as-is: they appear 500+ times across ~90 files, and
+  // renaming them would balloon this diff for no functional gain. The type is
+  // what mattered — these are plain Dates now, not moment objects.
+  startAtMoment: Date | null | undefined;
+  endAtMoment: Date | null;
 }
 
 export interface DatesStrings {

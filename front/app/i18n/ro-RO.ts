@@ -1,4 +1,4 @@
-import ro from 'date-fns/locale/ro';
+import { ro } from 'date-fns/locale/ro';
 
 import { addLocale } from 'components/admin/DatePickers/_shared/locales';
 

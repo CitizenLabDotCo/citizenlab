@@ -1,4 +1,4 @@
-import srLatn from 'date-fns/locale/sr-Latn';
+import { srLatn } from 'date-fns/locale/sr-Latn';
 
 import { addLocale } from 'components/admin/DatePickers/_shared/locales';
 

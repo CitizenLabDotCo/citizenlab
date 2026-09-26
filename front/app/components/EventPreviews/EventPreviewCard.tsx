@@ -7,14 +7,16 @@ import {
   Text,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import moment from 'moment';
 import styled, { useTheme } from 'styled-components';
 
 import { IEventData } from 'api/events/types';
 
+import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import DayAndMonth from 'components/EventCards/DateBlocks/DayAndMonth';
+
+import { formatDayOfMonth, formatMonthShort } from 'utils/dateFormat';
 
 const Container = styled(Box)`
   ${defaultCardStyle};
@@ -57,6 +59,7 @@ type EventPreviewCardProps = {
 };
 
 const EventPreviewCard = ({ event }: EventPreviewCardProps) => {
+  const locale = useLocale();
   const localize = useLocalize();
   const isMobile = useBreakpoint('phone');
 
@@ -78,8 +81,8 @@ const EventPreviewCard = ({ event }: EventPreviewCardProps) => {
       <Box display="flex" flexDirection="column" alignItems="stretch">
         <EventDate mr={theme.isRtl ? '8px' : '0px'}>
           <DayAndMonth
-            day={moment(event.attributes.start_at).format('DD')}
-            month={moment(event.attributes.start_at).format('MMM')}
+            day={formatDayOfMonth(event.attributes.start_at, locale)}
+            month={formatMonthShort(event.attributes.start_at, locale)}
           />
         </EventDate>
       </Box>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import moment from 'moment';
+import { format, parseISO } from 'date-fns';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 
@@ -24,7 +24,7 @@ interface DataTableProps<T> {
 
 const formatCell = (value: CellValue, type?: ColumnType): string => {
   if (value == null) return '';
-  if (type === 'date') return moment(value).format('MMM DD, YYYY');
+  if (type === 'date') return format(parseISO(String(value)), 'MMM dd, yyyy');
   if (type === 'percentage') return `${value}%`;
   return String(value);
 };

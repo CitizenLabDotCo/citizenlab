@@ -1,5 +1,5 @@
-import enGB from 'date-fns/locale/en-GB';
-import enUS from 'date-fns/locale/en-US';
+import { enGB } from 'date-fns/locale/en-GB';
+import { enUS } from 'date-fns/locale/en-US';
 
 import { addLocale } from 'components/admin/DatePickers/_shared/locales';
 

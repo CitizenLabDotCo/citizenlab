@@ -1,4 +1,4 @@
-import arMA from 'date-fns/locale/ar-MA';
+import { arMA } from 'date-fns/locale/ar-MA';
 
 import { addLocale } from 'components/admin/DatePickers/_shared/locales';
 

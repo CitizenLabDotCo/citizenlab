@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Box, Label, Text } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
-import moment from 'moment-timezone';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IEventProperties } from 'api/events/types';
@@ -12,7 +11,13 @@ import TimeInput from 'components/admin/TimeSelection/TimeInput';
 import ErrorComponent from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
-import { getGmtOffset } from 'utils/dateUtils';
+import { getViewerZone } from 'utils/dateFormat';
+import {
+  convertToTimeZoneISO,
+  getDateInTimezone,
+  getGmtOffset,
+  nowInZone,
+} from 'utils/dateUtils';
 
 import messages from './messages';
 import { ErrorType } from './types';
@@ -39,44 +44,31 @@ const DateTimeSelection = ({
   // wall-clock values in the platform tz, we project the stored UTC instant
   // into the platform tz and rebuild a Date whose browser-tz components
   // match those platform-tz wall-clock values.
-  const toPickerDate = (iso: string) => {
-    if (!platformTimezone) return new Date(iso);
-    const m = moment.tz(iso, platformTimezone);
-    return new Date(m.year(), m.month(), m.date(), m.hour(), m.minute());
-  };
+  const toPickerDate = (iso: string) =>
+    platformTimezone
+      ? getDateInTimezone(iso, platformTimezone) ?? new Date(iso)
+      : new Date(iso);
 
   // Inverse of toPickerDate: treat the picker Date's wall-clock components
   // as platform-tz values and return the corresponding UTC ISO string.
   const fromPickerDate = (date: Date) => {
     if (!platformTimezone) return date.toISOString();
-    return moment
-      .tz(
-        {
-          year: date.getFullYear(),
-          month: date.getMonth(),
-          day: date.getDate(),
-          hour: date.getHours(),
-          minute: date.getMinutes(),
-          second: 0,
-        },
-        platformTimezone
-      )
-      .utc()
-      .toISOString();
+    const withoutSeconds = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      date.getHours(),
+      date.getMinutes(),
+      0
+    );
+    return convertToTimeZoneISO(withoutSeconds, platformTimezone);
   };
 
   const startAtDate = toPickerDate(startAt);
   const endAtDate = toPickerDate(endAt);
 
-  const now = platformTimezone ? moment().tz(platformTimezone) : moment();
-  const tenantTimeNow = new Date(
-    now.year(),
-    now.month(),
-    now.date(),
-    now.hour(),
-    now.minute()
-  );
-  const browserTimezone = moment.tz.guess();
+  const tenantTimeNow = nowInZone(platformTimezone);
+  const browserTimezone = getViewerZone();
   const startGmtOffset = getGmtOffset(
     platformTimezone,
     tenantTimeNow,
@@ -100,13 +92,13 @@ const DateTimeSelection = ({
 
   const updateStartAt = (date: Date) => {
     // Preserve real (UTC) duration so DST transitions don't stretch/shrink the event
-    const currentDurationMs = moment.utc(endAt).diff(moment.utc(startAt));
+    const currentDurationMs =
+      new Date(endAt).getTime() - new Date(startAt).getTime();
 
     const newStartIso = fromPickerDate(date);
-    const newEndIso = moment
-      .utc(newStartIso)
-      .add(currentDurationMs, 'ms')
-      .toISOString();
+    const newEndIso = new Date(
+      new Date(newStartIso).getTime() + currentDurationMs
+    ).toISOString();
 
     setAttributeDiff((prev) => ({
       ...prev,
@@ -117,16 +109,13 @@ const DateTimeSelection = ({
 
   const updateEndAt = (date: Date) => {
     const newEndIso = fromPickerDate(date);
-    const newEndUtc = moment.utc(newEndIso);
-    const oldStartUtc = moment.utc(startAt);
+    const newEndMs = new Date(newEndIso).getTime();
+    const oldStartMs = new Date(startAt).getTime();
 
     let newStartIso = startAt;
-    if (newEndUtc.isBefore(oldStartUtc)) {
-      const currentDurationMs = moment.utc(endAt).diff(oldStartUtc);
-      newStartIso = newEndUtc
-        .clone()
-        .subtract(currentDurationMs, 'ms')
-        .toISOString();
+    if (newEndMs < oldStartMs) {
+      const currentDurationMs = new Date(endAt).getTime() - oldStartMs;
+      newStartIso = new Date(newEndMs - currentDurationMs).toISOString();
     }
 
     setAttributeDiff((prev) => ({

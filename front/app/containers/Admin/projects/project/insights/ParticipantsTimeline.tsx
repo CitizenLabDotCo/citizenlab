@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 
 import { Box, Text, Title, Spinner } from '@citizenlab/cl2-component-library';
-import moment from 'moment';
+import { parseISO } from 'date-fns';
 
 import usePhaseInsights from 'api/phase_insights/usePhaseInsights';
 
@@ -69,10 +69,10 @@ const ParticipantsTimeline = ({ phaseId }: Props) => {
   };
 
   const startAtMoment =
-    timeSeries.length > 0 ? moment(timeSeries[0].date_group) : null;
+    timeSeries.length > 0 ? parseISO(timeSeries[0].date_group) : null;
   const endAtMoment =
     timeSeries.length > 0
-      ? moment(timeSeries[timeSeries.length - 1].date_group)
+      ? parseISO(timeSeries[timeSeries.length - 1].date_group)
       : null;
 
   return (

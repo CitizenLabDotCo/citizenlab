@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { parseISO } from 'date-fns';
 
 import { deriveProjectStatus } from './utils';
 
@@ -9,7 +9,7 @@ describe('deriveProjectStatus', () => {
       end_at: '2022-01-01',
     };
 
-    const now = moment('2020-01-01');
+    const now = parseISO('2020-01-01');
 
     expect(deriveProjectStatus(period, now)).toBe('planned');
   });
@@ -20,7 +20,7 @@ describe('deriveProjectStatus', () => {
       end_at: null,
     };
 
-    const now = moment('2021-07-01');
+    const now = parseISO('2021-07-01');
 
     expect(deriveProjectStatus(period, now)).toBe('open-ended');
   });
@@ -31,7 +31,7 @@ describe('deriveProjectStatus', () => {
       end_at: '2021-06-01',
     };
 
-    const now = moment('2021-07-01');
+    const now = parseISO('2021-07-01');
 
     expect(deriveProjectStatus(period, now)).toBe('finished');
   });
@@ -42,7 +42,7 @@ describe('deriveProjectStatus', () => {
       end_at: '2022-01-01',
     };
 
-    const now = moment('2021-07-01');
+    const now = parseISO('2021-07-01');
 
     expect(deriveProjectStatus(period, now)).toBe('active');
   });

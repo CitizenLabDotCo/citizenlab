@@ -1,17 +1,27 @@
+import {
+  addDays,
+  parseISO,
+  addMonths,
+  format,
+  isAfter,
+  startOfDay,
+  startOfMonth,
+  startOfWeek,
+  subMonths,
+} from 'date-fns';
 import { orderBy } from 'lodash-es';
-import moment, { Moment } from 'moment';
 
 import { IResolution } from 'components/admin/ResolutionControl';
 
 export const timeSeriesParser =
   <Row, ParsedRow>(
-    getDate: (row: Row) => Moment,
-    parseRow: (date: Moment, row?: Row) => ParsedRow
+    getDate: (row: Row) => Date,
+    parseRow: (date: Date, row?: Row) => ParsedRow
   ) =>
   (
     timeSeries: Row[],
-    startAtMoment: Moment | null | undefined,
-    endAtMoment: Moment | null,
+    startAtMoment: Date | null | undefined,
+    endAtMoment: Date | null,
     resolution: IResolution
   ): ParsedRow[] | null => {
     if (timeSeries.length === 0) return null;
@@ -55,10 +65,10 @@ export const timeSeriesParser =
 
 export const parseMonths = <Row, ParsedRow>(
   timeSeries: Row[],
-  startAtMoment: Moment | null | undefined,
-  endAtMoment: Moment | null,
-  getDate: (row: Row) => Moment,
-  parseRow: (date: Moment, row?: Row) => ParsedRow
+  startAtMoment: Date | null | undefined,
+  endAtMoment: Date | null,
+  getDate: (row: Row) => Date,
+  parseRow: (date: Date, row?: Row) => ParsedRow
 ): ParsedRow[] | null => {
   const indexedTimeSeries = indexTimeSeries(timeSeries, (row) => {
     const date = getDate(row);
@@ -80,7 +90,7 @@ export const parseMonths = <Row, ParsedRow>(
   if (months === null) return null;
 
   return months.map((month) => {
-    const currentMonthStr = month.format('YYYY-MM-DD');
+    const currentMonthStr = format(month, 'yyyy-MM-dd');
     const row = indexedTimeSeries.get(currentMonthStr);
 
     return parseRow(month, row);
@@ -89,10 +99,10 @@ export const parseMonths = <Row, ParsedRow>(
 
 export const parseWeeks = <Row, ParsedRow>(
   timeSeries: Row[],
-  startAtMoment: Moment | null | undefined,
-  endAtMoment: Moment | null,
-  getDate: (row: Row) => Moment,
-  parseRow: (date: Moment, row?: Row) => ParsedRow
+  startAtMoment: Date | null | undefined,
+  endAtMoment: Date | null,
+  getDate: (row: Row) => Date,
+  parseRow: (date: Date, row?: Row) => ParsedRow
 ): ParsedRow[] | null => {
   const indexedTimeSeries = indexTimeSeries(timeSeries, (row) => {
     const date = getDate(row);
@@ -114,7 +124,7 @@ export const parseWeeks = <Row, ParsedRow>(
   if (mondays === null) return null;
 
   return mondays.map((monday) => {
-    const currentMondayStr = monday.format('YYYY-MM-DD');
+    const currentMondayStr = format(monday, 'yyyy-MM-dd');
     const row = indexedTimeSeries.get(currentMondayStr);
 
     return parseRow(monday, row);
@@ -123,10 +133,10 @@ export const parseWeeks = <Row, ParsedRow>(
 
 export const parseDays = <Row, ParsedRow>(
   timeSeries: Row[],
-  startAtMoment: Moment | null | undefined,
-  endAtMoment: Moment | null,
-  getDate: (row: Row) => Moment,
-  parseRow: (date: Moment, row?: Row) => ParsedRow
+  startAtMoment: Date | null | undefined,
+  endAtMoment: Date | null,
+  getDate: (row: Row) => Date,
+  parseRow: (date: Date, row?: Row) => ParsedRow
 ): ParsedRow[] | null => {
   const indexedTimeSeries = indexTimeSeries(timeSeries, getDate);
 
@@ -140,33 +150,28 @@ export const parseDays = <Row, ParsedRow>(
   if (days === null) return null;
 
   return days.map((day) => {
-    const currentDayStr = day.format('YYYY-MM-DD');
+    const currentDayStr = format(day, 'yyyy-MM-dd');
     const row = indexedTimeSeries.get(currentDayStr);
 
     return parseRow(day, row);
   });
 };
 
-const roundDownToFirstDayOfMonth = (date: Moment) => {
-  return moment(`${date.format('YYYY-MM')}-01`);
-};
+const roundDownToFirstDayOfMonth = (date: Date) => startOfMonth(date);
 
-const roundDownToMonday = (date: Moment) => {
-  const dayNumber = date.isoWeekday();
-  return date.clone().subtract({ day: dayNumber - 1 });
-};
+// ISO weeks: Monday is the first day.
+const roundDownToMonday = (date: Date) =>
+  startOfWeek(date, { weekStartsOn: 1 });
 
-export const roundDateToMidnight = (date: Moment) => {
-  return moment(date.format('YYYY-MM-DD'));
-};
+export const roundDateToMidnight = (date: Date) => startOfDay(date);
 
 const indexTimeSeries = <Row>(
   responseTimeSeries: Row[],
-  getDate: (row: Row) => Moment
+  getDate: (row: Row) => Date
 ): Map<string, Row> => {
   return responseTimeSeries.reduce((acc, row) => {
     const date = getDate(row);
-    acc.set(date.format('YYYY-MM-DD'), row);
+    acc.set(format(date, 'yyyy-MM-dd'), row);
 
     return acc;
   }, new Map<string, Row>());
@@ -174,62 +179,59 @@ const indexTimeSeries = <Row>(
 
 export const getFirstDateInData = <Row>(
   responseTimeSeries: Row[],
-  getDate: (row: Row) => Moment
+  getDate: (row: Row) => Date
 ) => {
   const firstMonthInData = responseTimeSeries.reduce((acc, row) => {
     const date = getDate(row);
-    return date.isAfter(acc) ? acc : date;
-  }, moment());
+    return isAfter(date, acc) ? acc : date;
+  }, new Date());
 
   return firstMonthInData;
 };
 
 export const getLastDateInData = <Row>(
   responseTimeSeries: Row[],
-  getDate: (row: Row) => Moment
+  getDate: (row: Row) => Date
 ) => {
   const lastMonthInData = responseTimeSeries.reduce((acc, row) => {
     const date = getDate(row);
-    return date.isAfter(acc) ? date : acc;
-  }, moment('1970-01-01'));
+    return isAfter(date, acc) ? date : acc;
+  }, new Date(0));
 
   return lastMonthInData;
 };
 
-type TimeDelta = { month: 1 } | { day: 7 } | { day: 1 };
-
-const TIME_DELTA_MAP: Record<IResolution, TimeDelta> = {
-  month: { month: 1 },
-  week: { day: 7 },
-  day: { day: 1 },
+const ADVANCE_BY: Record<IResolution, (date: Date) => Date> = {
+  month: (date) => addMonths(date, 1),
+  week: (date) => addDays(date, 7),
+  day: (date) => addDays(date, 1),
 };
 
-const dateRange = (start: Moment, end: Moment, step: IResolution) => {
-  const timeDelta = TIME_DELTA_MAP[step];
-  const dates: Moment[] = [];
-
-  let currentDate = start.clone();
+const dateRange = (start: Date, end: Date, step: IResolution) => {
+  const advance = ADVANCE_BY[step];
+  const dates: Date[] = [];
 
   // Should not be possible, but just in case to avoid
   // infinite loop
-  if (start.isAfter(end)) return null;
+  if (isAfter(start, end)) return null;
 
-  while (currentDate.isSameOrBefore(end)) {
-    dates.push(currentDate.clone());
-    currentDate = currentDate.add(timeDelta);
+  let currentDate = start;
+  while (!isAfter(currentDate, end)) {
+    dates.push(currentDate);
+    currentDate = advance(currentDate);
   }
 
   return dates;
 };
 
 export const emptyDateRange = <Row>(
-  startAtMoment: Moment | null | undefined,
-  endAtMoment: Moment | null | undefined,
+  startAtMoment: Date | null | undefined,
+  endAtMoment: Date | null | undefined,
   resolution: IResolution,
-  getEmptyRow: (date: Moment, index: number) => Row
+  getEmptyRow: (date: Date, index: number) => Row
 ): Row[] => {
-  const start = startAtMoment ?? moment().subtract({ month: 7 });
-  const end = endAtMoment ?? moment();
+  const start = startAtMoment ?? subMonths(new Date(), 7);
+  const end = endAtMoment ?? new Date();
 
   const dates = dateRange(start, end, resolution);
   if (dates === null) return [];
@@ -248,7 +250,7 @@ export function calculateCumulativeSerie<SerieRow extends RowWithDate>(
   let timeSerie = orderBy(
     serie,
     (row: SerieRow) => {
-      return moment(row.date).format('YYYYMMDD');
+      return format(parseISO(row.date), 'yyyyMMdd');
     },
     ['desc']
   );

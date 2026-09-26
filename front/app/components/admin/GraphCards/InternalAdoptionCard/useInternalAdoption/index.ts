@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react';
 
+import { format } from 'date-fns';
+
 import { useInternalAdoptionLive } from 'api/graph_data_units';
 
 import { useIntl } from 'utils/cl-intl';
@@ -19,8 +21,8 @@ export default function useInternalAdoption({
   const { formatMessage } = useIntl();
   const { data: analytics } = useInternalAdoptionLive(
     {
-      start_at: startAtMoment?.local().format('YYYY-MM-DD'),
-      end_at: endAtMoment?.local().format('YYYY-MM-DD'),
+      start_at: startAtMoment ? format(startAtMoment, 'yyyy-MM-dd') : undefined,
+      end_at: endAtMoment ? format(endAtMoment, 'yyyy-MM-dd') : undefined,
       resolution,
       ...getComparedPeriod(resolution),
     },

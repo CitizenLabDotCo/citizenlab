@@ -1,4 +1,4 @@
-import moment, { Moment } from 'moment';
+import { format, parseISO } from 'date-fns';
 
 import {
   ParticipantsResponse,
@@ -16,32 +16,32 @@ import { formatPercentage } from '../../_utils/format';
 import { Translations } from './translations';
 import { TimeSeries, TimeSeriesRow, Stats } from './typings';
 
-export const getEmptyRow = (date: Moment): TimeSeriesRow => ({
-  date: date.format('YYYY-MM-DD'),
+export const getEmptyRow = (date: Date): TimeSeriesRow => ({
+  date: format(date, 'yyyy-MM-dd'),
   participants: 0,
   visitors: 0,
 });
 
-const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
+const parseRow = (date: Date, row?: TimeSeriesResponseRow): TimeSeriesRow => {
   if (!row) return getEmptyRow(date);
 
   return {
     participants: row.participants,
     visitors: row.visitors ?? 0,
-    date: date.format('YYYY-MM-DD'),
+    date: format(date, 'yyyy-MM-dd'),
   };
 };
 
 const getDate = (row: TimeSeriesResponseRow) => {
-  return moment(get(row, 'date_group'));
+  return parseISO(get(row, 'date_group'));
 };
 
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
 
 export const parseTimeSeries = (
   responseTimeSeries: ParticipantsResponse['data']['attributes']['participants_timeseries'],
-  startAtMoment: Moment | null | undefined,
-  endAtMoment: Moment | null,
+  startAtMoment: Date | null | undefined,
+  endAtMoment: Date | null,
   resolution: IResolution
 ): TimeSeries | null => {
   return _parseTimeSeries(

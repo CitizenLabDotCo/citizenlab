@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 
-import moment from 'moment';
+import { parseISO } from 'date-fns';
 
 import { useParticipants as useParticipantsData } from 'api/graph_data_units';
 import { ParticipantsProps } from 'api/graph_data_units/requestTypes';
@@ -40,8 +40,8 @@ export default function useParticipants({
       analytics?.data
         ? parseTimeSeries(
             analytics.data.attributes.participants_timeseries,
-            start_at ? moment(start_at) : null,
-            end_at ? moment(end_at) : null,
+            start_at ? parseISO(start_at) : null,
+            end_at ? parseISO(end_at) : null,
             currentResolution
           )
         : null,

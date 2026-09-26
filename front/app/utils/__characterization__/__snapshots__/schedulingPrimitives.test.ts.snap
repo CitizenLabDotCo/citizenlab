@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`scheduling primitives: moment (today) vs façade helpers 2. picker Date → UTC ISO (components read as tenant wall clock) resolves DST-ambiguous wall-clock times differently from moment (known) 1`] = `
+{
+  "fallBackOverlap": {
+    "facade": "2026-10-25T01:30:00.000Z",
+    "moment": "2026-10-25T00:30:00.000Z",
+  },
+  "springForwardGap": {
+    "facade": "2026-03-29T00:30:00.000Z",
+    "moment": "2026-03-29T01:30:00.000Z",
+  },
+}
+`;

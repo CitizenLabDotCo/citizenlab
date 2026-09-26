@@ -1,4 +1,4 @@
-import fi from 'date-fns/locale/fi';
+import { fi } from 'date-fns/locale/fi';
 
 import { addLocale } from 'components/admin/DatePickers/_shared/locales';
 

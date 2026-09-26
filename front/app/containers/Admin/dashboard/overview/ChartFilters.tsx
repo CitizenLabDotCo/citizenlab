@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { Moment } from 'moment';
 import { IOption } from 'typings';
 
 import ResolutionControl, {
@@ -12,15 +11,15 @@ import ProjectFilter from '../components/filters/ProjectFilter';
 import TimeControl from '../components/TimeControl';
 
 interface Props {
-  startAtMoment?: Moment | null | undefined;
-  endAtMoment: Moment | null;
-  minDate?: Moment;
+  startAtMoment?: Date | null | undefined;
+  endAtMoment: Date | null;
+  minDate?: Date;
   projectId: string | undefined;
   resolution: IResolution;
   timeControlTooltip?: string;
   onChangeTimeRange: (
-    startAtMoment: Moment | null,
-    endAtMoment: Moment | null
+    startAtMoment: Date | null,
+    endAtMoment: Date | null
   ) => void;
   onProjectFilter: (filter: IOption) => void;
   onChangeResolution: (resolution: IResolution) => void;

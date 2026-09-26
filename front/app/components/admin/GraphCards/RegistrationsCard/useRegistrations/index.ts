@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react';
 
+import { format } from 'date-fns';
+
 import { useRegistrationsLive } from 'api/graph_data_units';
 
 import { getComparedPeriod } from 'components/admin/GraphCards/_utils/query';
@@ -20,8 +22,8 @@ export default function useRegistrations({
 
   const { data: analytics } = useRegistrationsLive(
     {
-      start_at: startAtMoment?.local().format('YYYY-MM-DD'),
-      end_at: endAtMoment?.local().format('YYYY-MM-DD'),
+      start_at: startAtMoment ? format(startAtMoment, 'yyyy-MM-dd') : undefined,
+      end_at: endAtMoment ? format(endAtMoment, 'yyyy-MM-dd') : undefined,
       resolution,
       ...getComparedPeriod(resolution),
     },

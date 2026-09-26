@@ -7,11 +7,12 @@ import {
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
-import moment from 'moment-timezone';
+import { isPast } from 'date-fns';
 import styled, { useTheme } from 'styled-components';
 
 import { IEventData } from 'api/events/types';
 
+import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import EventAttendanceButton from 'components/EventAttendanceButton';
@@ -21,7 +22,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import Link, { typedStyled } from 'utils/cl-router/Link';
-import { getEventDateString, userTimezone } from 'utils/dateUtils';
+import { getEventDateString } from 'utils/dateUtils';
 
 import DateBlocks from '../DateBlocks';
 import messages from '../messages';
@@ -54,19 +55,17 @@ interface Props {
 }
 
 const EventInformation = ({ event }: Props) => {
+  const locale = useLocale();
   const { formatMessage } = useIntl();
   const theme = useTheme();
   const localize = useLocalize();
   const registrantCountMessage = useRegistrantCountMessage(event);
   const ariaId = useId();
 
-  const startAtMoment = moment.tz(event.attributes.start_at, userTimezone);
-  const endAtMoment = moment.tz(event.attributes.end_at, userTimezone);
-
-  const isPastEvent = moment().isAfter(endAtMoment);
+  const isPastEvent = isPast(new Date(event.attributes.end_at));
   const address1 = event.attributes.address_1;
   const onlineLink = event.attributes.online_link;
-  const eventDateTime = getEventDateString(event);
+  const eventDateTime = getEventDateString(event, locale);
 
   return (
     <EventInformationContainer data-testid="EventInformation">
@@ -95,8 +94,8 @@ const EventInformation = ({ event }: Props) => {
           </EventTitleLink>
 
           <DateBlocks
-            startAtMoment={startAtMoment}
-            endAtMoment={endAtMoment}
+            startAt={event.attributes.start_at}
+            endAt={event.attributes.end_at}
             isMultiDayEvent={false}
             showOnlyStartDate={true}
           />

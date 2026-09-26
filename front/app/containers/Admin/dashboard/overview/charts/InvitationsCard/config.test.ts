@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { setYear } from 'date-fns';
 
 import { Query } from 'api/analytics/types';
 
@@ -9,9 +9,11 @@ import { InvitationsCardLabels, invitationsConfig } from './config';
 describe('Invitations card data parsing', () => {
   beforeAll(() => {
     // Set 'now' as a fixed date - 2022-10-31
-    jest.spyOn(Date, 'now').mockImplementation(() => {
-      return new Date('2022-10-31T00:00:00.000Z').getTime();
-    });
+    jest.useFakeTimers().setSystemTime(new Date('2022-10-31T00:00:00.000Z'));
+  });
+
+  afterAll(() => {
+    jest.useRealTimers();
   });
 
   it('Transforms data correctly into data format required by the invitations stat card', () => {
@@ -264,8 +266,8 @@ describe('Invitations card data parsing', () => {
 
     const query = invitationsConfig.queryHandler({
       projectId: 'PROJECT_ID',
-      startAtMoment: moment().set('year', 2020),
-      endAtMoment: moment().set('year', 2021),
+      startAtMoment: setYear(new Date(), 2020),
+      endAtMoment: setYear(new Date(), 2021),
       resolution: 'week',
     });
 

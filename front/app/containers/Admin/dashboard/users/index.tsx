@@ -1,7 +1,5 @@
 import React, { PureComponent } from 'react';
 
-import moment, { Moment } from 'moment';
-
 import { GraphsContainer } from 'components/admin/GraphWrappers';
 
 import { trackEventByName } from 'utils/analytics';
@@ -12,8 +10,8 @@ import ChartFilters from './ChartFilters';
 import Charts from './Charts';
 
 interface State {
-  startAtMoment?: Moment | null;
-  endAtMoment: Moment | null;
+  startAtMoment?: Date | null;
+  endAtMoment: Date | null;
   currentGroupFilter: string | undefined;
   currentGroupFilterLabel: string | undefined;
 }
@@ -25,15 +23,15 @@ export class UsersDashboard extends PureComponent<Props, State> {
     super(props);
     this.state = {
       startAtMoment: undefined,
-      endAtMoment: moment(),
+      endAtMoment: new Date(),
       currentGroupFilter: undefined,
       currentGroupFilterLabel: undefined,
     };
   }
 
   handleChangeTimeRange = (
-    startAtMoment: Moment | null | undefined,
-    endAtMoment: Moment | null
+    startAtMoment: Date | null | undefined,
+    endAtMoment: Date | null
   ) => {
     this.setState({ startAtMoment, endAtMoment });
   };

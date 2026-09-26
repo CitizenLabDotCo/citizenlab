@@ -1,5 +1,5 @@
+import { format, parseISO } from 'date-fns';
 import { groupBy } from 'lodash-es';
-import moment, { Moment } from 'moment';
 
 import { getInterval } from 'components/admin/GraphCards/_utils/query';
 import { timeSeriesParser } from 'components/admin/GraphCards/_utils/timeSeries';
@@ -38,14 +38,14 @@ export const mergeTimeSeries = (
   }));
 };
 
-export const getEmptyRow = (date: Moment) => ({
-  date: date.format('YYYY-MM-DD'),
+export const getEmptyRow = (date: Date) => ({
+  date: format(date, 'yyyy-MM-dd'),
   automated: 0,
   custom: 0,
 });
 
 const parseRow = (
-  date: Moment,
+  date: Date,
   row?: PreparedTimeSeriesResponseRow
 ): TimeSeriesRow => {
   if (!row) return getEmptyRow(date);
@@ -53,7 +53,7 @@ const parseRow = (
   return {
     automated: row.automated,
     custom: row.custom,
-    date: date.format('YYYY-MM-DD'),
+    date: format(date, 'yyyy-MM-dd'),
   };
 };
 
@@ -63,15 +63,15 @@ const getDate = (row: PreparedTimeSeriesResponseRow) => {
     row.first_dimension_date_sent_week ||
     row.first_dimension_date_sent_month;
 
-  return moment(dateAttribute);
+  return parseISO(dateAttribute ?? '');
 };
 
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
 
 export const parseTimeSeries = (
   timeSeriesQuery: PreparedTimeSeriesResponse,
-  startAtMoment: Moment | null | undefined,
-  endAtMoment: Moment | null,
+  startAtMoment: Date | null | undefined,
+  endAtMoment: Date | null,
   resolution: IResolution
 ): TimeSeries | null => {
   return _parseTimeSeries(

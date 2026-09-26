@@ -1,4 +1,4 @@
-import cy from 'date-fns/locale/cy';
+import { cy } from 'date-fns/locale/cy';
 
 import { addLocale } from 'components/admin/DatePickers/_shared/locales';
 

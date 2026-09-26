@@ -1,18 +1,19 @@
-import moment, { Moment } from 'moment';
+import { differenceInCalendarDays } from 'date-fns';
 
 export const getSensibleResolution = (
-  startAtMoment: Moment | null,
-  endAtMoment: Moment | null
+  startAtMoment: Date | null,
+  endAtMoment: Date | null
 ) => {
-  const timeDiff =
+  const rangeInDays =
     endAtMoment &&
     startAtMoment &&
-    moment.duration(endAtMoment.diff(startAtMoment));
+    differenceInCalendarDays(endAtMoment, startAtMoment);
 
-  const resolution = timeDiff
-    ? timeDiff.asMonths() > 6
+  // Thresholds preserved from the moment version: >6 months, then >4 weeks.
+  const resolution = rangeInDays
+    ? rangeInDays / 30.436875 > 6
       ? 'month'
-      : timeDiff.asWeeks() > 4
+      : rangeInDays / 7 > 4
       ? 'week'
       : 'day'
     : 'month';
