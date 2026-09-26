@@ -101,6 +101,14 @@ export const getTabs = (
         name: 'insights',
         className: 'intercom-phase-insights-tab',
       },
+    ['ideation', 'common_ground', 'proposals'].includes(
+      phase.attributes.participation_method
+    ) && {
+      label: formatMessage(messages.opinionGroupsTab),
+      url: 'opinion-groups',
+      name: 'opinion-groups',
+      className: 'intercom-phase-opinion-groups-tab',
+    },
     {
       label: formatMessage(messages.phaseAccessRights),
       url: 'access-rights',
