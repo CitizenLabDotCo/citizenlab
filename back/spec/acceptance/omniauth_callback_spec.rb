@@ -295,6 +295,64 @@ resource 'Omniauth Callback', document: false do
           expect(existing_user.new_email).to be_nil
         end
       end
+
+      # Signed up with email only (no name), logged out, then logged in with SSO.
+      context 'when a passwordless user with a confirmed email but no name exists' do
+        let!(:existing_user) do
+          create(:user, email: 'billy_fixed@example.com', password: nil, first_name: nil, last_name: nil, avatar: nil)
+        end
+
+        example 'fills in the name the SSO method locks', document: false do
+          do_request
+
+          assert_status(302)
+          expect(User.count).to eq(1)
+
+          existing_user.reload
+          expect(existing_user.verified).to be true
+          expect(Verification::VerificationService.new.locked_attributes(existing_user)).to include(:first_name, :last_name)
+          expect(existing_user.first_name).to eq 'Billy'
+          expect(existing_user.last_name).to eq 'Fixed'
+        end
+      end
+
+      # Signed up through POST /web_api/v1/users, confirmed the email with the code,
+      # then logged in with an SSO that returns the same email.
+      context 'when a user signed up with email and confirmed it' do
+        before do
+          create(:custom_field_gender, :with_options)
+          create(:custom_field_birthyear)
+        end
+
+        example 'fills in the custom fields the SSO method locks', document: false do
+          client.post(
+            '/web_api/v1/users',
+            { user: { email: 'billy_fixed@example.com', password: 'democracy2.0', locale: 'en' } }.to_json,
+            headers
+          )
+          expect(client.status).to eq 201
+
+          user = User.find_by(email: 'billy_fixed@example.com')
+          client.post(
+            '/web_api/v1/user/confirm_code_email',
+            { confirmation: { email: user.email, code: user.email_confirmation.code } }.to_json,
+            headers
+          )
+          expect(client.status).to eq 200
+
+          do_request
+
+          assert_status(302)
+          expect(User.count).to eq(1)
+
+          user = User.find_by(email: 'billy_fixed@example.com')
+          expect(user.verified).to be true
+          expect(user.first_name).to eq 'Billy'
+          expect(user.last_name).to eq 'Fixed'
+          expect(Verification::VerificationService.new.locked_custom_fields(user)).to include(:gender, :birthyear)
+          expect(CustomFieldValuesTransitionService.new.custom_field_values(user)).to include('gender' => 'male', 'birthyear' => 1980)
+        end
+      end
     end
   end
 

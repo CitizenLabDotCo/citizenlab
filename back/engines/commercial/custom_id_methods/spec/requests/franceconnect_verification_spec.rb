@@ -171,6 +171,30 @@ context 'franceconnect verification' do
     end
   end
 
+  context 'when birthyear and gender are enabled registration fields' do
+    before do
+      create(:custom_field_birthyear)
+      create(:custom_field_gender)
+    end
+
+    it 'fills them in when signing up a new user' do
+      get '/auth/franceconnect'
+      follow_redirect!
+
+      user = User.find_by(new_email: 'wossewodda-3728@yopmail.com')
+      expect(CustomFieldValuesTransitionService.new.custom_field_values(user)).to include('birthyear' => 1962, 'gender' => 'female')
+    end
+
+    it 'fills them in when verifying an existing user' do
+      user = create(:user, first_name: 'Jean', last_name: 'Dupont')
+      token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
+      get "/auth/franceconnect?sso_verification=true&token=#{token}&verification_pathname=/yipie"
+      follow_redirect!
+
+      expect(CustomFieldValuesTransitionService.new.custom_field_values(user.reload)).to include('birthyear' => 1962, 'gender' => 'female')
+    end
+  end
+
   it 'successfully authenticates a user that was previously authenticated and updates the auth_hash' do
     get '/auth/franceconnect'
     follow_redirect!

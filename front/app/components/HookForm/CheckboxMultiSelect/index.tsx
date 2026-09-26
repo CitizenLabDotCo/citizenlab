@@ -22,18 +22,34 @@ interface Props extends Omit<SelectProps, 'onChange'> {
   'aria-required'?: boolean;
 }
 
-const StyledBox = styled(Box)<{ selected: boolean }>`
+const StyledBox = styled(Box)<{ selected: boolean; $disabled?: boolean }>`
   cursor: pointer;
   &:hover {
     box-shadow: 0 0 0 1px
       ${({ selected }) => (selected ? 'undefined' : colors.borderDark)};
   }
+
+  ${({ $disabled }) =>
+    $disabled &&
+    `
+    background-color: #f9f9f9;
+
+    &:hover {
+      box-shadow: none;
+    }
+
+    /* CheckboxWithLabel sets an inline pointer cursor on its label */
+    &, * {
+      cursor: not-allowed !important;
+    }
+  `}
 `;
 
 const CheckboxMultiSelect = ({
   name,
   options,
   scrollErrorIntoView,
+  disabled,
   'aria-required': ariaRequired,
 }: Props) => {
   const {
@@ -72,16 +88,20 @@ const CheckboxMultiSelect = ({
             >
               {options.map((option, index) => (
                 <StyledBox
-                  style={{ cursor: 'pointer' }}
                   mb="12px"
                   border={
                     checkedOptions.includes(option.value)
-                      ? `2px solid ${theme.colors.tenantPrimary}`
-                      : `1px solid ${theme.colors.borderDark}`
+                      ? `2px solid ${
+                          disabled ? '#ccc' : theme.colors.tenantPrimary
+                        }`
+                      : `1px solid ${
+                          disabled ? '#ccc' : theme.colors.borderDark
+                        }`
                   }
                   key={option.value}
                   borderRadius="3px"
                   selected={checkedOptions.includes(option.value)}
+                  $disabled={disabled}
                 >
                   <CheckboxWithLabel
                     size="20px"
@@ -95,10 +115,14 @@ const CheckboxMultiSelect = ({
                     ariaLabel={option.label}
                     checked={checkedOptions.includes(option.value)}
                     usePrimaryBorder={false}
+                    disabled={disabled}
                     setRef={index === 0 ? (el) => ref(el) : undefined}
                     ariaInvalid={!!fieldState.error}
                     ariaDescribedBy={ariaDescribedBy}
                     onChange={() => {
+                      // Checkbox still calls onChange on click when disabled
+                      if (disabled) return;
+
                       if (checkedOptions.includes(option.value)) {
                         setValue(
                           name,

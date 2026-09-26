@@ -71,10 +71,6 @@ module CustomIdMethods::EtatLu
       auth['uid']
     end
 
-    def updateable_user_attrs
-      super + %i[first_name last_name]
-    end
-
     def ui_method_name
       config[:ui_method_name].presence || name
     end

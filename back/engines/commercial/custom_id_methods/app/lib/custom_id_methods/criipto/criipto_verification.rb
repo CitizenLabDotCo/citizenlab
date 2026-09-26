@@ -129,13 +129,13 @@ module CustomIdMethods::Criipto
 
     def locked_custom_fields
       [
-        config[:birthday_custom_field_key].presence,
-        config[:birthyear_custom_field_key].presence
+        config&.dig(:birthday_custom_field_key).presence,
+        config&.dig(:birthyear_custom_field_key).presence
       ].compact
     end
 
     def updateable_user_attrs
-      super + %i[custom_field_values birthyear]
+      super + %i[custom_field_values]
     end
   end
 end
