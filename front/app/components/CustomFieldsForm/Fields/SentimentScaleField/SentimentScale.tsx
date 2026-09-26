@@ -15,9 +15,9 @@ import TableHead from './TableHead';
 import { getAriaValueText, handleKeyboardKeyChange } from './utils';
 
 interface Props {
-  value?: number;
+  value?: number | null;
   question: IFlatCustomField;
-  onChange: (value?: number) => void;
+  onChange: (value: number | null) => void;
 }
 
 const SentimentScale = ({ value: data, question, onChange }: Props) => {

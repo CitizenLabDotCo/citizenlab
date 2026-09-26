@@ -12,9 +12,9 @@ import { getLinearScaleLabel } from './utils';
 interface Props {
   question: IFlatCustomField;
   visualIndex: number;
-  data?: number;
+  data?: number | null;
   maximum: number;
-  onSelect: (value: number | undefined) => void;
+  onSelect: (value: number | null) => void;
 }
 
 const RadioOption = styled.div<{
@@ -88,7 +88,9 @@ const LinearScaleOption = ({
         bgColor={theme.colors.white}
         selectedBgColor={theme.colors.tenantPrimary}
         onClick={(e) => {
-          onSelect(isSelected ? undefined : visualIndex);
+          // null clears the answer; undefined would read back as the field's
+          // defaultValue and restore it.
+          onSelect(isSelected ? null : visualIndex);
           (e.currentTarget as HTMLElement).focus();
         }}
       >

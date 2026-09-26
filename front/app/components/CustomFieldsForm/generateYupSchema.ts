@@ -357,7 +357,9 @@ const generateYupSchema = ({
       }
 
       case 'linear_scale': {
-        schema[key] = required ? number().required(fieldRequired) : number();
+        schema[key] = required
+          ? number().nullable().required(fieldRequired)
+          : number().nullable();
         break;
       }
 
@@ -369,6 +371,7 @@ const generateYupSchema = ({
           required && numberOfOptions !== undefined
             ? array()
                 .of(string())
+                .nullable()
                 .min(numberOfOptions, fieldRequired)
                 .max(numberOfOptions, fieldRequired)
                 .required(fieldRequired)
@@ -396,27 +399,29 @@ const generateYupSchema = ({
         const numberOfColumns = question.maximum ?? 11;
 
         schema[key] = required
-          ? object().test({
-              message: formatMessage(messages.allStatementsError),
-              test: (object) => {
-                if (typeof object !== 'object') {
-                  return false;
-                }
-                const keys = Object.keys(object);
-                const values = Object.values(object);
-                const isValid =
-                  keys.length === numberOfStatements &&
-                  values.every((value) => {
-                    return (
-                      typeof value === 'number' &&
-                      value >= 1 &&
-                      value <= numberOfColumns
-                    );
-                  });
+          ? object()
+              .nullable()
+              .test({
+                message: formatMessage(messages.allStatementsError),
+                test: (object) => {
+                  if (!object || typeof object !== 'object') {
+                    return false;
+                  }
+                  const keys = Object.keys(object);
+                  const values = Object.values(object);
+                  const isValid =
+                    keys.length === numberOfStatements &&
+                    values.every((value) => {
+                      return (
+                        typeof value === 'number' &&
+                        value >= 1 &&
+                        value <= numberOfColumns
+                      );
+                    });
 
-                return isValid;
-              },
-            })
+                  return isValid;
+                },
+              })
           : object().nullable();
         break;
       }
@@ -432,13 +437,14 @@ const generateYupSchema = ({
       case 'sentiment_linear_scale': {
         schema[key] = required
           ? number()
+              .nullable()
               .min(1, fieldRequired)
               .max(5, fieldRequired)
               .required(fieldRequired)
-          : number();
+          : number().nullable();
 
-        // follow up field (never required)
-        schema[`${key}_follow_up`] = string();
+        // follow up field (never required, and cleared along with the answer)
+        schema[`${key}_follow_up`] = string().nullable();
 
         break;
       }

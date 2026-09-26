@@ -264,6 +264,67 @@ describe('SurveyForm — anonymous multi-page persistence', () => {
     );
   });
 
+  // Navigating away and back remounts SurveyPage with the answers as react
+  // hook form defaultValues. Clearing a field by writing `undefined` then
+  // reads back as that defaultValue, so the answer looks like it never left.
+  it('clears a sentiment answer after navigating away from its page and back', async () => {
+    const user = userEvent.setup();
+    mockCustomFieldsQuery = {
+      data: [
+        customFields[0],
+        {
+          ...customFields[1],
+          input_type: 'sentiment_linear_scale',
+          required: false,
+          maximum: 5,
+        },
+        ...customFields.slice(2),
+      ] as typeof customFields,
+      isLoading: false,
+    };
+
+    render(
+      <SurveyForm
+        projectId="project-1"
+        phaseId="phase-1"
+        participationMethod="native_survey"
+      />
+    );
+
+    const sentimentOption = async () =>
+      screen.findByRole('button', { name: '4 out of 5' });
+    // The component library renders the pressed state on the wrapper around
+    // the button element.
+    const isPicked = async () =>
+      (await sentimentOption())
+        .closest('[aria-pressed]')
+        ?.getAttribute('aria-pressed');
+
+    await user.click(await sentimentOption());
+    expect(await isPicked()).toBe('true');
+
+    await user.click(screen.getByRole('button', { name: /next/i }));
+    await screen.findByText(/Question Two/i);
+    await user.click(screen.getByRole('button', { name: /previous/i }));
+
+    expect(await isPicked()).toBe('true');
+
+    await user.click(await sentimentOption());
+    expect(await isPicked()).toBe('false');
+
+    // The cleared answer must not come back in the submitted payload either.
+    await user.click(screen.getByRole('button', { name: /next/i }));
+    await user.type(await screen.findByLabelText(/Question Two/i), 'answer');
+    await user.click(screen.getByRole('button', { name: /submit/i }));
+
+    await waitFor(() => expect(mockAddIdea).toHaveBeenCalledTimes(1));
+    expect(mockAddIdea).toHaveBeenCalledWith(
+      expect.objectContaining({
+        requestBody: expect.objectContaining({ question_one: null }),
+      })
+    );
+  });
+
   const renderWithDropdown = (inputType: string) => {
     mockCustomFieldsQuery = {
       data: [

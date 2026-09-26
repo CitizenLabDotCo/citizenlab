@@ -33,10 +33,10 @@ export const StyledImg = styled.img`
 `;
 
 interface Props {
-  data?: number;
+  data?: number | null;
   id: string;
   getAriaLabel: (value: number, total: number) => string;
-  onChange: (data?: number) => void;
+  onChange: (data: number | null) => void;
   onFocusSliderRef: () => void;
 }
 
@@ -70,11 +70,9 @@ const TableHead = ({
                   width="100%"
                   tabIndex={-1}
                   onClick={() => {
-                    if (isSelected) {
-                      onChange(undefined);
-                    } else {
-                      onChange(visualIndex);
-                    }
+                    // null clears the answer; undefined would read back as the
+                    // field's defaultValue and restore it.
+                    onChange(isSelected ? null : visualIndex);
                   }}
                   onFocus={onFocusSliderRef}
                   buttonStyle="text"

@@ -28,9 +28,9 @@ const Ul = styled.ul`
 `;
 
 interface Props {
-  value?: string[];
+  value?: string[] | null;
   question: IFlatCustomField;
-  onChange: (value?: string[]) => void;
+  onChange: (value: string[] | null) => void;
 }
 
 const getOptionsFromData = (data: string[], options: IOption[]): IOption[] => {
@@ -67,8 +67,8 @@ const Ranking = ({ value: data, question, onChange }: Props) => {
     : questionOptions;
 
   // updateData: Function to update the form data with a specific option order.
-  const updateData = (newOptionOrder?: IOption[]) => {
-    onChange(newOptionOrder?.map((option: IOption) => option.value));
+  const updateData = (newOptionOrder: IOption[]) => {
+    onChange(newOptionOrder.map((option: IOption) => option.value));
   };
 
   // moveOptionInArray: Function to move an option in the array to a new index & update the form data.
@@ -121,7 +121,7 @@ const Ranking = ({ value: data, question, onChange }: Props) => {
             </Ul>
           </Drop>
         </DragAndDrop>
-        {data !== undefined && (
+        {data != null && (
           <Box display="flex">
             <Button
               type="button"
@@ -131,7 +131,9 @@ const Ranking = ({ value: data, question, onChange }: Props) => {
               textDecoration="underline"
               text={formatMessage(messages.clearAll)}
               onClick={() => {
-                updateData(undefined);
+                // null clears the answer; undefined would read back as the
+                // field's defaultValue and restore it.
+                onChange(null);
               }}
             />
           </Box>

@@ -13,8 +13,8 @@ interface Props {
   id: string;
   statements: IMatrixStatementsType[];
   columns: string[];
-  value?: Record<string, number>;
-  onChange: (value?: Record<string, number>) => void;
+  value?: Record<string, number> | null;
+  onChange: (value: Record<string, number> | null) => void;
 }
 
 // Alternative matrix layout for when the table doesn't fit horizontally:

@@ -76,9 +76,9 @@ const StyledTr = styled(Tr)`
 const LONG_LABEL_THRESHOLD = 10; // Threshold for long labels, used to apply specific styling
 
 interface Props {
-  value?: Record<string, number>;
+  value?: Record<string, number> | null;
   question: IFlatCustomField;
-  onChange: (value?: Record<string, number>) => void;
+  onChange: (value: Record<string, number> | null) => void;
 }
 
 const Matrix = ({ value: data, question, onChange }: Props) => {
@@ -320,7 +320,7 @@ const Matrix = ({ value: data, question, onChange }: Props) => {
           onChange={onChange}
         />
       )}
-      {data !== undefined && (
+      {data != null && (
         <Box display="flex">
           <Button
             type="button"
@@ -338,7 +338,9 @@ const Matrix = ({ value: data, question, onChange }: Props) => {
               </>
             }
             onClick={() => {
-              onChange(undefined);
+              // null clears the answer; undefined would read back as the
+              // field's defaultValue and restore it.
+              onChange(null);
             }}
           />
         </Box>
