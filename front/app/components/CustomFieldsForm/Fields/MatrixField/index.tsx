@@ -17,10 +17,15 @@ interface Props {
 const MatrixField = ({ question, scrollErrorIntoView }: Props) => {
   const {
     control,
+    watch,
     formState: { errors: formContextErrors },
   } = useFormContext();
 
   const name = question.key;
+  // field.value falls back to the value the field had when it first appeared
+  // whenever the answer is cleared, so the old answer stays selected.
+  // watch() always gives the real current value.
+  const value = watch(name);
 
   const errors = formContextErrors[name] as RHFErrors;
   const validationError = errors?.message;
@@ -32,7 +37,7 @@ const MatrixField = ({ question, scrollErrorIntoView }: Props) => {
         name={name}
         control={control}
         render={({ field: { ref: _ref, ...field } }) => {
-          return <Matrix question={question} {...field} />;
+          return <Matrix question={question} {...field} value={value} />;
         }}
       />
       {validationError && (
