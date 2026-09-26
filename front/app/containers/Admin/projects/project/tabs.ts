@@ -101,6 +101,14 @@ export const getTabs = (
         name: 'insights',
         className: 'intercom-phase-insights-tab',
       },
+    (phase.attributes.participation_method === 'ideation' ||
+      phase.attributes.participation_method === 'voting' ||
+      phase.attributes.participation_method === 'proposals' ||
+      phase.attributes.participation_method === 'common_ground') && {
+      label: formatMessage(messages.tradeoffsTab),
+      url: 'trade-offs',
+      name: 'trade-offs',
+    },
     {
       label: formatMessage(messages.phaseAccessRights),
       url: 'access-rights',

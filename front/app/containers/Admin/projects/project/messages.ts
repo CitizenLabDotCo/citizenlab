@@ -672,6 +672,10 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.insights',
     defaultMessage: 'Insights',
   },
+  tradeoffsTab: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.tradeoffs',
+    defaultMessage: 'Trade-offs',
+  },
   lockedTooltip: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.lockedTooltip',
     defaultMessage:
