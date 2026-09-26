@@ -14,10 +14,12 @@ describe('Idea edit page', () => {
   let phaseId: string;
   let ideaId: string;
   let ideaSlug: string;
+  let userId: string;
 
   before(() => {
     cy.apiSignup(firstName, lastName, email, password)
-      .then(() => {
+      .then((user) => {
+        userId = user.body.data.id;
         return cy.apiLogin(email, password);
       })
       .then((user) => {
@@ -40,6 +42,12 @@ describe('Idea edit page', () => {
   afterEach(() => {
     if (ideaId) {
       cy.apiRemoveIdea(ideaId);
+    }
+  });
+
+  after(() => {
+    if (userId) {
+      cy.apiRemoveUser(userId);
     }
   });
 

@@ -81,6 +81,7 @@ describe('Native survey CTA bar', () => {
   let projectId: string;
   let projectSlug: string;
   let phaseId: string;
+  let userId: string;
 
   const firstName = randomString();
   const lastName = randomString();
@@ -89,7 +90,8 @@ describe('Native survey CTA bar', () => {
 
   before(() => {
     cy.apiSignup(firstName, lastName, email, password)
-      .then(() => {
+      .then((user) => {
+        userId = user.body.data.id;
         cy.apiLogin(email, password);
       })
       .then(() => {
@@ -174,6 +176,9 @@ describe('Native survey CTA bar', () => {
       });
     } else if (projectId) {
       cy.apiRemoveProject(projectId);
+    }
+    if (userId) {
+      cy.apiRemoveUser(userId);
     }
   });
 });

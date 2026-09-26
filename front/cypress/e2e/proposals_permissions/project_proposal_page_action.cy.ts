@@ -66,15 +66,23 @@ describe('Proposal show page actions', () => {
 
   describe('logged in as normal user', () => {
     describe('Reaction', () => {
+      let userId: string;
+
       beforeEach(() => {
         const firstName = randomString();
         const lastName = randomString();
         const email = randomEmail();
         const password = randomString();
 
-        cy.apiSignup(firstName, lastName, email, password);
+        cy.apiSignup(firstName, lastName, email, password).then((user) => {
+          userId = user.body.data.id;
+        });
         cy.setLoginCookie(email, password);
         cy.reload();
+      });
+
+      afterEach(() => {
+        cy.apiRemoveUser(userId);
       });
 
       it('has working up and dislike buttons', () => {

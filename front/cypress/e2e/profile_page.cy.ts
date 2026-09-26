@@ -137,6 +137,7 @@ describe('Profile Page', () => {
   });
 
   after(() => {
+    cy.apiRemoveEvent(eventId);
     cy.apiRemoveComment(commentId);
     cy.apiRemoveIdea(ideaId);
     cy.apiRemoveUser(userId);

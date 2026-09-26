@@ -1,6 +1,8 @@
 import { randomString } from '../../../support/commands';
 
 describe('Admin: add project', () => {
+  let projectId: string | undefined;
+
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit('/admin/projects');
@@ -9,9 +11,18 @@ describe('Admin: add project', () => {
     cy.get('.e2e-project-general-form');
   });
 
+  afterEach(() => {
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+      projectId = undefined;
+    }
+  });
+
   context('Type: Timeline', () => {
     context('Areas: All areas', () => {
       it('creates a draft project by default', () => {
+        cy.intercept('POST', '**/web_api/v1/projects').as('createProject');
+
         const projectTitleEN = randomString();
         const projectTitleNLBE = randomString();
         const projectTitleNLNL = randomString();
@@ -28,6 +39,9 @@ describe('Admin: add project', () => {
 
         // Submit form
         cy.get('.e2e-submit-wrapper-button button').click();
+        cy.wait('@createProject').then((interception) => {
+          projectId = interception.response?.body.data.id;
+        });
 
         // Confirm the project is saved and appears as draft
         cy.visit('/admin/projects');
@@ -76,11 +90,12 @@ describe('Admin: add project', () => {
 
         // Expect the correct area to be set for the newly created project
         cy.wait('@createProject').then((interception) => {
-          const projectId = interception.response?.body.data.id;
+          const createdProjectId = interception.response?.body.data.id;
+          projectId = createdProjectId;
 
           // Make a separate request to the project endpoint, as the createProject
           // intercept might not include the area relationship yet (results in flakiness)
-          cy.getProjectById(projectId).then((project) => {
+          cy.getProjectById(createdProjectId).then((project) => {
             const areaId = project.body.data.relationships.areas.data?.[0]?.id;
             cy.getArea(areaId).then((area) => {
               expect(area.body.data.attributes.title_multiloc.en).to.equal(

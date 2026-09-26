@@ -1,4 +1,5 @@
 import { randomString, randomEmail } from '../support/commands';
+import { Interception } from 'cypress/types/net-stubbing';
 
 const round = (x: number) => Math.round(x * 1000) / 1000;
 
@@ -7,15 +8,36 @@ describe('Idea submission form', () => {
   const lastName = randomString();
   const email = randomEmail();
   const password = randomString();
+  let userId: string;
 
   before(() => {
-    cy.apiSignup(firstName, lastName, email, password);
+    cy.apiSignup(firstName, lastName, email, password).then((user) => {
+      userId = user.body.data.id;
+    });
   });
 
   beforeEach(() => {
+    cy.intercept('POST', '**/phases/*/inputs').as('createdIdeas');
     cy.setLoginCookie(email, password);
     cy.visit('/projects/an-idea-bring-it-to-your-council/ideas/new');
     cy.get('#idea-form');
+  });
+
+  afterEach(() => {
+    cy.get<Interception[]>('@createdIdeas.all').then((interceptions) => {
+      interceptions.forEach((interception) => {
+        const ideaId = interception.response?.body?.data?.id;
+        if (ideaId) {
+          cy.apiRemoveIdea(ideaId);
+        }
+      });
+    });
+  });
+
+  after(() => {
+    if (userId) {
+      cy.apiRemoveUser(userId);
+    }
   });
 
   it('shows an error when no title is provided', () => {

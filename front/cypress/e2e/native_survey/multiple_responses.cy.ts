@@ -14,9 +14,16 @@ describe('Native survey: multiple responses per user', () => {
   const lastName = randomString();
   const email = randomEmail();
   const password = randomString();
+  let userId: string;
 
   before(() => {
-    cy.apiSignup(firstName, lastName, email, password);
+    cy.apiSignup(firstName, lastName, email, password).then((user) => {
+      userId = user.body.data.id;
+    });
+  });
+
+  after(() => {
+    cy.apiRemoveUser(userId);
   });
 
   const createSurveyProject = (allowMultipleResponses: boolean) => {

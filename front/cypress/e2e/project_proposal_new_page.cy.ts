@@ -14,12 +14,15 @@ describe('Project proposal new page', () => {
 
   let projectId: string;
   let projectSlug: string;
+  let userId: string;
 
   const twoMonthsAgo = moment().subtract(2, 'month').format('DD/MM/YYYY');
   const inTwoMonths = moment().add(2, 'month').format('DD/MM/YYYY');
 
   before(() => {
-    cy.apiSignup(firstName, lastName, email, password);
+    cy.apiSignup(firstName, lastName, email, password).then((user) => {
+      userId = user.body.data.id;
+    });
 
     // create new project
     cy.apiCreateProject({
@@ -120,5 +123,6 @@ describe('Project proposal new page', () => {
 
   after(() => {
     cy.apiRemoveProject(projectId);
+    cy.apiRemoveUser(userId);
   });
 });

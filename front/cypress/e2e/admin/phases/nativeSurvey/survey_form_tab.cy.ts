@@ -19,6 +19,10 @@ describe('Survey Form Tab Navigation', () => {
     cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/survey-form`);
   });
 
+  after(() => {
+    cy.apiRemoveProject(projectId);
+  });
+
   it('should navigate to survey form tab and verify content loads', () => {
     // Verify the tab panel loaded by checking section title
     cy.dataCy('e2e-survey-form-title').should('be.visible');
