@@ -11,6 +11,9 @@ import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableE
 import Section from 'components/admin/ContentBuilder/Toolbox/Section';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
+import CustomPages, {
+  customPagesTitle,
+} from 'components/admin/ContentBuilder/Widgets/CustomPages';
 import EventsList from 'components/admin/ContentBuilder/Widgets/Events';
 import eventsMessages from 'components/admin/ContentBuilder/Widgets/Events/messages';
 import FileAttachment from 'components/admin/ContentBuilder/Widgets/FileAttachment';
@@ -183,6 +186,12 @@ const CustomPageBuilderToolbox = () => {
           }
           icon="folder-outline"
           label={formatMessage(selectionTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-custom-pages"
+          component={<CustomPages customPages={[]} />}
+          icon="page"
+          label={formatMessage(customPagesTitle)}
         />
         <DraggableElement
           id="e2e-draggable-events"

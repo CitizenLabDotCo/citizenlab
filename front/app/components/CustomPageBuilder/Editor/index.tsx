@@ -7,6 +7,7 @@ import { VerticalRhythmContext } from 'components/admin/ContentBuilder/verticalR
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
+import CustomPages from 'components/admin/ContentBuilder/Widgets/CustomPages';
 import EventsList from 'components/admin/ContentBuilder/Widgets/Events';
 import FileAttachment from 'components/admin/ContentBuilder/Widgets/FileAttachment';
 import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
@@ -63,6 +64,7 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
           PageLink,
           Spotlight,
           Selection,
+          CustomPages,
           CustomPageRoot,
           CustomPageBanner,
           CustomPageTitle,

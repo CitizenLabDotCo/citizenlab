@@ -28,6 +28,7 @@ module ContentBuilder
         ProjectsByFilter
         Spotlight
         Selection
+        CustomPages
         CustomPageRoot
         CustomPageBanner
         CustomPageTitle
@@ -93,6 +94,7 @@ module ContentBuilder
           'enums' => { 'publicationType' => %w[project folder] }
         },
         'Selection' => { 'multilocs' => %w[titleMultiloc] },
+        'CustomPages' => { 'multilocs' => %w[titleMultiloc] },
         # The project page scaffold (no rules: nodes patches may not add, move or delete).
         'ProjectPageRoot' => {},
         'ProjectBanner' => {},
