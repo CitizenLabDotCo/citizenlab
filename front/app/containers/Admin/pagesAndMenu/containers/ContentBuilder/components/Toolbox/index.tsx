@@ -50,6 +50,9 @@ import ThreeColumn, {
 import TwoColumn, {
   twoColumnTitle,
 } from 'components/admin/ContentBuilder/Widgets/TwoColumn';
+import VideoEmbed, {
+  videoEmbedTitle,
+} from 'components/admin/ContentBuilder/Widgets/VideoEmbed';
 import WhiteSpace, {
   whiteSpaceTitle,
 } from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
@@ -86,7 +89,6 @@ import ProjectsAndFoldersLegacy, {
 } from '../Widgets/ProjectsAndFoldersLegacy';
 import projectsMessages from '../Widgets/ProjectsAndFoldersLegacy/messages';
 import TextMultiloc, { textMultilocTitle } from '../Widgets/TextMultiloc';
-import VideoEmbed, { videoEmbedTitle } from '../Widgets/VideoEmbed';
 
 import { platformCreatedBeforeReleaseNewWidgets } from './utils';
 

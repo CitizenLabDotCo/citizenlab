@@ -41,6 +41,9 @@ import ThreeColumn, {
 import TwoColumn, {
   twoColumnTitle,
 } from 'components/admin/ContentBuilder/Widgets/TwoColumn';
+import VideoEmbed, {
+  videoEmbedTitle,
+} from 'components/admin/ContentBuilder/Widgets/VideoEmbed';
 import WhiteSpace, {
   whiteSpaceTitle,
 } from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
@@ -75,7 +78,6 @@ import ProjectsAndFoldersLegacy, {
   projectsAndFoldersLegacyTitle,
 } from './ProjectsAndFoldersLegacy';
 import TextMultiloc, { textMultilocTitle } from './TextMultiloc';
-import VideoEmbed, { videoEmbedTitle } from './VideoEmbed';
 
 export const WIDGETS = {
   // Shared widgets
