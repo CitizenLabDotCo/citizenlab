@@ -18,6 +18,9 @@ import AccordionMultiloc, {
 import ButtonMultiloc, {
   buttonMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
+import CallToAction, {
+  callToActionTitle,
+} from 'components/admin/ContentBuilder/Widgets/CallToAction';
 import CustomPages, {
   customPagesTitle,
 } from 'components/admin/ContentBuilder/Widgets/CustomPages';
@@ -60,7 +63,6 @@ import {
 
 import messages from '../../messages';
 import Areas, { areasTitle } from '../Widgets/Areas';
-import CallToAction, { callToActionTitle } from '../Widgets/CallToAction';
 import CommunityMonitorCTA, {
   communityMonitorCTATitle,
 } from '../Widgets/CommunityMonitorCTA';
