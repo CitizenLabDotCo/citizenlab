@@ -22,6 +22,9 @@ import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultil
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
 import PageLink from 'components/admin/ContentBuilder/Widgets/PageLink';
+import Published, {
+  publishedTitle,
+} from 'components/admin/ContentBuilder/Widgets/Published';
 import Selection, {
   selectionTitle,
 } from 'components/admin/ContentBuilder/Widgets/Selection';
@@ -192,6 +195,12 @@ const CustomPageBuilderToolbox = () => {
           component={<CustomPages customPages={[]} />}
           icon="page"
           label={formatMessage(customPagesTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-published"
+          component={<Published titleMultiloc={toMultiloc(publishedTitle)} />}
+          icon="check-circle"
+          label={formatMessage(publishedTitle)}
         />
         <DraggableElement
           id="e2e-draggable-events"

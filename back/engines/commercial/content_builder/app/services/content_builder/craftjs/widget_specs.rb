@@ -29,6 +29,7 @@ module ContentBuilder
         Spotlight
         Selection
         CustomPages
+        Published
         CustomPageRoot
         CustomPageBanner
         CustomPageTitle
@@ -95,6 +96,7 @@ module ContentBuilder
         },
         'Selection' => { 'multilocs' => %w[titleMultiloc] },
         'CustomPages' => { 'multilocs' => %w[titleMultiloc] },
+        'Published' => { 'multilocs' => %w[titleMultiloc] },
         # The project page scaffold (no rules: nodes patches may not add, move or delete).
         'ProjectPageRoot' => {},
         'ProjectBanner' => {},
