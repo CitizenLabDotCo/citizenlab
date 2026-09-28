@@ -4,8 +4,8 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 import { Node, UserComponent, useEditor } from '@craftjs/core';
 import styled, { css } from 'styled-components';
 
+import DropZoneOutline from 'components/admin/ContentBuilder/DropFeedback/DropZoneOutline';
 import useWidgetProjectId from 'components/admin/ContentBuilder/useWidgetProjectId';
-import DropZoneOutline from 'components/DescriptionBuilder/DropFeedback/DropZoneOutline';
 
 import { useParams } from 'utils/router';
 

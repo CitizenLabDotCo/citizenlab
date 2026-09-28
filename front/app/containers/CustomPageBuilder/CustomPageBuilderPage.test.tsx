@@ -77,7 +77,7 @@ jest.mock('components/DescriptionBuilder/Settings', () => ({
   default: () => null,
 }));
 jest.mock(
-  'components/DescriptionBuilder/DropFeedback/DropPlacementOverlay',
+  'components/admin/ContentBuilder/DropFeedback/DropPlacementOverlay',
   () => ({
     __esModule: true,
     default: () => null,

@@ -14,10 +14,10 @@ import useLocale from 'hooks/useLocale';
 
 import { PROJECT_PAGE_BUILDER_PATH } from 'components/admin/ContentBuilder/constants';
 import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
+import DropPlacementOverlay from 'components/admin/ContentBuilder/DropFeedback/DropPlacementOverlay';
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import DescriptionBuilderContent from 'components/DescriptionBuilder/DescriptionBuilderContent';
-import DropPlacementOverlay from 'components/DescriptionBuilder/DropFeedback/DropPlacementOverlay';
 import ContentBuilderSettings from 'components/DescriptionBuilder/Settings';
 import { normalizeProjectPageLayout } from 'components/ProjectPageBuilder/defaultLayout';
 import ProjectPageBuilderEditModePreview from 'components/ProjectPageBuilder/EditModePreview';
