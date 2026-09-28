@@ -16,7 +16,7 @@ describe Export::Geojson::GeojsonGenerator do
     create(:custom_field_text, resource_type: 'User', title_multiloc: { 'en' => 'Field for registration question' })
   end
 
-  let(:user) { create(:user, custom_field_values: { custom_field3.key => 'Registration q answer' }) }
+  let(:user) { create(:user, custom_field_answers: [build(:custom_field_answer, key: custom_field3.key, value: 'Registration q answer')]) }
 
   describe '#generate_geojson' do
     let(:idea1) do
@@ -25,10 +25,10 @@ describe Export::Geojson::GeojsonGenerator do
         author: user,
         creation_phase: phase,
         project: project,
-        custom_field_values: {
-          custom_field1.key => { type: 'Point', coordinates: [1.1, 2.2] },
-          custom_field2.key => 'Text answer 1'
-        }
+        custom_field_answers: [
+          build(:custom_field_answer, key: custom_field1.key, value: { type: 'Point', coordinates: [1.1, 2.2] }),
+          build(:custom_field_answer, key: custom_field2.key, value: 'Text answer 1')
+        ]
       )
     end
     let!(:idea_phase1) { create(:ideas_phase, idea: idea1, phase: phase) }
@@ -38,10 +38,10 @@ describe Export::Geojson::GeojsonGenerator do
         :idea,
         creation_phase: phase,
         project: project,
-        custom_field_values: {
-          custom_field1.key => { type: 'Point', coordinates: [3.3, 4.4] },
-          custom_field2.key => 'Text answer 2'
-        }
+        custom_field_answers: [
+          build(:custom_field_answer, key: custom_field1.key, value: { type: 'Point', coordinates: [3.3, 4.4] }),
+          build(:custom_field_answer, key: custom_field2.key, value: 'Text answer 2')
+        ]
       )
     end
     let!(:idea_phase2) { create(:ideas_phase, idea: idea2, phase: phase) }

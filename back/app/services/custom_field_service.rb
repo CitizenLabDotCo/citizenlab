@@ -29,13 +29,13 @@ class CustomFieldService
     end
   end
 
-  def delete_custom_field_values(field)
+  def delete_field_answers(field)
     case field.resource_type
     when 'User'
-      delete_keys_from_values(User.all, keys_with_companions(field.key))
-      delete_keys_from_values(Idea.all, keys_with_companions(UserFieldsInFormService.prefix_key(field.key)))
+      delete_answers_for_keys(User.all, keys_with_companions(field.key))
+      delete_answers_for_keys(Idea.all, keys_with_companions(UserFieldsInFormService.prefix_key(field.key)))
     when 'CustomForm'
-      delete_keys_from_values(form_inputs(field.resource), keys_with_companions(field.key))
+      delete_answers_for_keys(form_inputs(field.resource), keys_with_companions(field.key))
     end
   end
 
@@ -45,20 +45,11 @@ class CustomFieldService
     answers = CustomFieldAnswer.where(answerable_type: 'User', key: field.key)
     if field.supports_multiple_selection?
       # When option is the only selection
-      User
-        .where("custom_field_values->>'#{field.key}' = ?", [option_key].to_json)
-        .update_all("custom_field_values = custom_field_values - '#{field.key}'")
       answers.where('value = :value::jsonb', value: [option_key].to_json).delete_all
       # When option was selected amongst other values
-      User
-        .where("(custom_field_values->>'#{field.key}')::jsonb ? :value", value: option_key)
-        .update_all("custom_field_values = jsonb_set(custom_field_values, '{#{field.key}}', (custom_field_values->'#{field.key}') - '#{option_key}')")
       answers.where('value ? :value', value: option_key).update_all("value = value - '#{option_key}'")
     else
       # When single select
-      User
-        .where("custom_field_values->>'#{field.key}' = ?", option_key)
-        .update_all("custom_field_values = custom_field_values - '#{field.key}'")
       answers.where('value = :value::jsonb', value: option_key.to_json).delete_all
     end
   end
@@ -86,12 +77,13 @@ class CustomFieldService
 
   # NOTE: Needs refactor. This is called by idea serializer so will have an n+1 issue
   def self.remove_not_visible_fields(idea, current_user)
-    return idea.custom_field_values if idea.draft?
+    custom_field_values = CustomFieldValuesTransitionService.new.custom_field_values(idea)
+    return custom_field_values if idea.draft?
 
     # If super admin, we return all custom fields.
     # This is mostly for debugging purposes, and to allow checking
     # this behavior in the e2e tests.
-    return idea.custom_field_values if current_user&.super_admin?
+    return custom_field_values if current_user&.super_admin?
 
     fields = IdeaCustomFieldsService.new(idea.custom_form).enabled_public_fields
     if can_see_admin_answers?(idea, current_user)
@@ -111,7 +103,7 @@ class CustomFieldService
       end
     end
 
-    idea.custom_field_values.slice(*visible_keys)
+    custom_field_values.slice(*visible_keys)
   end
 
   def self.can_see_admin_answers?(idea, current_user)
@@ -142,11 +134,7 @@ class CustomFieldService
     [key, "#{key}_other", "#{key}_follow_up"]
   end
 
-  def delete_keys_from_values(scope, keys)
-    keys_sql = keys.map { |key| "'#{key}'" }.join(', ')
-    scope
-      .where("custom_field_values ?| array[#{keys_sql}]")
-      .update_all("custom_field_values = custom_field_values - array[#{keys_sql}]::text[]")
+  def delete_answers_for_keys(scope, keys)
     CustomFieldAnswer.where(answerable: scope, key: keys).delete_all
   end
 end

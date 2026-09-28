@@ -93,9 +93,9 @@ context 'keycloak verification (ID-Porten - Oslo)' do
     expect(user.reload).to have_attributes({
       verified: true,
       first_name: 'Unøy-Aktig',
-      last_name: 'Kost Nost',
-      custom_field_values: {}
+      last_name: 'Kost Nost'
     })
+    expect(user.custom_field_answers).to be_empty
     expect(user.verifications.first).to have_attributes({
       method_name: 'keycloak',
       user_id: user.id,

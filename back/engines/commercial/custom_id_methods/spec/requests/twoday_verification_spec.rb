@@ -75,9 +75,9 @@ context 'Twoday verification (BankID - Helsingborg)' do
     expect(user.reload).to have_attributes({
       verified: true,
       first_name: 'Nils',
-      last_name: 'Eriksson',
-      custom_field_values: {}
+      last_name: 'Eriksson'
     })
+    expect(user.custom_field_answers).to be_empty
     expect(user.verifications.first).to have_attributes({
       method_name: 'twoday',
       user_id: user.id,

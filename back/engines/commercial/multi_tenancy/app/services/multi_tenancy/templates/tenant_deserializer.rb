@@ -20,7 +20,9 @@ module MultiTenancy
       # ActiveModel::UnknownAttributeError and abort the whole template application.
       REMOVED_ATTRIBUTES = {
         'Project' => %w[description_multiloc],
-        'ProjectFolders::Folder' => %w[description_multiloc]
+        'ProjectFolders::Folder' => %w[description_multiloc],
+        'User' => %w[custom_field_values gender birthyear domicile],
+        'Idea' => %w[custom_field_values]
       }.freeze
 
       def initialize(save_temp_remote_urls: false)

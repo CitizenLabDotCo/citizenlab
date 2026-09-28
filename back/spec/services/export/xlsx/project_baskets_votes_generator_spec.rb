@@ -106,7 +106,7 @@ describe Export::Xlsx::ProjectBasketsVotesGenerator do
     it 'contains extra columns for custom user fields' do
       create(:custom_field_domicile)
       area = create(:area, title_multiloc: { 'en' => 'Center' })
-      user1.update!(custom_field_values: { 'domicile' => area.id })
+      user1.custom_field_answers.create!(key: 'domicile', value: area.id)
 
       header_row = workbook.worksheets[1][0].cells.map(&:value)
       user_row = workbook.worksheets[1][1].cells.map(&:value)

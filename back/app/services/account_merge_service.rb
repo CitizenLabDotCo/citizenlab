@@ -260,11 +260,14 @@ class AccountMergeService
 
     locked_keys = @verification_service.locked_custom_fields(target).map(&:to_s) - target_locks[:custom_fields]
 
-    merged = source.custom_field_values
-      .merge(target.custom_field_values)
-      .merge(source.custom_field_values.slice(*locked_keys))
+    transition_service = CustomFieldValuesTransitionService.new
+    source_values = transition_service.custom_field_values(source)
+    merged = source_values
+      .merge(transition_service.custom_field_values(target))
+      .merge(source_values.slice(*locked_keys))
 
-    target.update_merging_custom_fields!(custom_field_values: merged)
+    transition_service.assign(target, merged)
+    target.save!
   end
 
   def recompute_counters!(target)

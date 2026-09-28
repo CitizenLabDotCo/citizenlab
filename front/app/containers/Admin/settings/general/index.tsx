@@ -28,6 +28,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import messages from '../messages';
 import ProjectReview from '../projectReview';
 
+import ExcludeAdminsAndModeratorsFromStatistics from './ExcludeAdminsAndModeratorsFromStatistics';
 import Form from './Form';
 
 const StyledSection = styled(Section)`
@@ -185,6 +186,8 @@ const SettingsGeneralTab = () => {
             id="app.containers.Admin.settings.general.form"
             onSettingChange={handleSettingChange}
           />
+
+          <ExcludeAdminsAndModeratorsFromStatistics />
 
           <Box mt="30px" mb="20px">
             <SubSectionTitle>

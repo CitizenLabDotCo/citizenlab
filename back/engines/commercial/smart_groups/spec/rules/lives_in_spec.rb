@@ -47,7 +47,7 @@ describe SmartGroups::Rules::LivesIn do
 
   describe 'filter' do
     before do
-      CustomField.create!(
+      @domicile_field = CustomField.create!(
         resource_type: 'User',
         key: 'domicile',
         title_multiloc: { 'en' => 'Domicile' },
@@ -63,11 +63,11 @@ describe SmartGroups::Rules::LivesIn do
     let!(:area2) { create(:area) }
     let!(:users) do
       users = build_list(:user, 5)
-      users[0][:custom_field_values] = { 'domicile' => 'outside' }
-      users[1][:custom_field_values] = { 'domicile' => area1.id }
-      users[2][:custom_field_values] = { 'domicile' => area2.id }
-      users[3][:custom_field_values] = nil
-      users[4][:custom_field_values] = { 'domicile' => area1.id }
+      users[0].custom_field_answers.build(key: 'domicile', value: 'outside', custom_field: @domicile_field)
+      users[1].custom_field_answers.build(key: 'domicile', value: area1.id, custom_field: @domicile_field)
+      users[2].custom_field_answers.build(key: 'domicile', value: area2.id, custom_field: @domicile_field)
+      # users[3] has no answer
+      users[4].custom_field_answers.build(key: 'domicile', value: area1.id, custom_field: @domicile_field)
       users.each(&:save!)
     end
 

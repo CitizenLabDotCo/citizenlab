@@ -91,15 +91,15 @@ module SeedNativeSurveyResponses
 
       responses_created = 0
       users_created = 0
+      fields_by_key = answerable_fields.index_by(&:key)
       num_responses.times do |i|
-        custom_field_values = @field_values.generate(answerable_fields)
+        answers = @field_values.generate(answerable_fields)
 
         idea_attrs = {
           project: @project,
           creation_phase: @phase,
           phase_ids: [@phase.id],
-          publication_status: 'published',
-          custom_field_values: custom_field_values
+          publication_status: 'published'
         }
 
         if anonymous
@@ -117,6 +117,7 @@ module SeedNativeSurveyResponses
         end
 
         idea = Idea.new(idea_attrs)
+        build_answers(idea, answers, fields_by_key)
 
         if idea.save
           responses_created += 1
@@ -143,15 +144,21 @@ module SeedNativeSurveyResponses
         email: email,
         password: SecureRandom.hex(16),
         locale: @locale,
-        custom_field_values: @field_values.generate(@user_fields),
         registration_completed_at: Time.current
       )
+      build_answers(user, @field_values.generate(@user_fields), @user_fields.index_by(&:key))
 
       if user.save
         user
       else
         puts "\nFailed to create user #{email}: #{user.errors.full_messages.join(', ')}"
         nil
+      end
+    end
+
+    def build_answers(record, values, fields_by_key)
+      values.each do |key, value|
+        record.custom_field_answers.build(key:, value:, custom_field: fields_by_key[key])
       end
     end
   end
