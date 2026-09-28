@@ -228,7 +228,7 @@ const EventsList: UserComponent<EventsProps> = ({
   );
 
   // A band pads itself, which is why the rhythm system leaves no margin between two of them.
-  // The homepage is outside that system and spaces its widgets on a smaller scale of its own.
+  // The homepage is outside that system and keeps its own spacing.
   const homepagePadding = isSmallerThanTablet
     ? DEFAULT_PADDING
     : DEFAULT_Y_PADDING;
