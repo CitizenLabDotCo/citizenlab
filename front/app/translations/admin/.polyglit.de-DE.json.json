@@ -6869,6 +6869,11 @@
     "verified_at": "2026-07-16T09:49:20.119280Z",
     "verified_by": "eva@govocal.com"
   },
+  "app.containers.Admin.messaging.smsUpsellTooltip2": {
+    "state": "verified",
+    "verified_at": "2026-09-28T08:52:08.361497Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.messaging.tabSms": {
     "state": "verified",
     "verified_at": "2026-07-16T09:49:20.119280Z",
@@ -22889,6 +22894,11 @@
     "verified_at": "2026-08-17T14:35:41.681284Z",
     "verified_by": "Jelena"
   },
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.notConfigured": {
+    "state": "verified",
+    "verified_at": "2026-09-28T08:52:08.361497Z",
+    "verified_by": "Jelena"
+  },
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordAvailableDescription": {
     "state": "verified",
     "verified_at": "2026-08-19T07:31:15.339130Z",
@@ -22912,6 +22922,11 @@
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailSignupTooltip2": {
     "state": "verified",
     "verified_at": "2026-08-27T12:19:30.999580Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.phoneUpsellTooltip2": {
+    "state": "verified",
+    "verified_at": "2026-09-28T08:52:08.361497Z",
     "verified_by": "Jelena"
   },
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.securityChecks2": {
