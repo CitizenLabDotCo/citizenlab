@@ -12,6 +12,7 @@ jest.mock('api/me/useAuthUser', () =>
         id: 'user-1',
         attributes: {
           roles: [{ type: 'admin' }],
+          highest_role: 'admin',
         },
       },
     },

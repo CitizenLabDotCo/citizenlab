@@ -2,9 +2,11 @@ import React from 'react';
 
 import { IdMethodData } from 'api/id_methods/types';
 import { IPermissionData } from 'api/permissions/types';
+import { HighestRole } from 'api/users/types';
 
 import { Changes } from 'components/admin/ActionForm/types';
 
+import { TRole } from 'utils/permissions/roles';
 import {
   render,
   screen,
@@ -59,10 +61,16 @@ jest.mock('api/id_methods/useVerificationMethod', () =>
   }))
 );
 
-let mockUserRoles: { type: string }[] = [{ type: 'admin' }];
+let mockUserRoles: TRole[] = [{ type: 'admin' }];
+let mockUserHighestRole: HighestRole = 'admin';
 
 jest.mock('api/me/useAuthUser', () => () => ({
-  data: { data: { id: 'user-1', attributes: { roles: mockUserRoles } } },
+  data: {
+    data: {
+      id: 'user-1',
+      attributes: { roles: mockUserRoles, highest_role: mockUserHighestRole },
+    },
+  },
 }));
 
 jest.mock('api/phases/usePhase', () =>
@@ -156,6 +164,7 @@ beforeEach(() => {
   mockIdMethods = [ssoMethod];
   mockVerificationMethodConfigured = true;
   mockUserRoles = [{ type: 'admin' }];
+  mockUserHighestRole = 'admin';
 });
 
 describe('<ActionForm />', () => {
@@ -322,7 +331,8 @@ describe('<ActionForm />', () => {
         screen.getByRole('link', { name: 'platform defaults' })
       ).toHaveAttribute('href', '/en/admin/settings/registration');
 
-      mockUserRoles = [{ type: 'project_moderator' }];
+      mockUserRoles = [{ type: 'project_moderator', project_id: 'project-1' }];
+      mockUserHighestRole = 'project_moderator';
       renderForm({ inherited: true }, { onOverride: jest.fn() });
       expect(screen.getAllByText(/Using/)).toHaveLength(2);
       expect(screen.getAllByRole('link')).toHaveLength(1);
