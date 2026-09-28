@@ -18,14 +18,13 @@ import useLocalize from 'hooks/useLocalize';
 import {
   BUILDER_CONTENT_MAX_WIDTH,
   DEFAULT_PADDING,
+  DEFAULT_Y_PADDING,
 } from 'components/admin/ContentBuilder/constants';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { useIntl } from 'utils/cl-intl';
 import { removeUrlLocale } from 'utils/removeUrlLocale';
-
-import { DEFAULT_Y_PADDING } from '../constants';
 
 import messages from './messages';
 

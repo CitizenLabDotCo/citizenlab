@@ -11,6 +11,7 @@ export const PROJECT_PAGE_BUILDER_PATH = 'admin/project-page-builder';
 export const HOMEPAGE_BUILDER_PATH = 'admin/pages-menu/homepage-builder';
 
 export const DEFAULT_PADDING = '20px';
+export const DEFAULT_Y_PADDING = '24px';
 
 export const BUILDER_CONTENT_MAX_WIDTH = '1200px';
 

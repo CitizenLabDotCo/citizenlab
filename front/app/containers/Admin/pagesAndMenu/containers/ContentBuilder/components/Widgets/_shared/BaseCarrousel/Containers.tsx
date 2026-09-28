@@ -3,10 +3,11 @@ import React from 'react';
 import { Box, useBreakpoint, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
+import {
+  BUILDER_CONTENT_MAX_WIDTH,
+  DEFAULT_Y_PADDING,
+} from 'components/admin/ContentBuilder/constants';
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
-
-import { DEFAULT_Y_PADDING } from '../../constants';
 
 const StyledBox = styled(Box)`
   .scroll-button {

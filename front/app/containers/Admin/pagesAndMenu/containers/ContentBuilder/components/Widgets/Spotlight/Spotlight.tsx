@@ -14,14 +14,15 @@ import { useTheme } from 'styled-components';
 
 import { CARD_IMAGE_ASPECT_RATIO_STR } from 'api/project_images/useProjectImages';
 
-import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
+import {
+  BUILDER_CONTENT_MAX_WIDTH,
+  DEFAULT_Y_PADDING,
+} from 'components/admin/ContentBuilder/constants';
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 import AvatarBubbles from 'components/AvatarBubbles';
 import Skeleton from 'components/AvatarBubbles/Skeleton';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-
-import { DEFAULT_Y_PADDING } from '../constants';
 
 interface Props {
   title: string;
