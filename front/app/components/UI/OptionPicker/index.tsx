@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 
 import {
   Box,
@@ -25,6 +25,12 @@ const Search = styled(Box)`
     border-radius: ${bo.borderRadius};
   }
 `;
+
+const Panel = styled(Dropdown)`
+  border-radius: ${bo.borderRadius};
+`;
+
+const GAP = 4;
 
 const TriggerContent = styled(Box)`
   min-width: 0;
@@ -66,13 +72,28 @@ const OptionPicker = <T extends string>({
 }: Props<T>) => {
   const { formatMessage } = useIntl();
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const [opened, setOpened] = useState(false);
+  const [openUp, setOpenUp] = useState(false);
   const [search, setSearch] = useState('');
 
   const close = () => {
     setOpened(false);
     setSearch('');
   };
+
+  // flip the dropdown to open upwards if there is not enough space below
+  useLayoutEffect(() => {
+    if (!opened) return;
+
+    const panel = contentRef.current?.offsetParent;
+    const trigger = triggerRef.current?.getBoundingClientRect();
+    if (!(panel instanceof HTMLElement) || !trigger) return;
+
+    const spaceBelow = window.innerHeight - trigger.bottom - GAP;
+    const spaceAbove = trigger.top - GAP;
+    setOpenUp(panel.offsetHeight > spaceBelow && spaceAbove > spaceBelow);
+  }, [opened]);
 
   const dismiss = () => {
     close();
@@ -121,7 +142,7 @@ const OptionPicker = <T extends string>({
         </TriggerContent>
       </Button>
 
-      <Dropdown
+      <Panel
         opened={opened}
         onClickOutside={({ target }) => {
           if (target instanceof Node && triggerRef.current?.contains(target)) {
@@ -129,13 +150,14 @@ const OptionPicker = <T extends string>({
           }
           close();
         }}
-        top="calc(100% + 4px)"
+        top={openUp ? undefined : `calc(100% + ${GAP}px)`}
+        bottom={openUp ? `calc(100% + ${GAP}px)` : undefined}
         left="0px"
         width="288px"
         maxHeight="320px"
         zIndex="1000"
         content={
-          <Box>
+          <Box ref={contentRef}>
             <Box pb="8px" mb="8px" borderBottom={`1px solid ${colors.grey200}`}>
               <Text variant="bo-section">{title}</Text>
               <Text variant="bo-helper" mt="2px">

@@ -15,6 +15,7 @@ const Container = styled(ClickOutside)<ContainerProps>`
   z-index: ${(props) => props.zIndex};
   position: absolute;
   top: ${(props) => props.top};
+  bottom: ${(props) => props.bottom};
   left: ${(props) => props.left};
   right: ${(props) => props.right};
   transition: none;
@@ -115,6 +116,7 @@ const Footer = styled.div`
 // Props interfaces
 interface ContainerProps {
   top: string;
+  bottom: string;
   left: string;
   right: string;
   mobileLeft: string;
@@ -139,6 +141,7 @@ interface Props {
   maxHeight?: string;
   mobileMaxHeight?: string;
   top?: string;
+  bottom?: string;
   left?: string;
   mobileLeft?: string;
   right?: string;
@@ -158,6 +161,7 @@ const Dropdown: React.FC<Props> = ({
   maxHeight = '320px',
   mobileMaxHeight = '280px',
   top = 'auto',
+  bottom = 'auto',
   left = 'auto',
   mobileLeft = 'auto',
   right = 'auto',
@@ -221,6 +225,7 @@ const Dropdown: React.FC<Props> = ({
       <Container
         id={id}
         top={top}
+        bottom={bottom}
         left={left}
         mobileLeft={mobileLeft}
         right={right}
