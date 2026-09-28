@@ -15,7 +15,6 @@ import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlock
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
-import PageLink from 'components/admin/ContentBuilder/Widgets/PageLink';
 import Published from 'components/admin/ContentBuilder/Widgets/Published';
 import Selection from 'components/admin/ContentBuilder/Widgets/Selection';
 import Spotlight from 'components/admin/ContentBuilder/Widgets/Spotlight';
@@ -64,7 +63,6 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
           HtmlBlockMultiloc,
           ImageTextCards,
           ButtonMultiloc,
-          PageLink,
           Spotlight,
           Selection,
           CustomPages,
