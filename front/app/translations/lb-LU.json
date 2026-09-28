@@ -2930,7 +2930,7 @@
   "app.utils.votingMethodUtils.voteSubmittedWithIcon": "Vote presentéiert 🎉",
   "app.utils.votingMethodUtils.votesCast": "Stëmmen ofginn",
   "app.utils.votingMethodUtils.votingClosed": "Ofstëmmung zougemaach",
-  "app.utils.votingMethodUtils.votingPreSubmissionWarning1": "<b>Är Stëmm gëtt net gezielt</b> bis Dir op \"Ofschécken\" klickt.",
+  "app.utils.votingMethodUtils.votingPreSubmissionWarning1": "<b>Är Stëmm gëtt net gezielt</b> bis Dir op \"Wielt\" klickt.",
   "app.utils.votingMethodUtils.votingSubmittedInstructions1": "<b>Gratulatioun, Är Stëmm gouf ofginn!</b> Dir kënnt Är Stëmm kontrolléieren oder änneren ier <b>{endDate}</b>.",
   "app.utils.votingMethodUtils.votingSubmittedInstructionsNoEndDate1": "<b>Gratulatioun, Är Stëmm gouf ofginn!</b> Dir kënnt Är Stëmm zu all Moment hei ënnendrënner kontrolléieren oder änneren.",
   "components.UI.IdeaSelect.noIdeaAvailable": "Et gi keng Iddien verfügbar.",
