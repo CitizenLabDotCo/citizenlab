@@ -54,17 +54,6 @@ class CustomFieldService
     end
   end
 
-  # @param [Hash<String, _>] custom_field_values
-  # @return [Hash<String, _>]
-  def self.remove_hidden_custom_fields(custom_field_values)
-    # The key to performance here is that the SQL request that gets 'all_hidden_keys' is always the same (it does not
-    # depend on the parameters). As a consequence, if this method is called several times for processing a single
-    # request, the result of the request is cached and the request is not repeated.
-    all_hidden_keys = CustomField.hidden.pluck(:key)
-    hidden_keys = all_hidden_keys & custom_field_values.keys
-    custom_field_values.except(*hidden_keys)
-  end
-
   # Drops values for registration fields this platform does not have. An identity
   # provider can return such a key, and once stored it makes the profile form refuse
   # every later save.
