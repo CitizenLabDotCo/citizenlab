@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { Box, useBreakpoint, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import {
+  BAND_Y_PADDING,
   BUILDER_CONTENT_MAX_WIDTH,
   DEFAULT_Y_PADDING,
 } from 'components/admin/ContentBuilder/constants';
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
+import { VerticalRhythmContext } from 'components/admin/ContentBuilder/verticalRhythm';
 
 const StyledBox = styled(Box)`
   .scroll-button {
@@ -36,11 +38,14 @@ export const CarrouselContainer = ({
 }: CarrouselContainerProps) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const craftComponentDefaultPadding = useCraftComponentDefaultPadding();
+  // Under the spacing rhythm a band pads itself on the same scale as the other bands.
+  // The homepage is outside that system and keeps its own spacing.
+  const underRhythm = useContext(VerticalRhythmContext);
 
   return (
     <Box
       px={isSmallerThanPhone ? undefined : craftComponentDefaultPadding}
-      py={DEFAULT_Y_PADDING}
+      py={underRhythm ? BAND_Y_PADDING : DEFAULT_Y_PADDING}
       w="100%"
       display="flex"
       overflowX="hidden"

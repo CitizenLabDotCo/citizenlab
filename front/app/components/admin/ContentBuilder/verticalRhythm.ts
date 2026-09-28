@@ -34,6 +34,7 @@ const WIDGET_ROLES: Record<string, WidgetRole> = {
   EventsList: 'band',
   ProjectsByFilter: 'band',
   Spotlight: 'band',
+  Selection: 'band',
   CustomPageBanner: 'band',
   CustomPageTitle: 'flow',
 };

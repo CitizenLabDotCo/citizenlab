@@ -19,6 +19,9 @@ import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultil
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
 import PageLink from 'components/admin/ContentBuilder/Widgets/PageLink';
+import Selection, {
+  selectionTitle,
+} from 'components/admin/ContentBuilder/Widgets/Selection';
 import Spotlight, {
   buttonTextDefault,
   spotlightTitle,
@@ -169,6 +172,17 @@ const CustomPageBuilderToolbox = () => {
           }
           icon="flash"
           label={formatMessage(spotlightTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-selection"
+          component={
+            <Selection
+              titleMultiloc={toMultiloc(selectionTitle)}
+              adminPublicationIds={[]}
+            />
+          }
+          icon="folder-outline"
+          label={formatMessage(selectionTitle)}
         />
         <DraggableElement
           id="e2e-draggable-events"

@@ -27,6 +27,7 @@ module ContentBuilder
       CUSTOM_PAGE_WIDGETS = %w[
         ProjectsByFilter
         Spotlight
+        Selection
         CustomPageRoot
         CustomPageBanner
         CustomPageTitle
@@ -91,6 +92,7 @@ module ContentBuilder
           'multilocs' => %w[titleMultiloc descriptionMultiloc buttonTextMultiloc],
           'enums' => { 'publicationType' => %w[project folder] }
         },
+        'Selection' => { 'multilocs' => %w[titleMultiloc] },
         # The project page scaffold (no rules: nodes patches may not add, move or delete).
         'ProjectPageRoot' => {},
         'ProjectBanner' => {},

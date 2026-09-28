@@ -28,8 +28,14 @@ export const CustomPageBody: UserComponent<RegionProps> = ({ children }) => {
     enabled: state.options.enabled,
   }));
 
+  // craft retargets a drop within 10px of a canvas edge to the canvas's parent, and ROOT
+  // refuses everything. Without space below the last widget, nothing can be dropped after it.
   return (
-    <Box w="100%" minHeight={inEditor ? '60px' : undefined}>
+    <Box
+      w="100%"
+      minHeight={inEditor ? '60px' : undefined}
+      pb={inEditor ? '40px' : undefined}
+    >
       {children}
     </Box>
   );
