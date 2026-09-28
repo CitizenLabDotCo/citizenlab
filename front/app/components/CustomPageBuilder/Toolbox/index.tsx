@@ -38,6 +38,9 @@ import Spotlight, {
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
+import VideoEmbed, {
+  videoEmbedTitle,
+} from 'components/admin/ContentBuilder/Widgets/VideoEmbed';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import CustomPageBanner from 'components/CustomPageBuilder/Widgets/CustomPageBanner';
 import ProjectsByFilter from 'components/CustomPageBuilder/Widgets/ProjectsByFilter';
@@ -259,6 +262,12 @@ const CustomPageBuilderToolbox = () => {
           }
           icon="code"
           label={formatMessage(IframeMultiloc.craft.custom.title)}
+        />
+        <DraggableElement
+          id="e2e-draggable-video-embed"
+          component={<VideoEmbed markup="" />}
+          icon="video"
+          label={formatMessage(videoEmbedTitle)}
         />
         <DraggableElement
           id="e2e-draggable-accordion"

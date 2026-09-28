@@ -31,6 +31,7 @@ module ContentBuilder
         CustomPages
         Published
         CallToAction
+        VideoEmbed
         CustomPageRoot
         CustomPageBanner
         CustomPageTitle
@@ -99,6 +100,7 @@ module ContentBuilder
         'CustomPages' => { 'multilocs' => %w[titleMultiloc] },
         'Published' => { 'multilocs' => %w[titleMultiloc] },
         'CallToAction' => { 'multilocs' => %w[title description primaryButtonText secondaryButtonText] },
+        'VideoEmbed' => {},
         # The project page scaffold (no rules: nodes patches may not add, move or delete).
         'ProjectPageRoot' => {},
         'ProjectBanner' => {},

@@ -17,6 +17,7 @@ const WIDGET_ROLES: Record<string, WidgetRole> = {
   RichTextMultiloc: 'flow',
   ImageMultiloc: 'flow',
   IframeMultiloc: 'flow',
+  VideoEmbed: 'flow',
   ButtonMultiloc: 'flow',
   WhiteSpace: 'flow',
   HtmlBlockMultiloc: 'flow',

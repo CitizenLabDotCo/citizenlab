@@ -22,6 +22,7 @@ import Spotlight from 'components/admin/ContentBuilder/Widgets/Spotlight';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
+import VideoEmbed from 'components/admin/ContentBuilder/Widgets/VideoEmbed';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import {
   CustomPageRoot,
@@ -69,6 +70,7 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
           CustomPages,
           Published,
           CallToAction,
+          VideoEmbed,
           CustomPageRoot,
           CustomPageBanner,
           CustomPageTitle,
