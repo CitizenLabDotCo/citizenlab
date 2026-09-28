@@ -1,43 +1,10 @@
 # frozen_string_literal: true
 
 class McpServer::Tools::UpdateHomepageLayout < McpServer::BaseTool
-  # Generous ceiling to bound runaway LLM patches; a rich homepage lands well under this.
-  MAX_NODES = 300
-
-  # Permissive shape of a single craftjs node in the patch; the full rules live in
-  # ContentBuilder::Craftjs::Validator, which produces correctable error messages.
-  NODE_SCHEMA = {
-    type: 'object',
-    properties: {
-      type: {
-        oneOf: [
-          { type: 'string' },
-          { type: 'object', properties: { resolvedName: { type: 'string' } }, required: %w[resolvedName] }
-        ]
-      },
-      parent: { type: 'string' },
-      props: { type: 'object' },
-      custom: { type: 'object' },
-      hidden: { type: 'boolean' },
-      isCanvas: { type: 'boolean' },
-      displayName: { type: 'string' },
-      nodes: { type: 'array', items: { type: 'string' } },
-      linkedNodes: { type: 'object', additionalProperties: { type: 'string' } }
-    },
-    required: %w[type]
-  }.freeze
-
   def name = 'update_homepage_layout'
   def title = 'Update homepage layout'
-
-  def annotations
-    {
-      read_only_hint: false,
-      destructive_hint: true,
-      idempotent_hint: true,
-      open_world_hint: true # Imports images from arbitrary public URLs.
-    }
-  end
+  def annotations = McpServer::LayoutPatching::ANNOTATIONS
+  def output_schema = McpServer::LayoutPatching::OUTPUT_SCHEMA
 
   # Kept short: MCP clients truncate long tool descriptions. The widget/format reference is
   # returned in validation-error responses instead.
@@ -62,47 +29,13 @@ class McpServer::Tools::UpdateHomepageLayout < McpServer::BaseTool
   end
 
   def input_schema
-    {
-      properties: {
-        nodes: {
-          type: 'object',
-          description: <<~DESC.squish,
-            Map of node-id to the node's full final JSON, containing only added or changed
-            nodes. New nodes need new unique ids (10 chars of [A-Za-z0-9_-]).
-          DESC
-          additionalProperties: NODE_SCHEMA
-        },
-        delete_node_ids: {
-          type: 'array',
-          items: { type: 'string' },
-          description: <<~DESC.squish
-            Ids of nodes to delete. Subtrees and linked slot nodes are removed and detached
-            automatically, so list only the topmost node of what you want gone.
-          DESC
-        }
-      },
-      additionalProperties: false
-    }
-  end
-
-  def output_schema
-    {
-      type: 'object',
-      properties: {
-        enabled: { type: 'boolean' },
-        outline: McpServer::Serializers::LayoutOutline::JSON_SCHEMA
-      },
-      required: %w[enabled outline]
-    }
+    { properties: McpServer::LayoutPatching.node_params, additionalProperties: false }
   end
 
   class Runner < McpServer::BaseTool::Runner
+    include McpServer::LayoutPatchable
+
     DEMO_ONLY_MESSAGE = 'The homepage layout can only be updated on demo and trial platforms.'
-
-    # Invalid patch: the message is returned to the client and nothing is saved.
-    PatchError = Class.new(StandardError)
-
-    delegate :resolved_name, to: :'ContentBuilder::Craftjs::Query', private: true
 
     def run
       return error(DEMO_ONLY_MESSAGE) unless published_writable_platform?
@@ -143,15 +76,12 @@ class McpServer::Tools::UpdateHomepageLayout < McpServer::BaseTool
 
     private
 
-    def patch_nodes
-      @patch_nodes ||= params[:nodes].to_h.deep_stringify_keys
-    end
+    def widget_specs = ContentBuilder::Craftjs::WidgetSpecs::HOMEPAGE_SPECS
+    def root_type = 'div'
+    def widget_reference(widgets) = McpServer::HomepageWidgets.reference_for(widgets)
 
-    def delete_node_ids
-      @delete_node_ids ||= Array(params[:delete_node_ids]).map(&:to_s)
-    end
-
-    # The fixed widgets (custom.noDelete) may be edited but not deleted.
+    # The homepage banner is fixed by type and any node marked custom.noDelete; either may be
+    # edited but not deleted.
     def protect_fixed_widgets!(stored)
       deleted = delete_node_ids.find { |id| McpServer::HomepageWidgets.protected?(stored[id]) }
       return unless deleted
@@ -170,82 +100,6 @@ class McpServer::Tools::UpdateHomepageLayout < McpServer::BaseTool
         graph[id]['custom'] ||= {}
         graph[id]['custom']['noDelete'] = true
       end
-    end
-
-    def patched_graph(stored)
-      graph = stored.deep_dup
-      apply_deletes!(graph)
-      graph.merge!(patch_nodes)
-      graph
-    end
-
-    def apply_deletes!(graph)
-      return if delete_node_ids.empty?
-
-      overlap = delete_node_ids & patch_nodes.keys
-      if overlap.any?
-        raise PatchError, "These ids are in both delete_node_ids and nodes: #{overlap.join(', ')}. " \
-                          'To replace a node just send it in `nodes`; deleting it too would detach it.'
-      end
-
-      missing = delete_node_ids - graph.keys
-      if missing.any?
-        raise PatchError, "delete_node_ids that do not exist in the layout: #{missing.join(', ')}"
-      end
-
-      state = ContentBuilder::Craftjs::State.new(graph)
-      delete_node_ids.each do |id|
-        # Already removed as part of an earlier id's subtree.
-        next unless graph.key?(id)
-
-        state.delete_node(id)
-      end
-    rescue KeyError => e
-      raise PatchError, "The stored layout is inconsistent around a deleted node (#{e.message}). " \
-                        'Fix it by sending corrected nodes.'
-    end
-
-    def validate!(graph)
-      if graph.size > MAX_NODES
-        raise PatchError, "Layout NOT saved: the graph would have #{graph.size} nodes, " \
-                          "above the maximum of #{MAX_NODES}."
-      end
-
-      errors = ContentBuilder::Craftjs::Validator.new(
-        graph,
-        widget_specs: ContentBuilder::Craftjs::WidgetSpecs::HOMEPAGE_SPECS,
-        root_type: 'div',
-        # Only the patched nodes must follow widget conventions, so pre-existing nodes
-        # cannot fail an unrelated update.
-        convention_scope: patch_nodes.keys
-      ).errors
-      return if errors.none?
-
-      raise PatchError,
-        "Layout NOT saved. Fix these problems and retry:\n" \
-        "#{errors.map { |e| "- #{e}" }.join("\n")}\n\n#{error_reference(errors, graph)}"
-    end
-
-    # Docs for just the widgets the errors point at, to keep retry responses small.
-    def error_reference(errors, graph)
-      widgets = errors.filter_map { |e| e.node_id && resolved_name(graph[e.node_id] || {}) }
-      McpServer::HomepageWidgets.reference_for(widgets)
-    end
-
-    def save_layout(layout)
-      # Same sequence as ContentBuilderLayoutsController. No transaction: before_update
-      # downloads remote images, which should not hold a DB connection.
-      side_fx = ContentBuilder::SideFxLayoutService.new
-      side_fx.before_update(layout, current_user)
-      layout.save!
-      side_fx.after_update(layout, current_user)
-    end
-
-    def image_import_error(record)
-      error(
-        "Image import failed: #{record.errors.full_messages.join(', ')}. Check that every " \
-        'image node\'s props.image.imageUrl is a publicly reachable image URL. Nothing was saved.'
-      )
     end
   end
 end
