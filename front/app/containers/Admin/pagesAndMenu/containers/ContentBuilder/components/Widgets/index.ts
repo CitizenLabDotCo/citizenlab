@@ -20,6 +20,9 @@ import IframeMultiloc, {
 import ImageMultiloc, {
   imageMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
+import Selection, {
+  selectionTitle,
+} from 'components/admin/ContentBuilder/Widgets/Selection';
 import Spotlight, {
   spotlightTitle,
 } from 'components/admin/ContentBuilder/Widgets/Spotlight';
@@ -65,7 +68,6 @@ import ProjectsAndFoldersLegacy, {
   projectsAndFoldersLegacyTitle,
 } from './ProjectsAndFoldersLegacy';
 import Published, { publishedTitle } from './Published';
-import Selection, { selectionTitle } from './Selection';
 import TextMultiloc, { textMultilocTitle } from './TextMultiloc';
 import VideoEmbed, { videoEmbedTitle } from './VideoEmbed';
 
