@@ -20,12 +20,13 @@ module ContentBuilder
       # deletable in place, but never newly created.
       LEGACY_WIDGETS = %w[RichTextMultiloc ProjectDescriptionSection EventsWidget].freeze
 
-      # Widgets and scaffold only the custom page builder resolves. A project page has no
-      # resolver entry for them, and an unknown resolvedName throws inside a pass over every
-      # node — taking the whole route down — so anything validating a project layout works
-      # from PROJECT_PAGE_SPECS instead.
+      # Custom page widgets and scaffold that the project page builder does not resolve. A
+      # project page has no resolver entry for them, and an unknown resolvedName throws inside
+      # a pass over every node — taking the whole route down — so anything validating a
+      # project layout works from PROJECT_PAGE_SPECS instead.
       CUSTOM_PAGE_WIDGETS = %w[
         ProjectsByFilter
+        Spotlight
         CustomPageRoot
         CustomPageBanner
         CustomPageTitle
@@ -85,6 +86,10 @@ module ContentBuilder
         'ProjectsByFilter' => {
           'multilocs' => %w[titleMultiloc],
           'enums' => { 'filterType' => %w[global_topics areas spaces] }
+        },
+        'Spotlight' => {
+          'multilocs' => %w[titleMultiloc descriptionMultiloc buttonTextMultiloc],
+          'enums' => { 'publicationType' => %w[project folder] }
         },
         # The project page scaffold (no rules: nodes patches may not add, move or delete).
         'ProjectPageRoot' => {},

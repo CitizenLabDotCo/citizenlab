@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import {
   Box,
@@ -15,10 +15,12 @@ import { useTheme } from 'styled-components';
 import { CARD_IMAGE_ASPECT_RATIO_STR } from 'api/project_images/useProjectImages';
 
 import {
+  BAND_Y_PADDING,
   BUILDER_CONTENT_MAX_WIDTH,
   DEFAULT_Y_PADDING,
 } from 'components/admin/ContentBuilder/constants';
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
+import { VerticalRhythmContext } from 'components/admin/ContentBuilder/verticalRhythm';
 import AvatarBubbles from 'components/AvatarBubbles';
 import Skeleton from 'components/AvatarBubbles/Skeleton';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -50,12 +52,16 @@ const Spotlight = ({
   const isSmallerThanPhone = useBreakpoint('phone');
   const craftComponentDefaultPadding = useCraftComponentDefaultPadding();
   const theme = useTheme();
+  // Under the spacing rhythm a band pads itself on the same scale as the other bands.
+  // The homepage is outside that system and keeps its own spacing.
+  const underRhythm = useContext(VerticalRhythmContext);
+  const homepageTop = isSmallerThanPhone ? DEFAULT_Y_PADDING : '56px';
 
   return (
     <Box
       px={craftComponentDefaultPadding}
-      pt={isSmallerThanPhone ? DEFAULT_Y_PADDING : '56px'}
-      pb="56px"
+      pt={underRhythm ? BAND_Y_PADDING : homepageTop}
+      pb={underRhythm ? BAND_Y_PADDING : '56px'}
       w="100%"
       display="flex"
       justifyContent="center"

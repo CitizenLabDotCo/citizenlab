@@ -18,6 +18,7 @@ import useLocalize from 'hooks/useLocalize';
 import eventsPageMessages from 'containers/EventsPage/messages';
 
 import {
+  BAND_Y_PADDING,
   BUILDER_CONTENT_MAX_WIDTH,
   DEFAULT_PADDING,
   DEFAULT_Y_PADDING,
@@ -47,7 +48,6 @@ export const EVENTS_WIDGET_NAME = 'EventsList';
 export const EVENTS_WIDGET_ANCHOR_ID = 'e2e-project-page-events';
 
 const PAGINATED_PAGE_SIZE = 15;
-const BAND_Y_PADDING = '40px';
 const CURRENT_PROJECT_STATUSES = ['published', 'draft', 'archived'] as const;
 
 const NoEventsText = styled.div`

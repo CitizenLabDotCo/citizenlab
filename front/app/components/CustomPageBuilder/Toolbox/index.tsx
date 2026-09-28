@@ -1,5 +1,8 @@
 import React from 'react';
 
+import useAppConfigurationLocales, {
+  createMultiloc,
+} from 'hooks/useAppConfigurationLocales';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import heroBannerMessages from 'components/admin/BannerFields/messages';
@@ -16,6 +19,10 @@ import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultil
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
 import PageLink from 'components/admin/ContentBuilder/Widgets/PageLink';
+import Spotlight, {
+  buttonTextDefault,
+  spotlightTitle,
+} from 'components/admin/ContentBuilder/Widgets/Spotlight';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
@@ -27,7 +34,11 @@ import messages from 'components/DescriptionBuilder/messages';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
 import NewLabel from 'components/UI/NewLabel';
 
-import { useIntl } from 'utils/cl-intl';
+import {
+  useIntl,
+  useFormatMessageWithLocale,
+  MessageDescriptor,
+} from 'utils/cl-intl';
 
 const CustomPageBuilderToolbox = () => {
   const { formatMessage } = useIntl();
@@ -42,6 +53,19 @@ const CustomPageBuilderToolbox = () => {
   const filteredProjectsEnabled = useFeatureFlag({
     name: 'advanced_custom_pages',
   });
+  const formatMessageWithLocale = useFormatMessageWithLocale();
+  const appConfigurationLocales = useAppConfigurationLocales();
+
+  if (!appConfigurationLocales || !formatMessageWithLocale) {
+    return null;
+  }
+
+  const toMultiloc = (message: MessageDescriptor) => {
+    return createMultiloc(appConfigurationLocales, (locale) => {
+      return formatMessageWithLocale(locale, message);
+    });
+  };
+
   return (
     <Container>
       <Section>
@@ -135,6 +159,17 @@ const CustomPageBuilderToolbox = () => {
             label={formatMessage(projectsMessages.filteredProjects)}
           />
         )}
+        <DraggableElement
+          id="e2e-draggable-spotlight"
+          component={
+            <Spotlight
+              buttonTextMultiloc={toMultiloc(buttonTextDefault)}
+              hideAvatars={false}
+            />
+          }
+          icon="flash"
+          label={formatMessage(spotlightTitle)}
+        />
         <DraggableElement
           id="e2e-draggable-events"
           component={
