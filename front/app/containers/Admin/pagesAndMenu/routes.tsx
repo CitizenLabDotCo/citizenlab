@@ -4,6 +4,7 @@ import * as yup from 'yup';
 
 import { supportedLocales } from 'containers/App/constants';
 
+import { HOMEPAGE_BUILDER_PATH } from 'components/admin/ContentBuilder/constants';
 import PageLoading from 'components/UI/PageLoading';
 
 import Navigate from 'utils/cl-router/Navigate';
@@ -47,7 +48,7 @@ const CustomPageHeroBannerForm = lazy(
 
 // path utils
 export const ADMIN_PAGES_MENU_PATH = `/admin/pages-menu`;
-export const ADMIN_HOMEPAGE_BUILDER_PATH = `/admin/pages-menu/homepage-builder`;
+export const ADMIN_HOMEPAGE_BUILDER_PATH = `/${HOMEPAGE_BUILDER_PATH}`;
 export const adminCustomPageContentLink = (customPageId: string) =>
   ({
     to: '/admin/pages-menu/pages/$customPageId/content',
