@@ -25,6 +25,7 @@ import {
 import CustomPageBuilderToolbox from 'components/CustomPageBuilder/Toolbox';
 import CustomPageBuilderTopBar from 'components/CustomPageBuilder/TopBar';
 import DescriptionBuilderContent from 'components/DescriptionBuilder/DescriptionBuilderContent';
+import DropPlacementOverlay from 'components/DescriptionBuilder/DropFeedback/DropPlacementOverlay';
 import ContentBuilderSettings from 'components/DescriptionBuilder/Settings';
 
 import { type TypedLinkProps } from 'utils/cl-router/Link';
@@ -167,6 +168,7 @@ const CustomPageBuilderPage = ({
               editorData={editorData}
             />
             <ContentBuilderSettings />
+            <DropPlacementOverlay />
           </Box>
         </Editor>
         <Box justifyContent="center" display={previewEnabled ? 'flex' : 'none'}>

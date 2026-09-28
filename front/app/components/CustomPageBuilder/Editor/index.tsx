@@ -68,6 +68,9 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
           CustomPageTitle,
           CustomPageBody,
         }}
+        // DropPlacementOverlay draws the drop indicator instead, so a refused drop
+        // carries its reason.
+        indicator={{ style: { display: 'none' } }}
         isPreview={isPreview}
         onNodesChange={onNodesChange}
       >

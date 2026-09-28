@@ -5,11 +5,11 @@ import { Node, UserComponent, useEditor } from '@craftjs/core';
 import styled, { css } from 'styled-components';
 
 import useWidgetProjectId from 'components/admin/ContentBuilder/useWidgetProjectId';
+import DropZoneOutline from 'components/DescriptionBuilder/DropFeedback/DropZoneOutline';
 
 import { useParams } from 'utils/router';
 
 import CTABar from './CTABar';
-import DropZoneOutline from './DropFeedback/DropZoneOutline';
 import EditableContentDivider from './EditableContentDivider';
 import LockedZonePill from './LockedZonePill';
 
