@@ -4,7 +4,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 
-import { render, userEvent } from 'utils/testUtils/rtl';
+import { render, screen, userEvent } from 'utils/testUtils/rtl';
 
 import SentimentScaleField from './index';
 
@@ -30,10 +30,12 @@ const renderComponent = (defaultValues: Record<string, unknown>) => {
   render(<Wrapper />);
 };
 
+// The emoji is hidden from screen readers, so an option is named by the text
+// only they get: "<value> out of <maximum>"
 const option = (value: number) =>
-  document.getElementById(`${question.key}-linear-scale-option-${value}`)!;
+  screen.getByRole('button', { name: `${value} out of 5` });
 
-describe('SentimentScale', () => {
+describe('SentimentScaleField deselect', () => {
   it('can deselect an answer that was already set when the field mounted', async () => {
     // E.g. when navigating back to an earlier survey page
     renderComponent({ [question.key]: 3 });

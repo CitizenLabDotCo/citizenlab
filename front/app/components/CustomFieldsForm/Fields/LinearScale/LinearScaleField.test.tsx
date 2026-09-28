@@ -30,10 +30,9 @@ const renderComponent = (defaultValues: Record<string, unknown>) => {
   render(<Wrapper />);
 };
 
+// Each option is labelled with its own number when the question sets no labels
 const option = (value: number) =>
-  screen
-    .getAllByRole('radio')
-    .find((radio) => radio.textContent === `${value}`)!;
+  screen.getByRole('radio', { name: `${value}` });
 
 describe('LinearScaleField', () => {
   it('can deselect an answer that was already set when the field mounted', async () => {
