@@ -130,16 +130,18 @@ const WorkspaceHeader = ({
             ariaLabel={formatMessage(messages.previewProject)}
           />
         </Tooltip>
-        <ShareDropdown
-          project={project}
-          opened={openDropdown === 'share'}
-          onOpenChange={(opened) => onOpenDropdown(opened ? 'share' : null)}
-        />
-        <PublishDropdown
-          project={project}
-          opened={openDropdown === 'publish'}
-          onOpenChange={(opened) => onOpenDropdown(opened ? 'publish' : null)}
-        />
+        <Box position="relative" display="flex" gap="10px">
+          <ShareDropdown
+            project={project}
+            opened={openDropdown === 'share'}
+            onOpenChange={(opened) => onOpenDropdown(opened ? 'share' : null)}
+          />
+          <PublishDropdown
+            project={project}
+            opened={openDropdown === 'publish'}
+            onOpenChange={(opened) => onOpenDropdown(opened ? 'publish' : null)}
+          />
+        </Box>
       </Box>
     </Box>
   );

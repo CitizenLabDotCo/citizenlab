@@ -6,7 +6,13 @@ import {
   ButtonStyles,
   Dropdown,
   IconNames,
+  bo,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+const Panel = styled(Dropdown)`
+  border-radius: ${bo.borderRadius};
+`;
 
 export type HeaderDropdownName = 'publish' | 'share';
 
@@ -39,7 +45,7 @@ const HeaderDropdown = ({
   };
 
   return (
-    <Box position="relative">
+    <>
       <Box ref={triggerRef} display="inline-block">
         <Button
           buttonStyle={buttonStyle}
@@ -52,7 +58,7 @@ const HeaderDropdown = ({
         </Button>
       </Box>
 
-      <Dropdown
+      <Panel
         opened={opened}
         onClickOutside={handleClickOutside}
         top="40px"
@@ -62,7 +68,7 @@ const HeaderDropdown = ({
         zIndex="2000"
         content={content}
       />
-    </Box>
+    </>
   );
 };
 
