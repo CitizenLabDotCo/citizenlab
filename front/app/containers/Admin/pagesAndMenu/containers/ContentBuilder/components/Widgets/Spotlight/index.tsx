@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
@@ -14,8 +14,11 @@ import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import Settings from './Settings';
 import SpotlightProjectInner from './Spotlight';
+
+// Lazy, as the settings use the rich text editor, which is only needed in the
+// builder, not on the homepage.
+const Settings = lazy(() => import('./Settings'));
 
 interface Props {
   publicationId?: string;

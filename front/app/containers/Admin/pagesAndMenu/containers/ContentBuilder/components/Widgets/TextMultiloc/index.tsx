@@ -1,7 +1,5 @@
-import React from 'react';
+import React, { lazy } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
-import { useNode } from '@craftjs/core';
 import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 
@@ -11,7 +9,6 @@ import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/use
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import messages from 'components/admin/ContentBuilder/Widgets/TextMultiloc/messages';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
 import { DEFAULT_Y_PADDING } from '../constants';
 
@@ -42,36 +39,15 @@ const TextMultiloc = ({ text }: Props) => {
   );
 };
 
-const TextMultilocSettings = () => {
-  const {
-    actions: { setProp },
-    text,
-  } = useNode((node) => ({
-    text: node.data.props.text,
-  }));
-
-  return (
-    <Box background="#ffffff" marginBottom="20px">
-      <QuillMutilocWithLocaleSwitcher
-        maxHeight="300px"
-        noImages
-        noVideos
-        id="quill-editor"
-        valueMultiloc={text}
-        onChange={(value) => {
-          setProp((props: Props) => (props.text = value));
-        }}
-      />
-    </Box>
-  );
-};
+// Lazy, as the rich text editor is only needed in the builder, not on the homepage.
+const Settings = lazy(() => import('./Settings'));
 
 TextMultiloc.craft = {
   props: {
     text: {},
   },
   related: {
-    settings: TextMultilocSettings,
+    settings: Settings,
   },
 };
 

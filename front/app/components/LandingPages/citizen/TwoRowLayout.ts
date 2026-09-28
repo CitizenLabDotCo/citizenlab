@@ -1,7 +1,7 @@
 import { media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { homepageBannerLayoutHeights } from 'components/admin/BannerFields/HeaderImageDropzone';
+import { homepageBannerLayoutHeights } from 'components/admin/BannerFields/constants';
 import Image from 'components/UI/Image';
 
 export const Container = styled.div`
