@@ -15,7 +15,10 @@ import styled, { useTheme } from 'styled-components';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
+import {
+  BUILDER_CONTENT_MAX_WIDTH,
+  DEFAULT_PADDING,
+} from 'components/admin/ContentBuilder/constants';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
@@ -137,7 +140,7 @@ const CallToAction = ({
       my={isSmallerThanTablet ? DEFAULT_PADDING : DEFAULT_Y_PADDING}
     >
       <Box
-        maxWidth="1200px"
+        maxWidth={BUILDER_CONTENT_MAX_WIDTH}
         margin="0 auto"
         px={isSmallerThanTablet ? DEFAULT_PADDING : '0px'}
       >

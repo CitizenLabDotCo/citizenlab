@@ -8,6 +8,7 @@ import { Multiloc } from 'typings';
 import useLocalize from 'hooks/useLocalize';
 
 import {
+  BUILDER_CONTENT_MAX_WIDTH,
   CUSTOM_PAGE_BUILDER_PATH,
   PROJECT_PAGE_BUILDER_PATH,
 } from 'components/admin/ContentBuilder/constants';
@@ -59,7 +60,7 @@ const HtmlBlockMultiloc = ({ html }: Props) => {
       isEditing={enabled}
       className="e2e-html-block"
       minHeight="26px"
-      maxWidth="1200px"
+      maxWidth={BUILDER_CONTENT_MAX_WIDTH}
       margin="0 auto"
     >
       <div dangerouslySetInnerHTML={{ __html: localize(html) }} />
