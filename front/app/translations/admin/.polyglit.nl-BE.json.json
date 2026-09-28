@@ -9914,6 +9914,11 @@
     "verified_at": "2026-04-20T15:54:43.434836Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": {
+    "state": "verified",
+    "verified_at": "2026-09-28T07:13:04.571677Z",
+    "verified_by": "Pauline"
+  },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": {
     "state": "verified",
     "verified_at": "2026-04-20T15:54:43.434836Z",
