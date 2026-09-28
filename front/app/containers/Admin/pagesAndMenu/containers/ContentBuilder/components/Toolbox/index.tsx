@@ -31,6 +31,9 @@ import IframeMultiloc, {
 import ImageMultiloc, {
   imageMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
+import Published, {
+  publishedTitle,
+} from 'components/admin/ContentBuilder/Widgets/Published';
 import Selection, {
   selectionTitle,
 } from 'components/admin/ContentBuilder/Widgets/Selection';
@@ -80,7 +83,6 @@ import ProjectsAndFoldersLegacy, {
   projectsAndFoldersLegacyTitle,
 } from '../Widgets/ProjectsAndFoldersLegacy';
 import projectsMessages from '../Widgets/ProjectsAndFoldersLegacy/messages';
-import Published, { publishedTitle } from '../Widgets/Published';
 import TextMultiloc, { textMultilocTitle } from '../Widgets/TextMultiloc';
 import VideoEmbed, { videoEmbedTitle } from '../Widgets/VideoEmbed';
 

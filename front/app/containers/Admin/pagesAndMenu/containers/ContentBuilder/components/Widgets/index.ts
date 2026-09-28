@@ -23,6 +23,9 @@ import IframeMultiloc, {
 import ImageMultiloc, {
   imageMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
+import Published, {
+  publishedTitle,
+} from 'components/admin/ContentBuilder/Widgets/Published';
 import Selection, {
   selectionTitle,
 } from 'components/admin/ContentBuilder/Widgets/Selection';
@@ -69,7 +72,6 @@ import OpenToParticipation, {
 import ProjectsAndFoldersLegacy, {
   projectsAndFoldersLegacyTitle,
 } from './ProjectsAndFoldersLegacy';
-import Published, { publishedTitle } from './Published';
 import TextMultiloc, { textMultilocTitle } from './TextMultiloc';
 import VideoEmbed, { videoEmbedTitle } from './VideoEmbed';
 

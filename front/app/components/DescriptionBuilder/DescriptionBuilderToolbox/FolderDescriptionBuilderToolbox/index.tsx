@@ -7,8 +7,6 @@ import useAppConfigurationLocales, {
 } from 'hooks/useAppConfigurationLocales';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import Published from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Published';
-
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 import Section from 'components/admin/ContentBuilder/Toolbox/Section';
@@ -18,6 +16,7 @@ import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlock
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
+import Published from 'components/admin/ContentBuilder/Widgets/Published';
 import Selection from 'components/admin/ContentBuilder/Widgets/Selection';
 import Spotlight, {
   spotlightTitle,
