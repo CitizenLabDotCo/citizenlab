@@ -7,47 +7,31 @@ describe WebApi::V1::IdeaSerializer do
     describe '#serializable_hash' do
       let(:project) { create(:project) }
       let(:form) { create(:custom_form, participation_context: project) }
-
-      let(:visible_public_field) { create(:custom_field, :for_custom_form, resource: form, enabled: true, input_type: 'number', code: 'proposed_budget') }
-      let(:visible_admin_field) { create(:custom_field, :for_custom_form, resource: form, enabled: true, input_type: 'number') }
-      let(:disabled_field) { create(:custom_field, :for_custom_form, resource: form, enabled: false, input_type: 'number') }
-
-      let(:visible_public_value) { 1 }
-      let(:visible_admin_value) { 2 }
-      let(:disabled_value) { 3 }
+      let(:field) { create(:custom_field, resource: form, input_type: 'number') }
+      let(:registration_field) { create(:custom_field_gender) }
 
       let(:idea_author) { create(:user) }
       let(:idea) do
         create(:idea, project: project, author: idea_author, custom_field_answers: [
-          build(:custom_field_answer, key: visible_public_field.key, value: visible_public_value),
-          build(:custom_field_answer, key: visible_admin_field.key, value: visible_admin_value),
-          build(:custom_field_answer, key: disabled_field.key, value: disabled_value)
+          build(:custom_field_answer, custom_field: field, key: field.key, value: 2),
+          build(:custom_field_answer, custom_field: registration_field, key: 'u_gender', value: 'female'),
+          build(:custom_field_answer, custom_field: nil, key: 'no_such_field', value: 'foo')
         ])
       end
 
-      it 'serializes all visible extra fields at the same level as the idea fields for the idea author' do
+      it 'serializes the answers the user may see at the same level as the idea attributes' do
         output = described_class.new(idea, params: { current_user: idea_author }).serializable_hash
-        expect(output.dig(:data, :attributes, visible_public_field.key.to_sym)).to eq visible_public_value
-        expect(output.dig(:data, :attributes, visible_admin_field.key.to_sym)).to eq visible_admin_value
-        expect(output.dig(:data, :attributes)).not_to have_key disabled_field.key.to_sym
-        expect(output.dig(:data, :attributes)).not_to have_key :custom_field_values
+        attributes = output.dig(:data, :attributes)
+        expect(attributes[field.key.to_sym]).to eq 2
+        expect(attributes[:u_gender]).to eq 'female'
+        expect(attributes).not_to have_key :no_such_field
       end
 
-      it 'serializes all visible extra fields at the same level as the idea fields for an admin user' do
-        admin_user = create(:admin)
-        output = described_class.new(idea, params: { current_user: admin_user }).serializable_hash
-        expect(output.dig(:data, :attributes, visible_public_field.key.to_sym)).to eq visible_public_value
-        expect(output.dig(:data, :attributes, visible_admin_field.key.to_sym)).to eq visible_admin_value
-        expect(output.dig(:data, :attributes)).not_to have_key disabled_field.key.to_sym
-        expect(output.dig(:data, :attributes)).not_to have_key :custom_field_values
-      end
-
-      it 'only serializes public fields for a public user' do
+      it 'serializes no answers for a visitor' do
         output = described_class.new(idea, params: { current_user: nil }).serializable_hash
-        expect(output.dig(:data, :attributes, visible_public_field.key.to_sym)).to eq visible_public_value
-        expect(output.dig(:data, :attributes)).not_to have_key visible_admin_field.key.to_sym
-        expect(output.dig(:data, :attributes)).not_to have_key disabled_field.key.to_sym
-        expect(output.dig(:data, :attributes)).not_to have_key :custom_field_values
+        attributes = output.dig(:data, :attributes)
+        expect(attributes).not_to have_key field.key.to_sym
+        expect(attributes).not_to have_key :u_gender
       end
     end
   end

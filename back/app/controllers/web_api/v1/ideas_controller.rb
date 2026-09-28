@@ -26,8 +26,8 @@ class WebApi::V1::IdeasController < ApplicationController
       :input_topics,
       :idea_status,
       :manual_votes_last_updated_by,
-      :custom_field_answers,
       {
+        custom_field_answers: :custom_field,
         phases: { permissions: [:groups] },
         creation_phase: { permissions: [:groups] },
         project: [:phases, { phases: { permissions: [:groups] } }, { custom_form: [:custom_fields] }],
