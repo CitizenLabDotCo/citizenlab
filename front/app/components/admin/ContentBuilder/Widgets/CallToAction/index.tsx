@@ -11,7 +11,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { Multiloc } from 'component-library/utils/typings';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -122,7 +122,6 @@ const CallToAction = ({
     return url;
   };
 
-  const theme = useTheme();
   const isSmallerThanTablet = useBreakpoint('tablet');
   const lоcalize = useLocalize();
 
@@ -165,9 +164,7 @@ const CallToAction = ({
                 <ButtonWithLink
                   fontWeight="500"
                   padding="13px 22px"
-                  buttonStyle="text"
-                  textColor={theme.colors.tenantPrimary}
-                  textDecorationHover="underline"
+                  buttonStyle="primary-outlined"
                   fullWidth={isSmallerThanTablet}
                   linkTo={getLink(secondaryButtonLink)}
                   scrollToTop
