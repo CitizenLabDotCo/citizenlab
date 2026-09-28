@@ -5,14 +5,14 @@ require 'rails_helper'
 describe CustomFieldAnswerPolicy do
   subject(:policy) { described_class.new(user, answer) }
 
-  let(:registration_field) { create(:custom_field_gender) }
+  let_it_be(:registration_field) { create(:custom_field_gender) }
 
   context 'for an answer of an idea' do
-    let(:project) { create(:project_with_active_ideation_phase) }
-    let(:form) { create(:custom_form, participation_context: project) }
-    let(:field) { create(:custom_field, resource: form) }
-    let(:author) { create(:user) }
-    let(:idea) { create(:idea, project: project, author: author) }
+    let_it_be(:project) { create(:project_with_active_ideation_phase) }
+    let_it_be(:form) { create(:custom_form, participation_context: project) }
+    let_it_be(:field) { create(:custom_field, resource: form) }
+    let_it_be(:author) { create(:user) }
+    let_it_be(:idea) { create(:idea, project: project, author: author) }
 
     let(:answers) do
       {
@@ -50,13 +50,13 @@ describe CustomFieldAnswerPolicy do
     end
 
     context 'for another user' do
-      let(:user) { create(:user) }
+      let_it_be(:user) { create(:user) }
 
       include_examples 'sees no answers'
     end
 
     context 'for a moderator of another project' do
-      let(:user) { create(:project_moderator) }
+      let_it_be(:user) { create(:project_moderator) }
 
       include_examples 'sees no answers'
     end
@@ -68,21 +68,21 @@ describe CustomFieldAnswerPolicy do
     end
 
     context "for a moderator of the idea's project" do
-      let(:user) { create(:project_moderator, projects: [project]) }
+      let_it_be(:user) { create(:project_moderator, projects: [project]) }
 
       include_examples 'sees all linked answers'
     end
 
     context 'for an admin' do
-      let(:user) { create(:admin) }
+      let_it_be(:user) { create(:admin) }
 
       include_examples 'sees all linked answers'
     end
   end
 
   context 'for an answer of a user' do
-    let(:hidden_field) { create(:custom_field, :for_registration, hidden: true) }
-    let(:owner) { create(:user) }
+    let_it_be(:hidden_field) { create(:custom_field, :for_registration, hidden: true) }
+    let_it_be(:owner) { create(:user) }
 
     let(:answers) do
       {
@@ -119,13 +119,13 @@ describe CustomFieldAnswerPolicy do
     end
 
     context 'for another user' do
-      let(:user) { create(:user) }
+      let_it_be(:user) { create(:user) }
 
       include_examples 'sees no answers'
     end
 
     context 'for a project moderator' do
-      let(:user) { create(:project_moderator) }
+      let_it_be(:user) { create(:project_moderator) }
 
       include_examples 'sees no answers'
     end
@@ -137,16 +137,17 @@ describe CustomFieldAnswerPolicy do
     end
 
     context 'for an admin' do
-      let(:user) { create(:admin) }
+      let_it_be(:user) { create(:admin) }
 
       include_examples 'sees the answers to visible fields'
     end
 
-    context 'when the user is a pending invitee' do
-      let(:owner) { create(:invited_user) }
+    context 'for a visitor when the user is a pending invitee' do
+      let_it_be(:invitee) { create(:invited_user) }
       let(:user) { nil }
+      let(:answer) { build(:custom_field_answer, answerable: invitee, custom_field: registration_field, key: 'gender') }
 
-      include_examples 'sees the answers to visible fields'
+      it { is_expected.to permit(:show) }
     end
   end
 end
