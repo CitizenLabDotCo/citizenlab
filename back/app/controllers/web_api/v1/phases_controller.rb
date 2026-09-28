@@ -41,7 +41,7 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def create
-    @phase = Phase.new(phase_params_for_create)
+    @phase = Phase.new(phase_params)
     @phase.project_id = params[:project_id]
     sidefx.before_create(@phase, current_user)
     authorize @phase
@@ -52,7 +52,7 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def update
-    update_params = phase_params_for_update
+    update_params = phase_params
     @phase.set_manual_voters(update_params[:manual_voters_amount], current_user) if update_params[:manual_voters_amount]
     @phase.assign_attributes update_params
     authorize @phase
@@ -258,13 +258,8 @@ class WebApi::V1::PhasesController < ApplicationController
     authorize @phase
   end
 
-  def phase_params_for_create
-    # placement_type can only be set on creation, not changed afterwards.
+  def phase_params
     params.require(:phase).permit(:placement_type, *shared_phase_params)
-  end
-
-  def phase_params_for_update
-    params.require(:phase).permit(shared_phase_params)
   end
 
   def ensure_input_export_review

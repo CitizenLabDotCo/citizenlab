@@ -1396,8 +1396,7 @@ function apiCreatePhase({
   nativeSurveyButtonMultiloc?: Multiloc;
   nativeSurveyTitleMultiloc?: Multiloc;
   reacting_dislike_enabled?: boolean;
-  // Only settable on creation: 'standalone' phases are extra surveys that run
-  // in parallel with the timeline.
+  // 'standalone' phases are extra surveys that run in parallel with the timeline.
   placementType?: 'on_timeline' | 'standalone';
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {

@@ -19,8 +19,9 @@ class McpServer::Tools::UpdatePhase < McpServer::BaseTool
     <<~DESC.squish
       Updates an existing phase. Partial update — only the fields you pass change, and `*_multiloc`
       fields merge per locale. Accepts the same fields as create_phase, except project_id and
-      placement_type — a phase can't be moved to another project or on/off the timeline. Changing
-      participation_method is rejected if the phase already has inputs.
+      placement_type — a phase can't be moved to another project, and this tool does not move it
+      on or off the timeline. Changing participation_method is rejected if the phase already has
+      inputs.
     DESC
   end
 

@@ -8,6 +8,7 @@ import useProjectPageLayout from 'api/project_page_layout/useProjectPageLayout';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { linkedSurveyPhaseIds } from 'components/ProjectPageBuilder/Widgets/SpotlightSurveys/linkedSurveyPhaseIds';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
@@ -22,8 +23,6 @@ import {
   formatDateRange,
   phaseStatus,
 } from '../phaseRowUtils';
-
-import { linkedSurveyPhaseIds } from './linkedSurveyPhaseIds';
 
 interface Props {
   projectId: string;

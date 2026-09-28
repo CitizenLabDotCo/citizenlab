@@ -45,6 +45,7 @@ import {
   ideationDefaultConfig,
   nativeSurveyDefaultConfig,
 } from './components/PhaseParticipationConfig/utils/participationMethodConfigs';
+import PhasePlacement from './components/PhasePlacement';
 import messages from './messages';
 import { SubmitStateType, ValidationErrors } from './typings';
 import validate from './validate';
@@ -387,6 +388,9 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
     setProcessing(true);
 
     if (phase) {
+      // Placement only changes through PhasePlacement, so the form never sends it.
+      const { placement_type: _placementType, ...phaseData } = formData;
+
       updatePhase(
         // TODO: Fix this the next time the file is edited.
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -394,7 +398,7 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
           // TODO: Fix this the next time the file is edited.
           // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           phaseId: phase?.data.id,
-          ...formData,
+          ...phaseData,
         },
         {
           onSuccess: (response) => {
@@ -469,6 +473,14 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
             setValidationErrors={setValidationErrors}
             hideMethodPicker={standalone}
           />
+          {phase && (
+            <PhasePlacement
+              phase={phase.data}
+              hasUnsavedChanges={
+                submitState === 'enabled' || submitState === 'error'
+              }
+            />
+          )}
           <SectionField>
             <SubSectionTitle>
               <FormattedMessage {...messages.uploadAttachments} />
