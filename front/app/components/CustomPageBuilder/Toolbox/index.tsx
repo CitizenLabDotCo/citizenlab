@@ -98,70 +98,6 @@ const CustomPageBuilderToolbox = () => {
           icon="image"
           label={formatMessage(heroBannerMessages.bannerWidgetTitle)}
         />
-      </Section>
-      <Section>
-        <DraggableElement
-          id="e2e-draggable-image-text-cards"
-          component={<ImageTextCards />}
-          icon="section-image-text"
-          label={formatMessage(messages.imageTextCards)}
-        />
-        <DraggableElement
-          id="e2e-draggable-info-accordions"
-          component={<InfoWithAccordions />}
-          icon="section-info-accordion"
-          label={formatMessage(messages.infoWithAccordions)}
-        />
-      </Section>
-      <Section>
-        <DraggableElement
-          id="e2e-draggable-two-column"
-          component={<TwoColumn columnLayout="1-1" />}
-          icon="layout-2column-1"
-          label={formatMessage(TwoColumn.craft.custom.title)}
-        />
-        <DraggableElement
-          id="e2e-draggable-three-column"
-          component={<ThreeColumn />}
-          icon="layout-3column"
-          label={formatMessage(ThreeColumn.craft.custom.title)}
-        />
-        <DraggableElement
-          id="e2e-draggable-white-space"
-          component={<WhiteSpace size="small" />}
-          icon="layout-white-space"
-          label={formatMessage(WhiteSpace.craft.custom.title)}
-        />
-      </Section>
-      <Section>
-        <DraggableElement
-          id="e2e-draggable-text"
-          component={<TextMultiloc />}
-          icon="text"
-          label={formatMessage(TextMultiloc.craft.custom.title)}
-        />
-        {isHtmlBlockMultilocEnabled && (
-          <DraggableElement
-            id="e2e-draggable-html-block"
-            component={<HtmlBlockMultiloc />}
-            icon="code"
-            label={formatMessage(HtmlBlockMultiloc.craft.custom.title)}
-            labelSuffix={<NewLabel expiryDate={new Date('2027-02-19')} />}
-          />
-        )}
-        <DraggableElement
-          id="e2e-draggable-button"
-          component={
-            <ButtonMultiloc
-              text={{}}
-              url={''}
-              type={'primary'}
-              alignment={'left'}
-            />
-          }
-          icon="button"
-          label={formatMessage(ButtonMultiloc.craft.custom.title)}
-        />
         {filteredProjectsEnabled && (
           <DraggableElement
             id="e2e-draggable-projects-by-filter"
@@ -205,14 +141,6 @@ const CustomPageBuilderToolbox = () => {
           label={formatMessage(publishedTitle)}
         />
         <DraggableElement
-          id="e2e-draggable-call-to-action"
-          component={
-            <CallToAction primaryButtonText={{}} secondaryButtonText={{}} />
-          }
-          icon="button"
-          label={formatMessage(callToActionTitle)}
-        />
-        <DraggableElement
           id="e2e-draggable-events"
           component={
             <EventsList
@@ -226,10 +154,48 @@ const CustomPageBuilderToolbox = () => {
           label={formatMessage(eventsMessages.eventsListTitle)}
         />
         <DraggableElement
-          id="e2e-draggable-file-attachment"
-          component={<FileAttachment />}
-          icon="paperclip"
-          label={formatMessage(FileAttachment.craft.custom.title)}
+          id="e2e-draggable-call-to-action"
+          component={
+            <CallToAction primaryButtonText={{}} secondaryButtonText={{}} />
+          }
+          icon="button"
+          label={formatMessage(callToActionTitle)}
+        />
+      </Section>
+      <Section>
+        <DraggableElement
+          id="e2e-draggable-text"
+          component={<TextMultiloc />}
+          icon="text"
+          label={formatMessage(TextMultiloc.craft.custom.title)}
+        />
+        {isHtmlBlockMultilocEnabled && (
+          <DraggableElement
+            id="e2e-draggable-html-block"
+            component={<HtmlBlockMultiloc />}
+            icon="code"
+            label={formatMessage(HtmlBlockMultiloc.craft.custom.title)}
+            labelSuffix={<NewLabel expiryDate={new Date('2027-02-19')} />}
+          />
+        )}
+        <DraggableElement
+          id="e2e-draggable-white-space"
+          component={<WhiteSpace size="small" />}
+          icon="layout-white-space"
+          label={formatMessage(WhiteSpace.craft.custom.title)}
+        />
+        <DraggableElement
+          id="e2e-draggable-button"
+          component={
+            <ButtonMultiloc
+              text={{}}
+              url={''}
+              type={'primary'}
+              alignment={'left'}
+            />
+          }
+          icon="button"
+          label={formatMessage(ButtonMultiloc.craft.custom.title)}
         />
         <DraggableElement
           id="e2e-draggable-image"
@@ -258,10 +224,40 @@ const CustomPageBuilderToolbox = () => {
           label={formatMessage(videoEmbedTitle)}
         />
         <DraggableElement
+          id="e2e-draggable-file-attachment"
+          component={<FileAttachment />}
+          icon="paperclip"
+          label={formatMessage(FileAttachment.craft.custom.title)}
+        />
+        <DraggableElement
+          id="e2e-draggable-two-column"
+          component={<TwoColumn columnLayout="1-1" />}
+          icon="layout-2column-1"
+          label={formatMessage(TwoColumn.craft.custom.title)}
+        />
+        <DraggableElement
+          id="e2e-draggable-three-column"
+          component={<ThreeColumn />}
+          icon="layout-3column"
+          label={formatMessage(ThreeColumn.craft.custom.title)}
+        />
+        <DraggableElement
           id="e2e-draggable-accordion"
           component={<AccordionMultiloc title={{}} />}
           icon="accordion"
           label={formatMessage(AccordionMultiloc.craft.custom.title)}
+        />
+        <DraggableElement
+          id="e2e-draggable-info-accordions"
+          component={<InfoWithAccordions />}
+          icon="section-info-accordion"
+          label={formatMessage(messages.infoWithAccordions)}
+        />
+        <DraggableElement
+          id="e2e-draggable-image-text-cards"
+          component={<ImageTextCards />}
+          icon="section-image-text"
+          label={formatMessage(messages.imageTextCards)}
         />
       </Section>
     </Container>
