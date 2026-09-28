@@ -18,6 +18,9 @@ import AccordionMultiloc, {
 import ButtonMultiloc, {
   buttonMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
+import CustomPages, {
+  customPagesTitle,
+} from 'components/admin/ContentBuilder/Widgets/CustomPages';
 import EventsList from 'components/admin/ContentBuilder/Widgets/Events';
 import HtmlBlockMultiloc, {
   htmlBlockMultilocTitle,
@@ -58,7 +61,6 @@ import CallToAction, { callToActionTitle } from '../Widgets/CallToAction';
 import CommunityMonitorCTA, {
   communityMonitorCTATitle,
 } from '../Widgets/CommunityMonitorCTA';
-import CustomPages, { customPagesTitle } from '../Widgets/CustomPages';
 import FinishedOrArchived, {
   finishedOrArchivedTitle,
 } from '../Widgets/FinishedOrArchived';
