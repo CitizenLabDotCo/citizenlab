@@ -6,6 +6,7 @@ import { SerializedNodes } from '@craftjs/core';
 import { VerticalRhythmContext } from 'components/admin/ContentBuilder/verticalRhythm';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
+import CallToAction from 'components/admin/ContentBuilder/Widgets/CallToAction';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import CustomPages from 'components/admin/ContentBuilder/Widgets/CustomPages';
 import EventsList from 'components/admin/ContentBuilder/Widgets/Events';
@@ -67,6 +68,7 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
           Selection,
           CustomPages,
           Published,
+          CallToAction,
           CustomPageRoot,
           CustomPageBanner,
           CustomPageTitle,

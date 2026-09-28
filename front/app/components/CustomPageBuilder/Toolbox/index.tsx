@@ -11,6 +11,9 @@ import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableE
 import Section from 'components/admin/ContentBuilder/Toolbox/Section';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
+import CallToAction, {
+  callToActionTitle,
+} from 'components/admin/ContentBuilder/Widgets/CallToAction';
 import CustomPages, {
   customPagesTitle,
 } from 'components/admin/ContentBuilder/Widgets/CustomPages';
@@ -201,6 +204,14 @@ const CustomPageBuilderToolbox = () => {
           component={<Published titleMultiloc={toMultiloc(publishedTitle)} />}
           icon="check-circle"
           label={formatMessage(publishedTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-call-to-action"
+          component={
+            <CallToAction primaryButtonText={{}} secondaryButtonText={{}} />
+          }
+          icon="button"
+          label={formatMessage(callToActionTitle)}
         />
         <DraggableElement
           id="e2e-draggable-events"
