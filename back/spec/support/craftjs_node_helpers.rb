@@ -30,6 +30,21 @@ module CraftjsNodeHelpers
     scaffold.merge(content)
   end
 
+  # A homepage graph in its persisted shape: ROOT (a plain `div` canvas) holding the two
+  # fixed widgets (HomepageBanner, Projects, marked custom.noDelete) plus any given content
+  # nodes. Content nodes whose parent is ROOT are appended to ROOT's `nodes`.
+  def homepage_craftjs(content = {})
+    top_level = content.select { |_id, node| node['parent'] == 'ROOT' }.keys
+    {
+      'ROOT' => craftjs_root(%w[HOMEPAGEBANNER PROJECTS] + top_level),
+      'HOMEPAGEBANNER' => craftjs_node(
+        'HomepageBanner', parent: 'ROOT',
+        props: { 'homepageSettings' => {}, 'image' => {} }, custom: { 'noDelete' => true }
+      ),
+      'PROJECTS' => craftjs_node('Projects', parent: 'ROOT', custom: { 'noDelete' => true })
+    }.merge(content)
+  end
+
   # A widget node with the full canonical key set. `widget` is the resolvedName;
   # override any canonical key by its craftjs name (e.g. `isCanvas: true`,
   # `props: { 'text' => { 'en' => '<p>Hi</p>' } }`, `linkedNodes: { 'left' => 'C1' }`).

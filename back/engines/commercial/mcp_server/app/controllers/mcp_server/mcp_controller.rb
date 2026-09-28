@@ -120,6 +120,8 @@ module McpServer
       McpServer::Tools::GetFormFields,
       McpServer::Tools::GetProjectLayout,
       McpServer::Tools::UpdateProjectLayout,
+      McpServer::Tools::GetHomepageLayout,
+      McpServer::Tools::UpdateHomepageLayout,
       McpServer::Tools::ReplaceFormFields,
       McpServer::Tools::ListProjects,
       McpServer::Tools::ListPhases,
