@@ -3,14 +3,16 @@ import React, { useState } from 'react';
 import {
   Box,
   Button,
-  Title,
   Tooltip,
   colors,
 } from '@citizenlab/cl2-component-library';
 
 import { IProjectData } from 'api/projects/types';
 
+import ModeToggle from 'components/UI/ModeToggle';
+
 import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 
 import useMarkSetupStep from '../_shared/useMarkSetupStep';
 import { HeaderDropdownName } from '../Header/HeaderDropdown';
@@ -42,9 +44,27 @@ const ProjectSetupPanel = ({ project, onOpenDropdown }: Props) => {
   return (
     <Box p="20px" display="flex" flexDirection="column" gap="20px">
       <Box display="flex" alignItems="center" justifyContent="space-between">
-        <Title variant="h4" fontSize="s" fontWeight="semi-bold" m="0">
-          {formatMessage(messages.projectSetupPanel)}
-        </Title>
+        <ModeToggle
+          size="s"
+          value="setup"
+          onChange={(view) => {
+            if (view === 'page') {
+              clHistory.push(
+                `/admin/project-page-builder/projects/${project.id}`
+              );
+            }
+          }}
+          options={[
+            {
+              value: 'setup',
+              label: formatMessage(messages.projectSetupPanel),
+            },
+            {
+              value: 'page',
+              label: formatMessage(messages.projectPageToggle),
+            },
+          ]}
+        />
         <Tooltip
           content={formatMessage(messages.projectSettings)}
           theme="dark"

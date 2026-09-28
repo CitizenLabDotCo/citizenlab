@@ -10,6 +10,7 @@ import useUpdateProject from 'api/projects/useUpdateProject';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Modal from 'components/UI/Modal';
+import ModeToggle from 'components/UI/ModeToggle';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -18,7 +19,6 @@ import tracks from '../tracks';
 
 import EmailNotificationsSection from './EmailNotificationsSection';
 import messages from './messages';
-import ModeToggle from './ModeToggle';
 import VisibilitySection from './VisibilitySection';
 import WhenSection from './WhenSection';
 
@@ -205,10 +205,28 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
       }
     >
       <Box p="28px">
-        <ModeToggle
-          mode={mode}
+        <ModeToggle<Mode>
+          size="m"
+          value={mode}
           onChange={setMode}
-          schedulingEnabled={isProjectSchedulingEnabled}
+          options={[
+            {
+              value: 'schedule',
+              label: formatMessage(messages.schedule),
+              icon: isProjectSchedulingEnabled ? 'calendar' : 'lock',
+              disabled: !isProjectSchedulingEnabled,
+              tooltip: isProjectSchedulingEnabled
+                ? undefined
+                : formatMessage(messages.schedulingNotIncludedTooltip),
+              dataCy: 'e2e-mode-toggle-schedule',
+            },
+            {
+              value: 'now',
+              label: formatMessage(messages.now),
+              icon: 'send',
+              dataCy: 'e2e-mode-toggle-now',
+            },
+          ]}
         />
 
         {mode === 'schedule' && (
