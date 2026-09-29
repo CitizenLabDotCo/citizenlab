@@ -6,6 +6,10 @@ class ApplicationController < ActionController::API
   include ActionController::Cookies
 
   before_action :authenticate_user
+  # Runs even where +authenticate_user+ is skipped, so that feature checks on public
+  # endpoints see the override too. +current_user+ resolves from the token on its own and
+  # returns nil when there is no valid one.
+  before_action :set_early_access_overrides
   before_action :set_policy_context
   before_action :set_current_location_headers
 
@@ -197,6 +201,10 @@ class ApplicationController < ActionController::API
 
     # setting the image attribute to nil will not remove the image
     resource.public_send(:"remove_#{image_field_name}!")
+  end
+
+  def set_early_access_overrides
+    Current.early_access_overrides = current_user&.early_access_overrides
   end
 
   def set_policy_context

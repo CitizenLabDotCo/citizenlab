@@ -33,7 +33,7 @@ module Onboarding
 
     def profile_incomplete?(user)
       MultilocService.new.empty?(user.bio_multiloc) ||
-        (user.avatar.blank? && AppConfiguration.instance.settings('user_avatars', 'enabled') != false) ||
+        (user.avatar.blank? && AppConfiguration.instance.feature_activated?('user_avatars')) ||
         CustomField.registration.enabled.any? do |cf|
           !user.answer_for_key(cf.key)
         end

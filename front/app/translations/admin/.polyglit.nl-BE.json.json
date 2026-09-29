@@ -6554,6 +6554,16 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.internalEarlyAccessLabel": {
+    "state": "verified",
+    "verified_at": "2026-09-23T16:51:52.571496Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.internalEarlyAccessLabelExplanation": {
+    "state": "verified",
+    "verified_at": "2026-09-23T16:51:52.571496Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.messaging.addSmsCampaignButton": {
     "state": "verified",
     "verified_at": "2026-07-14T17:01:42.121278Z",

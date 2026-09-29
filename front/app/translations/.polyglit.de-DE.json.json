@@ -12454,6 +12454,21 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSaveError": {
+    "state": "verified",
+    "verified_at": "2026-09-22T14:37:40.447907Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": {
+    "state": "verified",
+    "verified_at": "2026-09-22T12:40:42.537618Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": {
+    "state": "verified",
+    "verified_at": "2026-09-22T12:40:42.537618Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
