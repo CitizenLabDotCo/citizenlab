@@ -32,6 +32,7 @@ export const CustomPageBody: UserComponent<RegionProps> = ({ children }) => {
   // refuses everything. Without space below the last widget, nothing can be dropped after it.
   return (
     <Box
+      data-cy="e2e-custom-page-body"
       w="100%"
       minHeight={inEditor ? '60px' : undefined}
       pb={inEditor ? '40px' : undefined}
