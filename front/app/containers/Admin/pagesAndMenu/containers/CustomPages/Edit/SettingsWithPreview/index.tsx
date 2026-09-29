@@ -37,7 +37,7 @@ const SettingsWithPreview = () => {
   return (
     <Box display="flex" gap="24px" alignItems="flex-start">
       <Box flex="1" minWidth="0">
-        <EditCustomPageSettings hideLinkedItems />
+        <EditCustomPageSettings />
       </Box>
       <Box flex="1" minWidth="0">
         {/* Without a layout the page renders its legacy sections, so the preview waits for one. */}

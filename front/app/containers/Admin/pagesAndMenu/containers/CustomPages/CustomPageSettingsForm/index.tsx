@@ -75,7 +75,6 @@ interface Props {
   showNavBarItemTitle?: boolean;
   mode: TMode;
   hideSlug?: boolean;
-  hideLinkedItems?: boolean;
   onSubmit: (formValues: FormValues) => void | Promise<void>;
 }
 
@@ -92,7 +91,6 @@ const CustomPageSettingsForm = ({
   showNavBarItemTitle,
   mode,
   hideSlug,
-  hideLinkedItems,
   onSubmit,
   defaultValues,
 }: Props) => {
@@ -105,7 +103,11 @@ const CustomPageSettingsForm = ({
   const isSpacesEnabled = useFeatureFlag({ name: 'spaces' });
   const showPlanUpgradeTease = !isFeatureAllowed;
   const showAdvancedCustomPages = showPlanUpgradeTease || isFeatureEnabled;
-  const showLinkedItems = showAdvancedCustomPages && !hideLinkedItems;
+  // The content builder lists projects through its own widgets, so linked items don't apply.
+  const customPageBuilderEnabled = useFeatureFlag({
+    name: 'custom_page_builder',
+  });
+  const showLinkedItems = showAdvancedCustomPages && !customPageBuilderEnabled;
   const { data: areas } = useAreas({});
   const { data: appConfig } = useAppConfiguration();
   const locale = useLocale();
