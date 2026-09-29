@@ -43,6 +43,17 @@ module CitizenLab
         []
       end
 
+      # Opens the feature to early access: an admin can then switch it on for themselves
+      # from their profile settings, whatever the tenant settings say. The value is the
+      # tier it is offered in (see AppConfiguration::Settings::EARLY_ACCESS_TIERS):
+      # - nil: not offered (the default).
+      # - 'general': offered to every admin.
+      # - 'internal': offered to Go Vocal staff (super admins) only.
+      # Core features set the same tiers with an "early_access" key in their JSON schema.
+      #
+      # Only use this for features that have no toggle in the admin settings. An admin who
+      # opted in sees the feature as on, so the toggle would show the wrong state.
+      #
       # @return [String, nil]
       def early_access
         nil

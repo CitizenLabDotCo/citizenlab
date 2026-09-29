@@ -71,6 +71,7 @@ class AppConfiguration < ApplicationRecord
 
     EARLY_ACCESS_TIERS = %w[general internal].freeze
 
+    # @return [Hash{String => String}] feature name => early access tier, for every feature open to early access
     def self.early_access_tiers
       core = core_settings_json_schema['properties'].filter_map do |name, feature|
         [name, feature['early_access']] if feature['early_access']
@@ -168,11 +169,10 @@ class AppConfiguration < ApplicationRecord
   end
 
   def public_settings
-    base = (@public_settings ||= SettingsService.new.format_for_front_end(settings, Settings.json_schema))
     overrides = Current.early_access_overrides
-    return base if overrides.empty?
+    return base_public_settings if overrides.empty?
 
-    base.deep_dup.tap do |res|
+    base_public_settings.deep_dup.tap do |res|
       overrides.each do |feature|
         res[feature] = (res[feature] || {}).merge('allowed' => true, 'enabled' => true)
       end
@@ -235,6 +235,10 @@ class AppConfiguration < ApplicationRecord
   end
 
   private
+
+  def base_public_settings
+    @base_public_settings ||= SettingsService.new.format_for_front_end(settings, Settings.json_schema)
+  end
 
   def timezone_changed?
     saved_change_to_settings? &&
