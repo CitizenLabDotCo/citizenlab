@@ -1220,6 +1220,8 @@
   "app.containers.Admin.inspirationHub.filters": "scagairí",
   "app.containers.Admin.inspirationHub.resetFilters": "Athshocraigh scagairí",
   "app.containers.Admin.inspirationHub.seemsLike": "Is cosúil nach bhfuil aon tionscadail eile ann. Bain triail as an {filters} a athrú.",
+  "app.containers.Admin.internalEarlyAccessLabel": "Luathrochtain Inmheánach",
+  "app.containers.Admin.internalEarlyAccessLabelExplanation": "Tá an ghné seo fós á forbairt agus níl sí ar fáil ach d'fhoireann Go Vocal. Ná taispeáin do chustaiméirí í.",
   "app.containers.Admin.messaging.addSmsCampaignButton": "Cruthaigh SMS",
   "app.containers.Admin.messaging.addSmsCampaignTitle": "Teachtaireacht SMS nua",
   "app.containers.Admin.messaging.automated.editModalTitle": "Cuir réimsí feachtais in eagar",

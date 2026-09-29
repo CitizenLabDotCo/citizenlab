@@ -1220,6 +1220,8 @@
   "app.containers.Admin.inspirationHub.filters": "suodattimet",
   "app.containers.Admin.inspirationHub.resetFilters": "Nollaa suodattimet",
   "app.containers.Admin.inspirationHub.seemsLike": "Näyttää siltä, että projektia ei enää ole. Yritä muuttaa {filters}.",
+  "app.containers.Admin.internalEarlyAccessLabel": "Sisäinen ennakkopääsy",
+  "app.containers.Admin.internalEarlyAccessLabelExplanation": "Tätä ominaisuutta kehitetään vielä, ja se on vain Go Vocalin henkilökunnan käytettävissä. Älä näytä tätä asiakkaille.",
   "app.containers.Admin.messaging.addSmsCampaignButton": "Luo tekstiviesti",
   "app.containers.Admin.messaging.addSmsCampaignTitle": "Uusi tekstiviesti",
   "app.containers.Admin.messaging.automated.editModalTitle": "Muokkaa kampanjakenttiä",
