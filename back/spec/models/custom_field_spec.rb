@@ -449,7 +449,7 @@ RSpec.describe CustomField do
     end
 
     it 'must be public for a built-in input field' do
-      field = build(:custom_field, :for_custom_form, input_type: 'text_multiloc', code: 'title_multiloc', answers_visible_to: 'moderators')
+      field = build(:default_input_field, answers_visible_to: 'moderators')
       expect(field).to be_invalid
       expect(field.errors.details[:answers_visible_to]).to include(error: :inclusion, value: 'moderators')
     end

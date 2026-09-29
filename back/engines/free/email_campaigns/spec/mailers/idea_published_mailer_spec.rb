@@ -69,12 +69,12 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer do
 
     context 'with custom form' do
       let!(:custom_form) { create(:custom_form, participation_context: input.project) }
-      let!(:text_field) { create(:custom_field, resource: custom_form, input_type: 'text_multiloc', code: 'title_multiloc', answers_visible_to: 'public') }
+      let!(:text_field) { create(:default_input_field, resource: custom_form) }
 
       before { input.reload }
 
       context 'and image field enabled in input form' do
-        let!(:image_field) { create(:custom_field, resource: custom_form, input_type: 'image_files', code: 'idea_images_attributes', answers_visible_to: 'public') }
+        let!(:image_field) { create(:default_input_field, code: 'idea_images_attributes', resource: custom_form) }
 
         it 'includes Add an image if input form has an image field' do
           expect(body).to include('Add an image')
@@ -104,12 +104,12 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer do
 
       context 'and with custom form' do
         let(:custom_form) { create(:custom_form, participation_context: input.creation_phase) }
-        let!(:text_field) { create(:custom_field, resource: custom_form, input_type: 'text_multiloc', code: 'title_multiloc', answers_visible_to: 'public') }
+        let!(:text_field) { create(:default_input_field, resource: custom_form) }
 
         before { input.reload }
 
         context 'and with image field enabled in input form' do
-          let!(:image_field) { create(:custom_field, resource: custom_form, input_type: 'image_files', code: 'idea_images_attributes', answers_visible_to: 'public') }
+          let!(:image_field) { create(:default_input_field, code: 'idea_images_attributes', resource: custom_form) }
 
           it 'includes Add an image if input form has an image field' do
             expect(body).to include('Add an image')

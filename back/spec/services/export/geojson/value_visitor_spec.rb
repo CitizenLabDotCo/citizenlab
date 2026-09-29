@@ -11,16 +11,7 @@ describe Export::Geojson::ValueVisitor do
 
   describe '#default' do
     context 'for a built-in field' do
-      let(:field) do
-        create(
-          :custom_field,
-          :for_custom_form,
-          input_type: 'number',
-          key: 'proposed_budget',
-          code: 'proposed_budget',
-          answers_visible_to: 'public'
-        )
-      end
+      let(:field) { create(:default_input_field, code: 'proposed_budget') }
       let(:model) { instance_double Idea, proposed_budget: 1234 }
 
       it 'returns the field value from the model' do
