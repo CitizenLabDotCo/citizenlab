@@ -341,7 +341,8 @@ describe('Custom page builder', () => {
     cy.get('.e2e-resource-tabs').should('not.exist');
     // The builder's widgets list projects and events, so the form's linked items are gone.
     cy.get('[id^="projects_filter_type_"]').should('not.exist');
-    cy.get('iframe[title="Custom page preview"]')
+    cy.dataCy('e2e-custom-page-preview')
+      .find('iframe')
       .should('have.attr', 'src')
       .and('include', `/pages/${pageSlug}`);
 
@@ -370,6 +371,6 @@ describe('Custom page builder', () => {
     cy.get('[data-testid="customPageSettingsForm"]').should('be.visible');
     cy.get('.e2e-resource-tabs').should('be.visible');
     cy.get('[id^="projects_filter_type_"]').should('exist');
-    cy.get('iframe[title="Custom page preview"]').should('not.exist');
+    cy.dataCy('e2e-custom-page-preview').should('not.exist');
   });
 });

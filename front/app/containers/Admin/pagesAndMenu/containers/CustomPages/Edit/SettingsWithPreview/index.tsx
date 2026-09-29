@@ -49,6 +49,7 @@ const SettingsWithPreview = () => {
               messages.editCustomPageInContentBuilder
             )}
             onEdit={openContentBuilder}
+            dataCy="e2e-custom-page-preview"
             alignTop
           />
         )}
