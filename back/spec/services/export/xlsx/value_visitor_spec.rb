@@ -19,7 +19,8 @@ describe Export::Xlsx::ValueVisitor do
           :for_custom_form,
           input_type: 'number',
           key: 'proposed_budget',
-          code: 'proposed_budget'
+          code: 'proposed_budget',
+          answers_visible_to: 'public'
         )
       end
       let(:model) { instance_double Idea, proposed_budget: 1234 }
@@ -50,7 +51,8 @@ describe Export::Xlsx::ValueVisitor do
         resource_type: resource_type,
         input_type: input_type,
         key: field_key,
-        code: code
+        code: code,
+        answers_visible_to: code && resource_type == 'CustomForm' ? 'public' : 'moderators'
       )
     end
     let(:answers) { value.nil? ? [] : [build(:custom_field_answer, key: field_key, value: value)] }

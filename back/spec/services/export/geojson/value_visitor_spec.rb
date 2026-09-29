@@ -17,7 +17,8 @@ describe Export::Geojson::ValueVisitor do
           :for_custom_form,
           input_type: 'number',
           key: 'proposed_budget',
-          code: 'proposed_budget'
+          code: 'proposed_budget',
+          answers_visible_to: 'public'
         )
       end
       let(:model) { instance_double Idea, proposed_budget: 1234 }

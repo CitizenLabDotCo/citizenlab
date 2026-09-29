@@ -9,6 +9,7 @@ RSpec.describe Analysis::SummarizationMethod do
         :custom_field,
         :for_custom_form,
         code: 'title_multiloc',
+        answers_visible_to: 'public',
         key: 'title_multiloc'
       ))
 
@@ -48,6 +49,7 @@ RSpec.describe Analysis::SummarizationMethod do
         :custom_field,
         :for_custom_form,
         code: 'title_multiloc',
+        answers_visible_to: 'public',
         key: 'title_multiloc'
       ))
     end
