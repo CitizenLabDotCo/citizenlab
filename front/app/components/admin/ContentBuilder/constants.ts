@@ -6,9 +6,9 @@ export const CONTENT_BUILDER_ERROR_EVENT = 'contentBuilderError';
 export const CONTENT_BUILDER_DELETE_ELEMENT_EVENT =
   'deleteContentBuilderElement';
 
-export const CUSTOM_PAGE_BUILDER_PATH = 'admin/custom-page-builder';
-export const PROJECT_PAGE_BUILDER_PATH = 'admin/project-page-builder';
-export const HOMEPAGE_BUILDER_PATH = 'admin/pages-menu/homepage-builder';
+export const CUSTOM_PAGE_BUILDER_PATH = '/admin/custom-page-builder';
+export const PROJECT_PAGE_BUILDER_PATH = '/admin/project-page-builder';
+export const HOMEPAGE_BUILDER_PATH = '/admin/pages-menu/homepage-builder';
 
 export const DEFAULT_PADDING = '20px';
 
