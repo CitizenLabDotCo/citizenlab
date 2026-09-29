@@ -29,6 +29,10 @@ export const ideaSortValues = [
   '-popular',
   'author_name',
   '-author_name',
+  'title',
+  '-title',
+  'assignee',
+  '-assignee',
   'likes_count',
   '-likes_count',
   'dislikes_count',
@@ -232,7 +236,9 @@ export interface IIdea {
   data: IIdeaData;
 }
 
-export interface IIdeaQueryParameters {
+// The API also filters on several statuses or assignees at once; lists that
+// do so pass `string | string[]` as the filter value.
+export interface IIdeaQueryParameters<FilterValue = string> {
   sort?: Sort;
   'page[number]'?: number;
   'page[size]'?: number;
@@ -241,12 +247,13 @@ export interface IIdeaQueryParameters {
   author?: string;
   search?: string;
   input_topics?: string[];
-  idea_status?: string;
+  idea_status?: FilterValue;
   publication_status?: IdeaPublicationStatus;
   project_publication_status?: ProjectPublicationStatus;
   bounding_box?: number[];
-  assignee?: string;
+  assignee?: FilterValue;
   feedback_needed?: boolean;
+  imported?: boolean;
   filter_can_moderate?: boolean;
   basket_id?: string;
   transitive?: boolean;
