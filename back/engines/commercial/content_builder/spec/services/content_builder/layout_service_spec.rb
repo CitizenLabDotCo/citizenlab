@@ -5,6 +5,28 @@ require 'rails_helper'
 describe ContentBuilder::LayoutService do
   let(:service) { described_class.new }
 
+  def node(resolved_name, parent:, props: {}, nodes: [], linked_nodes: {}, is_canvas: false)
+    {
+      'type' => { 'resolvedName' => resolved_name },
+      'parent' => parent,
+      'props' => props,
+      'nodes' => nodes,
+      'linkedNodes' => linked_nodes,
+      'isCanvas' => is_canvas,
+      'custom' => {},
+      'hidden' => false,
+      'displayName' => resolved_name
+    }
+  end
+
+  def spotlight(parent, publication)
+    node('Spotlight', parent: parent, props: {
+      'publicationId' => publication.id,
+      'publicationType' => 'project',
+      'buttonTextMultiloc' => { 'en' => 'Go' }
+    })
+  end
+
   describe 'select_craftjs_elements_for_types' do
     it 'can deal with different combinations of hash structures' do
       content = {
@@ -188,12 +210,30 @@ describe ContentBuilder::LayoutService do
       expect(layout.reload.craftjs_json).not_to have_key 'lsKEOMxTkR'
       expect(layout.reload.craftjs_json).not_to have_key 'ffJQERoXGy'
     end
+
+    it 'removes a Spotlight inside a column from that column, leaving no dangling reference' do
+      root = { 'type' => 'div', 'parent' => nil, 'nodes' => %w[COLUMNS], 'linkedNodes' => {}, 'props' => {},
+               'isCanvas' => true, 'custom' => {}, 'hidden' => false, 'displayName' => 'div' }
+      nested = create(:homepage_layout, craftjs_json: {
+        'ROOT' => root,
+        'COLUMNS' => node('TwoColumn', parent: 'ROOT', linked_nodes: { 'left' => 'LEFT', 'right' => 'RIGHT' }),
+        'LEFT' => node('Container', parent: 'COLUMNS', nodes: %w[SPOT], is_canvas: true),
+        'RIGHT' => node('Container', parent: 'COLUMNS', is_canvas: true),
+        'SPOT' => spotlight('LEFT', project1)
+      })
+
+      service.clean_layouts_when_publication_deleted project1
+
+      json = nested.reload.craftjs_json
+      expect(json).not_to have_key('SPOT')
+      expect(json['LEFT']['nodes']).to eq []
+    end
   end
 
   describe 'clean_layouts_when_publication_deleted on other pages' do
     let(:project) { create(:project) }
-    # Widgets sit in the page body, not on ROOT, and one Spotlight sits in a column:
-    # the cases the homepage-only cleanup never had to handle.
+    # Widgets sit below ROOT and one Spotlight sits in a column: the old cleanup removed a
+    # Spotlight's id from ROOT's `nodes` only, leaving a dangling reference in any other parent.
     let(:craftjs) do
       {
         'ROOT' => node('CustomPageRoot', parent: nil, nodes: %w[BODY], is_canvas: true),
@@ -211,28 +251,6 @@ describe ContentBuilder::LayoutService do
       }
     end
     let(:other_project) { create(:project) }
-
-    def node(resolved_name, parent:, props: {}, nodes: [], linked_nodes: {}, is_canvas: false)
-      {
-        'type' => { 'resolvedName' => resolved_name },
-        'parent' => parent,
-        'props' => props,
-        'nodes' => nodes,
-        'linkedNodes' => linked_nodes,
-        'isCanvas' => is_canvas,
-        'custom' => {},
-        'hidden' => false,
-        'displayName' => resolved_name
-      }
-    end
-
-    def spotlight(parent, publication)
-      node('Spotlight', parent: parent, props: {
-        'publicationId' => publication.id,
-        'publicationType' => 'project',
-        'buttonTextMultiloc' => { 'en' => 'Go' }
-      })
-    end
 
     where(:code) do
       [
