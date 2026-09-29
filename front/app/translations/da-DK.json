@@ -757,6 +757,7 @@
   "app.components.UI.MoreActionsMenu.moreOptions": "Flere valgmuligheder",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Vis flere handlinger",
   "app.components.UI.NewLabel.new": "NY",
+  "app.components.UI.OptionPicker.noResults": "Ingen resultater",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "Ingen passende faser fundet til dette projekt",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Fjern",
   "app.components.UI.TranslateButton.original": "Original",

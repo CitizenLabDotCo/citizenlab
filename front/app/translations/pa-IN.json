@@ -757,6 +757,7 @@
   "app.components.UI.MoreActionsMenu.moreOptions": "ਹੋਰ ਵਿਕਲਪ",
   "app.components.UI.MoreActionsMenu.showMoreActions": "ਹੋਰ ਕਾਰਵਾਈਆਂ ਦਿਖਾਓ",
   "app.components.UI.NewLabel.new": "ਨਵਾਂ",
+  "app.components.UI.OptionPicker.noResults": "ਕੋਈ ਨਤੀਜਾ ਨਹੀਂ",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "ਇਸ ਪ੍ਰੋਜੈਕਟ ਲਈ ਕੋਈ ਢੁਕਵੇਂ ਪੜਾਅ ਨਹੀਂ ਮਿਲੇ",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "ਹਟਾਓ",
   "app.components.UI.TranslateButton.original": "ਮੂਲ",
