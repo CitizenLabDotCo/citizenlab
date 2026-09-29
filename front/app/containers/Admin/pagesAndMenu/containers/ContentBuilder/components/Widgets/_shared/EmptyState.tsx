@@ -2,7 +2,10 @@ import React from 'react';
 
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 
-import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
+import {
+  BUILDER_CONTENT_MAX_WIDTH,
+  DEFAULT_PADDING,
+} from 'components/admin/ContentBuilder/constants';
 import { useIsInBuilderCanvas } from 'components/admin/ContentBuilder/context/BuilderCanvasContext';
 import Warning from 'components/UI/Warning';
 
@@ -30,7 +33,7 @@ const EmptyState = ({ title, explanation }: Props) => {
       display="flex"
       justifyContent="center"
     >
-      <Box w="100%" maxWidth="1200px">
+      <Box w="100%" maxWidth={BUILDER_CONTENT_MAX_WIDTH}>
         <Title
           variant="h3"
           mt="0px"

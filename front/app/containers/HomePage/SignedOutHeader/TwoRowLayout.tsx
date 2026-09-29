@@ -6,8 +6,8 @@ import styled from 'styled-components';
 import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/HomepageBanner';
 import HeaderContent from 'containers/HomePage/SignedOutHeader/HeaderContent';
 
-import { homepageBannerLayoutHeights } from 'components/admin/BannerFields/HeaderImageDropzone';
 import ContentContainer from 'components/ContentContainer';
+import { homepageBannerLayoutHeights } from 'components/LandingPages/citizen/constants';
 import { Container } from 'components/LandingPages/citizen/TwoRowLayout';
 import Image from 'components/UI/Image';
 

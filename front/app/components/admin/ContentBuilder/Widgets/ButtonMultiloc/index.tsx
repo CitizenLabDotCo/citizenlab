@@ -14,6 +14,7 @@ import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
 import ButtonComponent from 'components/UI/ButtonWithLink';
 import InputMultilocWithLocaleSwitcherWrapper from 'components/UI/InputMultilocWithLocaleSwitcher';
 
@@ -61,7 +62,7 @@ const Button = ({ text, url, type, alignment }: ButtonProps) => {
           ? 'flex-start'
           : 'flex-end'
       }
-      maxWidth="1200px"
+      maxWidth={BUILDER_CONTENT_MAX_WIDTH}
       margin="0 auto"
       px={componentDefaultPadding}
     >
