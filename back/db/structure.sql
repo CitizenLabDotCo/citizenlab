@@ -1610,7 +1610,7 @@ CREATE TABLE public.users (
     phone character varying,
     new_phone character varying,
     phone_confirmed_at timestamp(6) without time zone,
-    early_access_features jsonb DEFAULT '[]'::jsonb NOT NULL,
+    early_access_opt_ins jsonb DEFAULT '[]'::jsonb NOT NULL,
     merge_target_email character varying
 );
 

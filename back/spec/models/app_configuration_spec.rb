@@ -142,13 +142,13 @@ RSpec.describe AppConfiguration do
       end
 
       it 'is true when the current user opted into the feature' do
-        Current.early_access_features = Set.new([feature])
+        Current.early_access_overrides = Set.new([feature])
 
         expect(config.feature_activated?(feature)).to be true
       end
 
       it 'leaves other features alone' do
-        Current.early_access_features = Set.new([feature])
+        Current.early_access_overrides = Set.new([feature])
         config.settings['user_avatars'] = { 'allowed' => false, 'enabled' => false }
 
         expect(config.feature_activated?('user_avatars')).to be false
@@ -157,7 +157,7 @@ RSpec.describe AppConfiguration do
 
     describe '#public_settings' do
       it 'reports an opted-into feature as allowed and enabled' do
-        Current.early_access_features = Set.new([feature])
+        Current.early_access_overrides = Set.new([feature])
 
         expect(config.public_settings[feature]).to include('allowed' => true, 'enabled' => true)
       end
@@ -168,13 +168,13 @@ RSpec.describe AppConfiguration do
 
       it 'adds a feature that is not in the persisted settings yet' do
         config.update_column(:settings, config.settings.except(feature))
-        Current.early_access_features = Set.new([feature])
+        Current.early_access_overrides = Set.new([feature])
 
         expect(described_class.instance.public_settings[feature]).to eq({ 'allowed' => true, 'enabled' => true })
       end
 
       it 'does not write the override to the persisted settings' do
-        Current.early_access_features = Set.new([feature])
+        Current.early_access_overrides = Set.new([feature])
         config.public_settings
 
         expect(config.settings[feature]).to include('allowed' => false, 'enabled' => false)

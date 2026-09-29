@@ -79,7 +79,7 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
       'User' => %w[
         block_end_at
         confirmation_required
-        early_access_features
+        early_access_opt_ins
         email_confirmed_at
         imported
         invite_status

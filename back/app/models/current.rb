@@ -11,14 +11,14 @@ class Current < ActiveSupport::CurrentAttributes
   # permission is resolved from. See Permissions::PermissionInheritanceService.
   attribute :global_visiting_permission
 
-  attribute :early_access_features
+  attribute :early_access_overrides
 
   private :tenant=, :app_configuration=
 
-  NO_EARLY_ACCESS_FEATURES = Set.new.freeze
+  NO_EARLY_ACCESS_OVERRIDES = Set.new.freeze
 
-  def early_access_features
-    super || NO_EARLY_ACCESS_FEATURES
+  def early_access_overrides
+    super || NO_EARLY_ACCESS_OVERRIDES
   end
 
   def app_configuration
@@ -33,7 +33,7 @@ class Current < ActiveSupport::CurrentAttributes
     self.tenant = nil
     self.app_configuration = nil
     self.global_visiting_permission = nil
-    self.early_access_features = nil
+    self.early_access_overrides = nil
   end
 
   # This attribute is used to globally disable some model validations and callbacks that

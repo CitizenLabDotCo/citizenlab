@@ -9,10 +9,10 @@ import usersKeys from './keys';
 
 export type UsersKeys = Keys<typeof usersKeys>;
 
-export type EarlyAccessLevel = 'general' | 'internal';
+export type EarlyAccessTier = 'general' | 'internal';
 
 export type OfferedEarlyAccessFeatures = Partial<
-  Record<TAppConfigurationSetting, EarlyAccessLevel>
+  Record<TAppConfigurationSetting, EarlyAccessTier>
 >;
 
 export interface UserCheckResponse {
@@ -60,7 +60,7 @@ export interface IUserAttributes {
   confirmation_required: boolean;
   custom_field_values?: Record<string, any>;
   onboarding?: OnboardingType;
-  early_access_features?: TAppConfigurationSetting[];
+  early_access_opt_ins?: TAppConfigurationSetting[];
   offered_early_access_features?: OfferedEarlyAccessFeatures;
   avatar?: ImageSizes;
   roles?: TRole[];
@@ -117,7 +117,7 @@ export interface IUserUpdate {
   bio_multiloc?: Multiloc;
   custom_field_values?: Record<string, any>;
   onboarding?: OnboardingType;
-  early_access_features?: TAppConfigurationSetting[];
+  early_access_opt_ins?: TAppConfigurationSetting[];
   phone?: string;
 }
 

@@ -70,7 +70,7 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
 
       'User' => %w[
         confirmation_required
-        early_access_features
+        early_access_opt_ins
         email_confirmed_at
         imported
         invite_status

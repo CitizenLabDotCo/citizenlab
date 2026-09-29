@@ -3,19 +3,19 @@ import React from 'react';
 import { Box, colors, Icon, Tooltip } from '@citizenlab/cl2-component-library';
 import Badge from 'component-library/components/Badge';
 
-import { EarlyAccessLevel } from 'api/users/types';
+import { EarlyAccessTier } from 'api/users/types';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
 type Props = {
-  level?: EarlyAccessLevel;
+  tier?: EarlyAccessTier;
 };
 
-const EarlyAccessBadge = ({ level = 'general' }: Props) => {
+const EarlyAccessBadge = ({ tier = 'general' }: Props) => {
   const { formatMessage } = useIntl();
-  const internal = level === 'internal';
+  const internal = tier === 'internal';
   const color = internal ? colors.orange500 : colors.primary;
 
   return (

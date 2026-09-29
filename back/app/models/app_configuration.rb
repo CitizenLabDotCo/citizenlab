@@ -69,9 +69,9 @@ class AppConfiguration < ApplicationRecord
       extension_features_hash.keys
     end
 
-    EARLY_ACCESS_LEVELS = %w[general internal].freeze
+    EARLY_ACCESS_TIERS = %w[general internal].freeze
 
-    def self.early_access_features
+    def self.early_access_tiers
       core = core_settings_json_schema['properties'].filter_map do |name, feature|
         [name, feature['early_access']] if feature['early_access']
       end
@@ -156,7 +156,7 @@ class AppConfiguration < ApplicationRecord
   end
 
   def feature_activated?(setting_name)
-    return true if Current.early_access_features.include?(setting_name)
+    return true if Current.early_access_overrides.include?(setting_name)
 
     settings[setting_name]&.values_at('enabled', 'allowed')&.all?
   end
@@ -169,11 +169,11 @@ class AppConfiguration < ApplicationRecord
 
   def public_settings
     base = (@public_settings ||= SettingsService.new.format_for_front_end(settings, Settings.json_schema))
-    early_access_features = Current.early_access_features
-    return base if early_access_features.empty?
+    overrides = Current.early_access_overrides
+    return base if overrides.empty?
 
     base.deep_dup.tap do |res|
-      early_access_features.each do |feature|
+      overrides.each do |feature|
         res[feature] = (res[feature] || {}).merge('allowed' => true, 'enabled' => true)
       end
     end

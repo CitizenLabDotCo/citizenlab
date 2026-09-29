@@ -294,29 +294,29 @@ describe UserPolicy do
   describe 'permitted_attributes_for_update' do
     subject(:permitted) { described_class.new(current_user, subject_user).permitted_attributes_for_update }
 
-    def permits_early_access_features?
-      permitted.any? { |attribute| attribute.is_a?(Hash) && attribute.key?(:early_access_features) }
+    def permits_early_access_opt_ins?
+      permitted.any? { |attribute| attribute.is_a?(Hash) && attribute.key?(:early_access_opt_ins) }
     end
 
     context 'for an admin on their own record' do
       let(:current_user) { create(:admin) }
       let(:subject_user) { current_user }
 
-      it { expect(permits_early_access_features?).to be true }
+      it { expect(permits_early_access_opt_ins?).to be true }
     end
 
     context 'for an admin on somebody else' do
       let(:current_user) { create(:admin) }
       let(:subject_user) { create(:admin) }
 
-      it { expect(permits_early_access_features?).to be false }
+      it { expect(permits_early_access_opt_ins?).to be false }
     end
 
     context 'for a resident on their own record' do
       let(:current_user) { create(:user) }
       let(:subject_user) { current_user }
 
-      it { expect(permits_early_access_features?).to be false }
+      it { expect(permits_early_access_opt_ins?).to be false }
     end
   end
 end

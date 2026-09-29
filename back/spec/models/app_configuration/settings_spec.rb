@@ -77,16 +77,16 @@ RSpec.describe AppConfiguration::Settings do
       it { expect(described_class.extension_features_specs.length).to eq(1) }
     end
 
-    describe '.early_access_features' do
+    describe '.early_access_tiers' do
       it 'does not include the feature by default' do
-        expect(described_class.early_access_features).not_to have_key(feature_spec.feature_name)
+        expect(described_class.early_access_tiers).not_to have_key(feature_spec.feature_name)
       end
 
       context 'when the feature declares itself early access' do
         before { feature_spec.define_singleton_method(:early_access) { 'internal' } }
 
         it 'includes the feature with its tier' do
-          expect(described_class.early_access_features[feature_spec.feature_name]).to eq 'internal'
+          expect(described_class.early_access_tiers[feature_spec.feature_name]).to eq 'internal'
         end
 
         it 'marks the feature in the json schema' do
@@ -97,24 +97,24 @@ RSpec.describe AppConfiguration::Settings do
     end
   end
 
-  describe '.early_access_features' do
+  describe '.early_access_tiers' do
     it 'includes the core features marked early access, with their tier' do
       marked = described_class.core_settings_json_schema['properties']
         .select { |_name, feature| feature['early_access'] }
         .transform_values { |feature| feature['early_access'] }
 
-      expect(described_class.early_access_features).to eq(marked)
+      expect(described_class.early_access_tiers).to eq(marked)
     end
 
     it 'only uses tiers a user can be eligible for' do
-      expect(described_class.early_access_features.values.uniq)
-        .to all(be_in(described_class::EARLY_ACCESS_LEVELS))
+      expect(described_class.early_access_tiers.values.uniq)
+        .to all(be_in(described_class::EARLY_ACCESS_TIERS))
     end
 
     it 'only marks features that need nothing else to work' do
       schema = described_class.json_schema
 
-      described_class.early_access_features.each_key do |feature|
+      described_class.early_access_tiers.each_key do |feature|
         expect(schema.dig('properties', feature, 'required-settings')).to be_nil
         expect(schema.dig('dependencies', feature)).to be_nil
       end

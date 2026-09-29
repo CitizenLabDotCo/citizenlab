@@ -35,7 +35,7 @@ const EarlyAccess = () => {
     return null;
   }
 
-  const optedIn = authUser.data.attributes.early_access_features ?? [];
+  const optedIn = authUser.data.attributes.early_access_opt_ins ?? [];
 
   const handleChange = (name: TAppConfigurationSetting) => () => {
     const next = optedIn.includes(name)
@@ -44,7 +44,7 @@ const EarlyAccess = () => {
 
     setFailed(false);
     updateUser(
-      { userId: authUser.data.id, early_access_features: next },
+      { userId: authUser.data.id, early_access_opt_ins: next },
       {
         onSuccess: () => {
           queryClient.invalidateQueries({
@@ -67,7 +67,7 @@ const EarlyAccess = () => {
           key={name}
           title={title}
           description={description}
-          level={offered[name]}
+          tier={offered[name]}
           checked={optedIn.includes(name)}
           // A toggle writes back the whole list, so block a second change until the
           // list we are reading from is the saved one again.

@@ -122,7 +122,7 @@ class UserPolicy < ApplicationPolicy
     !!((user && (instance&.id == user.id || user.admin?)) || instance&.invite_pending?)
   end
 
-  def own_early_access_features?
+  def own_early_access?
     !!user && admin? && record.id == user.id
   end
 
@@ -138,7 +138,7 @@ class UserPolicy < ApplicationPolicy
     # avatar is allowed even if the feature "user_avatars" is not activated to allow
     # users to remove their avatar.
     shared = [:first_name, :last_name, :password, :avatar, :locale, { onboarding: [:topics_and_areas], custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES }]
-    shared += [{ early_access_features: [] }] if own_early_access_features?
+    shared += [{ early_access_opt_ins: [] }] if own_early_access?
     attributes = admin? ? shared + [roles: %i[type project_id project_folder_id project_reviewer]] : shared
     attributes - verification_service.locked_attributes(record) # locked attributes cannot be updated
   end

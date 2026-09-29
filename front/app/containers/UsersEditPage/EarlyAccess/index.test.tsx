@@ -38,7 +38,7 @@ jest.mock('./features', () => ({
 
 const GENERAL_ONLY: OfferedEarlyAccessFeatures = { spaces: 'general' };
 
-const BOTH_LEVELS: OfferedEarlyAccessFeatures = {
+const BOTH_TIERS: OfferedEarlyAccessFeatures = {
   spaces: 'general',
   project_planning_calendar: 'internal',
 };
@@ -55,7 +55,7 @@ const buildUser = ({
       id: 'user-id',
       type: 'user',
       attributes: {
-        early_access_features: optedIn,
+        early_access_opt_ins: optedIn,
         offered_early_access_features: offered,
       },
     },
@@ -90,16 +90,16 @@ describe('<EarlyAccess />', () => {
     expect(screen.queryByText('Internal feature')).not.toBeInTheDocument();
   });
 
-  it('offers both levels when the API reports both', () => {
-    mockAuthUser = buildUser({ offered: BOTH_LEVELS });
+  it('offers both tiers when the API reports both', () => {
+    mockAuthUser = buildUser({ offered: BOTH_TIERS });
     render(<EarlyAccess />);
 
     expect(screen.getByText('General feature')).toBeInTheDocument();
     expect(screen.getByText('Internal feature')).toBeInTheDocument();
   });
 
-  it('labels the internal level apart from the general one', () => {
-    mockAuthUser = buildUser({ offered: BOTH_LEVELS });
+  it('labels the internal tier apart from the general one', () => {
+    mockAuthUser = buildUser({ offered: BOTH_TIERS });
     render(<EarlyAccess />);
 
     expect(screen.getByText('Internal Early Access')).toBeInTheDocument();
@@ -124,7 +124,7 @@ describe('<EarlyAccess />', () => {
 
     await waitFor(() =>
       expect(mockUpdateUser).toHaveBeenCalledWith(
-        { userId: 'user-id', early_access_features: ['spaces'] },
+        { userId: 'user-id', early_access_opt_ins: ['spaces'] },
         expect.anything()
       )
     );
@@ -141,7 +141,7 @@ describe('<EarlyAccess />', () => {
 
     await waitFor(() =>
       expect(mockUpdateUser).toHaveBeenCalledWith(
-        { userId: 'user-id', early_access_features: [] },
+        { userId: 'user-id', early_access_opt_ins: [] },
         expect.anything()
       )
     );
@@ -161,7 +161,7 @@ describe('<EarlyAccess />', () => {
 
   it('blocks a second change until the saved list is back', () => {
     mockIsPending = true;
-    mockAuthUser = buildUser({ offered: BOTH_LEVELS });
+    mockAuthUser = buildUser({ offered: BOTH_TIERS });
     render(<EarlyAccess />);
 
     screen

@@ -37,7 +37,7 @@ require Rails.root.join('lib/email_domain_blacklist')
 #  phone                     :string
 #  new_phone                 :string
 #  phone_confirmed_at        :datetime
-#  early_access_features     :jsonb            not null
+#  early_access_opt_ins      :jsonb            not null
 #  merge_target_email        :string
 #
 # Indexes
@@ -122,7 +122,7 @@ class User < ApplicationRecord
     end
     private :deletion_job_user_id
 
-    def early_access_features_json_schema
+    def early_access_opt_ins_json_schema
       {
         'type' => 'array',
         'uniqueItems' => true,
@@ -262,9 +262,9 @@ class User < ApplicationRecord
   validates :invite_status, inclusion: { in: INVITE_STATUSES }, allow_nil: true
 
   validates :onboarding, json: { schema: -> { User.onboarding_json_schema } }
-  validates :early_access_features, json: { schema: -> { User.early_access_features_json_schema } },
-    if: :early_access_features_changed?
-  validate :validate_early_access_features_offered, if: :early_access_features_changed?
+  validates :early_access_opt_ins, json: { schema: -> { User.early_access_opt_ins_json_schema } },
+    if: :early_access_opt_ins_changed?
+  validate :validate_early_access_opt_ins_offered, if: :early_access_opt_ins_changed?
 
   validate :validate_not_duplicate_email
   validate :validate_not_duplicate_new_email
@@ -332,20 +332,21 @@ class User < ApplicationRecord
     self[:last_name].blank? && self[:first_name].blank? && !invite_pending?
   end
 
-  def early_access_levels
+  def early_access_tiers
     return [] unless admin?
 
-    super_admin? ? AppConfiguration::Settings::EARLY_ACCESS_LEVELS : %w[general]
+    super_admin? ? AppConfiguration::Settings::EARLY_ACCESS_TIERS : %w[general]
   end
 
-  # @return [Hash] the features this user may opt into, mapped to the level they are offered in
+  # @return [Hash] the features this user may opt into, mapped to the tier they are offered in
   def offered_early_access_features
-    levels = early_access_levels
-    AppConfiguration::Settings.early_access_features.select { |_name, level| levels.include?(level) }
+    tiers = early_access_tiers
+    AppConfiguration::Settings.early_access_tiers.select { |_name, tier| tiers.include?(tier) }
   end
 
-  def active_early_access_features
-    Set.new(early_access_features) & offered_early_access_features.keys
+  # The opt-ins that still apply: a feature can stop being offered after the user opted in.
+  def early_access_overrides
+    Set.new(early_access_opt_ins) & offered_early_access_features.keys
   end
 
   # Authenticating ALWAYS requires a non-blank password that matches the stored digest.
@@ -599,14 +600,14 @@ class User < ApplicationRecord
     Rails.logger.info "Validation error! Email banned: #{value.split('@')&.last}"
   end
 
-  def validate_early_access_features_offered
-    return unless early_access_features.is_a?(Array)
+  def validate_early_access_opt_ins_offered
+    return unless early_access_opt_ins.is_a?(Array)
 
-    added = early_access_features - Array(early_access_features_was)
+    added = early_access_opt_ins - Array(early_access_opt_ins_was)
     not_offered = added - offered_early_access_features.keys
     return if not_offered.empty?
 
-    errors.add(:early_access_features, 'not_offered', value: not_offered)
+    errors.add(:early_access_opt_ins, 'not_offered', value: not_offered)
   end
 
   def auto_confirm_on_invite_accept

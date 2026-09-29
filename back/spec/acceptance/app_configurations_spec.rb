@@ -43,7 +43,7 @@ resource 'AppConfigurations' do
     let(:admin) { create(:admin) }
 
     before do
-      allow(AppConfiguration::Settings).to receive(:early_access_features).and_return({ feature => 'general' })
+      allow(AppConfiguration::Settings).to receive(:early_access_tiers).and_return({ feature => 'general' })
       config = AppConfiguration.instance
       config.settings[feature] = { 'allowed' => false, 'enabled' => false }
       config.save!
@@ -52,7 +52,7 @@ resource 'AppConfigurations' do
 
     get 'web_api/v1/app_configuration' do
       example 'Reports the feature as on for the admin who opted into it' do
-        admin.update!(early_access_features: [feature])
+        admin.update!(early_access_opt_ins: [feature])
         do_request
 
         assert_status 200
