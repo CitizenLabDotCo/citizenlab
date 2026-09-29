@@ -2073,6 +2073,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.sort": "Sort by",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.TableOfContents.contents": "Contents",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.TableOfContents.empty": "Section headings will be listed here, with their page numbers, when the report is exported.",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.TableOfContents.headingLabel": "Heading",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.description": "Description:",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeFolders": "Exclude folders",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeProjects": "Exclude projects",
