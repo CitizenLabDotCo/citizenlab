@@ -30,6 +30,7 @@ module ContentBuilder
         Selection
         CustomPages
         Published
+        OpenToParticipation
         CallToAction
         VideoEmbed
         CustomPageRoot
@@ -99,6 +100,7 @@ module ContentBuilder
         'Selection' => { 'multilocs' => %w[titleMultiloc] },
         'CustomPages' => { 'multilocs' => %w[titleMultiloc] },
         'Published' => { 'multilocs' => %w[titleMultiloc] },
+        'OpenToParticipation' => { 'multilocs' => %w[titleMultiloc] },
         'CallToAction' => { 'multilocs' => %w[title description primaryButtonText secondaryButtonText] },
         'VideoEmbed' => {},
         # The project page scaffold (no rules: nodes patches may not add, move or delete).

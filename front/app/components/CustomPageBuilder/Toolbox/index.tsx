@@ -24,6 +24,9 @@ import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlock
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
+import OpenToParticipation, {
+  openToParticipationTitle,
+} from 'components/admin/ContentBuilder/Widgets/OpenToParticipation';
 import Published, {
   publishedTitle,
 } from 'components/admin/ContentBuilder/Widgets/Published';
@@ -106,6 +109,16 @@ const CustomPageBuilderToolbox = () => {
             label={formatMessage(projectsMessages.filteredProjects)}
           />
         )}
+        <DraggableElement
+          id="e2e-draggable-open-to-participation"
+          component={
+            <OpenToParticipation
+              titleMultiloc={toMultiloc(openToParticipationTitle)}
+            />
+          }
+          icon="personRaisedHand"
+          label={formatMessage(openToParticipationTitle)}
+        />
         <DraggableElement
           id="e2e-draggable-spotlight"
           component={
