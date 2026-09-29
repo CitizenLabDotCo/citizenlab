@@ -16,6 +16,7 @@ import useAddContentBuilderImage from 'api/content_builder_images/useAddContentB
 import useLocalize from 'hooks/useLocalize';
 
 import {
+  BUILDER_CONTENT_MAX_WIDTH,
   IMAGE_UPLOADING_EVENT,
   IMAGE_LOADED_EVENT,
 } from 'components/admin/ContentBuilder/constants';
@@ -61,7 +62,7 @@ const Image = ({ alt = {}, image }: Props) => {
       className="e2e-image"
       pointerEvents="none"
       minHeight="26px"
-      maxWidth="1200px"
+      maxWidth={BUILDER_CONTENT_MAX_WIDTH}
       margin="0 auto"
       px={componentDefaultPadding}
     >

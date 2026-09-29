@@ -3,6 +3,7 @@ import React from 'react';
 import { Box, useBreakpoint, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 
 import { DEFAULT_Y_PADDING } from '../../constants';
@@ -46,7 +47,11 @@ export const CarrouselContainer = ({
       className={className}
       data-cy={dataCy}
     >
-      <StyledBox w="100%" maxWidth="1200px" position="relative">
+      <StyledBox
+        w="100%"
+        maxWidth={BUILDER_CONTENT_MAX_WIDTH}
+        position="relative"
+      >
         {children}
       </StyledBox>
     </Box>

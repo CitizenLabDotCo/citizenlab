@@ -1069,61 +1069,51 @@
     "verified_at": "2026-03-27T12:42:54.405874Z",
     "verified_by": "Luuc"
   },
-
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.description": {
     "state": "verified",
     "verified_at": "2026-09-16T16:56:10.007859Z",
     "verified_by": "Luuc"
   },
-
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filterByAreas": {
     "state": "verified",
     "verified_at": "2026-09-16T16:56:10.007859Z",
     "verified_by": "Luuc"
   },
-
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filterByLabel": {
     "state": "verified",
     "verified_at": "2026-09-16T16:56:10.007859Z",
     "verified_by": "Luuc"
   },
-
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filterBySpaces": {
     "state": "verified",
     "verified_at": "2026-09-16T16:56:10.007859Z",
     "verified_by": "Luuc"
   },
-
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filterByTags": {
     "state": "verified",
     "verified_at": "2026-09-16T16:56:10.007859Z",
     "verified_by": "Luuc"
   },
-
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.filteredProjects": {
     "state": "verified",
     "verified_at": "2026-09-16T16:56:10.007859Z",
     "verified_by": "Luuc"
   },
-
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.notAvailable": {
     "state": "verified",
     "verified_at": "2026-09-16T16:56:10.007859Z",
     "verified_by": "Luuc"
   },
-
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.nothingSelected": {
     "state": "verified",
     "verified_at": "2026-09-16T16:56:10.007859Z",
     "verified_by": "Luuc"
   },
-
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.selectionLabel": {
     "state": "verified",
     "verified_at": "2026-09-16T16:56:10.007859Z",
     "verified_by": "Luuc"
   },
-
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.titleLabel": {
     "state": "verified",
     "verified_at": "2026-09-16T16:56:10.007859Z",
@@ -7064,7 +7054,6 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Authentication.accountMergeNotAllowed": {
     "state": "verified",
     "verified_at": "2026-09-16T16:56:10.007859Z",
@@ -7085,7 +7074,6 @@
     "verified_at": "2026-07-21T19:53:38.940387Z",
     "verified_by": "Luuc"
   },
-
   "app.containers.Authentication.linkYourAccount": {
     "state": "verified",
     "verified_at": "2026-09-16T16:56:10.007859Z",
@@ -7801,13 +7789,11 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
-
   "app.containers.CustomPageBuilder.customPage": {
     "state": "verified",
     "verified_at": "2026-09-16T16:56:10.007859Z",
     "verified_by": "Luuc"
   },
-
   "app.containers.CustomPageBuilder.saveError": {
     "state": "verified",
     "verified_at": "2026-09-16T16:56:10.007859Z",
@@ -11798,7 +11784,6 @@
     "verified_at": "2026-03-18T16:34:36.118563Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Projects.seeVolunteering": {
     "state": "verified",
     "verified_at": "2026-09-15T12:47:32.212306Z",
@@ -12413,6 +12398,21 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
+  },
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSaveError": {
+    "state": "verified",
+    "verified_at": "2026-09-23T16:51:52.517673Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": {
+    "state": "verified",
+    "verified_at": "2026-09-23T16:51:52.517673Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": {
+    "state": "verified",
+    "verified_at": "2026-09-23T16:51:52.517673Z",
+    "verified_by": "Luuc"
   },
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": {
     "state": "verified",
@@ -13179,7 +13179,6 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
-
   "app.containers.landing.editHomepage": {
     "state": "verified",
     "verified_at": "2026-09-09T21:32:10.025128Z",
@@ -13385,7 +13384,6 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
-
   "app.errors.bulk_import_pdf_parsing_timeout": {
     "state": "verified",
     "verified_at": "2026-09-16T16:56:10.007859Z",

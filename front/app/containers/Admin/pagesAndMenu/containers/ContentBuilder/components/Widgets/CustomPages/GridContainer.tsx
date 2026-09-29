@@ -3,6 +3,7 @@ import React from 'react';
 import { Box, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 
 import { DEFAULT_Y_PADDING } from '../constants';
@@ -40,7 +41,7 @@ const GridContainer = ({ children }: Props) => {
       display="flex"
       justifyContent="center"
     >
-      <Box w="100%" maxWidth="1200px">
+      <Box w="100%" maxWidth={BUILDER_CONTENT_MAX_WIDTH}>
         {children}
       </Box>
     </Box>

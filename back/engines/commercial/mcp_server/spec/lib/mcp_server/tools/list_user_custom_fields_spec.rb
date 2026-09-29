@@ -42,6 +42,24 @@ describe McpServer::Tools::ListUserCustomFields do
     )
   end
 
+  it 'includes options for a multiselect field, which also supports a reference distribution' do
+    field = create(:custom_field_multiselect, :with_options)
+
+    response = list
+
+    entry = response.structured_content[:data].find { |f| f[:id] == field.id }
+    expect(entry[:options].pluck('key')).to contain_exactly('option1', 'option2')
+  end
+
+  it 'omits options for birthyear, which supports a reference distribution but has none' do
+    field = create(:custom_field_birthyear)
+
+    response = list
+
+    entry = response.structured_content[:data].find { |f| f[:id] == field.id }
+    expect(entry).not_to have_key(:options)
+  end
+
   it_behaves_like 'a paginated list tool'
 
   it 'excludes disabled and hidden fields' do
