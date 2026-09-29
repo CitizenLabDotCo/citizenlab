@@ -5,7 +5,7 @@ class CustomFieldAnswerPolicy < ApplicationPolicy
     return false if !record.custom_field
 
     case record.answerable_type
-    when 'Idea' then author? || can_moderate?(record.answerable.project)
+    when 'Idea' then record.custom_field.answers_visible_to_public? || author? || can_moderate?(record.answerable.project)
     when 'User' then !record.custom_field.hidden? && policy_for(record.answerable).view_private_attributes?
     else false
     end
