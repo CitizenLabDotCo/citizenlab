@@ -21,9 +21,9 @@ import EditCustomPageSettings from '../Settings';
 const SettingsWithPreview = () => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
-  const { customPageId } = useParams({ strict: false }) as {
-    customPageId: string;
-  };
+  const { customPageId } = useParams({
+    from: '/$locale/admin/pages-menu/pages/$customPageId',
+  });
   const { data: customPage } = useCustomPageById(customPageId);
   const { data: layout } = useCustomPageLayout(customPageId);
   useEnsureCustomPageLayout(customPageId);
