@@ -19,12 +19,18 @@ export interface IIdeasFilterCounts {
       input_topic_id: {
         [key: string]: number;
       };
+      assignee_id: {
+        [key: string]: number;
+      };
       total: number;
     };
   };
 }
 
 export interface IIdeasFilterCountsQueryParameters
-  extends Omit<IIdeaQueryParameters, 'page[number]' | 'page[size]' | 'sort'> {
+  extends Omit<
+    IIdeaQueryParameters<string | string[]>,
+    'page[number]' | 'page[size]' | 'sort'
+  > {
   sort?: Sort;
 }
