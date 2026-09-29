@@ -55,6 +55,9 @@ const PublishDropdown = ({ project, opened, onOpenChange }: Props) => {
       <HeaderDropdown
         opened={opened}
         onOpenChange={onOpenChange}
+        buttonStyle={
+          publicationState === 'published' ? 'bo-status' : 'bo-primary'
+        }
         icon="chevron-down"
         id="e2e-publish-dropdown-toggle"
         width="380px"

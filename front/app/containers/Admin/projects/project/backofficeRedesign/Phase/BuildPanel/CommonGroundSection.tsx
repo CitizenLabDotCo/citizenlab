@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Button, Divider } from '@citizenlab/cl2-component-library';
+import { Box, Divider, Button } from '@citizenlab/cl2-component-library';
 
 import useProjectById from 'api/projects/useProjectById';
 
@@ -31,7 +31,7 @@ const CommonGroundSection = ({ projectId, phaseId }: Props) => {
       <PanelField label={formatMessage(messages.inputsSection)}>
         <Box display="flex" gap="8px" flexWrap="wrap">
           <ButtonWithLink
-            buttonStyle="secondary-outlined"
+            buttonStyle="bo-secondary"
             width="auto"
             to={slug ? '/projects/$slug/ideas/new' : undefined}
             params={slug ? { slug } : undefined}
@@ -41,7 +41,7 @@ const CommonGroundSection = ({ projectId, phaseId }: Props) => {
             {formatMessage(commonGroundMessages.createInput)}
           </ButtonWithLink>
           <Button
-            buttonStyle="admin-dark"
+            buttonStyle="bo-primary"
             width="auto"
             onClick={() => setImportOpened(true)}
           >

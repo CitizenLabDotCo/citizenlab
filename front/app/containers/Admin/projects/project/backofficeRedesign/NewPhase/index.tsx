@@ -11,8 +11,8 @@ import { useSearch } from 'utils/router';
 import ProjectWorkspace from '..';
 import messages from '../messages';
 import PhasePreview from '../Phase/PhasePreview';
-import ProjectLeftPanel from '../ProjectLeftPanel';
 import SelectMethodModal from '../ProjectSetupPanel/SelectMethodModal';
+import ProjectTimeline from '../ProjectTimeline';
 
 import NewPhaseWorkspace from './NewPhaseWorkspace';
 
@@ -46,7 +46,7 @@ const NewPhase = ({ project }: Props) => {
       <>
         <ProjectWorkspace
           project={project}
-          leftPanel={<ProjectLeftPanel projectId={project.id} />}
+          sidePanel={<ProjectTimeline projectId={project.id} />}
         >
           <PhasePreview projectId={project.id} />
         </ProjectWorkspace>

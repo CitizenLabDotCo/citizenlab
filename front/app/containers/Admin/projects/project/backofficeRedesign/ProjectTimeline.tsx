@@ -11,7 +11,7 @@ interface Props {
   projectId: string;
 }
 
-const ProjectLeftPanel = ({ projectId }: Props) => {
+const ProjectTimeline = ({ projectId }: Props) => {
   const [methodModalOpened, setMethodModalOpened] = useState(false);
 
   return (
@@ -31,4 +31,4 @@ const ProjectLeftPanel = ({ projectId }: Props) => {
   );
 };
 
-export default ProjectLeftPanel;
+export default ProjectTimeline;

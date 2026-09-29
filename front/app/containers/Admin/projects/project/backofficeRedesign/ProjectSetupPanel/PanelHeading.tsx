@@ -15,14 +15,10 @@ const PanelHeading = ({ title, meta }: Props) => (
     gap="8px"
     mb="6px"
   >
-    <Text m="0" fontSize="s" fontWeight="bold" color="textPrimary">
+    <Text variant="boSection" color="textSecondary">
       {title}
     </Text>
-    {meta && (
-      <Text m="0" fontSize="xs" color="textSecondary">
-        {meta}
-      </Text>
-    )}
+    {meta && <Text variant="boMicro">{meta}</Text>}
   </Box>
 );
 
