@@ -38,30 +38,30 @@ export const BodyXs: Story = {
   },
 };
 
-export const BOSection: Story = {
+export const BackOfficeSection: Story = {
   args: {
     children: 'Section header · group / field label',
-    variant: 'bo-section',
+    variant: 'boSection',
   },
 };
 
-export const BOLabel: Story = {
+export const BackOfficeLabel: Story = {
   args: {
     children: 'Control / option label',
-    variant: 'bo-label',
+    variant: 'boLabel',
   },
 };
 
-export const BOHelper: Story = {
+export const BackOfficeHelper: Story = {
   args: {
     children: 'Helper / description text',
-    variant: 'bo-helper',
+    variant: 'boHelper',
   },
 };
 
-export const BOMicro: Story = {
+export const BackOfficeMicro: Story = {
   args: {
     children: 'Micro / hint',
-    variant: 'bo-micro',
+    variant: 'boMicro',
   },
 };

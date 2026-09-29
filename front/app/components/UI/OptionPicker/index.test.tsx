@@ -66,6 +66,16 @@ describe('OptionPicker', () => {
     expect(screen.queryByRole('radiogroup')).toBeNull();
   });
 
+  it('closes without reporting a change when the selected option is picked again', async () => {
+    renderDropdown();
+
+    await userEvent.click(trigger());
+    await userEvent.click(screen.getByRole('radio', { name: /Public/ }));
+
+    expect(onChange).not.toHaveBeenCalled();
+    expect(screen.queryByRole('radiogroup')).toBeNull();
+  });
+
   it('closes on escape without picking anything', async () => {
     renderDropdown();
 

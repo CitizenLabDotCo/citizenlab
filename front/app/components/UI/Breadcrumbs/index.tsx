@@ -34,13 +34,9 @@ export type TBreadcrumbs = TBreadcrumb[];
 
 interface Props {
   breadcrumbs: TBreadcrumbs;
-  /** Icon shown once, before the first crumb. */
   icon?: IconNames;
-  /** Defaults to the "/" character; "chevron" swaps in a > icon. */
   separator?: 'slash' | 'chevron';
-  /** Crumb text size. Defaults to the body scale. */
   fontSize?: 's' | 'm';
-  /** Renders the current (last, unlinked) crumb as a page heading. */
   highlightCurrentPage?: boolean;
 }
 
@@ -95,7 +91,7 @@ const Breadcrumbs = ({
               </Text>
             )}
             {isHeading && (
-              <Text variant="bo-section" as="span">
+              <Text variant="boSection" as="span">
                 {label}
               </Text>
             )}

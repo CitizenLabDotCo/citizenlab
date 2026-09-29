@@ -37,7 +37,7 @@ const EditAccessButton = ({ phaseId }: Props) => {
         header={formatMessage(messages.editAccess)}
       >
         <Box p="24px">
-          <Text variant="bo-helper" mb="16px">
+          <Text variant="boHelper" mb="16px">
             {formatMessage(messages.editAccessDescription)}
           </Text>
           <ActionForms phaseId={phaseId} />

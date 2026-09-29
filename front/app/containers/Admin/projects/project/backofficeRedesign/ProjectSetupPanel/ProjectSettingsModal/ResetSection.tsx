@@ -21,13 +21,13 @@ const ResetSection = ({ projectId }: Props) => {
 
   return (
     <Box>
-      <Text variant="bo-section" mb="8px">
+      <Text variant="boSection" mb="8px">
         {formatMessage(dataMessages.dataTitle)}
       </Text>
-      <Text variant="bo-helper" mb="4px">
+      <Text variant="boHelper" mb="4px">
         {formatMessage(dataMessages.dataDescription)}
       </Text>
-      <Text variant="bo-helper" color="error" mb="16px">
+      <Text variant="boHelper" color="error" mb="16px">
         {formatMessage(dataMessages.confirmationDescription)}
       </Text>
       <Button
@@ -51,7 +51,7 @@ const ResetSection = ({ projectId }: Props) => {
         >
           {formatMessage(dataMessages.confirmationTitle)}
         </Title>
-        <Text variant="bo-helper" mb="16px">
+        <Text variant="boHelper" mb="16px">
           {formatMessage(dataMessages.confirmationDescription)}
         </Text>
         <Box display="flex" justifyContent="flex-end" gap="12px">

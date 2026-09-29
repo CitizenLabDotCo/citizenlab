@@ -1,6 +1,6 @@
 import 'focus-visible';
 import { get } from 'lodash-es';
-import { darken, transparentize } from 'polished';
+import { darken, rgba, transparentize } from 'polished';
 import { css } from 'styled-components';
 
 import { isNilOrError } from './helperUtils';
@@ -91,6 +91,7 @@ export const themeColors = {
    * Green
    */
   green700: '#024D2B',
+  green600: '#096F03',
   green500: '#04884C', // formerly clGreen
   green400: '#32B67A',
   green300: '#62C462',
@@ -205,9 +206,8 @@ export const bo = {
   colors: {
     textHeadingStrong: '#1E1E1E',
     textHeading: '#474747',
-    // green600 (#096F03) at 12% and 18%; the label is colors.green700
-    statusFill: 'rgba(9, 111, 3, 0.12)',
-    statusFillHover: 'rgba(9, 111, 3, 0.18)',
+    statusFill: rgba(themeColors.green600, 0.12),
+    statusFillHover: rgba(themeColors.green600, 0.18),
   },
   borderRadius: '8px',
   panelBorderRadius: '12px',

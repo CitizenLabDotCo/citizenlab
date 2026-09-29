@@ -50,11 +50,11 @@ const OptionRow = ({ icon, label, description, selected, onClick }: Props) => {
         my="2px"
       />
       <Box flex="1 1 auto" minWidth="0">
-        <Text variant="bo-label" textAlign="left">
+        <Text variant="boLabel" textAlign="left">
           {label}
         </Text>
         {description && (
-          <Text variant="bo-helper" mt="2px" textAlign="left">
+          <Text variant="boHelper" mt="2px" textAlign="left">
             {description}
           </Text>
         )}

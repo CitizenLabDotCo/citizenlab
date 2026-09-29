@@ -91,7 +91,7 @@ const ConfirmStatusChangeModal = ({
       }
     >
       <Box p="28px">
-        <Text variant="bo-helper">{formatMessage(body)}</Text>
+        <Text variant="boHelper">{formatMessage(body)}</Text>
       </Box>
     </Modal>
   );

@@ -63,7 +63,7 @@ const StepRow = ({ step, isLast }: Props) => {
         id={`e2e-get-started-${step.name}`}
       >
         <Text
-          variant="bo-label"
+          variant="boLabel"
           as="span"
           textAlign="left"
           color={step.done ? 'coolGrey500' : undefined}

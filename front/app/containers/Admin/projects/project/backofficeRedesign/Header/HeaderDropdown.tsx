@@ -8,11 +8,6 @@ import {
   IconNames,
   bo,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
-
-const Panel = styled(Dropdown)`
-  border-radius: ${bo.borderRadius};
-`;
 
 export type HeaderDropdownName = 'publish' | 'share';
 
@@ -58,7 +53,7 @@ const HeaderDropdown = ({
         </Button>
       </Box>
 
-      <Panel
+      <Dropdown
         opened={opened}
         onClickOutside={handleClickOutside}
         top="40px"
@@ -66,6 +61,7 @@ const HeaderDropdown = ({
         width={width}
         maxHeight="none"
         zIndex="2000"
+        borderRadius={bo.borderRadius}
         content={content}
       />
     </>

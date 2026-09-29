@@ -50,7 +50,7 @@ const PlacementTabs = ({ selected, onSelect }: Props) => {
             onClick={() => onSelect(key)}
           >
             <Text
-              variant={active ? 'bo-section' : 'bo-label'}
+              variant={active ? 'boSection' : 'boLabel'}
               color={active ? 'primary' : undefined}
             >
               {formatMessage(label)}

@@ -64,7 +64,7 @@ const SelectMethodModal = ({ projectId, opened, onClose }: Props) => {
     >
       <PlacementTabs selected={placement} onSelect={setPlacement} />
       <Box p="24px">
-        <Text variant="bo-helper" mb="16px">
+        <Text variant="boHelper" mb="16px">
           {formatMessage(
             standalone
               ? messages.placementStandaloneDescription

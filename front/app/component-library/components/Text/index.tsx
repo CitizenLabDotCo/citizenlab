@@ -30,10 +30,10 @@ type Variant =
   | 'bodyM'
   | 'bodyS'
   | 'bodyXs'
-  | 'bo-section'
-  | 'bo-label'
-  | 'bo-helper'
-  | 'bo-micro';
+  | 'boSection'
+  | 'boLabel'
+  | 'boHelper'
+  | 'boMicro';
 
 type FontSize = keyof typeof fontSizes;
 type FontStyle = 'italic' | 'normal';
@@ -63,28 +63,26 @@ type Role = {
   color: string;
 };
 
-// The back office type hierarchy. Unlike the body variants, a role also pins
-// the weight and the colour: https://govocal.augur.page/ux-ui-audit/design-system/#type
 const BO_ROLES: Partial<Record<Variant, Role>> = {
-  'bo-section': {
+  boSection: {
     fontSize: fontSizes.s,
     fontWeight: 500,
     lineHeight: 1.4,
     color: bo.colors.textHeadingStrong,
   },
-  'bo-label': {
+  boLabel: {
     fontSize: fontSizes.s,
     fontWeight: 400,
     lineHeight: 1.4,
     color: bo.colors.textHeading,
   },
-  'bo-helper': {
+  boHelper: {
     fontSize: fontSizes.s,
     fontWeight: 400,
     lineHeight: 1.4,
     color: colors.coolGrey600,
   },
-  'bo-micro': {
+  boMicro: {
     fontSize: fontSizes.xs,
     fontWeight: 400,
     lineHeight: 1.4,

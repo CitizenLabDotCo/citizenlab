@@ -84,11 +84,11 @@ const SharePanel = ({ project, linkCopied, onLinkCopied }: Props) => {
 
   return (
     <Box>
-      <Text variant="bo-section" mb="16px">
+      <Text variant="boSection" mb="16px">
         {formatMessage(projectHeaderMessages.shareTitle)}
       </Text>
 
-      <Text variant="bo-section" mb="4px">
+      <Text variant="boSection" mb="4px">
         {formatMessage(messages.shareInvitePeople)}
       </Text>
       <Box display="flex" gap="8px" alignItems="flex-start">
@@ -111,7 +111,7 @@ const SharePanel = ({ project, linkCopied, onLinkCopied }: Props) => {
         </Button>
       </Box>
 
-      <Text variant="bo-section" mt="16px">
+      <Text variant="boSection" mt="16px">
         {formatMessage(messages.sharePeopleWithAccess)}
       </Text>
       <Box
@@ -133,7 +133,7 @@ const SharePanel = ({ project, linkCopied, onLinkCopied }: Props) => {
 
       <Divider />
 
-      <Text variant="bo-helper" mb="12px">
+      <Text variant="boHelper" mb="12px">
         {formatMessage(messages.sharePreviewExplanation)}
       </Text>
       <Tooltip

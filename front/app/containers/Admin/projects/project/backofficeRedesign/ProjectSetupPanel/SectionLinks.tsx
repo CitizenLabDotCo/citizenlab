@@ -40,7 +40,7 @@ const SectionLinks = ({ projectId }: Props) => {
     <Box display="flex" flexDirection="column" gap="12px">
       {LINKED_SECTIONS.map(({ path, label, to }) => (
         <Row key={path} to={to} params={{ projectId }}>
-          <Text variant="bo-label" as="span">
+          <Text variant="boLabel" as="span">
             {formatMessage(label)}
           </Text>
           <Icon

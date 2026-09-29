@@ -9,7 +9,7 @@ import { colors, fontSizes, media, isRtl } from '../../utils/styleUtils';
 const timeout = 200;
 
 const Container = styled(ClickOutside)<ContainerProps>`
-  border-radius: ${(props) => props.theme.borderRadius};
+  border-radius: ${(props) => props.borderRadius ?? props.theme.borderRadius};
   background-color: #fff;
   box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.18);
   z-index: ${(props) => props.zIndex};
@@ -122,6 +122,7 @@ interface ContainerProps {
   mobileLeft: string;
   mobileRight: string;
   zIndex: string;
+  borderRadius?: string;
 }
 
 interface ContainerInnerProps {
@@ -146,6 +147,7 @@ interface Props {
   mobileLeft?: string;
   right?: string;
   mobileRight?: string;
+  borderRadius?: string;
   content: JSX.Element;
   footer?: React.ReactNode;
   zIndex?: string;
@@ -166,6 +168,7 @@ const Dropdown: React.FC<Props> = ({
   mobileLeft = 'auto',
   right = 'auto',
   mobileRight = 'auto',
+  borderRadius,
   content,
   footer,
   id,
@@ -230,6 +233,7 @@ const Dropdown: React.FC<Props> = ({
         mobileLeft={mobileLeft}
         right={right}
         mobileRight={mobileRight}
+        borderRadius={borderRadius}
         closeOnClickOutsideEnabled={opened}
         onClickOutside={close}
         zIndex={zIndex}

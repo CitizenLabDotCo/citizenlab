@@ -59,7 +59,7 @@ const NextActions = ({ project }: Props) => {
               fill={colors.textPrimary}
               my="0px"
             />
-            <Text variant="bo-label" as="span">
+            <Text variant="boLabel" as="span">
               {formatMessage(messages.actionMessageParticipants)}
             </Text>
           </Box>

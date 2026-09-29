@@ -45,7 +45,7 @@ const DraftMethodSettings = ({
         />
       )}
 
-      <Text variant="bo-helper">
+      <Text variant="boHelper">
         {formatMessage(messages.saveToEditSettings)}
       </Text>
     </PanelSettings>

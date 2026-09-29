@@ -55,7 +55,7 @@ const FormSection = ({ projectId, participationMethod, phaseId }: Props) => {
         )}
       >
         {!phaseId && (
-          <Text variant="bo-helper" mb="12px">
+          <Text variant="boHelper" mb="12px">
             {formatMessage(messages.saveToEditForm)}
           </Text>
         )}

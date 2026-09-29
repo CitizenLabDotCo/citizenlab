@@ -90,21 +90,21 @@ export const ButtonLink = {
   },
 };
 
-export const BOPrimary = {
+export const BackOfficePrimary = {
   args: {
     buttonStyle: 'bo-primary',
     children: 'Publish',
   },
 };
 
-export const BOSecondary = {
+export const BackOfficeSecondary = {
   args: {
     buttonStyle: 'bo-secondary',
     children: 'Share',
   },
 };
 
-export const BOSecondaryWithIcon = {
+export const BackOfficeSecondaryWithIcon = {
   args: {
     buttonStyle: 'bo-secondary',
     icon: 'chevron-down',
@@ -113,7 +113,7 @@ export const BOSecondaryWithIcon = {
   },
 };
 
-export const BOStatus = {
+export const BackOfficeStatus = {
   args: {
     buttonStyle: 'bo-status',
     icon: 'chevron-down',
@@ -122,21 +122,21 @@ export const BOStatus = {
   },
 };
 
-export const BOText = {
+export const BackOfficeText = {
   args: {
     buttonStyle: 'bo-text',
     children: 'Back to project setup',
   },
 };
 
-export const BODelete = {
+export const BackOfficeDelete = {
   args: {
     buttonStyle: 'bo-delete',
     children: 'Reset participation data',
   },
 };
 
-export const BOIconOnly = {
+export const BackOfficeIconOnly = {
   args: {
     buttonStyle: 'bo-text',
     icon: 'settings',

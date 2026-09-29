@@ -96,13 +96,13 @@ const SwitchSurveyMethodModal = ({ phase, method, onClose }: Props) => {
       }
     >
       <Box p="24px">
-        <Text variant="bo-helper" mb="12px">
+        <Text variant="boHelper" mb="12px">
           {formatMessage(messages.switchSurveyMethodIntro)}
         </Text>
         <Box as="ul" pl="20px" m="0">
           {consequences.map((message) => (
             <li key={message.id}>
-              <Text variant="bo-helper" my="4px">
+              <Text variant="boHelper" my="4px">
                 {formatMessage(message)}
               </Text>
             </li>

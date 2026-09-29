@@ -26,10 +26,6 @@ const Search = styled(Box)`
   }
 `;
 
-const Panel = styled(Dropdown)`
-  border-radius: ${bo.borderRadius};
-`;
-
 const GAP = 4;
 
 const TriggerContent = styled(Box)`
@@ -45,6 +41,27 @@ const Label = styled.span`
   white-space: nowrap;
   text-overflow: ellipsis;
 `;
+
+const CLIPPING_OVERFLOW = ['auto', 'scroll', 'hidden', 'clip', 'overlay'];
+
+const getVisibleBounds = (element: HTMLElement) => {
+  let top = 0;
+  let bottom = window.innerHeight;
+
+  for (
+    let ancestor = element.parentElement;
+    ancestor && ancestor !== document.body;
+    ancestor = ancestor.parentElement
+  ) {
+    if (CLIPPING_OVERFLOW.includes(getComputedStyle(ancestor).overflowY)) {
+      const rect = ancestor.getBoundingClientRect();
+      top = Math.max(top, rect.top);
+      bottom = Math.min(bottom, rect.bottom);
+    }
+  }
+
+  return { top, bottom };
+};
 
 export interface PickerOption<T extends string> {
   value: T;
@@ -87,12 +104,16 @@ const OptionPicker = <T extends string>({
     if (!opened) return;
 
     const panel = contentRef.current?.offsetParent;
-    const trigger = triggerRef.current?.getBoundingClientRect();
-    if (!(panel instanceof HTMLElement) || !trigger) return;
+    const triggerElement = triggerRef.current;
+    if (!(panel instanceof HTMLElement) || !triggerElement) return;
 
-    const spaceBelow = window.innerHeight - trigger.bottom - GAP;
-    const spaceAbove = trigger.top - GAP;
-    setOpenUp(panel.offsetHeight > spaceBelow && spaceAbove > spaceBelow);
+    const trigger = triggerElement.getBoundingClientRect();
+    const bounds = getVisibleBounds(triggerElement);
+    const spaceBelow = bounds.bottom - trigger.bottom - GAP;
+    const spaceAbove = trigger.top - bounds.top - GAP;
+    setOpenUp(
+      panel.offsetHeight > spaceBelow && panel.offsetHeight <= spaceAbove
+    );
   }, [opened]);
 
   const dismiss = () => {
@@ -142,7 +163,7 @@ const OptionPicker = <T extends string>({
         </TriggerContent>
       </Button>
 
-      <Panel
+      <Dropdown
         opened={opened}
         onClickOutside={({ target }) => {
           if (target instanceof Node && triggerRef.current?.contains(target)) {
@@ -156,11 +177,12 @@ const OptionPicker = <T extends string>({
         width="288px"
         maxHeight="320px"
         zIndex="1000"
+        borderRadius={bo.borderRadius}
         content={
           <Box ref={contentRef}>
             <Box pb="8px" mb="8px" borderBottom={`1px solid ${colors.grey200}`}>
-              <Text variant="bo-section">{title}</Text>
-              <Text variant="bo-helper" mt="2px">
+              <Text variant="boSection">{title}</Text>
+              <Text variant="boHelper" mt="2px">
                 {description}
               </Text>
             </Box>
@@ -192,13 +214,13 @@ const OptionPicker = <T extends string>({
                   description={option.description}
                   selected={option.value === value}
                   onClick={() => {
-                    onChange(option.value);
+                    if (option.value !== value) onChange(option.value);
                     dismiss();
                   }}
                 />
               ))}
               {visibleOptions.length === 0 && (
-                <Text variant="bo-helper" p="8px">
+                <Text variant="boHelper" p="8px">
                   {formatMessage(messages.noResults)}
                 </Text>
               )}

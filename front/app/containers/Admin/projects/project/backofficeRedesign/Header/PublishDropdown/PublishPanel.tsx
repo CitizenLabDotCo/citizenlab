@@ -116,11 +116,11 @@ const PublishPanel = ({
 
   return (
     <Box>
-      <Text variant="bo-section" mb="12px">
+      <Text variant="boSection" mb="12px">
         {header}
       </Text>
 
-      <Text variant="bo-section" mb="4px">
+      <Text variant="boSection" mb="4px">
         {formatMessage(messages.publishWhoCanFind)}
       </Text>
       <Box role="radiogroup" display="flex" flexDirection="column">
@@ -140,7 +140,7 @@ const PublishPanel = ({
         })}
       </Box>
 
-      <Text variant="bo-section" mt="12px" mb="4px">
+      <Text variant="boSection" mt="12px" mb="4px">
         {formatMessage(messages.publishWhoCanOpen)}
       </Text>
       <Box role="radiogroup" display="flex" flexDirection="column">
@@ -164,7 +164,7 @@ const PublishPanel = ({
         alignItems="center"
         gap="12px"
       >
-        <Text variant="bo-label">
+        <Text variant="boLabel">
           {formatMessage(messages.publishSendEmail)}
         </Text>
         <Tooltip
@@ -179,7 +179,7 @@ const PublishPanel = ({
         </Tooltip>
       </Box>
       {count !== undefined && (
-        <Text variant="bo-micro" mt="4px">
+        <Text variant="boMicro" mt="4px">
           {formatMessage(messages.publishEmailRecipients, { count })}
         </Text>
       )}

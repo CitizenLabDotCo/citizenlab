@@ -47,14 +47,14 @@ const CausesSection = ({ phaseId }: Props) => {
     <>
       <Divider />
       <PanelField label={formatMessage(messages.causesSection)}>
-        <Text variant="bo-helper" mb="12px">
+        <Text variant="boHelper" mb="12px">
           {formatMessage(messages.causesSectionDescription)}
         </Text>
         {causes && causes.data.length > 0 && (
           <Box as="ul" pl="20px" mt="0" mb="12px">
             {causes.data.map((cause) => (
               <li key={cause.id}>
-                <Text variant="bo-label" my="2px">
+                <Text variant="boLabel" my="2px">
                   <T value={cause.attributes.title_multiloc} />
                 </Text>
               </li>
@@ -73,7 +73,7 @@ const CausesSection = ({ phaseId }: Props) => {
         header={formatMessage(volunteeringMessages.newCauseTitle)}
       >
         <Box p="24px">
-          <Text variant="bo-helper" mb="16px">
+          <Text variant="boHelper" mb="16px">
             {formatMessage(volunteeringMessages.newCauseSubtitle)}
           </Text>
           <CauseForm onSubmit={handleSubmit} submitPlacement="inline" />

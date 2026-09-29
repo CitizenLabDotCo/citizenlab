@@ -32,7 +32,7 @@ const ReportSection = ({ projectId, phase }: Props) => {
 
   return (
     <Box display="flex" flexDirection="column" gap="12px">
-      <Text variant="bo-section">{formatMessage(messages.report)}</Text>
+      <Text variant="boSection">{formatMessage(messages.report)}</Text>
 
       {reportId ? (
         <>
@@ -57,7 +57,7 @@ const ReportSection = ({ projectId, phase }: Props) => {
           </Box>
           {report && (
             <Warning>
-              <Text variant="bo-helper">
+              <Text variant="boHelper">
                 {formatMessage(visibilityWarning(report, phase))}
               </Text>
             </Warning>
