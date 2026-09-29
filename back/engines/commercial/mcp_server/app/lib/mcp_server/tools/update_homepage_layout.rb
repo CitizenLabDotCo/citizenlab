@@ -18,7 +18,8 @@ class McpServer::Tools::UpdateHomepageLayout < McpServer::BaseTool
 
       ALWAYS call get_homepage_layout first and copy the exact shape of existing nodes. The
       homepage ROOT is a plain container with NO body node — all content lives directly under
-      ROOT. HomepageBanner and Projects are fixed (they can be edited but not moved or deleted).
+      ROOT. The HomepageBanner is fixed (it can be edited but not moved or deleted); some
+      homepages mark other widgets fixed too — the outline flags every fixed node with locked.
       To add or reorder top-level content, also send the ROOT node with only its `nodes` array
       changed (keep the fixed widgets' ids); to remove content use `delete_node_ids`.
 
