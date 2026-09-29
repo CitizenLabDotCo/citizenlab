@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 
-import useCustomPageLayout from 'api/custom_page_layout/useCustomPageLayout';
-import useUpsertCustomPageLayout from 'api/custom_page_layout/useUpsertCustomPageLayout';
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import useEnsureCustomPageLayout from 'components/CustomPageBuilder/useEnsureCustomPageLayout';
 
 import { useParams } from 'utils/router';
 
@@ -18,18 +18,7 @@ const CustomPageBuilder = () => {
   // a typed URL on a tenant without the feature would write data.
   const featureEnabled = useFeatureFlag({ name: 'custom_page_builder' });
   const { data: customPage } = useCustomPageById(customPageId);
-  const { isError } = useCustomPageLayout(customPageId);
-  const { mutate: upsertCustomPageLayout } = useUpsertCustomPageLayout();
-
-  // A page with no layout 404s; create one so the builder opens on the page's own content.
-  const bootstrappedPageId = useRef<string>();
-  useEffect(() => {
-    if (!featureEnabled) return;
-    if (isError && bootstrappedPageId.current !== customPageId) {
-      bootstrappedPageId.current = customPageId;
-      upsertCustomPageLayout({ staticPageId: customPageId });
-    }
-  }, [featureEnabled, isError, customPageId, upsertCustomPageLayout]);
+  useEnsureCustomPageLayout(customPageId);
 
   if (!featureEnabled || !customPage) return null;
 
