@@ -18,7 +18,7 @@ class ProjectsFinderAdminService
     projects = filter_start_date(projects, params)
     projects = filter_phase_date_range(projects, params)
     projects = filter_participation_states(projects, params)
-    projects = filter_current_phase_participation_method(projects, params)
+    projects = filter_participation_methods(projects, params)
     projects = filter_visibility(projects, params)
     projects = filter_discoverability(projects, params)
     projects = filter_space(projects, params)
@@ -331,16 +331,13 @@ class ProjectsFinderAdminService
     scope.where(conditions.map { |c| "(#{c})" }.join(' OR '))
   end
 
-  # Filter projects by the participation method of their current phase
-  def self.filter_current_phase_participation_method(scope, params = {})
+  # Filter projects that have at least one phase with one of the given participation methods
+  def self.filter_participation_methods(scope, params = {})
     participation_methods = params[:participation_methods] || []
     return scope if participation_methods.blank?
 
-    current_phases_with_participation_methods = Phase
+    project_ids_with_matching_phase = Phase
       .where(participation_method: participation_methods)
-      .where("start_at <= now() AND coalesce(end_at, 'infinity'::timestamp) > now()")
-
-    project_ids_with_matching_phase = current_phases_with_participation_methods
       .select(:project_id)
 
     scope.where(id: project_ids_with_matching_phase)

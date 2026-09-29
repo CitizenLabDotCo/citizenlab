@@ -9,7 +9,7 @@ module WebApi
         skip_after_action :verify_policy_scoped, only: :index
 
         def index
-          @moderators = paginate moderator_scope
+          @moderators = paginate(moderator_scope).includes(:custom_field_answers)
           render json: linked_json(@moderators, ::WebApi::V1::UserSerializer, params: jsonapi_serializer_params)
         end
 

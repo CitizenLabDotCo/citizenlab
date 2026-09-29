@@ -41,7 +41,10 @@ namespace :id_clave_unica do
       else
         user = verification.user
         if user
-          user.update_merging_custom_fields!(custom_field_values: { rut_verified: true })
+          answer = user.answer_for_key('rut_verified')
+          answer ||= user.custom_field_answers.build(key: 'rut_verified', custom_field: CustomField.registration.find_by(key: 'rut_verified'))
+          answer.value = true
+          user.save!
           puts "Updated user #{user.id} (#{rut})"
         end
       end

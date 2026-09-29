@@ -265,7 +265,7 @@ describe MultiTenancy::Templates::TenantSerializer do
       field = create(:custom_field, :for_custom_form, resource: form)
 
       create(:idea, project: timeline_project, phases: [ideation_phase])
-      create(:idea, project: timeline_project, phases: [survey_phase], creation_phase: survey_phase, custom_field_values: { field.key => 'My value' })
+      create(:idea, project: timeline_project, phases: [survey_phase], creation_phase: survey_phase, custom_field_answers: [build(:custom_field_answer, key: field.key, value: 'My value')])
 
       template = tenant_serializer.run(deserializer_format: true)
 
@@ -285,7 +285,7 @@ describe MultiTenancy::Templates::TenantSerializer do
         expect(new_survey_phase.custom_form.custom_fields.pluck(:input_type)).to eq ['text']
         new_field = new_survey_phase.custom_form.custom_fields.first
         expect(new_survey_phase.ideas_count).to eq 1
-        expect(new_survey_phase.ideas.first.custom_field_values[new_field.key]).to eq 'My value'
+        expect(new_survey_phase.ideas.first.answer_for_key(new_field.key)&.value).to eq 'My value'
       end
     end
 
@@ -353,23 +353,20 @@ describe MultiTenancy::Templates::TenantSerializer do
       unsupported_field = create(:custom_field, :for_custom_form, input_type: 'file_upload', resource: custom_form)
       create(:idea_status_proposed)
       response = create(:native_survey_response, project: project)
-      custom_field_values = {
-        supported_fields[0].key => 7,
-        supported_fields[1].key => 1,
-        unsupported_field.key => create(:file_upload, idea: response).id,
-        supported_fields[2].key => false
-      }
-      response.update! custom_field_values: custom_field_values
+      response.custom_field_answers.build(key: supported_fields[0].key, value: 7, custom_field: supported_fields[0])
+      response.custom_field_answers.build(key: supported_fields[1].key, value: 1, custom_field: supported_fields[1])
+      response.custom_field_answers.build(key: unsupported_field.key, value: create(:file_upload, idea: response).id, custom_field: unsupported_field)
+      response.custom_field_answers.build(key: supported_fields[2].key, value: false, custom_field: supported_fields[2])
+      response.save!
 
       template = tenant_serializer.run(deserializer_format: true)
 
-      expected_custom_field_values = {
-        supported_fields[0].key => 7,
-        supported_fields[1].key => 1,
-        supported_fields[2].key => false
-      }
       expect(template['models']['idea'].size).to eq 1
-      expect(template['models']['idea'].first['custom_field_values']).to match expected_custom_field_values
+      expect(template['models']['custom_field_answer'].map { |answer| answer.values_at('key', 'value') }).to contain_exactly(
+        [supported_fields[0].key, 7],
+        [supported_fields[1].key, 1],
+        [supported_fields[2].key, false]
+      )
     end
 
     it 'copies exact :ordering values of records for models that use acts_as_list gem' do

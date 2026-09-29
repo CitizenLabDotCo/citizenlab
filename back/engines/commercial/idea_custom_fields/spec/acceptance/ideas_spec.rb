@@ -60,9 +60,7 @@ resource 'Ideas' do
                 assert_status 201
                 json_response = json_parse(response_body)
                 idea_from_db = Idea.find(json_response[:data][:id])
-                expect(idea_from_db.custom_field_values).to eq({
-                  extra_field_name => field_desc[:value]
-                })
+                expect(idea_from_db.custom_field_answers.pluck(:key, :value)).to eq [[extra_field_name, field_desc[:value]]]
               end
             end
           end
@@ -116,9 +114,7 @@ resource 'Ideas' do
             assert_status 201
             json_response = json_parse(response_body)
             idea_from_db = Idea.find(json_response[:data][:id])
-            expect(idea_from_db.custom_field_values.to_h).to eq({
-              extra_field_name => 'test value'
-            })
+            expect(idea_from_db.custom_field_answers.pluck(:key, :value)).to eq [[extra_field_name, 'test value']]
           end
         end
       end
@@ -129,7 +125,7 @@ resource 'Ideas' do
             assert_status 201
             json_response = json_parse(response_body)
             idea_from_db = Idea.find(json_response[:data][:id])
-            expect(idea_from_db.custom_field_values.to_h).to eq({})
+            expect(idea_from_db.custom_field_answers).to be_empty
           end
         end
       end
@@ -139,7 +135,7 @@ resource 'Ideas' do
   describe 'Update' do
     let(:project) { create(:single_phase_ideation_project) }
     let(:form) { create(:custom_form, :with_default_fields, participation_context: project) }
-    let(:idea) { create(:idea, author: user, project: project, custom_field_values: { extra_field_name1 => 'test value' }) }
+    let(:idea) { create(:idea, author: user, project: project, custom_field_answers: [build(:custom_field_answer, key: extra_field_name1, value: 'test value')]) }
     let(:id) { idea.id }
     let(:extra_field_name1) { 'custom_field_name1' }
     let(:extra_field_name2) { 'custom_field_name2' }
@@ -159,9 +155,7 @@ resource 'Ideas' do
             assert_status 200
             json_response = json_parse(response_body)
             idea_from_db = Idea.find(json_response[:data][:id])
-            expect(idea_from_db.custom_field_values.to_h).to eq({
-              extra_field_name1 => 'Changed Value'
-            })
+            expect(idea_from_db.custom_field_answers.pluck(:key, :value)).to eq [[extra_field_name1, 'Changed Value']]
           end
         end
       end
@@ -189,10 +183,10 @@ resource 'Ideas' do
             assert_status 200
             json_response = json_parse(response_body)
             idea_from_db = Idea.find(json_response[:data][:id])
-            expect(idea_from_db.custom_field_values.to_h).to eq({
-              extra_field_name1 => 'Changed Value',
-              extra_field_name2 => 'option1'
-            })
+            expect(idea_from_db.custom_field_answers.pluck(:key, :value)).to contain_exactly(
+              [extra_field_name1, 'Changed Value'],
+              [extra_field_name2, 'option1']
+            )
           end
         end
       end
@@ -221,9 +215,7 @@ resource 'Ideas' do
             assert_status 200
             json_response = json_parse(response_body)
             idea_from_db = Idea.find(json_response[:data][:id])
-            expect(idea_from_db.custom_field_values.to_h).to eq({
-              extra_field_name1 => 'Changed Value'
-            })
+            expect(idea_from_db.custom_field_answers.pluck(:key, :value)).to eq [[extra_field_name1, 'Changed Value']]
           end
         end
       end
@@ -236,7 +228,7 @@ resource 'Ideas' do
             assert_status 200
             json_response = json_parse(response_body)
             idea_from_db = Idea.find(json_response[:data][:id])
-            expect(idea_from_db.custom_field_values.to_h).to eq({})
+            expect(idea_from_db.custom_field_answers).to be_empty
           end
         end
       end

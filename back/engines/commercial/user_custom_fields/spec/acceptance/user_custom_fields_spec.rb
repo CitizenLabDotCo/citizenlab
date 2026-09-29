@@ -279,15 +279,18 @@ resource 'User Custom Fields' do
       example 'Delete a custom field, user saved values and permission relationships' do
         permission = create(:permission)
         permissions_custom_field = create(:permissions_custom_field, custom_field: custom_field, permission: permission)
-        user_with_fields = create(:user, custom_field_values: { field_to_delete: 'a value' })
-        input = create(:idea, custom_field_values: { 'u_field_to_delete' => 'a value', 'another_field' => 'another value' })
+        user_with_fields = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'field_to_delete', value: 'a value')])
+        input = create(:idea, custom_field_answers: [
+          build(:custom_field_answer, key: 'u_field_to_delete', value: 'a value', custom_field: custom_field),
+          build(:custom_field_answer, key: 'another_field', value: 'another value')
+        ])
 
         do_request
         expect(response_status).to eq 200
         expect { CustomField.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect { PermissionsCustomField.find(permissions_custom_field.id) }.to raise_error(ActiveRecord::RecordNotFound)
-        expect(user_with_fields.reload.custom_field_values).to eq({})
-        expect(input.reload.custom_field_values).to eq({ 'another_field' => 'another value' })
+        expect(user_with_fields.reload.custom_field_answers).to be_empty
+        expect(input.reload.custom_field_answers.pluck(:key, :value)).to eq [['another_field', 'another value']]
       end
 
       example "[error] Delete a custom field that's still referenced in a rules group" do

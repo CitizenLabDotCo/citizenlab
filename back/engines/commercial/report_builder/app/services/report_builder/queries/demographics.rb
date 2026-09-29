@@ -6,13 +6,14 @@ module ReportBuilder
       end_at: nil,
       project_id: nil,
       group_id: nil,
+      exclude_admins_and_moderators: false,
       **_other_props
     )
       return {} if custom_field_id.blank?
 
       custom_field = CustomField.find(custom_field_id)
 
-      users = find_users(start_at, end_at, project_id, group_id)
+      users = find_users(start_at, end_at, project_id, group_id, exclude_admins_and_moderators)
       series = UserCustomFields::FieldValueCounter.counts_by_field_option(users, custom_field)
 
       # Demographics can also be found in ideas where user_fields_in_form is enabled
@@ -38,12 +39,13 @@ module ReportBuilder
     private
 
     # Copied from UserCustomFields::...::StatsUsersController#find_users
-    def find_users(start_at, end_at, project_id, group_id)
+    def find_users(start_at, end_at, project_id, group_id, exclude_admins_and_moderators)
       # TODO: Find a way to pass the policy context when instantiating the scope.
       #   This should not cause any issue since the current usage of the policy context
       #   does not impact the report queries. But for consistency, we should find a way
       #   to pass the policy context.
       users = StatUserPolicy::Scope.new(@current_user, User.active).resolve
+      users = users.normal_user if exclude_admins_and_moderators
       start_at, end_at = TimeBoundaries.parse(start_at, end_at)
       finder_params = {
         registration_date_range: start_at...end_at,

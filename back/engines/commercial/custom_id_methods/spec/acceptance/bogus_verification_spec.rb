@@ -32,7 +32,7 @@ resource 'Verifications' do
         assert_status 201
         expect(@user.reload.verified).to be true
         expect(@user.last_name).to eq 'BOGUS'
-        expect(@user.custom_field_values['gender']).to eq 'female'
+        expect(@user.answer_for_key('gender')&.value).to eq 'female'
       end
     end
 
@@ -45,7 +45,7 @@ resource 'Verifications' do
         assert_status 201
         expect(@user.reload.verified).to be true
         expect(@user.last_name).to eq 'BOGUS'
-        expect(@user.custom_field_values['gender']).to eq 'female'
+        expect(@user.answer_for_key('gender')&.value).to eq 'female'
       end
     end
 
