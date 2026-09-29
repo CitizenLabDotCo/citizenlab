@@ -2,11 +2,15 @@ import React, { ReactNode } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
+
 import useFitPhonePreview, {
   PHONE_LOGICAL_HEIGHT,
   PHONE_LOGICAL_WIDTH,
   PHONE_PREVIEW_PADDING,
 } from './useFitPhonePreview';
+
+const DOTTED_BACKGROUND = `radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.04) 1px, transparent 0) 0 0 / 18px 18px, ${colors.background}`;
 
 interface Props {
   src: string;
@@ -18,6 +22,7 @@ interface Props {
 
 const PhonePreview = ({ src, title, className, dataCy, children }: Props) => {
   const { scale, containerRef } = useFitPhonePreview();
+  const redesign = useProjectBackofficeRedesign();
 
   return (
     <Box
@@ -29,7 +34,7 @@ const PhonePreview = ({ src, title, className, dataCy, children }: Props) => {
       justifyContent="center"
       overflow="hidden"
       p={`${PHONE_PREVIEW_PADDING}px`}
-      background={`radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.04) 1px, transparent 0) 0 0 / 18px 18px, ${colors.background}`}
+      background={redesign ? colors.grey100 : DOTTED_BACKGROUND}
     >
       <Box
         className={className}

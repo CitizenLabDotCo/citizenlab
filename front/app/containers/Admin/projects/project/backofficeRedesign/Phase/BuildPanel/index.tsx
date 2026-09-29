@@ -96,7 +96,7 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
 
   return (
     <Box display="flex" flexDirection="column" flexGrow={1} minHeight="0">
-      <Box flexGrow={1} px="20px" pb="20px">
+      <Box flexGrow={1} p="20px">
         <BuildFields
           projectId={projectId}
           phaseId={phase.id}

@@ -15,8 +15,8 @@ import { Outlet as RouterOutlet, useMatchRoute, useParams } from 'utils/router';
 import ProjectWorkspace from './backofficeRedesign';
 import { PhaseSaveProvider } from './backofficeRedesign/_shared/PhaseSaveContext';
 import NewPhase from './backofficeRedesign/NewPhase';
-import PhaseLeftPanel from './backofficeRedesign/Phase/PhaseLeftPanel';
-import ProjectLeftPanel from './backofficeRedesign/ProjectLeftPanel';
+import PhaseSetup from './backofficeRedesign/Phase/PhaseSetup';
+import ProjectTimeline from './backofficeRedesign/ProjectTimeline';
 import UnsavedChangesGuard from './backofficeRedesign/UnsavedChangesGuard';
 import ProjectHeader from './projectHeader';
 import ProjectSidebar from './projectPage/ProjectSidebar';
@@ -48,15 +48,15 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
           <ProjectWorkspace
             project={project}
             phase={selectedPhase}
-            leftPanel={
+            sidePanel={
               selectedPhase ? (
-                <PhaseLeftPanel
+                <PhaseSetup
                   key={selectedPhase.id}
                   projectId={projectId}
                   phase={selectedPhase}
                 />
               ) : (
-                <ProjectLeftPanel projectId={projectId} />
+                <ProjectTimeline projectId={projectId} />
               )
             }
           >

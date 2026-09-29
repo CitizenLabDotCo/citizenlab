@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Tooltip, colors } from '@citizenlab/cl2-component-library';
+import { Box, Tooltip, bo, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
@@ -53,23 +53,34 @@ const WorkspaceHeader = ({
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const views = usePhaseViews(phase);
+  const inPhase = !!(phase || draftLabel);
 
-  const crumbs: TBreadcrumbs = [
+  const phaseCrumbs: TBreadcrumbs = [
+    {
+      label: localize(project.attributes.title_multiloc),
+      link: {
+        to: '/admin/projects/$projectId',
+        params: { projectId: project.id },
+      },
+    },
+    ...(phase ? [{ label: localize(phase.attributes.title_multiloc) }] : []),
+    ...(draftLabel ? [{ label: draftLabel }] : []),
+  ];
+
+  const projectCrumbs: TBreadcrumbs = [
     {
       label: formatMessage(messages.projectsCrumb),
       link: { to: '/admin/projects' },
     },
     {
       label: localize(project.attributes.title_multiloc),
-      ...((phase || draftLabel || section) && {
+      ...(section && {
         link: {
           to: '/admin/projects/$projectId' as const,
           params: { projectId: project.id },
         },
       }),
     },
-    ...(phase ? [{ label: localize(phase.attributes.title_multiloc) }] : []),
-    ...(draftLabel ? [{ label: draftLabel }] : []),
     ...(section ? [{ label: formatMessage(section.label) }] : []),
   ];
 
@@ -82,16 +93,42 @@ const WorkspaceHeader = ({
       height={HEADER_HEIGHT}
       px="16px"
       background={colors.white}
-      borderBottom={`1px solid ${colors.grey200}`}
+      borderRadius={bo.panelBorderRadius}
     >
-      <CrumbBar flex="1 1 0" minWidth="0" overflow="hidden">
-        <Breadcrumbs
-          breadcrumbs={crumbs}
-          icon="folder-outline"
-          separator="chevron"
-          fontSize="s"
-          highlightCurrentPage
-        />
+      <CrumbBar
+        flex="1 1 0"
+        minWidth="0"
+        overflow="hidden"
+        display="flex"
+        alignItems="center"
+        gap="12px"
+      >
+        {inPhase ? (
+          <>
+            <ButtonWithLink
+              to="/admin/projects/$projectId"
+              params={{ projectId: project.id }}
+              buttonStyle="bo-secondary"
+              icon="arrow-left"
+              width="36px"
+              padding="0"
+              ariaLabel={formatMessage(messages.backToProjectSetup)}
+            />
+            <Breadcrumbs
+              breadcrumbs={phaseCrumbs}
+              fontSize="s"
+              highlightCurrentPage
+            />
+          </>
+        ) : (
+          <Breadcrumbs
+            breadcrumbs={projectCrumbs}
+            icon="folder-outline"
+            separator="chevron"
+            fontSize="s"
+            highlightCurrentPage
+          />
+        )}
       </CrumbBar>
 
       <Box flex="0 0 auto">
@@ -112,36 +149,45 @@ const WorkspaceHeader = ({
         justifyContent="flex-end"
         gap="10px"
       >
-        {(phase || draftLabel) && <SaveChangesButton />}
-        <Tooltip
-          content={formatMessage(messages.previewProject)}
-          theme="dark"
-          placement="bottom"
-        >
-          <ButtonWithLink
-            to="/projects/$slug"
-            params={{ slug: project.attributes.slug }}
-            buttonStyle="bo-text"
-            icon="eye"
-            width="36px"
-            padding="0"
-            bgHoverColor={colors.grey100}
-            iconHoverColor={colors.textPrimary}
-            ariaLabel={formatMessage(messages.previewProject)}
-          />
-        </Tooltip>
-        <Box position="relative" display="flex" gap="10px">
-          <ShareDropdown
-            project={project}
-            opened={openDropdown === 'share'}
-            onOpenChange={(opened) => onOpenDropdown(opened ? 'share' : null)}
-          />
-          <PublishDropdown
-            project={project}
-            opened={openDropdown === 'publish'}
-            onOpenChange={(opened) => onOpenDropdown(opened ? 'publish' : null)}
-          />
-        </Box>
+        {inPhase ? (
+          <SaveChangesButton />
+        ) : (
+          <>
+            <Tooltip
+              content={formatMessage(messages.previewProject)}
+              theme="dark"
+              placement="bottom"
+            >
+              <ButtonWithLink
+                to="/projects/$slug"
+                params={{ slug: project.attributes.slug }}
+                buttonStyle="bo-text"
+                icon="eye"
+                width="36px"
+                padding="0"
+                bgHoverColor={colors.grey100}
+                iconHoverColor={colors.textPrimary}
+                ariaLabel={formatMessage(messages.previewProject)}
+              />
+            </Tooltip>
+            <Box position="relative" display="flex" gap="10px">
+              <ShareDropdown
+                project={project}
+                opened={openDropdown === 'share'}
+                onOpenChange={(opened) =>
+                  onOpenDropdown(opened ? 'share' : null)
+                }
+              />
+              <PublishDropdown
+                project={project}
+                opened={openDropdown === 'publish'}
+                onOpenChange={(opened) =>
+                  onOpenDropdown(opened ? 'publish' : null)
+                }
+              />
+            </Box>
+          </>
+        )}
       </Box>
     </Box>
   );

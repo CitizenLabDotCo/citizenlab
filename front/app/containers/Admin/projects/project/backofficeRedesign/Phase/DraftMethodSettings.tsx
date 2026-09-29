@@ -22,7 +22,7 @@ interface Props {
   setValidationErrors: React.Dispatch<React.SetStateAction<ValidationErrors>>;
 }
 
-const DraftPhaseRightPanel = ({
+const DraftMethodSettings = ({
   formData,
   validationErrors,
   apiErrors,
@@ -52,4 +52,4 @@ const DraftPhaseRightPanel = ({
   );
 };
 
-export default DraftPhaseRightPanel;
+export default DraftMethodSettings;

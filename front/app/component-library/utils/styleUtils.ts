@@ -210,6 +210,7 @@ export const bo = {
     statusFillHover: 'rgba(9, 111, 3, 0.18)',
   },
   borderRadius: '8px',
+  panelBorderRadius: '12px',
 };
 
 export const stylingConsts = {
