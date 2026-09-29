@@ -330,4 +330,33 @@ describe('Custom page builder', () => {
     cy.get('.e2e-published-projects-and-folders').should('exist');
     cy.contains(buttonText).should('be.visible');
   });
+
+  // With the builder on, one page replaces the settings and content tabs: the settings form beside
+  // a preview, and the builder one click away.
+  it('edits the page from one page with a preview', () => {
+    cy.setAdminLoginCookie();
+    cy.visit(`/admin/pages-menu/pages/${pageId}/settings`);
+
+    cy.get('[data-testid="customPageSettingsForm"]').should('be.visible');
+    cy.get('.e2e-resource-tabs').should('not.exist');
+    // The builder's widgets list projects and events, so the form's linked items are gone.
+    cy.get('[id^="projects_filter_type_"]').should('not.exist');
+    cy.get('iframe[title="Custom page preview"]')
+      .should('have.attr', 'src')
+      .and('include', `/pages/${pageSlug}`);
+
+    // The button only shows while the preview is hovered, which Cypress cannot do.
+    cy.dataCy('e2e-edit-page-content').click({ force: true });
+    cy.location('pathname').should(
+      'include',
+      `/admin/custom-page-builder/pages/${pageId}`
+    );
+    cy.get('#e2e-draggable-text');
+
+    cy.get('#e2e-go-back-button').click();
+    cy.location('pathname').should(
+      'include',
+      `/admin/pages-menu/pages/${pageId}/settings`
+    );
+  });
 });
