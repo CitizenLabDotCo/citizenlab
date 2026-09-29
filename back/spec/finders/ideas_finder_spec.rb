@@ -170,14 +170,31 @@ describe IdeasFinder do
   end
 
   describe '#feedback_needed_condition' do
-    let(:expected_record_ids) { Idea.feedback_needed.pluck(:id) }
-
-    before do
-      params[:feedback_needed] = true
+    let!(:idea_with_feedback) do
+      proposed = IdeaStatus.find_by(code: 'proposed')
+      create(:idea, project: timeline_project, idea_status: proposed).tap { |idea| create(:official_feedback, idea: idea) }
     end
 
-    it 'returns the correct records' do
-      expect(result_record_ids).to match_array expected_record_ids
+    before do
+      params[:feedback_needed] = feedback_needed
+    end
+
+    context 'when true' do
+      let(:feedback_needed) { 'true' }
+
+      it 'returns the ideas that need feedback' do
+        expect(result_record_ids).to match_array Idea.feedback_needed.pluck(:id)
+        expect(result_record_ids).not_to include idea_with_feedback.id
+      end
+    end
+
+    context 'when false' do
+      let(:feedback_needed) { 'false' }
+
+      it 'returns the ideas that do not need feedback' do
+        expect(result_record_ids).to match_array Idea.where.not(id: Idea.feedback_needed).pluck(:id)
+        expect(result_record_ids).to include idea_with_feedback.id
+      end
     end
   end
 
