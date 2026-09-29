@@ -64,6 +64,8 @@ type Props = {
   onEdit: () => void;
   dataCy?: string;
   editPageContentClassName?: string;
+  // Starts the phone at the top of the area, to line up with content beside it.
+  alignTop?: boolean;
 };
 
 const PagePreview = ({
@@ -73,6 +75,7 @@ const PagePreview = ({
   onEdit,
   dataCy,
   editPageContentClassName,
+  alignTop = false,
 }: Props) => {
   const { formatMessage } = useIntl();
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -112,9 +115,10 @@ const PagePreview = ({
       ref={containerRef}
       minHeight="100%"
       display="flex"
-      alignItems="center"
+      alignItems={alignTop ? 'flex-start' : 'center'}
       justifyContent="center"
       p={`${PREVIEW_AREA_PADDING}px`}
+      pt={alignTop ? '0px' : `${PREVIEW_AREA_PADDING}px`}
       background={`radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.04) 1px, transparent 0) 0 0 / 18px 18px, ${colors.background}`}
     >
       <Card

@@ -49,6 +49,7 @@ const SettingsWithPreview = () => {
               messages.editCustomPageInContentBuilder
             )}
             onEdit={openContentBuilder}
+            alignTop
           />
         )}
       </Box>
