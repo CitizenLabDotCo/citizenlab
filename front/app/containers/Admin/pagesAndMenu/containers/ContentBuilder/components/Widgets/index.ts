@@ -26,6 +26,9 @@ import IframeMultiloc, {
 import ImageMultiloc, {
   imageMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
+import OpenToParticipation, {
+  openToParticipationTitle,
+} from 'components/admin/ContentBuilder/Widgets/OpenToParticipation';
 import Published, {
   publishedTitle,
 } from 'components/admin/ContentBuilder/Widgets/Published';
@@ -71,9 +74,6 @@ import FinishedOrArchived, {
 } from './FinishedOrArchived';
 import FollowedItems, { followedItemsTitle } from './FollowedItems';
 import HomepageBanner, { homepageBannerTitle } from './HomepageBanner';
-import OpenToParticipation, {
-  openToParticipationTitle,
-} from './OpenToParticipation';
 import ProjectsAndFoldersLegacy, {
   projectsAndFoldersLegacyTitle,
 } from './ProjectsAndFoldersLegacy';

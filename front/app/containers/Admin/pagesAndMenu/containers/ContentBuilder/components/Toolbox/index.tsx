@@ -34,6 +34,9 @@ import IframeMultiloc, {
 import ImageMultiloc, {
   imageMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
+import OpenToParticipation, {
+  openToParticipationTitle,
+} from 'components/admin/ContentBuilder/Widgets/OpenToParticipation';
 import Published, {
   publishedTitle,
 } from 'components/admin/ContentBuilder/Widgets/Published';
@@ -81,9 +84,6 @@ import {
   getHomepageBannerDefaultSettings,
 } from '../Widgets/HomepageBanner/utils';
 import ImageTextCards from '../Widgets/ImageTextCards';
-import OpenToParticipation, {
-  openToParticipationTitle,
-} from '../Widgets/OpenToParticipation';
 import ProjectsAndFoldersLegacy, {
   projectsAndFoldersLegacyTitle,
 } from '../Widgets/ProjectsAndFoldersLegacy';
