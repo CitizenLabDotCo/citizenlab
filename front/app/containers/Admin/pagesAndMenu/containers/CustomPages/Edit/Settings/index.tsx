@@ -27,7 +27,11 @@ const customPageSlugAllowedToEdit: { [key in TCustomPageCode]: boolean } = {
   'cookie-policy': false,
 };
 
-const EditCustomPageSettings = () => {
+type Props = {
+  hideLinkedItems?: boolean;
+};
+
+const EditCustomPageSettings = ({ hideLinkedItems }: Props) => {
   const { mutateAsync: updateCustomPage } = useUpdateCustomPage();
   const { customPageId } = useParams({ strict: false }) as {
     customPageId: string;
@@ -83,6 +87,7 @@ const EditCustomPageSettings = () => {
         showNavBarItemTitle={hasNavbarItem}
         onSubmit={handleOnSubmit}
         hideSlug={!customPageSlugAllowedToEdit[customPage.data.attributes.code]}
+        hideLinkedItems={hideLinkedItems}
       />
     );
   }

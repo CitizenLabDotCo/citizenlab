@@ -23,6 +23,7 @@ import { Outlet as RouterOutlet, useParams } from 'utils/router';
 
 import messages from '../messages';
 
+import SettingsWithPreview from './SettingsWithPreview';
 import ViewCustomPageButton from './ViewCustomPageButton';
 
 const CustomPagesEditSettings = () => {
@@ -35,6 +36,11 @@ const CustomPagesEditSettings = () => {
   const canCreateCustomPages = useFeatureFlag({
     name: 'pages',
     onlyCheckAllowed: true,
+  });
+  // With the builder on, one page replaces the two tabs: the section editors on the content
+  // tab no longer change what the page shows.
+  const customPageBuilderEnabled = useFeatureFlag({
+    name: 'custom_page_builder',
   });
 
   if (isNilOrError(customPage)) {
@@ -73,21 +79,29 @@ const CustomPagesEditSettings = () => {
               />
             ),
           }}
-          tabs={[
-            {
-              label: formatMessage(messages.pageSettingsTab),
-              name: 'settings',
-              url: `/admin/pages-menu/pages/${customPageId}/settings`,
-            },
-            {
-              label: formatMessage(messages.pageContentTab),
-              name: 'content',
-              url: `/admin/pages-menu/pages/${customPageId}/content`,
-            },
-          ]}
+          tabs={
+            customPageBuilderEnabled
+              ? []
+              : [
+                  {
+                    label: formatMessage(messages.pageSettingsTab),
+                    name: 'settings',
+                    url: `/admin/pages-menu/pages/${customPageId}/settings`,
+                  },
+                  {
+                    label: formatMessage(messages.pageContentTab),
+                    name: 'content',
+                    url: `/admin/pages-menu/pages/${customPageId}/content`,
+                  },
+                ]
+          }
           contentWrapper={false}
         >
-          <RouterOutlet />
+          {customPageBuilderEnabled ? (
+            <SettingsWithPreview />
+          ) : (
+            <RouterOutlet />
+          )}
         </TabbedResource>
       )}
     </>
