@@ -1,6 +1,6 @@
 import 'focus-visible';
 import { get } from 'lodash-es';
-import { darken, rgba, transparentize } from 'polished';
+import { darken, transparentize } from 'polished';
 import { css } from 'styled-components';
 
 import { isNilOrError } from './helperUtils';
@@ -96,6 +96,7 @@ export const themeColors = {
   green400: '#32B67A',
   green300: '#62C462',
   green100: '#e4f7ef', // formerly clGreenSuccessBackground
+  greenMint: '#CAE0CD',
 
   /**
    * Orange
@@ -206,8 +207,7 @@ export const bo = {
   colors: {
     textHeadingStrong: '#1E1E1E',
     textHeading: '#474747',
-    statusFill: rgba(themeColors.green600, 0.12),
-    statusFillHover: rgba(themeColors.green600, 0.18),
+    statusFill: '#E2EEE1',
   },
   borderRadius: '8px',
   panelBorderRadius: '12px',

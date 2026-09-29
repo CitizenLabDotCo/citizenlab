@@ -256,7 +256,7 @@ function getButtonStyle(
     'bo-status': {
       ...BO_GEOMETRY,
       bgColor: bo.colors.statusFill,
-      bgHoverColor: bo.colors.statusFillHover,
+      bgHoverColor: colors.greenMint,
       textColor: colors.green700,
       textHoverColor: colors.green700,
       iconColor: colors.green700,
