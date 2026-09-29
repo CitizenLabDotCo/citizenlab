@@ -1220,6 +1220,8 @@
   "app.containers.Admin.inspirationHub.filters": "filtrai",
   "app.containers.Admin.inspirationHub.resetFilters": "Iš naujo nustatyti filtrus",
   "app.containers.Admin.inspirationHub.seemsLike": "Atrodo, kad daugiau projektų nėra. Pabandykite pakeisti {filters}.",
+  "app.containers.Admin.internalEarlyAccessLabel": "Vidinė ankstyvoji prieiga",
+  "app.containers.Admin.internalEarlyAccessLabelExplanation": "Ši funkcija vis dar kuriama ir yra prieinama tik „Go Vocal“ darbuotojams. Nerodykite jos klientams.",
   "app.containers.Admin.messaging.addSmsCampaignButton": "Sukurti SMS",
   "app.containers.Admin.messaging.addSmsCampaignTitle": "Nauja SMS žinutė",
   "app.containers.Admin.messaging.automated.editModalTitle": "Redaguoti kampanijos laukus",

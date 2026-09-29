@@ -1220,6 +1220,8 @@
   "app.containers.Admin.inspirationHub.filters": "filters",
   "app.containers.Admin.inspirationHub.resetFilters": "Reset de filters",
   "app.containers.Admin.inspirationHub.seemsLike": "Het lijkt erop dat er geen projecten meer zijn. Probeer de {filters}te veranderen.",
+  "app.containers.Admin.internalEarlyAccessLabel": "Interne vroege toegang",
+  "app.containers.Admin.internalEarlyAccessLabelExplanation": "Deze functie is nog in ontwikkeling en is alleen beschikbaar voor medewerkers van Go Vocal. Laat deze niet aan klanten zien.",
   "app.containers.Admin.messaging.addSmsCampaignButton": "SMS maken",
   "app.containers.Admin.messaging.addSmsCampaignTitle": "Nieuw SMS-bericht",
   "app.containers.Admin.messaging.automated.editModalTitle": "Campagnevelden bewerken",

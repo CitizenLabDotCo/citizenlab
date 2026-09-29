@@ -1,7 +1,7 @@
 import { SerializedNodes } from '@craftjs/core';
 import { Multiloc } from 'typings';
 
-import { findNodeIdByName } from './defaultLayout';
+import { findNodeIdByName } from 'components/admin/ContentBuilder/resolvedName';
 
 export type BannerImageDraft = {
   dataCode?: string;
