@@ -1220,6 +1220,8 @@
   "app.containers.Admin.inspirationHub.filters": "ਫਿਲਟਰ",
   "app.containers.Admin.inspirationHub.resetFilters": "ਫਿਲਟਰ ਰੀਸੈਟ ਕਰੋ",
   "app.containers.Admin.inspirationHub.seemsLike": "ਲੱਗਦਾ ਹੈ ਕਿ ਹੁਣ ਕੋਈ ਹੋਰ ਪ੍ਰੋਜੈਕਟ ਨਹੀਂ ਹਨ। {filters}ਨੂੰ ਬਦਲਣ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
+  "app.containers.Admin.internalEarlyAccessLabel": "ਅੰਦਰੂਨੀ ਅਗੇਤੀ ਪਹੁੰਚ",
+  "app.containers.Admin.internalEarlyAccessLabelExplanation": "ਇਹ ਵਿਸ਼ੇਸ਼ਤਾ ਅਜੇ ਬਣਾਈ ਜਾ ਰਹੀ ਹੈ ਅਤੇ ਸਿਰਫ਼ Go Vocal ਸਟਾਫ਼ ਲਈ ਉਪਲਬਧ ਹੈ। ਇਸਨੂੰ ਗਾਹਕਾਂ ਨੂੰ ਨਾ ਦਿਖਾਓ।",
   "app.containers.Admin.messaging.addSmsCampaignButton": "SMS ਬਣਾਓ",
   "app.containers.Admin.messaging.addSmsCampaignTitle": "ਨਵਾਂ SMS ਸੁਨੇਹਾ",
   "app.containers.Admin.messaging.automated.editModalTitle": "ਮੁਹਿੰਮ ਖੇਤਰਾਂ ਦਾ ਸੰਪਾਦਨ ਕਰੋ",

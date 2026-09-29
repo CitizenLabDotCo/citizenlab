@@ -2,8 +2,6 @@ import React from 'react';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import messages from 'containers/DescriptionBuilder/messages';
-
 import heroBannerMessages from 'components/admin/BannerFields/messages';
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
@@ -25,6 +23,7 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import CustomPageBanner from 'components/CustomPageBuilder/Widgets/CustomPageBanner';
 import ProjectsByFilter from 'components/CustomPageBuilder/Widgets/ProjectsByFilter';
 import projectsMessages from 'components/CustomPageBuilder/Widgets/ProjectsByFilter/messages';
+import messages from 'components/DescriptionBuilder/messages';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
 import NewLabel from 'components/UI/NewLabel';
 

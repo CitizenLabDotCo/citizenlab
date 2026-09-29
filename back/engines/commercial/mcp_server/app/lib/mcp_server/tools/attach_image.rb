@@ -3,7 +3,8 @@
 class McpServer::Tools::AttachImage < McpServer::BaseTool
   CONTAINERS = {
     'project' => { class: Project, association: :project_images },
-    'event' => { class: Event, association: :event_images }
+    'event' => { class: Event, association: :event_images },
+    'idea' => { class: Idea, association: :idea_images }
   }.freeze
   private_constant :CONTAINERS
 
@@ -20,8 +21,9 @@ class McpServer::Tools::AttachImage < McpServer::BaseTool
 
   def description
     <<~DESC.squish
-      Adds an image to an existing resource by fetching it from a public URL.
-      The image is shown on the resource's page.
+      Adds an image to an existing project, event or input (idea or proposal) by
+      fetching it from a public URL. It is shown on the resource's page, and for
+      inputs also as the card image in listings.
     DESC
   end
 
@@ -35,7 +37,7 @@ class McpServer::Tools::AttachImage < McpServer::BaseTool
           format: 'uri',
           description: 'Public URL of the image to download and attach.'
         },
-        alt_text_multiloc: { **multiloc_schema, description: 'Alt text per locale.' }
+        alt_text_multiloc: { **multiloc_schema, description: 'Alt text per locale. Not supported for inputs.' }
       },
       required: %w[resource_type resource_id remote_url],
       additionalProperties: false
@@ -50,10 +52,9 @@ class McpServer::Tools::AttachImage < McpServer::BaseTool
 
       authorize_project!(container.project)
 
-      image = container.public_send(images_association).build(
-        remote_image_url: params[:remote_url],
-        alt_text_multiloc: params[:alt_text_multiloc]
-      )
+      image = container.public_send(images_association).build(remote_image_url: params[:remote_url])
+      # alt_text_multiloc exists on project/event images but not idea images.
+      image.alt_text_multiloc = params[:alt_text_multiloc] if image.respond_to?(:alt_text_multiloc=)
 
       authorize(image, :create?)
       image.save!

@@ -11,7 +11,19 @@ class Current < ActiveSupport::CurrentAttributes
   # permission is resolved from. See Permissions::PermissionInheritanceService.
   attribute :global_visiting_permission
 
+  # Features switched on for the current user only, on top of the tenant settings. Set
+  # per request by ApplicationController. Queued jobs run in a worker where this is not
+  # set, so they only see the tenant settings. Pass the user to the job if it must
+  # behave like the request did.
+  attribute :early_access_overrides
+
   private :tenant=, :app_configuration=
+
+  NO_EARLY_ACCESS_OVERRIDES = Set.new.freeze
+
+  def early_access_overrides
+    super || NO_EARLY_ACCESS_OVERRIDES
+  end
 
   def app_configuration
     super or (cache_tenant and super)
@@ -25,6 +37,7 @@ class Current < ActiveSupport::CurrentAttributes
     self.tenant = nil
     self.app_configuration = nil
     self.global_visiting_permission = nil
+    self.early_access_overrides = nil
   end
 
   # This attribute is used to globally disable some model validations and callbacks that
