@@ -20,6 +20,8 @@ import CustomPages, {
 import EventsList from 'components/admin/ContentBuilder/Widgets/Events';
 import eventsMessages from 'components/admin/ContentBuilder/Widgets/Events/messages';
 import FileAttachment from 'components/admin/ContentBuilder/Widgets/FileAttachment';
+import FinishedOrArchived from 'components/admin/ContentBuilder/Widgets/FinishedOrArchived';
+import finishedOrArchivedMessages from 'components/admin/ContentBuilder/Widgets/FinishedOrArchived/messages';
 import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
@@ -129,6 +131,21 @@ const CustomPageBuilderToolbox = () => {
           }
           icon="personRaisedHand"
           label={formatMessage(openToParticipationTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-finished-or-archived"
+          component={
+            <FinishedOrArchived
+              titleMultiloc={toMultiloc(
+                finishedOrArchivedMessages.youSaidWeDid
+              )}
+              filterBy="finished"
+            />
+          }
+          icon="sportsScore"
+          label={formatMessage(
+            finishedOrArchivedMessages.finishedOrArchivedTitle
+          )}
         />
         <DraggableElement
           id="e2e-draggable-published"
