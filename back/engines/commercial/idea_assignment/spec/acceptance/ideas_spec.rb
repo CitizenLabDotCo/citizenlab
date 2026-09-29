@@ -45,6 +45,18 @@ resource 'Ideas' do
         expect(json_response[:data].size).to eq 2
         expect(json_response[:data].pluck(:id)).to match_array ideas.map(&:id)
       end
+
+      example 'List all ideas for several assignees, including unassigned' do
+        assignee = create(:admin)
+        ideas = [create(:idea, assignee: assignee), create(:idea, assignee: nil)]
+        create(:idea, assignee: create(:admin))
+
+        do_request assignee: [assignee.id, 'unassigned']
+
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response[:data].pluck(:id)).to match_array ideas.map(&:id)
+      end
     end
 
     get 'web_api/v1/ideas/as_markers' do
@@ -89,7 +101,18 @@ resource 'Ideas' do
     get 'web_api/v1/ideas/filter_counts' do
       parameter :assignee, 'Filter by assignee (user id)', required: false
 
-      example 'List idea counts per filter option by assignee', :pending
+      example 'List idea counts per assignee' do
+        assignee = create(:admin)
+        create_list(:idea, 2, assignee: assignee)
+        create(:idea, assignee: nil)
+
+        do_request
+
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :attributes, :assignee_id)).to eq({ assignee.id.to_sym => 2 })
+        expect(json_response.dig(:data, :attributes, :total)).to eq 3
+      end
     end
 
     post 'web_api/v1/phases/:phase_id/inputs' do
