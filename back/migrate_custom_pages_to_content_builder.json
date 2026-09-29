@@ -1,0 +1,158 @@
+{
+  "processed_tenants": [
+    "localhost"
+  ],
+  "creates": [
+    {
+      "model_name": "ContentBuilder::Layout",
+      "attributes": {
+        "code": "custom_page",
+        "node_ids": [
+          "ROOT",
+          "CUSTOM_PAGE_BODY",
+          "CUSTOM_PAGE_TITLE",
+          "CUSTOM_PAGE_TOP_INFO"
+        ]
+      },
+      "context": {
+        "tenant": "localhost",
+        "page_id": "517020d9-07b8-4e24-a821-f86c72da8fca",
+        "slug": "omnis-voluptatem-expedita-et"
+      }
+    },
+    {
+      "model_name": "ContentBuilder::Layout",
+      "attributes": {
+        "code": "custom_page",
+        "node_ids": [
+          "ROOT",
+          "CUSTOM_PAGE_BODY",
+          "CUSTOM_PAGE_TITLE",
+          "CUSTOM_PAGE_TOP_INFO"
+        ]
+      },
+      "context": {
+        "tenant": "localhost",
+        "page_id": "60dbb32d-862c-4f6d-aff7-1cf7b95efa3b",
+        "slug": "quia-et-et-aperiam"
+      }
+    },
+    {
+      "model_name": "ContentBuilder::Layout",
+      "attributes": {
+        "code": "custom_page",
+        "node_ids": [
+          "ROOT",
+          "CUSTOM_PAGE_BODY",
+          "CUSTOM_PAGE_TITLE",
+          "CUSTOM_PAGE_TOP_INFO"
+        ]
+      },
+      "context": {
+        "tenant": "localhost",
+        "page_id": "671b542a-518d-4b35-a788-724d0f4fa10c",
+        "slug": "iusto-soluta-quia-et"
+      }
+    },
+    {
+      "model_name": "ContentBuilder::Layout",
+      "attributes": {
+        "code": "custom_page",
+        "node_ids": [
+          "ROOT",
+          "CUSTOM_PAGE_BODY",
+          "CUSTOM_PAGE_TITLE",
+          "CUSTOM_PAGE_TOP_INFO"
+        ]
+      },
+      "context": {
+        "tenant": "localhost",
+        "page_id": "67718ade-00f0-4e2c-9ecb-e4bc34decf1b",
+        "slug": "corrupti-quam-vitae-et"
+      }
+    },
+    {
+      "model_name": "ContentBuilder::Layout",
+      "attributes": {
+        "code": "custom_page",
+        "node_ids": [
+          "ROOT",
+          "CUSTOM_PAGE_BODY",
+          "CUSTOM_PAGE_TITLE",
+          "CUSTOM_PAGE_TOP_INFO"
+        ]
+      },
+      "context": {
+        "tenant": "localhost",
+        "page_id": "b5fcd5f2-34c0-4777-964a-54b686c30f9f",
+        "slug": "illum-ex-consequuntur-quaerat"
+      }
+    },
+    {
+      "model_name": "ContentBuilder::Layout",
+      "attributes": {
+        "code": "custom_page",
+        "node_ids": [
+          "ROOT",
+          "CUSTOM_PAGE_BODY",
+          "CUSTOM_PAGE_TITLE",
+          "CUSTOM_PAGE_TOP_INFO"
+        ]
+      },
+      "context": {
+        "tenant": "localhost",
+        "page_id": "d323a48b-1f40-4bf2-8de8-491d2b30e956",
+        "slug": "sunt-quaerat-temporibus-velit"
+      }
+    },
+    {
+      "model_name": "ContentBuilder::Layout",
+      "attributes": {
+        "code": "custom_page",
+        "node_ids": [
+          "ROOT",
+          "CUSTOM_PAGE_BODY",
+          "CUSTOM_PAGE_TITLE",
+          "CUSTOM_PAGE_TOP_INFO"
+        ]
+      },
+      "context": {
+        "tenant": "localhost",
+        "page_id": "f53faac1-2e2d-4503-a028-139e729a490c",
+        "slug": "temporibus-qui-enim-incidunt"
+      }
+    },
+    {
+      "model_name": "ContentBuilder::Layout",
+      "attributes": {
+        "code": "custom_page",
+        "node_ids": [
+          "ROOT",
+          "CUSTOM_PAGE_BODY",
+          "CUSTOM_PAGE_BANNER",
+          "CUSTOM_PAGE_TITLE",
+          "CUSTOM_PAGE_TOP_INFO",
+          "CUSTOM_PAGE_PROJECTS",
+          "CUSTOM_PAGE_EVENTS"
+        ]
+      },
+      "context": {
+        "tenant": "localhost",
+        "page_id": "fef958fb-9274-4579-808b-a02ac89ce0a1",
+        "slug": "tenetur-exercitationem-voluptates-reprehenderit"
+      }
+    }
+  ],
+  "changes": [
+    {
+      "old_value": false,
+      "new_value": true,
+      "context": {
+        "tenant": "localhost",
+        "feature": "custom_page_builder"
+      }
+    }
+  ],
+  "deletes": [],
+  "errors": []
+}

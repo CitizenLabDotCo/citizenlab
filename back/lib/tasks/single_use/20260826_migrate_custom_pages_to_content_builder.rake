@@ -17,7 +17,7 @@
 #     rake 'single_use:migrate_custom_pages_to_content_builder[execute]'                  # create, all tenants
 #     rake 'single_use:migrate_custom_pages_to_content_builder[execute,foo.com]'          # create, one tenant
 #     rake 'single_use:migrate_custom_pages_to_content_builder[execute,foo.com,overwrite]' # re-derive existing layouts
-#     rake 'single_use:migrate_custom_pages_to_content_builder[execute,,cutover]'         # re-derive and switch on, all tenants
+#     rake 'single_use:migrate_custom_pages_to_content_builder[execute,,cutover]'         # re-derive and switch on, all tenants (empty host)
 namespace :single_use do
   desc "Derive Content Builder layouts for global custom pages. Dry run unless passed 'execute'."
   task :migrate_custom_pages_to_content_builder, %i[execute host mode force] => [:environment] do |_t, args|
