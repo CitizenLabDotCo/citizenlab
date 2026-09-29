@@ -1950,7 +1950,6 @@
   "app.containers.Admin.projects.project.previewProject": "Preview the project page",
   "app.containers.Admin.projects.project.projectHomepage": "Project homepage",
   "app.containers.Admin.projects.project.projectPagePreviewTitle": "Project page preview",
-  "app.containers.Admin.projects.project.projectPageToggle": "Project page",
   "app.containers.Admin.projects.project.projectSettings": "Project settings",
   "app.containers.Admin.projects.project.projectSetupPanel": "Project setup",
   "app.containers.Admin.projects.project.projectsCrumb": "Projects",
