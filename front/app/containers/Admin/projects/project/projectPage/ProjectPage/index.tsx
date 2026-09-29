@@ -11,6 +11,7 @@ import styled from 'styled-components';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import PhonePreview from 'containers/Admin/projects/_shared/components/PhonePreview';
 
@@ -67,12 +68,13 @@ const ProjectPage = () => {
     from: '/$locale/admin/projects/$projectId/project-page',
   });
   const { data: project } = useProjectById(projectId);
+  const redesign = useProjectBackofficeRedesign();
 
   if (!project) {
     return (
       <Box
         minHeight="100%"
-        background={colors.background}
+        background={redesign ? colors.grey100 : colors.background}
         display="flex"
         alignItems="center"
         justifyContent="center"

@@ -28,6 +28,8 @@ const ShareDropdown = ({ project, opened, onOpenChange }: Props) => {
         onOpenChange(nextOpened);
       }}
       label={formatMessage(projectHeaderMessages.share)}
+      buttonStyle="bo-secondary"
+      icon="chevron-down"
       id="e2e-share-dropdown-toggle"
       width="420px"
       content={

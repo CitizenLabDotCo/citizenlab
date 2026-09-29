@@ -34,13 +34,19 @@ export type TBreadcrumbs = TBreadcrumb[];
 
 interface Props {
   breadcrumbs: TBreadcrumbs;
-  /** Icon shown once, before the first crumb. */
   icon?: IconNames;
-  /** Defaults to the "/" character; "chevron" swaps in a > icon. */
   separator?: 'slash' | 'chevron';
+  fontSize?: 's' | 'm';
+  highlightCurrentPage?: boolean;
 }
 
-const Breadcrumbs = ({ breadcrumbs, icon, separator = 'slash' }: Props) => {
+const Breadcrumbs = ({
+  breadcrumbs,
+  icon,
+  separator = 'slash',
+  fontSize = 'm',
+  highlightCurrentPage = false,
+}: Props) => {
   if (breadcrumbs.length === 0) {
     return null;
   }
@@ -58,6 +64,7 @@ const Breadcrumbs = ({ breadcrumbs, icon, separator = 'slash' }: Props) => {
       )}
       {breadcrumbs.map(({ label, link }, index) => {
         const isLastBreadcrumb = index === breadcrumbs.length - 1;
+        const isHeading = highlightCurrentPage && isLastBreadcrumb && !link;
 
         return (
           <Box
@@ -68,7 +75,7 @@ const Breadcrumbs = ({ breadcrumbs, icon, separator = 'slash' }: Props) => {
             data-cy={`breadcrumbs-${label}`}
           >
             {link && (
-              <Text fontSize="m" as="span" mb="0">
+              <Text fontSize={fontSize} as="span" mb="0">
                 <StyledLink
                   to={link.to}
                   params={link.params}
@@ -78,8 +85,13 @@ const Breadcrumbs = ({ breadcrumbs, icon, separator = 'slash' }: Props) => {
                 </StyledLink>
               </Text>
             )}
-            {!link && (
-              <Text color="textSecondary" fontSize="m" as="span" mb="0">
+            {!link && !isHeading && (
+              <Text color="textSecondary" fontSize={fontSize} as="span" mb="0">
+                {label}
+              </Text>
+            )}
+            {isHeading && (
+              <Text variant="boSection" as="span">
                 {label}
               </Text>
             )}
@@ -98,7 +110,7 @@ const Breadcrumbs = ({ breadcrumbs, icon, separator = 'slash' }: Props) => {
                   ml="16px"
                   as="span"
                   mr="16px"
-                  fontSize="m"
+                  fontSize={fontSize}
                   mb="0"
                 >
                   /

@@ -243,14 +243,14 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
       footer={
         <Box display="flex" gap="8px">
           <Button
-            buttonStyle="secondary-outlined"
+            buttonStyle="bo-secondary"
             width="auto"
             onClick={handleCancel}
           >
             {formatMessage(messages.settingsCancel)}
           </Button>
           <Button
-            buttonStyle="admin-dark"
+            buttonStyle="bo-primary"
             width="auto"
             processing={processing}
             onClick={handleSave}

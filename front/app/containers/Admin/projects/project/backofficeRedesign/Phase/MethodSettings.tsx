@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useState } from 'react';
 
-import { Box, Spinner } from '@citizenlab/cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import {
@@ -61,7 +61,7 @@ interface Props {
   phase: IPhaseData;
 }
 
-const PhaseRightPanel = ({ phase }: Props) => {
+const MethodSettings = ({ phase }: Props) => {
   const { formatMessage } = useIntl();
   const { data: phaseWithRelationships } = usePhase(phase.id);
   const { mutateAsync: updatePhase } = useUpdatePhase();
@@ -111,54 +111,52 @@ const PhaseRightPanel = ({ phase }: Props) => {
   });
 
   return (
-    <Box display="flex" flexDirection="column" minHeight="100%">
-      <PanelSettings flexGrow={1} p="20px">
-        {accessOnlyActions ? (
-          <ParticipantActionsGroup
-            phaseId={phase.id}
-            actions={accessOnlyActions}
-          />
-        ) : (
-          <PhaseParticipationConfig
-            phase={phaseWithRelationships}
-            formData={formData}
-            validationErrors={validationErrors}
-            apiErrors={errors}
-            onChange={handleChange}
-            setValidationErrors={setValidationErrors}
-            hideMethodPicker
-            layout="panel"
-          />
+    <PanelSettings p="20px">
+      {accessOnlyActions ? (
+        <ParticipantActionsGroup
+          phaseId={phase.id}
+          actions={accessOnlyActions}
+        />
+      ) : (
+        <PhaseParticipationConfig
+          phase={phaseWithRelationships}
+          formData={formData}
+          validationErrors={validationErrors}
+          apiErrors={errors}
+          onChange={handleChange}
+          setValidationErrors={setValidationErrors}
+          hideMethodPicker
+          layout="panel"
+        />
+      )}
+
+      {!accessOnlyActions &&
+        !METHODS_WITH_ACTION_TOGGLES.includes(participationMethod) && (
+          <EditAccessButton phaseId={phase.id} />
         )}
 
-        {!accessOnlyActions &&
-          !METHODS_WITH_ACTION_TOGGLES.includes(participationMethod) && (
-            <EditAccessButton phaseId={phase.id} />
-          )}
-
-        {getMethodConfig(participationMethod).supportsMapView && (
-          <PanelRowModal
-            label={formatMessage(messages.mapConfiguration)}
-            width="1100px"
+      {getMethodConfig(participationMethod).supportsMapView && (
+        <PanelRowModal
+          label={formatMessage(messages.mapConfiguration)}
+          width="1100px"
+        >
+          <Suspense
+            fallback={
+              <Centerer height="500px">
+                <Spinner />
+              </Centerer>
+            }
           >
-            <Suspense
-              fallback={
-                <Centerer height="500px">
-                  <Spinner />
-                </Centerer>
-              }
-            >
-              <CustomMapConfigPage />
-            </Suspense>
-          </PanelRowModal>
-        )}
-
-        <PanelRowModal label={formatMessage(messages.notifications)}>
-          <AdminPhaseEmailWrapper />
+            <CustomMapConfigPage />
+          </Suspense>
         </PanelRowModal>
-      </PanelSettings>
-    </Box>
+      )}
+
+      <PanelRowModal label={formatMessage(messages.notifications)}>
+        <AdminPhaseEmailWrapper />
+      </PanelRowModal>
+    </PanelSettings>
   );
 };
 
-export default PhaseRightPanel;
+export default MethodSettings;

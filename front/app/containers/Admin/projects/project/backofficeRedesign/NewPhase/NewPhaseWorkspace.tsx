@@ -19,9 +19,8 @@ import clHistory from 'utils/cl-router/history';
 
 import ProjectWorkspace from '..';
 import { SaveReason, useRegisterPhaseSaver } from '../_shared/PhaseSaveContext';
-import BackToProjectSetup from '../Phase/BackToProjectSetup';
 import BuildFields from '../Phase/BuildPanel/BuildFields';
-import DraftPhaseRightPanel from '../Phase/DraftPhaseRightPanel';
+import DraftMethodSettings from '../Phase/DraftMethodSettings';
 import PhasePreview from '../Phase/PhasePreview';
 
 interface Props {
@@ -114,8 +113,8 @@ const NewPhaseWorkspace = ({
       project={project}
       draft={{
         label,
-        rightPanel: (
-          <DraftPhaseRightPanel
+        methodSettings: (
+          <DraftMethodSettings
             formData={formData}
             validationErrors={validationErrors}
             apiErrors={errors}
@@ -124,37 +123,31 @@ const NewPhaseWorkspace = ({
           />
         ),
       }}
-      leftPanel={
-        <Box display="flex" flexDirection="column" minHeight="100%">
-          <BackToProjectSetup projectId={projectId} />
-
-          <Box display="flex" flexDirection="column" flexGrow={1} minHeight="0">
-            <Box flexGrow={1} px="20px" pb="20px">
-              <BuildFields
-                projectId={projectId}
-                participationMethod={participationMethod}
-                formData={formData}
-                errors={errors}
-                validationErrors={validationErrors}
-                standalone={standalone}
-                files={files}
-                surveyMethodSwitch={{
-                  onSelect: (method) => {
-                    setParticipationMethod(method);
-                    updateFormData(defaultsForMethod(method));
-                  },
-                }}
-                onChange={updateFormData}
-                onDatesChange={(dates) => {
-                  setValidationErrors((errors) => ({
-                    ...errors,
-                    phaseDateError: undefined,
-                  }));
-                  updateFormData(dates);
-                }}
-              />
-            </Box>
-          </Box>
+      sidePanel={
+        <Box p="20px">
+          <BuildFields
+            projectId={projectId}
+            participationMethod={participationMethod}
+            formData={formData}
+            errors={errors}
+            validationErrors={validationErrors}
+            standalone={standalone}
+            files={files}
+            surveyMethodSwitch={{
+              onSelect: (method) => {
+                setParticipationMethod(method);
+                updateFormData(defaultsForMethod(method));
+              },
+            }}
+            onChange={updateFormData}
+            onDatesChange={(dates) => {
+              setValidationErrors((errors) => ({
+                ...errors,
+                phaseDateError: undefined,
+              }));
+              updateFormData(dates);
+            }}
+          />
         </Box>
       }
     >
