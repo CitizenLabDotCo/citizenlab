@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, fontSizes } from '@citizenlab/cl2-component-library';
 
-import messages from 'containers/DescriptionBuilder/messages';
+import messages from 'components/DescriptionBuilder/messages';
 
 import { useIntl } from 'utils/cl-intl';
 import Link, { typedStyled } from 'utils/cl-router/Link';

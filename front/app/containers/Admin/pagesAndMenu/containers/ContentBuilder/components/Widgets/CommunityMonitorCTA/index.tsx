@@ -18,6 +18,7 @@ import { getPhaseActionDescriptor } from 'api/phases/utils';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
 import SurveyTimeToComplete from 'components/SurveyTimeToComplete';
 
 import { trackEventByName } from 'utils/analytics';
@@ -88,7 +89,7 @@ const CommunityMonitorCTA = ({
     <Box
       mx="auto"
       w="100%"
-      maxWidth="1200px"
+      maxWidth={BUILDER_CONTENT_MAX_WIDTH}
       px={isTabletOrSmaller ? '16px' : undefined}
     >
       <Box

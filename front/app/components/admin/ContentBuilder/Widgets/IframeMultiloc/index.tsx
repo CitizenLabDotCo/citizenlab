@@ -4,6 +4,8 @@ import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
+
 import { isYouTubeEmbedLink } from 'utils/urlUtils';
 
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
@@ -49,7 +51,7 @@ const IframeMultiloc = ({
     <Box
       className="e2e-content-builder-iframe-component"
       minHeight="26px"
-      maxWidth="1200px"
+      maxWidth={BUILDER_CONTENT_MAX_WIDTH}
       margin="0 auto"
       px={componentDefaultPadding}
     >

@@ -15,6 +15,8 @@ import useReport from 'api/reports/useReport';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 
+import { getResolvedName } from 'components/admin/ContentBuilder/resolvedName';
+
 import { useIntl } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
 import { htmlToImageBuffer } from 'utils/word/utils/htmlToImage';
@@ -71,7 +73,6 @@ const CONTAINER_NODES = new Set([
 ]);
 
 type SerializedNodeWithProps = SerializedNodes[string] & {
-  type?: string | { resolvedName?: string };
   props?: Record<string, any>;
   nodes: string[];
   linkedNodes: Record<string, string>;
@@ -97,8 +98,7 @@ const buildExportNodes = (
     const node = nodes[nodeId] as SerializedNodeWithProps | undefined;
     if (!node) return [];
 
-    const nodeName =
-      typeof node.type === 'object' ? node.type.resolvedName : node.type;
+    const nodeName = getResolvedName(node);
     const children = Array.from(
       new Set([...node.nodes, ...Object.values(node.linkedNodes)])
     );

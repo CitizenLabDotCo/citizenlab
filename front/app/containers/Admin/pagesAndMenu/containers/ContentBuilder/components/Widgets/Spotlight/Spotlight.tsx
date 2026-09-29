@@ -14,6 +14,7 @@ import { useTheme } from 'styled-components';
 
 import { CARD_IMAGE_ASPECT_RATIO_STR } from 'api/project_images/useProjectImages';
 
+import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 import AvatarBubbles from 'components/AvatarBubbles';
 import Skeleton from 'components/AvatarBubbles/Skeleton';
@@ -61,7 +62,7 @@ const Spotlight = ({
     >
       <Box
         w="100%"
-        maxWidth="1200px"
+        maxWidth={BUILDER_CONTENT_MAX_WIDTH}
         display="flex"
         flexDirection={isSmallerThanPhone ? 'column' : 'row'}
         justifyContent={isSmallerThanPhone ? 'flex-start' : 'space-between'}
