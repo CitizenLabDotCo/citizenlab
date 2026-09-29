@@ -66,9 +66,12 @@ module ReportBuilder
             section: the layout already avoids breaking a chart or a paragraph in half.
         DOC
         'TableOfContents' => <<~DOC,
-          TableOfContents — lists the report's headings with the page each one is on. props: {}
-            Place one, after the cover and its page break. It fills itself in from the
-            headings you wrote, so it needs no content of its own.
+          TableOfContents — lists the report's headings with the page each one is on.
+          props: {"title":{"<locale>":"Contents"}}
+            Place one, after the cover and its page break. It fills the list in from the
+            headings you wrote, so the only thing to write is the heading above it —
+            and leaving title out is fine, it then reads "Contents" in the reader's
+            own language.
         DOC
         'Cover' => <<~DOC,
           Cover — the title page. Always the first node of the report.

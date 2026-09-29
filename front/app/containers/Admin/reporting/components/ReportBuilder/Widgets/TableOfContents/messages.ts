@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.TableOfContents.contents',
     defaultMessage: 'Contents',
   },
+  headingLabel: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.TableOfContents.headingLabel',
+    defaultMessage: 'Heading',
+  },
   empty: {
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.TableOfContents.empty',
     defaultMessage:

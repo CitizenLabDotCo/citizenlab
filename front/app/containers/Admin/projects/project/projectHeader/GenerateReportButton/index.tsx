@@ -8,6 +8,7 @@ import {
   isReportGenerationInProgress,
   reportGenerationFailed,
 } from 'api/report_generation/util';
+import useReportLayout from 'api/report_layout/useReportLayout';
 import useAddReport from 'api/reports/useAddReport';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -34,12 +35,22 @@ const GenerateReportButton = ({ projectId, reportId }: Props) => {
     { type: 'Project', id: projectId },
     { enabled: llmReportingEnabled }
   );
+  const { data: layout } = useReportLayout(
+    llmReportingEnabled ? reportId : undefined
+  );
 
   if (!llmReportingEnabled) return null;
 
   const job = jobs?.data[0];
   const running = isReportGenerationInProgress(job);
   const failed = reportGenerationFailed(job);
+
+  // A report row exists from the moment someone asks for one, and stays behind
+  // empty if the run failed or never ran. Offering to open that is offering an
+  // empty editor with no way out, so what matters here is whether the report has
+  // anything in it, not whether it exists.
+  const hasContent =
+    Object.keys(layout?.data.attributes.craftjs_json ?? {}).length > 0;
 
   if (running) {
     return (
@@ -54,8 +65,9 @@ const GenerateReportButton = ({ projectId, reportId }: Props) => {
     );
   }
 
-  // The report exists and nothing is running: the button's job now is to open it.
-  if (reportId && !failed) {
+  // The report exists, has something in it and nothing is running: the button's
+  // job now is to open it.
+  if (reportId && hasContent && !failed) {
     return (
       <ButtonWithLink
         to="/admin/reporting/report-builder/$reportId/editor"
@@ -95,7 +107,9 @@ const GenerateReportButton = ({ projectId, reportId }: Props) => {
         );
       }}
     >
-      {formatMessage(failed ? messages.retryReport : messages.generateReport)}
+      {formatMessage(
+        failed || reportId ? messages.retryReport : messages.generateReport
+      )}
     </ButtonWithLink>
   );
 };

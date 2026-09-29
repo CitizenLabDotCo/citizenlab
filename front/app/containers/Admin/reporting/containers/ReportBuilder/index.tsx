@@ -11,6 +11,7 @@ import { ReportResponse } from 'api/reports/types';
 import useReport from 'api/reports/useReport';
 import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import ContentBuilderCanvas from 'components/admin/ContentBuilder/Canvas';
@@ -53,6 +54,9 @@ const ReportBuilder = ({ report, reportLayout, templateConfig }: Props) => {
   const phaseId = report.data.relationships.phase?.data?.id;
 
   const platformLocale = useLocale();
+  // With the chat in place the right rail is never empty: it holds the settings
+  // of the selected widget, or the chat about the report as a whole.
+  const llmReportingEnabled = useFeatureFlag({ name: 'llm_reporting' });
   const [view, setView] = useState<View>('pdf');
 
   const [initialData] = useState(() => {
@@ -124,7 +128,10 @@ const ReportBuilder = ({ report, reportLayout, templateConfig }: Props) => {
                 contentBuilderLocale={selectedLocale}
                 platformLocale={platformLocale}
               >
-                <ContentBuilderCanvas toolboxWidth="220px">
+                <ContentBuilderCanvas
+                  toolboxWidth="220px"
+                  rightPanelOpen={llmReportingEnabled}
+                >
                   {!!phaseId && (
                     <Box maxWidth={A4_WIDTH} mb="20px">
                       <Warning>

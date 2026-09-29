@@ -34,7 +34,7 @@ module ReportBuilder
         },
         'WhiteSpace' => { 'enums' => { 'size' => ['small', 'medium', 'large', ''] } },
         'PageBreak' => {},
-        'TableOfContents' => {},
+        'TableOfContents' => { 'multilocs' => %w[title] },
         'Cover' => { 'multilocs' => %w[title subtitle eyebrow footnote] },
         'Divider' => { 'enums' => { 'variant' => %w[section hairline dots] } },
         # figures is an array of {value, label}; the validator's conventions describe

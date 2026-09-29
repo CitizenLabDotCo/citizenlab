@@ -84,16 +84,45 @@ RSpec.describe ReportBuilder::Report do
   end
 
   describe '.listable' do
-    it 'hides a project report until the run that created it has written something' do
+    def generation_tracker(report, completed: false, created_at: Time.current)
+      create(
+        :jobs_tracker,
+        root_job_type: ReportBuilder::GenerateReportJob.name,
+        context: report.project,
+        project: report.project,
+        completed_at: completed ? Time.current : nil,
+        created_at: created_at
+      )
+    end
+
+    it 'hides an empty project report while the run that is filling it is under way' do
       report = create(:report, :with_project)
       report.layout.update!(craftjs_json: {})
+      generation_tracker(report)
 
       expect(described_class.listable).not_to include(report)
     end
 
-    it 'lists a project report once it has content' do
+    it 'lists an empty project report once the run is over, so it can be opened or deleted' do
+      report = create(:report, :with_project)
+      report.layout.update!(craftjs_json: {})
+      generation_tracker(report, completed: true)
+
+      expect(described_class.listable).to include(report)
+    end
+
+    it 'lists an empty project report whose run never completed but is long past, rather than hiding it for good' do
+      report = create(:report, :with_project)
+      report.layout.update!(craftjs_json: {})
+      generation_tracker(report, created_at: 2.hours.ago)
+
+      expect(described_class.listable).to include(report)
+    end
+
+    it 'lists a project report with content even while it is being generated again' do
       report = create(:report, :with_project)
       report.layout.update!(craftjs_json: { 'ROOT' => { 'type' => 'div' } })
+      generation_tracker(report)
 
       expect(described_class.listable).to include(report)
     end

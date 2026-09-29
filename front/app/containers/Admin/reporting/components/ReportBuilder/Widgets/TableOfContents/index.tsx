@@ -2,10 +2,14 @@ import React, { useEffect, useState } from 'react';
 
 import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+import { Multiloc } from 'typings';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import useLocalize from 'hooks/useLocalize';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import Settings from './Settings';
 
 // The class the paginator looks for when it writes the page numbers in.
 export const TOC_PAGE_CLASS = 'e2e-toc-page';
@@ -60,7 +64,15 @@ const readHeadings = (root: ParentNode): Entry[] =>
     })
     .filter((entry) => entry.text !== '');
 
-const TableOfContents = () => {
+export interface Props {
+  // The heading above the list. Falls back to the platform's own word for it,
+  // so a report that never sets one still reads correctly in every locale.
+  title?: Multiloc;
+}
+
+const TableOfContents = ({ title }: Props) => {
+  const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const [entries, setEntries] = useState<Entry[]>([]);
 
   // One pass after the report has rendered. The entries must exist before the
@@ -81,7 +93,7 @@ const TableOfContents = () => {
   return (
     <Panel className="e2e-table-of-contents" mb="8px">
       <Title variant="h3" m="0 0 12px">
-        <FormattedMessage {...messages.contents} />
+        {localize(title) || formatMessage(messages.contents)}
       </Title>
 
       {entries.length === 0 && (
@@ -115,7 +127,12 @@ const TableOfContents = () => {
 };
 
 TableOfContents.craft = {
-  props: {},
+  props: {
+    title: {},
+  },
+  related: {
+    settings: Settings,
+  },
   custom: {
     title: messages.contents,
   },
