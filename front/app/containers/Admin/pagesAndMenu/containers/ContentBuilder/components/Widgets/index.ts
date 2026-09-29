@@ -17,6 +17,9 @@ import CustomPages, {
 import EventsList, {
   eventsListTitle,
 } from 'components/admin/ContentBuilder/Widgets/Events';
+import FinishedOrArchived, {
+  finishedOrArchivedTitle,
+} from 'components/admin/ContentBuilder/Widgets/FinishedOrArchived';
 import HtmlBlockMultiloc, {
   htmlBlockMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
@@ -69,9 +72,6 @@ import CommunityMonitorCTA, {
   communityMonitorCTATitle,
 } from './CommunityMonitorCTA';
 import Events, { eventsTitle } from './Events';
-import FinishedOrArchived, {
-  finishedOrArchivedTitle,
-} from './FinishedOrArchived';
 import FollowedItems, { followedItemsTitle } from './FollowedItems';
 import HomepageBanner, { homepageBannerTitle } from './HomepageBanner';
 import ProjectsAndFoldersLegacy, {

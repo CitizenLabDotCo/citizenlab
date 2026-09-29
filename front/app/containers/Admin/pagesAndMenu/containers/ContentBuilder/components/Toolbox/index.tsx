@@ -25,6 +25,10 @@ import CustomPages, {
   customPagesTitle,
 } from 'components/admin/ContentBuilder/Widgets/CustomPages';
 import EventsList from 'components/admin/ContentBuilder/Widgets/Events';
+import FinishedOrArchived, {
+  finishedOrArchivedTitle,
+} from 'components/admin/ContentBuilder/Widgets/FinishedOrArchived';
+import finishedOrArchivedMessages from 'components/admin/ContentBuilder/Widgets/FinishedOrArchived/messages';
 import HtmlBlockMultiloc, {
   htmlBlockMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
@@ -72,10 +76,6 @@ import Areas, { areasTitle } from '../Widgets/Areas';
 import CommunityMonitorCTA, {
   communityMonitorCTATitle,
 } from '../Widgets/CommunityMonitorCTA';
-import FinishedOrArchived, {
-  finishedOrArchivedTitle,
-} from '../Widgets/FinishedOrArchived';
-import finishedOrArchivedMessages from '../Widgets/FinishedOrArchived/messages';
 import FollowedItems, { followedItemsTitle } from '../Widgets/FollowedItems';
 import followedItemsMessages from '../Widgets/FollowedItems/messages';
 import HomepageBanner, { homepageBannerTitle } from '../Widgets/HomepageBanner';
