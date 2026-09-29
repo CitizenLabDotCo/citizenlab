@@ -843,6 +843,8 @@
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleSinglelocError": "Enter a title",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.viewCustomPage": "View custom page",
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.Edit.HeroBanner.buttonTitle": "Button",
+  "app.containers.Admin.PagesAndMenu.containers.CustomPages.customPagePreviewTitle": "Custom page preview",
+  "app.containers.Admin.PagesAndMenu.containers.CustomPages.editCustomPageInContentBuilder": "Edit the page in the content builder",
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.editCustomPageMetaTitle": "Edit custom page | {orgName}",
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.pageContentTab": "Page content",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.editProject": "Edit",
