@@ -4,6 +4,8 @@ import useCustomPageById from 'api/custom_pages/useCustomPageById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import { adminCustomPageSettingsPath } from 'containers/Admin/pagesAndMenu/routes';
+
 import useEnsureCustomPageLayout from 'components/CustomPageBuilder/useEnsureCustomPageLayout';
 
 import { useParams } from 'utils/router';
@@ -22,7 +24,9 @@ const CustomPageBuilder = () => {
 
   if (!featureEnabled || !customPage) return null;
 
-  const backPath = `/admin/pages-menu/pages/${customPageId}/settings${window.location.search}`;
+  const backPath = `${adminCustomPageSettingsPath(customPageId)}${
+    window.location.search
+  }`;
 
   return (
     <CustomPageBuilderPage

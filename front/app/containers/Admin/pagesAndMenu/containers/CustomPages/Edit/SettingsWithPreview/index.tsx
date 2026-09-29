@@ -7,6 +7,7 @@ import useCustomPageById from 'api/custom_pages/useCustomPageById';
 
 import useLocale from 'hooks/useLocale';
 
+import { CUSTOM_PAGE_BUILDER_PATH } from 'components/admin/ContentBuilder/constants';
 import PagePreview from 'components/admin/PagePreview';
 import useEnsureCustomPageLayout from 'components/CustomPageBuilder/useEnsureCustomPageLayout';
 
@@ -30,7 +31,7 @@ const SettingsWithPreview = () => {
   if (!customPage) return null;
 
   const openContentBuilder = () => {
-    clHistory.push(`/admin/custom-page-builder/pages/${customPageId}`);
+    clHistory.push(`${CUSTOM_PAGE_BUILDER_PATH}/pages/${customPageId}`);
   };
 
   return (
