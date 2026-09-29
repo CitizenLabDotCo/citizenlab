@@ -8,16 +8,24 @@ import { render, screen, userEvent } from 'utils/testUtils/rtl';
 
 import RankingField from './index';
 
-const question = {
+const question: IFlatCustomField = {
+  id: 'priorities-id',
+  type: 'custom_field',
   key: 'priorities',
   title_multiloc: { en: 'Rank these priorities' },
+  description_multiloc: {},
   input_type: 'ranking',
   required: false,
+  enabled: true,
+  ordering: 0,
+  created_at: '',
+  updated_at: '',
+  logic: {},
   options: [
     { id: '1', key: 'housing', title_multiloc: { en: 'Housing' } },
     { id: '2', key: 'mobility', title_multiloc: { en: 'Mobility' } },
   ],
-} as unknown as IFlatCustomField;
+};
 
 const renderComponent = (defaultValues: Record<string, unknown>) => {
   const Wrapper = () => {

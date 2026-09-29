@@ -8,13 +8,21 @@ import { render, screen, userEvent } from 'utils/testUtils/rtl';
 
 import LinearScaleField from './index';
 
-const question = {
+const question: IFlatCustomField = {
+  id: 'satisfaction-id',
+  type: 'custom_field',
   key: 'satisfaction',
   title_multiloc: { en: 'How satisfied are you?' },
+  description_multiloc: {},
   input_type: 'linear_scale',
   required: false,
+  enabled: true,
+  ordering: 0,
+  created_at: '',
+  updated_at: '',
+  logic: {},
   maximum: 5,
-} as unknown as IFlatCustomField;
+};
 
 const renderComponent = (defaultValues: Record<string, unknown>) => {
   const Wrapper = () => {

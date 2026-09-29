@@ -8,13 +8,21 @@ import { render, screen, userEvent } from 'utils/testUtils/rtl';
 
 import SentimentScaleField from './index';
 
-const question = {
+const question: IFlatCustomField = {
+  id: 'experience-id',
+  type: 'custom_field',
   key: 'experience',
   title_multiloc: { en: 'How was your experience?' },
+  description_multiloc: {},
   input_type: 'sentiment_linear_scale',
   required: false,
+  enabled: true,
+  ordering: 0,
+  created_at: '',
+  updated_at: '',
+  logic: {},
   ask_follow_up: false,
-} as unknown as IFlatCustomField;
+};
 
 const renderComponent = (defaultValues: Record<string, unknown>) => {
   const Wrapper = () => {
