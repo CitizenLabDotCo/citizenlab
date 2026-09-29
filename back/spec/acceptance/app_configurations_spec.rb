@@ -68,6 +68,27 @@ resource 'AppConfigurations' do
           .to include(allowed: false, enabled: false)
       end
     end
+
+    patch 'web_api/v1/app_configuration' do
+      example '[error] Change a feature the admin only sees through early access', document: false do
+        admin.update!(early_access_opt_ins: [feature])
+        do_request(app_configuration: { settings: { feature => { enabled: true } } })
+
+        assert_status 422
+        expect(json_parse(response_body).dig(:errors, :settings))
+          .to include({ error: 'early_access_override', value: [feature] })
+        expect(AppConfiguration.instance.reload.settings(feature))
+          .to include('allowed' => false, 'enabled' => false)
+      end
+
+      example 'Change other settings while opted into early access', document: false do
+        admin.update!(early_access_opt_ins: [feature])
+        do_request(app_configuration: { settings: { core: { organization_name: { 'en' => 'Early town' } } } })
+
+        assert_status 200
+        expect(AppConfiguration.instance.reload.settings('core', 'organization_name', 'en')).to eq 'Early town'
+      end
+    end
   end
 
   patch 'web_api/v1/app_configuration' do
