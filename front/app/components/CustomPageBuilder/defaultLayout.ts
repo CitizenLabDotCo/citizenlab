@@ -1,5 +1,10 @@
 import { SerializedNodes, SerializedNode } from '@craftjs/core';
 
+import {
+  findNodeIdByName,
+  getResolvedName,
+} from 'components/admin/ContentBuilder/resolvedName';
+
 import { isEmptyMultiloc } from 'utils/helperUtils';
 
 import { CustomPageBannerProps } from './Widgets/CustomPageBanner/types';
@@ -37,18 +42,12 @@ export const defaultCustomPageLayout = (): SerializedNodes => ({
   [BODY_NODE_ID]: bodyNode([]),
 });
 
-const resolvedNameOf = (node: SerializedNode) =>
-  typeof node.type === 'object' ? node.type.resolvedName : undefined;
-
-export const findNodeIdByName = (nodes: SerializedNodes, name: string) =>
-  Object.keys(nodes).find((id) => resolvedNameOf(nodes[id]) === name);
-
 // A node off the wire may have no children array at all, whatever the type says.
 const childIdsOf = (node: SerializedNode): string[] =>
   Array.isArray(node.nodes) ? node.nodes : [];
 
 const isTitle = (nodes: SerializedNodes, id: string) =>
-  resolvedNameOf(nodes[id]) === 'CustomPageTitle';
+  getResolvedName(nodes[id]) === 'CustomPageTitle';
 
 // Every stored layout carries the scaffold and the title, so an unused builder still yields
 // a non-empty graph. Content means the body region holds something else — or ROOT does, on a
@@ -93,7 +92,7 @@ export const layoutStartsWithBanner = (nodes?: SerializedNodes): boolean => {
   );
   return (
     firstVisibleId !== undefined &&
-    resolvedNameOf(nodes[firstVisibleId]) === 'CustomPageBanner' &&
+    getResolvedName(nodes[firstVisibleId]) === 'CustomPageBanner' &&
     bannerHasContent(nodes[firstVisibleId].props)
   );
 };
