@@ -1118,7 +1118,6 @@
   "app.components.formBuilder.sentiment": "Scála meon",
   "app.components.formBuilder.shapefileUpload": "Uaslódáil comhad cruth Esri",
   "app.components.formBuilder.shortAnswer": "Freagra gairid",
-  "app.components.formBuilder.showResponseToUsersToggleLabel": "Taispeáin freagra d'úsáideoirí",
   "app.components.formBuilder.singleChoice": "Rogha aonair",
   "app.components.formBuilder.staleDataErrorMessage2": "Bhí fadhb ann. Sábháladh an fhoirm ionchuir seo le déanaí in áit eile. B’fhéidir gur tharla sé seo toisc go bhfuil sí oscailte agat féin nó ag úsáideoir eile le haghaidh eagarthóireachta i bhfuinneog brabhsálaí eile. Athnuachan an leathanach le do thoil chun an fhoirm is déanaí a fháil agus ansin déan do chuid athruithe arís.",
   "app.components.formBuilder.stronglyAgree": "Aontaím go láidir",
