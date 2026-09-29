@@ -66,7 +66,13 @@ class IdeasFinder < ApplicationFinder
   end
 
   def feedback_needed_condition(feedback_needed)
-    scope(:feedback_needed) if feedback_needed
+    return if feedback_needed.nil?
+
+    if Utils.to_bool(feedback_needed)
+      scope(:feedback_needed)
+    else
+      records.where.not(id: Idea.feedback_needed)
+    end
   end
 
   def search_condition(search)
@@ -121,3 +127,4 @@ class IdeasFinder < ApplicationFinder
 end
 
 IdeasFinder.include(IdeaAssignment::Extensions::IdeasFinder)
+IdeasFinder.include(BulkImportIdeas::Extensions::IdeasFinder)
