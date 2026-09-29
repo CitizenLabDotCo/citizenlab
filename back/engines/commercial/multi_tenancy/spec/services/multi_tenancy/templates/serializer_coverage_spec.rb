@@ -80,6 +80,7 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
       'User' => %w[
         block_end_at
         confirmation_required
+        early_access_opt_ins
         email_confirmed_at
         imported
         invite_status
@@ -93,7 +94,7 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         reset_password_token
         roles
         token_expiry_key
-      ] # auth/session/role/contact state — deliberately not templated (privacy/security)
+      ] # auth/session/role/contact state and personal settings — deliberately not templated (privacy/security)
     }.freeze
   end
 

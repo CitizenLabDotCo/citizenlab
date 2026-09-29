@@ -1611,6 +1611,7 @@ CREATE TABLE public.users (
     phone character varying,
     new_phone character varying,
     phone_confirmed_at timestamp(6) without time zone,
+    early_access_opt_ins jsonb DEFAULT '[]'::jsonb NOT NULL,
     merge_target_email character varying
 );
 
@@ -9567,6 +9568,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20260909100000'),
 ('20260908144646'),
 ('20260904074654'),
+('20260827120000'),
 ('20260821210000'),
 ('20260821090000'),
 ('20260821000000'),
