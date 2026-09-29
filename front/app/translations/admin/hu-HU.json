@@ -1220,6 +1220,8 @@
   "app.containers.Admin.inspirationHub.filters": "szűrők",
   "app.containers.Admin.inspirationHub.resetFilters": "Szűrők alaphelyzetbe állítása",
   "app.containers.Admin.inspirationHub.seemsLike": "Úgy tűnik, nincs több projekt. Próbálja meg módosítani a {filters} beállításait.",
+  "app.containers.Admin.internalEarlyAccessLabel": "Belső korai hozzáférés",
+  "app.containers.Admin.internalEarlyAccessLabelExplanation": "Ez a funkció még fejlesztés alatt áll, és csak a Go Vocal munkatársai számára érhető el. Ne mutassa meg az ügyfeleknek.",
   "app.containers.Admin.messaging.addSmsCampaignButton": "SMS létrehozása",
   "app.containers.Admin.messaging.addSmsCampaignTitle": "Új SMS-üzenet",
   "app.containers.Admin.messaging.automated.editModalTitle": "Kampánymezők szerkesztése",
