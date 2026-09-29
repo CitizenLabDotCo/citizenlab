@@ -21,10 +21,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.projectSetupPanel',
     defaultMessage: 'Project setup',
   },
-  projectPageToggle: {
-    id: 'app.containers.Admin.projects.project.projectPageToggle',
-    defaultMessage: 'Project page',
-  },
   projectSettings: {
     id: 'app.containers.Admin.projects.project.projectSettings',
     defaultMessage: 'Project settings',
