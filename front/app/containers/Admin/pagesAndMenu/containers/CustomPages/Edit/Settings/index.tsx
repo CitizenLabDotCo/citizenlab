@@ -5,6 +5,9 @@ import { omit } from 'lodash-es';
 import { TCustomPageCode } from 'api/custom_pages/types';
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
+import { isGlobalCustomPage } from 'api/custom_pages/util';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { FormValues } from 'containers/Admin/pagesAndMenu/containers/CustomPages/CustomPageSettingsForm';
 
@@ -33,6 +36,9 @@ const EditCustomPageSettings = () => {
     customPageId: string;
   };
   const { data: customPage } = useCustomPageById(customPageId);
+  const customPageBuilderEnabled = useFeatureFlag({
+    name: 'custom_page_builder',
+  });
 
   if (!isNilOrError(customPage)) {
     const hasNavbarItem = !!customPage.data.relationships.nav_bar_item.data?.id;
@@ -83,6 +89,10 @@ const EditCustomPageSettings = () => {
         showNavBarItemTitle={hasNavbarItem}
         onSubmit={handleOnSubmit}
         hideSlug={!customPageSlugAllowedToEdit[customPage.data.attributes.code]}
+        // The content builder lists projects through its own widgets, so linked items don't apply.
+        hideLinkedItems={
+          customPageBuilderEnabled && isGlobalCustomPage(customPage.data)
+        }
       />
     );
   }

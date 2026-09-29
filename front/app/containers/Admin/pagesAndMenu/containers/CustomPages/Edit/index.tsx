@@ -3,6 +3,7 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
+import { isGlobalCustomPage } from 'api/custom_pages/util';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
@@ -37,8 +38,6 @@ const CustomPagesEditSettings = () => {
     name: 'pages',
     onlyCheckAllowed: true,
   });
-  // With the builder on, one page replaces the two tabs: the section editors on the content
-  // tab no longer change what the page shows.
   const customPageBuilderEnabled = useFeatureFlag({
     name: 'custom_page_builder',
   });
@@ -46,6 +45,11 @@ const CustomPagesEditSettings = () => {
   if (isNilOrError(customPage)) {
     return null;
   }
+
+  // With the builder on, one page replaces the two tabs: the section editors on the content
+  // tab no longer change what the page shows.
+  const showSettingsWithPreview =
+    customPageBuilderEnabled && isGlobalCustomPage(customPage.data);
 
   const pageTitleMultiloc = customPage.data.attributes.title_multiloc;
   return (
@@ -80,7 +84,7 @@ const CustomPagesEditSettings = () => {
             ),
           }}
           tabs={
-            customPageBuilderEnabled
+            showSettingsWithPreview
               ? []
               : [
                   {
@@ -97,11 +101,7 @@ const CustomPagesEditSettings = () => {
           }
           contentWrapper={false}
         >
-          {customPageBuilderEnabled ? (
-            <SettingsWithPreview />
-          ) : (
-            <RouterOutlet />
-          )}
+          {showSettingsWithPreview ? <SettingsWithPreview /> : <RouterOutlet />}
         </TabbedResource>
       )}
     </>
