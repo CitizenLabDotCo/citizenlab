@@ -22,7 +22,7 @@ const CustomPageBuilder = () => {
 
   if (!featureEnabled || !customPage) return null;
 
-  const backPath = `/admin/pages-menu/pages/${customPageId}/content${window.location.search}`;
+  const backPath = `/admin/pages-menu/pages/${customPageId}/settings${window.location.search}`;
 
   return (
     <CustomPageBuilderPage
