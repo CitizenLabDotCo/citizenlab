@@ -12,7 +12,6 @@ import useEnsureCustomPageLayout from 'components/CustomPageBuilder/useEnsureCus
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { isNilOrError } from 'utils/helperUtils';
 import { useParams } from 'utils/router';
 
 import messages from '../../messages';
@@ -28,7 +27,7 @@ const SettingsWithPreview = () => {
   const { data: layout } = useCustomPageLayout(customPageId);
   useEnsureCustomPageLayout(customPageId);
 
-  if (isNilOrError(customPage)) return null;
+  if (!customPage) return null;
 
   const openContentBuilder = () => {
     clHistory.push(`/admin/custom-page-builder/pages/${customPageId}`);
