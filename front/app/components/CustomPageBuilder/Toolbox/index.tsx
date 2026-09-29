@@ -110,6 +110,17 @@ const CustomPageBuilderToolbox = () => {
           />
         )}
         <DraggableElement
+          id="e2e-draggable-selection"
+          component={
+            <Selection
+              titleMultiloc={toMultiloc(selectionTitle)}
+              adminPublicationIds={[]}
+            />
+          }
+          icon="folder-outline"
+          label={formatMessage(selectionTitle)}
+        />
+        <DraggableElement
           id="e2e-draggable-open-to-participation"
           component={
             <OpenToParticipation
@@ -118,6 +129,12 @@ const CustomPageBuilderToolbox = () => {
           }
           icon="personRaisedHand"
           label={formatMessage(openToParticipationTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-published"
+          component={<Published titleMultiloc={toMultiloc(publishedTitle)} />}
+          icon="check-circle"
+          label={formatMessage(publishedTitle)}
         />
         <DraggableElement
           id="e2e-draggable-spotlight"
@@ -131,27 +148,10 @@ const CustomPageBuilderToolbox = () => {
           label={formatMessage(spotlightTitle)}
         />
         <DraggableElement
-          id="e2e-draggable-selection"
-          component={
-            <Selection
-              titleMultiloc={toMultiloc(selectionTitle)}
-              adminPublicationIds={[]}
-            />
-          }
-          icon="folder-outline"
-          label={formatMessage(selectionTitle)}
-        />
-        <DraggableElement
           id="e2e-draggable-custom-pages"
           component={<CustomPages customPages={[]} />}
           icon="page"
           label={formatMessage(customPagesTitle)}
-        />
-        <DraggableElement
-          id="e2e-draggable-published"
-          component={<Published titleMultiloc={toMultiloc(publishedTitle)} />}
-          icon="check-circle"
-          label={formatMessage(publishedTitle)}
         />
         <DraggableElement
           id="e2e-draggable-events"
