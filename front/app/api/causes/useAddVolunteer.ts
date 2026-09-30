@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import { trackCustomerAnalyticsEvent } from 'utils/analytics';
+import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import causeKeys from './keys';
@@ -19,7 +19,9 @@ const useAddVolunteer = () => {
   return useMutation<IVolunteer, CLErrors, string>({
     mutationFn: addVolunteer,
     onSuccess: (_data, causeId) => {
-      trackCustomerAnalyticsEvent('volunteered', { cause_id: causeId });
+      trackEventByName(customerAnalyticsEvents.volunteered, {
+        cause_id: causeId,
+      });
 
       queryClient.invalidateQueries({
         queryKey: causeKeys.lists(),

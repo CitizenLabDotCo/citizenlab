@@ -3,7 +3,7 @@ import { CLErrors } from 'typings';
 
 import projectsKeys from 'api/projects/keys';
 
-import { trackCustomerAnalyticsEvent } from 'utils/analytics';
+import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import pollResponsesKeys from './keys';
@@ -36,7 +36,7 @@ const useAddPollResponse = () => {
   return useMutation<IPollResponses, CLErrors, AddPollResponse>({
     mutationFn: addPollResponse,
     onSuccess: (_data, variables) => {
-      trackCustomerAnalyticsEvent('poll_submitted', {
+      trackEventByName(customerAnalyticsEvents.pollSubmitted, {
         project_id: variables.projectId,
         phase_id: variables.phaseId,
       });

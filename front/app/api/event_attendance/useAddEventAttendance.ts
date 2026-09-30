@@ -4,7 +4,7 @@ import { CLErrors } from 'typings';
 
 import eventsKeys from 'api/events/keys';
 
-import { trackCustomerAnalyticsEvent } from 'utils/analytics';
+import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import eventsAttendancesKeys from './keys';
@@ -26,7 +26,7 @@ const useAddEventAttendance = (eventId: string) => {
     {
       mutationFn: addEventAttendance,
       onSuccess: (_data, params) => {
-        trackCustomerAnalyticsEvent('event_attendance_registered', {
+        trackEventByName(customerAnalyticsEvents.eventAttendanceRegistered, {
           event_id: eventId,
         });
 

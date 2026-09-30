@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
-import { trackCustomerAnalyticsEvent } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
@@ -10,7 +10,7 @@ import useUpdateBasket from './useUpdateBasket';
 
 jest.mock('utils/analytics', () => ({
   ...jest.requireActual('utils/analytics'),
-  trackCustomerAnalyticsEvent: jest.fn(),
+  trackEventByName: jest.fn(),
 }));
 
 const apiPath = '*baskets/:id';
@@ -48,20 +48,15 @@ describe('useUpdateBasket', () => {
       result.current.mutate({ id: 'id', submitted: false });
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(trackCustomerAnalyticsEvent).not.toHaveBeenCalled();
+    expect(trackEventByName).not.toHaveBeenCalled();
 
     act(() => {
       result.current.mutate({ id: 'id', submitted: true });
     });
-    await waitFor(() =>
-      expect(trackCustomerAnalyticsEvent).toHaveBeenCalledTimes(1)
-    );
-    expect(trackCustomerAnalyticsEvent).toHaveBeenCalledWith(
-      'voting_submitted',
-      {
-        phase_id: basketData.relationships.phase.data.id,
-      }
-    );
+    await waitFor(() => expect(trackEventByName).toHaveBeenCalledTimes(1));
+    expect(trackEventByName).toHaveBeenCalledWith('voting_submitted', {
+      phase_id: basketData.relationships.phase.data.id,
+    });
   });
 
   it('returns error correctly', async () => {

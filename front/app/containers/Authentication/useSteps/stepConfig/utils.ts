@@ -4,7 +4,7 @@ import { requestReconfirmCodePhone } from 'api/authentication/confirm_phone/requ
 import { redirectToSSOProvider } from 'api/authentication/singleSignOn';
 import { checkEmail, checkPhone } from 'api/users/checkUser';
 
-import { trackCustomerAnalyticsEvent } from 'utils/analytics';
+import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 
 import {
   GetRequirements,
@@ -22,9 +22,14 @@ export const trackAuthenticated = (
   flow: 'signup' | 'signin',
   method: 'email' | 'phone' | 'sso' | 'invite'
 ) => {
-  trackCustomerAnalyticsEvent(flow === 'signup' ? 'sign_up' : 'login', {
-    method,
-  });
+  trackEventByName(
+    flow === 'signup'
+      ? customerAnalyticsEvents.signUp
+      : customerAnalyticsEvents.login,
+    {
+      method,
+    }
+  );
 };
 
 export const checkMissingData = async (

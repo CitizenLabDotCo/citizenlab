@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import { trackCustomerAnalyticsEvent } from 'utils/analytics';
+import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import { FollowerAdd, IFollower } from './types';
@@ -23,12 +23,12 @@ const useAddFollower = () => {
     mutationFn: addFollower,
     onSuccess: async (_data, variables) => {
       if (variables.followableType === 'ideas') {
-        trackCustomerAnalyticsEvent('idea_followed', {
+        trackEventByName(customerAnalyticsEvents.ideaFollowed, {
           idea_id: variables.followableId,
         });
       }
       if (variables.followableType === 'projects') {
-        trackCustomerAnalyticsEvent('project_followed', {
+        trackEventByName(customerAnalyticsEvents.projectFollowed, {
           project_id: variables.followableId,
         });
       }

@@ -13,7 +13,7 @@ import usePhase from 'api/phases/usePhase';
 
 import useLocale from 'hooks/useLocale';
 
-import { trackCustomerAnalyticsEvent } from 'utils/analytics';
+import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { weglotTranslateIdeaSubmission } from 'utils/weglot';
 
@@ -104,7 +104,7 @@ const IdeationForm = ({
           },
         });
         updateSearchParams({ idea_id: idea.data.id });
-        trackCustomerAnalyticsEvent('idea_submitted', {
+        trackEventByName(customerAnalyticsEvents.ideaSubmitted, {
           project_id: projectId,
           phase_id: phase.data.id,
           participation_method: participationMethod,

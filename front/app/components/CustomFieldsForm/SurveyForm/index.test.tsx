@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { trackCustomerAnalyticsEvent } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import { render, screen, userEvent, waitFor } from 'utils/testUtils/rtl';
 
 import { SEARCHABLE_OPTION_COUNT } from '../constants';
@@ -39,7 +39,7 @@ jest.mock('api/me/useAuthUser', () => () => ({ data: undefined }));
 
 jest.mock('utils/analytics', () => ({
   ...jest.requireActual('utils/analytics'),
-  trackCustomerAnalyticsEvent: jest.fn(),
+  trackEventByName: jest.fn(),
 }));
 
 // No server-side draft for anonymous users — intermediate page submits no-op
@@ -350,7 +350,7 @@ describe('SurveyForm — anonymous multi-page persistence', () => {
 
 describe('SurveyForm — survey_started', () => {
   beforeEach(() => {
-    jest.mocked(trackCustomerAnalyticsEvent).mockClear();
+    jest.mocked(trackEventByName).mockClear();
     mockCustomFieldsQuery = { data: customFields, isLoading: false };
   });
 
@@ -380,8 +380,8 @@ describe('SurveyForm — survey_started', () => {
       />
     );
 
-    expect(trackCustomerAnalyticsEvent).toHaveBeenCalledTimes(1);
-    expect(trackCustomerAnalyticsEvent).toHaveBeenCalledWith('survey_started', {
+    expect(trackEventByName).toHaveBeenCalledTimes(1);
+    expect(trackEventByName).toHaveBeenCalledWith('survey_started', {
       project_id: 'project-1',
       phase_id: 'phase-1',
       participation_method: 'native_survey',
@@ -406,7 +406,7 @@ describe('SurveyForm — survey_started', () => {
       />
     );
 
-    expect(trackCustomerAnalyticsEvent).toHaveBeenCalledWith(
+    expect(trackEventByName).toHaveBeenCalledWith(
       'survey_started',
       expect.objectContaining({ resumed: true })
     );

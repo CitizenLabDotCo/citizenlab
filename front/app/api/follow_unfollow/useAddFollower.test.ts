@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
-import { trackCustomerAnalyticsEvent } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
@@ -10,7 +10,7 @@ import useAddFollower from './useAddFollower';
 
 jest.mock('utils/analytics', () => ({
   ...jest.requireActual('utils/analytics'),
-  trackCustomerAnalyticsEvent: jest.fn(),
+  trackEventByName: jest.fn(),
 }));
 
 const apiPath = '*followers';
@@ -47,7 +47,7 @@ describe('useAddFollower', () => {
   ] as const)(
     'tracks following %s as %s',
     async (followableType, eventName, properties) => {
-      jest.mocked(trackCustomerAnalyticsEvent).mockClear();
+      jest.mocked(trackEventByName).mockClear();
       const { result } = renderHook(() => useAddFollower(), {
         wrapper: createQueryClientWrapper(),
       });
@@ -57,15 +57,12 @@ describe('useAddFollower', () => {
       });
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
-      expect(trackCustomerAnalyticsEvent).toHaveBeenCalledWith(
-        eventName,
-        properties
-      );
+      expect(trackEventByName).toHaveBeenCalledWith(eventName, properties);
     }
   );
 
   it('does not track following other types', async () => {
-    jest.mocked(trackCustomerAnalyticsEvent).mockClear();
+    jest.mocked(trackEventByName).mockClear();
     const { result } = renderHook(() => useAddFollower(), {
       wrapper: createQueryClientWrapper(),
     });
@@ -75,7 +72,7 @@ describe('useAddFollower', () => {
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(trackCustomerAnalyticsEvent).not.toHaveBeenCalled();
+    expect(trackEventByName).not.toHaveBeenCalled();
   });
 
   it('returns error correctly', async () => {

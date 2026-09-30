@@ -3,7 +3,7 @@ import { CLErrors } from 'typings';
 
 import ideasKeys from 'api/ideas/keys';
 
-import { trackCustomerAnalyticsEvent } from 'utils/analytics';
+import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import { IIdeaReaction, INewReactionProperties } from './types';
@@ -24,7 +24,7 @@ const useAddIdeaReaction = () => {
   return useMutation<IIdeaReaction, CLErrors, INewReactionProperties>({
     mutationFn: addIdeaReaction,
     onSuccess: (_data, variables) => {
-      trackCustomerAnalyticsEvent('reaction_added', {
+      trackEventByName(customerAnalyticsEvents.reactionAdded, {
         idea_id: variables.ideaId,
         mode: variables.mode,
       });

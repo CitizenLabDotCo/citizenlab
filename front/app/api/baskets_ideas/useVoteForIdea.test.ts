@@ -3,7 +3,7 @@ import { setupServer } from 'msw/node';
 
 import { phasesData } from 'api/phases/__mocks__/_mockServer';
 
-import { trackCustomerAnalyticsEvent } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
@@ -12,7 +12,7 @@ import useVoteForIdea from './useVoteForIdea';
 
 jest.mock('utils/analytics', () => ({
   ...jest.requireActual('utils/analytics'),
-  trackCustomerAnalyticsEvent: jest.fn(),
+  trackEventByName: jest.fn(),
 }));
 
 const server = setupServer(
@@ -27,7 +27,7 @@ const basketId = basketsIdeasData.relationships.basket.data.id;
 describe('useVoteForIdea', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
-  beforeEach(() => jest.mocked(trackCustomerAnalyticsEvent).mockClear());
+  beforeEach(() => jest.mocked(trackEventByName).mockClear());
 
   it('tracks the start of voting when the vote creates a basket', async () => {
     const { result } = renderHook(() => useVoteForIdea(phase), {
@@ -39,7 +39,7 @@ describe('useVoteForIdea', () => {
     });
 
     await waitFor(() => expect(result.current.basketId).toBe(basketId));
-    expect(trackCustomerAnalyticsEvent).toHaveBeenCalledWith('voting_started', {
+    expect(trackEventByName).toHaveBeenCalledWith('voting_started', {
       project_id: phase.relationships.project.data.id,
       phase_id: phase.id,
     });
@@ -55,6 +55,6 @@ describe('useVoteForIdea', () => {
     });
 
     await waitFor(() => expect(result.current.basketId).toBe(basketId));
-    expect(trackCustomerAnalyticsEvent).not.toHaveBeenCalled();
+    expect(trackEventByName).not.toHaveBeenCalled();
   });
 });

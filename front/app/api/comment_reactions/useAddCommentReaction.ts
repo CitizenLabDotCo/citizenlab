@@ -3,7 +3,7 @@ import { CLErrors } from 'typings';
 
 import commentKeys from 'api/comments/keys';
 
-import { trackCustomerAnalyticsEvent } from 'utils/analytics';
+import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import { ICommentReaction, INewReactionProperties } from './types';
@@ -24,7 +24,7 @@ const useAddCommentReaction = () => {
   return useMutation<ICommentReaction, CLErrors, INewReactionProperties>({
     mutationFn: addCommentReaction,
     onSuccess: (_data, variables) => {
-      trackCustomerAnalyticsEvent('reaction_added', {
+      trackEventByName(customerAnalyticsEvents.reactionAdded, {
         comment_id: variables.commentId,
         mode: variables.mode,
       });

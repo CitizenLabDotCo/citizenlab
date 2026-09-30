@@ -1,7 +1,7 @@
 import { phaseResponse } from 'api/authentication/authentication_requirements/__mocks__/_mockServer';
 import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
 
-import { trackCustomerAnalyticsEvent } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 
 import { State } from '../../typings';
 
@@ -9,7 +9,7 @@ import { preAuthSteps } from './preAuthSteps';
 
 jest.mock('utils/analytics', () => ({
   ...jest.requireActual('utils/analytics'),
-  trackCustomerAnalyticsEvent: jest.fn(),
+  trackEventByName: jest.fn(),
 }));
 
 jest.mock(
@@ -53,7 +53,7 @@ const getSteps = (flow: State['flow']) =>
 
 describe('preAuthSteps tracking', () => {
   beforeEach(() => {
-    jest.mocked(trackCustomerAnalyticsEvent).mockClear();
+    jest.mocked(trackEventByName).mockClear();
   });
 
   it.each([
@@ -67,7 +67,7 @@ describe('preAuthSteps tracking', () => {
         '1234'
       );
 
-      expect(trackCustomerAnalyticsEvent).toHaveBeenCalledWith(eventName, {
+      expect(trackEventByName).toHaveBeenCalledWith(eventName, {
         method: 'email',
       });
     }
@@ -82,7 +82,7 @@ describe('preAuthSteps tracking', () => {
       1
     );
 
-    expect(trackCustomerAnalyticsEvent).toHaveBeenCalledWith('login', {
+    expect(trackEventByName).toHaveBeenCalledWith('login', {
       method: 'email',
     });
   });

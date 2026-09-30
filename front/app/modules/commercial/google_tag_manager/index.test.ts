@@ -1,4 +1,4 @@
-import { trackEventByName, trackCustomerAnalyticsEvent } from 'utils/analytics';
+import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import eventEmitter from 'utils/eventEmitter';
 
 import config from '.';
@@ -42,7 +42,9 @@ describe('google_tag_manager', () => {
   });
 
   it('pushes only customer analytics events to the dataLayer, once consent is given', () => {
-    trackCustomerAnalyticsEvent('comment_posted', { idea_id: 'idea-1' });
+    trackEventByName(customerAnalyticsEvents.commentPosted, {
+      idea_id: 'idea-1',
+    });
     trackEventByName('Clicked a button');
 
     expect(window.dataLayer).toEqual([]);
@@ -55,7 +57,9 @@ describe('google_tag_manager', () => {
       { event: 'comment_posted', idea_id: 'idea-1' },
     ]);
 
-    trackCustomerAnalyticsEvent('volunteered', { cause_id: 'cause-1' });
+    trackEventByName(customerAnalyticsEvents.volunteered, {
+      cause_id: 'cause-1',
+    });
     trackEventByName('Clicked a button');
 
     expect(window.dataLayer).toEqual([

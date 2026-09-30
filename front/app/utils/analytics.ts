@@ -151,8 +151,9 @@ export function trackEventByName(
   });
 }
 
-/** Events that are safe to share with the customer's own analytics. Besides
- * our tools, these events are pushed to the Google Tag Manager dataLayer,
+/** Events that are safe to share with the customer's own analytics. Track
+ * them with trackEventByName like any other event: besides our tools, the
+ * Google Tag Manager module pushes these (and only these) to the dataLayer,
  * where customers build triggers and conversions on them. Treat them as a
  * public contract: don't rename them, fire them only once an action has
  * succeeded, and only pass ids, never personal data or free text.
@@ -161,34 +162,32 @@ export function trackEventByName(
  * GA4 unchanged, and GA4 event names may only contain letters, numbers and
  * underscores. `login` and `sign_up` use GA4's recommended event names (with
  * its `method` parameter) so they line up with GA4's own reporting. */
-const customerAnalyticsEvents = [
-  'idea_started',
-  'idea_submitted',
-  'survey_started',
-  'survey_submitted',
-  'comment_posted',
-  'reaction_added',
-  'voting_started',
-  'voting_submitted',
-  'poll_submitted',
-  'volunteered',
-  'event_attendance_registered',
-  'idea_followed',
-  'project_followed',
-  'login',
-  'sign_up',
-] as const;
+export const customerAnalyticsEvents = {
+  ideaStarted: 'idea_started',
+  ideaSubmitted: 'idea_submitted',
+  surveyStarted: 'survey_started',
+  surveySubmitted: 'survey_submitted',
+  commentPosted: 'comment_posted',
+  reactionAdded: 'reaction_added',
+  votingStarted: 'voting_started',
+  votingSubmitted: 'voting_submitted',
+  pollSubmitted: 'poll_submitted',
+  volunteered: 'volunteered',
+  eventAttendanceRegistered: 'event_attendance_registered',
+  ideaFollowed: 'idea_followed',
+  projectFollowed: 'project_followed',
+  login: 'login',
+  signUp: 'sign_up',
+} as const;
 
-type CustomerAnalyticsEvent = (typeof customerAnalyticsEvents)[number];
+type CustomerAnalyticsEvent =
+  (typeof customerAnalyticsEvents)[keyof typeof customerAnalyticsEvents];
+
+const customerAnalyticsEventNames: string[] = Object.values(
+  customerAnalyticsEvents
+);
 
 export const isCustomerAnalyticsEvent = (
   eventName: string
 ): eventName is CustomerAnalyticsEvent =>
-  customerAnalyticsEvents.some((name) => name === eventName);
-
-export function trackCustomerAnalyticsEvent(
-  eventName: CustomerAnalyticsEvent,
-  properties: Properties = {}
-) {
-  trackEventByName(eventName, properties);
-}
+  customerAnalyticsEventNames.includes(eventName);

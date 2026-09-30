@@ -14,7 +14,7 @@ import usePhase from 'api/phases/usePhase';
 
 import useOnQuerySuccess from 'hooks/useOnQuerySuccess';
 
-import { trackCustomerAnalyticsEvent } from 'utils/analytics';
+import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import { FormValues } from '../Page/types';
@@ -58,7 +58,7 @@ const SurveyForm = ({
     if (hasTrackedStart.current) return;
     hasTrackedStart.current = true;
 
-    trackCustomerAnalyticsEvent('survey_started', {
+    trackEventByName(customerAnalyticsEvents.surveyStarted, {
       project_id: projectId,
       phase_id: phaseId,
       participation_method: participationMethod,
@@ -129,7 +129,7 @@ const SurveyForm = ({
 
     clearDraftIdea(phaseId);
     if (isSubmitPage) {
-      trackCustomerAnalyticsEvent('survey_submitted', {
+      trackEventByName(customerAnalyticsEvents.surveySubmitted, {
         project_id: projectId,
         phase_id: phase.data.id,
         participation_method: participationMethod,

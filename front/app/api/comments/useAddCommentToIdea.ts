@@ -5,7 +5,7 @@ import commentKeys from 'api/comments/keys';
 import ideasKeys from 'api/ideas/keys';
 import userCommentsCount from 'api/user_comments_count/keys';
 
-import { trackCustomerAnalyticsEvent } from 'utils/analytics';
+import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import { INewComment, IComment } from './types';
@@ -22,7 +22,7 @@ const useAddCommentToIdea = () => {
   return useMutation<IComment, CLErrorsWrapper, INewComment>({
     mutationFn: addCommentToIdea,
     onSuccess: (_data, variables) => {
-      trackCustomerAnalyticsEvent('comment_posted', {
+      trackEventByName(customerAnalyticsEvents.commentPosted, {
         idea_id: variables.ideaId,
       });
 

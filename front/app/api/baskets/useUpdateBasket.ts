@@ -4,7 +4,7 @@ import { CLErrors } from 'typings';
 import basketsIdeasKeys from 'api/baskets_ideas/keys';
 import phasesKeys from 'api/phases/keys';
 
-import { trackCustomerAnalyticsEvent } from 'utils/analytics';
+import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import basketKeys from './keys';
@@ -36,7 +36,9 @@ const useUpdateBasket = () => {
       });
 
       if (variables.submitted) {
-        trackCustomerAnalyticsEvent('voting_submitted', { phase_id: phaseId });
+        trackEventByName(customerAnalyticsEvents.votingSubmitted, {
+          phase_id: phaseId,
+        });
       }
     },
   });

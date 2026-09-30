@@ -8,7 +8,7 @@ import basketsIdeasKeys from 'api/baskets_ideas/keys';
 import phasesKeys from 'api/phases/keys';
 import { IPhaseData } from 'api/phases/types';
 
-import { trackCustomerAnalyticsEvent } from 'utils/analytics';
+import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import basketsKeys from '../baskets/keys';
@@ -52,7 +52,7 @@ const useVoteForIdeaMutation = () => {
       if (newBasket) {
         // The first vote in a phase creates the basket, so this is the
         // start of voting.
-        trackCustomerAnalyticsEvent('voting_started', {
+        trackEventByName(customerAnalyticsEvents.votingStarted, {
           project_id,
           phase_id,
         });

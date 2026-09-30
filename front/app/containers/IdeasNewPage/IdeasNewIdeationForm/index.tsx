@@ -21,7 +21,7 @@ import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSu
 
 import { FORM_PAGE_CHANGE_EVENT } from 'components/CustomFieldsForm/PageControlButtons/events';
 
-import { trackCustomerAnalyticsEvent } from 'utils/analytics';
+import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import eventEmitter from 'utils/eventEmitter';
@@ -72,7 +72,7 @@ const IdeasNewIdeationForm = ({
     if (hasTrackedStart.current || !phase) return;
     hasTrackedStart.current = true;
 
-    trackCustomerAnalyticsEvent('idea_started', {
+    trackEventByName(customerAnalyticsEvents.ideaStarted, {
       project_id: project.data.id,
       phase_id: phase.data.id,
       participation_method: phase.data.attributes.participation_method,
