@@ -67,8 +67,8 @@ jest.mock('utils/router', () => ({
 
 // Only the browser call is stubbed — the scheme guard under test stays real.
 const mockNavigateToUrl = jest.fn();
-jest.mock('./utils', () => ({
-  ...jest.requireActual('./utils'),
+jest.mock('utils/urlUtils', () => ({
+  ...jest.requireActual('utils/urlUtils'),
   navigateToUrl: (url: string) => mockNavigateToUrl(url),
 }));
 

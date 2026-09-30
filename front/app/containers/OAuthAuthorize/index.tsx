@@ -19,12 +19,12 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { useSearch } from 'utils/router';
+import { isSafeRedirectUrl, navigateToUrl } from 'utils/urlUtils';
 
 import Card from './components/Card';
 import IconBadge from './components/IconBadge';
 import InfoCard from './components/InfoCard';
 import messages from './messages';
-import { isSafeRedirectUrl, navigateToUrl } from './utils';
 
 const scopeContent = (scope: string) => {
   switch (scope) {

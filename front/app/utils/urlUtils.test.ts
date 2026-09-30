@@ -1,4 +1,4 @@
-import { isSafeRedirectUrl } from './utils';
+import { isSafeRedirectUrl } from './urlUtils';
 
 describe('isSafeRedirectUrl', () => {
   it('accepts https and loopback http callbacks', () => {
