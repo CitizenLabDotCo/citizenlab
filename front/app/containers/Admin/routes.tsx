@@ -64,6 +64,11 @@ const ProjectImporter = React.lazy(
   () => import('containers/Admin/ProjectImporter')
 );
 
+// prototype — AI project generator, opened directly at /admin/project-generator
+const ProjectGeneratorPrototype = React.lazy(
+  () => import('containers/Admin/projectGeneratorPrototype')
+);
+
 const isTemplatePreviewPage = (urlSegments: string[]) =>
   urlSegments.length === 4 &&
   urlSegments[0] === 'admin' &&
@@ -280,6 +285,17 @@ export type ProjectImporterSearchParams = yup.InferType<
   typeof projectImporterSearchSchema
 >;
 
+// prototype — AI project generator
+const projectGeneratorPrototypeRoute = createRoute({
+  getParentRoute: () => adminRoute,
+  path: 'project-generator',
+  component: () => (
+    <PageLoading>
+      <ProjectGeneratorPrototype />
+    </PageLoading>
+  ),
+});
+
 // Project importer route
 const projectImporterRoute = createRoute({
   getParentRoute: () => adminRoute,
@@ -321,5 +337,6 @@ export const createAdminRoutes = (moduleRoutes: Partial<Routes> = {}) => {
     customPageBuilderRoute,
     customPageBuilderPreviewRoute,
     projectImporterRoute,
+    projectGeneratorPrototypeRoute,
   ]);
 };
