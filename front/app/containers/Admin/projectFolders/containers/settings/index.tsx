@@ -60,7 +60,8 @@ const FolderSettings = () => {
   >;
   const { formatMessage } = useIntl();
   const locale = useLocale();
-  const { data: projectFolder } = useProjectFolderById(projectFolderId);
+  const { data: projectFolder, dataUpdatedAt } =
+    useProjectFolderById(projectFolderId);
   const mode = projectFolderId ? 'edit' : 'new';
 
   // ---- Rendering
@@ -122,7 +123,9 @@ const FolderSettings = () => {
         position="sticky"
         top={`${stylingConsts.menuHeight + 20}px`}
       >
+        {/* The frame runs its own copy of the app, so it is remounted to show a save. */}
         <PagePreview
+          key={dataUpdatedAt}
           src={`/${locale}/folders/${projectFolder.data.attributes.slug}`}
           iframeTitle={formatMessage(messages.folderPreviewTitle)}
           editPageContentAriaLabel={formatMessage(

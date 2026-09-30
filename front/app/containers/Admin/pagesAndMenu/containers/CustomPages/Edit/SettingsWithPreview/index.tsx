@@ -24,7 +24,7 @@ const SettingsWithPreview = () => {
   const { customPageId } = useParams({
     from: '/$locale/admin/pages-menu/pages/$customPageId',
   });
-  const { data: customPage } = useCustomPageById(customPageId);
+  const { data: customPage, dataUpdatedAt } = useCustomPageById(customPageId);
   const { data: layout } = useCustomPageLayout(customPageId);
   useEnsureCustomPageLayout(customPageId);
 
@@ -42,7 +42,9 @@ const SettingsWithPreview = () => {
       <Box flex="1" minWidth="0">
         {/* Without a layout the page renders its legacy sections, so the preview waits for one. */}
         {layout && (
+          // The frame runs its own copy of the app, so it is remounted to show a save.
           <PagePreview
+            key={dataUpdatedAt}
             src={`/${locale}/pages/${customPage.data.attributes.slug}`}
             iframeTitle={formatMessage(messages.customPagePreviewTitle)}
             editPageContentAriaLabel={formatMessage(
