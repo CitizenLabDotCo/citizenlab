@@ -36,7 +36,7 @@ const useUpdateBasket = () => {
       });
 
       if (variables.submitted) {
-        trackCustomerAnalyticsEvent('votes_submitted', { phase_id: phaseId });
+        trackCustomerAnalyticsEvent('voting_submitted', { phase_id: phaseId });
       }
     },
   });

@@ -57,7 +57,7 @@ describe('useUpdateBasket', () => {
       expect(trackCustomerAnalyticsEvent).toHaveBeenCalledTimes(1)
     );
     expect(trackCustomerAnalyticsEvent).toHaveBeenCalledWith(
-      'votes_submitted',
+      'voting_submitted',
       {
         phase_id: basketData.relationships.phase.data.id,
       }
