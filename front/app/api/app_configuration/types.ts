@@ -128,9 +128,6 @@ export interface IAppConfigurationSettings {
   satismeter?: AppConfigurationFeature & {
     write_key: string;
   };
-  google_analytics?: AppConfigurationFeature & {
-    tracking_id: string;
-  };
   google_tag_manager?: AppConfigurationFeature & {
     destinations: string;
     container_id: string;
