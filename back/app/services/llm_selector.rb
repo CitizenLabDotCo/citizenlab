@@ -86,6 +86,12 @@ class LLMSelector
       description: 'Extract handwritten survey responses from scanned PDF forms',
       supported_models: [::Analysis::LLM::ClaudeSonnet46, ::Analysis::LLM::Gemini3Flash],
       default_model: ::Analysis::LLM::ClaudeSonnet46
+    ),
+    LLMUseCase.new(
+      key: 'survey_generation',
+      description: 'Generate a native survey from a prompt and/or a document',
+      supported_models: [::Analysis::LLM::ClaudeSonnet46, ::Analysis::LLM::Gemini3Flash],
+      default_model: ::Analysis::LLM::ClaudeSonnet46
     )
   ]
 

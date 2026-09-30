@@ -807,6 +807,33 @@ describe 'Rack::Attack' do
     end
   end
 
+  describe 'survey generations' do
+    let(:path) { "/web_api/v1/phases/#{SecureRandom.uuid}/survey_generations" }
+    let(:params) { '{ "survey_generation": { "prompt": "A survey", "locale": "en" } }' }
+
+    it 'limits requests for the same user to 20 in an hour' do
+      freeze_time do
+        20.times do |i|
+          post(path, params: params, headers: json_headers(token: token, ip: "1.2.3.#{i + 1}"))
+        end
+        expect(status).to eq(401) # Unauthorized, but not throttled
+
+        post(path, params: params, headers: json_headers(token: token, ip: '1.2.3.100'))
+        expect(status).to eq(429) # Too many requests
+      end
+    end
+
+    it 'limits requests from the same IP to 40 in an hour' do
+      freeze_time do
+        40.times { post(path, params: params, headers: json_headers(ip: '1.2.3.4')) }
+        expect(status).to eq(401) # Unauthorized, but not throttled
+
+        post(path, params: params, headers: json_headers(ip: '1.2.3.4'))
+        expect(status).to eq(429) # Too many requests
+      end
+    end
+  end
+
   describe 'spam reports' do
     let(:headers) { { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.4' } }
     let(:params) { '{ "spam_report": { "reason_code": "other", "other_reason": "spam" } }' }

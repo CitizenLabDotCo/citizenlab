@@ -25,6 +25,7 @@ IdeaCustomFields::Engine.routes.draw do
           get :as_geojson, on: :member, action: 'as_geojson'
           resources :custom_field_matrix_statements, controller: '/web_api/v1/custom_field_matrix_statements', only: %i[index show]
         end
+        resources :survey_generations, only: %i[create]
       end
     end
   end

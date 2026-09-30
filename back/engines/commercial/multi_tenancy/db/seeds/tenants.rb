@@ -449,6 +449,10 @@ module MultiTenancy
             configurable_dropdown: {
               enabled: true,
               allowed: true
+            },
+            ai_survey_generator: {
+              enabled: true,
+              allowed: true
             }
           })
         )

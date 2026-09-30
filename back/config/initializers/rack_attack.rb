@@ -274,6 +274,17 @@ class Rack::Attack
     end
   end
 
+  # AI survey generations, which are expensive LLM calls.
+  SURVEY_GENERATIONS_PATH = %r{\A/web_api/v1/phases/[^/]+/survey_generations\z}
+
+  throttle('survey_generations/user', limit: 20, period: 1.hour) do |req|
+    USER_ID_FROM_JWT.call(req) if SURVEY_GENERATIONS_PATH.match?(req.path) && req.post?
+  end
+
+  throttle('survey_generations/ip', limit: 40, period: 1.hour) do |req|
+    req.remote_ip if SURVEY_GENERATIONS_PATH.match?(req.path) && req.post?
+  end
+
   # Similar inputs responses by IP.
   throttle('similar_ideas/ip', limit: 5, period: 1.second) do |req|
     if %r{\A/web_api/v1/phases/[^/]+/inputs/similar\z}.match?(req.path) && req.post?
