@@ -60,8 +60,14 @@ describe ReportBuilder::Composition::ReportComposer do
     respond_with([content_block_class.new(nil, tool_use_class.new(id, name, input))], 'tool_use')
   end
 
-  def set_layout(layout, id: 'tu_layout')
-    tool_call('set_layout', { 'layout' => layout }, id: id)
+  # A first write is just a patch that carries every node.
+  def write_layout(layout, id: 'tu_layout')
+    tool_call('patch_layout', { 'nodes' => layout }, id: id)
+  end
+
+  # The model stopping is what ends a run, so most stubs finish with this.
+  def done(text = 'Wrote the report.')
+    respond_with([content_block_class.new(text, nil)], 'end_turn')
   end
 
   # Blocks are compiled and checked by the check service before anything is stored,
@@ -92,6 +98,13 @@ describe ReportBuilder::Composition::ReportComposer do
 
   def last_tool_result
     sent_messages.last.last[:content].first[:tool_result]
+  end
+
+  # Every tool result the model was sent, oldest first. A run now ends when the model
+  # stops rather than when a tool returns a layout, so the result a spec cares about
+  # is usually not the last one.
+  def tool_results
+    sent_messages.flatten.flat_map { |m| m[:content] || [] }.filter_map { |c| c[:tool_result] }
   end
 
   def node(resolved_name, props, parent: 'ROOT')
@@ -128,34 +141,33 @@ describe ReportBuilder::Composition::ReportComposer do
   end
 
   describe '#compose' do
-    it 'returns the layout of the first reply that validates' do
-      allow(client).to receive(:converse).and_return(set_layout(text_layout))
+    it 'returns the report the patches built' do
+      stub_converse(write_layout(text_layout), done)
 
       expect(composer.compose).to eq text_layout
-      expect(client).to have_received(:converse).once
     end
 
     it 'gives the model the reporting schema, the widget reference and the project' do
-      allow(client).to receive(:converse).and_return(set_layout(text_layout))
+      stub_converse(write_layout(text_layout), done)
 
       composer.compose
 
-      expect(client).to have_received(:converse) do |args|
+      expect(client).to have_received(:converse).at_least(:once) do |args|
         system_prompt = args[:system].first[:text]
         expect(system_prompt).to include 'reporting_contributions'
         expect(system_prompt).to include project.title_multiloc['en']
         expect(system_prompt).to include ReportBuilder::Craftjs::LayoutWidgets::DOCS['CustomBlock']
         expect(args[:tool_config][:tools].map { |tool| tool[:tool_spec][:name] })
-          .to eq %w[run_reporting_sql_query author_chart_block set_layout]
+          .to eq %w[run_reporting_sql_query author_chart_block get_layout patch_layout]
       end
     end
 
     it 'tells the model the report is printed, which is what the charts are sized for' do
-      allow(client).to receive(:converse).and_return(set_layout(text_layout))
+      stub_converse(write_layout(text_layout), done)
 
       composer.compose
 
-      expect(client).to have_received(:converse) do |args|
+      expect(client).to have_received(:converse).at_least(:once) do |args|
         system_prompt = args[:system].first[:text]
         expect(system_prompt).to include 'A4'
         expect(system_prompt).to include 'never split across a page break'
@@ -168,25 +180,27 @@ describe ReportBuilder::Composition::ReportComposer do
         stub_converse(
           tool_call('run_reporting_sql_query',
             { 'query' => 'SELECT count(*) AS contributions FROM reporting_contributions' }),
-          set_layout(text_layout)
+          write_layout(text_layout),
+          done
         )
 
         composer.compose
 
-        expect(last_tool_result[:status]).to eq 'success'
-        expect(last_tool_result[:content].first[:text]).to include 'contributions'
+        expect(tool_results.first[:status]).to eq 'success'
+        expect(tool_results.first[:content].first[:text]).to include 'contributions'
       end
 
       it 'hands back the sandbox rejection rather than running it' do
         stub_converse(
           tool_call('run_reporting_sql_query', { 'query' => 'SELECT * FROM users' }),
-          set_layout(text_layout)
+          write_layout(text_layout),
+          done
         )
 
         composer.compose
 
-        expect(last_tool_result[:status]).to eq 'error'
-        expect(last_tool_result[:content].first[:text]).to include 'rejected'
+        expect(tool_results.first[:status]).to eq 'error'
+        expect(tool_results.first[:content].first[:text]).to include 'rejected'
       end
     end
 
@@ -197,7 +211,7 @@ describe ReportBuilder::Composition::ReportComposer do
           if sent_messages.size == 1
             tool_call('author_chart_block', authored)
           else
-            set_layout(layout_with(
+            write_layout(layout_with(
               'chartnode1' => node('CustomBlock', {
                 'blockId' => ContentBuilder::CustomBlock.last.id, 'version' => 1
               })
@@ -215,7 +229,7 @@ describe ReportBuilder::Composition::ReportComposer do
       end
 
       it 'discards a chart the finished layout does not use' do
-        stub_converse(tool_call('author_chart_block', authored), set_layout(text_layout))
+        stub_converse(tool_call('author_chart_block', authored), write_layout(text_layout), done)
 
         expect { composer.compose }.not_to change(ContentBuilder::CustomBlock, :count)
       end
@@ -229,21 +243,21 @@ describe ReportBuilder::Composition::ReportComposer do
             { 'kind' => 'lint', 'line' => 2, 'rule' => 'no-network', 'message' => 'No fetch in a block.' }
           ]
         )
-        stub_converse(tool_call('author_chart_block', authored), set_layout(text_layout))
+        stub_converse(tool_call('author_chart_block', authored), write_layout(text_layout), done)
 
         expect { composer.compose }.not_to change(ContentBuilder::CustomBlock, :count)
-        expect(last_tool_result[:status]).to eq 'error'
-        expect(last_tool_result[:content].first[:text]).to include 'no-network'
-        expect(last_tool_result[:content].first[:text]).to include 'line 2'
+        expect(tool_results.first[:status]).to eq 'error'
+        expect(tool_results.first[:content].first[:text]).to include 'no-network'
+        expect(tool_results.first[:content].first[:text]).to include 'line 2'
       end
 
       it 'says so plainly when the block cannot be checked at all' do
         stub_request(:post, 'http://check_service:3100/build').to_timeout
-        stub_converse(tool_call('author_chart_block', authored), set_layout(text_layout))
+        stub_converse(tool_call('author_chart_block', authored), write_layout(text_layout), done)
 
         composer.compose
 
-        expect(last_tool_result[:content].first[:text]).to include 'cannot be checked right now'
+        expect(tool_results.first[:content].first[:text]).to include 'cannot be checked right now'
       end
     end
 
@@ -258,7 +272,7 @@ describe ReportBuilder::Composition::ReportComposer do
         half = layout_with('textnode01' => node('TextMultiloc', { 'text' => { 'en' => '<p>Half</p>' } }))
         stub_converse(
           truncated('set_layout', { 'layout' => half }),
-          set_layout(text_layout, id: 'tu_2')
+          write_layout(text_layout, id: 'tu_2')
         )
 
         expect(composer.compose).to eq text_layout
@@ -267,7 +281,7 @@ describe ReportBuilder::Composition::ReportComposer do
       it 'tells the model the call was not run, and why' do
         stub_converse(
           truncated('set_layout', { 'layout' => text_layout }),
-          set_layout(text_layout, id: 'tu_2')
+          write_layout(text_layout, id: 'tu_2')
         )
 
         composer.compose
@@ -290,7 +304,7 @@ describe ReportBuilder::Composition::ReportComposer do
             ],
             'max_tokens'
           ),
-          set_layout(text_layout, id: 'tu_2')
+          write_layout(text_layout, id: 'tu_2')
         )
 
         composer.compose
@@ -303,7 +317,7 @@ describe ReportBuilder::Composition::ReportComposer do
       it 'nudges when the truncated reply had not started a tool call yet' do
         stub_converse(
           respond_with([content_block_class.new('Thinking about it', nil)], 'max_tokens'),
-          set_layout(text_layout, id: 'tu_2')
+          write_layout(text_layout, id: 'tu_2')
         )
 
         expect(composer.compose).to eq text_layout
@@ -334,27 +348,110 @@ describe ReportBuilder::Composition::ReportComposer do
       end
     end
 
-    describe 'set_layout' do
+    describe 'building a report over several patches' do
+      let(:first_patch) do
+        { 'ROOT' => text_layout['ROOT'].merge('nodes' => ['textnode01']),
+          'textnode01' => node('TextMultiloc', { 'text' => { 'en' => '<p>Opening</p>' } }) }
+      end
+      let(:second_patch) do
+        { 'ROOT' => text_layout['ROOT'].merge('nodes' => %w[textnode01 textnode02]),
+          'textnode02' => node('TextMultiloc', { 'text' => { 'en' => '<p>Closing</p>' } }) }
+      end
+
+      it 'keeps what earlier patches wrote' do
+        stub_converse(
+          tool_call('patch_layout', { 'nodes' => first_patch }),
+          tool_call('patch_layout', { 'nodes' => second_patch }, id: 'tu_2'),
+          done
+        )
+
+        expect(composer.compose.keys).to contain_exactly('ROOT', 'textnode01', 'textnode02')
+      end
+
+      it 'answers a patch with the report as it now reads' do
+        stub_converse(tool_call('patch_layout', { 'nodes' => first_patch }), done)
+
+        composer.compose
+
+        expect(tool_results.first[:content].first[:text]).to include 'textnode01'
+      end
+
+      it 'leaves the report alone when a patch does not validate' do
+        stub_converse(
+          tool_call('patch_layout', { 'nodes' => first_patch }),
+          tool_call('patch_layout', { 'nodes' => { 'textnode02' => 'not a node' } }, id: 'tu_2'),
+          done
+        )
+
+        expect(composer.compose.keys).to contain_exactly('ROOT', 'textnode01')
+      end
+
+      it 'removes a node the model asks to delete' do
+        stub_converse(
+          tool_call('patch_layout', { 'nodes' => first_patch.merge(second_patch) }),
+          tool_call('patch_layout', {
+            'nodes' => { 'ROOT' => text_layout['ROOT'].merge('nodes' => ['textnode01']) },
+            'delete_node_ids' => ['textnode02']
+          }, id: 'tu_2'),
+          done
+        )
+
+        expect(composer.compose.keys).to contain_exactly('ROOT', 'textnode01')
+      end
+
+      # The failure this replaced: a run that used every round wrote nothing at all,
+      # throwing away the charts it had paid to build along with the report.
+      it 'keeps an unfinished report when it runs out of rounds' do
+        stub_converse(tool_call('patch_layout', { 'nodes' => first_patch }))
+
+        expect(composer.compose.keys).to contain_exactly('ROOT', 'textnode01')
+      end
+    end
+
+    describe 'get_layout' do
+      it 'says the report is empty before anything is written' do
+        stub_converse(tool_call('get_layout', {}), write_layout(text_layout), done)
+
+        composer.compose
+
+        expect(tool_results.first[:content].first[:text]).to include 'empty'
+      end
+
+      it 'shows the nodes once there are some' do
+        stub_converse(
+          write_layout(text_layout),
+          tool_call('get_layout', {}, id: 'tu_2'),
+          done
+        )
+
+        composer.compose
+
+        expect(tool_results.last[:content].first[:text]).to include text_layout.keys.last
+      end
+    end
+
+    describe 'patch_layout' do
       it 'refuses a chart node pointing at a block that was never authored' do
         chart_layout = layout_with(
           'chartnode1' => node('CustomBlock', { 'blockId' => SecureRandom.uuid, 'version' => 1 })
         )
-        stub_converse(set_layout(chart_layout), set_layout(text_layout, id: 'tu_2'))
+        stub_converse(write_layout(chart_layout), write_layout(text_layout, id: 'tu_2'), done)
 
         expect(composer.compose).to eq text_layout
-        expect(last_tool_result[:status]).to eq 'error'
+        expect(tool_results.first[:status]).to eq 'error'
       end
 
       it 'accepts a chart node pointing at a block authored in this run' do
         allow(client).to receive(:converse) do |args|
           sent_messages << args[:messages].deep_dup
-          if sent_messages.size == 1
-            tool_call('author_chart_block', authored)
-          else
+          case sent_messages.size
+          when 1 then tool_call('author_chart_block', authored)
+          when 2
             block_id = ContentBuilder::CustomBlock.last.id
-            set_layout(
+            write_layout(
               layout_with('chartnode1' => node('CustomBlock', { 'blockId' => block_id, 'version' => 1 }))
             )
+          else done
           end
         end
 
@@ -368,15 +465,17 @@ describe ReportBuilder::Composition::ReportComposer do
     it 'tells the model to use the tools when it replies with text only' do
       stub_converse(
         respond_with([content_block_class.new('What would you like?', nil)], 'end_turn'),
-        set_layout(text_layout)
+        write_layout(text_layout),
+        done
       )
 
       expect(composer.compose).to eq text_layout
-      expect(sent_messages.last.last[:content].first[:text]).to include 'Do not reply with text'
+      nudges = sent_messages.flatten.flat_map { |m| m[:content] || [] }.filter_map { |c| c[:text] }
+      expect(nudges).to include a_string_including('Do not reply with text')
     end
 
     it 'gives up rather than looping forever on a layout that never validates' do
-      allow(client).to receive(:converse).and_return(set_layout({ 'ROOT' => 'not a node' }))
+      stub_converse(write_layout({ 'ROOT' => 'not a node' }), done)
 
       expect { composer.compose }.to raise_error(described_class::ComposeError)
       expect(client).to have_received(:converse).exactly(described_class::MAX_ROUNDS).times

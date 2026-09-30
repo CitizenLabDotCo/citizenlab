@@ -10,7 +10,8 @@ module ReportBuilder
     #   run_reporting_sql_query — real, sandboxed SQL, so charts are chosen after
     #                             seeing the data rather than guessed at.
     #   author_chart_block      — one chart, built and checked, then stored as a custom block.
-    #   set_layout              — the finished craftjs graph, validated before it counts.
+    #   get_layout / patch_layout — the report itself, built up a patch at a time and
+    #                             validated before each one counts.
     #
     # Anything rejected comes back as a tool result the model can correct itself
     # from, which is the whole feedback loop: there is no admin watching.
@@ -106,17 +107,38 @@ module ReportBuilder
         },
         {
           tool_spec: {
-            name: 'set_layout',
-            description: 'Replace the whole report layout with a craftjs node graph. ' \
-                         'Always send the complete graph including ROOT, never a fragment. ' \
-                         'Call this last, once every chart you want has been authored.',
+            name: 'get_layout',
+            description: 'Show the report as it stands: an outline of every node in reading ' \
+                         'order, and the raw graph. Call it when you need node ids to change ' \
+                         'or reorder something you cannot remember writing.',
+            input_schema: { json: { type: 'object', properties: {} } }
+          }
+        },
+        {
+          tool_spec: {
+            name: 'patch_layout',
+            description: 'Add, change or remove nodes in the report. Send ONLY the nodes you ' \
+                         'are adding or changing, each in its full final form; never re-send a ' \
+                         'node you did not touch. The patch is merged into the report and ' \
+                         'validated, and nothing is kept if it does not validate. Build the ' \
+                         'report over several patches rather than one big one.',
             input_schema: {
               json: {
                 type: 'object',
                 properties: {
-                  layout: { type: 'object', description: 'The complete craftjs_json object.' }
-                },
-                required: ['layout']
+                  nodes: {
+                    type: 'object',
+                    description: 'Map of node-id to that node\'s full final JSON, containing only ' \
+                                 'the nodes you are adding or changing. New ids are 10 characters ' \
+                                 'of [A-Za-z0-9_-]. The first patch must include ROOT.'
+                  },
+                  delete_node_ids: {
+                    type: 'array',
+                    items: { type: 'string' },
+                    description: 'Ids to remove. A node\'s subtree goes with it, so name only the ' \
+                                 'top of what you want gone.'
+                  }
+                }
               }
             }
           }
@@ -134,21 +156,20 @@ module ReportBuilder
         @author = author
         @client = client
         @authored_blocks = []
+        # What the report held when this run started, and the graph as it stands now.
         @current_layout = nil
+        @layout = {}
       end
 
       # @return [Hash] a validated craftjs_json graph.
       # @raise [ComposeError] if no valid layout was produced within MAX_ROUNDS.
       def compose
-        result = run_loop(
-          [{ role: 'user', content: [{ text: 'Generate the report.' }] }],
-          require_layout: true
-        )
+        result = run_loop([{ role: 'user', content: [{ text: 'Generate the report.' }] }])
         if result[:layout].nil?
           # The charts were authored for a report that never got written. Leaving them
           # would fill the block library with orphans nothing can reach or delete.
           discard_authored_blocks
-          raise ComposeError, "no valid layout after #{MAX_ROUNDS} rounds"
+          raise ComposeError, "no report was written in #{MAX_ROUNDS} rounds"
         end
 
         result[:layout]
@@ -163,6 +184,7 @@ module ReportBuilder
       # @return [Hash] { layout: Hash or nil when nothing changed, reply: String }
       def revise(current_layout:, instruction:, history: [])
         @current_layout = current_layout
+        @layout = current_layout || {}
         # Charts already in the report stay placeable; the model keeps what it keeps.
         @authored_blocks |= block_ids_in(current_layout)
 
@@ -172,13 +194,14 @@ module ReportBuilder
         end
         messages << { role: 'user', content: [{ text: instruction }] }
 
-        run_loop(messages, require_layout: false)
+        run_loop(messages, allow_answer_only: true)
       end
 
       private
 
-      def run_loop(messages, require_layout:)
+      def run_loop(messages, allow_answer_only: false)
         reply = nil
+        patched = false
 
         MAX_ROUNDS.times do
           response = converse(messages)
@@ -199,22 +222,18 @@ module ReportBuilder
           end
 
           if calls.empty?
-            # Nothing to do and nothing asked for: in the chat that is a plain answer.
-            return { layout: nil, reply: reply } if !require_layout && response.stop_reason.to_s == 'end_turn'
+            # Nothing left to do is how a turn ends. Ending one without having written
+            # anything is only an answer in the chat; asked to generate a report, it
+            # means the model stopped short, and a nudge costs less than a failed run.
+            done = response.stop_reason.to_s == 'end_turn' && (patched || allow_answer_only)
+            return finish(patched, reply) if done
 
             messages << nudge(response.stop_reason)
             next
           end
 
           outcomes = calls.map { |call| [call, handle(call)] }
-          finished = outcomes.find { |_call, outcome| outcome[:layout] }
-          if finished
-            layout = finished.last[:layout]
-            discard_unplaced_blocks(layout)
-            return { layout: layout, reply: reply } if require_layout
-
-            return { layout: layout, reply: closing_reply(messages, outcomes) || reply }
-          end
+          patched ||= outcomes.any? { |_call, outcome| outcome[:patched] }
 
           # Every tool call must be answered, or the next request is rejected.
           messages << {
@@ -223,7 +242,17 @@ module ReportBuilder
           }
         end
 
-        { layout: nil, reply: reply }
+        # Out of rounds. Every patch was validated before it landed, so what is here
+        # is a real report, just possibly an unfinished one — and an unfinished report
+        # the admin can edit beats throwing away the whole run.
+        finish(patched, reply)
+      end
+
+      def finish(patched, reply)
+        return { layout: nil, reply: reply } unless patched
+
+        discard_unplaced_blocks(@layout)
+        { layout: @layout, reply: reply }
       end
 
       def block_ids_in(layout)
@@ -257,7 +286,8 @@ module ReportBuilder
         case call[:name]
         when 'run_reporting_sql_query' then run_query(call[:input]['query'])
         when 'author_chart_block' then author_block(call[:input])
-        when 'set_layout' then check_layout(call[:input]['layout'])
+        when 'get_layout' then read_layout
+        when 'patch_layout' then patch_layout(call[:input])
         else { error: true, text: "Unknown tool '#{call[:name]}'." }
         end
       end
@@ -288,26 +318,42 @@ module ReportBuilder
         { error: true, text: e.message }
       end
 
-      def check_layout(layout)
-        result = Craftjs::LayoutValidator.validate(layout, widget_specs: widget_specs)
-        return { layout: layout, text: 'Layout saved.' } if result.valid?
+      def read_layout
+        return { text: 'The report is empty. Your first patch_layout must include ROOT.' } if @layout.empty?
 
-        { error: true, text: result.message }
+        { text: "#{outline_text}\n\nraw:\n#{@layout.to_json}" }
       end
 
-      # In the chat the admin gets a sentence saying what changed, and a model that
-      # ends its turn on a tool call has not written one yet. Answer the call and take
-      # one more turn for it. The report is already composed either way, so a failure
-      # here costs the sentence, not the change.
-      def closing_reply(messages, outcomes)
-        messages << {
-          role: 'user',
-          content: outcomes.map { |call, outcome| tool_result_block(call[:id], outcome) }
-        }
+      # A sparse patch, merged into the report as it stands: the same shape
+      # McpServer::Tools::UpdateProjectLayout uses, which is proven with real models.
+      #
+      # Patching rather than resending the whole graph is what keeps a report of any
+      # size within one reply: the model writes a section at a time instead of
+      # re-emitting every node it has already written each time it adds one.
+      def patch_layout(input)
+        nodes = (input['nodes'] || {}).deep_stringify_keys
+        graph = Craftjs::LayoutPatcher.patch(
+          @layout, nodes: nodes, delete_node_ids: input['delete_node_ids']
+        )
 
-        assistant_text(serialize_message(converse(messages).output.message))
-      rescue Aws::Errors::ServiceError
-        nil
+        result = Craftjs::LayoutValidator.validate(
+          graph, widget_specs: widget_specs, convention_scope: nodes.keys
+        )
+        return { error: true, text: result.message } unless result.valid?
+
+        @layout = graph
+        { patched: true, text: "Patched. The report now reads:\n#{outline_text}" }
+      rescue Craftjs::LayoutPatcher::PatchError => e
+        { error: true, text: e.message }
+      end
+
+      def outline_text
+        McpServer::Serializers::LayoutOutline.new(@layout).entries.map do |entry|
+          indent = '  ' * entry[:depth].to_i
+          label = [entry[:id], entry[:widget]].compact.join(' ')
+          text = entry[:text].presence
+          "#{indent}#{label}#{text ? " — #{text}" : ''}"
+        end.join("\n")
       end
 
       def client
@@ -356,9 +402,8 @@ module ReportBuilder
         outcome = {
           error: true,
           text: 'Your reply was cut off by the output token limit, so this call was not run. ' \
-                'Send less in one call. For set_layout that means fewer nodes: put the chart ' \
-                'blocks you have already authored into a shorter report rather than writing ' \
-                'more of them.'
+                'Send less in one call. For patch_layout that means fewer nodes: a patch can ' \
+                'be as small as one section, and you can send as many patches as you need.'
         }
 
         return nudge('max_tokens') if calls.empty?
@@ -372,7 +417,7 @@ module ReportBuilder
             'a shorter block, or a smaller part of the layout. Then call the tool again.'
         else
           'Do not reply with text. Use the tools: explore with run_reporting_sql_query, ' \
-            'write charts with author_chart_block, and finish with set_layout.'
+            'write charts with author_chart_block, and build the report with patch_layout.'
         end
 
         { role: 'user', content: [{ text: text }] }
@@ -424,12 +469,14 @@ module ReportBuilder
           The admin is talking to you about the report below. Do what they ask and nothing
           more: this is their document, not a draft for you to improve.
 
-          - Changing anything means calling set_layout with the COMPLETE graph, the current
-            one with your change applied. Keep every node id you are not changing, and keep
-            its props byte for byte. A node you drop disappears from their report.
-          - Adding a chart means author_chart_block first, then placing it. Explore with
-            run_reporting_sql_query if you need to know what the data holds.
-          - Removing a chart means leaving its node out of the layout.
+          - Changing something means patch_layout with just the nodes you are changing.
+            Everything you do not send stays exactly as it is, so never re-send a node you
+            are not editing.
+          - Moving or reordering means sending the parent with its `nodes` array changed,
+            and nothing else about it.
+          - Removing something means its id in delete_node_ids. Its children go with it.
+          - Adding a chart means author_chart_block first, then a patch that places it.
+            Explore with run_reporting_sql_query if you need to know what the data holds.
           - If they only asked a question, answer it in one or two sentences and call no
             tools at all.
           - Always finish with one or two plain sentences saying what you changed. No
@@ -454,8 +501,11 @@ module ReportBuilder
              the most a report this length carries, so choose the questions worth a
              chart rather than charting everything you can. A chart you author and do
              not place is wasted.
-          3. Lay it out with set_layout, once, at the end. The whole layout goes in
-             that one call, so keep the report to a size you can write in one reply.
+          3. Build the report with patch_layout, a section at a time. Send only the nodes
+             you are adding or changing; never re-send a node you have already written.
+             Start with a patch that creates ROOT and the cover, then add sections. When
+             the report is complete, stop calling tools and say in one sentence what you
+             wrote — that is what ends the run.
           #{revision_instructions if @current_layout}
 
           ## What you may write
