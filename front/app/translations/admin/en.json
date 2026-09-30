@@ -216,6 +216,7 @@
   "app.components.admin.ContentBuilder.CustomBlocks.blockDisabled": "This custom block is disabled.",
   "app.components.admin.ContentBuilder.CustomBlocks.blockLoadError": "This custom block failed to load.",
   "app.components.admin.ContentBuilder.CustomBlocks.customBlockTitle": "Custom block",
+  "app.components.admin.ContentBuilder.CustomBlocks.noSettings": "This block has no settings to change.",
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "To add content inside the accordion, open the accordion by pressing on the symbol \">\", then drag any widgets inside.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "No question selected. Please select a question first.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "No answer",
