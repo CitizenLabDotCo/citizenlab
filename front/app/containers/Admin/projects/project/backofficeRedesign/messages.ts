@@ -525,4 +525,32 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.contextSearchFolders',
     defaultMessage: 'Search folders',
   },
+  noInputsYet: {
+    id: 'app.containers.Admin.projects.project.noInputsYet',
+    defaultMessage: 'No inputs yet',
+  },
+  noInputsYetDescription: {
+    id: 'app.containers.Admin.projects.project.noInputsYetDescription',
+    defaultMessage:
+      'Inputs appear here as participants take part. You can follow each one and add the ones collected offline.',
+  },
+  manageToolsHint: {
+    id: 'app.containers.Admin.projects.project.manageToolsHint',
+    defaultMessage:
+      'Tools to export inputs and add the ones collected offline appear here once participation starts.',
+  },
+  noInsightsYet: {
+    id: 'app.containers.Admin.projects.project.noInsightsYet',
+    defaultMessage: 'No insights yet',
+  },
+  noInsightsYetDescription: {
+    id: 'app.containers.Admin.projects.project.noInsightsYetDescription',
+    defaultMessage:
+      'As participants take part, this page shows participation over time, demographics and a summary of their input.',
+  },
+  recommendedActionsHint: {
+    id: 'app.containers.Admin.projects.project.recommendedActionsHint',
+    defaultMessage:
+      'Recommended actions appear here once participants take part.',
+  },
 });
