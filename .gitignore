@@ -36,3 +36,5 @@ CLAUDE.local.md
 # MCP local files
 .serena/
 .playwright-mcp/
+# Compiled output of the check service (built into its image)
+/check-service/dist

@@ -17,40 +17,20 @@ module ContentBuilder
       end
     end
 
-    def index?
-      feature_activated? && active_admin?
-    end
-
-    def create?
-      feature_activated? && active_admin?
-    end
-
-    def update?
-      create?
-    end
-
-    def destroy?
-      create?
-    end
-
+    # Reading one version of a block: its metadata, and (via +bundle?+) its compiled
+    # code. Published blocks are readable by anyone who can reach the report that
+    # places them; a draft or disabled block is admin-only.
+    #
+    # Blocks are written by the report generation loop, not through the API, so there
+    # is no create/update/destroy to authorize here.
     def show?
       return false if !feature_activated?
 
       active_admin? || record.published?
     end
 
-    # Serving the compiled bundle of one version. Same audience as +show?+: the bundle is
-    # public for published blocks, admin-only while a block is still being authored.
     def bundle?
       show?
-    end
-
-    def versions_index?
-      create?
-    end
-
-    def versions_create?
-      create?
     end
 
     private

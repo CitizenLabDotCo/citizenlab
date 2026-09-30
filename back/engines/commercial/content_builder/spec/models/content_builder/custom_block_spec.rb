@@ -18,7 +18,7 @@ RSpec.describe ContentBuilder::CustomBlock do
     it 'is valid for every status in STATUSES' do
       described_class::STATUSES.each do |status|
         custom_block = create(:custom_block)
-        custom_block.current_version = create(:custom_block_version, custom_block: custom_block)
+        create(:custom_block_version, custom_block: custom_block)
         custom_block.status = status
 
         expect(custom_block).to be_valid
@@ -27,45 +27,34 @@ RSpec.describe ContentBuilder::CustomBlock do
   end
 
   describe 'publishing' do
-    it 'is invalid when published without a current version' do
+    it 'is invalid when published without a version to render' do
       custom_block = create(:custom_block)
       custom_block.status = 'published'
 
       expect(custom_block).to be_invalid
-      expect(custom_block.errors.details[:current_version]).to include(hash_including(error: :blank))
+      expect(custom_block.errors.details[:base]).to include(hash_including(error: :no_version))
     end
 
-    it 'is valid when published with a current version' do
+    it 'is valid when published with a version' do
       custom_block = create(:custom_block)
-      version = create(:custom_block_version, custom_block: custom_block)
+      create(:custom_block_version, custom_block: custom_block)
 
-      expect(custom_block.update(current_version: version, status: 'published')).to be true
+      expect(custom_block.update(status: 'published')).to be true
       expect(custom_block.reload).to be_published
     end
   end
 
-  describe 'version numbering' do
-    it 'numbers the versions of a block sequentially' do
+  describe '#latest_version' do
+    it 'is the highest-numbered version' do
       custom_block = create(:custom_block)
+      create(:custom_block_version, custom_block: custom_block)
+      newest = create(:custom_block_version, custom_block: custom_block)
 
-      first = create(:custom_block_version, custom_block: custom_block)
-      second = create(:custom_block_version, custom_block: custom_block)
-
-      expect(first.number).to eq 1
-      expect(second.number).to eq 2
+      expect(custom_block.latest_version).to eq newest
     end
 
-    it 'numbers the versions of every block independently' do
-      other_block = create(:custom_block)
-      create(:custom_block_version, custom_block: create(:custom_block))
-
-      expect(create(:custom_block_version, custom_block: other_block).number).to eq 1
-    end
-
-    it 'keeps an explicitly given number' do
-      custom_block = create(:custom_block)
-
-      expect(create(:custom_block_version, custom_block: custom_block, number: 7).number).to eq 7
+    it 'is nil for a block with no versions' do
+      expect(create(:custom_block).latest_version).to be_nil
     end
   end
 

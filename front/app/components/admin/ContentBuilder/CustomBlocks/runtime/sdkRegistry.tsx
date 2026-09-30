@@ -42,7 +42,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import Link from 'utils/cl-router/Link';
 
-import { SDK_EXPORT_NAMES, SdkExportName } from './sdkContract';
+import { SDK_EXPORT_NAMES, SdkExportName } from '../sdk/v1/contract';
 
 const EXAMPLE_ICON_NAMES =
   'check-circle, alert-circle, info-outline, flag, flash, idea, calendar, ' +

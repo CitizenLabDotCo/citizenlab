@@ -13,4 +13,8 @@ export default defineMessages({
     id: 'app.components.admin.ContentBuilder.CustomBlocks.blockDisabled',
     defaultMessage: 'This custom block is disabled.',
   },
+  noSettings: {
+    id: 'app.components.admin.ContentBuilder.CustomBlocks.noSettings',
+    defaultMessage: 'This block has no settings to change.',
+  },
 });

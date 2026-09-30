@@ -9,7 +9,7 @@ module ReportBuilder
     # Three tools, all executed here:
     #   run_reporting_sql_query — real, sandboxed SQL, so charts are chosen after
     #                             seeing the data rather than guessed at.
-    #   author_chart_block      — one chart, stored as a custom block awaiting compile.
+    #   author_chart_block      — one chart, built and checked, then stored as a custom block.
     #   set_layout              — the finished craftjs graph, validated before it counts.
     #
     # Anything rejected comes back as a tool result the model can correct itself
@@ -19,11 +19,15 @@ module ReportBuilder
 
       # Enough rounds to explore the data, write several charts and lay them out,
       # with room for corrections. A run that needs more than this is not converging.
-      MAX_ROUNDS = 24
+      MAX_ROUNDS = 32
 
       # The whole layout must fit one reply, or the loop degenerates into
       # truncated-rewrite cycles. Same reasoning as the block authoring loop.
-      MAX_OUTPUT_TOKENS = 16_384
+      MAX_OUTPUT_TOKENS = 32_768
+
+      # Comfortably above the longest turn we have measured (about 2.5 minutes).
+      HTTP_READ_TIMEOUT_SECONDS = 900
+      HTTP_OPEN_TIMEOUT_SECONDS = 10
 
       # Query results go into the transcript, so they are sampled rather than passed
       # whole: the model needs the shape and the spread, not every row.
@@ -54,38 +58,48 @@ module ReportBuilder
           tool_spec: {
             name: 'author_chart_block',
             description: 'Store one chart as a block and get back the blockId and version to ' \
-                         'place in the layout. The query is validated and the source is checked; ' \
-                         'anything wrong comes back for you to fix.',
+                         'place in the layout. The source is compiled, typechecked against the ' \
+                         'SDK, linted, and every query it runs is put through the reporting SQL ' \
+                         'sandbox. Nothing is stored unless all of that passes; whatever failed ' \
+                         'comes back with line numbers for you to fix.',
             input_schema: {
               json: {
                 type: 'object',
                 properties: {
                   title: { type: 'string', description: 'Short name for the block, for admins.' },
-                  sql: { type: 'string', description: 'The one query this chart draws.' },
-                  source: { type: 'string', description: 'The complete TSX of the block.' },
+                  source: {
+                    type: 'string',
+                    description: 'The complete TSX of the block. The queries it runs are read ' \
+                                 'out of this source, so there is no separate sql argument.'
+                  },
+                  messages: {
+                    type: 'object',
+                    description: 'Every string the block displays, as locale to key to text: ' \
+                                 '{"en":{"title":"Contributions per month"}}. One entry per ' \
+                                 'platform locale, with the same keys in each.'
+                  },
                   config_schema: {
-                    type: 'array',
-                    description: 'The settings an admin can change on this chart without ' \
-                                 'editing code. Each becomes a field in the report builder ' \
-                                 'sidebar, and its value reaches the block as config[key].',
-                    items: {
-                      type: 'object',
+                    type: 'object',
+                    description: 'A JSON Schema object describing the settings an admin can ' \
+                                 'change on this chart without editing code. Each property ' \
+                                 'becomes a field in the report builder sidebar and reaches the ' \
+                                 'block as config[key]. Send {"type":"object","properties":{}} ' \
+                                 'when there is nothing worth exposing.',
+                    properties: {
+                      type: { type: 'string', enum: ['object'] },
                       properties: {
-                        key: { type: 'string' },
-                        label: { type: 'object', description: 'Locale to label, e.g. {"en":"Chart title"}.' },
-                        type: { type: 'string', enum: %w[text number boolean multiloc_text select] },
-                        default: { description: 'Matching the type; a multiloc object for multiloc_text.' },
-                        options: {
-                          type: 'array',
-                          description: 'Required for select: [{"value":"...","label":{"en":"..."}}].',
-                          items: { type: 'object' }
-                        }
+                        type: 'object',
+                        description: 'Field name to JSON Schema. Each needs a type ' \
+                                     '(string, number, integer or boolean) and a title. Add ' \
+                                     'enum for a fixed set of strings, x-multiloc for a ' \
+                                     'translated string, default for a starting value.'
                       },
-                      required: %w[key label type]
-                    }
+                      required: { type: 'array', items: { type: 'string' } }
+                    },
+                    required: %w[type properties]
                   }
                 },
-                required: %w[title sql source config_schema]
+                required: %w[title source messages config_schema]
               }
             }
           }
@@ -130,7 +144,12 @@ module ReportBuilder
           [{ role: 'user', content: [{ text: 'Generate the report.' }] }],
           require_layout: true
         )
-        raise ComposeError, "no valid layout after #{MAX_ROUNDS} rounds" if result[:layout].nil?
+        if result[:layout].nil?
+          # The charts were authored for a report that never got written. Leaving them
+          # would fill the block library with orphans nothing can reach or delete.
+          discard_authored_blocks
+          raise ComposeError, "no valid layout after #{MAX_ROUNDS} rounds"
+        end
 
         result[:layout]
       end
@@ -168,6 +187,17 @@ module ReportBuilder
           reply = assistant_text(assistant) || reply
 
           calls = tool_calls(assistant)
+
+          # A reply cut off by the token limit still carries the tool call it had
+          # started writing, and that fragment parses. Running it would act on half
+          # an argument: a truncated layout is indistinguishable from a layout with
+          # most of the report deleted, and the model would then be told its own
+          # good work was invalid. Answer the truncation instead.
+          if response.stop_reason.to_s == 'max_tokens'
+            messages << truncation_response(calls)
+            next
+          end
+
           if calls.empty?
             # Nothing to do and nothing asked for: in the chat that is a plain answer.
             return { layout: nil, reply: reply } if !require_layout && response.stop_reason.to_s == 'end_turn'
@@ -207,6 +237,12 @@ module ReportBuilder
         texts.empty? ? nil : texts.join("\n")
       end
 
+      def discard_authored_blocks
+        ContentBuilder::CustomBlock
+          .where(id: @authored_blocks - block_ids_in(@current_layout))
+          .destroy_all
+      end
+
       # A run often authors a chart it then improves on. Only what the layout points
       # at is part of the report; the rest would sit in the block library forever.
       def discard_unplaced_blocks(layout)
@@ -239,11 +275,11 @@ module ReportBuilder
       end
 
       def author_block(input)
-        result = ChartBlockAuthor.new(@project, @author).author(
+        result = ChartBlockAuthor.new(@author, locale: @locale).author(
           title: input['title'],
-          sql: input['sql'],
           source: input['source'],
-          config_schema: input['config_schema']
+          config_schema: input['config_schema'],
+          messages: input['messages']
         )
         @authored_blocks << result.block_id
 
@@ -276,7 +312,14 @@ module ReportBuilder
 
       def client
         @client ||= Aws::BedrockRuntime::Client.new(
-          region: ENV.fetch('AWS_TOXICITY_DETECTION_REGION', 'eu-central-1')
+          region: ENV.fetch('AWS_TOXICITY_DETECTION_REGION', 'eu-central-1'),
+          # One turn writes a whole report layout, which takes minutes. The SDK's
+          # default read timeout is 60 seconds and cuts the model off mid-reply.
+          http_read_timeout: HTTP_READ_TIMEOUT_SECONDS,
+          http_open_timeout: HTTP_OPEN_TIMEOUT_SECONDS,
+          # A retry re-sends the whole transcript, so a hung request must not be sent
+          # three more times behind our back. The job decides whether to try again.
+          retry_limit: 0
         )
       end
 
@@ -306,6 +349,23 @@ module ReportBuilder
 
       # The model replied without calling a tool. A reply cut off by the output
       # limit needs different advice from one that just talked instead of acting.
+      # Bedrock rejects the next request unless every tool call in the last assistant
+      # message is answered, so a truncated reply that started a tool call is answered
+      # call by call rather than with a plain message.
+      def truncation_response(calls)
+        outcome = {
+          error: true,
+          text: 'Your reply was cut off by the output token limit, so this call was not run. ' \
+                'Send less in one call. For set_layout that means fewer nodes: put the chart ' \
+                'blocks you have already authored into a shorter report rather than writing ' \
+                'more of them.'
+        }
+
+        return nudge('max_tokens') if calls.empty?
+
+        { role: 'user', content: calls.map { |call| tool_result_block(call[:id], outcome) } }
+      end
+
       def nudge(stop_reason)
         text = if stop_reason.to_s == 'max_tokens'
           'Your reply was cut off by the output token limit. Write less per tool call: ' \
@@ -390,8 +450,12 @@ module ReportBuilder
           1. Explore. Run queries until you know what this project's data actually holds:
              how participation moved over time, what people answered, who took part, where
              they came from. Look before you decide what the report says.
-          2. Write the charts. One author_chart_block call per chart.
-          3. Lay it out with set_layout, once, at the end.
+          2. Write the charts. One author_chart_block call per chart. Six to eight is
+             the most a report this length carries, so choose the questions worth a
+             chart rather than charting everything you can. A chart you author and do
+             not place is wasted.
+          3. Lay it out with set_layout, once, at the end. The whole layout goes in
+             that one call, so keep the report to a size you can write in one reply.
           #{revision_instructions if @current_layout}
 
           ## What you may write
@@ -499,55 +563,75 @@ module ReportBuilder
 
           ## Writing a chart block
 
-          author_chart_block takes a title, the sql, the complete TSX source, and a
-          config_schema. The source must contain the sql verbatim, as one template literal
-          at the top:
+          author_chart_block takes a title, the complete TSX source, the messages the
+          block displays, and a config_schema. There is no sql argument: the queries are
+          read out of the source, so the two can never disagree about what the chart
+          reads. Put each one in a template literal at the top of the file.
 
-          const SQL = `SELECT ... FROM reporting_contributions ...`;
+          The source is compiled, typechecked against the SDK declarations, linted, and
+          every query it runs goes through the SQL sandbox. Nothing is stored unless all
+          of that passes, and what failed comes back with line numbers. You will not be
+          asked to fix a block after it has been placed.
+
+          ### messages — every string a reader sees
+
+          A block displays no literal text. Each string is a key, read with msg(), and
+          defined under the report's locale, the same one every text prop uses:
+
+          messages: {"#{@locale}":{"title":"Participants per phase",
+                                   "caption":"One line on what this shows.",
+                                   "empty":"No data for this chart yet."}}
+
+          Use the same keys in every locale. A key the source never reads, or a key a
+          locale does not define, is reported as an error.
 
           ### config_schema — what an admin can change afterwards
 
           A generated chart is not the last word: whoever owns the report has to be able to
-          correct it without editing code. Each field becomes an input in the builder
-          sidebar, and its value arrives as config[key].
+          correct it without editing code. config_schema is a JSON Schema object; each
+          property becomes an input in the builder sidebar and arrives as config[key].
 
-          Every chart exposes its title and its caption, so the wording can always be fixed:
+          {"type":"object",
+           "properties":{
+             "title":{"type":"string","x-multiloc":true,"title":"Chart title"},
+             "caption":{"type":"string","x-multiloc":true,"title":"Caption"},
+             "showValues":{"type":"boolean","title":"Show the value on each bar","default":true},
+             "topN":{"type":"integer","title":"How many rows to show","default":10}
+           }}
 
-          [{"key":"title","type":"multiloc_text","label":{"#{@locale}":"Chart title"},
-            "default":{"#{@locale}":"Participants per phase"}},
-           {"key":"caption","type":"multiloc_text","label":{"#{@locale}":"Caption"},
-            "default":{"#{@locale}":"One line on what this shows."}},
-           {"key":"showValues","type":"boolean","label":{"#{@locale}":"Show the value on each bar"},
-            "default":true}]
+          Every chart exposes its title and its caption as x-multiloc strings, so the
+          wording can always be fixed in every language. Then add one or two more where the
+          chart has a real choice in it: how many rows to show, the sort direction, which
+          measure to plot. Six properties is the maximum.
 
-          Then add one or two more where the chart has a real choice in it: how many rows to
-          show ("topN", number), the sort direction ("sort", select), which measure to plot.
-          Six fields is the maximum. A field the block never reads is worse than no field,
-          so read every one you declare, and give every one a default that matches what the
-          chart does now — the block must render identically before anything is touched.
-
-          Types: text, number, boolean, multiloc_text, select (select needs options, each
-          {"value":"...","label":{"<locale>":"..."}}).
+          - type is string, number, integer or boolean.
+          - title is the label the admin reads.
+          - "x-multiloc": true on a string gives a per-locale text input; the value arrives
+            as a multiloc object, so read it with localize().
+          - "enum": ["count","share"] gives a dropdown of fixed values.
+          - default is what the chart already does. A field the block never reads is worse
+            than no field, so read every one you declare, and make the block render
+            identically before anything is touched.
 
           ### The source
 
-          The file default-exports a React component taking { config }, and may import only
-          from 'gv-sdk':
+          The file default-exports a React component taking { config, msg }, and may import
+          only from 'gv-sdk':
 
           import { React, Box, Text, Title, Spinner, colors, useTheme, useLocalize,
                    useReportingData, ResponsiveContainer, BarChart, Bar, XAxis, YAxis,
-                   CartesianGrid, Tooltip, Legend, LineChart, Line, AreaChart, Area,
+                   CartesianGrid, Legend, LineChart, Line, AreaChart, Area,
                    PieChart, Pie, Cell, LabelList } from 'gv-sdk';
 
           const SQL = `SELECT ...`;
 
-          export default function Block({ config }) {
+          export default function Block({ config, msg }) {
             const theme = useTheme();
             const localize = useLocalize();
             const { data, isLoading } = useReportingData(SQL);
             if (isLoading) return <Box p="24px" display="flex" justifyContent="center"><Spinner /></Box>;
             const rows = data ? data.rows : [];
-            if (rows.length === 0) return <Text color="textSecondary">No data for this chart.</Text>;
+            if (rows.length === 0) return <Text color="textSecondary">{msg('empty')}</Text>;
 
             // Every declared field is read, and falls back to what the chart would
             // have shown anyway.
@@ -556,7 +640,7 @@ module ReportBuilder
             return (
               <Box width="100%">
                 <Title variant="h4" m="0 0 12px">
-                  {localize(config.title) || 'A title that says what this shows'}
+                  {localize(config.title) || msg('title')}
                 </Title>
                 <Box width="100%" height="280px">
                   <ResponsiveContainer width="100%" height="100%">
@@ -577,7 +661,7 @@ module ReportBuilder
                   </ResponsiveContainer>
                 </Box>
                 <Text m="8px 0 0" fontSize="s" color="textSecondary">
-                  {localize(config.caption)}
+                  {localize(config.caption) || msg('caption')}
                 </Text>
               </Box>
             );
@@ -585,7 +669,11 @@ module ReportBuilder
 
           Notes that save you a round trip:
           - `data.rows` is an array of plain objects keyed by your column names. Alias your
-            columns to the keys you use in the chart.
+            columns to the keys you use in the chart. `data` is undefined until it loads,
+            and the typechecker will hold you to that.
+          - The argument to useReportingData must be a static string: a literal, or a const
+            in this file that holds one. It is extracted and snapshotted, so it cannot be
+            assembled while the block runs.
           - A chart needs an explicit pixel height on its container; ResponsiveContainer
             fills its parent and a parent with no height renders nothing. Give that
             container width="100%" too, so the chart spans the column.
@@ -597,8 +685,9 @@ module ReportBuilder
             have — which is why the example has no Tooltip at all.
           - theme.colors.tenantPrimary and tenantSecondary are the council's own colours.
             colors.grey200, colors.textSecondary and friends are the platform tokens.
-          - No fetch, no storage, no dangerouslySetInnerHTML, no imports other than 'gv-sdk'.
-          - Write the chart's own title inside the block, in the report's locale.
+            Never a literal hex value.
+          - No fetch, no window, no document, no storage, no eval, no import(), no
+            dangerouslySetInnerHTML, and no import other than 'gv-sdk'.
 
           ## Writing the query
 

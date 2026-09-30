@@ -4,12 +4,12 @@ FactoryBot.define do
   factory :custom_block, class: 'ContentBuilder::CustomBlock' do
     title_multiloc { { 'en' => 'My custom block' } }
 
-    # A block can only be published once it has a current version, so the block is created
-    # first and flipped to published together with its version.
+    # A block needs a version before it can be published, so the version is created
+    # first and the block flipped afterwards.
     trait :published do
       after(:create) do |custom_block, _evaluator|
-        version = create(:custom_block_version, custom_block: custom_block)
-        custom_block.update!(current_version: version, status: 'published')
+        create(:custom_block_version, custom_block: custom_block)
+        custom_block.update!(status: 'published')
       end
     end
   end
@@ -19,22 +19,18 @@ FactoryBot.define do
 
     source { "export default function MyCustomBlock() {\n  return <div>Hello</div>;\n}\n" }
     bundle { 'export default function MyCustomBlock(){return null}' }
-    compile_state { 'compiled' }
+    sdk_version { 'v1' }
     manifest do
       {
         'manifest_version' => 1,
-        'sdk_version' => 1,
+        'sdk_version' => 'v1',
         'targets' => ['report'],
-        'data_uses' => [],
-        'config_schema' => []
+        'data_uses' => ['useReportingData'],
+        'queries' => ['SELECT count(*) AS contributions FROM reporting_contributions'],
+        'config_schema' => { 'type' => 'object', 'properties' => {} }
       }
     end
-    messages { {} }
-
-    # What the background composer writes: source only, compiled by the browser later.
-    trait :pending do
-      bundle { '' }
-      compile_state { 'pending' }
-    end
+    messages { { 'en' => {} } }
+    toolchain { { 'esbuild' => '0.28.2', 'typescript' => '5.7.3', 'sdk' => 'v1' } }
   end
 end

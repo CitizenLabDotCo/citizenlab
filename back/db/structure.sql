@@ -153,7 +153,6 @@ ALTER TABLE IF EXISTS ONLY public.email_campaigns_examples DROP CONSTRAINT IF EX
 ALTER TABLE IF EXISTS ONLY public.followers DROP CONSTRAINT IF EXISTS fk_rails_3d258d3942;
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS fk_rails_3c57357702;
 ALTER TABLE IF EXISTS ONLY public.baskets_ideas DROP CONSTRAINT IF EXISTS fk_rails_39a1b51358;
-ALTER TABLE IF EXISTS ONLY public.content_builder_custom_blocks DROP CONSTRAINT IF EXISTS fk_rails_38d7ff057d;
 ALTER TABLE IF EXISTS ONLY public.custom_field_option_images DROP CONSTRAINT IF EXISTS fk_rails_3814d72daa;
 ALTER TABLE IF EXISTS ONLY public.analysis_comments_summaries DROP CONSTRAINT IF EXISTS fk_rails_37becdebb0;
 ALTER TABLE IF EXISTS ONLY public.files DROP CONSTRAINT IF EXISTS fk_rails_34e9f7c7ef;
@@ -2338,12 +2337,11 @@ CREATE TABLE public.content_builder_custom_block_versions (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     custom_block_id uuid NOT NULL,
     number integer NOT NULL,
-    source text DEFAULT ''::text NOT NULL,
-    bundle text DEFAULT ''::text NOT NULL,
-    compile_state character varying DEFAULT 'pending'::character varying NOT NULL,
+    sdk_version character varying DEFAULT 'v1'::character varying NOT NULL,
+    source text NOT NULL,
+    bundle text NOT NULL,
     manifest jsonb DEFAULT '{}'::jsonb NOT NULL,
     messages jsonb DEFAULT '{}'::jsonb NOT NULL,
-    sdk_version integer DEFAULT 1 NOT NULL,
     toolchain jsonb DEFAULT '{}'::jsonb NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
@@ -2360,7 +2358,6 @@ CREATE TABLE public.content_builder_custom_blocks (
     description_multiloc jsonb DEFAULT '{}'::jsonb,
     status character varying DEFAULT 'draft'::character varying NOT NULL,
     created_by_id uuid,
-    current_version_id uuid,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -8568,14 +8565,6 @@ ALTER TABLE ONLY public.analysis_comments_summaries
 
 ALTER TABLE ONLY public.custom_field_option_images
     ADD CONSTRAINT fk_rails_3814d72daa FOREIGN KEY (custom_field_option_id) REFERENCES public.custom_field_options(id);
-
-
---
--- Name: content_builder_custom_blocks fk_rails_38d7ff057d; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.content_builder_custom_blocks
-    ADD CONSTRAINT fk_rails_38d7ff057d FOREIGN KEY (current_version_id) REFERENCES public.content_builder_custom_block_versions(id) ON DELETE SET NULL;
 
 
 --

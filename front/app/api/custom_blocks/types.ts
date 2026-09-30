@@ -8,63 +8,52 @@ export type CustomBlocksKeys = Keys<typeof customBlocksKeys>;
 
 export type CustomBlockStatus = 'draft' | 'published' | 'disabled';
 
-// A version authored by the background composer starts 'pending': it carries source
-// but no bundle until the browser compiles it on first open.
-export type CustomBlockCompileState = 'pending' | 'compiled' | 'failed';
-
 // The only supported target for now. Other builders (homepage, project
 // description) get their own value once the host widget is registered there.
 export type CustomBlockTarget = 'report';
 
 // --- Manifest ---
-// Authored by the AI loop, stored per version, validated on both sides.
+// Written by the report generation loop, filled in by the build, stored per
+// version and validated on both sides.
 
-interface BlockConfigFieldBase {
-  key: string;
-  label: Multiloc;
+// The config schema is a JSON Schema object: one property per field the builder
+// sidebar offers. Two extensions carry what plain JSON Schema cannot express.
+export type ConfigFieldType = 'string' | 'number' | 'integer' | 'boolean';
+
+export interface ConfigFieldSchema {
+  type: ConfigFieldType;
+  /** The label the admin reads. */
+  title?: string;
+  description?: string;
+  default?: unknown;
+  /** A fixed set of values, rendered as a dropdown. */
+  enum?: string[];
+  /**
+   * A string whose value is a multiloc object, so the sidebar offers one input
+   * per locale. Plain JSON Schema has no translated string, and a chart title
+   * that exists in one language only is not shippable here.
+   */
+  'x-multiloc'?: boolean;
+  /** A record picker, rather than asking the admin to paste an id. */
+  'x-picker'?: 'project';
 }
 
-export interface TextConfigField extends BlockConfigFieldBase {
-  type: 'text';
-  default?: string;
+export interface ConfigSchema {
+  type: 'object';
+  properties?: Record<string, ConfigFieldSchema>;
+  required?: string[];
 }
-
-export interface NumberConfigField extends BlockConfigFieldBase {
-  type: 'number';
-  default?: number;
-}
-
-export interface BooleanConfigField extends BlockConfigFieldBase {
-  type: 'boolean';
-  default?: boolean;
-}
-
-export interface MultilocTextConfigField extends BlockConfigFieldBase {
-  type: 'multiloc_text';
-  default?: Multiloc;
-}
-
-export interface SelectConfigField extends BlockConfigFieldBase {
-  type: 'select';
-  options: { value: string; label: Multiloc }[];
-  default?: string;
-}
-
-export type BlockConfigField =
-  | TextConfigField
-  | NumberConfigField
-  | BooleanConfigField
-  | MultilocTextConfigField
-  | SelectConfigField;
 
 export interface BlockManifest {
-  manifest_version: 1;
-  sdk_version: 1;
+  manifest_version: number;
+  sdk_version: string;
   targets: CustomBlockTarget[];
-  // Names of gv-sdk data hooks the block uses, e.g. ['useProjectsMini'].
+  // Names of gv-sdk data hooks the block uses, e.g. ['useReportingData'].
   // Used for impact analysis when the SDK evolves.
   data_uses: string[];
-  config_schema: BlockConfigField[];
+  config_schema?: ConfigSchema;
+  // The reporting queries the block runs, read out of its source at build time.
+  queries?: string[];
 }
 
 // locale -> message key -> text
@@ -75,49 +64,21 @@ export type BlockConfigValues = Record<string, unknown>;
 
 // --- API resources ---
 
-export interface ICustomBlockVersionSummary {
-  id: string;
-  number: number;
-  manifest: BlockManifest;
-  messages: BlockMessages;
-  sdk_version: number;
-  compile_state: CustomBlockCompileState;
-  created_at: string;
-}
-
-export interface ICustomBlockData {
-  id: string;
-  type: 'custom_block';
-  attributes: {
-    title_multiloc: Multiloc;
-    description_multiloc: Multiloc | null;
-    status: CustomBlockStatus;
-    created_at: string;
-    updated_at: string;
-    current_version: ICustomBlockVersionSummary | null;
-  };
-}
-
-export interface ICustomBlock {
-  data: ICustomBlockData;
-}
-
-export interface ICustomBlocksParams {
-  // Set when listing the versions of one block rather than the blocks themselves.
-  versionsOf?: string;
-}
-
+// One pinned version, and the little the renderer needs to know about the block
+// it belongs to. Neither the authored source nor the compiled bundle is in here:
+// the bundle has its own endpoint so the browser can cache it, and the source is
+// of no use to a renderer.
 export interface ICustomBlockVersionData {
   id: string;
   type: 'custom_block_version';
   attributes: {
     number: number;
-    source: string;
+    sdk_version: string;
     manifest: BlockManifest;
     messages: BlockMessages;
-    sdk_version: number;
-    compile_state: CustomBlockCompileState;
     created_at: string;
+    block_title_multiloc: Multiloc;
+    block_status: CustomBlockStatus;
   };
 }
 
@@ -125,11 +86,12 @@ export interface ICustomBlockVersion {
   data: ICustomBlockVersionData;
 }
 
-export interface ICustomBlockVersions {
-  data: ICustomBlockVersionData[];
+export interface ICustomBlockVersionParams {
+  blockId?: string;
+  version?: number;
 }
 
-// Served with Content-Type: text/javascript; imported at runtime by the
-// custom block loader. Not a fetcher path: the browser imports it directly.
+// Served with Content-Type: text/javascript and immutable cache headers; the
+// block loader imports it directly, so this is not a fetcher path.
 export const customBlockBundleUrl = (blockId: string, version: number) =>
   `/web_api/v1/custom_blocks/${blockId}/versions/${version}/bundle`;

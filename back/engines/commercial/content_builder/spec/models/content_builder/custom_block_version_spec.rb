@@ -3,31 +3,72 @@
 require 'rails_helper'
 
 RSpec.describe ContentBuilder::CustomBlockVersion do
-  describe 'compile_state' do
-    it 'defaults to pending' do
-      custom_block = create(:custom_block)
-      version = described_class.create!(custom_block: custom_block, manifest: {}, messages: {})
-
-      expect(version.compile_state).to eq 'pending'
-      expect(version).to be_pending
-    end
-
-    it 'is invalid for a state outside of COMPILE_STATES' do
-      version = build(:custom_block_version, compile_state: 'compiling')
+  describe 'completeness' do
+    it 'requires the source and the compiled bundle' do
+      version = build(:custom_block_version, source: '', bundle: '')
 
       expect(version).to be_invalid
-      expect(version.errors.details[:compile_state]).to include(hash_including(error: :inclusion))
+      expect(version.errors.details[:source]).to include(hash_including(error: :blank))
+      expect(version.errors.details[:bundle]).to include(hash_including(error: :blank))
     end
 
-    it 'is valid for every state in COMPILE_STATES' do
-      described_class::COMPILE_STATES.each do |compile_state|
-        expect(build(:custom_block_version, compile_state: compile_state)).to be_valid
-      end
+    it 'defaults sdk_version to v1' do
+      custom_block = create(:custom_block)
+      version = described_class.create!(
+        custom_block: custom_block, source: 'x', bundle: 'y', manifest: {}, messages: {}
+      )
+
+      expect(version.sdk_version).to eq 'v1'
+    end
+  end
+
+  describe 'immutability' do
+    it 'refuses to be updated once written' do
+      version = create(:custom_block_version)
+
+      expect { version.update!(bundle: 'something else') }
+        .to raise_error ActiveRecord::ReadOnlyRecord
+    end
+  end
+
+  describe 'manifest' do
+    it 'rejects a config_schema that is not a JSON Schema object' do
+      version = build(:custom_block_version, manifest: { 'config_schema' => [] })
+
+      expect(version).to be_invalid
+      expect(version.errors.details[:manifest]).to include(hash_including(error: :config_schema_invalid))
     end
 
-    it 'reports compiled? only once compiled' do
-      expect(create(:custom_block_version)).to be_compiled
-      expect(create(:custom_block_version, :pending)).not_to be_compiled
+    it 'rejects config_schema properties that are not an object' do
+      version = build(:custom_block_version, manifest: {
+        'config_schema' => { 'type' => 'object', 'properties' => [] }
+      })
+
+      expect(version).to be_invalid
+      expect(version.errors.details[:manifest]).to include(hash_including(error: :config_schema_invalid))
+    end
+
+    it 'accepts a manifest with no config_schema' do
+      expect(build(:custom_block_version, manifest: { 'targets' => ['report'] })).to be_valid
+    end
+
+    it 'rejects queries that are not SQL strings' do
+      version = build(:custom_block_version, manifest: { 'queries' => [{ 'sql' => 'SELECT 1' }] })
+
+      expect(version).to be_invalid
+      expect(version.errors.details[:manifest]).to include(hash_including(error: :queries_invalid))
+    end
+  end
+
+  describe '#queries' do
+    it 'reads the queries the build extracted from the source' do
+      version = create(:custom_block_version)
+
+      expect(version.queries).to eq ['SELECT count(*) AS contributions FROM reporting_contributions']
+    end
+
+    it 'is empty when the manifest names none' do
+      expect(build(:custom_block_version, manifest: {}).queries).to eq []
     end
   end
 
@@ -41,6 +82,12 @@ RSpec.describe ContentBuilder::CustomBlockVersion do
 
       expect([first.number, second.number]).to eq [1, 2]
       expect(create(:custom_block_version, custom_block: other_block).number).to eq 1
+    end
+
+    it 'keeps an explicitly given number' do
+      custom_block = create(:custom_block)
+
+      expect(create(:custom_block_version, custom_block: custom_block, number: 7).number).to eq 7
     end
   end
 end

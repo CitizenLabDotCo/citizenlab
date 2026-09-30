@@ -4,261 +4,83 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'CustomBlocks' do
-  explanation 'Page builder blocks whose React code is authored through an AI loop.'
+  explanation <<~DESC
+    Page builder blocks whose React code is written by the report generation loop.
+
+    A layout pins the version it renders, so these are the only two reads a placed
+    block performs: the version's metadata, and its compiled bundle.
+  DESC
 
   before do
     set_api_content_type
     SettingsService.new.activate_feature!('llm_reporting')
   end
 
-  get 'web_api/v1/custom_blocks' do
-    # No `parameter :status` declaration: rspec_api_documentation resolves declared
-    # parameters against methods of the example group, and `status` is already the
-    # response status there. The filter is passed explicitly through `do_request`.
-    let!(:draft_block) { create(:custom_block) }
-    let!(:published_block) { create(:custom_block, :published) }
-
-    context 'when admin' do
-      before { admin_header_token }
-
-      example_request 'List all custom blocks' do
-        assert_status 200
-        expect(response_ids).to contain_exactly(draft_block.id, published_block.id)
-      end
-
-      example 'List the custom blocks with a given status', document: false do
-        do_request(status: 'published')
-
-        assert_status 200
-        expect(response_ids).to eq [published_block.id]
-      end
-    end
-
-    context 'when visitor' do
-      # The index stays behind authentication: citizens render blocks through
-      # show + bundle only. The policy scope (covered in the policy spec) still
-      # limits what non-admins could see.
-      example_request '[error] List the custom blocks without authorization' do
-        assert_status 401
-      end
-    end
-  end
-
-  get 'web_api/v1/custom_blocks/:id' do
+  get 'web_api/v1/custom_blocks/:custom_block_id/versions/:number' do
     let(:custom_block) { create(:custom_block, :published) }
-    let(:id) { custom_block.id }
+    let(:custom_block_id) { custom_block.id }
+    let(:version) { custom_block.versions.first }
+    let(:number) { version.number }
 
-    example_request 'Get one published custom block by id' do
+    example_request 'Get one version of a published custom block' do
       assert_status 200
 
-      expect(response_data).to include(id: custom_block.id, type: 'custom_block')
-      attributes = response_data[:attributes]
-      expect(attributes.keys).to match_array %i[title_multiloc description_multiloc status created_at updated_at current_version]
-      expect(attributes[:status]).to eq 'published'
-      expect(attributes[:current_version]).to include(
-        id: custom_block.current_version.id,
-        number: 1,
-        sdk_version: 1
+      expect(response_data).to include(id: version.id, type: 'custom_block_version')
+      expect(response_data[:attributes].keys).to match_array(
+        %i[number sdk_version manifest messages created_at block_title_multiloc block_status]
       )
-      expect(attributes[:current_version][:manifest]).to include(targets: ['report'])
+      expect(response_data[:attributes]).to include(
+        number: 1,
+        sdk_version: 'v1',
+        block_status: 'published'
+      )
+      expect(response_data[:attributes][:manifest]).to include(targets: ['report'])
     end
 
-    example_request 'The source and the bundle are not exposed', document: false do
+    example_request 'Neither the source nor the bundle is exposed', document: false do
+      expect(response_body).not_to include version.source
+      expect(response_body).not_to include version.bundle
+    end
+
+    example 'Get a specific version rather than the newest', document: false do
+      create(:custom_block_version, custom_block: custom_block)
+
+      do_request(number: 1)
+
       assert_status 200
-
-      expect(response_data[:attributes][:current_version].keys)
-        .to match_array %i[id number manifest messages sdk_version compile_state created_at]
-      expect(response_body).not_to include custom_block.current_version.bundle
-      expect(response_body).not_to include custom_block.current_version.source
+      expect(response_data[:attributes][:number]).to eq 1
     end
 
-    context 'when the block is not published' do
+    context 'when the version does not exist' do
+      let(:number) { 99 }
+
+      example_request '[error] Try to get a version that was never written' do
+        assert_status 404
+      end
+    end
+
+    context 'when the block is a draft' do
       let(:custom_block) { create(:custom_block) }
+      let(:version) { create(:custom_block_version, custom_block: custom_block) }
 
-      example_request '[error] Try to get a draft custom block as a visitor' do
+      example_request '[error] Try to get a draft version as a visitor' do
         assert_status 401
       end
-    end
-  end
 
-  post 'web_api/v1/custom_blocks' do
-    with_options scope: :custom_block do
-      parameter :title_multiloc, 'The title of the block, as a multiloc.', required: true
-    end
+      context 'when admin' do
+        before { admin_header_token }
 
-    let(:title_multiloc) { { 'en' => 'Upcoming events teaser' } }
-
-    context 'when admin' do
-      before { admin_header_token }
-
-      example_request 'Create a custom block' do
-        assert_status 201
-
-        expect(response_data[:type]).to eq 'custom_block'
-        expect(response_data[:attributes]).to include(
-          title_multiloc: { en: 'Upcoming events teaser' },
-          status: 'draft',
-          current_version: nil
-        )
-        expect(ContentBuilder::CustomBlock.find(response_data[:id]).created_by).to be_present
-      end
-    end
-
-    context 'when visitor' do
-      example_request '[error] Try to create a custom block without authorization' do
-        assert_status 401
+        example_request 'Get a draft version as an admin' do
+          assert_status 200
+          expect(response_data[:attributes][:block_status]).to eq 'draft'
+        end
       end
     end
 
     context 'when the feature is not activated' do
-      before do
-        SettingsService.new.deactivate_feature!('llm_reporting')
-        admin_header_token
-      end
+      before { SettingsService.new.deactivate_feature!('llm_reporting') }
 
-      example_request '[error] Try to create a custom block while the feature is not activated' do
-        assert_status 401
-      end
-    end
-  end
-
-  patch 'web_api/v1/custom_blocks/:id' do
-    with_options scope: :custom_block do
-      parameter :title_multiloc, 'The title of the block, as a multiloc.'
-      parameter :description_multiloc, 'The description of the block, as a multiloc.'
-    end
-
-    let(:custom_block) { create(:custom_block) }
-    let(:id) { custom_block.id }
-
-    before { admin_header_token }
-
-    example '[error] Publish a custom block that has no version' do
-      do_request(custom_block: { status: 'published' })
-
-      assert_status 422
-      expect(json_response_body).to include_response_error(:current_version, 'blank')
-      expect(custom_block.reload.status).to eq 'draft'
-    end
-
-    example 'Publish a custom block that has a version' do
-      version = create(:custom_block_version, custom_block: custom_block)
-      custom_block.update!(current_version: version)
-
-      do_request(custom_block: { status: 'published' })
-
-      assert_status 200
-      expect(response_data[:attributes][:status]).to eq 'published'
-      expect(custom_block.reload).to be_published
-    end
-
-    example 'Update the title of a custom block', document: false do
-      do_request(custom_block: { title_multiloc: { en: 'Renamed block' } })
-
-      assert_status 200
-      expect(custom_block.reload.title_multiloc).to eq({ 'en' => 'Renamed block' })
-    end
-  end
-
-  delete 'web_api/v1/custom_blocks/:id' do
-    let!(:custom_block) { create(:custom_block, :published) }
-    let(:id) { custom_block.id }
-
-    context 'when admin' do
-      before { admin_header_token }
-
-      example_request 'Delete a custom block' do
-        assert_status 200
-        expect { custom_block.reload }.to raise_error ActiveRecord::RecordNotFound
-      end
-    end
-
-    context 'when visitor' do
-      example_request '[error] Try to delete a custom block without authorization' do
-        assert_status 401
-      end
-    end
-  end
-
-  post 'web_api/v1/custom_blocks/:custom_block_id/versions' do
-    with_options scope: :version do
-      parameter :source, 'The TSX source of the block.', required: true
-      parameter :bundle, 'The compiled JS bundle of the block. Empty while compile_state is pending.'
-      parameter :compile_state, 'One of pending, compiled, failed. Defaults to pending.'
-      parameter :manifest, 'The manifest describing the block.'
-      parameter :messages, 'The message catalogs of the block, per locale.'
-    end
-
-    let(:custom_block) { create(:custom_block) }
-    let(:custom_block_id) { custom_block.id }
-    let(:source) { 'export default function MyBlock() { return <div>Hi</div>; }' }
-    let(:bundle) { 'export default function MyBlock(){return null}' }
-    let(:manifest) do
-      {
-        'manifest_version' => 1,
-        'sdk_version' => 1,
-        'targets' => ['report'],
-        'data_uses' => [],
-        'config_schema' => []
-      }
-    end
-    let(:messages) { { 'en' => { 'greeting' => 'Hi' } } }
-
-    context 'when admin' do
-      before { admin_header_token }
-
-      example_request 'Create a version of a custom block' do
-        assert_status 201
-
-        expect(response_data[:type]).to eq 'custom_block_version'
-        expect(response_data[:attributes]).to include(number: 1, source: source, sdk_version: 1)
-        expect(custom_block.reload.current_version_id).to eq response_data[:id]
-      end
-
-      example 'Creating a version without a bundle leaves it pending', document: false do
-        do_request(version: { source: source, manifest: manifest, messages: messages })
-
-        assert_status 201
-        expect(response_data[:attributes]).to include(compile_state: 'pending')
-      end
-
-      example 'Creating a second version makes it the current version', document: false do
-        create(:custom_block_version, custom_block: custom_block)
-
-        do_request
-
-        assert_status 201
-        expect(response_data[:attributes][:number]).to eq 2
-        expect(custom_block.reload.current_version.number).to eq 2
-      end
-    end
-
-    context 'when visitor' do
-      example_request '[error] Try to create a version without authorization' do
-        assert_status 401
-      end
-    end
-  end
-
-  get 'web_api/v1/custom_blocks/:custom_block_id/versions' do
-    let(:custom_block) { create(:custom_block, :published) }
-    let(:custom_block_id) { custom_block.id }
-
-    context 'when admin' do
-      before { admin_header_token }
-
-      example 'List the versions of a custom block' do
-        create(:custom_block_version, custom_block: custom_block)
-
-        do_request
-
-        assert_status 200
-        expect(response_data.pluck(:attributes).pluck(:number)).to eq [2, 1]
-      end
-    end
-
-    context 'when visitor' do
-      example_request '[error] Try to list the versions without authorization' do
+      example_request '[error] Try to get a version while the feature is off' do
         assert_status 401
       end
     end
@@ -267,7 +89,8 @@ resource 'CustomBlocks' do
   get 'web_api/v1/custom_blocks/:custom_block_id/versions/:number/bundle' do
     let(:custom_block) { create(:custom_block, :published) }
     let(:custom_block_id) { custom_block.id }
-    let(:number) { custom_block.current_version.number }
+    let(:version) { custom_block.versions.first }
+    let(:number) { version.number }
 
     example_request 'Get the compiled bundle of a version of a published custom block' do
       assert_status 200
@@ -275,13 +98,12 @@ resource 'CustomBlocks' do
       expect(response_headers['Content-Type']).to include 'text/javascript'
       expect(response_headers['Cache-Control']).to include 'immutable'
       expect(response_headers['Cache-Control']).to include 'max-age=31536000'
-      expect(response_body).to eq custom_block.current_version.bundle
+      expect(response_body).to eq version.bundle
     end
 
     context 'when the block is not published' do
       let(:custom_block) { create(:custom_block) }
-      let!(:version) { create(:custom_block_version, custom_block: custom_block) }
-      let(:number) { version.number }
+      let(:version) { create(:custom_block_version, custom_block: custom_block) }
 
       example_request '[error] Try to get the bundle of a draft custom block as a visitor' do
         assert_status 401

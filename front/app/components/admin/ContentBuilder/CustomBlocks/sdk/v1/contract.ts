@@ -1,13 +1,16 @@
-// The v1 SDK contract for custom blocks.
+// The v1 SDK contract for custom blocks: the names a block may import.
 //
-// Everything a custom block can import from 'gv-sdk' is listed here, and the
-// static shim at public/custom-block-sdk/v1.js re-exports exactly these names
-// from window.__GV_SDK__.v1 (kept in sync by sdkShimSync.test.ts). Compiled
-// block bundles never import app modules directly: the compiler rewrites
-// 'gv-sdk' (and the jsx runtime) to the shim URL, and the registry below is
-// installed before any block module is imported.
-export const SDK_VERSION = 1;
-
+// Three artifacts describe this one contract and must agree:
+//   - this file, which the app's registry builds from;
+//   - gv-sdk.d.ts next to it, which the check service typechecks blocks against
+//     and the report generation loop puts in the model's system prompt;
+//   - the static shim at app/public/custom-block-sdk/v1.js, which re-exports
+//     these names from window.__GV_SDK__.v1 at runtime.
+// sdkContractSync.test.ts fails when any of the three drifts.
+//
+// Compiled bundles never import app modules directly: the build rewrites
+// 'gv-sdk' (and the jsx runtime) to the shim URL, and the registry is installed
+// before any block module is imported.
 export const SDK_SHIM_URL = '/custom-block-sdk/v1.js';
 
 export const SDK_EXPORT_NAMES = [
@@ -56,11 +59,3 @@ export const SDK_EXPORT_NAMES = [
 ] as const;
 
 export type SdkExportName = (typeof SDK_EXPORT_NAMES)[number];
-
-// Data hooks a block may declare in its manifest's data_uses.
-export const SDK_DATA_HOOKS = [
-  'useAuthUser',
-  'useProjectsMini',
-  'useAppConfiguration',
-  'useReportingData',
-] as const;

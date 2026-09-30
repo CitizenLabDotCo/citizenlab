@@ -1,18 +1,16 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
-import { ICustomBlocksParams } from './types';
+import { ICustomBlockVersionParams } from './types';
 
-const baseKey = { type: 'custom_block' };
+const baseKey = { type: 'custom_block_version' };
 
 const customBlocksKeys = {
   all: () => [baseKey],
-  lists: () => [{ ...baseKey, operation: 'list' }],
-  list: (params: ICustomBlocksParams) => [
-    { ...baseKey, operation: 'list', parameters: params },
-  ],
   items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({ id }: { id?: string }) => [
-    { ...baseKey, operation: 'item', parameters: { id } },
+  // A version is immutable, and a layout pins the one it renders, so the block
+  // id and the version number together are the whole identity.
+  item: ({ blockId, version }: ICustomBlockVersionParams) => [
+    { ...baseKey, operation: 'item', parameters: { blockId, version } },
   ],
 } satisfies QueryKeys;
 

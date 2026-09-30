@@ -5,35 +5,27 @@ class CreateContentBuilderCustomBlockVersions < ActiveRecord::Migration[7.2]
     create_table :content_builder_custom_block_versions, id: :uuid do |t|
       t.references :custom_block, type: :uuid, null: false, index: true, foreign_key: { to_table: :content_builder_custom_blocks, on_delete: :cascade }
       t.integer :number, null: false
-      t.text :source, null: false, default: ''
-      t.text :bundle, null: false, default: ''
-      # A version authored by the background composer has no bundle yet: the browser
-      # compiles it on first open and fills it in.
-      t.string :compile_state, null: false, default: 'pending'
+      t.string :sdk_version, null: false, default: 'v1'
+      # A version is immutable and always complete: the build runs before the version
+      # is written, so there is no state in which a stored version has no bundle.
+      t.text :source, null: false
+      t.text :bundle, null: false
       t.jsonb :manifest, null: false, default: {}
       t.jsonb :messages, null: false, default: {}
-      t.integer :sdk_version, null: false, default: 1
+      # The versions of esbuild, TypeScript and the SDK the bundle was built with,
+      # so a later toolchain upgrade can tell what needs rebuilding.
       t.jsonb :toolchain, null: false, default: {}
 
       t.timestamps
     end
 
+    # A layout pins {block, version}, so resolving a placed block is a lookup on
+    # exactly this pair on every render.
     add_index(
       :content_builder_custom_block_versions,
       %i[custom_block_id number],
       unique: true,
       name: 'index_custom_block_versions_on_custom_block_id_and_number'
     )
-
-    # Both tables are created in this PR and are empty when this runs, so the
-    # write lock strong_migrations warns about cannot bite.
-    safety_assured do
-      add_foreign_key(
-        :content_builder_custom_blocks,
-        :content_builder_custom_block_versions,
-        column: :current_version_id,
-        on_delete: :nullify
-      )
-    end
   end
 end

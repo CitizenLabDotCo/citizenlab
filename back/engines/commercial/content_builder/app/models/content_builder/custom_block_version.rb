@@ -7,12 +7,11 @@
 #  id              :uuid             not null, primary key
 #  custom_block_id :uuid             not null
 #  number          :integer          not null
-#  source          :text             default(""), not null
-#  bundle          :text             default(""), not null
-#  compile_state   :string           default("pending"), not null
+#  sdk_version     :string           default("v1"), not null
+#  source          :text             not null
+#  bundle          :text             not null
 #  manifest        :jsonb            not null
 #  messages        :jsonb            not null
-#  sdk_version     :integer          default(1), not null
 #  toolchain       :jsonb            not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
@@ -27,29 +26,37 @@
 #  fk_rails_...  (custom_block_id => content_builder_custom_blocks.id) ON DELETE => cascade
 #
 module ContentBuilder
-  # A snapshot of a {CustomBlock}: the authored source, the compiled bundle that the
-  # front-end imports at runtime, the manifest describing what the block needs and where
-  # it can be used, and the message catalogs it renders. The authored content never
-  # changes once written; only +compile_state+ and +bundle+ move, and only until the
-  # source has been compiled.
+  # An immutable snapshot of a {CustomBlock}: the authored source, the compiled bundle
+  # the front-end imports at runtime, the manifest describing what the block needs and
+  # where it can be used, and the message catalogues it renders.
+  #
+  # A version is only ever written complete. The build (compile, typecheck, lint, SQL
+  # extraction) runs before the record is created, so there is no partially built state
+  # to render around: if a row exists, its bundle runs.
   class CustomBlockVersion < ApplicationRecord
-    COMPILE_STATES = %w[pending compiled failed].freeze
-
     belongs_to :custom_block, class_name: 'ContentBuilder::CustomBlock', inverse_of: :versions
 
     before_validation :set_number, on: :create
 
     validates :number, presence: true, uniqueness: { scope: :custom_block_id }
-    validates :compile_state, inclusion: { in: COMPILE_STATES }
+    validates :sdk_version, presence: true
+    validates :source, presence: true
+    validates :bundle, presence: true
     validate :validate_manifest
     validate :validate_messages
 
-    def pending?
-      compile_state == 'pending'
+    # Read-only once written: the bundle is served with immutable cache headers and a
+    # layout pins this exact number, so changing it, or deleting it by itself, would
+    # silently alter a report that was already reviewed. Deleting the block it belongs
+    # to takes its versions with it.
+    def readonly?
+      persisted?
     end
 
-    def compiled?
-      compile_state == 'compiled'
+    # The reporting queries the block runs, extracted from the source at build time so
+    # that "which blocks read this view?" is a database question.
+    def queries
+      manifest['queries'] || []
     end
 
     private
@@ -67,10 +74,31 @@ module ContentBuilder
         return
       end
 
-      config_schema = manifest['config_schema']
-      return if !manifest.key?('config_schema') || config_schema.is_a?(Array)
+      validate_config_schema
+      validate_queries
+    end
 
-      errors.add :manifest, :config_schema_invalid, message: 'config_schema must be an array'
+    # A JSON Schema object: the sidebar renders one control per entry in +properties+.
+    def validate_config_schema
+      schema = manifest['config_schema']
+      return if schema.nil?
+
+      if !schema.is_a?(Hash) || (schema.key?('type') && schema['type'] != 'object')
+        errors.add :manifest, :config_schema_invalid,
+          message: 'config_schema must be a JSON Schema object'
+        return
+      end
+
+      return if schema['properties'].nil? || schema['properties'].is_a?(Hash)
+
+      errors.add :manifest, :config_schema_invalid, message: 'config_schema properties must be an object'
+    end
+
+    def validate_queries
+      queries = manifest['queries']
+      return if queries.nil? || (queries.is_a?(Array) && queries.all?(String))
+
+      errors.add :manifest, :queries_invalid, message: 'queries must be an array of SQL strings'
     end
 
     def validate_messages

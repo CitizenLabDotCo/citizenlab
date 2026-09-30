@@ -23,6 +23,8 @@ class ReportingDemoSeed
   IDEA_COUNT = 34
   SURVEY_RESPONSE_COUNT = 68
   SESSION_COUNT = 620
+  SHORTLIST_COUNT = 8
+  VOTER_COUNT = 52
 
   IDEA_TITLES = [
     'Plant a shade canopy along the main path', 'Open the riverbank for swimming',
@@ -70,6 +72,7 @@ class ReportingDemoSeed
       create_survey_form
       create_ideas
       create_survey_responses
+      create_votes
       create_traffic
     end
 
@@ -228,6 +231,7 @@ class ReportingDemoSeed
         creation_phase: nil,
         publication_status: 'published',
         published_at: published_at,
+        submitted_at: published_at,
         created_at: published_at
       )
 
@@ -265,6 +269,7 @@ class ReportingDemoSeed
         author: resident,
         publication_status: 'published',
         published_at: submitted_at,
+        submitted_at: submitted_at,
         created_at: submitted_at,
         custom_field_values: {
           @q_priority.key => weighted_sample(priority_keys, [0.42, 0.28, 0.19, 0.11]),
@@ -285,6 +290,34 @@ class ReportingDemoSeed
       return value if target <= cumulative
     end
     values.last
+  end
+
+  # Without this the voting phase is a heading with nothing under it, and a report
+  # about the project has nothing to say about a third of it.
+  def create_votes
+    shortlist = @project.ideas
+      .where(creation_phase_id: nil)
+      .order(likes_count: :desc)
+      .limit(SHORTLIST_COUNT)
+      .to_a
+    shortlist.each { |idea| idea.phases << @voting }
+
+    puts "Creating #{VOTER_COUNT} submitted votes over a shortlist of #{shortlist.size}"
+    @residents.sample(VOTER_COUNT).each do |resident|
+      submitted_at = rand(@voting.start_at.to_time..Time.zone.now)
+      basket = Basket.create!(
+        phase: @voting, user: resident,
+        submitted_at: submitted_at, created_at: submitted_at
+      )
+
+      # A voter spends some of their five votes, not always all of them, and the
+      # shortlist's own order biases what they pick.
+      shortlist.sample(rand(1..@voting.voting_max_total)).each do |idea|
+        BasketsIdea.create!(basket: basket, idea: idea, votes: 1, created_at: submitted_at)
+      end
+    end
+
+    Basket.update_counts(@voting)
   end
 
   def create_traffic
@@ -328,6 +361,7 @@ class ReportingDemoSeed
         responses   #{@project.ideas.where(creation_phase_id: @survey.id).count}
         reactions   #{Reaction.where(reactable: @project.ideas).count}
         comments    #{Comment.where(idea: @project.ideas).count}
+        votes       #{BasketsIdea.joins(:basket).where(baskets: { phase_id: @voting.id }).count}
         sessions    #{SESSION_COUNT}
     SUMMARY
   end

@@ -1,0 +1,25 @@
+{
+  "name": "@govocal/check-service",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Builds and checks generated custom blocks for the report generation loop.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/server.js",
+    "dev": "node --experimental-strip-types --watch src/server.ts",
+    "test": "node --experimental-strip-types --test 'src/**/*.test.ts'",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "esbuild": "0.28.2",
+    "fastify": "5.2.1",
+    "typescript": "5.7.3"
+  },
+  "devDependencies": {
+    "@types/node": "22.13.1"
+  }
+}

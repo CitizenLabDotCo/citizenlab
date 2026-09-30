@@ -25,10 +25,12 @@ ContentBuilder::Engine.routes.draw do
       end
       resources :content_builder_layout_images, only: :create, controller: :layout_images
 
-      resources :custom_blocks, only: %i[index show create update destroy] do
-        resources :versions, only: %i[index create], controller: 'custom_block_versions'
+      # A layout pins {blockId, version}, so a placed block only ever reads one
+      # version: its metadata and its bundle. Blocks are written by the report
+      # generation loop, never through the API, so there is nothing else to expose.
+      resources :custom_blocks, only: [] do
+        get 'versions/:number', to: 'custom_block_versions#show', constraints: { number: /\d+/ }
         get 'versions/:number/bundle', to: 'custom_block_versions#bundle', constraints: { number: /\d+/ }
-        patch 'versions/:number/compile', to: 'custom_block_versions#compile', constraints: { number: /\d+/ }
       end
       resources :reporting_queries, only: %i[create]
     end

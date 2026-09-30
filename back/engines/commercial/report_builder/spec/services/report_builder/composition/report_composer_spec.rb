@@ -12,7 +12,22 @@ describe ReportBuilder::Composition::ReportComposer do
   end
   # rubocop:enable RSpec/BeforeAfterAll
 
+  before do
+    allow(ENV).to receive(:fetch).and_call_original
+    allow(ENV).to receive(:fetch).with('CHECK_SERVICE_SECRET', nil).and_return('test-secret')
+    stub_check_service
+  end
+
   let(:project) { create(:project) }
+  let(:sql) { 'SELECT count(*) AS count FROM reporting_contributions' }
+  let(:authored) do
+    {
+      'title' => 'Contributions',
+      'source' => block_source,
+      'messages' => { 'en' => { 'total' => 'Contributions' } },
+      'config_schema' => { 'type' => 'object', 'properties' => {} }
+    }
+  end
   let(:block_source) do
     <<~TSX
       import { React, Box, Text, useReportingData } from 'gv-sdk';
@@ -47,6 +62,23 @@ describe ReportBuilder::Composition::ReportComposer do
 
   def set_layout(layout, id: 'tu_layout')
     tool_call('set_layout', { 'layout' => layout }, id: id)
+  end
+
+  # Blocks are compiled and checked by the check service before anything is stored,
+  # so every authoring path goes through it. The default is a clean build; the specs
+  # that care about failure re-stub it.
+  def stub_check_service(ok: true, diagnostics: [])
+    stub_request(:post, 'http://check_service:3100/build').to_return(
+      status: 200,
+      body: {
+        ok: ok,
+        bundle: ok ? 'export default function Block(){return null}' : nil,
+        manifest: { 'queries' => [sql] },
+        diagnostics: diagnostics,
+        toolchain: { 'esbuild' => '0.28.2', 'typescript' => '5.7.3', 'sdk' => 'v1' }
+      }.to_json,
+      headers: { 'Content-Type' => 'application/json' }
+    )
   end
 
   # The composer appends to one messages array, so a plain spy records every call
@@ -159,14 +191,6 @@ describe ReportBuilder::Composition::ReportComposer do
     end
 
     describe 'author_chart_block' do
-      let(:authored) do
-        {
-          'title' => 'Contributions',
-          'sql' => 'SELECT count(*) AS count FROM reporting_contributions',
-          'source' => block_source
-        }
-      end
-
       it 'stores the block and answers with the id to place' do
         allow(client).to receive(:converse) do |args|
           sent_messages << args[:messages].deep_dup
@@ -186,8 +210,8 @@ describe ReportBuilder::Composition::ReportComposer do
           .and change(ContentBuilder::CustomBlockVersion, :count).by(1)
 
         version = ContentBuilder::CustomBlockVersion.last
-        expect(version).to be_pending
-        expect(version.manifest['queries']).to eq [authored['sql']]
+        expect(version.bundle).to eq 'export default function Block(){return null}'
+        expect(version.manifest['queries']).to eq [sql]
       end
 
       it 'discards a chart the finished layout does not use' do
@@ -196,27 +220,117 @@ describe ReportBuilder::Composition::ReportComposer do
         expect { composer.compose }.not_to change(ContentBuilder::CustomBlock, :count)
       end
 
-      it 'refuses a source that does not carry the query it declared' do
-        stub_converse(
-          tool_call('author_chart_block', authored.merge('source' => 'export default function Block() {}')),
-          set_layout(text_layout)
+      # The build is what decides; the composer's job is to pass its verdict back in a
+      # form the model can act on rather than swallowing it.
+      it 'hands a failed build back as a correctable tool error' do
+        stub_check_service(
+          ok: false,
+          diagnostics: [
+            { 'kind' => 'lint', 'line' => 2, 'rule' => 'no-network', 'message' => 'No fetch in a block.' }
+          ]
         )
+        stub_converse(tool_call('author_chart_block', authored), set_layout(text_layout))
 
         expect { composer.compose }.not_to change(ContentBuilder::CustomBlock, :count)
         expect(last_tool_result[:status]).to eq 'error'
-        expect(last_tool_result[:content].first[:text]).to include 'character for character'
+        expect(last_tool_result[:content].first[:text]).to include 'no-network'
+        expect(last_tool_result[:content].first[:text]).to include 'line 2'
       end
 
-      it 'refuses a source that reaches outside the sdk' do
-        forbidden = block_source.sub('export default', "const r = await fetch('/x');\nexport default")
+      it 'says so plainly when the block cannot be checked at all' do
+        stub_request(:post, 'http://check_service:3100/build').to_timeout
+        stub_converse(tool_call('author_chart_block', authored), set_layout(text_layout))
+
+        composer.compose
+
+        expect(last_tool_result[:content].first[:text]).to include 'cannot be checked right now'
+      end
+    end
+
+    describe 'a reply cut off by the output token limit' do
+      def truncated(name, input, id: 'tu_cut')
+        respond_with([content_block_class.new(nil, tool_use_class.new(id, name, input))], 'max_tokens')
+      end
+
+      # The fragment parses, so it reaches the tool looking like a real argument. A
+      # half-written layout is a layout with most of the report missing.
+      it 'does not apply a layout out of a truncated reply' do
+        half = layout_with('textnode01' => node('TextMultiloc', { 'text' => { 'en' => '<p>Half</p>' } }))
         stub_converse(
-          tool_call('author_chart_block', authored.merge('source' => forbidden)),
-          set_layout(text_layout)
+          truncated('set_layout', { 'layout' => half }),
+          set_layout(text_layout, id: 'tu_2')
+        )
+
+        expect(composer.compose).to eq text_layout
+      end
+
+      it 'tells the model the call was not run, and why' do
+        stub_converse(
+          truncated('set_layout', { 'layout' => text_layout }),
+          set_layout(text_layout, id: 'tu_2')
         )
 
         composer.compose
 
-        expect(last_tool_result[:content].first[:text]).to include 'no-network'
+        cut_off = sent_messages.flatten.flat_map { |m| m[:content] || [] }
+          .filter_map { |c| c[:tool_result] }
+          .find { |r| r[:content].first[:text].to_s.include?('cut off') }
+        expect(cut_off).to be_present
+        expect(cut_off[:status]).to eq 'error'
+      end
+
+      # Bedrock rejects the next request if a tool call went unanswered, so the
+      # truncation has to come back as a tool result, not a plain message.
+      it 'answers every tool call the truncated reply had started' do
+        stub_converse(
+          respond_with(
+            [
+              content_block_class.new(nil, tool_use_class.new('tu_a', 'set_layout', { 'layout' => text_layout })),
+              content_block_class.new(nil, tool_use_class.new('tu_b', 'set_layout', { 'layout' => text_layout }))
+            ],
+            'max_tokens'
+          ),
+          set_layout(text_layout, id: 'tu_2')
+        )
+
+        composer.compose
+
+        answered = sent_messages.flatten.flat_map { |m| m[:content] || [] }
+          .filter_map { |c| c.dig(:tool_result, :tool_use_id) }
+        expect(answered).to include('tu_a', 'tu_b')
+      end
+
+      it 'nudges when the truncated reply had not started a tool call yet' do
+        stub_converse(
+          respond_with([content_block_class.new('Thinking about it', nil)], 'max_tokens'),
+          set_layout(text_layout, id: 'tu_2')
+        )
+
+        expect(composer.compose).to eq text_layout
+      end
+    end
+
+    describe 'when no valid layout is produced' do
+      it 'fails loudly rather than saving an empty report' do
+        stub_converse(respond_with([content_block_class.new('no tools for me', nil)], 'end_turn'))
+
+        expect { composer.compose }.to raise_error described_class::ComposeError
+      end
+
+      # Paid rounds and a pile of built charts, and the report never gets written: the
+      # blocks would be unreachable from any layout and undeletable from the UI.
+      it 'discards charts it authored before giving up' do
+        allow(client).to receive(:converse) do |args|
+          sent_messages << args[:messages].deep_dup
+          if sent_messages.size == 1
+            tool_call('author_chart_block', authored)
+          else
+            respond_with([content_block_class.new('I give up', nil)], 'end_turn')
+          end
+        end
+
+        expect { suppress(described_class::ComposeError) { composer.compose } }
+          .not_to change(ContentBuilder::CustomBlock, :count)
       end
     end
 
@@ -232,11 +346,6 @@ describe ReportBuilder::Composition::ReportComposer do
       end
 
       it 'accepts a chart node pointing at a block authored in this run' do
-        authored = {
-          'title' => 'Contributions',
-          'sql' => 'SELECT count(*) AS count FROM reporting_contributions',
-          'source' => block_source
-        }
         allow(client).to receive(:converse) do |args|
           sent_messages << args[:messages].deep_dup
           if sent_messages.size == 1

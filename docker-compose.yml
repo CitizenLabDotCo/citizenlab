@@ -119,6 +119,26 @@ services:
     # Production Gotenberg needs the same flag in its own deploy config.
     command: ["gotenberg", "--api-timeout=600s"]
 
+  # Builds and checks the custom blocks the report generation loop writes.
+  # Its own container because it executes model-generated JavaScript, which must
+  # not run inside the Rails process.
+  check_service:
+    container_name: ${WORKTREE_PREFIX:-cl}-check-service
+    build:
+      # The repository root, so the image can take the SDK type definitions from
+      # the front-end tree.
+      context: .
+      dockerfile: check-service/Dockerfile
+    restart: always
+    environment:
+      # Rails authenticates with this header; both sides read the same variable.
+      CHECK_SERVICE_SECRET: ${CHECK_SERVICE_SECRET:-development-check-secret}
+      PORT: 3100
+      SDK_TYPES_PATH: /app/sdk/gv-sdk.d.ts
+    volumes:
+      # So editing the contract does not need an image rebuild in development.
+      - ./front/app/components/admin/ContentBuilder/CustomBlocks/sdk/v1/gv-sdk.d.ts:/app/sdk/gv-sdk.d.ts:ro
+
   # Fake OIDC provider used by the `fake_sso` verification/auth method.
   # Only starts if you run `docker compose --profile fake_sso up`
   # (or via `make up-fake-sso` / `make e2e-setup-and-up-fake-sso`).
