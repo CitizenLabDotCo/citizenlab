@@ -5,9 +5,12 @@
 class McpServer::Serializers::UserCustomField < McpServer::Serializers::Base
   def attributes(record)
     attrs = record.slice(:id, :title_multiloc, :input_type, :code, :required)
-    return attrs unless record.input_type == 'select'
+    # Options (with their keys) let an LLM key a categorical reference distribution. Inlined for
+    # option-bearing fields that support a reference distribution — one step ahead of
+    # set_reference_distribution, whose categorical path is select-only today (birthyear is binned,
+    # with no options).
+    return attrs unless record.supports_reference_distribution? && record.options.any?
 
-    # Options (with their keys) are needed to key a categorical reference distribution.
     attrs.merge(options: record.options.map { |option| { key: option.key, title_multiloc: option.title_multiloc } })
   end
 end
