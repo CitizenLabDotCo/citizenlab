@@ -4,6 +4,7 @@ import { CLErrors } from 'typings';
 import basketsIdeasKeys from 'api/baskets_ideas/keys';
 import phasesKeys from 'api/phases/keys';
 
+import { trackCustomerAnalyticsEvent } from 'utils/analytics';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import basketKeys from './keys';
@@ -33,6 +34,10 @@ const useUpdateBasket = () => {
       queryClient.invalidateQueries({
         queryKey: phasesKeys.item({ phaseId }),
       });
+
+      if (variables.submitted) {
+        trackCustomerAnalyticsEvent('votes_submitted', { phase_id: phaseId });
+      }
     },
   });
 };

@@ -4,6 +4,8 @@ import { requestReconfirmCodePhone } from 'api/authentication/confirm_phone/requ
 import { redirectToSSOProvider } from 'api/authentication/singleSignOn';
 import { checkEmail, checkPhone } from 'api/users/checkUser';
 
+import { trackCustomerAnalyticsEvent } from 'utils/analytics';
+
 import {
   GetRequirements,
   UpdateState,
@@ -13,6 +15,17 @@ import {
 } from '../../typings';
 
 import { Step } from './typings';
+
+// The flow is decided by the back end (see handleSubmitEmail and the SSO
+// callback), so 'signup' here means a new account was created.
+export const trackAuthenticated = (
+  flow: 'signup' | 'signin',
+  method: 'email' | 'phone' | 'sso' | 'invite'
+) => {
+  trackCustomerAnalyticsEvent(flow === 'signup' ? 'sign_up' : 'login', {
+    method,
+  });
+};
 
 export const checkMissingData = async (
   requirements: AuthenticationRequirements['requirements'],

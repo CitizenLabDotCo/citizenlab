@@ -150,3 +150,44 @@ export function trackEventByName(
     name: eventName,
   });
 }
+
+/** Events that are safe to share with the customer's own analytics. Besides
+ * our tools, these events are pushed to the Google Tag Manager dataLayer,
+ * where customers build triggers and conversions on them. Treat them as a
+ * public contract: don't rename them, fire them only once an action has
+ * succeeded, and only pass ids, never personal data or free text.
+ *
+ * Names are snake_case because customers usually forward them from GTM to
+ * GA4 unchanged, and GA4 event names may only contain letters, numbers and
+ * underscores. `login` and `sign_up` use GA4's recommended event names (with
+ * its `method` parameter) so they line up with GA4's own reporting. */
+const customerAnalyticsEvents = [
+  'idea_started',
+  'idea_submitted',
+  'survey_started',
+  'survey_submitted',
+  'comment_posted',
+  'reaction_added',
+  'votes_submitted',
+  'poll_submitted',
+  'volunteered',
+  'event_attendance_registered',
+  'idea_followed',
+  'project_followed',
+  'login',
+  'sign_up',
+] as const;
+
+type CustomerAnalyticsEvent = (typeof customerAnalyticsEvents)[number];
+
+export const isCustomerAnalyticsEvent = (
+  eventName: string
+): eventName is CustomerAnalyticsEvent =>
+  customerAnalyticsEvents.some((name) => name === eventName);
+
+export function trackCustomerAnalyticsEvent(
+  eventName: CustomerAnalyticsEvent,
+  properties: Properties = {}
+) {
+  trackEventByName(eventName, properties);
+}
