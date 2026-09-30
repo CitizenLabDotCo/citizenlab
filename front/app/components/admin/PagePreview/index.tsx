@@ -61,6 +61,7 @@ type Props = {
   src: string;
   iframeTitle: string;
   editPageContentAriaLabel: string;
+  editPageContentText?: string;
   onEdit: () => void;
   dataCy?: string;
   editPageContentClassName?: string;
@@ -72,6 +73,7 @@ const PagePreview = ({
   src,
   iframeTitle,
   editPageContentAriaLabel,
+  editPageContentText,
   onEdit,
   dataCy,
   editPageContentClassName,
@@ -119,7 +121,6 @@ const PagePreview = ({
       justifyContent="center"
       p={`${PREVIEW_AREA_PADDING}px`}
       pt={alignTop ? '0px' : `${PREVIEW_AREA_PADDING}px`}
-      background={`radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.04) 1px, transparent 0) 0 0 / 18px 18px, ${colors.background}`}
     >
       <Card
         data-cy={dataCy}
@@ -184,7 +185,9 @@ const PagePreview = ({
               onClick={onEdit}
               ariaLabel={editPageContentAriaLabel}
               dataCy="e2e-edit-page-content"
-              text={formatMessage(messages.editPageContent)}
+              text={
+                editPageContentText ?? formatMessage(messages.editPageContent)
+              }
             />
           </CtaWrapper>
         </Overlay>

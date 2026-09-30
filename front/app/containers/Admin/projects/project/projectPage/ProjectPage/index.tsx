@@ -46,16 +46,21 @@ const ProjectPage = () => {
   };
 
   return (
-    <PagePreview
-      src={previewSrc}
-      iframeTitle={formatMessage(messages.projectPagePreviewTitle)}
-      editPageContentAriaLabel={formatMessage(
-        messages.editProjectPageInContentBuilder
-      )}
-      onEdit={openContentBuilder}
-      dataCy="e2e-project-page-preview"
-      editPageContentClassName="intercom-product-tour-project-edit-project"
-    />
+    <Box
+      height="100%"
+      background={`radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.04) 1px, transparent 0) 0 0 / 18px 18px, ${colors.background}`}
+    >
+      <PagePreview
+        src={previewSrc}
+        iframeTitle={formatMessage(messages.projectPagePreviewTitle)}
+        editPageContentAriaLabel={formatMessage(
+          messages.editProjectPageInContentBuilder
+        )}
+        onEdit={openContentBuilder}
+        dataCy="e2e-project-page-preview"
+        editPageContentClassName="intercom-product-tour-project-edit-project"
+      />
+    </Box>
   );
 };
 
