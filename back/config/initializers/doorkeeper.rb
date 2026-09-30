@@ -288,8 +288,13 @@ Doorkeeper.configure do
   # which is what MCP clients (Claude Code) use for their OAuth
   # callback during Dynamic Client Registration. Without this the
   # default (force SSL outside development) rejects http://localhost:<port>/...
+  #
+  # loopback_uri? covers the whole 127.0.0.0/8 range and ::1 (including the
+  # bracketed IPv6 form), which is what RFC 8252 means by "loopback interface";
+  # localhost is not an IP so it needs its own check.
   force_ssl_in_redirect_uri do |uri|
-    !Rails.env.development? && %w[localhost 127.0.0.1 ::1].exclude?(uri.hostname&.downcase)
+    !Rails.env.development? &&
+      !(Doorkeeper::OAuth::Helpers::URIChecker.loopback_uri?(uri) || uri.hostname&.casecmp?('localhost'))
   end
 
   # Specify what redirect URI's you want to block during Application creation.

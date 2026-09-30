@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-# Defence in depth behind the allowlist in Oauth::RegistrationsController: whatever
-# creates a Doorkeeper::Application, the redirect_uri rules configured in
+# These rules are the whole redirect_uri allowlist: whatever creates a
+# Doorkeeper::Application, the rules configured in
 # config/initializers/doorkeeper.rb (forbid_redirect_uri + force_ssl_in_redirect_uri)
 # must refuse any scheme a browser would execute.
 describe Doorkeeper::Application do
@@ -17,6 +17,8 @@ describe Doorkeeper::Application do
       'loopback host'             | 'http://localhost:33418/cb'                 | true
       'loopback IPv4'             | 'http://127.0.0.1:33418/cb'                 | true
       'loopback IPv6'             | 'http://[::1]:33418/cb'                     | true
+      # RFC 8252 exempts the loopback *interface*, not just 127.0.0.1.
+      'loopback IPv4 range'       | 'http://127.0.0.2:33418/cb'                 | true
       'non-loopback http URI'     | 'http://client.example.com/cb'              | false
       'javascript scheme'         | 'javascript:alert(document.cookie)'         | false
       'javascript with authority' | 'javascript://x%0Aalert(document.cookie)'   | false

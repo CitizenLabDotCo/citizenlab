@@ -3,9 +3,12 @@
 require 'rails_helper'
 
 # RFC 7591 Dynamic Client Registration. The endpoint is public and
-# unauthenticated, so its redirect_uri scheme allowlist is what stops anyone from
-# registering a client whose redirect_uri runs script in the platform origin once
-# the SPA consent screen navigates to it (on approve as well as on deny).
+# unauthenticated, so the redirect_uri scheme allowlist it registers through is
+# what stops anyone from registering a client whose redirect_uri runs script in
+# the platform origin once the SPA consent screen navigates to it (on approve as
+# well as on deny). The rules themselves live in
+# config/initializers/doorkeeper.rb; this spec covers the endpoint's contract —
+# that a rejection is reported as invalid_redirect_uri and persists nothing.
 describe Oauth::RegistrationsController do
   let(:headers) { { 'CONTENT_TYPE' => 'application/json' } }
 
@@ -26,8 +29,8 @@ describe Oauth::RegistrationsController do
     end
 
     # RFC 8252: native apps get their authorization code on a loopback http
-    # callback, and those apps are what this endpoint exists for. The guard is on
-    # the scheme, not on https, precisely so loopback registration keeps working.
+    # callback, and those apps are what this endpoint exists for. force_ssl_in_redirect_uri
+    # exempts loopback precisely so this keeps working.
     it 'registers a client with a loopback http redirect_uri' do
       expect { register(['http://localhost:33418/callback']) }
         .to change(Doorkeeper::Application, :count).by(1)
@@ -40,6 +43,18 @@ describe Oauth::RegistrationsController do
 
       expect(response).to have_http_status(:created)
       expect(response.parsed_body['redirect_uris']).to eq ['https://a.example.com/cb', 'http://127.0.0.1:5000/cb']
+    end
+
+    # The one gap in the allowlist: Doorkeeper's RedirectUriValidator skips the
+    # out-of-band URNs entirely, so no rule applies to them. Harmless rather than
+    # exploitable — we do not serve the OOB flow (Doorkeeper's own :authorizations
+    # controller is skipped in routes.rb) and the consent screen refuses to render
+    # for a non-http(s) redirect_uri, so such a client can never obtain a grant.
+    it 'registers a client with an out-of-band URN, which Doorkeeper exempts' do
+      expect { register(['urn:ietf:wg:oauth:2.0:oob']) }
+        .to change(Doorkeeper::Application, :count).by(1)
+
+      expect(response).to have_http_status(:created)
     end
 
     # The other side of the error-code split: a failure that has nothing to do
@@ -57,14 +72,15 @@ describe Oauth::RegistrationsController do
 
       where(:case_name, :redirect_uris) do
         'javascript scheme'           | ['javascript:alert(document.cookie)']
-        # Parses as a URI with a host, so it survives Doorkeeper's default validators.
+        # Parses as a URI with a host, so it survives Doorkeeper's default validators
+        # and only forbid_redirect_uri's scheme allowlist refuses it.
         'javascript with authority'   | ['javascript://x%0Aalert(document.cookie)']
         'javascript in mixed case'    | ['JavaScript:alert(1)']
         'data scheme'                 | ['data:text/html,<script>alert(1)</script>']
         'vbscript scheme'             | ['vbscript:msgbox(1)']
-        # Doorkeeper stores redirect URIs newline-separated and splits them on
-        # whitespace, so a URI smuggled into one entry would become a second
-        # registered redirect_uri. A prefix check on the entry would miss it.
+        # Doorkeeper stores redirect URIs newline-separated and validates each
+        # whitespace-separated token, so a URI smuggled into one entry cannot
+        # become a second registered redirect_uri unnoticed.
         'newline-smuggled URI'        | ["https://ok.example.com/cb\njavascript://x%0Aalert(1)"]
         'valid URI plus hostile one'  | ['https://ok.example.com/cb', 'javascript:alert(1)']
         'relative URI'                | ['/oauth/callback']
@@ -72,8 +88,8 @@ describe Oauth::RegistrationsController do
         'URI with a fragment'         | ['https://ok.example.com/cb#fragment']
         'no redirect_uris'            | []
         'non-string entry'            | [{ 'uri' => 'https://ok.example.com/cb' }]
-        # Passes the controller allowlist (http is a valid scheme) and is refused one layer down
-        # by force_ssl_in_redirect_uri. Same code either way.
+        # Passes the scheme allowlist (http is allowed) and is refused by
+        # force_ssl_in_redirect_uri instead. Same error code either way.
         'plaintext non-loopback URI' | ['http://client.example.com/cb']
       end
 
