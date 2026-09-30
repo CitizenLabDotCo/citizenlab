@@ -216,11 +216,13 @@ export default defineMessages({
   },
   minimumPinsRequired: {
     id: 'app.components.CustomFieldsForm.minimumPinsRequired',
-    defaultMessage: 'Add at least {minPins} locations.',
+    defaultMessage:
+      'Add at least {minPins, plural, one {# location} other {# locations}}.',
   },
   maximumPinsAllowed: {
     id: 'app.components.CustomFieldsForm.maximumPinsAllowed',
-    defaultMessage: 'Add no more than {maxPins} locations.',
+    defaultMessage:
+      'Add no more than {maxPins, plural, one {# location} other {# locations}}.',
   },
   fileSizeLimit: {
     id: 'app.components.CustomFieldsForm.fileSizeLimit',
