@@ -2488,7 +2488,6 @@
   "app.containers.AdminPage.FoldersEdit.draftStatus": "Draft",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabel": "Afegir fitxers a aquesta carpeta",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabelTooltip": "Els fitxers no han de ser més grans de 50 Mb. Els fitxers afegits es mostraran a la pàgina de la carpeta.",
-  "app.containers.AdminPage.FoldersEdit.folderDescriptions2": "Descripció de la carpeta",
   "app.containers.AdminPage.FoldersEdit.folderEmptyGoBackToAdd": "No hi ha cap projecte en aquesta carpeta. Torneu a la pestanya principal Projectes per crear i afegir projectes.",
   "app.containers.AdminPage.FoldersEdit.folderName": "Nom de la carpeta",
   "app.containers.AdminPage.FoldersEdit.headerImageInputLabel": "Header image",

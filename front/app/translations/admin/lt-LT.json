@@ -2488,7 +2488,6 @@
   "app.containers.AdminPage.FoldersEdit.draftStatus": "Projektas",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabel": "Pridėti failus į šį aplanką",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabelTooltip": "Failai neturėtų būti didesni nei 50 MB. Pridėti failai bus rodomi aplanko puslapyje.",
-  "app.containers.AdminPage.FoldersEdit.folderDescriptions2": "Aplankas Aprašymas",
   "app.containers.AdminPage.FoldersEdit.folderEmptyGoBackToAdd": "Šiame aplanke nėra projektų. Grįžkite į pagrindinį skirtuką \"Projektai\" ir kurkite bei pridėkite projektus.",
   "app.containers.AdminPage.FoldersEdit.folderName": "Aplankalo pavadinimas",
   "app.containers.AdminPage.FoldersEdit.headerImageInputLabel": "Antraštės paveikslėlis",

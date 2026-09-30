@@ -2488,7 +2488,6 @@
   "app.containers.AdminPage.FoldersEdit.draftStatus": "Borrador",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabel": "Agregar archivos a esta carpeta",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabelTooltip": "Archivos no deben ser mayores de 50 Mb. Los archivos agregados se visualizarán en la página de la carpeta.",
-  "app.containers.AdminPage.FoldersEdit.folderDescriptions2": "Descripción de la carpeta",
   "app.containers.AdminPage.FoldersEdit.folderEmptyGoBackToAdd": "No hay proyectos en esta carpeta. Vuelve a la pestaña principal de proyectos para crear y añadir nuevos proyectos.",
   "app.containers.AdminPage.FoldersEdit.folderName": "Nombre de la carpeta",
   "app.containers.AdminPage.FoldersEdit.headerImageInputLabel": "Imagen del encabezado",

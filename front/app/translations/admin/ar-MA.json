@@ -2488,7 +2488,6 @@
   "app.containers.AdminPage.FoldersEdit.draftStatus": "مسوّدة",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabel": "أضِف ملفات إلى هذا المجلد",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabelTooltip": "يجب ألا يزيد حجم الملفات عن 50 ميغابايت. ستظهر الملفات المُضافة في صفحة المجلد.",
-  "app.containers.AdminPage.FoldersEdit.folderDescriptions2": "وصف المجلد",
   "app.containers.AdminPage.FoldersEdit.folderEmptyGoBackToAdd": "لا توجد مشاريع في هذا المجلد. ارجع إلى علامة تبويب المشاريع الرئيسية لإنشاء مشاريع وإضافتها.",
   "app.containers.AdminPage.FoldersEdit.folderName": "اسم المجلد",
   "app.containers.AdminPage.FoldersEdit.headerImageInputLabel": "صورة الترويسة",

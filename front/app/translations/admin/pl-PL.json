@@ -2488,7 +2488,6 @@
   "app.containers.AdminPage.FoldersEdit.draftStatus": "Szkic",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabel": "Dodaj pliki do tego folderu",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabelTooltip": "Pliki nie powinny być większe niż 50Mb. Dodane pliki zostaną wyświetlone na stronie folderu.",
-  "app.containers.AdminPage.FoldersEdit.folderDescriptions2": "Folder Opis",
   "app.containers.AdminPage.FoldersEdit.folderEmptyGoBackToAdd": "W tym folderze nie ma żadnych projektów. Wróć do zakładki \"Projekty\", aby utworzyć i dodać projekty.",
   "app.containers.AdminPage.FoldersEdit.folderName": "Nazwa folderu",
   "app.containers.AdminPage.FoldersEdit.headerImageInputLabel": "Obrazek z nagłówka",

@@ -2488,7 +2488,6 @@
   "app.containers.AdminPage.FoldersEdit.draftStatus": "Melnraksts",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabel": "Pievienot šai mapei failus",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabelTooltip": "Faili nedrīkst būt lielāki par 50 Mb. Pievienotie faili tiks parādīti mapes lapā.",
-  "app.containers.AdminPage.FoldersEdit.folderDescriptions2": "Mapes apraksts",
   "app.containers.AdminPage.FoldersEdit.folderEmptyGoBackToAdd": "Šajā mapē nav projektu. Atgriezieties galvenajā Projektu cilnē, lai izveidotu un pievienotu projektus.",
   "app.containers.AdminPage.FoldersEdit.folderName": "Mapes nosaukums",
   "app.containers.AdminPage.FoldersEdit.headerImageInputLabel": "Virsraksta attēls",

@@ -2488,7 +2488,6 @@
   "app.containers.AdminPage.FoldersEdit.draftStatus": "Entwurf",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabel": "Dateien zu diesem Ordner hinzufügen",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabelTooltip": "Dateien sollten nicht größer als 50Mb sein. Hinzugefügte Dateien werden auf der Ordnerseite angezeigt.",
-  "app.containers.AdminPage.FoldersEdit.folderDescriptions2": "Ordnerbeschreibung",
   "app.containers.AdminPage.FoldersEdit.folderEmptyGoBackToAdd": "In diesem Ordner sind keine Projekte vorhanden. Gehen Sie zurück zur Hauptregisterkarte Projekte, um Projekte zu erstellen und hinzuzufügen.",
   "app.containers.AdminPage.FoldersEdit.folderName": "Name des Ordners",
   "app.containers.AdminPage.FoldersEdit.headerImageInputLabel": "Bild in der Kopfzeile",

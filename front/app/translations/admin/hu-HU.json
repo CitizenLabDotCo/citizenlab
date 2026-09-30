@@ -2488,7 +2488,6 @@
   "app.containers.AdminPage.FoldersEdit.draftStatus": "Draft",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabel": "Add files to this folder",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabelTooltip": "Files should not be larger than 50Mb. Added files will be shown on the folder page.",
-  "app.containers.AdminPage.FoldersEdit.folderDescriptions2": "Mappa leírása",
   "app.containers.AdminPage.FoldersEdit.folderEmptyGoBackToAdd": "There are no projects in this folder. Go back to the main Projects tab to create and add projects.",
   "app.containers.AdminPage.FoldersEdit.folderName": "Mappa neve",
   "app.containers.AdminPage.FoldersEdit.headerImageInputLabel": "Fejléckép",

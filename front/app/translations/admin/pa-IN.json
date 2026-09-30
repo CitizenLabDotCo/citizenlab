@@ -2488,7 +2488,6 @@
   "app.containers.AdminPage.FoldersEdit.draftStatus": "ਡਰਾਫਟ",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabel": "ਇਸ ਫੋਲਡਰ ਵਿੱਚ ਫਾਈਲਾਂ ਸ਼ਾਮਲ ਕਰੋ",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabelTooltip": "ਫ਼ਾਈਲਾਂ 50Mb ਤੋਂ ਵੱਡੀਆਂ ਨਹੀਂ ਹੋਣੀਆਂ ਚਾਹੀਦੀਆਂ। ਜੋੜੀਆਂ ਗਈਆਂ ਫਾਈਲਾਂ ਫੋਲਡਰ ਪੰਨੇ 'ਤੇ ਦਿਖਾਈਆਂ ਜਾਣਗੀਆਂ।",
-  "app.containers.AdminPage.FoldersEdit.folderDescriptions2": "ਫੋਲਡਰ ਵੇਰਵਾ",
   "app.containers.AdminPage.FoldersEdit.folderEmptyGoBackToAdd": "ਇਸ ਫੋਲਡਰ ਵਿੱਚ ਕੋਈ ਪ੍ਰੋਜੈਕਟ ਨਹੀਂ ਹਨ। ਪ੍ਰੋਜੈਕਟ ਬਣਾਉਣ ਅਤੇ ਜੋੜਨ ਲਈ ਮੁੱਖ ਪ੍ਰੋਜੈਕਟ ਟੈਬ 'ਤੇ ਵਾਪਸ ਜਾਓ।",
   "app.containers.AdminPage.FoldersEdit.folderName": "ਫੋਲਡਰ ਦਾ ਨਾਮ",
   "app.containers.AdminPage.FoldersEdit.headerImageInputLabel": "ਸਿਰਲੇਖ ਚਿੱਤਰ",

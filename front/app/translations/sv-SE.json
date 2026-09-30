@@ -1362,7 +1362,6 @@
   "app.containers.AccessibilityStatement.userGeneratedContent": "Användargenererat innehåll",
   "app.containers.AccessibilityStatement.workshops": "Workshops",
   "app.containers.AdminPage.DashboardPage.typeToSearchProjects": "Typ för att söka projekt",
-  "app.containers.AdminPage.ProjectDescription.linkText": "Redigera beskrivning i Content Builder",
   "app.containers.AdminPage.ProjectDescription.saveError": "Något gick fel när du sparade projektbeskrivningen.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Visa projekt",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Undersökningens slut",

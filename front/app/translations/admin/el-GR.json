@@ -2488,7 +2488,6 @@
   "app.containers.AdminPage.FoldersEdit.draftStatus": "Draft",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabel": "Προσθήκη αρχείων σε αυτό το φάκελο",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabelTooltip": "Τα αρχεία δεν πρέπει να είναι μεγαλύτερα από 50Mb. Τα προστιθέμενα αρχεία θα εμφανίζονται στη σελίδα του φακέλου.",
-  "app.containers.AdminPage.FoldersEdit.folderDescriptions2": "Περιγραφή φακέλου",
   "app.containers.AdminPage.FoldersEdit.folderEmptyGoBackToAdd": "Δεν υπάρχουν έργα σε αυτόν το φάκελο. Επιστρέψτε στην κύρια καρτέλα Έργα για να δημιουργήσετε και να προσθέσετε έργα.",
   "app.containers.AdminPage.FoldersEdit.folderName": "Όνομα φακέλου",
   "app.containers.AdminPage.FoldersEdit.headerImageInputLabel": "Header image",

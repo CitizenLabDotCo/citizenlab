@@ -1362,7 +1362,6 @@
   "app.containers.AccessibilityStatement.userGeneratedContent": "Contingut generat per l'usuari",
   "app.containers.AccessibilityStatement.workshops": "Tallers",
   "app.containers.AdminPage.DashboardPage.typeToSearchProjects": "Escriu per cercar projectes",
-  "app.containers.AdminPage.ProjectDescription.linkText": "Editeu la descripció al Content Builder",
   "app.containers.AdminPage.ProjectDescription.saveError": "S'ha produït un error en desar la descripció del projecte.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Veure projecte",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Final de l'enquesta",

@@ -2488,7 +2488,6 @@
   "app.containers.AdminPage.FoldersEdit.draftStatus": "Luonnos",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabel": "Lisää tiedostoja tähän kansioon",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabelTooltip": "Tiedostot eivät saa olla suurempia kuin 50 Mt. Lisätyt tiedostot näkyvät kansiosivulla.",
-  "app.containers.AdminPage.FoldersEdit.folderDescriptions2": "Kansion kuvaus",
   "app.containers.AdminPage.FoldersEdit.folderEmptyGoBackToAdd": "Tässä kansiossa ei ole projektia. Palaa Projektit-päävälilehteen luodaksesi ja lisätäksesi projektia.",
   "app.containers.AdminPage.FoldersEdit.folderName": "Kansion nimi",
   "app.containers.AdminPage.FoldersEdit.headerImageInputLabel": "Otsikkokuva",

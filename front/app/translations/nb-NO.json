@@ -1362,7 +1362,6 @@
   "app.containers.AccessibilityStatement.userGeneratedContent": "Brukergenerert innhold",
   "app.containers.AccessibilityStatement.workshops": "Verksteder",
   "app.containers.AdminPage.DashboardPage.typeToSearchProjects": "Skriv inn for å søke i prosjekter",
-  "app.containers.AdminPage.ProjectDescription.linkText": "Rediger beskrivelse i Content Builder",
   "app.containers.AdminPage.ProjectDescription.saveError": "Noe gikk galt da du lagret prosjektbeskrivelsen.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Vis prosjekt",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Slutt på undersøkelsen",

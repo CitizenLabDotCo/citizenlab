@@ -1362,7 +1362,6 @@
   "app.containers.AccessibilityStatement.userGeneratedContent": "صارف کا تیار کردہ مواد",
   "app.containers.AccessibilityStatement.workshops": "ورکشاپس",
   "app.containers.AdminPage.DashboardPage.typeToSearchProjects": "پروجیکٹس تلاش کرنے کے لیے ٹائپ کریں۔",
-  "app.containers.AdminPage.ProjectDescription.linkText": "Content Builder میں تفصیل میں ترمیم کریں۔",
   "app.containers.AdminPage.ProjectDescription.saveError": "پروجیکٹ کی تفصیل محفوظ کرتے وقت کچھ غلط ہو گیا۔",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "پروجیکٹ دیکھیں",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "سروے ختم",

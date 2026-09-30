@@ -1362,7 +1362,6 @@
   "app.containers.AccessibilityStatement.userGeneratedContent": "Cynnwys a gynhyrchir gan ddefnyddwyr",
   "app.containers.AccessibilityStatement.workshops": "Gweithdai",
   "app.containers.AdminPage.DashboardPage.typeToSearchProjects": "Teipiwch i chwilio am brosiectau",
-  "app.containers.AdminPage.ProjectDescription.linkText": "Golygu disgrifiad yn Content Builder",
   "app.containers.AdminPage.ProjectDescription.saveError": "Aeth rhywbeth o'i le wrth gadw disgrifiad y prosiect.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Gweld prosiect",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Diwedd yr arolwg",

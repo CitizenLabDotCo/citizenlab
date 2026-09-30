@@ -2488,7 +2488,6 @@
   "app.containers.AdminPage.FoldersEdit.draftStatus": "Rascunho",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabel": "Adicionar arquivos a esta pasta",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabelTooltip": "Os arquivos não devem ser maiores que 50 Mb. Os arquivos adicionados serão mostrados na página da pasta.",
-  "app.containers.AdminPage.FoldersEdit.folderDescriptions2": "Descrição da pasta",
   "app.containers.AdminPage.FoldersEdit.folderEmptyGoBackToAdd": "Não há projetos nesta pasta. Volte para o separador principal Projetos para criar e adicionar projetos.",
   "app.containers.AdminPage.FoldersEdit.folderName": "Nome da pasta",
   "app.containers.AdminPage.FoldersEdit.headerImageInputLabel": "Imagem de cabeçalho",

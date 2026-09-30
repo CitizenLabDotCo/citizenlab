@@ -2488,7 +2488,6 @@
   "app.containers.AdminPage.FoldersEdit.draftStatus": "Nacrt",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabel": "Dodajte datoteke u mapu",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabelTooltip": "Datoteke ne smiju biti veće od 50 MB. Dodane datoteke će se prikazivati na stranici mape.",
-  "app.containers.AdminPage.FoldersEdit.folderDescriptions2": "Opis mape",
   "app.containers.AdminPage.FoldersEdit.folderEmptyGoBackToAdd": "U ovoj mapi nema projekata. Vratite se na karticu Projekti kako biste kreirali i dodali projekte.",
   "app.containers.AdminPage.FoldersEdit.folderName": "Naziv mape",
   "app.containers.AdminPage.FoldersEdit.headerImageInputLabel": "Naslovna slika",

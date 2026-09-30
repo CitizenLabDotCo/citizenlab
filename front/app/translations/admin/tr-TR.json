@@ -2488,7 +2488,6 @@
   "app.containers.AdminPage.FoldersEdit.draftStatus": "Taslak",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabel": "Bu klasöre dosya ekle",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabelTooltip": "Dosyalar 50 MB'tan büyük olmamalıdır. Eklenen dosyalar klasör sayfasında gösterilir.",
-  "app.containers.AdminPage.FoldersEdit.folderDescriptions2": "Klasör Açıklaması",
   "app.containers.AdminPage.FoldersEdit.folderEmptyGoBackToAdd": "Bu klasörde proje yok. Proje oluşturmak ve eklemek için ana Projeler sekmesine geri dönün.",
   "app.containers.AdminPage.FoldersEdit.folderName": "Klasör adı",
   "app.containers.AdminPage.FoldersEdit.headerImageInputLabel": "Başlık resmi",
