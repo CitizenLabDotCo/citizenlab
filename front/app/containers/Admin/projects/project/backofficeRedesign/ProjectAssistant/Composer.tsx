@@ -13,15 +13,18 @@ import { useDropzone } from 'react-dropzone';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import TextArea from 'components/UI/TextArea';
 
-// prototype data — adapted from Achraf's survey-generator Composer. A brief plus
-// up to three reference documents (concept note, memo, plan) the assistant reads
-// alongside the brief.
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
+
 const ACCEPTED_FILES = {
   'application/pdf': ['.pdf'],
   'text/markdown': ['.md'],
   'text/plain': ['.txt'],
 };
 const MAX_FILES = 3;
+const MAX_FILE_SIZE_MB = 10;
+export const MAX_PROMPT_LENGTH = 5000;
 
 type Props = {
   prompt: string;
@@ -40,30 +43,36 @@ const Composer = ({
   onFilesChange,
   onSend,
 }: Props) => {
-  const [dragging, setDragging] = useState(false);
+  const { formatMessage } = useIntl();
+  const [filesRejected, setFilesRejected] = useState(false);
 
-  const { getRootProps, getInputProps, open } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
     accept: ACCEPTED_FILES,
+    maxSize: MAX_FILE_SIZE_MB * 1024 * 1024,
     noClick: true,
     noKeyboard: true,
     disabled: busy,
-    onDragEnter: () => setDragging(true),
-    onDragLeave: () => setDragging(false),
-    onDrop: (accepted) => {
-      setDragging(false);
-      onFilesChange([...files, ...accepted].slice(0, MAX_FILES));
+    onDrop: (acceptedFiles, rejectedFiles) => {
+      const nextFiles = [...files, ...acceptedFiles];
+      setFilesRejected(rejectedFiles.length > 0 || nextFiles.length > MAX_FILES);
+      onFilesChange(nextFiles.slice(0, MAX_FILES));
     },
   });
 
-  const canSend = !busy && (prompt.trim() !== '' || files.length > 0);
+  const canSend =
+    !busy &&
+    (prompt.trim() !== '' || files.length > 0) &&
+    prompt.length <= MAX_PROMPT_LENGTH;
 
-  const removeFile = (file: File) =>
-    onFilesChange(files.filter((other) => other !== file));
+  const removeFile = (file: File) => {
+    setFilesRejected(false);
+    onFilesChange(files.filter((otherFile) => otherFile !== file));
+  };
 
   return (
     <Box {...getRootProps()} position="relative">
       <input {...getInputProps()} />
-      {dragging && (
+      {isDragActive && (
         <Box
           position="absolute"
           top="0"
@@ -79,15 +88,16 @@ const Composer = ({
           borderRadius={stylingConsts.borderRadius}
         >
           <Text m="0px" color="teal700">
-            Drop your document here
+            <FormattedMessage {...messages.dropFiles} />
           </Text>
         </Box>
       )}
       <TextArea
         value={prompt}
         onChange={onPromptChange}
-        placeholder="Describe your project in a sentence or two…"
+        placeholder={formatMessage(messages.placeholder)}
         rows={4}
+        maxCharCount={MAX_PROMPT_LENGTH}
         disabled={busy}
       />
       {files.length > 0 && (
@@ -101,9 +111,10 @@ const Composer = ({
               pl="8px"
               bgColor={colors.grey100}
               borderRadius={stylingConsts.borderRadius}
+              maxWidth="100%"
             >
               <Icon name="file" width="14px" height="14px" fill={colors.grey700} />
-              <Text m="0px" fontSize="s">
+              <Text m="0px" fontSize="s" overflow="hidden" whiteSpace="nowrap">
                 {file.name}
               </Text>
               <IconButton
@@ -113,7 +124,9 @@ const Composer = ({
                 iconHeight="14px"
                 iconColor={colors.grey700}
                 iconColorOnHover={colors.textPrimary}
-                a11y_buttonActionMessage={`Remove ${file.name}`}
+                a11y_buttonActionMessage={formatMessage(messages.removeFile, {
+                  fileName: file.name,
+                })}
                 onClick={() => removeFile(file)}
                 disabled={busy}
               />
@@ -132,7 +145,7 @@ const Composer = ({
           buttonType="button"
           iconColor={colors.grey700}
           iconColorOnHover={colors.textPrimary}
-          a11y_buttonActionMessage="Attach a document"
+          a11y_buttonActionMessage={formatMessage(messages.attachFile)}
           onClick={open}
           disabled={busy}
         />
@@ -144,13 +157,20 @@ const Composer = ({
           disabled={!canSend}
           processing={busy}
         >
-          Draft my project
+          <FormattedMessage {...messages.draftButton} />
         </ButtonWithLink>
       </Box>
+      {filesRejected && (
+        <Text m="0px" mt="8px" fontSize="s" color="error">
+          <FormattedMessage
+            {...messages.filesHint}
+            values={{ maxFiles: MAX_FILES }}
+          />
+        </Text>
+      )}
       {files.length > 0 && (
         <Text m="0px" mt="8px" fontSize="s" color="textSecondary">
-          The assistant reads your documents to ground the draft. PDF, Markdown
-          or text, up to {MAX_FILES}.
+          <FormattedMessage {...messages.filesHint} values={{ maxFiles: MAX_FILES }} />
         </Text>
       )}
     </Box>

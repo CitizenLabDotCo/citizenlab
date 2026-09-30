@@ -4,9 +4,11 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
+import usePhases from 'api/phases/usePhases';
 import { IProjectData } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 
+import useAiProjectGenerator from 'hooks/useAiProjectGenerator';
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
@@ -16,6 +18,7 @@ import ProjectWorkspace from './backofficeRedesign';
 import { PhaseSaveProvider } from './backofficeRedesign/_shared/PhaseSaveContext';
 import NewPhase from './backofficeRedesign/NewPhase';
 import PhaseSetup from './backofficeRedesign/Phase/PhaseSetup';
+import ProjectAssistant from './backofficeRedesign/ProjectAssistant';
 import ProjectTimeline from './backofficeRedesign/ProjectTimeline';
 import UnsavedChangesGuard from './backofficeRedesign/UnsavedChangesGuard';
 import ProjectHeader from './projectHeader';
@@ -25,7 +28,9 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
   const { data: authUser } = useAuthUser();
   const { phaseId } = useParams({ strict: false });
   const { data: phase } = usePhase(phaseId);
+  const { data: phases } = usePhases(project.id);
   const workspaceEnabled = useProjectBackofficeRedesign();
+  const aiProjectGeneratorEnabled = useAiProjectGenerator();
   const matchRoute = useMatchRoute();
   const onNewPhaseRoute = !!matchRoute({
     to: '/$locale/admin/projects/$projectId/phases/new',
@@ -33,6 +38,14 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
   const projectId = project.id;
 
   const selectedPhase = phaseId ? phase?.data : undefined;
+
+  // The assistant takes the side panel of a fresh draft: a project you have
+  // just created from scratch, before any phase exists.
+  const showAssistant =
+    aiProjectGeneratorEnabled &&
+    !selectedPhase &&
+    project.attributes.publication_status === 'draft' &&
+    (phases?.data.length ?? 0) === 0;
 
   if (!canModerateProject(project, authUser)) {
     return null;
@@ -55,6 +68,8 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
                   projectId={projectId}
                   phase={selectedPhase}
                 />
+              ) : showAssistant ? (
+                <ProjectAssistant project={project} />
               ) : (
                 <ProjectTimeline projectId={projectId} />
               )

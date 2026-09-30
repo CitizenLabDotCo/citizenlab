@@ -111,6 +111,7 @@ const rootSearchSchema = yup.object({
   lat: yup.number().optional(),
   lng: yup.number().optional(),
   project_backoffice_redesign: yup.string().optional(),
+  ai_project_generator: yup.string().optional(),
 });
 
 export type RootSearchParams = yup.InferType<typeof rootSearchSchema>;
@@ -120,9 +121,15 @@ const rootRoute = createRootRoute({
   validateSearch: (search: Record<string, unknown>): RootSearchParams =>
     rootSearchSchema.validateSync(search),
   search: {
-    // Keep `project_backoffice_redesign` in the URL across client-side
-    // navigations, so it sticks while moving through the project's pages
-    middlewares: [retainSearchParams(['project_backoffice_redesign'])],
+    // Keep these dev flags in the URL across client-side navigations, so they
+    // stick while moving through the project's pages (e.g. from "new" into the
+    // freshly created draft).
+    middlewares: [
+      retainSearchParams([
+        'project_backoffice_redesign',
+        'ai_project_generator',
+      ]),
+    ],
   },
   component: () => (
     <App>
@@ -700,15 +707,22 @@ const buildRouteTree = (moduleRoutes: Partial<Routes> = {}) =>
     ]),
   ]);
 
+// These dev flags read as bare params (`?project_backoffice_redesign`), so keep
+// them out of the `key=value` stringify and re-append them without a value.
+const BARE_FLAGS = [
+  'project_backoffice_redesign',
+  'ai_project_generator',
+] as const;
+
 const stringifySearch = (search: Record<string, unknown>) => {
-  const { project_backoffice_redesign, ...rest } = search;
-  const searchStr = defaultStringifySearch(rest);
+  const rest = { ...search };
+  const presentFlags = BARE_FLAGS.filter((flag) => rest[flag] !== undefined);
+  presentFlags.forEach((flag) => delete rest[flag]);
 
-  if (project_backoffice_redesign === undefined) return searchStr;
-
-  return searchStr
-    ? `${searchStr}&project_backoffice_redesign`
-    : '?project_backoffice_redesign';
+  return presentFlags.reduce(
+    (str, flag) => (str ? `${str}&${flag}` : `?${flag}`),
+    defaultStringifySearch(rest)
+  );
 };
 
 // Create and export the router.
