@@ -19,6 +19,7 @@ import Link from 'utils/cl-router/Link';
 import { useParams } from 'utils/router';
 
 import messages from '../../messages';
+import AnswerVisibilityToggle from '../AnswerVisibilityToggle';
 import FieldTypeSwitcher from '../FieldTypeSwitcher';
 
 type ContentSettingsProps = {
@@ -112,6 +113,7 @@ const ContentSettings = ({ field }: ContentSettingsProps) => {
           />
         </SectionField>
       )}
+      {!isFieldGrouping && <AnswerVisibilityToggle field={field} />}
     </Box>
   );
 };
