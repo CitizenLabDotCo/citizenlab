@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import {
   Box,
@@ -69,8 +69,6 @@ const OAuthAuthorize = () => {
   const { mutate: authorize, isPending: authorizing } =
     useCreateOAuthAuthorization();
 
-  const [redirectBlocked, setRedirectBlocked] = useState(false);
-
   // A client is registered with a redirect_uri of its choosing, so the URI we
   // are asked to send the user back to is attacker-controlled. Refuse the whole
   // consent screen when the scheme is not http(s), rather than only guarding the navigation.
@@ -79,13 +77,13 @@ const OAuthAuthorize = () => {
     !isSafeRedirectUrl(authorization.data.attributes.redirect_uri);
 
   // Single choke point for leaving the platform: window.location never receives
-  // a URL whose scheme we have not validated ourselves.
+  // a URL whose scheme we have not validated ourselves. Unreachable in practice —
+  // the screen already refuses to render for a redirect_uri that is not http(s) —
+  // so a blocked navigation needs no user-facing state of its own.
   const navigateToClient = (url: string) => {
-    if (!isSafeRedirectUrl(url)) {
-      setRedirectBlocked(true);
-      return;
+    if (isSafeRedirectUrl(url)) {
+      navigateToUrl(url);
     }
-    navigateToUrl(url);
   };
 
   // Not logged in: open the normal sign-in flow in place. Once authenticated,
@@ -121,7 +119,7 @@ const OAuthAuthorize = () => {
         </Box>
       </Card>
     );
-  } else if (isError || unsafeRedirect || redirectBlocked) {
+  } else if (isError || unsafeRedirect) {
     content = (
       <Card>
         <Box p="40px">

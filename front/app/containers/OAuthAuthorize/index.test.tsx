@@ -128,6 +128,9 @@ describe('OAuthAuthorize', () => {
     expect(mockNavigateToUrl).not.toHaveBeenCalled();
   });
 
+  // Unreachable through the UI — the screen above refuses to render for a hostile
+  // redirect_uri — so this only pins the choke point itself: whatever the approve
+  // call returns, window.location is never handed a scheme we have not validated.
   it('navigates nowhere when approving returns a non-http(s) redirect_uri', async () => {
     mockApproveRedirectUri = HOSTILE_REDIRECT_URI;
     const user = userEvent.setup();
@@ -136,8 +139,5 @@ describe('OAuthAuthorize', () => {
     await user.click(screen.getByRole('button', { name: 'Authorize' }));
 
     expect(mockNavigateToUrl).not.toHaveBeenCalled();
-    expect(
-      await screen.findByText('This authorization request is invalid')
-    ).toBeInTheDocument();
   });
 });
