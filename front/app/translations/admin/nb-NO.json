@@ -1220,6 +1220,8 @@
   "app.containers.Admin.inspirationHub.filters": "filtre",
   "app.containers.Admin.inspirationHub.resetFilters": "Tilbakestill filtre",
   "app.containers.Admin.inspirationHub.seemsLike": "Det ser ut til at det ikke finnes flere prosjekter. Prøv å endre {filters}.",
+  "app.containers.Admin.internalEarlyAccessLabel": "Intern tidlig tilgang",
+  "app.containers.Admin.internalEarlyAccessLabelExplanation": "Denne funksjonen er fortsatt under utvikling og er bare tilgjengelig for ansatte i Go Vocal. Ikke vis den til kunder.",
   "app.containers.Admin.messaging.addSmsCampaignButton": "Opprett SMS",
   "app.containers.Admin.messaging.addSmsCampaignTitle": "Ny SMS-melding",
   "app.containers.Admin.messaging.automated.editModalTitle": "Rediger kampanjefelt",

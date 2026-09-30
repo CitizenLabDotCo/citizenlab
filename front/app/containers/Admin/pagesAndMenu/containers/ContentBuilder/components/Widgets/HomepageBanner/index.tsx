@@ -24,12 +24,12 @@ import homepageMessages from 'containers/HomePage/messages';
 import SignedInHeader from 'containers/HomePage/SignedInHeader';
 import SignedOutHeader from 'containers/HomePage/SignedOutHeader';
 
-import { homepageBannerLayoutHeights } from 'components/admin/BannerFields/HeaderImageDropzone';
 import {
   CONTENT_BUILDER_ERROR_EVENT,
   IMAGE_UPLOADING_EVENT,
 } from 'components/admin/ContentBuilder/constants';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
+import { homepageBannerLayoutHeights } from 'components/LandingPages/citizen/constants';
 import Error from 'components/UI/Error';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';

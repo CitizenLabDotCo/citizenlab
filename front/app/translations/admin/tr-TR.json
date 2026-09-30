@@ -1220,6 +1220,8 @@
   "app.containers.Admin.inspirationHub.filters": "filtreler",
   "app.containers.Admin.inspirationHub.resetFilters": "Filtreleri sıfırla",
   "app.containers.Admin.inspirationHub.seemsLike": "Görünüşe göre başka proje yok. {filters}adresini değiştirmeyi deneyin.",
+  "app.containers.Admin.internalEarlyAccessLabel": "Dahili Erken Erişim",
+  "app.containers.Admin.internalEarlyAccessLabelExplanation": "Bu özellik henüz geliştirilme aşamasındadır ve yalnızca Go Vocal personeli tarafından kullanılabilir. Müşterilere göstermeyin.",
   "app.containers.Admin.messaging.addSmsCampaignButton": "SMS oluştur",
   "app.containers.Admin.messaging.addSmsCampaignTitle": "Yeni SMS mesajı",
   "app.containers.Admin.messaging.automated.editModalTitle": "Kampanya alanlarını düzenleme",
