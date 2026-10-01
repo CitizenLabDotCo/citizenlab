@@ -15,11 +15,8 @@ interface Props {
   onChangePage: (page: number) => void;
 }
 
-/**
- * Previous and next in the side panel follow the list's order and filters,
- * across pages. The neighbouring page is only loaded once the open input is
- * the first or last one of its page.
- */
+// Previous and next work across pages, but the neighbouring page is only
+// loaded once the open input is the first or last one of its page.
 const usePanelNavigation = ({
   openIdeaId,
   pageIdeas,
