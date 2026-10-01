@@ -9,12 +9,13 @@ import useLocalize from 'hooks/useLocalize';
 import { ManagerType } from 'components/admin/PostManager';
 import usePrescreeningStatusFilter from 'components/admin/PostManager/components/FilterSidebar/statuses/usePrescreeningStatusFilter';
 import postManagerMessages from 'components/admin/PostManager/messages';
+import useAssigneeOptions from 'components/admin/PostManager/useAssigneeOptions';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { getFullName } from 'utils/textUtils';
 
 import messages from '../messages';
 import { Option } from '../OptionList';
-import useAssigneeOptions from '../useAssigneeOptions';
 import {
   isReplyFilter,
   isSourceFilter,
@@ -37,10 +38,8 @@ export interface FilterCategory {
   icon: IconNames;
   options: Option[];
   selected: string[];
-  /** Whether several options can be picked, which makes the chip read "is any of". */
   multiple: boolean;
   searchable: boolean;
-  /** Whether the category narrows the list, which gives it a chip. */
   isActive: boolean;
   toggle: (value: string) => void;
   clear: () => void;
@@ -77,7 +76,7 @@ const useFilterCategories = ({
     type,
     projectId
   );
-  const assigneeOptions = useAssigneeOptions(projectId);
+  const assigneeOptions = useAssigneeOptions(projectId, getFullName);
   const prescreening = usePrescreeningStatusFilter(type);
 
   const statusOptions: Option[] = statuses.map((status) => {
@@ -146,7 +145,7 @@ const useFilterCategories = ({
       icon: 'user',
       options: assigneeOptions.map((option) => ({
         ...option,
-        count: counts?.byAssignee[option.value] ?? 0,
+        count: counts?.byAssignee && (counts.byAssignee[option.value] ?? 0),
       })),
       selected: filters.assignees,
       multiple: true,
