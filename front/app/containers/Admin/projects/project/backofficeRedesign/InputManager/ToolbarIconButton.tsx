@@ -13,7 +13,6 @@ interface Props {
   label: string;
   onClick: () => void;
   active?: boolean;
-  /** Marks that the tool is in use, e.g. that filters are applied. */
   showDot?: boolean;
 }
 
