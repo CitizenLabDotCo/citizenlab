@@ -750,6 +750,7 @@
   "app.components.UI.MoreActionsMenu.moreOptions": "Mais opções",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Mostrar mais acções",
   "app.components.UI.NewLabel.new": "NOVO",
+  "app.components.UI.OptionPicker.noResults": "Nenhum resultado",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "Não foram encontradas fases apropriadas para este projeto",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Remover",
   "app.components.UI.TranslateButton.original": "Original",

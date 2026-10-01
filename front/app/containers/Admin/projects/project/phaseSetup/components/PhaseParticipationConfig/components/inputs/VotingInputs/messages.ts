@@ -109,4 +109,21 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.Voting.percentTerm',
     defaultMessage: 'Percent',
   },
+  changeVotingMethodTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.changeVotingMethodTitle',
+    defaultMessage: 'Change the voting method?',
+  },
+  changeVotingMethodWarning: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.changeVotingMethodWarning',
+    defaultMessage:
+      'People have already voted in this phase. Their votes are kept as numbers but read by the new method: a budget amount becomes a number of votes, or the other way round. The results will no longer be correct.',
+  },
+  changeVotingMethodCancel: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.changeVotingMethodCancel',
+    defaultMessage: 'Cancel',
+  },
+  changeVotingMethodConfirm: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.changeVotingMethodConfirm',
+    defaultMessage: 'Change anyway',
+  },
 });

@@ -750,6 +750,7 @@
   "app.components.UI.MoreActionsMenu.moreOptions": "Daha fazla seçenek",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Daha fazla eylem göster",
   "app.components.UI.NewLabel.new": "YENİ",
+  "app.components.UI.OptionPicker.noResults": "Sonuç bulunamadı",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "Bu proje için uygun bir aşama bulunamamıştır",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Kaldır",
   "app.components.UI.TranslateButton.original": "Orijinal",

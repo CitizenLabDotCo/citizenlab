@@ -13,6 +13,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
 
 import messages from './messages';
+import NewProjectButton from './NewProjectButton';
 
 const Header = () => {
   const searchParams = useSearch({
@@ -43,15 +44,7 @@ const Header = () => {
       >
         {tab === undefined && (
           <Box>
-            <Button
-              data-cy="e2e-new-project-button"
-              className="intercom-admin-projects-new-project-button"
-              to="/admin/projects/new"
-              icon="plus-circle"
-              buttonStyle="admin-dark"
-            >
-              <FormattedMessage {...messages.newProject} />
-            </Button>
+            <NewProjectButton />
           </Box>
         )}
         {tab === 'folders' && (
