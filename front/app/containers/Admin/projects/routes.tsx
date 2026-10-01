@@ -519,6 +519,7 @@ const phasesSearchSchema = yup.object({
   topics: yup.string().optional(),
   assignee: yup.string().optional(),
   feedback_needed: yup.string().oneOf(['true', 'false']).optional(),
+  source: yup.string().oneOf(['online', 'imported']).optional(),
   phase: yup.string().optional(),
   projects: yup.string().optional(),
   tab: yup
