@@ -1869,6 +1869,7 @@
   "app.containers.Admin.projects.project.manageView": "Manage",
   "app.containers.Admin.projects.project.mapConfiguration": "Map configuration",
   "app.containers.Admin.projects.project.messagingSection": "Messaging",
+  "app.containers.Admin.projects.project.newEvent": "New event",
   "app.containers.Admin.projects.project.newParticipationMethod": "New participation method",
   "app.containers.Admin.projects.project.newPhase": "New phase",
   "app.containers.Admin.projects.project.newPhaseCrumb": "New phase",
