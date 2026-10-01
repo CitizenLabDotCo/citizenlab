@@ -5,6 +5,7 @@ import { Box, Spinner, colors } from '@citizenlab/cl2-component-library';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import PagePreview from 'components/admin/PagePreview';
 
@@ -21,12 +22,13 @@ const ProjectPage = () => {
     from: '/$locale/admin/projects/$projectId/project-page',
   });
   const { data: project } = useProjectById(projectId);
+  const redesign = useProjectBackofficeRedesign();
 
   if (!project) {
     return (
       <Box
         minHeight="100%"
-        background={colors.background}
+        background={redesign ? colors.grey100 : colors.background}
         display="flex"
         alignItems="center"
         justifyContent="center"
@@ -37,7 +39,6 @@ const ProjectPage = () => {
   }
 
   const slug = project.data.attributes.slug;
-  const previewSrc = `/${locale}/projects/${slug}${window.location.search}`;
 
   const openContentBuilder = () => {
     clHistory.push(
@@ -48,10 +49,14 @@ const ProjectPage = () => {
   return (
     <Box
       height="100%"
-      background={`radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.04) 1px, transparent 0) 0 0 / 18px 18px, ${colors.background}`}
+      background={
+        redesign
+          ? colors.grey100
+          : `radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.04) 1px, transparent 0) 0 0 / 18px 18px, ${colors.background}`
+      }
     >
       <PagePreview
-        src={previewSrc}
+        src={`/${locale}/projects/${slug}${window.location.search}`}
         iframeTitle={formatMessage(messages.projectPagePreviewTitle)}
         editPageContentAriaLabel={formatMessage(
           messages.editProjectPageInContentBuilder

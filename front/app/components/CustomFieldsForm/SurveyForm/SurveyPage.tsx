@@ -66,9 +66,16 @@ type SurveyPage = {
   projectId: string;
   onSubmit: ({
     formValues,
+    pageValues,
     isSubmitPage,
   }: {
+    // Validated by the yup resolver, which casts values to the types the API
+    // expects (a number input hands React Hook Form a string).
     formValues: FormValues;
+    // The same answers before validation. The resolver drops keys whose value
+    // is undefined, so a cleared answer is missing from formValues and the
+    // parent would carry the previous one forward. Here it is still present.
+    pageValues: FormValues;
     isSubmitPage: boolean;
   }) => Promise<void>;
   // Called when this page unmounts via the Previous button so the parent can
@@ -200,6 +207,7 @@ const SurveyPage = ({
       setShowSubmitConfirmation(false);
       await onSubmit({
         formValues,
+        pageValues: methods.getValues(),
         isSubmitPage: isSubmissionPage,
       });
       // Go to the next page

@@ -750,6 +750,7 @@
   "app.components.UI.MoreActionsMenu.moreOptions": "Tuilleadh roghanna",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Taispeáin tuilleadh gníomhartha",
   "app.components.UI.NewLabel.new": "NUA",
+  "app.components.UI.OptionPicker.noResults": "Gan torthaí",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "Níor aimsíodh aon chéimeanna oiriúnacha don tionscadal seo",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Bain",
   "app.components.UI.TranslateButton.original": "Bunaidh",
