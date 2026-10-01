@@ -180,6 +180,7 @@ fr-BE:
       logic_no_further_questions: D'après vos réponses précédentes, vous avez terminé. Merci de ne pas remplir le reste du formulaire.
       logic_section: Section %{letter}
       matrix_print_description: Pour chaque ligne, cochez un cercle avec une croix pour indiquer votre préférence.
+      multipoint_print_description: Veuillez dessiner une croix sur la carte ci-dessous pour chaque emplacement que vous souhaitez ajouter.
       optional: optionnel
       page: Page
       permission: Permission

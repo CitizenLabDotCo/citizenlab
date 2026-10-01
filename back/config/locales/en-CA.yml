@@ -180,6 +180,7 @@ en-CA:
       logic_no_further_questions: Based on your responses, you <strong>do not</strong> need to answer any further questions.
       logic_section: Section %{letter}
       matrix_print_description: For each row, mark one circle with a cross to indicate your preference.
+      multipoint_print_description: Please draw an X on the map below for each location you want to add.
       optional: optional
       page: Page
       permission: Permission

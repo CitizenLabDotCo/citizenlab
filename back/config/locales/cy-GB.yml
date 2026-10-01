@@ -184,6 +184,7 @@ cy-GB:
       logic_no_further_questions: Yn seiliedig ar eich ymatebion, <strong>nid oes angen</strong> i chi ateb unrhyw gwestiynau pellach.
       logic_section: Adran %{letter}
       matrix_print_description: Ar gyfer pob rhes, marciwch un cylch gyda chroes i nodi eich dewis.
+      multipoint_print_description: Lluniwch X ar y map isod ar gyfer pob lleoliad rydych chi am ei ychwanegu.
       optional: dewisol
       page: Tudalen
       permission: Caniatâd

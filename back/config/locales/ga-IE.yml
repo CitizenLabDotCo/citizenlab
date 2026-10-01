@@ -183,6 +183,7 @@ ga-IE:
       logic_no_further_questions: Bunaithe ar do chuid freagraí, <strong>ní gá</strong> duit aon cheisteanna eile a fhreagairt.
       logic_section: Rannán %{letter}
       matrix_print_description: I ngach sraith, marcáil ciorcal amháin le cros chun do rogha a léiriú.
+      multipoint_print_description: Tarraing X ar an léarscáil thíos do gach suíomh ar mian leat a chur leis, le do thoil.
       optional: roghnach
       page: Leathanach
       permission: Cead
