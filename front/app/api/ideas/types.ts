@@ -253,6 +253,7 @@ export interface IIdeaQueryParameters<FilterValue = string> {
   bounding_box?: number[];
   assignee?: FilterValue;
   feedback_needed?: boolean;
+  official_feedback?: boolean;
   imported?: boolean;
   filter_can_moderate?: boolean;
   basket_id?: string;

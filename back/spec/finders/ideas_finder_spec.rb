@@ -170,30 +170,35 @@ describe IdeasFinder do
   end
 
   describe '#feedback_needed_condition' do
-    let!(:idea_with_feedback) do
-      proposed = IdeaStatus.find_by(code: 'proposed')
-      create(:idea, project: timeline_project, idea_status: proposed).tap { |idea| create(:official_feedback, idea: idea) }
-    end
+    let(:expected_record_ids) { Idea.feedback_needed.pluck(:id) }
 
     before do
-      params[:feedback_needed] = feedback_needed
+      params[:feedback_needed] = true
+    end
+
+    it 'returns the correct records' do
+      expect(result_record_ids).to match_array expected_record_ids
+    end
+  end
+
+  describe '#official_feedback_condition' do
+    let!(:idea_with_feedback) do
+      create(:idea, project: timeline_project).tap { |idea| create(:official_feedback, idea: idea) }
     end
 
     context 'when true' do
-      let(:feedback_needed) { 'true' }
+      let(:params) { { official_feedback: 'true' } }
 
-      it 'returns the ideas that need feedback' do
-        expect(result_record_ids).to match_array Idea.feedback_needed.pluck(:id)
-        expect(result_record_ids).not_to include idea_with_feedback.id
+      it 'returns the ideas with an official update' do
+        expect(result_record_ids).to eq [idea_with_feedback.id]
       end
     end
 
     context 'when false' do
-      let(:feedback_needed) { 'false' }
+      let(:params) { { official_feedback: 'false' } }
 
-      it 'returns the ideas that do not need feedback' do
-        expect(result_record_ids).to match_array Idea.where.not(id: Idea.feedback_needed).pluck(:id)
-        expect(result_record_ids).to include idea_with_feedback.id
+      it 'returns all ideas' do
+        expect(result_record_ids).to include(idea_with_feedback.id, *ideas.map(&:id))
       end
     end
   end

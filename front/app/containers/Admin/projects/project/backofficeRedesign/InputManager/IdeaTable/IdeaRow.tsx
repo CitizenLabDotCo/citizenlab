@@ -20,7 +20,6 @@ import { useIntl } from 'utils/cl-intl';
 
 import { ColumnKey, COLUMNS } from '../columns';
 import messages from '../messages';
-import { isAwaitingReply } from '../utils';
 
 import IdeaCell from './IdeaCell';
 
@@ -69,7 +68,7 @@ const IdeaRow = ({
   );
   const showsMark = (column: ColumnKey) => columns.includes(column);
   const wasImported = !!relationships.idea_import?.data;
-  const hasReply = !isAwaitingReply(idea, statuses);
+  const hasReply = attributes.official_feedbacks_count > 0;
 
   return (
     <Row

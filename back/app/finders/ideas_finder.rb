@@ -66,13 +66,11 @@ class IdeasFinder < ApplicationFinder
   end
 
   def feedback_needed_condition(feedback_needed)
-    return if feedback_needed.nil?
+    scope(:feedback_needed) if feedback_needed
+  end
 
-    if Utils.to_bool(feedback_needed)
-      scope(:feedback_needed)
-    else
-      records.where.not(id: Idea.feedback_needed)
-    end
+  def official_feedback_condition(official_feedback)
+    where('ideas.official_feedbacks_count > 0') if Utils.to_bool(official_feedback)
   end
 
   def search_condition(search)

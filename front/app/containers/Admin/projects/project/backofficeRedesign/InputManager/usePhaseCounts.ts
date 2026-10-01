@@ -15,9 +15,13 @@ const usePhaseCounts = (scope: Scope) => {
     ...scope,
     feedback_needed: true,
   });
+  const { data: replied } = useIdeasFilterCounts({
+    ...scope,
+    official_feedback: true,
+  });
   const { data: imported } = useIdeasFilterCounts({ ...scope, imported: true });
 
-  if (!counts || !awaiting || !imported) return undefined;
+  if (!counts || !awaiting || !replied || !imported) return undefined;
 
   const { total, idea_status_id, input_topic_id, assignee_id } =
     counts.data.attributes;
@@ -32,7 +36,7 @@ const usePhaseCounts = (scope: Scope) => {
     byTopic: input_topic_id,
     byAssignee,
     awaiting: awaiting.data.attributes.total,
-    replied: total - awaiting.data.attributes.total,
+    replied: replied.data.attributes.total,
     imported: imported.data.attributes.total,
     online: total - imported.data.attributes.total,
   };
