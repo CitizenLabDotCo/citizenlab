@@ -32,10 +32,12 @@ import Transcript from './Transcript';
 import { Exchange } from './types';
 import useDemoGeneration from './useDemoGeneration';
 
-// prototype data — staging has no generation engine, so the Draft button plays
-// a simulated run (progress modal + result report) instead of calling the API.
-// Flip to false to exercise the real backend path (epic preview env).
-const DEMO_MODE: boolean = true;
+// By default the Draft button plays a simulated run (progress + result report)
+// so the preview link always shows the polished experience. Add `?live` to the
+// URL to exercise the real backend generation end to end instead.
+const DEMO_MODE =
+  typeof window === 'undefined' ||
+  !new URLSearchParams(window.location.search).has('live');
 
 const getErrorCode = (error: unknown) =>
   isCLErrorsWrapper(error)
