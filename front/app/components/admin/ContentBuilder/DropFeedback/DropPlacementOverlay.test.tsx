@@ -7,6 +7,15 @@ import { render, screen, act } from 'utils/testUtils/rtl';
 import DropPlacementOverlay from './DropPlacementOverlay';
 
 const BODY_ID = 'PROJECT_PAGE_BODY';
+const NODE_IDS: Record<string, string> = {
+  ProjectTitle: 'PROJECT_TITLE',
+  ProjectPageBody: BODY_ID,
+  PhasesWidget: 'PHASES',
+};
+const CHILD_IDS: Record<string, string[]> = {
+  [ROOT_NODE]: ['PROJECT_BANNER', 'PROJECT_TITLE', BODY_ID],
+  [BODY_ID]: ['PHASES'],
+};
 
 let editorState: EditorState;
 // The canvas scrolls in its own container, which shifts every measured rect.
@@ -50,10 +59,18 @@ const buildState = (
     },
     indicator: {
       placement: {
-        parent: { id: parentId, dom: elementAt(300) },
+        parent: {
+          id: parentId,
+          dom: elementAt(300),
+          data: { nodes: CHILD_IDS[parentId] },
+        },
         index: 0,
         where,
-        currentNode: { dom: elementAt(300), data: { name: currentNodeName } },
+        currentNode: {
+          id: NODE_IDS[currentNodeName],
+          dom: elementAt(300),
+          data: { name: currentNodeName },
+        },
       },
       error,
     },

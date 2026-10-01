@@ -7,7 +7,7 @@ import useCustomPages from 'api/custom_pages/useCustomPages';
 
 import useLocalize from 'hooks/useLocalize';
 
-import EmptyState from '../_shared/EmptyState';
+import EmptyState from 'components/admin/ContentBuilder/Widgets/_shared/EmptyState';
 
 import { CARD_ICON_SIZE } from './constants';
 import CustomPageCard from './CustomPageCard';
