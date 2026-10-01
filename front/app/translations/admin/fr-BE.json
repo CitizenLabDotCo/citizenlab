@@ -487,7 +487,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.commentTerm": "Commentaire",
   "app.components.app.containers.AdminPage.ProjectEdit.contactGovSuccessToAccess": "Récolter des commentaires sur un document est une fonctionnalité qui n'est pas incluse dans votre licence actuelle. Contactez votre responsable GovSuccess pour en savoir plus à ce sujet.",
   "app.components.app.containers.AdminPage.ProjectEdit.contentScreeningTitle": "Modération du contenu",
-  "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Suggestion",
+  "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Contribution",
   "app.components.app.containers.AdminPage.ProjectEdit.expireDateLimitRequired": "Le champ « Nombre de jours » est obligatoire",
   "app.components.app.containers.AdminPage.ProjectEdit.expireDaysLimit": "Nombre de jours pour atteindre le nombre minimum de votes",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Vous trouverez de plus amples informations sur la manière d'intégrer un lien pour Google Forms dans {googleFormsTooltipLink}.",
