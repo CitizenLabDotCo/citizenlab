@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 
@@ -12,11 +12,12 @@ import useAuthUser from 'api/me/useAuthUser';
 import { ParticipationMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 
-import { trackEventByName } from 'utils/analytics';
+import useOnQuerySuccess from 'hooks/useOnQuerySuccess';
+
+import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import { FormValues } from '../Page/types';
-import tracks from '../tracks';
 import { convertCustomFieldsToNestedPages } from '../util';
 
 import SurveyPage from './SurveyPage';
@@ -47,8 +48,23 @@ const SurveyForm = ({
 
   const { data: authUser } = useAuthUser();
   const { data: phase } = usePhase(phaseId);
-  const { data: draftIdea, isLoading: isLoadingDraftIdea } =
-    useDraftIdeaByPhaseId(phaseId);
+  const draftIdeaQuery = useDraftIdeaByPhaseId(phaseId);
+  const { data: draftIdea, isLoading: isLoadingDraftIdea } = draftIdeaQuery;
+
+  // The draft refetches after every saved page; only the first load counts.
+  const hasTrackedStart = useRef(false);
+  useOnQuerySuccess(draftIdeaQuery, () => {
+    if (hasTrackedStart.current) return;
+    hasTrackedStart.current = true;
+
+    trackEventByName(customerAnalyticsEvents.surveyStarted, {
+      project_id: projectId,
+      phase_id: phaseId,
+      participation_method: participationMethod,
+      // Only a previously saved draft has an id.
+      resumed: !!draftIdea?.data.id,
+    });
+  });
 
   const { mutateAsync: addIdea } = useAddIdea();
   const { mutateAsync: updateIdea } = useUpdateIdea();
@@ -112,7 +128,11 @@ const SurveyForm = ({
 
     clearDraftIdea(phaseId);
     if (isSubmitPage) {
-      trackEventByName(tracks.surveyFormSubmitted);
+      trackEventByName(customerAnalyticsEvents.surveySubmitted, {
+        project_id: projectId,
+        phase_id: phase.data.id,
+        participation_method: participationMethod,
+      });
     }
   };
 

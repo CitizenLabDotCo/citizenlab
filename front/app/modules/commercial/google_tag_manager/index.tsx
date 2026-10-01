@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { combineLatest } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 
@@ -9,7 +10,12 @@ import {
   registerDestination,
 } from 'components/ConsentManager/destinations';
 
-import { initializeFor } from 'utils/analytics';
+import {
+  bufferUntilInitialized,
+  events$,
+  initializeFor,
+  isCustomerAnalyticsEvent,
+} from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { ModuleConfiguration } from 'utils/moduleUtils';
@@ -76,6 +82,14 @@ const configuration: ModuleConfiguration = {
           f?.parentNode?.insertBefore(j, f);
         })(window, document, 'script', 'dataLayer', containerId);
       });
+    });
+
+    bufferUntilInitialized(
+      'google_tag_manager',
+      events$.pipe(filter((event) => isCustomerAnalyticsEvent(event.name)))
+    ).subscribe((event) => {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: event.name, ...event.properties });
     });
 
     registerDestination(destinationConfig);

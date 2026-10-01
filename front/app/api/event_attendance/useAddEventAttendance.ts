@@ -4,6 +4,7 @@ import { CLErrors } from 'typings';
 
 import eventsKeys from 'api/events/keys';
 
+import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import eventsAttendancesKeys from './keys';
@@ -39,6 +40,10 @@ const useAddEventAttendance = (eventId: string) => {
             queryKey: eventsKeys.list({ attendeeId: params.attendeeId }),
           });
         }
+
+        trackEventByName(customerAnalyticsEvents.eventAttendanceRegistered, {
+          event_id: eventId,
+        });
       },
     }
   );

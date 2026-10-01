@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { trackEventByName } from 'utils/analytics';
 import { render, screen, userEvent, waitFor } from 'utils/testUtils/rtl';
 
 import { SEARCHABLE_OPTION_COUNT } from '../constants';
@@ -36,10 +37,28 @@ const mockUpdateIdea = jest.fn();
 // Anonymous user (permitted_by: 'everyone' flow)
 jest.mock('api/me/useAuthUser', () => () => ({ data: undefined }));
 
+jest.mock('utils/analytics', () => ({
+  ...jest.requireActual('utils/analytics'),
+  trackEventByName: jest.fn(),
+}));
+
 // No server-side draft for anonymous users — intermediate page submits no-op
+let mockDraftIdeaQuery: {
+  data?: { data: { id?: string } };
+  isLoading: boolean;
+  isSuccess: boolean;
+  isPlaceholderData: boolean;
+  dataUpdatedAt: number;
+} = {
+  data: undefined,
+  isLoading: false,
+  isSuccess: true,
+  isPlaceholderData: false,
+  dataUpdatedAt: 1,
+};
 jest.mock('api/ideas/useDraftIdeaByPhaseId', () => ({
   __esModule: true,
-  default: () => ({ data: undefined, isLoading: false }),
+  default: () => mockDraftIdeaQuery,
   clearDraftIdea: () => undefined,
 }));
 
@@ -327,4 +346,69 @@ describe('SurveyForm — anonymous multi-page persistence', () => {
       expect(screen.queryByText(/Question Two/i)).not.toBeInTheDocument();
     }
   );
+});
+
+describe('SurveyForm — survey_started', () => {
+  beforeEach(() => {
+    jest.mocked(trackEventByName).mockClear();
+    mockCustomFieldsQuery = { data: customFields, isLoading: false };
+  });
+
+  it('tracks the start once, even when the draft refetches', () => {
+    mockDraftIdeaQuery = {
+      data: { data: {} },
+      isLoading: false,
+      isSuccess: true,
+      isPlaceholderData: false,
+      dataUpdatedAt: 1,
+    };
+
+    const { rerender } = render(
+      <SurveyForm
+        projectId="project-1"
+        phaseId="phase-1"
+        participationMethod="native_survey"
+      />
+    );
+
+    mockDraftIdeaQuery = { ...mockDraftIdeaQuery, dataUpdatedAt: 2 };
+    rerender(
+      <SurveyForm
+        projectId="project-1"
+        phaseId="phase-1"
+        participationMethod="native_survey"
+      />
+    );
+
+    expect(trackEventByName).toHaveBeenCalledTimes(1);
+    expect(trackEventByName).toHaveBeenCalledWith('survey_started', {
+      project_id: 'project-1',
+      phase_id: 'phase-1',
+      participation_method: 'native_survey',
+      resumed: false,
+    });
+  });
+
+  it('marks the start as resumed when a saved draft exists', () => {
+    mockDraftIdeaQuery = {
+      data: { data: { id: 'draft-1' } },
+      isLoading: false,
+      isSuccess: true,
+      isPlaceholderData: false,
+      dataUpdatedAt: 1,
+    };
+
+    render(
+      <SurveyForm
+        projectId="project-1"
+        phaseId="phase-1"
+        participationMethod="native_survey"
+      />
+    );
+
+    expect(trackEventByName).toHaveBeenCalledWith(
+      'survey_started',
+      expect.objectContaining({ resumed: true })
+    );
+  });
 });
