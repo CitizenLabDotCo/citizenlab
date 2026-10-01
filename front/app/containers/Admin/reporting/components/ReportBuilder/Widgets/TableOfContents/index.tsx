@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
@@ -22,7 +22,7 @@ const Panel = styled(Box)`
 const Row = styled(Box)`
   display: flex;
   align-items: baseline;
-  gap: 8px;
+  gap: 10px;
   break-inside: avoid;
 
   // The leader dots between the title and the page number.
@@ -31,7 +31,7 @@ const Row = styled(Box)`
     flex: 1;
     order: 1;
     border-bottom: 1px dotted ${colors.borderDark};
-    margin-bottom: 4px;
+    margin-bottom: 5px;
   }
 `;
 
@@ -71,9 +71,11 @@ export interface Props {
 }
 
 const TableOfContents = ({ title }: Props) => {
+  const theme = useTheme();
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const [entries, setEntries] = useState<Entry[]>([]);
+  const accent = theme.colors.tenantPrimary;
 
   // One pass after the report has rendered. The entries must exist before the
   // paginator runs, so that filling in the page numbers cannot change the
@@ -92,36 +94,52 @@ const TableOfContents = ({ title }: Props) => {
 
   return (
     <Panel className="e2e-table-of-contents" mb="8px">
-      <Title variant="h3" m="0 0 12px">
+      {/* The same rule the cover opens with, so the contents reads as the second
+          page of one document rather than a list that wandered in. */}
+      <Box w="100%" h="4px" background={accent} mb="24px" />
+
+      <Title variant="h2" m="0 0 24px">
         {localize(title) || formatMessage(messages.contents)}
       </Title>
 
       {entries.length === 0 && (
-        <Text m="0" fontSize="s" color="textSecondary">
+        <Text m="0" fontSize="base" color="textSecondary">
           <FormattedMessage {...messages.empty} />
         </Text>
       )}
 
-      {entries.map((entry) => (
-        <Row
-          key={entry.id}
-          className={TOC_ROW_CLASS}
-          data-toc-ref={entry.id}
-          mb="6px"
-          pl={entry.level >= 3 ? '16px' : '0'}
-        >
-          <Text m="0" fontSize="s" color="textPrimary">
-            {entry.text}
-          </Text>
-          <Text
-            m="0"
-            fontSize="s"
-            color="textSecondary"
-            className={TOC_PAGE_CLASS}
-            style={{ order: 2 }}
-          />
-        </Row>
-      ))}
+      {entries.map((entry) => {
+        // Sections carry the weight; anything nested under them steps back and in,
+        // so the shape of the report is readable at a glance.
+        const isSection = entry.level <= 2;
+
+        return (
+          <Row
+            key={entry.id}
+            className={TOC_ROW_CLASS}
+            data-toc-ref={entry.id}
+            mb={isSection ? '14px' : '10px'}
+            pl={isSection ? '0' : '20px'}
+          >
+            <Text
+              m="0"
+              fontSize={isSection ? 'l' : 'base'}
+              color={isSection ? 'textPrimary' : 'textSecondary'}
+              fontWeight={isSection ? 'semi-bold' : 'normal'}
+            >
+              {entry.text}
+            </Text>
+            <Text
+              m="0"
+              fontSize={isSection ? 'l' : 'base'}
+              color={isSection ? 'textPrimary' : 'textSecondary'}
+              fontWeight={isSection ? 'semi-bold' : 'normal'}
+              className={TOC_PAGE_CLASS}
+              style={{ order: 2 }}
+            />
+          </Row>
+        );
+      })}
     </Panel>
   );
 };

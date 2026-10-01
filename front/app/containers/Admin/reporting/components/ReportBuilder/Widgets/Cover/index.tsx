@@ -40,7 +40,13 @@ const Cover = ({
 
   const accent = theme.colors.tenantPrimary;
   const logoUrl = appConfiguration?.data.attributes.logo?.medium;
-  const tenantName = appConfiguration?.data.attributes.name;
+  // Only the logo names the organisation now, so its alt text carries the name.
+  // The organisation as it calls itself, not `attributes.name`, which is the
+  // tenant's internal handle — "local" on a development platform — and never
+  // translated.
+  const organizationName = localize(
+    appConfiguration?.data.attributes.settings.core.organization_name
+  );
 
   const titleText = localize(title);
   const eyebrowText =
@@ -70,7 +76,7 @@ const Cover = ({
         <Box>
           <img
             src={logoUrl}
-            alt={tenantName ?? ''}
+            alt={organizationName}
             style={{ maxHeight: '56px', maxWidth: '60%' }}
           />
         </Box>
@@ -99,14 +105,9 @@ const Cover = ({
 
       <Box w="100%" h="1px" background={colors.divider} mb="12px" />
 
-      <Box display="flex" justifyContent="space-between" gap="16px">
-        <Text m="0" fontSize="s" color="textSecondary">
-          {tenantName}
-        </Text>
-        <Text m="0" fontSize="s" color="textSecondary">
-          {localize(footnote)}
-        </Text>
-      </Box>
+      <Text m="0" fontSize="s" color="textSecondary">
+        {localize(footnote)}
+      </Text>
     </Box>
   );
 };
