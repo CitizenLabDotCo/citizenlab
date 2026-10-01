@@ -62,7 +62,6 @@ export const COLUMNS: Record<ColumnKey, Column> = {
   imported: { label: postManagerMessages.imported, mark: true },
 };
 
-// Columns keep this order wherever they are shown.
 const COLUMN_ORDER: ColumnKey[] = [
   'status',
   'assignee',
@@ -93,7 +92,6 @@ const GENERAL_COLUMNS: ColumnKey[] = [
   'imported',
 ];
 
-// The voting columns match what each voting method counts.
 const VOTING_COLUMNS: Record<string, ColumnKey[]> = {
   budgeting: ['picks', 'offlinePicks', 'budget', 'comments'],
   multiple_voting: ['votes', 'offlineVotes', 'participants', 'comments'],
@@ -103,10 +101,6 @@ const VOTING_COLUMNS: Record<string, ColumnKey[]> = {
 export const orderColumns = (columns: ColumnKey[]) =>
   COLUMN_ORDER.filter((column) => columns.includes(column));
 
-/**
- * The columns an admin can show for the listed phase, and the ones shown
- * before they pick. `phase` is undefined when all phases are listed.
- */
 export const getColumns = (
   phase: IPhaseData | undefined,
   isProposals: boolean
