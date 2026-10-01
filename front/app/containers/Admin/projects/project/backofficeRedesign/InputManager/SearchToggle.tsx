@@ -35,6 +35,7 @@ const SearchToggle = ({ searchTerm, onChange, resultCount }: Props) => {
         icon="search"
         label={formatMessage(messages.searchInputs)}
         onClick={() => setIsOpen(true)}
+        dataCy="e2e-input-manager-search-toggle"
       />
     );
   }
@@ -51,6 +52,7 @@ const SearchToggle = ({ searchTerm, onChange, resultCount }: Props) => {
         onChange={onChange}
         a11y_numberOfSearchResults={resultCount}
         setInputRef={(input) => input?.focus()}
+        dataCy="e2e-input-manager-search"
       />
     </Box>
   );

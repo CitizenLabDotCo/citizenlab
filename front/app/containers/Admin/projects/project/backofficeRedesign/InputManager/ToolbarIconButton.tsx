@@ -14,6 +14,7 @@ interface Props {
   onClick: () => void;
   active?: boolean;
   showDot?: boolean;
+  dataCy?: string;
 }
 
 const ToolbarIconButton = ({
@@ -22,6 +23,7 @@ const ToolbarIconButton = ({
   onClick,
   active = false,
   showDot = false,
+  dataCy,
 }: Props) => (
   <Tooltip content={label} placement="bottom" theme="dark">
     <Box position="relative">
@@ -33,6 +35,7 @@ const ToolbarIconButton = ({
         onClick={onClick}
         ariaLabel={label}
         ariaExpanded={active}
+        dataCy={dataCy}
         bgColor={active ? colors.grey100 : colors.white}
       />
       {showDot && (

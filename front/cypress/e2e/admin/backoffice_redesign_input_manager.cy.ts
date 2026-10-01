@@ -78,8 +78,8 @@ describe('Redesigned input manager', () => {
   it('filters the inputs with the search', () => {
     cy.get(`[data-cy="e2e-idea-row-${secondIdeaId}"]`).should('exist');
 
-    cy.get('button[aria-label="Search inputs"]').click();
-    cy.get('input[aria-label="Search inputs"]').type(firstTitle);
+    cy.get('[data-cy="e2e-input-manager-search-toggle"]').click();
+    cy.get('[data-cy="e2e-input-manager-search"] input').type(firstTitle);
 
     cy.location('search').should('include', `search=${firstTitle}`);
     cy.get(`[data-cy="e2e-idea-row-${firstIdeaId}"]`).should('exist');
