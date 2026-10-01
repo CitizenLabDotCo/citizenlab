@@ -11,6 +11,7 @@ import { useLocation } from 'utils/router';
 
 import messages from '../messages';
 import BlockErrorBoundary from '../runtime/BlockErrorBoundary';
+import { getDraftBlock, isDraft } from '../runtime/draftBlock';
 import useBlockMessages from '../runtime/useBlockMessages';
 import useLoadedBlock from '../runtime/useLoadedBlock';
 
@@ -23,9 +24,16 @@ interface Props {
   config?: BlockConfigValues;
 }
 
-const useIsInBuilder = () => {
+// Where a broken block must say so rather than leave a gap: the builder an admin is
+// working in, and the harness the check service renders in. On a report a resident
+// reads, a block that failed renders nothing at all.
+const useShowsFailures = () => {
   const { pathname } = useLocation();
-  return pathname.includes('admin/reporting/report-builder');
+
+  return (
+    pathname.includes('admin/reporting/report-builder') ||
+    pathname.includes('block-harness')
+  );
 };
 
 /**
@@ -37,8 +45,14 @@ const useIsInBuilder = () => {
  * block, so a new block never needs a rebuild or an editor remount.
  */
 const CustomBlock = ({ blockId, version, config = {} }: Props) => {
-  const inBuilder = useIsInBuilder();
-  const { data: blockVersion } = useCustomBlockVersion({ blockId, version });
+  const showsFailures = useShowsFailures();
+  // A draft is the block being checked before it has a version to fetch. Only the
+  // check service's harness ever places one.
+  const draft = isDraft(blockId) ? getDraftBlock() : null;
+  const { data: blockVersion } = useCustomBlockVersion({
+    blockId: draft ? undefined : blockId,
+    version,
+  });
   const attributes = blockVersion?.data.attributes;
   const disabled = attributes?.block_status === 'disabled';
 
@@ -46,18 +60,18 @@ const CustomBlock = ({ blockId, version, config = {} }: Props) => {
     blockId: disabled ? undefined : blockId,
     version: disabled ? undefined : version,
   });
-  const msg = useBlockMessages(attributes?.messages);
+  const msg = useBlockMessages(draft?.messages ?? attributes?.messages);
 
-  if (!blockId || !version) return null;
+  if (!blockId || (!version && !draft)) return null;
 
   if (disabled) {
-    return inBuilder ? (
+    return showsFailures ? (
       <BuilderNotice message={messages.blockDisabled} />
     ) : null;
   }
 
   if (failed) {
-    return inBuilder ? (
+    return showsFailures ? (
       <BuilderNotice message={messages.blockLoadError} />
     ) : null;
   }
@@ -91,7 +105,9 @@ const CustomBlock = ({ blockId, version, config = {} }: Props) => {
         blockId={blockId}
         version={version}
         fallback={
-          inBuilder ? <BuilderNotice message={messages.blockLoadError} /> : null
+          showsFailures ? (
+            <BuilderNotice message={messages.blockLoadError} />
+          ) : null
         }
       >
         <Component config={config} msg={msg} />

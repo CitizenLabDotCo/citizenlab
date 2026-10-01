@@ -26,6 +26,9 @@ module ReportBuilder
       # truncated-rewrite cycles. Same reasoning as the block authoring loop.
       MAX_OUTPUT_TOKENS = 32_768
 
+      # Marks a point up to which the provider may reuse its cached prefix.
+      CACHE_POINT = { cache_point: { type: 'default' } }.freeze
+
       # Comfortably above the longest turn we have measured (about 2.5 minutes).
       HTTP_READ_TIMEOUT_SECONDS = 900
       HTTP_OPEN_TIMEOUT_SECONDS = 10
@@ -40,126 +43,35 @@ module ReportBuilder
         Cover Divider KeyFigures TextMultiloc WhiteSpace PageBreak TableOfContents TwoColumn Container CustomBlock
       ].freeze
 
-      TOOLS = [
-        {
-          tool_spec: {
-            name: 'run_reporting_sql_query',
-            description: 'Run one read-only SELECT over the reporting views and see the rows. ' \
-                         'Use it to find out what the data holds before deciding what to chart.',
-            input_schema: {
-              json: {
-                type: 'object',
-                properties: { query: { type: 'string', description: 'A single SELECT statement.' } },
-                required: ['query']
-              }
-            }
-          }
-        },
-        {
-          tool_spec: {
-            name: 'author_chart_block',
-            description: 'Store one chart as a block and get back the blockId and version to ' \
-                         'place in the layout. The source is compiled, typechecked against the ' \
-                         'SDK, linted, and every query it runs is put through the reporting SQL ' \
-                         'sandbox. Nothing is stored unless all of that passes; whatever failed ' \
-                         'comes back with line numbers for you to fix.',
-            input_schema: {
-              json: {
-                type: 'object',
-                properties: {
-                  title: { type: 'string', description: 'Short name for the block, for admins.' },
-                  source: {
-                    type: 'string',
-                    description: 'The complete TSX of the block. The queries it runs are read ' \
-                                 'out of this source, so there is no separate sql argument.'
-                  },
-                  messages: {
-                    type: 'object',
-                    description: 'Every string the block displays, as locale to key to text: ' \
-                                 '{"en":{"title":"Contributions per month"}}. One entry per ' \
-                                 'platform locale, with the same keys in each.'
-                  },
-                  config_schema: {
-                    type: 'object',
-                    description: 'A JSON Schema object describing the settings an admin can ' \
-                                 'change on this chart without editing code. Each property ' \
-                                 'becomes a field in the report builder sidebar and reaches the ' \
-                                 'block as config[key]. Send {"type":"object","properties":{}} ' \
-                                 'when there is nothing worth exposing.',
-                    properties: {
-                      type: { type: 'string', enum: ['object'] },
-                      properties: {
-                        type: 'object',
-                        description: 'Field name to JSON Schema. Each needs a type ' \
-                                     '(string, number, integer or boolean) and a title. Add ' \
-                                     'enum for a fixed set of strings, x-multiloc for a ' \
-                                     'translated string, default for a starting value.'
-                      },
-                      required: { type: 'array', items: { type: 'string' } }
-                    },
-                    required: %w[type properties]
-                  }
-                },
-                required: %w[title source messages config_schema]
-              }
-            }
-          }
-        },
-        {
-          tool_spec: {
-            name: 'get_layout',
-            description: 'Show the report as it stands: an outline of every node in reading ' \
-                         'order, and the raw graph. Call it when you need node ids to change ' \
-                         'or reorder something you cannot remember writing.',
-            input_schema: { json: { type: 'object', properties: {} } }
-          }
-        },
-        {
-          tool_spec: {
-            name: 'patch_layout',
-            description: 'Add, change or remove nodes in the report. Send ONLY the nodes you ' \
-                         'are adding or changing, each in its full final form; never re-send a ' \
-                         'node you did not touch. The patch is merged into the report and ' \
-                         'validated, and nothing is kept if it does not validate. Build the ' \
-                         'report over several patches rather than one big one.',
-            input_schema: {
-              json: {
-                type: 'object',
-                properties: {
-                  nodes: {
-                    type: 'object',
-                    description: 'Map of node-id to that node\'s full final JSON, containing only ' \
-                                 'the nodes you are adding or changing. New ids are 10 characters ' \
-                                 'of [A-Za-z0-9_-]. The first patch must include ROOT.'
-                  },
-                  delete_node_ids: {
-                    type: 'array',
-                    items: { type: 'string' },
-                    description: 'Ids to remove. A node\'s subtree goes with it, so name only the ' \
-                                 'top of what you want gone.'
-                  }
-                }
-              }
-            }
-          }
-        }
-      ].freeze
-
       # @param project [Project] the subject of the report.
       # @param locale [String] the locale the report text is written in.
       # @param phase [Phase, nil] the one phase to report on, for a phase report.
       # @param author [User, nil] who the authored blocks are attributed to.
-      def initialize(project, locale:, phase: nil, author: nil, client: nil)
+      def initialize(project, locale:, phase: nil, author: nil, client: nil, layout_record: nil)
         @project = project
         @locale = locale
         @phase = phase
         @author = author
         @client = client
+        # The report's own layout row. Only used for checking: a render needs a layout
+        # to scope its data token to.
+        @layout_record = layout_record
         @authored_blocks = []
         # What the report held when this run started, and the graph as it stands now.
         @current_layout = nil
         @layout = {}
+        # What the model was told and what it said, for whoever has to work out why a
+        # run went the way it did.
+        @transcript = []
+        @usage = Hash.new(0)
+        @stopped_because = 'failed'
       end
+
+      # The run's record: every message in order, what it cost, and why it stopped.
+      attr_reader :transcript, :usage, :stopped_because
+
+      # Which model wrote this run, for the record.
+      def model_name = model_id
 
       # @return [Hash] a validated craftjs_json graph.
       # @raise [ComposeError] if no valid layout was produced within MAX_ROUNDS.
@@ -172,7 +84,33 @@ module ReportBuilder
           raise ComposeError, "no report was written in #{MAX_ROUNDS} rounds"
         end
 
-        result[:layout]
+        review(result[:layout])
+      end
+
+      # The model stops when it believes the report is done. Believing is not seeing:
+      # this renders what it wrote and, if something is actually broken, gives it one
+      # bounded round to fix it. One, because a model handed its own output
+      # indefinitely will keep polishing it.
+      REVIEW_ROUNDS = 5
+
+      def review(layout)
+        return layout if checker.nil?
+
+        outcome = checker.check(checker.layout_target(layout))
+        return layout unless outcome[:error]
+
+        result = run_loop(
+          [{ role: 'user', content: [{ text: <<~TEXT }] }], max_rounds: REVIEW_ROUNDS
+            I rendered the report you just wrote. Some checks failed:
+
+            #{outcome[:text]}
+
+            Fix what is actually broken with patch_layout and stop. If a failure is not
+            worth fixing, say so and stop — do not rewrite the report.
+          TEXT
+        )
+
+        result[:layout] || layout
       end
 
       # One turn of the chat: answer the admin, and change the report if that is what
@@ -199,17 +137,18 @@ module ReportBuilder
 
       private
 
-      def run_loop(messages, allow_answer_only: false)
+      def run_loop(messages, allow_answer_only: false, max_rounds: MAX_ROUNDS)
         reply = nil
         patched = false
 
-        MAX_ROUNDS.times do
+        max_rounds.times do
           response = converse(messages)
-          assistant = serialize_message(response.output.message)
+          record_usage(response)
+          assistant = Messages.serialize(response.output.message)
           messages << assistant
-          reply = assistant_text(assistant) || reply
+          reply = Messages.assistant_text(assistant) || reply
 
-          calls = tool_calls(assistant)
+          calls = Messages.tool_calls(assistant)
 
           # A reply cut off by the token limit still carries the tool call it had
           # started writing, and that fragment parses. Running it would act on half
@@ -226,7 +165,10 @@ module ReportBuilder
             # anything is only an answer in the chat; asked to generate a report, it
             # means the model stopped short, and a nudge costs less than a failed run.
             done = response.stop_reason.to_s == 'end_turn' && (patched || allow_answer_only)
-            return finish(patched, reply) if done
+            if done
+              @stopped_because = 'done'
+              return finish(patched, reply)
+            end
 
             messages << nudge(response.stop_reason)
             next
@@ -238,14 +180,26 @@ module ReportBuilder
           # Every tool call must be answered, or the next request is rejected.
           messages << {
             role: 'user',
-            content: outcomes.map { |call, outcome| tool_result_block(call[:id], outcome) }
+            content: outcomes.map { |call, outcome| Messages.tool_result(call[:id], outcome) }
           }
         end
 
         # Out of rounds. Every patch was validated before it landed, so what is here
         # is a real report, just possibly an unfinished one — and an unfinished report
         # the admin can edit beats throwing away the whole run.
+        @stopped_because = 'round_cap'
         finish(patched, reply)
+      ensure
+        @transcript = messages
+      end
+
+      def record_usage(response)
+        reported = response.usage
+        return if reported.nil?
+
+        %i[input_tokens output_tokens cache_read_input_tokens cache_write_input_tokens].each do |field|
+          @usage[field.to_s] += reported.respond_to?(field) ? reported.public_send(field).to_i : 0
+        end
       end
 
       def finish(patched, reply)
@@ -259,11 +213,6 @@ module ReportBuilder
         return [] unless layout.is_a?(Hash)
 
         layout.values.filter_map { |node| node.is_a?(Hash) ? node.dig('props', 'blockId') : nil }
-      end
-
-      def assistant_text(assistant_message)
-        texts = assistant_message[:content].filter_map { |block| block[:text] }
-        texts.empty? ? nil : texts.join("\n")
       end
 
       def discard_authored_blocks
@@ -286,6 +235,8 @@ module ReportBuilder
         case call[:name]
         when 'run_reporting_sql_query' then run_query(call[:input]['query'])
         when 'author_chart_block' then author_block(call[:input])
+        when 'edit_source' then edit_block(call[:input])
+        when 'check' then check(call[:input])
         when 'get_layout' then read_layout
         when 'patch_layout' then patch_layout(call[:input])
         else { error: true, text: "Unknown tool '#{call[:name]}'." }
@@ -313,15 +264,67 @@ module ReportBuilder
         )
         @authored_blocks << result.block_id
 
-        { text: "Stored. Place it with {\"blockId\":\"#{result.block_id}\",\"version\":#{result.version_number}}." }
+        { text: "Stored. Place it with #{placement(result)}." }
       rescue ChartBlockAuthor::Rejected => e
         { error: true, text: e.message }
+      end
+
+      # An edit writes a new version, so the node has to be repointed at it; saying so
+      # here is what stops the report still showing the one that was just fixed.
+      def edit_block(input)
+        block_id = input['block_id'].to_s
+        unless @authored_blocks.include?(block_id)
+          return { error: true, text: "No block #{block_id} was authored in this run." }
+        end
+
+        result = ChartBlockAuthor.new(@author, locale: @locale)
+          .edit(block_id: block_id, find: input['find'].to_s, replace: input['replace'].to_s)
+
+        { text: "Edited. The chart is now #{placement(result)} — patch the node that places it." }
+      rescue ChartBlockAuthor::Rejected => e
+        { error: true, text: e.message }
+      end
+
+      def placement(result)
+        %({"blockId":"#{result.block_id}","version":#{result.version_number}})
+      end
+
+      # Rendering the report, or one chart in it, and reporting what the browser saw.
+      def check(input)
+        return { error: true, text: 'Checking is not available in this run.' } if checker.nil?
+
+        block_id = input['block_id'].presence
+        return checker.check(checker.layout_target(@layout)) if block_id.nil?
+
+        version = authored_version(block_id)
+        return { error: true, text: "No block #{block_id} was authored in this run." } if version.nil?
+
+        checker.check(
+          checker.block_target(
+            bundle: version.bundle,
+            manifest: version.manifest,
+            messages: version.messages,
+            config: input['config'] || {}
+          )
+        )
+      end
+
+      def authored_version(block_id)
+        return nil unless @authored_blocks.include?(block_id)
+
+        ContentBuilder::CustomBlock.find_by(id: block_id)&.latest_version
+      end
+
+      def checker
+        return nil if @layout_record.nil?
+
+        @checker ||= BlockChecker.new(layout: @layout_record, author: @author, locale: @locale)
       end
 
       def read_layout
         return { text: 'The report is empty. Your first patch_layout must include ROOT.' } if @layout.empty?
 
-        { text: "#{outline_text}\n\nraw:\n#{@layout.to_json}" }
+        { text: "#{Craftjs::LayoutSummary.text(@layout)}\n\nraw:\n#{@layout.to_json}" }
       end
 
       # A sparse patch, merged into the report as it stands: the same shape
@@ -342,18 +345,9 @@ module ReportBuilder
         return { error: true, text: result.message } unless result.valid?
 
         @layout = graph
-        { patched: true, text: "Patched. The report now reads:\n#{outline_text}" }
+        { patched: true, text: "Patched. The report now reads:\n#{Craftjs::LayoutSummary.text(@layout)}" }
       rescue Craftjs::LayoutPatcher::PatchError => e
         { error: true, text: e.message }
-      end
-
-      def outline_text
-        McpServer::Serializers::LayoutOutline.new(@layout).entries.map do |entry|
-          indent = '  ' * entry[:depth].to_i
-          label = [entry[:id], entry[:widget]].compact.join(' ')
-          text = entry[:text].presence
-          "#{indent}#{label}#{text ? " — #{text}" : ''}"
-        end.join("\n")
       end
 
       def client
@@ -369,28 +363,32 @@ module ReportBuilder
         )
       end
 
+      # Which model writes reports is a platform setting like every other AI feature,
+      # not an environment variable only this engine knows about.
       def model_id
-        ENV.fetch('BEDROCK_SONNET_MODEL', 'eu.anthropic.claude-sonnet-4-6')
+        @model_id ||= LLMSelector.new.llm_class_for_use_case('report_generation').new.model
       end
 
       def converse(messages)
         client.converse(
           model_id: model_id,
-          system: [{ text: system_prompt }],
-          messages: messages,
-          tool_config: { tools: TOOLS },
+          # System prompt and tool list are the same ~38KB on every round, so they are
+          # marked once and read from the provider's cache after the first call.
+          system: [{ text: system_prompt }, CACHE_POINT],
+          messages: cached(messages),
+          tool_config: { tools: Tools::DEFINITIONS + [CACHE_POINT] },
           inference_config: { max_tokens: MAX_OUTPUT_TOKENS }
         )
       end
 
-      def tool_result_block(tool_use_id, outcome)
-        {
-          tool_result: {
-            tool_use_id: tool_use_id,
-            content: [{ text: outcome[:text] }],
-            status: outcome[:error] ? 'error' : 'success'
-          }
-        }
+      # One moving mark at the end of the transcript: each round reads the prefix the
+      # round before it wrote. It is never stored in +messages+, because marks left
+      # behind would pile up past the handful a provider allows.
+      def cached(messages)
+        last = messages.last
+        return messages if last.nil? || last[:role] != 'user'
+
+        messages[0..-2] + [last.merge(content: last[:content] + [CACHE_POINT])]
       end
 
       # The model replied without calling a tool. A reply cut off by the output
@@ -408,7 +406,7 @@ module ReportBuilder
 
         return nudge('max_tokens') if calls.empty?
 
-        { role: 'user', content: calls.map { |call| tool_result_block(call[:id], outcome) } }
+        { role: 'user', content: calls.map { |call| Messages.tool_result(call[:id], outcome) } }
       end
 
       def nudge(stop_reason)
@@ -421,34 +419,6 @@ module ReportBuilder
         end
 
         { role: 'user', content: [{ text: text }] }
-      end
-
-      def serialize_message(message)
-        content = message.content.filter_map do |block|
-          if block.respond_to?(:text) && block.text
-            { text: block.text }
-          elsif block.respond_to?(:tool_use) && block.tool_use
-            {
-              tool_use: {
-                tool_use_id: block.tool_use.tool_use_id,
-                name: block.tool_use.name,
-                # Tool input is payload, not request parameters: it keeps its string keys.
-                input: block.tool_use.input.to_h
-              }
-            }
-          end
-        end
-
-        { role: 'assistant', content: content }
-      end
-
-      def tool_calls(assistant_message)
-        assistant_message[:content].filter_map do |block|
-          tool_use = block[:tool_use]
-          next unless tool_use
-
-          { id: tool_use[:tool_use_id], name: tool_use[:name], input: tool_use[:input] }
-        end
       end
 
       def context

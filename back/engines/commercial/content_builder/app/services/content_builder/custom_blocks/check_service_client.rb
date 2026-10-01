@@ -10,6 +10,9 @@ module ContentBuilder
     # not run in it either, which is why this is a network call rather than a library.
     class CheckServiceClient
       DEFAULT_TIMEOUT_SECONDS = 60
+      # A render drives a real browser and waits for the block's data; the service's
+      # own timeout is 30s, so this sits above it.
+      RENDER_TIMEOUT_SECONDS = 90
       OPEN_TIMEOUT_SECONDS = 5
       SECRET_HEADER = 'X-Check-Secret'
 
@@ -50,6 +53,37 @@ module ContentBuilder
         raise Unavailable, 'The check service returned a response that is not JSON.'
       end
 
+      # Mounts a block, or a whole report, in a real browser and reports what happened.
+      #
+      # @param target [Hash] {kind: 'block', bundle:, manifest:, messages:, config:}
+      #   or {kind: 'layout', craftjs_json:}.
+      # @return [Hash] the service's render result, with string keys.
+      # @raise [Unavailable]
+      def render(target:, locale:, layout_id:, app_origin:, token:, screenshot: true)
+        raise Unavailable, 'CHECK_SERVICE_SECRET is not configured.' if @secret.blank?
+
+        response = render_connection.post('/render') do |request|
+          request.body = {
+            target: target,
+            locale: locale,
+            layoutId: layout_id,
+            appOrigin: app_origin,
+            token: token,
+            screenshot: screenshot
+          }.to_json
+        end
+
+        unless response.success?
+          raise Unavailable, "The check service responded with #{response.status}: #{response.body.to_s.truncate(200)}"
+        end
+
+        JSON.parse(response.body)
+      rescue Faraday::Error => e
+        raise Unavailable, "The check service is unreachable: #{e.class}"
+      rescue JSON::ParserError
+        raise Unavailable, 'The check service returned a response that is not JSON.'
+      end
+
       def up?
         connection.get('/health').success?
       rescue StandardError
@@ -58,11 +92,19 @@ module ContentBuilder
 
       private
 
+      def render_connection
+        @render_connection ||= build_connection(RENDER_TIMEOUT_SECONDS)
+      end
+
       def connection
-        @connection ||= Faraday.new(@api_url) do |f|
+        @connection ||= build_connection(@timeout)
+      end
+
+      def build_connection(timeout)
+        Faraday.new(@api_url) do |f|
           f.headers['Content-Type'] = 'application/json'
           f.headers[SECRET_HEADER] = @secret.to_s
-          f.options.timeout = @timeout
+          f.options.timeout = timeout
           f.options.open_timeout = OPEN_TIMEOUT_SECONDS
           f.adapter :net_http
         end

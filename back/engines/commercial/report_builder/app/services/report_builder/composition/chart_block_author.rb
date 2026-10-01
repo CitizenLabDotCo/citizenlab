@@ -78,7 +78,71 @@ module ReportBuilder
         raise Rejected, "The block could not be saved: #{e.record.errors.full_messages.join('; ')}"
       end
 
+      # Changes one passage of an already-authored chart and writes the result as a new
+      # version.
+      #
+      # Search and replace rather than a fresh source, because a model that has to
+      # re-emit a whole file to fix one word spends thousands of output tokens on text
+      # that did not change, and every one of those replies is new, uncacheable
+      # transcript. A failed match is loud on purpose: a silent no-op, or an edit
+      # applied in the wrong one of three similar places, is worse than an error.
+      #
+      # The previous version stays exactly as it was. If a report already places it, it
+      # keeps rendering what it always rendered.
+      #
+      # @param block_id [String] a block authored in this run.
+      # @param find [String] the passage to replace. Must appear exactly once.
+      # @param replace [String] what to put there.
+      # @raise [Rejected] with a message the composer can correct itself from.
+      def edit(block_id:, find:, replace:)
+        raise Rejected, 'find is required.' if find.blank?
+
+        block = ContentBuilder::CustomBlock.find_by(id: block_id)
+        raise Rejected, "No block #{block_id}." if block.nil?
+
+        previous = block.latest_version
+        raise Rejected, "Block #{block_id} has no version to edit." if previous.nil?
+
+        source = replace_once!(previous.source, find, replace.to_s)
+        built = build!(source, previous.manifest['config_schema'], previous.messages)
+
+        version = block.versions.create!(
+          source: source,
+          bundle: built.bundle,
+          manifest: built.manifest,
+          messages: previous.messages,
+          toolchain: built.toolchain,
+          sdk_version: built.manifest['sdk_version'].presence || 'v1'
+        )
+
+        Result.new(block_id: block.id, version_number: version.number)
+      rescue ActiveRecord::RecordInvalid => e
+        raise Rejected, "The block could not be saved: #{e.record.errors.full_messages.join('; ')}"
+      end
+
       private
+
+      def replace_once!(source, find, replace)
+        # String#scan with a String matches literally; handing it an escaped pattern
+        # would look for the backslashes too.
+        occurrences = source.scan(find).size
+
+        if occurrences.zero?
+          raise Rejected,
+            'That passage is not in the source, character for character. Nothing was ' \
+            'changed. Read the source again and copy the exact text, whitespace included.'
+        end
+
+        if occurrences > 1
+          raise Rejected,
+            "That passage appears #{occurrences} times, so there is no telling which one " \
+            'you meant. Nothing was changed. Include enough surrounding text to name one.'
+        end
+
+        # Block form: a replacement string would read \\1 and \\& as backreferences,
+        # and generated source is full of backslashes.
+        source.sub(find) { replace }
+      end
 
       def locale
         @locale.presence || AppConfiguration.instance.settings('core', 'locales')&.first || 'en'

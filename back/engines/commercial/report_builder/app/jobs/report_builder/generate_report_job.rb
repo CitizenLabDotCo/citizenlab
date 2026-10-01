@@ -28,9 +28,21 @@ module ReportBuilder
       # A retry starts over; don't stack progress on the first attempt's.
       tracker.update!(progress: 0, error_count: 0)
 
-      craftjs_json = Composition::ReportComposer
-        .new(report.reported_project, locale: locale, phase: report.phase, author: tracker.owner)
-        .compose
+      composer = Composition::ReportComposer.new(
+        report.reported_project,
+        locale: locale,
+        phase: report.phase,
+        author: tracker.owner,
+        layout_record: report.layout
+      )
+
+      begin
+        craftjs_json = composer.compose
+      ensure
+        # Written whether the run produced a report or not: a failed run is the one
+        # whose reasoning someone actually needs to read.
+        record_transcript(report, composer)
+      end
 
       report.layout.craftjs_json = craftjs_json
       raise ActiveRecord::RecordInvalid, report unless ReportSaver.new(report, tracker.owner).save
@@ -45,6 +57,19 @@ module ReportBuilder
     end
 
     private
+
+    def record_transcript(report, composer)
+      GenerationTranscript.create!(
+        report: report,
+        model: composer.model_name,
+        messages: composer.transcript,
+        usage: composer.usage,
+        stopped_because: composer.stopped_because
+      )
+    rescue StandardError => e
+      # Never let bookkeeping take down a run that otherwise worked.
+      ErrorReporter.report(e, extra: { report_id: report.id })
+    end
 
     # Called on the final failure. Expire the Que job first (so the tracker
     # exposes the error via +job_errors+), then complete the tracker so the

@@ -16,7 +16,10 @@ COPY check-service/src ./src
 RUN npm run build
 
 
-FROM node:22-slim AS runtime
+# Chromium and its system libraries come from Playwright's image. Its tag must
+# match the playwright version in package.json, or the browser it ships will not
+# be the one the library drives.
+FROM mcr.microsoft.com/playwright:v1.56.0-noble AS runtime
 
 ENV NODE_ENV=production
 WORKDIR /app
@@ -28,7 +31,8 @@ COPY --from=build /app/dist ./dist
 COPY front/app/components/admin/ContentBuilder/CustomBlocks/sdk/v1/gv-sdk.d.ts ./sdk/gv-sdk.d.ts
 
 # Nothing here needs root, and this container is the one running generated code.
-USER node
+# The Playwright image ships this user with the browser already installed for it.
+USER pwuser
 
 EXPOSE 3100
 

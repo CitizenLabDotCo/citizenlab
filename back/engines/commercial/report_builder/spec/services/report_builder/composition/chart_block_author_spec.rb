@@ -206,4 +206,87 @@ describe ReportBuilder::Composition::ChartBlockAuthor do
         .to raise_error described_class::Rejected, /locale to key-value pairs/
     end
   end
+
+  describe '#edit' do
+    let(:authored) { author_with }
+
+    it 'writes the change as a new version and leaves the old one alone' do
+      previous = stored_version(authored)
+
+      result = chart_author.edit(
+        block_id: authored.block_id, find: "msg('total')", replace: "msg('heading')"
+      )
+
+      expect(result.version_number).to eq previous.number + 1
+      expect(previous.reload.source).to include "msg('total')"
+      expect(stored_version(result).source).to include "msg('heading')"
+    end
+
+    # A report already placing the old version keeps rendering exactly what it did.
+    it 'leaves the previous version byte for byte as it was' do
+      previous = stored_version(authored)
+      before = { source: previous.source, bundle: previous.bundle, messages: previous.messages }
+
+      chart_author.edit(block_id: authored.block_id, find: "msg('total')", replace: "msg('heading')")
+
+      expect(previous.reload).to have_attributes(before)
+    end
+
+    it 'carries the catalogues over, so the edit does not silently drop them' do
+      result = chart_author.edit(
+        block_id: authored.block_id, find: "msg('total')", replace: "msg('heading')"
+      )
+
+      expect(stored_version(result).messages).to eq messages
+    end
+
+    # Silence here would be worse than an error: the model would go on to place a
+    # version it believes it fixed.
+    it 'refuses a passage that is not there, and changes nothing' do
+      expect { chart_author.edit(block_id: authored.block_id, find: 'not in the file', replace: 'x') }
+        .to raise_error(described_class::Rejected, /not in the source/)
+
+      expect(ContentBuilder::CustomBlock.find(authored.block_id).versions.count).to eq 1
+    end
+
+    it 'refuses a passage that appears more than once, saying how many' do
+      expect { chart_author.edit(block_id: authored.block_id, find: 'const', replace: 'let') }
+        .to raise_error(described_class::Rejected, /appears 2 times/)
+    end
+
+    it 'refuses an edit that stops the block building' do
+      authored
+      stub_request(:post, 'http://check_service:3100/build').to_return(
+        status: 200,
+        body: { ok: false, bundle: nil, manifest: {},
+                diagnostics: [{ 'kind' => 'type', 'line' => 3, 'message' => 'Cannot find name.' }],
+                toolchain: {} }.to_json,
+        headers: { 'Content-Type' => 'application/json' }
+      )
+
+      expect { chart_author.edit(block_id: authored.block_id, find: "msg('total')", replace: 'nope(') }
+        .to raise_error(described_class::Rejected, /does not build/)
+      expect(ContentBuilder::CustomBlock.find(authored.block_id).versions.count).to eq 1
+    end
+
+    # Generated source is full of backslashes; a replacement read as a backreference
+    # would quietly corrupt the file.
+    it 'puts the replacement in literally, backslashes and all' do
+      result = chart_author.edit(
+        block_id: authored.block_id, find: "msg('total')", replace: 'String.raw`\\d+`'
+      )
+
+      expect(stored_version(result).source).to include 'String.raw`\\d+`'
+    end
+
+    it 'refuses a block it does not know' do
+      expect { chart_author.edit(block_id: SecureRandom.uuid, find: 'a', replace: 'b') }
+        .to raise_error(described_class::Rejected, /No block/)
+    end
+
+    it 'refuses an empty search' do
+      expect { chart_author.edit(block_id: authored.block_id, find: '', replace: 'b') }
+        .to raise_error(described_class::Rejected, /find is required/)
+    end
+  end
 end

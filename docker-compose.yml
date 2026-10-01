@@ -135,6 +135,11 @@ services:
       CHECK_SERVICE_SECRET: ${CHECK_SERVICE_SECRET:-development-check-secret}
       PORT: 3100
       SDK_TYPES_PATH: /app/sdk/gv-sdk.d.ts
+      # The tenant is `localhost` here, which inside this container means this
+      # container. Point the browser at the machine running the front end instead.
+      RENDER_HOST_RESOLVER_RULES: ${RENDER_HOST_RESOLVER_RULES:-MAP localhost host-gateway}
+    extra_hosts:
+      - "host-gateway:host-gateway"
     volumes:
       # So editing the contract does not need an image rebuild in development.
       - ./front/app/components/admin/ContentBuilder/CustomBlocks/sdk/v1/gv-sdk.d.ts:/app/sdk/gv-sdk.d.ts:ro

@@ -3,6 +3,9 @@ import React, { createContext, useContext } from 'react';
 import { SupportedLocale } from 'typings';
 
 import usePhase from 'api/phases/usePhase';
+import useReportLayout from 'api/report_layout/useReportLayout';
+
+import BlockDataProvider from 'components/admin/ContentBuilder/CustomBlocks/runtime/BlockDataContext';
 
 type ReportWidth = 'phone' | 'tablet' | 'desktop' | 'pdf';
 
@@ -36,6 +39,9 @@ export const ReportContextProvider = ({
 }: ReportContextProps) => {
   const { data: phase } = usePhase(phaseId);
   const projectId = phase?.data.relationships.project.data.id;
+  // The blocks on this report answer their queries against its layout, so that a
+  // reader sees the stored answer rather than running SQL of their own.
+  const { data: layout } = useReportLayout(reportId);
 
   // If report has phase relation: also wait for project id to be available
   if (phaseId && !projectId) return null;
@@ -50,7 +56,9 @@ export const ReportContextProvider = ({
         contentBuilderLocale,
       }}
     >
-      {children}
+      <BlockDataProvider layoutId={layout?.data.id}>
+        {children}
+      </BlockDataProvider>
     </Context.Provider>
   );
 };

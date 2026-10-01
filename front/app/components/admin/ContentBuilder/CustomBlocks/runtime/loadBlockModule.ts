@@ -1,3 +1,5 @@
+import { SDK_SHIM_URL } from '../sdk/v1/contract';
+
 import { installCustomBlockSdk } from './sdkRegistry';
 import { CustomBlockModule } from './types';
 
@@ -12,6 +14,39 @@ const validate = (module: unknown): CustomBlockModule => {
     throw new Error('Block module has no default-exported component.');
   }
   return candidate as CustomBlockModule;
+};
+
+// A blob has no hierarchical base, so the root-absolute shim specifier a compiled
+// bundle carries cannot resolve inside one: the browser rejects the module before
+// it runs. Only blob imports need this — served bundles resolve it against the
+// origin they came from.
+const absolutizeShimImport = (bundle: string, origin: string): string => {
+  const absolute = new URL(SDK_SHIM_URL, origin).href;
+
+  return bundle
+    .split(`"${SDK_SHIM_URL}"`)
+    .join(`"${absolute}"`)
+    .split(`'${SDK_SHIM_URL}'`)
+    .join(`'${absolute}'`);
+};
+
+// A draft has no URL to import from, so its code is imported as a blob. Never
+// cached: the next check is a different draft under the same id.
+export const loadBlockModuleFromSource = async (
+  bundle: string
+): Promise<CustomBlockModule> => {
+  installCustomBlockSdk();
+
+  const blobUrl = URL.createObjectURL(
+    new Blob([absolutizeShimImport(bundle, window.location.origin)], {
+      type: 'text/javascript',
+    })
+  );
+  try {
+    return validate(await import(/* @vite-ignore */ blobUrl));
+  } finally {
+    URL.revokeObjectURL(blobUrl);
+  }
 };
 
 // Versions are immutable and served with immutable cache headers, so the URL is

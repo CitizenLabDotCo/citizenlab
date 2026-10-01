@@ -70,6 +70,32 @@ RSpec.describe ReportBuilder::GenerateReportJob do
       expect(job.tracker).to be_completed
     end
 
+    describe 'the record of the run' do
+      it 'writes what the model was told and what it cost' do
+        expect { enqueue_job.perform_now }.to change(ReportBuilder::GenerationTranscript, :count).by(1)
+
+        transcript = ReportBuilder::GenerationTranscript.last
+        expect(transcript.report).to eq report
+        expect(transcript.model).to be_present
+      end
+
+      # A run that produced nothing is the one whose reasoning someone needs to read.
+      it 'writes it even when the run fails' do
+        allow_any_instance_of(ReportBuilder::Composition::ReportComposer)
+          .to receive(:compose).and_raise(ReportBuilder::Composition::ReportComposer::ComposeError, 'nope')
+
+        expect { suppress(StandardError) { enqueue_job.perform_now } }
+          .to change(ReportBuilder::GenerationTranscript, :count).by(1)
+      end
+
+      it 'does not take the run down if the record cannot be written' do
+        allow(ReportBuilder::GenerationTranscript).to receive(:create!).and_raise(ActiveRecord::RecordInvalid)
+
+        expect { enqueue_job.perform_now }.not_to raise_error
+        expect(report.reload.layout.craftjs_json).to eq composed_layout
+      end
+    end
+
     it 'reports that the report was generated, which is what notifies the admin' do
       expect_any_instance_of(ReportBuilder::SideFxReportService)
         .to receive(:after_generate).with(report, owner)
@@ -79,7 +105,9 @@ RSpec.describe ReportBuilder::GenerateReportJob do
 
     it 'composes for the project behind the phase, naming the phase it reports on' do
       expect(ReportBuilder::Composition::ReportComposer)
-        .to receive(:new).with(phase.project, locale: 'en', phase: phase, author: owner).and_call_original
+        .to receive(:new)
+        .with(phase.project, locale: 'en', phase: phase, author: owner, layout_record: report.layout)
+        .and_call_original
 
       enqueue_job.perform_now
     end
@@ -89,7 +117,9 @@ RSpec.describe ReportBuilder::GenerateReportJob do
 
       it 'tracks against the project and composes without a phase' do
         expect(ReportBuilder::Composition::ReportComposer)
-          .to receive(:new).with(phase.project, locale: 'en', phase: nil, author: owner).and_call_original
+          .to receive(:new)
+          .with(phase.project, locale: 'en', phase: nil, author: owner, layout_record: report.layout)
+          .and_call_original
 
         job = enqueue_job
         expect(job.tracker).to have_attributes(context: phase.project, project_id: phase.project_id)

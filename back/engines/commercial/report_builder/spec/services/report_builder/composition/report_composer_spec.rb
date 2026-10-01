@@ -19,6 +19,14 @@ describe ReportBuilder::Composition::ReportComposer do
   end
 
   let(:project) { create(:project) }
+  let(:sent_messages) { [] }
+  # Minimal stand-ins for the AWS SDK response structs.
+  let(:content_block_class) { Struct.new(:text, :tool_use) }
+  let(:tool_use_class) { Struct.new(:tool_use_id, :name, :input) }
+  let(:response_class) { Struct.new(:output, :stop_reason, :usage) }
+  let(:output_class) { Struct.new(:message) }
+  let(:message_class) { Struct.new(:role, :content) }
+  let(:usage_class) { Struct.new(:input_tokens, :output_tokens, :cache_read_input_tokens, :cache_write_input_tokens) }
   let(:sql) { 'SELECT count(*) AS count FROM reporting_contributions' }
   let(:authored) do
     {
@@ -43,17 +51,24 @@ describe ReportBuilder::Composition::ReportComposer do
   let!(:phase) { create(:phase, project: project) }
   let(:client) { instance_double(Aws::BedrockRuntime::Client) }
   let(:composer) { described_class.new(project, locale: 'en', client: client) }
-  let(:sent_messages) { [] }
+  let(:checking_composer) do
+    described_class.new(project, locale: 'en', client: client, layout_record: create(:layout))
+  end
+  let(:check_service) { instance_double(ContentBuilder::CustomBlocks::CheckServiceClient) }
 
-  # Minimal stand-ins for the AWS SDK response structs.
-  let(:content_block_class) { Struct.new(:text, :tool_use) }
-  let(:tool_use_class) { Struct.new(:tool_use_id, :name, :input) }
-  let(:response_class) { Struct.new(:output, :stop_reason) }
-  let(:output_class) { Struct.new(:message) }
-  let(:message_class) { Struct.new(:role, :content) }
+  def stub_render(**result)
+    allow(ContentBuilder::CustomBlocks::CheckServiceClient).to receive(:new).and_return(check_service)
+    allow(check_service).to receive(:render).and_return({
+      'checks' => [], 'errors' => [], 'console' => [], 'failedRequests' => [], 'screenshot' => nil
+    }.merge(result.transform_keys(&:to_s)))
+  end
 
-  def respond_with(content_blocks, stop_reason)
-    response_class.new(output_class.new(message_class.new('assistant', content_blocks)), stop_reason)
+  def respond_with(content_blocks, stop_reason, usage: nil)
+    response_class.new(
+      output_class.new(message_class.new('assistant', content_blocks)),
+      stop_reason,
+      usage || usage_class.new(100, 20, 0, 0)
+    )
   end
 
   def tool_call(name, input, id: 'tu_1')
@@ -157,8 +172,21 @@ describe ReportBuilder::Composition::ReportComposer do
         expect(system_prompt).to include 'reporting_contributions'
         expect(system_prompt).to include project.title_multiloc['en']
         expect(system_prompt).to include ReportBuilder::Craftjs::LayoutWidgets::DOCS['CustomBlock']
-        expect(args[:tool_config][:tools].map { |tool| tool[:tool_spec][:name] })
-          .to eq %w[run_reporting_sql_query author_chart_block get_layout patch_layout]
+        expect(args[:tool_config][:tools].filter_map { |tool| tool.dig(:tool_spec, :name) })
+          .to eq %w[
+            run_reporting_sql_query author_chart_block edit_source check get_layout patch_layout
+          ]
+      end
+    end
+
+    it 'marks the unchanging prefix so the provider can cache it' do
+      stub_converse(write_layout(text_layout), done)
+
+      composer.compose
+
+      expect(client).to have_received(:converse).at_least(:once) do |args|
+        expect(args[:system].last).to eq(cache_point: { type: 'default' })
+        expect(args[:tool_config][:tools].last).to eq(cache_point: { type: 'default' })
       end
     end
 
@@ -405,6 +433,159 @@ describe ReportBuilder::Composition::ReportComposer do
         stub_converse(tool_call('patch_layout', { 'nodes' => first_patch }))
 
         expect(composer.compose.keys).to contain_exactly('ROOT', 'textnode01')
+      end
+    end
+
+    describe 'check' do
+      it 'renders the report and hands back what the browser saw' do
+        stub_render(checks: [{ 'id' => 'has_height', 'ok' => false, 'message' => 'Only 4px tall.' }])
+        stub_converse(write_layout(text_layout), tool_call('check', {}, id: 'tu_2'), done)
+
+        checking_composer.compose
+
+        expect(tool_results.last[:status]).to eq 'error'
+        expect(tool_results.last[:content].first[:text]).to include 'has_height'
+      end
+
+      it 'refuses to check a block this run never authored' do
+        stub_render
+        stub_converse(
+          write_layout(text_layout),
+          tool_call('check', { 'block_id' => SecureRandom.uuid }, id: 'tu_2'),
+          done
+        )
+
+        checking_composer.compose
+
+        expect(tool_results.last[:content].first[:text]).to include 'was authored in this run'
+      end
+
+      it 'says checking is off when there is no layout to check against' do
+        stub_converse(write_layout(text_layout), tool_call('check', {}, id: 'tu_2'), done)
+
+        composer.compose
+
+        expect(tool_results.last[:content].first[:text]).to include 'not available'
+      end
+    end
+
+    describe 'edit_source' do
+      # The saving the tool exists for: a one-word fix costs a few hundred output
+      # tokens instead of the whole file.
+      it 'writes a new version of a chart it authored' do
+        # The block id is only known once the chart is stored, so the replies are
+        # built per round rather than queued up front.
+        allow(client).to receive(:converse) do |args|
+          sent_messages << args[:messages].deep_dup
+          case sent_messages.size
+          when 1 then tool_call('author_chart_block', authored)
+          when 2
+            tool_call('edit_source', {
+              'block_id' => ContentBuilder::CustomBlock.last.id,
+              'find' => 'data.rows.length',
+              'replace' => 'data.rows.length * 1'
+            }, id: 'tu_2')
+          else done
+          end
+        end
+
+        suppress(described_class::ComposeError) { composer.compose }
+
+        expect(tool_results.last[:content].first[:text]).to include 'Edited'
+      end
+
+      it 'refuses to edit a block this run never authored' do
+        stub_converse(
+          tool_call('edit_source', {
+            'block_id' => SecureRandom.uuid, 'find' => 'a', 'replace' => 'b'
+          }),
+          write_layout(text_layout),
+          done
+        )
+
+        composer.compose
+
+        expect(tool_results.first[:status]).to eq 'error'
+        expect(tool_results.first[:content].first[:text]).to include 'was authored in this run'
+      end
+    end
+
+    describe 'the automatic review when the model stops' do
+      # Believing the report is finished is not the same as seeing it render.
+      it 'renders what was written and accepts it when nothing is wrong' do
+        stub_render(checks: [{ 'id' => 'mounted', 'ok' => true, 'message' => 'ok' }])
+        stub_converse(write_layout(text_layout), done)
+
+        expect(checking_composer.compose).to eq text_layout
+        expect(check_service).to have_received(:render).once
+      end
+
+      it 'gives the model one round to fix what the render found' do
+        stub_render(checks: [{ 'id' => 'no_overflow', 'ok' => false, 'message' => 'Too wide.' }])
+        fixed = {
+          'ROOT' => text_layout['ROOT'].merge('nodes' => %w[textnode01 textnode09]),
+          'textnode09' => node('TextMultiloc', { 'text' => { 'en' => '<p>Narrower</p>' } })
+        }
+        stub_converse(
+          write_layout(text_layout),
+          done,
+          tool_call('patch_layout', { 'nodes' => fixed }, id: 'tu_fix'),
+          done('Narrowed it.')
+        )
+
+        expect(checking_composer.compose.keys).to include 'textnode09'
+      end
+
+      it 'keeps the report when the model will not improve on it' do
+        stub_render(checks: [{ 'id' => 'no_overflow', 'ok' => false, 'message' => 'Too wide.' }])
+        stub_converse(write_layout(text_layout), done, done('That is as good as it gets.'))
+
+        expect(checking_composer.compose).to eq text_layout
+      end
+    end
+
+    describe 'the record of the run' do
+      it 'keeps every message in order, so a failed run can be read back' do
+        stub_converse(write_layout(text_layout), done)
+
+        composer.compose
+
+        expect(composer.transcript.first).to include(role: 'user')
+        expect(composer.transcript.map { |m| m[:role] }).to include 'assistant'
+      end
+
+      it 'adds up what the run cost' do
+        stub_converse(write_layout(text_layout), done)
+
+        composer.compose
+
+        expect(composer.usage['input_tokens']).to eq 200
+        expect(composer.usage['output_tokens']).to eq 40
+      end
+
+      it 'says the run finished because the model stopped' do
+        stub_converse(write_layout(text_layout), done)
+
+        composer.compose
+
+        expect(composer.stopped_because).to eq 'done'
+      end
+
+      it 'says the run ran out of rounds' do
+        stub_converse(tool_call('patch_layout', { 'nodes' => text_layout }))
+
+        composer.compose
+
+        expect(composer.stopped_because).to eq 'round_cap'
+      end
+
+      it 'keeps the transcript of a run that wrote nothing' do
+        stub_converse(respond_with([content_block_class.new('no tools for me', nil)], 'end_turn'))
+
+        suppress(described_class::ComposeError) { composer.compose }
+
+        expect(composer.transcript).not_to be_empty
+        expect(composer.stopped_because).to eq 'round_cap'
       end
     end
 

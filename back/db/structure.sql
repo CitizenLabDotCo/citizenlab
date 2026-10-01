@@ -61,6 +61,7 @@ ALTER TABLE IF EXISTS ONLY public.analysis_background_tasks DROP CONSTRAINT IF E
 ALTER TABLE IF EXISTS ONLY public.ideas_phases DROP CONSTRAINT IF EXISTS fk_rails_bd36415a82;
 ALTER TABLE IF EXISTS ONLY public.project_folders_files DROP CONSTRAINT IF EXISTS fk_rails_bc5577641e;
 ALTER TABLE IF EXISTS ONLY public.polls_options DROP CONSTRAINT IF EXISTS fk_rails_bb813b4549;
+ALTER TABLE IF EXISTS ONLY public.report_builder_generation_transcripts DROP CONSTRAINT IF EXISTS fk_rails_b8de72b62d;
 ALTER TABLE IF EXISTS ONLY public.static_page_files DROP CONSTRAINT IF EXISTS fk_rails_b8d87c000f;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_b894d506a0;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_b82ab32ac2;
@@ -96,6 +97,7 @@ ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rai
 ALTER TABLE IF EXISTS ONLY public.files_transcripts DROP CONSTRAINT IF EXISTS fk_rails_94bf1dac11;
 ALTER TABLE IF EXISTS ONLY public.static_pages DROP CONSTRAINT IF EXISTS fk_rails_938fbf3a5d;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_9268535f02;
+ALTER TABLE IF EXISTS ONLY public.content_builder_query_snapshots DROP CONSTRAINT IF EXISTS fk_rails_90d94ea8e1;
 ALTER TABLE IF EXISTS ONLY public.areas DROP CONSTRAINT IF EXISTS fk_rails_901fc7a65b;
 ALTER TABLE IF EXISTS ONLY public.areas_projects DROP CONSTRAINT IF EXISTS fk_rails_8fb43a173d;
 ALTER TABLE IF EXISTS ONLY public.phase_files DROP CONSTRAINT IF EXISTS fk_rails_8f9b3b56d6;
@@ -242,9 +244,11 @@ DROP INDEX IF EXISTS public.index_report_builder_reports_on_phase_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_owner_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_name_tsvector;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_name;
+DROP INDEX IF EXISTS public.index_report_builder_generation_transcripts_on_report_id;
 DROP INDEX IF EXISTS public.index_reactions_on_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id_and_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id;
+DROP INDEX IF EXISTS public.index_query_snapshots_on_layout_id_and_query_hash;
 DROP INDEX IF EXISTS public.index_projects_on_space_id;
 DROP INDEX IF EXISTS public.index_projects_on_slug;
 DROP INDEX IF EXISTS public.index_projects_global_topics_on_project_id;
@@ -567,6 +571,7 @@ ALTER TABLE IF EXISTS public.admin_publications DROP CONSTRAINT IF EXISTS schedu
 ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXISTS report_builder_reports_pkey;
 ALTER TABLE IF EXISTS ONLY public.report_builder_report_chats DROP CONSTRAINT IF EXISTS report_builder_report_chats_pkey;
 ALTER TABLE IF EXISTS ONLY public.report_builder_published_graph_data_units DROP CONSTRAINT IF EXISTS report_builder_published_graph_data_units_pkey;
+ALTER TABLE IF EXISTS ONLY public.report_builder_generation_transcripts DROP CONSTRAINT IF EXISTS report_builder_generation_transcripts_pkey;
 ALTER TABLE IF EXISTS ONLY public.que_values DROP CONSTRAINT IF EXISTS que_values_pkey;
 ALTER TABLE IF EXISTS ONLY public.que_lockers DROP CONSTRAINT IF EXISTS que_lockers_pkey;
 ALTER TABLE IF EXISTS ONLY public.que_jobs DROP CONSTRAINT IF EXISTS que_jobs_pkey;
@@ -661,6 +666,7 @@ ALTER TABLE IF EXISTS ONLY public.custom_field_matrix_statements DROP CONSTRAINT
 ALTER TABLE IF EXISTS ONLY public.custom_field_bins DROP CONSTRAINT IF EXISTS custom_field_bins_pkey;
 ALTER TABLE IF EXISTS ONLY public.custom_field_answers DROP CONSTRAINT IF EXISTS custom_field_answers_pkey;
 ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS cosponsorships_pkey;
+ALTER TABLE IF EXISTS ONLY public.content_builder_query_snapshots DROP CONSTRAINT IF EXISTS content_builder_query_snapshots_pkey;
 ALTER TABLE IF EXISTS ONLY public.content_builder_layouts DROP CONSTRAINT IF EXISTS content_builder_layouts_pkey;
 ALTER TABLE IF EXISTS ONLY public.content_builder_layout_images DROP CONSTRAINT IF EXISTS content_builder_layout_images_pkey;
 ALTER TABLE IF EXISTS ONLY public.content_builder_custom_blocks DROP CONSTRAINT IF EXISTS content_builder_custom_blocks_pkey;
@@ -727,6 +733,7 @@ DROP VIEW IF EXISTS public.reporting_contributions;
 DROP TABLE IF EXISTS public.report_builder_reports;
 DROP TABLE IF EXISTS public.report_builder_report_chats;
 DROP TABLE IF EXISTS public.report_builder_published_graph_data_units;
+DROP TABLE IF EXISTS public.report_builder_generation_transcripts;
 DROP TABLE IF EXISTS public.que_values;
 DROP TABLE IF EXISTS public.que_lockers;
 DROP SEQUENCE IF EXISTS public.que_jobs_id_seq;
@@ -806,6 +813,7 @@ DROP TABLE IF EXISTS public.custom_field_matrix_statements;
 DROP TABLE IF EXISTS public.custom_field_bins;
 DROP TABLE IF EXISTS public.custom_field_answers;
 DROP TABLE IF EXISTS public.cosponsorships;
+DROP TABLE IF EXISTS public.content_builder_query_snapshots;
 DROP TABLE IF EXISTS public.content_builder_layouts;
 DROP TABLE IF EXISTS public.content_builder_layout_images;
 DROP TABLE IF EXISTS public.content_builder_custom_blocks;
@@ -2393,6 +2401,22 @@ CREATE TABLE public.content_builder_layouts (
 
 
 --
+-- Name: content_builder_query_snapshots; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.content_builder_query_snapshots (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    layout_id uuid NOT NULL,
+    query_hash character varying NOT NULL,
+    sql text NOT NULL,
+    data jsonb DEFAULT '{}'::jsonb NOT NULL,
+    executed_at timestamp(6) without time zone NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: cosponsorships; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3788,6 +3812,22 @@ WITH (fillfactor='90');
 
 
 --
+-- Name: report_builder_generation_transcripts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.report_builder_generation_transcripts (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    report_id uuid NOT NULL,
+    model character varying DEFAULT ''::character varying NOT NULL,
+    messages jsonb DEFAULT '[]'::jsonb NOT NULL,
+    usage jsonb DEFAULT '{}'::jsonb NOT NULL,
+    stopped_because character varying DEFAULT 'done'::character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: report_builder_published_graph_data_units; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4865,6 +4905,14 @@ ALTER TABLE ONLY public.content_builder_layouts
 
 
 --
+-- Name: content_builder_query_snapshots content_builder_query_snapshots_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_builder_query_snapshots
+    ADD CONSTRAINT content_builder_query_snapshots_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: cosponsorships cosponsorships_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5614,6 +5662,14 @@ ALTER TABLE ONLY public.que_lockers
 
 ALTER TABLE ONLY public.que_values
     ADD CONSTRAINT que_values_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: report_builder_generation_transcripts report_builder_generation_transcripts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.report_builder_generation_transcripts
+    ADD CONSTRAINT report_builder_generation_transcripts_pkey PRIMARY KEY (id);
 
 
 --
@@ -7894,6 +7950,13 @@ CREATE INDEX index_projects_on_space_id ON public.projects USING btree (space_id
 
 
 --
+-- Name: index_query_snapshots_on_layout_id_and_query_hash; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_query_snapshots_on_layout_id_and_query_hash ON public.content_builder_query_snapshots USING btree (layout_id, query_hash);
+
+
+--
 -- Name: index_reactions_on_reactable_type_and_reactable_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7912,6 +7975,13 @@ CREATE UNIQUE INDEX index_reactions_on_reactable_type_and_reactable_id_and_user_
 --
 
 CREATE INDEX index_reactions_on_user_id ON public.reactions USING btree (user_id);
+
+
+--
+-- Name: index_report_builder_generation_transcripts_on_report_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_report_builder_generation_transcripts_on_report_id ON public.report_builder_generation_transcripts USING btree (report_id);
 
 
 --
@@ -9024,6 +9094,14 @@ ALTER TABLE ONLY public.areas
 
 
 --
+-- Name: content_builder_query_snapshots fk_rails_90d94ea8e1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_builder_query_snapshots
+    ADD CONSTRAINT fk_rails_90d94ea8e1 FOREIGN KEY (layout_id) REFERENCES public.content_builder_layouts(id) ON DELETE CASCADE;
+
+
+--
 -- Name: notifications fk_rails_9268535f02; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -9301,6 +9379,14 @@ ALTER TABLE ONLY public.notifications
 
 ALTER TABLE ONLY public.static_page_files
     ADD CONSTRAINT fk_rails_b8d87c000f FOREIGN KEY (migrated_file_id) REFERENCES public.files(id);
+
+
+--
+-- Name: report_builder_generation_transcripts fk_rails_b8de72b62d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.report_builder_generation_transcripts
+    ADD CONSTRAINT fk_rails_b8de72b62d FOREIGN KEY (report_id) REFERENCES public.report_builder_reports(id) ON DELETE CASCADE;
 
 
 --
@@ -9726,6 +9812,8 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260930100000'),
+('20260930090000'),
 ('20260915081521'),
 ('20260910103205'),
 ('20260910082118'),

@@ -5,8 +5,8 @@ const baseKey = { type: 'reporting_query' };
 const reportingQueryKeys = {
   all: () => [baseKey],
   items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({ query }: { query: string }) => [
-    { ...baseKey, operation: 'item', parameters: { query } },
+  item: ({ query, layoutId }: { query: string; layoutId?: string }) => [
+    { ...baseKey, operation: 'item', parameters: { query, layoutId } },
   ],
 } satisfies QueryKeys;
 

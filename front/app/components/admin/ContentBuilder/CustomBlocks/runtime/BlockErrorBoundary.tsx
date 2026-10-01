@@ -7,7 +7,7 @@ import { reportError } from 'utils/loggingUtils';
 interface Props {
   /** Identifies the failing code in Sentry. A stack trace alone cannot. */
   blockId: string;
-  version: number;
+  version?: number;
   /** What to show instead. The citizen side passes nothing and renders a hole. */
   fallback?: ReactNode;
   children: ReactNode;
@@ -41,7 +41,7 @@ class BlockErrorBoundary extends Component<Props, { hasError: boolean }> {
     withScope((scope) => {
       scope.setExtra('from', 'CustomBlock');
       scope.setExtra('customBlockId', blockId);
-      scope.setExtra('customBlockVersion', version);
+      scope.setExtra('customBlockVersion', version ?? 'draft');
       scope.setExtra('componentStack', info.componentStack ?? null);
       reportError(error);
     });

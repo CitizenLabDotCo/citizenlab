@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.projectHeader.GenerateReportButton.openReport',
     defaultMessage: 'Open report',
   },
+  generatingReport: {
+    id: 'app.containers.Admin.projects.project.projectHeader.GenerateReportButton.generatingReport',
+    defaultMessage: 'Generating report…',
+  },
   retryReport: {
     id: 'app.containers.Admin.projects.project.projectHeader.GenerateReportButton.retryReport',
     defaultMessage: 'Retry report',

@@ -33,6 +33,10 @@ ContentBuilder::Engine.routes.draw do
         get 'versions/:number/bundle', to: 'custom_block_versions#bundle', constraints: { number: /\d+/ }
       end
       resources :reporting_queries, only: %i[create]
+      # Replaces every stored answer a layout holds. Keyed by layout, because the
+      # layout is what asks the questions.
+      post 'content_builder_layouts/:layout_id/refresh_snapshots',
+        to: 'reporting_queries#refresh'
     end
   end
 end

@@ -13,6 +13,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import ConfigSchemaForm from '../ConfigSchemaForm';
 import messages from '../messages';
 
+import catalogueValues from './catalogueValues';
+
 interface NodeProps {
   blockId?: string;
   version?: number;
@@ -38,7 +40,11 @@ const Settings = () => {
 
   if (!blockVersion) return null;
 
-  const { block_title_multiloc, manifest } = blockVersion.data.attributes;
+  const {
+    block_title_multiloc,
+    manifest,
+    messages: catalogue,
+  } = blockVersion.data.attributes;
   const schema = manifest.config_schema;
   const hasFields = Object.keys(schema?.properties ?? {}).length > 0;
 
@@ -50,7 +56,7 @@ const Settings = () => {
       {hasFields && schema ? (
         <ConfigSchemaForm
           schema={schema}
-          values={config ?? {}}
+          values={catalogueValues(schema, catalogue, config ?? {})}
           onChange={(name, value) => {
             setProp((props: NodeProps) => {
               props.config = { ...(props.config ?? {}), [name]: value };

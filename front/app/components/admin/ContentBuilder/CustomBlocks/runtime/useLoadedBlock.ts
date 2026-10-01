@@ -2,7 +2,8 @@ import { ComponentType, useEffect, useState } from 'react';
 
 import { customBlockBundleUrl } from 'api/custom_blocks/types';
 
-import { loadBlockModule } from './loadBlockModule';
+import { getDraftBlock, isDraft } from './draftBlock';
+import { loadBlockModule, loadBlockModuleFromSource } from './loadBlockModule';
 import { BlockProps } from './types';
 
 interface Params {
@@ -35,12 +36,19 @@ const useLoadedBlock = ({ blockId, version }: Params): LoadedBlock => {
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
-    if (!blockId || !version) return;
+    if (!blockId) return;
+
+    const draft = isDraft(blockId) ? getDraftBlock() : null;
+    if (!draft && !version) return;
 
     let live = true;
     setFailed(false);
 
-    loadBlockModule(customBlockBundleUrl(blockId, version))
+    const loading = draft
+      ? loadBlockModuleFromSource(draft.bundle)
+      : loadBlockModule(customBlockBundleUrl(blockId, version as number));
+
+    loading
       .then((module) => {
         if (live) setComponent(() => module.default);
       })

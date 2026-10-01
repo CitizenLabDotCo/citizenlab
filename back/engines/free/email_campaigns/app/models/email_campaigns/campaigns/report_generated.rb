@@ -1,5 +1,38 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: email_campaigns_campaigns
+#
+#  id                   :uuid             not null, primary key
+#  type                 :string           not null
+#  author_id            :uuid
+#  enabled              :boolean
+#  sender               :string
+#  reply_to             :string
+#  schedule             :jsonb
+#  subject_multiloc     :jsonb
+#  body_multiloc        :jsonb
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  deliveries_count     :integer          default(0), not null
+#  context_id           :uuid
+#  title_multiloc       :jsonb
+#  intro_multiloc       :jsonb
+#  button_text_multiloc :jsonb
+#  context_type         :string
+#  channel              :string           default("email"), not null
+#
+# Indexes
+#
+#  index_email_campaigns_campaigns_on_author_id   (author_id)
+#  index_email_campaigns_campaigns_on_context_id  (context_id)
+#  index_email_campaigns_campaigns_on_type        (type)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (author_id => users.id)
+#
 module EmailCampaigns
   # Tells the admin who asked for an LLM-written report that it is ready.
   #

@@ -44,6 +44,8 @@ import Link from 'utils/cl-router/Link';
 
 import { SDK_EXPORT_NAMES, SdkExportName } from '../sdk/v1/contract';
 
+import { useBlockData } from './BlockDataContext';
+
 const EXAMPLE_ICON_NAMES =
   'check-circle, alert-circle, info-outline, flag, flash, idea, calendar, ' +
   'email, map, user, users, comment, chart-bar, arrow-right';
@@ -60,6 +62,14 @@ const SafeIcon = (props: React.ComponentProps<typeof Icon>) => {
     );
   }
   return <Icon {...props} />;
+};
+
+// A block asks its question with one argument. Which report it belongs to is not
+// the block's business — it is placed in many — so the layout comes from context.
+const useBlockReportingData = (query: string) => {
+  const { layoutId, reportingToken } = useBlockData();
+
+  return useReportingData({ query, layoutId, reportingToken });
 };
 
 declare global {
@@ -87,7 +97,7 @@ const buildSdkV1 = (): Record<SdkExportName, unknown> => ({
   useLocalize,
   useTheme,
   Link,
-  useReportingData,
+  useReportingData: useBlockReportingData,
   ResponsiveContainer,
   BarChart,
   Bar,
