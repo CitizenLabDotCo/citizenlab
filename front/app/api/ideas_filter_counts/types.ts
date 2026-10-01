@@ -19,7 +19,8 @@ export interface IIdeasFilterCounts {
       input_topic_id: {
         [key: string]: number;
       };
-      assignee_id: {
+      // Only returned to users who can moderate every listed idea.
+      assignee_id?: {
         [key: string]: number;
       };
       total: number;
