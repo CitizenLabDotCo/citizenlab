@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import SpotlightSurveys from 'containers/Admin/projects/project/projectPage/SpotlightSurveys';
 import TimelinePhases from 'containers/Admin/projects/project/projectPage/TimelinePhases';
 
 import SelectMethodModal from './ProjectSetupPanel/SelectMethodModal';
+import TimelineEvents from './TimelineEvents';
 
 interface Props {
   projectId: string;
@@ -21,7 +21,7 @@ const ProjectTimeline = ({ projectId }: Props) => {
         onNewPhase={() => setMethodModalOpened(true)}
         withPhaseOptions
       />
-      <SpotlightSurveys projectId={projectId} />
+      <TimelineEvents projectId={projectId} />
       <SelectMethodModal
         projectId={projectId}
         opened={methodModalOpened}

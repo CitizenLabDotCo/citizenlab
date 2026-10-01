@@ -2,20 +2,18 @@ import messages from '../messages';
 
 export const LINKED_SECTIONS = [
   {
-    path: 'events',
-    label: messages.eventsSection,
-    to: '/admin/projects/$projectId/events',
-  },
-  {
     path: 'files',
     label: messages.filesSection,
     to: '/admin/projects/$projectId/files',
   },
 ] as const;
 
-// Messaging takes over the workspace like the sections above, but is reached
-// from the Next actions list instead of a link in the setup panel.
 const SECTIONS = [
+  {
+    path: 'events',
+    label: messages.eventsSection,
+    to: '/admin/projects/$projectId/events',
+  },
   ...LINKED_SECTIONS,
   {
     path: 'messaging',

@@ -82,6 +82,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.eventsSection',
     defaultMessage: 'Events',
   },
+  newEvent: {
+    id: 'app.containers.Admin.projects.project.newEvent',
+    defaultMessage: 'New event',
+  },
   filesSection: {
     id: 'app.containers.Admin.projects.project.filesSection',
     defaultMessage: '360 Input',

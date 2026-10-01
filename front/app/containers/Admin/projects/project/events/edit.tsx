@@ -32,6 +32,7 @@ import useAddFile from 'api/files/useAddFile';
 import { useSyncFiles } from 'hooks/files/useSyncFiles';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useLocale from 'hooks/useLocale';
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import projectMessages from 'containers/Admin/projects/project/general/messages';
 
@@ -74,6 +75,7 @@ const AdminProjectEventEdit = () => {
   const { formatMessage } = useIntl();
   const theme = useTheme();
   const locale = useLocale();
+  const redesignEnabled = useProjectBackofficeRedesign();
 
   const { mutate: addEvent } = useAddEvent();
   const { data: event, isLoading } = useEvent(eventId);
@@ -456,6 +458,12 @@ const AdminProjectEventEdit = () => {
     }
   };
 
+  const goToProjectPage = () => {
+    clHistory.push(
+      `/admin/projects/${projectId}/events?project_backoffice_redesign`
+    );
+  };
+
   const handleOnSubmit = async (e: FormEvent) => {
     const locationPointChanged =
       locationPoint !== event?.data.attributes.location_point_geojson;
@@ -534,6 +542,10 @@ const AdminProjectEventEdit = () => {
                   setSaving(false);
                   setSubmitState('success');
                   setFileAttachmentsChanged(false);
+
+                  if (redesignEnabled) {
+                    setTimeout(goToProjectPage, 1000);
+                  }
                 } catch (error) {
                   setSaving(false);
                   setSubmitState('error');
@@ -576,7 +588,11 @@ const AdminProjectEventEdit = () => {
 
                   // Navigate after a short delay to show success state
                   setTimeout(() => {
-                    clHistory.push(`/admin/projects/${projectId}/events`);
+                    if (redesignEnabled) {
+                      goToProjectPage();
+                    } else {
+                      clHistory.push(`/admin/projects/${projectId}/events`);
+                    }
                   }, 1000);
                 } catch (error) {
                   setSaving(false);
