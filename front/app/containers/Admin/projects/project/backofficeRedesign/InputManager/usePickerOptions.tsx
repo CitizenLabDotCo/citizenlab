@@ -14,10 +14,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import { Option } from './OptionList';
 
-/**
- * The statuses, tags and phases an input can be given. Statuses that change
- * automatically can't be picked.
- */
 const usePickerOptions = (type: ManagerType, projectId: string) => {
   const localize = useLocalize();
   const { data: statuses } = useIdeaStatuses({
