@@ -6,7 +6,7 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
 
-import PhonePreview from 'containers/Admin/projects/_shared/components/PhonePreview';
+import PhonePreview from 'components/admin/PhonePreview';
 
 import { useIntl } from 'utils/cl-intl';
 
