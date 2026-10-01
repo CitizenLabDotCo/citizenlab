@@ -15,6 +15,10 @@ class SortByParamsService
     when '-popular' then scope.order_popular(:asc)
     when 'author_name' then scope.order_author_name(:desc)
     when '-author_name' then scope.order_author_name(:asc)
+    when 'title' then scope.order_title(sort_locale(current_user), :desc)
+    when '-title' then scope.order_title(sort_locale(current_user), :asc)
+    when 'assignee' then scope.order_assignee(:desc)
+    when '-assignee' then scope.order_assignee(:asc)
     when 'status' then scope.order_status(:desc)
     when '-status' then scope.order_status(:asc)
     when 'trending'
@@ -66,6 +70,10 @@ class SortByParamsService
   end
 
   private
+
+  def sort_locale(current_user)
+    current_user&.locale || AppConfiguration.instance.settings('core', 'locales').first
+  end
 
   def idea_voting_count_sort(scope, sort, phase_id, direction: :asc, add_column: nil)
     if phase_id

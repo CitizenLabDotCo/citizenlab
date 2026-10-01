@@ -104,6 +104,30 @@ RSpec.describe Project do
     end
   end
 
+  describe 'completed_setup_steps validation' do
+    it 'is valid when every step is a known setup step' do
+      expect(build(:project, completed_setup_steps: Project::SETUP_STEPS)).to be_valid
+    end
+
+    it 'is valid when empty' do
+      expect(build(:project, completed_setup_steps: [])).to be_valid
+    end
+
+    it '[error] is invalid when it holds an unknown step' do
+      project = build(:project, completed_setup_steps: %w[share not-a-step])
+
+      expect(project).to be_invalid
+      expect(project.errors[:completed_setup_steps]).to include('contains unknown setup steps')
+    end
+
+    it '[error] is invalid when it is not an array' do
+      project = build(:project, completed_setup_steps: 'share')
+
+      expect(project).to be_invalid
+      expect(project.errors[:completed_setup_steps]).to include('must be an array')
+    end
+  end
+
   describe 'Project without admin publication' do
     it 'is invalid' do
       project = create(:project)

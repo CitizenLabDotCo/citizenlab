@@ -1476,7 +1476,8 @@ CREATE TABLE public.projects (
     listed boolean DEFAULT true NOT NULL,
     track_participation_location boolean DEFAULT false NOT NULL,
     live_auto_input_topics_enabled boolean DEFAULT false NOT NULL,
-    space_id uuid
+    space_id uuid,
+    completed_setup_steps jsonb DEFAULT '[]'::jsonb NOT NULL
 );
 
 
@@ -9564,6 +9565,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20260915134812'),
 ('20260915120000'),
 ('20260915103146'),
+('20260909100000'),
 ('20260908144646'),
 ('20260904074654'),
 ('20260827120000'),

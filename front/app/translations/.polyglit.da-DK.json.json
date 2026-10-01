@@ -3829,6 +3829,11 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.components.UI.OptionPicker.noResults": {
+    "state": "verified",
+    "verified_at": "2026-09-30T07:42:44.757420Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.components.UI.PhaseFilter.noAppropriatePhases": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
