@@ -45,7 +45,7 @@ const StatusProperty = ({ idea, type }: Props) => {
 
   return (
     <PropertyRow label={formatMessage(messages.filterStatus)}>
-      <PropertyMenu label={current?.label ?? ''} color={current?.color}>
+      <PropertyMenu label={current?.label} color={current?.color}>
         {(close) => (
           <OptionList
             options={statusOptions}
