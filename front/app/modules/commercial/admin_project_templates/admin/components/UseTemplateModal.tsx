@@ -147,18 +147,9 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
     const [responseError, setResponseError] = useState<any>(null);
 
     const onCreateProject = useCallback(async () => {
-      const titleErrors = isNilOrError(tenantLocales)
-        ? {}
-        : validateTitle(
-            tenantLocales,
-            titleMultiloc ?? undefined,
-            intl.formatMessage(
-              tenantLocales.length === 1
-                ? messages.projectTitleError
-                : messages.projectTitleMultilocError
-            )
-          );
-      const invalidTitle = Object.keys(titleErrors).length > 0;
+      const invalidTitle =
+        !titleMultiloc ||
+        Object.values(titleMultiloc).every((title) => isEmpty(title));
       const noDate = isEmpty(startDate);
       const invalidDate = !moment(
         startDate || '',
@@ -170,8 +161,18 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
         projectTemplateId,
       });
 
-      if (invalidTitle) {
-        setTitleError(titleErrors);
+      if (invalidTitle && !isNilOrError(tenantLocales)) {
+        setTitleError(
+          validateTitle(
+            tenantLocales,
+            titleMultiloc ?? undefined,
+            intl.formatMessage(
+              tenantLocales.length === 1
+                ? messages.projectTitleError
+                : messages.projectTitleMultilocError
+            )
+          )
+        );
       }
 
       if (noDate) {
@@ -182,7 +183,7 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
         );
       }
 
-      if (!invalidTitle && !invalidDate && titleMultiloc && startDate) {
+      if (!invalidTitle && !invalidDate && startDate) {
         setResponseError(null);
         setTitleError(null);
         setStartDateError(null);

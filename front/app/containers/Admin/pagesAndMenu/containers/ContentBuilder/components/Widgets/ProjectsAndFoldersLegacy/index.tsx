@@ -8,14 +8,13 @@ import { Multiloc } from 'typings';
 import {
   BUILDER_CONTENT_MAX_WIDTH,
   DEFAULT_PADDING,
+  DEFAULT_Y_PADDING,
 } from 'components/admin/ContentBuilder/constants';
 import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-
-import { DEFAULT_Y_PADDING } from '../constants';
 
 import messages from './messages';
 

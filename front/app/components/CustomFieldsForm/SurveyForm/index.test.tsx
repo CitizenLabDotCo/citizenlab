@@ -327,4 +327,52 @@ describe('SurveyForm — anonymous multi-page persistence', () => {
       expect(screen.queryByText(/Question Two/i)).not.toBeInTheDocument();
     }
   );
+
+  // The yup resolver leaves out keys whose value is undefined, so an answer the
+  // user cleared is missing from what handleSubmit hands to onSubmit. Merging
+  // that into the values accumulated so far brings the old answer back.
+  it('keeps an answer cleared after leaving the page and coming back', async () => {
+    const user = userEvent.setup();
+    mockCustomFieldsQuery = {
+      data: [
+        customFields[0],
+        {
+          ...customFields[1],
+          input_type: 'linear_scale',
+          required: false,
+          maximum: 5,
+        },
+        ...customFields.slice(2),
+      ] as typeof customFields,
+      isLoading: false,
+    };
+
+    render(
+      <SurveyForm
+        projectId="project-1"
+        phaseId="phase-1"
+        participationMethod="native_survey"
+      />
+    );
+
+    // Answer, then leave the page and come back, so that the answer is part of
+    // the values the form carries between pages.
+    await user.click(await screen.findByRole('radio', { name: '3' }));
+    await user.click(screen.getByRole('button', { name: /next/i }));
+    await user.click(await screen.findByRole('button', { name: /previous/i }));
+    expect(await screen.findByRole('radio', { name: '3' })).toHaveAttribute(
+      'aria-checked',
+      'true'
+    );
+
+    // Clear the answer and make the same round trip.
+    await user.click(screen.getByRole('radio', { name: '3' }));
+    await user.click(screen.getByRole('button', { name: /next/i }));
+    await user.click(await screen.findByRole('button', { name: /previous/i }));
+
+    expect(await screen.findByRole('radio', { name: '3' })).toHaveAttribute(
+      'aria-checked',
+      'false'
+    );
+  });
 });
