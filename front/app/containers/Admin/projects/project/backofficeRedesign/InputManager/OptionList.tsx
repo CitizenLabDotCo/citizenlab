@@ -18,8 +18,6 @@ export interface Option {
   label: string;
   color?: string;
   count?: number;
-  /** Shown instead of the count, e.g. an avatar for a person. */
-  prefix?: ReactNode;
   disabled?: boolean;
   disabledReason?: ReactNode;
   /** Some, but not all, of the selected inputs have this option. */
@@ -98,7 +96,6 @@ const OptionList = ({ options, selected, onToggle, searchable }: Props) => {
                     background={option.color}
                   />
                 )}
-                {option.prefix}
                 <Box flexGrow={1}>
                   <Text
                     m="0"
