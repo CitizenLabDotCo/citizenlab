@@ -6,7 +6,6 @@ import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
 import NewIdeaButton from 'containers/Admin/projects/_shared/components/NewIdeaButton';
-import ideasMessages from 'containers/Admin/projects/project/ideas/messages';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
@@ -34,7 +33,7 @@ const OfflineCollection = ({ project, phase }: Props) => {
           buttonStyle="secondary-outlined"
           width="100%"
         >
-          {formatMessage(ideasMessages.importInputs)}
+          {formatMessage(messages.importInputs)}
         </ButtonWithLink>
         <NewIdeaButton
           participationMethod={phase.attributes.participation_method}

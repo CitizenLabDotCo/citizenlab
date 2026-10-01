@@ -219,6 +219,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.offlineCollection',
     defaultMessage: 'Offline collection',
   },
+  importInputs: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.importInputs',
+    defaultMessage: 'Import',
+  },
   exports: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.exports',
     defaultMessage: 'Exports',
