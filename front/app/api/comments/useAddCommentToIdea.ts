@@ -22,10 +22,6 @@ const useAddCommentToIdea = () => {
   return useMutation<IComment, CLErrorsWrapper, INewComment>({
     mutationFn: addCommentToIdea,
     onSuccess: (_data, variables) => {
-      trackEventByName(customerAnalyticsEvents.commentPosted, {
-        idea_id: variables.ideaId,
-      });
-
       queryClient.invalidateQueries({
         queryKey: commentKeys.list({ authorId: variables.author_id }),
       });
@@ -44,6 +40,10 @@ const useAddCommentToIdea = () => {
           queryKey: commentKeys.list({ commentId: variables.parent_id }),
         });
       }
+
+      trackEventByName(customerAnalyticsEvents.commentPosted, {
+        idea_id: variables.ideaId,
+      });
     },
   });
 };

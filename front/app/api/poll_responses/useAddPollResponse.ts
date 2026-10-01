@@ -36,11 +36,6 @@ const useAddPollResponse = () => {
   return useMutation<IPollResponses, CLErrors, AddPollResponse>({
     mutationFn: addPollResponse,
     onSuccess: (_data, variables) => {
-      trackEventByName(customerAnalyticsEvents.pollSubmitted, {
-        project_id: variables.projectId,
-        phase_id: variables.phaseId,
-      });
-
       queryClient.invalidateQueries({
         queryKey: pollResponsesKeys.item({
           phaseId: variables.phaseId,
@@ -49,6 +44,11 @@ const useAddPollResponse = () => {
 
       queryClient.invalidateQueries({
         queryKey: projectsKeys.item({ id: variables.projectId }),
+      });
+
+      trackEventByName(customerAnalyticsEvents.pollSubmitted, {
+        project_id: variables.projectId,
+        phase_id: variables.phaseId,
       });
     },
   });

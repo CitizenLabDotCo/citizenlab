@@ -24,13 +24,13 @@ const useAddCommentReaction = () => {
   return useMutation<ICommentReaction, CLErrors, INewReactionProperties>({
     mutationFn: addCommentReaction,
     onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: commentKeys.item({ id: variables.commentId }),
+      });
+
       trackEventByName(customerAnalyticsEvents.reactionAdded, {
         comment_id: variables.commentId,
         mode: variables.mode,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: commentKeys.item({ id: variables.commentId }),
       });
     },
   });

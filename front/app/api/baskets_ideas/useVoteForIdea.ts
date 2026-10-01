@@ -50,18 +50,18 @@ const useVoteForIdeaMutation = () => {
       const newBasket = basket_id !== basketId;
 
       if (newBasket) {
-        // The first vote in a phase creates the basket.
-        trackEventByName(customerAnalyticsEvents.votingStarted, {
-          project_id,
-          phase_id,
-        });
-
         queryClient.invalidateQueries({
           queryKey: phasesKeys.item({ phaseId: phase_id }),
         });
 
         queryClient.invalidateQueries({
           queryKey: phasesKeys.list({ projectId: project_id }),
+        });
+
+        // The first vote in a phase creates the basket.
+        trackEventByName(customerAnalyticsEvents.votingStarted, {
+          project_id,
+          phase_id,
         });
       }
     },

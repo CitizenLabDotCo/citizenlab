@@ -19,15 +19,15 @@ const useAddVolunteer = () => {
   return useMutation<IVolunteer, CLErrors, string>({
     mutationFn: addVolunteer,
     onSuccess: (_data, causeId) => {
-      trackEventByName(customerAnalyticsEvents.volunteered, {
-        cause_id: causeId,
-      });
-
       queryClient.invalidateQueries({
         queryKey: causeKeys.lists(),
       });
       queryClient.invalidateQueries({
         queryKey: causeKeys.item({ id: causeId }),
+      });
+
+      trackEventByName(customerAnalyticsEvents.volunteered, {
+        cause_id: causeId,
       });
     },
   });

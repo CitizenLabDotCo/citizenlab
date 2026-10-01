@@ -26,10 +26,6 @@ const useAddEventAttendance = (eventId: string) => {
     {
       mutationFn: addEventAttendance,
       onSuccess: (_data, params) => {
-        trackEventByName(customerAnalyticsEvents.eventAttendanceRegistered, {
-          event_id: eventId,
-        });
-
         queryClient.invalidateQueries({
           queryKey: eventsAttendancesKeys.list({ eventId }),
         });
@@ -44,6 +40,10 @@ const useAddEventAttendance = (eventId: string) => {
             queryKey: eventsKeys.list({ attendeeId: params.attendeeId }),
           });
         }
+
+        trackEventByName(customerAnalyticsEvents.eventAttendanceRegistered, {
+          event_id: eventId,
+        });
       },
     }
   );

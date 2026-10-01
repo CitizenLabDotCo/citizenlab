@@ -24,13 +24,13 @@ const useAddIdeaReaction = () => {
   return useMutation<IIdeaReaction, CLErrors, INewReactionProperties>({
     mutationFn: addIdeaReaction,
     onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ideasKeys.item({ id: variables.ideaId }),
+      });
+
       trackEventByName(customerAnalyticsEvents.reactionAdded, {
         idea_id: variables.ideaId,
         mode: variables.mode,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: ideasKeys.item({ id: variables.ideaId }),
       });
     },
   });

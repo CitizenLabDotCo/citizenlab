@@ -22,6 +22,13 @@ const useAddFollower = () => {
   return useMutation<IFollower, CLErrors, FollowerAdd>({
     mutationFn: addFollower,
     onSuccess: async (_data, variables) => {
+      invalidateFollowQueries(
+        queryClient,
+        variables.followableType,
+        variables.followableId,
+        variables.followableSlug
+      );
+
       if (variables.followableType === 'ideas') {
         trackEventByName(customerAnalyticsEvents.ideaFollowed, {
           idea_id: variables.followableId,
@@ -32,13 +39,6 @@ const useAddFollower = () => {
           project_id: variables.followableId,
         });
       }
-
-      invalidateFollowQueries(
-        queryClient,
-        variables.followableType,
-        variables.followableId,
-        variables.followableSlug
-      );
     },
   });
 };
