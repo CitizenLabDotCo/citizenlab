@@ -3,9 +3,7 @@ import React, { ReactNode, useRef, useState } from 'react';
 import { Box, Dropdown } from '@citizenlab/cl2-component-library';
 
 interface Props {
-  /** Renders the trigger; `toggle` opens and closes the menu. */
   trigger: (props: { opened: boolean; toggle: () => void }) => ReactNode;
-  /** Renders the menu; `close` closes it after a choice. */
   children: (close: () => void) => ReactNode;
   width?: string;
   align?: 'left' | 'right';
