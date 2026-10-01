@@ -45,7 +45,6 @@ const QuickActions = ({ idea, onEdit, onDeleted }: Props) => {
           <ButtonWithLink
             to="/ideas/$slug"
             params={{ slug: idea.attributes.slug }}
-            // A new tab keeps the manager's filters and selection as they are.
             openLinkInNewTab
             buttonStyle="bo-secondary"
             icon="eye"

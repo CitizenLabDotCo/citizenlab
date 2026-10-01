@@ -16,7 +16,6 @@ import PropertyRow from './PropertyRow';
 
 interface Props {
   idea: IIdeaData;
-  /** The phase whose votes are shown. Absent when all phases are listed. */
   phase: IPhaseData | undefined;
 }
 

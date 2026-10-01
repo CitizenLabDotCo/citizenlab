@@ -28,8 +28,6 @@ interface Props {
   onClearFilters: () => void;
 }
 
-// The batch actions take the place of the count, so the tools on the right
-// never move.
 const ListToolbar = ({
   type,
   projectId,

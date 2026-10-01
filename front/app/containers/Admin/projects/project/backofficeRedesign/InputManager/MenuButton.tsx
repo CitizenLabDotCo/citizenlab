@@ -20,8 +20,6 @@ const MenuButton = ({
 
   const close = () => setOpened(false);
 
-  // A click on the trigger already toggles the menu; closing it here as well
-  // would open it again straight away.
   const handleClickOutside = (event: { target: EventTarget | null }) => {
     if (
       event.target instanceof Node &&

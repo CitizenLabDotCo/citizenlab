@@ -8,8 +8,6 @@ module IdeaAssignment
           belongs_to :assignee, class_name: 'User', optional: true
           validate :assignee_can_moderate_project, unless: :draft?
 
-          # A subquery rather than a join, so it can't clash with the `users`
-          # table when the author is eager loaded.
           scope :order_assignee, lambda { |direction = :asc|
             sql_direction = direction == :desc ? 'DESC' : 'ASC'
             assignee_name = ::User

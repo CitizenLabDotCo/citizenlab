@@ -15,15 +15,12 @@ interface Props {
   resultCount: number;
 }
 
-// Stays open while a search is applied, so the term is never hidden.
 const SearchToggle = ({ searchTerm, onChange, resultCount }: Props) => {
   const { formatMessage } = useIntl();
   const [isOpen, setIsOpen] = useState(!!searchTerm);
   const [appliedTerm, setAppliedTerm] = useState(searchTerm);
   const [inputKey, setInputKey] = useState(0);
 
-  // The input keeps its own text, so it is remounted when the search is
-  // cleared from outside, e.g. by resetting the filters.
   if (searchTerm !== appliedTerm) {
     setAppliedTerm(searchTerm);
     if (!searchTerm) setInputKey((key) => key + 1);

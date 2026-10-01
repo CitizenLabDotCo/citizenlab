@@ -15,7 +15,6 @@ module IdeaAssignment
             end
           end
 
-          # Assignments are only visible to moderators, so the counts are too.
           def filter_counts_attributes(ideas)
             return super unless current_user
 

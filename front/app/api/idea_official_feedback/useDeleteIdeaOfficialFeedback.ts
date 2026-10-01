@@ -23,7 +23,6 @@ const useDeleteIdeaOfficialFeedback = () => {
       queryClient.invalidateQueries({
         queryKey: ideaOfficialFeedbackKeys.lists(),
       });
-      // The idea's official_feedbacks_count decides whether it awaits a reply.
       queryClient.invalidateQueries({ queryKey: ideasKeys.all() });
     },
   });

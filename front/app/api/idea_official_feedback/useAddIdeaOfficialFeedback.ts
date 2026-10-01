@@ -30,7 +30,6 @@ const useAddIdeaOfficialFeedback = () => {
       queryClient.invalidateQueries({
         queryKey: ideaFilterCountsKeys.items(),
       });
-      // The idea's official_feedbacks_count decides whether it awaits a reply.
       queryClient.invalidateQueries({
         queryKey: ideasKeys.item({ id: ideaId }),
       });

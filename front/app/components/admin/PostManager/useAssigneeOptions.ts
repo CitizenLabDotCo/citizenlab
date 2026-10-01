@@ -15,7 +15,6 @@ const useAssigneeOptions = (
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
   const { data: prospectAssignees } = useUsers({
-    // Proposals have no project, so any admin can take them.
     ...(projectId
       ? { can_moderate_project: projectId }
       : { admins_only: true }),

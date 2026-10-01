@@ -16,27 +16,22 @@ export const isSourceFilter = (value: unknown): value is SourceFilter =>
 
 export interface ManagerFilters {
   statuses: string[];
-  /** User ids, and `unassigned` for inputs without an assignee. */
   assignees: string[];
   topics: string[];
   reply?: ReplyFilter;
   source?: SourceFilter;
-  /** The phase whose inputs are listed. Undefined lists all phases. */
   phase?: string;
 }
 
 export const DEFAULT_SORT: Sort = 'new';
 export const ALL_PHASES = 'all';
 
-// Other routes type some of these params as lists, so both shapes are read.
 const list = (value: string | string[] | undefined) =>
   (Array.isArray(value) ? value : value?.split(',') ?? []).filter(Boolean);
 
 const joined = (values: string[]) =>
   values.length > 0 ? values.join(',') : undefined;
 
-// State lives in the url, so a filtered list can be shared and notification
-// emails can link straight to one input.
 const useManagerParams = (phaseId: string) => {
   const search = useSearch({ strict: false });
 

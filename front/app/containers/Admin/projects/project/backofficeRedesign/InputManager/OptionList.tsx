@@ -20,11 +20,9 @@ export interface Option {
   count?: number;
   disabled?: boolean;
   disabledReason?: ReactNode;
-  /** Some, but not all, of the selected inputs have this option. */
   partial?: boolean;
 }
 
-// Short lists are quicker to scan than to search.
 const SEARCHABLE_FROM = 9;
 
 interface Props {
@@ -80,8 +78,6 @@ const OptionList = ({
               onClick={() => onToggle(option.value)}
             >
               <Box display="flex" alignItems="center" gap="8px" width="100%">
-                {/* The row toggles the option, so the checkbox's own clicks
-                    must not reach it too. */}
                 <Box
                   display="flex"
                   onClick={(event) => event.stopPropagation()}

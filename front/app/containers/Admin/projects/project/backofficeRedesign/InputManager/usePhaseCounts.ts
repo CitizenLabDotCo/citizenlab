@@ -5,10 +5,6 @@ import { UNASSIGNED } from 'components/admin/PostManager/useAssigneeOptions';
 
 type Scope = Pick<IIdeaQueryParameters, 'projects' | 'phase' | 'transitive'>;
 
-/**
- * Counts of the listed inputs per filter option. They ignore the active
- * filters, so an option keeps its count while the list is filtered.
- */
 const usePhaseCounts = (scope: Scope) => {
   const { data: counts } = useIdeasFilterCounts(scope);
   const { data: awaiting } = useIdeasFilterCounts({

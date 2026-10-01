@@ -23,7 +23,6 @@ import messages from '../messages';
 
 import IdeaCell from './IdeaCell';
 
-// Hover and the pointer can't be expressed through Box props.
 const Row = styled.tr<{ selected: boolean; active: boolean }>`
   cursor: pointer;
   background: ${({ selected, active }) =>

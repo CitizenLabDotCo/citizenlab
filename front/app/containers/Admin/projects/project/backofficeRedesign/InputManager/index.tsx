@@ -60,7 +60,6 @@ const InputManager = ({ project, phase }: Props) => {
     setSelectedIdeaId,
   } = useManagerParams(phase.id);
 
-  // Proposals only ever belong to the phase they were posted in.
   const listedPhaseId = isProposals ? phase.id : filters.phase;
   const scope = isProposals
     ? { projects: [project.id], phase: phase.id }
@@ -92,8 +91,6 @@ const InputManager = ({ project, phase }: Props) => {
     available.includes(column)
   );
 
-  // Kept as data, not ids, so the batch actions still know the tags and
-  // phases of inputs selected on another page.
   const [selection, setSelection] = useState<Map<string, IIdeaData>>(new Map());
   const [editingIdeaId, setEditingIdeaId] = useState<string>();
   const panelMode: PreviewMode =
@@ -104,7 +101,6 @@ const InputManager = ({ project, phase }: Props) => {
   const filteredTotal = filteredCounts?.data.attributes.total;
 
   const openPanel = (ideaId: string, mode: PreviewMode = 'view') => {
-    // The panel acts on one input, so it replaces the selection.
     setSelection(new Map());
     setEditingIdeaId(mode === 'edit' ? ideaId : undefined);
     setSelectedIdeaId(ideaId);
@@ -146,7 +142,6 @@ const InputManager = ({ project, phase }: Props) => {
       current.has(idea.id) ? new Map(current).set(idea.id, idea) : current
     );
 
-  // The page's copy of an input is the freshest one.
   const selectedIdeas = [...selection.values()].map(
     (idea) => pageIdeas.find((pageIdea) => pageIdea.id === idea.id) ?? idea
   );

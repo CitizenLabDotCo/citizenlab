@@ -39,7 +39,6 @@ const StatusProperty = ({ idea, type }: Props) => {
       location: 'Input manager side panel',
       idea: idea.id,
     });
-    // Asks for an official update that explains the new status.
     eventEmitter.emit(getIdeaOfficialFeedbackModalEventName(idea.id));
   };
 

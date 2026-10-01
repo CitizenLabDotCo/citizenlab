@@ -12,7 +12,6 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 export interface PanelNavigation {
-  /** 1-based, across all pages of the filtered list. */
   position: number;
   total: number;
   onPrevious?: () => void;
@@ -24,8 +23,6 @@ interface Props {
   navigation: PanelNavigation | undefined;
 }
 
-// The side modal draws its own close button in the top right corner, so the
-// header leaves room for it.
 const PanelHeader = ({ context, navigation }: Props) => {
   const { formatMessage } = useIntl();
 

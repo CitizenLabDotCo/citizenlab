@@ -26,9 +26,7 @@ export type ColumnKey =
 
 interface Column {
   label: MessageDescriptor;
-  /** Absent for columns the API can't order by. */
   sort?: Sort;
-  /** Shown as a mark next to the title rather than as a column. */
   mark?: boolean;
 }
 

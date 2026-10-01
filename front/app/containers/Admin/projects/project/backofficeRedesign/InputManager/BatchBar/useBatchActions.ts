@@ -69,8 +69,6 @@ const useBatchActions = ({
   const deleteAll = async () => {
     setIsDeleting(true);
 
-    // Deleting several inputs in parallel overloads the database, so they go
-    // one by one.
     for (const idea of ideas) {
       try {
         await deleteIdea(idea.id);

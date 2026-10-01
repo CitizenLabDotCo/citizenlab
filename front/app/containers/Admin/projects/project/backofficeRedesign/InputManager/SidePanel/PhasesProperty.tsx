@@ -43,7 +43,6 @@ const PhasesProperty = ({ idea }: Props) => {
   const removePhase = (phaseId: string) =>
     savePhases(current.filter((id) => id !== phaseId));
 
-  // Removing a phase also removes the votes the input got in it.
   const requestRemoval = (phaseId: string) => {
     if (ideaHasVotesInPhase(phaseId, ideasPhases)) {
       setPhaseToRemove(phaseId);

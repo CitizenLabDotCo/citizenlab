@@ -3,8 +3,6 @@
 module BulkImportIdeas
   module Extensions
     module IdeasFinder
-      # Only moderators can see whether an idea was imported, so the filter
-      # never reaches beyond the ideas the user can moderate.
       def imported_condition(imported)
         return if imported.nil?
 

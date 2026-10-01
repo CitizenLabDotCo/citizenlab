@@ -15,8 +15,6 @@ interface Props {
   onChangePage: (page: number) => void;
 }
 
-// Previous and next work across pages, but the neighbouring page is only
-// loaded once the open input is the first or last one of its page.
 const usePanelNavigation = ({
   openIdeaId,
   pageIdeas,
@@ -44,7 +42,6 @@ const usePanelNavigation = ({
 
   if (index < 0 || total === undefined) return undefined;
 
-  // Placeholder data belongs to another page, so it can't be navigated to.
   const lastOfPreviousPage =
     needsPreviousPage && !previousPage.isPlaceholderData
       ? previousPage.data?.data.at(-1)

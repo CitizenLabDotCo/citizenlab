@@ -236,8 +236,6 @@ export interface IIdea {
   data: IIdeaData;
 }
 
-// The API also filters on several statuses or assignees at once; lists that
-// do so pass `string | string[]` as the filter value.
 export interface IIdeaQueryParameters<FilterValue = string> {
   sort?: Sort;
   'page[number]'?: number;
