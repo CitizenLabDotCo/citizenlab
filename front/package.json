@@ -186,7 +186,7 @@
     "@tanstack/router-plugin": "1.159.5",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "16.1.0",
-    "@testing-library/user-event": "14.6.1",
+    "@testing-library/user-event": "14.6.7",
     "@types/css-mediaquery": "0.1.4",
     "@types/file-saver": "2.0.5",
     "@types/formatcoords": "1.1.2",
