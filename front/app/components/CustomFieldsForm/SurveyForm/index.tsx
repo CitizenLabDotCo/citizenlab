@@ -67,15 +67,22 @@ const SurveyForm = ({
 
   const onSubmit = async ({
     formValues,
+    pageValues,
     isSubmitPage,
   }: {
     formValues: FormValues;
+    pageValues: FormValues;
     isSubmitPage: boolean;
   }) => {
     // Carry the page's values forward across the next remount so anonymous
     // users don't lose answers from previous pages, and so the final submit
     // sends every answer from every visited page.
-    const mergedValues = { ...accumulatedValues, ...formValues };
+    // pageValues comes first so that an answer the user cleared ends up as
+    // undefined instead of keeping the value it had before: the yup resolver
+    // leaves such a key out of formValues, and a spread can only overwrite
+    // keys it has. formValues still wins for every answer it does carry,
+    // because its values are cast to the types the API expects.
+    const mergedValues = { ...accumulatedValues, ...pageValues, ...formValues };
     setAccumulatedValues(mergedValues);
 
     // The draft idea endpoint relies on the idea having a user id / being linked to a user
