@@ -26,12 +26,14 @@ import { IPhaseData } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import useSubmissionsCount from 'api/submission_count/useSubmissionCount';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import FormBuilderSettings from 'components/FormBuilder/components/FormBuilderSettings';
 import FormBuilderToolbox from 'components/FormBuilder/components/FormBuilderToolbox';
 import FormBuilderTopBar from 'components/FormBuilder/components/FormBuilderTopBar';
 import FormFields from 'components/FormBuilder/components/FormFields';
+import SurveyGenerator from 'components/FormBuilder/components/SurveyGenerator';
 import HelmetIntl from 'components/HelmetIntl';
 
 import { useIntl } from 'utils/cl-intl';
@@ -89,6 +91,9 @@ const FormEdit = ({
   const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(false);
   const [autosaveEnabled, setAutosaveEnabled] = useState(true);
   const { isFormPhaseSpecific } = builderConfig;
+  const surveyGeneratorEnabled =
+    useFeatureFlag({ name: 'ai_survey_generator' }) &&
+    phase.attributes.participation_method === 'native_survey';
   const { mutateAsync: updateFormCustomFields } = useUpdateCustomField();
   const { data: formCustomFields, isFetching } = useFormCustomFields({
     projectId,
@@ -390,7 +395,13 @@ const FormEdit = ({
                       />
                     </Box>
                   </Box>
-                  <Box flex={!isNilOrError(selectedField) ? '1' : '0'}>
+                  <Box
+                    flex={
+                      !isNilOrError(selectedField) || surveyGeneratorEnabled
+                        ? '1'
+                        : '0'
+                    }
+                  >
                     {selectedField && (
                       <Box>
                         <FormBuilderSettings
@@ -398,6 +409,19 @@ const FormEdit = ({
                           field={selectedField}
                           closeSettings={closeSettings}
                           builderConfig={builderConfig}
+                        />
+                      </Box>
+                    )}
+                    {/* Hidden, not unmounted, so the typed request survives editing a field. */}
+                    {surveyGeneratorEnabled && (
+                      <Box display={selectedField ? 'none' : 'block'}>
+                        <SurveyGenerator
+                          phase={phase}
+                          totalSubmissions={totalSubmissions}
+                          onSurveyGenerated={() => {
+                            setSelectedField(undefined);
+                            setIsUpdatingForm(true);
+                          }}
                         />
                       </Box>
                     )}
