@@ -65,8 +65,10 @@ class IdeasFinder < ApplicationFinder
     scope(:with_project_publication_status, project_publication_status) if project_publication_status.present?
   end
 
+  # A subquery, because the scope joins idea_statuses: referencing it here
+  # would turn the index's includes into one huge eager-load join.
   def feedback_needed_condition(feedback_needed)
-    scope(:feedback_needed) if feedback_needed
+    where(id: Idea.feedback_needed) if feedback_needed
   end
 
   def official_feedback_condition(official_feedback)
