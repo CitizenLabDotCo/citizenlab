@@ -380,7 +380,7 @@ class WebApi::V1::IdeasController < ApplicationController
   private
 
   def filter_counts_attributes(_ideas)
-    %w[idea_status_id input_topic_id]
+    IdeasCountService::DEFAULT_ATTRIBUTES
   end
 
   def phase
