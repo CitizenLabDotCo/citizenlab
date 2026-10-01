@@ -1,7 +1,7 @@
 import { IIdeaQueryParameters } from 'api/ideas/types';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 
-import { UNASSIGNED } from './useAssigneeOptions';
+import { UNASSIGNED } from 'components/admin/PostManager/useAssigneeOptions';
 
 type Scope = Pick<IIdeaQueryParameters, 'projects' | 'phase' | 'transitive'>;
 
@@ -21,13 +21,16 @@ const usePhaseCounts = (scope: Scope) => {
 
   const { total, idea_status_id, input_topic_id, assignee_id } =
     counts.data.attributes;
-  const assigned = Object.values(assignee_id).reduce((a, b) => a + b, 0);
+  const byAssignee = assignee_id && {
+    ...assignee_id,
+    [UNASSIGNED]: total - Object.values(assignee_id).reduce((a, b) => a + b, 0),
+  };
 
   return {
     total,
     byStatus: idea_status_id,
     byTopic: input_topic_id,
-    byAssignee: { ...assignee_id, [UNASSIGNED]: total - assigned },
+    byAssignee,
     awaiting: awaiting.data.attributes.total,
     replied: total - awaiting.data.attributes.total,
     imported: imported.data.attributes.total,
