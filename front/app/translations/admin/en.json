@@ -1858,6 +1858,7 @@
   "app.containers.Admin.projects.project.participation.usersSubtitle": "Get an overview of the participants on this project that have an account. Anonymous participation is not accounted.",
   "app.containers.Admin.projects.project.phaseNoEndDate": "No end date",
   "app.containers.Admin.projects.project.projectHeader.GenerateReportButton.generateReport": "Generate report",
+  "app.containers.Admin.projects.project.projectHeader.GenerateReportButton.generatingReport": "Generating report…",
   "app.containers.Admin.projects.project.projectHeader.GenerateReportButton.openReport": "Open report",
   "app.containers.Admin.projects.project.projectHeader.GenerateReportButton.retryReport": "Retry report",
   "app.containers.Admin.projects.project.projectHomepage": "Project homepage",
