@@ -402,6 +402,12 @@ namespace :cl2_back do
       admin = User.find_by(email: 'admin@govocal.com')
       UserService.update_in_tenant_template!(admin) if admin
       Analytics::PopulateDimensionsService.run
+
+      # Otherwise the first admin request that needs the community monitor creates it, and that
+      # request saves every setting as it read them at its start, reverting any change saved
+      # meanwhile — such as an e2e spec switching a feature on.
+      community_monitor = CommunityMonitorService.new
+      community_monitor.project || community_monitor.create_and_set_project if community_monitor.enabled?
     end
 
     MultiTenancy::TenantService.new.finalize_creation(tenant)
