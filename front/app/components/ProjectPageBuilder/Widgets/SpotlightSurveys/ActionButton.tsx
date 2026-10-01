@@ -9,13 +9,13 @@ import useProjectById from 'api/projects/useProjectById';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
+import useWidgetProjectId from 'components/admin/ContentBuilder/useWidgetProjectId';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import { getLocalisedDateString, timeAgo } from 'utils/dateUtils';
 
 import messages from '../messages';
-import useWidgetProjectId from '../useWidgetProjectId';
 
 import { getSpotlightSurveyState } from './utils';
 

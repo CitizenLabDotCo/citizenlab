@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class Invites::XlsxProcessor
-  def initialize(error_storage, custom_field_schema)
+  def initialize(error_storage, custom_fields)
     @error_storage = error_storage
-    @custom_field_schema = custom_field_schema
+    @custom_fields = custom_fields
   end
 
   def param_to_hash_array(xlsx_param)
@@ -84,32 +84,16 @@ class Invites::XlsxProcessor
   # @param [Hash]
   # @return [Hash]
   def coerce_custom_field_types(hash)
-    hash.each do |field, value|
-      if (type = custom_field_types[field]) # only runs for custom fields
-        hash[field] = coerce_value(value, type)
+    hash.each do |key, value|
+      if (custom_field = custom_fields_by_key[key]) # only runs for custom fields
+        hash[key] = custom_field.input_type_strategy.cast_xlsx_value(value)
       end
     rescue ArgumentError => e
       @error_storage.add_error(:malformed_custom_field_value, row: @current_row, value: value, raw_error: e)
     end
   end
 
-  # Returns type information of custom fields.
-  #
-  # @return [Hash<String, String>] Mapping from field key to field type
-  def custom_field_types
-    @custom_field_schema[:properties].transform_values { |field_schema| field_schema[:type] }
-  end
-
-  # Converts a value to a given type.
-  #
-  # @param [Object] value any kind of value
-  # @param [String] type destination type ('number', 'boolean' or 'string')
-  # @return [String, Float, Integer, Boolean]
-  def coerce_value(value, type)
-    case type
-    when 'number' then Utils.to_number(value)
-    when 'boolean' then Utils.to_bool(value)
-    when 'string' then String(value)
-    end
+  def custom_fields_by_key
+    @custom_fields_by_key ||= @custom_fields.index_by(&:key)
   end
 end

@@ -7,9 +7,9 @@ import { useTheme } from 'styled-components';
 import useEvents from 'api/events/useEvents';
 import { getCurrentPhase } from 'api/phases/utils';
 
+import { EVENTS_WIDGET_ANCHOR_ID } from 'components/admin/ContentBuilder/Widgets/Events';
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 import { CTABarProps } from 'components/ParticipationCTABars/utils';
-import { EVENTS_WIDGET_ANCHOR_ID } from 'components/ProjectPageBuilder/Widgets/Events';
 import useHasEventsWidget from 'components/ProjectPageBuilder/Widgets/Events/useHasEventsWidget';
 
 import { FormattedMessage } from 'utils/cl-intl';

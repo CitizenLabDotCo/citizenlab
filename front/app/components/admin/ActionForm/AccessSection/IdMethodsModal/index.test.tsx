@@ -56,7 +56,7 @@ const buildMetadata = (
   other_attributes: [{ en: 'Phone number' }],
   locked_custom_fields: [{ en: 'Birthyear' }],
   other_custom_fields: [{ en: 'Neighbourhood' }],
-  email_always_present: true,
+  confirmed_email_always_present: true,
   ...overrides,
 });
 

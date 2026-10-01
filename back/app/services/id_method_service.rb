@@ -92,7 +92,7 @@ class IdMethodService
       other_attributes: other_attributes,
       locked_custom_fields: locked_custom_fields,
       other_custom_fields: other_custom_fields,
-      email_always_present: method.email_always_present?
+      confirmed_email_always_present: method.confirmed_email_always_present?
     }
   end
 end

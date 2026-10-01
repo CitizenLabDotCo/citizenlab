@@ -282,6 +282,10 @@ class Permissions::UserRequirementsService
   # - :confirm_new_email  an account with a pending `new_email` (e.g. an SSO
   #                       sign-up with an unconfirmed email) — confirm it
   #                       (NewEmailConfirmation), which promotes it to `email`.
+  # - :confirm_merge_account  an account with a pending `merge_target_email` (an
+  #                       SSO sign-up whose unconfirmed email another account
+  #                       owns) — confirm it (MergeAccountConfirmation), which
+  #                       merges this account into that one.
   #
   # A user who already has a confirmed `email` and separately started an email
   # *change* (so `email` is present AND `new_email` is pending) is not forced
@@ -298,6 +302,8 @@ class Permissions::UserRequirementsService
       end
     elsif user.new_email.present?
       :confirm_new_email
+    elsif user.merge_target_email.present?
+      :confirm_merge_account
     else
       :provide_new_email
     end

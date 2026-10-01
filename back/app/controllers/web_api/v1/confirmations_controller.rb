@@ -65,6 +65,24 @@ class WebApi::V1::ConfirmationsController < ApplicationController
     end
   end
 
+  # On success the caller's account no longer exists, so its JWT is dead
+  # (from_token_payload looks the user up by id). A token for the survivor is returned
+  # instead, as confirm_code_email does. reset_jwt_cookie would be wrong: it is built
+  # around current_user, i.e. the deleted account.
+  def confirm_code_merge_account
+    result = user_confirmation_service.validate_and_confirm_merge_account!(
+      current_user,
+      confirm_code_params[:code]
+    )
+
+    if result.success?
+      target = result.user
+      render json: raw_json({ auth_token: short_lived_auth_token(target) })
+    else
+      render json: { errors: result.errors.details }, status: :unprocessable_entity
+    end
+  end
+
   # The phone mirror of confirm_code_email: phone account creation and
   # passwordless login, with the account looked up from the submitted `phone`.
   def confirm_code_phone

@@ -29,13 +29,16 @@ resource 'Api Clients' do
           name: 'Api Client 1',
           masked_secret: kind_of(String),
           created_at: kind_of(String),
-          last_used_at: nil
+          last_used_at: nil,
+          last_user_agent: nil
         })
       end
     end
 
     get 'web_api/v1/api_clients/:id' do
-      let(:api_client) { create(:api_client, name: 'Api Client 1', last_used_at: Time.now) }
+      let(:api_client) do
+        create(:api_client, name: 'Api Client 1', last_used_at: Time.now, last_user_agent: 'Microsoft.Data.Mashup')
+      end
       let(:id) { api_client.id }
       example_request 'Get one api client by id' do
         expect(status).to eq 200
@@ -44,7 +47,8 @@ resource 'Api Clients' do
           name: 'Api Client 1',
           masked_secret: "***#{api_client.secret_postfix}",
           created_at: kind_of(String),
-          last_used_at: kind_of(String)
+          last_used_at: kind_of(String),
+          last_user_agent: 'Microsoft.Data.Mashup'
         })
       end
     end

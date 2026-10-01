@@ -8,8 +8,6 @@ import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import projectMessages from 'containers/ProjectsShowPage/messages';
 import {
   excludeHidden,
@@ -18,7 +16,8 @@ import {
 } from 'containers/ProjectsShowPage/shared/header/participationOptions';
 import ProjectInfoSideBar from 'containers/ProjectsShowPage/shared/header/ProjectInfoSideBar';
 
-import useWidgetProjectId from 'components/ProjectPageBuilder/Widgets/useWidgetProjectId';
+import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
+import useWidgetProjectId from 'components/admin/ContentBuilder/useWidgetProjectId';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { useIntl } from 'utils/cl-intl';
@@ -45,7 +44,7 @@ const AboutBox = ({
   return (
     <Box
       id="e2e-about-box"
-      maxWidth="1200px"
+      maxWidth={BUILDER_CONTENT_MAX_WIDTH}
       margin="0 auto"
       px={componentDefaultPadding}
     >
@@ -63,9 +62,6 @@ const AboutBox = ({
 
 const AboutBoxSettings = () => {
   const { formatMessage } = useIntl();
-  const isParallelParticipationEnabled = useFeatureFlag({
-    name: 'parallel_participation',
-  });
   const {
     actions: { setProp },
     hideParticipationAvatars,
@@ -78,16 +74,9 @@ const AboutBoxSettings = () => {
   }));
 
   const projectId = useWidgetProjectId();
-  const { data: project } = useProjectById(
-    isParallelParticipationEnabled ? projectId : undefined
-  );
-  const { data: phases } = usePhases(
-    isParallelParticipationEnabled ? projectId : undefined
-  );
-  const { data: standalonePhases } = usePhases(
-    isParallelParticipationEnabled ? projectId : undefined,
-    'standalone'
-  );
+  const { data: project } = useProjectById(projectId);
+  const { data: phases } = usePhases(projectId);
+  const { data: standalonePhases } = usePhases(projectId, 'standalone');
 
   const toggleOption = (phaseId: string) => {
     setProp((props: AboutBoxProps) => {
@@ -127,45 +116,41 @@ const AboutBoxSettings = () => {
         }}
         label={formatMessage(messages.hideParticipationAvatarsText)}
       />
-      {isParallelParticipationEnabled && (
-        <>
-          <OptionGroup
-            title={messages.participationOptionsTimeline}
-            description={messages.participationOptionsTimelineDescription}
-            phases={timelinePhases}
-            hiddenOptionIds={hiddenOptionIds}
-            onToggle={toggleOption}
-          />
-          <OptionGroup
-            title={messages.participationOptionsCurrentlyOpen}
-            description={messages.participationOptionsCurrentlyOpenDescription}
-            phases={open}
-            hiddenOptionIds={hiddenOptionIds}
-            onToggle={toggleOption}
-          />
-          <OptionGroup
-            title={messages.participationOptionsUpcoming}
-            description={messages.participationOptionsUpcomingDescription}
-            phases={upcoming}
-            hiddenOptionIds={hiddenOptionIds}
-            onToggle={toggleOption}
-          />
-          {visibleActiveCount > 2 && (
-            <InputMultilocWithLocaleSwitcher
-              id="e2e-participation-box-collapsed-title"
-              label={formatMessage(messages.collapsedButtonTitleLabel)}
-              placeholder={formatMessage(projectMessages.participate)}
-              type="text"
-              valueMultiloc={collapsedButtonTitleMultiloc}
-              onChange={(value) => {
-                setProp(
-                  (props: AboutBoxProps) =>
-                    (props.collapsedButtonTitleMultiloc = value)
-                );
-              }}
-            />
-          )}
-        </>
+      <OptionGroup
+        title={messages.participationOptionsTimeline}
+        description={messages.participationOptionsTimelineDescription}
+        phases={timelinePhases}
+        hiddenOptionIds={hiddenOptionIds}
+        onToggle={toggleOption}
+      />
+      <OptionGroup
+        title={messages.participationOptionsCurrentlyOpen}
+        description={messages.participationOptionsCurrentlyOpenDescription}
+        phases={open}
+        hiddenOptionIds={hiddenOptionIds}
+        onToggle={toggleOption}
+      />
+      <OptionGroup
+        title={messages.participationOptionsUpcoming}
+        description={messages.participationOptionsUpcomingDescription}
+        phases={upcoming}
+        hiddenOptionIds={hiddenOptionIds}
+        onToggle={toggleOption}
+      />
+      {visibleActiveCount > 2 && (
+        <InputMultilocWithLocaleSwitcher
+          id="e2e-participation-box-collapsed-title"
+          label={formatMessage(messages.collapsedButtonTitleLabel)}
+          placeholder={formatMessage(projectMessages.participate)}
+          type="text"
+          valueMultiloc={collapsedButtonTitleMultiloc}
+          onChange={(value) => {
+            setProp(
+              (props: AboutBoxProps) =>
+                (props.collapsedButtonTitleMultiloc = value)
+            );
+          }}
+        />
       )}
     </Box>
   );

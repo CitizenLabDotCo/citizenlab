@@ -265,6 +265,30 @@ RSpec.describe ContentBuilder::Layout do
       expect { orphaned_attachment.reload }.to raise_error ActiveRecord::RecordNotFound
       expect(layout.file_attachments.where(file: file).count).to eq(1)
     end
+
+    it 'keeps a single attachment while any widget still references the file' do
+      file_widget = { 'type' => { 'resolvedName' => 'FileAttachment' }, 'props' => { 'fileId' => file.id } }
+      layout = create(:layout, craftjs_json: {
+        'ROOT' => { 'type' => { 'resolvedName' => 'Container' }, 'nodes' => %w[node1 node2] },
+        'node1' => file_widget,
+        'node2' => file_widget
+      })
+
+      expect(layout.file_attachments.where(file: file).count).to eq(1)
+
+      layout.update!(craftjs_json: {
+        'ROOT' => { 'type' => { 'resolvedName' => 'Container' }, 'nodes' => ['node1'] },
+        'node1' => file_widget
+      })
+
+      expect(layout.file_attachments.where(file: file).count).to eq(1)
+
+      layout.update!(craftjs_json: {
+        'ROOT' => { 'type' => { 'resolvedName' => 'Container' }, 'nodes' => [] }
+      })
+
+      expect(layout.file_attachments.where(file: file)).to be_empty
+    end
   end
 
   def craftjson_with_iframe_url(url)

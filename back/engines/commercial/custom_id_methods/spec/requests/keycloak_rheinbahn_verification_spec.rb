@@ -11,7 +11,7 @@ context 'keycloak verification (Rheinbahn)' do
       'info' => {
         'name' => 'UNØY-AKTIG KOST NOST',
         'email' => 'test@govocal.com',
-        'email_verified' => false,
+        'email_verified' => true,
         'nickname' => '21929974805',
         'first_name' => 'UNØY-AKTIG',
         'last_name' => 'KOST NOST',
@@ -36,7 +36,7 @@ context 'keycloak verification (Rheinbahn)' do
         'raw_info' => {
           'sub' => 'b045a9a9-cf7e-4add-acc7-1f606eb1e9e0',
           'address' => {},
-          'email_verified' => false,
+          'email_verified' => true,
           'amr' => 'TestID',
           'pid' => '21929974805',
           'preferred_username' => '21929974805',
@@ -90,10 +90,8 @@ context 'keycloak verification (Rheinbahn)' do
   end
 
   def expect_user_to_not_be_verified(user)
-    expect(user.reload).to have_attributes({
-      verified: false,
-      custom_field_values: {}
-    })
+    expect(user.reload).to have_attributes({ verified: false })
+    expect(user.custom_field_answers).to be_empty
     expect(user.verifications.count).to eq 0
   end
 
@@ -137,6 +135,27 @@ context 'keycloak verification (Rheinbahn)' do
     })
 
     expect(response).to redirect_to('/en/?param=some-param&sso_flow=signup&sso_success=true')
+  end
+
+  context 'when the auth response says the email is not verified' do
+    let(:auth_hash) do
+      super().tap do |hash|
+        hash['info']['email_verified'] = false
+        hash['extra']['raw_info']['email_verified'] = false
+      end
+    end
+
+    it 'creates a new user whose email still has to be confirmed' do
+      get '/auth/keycloak'
+      follow_redirect!
+
+      user = User.order(created_at: :asc).last
+      expect(user).to have_attributes({
+        email: nil,
+        new_email: 'test@govocal.com'
+      })
+      expect(user.confirmation_required?).to be(true)
+    end
   end
 
   context 'when identity is already taken by a user' do

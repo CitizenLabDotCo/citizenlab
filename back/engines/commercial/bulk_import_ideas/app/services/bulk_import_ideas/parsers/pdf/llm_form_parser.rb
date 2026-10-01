@@ -39,6 +39,10 @@ module BulkImportIdeas::Parsers::Pdf
         raise unless e.message.include?('grammar is too large')
 
         response = llm.chat(message)
+      rescue RubyLLM::ForbiddenError => e
+        raise unless e.message.include?('Signature expired')
+
+        raise BulkImportIdeas::Error.new 'bulk_import_pdf_parsing_timeout', value: file_uploader.url
       end
       parse_response(response)
     end
@@ -49,7 +53,12 @@ module BulkImportIdeas::Parsers::Pdf
       return response if response.is_a?(Hash)
 
       parsed = response.match(/\{.+\}/m)&.try(:[], 0)
-      parsed.present? ? JSON.parse(parsed) : nil
+      return nil if parsed.blank?
+
+      JSON.parse(parsed.squish)
+    rescue JSON::ParserError => e
+      ErrorReporter.report_msg("LLM form parser returned malformed JSON: #{e.message}")
+      nil
     end
 
     def map_response_to_fields(response)

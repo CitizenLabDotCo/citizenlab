@@ -186,6 +186,7 @@ ur-PK:
       manual_project_participants: پروجیکٹ کے شرکاء کے لیے سرکاری پیغامات
       mention_in_internal_comment: اندرونی تبصرے میں ذکر کریں۔
       mention_in_official_feedback: اپ ڈیٹ میں ذکر کریں۔
+      merge_account_confirmation: اکاؤنٹ ضم کرنے کا تصدیقی کوڈ
       moderator_digest: پروجیکٹ مینیجرز کے لیے ہفتہ وار جائزہ
       native_survey_not_submitted: سروے جمع نہیں ہوا۔
       new_comment_for_admin: ایک پروجیکٹ میں نیا تبصرہ جس میں میں معتدل ہوں۔
@@ -477,6 +478,15 @@ ur-PK:
       preheader: '%{commentAuthor} نے تاثرات میں آپ کا ذکر کیا۔'
       subject: '%{organizationName} نے اپنے تاثرات میں آپ کا ذکر کیا۔'
       title: آپ کا ذکر ہو چکا ہے۔
+    merge_account_confirmation:
+      best_regards: نیک تمنائیں،
+      event_description: 'کسی نے %{organizationName} کے شراکتی پلیٹ فارم پر سائن ان کیا ہے اور اس سائن ان کو اس ای میل ایڈریس کا استعمال کرتے ہوئے اکاؤنٹ سے لنک کرنے کی درخواست کی ہے۔ اگر وہ آپ تھے، تو جاری رکھنے کے لیے یہ تصدیقی کوڈ درج کریں:'
+      expire_code: اس کوڈ کی میعاد ختم ہو جائے گی
+      hours_24: 24 گھنٹے۔
+      ignore_email: اگر یہ آپ نہیں تھے، تو آپ اس ای میل کو نظر انداز کر سکتے ہیں۔ کچھ بھی تبدیل نہیں ہوا ہے، اور اس ان باکس تک رسائی کے بغیر کوئی بھی اس کوڈ کو استعمال نہیں کر سکتا۔
+      preheader: '%{organizationName} کے لیے اپنے ای میل ایڈریس کی تصدیق کریں'
+      subject: '%{organizationName} کے شراکتی پلیٹ فارم کے لیے اپنے ای میل ایڈریس کی تصدیق کریں'
+      title: اپنے ای میل ایڈریس کی تصدیق کریں
     moderator_digest:
       cta_button: اپنے پروجیکٹ کا نظم کریں۔
       event_description: ہم نے آپ کے لیے وہ ان پٹ تیار کیا ہے جس نے پچھلے ہفتے کے دوران سب سے زیادہ سرگرمی پیدا کی ہے۔ معلوم کریں کہ آپ کے پروجیکٹ کے ساتھ کیا ہو رہا ہے!

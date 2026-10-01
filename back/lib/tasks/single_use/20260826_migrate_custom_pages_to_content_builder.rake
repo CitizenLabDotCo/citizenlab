@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-# Derives a `custom_page` Content Builder layout for every global custom page, from the info
-# sections and attachments the page renders today. It derives whatever
-# CustomPageLayoutService emits, so it grows with each widget that lands rather than needing
-# changes of its own.
+# Derives a `custom_page` Content Builder layout for every global custom page, from the banner,
+# title, info sections and attachments the page renders. It derives whatever CustomPageLayoutService
+# emits. A layout derived before a widget existed lacks its node; `overwrite` re-derives it, which
+# is the upgrade path for an already-migrated page.
 #
 # Run it while `custom_page_builder` is still off for the tenant: no admin can have opened the
 # builder, so there is no builder edit for a re-derive to overwrite. `overwrite` refuses a
@@ -22,6 +22,7 @@ namespace :single_use do
     service = ContentBuilder::CustomPageLayoutService.new
     refusals = []
     archived = []
+    dropped_lists = []
 
     # A switched-off section renders nowhere today, so it is not migrated. Its content stays
     # in the column until the cutover drops it, and this report is then the only record left —
@@ -45,8 +46,29 @@ namespace :single_use do
       end
     end
 
+    # A projects or events list can be switched on and still derive nothing: the page has no
+    # project filter, or the tenant has no `advanced_custom_pages`. The setting goes at the
+    # cutover with the columns, so the report is the last record that it was ever on. Read from
+    # the derived graph rather than re-deriving the rules, which live in the layout service.
+    archive_dropped_lists = lambda do |page, craftjs, tenant, script|
+      {
+        projects: [page.projects_enabled, ContentBuilder::CustomPageLayoutService::PROJECTS_ID],
+        events: [page.events_widget_enabled, ContentBuilder::CustomPageLayoutService::EVENTS_ID]
+      }.each do |section, (enabled, node_id)|
+        next if !enabled || craftjs.key?(node_id)
+
+        dropped_lists << section
+        script.reporter.add_change(
+          { 'enabled' => true, 'projects_filter_type' => page.projects_filter_type },
+          nil,
+          context: { tenant: tenant.host, page_id: page.id, slug: page.slug, section: section, reason: 'list not migrated' }
+        )
+      end
+    end
+
     summary = lambda do |_script|
       puts "   Disabled sections not migrated: #{archived.size}"
+      puts "   Lists switched on but not migrated: #{dropped_lists.size}"
       puts "   Tenants refused (flag already active): #{refusals.size}"
       refusals.each { |host| puts "     - #{host}" }
     end
@@ -71,7 +93,9 @@ namespace :single_use do
 
         context = { tenant: tenant.host, page_id: page.id, slug: page.slug }
         layout = ContentBuilder::Layout.find_by(content_buildable: page, code: code)
-        craftjs_json = service.craftjs_json_for(page)
+        # A dry run must not copy banner images; the derived graph is the same either way.
+        craftjs_json = service.craftjs_json_for(page, persist_images: script.execute?)
+        archive_dropped_lists.call(page, craftjs_json, tenant, script)
 
         if layout.nil?
           script.reporter.add_create('ContentBuilder::Layout', { code: code, node_ids: craftjs_json.keys }, context: context)

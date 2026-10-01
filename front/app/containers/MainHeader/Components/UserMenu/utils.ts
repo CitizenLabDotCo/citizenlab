@@ -11,7 +11,8 @@ import { AuthenticationRequirements } from 'api/authentication/authentication_re
 //                      (missing name, password, custom fields, verification...).
 // - 'complete'         nothing outstanding.
 //
-// Only the `confirm_new_*` actions are treated as blocking. `confirm_email` is
+// Only the `confirm_new_*` and `confirm_merge_account` actions are treated as
+// blocking. `confirm_email` is
 // resolved while the user is still logged out, and the `reconfirm_*` actions are
 // a permission-level freshness check — neither should lock someone out of their
 // own profile.
@@ -29,7 +30,12 @@ export const getUserMenuState = (
   const { email_action_required, phone_action_required } =
     authRequirements.requirements.authentication;
 
-  if (email_action_required === 'confirm_new_email') return 'confirm-email';
+  if (
+    email_action_required === 'confirm_new_email' ||
+    email_action_required === 'confirm_merge_account'
+  ) {
+    return 'confirm-email';
+  }
   if (phone_action_required === 'confirm_new_phone') return 'confirm-phone';
   if (!authRequirements.permitted) return 'complete-profile';
 

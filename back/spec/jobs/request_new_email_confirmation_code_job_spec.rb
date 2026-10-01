@@ -83,5 +83,14 @@ RSpec.describe RequestNewEmailConfirmationCodeJob do
       job.perform(user, new_email: new_email)
       expect(user.reload.confirmation_required?).to be false
     end
+
+    # A user holds one pending address at a time.
+    it 'replaces a pending merge_target_email' do
+      user.update_columns(merge_target_email: 'someone-else@example.org')
+
+      job.perform(user, new_email: new_email)
+
+      expect(user.reload.merge_target_email).to be_nil
+    end
   end
 end

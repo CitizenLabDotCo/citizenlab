@@ -45,7 +45,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError, isError } from 'utils/helperUtils';
-import { isSpaceModerator } from 'utils/permissions/roles';
+import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
 import { validateSlug } from 'utils/textUtils';
 
 import messages from '../../messages';
@@ -316,7 +316,10 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       );
     }
 
-    if (isSpaceModerator(authUser) && !spaceId) {
+    // Mirrors ProjectFolders::FolderPolicy#create?: a space manager may only
+    // create folders inside their own space, but an admin may leave the space
+    // empty even when they also manage one.
+    if (!isAdmin(authUser) && isSpaceModerator(authUser) && !spaceId) {
       valid = false;
       setSpaceIdError(true);
     }

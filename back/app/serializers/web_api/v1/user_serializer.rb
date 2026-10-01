@@ -2,6 +2,7 @@
 
 class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   PRIVATE = proc { |object, params| view_private_attributes? object, params }
+  OWN_EARLY_ACCESS = proc { |object, params| own_early_access? object, params }
 
   # Public attributes
   attributes :locale,
@@ -44,13 +45,15 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   attribute :verified, if: PRIVATE
   attribute :followings_count, if: PRIVATE
   attribute :onboarding, if: PRIVATE
+  attribute :early_access_opt_ins, if: OWN_EARLY_ACCESS
+  attribute :offered_early_access_features, if: OWN_EARLY_ACCESS
 
   attribute :no_password, if: PRIVATE do |object|
     object.no_password?
   end
 
   attribute :custom_field_values, if: PRIVATE do |object|
-    CustomFieldService.remove_hidden_custom_fields(object.custom_field_values)
+    CustomFieldService.remove_hidden_custom_fields(CustomFieldValuesTransitionService.new.custom_field_values(object))
   end
 
   attribute :unread_notifications, if: PRIVATE do |object|
@@ -66,6 +69,7 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :new_email, if: PRIVATE
+  attribute :merge_target_email, if: PRIVATE
 
   attribute :phone, if: PRIVATE
   attribute :phone_confirmed_at, if: PRIVATE
@@ -77,5 +81,9 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
 
   def self.view_private_attributes?(object, params = {})
     Pundit.policy!(user_context(params), object).view_private_attributes?
+  end
+
+  def self.own_early_access?(object, params = {})
+    Pundit.policy!(user_context(params), object).own_early_access?
   end
 end

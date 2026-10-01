@@ -61,6 +61,23 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::FormSyncSchemaBuilder do
       end
     end
 
+    context 'with labels containing extra whitespace' do
+      let!(:text_field) { create(:custom_field_text, resource: custom_form, key: 'text_field', title_multiloc: { 'en' => "   Your   \r\n name   \r\n" }) }
+      let!(:select_field) do
+        field = create(:custom_field_select, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => "   Your   \r\n preference   \r\n" })
+        field.options.create!(key: 'opt_a', title_multiloc: { 'en' => '  Option   A  ' })
+        field.options.create!(key: 'opt_b', title_multiloc: { 'en' => 'Option   B' })
+        field
+      end
+
+      it 'normalizes field and option labels before building the schema' do
+        schema = builder.output_schema
+
+        expect(schema[:properties]['question_1'][:description]).to include("'Your name'")
+        expect(schema[:properties]['question_2'][:items][:enum]).to eq(['Option A', 'Option B'])
+      end
+    end
+
     context 'with scale fields' do
       let!(:rating_field) { create(:custom_field_rating, resource: custom_form, key: 'rating_field', title_multiloc: { 'en' => 'Rating field' }) }
 

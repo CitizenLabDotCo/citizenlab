@@ -45,6 +45,7 @@ export type IdMethodName =
   | 'keycloak'
   | 'nemlog_in'
   | 'oostende_rrn'
+  | 'publik'
   | 'twoday'
   | 'vienna_citizen'
   | 'vienna_employee';
@@ -64,7 +65,7 @@ export type MethodMetadata = {
   other_attributes: Multiloc[];
   locked_custom_fields: Multiloc[];
   other_custom_fields: Multiloc[];
-  email_always_present: boolean;
+  confirmed_email_always_present: boolean;
 };
 
 // Base shape shared by every id method. Concrete methods are built from this by
@@ -133,6 +134,8 @@ export type IDKeycloakMethod = TGenericMethod<
   { ui_method_name: string; provider: IconNames }
 >;
 
+export type IDPublikMethod = TGenericMethod<'publik', { logo_url?: string }>;
+
 export type IDTwodayMethod = TGenericMethod<
   'twoday',
   { ui_method_name: string }
@@ -150,6 +153,7 @@ type TOtherMethodName = Exclude<
   | 'id_austria'
   | 'id_card_lookup'
   | 'keycloak'
+  | 'publik'
   | 'twoday'
 >;
 
@@ -165,5 +169,6 @@ export type IdMethodData =
   | IDIdAustriaMethod
   | IDKeycloakMethod
   | IDLookupMethod
+  | IDPublikMethod
   | IDTwodayMethod
   | IDOtherMethod;

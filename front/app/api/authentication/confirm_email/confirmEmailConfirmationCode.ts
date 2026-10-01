@@ -66,6 +66,28 @@ export const reconfirmCodeEmail = async (code: string) => {
   }
 };
 
+// On success the requesting account no longer exists, so the response carries a
+// token for the survivor. The whole cache is reset rather than a few keys: the
+// signed-in user is now a different person.
+export const confirmCodeMergeAccount = async (code: string) => {
+  try {
+    const res = await fetcher<ConfirmCodeResponse>({
+      path: `/user/confirm_code_merge_account`,
+      action: 'post',
+      body: {
+        confirmation: { code },
+      },
+    });
+
+    setJwt(res.data.attributes.auth_token.token, false);
+    invalidateQueryCache();
+
+    return true;
+  } catch (errors) {
+    throw errors.errors;
+  }
+};
+
 export const confirmCodeNewEmail = async (code: string) => {
   try {
     await fetcher({

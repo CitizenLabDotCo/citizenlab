@@ -194,38 +194,38 @@ RSpec.describe DecidimImporter::Importer do
   end
 
   describe '.resolve_scope_areas!' do
-    it 'rewrites each idea’s parked scope pointer to the imported area’s id and title' do
+    it 'rewrites each idea import’s parked scope pointer to the imported area’s id and title' do
       area = create(:area, title_multiloc: { 'en' => 'Utah' })
-      scoped = create(:idea, custom_field_values: {})
-      plain = create(:idea, custom_field_values: {})
+      scoped = create(:idea_import)
+      plain = create(:idea_import)
       area_attrs = { 'title_multiloc' => { 'en' => 'Utah' } }
       template = {
         'models' => {
           'area' => [area_attrs],
-          # The scoped idea's pointer is the *same* area attributes hash (a YAML anchor/alias in practice).
-          'idea' => [{ 'custom_field_values' => { 'decidim_scope' => area_attrs } }, { 'custom_field_values' => {} }]
+          # The scoped import's pointer is the *same* area attributes hash (a YAML anchor/alias in practice).
+          'bulk_import_ideas/idea_import' => [{ 'extra_info' => { 'decidim_scope' => area_attrs } }, { 'extra_info' => {} }]
         }
       }
-      created = { 'Area' => [area.id], 'Idea' => [scoped.id, plain.id] }
+      created = { 'Area' => [area.id], 'BulkImportIdeas::IdeaImport' => [scoped.id, plain.id] }
 
       described_class.resolve_scope_areas!(template, created)
 
-      expect(scoped.reload.custom_field_values['decidim_scope']).to eq(
+      expect(scoped.reload.extra_info['decidim_scope']).to eq(
         'area_id' => area.id, 'title_multiloc' => { 'en' => 'Utah' }
       )
-      expect(plain.reload.custom_field_values).to eq({})
+      expect(plain.reload.extra_info).to eq({})
     end
 
-    it 'skips the pass when idea/area counts do not line up with the created ids' do
-      idea = create(:idea, custom_field_values: { 'decidim_scope' => { 'title_multiloc' => {} } })
-      template = { 'models' => { 'area' => [{}], 'idea' => [idea.attributes.slice('custom_field_values')] } }
+    it 'skips the pass when idea-import/area counts do not line up with the created ids' do
+      idea_import = create(:idea_import, extra_info: { 'decidim_scope' => { 'title_multiloc' => {} } })
+      template = { 'models' => { 'area' => [{}], 'bulk_import_ideas/idea_import' => [idea_import.attributes.slice('extra_info')] } }
 
-      described_class.resolve_scope_areas!(template, { 'Area' => [], 'Idea' => [idea.id] })
+      described_class.resolve_scope_areas!(template, { 'Area' => [], 'BulkImportIdeas::IdeaImport' => [idea_import.id] })
 
-      expect(idea.reload.custom_field_values['decidim_scope']).to eq('title_multiloc' => {})
+      expect(idea_import.reload.extra_info['decidim_scope']).to eq('title_multiloc' => {})
     end
 
-    it 'is a no-op when the template has no ideas or areas' do
+    it 'is a no-op when the template has no idea imports or areas' do
       expect { described_class.resolve_scope_areas!({ 'models' => {} }, {}) }.not_to raise_error
     end
   end
@@ -275,8 +275,7 @@ RSpec.describe DecidimImporter::Importer do
 
     def flags
       {
-        'project_static_pages' => { 'allowed' => true, 'enabled' => true },
-        'parallel_participation' => { 'allowed' => true, 'enabled' => true }
+        'project_static_pages' => { 'allowed' => true, 'enabled' => true }
       }
     end
 
@@ -304,7 +303,6 @@ RSpec.describe DecidimImporter::Importer do
 
       config = AppConfiguration.instance.reload
       expect(config.feature_activated?('project_static_pages')).to be(true)
-      expect(config.feature_activated?('parallel_participation')).to be(true)
       expect(config.settings('core', 'organization_name')).to eq(name_before) # untouched
     ensure
       file&.unlink
@@ -315,7 +313,7 @@ RSpec.describe DecidimImporter::Importer do
         .merge(flags))
 
       expect(described_class.apply_import_app_config_file(file.path)).to eq([])
-      expect(AppConfiguration.instance.reload.feature_activated?('parallel_participation')).to be(true)
+      expect(AppConfiguration.instance.reload.feature_activated?('project_static_pages')).to be(true)
     ensure
       file&.unlink
     end

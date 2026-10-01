@@ -1,5 +1,7 @@
 import { Multiloc, ILinks, IRelationship } from 'typings';
 
+import { IGroupData } from 'api/groups/types';
+
 import { Keys } from 'utils/cl-react-query/types';
 
 import { CampaignName, CampaignContext } from '../types';
@@ -110,6 +112,7 @@ export interface IUpdateEmailCampaignProperties {
 
 export interface IEmailCampaign {
   data: IEmailCampaignData;
+  included?: IGroupData[];
 }
 
 export interface EmailCampaignsQueryParameters {

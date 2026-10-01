@@ -99,25 +99,43 @@ RSpec.describe Surveys::AverageGenerator do
         project: survey_phase.project,
         creation_phase: survey_phase,
         phases: [survey_phase],
-        custom_field_values: { 'place_to_live' => 3, 'overall_value' => 3, 'trust_in_government' => 3 },
+        custom_field_answers: [
+          build(:custom_field_answer, key: 'place_to_live', value: 3),
+          build(:custom_field_answer, key: 'overall_value', value: 3),
+          build(:custom_field_answer, key: 'trust_in_government', value: 3)
+        ],
         created_at: '2025-01-20')
       create(:native_survey_response,
         project: survey_phase.project,
         creation_phase: survey_phase,
         phases: [survey_phase],
-        custom_field_values: { 'sense_of_safety' => 2, 'quality_of_services' => 2, 'responsiveness_of_officials' => 1 },
+        custom_field_answers: [
+          build(:custom_field_answer, key: 'sense_of_safety', value: 2),
+          build(:custom_field_answer, key: 'quality_of_services', value: 2),
+          build(:custom_field_answer, key: 'responsiveness_of_officials', value: 1)
+        ],
         created_at: '2025-01-20')
       create(:native_survey_response,
         project: survey_phase.project,
         creation_phase: survey_phase,
         phases: [survey_phase],
-        custom_field_values: { 'affordable_housing' => 4, 'cleanliness_and_maintenance' => 3, 'transparency_of_money_spent' => 1, 'another_question' => 2 },
+        custom_field_answers: [
+          build(:custom_field_answer, key: 'affordable_housing', value: 4),
+          build(:custom_field_answer, key: 'cleanliness_and_maintenance', value: 3),
+          build(:custom_field_answer, key: 'transparency_of_money_spent', value: 1),
+          build(:custom_field_answer, key: 'another_question', value: 2)
+        ],
         created_at: '2025-04-20')
       create(:native_survey_response,
         project: survey_phase.project,
         creation_phase: survey_phase,
         phases: [survey_phase],
-        custom_field_values: { 'sense_of_safety' => 1, 'quality_of_services' => 5, 'responsiveness_of_officials' => 2, 'another_question' => 1 },
+        custom_field_answers: [
+          build(:custom_field_answer, key: 'sense_of_safety', value: 1),
+          build(:custom_field_answer, key: 'quality_of_services', value: 5),
+          build(:custom_field_answer, key: 'responsiveness_of_officials', value: 2),
+          build(:custom_field_answer, key: 'another_question', value: 1)
+        ],
         created_at: '2025-04-20')
     end
 

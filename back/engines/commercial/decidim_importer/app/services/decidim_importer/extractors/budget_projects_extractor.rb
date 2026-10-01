@@ -46,6 +46,7 @@ module DecidimImporter
 
         register_ideas_phase(uid, idea, phase)
         register_input_topic(uid, idea, row[COLUMNS[:category]])
+        register_idea_import(uid, idea)
         idea
       end
 

@@ -186,6 +186,7 @@ ar-SA:
       manual_project_participants: الرسائل الرسمية للمشاركين في المشروع
       mention_in_internal_comment: أذكر في تعليق داخلي
       mention_in_official_feedback: ذكر في تحديث
+      merge_account_confirmation: رمز تأكيد دمج الحساب
       moderator_digest: نظرة عامة أسبوعية لمديري المشاريع
       native_survey_not_submitted: لم يتم إرسال الاستطلاع
       new_comment_for_admin: تعليق جديد في مشروع أُشرف عليه
@@ -477,6 +478,15 @@ ar-SA:
       preheader: ذكرك %{commentAuthor} في ملاحظات
       subject: ذكرك %{organizationName} في الملاحظات
       title: لقد تم ذكرك
+    merge_account_confirmation:
+      best_regards: مع أطيب التحيات،
+      event_description: 'قام شخص ما بتسجيل الدخول إلى منصة المشاركة الخاصة بـ %{organizationName} وطلب ربط تسجيل الدخول هذا بالحساب المرتبط بعنوان البريد الإلكتروني هذا. إذا كنت أنت من قام بذلك، فأدخل رمز التأكيد هذا للمتابعة:'
+      expire_code: ستنتهي صلاحية هذا الرمز خلال
+      hours_24: 24 ساعة.
+      ignore_email: إذا لم تكن أنت من قام بذلك، يمكنك تجاهل هذا البريد الإلكتروني بأمان. لم يتغير شيء، ولا يمكن لأي شخص استخدام هذا الرمز دون الوصول إلى صندوق الوارد هذا.
+      preheader: أكّد عنوان بريدك الإلكتروني لـ %{organizationName}
+      subject: أكّد عنوان بريدك الإلكتروني لمنصة المشاركة الخاصة بـ %{organizationName}
+      title: أكّد عنوان بريدك الإلكتروني
     moderator_digest:
       cta_button: إدارة مشروعك
       event_description: لقد جمعنا لك المشاركات التي حظيت بأكبر قدر من النشاط خلال الأسبوع الماضي. اكتشف ما يحدث في مشروعك!

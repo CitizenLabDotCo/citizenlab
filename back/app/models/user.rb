@@ -20,7 +20,6 @@ require Rails.root.join('lib/email_domain_blacklist')
 #  locale                    :string
 #  bio_multiloc              :jsonb
 #  invite_status             :string
-#  custom_field_values       :jsonb
 #  registration_completed_at :datetime
 #  verified                  :boolean          default(FALSE), not null
 #  email_confirmed_at        :datetime
@@ -38,6 +37,8 @@ require Rails.root.join('lib/email_domain_blacklist')
 #  phone                     :string
 #  new_phone                 :string
 #  phone_confirmed_at        :datetime
+#  early_access_opt_ins      :jsonb            not null
+#  merge_target_email        :string
 #
 # Indexes
 #
@@ -120,6 +121,14 @@ class User < ApplicationRecord
       end
     end
     private :deletion_job_user_id
+
+    def early_access_opt_ins_json_schema
+      {
+        'type' => 'array',
+        'uniqueItems' => true,
+        'items' => { 'type' => 'string' }
+      }
+    end
 
     def onboarding_json_schema
       {
@@ -225,6 +234,7 @@ class User < ApplicationRecord
   has_one :new_email_confirmation, dependent: :destroy
   has_one :phone_confirmation, dependent: :destroy
   has_one :new_phone_confirmation, dependent: :destroy
+  has_one :merge_account_confirmation, dependent: :destroy
   has_many :baskets, -> { order(:phase_id) }
   before_destroy :destroy_baskets
 
@@ -234,7 +244,8 @@ class User < ApplicationRecord
   has_many :jobs_trackers, class_name: 'Jobs::Tracker', foreign_key: :owner_id, dependent: :nullify
   has_many :invites_imports, foreign_key: :importer_id, dependent: :destroy
 
-  store_accessor :custom_field_values, :gender, :birthyear, :domicile
+  self.ignored_columns += %w[custom_field_values] # backup only; the answers are the source of truth
+
   store_accessor :onboarding, :topics_and_areas
 
   validates :locale, presence: true, unless: :invite_pending?
@@ -244,20 +255,16 @@ class User < ApplicationRecord
   validate :validate_phone_format
   validate :validate_new_phone_format
   validates :new_email, format: { with: EMAIL_REGEX }, allow_nil: true
+  validates :merge_target_email, format: { with: EMAIL_REGEX }, allow_nil: true
   validates :first_name, :last_name, format: { without: /@/ }, allow_nil: true
   validates :locale, inclusion: { in: proc { AppConfiguration.instance.settings('core', 'locales') } }
   validates :bio_multiloc, multiloc: { presence: false, html: true }
-  validates :gender, inclusion: { in: GENDERS }, allow_nil: true
-  validates :birthyear, numericality: { only_integer: true, greater_than_or_equal_to: 1900, less_than: Time.zone.now.year }, allow_nil: true
-  validates :domicile, inclusion: { in: proc { ['outside'] + Area.select(:id).map(&:id) } }, allow_nil: true
   validates :invite_status, inclusion: { in: INVITE_STATUSES }, allow_nil: true
 
-  # NOTE: All validation except for required
-  validates :custom_field_values, json: {
-    schema: -> { CustomFieldService.new.fields_to_json_schema_ignore_required(CustomField.registration) }
-  }, on: :form_submission, if: :custom_field_values_changed? # only called if `save` is called w/ `context: :form_submission`
-
   validates :onboarding, json: { schema: -> { User.onboarding_json_schema } }
+  validates :early_access_opt_ins, json: { schema: -> { User.early_access_opt_ins_json_schema } },
+    if: :early_access_opt_ins_changed?
+  validate :validate_early_access_opt_ins_offered, if: :early_access_opt_ins_changed?
 
   validate :validate_not_duplicate_email
   validate :validate_not_duplicate_new_email
@@ -275,14 +282,6 @@ class User < ApplicationRecord
   scope :blocked, -> { where('? < block_end_at', Time.zone.now) }
   scope :not_blocked, -> { where(block_end_at: nil).or(where('? > block_end_at', Time.zone.now)) }
   scope :active, -> { registered.not_blocked }
-
-  def update_merging_custom_fields!(attributes)
-    attributes = attributes.deep_stringify_keys
-    update!(
-      **attributes,
-      custom_field_values: custom_field_values.merge(attributes['custom_field_values'] || {})
-    )
-  end
 
   def to_token_payload
     # Converting into hours to avoid issues when crossing DST boundaries. In other words,
@@ -333,6 +332,23 @@ class User < ApplicationRecord
     self[:last_name].blank? && self[:first_name].blank? && !invite_pending?
   end
 
+  def early_access_tiers
+    return [] unless admin?
+
+    super_admin? ? AppConfiguration::Settings::EARLY_ACCESS_TIERS : %w[general]
+  end
+
+  # @return [Hash] the features this user may opt into, mapped to the tier they are offered in
+  def offered_early_access_features
+    tiers = early_access_tiers
+    AppConfiguration::Settings.early_access_tiers.select { |_name, tier| tiers.include?(tier) }
+  end
+
+  # The opt-ins that still apply: a feature can stop being offered after the user opted in.
+  def early_access_overrides
+    Set.new(early_access_opt_ins) & offered_early_access_features.keys
+  end
+
   # Authenticating ALWAYS requires a non-blank password that matches the stored digest.
   # A user without a password digest (email-only, SSO or invited account) can never be
   # authenticated here, no matter what is passed in - a blank password is not a valid
@@ -363,11 +379,6 @@ class User < ApplicationRecord
 
   def active?
     registered? && !blocked? && authenticated_at_least_once?
-  end
-
-  def blank_and_can_be_deleted?
-    # atm it can be true only for users registered with ClaveUnica and MitID who haven't entered email
-    sso? && email.blank? && new_email.blank? && password_digest.blank? && identity_ids.count == 1
   end
 
   def show_public_profile?
@@ -409,6 +420,15 @@ class User < ApplicationRecord
 
   def new_phone_confirmation_pending?
     new_phone.present?
+  end
+
+  def answer_for_code(code)
+    key = CustomField.registration.find_by(code: code)&.key
+    key && answer_for_key(key)
+  end
+
+  def merge_account_confirmation_pending?
+    merge_target_email.present?
   end
 
   private
@@ -580,10 +600,20 @@ class User < ApplicationRecord
     Rails.logger.info "Validation error! Email banned: #{value.split('@')&.last}"
   end
 
+  def validate_early_access_opt_ins_offered
+    return unless early_access_opt_ins.is_a?(Array)
+
+    added = early_access_opt_ins - Array(early_access_opt_ins_was)
+    not_offered = added - offered_early_access_features.keys
+    return if not_offered.empty?
+
+    errors.add(:early_access_opt_ins, 'not_offered', value: not_offered)
+  end
+
   def auto_confirm_on_invite_accept
     self.email_confirmed_at = Time.zone.now
     self.confirmation_required = false
-    email_confirmation&.clear_code!
+    email_confirmation&.consume!
   end
 
   def remove_initiated_notifications

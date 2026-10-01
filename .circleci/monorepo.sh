@@ -148,9 +148,13 @@ function print_status {
 
 function create_request_body {
   echo "$1" | 
-  jq --raw-output --arg branch "${CIRCLE_BRANCH}" --arg trigger "${TRIGGER_PARAM_NAME}" --argjson params "${CI_PARAMETERS:-null}" '. | 
+  jq --raw-output --arg branch "${CIRCLE_BRANCH}" --arg trigger "${TRIGGER_PARAM_NAME}" --argjson params "${CI_PARAMETERS:-null}" '. as $statuses | 
+    def uncovered(p): ($statuses | map(select(.package == p)) | first | .changes // 1) == 0;
+    . | 
     map(select(.changes > 0)) | 
     reduce .[] as $i (($params // {}) * { ($trigger): false }; .[$i.package] = true) | 
+    .epic_back_artifact = uncovered("back") | 
+    .epic_front_artifact = uncovered("front") | 
     { branch: $branch, parameters: . } | 
     @json'
 }
@@ -241,11 +245,10 @@ function main {
 
   echo "Number of packages changed: ${changed_packages} / ${total_packages}"
 
-  if [[ "${changed_packages}" != "0" ]]; then
-    create_pipeline "$( create_request_body "${statuses}" )"
-  else
-    echo "No changes in packages. Skip workflow trigger."
+  if [[ "${changed_packages}" == "0" ]]; then
+    echo "No changes in packages. Triggering only the epic artifact builds."
   fi
+  create_pipeline "$( create_request_body "${statuses}" )"
 
   if [[ "${MONOREPO_DEBUG}" == "true" ]]; then
     debug

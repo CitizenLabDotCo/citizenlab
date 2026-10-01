@@ -41,6 +41,12 @@ const isWrongConfirmationCodeError = (e: any) => {
   return e?.code?.[0]?.error === 'invalid';
 };
 
+// Only confirm_code_merge_account returns this: the code was right, but that account
+// may not be linked to. Which rule refused is not disclosed, so one message covers all.
+const isMergeNotAllowedError = (e: any) => {
+  return e?.base?.[0]?.error === 'merge_not_allowed';
+};
+
 const EmailConfirmation = ({
   email,
   loading,
@@ -91,6 +97,11 @@ const EmailConfirmation = ({
 
       if (isWrongConfirmationCodeError(e)) {
         setError('wrong_confirmation_code');
+        return;
+      }
+
+      if (isMergeNotAllowedError(e)) {
+        setError('account_merge_not_allowed');
         return;
       }
 

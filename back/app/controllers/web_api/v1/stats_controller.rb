@@ -11,4 +11,11 @@ class WebApi::V1::StatsController < ApplicationController
   def parse_time_boundaries
     @start_at, @end_at, @no_data = TimeBoundaries.parse(params[:start_at], params[:end_at])
   end
+
+  def apply_exclude_admins_and_moderators_filter(records, user_column)
+    role_exclusion = StatisticsRoleExclusion.new
+    return records unless role_exclusion.exclude_admins_and_moderators?
+
+    role_exclusion.exclude_admin_and_moderator_records(records, user_column)
+  end
 end

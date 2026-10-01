@@ -82,6 +82,11 @@ describe McpServer::Tools::UpdatePhasePermission do
     end
 
     it 'sets the verification expiry' do
+      # require_verification only reads back on a platform that has a verification method.
+      AppConfiguration.instance.settings['id_config'] =
+        { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+      AppConfiguration.instance.save!
+
       response = run(params.merge(
         permitted_by: 'users',
         require_verification: true,

@@ -54,7 +54,8 @@ module DecidimImporter
 
         register_ideas_phase(uid, idea, phase)
         register_input_topic(uid, idea, row[COLUMNS[:category]])
-        register_scope_area(idea, row[COLUMNS[:scope]])
+        idea_import = register_idea_import(uid, idea)
+        register_scope_area(idea_import, row[COLUMNS[:scope]])
         idea
       end
 

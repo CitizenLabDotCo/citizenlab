@@ -186,6 +186,7 @@ hu-HU:
       manual_project_participants: Hivatalos üzenetek a projekt résztvevőinek
       mention_in_internal_comment: Említse meg egy belső megjegyzésben
       mention_in_official_feedback: Említse meg a frissítésben
+      merge_account_confirmation: Fiókösszevonási megerősítő kód
       moderator_digest: Heti áttekintés projektmenedzsereknek
       native_survey_not_submitted: A felmérés nem került benyújtásra
       new_comment_for_admin: Új megjegyzés egy általam moderált projektben
@@ -477,6 +478,15 @@ hu-HU:
       preheader: '%{commentAuthor} megemlítette Önt visszajelzésében'
       subject: '%{organizationName} megemlítette Önt visszajelzésében'
       title: Megemlítettek téged
+    merge_account_confirmation:
+      best_regards: Üdvözlettel,
+      event_description: 'Valaki bejelentkezett a(z) %{organizationName} részvételi platformjára, és kérte a bejelentkezés összekapcsolását az ezzel az e-mail-címmel rendelkező fiókkal. Ha Ön volt az, a folytatáshoz adja meg ezt a megerősítő kódot:'
+      expire_code: 'Ez a kód lejár:'
+      hours_24: 24 óra.
+      ignore_email: Ha nem Ön volt az, nyugodtan hagyja figyelmen kívül ezt az e-mailt. Semmi sem változott, és senki sem tudja használni ezt a kódot a beérkező leveleihez való hozzáférés nélkül.
+      preheader: Erősítse meg e-mail-címét a(z) %{organizationName} számára
+      subject: Erősítse meg e-mail-címét a(z) %{organizationName} részvételi platformján
+      title: E-mail-cím megerősítése
     moderator_digest:
       cta_button: Projekt kezelése
       event_description: Összegyűjtöttük azokat a hozzászólásokat, amelyek az elmúlt héten a legtöbb aktivitást generálták. Tudd meg, mi újság a projekteddel!

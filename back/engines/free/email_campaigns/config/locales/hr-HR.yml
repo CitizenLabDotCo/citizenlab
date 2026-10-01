@@ -186,6 +186,7 @@ hr-HR:
       manual_project_participants: Službene poruke sudionicima projekta
       mention_in_internal_comment: Spomenuti u internom komentaru
       mention_in_official_feedback: Spominjanje u objavi
+      merge_account_confirmation: Potvrdni kôd za spajanje računa
       moderator_digest: Tjedni pregled za voditelja projekata
       native_survey_not_submitted: Anketa nije poslana
       new_comment_for_admin: Novi komentar u projektu kojim upravljam
@@ -477,6 +478,15 @@ hr-HR:
       preheader: '%{commentAuthor} vas je spomenuo/la u povratnim informacijama'
       subject: '%{organizationName} vas je spomenuo/la u povratnim informacijama'
       title: Spomenuti ste
+    merge_account_confirmation:
+      best_regards: Srdačan pozdrav,
+      event_description: 'Netko se prijavio na platformu za sudjelovanje organizacije %{organizationName} i zatražio povezivanje te prijave s računom koji upotrebljava ovu adresu e-pošte. Ako ste to bili vi, unesite ovaj potvrdni kôd za nastavak:'
+      expire_code: Ovaj kôd istječe za
+      hours_24: 24 sata.
+      ignore_email: Ako to niste bili vi, možete slobodno zanemariti ovu e-poruku. Ništa se nije promijenilo i nitko ne može upotrijebiti ovaj kôd bez pristupa ovom sandučiću e-pošte.
+      preheader: Potvrdite svoju adresu e-pošte za %{organizationName}
+      subject: Potvrdite svoju adresu e-pošte za platformu za sudjelovanje organizacije %{organizationName}
+      title: Potvrdite svoju adresu e-pošte
     moderator_digest:
       cta_button: Upravljajte svojim projektom
       event_description: Prikupili smo za vas informacije koje su generirale najviše aktivnosti tijekom proteklog tjedna. Saznajte što se događa s vašim projektom!

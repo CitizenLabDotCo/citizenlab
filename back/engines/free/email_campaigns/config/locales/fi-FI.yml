@@ -186,6 +186,7 @@ fi-FI:
       manual_project_participants: Viralliset viestit projektin osallistujille
       mention_in_internal_comment: Mainitse sisäisessä kommentissa
       mention_in_official_feedback: Mainitse päivityksessä
+      merge_account_confirmation: Tilien yhdistämisen vahvistuskoodi
       moderator_digest: Viikkokatsaus projektipäälliköille
       native_survey_not_submitted: Kyselyä ei lähetetty
       new_comment_for_admin: Uusi kommentti moderoimassani projektissa
@@ -477,6 +478,15 @@ fi-FI:
       preheader: '%{commentAuthor} mainitsi sinut palautteessa'
       subject: '%{organizationName} mainitsi sinut palautteessaan'
       title: Sinut on mainittu
+    merge_account_confirmation:
+      best_regards: Ystävällisin terveisin,
+      event_description: 'Joku kirjautui organisaation %{organizationName} osallistumisalustalle ja pyysi yhdistämään kyseisen kirjautumisen tähän sähköpostiosoitteeseen liitettyyn tiliin. Jos se olit sinä, syötä tämä vahvistuskoodi jatkaaksesi:'
+      expire_code: Tämä koodi vanhenee
+      hours_24: 24 tuntia.
+      ignore_email: Jos et ollut sinä, voit jättää tämän sähköpostin huomiotta. Mitään ei ole muutettu, eikä kukaan voi käyttää tätä koodia ilman pääsyä tähän sähköpostilaatikkoon.
+      preheader: Vahvista sähköpostiosoitteesi organisaatiolle %{organizationName}
+      subject: Vahvista sähköpostiosoitteesi organisaation %{organizationName} osallistumisalustalla
+      title: Vahvista sähköpostiosoitteesi
     moderator_digest:
       cta_button: Hallitse projektiasi
       event_description: Olemme koonneet sinulle palautteen, joka on herättänyt eniten aktiivisuutta kuluneen viikon aikana. Ota selvää, mitä projektissasi tapahtuu!

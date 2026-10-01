@@ -14,10 +14,13 @@ const useCraftComponentDefaultPadding = () => {
   const parentNode = query.node(parent);
   const parentName = parentNode.get().data.displayName;
 
+  // A page's body region is a full-width column like ROOT, so its direct children need
+  // the same gutter on small screens.
   return isSmallerThanTablet &&
     (parent === ROOT_NODE ||
       parentName === 'Box' ||
-      parentName === 'ProjectPageBody')
+      parentName === 'ProjectPageBody' ||
+      parentName === 'CustomPageBody')
     ? DEFAULT_PADDING
     : '0px';
 };

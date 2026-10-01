@@ -19,12 +19,12 @@ describe Permissions::UserRequirementsService do
         first_name: 'Jane',
         last_name: 'Jacobs',
         email: 'jane@jacobs.com',
-        custom_field_values: {
-          'gender' => 'female',
-          'birthyear' => 1975,
-          'extra_required_field' => false,
-          'extra_optional_field' => 29
-        },
+        custom_field_answers: [
+          build(:custom_field_answer, key: 'gender', value: 'female'),
+          build(:custom_field_answer, key: 'birthyear', value: 1975),
+          build(:custom_field_answer, key: 'extra_required_field', value: false),
+          build(:custom_field_answer, key: 'extra_optional_field', value: 29)
+        ],
         password: 'supersecret',
         email_confirmed_at: Time.now
       )
@@ -128,7 +128,8 @@ describe Permissions::UserRequirementsService do
         end
 
         it 'permits a light confirmed resident' do
-          user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
+          user.custom_field_answers.destroy_all
+          user.update!(password_digest: nil, identity_ids: [], first_name: nil)
           requirements = service.requirements(permission, user)
           expect(service.permitted?(requirements)).to be true
           expect(requirements).to eq({
@@ -293,7 +294,8 @@ describe Permissions::UserRequirementsService do
         end
 
         it 'does not permit a light confirmed resident' do
-          user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
+          user.custom_field_answers.destroy_all
+          user.update!(password_digest: nil, identity_ids: [], first_name: nil)
           requirements = service.requirements(permission, user)
           expect(service.permitted?(requirements)).to be false
           expect(requirements).to eq({
@@ -525,6 +527,13 @@ describe Permissions::UserRequirementsService do
         let(:groups) { [create(:group), create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])] }
         let(:group_permission) { create(:permission, permitted_by: 'users', groups: groups) }
 
+        before do
+          # A verification group only asks for verification where verifying is possible.
+          AppConfiguration.instance.settings['id_config'] =
+            { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+          AppConfiguration.instance.save!
+        end
+
         context 'there is no user' do
           it 'requires verification' do
             requirements = service.requirements(group_permission, nil)
@@ -642,6 +651,14 @@ describe Permissions::UserRequirementsService do
             expect(requirements[:authentication][:email_action_required]).to eq :provide_new_email
           end
 
+          it 'asks for the merge code while a merge into another account is pending' do
+            verified_permission.update!(require_confirmed_email: true)
+            user.update!(unique_code: '1234abcd', email: nil, new_email: nil, password: nil)
+            user.update_columns(merge_target_email: 'existing@example.org')
+            requirements = service.requirements(verified_permission, user)
+            expect(requirements[:authentication][:email_action_required]).to eq :confirm_merge_account
+          end
+
           it 'removes locked custom fields if verified' do
             verified_permission.update!(custom_fields_behavior: 'custom')
             create(:permissions_custom_field, custom_field: CustomField.find_by(key: 'gender'), permission: verified_permission, required: true) # locked
@@ -697,7 +714,9 @@ describe Permissions::UserRequirementsService do
 
           it 'requires verification again after more than 30 days' do
             verified_permission.update!(verification_expiry: 30)
-            travel_to Time.now + 30.days + 1.second do
+            # from_now, not Time.now + 30.days: adding days to a zoned time spans the extra hour
+            # of a DST fall-back, as the service's expiry arithmetic does.
+            travel_to (30.days + 1.second).from_now do
               requirements = service.requirements(verified_permission, user)
               expect(service.permitted?(requirements)).to be false
               expect(requirements[:authentication][:permitted_by]).to eq 'users'
@@ -718,6 +737,25 @@ describe Permissions::UserRequirementsService do
           expect(requirements[:authentication][:missing_user_attributes]).to eq []
           expect(requirements[:authentication][:email_action_required]).to eq :confirm_email
         end
+      end
+    end
+
+    # A verification method is what makes a user verifiable at all, so a permission that kept
+    # require_verification after the platform's last method was removed must not ask for it.
+    # See Permission#require_verification.
+    context 'verification via require_verification without a configured verification method' do
+      let(:verified_permission) { create(:permission, :by_verified) }
+
+      it 'does not require verification when there is no user' do
+        requirements = service.requirements(verified_permission, nil)
+        expect(requirements[:verification]).to be false
+      end
+
+      it 'does not require verification for an unverified user' do
+        user.update!(verified: false)
+        requirements = service.requirements(verified_permission, user)
+        expect(requirements[:verification]).to be false
+        expect(service.permitted?(requirements)).to be true
       end
     end
 
@@ -780,6 +818,41 @@ describe Permissions::UserRequirementsService do
       end
     end
 
+    # The sms feature is what makes a phone number addable and confirmable at all,
+    # so a permission that kept require_confirmed_phone_number after it was switched
+    # off must not ask for one. See Permission#require_confirmed_phone_number.
+    context 'when a confirmed phone number is required but the sms feature is off' do
+      let(:permission) do
+        create(
+          :permission,
+          permitted_by: 'users',
+          require_confirmed_email: false,
+          require_name: false,
+          require_password: false,
+          require_confirmed_phone_number: true
+        )
+      end
+
+      it 'asks nothing of a user without a phone number' do
+        user.update!(phone: nil, new_phone: nil, phone_confirmed_at: nil)
+        requirements = service.requirements(permission, user)
+        expect(requirements[:authentication][:phone_action_required]).to be_nil
+        expect(service.permitted?(requirements)).to be true
+      end
+
+      it 'asks nothing of a user with an unconfirmed phone number' do
+        user.update!(phone: '+3212345678', phone_confirmed_at: nil)
+        requirements = service.requirements(permission, user)
+        expect(requirements[:authentication][:phone_action_required]).to be_nil
+        expect(service.permitted?(requirements)).to be true
+      end
+
+      it 'asks nothing when there is no user yet' do
+        requirements = service.requirements(permission, nil)
+        expect(requirements[:authentication][:phone_action_required]).to be_nil
+      end
+    end
+
     # Re-confirmation of an already-confirmed email once confirmed_email_expiry has
     # elapsed. The top-level `user` has a confirmed email (email_confirmed_at: Time.now,
     # confirmation_required? false), so the only thing that can put them back into a
@@ -836,7 +909,9 @@ describe Permissions::UserRequirementsService do
 
         it 'requires re-confirmation after the expiry window' do
           user # confirm the email at the real current time, before traveling past the expiry window
-          travel_to Time.now + 30.days + 1.second do
+          # from_now, not Time.now + 30.days: adding days to a zoned time spans the extra hour
+          # of a DST fall-back, as the service's expiry arithmetic does.
+          travel_to (30.days + 1.second).from_now do
             requirements = service.requirements(permission, user)
             expect(service.permitted?(requirements)).to be false
             expect(requirements[:authentication][:email_action_required]).to eq :reconfirm_email
@@ -905,12 +980,36 @@ describe Permissions::UserRequirementsService do
         end
 
         it 'requires re-confirmation after the expiry window' do
-          travel_to Time.now + 30.days + 1.second do
+          # from_now, not Time.now + 30.days: adding days to a zoned time spans the extra hour
+          # of a DST fall-back, as the service's expiry arithmetic does.
+          travel_to (30.days + 1.second).from_now do
             requirements = service.requirements(permission, user)
             expect(service.permitted?(requirements)).to be false
             expect(requirements[:authentication][:phone_action_required]).to eq :reconfirm_phone
           end
         end
+      end
+    end
+
+    # A password is not a credential anyone can log in with once password_login is off, and the
+    # admin UI stops offering the toggle. See Permission#require_password.
+    context 'when a password is required but password_login is off' do
+      let(:permission) do
+        create(:permission, permitted_by: 'users', require_name: false, require_password: true)
+      end
+
+      before { SettingsService.new.deactivate_feature!('password_login') }
+
+      it 'does not ask for a password from a user without one' do
+        user.update!(password_digest: nil)
+        requirements = service.requirements(permission, user)
+        expect(requirements[:authentication][:missing_user_attributes]).not_to include(:password)
+        expect(service.permitted?(requirements)).to be true
+      end
+
+      it 'does not ask for a password when there is no user' do
+        requirements = service.requirements(permission, nil)
+        expect(requirements[:authentication][:missing_user_attributes]).not_to include(:password)
       end
     end
 

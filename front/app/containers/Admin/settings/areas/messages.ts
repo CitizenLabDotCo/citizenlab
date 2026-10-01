@@ -26,9 +26,18 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.addAreaButton',
     defaultMessage: 'Add area',
   },
-  areaDeletionConfirmation: {
-    id: 'app.containers.AdminPage.SettingsPage.areaDeletionConfirmation',
-    defaultMessage: 'Are you sure you want to delete this area?',
+  deleteAreaButton: {
+    id: 'app.containers.AdminPage.SettingsPage.deleteAreaButton',
+    defaultMessage: 'Delete area',
+  },
+  deleteAreaModalTitle: {
+    id: 'app.containers.AdminPage.SettingsPage.deleteAreaModalTitle',
+    defaultMessage: 'Delete this area permanently?',
+  },
+  deleteAreaModalWarning: {
+    id: 'app.containers.AdminPage.SettingsPage.deleteAreaModalWarning',
+    defaultMessage:
+      'This will permanently delete this area and all of its associated data, such as the answers of users who selected it in the “Place of residence” demographic question.',
   },
   fieldTitle: {
     id: 'app.containers.AdminPage.SettingsPage.fieldTitle',

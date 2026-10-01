@@ -96,7 +96,7 @@ RSpec.describe Surveys::ResultsWithDateGenerator do
               :native_survey_response,
               project: project,
               phases: phases_of_inputs,
-              custom_field_values: { linear_scale_field.key => 5 },
+              custom_field_answers: [build(:custom_field_answer, key: linear_scale_field.key, value: 5)],
               created_at: Time.zone.local(2025, 3, 31, 23, 59, 0)
             )
           end

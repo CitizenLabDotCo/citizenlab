@@ -5,6 +5,16 @@ require 'rails_helper'
 RSpec.describe Permission do
   it_behaves_like 'a sanitized html_multiloc', factory: :permission, attribute: :access_denied_explanation_multiloc
 
+  def configure_verification_method
+    AppConfiguration.instance.settings['id_config'] =
+      { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+    AppConfiguration.instance.save!
+  end
+
+  def verified_members_group
+    create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
+  end
+
   describe 'access denied explanation sanitizer' do
     def explanation_of(html)
       create(:permission, access_denied_explanation_multiloc: { 'en' => html })
@@ -131,13 +141,152 @@ RSpec.describe Permission do
     end
   end
 
-  describe '#verification_enabled?' do
-    it 'is true when require_verification is true' do
-      expect(build(:permission, :by_users, require_verification: true).verification_enabled?).to be true
+  describe '#require_confirmed_phone_number' do
+    let(:permission) { create(:permission, :by_users, require_confirmed_phone_number: true) }
+
+    context 'when the sms feature is enabled' do
+      include_context 'with sms feature enabled'
+
+      it 'returns the stored value' do
+        expect(permission.require_confirmed_phone_number).to be true
+        expect(permission.require_confirmed_phone_number?).to be true
+      end
     end
 
-    it 'is false when verification is not required and there is no verification group' do
-      expect(build(:permission, :by_users).verification_enabled?).to be false
+    context 'when the sms feature is disabled' do
+      it 'is false, whatever is stored' do
+        expect(permission.require_confirmed_phone_number).to be false
+        expect(permission.require_confirmed_phone_number?).to be false
+      end
+
+      it 'masks the stored value rather than clearing it' do
+        expect(permission.reload.read_attribute(:require_confirmed_phone_number)).to be true
+      end
+
+      it 'returns the stored value again once the feature is switched back on' do
+        SettingsService.new.activate_feature!('sms')
+        expect(permission.require_confirmed_phone_number).to be true
+      end
+    end
+  end
+
+  describe '#require_verification' do
+    let(:permission) { create(:permission, :by_users, require_verification: true) }
+
+    context 'when a verification method is configured' do
+      before { configure_verification_method }
+
+      it 'returns the stored value' do
+        expect(permission.require_verification).to be true
+        expect(permission.require_verification?).to be true
+      end
+    end
+
+    context 'when no verification method is configured' do
+      it 'is false, whatever is stored' do
+        expect(permission.require_verification).to be false
+        expect(permission.require_verification?).to be false
+      end
+
+      it 'masks the stored value rather than clearing it' do
+        expect(permission.reload.read_attribute(:require_verification)).to be true
+      end
+
+      it 'returns the stored value again once a method is configured' do
+        configure_verification_method
+        expect(permission.require_verification).to be true
+      end
+    end
+  end
+
+  describe '#require_password' do
+    let(:permission) { create(:permission, :by_users, require_password: true) }
+
+    it 'returns the stored value while password_login is enabled' do
+      expect(permission.require_password).to be true
+      expect(permission.require_password?).to be true
+    end
+
+    context 'when password_login is disabled' do
+      before { SettingsService.new.deactivate_feature!('password_login') }
+
+      it 'is false, whatever is stored' do
+        expect(permission.require_password).to be false
+        expect(permission.require_password?).to be false
+      end
+
+      it 'masks the stored value rather than clearing it' do
+        expect(permission.reload.read_attribute(:require_password)).to be true
+      end
+
+      it 'returns the stored value again once the feature is switched back on' do
+        SettingsService.new.activate_feature!('password_login')
+        expect(permission.require_password).to be true
+      end
+    end
+  end
+
+  describe '#custom_fields_behavior' do
+    let(:permission) { create(:permission, :by_users, custom_fields_behavior: 'custom') }
+
+    it 'returns the stored value while permissions_custom_fields is enabled' do
+      expect(permission.custom_fields_behavior).to eq 'custom'
+    end
+
+    context 'when permissions_custom_fields is disabled' do
+      before { SettingsService.new.deactivate_feature!('permissions_custom_fields') }
+
+      it "falls back to the platform-wide questions instead of the action's own" do
+        expect(permission.custom_fields_behavior).to eq 'global'
+      end
+
+      it 'masks the stored value rather than clearing it' do
+        expect(permission.reload.read_attribute(:custom_fields_behavior)).to eq 'custom'
+      end
+
+      it 'returns the stored value again once the feature is switched back on' do
+        SettingsService.new.activate_feature!('permissions_custom_fields')
+        expect(permission.custom_fields_behavior).to eq 'custom'
+      end
+
+      it 'leaves the other behaviors alone' do
+        %w[global disabled].each do |behavior|
+          permission.update!(custom_fields_behavior: behavior)
+          expect(permission.custom_fields_behavior).to eq behavior
+        end
+      end
+    end
+  end
+
+  describe '#verification_enabled?' do
+    context 'when a verification method is configured' do
+      before { configure_verification_method }
+
+      it 'is true when require_verification is true' do
+        expect(create(:permission, :by_users, require_verification: true).verification_enabled?).to be true
+      end
+
+      it 'is true when a verification group is set' do
+        permission = create(:permission, :by_users, groups: [verified_members_group])
+        expect(permission.verification_enabled?).to be true
+      end
+
+      it 'is false when verification is not required and there is no verification group' do
+        expect(create(:permission, :by_users).verification_enabled?).to be false
+      end
+    end
+
+    context 'when no verification method is configured' do
+      it 'is false even when require_verification is true' do
+        expect(create(:permission, :by_users, require_verification: true).verification_enabled?).to be false
+      end
+
+      # The group still restricts who may participate, which is reported as a group
+      # membership requirement rather than as a verification step.
+      it 'is false even when a verification group is set' do
+        permission = create(:permission, :by_users, groups: [verified_members_group])
+        expect(permission.verification_enabled?).to be false
+      end
     end
   end
 

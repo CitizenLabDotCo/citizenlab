@@ -139,6 +139,29 @@ describe Permissions::PermissionsCustomFieldsService do
       end
     end
 
+    # Curating an action's own questions is the permissions_custom_fields feature; without it
+    # the platform-wide questions are asked instead. See Permission#custom_fields_behavior.
+    context "custom_fields_behavior is 'custom' without the permissions_custom_fields feature" do
+      it 'returns the platform fields rather than the curated ones' do
+        permission = create(:permission, permitted_by: 'users', custom_fields_behavior: 'custom')
+        create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field_birthyear, enabled: false))
+        SettingsService.new.deactivate_feature!('permissions_custom_fields')
+
+        fields = service.fields_for_permission(permission)
+        expect(fields.map { |field| field.custom_field.code }).to eq %w[domicile gender]
+        expect(fields.map(&:persisted?)).to all(be false)
+      end
+
+      it 'serves the curated ones again once the feature returns' do
+        permission = create(:permission, permitted_by: 'users', custom_fields_behavior: 'custom')
+        curated_field = create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field_birthyear))
+        SettingsService.new.deactivate_feature!('permissions_custom_fields')
+        SettingsService.new.activate_feature!('permissions_custom_fields')
+
+        expect(service.fields_for_permission(permission)).to eq [curated_field]
+      end
+    end
+
     context "custom_fields_behavior is 'custom'" do
       let(:permission) { create(:permission, permitted_by: 'users') }
 

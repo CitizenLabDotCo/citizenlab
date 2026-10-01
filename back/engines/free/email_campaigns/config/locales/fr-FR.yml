@@ -189,6 +189,7 @@ fr-FR:
       manual_project_participants: Messages officiels aux participants d'un projet
       mention_in_internal_comment: Mention dans un commentaire interne
       mention_in_official_feedback: Mention dans une mise à jour
+      merge_account_confirmation: Code de confirmation de fusion de compte
       moderator_digest: Aperçu hebdomadaire pour les administrateurs projet
       native_survey_not_submitted: Réponse à l'enquête non soumise
       new_comment_for_admin: Nouveau commentaire dans un projet que je modère
@@ -480,6 +481,15 @@ fr-FR:
       preheader: '%{commentAuthor} vous a mentionné dans un commentaire'
       subject: '%{organizationName} vous ont mentionné dans leurs commentaires'
       title: Vous avez été mentionné
+    merge_account_confirmation:
+      best_regards: Cordialement,
+      event_description: "Quelqu'un s'est connecté à la plateforme de participation de %{organizationName} et a demandé à lier cette connexion au compte utilisant cette adresse e-mail. S'il s'agit de vous, saisissez ce code de confirmation pour continuer :"
+      expire_code: Ce code expirera dans
+      hours_24: 24 heures.
+      ignore_email: "Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet e-mail en toute sécurité. Rien n'a été modifié, et personne ne peut utiliser ce code sans avoir accès à cette boîte de réception."
+      preheader: Confirmez votre adresse e-mail pour %{organizationName}
+      subject: Confirmez votre adresse e-mail pour la plateforme de participation de %{organizationName}
+      title: Confirmer votre adresse e-mail
     moderator_digest:
       cta_button: Gérez votre projet
       event_description: Voici une sélection des idées qui ont généré le plus d'activité la semaine dernière. Découvrez ce qui se passe sur votre plateforme !

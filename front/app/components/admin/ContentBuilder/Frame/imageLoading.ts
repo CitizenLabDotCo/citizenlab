@@ -3,13 +3,15 @@ import { SerializedNode } from '@craftjs/core';
 import eventEmitter from 'utils/eventEmitter';
 
 import { IMAGE_LOADED_EVENT } from '../constants';
+import { getResolvedName } from '../resolvedName';
 
 export const getImagesToBeLoaded = (
   editorData: Record<string, SerializedNode>
-) => {
+): string[] => {
   return Object.values(editorData)
-    .filter((node) => node.displayName === 'Image')
-    .map((node) => node.props.imageUrl);
+    .filter((node) => getResolvedName(node) === 'ImageMultiloc')
+    .map((node) => node.props.image?.imageUrl)
+    .filter((imageUrl): imageUrl is string => typeof imageUrl === 'string');
 };
 
 export const allImagesLoaded = (imagesToBeLoaded: string[]) => {

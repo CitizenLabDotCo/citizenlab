@@ -26,10 +26,33 @@ describe Export::Xlsx::Utils do
     end
   end
 
+  describe 'convert_to_text' do
+    # The gem edits the string it is given in place. Callers pass a value read off a record, so
+    # a conversion that rewrote it would flatten the record itself and be saved from there.
+    it 'leaves the html it is given untouched' do
+      html = +'<p><img src="https://example.com/tree.png">Trees for the square</p>'
+
+      expect(service.convert_to_text(html)).to eq 'Trees for the square'
+      expect(html).to eq '<p><img src="https://example.com/tree.png">Trees for the square</p>'
+    end
+
+    it 'accepts a frozen string' do
+      expect(service.convert_to_text('<p>line1</p>')).to eq 'line1'
+    end
+  end
+
   describe 'convert_to_text_long_lines' do
     it 'converts html to text and replaces each newline by a space' do
       actual = service.convert_to_text_long_lines(+"<p>line1<p>\n<strong>line2</strong>")
       expect(actual).to eq 'line1 line2'
+    end
+
+    it 'leaves the html it is given untouched' do
+      html = +'<p>line1<p>line2'
+
+      service.convert_to_text_long_lines(html)
+
+      expect(html).to eq '<p>line1<p>line2'
     end
   end
 

@@ -2,8 +2,10 @@ import { SerializedNodes } from '@craftjs/core';
 
 import {
   BODY_NODE_ID,
+  bannerHasContent,
   defaultCustomPageLayout,
   layoutHasContent,
+  layoutStartsWithBanner,
   normalizeCustomPageLayout,
 } from './defaultLayout';
 
@@ -103,7 +105,100 @@ describe('normalizeCustomPageLayout', () => {
   });
 });
 
+const titleNode = (showTitle: boolean) => ({
+  type: { resolvedName: 'CustomPageTitle' },
+  nodes: [],
+  props: { showTitle },
+  custom: {},
+  hidden: false,
+  parent: BODY_NODE_ID,
+  isCanvas: false,
+  displayName: 'CustomPageTitle',
+  linkedNodes: {},
+});
+
+const bannerNode = (headerMultiloc: Record<string, string>) => ({
+  type: { resolvedName: 'CustomPageBanner' },
+  nodes: [],
+  props: { headerMultiloc, subheaderMultiloc: {}, ctaType: 'no_button' },
+  custom: {},
+  hidden: false,
+  parent: BODY_NODE_ID,
+  isCanvas: false,
+  displayName: 'CustomPageBanner',
+  linkedNodes: {},
+});
+
+// A body in the given order, holding a title, a banner and a text widget.
+const bodyWith = (
+  showTitle: boolean,
+  bodyIds: string[],
+  bannerHeader: Record<string, string> = { en: 'Welcome' }
+) =>
+  ({
+    ...defaultCustomPageLayout(),
+    [BODY_NODE_ID]: {
+      ...defaultCustomPageLayout()[BODY_NODE_ID],
+      nodes: bodyIds,
+    },
+    title: titleNode(showTitle),
+    banner: bannerNode(bannerHeader),
+    txt: textNode(BODY_NODE_ID),
+  } as unknown as SerializedNodes);
+
+describe('bannerHasContent', () => {
+  const empty = {
+    image: {},
+    headerMultiloc: {},
+    subheaderMultiloc: {},
+    ctaType: 'no_button' as const,
+  };
+
+  it('is false for a banner fresh from the toolbox', () => {
+    expect(bannerHasContent(empty)).toBe(false);
+  });
+
+  it.each([
+    ['an image', { image: { imageUrl: 'https://example.com/header.jpg' } }],
+    ['a heading', { headerMultiloc: { en: 'Welcome' } }],
+    ['a subheader', { subheaderMultiloc: { en: 'Have your say' } }],
+    ['a button', { ctaType: 'customized_button' as const }],
+  ])('is true for a banner with only %s', (_, content) => {
+    expect(bannerHasContent({ ...empty, ...content })).toBe(true);
+  });
+});
+
+describe('layoutStartsWithBanner', () => {
+  it('is true when the body opens with a banner', () => {
+    expect(layoutStartsWithBanner(bodyWith(false, ['banner', 'title']))).toBe(
+      true
+    );
+    expect(layoutStartsWithBanner(bodyWith(true, ['banner', 'title']))).toBe(
+      true
+    );
+  });
+
+  it('is false when a shown title comes first', () => {
+    expect(layoutStartsWithBanner(bodyWith(true, ['title', 'banner']))).toBe(
+      false
+    );
+  });
+
+  // The page renders nothing for it, so the first real widget would sit under the nav bar.
+  it('is false when the banner that opens the body draws nothing', () => {
+    expect(
+      layoutStartsWithBanner(bodyWith(false, ['banner', 'title'], {}))
+    ).toBe(false);
+  });
+});
+
 describe('layoutHasContent', () => {
+  // Every derived layout carries the title, so it must not count as content: the page would
+  // otherwise hand itself to an empty builder and drop its legacy sections.
+  it('is false for a layout that holds only the scaffold and the title', () => {
+    expect(layoutHasContent(bodyWith(true, ['title']))).toBe(false);
+  });
+
   it('is false for a layout that holds only the scaffold', () => {
     expect(layoutHasContent(defaultCustomPageLayout())).toBe(false);
   });

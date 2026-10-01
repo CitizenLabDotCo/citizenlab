@@ -35,6 +35,7 @@ module CustomIdMethods
         CustomIdMethods::Keycloak::KeycloakOmniauth.new,
         CustomIdMethods::NemlogIn::NemlogInOmniauth.new,
         CustomIdMethods::OostendeRrn::OostendeRrnVerification.new,
+        CustomIdMethods::Publik::PublikOmniauth.new,
         CustomIdMethods::Twoday::TwodayOmniauth.new,
         CustomIdMethods::ViennaSaml::EmployeeSamlOmniauth.new,
         CustomIdMethods::ViennaSaml::CitizenSamlOmniauth.new

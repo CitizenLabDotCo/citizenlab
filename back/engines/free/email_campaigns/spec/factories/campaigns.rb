@@ -213,6 +213,10 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :merge_account_confirmation_campaign, class: 'EmailCampaigns::Campaigns::MergeAccountConfirmation' do
+    enabled { true }
+  end
+
   factory :admin_digest_campaign, class: 'EmailCampaigns::Campaigns::AdminDigest' do
     enabled { true }
     schedule { weekly_schedule }

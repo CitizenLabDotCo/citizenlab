@@ -7,6 +7,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { Element } from '@craftjs/core';
 
+import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
+
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 import Container from '../Container';
 
@@ -38,7 +40,7 @@ const ThreeColumn = () => {
   const componentDefaultPadding = useCraftComponentDefaultPadding();
   return (
     <ThreeColumnWrapper
-      maxWidth="1200px"
+      maxWidth={BUILDER_CONTENT_MAX_WIDTH}
       margin="0 auto"
       px={componentDefaultPadding}
     >

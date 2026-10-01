@@ -45,16 +45,12 @@ module CustomIdMethods::EtatLu
       }
     end
 
-    def email_always_present?
+    def confirmed_email_always_present?
       true
     end
 
     def verification_prioritized?
       true
-    end
-
-    def email_confirmed?(auth)
-      auth&.info&.email.present?
     end
 
     def filter_auth_to_persist(auth)
@@ -68,6 +64,13 @@ module CustomIdMethods::EtatLu
 
     def updateable_user_attrs
       super + %i[first_name last_name]
+    end
+
+    # James: Steve from Luxembourg said that the email
+    # returned by this method is always verified, even
+    # though it does not return email_verified: true
+    def email_confirmed?(_auth)
+      true
     end
   end
 end

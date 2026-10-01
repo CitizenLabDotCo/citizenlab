@@ -63,9 +63,10 @@ meaning matches and proposes a handful of new `custom` statuses for the genuinel
 the customs (target ~12 statuses total). **`ProposalStatusResolver`** turns the result into `idea_status`
 records (emitted before the ideas that reference them) and resolves each proposal's `(component, token)`
 to its status. Best-effort: if the model is unavailable or misbehaves, it falls back to a deterministic
-token→standard-code mapping (no customs) so the import still succeeds. Each imported idea keeps its
-original Decidim status (token + citizen-facing label) in `custom_field_values['decidim_status']` for
-provenance — mirroring the scope→area pointer in `custom_field_values['decidim_scope']`.
+token→standard-code mapping (no customs) so the import still succeeds. Every imported idea gets a
+`BulkImportIdeas::IdeaImport` record, whose `extra_info` holds the Decidim data an idea has no field for.
+Each proposal keeps its original Decidim status (token + citizen-facing label) there in
+`extra_info['decidim_status']` for provenance — next to the scope→area pointer in `extra_info['decidim_scope']`.
 
 ### The rake tasks
 
@@ -85,7 +86,7 @@ counts and every skipped record):
 - **`<base>.template.yml`** — the record graph, the main artifact.
 - **`<base>.app_config.json`** — the small `AppConfiguration` patch the import applies: just the export's
   locales (from `01--organization.csv`) plus the feature flags the import turns on
-  (`project_static_pages`, `parallel_participation`). Nothing else from the org row is mapped.
+  (`project_static_pages`). Nothing else from the org row is mapped.
 - **`<base>.url_mapping.csv`** — old-Decidim-URL → new-target map for links embedded in descriptions,
   applied post-import.
 - **`<base>.moderators.csv`** — project-moderator assignments (user `unique_code` → project `slug`),
@@ -109,7 +110,7 @@ already-imported users/folders rather than duplicating them (see "Reuse" below).
 there (its own `.import.log`/`.broken_links.csv` are written beside the zip). First applies the
 `<base>.app_config.json` patch: unions the export's locales into the tenant's `core.locales` (additive —
 never dropping the tenant's own, so the template's multilocs have every locale they reference) and
-allows+enables the import's feature flags (`project_static_pages`, `parallel_participation`), leaving the
+allows+enables the import's feature flags (`project_static_pages`), leaving the
 rest of the tenant's app config untouched. Then deserializes the template — resolving idea statuses and area orderings,
 letting **TemplateCleaner** drop uploads it can't fetch (and the file/image/craftjs nodes they'd
 orphan), then bulk-inserting under `no_touching` so source dates survive — and backfills
@@ -202,7 +203,7 @@ tenant, so it can be run locally / on staging. It produces the loose artifacts a
 single `<base>.template.zip` — the only file `import` needs. Inside the bundle:
 
 - `<base>.template.yml` — the graph to deserialize
-- `<base>.app_config.json` — app-config patch `import` applies first: the export's locales (unioned in) + the feature flags it enables (`project_static_pages`, `parallel_participation`)
+- `<base>.app_config.json` — app-config patch `import` applies first: the export's locales (unioned in) + the feature flags it enables (`project_static_pages`)
 - `<base>.url_mapping.csv` — post-import link correction
 - `<base>.moderators.csv` — post-import project-moderator assignment (present only when the export has process admins)
 
@@ -240,4 +241,3 @@ scp <swarm-leader>:/home/ubuntu/import/<base>.broken_links.csv .
 
 **6. Delete the artifacts from the box** (`rm /home/ubuntu/import/<base>.*`) — they can carry tenant real user PII
 if `create_template` ran with `production=true`.
-

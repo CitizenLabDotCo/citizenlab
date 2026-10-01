@@ -186,6 +186,7 @@ nl-NL:
       manual_project_participants: Officiële berichten aan projectdeelnemers
       mention_in_internal_comment: Vermelding in een interne reactie
       mention_in_official_feedback: Vermelding in een update
+      merge_account_confirmation: Bevestigingscode voor het samenvoegen van accounts
       moderator_digest: Weekoverzicht voor projectbeheerders
       native_survey_not_submitted: Vragenlijst niet ingediend
       new_comment_for_admin: Nieuwe reactie in een project dat ik modereer
@@ -477,6 +478,15 @@ nl-NL:
       preheader: '%{commentAuthor} heeft je genoemd in feedback'
       subject: '%{organizationName} noemde je in hun feedback'
       title: Je bent genoemd
+    merge_account_confirmation:
+      best_regards: Met vriendelijke groet,
+      event_description: 'Iemand is ingelogd op het participatieplatform van %{organizationName} en heeft gevraagd om die aanmelding te koppelen aan het account met dit e-mailadres. Als jij dat was, voer dan deze bevestigingscode in om door te gaan:'
+      expire_code: Deze code verloopt over
+      hours_24: 24 uur.
+      ignore_email: Als jij dit niet was, kun je deze e-mail veilig negeren. Er is niets gewijzigd en niemand kan deze code gebruiken zonder toegang tot deze inbox.
+      preheader: Bevestig je e-mailadres voor %{organizationName}
+      subject: Bevestig je e-mailadres voor het participatieplatform van %{organizationName}
+      title: Bevestig je e-mailadres
     moderator_digest:
       cta_button: Beheer je project
       event_description: Ontdek rond welke bijdrages er het meest werd gediscussieerd de afgelopen week. Hieronder kom je te weten wat er leeft in je project!

@@ -19,13 +19,24 @@ const EDITED_NODES = {
   },
   CUSTOM_PAGE_BODY: {
     type: { resolvedName: 'CustomPageBody' },
-    nodes: ['txt'],
+    nodes: ['CUSTOM_PAGE_TITLE', 'txt'],
     props: {},
     custom: { region: true },
     hidden: false,
     parent: 'ROOT',
     isCanvas: true,
     displayName: 'CustomPageBody',
+    linkedNodes: {},
+  },
+  CUSTOM_PAGE_TITLE: {
+    type: { resolvedName: 'CustomPageTitle' },
+    nodes: [],
+    props: { showTitle: true },
+    custom: { deletable: false },
+    hidden: false,
+    parent: 'CUSTOM_PAGE_BODY',
+    isCanvas: false,
+    displayName: 'CustomPageTitle',
     linkedNodes: {},
   },
   txt: {
@@ -88,6 +99,10 @@ const mockUpsertCustomPageLayout = jest.fn(() => Promise.resolve());
 jest.mock('api/custom_page_layout/useUpsertCustomPageLayout', () =>
   jest.fn(() => ({ mutateAsync: mockUpsertCustomPageLayout }))
 );
+const mockUpdateCustomPage = jest.fn(() => Promise.resolve());
+jest.mock('api/custom_pages/useUpdateCustomPage', () =>
+  jest.fn(() => ({ mutateAsync: mockUpdateCustomPage }))
+);
 
 jest.mock('api/custom_page_layout/useCustomPageLayout', () => ({
   __esModule: true,
@@ -113,14 +128,14 @@ describe('CustomPageBuilderPage save contract', () => {
     jest.clearAllMocks();
   });
 
-  // No widget writes back to the page record yet, so there are no drafts to commit first.
-  // The banner and title widgets make this a two-step save, and should fail this assertion.
-  it('saves the layout directly, with no page-attribute commit', async () => {
+  // An untouched title widget must not send the page an update on every save.
+  it('saves the layout directly when no widget edited the page', async () => {
     render(<CustomPageBuilderPage {...defaultProps} />);
     fireEvent.click(screen.getByTestId('mockSaveButton'));
 
     await waitFor(() => expect(mockUpsertCustomPageLayout).toHaveBeenCalled());
 
+    expect(mockUpdateCustomPage).not.toHaveBeenCalled();
     expect(mockUpsertCustomPageLayout).toHaveBeenCalledWith({
       staticPageId: 'page-1',
       craftjs_json: EDITED_NODES,

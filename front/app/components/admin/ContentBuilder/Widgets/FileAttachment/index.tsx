@@ -16,12 +16,12 @@ import useFiles from 'api/files/useFiles';
 
 import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
 import { useContentBuilderLayoutContext } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
+import WidgetPlaceholder from 'components/admin/ContentBuilder/Widgets/WidgetPlaceholder';
 import FileDisplay from 'components/UI/FileAttachments/FileDisplay';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { useParams } from 'utils/router';
 
-import FilePlaceholder from './FilePlaceholder';
 import messages from './messages';
 import UploadFilesLink from './UploadFilesLink';
 import { getIsFileAlreadyUsed } from './utils';
@@ -36,9 +36,9 @@ const FilePreview = ({ fileId }: { fileId?: string }) => {
   if (!fileId) {
     return (
       <Box maxWidth={BUILDER_CONTENT_MAX_WIDTH} margin="0 auto">
-        <FilePlaceholder>
+        <WidgetPlaceholder iconName="file-add">
           <FormattedMessage {...messages.selectFilePrompt} />
-        </FilePlaceholder>
+        </WidgetPlaceholder>
       </Box>
     );
   }
@@ -50,9 +50,9 @@ const FilePreview = ({ fileId }: { fileId?: string }) => {
   if (!file) {
     return (
       <Box maxWidth={BUILDER_CONTENT_MAX_WIDTH} margin="0 auto">
-        <FilePlaceholder variant="error">
+        <WidgetPlaceholder iconName="paperclip" variant="error">
           <FormattedMessage {...messages.fileMissing} />
-        </FilePlaceholder>
+        </WidgetPlaceholder>
       </Box>
     );
   }

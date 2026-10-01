@@ -76,6 +76,16 @@ parameters:
     type: boolean
     default: false
 
+  # Set by .circleci/monorepo.sh in case nothing changed in back/front. This
+  # causes the builds to still happen, necessary for the epic platform
+  epic_back_artifact:
+    type: boolean
+    default: false
+
+  epic_front_artifact:
+    type: boolean
+    default: false
+
 executors:
   cl2-back:
     parameters:
@@ -223,11 +233,17 @@ jobs:
     working_directory: ~/
     docker:
       - image: cimg/base:2025.01
+    parameters:
+      docker_layer_caching:
+        type: boolean
+        # DLC bills costs 200 credits per job run, and the extra speed is not
+        # always needed
+        default: true
     steps:
       - echo_pipeline_parameters
       - shallow-clone
       - setup_remote_docker:
-          docker_layer_caching: true
+          docker_layer_caching: << parameters.docker_layer_caching >>
       - run: |
           docker build -t citizenlabdotco/back-ee:amd64-$CIRCLE_SHA1 --build-arg BUNDLE_JOBS=4 -f citizenlab/back/Dockerfile citizenlab/.
       - run: |
@@ -282,7 +298,7 @@ jobs:
           path: spec/reports
 
   back-test-tenant-templates:
-    resource_class: small
+    resource_class: medium
     executor:
       name: cl2-back
       image-tag: amd64-$CIRCLE_SHA1
@@ -304,7 +320,7 @@ jobs:
             - failed-templates.txt
 
   back-release-tenant-templates:
-    resource_class: small
+    resource_class: medium
     executor:
       name: cl2-back
       image-tag: amd64-$CIRCLE_SHA1
@@ -716,10 +732,8 @@ jobs:
             - /root/.npm
           key: v2-npm-cache-{{ checksum "package-lock.json" }}
       - run:
-          # Set immutable per-build asset prefix (Vite `base`) + content-hashed twemoji prefix
-          name: Compute content-hashed asset + twemoji prefixes
+          name: Compute content-hashed twemoji prefix
           command: |
-            echo "export ASSET_BASE_URL=/$CIRCLE_SHA1/" >> "$BASH_ENV"
             TWEMOJI_HASH=$(find app/public/twemoji -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum | cut -c1-12)
             echo "export TWEMOJI_BASE_URL=/twemoji/$TWEMOJI_HASH/" >> "$BASH_ENV"
       - run:
@@ -731,8 +745,11 @@ jobs:
             rm -f build/assets/*.map
       - run:
           # 1. Only upload ~4k Twemoji if anything changes.
-          # 2. Upload the build into a fresh, EMPTY per-build prefix.
-          # 3. Flip the root index.html to the new prefix — the atomic release switch.
+          # 2. Upload the build to assets/, shared by all releases. Use `cp`, not
+          #    `sync`: `cp` re-uploads every file, refreshing its date, so the S3
+          #    lifecycle rule (expire 60 days after upload) only removes files no
+          #    recent release uses. `sync` also lists the whole folder first.
+          # 3. Upload index.html last: the switch to the new release.
           name: Deploy to S3 if tests pass and branch is Master
           command: |
             # Assigned outside the `if` so that a failed call (e.g. missing
@@ -742,7 +759,7 @@ jobs:
               aws s3 sync app/public/twemoji/ "s3://cl2-front-staging${TWEMOJI_BASE_URL}" --acl public-read --cache-control "public, max-age=31536000, immutable"
             fi
             rm -rf build/twemoji
-            aws s3 cp build/ "s3://cl2-front-staging/$CIRCLE_SHA1/" --recursive --acl public-read --exclude "index.html" --cache-control "public, max-age=31536000, immutable"
+            aws s3 cp build/assets/ "s3://cl2-front-staging/assets/" --recursive --acl public-read --cache-control "public, max-age=31536000, immutable"
             aws s3 cp build/index.html s3://cl2-front-staging/index.html --acl public-read --cache-control no-cache
             aws s3 cp .well-known/security.txt s3://cl2-front-staging/.well-known/security.txt --acl public-read --content-type text/plain
 
@@ -762,10 +779,8 @@ jobs:
             - /root/.npm
           key: v2-npm-cache-{{ checksum "package-lock.json" }}
       - run:
-          # Set immutable per-build asset prefix (Vite `base`) + content-hashed twemoji prefix
-          name: Compute content-hashed asset + twemoji prefixes
+          name: Compute content-hashed twemoji prefix
           command: |
-            echo "export ASSET_BASE_URL=/$CIRCLE_SHA1/" >> "$BASH_ENV"
             TWEMOJI_HASH=$(find app/public/twemoji -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum | cut -c1-12)
             echo "export TWEMOJI_BASE_URL=/twemoji/$TWEMOJI_HASH/" >> "$BASH_ENV"
       - run:
@@ -777,8 +792,11 @@ jobs:
             rm -f build/assets/*.map
       - run:
           # 1. Only upload ~4k Twemoji if anything changes.
-          # 2. Upload the build into a fresh, EMPTY per-build prefix.
-          # 3. Flip the root index.html to the new prefix — the atomic release switch.
+          # 2. Upload the build to assets/, shared by all releases. Use `cp`, not
+          #    `sync`: `cp` re-uploads every file, refreshing its date, so the S3
+          #    lifecycle rule (expire 60 days after upload) only removes files no
+          #    recent release uses. `sync` also lists the whole folder first.
+          # 3. Upload index.html last: the switch to the new release.
           name: Deploy production version
           command: |
             TWEMOJI_KEY_COUNT=$(aws s3api list-objects-v2 --bucket cl2-front-production-benelux --prefix "${TWEMOJI_BASE_URL#/}" --max-keys 1 --query 'KeyCount' --output text)
@@ -786,7 +804,7 @@ jobs:
               aws s3 sync app/public/twemoji/ "s3://cl2-front-production-benelux${TWEMOJI_BASE_URL}" --acl public-read --cache-control "public, max-age=31536000, immutable"
             fi
             rm -rf build/twemoji
-            aws s3 cp build/ "s3://cl2-front-production-benelux/$CIRCLE_SHA1/" --recursive --acl public-read --exclude "index.html" --cache-control "public, max-age=31536000, immutable"
+            aws s3 cp build/assets/ "s3://cl2-front-production-benelux/assets/" --recursive --acl public-read --cache-control "public, max-age=31536000, immutable"
             aws s3 cp build/index.html s3://cl2-front-production-benelux/index.html --acl public-read --cache-control no-cache
             aws s3 cp .well-known/security.txt s3://cl2-front-production-benelux/.well-known/security.txt --acl public-read --content-type text/plain
 
@@ -1411,6 +1429,30 @@ workflows:
             branches:
               only:
                 - master
+
+  # Epic previews need both artifacts to be built for every sha; monorepo.sh
+  # sets these parameters only in case nothing has changed on back/front
+  epic-back-artifact:
+    when:
+      and:
+        - << pipeline.parameters.epic_back_artifact >>
+        - not:
+            equal: ["production", << pipeline.git.branch >>]
+    jobs:
+      - back-build-docker-image-amd64:
+          context:
+            - docker-hub-access
+          docker_layer_caching: false
+
+  epic-front-artifact:
+    when:
+      and:
+        - << pipeline.parameters.epic_front_artifact >>
+        - not:
+            equal: ["production", << pipeline.git.branch >>]
+    jobs:
+      - front-build:
+          context: epic-front-bundles
 
   front-deploy-staging:
     when:

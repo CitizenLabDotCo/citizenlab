@@ -257,6 +257,7 @@ kl-GL:
       manual_project_participants: Suliniummi peqataasunut pisortatigoortumik nalunaarutit
       mention_in_internal_comment: Ilumi oqaaseqaammi taaneqarneq
       mention_in_official_feedback: Nutarterinermi taaneqarneq
+      merge_account_confirmation: Kontut kattunnerannut uppernarsaat
       moderator_digest: Suliniummik ingerlatsisut takussutissartaat sapaatip akunnikkaartoq
       native_survey_not_submitted: Misissuineq nassiunneqanngilaq
       new_comment_for_admin: Suliniummut ingerlatannut nutaamik oqaaseqaat
@@ -657,6 +658,15 @@ kl-GL:
       preheader: '%{commentAuthor}ip oqaaseqaammini taavaatit'
       subject: '%{organizationName}p oqaaseqaammini taavaatit'
       title: Taaneqarputit
+    merge_account_confirmation:
+      best_regards: Inuulluaqqusilluta,
+      event_description: 'Kinaluunniit %{organizationName}-ip peqataatitsinermut nittartagaanut iserpoq, isernerlu una e-maili atorlugu kontumut ataqatilerneqarnissaa kissaatigalugu. Illuuguit, nanginniarlutit uppernarsaat una ikkuguk:'
+      expire_code: Kode una atorunnaassaaq uani
+      hours_24: Akunnerit 24-t.
+      ignore_email: Illuunngippat, e-maili una sumiginnarsinnaavat. Suut tamarmik allanngunngillat, kinaluunniillu kodelu una atorsinnaanngilaa e-mailinnut isersinnaatitaanngikkuni.
+      preheader: '%{organizationName}-imut e-mailit uppernarsaruk'
+      subject: '%{organizationName}-ip peqataatitsinermut nittartagaani e-mailit uppernarsaruk'
+      title: E-mailit uppernarsaruk
     moderator_digest:
       cta_button: Suliniutit aqqustigu
       cta_moderate: Sulianni ingerlatsineq tigujuk

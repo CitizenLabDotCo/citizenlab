@@ -98,7 +98,8 @@ export const useVisibleSecurityRequirements = ():
   const hasAuthMethodNotReturningEmail = idMethods.data.some(
     (method) =>
       method.attributes.authentication_method &&
-      method.attributes.method_metadata?.email_always_present === false
+      method.attributes.method_metadata?.confirmed_email_always_present ===
+        false
   );
 
   return getVisibleSecurityRequirements({

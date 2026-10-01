@@ -119,5 +119,13 @@ module CustomIdMethods::AzureActiveDirectoryB2c
         locale: AppConfiguration.instance.settings('core', 'locales').first
       }
     end
+
+    # Azure AD b2c does not use the email_verified attribute,
+    # but only returns emails if they are verified since these
+    # are work email addresses.
+    # See https://app.notion.com/p/govocal/SSO-ID-verification-Testing-and-dev-set-up-a176dd3e335f47c28f949e5962d32a26#3d69663b7b2680dbbbabd683cc1c8fcd
+    def email_confirmed?(auth)
+      auth.extra.raw_info['emails'].first.present?
+    end
   end
 end

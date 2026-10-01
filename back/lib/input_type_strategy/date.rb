@@ -2,6 +2,10 @@
 
 module InputTypeStrategy
   class Date < Base
+    def json_schema
+      { type: 'string', format: 'date' }
+    end
+
     def answers_one_of(answers, values)
       answers.where("value #>> '{}' IN (?)", values)
     end

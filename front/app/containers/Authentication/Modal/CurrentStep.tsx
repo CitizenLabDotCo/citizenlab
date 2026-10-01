@@ -175,6 +175,23 @@ const CurrentStep = ({
         />
       );
 
+    // The pending address is merge_target_email; a merge clears new_email.
+    case 'confirmation:merge-account':
+      return (
+        <EmailConfirmation
+          email={
+            state.new_email ??
+            authUser?.data.attributes.merge_target_email ??
+            null
+          }
+          loading={loading}
+          setError={setError}
+          onConfirm={transition(currentStep, 'SUBMIT_CODE')}
+          onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
+          onResendCode={transition(currentStep, 'RESEND_CODE')}
+        />
+      );
+
     case 'confirmation:reconfirm-phone':
       return (
         <PhoneConfirmation

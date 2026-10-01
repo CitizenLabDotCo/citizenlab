@@ -25,6 +25,7 @@ import insightWordMessages from 'containers/Admin/projects/project/insights/word
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 import { useReportWordExportContext } from 'containers/Admin/reporting/word/ReportWordExportContext';
 
+import { getResolvedName } from 'components/admin/ContentBuilder/resolvedName';
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
 import LocaleSelect from 'components/admin/ContentBuilder/TopBar/LocaleSelect';
@@ -233,11 +234,7 @@ const ContentBuilderTopBar = ({
       const firstNode = nodes.ROOT?.nodes[0];
       if (!firstNode) return;
 
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      const type = nodes?.[firstNode].type;
-      const resolvedName =
-        typeof type === 'object' ? type.resolvedName : undefined;
+      const resolvedName = getResolvedName(nodes[firstNode]);
 
       if (!isTemplateNode(resolvedName)) {
         // In theory this should not be possible, but handling

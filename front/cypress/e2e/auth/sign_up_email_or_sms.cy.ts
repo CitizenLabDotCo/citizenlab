@@ -128,7 +128,7 @@ describe('Sign up - either email or SMS', () => {
         });
     };
 
-    it.only('gets back to the confirmation step when the number is kept', () => {
+    it('gets back to the confirmation step when the number is kept', () => {
       const phone = randomPhoneNumber();
 
       startFlow();

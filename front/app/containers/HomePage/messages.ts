@@ -37,6 +37,10 @@ export default defineMessages({
     id: 'app.containers.landing.defaultSignedInMessage',
     defaultMessage: '{firstName}, inspire change today!',
   },
+  editHomepage: {
+    id: 'app.containers.landing.editHomepage',
+    defaultMessage: 'Edit homepage',
+  },
   new: {
     id: 'app.containers.landing.new',
     defaultMessage: 'new',

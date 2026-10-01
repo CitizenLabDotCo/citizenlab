@@ -12,7 +12,6 @@ import Selection from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/c
 import Spotlight, {
   spotlightTitle,
 } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Spotlight';
-import messages from 'containers/DescriptionBuilder/messages';
 
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
@@ -27,6 +26,7 @@ import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import messages from 'components/DescriptionBuilder/messages';
 import FolderFiles, {
   folderFilesTitle,
 } from 'components/DescriptionBuilder/Widgets/FolderFiles';

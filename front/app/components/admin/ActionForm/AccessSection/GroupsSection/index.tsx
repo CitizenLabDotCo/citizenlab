@@ -6,7 +6,7 @@ import {
   Button,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import { Multiloc } from 'typings';
+import { isEqual } from 'lodash-es';
 
 import useGroups from 'api/groups/useGroups';
 import { IPermissionData } from 'api/permissions/types';
@@ -36,6 +36,10 @@ const GroupsSection = ({ permission, onChange }: Props) => {
   const [errorMessageOpen, setErrorMessageOpen] = useState(false);
   const { formatMessage } = useIntl();
 
+  const savedMultiloc =
+    permission.attributes.access_denied_explanation_multiloc;
+  const [draftMultiloc, setDraftMultiloc] = useState(savedMultiloc);
+
   // One-line summary shown while the row is collapsed.
   const groupCount = getGroupIds(permission).length;
   const summary =
@@ -43,9 +47,20 @@ const GroupsSection = ({ permission, onChange }: Props) => {
       ? formatMessage(messages.everyoneWhoSignsIn)
       : formatMessage(actionFormMessages.nGroups, { nGroups: groupCount });
 
-  const setAccessDeniedMultiloc = (
-    access_denied_explanation_multiloc: Multiloc
-  ) => onChange({ access_denied_explanation_multiloc });
+  const openErrorMessage = () => {
+    setDraftMultiloc(savedMultiloc);
+    setErrorMessageOpen(true);
+  };
+
+  // The message is saved once, on close. Saving per keystroke patches the
+  // permission on every character, and the refetch that follows overwrites
+  // whatever was typed while it was in flight.
+  const closeErrorMessage = () => {
+    setErrorMessageOpen(false);
+    if (!isEqual(draftMultiloc, savedMultiloc)) {
+      onChange({ access_denied_explanation_multiloc: draftMultiloc });
+    }
+  };
 
   return (
     <>
@@ -78,7 +93,7 @@ const GroupsSection = ({ permission, onChange }: Props) => {
             buttonStyle="secondary-outlined"
             size="s"
             icon="edit"
-            onClick={() => setErrorMessageOpen(true)}
+            onClick={openErrorMessage}
             width="auto"
             fontSize={`${fontSizes.s}px`}
             iconSize={`${fontSizes.s}px`}
@@ -91,9 +106,9 @@ const GroupsSection = ({ permission, onChange }: Props) => {
 
       <ErrorMessageModal
         opened={errorMessageOpen}
-        valueMultiloc={permission.attributes.access_denied_explanation_multiloc}
-        onClose={() => setErrorMessageOpen(false)}
-        onChange={setAccessDeniedMultiloc}
+        valueMultiloc={draftMultiloc}
+        onClose={closeErrorMessage}
+        onChange={setDraftMultiloc}
       />
     </>
   );

@@ -57,9 +57,8 @@ module Verification
       response = method.verify_sync(**verification_parameters)
       uid = response[:uid]
       user_attributes = response[:attributes] || {}
-      user.update_merging_custom_fields!(
-        user_attributes.merge(custom_field_values: response[:custom_field_values] || {})
-      )
+      custom_field_values = CustomFieldService.remove_unknown_registration_custom_fields(response[:custom_field_values] || {})
+      UserService.assign_merging_custom_fields(user, user_attributes.merge(custom_field_values: custom_field_values)).save!
       make_verification(user:, method:, uid:)
     end
 
@@ -116,17 +115,11 @@ module Verification
     private
 
     def make_verification(user:, uid:, method:, activity_payload: {})
-      existing_users = existing_verified_users(user, uid, method)
-      taken = existing_users.present?
-
-      if taken
-        # it means sth went wrong and user wasn't fully created (e.g., they didn't enter email)
-        if existing_users.all?(&:blank_and_can_be_deleted?)
-          existing_users.each { |u| DeleteUserJob.perform_now(u) }
-        else
-          raise VerificationTakenError
-        end
-      end
+      # Other accounts already verified with this uid: either an email-less SSO account
+      # belonging to the same person, or somebody else claiming this identity. Normally
+      # at most one, but nothing enforces a unique uid, so older data can hold more.
+      other_accounts = existing_verified_users(user, uid, method)
+      raise VerificationTakenError unless other_accounts.all? { |u| merge_source?(u, method) }
 
       verification = ::Verification::Verification.new(
         method_name: method.name_for_hashing,
@@ -141,9 +134,35 @@ module Verification
       ActiveRecord::Base.transaction do
         verification.save!
         sfxv_service.after_create(verification, user, activity_payload)
+
+        # After the save on purpose: the source's copy is then a duplicate of one
+        # +user+ holds, so the merge drops it rather than leaving two identical rows.
+        other_accounts.each do |source|
+          account_merge_service.merge!(source: source, target: user, proof: :identity_provider)
+        end
       end
 
       verification
+    end
+
+    # Whether another account holding this uid is merged into the user verifying now,
+    # rather than blocking the verification as taken.
+    #
+    # Only when an identity provider asserted the uid: then both accounts proved they
+    # are the same person. A manual_sync uid is typed by the user and merely looked up,
+    # so knowing somebody's number would otherwise be enough to take their account.
+    # try so an unknown method fails closed.
+    def merge_source?(other_user, method)
+      method.try(:verification_method_type) == :omniauth &&
+        merge_eligibility_service.source_eligible?(other_user)
+    end
+
+    def merge_eligibility_service
+      @merge_eligibility_service ||= AccountMergeEligibilityService.new
+    end
+
+    def account_merge_service
+      @account_merge_service ||= AccountMergeService.new
     end
 
     def existing_verified_users(user, uid, method)

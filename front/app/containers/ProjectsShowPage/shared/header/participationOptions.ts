@@ -10,6 +10,7 @@ const PRIMARY_CTA_METHODS: ParticipationMethod[] = [
   'native_survey',
   'poll',
   'document_annotation',
+  'volunteering',
 ];
 
 export function phaseHasPrimaryCTA(phase: IPhaseData) {

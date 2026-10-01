@@ -16,7 +16,7 @@ import 'quill/dist/quill.snow.css';
 import '@enzedonline/quill-blot-formatter2/dist/css/quill-blot-formatter2.css';
 
 import { configureQuill, setEmbeddedVideoTitle } from './configureQuill';
-import { createQuill } from './createQuill';
+import { createQuill, detachQuillFromToolbar } from './createQuill';
 import ImageTooLargeModal from './ImageTooLargeModal';
 import messages from './messages';
 import StyleContainer from './StyleContainer';
@@ -145,6 +145,7 @@ const QuillEditor = ({
 
     return () => {
       observer.disconnect();
+      detachQuillFromToolbar(quill);
       container.innerHTML = '';
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

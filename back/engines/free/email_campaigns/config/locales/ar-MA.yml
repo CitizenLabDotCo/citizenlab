@@ -186,6 +186,7 @@ ar-MA:
       manual_project_participants: الرسائل الرسمية للمشاركين في المشروع
       mention_in_internal_comment: أذكر في تعليق داخلي
       mention_in_official_feedback: ذكر في تحديث
+      merge_account_confirmation: كود تأكيد دمج الحساب
       moderator_digest: نظرة عامة أسبوعية لمديري المشاريع
       native_survey_not_submitted: لم يتم إرسال الاستطلاع
       new_comment_for_admin: تعليق جديد في مشروع أُشرف عليه
@@ -477,6 +478,15 @@ ar-MA:
       preheader: ذكرك %{commentAuthor} في ملاحظات
       subject: ذكرك %{organizationName} في الملاحظات
       title: لقد تم ذكرك
+    merge_account_confirmation:
+      best_regards: مع أطيب التحيات،
+      event_description: 'شي واحد دخل لمنصة المشاركة ديال %{organizationName} وطلب يربط هاد الدخول بالحساب اللي كيستعمل هاد البريد الإلكتروني. إلا كنتي نتا، دخل كود التأكيد باش تكمل:'
+      expire_code: هاد الكود غادي تسالي الصلاحية ديالو فـ
+      hours_24: 24 ساعة.
+      ignore_email: إلا ما كنتيش نتا، تقدر تجاهل هاد البريد الإلكتروني بكل أمان. حتى حاجة ما تبدلات، وما كاين حتى شي واحد يقدر يستعمل هاد الكود بلا ما يدخل لهاد البريد الإلكتروني.
+      preheader: أكد البريد الإلكتروني ديالك الخاص بـ %{organizationName}
+      subject: أكد البريد الإلكتروني ديالك فمنصة المشاركة ديال %{organizationName}
+      title: أكد البريد الإلكتروني ديالك
     moderator_digest:
       cta_button: إدارة مشروعك
       event_description: لقد جمعنا لك المشاركات التي حظيت بأكبر قدر من النشاط خلال الأسبوع الماضي. اكتشف ما يحدث في مشروعك!

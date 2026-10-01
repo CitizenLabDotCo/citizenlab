@@ -87,14 +87,6 @@ module CustomIdMethods::ClaveUnica
       "https://#{host}/api/v1/accounts/app/logout?#{url_params.to_query}"
     end
 
-    def email_always_present?
-      false
-    end
-
-    def email_confirmed?(_auth)
-      false
-    end
-
     private
 
     def formatted_rut(auth)

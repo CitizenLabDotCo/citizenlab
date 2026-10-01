@@ -80,10 +80,13 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
     end
 
     it 'adds user custom field values as expected' do
-      user1.update!(custom_field_values: { 'field_1' => 'value_1u', 'field_2' => 'value_2u' })
+      create(:custom_field_answer, answerable: user1, key: 'field_1', value: 'value_1u')
+      create(:custom_field_answer, answerable: user1, key: 'field_2', value: 'value_2u')
 
       prefix = UserFieldsInFormService.prefix
-      idea2.update!(custom_field_values: { "#{prefix}field_1" => 'value_1i', 'field_3' => 'value_3i', "#{prefix}field_4" => 'value_4i' })
+      create(:custom_field_answer, answerable: idea2, key: "#{prefix}field_1", value: 'value_1i')
+      create(:custom_field_answer, answerable: idea2, key: 'field_3', value: 'value_3i')
+      create(:custom_field_answer, answerable: idea2, key: "#{prefix}field_4", value: 'value_4i')
 
       participations_submitting_idea = service.send(:participations_submitting_idea)
       idea2_participation = participations_submitting_idea.find { |p| p[:item_id] == idea2.id }
@@ -156,6 +159,45 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
         surveys_submitted_7_day_percent_change: 0,
         completion_rate_as_percent: 'submitted_count_compared_with_zero_ideas',
         completion_rate_7_day_percent_change: 'no_new_survey_responses_in_one_or_both_periods'
+      })
+    end
+  end
+
+  context 'with exclude_admins_and_moderators' do
+    before do
+      # 3 submitted responses and 2 drafts
+      create_admins_and_moderators(project: phase.project).each_with_index do |author, i|
+        submitted = i.even?
+        create(
+          :idea,
+          phases: [phase],
+          created_at: 10.days.ago,
+          submitted_at: submitted ? 10.days.ago : nil,
+          author: author,
+          publication_status: submitted ? 'published' : 'draft',
+          creation_phase_id: phase.id
+        )
+      end
+    end
+
+    it 'includes the responses of admins and moderators by default' do
+      participations = service.send(:filtered_phase_participations)
+      metrics = service.send(:phase_participation_method_metrics, participations)
+
+      expect(metrics).to include(surveys_submitted: 9, completion_rate_as_percent: 75.0) # 9 submitted out of 12 ideas
+    end
+
+    it 'excludes the responses of admins and moderators, but keeps responses without an author' do
+      service = described_class.new(phase, exclude_admins_and_moderators: true)
+      participations = service.send(:filtered_phase_participations)
+      metrics = service.send(:phase_participation_method_metrics, participations)
+
+      expect(participations[:submitting_idea].pluck(:item_id)).to contain_exactly(idea1.id, idea2.id, idea3.id, idea4.id, idea6.id, idea7.id)
+      expect(metrics).to eq({
+        surveys_submitted: 6,
+        surveys_submitted_7_day_percent_change: 50.0,
+        completion_rate_as_percent: 85.7,
+        completion_rate_7_day_percent_change: 7.1
       })
     end
   end

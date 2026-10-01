@@ -186,6 +186,7 @@ tr-TR:
       manual_project_participants: Proje katılımcılarına resmi mesajlar
       mention_in_internal_comment: Dahili bir yorumda bahsedin
       mention_in_official_feedback: Bir bildirimde bahis
+      merge_account_confirmation: Hesap birleştirme onay kodu
       moderator_digest: Proje yöneticileri için haftalık genel bakış
       native_survey_not_submitted: Anket gönderilmedi
       new_comment_for_admin: Yönettiğim bir projede yeni yorum
@@ -477,6 +478,15 @@ tr-TR:
       preheader: '%{commentAuthor} geri bildirimde sizden bahsetti'
       subject: '%{organizationName} geri bildiriminde sizden bahsetti'
       title: Sizden bahsedildi
+    merge_account_confirmation:
+      best_regards: Saygılarımızla,
+      event_description: 'Birisi %{organizationName} katılım platformuna giriş yaptı ve bu girişi bu e-posta adresini kullanan hesaba bağlamayı talep etti. Bunu yapan sizseniz devam etmek için bu onay kodunu girin:'
+      expire_code: 'Bu kodun süresi şu kadar süre içinde dolacak:'
+      hours_24: 24 saat.
+      ignore_email: Bunu yapan siz değilseniz bu e-postayı güvenle görmezden gelebilirsiniz. Hiçbir şey değişmedi ve bu gelen kutusuna erişimi olmayan hiç kimse bu kodu kullanamaz.
+      preheader: '%{organizationName} için e-posta adresinizi onaylayın'
+      subject: '%{organizationName} katılım platformu için e-posta adresinizi onaylayın'
+      title: E-posta adresinizi onaylayın
     moderator_digest:
       cta_button: Projenizi yönetin
       event_description: Geçtiğimiz hafta boyunca en çok etkinlik yaratan girdileri sizin için derledik. Projenizle ilgili neler olduğunu öğrenin!

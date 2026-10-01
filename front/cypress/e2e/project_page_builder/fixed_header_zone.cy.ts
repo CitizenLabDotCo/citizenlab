@@ -42,17 +42,25 @@ describe('Project page builder fixed header zone', () => {
     ).should('be.visible');
   });
 
+  // A chip is drawn 28px above its widget, and the canvas leaves only 24px of
+  // top padding for it. So a chip is on screen only while the canvas is
+  // scrolled to the top. Cypress scrolls its target to the top of the scroll
+  // container before clicking it, which pushes that widget's own chip out.
+  const scrollCanvasToTop = () =>
+    cy
+      .get('#e2e-project-page-content-builder-page')
+      .children()
+      .eq(1)
+      .scrollTo('top');
+
   it('shows a specific chip when clicking on the banner or the title', () => {
     cy.get('#PROJECT_PAGE_BANNER').click();
+    scrollCanvasToTop();
     cy.contains(
       "Project image - click to edit — can't be moved or removed"
     ).should('be.visible');
     cy.get('#PROJECT_PAGE_TITLE').click();
-    // sometimes page scrolls down and the title chip is not visible
-    cy.get('#e2e-project-page-content-builder-page')
-      .children()
-      .eq(1)
-      .scrollTo('top');
+    scrollCanvasToTop();
     cy.contains("Title - click to edit — can't be moved or removed").should(
       'be.visible'
     );

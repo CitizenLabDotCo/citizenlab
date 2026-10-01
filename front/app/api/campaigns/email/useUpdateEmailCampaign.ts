@@ -21,8 +21,11 @@ const useUpdateEmailCampaign = () => {
   const queryClient = useQueryClient();
   return useMutation<IEmailCampaign, CLErrors, IUpdateEmailCampaignProperties>({
     mutationFn: updateEmailCampaign,
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: emailCampaignsKeys.lists() });
+      queryClient.invalidateQueries({
+        queryKey: emailCampaignsKeys.item({ campaignId: data.data.id }),
+      });
       queryClient.invalidateQueries({
         queryKey: emailCampaignPreviewsKeys.all(),
       });

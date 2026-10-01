@@ -150,6 +150,8 @@ resource 'Permissions' do
       end
 
       context 'for the visiting permission' do
+        include_context 'with sms feature enabled'
+
         let(:action) { 'visiting' }
 
         before do
@@ -289,6 +291,21 @@ resource 'Permissions' do
           expect(response_data.dig(:attributes, :confirmed_phone_number_expiry)).to eq confirmed_phone_number_expiry
           expect(response_data.dig(:attributes, :access_denied_explanation_multiloc)).to eq access_denied_explanation_multiloc
           expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array group_ids
+        end
+      end
+
+      context 'require_confirmed_phone_number without the sms feature', document: false do
+        let(:permitted_by) { 'users' }
+        let(:require_confirmed_phone_number) { true }
+        let(:confirmed_phone_number_expiry) { 30 }
+
+        example 'is reported as false, while the stored value is kept' do
+          do_request
+          assert_status 200
+          expect(response_data.dig(:attributes, :require_confirmed_phone_number)).to be false
+
+          permission = Permission.find(response_data[:id])
+          expect(permission.read_attribute(:require_confirmed_phone_number)).to be true
         end
       end
 
@@ -479,6 +496,8 @@ resource 'Permissions' do
       end
 
       context 'for the visiting permission' do
+        include_context 'with sms feature enabled'
+
         let(:action) { 'visiting' }
         let(:require_confirmed_email) { false }
         let(:require_confirmed_phone_number) { true }
@@ -559,11 +578,11 @@ resource 'Permissions' do
           create(:custom_field_gender, required: false)
           create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field')
 
+          @user.custom_field_answers.build(key: 'gender', value: 'male')
           @user.update!(
             first_name: 'Jack',
             last_name: nil,
-            password_digest: nil,
-            custom_field_values: { 'gender' => 'male' }
+            password_digest: nil
           )
         end
 
@@ -656,12 +675,12 @@ resource 'Permissions' do
           create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field')
           create(:custom_field, resource_type: 'User', enabled: false, key: 'disabled_field') # Should not be returned
 
+          @user.custom_field_answers.build(key: 'gender', value: 'male')
           @user.update!(
             email: 'my@email.com',
             first_name: 'Jack',
             last_name: nil,
-            password_digest: nil,
-            custom_field_values: { 'gender' => 'male' }
+            password_digest: nil
           )
 
           create(:topic, include_in_onboarding: true)

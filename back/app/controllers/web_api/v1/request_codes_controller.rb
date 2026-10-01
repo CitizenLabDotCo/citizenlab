@@ -58,6 +58,29 @@ class WebApi::V1::RequestCodesController < ApplicationController
     head :ok
   end
 
+  # Sends a merge code to the address of the account an email-less SSO user wants to
+  # be merged into. The front end asks for one when request_code_new_email refuses
+  # that address as taken: almost always the same person arriving a second way.
+  #
+  # Nobody is looked up here. Who owns the address, and whether they may be merged
+  # into, is settled at confirm time; answering now would let anyone probe which
+  # addresses belong to admins.
+  def request_code_merge_account
+    authorize current_user, policy_class: RequestCodePolicy
+    # A resend carries no address, so it goes to the pending one.
+    merge_target_email = request_code_merge_account_params[:merge_target_email].presence ||
+                         current_user.merge_target_email
+
+    if merge_target_email.blank?
+      render json: { errors: { merge_target_email: [{ error: 'cannot be blank' }] } }, status: :unprocessable_entity
+      return
+    end
+
+    RequestMergeAccountConfirmationCodeJob.perform_now(current_user, merge_target_email: merge_target_email)
+
+    head :ok
+  end
+
   # The phone mirror of request_code_email: phone signup / passwordless login,
   # with the account looked up from the submitted `phone`.
   def request_code_phone
@@ -188,6 +211,10 @@ class WebApi::V1::RequestCodesController < ApplicationController
 
   def request_code_new_email_params
     params.fetch(:request_code, {}).permit(:new_email)
+  end
+
+  def request_code_merge_account_params
+    params.fetch(:request_code, {}).permit(:merge_target_email)
   end
 
   def request_code_phone_params

@@ -18,8 +18,7 @@ module DecidimImporter
 
     # @return [Hash] e.g.
     #   { 'settings' => { 'core' => { 'locales' => ['fr-FR', 'en'] },
-    #                     'project_static_pages' => { 'allowed' => true, 'enabled' => true },
-    #                     'parallel_participation' => { 'allowed' => true, 'enabled' => true } } }
+    #                     'project_static_pages' => { 'allowed' => true, 'enabled' => true } } }
     def patch
       settings = feature_settings
       locales = mapped_locales
@@ -30,13 +29,10 @@ module DecidimImporter
     private
 
     # Feature flags the import always turns on (each allowed *and* enabled). `project_static_pages` backs
-    # the project-level static pages the importer creates from Decidim `pages` components;
-    # `parallel_participation` puts imported projects into the redesigned, content-builder-driven back
-    # office the import targets.
+    # the project-level static pages the importer creates from Decidim `pages` components.
     def feature_settings
       {
-        'project_static_pages' => { 'allowed' => true, 'enabled' => true },
-        'parallel_participation' => { 'allowed' => true, 'enabled' => true }
+        'project_static_pages' => { 'allowed' => true, 'enabled' => true }
       }
     end
 

@@ -18,6 +18,7 @@ import setPhaseURL from 'containers/ProjectsShowPage/timeline/setPhaseURL';
 import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
 
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
+import useWidgetProjectId from 'components/admin/ContentBuilder/useWidgetProjectId';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
@@ -26,7 +27,6 @@ import { useParams } from 'utils/router';
 import messages from '../messages';
 import SectionBackground from '../SectionBackground';
 import useIsPageBodyChild from '../useIsPageBodyChild';
-import useWidgetProjectId from '../useWidgetProjectId';
 
 import EmptyTimeline from './EmptyTimeline';
 

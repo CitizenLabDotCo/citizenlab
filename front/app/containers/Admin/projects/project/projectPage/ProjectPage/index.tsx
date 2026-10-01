@@ -192,7 +192,11 @@ const ProjectPage = () => {
           // Let wheel/scroll fall through to the iframe so the preview stays scrollable
           pointerEvents="none"
         >
-          <CtaWrapper pointerEvents="auto" transform="translateY(7px)">
+          <CtaWrapper
+            className="intercom-product-tour-project-edit-project"
+            pointerEvents="auto"
+            transform="translateY(7px)"
+          >
             <Button
               icon="edit"
               buttonStyle="primary"

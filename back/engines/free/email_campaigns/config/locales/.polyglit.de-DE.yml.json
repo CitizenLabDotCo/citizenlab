@@ -884,6 +884,11 @@
     "verified_at": "2026-03-18T15:41:17.450605Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.campaign_type_description.merge_account_confirmation": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.430432Z",
+    "verified_by": "Jelena"
+  },
   "email_campaigns.campaign_type_description.moderator_digest": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.450605Z",
@@ -2178,6 +2183,46 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.450605Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.merge_account_confirmation.best_regards": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.430432Z",
+    "verified_by": "Jelena"
+  },
+  "email_campaigns.merge_account_confirmation.event_description": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.430432Z",
+    "verified_by": "Jelena"
+  },
+  "email_campaigns.merge_account_confirmation.expire_code": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.430432Z",
+    "verified_by": "Jelena"
+  },
+  "email_campaigns.merge_account_confirmation.hours_24": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.430432Z",
+    "verified_by": "Jelena"
+  },
+  "email_campaigns.merge_account_confirmation.ignore_email": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.430432Z",
+    "verified_by": "Jelena"
+  },
+  "email_campaigns.merge_account_confirmation.preheader": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.430432Z",
+    "verified_by": "Jelena"
+  },
+  "email_campaigns.merge_account_confirmation.subject": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.430432Z",
+    "verified_by": "Jelena"
+  },
+  "email_campaigns.merge_account_confirmation.title": {
+    "state": "verified",
+    "verified_at": "2026-09-22T06:09:59.430432Z",
+    "verified_by": "Jelena"
   },
   "email_campaigns.moderator_digest.cta_button": {
     "state": "verified",

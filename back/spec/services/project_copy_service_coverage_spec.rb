@@ -70,10 +70,12 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
 
       'User' => %w[
         confirmation_required
+        early_access_opt_ins
         email_confirmed_at
         imported
         invite_status
         last_active_at
+        merge_target_email
         new_email
         new_phone
         onboarding
@@ -82,7 +84,7 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
         reset_password_token
         roles
         token_expiry_key
-      ] # auth/session/role/contact state — deliberately not exported (privacy/security)
+      ] # auth/session/role/contact state and personal settings — deliberately not exported (privacy/security)
     }.freeze
   end
 
@@ -148,7 +150,6 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
       # Activity logs, telemetry and derived caches — runtime data, not content.
       tracking_and_caches: %w[
         Activity
-        CustomFieldAnswer
         IdeaExposure
         ImpactTracking::Pageview
         ImpactTracking::Salt

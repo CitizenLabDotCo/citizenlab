@@ -83,7 +83,7 @@ resource 'Ideas' do
         expect(inputs.size).to eq 1
         input = inputs.first
         expect(input.phase_ids).to eq [phase.id]
-        expect(input.custom_field_values).to eq({ 'custom_field_name1' => 'Cat' })
+        expect(input.custom_field_answers.pluck(:key, :value)).to eq [%w[custom_field_name1 Cat]]
         expect(input.creation_phase_id).to eq phase.id
       end
     end
@@ -122,9 +122,7 @@ resource 'Ideas' do
         :idea,
         author: user,
         project: project,
-        custom_field_values: {
-          custom_field_name1: 'Cat'
-        },
+        custom_field_answers: [build(:custom_field_answer, key: 'custom_field_name1', value: 'Cat')],
         creation_phase: creation_phase,
         phases: [creation_phase].compact
       )

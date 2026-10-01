@@ -29,10 +29,21 @@ class RequestCodePolicy < ApplicationPolicy
     true
   end
 
-  # For authenticated users changing their email
+  # For authenticated users changing their email.
   def request_code_new_email?
     return false if user.nil?
     return false if code_reset_count(user.new_email_confirmation) >= max_retries - 1
+
+    true
+  end
+
+  # For an email-less SSO user asking to be merged into the account owning an
+  # address. The source rules only look at the caller's own account, so they can
+  # refuse before anything is proven. The target rules wait for the code.
+  def request_code_merge_account?
+    return false if user.nil?
+    return false unless AccountMergeEligibilityService.new.source_eligible?(user)
+    return false if code_reset_count(user.merge_account_confirmation) >= max_retries - 1
 
     true
   end

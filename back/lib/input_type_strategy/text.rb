@@ -6,6 +6,10 @@ module InputTypeStrategy
       true
     end
 
+    def json_schema
+      { type: 'string' }
+    end
+
     def answers_eq(answers, value)
       answers.where("value #>> '{}' = ?", value)
     end

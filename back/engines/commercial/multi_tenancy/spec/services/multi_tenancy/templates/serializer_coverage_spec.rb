@@ -79,10 +79,12 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
       'User' => %w[
         block_end_at
         confirmation_required
+        early_access_opt_ins
         email_confirmed_at
         imported
         invite_status
         last_active_at
+        merge_target_email
         new_email
         new_phone
         onboarding
@@ -91,7 +93,7 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         reset_password_token
         roles
         token_expiry_key
-      ] # auth/session/role/contact state — deliberately not templated (privacy/security)
+      ] # auth/session/role/contact state and personal settings — deliberately not templated (privacy/security)
     }.freeze
   end
 
@@ -142,7 +144,6 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
       # Activity logs, telemetry and derived caches — runtime data, not content.
       tracking_and_caches: %w[
         Activity
-        CustomFieldAnswer
         IdeaExposure
         ImpactTracking::Pageview
         ImpactTracking::Salt

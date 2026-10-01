@@ -6,6 +6,8 @@ import { UserComponent, useEditor } from '@craftjs/core';
 import Events from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Events';
 import Projects from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/ProjectsAndFoldersLegacy';
 
+import EventsList from 'components/admin/ContentBuilder/Widgets/Events';
+
 const Container: UserComponent = ({ children }) => {
   const { enabled: inEditor } = useEditor((state) => ({
     enabled: state.options.enabled,
@@ -26,7 +28,10 @@ Container.craft = {
   rules: {
     canMoveIn: (incomingNodes) => {
       return !incomingNodes.some(
-        (node) => node.data.type === Events || node.data.type === Projects
+        (node) =>
+          node.data.type === Events ||
+          node.data.type === EventsList ||
+          node.data.type === Projects
       );
     },
   },
