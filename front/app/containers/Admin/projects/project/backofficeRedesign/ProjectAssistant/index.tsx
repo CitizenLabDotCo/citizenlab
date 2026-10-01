@@ -200,25 +200,31 @@ const ProjectAssistant = ({ project }: Props) => {
   };
 
   return (
-    <Box p="20px" display="flex" flexDirection="column" gap="16px">
-      <Box display="flex" alignItems="center" gap="10px">
+    <Box p="20px" display="flex" flexDirection="column" gap="20px">
+      <Box
+        display="flex"
+        alignItems="center"
+        gap="12px"
+        pb="16px"
+        borderBottom={`1px solid ${colors.grey200}`}
+      >
         <Box
           flex="0 0 auto"
-          width="36px"
-          height="36px"
+          width="40px"
+          height="40px"
           borderRadius="50%"
           bgColor={colors.teal50}
           display="flex"
           alignItems="center"
           justifyContent="center"
         >
-          <Icon name="stars" width="20px" height="20px" fill={colors.teal500} />
+          <Icon name="stars" width="22px" height="22px" fill={colors.teal500} />
         </Box>
         <Box>
-          <Text m="0px" fontSize="l" fontWeight="bold">
+          <Text m="0px" fontSize="l" fontWeight="bold" lineHeight="1.2">
             {formatMessage(messages.title)}
           </Text>
-          <Text m="0px" fontSize="s" color="textSecondary">
+          <Text m="0px" fontSize="s" color="textSecondary" lineHeight="1.3">
             {formatMessage(messages.tagline)}
           </Text>
         </Box>
@@ -244,7 +250,7 @@ const ProjectAssistant = ({ project }: Props) => {
               runningJobStartedAt={runningJob?.attributes.created_at}
             />
           ) : (
-            <Text m="0px" color="textSecondary">
+            <Text m="0px" color="textSecondary" lineHeight="1.55">
               {formatMessage(messages.intro)}
             </Text>
           )}

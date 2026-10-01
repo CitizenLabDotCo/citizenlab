@@ -6,7 +6,6 @@ import {
   IconButton,
   Text,
   colors,
-  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { useDropzone } from 'react-dropzone';
 import styled from 'styled-components';
@@ -32,7 +31,7 @@ const ComposerField = styled(Box)`
   textarea {
     min-height: 140px;
     padding-bottom: 44px;
-    border-radius: ${stylingConsts.borderRadius};
+    border-radius: 10px;
     transition: border-color 120ms ease, box-shadow 120ms ease;
   }
   /* Reads as a chat composer: soft focus ring in the assistant's teal. */
@@ -94,7 +93,7 @@ const Composer = ({
           justifyContent="center"
           bgColor={colors.teal50}
           border={`2px dashed ${colors.teal400}`}
-          borderRadius={stylingConsts.borderRadius}
+          borderRadius="10px"
         >
           <Text m="0px" color="teal700">
             <FormattedMessage {...messages.dropFiles} />
@@ -132,14 +131,23 @@ const Composer = ({
               key={`${file.name}-${file.lastModified}`}
               display="flex"
               alignItems="center"
-              gap="4px"
-              pl="8px"
+              gap="6px"
+              pl="10px"
+              py="2px"
               bgColor={colors.grey100}
-              borderRadius={stylingConsts.borderRadius}
+              border={`1px solid ${colors.grey200}`}
+              borderRadius="8px"
               maxWidth="100%"
             >
               <Icon name="file" width="14px" height="14px" fill={colors.grey700} />
-              <Text m="0px" fontSize="s" overflow="hidden" whiteSpace="nowrap">
+              <Text
+                m="0px"
+                fontSize="s"
+                overflow="hidden"
+                whiteSpace="nowrap"
+                textOverflow="ellipsis"
+                maxWidth="180px"
+              >
                 {file.name}
               </Text>
               <IconButton

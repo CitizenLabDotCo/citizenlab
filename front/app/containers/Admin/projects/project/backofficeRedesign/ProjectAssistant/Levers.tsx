@@ -67,17 +67,17 @@ const Levers = ({ values, disabled, onChange }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Reveal pt="16px" borderTop={`1px solid ${colors.grey200}`}>
-      <Text m="0px" mb="2px" fontSize="s" fontWeight="bold">
+    <Reveal pt="20px" borderTop={`1px solid ${colors.grey200}`}>
+      <Text m="0px" mb="2px" fontSize="m" fontWeight="bold">
         {formatMessage(messages.leversHeading)}
       </Text>
-      <Text m="0px" mb="14px" fontSize="s" color="textSecondary">
+      <Text m="0px" mb="16px" fontSize="s" color="textSecondary" lineHeight="1.45">
         {formatMessage(messages.leversHelper)}
       </Text>
-      <Box display="flex" flexDirection="column" gap="14px">
+      <Box display="flex" flexDirection="column" gap="16px">
         {LEVERS.map((lever) => (
           <Box key={lever.id}>
-            <Text m="0px" mb="7px" fontSize="s" color="textSecondary">
+            <Text m="0px" mb="8px" fontSize="s" color="textPrimary">
               {formatMessage(lever.question)}
             </Text>
             <Box display="flex" flexWrap="wrap" gap="7px">
