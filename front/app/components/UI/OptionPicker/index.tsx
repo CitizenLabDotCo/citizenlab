@@ -77,6 +77,9 @@ interface Props<T extends string> {
   value: T;
   onChange: (value: T) => void;
   searchPlaceholder?: string;
+  triggerLabel?: string;
+  keepOpenFor?: T;
+  children?: React.ReactNode;
 }
 
 const OptionPicker = <T extends string>({
@@ -86,6 +89,9 @@ const OptionPicker = <T extends string>({
   value,
   onChange,
   searchPlaceholder,
+  triggerLabel,
+  keepOpenFor,
+  children,
 }: Props<T>) => {
   const { formatMessage } = useIntl();
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -159,7 +165,7 @@ const OptionPicker = <T extends string>({
               fill={colors.coolGrey500}
             />
           )}
-          <Label>{selected?.label}</Label>
+          <Label>{triggerLabel ?? selected?.label}</Label>
         </TriggerContent>
       </Button>
 
@@ -215,7 +221,7 @@ const OptionPicker = <T extends string>({
                   selected={option.value === value}
                   onClick={() => {
                     if (option.value !== value) onChange(option.value);
-                    dismiss();
+                    if (option.value !== keepOpenFor) dismiss();
                   }}
                 />
               ))}
@@ -225,6 +231,8 @@ const OptionPicker = <T extends string>({
                 </Text>
               )}
             </Box>
+
+            {children}
           </Box>
         }
       />

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Divider } from '@citizenlab/cl2-component-library';
 
 import { IProjectData } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
@@ -20,6 +20,7 @@ import {
 import messages from '../../messages';
 import PanelHeading from '../PanelHeading';
 
+import AreaFilterDropdown from './AreaFilterDropdown';
 import ContextDropdowns from './ContextDropdowns';
 
 interface Props {
@@ -76,6 +77,9 @@ const SetupDropdowns = ({ project }: Props) => {
           }
         />
       </Box>
+      <Divider />
+
+      <AreaFilterDropdown project={project} />
     </Box>
   );
 };

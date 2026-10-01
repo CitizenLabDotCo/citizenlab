@@ -500,6 +500,23 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.visibility',
     defaultMessage: 'Visibility',
   },
+  areaFilterDescription: {
+    id: 'app.containers.Admin.projects.project.areaFilterDescription',
+    defaultMessage:
+      'Where this project surfaces when residents filter by their area.',
+  },
+  areaFilterAllAreas: {
+    id: 'app.containers.Admin.projects.project.areaFilterAllAreas',
+    defaultMessage: 'All areas',
+  },
+  areaFilterSelectedAreas: {
+    id: 'app.containers.Admin.projects.project.areaFilterSelectedAreas',
+    defaultMessage: 'Selected areas',
+  },
+  areaFilterChooseAreas: {
+    id: 'app.containers.Admin.projects.project.areaFilterChooseAreas',
+    defaultMessage: 'Choose which area filters it shows in',
+  },
   contextSpaceDescription: {
     id: 'app.containers.Admin.projects.project.contextSpaceDescription',
     defaultMessage:
