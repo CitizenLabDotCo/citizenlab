@@ -4,13 +4,16 @@ import { IIdeaData } from 'api/ideas/types';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 
 import tracks from 'components/admin/PostManager/tracks';
+import useAssigneeOptions, {
+  UNASSIGNED,
+} from 'components/admin/PostManager/useAssigneeOptions';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+import { getFullName } from 'utils/textUtils';
 
 import messages from '../messages';
 import OptionList from '../OptionList';
-import useAssigneeOptions, { UNASSIGNED } from '../useAssigneeOptions';
 
 import PropertyMenu from './PropertyMenu';
 import PropertyRow from './PropertyRow';
@@ -21,7 +24,10 @@ interface Props {
 
 const AssigneeProperty = ({ idea }: Props) => {
   const { formatMessage } = useIntl();
-  const options = useAssigneeOptions(idea.relationships.project.data.id);
+  const options = useAssigneeOptions(
+    idea.relationships.project.data.id,
+    getFullName
+  );
   const { mutate: updateIdea } = useUpdateIdea();
   const assigneeId = idea.relationships.assignee?.data?.id ?? UNASSIGNED;
   const current = options.find((option) => option.value === assigneeId);
@@ -41,7 +47,7 @@ const AssigneeProperty = ({ idea }: Props) => {
 
   return (
     <PropertyRow label={formatMessage(messages.filterAssignee)}>
-      <PropertyMenu label={current?.label ?? ''}>
+      <PropertyMenu label={current?.label}>
         {(close) => (
           <OptionList
             options={options}
