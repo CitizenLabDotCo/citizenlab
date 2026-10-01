@@ -76,6 +76,13 @@ jest.mock('components/DescriptionBuilder/Settings', () => ({
   __esModule: true,
   default: () => null,
 }));
+jest.mock(
+  'components/admin/ContentBuilder/DropFeedback/DropPlacementOverlay',
+  () => ({
+    __esModule: true,
+    default: () => null,
+  })
+);
 jest.mock('components/CustomPageBuilder/Editor', () => ({
   __esModule: true,
   default: ({ children }: { children: React.ReactNode }) => <>{children}</>,

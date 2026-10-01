@@ -5,9 +5,10 @@ import { useNode } from '@craftjs/core';
 
 import { ICustomPageData } from 'api/custom_pages/types';
 
+import TitleMultilocInput from 'components/admin/ContentBuilder/Widgets/_shared/TitleMultilocInput';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
-import TitleMultilocInput from '../../_shared/TitleMultilocInput';
 import messages from '../messages';
 import { CustomPageIconImage, CustomPageItem } from '../typings';
 

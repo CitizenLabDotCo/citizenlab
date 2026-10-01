@@ -5,12 +5,12 @@ import { Multiloc } from 'typings';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import { PublicationStatus } from 'api/projects/types';
 
-import AdminPublicationsCarrousel from '../_shared/AdminPublicationsCarrousel';
-import Skeleton from '../_shared/AdminPublicationsCarrousel/Skeleton';
-import { CarrouselContainer } from '../_shared/BaseCarrousel/Containers';
-import CarrouselTitle from '../_shared/CarrouselTitle';
-import EmptyState from '../_shared/EmptyState';
-import useLocalizeWithFallback from '../_shared/useLocalizeWithFallback';
+import AdminPublicationsCarrousel from 'components/admin/ContentBuilder/Widgets/_shared/AdminPublicationsCarrousel';
+import Skeleton from 'components/admin/ContentBuilder/Widgets/_shared/AdminPublicationsCarrousel/Skeleton';
+import { CarrouselContainer } from 'components/admin/ContentBuilder/Widgets/_shared/BaseCarrousel/Containers';
+import CarrouselTitle from 'components/admin/ContentBuilder/Widgets/_shared/CarrouselTitle';
+import EmptyState from 'components/admin/ContentBuilder/Widgets/_shared/EmptyState';
+import useLocalizeWithFallback from 'components/admin/ContentBuilder/Widgets/_shared/useLocalizeWithFallback';
 
 import messages from './messages';
 import Settings from './Settings';
