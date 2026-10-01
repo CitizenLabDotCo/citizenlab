@@ -10,7 +10,7 @@ import {
 import MenuButton from '../MenuButton';
 
 interface Props {
-  label: string;
+  label?: string;
   /** A dot before the label, e.g. the status colour. */
   color?: string;
   icon?: IconNames;
