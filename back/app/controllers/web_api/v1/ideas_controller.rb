@@ -110,7 +110,7 @@ class WebApi::V1::IdeasController < ApplicationController
     ideas = SortByParamsService.new.sort_ideas(ideas, params, current_user)
     ideas = ideas.includes(:idea_trending_info)
 
-    result = IdeasCountService.counts(ideas, %w[idea_status_id input_topic_id assignee_id])
+    result = IdeasCountService.counts(ideas, filter_counts_attributes(ideas))
     result['total'] = ideas.count
     render json: raw_json(result)
   end
@@ -378,6 +378,10 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   private
+
+  def filter_counts_attributes(_ideas)
+    %w[idea_status_id input_topic_id]
+  end
 
   def phase
     @phase ||= Phase.find(params[:phase_id])
