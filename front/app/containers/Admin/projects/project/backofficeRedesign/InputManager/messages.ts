@@ -1,7 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  // Table
   inputColumn: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.inputColumn',
     defaultMessage: 'Input',
@@ -22,10 +21,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.repliedMark',
     defaultMessage: 'Replied',
   },
-  orderBy: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.orderBy',
-    defaultMessage: 'Order by {column}',
-  },
   addColumns: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.addColumns',
     defaultMessage: 'Add columns',
@@ -42,12 +37,7 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.unassigned',
     defaultMessage: 'Unassigned',
   },
-  assignedTo: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.assignedTo',
-    defaultMessage: 'Assigned to {name}',
-  },
 
-  // Toolbar
   searchInputs: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.searchInputs',
     defaultMessage: 'Search inputs',
@@ -129,7 +119,6 @@ export default defineMessages({
     defaultMessage: 'Remove this filter',
   },
 
-  // Batch actions
   selectedCount: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectedCount',
     defaultMessage: '{count} selected',
@@ -164,7 +153,6 @@ export default defineMessages({
     defaultMessage: 'There is no other phase that can hold inputs.',
   },
 
-  // Side panel
   previousInput: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.previousInput',
     defaultMessage: 'Previous input',
@@ -205,12 +193,7 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.removeTag',
     defaultMessage: 'Remove {tag}',
   },
-  officialUpdate: {
-    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.officialUpdate',
-    defaultMessage: 'Official update',
-  },
 
-  // Right column
   inputsTile: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.inputsTile',
     defaultMessage: 'Inputs',
@@ -241,7 +224,6 @@ export default defineMessages({
     defaultMessage: 'Exports',
   },
 
-  // Empty states
   noInputsTitle: {
     id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.noInputsTitle',
     defaultMessage: 'Inputs will appear here',
