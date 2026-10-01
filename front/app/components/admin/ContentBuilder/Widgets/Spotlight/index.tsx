@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
 import useProjectFolderImage from 'api/project_folder_images/useProjectFolderImage';
@@ -59,7 +58,7 @@ const Spotlight = ({
   const { formatMessage } = useIntl();
 
   if (isErrorProject || isErrorFolder) {
-    return <Box />;
+    return null;
   }
 
   if (!publicationId) {

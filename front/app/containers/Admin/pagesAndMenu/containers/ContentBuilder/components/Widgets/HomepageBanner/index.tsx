@@ -27,6 +27,7 @@ import SignedOutHeader from 'containers/HomePage/SignedOutHeader';
 import {
   CONTENT_BUILDER_ERROR_EVENT,
   IMAGE_UPLOADING_EVENT,
+  DEFAULT_Y_PADDING,
 } from 'components/admin/ContentBuilder/constants';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import { homepageBannerLayoutHeights } from 'components/LandingPages/citizen/constants';
@@ -41,8 +42,6 @@ import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { useLocation, useSearch } from 'utils/router';
 import { isValidUrl } from 'utils/validate';
-
-import { DEFAULT_Y_PADDING } from '../constants';
 
 import BannerHeightSettings from './BannerHeightSettings';
 import LayoutSettingField from './LayoutSettingField';

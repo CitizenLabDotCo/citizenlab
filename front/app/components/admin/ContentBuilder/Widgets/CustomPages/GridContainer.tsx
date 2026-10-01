@@ -3,10 +3,11 @@ import React from 'react';
 import { Box, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
+import {
+  BUILDER_CONTENT_MAX_WIDTH,
+  DEFAULT_Y_PADDING,
+} from 'components/admin/ContentBuilder/constants';
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
-
-import { DEFAULT_Y_PADDING } from '../constants';
 
 // minmax(0, ...) rather than a plain 1fr: the implicit minimum of a 1fr track is
 // the min-content of the card, which makes the grid overflow its container as

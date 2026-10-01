@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import {
   Box,
@@ -9,23 +9,24 @@ import {
   Title,
   Input,
 } from '@citizenlab/cl2-component-library';
-import { useEditor, useNode } from '@craftjs/core';
+import { useNode } from '@craftjs/core';
 import { Multiloc } from 'component-library/utils/typings';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 
 import useLocalize from 'hooks/useLocalize';
 
 import {
+  BAND_Y_PADDING,
   BUILDER_CONTENT_MAX_WIDTH,
   DEFAULT_PADDING,
+  DEFAULT_Y_PADDING,
 } from 'components/admin/ContentBuilder/constants';
+import { VerticalRhythmContext } from 'components/admin/ContentBuilder/verticalRhythm';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { useIntl } from 'utils/cl-intl';
 import { removeUrlLocale } from 'utils/removeUrlLocale';
-
-import { DEFAULT_Y_PADDING } from '../constants';
 
 import messages from './messages';
 
@@ -91,12 +92,6 @@ const CallToAction = ({
   secondaryButtonText,
   secondaryButtonLink,
 }: Props) => {
-  const { enabled } = useEditor((state) => {
-    return {
-      enabled: state.options.enabled,
-    };
-  });
-
   const isInternalLink = (url?: string) => {
     if (!url) {
       return false;
@@ -127,17 +122,22 @@ const CallToAction = ({
     return url;
   };
 
-  const theme = useTheme();
   const isSmallerThanTablet = useBreakpoint('tablet');
   const lоcalize = useLocalize();
 
   const renderSecondaryButton = secondaryButtonLink && secondaryButtonText;
   const renderPrimaryButton = primaryButtonLink && primaryButtonText;
   const renderAnyButton = renderSecondaryButton || renderPrimaryButton;
+  // Under the spacing rhythm a band pads itself on the same scale as the other bands; a
+  // margin here would collapse into the rhythm's own. The homepage keeps its own spacing.
+  const underRhythm = useContext(VerticalRhythmContext);
+  const homepageY = isSmallerThanTablet ? DEFAULT_PADDING : DEFAULT_Y_PADDING;
+
   return (
     <Box
       data-cy="e2e-highlight"
-      my={isSmallerThanTablet ? DEFAULT_PADDING : DEFAULT_Y_PADDING}
+      my={underRhythm ? undefined : homepageY}
+      py={underRhythm ? BAND_Y_PADDING : undefined}
     >
       <Box
         maxWidth={BUILDER_CONTENT_MAX_WIDTH}
@@ -158,15 +158,13 @@ const CallToAction = ({
               {lоcalize(description)}
             </Text>
           </Box>
-          {enabled && renderAnyButton && (
+          {renderAnyButton && (
             <ButtonContainer>
               {renderSecondaryButton && (
                 <ButtonWithLink
                   fontWeight="500"
                   padding="13px 22px"
-                  buttonStyle="text"
-                  textColor={theme.colors.tenantPrimary}
-                  textDecorationHover="underline"
+                  buttonStyle="primary-outlined"
                   fullWidth={isSmallerThanTablet}
                   linkTo={getLink(secondaryButtonLink)}
                   scrollToTop
