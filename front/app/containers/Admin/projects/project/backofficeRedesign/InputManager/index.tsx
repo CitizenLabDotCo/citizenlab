@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
@@ -57,7 +57,7 @@ const InputManager = ({ project, phase }: Props) => {
     setSort,
     setPage,
     setSearchTerm,
-    clearSelectedIdeaId,
+    setSelectedIdeaId,
   } = useManagerParams(phase.id);
 
   // Proposals only ever belong to the phase they were posted in.
@@ -92,14 +92,9 @@ const InputManager = ({ project, phase }: Props) => {
   // Kept as data, not ids, so the batch actions still know the tags and
   // phases of inputs selected on another page.
   const [selection, setSelection] = useState<Map<string, IIdeaData>>(new Map());
-  const [panel, setPanel] = useState<{ ideaId: string; mode: PreviewMode }>();
-
-  // Links from notification emails open an input through the url.
-  useEffect(() => {
-    if (!selectedIdeaId) return;
-    setPanel({ ideaId: selectedIdeaId, mode: 'view' });
-    clearSelectedIdeaId();
-  }, [selectedIdeaId, clearSelectedIdeaId]);
+  const [editingIdeaId, setEditingIdeaId] = useState<string>();
+  const panelMode: PreviewMode =
+    selectedIdeaId && editingIdeaId === selectedIdeaId ? 'edit' : 'view';
 
   const pageIdeas = ideas?.data ?? [];
   const lastPage = (ideas && getPageNumberFromUrl(ideas.links.last)) || 1;
@@ -108,11 +103,12 @@ const InputManager = ({ project, phase }: Props) => {
   const openPanel = (ideaId: string, mode: PreviewMode = 'view') => {
     // The panel acts on one input, so it replaces the selection.
     setSelection(new Map());
-    setPanel({ ideaId, mode });
+    setEditingIdeaId(mode === 'edit' ? ideaId : undefined);
+    setSelectedIdeaId(ideaId);
   };
 
   const navigation = usePanelNavigation({
-    openIdeaId: panel?.ideaId,
+    openIdeaId: selectedIdeaId,
     pageIdeas,
     listParameters,
     page,
@@ -191,7 +187,7 @@ const InputManager = ({ project, phase }: Props) => {
             selectedIds={new Set(selection.keys())}
             onToggleSelect={toggleSelect}
             onToggleSelectPage={toggleSelectPage}
-            openIdeaId={panel?.ideaId}
+            openIdeaId={selectedIdeaId}
             onOpen={openPanel}
             currentPage={page}
             lastPage={lastPage}
@@ -211,14 +207,16 @@ const InputManager = ({ project, phase }: Props) => {
         />
       </Box>
       <SidePanel
-        ideaId={panel?.ideaId}
-        mode={panel?.mode ?? 'view'}
+        ideaId={selectedIdeaId}
+        mode={panelMode}
         type={type}
         context={localize(phase.attributes.title_multiloc)}
         listedPhase={listedPhase}
         navigation={navigation}
-        onChangeMode={(mode) => panel && setPanel({ ...panel, mode })}
-        onClose={() => setPanel(undefined)}
+        onChangeMode={(mode) =>
+          setEditingIdeaId(mode === 'edit' ? selectedIdeaId : undefined)
+        }
+        onClose={() => setSelectedIdeaId(undefined)}
       />
     </Box>
   );
