@@ -71,6 +71,20 @@ module ReportBuilder
     alias update? write?
     alias destroy? write?
 
+    # Composing the report with an LLM. Everything write? requires, plus the feature
+    # flag and a project to report on: the recipe writes about a project, so a report
+    # tied to neither a project nor a phase has no subject.
+    def generate?
+      AppConfiguration.instance.feature_activated?('llm_reporting') &&
+        record.reported_project.present? &&
+        write?
+    end
+
+    # Reading the chat and asking it for a change are the same privilege as
+    # generating: both are the LLM writing this report.
+    alias chat? generate?
+    alias chat_turn? generate?
+
     def access_to_data?
       ReportBuilder::Permissions::ReportPermissionsService.new.editing_disabled_reason_for_report(record, user).blank?
     end

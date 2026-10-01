@@ -110,6 +110,12 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     phase
   end
 
+  # Only while the flag is on: the linkage costs a query per project, and every
+  # projects listing pays it. Phases expose their report the same way.
+  has_one :report, serializer: ReportBuilder::WebApi::V1::ReportSerializer, if: proc {
+    AppConfiguration.instance.feature_activated?('llm_reporting')
+  }
+
   has_one :highlighted_phase, serializer: WebApi::V1::PhaseSerializer, record_type: :phase do |project|
     phase = project.schedule.highlighted_phase
     phase.project = project if phase # Performance optimization (keep preloaded relationships)

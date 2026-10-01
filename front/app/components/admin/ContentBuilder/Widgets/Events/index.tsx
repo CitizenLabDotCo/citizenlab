@@ -130,7 +130,12 @@ const EventsList: UserComponent<EventsProps> = ({
 
   const { data: upcomingEvents, isLoading: loadingUpcoming } = useEvents(
     // `-start_at` is ascending: SortByParamsService inverts the usual convention.
-    { ...params, sort: '-start_at', currentAndFutureOnly: true, pageNumber: upcomingPage },
+    {
+      ...params,
+      sort: '-start_at',
+      currentAndFutureOnly: true,
+      pageNumber: upcomingPage,
+    },
     { enabled: showUpcoming && !waitingForProject }
   );
   const { data: pastEvents, isLoading: loadingPast } = useEvents(

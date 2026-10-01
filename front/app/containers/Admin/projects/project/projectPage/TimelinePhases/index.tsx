@@ -79,7 +79,7 @@ const TimelinePhases = ({ projectId }: Props) => {
 
       {sortedPhases.length === 0 && <EmptyState />}
 
-      <Box 
+      <Box
         className="intercom-product-tour-project-timeline-phases"
         display="flex"
         flexDirection="column"
@@ -127,7 +127,7 @@ const TimelinePhases = ({ projectId }: Props) => {
         })}
       </Box>
 
-      <Box 
+      <Box
         display="flex"
         mt="4px"
         className="intercom-product-tour-project-timeline-new-phase"

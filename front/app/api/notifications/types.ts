@@ -260,6 +260,17 @@ export interface IProjectPublishedNotificationData
   };
 }
 
+export interface IReportGeneratedNotificationData
+  extends IBaseNotificationData {
+  attributes: {
+    type: 'report_generated';
+    read_at: string | null;
+    created_at: string;
+    report_id: string;
+    project_title_multiloc: Multiloc;
+  };
+}
+
 export interface IProjectReviewRequestNotificationData
   extends IBaseNotificationData {
   attributes: {
@@ -418,6 +429,7 @@ export interface INotificationDataMap {
   IProjectPhaseUpcomingNotificationData: IProjectPhaseUpcomingNotificationData;
   IProjectPublishedNotificationData: IProjectPublishedNotificationData;
   IProjectReviewRequestNotificationData: IProjectReviewRequestNotificationData;
+  IReportGeneratedNotificationData: IReportGeneratedNotificationData;
   IProjectReviewStateChangeNotificationData: IProjectReviewStateChangeNotificationData;
   IStatusChangeOnIdeaYouFollowNotificationData: IStatusChangeOnIdeaYouFollowNotificationData;
   IThresholdReachedForAdminNotificationData: IThresholdReachedForAdminNotificationData;
