@@ -12,7 +12,6 @@ import Card from './Card';
 interface Props {
   type: ManagerType;
   projectId: string;
-  /** Exports only these inputs when some are selected. */
   selectedIds: string[];
 }
 
