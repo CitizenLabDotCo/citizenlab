@@ -31,7 +31,14 @@ export const MAX_PROMPT_LENGTH = 5000;
 const ComposerField = styled(Box)`
   textarea {
     min-height: 140px;
-    padding-bottom: 42px;
+    padding-bottom: 44px;
+    border-radius: ${stylingConsts.borderRadius};
+    transition: border-color 120ms ease, box-shadow 120ms ease;
+  }
+  /* Reads as a chat composer: soft focus ring in the assistant's teal. */
+  &:focus-within textarea {
+    border-color: ${colors.teal400};
+    box-shadow: 0 0 0 3px ${colors.teal100};
   }
 `;
 

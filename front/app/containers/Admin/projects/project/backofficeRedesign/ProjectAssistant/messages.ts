@@ -47,6 +47,16 @@ export default defineMessages({
     id: `${scope}.leversHeading`,
     defaultMessage: 'A few choices to shape it',
   },
+  leversHelper: {
+    id: `${scope}.leversHelper`,
+    defaultMessage:
+      'Set to sensible defaults from best practice — nudge any that matter to you.',
+  },
+  leversTeaser: {
+    id: `${scope}.leversTeaser`,
+    defaultMessage:
+      'A few quick choices to shape the draft will appear here once you add a brief.',
+  },
   leverInfluenceQuestion: {
     id: `${scope}.leverInfluenceQuestion`,
     defaultMessage: 'How much influence will residents have?',

@@ -245,13 +245,19 @@ const ProjectAssistant = ({ project }: Props) => {
             onFilesChange={setFiles}
           />
 
-          {/* Shaping questions appear once there's a brief to shape. */}
-          {hasInput && (
+          {/* Shaping questions appear once there's a brief to shape; before
+              that, a quiet teaser so the reveal feels intentional. */}
+          {hasInput ? (
             <Levers values={levers} disabled={busy} onChange={setLever} />
+          ) : (
+            <Text m="0px" fontSize="s" color="textSecondary">
+              {formatMessage(messages.leversTeaser)}
+            </Text>
           )}
 
           <ButtonWithLink
             type="button"
+            width="100%"
             icon="stars"
             onClick={handleDraft}
             disabled={!canDraft}
