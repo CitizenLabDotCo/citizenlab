@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-# Derives a `custom_page` Content Builder layout for every global custom page, from the banner,
-# title, info sections and attachments the page renders. It derives whatever CustomPageLayoutService
-# emits. A layout derived before a widget existed lacks its node; `overwrite` re-derives it, which
-# is the upgrade path for an already-migrated page.
+# Derives a `custom_page` Content Builder layout for every page on the builder (global custom pages,
+# About and FAQ), from the banner, title, info sections and attachments the page renders. It derives
+# whatever CustomPageLayoutService emits. A layout derived before a widget existed lacks its node;
+# `overwrite` re-derives it, which is the upgrade path for an already-migrated page.
 #
 # Run it while `custom_page_builder` is still off for the tenant: no admin can have opened the
 # builder, so there is no builder edit for a re-derive to overwrite. `overwrite` refuses a
@@ -19,7 +19,7 @@
 #     rake 'single_use:migrate_custom_pages_to_content_builder[execute,foo.com,overwrite]' # re-derive existing layouts
 #     rake 'single_use:migrate_custom_pages_to_content_builder[execute,,cutover]'         # re-derive and switch on, all tenants (empty host)
 namespace :single_use do
-  desc "Derive Content Builder layouts for global custom pages. Dry run unless passed 'execute'."
+  desc "Derive Content Builder layouts for custom, About and FAQ pages. Dry run unless passed 'execute'."
   task :migrate_custom_pages_to_content_builder, %i[execute host mode force] => [:environment] do |_t, args|
     cutover = args[:mode] == 'cutover'
     overwrite = cutover || args[:mode] == 'overwrite'
@@ -139,7 +139,7 @@ namespace :single_use do
     TenantScript.run(
       'migrate_custom_pages_to_content_builder',
       args: args,
-      description: 'deriving Content Builder layouts for global custom pages',
+      description: 'deriving Content Builder layouts for custom, About and FAQ pages',
       summary: summary
     ) do |tenant, script|
       flag_active = AppConfiguration.instance.feature_activated?('custom_page_builder')
@@ -159,7 +159,7 @@ namespace :single_use do
 
       seen = {}
       failures = 0
-      StaticPage.where(code: 'custom', project_id: nil).find_each do |page|
+      StaticPage.on_content_builder.find_each do |page|
         archive_disabled_sections.call(page, tenant, script)
         seen[page.id] = [page.updated_at, derive.call(page, tenant, script)]
       rescue StandardError => e

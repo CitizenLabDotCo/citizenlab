@@ -62,8 +62,18 @@ describe 'single_use:migrate_custom_pages_to_content_builder' do
     expect(existing.reload.craftjs_json).to eq({ 'ROOT' => {} })
   end
 
+  it 'derives the About and FAQ pages too' do
+    about_page = create(:static_page, code: 'about')
+    faq_page = create(:static_page, code: 'faq')
+
+    task.invoke('execute')
+
+    expect(layout_for(about_page)).to be_present
+    expect(layout_for(faq_page)).to be_present
+  end
+
   it 'ignores policy pages and project-scoped pages' do
-    policy_page = create(:static_page, code: 'faq')
+    policy_page = create(:static_page, code: 'terms-and-conditions')
     project_page = create(:static_page, :project_scoped, code: 'custom')
 
     task.invoke('execute')

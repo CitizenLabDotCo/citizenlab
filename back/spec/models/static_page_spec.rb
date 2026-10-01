@@ -195,6 +195,33 @@ RSpec.describe StaticPage do
     end
   end
 
+  describe 'on the content builder' do
+    using RSpec::Parameterized::TableSyntax
+
+    where(:code, :on_content_builder) do
+      'custom'               | true
+      'about'                | true
+      'faq'                  | true
+      'terms-and-conditions' | false
+      'privacy-policy'       | false
+      'cookie-policy'        | false
+    end
+
+    with_them do
+      let!(:page) { create(:static_page, code: code) }
+
+      it { expect(page.on_content_builder?).to eq on_content_builder }
+      it { expect(described_class.on_content_builder.include?(page)).to eq on_content_builder }
+    end
+
+    it 'excludes a project-scoped page' do
+      page = create(:static_page, :project_scoped)
+
+      expect(page.on_content_builder?).to be false
+      expect(described_class.on_content_builder).not_to include(page)
+    end
+  end
+
   describe 'nav bar item restrictions' do
     it 'cannot have a nav bar item when project-scoped' do
       page = build(:static_page, :project_scoped, nav_bar_item: build(:nav_bar_item, code: 'custom'))

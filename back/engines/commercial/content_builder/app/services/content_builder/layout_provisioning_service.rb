@@ -21,7 +21,7 @@ module ContentBuilder
       ProjectFolders::Folder.find_each { |folder| safely_ensure_on_content_builder(folder) }
     end
 
-    # Gives a custom page its layout. A failure on one page is reported and skipped
+    # Gives every page on the builder its layout. A failure on one page is reported and skipped
     # rather than aborting tenant creation.
     def provision_all_custom_pages!
       StaticPage.find_each { |static_page| safely_ensure_custom_page(static_page) }
@@ -44,7 +44,7 @@ module ContentBuilder
     end
 
     def ensure_custom_page!(static_page)
-      return unless static_page.custom? && !static_page.project_scoped?
+      return unless static_page.on_content_builder?
       return if ContentBuilder::Layout.exists?(content_buildable: static_page, code: CustomPageLayoutService::CODE)
 
       create_layout!(static_page, CustomPageLayoutService::CODE, CustomPageLayoutService.new.craftjs_json_for(static_page))
