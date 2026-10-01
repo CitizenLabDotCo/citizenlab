@@ -66,6 +66,30 @@ describe McpServer::Tools::GetFormFields do
     end
   end
 
+  context 'with a community monitor phase' do
+    let(:phase) { create(:community_monitor_survey_phase) }
+
+    it 'returns the community monitor form with its categories and questions' do
+      response = run_mcp_tool(
+        described_class,
+        params: { container_type: 'phase', container_id: phase.id },
+        current_user:
+      )
+
+      expect(response).not_to be_error
+      structured = response.structured_content
+      expect(structured[:participation_method]).to eq('community_monitor_survey')
+      expect(structured[:fields].pluck(:key)).to include('page_quality_of_life', 'place_to_live')
+      expect(structured.dig(:constraints, :page_quality_of_life, :locks, :attributes)).to include(:title_multiloc)
+
+      # question_category must be a schema property so the round-trip (echo the fetched fields
+      # back to replace_form_fields) is accepted — CM questions carry it.
+      question = structured[:fields].find { |field| field[:key] == 'place_to_live' }
+      expect(question[:question_category]).to eq('quality_of_life')
+      expect(McpServer::Tools::FormFieldsSchemaBuilder.new.field_schema[:properties]).to have_key(:question_category)
+    end
+  end
+
   it 'returns an error for an unsupported participation method' do
     phase = create(:information_phase)
 

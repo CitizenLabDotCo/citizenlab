@@ -6,7 +6,7 @@ class McpServer::Tools::GetFormFields < McpServer::BaseTool
     'project' => Project
   }.freeze
 
-  SUPPORTED_METHODS = %w[native_survey ideation].freeze
+  SUPPORTED_METHODS = %w[native_survey ideation community_monitor_survey].freeze
 
   CONSTRAINTS_SCHEMA = {
     type: 'object',
@@ -43,10 +43,14 @@ class McpServer::Tools::GetFormFields < McpServer::BaseTool
   def description
     <<~DESC
       Returns the fields (questions and page breaks) in display order for the form
-      attached to a native-survey phase, or for a project's ideation form. The same
-      ideation form is shared across all ideation phases of a project, so the container is
-      the project (`container_type: 'project'`). Native-survey forms are specific to a
-      single phase, so the container is the phase (`container_type: 'phase'`).
+      attached to a native-survey phase, a community-monitor phase, or for a project's
+      ideation form. The same ideation form is shared across all ideation phases of a
+      project, so the container is the project (`container_type: 'project'`). Native-survey
+      and community-monitor forms are specific to a single phase, so the container is the
+      phase (`container_type: 'phase'`).
+
+      Community-monitor forms have 3 fixed category pages and built-in questions that
+      cannot be removed; you can add custom questions (sentiment_linear_scale) on top.
 
       In native-survey forms, fields can carry branching logic. By default, participants
       move through fields in display order, but logic rules can skip ahead to a specific
@@ -60,7 +64,7 @@ class McpServer::Tools::GetFormFields < McpServer::BaseTool
   def input_schema
     {
       properties: {
-        container_type: { type: 'string', enum: CONTAINER_TYPES.keys, description: "'phase' for native_survey, 'project' for ideation." },
+        container_type: { type: 'string', enum: CONTAINER_TYPES.keys, description: "'phase' for native_survey or community_monitor, 'project' for ideation." },
         container_id: { type: 'string', description: 'ID of the phase or project.' }
       },
       required: %w[container_type container_id]

@@ -214,6 +214,15 @@ class McpServer::Tools::FormFieldsSchemaBuilder
           follow-up input after selecting their sentiment.
         DESC
       },
+      question_category: {
+        type: %w[string null],
+        enum: [*CustomField::QUESTION_CATEGORIES, nil],
+        description: <<~DESC.squish
+          Reporting category a community-monitor question is grouped under. Echo it back
+          unchanged for built-in questions; a custom question may set it to group itself,
+          or omit it.
+        DESC
+      },
 
       # Scale family
       maximum: {
