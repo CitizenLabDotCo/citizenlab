@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Title, colors } from '@citizenlab/cl2-component-library';
 
 import TimelinePhases from 'containers/Admin/projects/project/projectPage/TimelinePhases';
 
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 import SelectMethodModal from './ProjectSetupPanel/SelectMethodModal';
 import TimelineEvents from './TimelineEvents';
 
@@ -12,15 +15,24 @@ interface Props {
 }
 
 const ProjectTimeline = ({ projectId }: Props) => {
+  const { formatMessage } = useIntl();
   const [methodModalOpened, setMethodModalOpened] = useState(false);
 
   return (
-    <Box>
+    <Box py="24px" px="16px">
       <TimelinePhases
         projectId={projectId}
+        heading={
+          <Box px="8px" mb="12px">
+            <Title variant="h4" fontSize="s" fontWeight="semi-bold" m="0">
+              {formatMessage(messages.participationMethods)}
+            </Title>
+          </Box>
+        }
         onNewPhase={() => setMethodModalOpened(true)}
         withPhaseOptions
       />
+      <Box mx="8px" my="24px" borderTop={`1px solid ${colors.grey200}`} />
       <TimelineEvents projectId={projectId} />
       <SelectMethodModal
         projectId={projectId}

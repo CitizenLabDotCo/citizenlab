@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Box, Button, Text, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  Text,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 
 import { ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
@@ -46,12 +51,14 @@ const METHOD_LABELS: Record<ParticipationMethod, MessageDescriptor> = {
 
 interface Props {
   projectId: string;
+  heading?: React.ReactNode;
   onNewPhase?: () => void;
   withPhaseOptions?: boolean;
 }
 
 const TimelinePhases = ({
   projectId,
+  heading,
   onNewPhase,
   withPhaseOptions = false,
 }: Props) => {
@@ -70,20 +77,18 @@ const TimelinePhases = ({
   const noEndLabel = formatMessage(messages.phaseNoEndDate);
 
   return (
-    <Box
-      className="intercom-product-tour-project-timeline"
-      p="12px"
-      borderTop={`1px solid ${colors.grey200}`}
-    >
-      <Text
-        m="0 0 8px 0"
-        px="10px"
-        fontSize="s"
-        fontWeight="bold"
-        color="textPrimary"
-      >
-        {formatMessage(messages.timeline)}
-      </Text>
+    <Box className="intercom-product-tour-project-timeline">
+      {heading ?? (
+        <Text
+          m="0 0 8px 0"
+          px="10px"
+          fontSize="s"
+          fontWeight="bold"
+          color="textPrimary"
+        >
+          {formatMessage(messages.timeline)}
+        </Text>
+      )}
 
       {sortedPhases.length === 0 && <EmptyState />}
 
@@ -156,13 +161,15 @@ const TimelinePhases = ({
       >
         {onNewPhase ? (
           <Button
-            buttonStyle="text"
-            size="s"
+            buttonStyle="bo-text"
+            height="32px"
+            padding="0 8px"
+            fontSize={`${fontSizes.xs}px`}
             icon="plus"
             width="auto"
             onClick={onNewPhase}
           >
-            {formatMessage(messages.newParticipationMethod)}
+            {formatMessage(messages.newPhase)}
           </Button>
         ) : (
           <ButtonWithLink

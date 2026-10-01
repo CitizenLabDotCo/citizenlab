@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import { Box, Text, Title, fontSizes } from '@citizenlab/cl2-component-library';
 import { format, isSameDay, isThisYear } from 'date-fns';
 
 import useEvents from 'api/events/useEvents';
@@ -55,18 +55,14 @@ const TimelineEvents = ({ projectId }: Props) => {
   if (!events) return null;
 
   return (
-    <Box p="12px" borderTop={`1px solid ${colors.grey200}`}>
-      <Link to="/admin/projects/$projectId/events" params={{ projectId }}>
-        <Text
-          m="0 0 8px 0"
-          px="10px"
-          fontSize="s"
-          fontWeight="bold"
-          color="textPrimary"
-        >
-          {formatMessage(messages.eventsSection)}
-        </Text>
-      </Link>
+    <Box>
+      <Box px="8px" mb="12px">
+        <Link to="/admin/projects/$projectId/events" params={{ projectId }}>
+          <Title variant="h4" fontSize="s" fontWeight="semi-bold" m="0">
+            {formatMessage(messages.eventsSection)}
+          </Title>
+        </Link>
+      </Box>
 
       <Box display="flex" flexDirection="column">
         {events.data.map((event, index) => {
@@ -106,12 +102,14 @@ const TimelineEvents = ({ projectId }: Props) => {
         })}
       </Box>
 
-      <Box display="flex" mt="4px">
+      <Box display="flex">
         <ButtonWithLink
           to="/admin/projects/$projectId/events/new"
           params={{ projectId }}
-          buttonStyle="text"
-          size="s"
+          buttonStyle="bo-text"
+          height="32px"
+          padding="0 8px"
+          fontSize={`${fontSizes.xs}px`}
           icon="plus"
           width="auto"
         >
