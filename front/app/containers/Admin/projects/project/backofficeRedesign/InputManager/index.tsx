@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
 
 import { IIdeaData } from 'api/ideas/types';
 import useIdeas from 'api/ideas/useIdeas';
@@ -68,7 +68,10 @@ const InputManager = ({ project, phase }: Props) => {
   const filterParameters = { ...queryParameters, ...scope };
   const listParameters = { ...filterParameters, 'page[size]': PAGE_SIZE };
 
-  const { data: ideas } = useIdeas({ ...listParameters, 'page[number]': page });
+  const { data: ideas, isPlaceholderData: isChangingList } = useIdeas({
+    ...listParameters,
+    'page[number]': page,
+  });
   const { data: filteredCounts } = useIdeasFilterCounts(filterParameters);
   const { data: phases } = usePhases(project.id);
   const counts = usePhaseCounts(scope);
@@ -168,32 +171,56 @@ const InputManager = ({ project, phase }: Props) => {
           onClearFilters={clearFilters}
         />
         <FilterChips categories={categories} onClearAll={clearFilters} />
-        {counts?.total === 0 && !hasFilters ? (
-          <EmptyState />
-        ) : ideas && pageIdeas.length === 0 ? (
-          <NoPost handleSeeAll={clearFilters} />
-        ) : (
-          <IdeaTable
-            ideas={pageIdeas}
-            columns={columns}
-            availableColumns={available}
-            onChangeColumns={setChosenColumns}
-            sort={sort}
-            onSort={setSort}
-            statuses={statuses}
-            tagLabels={
-              new Map(tagOptions.map((option) => [option.value, option.label]))
-            }
-            selectedIds={new Set(selection.keys())}
-            onToggleSelect={toggleSelect}
-            onToggleSelectPage={toggleSelectPage}
-            openIdeaId={selectedIdeaId}
-            onOpen={openPanel}
-            currentPage={page}
-            lastPage={lastPage}
-            onChangePage={setPage}
-          />
-        )}
+        <Box position="relative">
+          {!ideas ? (
+            <Box display="flex" justifyContent="center" py="80px">
+              <Spinner />
+            </Box>
+          ) : (
+            <Box opacity={isChangingList ? 0.4 : 1}>
+              {counts?.total === 0 && !hasFilters ? (
+                <EmptyState />
+              ) : pageIdeas.length === 0 ? (
+                <NoPost handleSeeAll={clearFilters} />
+              ) : (
+                <IdeaTable
+                  ideas={pageIdeas}
+                  columns={columns}
+                  availableColumns={available}
+                  onChangeColumns={setChosenColumns}
+                  sort={sort}
+                  onSort={setSort}
+                  statuses={statuses}
+                  tagLabels={
+                    new Map(
+                      tagOptions.map((option) => [option.value, option.label])
+                    )
+                  }
+                  selectedIds={new Set(selection.keys())}
+                  onToggleSelect={toggleSelect}
+                  onToggleSelectPage={toggleSelectPage}
+                  openIdeaId={selectedIdeaId}
+                  onOpen={openPanel}
+                  currentPage={page}
+                  lastPage={lastPage}
+                  onChangePage={setPage}
+                />
+              )}
+            </Box>
+          )}
+          {ideas && isChangingList && (
+            <Box
+              position="absolute"
+              top="80px"
+              left="0"
+              right="0"
+              display="flex"
+              justifyContent="center"
+            >
+              <Spinner />
+            </Box>
+          )}
+        </Box>
       </Box>
       <Box flex="0 0 340px" width="340px" position="sticky" top="0">
         <RightColumn
