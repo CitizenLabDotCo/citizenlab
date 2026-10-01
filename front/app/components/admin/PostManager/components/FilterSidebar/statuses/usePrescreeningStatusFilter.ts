@@ -6,9 +6,6 @@ import { ManagerType } from 'components/admin/PostManager';
 
 import { useParams } from 'utils/router';
 
-/**
- * Whether inputs can be filtered on the prescreening status, and why not.
- */
 const usePrescreeningStatusFilter = (type: ManagerType) => {
   const { phaseId } = useParams({ strict: false });
   const { data: phase } = usePhase(phaseId);
