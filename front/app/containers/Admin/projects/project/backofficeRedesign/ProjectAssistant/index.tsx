@@ -17,9 +17,7 @@ import { IProjectData } from 'api/projects/types';
 import useLocale from 'hooks/useLocale';
 import useOnQuerySuccess from 'hooks/useOnQuerySuccess';
 
-import ButtonWithLink from 'components/UI/ButtonWithLink';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import { isCLErrorsWrapper } from 'utils/errorUtils';
 import { getBase64FromFile } from 'utils/fileUtils';
 
@@ -241,12 +239,15 @@ const ProjectAssistant = ({ project }: Props) => {
             prompt={prompt}
             files={files}
             busy={busy}
+            canDraft={canDraft}
             onPromptChange={setPrompt}
             onFilesChange={setFiles}
+            onDraft={handleDraft}
           />
 
-          {/* Shaping questions appear once there's a brief to shape; before
-              that, a quiet teaser so the reveal feels intentional. */}
+          {/* Optional shaping questions appear below the input once there's a
+              brief to shape; before that, a quiet teaser so the reveal feels
+              intentional. */}
           {hasInput ? (
             <Levers values={levers} disabled={busy} onChange={setLever} />
           ) : (
@@ -254,17 +255,6 @@ const ProjectAssistant = ({ project }: Props) => {
               {formatMessage(messages.leversTeaser)}
             </Text>
           )}
-
-          <ButtonWithLink
-            type="button"
-            width="100%"
-            icon="stars"
-            onClick={handleDraft}
-            disabled={!canDraft}
-            processing={busy}
-          >
-            <FormattedMessage {...messages.draftButton} />
-          </ButtonWithLink>
         </>
       )}
 
