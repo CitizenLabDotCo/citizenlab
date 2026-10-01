@@ -1653,6 +1653,7 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterSource": "Source",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterStatus": "Status",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterTags": "Tags",
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importInputs": "Import",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.inputColumn": "Input",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.inputCount": "{count, plural, one {# input} other {# inputs}}",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.inputsTile": "Inputs",
