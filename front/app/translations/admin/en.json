@@ -1952,6 +1952,7 @@
   "app.containers.Admin.projects.project.participation.usersByAge": "Users by age",
   "app.containers.Admin.projects.project.participation.usersByGender": "Users by gender",
   "app.containers.Admin.projects.project.participation.usersSubtitle": "Get an overview of the participants on this project that have an account. Anonymous participation is not accounted.",
+  "app.containers.Admin.projects.project.participationMethods": "Participation methods",
   "app.containers.Admin.projects.project.phaseNoEndDate": "No end date",
   "app.containers.Admin.projects.project.phasePreviewTitle": "Preview of this phase",
   "app.containers.Admin.projects.project.placementStandalone": "Standalone",
