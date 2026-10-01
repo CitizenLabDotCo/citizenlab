@@ -89,6 +89,17 @@ describe McpServer::Tools::GetFormFields do
     expect(response).to be_not_found('Container (phase)')
   end
 
+  it 'refuses users who may not edit the form' do
+    response = run_mcp_tool(
+      described_class,
+      params: { container_type: 'phase', container_id: create(:native_survey_phase).id },
+      current_user: create(:user)
+    )
+
+    expect(response).to be_error
+    expect(response.content.sole[:text]).to start_with('Not allowed')
+  end
+
   it 'returns a not-found error for a missing project' do
     response = run_mcp_tool(
       described_class,

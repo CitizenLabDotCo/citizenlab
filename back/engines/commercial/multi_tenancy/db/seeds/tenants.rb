@@ -449,6 +449,10 @@ module MultiTenancy
             configurable_dropdown: {
               enabled: true,
               allowed: true
+            },
+            ai_assistant: {
+              enabled: true,
+              allowed: true
             }
           })
         )

@@ -807,6 +807,33 @@ describe 'Rack::Attack' do
     end
   end
 
+  describe 'AI assistant turns' do
+    let(:message_path) { "/web_api/v1/ai_assistant_conversations/#{SecureRandom.uuid}/messages" }
+    let(:approve_path) { "/web_api/v1/ai_assistant_tool_calls/#{SecureRandom.uuid}/approve" }
+    let(:params) { '{ "ai_assistant_message": { "content": "Hello" } }' }
+
+    it 'limits messages and decisions for the same user to 60 in an hour' do
+      freeze_time do
+        30.times { |i| post(message_path, params: params, headers: json_headers(token: token, ip: "1.2.3.#{i + 1}")) }
+        30.times { |i| post(approve_path, headers: json_headers(token: token, ip: "1.2.4.#{i + 1}")) }
+        expect(status).not_to eq(429)
+
+        post(message_path, params: params, headers: json_headers(token: token, ip: '1.2.5.1'))
+        expect(status).to eq(429) # Too many requests
+      end
+    end
+
+    it 'limits messages and decisions from the same IP to 120 in an hour' do
+      freeze_time do
+        120.times { post(message_path, params: params, headers: json_headers(ip: '1.2.3.4')) }
+        expect(status).not_to eq(429)
+
+        post(approve_path, headers: json_headers(ip: '1.2.3.4'))
+        expect(status).to eq(429) # Too many requests
+      end
+    end
+  end
+
   describe 'spam reports' do
     let(:headers) { { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.4' } }
     let(:params) { '{ "spam_report": { "reason_code": "other", "other_reason": "spam" } }' }

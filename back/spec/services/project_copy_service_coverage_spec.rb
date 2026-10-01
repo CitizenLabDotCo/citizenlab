@@ -112,6 +112,14 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
         Analytics::FactVisit
       ],
 
+      # The AI assistant's chats with individual admins — per-user runtime data, never
+      # templated or copied.
+      ai_assistant: %w[
+        AIAssistant::Conversation
+        AIAssistant::Message
+        AIAssistant::ToolCall
+      ],
+
       # AI analysis, insights and embeddings — derived from user content.
       analysis: %w[
         Analysis::AdditionalCustomField

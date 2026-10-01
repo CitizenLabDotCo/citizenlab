@@ -28,10 +28,12 @@ import useSubmissionsCount from 'api/submission_count/useSubmissionCount';
 
 import useLocale from 'hooks/useLocale';
 
+import useAiAssistantEnabled from 'components/AiAssistant/useAiAssistantEnabled';
 import FormBuilderSettings from 'components/FormBuilder/components/FormBuilderSettings';
 import FormBuilderToolbox from 'components/FormBuilder/components/FormBuilderToolbox';
 import FormBuilderTopBar from 'components/FormBuilder/components/FormBuilderTopBar';
 import FormFields from 'components/FormBuilder/components/FormFields';
+import SurveyAssistant from 'components/FormBuilder/components/SurveyAssistant';
 import HelmetIntl from 'components/HelmetIntl';
 
 import { useIntl } from 'utils/cl-intl';
@@ -89,6 +91,9 @@ const FormEdit = ({
   const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(false);
   const [autosaveEnabled, setAutosaveEnabled] = useState(true);
   const { isFormPhaseSpecific } = builderConfig;
+  const assistantEnabled =
+    useAiAssistantEnabled() &&
+    phase.attributes.participation_method === 'native_survey';
   const { mutateAsync: updateFormCustomFields } = useUpdateCustomField();
   const { data: formCustomFields, isFetching } = useFormCustomFields({
     projectId,
@@ -390,7 +395,13 @@ const FormEdit = ({
                       />
                     </Box>
                   </Box>
-                  <Box flex={!isNilOrError(selectedField) ? '1' : '0'}>
+                  <Box
+                    flex={
+                      !isNilOrError(selectedField) || assistantEnabled
+                        ? '1'
+                        : '0'
+                    }
+                  >
                     {selectedField && (
                       <Box>
                         <FormBuilderSettings
@@ -398,6 +409,19 @@ const FormEdit = ({
                           field={selectedField}
                           closeSettings={closeSettings}
                           builderConfig={builderConfig}
+                        />
+                      </Box>
+                    )}
+                    {/* Hidden, not unmounted, so a typed request survives editing a field. */}
+                    {assistantEnabled && (
+                      <Box display={selectedField ? 'none' : 'block'}>
+                        <SurveyAssistant
+                          phaseId={phaseId}
+                          projectId={projectId}
+                          onFormReplaced={() => {
+                            setSelectedField(undefined);
+                            setIsUpdatingForm(true);
+                          }}
                         />
                       </Box>
                     )}

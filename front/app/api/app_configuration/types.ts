@@ -210,6 +210,7 @@ export interface IAppConfigurationSettings {
   html_block_in_content_builder?: AppConfigurationFeature;
   custom_page_builder?: AppConfigurationFeature;
   configurable_dropdown?: AppConfigurationFeature;
+  ai_assistant?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
