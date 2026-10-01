@@ -17,12 +17,14 @@ import { IProjectData } from 'api/projects/types';
 import useLocale from 'hooks/useLocale';
 import useOnQuerySuccess from 'hooks/useOnQuerySuccess';
 
-import { useIntl } from 'utils/cl-intl';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isCLErrorsWrapper } from 'utils/errorUtils';
 import { getBase64FromFile } from 'utils/fileUtils';
 
 import Composer, { MAX_PROMPT_LENGTH } from './Composer';
-import GenerationModal from './GenerationModal';
+import GenerationPanel from './GenerationPanel';
 import { DEFAULT_LEVERS, LeverId } from './leverConfig';
 import Levers from './Levers';
 import messages from './messages';
@@ -222,55 +224,73 @@ const ProjectAssistant = ({ project }: Props) => {
         </Box>
       </Box>
 
-      {showTranscript ? (
-        <Transcript
-          exchanges={exchanges}
-          runningJobStartedAt={runningJob?.attributes.created_at}
+      {demo.status !== 'idle' ? (
+        /* Progress + result live inline in the dock, as the assistant's reply
+           to the brief — not a modal that would cover the project page. */
+        <GenerationPanel
+          status={demo.status}
+          steps={demo.steps}
+          activeIndex={demo.activeIndex}
+          report={demo.report}
+          prompt={prompt}
+          fileNames={files.map((file) => file.name)}
+          onClose={demo.reset}
         />
       ) : (
-        <Text m="0px" color="textSecondary">
-          {formatMessage(messages.intro)}
-        </Text>
-      )}
-
-      {!runningJob && (
         <>
-          <Composer
-            prompt={prompt}
-            files={files}
-            busy={busy}
-            canDraft={canDraft}
-            onPromptChange={setPrompt}
-            onFilesChange={setFiles}
-            onDraft={handleDraft}
-          />
-
-          {/* Optional shaping questions appear below the input once there's a
-              brief to shape; before that, a quiet teaser so the reveal feels
-              intentional. */}
-          {hasInput ? (
-            <Levers values={levers} disabled={busy} onChange={setLever} />
+          {showTranscript ? (
+            <Transcript
+              exchanges={exchanges}
+              runningJobStartedAt={runningJob?.attributes.created_at}
+            />
           ) : (
-            <Text m="0px" fontSize="s" color="textSecondary">
-              {formatMessage(messages.leversTeaser)}
+            <Text m="0px" color="textSecondary">
+              {formatMessage(messages.intro)}
+            </Text>
+          )}
+
+          {!runningJob && (
+            <>
+              <Composer
+                prompt={prompt}
+                files={files}
+                busy={busy}
+                onPromptChange={setPrompt}
+                onFilesChange={setFiles}
+              />
+
+              {/* Optional shaping questions appear below the input once there's
+                  a brief to shape; before that, a quiet teaser so the reveal
+                  feels intentional. */}
+              {hasInput ? (
+                <Levers values={levers} disabled={busy} onChange={setLever} />
+              ) : (
+                <Text m="0px" fontSize="s" color="textSecondary">
+                  {formatMessage(messages.leversTeaser)}
+                </Text>
+              )}
+
+              {/* Draft is the final commit, after the shaping choices. */}
+              <ButtonWithLink
+                type="button"
+                width="100%"
+                icon="stars"
+                onClick={handleDraft}
+                disabled={!canDraft}
+                processing={busy}
+              >
+                <FormattedMessage {...messages.draftButton} />
+              </ButtonWithLink>
+            </>
+          )}
+
+          {sendError && (
+            <Text m="0px" color="error">
+              {sendError}
             </Text>
           )}
         </>
       )}
-
-      {sendError && (
-        <Text m="0px" color="error">
-          {sendError}
-        </Text>
-      )}
-
-      <GenerationModal
-        status={demo.status}
-        steps={demo.steps}
-        activeIndex={demo.activeIndex}
-        report={demo.report}
-        onClose={demo.reset}
-      />
     </Box>
   );
 };

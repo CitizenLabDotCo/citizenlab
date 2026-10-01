@@ -11,7 +11,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
-import Modal from 'components/UI/Modal';
 
 import { DemoReport, DemoStatus } from './useDemoGeneration';
 
@@ -20,10 +19,18 @@ type Props = {
   steps: string[];
   activeIndex: number;
   report: DemoReport;
+  prompt: string;
+  fileNames: string[];
   onClose: () => void;
 };
 
-const StepRow = ({ label, state }: { label: string; state: 'done' | 'active' | 'pending' }) => (
+const StepRow = ({
+  label,
+  state,
+}: {
+  label: string;
+  state: 'done' | 'active' | 'pending';
+}) => (
   <Box display="flex" alignItems="center" gap="10px" py="6px">
     <Box width="22px" display="flex" alignItems="center" justifyContent="center">
       {state === 'done' && (
@@ -86,8 +93,8 @@ const RunningView = ({
 }) => (
   <Box>
     <Text m="0px" mb="12px" color="textSecondary">
-      I’m drafting the whole project — this takes about a minute. You can keep
-      working; I’ll let you know when it’s ready.
+      I’m drafting the whole project — this takes about a minute. The project
+      page on the left fills in as I go.
     </Text>
     {steps.map((label, index) => (
       <StepRow
@@ -209,39 +216,82 @@ const ReportView = ({
       ))}
     </Box>
 
-    <Box display="flex" gap="10px" justifyContent="flex-end">
+    <Box display="flex" gap="10px">
       <ButtonWithLink buttonStyle="secondary-outlined" onClick={onClose}>
-        Close
+        Start over
       </ButtonWithLink>
       <ButtonWithLink icon="sidebar-pages-menu" onClick={onClose}>
-        Open the project page
+        Review the project
       </ButtonWithLink>
     </Box>
   </Box>
 );
 
-const GenerationModal = ({
+// The progress + result live inline in the dock (not a modal) so the manager
+// can watch the project page on the left fill in, and so the brief, the run
+// and the result read as one thread in the assistant.
+const GenerationPanel = ({
   status,
   steps,
   activeIndex,
   report,
+  prompt,
+  fileNames,
   onClose,
 }: Props) => (
-  <Modal
-    opened={status !== 'idle'}
-    close={onClose}
-    width={620}
-    header={status === 'done' ? 'Your project draft is ready' : 'Drafting your project'}
-    closeOnClickOutside={status === 'done'}
-  >
-    <Box p="24px">
-      {status === 'done' ? (
-        <ReportView report={report} onClose={onClose} />
-      ) : (
-        <RunningView steps={steps} activeIndex={activeIndex} />
-      )}
-    </Box>
-  </Modal>
+  <Box>
+    {(prompt.trim() !== '' || fileNames.length > 0) && (
+      <Box
+        mb="16px"
+        p="12px"
+        borderRadius={stylingConsts.borderRadius}
+        bgColor={colors.grey100}
+      >
+        {prompt.trim() !== '' && (
+          <Text m="0px" color="textPrimary">
+            {prompt.trim()}
+          </Text>
+        )}
+        {fileNames.length > 0 && (
+          <Box
+            display="flex"
+            flexWrap="wrap"
+            gap="6px"
+            mt={prompt.trim() !== '' ? '8px' : '0px'}
+          >
+            {fileNames.map((name) => (
+              <Box
+                key={name}
+                display="flex"
+                alignItems="center"
+                gap="4px"
+                px="8px"
+                py="2px"
+                bgColor="white"
+                borderRadius={stylingConsts.borderRadius}
+                maxWidth="100%"
+              >
+                <Icon name="file" width="14px" height="14px" fill={colors.grey700} />
+                <Text m="0px" fontSize="s" overflow="hidden" whiteSpace="nowrap">
+                  {name}
+                </Text>
+              </Box>
+            ))}
+          </Box>
+        )}
+      </Box>
+    )}
+
+    <Text m="0px" mb="12px" fontSize="l" fontWeight="bold">
+      {status === 'done' ? 'Your project draft is ready' : 'Drafting your project'}
+    </Text>
+
+    {status === 'done' ? (
+      <ReportView report={report} onClose={onClose} />
+    ) : (
+      <RunningView steps={steps} activeIndex={activeIndex} />
+    )}
+  </Box>
 );
 
-export default GenerationModal;
+export default GenerationPanel;

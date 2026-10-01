@@ -11,7 +11,6 @@ import {
 import { useDropzone } from 'react-dropzone';
 import styled from 'styled-components';
 
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 import TextArea from 'components/UI/TextArea';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -27,12 +26,12 @@ const MAX_FILES = 3;
 const MAX_FILE_SIZE_MB = 10;
 export const MAX_PROMPT_LENGTH = 5000;
 
-// The textarea keeps room at its bottom for the action bar (attach + draft)
-// that sits inside the box, chat-composer style.
+// The textarea keeps room at its bottom-left for the attach control that sits
+// inside the box, chat-composer style.
 const ComposerField = styled(Box)`
   textarea {
-    min-height: 150px;
-    padding-bottom: 56px;
+    min-height: 140px;
+    padding-bottom: 44px;
     border-radius: ${stylingConsts.borderRadius};
     transition: border-color 120ms ease, box-shadow 120ms ease;
   }
@@ -47,20 +46,16 @@ type Props = {
   prompt: string;
   files: File[];
   busy: boolean;
-  canDraft: boolean;
   onPromptChange: (prompt: string) => void;
   onFilesChange: (files: File[]) => void;
-  onDraft: () => void;
 };
 
 const Composer = ({
   prompt,
   files,
   busy,
-  canDraft,
   onPromptChange,
   onFilesChange,
-  onDraft,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [filesRejected, setFilesRejected] = useState(false);
@@ -116,19 +111,8 @@ const Composer = ({
           maxCharCount={MAX_PROMPT_LENGTH}
           disabled={busy}
         />
-        {/* Action bar inside the field: attach on the left, the primary
-            "Draft my project" action on the right — chat-composer style. */}
-        <Box
-          position="absolute"
-          bottom="8px"
-          left="10px"
-          right="10px"
-          zIndex="2"
-          display="flex"
-          alignItems="center"
-          justifyContent="space-between"
-          gap="8px"
-        >
+        {/* Attach control lives inside the field, bottom-left. */}
+        <Box position="absolute" bottom="10px" left="10px" zIndex="2">
           <IconButton
             iconName="paperclip"
             buttonType="button"
@@ -138,16 +122,6 @@ const Composer = ({
             onClick={open}
             disabled={busy}
           />
-          <ButtonWithLink
-            type="button"
-            size="s"
-            icon="stars"
-            onClick={onDraft}
-            disabled={!canDraft}
-            processing={busy}
-          >
-            {formatMessage(messages.draftButton)}
-          </ButtonWithLink>
         </Box>
       </ComposerField>
 
