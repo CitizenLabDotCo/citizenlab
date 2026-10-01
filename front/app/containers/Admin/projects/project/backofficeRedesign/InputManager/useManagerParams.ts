@@ -34,11 +34,8 @@ const list = (value: string | string[] | undefined) =>
 const joined = (values: string[]) =>
   values.length > 0 ? values.join(',') : undefined;
 
-/**
- * Keeps the input manager's filters, sort, page, search and the input shown
- * in the side panel in the url. That way a filtered list can be shared, and
- * notification emails can link straight to one input.
- */
+// State lives in the url, so a filtered list can be shared and notification
+// emails can link straight to one input.
 const useManagerParams = (phaseId: string) => {
   const search = useSearch({ strict: false });
 
@@ -83,8 +80,9 @@ const useManagerParams = (phaseId: string) => {
     (changes: Partial<ManagerFilters>) => {
       const updates: Record<string, string | undefined> = { page: undefined };
 
-      if ('statuses' in changes)
+      if ('statuses' in changes) {
         updates.status = joined(changes.statuses ?? []);
+      }
       if ('assignees' in changes) {
         updates.assignee = joined(changes.assignees ?? []);
       }
@@ -137,8 +135,8 @@ const useManagerParams = (phaseId: string) => {
     updateSearchParams({ page: undefined, search: term || undefined });
   }, []);
 
-  const clearSelectedIdeaId = useCallback(() => {
-    updateSearchParams({ selected_idea_id: undefined });
+  const setSelectedIdeaId = useCallback((ideaId: string | undefined) => {
+    updateSearchParams({ selected_idea_id: ideaId });
   }, []);
 
   return {
@@ -153,7 +151,7 @@ const useManagerParams = (phaseId: string) => {
     setSort,
     setPage,
     setSearchTerm,
-    clearSelectedIdeaId,
+    setSelectedIdeaId,
   };
 };
 
