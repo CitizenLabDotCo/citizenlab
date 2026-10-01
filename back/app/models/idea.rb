@@ -234,7 +234,6 @@ class Idea < ApplicationRecord
     includes(:author).order('users.first_name' => direction, 'users.last_name' => direction)
   }
 
-  # Ideas without a title in the given locale go last, whatever the direction.
   scope :order_title, lambda { |locale, direction = :asc|
     title = Arel::Nodes::InfixOperation.new('->>', arel_table[:title_multiloc], Arel::Nodes.build_quoted(locale))
     order(Arel::Nodes::NamedFunction.new('LOWER', [title]).public_send(direction).nulls_last, :id)
