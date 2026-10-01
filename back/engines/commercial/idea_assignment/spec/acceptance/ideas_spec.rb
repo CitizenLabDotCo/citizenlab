@@ -152,6 +152,46 @@ resource 'Ideas' do
     end
   end
 
+  get 'web_api/v1/ideas/filter_counts' do
+    let(:project) { create(:single_phase_ideation_project) }
+    let(:other_project) { create(:single_phase_ideation_project) }
+
+    before do
+      create(:idea_status, code: 'proposed')
+      create(:idea, project: project, assignee: create(:admin))
+      create(:idea, project: other_project, assignee: create(:admin))
+    end
+
+    context 'when resident' do
+      before { resident_header_token }
+
+      example 'Does not count ideas per assignee', document: false do
+        do_request
+
+        assert_status 200
+        expect(json_parse(response_body).dig(:data, :attributes)).not_to have_key(:assignee_id)
+      end
+    end
+
+    context 'when project moderator' do
+      before { header_token_for create(:project_moderator, projects: [project]) }
+
+      example 'Counts ideas per assignee within the moderated project', document: false do
+        do_request projects: [project.id]
+
+        assert_status 200
+        expect(json_parse(response_body).dig(:data, :attributes, :assignee_id).size).to eq 1
+      end
+
+      example 'Does not count ideas per assignee across other projects', document: false do
+        do_request
+
+        assert_status 200
+        expect(json_parse(response_body).dig(:data, :attributes)).not_to have_key(:assignee_id)
+      end
+    end
+  end
+
   patch 'web_api/v1/ideas/:id' do
     with_options scope: :idea do
       parameter :assignee_id, 'The user id of the admin/moderator that takes ownership. Only allowed for admins/moderators.'
