@@ -1681,7 +1681,7 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.removeTag": "{tag} kaldır",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.repliedMark": "Yanıtlandı",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.replyAwaiting": "Yanıt bekleniyor",
-  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.replyReplied": "Cevaplandı",
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.replyReplied": "Yanıtlandı",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.respondedTile": "Yanıtlandı",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.searchInputs": "Girdilerde ara",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.searchOptions": "Filtrele…",
