@@ -6,6 +6,8 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
 
+import PhonePreviewBackdrop from 'containers/Admin/projects/_shared/components/PhonePreviewBackdrop';
+
 import PhonePreview from 'components/admin/PhonePreview';
 
 import { useIntl } from 'utils/cl-intl';
@@ -33,10 +35,12 @@ const PhasePreview = ({ projectId, phase }: Props) => {
       : `/${locale}/projects/${slug}/${phaseIndex + 1}`;
 
   return (
-    <PhonePreview
-      src={`${path}${window.location.search}`}
-      title={formatMessage(messages.phasePreviewTitle)}
-    />
+    <PhonePreviewBackdrop>
+      <PhonePreview
+        src={`${path}${window.location.search}`}
+        title={formatMessage(messages.phasePreviewTitle)}
+      />
+    </PhonePreviewBackdrop>
   );
 };
 

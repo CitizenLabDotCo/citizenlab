@@ -7,6 +7,8 @@ import useProjectById from 'api/projects/useProjectById';
 import useLocale from 'hooks/useLocale';
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
+import PhonePreviewBackdrop from 'containers/Admin/projects/_shared/components/PhonePreviewBackdrop';
+
 import PagePreview from 'components/admin/PagePreview';
 
 import { useIntl } from 'utils/cl-intl';
@@ -47,14 +49,7 @@ const ProjectPage = () => {
   };
 
   return (
-    <Box
-      height="100%"
-      background={
-        redesign
-          ? colors.grey100
-          : `radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.04) 1px, transparent 0) 0 0 / 18px 18px, ${colors.background}`
-      }
-    >
+    <PhonePreviewBackdrop>
       <PagePreview
         src={`/${locale}/projects/${slug}${window.location.search}`}
         iframeTitle={formatMessage(messages.projectPagePreviewTitle)}
@@ -65,7 +60,7 @@ const ProjectPage = () => {
         dataCy="e2e-project-page-preview"
         editPageContentClassName="intercom-product-tour-project-edit-project"
       />
-    </Box>
+    </PhonePreviewBackdrop>
   );
 };
 
