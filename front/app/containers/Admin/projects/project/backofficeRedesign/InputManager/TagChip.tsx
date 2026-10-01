@@ -10,7 +10,6 @@ import {
 
 interface Props {
   label: string;
-  /** Adds a remove button, labelled for screen readers by `removeLabel`. */
   onRemove?: () => void;
   removeLabel?: string;
 }
