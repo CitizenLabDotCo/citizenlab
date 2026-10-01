@@ -1,9 +1,11 @@
-import { ICustomPageData } from './types';
+import { ICustomPageData, TCustomPageCode } from './types';
 
-// Only global custom pages are on the Content Builder, mirroring the backend's provisioning
-// guard. FAQ, About and project-scoped pages keep their legacy sections.
-export function isGlobalCustomPage({
+// Pages whose content is authored in the content builder, mirroring the backend's
+// StaticPage#on_content_builder?. Policy and project-scoped pages keep their legacy content.
+const CONTENT_BUILDER_CODES: TCustomPageCode[] = ['custom', 'about', 'faq'];
+
+export function isOnContentBuilder({
   attributes: { code, project_id },
 }: ICustomPageData): boolean {
-  return code === 'custom' && !project_id;
+  return CONTENT_BUILDER_CODES.includes(code) && !project_id;
 }

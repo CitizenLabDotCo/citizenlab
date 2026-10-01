@@ -5,7 +5,7 @@ import { omit } from 'lodash-es';
 import { TCustomPageCode } from 'api/custom_pages/types';
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
-import { isGlobalCustomPage } from 'api/custom_pages/util';
+import { isOnContentBuilder } from 'api/custom_pages/util';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -91,7 +91,7 @@ const EditCustomPageSettings = () => {
         hideSlug={!customPageSlugAllowedToEdit[customPage.data.attributes.code]}
         // The content builder lists projects through its own widgets, so linked items don't apply.
         hideLinkedItems={
-          customPageBuilderEnabled && isGlobalCustomPage(customPage.data)
+          customPageBuilderEnabled && isOnContentBuilder(customPage.data)
         }
       />
     );

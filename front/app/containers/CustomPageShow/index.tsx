@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
-import { isGlobalCustomPage } from 'api/custom_pages/util';
+import { isOnContentBuilder } from 'api/custom_pages/util';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -41,7 +41,7 @@ const CustomPageShow = () => {
   const { data: page, isError } = useCustomPageBySlug(pageSlugToUse);
   // The other pages served here must not wait on a request that can only 404.
   const builderContent = useCustomPageBuilderContent(
-    page && isGlobalCustomPage(page.data) ? page.data.id : undefined
+    page && isOnContentBuilder(page.data) ? page.data.id : undefined
   );
 
   // when neither have loaded

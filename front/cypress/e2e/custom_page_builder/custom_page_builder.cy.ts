@@ -360,17 +360,4 @@ describe('Custom page builder', () => {
       `/admin/pages-menu/pages/${pageId}/settings`
     );
   });
-
-  // FAQ is not on the builder, so it keeps its tabs and linked items with the flag on.
-  it('keeps the tabbed edit page for FAQ', () => {
-    cy.setAdminLoginCookie();
-    cy.apiGetCustomPageBySlug('faq').then((faq) => {
-      cy.visit(`/admin/pages-menu/pages/${faq.body.data.id}/settings`);
-    });
-
-    cy.get('[data-testid="customPageSettingsForm"]').should('be.visible');
-    cy.get('.e2e-resource-tabs').should('be.visible');
-    cy.get('[id^="projects_filter_type_"]').should('exist');
-    cy.dataCy('e2e-custom-page-preview').should('not.exist');
-  });
 });
