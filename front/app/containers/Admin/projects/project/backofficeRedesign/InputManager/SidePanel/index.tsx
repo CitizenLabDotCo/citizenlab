@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
+
 import useIdeaById from 'api/ideas/useIdeaById';
 import { IPhaseData } from 'api/phases/types';
 
@@ -31,11 +33,16 @@ const SidePanel = ({
   onChangeMode,
   onClose,
 }: Props) => {
-  const { data: idea } = useIdeaById(ideaId);
+  const { data: idea, isPlaceholderData } = useIdeaById(ideaId);
 
   return (
     <SideModal opened={!!ideaId} close={onClose} width="640px">
-      {idea && (
+      {(!idea || isPlaceholderData) && !!ideaId && (
+        <Box display="flex" justifyContent="center" py="80px">
+          <Spinner />
+        </Box>
+      )}
+      {idea && !isPlaceholderData && (
         <>
           <PanelHeader context={context} navigation={navigation} />
           {mode === 'edit' ? (
