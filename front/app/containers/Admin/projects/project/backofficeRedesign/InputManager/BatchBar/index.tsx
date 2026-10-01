@@ -12,14 +12,17 @@ import { IIdeaData } from 'api/ideas/types';
 
 import { ManagerType } from 'components/admin/PostManager';
 import actionBarMessages from 'components/admin/PostManager/components/ActionBar/messages';
+import useAssigneeOptions, {
+  UNASSIGNED,
+} from 'components/admin/PostManager/useAssigneeOptions';
 import WarningModal from 'components/WarningModal';
 import warningModalMessages from 'components/WarningModal/messages';
 
 import { useIntl } from 'utils/cl-intl';
+import { getFullName } from 'utils/textUtils';
 
 import messages from '../messages';
 import OptionList from '../OptionList';
-import useAssigneeOptions, { UNASSIGNED } from '../useAssigneeOptions';
 import usePickerOptions from '../usePickerOptions';
 import { phaseIds, topicIds } from '../utils';
 
@@ -35,7 +38,6 @@ interface Props {
   onClear: () => void;
 }
 
-/** The values every selected input shares. */
 const shared = (ideas: IIdeaData[], values: (idea: IIdeaData) => string[]) =>
   ideas.length === 0
     ? []
@@ -43,7 +45,6 @@ const shared = (ideas: IIdeaData[], values: (idea: IIdeaData) => string[]) =>
         ideas.every((idea) => values(idea).includes(value))
       );
 
-/** The values some, but not all, selected inputs have. */
 const partial = (ideas: IIdeaData[], values: (idea: IIdeaData) => string[]) => {
   const all = shared(ideas, values);
   return [...new Set(ideas.flatMap(values))].filter(
@@ -65,7 +66,7 @@ const BatchBar = ({
     type,
     projectId
   );
-  const assigneeOptions = useAssigneeOptions(projectId);
+  const assigneeOptions = useAssigneeOptions(projectId, getFullName);
   const { setStatus, assign, toggleTag, copyToPhase, deleteAll, isDeleting } =
     useBatchActions({
       ideas,
