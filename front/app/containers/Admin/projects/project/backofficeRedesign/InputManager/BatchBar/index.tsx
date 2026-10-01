@@ -121,7 +121,6 @@ const BatchBar = ({
           <OptionList
             options={assigneeOptions}
             selected={shared(ideas, assigneeIds)}
-            searchable={assigneeOptions.length > 8}
             onToggle={(assigneeId) => {
               assign(assigneeId);
               close();

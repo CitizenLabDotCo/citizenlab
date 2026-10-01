@@ -17,6 +17,7 @@ import { getFullName } from 'utils/textUtils';
 import messages from '../messages';
 import { Option } from '../OptionList';
 import {
+  ALL_PHASES,
   isReplyFilter,
   isSourceFilter,
   ManagerFilters,
@@ -39,13 +40,11 @@ export interface FilterCategory {
   options: Option[];
   selected: string[];
   multiple: boolean;
-  searchable: boolean;
+  searchable?: boolean;
   isActive: boolean;
   toggle: (value: string) => void;
   clear: () => void;
 }
-
-const ALL_PHASES = 'all';
 
 const toggled = (values: string[], value: string) =>
   values.includes(value)
@@ -118,7 +117,6 @@ const useFilterCategories = ({
       ],
       selected: filters.source ? [filters.source] : [],
       multiple: false,
-      searchable: false,
       isActive: !!filters.source,
       toggle: (value) => {
         if (!isSourceFilter(value)) return;
@@ -133,7 +131,6 @@ const useFilterCategories = ({
       options: statusOptions,
       selected: filters.statuses,
       multiple: true,
-      searchable: statusOptions.length > 8,
       isActive: filters.statuses.length > 0,
       toggle: (value) =>
         setFilters({ statuses: toggled(filters.statuses, value) }),
@@ -149,7 +146,6 @@ const useFilterCategories = ({
       })),
       selected: filters.assignees,
       multiple: true,
-      searchable: assigneeOptions.length > 8,
       isActive: filters.assignees.length > 0,
       toggle: (value) =>
         setFilters({ assignees: toggled(filters.assignees, value) }),
@@ -188,7 +184,6 @@ const useFilterCategories = ({
       ],
       selected: filters.reply ? [filters.reply] : [],
       multiple: false,
-      searchable: false,
       isActive: !!filters.reply,
       toggle: (value) => {
         if (!isReplyFilter(value)) return;
@@ -214,7 +209,6 @@ const useFilterCategories = ({
     ],
     selected: [filters.phase ?? ALL_PHASES],
     multiple: false,
-    searchable: phaseOptions.length > 8,
     isActive: filters.phase !== phase.id,
     toggle: (value) =>
       setFilters({ phase: value === ALL_PHASES ? undefined : value }),

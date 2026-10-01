@@ -52,7 +52,6 @@ const AssigneeProperty = ({ idea }: Props) => {
           <OptionList
             options={options}
             selected={[assigneeId]}
-            searchable={options.length > 8}
             onToggle={(newAssigneeId) => {
               if (newAssigneeId !== assigneeId) assign(newAssigneeId);
               close();

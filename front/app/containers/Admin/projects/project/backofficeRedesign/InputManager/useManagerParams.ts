@@ -26,6 +26,7 @@ export interface ManagerFilters {
 }
 
 export const DEFAULT_SORT: Sort = 'new';
+export const ALL_PHASES = 'all';
 
 // Other routes type some of these params as lists, so both shapes are read.
 const list = (value: string | string[] | undefined) =>
@@ -51,7 +52,7 @@ const useManagerParams = (phaseId: string) => {
           ? 'replied'
           : undefined,
       source: isSourceFilter(search.source) ? search.source : undefined,
-      phase: search.phase === 'all' ? undefined : search.phase || phaseId,
+      phase: search.phase === ALL_PHASES ? undefined : search.phase || phaseId,
     }),
     [search, phaseId]
   );
@@ -97,7 +98,7 @@ const useManagerParams = (phaseId: string) => {
       if ('phase' in changes) {
         updates.phase =
           changes.phase === undefined
-            ? 'all'
+            ? ALL_PHASES
             : changes.phase === phaseId
             ? undefined
             : changes.phase;

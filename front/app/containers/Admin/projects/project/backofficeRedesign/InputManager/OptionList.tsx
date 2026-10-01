@@ -24,6 +24,9 @@ export interface Option {
   partial?: boolean;
 }
 
+// Short lists are quicker to scan than to search.
+const SEARCHABLE_FROM = 9;
+
 interface Props {
   options: Option[];
   selected: string[];
@@ -31,7 +34,12 @@ interface Props {
   searchable?: boolean;
 }
 
-const OptionList = ({ options, selected, onToggle, searchable }: Props) => {
+const OptionList = ({
+  options,
+  selected,
+  onToggle,
+  searchable = options.length >= SEARCHABLE_FROM,
+}: Props) => {
   const { formatMessage } = useIntl();
   const [search, setSearch] = useState('');
 
