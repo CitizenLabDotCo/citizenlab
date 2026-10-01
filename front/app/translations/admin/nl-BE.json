@@ -1672,7 +1672,7 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.noMatchingOptions": "Niets komt overeen met je zoekopdracht",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.noOtherPhases": "Er is geen andere fase die bijdragen kan bevatten.",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.offlineCollection": "Offline verzameling",
-  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.phases": "Fases",
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.phases": "Fasen",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.position": "{position} van {total}",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.previousInput": "Vorige bijdrage",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.publishedColumn": "Gepubliceerd",
