@@ -11,6 +11,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
+import { MessageDescriptor } from 'react-intl';
 import { CLError, RHFErrors } from 'typings';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
@@ -33,6 +34,30 @@ import {
   convertGeojsonToWKT,
   convertWKTToGeojson,
 } from './multiPointUtils';
+import { MapInputType } from './utils';
+
+// Touch devices are told to tap, pointer devices to click, so each input type
+// needs both wordings.
+const INSTRUCTION_MESSAGES: {
+  [key in MapInputType]: { tap: MessageDescriptor; click: MessageDescriptor };
+} = {
+  point: {
+    tap: messages.tapOnMapToAddOrType,
+    click: messages.clickOnMapToAddOrType,
+  },
+  multipoint: {
+    tap: messages.tapOnMapToAddMultiplePins,
+    click: messages.clickOnMapToAddMultiplePins,
+  },
+  line: {
+    tap: messages.tapOnMapMultipleToAdd,
+    click: messages.clickOnMapMultipleToAdd,
+  },
+  polygon: {
+    tap: messages.tapOnMapMultipleToAdd,
+    click: messages.clickOnMapMultipleToAdd,
+  },
+};
 
 const MapField = ({
   question,
@@ -143,17 +168,7 @@ const MapField = ({
     [setValue, name, question.input_type]
   );
 
-  const getInstructionMessage = () => {
-    if (isTabletOrSmaller) {
-      return question.input_type === 'point'
-        ? formatMessage(messages.tapOnMapToAddOrType)
-        : formatMessage(messages.tapOnMapMultipleToAdd);
-    } else {
-      return question.input_type === 'point'
-        ? formatMessage(messages.clickOnMapToAddOrType)
-        : formatMessage(messages.clickOnMapMultipleToAdd);
-    }
-  };
+  const instruction = INSTRUCTION_MESSAGES[question.input_type];
 
   return (
     <>
@@ -161,7 +176,11 @@ const MapField = ({
         <Label>
           <Box display="flex">
             <Icon name="info-outline" fill={colors.coolGrey600} mr="4px" />
-            <Box my="auto">{getInstructionMessage()}</Box>
+            <Box my="auto">
+              {formatMessage(
+                isTabletOrSmaller ? instruction.tap : instruction.click
+              )}
+            </Box>
           </Box>
         </Label>
       </Box>

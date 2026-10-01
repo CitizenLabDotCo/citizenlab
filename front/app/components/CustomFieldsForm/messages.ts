@@ -143,6 +143,10 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.tapOnMapMultipleToAdd3',
     defaultMessage: 'Tap on the map to add your answer.',
   },
+  tapOnMapToAddMultiplePins: {
+    id: 'app.components.CustomFieldsForm.tapOnMapToAddMultiplePins',
+    defaultMessage: 'Tap on the map to add locations.',
+  },
   tapOnFullscreenMapToAddPoint: {
     id: 'app.components.CustomFieldsForm.tapOnFullscreenMapToAddPoint',
     defaultMessage: 'Tap on the map to draw.',
@@ -161,6 +165,11 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.clickOnMapMultipleToAdd3',
     defaultMessage:
       'Click on the map to draw. Then, drag on points to move them.',
+  },
+  clickOnMapToAddMultiplePins: {
+    id: 'app.components.CustomFieldsForm.clickOnMapToAddMultiplePins',
+    defaultMessage:
+      'Click on the map to add locations. Then, drag on points to move them.',
   },
   minimumCoordinates: {
     id: 'app.components.CustomFieldsForm.minimumCoordinates2',
