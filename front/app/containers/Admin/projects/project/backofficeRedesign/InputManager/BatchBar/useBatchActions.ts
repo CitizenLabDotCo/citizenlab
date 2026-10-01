@@ -5,16 +5,12 @@ import useDeleteIdea from 'api/ideas/useDeleteIdea';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 
 import tracks from 'components/admin/PostManager/tracks';
+import { UNASSIGNED } from 'components/admin/PostManager/useAssigneeOptions';
 
 import { trackEventByName } from 'utils/analytics';
 
-import { UNASSIGNED } from '../useAssigneeOptions';
 import { phaseIds, topicIds } from '../utils';
 
-/**
- * Changes applied to every selected input at once. Each input keeps what it
- * already had: adding a tag or a phase merges it into the input's own list.
- */
 const useBatchActions = ({
   ideas,
   onUpdated,
@@ -29,7 +25,7 @@ const useBatchActions = ({
   const [isDeleting, setIsDeleting] = useState(false);
 
   const updateEach = (requestBody: (idea: IIdeaData) => IIdeaUpdate) =>
-    Promise.all(
+    Promise.allSettled(
       ideas.map((idea) =>
         updateIdea({ id: idea.id, requestBody: requestBody(idea) }).then(
           (updated) => onUpdated(updated.data)
@@ -55,7 +51,6 @@ const useBatchActions = ({
     });
   };
 
-  /** Removes the tag when every input has it, and adds it to all otherwise. */
   const toggleTag = (tagId: string) => {
     const allHaveTag = ideas.every((idea) => topicIds(idea).includes(tagId));
 
@@ -77,7 +72,11 @@ const useBatchActions = ({
     // Deleting several inputs in parallel overloads the database, so they go
     // one by one.
     for (const idea of ideas) {
-      await deleteIdea(idea.id);
+      try {
+        await deleteIdea(idea.id);
+      } catch {
+        // Inputs that failed to delete stay in the list.
+      }
     }
 
     setIsDeleting(false);
