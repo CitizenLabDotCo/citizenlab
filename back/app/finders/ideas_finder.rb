@@ -111,14 +111,12 @@ class IdeasFinder < ApplicationFinder
     @records.where.not(location_point: nil)
   end
 
-  def filter_can_moderate_condition(can_moderate)
-    return unless can_moderate
+  def moderatable_records
+    current_user ? where(project: user_role_service.moderatable_projects(current_user)) : records.none
+  end
 
-    if current_user
-      where(project: user_role_service.moderatable_projects(current_user))
-    else
-      records.none
-    end
+  def filter_can_moderate_condition(can_moderate)
+    moderatable_records if can_moderate
   end
 
   def user_role_service
