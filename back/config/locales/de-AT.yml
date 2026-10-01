@@ -180,7 +180,7 @@ de-AT:
       logic_no_further_questions: Basierend auf Ihren Antworten müssen Sie <strong>keine</strong> weiteren Fragen beantworten.
       logic_section: Abschnitt %{letter}
       matrix_print_description: Markieren Sie für jede Reihe einen Kreis mit einem Kreuz, um Ihre Präferenz anzugeben.
-      multipoint_print_description: Bitte markieren Sie jeden Standort, den Sie hinzufügen möchten, mit einem X auf der Karte unten.
+      multipoint_print_description: Bitte markiere jeden Standort, den du hinzufügen möchtest, mit einem X auf der Karte unten.
       optional: optional
       page: Seite
       permission: Berechtigung
