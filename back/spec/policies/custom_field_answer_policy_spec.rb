@@ -30,7 +30,7 @@ describe CustomFieldAnswerPolicy do
         context "for the #{name} answer" do
           let(:answer) { answers[name] }
 
-          it { is_expected.send(permitted ? :to : :not_to, permit(:show)) }
+          it { expect(policy.show?).to be permitted }
         end
       end
     end
@@ -40,7 +40,7 @@ describe CustomFieldAnswerPolicy do
         context "for the #{name} answer" do
           let(:answer) { answers[name] }
 
-          it { is_expected.send(permitted ? :to : :not_to, permit(:show)) }
+          it { expect(policy.show?).to be permitted }
         end
       end
     end
@@ -183,7 +183,7 @@ describe CustomFieldAnswerPolicy do
         context "for the #{name} answer" do
           let(:answer) { answers[name] }
 
-          it { is_expected.send(permitted ? :to : :not_to, permit(:show)) }
+          it { expect(policy.show?).to be permitted }
         end
       end
     end
