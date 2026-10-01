@@ -51,8 +51,7 @@ const SurveyForm = ({
   const draftIdeaQuery = useDraftIdeaByPhaseId(phaseId);
   const { data: draftIdea, isLoading: isLoadingDraftIdea } = draftIdeaQuery;
 
-  // The draft refetches after every saved page, so only its first load
-  // counts as the start.
+  // The draft refetches after every saved page; only the first load counts.
   const hasTrackedStart = useRef(false);
   useOnQuerySuccess(draftIdeaQuery, () => {
     if (hasTrackedStart.current) return;
@@ -62,7 +61,7 @@ const SurveyForm = ({
       project_id: projectId,
       phase_id: phaseId,
       participation_method: participationMethod,
-      // Only a draft saved in an earlier visit has an id.
+      // Only a previously saved draft has an id.
       resumed: !!draftIdea?.data.id,
     });
   });

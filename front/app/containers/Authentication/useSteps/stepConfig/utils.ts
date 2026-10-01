@@ -16,8 +16,7 @@ import {
 
 import { Step } from './typings';
 
-// The flow is decided by the back end (see handleSubmitEmail and the SSO
-// callback), so 'signup' here means a new account was created.
+// The back end sets the flow, so 'signup' means a new account was created.
 export const trackAuthenticated = (
   flow: 'signup' | 'signin',
   method: 'email' | 'phone' | 'sso' | 'invite'

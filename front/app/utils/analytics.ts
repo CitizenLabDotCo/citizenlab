@@ -151,17 +151,12 @@ export function trackEventByName(
   });
 }
 
-/** Events that are safe to share with the customer's own analytics. Track
- * them with trackEventByName like any other event: besides our tools, the
- * Google Tag Manager module pushes these (and only these) to the dataLayer,
- * where customers build triggers and conversions on them. Treat them as a
- * public contract: don't rename them, fire them only once an action has
- * succeeded, and only pass ids, never personal data or free text.
- *
- * Names are snake_case because customers usually forward them from GTM to
- * GA4 unchanged, and GA4 event names may only contain letters, numbers and
- * underscores. `login` and `sign_up` use GA4's recommended event names (with
- * its `method` parameter) so they line up with GA4's own reporting. */
+/** Events that are safe to push to tools outside our control
+ * The only events pushed to the customer's GTM dataLayer. They are a
+ * public contract: don't rename them, fire them only on success, and pass
+ * ids only, never personal data or free text. Names are snake_case because
+ * GA4 only accepts letters, numbers and underscores; `login` and `sign_up`
+ * are GA4's recommended names. */
 export const customerAnalyticsEvents = {
   ideaStarted: 'idea_started',
   ideaSubmitted: 'idea_submitted',

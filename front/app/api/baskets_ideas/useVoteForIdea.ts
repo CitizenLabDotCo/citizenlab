@@ -50,8 +50,7 @@ const useVoteForIdeaMutation = () => {
       const newBasket = basket_id !== basketId;
 
       if (newBasket) {
-        // The first vote in a phase creates the basket, so this is the
-        // start of voting.
+        // The first vote in a phase creates the basket.
         trackEventByName(customerAnalyticsEvents.votingStarted, {
           project_id,
           phase_id,
