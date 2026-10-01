@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
 import { useQueryClient } from '@tanstack/react-query';
 
 import customFieldsKeys from 'api/custom_fields/keys';
@@ -17,18 +17,25 @@ import { IProjectData } from 'api/projects/types';
 import useLocale from 'hooks/useLocale';
 import useOnQuerySuccess from 'hooks/useOnQuerySuccess';
 
-import { useIntl } from 'utils/cl-intl';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isCLErrorsWrapper } from 'utils/errorUtils';
 import { getBase64FromFile } from 'utils/fileUtils';
 
-import PanelHeading from '../ProjectSetupPanel/PanelHeading';
-
 import Composer, { MAX_PROMPT_LENGTH } from './Composer';
+import GenerationModal from './GenerationModal';
 import { DEFAULT_LEVERS, LeverId } from './leverConfig';
 import Levers from './Levers';
 import messages from './messages';
 import Transcript from './Transcript';
 import { Exchange } from './types';
+import useDemoGeneration from './useDemoGeneration';
+
+// prototype data — staging has no generation engine, so the Draft button plays
+// a simulated run (progress modal + result report) instead of calling the API.
+// Flip to false to exercise the real backend path (epic preview env).
+const DEMO_MODE: boolean = true;
 
 const getErrorCode = (error: unknown) =>
   isCLErrorsWrapper(error)
@@ -48,6 +55,7 @@ const ProjectAssistant = ({ project }: Props) => {
   const { mutateAsync: addFile } = useAddFile();
   const { mutateAsync: addProjectGeneration } = useAddProjectGeneration();
 
+  const demo = useDemoGeneration();
   const [prompt, setPrompt] = useState('');
   const [files, setFiles] = useState<File[]>([]);
   const [levers, setLevers] = useState(DEFAULT_LEVERS);
@@ -177,13 +185,44 @@ const ProjectAssistant = ({ project }: Props) => {
 
   const busy = sending || !!runningJob || jobsQuery.isLoading;
   const showTranscript = exchanges.length > 0 || !!runningJob;
+  const hasInput = prompt.trim() !== '' || files.length > 0;
+  const canDraft = hasInput && !busy;
 
   const setLever = (id: LeverId, value: number) =>
     setLevers((previous) => ({ ...previous, [id]: value }));
 
+  const handleDraft = () => {
+    if (DEMO_MODE) {
+      demo.start();
+      return;
+    }
+    send();
+  };
+
   return (
     <Box p="20px" display="flex" flexDirection="column" gap="16px">
-      <PanelHeading title={formatMessage(messages.title)} />
+      <Box display="flex" alignItems="center" gap="10px">
+        <Box
+          flex="0 0 auto"
+          width="36px"
+          height="36px"
+          borderRadius="50%"
+          bgColor={colors.teal50}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Icon name="stars" width="20px" height="20px" fill={colors.teal500} />
+        </Box>
+        <Box>
+          <Text m="0px" fontSize="l" fontWeight="bold">
+            {formatMessage(messages.title)}
+          </Text>
+          <Text m="0px" fontSize="s" color="textSecondary">
+            {formatMessage(messages.tagline)}
+          </Text>
+        </Box>
+      </Box>
 
       {showTranscript ? (
         <Transcript
@@ -198,15 +237,28 @@ const ProjectAssistant = ({ project }: Props) => {
 
       {!runningJob && (
         <>
-          <Levers values={levers} disabled={busy} onChange={setLever} />
           <Composer
             prompt={prompt}
             files={files}
             busy={busy}
             onPromptChange={setPrompt}
             onFilesChange={setFiles}
-            onSend={send}
           />
+
+          {/* Shaping questions appear once there's a brief to shape. */}
+          {hasInput && (
+            <Levers values={levers} disabled={busy} onChange={setLever} />
+          )}
+
+          <ButtonWithLink
+            type="button"
+            icon="stars"
+            onClick={handleDraft}
+            disabled={!canDraft}
+            processing={busy}
+          >
+            <FormattedMessage {...messages.draftButton} />
+          </ButtonWithLink>
         </>
       )}
 
@@ -215,6 +267,14 @@ const ProjectAssistant = ({ project }: Props) => {
           {sendError}
         </Text>
       )}
+
+      <GenerationModal
+        status={demo.status}
+        steps={demo.steps}
+        activeIndex={demo.activeIndex}
+        report={demo.report}
+        onClose={demo.reset}
+      />
     </Box>
   );
 };

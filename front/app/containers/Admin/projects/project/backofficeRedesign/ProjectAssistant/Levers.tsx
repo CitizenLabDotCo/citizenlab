@@ -25,25 +25,24 @@ const Levers = ({ values, disabled, onChange }: Props) => {
       <Text m="0px" mb="8px" variant="bodyS" color="textSecondary">
         {formatMessage(messages.leversHeading)}
       </Text>
-      <Box display="flex" flexDirection="column" gap="12px">
+      <Box display="flex" flexDirection="column" gap="14px">
         {LEVERS.map((lever) => (
           <Box key={lever.id}>
-            <Text m="0px" mb="4px" fontSize="s" fontWeight="bold">
+            <Text m="0px" mb="6px" fontSize="s" fontWeight="bold">
               {formatMessage(lever.question)}
             </Text>
-            <Box display="flex" gap="6px">
+            <Box display="flex" flexWrap="wrap" gap="6px">
               {lever.options.map((option, index) => (
                 <ButtonWithLink
                   key={option.id}
                   type="button"
                   size="s"
-                  padding="6px 8px"
+                  padding="6px 10px"
                   buttonStyle={
                     values[lever.id] === index
                       ? 'primary'
                       : 'secondary-outlined'
                   }
-                  width="100%"
                   disabled={disabled}
                   onClick={() => onChange(lever.id, index)}
                 >

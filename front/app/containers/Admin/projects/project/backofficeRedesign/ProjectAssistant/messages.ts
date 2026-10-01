@@ -9,13 +9,18 @@ export default defineMessages({
     defaultMessage: 'Project assistant',
   },
   intro: {
-    id: `${scope}.intro`,
+    id: `${scope}.introV2`,
     defaultMessage:
-      'Tell me what you want to achieve and I’ll draft the whole project — page, phases and a survey — for you to review.',
+      'Tell me what you want to achieve and I’ll draft the whole project for you — page, phases and a survey, ready to review. Every draft is grounded in local best practice and ten years of data on what actually drives participation.',
+  },
+  tagline: {
+    id: `${scope}.tagline`,
+    defaultMessage: 'Drafts the whole project from a brief',
   },
   placeholder: {
-    id: `${scope}.placeholder`,
-    defaultMessage: 'Describe your project in a sentence or two…',
+    id: `${scope}.placeholderV2`,
+    defaultMessage:
+      'Describe what you want to achieve — a paragraph is perfect. Or drop a brief or memo and I’ll read it.',
   },
   draftButton: {
     id: `${scope}.draftButton`,
@@ -89,6 +94,22 @@ export default defineMessages({
   leverReachDepth: {
     id: `${scope}.leverReachDepth`,
     defaultMessage: 'Fewer, in depth',
+  },
+  leverFormatQuestion: {
+    id: `${scope}.leverFormatQuestion`,
+    defaultMessage: 'How should people take part?',
+  },
+  leverFormatOpen: {
+    id: `${scope}.leverFormatOpen`,
+    defaultMessage: 'In the open (ideation)',
+  },
+  leverFormatBalance: {
+    id: `${scope}.leverFormatBalance`,
+    defaultMessage: 'A balance',
+  },
+  leverFormatPrivate: {
+    id: `${scope}.leverFormatPrivate`,
+    defaultMessage: 'Privately (survey)',
   },
   leverAudienceQuestion: {
     id: `${scope}.leverAudienceQuestion`,

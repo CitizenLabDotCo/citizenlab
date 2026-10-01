@@ -9,8 +9,8 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { useDropzone } from 'react-dropzone';
+import styled from 'styled-components';
 
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 import TextArea from 'components/UI/TextArea';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -26,13 +26,21 @@ const MAX_FILES = 3;
 const MAX_FILE_SIZE_MB = 10;
 export const MAX_PROMPT_LENGTH = 5000;
 
+// The textarea keeps room at its bottom-left for the attach control that sits
+// inside the box, chat-composer style.
+const ComposerField = styled(Box)`
+  textarea {
+    min-height: 140px;
+    padding-bottom: 42px;
+  }
+`;
+
 type Props = {
   prompt: string;
   files: File[];
   busy: boolean;
   onPromptChange: (prompt: string) => void;
   onFilesChange: (files: File[]) => void;
-  onSend: () => void;
 };
 
 const Composer = ({
@@ -41,7 +49,6 @@ const Composer = ({
   busy,
   onPromptChange,
   onFilesChange,
-  onSend,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [filesRejected, setFilesRejected] = useState(false);
@@ -58,11 +65,6 @@ const Composer = ({
       onFilesChange(nextFiles.slice(0, MAX_FILES));
     },
   });
-
-  const canSend =
-    !busy &&
-    (prompt.trim() !== '' || files.length > 0) &&
-    prompt.length <= MAX_PROMPT_LENGTH;
 
   const removeFile = (file: File) => {
     setFilesRejected(false);
@@ -92,14 +94,30 @@ const Composer = ({
           </Text>
         </Box>
       )}
-      <TextArea
-        value={prompt}
-        onChange={onPromptChange}
-        placeholder={formatMessage(messages.placeholder)}
-        rows={4}
-        maxCharCount={MAX_PROMPT_LENGTH}
-        disabled={busy}
-      />
+
+      <ComposerField position="relative">
+        <TextArea
+          value={prompt}
+          onChange={onPromptChange}
+          placeholder={formatMessage(messages.placeholder)}
+          rows={6}
+          maxCharCount={MAX_PROMPT_LENGTH}
+          disabled={busy}
+        />
+        {/* Attach control lives inside the field, bottom-left. */}
+        <Box position="absolute" bottom="10px" left="10px" zIndex="2">
+          <IconButton
+            iconName="paperclip"
+            buttonType="button"
+            iconColor={colors.grey700}
+            iconColorOnHover={colors.textPrimary}
+            a11y_buttonActionMessage={formatMessage(messages.attachFile)}
+            onClick={open}
+            disabled={busy}
+          />
+        </Box>
+      </ComposerField>
+
       {files.length > 0 && (
         <Box display="flex" flexWrap="wrap" gap="6px" mt="8px">
           {files.map((file) => (
@@ -134,32 +152,7 @@ const Composer = ({
           ))}
         </Box>
       )}
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        mt="8px"
-      >
-        <IconButton
-          iconName="paperclip"
-          buttonType="button"
-          iconColor={colors.grey700}
-          iconColorOnHover={colors.textPrimary}
-          a11y_buttonActionMessage={formatMessage(messages.attachFile)}
-          onClick={open}
-          disabled={busy}
-        />
-        <ButtonWithLink
-          type="button"
-          icon="stars"
-          size="s"
-          onClick={onSend}
-          disabled={!canSend}
-          processing={busy}
-        >
-          <FormattedMessage {...messages.draftButton} />
-        </ButtonWithLink>
-      </Box>
+
       {filesRejected && (
         <Text m="0px" mt="8px" fontSize="s" color="error">
           <FormattedMessage
@@ -168,9 +161,12 @@ const Composer = ({
           />
         </Text>
       )}
-      {files.length > 0 && (
+      {files.length > 0 && !filesRejected && (
         <Text m="0px" mt="8px" fontSize="s" color="textSecondary">
-          <FormattedMessage {...messages.filesHint} values={{ maxFiles: MAX_FILES }} />
+          <FormattedMessage
+            {...messages.filesHint}
+            values={{ maxFiles: MAX_FILES }}
+          />
         </Text>
       )}
     </Box>

@@ -43,6 +43,15 @@ export const LEVERS: LeverConfig[] = [
     ],
   },
   {
+    id: 'format',
+    question: messages.leverFormatQuestion,
+    options: [
+      messages.leverFormatOpen,
+      messages.leverFormatBalance,
+      messages.leverFormatPrivate,
+    ],
+  },
+  {
     id: 'audience',
     question: messages.leverAudienceQuestion,
     options: [
@@ -57,5 +66,6 @@ export const DEFAULT_LEVERS: ProjectGenerationLevers = {
   influence: 1,
   how_fixed: 1,
   reach: 1,
+  format: 1,
   audience: 1,
 };

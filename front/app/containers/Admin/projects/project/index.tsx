@@ -61,6 +61,7 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
           <ProjectWorkspace
             project={project}
             phase={selectedPhase}
+            sidePanelWidth={showAssistant ? '460px' : undefined}
             sidePanel={
               selectedPhase ? (
                 <PhaseSetup
