@@ -16,11 +16,8 @@ const BatchMenuButton = ({ icon, label, children, width }: Props) => (
     width={width}
     trigger={({ opened, toggle }) => (
       <Button
-        buttonStyle="secondary-outlined"
-        size="s"
-        padding="4px 10px"
+        buttonStyle="bo-secondary"
         icon={icon}
-        iconSize="16px"
         onClick={toggle}
         ariaExpanded={opened}
         ariaHasPopup="menu"

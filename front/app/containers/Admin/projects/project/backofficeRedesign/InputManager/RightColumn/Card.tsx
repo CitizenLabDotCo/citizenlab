@@ -1,11 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import {
-  Box,
-  colors,
-  stylingConsts,
-  Text,
-} from '@citizenlab/cl2-component-library';
+import { bo, Box, colors, Text } from '@citizenlab/cl2-component-library';
 
 interface Props {
   title: string;
@@ -15,10 +10,10 @@ interface Props {
 const Card = ({ title, children }: Props) => (
   <Box
     border={`1px solid ${colors.grey300}`}
-    borderRadius={stylingConsts.borderRadius}
+    borderRadius={bo.panelBorderRadius}
     p="16px"
   >
-    <Text m="0" mb="12px" fontSize="s" fontWeight="semi-bold">
+    <Text variant="boSection" m="0" mb="12px">
       {title}
     </Text>
     {children}

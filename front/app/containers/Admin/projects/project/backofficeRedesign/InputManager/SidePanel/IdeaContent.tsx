@@ -1,10 +1,10 @@
 import React from 'react';
 
 import {
+  bo,
   Box,
   colors,
   Image,
-  stylingConsts,
   Text,
 } from '@citizenlab/cl2-component-library';
 
@@ -47,13 +47,13 @@ const IdeaContent = ({ idea }: Props) => {
           src={image}
           alt=""
           width="100%"
-          borderRadius={stylingConsts.borderRadius}
+          borderRadius={bo.borderRadius}
           border={`1px solid ${colors.divider}`}
         />
       )}
       {attributes.proposed_budget && (
         <Box>
-          <Text m="0" fontSize="s" color="coolGrey600">
+          <Text variant="boHelper" m="0">
             {formatMessage(previewMessages.proposedBudgetTitle)}
           </Text>
           <Text m="0" fontWeight="bold">

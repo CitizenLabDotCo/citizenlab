@@ -1,12 +1,12 @@
 import React from 'react';
 
 import {
+  bo,
   Box,
   Button,
   colors,
   Icon,
   IconButton,
-  stylingConsts,
   Text,
 } from '@citizenlab/cl2-component-library';
 
@@ -36,7 +36,7 @@ const FilterChips = ({ categories, onClearAll }: Props) => {
       p="8px"
       mb="8px"
       background={colors.grey50}
-      borderRadius={stylingConsts.borderRadius}
+      borderRadius={bo.borderRadius}
     >
       {activeCategories.map((category) => {
         const values = category.options
@@ -53,18 +53,18 @@ const FilterChips = ({ categories, onClearAll }: Props) => {
             pl="8px"
             background={colors.white}
             border={`1px solid ${colors.grey300}`}
-            borderRadius={stylingConsts.borderRadius}
+            borderRadius={bo.borderRadius}
           >
             <Icon name={category.icon} width="14px" fill={colors.coolGrey600} />
-            <Text as="span" m="0" fontSize="s">
+            <Text variant="boLabel" as="span" m="0">
               {category.label}
             </Text>
-            <Text as="span" m="0" fontSize="s" color="coolGrey600">
+            <Text variant="boHelper" as="span" m="0">
               {formatMessage(
                 category.multiple ? messages.isAnyOf : messages.is
               )}
             </Text>
-            <Text as="span" m="0" fontSize="s" fontWeight="semi-bold">
+            <Text variant="boSection" as="span" m="0">
               {values}
             </Text>
             <IconButton
@@ -80,12 +80,7 @@ const FilterChips = ({ categories, onClearAll }: Props) => {
         );
       })}
       <Box ml="auto">
-        <Button
-          buttonStyle="text"
-          size="s"
-          padding="4px 8px"
-          onClick={onClearAll}
-        >
+        <Button buttonStyle="bo-text" onClick={onClearAll}>
           {formatMessage(messages.clearFilters)}
         </Button>
       </Box>

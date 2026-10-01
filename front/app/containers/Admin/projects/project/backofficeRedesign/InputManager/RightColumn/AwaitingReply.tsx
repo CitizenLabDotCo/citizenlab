@@ -1,11 +1,11 @@
 import React from 'react';
 
 import {
+  bo,
   Box,
   Button,
   colors,
   Icon,
-  stylingConsts,
   Text,
 } from '@citizenlab/cl2-component-library';
 
@@ -29,11 +29,11 @@ const AwaitingReply = ({ count, onShow }: Props) => {
       gap="10px"
       p="12px 16px"
       background={colors.orange100}
-      borderRadius={stylingConsts.borderRadius}
+      borderRadius={bo.borderRadius}
     >
       <Icon name="clock" width="18px" fill={colors.orange500} />
       <Box>
-        <Text m="0" fontSize="s" fontWeight="semi-bold" color="orange500">
+        <Text variant="boSection" color="orange500" m="0">
           {formatMessage(messages.awaitingReply, { count })}
         </Text>
         <Button

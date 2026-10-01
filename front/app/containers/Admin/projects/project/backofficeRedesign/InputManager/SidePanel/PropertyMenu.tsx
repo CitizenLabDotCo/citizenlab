@@ -1,11 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import {
-  Box,
-  Button,
-  colors,
-  IconNames,
-} from '@citizenlab/cl2-component-library';
+import { Box, Button, IconNames } from '@citizenlab/cl2-component-library';
 
 import MenuButton from '../MenuButton';
 
@@ -27,15 +22,9 @@ const PropertyMenu = ({
     width="280px"
     trigger={({ opened, toggle }) => (
       <Button
-        buttonStyle="text"
-        size="s"
-        padding="4px 10px"
-        bgColor={colors.grey100}
-        bgHoverColor={colors.grey200}
-        textColor={colors.textPrimary}
+        buttonStyle="bo-picker"
         icon={icon}
         iconPos="right"
-        iconSize="14px"
         onClick={toggle}
         ariaExpanded={opened}
         ariaHasPopup="menu"

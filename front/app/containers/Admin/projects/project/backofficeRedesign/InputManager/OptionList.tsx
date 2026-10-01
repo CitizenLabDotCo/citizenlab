@@ -106,8 +106,8 @@ const OptionList = ({
                 )}
                 <Box flexGrow={1}>
                   <Text
+                    variant="boLabel"
                     m="0"
-                    fontSize="s"
                     color={option.disabled ? 'coolGrey500' : 'textPrimary'}
                     textAlign="left"
                   >
@@ -115,7 +115,7 @@ const OptionList = ({
                   </Text>
                 </Box>
                 {option.count !== undefined && (
-                  <Text as="span" m="0" fontSize="xs" color="coolGrey500">
+                  <Text variant="boMicro" color="coolGrey500" as="span" m="0">
                     {option.count}
                   </Text>
                 )}
@@ -125,7 +125,7 @@ const OptionList = ({
         );
       })}
       {visibleOptions.length === 0 && (
-        <Text m="8px" fontSize="s" color="coolGrey600">
+        <Text variant="boHelper" m="8px">
           {formatMessage(messages.noMatchingOptions)}
         </Text>
       )}

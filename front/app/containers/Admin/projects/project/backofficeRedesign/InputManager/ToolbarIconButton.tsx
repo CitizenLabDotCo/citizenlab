@@ -28,10 +28,10 @@ const ToolbarIconButton = ({
   <Tooltip content={label} placement="bottom" theme="dark">
     <Box position="relative">
       <Button
-        buttonStyle="secondary-outlined"
+        buttonStyle="bo-secondary"
         icon={icon}
-        iconSize="18px"
-        padding="6px"
+        width="36px"
+        padding="0"
         onClick={onClick}
         ariaLabel={label}
         ariaExpanded={active}

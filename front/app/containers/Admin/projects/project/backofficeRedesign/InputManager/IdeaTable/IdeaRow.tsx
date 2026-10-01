@@ -87,10 +87,10 @@ const IdeaRow = ({
       <Td {...cellProps} onClick={onOpen} maxWidth="0" width="100%">
         <Box display="flex" alignItems="center" gap="8px">
           <Text
+            variant="boLabel"
+            color="textPrimary"
             as="span"
             m="0"
-            fontSize="s"
-            color="textPrimary"
             overflow="hidden"
             whiteSpace="nowrap"
             textOverflow="ellipsis"

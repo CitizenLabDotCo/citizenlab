@@ -40,13 +40,7 @@ const IdeaCell = ({ column, idea, status, tagLabels }: Props) => {
           borderRadius="50%"
           background={status.attributes.color}
         />
-        <Text
-          as="span"
-          m="0"
-          fontSize="s"
-          color="coolGrey700"
-          whiteSpace="nowrap"
-        >
+        <Text variant="boLabel" as="span" m="0" whiteSpace="nowrap">
           {localize(status.attributes.title_multiloc)}
         </Text>
       </Box>
@@ -86,7 +80,7 @@ const IdeaCell = ({ column, idea, status, tagLabels }: Props) => {
   };
 
   return (
-    <Text as="span" m="0" fontSize="s" color="coolGrey700" whiteSpace="nowrap">
+    <Text variant="boLabel" as="span" m="0" whiteSpace="nowrap">
       {values[column]}
     </Text>
   );

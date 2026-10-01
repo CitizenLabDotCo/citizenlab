@@ -64,7 +64,7 @@ const ListToolbar = ({
           onClear={onClearSelection}
         />
       ) : (
-        <Text m="0" fontSize="s" color="coolGrey700">
+        <Text variant="boLabel" m="0">
           {count !== undefined && formatMessage(messages.inputCount, { count })}
         </Text>
       )}

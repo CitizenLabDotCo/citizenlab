@@ -1,10 +1,10 @@
 import React from 'react';
 
 import {
+  bo,
   Box,
   colors,
   IconButton,
-  stylingConsts,
   Text,
 } from '@citizenlab/cl2-component-library';
 
@@ -22,7 +22,7 @@ const TagChip = ({ label, onRemove, removeLabel }: Props) => (
     px="6px"
     py="2px"
     background={colors.grey100}
-    borderRadius={stylingConsts.borderRadius}
+    borderRadius={bo.borderRadius}
   >
     <Text
       as="span"

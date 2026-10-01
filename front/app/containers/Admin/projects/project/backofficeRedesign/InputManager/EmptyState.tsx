@@ -21,7 +21,7 @@ const EmptyState = () => {
       <Text m="0" fontWeight="semi-bold" textAlign="center">
         {formatMessage(messages.noInputsTitle)}
       </Text>
-      <Text m="0" fontSize="s" color="coolGrey600" textAlign="center">
+      <Text variant="boHelper" m="0" textAlign="center">
         {formatMessage(messages.noInputsDescription)}
       </Text>
     </Box>

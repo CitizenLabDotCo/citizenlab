@@ -30,7 +30,7 @@ const OfflineCollection = ({ project, phase }: Props) => {
           to="/admin/projects/$projectId/phases/$phaseId/input-importer"
           params={{ projectId: project.id, phaseId: phase.id }}
           icon="page"
-          buttonStyle="secondary-outlined"
+          buttonStyle="bo-secondary"
           width="100%"
         >
           {formatMessage(messages.importInputs)}

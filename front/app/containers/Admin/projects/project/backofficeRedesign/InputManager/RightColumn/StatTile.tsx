@@ -1,11 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  colors,
-  stylingConsts,
-  Text,
-} from '@citizenlab/cl2-component-library';
+import { bo, Box, colors, Text } from '@citizenlab/cl2-component-library';
 
 interface Props {
   value: number;
@@ -17,12 +12,12 @@ const StatTile = ({ value, label }: Props) => (
     flex="1 1 0"
     p="12px"
     border={`1px solid ${colors.grey300}`}
-    borderRadius={stylingConsts.borderRadius}
+    borderRadius={bo.borderRadius}
   >
     <Text m="0" fontSize="xl" fontWeight="bold">
       {value}
     </Text>
-    <Text m="0" fontSize="s" color="coolGrey600">
+    <Text variant="boHelper" m="0">
       {label}
     </Text>
   </Box>

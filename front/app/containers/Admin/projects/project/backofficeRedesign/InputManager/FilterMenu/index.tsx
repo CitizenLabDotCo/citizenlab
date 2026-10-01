@@ -61,7 +61,7 @@ const FilterMenu = ({ categories, onClearAll }: Props) => {
                   width="16px"
                   fill={colors.coolGrey600}
                 />
-                <Text as="span" m="0" fontSize="s" fontWeight="bold">
+                <Text variant="boSection" fontWeight="bold" as="span" m="0">
                   {openCategory.label}
                 </Text>
               </Box>
@@ -88,12 +88,12 @@ const FilterMenu = ({ categories, onClearAll }: Props) => {
                     fill={colors.coolGrey600}
                   />
                   <Box flexGrow={1}>
-                    <Text m="0" fontSize="s" textAlign="left">
+                    <Text variant="boLabel" m="0" textAlign="left">
                       {category.label}
                     </Text>
                   </Box>
                   {category.isActive && category.multiple && (
-                    <Text as="span" m="0" fontSize="xs" color="coolGrey600">
+                    <Text variant="boMicro" as="span" m="0">
                       {category.selected.length}
                     </Text>
                   )}
@@ -116,7 +116,7 @@ const FilterMenu = ({ categories, onClearAll }: Props) => {
                 >
                   <Box display="flex" alignItems="center" gap="8px">
                     <Icon name="close" width="16px" fill={colors.red600} />
-                    <Text as="span" m="0" fontSize="s" color="red600">
+                    <Text variant="boLabel" color="red600" as="span" m="0">
                       {formatMessage(messages.clearAllFilters)}
                     </Text>
                   </Box>

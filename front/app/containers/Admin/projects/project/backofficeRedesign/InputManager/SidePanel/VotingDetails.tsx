@@ -31,10 +31,10 @@ const VotingDetails = ({ idea, phase }: Props) => {
     <Box display="flex" flexDirection="column" gap="8px">
       {budget && (
         <PropertyRow label={formatMessage(postManagerMessages.cost)}>
-          <Text m="0" fontSize="s" fontWeight="bold">
+          <Text variant="boSection" fontWeight="bold" m="0">
             <FormattedBudget value={budget} />
           </Text>
-          <Text m="0" fontSize="s" color="coolGrey600">
+          <Text variant="boHelper" m="0">
             <FormattedMessage
               {...previewMessages.picks}
               values={{ picksNumber: baskets_count }}

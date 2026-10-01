@@ -10,7 +10,7 @@ interface Props {
 const PropertyRow = ({ label, children }: Props) => (
   <Box display="flex" alignItems="flex-start" gap="12px" minHeight="32px">
     <Box flex="0 0 96px" pt="6px">
-      <Text m="0" fontSize="s" color="coolGrey600">
+      <Text variant="boHelper" m="0">
         {label}
       </Text>
     </Box>

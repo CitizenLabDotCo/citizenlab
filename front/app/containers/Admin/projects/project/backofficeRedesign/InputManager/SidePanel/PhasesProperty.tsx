@@ -82,7 +82,7 @@ const PhasesProperty = ({ idea }: Props) => {
               }}
             />
           ) : (
-            <Text m="8px" fontSize="s" color="coolGrey600">
+            <Text variant="boHelper" m="8px">
               {formatMessage(messages.noOtherPhases)}
             </Text>
           )

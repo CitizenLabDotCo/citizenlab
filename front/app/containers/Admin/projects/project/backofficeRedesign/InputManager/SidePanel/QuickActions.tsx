@@ -47,10 +47,10 @@ const QuickActions = ({ idea, onEdit, onDeleted }: Props) => {
             params={{ slug: idea.attributes.slug }}
             // A new tab keeps the manager's filters and selection as they are.
             openLinkInNewTab
-            buttonStyle="secondary-outlined"
+            buttonStyle="bo-secondary"
             icon="eye"
-            iconSize="18px"
-            padding="6px"
+            width="36px"
+            padding="0"
             ariaLabel={formatMessage(messages.viewOnSite)}
           />
         </Box>

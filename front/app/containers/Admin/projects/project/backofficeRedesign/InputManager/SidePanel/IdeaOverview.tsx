@@ -56,7 +56,7 @@ const IdeaOverview = ({
           {localize(attributes.title_multiloc)}
         </Title>
         <Box display="flex" alignItems="center" gap="8px">
-          <Text m="0" fontSize="s" color="coolGrey600">
+          <Text variant="boHelper" m="0">
             <UserName
               userId={relationships.author?.data?.id ?? null}
               anonymous={attributes.anonymous}
@@ -64,7 +64,7 @@ const IdeaOverview = ({
             />
           </Text>
           {attributes.published_at && (
-            <Text m="0" fontSize="s" color="coolGrey600">
+            <Text variant="boHelper" m="0">
               <FormattedDate
                 value={attributes.published_at}
                 year="numeric"
@@ -80,14 +80,14 @@ const IdeaOverview = ({
         <Box display="flex" alignItems="center" gap="12px">
           <Box display="flex" alignItems="center" gap="4px">
             <Icon name="vote-up" width="16px" fill={colors.coolGrey600} />
-            <Text m="0" fontSize="s">
+            <Text variant="boLabel" m="0">
               {attributes.likes_count}
             </Text>
           </Box>
           {!isProposals && (
             <Box display="flex" alignItems="center" gap="4px">
               <Icon name="vote-down" width="16px" fill={colors.coolGrey600} />
-              <Text m="0" fontSize="s">
+              <Text variant="boLabel" m="0">
                 {attributes.dislikes_count}
               </Text>
             </Box>

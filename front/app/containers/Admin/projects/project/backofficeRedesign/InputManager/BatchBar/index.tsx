@@ -90,7 +90,7 @@ const BatchBar = ({
 
   return (
     <Box display="flex" alignItems="center" gap="8px" flexWrap="wrap">
-      <Text m="0" mr="4px" fontSize="s" fontWeight="semi-bold">
+      <Text variant="boSection" m="0" mr="4px">
         {formatMessage(messages.selectedCount, { count: ideas.length })}
       </Text>
 
@@ -109,7 +109,7 @@ const BatchBar = ({
                 close();
               }}
             />
-            <Text m="8px" fontSize="xs" color="coolGrey600">
+            <Text variant="boMicro" m="8px">
               {formatMessage(messages.statusChangeNotifies)}
             </Text>
           </>
@@ -163,7 +163,7 @@ const BatchBar = ({
                 }}
               />
             ) : (
-              <Text m="8px" fontSize="s" color="coolGrey600">
+              <Text variant="boHelper" m="8px">
                 {formatMessage(messages.noOtherPhases)}
               </Text>
             )
@@ -173,11 +173,8 @@ const BatchBar = ({
 
       {isSingle && (
         <Button
-          buttonStyle="secondary-outlined"
-          size="s"
-          padding="4px 10px"
+          buttonStyle="bo-secondary"
           icon="edit"
-          iconSize="16px"
           onClick={() => onEdit(ideas[0].id)}
         >
           {formatMessage(messages.edit)}
@@ -185,11 +182,8 @@ const BatchBar = ({
       )}
 
       <Button
-        buttonStyle="delete"
-        size="s"
-        padding="4px 10px"
+        buttonStyle="bo-delete"
         icon="delete"
-        iconSize="16px"
         onClick={() => setDeleteModalOpen(true)}
       >
         {isSingle

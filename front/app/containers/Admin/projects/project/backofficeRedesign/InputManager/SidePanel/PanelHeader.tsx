@@ -44,7 +44,7 @@ const PanelHeader = ({ context, navigation }: Props) => {
       background={colors.white}
       zIndex="1"
     >
-      <Text m="0" fontSize="s" color="coolGrey600">
+      <Text variant="boHelper" m="0">
         {context}
       </Text>
       {navigation && (
@@ -57,7 +57,7 @@ const PanelHeader = ({ context, navigation }: Props) => {
             onClick={() => navigation.onPrevious?.()}
             disabled={!navigation.onPrevious}
           />
-          <Text m="0" fontSize="s" color="coolGrey600">
+          <Text variant="boHelper" m="0">
             {formatMessage(messages.position, {
               position: navigation.position,
               total: navigation.total,
