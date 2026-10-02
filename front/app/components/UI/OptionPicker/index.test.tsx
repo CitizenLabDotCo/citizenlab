@@ -130,4 +130,43 @@ describe('OptionPicker', () => {
       expect(screen.queryAllByRole('radio')).toHaveLength(3);
     });
   });
+
+  it('shows the trigger label instead of the selected option when given', () => {
+    render(
+      <OptionPicker
+        title="Who can find it"
+        description="Whether residents can discover this project."
+        options={options}
+        value="groups"
+        onChange={onChange}
+        triggerLabel="Admins, Moderators"
+      />
+    );
+
+    expect(trigger()).toHaveTextContent('Admins, Moderators');
+  });
+
+  it('stays open and shows its extra content when the keep-open option is picked', async () => {
+    render(
+      <OptionPicker
+        title="Who can find it"
+        description="Whether residents can discover this project."
+        options={options}
+        value="public"
+        onChange={onChange}
+        keepOpenFor="groups"
+      >
+        <p>Pick groups</p>
+      </OptionPicker>
+    );
+
+    await userEvent.click(trigger());
+    await userEvent.click(
+      screen.getByRole('radio', { name: /Selected groups/ })
+    );
+
+    expect(onChange).toHaveBeenCalledWith('groups');
+    expect(screen.getByRole('radiogroup')).toBeInTheDocument();
+    expect(screen.getByText('Pick groups')).toBeInTheDocument();
+  });
 });

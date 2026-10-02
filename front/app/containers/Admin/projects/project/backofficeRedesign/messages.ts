@@ -82,9 +82,34 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.eventsSection',
     defaultMessage: 'Events',
   },
+  participationMethods: {
+    id: 'app.containers.Admin.projects.project.participationMethods',
+    defaultMessage: 'Participation methods',
+  },
+  newEvent: {
+    id: 'app.containers.Admin.projects.project.newEvent',
+    defaultMessage: 'New event',
+  },
   filesSection: {
     id: 'app.containers.Admin.projects.project.filesSection',
     defaultMessage: '360 Input',
+  },
+  filesDescription: {
+    id: 'app.containers.Admin.projects.project.filesDescription',
+    defaultMessage:
+      'Documents and recordings added to this project as extra input.',
+  },
+  noAttachments: {
+    id: 'app.containers.Admin.projects.project.noAttachments',
+    defaultMessage: 'No attachments',
+  },
+  filesCount: {
+    id: 'app.containers.Admin.projects.project.filesCount',
+    defaultMessage: '{count, plural, one {# file} other {# files}}',
+  },
+  addFiles: {
+    id: 'app.containers.Admin.projects.project.addFiles',
+    defaultMessage: 'Add files',
   },
   messagingSection: {
     id: 'app.containers.Admin.projects.project.messagingSection',
@@ -500,6 +525,23 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.visibility',
     defaultMessage: 'Visibility',
   },
+  areaFilterDescription: {
+    id: 'app.containers.Admin.projects.project.areaFilterDescription',
+    defaultMessage:
+      'Where this project surfaces when residents filter by their area.',
+  },
+  areaFilterAllAreas: {
+    id: 'app.containers.Admin.projects.project.areaFilterAllAreas',
+    defaultMessage: 'All areas',
+  },
+  areaFilterSelectedAreas: {
+    id: 'app.containers.Admin.projects.project.areaFilterSelectedAreas',
+    defaultMessage: 'Selected areas',
+  },
+  areaFilterChooseAreas: {
+    id: 'app.containers.Admin.projects.project.areaFilterChooseAreas',
+    defaultMessage: 'Choose which area filters it shows in',
+  },
   contextSpaceDescription: {
     id: 'app.containers.Admin.projects.project.contextSpaceDescription',
     defaultMessage:
@@ -524,5 +566,33 @@ export default defineMessages({
   contextSearchFolders: {
     id: 'app.containers.Admin.projects.project.contextSearchFolders',
     defaultMessage: 'Search folders',
+  },
+  noInputsYet: {
+    id: 'app.containers.Admin.projects.project.noInputsYet',
+    defaultMessage: 'No inputs yet',
+  },
+  noInputsYetDescription: {
+    id: 'app.containers.Admin.projects.project.noInputsYetDescription',
+    defaultMessage:
+      'Inputs appear here as participants take part. You can follow each one and add the ones collected offline.',
+  },
+  manageToolsHint: {
+    id: 'app.containers.Admin.projects.project.manageToolsHint',
+    defaultMessage:
+      'Tools to export inputs and add the ones collected offline appear here once participation starts.',
+  },
+  noInsightsYet: {
+    id: 'app.containers.Admin.projects.project.noInsightsYet',
+    defaultMessage: 'No insights yet',
+  },
+  noInsightsYetDescription: {
+    id: 'app.containers.Admin.projects.project.noInsightsYetDescription',
+    defaultMessage:
+      'As participants take part, this page shows participation over time, demographics and a summary of their input.',
+  },
+  recommendedActionsHint: {
+    id: 'app.containers.Admin.projects.project.recommendedActionsHint',
+    defaultMessage:
+      'Recommended actions appear here once participants take part.',
   },
 });
