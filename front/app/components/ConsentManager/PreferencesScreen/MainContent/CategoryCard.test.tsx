@@ -19,12 +19,12 @@ const getRadioInputs = () => {
 describe('<CategoryCard />', () => {
   const category = 'analytics';
 
-  const destinations: IDestination[] = ['google_analytics'];
+  const destinations: IDestination[] = ['google_tag_manager'];
 
   registerDestination({
-    key: 'google_analytics',
+    key: 'google_tag_manager',
     category,
-    name: () => 'Google Analytics',
+    name: () => 'Google Tag Manager',
   });
 
   const handleChange = jest.fn();
