@@ -6,17 +6,23 @@ import { Multiloc, SupportedLocale } from 'typings';
 
 import useCustomPageLayout from 'api/custom_page_layout/useCustomPageLayout';
 import useUpsertCustomPageLayout from 'api/custom_page_layout/useUpsertCustomPageLayout';
+import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 
 import { CUSTOM_PAGE_BUILDER_PATH } from 'components/admin/ContentBuilder/constants';
 import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
+import DropPlacementOverlay from 'components/admin/ContentBuilder/DropFeedback/DropPlacementOverlay';
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import { normalizeCustomPageLayout } from 'components/CustomPageBuilder/defaultLayout';
 import CustomPageBuilderEditModePreview from 'components/CustomPageBuilder/EditModePreview';
 import Editor from 'components/CustomPageBuilder/Editor';
+import {
+  getTitleDraft,
+  stripTitleDraft,
+} from 'components/CustomPageBuilder/titleDraft';
 import CustomPageBuilderToolbox from 'components/CustomPageBuilder/Toolbox';
 import CustomPageBuilderTopBar from 'components/CustomPageBuilder/TopBar';
 import DescriptionBuilderContent from 'components/DescriptionBuilder/DescriptionBuilderContent';
@@ -48,6 +54,7 @@ const CustomPageBuilderPage = ({
   const locales = useAppConfigurationLocales();
   const { data: layout } = useCustomPageLayout(staticPageId);
   const { mutateAsync: upsertCustomPageLayout } = useUpsertCustomPageLayout();
+  const { mutateAsync: updateCustomPage } = useUpdateCustomPage();
 
   const [contentBuilderErrors, setContentBuilderErrors] =
     useState<ContentBuilderErrors>({});
@@ -87,13 +94,23 @@ const CustomPageBuilderPage = ({
     Object.values(contentBuilderErrors).filter((node) => node.hasError).length >
     0;
 
+  // Two-step save: commit the title widget's draft to the page, then store the layout
+  // without it (see titleDraft.ts).
   const handleSave = async (nodes: SerializedNodes): Promise<void> => {
     if (isSaving) return;
     setIsSaving(true);
     setSaveError(false);
 
     try {
-      await upsertCustomPageLayout({ staticPageId, craftjs_json: nodes });
+      const title = getTitleDraft(nodes);
+      if (title) {
+        await updateCustomPage({ id: staticPageId, title_multiloc: title });
+      }
+
+      await upsertCustomPageLayout({
+        staticPageId,
+        craftjs_json: stripTitleDraft(nodes),
+      });
       iframeRef.current?.contentWindow?.postMessage(
         { layoutSaved: true },
         window.location.href
@@ -151,6 +168,7 @@ const CustomPageBuilderPage = ({
               editorData={editorData}
             />
             <ContentBuilderSettings />
+            <DropPlacementOverlay />
           </Box>
         </Editor>
         <Box justifyContent="center" display={previewEnabled ? 'flex' : 'none'}>

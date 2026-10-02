@@ -40,8 +40,8 @@ RSpec.describe CustomFieldBins::RangeBin do
 
     context 'when bins do not exist' do
       let!(:custom_field) { create(:custom_field_number) }
-      let!(:low_user) { create(:user, custom_field_values: { custom_field.key => 5 }) }
-      let!(:high_user) { create(:user, custom_field_values: { custom_field.key => 20 }) }
+      let!(:low_user) { create(:user, custom_field_answers: [build(:custom_field_answer, key: custom_field.key, value: 5, custom_field: custom_field)]) }
+      let!(:high_user) { create(:user, custom_field_answers: [build(:custom_field_answer, key: custom_field.key, value: 20, custom_field: custom_field)]) }
 
       it 'creates bins for the specified range and bin count' do
         expect do

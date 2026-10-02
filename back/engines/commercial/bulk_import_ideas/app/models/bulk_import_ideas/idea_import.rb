@@ -16,6 +16,7 @@
 #  updated_at      :datetime         not null
 #  user_consent    :boolean          default(FALSE), not null
 #  content_changes :jsonb
+#  extra_info      :jsonb
 #
 # Indexes
 #

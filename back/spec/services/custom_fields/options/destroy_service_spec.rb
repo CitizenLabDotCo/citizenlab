@@ -10,11 +10,11 @@ describe CustomFields::Options::DestroyService do
     context 'when deleting a custom-form field option that has the same key as a user field option' do
       let(:custom_field) { create(:custom_field, :for_custom_form, input_type: 'select') }
       let(:option) { create(:custom_field_option, custom_field: custom_field, key: 'same-option-key') }
-      let!(:user) { create(:user, custom_field_values: { custom_field.key => 'same-option-key' }) }
+      let!(:user) { create(:user, custom_field_answers: [build(:custom_field_answer, key: custom_field.key, value: 'same-option-key')]) }
 
       it 'does not update the custom field value of users' do
         service.destroy!(option, current_user)
-        expect(user.reload.custom_field_values).to eq({ custom_field.key => 'same-option-key' })
+        expect(user.reload.custom_field_answers.pluck(:key, :value)).to eq [[custom_field.key, 'same-option-key']]
       end
     end
 
@@ -45,32 +45,32 @@ describe CustomFields::Options::DestroyService do
 
     context 'when deleting a select custom-form field option' do
       let(:field) { create(:custom_field_select, :with_options, :for_custom_form) }
-      let!(:idea) { create(:idea, custom_field_values: { field.key => 'option1' }) }
+      let!(:idea) { create(:idea, custom_field_answers: [build(:custom_field_answer, key: field.key, value: 'option1')]) }
 
       it 'does not update the custom field values of ideas' do
         service.destroy!(field.options.find_by(key: 'option1'), current_user)
-        expect(idea.reload.custom_field_values).to eq({ field.key => 'option1' })
+        expect(idea.reload.custom_field_answers.pluck(:key, :value)).to eq [[field.key, 'option1']]
       end
     end
 
     context 'when deleting a multiselect custom-form field option' do
       let(:field) { create(:custom_field_multiselect, :with_options, :for_custom_form) }
-      let!(:idea) { create(:idea, custom_field_values: { field.key => %w[option1 option2] }) }
+      let!(:idea) { create(:idea, custom_field_answers: [build(:custom_field_answer, key: field.key, value: %w[option1 option2])]) }
 
       it 'does not update the custom field values of ideas' do
         service.destroy!(field.options.find_by(key: 'option1'), current_user)
-        expect(idea.reload.custom_field_values).to eq({ field.key => %w[option1 option2] })
+        expect(idea.reload.custom_field_answers.pluck(:key, :value)).to eq [[field.key, %w[option1 option2]]]
       end
     end
 
     context 'when deleting a user field option' do
       let(:field) { create(:custom_field_select) }
       let(:option) { create(:custom_field_option, custom_field: field, key: 'option1') }
-      let!(:user) { create(:user, custom_field_values: { field.key => 'option1' }) }
+      let!(:user) { create(:user, custom_field_answers: [build(:custom_field_answer, key: field.key, value: 'option1')]) }
 
       it 'deletes the option from the custom field values of users' do
         service.destroy!(option, current_user)
-        expect(user.reload.custom_field_values).to eq({})
+        expect(user.reload.custom_field_answers).to be_empty
       end
     end
 
@@ -78,21 +78,18 @@ describe CustomFields::Options::DestroyService do
       let(:ranking_cf) { create(:custom_field_ranking, :with_options, :for_custom_form) }
       let(:another_cf) { create(:custom_field_select, :with_options, :for_custom_form) }
       let!(:idea) do
-        create(:idea, custom_field_values: {
-          ranking_cf.key => ranking_cf.options.map(&:key),
-          another_cf.key => another_cf.options.first.key
-        })
+        create(:idea, custom_field_answers: [
+          build(:custom_field_answer, key: ranking_cf.key, value: ranking_cf.options.map(&:key)),
+          build(:custom_field_answer, key: another_cf.key, value: another_cf.options.first.key)
+        ])
       end
 
       it 'removes the option from the custom field values of ideas' do
         option = ranking_cf.options.first
 
-        expect { service.destroy!(option, current_user) }
-          .not_to change { idea.reload.custom_field_values.except(ranking_cf.key) }
+        service.destroy!(option, current_user)
 
-        expect(idea.reload.custom_field_values[ranking_cf.key]).not_to include(option.key)
-
-        answers = idea.custom_field_answers.index_by(&:key)
+        answers = idea.reload.custom_field_answers.index_by(&:key)
         expect(answers[ranking_cf.key].value).to eq(ranking_cf.options.map(&:key) - [option.key])
         expect(answers[another_cf.key].value).to eq another_cf.options.first.key
       end

@@ -20,7 +20,6 @@ import useAuthUser from 'api/me/useAuthUser';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
-import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
 import homepageMessages from 'containers/HomePage/messages';
 import SignedInHeader from 'containers/HomePage/SignedInHeader';
 import SignedOutHeader from 'containers/HomePage/SignedOutHeader';
@@ -28,8 +27,10 @@ import SignedOutHeader from 'containers/HomePage/SignedOutHeader';
 import {
   CONTENT_BUILDER_ERROR_EVENT,
   IMAGE_UPLOADING_EVENT,
+  DEFAULT_Y_PADDING,
 } from 'components/admin/ContentBuilder/constants';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
+import { homepageBannerLayoutHeights } from 'components/LandingPages/citizen/constants';
 import Error from 'components/UI/Error';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
@@ -41,8 +42,6 @@ import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { useLocation, useSearch } from 'utils/router';
 import { isValidUrl } from 'utils/validate';
-
-import { DEFAULT_Y_PADDING } from '../constants';
 
 import BannerHeightSettings from './BannerHeightSettings';
 import LayoutSettingField from './LayoutSettingField';

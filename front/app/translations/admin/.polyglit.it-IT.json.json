@@ -16499,6 +16499,16 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.SettingsPage.ExcludeAdminsAndModeratorsFromStatistics.toggleDescription": {
+    "state": "verified",
+    "verified_at": "2026-09-24T07:26:02.888828Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.AdminPage.SettingsPage.ExcludeAdminsAndModeratorsFromStatistics.toggleLabel": {
+    "state": "verified",
+    "verified_at": "2026-09-24T07:26:02.888828Z",
+    "verified_by": "Roger"
+  },
   "app.containers.AdminPage.SettingsPage.Topics.DefaultInputTopics.addDefaultInputTopicButton": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",

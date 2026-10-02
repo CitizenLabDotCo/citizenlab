@@ -10,11 +10,11 @@ import useLocalize from 'hooks/useLocalize';
 
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 import useWidgetProjectId from 'components/admin/ContentBuilder/useWidgetProjectId';
+import LockedNote from 'components/admin/ContentBuilder/Widgets/LockedNote';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { useIntl } from 'utils/cl-intl';
 
-import LockedNote from '../LockedNote';
 import messages from '../messages';
 
 type Props = {

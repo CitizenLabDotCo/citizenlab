@@ -15,12 +15,13 @@ import useEvents from 'api/events/useEvents';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { DEFAULT_Y_PADDING } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/constants';
 import eventsPageMessages from 'containers/EventsPage/messages';
 
 import {
+  BAND_Y_PADDING,
   BUILDER_CONTENT_MAX_WIDTH,
   DEFAULT_PADDING,
+  DEFAULT_Y_PADDING,
 } from 'components/admin/ContentBuilder/constants';
 import EventCardsSkeleton from 'components/EventCards/Skeleton';
 import EditModeHeightCap from 'components/ProjectPageBuilder/Widgets/EditModeHeightCap';
@@ -47,7 +48,6 @@ export const EVENTS_WIDGET_NAME = 'EventsList';
 export const EVENTS_WIDGET_ANCHOR_ID = 'e2e-project-page-events';
 
 const PAGINATED_PAGE_SIZE = 15;
-const BAND_Y_PADDING = '40px';
 const CURRENT_PROJECT_STATUSES = ['published', 'draft', 'archived'] as const;
 
 const NoEventsText = styled.div`
@@ -125,17 +125,22 @@ const EventsList: UserComponent<EventsProps> = ({
       ? [...CURRENT_PROJECT_STATUSES]
       : projectPublicationStatuses,
     pageSize: paginated ? PAGINATED_PAGE_SIZE : limit,
-    // `-start_at` is ascending: SortByParamsService inverts the usual convention.
-    sort: '-start_at',
   };
   const waitingForProject = isProjectEvents && !currentProjectId;
 
   const { data: upcomingEvents, isLoading: loadingUpcoming } = useEvents(
-    { ...params, currentAndFutureOnly: true, pageNumber: upcomingPage },
+    // `-start_at` is ascending: SortByParamsService inverts the usual convention.
+    {
+      ...params,
+      sort: '-start_at',
+      currentAndFutureOnly: true,
+      pageNumber: upcomingPage,
+    },
     { enabled: showUpcoming && !waitingForProject }
   );
   const { data: pastEvents, isLoading: loadingPast } = useEvents(
-    { ...params, pastOnly: true, pageNumber: pastPage },
+    // `start_at` is descending
+    { ...params, sort: 'start_at', pastOnly: true, pageNumber: pastPage },
     { enabled: showPast && !waitingForProject }
   );
 
@@ -223,7 +228,7 @@ const EventsList: UserComponent<EventsProps> = ({
   );
 
   // A band pads itself, which is why the rhythm system leaves no margin between two of them.
-  // The homepage is outside that system and spaces its widgets on a smaller scale of its own.
+  // The homepage is outside that system and keeps its own spacing.
   const homepagePadding = isSmallerThanTablet
     ? DEFAULT_PADDING
     : DEFAULT_Y_PADDING;

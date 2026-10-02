@@ -5,7 +5,7 @@ module CustomFields
 
       def destroy!(option, user = nil)
         ActiveRecord::Base.transaction do
-          update_custom_field_values(option)
+          delete_option_answers(option)
           option.destroy!
           update_form_logic(option)
         end
@@ -22,7 +22,7 @@ module CustomFields
 
       private
 
-      def update_custom_field_values(option)
+      def delete_option_answers(option)
         cf = option.custom_field
 
         if cf.resource_type == 'User'
@@ -42,20 +42,6 @@ module CustomFields
 
       def delete_ranking_option_from_ideas(option)
         field_key = option.custom_field.key
-
-        ideas = ::Idea.where(
-          'custom_field_values -> :field_key ? :option_key',
-          field_key: field_key,
-          option_key: option.key
-        )
-
-        ideas.update_all(<<~SQL.squish)
-          custom_field_values = jsonb_set(
-            custom_field_values,
-            '{#{field_key}}',
-            (custom_field_values -> '#{field_key}') - '#{option.key}'
-          )
-        SQL
 
         ::CustomFieldAnswer
           .where(answerable_type: 'Idea', key: field_key)

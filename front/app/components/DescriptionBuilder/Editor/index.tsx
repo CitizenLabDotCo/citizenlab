@@ -3,10 +3,6 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 
-import Published from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Published';
-import Selection from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Selection';
-import Spotlight from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Spotlight';
-
 import AboutBox from 'components/admin/ContentBuilder/Widgets/AboutBox';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
@@ -17,6 +13,9 @@ import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultil
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
 import PageLink from 'components/admin/ContentBuilder/Widgets/PageLink';
+import Published from 'components/admin/ContentBuilder/Widgets/Published';
+import Selection from 'components/admin/ContentBuilder/Widgets/Selection';
+import Spotlight from 'components/admin/ContentBuilder/Widgets/Spotlight';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';

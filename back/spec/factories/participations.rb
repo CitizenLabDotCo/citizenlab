@@ -15,7 +15,7 @@ FactoryBot.define do
       acted_at_time = acted_at || Time.current
       participation_user = user || create(:user)
       participant_id ||= participation_user.id
-      cfvs = user_custom_field_values.presence || participation_user.custom_field_values || {}
+      cfvs = user_custom_field_values.presence || participation_user.custom_field_answers.to_h { [it.key, it.value] }
 
       {
         item_id: SecureRandom.uuid,
@@ -35,7 +35,7 @@ FactoryBot.define do
       basket = create(:basket, user: participation_user)
       acted_at_time = acted_at || basket.created_at
       participant_id ||= basket.user_id
-      cfvs = user_custom_field_values.presence || basket.user.custom_field_values || {}
+      cfvs = user_custom_field_values.presence || basket.user.custom_field_answers.to_h { [it.key, it.value] }
 
       {
         item_id: basket.id,
@@ -61,7 +61,7 @@ FactoryBot.define do
         acted_at_time = acted_at || basket.created_at
         participant_id ||= basket.user_id
         create(:baskets_idea, basket: basket, votes: vote_count)
-        cfvs = user_custom_field_values.presence || basket.user.custom_field_values || {}
+        cfvs = user_custom_field_values.presence || basket.user.custom_field_answers.to_h { [it.key, it.value] }
 
         {
           item_id: basket.id,
@@ -84,7 +84,7 @@ FactoryBot.define do
       idea = create(:idea, author: participation_user)
       acted_at_time = acted_at || idea.created_at
       participant_id ||= idea.author_id
-      cfvs = user_custom_field_values.presence || idea.author.custom_field_values || {}
+      cfvs = user_custom_field_values.presence || idea.author.custom_field_answers.to_h { [it.key, it.value] }
 
       {
         item_id: idea.id,
@@ -103,7 +103,7 @@ FactoryBot.define do
       comment = create(:comment, author: participation_user)
       acted_at_time = acted_at || comment.created_at
       participant_id ||= comment.author_id
-      cfvs = user_custom_field_values.presence || comment.author.custom_field_values || {}
+      cfvs = user_custom_field_values.presence || comment.author.custom_field_answers.to_h { [it.key, it.value] }
 
       {
         item_id: comment.id,
@@ -122,7 +122,7 @@ FactoryBot.define do
       reaction = create(:reaction, user: participation_user)
       acted_at_time = acted_at || reaction.created_at
       participant_id ||= reaction.user_id
-      cfvs = user_custom_field_values.presence || reaction.user.custom_field_values || {}
+      cfvs = user_custom_field_values.presence || reaction.user.custom_field_answers.to_h { [it.key, it.value] }
 
       {
         item_id: reaction.id,
@@ -141,7 +141,7 @@ FactoryBot.define do
       response = create(:poll_response, user: participation_user)
       acted_at_time = acted_at || response.created_at
       participant_id ||= response.user_id
-      cfvs = user_custom_field_values.presence || response.user.custom_field_values || {}
+      cfvs = user_custom_field_values.presence || response.user.custom_field_answers.to_h { [it.key, it.value] }
 
       {
         item_id: response.id,
@@ -160,7 +160,7 @@ FactoryBot.define do
       volunteer = create(:volunteer, user: participation_user)
       acted_at_time = acted_at || volunteer.created_at
       participant_id ||= volunteer.user_id
-      cfvs = user_custom_field_values.presence || volunteer.user.custom_field_values || {}
+      cfvs = user_custom_field_values.presence || volunteer.user.custom_field_answers.to_h { [it.key, it.value] }
 
       {
         item_id: volunteer.id,

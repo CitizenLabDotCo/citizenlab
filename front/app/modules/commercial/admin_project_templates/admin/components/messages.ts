@@ -86,6 +86,10 @@ export default defineMessages({
     id: 'app.components.ProjectTemplatePreview.successMessage',
     defaultMessage: 'The project was successfully created!',
   },
+  findItInProjectsList: {
+    id: 'app.components.ProjectTemplatePreview.findItInProjectsList',
+    defaultMessage: 'You can find it in the projects list.',
+  },
   goBackTo: {
     id: 'app.components.ProjectTemplatePreview.goBackTo',
     defaultMessage: 'Go back to the {goBackLink}.',

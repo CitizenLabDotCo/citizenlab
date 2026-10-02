@@ -4,8 +4,7 @@ import { colors, Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
 
-import { ADMIN_HOMEPAGE_BUILDER_PATH } from 'containers/Admin/pagesAndMenu/routes';
-
+import { HOMEPAGE_BUILDER_PATH } from 'components/admin/ContentBuilder/constants';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
@@ -29,14 +28,14 @@ const AdminHomePageEditButton = () => {
       top="30px"
       right="30px"
       width="fit-content"
-      marginTop={isSmallerThanTablet ? "16px" : ''}
-      marginBottom={isSmallerThanTablet ? "16px" : ''}
-      marginLeft={isSmallerThanTablet ? "15px" : ''}
+      marginTop={isSmallerThanTablet ? '16px' : ''}
+      marginBottom={isSmallerThanTablet ? '16px' : ''}
+      marginLeft={isSmallerThanTablet ? '15px' : ''}
     >
       <ButtonWithLink
         id="e2e-edit-homepage-button"
         icon="edit"
-        to={ADMIN_HOMEPAGE_BUILDER_PATH}
+        to={HOMEPAGE_BUILDER_PATH}
         buttonStyle="secondary"
         bgColor={colors.white}
         padding="5px 8px"

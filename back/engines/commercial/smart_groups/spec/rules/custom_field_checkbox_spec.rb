@@ -27,11 +27,11 @@ describe SmartGroups::Rules::CustomFieldCheckbox do
 
       let!(:users) do
         users = build_list(:user, 5)
-        users[0].custom_field_values[custom_field.key] = true
-        users[1].custom_field_values[custom_field.key] = false # nil
-        users[2].custom_field_values[custom_field.key] = true
-        users[3].custom_field_values[custom_field.key] = false
-        users[4].custom_field_values[custom_field.key] = false # nil
+        users[0].custom_field_answers.build(key: custom_field.key, value: true, custom_field: custom_field)
+        users[1].custom_field_answers.build(key: custom_field.key, value: false, custom_field: custom_field) # nil
+        users[2].custom_field_answers.build(key: custom_field.key, value: true, custom_field: custom_field)
+        users[3].custom_field_answers.build(key: custom_field.key, value: false, custom_field: custom_field)
+        users[4].custom_field_answers.build(key: custom_field.key, value: false, custom_field: custom_field) # nil
         users.each(&:save!)
       end
 

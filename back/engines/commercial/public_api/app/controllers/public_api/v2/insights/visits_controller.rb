@@ -14,8 +14,9 @@ module PublicApi
       project_id = params[:project_id]
       start_at = params[:start_at] || default_start_at(resolution)
       end_at = params[:end_at]
+      exclude_admins_and_moderators = ActiveModel::Type::Boolean.new.cast(params[:exclude_admins_and_moderators]) || false
 
-      service = ::Insights::VisitsService.new(project_id, start_at:, end_at:)
+      service = ::Insights::VisitsService.new(project_id, start_at:, end_at:, exclude_admins_and_moderators:)
 
       visits = if resolution == 'all'
         [service.total_visits]

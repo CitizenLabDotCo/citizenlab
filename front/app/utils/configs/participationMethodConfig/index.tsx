@@ -84,6 +84,8 @@ export type ParticipationMethodConfig = {
   supportsComments: boolean;
   /** Does this method support having the topic field in its form? */
   supportsTopicsCustomField: boolean;
+  /** Does this method offer a map view, and so have a map to configure? */
+  supportsMapView: boolean;
 };
 
 const ideationConfig: ParticipationMethodConfig = {
@@ -95,6 +97,7 @@ const ideationConfig: ParticipationMethodConfig = {
   supportsVotes: true,
   supportsComments: true,
   supportsTopicsCustomField: true,
+  supportsMapView: true,
   postType: 'defaultInput',
   getModalContent: (props: ModalContentMethodProps) => {
     if (props.ideaId && props.title && props.subtitle) {
@@ -150,6 +153,7 @@ const commonGroundConfig: ParticipationMethodConfig = {
   supportsVotes: false, // Check analysis if we need to support them
   supportsComments: false,
   supportsTopicsCustomField: false,
+  supportsMapView: false,
   postType: 'defaultInput',
   getModalContent: null,
   showInputManager: true,
@@ -169,6 +173,7 @@ const proposalsConfig: ParticipationMethodConfig = {
   supportsVotes: false,
   supportsComments: true,
   supportsTopicsCustomField: true,
+  supportsMapView: true,
   postType: 'defaultInput',
   getModalContent: (props: ModalContentMethodProps) => {
     if (props.ideaId && props.title && props.subtitle) {
@@ -228,6 +233,7 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
   supportsVotes: false,
   supportsComments: false,
   supportsTopicsCustomField: false,
+  supportsMapView: false,
 };
 
 const informationConfig: ParticipationMethodConfig = {
@@ -246,6 +252,7 @@ const informationConfig: ParticipationMethodConfig = {
   supportsVotes: false,
   supportsComments: false,
   supportsTopicsCustomField: false,
+  supportsMapView: false,
 };
 
 const surveyConfig: ParticipationMethodConfig = {
@@ -265,6 +272,7 @@ const surveyConfig: ParticipationMethodConfig = {
   supportsVotes: false,
   supportsComments: false,
   supportsTopicsCustomField: false,
+  supportsMapView: false,
 };
 
 const documentAnnotationConfig: ParticipationMethodConfig = {
@@ -285,6 +293,7 @@ const documentAnnotationConfig: ParticipationMethodConfig = {
   supportsVotes: false,
   supportsComments: false,
   supportsTopicsCustomField: false,
+  supportsMapView: false,
 };
 
 const votingConfig: ParticipationMethodConfig = {
@@ -332,6 +341,7 @@ const votingConfig: ParticipationMethodConfig = {
   ),
   hideAuthorOnIdeas: true,
   supportsTopicsCustomField: true,
+  supportsMapView: true,
 };
 
 const pollConfig: ParticipationMethodConfig = {
@@ -350,6 +360,7 @@ const pollConfig: ParticipationMethodConfig = {
   supportsVotes: false,
   supportsComments: false,
   supportsTopicsCustomField: false,
+  supportsMapView: false,
 };
 
 const volunteeringConfig: ParticipationMethodConfig = {
@@ -367,6 +378,7 @@ const volunteeringConfig: ParticipationMethodConfig = {
   supportsVotes: false,
   supportsComments: false,
   supportsTopicsCustomField: false,
+  supportsMapView: false,
 };
 
 const methodToConfig: {

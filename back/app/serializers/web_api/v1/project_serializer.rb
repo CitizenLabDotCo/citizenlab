@@ -88,6 +88,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :preview_token, if: proc { |object, params| can_moderate? object, params }
+  attribute :completed_setup_steps, if: proc { |object, params| can_moderate? object, params }
 
   has_one :admin_publication
 

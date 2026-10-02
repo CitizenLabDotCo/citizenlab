@@ -241,11 +241,11 @@ module Analysis
     end
 
     # Domicile is a special user custom_field, which stores the area.id as the
-    # value in user.custom_field_values, instead of the key value of the
+    # answer value, instead of the key value of the
     # custom_field option. Historically, the domicile custom_field did not have
     # any custom_field_option database records. At some point, we added a
     # mechanism to sync areas to custom_field_options for domicile. But the work
-    # to change the actual value stored in custom_field_values was not
+    # to change the actual stored answer value was not
     # completed. This means that the front-end can treat the domicile field as
     # any other field, but we need to convert the option_key to the right
     # area_id in order for the filter to work. Also see

@@ -60,12 +60,12 @@ describe Permissions::BasePermissionsService do
         first_name: 'Jerry',
         last_name: 'Jones',
         email: 'jerry@jones.com',
-        custom_field_values: {
-          'gender' => 'male',
-          'birthyear' => 1982,
-          'extra_required_field' => false,
-          'extra_optional_field' => 29
-        },
+        custom_field_answers: [
+          build(:custom_field_answer, key: 'gender', value: 'male'),
+          build(:custom_field_answer, key: 'birthyear', value: 1982),
+          build(:custom_field_answer, key: 'extra_required_field', value: false),
+          build(:custom_field_answer, key: 'extra_optional_field', value: 29)
+        ],
         registration_completed_at: Time.now,
         password: 'supersecret',
         email_confirmed_at: Time.now
