@@ -285,6 +285,7 @@ Rails.application.routes.draw do
           patch 'move', on: :member
         end
         resources :phases, only: %i[index new create]
+        resources :project_generations, only: %i[create]
         resources :images, defaults: { container_type: 'Project' }
         resources :files, defaults: { container_type: 'Project' }
         resources :groups_projects, shallow: true, except: [:update]

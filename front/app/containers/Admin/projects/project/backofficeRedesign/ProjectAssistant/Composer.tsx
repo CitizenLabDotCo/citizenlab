@@ -1,0 +1,191 @@
+import React, { useState } from 'react';
+
+import {
+  Box,
+  Icon,
+  IconButton,
+  Text,
+  colors,
+} from '@citizenlab/cl2-component-library';
+import { useDropzone } from 'react-dropzone';
+import styled from 'styled-components';
+
+import TextArea from 'components/UI/TextArea';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
+
+const ACCEPTED_FILES = {
+  'application/pdf': ['.pdf'],
+  'text/markdown': ['.md'],
+  'text/plain': ['.txt'],
+};
+const MAX_FILES = 3;
+const MAX_FILE_SIZE_MB = 10;
+export const MAX_PROMPT_LENGTH = 5000;
+
+// The textarea keeps room at its bottom-left for the attach control that sits
+// inside the box, chat-composer style.
+const ComposerField = styled(Box)`
+  textarea {
+    min-height: 140px;
+    padding-bottom: 44px;
+    border-radius: 10px;
+    transition: border-color 120ms ease, box-shadow 120ms ease;
+  }
+  /* Reads as a chat composer: soft focus ring in the assistant's teal. */
+  &:focus-within textarea {
+    border-color: ${colors.teal400};
+    box-shadow: 0 0 0 3px ${colors.teal100};
+  }
+`;
+
+type Props = {
+  prompt: string;
+  files: File[];
+  busy: boolean;
+  onPromptChange: (prompt: string) => void;
+  onFilesChange: (files: File[]) => void;
+};
+
+const Composer = ({
+  prompt,
+  files,
+  busy,
+  onPromptChange,
+  onFilesChange,
+}: Props) => {
+  const { formatMessage } = useIntl();
+  const [filesRejected, setFilesRejected] = useState(false);
+
+  const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
+    accept: ACCEPTED_FILES,
+    maxSize: MAX_FILE_SIZE_MB * 1024 * 1024,
+    noClick: true,
+    noKeyboard: true,
+    disabled: busy,
+    onDrop: (acceptedFiles, rejectedFiles) => {
+      const nextFiles = [...files, ...acceptedFiles];
+      setFilesRejected(rejectedFiles.length > 0 || nextFiles.length > MAX_FILES);
+      onFilesChange(nextFiles.slice(0, MAX_FILES));
+    },
+  });
+
+  const removeFile = (file: File) => {
+    setFilesRejected(false);
+    onFilesChange(files.filter((otherFile) => otherFile !== file));
+  };
+
+  return (
+    <Box {...getRootProps()} position="relative">
+      <input {...getInputProps()} />
+      {isDragActive && (
+        <Box
+          position="absolute"
+          top="0"
+          left="0"
+          right="0"
+          bottom="0"
+          zIndex="1"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          bgColor={colors.teal50}
+          border={`2px dashed ${colors.teal400}`}
+          borderRadius="10px"
+        >
+          <Text m="0px" color="teal700">
+            <FormattedMessage {...messages.dropFiles} />
+          </Text>
+        </Box>
+      )}
+
+      <ComposerField position="relative">
+        <TextArea
+          value={prompt}
+          onChange={onPromptChange}
+          placeholder={formatMessage(messages.placeholder)}
+          rows={6}
+          maxCharCount={MAX_PROMPT_LENGTH}
+          disabled={busy}
+        />
+        {/* Attach control lives inside the field, bottom-left. */}
+        <Box position="absolute" bottom="10px" left="10px" zIndex="2">
+          <IconButton
+            iconName="paperclip"
+            buttonType="button"
+            iconColor={colors.grey700}
+            iconColorOnHover={colors.textPrimary}
+            a11y_buttonActionMessage={formatMessage(messages.attachFile)}
+            onClick={open}
+            disabled={busy}
+          />
+        </Box>
+      </ComposerField>
+
+      {files.length > 0 && (
+        <Box display="flex" flexWrap="wrap" gap="6px" mt="8px">
+          {files.map((file) => (
+            <Box
+              key={`${file.name}-${file.lastModified}`}
+              display="flex"
+              alignItems="center"
+              gap="6px"
+              pl="10px"
+              py="2px"
+              bgColor={colors.grey100}
+              border={`1px solid ${colors.grey200}`}
+              borderRadius="8px"
+              maxWidth="100%"
+            >
+              <Icon name="file" width="14px" height="14px" fill={colors.grey700} />
+              <Text
+                m="0px"
+                fontSize="s"
+                overflow="hidden"
+                whiteSpace="nowrap"
+                textOverflow="ellipsis"
+                maxWidth="180px"
+              >
+                {file.name}
+              </Text>
+              <IconButton
+                iconName="close"
+                buttonType="button"
+                iconWidth="14px"
+                iconHeight="14px"
+                iconColor={colors.grey700}
+                iconColorOnHover={colors.textPrimary}
+                a11y_buttonActionMessage={formatMessage(messages.removeFile, {
+                  fileName: file.name,
+                })}
+                onClick={() => removeFile(file)}
+                disabled={busy}
+              />
+            </Box>
+          ))}
+        </Box>
+      )}
+
+      {filesRejected && (
+        <Text m="0px" mt="8px" fontSize="s" color="error">
+          <FormattedMessage
+            {...messages.filesHint}
+            values={{ maxFiles: MAX_FILES }}
+          />
+        </Text>
+      )}
+      {files.length > 0 && !filesRejected && (
+        <Text m="0px" mt="8px" fontSize="s" color="textSecondary">
+          <FormattedMessage
+            {...messages.filesHint}
+            values={{ maxFiles: MAX_FILES }}
+          />
+        </Text>
+      )}
+    </Box>
+  );
+};
+
+export default Composer;
