@@ -179,41 +179,49 @@ const ProjectPageForm = ({ project, page }: Props) => {
   };
 
   return (
-    <Box mt="44px" mx="44px">
+    // With the builder on, the surrounding page shows the breadcrumbs, title and view button.
+    <Box
+      mt={customPageBuilderEnabled ? undefined : '44px'}
+      mx={customPageBuilderEnabled ? undefined : '44px'}
+    >
       <Box bg={colors.white} borderRadius={stylingConsts.borderRadius} p="44px">
         <Box ref={containerRef}>
-          <Box mb="16px">
-            <GoBackButton
-              to="/admin/projects/$projectId/pages"
-              params={{ projectId: project.id }}
-            />
-          </Box>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            mb="16px"
-          >
-            <Title variant="h2">
-              {isEditing
-                ? localize(page.attributes.title_multiloc)
-                : formatMessage(messages.newPageTitle)}
-            </Title>
-            {isEditing && (
-              <ButtonWithLink
-                buttonStyle="secondary-outlined"
-                icon="eye"
-                openLinkInNewTab
-                to="/projects/$slug/pages/$pageSlug"
-                params={{
-                  slug: project.attributes.slug,
-                  pageSlug: page.attributes.slug,
-                }}
+          {!customPageBuilderEnabled && (
+            <>
+              <Box mb="16px">
+                <GoBackButton
+                  to="/admin/projects/$projectId/pages"
+                  params={{ projectId: project.id }}
+                />
+              </Box>
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                mb="16px"
               >
-                {formatMessage(messages.viewPage)}
-              </ButtonWithLink>
-            )}
-          </Box>
+                <Title variant="h2">
+                  {isEditing
+                    ? localize(page.attributes.title_multiloc)
+                    : formatMessage(messages.newPageTitle)}
+                </Title>
+                {isEditing && (
+                  <ButtonWithLink
+                    buttonStyle="secondary-outlined"
+                    icon="eye"
+                    openLinkInNewTab
+                    to="/projects/$slug/pages/$pageSlug"
+                    params={{
+                      slug: project.attributes.slug,
+                      pageSlug: page.attributes.slug,
+                    }}
+                  >
+                    {formatMessage(messages.viewPage)}
+                  </ButtonWithLink>
+                )}
+              </Box>
+            </>
+          )}
           <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(onSubmit)}>
               <Feedback
