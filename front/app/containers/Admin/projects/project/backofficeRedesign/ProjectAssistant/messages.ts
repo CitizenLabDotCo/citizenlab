@@ -55,7 +55,130 @@ export default defineMessages({
   leversTeaser: {
     id: `${scope}.leversTeaser`,
     defaultMessage:
-      'A few quick choices to shape the draft will appear here once you add a brief.',
+      'Add a brief above and I’ll ask a couple of quick questions to shape the draft.',
+  },
+  intakeLead: {
+    id: `${scope}.intakeLead`,
+    defaultMessage:
+      'Got it. A couple of quick questions and I’ll draft — tap an answer, or just hit draft whenever you’re ready.',
+  },
+  intakeSkip: {
+    id: `${scope}.intakeSkip`,
+    defaultMessage: 'Skip',
+  },
+  intakeDetailAdd: {
+    id: `${scope}.intakeDetailAdd`,
+    defaultMessage: 'Add a detail (optional)',
+  },
+  intakeAdvancedToggle: {
+    id: `${scope}.intakeAdvancedToggle`,
+    defaultMessage: 'Fine-tune the setup',
+  },
+  intakeAdvancedHelper: {
+    id: `${scope}.intakeAdvancedHelper`,
+    defaultMessage:
+      'Your answers set these already — nudge any dial if you want more control.',
+  },
+  intakeOutcomeAsk: {
+    id: `${scope}.intakeOutcomeAsk`,
+    defaultMessage: 'When this wraps up, what do you want to walk away with?',
+  },
+  intakeOutcomeUnderstand: {
+    id: `${scope}.intakeOutcomeUnderstand`,
+    defaultMessage: 'A clear read on what people think',
+  },
+  intakeOutcomeUnderstandBrief: {
+    id: `${scope}.intakeOutcomeUnderstandBrief`,
+    defaultMessage:
+      'The main goal is to understand what people think — we’re still exploring.',
+  },
+  intakeOutcomeInform: {
+    id: `${scope}.intakeOutcomeInform`,
+    defaultMessage: 'Input that feeds a decision we’ll make',
+  },
+  intakeOutcomeInformBrief: {
+    id: `${scope}.intakeOutcomeInformBrief`,
+    defaultMessage: 'We’ll fold the input into a decision we make.',
+  },
+  intakeOutcomeDecide: {
+    id: `${scope}.intakeOutcomeDecide`,
+    defaultMessage: 'A choice or priorities set by residents',
+  },
+  intakeOutcomeDecideBrief: {
+    id: `${scope}.intakeOutcomeDecideBrief`,
+    defaultMessage: 'Residents should directly shape the decision or set priorities.',
+  },
+  intakeAudienceAsk: {
+    id: `${scope}.intakeAudienceAsk`,
+    defaultMessage: 'Who do you most want to hear from?',
+  },
+  intakeAudienceAnyone: {
+    id: `${scope}.intakeAudienceAnyone`,
+    defaultMessage: 'Anyone in the community',
+  },
+  intakeAudienceAnyoneBrief: {
+    id: `${scope}.intakeAudienceAnyoneBrief`,
+    defaultMessage: 'Open to anyone in the community.',
+  },
+  intakeAudienceResidents: {
+    id: `${scope}.intakeAudienceResidents`,
+    defaultMessage: 'Residents of our area',
+  },
+  intakeAudienceResidentsBrief: {
+    id: `${scope}.intakeAudienceResidentsBrief`,
+    defaultMessage: 'Aimed at residents of our area.',
+  },
+  intakeAudienceInvited: {
+    id: `${scope}.intakeAudienceInvited`,
+    defaultMessage: 'A specific group we’ll invite',
+  },
+  intakeAudienceInvitedBrief: {
+    id: `${scope}.intakeAudienceInvitedBrief`,
+    defaultMessage: 'Aimed at a specific group we’ll invite.',
+  },
+  intakeAudienceDetailPlaceholder: {
+    id: `${scope}.intakeAudienceDetailPlaceholder`,
+    defaultMessage: 'Anyone in particular? e.g. parents, cyclists, a neighbourhood',
+  },
+  intakeAudienceDetailBrief: {
+    id: `${scope}.intakeAudienceDetailBrief`,
+    defaultMessage: 'We especially want to reach: {detail}.',
+  },
+  intakeTimingAsk: {
+    id: `${scope}.intakeTimingAsk`,
+    defaultMessage: 'Last one — are you working towards a date?',
+  },
+  intakeTimingNone: {
+    id: `${scope}.intakeTimingNone`,
+    defaultMessage: 'No fixed deadline',
+  },
+  intakeTimingNoneBrief: {
+    id: `${scope}.intakeTimingNoneBrief`,
+    defaultMessage: 'No fixed deadline.',
+  },
+  intakeTimingWeeks: {
+    id: `${scope}.intakeTimingWeeks`,
+    defaultMessage: 'Within a few weeks',
+  },
+  intakeTimingWeeksBrief: {
+    id: `${scope}.intakeTimingWeeksBrief`,
+    defaultMessage: 'We’d like to wrap up within a few weeks.',
+  },
+  intakeTimingMonths: {
+    id: `${scope}.intakeTimingMonths`,
+    defaultMessage: 'A couple of months',
+  },
+  intakeTimingMonthsBrief: {
+    id: `${scope}.intakeTimingMonthsBrief`,
+    defaultMessage: 'We have a couple of months to run this.',
+  },
+  intakeTimingDetailPlaceholder: {
+    id: `${scope}.intakeTimingDetailPlaceholder`,
+    defaultMessage: 'A specific date or milestone? e.g. the March budget vote',
+  },
+  intakeTimingDetailBrief: {
+    id: `${scope}.intakeTimingDetailBrief`,
+    defaultMessage: 'Timed around: {detail}.',
   },
   leverInfluenceQuestion: {
     id: `${scope}.leverInfluenceQuestion`,

@@ -25,8 +25,14 @@ import { getBase64FromFile } from 'utils/fileUtils';
 
 import Composer, { MAX_PROMPT_LENGTH } from './Composer';
 import GenerationPanel from './GenerationPanel';
+import Intake from './Intake';
+import {
+  INTAKE_QUESTIONS,
+  IntakeAnswers,
+  IntakeOption,
+  IntakeQuestionId,
+} from './intakeConfig';
 import { DEFAULT_LEVERS, LeverId } from './leverConfig';
-import Levers from './Levers';
 import messages from './messages';
 import Transcript from './Transcript';
 import { Exchange } from './types';
@@ -61,6 +67,7 @@ const ProjectAssistant = ({ project }: Props) => {
   const [prompt, setPrompt] = useState('');
   const [files, setFiles] = useState<File[]>([]);
   const [levers, setLevers] = useState(DEFAULT_LEVERS);
+  const [answers, setAnswers] = useState<IntakeAnswers>({});
   const [exchanges, setExchanges] = useState<Exchange[]>([]);
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState<string>();
@@ -159,9 +166,15 @@ const ProjectAssistant = ({ project }: Props) => {
       const fileIds = uploads.flatMap((upload) =>
         upload.status === 'fulfilled' ? [upload.value.data.id] : []
       );
+      // The intake answers ride along as plain-language context appended to the
+      // brief, so the engine reads them in the same words the manager would use.
+      const extra = briefSupplement();
+      const fullPrompt = (
+        extra.length ? [prompt.trim(), '', ...extra].join('\n') : prompt.trim()
+      ).slice(0, MAX_PROMPT_LENGTH);
       await addProjectGeneration({
         projectId,
-        prompt: prompt.trim().slice(0, MAX_PROMPT_LENGTH),
+        prompt: fullPrompt,
         locale,
         fileIds,
         levers,
@@ -178,6 +191,9 @@ const ProjectAssistant = ({ project }: Props) => {
       ]);
       setPrompt('');
       setFiles([]);
+      // A fresh brief starts a fresh conversation.
+      setAnswers({});
+      setLevers(DEFAULT_LEVERS);
     } catch (error) {
       setSendError(getSendErrorMessage(error));
     } finally {
@@ -192,6 +208,37 @@ const ProjectAssistant = ({ project }: Props) => {
 
   const setLever = (id: LeverId, value: number) =>
     setLevers((previous) => ({ ...previous, [id]: value }));
+
+  // Picking an answer records it and nudges the structural dials it implies.
+  const handleAnswer = (questionId: IntakeQuestionId, option: IntakeOption) => {
+    setAnswers((previous) => ({
+      ...previous,
+      [questionId]: { ...previous[questionId], optionId: option.id },
+    }));
+    if (option.levers) {
+      setLevers((previous) => ({ ...previous, ...option.levers }));
+    }
+  };
+
+  const handleDetail = (questionId: IntakeQuestionId, detail: string) =>
+    setAnswers((previous) => ({
+      ...previous,
+      [questionId]: { ...previous[questionId], detail },
+    }));
+
+  // The answered questions, turned into plain-language lines for the brief.
+  const briefSupplement = () =>
+    INTAKE_QUESTIONS.flatMap((question) => {
+      const answer = answers[question.id];
+      const option = question.options.find((o) => o.id === answer?.optionId);
+      if (!option) return [];
+      const lines = [formatMessage(option.brief)];
+      const detail = answer?.detail?.trim();
+      if (detail && question.detailBrief) {
+        lines.push(formatMessage(question.detailBrief, { detail }));
+      }
+      return lines;
+    });
 
   const handleDraft = () => {
     if (DEMO_MODE) {
@@ -267,11 +314,19 @@ const ProjectAssistant = ({ project }: Props) => {
                 onFilesChange={setFiles}
               />
 
-              {/* Optional shaping questions appear below the input once there's
-                  a brief to shape; before that, a quiet teaser so the reveal
-                  feels intentional. */}
+              {/* The conversational intake opens once there's a brief to shape;
+                  before that, a quiet teaser so the reveal feels intentional.
+                  Keyed by the round so each new brief starts a fresh chat. */}
               {hasInput ? (
-                <Levers values={levers} disabled={busy} onChange={setLever} />
+                <Intake
+                  key={exchanges.length}
+                  answers={answers}
+                  levers={levers}
+                  disabled={busy}
+                  onAnswer={handleAnswer}
+                  onDetail={handleDetail}
+                  onLeverChange={setLever}
+                />
               ) : (
                 <Text m="0px" fontSize="s" color="textSecondary">
                   {formatMessage(messages.leversTeaser)}
