@@ -10,9 +10,13 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import usePhases from 'api/phases/usePhases';
+
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
-import { DemoReport, DemoStatus } from './useDemoGeneration';
+import clHistory from 'utils/cl-router/history';
+
+import { DemoReport, DemoStatus, NextStepTarget } from './useDemoGeneration';
 
 type Props = {
   status: DemoStatus;
@@ -21,7 +25,42 @@ type Props = {
   report: DemoReport;
   prompt: string;
   fileNames: string[];
+  projectId: string;
   onClose: () => void;
+};
+
+// Turns a next-step target into the real editor route, keeping the current
+// search string so the workspace feature params survive the jump. When a
+// generated phase isn't there to deep-link into (e.g. the simulated run),
+// it falls back to the project workspace rather than a broken link.
+const useTargetNavigation = (projectId: string) => {
+  const { data: phases } = usePhases(projectId);
+  const phaseList = phases?.data ?? [];
+  const surveyPhaseId = phaseList.find(
+    (phase) => phase.attributes.participation_method === 'native_survey'
+  )?.id;
+  const firstPhaseId = phaseList[0]?.id;
+
+  const workspaceRoot = `/admin/projects/${projectId}`;
+  const pathFor = (target: NextStepTarget) => {
+    switch (target) {
+      case 'description':
+        return `/admin/project-page-builder/projects/${projectId}`;
+      case 'survey':
+        return surveyPhaseId
+          ? `/admin/projects/${projectId}/phases/${surveyPhaseId}/survey-form/edit`
+          : workspaceRoot;
+      case 'phases':
+        return firstPhaseId
+          ? `/admin/projects/${projectId}/phases/${firstPhaseId}/setup`
+          : workspaceRoot;
+      case 'access':
+        return `/admin/projects/${projectId}/general/access-rights`;
+    }
+  };
+
+  return (target: NextStepTarget) =>
+    clHistory.push(`${pathFor(target)}${window.location.search}`);
 };
 
 // Small uppercase section label, used to divide the report into scannable
@@ -186,11 +225,15 @@ const RunningView = ({
 
 const ReportView = ({
   report,
+  projectId,
   onClose,
 }: {
   report: DemoReport;
+  projectId: string;
   onClose: () => void;
-}) => (
+}) => {
+  const navigateTo = useTargetNavigation(projectId);
+  return (
   <Box>
     <Box
       display="inline-flex"
@@ -250,7 +293,11 @@ const ReportView = ({
     />
     <Box mb="24px">
       {report.nextSteps.map((step) => (
-        <NextStepRow key={step.title} type="button" onClick={onClose}>
+        <NextStepRow
+          key={step.title}
+          type="button"
+          onClick={() => navigateTo(step.target)}
+        >
           <Icon name={step.icon} width="18px" height="18px" fill={colors.teal500} />
           <Box flexGrow={1}>
             <Text m="0px" fontWeight="bold" lineHeight="1.3">
@@ -274,12 +321,20 @@ const ReportView = ({
       <ButtonWithLink buttonStyle="secondary-outlined" onClick={onClose}>
         Start over
       </ButtonWithLink>
-      <ButtonWithLink icon="sidebar-pages-menu" onClick={onClose}>
+      <ButtonWithLink
+        icon="sidebar-pages-menu"
+        onClick={() =>
+          clHistory.push(
+            `/admin/projects/${projectId}${window.location.search}`
+          )
+        }
+      >
         Review the project
       </ButtonWithLink>
     </Box>
-  </Box>
-);
+    </Box>
+  );
+};
 
 // The progress + result live inline in the dock (not a modal) so the manager
 // can watch the project page on the left fill in, and so the brief, the run
@@ -292,6 +347,7 @@ const GenerationPanel = ({
   report,
   prompt,
   fileNames,
+  projectId,
   onClose,
 }: Props) => (
   <Box>
@@ -369,7 +425,7 @@ const GenerationPanel = ({
     </Box>
 
     {status === 'done' ? (
-      <ReportView report={report} onClose={onClose} />
+      <ReportView report={report} projectId={projectId} onClose={onClose} />
     ) : (
       <RunningView steps={steps} activeIndex={activeIndex} />
     )}

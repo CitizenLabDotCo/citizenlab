@@ -23,10 +23,15 @@ export type DemoArtifact = {
   detail: string;
 };
 
+// Where a next-step row takes the manager. GenerationPanel turns each target
+// into the real editor route (survey builder, page content builder, …).
+export type NextStepTarget = 'description' | 'survey' | 'phases' | 'access';
+
 export type DemoNextStep = {
   icon: 'edit' | 'survey-matrix' | 'calendar' | 'lock';
   title: string;
   detail: string;
+  target: NextStepTarget;
 };
 
 export type DemoReport = {
@@ -74,21 +79,25 @@ const REPORT: DemoReport = {
       icon: 'edit',
       title: 'Polish the project page',
       detail: 'Tweak the intro and add your own image.',
+      target: 'description',
     },
     {
       icon: 'survey-matrix',
       title: 'Review the 8 survey questions',
       detail: 'Edit wording or reorder in the survey builder.',
+      target: 'survey',
     },
     {
       icon: 'calendar',
       title: 'Confirm the phase dates',
       detail: 'I used sensible defaults — set the real start and end.',
+      target: 'phases',
     },
     {
       icon: 'lock',
       title: 'Check who can participate',
       detail: 'Open it up further or restrict to a group.',
+      target: 'access',
     },
   ],
 };

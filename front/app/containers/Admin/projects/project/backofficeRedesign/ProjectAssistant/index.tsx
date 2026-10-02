@@ -289,6 +289,7 @@ const ProjectAssistant = ({ project }: Props) => {
           report={demo.report}
           prompt={prompt}
           fileNames={files.map((file) => file.name)}
+          projectId={projectId}
           onClose={demo.reset}
         />
       ) : (
