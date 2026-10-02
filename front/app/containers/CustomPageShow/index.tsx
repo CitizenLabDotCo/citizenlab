@@ -19,6 +19,7 @@ import PageNotFound from 'components/PageNotFound';
 import { useParams } from 'utils/router';
 
 import AdminCustomPageEditButton from './AdminCustomPageEditButton';
+import BackToProjectLink from './BackToProjectLink';
 import LegacyPageHeader from './LegacyPageHeader';
 import PageSections from './PageSections';
 
@@ -88,6 +89,11 @@ const CustomPageShow = () => {
               }
               zIndex="40000"
             >
+              {pageAttributes.project_id && (
+                <Box mb="8px">
+                  <BackToProjectLink projectId={pageAttributes.project_id} />
+                </Box>
+              )}
               <AdminCustomPageEditButton
                 pageId={page.data.id}
                 projectId={pageAttributes.project_id}
