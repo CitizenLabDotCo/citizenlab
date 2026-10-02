@@ -3,8 +3,13 @@
 module ContentBuilder
   class LayoutImageUploader < BaseImageUploader
     SVG_CONTENT_TYPE = 'image/svg+xml'
+    # Admins often upload photos straight from a camera (5000px+ wide, several MB).
+    # No layout shows an image wider than this, even on high-density screens.
+    MAX_SIZE = 2400
+    QUALITY = 85
 
     process :sanitize_svg
+    process :limit_size
 
     # Widgets such as the custom pages cards render layout images at icon size,
     # where a vector stays crisp on any screen density, so SVG is accepted here
@@ -34,6 +39,19 @@ module ContentBuilder
     rescue SvgSanitizationService::InvalidSvgError => e
       # Surfaces as a validation error on the mounted attribute rather than a 500.
       raise CarrierWave::IntegrityError, e.message
+    end
+
+    def limit_size
+      return if svg?
+
+      width, height = ::MiniMagick::Image.new(current_path).dimensions
+      return if width <= MAX_SIZE && height <= MAX_SIZE
+
+      if @file.content_type == 'image/gif'
+        gif_safe_transform! { |img| img.resize "#{MAX_SIZE}x#{MAX_SIZE}>" }
+      else
+        resize_to_limit(MAX_SIZE, MAX_SIZE, combine_options: { quality: QUALITY })
+      end
     end
 
     private
