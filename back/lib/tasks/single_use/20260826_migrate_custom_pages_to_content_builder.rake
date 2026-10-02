@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Derives a `custom_page` Content Builder layout for every page on the builder (global custom pages,
-# About and FAQ), from the banner, title, info sections and attachments the page renders. It derives
-# whatever CustomPageLayoutService emits. A layout derived before a widget existed lacks its node;
+# Derives a `custom_page` Content Builder layout for every page on the builder (custom pages,
+# project-scoped ones included, About and FAQ), from the banner, title, info sections and attachments
+# the page renders. It derives whatever CustomPageLayoutService emits. A layout derived before a widget existed lacks its node;
 # `overwrite` re-derives it, which is the upgrade path for an already-migrated page.
 #
 # Run it while `custom_page_builder` is still off for the tenant: no admin can have opened the
@@ -19,7 +19,7 @@
 #     rake 'single_use:migrate_custom_pages_to_content_builder[execute,foo.com,overwrite]' # re-derive existing layouts
 #     rake 'single_use:migrate_custom_pages_to_content_builder[execute,,cutover]'         # re-derive and switch on, all tenants (empty host)
 namespace :single_use do
-  desc "Derive Content Builder layouts for custom, About and FAQ pages. Dry run unless passed 'execute'."
+  desc "Derive Content Builder layouts for custom (incl. project), About and FAQ pages. Dry run unless passed 'execute'."
   task :migrate_custom_pages_to_content_builder, %i[execute host mode force] => [:environment] do |_t, args|
     cutover = args[:mode] == 'cutover'
     overwrite = cutover || args[:mode] == 'overwrite'
