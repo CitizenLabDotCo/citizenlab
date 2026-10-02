@@ -24,6 +24,7 @@ import { handleAddPageFiles, handleRemovePageFiles } from 'api/page_files/util';
 import { IProjectData } from 'api/projects/types';
 
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
@@ -72,6 +73,10 @@ const ProjectPageForm = ({ project, page }: Props) => {
   const { mutateAsync: addPageFile } = useAddPageFile();
   const { mutateAsync: deletePageFile } = useDeletePageFile();
   const [files, setFiles] = useState<UploadFile[]>([]);
+  // With the builder on, the page's body is authored there.
+  const customPageBuilderEnabled = useFeatureFlag({
+    name: 'custom_page_builder',
+  });
 
   useEffect(() => {
     async function getFiles() {
@@ -231,13 +236,15 @@ const ProjectPageForm = ({ project, page }: Props) => {
                   />
                 </SectionField>
               )}
-              <SectionField>
-                <QuillMultilocWithLocaleSwitcher
-                  name="top_info_section_multiloc"
-                  label={formatMessage(messages.contentLabel)}
-                  withCTAButton
-                />
-              </SectionField>
+              {!customPageBuilderEnabled && (
+                <SectionField>
+                  <QuillMultilocWithLocaleSwitcher
+                    name="top_info_section_multiloc"
+                    label={formatMessage(messages.contentLabel)}
+                    withCTAButton
+                  />
+                </SectionField>
+              )}
               <SectionField>
                 <Label>{formatMessage(messages.attachmentsLabel)}</Label>
                 <FileUploader name="local_page_files" remoteFiles={files} />
