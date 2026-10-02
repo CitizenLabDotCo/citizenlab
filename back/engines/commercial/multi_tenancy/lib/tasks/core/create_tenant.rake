@@ -159,42 +159,7 @@ namespace :cl2_back do
           enabled: true,
           id_methods: [
             {
-              name: 'cow',
-              api_username: 'fake_username',
-              api_password: 'fake_password',
-              rut_empresa: 'fake_rut_empresa'
-            },
-            {
-              name: 'bosa_fas',
-              environment: 'integration',
-              identifier: 'fake_identifier',
-              secret: 'fake_secret'
-            },
-            {
-              name: 'clave_unica',
-              client_id: 'fake_identifier',
-              client_secret: 'fake_secret'
-            },
-            {
               name: 'bogus'
-            },
-            {
-              name: 'id_card_lookup',
-              ui_method_name: 'Enter social security number',
-              card_id: 'Social security number',
-              card_id_placeholder: 'xx-xxxxx-xx',
-              card_id_tooltip: 'You can find this number on you ID card. We check your number without storing it.',
-              explainer_image_url: 'http://localhost:4000/id_card_explainer.jpg'
-            },
-            {
-              name: 'franceconnect'
-            },
-            {
-              name: 'auth0',
-              client_id: 'fake_client_id',
-              client_secret: 'fake_client_secret',
-              domain: 'fake_domain',
-              method_name_multiloc: { en: 'Verify with Auth0' }
             },
             {
               name: 'fake_sso'
