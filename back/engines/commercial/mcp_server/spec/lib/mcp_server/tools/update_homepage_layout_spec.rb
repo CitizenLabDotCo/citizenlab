@@ -61,6 +61,41 @@ describe McpServer::Tools::UpdateHomepageLayout do
     expect(layout.reload.craftjs_json).to have_key('HOMEPAGEBANNER')
   end
 
+  it 'refuses to change the banner to a different widget type' do
+    retyped = layout.craftjs_json['HOMEPAGEBANNER'].merge('type' => { 'resolvedName' => 'TextMultiloc' })
+    response = run(nodes: { 'HOMEPAGEBANNER' => retyped })
+
+    expect(response).to be_error
+    expect(response.content.first[:text]).to include('type cannot be changed')
+    expect(layout.reload.craftjs_json.dig('HOMEPAGEBANNER', 'type', 'resolvedName')).to eq('HomepageBanner')
+  end
+
+  it 'refuses to reparent the banner' do
+    moved = layout.craftjs_json['HOMEPAGEBANNER'].merge('parent' => 'PROJECTS')
+    response = run(nodes: { 'HOMEPAGEBANNER' => moved })
+
+    expect(response).to be_error
+    expect(response.content.first[:text]).to include('cannot be moved to another parent')
+  end
+
+  it 'refuses to add a second HomepageBanner' do
+    root = layout.craftjs_json['ROOT'].merge('nodes' => %w[HOMEPAGEBANNER PROJECTS BANNER2])
+    response = run(nodes: { 'ROOT' => root, 'BANNER2' => craftjs_node('HomepageBanner', parent: 'ROOT') })
+
+    expect(response).to be_error
+    expect(response.content.first[:text]).to include('only be one HomepageBanner')
+    expect(layout.reload.craftjs_json).not_to have_key('BANNER2')
+  end
+
+  it 'refuses to move the banner off the first position in ROOT' do
+    root = layout.craftjs_json['ROOT'].merge('nodes' => %w[PROJECTS HOMEPAGEBANNER])
+    response = run(nodes: { 'ROOT' => root })
+
+    expect(response).to be_error
+    expect(response.content.first[:text]).to include('must stay the first item in ROOT')
+    expect(layout.reload.craftjs_json['ROOT']['nodes']).to eq(%w[HOMEPAGEBANNER PROJECTS])
+  end
+
   it 'rejects an unsupported widget and returns a widget reference' do
     root = layout.craftjs_json['ROOT'].merge('nodes' => %w[HOMEPAGEBANNER PROJECTS BAD])
     response = run(nodes: { 'ROOT' => root, 'BAD' => craftjs_node('ProjectBanner', parent: 'ROOT') })

@@ -18,10 +18,12 @@ class McpServer::Tools::UpdateHomepageLayout < McpServer::BaseTool
 
       ALWAYS call get_homepage_layout first and copy the exact shape of existing nodes. The
       homepage ROOT is a plain container with NO body node — all content lives directly under
-      ROOT. The HomepageBanner is fixed (it can be edited but not moved or deleted); some
-      homepages mark other widgets fixed too — the outline flags every fixed node with locked.
-      To add or reorder top-level content, also send the ROOT node with only its `nodes` array
-      changed (keep the fixed widgets' ids); to remove content use `delete_node_ids`.
+      ROOT. The HomepageBanner is fixed: edit its props, but you cannot delete it, change its
+      type, move it to another parent, add a second one, or move it off the first position in
+      ROOT. Some homepages mark other widgets fixed too (they keep their type and parent) — the
+      outline flags every fixed node with locked. To add or reorder top-level content, send the
+      ROOT node with its `nodes` array changed (keep the banner first); remove content via
+      `delete_node_ids`.
 
       Recipes: edit or replace = send just that node. Insert/move = send the node (with `parent`)
       AND ROOT with its updated `nodes` array. Delete = ids in `delete_node_ids` (subtrees and
@@ -53,6 +55,7 @@ class McpServer::Tools::UpdateHomepageLayout < McpServer::BaseTool
       protect_fixed_widgets!(stored)
       graph = patched_graph(stored)
       preserve_no_delete!(stored, graph)
+      protect_fixed_structure!(stored, graph)
       validate!(graph)
 
       layout.craftjs_json = graph
@@ -100,6 +103,34 @@ class McpServer::Tools::UpdateHomepageLayout < McpServer::BaseTool
 
         graph[id]['custom'] ||= {}
         graph[id]['custom']['noDelete'] = true
+      end
+    end
+
+    # A fixed widget may have its props edited but not be restructured: no type change, no
+    # reparenting, no second banner, and the banner stays the first child of ROOT.
+    def protect_fixed_structure!(stored, graph)
+      stored.each do |id, node|
+        next unless McpServer::HomepageWidgets.protected?(node) && (patched = patch_nodes[id])
+
+        name = resolved_name(node)
+        if resolved_name(patched) != name
+          raise PatchError, "node #{id}: #{name} is a fixed homepage widget; its type cannot be changed."
+        end
+        if patched['parent'] != node['parent']
+          raise PatchError, "node #{id}: #{name} is a fixed homepage widget; it cannot be moved to another parent."
+        end
+      end
+
+      banner_ids = graph.select { |_id, node| McpServer::HomepageWidgets::FIXED_WIDGETS.include?(resolved_name(node)) }.keys
+      if banner_ids.size > 1
+        raise PatchError, "There can only be one HomepageBanner; remove the extra: #{banner_ids.join(', ')}."
+      end
+
+      # A reorder can only happen by patching ROOT's `nodes`; only check then, so an unrelated
+      # edit is never rejected for a banner that was already not-first in a nonstandard layout.
+      root_nodes = graph.dig('ROOT', 'nodes')
+      if patch_nodes.key?('ROOT') && banner_ids.first && root_nodes&.first != banner_ids.first
+        raise PatchError, "The HomepageBanner (#{banner_ids.first}) must stay the first item in ROOT."
       end
     end
   end
