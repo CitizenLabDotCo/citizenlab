@@ -125,6 +125,25 @@ RSpec.describe ProjectGeneration::ProjectGenerator do
       expect(permission_calls).to all(include(action: 'posting_idea', permitted_by: 'admins_moderators'))
     end
 
+    it 'fills the plain-text preview when the project has none' do
+      blank_project = create(:project, :draft, description_preview_multiloc: {})
+      stub_all_tools
+      project_calls = stub_tool(McpServer::Tools::UpdateProject)
+      described_class.new(blank_project, user, 'en').generate_and_persist(prompt: 'x', levers: levers)
+
+      expect(project_calls.sole).to include(description_preview_multiloc: { 'en' => 'Help redesign the central park.' })
+    end
+
+    it 'does not overwrite a preview the manager already wrote' do
+      own_preview = create(:project, :draft, description_preview_multiloc: { 'en' => 'My own summary.' })
+      stub_all_tools
+      project_calls = stub_tool(McpServer::Tools::UpdateProject)
+      described_class.new(own_preview, user, 'en').generate_and_persist(prompt: 'x', levers: levers)
+
+      expect(project_calls.sole).to include(visible_to: 'public')
+      expect(project_calls.sole).not_to include(:description_preview_multiloc)
+    end
+
     it 'creates a voting phase with its method and per-voter allowance' do
       plan['phases'] = [phase('Allocate the budget', 'voting', duration_days: 30, voting: {
         'voting_method' => 'budgeting', 'voting_min_total' => 0, 'voting_max_total' => 250_000,

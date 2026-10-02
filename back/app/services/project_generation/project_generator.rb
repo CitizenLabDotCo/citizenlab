@@ -6,7 +6,7 @@ module ProjectGeneration
   # project by orchestrating the MCP tools, in this order:
   #
   #   create_phase(s) -> update_project_layout -> replace_form_fields (per survey phase)
-  #   -> create_event(s) -> update_project (visibility) -> update_phase_permission (access)
+  #   -> create_event(s) -> update_project (visibility + preview) -> update_phase_permission (access)
   #
   # The phases, page content and survey are the core draft: a failure there fails the
   # generation. Events, visibility and access are best-effort: a tool error is reported
@@ -245,7 +245,7 @@ module ProjectGeneration
       core_failed = errors.any?
 
       create_events(plan['events'], errors)
-      update_visibility(plan['visibility'], errors)
+      update_project_settings(plan, errors)
       update_access(phases, plan['audience_index'], errors)
 
       GenerationResult.new(errors: errors, failed: core_failed)
@@ -393,12 +393,20 @@ module ProjectGeneration
       args
     end
 
-    # Visibility: only 'public' and 'admins' are applied. 'groups' needs group ids we
-    # cannot infer here, so it is left at the project's current default for the manager.
-    def update_visibility(visibility, errors)
-      return unless %w[public admins].include?(visibility)
+    # One update_project call for the project-level settings. Only 'public' and 'admins'
+    # visibility are applied — 'groups' needs group ids we can't infer. The preview is
+    # filled only when it is still blank, so a summary the manager wrote is never lost.
+    def update_project_settings(plan, errors)
+      args = { project_id: @project.id }
+      args[:visible_to] = plan['visibility'] if %w[public admins].include?(plan['visibility'])
 
-      response = call_tool(McpServer::Tools::UpdateProject, { project_id: @project.id, visible_to: visibility })
+      preview = plan['description_preview'].to_s.strip
+      current_preview = (@project.description_preview_multiloc || {})[@locale]
+      args[:description_preview_multiloc] = { @locale => preview } if preview.present? && current_preview.to_s.strip.blank?
+
+      return if args.keys == [:project_id] # nothing to change
+
+      response = call_tool(McpServer::Tools::UpdateProject, args)
       errors << "update_project: #{response.content.to_json}" if response.error?
     end
 
