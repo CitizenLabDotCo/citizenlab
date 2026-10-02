@@ -34,8 +34,12 @@ RSpec.describe ProjectGeneration::ProjectGenerator do
     }
   end
 
-  def phase(title, method, duration_days:, survey: { 'title' => '', 'questions' => [] })
-    { 'title' => title, 'description' => 'A phase.', 'participation_method' => method, 'duration_days' => duration_days, 'survey' => survey }
+  def phase(title, method, duration_days:, survey: { 'title' => '', 'questions' => [] }, voting: no_voting)
+    { 'title' => title, 'description' => 'A phase.', 'participation_method' => method, 'duration_days' => duration_days, 'survey' => survey, 'voting' => voting }
+  end
+
+  def no_voting
+    { 'voting_method' => 'single_voting', 'voting_min_total' => 0, 'voting_max_total' => 0, 'voting_max_votes_per_idea' => 0, 'vote_term' => 'vote' }
   end
 
   def question(input_type, title, options: [], statements: [], scale_maximum: 0, scale_labels: [])
@@ -119,6 +123,40 @@ RSpec.describe ProjectGeneration::ProjectGenerator do
 
       expect(project_calls.sole).to include(visible_to: 'public')
       expect(permission_calls).to all(include(action: 'posting_idea', permitted_by: 'admins_moderators'))
+    end
+
+    it 'creates a voting phase with its method and per-voter allowance' do
+      plan['phases'] = [phase('Allocate the budget', 'voting', duration_days: 30, voting: {
+        'voting_method' => 'budgeting', 'voting_min_total' => 0, 'voting_max_total' => 250_000,
+        'voting_max_votes_per_idea' => 0, 'vote_term' => 'credit'
+      })]
+      phase_calls = stub_all_tools
+      generator.generate_and_persist(prompt: 'x', levers: levers)
+
+      expect(phase_calls.sole).to include(
+        participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 250_000, vote_term: 'credit'
+      )
+    end
+
+    it 'falls back to a safe allowance when a multiple_voting phase omits the total' do
+      plan['phases'] = [phase('Prioritise', 'voting', duration_days: 30, voting: {
+        'voting_method' => 'multiple_voting', 'voting_min_total' => 0, 'voting_max_total' => 0,
+        'voting_max_votes_per_idea' => 0, 'vote_term' => 'token'
+      })]
+      phase_calls = stub_all_tools
+      generator.generate_and_persist(prompt: 'x', levers: levers)
+
+      expect(phase_calls.sole).to include(voting_method: 'multiple_voting', voting_max_total: 7)
+    end
+
+    it 'creates a common_ground phase and sets its access from the audience lever' do
+      plan['phases'] = [phase('Find common ground', 'common_ground', duration_days: 14)]
+      phase_calls = stub_all_tools
+      permission_calls = stub_tool(McpServer::Tools::UpdatePhasePermission)
+      generator.generate_and_persist(prompt: 'x', levers: levers)
+
+      expect(phase_calls.sole).to include(participation_method: 'common_ground')
+      expect(permission_calls.sole).to include(action: 'reacting_idea', permitted_by: 'admins_moderators')
     end
 
     it 'creates events with clamped offsets and durations' do

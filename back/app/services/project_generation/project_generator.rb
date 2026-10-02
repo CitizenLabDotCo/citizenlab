@@ -24,13 +24,22 @@ module ProjectGeneration
     FILE_EXTENSIONS = [*PDF_EXTENSIONS, *TEXT_EXTENSIONS].freeze
 
     # The archetype vocabulary and method recipes are a port of the govocal-project-setup
-    # skill; see the prompt template's version marker. TODO: reconcile the enum values and
-    # recipes with the authoritative skill text when it is synced.
+    # skill; see the prompt template's version marker.
     ARCHETYPES = %w[inform consult gather_input prioritize co_create].freeze
-    # Methods whose create_phase call needs no extra required fields beyond a survey's
-    # title/button. Voting, common_ground, poll and volunteering are follow-ups: they
-    # need method-specific required fields the schema does not cover yet.
-    PARTICIPATION_METHODS = %w[information ideation proposals native_survey].freeze
+    # Participation methods the generator can create. native_survey carries a survey;
+    # voting carries a voting config (see VOTING_SCHEMA); common_ground needs the
+    # 'common_ground' feature flag on the tenant. For voting and common_ground the draft
+    # sets the phase + config only — the voting options and the agree/disagree statements
+    # are ideas/statements an admin adds after the upstream phase, so none are created here.
+    PARTICIPATION_METHODS = %w[information ideation proposals native_survey voting common_ground].freeze
+    # Mirror Phase::VOTING_METHODS / Phase::VOTE_TERMS (inlined to avoid load-order coupling).
+    VOTING_METHODS = %w[single_voting multiple_voting budgeting].freeze
+    VOTE_TERMS = %w[vote point token credit percent].freeze
+    DEFAULT_VOTING_METHOD = 'single_voting'
+    DEFAULT_VOTE_TERM = 'vote'
+    # Fallback per-voter allowance when the model omits one but the method requires it
+    # (create_phase requires voting_max_total for multiple_voting and budgeting).
+    DEFAULT_VOTING_MAX_TOTAL = { 'multiple_voting' => 7, 'budgeting' => 1000 }.freeze
     VISIBILITIES = %w[public groups admins].freeze
 
     QUESTION_TYPES = %w[
@@ -55,7 +64,9 @@ module ProjectGeneration
     PRIMARY_ACTION = {
       'ideation' => 'posting_idea',
       'proposals' => 'posting_idea',
-      'native_survey' => 'posting_idea'
+      'native_survey' => 'posting_idea',
+      'voting' => 'voting',
+      'common_ground' => 'reacting_idea'
     }.freeze
 
     # Claude's structured output only accepts closed objects (additionalProperties: false)
@@ -87,16 +98,30 @@ module ProjectGeneration
       }
     }.freeze
 
+    VOTING_SCHEMA = {
+      type: 'object',
+      additionalProperties: false,
+      required: %w[voting_method voting_min_total voting_max_total voting_max_votes_per_idea vote_term],
+      properties: {
+        voting_method: { type: 'string', enum: VOTING_METHODS, description: 'single_voting (approval), multiple_voting (strength of preference) or budgeting (costed options + a fixed pot).' },
+        voting_min_total: { type: 'integer', description: 'Minimum a voter must cast; 0 for none.' },
+        voting_max_total: { type: 'integer', description: "Votes/tokens per voter, or the total budget for budgeting. 0 to use the platform default." },
+        voting_max_votes_per_idea: { type: 'integer', description: 'Max votes on a single option; only for multiple_voting, 0 otherwise.' },
+        vote_term: { type: 'string', enum: VOTE_TERMS, description: 'Noun for a vote.' }
+      }
+    }.freeze
+
     PHASE_SCHEMA = {
       type: 'object',
       additionalProperties: false,
-      required: %w[title description participation_method duration_days survey],
+      required: %w[title description participation_method duration_days survey voting],
       properties: {
         title: { type: 'string' },
         description: { type: 'string', description: 'One or two sentences, plain text.' },
         participation_method: { type: 'string', enum: PARTICIPATION_METHODS },
         duration_days: { type: 'integer', description: 'Length of the phase in days.' },
-        survey: { **SURVEY_SCHEMA, description: 'Only used when participation_method is native_survey; otherwise leave title empty and questions empty.' }
+        survey: { **SURVEY_SCHEMA, description: 'Only used when participation_method is native_survey; otherwise leave title empty and questions empty.' },
+        voting: { **VOTING_SCHEMA, description: 'Only used when participation_method is voting; otherwise fill with single_voting, vote and zeros.' }
       }
     }.freeze
 
@@ -264,6 +289,35 @@ module ProjectGeneration
         survey_title = phase_plan.dig('survey', 'title').presence || phase_plan['title']
         args[:native_survey_title_multiloc] = multiloc(survey_title)
         args[:native_survey_button_multiloc] = multiloc(I18n.t('project_generation.take_the_survey', locale: @locale, default: 'Take the survey'))
+      end
+
+      args.merge!(voting_args(phase_plan['voting'])) if method == 'voting'
+
+      args
+    end
+
+    # Builds the voting fields create_phase needs. The options (ideas) are added by an
+    # admin after the upstream phase, so only the method and per-voter allowance are set
+    # here. Falls back to approval voting with safe allowances when the model is vague.
+    def voting_args(config)
+      config = config.is_a?(Hash) ? config : {}
+      method = VOTING_METHODS.include?(config['voting_method']) ? config['voting_method'] : DEFAULT_VOTING_METHOD
+      term = VOTE_TERMS.include?(config['vote_term']) ? config['vote_term'] : DEFAULT_VOTE_TERM
+      args = { voting_method: method, vote_term: term }
+
+      min_total = config['voting_min_total'].to_i
+      max_total = config['voting_max_total'].to_i
+      args[:voting_min_total] = min_total if min_total.positive?
+
+      if DEFAULT_VOTING_MAX_TOTAL.key?(method) # required for multiple_voting / budgeting
+        args[:voting_max_total] = max_total.positive? ? max_total : DEFAULT_VOTING_MAX_TOTAL[method]
+      elsif max_total.positive?
+        args[:voting_max_total] = max_total
+      end
+
+      if method == 'multiple_voting'
+        per_idea = config['voting_max_votes_per_idea'].to_i
+        args[:voting_max_votes_per_idea] = per_idea if per_idea.positive?
       end
 
       args
