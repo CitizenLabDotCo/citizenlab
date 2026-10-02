@@ -1990,7 +1990,6 @@
   "app.containers.AdminPage.FoldersEdit.draftStatus": "Nacrt",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabel": "Dodajte fajlove u folder",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabelTooltip": "Fajlovi ne bi trebalo da budu veći od 50Mb. Dodati fajlovi će se prikazivati na stranici foldera.",
-  "app.containers.AdminPage.FoldersEdit.folderDescriptions2": "Folder Description",
   "app.containers.AdminPage.FoldersEdit.folderEmptyGoBackToAdd": "U ovom folderu nema projekata. Vratite se na karticu Projekti kako biste kreirali i dodali projekte. ",
   "app.containers.AdminPage.FoldersEdit.folderName": "Naziv fascikle",
   "app.containers.AdminPage.FoldersEdit.headerImageInputLabel": "Slika u zaglavlju",

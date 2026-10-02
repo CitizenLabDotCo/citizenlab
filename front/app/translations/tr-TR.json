@@ -1363,7 +1363,6 @@
   "app.containers.AccessibilityStatement.userGeneratedContent": "Kullanıcılar tarafından oluşturulan içerikler",
   "app.containers.AccessibilityStatement.workshops": "Atölyeler",
   "app.containers.AdminPage.DashboardPage.typeToSearchProjects": "Projeleri aramak için yazın",
-  "app.containers.AdminPage.ProjectDescription.linkText": "Content Builder'da açıklamayı düzenleme",
   "app.containers.AdminPage.ProjectDescription.saveError": "Proje açıklamasını kaydederken bir şeyler ters gitti.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Projeyi görüntüle",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Anket sonu",

@@ -1363,7 +1363,6 @@
   "app.containers.AccessibilityStatement.userGeneratedContent": "Conteúdo gerado pelo utilizador",
   "app.containers.AccessibilityStatement.workshops": "Seminário",
   "app.containers.AdminPage.DashboardPage.typeToSearchProjects": "Digite para pesquisar projetos",
-  "app.containers.AdminPage.ProjectDescription.linkText": "Editar descrição no Content Builder",
   "app.containers.AdminPage.ProjectDescription.saveError": "Algo deu errado ao salvar a descrição do projeto.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Exibir projeto",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Fim da pesquisa",

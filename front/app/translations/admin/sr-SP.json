@@ -1990,7 +1990,6 @@
   "app.containers.AdminPage.FoldersEdit.draftStatus": "Нацрт",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabel": "Додајте датотеке у ову фасциклу",
   "app.containers.AdminPage.FoldersEdit.fileUploadLabelTooltip": "Датотеке не би требало да буду веће од 50Мб. Додате датотеке ће бити приказане на страници фасцикле.",
-  "app.containers.AdminPage.FoldersEdit.folderDescriptions2": "Folder Description",
   "app.containers.AdminPage.FoldersEdit.folderEmptyGoBackToAdd": "У овој фасцикли нема пројеката. Вратите се на главну картицу Пројекти да бисте креирали и додали пројекте.",
   "app.containers.AdminPage.FoldersEdit.folderName": "Име фасцикле",
   "app.containers.AdminPage.FoldersEdit.headerImageInputLabel": "Слика заглавља",

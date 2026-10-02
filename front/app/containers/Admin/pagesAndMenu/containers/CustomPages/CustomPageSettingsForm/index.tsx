@@ -75,6 +75,7 @@ interface Props {
   showNavBarItemTitle?: boolean;
   mode: TMode;
   hideSlug?: boolean;
+  hideLinkedItems?: boolean;
   onSubmit: (formValues: FormValues) => void | Promise<void>;
 }
 
@@ -91,6 +92,7 @@ const CustomPageSettingsForm = ({
   showNavBarItemTitle,
   mode,
   hideSlug,
+  hideLinkedItems,
   onSubmit,
   defaultValues,
 }: Props) => {
@@ -103,6 +105,7 @@ const CustomPageSettingsForm = ({
   const isSpacesEnabled = useFeatureFlag({ name: 'spaces' });
   const showPlanUpgradeTease = !isFeatureAllowed;
   const showAdvancedCustomPages = showPlanUpgradeTease || isFeatureEnabled;
+  const showLinkedItems = showAdvancedCustomPages && !hideLinkedItems;
   const { data: areas } = useAreas({});
   const { data: appConfig } = useAppConfiguration();
   const locale = useLocale();
@@ -288,7 +291,7 @@ const CustomPageSettingsForm = ({
               </Box>
             )}
 
-            {showAdvancedCustomPages && (
+            {showLinkedItems && (
               <Tooltip
                 placement="top-start"
                 content={formatMessage(messages.contactGovSuccessToAccess)}
@@ -345,7 +348,7 @@ const CustomPageSettingsForm = ({
                 </div>
               </Tooltip>
             )}
-            {showAdvancedCustomPages && (
+            {showLinkedItems && (
               <>
                 {methods.watch('projects_filter_type') === 'global_topics' && (
                   <SelectContainer mb="30px">

@@ -17,6 +17,7 @@ import VerticalCenterer from 'components/VerticalCenterer';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
+import isFramed from 'utils/isFramed';
 import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
 import { useParams } from 'utils/router';
 
@@ -40,7 +41,9 @@ interface Props {
 const ProjectFolderShowPage = ({ projectFolder }: Props) => {
   const { data: authUser } = useAuthUser();
 
-  const userCanEditFolder = userModeratesFolder(authUser, projectFolder.id);
+  // An admin preview shows this page in a frame, where the button would open the admin inside it.
+  const showEditButton =
+    userModeratesFolder(authUser, projectFolder.id) && !isFramed();
   const maxPageWidth = '1166px';
 
   return (
@@ -48,7 +51,7 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
       <StyledContentContainer maxWidth={maxPageWidth}>
         <Box display="flex" width="100%">
           <Box ml="auto" display="flex">
-            {userCanEditFolder && (
+            {showEditButton && (
               <Box
                 display="flex"
                 alignItems="center"
