@@ -104,6 +104,7 @@ module McpServer
       McpServer::Tools::CreatePollQuestion,
       McpServer::Tools::CreatePollOption,
       McpServer::Tools::CreateDemoInputs,
+      McpServer::Tools::CreateDemoImportInputs,
       McpServer::Tools::CreateDemoComments,
       McpServer::Tools::SeedDemoVotes,
       McpServer::Tools::SeedDemoReactions,
