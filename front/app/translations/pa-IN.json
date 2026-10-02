@@ -239,6 +239,7 @@
   "app.components.ErrorBoundary.errorFormTitle": "ਅਜਿਹਾ ਲਗਦਾ ਹੈ ਕਿ ਕੋਈ ਸਮੱਸਿਆ ਹੈ।",
   "app.components.ErrorBoundary.genericErrorWithForm": "ਇੱਕ ਗਲਤੀ ਆਈ ਹੈ ਅਤੇ ਅਸੀਂ ਇਸ ਸਮੱਗਰੀ ਨੂੰ ਪ੍ਰਦਰਸ਼ਿਤ ਨਹੀਂ ਕਰ ਸਕਦੇ ਹਾਂ। ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ, ਜਾਂ {openForm}",
   "app.components.ErrorBoundary.openFormText": "ਇਸਦਾ ਪਤਾ ਲਗਾਉਣ ਵਿੱਚ ਸਾਡੀ ਮਦਦ ਕਰੋ",
+  "app.components.ErrorBoundary.reloadPage": "ਪੇਜ ਨੂੰ ਮੁੜ ਲੋਡ ਕਰੋ",
   "app.components.ErrorToast.budgetExceededError": "ਤੁਹਾਡੇ ਕੋਲ ਲੋੜੀਂਦਾ ਬਜਟ ਨਹੀਂ ਹੈ",
   "app.components.ErrorToast.votesExceededError": "ਤੁਹਾਡੇ ਕੋਲ ਲੋੜੀਂਦੀਆਂ ਵੋਟਾਂ ਨਹੀਂ ਬਚੀਆਂ ਹਨ",
   "app.components.EsriMap.drawOnMap": "ਉਲੀਕੋ",
