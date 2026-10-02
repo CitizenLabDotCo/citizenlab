@@ -72,14 +72,20 @@ describe 'single_use:migrate_custom_pages_to_content_builder' do
     expect(layout_for(faq_page)).to be_present
   end
 
-  it 'ignores policy pages and project-scoped pages' do
-    policy_page = create(:static_page, code: 'terms-and-conditions')
+  it 'derives project-scoped pages too' do
     project_page = create(:static_page, :project_scoped, code: 'custom')
 
     task.invoke('execute')
 
+    expect(layout_for(project_page)).to be_present
+  end
+
+  it 'ignores policy pages' do
+    policy_page = create(:static_page, code: 'terms-and-conditions')
+
+    task.invoke('execute')
+
     expect(layout_for(policy_page)).to be_nil
-    expect(layout_for(project_page)).to be_nil
   end
 
   # Once the legacy columns are dropped, this report is the only record of the content that

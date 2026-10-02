@@ -214,11 +214,11 @@ RSpec.describe StaticPage do
       it { expect(described_class.on_content_builder.include?(page)).to eq on_content_builder }
     end
 
-    it 'excludes a project-scoped page' do
+    it 'includes a project-scoped page' do
       page = create(:static_page, :project_scoped)
 
-      expect(page.on_content_builder?).to be false
-      expect(described_class.on_content_builder).not_to include(page)
+      expect(page.on_content_builder?).to be true
+      expect(described_class.on_content_builder).to include(page)
     end
   end
 

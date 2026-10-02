@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 
@@ -10,7 +10,11 @@ import { isOnContentBuilder } from 'api/custom_pages/util';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
+import {
+  BUILDER_CONTENT_MAX_WIDTH,
+  DEFAULT_PADDING,
+} from 'components/admin/ContentBuilder/constants';
+import { useSectionBoundaryMargin } from 'components/admin/ContentBuilder/verticalRhythm';
 import CustomPageContentViewer from 'components/CustomPageBuilder/ContentViewer';
 import useCustomPageBuilderContent from 'components/CustomPageBuilder/ContentViewer/useCustomPageBuilderContent';
 import { Container, Content } from 'components/LandingPages/citizen';
@@ -19,6 +23,7 @@ import PageNotFound from 'components/PageNotFound';
 import { useParams } from 'utils/router';
 
 import AdminCustomPageEditButton from './AdminCustomPageEditButton';
+import BackToProjectLink from './BackToProjectLink';
 import LegacyPageHeader from './LegacyPageHeader';
 import PageSections from './PageSections';
 
@@ -40,6 +45,8 @@ const CustomPageShow = () => {
   const localize = useLocalize();
   const { data: page, isError } = useCustomPageBySlug(pageSlugToUse);
   // The other pages served here must not wait on a request that can only 404.
+  const isSmallerThanTablet = useBreakpoint('tablet');
+  const sectionBoundaryMargin = useSectionBoundaryMargin();
   const builderContent = useCustomPageBuilderContent(
     page && isOnContentBuilder(page.data) ? page.data.id : undefined
   );
@@ -88,6 +95,17 @@ const CustomPageShow = () => {
               }
               zIndex="40000"
             >
+              {pageAttributes.project_id && (
+                // Spaced and aligned like the layout's own content below it.
+                <Box
+                  maxWidth={BUILDER_CONTENT_MAX_WIDTH}
+                  mx="auto"
+                  pt={sectionBoundaryMargin}
+                  px={isSmallerThanTablet ? DEFAULT_PADDING : undefined}
+                >
+                  <BackToProjectLink projectId={pageAttributes.project_id} />
+                </Box>
+              )}
               <AdminCustomPageEditButton
                 pageId={page.data.id}
                 projectId={pageAttributes.project_id}

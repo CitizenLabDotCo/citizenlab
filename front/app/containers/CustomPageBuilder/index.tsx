@@ -2,10 +2,12 @@ import React from 'react';
 
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import { isOnContentBuilder } from 'api/custom_pages/util';
+import useProjectById from 'api/projects/useProjectById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { adminCustomPageSettingsPath } from 'containers/Admin/pagesAndMenu/routes';
+import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 import useEnsureCustomPageLayout from 'components/CustomPageBuilder/useEnsureCustomPageLayout';
 
@@ -22,24 +24,35 @@ const CustomPageBuilder = () => {
   // data.
   const featureEnabled = useFeatureFlag({ name: 'custom_page_builder' });
   const { data: customPage } = useCustomPageById(customPageId);
+  const projectId = customPage?.data.attributes.project_id;
+  const { data: project } = useProjectById(projectId);
   useEnsureCustomPageLayout(customPageId);
 
   if (!featureEnabled || !customPage || !isOnContentBuilder(customPage.data)) {
     return null;
   }
+  // A project's page lives under the project, in the admin and on the site.
+  if (projectId && !project) return null;
 
-  const backPath = `${adminCustomPageSettingsPath(customPageId)}${
-    window.location.search
-  }`;
+  const pageSlug = customPage.data.attributes.slug;
+  const backPath = `${
+    projectId
+      ? `${adminProjectsProjectPath(projectId)}/pages/${customPageId}`
+      : adminCustomPageSettingsPath(customPageId)
+  }${window.location.search}`;
 
   return (
     <CustomPageBuilderPage
       staticPageId={customPageId}
       backPath={backPath}
-      previewLink={{
-        to: '/pages/$slug',
-        params: { slug: customPage.data.attributes.slug },
-      }}
+      previewLink={
+        project
+          ? {
+              to: '/projects/$slug/pages/$pageSlug',
+              params: { slug: project.data.attributes.slug, pageSlug },
+            }
+          : { to: '/pages/$slug', params: { slug: pageSlug } }
+      }
       titleMultiloc={customPage.data.attributes.title_multiloc}
     />
   );

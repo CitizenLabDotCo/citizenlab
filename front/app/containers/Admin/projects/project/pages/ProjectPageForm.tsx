@@ -24,10 +24,13 @@ import { handleAddPageFiles, handleRemovePageFiles } from 'api/page_files/util';
 import { IProjectData } from 'api/projects/types';
 
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
+import PageWrapper from 'components/admin/PageWrapper';
 import { SectionField } from 'components/admin/Section';
+import StickyContainer from 'components/admin/StickyContainer';
 import Feedback from 'components/HookForm/Feedback';
 import FileUploader from 'components/HookForm/FileUploader';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
@@ -72,6 +75,9 @@ const ProjectPageForm = ({ project, page }: Props) => {
   const { mutateAsync: addPageFile } = useAddPageFile();
   const { mutateAsync: deletePageFile } = useDeletePageFile();
   const [files, setFiles] = useState<UploadFile[]>([]);
+  const customPageBuilderEnabled = useFeatureFlag({
+    name: 'custom_page_builder',
+  });
 
   useEffect(() => {
     async function getFiles() {
@@ -151,7 +157,7 @@ const ProjectPageForm = ({ project, page }: Props) => {
             })
           ).data.id;
 
-      if (local_page_files) {
+      if (local_page_files && !customPageBuilderEnabled) {
         // Empty `files` on create, so this only adds; on edit it diffs.
         await Promise.all([
           handleAddPageFiles(pageId, local_page_files, files, addPageFile),
@@ -172,6 +178,66 @@ const ProjectPageForm = ({ project, page }: Props) => {
       handleHookFormSubmissionError(error, methods.setError);
     }
   };
+
+  const feedback = (
+    <Feedback
+      successMessage={
+        isEditing ? formatMessage(messages.saveSuccess) : undefined
+      }
+    />
+  );
+
+  const titleAndSlugFields = (
+    <>
+      <SectionField>
+        <InputMultilocWithLocaleSwitcher
+          name="title_multiloc"
+          label={formatMessage(messages.titleLabel)}
+        />
+      </SectionField>
+      {isEditing && (
+        <SectionField>
+          <SlugInput
+            slug={slug}
+            showWarningMessage={slugHasChanged}
+            previewUrl={previewUrl}
+          />
+        </SectionField>
+      )}
+    </>
+  );
+
+  const submitButton = (
+    <Button
+      type="submit"
+      processing={methods.formState.isSubmitting}
+      disabled={!methods.formState.isDirty}
+      bgColor={colors.blue500}
+      dataCy={isEditing ? 'e2e-save-project-page' : 'e2e-create-project-page'}
+    >
+      {isEditing
+        ? formatMessage(messages.saveButton)
+        : formatMessage(messages.createButton)}
+    </Button>
+  );
+
+  // With the builder on, the body and files are authored there, and the surrounding page shows
+  // the breadcrumbs, title and view button: the form is the custom page settings card.
+  if (customPageBuilderEnabled) {
+    return (
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <PageWrapper flatTopBorder>
+            {feedback}
+            {titleAndSlugFields}
+            <StickyContainer>
+              <Box display="flex">{submitButton}</Box>
+            </StickyContainer>
+          </PageWrapper>
+        </form>
+      </FormProvider>
+    );
+  }
 
   return (
     <Box mt="44px" mx="44px">
@@ -211,26 +277,8 @@ const ProjectPageForm = ({ project, page }: Props) => {
           </Box>
           <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(onSubmit)}>
-              <Feedback
-                successMessage={
-                  isEditing ? formatMessage(messages.saveSuccess) : undefined
-                }
-              />
-              <SectionField>
-                <InputMultilocWithLocaleSwitcher
-                  name="title_multiloc"
-                  label={formatMessage(messages.titleLabel)}
-                />
-              </SectionField>
-              {isEditing && (
-                <SectionField>
-                  <SlugInput
-                    slug={slug}
-                    showWarningMessage={slugHasChanged}
-                    previewUrl={previewUrl}
-                  />
-                </SectionField>
-              )}
+              {feedback}
+              {titleAndSlugFields}
               <SectionField>
                 <QuillMultilocWithLocaleSwitcher
                   name="top_info_section_multiloc"
@@ -253,21 +301,7 @@ const ProjectPageForm = ({ project, page }: Props) => {
                 justifyContent="flex-start"
               >
                 <Box py="8px" px={`${defaultAdminCardPadding}px`}>
-                  <Button
-                    type="submit"
-                    processing={methods.formState.isSubmitting}
-                    disabled={!methods.formState.isDirty}
-                    bgColor={colors.blue500}
-                    dataCy={
-                      isEditing
-                        ? 'e2e-save-project-page'
-                        : 'e2e-create-project-page'
-                    }
-                  >
-                    {isEditing
-                      ? formatMessage(messages.saveButton)
-                      : formatMessage(messages.createButton)}
-                  </Button>
+                  {submitButton}
                 </Box>
               </Box>
             </form>
