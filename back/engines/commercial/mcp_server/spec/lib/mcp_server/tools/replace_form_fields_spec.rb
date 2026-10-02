@@ -115,6 +115,76 @@ describe McpServer::Tools::ReplaceFormFields do
     end
   end
 
+  context 'with a community monitor phase' do
+    let(:cm_phase) { create(:community_monitor_survey_phase) }
+
+    def fetch_cm_fields
+      run_mcp_tool(
+        McpServer::Tools::GetFormFields,
+        params: { container_type: 'phase', container_id: cm_phase.id },
+        current_user:
+      ).structured_content[:fields]
+    end
+
+    def replace_cm(fields)
+      run(container_type: 'phase', container_id: cm_phase.id, fields:)
+    end
+
+    context 'on a demo platform' do
+      before { change_lifecycle_stage('demo') }
+
+      it 'adds a custom question on top, keeping the built-ins' do
+        fields = fetch_cm_fields
+        # Clone a built-in sentiment question so the custom one is structurally valid.
+        custom_question = fields.find { |field| field[:key] == 'place_to_live' }.dup
+        custom_question.delete(:id)
+        custom_question[:key] = 'strategic_goal_1'
+        custom_question[:title_multiloc] = { 'en' => 'How well are we meeting our strategic goal?' }
+        fields.insert(-2, custom_question) # before the form_end page
+
+        response = replace_cm(fields)
+
+        expect(response).not_to be_error
+        keys = response.structured_content[:fields].pluck(:key)
+        expect(keys).to include('strategic_goal_1', 'place_to_live', 'page_quality_of_life')
+      end
+
+      it 'refuses to remove a built-in question' do
+        fields = fetch_cm_fields.reject { |field| field[:key] == 'place_to_live' }
+
+        response = replace_cm(fields)
+
+        expect(response).to be_error
+        expect(response.content.sole[:text]).to include('Cannot remove built-in community monitor field', 'place_to_live')
+      end
+
+      it 'refuses to remove a category page' do
+        fields = fetch_cm_fields.reject { |field| field[:key] == 'page_service_delivery' }
+
+        response = replace_cm(fields)
+
+        expect(response).to be_error
+        expect(response.content.sole[:text]).to include('Cannot remove built-in community monitor field', 'page_service_delivery')
+      end
+
+      it 'allows editing after responses exist (continuous monitor)' do
+        create(:idea, project: cm_phase.project, phases: [cm_phase], creation_phase: cm_phase)
+
+        response = replace_cm(fetch_cm_fields)
+
+        expect(response).not_to be_error
+      end
+    end
+
+    it 'refuses on a non-demo/trial platform' do
+      change_lifecycle_stage('active')
+
+      response = replace_cm(fetch_cm_fields)
+
+      expect(response).to be_unauthorized_project
+    end
+  end
+
   it 'creates fields from scratch on an empty form' do
     response = run(
       container_type: 'phase',
