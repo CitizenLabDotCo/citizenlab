@@ -154,7 +154,7 @@ export type IFlatCustomField = Omit<
     options?: IOptionsType[];
     matrix_statements?: IMatrixStatementsType[];
     map_config?: { data: IRelationship };
-    visible_to_public?: boolean;
+    answers_visible_to?: 'public' | 'moderators';
   };
 
 export type ICustomFieldSettingsTab = 'content' | 'logic';

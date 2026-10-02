@@ -52,8 +52,11 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
     object.no_password?
   end
 
-  attribute :custom_field_values, if: PRIVATE do |object|
-    CustomFieldService.remove_hidden_custom_fields(CustomFieldValuesTransitionService.new.custom_field_values(object))
+  attribute :custom_field_values do |object, params|
+    user_context = user_context(params)
+    object.custom_field_answers
+      .select { |answer| Pundit.policy!(user_context, answer).show? }
+      .to_h { [it.key, it.value] }
   end
 
   attribute :unread_notifications, if: PRIVATE do |object|

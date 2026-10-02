@@ -109,10 +109,6 @@ module ParticipationMethod
       campaigns
     end
 
-    def supports_answer_visible_to?
-      false
-    end
-
     def supports_assignment?
       false
     end
