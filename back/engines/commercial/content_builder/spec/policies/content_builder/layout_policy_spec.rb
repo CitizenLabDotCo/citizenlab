@@ -167,6 +167,28 @@ RSpec.describe ContentBuilder::LayoutPolicy do
       it { is_expected.not_to permit(:update) }
       it { is_expected.not_to permit(:destroy) }
     end
+
+    context 'when the project is a draft' do
+      let(:project) { create(:project, :draft) }
+
+      context 'for a visitor' do
+        let(:user) { nil }
+
+        it { is_expected.not_to permit(:show) }
+      end
+
+      context 'for a moderator of the page\'s project' do
+        let(:user) { create(:project_moderator, projects: [project]) }
+
+        it { is_expected.to permit(:show) }
+      end
+
+      context 'for an admin' do
+        let(:user) { create(:admin) }
+
+        it { is_expected.to permit(:show) }
+      end
+    end
   end
 
   describe 'Scope' do
