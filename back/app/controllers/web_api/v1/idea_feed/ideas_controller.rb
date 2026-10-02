@@ -28,7 +28,7 @@ module WebApi
               :ideas_phases,
               :idea_status,
               :creation_phase,
-              { project: [:phases], author: [:unread_notifications] }
+              { project: [:phases], author: [:unread_notifications, { custom_field_answers: :custom_field }], custom_field_answers: :custom_field }
             ]
           ).call
 
