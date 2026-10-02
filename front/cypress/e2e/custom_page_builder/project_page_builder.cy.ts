@@ -90,6 +90,8 @@ describe('Project page builder', () => {
     setFeatures(true, true);
     cy.visit(`/projects/${projectSlug}/pages/${pageSlug}`);
 
+    // Only the builder renders the title widget; the legacy header's title has no data-cy.
+    cy.dataCy('e2e-custom-page-title').should('contain', pageTitle);
     cy.contains(bodyText).should('be.visible');
     cy.contains('a', projectTitle).should('be.visible');
   });
