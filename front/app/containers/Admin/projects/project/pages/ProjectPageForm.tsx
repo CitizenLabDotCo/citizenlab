@@ -73,7 +73,7 @@ const ProjectPageForm = ({ project, page }: Props) => {
   const { mutateAsync: addPageFile } = useAddPageFile();
   const { mutateAsync: deletePageFile } = useDeletePageFile();
   const [files, setFiles] = useState<UploadFile[]>([]);
-  // With the builder on, the page's body is authored there.
+  // With the builder on, the page's body and its files are handled there.
   const customPageBuilderEnabled = useFeatureFlag({
     name: 'custom_page_builder',
   });
@@ -156,7 +156,7 @@ const ProjectPageForm = ({ project, page }: Props) => {
             })
           ).data.id;
 
-      if (local_page_files) {
+      if (local_page_files && !customPageBuilderEnabled) {
         // Empty `files` on create, so this only adds; on edit it diffs.
         await Promise.all([
           handleAddPageFiles(pageId, local_page_files, files, addPageFile),
@@ -245,10 +245,12 @@ const ProjectPageForm = ({ project, page }: Props) => {
                   />
                 </SectionField>
               )}
-              <SectionField>
-                <Label>{formatMessage(messages.attachmentsLabel)}</Label>
-                <FileUploader name="local_page_files" remoteFiles={files} />
-              </SectionField>
+              {!customPageBuilderEnabled && (
+                <SectionField>
+                  <Label>{formatMessage(messages.attachmentsLabel)}</Label>
+                  <FileUploader name="local_page_files" remoteFiles={files} />
+                </SectionField>
+              )}
               <Box
                 position="fixed"
                 borderTop={`1px solid ${colors.divider}`}
