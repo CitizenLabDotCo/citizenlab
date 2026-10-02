@@ -17,11 +17,11 @@ module ProjectGeneration
     end
 
     def self.allowed_by_default
-      false
+      true
     end
 
     def self.enabled_by_default
-      false
+      true
     end
   end
 end
