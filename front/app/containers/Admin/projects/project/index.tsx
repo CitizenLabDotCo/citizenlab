@@ -4,7 +4,6 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
-import usePhases from 'api/phases/usePhases';
 import { IProjectData } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 
@@ -28,9 +27,11 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
   const { data: authUser } = useAuthUser();
   const { phaseId } = useParams({ strict: false });
   const { data: phase } = usePhase(phaseId);
-  const { data: phases } = usePhases(project.id);
-  const workspaceEnabled = useProjectBackofficeRedesign();
   const aiProjectGeneratorEnabled = useAiProjectGenerator();
+  // The assistant lives in the redesigned workspace, so turning the assistant
+  // on turns the workspace on too — one switch shows the whole experience.
+  const workspaceEnabled =
+    useProjectBackofficeRedesign() || aiProjectGeneratorEnabled;
   const matchRoute = useMatchRoute();
   const onNewPhaseRoute = !!matchRoute({
     to: '/$locale/admin/projects/$projectId/phases/new',
@@ -39,13 +40,13 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
 
   const selectedPhase = phaseId ? phase?.data : undefined;
 
-  // The assistant takes the side panel of a fresh draft: a project you have
-  // just created from scratch, before any phase exists.
+  // The assistant takes the side panel of a draft project: one you have just
+  // created and not yet published. It stays available even after it drafts
+  // phases, so its result report keeps showing alongside the generated plan.
   const showAssistant =
     aiProjectGeneratorEnabled &&
     !selectedPhase &&
-    project.attributes.publication_status === 'draft' &&
-    (phases?.data.length ?? 0) === 0;
+    project.attributes.publication_status === 'draft';
 
   if (!canModerateProject(project, authUser)) {
     return null;
