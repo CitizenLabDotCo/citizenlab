@@ -3,7 +3,7 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { Helmet } from 'react-helmet-async';
 
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocale from 'hooks/useLocale';
 
 import {
   Container,
@@ -25,11 +25,9 @@ const DEFAULT_REPORT_URL =
 
 const AccessibilityStatement = () => {
   const { formatMessage } = useIntl();
-  const platformLocales = useAppConfigurationLocales();
-  const isDutchPlatform = !!platformLocales?.some(
-    (l) => l === 'nl-NL' || l === 'nl-BE'
-  );
-  const reportUrl = isDutchPlatform ? DUTCH_REPORT_URL : DEFAULT_REPORT_URL;
+  const locale = useLocale();
+  const isDutchLocale = locale === 'nl-NL' || locale === 'nl-BE';
+  const reportUrl = isDutchLocale ? DUTCH_REPORT_URL : DEFAULT_REPORT_URL;
 
   return (
     <>
