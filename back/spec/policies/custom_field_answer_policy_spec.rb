@@ -11,6 +11,7 @@ describe CustomFieldAnswerPolicy do
     let_it_be(:project) { create(:project_with_active_ideation_phase) }
     let_it_be(:form) { create(:custom_form, participation_context: project) }
     let_it_be(:field) { create(:custom_field, resource: form) }
+    let_it_be(:hidden_registration_field) { create(:custom_field, :for_registration, hidden: true) }
     let_it_be(:author) { create(:user) }
     let_it_be(:idea) { create(:idea, project: project, author: author) }
 
@@ -19,12 +20,13 @@ describe CustomFieldAnswerPolicy do
         question: build(:custom_field_answer, answerable: idea, custom_field: field, key: field.key),
         other_option: build(:custom_field_answer, answerable: idea, custom_field: field, key: "#{field.key}_other"),
         registration: build(:custom_field_answer, answerable: idea, custom_field: registration_field, key: 'u_gender'),
+        hidden_registration: build(:custom_field_answer, answerable: idea, custom_field: hidden_registration_field, key: "u_#{hidden_registration_field.key}"),
         unlinked: build(:custom_field_answer, answerable: idea, custom_field: nil, key: 'no_such_field')
       }
     end
 
     shared_examples 'sees no answers' do
-      %i[question other_option registration unlinked].each do |name|
+      %i[question other_option registration hidden_registration unlinked].each do |name|
         context "for the #{name} answer" do
           let(:answer) { answers[name] }
 
@@ -34,7 +36,7 @@ describe CustomFieldAnswerPolicy do
     end
 
     shared_examples 'sees all linked answers' do
-      { question: true, other_option: true, registration: true, unlinked: false }.each do |name, permitted|
+      { question: true, other_option: true, registration: true, hidden_registration: false, unlinked: false }.each do |name, permitted|
         context "for the #{name} answer" do
           let(:answer) { answers[name] }
 
