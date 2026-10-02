@@ -32,6 +32,12 @@ const StyledButton = styled.button`
   }
 `;
 
+const ReloadButton = styled(StyledButton)`
+  display: block;
+  margin: 20px auto 0;
+  text-decoration: underline;
+`;
+
 interface InputProps {
   children: React.ReactNode;
 }
@@ -46,6 +52,45 @@ type State = {
   hasError: boolean;
 };
 
+// Weglot rewrites text nodes inside React-managed DOM, which can crash React
+// renders. Recording whether it's active (and in which language) lets us tell
+// those crashes apart.
+const weglotLang = (): string | null => {
+  try {
+    return window.Weglot?.getCurrentLang() ?? null;
+  } catch {
+    return null;
+  }
+};
+
+const isFramed = (): boolean => {
+  try {
+    return window.self !== window.top;
+  } catch {
+    return true;
+  }
+};
+
+// Tags are indexed by Sentry, so these are the values worth filtering on.
+const errorBoundaryTags = () => ({
+  tenant_host: window.location.hostname,
+  route: window.location.pathname,
+  weglot_active: !!window.Weglot,
+  weglot_lang: weglotLang() ?? 'none',
+  in_iframe: isFramed(),
+});
+
+const errorBoundaryContext = () => ({
+  url: window.location.href,
+  user_agent: navigator.userAgent,
+  browser_languages: navigator.languages.join(', '),
+  document_lang: document.documentElement.lang,
+  viewport: `${window.innerWidth}x${window.innerHeight}`,
+  device_pixel_ratio: window.devicePixelRatio,
+  touch_points: navigator.maxTouchPoints,
+  seconds_since_page_load: Math.round(performance.now() / 1000),
+});
+
 class ErrorBoundary extends Component<Props & WrappedComponentProps, State> {
   constructor(props: Props & WrappedComponentProps) {
     super(props);
@@ -58,15 +103,23 @@ class ErrorBoundary extends Component<Props & WrappedComponentProps, State> {
   }
 
   componentDidCatch(error, errorInfo) {
-    // Report to Sentry
+    // Report to Sentry, with enough browser and page context to diagnose
+    // crashes we can't reproduce (e.g. device- or third-party-script-specific).
+    // See TAN-8719.
     withScope((scope) => {
       Object.keys(errorInfo).forEach((key) => {
         scope.setExtra(key, errorInfo[key]);
-        scope.setExtra('from', 'ErrorBoundary');
       });
+      scope.setExtra('from', 'ErrorBoundary');
+      scope.setTags(errorBoundaryTags());
+      scope.setContext('error_boundary', errorBoundaryContext());
       reportError(error);
     });
   }
+
+  reload = () => {
+    window.location.reload();
+  };
 
   openDialog = () => {
     const {
@@ -125,6 +178,9 @@ class ErrorBoundary extends Component<Props & WrappedComponentProps, State> {
               ),
             }}
           />
+          <ReloadButton onClick={this.reload}>
+            <FormattedMessage {...messages.reloadPage} />
+          </ReloadButton>
         </Container>
       );
     }
