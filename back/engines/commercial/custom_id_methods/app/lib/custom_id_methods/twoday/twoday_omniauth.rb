@@ -59,9 +59,5 @@ module CustomIdMethods::Twoday
     def issuer
       "https://#{host}"
     end
-
-    def updateable_user_attrs
-      super + %i[first_name last_name]
-    end
   end
 end
