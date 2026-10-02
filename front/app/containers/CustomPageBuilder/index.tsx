@@ -7,6 +7,7 @@ import useProjectById from 'api/projects/useProjectById';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { adminCustomPageSettingsPath } from 'containers/Admin/pagesAndMenu/routes';
+import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 import useEnsureCustomPageLayout from 'components/CustomPageBuilder/useEnsureCustomPageLayout';
 
@@ -36,7 +37,7 @@ const CustomPageBuilder = () => {
   const pageSlug = customPage.data.attributes.slug;
   const backPath = `${
     projectId
-      ? `/admin/projects/${projectId}/pages/${customPageId}`
+      ? `${adminProjectsProjectPath(projectId)}/pages/${customPageId}`
       : adminCustomPageSettingsPath(customPageId)
   }${window.location.search}`;
 
