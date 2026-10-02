@@ -1,6 +1,13 @@
 import React from 'react';
 
-import { Box, Text, Title, fontSizes } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  Text,
+  Title,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import { format, isSameDay, isThisYear } from 'date-fns';
 
 import useEvents from 'api/events/useEvents';
@@ -8,8 +15,6 @@ import useEvents from 'api/events/useEvents';
 import useLocalize from 'hooks/useLocalize';
 
 import {
-  Connector,
-  PhaseDot,
   Row,
   formatDateRange,
 } from 'containers/Admin/projects/project/projectPage/phaseRowUtils';
@@ -65,7 +70,7 @@ const TimelineEvents = ({ projectId }: Props) => {
       </Box>
 
       <Box display="flex" flexDirection="column">
-        {events.data.map((event, index) => {
+        {events.data.map((event) => {
           const { start_at, end_at, title_multiloc } = event.attributes;
           const status = pastPresentOrFuture([start_at, end_at]);
 
@@ -76,23 +81,29 @@ const TimelineEvents = ({ projectId }: Props) => {
               params={{ projectId, id: event.id }}
             >
               <Row selected={event.id === selectedEventId}>
-                {events.data.length > 1 && (
-                  <Connector
-                    isFirst={index === 0}
-                    isLast={index === events.data.length - 1}
-                  />
-                )}
-                <PhaseDot status={status} />
                 <Box flexGrow={1} pb="4px">
-                  <Text
-                    as="span"
-                    m="0"
-                    fontSize="s"
-                    color={status === 'past' ? 'textSecondary' : 'textPrimary'}
-                  >
-                    {localize(title_multiloc)}
-                  </Text>
-                  <Text m="2px 0 0 0" fontSize="xs" color="textSecondary">
+                  <Box display="flex" alignItems="center" gap="10px">
+                    <Icon
+                      name="calendar"
+                      width="16px"
+                      height="16px"
+                      fill={
+                        status === 'past' ? colors.coolGrey500 : colors.primary
+                      }
+                    />
+                    <Text
+                      as="span"
+                      m="0"
+                      fontSize="s"
+                      color={
+                        status === 'past' ? 'textSecondary' : 'textPrimary'
+                      }
+                    >
+                      {localize(title_multiloc)}
+                    </Text>
+                  </Box>
+                  {/* 26px = 16px icon + 10px gap, so the date lines up with the title */}
+                  <Text m="2px 0 0 26px" fontSize="xs" color="textSecondary">
                     {formatEventDate(start_at, end_at)}
                   </Text>
                 </Box>
