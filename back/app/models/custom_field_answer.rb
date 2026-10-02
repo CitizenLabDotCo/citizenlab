@@ -27,7 +27,8 @@ class CustomFieldAnswer < ApplicationRecord
   ANSWERABLE_TYPES = %w[Idea User].freeze
 
   belongs_to :answerable, polymorphic: true
-  # nil for legacy answers and for answers of an input moved to another project.
+  # nil for legacy answers, for answers of an input moved to another project, and for
+  # unknown keys written by the MCP demo tools.
   belongs_to :custom_field, optional: true
 
   # Only the answers under the field's own key, not its _other and _follow_up
