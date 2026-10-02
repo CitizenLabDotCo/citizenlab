@@ -1214,6 +1214,11 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+  "app.components.ErrorBoundary.reloadPage": {
+    "state": "verified",
+    "verified_at": "2026-10-02T14:09:45.587322Z",
+    "verified_by": "Pauline"
+  },
   "app.components.ErrorToast.budgetExceededError": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
