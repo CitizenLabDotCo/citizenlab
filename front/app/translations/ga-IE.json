@@ -239,7 +239,7 @@
   "app.components.ErrorBoundary.errorFormTitle": "Is cosúil go bhfuil fadhb ann.",
   "app.components.ErrorBoundary.genericErrorWithForm": "Tharla earráid agus ní féidir linn an t-ábhar seo a thaispeáint. Déan iarracht arís, nó {openForm}",
   "app.components.ErrorBoundary.openFormText": "cabhraigh linn é a réiteach",
-  "app.components.ErrorBoundary.reloadPage": "Athluchtaigh an leathanach",
+  "app.components.ErrorBoundary.reloadPage": "Athlódáil an leathanach",
   "app.components.ErrorToast.budgetExceededError": "Níl dóthain buiséid agat",
   "app.components.ErrorToast.votesExceededError": "Níl dóthain vótaí fágtha agat",
   "app.components.EsriMap.drawOnMap": "Tarraing",
