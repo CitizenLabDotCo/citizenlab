@@ -104,6 +104,16 @@ export default defineMessages({
     defaultMessage:
       'This will approve and publish all {numIdeas} imported inputs at once. You can still find them in the input manager afterwards.',
   },
+  confirmApproveAllExplanationInsights: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights',
+    defaultMessage:
+      'This will approve and publish all {numIdeas} imported responses at once. You can find them in the Insights tab of this phase afterwards.',
+  },
+  confirmApproveAllExplanationCommunityMonitor: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationCommunityMonitor',
+    defaultMessage:
+      'This will approve and publish all {numIdeas} imported responses at once. You can find them in the Live monitor tab of the Community Monitor afterwards.',
+  },
   confirmRemoveAll: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll',
     defaultMessage: 'Remove all inputs?',

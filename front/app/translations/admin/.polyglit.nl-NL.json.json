@@ -10564,6 +10564,16 @@
     "verified_at": "2026-04-20T15:54:43.275687Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationCommunityMonitor": {
+    "state": "verified",
+    "verified_at": "2026-10-02T14:11:00.133760Z",
+    "verified_by": "Pauline"
+  },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": {
+    "state": "verified",
+    "verified_at": "2026-09-28T07:13:03.940348Z",
+    "verified_by": "Pauline"
+  },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": {
     "state": "verified",
     "verified_at": "2026-04-20T15:54:43.275687Z",

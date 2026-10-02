@@ -10,6 +10,7 @@ import useDeleteAllDraftImportedIdeas from 'api/import_ideas/useDeleteAllDraftIm
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
 import useTrackImportJobProgress from 'api/import_ideas/useTrackImportJobProgress';
+import usePhase from 'api/phases/usePhase';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
@@ -25,6 +26,7 @@ import ImportStatus from './ImportStatus';
 import messages from './messages';
 import PDFViewer from './PDFViewer';
 import RecentlyApprovedList, { ApprovedIdea } from './RecentlyApprovedList';
+import { getApproveAllExplanationMessage } from './utils';
 
 const ReviewSection = ({
   onClickPDFImport,
@@ -70,6 +72,7 @@ const ReviewSection = ({
   const { mutate: deleteAllIdeas, isPending: isDeleting } =
     useDeleteAllDraftImportedIdeas();
 
+  const { data: phase } = usePhase(phaseId);
   const { data: idea } = useIdeaById(ideaId ?? undefined, false);
   const { data: ideaMetadata } = useImportedIdeaMetadata({
     id: isLoadingIdeas
@@ -286,9 +289,12 @@ const ReviewSection = ({
         }
         explanation={
           confirmAction === 'approveAll'
-            ? formatMessage(messages.confirmApproveAllExplanation, {
-                numIdeas,
-              })
+            ? formatMessage(
+                getApproveAllExplanationMessage(
+                  phase?.data.attributes.participation_method
+                ),
+                { numIdeas }
+              )
             : formatMessage(messages.confirmRemoveAllExplanation)
         }
         onClose={() => setConfirmAction(null)}

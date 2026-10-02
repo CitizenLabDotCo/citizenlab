@@ -10119,6 +10119,16 @@
     "verified_at": "2026-04-20T13:09:16.012100Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationCommunityMonitor": {
+    "state": "verified",
+    "verified_at": "2026-10-02T08:42:44.325401Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": {
+    "state": "verified",
+    "verified_at": "2026-09-28T08:41:41.220090Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": {
     "state": "verified",
     "verified_at": "2026-04-20T13:09:16.012100Z",
