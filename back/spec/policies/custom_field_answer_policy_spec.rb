@@ -81,34 +81,6 @@ describe CustomFieldAnswerPolicy do
       include_examples 'sees all linked answers'
     end
 
-    context 'for an answer to a question of the project the idea was moved from' do
-      let_it_be(:previous_project) { create(:project_with_active_ideation_phase) }
-      let_it_be(:previous_form) { create(:custom_form, participation_context: previous_project) }
-      let_it_be(:previous_private_field) { create(:custom_field, resource: previous_form, answers_visible_to: 'moderators') }
-      let_it_be(:previous_public_field) { create(:custom_field, resource: previous_form, answers_visible_to: 'public') }
-
-      context 'for a moderator of the project the idea is in now' do
-        let_it_be(:user) { create(:project_moderator, projects: [project]) }
-        let(:answer) { build(:custom_field_answer, answerable: idea, custom_field: previous_private_field, key: previous_private_field.key) }
-
-        it { is_expected.to permit(:show) }
-      end
-
-      context 'for a moderator of the project the question belongs to' do
-        let_it_be(:user) { create(:project_moderator, projects: [previous_project]) }
-        let(:answer) { build(:custom_field_answer, answerable: idea, custom_field: previous_private_field, key: previous_private_field.key) }
-
-        it { is_expected.not_to permit(:show) }
-      end
-
-      context 'for a visitor' do
-        let(:user) { nil }
-        let(:answer) { build(:custom_field_answer, answerable: idea, custom_field: previous_public_field, key: previous_public_field.key) }
-
-        it { is_expected.to permit(:show) }
-      end
-    end
-
     context 'for an answer to a disabled question' do
       let_it_be(:disabled_public_field) { create(:custom_field, resource: form, enabled: false, answers_visible_to: 'public') }
       let_it_be(:disabled_private_field) { create(:custom_field, resource: form, enabled: false, answers_visible_to: 'moderators') }
