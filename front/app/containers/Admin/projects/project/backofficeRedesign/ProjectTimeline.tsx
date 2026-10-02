@@ -20,18 +20,20 @@ const ProjectTimeline = ({ projectId }: Props) => {
 
   return (
     <Box py="24px" px="16px">
-      <TimelinePhases
-        projectId={projectId}
-        heading={
-          <Box px="8px" mb="12px">
-            <Title variant="h4" fontSize="s" fontWeight="semi-bold" m="0">
-              {formatMessage(messages.participationMethods)}
-            </Title>
-          </Box>
-        }
-        onNewPhase={() => setMethodModalOpened(true)}
-        withPhaseOptions
-      />
+      <Box className="intercom-product-tour-project-timeline">
+        <TimelinePhases
+          projectId={projectId}
+          heading={
+            <Box px="8px" mb="12px">
+              <Title variant="h4" fontSize="s" fontWeight="semi-bold" m="0">
+                {formatMessage(messages.participationMethods)}
+              </Title>
+            </Box>
+          }
+          onNewPhase={() => setMethodModalOpened(true)}
+          withPhaseOptions
+        />
+      </Box>
       <Box mx="8px" my="24px" borderTop={`1px solid ${colors.grey200}`} />
       <TimelineEvents projectId={projectId} />
       <SelectMethodModal

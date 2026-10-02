@@ -1,20 +1,16 @@
 import messages from '../messages';
 
-export const LINKED_SECTIONS = [
-  {
-    path: 'files',
-    label: messages.filesSection,
-    to: '/admin/projects/$projectId/files',
-  },
-] as const;
-
 const SECTIONS = [
   {
     path: 'events',
     label: messages.eventsSection,
     to: '/admin/projects/$projectId/events',
   },
-  ...LINKED_SECTIONS,
+  {
+    path: 'files',
+    label: messages.filesSection,
+    to: '/admin/projects/$projectId/files',
+  },
   {
     path: 'messaging',
     label: messages.messagingSection,

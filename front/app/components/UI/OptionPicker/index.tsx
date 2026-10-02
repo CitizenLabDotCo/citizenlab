@@ -74,10 +74,11 @@ interface Props<T extends string> {
   title: string;
   description: string;
   options: PickerOption<T>[];
-  value: T;
+  value?: T;
   onChange: (value: T) => void;
   searchPlaceholder?: string;
   triggerLabel?: string;
+  triggerIcon?: IconNames;
   keepOpenFor?: T;
   children?: React.ReactNode;
 }
@@ -90,6 +91,7 @@ const OptionPicker = <T extends string>({
   onChange,
   searchPlaceholder,
   triggerLabel,
+  triggerIcon,
   keepOpenFor,
   children,
 }: Props<T>) => {
@@ -128,6 +130,7 @@ const OptionPicker = <T extends string>({
   };
 
   const selected = options.find((option) => option.value === value);
+  const icon = triggerIcon ?? selected?.icon;
 
   const query = search.trim().toLowerCase();
   const visibleOptions = options.filter((option) =>
@@ -157,9 +160,9 @@ const OptionPicker = <T extends string>({
         onClick={() => (opened ? close() : setOpened(true))}
       >
         <TriggerContent display="flex" alignItems="center" gap="8px">
-          {selected && (
+          {icon && (
             <Icon
-              name={selected.icon}
+              name={icon}
               width="16px"
               height="16px"
               fill={colors.coolGrey500}

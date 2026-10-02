@@ -94,6 +94,23 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.filesSection',
     defaultMessage: '360 Input',
   },
+  filesDescription: {
+    id: 'app.containers.Admin.projects.project.filesDescription',
+    defaultMessage:
+      'Documents and recordings added to this project as extra input.',
+  },
+  noAttachments: {
+    id: 'app.containers.Admin.projects.project.noAttachments',
+    defaultMessage: 'No attachments',
+  },
+  filesCount: {
+    id: 'app.containers.Admin.projects.project.filesCount',
+    defaultMessage: '{count, plural, one {# file} other {# files}}',
+  },
+  addFiles: {
+    id: 'app.containers.Admin.projects.project.addFiles',
+    defaultMessage: 'Add files',
+  },
   messagingSection: {
     id: 'app.containers.Admin.projects.project.messagingSection',
     defaultMessage: 'Messaging',

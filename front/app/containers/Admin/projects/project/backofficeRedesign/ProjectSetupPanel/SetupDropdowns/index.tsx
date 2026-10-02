@@ -22,6 +22,7 @@ import PanelHeading from '../PanelHeading';
 
 import AreaFilterDropdown from './AreaFilterDropdown';
 import ContextDropdowns from './ContextDropdowns';
+import FilesDropdown from './FilesDropdown';
 
 interface Props {
   project: IProjectData;
@@ -80,6 +81,9 @@ const SetupDropdowns = ({ project }: Props) => {
       <Divider />
 
       <AreaFilterDropdown project={project} />
+      <Divider />
+
+      <FilesDropdown projectId={project.id} />
     </Box>
   );
 };

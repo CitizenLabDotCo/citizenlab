@@ -77,7 +77,7 @@ const TimelinePhases = ({
   const noEndLabel = formatMessage(messages.phaseNoEndDate);
 
   return (
-    <Box className="intercom-product-tour-project-timeline">
+    <Box>
       {heading ?? (
         <Text
           m="0 0 8px 0"
