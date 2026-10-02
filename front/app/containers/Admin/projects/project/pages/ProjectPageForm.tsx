@@ -28,7 +28,9 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
+import PageWrapper from 'components/admin/PageWrapper';
 import { SectionField } from 'components/admin/Section';
+import StickyContainer from 'components/admin/StickyContainer';
 import Feedback from 'components/HookForm/Feedback';
 import FileUploader from 'components/HookForm/FileUploader';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
@@ -73,7 +75,6 @@ const ProjectPageForm = ({ project, page }: Props) => {
   const { mutateAsync: addPageFile } = useAddPageFile();
   const { mutateAsync: deletePageFile } = useDeletePageFile();
   const [files, setFiles] = useState<UploadFile[]>([]);
-  // With the builder on, the page's body and its files are handled there.
   const customPageBuilderEnabled = useFeatureFlag({
     name: 'custom_page_builder',
   });
@@ -178,87 +179,117 @@ const ProjectPageForm = ({ project, page }: Props) => {
     }
   };
 
-  return (
-    // With the builder on, the surrounding page shows the breadcrumbs, title and view button.
-    <Box
-      mt={customPageBuilderEnabled ? undefined : '44px'}
-      mx={customPageBuilderEnabled ? undefined : '44px'}
+  const feedback = (
+    <Feedback
+      successMessage={
+        isEditing ? formatMessage(messages.saveSuccess) : undefined
+      }
+    />
+  );
+
+  const titleAndSlugFields = (
+    <>
+      <SectionField>
+        <InputMultilocWithLocaleSwitcher
+          name="title_multiloc"
+          label={formatMessage(messages.titleLabel)}
+        />
+      </SectionField>
+      {isEditing && (
+        <SectionField>
+          <SlugInput
+            slug={slug}
+            showWarningMessage={slugHasChanged}
+            previewUrl={previewUrl}
+          />
+        </SectionField>
+      )}
+    </>
+  );
+
+  const submitButton = (
+    <Button
+      type="submit"
+      processing={methods.formState.isSubmitting}
+      disabled={!methods.formState.isDirty}
+      bgColor={colors.blue500}
+      dataCy={isEditing ? 'e2e-save-project-page' : 'e2e-create-project-page'}
     >
+      {isEditing
+        ? formatMessage(messages.saveButton)
+        : formatMessage(messages.createButton)}
+    </Button>
+  );
+
+  // With the builder on, the body and files are authored there, and the surrounding page shows
+  // the breadcrumbs, title and view button: the form is the custom page settings card.
+  if (customPageBuilderEnabled) {
+    return (
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <PageWrapper flatTopBorder>
+            {feedback}
+            {titleAndSlugFields}
+            <StickyContainer>
+              <Box display="flex">{submitButton}</Box>
+            </StickyContainer>
+          </PageWrapper>
+        </form>
+      </FormProvider>
+    );
+  }
+
+  return (
+    <Box mt="44px" mx="44px">
       <Box bg={colors.white} borderRadius={stylingConsts.borderRadius} p="44px">
         <Box ref={containerRef}>
-          {!customPageBuilderEnabled && (
-            <>
-              <Box mb="16px">
-                <GoBackButton
-                  to="/admin/projects/$projectId/pages"
-                  params={{ projectId: project.id }}
-                />
-              </Box>
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                mb="16px"
+          <Box mb="16px">
+            <GoBackButton
+              to="/admin/projects/$projectId/pages"
+              params={{ projectId: project.id }}
+            />
+          </Box>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            mb="16px"
+          >
+            <Title variant="h2">
+              {isEditing
+                ? localize(page.attributes.title_multiloc)
+                : formatMessage(messages.newPageTitle)}
+            </Title>
+            {isEditing && (
+              <ButtonWithLink
+                buttonStyle="secondary-outlined"
+                icon="eye"
+                openLinkInNewTab
+                to="/projects/$slug/pages/$pageSlug"
+                params={{
+                  slug: project.attributes.slug,
+                  pageSlug: page.attributes.slug,
+                }}
               >
-                <Title variant="h2">
-                  {isEditing
-                    ? localize(page.attributes.title_multiloc)
-                    : formatMessage(messages.newPageTitle)}
-                </Title>
-                {isEditing && (
-                  <ButtonWithLink
-                    buttonStyle="secondary-outlined"
-                    icon="eye"
-                    openLinkInNewTab
-                    to="/projects/$slug/pages/$pageSlug"
-                    params={{
-                      slug: project.attributes.slug,
-                      pageSlug: page.attributes.slug,
-                    }}
-                  >
-                    {formatMessage(messages.viewPage)}
-                  </ButtonWithLink>
-                )}
-              </Box>
-            </>
-          )}
+                {formatMessage(messages.viewPage)}
+              </ButtonWithLink>
+            )}
+          </Box>
           <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(onSubmit)}>
-              <Feedback
-                successMessage={
-                  isEditing ? formatMessage(messages.saveSuccess) : undefined
-                }
-              />
+              {feedback}
+              {titleAndSlugFields}
               <SectionField>
-                <InputMultilocWithLocaleSwitcher
-                  name="title_multiloc"
-                  label={formatMessage(messages.titleLabel)}
+                <QuillMultilocWithLocaleSwitcher
+                  name="top_info_section_multiloc"
+                  label={formatMessage(messages.contentLabel)}
+                  withCTAButton
                 />
               </SectionField>
-              {isEditing && (
-                <SectionField>
-                  <SlugInput
-                    slug={slug}
-                    showWarningMessage={slugHasChanged}
-                    previewUrl={previewUrl}
-                  />
-                </SectionField>
-              )}
-              {!customPageBuilderEnabled && (
-                <SectionField>
-                  <QuillMultilocWithLocaleSwitcher
-                    name="top_info_section_multiloc"
-                    label={formatMessage(messages.contentLabel)}
-                    withCTAButton
-                  />
-                </SectionField>
-              )}
-              {!customPageBuilderEnabled && (
-                <SectionField>
-                  <Label>{formatMessage(messages.attachmentsLabel)}</Label>
-                  <FileUploader name="local_page_files" remoteFiles={files} />
-                </SectionField>
-              )}
+              <SectionField>
+                <Label>{formatMessage(messages.attachmentsLabel)}</Label>
+                <FileUploader name="local_page_files" remoteFiles={files} />
+              </SectionField>
               <Box
                 position="fixed"
                 borderTop={`1px solid ${colors.divider}`}
@@ -270,21 +301,7 @@ const ProjectPageForm = ({ project, page }: Props) => {
                 justifyContent="flex-start"
               >
                 <Box py="8px" px={`${defaultAdminCardPadding}px`}>
-                  <Button
-                    type="submit"
-                    processing={methods.formState.isSubmitting}
-                    disabled={!methods.formState.isDirty}
-                    bgColor={colors.blue500}
-                    dataCy={
-                      isEditing
-                        ? 'e2e-save-project-page'
-                        : 'e2e-create-project-page'
-                    }
-                  >
-                    {isEditing
-                      ? formatMessage(messages.saveButton)
-                      : formatMessage(messages.createButton)}
-                  </Button>
+                  {submitButton}
                 </Box>
               </Box>
             </form>
