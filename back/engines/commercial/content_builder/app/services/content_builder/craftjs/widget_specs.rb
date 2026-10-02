@@ -130,6 +130,8 @@ module ContentBuilder
         'FollowedItems' => {},
         'OpenToParticipation' => {},
         'FinishedOrArchived' => {},
+        'Selection' => {},
+        'CustomPages' => {},
         'Spotlight' => { 'enums' => { 'publicationType' => %w[project folder] } }
       }.freeze
 

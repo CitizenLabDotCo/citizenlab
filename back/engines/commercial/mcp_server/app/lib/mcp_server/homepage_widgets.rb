@@ -64,6 +64,25 @@ class McpServer::HomepageWidgets
     'FinishedOrArchived' => <<~DOC,
       FinishedOrArchived — finished or archived projects. Renders automatically; no ids needed.
     DOC
+    'Selection' => <<~DOC,
+      Selection — a curated list of specific projects and folders you choose.
+        props: {"adminPublicationIds":["<admin_publication id>", ...]} (array order = display order)
+        Get the ids from list_admin_publications — these are admin-publication ids, a DIFFERENT id
+        space from project/folder ids.
+    DOC
+    'CustomPages' => <<~DOC,
+      CustomPages — tiles linking to the platform's custom pages.
+        props: {"customPages":[{"id":"<static page id>","icon":"<optional icon>","image":{"imageUrl":"<public url>"}}]}
+        Get each id from list_custom_pages. icon and image are optional per page (new image =
+        imageUrl, existing = keep dataCode).
+    DOC
+    'EventsList' => <<~DOC,
+      EventsList — upcoming and past events across a chosen scope.
+        props: {"source":"all"|"projects"|"areas"|"global_topics"|"spaces","ids":["<id>", ...]}
+        source "all" needs no ids. "projects" → project ids (list_projects), "areas" → area ids
+        (list_areas), "global_topics" → topic ids (list_global_topics), "spaces" → space ids
+        (list_spaces; only when the spaces feature is enabled). Renders the matching events automatically.
+    DOC
     'Spotlight' => <<~DOC
       Spotlight — highlights one project or folder.
         props: {"publicationId":"<project or folder id>","publicationType":"project"|"folder", ...text multilocs}
