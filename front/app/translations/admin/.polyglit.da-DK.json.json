@@ -6854,6 +6854,11 @@
     "verified_at": "2026-07-14T16:35:52.450315Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.containers.Admin.messaging.smsUpsellTooltip2": {
+    "state": "verified",
+    "verified_at": "2026-09-25T09:17:32.228163Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Admin.messaging.tabSms": {
     "state": "verified",
     "verified_at": "2026-07-14T16:35:52.450315Z",
@@ -23569,6 +23574,11 @@
     "verified_at": "2026-09-07T11:01:59.649684Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.notConfigured": {
+    "state": "verified",
+    "verified_at": "2026-09-25T09:17:32.228163Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordAvailableDescription2": {
     "state": "verified",
     "verified_at": "2026-09-07T11:01:59.649684Z",
@@ -23582,6 +23592,11 @@
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.passwordOnlyForEmailSignupTooltip2": {
     "state": "verified",
     "verified_at": "2026-09-07T11:01:59.649684Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.phoneUpsellTooltip2": {
+    "state": "verified",
+    "verified_at": "2026-09-25T09:17:32.228163Z",
     "verified_by": "kielgast@govocal.com"
   },
   "front.app.components.admin.ActionForm.AccessSections.SecurityChecksSection.securityChecks2": {
