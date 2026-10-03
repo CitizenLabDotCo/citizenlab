@@ -809,6 +809,11 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+  "app.components.CustomFieldsForm.atLeastOnePinRequired": {
+    "state": "verified",
+    "verified_at": "2026-10-01T15:04:20.294947Z",
+    "verified_by": "Pauline"
+  },
   "app.components.CustomFieldsForm.atLeastThreePointsRequired": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
@@ -853,6 +858,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
+  },
+  "app.components.CustomFieldsForm.clickOnMapToAddMultiplePins": {
+    "state": "verified",
+    "verified_at": "2026-10-01T15:04:20.294947Z",
+    "verified_by": "Pauline"
   },
   "app.components.CustomFieldsForm.clickOnMapToAddOrType": {
     "state": "verified",
@@ -919,10 +929,20 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+  "app.components.CustomFieldsForm.maximumPinsAllowed": {
+    "state": "verified",
+    "verified_at": "2026-10-01T15:04:20.294947Z",
+    "verified_by": "Pauline"
+  },
   "app.components.CustomFieldsForm.minimumCoordinates2": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
+  },
+  "app.components.CustomFieldsForm.minimumPinsRequired": {
+    "state": "verified",
+    "verified_at": "2026-10-01T15:04:20.294947Z",
+    "verified_by": "Pauline"
   },
   "app.components.CustomFieldsForm.notPublic1": {
     "state": "verified",
@@ -994,6 +1014,11 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+  "app.components.CustomFieldsForm.tapOnMapToAddMultiplePins": {
+    "state": "verified",
+    "verified_at": "2026-10-01T15:04:20.294947Z",
+    "verified_by": "Pauline"
+  },
   "app.components.CustomFieldsForm.tapOnMapToAddOrType": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
@@ -1013,6 +1038,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
+  },
+  "app.components.CustomFieldsForm.tapToAddPins": {
+    "state": "verified",
+    "verified_at": "2026-10-01T15:04:20.294947Z",
+    "verified_by": "Pauline"
   },
   "app.components.CustomFieldsForm.titleMaxLength": {
     "state": "verified",
@@ -5034,6 +5064,11 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+  "app.components.formBuilder.dropMultiplePins": {
+    "state": "verified",
+    "verified_at": "2026-10-01T15:04:20.294947Z",
+    "verified_by": "Pauline"
+  },
   "app.components.formBuilder.dropPin": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
@@ -5284,6 +5319,16 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+  "app.components.formBuilder.limitNumberPins": {
+    "state": "verified",
+    "verified_at": "2026-10-01T15:04:20.294947Z",
+    "verified_by": "Pauline"
+  },
+  "app.components.formBuilder.limitNumberPinsTooltip": {
+    "state": "verified",
+    "verified_at": "2026-10-01T15:04:20.294947Z",
+    "verified_by": "Pauline"
+  },
   "app.components.formBuilder.limitNumberTags": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
@@ -5518,6 +5563,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
+  },
+  "app.components.formBuilder.pinCount.maximum": {
+    "state": "verified",
+    "verified_at": "2026-10-01T15:04:20.294947Z",
+    "verified_by": "Pauline"
+  },
+  "app.components.formBuilder.pinCount.minimum": {
+    "state": "verified",
+    "verified_at": "2026-10-01T15:04:20.294947Z",
+    "verified_by": "Pauline"
   },
   "app.components.formBuilder.preview": {
     "state": "verified",

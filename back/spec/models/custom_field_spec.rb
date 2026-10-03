@@ -75,6 +75,10 @@ class TestVisitor < FieldVisitorService
     'polygon from visitor'
   end
 
+  def visit_multipoint(_field)
+    'multipoint from visitor'
+  end
+
   def visit_linear_scale(_field)
     'linear_scale from visitor'
   end
@@ -555,6 +559,44 @@ RSpec.describe CustomField do
         field.minimum_select_count = nil
         field.maximum_select_count = nil
         expect(field.valid?).to be true
+      end
+    end
+  end
+
+  describe 'multipoint field with pin counts' do
+    let(:project) { create(:single_phase_native_survey_project) }
+    let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
+    let(:field) { create(:custom_field_multipoint, resource: custom_form, select_count_enabled: true) }
+
+    it 'supports select counts' do
+      expect(field.supports_select_count?).to be true
+    end
+
+    it 'accepts a minimum and maximum number of pins' do
+      field.minimum_select_count = 2
+      field.maximum_select_count = 5
+      expect(field.valid?).to be true
+    end
+
+    it 'cannot have maximum_select_count less than minimum_select_count' do
+      field.minimum_select_count = 5
+      field.maximum_select_count = 3
+      expect(field.valid?).to be false
+      expect(field.errors[:maximum_select_count]).to be_present
+    end
+
+    it 'cannot have minimum_select_count less than 0' do
+      field.minimum_select_count = -1
+      expect(field.valid?).to be false
+    end
+
+    context 'when select_count_enabled is false' do
+      before { field.select_count_enabled = false }
+
+      it 'cannot set the pin counts' do
+        field.minimum_select_count = 2
+        expect(field.valid?).to be false
+        expect(field.errors[:minimum_select_count]).to be_present
       end
     end
   end

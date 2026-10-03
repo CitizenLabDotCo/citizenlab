@@ -52,6 +52,7 @@ export const nativeSurveyConfig: FormBuilderConfig = {
     'point',
     'line',
     'polygon',
+    'multipoint',
   ],
   formCustomFields: undefined,
 

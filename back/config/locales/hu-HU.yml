@@ -180,6 +180,7 @@ hu-HU:
       logic_no_further_questions: A válaszai alapján <strong>nem kell</strong> további kérdésekre válaszolnia.
       logic_section: '%{letter}. szakasz'
       matrix_print_description: Minden sorban jelöljön meg egy kört egy kereszttel a preferenciája jelzésére.
+      multipoint_print_description: Kérjük, rajzoljon egy X-et az alábbi térképre minden egyes hozzáadni kívánt helyszínhez.
       optional: választható
       page: oldal
       permission: Engedély

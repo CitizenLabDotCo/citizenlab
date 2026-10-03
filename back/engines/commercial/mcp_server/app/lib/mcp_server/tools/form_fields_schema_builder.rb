@@ -129,7 +129,8 @@ class McpServer::Tools::FormFieldsSchemaBuilder
 
           - native_survey: page, number, linear_scale, rating, text, multiline_text,
             select, multiselect, multiselect_image, file_upload, shapefile_upload,
-            point, line, polygon, ranking, matrix_linear_scale, sentiment_linear_scale
+            point, line, polygon, multipoint, ranking, matrix_linear_scale,
+            sentiment_linear_scale
           - ideation: page, number, linear_scale, rating, text, multiline_text,
             select, multiselect, multiselect_image, ranking, sentiment_linear_scale,
             matrix_linear_scale
@@ -140,7 +141,7 @@ class McpServer::Tools::FormFieldsSchemaBuilder
         DESC
         enum: %w[
           page number linear_scale rating text multiline_text select multiselect
-          multiselect_image file_upload shapefile_upload point line polygon
+          multiselect_image file_upload shapefile_upload point line polygon multipoint
           ranking matrix_linear_scale sentiment_linear_scale
 
           text_multiloc html_multiloc image_files files topic_ids
@@ -246,8 +247,8 @@ class McpServer::Tools::FormFieldsSchemaBuilder
       map_config_id: {
         type: %w[string null],
         description: <<~DESC.squish
-          Only for point / line / polygon, and for map-layout pages. UUID of an existing
-          CustomMaps::MapConfig. Must reference a MapConfig that already exists.
+          Only for point / line / polygon / multipoint, and for map-layout pages. UUID of
+          an existing CustomMaps::MapConfig. Must reference a MapConfig that already exists.
         DESC
       },
 

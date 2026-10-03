@@ -180,6 +180,7 @@ ca-ES:
       logic_no_further_questions: Segons les vostres respostes, <strong>no cal</strong> que respongueu cap més pregunta.
       logic_section: Secció %{letter}
       matrix_print_description: Per a cada fila, marqueu un cercle amb una creu per indicar la vostra preferència.
+      multipoint_print_description: Dibuixa una X al mapa següent per a cada ubicació que vulguis afegir.
       optional: opcional
       page: Pàgina
       permission: Permís

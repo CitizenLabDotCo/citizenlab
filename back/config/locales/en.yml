@@ -353,6 +353,7 @@ en:
       point_print_description: 'Please draw an X on the map below to show the location or write the address instead.'
       line_print_description: 'Please draw a route on the map below.'
       polygon_print_description: 'Please draw a shape on the map below.'
+      multipoint_print_description: 'Please draw an X on the map below for each location you want to add.'
       select_print_description: 'Only choose one option.'
       date_print_description: 'Please write a date in the format YYYY-MM-DD.'
       logic_section: 'Section %{letter}'

@@ -180,6 +180,7 @@ fi-FI:
       logic_no_further_questions: Vastaustesi perusteella sinun <strong>ei tarvitse</strong> vastata muihin kysymyksiin.
       logic_section: Osio %{letter}
       matrix_print_description: Merkitse jokaiselle riville yksi ympyrä ristillä osoittaaksesi mieltymyksesi.
+      multipoint_print_description: Merkitse rasti (X) alla olevaan karttaan jokaisen lisättävän sijainnin kohdalle.
       optional: valinnainen
       page: Sivu
       permission: Lupa

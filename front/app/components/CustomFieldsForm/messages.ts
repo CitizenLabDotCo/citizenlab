@@ -143,6 +143,10 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.tapOnMapMultipleToAdd3',
     defaultMessage: 'Tap on the map to add your answer.',
   },
+  tapOnMapToAddMultiplePins: {
+    id: 'app.components.CustomFieldsForm.tapOnMapToAddMultiplePins',
+    defaultMessage: 'Tap on the map to add locations.',
+  },
   tapOnFullscreenMapToAddPoint: {
     id: 'app.components.CustomFieldsForm.tapOnFullscreenMapToAddPoint',
     defaultMessage: 'Tap on the map to draw.',
@@ -161,6 +165,11 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.clickOnMapMultipleToAdd3',
     defaultMessage:
       'Click on the map to draw. Then, drag on points to move them.',
+  },
+  clickOnMapToAddMultiplePins: {
+    id: 'app.components.CustomFieldsForm.clickOnMapToAddMultiplePins',
+    defaultMessage:
+      'Click on the map to add locations. Then, drag on points to move them.',
   },
   minimumCoordinates: {
     id: 'app.components.CustomFieldsForm.minimumCoordinates2',
@@ -186,6 +195,10 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.tapToAddAnArea',
     defaultMessage: 'Tap to add an area',
   },
+  tapToAddPins: {
+    id: 'app.components.CustomFieldsForm.tapToAddPins',
+    defaultMessage: 'Tap to add locations',
+  },
   back: {
     id: 'app.components.CustomFieldsForm.back',
     defaultMessage: 'Back',
@@ -205,6 +218,20 @@ export default defineMessages({
   atLeastThreePointsRequired: {
     id: 'app.components.CustomFieldsForm.atLeastThreePointsRequired',
     defaultMessage: 'At least three points are required for a polygon.',
+  },
+  atLeastOnePinRequired: {
+    id: 'app.components.CustomFieldsForm.atLeastOnePinRequired',
+    defaultMessage: 'At least one location is required.',
+  },
+  minimumPinsRequired: {
+    id: 'app.components.CustomFieldsForm.minimumPinsRequired',
+    defaultMessage:
+      'Add at least {minPins, plural, one {# location} other {# locations}}.',
+  },
+  maximumPinsAllowed: {
+    id: 'app.components.CustomFieldsForm.maximumPinsAllowed',
+    defaultMessage:
+      'Add no more than {maxPins, plural, one {# location} other {# locations}}.',
   },
   fileSizeLimit: {
     id: 'app.components.CustomFieldsForm.fileSizeLimit',
