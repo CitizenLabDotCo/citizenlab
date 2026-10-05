@@ -1304,7 +1304,6 @@
   "app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.youSaidWeDid": "Εσείς είπατε, εμείς κάναμε...",
   "app.containers.Admin.pagesAndMenu.components.PagesMenuTabs.menuTab": "Μενού",
   "app.containers.Admin.pagesAndMenu.components.PagesMenuTabs.pagesTab": "Σελίδες",
-  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTADescription": "Αυτό το widget θα είναι ορατό στην Αρχική σελίδα μόνο όταν το Community Monitor δέχεται απαντήσεις.",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTATitle2": "Επόπτης Κοινότητας",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorDescription": "Περιγραφή",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorSubmitBtnText": "Κουμπί",

@@ -1304,7 +1304,6 @@
   "app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.youSaidWeDid": "Sanoit, teimme...",
   "app.containers.Admin.pagesAndMenu.components.PagesMenuTabs.menuTab": "Valikko",
   "app.containers.Admin.pagesAndMenu.components.PagesMenuTabs.pagesTab": "Sivut",
-  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTADescription": "Tämä widget näkyy vain kotisivulla, kun Community Monitor hyväksyy vastauksia.",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTATitle2": "Yhteisön valvonta",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorDescription": "Kuvaus",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorSubmitBtnText": "Painike",

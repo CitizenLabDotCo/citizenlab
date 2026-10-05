@@ -1304,7 +1304,6 @@
   "app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.youSaidWeDid": "Önök mondták, mi megvalósítottuk...",
   "app.containers.Admin.pagesAndMenu.components.PagesMenuTabs.menuTab": "Menü",
   "app.containers.Admin.pagesAndMenu.components.PagesMenuTabs.pagesTab": "Oldalak",
-  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTADescription": "Ez a widget csak akkor lesz látható a kezdőlapon, amikor a Közösségi Monitor válaszokat fogad.",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTATitle2": "Közösségi monitor",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorDescription": "Leírás",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorSubmitBtnText": "Gomb",

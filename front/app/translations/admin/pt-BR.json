@@ -1304,7 +1304,6 @@
   "app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.youSaidWeDid": "Você disse, nós fizemos...",
   "app.containers.Admin.pagesAndMenu.components.PagesMenuTabs.menuTab": "Menu",
   "app.containers.Admin.pagesAndMenu.components.PagesMenuTabs.pagesTab": "Páginas",
-  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTADescription": "Esse widget só ficará visível na página inicial quando o Monitor da comunidade estiver aceitando respostas.",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTATitle2": "Monitor da comunidade",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorDescription": "Descrição",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorSubmitBtnText": "Botão",

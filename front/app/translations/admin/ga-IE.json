@@ -1304,7 +1304,6 @@
   "app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.youSaidWeDid": "Dúirt tú, rinneamar...",
   "app.containers.Admin.pagesAndMenu.components.PagesMenuTabs.menuTab": "Roghchlár",
   "app.containers.Admin.pagesAndMenu.components.PagesMenuTabs.pagesTab": "Leathanaigh",
-  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTADescription": "Ní bheidh an giuirléid seo le feiceáil ar an Leathanach Baile ach amháin nuair a bheidh an Monatóir Pobail ag glacadh le freagraí.",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTATitle2": "Monatóir Pobail",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorDescription": "Cur síos",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorSubmitBtnText": "Cnaipe",
