@@ -2056,7 +2056,6 @@
   "app.containers.Admin.projects.project.saveToEditForm": "Sábháil an chéim chun ceisteanna a chur leis agus ionchur as líne a iompórtáil.",
   "app.containers.Admin.projects.project.saveToEditSettings": "Beidh cearta rochtana, fógraí agus socruithe eile ar fáil nuair a shábhálann tú an chéim.",
   "app.containers.Admin.projects.project.selectMethodContinue": "Lean ar aghaidh",
-  "app.containers.Admin.projects.project.settingsCancel": "Cealaigh",
   "app.containers.Admin.projects.project.settingsFrontOffice": "Oifig tosaigh",
   "app.containers.Admin.projects.project.settingsGeneral": "Ginearálta",
   "app.containers.Admin.projects.project.settingsIdeaTags": "Clibeanna smaointe",

@@ -2056,7 +2056,6 @@
   "app.containers.Admin.projects.project.saveToEditForm": "Lagre fasen for å legge til spørsmål og importere offline-innspill.",
   "app.containers.Admin.projects.project.saveToEditSettings": "Tilgangsrettigheter, varslinger og andre innstillinger blir tilgjengelige når du lagrer fasen.",
   "app.containers.Admin.projects.project.selectMethodContinue": "Fortsett",
-  "app.containers.Admin.projects.project.settingsCancel": "Avbryt",
   "app.containers.Admin.projects.project.settingsFrontOffice": "Publikumsvisning",
   "app.containers.Admin.projects.project.settingsGeneral": "Generelt",
   "app.containers.Admin.projects.project.settingsIdeaTags": "Idétagger",

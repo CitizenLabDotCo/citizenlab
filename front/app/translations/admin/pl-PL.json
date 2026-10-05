@@ -2056,7 +2056,6 @@
   "app.containers.Admin.projects.project.saveToEditForm": "Zapisz etap, aby dodać pytania i zaimportować dane zebrane offline.",
   "app.containers.Admin.projects.project.saveToEditSettings": "Prawa dostępu, powiadomienia i inne ustawienia staną się dostępne po zapisaniu fazy.",
   "app.containers.Admin.projects.project.selectMethodContinue": "Kontynuuj",
-  "app.containers.Admin.projects.project.settingsCancel": "Anuluj",
   "app.containers.Admin.projects.project.settingsFrontOffice": "Widok publiczny",
   "app.containers.Admin.projects.project.settingsGeneral": "Ogólne",
   "app.containers.Admin.projects.project.settingsIdeaTags": "Tagi pomysłów",

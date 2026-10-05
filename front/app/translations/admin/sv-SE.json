@@ -2056,7 +2056,6 @@
   "app.containers.Admin.projects.project.saveToEditForm": "Spara fasen för att lägga till frågor och importera offline-indata.",
   "app.containers.Admin.projects.project.saveToEditSettings": "Åtkomsträttigheter, aviseringar och andra inställningar blir tillgängliga när du sparar fasen.",
   "app.containers.Admin.projects.project.selectMethodContinue": "Fortsätt",
-  "app.containers.Admin.projects.project.settingsCancel": "Avbryt",
   "app.containers.Admin.projects.project.settingsFrontOffice": "Publik sida",
   "app.containers.Admin.projects.project.settingsGeneral": "Allmänt",
   "app.containers.Admin.projects.project.settingsIdeaTags": "Idétaggar",

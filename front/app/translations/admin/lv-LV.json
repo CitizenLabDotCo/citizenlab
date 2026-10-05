@@ -2056,7 +2056,6 @@
   "app.containers.Admin.projects.project.saveToEditForm": "Saglabājiet posmu, lai pievienotu jautājumus un importētu bezsaistes ievadi.",
   "app.containers.Admin.projects.project.saveToEditSettings": "Piekļuves tiesības, paziņojumi un citi iestatījumi kļūs pieejami, kad saglabāsiet posmu.",
   "app.containers.Admin.projects.project.selectMethodContinue": "Turpināt",
-  "app.containers.Admin.projects.project.settingsCancel": "Atcelt",
   "app.containers.Admin.projects.project.settingsFrontOffice": "Publiskā daļa",
   "app.containers.Admin.projects.project.settingsGeneral": "Vispārīgi",
   "app.containers.Admin.projects.project.settingsIdeaTags": "Ideju birkas",

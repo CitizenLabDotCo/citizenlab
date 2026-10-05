@@ -2056,7 +2056,6 @@
   "app.containers.Admin.projects.project.saveToEditForm": "Išsaugokite etapą, kad galėtumėte pridėti klausimų ir importuoti ne internetu gautus duomenis.",
   "app.containers.Admin.projects.project.saveToEditSettings": "Prieigos teisės, pranešimai ir kiti nustatymai taps prieinami, kai išsaugosite etapą.",
   "app.containers.Admin.projects.project.selectMethodContinue": "Tęsti",
-  "app.containers.Admin.projects.project.settingsCancel": "Atšaukti",
   "app.containers.Admin.projects.project.settingsFrontOffice": "Viešoji dalis",
   "app.containers.Admin.projects.project.settingsGeneral": "Bendra",
   "app.containers.Admin.projects.project.settingsIdeaTags": "Idėjų žymos",

@@ -2056,7 +2056,6 @@
   "app.containers.Admin.projects.project.saveToEditForm": "Tallenna vaihe lisätäksesi kysymyksiä ja tuodaksesi offline-syötteitä.",
   "app.containers.Admin.projects.project.saveToEditSettings": "Käyttöoikeudet, ilmoitukset ja muut asetukset tulevat saataville, kun tallennat vaiheen.",
   "app.containers.Admin.projects.project.selectMethodContinue": "Jatka",
-  "app.containers.Admin.projects.project.settingsCancel": "Peruuta",
   "app.containers.Admin.projects.project.settingsFrontOffice": "Julkinen puoli",
   "app.containers.Admin.projects.project.settingsGeneral": "Yleiset",
   "app.containers.Admin.projects.project.settingsIdeaTags": "Ideatunnisteet",

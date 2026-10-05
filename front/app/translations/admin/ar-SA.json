@@ -2056,7 +2056,6 @@
   "app.containers.Admin.projects.project.saveToEditForm": "احفظ المرحلة لإضافة أسئلة واستيراد المدخلات غير المتصلة بالإنترنت.",
   "app.containers.Admin.projects.project.saveToEditSettings": "ستصبح صلاحيات الوصول والإشعارات والإعدادات الأخرى متاحة بمجرد حفظ المرحلة.",
   "app.containers.Admin.projects.project.selectMethodContinue": "متابعة",
-  "app.containers.Admin.projects.project.settingsCancel": "إلغاء",
   "app.containers.Admin.projects.project.settingsFrontOffice": "الواجهة الأمامية",
   "app.containers.Admin.projects.project.settingsGeneral": "عام",
   "app.containers.Admin.projects.project.settingsIdeaTags": "وسوم الأفكار",

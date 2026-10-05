@@ -2056,7 +2056,6 @@
   "app.containers.Admin.projects.project.saveToEditForm": "Salva la fase per aggiungere domande e importare input offline.",
   "app.containers.Admin.projects.project.saveToEditSettings": "I diritti di accesso, le notifiche e altre impostazioni diventeranno disponibili una volta salvata la fase.",
   "app.containers.Admin.projects.project.selectMethodContinue": "Continua",
-  "app.containers.Admin.projects.project.settingsCancel": "Annulla",
   "app.containers.Admin.projects.project.settingsFrontOffice": "Front office",
   "app.containers.Admin.projects.project.settingsGeneral": "Generale",
   "app.containers.Admin.projects.project.settingsIdeaTags": "Tag delle idee",
