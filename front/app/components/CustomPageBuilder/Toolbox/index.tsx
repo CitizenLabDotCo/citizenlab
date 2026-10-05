@@ -22,6 +22,10 @@ import eventsMessages from 'components/admin/ContentBuilder/Widgets/Events/messa
 import FileAttachment from 'components/admin/ContentBuilder/Widgets/FileAttachment';
 import FinishedOrArchived from 'components/admin/ContentBuilder/Widgets/FinishedOrArchived';
 import finishedOrArchivedMessages from 'components/admin/ContentBuilder/Widgets/FinishedOrArchived/messages';
+import FollowedItems, {
+  followedItemsTitle,
+} from 'components/admin/ContentBuilder/Widgets/FollowedItems';
+import followedItemsMessages from 'components/admin/ContentBuilder/Widgets/FollowedItems/messages';
 import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
@@ -146,6 +150,16 @@ const CustomPageBuilderToolbox = () => {
           label={formatMessage(
             finishedOrArchivedMessages.finishedOrArchivedTitle
           )}
+        />
+        <DraggableElement
+          id="e2e-draggable-followed-items"
+          component={
+            <FollowedItems
+              titleMultiloc={toMultiloc(followedItemsMessages.defaultTitle)}
+            />
+          }
+          icon="notification"
+          label={formatMessage(followedItemsTitle)}
         />
         <DraggableElement
           id="e2e-draggable-published"

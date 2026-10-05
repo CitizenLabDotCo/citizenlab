@@ -12,6 +12,7 @@ import CustomPages from 'components/admin/ContentBuilder/Widgets/CustomPages';
 import EventsList from 'components/admin/ContentBuilder/Widgets/Events';
 import FileAttachment from 'components/admin/ContentBuilder/Widgets/FileAttachment';
 import FinishedOrArchived from 'components/admin/ContentBuilder/Widgets/FinishedOrArchived';
+import FollowedItems from 'components/admin/ContentBuilder/Widgets/FollowedItems';
 import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
@@ -71,6 +72,7 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
           Published,
           OpenToParticipation,
           FinishedOrArchived,
+          FollowedItems,
           CallToAction,
           VideoEmbed,
           CustomPageRoot,

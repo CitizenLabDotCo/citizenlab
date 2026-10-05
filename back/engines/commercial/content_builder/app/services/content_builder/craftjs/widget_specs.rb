@@ -32,6 +32,7 @@ module ContentBuilder
         Published
         OpenToParticipation
         FinishedOrArchived
+        FollowedItems
         CallToAction
         VideoEmbed
         CustomPageRoot
@@ -106,6 +107,7 @@ module ContentBuilder
           'multilocs' => %w[titleMultiloc],
           'enums' => { 'filterBy' => %w[finished archived finished_and_archived] }
         },
+        'FollowedItems' => { 'multilocs' => %w[titleMultiloc] },
         'CallToAction' => { 'multilocs' => %w[title description primaryButtonText secondaryButtonText] },
         'VideoEmbed' => {},
         # The project page scaffold (no rules: nodes patches may not add, move or delete).
