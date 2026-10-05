@@ -9,9 +9,19 @@ import useLocalize from 'hooks/useLocalize';
 import TagPicker from 'components/UI/TagPicker';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 
 import messages from '../../messages';
+
+const HelperLink = typedStyled(Link)`
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+
+  &:hover {
+  text-decoration: underline;
+  }
+`;
 
 interface Props {
   selectedTopicIds: string[];
@@ -40,9 +50,9 @@ const ProjectTagsField = ({ selectedTopicIds, onChange }: Props) => {
           {...messages.settingsTagsDescription}
           values={{
             platformSettingsLink: (
-              <Link to="/admin/settings/topics">
+              <HelperLink to="/admin/settings/topics">
                 <FormattedMessage {...messages.settingsPlatformSettingsLink} />
-              </Link>
+              </HelperLink>
             ),
           }}
         />

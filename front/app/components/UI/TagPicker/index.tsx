@@ -5,28 +5,56 @@ import {
   ClickOutside,
   Icon,
   IconButton,
-  Text,
   colors,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
+import { hexToRGBA } from 'utils/helperUtils';
 
 import messages from './messages';
 import TagPickerPopover, { TagOption } from './TagPickerPopover';
 
-// A dashed pill isn't a Button style, so it gets its own small styled button.
+const Pill = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 26px;
+  padding: 0 5px 0 11px;
+  border-radius: 999px;
+  background: ${hexToRGBA(colors.primary, 0.1)};
+  font-size: 12.5px;
+  line-height: 1;
+  color: ${colors.primary};
+
+  button {
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    border-radius: 50%;
+    opacity: 0.55;
+    transition: opacity 0.12s, background 0.12s;
+
+    &:hover,
+    &:focus-visible {
+      opacity: 1;
+      background: ${hexToRGBA(colors.primary, 0.16)};
+    }
+  }
+`;
+
 const AddButton = styled.button`
   display: inline-flex;
   align-items: center;
   gap: 5px;
   height: 26px;
-  padding: 0 12px;
+  padding: 0 12px 0 10px;
   border: 1px dashed ${colors.grey300};
   border-radius: 999px;
   background: none;
   font: inherit;
-  font-size: 14px;
+  font-size: 12.5px;
+  line-height: 1;
   color: ${colors.coolGrey600};
   cursor: pointer;
 
@@ -34,8 +62,7 @@ const AddButton = styled.button`
     fill: currentColor;
   }
 
-  &:hover,
-  &[aria-expanded='true'] {
+  &:hover {
     border-color: ${colors.primary};
     color: ${colors.primary};
   }
@@ -77,32 +104,20 @@ const TagPicker = ({ options, selected, onChange }: Props) => {
       onKeyDown={handleKeyDown}
     >
       {selectedOptions.map(({ value, label }) => (
-        <Box
-          key={value}
-          display="inline-flex"
-          alignItems="center"
-          gap="4px"
-          height="26px"
-          pl="11px"
-          pr="5px"
-          borderRadius="999px"
-          background={colors.grey200}
-        >
-          <Text as="span" m="0" fontSize="s" color="primary">
-            {label}
-          </Text>
+        <Pill key={value}>
+          {label}
           <IconButton
             iconName="close"
-            iconWidth="12px"
-            iconHeight="12px"
-            iconColor={colors.coolGrey600}
+            iconWidth="11px"
+            iconHeight="11px"
+            iconColor={colors.primary}
             iconColorOnHover={colors.primary}
             a11y_buttonActionMessage={formatMessage(messages.removeTag, {
               tag: label,
             })}
             onClick={() => onChange(selected.filter((id) => id !== value))}
           />
-        </Box>
+        </Pill>
       ))}
       <ClickOutside
         onClickOutside={() => setOpened(false)}
@@ -115,7 +130,7 @@ const TagPicker = ({ options, selected, onChange }: Props) => {
           aria-haspopup="dialog"
           onClick={() => (opened ? close() : setOpened(true))}
         >
-          <Icon name="plus" width="14px" height="14px" />
+          <Icon name="plus" width="13px" height="13px" />
           {formatMessage(messages.addTags)}
         </AddButton>
         {opened && (

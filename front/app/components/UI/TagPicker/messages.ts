@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.components.UI.TagPicker.searchTags',
     defaultMessage: 'Search tags',
   },
+  clearSearch: {
+    id: 'app.components.UI.TagPicker.clearSearch',
+    defaultMessage: 'Clear search',
+  },
   noMatch: {
     id: 'app.components.UI.TagPicker.noMatch',
     defaultMessage: 'No tags match your search.',

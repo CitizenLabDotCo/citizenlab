@@ -7,9 +7,9 @@ import React, {
 } from 'react';
 
 import { isEmpty, debounce as debounceFn } from 'lodash-es';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-import { colors, isRtl, defaultStyles } from '../../utils/styleUtils';
+import { bo, colors, isRtl, defaultStyles } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 import { InputSize } from '../../utils/typings';
 import Box from '../Box';
@@ -41,7 +41,9 @@ const StyledLabel = styled.label<{ isFloating: boolean; color?: string }>`
   `}
 `;
 
-const StyledInput = styled(Input)`
+type Variant = 'default' | 'bo';
+
+const StyledInput = styled(Input)<{ variant: Variant }>`
   input {
     padding-right: 40px;
     width: 100%;
@@ -56,17 +58,64 @@ const StyledInput = styled(Input)`
         padding-left: 40px;
     }
   `}
+
+  ${({ variant }) =>
+    variant === 'bo' &&
+    css`
+      input {
+        height: 36px;
+        padding: 0 10px 0 33px;
+        border-radius: ${bo.borderRadius};
+        border-color: ${colors.grey300};
+        font-size: 13px;
+        color: ${bo.colors.textHeadingStrong};
+        transition: border-color 0.15s;
+
+        &::placeholder {
+          color: ${colors.coolGrey500};
+        }
+
+        &::-webkit-search-cancel-button {
+          display: none;
+        }
+      }
+      ${isRtl`
+        input {
+          padding: 0 33px 0 10px;
+        }
+      `}
+
+      input:not(:disabled):not(.disabled):not(.error):hover {
+        border-color: ${colors.grey300};
+      }
+
+      input:not(:disabled):not(.disabled):not(.error):focus {
+        border: 1px solid ${colors.primary};
+      }
+    `}
 `;
 
-const IconContainer = styled(Box)`
+const IconContainer = styled(Box)<{ variant: Variant }>`
   position: absolute;
-  right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  ${isRtl`
-    left: 10px;
-    right: auto;
-  `}
+
+  ${({ variant }) =>
+    variant === 'bo'
+      ? css`
+          left: 11px;
+          ${isRtl`
+            left: auto;
+            right: 11px;
+          `}
+        `
+      : css`
+          right: 10px;
+          ${isRtl`
+            left: 10px;
+            right: auto;
+          `}
+        `}
 `;
 
 export interface Props {
@@ -84,6 +133,7 @@ export interface Props {
   labelColor?: string;
   hideLabel?: boolean;
   dataCy?: string;
+  variant?: Variant;
 }
 
 const SearchInput = ({
@@ -100,6 +150,7 @@ const SearchInput = ({
   labelColor,
   hideLabel = false,
   dataCy,
+  variant = 'default',
 }: Props) => {
   const [internalSearchTerm, setInternalSearchTerm] = useState(
     defaultValue ?? null
@@ -166,7 +217,7 @@ const SearchInput = ({
           className="e2e-search-input"
           type="search"
           aria-label={ariaLabel}
-          placeholder={isLabelFloating ? '' : placeholder}
+          placeholder={isLabelFloating && !hideLabel ? '' : placeholder}
           value={internalSearchTerm || ''}
           onChange={handleOnChange}
           size={size}
@@ -174,21 +225,28 @@ const SearchInput = ({
           setRef={handleRef}
           onFocus={handleFocus}
           onBlur={handleBlur}
+          variant={variant}
         />
-        <IconContainer>
+        <IconContainer variant={variant}>
           {internalSearchTerm ? (
             <IconButton
               iconName="close"
               onClick={handleOnReset}
               iconColor={colors.textSecondary}
               iconColorOnHover="#000"
+              iconWidth={variant === 'bo' ? '15px' : undefined}
+              iconHeight={variant === 'bo' ? '15px' : undefined}
               a11y_buttonActionMessage={a11y_closeIconTitle}
               mr="-5px"
             />
           ) : (
             <Icon
               name="search"
-              fill={colors.textSecondary}
+              fill={
+                variant === 'bo' ? colors.coolGrey500 : colors.textSecondary
+              }
+              width={variant === 'bo' ? '15px' : undefined}
+              height={variant === 'bo' ? '15px' : undefined}
               role="presentation"
             />
           )}

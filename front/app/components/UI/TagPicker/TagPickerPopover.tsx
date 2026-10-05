@@ -3,16 +3,77 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   Box,
   Button,
-  Checkbox,
+  Icon,
+  SearchInput,
   Text,
+  bo,
   colors,
 } from '@citizenlab/cl2-component-library';
-
-import SearchInput from 'components/UI/SearchInput';
+import styled from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+
+const CheckBox = styled.span`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 17px;
+  height: 17px;
+  border: 1px solid ${colors.coolGrey300};
+  border-radius: 5px;
+  opacity: 0;
+  transition: opacity 0.1s, background 0.12s, border-color 0.12s;
+
+  svg {
+    opacity: 0;
+  }
+`;
+
+const Option = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px;
+  border: 0;
+  border-radius: ${bo.borderRadius};
+  background: none;
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: left;
+  color: ${bo.colors.textHeadingStrong};
+  cursor: pointer;
+
+  &:hover {
+    background: ${colors.grey100};
+  }
+
+  &:hover ${CheckBox}, &:focus-visible ${CheckBox} {
+    opacity: 1;
+  }
+
+  &[aria-checked='true'] ${CheckBox} {
+    opacity: 1;
+    background: ${colors.primary};
+    border-color: ${colors.primary};
+
+    svg {
+      opacity: 1;
+    }
+  }
+`;
+
+const List = styled.div`
+  max-height: 248px;
+  overflow-y: auto;
+  margin: 0 -6px;
+  padding: 0 6px;
+  scrollbar-width: thin;
+`;
 
 export interface TagOption {
   value: string;
@@ -45,6 +106,8 @@ const TagPickerPopover = ({ options, selected, onToggle, onClose }: Props) => {
       position="absolute"
       top="calc(100% + 8px)"
       left="0"
+      right="0"
+      mx="auto"
       zIndex="10"
       w="328px"
       p="12px"
@@ -55,45 +118,50 @@ const TagPickerPopover = ({ options, selected, onToggle, onClose }: Props) => {
     >
       <Box mb="8px">
         <SearchInput
-          size="small"
+          variant="bo"
           hideLabel
           debounce={0}
           placeholder={formatMessage(messages.searchTags)}
           ariaLabel={formatMessage(messages.searchTags)}
+          a11y_closeIconTitle={formatMessage(messages.clearSearch)}
           onChange={(value) => setSearch(value ?? '')}
           setInputRef={(element) => (searchRef.current = element)}
-          a11y_numberOfSearchResults={visibleOptions.length}
         />
       </Box>
 
-      <Box maxHeight="248px" overflowY="auto">
+      <List>
         {visibleOptions.map(({ value, label }) => (
-          <Box
-            as="label"
+          <Option
             key={value}
-            display="flex"
-            alignItems="center"
-            gap="10px"
-            p="8px"
-            cursor="pointer"
+            type="button"
+            role="checkbox"
+            aria-checked={selected.includes(value)}
+            onClick={() => onToggle(value)}
           >
-            <Checkbox
-              checked={selected.includes(value)}
-              onChange={() => onToggle(value)}
-              size="18px"
-              checkedColor="primary"
-            />
-            <Text as="span" m="0" fontSize="s" color="textPrimary">
-              {label}
-            </Text>
-          </Box>
+            <CheckBox>
+              <Icon
+                name="check"
+                width="11px"
+                height="11px"
+                fill={colors.white}
+              />
+            </CheckBox>
+            {label}
+          </Option>
         ))}
         {visibleOptions.length === 0 && (
-          <Text textAlign="center" py="16px" m="0" variant="boHelper">
+          <Text
+            textAlign="center"
+            py="16px"
+            px="8px"
+            m="0"
+            fontSize="xs"
+            color="coolGrey500"
+          >
             {formatMessage(messages.noMatch)}
           </Text>
         )}
-      </Box>
+      </List>
 
       <Box
         display="flex"
@@ -103,14 +171,25 @@ const TagPickerPopover = ({ options, selected, onToggle, onClose }: Props) => {
         pt="10px"
         borderTop={`1px solid ${colors.grey200}`}
       >
-        <Text as="span" m="0" variant="boMicro" aria-live="polite">
+        <Text
+          as="span"
+          m="0"
+          fontSize="xs"
+          color="coolGrey600"
+          aria-live="polite"
+        >
           {formatMessage(messages.selectedCount, { count: selected.length })}
         </Text>
         <Button
           buttonStyle="bo-text"
           width="auto"
-          padding="2px 4px"
+          height="auto"
+          padding="3px 4px 2px"
+          fontSize="13px"
+          fontWeight="500"
+          lineHeight="19.5px"
           textColor={colors.primary}
+          textHoverColor={colors.primary}
           onClick={onClose}
         >
           {formatMessage(messages.done)}
