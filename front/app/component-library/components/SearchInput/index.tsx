@@ -9,7 +9,7 @@ import React, {
 import { isEmpty, debounce as debounceFn } from 'lodash-es';
 import styled, { css } from 'styled-components';
 
-import { bo, colors, isRtl, defaultStyles } from '../../utils/styleUtils';
+import { colors, isRtl, defaultStyles } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 import { InputSize } from '../../utils/typings';
 import Box from '../Box';
@@ -63,17 +63,7 @@ const StyledInput = styled(Input)<{ variant: Variant }>`
     variant === 'bo' &&
     css`
       input {
-        height: 36px;
-        padding: 0 10px 0 33px;
-        border-radius: ${bo.borderRadius};
-        border-color: ${colors.grey300};
-        font-size: 13px;
-        color: ${bo.colors.textHeadingStrong};
-        transition: border-color 0.15s;
-
-        &::placeholder {
-          color: ${colors.coolGrey500};
-        }
+        padding: 0 12px 0 33px;
 
         &::-webkit-search-cancel-button {
           display: none;
@@ -81,17 +71,9 @@ const StyledInput = styled(Input)<{ variant: Variant }>`
       }
       ${isRtl`
         input {
-          padding: 0 33px 0 10px;
+          padding: 0 33px 0 12px;
         }
       `}
-
-      input:not(:disabled):not(.disabled):not(.error):hover {
-        border-color: ${colors.grey300};
-      }
-
-      input:not(:disabled):not(.disabled):not(.error):focus {
-        border: 1px solid ${colors.primary};
-      }
     `}
 `;
 

@@ -32,6 +32,7 @@ const GeneralSection = ({
         {formatMessage(messages.settingsUrlSlug)}
       </Text>
       <SlugInput
+        variant="bo"
         slug={slug}
         pathnameWithoutSlug="projects"
         apiErrors={apiErrors}
