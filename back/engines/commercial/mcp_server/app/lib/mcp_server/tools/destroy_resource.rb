@@ -10,6 +10,7 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
     'poll_option' => Polls::Option,
     'project_image' => ProjectImage,
     'event_image' => EventImage,
+    'folder_image' => ProjectFolders::Image,
     'file_attachment' => Files::FileAttachment
   }.freeze
 
@@ -37,8 +38,8 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
 
   def description
     <<~DESC.squish
-      Deletes a resource by id. Only works on resources whose target project is in draft,
-      except on demo and trial platforms, where published projects can be targeted too.
+      Deletes a resource by id. Only works on resources whose target project or folder is
+      in draft, except on demo and trial platforms, where published ones can be targeted too.
       Destroying a project or a phase fails if any of its inputs would be deleted along with it.
     DESC
   end
@@ -76,6 +77,8 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
     def project_for(record)
       case record
       when Files::FileAttachment then record.attachable.source_project
+      # A folder is its own draft-guard target.
+      when ProjectFolders::Image then record.project_folder
       else record.project
       end
     end

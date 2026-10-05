@@ -3,9 +3,9 @@
 # Runtime base class for MCP tools. Every Tool class nests a `Runner < BaseTool::Runner`
 # whose `#run` method is the actual tool implementation.
 class McpServer::BaseTool::Runner
-  NOT_DRAFT_MESSAGE = 'Project is not in draft. On this platform, only draft projects can be ' \
-                      'modified via MCP; published projects are only modifiable on demo and ' \
-                      'trial platforms.'
+  NOT_DRAFT_MESSAGE = 'Target project or folder is not in draft. On this platform, only draft ' \
+                      'projects and folders can be modified via MCP; published ones are only ' \
+                      'modifiable on demo and trial platforms.'
 
   # Lifecycle stages on which the draft-only rule is lifted, so the MCP can also modify
   # published (and archived) projects. Never add 'active' here: live client platforms have
@@ -47,8 +47,9 @@ class McpServer::BaseTool::Runner
     attributes
   end
 
-  # MCP-channel guard. Tools that mutate or destroy a project (or anything inside one)
-  # must call this with the target's project before doing the work.
+  # MCP-channel guard. Tools that mutate or destroy a project or folder (or anything
+  # inside one) must call this with the target's project — or the folder itself, which
+  # carries its own admin_publication — before doing the work.
   def authorize_project!(project)
     return if project.admin_publication.draft?
     return if published_writable_platform?

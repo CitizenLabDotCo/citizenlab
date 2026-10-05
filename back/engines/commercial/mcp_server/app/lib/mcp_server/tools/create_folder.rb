@@ -8,7 +8,7 @@ class McpServer::Tools::CreateFolder < McpServer::BaseTool
       read_only_hint: false,
       destructive_hint: false,
       idempotent_hint: false,
-      open_world_hint: false
+      open_world_hint: true # Fetches `remote_header_bg_url` from an arbitrary public URL.
     }
   end
 
@@ -24,7 +24,8 @@ class McpServer::Tools::CreateFolder < McpServer::BaseTool
     {
       properties: {
         title_multiloc: { **multiloc_schema, description: 'Folder name.' },
-        description_preview_multiloc: { **multiloc_schema, description: 'Short folder description shown on its card and page (HTML).' }
+        description_preview_multiloc: { **multiloc_schema, description: 'Short folder description shown on its card and page (HTML).' },
+        remote_header_bg_url: { type: 'string', format: 'uri', description: 'Public URL of the image to download and use as the header background.' }
       },
       required: %w[title_multiloc],
       additionalProperties: false
@@ -36,6 +37,7 @@ class McpServer::Tools::CreateFolder < McpServer::BaseTool
       folder = ProjectFolders::Folder.new(
         title_multiloc: params[:title_multiloc],
         description_preview_multiloc: params[:description_preview_multiloc],
+        remote_header_bg_url: params[:remote_header_bg_url],
         # A folder's admin_publication is mandatory and auto-built defaulting to 'published';
         # create it as a draft so publishing stays a deliberate action.
         admin_publication_attributes: { publication_status: 'draft' }

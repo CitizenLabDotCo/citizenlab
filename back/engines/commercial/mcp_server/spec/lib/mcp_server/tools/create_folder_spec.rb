@@ -28,6 +28,28 @@ describe McpServer::Tools::CreateFolder do
       .to have_enqueued_job(LogActivityJob)
   end
 
+  it 'sets the header background from a remote URL' do
+    remote_url = 'https://example.com/image.jpg'
+    fixture_path = stub_remote_image_download(remote_url)
+
+    response = create_folder(title_multiloc: { 'en' => 'Mobility' }, remote_header_bg_url: remote_url)
+
+    expect(response).not_to be_error
+    folder = ProjectFolders::Folder.find(response.structured_content[:id])
+    expect(folder.header_bg.file.read).to eq(fixture_path.binread)
+  end
+
+  it 'returns an error when the header background download fails' do
+    failing_url = 'https://example.com/missing.jpg'
+    stub_failing_remote_download(failing_url)
+
+    response = nil
+    expect { response = create_folder(title_multiloc: { 'en' => 'Mobility' }, remote_header_bg_url: failing_url) }
+      .not_to change(ProjectFolders::Folder, :count)
+    expect(response).to be_error
+    expect(response.structured_content[:errors].pluck(:error)).to include(:carrierwave_download_error)
+  end
+
   it 'refuses a blank title' do
     response = nil
     expect { response = create_folder(title_multiloc: {}) }.not_to change(ProjectFolders::Folder, :count)

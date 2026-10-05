@@ -4,7 +4,8 @@ class McpServer::Tools::AttachImage < McpServer::BaseTool
   CONTAINERS = {
     'project' => { class: Project, association: :project_images },
     'event' => { class: Event, association: :event_images },
-    'idea' => { class: Idea, association: :idea_images }
+    'idea' => { class: Idea, association: :idea_images },
+    'folder' => { class: ProjectFolders::Folder, association: :images }
   }.freeze
   private_constant :CONTAINERS
 
@@ -21,9 +22,9 @@ class McpServer::Tools::AttachImage < McpServer::BaseTool
 
   def description
     <<~DESC.squish
-      Adds an image to an existing project, event or input (idea or proposal) by
-      fetching it from a public URL. It is shown on the resource's page, and for
-      inputs also as the card image in listings.
+      Adds an image to an existing project, event, folder or input (idea or
+      proposal) by fetching it from a public URL. It is shown on the resource's
+      page, and for inputs also as the card image in listings.
     DESC
   end
 
@@ -50,10 +51,11 @@ class McpServer::Tools::AttachImage < McpServer::BaseTool
         return not_found_error("Resource (#{params[:resource_type]})", params[:resource_id])
       end
 
-      authorize_project!(container.project)
+      # A folder is its own draft-guard target; the other containers live inside a project.
+      authorize_project!(container.is_a?(ProjectFolders::Folder) ? container : container.project)
 
       image = container.public_send(images_association).build(remote_image_url: params[:remote_url])
-      # alt_text_multiloc exists on project/event images but not idea images.
+      # alt_text_multiloc exists on project/event/folder images but not idea images.
       image.alt_text_multiloc = params[:alt_text_multiloc] if image.respond_to?(:alt_text_multiloc=)
 
       authorize(image, :create?)
