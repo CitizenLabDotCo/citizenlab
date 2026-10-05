@@ -128,6 +128,7 @@ module ContentBuilder
       }.freeze
 
       PROJECT_PAGE_SPECS = SPECS.except(*CUSTOM_PAGE_WIDGETS).freeze
+      # Homepage widget rules live in HomepageWidgetSpecs (keeps this module within length limits).
     end
   end
 end
