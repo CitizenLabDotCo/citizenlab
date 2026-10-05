@@ -39,7 +39,7 @@ const CustomPageShow = () => {
   const { data: appConfiguration } = useAppConfiguration();
   const localize = useLocalize();
   const { data: page, isError } = useCustomPageBySlug(pageSlugToUse);
-  // The other pages served here must not wait on a request that can only 404.
+  // Pages off the builder must not wait on a layout request that can only 404.
   const builderContent = useCustomPageBuilderContent(
     page && isOnContentBuilder(page.data) ? page.data.id : undefined
   );
