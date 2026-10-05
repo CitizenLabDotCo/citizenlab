@@ -92,10 +92,6 @@ namespace :cl2_back do
           enabled: false,
           allowed: true
         },
-        google_analytics: {
-          enabled: false,
-          allowed: true
-        },
         google_tag_manager: {
           enabled: false,
           allowed: false

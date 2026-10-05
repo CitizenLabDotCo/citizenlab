@@ -1112,7 +1112,6 @@
   "app.components.formBuilder.sentiment": "Stimmungsskala",
   "app.components.formBuilder.shapefileUpload": "Esri Shapefile hochladen",
   "app.components.formBuilder.shortAnswer": "Kurze Antwort",
-  "app.components.formBuilder.showResponseToUsersToggleLabel": "Zeige Antwort an Nutzer*innen",
   "app.components.formBuilder.singleChoice": "Einfachauswahl",
   "app.components.formBuilder.staleDataErrorMessage2": "Es ist ein Problem aufgetreten. Dieses Eingabeformular wurde vor kurzem an einem anderen Ort gespeichert. Das kann daran liegen, dass du oder ein anderer Benutzer es in einem anderen Browserfenster zur Bearbeitung geöffnet hast. Bitte aktualisiere die Seite, um das neueste Formular zu erhalten, und nimm dann deine Änderungen erneut vor.",
   "app.components.formBuilder.stronglyAgree": "Stimme voll und ganz zu",
