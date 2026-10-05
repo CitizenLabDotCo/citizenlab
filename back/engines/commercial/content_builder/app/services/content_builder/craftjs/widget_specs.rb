@@ -128,36 +128,7 @@ module ContentBuilder
       }.freeze
 
       PROJECT_PAGE_SPECS = SPECS.except(*CUSTOM_PAGE_WIDGETS).freeze
-
-      # Widgets shared with other builders that the homepage also uses (content leaves and
-      # the slot containers); reused from SPECS rather than redefined.
-      HOMEPAGE_SHARED_WIDGETS = %w[
-        TextMultiloc ButtonMultiloc ImageMultiloc IframeMultiloc HtmlBlockMultiloc
-        AccordionMultiloc WhiteSpace TwoColumn ThreeColumn EventsList Container Box
-      ].freeze
-
-      # Homepage-only widgets. Most render from their own auto-queries and carry no settable
-      # props worth validating here (the LLM docs describe them); enums are declared only
-      # where the value set is static and top-level. HomepageBanner's settings are nested
-      # under props.homepageSettings, which the flat prop checks can't reach, so it stays {}.
-      HOMEPAGE_ONLY_SPECS = {
-        'HomepageBanner' => {},
-        'Projects' => {},
-        'Highlight' => {},
-        'VideoEmbed' => {},
-        'Areas' => {},
-        'Published' => {},
-        'Events' => {},
-        'CommunityMonitorCTA' => {},
-        'FollowedItems' => {},
-        'OpenToParticipation' => {},
-        'FinishedOrArchived' => {},
-        'Selection' => {},
-        'CustomPages' => {},
-        'Spotlight' => { 'enums' => { 'publicationType' => %w[project folder] } }
-      }.freeze
-
-      HOMEPAGE_SPECS = SPECS.slice(*HOMEPAGE_SHARED_WIDGETS).merge(HOMEPAGE_ONLY_SPECS).freeze
+      # Homepage widget rules live in HomepageWidgetSpecs (keeps this module within length limits).
     end
   end
 end

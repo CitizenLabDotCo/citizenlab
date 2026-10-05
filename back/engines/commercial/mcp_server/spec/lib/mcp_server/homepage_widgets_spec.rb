@@ -5,7 +5,7 @@ require 'rails_helper'
 # Guards against the homepage widget rules (WidgetSpecs::HOMEPAGE_SPECS) and the LLM-facing
 # docs drifting apart.
 describe McpServer::HomepageWidgets do
-  let(:specs) { ContentBuilder::Craftjs::WidgetSpecs::HOMEPAGE_SPECS }
+  let(:specs) { ContentBuilder::Craftjs::HomepageWidgetSpecs::SPECS }
   # Structural containers carry no insertable docs (they fill slots, like on project pages).
   let(:structural) { %w[Container Box] }
 
