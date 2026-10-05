@@ -76,6 +76,7 @@ const UserActions = ({
 
         <ToggleRow>
           <Toggle
+            variant="bo"
             checked={submission_enabled || false}
             onChange={togglePostingEnabled}
             label={formatMessage(messages.inputPostingEnabled)}
@@ -89,6 +90,7 @@ const UserActions = ({
         {showCommentingToggle && (
           <ToggleRow>
             <Toggle
+              variant="bo"
               checked={commenting_enabled || false}
               onChange={toggleCommentingEnabled}
               label={formatMessage(messages.inputCommentingEnabled)}
@@ -103,6 +105,7 @@ const UserActions = ({
         {showReactingToggle && (
           <ToggleRow className="last">
             <Toggle
+              variant="bo"
               checked={reacting_enabled || false}
               onChange={toggleReactingEnabled}
               label={formatMessage(messages.inputReactingEnabled)}
