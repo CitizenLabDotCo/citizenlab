@@ -147,6 +147,7 @@ namespace :single_use do
       description: 'deriving Content Builder layouts for custom, About and FAQ pages',
       summary: summary
     ) do |tenant, script|
+      puts "Processing #{tenant.host}..."
       flag_active = AppConfiguration.instance.feature_activated?('custom_page_builder')
       if cutover && flag_active
         already_on << tenant.host
