@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
-import { isOnContentBuilder } from 'api/custom_pages/util';
+import { isContentBuilderPage } from 'api/custom_pages/util';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -48,7 +48,7 @@ const CustomPageShow = () => {
   const sectionBoundaryMargin = useSectionBoundaryMargin();
   // Pages off the builder must not wait on a layout request that can only 404.
   const builderContent = useCustomPageBuilderContent(
-    page && isOnContentBuilder(page.data) ? page.data.id : undefined
+    page && isContentBuilderPage(page.data) ? page.data.id : undefined
   );
 
   // when neither have loaded

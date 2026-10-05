@@ -44,7 +44,7 @@ module ContentBuilder
     end
 
     def ensure_custom_page!(static_page)
-      return unless static_page.on_content_builder?
+      return unless static_page.content_builder_page?
       return if ContentBuilder::Layout.exists?(content_buildable: static_page, code: CustomPageLayoutService::CODE)
 
       create_layout!(static_page, CustomPageLayoutService::CODE, CustomPageLayoutService.new.craftjs_json_for(static_page))

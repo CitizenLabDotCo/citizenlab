@@ -1,7 +1,7 @@
 import React from 'react';
 
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
-import { isOnContentBuilder } from 'api/custom_pages/util';
+import { isContentBuilderPage } from 'api/custom_pages/util';
 import useProjectById from 'api/projects/useProjectById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -29,7 +29,11 @@ const CustomPageBuilder = () => {
   useEnsureCustomPageLayout(customPageId);
   const { searchStr } = useLocation();
 
-  if (!featureEnabled || !customPage || !isOnContentBuilder(customPage.data)) {
+  if (
+    !featureEnabled ||
+    !customPage ||
+    !isContentBuilderPage(customPage.data)
+  ) {
     return null;
   }
   // A project's page lives under the project, in the admin and on the site.

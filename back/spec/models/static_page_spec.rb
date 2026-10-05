@@ -195,10 +195,10 @@ RSpec.describe StaticPage do
     end
   end
 
-  describe 'on the content builder' do
+  describe 'content builder pages' do
     using RSpec::Parameterized::TableSyntax
 
-    where(:code, :on_content_builder) do
+    where(:code, :content_builder_page) do
       'custom'               | true
       'about'                | true
       'faq'                  | true
@@ -210,15 +210,15 @@ RSpec.describe StaticPage do
     with_them do
       let!(:page) { create(:static_page, code: code) }
 
-      it { expect(page.on_content_builder?).to eq on_content_builder }
-      it { expect(described_class.on_content_builder.include?(page)).to eq on_content_builder }
+      it { expect(page.content_builder_page?).to eq content_builder_page }
+      it { expect(described_class.content_builder_pages.include?(page)).to eq content_builder_page }
     end
 
     it 'includes a project-scoped page' do
       page = create(:static_page, :project_scoped)
 
-      expect(page.on_content_builder?).to be true
-      expect(described_class.on_content_builder).to include(page)
+      expect(page.content_builder_page?).to be true
+      expect(described_class.content_builder_pages).to include(page)
     end
   end
 
