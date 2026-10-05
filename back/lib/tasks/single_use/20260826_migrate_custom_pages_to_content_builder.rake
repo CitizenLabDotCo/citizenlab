@@ -170,6 +170,7 @@ namespace :single_use do
       rescue StandardError => e
         # Carry on, so one run lists every page that needs fixing before the tenant can switch.
         failures += 1
+        puts "❌ ERROR on #{tenant.host}, page #{page.id} (#{page.slug}): #{e.class}: #{e.message}"
         script.reporter.add_error("#{e.class}: #{e.message}", context: { tenant: tenant.host, page_id: page.id, slug: page.slug })
       end
       next unless cutover
