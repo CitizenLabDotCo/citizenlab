@@ -18,7 +18,10 @@ import { getPhaseActionDescriptor } from 'api/phases/utils';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
+import {
+  BUILDER_CONTENT_MAX_WIDTH,
+  CUSTOM_PAGE_BUILDER_PATH,
+} from 'components/admin/ContentBuilder/constants';
 import SurveyTimeToComplete from 'components/SurveyTimeToComplete';
 
 import { trackEventByName } from 'utils/analytics';
@@ -69,12 +72,13 @@ const CommunityMonitorCTA = ({
     }
   };
 
-  // Check if we're currently in the homepage builder
-  const onHomepageBuilder =
-    window.location.pathname.includes('homepage-builder/');
+  // A builder always shows the widget, so it can be placed and configured while no survey runs.
+  const inBuilder =
+    window.location.pathname.includes('homepage-builder/') ||
+    window.location.pathname.includes(CUSTOM_PAGE_BUILDER_PATH);
 
-  // If the survey is not live and we're not on the homepage builder, don't render the CTA
-  if (!isSurveyLive && !onHomepageBuilder) {
+  // If the survey is not live and we're not in a builder, don't render the CTA
+  if (!isSurveyLive && !inBuilder) {
     return null;
   }
 

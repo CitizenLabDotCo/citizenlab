@@ -10,9 +10,9 @@ export default defineMessages({
     defaultMessage: 'Important:',
   },
   communityMonitorCTADescription: {
-    id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTADescription',
+    id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTADescription2',
     defaultMessage:
-      'This widget will only be visible on the Homepage when the Community Monitor is accepting responses.',
+      'This widget will only be visible on the page when the Community Monitor is accepting responses.',
   },
   sentimentQuestionPreviewAltText: {
     id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.sentimentQuestionPreviewAltText',

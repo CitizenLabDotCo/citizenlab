@@ -30,6 +30,7 @@ const WIDGET_ROLES: Record<string, WidgetRole> = {
   ImageTextCards: 'card',
   InfoWithAccordions: 'card',
   ExtraSurveysWidget: 'card',
+  CommunityMonitorCTA: 'card',
   PhasesWidget: 'band',
   EventsWidget: 'band',
   EventsList: 'band',
