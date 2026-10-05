@@ -4,9 +4,12 @@ import { createRequire } from "node:module";
 import type { Page } from "playwright";
 
 import { runChecks } from "./checks.ts";
+import { isAllowedRequest } from "./egress.ts";
 import type { RenderPool } from "./pool.ts";
+import { describeStackPosition } from "./sourceMap.ts";
 import {
   MAX_CONSOLE_LINES,
+  MAX_SCREENSHOT_HEIGHT_PX,
   RENDER_TIMEOUT_MS,
   type BrowserFacts,
   type HarnessFacts,
@@ -25,7 +28,25 @@ const axe = (): string => {
 
 const dedupe = (lines: string[]): string[] => [...new Set(lines)];
 
-const collectBrowserFacts = (page: Page): BrowserFacts => {
+/** The bundle a block target carries; a layout target's blocks come from the backend. */
+const bundleOf = (input: RenderRequest): string | null =>
+  input.target.kind === "block" ? input.target.bundle : null;
+
+// An error names a line in the bundle; the model wrote block.tsx. Where the stack
+// reaches into the bundle, say where in the source that is.
+const located = (
+  message: string,
+  stack: string | undefined,
+  bundle: string | null
+): string => {
+  const position = describeStackPosition(stack, bundle);
+  return position ? `${message} (${position})` : message;
+};
+
+const collectBrowserFacts = (
+  page: Page,
+  bundle: string | null
+): BrowserFacts => {
   const facts: BrowserFacts = {
     console: [],
     warnings: [],
@@ -38,7 +59,7 @@ const collectBrowserFacts = (page: Page): BrowserFacts => {
     if (message.type() === "warning") facts.warnings.push(message.text());
   });
   page.on("pageerror", (error) => {
-    facts.pageErrors.push(error.message);
+    facts.pageErrors.push(located(error.message, error.stack, bundle));
   });
   page.on("requestfailed", (request) => {
     facts.failedRequests.push({
@@ -72,10 +93,25 @@ export const render = async (
 ): Promise<RenderResponse> => {
   const slot = await pool.acquire();
   const page = await slot.context.newPage();
-  const browserFacts = collectBrowserFacts(page);
+  const bundle = bundleOf(input);
+  const browserFacts = collectBrowserFacts(page, bundle);
   let harnessFacts: HarnessFacts | null = null;
 
   try {
+    // Generated code runs in this page. It may reach the app and the public web,
+    // never a file or anything on a private network.
+    await page.route("**/*", (route) => {
+      if (
+        isAllowedRequest(route.request().url(), [
+          input.appOrigin,
+          input.apiOrigin,
+        ])
+      ) {
+        return route.continue();
+      }
+      return route.abort("blockedbyclient");
+    });
+
     // Locale-prefixed, like every route in this app, and deliberately not under
     // /admin: this browser has no session and would be redirected to a sign-in page.
     await page.goto(`${input.appOrigin}/${input.locale}/block-harness`, {
@@ -132,15 +168,36 @@ export const render = async (
   });
 
   // The picture always travels with the result; Rails decides whether the model
-  // needs to see it (section 7.4).
+  // needs to see it (section 7.4). Captured at CSS scale and no taller than a
+  // provider accepts: the context renders at 2x for crisp measurements, but a
+  // picture twice the size says nothing more to a model and can be refused outright.
   const wantsScreenshot = input.screenshot !== false;
-  const screenshot = wantsScreenshot
-    ? await page
-        .locator("#harness-root")
-        .screenshot({ type: "png", timeout: 5_000 })
+  let screenshot: string | null = null;
+  let screenshotClipped = false;
+  if (wantsScreenshot) {
+    const box = await page
+      .locator("#harness-root")
+      .boundingBox({ timeout: 5_000 })
+      .catch(() => null);
+    if (box) {
+      screenshotClipped = box.height > MAX_SCREENSHOT_HEIGHT_PX;
+      screenshot = await page
+        .screenshot({
+          type: "png",
+          timeout: 5_000,
+          fullPage: true,
+          scale: "css",
+          clip: {
+            x: box.x,
+            y: box.y,
+            width: box.width,
+            height: Math.min(box.height, MAX_SCREENSHOT_HEIGHT_PX),
+          },
+        })
         .then((buffer) => buffer.toString("base64"))
-        .catch(() => null)
-    : null;
+        .catch(() => null);
+    }
+  }
 
   await page.close().catch(() => undefined);
   await pool.release(slot);
@@ -150,7 +207,13 @@ export const render = async (
     errors: [
       ...browserFacts.pageErrors,
       ...(harnessFacts?.boundaryError
-        ? [harnessFacts.boundaryError.message]
+        ? [
+            located(
+              harnessFacts.boundaryError.message,
+              harnessFacts.boundaryError.stack,
+              bundle
+            ),
+          ]
         : []),
     ],
     console: dedupe(browserFacts.console).slice(0, MAX_CONSOLE_LINES),
@@ -160,5 +223,6 @@ export const render = async (
     a11y: harnessFacts?.a11y ?? null,
     checks,
     screenshot,
+    screenshotClipped,
   };
 };

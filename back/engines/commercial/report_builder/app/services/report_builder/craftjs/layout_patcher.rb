@@ -38,6 +38,7 @@ module ReportBuilder
 
         reject_conflicting_deletes!
         reject_unknown_deletes!
+        normalize_root!
 
         patched = @graph.deep_dup
         apply_deletes!(patched)
@@ -45,6 +46,17 @@ module ReportBuilder
       end
 
       private
+
+      # Every widget node's type is {"resolvedName": ...}; ROOT alone is the plain
+      # string "div". A model that writes ROOT the way it writes every other node
+      # meant the same thing, and refusing a 50-node patch over it costs the whole
+      # patch twice over.
+      def normalize_root!
+        root = @nodes['ROOT']
+        return unless root.is_a?(Hash) && root['type'].is_a?(Hash)
+
+        root['type'] = 'div' if root['type']['resolvedName'] == 'div'
+      end
 
       def reject_conflicting_deletes!
         overlap = @delete_node_ids & @nodes.keys

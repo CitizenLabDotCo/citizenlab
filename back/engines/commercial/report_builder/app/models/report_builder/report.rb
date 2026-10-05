@@ -41,6 +41,8 @@ module ReportBuilder
     belongs_to :project, optional: true
     has_many :published_graph_data_units, dependent: :destroy
     has_one :chat, class_name: 'ReportBuilder::ReportChat', dependent: :destroy, inverse_of: :report
+    has_many :generation_transcripts, class_name: 'ReportBuilder::GenerationTranscript',
+      dependent: :destroy, inverse_of: :report
 
     # The "your report is ready" notification points at the report, so deleting one
     # would otherwise be refused by the foreign key. Nullifying is tried first and
@@ -115,6 +117,11 @@ module ReportBuilder
     # to one of its phases.
     def reported_project
       project || phase&.project
+    end
+
+    # The run that wrote what the report holds now, if a model wrote it.
+    def last_generation
+      generation_transcripts.generations.finished.newest_first.first
     end
 
     def public?

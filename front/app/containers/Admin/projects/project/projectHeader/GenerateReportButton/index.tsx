@@ -1,7 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { useQueryClient } from '@tanstack/react-query';
 
+import useCancelReportGeneration from 'api/report_generation/useCancelReportGeneration';
 import useGenerateReport from 'api/report_generation/useGenerateReport';
 import useReportGenerationJob from 'api/report_generation/useReportGenerationJob';
 import {
@@ -33,6 +35,8 @@ const GenerateReportButton = ({ projectId, reportId }: Props) => {
   const queryClient = useQueryClient();
   const { mutate: addReport, isPending: creating } = useAddReport();
   const { mutate: generateReport, isPending: starting } = useGenerateReport();
+  const { mutate: cancelGeneration, isPending: stopping } =
+    useCancelReportGeneration();
   const { data: jobs } = useReportGenerationJob(
     { type: 'Project', id: projectId },
     { enabled: llmReportingEnabled }
@@ -101,27 +105,43 @@ const GenerateReportButton = ({ projectId, reportId }: Props) => {
   const busy = running || creating || starting || loadingLayout;
 
   return (
-    <ButtonWithLink
-      buttonStyle="secondary-outlined"
-      icon="stars"
-      size="s"
-      padding="4px 8px"
-      processing={busy}
-      disabled={busy}
-      onClick={() => {
-        if (reportId) {
-          generate(reportId);
-          return;
-        }
+    <Box display="flex" alignItems="center" gap="4px">
+      <ButtonWithLink
+        buttonStyle="secondary-outlined"
+        icon="stars"
+        size="s"
+        padding="4px 8px"
+        processing={busy}
+        disabled={busy}
+        onClick={() => {
+          if (reportId) {
+            generate(reportId);
+            return;
+          }
 
-        addReport(
-          { project_id: projectId },
-          { onSuccess: (report) => generate(report.data.id) }
-        );
-      }}
-    >
-      {formatMessage(label({ busy: running, failed, reportId, hasContent }))}
-    </ButtonWithLink>
+          addReport(
+            { project_id: projectId },
+            { onSuccess: (report) => generate(report.data.id) }
+          );
+        }}
+      >
+        {formatMessage(label({ busy: running, failed, reportId, hasContent }))}
+      </ButtonWithLink>
+      {/* The run keeps going until the loop reads the flag between rounds, so the
+          button stays while the tracker still says running. */}
+      {running && reportId && (
+        <ButtonWithLink
+          buttonStyle="text"
+          size="s"
+          padding="4px 8px"
+          processing={stopping}
+          disabled={stopping}
+          onClick={() => cancelGeneration({ reportId })}
+        >
+          {formatMessage(messages.stopGenerating)}
+        </ButtonWithLink>
+      )}
+    </Box>
   );
 };
 

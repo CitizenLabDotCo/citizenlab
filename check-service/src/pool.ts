@@ -31,7 +31,7 @@ export class RenderPool {
         // This process runs model-generated JavaScript.
         "--no-sandbox",
         "--disable-dev-shm-usage",
-        // The block reaches the app origin and nothing else.
+        // No pop-ups; what a page may fetch is decided per request in render.ts.
         "--block-new-web-contents",
         // In production the tenant's host resolves on its own. In development the
         // tenant is `localhost`, which inside this container is this container — so

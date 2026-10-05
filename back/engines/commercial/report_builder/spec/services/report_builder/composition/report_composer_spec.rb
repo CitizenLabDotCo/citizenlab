@@ -56,11 +56,17 @@ describe ReportBuilder::Composition::ReportComposer do
   end
   let(:check_service) { instance_double(ContentBuilder::CustomBlocks::CheckServiceClient) }
 
+  # Just enough of a PNG for the checker to read its size off the header.
+  let(:png_bytes) { "\x89PNG\r\n\x1a\n".b + [13].pack('N') + 'IHDR'.b + [794, 600].pack('N2') }
+
   def stub_render(**result)
     allow(ContentBuilder::CustomBlocks::CheckServiceClient).to receive(:new).and_return(check_service)
-    allow(check_service).to receive(:render).and_return({
-      'checks' => [], 'errors' => [], 'console' => [], 'failedRequests' => [], 'screenshot' => nil
-    }.merge(result.transform_keys(&:to_s)))
+    allow(check_service).to receive_messages(
+      sdk_declarations: "declare module 'gv-sdk' {}",
+      render: {
+        'checks' => [], 'errors' => [], 'console' => [], 'failedRequests' => [], 'screenshot' => nil
+      }.merge(result.transform_keys(&:to_s))
+    )
   end
 
   def respond_with(content_blocks, stop_reason, usage: nil)
@@ -89,6 +95,9 @@ describe ReportBuilder::Composition::ReportComposer do
   # so every authoring path goes through it. The default is a clean build; the specs
   # that care about failure re-stub it.
   def stub_check_service(ok: true, diagnostics: [])
+    stub_request(:get, 'http://check_service:3100/sdk/v1.d.ts').to_return(
+      status: 200, body: "declare module 'gv-sdk' { export const Box: unknown; }"
+    )
     stub_request(:post, 'http://check_service:3100/build').to_return(
       status: 200,
       body: {
@@ -162,7 +171,7 @@ describe ReportBuilder::Composition::ReportComposer do
       expect(composer.compose).to eq text_layout
     end
 
-    it 'gives the model the reporting schema, the widget reference and the project' do
+    it 'gives the model the reporting schema, the widget reference, the SDK and the platform' do
       stub_converse(write_layout(text_layout), done)
 
       composer.compose
@@ -170,12 +179,39 @@ describe ReportBuilder::Composition::ReportComposer do
       expect(client).to have_received(:converse).at_least(:once) do |args|
         system_prompt = args[:system].first[:text]
         expect(system_prompt).to include 'reporting_contributions'
-        expect(system_prompt).to include project.title_multiloc['en']
         expect(system_prompt).to include ReportBuilder::Craftjs::LayoutWidgets::DOCS['CustomBlock']
+        expect(system_prompt).to include "declare module 'gv-sdk'"
+        expect(system_prompt).to include 'Platform locales'
         expect(args[:tool_config][:tools].filter_map { |tool| tool.dig(:tool_spec, :name) })
           .to eq %w[
-            run_reporting_sql_query author_chart_block edit_source check get_layout patch_layout
+            run_reporting_sql_query author_chart_block edit_source check get_layout patch_layout read_docs
           ]
+      end
+    end
+
+    # The system prompt is the same for every report on the platform; what is about
+    # this one comes in the first turn, after the cached prefix.
+    it 'puts the project in the first user message, not the system prompt' do
+      stub_converse(write_layout(text_layout), done)
+
+      composer.compose
+
+      first_turn = sent_messages.first.first
+      expect(first_turn[:role]).to eq 'user'
+      expect(first_turn[:content].first[:text]).to include project.title_multiloc['en']
+      expect(client).to have_received(:converse).at_least(:once) do |args|
+        expect(args[:system].first[:text]).not_to include project.title_multiloc['en']
+      end
+    end
+
+    it 'says so in the prompt when the SDK declarations cannot be read' do
+      stub_request(:get, 'http://check_service:3100/sdk/v1.d.ts').to_return(status: 503)
+      stub_converse(write_layout(text_layout), done)
+
+      composer.compose
+
+      expect(client).to have_received(:converse).at_least(:once) do |args|
+        expect(args[:system].first[:text]).to include 'cannot be read right now'
       end
     end
 
@@ -374,6 +410,18 @@ describe ReportBuilder::Composition::ReportComposer do
         expect { suppress(described_class::ComposeError) { composer.compose } }
           .not_to change(ContentBuilder::CustomBlock, :count)
       end
+
+      it 'discards them too when the provider throws mid-run' do
+        allow(client).to receive(:converse) do |args|
+          sent_messages << args[:messages].deep_dup
+          raise Aws::BedrockRuntime::Errors::ValidationException.new(nil, 'nope') if sent_messages.size > 1
+
+          tool_call('author_chart_block', authored)
+        end
+
+        expect { suppress(Aws::BedrockRuntime::Errors::ValidationException) { composer.compose } }
+          .not_to change(ContentBuilder::CustomBlock, :count)
+      end
     end
 
     describe 'building a report over several patches' do
@@ -445,6 +493,72 @@ describe ReportBuilder::Composition::ReportComposer do
 
         expect(tool_results.last[:status]).to eq 'error'
         expect(tool_results.last[:content].first[:text]).to include 'has_height'
+      end
+
+      it 'hands the model the screenshot when a check failed' do
+        stub_render(
+          checks: [{ 'id' => 'no_overflow', 'ok' => false, 'message' => 'Too wide.' }],
+          screenshot: Base64.strict_encode64(png_bytes)
+        )
+        stub_converse(write_layout(text_layout), tool_call('check', {}, id: 'tu_2'), done)
+
+        checking_composer.compose
+
+        # The result itself stays text (an error result may hold nothing else); the
+        # picture follows it. The provider gets bytes; the run keeps text it can store.
+        # The review pass that follows is a conversation of its own, so look across
+        # every call, not just the last.
+        answer = sent_messages.flatten.find { |m| m[:content].any? { |c| c[:image] } }
+        expect(answer[:content].map(&:keys).first(2)).to eq [[:tool_result], [:image]]
+        expect(answer[:content].first[:tool_result][:status]).to eq 'error'
+        expect(answer[:content][1][:image]).to include(format: 'png')
+        expect(answer[:content][1][:image][:source][:bytes]).to eq png_bytes
+        kept = checking_composer.transcript.flat_map { |m| m[:content] }.find { |c| c[:image] }
+        expect(kept[:image][:source][:bytes]).to eq Base64.strict_encode64(png_bytes)
+      end
+
+      it 'hands over the screenshot when asked, even though every check passed' do
+        stub_render(checks: [], screenshot: Base64.strict_encode64(png_bytes))
+        stub_converse(
+          write_layout(text_layout), tool_call('check', { 'include_screenshot' => true }, id: 'tu_2'), done
+        )
+
+        checking_composer.compose
+
+        expect(tool_results.last[:status]).to eq 'success'
+        answer = sent_messages.flatten.find { |m| m[:content].any? { |c| c[:image] } }
+        expect(answer[:content].map(&:keys).first(2)).to eq [[:tool_result], [:image]]
+      end
+
+      it 'keeps the picture to itself when every check passed and nobody asked' do
+        stub_render(checks: [], screenshot: Base64.strict_encode64(png_bytes))
+        stub_converse(write_layout(text_layout), tool_call('check', {}, id: 'tu_2'), done)
+
+        checking_composer.compose
+
+        expect(sent_messages.flatten.flat_map { |m| m[:content] }).to all(satisfy { |c| !c.key?(:image) })
+      end
+
+      it 'renders one part of the report when given a node' do
+        stub_render
+        stub_converse(
+          write_layout(text_layout), tool_call('check', { 'node_id' => 'textnode01' }, id: 'tu_2'), done
+        )
+
+        checking_composer.compose
+
+        expect(check_service).to have_received(:render).with(
+          hash_including(target: hash_including(kind: 'layout', craftjs_json: hash_including('ROOT', 'textnode01')))
+        ).at_least(:once)
+      end
+
+      it 'says when there is no such node' do
+        stub_render
+        stub_converse(write_layout(text_layout), tool_call('check', { 'node_id' => 'ghost' }, id: 'tu_2'), done)
+
+        checking_composer.compose
+
+        expect(tool_results.last[:content].first[:text]).to include 'no node ghost'
       end
 
       it 'refuses to check a block this run never authored' do
@@ -536,11 +650,13 @@ describe ReportBuilder::Composition::ReportComposer do
         expect(checking_composer.compose.keys).to include 'textnode09'
       end
 
-      it 'keeps the report when the model will not improve on it' do
+      it 'keeps the report when the model will not improve on it, and takes that for an answer' do
         stub_render(checks: [{ 'id' => 'no_overflow', 'ok' => false, 'message' => 'Too wide.' }])
         stub_converse(write_layout(text_layout), done, done('That is as good as it gets.'))
 
         expect(checking_composer.compose).to eq text_layout
+        # Two rounds to write, one to decline: no nudging it to fix what it declined to.
+        expect(client).to have_received(:converse).exactly(3).times
       end
     end
 
@@ -552,6 +668,18 @@ describe ReportBuilder::Composition::ReportComposer do
 
         expect(composer.transcript.first).to include(role: 'user')
         expect(composer.transcript.map { |m| m[:role] }).to include 'assistant'
+      end
+
+      it 'keeps the review conversation in the record as well' do
+        stub_render(checks: [{ 'id' => 'no_overflow', 'ok' => false, 'message' => 'Too wide.' }])
+        stub_converse(write_layout(text_layout), done, done('That is as good as it gets.'))
+
+        checking_composer.compose
+
+        texts = checking_composer.transcript.flat_map { |m| m[:content] }.filter_map { |c| c[:text] }
+        expect(texts.first).to include 'Generate the report.'
+        expect(texts).to include a_string_including('I rendered the report you just wrote')
+        expect(texts.last).to eq 'That is as good as it gets.'
       end
 
       it 'adds up what the run cost' do
@@ -587,6 +715,136 @@ describe ReportBuilder::Composition::ReportComposer do
         expect(composer.transcript).not_to be_empty
         expect(composer.stopped_because).to eq 'round_cap'
       end
+
+      it 'stops when the turn has used up its hour, and keeps what was written' do
+        stub_converse(write_layout(text_layout), tool_call('get_layout', {}, id: 'tu_2'), done)
+        # The clock is read between rounds; here it runs out after the first.
+        allow(composer).to receive(:turn_over?).and_return(false, true)
+
+        expect(composer.compose).to eq text_layout
+        expect(composer.stopped_because).to eq 'timeout'
+        expect(client).to have_received(:converse).once
+      end
+
+      it 'stops when the admin pressed stop, and keeps what was written' do
+        run = create(:generation_transcript, report: create(:report, project: project), stopped_because: nil)
+        composer = described_class.new(project, locale: 'en', client: client, run_record: run)
+        allow(client).to receive(:converse) do |args|
+          sent_messages << args[:messages].deep_dup
+          run.update!(cancel_requested_at: Time.current)
+          write_layout(text_layout)
+        end
+
+        expect(composer.compose).to eq text_layout
+        expect(composer.stopped_because).to eq 'cancelled'
+        expect(client).to have_received(:converse).once
+      end
+
+      it 'fails a cancelled run that had written nothing, and says why' do
+        run = create(:generation_transcript, report: create(:report, project: project), stopped_because: nil)
+        composer = described_class.new(project, locale: 'en', client: client, run_record: run)
+        allow(client).to receive(:converse) do
+          run.update!(cancel_requested_at: Time.current)
+          tool_call('get_layout', {})
+        end
+
+        expect { composer.compose }.to raise_error(described_class::ComposeError, /cancelled/)
+        expect(composer.stopped_because).to eq 'cancelled'
+      end
+
+      it 'does not let the review pass change a finished run into one that ran out of rounds' do
+        stub_render(checks: [{ 'id' => 'no_overflow', 'ok' => false, 'message' => 'Too wide.' }])
+        stub_converse(write_layout(text_layout), done, tool_call('get_layout', {}, id: 'tu_r'))
+
+        checking_composer.compose
+
+        expect(checking_composer.stopped_because).to eq 'done'
+      end
+    end
+
+    describe 'a tool that breaks on our side' do
+      it 'is reported to the model rather than ending the run' do
+        allow(ContentBuilder::Craftjs::Query).to receive(:subtree_ids).and_raise(NoMethodError, 'boom')
+        allow(ErrorReporter).to receive(:report)
+        stub_render
+        stub_converse(
+          write_layout(text_layout), tool_call('check', { 'node_id' => 'textnode01' }, id: 'tu_2'), done
+        )
+
+        expect(checking_composer.compose).to eq text_layout
+        expect(tool_results.last[:status]).to eq 'error'
+        expect(tool_results.last[:content].first[:text]).to include 'failed on our side'
+        expect(ErrorReporter).to have_received(:report).with(kind_of(NoMethodError), extra: { tool: 'check' })
+      end
+    end
+
+    describe 'read_docs' do
+      it 'reads the notes on a topic' do
+        stub_converse(tool_call('read_docs', { 'topic' => 'recharts' }), write_layout(text_layout, id: 'tu_2'), done)
+
+        composer.compose
+
+        expect(tool_results.first[:status]).to eq 'success'
+        expect(tool_results.first[:content].first[:text]).to include 'ResponsiveContainer'
+      end
+
+      it 'lists the topics when asked for one that does not exist' do
+        stub_converse(tool_call('read_docs', { 'topic' => 'magic' }), write_layout(text_layout, id: 'tu_2'), done)
+
+        composer.compose
+
+        expect(tool_results.first[:status]).to eq 'error'
+        expect(tool_results.first[:content].first[:text]).to include 'config, layout, queries, recharts'
+      end
+    end
+
+    describe '#revise' do
+      let(:history) do
+        [
+          { role: 'user', content: [{ text: 'Generate the report.' }] },
+          { role: 'assistant', content: [{ text: 'Wrote the report.' }] }
+        ]
+      end
+
+      it 'continues the conversation it was given, with the report and the request in the new turn' do
+        stub_converse(done('It shows weekly participants.'))
+
+        result = composer.revise(current_layout: text_layout, instruction: 'what does chart 1 show?', history: history)
+
+        expect(result).to eq(layout: nil, reply: 'It shows weekly participants.')
+        sent = sent_messages.first
+        expect(sent.first(2)).to eq history
+        expect(sent.last[:role]).to eq 'user'
+        expect(sent.last[:content].first[:text]).to include 'what does chart 1 show?'
+        expect(sent.last[:content].first[:text]).to include 'textnode01'
+        expect(sent.last[:content].first[:text]).not_to include 'Project context'
+      end
+
+      it 'introduces the project when there is no conversation to continue' do
+        stub_converse(done('Sure.'))
+
+        composer.revise(current_layout: text_layout, instruction: 'hello', history: [])
+
+        expect(sent_messages.first.last[:content].first[:text]).to include project.title_multiloc['en']
+      end
+
+      it 'records only what this turn added' do
+        stub_converse(done('Sure.'))
+
+        composer.revise(current_layout: text_layout, instruction: 'hello', history: history)
+
+        expect(composer.transcript.size).to eq 4
+        expect(composer.turn_messages.size).to eq 2
+        expect(composer.turn_messages.first[:role]).to eq 'user'
+      end
+
+      it 'says the turn finished' do
+        stub_converse(done('Sure.'))
+
+        composer.revise(current_layout: text_layout, instruction: 'hello', history: history)
+
+        expect(composer.stopped_because).to eq 'done'
+      end
     end
 
     describe 'get_layout' do
@@ -620,6 +878,27 @@ describe ReportBuilder::Composition::ReportComposer do
 
         expect(composer.compose).to eq text_layout
         expect(tool_results.first[:status]).to eq 'error'
+      end
+
+      it 'refuses a chart node pointing at a version that was never written' do
+        allow(client).to receive(:converse) do |args|
+          sent_messages << args[:messages].deep_dup
+          case sent_messages.size
+          when 1 then tool_call('author_chart_block', authored)
+          when 2
+            block_id = ContentBuilder::CustomBlock.last.id
+            write_layout(
+              layout_with('chartnode1' => node('CustomBlock', { 'blockId' => block_id, 'version' => 7 }))
+            )
+          when 3 then write_layout(text_layout, id: 'tu_3')
+          else done
+          end
+        end
+
+        composer.compose
+
+        expect(tool_results.map { |result| result[:content].first[:text] })
+          .to include a_string_including('version 7, which does not exist (the latest is 1)')
       end
 
       it 'accepts a chart node pointing at a block authored in this run' do

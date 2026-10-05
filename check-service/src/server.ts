@@ -46,6 +46,12 @@ server.addHook("onRequest", async (request, reply) => {
 
 server.get("/health", async () => ({ status: "ok" }));
 
+// The one description of the SDK. Rails puts it in the system prompt, so the model is
+// told about exactly the module the typechecker holds its blocks to.
+server.get("/sdk/v1.d.ts", async (_request, reply) => {
+  return reply.type("text/plain; charset=utf-8").send(sdkTypes());
+});
+
 server.post<{ Body: BuildRequest }>("/build", async (request, reply) => {
   const body = request.body;
 

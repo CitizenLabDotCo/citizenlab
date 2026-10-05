@@ -15,6 +15,10 @@ class CreateContentBuilderCustomBlockVersions < ActiveRecord::Migration[7.2]
       # The versions of esbuild, TypeScript and the SDK the bundle was built with,
       # so a later toolchain upgrade can tell what needs rebuilding.
       t.jsonb :toolchain, null: false, default: {}
+      # The generation run that wrote this version, for provenance. A plain uuid rather
+      # than a reference: the run lives in the report_builder engine, which depends on
+      # this one, and a foreign key here would point the dependency the other way.
+      t.uuid :generation_transcript_id
 
       t.timestamps
     end

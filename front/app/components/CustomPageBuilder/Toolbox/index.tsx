@@ -1,8 +1,12 @@
 import React from 'react';
 
+import useCustomBlocks from 'api/custom_blocks/useCustomBlocks';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocalize from 'hooks/useLocalize';
 
 import heroBannerMessages from 'components/admin/BannerFields/messages';
+import CustomBlock from 'components/admin/ContentBuilder/CustomBlocks/Widget';
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 import Section from 'components/admin/ContentBuilder/Toolbox/Section';
@@ -31,6 +35,11 @@ import { useIntl } from 'utils/cl-intl';
 
 const CustomPageBuilderToolbox = () => {
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
+  const llmReportingEnabled = useFeatureFlag({ name: 'llm_reporting' });
+  const { data: customBlocks } = useCustomBlocks({
+    enabled: llmReportingEnabled,
+  });
   const isHtmlBlockMultilocEnabled = useFeatureFlag({
     name: 'html_block_in_content_builder',
   });
@@ -189,6 +198,29 @@ const CustomPageBuilderToolbox = () => {
           label={formatMessage(AccordionMultiloc.craft.custom.title)}
         />
       </Section>
+      {/* The same generated charts the report builder offers: one widget, a
+          different page. */}
+      {llmReportingEnabled && customBlocks && customBlocks.data.length > 0 && (
+        <Section>
+          {customBlocks.data.map((block) =>
+            block.attributes.latest_version === null ? null : (
+              <DraggableElement
+                key={block.id}
+                id={`e2e-draggable-custom-block-${block.id}`}
+                component={
+                  <CustomBlock
+                    blockId={block.id}
+                    version={block.attributes.latest_version}
+                    config={{}}
+                  />
+                }
+                icon="stars"
+                label={localize(block.attributes.title_multiloc)}
+              />
+            )
+          )}
+        </Section>
+      )}
     </Container>
   );
 };

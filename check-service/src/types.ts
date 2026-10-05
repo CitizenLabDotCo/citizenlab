@@ -60,6 +60,8 @@ export interface RenderRequest {
   layoutId: string;
   /** Origin of the SPA that serves the harness route. */
   appOrigin: string;
+  /** Origin of the API the page fetches data and uploads from, when it differs. */
+  apiOrigin?: string;
   /** Short-lived, scoped to reading this layout's reporting data. */
   token: string;
   screenshot?: boolean;
@@ -112,7 +114,16 @@ export interface RenderResponse {
   checks: Check[];
   /** base64 PNG of the harness root, when one was asked for or a check failed. */
   screenshot: string | null;
+  /** The report was taller than a picture may be, and the screenshot shows its top. */
+  screenshotClipped: boolean;
 }
+
+/**
+ * The most of a page a screenshot shows, in CSS pixels. A model provider refuses an
+ * image over 8000 px on a side, and a whole report at the A4 content width runs to
+ * many thousands; the top of it is what a layout question is usually about.
+ */
+export const MAX_SCREENSHOT_HEIGHT_PX = 6000;
 
 /** A page that will not settle is killed and reported rather than held open. */
 export const RENDER_TIMEOUT_MS = 30_000;

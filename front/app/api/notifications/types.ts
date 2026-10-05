@@ -268,6 +268,9 @@ export interface IReportGeneratedNotificationData
     created_at: string;
     report_id: string;
     project_title_multiloc: Multiloc;
+    // The run stopped before the model said it was done; the report is saved but
+    // may not be whole.
+    stopped_early: boolean;
   };
 }
 

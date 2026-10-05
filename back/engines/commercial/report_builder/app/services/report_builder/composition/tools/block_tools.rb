@@ -3,7 +3,7 @@
 module ReportBuilder
   module Composition
     module Tools
-      # Writing a chart, and seeing whether it actually draws.
+      # Writing a chart, and changing one already written.
       module BlockTools
         DEFINITIONS = [
           {
@@ -76,25 +76,6 @@ module ReportBuilder
                     replace: { type: 'string', description: 'What to put in its place.' }
                   },
                   required: %w[block_id find replace]
-                }
-              }
-            }
-          },
-          {
-            tool_spec: {
-              name: 'check',
-              description: 'Render what you have written in a real browser and report back: ' \
-                           'whether it mounted, whether its charts actually drew anything, ' \
-                           'whether anything overflows the page. Check a chart after you author ' \
-                           'it, and the whole report when you think it is finished. A block that ' \
-                           'compiles can still draw an empty frame, and only this will tell you.',
-              input_schema: {
-                json: {
-                  type: 'object',
-                  properties: {
-                    block_id: { type: 'string', description: 'A chart you authored. Omit to check the whole report.' },
-                    config: { type: 'object', description: 'Settings to render that chart with.' }
-                  }
                 }
               }
             }

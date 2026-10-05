@@ -343,6 +343,11 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.reportGenerated',
     defaultMessage: 'Your report for {projectTitle} is ready',
   },
+  reportGeneratedStoppedEarly: {
+    id: 'app.containers.NotificationMenu.reportGeneratedStoppedEarly',
+    defaultMessage:
+      'Your report for {projectTitle} stopped before it was finished. What was written is saved.',
+  },
   projectPublished: {
     id: 'app.containers.NotificationMenu.projectPublished',
     defaultMessage: 'A new project was published',

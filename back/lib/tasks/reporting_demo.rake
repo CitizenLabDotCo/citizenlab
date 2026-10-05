@@ -155,9 +155,12 @@ class ReportingDemoSeed
     locales = AppConfiguration.instance.settings('core', 'locales')
 
     Array.new(RESIDENT_COUNT) do |index|
-      attributes = anonymizer.anonymized_attributes(locales)
+      # Gender and birth year, so the report has demographics to chart. They live in
+      # custom_field_answers, which the transition service stages onto the user.
+      answers = anonymizer.anonymized_answers
+      attributes = anonymizer.anonymized_attributes(locales, answers: answers)
       registered_at = rand(6.months.ago..1.week.ago)
-      User.create!(
+      user = User.new(
         attributes.merge(
           'email' => "riverside-resident-#{index}-#{SecureRandom.hex(3)}@example.org",
           'password' => 'democracy2.0',
@@ -165,6 +168,11 @@ class ReportingDemoSeed
           'created_at' => registered_at
         )
       )
+      CustomFieldValuesTransitionService.new.assign(
+        user, answers.to_h { |answer| [answer['custom_field'].key, answer['value']] }
+      )
+      user.save!
+      user
     end
   end
 
@@ -262,7 +270,7 @@ class ReportingDemoSeed
 
     @residents.sample(SURVEY_RESPONSE_COUNT).each do |resident|
       submitted_at = rand(@survey.start_at.to_time..@survey.end_at.to_time)
-      Idea.create!(
+      response = Idea.new(
         project: @project,
         phases: [@survey],
         creation_phase: @survey,
@@ -270,8 +278,12 @@ class ReportingDemoSeed
         publication_status: 'published',
         published_at: submitted_at,
         submitted_at: submitted_at,
-        created_at: submitted_at,
-        custom_field_values: {
+        created_at: submitted_at
+      )
+      # The answers are rows of their own, which the reporting views read.
+      CustomFieldValuesTransitionService.new.assign(
+        response,
+        {
           @q_priority.key => weighted_sample(priority_keys, [0.42, 0.28, 0.19, 0.11]),
           @q_visit.key => weighted_sample(visit_keys, [0.34, 0.38, 0.22, 0.06]),
           @q_safety.key => weighted_sample([1, 2, 3, 4, 5], [0.12, 0.21, 0.3, 0.24, 0.13]),
@@ -279,6 +291,7 @@ class ReportingDemoSeed
           @q_anything.key => COMMENTS.sample
         }
       )
+      response.save!
     end
   end
 

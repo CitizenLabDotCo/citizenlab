@@ -6,21 +6,29 @@ module ReportBuilder
     # explores the platform's reporting data with real SQL, writes a chart component
     # for each thing worth showing, and lays the whole document out.
     #
-    # Three tools, all executed here:
+    # The tools, all executed here (Tools::DEFINITIONS):
     #   run_reporting_sql_query — real, sandboxed SQL, so charts are chosen after
     #                             seeing the data rather than guessed at.
-    #   author_chart_block      — one chart, built and checked, then stored as a custom block.
+    #   author_chart_block / edit_source — one chart, built, then stored as a custom block.
+    #   check                   — what a real browser made of a chart, or of the report.
     #   get_layout / patch_layout — the report itself, built up a patch at a time and
     #                             validated before each one counts.
+    #   read_docs               — the longer SDK notes, by topic, when the prompt is not enough.
     #
     # Anything rejected comes back as a tool result the model can correct itself
-    # from, which is the whole feedback loop: there is no admin watching.
+    # from, which is the whole feedback loop: there is no admin watching. A tool that
+    # breaks on our side is reported the same way; nothing a tool does ends the run.
     class ReportComposer
       class ComposeError < StandardError; end
 
       # Enough rounds to explore the data, write several charts and lay them out,
       # with room for corrections. A run that needs more than this is not converging.
       MAX_ROUNDS = 32
+
+      # A turn's wall clock. The round cap bounds the model; this bounds everything
+      # else: a slow database or a renderer that hangs must not keep a job going all
+      # night. Read between rounds, like the cancel flag.
+      MAX_TURN_SECONDS = 60 * 60
 
       # The whole layout must fit one reply, or the loop degenerates into
       # truncated-rewrite cycles. Same reasoning as the block authoring loop.
@@ -37,17 +45,13 @@ module ReportBuilder
       # whole: the model needs the shape and the spread, not every row.
       SAMPLE_ROWS = 15
 
-      # The widgets the layout may use. Every chart is a CustomBlock; the built-in
-      # report charts are deliberately not offered.
-      COMPOSABLE_WIDGETS = %w[
-        Cover Divider KeyFigures TextMultiloc WhiteSpace PageBreak TableOfContents TwoColumn Container CustomBlock
-      ].freeze
-
       # @param project [Project] the subject of the report.
       # @param locale [String] the locale the report text is written in.
       # @param phase [Phase, nil] the one phase to report on, for a phase report.
       # @param author [User, nil] who the authored blocks are attributed to.
-      def initialize(project, locale:, phase: nil, author: nil, client: nil, layout_record: nil)
+      # @param run_record [GenerationTranscript, nil] this run's row. The versions it
+      #   writes point back at it, and it carries the cancel flag the loop reads.
+      def initialize(project, locale:, phase: nil, author: nil, client: nil, layout_record: nil, run_record: nil)
         @project = project
         @locale = locale
         @phase = phase
@@ -56,19 +60,27 @@ module ReportBuilder
         # The report's own layout row. Only used for checking: a render needs a layout
         # to scope its data token to.
         @layout_record = layout_record
+        @run_record = run_record
         @authored_blocks = []
         # What the report held when this run started, and the graph as it stands now.
         @current_layout = nil
         @layout = {}
         # What the model was told and what it said, for whoever has to work out why a
-        # run went the way it did.
+        # run went the way it did. A chat turn starts from the stored conversation;
+        # +turn_messages+ is the part this run added.
         @transcript = []
+        @history_size = 0
         @usage = Hash.new(0)
         @stopped_because = 'failed'
+        @turn_started_at = nil
       end
 
       # The run's record: every message in order, what it cost, and why it stopped.
       attr_reader :transcript, :usage, :stopped_because
+
+      # The messages this run added to the conversation, which is what gets stored
+      # for a chat turn: the history before them is already on record.
+      def turn_messages = @transcript.drop(@history_size)
 
       # Which model wrote this run, for the record.
       def model_name = model_id
@@ -76,15 +88,22 @@ module ReportBuilder
       # @return [Hash] a validated craftjs_json graph.
       # @raise [ComposeError] if no valid layout was produced within MAX_ROUNDS.
       def compose
-        result = run_loop([{ role: 'user', content: [{ text: 'Generate the report.' }] }])
-        if result[:layout].nil?
-          # The charts were authored for a report that never got written. Leaving them
-          # would fill the block library with orphans nothing can reach or delete.
-          discard_authored_blocks
-          raise ComposeError, "no report was written in #{MAX_ROUNDS} rounds"
-        end
+        start_turn
+        result = run_loop([{ role: 'user', content: [{ text: brief }] }])
+        @stopped_because = result[:stopped]
+        raise ComposeError, "no report was written (#{result[:stopped]})" if result[:layout].nil?
+
+        # A run that was stopped — out of rounds, out of time, cancelled — did not
+        # finish, and a review pass would only spend more of what ran out.
+        return result[:layout] unless result[:stopped] == 'done'
 
         review(result[:layout])
+      rescue StandardError
+        # The charts were authored for a report that never got written — whether the
+        # model gave up or the provider threw. Leaving them would fill the block library,
+        # and now the toolbox, with orphans nothing can reach.
+        discard_authored_blocks
+        raise
       end
 
       # The model stops when it believes the report is done. Believing is not seeing:
@@ -99,8 +118,10 @@ module ReportBuilder
         outcome = checker.check(checker.layout_target(layout))
         return layout unless outcome[:error]
 
+        # "Not worth fixing" is an answer here, not a model that stopped short: without
+        # this the loop would nudge it to use the tools for every remaining round.
         result = run_loop(
-          [{ role: 'user', content: [{ text: <<~TEXT }] }], max_rounds: REVIEW_ROUNDS
+          [{ role: 'user', content: [{ text: <<~TEXT }] }], allow_answer_only: true, max_rounds: REVIEW_ROUNDS
             I rendered the report you just wrote. Some checks failed:
 
             #{outcome[:text]}
@@ -110,6 +131,9 @@ module ReportBuilder
           TEXT
         )
 
+        # Running out of review rounds is the bound working, not the report failing;
+        # the clock and the cancel flag are the only ways a review changes the verdict.
+        @stopped_because = result[:stopped] if %w[timeout cancelled].include?(result[:stopped])
         result[:layout] || layout
       end
 
@@ -118,30 +142,35 @@ module ReportBuilder
       #
       # @param current_layout [Hash] what the report holds now.
       # @param instruction [String] what the admin just asked.
-      # @param history [Array<Hash>] earlier turns as {'role','text'}.
+      # @param history [Array<Hash>] the conversation so far, as Messages.history
+      #   shapes it: every earlier turn with its tool calls and results.
       # @return [Hash] { layout: Hash or nil when nothing changed, reply: String }
       def revise(current_layout:, instruction:, history: [])
+        start_turn
         @current_layout = current_layout
         @layout = current_layout || {}
         # Charts already in the report stay placeable; the model keeps what it keeps.
         @authored_blocks |= block_ids_in(current_layout)
+        @history_size = history.size
 
-        messages = history.filter_map do |turn|
-          text = turn['text'].presence
-          { role: turn['role'], content: [{ text: text }] } if text
-        end
-        messages << { role: 'user', content: [{ text: instruction }] }
-
-        run_loop(messages, allow_answer_only: true)
+        messages = history + [{ role: 'user', content: [{ text: revision_turn(instruction, history.empty?) }] }]
+        result = run_loop(messages, allow_answer_only: true)
+        @stopped_because = result[:stopped]
+        result.slice(:layout, :reply)
       end
 
       private
 
+      # @return [Hash] { layout:, reply:, stopped: } — stopped is one of
+      #   GenerationTranscript::STOP_REASONS; the caller decides what it means.
       def run_loop(messages, allow_answer_only: false, max_rounds: MAX_ROUNDS)
         reply = nil
         patched = false
 
         max_rounds.times do
+          return finish(patched, reply, 'cancelled') if cancel_requested?
+          return finish(patched, reply, 'timeout') if turn_over?
+
           response = converse(messages)
           record_usage(response)
           assistant = Messages.serialize(response.output.message)
@@ -165,32 +194,44 @@ module ReportBuilder
             # anything is only an answer in the chat; asked to generate a report, it
             # means the model stopped short, and a nudge costs less than a failed run.
             done = response.stop_reason.to_s == 'end_turn' && (patched || allow_answer_only)
-            if done
-              @stopped_because = 'done'
-              return finish(patched, reply)
-            end
+            return finish(patched, reply, 'done') if done
 
             messages << nudge(response.stop_reason)
             next
           end
 
-          outcomes = calls.map { |call| [call, handle(call)] }
+          outcomes = calls.map { |call| [call, execute(call)] }
           patched ||= outcomes.any? { |_call, outcome| outcome[:patched] }
 
-          # Every tool call must be answered, or the next request is rejected.
-          messages << {
-            role: 'user',
-            content: outcomes.map { |call, outcome| Messages.tool_result(call[:id], outcome) }
-          }
+          messages << Messages.results_message(outcomes)
         end
 
         # Out of rounds. Every patch was validated before it landed, so what is here
         # is a real report, just possibly an unfinished one — and an unfinished report
         # the admin can edit beats throwing away the whole run.
-        @stopped_because = 'round_cap'
-        finish(patched, reply)
+        finish(patched, reply, 'round_cap')
       ensure
-        @transcript = messages
+        # Appended, not assigned: the review pass is a second conversation in the same
+        # run, and the record has to hold both.
+        @transcript.concat(messages)
+      end
+
+      def start_turn
+        @turn_started_at = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+      end
+
+      def turn_over?
+        return false if @turn_started_at.nil?
+
+        Process.clock_gettime(Process::CLOCK_MONOTONIC) - @turn_started_at > MAX_TURN_SECONDS
+      end
+
+      # The admin pressed stop. Read fresh each time: the flag is set by a web request
+      # while this job is running.
+      def cancel_requested?
+        return false if @run_record.nil?
+
+        @run_record.reload.cancel_requested?
       end
 
       def record_usage(response)
@@ -202,11 +243,11 @@ module ReportBuilder
         end
       end
 
-      def finish(patched, reply)
-        return { layout: nil, reply: reply } unless patched
+      def finish(patched, reply, stopped)
+        return { layout: nil, reply: reply, stopped: stopped } unless patched
 
         discard_unplaced_blocks(@layout)
-        { layout: @layout, reply: reply }
+        { layout: @layout, reply: reply, stopped: stopped }
       end
 
       def block_ids_in(layout)
@@ -231,16 +272,39 @@ module ReportBuilder
         ContentBuilder::CustomBlock.where(id: @authored_blocks - placed - block_ids_in(@current_layout)).destroy_all
       end
 
+      # A tool that fails on our side is a tool result, not an exception: the model is
+      # told, and decides whether to try again or go on without it. The handlers rescue
+      # what they can explain; this catches what they cannot.
+      def execute(call)
+        handle(call)
+      rescue StandardError => e
+        ErrorReporter.report(e, extra: { tool: call[:name] })
+        {
+          error: true,
+          text: "#{call[:name]} failed on our side (#{e.class}). Try it once more; if it " \
+                'fails again, carry on without it.'
+        }
+      end
+
       def handle(call)
+        input = call[:input].is_a?(Hash) ? call[:input] : {}
         case call[:name]
-        when 'run_reporting_sql_query' then run_query(call[:input]['query'])
-        when 'author_chart_block' then author_block(call[:input])
-        when 'edit_source' then edit_block(call[:input])
-        when 'check' then check(call[:input])
+        when 'run_reporting_sql_query' then run_query(input['query'])
+        when 'author_chart_block' then author_block(input)
+        when 'edit_source' then edit_block(input)
+        when 'check' then check(input)
         when 'get_layout' then read_layout
-        when 'patch_layout' then patch_layout(call[:input])
+        when 'patch_layout' then patch_layout(input)
+        when 'read_docs' then read_docs(input['topic'])
         else { error: true, text: "Unknown tool '#{call[:name]}'." }
         end
+      end
+
+      def read_docs(topic)
+        text = Docs.read(topic)
+        return { text: text } if text
+
+        { error: true, text: "No notes on '#{topic}'. The topics are: #{Docs.topics.join(', ')}." }
       end
 
       def run_query(query)
@@ -256,7 +320,7 @@ module ReportBuilder
       end
 
       def author_block(input)
-        result = ChartBlockAuthor.new(@author, locale: @locale).author(
+        result = block_author.author(
           title: input['title'],
           source: input['source'],
           config_schema: input['config_schema'],
@@ -277,8 +341,7 @@ module ReportBuilder
           return { error: true, text: "No block #{block_id} was authored in this run." }
         end
 
-        result = ChartBlockAuthor.new(@author, locale: @locale)
-          .edit(block_id: block_id, find: input['find'].to_s, replace: input['replace'].to_s)
+        result = block_author.edit(block_id: block_id, find: input['find'].to_s, replace: input['replace'].to_s)
 
         { text: "Edited. The chart is now #{placement(result)} — patch the node that places it." }
       rescue ChartBlockAuthor::Rejected => e
@@ -289,24 +352,39 @@ module ReportBuilder
         %({"blockId":"#{result.block_id}","version":#{result.version_number}})
       end
 
-      # Rendering the report, or one chart in it, and reporting what the browser saw.
+      def block_author
+        @block_author ||= ChartBlockAuthor.new(@author, locale: @locale, run_id: @run_record&.id)
+      end
+
+      # Rendering the report, one part of it, or one chart, and reporting what the
+      # browser saw.
       def check(input)
         return { error: true, text: 'Checking is not available in this run.' } if checker.nil?
 
+        screenshot = input['include_screenshot'] == true
         block_id = input['block_id'].presence
-        return checker.check(checker.layout_target(@layout)) if block_id.nil?
+        node_id = input['node_id'].presence
 
-        version = authored_version(block_id)
-        return { error: true, text: "No block #{block_id} was authored in this run." } if version.nil?
+        if block_id
+          version = authored_version(block_id)
+          return { error: true, text: "No block #{block_id} was authored in this run." } if version.nil?
 
-        checker.check(
-          checker.block_target(
+          target = checker.block_target(
             bundle: version.bundle,
             manifest: version.manifest,
             messages: version.messages,
             config: input['config'] || {}
           )
-        )
+        elsif node_id
+          subgraph = Craftjs::Subgraph.extract(@layout, node_id)
+          return { error: true, text: "There is no node #{node_id} in the report." } if subgraph.nil?
+
+          target = checker.layout_target(subgraph)
+        else
+          target = checker.layout_target(@layout)
+        end
+
+        checker.check(target, screenshot: screenshot)
       end
 
       def authored_version(block_id)
@@ -344,10 +422,33 @@ module ReportBuilder
         )
         return { error: true, text: result.message } unless result.valid?
 
+        missing = missing_versions(nodes)
+        return { error: true, text: missing } if missing
+
         @layout = graph
         { patched: true, text: "Patched. The report now reads:\n#{Craftjs::LayoutSummary.text(@layout)}" }
       rescue Craftjs::LayoutPatcher::PatchError => e
         { error: true, text: e.message }
+      end
+
+      # The validator pins blockId to the charts of this run; the version number is
+      # the other half of the pin, and a number that was never written renders nothing.
+      def missing_versions(nodes)
+        problems = nodes.filter_map do |id, node|
+          # ROOT's type is the plain string "div"; only widget nodes carry a Hash.
+          next unless node.is_a?(Hash) && node['type'].is_a?(Hash) && node['type']['resolvedName'] == 'CustomBlock'
+
+          block_id = node.dig('props', 'blockId')
+          number = node.dig('props', 'version')
+          next if ContentBuilder::CustomBlockVersion.exists?(custom_block_id: block_id, number: number)
+
+          latest = ContentBuilder::CustomBlock.find_by(id: block_id)&.latest_version&.number
+          "node #{id} places block #{block_id} at version #{number.inspect}, which does not exist" \
+            "#{latest ? " (the latest is #{latest})" : ''}"
+        end
+        return nil if problems.empty?
+
+        "Nothing was changed.\n#{problems.join("\n")}"
       end
 
       def client
@@ -375,7 +476,7 @@ module ReportBuilder
           # System prompt and tool list are the same ~38KB on every round, so they are
           # marked once and read from the provider's cache after the first call.
           system: [{ text: system_prompt }, CACHE_POINT],
-          messages: cached(messages),
+          messages: Messages.to_provider(cached(messages)),
           tool_config: { tools: Tools::DEFINITIONS + [CACHE_POINT] },
           inference_config: { max_tokens: MAX_OUTPUT_TOKENS }
         )
@@ -430,10 +531,26 @@ module ReportBuilder
         Craftjs::WidgetSpecs.with_allowed_ids('blockId' => @authored_blocks)
       end
 
+      # The first thing the model is told about this report. In the user turn rather
+      # than the system prompt, so the system prompt is the same bytes for every report
+      # on the platform and the provider's cache carries across them.
+      def brief
+        <<~TEXT
+          Generate the report.
+
+          ## Project context
+
+          #{context.to_prompt_text}
+        TEXT
+      end
+
       # In the chat the model is editing something that already exists, and the admin
       # is waiting: the instructions change from "write a report" to "change this one".
-      def revision_instructions
+      # In the user turn, with the report as it stands: the layout changes every turn,
+      # and anything that changes belongs after the cached prefix, not in it.
+      def revision_turn(instruction, first_turn)
         <<~SECTION
+          #{first_turn ? "## Project context\n\n#{context.to_prompt_text}\n" : ''}
           ## You are editing an existing report
 
           The admin is talking to you about the report below. Do what they ask and nothing
@@ -455,281 +572,15 @@ module ReportBuilder
           ### The report as it is now
 
           #{@current_layout.to_json}
+
+          ### The admin says
+
+          #{instruction}
         SECTION
       end
 
       def system_prompt
-        @system_prompt ||= <<~PROMPT
-          You write the report on a participation project for Go Vocal, a digital democracy platform used by local governments. The reader is a resident or a councillor: interested, not an expert, and reading a printed PDF rather than a screen.
-
-          You have the platform's reporting data and you write your own charts. Work in this order:
-
-          1. Explore. Run queries until you know what this project's data actually holds:
-             how participation moved over time, what people answered, who took part, where
-             they came from. Look before you decide what the report says.
-          2. Write the charts. One author_chart_block call per chart. Six to eight is
-             the most a report this length carries, so choose the questions worth a
-             chart rather than charting everything you can. A chart you author and do
-             not place is wasted.
-          3. Build the report with patch_layout, a section at a time. Send only the nodes
-             you are adding or changing; never re-send a node you have already written.
-             Start with a patch that creates ROOT and the cover, then add sections. When
-             the report is complete, stop calling tools and say in one sentence what you
-             wrote — that is what ends the run.
-          #{revision_instructions if @current_layout}
-
-          ## What you may write
-
-          A chart shows real numbers, because it runs its own query. Your prose does not:
-          you may only state a number in text if you saw it in a query result in this
-          conversation. Never guess, never round something you did not see, and never write
-          a sentence that would be wrong if the data changed. Prefer describing what the
-          chart shows to repeating its numbers.
-
-          Write the report in the platform locale "#{@locale}", and give every text prop
-          exactly that one key: {"text":{"#{@locale}":"..."}}.
-
-          ## The report
-
-          The first three are not optional, and they come in this order. A report that
-          opens straight onto a chart is not a report.
-
-          1. Cover. One Cover node, filled in for this project, then a PageBreak.
-          2. Contents. One TableOfContents, then a PageBreak, so the contents have a
-             page to themselves.
-          3. Executive summary. Four to six bullet points in one TextMultiloc, under an
-             <h2> reading "Executive summary" in the report's locale. Each bullet opens
-             with the finding itself in <b>, then the evidence for it. This is the only
-             part some readers will read, so it carries the whole argument — and every
-             number in it must be one you saw in a query result.
-          4. Taking part. How participation went, with a chart.
-          5. Results. What people actually said or chose — usually the heart of the report,
-             and usually more than one chart.
-          6. Who took part. The demographics of participants, if the data supports it.
-          7. Reach. Visitors and where they came from, if the data supports it.
-          8. What happens next.
-
-          Every section from 3 onwards opens the same way: a Divider with variant
-          "section", then a TextMultiloc whose first tag is the <h2> naming the section.
-          That repetition is the report's spine — keep it exact, and put a Divider
-          nowhere else.
-
-          Where a section's point is a handful of headline counts — how many took part,
-          how many visitors, what share completed something — open it with a KeyFigures
-          band directly under the heading, and let it carry those numbers instead of a
-          sentence that lists them. Two or three sections usually deserve one; a section
-          whose point is a shape or a trend does not, that is what the chart is for.
-
-          Between four and seven charts is right for a project report. Separate sections
-          with a WhiteSpace of size "large", and a chart from the sentence above it with
-          size "small". Keep the prose under about 500 words in total.
-
-          Each section should read as a page: a heading, a short paragraph, and at most
-          two charts. That is what makes the PDF navigable.
-
-          ## Choosing the chart
-
-          The data's job picks the form, and color comes last:
-
-          - Magnitude across categories: horizontal bar, sorted, one hue. The safe default.
-          - Change over time: line, or area for a single series.
-          - Part of a whole: a stacked bar, not a pie. Only use a pie for two or three
-            slices that sum to something meaningful.
-          - An ordered scale (agree to disagree, 1 to 5): a stacked bar in one hue ramp,
-            in scale order, never re-sorted by size.
-          - One number that matters on its own: large text, not a one-bar chart.
-
-          Rules that hold for every chart:
-          - The council's own colours are the default palette. theme.colors.tenantPrimary
-            for a single series, tenantSecondary for a second one. Reach for the platform
-            greys for everything that is not data. Never invent a brand colour.
-          - Never two y-axes. Two measures of different scale are two charts.
-          - One hue, light to dark, unless the series themselves are the subject; then use
-            distinct hues, at most six, and always with a legend.
-          - Sort bars by value, except on an ordered scale.
-          - Label the axes in the report's locale. No jargon and no column names.
-          - Thin marks, a recessive grid, no 3D, no shadows, no gradients.
-          - The chart must read in print: no tooltips as the only way to see a value, and
-            enough contrast in greyscale.
-
-          Every chart block is laid out the same way, so a run of them reads as one
-          document: a heading, the chart filling the full width of the column, then one
-          line of caption under it in small secondary text saying what the reader should
-          take from it or what it leaves out. The chart's box is the width of the column
-          — never narrower and never given a fixed pixel width, or it sits off-centre on
-          the page.
-
-          ## The report is printed
-
-          Everything you write ends up as a PDF at a fixed A4 width, about 21cm, on paper
-          or on a screen that cannot be hovered or scrolled sideways. Compose for that:
-
-          - A chart is never split across a page break, so keep each one short enough to
-            fit on a page: 220 to 320 pixels tall, never more than 400.
-          - A PageBreak is the only way to decide where a page ends. Use it after the cover
-            and after the contents, and otherwise only where a section really deserves to
-            start at the top of a page.
-          - Give the sentence that introduces a chart its own text node directly above it,
-            and separate them with a WhiteSpace of size "small" so they stay together.
-          - Nothing may depend on interaction. A value that can only be read from a tooltip
-            is a value the printed report does not have, so label the bars or points that
-            carry the point.
-          - No colour-only meaning: a reader in greyscale must still be able to tell the
-            series apart, by order, by label, or by lightness.
-          - Never a fixed pixel width wider than about 700, and never a viewport unit
-            (vw, vh): the page is not the screen.
-          - Keep the whole report to roughly 6 to 10 printed pages. A section per page
-            reads better than one long scroll.
-
-          ## Writing a chart block
-
-          author_chart_block takes a title, the complete TSX source, the messages the
-          block displays, and a config_schema. There is no sql argument: the queries are
-          read out of the source, so the two can never disagree about what the chart
-          reads. Put each one in a template literal at the top of the file.
-
-          The source is compiled, typechecked against the SDK declarations, linted, and
-          every query it runs goes through the SQL sandbox. Nothing is stored unless all
-          of that passes, and what failed comes back with line numbers. You will not be
-          asked to fix a block after it has been placed.
-
-          ### messages — every string a reader sees
-
-          A block displays no literal text. Each string is a key, read with msg(), and
-          defined under the report's locale, the same one every text prop uses:
-
-          messages: {"#{@locale}":{"title":"Participants per phase",
-                                   "caption":"One line on what this shows.",
-                                   "empty":"No data for this chart yet."}}
-
-          Use the same keys in every locale. A key the source never reads, or a key a
-          locale does not define, is reported as an error.
-
-          ### config_schema — what an admin can change afterwards
-
-          A generated chart is not the last word: whoever owns the report has to be able to
-          correct it without editing code. config_schema is a JSON Schema object; each
-          property becomes an input in the builder sidebar and arrives as config[key].
-
-          {"type":"object",
-           "properties":{
-             "title":{"type":"string","x-multiloc":true,"title":"Chart title"},
-             "caption":{"type":"string","x-multiloc":true,"title":"Caption"},
-             "showValues":{"type":"boolean","title":"Show the value on each bar","default":true},
-             "topN":{"type":"integer","title":"How many rows to show","default":10}
-           }}
-
-          Every chart exposes its title and its caption as x-multiloc strings, so the
-          wording can always be fixed in every language. Then add one or two more where the
-          chart has a real choice in it: how many rows to show, the sort direction, which
-          measure to plot. Six properties is the maximum.
-
-          - type is string, number, integer or boolean.
-          - title is the label the admin reads.
-          - "x-multiloc": true on a string gives a per-locale text input; the value arrives
-            as a multiloc object, so read it with localize().
-          - "enum": ["count","share"] gives a dropdown of fixed values.
-          - default is what the chart already does. A field the block never reads is worse
-            than no field, so read every one you declare, and make the block render
-            identically before anything is touched.
-
-          ### The source
-
-          The file default-exports a React component taking { config, msg }, and may import
-          only from 'gv-sdk':
-
-          import { React, Box, Text, Title, Spinner, colors, useTheme, useLocalize,
-                   useReportingData, ResponsiveContainer, BarChart, Bar, XAxis, YAxis,
-                   CartesianGrid, Legend, LineChart, Line, AreaChart, Area,
-                   PieChart, Pie, Cell, LabelList } from 'gv-sdk';
-
-          const SQL = `SELECT ...`;
-
-          export default function Block({ config, msg }) {
-            const theme = useTheme();
-            const localize = useLocalize();
-            const { data, isLoading } = useReportingData(SQL);
-            if (isLoading) return <Box p="24px" display="flex" justifyContent="center"><Spinner /></Box>;
-            const rows = data ? data.rows : [];
-            if (rows.length === 0) return <Text color="textSecondary">{msg('empty')}</Text>;
-
-            // Every declared field is read, and falls back to what the chart would
-            // have shown anyway.
-            const showValues = config.showValues !== false;
-
-            return (
-              <Box width="100%">
-                <Title variant="h4" m="0 0 12px">
-                  {localize(config.title) || msg('title')}
-                </Title>
-                <Box width="100%" height="280px">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={rows} layout="vertical"
-                              margin={{ top: 4, right: 48, bottom: 4, left: 0 }}>
-                      <CartesianGrid stroke={colors.grey200} horizontal={false} />
-                      <XAxis type="number" hide />
-                      <YAxis type="category" dataKey="label" width={160} tickLine={false}
-                             axisLine={false} stroke={colors.textSecondary} fontSize={12} />
-                      <Bar dataKey="count" fill={theme.colors.tenantPrimary}
-                           radius={[0, 4, 4, 0]} barSize={18}>
-                        {showValues && (
-                          <LabelList dataKey="count" position="right" fontSize={12}
-                                     fill={colors.textPrimary} />
-                        )}
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
-                </Box>
-                <Text m="8px 0 0" fontSize="s" color="textSecondary">
-                  {localize(config.caption) || msg('caption')}
-                </Text>
-              </Box>
-            );
-          }
-
-          Notes that save you a round trip:
-          - `data.rows` is an array of plain objects keyed by your column names. Alias your
-            columns to the keys you use in the chart. `data` is undefined until it loads,
-            and the typechecker will hold you to that.
-          - The argument to useReportingData must be a static string: a literal, or a const
-            in this file that holds one. It is extracted and snapshotted, so it cannot be
-            assembled while the block runs.
-          - A chart needs an explicit pixel height on its container; ResponsiveContainer
-            fills its parent and a parent with no height renders nothing. Give that
-            container width="100%" too, so the chart spans the column.
-          - Room for the labels comes from the axis, not the margin: set YAxis width and
-            leave margin.left at 0. Setting both indents the plot twice and leaves the
-            chart stranded against the right edge of the page.
-          - Label the bars or points directly with LabelList. A printed chart has no
-            hover, so a value that is only in a Tooltip is a value the report does not
-            have — which is why the example has no Tooltip at all.
-          - theme.colors.tenantPrimary and tenantSecondary are the council's own colours.
-            colors.grey200, colors.textSecondary and friends are the platform tokens.
-            Never a literal hex value.
-          - No fetch, no window, no document, no storage, no eval, no import(), no
-            dangerouslySetInnerHTML, and no import other than 'gv-sdk'.
-
-          ## Writing the query
-
-          - One statement, a single SELECT, over the reporting views below and nothing else.
-            Name them unqualified.
-          - Aggregate in SQL. At most 1000 rows come back, and a chart wants tens of rows.
-          - No now() or any moving value: the query is stored and must give the same answer
-            tomorrow. Write the dates out.
-          - Scope it to this project with its id unless the chart is deliberately about the
-            whole platform.
-          - Count participants with COUNT(DISTINCT participant_id) on reporting_contributions.
-
-          ## The reporting views
-
-          #{ReportingSchema.to_prompt_text}
-
-          #{Craftjs::LayoutWidgets.reference_for(COMPOSABLE_WIDGETS)}
-
-          ## Project context
-
-          #{context.to_prompt_text}
-        PROMPT
+        @system_prompt ||= SystemPrompt.new(locale: @locale).text
       end
     end
   end

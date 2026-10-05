@@ -11,6 +11,11 @@
         <%= localize_for_recipient(event.project_title_multiloc) %>
       </h2>
     </mj-text>
+    <% if event.stopped_early %>
+      <mj-text>
+        <p><%= t('.stopped_early') %></p>
+      </mj-text>
+    <% end %>
   </mj-column>
 </mj-section>
 

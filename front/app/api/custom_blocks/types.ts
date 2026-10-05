@@ -86,6 +86,24 @@ export interface ICustomBlockVersion {
   data: ICustomBlockVersionData;
 }
 
+// A block as the toolbox lists it: its name, and the version a new placement pins.
+export interface ICustomBlockData {
+  id: string;
+  type: 'custom_block';
+  attributes: {
+    title_multiloc: Multiloc;
+    status: CustomBlockStatus;
+    created_at: string;
+    // Null only for a block with no version yet, which cannot be published.
+    latest_version: number | null;
+    targets: CustomBlockTarget[];
+  };
+}
+
+export interface ICustomBlocks {
+  data: ICustomBlockData[];
+}
+
 export interface ICustomBlockVersionParams {
   blockId?: string;
   version?: number;

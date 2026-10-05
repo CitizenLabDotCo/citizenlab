@@ -28,20 +28,24 @@ module ReportBuilder
       # A retry starts over; don't stack progress on the first attempt's.
       tracker.update!(progress: 0, error_count: 0)
 
+      # The record exists before the first model call: the versions the run writes
+      # point at it, and the cancel endpoint marks it while the run is going.
+      run_record = GenerationTranscript.create!(report: report, kind: 'generation')
       composer = Composition::ReportComposer.new(
         report.reported_project,
         locale: locale,
         phase: report.phase,
         author: tracker.owner,
-        layout_record: report.layout
+        layout_record: report.layout,
+        run_record: run_record
       )
 
       begin
         craftjs_json = composer.compose
       ensure
-        # Written whether the run produced a report or not: a failed run is the one
+        # Filled in whether the run produced a report or not: a failed run is the one
         # whose reasoning someone actually needs to read.
-        record_transcript(report, composer)
+        record_transcript(run_record, composer)
       end
 
       report.layout.craftjs_json = craftjs_json
@@ -58,9 +62,8 @@ module ReportBuilder
 
     private
 
-    def record_transcript(report, composer)
-      GenerationTranscript.create!(
-        report: report,
+    def record_transcript(run_record, composer)
+      run_record.update!(
         model: composer.model_name,
         messages: composer.transcript,
         usage: composer.usage,
@@ -68,7 +71,7 @@ module ReportBuilder
       )
     rescue StandardError => e
       # Never let bookkeeping take down a run that otherwise worked.
-      ErrorReporter.report(e, extra: { report_id: report.id })
+      ErrorReporter.report(e, extra: { report_id: run_record.report_id })
     end
 
     # Called on the final failure. Expire the Que job first (so the tracker

@@ -21,7 +21,8 @@ module EmailCampaigns
         recipient: recipient,
         event_payload: {
           project_title_multiloc: data.project.title_multiloc,
-          report_url: data.project.url
+          report_url: data.project.url,
+          stopped_early: false
         }
       }
     end

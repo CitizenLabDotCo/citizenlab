@@ -19,29 +19,16 @@
 #  fk_rails_...  (report_id => report_builder_reports.id) ON DELETE => cascade
 #
 module ReportBuilder
-  # The conversation in which an admin asks for changes to a report, and the record
-  # of what was asked and what the model did about it.
+  # The conversation in which an admin asks for changes to a report, as the admin
+  # sees it: what was asked, what the model answered, and whether the report changed.
   #
-  # One per report. The transcript is the model conversation itself — user turns and
-  # assistant turns with their tool calls — so a revision continues where the last
-  # one stopped instead of re-reading the whole report from scratch.
+  # One per report. This is the panel's record, not the model's. What the model is
+  # sent on a turn is the report's runs read back in order (GenerationTranscript),
+  # tool calls included, so a revision continues where the last one stopped.
   class ReportChat < ::ApplicationRecord
-    # Every turn is a model call, and the transcript is resent in full each time. Past
-    # this the oldest turns are dropped rather than letting one report's chat grow
-    # without bound.
-    MAX_MESSAGES = 120
-
     belongs_to :report, class_name: 'ReportBuilder::Report', inverse_of: :chat
 
     validate :validate_transcript
-
-    # The turns to send to the model: the tail that fits, always starting on a user
-    # turn so the conversation the model sees is well formed.
-    def messages_for_model
-      kept = transcript.last(MAX_MESSAGES)
-      kept = kept.drop(1) until kept.empty? || kept.first['role'] == 'user'
-      kept
-    end
 
     private
 

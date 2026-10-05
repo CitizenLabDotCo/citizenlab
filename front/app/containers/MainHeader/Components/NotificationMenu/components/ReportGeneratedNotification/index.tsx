@@ -22,7 +22,9 @@ const ReportGeneratedNotification = memo<Props>(({ notification }) => (
     isRead={!!notification.attributes.read_at}
   >
     <FormattedMessage
-      {...messages.reportGenerated}
+      {...(notification.attributes.stopped_early
+        ? messages.reportGeneratedStoppedEarly
+        : messages.reportGenerated)}
       values={{
         projectTitle: (
           <T value={notification.attributes.project_title_multiloc} />

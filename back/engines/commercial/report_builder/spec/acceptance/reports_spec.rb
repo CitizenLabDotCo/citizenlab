@@ -649,6 +649,55 @@ resource 'Reports' do
     include_examples 'not authorized to normal users'
   end
 
+  post 'web_api/v1/reports/:id/cancel_generation' do
+    route_description <<~DESC
+      Ask the run in progress — a generation or a chat turn — to stop. The loop reads
+      the flag between rounds, so the round under way finishes first; what was written
+      up to then is saved.
+    DESC
+
+    let_it_be(:phase) { create(:phase) }
+    let_it_be(:report) { create(:report, phase: phase) }
+    let(:id) { report.id }
+
+    before { SettingsService.new.activate_feature!('llm_reporting') }
+
+    describe 'when authorized' do
+      let(:current_user) { create(:admin) }
+
+      before { header_token_for current_user }
+
+      example 'Stop the run in progress' do
+        run = create(:generation_transcript, report: report, stopped_because: nil)
+
+        do_request
+
+        assert_status 202
+        expect(response_data).to include(id: run.id, type: 'generation_cancel')
+        expect(run.reload.cancel_requested_at).to be_present
+      end
+
+      example 'Asking twice changes nothing', document: false do
+        run = create(:generation_transcript, report: report, stopped_because: nil, cancel_requested_at: 1.minute.ago)
+
+        expect { do_request }.not_to change { run.reload.cancel_requested_at }
+        assert_status 202
+      end
+
+      example '[error] Nothing is running' do
+        create(:generation_transcript, report: report, stopped_because: 'done')
+
+        do_request
+
+        assert_status 404
+        expect(json_response_body.dig(:errors, :base).first[:error]).to eq 'not_running'
+      end
+    end
+
+    include_examples 'not authorized to visitors'
+    include_examples 'not authorized to normal users'
+  end
+
   get 'web_api/v1/reports/:id/chat' do
     route_description 'The conversation in which an admin asks for changes to the report.'
 

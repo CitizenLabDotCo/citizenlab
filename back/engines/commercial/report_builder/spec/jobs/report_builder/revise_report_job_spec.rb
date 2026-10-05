@@ -43,9 +43,11 @@ RSpec.describe ReportBuilder::ReviseReportJob do
     }
   end
 
-  def stub_revision(result)
+  def stub_revision(result, stopped: 'done')
     allow_any_instance_of(ReportBuilder::Composition::ReportComposer)
       .to receive(:revise).and_return(result)
+    allow_any_instance_of(ReportBuilder::Composition::ReportComposer)
+      .to receive(:stopped_because).and_return(stopped)
   end
 
   describe '#run', :active_job_que_adapter do
@@ -112,13 +114,42 @@ RSpec.describe ReportBuilder::ReviseReportJob do
       expect(chat.reload.transcript.last['changed_layout']).to be false
     end
 
-    it 'passes the conversation so far, so a turn continues the last one' do
+    it 'passes the conversation so far, tool calls included, so a turn continues the last one' do
+      create(:generation_transcript, report: report, kind: 'generation', stopped_because: 'done', messages: [
+        { 'role' => 'user', 'content' => [{ 'text' => 'Generate the report.' }] },
+        { 'role' => 'assistant', 'content' => [{ 'tool_use' => { 'tool_use_id' => 't1', 'name' => 'get_layout', 'input' => {} } }] },
+        { 'role' => 'user', 'content' => [{ 'tool_result' => { 'tool_use_id' => 't1', 'content' => [{ 'text' => 'empty' }], 'status' => 'success' } }] },
+        { 'role' => 'assistant', 'content' => [{ 'text' => 'Wrote it.' }] }
+      ])
       expect_any_instance_of(ReportBuilder::Composition::ReportComposer)
         .to receive(:revise)
-        .with(hash_including(instruction: 'make it shorter', history: chat.transcript))
+        .with(hash_including(instruction: 'make it shorter', history: [
+          { role: 'user', content: [{ text: 'Generate the report.' }] },
+          { role: 'assistant', content: [{ tool_use: { tool_use_id: 't1', name: 'get_layout', input: {} } }] },
+          { role: 'user', content: [{ tool_result: { tool_use_id: 't1', content: [{ text: 'empty' }], status: 'success' } }] },
+          { role: 'assistant', content: [{ text: 'Wrote it.' }] }
+        ]))
         .and_return({ layout: nil, reply: 'ok' })
 
       enqueue_job.perform_now
+    end
+
+    it 'records the turn as a run of its own, so the next turn can continue it' do
+      stub_revision({ layout: revised_layout, reply: 'Trimmed it.' })
+
+      expect { enqueue_job.perform_now }.to change(ReportBuilder::GenerationTranscript, :count).by(1)
+
+      run = ReportBuilder::GenerationTranscript.last
+      expect(run).to have_attributes(report: report, kind: 'revision', stopped_because: 'done')
+    end
+
+    it 'says in the chat when it was stopped before finishing' do
+      stub_revision({ layout: revised_layout, reply: nil }, stopped: 'cancelled')
+
+      enqueue_job.perform_now
+
+      expect(chat.reload.transcript.last['text']).to include 'Stopped'
+      expect(chat.transcript.last['changed_layout']).to be true
     end
 
     it 'keeps the turn the admin wrote after the job was enqueued' do

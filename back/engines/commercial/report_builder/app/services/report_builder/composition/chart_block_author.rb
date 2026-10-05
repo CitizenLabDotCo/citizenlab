@@ -41,9 +41,12 @@ module ReportBuilder
 
       # @param locale [String] the locale the report is written in. A composed report is
       #   single-locale by design, and a block's catalogues follow it.
-      def initialize(author, locale: nil)
+      # @param run_id [String, nil] the GenerationTranscript this run writes to, recorded
+      #   on every version so a chart can be traced back to the conversation that wrote it.
+      def initialize(author, locale: nil, run_id: nil)
         @author = author
         @locale = locale
+        @run_id = run_id
       end
 
       # @param title [String] the block name admins see in the builder.
@@ -69,7 +72,8 @@ module ReportBuilder
           manifest: built.manifest,
           messages: catalogues,
           toolchain: built.toolchain,
-          sdk_version: built.manifest['sdk_version'].presence || 'v1'
+          sdk_version: built.manifest['sdk_version'].presence || 'v1',
+          generation_transcript_id: @run_id
         )
         block.update!(status: 'published')
 
@@ -112,7 +116,8 @@ module ReportBuilder
           manifest: built.manifest,
           messages: previous.messages,
           toolchain: built.toolchain,
-          sdk_version: built.manifest['sdk_version'].presence || 'v1'
+          sdk_version: built.manifest['sdk_version'].presence || 'v1',
+          generation_transcript_id: @run_id
         )
 
         Result.new(block_id: block.id, version_number: version.number)

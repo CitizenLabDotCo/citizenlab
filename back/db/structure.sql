@@ -2354,6 +2354,7 @@ CREATE TABLE public.content_builder_custom_block_versions (
     manifest jsonb DEFAULT '{}'::jsonb NOT NULL,
     messages jsonb DEFAULT '{}'::jsonb NOT NULL,
     toolchain jsonb DEFAULT '{}'::jsonb NOT NULL,
+    generation_transcript_id uuid,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -3824,9 +3825,11 @@ CREATE TABLE public.report_builder_generation_transcripts (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     report_id uuid NOT NULL,
     model character varying DEFAULT ''::character varying NOT NULL,
+    kind character varying DEFAULT 'generation'::character varying NOT NULL,
     messages jsonb DEFAULT '[]'::jsonb NOT NULL,
     usage jsonb DEFAULT '{}'::jsonb NOT NULL,
-    stopped_because character varying DEFAULT 'done'::character varying NOT NULL,
+    stopped_because character varying,
+    cancel_requested_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );

@@ -22,19 +22,35 @@ module ReportBuilder
       tracker.update!(progress: 0, error_count: 0)
       chat = report.chat || report.create_chat!
 
-      result = Composition::ReportComposer
-        .new(report.reported_project, locale: locale, phase: report.phase, author: tracker.owner)
-        .revise(
+      run_record = GenerationTranscript.create!(report: report, kind: 'revision')
+      composer = Composition::ReportComposer.new(
+        report.reported_project,
+        locale: locale,
+        phase: report.phase,
+        author: tracker.owner,
+        layout_record: report.layout,
+        run_record: run_record
+      )
+
+      begin
+        result = composer.revise(
           # ActiveJob symbolizes hash arguments on the way through the queue, and
           # every craftjs reader here works in string keys.
           current_layout: craftjs_json.presence&.deep_stringify_keys || report.layout.craftjs_json,
           instruction: instruction,
-          history: chat.messages_for_model
+          # The whole conversation so far, tool calls included: the model remembers the
+          # chart it wrote rather than re-reading it.
+          history: Composition::Messages.history(
+            GenerationTranscript.session_runs_for(report).flat_map(&:messages)
+          )
         )
+      ensure
+        record_transcript(run_record, composer)
+      end
 
       changed = result[:layout].present?
       save_layout!(report, result[:layout]) if changed
-      answer(chat, result[:reply].presence || default_reply(result[:layout]), changed_layout: changed)
+      answer(chat, reply_for(result, composer.stopped_because), changed_layout: changed)
 
       track_progress
       mark_as_complete!
@@ -66,8 +82,28 @@ module ReportBuilder
       }])
     end
 
-    def default_reply(layout)
-      layout.present? ? 'Done.' : 'I did not change anything.'
+    # The model's own closing sentence when it finished; a plain account of what
+    # happened when it did not get to write one.
+    def reply_for(result, stopped_because)
+      return result[:reply] if result[:reply].present? && stopped_because == 'done'
+
+      case stopped_because
+      when 'cancelled' then 'Stopped. What I had changed so far is saved.'
+      when 'timeout', 'round_cap' then 'I ran out of time before finishing. What I had changed so far is saved.'
+      else result[:reply].presence || (result[:layout].present? ? 'Done.' : 'I did not change anything.')
+      end
+    end
+
+    # Only this turn's messages: the history before them is already on record.
+    def record_transcript(run_record, composer)
+      run_record.update!(
+        model: composer.model_name,
+        messages: composer.turn_messages,
+        usage: composer.usage,
+        stopped_because: composer.stopped_because
+      )
+    rescue StandardError => e
+      ErrorReporter.report(e, extra: { report_id: run_record.report_id })
     end
 
     # Called on the final failure. Expire the Que job first (so the tracker exposes

@@ -143,6 +143,27 @@ module ReportBuilder
           end
         end
 
+        # Asks the run that is going — a generation or a chat turn — to stop. The loop
+        # reads the flag between rounds, so a round in flight finishes first and what
+        # was written up to then is saved.
+        def cancel_generation
+          authorize report, :cancel_generation?
+          run = report.generation_transcripts.running.newest_first.first
+
+          if run.nil?
+            return render json: { errors: { base: [{ error: 'not_running' }] } }, status: :not_found
+          end
+
+          run.update!(cancel_requested_at: Time.current) unless run.cancel_requested?
+          render json: {
+            data: {
+              id: run.id,
+              type: 'generation_cancel',
+              attributes: { requested_at: run.cancel_requested_at }
+            }
+          }, status: :accepted
+        end
+
         # The report chat: the conversation and what it changed.
         def chat
           render json: chat_json(report.chat)

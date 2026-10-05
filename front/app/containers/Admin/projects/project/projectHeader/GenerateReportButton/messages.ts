@@ -17,4 +17,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.projectHeader.GenerateReportButton.retryReport',
     defaultMessage: 'Retry report',
   },
+  stopGenerating: {
+    id: 'app.containers.Admin.projects.project.projectHeader.GenerateReportButton.stopGenerating',
+    defaultMessage: 'Stop',
+  },
 });

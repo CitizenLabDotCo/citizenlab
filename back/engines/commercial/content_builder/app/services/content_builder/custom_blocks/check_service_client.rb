@@ -59,7 +59,7 @@ module ContentBuilder
       #   or {kind: 'layout', craftjs_json:}.
       # @return [Hash] the service's render result, with string keys.
       # @raise [Unavailable]
-      def render(target:, locale:, layout_id:, app_origin:, token:, screenshot: true)
+      def render(target:, locale:, layout_id:, app_origin:, token:, api_origin: nil, screenshot: true)
         raise Unavailable, 'CHECK_SERVICE_SECRET is not configured.' if @secret.blank?
 
         response = render_connection.post('/render') do |request|
@@ -68,6 +68,7 @@ module ContentBuilder
             locale: locale,
             layoutId: layout_id,
             appOrigin: app_origin,
+            apiOrigin: api_origin,
             token: token,
             screenshot: screenshot
           }.to_json
@@ -82,6 +83,21 @@ module ContentBuilder
         raise Unavailable, "The check service is unreachable: #{e.class}"
       rescue JSON::ParserError
         raise Unavailable, 'The check service returned a response that is not JSON.'
+      end
+
+      # The SDK's type declarations, from the copy the typechecker checks blocks
+      # against, so the prompt describes the same module the compiler enforces.
+      def sdk_declarations
+        raise Unavailable, 'CHECK_SERVICE_SECRET is not configured.' if @secret.blank?
+
+        response = connection.get('/sdk/v1.d.ts')
+        unless response.success?
+          raise Unavailable, "The check service responded with #{response.status} for the SDK declarations."
+        end
+
+        response.body.to_s
+      rescue Faraday::Error => e
+        raise Unavailable, "The check service is unreachable: #{e.class}"
       end
 
       def up?

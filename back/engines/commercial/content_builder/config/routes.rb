@@ -27,8 +27,8 @@ ContentBuilder::Engine.routes.draw do
 
       # A layout pins {blockId, version}, so a placed block only ever reads one
       # version: its metadata and its bundle. Blocks are written by the report
-      # generation loop, never through the API, so there is nothing else to expose.
-      resources :custom_blocks, only: [] do
+      # generation loop, never through the API; the list is for the builder toolbox.
+      resources :custom_blocks, only: [:index] do
         get 'versions/:number', to: 'custom_block_versions#show', constraints: { number: /\d+/ }
         get 'versions/:number/bundle', to: 'custom_block_versions#bundle', constraints: { number: /\d+/ }
       end

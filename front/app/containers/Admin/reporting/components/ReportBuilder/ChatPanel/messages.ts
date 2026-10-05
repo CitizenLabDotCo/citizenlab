@@ -22,4 +22,8 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.ChatPanel.working',
     defaultMessage: 'Working on it. This can take a minute.',
   },
+  stop: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.ChatPanel.stop',
+    defaultMessage: 'Stop',
+  },
 });

@@ -637,6 +637,7 @@ en:
       cta_button: Open the report
       event_description: The report has been written and is ready for you to review and edit.
       preheader: Your report is ready
+      stopped_early: The writing stopped before the report was finished. Everything written so far is saved — open it and ask for the rest in the chat.
       subject: Your report for '%{projectName}' is ready
       title: Your report is ready
     project_review_request:

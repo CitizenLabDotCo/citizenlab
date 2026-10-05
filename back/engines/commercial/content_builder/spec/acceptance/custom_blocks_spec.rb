@@ -16,6 +16,38 @@ resource 'CustomBlocks' do
     SettingsService.new.activate_feature!('llm_reporting')
   end
 
+  get 'web_api/v1/custom_blocks' do
+    let!(:published) { create(:custom_block, :published) }
+    let!(:draft) { create(:custom_block) }
+
+    before do
+      create(:custom_block_version, custom_block: published)
+      admin_header_token
+    end
+
+    example_request 'List the published blocks with the version a new placement pins' do
+      assert_status 200
+
+      expect(response_data.pluck(:id)).to eq [published.id]
+      expect(response_data.first[:attributes]).to include(
+        title_multiloc: published.title_multiloc.symbolize_keys,
+        status: 'published',
+        latest_version: 2,
+        targets: ['report']
+      )
+      expect(response_body).not_to include draft.id
+    end
+
+    example '[error] List the blocks while the feature is off', document: false do
+      SettingsService.new.deactivate_feature!('llm_reporting')
+
+      do_request
+
+      assert_status 200
+      expect(response_data).to be_empty
+    end
+  end
+
   get 'web_api/v1/custom_blocks/:custom_block_id/versions/:number' do
     let(:custom_block) { create(:custom_block, :published) }
     let(:custom_block_id) { custom_block.id }

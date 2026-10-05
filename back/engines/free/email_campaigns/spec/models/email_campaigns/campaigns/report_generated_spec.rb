@@ -19,6 +19,15 @@ RSpec.describe EmailCampaigns::Campaigns::ReportGenerated do
       expect(command[:event_payload][:report_url]).to end_with(
         "/admin/reporting/report-builder/#{notification.report_id}/editor"
       )
+      expect(command[:event_payload][:stopped_early]).to be false
+    end
+
+    it 'says so when the run stopped before the report was finished' do
+      create(:generation_transcript, report: notification.report, stopped_because: 'round_cap')
+
+      command = campaign.generate_commands(recipient: notification.recipient, activity: activity).first
+
+      expect(command[:event_payload][:stopped_early]).to be true
     end
   end
 

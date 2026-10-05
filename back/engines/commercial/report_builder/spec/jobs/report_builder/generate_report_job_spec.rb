@@ -77,19 +77,34 @@ RSpec.describe ReportBuilder::GenerateReportJob do
         transcript = ReportBuilder::GenerationTranscript.last
         expect(transcript.report).to eq report
         expect(transcript.model).to be_present
+        expect(transcript.kind).to eq 'generation'
+        expect(transcript).not_to be_running
+      end
+
+      # The cancel endpoint marks the record, and the versions a run writes point at
+      # it, so it has to exist before the first model call rather than after the last.
+      it 'exists, and is running, from the start of the run' do
+        expect(ReportBuilder::Composition::ReportComposer)
+          .to receive(:new)
+          .with(phase.project, locale: 'en', phase: phase, author: owner, layout_record: report.layout,
+            run_record: having_attributes(kind: 'generation', stopped_because: nil))
+          .and_call_original
+
+        enqueue_job.perform_now
       end
 
       # A run that produced nothing is the one whose reasoning someone needs to read.
-      it 'writes it even when the run fails' do
+      it 'fills it in even when the run fails' do
         allow_any_instance_of(ReportBuilder::Composition::ReportComposer)
           .to receive(:compose).and_raise(ReportBuilder::Composition::ReportComposer::ComposeError, 'nope')
 
         expect { suppress(StandardError) { enqueue_job.perform_now } }
           .to change(ReportBuilder::GenerationTranscript, :count).by(1)
+        expect(ReportBuilder::GenerationTranscript.last.stopped_because).to eq 'failed'
       end
 
-      it 'does not take the run down if the record cannot be written' do
-        allow(ReportBuilder::GenerationTranscript).to receive(:create!).and_raise(ActiveRecord::RecordInvalid)
+      it 'does not take the run down if the record cannot be filled in' do
+        allow_any_instance_of(ReportBuilder::GenerationTranscript).to receive(:update!).and_raise(ActiveRecord::RecordInvalid)
 
         expect { enqueue_job.perform_now }.not_to raise_error
         expect(report.reload.layout.craftjs_json).to eq composed_layout
@@ -106,7 +121,8 @@ RSpec.describe ReportBuilder::GenerateReportJob do
     it 'composes for the project behind the phase, naming the phase it reports on' do
       expect(ReportBuilder::Composition::ReportComposer)
         .to receive(:new)
-        .with(phase.project, locale: 'en', phase: phase, author: owner, layout_record: report.layout)
+        .with(phase.project, locale: 'en', phase: phase, author: owner, layout_record: report.layout,
+          run_record: kind_of(ReportBuilder::GenerationTranscript))
         .and_call_original
 
       enqueue_job.perform_now
@@ -118,7 +134,8 @@ RSpec.describe ReportBuilder::GenerateReportJob do
       it 'tracks against the project and composes without a phase' do
         expect(ReportBuilder::Composition::ReportComposer)
           .to receive(:new)
-          .with(phase.project, locale: 'en', phase: nil, author: owner, layout_record: report.layout)
+          .with(phase.project, locale: 'en', phase: nil, author: owner, layout_record: report.layout,
+            run_record: kind_of(ReportBuilder::GenerationTranscript))
           .and_call_original
 
         job = enqueue_job

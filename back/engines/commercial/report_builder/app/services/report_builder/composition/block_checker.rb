@@ -16,6 +16,10 @@ module ReportBuilder
       # not crowd the rest of the run out of the transcript.
       MAX_LINES = 8
 
+      # The provider refuses an image over this on either side, and it refuses the
+      # whole request with it — so a picture that size is never sent.
+      MAX_IMAGE_SIDE_PX = 8000
+
       def initialize(layout:, author:, locale:, client: nil)
         @layout = layout
         @author = author
@@ -33,6 +37,7 @@ module ReportBuilder
           locale: @locale,
           layout_id: @layout.id,
           app_origin: app_origin,
+          api_origin: api_origin,
           token: token,
           screenshot: true
         )
@@ -64,6 +69,13 @@ module ReportBuilder
         AppConfiguration.instance.base_frontend_uri
       end
 
+      # Where the page fetches its data and its uploads from. The same host as the app
+      # in production; a second port in development, which the browser would otherwise
+      # refuse as a private address.
+      def api_origin
+        AppConfiguration.instance.base_backend_uri
+      end
+
       # Failures first and in full; what passed is one line, because a model that is
       # told at length what already works will spend a round admiring it.
       def summarize(result, screenshot:)
@@ -75,13 +87,29 @@ module ReportBuilder
         failed.each { |entry| lines << "- #{entry['id']}: #{entry['message']}" }
         lines.concat(detail_lines(result))
 
-        {
-          error: failed.any?,
-          text: lines.join("\n"),
-          # The picture goes to the model when a check failed and it cannot say what
-          # is wrong, or when the model asked to see it.
-          screenshot: failed.any? || screenshot ? result['screenshot'] : nil
-        }
+        # The picture goes to the model when a check failed and it cannot say what is
+        # wrong, or when the model asked to see it.
+        picture = sendable_screenshot(result['screenshot']) if failed.any? || screenshot
+        if picture
+          lines << 'The screenshot shows the top of the report; it is taller than a picture can be.' if result['screenshotClipped']
+        elsif (failed.any? || screenshot) && result['screenshot'].present?
+          lines << 'The screenshot was too large to send.'
+        end
+
+        { error: failed.any?, text: lines.join("\n"), screenshot: picture }
+      end
+
+      # The PNG's own header says how big it is; a picture a side over the limit is
+      # dropped rather than handed to a provider that will refuse the whole turn.
+      def sendable_screenshot(base64)
+        return nil if base64.blank?
+
+        width, height = Base64.strict_decode64(base64)[16, 8]&.unpack('N2')
+        return nil if width.nil? || height.nil? || width > MAX_IMAGE_SIDE_PX || height > MAX_IMAGE_SIDE_PX
+
+        base64
+      rescue ArgumentError
+        nil
       end
 
       def detail_lines(result)

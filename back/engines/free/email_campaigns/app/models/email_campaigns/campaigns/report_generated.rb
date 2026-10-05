@@ -83,7 +83,8 @@ module EmailCampaigns
       [{
         event_payload: {
           project_title_multiloc: notification.project&.title_multiloc,
-          report_url: report_url(notification.report_id, recipient)
+          report_url: report_url(notification.report_id, recipient),
+          stopped_early: notification.report&.last_generation&.stopped_early? || false
         }
       }]
     end

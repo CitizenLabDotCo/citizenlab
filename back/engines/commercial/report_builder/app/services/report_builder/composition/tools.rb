@@ -9,7 +9,8 @@ module ReportBuilder
     # so it has to be the same bytes each time.
     module Tools
       DEFINITIONS = (
-        DataTools::DEFINITIONS + BlockTools::DEFINITIONS + LayoutTools::DEFINITIONS
+        DataTools::DEFINITIONS + BlockTools::DEFINITIONS + CheckTools::DEFINITIONS +
+        LayoutTools::DEFINITIONS + DocsTools::DEFINITIONS
       ).freeze
     end
   end

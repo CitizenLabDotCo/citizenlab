@@ -37,6 +37,23 @@ describe ReportBuilder::Craftjs::LayoutPatcher do
       expect(result.keys).to contain_exactly('ROOT', 'textnode01', 'textnode02', 'textnode03')
     end
 
+    # The one node whose type is a plain string. A model that writes it like every other
+    # node meant the same thing; refusing a 50-node patch over it costs the patch twice.
+    it 'reads a ROOT written the widget way as the plain "div" it is' do
+      result = described_class.patch(
+        {}, nodes: { 'ROOT' => root('textnode01').merge('type' => { 'resolvedName' => 'div' }),
+                     'textnode01' => node('TextMultiloc', { 'text' => { 'en' => '<p>One</p>' } }) }
+      )
+
+      expect(result['ROOT']['type']).to eq 'div'
+    end
+
+    it 'leaves a ROOT that resolves to something else for the validator to refuse' do
+      result = described_class.patch({}, nodes: { 'ROOT' => root.merge('type' => { 'resolvedName' => 'Box' }) })
+
+      expect(result['ROOT']['type']).to eq('resolvedName' => 'Box')
+    end
+
     # The whole point: a node the model did not send comes back untouched, so it never
     # has to re-emit the report to add to it.
     it 'leaves nodes the patch did not mention exactly as they were' do

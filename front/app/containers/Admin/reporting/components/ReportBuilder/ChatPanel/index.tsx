@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 import useReportChat from 'api/report_chat/useReportChat';
 import useSendReportChatMessage from 'api/report_chat/useSendReportChatMessage';
+import useCancelReportGeneration from 'api/report_generation/useCancelReportGeneration';
 import useReportLayout from 'api/report_layout/useReportLayout';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -41,6 +42,8 @@ const ChatPanel = ({ reportId, setSaved }: Props) => {
   });
   const { mutate: sendMessage, isPending: sending } =
     useSendReportChatMessage();
+  const { mutate: cancelTurn, isPending: stopping } =
+    useCancelReportGeneration();
   const { refetch: refetchLayout } = useReportLayout(reportId);
 
   const pending = chat?.data.attributes.pending ?? false;
@@ -121,7 +124,7 @@ const ChatPanel = ({ reportId, setSaved }: Props) => {
           onChange={setDraft}
         />
       </Box>
-      <Box mt="8px">
+      <Box mt="8px" display="flex" alignItems="center" gap="8px">
         <ButtonWithLink
           buttonStyle="primary"
           icon="stars"
@@ -132,6 +135,17 @@ const ChatPanel = ({ reportId, setSaved }: Props) => {
         >
           <FormattedMessage {...messages.send} />
         </ButtonWithLink>
+        {pending && (
+          <ButtonWithLink
+            buttonStyle="text"
+            size="s"
+            processing={stopping}
+            disabled={stopping}
+            onClick={() => cancelTurn({ reportId })}
+          >
+            <FormattedMessage {...messages.stop} />
+          </ButtonWithLink>
+        )}
       </Box>
     </Panel>
   );

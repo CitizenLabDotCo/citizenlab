@@ -44,6 +44,8 @@ import Link from 'utils/cl-router/Link';
 
 import { SDK_EXPORT_NAMES, SdkExportName } from '../sdk/v1/contract';
 
+import { useContentBuilderLayoutContext } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
+
 import { useBlockData } from './BlockDataContext';
 
 const EXAMPLE_ICON_NAMES =
@@ -67,9 +69,18 @@ const SafeIcon = (props: React.ComponentProps<typeof Icon>) => {
 // A block asks its question with one argument. Which report it belongs to is not
 // the block's business — it is placed in many — so the layout comes from context.
 const useBlockReportingData = (query: string) => {
-  const { layoutId, reportingToken } = useBlockData();
+  const blockData = useBlockData();
+  // A report provides its layout through BlockDataProvider; a custom page already
+  // puts its layout in context for its other widgets, and a block placed there reads
+  // the same one, so its answers are stored against that page.
+  const { layoutId: pageLayoutId } = useContentBuilderLayoutContext();
+  const layoutId = blockData.layoutId ?? pageLayoutId;
 
-  return useReportingData({ query, layoutId, reportingToken });
+  return useReportingData({
+    query,
+    layoutId,
+    reportingToken: blockData.reportingToken,
+  });
 };
 
 declare global {
