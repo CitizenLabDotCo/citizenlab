@@ -3,21 +3,68 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
+import usePhase from 'api/phases/usePhase';
 import { IProjectData } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-import { Outlet as RouterOutlet, useParams } from 'utils/router';
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+import { Outlet as RouterOutlet, useMatchRoute, useParams } from 'utils/router';
+
+import ProjectWorkspace from './backofficeRedesign';
+import { PhaseSaveProvider } from './backofficeRedesign/_shared/PhaseSaveContext';
+import NewPhase from './backofficeRedesign/NewPhase';
+import PhaseSetup from './backofficeRedesign/Phase/PhaseSetup';
+import ProjectTimeline from './backofficeRedesign/ProjectTimeline';
+import UnsavedChangesGuard from './backofficeRedesign/UnsavedChangesGuard';
 import ProjectHeader from './projectHeader';
 import ProjectSidebar from './projectPage/ProjectSidebar';
 
 const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
   const { data: authUser } = useAuthUser();
+  const { phaseId } = useParams({ strict: false });
+  const { data: phase } = usePhase(phaseId);
+  const workspaceEnabled = useProjectBackofficeRedesign();
+  const matchRoute = useMatchRoute();
+  const onNewPhaseRoute = !!matchRoute({
+    to: '/$locale/admin/projects/$projectId/phases/new',
+  });
   const projectId = project.id;
+
+  const selectedPhase = phaseId ? phase?.data : undefined;
 
   if (!canModerateProject(project, authUser)) {
     return null;
+  }
+
+  if (workspaceEnabled) {
+    return (
+      <PhaseSaveProvider>
+        <UnsavedChangesGuard />
+        {onNewPhaseRoute ? (
+          <NewPhase project={project} />
+        ) : (
+          <ProjectWorkspace
+            project={project}
+            phase={selectedPhase}
+            sidePanel={
+              selectedPhase ? (
+                <PhaseSetup
+                  key={selectedPhase.id}
+                  projectId={projectId}
+                  phase={selectedPhase}
+                />
+              ) : (
+                <ProjectTimeline projectId={projectId} />
+              )
+            }
+          >
+            <RouterOutlet />
+          </ProjectWorkspace>
+        )}
+      </PhaseSaveProvider>
+    );
   }
 
   return (

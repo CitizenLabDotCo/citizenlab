@@ -7,14 +7,15 @@ import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
+import {
+  BUILDER_CONTENT_MAX_WIDTH,
+  DEFAULT_Y_PADDING,
+} from 'components/admin/ContentBuilder/constants';
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import messages from 'components/admin/ContentBuilder/Widgets/TextMultiloc/messages';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-
-import { DEFAULT_Y_PADDING } from '../constants';
 
 interface Props {
   text?: Multiloc;

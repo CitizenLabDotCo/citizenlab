@@ -12,6 +12,7 @@ describe CustomFieldAnswerPolicy do
     let_it_be(:form) { create(:custom_form, participation_context: project) }
     let_it_be(:public_field) { create(:custom_field, resource: form, answers_visible_to: 'public') }
     let_it_be(:private_field) { create(:custom_field, resource: form, answers_visible_to: 'moderators') }
+    let_it_be(:hidden_registration_field) { create(:custom_field, :for_registration, hidden: true) }
     let_it_be(:author) { create(:user) }
     let_it_be(:idea) { create(:idea, project: project, author: author) }
 
@@ -21,26 +22,27 @@ describe CustomFieldAnswerPolicy do
         private: build(:custom_field_answer, answerable: idea, custom_field: private_field, key: private_field.key),
         other_option: build(:custom_field_answer, answerable: idea, custom_field: private_field, key: "#{private_field.key}_other"),
         registration: build(:custom_field_answer, answerable: idea, custom_field: registration_field, key: 'u_gender'),
+        hidden_registration: build(:custom_field_answer, answerable: idea, custom_field: hidden_registration_field, key: "u_#{hidden_registration_field.key}"),
         unlinked: build(:custom_field_answer, answerable: idea, custom_field: nil, key: 'no_such_field')
       }
     end
 
     shared_examples 'sees only public answers' do
-      { public: true, private: false, other_option: false, registration: false, unlinked: false }.each do |name, permitted|
+      { public: true, private: false, other_option: false, registration: false, hidden_registration: false, unlinked: false }.each do |name, permitted|
         context "for the #{name} answer" do
           let(:answer) { answers[name] }
 
-          it { is_expected.send(permitted ? :to : :not_to, permit(:show)) }
+          it { expect(policy.show?).to be permitted }
         end
       end
     end
 
     shared_examples 'sees all linked answers' do
-      { public: true, private: true, other_option: true, registration: true, unlinked: false }.each do |name, permitted|
+      { public: true, private: true, other_option: true, registration: true, hidden_registration: false, unlinked: false }.each do |name, permitted|
         context "for the #{name} answer" do
           let(:answer) { answers[name] }
 
-          it { is_expected.send(permitted ? :to : :not_to, permit(:show)) }
+          it { expect(policy.show?).to be permitted }
         end
       end
     end
@@ -80,6 +82,52 @@ describe CustomFieldAnswerPolicy do
 
       include_examples 'sees all linked answers'
     end
+
+    context 'for an answer to a disabled question' do
+      let_it_be(:disabled_public_field) { create(:custom_field, resource: form, enabled: false, answers_visible_to: 'public') }
+      let_it_be(:disabled_private_field) { create(:custom_field, resource: form, enabled: false, answers_visible_to: 'moderators') }
+
+      context 'for a visitor' do
+        let(:user) { nil }
+        let(:answer) { build(:custom_field_answer, answerable: idea, custom_field: disabled_public_field, key: disabled_public_field.key) }
+
+        it { is_expected.to permit(:show) }
+      end
+
+      context "for a moderator of the idea's project" do
+        let_it_be(:user) { create(:project_moderator, projects: [project]) }
+        let(:answer) { build(:custom_field_answer, answerable: idea, custom_field: disabled_private_field, key: disabled_private_field.key) }
+
+        it { is_expected.to permit(:show) }
+      end
+    end
+
+    # Such questions are registration fields that are disabled at platform level and
+    # attached to the phase's permission, so the form asks them while the field stays disabled.
+    context 'for the copy of an answer to a demographic question asked only in this project' do
+      let_it_be(:disabled_registration_field) { create(:custom_field, :for_registration, enabled: false) }
+      let(:answer) do
+        build(:custom_field_answer, answerable: idea, custom_field: disabled_registration_field, key: "u_#{disabled_registration_field.key}")
+      end
+
+      context 'for the author' do
+        let(:user) { author }
+
+        it { is_expected.to permit(:show) }
+      end
+
+      context "for a moderator of the idea's project" do
+        let_it_be(:user) { create(:project_moderator, projects: [project]) }
+
+        it { is_expected.to permit(:show) }
+      end
+
+      context 'for a visitor' do
+        let(:user) { nil }
+
+        it { is_expected.not_to permit(:show) }
+      end
+    end
   end
 
   context 'for an answer of a user' do
@@ -109,7 +157,7 @@ describe CustomFieldAnswerPolicy do
         context "for the #{name} answer" do
           let(:answer) { answers[name] }
 
-          it { is_expected.send(permitted ? :to : :not_to, permit(:show)) }
+          it { expect(policy.show?).to be permitted }
         end
       end
     end

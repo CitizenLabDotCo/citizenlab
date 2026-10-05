@@ -53,9 +53,9 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :custom_field_values do |object, params|
-    user_context = user_context(params)
+    user = current_user(params)
     object.custom_field_answers
-      .select { |answer| Pundit.policy!(user_context, answer).show? }
+      .select { |answer| CustomFieldAnswerPolicy.new(user, answer).show? }
       .to_h { [it.key, it.value] }
   end
 
