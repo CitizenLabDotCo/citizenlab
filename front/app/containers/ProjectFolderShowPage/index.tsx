@@ -15,9 +15,9 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
 
+import checkIfFramed from 'utils/checkIfFramed';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
-import isFramed from 'utils/isFramed';
 import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
 import { useParams } from 'utils/router';
 
@@ -43,7 +43,7 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
 
   // An admin preview shows this page in a frame, where the button would open the admin inside it.
   const showEditButton =
-    userModeratesFolder(authUser, projectFolder.id) && !isFramed();
+    userModeratesFolder(authUser, projectFolder.id) && !checkIfFramed();
   const maxPageWidth = '1166px';
 
   return (

@@ -1,7 +1,7 @@
 import { captureMessage, withScope } from '@sentry/react';
 import { jwtDecode } from 'jwt-decode';
 
-import isFramed from 'utils/isFramed';
+import checkIfFramed from 'utils/checkIfFramed';
 
 // A tenant's cookie-consent tool (typically loaded via their GTM container) can
 // enumerate document.cookie and delete everything not on its own allow-list. Our
@@ -73,7 +73,7 @@ export const reportUnexpectedJwtLoss = () => {
     scope.setLevel('error');
     scope.setTags({
       tenant_host: window.location.hostname,
-      in_iframe: isFramed(),
+      in_iframe: checkIfFramed(),
     });
     scope.setContext('jwt_loss', {
       path: window.location.pathname,
