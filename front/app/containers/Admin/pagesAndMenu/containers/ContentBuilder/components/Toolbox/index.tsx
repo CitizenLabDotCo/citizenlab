@@ -15,6 +15,9 @@ import Section from 'components/admin/ContentBuilder/Toolbox/Section';
 import AccordionMultiloc, {
   accordionMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
+import Areas, {
+  areasTitle,
+} from 'components/admin/ContentBuilder/Widgets/Areas';
 import ButtonMultiloc, {
   buttonMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
@@ -76,7 +79,6 @@ import {
 } from 'utils/cl-intl';
 
 import messages from '../../messages';
-import Areas, { areasTitle } from '../Widgets/Areas';
 import CommunityMonitorCTA, {
   communityMonitorCTATitle,
 } from '../Widgets/CommunityMonitorCTA';
