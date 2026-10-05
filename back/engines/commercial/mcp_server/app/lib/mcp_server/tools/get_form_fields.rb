@@ -49,8 +49,9 @@ class McpServer::Tools::GetFormFields < McpServer::BaseTool
       and community-monitor forms are specific to a single phase, so the container is the
       phase (`container_type: 'phase'`).
 
-      Community-monitor forms have 3 fixed category pages and built-in questions that
-      cannot be removed; you can add custom questions (sentiment_linear_scale) on top.
+      Community-monitor forms have 3 fixed category pages, built-in questions and a
+      form_end page that cannot be removed; you can add extra pages and custom
+      questions (sentiment_linear_scale) on top.
 
       In native-survey forms, fields can carry branching logic. By default, participants
       move through fields in display order, but logic rules can skip ahead to a specific

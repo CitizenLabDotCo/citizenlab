@@ -109,9 +109,9 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
   describe 'constraints' do
     it 'has constraints on built in fields to lock certain values from being changed' do
       expect(participation_method.constraints).to eq({
-        page_governance_and_trust: { locks: { attributes: %i[title_multiloc] } },
-        page_quality_of_life: { locks: { attributes: %i[title_multiloc] } },
-        page_service_delivery: { locks: { attributes: %i[title_multiloc] } }
+        page_governance_and_trust: { locks: { attributes: %i[title_multiloc], deletion: true } },
+        page_quality_of_life: { locks: { attributes: %i[title_multiloc], deletion: true } },
+        page_service_delivery: { locks: { attributes: %i[title_multiloc], deletion: true } }
       })
     end
   end
@@ -228,6 +228,7 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
   its(:transitive?) { is_expected.to be false }
   its(:destroy_ideas_on_phase_destroy?) { is_expected.to be true }
   its(:form_logic_enabled?) { is_expected.to be false }
+  its(:form_editable_after_responses?) { is_expected.to be true }
   its(:follow_idea_on_idea_submission?) { is_expected.to be false }
   its(:supports_custom_field_categories?) { is_expected.to be true }
   its(:supports_multiple_phase_reports?) { is_expected.to be true }

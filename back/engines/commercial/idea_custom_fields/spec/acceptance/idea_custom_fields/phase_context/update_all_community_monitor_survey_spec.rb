@@ -49,6 +49,21 @@ resource 'Idea Custom Fields' do
       }
     end
 
+    # The three category pages carry deletion and title locks, so every payload must
+    # retain them with their default titles.
+    let(:category_pages) do
+      phase.pmethod.default_fields(custom_form).select(&:page?).reject(&:form_end_page?).map do |page|
+        {
+          key: page.key,
+          code: page.code,
+          title_multiloc: page.title_multiloc,
+          input_type: 'page',
+          page_layout: 'default',
+          enabled: true
+        }
+      end
+    end
+
     let(:phase) { create(:community_monitor_survey_phase) }
     let!(:custom_form) { create(:custom_form, participation_context: phase) }
     let(:phase_id) { phase.id }
@@ -81,13 +96,14 @@ resource 'Idea Custom Fields' do
               required: false,
               enabled: false
             },
+            *category_pages,
             last_page
           ]
         }
         do_request request
 
         assert_status 200
-        expect(response_data.size).to eq 4
+        expect(response_data.size).to eq 7
         expect(response_data[1]).to match({
           attributes: {
             code: nil,
@@ -162,6 +178,7 @@ resource 'Idea Custom Fields' do
               first_page,
               { input_type: 'multiselect_image', title_multiloc: { en: 'Not allowed' } },
               { input_type: 'html_multiloc', title_multiloc: { en: 'Not allowed' } },
+              *category_pages,
               last_page
             ]
           }

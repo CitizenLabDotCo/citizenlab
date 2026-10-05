@@ -167,12 +167,79 @@ describe McpServer::Tools::ReplaceFormFields do
         expect(response.content.sole[:text]).to include('Cannot remove built-in community monitor field', 'page_service_delivery')
       end
 
-      it 'allows editing after responses exist (continuous monitor)' do
-        create(:idea, project: cm_phase.project, phases: [cm_phase], creation_phase: cm_phase)
+      it 'allows editing after responses exist and preserves their answers (continuous monitor)' do
+        idea = create(:idea, project: cm_phase.project, phases: [cm_phase], creation_phase: cm_phase)
+        answer = create(:custom_field_answer, answerable: idea, key: 'place_to_live', custom_field: nil, value: 3)
 
         response = replace_cm(fetch_cm_fields)
 
         expect(response).not_to be_error
+        expect(CustomFieldAnswer.exists?(answer.id)).to be(true)
+      end
+
+      it 'updates persisted fields in place when payload ids are stale or missing' do
+        expect(replace_cm(fetch_cm_fields)).not_to be_error
+        persisted_ids = cm_phase.custom_form.custom_fields.pluck(:id)
+
+        fields = fetch_cm_fields.each { |field| field.delete(:id) }
+        response = replace_cm(fields)
+
+        expect(response).not_to be_error
+        expect(cm_phase.reload.custom_form.custom_fields.pluck(:id)).to match_array(persisted_ids)
+      end
+
+      it 'refuses to disable a built-in question' do
+        fields = fetch_cm_fields
+        fields.find { |field| field[:key] == 'place_to_live' }[:enabled] = false
+
+        response = replace_cm(fields)
+
+        expect(response).to be_error
+        expect(response.content.sole[:text]).to include('Cannot disable or re-key built-in', 'place_to_live')
+      end
+
+      context 'with a custom question on the form' do
+        def add_custom_question!
+          fields = fetch_cm_fields
+          custom_question = fields.find { |field| field[:key] == 'place_to_live' }.dup
+          custom_question.delete(:id)
+          custom_question[:key] = 'strategic_goal_1'
+          custom_question[:title_multiloc] = { 'en' => 'How well are we meeting our strategic goal?' }
+          fields.insert(-2, custom_question)
+          expect(replace_cm(fields)).not_to be_error
+        end
+
+        it 'allows removing it while no responses exist' do
+          add_custom_question!
+
+          response = replace_cm(fetch_cm_fields.reject { |field| field[:key] == 'strategic_goal_1' })
+
+          expect(response).not_to be_error
+          expect(CustomField.find_by(key: 'strategic_goal_1')).to be_nil
+        end
+
+        it 'refuses to remove it once responses exist' do
+          add_custom_question!
+          create(:idea, project: cm_phase.project, phases: [cm_phase], creation_phase: cm_phase)
+
+          response = replace_cm(fetch_cm_fields.reject { |field| field[:key] == 'strategic_goal_1' })
+
+          expect(response).to be_error
+          expect(response.content.sole[:text]).to include('permanently deletes its answers', 'strategic_goal_1')
+          expect(CustomField.find_by(key: 'strategic_goal_1')).to be_present
+        end
+
+        it 'refuses to change its key once responses exist' do
+          add_custom_question!
+          create(:idea, project: cm_phase.project, phases: [cm_phase], creation_phase: cm_phase)
+
+          fields = fetch_cm_fields
+          fields.find { |field| field[:key] == 'strategic_goal_1' }[:key] = 'strategic_goal_renamed'
+          response = replace_cm(fields)
+
+          expect(response).to be_error
+          expect(response.content.sole[:text]).to include('orphans its answers', 'strategic_goal_1')
+        end
       end
     end
 

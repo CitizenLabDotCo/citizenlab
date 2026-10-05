@@ -27,12 +27,15 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
       created (use temp_id to reference them from logic rules).
 
       Fails if any responses (ideas) exist on the container — except for community monitors,
-      which run continuously and can be edited after responses. On a community monitor the 3
-      category pages and the built-in questions cannot be removed (echo them back from
-      get_form_fields); custom questions (sentiment_linear_scale) can be added on top.
+      which run continuously and stay editable. On a community monitor: the 3 category pages,
+      the built-in questions and the form_end page cannot be removed, disabled or re-keyed
+      (echo them back from get_form_fields); extra pages and custom sentiment_linear_scale
+      questions can be added; and once responses exist, custom fields can no longer be removed
+      or re-keyed either, because that permanently deletes or orphans their submitted answers.
 
       Call `get_form_fields` first to see the current shape and the participation method's
-      constraints.
+      constraints, and pass its `fields_last_updated_at` back on every call so a concurrent
+      edit of the form fails this call instead of being overwritten.
     DESC
   end
 
@@ -48,7 +51,11 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
         },
         fields_last_updated_at: {
           type: 'string',
-          description: 'Optional stale-data guard. If set, the call fails when the form was modified server-side after this timestamp.'
+          description: <<~DESC.squish
+            Stale-data guard: pass the value returned by get_form_fields. If set, the call
+            fails when the form was modified server-side after this timestamp. Strongly
+            recommended for community monitors, which stay editable while responses come in.
+          DESC
         }
       },
       required: %w[container_type container_id fields]
@@ -62,10 +69,6 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
   end
 
   class Runner < McpServer::BaseTool::Runner
-    # Survey forms are frozen once responses exist (editing would orphan answers). Community
-    # monitor is the exception — it runs continuously and stays editable (the admin UI too).
-    RESPONSES_LOCK_EXEMPT_METHODS = %w[community_monitor_survey].freeze
-
     def run
       container = CONTAINER_TYPES
         .fetch(params[:container_type])
@@ -81,7 +84,8 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
       pmethod = container.pmethod
       return unsupported_error(pmethod) unless SUPPORTED_METHODS.include?(pmethod.class.method_str)
 
-      if responses_lock?(pmethod) && container.ideas_count.to_i.positive?
+      responses_count = container.ideas_count.to_i
+      if !pmethod.form_editable_after_responses? && responses_count.positive?
         return error(<<~MSG.squish)
           Cannot replace form fields: #{container.ideas_count} response(s) already
           submitted to this #{params[:container_type]}. Replacing the fields would
@@ -92,8 +96,10 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
       custom_form = CustomForm.find_or_initialize_by(participation_context: container)
       custom_form.save! if custom_form.new_record?
 
-      missing = missing_built_in_keys(pmethod, custom_form)
-      return built_in_removed_error(missing) if missing.any?
+      if pmethod.form_editable_after_responses?
+        guard_error = guard_live_form(pmethod, custom_form, responses_count)
+        return guard_error if guard_error
+      end
 
       result = IdeaCustomFields::UpdateAllService.new(
         custom_form,
@@ -128,26 +134,110 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
 
     private
 
-    def responses_lock?(pmethod)
-      RESPONSES_LOCK_EXEMPT_METHODS.exclude?(pmethod.class.method_str)
-    end
-
-    # The community monitor's built-in fields (3 category pages + the default questions) must
-    # stay. This is an MCP-only guard so the LLM caller can't drop them — stricter than the admin
-    # UI, which does allow it. Matched by key, not id: the virtual default fields regenerate ids
-    # on every call, so ids aren't stable across the get→replace round-trip.
-    def missing_built_in_keys(pmethod, custom_form)
-      return [] unless pmethod.class.method_str == 'community_monitor_survey'
+    # A live form's fields carry submitted answers, and UpdateAllService hard-deletes the
+    # answers of any persisted field whose id is missing from the payload. Persist the
+    # default fields first (a never-saved form serves virtual fields whose ids change on
+    # every read, so an echoed payload could never match them by id), re-attach payload
+    # entries to persisted fields by key, then refuse edits that would destroy data.
+    # Returns an error response, or nil when the payload is safe.
+    def guard_live_form(pmethod, custom_form, responses_count)
+      materialize_default_fields!(pmethod, custom_form)
+      remap_fields_by_key!(custom_form)
 
       built_in_keys = pmethod.default_fields(custom_form).map(&:key)
-      present = IdeaCustomFieldsService.new(custom_form).all_fields.map(&:key) & built_in_keys
-      present - normalized_fields.filter_map { |field| field['key'] }
+      removed_built_ins, removed_customs = removed_persisted_fields(custom_form)
+        .partition { |field| built_in_keys.include?(field.key) }
+
+      return built_in_removed_error(removed_built_ins.map(&:key)) if removed_built_ins.any?
+
+      if removed_customs.any? && responses_count.positive?
+        return error(<<~MSG.squish)
+          Cannot remove field(s) #{removed_customs.map(&:key).join(', ')}: #{responses_count}
+          response(s) already submitted, and removing a field permanently deletes its
+          answers. If that is really intended, remove the field in the admin UI.
+        MSG
+      end
+
+      rekeyed = rekeyed_persisted_customs(custom_form, built_in_keys)
+      if rekeyed.any? && responses_count.positive?
+        return error(<<~MSG.squish)
+          Cannot change the key of field(s) #{rekeyed.join(', ')}: #{responses_count}
+          response(s) already submitted, and changing a field's key orphans its answers.
+        MSG
+      end
+
+      edited = edited_built_ins(custom_form, built_in_keys)
+      return built_in_edited_error(edited) if edited.any?
+
+      nil
+    end
+
+    def materialize_default_fields!(pmethod, custom_form)
+      return if custom_form.custom_fields.exists?
+
+      pmethod.default_fields(custom_form).reverse_each do |field|
+        field.save!
+        field.move_to_top
+      end
+      custom_form.custom_fields.reload
+    end
+
+    def remap_fields_by_key!(custom_form)
+      persisted_by_id = custom_form.custom_fields.index_by(&:id)
+      persisted_by_key = custom_form.custom_fields.index_by(&:key)
+
+      normalized_fields.each do |field|
+        next if persisted_by_id.key?(field['id'])
+
+        match = field['key'] && persisted_by_key[field['key']]
+        field['id'] = match.id if match
+      end
+    end
+
+    def removed_persisted_fields(custom_form)
+      payload_ids = normalized_fields.filter_map { |field| field['id'] }
+      custom_form.custom_fields.reject { |field| payload_ids.include?(field.id) }
+    end
+
+    def rekeyed_persisted_customs(custom_form, built_in_keys)
+      persisted_by_id = custom_form.custom_fields.index_by(&:id)
+
+      normalized_fields.filter_map do |field|
+        persisted = persisted_by_id[field['id']]
+        next unless persisted && built_in_keys.exclude?(persisted.key)
+        next unless field.key?('key') && field['key'] != persisted.key
+
+        persisted.key
+      end
+    end
+
+    # Built-in questions must stay enabled and keep their key: disabling one removes it
+    # from the live survey, and re-keying one orphans its answers and breaks the
+    # standard-monitor reporting.
+    def edited_built_ins(custom_form, built_in_keys)
+      persisted_by_id = custom_form.custom_fields.index_by(&:id)
+
+      normalized_fields.filter_map do |field|
+        persisted = persisted_by_id[field['id']]
+        next unless persisted && built_in_keys.include?(persisted.key)
+        next unless field['enabled'] == false || (field.key?('key') && field['key'] != persisted.key)
+
+        persisted.key
+      end
     end
 
     def built_in_removed_error(missing)
       error(<<~MSG.squish)
         Cannot remove built-in community monitor field(s): #{missing.join(', ')}.
         These are part of the standard monitor and must be kept — echo them back from get_form_fields.
+      MSG
+    end
+
+    def built_in_edited_error(keys)
+      error(<<~MSG.squish)
+        Cannot disable or re-key built-in community monitor field(s): #{keys.join(', ')}.
+        These are part of the standard monitor — echo them back from get_form_fields with
+        `enabled` and `key` unchanged.
       MSG
     end
 

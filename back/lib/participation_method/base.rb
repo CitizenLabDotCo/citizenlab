@@ -74,6 +74,13 @@ module ParticipationMethod
       context.custom_form || CustomForm.new(participation_context: context)
     end
 
+    # Whether the form can still be edited once responses exist. Most methods freeze
+    # the form then (editing could orphan submitted answers); continuously-running
+    # methods keep it editable.
+    def form_editable_after_responses?
+      false
+    end
+
     def form_logic_enabled?
       false
     end
