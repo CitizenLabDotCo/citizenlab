@@ -51,8 +51,7 @@ class McpServer::Tools::AttachImage < McpServer::BaseTool
         return not_found_error("Resource (#{params[:resource_type]})", params[:resource_id])
       end
 
-      # A folder is its own draft-guard target; the other containers live inside a project.
-      authorize_project!(container.is_a?(ProjectFolders::Folder) ? container : container.project)
+      authorize_project!(publication_owner_for(container))
 
       image = container.public_send(images_association).build(remote_image_url: params[:remote_url])
       # alt_text_multiloc exists on project/event/folder images but not idea images.

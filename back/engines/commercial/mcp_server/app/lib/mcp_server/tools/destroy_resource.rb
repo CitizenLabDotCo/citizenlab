@@ -61,7 +61,7 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
         return not_found_error("Resource (#{params[:resource_type]})", params[:id])
       end
 
-      authorize_project!(project_for(record))
+      authorize_project!(guard_target(record))
       authorize(record, :destroy?)
 
       assert_can_destroy_project!(record) if record.is_a?(Project)
@@ -74,12 +74,12 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
 
     private
 
-    def project_for(record)
+    # The record whose admin_publication the draft guard reads.
+    def guard_target(record)
       case record
-      when Files::FileAttachment then record.attachable.source_project
-      # A folder is its own draft-guard target.
+      when Files::FileAttachment then publication_owner_for(record.attachable)
       when ProjectFolders::Image then record.project_folder
-      else record.project
+      else publication_owner_for(record)
       end
     end
 

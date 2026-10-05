@@ -62,4 +62,14 @@ class McpServer::BaseTool::Runner
   def published_writable_platform?
     PUBLISHED_WRITABLE_LIFECYCLES.include?(AppConfiguration.instance.lifecycle_stage)
   end
+
+  # The record whose admin_publication the draft rule reads: a folder is its own
+  # publication owner; everything else resolves to its project (via source_project
+  # where it exists, so attachables like Analysis keep their own derivation).
+  def publication_owner_for(record)
+    return record if record.is_a?(ProjectFolders::Folder)
+    return record.source_project if record.respond_to?(:source_project)
+
+    record.project
+  end
 end

@@ -35,9 +35,7 @@ class McpServer::Tools::CreateFolder < McpServer::BaseTool
   class Runner < McpServer::BaseTool::Runner
     def run
       folder = ProjectFolders::Folder.new(
-        title_multiloc: params[:title_multiloc],
-        description_preview_multiloc: params[:description_preview_multiloc],
-        remote_header_bg_url: params[:remote_header_bg_url],
+        **params,
         # A folder's admin_publication is mandatory and auto-built defaulting to 'published';
         # create it as a draft so publishing stays a deliberate action.
         admin_publication_attributes: { publication_status: 'draft' }
