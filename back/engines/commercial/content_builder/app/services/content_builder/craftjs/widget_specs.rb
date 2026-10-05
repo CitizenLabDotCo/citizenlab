@@ -32,6 +32,8 @@ module ContentBuilder
         Published
         OpenToParticipation
         FinishedOrArchived
+        FollowedItems
+        Areas
         CallToAction
         VideoEmbed
         CustomPageRoot
@@ -106,6 +108,8 @@ module ContentBuilder
           'multilocs' => %w[titleMultiloc],
           'enums' => { 'filterBy' => %w[finished archived finished_and_archived] }
         },
+        'FollowedItems' => { 'multilocs' => %w[titleMultiloc] },
+        'Areas' => { 'multilocs' => %w[titleMultiloc] },
         'CallToAction' => { 'multilocs' => %w[title description primaryButtonText secondaryButtonText] },
         'VideoEmbed' => {},
         # The project page scaffold (no rules: nodes patches may not add, move or delete).
@@ -128,6 +132,7 @@ module ContentBuilder
       }.freeze
 
       PROJECT_PAGE_SPECS = SPECS.except(*CUSTOM_PAGE_WIDGETS).freeze
+      # Homepage widget rules live in HomepageWidgetSpecs (keeps this module within length limits).
     end
   end
 end

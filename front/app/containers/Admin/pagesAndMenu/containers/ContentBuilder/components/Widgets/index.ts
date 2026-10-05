@@ -5,6 +5,9 @@ import AboutBox, {
 import AccordionMultiloc, {
   accordionMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
+import Areas, {
+  areasTitle,
+} from 'components/admin/ContentBuilder/Widgets/Areas';
 import ButtonMultiloc, {
   buttonMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
@@ -20,6 +23,9 @@ import EventsList, {
 import FinishedOrArchived, {
   finishedOrArchivedTitle,
 } from 'components/admin/ContentBuilder/Widgets/FinishedOrArchived';
+import FollowedItems, {
+  followedItemsTitle,
+} from 'components/admin/ContentBuilder/Widgets/FollowedItems';
 import HtmlBlockMultiloc, {
   htmlBlockMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
@@ -67,12 +73,10 @@ import { MessageDescriptor } from 'utils/cl-intl';
 
 // Homepage builder widgets
 import Proposals from './_deprecated/Proposals';
-import Areas, { areasTitle } from './Areas';
 import CommunityMonitorCTA, {
   communityMonitorCTATitle,
 } from './CommunityMonitorCTA';
 import Events, { eventsTitle } from './Events';
-import FollowedItems, { followedItemsTitle } from './FollowedItems';
 import HomepageBanner, { homepageBannerTitle } from './HomepageBanner';
 import ProjectsAndFoldersLegacy, {
   projectsAndFoldersLegacyTitle,

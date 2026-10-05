@@ -10,7 +10,7 @@ describe ContentBuilder::Craftjs::WidgetSpecs do
       expect(described_class::CUSTOM_PAGE_WIDGETS).to match_array(
         %w[
           ProjectsByFilter Spotlight Selection CustomPages Published OpenToParticipation FinishedOrArchived
-          CallToAction VideoEmbed
+          FollowedItems Areas CallToAction VideoEmbed
           CustomPageRoot CustomPageBanner CustomPageTitle CustomPageBody
         ]
       )
@@ -20,8 +20,8 @@ describe ContentBuilder::Craftjs::WidgetSpecs do
     it 'names only widgets that are actually specified' do
       expect(described_class::SPECS.keys).to include(
         'ProjectsByFilter', 'Spotlight', 'Selection', 'CustomPages', 'Published', 'OpenToParticipation',
-        'FinishedOrArchived', 'CallToAction', 'VideoEmbed', 'CustomPageRoot', 'CustomPageBanner', 'CustomPageTitle',
-        'CustomPageBody'
+        'FinishedOrArchived', 'FollowedItems', 'Areas', 'CallToAction', 'VideoEmbed', 'CustomPageRoot',
+        'CustomPageBanner', 'CustomPageTitle', 'CustomPageBody'
       )
     end
 

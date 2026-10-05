@@ -5,6 +5,7 @@ import { SerializedNodes } from '@craftjs/core';
 
 import { VerticalRhythmContext } from 'components/admin/ContentBuilder/verticalRhythm';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
+import Areas from 'components/admin/ContentBuilder/Widgets/Areas';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
 import CallToAction from 'components/admin/ContentBuilder/Widgets/CallToAction';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
@@ -12,6 +13,7 @@ import CustomPages from 'components/admin/ContentBuilder/Widgets/CustomPages';
 import EventsList from 'components/admin/ContentBuilder/Widgets/Events';
 import FileAttachment from 'components/admin/ContentBuilder/Widgets/FileAttachment';
 import FinishedOrArchived from 'components/admin/ContentBuilder/Widgets/FinishedOrArchived';
+import FollowedItems from 'components/admin/ContentBuilder/Widgets/FollowedItems';
 import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
@@ -73,6 +75,8 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
           Published,
           OpenToParticipation,
           FinishedOrArchived,
+          FollowedItems,
+          Areas,
           CallToAction,
           VideoEmbed,
           CustomPageRoot,

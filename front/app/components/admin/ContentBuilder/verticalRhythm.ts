@@ -39,6 +39,8 @@ const WIDGET_ROLES: Record<string, WidgetRole> = {
   CustomPages: 'band',
   Published: 'band',
   OpenToParticipation: 'band',
+  FollowedItems: 'band',
+  Areas: 'band',
   FinishedOrArchived: 'band',
   CallToAction: 'band',
   CustomPageBanner: 'band',
