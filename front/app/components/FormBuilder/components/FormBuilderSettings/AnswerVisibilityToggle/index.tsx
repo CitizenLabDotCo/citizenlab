@@ -4,6 +4,9 @@ import { Text, Toggle } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
 
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
+import { supportsPublicAnswers } from 'api/custom_fields/util';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { SectionField } from 'components/admin/Section';
 
@@ -18,9 +21,15 @@ type Props = {
 const AnswerVisibilityToggle = ({ field }: Props) => {
   const { watch, setValue } = useFormContext();
   const { formatMessage } = useIntl();
+  const isEnabled = useFeatureFlag({ name: 'input_form_answer_visibility' });
 
   const name = `customFields.${field.index}.answers_visible_to`;
+  const inputType = watch(`customFields.${field.index}.input_type`);
   const isPublic = watch(name) === 'public';
+
+  if (!isEnabled || field.code || !supportsPublicAnswers(inputType)) {
+    return null;
+  }
 
   return (
     <SectionField>
