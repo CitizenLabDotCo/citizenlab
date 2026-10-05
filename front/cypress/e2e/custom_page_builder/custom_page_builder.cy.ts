@@ -299,4 +299,35 @@ describe('Custom page builder', () => {
     cy.get('#e2e-draggable-events').should('exist');
     cy.get('#e2e-draggable-projects-by-filter').should('not.exist');
   });
+
+  // The Call to action is the homepage widget worth checking on a published page: its buttons
+  // used to render only while the editor was enabled, which the homepage never turns off but a
+  // published custom page does.
+  it('renders homepage widgets added in the builder on the published page', () => {
+    const buttonText = `Go ${randomString()}`;
+    openBuilder();
+
+    cy.get('#e2e-draggable-published').dragAndDrop(
+      '[data-cy="e2e-custom-page-body"]',
+      { position: 'inside' }
+    );
+    cy.get('#e2e-draggable-call-to-action').dragAndDrop(
+      '[data-cy="e2e-custom-page-body"]',
+      { position: 'inside' }
+    );
+
+    // A dropped widget is selected, so its settings panel is open.
+    cy.get('#highlight_primaryButtonText').type(buttonText);
+    cy.get('#highlight_primaryButtonLink').type('/projects');
+
+    cy.intercept('**/content_builder_layouts/custom_page/upsert').as(
+      'saveCustomPageLayout'
+    );
+    cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveCustomPageLayout');
+
+    cy.visit(`/pages/${pageSlug}`);
+    cy.get('.e2e-published-projects-and-folders').should('exist');
+    cy.contains(buttonText).should('be.visible');
+  });
 });

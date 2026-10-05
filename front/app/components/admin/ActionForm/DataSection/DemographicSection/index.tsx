@@ -38,6 +38,7 @@ interface Props {
   permission: IPermissionData;
   phaseId?: string;
   permissionHasForm: boolean;
+  defaultOpen?: boolean;
   onChange: (changes: Changes) => void;
 }
 
@@ -45,6 +46,7 @@ const DemographicSection = ({
   permission,
   phaseId,
   permissionHasForm,
+  defaultOpen,
   onChange,
 }: Props) => {
   const { attributes } = permission;
@@ -104,6 +106,7 @@ const DemographicSection = ({
   return (
     <Expander
       icon="user-data"
+      defaultOpen={defaultOpen}
       title={formatMessage(messages.demographicQuestions)}
       summary={
         customFields.length === 0

@@ -5,6 +5,8 @@ import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
+
 import ProjectProposalsManager from 'components/admin/PostManager/ProjectProposalsManager';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
@@ -13,6 +15,7 @@ import { useParams } from 'utils/router';
 
 import AnalysisBanner from '../../_shared/components/AnalysisBanner';
 import NewIdeaButton from '../../_shared/components/NewIdeaButton';
+import InputManagerRedesign from '../backofficeRedesign/InputManager';
 import messages from '../messages';
 
 type TFilterMenu = 'topics' | 'statuses';
@@ -29,8 +32,19 @@ const AdminProjectProposals = () => {
   });
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
+  const isBackofficeRedesignEnabled = useProjectBackofficeRedesign();
 
   if (!project) return null;
+
+  if (isBackofficeRedesignEnabled && phase) {
+    return (
+      <InputManagerRedesign
+        key={phaseId}
+        project={project.data}
+        phase={phase.data}
+      />
+    );
+  }
 
   return (
     <>
