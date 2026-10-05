@@ -10,6 +10,9 @@ import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 import Section from 'components/admin/ContentBuilder/Toolbox/Section';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
+import Areas, {
+  areasTitle,
+} from 'components/admin/ContentBuilder/Widgets/Areas';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
 import CallToAction, {
   callToActionTitle,
@@ -65,6 +68,7 @@ import {
 
 const CustomPageBuilderToolbox = () => {
   const { formatMessage } = useIntl();
+  const followEnabled = useFeatureFlag({ name: 'follow' });
   const isHtmlBlockMultilocEnabled = useFeatureFlag({
     name: 'html_block_in_content_builder',
   });
@@ -161,6 +165,14 @@ const CustomPageBuilderToolbox = () => {
           icon="notification"
           label={formatMessage(followedItemsTitle)}
         />
+        {followEnabled && (
+          <DraggableElement
+            id="e2e-draggable-areas"
+            component={<Areas titleMultiloc={toMultiloc(areasTitle)} />}
+            icon="home"
+            label={formatMessage(areasTitle)}
+          />
+        )}
         <DraggableElement
           id="e2e-draggable-published"
           component={<Published titleMultiloc={toMultiloc(publishedTitle)} />}

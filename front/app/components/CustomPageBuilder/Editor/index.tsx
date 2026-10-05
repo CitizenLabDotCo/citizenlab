@@ -5,6 +5,7 @@ import { SerializedNodes } from '@craftjs/core';
 
 import { VerticalRhythmContext } from 'components/admin/ContentBuilder/verticalRhythm';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
+import Areas from 'components/admin/ContentBuilder/Widgets/Areas';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
 import CallToAction from 'components/admin/ContentBuilder/Widgets/CallToAction';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
@@ -73,6 +74,7 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
           OpenToParticipation,
           FinishedOrArchived,
           FollowedItems,
+          Areas,
           CallToAction,
           VideoEmbed,
           CustomPageRoot,
