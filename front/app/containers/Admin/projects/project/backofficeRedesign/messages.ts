@@ -375,9 +375,31 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.settingsReset',
     defaultMessage: 'Reset',
   },
-  settingsCancel: {
-    id: 'app.containers.Admin.projects.project.settingsCancel',
-    defaultMessage: 'Cancel',
+  settingsTagsTitle: {
+    id: 'app.containers.Admin.projects.project.settingsTagsTitle',
+    defaultMessage: 'Tags',
+  },
+  settingsTagsDescription: {
+    id: 'app.containers.Admin.projects.project.settingsTagsDescription',
+    defaultMessage:
+      'Help residents find projects by theme. Manage the full tag list in {platformSettingsLink}.',
+  },
+  settingsPlatformSettingsLink: {
+    id: 'app.containers.Admin.projects.project.settingsPlatformSettingsLink',
+    defaultMessage: 'platform settings',
+  },
+  settingsThumbnailTitle: {
+    id: 'app.containers.Admin.projects.project.settingsThumbnailTitle',
+    defaultMessage: 'Project thumbnail',
+  },
+  settingsThumbnailDescription: {
+    id: 'app.containers.Admin.projects.project.settingsThumbnailDescription',
+    defaultMessage:
+      'The image and short text shown on the project thumbnail — on the homepage and in project lists.',
+  },
+  settingsUrlSlug: {
+    id: 'app.containers.Admin.projects.project.settingsUrlSlug',
+    defaultMessage: 'URL slug',
   },
   settingsSaveChanges: {
     id: 'app.containers.Admin.projects.project.settingsSaveChanges',
