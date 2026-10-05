@@ -20,9 +20,9 @@ import FollowUnfollow from 'components/FollowUnfollow';
 import ProjectPageContentViewer from 'components/ProjectPageBuilder/ContentViewer';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
+import checkIfFramed from 'utils/checkIfFramed';
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import isFramed from 'utils/isFramed';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import ProjectArchivedIndicator from './ProjectArchivedIndicator';
@@ -67,7 +67,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
     const userCanEditProject =
       !isNilOrError(authUser) && canModerateProject(project.data, authUser);
     // An admin preview shows this page in a frame, where the button would open the admin inside it.
-    const showEditButton = userCanEditProject && !isFramed();
+    const showEditButton = userCanEditProject && !checkIfFramed();
 
     return (
       <Container className={className || ''}>

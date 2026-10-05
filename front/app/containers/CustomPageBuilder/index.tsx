@@ -11,7 +11,7 @@ import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 import useEnsureCustomPageLayout from 'components/CustomPageBuilder/useEnsureCustomPageLayout';
 
-import { useParams } from 'utils/router';
+import { useLocation, useParams } from 'utils/router';
 
 import CustomPageBuilderPage from './CustomPageBuilderPage';
 
@@ -27,6 +27,7 @@ const CustomPageBuilder = () => {
   const projectId = customPage?.data.attributes.project_id;
   const { data: project } = useProjectById(projectId);
   useEnsureCustomPageLayout(customPageId);
+  const { searchStr } = useLocation();
 
   if (!featureEnabled || !customPage || !isOnContentBuilder(customPage.data)) {
     return null;
@@ -39,7 +40,7 @@ const CustomPageBuilder = () => {
     projectId
       ? `${adminProjectsProjectPath(projectId)}/pages/${customPageId}`
       : adminCustomPageSettingsPath(customPageId)
-  }${window.location.search}`;
+  }${searchStr}`;
 
   return (
     <CustomPageBuilderPage
