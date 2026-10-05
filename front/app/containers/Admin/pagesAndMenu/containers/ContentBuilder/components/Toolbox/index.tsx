@@ -24,6 +24,9 @@ import ButtonMultiloc, {
 import CallToAction, {
   callToActionTitle,
 } from 'components/admin/ContentBuilder/Widgets/CallToAction';
+import CommunityMonitorCTA, {
+  communityMonitorCTATitle,
+} from 'components/admin/ContentBuilder/Widgets/CommunityMonitorCTA';
 import CustomPages, {
   customPagesTitle,
 } from 'components/admin/ContentBuilder/Widgets/CustomPages';
@@ -79,9 +82,6 @@ import {
 } from 'utils/cl-intl';
 
 import messages from '../../messages';
-import CommunityMonitorCTA, {
-  communityMonitorCTATitle,
-} from '../Widgets/CommunityMonitorCTA';
 import HomepageBanner, { homepageBannerTitle } from '../Widgets/HomepageBanner';
 import {
   getHomepageBannerDefaultImage,
