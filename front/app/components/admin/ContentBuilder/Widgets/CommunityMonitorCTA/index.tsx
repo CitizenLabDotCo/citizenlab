@@ -27,6 +27,7 @@ import SurveyTimeToComplete from 'components/SurveyTimeToComplete';
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { removeUrlLocale } from 'utils/removeUrlLocale';
 import { useLocation } from 'utils/router';
 
 import SentimentQuestionPreview from './assets/SentimentQuestionPreview.png';
@@ -62,9 +63,11 @@ const CommunityMonitorCTA = ({
 
   const goToCommunityMonitorSurvey = () => {
     if (phaseId) {
-      // Track the homepage CTA interaction
+      // Kept apart so the homepage event still counts only homepage clicks.
       trackEventByName(
-        tracks.communityMonitorHomepageWidgetClickedAndRedirected
+        removeUrlLocale(pathname) === '/'
+          ? tracks.communityMonitorHomepageWidgetClickedAndRedirected
+          : tracks.communityMonitorCustomPageWidgetClickedAndRedirected
       );
 
       // Redirect to the survey page
