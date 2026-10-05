@@ -208,6 +208,40 @@ describe McpServer::Tools::UpdateProjectLayout do
         end
       end
 
+      describe 'slot widgets' do
+        # A TwoColumn with both columns wired through linkedNodes Containers, as the FE writes them.
+        def two_column
+          {
+            'TC1' => craftjs_node('TwoColumn', parent: body, props: { 'columnLayout' => '1-1' },
+              linkedNodes: { 'left' => 'L1', 'right' => 'R1' }),
+            'L1' => craftjs_node('Container', parent: 'TC1', isCanvas: true, nodes: ['LT1']),
+            'LT1' => text_node(parent: 'L1', text: { 'en' => '<p>Left</p>' }),
+            'R1' => craftjs_node('Container', parent: 'TC1', isCanvas: true)
+          }
+        end
+
+        it 'saves a TwoColumn whose columns are wired through linkedNodes' do
+          response = patch(nodes: { body => body_with(%w[T1 TC1]), **two_column })
+
+          expect(response).not_to be_error
+          expect(layout.reload.craftjs_json.dig('TC1', 'linkedNodes')).to eq('left' => 'L1', 'right' => 'R1')
+        end
+
+        it "rejects a TwoColumn with its content wired through 'nodes', saving nothing" do
+          nodes_wired = {
+            'TC1' => craftjs_node('TwoColumn', parent: body, props: { 'columnLayout' => '1-1' }, nodes: %w[LT1 RT1]),
+            'LT1' => text_node(parent: 'TC1', text: { 'en' => '<p>Left</p>' }),
+            'RT1' => text_node(parent: 'TC1', text: { 'en' => '<p>Right</p>' })
+          }
+
+          response = patch(nodes: { body => body_with(%w[T1 TC1]), **nodes_wired })
+
+          expect(response).to be_error
+          expect(response.content.first[:text]).to include('linkedNodes')
+          expect(layout.reload.craftjs_json).to eq(initial_graph)
+        end
+      end
+
       describe 'scaffold protection' do
         it 'rejects deleting a scaffold node' do
           ['ROOT', body, 'PROJECT_PAGE_BANNER'].each do |id|
@@ -462,16 +496,16 @@ describe McpServer::Tools::UpdateProjectLayout do
         end
 
         it 'accepts a graph with exactly the maximum number of nodes' do
-          patch = patch_with_children(described_class::MAX_NODES - seeded_ids.size)
+          patch = patch_with_children(McpServer::LayoutPatching::MAX_NODES - seeded_ids.size)
 
           response = patch(nodes: patch)
 
           expect(response).not_to be_error
-          expect(layout.reload.craftjs_json.size).to eq(described_class::MAX_NODES)
+          expect(layout.reload.craftjs_json.size).to eq(McpServer::LayoutPatching::MAX_NODES)
         end
 
         it 'rejects a graph one node above the cap' do
-          patch = patch_with_children(described_class::MAX_NODES - seeded_ids.size + 1)
+          patch = patch_with_children(McpServer::LayoutPatching::MAX_NODES - seeded_ids.size + 1)
 
           response = patch(nodes: patch)
 

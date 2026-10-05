@@ -44,8 +44,9 @@ const IndentedSortableRow = styled(SortableRow)<{ depth: number }>`
 
 const ProjectInputTopics = () => {
   const { projectId } = useParams({
-    from: '/$locale/admin/projects/$projectId/general/input-tags',
+    from: '/$locale/admin/projects/$projectId',
   });
+
   const nestedInputTopicsActive = useFeatureFlag({
     name: 'nested_input_topics',
   });
