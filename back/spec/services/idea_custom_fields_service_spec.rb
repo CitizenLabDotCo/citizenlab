@@ -33,24 +33,6 @@ describe IdeaCustomFieldsService do
       end
     end
 
-    describe 'visible_fields' do
-      it 'excludes disabled fields' do
-        output = service.visible_fields
-        expect(output.filter_map(&:code)).to eq %w[
-          title_page
-          title_multiloc
-          body_page
-          body_multiloc
-          uploads_page
-          idea_images_attributes
-          idea_files_attributes
-          details_page
-          topic_ids
-          location_description
-        ]
-      end
-    end
-
     describe 'submittable_fields' do
       it 'excludes disabled fields and pages' do
         output = service.submittable_fields
@@ -80,32 +62,6 @@ describe IdeaCustomFieldsService do
           topic_ids
           location_description
         ]
-      end
-    end
-
-    describe 'enabled_public_fields' do
-      it 'excludes disabled & answer_visible_to: admins fields' do
-        output = service.enabled_public_fields
-        expect(output.map(&:code)).to eq [
-          'title_page',
-          'title_multiloc',
-          'body_page',
-          'body_multiloc',
-          'uploads_page',
-          'idea_images_attributes',
-          'idea_files_attributes',
-          'details_page',
-          'topic_ids',
-          'location_description',
-          nil
-        ]
-      end
-    end
-
-    describe 'extra_visible_fields' do
-      it 'excludes disabled and built-in fields' do
-        output = service.extra_visible_fields
-        expect(output.size).to eq 1
       end
     end
 
@@ -190,31 +146,6 @@ describe IdeaCustomFieldsService do
       end
     end
 
-    describe 'visible_fields' do
-      it 'excludes disabled fields' do
-        topic_field = custom_form.custom_fields.find_by(code: 'topic_ids')
-        topic_field.update!(enabled: false)
-        custom_form.custom_fields.find_by(code: 'location_description').destroy!
-
-        output = service.visible_fields
-        expect(output).to include extra_field1
-        expect(output).not_to include extra_field2
-        expect(output).not_to include topic_field
-        expect(output.map(&:code)).to eq [
-          'title_page',
-          'title_multiloc',
-          'body_page',
-          'body_multiloc',
-          'uploads_page',
-          'idea_images_attributes',
-          'idea_files_attributes',
-          'details_page',
-          nil,
-          nil
-        ]
-      end
-    end
-
     describe 'submittable_fields' do
       it 'excludes disabled fields and pages' do
         topic_field = custom_form.custom_fields.find_by(code: 'topic_ids')
@@ -254,15 +185,6 @@ describe IdeaCustomFieldsService do
           nil,
           nil
         ]
-      end
-    end
-
-    describe 'extra_visible_fields' do
-      it 'excludes disabled and built-in fields' do
-        output = service.extra_visible_fields
-        expect(output).to include extra_field1
-        expect(output).not_to include extra_field2
-        expect(output.map(&:code)).to eq [nil, nil]
       end
     end
   end
