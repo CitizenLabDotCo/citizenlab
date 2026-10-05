@@ -496,16 +496,16 @@ describe McpServer::Tools::UpdateProjectLayout do
         end
 
         it 'accepts a graph with exactly the maximum number of nodes' do
-          patch = patch_with_children(described_class::MAX_NODES - seeded_ids.size)
+          patch = patch_with_children(McpServer::LayoutPatching::MAX_NODES - seeded_ids.size)
 
           response = patch(nodes: patch)
 
           expect(response).not_to be_error
-          expect(layout.reload.craftjs_json.size).to eq(described_class::MAX_NODES)
+          expect(layout.reload.craftjs_json.size).to eq(McpServer::LayoutPatching::MAX_NODES)
         end
 
         it 'rejects a graph one node above the cap' do
-          patch = patch_with_children(described_class::MAX_NODES - seeded_ids.size + 1)
+          patch = patch_with_children(McpServer::LayoutPatching::MAX_NODES - seeded_ids.size + 1)
 
           response = patch(nodes: patch)
 
