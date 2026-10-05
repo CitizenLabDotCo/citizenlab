@@ -165,6 +165,13 @@ RSpec.describe ParticipationMethod::Ideation do
         proposed_budget
       ]
     end
+
+    it 'shows the answers of the built-in questions publicly' do
+      fields = participation_method.default_fields(create(:custom_form, participation_context: phase))
+      questions, pages = fields.partition(&:supports_submission?)
+      expect(questions.map(&:answers_visible_to).uniq).to eq ['public']
+      expect(pages.map(&:answers_visible_to).uniq).to eq ['moderators']
+    end
   end
 
   describe '#author_in_form?' do

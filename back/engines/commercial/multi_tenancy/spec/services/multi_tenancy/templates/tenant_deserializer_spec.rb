@@ -41,6 +41,7 @@ describe MultiTenancy::Templates::TenantDeserializer do
               description_multiloc:
                 nl-BE: Debitis expedita qui nostrum.
               code: body_multiloc
+              answers_visible_to: public
             - resource_type: CustomForm
               resource_ref: *2
               key: title_multiloc
@@ -50,6 +51,7 @@ describe MultiTenancy::Templates::TenantDeserializer do
               description_multiloc:
                 nl-BE: Minima et ipsa debitis.
               code: title_multiloc
+              answers_visible_to: public
       YAML
 
       template = YAML.load(yml, aliases: true)

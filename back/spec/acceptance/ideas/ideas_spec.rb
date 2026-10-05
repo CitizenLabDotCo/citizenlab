@@ -396,6 +396,7 @@ resource 'Ideas' do
         permission.permissions_custom_fields = [
           create(:permissions_custom_field, custom_field: create(:custom_field, key: 'gender'))
         ]
+        create(:custom_field, resource: create(:custom_form, participation_context: phase), key: 'field')
 
         phase
       end

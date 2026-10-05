@@ -18,7 +18,8 @@ describe WebApi::V1::CustomFieldSerializer do
       logic: {},
       constraints: {},
       random_option_ordering: false,
-      include_in_printed_form: true
+      include_in_printed_form: true,
+      answers_visible_to: 'moderators'
     }
   end
 
@@ -48,7 +49,7 @@ describe WebApi::V1::CustomFieldSerializer do
     end
 
     it 'includes the attributes of a field' do
-      params = { params: { constraints: {}, supports_answer_visible_to: true } }
+      params = { params: { constraints: {} } }
       serialized_field = described_class.new(field, params).serializable_hash
       attributes = serialized_field[:data][:attributes]
       expect(attributes).to match(default_attributes.merge({
@@ -56,7 +57,6 @@ describe WebApi::V1::CustomFieldSerializer do
         input_type: 'text',
         key: 'extra',
         title_multiloc: { 'en' => 'Did you attend' },
-        visible_to_public: false,
         min_characters: nil,
         max_characters: nil
       }))
