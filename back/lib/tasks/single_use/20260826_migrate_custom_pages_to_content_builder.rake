@@ -159,7 +159,7 @@ namespace :single_use do
 
       seen = {}
       failures = 0
-      StaticPage.on_content_builder.find_each do |page|
+      StaticPage.content_builder_pages.find_each do |page|
         archive_disabled_sections.call(page, tenant, script)
         seen[page.id] = [page.updated_at, derive.call(page, tenant, script)]
       rescue StandardError => e

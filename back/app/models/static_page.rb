@@ -53,7 +53,7 @@ class StaticPage < ApplicationRecord
 
   enum :projects_filter_type, { no_filter: 'no_filter', areas: 'areas', global_topics: 'topics', spaces: 'spaces' }
 
-  scope :on_content_builder, -> { where(code: CONTENT_BUILDER_CODES, project_id: nil) }
+  scope :content_builder_pages, -> { where(code: CONTENT_BUILDER_CODES, project_id: nil) }
 
   has_many_text_images from: :top_info_section_multiloc, as: :top_info_section_text_images
   has_many_text_images from: :bottom_info_section_multiloc, as: :bottom_info_section_text_images
@@ -167,7 +167,7 @@ class StaticPage < ApplicationRecord
     code == 'custom'
   end
 
-  def on_content_builder?
+  def content_builder_page?
     code.in?(CONTENT_BUILDER_CODES) && !project_scoped?
   end
 
