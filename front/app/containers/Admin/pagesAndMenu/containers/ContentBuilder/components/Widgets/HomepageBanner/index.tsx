@@ -10,9 +10,9 @@ import useLocale from 'hooks/useLocale';
 import SignedInHeader from 'containers/HomePage/SignedInHeader';
 import SignedOutHeader from 'containers/HomePage/SignedOutHeader';
 
-import { useLocation, useSearch } from 'utils/router';
+import { DEFAULT_Y_PADDING } from 'components/admin/ContentBuilder/constants';
 
-import { DEFAULT_Y_PADDING } from '../constants';
+import { useLocation, useSearch } from 'utils/router';
 
 import messages from './messages';
 

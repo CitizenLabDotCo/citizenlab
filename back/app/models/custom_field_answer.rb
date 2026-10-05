@@ -27,6 +27,8 @@ class CustomFieldAnswer < ApplicationRecord
   ANSWERABLE_TYPES = %w[Idea User].freeze
 
   belongs_to :answerable, polymorphic: true
+  # nil for legacy answers, for answers of an input moved to another project, and for
+  # unknown keys written by the MCP demo tools.
   belongs_to :custom_field, optional: true
 
   # Only the answers under the field's own key, not its _other and _follow_up
@@ -35,12 +37,24 @@ class CustomFieldAnswer < ApplicationRecord
 
   validates :answerable_type, inclusion: { in: ANSWERABLE_TYPES }
   validates :key, presence: true
-  # presence would reject false/[]; exclusion checks arrays element-wise.
-  validate :value_is_not_nil
+  # presence would reject false/[]; this also checks arrays element-wise.
+  validate :value_has_no_nils
+  validate :validate_built_in_value
 
   private
 
-  def value_is_not_nil
-    errors.add(:value, 'must not be nil') if value.nil?
+  def value_has_no_nils
+    errors.add(:value, 'must not be or contain nil') if value.nil? || (value.is_a?(Array) && value.include?(nil))
+  end
+
+  def validate_built_in_value
+    case custom_field&.code
+    when 'gender'
+      errors.add(:value, :inclusion) if User::GENDERS.exclude?(value)
+    when 'birthyear'
+      errors.add(:value, :invalid) if !value.is_a?(Integer) || !(1900...Time.zone.now.year).cover?(value)
+    when 'domicile'
+      errors.add(:value, :inclusion) if value != 'outside' && !Area.exists?(id: value)
+    end
   end
 end

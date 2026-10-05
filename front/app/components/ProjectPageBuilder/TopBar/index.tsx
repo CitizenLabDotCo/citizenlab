@@ -6,12 +6,12 @@ import { Multiloc, SupportedLocale } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { findNodeIdByName } from 'components/admin/ContentBuilder/resolvedName';
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
 import LocaleSelect from 'components/admin/ContentBuilder/TopBar/LocaleSelect';
 import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
-import { findNodeIdByName } from 'components/ProjectPageBuilder/defaultLayout';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';

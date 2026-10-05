@@ -91,10 +91,12 @@ export const themeColors = {
    * Green
    */
   green700: '#024D2B',
+  green600: '#096F03',
   green500: '#04884C', // formerly clGreen
   green400: '#32B67A',
   green300: '#62C462',
   green100: '#e4f7ef', // formerly clGreenSuccessBackground
+  greenMint: '#CAE0CD',
 
   /**
    * Orange
@@ -199,6 +201,17 @@ export const focusRing = css`
   outline-offset: 2px;
   box-shadow: 0 0 0 2px ${colors.white};
 `;
+
+// Back office theme
+export const bo = {
+  colors: {
+    textHeadingStrong: '#1E1E1E',
+    textHeading: '#474747',
+    statusFill: '#E2EEE1',
+  },
+  borderRadius: '8px',
+  panelBorderRadius: '12px',
+};
 
 export const stylingConsts = {
   menuHeight: 78,

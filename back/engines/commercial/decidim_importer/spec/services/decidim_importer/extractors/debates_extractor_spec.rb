@@ -49,6 +49,9 @@ RSpec.describe DecidimImporter::Extractors::DebatesExtractor do
     expect(attrs).not_to have_key('creation_phase_ref')
     join = ref_map.fetch('decidim--debates--debate--4-ideas-phase')
     expect(join.attributes.values_at('idea_ref', 'phase_ref')).to eq([idea.attributes, phase.attributes])
+
+    idea_import = ref_map.fetch('decidim--debates--debate--4-idea-import')
+    expect(idea_import.attributes['idea_ref']).to be(idea.attributes)
   end
 
   it 'folds instructions/information_updates/conclusions into the body under <h3> headings, keeping order' do

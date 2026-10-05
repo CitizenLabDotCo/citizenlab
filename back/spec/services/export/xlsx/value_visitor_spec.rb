@@ -13,14 +13,7 @@ describe Export::Xlsx::ValueVisitor do
 
   describe '#default' do
     context 'for a built-in field' do
-      let(:field) do
-        create(
-          :custom_field,
-          input_type: 'number',
-          key: 'proposed_budget',
-          code: 'proposed_budget'
-        )
-      end
+      let(:field) { create(:default_input_field, code: 'proposed_budget') }
       let(:model) { instance_double Idea, proposed_budget: 1234 }
 
       it 'returns the field value from the model' do
@@ -41,17 +34,7 @@ describe Export::Xlsx::ValueVisitor do
 
   context 'visit_xxx methods' do
     let(:field_key) { 'field_1' }
-    let(:code) { nil }
-    let(:resource_type) { 'CustomForm' }
-    let!(:field) do
-      create(
-        :custom_field,
-        resource_type: resource_type,
-        input_type: input_type,
-        key: field_key,
-        code: code
-      )
-    end
+    let!(:field) { create(:custom_field, resource_type: 'CustomForm', input_type: input_type, key: field_key) }
     let(:answers) { value.nil? ? [] : [build(:custom_field_answer, key: field_key, value: value)] }
     let(:model) { build(:idea, custom_field_answers: answers) }
 
@@ -203,10 +186,9 @@ describe Export::Xlsx::ValueVisitor do
       let(:input_type) { 'select' }
 
       context 'when the code is domicile' do
-        let(:resource_type) { 'User' }
-        let(:code) { 'domicile' }
+        let!(:field) { create(:custom_field_domicile) }
         let(:field_key) { :domicile }
-        let(:model) { create(:user, field_key => value) }
+        let(:model) { create(:user, custom_field_answers: answers) }
 
         context 'when there is no value' do
           let(:value) { nil }
@@ -429,9 +411,8 @@ describe Export::Xlsx::ValueVisitor do
       let(:input_type) { 'files' }
 
       context 'when the code is idea_files_attributes' do
-        let(:code) { 'idea_files_attributes' }
-        let(:value) { nil } # The field value is irrelevant for this field
-        let(:model) { create(:idea, custom_field_values: { field_key => value }) }
+        let!(:field) { create(:default_input_field, code: 'idea_files_attributes') }
+        let(:model) { create(:idea) }
 
         context 'when there is no value' do
           it 'returns the empty string' do
@@ -589,7 +570,7 @@ describe Export::Xlsx::ValueVisitor do
         let!(:file) { create(:idea_file, name: 'File1.pdf', idea: model) }
 
         it 'returns the value for the report' do
-          create(:custom_field_answer, answerable: model, custom_field: field, value: { 'id' => file.id, 'name' => file.name })
+          create(:custom_field_answer, answerable: model, key: field.key, custom_field: field, value: { 'id' => file.id, 'name' => file.name })
           expect(visitor.visit_file_upload(field)).to eq file.file.url
         end
       end
@@ -600,7 +581,7 @@ describe Export::Xlsx::ValueVisitor do
         let(:model) { create(:native_survey_response) }
 
         it 'returns an empty string' do
-          create(:custom_field_answer, answerable: model, custom_field: field, value: { 'id' => 'FILE_ID_NO_LONGER_EXISTS', 'name' => 'Deleted file' })
+          create(:custom_field_answer, answerable: model, key: field.key, custom_field: field, value: { 'id' => 'FILE_ID_NO_LONGER_EXISTS', 'name' => 'Deleted file' })
           expect(visitor.visit_file_upload(field)).to eq ''
         end
       end
@@ -626,7 +607,7 @@ describe Export::Xlsx::ValueVisitor do
         let!(:file) { create(:idea_file, name: 'File1.pdf', idea: model) }
 
         it 'returns the value for the report' do
-          create(:custom_field_answer, answerable: model, custom_field: field, value: { 'id' => file.id, 'name' => file.name })
+          create(:custom_field_answer, answerable: model, key: field.key, custom_field: field, value: { 'id' => file.id, 'name' => file.name })
           expect(visitor.visit_shapefile_upload(field)).to eq file.file.url
         end
       end
@@ -634,11 +615,10 @@ describe Export::Xlsx::ValueVisitor do
 
     describe '#visit_topic_ids' do
       let(:input_type) { 'topic_ids' }
-      let(:model) { create(:idea, input_topics: topics, custom_field_values: { field_key => value }) }
+      let(:model) { create(:idea, input_topics: topics) }
 
       context 'when there are no topics selected' do
         let(:topics) { [] }
-        let(:value) { nil }
 
         it 'returns the empty string' do
           I18n.with_locale('nl-NL') do

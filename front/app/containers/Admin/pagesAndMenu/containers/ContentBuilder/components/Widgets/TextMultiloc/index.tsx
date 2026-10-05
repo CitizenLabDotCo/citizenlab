@@ -10,7 +10,10 @@ import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import messages from 'components/admin/ContentBuilder/Widgets/TextMultiloc/messages';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-import { DEFAULT_Y_PADDING } from '../constants';
+import {
+  BUILDER_CONTENT_MAX_WIDTH,
+  DEFAULT_Y_PADDING,
+} from 'components/admin/ContentBuilder/constants';
 
 interface Props {
   text?: Multiloc;
@@ -27,7 +30,7 @@ const TextMultiloc = ({ text }: Props) => {
     <PageBreakBox
       className="e2e-text-box"
       minHeight="26px"
-      maxWidth="1200px"
+      maxWidth={BUILDER_CONTENT_MAX_WIDTH}
       margin="0 auto"
       px={craftComponentDefaultPadding}
       py={DEFAULT_Y_PADDING}

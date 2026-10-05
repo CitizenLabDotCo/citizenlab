@@ -8,19 +8,15 @@ import {
   Box,
   Button,
   Icon,
-  Text,
   Title,
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 
-import useAuthUser from 'api/me/useAuthUser';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
-import { isAdmin } from 'utils/permissions/roles';
+import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import PlatformDefaultsNote from './PlatformDefaultsNote';
 
 // The line box of the h4 Title below (fontSizes.l at Title's line-height of
 // 1.3). The note is set on the same band so the two line boxes have identical
@@ -46,8 +42,6 @@ const PlatformDefaultsHeader = ({
   onOverride,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: authUser } = useAuthUser();
-  const userIsAdmin = isAdmin(authUser);
 
   return (
     <Box
@@ -85,29 +79,12 @@ const PlatformDefaultsHeader = ({
         </Title>
       </Box>
 
-      <Text
+      <PlatformDefaultsNote
         as="span"
-        m="0"
         mt="4px"
         ml="4px"
-        fontSize="xs"
-        color="coolGrey600"
         lineHeight={TITLE_LINE_HEIGHT}
-      >
-        <FormattedMessage
-          {...messages.usingPlatformDefaults}
-          values={{
-            // Only admins can reach the platform-wide settings the link points
-            // at, so managers get the same sentence as plain text.
-            link: (chunks) =>
-              userIsAdmin ? (
-                <Link to="/admin/settings/registration">{chunks}</Link>
-              ) : (
-                <>{chunks}</>
-              ),
-          }}
-        />
-      </Text>
+      />
 
       <Box flex="1 1 auto" />
 

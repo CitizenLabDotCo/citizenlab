@@ -3,7 +3,7 @@
 module DecidimImporter
   # Translates a Decidim organization's `extra_user_fields` config (JSON column on
   # `01--organization.csv`) into Go Vocal user {CustomField} records for the tenant template, plus the
-  # `extended_data` keys {Extractors::UsersExtractor} should copy onto each user's `custom_field_values`.
+  # `extended_data` keys {Extractors::UsersExtractor} should emit as each user's answers.
   #
   # Fields Go Vocal already seeds as built-ins (`gender`, `date_of_birth` → `birthyear`) are *not*
   # recreated — the users extractor maps their values onto the built-ins. Everything else enabled
@@ -36,17 +36,27 @@ module DecidimImporter
       end
     end
 
-    # The `extended_data` keys the users extractor folds into `custom_field_values` (built-ins
-    # gender/birthyear are handled separately there).
+    # The `extended_data` keys the users extractor emits answers for (built-ins gender/birthyear are
+    # handled separately there).
     def text_field_keys
       definitions.pluck(:key)
     end
 
-    # Registers a `custom_field` {Record} per definition into the ref map so it's emitted. Keyed by a
-    # synthetic uid since Decidim has no row id for these.
+    # The built-ins the users extractor emits answers for. They travel only as ref targets: the
+    # importer's `CustomField` reuse matcher points them at the tenant's seeded fields.
+    BUILT_IN_FIELDS = {
+      'gender' => { 'input_type' => 'select', 'title_multiloc' => 'custom_fields.users.gender.title' },
+      'birthyear' => { 'input_type' => 'number', 'title_multiloc' => 'custom_fields.users.birthyear.title' }
+    }.freeze
+
+    # Registers a `custom_field` {Record} per definition, plus the built-ins, into the ref map so
+    # they're emitted. Keyed by a synthetic uid since Decidim has no row id for these.
     def register!(ref_map)
       definitions.each do |definition|
         ref_map.register("decidim-userfield-#{definition[:key]}", Record.new('custom_field', attributes_for(definition)))
+      end
+      BUILT_IN_FIELDS.each do |code, spec|
+        ref_map.register("decidim-userfield-#{code}", Record.new('custom_field', built_in_attributes_for(code, spec)))
       end
     end
 
@@ -71,6 +81,18 @@ module DecidimImporter
         'required' => false,
         'enabled' => true
         # No `code` (not built-ins) and no `ordering` (acts_as_list appends below existing fields).
+      }
+    end
+
+    def built_in_attributes_for(code, spec)
+      {
+        'resource_type' => 'User',
+        'key' => code,
+        'code' => code,
+        'input_type' => spec['input_type'],
+        'title_multiloc' => spec['title_multiloc'],
+        'required' => false,
+        'enabled' => true
       }
     end
 

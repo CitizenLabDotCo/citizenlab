@@ -31,4 +31,12 @@ RSpec.describe InputTypeStrategy::Polygon do
   its(:supports_reference_distribution?) { is_expected.to be false }
   its(:supports_file_upload?) { is_expected.to be false }
   its(:supports_logic?) { is_expected.to be false }
+
+  describe '#normalize_value' do
+    it 'converts a WKT string to GeoJSON, closing the ring' do
+      expect(input_type_strategy.normalize_value('POLYGON ((4.3 50.85, 4.31 50.85, 4.31 50.86))')).to eq(
+        'type' => 'Polygon', 'coordinates' => [[[4.3, 50.85], [4.31, 50.85], [4.31, 50.86], [4.3, 50.85]]]
+      )
+    end
+  end
 end

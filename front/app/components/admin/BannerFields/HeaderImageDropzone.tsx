@@ -10,13 +10,13 @@ import {
 } from 'api/custom_pages/types';
 
 import { TDevice } from 'components/admin/SelectPreviewDevice';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
-
-import { TBannerError } from './BannerImageFields';
 import {
   FIXED_RATIO_LAYOUT_ASPECT_RATIO,
   homepageBannerLayoutHeights,
-} from './constants';
+} from 'components/LandingPages/citizen/constants';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
+
+import { TBannerError } from './BannerImageFields';
 
 const HeaderImageOverlay = styled.div<{
   overlayColor: string;

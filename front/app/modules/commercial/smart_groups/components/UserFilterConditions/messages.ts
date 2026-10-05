@@ -383,4 +383,19 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.ideaStatusMethodIdeation',
     defaultMessage: 'Ideation',
   },
+  emailListPlaceholder: {
+    id: 'app.components.admin.UserFilterConditions.emailListPlaceholder',
+    defaultMessage:
+      'Paste email addresses, separated by commas or on separate lines',
+  },
+  emailListCount: {
+    id: 'app.components.admin.UserFilterConditions.emailListCount',
+    defaultMessage:
+      '{count, plural, =0 {No email addresses} one {# email address} other {# email addresses}}',
+  },
+  emailListInvalid: {
+    id: 'app.components.admin.UserFilterConditions.emailListInvalid',
+    defaultMessage:
+      '{count, plural, one {# entry is not a valid email address} other {# entries are not valid email addresses}}: {emails}',
+  },
 });

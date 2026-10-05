@@ -41,7 +41,7 @@ class CustomFieldBin < ApplicationRecord
   end
 
   # Does the given value fall into this bin.
-  # - `value` is the custom_field_value for the custom_field, as extracted from the custom_field_values
+  # - `value` is the answer value for the custom_field
   def in_bin?(value)
     raise NotImplementedError
   end

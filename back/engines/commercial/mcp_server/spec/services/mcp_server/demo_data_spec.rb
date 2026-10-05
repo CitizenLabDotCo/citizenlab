@@ -32,8 +32,8 @@ describe McpServer::DemoData do
 
       author = described_class.build_author(Time.zone.now)
 
-      expect(gender.options.map(&:key)).to include(author.custom_field_values[gender.key])
-      expect(author.custom_field_values).not_to have_key('disabled_one')
+      expect(gender.options.map(&:key)).to include(author.answer_for_key(gender.key)&.value)
+      expect(author.answer_for_key('disabled_one')).to be_nil
     end
 
     it 'builds a valid email from names with apostrophes and accents' do

@@ -1,16 +1,17 @@
 import React, { lazy } from 'react';
 
-import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
+import { useTheme } from 'styled-components';
 
 import useLocalize from 'hooks/useLocalize';
 
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 import PageBreakBox from '../PageBreakBox';
+import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
 import messages from './messages';
+import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
 
 interface Props {
   text?: Multiloc;
@@ -27,7 +28,7 @@ const TextMultiloc = ({ text }: Props) => {
     <PageBreakBox
       className="e2e-text-box"
       minHeight="26px"
-      maxWidth="1200px"
+      maxWidth={BUILDER_CONTENT_MAX_WIDTH}
       margin="0 auto"
       px={craftComponentDefaultPadding}
     >

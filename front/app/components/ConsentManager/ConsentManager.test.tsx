@@ -42,7 +42,7 @@ const mockAppConfiguration = {
           allowed: true,
           enabled: true,
         },
-        google_analytics: {
+        google_tag_manager: {
           allowed: true,
           enabled: true,
         },
@@ -75,10 +75,10 @@ registerDestination({
 });
 
 registerDestination({
-  key: 'google_analytics',
+  key: 'google_tag_manager',
   category: 'analytics',
-  feature_flag: 'google_analytics',
-  name: () => 'Google Analytics',
+  feature_flag: 'google_tag_manager',
+  name: () => 'Google Tag Manager',
 });
 
 registerDestination({
@@ -143,7 +143,7 @@ describe('<ConsentManager />', () => {
         advertising: true,
         savedChoices: {
           matomo: true,
-          google_analytics: true,
+          google_tag_manager: true,
         },
       });
     });
@@ -159,7 +159,7 @@ describe('<ConsentManager />', () => {
         advertising: false,
         savedChoices: {
           matomo: false,
-          google_analytics: false,
+          google_tag_manager: false,
         },
       });
     });
@@ -176,7 +176,7 @@ describe('<ConsentManager />', () => {
         advertising: false,
         savedChoices: {
           matomo: false,
-          google_analytics: false,
+          google_tag_manager: false,
         },
       });
     });
@@ -209,7 +209,7 @@ describe('<ConsentManager />', () => {
         advertising: false,
         savedChoices: {
           matomo: true,
-          google_analytics: true,
+          google_tag_manager: true,
         },
       });
     });
@@ -225,7 +225,7 @@ describe('<ConsentManager />', () => {
         advertising: false,
         savedChoices: {
           matomo: false,
-          google_analytics: false,
+          google_tag_manager: false,
         },
       };
     });
@@ -266,7 +266,7 @@ describe('<ConsentManager />', () => {
         advertising: false,
         savedChoices: {
           matomo: true,
-          google_analytics: true,
+          google_tag_manager: true,
         },
       });
     });
@@ -291,7 +291,7 @@ describe('<ConsentManager />', () => {
         advertising: true,
         savedChoices: {
           matomo: true,
-          google_analytics: true,
+          google_tag_manager: true,
         },
       });
 
@@ -307,7 +307,7 @@ describe('<ConsentManager />', () => {
         advertising: true,
         savedChoices: {
           matomo: true,
-          google_analytics: true,
+          google_tag_manager: true,
         },
       });
       // Verify that the modal is closed after accepting cookies again.
@@ -334,7 +334,7 @@ describe('<ConsentManager />', () => {
         advertising: false,
         savedChoices: {
           matomo: false,
-          google_analytics: false,
+          google_tag_manager: false,
         },
       });
       expect(screen.queryByTestId('consent-manager')).not.toBeInTheDocument();
@@ -350,7 +350,7 @@ describe('<ConsentManager />', () => {
         advertising: false,
         savedChoices: {
           matomo: false,
-          google_analytics: false,
+          google_tag_manager: false,
         },
       });
       expect(screen.queryByTestId('consent-manager')).not.toBeInTheDocument();
@@ -365,7 +365,7 @@ describe('<ConsentManager />', () => {
         advertising: false,
         savedChoices: {
           matomo: true,
-          google_analytics: true,
+          google_tag_manager: true,
         },
       };
     });

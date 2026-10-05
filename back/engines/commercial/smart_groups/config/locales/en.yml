@@ -32,6 +32,8 @@ en:
       not_ends_on: "%{property} doesn't end on %{value}"
     email:
       property: "e-mail"
+      is_one_of: "%{property} is one of: %{value}"
+      not_is_one_of: "%{property} is not one of: %{value}"
     event_attendances:
       attends_something: "User is registered for at least one event"
       attends_nothing: "User is not registered for any event"

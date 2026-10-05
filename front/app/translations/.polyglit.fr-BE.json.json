@@ -3939,6 +3939,21 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.UserFilterConditions.emailListCount": {
+    "state": "verified",
+    "verified_at": "2026-09-16T19:59:32.227297Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.admin.UserFilterConditions.emailListInvalid": {
+    "state": "verified",
+    "verified_at": "2026-09-16T19:59:32.227297Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.admin.UserFilterConditions.emailListPlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-09-16T19:59:32.227297Z",
+    "verified_by": "Cindy EB"
+  },
   "app.components.admin.UserFilterConditions.field_email": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -6753,6 +6768,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.Users.UsersGroup.emailListTooLongError": {
+    "state": "verified",
+    "verified_at": "2026-09-16T19:59:32.227297Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.AdminPage.Users.UsersGroup.rulesError": {
     "state": "verified",
@@ -11514,6 +11534,7 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+
   "app.containers.Projects.seeVolunteering": {
     "state": "verified",
     "verified_at": "2026-09-16T20:00:57.942676Z",
@@ -12889,6 +12910,7 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+
   "app.containers.landing.editHomepage": {
     "state": "verified",
     "verified_at": "2026-09-14T08:15:27.771318Z",

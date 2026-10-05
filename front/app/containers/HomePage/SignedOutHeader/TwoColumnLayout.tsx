@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/HomepageBanner';
 import HeaderContent from 'containers/HomePage/SignedOutHeader/HeaderContent';
 
-import { homepageBannerLayoutHeights } from 'components/admin/BannerFields/constants';
+import { homepageBannerLayoutHeights } from 'components/LandingPages/citizen/constants';
 import {
   Container,
   HeaderImageWrapper,

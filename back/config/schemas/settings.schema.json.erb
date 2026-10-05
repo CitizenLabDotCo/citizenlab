@@ -265,6 +265,12 @@
             "type": "boolean",
             "default": true
           },
+          "exclude_admins_and_moderators_from_statistics":  {
+            "title": "Exclude admins and moderators from statistics",
+            "description": "When enabled, the participation and visits of admins and moderators are left out of statistics and graphs.",
+            "type": "boolean",
+            "default": false
+          },
           "min_user_age": {
             "title": "Minimum user age",
             "description": "Used to determine the available birthyears in the birthyear registration question",
@@ -570,25 +576,6 @@
         }
       },
 
-      "google_analytics": {
-        "type": "object",
-        "title": "Google Analytics Integration",
-        "description":  "Integrates Google Analytics data collection to the front-end",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "required-settings": ["tracking_id"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true},
-          "tracking_id": {
-            "type": "string",
-            "description": "The tracking ID the front-end send it's data to. Format UA-XXXXXXXXX-XX",
-            "pattern": "^(UA|YT|MO)-[0-9]+-[0-9]+$",
-            "default": "<%= ENV.fetch('DEFAULT_GA_TRACKING_ID', '')%>"
-          }
-        }
-      },
-
       "polls": {
         "type": "object",
         "title": "Polls",
@@ -841,6 +828,18 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "project_backoffice_redesign": {
+        "type": "object",
+        "title": "Project Backoffice Redesign [DO NOT ENABLE]",
+        "description": "Show the project back office as a single three-pane workspace instead of a page per setting. Still under development, not ready for customer use.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
         }
       },
 

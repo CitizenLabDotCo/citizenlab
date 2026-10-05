@@ -2,8 +2,9 @@
 
 module Analytics
   class MultipleQueries
-    def initialize(original_url: nil)
+    def initialize(original_url: nil, exclude_admins_and_moderators: false)
       @original_url = original_url
+      @exclude_admins_and_moderators = exclude_admins_and_moderators
     end
 
     def run(json_query_input)
@@ -15,7 +16,7 @@ module Analytics
       paginations = []
 
       json_queries.each_with_index do |json_query, index|
-        query = Query.new(json_query)
+        query = Query.new(json_query, exclude_admins_and_moderators: @exclude_admins_and_moderators)
         queries.push(query)
         query.validate
         next if query.valid

@@ -40,18 +40,25 @@ module McpServer::DemoData
   def build_author(registered_at)
     first_name = Faker::Name.first_name
     last_name = Faker::Name.last_name
+    fields = CustomField.registration.enabled
+    values = RandomCustomFieldValuesService.new.generate(fields)
     # parameterize: Faker names can contain apostrophes/accents, invalid in emails.
     User.new(
       email: "#{"#{first_name}.#{last_name}".parameterize(separator: '.')}.#{SecureRandom.hex(4)}@#{EMAIL_DOMAIN}",
       first_name: first_name,
       last_name: last_name,
       locale: AppConfiguration.instance.settings('core', 'locales').sample,
-      custom_field_values: RandomCustomFieldValuesService.new.generate(CustomField.registration.enabled),
       confirmation_required: false,
       email_confirmed_at: registered_at,
       registration_completed_at: registered_at,
       created_at: registered_at
-    )
+    ).tap do |user|
+      fields.each do |field|
+        next if !values.key?(field.key)
+
+        user.custom_field_answers.build(key: field.key, value: values[field.key], custom_field: field)
+      end
+    end
   end
 
   # Timestamps shaped like a real participation curve over [from, to] (clamped

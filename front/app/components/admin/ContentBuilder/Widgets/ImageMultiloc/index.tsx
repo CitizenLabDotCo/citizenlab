@@ -10,7 +10,10 @@ import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { IMAGE_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
+import {
+  BUILDER_CONTENT_MAX_WIDTH,
+  IMAGE_LOADED_EVENT,
+} from 'components/admin/ContentBuilder/constants';
 
 import eventEmitter from 'utils/eventEmitter';
 
@@ -49,7 +52,7 @@ const Image = ({ alt = {}, image }: Props) => {
       className="e2e-image"
       pointerEvents="none"
       minHeight="26px"
-      maxWidth="1200px"
+      maxWidth={BUILDER_CONTENT_MAX_WIDTH}
       margin="0 auto"
       px={componentDefaultPadding}
     >

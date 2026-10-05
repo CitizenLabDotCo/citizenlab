@@ -88,7 +88,7 @@ class SideFxProjectService
   def before_destroy(project, user); end
 
   def after_destroy(frozen_project, user)
-    ContentBuilder::LayoutService.new.clean_homepage_layout_when_publication_deleted(frozen_project)
+    ContentBuilder::LayoutService.new.clean_layouts_when_publication_deleted(frozen_project)
 
     serialized_project = clean_time_attributes(frozen_project.attributes)
 

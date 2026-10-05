@@ -9,7 +9,7 @@ import useDismissOnboardingCampaign from 'api/onboarding_campaigns/useDismissOnb
 
 import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/HomepageBanner';
 
-import { homepageBannerLayoutHeights } from 'components/admin/BannerFields/constants';
+import { homepageBannerLayoutHeights } from 'components/LandingPages/citizen/constants';
 import {
   Container,
   HeaderImage,

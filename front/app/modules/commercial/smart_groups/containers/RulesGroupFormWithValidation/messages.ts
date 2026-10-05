@@ -23,6 +23,11 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError',
     defaultMessage: 'Provide a group name',
   },
+  emailListTooLongError: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.emailListTooLongError',
+    defaultMessage:
+      'A condition can hold at most {max, number} email addresses.',
+  },
   saveGroup: {
     id: 'app.containers.AdminPage.Users.UsersGroup.saveGroup',
     defaultMessage: 'Save group',

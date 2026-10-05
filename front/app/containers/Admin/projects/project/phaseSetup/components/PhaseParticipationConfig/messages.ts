@@ -19,4 +19,32 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle',
     defaultMessage: 'support article',
   },
+  participantActionsGroup: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.participantActionsGroup',
+    defaultMessage: 'Participant actions',
+  },
+  moderationGroup: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.moderationGroup',
+    defaultMessage: 'Moderation',
+  },
+  displayGroup: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.displayGroup',
+    defaultMessage: 'Display',
+  },
+  submissionNameGroup: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.submissionNameGroup',
+    defaultMessage: 'Submission name',
+  },
+  votingOnInputsAction: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.votingOnInputsAction',
+    defaultMessage: 'Voting on inputs',
+  },
+  volunteeringAction: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction',
+    defaultMessage: 'Volunteering',
+  },
+  votesGroup: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.votesGroup',
+    defaultMessage: 'Votes',
+  },
 });
