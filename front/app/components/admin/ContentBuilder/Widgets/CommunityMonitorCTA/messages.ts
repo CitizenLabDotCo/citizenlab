@@ -35,4 +35,17 @@ export default defineMessages({
     defaultMessage:
       "Thank you for completing the survey! You're welcome to take it again next quarter.",
   },
+  communityMonitorCtaDefaultTitle: {
+    id: 'app.containers.admin.ContentBuilder.homepage.communityMonitorCtaDefaultTitle',
+    defaultMessage: 'Help us serve you better',
+  },
+  communityMonitorCtaDefaultDescription: {
+    id: 'app.containers.admin.ContentBuilder.homepage.communityMonitorCtaDefaultDescription',
+    defaultMessage:
+      'This is a quarterly, ongoing survey that tracks how you feel about governance & public services.',
+  },
+  communityMonitorCtaDefaultSurveyButtonText: {
+    id: 'app.containers.admin.ContentBuilder.homepage.communityMonitorCtaDefaultSurveyButtonText',
+    defaultMessage: 'Take the survey',
+  },
 });
