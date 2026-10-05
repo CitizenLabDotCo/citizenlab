@@ -3,7 +3,9 @@ module IdeasCountService
     'input_topic_id' => 'ideas_input_topics'
   }
 
-  def self.counts(ideas_scope, attributes = %w[idea_status_id input_topic_id])
+  DEFAULT_ATTRIBUTES = %w[idea_status_id input_topic_id].freeze
+
+  def self.counts(ideas_scope, attributes = DEFAULT_ATTRIBUTES)
     result = attributes.index_with { {} }
 
     attributes.each do |attribute|

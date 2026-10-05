@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  IconNames,
+  Text,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 import Link, { typedStyled, type WrapperTo } from 'utils/cl-router/Link';
 
@@ -28,17 +34,37 @@ export type TBreadcrumbs = TBreadcrumb[];
 
 interface Props {
   breadcrumbs: TBreadcrumbs;
+  icon?: IconNames;
+  separator?: 'slash' | 'chevron';
+  fontSize?: 's' | 'm';
+  highlightCurrentPage?: boolean;
 }
 
-const Breadcrumbs = ({ breadcrumbs }: Props) => {
+const Breadcrumbs = ({
+  breadcrumbs,
+  icon,
+  separator = 'slash',
+  fontSize = 'm',
+  highlightCurrentPage = false,
+}: Props) => {
   if (breadcrumbs.length === 0) {
     return null;
   }
 
   return (
-    <Box display="flex">
+    <Box display="flex" alignItems="center">
+      {icon && (
+        <Icon
+          name={icon}
+          width="18px"
+          height="18px"
+          fill={colors.coolGrey500}
+          mr="8px"
+        />
+      )}
       {breadcrumbs.map(({ label, link }, index) => {
         const isLastBreadcrumb = index === breadcrumbs.length - 1;
+        const isHeading = highlightCurrentPage && isLastBreadcrumb && !link;
 
         return (
           <Box
@@ -49,7 +75,7 @@ const Breadcrumbs = ({ breadcrumbs }: Props) => {
             data-cy={`breadcrumbs-${label}`}
           >
             {link && (
-              <Text fontSize="m" as="span">
+              <Text fontSize={fontSize} as="span" mb="0">
                 <StyledLink
                   to={link.to}
                   params={link.params}
@@ -59,22 +85,37 @@ const Breadcrumbs = ({ breadcrumbs }: Props) => {
                 </StyledLink>
               </Text>
             )}
-            {!link && (
-              <Text color="textSecondary" fontSize="m" as="span">
+            {!link && !isHeading && (
+              <Text color="textSecondary" fontSize={fontSize} as="span" mb="0">
                 {label}
               </Text>
             )}
-            {!isLastBreadcrumb && (
-              <Text
-                color="borderDark"
-                ml="16px"
-                as="span"
-                mr="16px"
-                fontSize="m"
-              >
-                /
+            {isHeading && (
+              <Text variant="boSection" as="span">
+                {label}
               </Text>
             )}
+            {!isLastBreadcrumb &&
+              (separator === 'chevron' ? (
+                <Icon
+                  name="chevron-right"
+                  width="16px"
+                  height="16px"
+                  fill={colors.coolGrey500}
+                  mx="8px"
+                />
+              ) : (
+                <Text
+                  color="borderDark"
+                  ml="16px"
+                  as="span"
+                  mr="16px"
+                  fontSize={fontSize}
+                  mb="0"
+                >
+                  /
+                </Text>
+              ))}
           </Box>
         );
       })}

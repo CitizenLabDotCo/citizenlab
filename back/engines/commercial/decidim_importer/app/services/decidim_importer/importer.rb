@@ -38,10 +38,7 @@ module DecidimImporter
           id ||= (email = attrs['email']).present? ? user_ids_by_email[email.downcase] : nil
           klass.find(id) if id
         },
-        'CustomField' => lambda { |attrs, klass|
-          key = attrs['key']
-          klass.find_by(key: key) if key.present?
-        },
+        'CustomField' => MultiTenancy::Templates::ReuseMatchers.registration_custom_field,
         'ProjectFolders::Folder' => lambda { |attrs, klass|
           slug = Slug.sanitize((attrs['title_multiloc'] || {}).values.find(&:present?))
           klass.find_by(slug: slug) if slug

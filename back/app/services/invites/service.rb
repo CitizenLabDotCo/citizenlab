@@ -96,16 +96,17 @@ class Invites::Service
     group_ids = params['group_ids'] || default_params['group_ids'] || []
     roles = ((params['roles'] || []) + (default_params['roles'] || [])).uniq
 
-    user =
-      User.find_by_cimail(email) ||
-      User.new({
+    user = User.find_by_cimail(email)
+    if !user
+      user = User.new({
         email: email,
         first_name: params['first_name'],
         last_name: params['last_name'],
         locale: params['locale'] || default_params['locale'] || AppConfiguration.instance.settings('core', 'locales').first,
-        custom_field_values: params.slice(*registration_custom_fields.map(&:key)),
         invite_status: 'pending'
       })
+      CustomFieldValuesTransitionService.new.assign(user, params.slice(*registration_custom_fields.map(&:key)))
+    end
 
     user.manual_group_ids = (user.manual_group_ids + group_ids).uniq
     user.roles = (user.roles + roles).map(&:to_h).uniq

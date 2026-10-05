@@ -27,6 +27,7 @@
 #  track_participation_location   :boolean          default(FALSE), not null
 #  live_auto_input_topics_enabled :boolean          default(FALSE), not null
 #  space_id                       :uuid
+#  completed_setup_steps          :jsonb            not null
 #
 # Indexes
 #
@@ -107,12 +108,16 @@ class Project < ApplicationRecord
   after_commit :clear_folder_changes, if: :folder_changed?
 
   INTERNAL_ROLES = %w[open_idea_box community_monitor].freeze
+  # Steps of the admin setup checklist that have no signal of their own, so
+  # opening them is what marks them done.
+  SETUP_STEPS = %w[settings share].freeze
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_preview_multiloc, multiloc: { presence: false }
   validates :visible_to, presence: true, inclusion: { in: VISIBLE_TOS }
   validates :internal_role, inclusion: { in: INTERNAL_ROLES, allow_nil: true }
   validates :live_auto_input_topics_enabled, inclusion: { in: [true, false] }
+  validate :validate_completed_setup_steps
   validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template } # TODO: This should always be validated!
   validate :space_must_match_folder_space
 
@@ -323,6 +328,17 @@ class Project < ApplicationRecord
   end
 
   private
+
+  def validate_completed_setup_steps
+    unless completed_setup_steps.is_a?(Array)
+      errors.add(:completed_setup_steps, :invalid, message: 'must be an array')
+      return
+    end
+
+    unless completed_setup_steps.all? { |step| SETUP_STEPS.include?(step) }
+      errors.add(:completed_setup_steps, :invalid, message: 'contains unknown setup steps')
+    end
+  end
 
   def admin_publication_must_exist
     # Built-in presence validation does not work.

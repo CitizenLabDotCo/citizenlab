@@ -26,6 +26,7 @@ export const data: IIdeasFilterCounts = {
         'b77ad2ff-16a0-4721-a9cc-be27efd1f717': 1,
         'c0ba47fe-bbe0-4bc0-9312-cf88314274c9': 2,
       },
+      assignee_id: {},
       total: 7,
     },
   },

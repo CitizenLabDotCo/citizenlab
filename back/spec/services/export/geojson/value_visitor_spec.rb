@@ -11,14 +11,7 @@ describe Export::Geojson::ValueVisitor do
 
   describe '#default' do
     context 'for a built-in field' do
-      let(:field) do
-        create(
-          :custom_field,
-          input_type: 'number',
-          key: 'proposed_budget',
-          code: 'proposed_budget'
-        )
-      end
+      let(:field) { create(:default_input_field, code: 'proposed_budget') }
       let(:model) { instance_double Idea, proposed_budget: 1234 }
 
       it 'returns the field value from the model' do
@@ -120,7 +113,7 @@ describe Export::Geojson::ValueVisitor do
         let(:resource_type) { 'User' }
         let(:code) { 'domicile' }
         let(:field_key) { :domicile }
-        let(:model) { create(:user, field_key => value) }
+        let(:model) { create(:user, custom_field_answers: answers) }
 
         context 'when there is no value' do
           let(:value) { nil }
@@ -383,7 +376,7 @@ describe Export::Geojson::ValueVisitor do
         let!(:file) { create(:idea_file, name: 'File1.pdf', idea: model) }
 
         it 'returns the value for the report' do
-          create(:custom_field_answer, answerable: model, custom_field: field, value: { 'id' => file.id, 'name' => file.name })
+          create(:custom_field_answer, answerable: model, key: field.key, custom_field: field, value: { 'id' => file.id, 'name' => file.name })
           expect(visitor.visit_file_upload(field)).to eq file.file.url
         end
       end
@@ -409,7 +402,7 @@ describe Export::Geojson::ValueVisitor do
         let!(:file) { create(:idea_file, name: 'File1.pdf', idea: model) }
 
         it 'returns the value for the report' do
-          create(:custom_field_answer, answerable: model, custom_field: field, value: { 'id' => file.id, 'name' => file.name })
+          create(:custom_field_answer, answerable: model, key: field.key, custom_field: field, value: { 'id' => file.id, 'name' => file.name })
           expect(visitor.visit_shapefile_upload(field)).to eq file.file.url
         end
       end

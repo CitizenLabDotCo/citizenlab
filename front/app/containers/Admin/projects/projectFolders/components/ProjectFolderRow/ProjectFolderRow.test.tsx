@@ -95,6 +95,7 @@ describe('ProjectFolderRow', () => {
             folderPublication.relationships.publication.data.id,
         },
       ];
+      mockUserData.attributes.highest_role = 'project_folder_moderator';
 
       render(<ProjectFolderRow {...props} />);
       const editButton = screen.getByTestId('folder-row-edit-button');
@@ -114,6 +115,7 @@ describe('ProjectFolderRow', () => {
       mockUserData.attributes.roles = [
         { type: 'project_folder_moderator', project_folder_id: 'testId' },
       ];
+      mockUserData.attributes.highest_role = 'project_folder_moderator';
       render(<ProjectFolderRow {...props} />);
 
       const editButton = within(
@@ -130,6 +132,7 @@ describe('ProjectFolderRow', () => {
             folderPublication.relationships.publication.data.id,
         },
       ];
+      mockUserData.attributes.highest_role = 'project_folder_moderator';
       render(<ProjectFolderRow {...props} />);
 
       const moreOptions = screen.queryByTestId('moreOptionsButton');

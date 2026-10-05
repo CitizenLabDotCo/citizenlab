@@ -456,4 +456,100 @@ resource 'Stats - Reactions' do
       end
     end
   end
+
+  describe 'excluding admins and moderators from statistics' do
+    def xlsx_column_sum(column_name)
+      worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+      header, *rows = worksheet.map { |row| row.cells.map(&:value) }
+      rows.sum { |row| row[header.index(column_name)] }
+    end
+
+    before do
+      @project = create(:project)
+      idea = create(:idea_with_topics, idea_status: @idea_status, project: @project, topics_count: 1)
+
+      create(:reaction, reactable: idea, user: create(:user))
+      create(:reaction, reactable: idea, user: nil)
+      create_admins_and_moderators(project: @project).each_with_index do |user, i|
+        create(:reaction, reactable: idea, user: user, mode: i.even? ? 'down' : 'up')
+      end
+    end
+
+    get 'web_api/v1/stats/reactions_count' do
+      time_boundary_parameters self
+
+      example 'Count all reactions includes reactions of admins and moderators by default', document: false do
+        do_request
+        assert_status 200
+        expect(json_parse(response_body)).to eq({ up: 4, down: 3, total: 7 })
+      end
+
+      example 'Count all reactions excluding admins and moderators' do
+        enable_exclude_admins_and_moderators_from_statistics
+        do_request
+        assert_status 200
+        expect(json_parse(response_body)).to eq({ up: 2, down: nil, total: 2 })
+      end
+    end
+
+    get 'web_api/v1/stats/reactions_by_topic' do
+      time_boundary_parameters self
+
+      example 'Reactions by topic includes reactions of admins and moderators by default', document: false do
+        do_request
+        assert_status 200
+        expect(json_parse(response_body).dig(:data, :attributes, :series, :total).values.sum).to eq 7
+      end
+
+      example 'Reactions by topic excluding admins and moderators' do
+        enable_exclude_admins_and_moderators_from_statistics
+        do_request
+        assert_status 200
+        expect(json_parse(response_body).dig(:data, :attributes, :series, :total).values.sum).to eq 2
+      end
+    end
+
+    get 'web_api/v1/stats/reactions_by_topic_as_xlsx' do
+      time_boundary_parameters self
+
+      context 'when admins and moderators are excluded from statistics' do
+        before { enable_exclude_admins_and_moderators_from_statistics }
+
+        example_request 'Reactions by topic excluding admins and moderators' do
+          assert_status 200
+          expect(xlsx_column_sum('reactions')).to eq 2
+        end
+      end
+    end
+
+    get 'web_api/v1/stats/reactions_by_project' do
+      time_boundary_parameters self
+
+      example 'Reactions by project includes reactions of admins and moderators by default', document: false do
+        do_request
+        assert_status 200
+        expect(json_parse(response_body).dig(:data, :attributes, :series, :total).stringify_keys).to eq({ @project.id => 7 })
+      end
+
+      example 'Reactions by project excluding admins and moderators' do
+        enable_exclude_admins_and_moderators_from_statistics
+        do_request
+        assert_status 200
+        expect(json_parse(response_body).dig(:data, :attributes, :series, :total).stringify_keys).to eq({ @project.id => 2 })
+      end
+    end
+
+    get 'web_api/v1/stats/reactions_by_project_as_xlsx' do
+      time_boundary_parameters self
+
+      context 'when admins and moderators are excluded from statistics' do
+        before { enable_exclude_admins_and_moderators_from_statistics }
+
+        example_request 'Reactions by project excluding admins and moderators' do
+          assert_status 200
+          expect(xlsx_column_sum('reactions')).to eq 2
+        end
+      end
+    end
+  end
 end

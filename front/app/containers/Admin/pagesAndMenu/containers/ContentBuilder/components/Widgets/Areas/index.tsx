@@ -9,10 +9,10 @@ import useProjectsMini from 'api/projects_mini/useProjectsMini';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
-import { CarrouselContainer } from '../_shared/BaseCarrousel/Containers';
-import CarrouselTitle from '../_shared/CarrouselTitle';
-import ProjectCarrousel from '../_shared/ProjectCarrousel';
-import Skeleton from '../_shared/ProjectCarrousel/Skeleton';
+import { CarrouselContainer } from 'components/admin/ContentBuilder/Widgets/_shared/BaseCarrousel/Containers';
+import CarrouselTitle from 'components/admin/ContentBuilder/Widgets/_shared/CarrouselTitle';
+import ProjectCarrousel from 'components/admin/ContentBuilder/Widgets/_shared/ProjectCarrousel';
+import Skeleton from 'components/admin/ContentBuilder/Widgets/_shared/ProjectCarrousel/Skeleton';
 
 import EmptyState from './EmptyState';
 import FollowAreasButtonWithModal from './FollowAreasButtonWithModal';

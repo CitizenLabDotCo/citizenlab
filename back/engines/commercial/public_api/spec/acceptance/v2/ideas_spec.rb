@@ -17,10 +17,9 @@ resource 'Posts' do
   let!(:ideas) do
     create_list(:idea, 3, created_at: '2020-01-01').tap do |ideas|
       ideas.each do |idea|
-        idea.update!(custom_field_values: {
-          'audience_size' => rand(101...4000),
-          'audience_type' => 'young people'
-        })
+        idea.custom_field_answers.build(key: 'audience_size', value: rand(101...4000))
+        idea.custom_field_answers.build(key: 'audience_type', value: 'young people')
+        idea.save!
       end
     end
   end

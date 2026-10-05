@@ -29,7 +29,7 @@ require 'open-uri'
 # Note: the specified key must be present in the custom_field_values hash for each row of data in the CSV.
 
 namespace :cl2_back do
-  desc 'Insert key-value pairs to user custom_field_values hashes.'
+  desc 'Insert missing user answers from a custom_field_values CSV dump.'
   task :insert_user_custom_field_key_value_pairs, %i[url host key] => [:environment] do |_t, args|
     data = CSV.parse(open(args[:url]).read, headers: true, col_sep: ',', converters: [])
     count = 0
@@ -37,15 +37,16 @@ namespace :cl2_back do
 
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       errors = []
+      custom_field = CustomField.registration.find_by(key: key)
 
       data.each do |d|
         user = User.find_by id: d['id']
         if user
-          cfv = user.custom_field_values
-          next if cfv[key].present?
+          next if user.answer_for_key(key).present?
 
-          cfv[key] = JSON.parse(d['custom_field_values'])[key]
-          user.update!(custom_field_values: cfv)
+          value = JSON.parse(d['custom_field_values'])[key]
+          user.custom_field_answers.build(key:, value:, custom_field:)
+          user.save!
           count += 1
           puts "#{count}: custom_field_value inserted for user.id #{user.id}."
         else

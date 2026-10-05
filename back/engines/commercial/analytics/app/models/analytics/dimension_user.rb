@@ -24,9 +24,11 @@ module Analytics
       {
         'id' => 'User primary key. Target of fact dimension_user_id foreign keys.',
         'role' => <<~DOC.squish,
-          Highest role of the user. One of admin,
-          project_moderator, project_folder_moderator or space_moderator, or citizen for ordinary
-          users with no special role.
+          The type of the FIRST role in the user's list of roles, which is NOT necessarily
+          their highest role (e.g. a user who was a project_moderator before becoming an admin
+          has role project_moderator). One of admin, project_moderator, project_folder_moderator
+          or space_moderator, or citizen for ordinary users with no role at all. Reliable for
+          telling citizens apart from users with any role, not for telling roles apart.
         DOC
         'invite_status' => <<~DOC.squish,
           Invitation state: pending (invited, not yet accepted), accepted, or NULL when the user

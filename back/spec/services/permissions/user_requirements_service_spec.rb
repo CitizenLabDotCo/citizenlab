@@ -19,12 +19,12 @@ describe Permissions::UserRequirementsService do
         first_name: 'Jane',
         last_name: 'Jacobs',
         email: 'jane@jacobs.com',
-        custom_field_values: {
-          'gender' => 'female',
-          'birthyear' => 1975,
-          'extra_required_field' => false,
-          'extra_optional_field' => 29
-        },
+        custom_field_answers: [
+          build(:custom_field_answer, key: 'gender', value: 'female'),
+          build(:custom_field_answer, key: 'birthyear', value: 1975),
+          build(:custom_field_answer, key: 'extra_required_field', value: false),
+          build(:custom_field_answer, key: 'extra_optional_field', value: 29)
+        ],
         password: 'supersecret',
         email_confirmed_at: Time.now
       )
@@ -128,7 +128,8 @@ describe Permissions::UserRequirementsService do
         end
 
         it 'permits a light confirmed resident' do
-          user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
+          user.custom_field_answers.destroy_all
+          user.update!(password_digest: nil, identity_ids: [], first_name: nil)
           requirements = service.requirements(permission, user)
           expect(service.permitted?(requirements)).to be true
           expect(requirements).to eq({
@@ -293,7 +294,8 @@ describe Permissions::UserRequirementsService do
         end
 
         it 'does not permit a light confirmed resident' do
-          user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
+          user.custom_field_answers.destroy_all
+          user.update!(password_digest: nil, identity_ids: [], first_name: nil)
           requirements = service.requirements(permission, user)
           expect(service.permitted?(requirements)).to be false
           expect(requirements).to eq({
@@ -712,7 +714,9 @@ describe Permissions::UserRequirementsService do
 
           it 'requires verification again after more than 30 days' do
             verified_permission.update!(verification_expiry: 30)
-            travel_to Time.now + 30.days + 1.second do
+            # from_now, not Time.now + 30.days: adding days to a zoned time spans the extra hour
+            # of a DST fall-back, as the service's expiry arithmetic does.
+            travel_to (30.days + 1.second).from_now do
               requirements = service.requirements(verified_permission, user)
               expect(service.permitted?(requirements)).to be false
               expect(requirements[:authentication][:permitted_by]).to eq 'users'
@@ -905,7 +909,9 @@ describe Permissions::UserRequirementsService do
 
         it 'requires re-confirmation after the expiry window' do
           user # confirm the email at the real current time, before traveling past the expiry window
-          travel_to Time.now + 30.days + 1.second do
+          # from_now, not Time.now + 30.days: adding days to a zoned time spans the extra hour
+          # of a DST fall-back, as the service's expiry arithmetic does.
+          travel_to (30.days + 1.second).from_now do
             requirements = service.requirements(permission, user)
             expect(service.permitted?(requirements)).to be false
             expect(requirements[:authentication][:email_action_required]).to eq :reconfirm_email
@@ -974,7 +980,9 @@ describe Permissions::UserRequirementsService do
         end
 
         it 'requires re-confirmation after the expiry window' do
-          travel_to Time.now + 30.days + 1.second do
+          # from_now, not Time.now + 30.days: adding days to a zoned time spans the extra hour
+          # of a DST fall-back, as the service's expiry arithmetic does.
+          travel_to (30.days + 1.second).from_now do
             requirements = service.requirements(permission, user)
             expect(service.permitted?(requirements)).to be false
             expect(requirements[:authentication][:phone_action_required]).to eq :reconfirm_phone

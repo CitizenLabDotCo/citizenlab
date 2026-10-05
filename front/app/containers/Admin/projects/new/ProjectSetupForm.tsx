@@ -28,7 +28,6 @@ import {
 import TopicInputs from 'containers/Admin/projects/_shared/components/ProjectSetupForm/TopicInputs';
 import { getSelectedTopicIds } from 'containers/Admin/projects/_shared/utils/getSelectedTopicIds';
 import messages from 'containers/Admin/projects/project/general/messages';
-import validateTitle from 'containers/Admin/projects/project/general/utils/validateTitle';
 import { fragmentId } from 'containers/Admin/projects/project/projectHeader';
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
@@ -47,6 +46,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
+import validateTitle from 'utils/validateTitle';
 
 import ProjectContextSection from '../_shared/components/ProjectSetupForm/ProjectContextSection';
 import { useValidateProjectContext } from '../_shared/components/ProjectSetupForm/ProjectContextSection/utils';

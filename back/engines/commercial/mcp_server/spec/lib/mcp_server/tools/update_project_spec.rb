@@ -42,6 +42,47 @@ describe McpServer::Tools::UpdateProject do
     expect(response).not_to be_error
   end
 
+  describe 'banner image reconciliation' do
+    let(:banner_id) { ContentBuilder::ProjectPageLayoutService::BANNER_ID }
+
+    def layout_with_baked_banner
+      graph = project_page_craftjs
+      graph[banner_id]['props']['image'] = { 'imageUrl' => 'https://example.com/baked.jpg' }
+      create(:layout, project: project, code: 'project_page', craftjs_json: graph)
+    end
+
+    it 'resets the ProjectBanner node image when a header is set, so header_bg renders' do
+      layout = layout_with_baked_banner
+      stub_remote_image_download('https://example.com/header.jpg')
+
+      response = run(project_id: project.id, remote_header_bg_url: 'https://example.com/header.jpg')
+
+      expect(response).not_to be_error
+      expect(project.reload.header_bg.file).to be_present
+      expect(layout.reload.craftjs_json.dig(banner_id, 'props', 'image')).to eq({})
+    end
+
+    it 'resets the banner node image when the header is removed' do
+      stub_remote_image_download('https://example.com/header.jpg')
+      project.update!(remote_header_bg_url: 'https://example.com/header.jpg')
+      layout = layout_with_baked_banner
+
+      response = run(project_id: project.id, remote_header_bg_url: nil)
+
+      expect(response).not_to be_error
+      expect(layout.reload.craftjs_json.dig(banner_id, 'props', 'image')).to eq({})
+    end
+
+    it 'leaves the banner node untouched when the update does not set a header' do
+      layout = layout_with_baked_banner
+
+      response = run(project_id: project.id, title_multiloc: { 'en' => 'Renamed' })
+
+      expect(response).not_to be_error
+      expect(layout.reload.craftjs_json.dig(banner_id, 'props', 'image')).to eq('imageUrl' => 'https://example.com/baked.jpg')
+    end
+  end
+
   it 'replaces associations wholesale when their ids are given, and preserves them otherwise' do
     area_a, area_b, area_c = create_list(:area, 3)
     project.update!(areas: [area_a, area_b])

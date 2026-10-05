@@ -65,7 +65,7 @@ describe McpServer::Tools::CreateDemoInputs do
     expect(response).not_to be_error
     survey_response = phase.reload.ideas.sole
     expect(survey_response.creation_phase).to eq(phase)
-    expect(survey_response.custom_field_values).to eq(field.key => 'An answer')
+    expect(survey_response.custom_field_answers.pluck(:key, :value)).to eq [[field.key, 'An answer']]
     expect(survey_response.author.email).to end_with("@#{McpServer::DemoData::EMAIL_DOMAIN}")
   end
 
