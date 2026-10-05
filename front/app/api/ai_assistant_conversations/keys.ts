@@ -12,8 +12,9 @@ const aiAssistantConversationsKeys = {
     contextId: string;
   }) => [{ ...baseKey, operation: 'list', parameters }],
   items: () => [{ ...baseKey, operation: 'item' }],
+  // Not just `{ id }`: the fetcher caches that key with the bare conversation, without `included`.
   item: ({ id }: { id?: string }) => [
-    { ...baseKey, operation: 'item', parameters: { id } },
+    { ...baseKey, operation: 'item', parameters: { id, include: 'messages' } },
   ],
 } satisfies QueryKeys;
 

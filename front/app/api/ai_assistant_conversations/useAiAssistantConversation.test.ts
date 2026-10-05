@@ -1,10 +1,15 @@
+import React from 'react';
+
+import { QueryClientProvider } from '@tanstack/react-query';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
+import { queryClient } from 'utils/cl-react-query/queryClient';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import useAiAssistantConversation from './useAiAssistantConversation';
+import useAiAssistantConversations from './useAiAssistantConversations';
 
 const apiPath = '*ai_assistant_conversations/:id';
 
@@ -41,6 +46,39 @@ describe('useAiAssistantConversation', () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data?.data.id).toBe('conversation-1');
+  });
+
+  it('keeps the included messages when the conversations list is fetched', async () => {
+    server.use(
+      http.get('*ai_assistant_conversations', () =>
+        HttpResponse.json({ data: [conversation.data] }, { status: 200 })
+      )
+    );
+    // The fetcher caches the list's bare conversations in the global client.
+    const wrapper = ({ children }: { children: React.ReactNode }) =>
+      React.createElement(
+        QueryClientProvider,
+        { client: queryClient },
+        children
+      );
+
+    const { result } = renderHook(
+      () => useAiAssistantConversation('conversation-1'),
+      { wrapper }
+    );
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    const { result: listResult } = renderHook(
+      () =>
+        useAiAssistantConversations({
+          contextKey: 'survey_builder',
+          contextId: 'phase-1',
+        }),
+      { wrapper }
+    );
+    await waitFor(() => expect(listResult.current.isSuccess).toBe(true));
+
+    expect(result.current.data?.included).toEqual(conversation.included);
   });
 
   it('does not fetch without an id', () => {
