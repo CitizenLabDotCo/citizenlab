@@ -29,6 +29,10 @@ import FinishedOrArchived, {
   finishedOrArchivedTitle,
 } from 'components/admin/ContentBuilder/Widgets/FinishedOrArchived';
 import finishedOrArchivedMessages from 'components/admin/ContentBuilder/Widgets/FinishedOrArchived/messages';
+import FollowedItems, {
+  followedItemsTitle,
+} from 'components/admin/ContentBuilder/Widgets/FollowedItems';
+import followedItemsMessages from 'components/admin/ContentBuilder/Widgets/FollowedItems/messages';
 import HtmlBlockMultiloc, {
   htmlBlockMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
@@ -76,8 +80,6 @@ import Areas, { areasTitle } from '../Widgets/Areas';
 import CommunityMonitorCTA, {
   communityMonitorCTATitle,
 } from '../Widgets/CommunityMonitorCTA';
-import FollowedItems, { followedItemsTitle } from '../Widgets/FollowedItems';
-import followedItemsMessages from '../Widgets/FollowedItems/messages';
 import HomepageBanner, { homepageBannerTitle } from '../Widgets/HomepageBanner';
 import {
   getHomepageBannerDefaultImage,
