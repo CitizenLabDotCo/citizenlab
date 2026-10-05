@@ -1,3 +1,5 @@
+import { HighestRole } from 'api/users/types';
+
 import { getAddableNodes } from './getAddableNodes';
 
 // A tree with: a root project, a root folder containing a project, and a space
@@ -41,20 +43,27 @@ const treeView = {
   },
 };
 
-const userWithRoles = (roles: Record<string, unknown>[]) => ({
+const userWithRoles = (
+  roles: Record<string, unknown>[],
+  highestRole: HighestRole
+) => ({
   id: 'user-id',
   type: 'user',
-  attributes: { roles },
+  attributes: { roles, highest_role: highestRole },
 });
 
-const ids = (roles: Record<string, unknown>[]) =>
-  getAddableNodes({ data: userWithRoles(roles) } as any, treeView as any).map(
-    (node) => node.id
-  );
+const ids = (
+  roles: Record<string, unknown>[],
+  highestRole: HighestRole = 'user'
+) =>
+  getAddableNodes(
+    { data: userWithRoles(roles, highestRole) } as any,
+    treeView as any
+  ).map((node) => node.id);
 
 describe('getAddableNodes', () => {
   it('offers all root folders and projects (including projects inside root folders) to an admin', () => {
-    expect(ids([{ type: 'admin' }])).toEqual([
+    expect(ids([{ type: 'admin' }], 'admin')).toEqual([
       'root-folder',
       'root-project',
       'project-in-folder',
@@ -62,30 +71,44 @@ describe('getAddableNodes', () => {
   });
 
   it('never offers a project that is already in a space', () => {
-    expect(ids([{ type: 'admin' }])).not.toContain('project-in-space');
+    expect(ids([{ type: 'admin' }], 'admin')).not.toContain('project-in-space');
   });
 
   it('offers nothing to a space moderator with no other moderation rights', () => {
-    expect(ids([{ type: 'space_moderator', space_id: 'space' }])).toEqual([]);
+    expect(
+      ids([{ type: 'space_moderator', space_id: 'space' }], 'space_moderator')
+    ).toEqual([]);
   });
 
   it('lets a folder moderator add their folder and pull the projects out of it', () => {
     expect(
-      ids([
-        { type: 'project_folder_moderator', project_folder_id: 'root-folder' },
-      ])
+      ids(
+        [
+          {
+            type: 'project_folder_moderator',
+            project_folder_id: 'root-folder',
+          },
+        ],
+        'project_folder_moderator'
+      )
     ).toEqual(['root-folder', 'project-in-folder']);
   });
 
   it('lets a project moderator add the project they moderate, even when it lives in a folder', () => {
     expect(
-      ids([{ type: 'project_moderator', project_id: 'project-in-folder' }])
+      ids(
+        [{ type: 'project_moderator', project_id: 'project-in-folder' }],
+        'project_moderator'
+      )
     ).toEqual(['project-in-folder']);
   });
 
   it('does not offer a folder or its projects to a moderator of an unrelated project', () => {
     expect(
-      ids([{ type: 'project_moderator', project_id: 'root-project' }])
+      ids(
+        [{ type: 'project_moderator', project_id: 'root-project' }],
+        'project_moderator'
+      )
     ).toEqual(['root-project']);
   });
 });

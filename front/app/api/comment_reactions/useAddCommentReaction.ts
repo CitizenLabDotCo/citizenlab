@@ -3,6 +3,7 @@ import { CLErrors } from 'typings';
 
 import commentKeys from 'api/comments/keys';
 
+import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import { ICommentReaction, INewReactionProperties } from './types';
@@ -25,6 +26,11 @@ const useAddCommentReaction = () => {
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
         queryKey: commentKeys.item({ id: variables.commentId }),
+      });
+
+      trackEventByName(customerAnalyticsEvents.reactionAdded, {
+        comment_id: variables.commentId,
+        mode: variables.mode,
       });
     },
   });
