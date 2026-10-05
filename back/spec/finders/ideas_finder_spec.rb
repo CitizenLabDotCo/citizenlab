@@ -181,6 +181,28 @@ describe IdeasFinder do
     end
   end
 
+  describe '#official_feedback_condition' do
+    let!(:idea_with_feedback) do
+      create(:idea, project: timeline_project).tap { |idea| create(:official_feedback, idea: idea) }
+    end
+
+    context 'when true' do
+      let(:params) { { official_feedback: 'true' } }
+
+      it 'returns the ideas with an official update' do
+        expect(result_record_ids).to eq [idea_with_feedback.id]
+      end
+    end
+
+    context 'when false' do
+      let(:params) { { official_feedback: 'false' } }
+
+      it 'returns all ideas' do
+        expect(result_record_ids).to include(idea_with_feedback.id, *ideas.map(&:id))
+      end
+    end
+  end
+
   describe '#search_condition' do
     let(:first_idea_title) { Idea.first.title_multiloc['en'] }
     let(:expected_record_ids) { Idea.search_by_all(first_idea_title).pluck(:id) }
