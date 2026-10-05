@@ -27,6 +27,7 @@ import SurveyTimeToComplete from 'components/SurveyTimeToComplete';
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { useLocation } from 'utils/router';
 
 import SentimentQuestionPreview from './assets/SentimentQuestionPreview.png';
 import messages from './messages';
@@ -57,6 +58,7 @@ const CommunityMonitorCTA = ({
   const { data: phase } = usePhase(phaseId);
 
   const isSurveyLive = phase?.data.attributes.submission_enabled;
+  const { pathname } = useLocation();
 
   const goToCommunityMonitorSurvey = () => {
     if (phaseId) {
@@ -74,8 +76,8 @@ const CommunityMonitorCTA = ({
 
   // A builder always shows the widget, so it can be placed and configured while no survey runs.
   const inBuilder =
-    window.location.pathname.includes('homepage-builder/') ||
-    window.location.pathname.includes(CUSTOM_PAGE_BUILDER_PATH);
+    pathname.includes('homepage-builder/') ||
+    pathname.includes(CUSTOM_PAGE_BUILDER_PATH);
 
   // If the survey is not live and we're not in a builder, don't render the CTA
   if (!isSurveyLive && !inBuilder) {
