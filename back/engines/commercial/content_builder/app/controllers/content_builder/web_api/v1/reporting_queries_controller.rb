@@ -25,8 +25,8 @@ module ContentBuilder
           )
           return render_result(snapshot.data, snapshot.executed_at, snapshot: true) if snapshot
 
-          # The check service's browser has no session, only a token good for this one
-          # layout's data. Everyone else has to be an admin.
+          # The custom block sandbox's browser has no session, only a token good
+          # for this one layout's data. Everyone else has to be an admin.
           unless scoped_token_permits?(layout)
             authorize :reporting_query, policy_class: ReportingQueryPolicy
           end

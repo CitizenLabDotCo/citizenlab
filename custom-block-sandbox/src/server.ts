@@ -8,8 +8,8 @@ import type { BuildRequest, RenderRequest } from "./types.ts";
 
 const PORT = Number(process.env.PORT ?? 3100);
 const HOST = process.env.HOST ?? "0.0.0.0";
-const SECRET = process.env.CHECK_SERVICE_SECRET;
-const SECRET_HEADER = "x-check-secret";
+const SECRET = process.env.CUSTOM_BLOCK_SANDBOX_SECRET;
+const SECRET_HEADER = "x-sandbox-secret";
 
 // A generated block can be large, and so can its message catalogues.
 const MAX_BODY_BYTES = 4 * 1024 * 1024;
@@ -34,7 +34,7 @@ server.addHook("onRequest", async (request, reply) => {
 
   if (!SECRET) {
     request.log.error(
-      "CHECK_SERVICE_SECRET is not set; refusing every request."
+      "CUSTOM_BLOCK_SANDBOX_SECRET is not set; refusing every request."
     );
     return reply.code(503).send({ error: "not_configured" });
   }

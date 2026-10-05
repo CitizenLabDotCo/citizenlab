@@ -2,7 +2,7 @@
 //
 // Three artifacts describe this one contract and must agree:
 //   - this file, which the app's registry builds from;
-//   - gv-sdk.d.ts next to it, which the check service typechecks blocks against
+//   - gv-sdk.d.ts next to it, which the sandbox typechecks blocks against
 //     and the report generation loop puts in the model's system prompt;
 //   - the static shim at app/public/custom-block-sdk/v1.js, which re-exports
 //     these names from window.__GV_SDK__.v1 at runtime.

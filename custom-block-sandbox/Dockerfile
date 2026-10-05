@@ -1,4 +1,4 @@
-# The check service runs model-generated JavaScript, which is why it is its own
+# The sandbox runs model-generated JavaScript, which is why it is its own
 # container rather than a library inside Rails.
 #
 # Build context is the repository root, because the image needs the SDK type
@@ -8,11 +8,11 @@ FROM node:22-slim AS build
 
 WORKDIR /app
 
-COPY check-service/package.json check-service/package-lock.json ./
+COPY custom-block-sandbox/package.json custom-block-sandbox/package-lock.json ./
 RUN npm ci
 
-COPY check-service/tsconfig.json ./
-COPY check-service/src ./src
+COPY custom-block-sandbox/tsconfig.json ./
+COPY custom-block-sandbox/src ./src
 RUN npm run build
 
 
@@ -24,7 +24,7 @@ FROM mcr.microsoft.com/playwright:v1.56.0-noble AS runtime
 ENV NODE_ENV=production
 WORKDIR /app
 
-COPY check-service/package.json check-service/package-lock.json ./
+COPY custom-block-sandbox/package.json custom-block-sandbox/package-lock.json ./
 RUN npm ci --omit=dev && npm cache clean --force
 
 COPY --from=build /app/dist ./dist

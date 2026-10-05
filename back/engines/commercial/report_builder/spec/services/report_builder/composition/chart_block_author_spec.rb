@@ -32,9 +32,9 @@ describe ReportBuilder::Composition::ChartBlockAuthor do
 
   before do
     allow(ENV).to receive(:fetch).and_call_original
-    allow(ENV).to receive(:fetch).with('CHECK_SERVICE_SECRET', nil).and_return('test-secret')
+    allow(ENV).to receive(:fetch).with('CUSTOM_BLOCK_SANDBOX_SECRET', nil).and_return('test-secret')
 
-    stub_request(:post, 'http://check_service:3100/build').to_return(
+    stub_request(:post, 'http://custom_block_sandbox:3100/build').to_return(
       status: 200,
       body: {
         ok: true,
@@ -88,7 +88,7 @@ describe ReportBuilder::Composition::ChartBlockAuthor do
 
   describe 'when the build fails' do
     before do
-      stub_request(:post, 'http://check_service:3100/build').to_return(
+      stub_request(:post, 'http://custom_block_sandbox:3100/build').to_return(
         status: 200,
         body: {
           ok: false, bundle: nil, manifest: { 'queries' => [] },
@@ -108,8 +108,8 @@ describe ReportBuilder::Composition::ChartBlockAuthor do
     end
   end
 
-  describe 'when the check service is down' do
-    before { stub_request(:post, 'http://check_service:3100/build').to_timeout }
+  describe 'when the sandbox is down' do
+    before { stub_request(:post, 'http://custom_block_sandbox:3100/build').to_timeout }
 
     # Sending the model back to rewrite working code would waste a whole turn on
     # something it cannot influence.
@@ -256,7 +256,7 @@ describe ReportBuilder::Composition::ChartBlockAuthor do
 
     it 'refuses an edit that stops the block building' do
       authored
-      stub_request(:post, 'http://check_service:3100/build').to_return(
+      stub_request(:post, 'http://custom_block_sandbox:3100/build').to_return(
         status: 200,
         body: { ok: false, bundle: nil, manifest: {},
                 diagnostics: [{ 'kind' => 'type', 'line' => 3, 'message' => 'Cannot find name.' }],

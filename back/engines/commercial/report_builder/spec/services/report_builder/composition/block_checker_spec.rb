@@ -7,7 +7,7 @@ RSpec.describe ReportBuilder::Composition::BlockChecker do
 
   let(:layout) { create(:layout) }
   let(:author) { create(:admin) }
-  let(:client) { instance_double(ContentBuilder::CustomBlocks::CheckServiceClient) }
+  let(:client) { instance_double(ContentBuilder::CustomBlocks::SandboxClient) }
 
   let(:picture) { png }
 
@@ -118,7 +118,7 @@ RSpec.describe ReportBuilder::Composition::BlockChecker do
     # "your block is broken".
     it 'says the renderer is unavailable rather than failing the block' do
       allow(client).to receive(:render)
-        .and_raise(ContentBuilder::CustomBlocks::CheckServiceClient::Unavailable, 'connection refused')
+        .and_raise(ContentBuilder::CustomBlocks::SandboxClient::Unavailable, 'connection refused')
 
       outcome = checker.check(checker.layout_target({}))
 

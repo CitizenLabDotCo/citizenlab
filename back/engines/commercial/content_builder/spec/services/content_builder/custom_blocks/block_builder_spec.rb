@@ -5,13 +5,13 @@ require 'rails_helper'
 describe ContentBuilder::CustomBlocks::BlockBuilder do
   subject(:builder) { described_class.new }
 
-  let(:build_url) { 'http://check_service:3100/build' }
+  let(:build_url) { 'http://custom_block_sandbox:3100/build' }
   let(:source) { 'export default () => null;' }
   let(:sql) { 'SELECT count(*) AS count FROM reporting_contributions' }
 
   before do
     allow(ENV).to receive(:fetch).and_call_original
-    allow(ENV).to receive(:fetch).with('CHECK_SERVICE_SECRET', nil).and_return('test-secret')
+    allow(ENV).to receive(:fetch).with('CUSTOM_BLOCK_SANDBOX_SECRET', nil).and_return('test-secret')
   end
 
   def stub_build(body)

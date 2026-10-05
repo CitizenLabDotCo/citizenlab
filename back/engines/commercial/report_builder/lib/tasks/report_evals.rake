@@ -73,7 +73,7 @@ class ReportEvalRun
       result = builder.call(source: source.sub('`SELECT ...`', sql), manifest: manifest, messages: messages, locales: [locale])
       puts "prompt example (#{name}): #{result.ok? ? 'builds' : "DOES NOT BUILD\n#{result.diagnostics_text}"}"
     end
-  rescue ContentBuilder::CustomBlocks::CheckServiceClient::Unavailable => e
+  rescue ContentBuilder::CustomBlocks::SandboxClient::Unavailable => e
     puts "prompt examples: not checked, #{e.message}"
   end
 

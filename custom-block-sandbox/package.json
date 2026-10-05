@@ -1,5 +1,5 @@
 {
-  "name": "@govocal/check-service",
+  "name": "@govocal/custom-block-sandbox",
   "version": "1.0.0",
   "private": true,
   "type": "module",

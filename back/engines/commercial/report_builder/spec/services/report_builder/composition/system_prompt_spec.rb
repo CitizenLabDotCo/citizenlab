@@ -5,7 +5,7 @@ require 'rails_helper'
 describe ReportBuilder::Composition::SystemPrompt do
   subject(:prompt) { described_class.new(locale: 'en', client: client) }
 
-  let(:client) { instance_double(ContentBuilder::CustomBlocks::CheckServiceClient) }
+  let(:client) { instance_double(ContentBuilder::CustomBlocks::SandboxClient) }
 
   it 'describes the SDK from the declarations the typechecker uses' do
     allow(client).to receive(:sdk_declarations).and_return("declare module 'gv-sdk' { export const Box: unknown; }")
@@ -16,7 +16,7 @@ describe ReportBuilder::Composition::SystemPrompt do
 
   it 'says so, rather than describing the SDK from memory, when the declarations cannot be read' do
     allow(client).to receive(:sdk_declarations)
-      .and_raise(ContentBuilder::CustomBlocks::CheckServiceClient::Unavailable, 'down')
+      .and_raise(ContentBuilder::CustomBlocks::SandboxClient::Unavailable, 'down')
 
     expect(prompt.text).to include 'cannot be read right now'
   end

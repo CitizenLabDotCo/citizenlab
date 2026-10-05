@@ -6,7 +6,7 @@ module ContentBuilder
     # compiles, it typechecks against the SDK, it obeys the block rules, and every
     # query it runs survives the reporting SQL sandbox.
     #
-    # The check service answers the first three. The fourth stays here, because the
+    # The sandbox answers the first three. The fourth stays here, because the
     # sandbox already exists and has one implementation ({McpServer::SqlSandboxer}, via
     # {McpServer::ReportingQueryRunner}) shared with the MCP reporting tool. Running it
     # immediately after the build call keeps the property that matters: the model gets
@@ -37,7 +37,7 @@ module ContentBuilder
         end
       end
 
-      def initialize(client: CheckServiceClient.new)
+      def initialize(client: SandboxClient.new)
         @client = client
       end
 
@@ -45,7 +45,7 @@ module ContentBuilder
       # @param manifest [Hash] the manifest, without `queries` — the build fills those in.
       # @param messages [Hash] locale => { key => text }.
       # @param locales [Array<String>] the locales that need a catalogue.
-      # @raise [CheckServiceClient::Unavailable]
+      # @raise [SandboxClient::Unavailable]
       def call(source:, manifest:, messages: {}, locales: nil)
         response = @client.build(
           source: source,

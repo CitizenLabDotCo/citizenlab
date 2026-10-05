@@ -139,7 +139,7 @@ export const localeRoute = createRoute({
   component: Outlet,
 });
 
-// Where the check service mounts a generated block to see what it does.
+// Where the custom block sandbox mounts a generated block to see what it does.
 //
 // Deliberately not under /admin: the browser that opens it has no session, only a
 // token scoped to one layout's data. An admin route would redirect it to a sign-in

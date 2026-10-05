@@ -57,17 +57,17 @@ interface MountState {
 }
 
 /**
- * Mounts one block, or a whole report, in the real front-end runtime so the check
- * service can see what it does.
+ * Mounts one block, or a whole report, in the real front-end runtime so the
+ * custom block sandbox can see what it does.
  *
- * The runtime is the bundle. A renderer of its own inside the check service would
+ * The runtime is the bundle. A renderer of its own inside the sandbox would
  * be a second app that drifts from this one on the first component library upgrade;
  * driving this one from outside means the agent's browser and the admin's browser
  * load the same code.
  *
  * The page reports facts and never judges them: it executes generated code, and
  * generated code can patch `console.error` or swallow its own errors. The verdicts
- * are the service's, out of reach.
+ * are the sandbox's, out of reach.
  */
 const BlockHarness = () => {
   const enabled = useFeatureFlag({ name: 'llm_reporting' });
@@ -172,7 +172,7 @@ const BlockHarness = () => {
   );
 };
 
-// axe is injected into the page by the check service rather than bundled here: it
+// axe is injected into the page by the sandbox rather than bundled here: it
 // is a checking dependency, and it has no business in the app every reader loads.
 const runAxe = async (): Promise<HarnessFacts['a11y']['violations']> => {
   const axe = window.axe;

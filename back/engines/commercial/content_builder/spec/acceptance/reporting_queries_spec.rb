@@ -34,7 +34,7 @@ resource 'ReportingQueries' do
   post 'web_api/v1/reporting_queries' do
     parameter :query, 'A single SELECT over the reporting views.', required: true
     parameter :layout_id, 'The layout the question belongs to. Without it the query runs live.'
-    parameter :reporting_token, 'A scoped token, for the check service rendering a block.'
+    parameter :reporting_token, 'A scoped token, for the sandbox rendering a block.'
 
     let(:query) { sql }
     let(:layout_id) { layout.id }
@@ -119,8 +119,8 @@ resource 'ReportingQueries' do
       end
     end
 
-    context 'when the check service renders a block' do
-      # The browser in the check service has no session: it holds a token good for
+    context 'when the sandbox renders a block' do
+      # The browser in the sandbox has no session: it holds a token good for
       # one layout's data and nothing else.
       let(:token) do
         ContentBuilder::ScopedReportingToken.mint(layout_id: layout.id, user_id: create(:admin).id)

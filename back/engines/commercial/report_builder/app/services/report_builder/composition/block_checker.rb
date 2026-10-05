@@ -10,7 +10,7 @@ module ReportBuilder
     # empty frame because its dataKey does not match a column, and no amount of type
     # checking sees that.
     class BlockChecker
-      Unavailable = ContentBuilder::CustomBlocks::CheckServiceClient::Unavailable
+      Unavailable = ContentBuilder::CustomBlocks::SandboxClient::Unavailable
 
       # Lines of console output and failed requests are capped: one noisy block must
       # not crowd the rest of the run out of the transcript.
@@ -24,10 +24,10 @@ module ReportBuilder
         @layout = layout
         @author = author
         @locale = locale
-        @client = client || ContentBuilder::CustomBlocks::CheckServiceClient.new
+        @client = client || ContentBuilder::CustomBlocks::SandboxClient.new
       end
 
-      # @param target [Hash] what to mount, in the check service's shape.
+      # @param target [Hash] what to mount, in the sandbox's shape.
       # @return [Hash] { text:, error:, screenshot: } — a tool outcome.
       def check(target, screenshot: false)
         return unavailable('There is no report to check yet.') if @layout.nil?

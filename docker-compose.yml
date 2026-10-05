@@ -122,17 +122,17 @@ services:
   # Builds and checks the custom blocks the report generation loop writes.
   # Its own container because it executes model-generated JavaScript, which must
   # not run inside the Rails process.
-  check_service:
-    container_name: ${WORKTREE_PREFIX:-cl}-check-service
+  custom_block_sandbox:
+    container_name: ${WORKTREE_PREFIX:-cl}-custom-block-sandbox
     build:
       # The repository root, so the image can take the SDK type definitions from
       # the front-end tree.
       context: .
-      dockerfile: check-service/Dockerfile
+      dockerfile: custom-block-sandbox/Dockerfile
     restart: always
     environment:
       # Rails authenticates with this header; both sides read the same variable.
-      CHECK_SERVICE_SECRET: ${CHECK_SERVICE_SECRET:-development-check-secret}
+      CUSTOM_BLOCK_SANDBOX_SECRET: ${CUSTOM_BLOCK_SANDBOX_SECRET:-development-sandbox-secret}
       PORT: 3100
       SDK_TYPES_PATH: /app/sdk/gv-sdk.d.ts
       # The tenant is `localhost` here, which inside this container means this

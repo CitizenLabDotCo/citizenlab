@@ -2,10 +2,10 @@
  * The v1 custom block SDK — the only module a block may import.
  *
  * This file is the single description of the contract. Three consumers read it:
- * the type checker in the check service, the system prompt the report generation
- * loop sends to the model, and humans. Keep it in step with `contract.ts`
- * (`sdkContractSync.test.ts` fails when the two disagree) and with the shim at
- * `app/public/custom-block-sdk/v1.js`.
+ * the type checker in the custom block sandbox, the system prompt the report
+ * generation loop sends to the model, and humans. Keep it in step with
+ * `contract.ts` (`sdkContractSync.test.ts` fails when the two disagree) and with
+ * the shim at `app/public/custom-block-sdk/v1.js`.
  *
  * The component types are deliberately permissive: the value of typechecking a
  * block is catching mistakes about the platform surface — the shape of query

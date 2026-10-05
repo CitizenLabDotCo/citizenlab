@@ -4,8 +4,8 @@ module ContentBuilder
   # A short-lived token that permits reading one layout's reporting data, and nothing
   # else.
   #
-  # The check service renders a block in a real browser to see whether it works, and
-  # that browser has no session. Handing it an admin's JWT would hand a container
+  # The custom block sandbox renders a block in a real browser to see whether it
+  # works, and that browser has no session. Handing it an admin's JWT would hand a container
   # running model-generated JavaScript the full rights of the admin who started the
   # run. This token cannot sign in, cannot read any other layout, and expires in
   # minutes.

@@ -2,17 +2,17 @@
 
 require 'rails_helper'
 
-describe ContentBuilder::CustomBlocks::CheckServiceClient do
+describe ContentBuilder::CustomBlocks::SandboxClient do
   subject(:client) { described_class.new }
 
-  let(:build_url) { 'http://check_service:3100/build' }
+  let(:build_url) { 'http://custom_block_sandbox:3100/build' }
   let(:payload) do
     { source: 'export default () => null;', manifest: {}, messages: {}, locales: ['en'] }
   end
 
   before do
     allow(ENV).to receive(:fetch).and_call_original
-    allow(ENV).to receive(:fetch).with('CHECK_SERVICE_SECRET', nil).and_return('test-secret')
+    allow(ENV).to receive(:fetch).with('CUSTOM_BLOCK_SANDBOX_SECRET', nil).and_return('test-secret')
   end
 
   describe '#build' do
@@ -31,7 +31,7 @@ describe ContentBuilder::CustomBlocks::CheckServiceClient do
 
       client.build(**payload)
 
-      expect(a_request(:post, build_url).with(headers: { 'X-Check-Secret' => 'test-secret' })).to have_been_made
+      expect(a_request(:post, build_url).with(headers: { 'X-Sandbox-Secret' => 'test-secret' })).to have_been_made
     end
 
     it 'sends the source, manifest, messages and locales' do
@@ -64,7 +64,7 @@ describe ContentBuilder::CustomBlocks::CheckServiceClient do
     end
 
     it 'raises Unavailable rather than calling out unauthenticated' do
-      allow(ENV).to receive(:fetch).with('CHECK_SERVICE_SECRET', nil).and_return(nil)
+      allow(ENV).to receive(:fetch).with('CUSTOM_BLOCK_SANDBOX_SECRET', nil).and_return(nil)
 
       expect { client.build(**payload) }
         .to raise_error described_class::Unavailable, /not configured/
@@ -74,13 +74,13 @@ describe ContentBuilder::CustomBlocks::CheckServiceClient do
 
   describe '#up?' do
     it 'is true when the health endpoint answers' do
-      stub_request(:get, 'http://check_service:3100/health').to_return(status: 200, body: '{}')
+      stub_request(:get, 'http://custom_block_sandbox:3100/health').to_return(status: 200, body: '{}')
 
       expect(client).to be_up
     end
 
     it 'is false when it does not' do
-      stub_request(:get, 'http://check_service:3100/health').to_timeout
+      stub_request(:get, 'http://custom_block_sandbox:3100/health').to_timeout
 
       expect(client).not_to be_up
     end

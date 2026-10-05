@@ -163,7 +163,7 @@ module ReportBuilder
         return result if result.ok?
 
         raise Rejected, "The block does not build yet:\n#{result.diagnostics_text}"
-      rescue ContentBuilder::CustomBlocks::CheckServiceClient::Unavailable => e
+      rescue ContentBuilder::CustomBlocks::SandboxClient::Unavailable => e
         # Not the model's fault and not something it can correct, so say so plainly
         # rather than sending it back to rewrite working code.
         raise Rejected, "Charts cannot be checked right now, so none can be stored. #{e.message}"
