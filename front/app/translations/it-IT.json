@@ -1112,7 +1112,6 @@
   "app.components.formBuilder.sentiment": "Indice di gradimento",
   "app.components.formBuilder.shapefileUpload": "Caricamento di shapefile Esri",
   "app.components.formBuilder.shortAnswer": "Risposta breve",
-  "app.components.formBuilder.showResponseToUsersToggleLabel": "Mostrare la risposta agli utenti",
   "app.components.formBuilder.singleChoice": "Scelta singola",
   "app.components.formBuilder.staleDataErrorMessage2": "Si è verificato un problema. Una versione più recente di questo modulo è stata salvata da un'altra parte. Ciò potrebbe essere dovuto al fatto che tu o un altro utente lo abbiate aperto per la modifica in un'altra finestra del browser. Aggiorna la pagina per ottenere il modulo più recente e poi apporta nuovamente le tue modifiche.",
   "app.components.formBuilder.stronglyAgree": "Fortemente d'accordo",

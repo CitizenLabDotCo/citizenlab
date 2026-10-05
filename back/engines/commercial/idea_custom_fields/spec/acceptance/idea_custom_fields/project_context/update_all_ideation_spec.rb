@@ -73,11 +73,22 @@ resource 'Idea Custom Fields' do
           json_response = json_parse response_body
           expect(json_response[:data].size).to eq 12
           expect(context.reload.custom_form.custom_fields[1].description_multiloc).to eq custom_description
+          expect(context.custom_form.custom_fields.find_by(code: 'title_multiloc')).to be_answers_visible_to_public
         end
       end
 
       context 'when the form has been persisted before' do
         let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: context) }
+
+        example 'Make the answers of a custom question public', document: false do
+          do_request custom_fields: default_fields_param + [
+            { input_type: 'text', title_multiloc: { 'en' => 'Public question' }, answers_visible_to: 'public' },
+            final_page
+          ]
+
+          assert_status 200
+          expect(custom_form.custom_fields.where(code: nil).find_by(input_type: 'text')).to be_answers_visible_to_public
+        end
 
         example 'Add, update and remove a field' do
           fields_param = default_fields_param # https://stackoverflow.com/a/58695857/3585671
