@@ -9,7 +9,7 @@ import { adminCustomPageSettingsPath } from 'containers/Admin/pagesAndMenu/route
 
 import useEnsureCustomPageLayout from 'components/CustomPageBuilder/useEnsureCustomPageLayout';
 
-import { useParams } from 'utils/router';
+import { useLocation, useParams } from 'utils/router';
 
 import CustomPageBuilderPage from './CustomPageBuilderPage';
 
@@ -23,14 +23,13 @@ const CustomPageBuilder = () => {
   const featureEnabled = useFeatureFlag({ name: 'custom_page_builder' });
   const { data: customPage } = useCustomPageById(customPageId);
   useEnsureCustomPageLayout(customPageId);
+  const { searchStr } = useLocation();
 
   if (!featureEnabled || !customPage || !isOnContentBuilder(customPage.data)) {
     return null;
   }
 
-  const backPath = `${adminCustomPageSettingsPath(customPageId)}${
-    window.location.search
-  }`;
+  const backPath = `${adminCustomPageSettingsPath(customPageId)}${searchStr}`;
 
   return (
     <CustomPageBuilderPage
