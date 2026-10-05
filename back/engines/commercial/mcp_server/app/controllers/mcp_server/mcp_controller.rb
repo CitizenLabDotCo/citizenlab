@@ -120,6 +120,8 @@ module McpServer
       McpServer::Tools::GetFormFields,
       McpServer::Tools::GetProjectLayout,
       McpServer::Tools::UpdateProjectLayout,
+      McpServer::Tools::GetHomepageLayout,
+      McpServer::Tools::UpdateHomepageLayout,
       McpServer::Tools::ReplaceFormFields,
       McpServer::Tools::ListProjects,
       McpServer::Tools::ListPhases,
@@ -130,6 +132,9 @@ module McpServer
       McpServer::Tools::ListAreas,
       McpServer::Tools::ListGlobalTopics,
       McpServer::Tools::ListFolders,
+      McpServer::Tools::ListAdminPublications,
+      McpServer::Tools::ListCustomPages,
+      McpServer::Tools::ListSpaces,
       McpServer::Tools::ListUserCustomFields,
       McpServer::Tools::ListGroups,
 
