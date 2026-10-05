@@ -14,6 +14,9 @@ import ButtonMultiloc, {
 import CallToAction, {
   callToActionTitle,
 } from 'components/admin/ContentBuilder/Widgets/CallToAction';
+import CommunityMonitorCTA, {
+  communityMonitorCTATitle,
+} from 'components/admin/ContentBuilder/Widgets/CommunityMonitorCTA';
 import CustomPages, {
   customPagesTitle,
 } from 'components/admin/ContentBuilder/Widgets/CustomPages';
@@ -73,9 +76,6 @@ import { MessageDescriptor } from 'utils/cl-intl';
 
 // Homepage builder widgets
 import Proposals from './_deprecated/Proposals';
-import CommunityMonitorCTA, {
-  communityMonitorCTATitle,
-} from './CommunityMonitorCTA';
 import Events, { eventsTitle } from './Events';
 import HomepageBanner, { homepageBannerTitle } from './HomepageBanner';
 import ProjectsAndFoldersLegacy, {

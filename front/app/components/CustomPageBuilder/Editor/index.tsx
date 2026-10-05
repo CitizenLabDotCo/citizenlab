@@ -8,6 +8,7 @@ import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/Accordion
 import Areas from 'components/admin/ContentBuilder/Widgets/Areas';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
 import CallToAction from 'components/admin/ContentBuilder/Widgets/CallToAction';
+import CommunityMonitorCTA from 'components/admin/ContentBuilder/Widgets/CommunityMonitorCTA';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import CustomPages from 'components/admin/ContentBuilder/Widgets/CustomPages';
 import EventsList from 'components/admin/ContentBuilder/Widgets/Events';
@@ -77,6 +78,7 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
           FinishedOrArchived,
           FollowedItems,
           Areas,
+          CommunityMonitorCTA,
           CallToAction,
           VideoEmbed,
           CustomPageRoot,

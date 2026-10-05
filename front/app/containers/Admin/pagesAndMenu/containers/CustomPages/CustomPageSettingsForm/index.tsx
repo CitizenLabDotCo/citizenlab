@@ -141,37 +141,41 @@ const CustomPageSettingsForm = ({
         .required(formatMessage(messages.slugRequiredError)),
     }),
     projects_filter_type: string().oneOf(projectsFilterTypesArray).required(),
-    global_topic_ids: array()
-      .nullable()
-      .when('projects_filter_type', ([value]) => {
-        if (value === 'global_topics') {
-          return array()
-            .of(string())
-            .min(1, formatMessage(messages.atLeastOneTag));
-        }
+    // Hidden fields keep the page's stored values, which can no longer be valid (a deleted
+    // area, say). Checking them would block the save with an error the admin cannot see.
+    ...(!hideLinkedItems && {
+      global_topic_ids: array()
+        .nullable()
+        .when('projects_filter_type', ([value]) => {
+          if (value === 'global_topics') {
+            return array()
+              .of(string())
+              .min(1, formatMessage(messages.atLeastOneTag));
+          }
 
-        return array();
-      }),
-    area_id: string()
-      .nullable()
-      .when('projects_filter_type', ([value]) => {
-        if (value === 'areas') {
-          return string().required(formatMessage(messages.selectAnArea));
-        }
+          return array();
+        }),
+      area_id: string()
+        .nullable()
+        .when('projects_filter_type', ([value]) => {
+          if (value === 'areas') {
+            return string().required(formatMessage(messages.selectAnArea));
+          }
 
-        return string().nullable();
-      }),
-    space_ids: array()
-      .nullable()
-      .when('projects_filter_type', ([value]) => {
-        if (value === 'spaces') {
-          return array()
-            .of(string())
-            .min(1, formatMessage(messages.selectASpace));
-        }
+          return string().nullable();
+        }),
+      space_ids: array()
+        .nullable()
+        .when('projects_filter_type', ([value]) => {
+          if (value === 'spaces') {
+            return array()
+              .of(string())
+              .min(1, formatMessage(messages.selectASpace));
+          }
 
-        return array();
-      }),
+          return array();
+        }),
+    }),
   });
 
   const methods = useForm<FormValues>({

@@ -19,6 +19,10 @@ import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultil
 import CallToAction, {
   callToActionTitle,
 } from 'components/admin/ContentBuilder/Widgets/CallToAction';
+import CommunityMonitorCTA, {
+  communityMonitorCTATitle,
+} from 'components/admin/ContentBuilder/Widgets/CommunityMonitorCTA';
+import communityMonitorMessages from 'components/admin/ContentBuilder/Widgets/CommunityMonitorCTA/messages';
 import CustomPages, {
   customPagesTitle,
 } from 'components/admin/ContentBuilder/Widgets/CustomPages';
@@ -77,6 +81,9 @@ const CustomPageBuilderToolbox = () => {
   const isProjectPage = !!customPage?.data.attributes.project_id;
   const { formatMessage } = useIntl();
   const followEnabled = useFeatureFlag({ name: 'follow' });
+  const communityMonitorEnabled = useFeatureFlag({
+    name: 'community_monitor',
+  });
   const isHtmlBlockMultilocEnabled = useFeatureFlag({
     name: 'html_block_in_content_builder',
   });
@@ -225,6 +232,26 @@ const CustomPageBuilderToolbox = () => {
           icon="button"
           label={formatMessage(callToActionTitle)}
         />
+        {communityMonitorEnabled && (
+          <DraggableElement
+            id="e2e-draggable-community-monitor-cta"
+            component={
+              <CommunityMonitorCTA
+                title={toMultiloc(
+                  communityMonitorMessages.communityMonitorCtaDefaultTitle
+                )}
+                description={toMultiloc(
+                  communityMonitorMessages.communityMonitorCtaDefaultDescription
+                )}
+                surveyButtonText={toMultiloc(
+                  communityMonitorMessages.communityMonitorCtaDefaultSurveyButtonText
+                )}
+              />
+            }
+            icon="survey"
+            label={formatMessage(communityMonitorCTATitle)}
+          />
+        )}
       </Section>
       <Section>
         <DraggableElement

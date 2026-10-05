@@ -24,6 +24,10 @@ import ButtonMultiloc, {
 import CallToAction, {
   callToActionTitle,
 } from 'components/admin/ContentBuilder/Widgets/CallToAction';
+import CommunityMonitorCTA, {
+  communityMonitorCTATitle,
+} from 'components/admin/ContentBuilder/Widgets/CommunityMonitorCTA';
+import communityMonitorMessages from 'components/admin/ContentBuilder/Widgets/CommunityMonitorCTA/messages';
 import CustomPages, {
   customPagesTitle,
 } from 'components/admin/ContentBuilder/Widgets/CustomPages';
@@ -79,9 +83,6 @@ import {
 } from 'utils/cl-intl';
 
 import messages from '../../messages';
-import CommunityMonitorCTA, {
-  communityMonitorCTATitle,
-} from '../Widgets/CommunityMonitorCTA';
 import HomepageBanner, { homepageBannerTitle } from '../Widgets/HomepageBanner';
 import {
   getHomepageBannerDefaultImage,
@@ -241,12 +242,14 @@ const HomepageBuilderToolbox = () => {
             id="e2e-draggable-community-monitor-cta"
             component={
               <CommunityMonitorCTA
-                title={toMultiloc(messages.communityMonitorCtaDefaultTitle)}
+                title={toMultiloc(
+                  communityMonitorMessages.communityMonitorCtaDefaultTitle
+                )}
                 description={toMultiloc(
-                  messages.communityMonitorCtaDefaultDescription
+                  communityMonitorMessages.communityMonitorCtaDefaultDescription
                 )}
                 surveyButtonText={toMultiloc(
-                  messages.communityMonitorCtaDefaultSurveyButtonText
+                  communityMonitorMessages.communityMonitorCtaDefaultSurveyButtonText
                 )}
               />
             }
