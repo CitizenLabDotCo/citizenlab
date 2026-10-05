@@ -754,6 +754,7 @@
   "app.components.UI.PhaseFilter.noAppropriatePhases": "No appropriate phases found for this project",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Remove",
   "app.components.UI.TagPicker.addTags": "Add tags",
+  "app.components.UI.TagPicker.clearSearch": "Clear search",
   "app.components.UI.TagPicker.done": "Done",
   "app.components.UI.TagPicker.noMatch": "No tags match your search.",
   "app.components.UI.TagPicker.removeTag": "Remove {tag}",
