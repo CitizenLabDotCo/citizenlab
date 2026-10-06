@@ -21,7 +21,7 @@ const ProjectTimeline = ({ projectId }: Props) => {
         onNewPhase={() => setMethodModalOpened(true)}
         withPhaseOptions
       />
-      <SpotlightSurveys projectId={projectId} />
+      <SpotlightSurveys projectId={projectId} withPhaseOptions />
       <SelectMethodModal
         projectId={projectId}
         opened={methodModalOpened}
