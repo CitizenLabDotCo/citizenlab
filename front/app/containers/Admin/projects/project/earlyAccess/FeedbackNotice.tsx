@@ -2,6 +2,8 @@ import React from 'react';
 
 import useAuthUser from 'api/me/useAuthUser';
 
+import ProjectBackofficeFeedbackLink from 'components/admin/ProjectBackofficeFeedbackLink';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
 import DismissibleNotice from './DismissibleNotice';
@@ -24,6 +26,7 @@ const FeedbackNotice = () => {
         values={{
           b: (chunks) => <b>{chunks}</b>,
           profileSettingsLink: <ProfileSettingsLink />,
+          slackChannelLink: <ProjectBackofficeFeedbackLink />,
         }}
       />
     </DismissibleNotice>
