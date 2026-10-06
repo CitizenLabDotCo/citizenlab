@@ -15,6 +15,10 @@ FactoryBot.define do
       phase factory: :phase
     end
 
+    trait :with_project do
+      project
+    end
+
     trait :with_image do
       layout { association :report_layout, :with_image, content_buildable: instance }
     end
