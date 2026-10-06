@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy } from 'react';
 
 import { Multiloc } from 'typings';
 
@@ -12,7 +12,10 @@ import EmptyState from '../_shared/EmptyState';
 import useLocalizeWithFallback from '../_shared/useLocalizeWithFallback';
 
 import messages from './messages';
-import Settings from './Settings';
+
+// Lazy, as the settings (drag-and-drop list, publication search) are only
+// needed in the builder, not on the homepage.
+const Settings = lazy(() => import('./Settings'));
 
 interface Props {
   titleMultiloc: Multiloc;
