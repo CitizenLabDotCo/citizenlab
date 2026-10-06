@@ -230,6 +230,7 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         ContentBuilder::CustomBlockVersion
         ContentBuilder::QuerySnapshot
         ReportBuilder::GenerationTranscript
+        ReportBuilder::ReportChat
       ],
 
       # Files engine — Preview/Transcript are derived artifacts (generated from the file),

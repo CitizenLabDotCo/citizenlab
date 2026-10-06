@@ -82,4 +82,71 @@ RSpec.describe ReportBuilder::Report do
       expect(report.reload.owner).to be_nil
     end
   end
+
+  describe '.listable' do
+    def generation_tracker(report, completed: false, created_at: Time.current)
+      create(
+        :jobs_tracker,
+        root_job_type: ReportBuilder::GenerateReportJob.name,
+        context: report.project,
+        project: report.project,
+        completed_at: completed ? Time.current : nil,
+        created_at: created_at
+      )
+    end
+
+    it 'hides an empty project report while the run that is filling it is under way' do
+      report = create(:report, :with_project)
+      report.layout.update!(craftjs_json: {})
+      generation_tracker(report)
+
+      expect(described_class.listable).not_to include(report)
+    end
+
+    it 'lists an empty project report once the run is over, so it can be opened or deleted' do
+      report = create(:report, :with_project)
+      report.layout.update!(craftjs_json: {})
+      generation_tracker(report, completed: true)
+
+      expect(described_class.listable).to include(report)
+    end
+
+    it 'lists an empty project report whose run never completed but is long past, rather than hiding it for good' do
+      report = create(:report, :with_project)
+      report.layout.update!(craftjs_json: {})
+      generation_tracker(report, created_at: 2.hours.ago)
+
+      expect(described_class.listable).to include(report)
+    end
+
+    it 'lists a project report with content even while it is being generated again' do
+      report = create(:report, :with_project)
+      report.layout.update!(craftjs_json: { 'ROOT' => { 'type' => 'div' } })
+      generation_tracker(report)
+
+      expect(described_class.listable).to include(report)
+    end
+
+    it 'lists a report that is not about a project even while it is empty' do
+      report = create(:report)
+      report.layout.update!(craftjs_json: {})
+
+      expect(described_class.listable).to include(report)
+    end
+  end
+
+  describe 'deletion' do
+    it 'takes its ready notifications with it, rather than being refused by the foreign key' do
+      report = create(:report, :with_phase)
+      notification = Notifications::ReportGenerated.create!(
+        recipient: create(:admin),
+        report: report,
+        project: report.reported_project,
+        phase: report.phase
+      )
+
+      expect { report.destroy! }.not_to raise_error
+      expect(Notification.where(id: notification.id)).to be_empty
+    end
+  end
 end
