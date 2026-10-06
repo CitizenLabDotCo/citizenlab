@@ -11,6 +11,7 @@
 #  start_at                  :datetime
 #  end_at                    :datetime
 #  location                  :text
+#  location_details          :text
 #  online_link               :text
 #  external_registration_url :text
 #  attendees_count           :integer
@@ -44,7 +45,11 @@ module Analytics
           DOC
           'start_at' => 'When the event starts (UTC).',
           'end_at' => 'When the event ends (UTC).',
-          'location' => 'Where the event takes place: the address, or the free-text location. NULL for online-only events.',
+          'location' => 'Where the event takes place: the address shown on the event page. NULL for online-only events.',
+          'location_details' => <<~DOC.squish,
+            Extra location details shown below the address, such as a building,
+            room or floor, resolved to the platform primary locale. NULL when none.
+          DOC
           'online_link' => 'Link to join the event online, or NULL when it is not held online.',
           'external_registration_url' => <<~DOC.squish,
             When set, people register on this external site instead of on the

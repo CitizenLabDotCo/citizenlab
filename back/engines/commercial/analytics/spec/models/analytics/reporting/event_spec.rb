@@ -17,7 +17,19 @@ RSpec.describe Analytics::Reporting::Event do
     expect(row.maximum_attendees).to eq 30
   end
 
-  it 'falls back to the free-text location when there is no address' do
+  it 'exposes the address details shown below the address' do
+    event = create(:event, :with_location)
+
+    expect(described_class.find(event.id).location_details).to eq 'Sphere 1'
+  end
+
+  it 'prefers the address over the older free-text location' do
+    event = create(:event, :with_location, location_multiloc: { 'en' => 'Old location text' })
+
+    expect(described_class.find(event.id).location).to eq 'Atomiumsquare 1, 1020 Brussels, Belgium'
+  end
+
+  it 'falls back to the older free-text location when there is no address' do
     event = create(:event, location_multiloc: { 'en' => 'Town hall, room 2' })
 
     expect(described_class.find(event.id).location).to eq 'Town hall, room 2'

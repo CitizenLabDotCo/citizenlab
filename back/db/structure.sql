@@ -3966,6 +3966,13 @@ CREATE VIEW public.reporting_events AS
           WHERE (t.value <> ''::text)
           ORDER BY t.key
          LIMIT 1)) AS location,
+    COALESCE(NULLIF((address_2_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(e.address_2_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS location_details,
     NULLIF((online_link)::text, ''::text) AS online_link,
     NULLIF((using_url)::text, ''::text) AS external_registration_url,
     attendees_count,

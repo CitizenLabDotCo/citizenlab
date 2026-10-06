@@ -11,11 +11,18 @@ SELECT
     e.title_multiloc,
     e.start_at,
     e.end_at,
+    -- The event page shows address_1 with address_2 below it. location_multiloc
+    -- is an older input the API copies into address_1, so it only matters for
+    -- events that have no address_1.
     COALESCE(
         NULLIF(e.address_1, ''),
         NULLIF(e.location_multiloc ->> (SELECT ac.settings -> 'core' -> 'locales' ->> 0 FROM app_configurations ac LIMIT 1), ''),
         (SELECT t.value FROM jsonb_each_text(e.location_multiloc) t WHERE t.value <> '' ORDER BY t.key LIMIT 1)
     ) AS location,
+    COALESCE(
+        NULLIF(e.address_2_multiloc ->> (SELECT ac.settings -> 'core' -> 'locales' ->> 0 FROM app_configurations ac LIMIT 1), ''),
+        (SELECT t.value FROM jsonb_each_text(e.address_2_multiloc) t WHERE t.value <> '' ORDER BY t.key LIMIT 1)
+    ) AS location_details,
     NULLIF(e.online_link, '') AS online_link,
     NULLIF(e.using_url, '') AS external_registration_url,
     e.attendees_count,
