@@ -2,13 +2,16 @@ import React from 'react';
 
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import { isContentBuilderPage } from 'api/custom_pages/util';
+import useProjectById from 'api/projects/useProjectById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { adminCustomPageSettingsPath } from 'containers/Admin/pagesAndMenu/routes';
+import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 import useEnsureCustomPageLayout from 'components/CustomPageBuilder/useEnsureCustomPageLayout';
 
+import { type TypedLinkProps } from 'utils/cl-router/Link';
 import { useLocation, useParams } from 'utils/router';
 
 import CustomPageBuilderPage from './CustomPageBuilderPage';
@@ -22,6 +25,8 @@ const CustomPageBuilder = () => {
   // data.
   const featureEnabled = useFeatureFlag({ name: 'custom_page_builder' });
   const { data: customPage } = useCustomPageById(customPageId);
+  const projectId = customPage?.data.attributes.project_id;
+  const { data: project } = useProjectById(projectId);
   useEnsureCustomPageLayout(customPageId);
   const { searchStr } = useLocation();
 
@@ -32,17 +37,27 @@ const CustomPageBuilder = () => {
   ) {
     return null;
   }
+  // A project's page lives under the project, in the admin and on the site.
+  if (projectId && !project) return null;
 
-  const backPath = `${adminCustomPageSettingsPath(customPageId)}${searchStr}`;
+  const pageSlug = customPage.data.attributes.slug;
+  const backPath = `${
+    projectId
+      ? `${adminProjectsProjectPath(projectId)}/pages/${customPageId}`
+      : adminCustomPageSettingsPath(customPageId)
+  }${searchStr}`;
+  const previewLink: TypedLinkProps = project
+    ? {
+        to: '/projects/$slug/pages/$pageSlug',
+        params: { slug: project.data.attributes.slug, pageSlug },
+      }
+    : { to: '/pages/$slug', params: { slug: pageSlug } };
 
   return (
     <CustomPageBuilderPage
       staticPageId={customPageId}
       backPath={backPath}
-      previewLink={{
-        to: '/pages/$slug',
-        params: { slug: customPage.data.attributes.slug },
-      }}
+      previewLink={previewLink}
       titleMultiloc={customPage.data.attributes.title_multiloc}
     />
   );

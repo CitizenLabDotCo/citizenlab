@@ -24,6 +24,8 @@ class UserRoleService
       context ? can_moderate?(context, user) : user.admin?
     when 'Space'
       user.admin? || (object.id && user.space_moderator?(object.id))
+    when 'StaticPage'
+      object.project ? can_moderate_project?(object.project, user) : false
     end
   end
 
