@@ -26,12 +26,12 @@ jest.mock('./features', () => ({
     {
       name: 'spaces',
       title: { id: 'general.title', defaultMessage: 'General feature' },
-      description: 'Anyone.',
+      description: { id: 'general.description', defaultMessage: 'Anyone.' },
     },
     {
       name: 'project_planning_calendar',
       title: { id: 'internal.title', defaultMessage: 'Internal feature' },
-      description: 'Staff.',
+      description: { id: 'internal.description', defaultMessage: 'Staff.' },
     },
   ],
 }));

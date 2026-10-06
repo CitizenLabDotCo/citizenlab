@@ -17,7 +17,7 @@ export default defineMessages({
   projectBackofficeRedesignDescription: {
     id: 'app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignDescription',
     defaultMessage:
-      'A new, easier to understand way to set up and manage projects. This is a work in progress: share your feedback in the {slackChannelLink} Slack channel.',
+      'A new, easier to understand way to set up and manage projects. We are still improving it.',
   },
   earlyAccessSaveError: {
     id: 'app.containers.UsersEditPage.EarlyAccess.earlyAccessSaveError',
