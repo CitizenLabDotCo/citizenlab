@@ -7,6 +7,8 @@ import { IProjectData } from 'api/projects/types';
 
 import { useLocation } from 'utils/router';
 
+import FeedbackNotice from '../earlyAccess/FeedbackNotice';
+
 import { usePhaseSave } from './_shared/PhaseSaveContext';
 import { sectionFromPathname } from './_shared/sections';
 import useMarkSetupStep from './_shared/useMarkSetupStep';
@@ -121,6 +123,7 @@ const ProjectWorkspace = ({
       overflow="hidden"
       background={colors.background}
     >
+      <FeedbackNotice />
       <WorkspaceHeader
         project={project}
         phase={phase}
