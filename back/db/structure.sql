@@ -4349,7 +4349,9 @@ CREATE VIEW public.reporting_sessions AS
     COALESCE((user_id)::text, (monthly_user_hash)::text) AS visitor_id,
     highest_role,
     device_type AS device,
-    referrer
+    referrer,
+    browser_name AS browser,
+    os_name AS os
    FROM public.impact_tracking_sessions s;
 
 
@@ -9757,6 +9759,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261006180100'),
 ('20261006170200'),
 ('20261006170100'),
 ('20261006160100'),
