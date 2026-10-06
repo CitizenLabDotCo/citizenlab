@@ -161,6 +161,10 @@ export interface IProjectData {
     user_follower: {
       data: IRelationship | null;
     };
+    // Only present while the llm_reporting feature is on.
+    report?: {
+      data: IRelationship | null;
+    };
     permissions?: {
       data: IRelationship[];
     };
