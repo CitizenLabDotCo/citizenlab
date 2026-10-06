@@ -38,16 +38,24 @@ const Container = styled.div<{ $toolboxWidth: string; $panelOpen: boolean }>`
 type Props = {
   children: React.ReactNode;
   toolboxWidth?: string;
+  // For builders whose right rail holds something even when no widget is
+  // selected. The rail is the same width either way, so the canvas reserves it
+  // the same way and the content stays centred between the two.
+  rightPanelOpen?: boolean;
 };
 
 const ContentBuilderCanvas = ({
   children,
   toolboxWidth = TOOLBOX_WIDTH,
+  rightPanelOpen = false,
 }: Props) => {
-  const panelOpen = useIsSettingsPanelOpen();
+  const settingsPanelOpen = useIsSettingsPanelOpen();
 
   return (
-    <Container $toolboxWidth={toolboxWidth} $panelOpen={panelOpen}>
+    <Container
+      $toolboxWidth={toolboxWidth}
+      $panelOpen={settingsPanelOpen || rightPanelOpen}
+    >
       {children}
     </Container>
   );
