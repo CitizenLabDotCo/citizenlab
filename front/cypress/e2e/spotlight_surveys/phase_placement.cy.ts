@@ -5,6 +5,7 @@ import { randomString } from '../../support/commands';
 describe('Moving a survey phase on and off the timeline', () => {
   let projectId = '';
   let surveyPhaseId = '';
+  let spotlightPhaseId = '';
 
   before(() => {
     cy.apiCreateProject({
@@ -22,13 +23,22 @@ describe('Moving a survey phase on and off the timeline', () => {
       }).then((phase) => {
         surveyPhaseId = phase.body.data.id;
       });
+
+      cy.apiCreateNativeSurveyPhase({
+        projectId,
+        title: randomString(),
+        startAt: format(subMonths(new Date(), 1), 'dd/MM/yyyy'),
+        endAt: format(addMonths(new Date(), 1), 'dd/MM/yyyy'),
+        placementType: 'standalone',
+      }).then((phase) => {
+        spotlightPhaseId = phase.body.data.id;
+      });
     });
   });
 
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.intercept('PATCH', `**/phases/${surveyPhaseId}`).as('updatePhase');
-    cy.visit(`/admin/projects/${projectId}/phases/${surveyPhaseId}/setup`);
   });
 
   after(() => {
@@ -36,28 +46,31 @@ describe('Moving a survey phase on and off the timeline', () => {
   });
 
   it('moves the survey off the timeline and back onto it', () => {
+    cy.visit(`/admin/projects/${projectId}/phases/${surveyPhaseId}/setup`);
+
     cy.dataCy('e2e-phase-placement-move')
-      .should('contain', 'Make it an extra survey')
+      .should('contain', 'Move to spotlight surveys')
       .click();
     cy.dataCy('e2e-phase-placement-confirm').click();
     cy.wait('@updatePhase')
       .its('response.body.data.attributes.placement_type')
       .should('eq', 'standalone');
-    cy.contains('This survey runs alongside the timeline').should('exist');
+    cy.contains('This is a spotlight survey.').should('exist');
 
     cy.dataCy('e2e-phase-placement-move')
-      .should('contain', 'Move onto the timeline')
+      .should('contain', 'Move to timeline')
       .click();
     cy.dataCy('e2e-phase-placement-confirm').click();
     cy.wait('@updatePhase')
       .its('response.body.data.attributes.placement_type')
       .should('eq', 'on_timeline');
-    cy.contains('This survey is a phase on the project timeline').should(
+    cy.contains('This survey is a phase on the project timeline.').should(
       'exist'
     );
   });
 
   it('cannot be moved while the form has unsaved changes', () => {
+    cy.visit(`/admin/projects/${projectId}/phases/${surveyPhaseId}/setup`);
     cy.get('#title').first().type(' edited');
 
     cy.dataCy('e2e-phase-placement-move')
@@ -66,5 +79,40 @@ describe('Moving a survey phase on and off the timeline', () => {
     cy.contains('Save your changes before you move the survey.').should(
       'exist'
     );
+  });
+
+  describe('in the redesigned back office', () => {
+    beforeEach(() => {
+      cy.visit(`/admin/projects/${projectId}?project_backoffice_redesign`);
+    });
+
+    it('moves the survey from its menu in the sidebar', () => {
+      cy.dataCy(`e2e-phase-options-${surveyPhaseId}`).click();
+      cy.get('.e2e-action-move-phase')
+        .should('contain', 'Move to spotlight surveys')
+        .click();
+      cy.dataCy('e2e-phase-placement-confirm').click();
+      cy.wait('@updatePhase')
+        .its('response.body.data.attributes.placement_type')
+        .should('eq', 'standalone');
+
+      cy.dataCy(`e2e-phase-options-${surveyPhaseId}`).click();
+      cy.get('.e2e-action-move-phase')
+        .should('contain', 'Move to timeline')
+        .click();
+      cy.dataCy('e2e-phase-placement-confirm').click();
+      cy.wait('@updatePhase')
+        .its('response.body.data.attributes.placement_type')
+        .should('eq', 'on_timeline');
+    });
+
+    it('deletes a spotlight survey from its menu in the sidebar', () => {
+      cy.dataCy(`e2e-phase-options-${spotlightPhaseId}`).click();
+      cy.get('.e2e-action-delete-phase').click();
+      cy.dataCy('typed-confirmation-input').type('DELETE');
+      cy.dataCy('typed-confirmation-delete-button').click();
+
+      cy.dataCy(`e2e-phase-options-${spotlightPhaseId}`).should('not.exist');
+    });
   });
 });
