@@ -23,12 +23,15 @@ import {
   formatDateRange,
   phaseStatus,
 } from '../phaseRowUtils';
+import PhaseOptionsMenu from '../TimelinePhases/PhaseOptionsMenu';
+import PhaseRowWithOptions from '../TimelinePhases/PhaseRowWithOptions';
 
 interface Props {
   projectId: string;
+  withPhaseOptions?: boolean;
 }
 
-const SpotlightSurveys = ({ projectId }: Props) => {
+const SpotlightSurveys = ({ projectId, withPhaseOptions = false }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { phaseId } = useParams({ strict: false });
@@ -68,15 +71,18 @@ const SpotlightSurveys = ({ projectId }: Props) => {
             : formatMessage(messages.ongoing);
           const onProjectPage = linkedPhaseIds.has(phase.id);
 
-          return (
+          const row = (
             <Link
-              key={phase.id}
               to={PHASE_TAB_ROUTES[getPhaseLandingTab(phase)]}
               params={{ projectId, phaseId: phase.id }}
             >
               <Row selected={phase.id === phaseId}>
                 <PhaseDot status={status} />
-                <Box flexGrow={1} pb="4px">
+                <Box
+                  flexGrow={1}
+                  pb="4px"
+                  pr={withPhaseOptions ? '24px' : undefined}
+                >
                   <Text
                     as="span"
                     m="0"
@@ -105,6 +111,17 @@ const SpotlightSurveys = ({ projectId }: Props) => {
                 </Box>
               </Row>
             </Link>
+          );
+
+          return withPhaseOptions ? (
+            <PhaseRowWithOptions
+              key={phase.id}
+              options={<PhaseOptionsMenu projectId={projectId} phase={phase} />}
+            >
+              {row}
+            </PhaseRowWithOptions>
+          ) : (
+            <React.Fragment key={phase.id}>{row}</React.Fragment>
           );
         })}
       </Box>
