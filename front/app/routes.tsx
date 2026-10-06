@@ -26,6 +26,7 @@ import { permissiveOneOf } from 'utils/cl-router/permissiveOneOf';
 import type { Routes } from 'utils/moduleUtils';
 
 const HomePage = lazy(() => import('containers/HomePage'));
+const BlockHarness = lazy(() => import('containers/Admin/BlockHarness'));
 const OAuthAuthorize = lazy(() => import('containers/OAuthAuthorize'));
 const SiteMap = lazy(() => import('containers/SiteMap'));
 const UsersEditPage = lazy(() => import('containers/UsersEditPage'));
@@ -144,6 +145,23 @@ export const localeRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '$locale',
   component: Outlet,
+});
+
+// Where the custom block sandbox mounts a generated block to see what it does.
+//
+// Deliberately not under /admin: the browser that opens it has no session, only a
+// token scoped to one layout's data. An admin route would redirect it to a sign-in
+// page. It is not a page anyone navigates to either — it renders nothing at all
+// until a block is handed to it over window.__blockHarness, and it sits behind the
+// same feature flag as the rest of the feature.
+const blockHarnessRoute = createRoute({
+  getParentRoute: () => localeRoute,
+  path: 'block-harness',
+  component: () => (
+    <PageLoading>
+      <BlockHarness />
+    </PageLoading>
+  ),
 });
 
 // Index route (home page)
@@ -659,6 +677,7 @@ const disabledAccountRoute = createRoute({
 const buildRouteTree = (moduleRoutes: Partial<Routes> = {}) =>
   rootRoute.addChildren([
     localeRoute.addChildren([
+      blockHarnessRoute,
       homeRoute,
       signInAdminRoute,
       signInRoute,

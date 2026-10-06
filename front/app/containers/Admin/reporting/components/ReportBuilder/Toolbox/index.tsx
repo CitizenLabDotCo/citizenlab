@@ -11,6 +11,7 @@ import Transition from 'react-transition-group/Transition';
 import { SupportedLocale } from 'typings';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
+import useCustomBlocks from 'api/custom_blocks/useCustomBlocks';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
 import useProjects from 'api/projects/useProjects';
@@ -20,10 +21,12 @@ import useAppConfigurationLocales, {
   createMultiloc,
 } from 'hooks/useAppConfigurationLocales';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocalize from 'hooks/useLocalize';
 
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 
+import CustomBlock from 'components/admin/ContentBuilder/CustomBlocks/Widget';
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 import Section from 'components/admin/ContentBuilder/Toolbox/Section';
@@ -53,13 +56,18 @@ import RegistrationsWidget from '../Widgets/ChartWidgets/RegistrationsWidget';
 import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
 import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
 import CommunityMonitorHealthScoreWidget from '../Widgets/CommunityMonitorHealthScoreWidget';
+import Cover from '../Widgets/Cover';
+import Divider from '../Widgets/Divider';
 import IframeMultiloc from '../Widgets/IframeMultiloc';
 import ImageMultiloc from '../Widgets/ImageMultiloc';
+import KeyFigures from '../Widgets/KeyFigures';
 import MostReactedIdeasWidget from '../Widgets/MostReactedIdeasWidget';
+import PageBreak from '../Widgets/PageBreak';
 import ProjectsTimelineWidget from '../Widgets/ProjectsTimelineWidget';
 import ProjectsWidget from '../Widgets/ProjectsWidget';
 import SingleIdeaWidget from '../Widgets/SingleIdeaWidget';
 import SurveyQuestionResultWidget from '../Widgets/SurveyQuestionResultWidget';
+import TableOfContents from '../Widgets/TableOfContents';
 import TextMultiloc from '../Widgets/TextMultiloc';
 import TwoColumn from '../Widgets/TwoColumn';
 
@@ -105,6 +113,11 @@ const ReportBuilderToolbox = ({
   const { data: userFields } = useUserCustomFields({ inputTypes: ['select'] });
   const projectPlanningCalendarEnabled = useFeatureFlag({
     name: 'project_planning_calendar',
+  });
+  const llmReportingEnabled = useFeatureFlag({ name: 'llm_reporting' });
+  const localize = useLocalize();
+  const { data: customBlocks } = useCustomBlocks({
+    enabled: llmReportingEnabled,
   });
 
   if (
@@ -214,6 +227,42 @@ const ReportBuilderToolbox = ({
               icon="layout-white-space"
               label={formatMessage(WIDGET_TITLES.WhiteSpace)}
             />
+            {/* The document furniture the generated reports are composed from.
+                Behind the same flag as the composer that places them. */}
+            {llmReportingEnabled && (
+              <>
+                <DraggableElement
+                  id="e2e-draggable-cover"
+                  component={<Cover />}
+                  icon="page"
+                  label={formatMessage(WIDGET_TITLES.Cover)}
+                />
+                <DraggableElement
+                  id="e2e-draggable-table-of-contents"
+                  component={<TableOfContents />}
+                  icon="list"
+                  label={formatMessage(WIDGET_TITLES.TableOfContents)}
+                />
+                <DraggableElement
+                  id="e2e-draggable-divider"
+                  component={<Divider />}
+                  icon="minus"
+                  label={formatMessage(WIDGET_TITLES.Divider)}
+                />
+                <DraggableElement
+                  id="e2e-draggable-key-figures"
+                  component={<KeyFigures />}
+                  icon="chart-bar"
+                  label={formatMessage(WIDGET_TITLES.KeyFigures)}
+                />
+                <DraggableElement
+                  id="e2e-draggable-page-break"
+                  component={<PageBreak />}
+                  icon="page"
+                  label={formatMessage(WIDGET_TITLES.PageBreak)}
+                />
+              </>
+            )}
             <DraggableElement
               id="e2e-draggable-iframe"
               component={
@@ -228,6 +277,31 @@ const ReportBuilderToolbox = ({
               label={formatMessage(WIDGET_TITLES.IframeMultiloc)}
             />
           </Section>
+          {/* Charts a generation run wrote. A new placement pins the block's newest
+              version, and renders that version from then on. */}
+          {llmReportingEnabled &&
+            customBlocks &&
+            customBlocks.data.length > 0 && (
+              <Section>
+                {customBlocks.data.map((block) =>
+                  block.attributes.latest_version === null ? null : (
+                    <DraggableElement
+                      key={block.id}
+                      id={`e2e-draggable-custom-block-${block.id}`}
+                      component={
+                        <CustomBlock
+                          blockId={block.id}
+                          version={block.attributes.latest_version}
+                          config={{}}
+                        />
+                      }
+                      icon="stars"
+                      label={localize(block.attributes.title_multiloc)}
+                    />
+                  )
+                )}
+              </Section>
+            )}
           <Section>
             <DraggableElement
               id="e2e-draggable-survey-question-result-widget"

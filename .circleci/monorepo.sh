@@ -155,6 +155,7 @@ function create_request_body {
     reduce .[] as $i (($params // {}) * { ($trigger): false }; .[$i.package] = true) | 
     .epic_back_artifact = uncovered("back") | 
     .epic_front_artifact = uncovered("front") | 
+    .epic_custom_block_sandbox_artifact = uncovered("custom_block_sandbox") | 
     { branch: $branch, parameters: . } | 
     @json'
 }

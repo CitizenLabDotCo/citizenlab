@@ -350,6 +350,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        llm_reporting: {
+          enabled: true,
+          allowed: true
+        },
         sms: {
           enabled: true,
           allowed: true,

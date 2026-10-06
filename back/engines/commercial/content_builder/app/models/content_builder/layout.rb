@@ -29,6 +29,7 @@ module ContentBuilder
     HOMEPAGE_CODE = 'homepage'
 
     belongs_to :content_buildable, polymorphic: true, optional: true
+    has_many :query_snapshots, class_name: 'ContentBuilder::QuerySnapshot', dependent: :destroy
 
     before_validation :swap_data_images, on: :create
     before_validation :set_craftjs_json, :sanitize_craftjs_json

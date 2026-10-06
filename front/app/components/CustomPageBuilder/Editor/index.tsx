@@ -3,6 +3,7 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 
+import CustomBlock from 'components/admin/ContentBuilder/CustomBlocks/Widget';
 import { VerticalRhythmContext } from 'components/admin/ContentBuilder/verticalRhythm';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
@@ -77,6 +78,7 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
           CustomPageBanner,
           CustomPageTitle,
           CustomPageBody,
+          CustomBlock,
         }}
         // DropPlacementOverlay draws the drop indicator instead, so a refused drop
         // carries its reason.
