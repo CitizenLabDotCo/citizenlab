@@ -149,22 +149,32 @@ describe McpServer::Tools::ReplaceFormFields do
         expect(keys).to include('strategic_goal_1', 'place_to_live', 'page_quality_of_life')
       end
 
-      it 'refuses to remove a built-in question' do
+      it 'allows removing a built-in question while no responses exist' do
         fields = fetch_cm_fields.reject { |field| field[:key] == 'place_to_live' }
 
         response = replace_cm(fields)
 
-        expect(response).to be_error
-        expect(response.content.sole[:text]).to include('Cannot remove built-in community monitor field', 'place_to_live')
+        expect(response).not_to be_error
+        expect(response.structured_content[:fields].pluck(:key)).not_to include('place_to_live')
       end
 
-      it 'refuses to remove a category page' do
+      it 'allows removing a category page while no responses exist' do
         fields = fetch_cm_fields.reject { |field| field[:key] == 'page_service_delivery' }
 
         response = replace_cm(fields)
 
+        expect(response).not_to be_error
+        expect(response.structured_content[:fields].pluck(:key)).not_to include('page_service_delivery')
+      end
+
+      it 'refuses to remove a built-in question once responses exist' do
+        create(:idea, project: cm_phase.project, phases: [cm_phase], creation_phase: cm_phase)
+
+        fields = fetch_cm_fields.reject { |field| field[:key] == 'place_to_live' }
+        response = replace_cm(fields)
+
         expect(response).to be_error
-        expect(response.content.sole[:text]).to include('Cannot remove built-in community monitor field', 'page_service_delivery')
+        expect(response.content.sole[:text]).to include('permanently deletes its answers', 'place_to_live')
       end
 
       it 'allows editing after responses exist and preserves their answers (continuous monitor)' do
@@ -188,24 +198,14 @@ describe McpServer::Tools::ReplaceFormFields do
         expect(cm_phase.reload.custom_form.custom_fields.pluck(:id)).to match_array(persisted_ids)
       end
 
-      it 'refuses to disable a built-in question' do
+      it 'allows disabling a built-in question' do
         fields = fetch_cm_fields
         fields.find { |field| field[:key] == 'place_to_live' }[:enabled] = false
 
         response = replace_cm(fields)
 
-        expect(response).to be_error
-        expect(response.content.sole[:text]).to include('Cannot disable or re-key built-in', 'place_to_live')
-      end
-
-      it 'accepts a faithful echo of a built-in that was already disabled elsewhere' do
-        expect(replace_cm(fetch_cm_fields)).not_to be_error
-        cm_phase.custom_form.custom_fields.find_by(key: 'access_to_parks').update!(enabled: false)
-
-        response = replace_cm(fetch_cm_fields)
-
         expect(response).not_to be_error
-        expect(cm_phase.custom_form.custom_fields.find_by(key: 'access_to_parks').enabled).to be(false)
+        expect(cm_phase.custom_form.custom_fields.find_by(key: 'place_to_live').enabled).to be(false)
       end
 
       it 'refuses a new field whose key collides with an existing field' do

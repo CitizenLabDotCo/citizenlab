@@ -27,11 +27,11 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
       created (use temp_id to reference them from logic rules).
 
       Fails if any responses (ideas) exist on the container — except for community monitors,
-      which run continuously and stay editable. On a community monitor: the 3 category pages,
-      the built-in questions and the form_end page cannot be removed, disabled or re-keyed
-      (echo them back from get_form_fields); extra pages and custom sentiment_linear_scale
-      questions can be added; and once responses exist, custom fields can no longer be removed
-      or re-keyed either, because that permanently deletes or orphans their submitted answers.
+      which run continuously and stay editable. A community monitor form can be freely
+      reshaped while no responses exist (the default questions and category pages may be
+      removed); once responses exist, removing or re-keying a question is refused here,
+      because that permanently deletes or orphans its submitted answers — an admin can
+      still do it deliberately in the admin UI.
 
       Call `get_form_fields` first to see the current shape and the participation method's
       constraints, and pass its `fields_last_updated_at` back on every call so a concurrent
@@ -141,8 +141,7 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
     # entries to persisted fields by key, then refuse edits that would destroy data.
     # Returns an error response, or nil when the payload is safe.
     def guard_live_form(pmethod, custom_form, responses_count)
-      default_fields = pmethod.default_fields(custom_form)
-      materialize_default_fields!(custom_form, default_fields)
+      materialize_default_fields!(pmethod, custom_form)
 
       persisted_fields = custom_form.custom_fields.to_a
       persisted_by_id = persisted_fields.index_by(&:id)
@@ -160,40 +159,33 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
 
       strip_noop_question_categories!(persisted_by_id)
 
-      built_in_keys = default_fields.map(&:key)
-      removed_built_ins, removed_customs = removed_persisted_fields(persisted_fields)
-        .partition { |field| built_in_keys.include?(field.key) }
-      # Page breaks carry no answers, so removing or re-keying a custom page is data-safe.
-      removed_customs = removed_customs.reject(&:page?)
+      return nil unless responses_count.positive?
 
-      return built_in_removed_error(removed_built_ins.map(&:key)) if removed_built_ins.any?
-
-      if removed_customs.any? && responses_count.positive?
+      # Page breaks carry no answers, so removing or re-keying one is data-safe.
+      removed = removed_persisted_fields(persisted_fields).reject(&:page?)
+      if removed.any?
         return error(<<~MSG.squish)
-          Cannot remove field(s) #{removed_customs.map(&:key).join(', ')}: #{responses_count}
+          Cannot remove field(s) #{removed.map(&:key).join(', ')}: #{responses_count}
           response(s) already submitted, and removing a field permanently deletes its
           answers. If that is really intended, remove the field in the admin UI.
         MSG
       end
 
-      rekeyed = rekeyed_persisted_customs(persisted_by_id, built_in_keys)
-      if rekeyed.any? && responses_count.positive?
+      rekeyed = rekeyed_persisted_fields(persisted_by_id)
+      if rekeyed.any?
         return error(<<~MSG.squish)
           Cannot change the key of field(s) #{rekeyed.join(', ')}: #{responses_count}
           response(s) already submitted, and changing a field's key orphans its answers.
         MSG
       end
 
-      edited = edited_built_ins(persisted_by_id, built_in_keys)
-      return built_in_edited_error(edited) if edited.any?
-
       nil
     end
 
-    def materialize_default_fields!(custom_form, default_fields)
+    def materialize_default_fields!(pmethod, custom_form)
       return if custom_form.custom_fields.exists?
 
-      default_fields.each(&:save!)
+      pmethod.default_fields(custom_form).each(&:save!)
       custom_form.custom_fields.reload
     end
 
@@ -224,47 +216,15 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
       persisted_fields.reject { |field| payload_ids.include?(field.id) }
     end
 
-    def rekeyed_persisted_customs(persisted_by_id, built_in_keys)
+    def rekeyed_persisted_fields(persisted_by_id)
       normalized_fields.filter_map do |field|
         persisted = persisted_by_id[field['id']]
-        next unless persisted && built_in_keys.exclude?(persisted.key)
+        next unless persisted
         next if persisted.page?
         next unless field.key?('key') && field['key'] != persisted.key
 
         persisted.key
       end
-    end
-
-    # Built-in questions must stay enabled and keep their key: disabling one removes it
-    # from the live survey, and re-keying one orphans its answers and breaks the
-    # standard-monitor reporting. Only the enabled true→false transition is refused, so
-    # a faithful echo of a form whose built-in was already disabled elsewhere still works.
-    def edited_built_ins(persisted_by_id, built_in_keys)
-      normalized_fields.filter_map do |field|
-        persisted = persisted_by_id[field['id']]
-        next unless persisted && built_in_keys.include?(persisted.key)
-
-        disabling = field.key?('enabled') && field['enabled'] == false && persisted.enabled
-        rekeying = field.key?('key') && field['key'] != persisted.key
-        next unless disabling || rekeying
-
-        persisted.key
-      end
-    end
-
-    def built_in_removed_error(missing)
-      error(<<~MSG.squish)
-        Cannot remove built-in community monitor field(s): #{missing.join(', ')}.
-        These are part of the standard monitor and must be kept — echo them back from get_form_fields.
-      MSG
-    end
-
-    def built_in_edited_error(keys)
-      error(<<~MSG.squish)
-        Cannot disable or re-key built-in community monitor field(s): #{keys.join(', ')}.
-        These are part of the standard monitor — echo them back from get_form_fields with
-        `enabled` and `key` unchanged.
-      MSG
     end
 
     # Actionable prose for the form-level error keys of IdeaCustomFields::UpdateAllService.
