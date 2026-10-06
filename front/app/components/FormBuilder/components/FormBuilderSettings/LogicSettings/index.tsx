@@ -8,7 +8,7 @@ import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 
 import useLocale from 'hooks/useLocale';
 
-import { FormBuilderConfig } from 'components/FormBuilder/utils';
+import { ResolvedFormBuilderConfig } from 'components/FormBuilder/utils';
 import Warning from 'components/UI/Warning';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
@@ -21,7 +21,7 @@ import { QuestionRuleInput } from './QuestionRuleInput';
 
 type LogicSettingsProps = {
   field: IFlatCustomFieldWithIndex;
-  builderConfig: FormBuilderConfig | undefined;
+  builderConfig: ResolvedFormBuilderConfig | undefined;
 };
 
 export type AnswersType =

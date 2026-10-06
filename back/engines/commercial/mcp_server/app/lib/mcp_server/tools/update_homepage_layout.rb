@@ -80,7 +80,7 @@ class McpServer::Tools::UpdateHomepageLayout < McpServer::BaseTool
 
     private
 
-    def widget_specs = ContentBuilder::Craftjs::WidgetSpecs::HOMEPAGE_SPECS
+    def widget_specs = ContentBuilder::Craftjs::HomepageWidgetSpecs::SPECS
     def root_type = 'div'
     def widget_reference(widgets) = McpServer::HomepageWidgets.reference_for(widgets)
 

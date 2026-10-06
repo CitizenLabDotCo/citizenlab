@@ -94,18 +94,6 @@ RSpec.describe ParticipationMethod::Voting do
     end
   end
 
-  describe '#author_in_form?' do
-    before { SettingsService.new.activate_feature! 'idea_author_change' }
-
-    it 'returns false for a resident when idea_author_change is activated' do
-      expect(participation_method.author_in_form?(create(:user))).to be false
-    end
-
-    it 'returns true for a moderator when idea_author_change is activated' do
-      expect(participation_method.author_in_form?(create(:admin))).to be true
-    end
-  end
-
   describe '#budget_in_form?' do
     it 'returns false for a resident and a budgeting phase' do
       expect(participation_method.budget_in_form?(create(:user))).to be false
@@ -209,7 +197,7 @@ RSpec.describe ParticipationMethod::Voting do
   its(:transitive?) { is_expected.to be true }
   its(:destroy_ideas_on_phase_destroy?) { is_expected.to be false }
   its(:supports_private_attributes_in_export?) { is_expected.to be true }
-  its(:form_logic_enabled?) { is_expected.to be false }
+  its(:supports_form_logic?) { is_expected.to be false }
   its(:follow_idea_on_idea_submission?) { is_expected.to be true }
   its(:supports_custom_field_categories?) { is_expected.to be false }
   its(:user_fields_in_form_enabled?) { is_expected.to be false }

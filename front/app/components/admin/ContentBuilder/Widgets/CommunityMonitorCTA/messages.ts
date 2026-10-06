@@ -10,9 +10,9 @@ export default defineMessages({
     defaultMessage: 'Important:',
   },
   communityMonitorCTADescription: {
-    id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTADescription',
+    id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTADescription2',
     defaultMessage:
-      'This widget will only be visible on the Homepage when the Community Monitor is accepting responses.',
+      'This widget will only be visible on the page when the Community Monitor is accepting responses.',
   },
   sentimentQuestionPreviewAltText: {
     id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.sentimentQuestionPreviewAltText',
@@ -34,5 +34,18 @@ export default defineMessages({
     id: 'app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter',
     defaultMessage:
       "Thank you for completing the survey! You're welcome to take it again next quarter.",
+  },
+  communityMonitorCtaDefaultTitle: {
+    id: 'app.containers.admin.ContentBuilder.homepage.communityMonitorCtaDefaultTitle',
+    defaultMessage: 'Help us serve you better',
+  },
+  communityMonitorCtaDefaultDescription: {
+    id: 'app.containers.admin.ContentBuilder.homepage.communityMonitorCtaDefaultDescription',
+    defaultMessage:
+      'This is a quarterly, ongoing survey that tracks how you feel about governance & public services.',
+  },
+  communityMonitorCtaDefaultSurveyButtonText: {
+    id: 'app.containers.admin.ContentBuilder.homepage.communityMonitorCtaDefaultSurveyButtonText',
+    defaultMessage: 'Take the survey',
   },
 });

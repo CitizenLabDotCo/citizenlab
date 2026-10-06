@@ -8,7 +8,7 @@ import {
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 
-import { FormBuilderConfig } from 'components/FormBuilder/utils';
+import { ResolvedFormBuilderConfig } from 'components/FormBuilder/utils';
 
 import {
   detectConflictsByPage,
@@ -30,7 +30,7 @@ interface FormFieldsProps {
     nestedGroupData: NestedGroupingStructure[]
   ) => void;
   selectedFieldId?: string;
-  builderConfig: FormBuilderConfig;
+  builderConfig: ResolvedFormBuilderConfig;
   closeSettings: (triggerAutosave?: boolean) => void;
   fieldArrayOperations: FieldArrayOperations;
 }

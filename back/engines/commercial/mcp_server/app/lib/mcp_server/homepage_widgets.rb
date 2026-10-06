@@ -3,7 +3,7 @@
 # LLM-facing documentation for platform homepage layout widgets, mirroring
 # McpServer::LayoutWidgets (project pages). Shared content widgets reuse LayoutWidgets::DOCS;
 # only the homepage-only widgets and the homepage FORMAT_RULES live here. The machine-readable
-# rules are ContentBuilder::Craftjs::WidgetSpecs::HOMEPAGE_SPECS; a spec asserts docs and rules
+# rules are ContentBuilder::Craftjs::HomepageWidgetSpecs::SPECS; a spec asserts docs and rules
 # cannot drift.
 class McpServer::HomepageWidgets
   # The homepage banner is the fixed header — always present and singular — so it is

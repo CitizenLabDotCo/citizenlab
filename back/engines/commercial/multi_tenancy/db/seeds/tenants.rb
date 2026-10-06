@@ -89,10 +89,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            idea_author_change: {
-              enabled: true,
-              allowed: true
-            },
             machine_translations: {
               enabled: true,
               allowed: true
@@ -113,11 +109,6 @@ module MultiTenancy
               enabled: true,
               allowed: true,
               write_key: ENV.fetch('DEFAULT_SATISMETER_WRITE_KEY')
-            },
-            google_analytics: {
-              enabled: true,
-              allowed: true,
-              tracking_id: ENV.fetch('DEFAULT_GA_TRACKING_ID')
             },
             google_tag_manager: {
               enabled: true,

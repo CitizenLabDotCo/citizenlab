@@ -71,6 +71,18 @@ describe WebApi::V1::PhaseSerializer do
     end
   end
 
+  context 'for an ideation phase' do
+    let(:user) { create(:user) }
+    let(:phase) { create(:ideation_phase) }
+
+    it 'includes what its participation method supports' do
+      expect(result.dig(:data, :attributes)).to include(
+        supports_form_logic: false,
+        supports_public_visibility: true
+      )
+    end
+  end
+
   context 'for a native survey phase' do
     let(:user) { create(:user) }
     let(:phase) { create(:native_survey_phase, with_permissions: true) }
@@ -81,6 +93,10 @@ describe WebApi::V1::PhaseSerializer do
         :native_survey_button_multiloc
       )
       expect(result.dig(:data, :attributes, :supports_survey_form)).to be true
+      expect(result.dig(:data, :attributes)).to include(
+        supports_form_logic: true,
+        supports_public_visibility: false
+      )
     end
   end
 
@@ -110,6 +126,10 @@ describe WebApi::V1::PhaseSerializer do
         :native_survey_button_multiloc
       )
       expect(result.dig(:data, :attributes, :supports_survey_form)).to be true
+      expect(result.dig(:data, :attributes)).to include(
+        supports_form_logic: false,
+        supports_public_visibility: false
+      )
     end
   end
 end
