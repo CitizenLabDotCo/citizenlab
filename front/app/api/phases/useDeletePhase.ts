@@ -29,7 +29,6 @@ const useDeletePhase = () => {
       queryClient.invalidateQueries({
         queryKey: phasesKeys.list({ projectId: variables.projectId }),
       });
-      // Deleting a spotlight survey removes its block from the project page.
       queryClient.invalidateQueries({
         queryKey: projectPageLayoutKeys.item({
           projectId: variables.projectId,
