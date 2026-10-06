@@ -42,6 +42,10 @@ parameters:
     type: boolean
     default: false
 
+  custom_block_sandbox: # corresponds to the name of the package
+    type: boolean
+    default: false
+
   run_deploy:
     type: boolean
     default: false
@@ -76,13 +80,17 @@ parameters:
     type: boolean
     default: false
 
-  # Set by .circleci/monorepo.sh in case nothing changed in back/front. This
+  # Set by .circleci/monorepo.sh for every package that did not change. This
   # causes the builds to still happen, necessary for the epic platform
   epic_back_artifact:
     type: boolean
     default: false
 
   epic_front_artifact:
+    type: boolean
+    default: false
+
+  epic_custom_block_sandbox_artifact:
     type: boolean
     default: false
 
@@ -520,6 +528,50 @@ jobs:
           name: Check for inconsistent data
           command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH bin/rake checks:invalid_data"
           no_output_timeout: 60m
+
+  # CUSTOM BLOCK SANDBOX
+  custom-block-sandbox-test:
+    resource_class: small
+    docker:
+      # The Node the service runs under, which is the one its runtime image ships.
+      - image: cimg/node:22.20
+    working_directory: ~/citizenlab/custom-block-sandbox
+    environment:
+      # The unit tests never start Chromium, and the browser download is the slowest
+      # part of installing playwright.
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+    steps:
+      - shallow-clone
+      - restore_cache:
+          keys:
+            - v1-custom-block-sandbox-npm-cache-{{ checksum "package-lock.json" }}
+      - run: npm ci
+      - save_cache:
+          paths:
+            - ~/.npm
+          key: v1-custom-block-sandbox-npm-cache-{{ checksum "package-lock.json" }}
+      - run: npm run typecheck
+      - run: npm test
+
+  custom-block-sandbox-build-docker-image-amd64:
+    working_directory: ~/
+    docker:
+      - image: cimg/base:2025.01
+    steps:
+      - echo_pipeline_parameters
+      - shallow-clone
+      - setup_remote_docker:
+          # The runtime stage starts from Playwright's image, which is a couple of
+          # gigabytes. Without the cache every run pulls it again, and the epic
+          # platform needs this image built on every pipeline.
+          docker_layer_caching: true
+      - run: |
+          # The build context is the repository root: the image takes the SDK type
+          # definitions from the front-end tree.
+          docker build -t citizenlabdotco/custom-block-sandbox:amd64-$CIRCLE_SHA1 -f citizenlab/custom-block-sandbox/Dockerfile citizenlab/.
+      - run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASS
+          docker push citizenlabdotco/custom-block-sandbox:amd64-$CIRCLE_SHA1
 
   front-detect-deadcode:
     docker:
@@ -1365,6 +1417,22 @@ workflows:
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_AUS
           env_file: ".env-web"
 
+  # CUSTOM BLOCK SANDBOX
+  # Named after the package in monorepo.json, like the back and front workflows:
+  # monorepo.sh finds a package's last successful build by workflow name.
+  custom_block_sandbox:
+    when:
+      and:
+        - << pipeline.parameters.custom_block_sandbox >>
+        - not: <<pipeline.parameters.run_deploy>>
+        - not:
+            equal: ["production", << pipeline.git.branch >>]
+    jobs:
+      - custom-block-sandbox-test
+      - custom-block-sandbox-build-docker-image-amd64:
+          context:
+            - docker-hub-access
+
   # FRONT-END
   front:
     when:
@@ -1453,6 +1521,17 @@ workflows:
     jobs:
       - front-build:
           context: epic-front-bundles
+
+  epic-custom-block-sandbox-artifact:
+    when:
+      and:
+        - << pipeline.parameters.epic_custom_block_sandbox_artifact >>
+        - not:
+            equal: ["production", << pipeline.git.branch >>]
+    jobs:
+      - custom-block-sandbox-build-docker-image-amd64:
+          context:
+            - docker-hub-access
 
   front-deploy-staging:
     when:
