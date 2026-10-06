@@ -7,9 +7,11 @@ import useCauses from 'api/causes/useCauses';
 import { IPhaseData } from 'api/phases/types';
 import { IPollResponses } from 'api/poll_responses/types';
 import usePollResponses from 'api/poll_responses/usePollResponses';
+import { IProjectData } from 'api/projects/types';
 
 import { useIntl } from 'utils/cl-intl';
 
+import OfflineCollection from '../InputManager/RightColumn/OfflineCollection';
 import messages from '../messages';
 
 import EmptyState from './EmptyState';
@@ -21,12 +23,10 @@ const EMPTY_COPY = {
   manage: {
     title: messages.noInputsYet,
     description: messages.noInputsYetDescription,
-    hint: messages.manageToolsHint,
   },
   insights: {
     title: messages.noInsightsYet,
     description: messages.noInsightsYetDescription,
-    hint: messages.recommendedActionsHint,
   },
 };
 
@@ -64,12 +64,13 @@ const isPhaseEmpty = (
 };
 
 interface Props {
+  project: IProjectData;
   phase: IPhaseData;
   view: Exclude<PhaseViewKey, 'build'>;
   children: ReactNode;
 }
 
-const ViewContent = ({ phase, view, children }: Props) => {
+const ViewContent = ({ project, phase, view, children }: Props) => {
   const { formatMessage } = useIntl();
   const onInsights = view === 'insights';
   const method = phase.attributes.participation_method;
@@ -134,7 +135,16 @@ const ViewContent = ({ phase, view, children }: Props) => {
         borderRadius={bo.panelBorderRadius}
         background={colors.white}
       >
-        <EmptyState size="small" description={formatMessage(copy.hint)} />
+        {view === 'manage' ? (
+          <Box p="16px">
+            <OfflineCollection project={project} phase={phase} />
+          </Box>
+        ) : (
+          <EmptyState
+            size="small"
+            description={formatMessage(messages.recommendedActionsHint)}
+          />
+        )}
       </Box>
     </>
   );

@@ -576,11 +576,6 @@ export default defineMessages({
     defaultMessage:
       'Inputs appear here as participants take part. You can follow each one and add the ones collected offline.',
   },
-  manageToolsHint: {
-    id: 'app.containers.Admin.projects.project.manageToolsHint',
-    defaultMessage:
-      'Tools to export inputs and add the ones collected offline appear here once participation starts.',
-  },
   noInsightsYet: {
     id: 'app.containers.Admin.projects.project.noInsightsYet',
     defaultMessage: 'No insights yet',
