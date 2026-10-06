@@ -449,7 +449,11 @@ const FormBuilderPage = ({
         <FormEdit
           defaultValues={{ customFields: formCustomFields }}
           phase={phase.data}
-          builderConfig={resolveFormBuilderConfig(builderConfig, goBackUrl)}
+          builderConfig={resolveFormBuilderConfig(
+            builderConfig,
+            phase.data,
+            goBackUrl
+          )}
           totalSubmissions={submissionCount.data.attributes.totalSubmissions}
           viewFormLink={viewFormLink}
         />,

@@ -24,7 +24,6 @@ export const communityMonitorConfig: FormBuilderConfig = {
   builtInFields: [],
   showStatusBadge: true,
   isLogicEnabled: false,
-  isParticipationPublic: false,
   isFormPhaseSpecific: true,
   getWarningNotice: () => {
     return (
