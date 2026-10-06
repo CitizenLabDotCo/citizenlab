@@ -35,6 +35,12 @@ describe('FeedbackNotice', () => {
     expect(
       screen.getByText('You are using the new project back office.')
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: '#dev-tandem-uxui-revamp' })
+    ).toHaveAttribute(
+      'href',
+      'https://go-vocal.slack.com/archives/C0BRBG0TGM8'
+    );
   });
 
   it('renders nothing when the redesign comes from the platform setting', () => {
