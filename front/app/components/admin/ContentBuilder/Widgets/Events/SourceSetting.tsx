@@ -28,7 +28,7 @@ const SourceSetting = () => {
     props,
   } = useNode((node) => ({ props: node.data.props as EventsProps }));
 
-  const { projectId } = useParams({ strict: false });
+  const { projectId, customPageId } = useParams({ strict: false });
   const advancedCustomPages = useFeatureFlag({ name: 'advanced_custom_pages' });
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
 
@@ -43,6 +43,12 @@ const SourceSetting = () => {
   // toolbox and the EventsWidget shim both write `currentProject` for this surface.
   if (projectId) return null;
 
+  // The homepage lists events from every project; filtering is for custom pages. A homepage
+  // widget that already filters still shows its filter, so it can be read and reset.
+  if (!customPageId && source === 'all') return null;
+
+  const filteringOffered = !!customPageId && advancedCustomPages;
+
   // A stored dimension stays listed once its feature is off: the widget still filters by it, so
   // dropping it would read as unset, and picking another discards the ids.
   const offers = (dimension: EventsSource, featureOn: boolean) =>
@@ -50,10 +56,10 @@ const SourceSetting = () => {
 
   const options: { value: EventsSource; label: string }[] = [
     { value: 'all', label: formatMessage(messages.everyProject) },
-    ...(offers('areas', advancedCustomPages)
+    ...(offers('areas', filteringOffered)
       ? [{ value: 'areas' as const, label: formatMessage(messages.byArea) }]
       : []),
-    ...(offers('global_topics', advancedCustomPages)
+    ...(offers('global_topics', filteringOffered)
       ? [
           {
             value: 'global_topics' as const,
@@ -61,7 +67,7 @@ const SourceSetting = () => {
           },
         ]
       : []),
-    ...(offers('spaces', advancedCustomPages && spacesEnabled)
+    ...(offers('spaces', filteringOffered && spacesEnabled)
       ? [{ value: 'spaces' as const, label: formatMessage(messages.bySpace) }]
       : []),
   ];
