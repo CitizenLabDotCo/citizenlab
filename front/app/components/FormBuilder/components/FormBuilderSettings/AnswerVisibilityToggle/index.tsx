@@ -9,6 +9,7 @@ import { supportsPublicAnswers } from 'api/custom_fields/util';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { SectionField } from 'components/admin/Section';
+import { ResolvedFormBuilderConfig } from 'components/FormBuilder/utils';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -16,9 +17,10 @@ import messages from './messages';
 
 type Props = {
   field: IFlatCustomFieldWithIndex;
+  builderConfig: ResolvedFormBuilderConfig;
 };
 
-const AnswerVisibilityToggle = ({ field }: Props) => {
+const AnswerVisibilityToggle = ({ field, builderConfig }: Props) => {
   const { watch, setValue } = useFormContext();
   const { formatMessage } = useIntl();
   const isEnabled = useFeatureFlag({ name: 'input_form_answer_visibility' });
@@ -27,7 +29,12 @@ const AnswerVisibilityToggle = ({ field }: Props) => {
   const inputType = watch(`customFields.${field.index}.input_type`);
   const isPublic = watch(name) === 'public';
 
-  if (!isEnabled || field.code || !supportsPublicAnswers(inputType)) {
+  if (
+    !isEnabled ||
+    !builderConfig.isParticipationPublic ||
+    field.code ||
+    !supportsPublicAnswers(inputType)
+  ) {
     return null;
   }
 

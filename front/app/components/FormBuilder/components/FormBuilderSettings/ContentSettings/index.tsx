@@ -117,9 +117,7 @@ const ContentSettings = ({ field, builderConfig }: ContentSettingsProps) => {
           />
         </SectionField>
       )}
-      {builderConfig.isParticipationPublic && (
-        <AnswerVisibilityToggle field={field} />
-      )}
+      <AnswerVisibilityToggle field={field} builderConfig={builderConfig} />
     </Box>
   );
 };
