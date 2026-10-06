@@ -19,7 +19,10 @@ interface Props {
   label: string;
   description: string;
   tooltip?: string;
+  // Shown next to the label, e.g. to explain why the toggle is disabled.
+  statusLabel?: string;
   enabled: boolean;
+  disabled?: boolean;
   dataCy?: string;
   children?: ReactNode;
   onChange: () => void;
@@ -30,15 +33,22 @@ const RequirementToggle = ({
   label,
   description,
   tooltip,
+  statusLabel,
   enabled,
+  disabled,
   onChange,
 }: Props) => (
   <Toggle
     checked={enabled}
+    disabled={disabled}
     onChange={onChange}
     size="small"
     label={
-      <Box ml="8px">
+      <Box
+        ml="8px"
+        opacity={disabled ? 0.5 : undefined}
+        style={disabled ? { cursor: 'not-allowed' } : undefined}
+      >
         <Box display="flex" alignItems="center" gap="6px">
           <Icon
             name={icon}
@@ -50,6 +60,11 @@ const RequirementToggle = ({
             {label}
           </Text>
           {tooltip && <IconTooltip content={tooltip} iconSize="14px" />}
+          {statusLabel && (
+            <Text as="span" m="0" fontSize="xs" color="coolGrey600">
+              ({statusLabel})
+            </Text>
+          )}
         </Box>
         <Text as="span" m="0" fontSize="xs" color="coolGrey600">
           {description}
