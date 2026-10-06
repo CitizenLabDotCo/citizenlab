@@ -28,7 +28,9 @@ module Analytics
           residents: residents see one only when it is visible and its phase
           has started (join reporting_phases and compare start_at with now()).
           Reports without a phase are internal to administrators. Use this to
-          measure how often projects close the loop with a published report.
+          measure how often projects close the loop with a published report,
+          leaving out community_monitor reports: they are quarterly reports on
+          the hidden community monitor project, not project results.
         DOC
       end
 
