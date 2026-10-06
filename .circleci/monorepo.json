@@ -7,6 +7,10 @@
     ],
     "front": [
       "front/"
+    ],
+    "custom_block_sandbox": [
+      "custom-block-sandbox/",
+      "front/app/components/admin/ContentBuilder/CustomBlocks/sdk/v1/gv-sdk.d.ts"
     ]
   }
 }
