@@ -185,7 +185,7 @@ RSpec.describe ReportBuilder::Queries::Participants do
       })
     end
 
-    it 'applies exclude_roles filter' do
+    it 'applies exclude_admins_and_moderators filter' do
       project = create(:single_phase_ideation_project)
 
       # Create 4 participants and 8 visitors for project with user role
@@ -197,17 +197,17 @@ RSpec.describe ReportBuilder::Queries::Participants do
         create(:session, :with_pageview, created_at: @date_september, monthly_user_hash: "visitor_#{i}", pageview_created_at: @date_september, project: project)
       end
 
-      # Create 3 participants and 4 visitors with admin role
-      3.times do
-        create(:idea, created_at: @date_september, project: project, author: create(:admin))
+      # Create 5 participants and 5 visitors with an admin or moderator role (not only moderators of this project)
+      create_admins_and_moderators(project: project).each do |author|
+        create(:idea, created_at: @date_september, project: project, author: author)
       end
 
-      4.times do |i|
+      admin_and_moderator_highest_roles.each_with_index do |highest_role, i|
         create(
           :session, :with_pageview,
           created_at: @date_september,
           monthly_user_hash: "another_visitor_#{i}",
-          highest_role: 'admin',
+          highest_role: highest_role,
           pageview_created_at: @date_september,
           project: project
         )
@@ -216,7 +216,7 @@ RSpec.describe ReportBuilder::Queries::Participants do
       params = {
         start_at: @date_september - 1.day,
         end_at: @date_september + 1.day,
-        exclude_roles: 'exclude_admins_and_moderators'
+        exclude_admins_and_moderators: true
       }
 
       expect(query.run_query(**params)).to eq({
@@ -227,6 +227,24 @@ RSpec.describe ReportBuilder::Queries::Participants do
         participants_whole_period: 4,
         participation_rate_whole_period: 0.5
       })
+    end
+
+    it 'keeps participations without a known user when applying exclude_admins_and_moderators filter' do
+      project = create(:single_phase_ideation_project)
+
+      create(:idea, created_at: @date_september, project: project, author: create(:user))
+      create(:idea, created_at: @date_september, project: project, author: nil)
+      create_admins_and_moderators(project: project).each do |author|
+        create(:idea, created_at: @date_september, project: project, author: author)
+      end
+
+      params = {
+        start_at: @date_september - 1.day,
+        end_at: @date_september + 1.day,
+        exclude_admins_and_moderators: true
+      }
+
+      expect(query.run_query(**params)[:participants_whole_period]).to eq 2
     end
 
     it 'handles cases where there is no data' do

@@ -21,6 +21,7 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -110,7 +111,7 @@ const PageLink = ({ pageId, displayType = 'link' }: PageLinkProps) => {
       return (
         <Box
           id="e2e-page-link"
-          maxWidth="1200px"
+          maxWidth={BUILDER_CONTENT_MAX_WIDTH}
           pointerEvents={enabled ? 'none' : 'auto'}
         >
           <PreviewTitleLink {...linkParams}>{title}</PreviewTitleLink>
@@ -126,7 +127,7 @@ const PageLink = ({ pageId, displayType = 'link' }: PageLinkProps) => {
     return (
       <Box
         id="e2e-page-link"
-        maxWidth="1200px"
+        maxWidth={BUILDER_CONTENT_MAX_WIDTH}
         pointerEvents={enabled ? 'none' : 'auto'}
       >
         <PageLinkRow {...linkParams}>
@@ -144,7 +145,7 @@ const PageLink = ({ pageId, displayType = 'link' }: PageLinkProps) => {
 
   // Builder: prompt to pick a page, or flag a missing one.
   return (
-    <Box maxWidth="1200px" margin="0 auto">
+    <Box maxWidth={BUILDER_CONTENT_MAX_WIDTH} margin="0 auto">
       <PagePlaceholder variant={pageId ? 'error' : undefined}>
         <FormattedMessage
           {...(pageId ? messages.pageMissing : messages.noPageSelected)}

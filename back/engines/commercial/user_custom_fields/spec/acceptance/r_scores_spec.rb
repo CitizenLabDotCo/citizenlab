@@ -86,6 +86,21 @@ resource 'R-scores (Representativeness scores)' do
               expect(response_data.dig(:attributes, :counts)).to match(expected_counts)
             end
           end
+
+          context 'when admins and moderators are excluded from statistics' do
+            before do
+              enable_exclude_admins_and_moderators_from_statistics
+              create_admins_and_moderators(answers: { custom_field.key => custom_field.options.first.key })
+            end
+
+            example_request 'returns the R-score (excluding admins and moderators)' do
+              expect(status).to eq(200)
+              expect(json_response_body).to match(response_structure)
+              # Neither the admins and moderators nor the admin performing the request (who has no value, i.e. _blank) are counted
+              expected_counts = custom_field.options.to_h { |option| [option.id.to_sym, 1] }.merge(_blank: 0)
+              expect(response_data.dig(:attributes, :counts)).to match(expected_counts)
+            end
+          end
         end
 
         context 'for birthyear custom field' do
@@ -108,6 +123,27 @@ resource 'R-scores (Representativeness scores)' do
             # account. The user born in 2020 is also not taken into account because they
             # are too young (wrt the age bins).
             expect(response_data.dig(:attributes, :counts)).to eq [2, 1, 0]
+          end
+
+          context 'with admins and moderators' do
+            before do
+              create_admins_and_moderators(answers: { 'birthyear' => 1980 })
+            end
+
+            example 'returns the R-score including admins and moderators by default', document: false do
+              travel_to(Time.zone.local(2010)) { do_request }
+
+              expect(status).to eq(200)
+              expect(response_data.dig(:attributes, :counts)).to eq [7, 1, 0]
+            end
+
+            example 'returns the R-score excluding admins and moderators' do
+              enable_exclude_admins_and_moderators_from_statistics
+              travel_to(Time.zone.local(2010)) { do_request }
+
+              expect(status).to eq(200)
+              expect(response_data.dig(:attributes, :counts)).to eq [2, 1, 0]
+            end
           end
         end
       end

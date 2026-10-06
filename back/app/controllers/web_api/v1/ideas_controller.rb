@@ -26,12 +26,12 @@ class WebApi::V1::IdeasController < ApplicationController
       :input_topics,
       :idea_status,
       :manual_votes_last_updated_by,
-      :custom_field_answers,
       {
+        custom_field_answers: :custom_field,
         phases: { permissions: [:groups] },
         creation_phase: { permissions: [:groups] },
         project: [:phases, { phases: { permissions: [:groups] } }, { custom_form: [:custom_fields] }],
-        author: %i[unread_notifications custom_field_answers]
+        author: [:unread_notifications, { custom_field_answers: :custom_field }]
       }
     )
     ideas = ideas.includes(:idea_import) unless current_user&.normal_user? # defined through BulkImportIdeas engine
@@ -110,7 +110,7 @@ class WebApi::V1::IdeasController < ApplicationController
     ideas = SortByParamsService.new.sort_ideas(ideas, params, current_user)
     ideas = ideas.includes(:idea_trending_info)
 
-    result = IdeasCountService.counts(ideas)
+    result = IdeasCountService.counts(ideas, filter_counts_attributes(ideas))
     result['total'] = ideas.count
     render json: raw_json(result)
   end
@@ -378,6 +378,10 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   private
+
+  def filter_counts_attributes(_ideas)
+    IdeasCountService::DEFAULT_ATTRIBUTES
+  end
 
   def phase
     @phase ||= Phase.find(params[:phase_id])

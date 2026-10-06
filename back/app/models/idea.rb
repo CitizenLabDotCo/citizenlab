@@ -234,6 +234,11 @@ class Idea < ApplicationRecord
     includes(:author).order('users.first_name' => direction, 'users.last_name' => direction)
   }
 
+  scope :order_title, lambda { |locale, direction = :asc|
+    title = Arel::Nodes::InfixOperation.new('->>', arel_table[:title_multiloc], Arel::Nodes.build_quoted(locale))
+    order(Arel::Nodes::NamedFunction.new('LOWER', [title]).public_send(direction).nulls_last, :id)
+  }
+
   scope :order_popular, ->(direction = :desc) { order(Arel.sql("(likes_count - dislikes_count) #{direction}, ideas.id")) }
   # based on https://medium.com/hacking-and-gonzo/how-hacker-news-ranking-algorithm-works-1d9b0cf2c08d
 
@@ -277,6 +282,9 @@ class Idea < ApplicationRecord
   scope :supports_survey, -> { where(creation_phase: Phase.where(participation_method: %w[native_survey community_monitor_survey])) }
   scope :supports_proposal, -> { where(creation_phase: Phase.where(participation_method: %w[proposals])) }
   scope :supports_idea, -> { where(creation_phase: nil) }
+  scope :excluding_admin_and_moderator_authors, lambda {
+    StatisticsRoleExclusion.new.exclude_admin_and_moderator_records(all, :author_id)
+  }
 
   # Filters out all the ideas for which the ParticipationMethod responds truety
   # to the given block. The block receives the ParticipationMethod object as an

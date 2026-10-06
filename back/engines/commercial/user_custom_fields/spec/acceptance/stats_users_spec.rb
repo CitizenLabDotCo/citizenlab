@@ -282,6 +282,30 @@ resource 'Stats - Users' do
           })
         end
       end
+
+      describe 'when admins and moderators are excluded from statistics' do
+        before do
+          travel_to(start_at + 24.days) do
+            create_admins_and_moderators(answers: { @custom_field.key => false }, manual_groups: [@group])
+          end
+        end
+
+        let(:group) { @group.id }
+        let(:custom_field_id) { @custom_field.id }
+
+        example 'Users by custom field includes admins and moderators by default' do
+          do_request
+          expect(response_status).to eq 200
+          expect(json_response_body.dig(:data, :attributes, :series, :users)).to eq({ false: 8, _blank: 0 }) # rubocop:disable Lint/BooleanSymbol
+        end
+
+        example 'Users by custom field excluding admins and moderators' do
+          enable_exclude_admins_and_moderators_from_statistics
+          do_request
+          expect(response_status).to eq 200
+          expect(json_response_body.dig(:data, :attributes, :series, :users)).to eq({ false: 3, _blank: 0 }) # rubocop:disable Lint/BooleanSymbol
+        end
+      end
     end
 
     get 'web_api/v1/stats/users_by_custom_field_as_xlsx/:custom_field_id' do
@@ -318,6 +342,28 @@ resource 'Stats - Users' do
 
         let(:group) { @group.id }
         let(:custom_field_id) { @custom_field.id }
+
+        describe 'when admins and moderators are excluded from statistics' do
+          before do
+            enable_exclude_admins_and_moderators_from_statistics
+            travel_to(start_at + 4.days) do
+              create_admins_and_moderators(answers: { @custom_field.key => @option1.key }, manual_groups: [@group])
+            end
+          end
+
+          include_examples('xlsx export', 'custom field (select) excluding admins and moderators') do
+            let(:expected_worksheet_name) { 'users_by_select_field' }
+            let(:expected_worksheet_values) do
+              [
+                %w[option users],
+                ['youth council', 1],
+                ['youth council', 1],
+                ['youth council', 0],
+                ['_blank', 1]
+              ]
+            end
+          end
+        end
 
         describe 'when the custom field has no reference distribution' do
           include_examples('xlsx export', 'custom field (select)') do
@@ -500,6 +546,37 @@ resource 'Stats - Users' do
           )
         end
       end
+
+      context 'when admins and moderators are excluded from statistics' do
+        before do
+          travel_to start_at + 16.days do
+            @group.members.push(*create_admins_and_moderators(answers: { 'birthyear' => 1990 }))
+          end
+        end
+
+        example 'Users counts by age includes admins and moderators by default' do
+          travel_to(Time.zone.local(2020, 1, 1)) { do_request }
+
+          expect(response_status).to eq 200
+          expect(json_response_body.dig(:data, :attributes)).to include(total_user_count: 13, unknown_age_count: 1)
+        end
+
+        example 'Users counts by age excluding admins and moderators' do
+          enable_exclude_admins_and_moderators_from_statistics
+          travel_to(Time.zone.local(2020, 1, 1)) { do_request }
+
+          expect(response_status).to eq 200
+          expect(json_response_body.dig(:data, :attributes)).to match(
+            total_user_count: 8,
+            unknown_age_count: 1,
+            series: {
+              user_counts: [0, 2, 2, 1, 1, 1, 0, 0, 0, 0],
+              reference_population: nil,
+              bins: UserCustomFields::AgeCounter::DEFAULT_BINS
+            }
+          )
+        end
+      end
     end
 
     get 'web_api/v1/stats/users_by_age_as_xlsx' do
@@ -548,6 +625,35 @@ resource 'Stats - Users' do
               ['50-74', 1, 308],
               ['75+', 0, 213],
               ['unknown', 1, '']
+            ]
+          end
+        end
+      end
+
+      context 'when admins and moderators are excluded from statistics' do
+        before do
+          enable_exclude_admins_and_moderators_from_statistics
+          travel_to start_at + 16.days do
+            @group.members.push(*create_admins_and_moderators(answers: { 'birthyear' => 1990 }))
+          end
+        end
+
+        include_examples('xlsx export', 'age excluding admins and moderators', Time.zone.local(2020, 1, 1)) do
+          let(:expected_worksheet_name) { 'users_by_age' }
+          let(:expected_worksheet_values) do
+            [
+              %w[age user_count],
+              ['0-9', 0],
+              ['10-19', 2],
+              ['20-29', 2],
+              ['30-39', 1],
+              ['40-49', 1],
+              ['50-59', 1],
+              ['60-69', 0],
+              ['70-79', 0],
+              ['80-89', 0],
+              ['90+', 0],
+              ['unknown', 1]
             ]
           end
         end

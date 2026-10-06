@@ -229,6 +229,46 @@ RSpec.describe Insights::VotingPhaseInsightsService do
   end
 
   describe '#vote_counts_with_user_custom_field_grouping' do
+    context 'with exclude_admins_and_moderators' do
+      before do
+        # 5 admins and moderators each give 12 votes to idea1
+        create_admins_and_moderators(project: phase.project).each do |user|
+          basket = create(:basket, phase: phase, user: user, submitted_at: phase.start_at + 1.day)
+          create(:baskets_idea, basket: basket, idea: idea1, votes: 12)
+        end
+        # As in production, the cached counter includes the votes of the admins and moderators
+        idea1.update_column(:votes_count, 62)
+      end
+
+      it 'includes the votes of admins and moderators by default' do
+        result = service.vote_counts_with_user_custom_field_grouping(nil)
+
+        expect(result[:online_votes]).to eq(107)
+        expect(result[:ideas].map { |idea| idea.slice(:id, :online_votes, :total_votes) }).to eq([
+          { id: idea1.id, online_votes: 62, total_votes: 62 },
+          { id: idea2.id, online_votes: 45, total_votes: 55 }
+        ])
+      end
+
+      it 'excludes the votes of admins and moderators and re-sorts the ideas' do
+        service = described_class.new(phase, exclude_admins_and_moderators: true)
+        result = service.vote_counts_with_user_custom_field_grouping(nil)
+
+        expect(result).to include(online_votes: 47, offline_votes: 10, total_votes: 57)
+        expect(result[:ideas]).to eq([
+          { id: idea2.id, title_multiloc: idea2.title_multiloc, online_votes: 45, offline_votes: 10, total_votes: 55, percentage: 96.5, series: nil },
+          { id: idea1.id, title_multiloc: idea1.title_multiloc, online_votes: 2, offline_votes: 0, total_votes: 2, percentage: 3.5, series: nil }
+        ])
+      end
+
+      it 'excludes admins and moderators from the voters metric' do
+        service = described_class.new(phase, exclude_admins_and_moderators: true)
+        participations = service.send(:filtered_phase_participations)
+
+        expect(service.send(:phase_participation_method_metrics, participations)).to include(online_votes: 47, voters: 2)
+      end
+    end
+
     it 'gives expected results when custom_field is nil' do
       result = service.vote_counts_with_user_custom_field_grouping(nil)
 

@@ -5,14 +5,16 @@ import { useNode } from '@craftjs/core';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
-import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
+import {
+  BUILDER_CONTENT_MAX_WIDTH,
+  DEFAULT_PADDING,
+  DEFAULT_Y_PADDING,
+} from 'components/admin/ContentBuilder/constants';
 import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-
-import { DEFAULT_Y_PADDING } from '../constants';
 
 import messages from './messages';
 
@@ -34,7 +36,7 @@ const ProjectsAndFoldersLegacy = ({
 }) => {
   return (
     <Box data-cy="e2e-projects">
-      <Box maxWidth="1200px" margin="0 auto">
+      <Box maxWidth={BUILDER_CONTENT_MAX_WIDTH} margin="0 auto">
         <ProjectSection id="e2e-landing-page-project-section">
           <ProjectAndFolderCards
             showTitle={true}

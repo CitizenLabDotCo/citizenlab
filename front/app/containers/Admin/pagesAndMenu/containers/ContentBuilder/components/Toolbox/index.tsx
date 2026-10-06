@@ -18,7 +18,17 @@ import AccordionMultiloc, {
 import ButtonMultiloc, {
   buttonMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
+import CallToAction, {
+  callToActionTitle,
+} from 'components/admin/ContentBuilder/Widgets/CallToAction';
+import CustomPages, {
+  customPagesTitle,
+} from 'components/admin/ContentBuilder/Widgets/CustomPages';
 import EventsList from 'components/admin/ContentBuilder/Widgets/Events';
+import FinishedOrArchived, {
+  finishedOrArchivedTitle,
+} from 'components/admin/ContentBuilder/Widgets/FinishedOrArchived';
+import finishedOrArchivedMessages from 'components/admin/ContentBuilder/Widgets/FinishedOrArchived/messages';
 import HtmlBlockMultiloc, {
   htmlBlockMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
@@ -28,12 +38,28 @@ import IframeMultiloc, {
 import ImageMultiloc, {
   imageMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
+import OpenToParticipation, {
+  openToParticipationTitle,
+} from 'components/admin/ContentBuilder/Widgets/OpenToParticipation';
+import Published, {
+  publishedTitle,
+} from 'components/admin/ContentBuilder/Widgets/Published';
+import Selection, {
+  selectionTitle,
+} from 'components/admin/ContentBuilder/Widgets/Selection';
+import Spotlight, {
+  spotlightTitle,
+  buttonTextDefault,
+} from 'components/admin/ContentBuilder/Widgets/Spotlight';
 import ThreeColumn, {
   threeColumnTitle,
 } from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn, {
   twoColumnTitle,
 } from 'components/admin/ContentBuilder/Widgets/TwoColumn';
+import VideoEmbed, {
+  videoEmbedTitle,
+} from 'components/admin/ContentBuilder/Widgets/VideoEmbed';
 import WhiteSpace, {
   whiteSpaceTitle,
 } from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
@@ -47,15 +73,9 @@ import {
 
 import messages from '../../messages';
 import Areas, { areasTitle } from '../Widgets/Areas';
-import CallToAction, { callToActionTitle } from '../Widgets/CallToAction';
 import CommunityMonitorCTA, {
   communityMonitorCTATitle,
 } from '../Widgets/CommunityMonitorCTA';
-import CustomPages, { customPagesTitle } from '../Widgets/CustomPages';
-import FinishedOrArchived, {
-  finishedOrArchivedTitle,
-} from '../Widgets/FinishedOrArchived';
-import finishedOrArchivedMessages from '../Widgets/FinishedOrArchived/messages';
 import FollowedItems, { followedItemsTitle } from '../Widgets/FollowedItems';
 import followedItemsMessages from '../Widgets/FollowedItems/messages';
 import HomepageBanner, { homepageBannerTitle } from '../Widgets/HomepageBanner';
@@ -64,21 +84,11 @@ import {
   getHomepageBannerDefaultSettings,
 } from '../Widgets/HomepageBanner/utils';
 import ImageTextCards from '../Widgets/ImageTextCards';
-import OpenToParticipation, {
-  openToParticipationTitle,
-} from '../Widgets/OpenToParticipation';
 import ProjectsAndFoldersLegacy, {
   projectsAndFoldersLegacyTitle,
 } from '../Widgets/ProjectsAndFoldersLegacy';
 import projectsMessages from '../Widgets/ProjectsAndFoldersLegacy/messages';
-import Published, { publishedTitle } from '../Widgets/Published';
-import Selection, { selectionTitle } from '../Widgets/Selection';
-import Spotlight, {
-  spotlightTitle,
-  buttonTextDefault,
-} from '../Widgets/Spotlight';
 import TextMultiloc, { textMultilocTitle } from '../Widgets/TextMultiloc';
-import VideoEmbed, { videoEmbedTitle } from '../Widgets/VideoEmbed';
 
 import { platformCreatedBeforeReleaseNewWidgets } from './utils';
 

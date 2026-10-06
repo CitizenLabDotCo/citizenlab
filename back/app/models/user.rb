@@ -37,6 +37,7 @@ require Rails.root.join('lib/email_domain_blacklist')
 #  phone                     :string
 #  new_phone                 :string
 #  phone_confirmed_at        :datetime
+#  early_access_opt_ins      :jsonb            not null
 #  merge_target_email        :string
 #
 # Indexes
@@ -44,6 +45,7 @@ require Rails.root.join('lib/email_domain_blacklist')
 #  index_users_on_email                      (email)
 #  index_users_on_phone                      (phone) UNIQUE WHERE (phone IS NOT NULL)
 #  index_users_on_registration_completed_at  (registration_completed_at)
+#  index_users_on_roles                      (roles) USING gin
 #  index_users_on_slug                       (slug) UNIQUE
 #  index_users_on_token_expiry_key           (token_expiry_key)
 #  index_users_on_unique_code                (unique_code) UNIQUE
@@ -120,6 +122,14 @@ class User < ApplicationRecord
       end
     end
     private :deletion_job_user_id
+
+    def early_access_opt_ins_json_schema
+      {
+        'type' => 'array',
+        'uniqueItems' => true,
+        'items' => { 'type' => 'string' }
+      }
+    end
 
     def onboarding_json_schema
       {
@@ -253,6 +263,9 @@ class User < ApplicationRecord
   validates :invite_status, inclusion: { in: INVITE_STATUSES }, allow_nil: true
 
   validates :onboarding, json: { schema: -> { User.onboarding_json_schema } }
+  validates :early_access_opt_ins, json: { schema: -> { User.early_access_opt_ins_json_schema } },
+    if: :early_access_opt_ins_changed?
+  validate :validate_early_access_opt_ins_offered, if: :early_access_opt_ins_changed?
 
   validate :validate_not_duplicate_email
   validate :validate_not_duplicate_new_email
@@ -318,6 +331,23 @@ class User < ApplicationRecord
 
   def no_name?
     self[:last_name].blank? && self[:first_name].blank? && !invite_pending?
+  end
+
+  def early_access_tiers
+    return [] unless admin?
+
+    super_admin? ? AppConfiguration::Settings::EARLY_ACCESS_TIERS : %w[general]
+  end
+
+  # @return [Hash] the features this user may opt into, mapped to the tier they are offered in
+  def offered_early_access_features
+    tiers = early_access_tiers
+    AppConfiguration::Settings.early_access_tiers.select { |_name, tier| tiers.include?(tier) }
+  end
+
+  # The opt-ins that still apply: a feature can stop being offered after the user opted in.
+  def early_access_overrides
+    Set.new(early_access_opt_ins) & offered_early_access_features.keys
   end
 
   # Authenticating ALWAYS requires a non-blank password that matches the stored digest.
@@ -569,6 +599,16 @@ class User < ApplicationRecord
 
     errors.add(field, 'something_went_wrong', code: 'zrb-43')
     Rails.logger.info "Validation error! Email banned: #{value.split('@')&.last}"
+  end
+
+  def validate_early_access_opt_ins_offered
+    return unless early_access_opt_ins.is_a?(Array)
+
+    added = early_access_opt_ins - Array(early_access_opt_ins_was)
+    not_offered = added - offered_early_access_features.keys
+    return if not_offered.empty?
+
+    errors.add(:early_access_opt_ins, 'not_offered', value: not_offered)
   end
 
   def auto_confirm_on_invite_accept

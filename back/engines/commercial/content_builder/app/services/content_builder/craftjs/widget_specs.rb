@@ -20,12 +20,20 @@ module ContentBuilder
       # deletable in place, but never newly created.
       LEGACY_WIDGETS = %w[RichTextMultiloc ProjectDescriptionSection EventsWidget].freeze
 
-      # Widgets and scaffold only the custom page builder resolves. A project page has no
-      # resolver entry for them, and an unknown resolvedName throws inside a pass over every
-      # node — taking the whole route down — so anything validating a project layout works
-      # from PROJECT_PAGE_SPECS instead.
+      # Custom page widgets and scaffold that the project page builder does not resolve. A
+      # project page has no resolver entry for them, and an unknown resolvedName throws inside
+      # a pass over every node — taking the whole route down — so anything validating a
+      # project layout works from PROJECT_PAGE_SPECS instead.
       CUSTOM_PAGE_WIDGETS = %w[
         ProjectsByFilter
+        Spotlight
+        Selection
+        CustomPages
+        Published
+        OpenToParticipation
+        FinishedOrArchived
+        CallToAction
+        VideoEmbed
         CustomPageRoot
         CustomPageBanner
         CustomPageTitle
@@ -86,6 +94,20 @@ module ContentBuilder
           'multilocs' => %w[titleMultiloc],
           'enums' => { 'filterType' => %w[global_topics areas spaces] }
         },
+        'Spotlight' => {
+          'multilocs' => %w[titleMultiloc descriptionMultiloc buttonTextMultiloc],
+          'enums' => { 'publicationType' => %w[project folder] }
+        },
+        'Selection' => { 'multilocs' => %w[titleMultiloc] },
+        'CustomPages' => { 'multilocs' => %w[titleMultiloc] },
+        'Published' => { 'multilocs' => %w[titleMultiloc] },
+        'OpenToParticipation' => { 'multilocs' => %w[titleMultiloc] },
+        'FinishedOrArchived' => {
+          'multilocs' => %w[titleMultiloc],
+          'enums' => { 'filterBy' => %w[finished archived finished_and_archived] }
+        },
+        'CallToAction' => { 'multilocs' => %w[title description primaryButtonText secondaryButtonText] },
+        'VideoEmbed' => {},
         # The project page scaffold (no rules: nodes patches may not add, move or delete).
         'ProjectPageRoot' => {},
         'ProjectBanner' => {},
@@ -106,6 +128,7 @@ module ContentBuilder
       }.freeze
 
       PROJECT_PAGE_SPECS = SPECS.except(*CUSTOM_PAGE_WIDGETS).freeze
+      # Homepage widget rules live in HomepageWidgetSpecs (keeps this module within length limits).
     end
   end
 end

@@ -2,20 +2,41 @@ module Insights
   class BasePhaseInsightsService
     attr_reader :phase
 
-    def initialize(phase)
+    # @param exclude_admins_and_moderators [Boolean] Leave out the participation and visits of admins and moderators
+    def initialize(phase, exclude_admins_and_moderators: false)
       @phase = phase
+      @exclude_admins_and_moderators = exclude_admins_and_moderators
     end
 
     # --- TEMPLATE METHOD (Instance Method) ---
     # This method defines the immutable workflow for all child services.
     def call
-      insights_data(phase_participations)
+      insights_data(filtered_phase_participations)
     end
 
     private
 
+    def exclude_admins_and_moderators?
+      @exclude_admins_and_moderators
+    end
+
+    # Removes the participations of admins and moderators when requested.
+    # The participant_id of a participation is the user id when the user is known,
+    # so participations without a known user (e.g. anonymous ones) are kept.
+    def filtered_phase_participations
+      participations = phase_participations
+      return participations unless exclude_admins_and_moderators?
+
+      participant_ids = participations.values.flatten.pluck(:participant_id).uniq
+      excluded_user_ids = User.not_normal_user.where(id: participant_ids).pluck(:id).to_set
+
+      participations.transform_values do |action_participations|
+        action_participations.reject { |p| excluded_user_ids.include?(p[:participant_id]) }
+      end
+    end
+
     def insights_data(participations)
-      visits_service = VisitsService.new(@phase.project_id, start_at: @phase.start_at, end_at: @phase.end_at)
+      visits_service = VisitsService.new(@phase.project_id, start_at: @phase.start_at, end_at: @phase.end_at, exclude_admins_and_moderators: @exclude_admins_and_moderators)
       flattened_participations = participations.values.flatten
       participant_ids = flattened_participations.pluck(:participant_id).uniq
       participation_method_metrics = phase_participation_method_metrics(participations)
@@ -66,7 +87,7 @@ module Insights
         p[:acted_at] < 7.days.ago
       end.pluck(:participant_id).uniq.count
 
-      visits_service_7_days_ago = VisitsService.new(@phase.project_id, start_at: @phase.start_at, end_at: 7.days.ago)
+      visits_service_7_days_ago = VisitsService.new(@phase.project_id, start_at: @phase.start_at, end_at: 7.days.ago, exclude_admins_and_moderators: @exclude_admins_and_moderators)
       visitors_count_7_days_ago = visits_service_7_days_ago.total_visits[:visitors]
 
       participation_rate_7_day_percent_change = if visitors_count > 0 && visitors_count_7_days_ago > 0

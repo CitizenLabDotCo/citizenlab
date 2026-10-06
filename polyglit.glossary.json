@@ -30,6 +30,9 @@
   "draft": {
     "nl-NL": "concept"
   },
+  "Communtiy Monitor": {
+    "de-DE": "Stimmungsbarometer"
+  },
   "content builder": {
     "nl-NL": "content builder"
   },
@@ -159,6 +162,9 @@
     "de-DE": "Empfänger*innen",
     "nl-NL": "ontvangers"
   },
+  "insights": {
+    "de-DE": "Einblicke"
+  },
   "widget": {
     "nl-NL": "widget"
   },
@@ -212,6 +218,9 @@
     "de-DE": "Kundenbetreuerin",
     "fr-FR": "Spécialiste en participation Go Vocal",
     "nl-NL": "GovSuccess Manager"
+  },
+  "residents": {
+    "de-DE": "Bürger*innen"
   },
   "sort": {
     "nl-NL": "sorteer"

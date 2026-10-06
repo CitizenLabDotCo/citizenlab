@@ -1,4 +1,4 @@
-import { SerializedNode } from '@craftjs/core';
+import { SerializedNode, SerializedNodes } from '@craftjs/core';
 
 /**
  * The name a serialized node is registered under in the editor's resolver.
@@ -8,3 +8,6 @@ import { SerializedNode } from '@craftjs/core';
  */
 export const getResolvedName = (node: SerializedNode): string | undefined =>
   typeof node.type === 'object' ? node.type.resolvedName : node.type;
+
+export const findNodeIdByName = (nodes: SerializedNodes, name: string) =>
+  Object.keys(nodes).find((id) => getResolvedName(nodes[id]) === name);

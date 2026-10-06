@@ -57,6 +57,7 @@ export type IAppConfigurationSettingsCore = {
   customer_portal_url?: string | null;
   anonymous_name_scheme?: string | null;
   private_attributes_in_export: boolean;
+  exclude_admins_and_moderators_from_statistics?: boolean;
   country_code: string | null;
 };
 
@@ -126,9 +127,6 @@ export interface IAppConfigurationSettings {
   intercom?: AppConfigurationFeature;
   satismeter?: AppConfigurationFeature & {
     write_key: string;
-  };
-  google_analytics?: AppConfigurationFeature & {
-    tracking_id: string;
   };
   google_tag_manager?: AppConfigurationFeature & {
     destinations: string;
@@ -206,6 +204,7 @@ export interface IAppConfigurationSettings {
   custom_smtp?: AppConfigurationFeature;
   hide_submission_removal_text?: AppConfigurationFeature;
   project_static_pages?: AppConfigurationFeature;
+  project_backoffice_redesign?: AppConfigurationFeature;
   html_block_in_content_builder?: AppConfigurationFeature;
   custom_page_builder?: AppConfigurationFeature;
   configurable_dropdown?: AppConfigurationFeature;

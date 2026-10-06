@@ -89,5 +89,49 @@ RSpec.describe ReportBuilder::Queries::Registrations do
         registration_rate_compared_period: 0.5
       })
     end
+
+    context 'with exclude_admins_and_moderators' do
+      before do
+        # 5 admins and moderators registered in September, with 5 unique admin/moderator visitors
+        create_admins_and_moderators(registration_completed_at: Date.new(2022, 9, 10))
+        admin_and_moderator_highest_roles.each do |highest_role|
+          session_attributes = { monthly_user_hash: "september_#{highest_role}", highest_role: highest_role, pageview_created_at: Date.new(2022, 9, 10) }
+          create(:session, :with_pageview, **session_attributes)
+        end
+      end
+
+      let(:params) do
+        {
+          start_at: Date.new(2022, 10, 1),
+          end_at: Date.new(2022, 11, 1),
+          compare_start_at: Date.new(2022, 9, 1),
+          compare_end_at: Date.new(2022, 10, 1)
+        }
+      end
+
+      it 'includes admins and moderators by default' do
+        result = query.run_query(**params)
+
+        expect(result[:registrations_compared_period]).to eq(8)
+        expect(result[:registration_rate_compared_period]).to eq(8 / 11.0)
+      end
+
+      it 'excludes admins and moderators from registrations and visitors' do
+        result = query.run_query(**params, exclude_admins_and_moderators: true)
+
+        expect(result).to eq({
+          registrations_timeseries: [
+            {
+              registrations: 7,
+              date_group: Date.new(2022, 10, 1)
+            }
+          ],
+          registrations_whole_period: 7,
+          registration_rate_whole_period: 0.5,
+          registrations_compared_period: 3,
+          registration_rate_compared_period: 0.5
+        })
+      end
+    end
   end
 end

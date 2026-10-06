@@ -9,7 +9,10 @@ project1.attributes.folder_id = folderId;
 describe('canModerateProject', () => {
   describe('when a user is an admin', () => {
     it('returns true', () => {
-      const user = makeUser({ roles: [{ type: 'admin' }] });
+      const user = makeUser({
+        roles: [{ type: 'admin' }],
+        highest_role: 'admin',
+      });
       expect(canModerateProject(project1, user)).toBe(true);
     });
   });

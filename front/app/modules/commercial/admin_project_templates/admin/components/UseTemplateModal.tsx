@@ -38,6 +38,7 @@ import {
   isProjectFolderModerator,
 } from 'utils/permissions/rules/projectFolderPermissions';
 import { useParams } from 'utils/router';
+import validateTitle from 'utils/validateTitle';
 
 import tracks from '../../tracks';
 import useApplyProjectTemplate from '../api/useApplyProjectTemplate';
@@ -108,6 +109,7 @@ export interface Props {
   emitSuccessEvent?: boolean;
   showGoBackLink?: boolean;
   close: () => void;
+  onCreated?: () => void;
 }
 
 const noFolderOption = 'NO_FOLDER_OPTION';
@@ -120,6 +122,7 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
     emitSuccessEvent,
     showGoBackLink,
     close,
+    onCreated,
   }) => {
     const params = useParams({ strict: false });
     const templateId: string | undefined =
@@ -137,7 +140,7 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
     const [startDate, setStartDate] = useState<string | null>(null);
     const [folderId, setFolderId] = useState<string | null>(null);
     const [folderOptions, setFolderOptions] = useState<IOption[] | null>(null);
-    const [titleError, setTitleError] = useState<string | null>(null);
+    const [titleError, setTitleError] = useState<Multiloc | null>(null);
     const [startDateError, setStartDateError] = useState<string | null>(null);
     const [processing, setProcessing] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -145,12 +148,8 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
 
     const onCreateProject = useCallback(async () => {
       const invalidTitle =
-        isEmpty(titleMultiloc) || // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        (titleMultiloc &&
-          Object.getOwnPropertyNames(titleMultiloc).every((key) =>
-            isEmpty(titleMultiloc[`${key}`])
-          ));
+        !titleMultiloc ||
+        Object.values(titleMultiloc).every((title) => isEmpty(title));
       const noDate = isEmpty(startDate);
       const invalidDate = !moment(
         startDate || '',
@@ -163,11 +162,17 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
       });
 
       if (invalidTitle && !isNilOrError(tenantLocales)) {
-        if (tenantLocales.length === 1) {
-          setTitleError(intl.formatMessage(messages.projectTitleError));
-        } else {
-          setTitleError(intl.formatMessage(messages.projectTitleMultilocError));
-        }
+        setTitleError(
+          validateTitle(
+            tenantLocales,
+            titleMultiloc ?? undefined,
+            intl.formatMessage(
+              tenantLocales.length === 1
+                ? messages.projectTitleError
+                : messages.projectTitleMultilocError
+            )
+          )
+        );
       }
 
       if (noDate) {
@@ -178,9 +183,7 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
         );
       }
 
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (!invalidTitle && !invalidDate && titleMultiloc && startDate) {
+      if (!invalidTitle && !invalidDate && startDate) {
         setResponseError(null);
         setTitleError(null);
         setStartDateError(null);
@@ -205,6 +208,7 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
 
           setProcessing(false);
           setSuccess(true);
+          onCreated?.();
         } catch (error) {
           setProcessing(false);
           setResponseError(error);
@@ -220,6 +224,7 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
       templateId,
       folderId,
       emitSuccessEvent,
+      onCreated,
     ]);
 
     const onClose = useCallback(() => {
@@ -351,7 +356,7 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
                 type="text"
                 valueMultiloc={titleMultiloc}
                 onChange={onTitleChange}
-                error={titleError}
+                errorMultiloc={titleError}
                 autoFocus={true}
               />
               <Box my="36px">
@@ -377,6 +382,7 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
               <SuccessIcon name="check-circle" />
               <SuccessText>
                 <FormattedMessage {...messages.successMessage} />
+                <FormattedMessage {...messages.findItInProjectsList} />
                 {showGoBackLink && (
                   <FormattedMessage
                     {...messages.goBackTo}
