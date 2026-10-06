@@ -4288,9 +4288,10 @@ CREATE VIEW public.reporting_projects AS
                   WHERE (t.value <> ''::text)
                   ORDER BY t.key
                  LIMIT 1)) AS "coalesce"
-           FROM (public.projects_global_topics pgt
-             JOIN public.global_topics gt ON ((gt.id = pgt.global_topic_id)))
-          WHERE (pgt.project_id = p.id)
+           FROM public.global_topics gt
+          WHERE (EXISTS ( SELECT 1
+                   FROM public.projects_global_topics pgt
+                  WHERE ((pgt.project_id = p.id) AND (pgt.global_topic_id = gt.id))))
           ORDER BY gt.ordering) AS topics,
     ARRAY( SELECT COALESCE(NULLIF((a.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
                    FROM public.app_configurations ac

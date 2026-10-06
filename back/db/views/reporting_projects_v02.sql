@@ -29,9 +29,8 @@ SELECT
             NULLIF(gt.title_multiloc ->> (SELECT ac.settings -> 'core' -> 'locales' ->> 0 FROM app_configurations ac LIMIT 1), ''),
             (SELECT t.value FROM jsonb_each_text(gt.title_multiloc) t WHERE t.value <> '' ORDER BY t.key LIMIT 1)
         )
-        FROM projects_global_topics pgt
-        INNER JOIN global_topics gt ON gt.id = pgt.global_topic_id
-        WHERE pgt.project_id = p.id
+        FROM global_topics gt
+        WHERE EXISTS (SELECT 1 FROM projects_global_topics pgt WHERE pgt.project_id = p.id AND pgt.global_topic_id = gt.id)
         ORDER BY gt.ordering
     ) AS topics,
     -- A project marked "all areas" matches every area, as in the product's

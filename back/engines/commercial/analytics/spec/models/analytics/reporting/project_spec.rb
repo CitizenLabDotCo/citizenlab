@@ -90,6 +90,13 @@ RSpec.describe Analytics::Reporting::Project do
 
       expect(row.topics).to eq %w[Mobility Nature]
     end
+
+    it 'lists a topic once even when it is linked twice' do
+      topic = create(:global_topic, title_multiloc: { 'en' => 'Mobility' })
+      create_list(:projects_global_topic, 2, project: project, global_topic: topic)
+
+      expect(row.topics).to eq %w[Mobility]
+    end
   end
 
   describe 'areas' do
