@@ -75,7 +75,19 @@ CROSS JOIN LATERAL (
             WHERE o.custom_field_id = q.id AND o.key = a.value #>> '{}'
         )
         WHEN q.input_type IN ('linear_scale', 'sentiment_linear_scale') AND jsonb_typeof(a.value) = 'number'
-        THEN to_jsonb(q) -> ('linear_scale_label_' || (a.value #>> '{}') || '_multiloc')
+        THEN CASE a.value #>> '{}'
+            WHEN '1' THEN q.linear_scale_label_1_multiloc
+            WHEN '2' THEN q.linear_scale_label_2_multiloc
+            WHEN '3' THEN q.linear_scale_label_3_multiloc
+            WHEN '4' THEN q.linear_scale_label_4_multiloc
+            WHEN '5' THEN q.linear_scale_label_5_multiloc
+            WHEN '6' THEN q.linear_scale_label_6_multiloc
+            WHEN '7' THEN q.linear_scale_label_7_multiloc
+            WHEN '8' THEN q.linear_scale_label_8_multiloc
+            WHEN '9' THEN q.linear_scale_label_9_multiloc
+            WHEN '10' THEN q.linear_scale_label_10_multiloc
+            WHEN '11' THEN q.linear_scale_label_11_multiloc
+        END
     END AS multiloc
 ) label
 
