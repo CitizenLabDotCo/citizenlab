@@ -128,6 +128,7 @@ ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaigns_groups DROP CONSTRAI
 ALTER TABLE IF EXISTS ONLY public.sms_deliveries DROP CONSTRAINT IF EXISTS fk_rails_704e460729;
 ALTER TABLE IF EXISTS ONLY public.groups_permissions DROP CONSTRAINT IF EXISTS fk_rails_6fa6389d80;
 ALTER TABLE IF EXISTS ONLY public.ideas_input_topics DROP CONSTRAINT IF EXISTS fk_rails_6f51315d9b;
+ALTER TABLE IF EXISTS ONLY public.content_builder_custom_block_versions DROP CONSTRAINT IF EXISTS fk_rails_6cbdf54e32;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_6c9ab6d4f8;
 ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXISTS fk_rails_6988c9886e;
 ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rails_67f00886f9;
@@ -137,6 +138,7 @@ ALTER TABLE IF EXISTS ONLY public.internal_comments DROP CONSTRAINT IF EXISTS fk
 ALTER TABLE IF EXISTS ONLY public.analysis_taggings DROP CONSTRAINT IF EXISTS fk_rails_604cfbcd8d;
 ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rails_5ea1f11fd5;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_5ac7668cd3;
+ALTER TABLE IF EXISTS ONLY public.content_builder_custom_blocks DROP CONSTRAINT IF EXISTS fk_rails_59b0c3817e;
 ALTER TABLE IF EXISTS ONLY public.event_files DROP CONSTRAINT IF EXISTS fk_rails_577d1fb456;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_575368d182;
 ALTER TABLE IF EXISTS ONLY public.custom_field_answers DROP CONSTRAINT IF EXISTS fk_rails_56fa027c1d;
@@ -457,9 +459,13 @@ DROP INDEX IF EXISTS public.index_custom_field_bins_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_custom_field_answers_on_key_and_answerable_type;
 DROP INDEX IF EXISTS public.index_custom_field_answers_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_custom_field_answers_on_answerable_and_key;
+DROP INDEX IF EXISTS public.index_custom_block_versions_on_custom_block_id_and_number;
 DROP INDEX IF EXISTS public.index_cosponsorships_on_user_id;
 DROP INDEX IF EXISTS public.index_cosponsorships_on_idea_id;
 DROP INDEX IF EXISTS public.index_content_builder_layouts_content_buidable_type_id_code;
+DROP INDEX IF EXISTS public.index_content_builder_custom_blocks_on_status;
+DROP INDEX IF EXISTS public.index_content_builder_custom_blocks_on_created_by_id;
+DROP INDEX IF EXISTS public.index_content_builder_custom_block_versions_on_custom_block_id;
 DROP INDEX IF EXISTS public.index_confirmations_on_user_id_and_type;
 DROP INDEX IF EXISTS public.index_confirmations_on_user_id;
 DROP INDEX IF EXISTS public.index_common_passwords_on_password;
@@ -663,6 +669,8 @@ ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS cospo
 ALTER TABLE IF EXISTS ONLY public.content_builder_query_snapshots DROP CONSTRAINT IF EXISTS content_builder_query_snapshots_pkey;
 ALTER TABLE IF EXISTS ONLY public.content_builder_layouts DROP CONSTRAINT IF EXISTS content_builder_layouts_pkey;
 ALTER TABLE IF EXISTS ONLY public.content_builder_layout_images DROP CONSTRAINT IF EXISTS content_builder_layout_images_pkey;
+ALTER TABLE IF EXISTS ONLY public.content_builder_custom_blocks DROP CONSTRAINT IF EXISTS content_builder_custom_blocks_pkey;
+ALTER TABLE IF EXISTS ONLY public.content_builder_custom_block_versions DROP CONSTRAINT IF EXISTS content_builder_custom_block_versions_pkey;
 ALTER TABLE IF EXISTS ONLY public.confirmations DROP CONSTRAINT IF EXISTS confirmations_pkey;
 ALTER TABLE IF EXISTS ONLY public.common_passwords DROP CONSTRAINT IF EXISTS common_passwords_pkey;
 ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS comments_pkey;
@@ -815,6 +823,8 @@ DROP TABLE IF EXISTS public.cosponsorships;
 DROP TABLE IF EXISTS public.content_builder_query_snapshots;
 DROP TABLE IF EXISTS public.content_builder_layouts;
 DROP TABLE IF EXISTS public.content_builder_layout_images;
+DROP TABLE IF EXISTS public.content_builder_custom_blocks;
+DROP TABLE IF EXISTS public.content_builder_custom_block_versions;
 DROP TABLE IF EXISTS public.confirmations;
 DROP TABLE IF EXISTS public.common_passwords;
 DROP TABLE IF EXISTS public.claim_tokens;
@@ -2332,6 +2342,41 @@ CREATE TABLE public.confirmations (
     code_retry_count integer DEFAULT 0 NOT NULL,
     code_reset_count integer DEFAULT 0 NOT NULL,
     code_sent_at timestamp(6) without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: content_builder_custom_block_versions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.content_builder_custom_block_versions (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    custom_block_id uuid NOT NULL,
+    number integer NOT NULL,
+    sdk_version character varying DEFAULT 'v1'::character varying NOT NULL,
+    source text NOT NULL,
+    bundle text NOT NULL,
+    manifest jsonb DEFAULT '{}'::jsonb NOT NULL,
+    messages jsonb DEFAULT '{}'::jsonb NOT NULL,
+    toolchain jsonb DEFAULT '{}'::jsonb NOT NULL,
+    generation_transcript_id uuid,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: content_builder_custom_blocks; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.content_builder_custom_blocks (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    title_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    description_multiloc jsonb DEFAULT '{}'::jsonb,
+    status character varying DEFAULT 'draft'::character varying NOT NULL,
+    created_by_id uuid,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -5228,6 +5273,22 @@ ALTER TABLE ONLY public.confirmations
 
 
 --
+-- Name: content_builder_custom_block_versions content_builder_custom_block_versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_builder_custom_block_versions
+    ADD CONSTRAINT content_builder_custom_block_versions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: content_builder_custom_blocks content_builder_custom_blocks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_builder_custom_blocks
+    ADD CONSTRAINT content_builder_custom_blocks_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: content_builder_layout_images content_builder_layout_images_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6769,6 +6830,27 @@ CREATE UNIQUE INDEX index_confirmations_on_user_id_and_type ON public.confirmati
 
 
 --
+-- Name: index_content_builder_custom_block_versions_on_custom_block_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_content_builder_custom_block_versions_on_custom_block_id ON public.content_builder_custom_block_versions USING btree (custom_block_id);
+
+
+--
+-- Name: index_content_builder_custom_blocks_on_created_by_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_content_builder_custom_blocks_on_created_by_id ON public.content_builder_custom_blocks USING btree (created_by_id);
+
+
+--
+-- Name: index_content_builder_custom_blocks_on_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_content_builder_custom_blocks_on_status ON public.content_builder_custom_blocks USING btree (status);
+
+
+--
 -- Name: index_content_builder_layouts_content_buidable_type_id_code; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6787,6 +6869,13 @@ CREATE INDEX index_cosponsorships_on_idea_id ON public.cosponsorships USING btre
 --
 
 CREATE INDEX index_cosponsorships_on_user_id ON public.cosponsorships USING btree (user_id);
+
+
+--
+-- Name: index_custom_block_versions_on_custom_block_id_and_number; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_custom_block_versions_on_custom_block_id_and_number ON public.content_builder_custom_block_versions USING btree (custom_block_id, number);
 
 
 --
@@ -9075,6 +9164,14 @@ ALTER TABLE ONLY public.event_files
 
 
 --
+-- Name: content_builder_custom_blocks fk_rails_59b0c3817e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_builder_custom_blocks
+    ADD CONSTRAINT fk_rails_59b0c3817e FOREIGN KEY (created_by_id) REFERENCES public.users(id) ON DELETE SET NULL;
+
+
+--
 -- Name: ideas fk_rails_5ac7668cd3; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -9144,6 +9241,14 @@ ALTER TABLE ONLY public.report_builder_reports
 
 ALTER TABLE ONLY public.ideas
     ADD CONSTRAINT fk_rails_6c9ab6d4f8 FOREIGN KEY (manual_votes_last_updated_by_id) REFERENCES public.users(id);
+
+
+--
+-- Name: content_builder_custom_block_versions fk_rails_6cbdf54e32; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_builder_custom_block_versions
+    ADD CONSTRAINT fk_rails_6cbdf54e32 FOREIGN KEY (custom_block_id) REFERENCES public.content_builder_custom_blocks(id) ON DELETE CASCADE;
 
 
 --
@@ -10135,6 +10240,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20260908144646'),
 ('20260904074654'),
 ('20260827120000'),
+('20260824210219'),
+('20260824210218'),
 ('20260821210000'),
 ('20260821090000'),
 ('20260821000000'),
