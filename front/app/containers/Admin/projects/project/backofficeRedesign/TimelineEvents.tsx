@@ -8,10 +8,11 @@ import {
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import { format, isSameDay, isThisYear } from 'date-fns';
+import { Locale, format, isSameDay, isThisYear } from 'date-fns';
 
 import useEvents from 'api/events/useEvents';
 
+import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import {
@@ -19,6 +20,7 @@ import {
   formatDateRange,
 } from 'containers/Admin/projects/project/projectPage/phaseRowUtils';
 
+import { getLocale } from 'components/admin/DatePickers/_shared/locales';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
@@ -29,18 +31,18 @@ import { useParams } from 'utils/router';
 import messages from './messages';
 
 // Events often span several years, so the year is shown unless it's this one.
-const formatDay = (date: Date) =>
-  format(date, isThisYear(date) ? 'd MMM' : 'd MMM yyyy');
+const formatDay = (date: Date, locale: Locale) =>
+  format(date, isThisYear(date) ? 'd MMM' : 'd MMM yyyy', { locale });
 
-const formatEventDate = (startAt: string, endAt: string) => {
+const formatEventDate = (startAt: string, endAt: string, locale: Locale) => {
   const start = new Date(startAt);
   const end = new Date(endAt);
 
-  if (isSameDay(start, end)) return formatDay(start);
+  if (isSameDay(start, end)) return formatDay(start, locale);
   if (isThisYear(start) && isThisYear(end)) {
-    return formatDateRange(startAt, endAt);
+    return formatDateRange(startAt, endAt, locale);
   }
-  return `${formatDay(start)} – ${formatDay(end)}`;
+  return `${formatDay(start, locale)} – ${formatDay(end, locale)}`;
 };
 
 interface Props {
@@ -50,6 +52,7 @@ interface Props {
 const TimelineEvents = ({ projectId }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const dateLocale = getLocale(useLocale());
   const { id: selectedEventId } = useParams({ strict: false });
   const { data: events } = useEvents({
     projectIds: [projectId],
@@ -104,7 +107,7 @@ const TimelineEvents = ({ projectId }: Props) => {
                   </Box>
                   {/* 26px = 16px icon + 10px gap, so the date lines up with the title */}
                   <Text m="2px 0 0 26px" fontSize="xs" color="textSecondary">
-                    {formatEventDate(start_at, end_at)}
+                    {formatEventDate(start_at, end_at, dateLocale)}
                   </Text>
                 </Box>
               </Row>

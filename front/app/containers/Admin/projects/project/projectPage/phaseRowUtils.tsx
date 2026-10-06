@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
-import { format, isSameMonth } from 'date-fns';
+import { Locale, format, isSameMonth } from 'date-fns';
 import styled from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
@@ -38,19 +38,21 @@ export const phaseStatus = (phase: IPhaseData): PhaseStatus =>
 export const formatDateRange = (
   startAt: string,
   endAt: string | null,
+  locale: Locale,
   noEndLabel?: string
 ): string => {
   const start = new Date(startAt);
+  const dayMonth = (date: Date) => format(date, 'd MMM', { locale });
 
   if (!endAt) {
-    return `${format(start, 'd MMM')} – ${noEndLabel ?? ''}`;
+    return `${dayMonth(start)} – ${noEndLabel ?? ''}`;
   }
 
   const end = new Date(endAt);
 
   return isSameMonth(start, end)
-    ? `${format(start, 'd')} – ${format(end, 'd MMM')}`
-    : `${format(start, 'd MMM')} – ${format(end, 'd MMM')}`;
+    ? `${format(start, 'd', { locale })} – ${dayMonth(end)}`
+    : `${dayMonth(start)} – ${dayMonth(end)}`;
 };
 
 const dotBackground = (status: PhaseStatus) => {

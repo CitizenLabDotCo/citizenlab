@@ -11,10 +11,12 @@ import { ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import { getPhaseLandingTab } from 'api/phases/utils';
 
+import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import methodMessages from 'containers/Admin/inspirationHub/messages';
 
+import { getLocale } from 'components/admin/DatePickers/_shared/locales';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
@@ -64,6 +66,7 @@ const TimelinePhases = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const dateLocale = getLocale(useLocale());
   const { phaseId } = useParams({ strict: false });
   const { data: phases } = usePhases(projectId);
 
@@ -104,6 +107,7 @@ const TimelinePhases = ({
           const dateText = formatDateRange(
             phase.attributes.start_at,
             phase.attributes.end_at,
+            dateLocale,
             noEndLabel
           );
           const methodLabel = formatMessage(

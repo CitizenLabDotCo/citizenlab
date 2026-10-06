@@ -12,8 +12,10 @@ import usePhases from 'api/phases/usePhases';
 import { getPhaseLandingTab } from 'api/phases/utils';
 import useProjectPageLayout from 'api/project_page_layout/useProjectPageLayout';
 
+import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
+import { getLocale } from 'components/admin/DatePickers/_shared/locales';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
@@ -39,6 +41,7 @@ interface Props {
 const SpotlightSurveys = ({ projectId, variant = 'sidebar' }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const dateLocale = getLocale(useLocale());
   const { phaseId } = useParams({ strict: false });
   const { data: phases } = usePhases(projectId, 'standalone');
   const { data: layout } = useProjectPageLayout(projectId);
@@ -87,7 +90,7 @@ const SpotlightSurveys = ({ projectId, variant = 'sidebar' }: Props) => {
           const status = phaseStatus(phase);
           const { start_at, end_at } = phase.attributes;
           const dateText = end_at
-            ? formatDateRange(start_at, end_at)
+            ? formatDateRange(start_at, end_at, dateLocale)
             : formatMessage(messages.ongoing);
           const onProjectPage = linkedPhaseIds.has(phase.id);
 
