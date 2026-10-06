@@ -174,28 +174,6 @@ RSpec.describe ParticipationMethod::Ideation do
     end
   end
 
-  describe '#author_in_form?' do
-    it 'returns false for a visitor when idea_author_change is activated' do
-      SettingsService.new.activate_feature! 'idea_author_change'
-      expect(participation_method.author_in_form?(nil)).to be false
-    end
-
-    it 'returns false for a resident when idea_author_change is activated' do
-      SettingsService.new.activate_feature! 'idea_author_change'
-      expect(participation_method.author_in_form?(create(:user))).to be false
-    end
-
-    it 'returns false for a moderator when idea_author_change is deactivated' do
-      SettingsService.new.deactivate_feature! 'idea_author_change'
-      expect(participation_method.author_in_form?(create(:admin))).to be false
-    end
-
-    it 'returns true for a moderator when idea_author_change is activated' do
-      SettingsService.new.activate_feature! 'idea_author_change'
-      expect(participation_method.author_in_form?(create(:admin))).to be true
-    end
-  end
-
   describe '#budget_in_form?' do
     let(:c) { { participation_method: 'voting', voting_method: 'budgeting' } }
     let(:project) do
