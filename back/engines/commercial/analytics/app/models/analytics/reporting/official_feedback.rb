@@ -42,7 +42,12 @@ module Analytics
             primary locale. Free text chosen by the poster, often a department
             or role (for example "City council").
           DOC
-          'user_id' => 'The staff member who posted the feedback, or NULL when that user was deleted.',
+          'user_id' => <<~DOC.squish,
+            The staff member who posted the feedback, or NULL when that user was
+            deleted. Can point to a user missing from reporting_users (blocked or
+            not fully registered), so LEFT JOIN to keep all feedback; use author
+            to name the poster.
+          DOC
           'created_at' => 'When the feedback was posted (UTC).',
           'updated_at' => 'When the feedback was last edited (UTC).'
         }
