@@ -311,16 +311,18 @@ describe('Events widget', () => {
   // and not the archived-projects filter the widget ignores there.
   it('offers a source choice on the homepage only with filtering, and never on a project page', () => {
     setFiltering(false);
+    cy.apiUpdateHomepageLayout({ craftjs_json: homepageWithoutEvents() });
     goToHomepageBuilder();
 
     cy.get('#e2e-draggable-events').dragAndDrop('#e2e-content-builder-frame', {
       position: 'inside',
     });
 
-    cy.get('label[for="events-source-areas"]').should('not.exist');
+    // The note first: it shows the panel is open, so the absence below is a real one.
     cy.contains(
       'Filtering by area, tag or space is part of a paid plan'
     ).should('exist');
+    cy.get('label[for="events-source-areas"]').should('not.exist');
 
     setFiltering(true);
     goToHomepageBuilder();
