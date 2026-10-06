@@ -62,6 +62,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectPages.saveSuccess',
     defaultMessage: 'Page saved',
   },
+  pagePreviewTitle: {
+    id: 'app.containers.AdminPage.ProjectPages.pagePreviewTitle',
+    defaultMessage: 'Project page preview',
+  },
+  editPageInContentBuilder: {
+    id: 'app.containers.AdminPage.ProjectPages.editPageInContentBuilder',
+    defaultMessage: 'Edit the project page in the content builder',
+  },
   viewPage: {
     id: 'app.containers.AdminPage.ProjectPages.viewPage',
     defaultMessage: 'View page',
