@@ -11,6 +11,7 @@ import Transition from 'react-transition-group/Transition';
 import { SupportedLocale } from 'typings';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
+import useCustomBlocks from 'api/custom_blocks/useCustomBlocks';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
 import useProjects from 'api/projects/useProjects';
@@ -20,10 +21,12 @@ import useAppConfigurationLocales, {
   createMultiloc,
 } from 'hooks/useAppConfigurationLocales';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocalize from 'hooks/useLocalize';
 
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 
+import CustomBlock from 'components/admin/ContentBuilder/CustomBlocks/Widget';
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 import Section from 'components/admin/ContentBuilder/Toolbox/Section';
@@ -112,6 +115,10 @@ const ReportBuilderToolbox = ({
     name: 'project_planning_calendar',
   });
   const llmReportingEnabled = useFeatureFlag({ name: 'llm_reporting' });
+  const localize = useLocalize();
+  const { data: customBlocks } = useCustomBlocks({
+    enabled: llmReportingEnabled,
+  });
 
   if (
     !appConfigurationLocales ||
@@ -270,6 +277,31 @@ const ReportBuilderToolbox = ({
               label={formatMessage(WIDGET_TITLES.IframeMultiloc)}
             />
           </Section>
+          {/* Charts a generation run wrote. A new placement pins the block's newest
+              version, and renders that version from then on. */}
+          {llmReportingEnabled &&
+            customBlocks &&
+            customBlocks.data.length > 0 && (
+              <Section>
+                {customBlocks.data.map((block) =>
+                  block.attributes.latest_version === null ? null : (
+                    <DraggableElement
+                      key={block.id}
+                      id={`e2e-draggable-custom-block-${block.id}`}
+                      component={
+                        <CustomBlock
+                          blockId={block.id}
+                          version={block.attributes.latest_version}
+                          config={{}}
+                        />
+                      }
+                      icon="stars"
+                      label={localize(block.attributes.title_multiloc)}
+                    />
+                  )
+                )}
+              </Section>
+            )}
           <Section>
             <DraggableElement
               id="e2e-draggable-survey-question-result-widget"
